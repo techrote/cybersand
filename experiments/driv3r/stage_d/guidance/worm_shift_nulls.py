@@ -1,7 +1,7 @@
 """Read-only, deterministic shifted-field controls for synthetic line-worm ink.
 
 The input MUST be an independently generated bind_synthetic_worm_morphology
-report; this module only checks its internal seals, not native authenticity.
+report; this module recomputes its synthetic motion/topology audits but cannot\nverify host/native authenticity.
 Toroidal translations preserve the field's value histogram, not its alignment
 with authored ink destinations. These posthoc nulls are descriptive and cannot
 establish causal model steering, visual input, or genuine material edits.
@@ -13,6 +13,8 @@ from math import gcd
 import json
 import re
 import struct
+
+from .worm_morphology_binding import bind_synthetic_worm_morphology
 
 PROTOCOL = "cybersand.driv3r.d1b-worm-shift-nulls/1"
 BOUND = "cybersand.driv3r.d1b-worm-morphology-bound/1"
@@ -127,6 +129,27 @@ def audit_shifted_field_nulls(*, bound_report: dict, guidance_u16le: bytes,
              "bound subreport custody mismatch")
     _require(type(movement.get("arms")) is dict and
              type(morphology.get("arms")) is dict, "missing bound arms")
+
+    # Hashes prove only that supplied dictionaries match their supplied seals.
+    # Rebuild both audits from the actual bytes and traces, rather than trusting
+    # an adversary who re-sealed fabricated "legal" motion or morphology.
+    try:
+        canonical = bind_synthetic_worm_morphology(
+            guidance_u16le=guidance_u16le,
+            width=frame[2], height=frame[3], origin_xy=frame[:2],
+            guidance_sha256=bound_report["guidance_sha256"],
+            initial_xy=bound_report["initial_xy"],
+            initial_world_sha256=bound_report["initial_world_sha256"],
+            scenario_sha256=bound_report["scenario_sha256"],
+            source_revision=bound_report["source_revision"],
+            seed=bound_report["seed"],
+            free_trace=free_trace, soft_trace=soft_trace,
+            max_decisions=movement["max_decisions"],
+            high_threshold=movement["high_threshold_u16"],
+        )
+    except (ValueError, TypeError, KeyError, IndexError) as exc:
+        raise ValueError("canonical source-bound replay invalid: " + str(exc)) from exc
+    _require(bound_report == canonical, "canonical source-bound replay mismatch")
     ink = {}
     for arm, trace in (("free", free_trace), ("soft", soft_trace)):
         route = movement["arms"][arm]
