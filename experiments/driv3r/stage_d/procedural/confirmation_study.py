@@ -151,9 +151,20 @@ def run(out: Path, names=None, *, allow_unqualified_shadow=False):
     if not exact_policy_source and not allow_unqualified_shadow:
         raise ValueError('unqualified policy source; explicit allow_unqualified_shadow required')
     out = Path(out); out.mkdir(parents=True, exist_ok=True)
-    requested = set(names) if names is not None else {c['id'] for c in frozen['cases']}
-    if not requested <= {c['id'] for c in frozen['cases']}:
-        raise ValueError('not predeclared')
+    registered_ids = tuple(c['id'] for c in frozen['cases'])
+    registered_set = set(registered_ids)
+    if len(registered_set) != len(registered_ids):
+        raise ValueError('duplicate IDs in frozen preregistration')
+    if names is None:
+        requested = registered_set
+    else:
+        supplied = tuple(names)
+        if not supplied or len(supplied) != len(set(supplied)):
+            raise ValueError('empty or duplicate requested case IDs')
+        requested = set(supplied)
+        if not requested <= registered_set:
+            raise ValueError('not predeclared')
+    full_cohort = requested == registered_set
     cases = []
     for registered in frozen['cases']:
         name = registered['id']
@@ -199,8 +210,17 @@ def run(out: Path, names=None, *, allow_unqualified_shadow=False):
         cases.append({'id':name, 'seed':seed, 'registered':registered,
                       'reachability':reach,'original_png_sha256':ff.digest(original_view),
                       'policies':policies})
-    report = {'version':VERSION,'qualification':('PRE_REGISTERED_SYNTHETIC_OFFLINE_ONLY' if exact_policy_source
-                                  else 'UNQUALIFIED_LOCAL_POLICY_REIMPLEMENTATION'),
+    qualification = ('PRE_REGISTERED_SYNTHETIC_OFFLINE_ONLY'
+                     if exact_policy_source and full_cohort else
+                     'PRE_REGISTERED_PARTIAL_SYNTHETIC_DIAGNOSTIC'
+                     if exact_policy_source else
+                     'UNQUALIFIED_LOCAL_POLICY_REIMPLEMENTATION')
+    report = {'version':VERSION,'qualification':qualification,
+              'selection_scope':('FULL_PREREGISTERED_COHORT' if full_cohort
+                                 else 'PARTIAL_SUBSET_DIAGNOSTIC'),
+              'included_case_ids':[name for name in registered_ids if name in requested],
+              'omitted_case_ids':[name for name in registered_ids if name not in requested],
+              'complete_source_qualified_cohort':bool(full_cohort and exact_policy_source),
               'freeze_commit':FROZEN_COMMIT,
               'frozen_fixture_sha256':FROZEN_FIXTURE_SHA256,
               'frozen_manifest_sha256':FROZEN_MANIFEST_SHA256,
@@ -212,7 +232,7 @@ def run(out: Path, names=None, *, allow_unqualified_shadow=False):
               'material_undo':'HOST_NATIVE_RECEIPT_REQUIRED_NOT_TESTED',
               'visual_acceptance':'NOT_PERFORMED',
               'no_policy_or_fixture_tuning_after_freeze':True,
-              'all_registered_cases_included':len(cases)==len(frozen['cases']),
+              'all_registered_cases_included':bool(full_cohort and len(cases)==len(frozen['cases'])),
               'cases':cases}
     raw = ff.encode(report) + b'\n'
     (out / 'confirmation-results.json').write_bytes(raw)

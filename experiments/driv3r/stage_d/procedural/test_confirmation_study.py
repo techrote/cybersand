@@ -89,6 +89,34 @@ class ConfirmationStudyTests(unittest.TestCase):
         with self.assertRaises(AssertionError):
             audit_events(initial, allowed, fresh, after, scalar)
 
+    def test_partial_selection_is_explicitly_not_full_confirmation(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            result, _ = run(Path(tmp), names=('nested-courtyard',))
+            self.assertEqual(result['qualification'], 'PRE_REGISTERED_PARTIAL_SYNTHETIC_DIAGNOSTIC')
+            self.assertEqual(result['selection_scope'], 'PARTIAL_SUBSET_DIAGNOSTIC')
+            self.assertTrue(result['policy_source_verified'])
+            self.assertFalse(result['complete_source_qualified_cohort'])
+            self.assertFalse(result['all_registered_cases_included'])
+            self.assertEqual(result['included_case_ids'], ['nested-courtyard'])
+            self.assertEqual(len(result['omitted_case_ids']), len(CASE_SEEDS)-1)
+            self.assertEqual([c['id'] for c in result['cases']], ['nested-courtyard'])
+
+    def test_reject_ambiguous_or_unregistered_case_selection(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            for selection in ((), ('nested-courtyard', 'nested-courtyard'),
+                              ('does-not-exist',)):
+                with self.subTest(selection=selection):
+                    with self.assertRaises(ValueError):
+                        run(Path(tmp), names=selection)
+
+    def test_complete_cohort_keeps_full_preregistration_label(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            result, _ = run(Path(tmp), names=(name for name, _ in CASE_SEEDS))
+            self.assertEqual(result['qualification'], 'PRE_REGISTERED_SYNTHETIC_OFFLINE_ONLY')
+            self.assertTrue(result['complete_source_qualified_cohort'])
+            self.assertEqual(result['selection_scope'], 'FULL_PREREGISTERED_COHORT')
+            self.assertEqual(result['omitted_case_ids'], [])
+
     def test_exact_policy_required_unless_provisional_shadow_explicit(self):
         import confirmation_study as study
         from unittest.mock import patch
