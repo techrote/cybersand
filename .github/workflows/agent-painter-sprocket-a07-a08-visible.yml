@@ -1,0 +1,99 @@
+name: SPROCKET A07/A08 original native Architecture vs visible splits (research only)
+on:
+  push:
+    branches: [codex/agent-painter-sprocket-568]
+    paths:
+      - experiments/agent_painter/lanes/sprocket/a07-a08-native-visible-request.json
+      - experiments/agent_painter/lanes/sprocket/test_a07_a08_original_native_visible.py
+      - .github/workflows/agent-painter-sprocket-a07-a08-visible.yml
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: sprocket-a07-a08-visible-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  source-locked-visible-architecture:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Refuse any implicit TRAIN, native, or FINAL promotion
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$GITHUB_REF" = refs/heads/codex/agent-painter-sprocket-568
+          test "$GITHUB_REPOSITORY" = techrote/cybersand
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$(git hash-object experiments/agent_painter/lanes/sprocket/threefamily_v3.py)" = b3ac98a8cd06158b39a2f58776fab845046f245f
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path("experiments/agent_painter/lanes/sprocket/a07-a08-native-visible-request.json").read_text())
+          assert r=={
+            "schema":"cybersand.sprocket-a07-a08-visible-native-request/1",
+            "sequence":1,
+            "original_corpus_artifact_id":14076703326,
+            "original_research_artifact_id":14111800549,
+            "original_research_source_sha":"63ee8b2b561068a72e0652e54b6e4193cb47d5e6",
+            "candidates":["A07","A08"],
+            "scope":["TRAIN","DEVELOPMENT"],
+            "model_training":False,
+            "new_native_execution":False,
+            "shared_train_admission":False,
+            "final_targets_opened":False,
+            "draft_hold":True
+          }
+          PY
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/sprocket-a-visible-scheduling.json
+          python3 -m py_compile experiments/agent_painter/lanes/sprocket/a07_a08_original_native_visible.py experiments/agent_painter/lanes/sprocket/test_a07_a08_original_native_visible.py
+      - name: Retrieve separately pinned ORIGINAL native material artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/sprocket-a-visible/original
+          for item in "14076703326 corpus.zip" "14111800549 native.zip"; do
+            set -- $item
+            curl --fail --show-error --silent --location --retry 3 --max-time 240 \
+              -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/techrote/cybersand/actions/artifacts/$1/zip" \
+              -o "evidence/sprocket-a-visible/original/$2"
+          done
+          echo '50a9ad9b255b2a57180edf5558ca2b47dab9affd9ef9d2438f9011d648f81f39  evidence/sprocket-a-visible/original/corpus.zip' | sha256sum -c --strict
+          echo '3a7397883b146a28da990f0a37b891897285c2c7c81cd9dd2aaa3895d0d196dd  evidence/sprocket-a-visible/original/native.zip' | sha256sum -c --strict
+          printf '%s\n' "$GITHUB_SHA" > evidence/sprocket-a-visible/source-head.txt
+      - name: Original readback, two-seed, and sealed-FINAL adversarial qualification
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/sprocket-a-visible"
+          "$RUNNER_TEMP/sprocket-a-visible/bin/python" -m pip install 'Pillow==13.0.0'
+          "$RUNNER_TEMP/sprocket-a-visible/bin/python" -m pip check
+          export SPROCKET_A_CORPUS_ZIP="$PWD/evidence/sprocket-a-visible/original/corpus.zip"
+          export SPROCKET_A_NATIVE_ZIP="$PWD/evidence/sprocket-a-visible/original/native.zip"
+          "$RUNNER_TEMP/sprocket-a-visible/bin/python" -m unittest discover \
+            -s experiments/agent_painter/lanes/sprocket \
+            -p test_a07_a08_original_native_visible.py -v
+          "$RUNNER_TEMP/sprocket-a-visible/bin/python" experiments/agent_painter/lanes/sprocket/a07_a08_original_native_visible.py \
+            --corpus-zip "$SPROCKET_A_CORPUS_ZIP" --native-zip "$SPROCKET_A_NATIVE_ZIP" \
+            --output evidence/sprocket-a-visible/receipt.json
+          "$RUNNER_TEMP/sprocket-a-visible/bin/python" - <<'PY'
+          import json
+          r=json.load(open("evidence/sprocket-a-visible/receipt.json"))
+          assert (r["pairwise_comparisons"],r["reference_seed_views"],r["candidate_structures"])==(16,8,2)
+          assert not r["final_targets_opened"] and not r["new_shared_train_admissions"]
+          PY
+          "$RUNNER_TEMP/sprocket-a-visible/bin/python" -m pip freeze --all > evidence/sprocket-a-visible/pip-freeze.txt
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sprocket-a-visible-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            evidence/sprocket-a-visible/receipt.json
+            evidence/sprocket-a-visible/source-head.txt
+            evidence/sprocket-a-visible/pip-freeze.txt
+          if-no-files-found: warn
+          retention-days: 90
