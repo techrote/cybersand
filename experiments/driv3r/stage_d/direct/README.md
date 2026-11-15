@@ -2,6 +2,19 @@
 
 **Status:** independent **development-only** preparatory fixtures and oracle policies, not native or model qualification. #570; [owner D roadmap](https://github.com/techrote/cybersand/issues/570#issuecomment-6877408001). The five-record [D-COMMON-001 contract](https://github.com/techrote/cybersand/pull/594) received **M1 owner acceptance on 14 Nov 2026** at source commit `8fa90de6be209ed0b7bd125039e6ec8b332fb1a6`, schema SHA-256 `ebe2fa211148602c614cba0f0a40f285cba797784b70efa035832d833877f80d` ([#570 freeze record](https://github.com/techrote/cybersand/issues/570#issuecomment-6881686675)). **M2 offline integration preparation is permitted; native/model experiments, merges and formal A1/A2/A3 comparisons are not.**
 
+## Cursor-line character for the owner's drawing-worm hypothesis (15 Nov 2026)
+
+Issue [#570 owner correction](https://github.com/techrote/cybersand/issues/570#issuecomment-6889195672) prioritises an eccentric but bounded **line-steering worm brain**, not A* superiority. The lane-only `line_character.py` adds a **descriptive** geometry fingerprint for original DEVELOPMENT paths: cardinal heading distribution and entropy, clockwise/counterclockwise turns, reversals, straight runs, repeated cursor cells, retraced undirected edges, closed loops and footprint bounds. None is treated as an art-quality score or success/failure by itself. A loop or detour may be desirable worm behaviour. Pen-state/material and steerability cannot be inferred from cursor geometry alone.
+
+`audit_development_line_character` invokes the existing `paired.verify_episode` before examining any original offline episode, rejecting held-out behaviour, forged receipts, source-identity/choice tampering or silent trajectory repair. Outputs explicitly identify **synthetic cursor geometry**, not actual native material strokes or learned-model decisions. The separately owner-authorised [real wormbrain PR #611](https://github.com/techrote/cybersand/pull/611) remains independent; its native receipts are not imported or claimed here.
+
+```sh
+python -m unittest experiments.driv3r.stage_d.direct.test_line_character -v
+python -m unittest discover -s experiments/driv3r/stage_d/direct -p 'test_*.py' -v
+```
+
+**New file qualification:** 8/8 pure descriptor methods executed locally on Git-blob-identical Python source/tests (blobs `01e19b975213aed10652565cc346d485d823c4de` and `d9e80d48cb943458bd1ec2f0b369ca1cb27d42ed`). The existing 101-method suite plus these eight = **109 authored tests**, but the full exact-head suite **has not been executed**. Full DEVELOPMENT replay integration and M2/M3 native adapter review remain open; D-1A native campaign authorization remains separate.
+
 ## Supplementary forward-Y selected-wall feasibility (15 November 2026)
 
 The v2 strict selected-wall horizon verifies 6–10-cell clearance across entire
