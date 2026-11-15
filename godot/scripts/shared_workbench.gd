@@ -191,6 +191,9 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_button(row,"Materials Lab…",open_materials_lab)
 	engine_lab = preload("res://scripts/workbench_engine_lab.gd").new()
 	engine_lab.name = "EngineLab"
+	# Window nodes default visible. Keep it hidden *before* entering
+	# the scene tree so mount() may select force_native without Godot refusal.
+	engine_lab.hide()
 	add_child(engine_lab)
 	engine_lab.mount(host,self)
 	_button(row,"Engine Lab…",func() -> void: engine_lab.open())
