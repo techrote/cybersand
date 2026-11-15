@@ -1,0 +1,166 @@
+"""Fail-closed, CPU-only exact-checkout D-1B unit qualification.
+
+Run from repository root:
+    python3 -m experiments.driv3r.stage_d.guidance.qualification
+
+Never launches model inference, native execution, training, APIs or formal A/B.
+"""
+from __future__ import annotations
+
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import subprocess
+import sys
+
+from .m1_compat import M1_COMMIT as ADAPTER_M1_COMMIT
+from .m1_compat import M1_SCHEMA_SHA256 as ADAPTER_SCHEMA_SHA256
+
+VERSION = "d1b-exact-head-offline-qualification/1"
+LANE = "experiments/driv3r/stage_d/guidance"
+SCHEMA = "experiments/driv3r/d_common/v1/interface.schema.json"
+M1_COMMIT = "8fa90de6be209ed0b7bd125039e6ec8b332fb1a6"
+M1_SCHEMA_SHA256 = "ebe2fa211148602c614cba0f0a40f285cba797784b70efa035832d833877f80d"
+# Counted from 15 existing test_*.py modules at the source-pinned intake head.
+MIN_TESTS = 149
+REQUIRED_MODULES = frozenset({
+    "test_comparison.py", "test_feedback_audit.py", "test_feedback_edgecases.py",
+    "test_geometry_guard.py", "test_guidance.py", "test_information.py",
+    "test_m1_compat.py", "test_png_structure.py", "test_shadow_policy.py",
+    "test_snapshot_identity.py", "test_trajectory_audit.py", "test_worm_morphology.py",
+    "test_worm_morphology_binding.py", "test_worm_shift_nulls.py", "test_worm_trace.py",
+    "test_qualification.py",
+})
+SHA = re.compile(r"[a-f0-9]{40}\Z")
+FOOTER = re.compile(r"^Ran ([0-9]+) tests? in [0-9.]+s$", re.MULTILINE)
+SKIP = re.compile(r"\bskipped=([0-9]+)\b")
+
+
+class QualificationError(ValueError):
+    """Precondition failure: no suite result should be certified."""
+
+
+def parse_unittest(log: str, returncode: int, minimum: int = MIN_TESTS) -> dict:
+    """Never classify shortened, skipped or ambiguous runs as passed."""
+    matches = list(FOOTER.finditer(log))
+    if len(matches) != 1 or type(returncode) is not int or type(minimum) is not int:
+        return {"passed": False, "test_count": None, "skipped": None,
+                "reason": "missing_or_ambiguous_unittest_footer"}
+    count = int(matches[0].group(1))
+    tail = log[matches[0].end():]
+    skipped_match = SKIP.search(tail)
+    skipped = int(skipped_match.group(1)) if skipped_match else 0
+    passed = (returncode == 0 and count >= minimum and skipped == 0
+              and re.search(r"^OK$", tail, re.MULTILINE) is not None
+              and "FAILED" not in tail)
+    return {"passed": passed, "test_count": count, "skipped": skipped,
+            "reason": "qualified" if passed else "failed_incomplete_or_skipped_suite"}
+
+
+def _git(root: Path, *args: str) -> subprocess.CompletedProcess[str]:
+    try:
+        return subprocess.run(["git", *args], cwd=root, stdout=subprocess.PIPE,
+                              stderr=subprocess.PIPE, text=True, timeout=20, check=False)
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        raise QualificationError("Git source verification unavailable") from exc
+
+
+def _checked_git(root: Path, *args: str) -> str:
+    result = _git(root, *args)
+    if result.returncode != 0:
+        raise QualificationError("Git query failed: " + " ".join(args[:2]))
+    return result.stdout
+
+
+def source_fence(root: Path) -> tuple[str, int]:
+    """Pin real source/schema bytes, ancestry, scope, status and discovery."""
+    if (ADAPTER_M1_COMMIT != M1_COMMIT or
+            ADAPTER_SCHEMA_SHA256 != M1_SCHEMA_SHA256):
+        raise QualificationError("D-1B adapter constants disagree with frozen M1")
+    head = _checked_git(root, "rev-parse", "HEAD").strip()
+    if not SHA.fullmatch(head):
+        raise QualificationError("Invalid Git HEAD")
+    if _git(root, "merge-base", "--is-ancestor", M1_COMMIT, head).returncode:
+        raise QualificationError("Owner-accepted immutable M1 is not an ancestor")
+    schema = root / SCHEMA
+    try:
+        digest = hashlib.sha256(schema.read_bytes()).hexdigest()
+    except OSError as exc:
+        raise QualificationError("Frozen M1 schema bytes unavailable") from exc
+    if digest != M1_SCHEMA_SHA256:
+        raise QualificationError("Frozen M1 schema bytes differ from owner acceptance")
+    dirty = _checked_git(root, "status", "--porcelain", "--untracked-files=all", "--", LANE, SCHEMA)
+    if dirty:
+        raise QualificationError("Working-tree guidance or schema changes invalidate source pin")
+    changed = _checked_git(root, "diff", "--name-only", "--diff-filter=ACDMRTUXB",
+                           M1_COMMIT, head, "--")
+    paths = [p for p in changed.splitlines() if p]
+    if not paths or any(not p.startswith(LANE + "/") for p in paths):
+        raise QualificationError("M1-to-head changes outside exclusive D-1B lane or empty")
+    modules = {p.name for p in (root / LANE).glob("test_*.py")}
+    if not REQUIRED_MODULES <= modules:
+        raise QualificationError("Required test modules missing from checkout")
+    return head, len(paths)
+
+
+def run_qualification(root: Path, timeout_seconds: int = 180) -> tuple[dict, str]:
+    if type(timeout_seconds) is not int or not 1 <= timeout_seconds <= 600:
+        raise QualificationError("Timeout must be an integer in 1..600 seconds")
+    root = root.resolve()
+    head, changed_count = source_fence(root)
+    command = [sys.executable, "-B", "-m", "unittest", "discover", "-s", LANE,
+               "-p", "test_*.py", "-v"]
+    env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
+    try:
+        proc = subprocess.run(command, cwd=root, env=env, stdout=subprocess.PIPE,
+                              stderr=subprocess.STDOUT, text=True, timeout=timeout_seconds,
+                              check=False)
+        log, code, timeout = proc.stdout, proc.returncode, False
+    except subprocess.TimeoutExpired as exc:
+        data = exc.stdout or b""
+        log = data.decode("utf-8", "replace") if isinstance(data, bytes) else data
+        code, timeout = 124, True
+    result = parse_unittest(log, code)
+    try:
+        after, _ = source_fence(root)
+        stable = head == after
+    except QualificationError:
+        stable = False
+    result.update({
+        "version": VERSION, "exact_head": head, "m1_commit": M1_COMMIT,
+        "m1_schema_sha256": M1_SCHEMA_SHA256, "changed_lane_paths": changed_count,
+        "minimum_expected_tests": MIN_TESTS, "test_command": command,
+        "returncode": code, "timed_out": timeout, "source_stable": stable,
+        "full_suite_passed": bool(result["passed"] and stable and not timeout),
+        "test_log_sha256": hashlib.sha256(log.encode("utf-8")).hexdigest(),
+        "native_qualified": False, "visual_d1_qualified": False,
+        "actual_undo_verified": False, "five_record_m1_conformance_verified": False,
+        "formal_ab_executed": False,
+    })
+    if not result["full_suite_passed"]:
+        result["reason"] = ("source_changed_or_dirty" if not stable else
+                            "timeout" if timeout else result["reason"])
+    return result, log
+
+
+def main() -> int:
+    import argparse
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--timeout-seconds", type=int, default=180)
+    args = parser.parse_args()
+    root = Path(__file__).resolve().parents[4]
+    try:
+        report, log = run_qualification(root, args.timeout_seconds)
+        sys.stderr.write(log)
+    except QualificationError as exc:
+        report = {"version": VERSION, "full_suite_passed": False,
+                  "reason": "precondition_refused", "detail": str(exc),
+                  "native_qualified": False, "five_record_m1_conformance_verified": False}
+    print(json.dumps(report, indent=2, sort_keys=True))
+    return 0 if report["full_suite_passed"] else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
