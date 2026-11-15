@@ -12,7 +12,7 @@ import random
 from pathlib import Path
 from typing import Any
 
-VERSION = "d1a-four-stream-controls/1"
+VERSION = "d1a-four-stream-controls/2"
 M1_COMMIT = "8fa90de6be209ed0b7bd125039e6ec8b332fb1a6"
 M1_SCHEMA_SHA256 = "ebe2fa211148602c614cba0f0a40f285cba797784b70efa035832d833877f80d"
 POLICIES = ("astar_or_contour", "random_legal", "random_legal_persistent_v1")
@@ -157,12 +157,21 @@ def _rollout(f, policy: str, seed: int, horizon: int) -> dict[str, Any]:
         if pos == f.target:
             stop = "arrived"
     score = offline.score_episode(f, path, len(events), stop)
+    from .line_character import describe_cursor_path
+    # Geometry descriptors quantify unusual steering; they do not score art
+    # or imply painted material, model decisions or native evidence.
+    character = describe_cursor_path(path)
+    if character["movement_cells"] != score["cursor_cell_steps"] or (
+        character["revisited_cursor_steps"] != score["retraced_cells"]
+    ):
+        raise ControlRefused("Cursor-line fingerprint and swept scoring disagree")
     return {
         "policy": policy, "seed": seed, "synthetic_decision_budget": horizon,
         "source_kind": "synthetic_development_only", "native_qualified": False,
         "sequential_native_receipts": 0, "material_effect": "none",
         "final_cursor": list(pos), "events": events, "path": [list(p) for p in path],
-        "metrics": score, "trajectory_sha256": digest([list(p) for p in path]),
+        "metrics": score, "line_character": character,
+        "trajectory_sha256": digest([list(p) for p in path]),
         "record_sha256": digest([events, score]),
     }
 
@@ -181,7 +190,7 @@ def run_matched_controls(slot: dict[str, Any], *, horizon: int = 36,
         raise ControlRefused("Oracle work cap must be <= 3 million probes")
     f = _get_fixture(slot["fixture_id"])
     _, budget_oracle = _lane_modules()
-    from . import offline
+    from . import offline, line_character
     clearance = (lambda p: offline.wall_distance(f, p)) if f.task == "wall_offset" else None
     try:
         oracle = budget_oracle.bounded_optimal_route(
@@ -214,6 +223,8 @@ def run_matched_controls(slot: dict[str, Any], *, horizon: int = 36,
                    "optimal_cost_within_budget": oracle["optimal_cost_within_budget"]},
         "oracle_source_sha256": hashlib.sha256(Path(budget_oracle.__file__).read_bytes()).hexdigest(),
         "offline_source_sha256": hashlib.sha256(Path(offline.__file__).read_bytes()).hexdigest(),
+        "line_character_source_sha256": hashlib.sha256(
+            Path(line_character.__file__).read_bytes()).hexdigest(),
         "common_initial_legal_set_sha256": next(iter(first_menus), None),
         "arms": arms, "native_qualified": False,
         "sequential_native_receipts": 0, "model_outcome": None,
@@ -289,6 +300,20 @@ def compact_handoff(slots: tuple[dict[str, Any], ...],
             "oracle_feasible_arrival_within_budget": report.get("oracle", {}).get("feasible_arrival_within_budget"),
             "oracle_source_sha256": report.get("oracle_source_sha256"),
             "offline_source_sha256": report.get("offline_source_sha256"),
+            "line_character_source_sha256": report.get("line_character_source_sha256"),
+            "arm_line_character": {
+                arm["policy"]: {
+                    "character_sha256": digest(arm["line_character"]),
+                    "turn_fraction": arm["line_character"]["turn_fraction_per_heading_transition"],
+                    "clockwise_turns": arm["line_character"]["right_angle_clockwise_turns"],
+                    "counterclockwise_turns": arm["line_character"]["left_angle_counterclockwise_turns"],
+                    "reverse_turns": arm["line_character"]["immediate_reverse_turns"],
+                    "closed_loops": arm["line_character"]["nontrivial_loop_closures"],
+                    "reused_edges": arm["line_character"]["reused_undirected_edge_steps"],
+                    "heading_entropy_bits": arm["line_character"]["heading_entropy_bits"],
+                    "longest_straight": arm["line_character"]["maximum_consecutive_straight_cells"],
+                } for arm in report["arms"]
+            },
             "common_initial_legal_set_sha256": report.get("common_initial_legal_set_sha256"),
             "arm_trajectory_sha256": {a["policy"]: a["trajectory_sha256"] for a in report["arms"]},
             "arm_metrics": {a["policy"]: a["metrics"] for a in report["arms"]},

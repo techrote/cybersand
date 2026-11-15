@@ -108,6 +108,26 @@ class FourStreamControls(unittest.TestCase):
         with self.assertRaises(fleet.ControlRefused):
             fleet.replay_matched_controls(self.slots[1], corrupt)
 
+    def test_source_replayed_line_character_is_descriptive_not_art_quality(self):
+        report = fleet.run_matched_controls(self.slots[1], horizon=36)
+        self.assertEqual(report["state"], "SYNTHETIC_CONTROLS_COMPLETE")
+        self.assertEqual(len(report["line_character_source_sha256"]), 64)
+        for arm in report["arms"]:
+            signature = arm["line_character"]
+            self.assertEqual(signature["movement_cells"], arm["metrics"]["cursor_cell_steps"])
+            self.assertEqual(signature["revisited_cursor_steps"], arm["metrics"]["retraced_cells"])
+            self.assertFalse(signature["artistic_quality_measured"])
+            self.assertFalse(signature["native_qualified"])
+            self.assertEqual(signature["evidence_kind"],
+                             "descriptive_synthetic_cursor_geometry_only")
+        self.assertTrue(fleet.replay_matched_controls(self.slots[1], report))
+
+    def test_line_character_forgery_rejected_even_when_arrival_unchanged(self):
+        report = fleet.run_matched_controls(self.slots[1], horizon=36)
+        report["arms"][0]["line_character"]["nontrivial_loop_closures"] += 1
+        with self.assertRaises(fleet.ControlRefused):
+            fleet.replay_matched_controls(self.slots[1], report)
+
     def test_handoff_retains_all_four_negative_resource_cases(self):
         reports = tuple(fleet.run_matched_controls(s, horizon=128,
                                                      oracle_probe_cap=1)
@@ -119,6 +139,7 @@ class FourStreamControls(unittest.TestCase):
         self.assertFalse(handoff["four_loaded_models"])
         self.assertFalse(handoff["native_128_approved"])
         self.assertEqual({s["native_receipts"] for s in handoff["streams"]}, {0})
+        self.assertTrue(all(s["arm_line_character"] == {} for s in handoff["streams"]))
 
 
 if __name__ == "__main__":

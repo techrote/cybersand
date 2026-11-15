@@ -1,4 +1,4 @@
-# D-1A four-stream matched controls — source-bound handoff v1
+# D-1A four-stream matched controls — source-bound handoff v2
 
 **Status:** Draft/HOLD · offline DEVELOPMENT only · **no model or native dispatch**.
 Owner-accepted immutable M1: `8fa90de6be209ed0b7bd125039e6ec8b332fb1a6`;
@@ -27,6 +27,13 @@ Every slot has a deterministic **synthetic run identifier** calculated from
 All *real* inference identifiers—checkpoint SHA, GitHub run/job, PID, native
 World SHA and native receipt artifact—remain **null**. These four entries do
 not constitute four resident models or four native episodes.
+
+The v2 handoff additionally records source-hashed **descriptive line character**
+for each controller: turns, reversals, closed-loop contacts, reused edges,
+heading entropy and longest straight segment, plus a full fingerprint digest.
+These are measurements of **synthetic brush-up cursor paths**, not evidence
+of material ink, artistic quality, model intent or native execution. Missing
+policy arms after oracle resource exhaustion have **no** invented fingerprints.
 
 Each slot replays three **matched initial-state, matched legal-menu** offline
 controllers at the same seed and 1/2/4/8-cell macro menu:
@@ -73,7 +80,7 @@ python3 -m experiments.driv3r.stage_d.direct.fleet_controls --horizon 128 --orac
 The CLI invokes `qualification.source_fence` and fails on dirty or
 out-of-lane source. A **128 resource-cap failure exits nonzero**, preserving
 negative cases in the written JSON rather than declaring success. Existing
-`qualification` still must execute **all 186 source tests/18 modules** on the
+`qualification` still must execute **all 188 authored source tests/18 modules** on the
 committed checkout; Stage A/doc/source-scope green is not that evidence.
 Do not report these runs as completed until exact source, stdout/stderr,
 first-pass failures, Git commit and test footer have been collected.
