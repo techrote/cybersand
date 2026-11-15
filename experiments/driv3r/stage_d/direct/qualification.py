@@ -69,7 +69,11 @@ def source_fence(root: Path) -> str:
     # This stacked branch is D-1A-exclusive: immutable M1 plus lane files.
     # Reject even committed changes to shared contracts, frozen evidence or
     # production code; HEAD ancestry alone would not detect such changes.
-    changed = _git(root, "diff", "--name-only", M1_SOURCE_COMMIT, sha)
+    # Disable rename detection: otherwise Git reports only the destination
+    # of a moved M1 file. A shared contract/native file renamed INTO this
+    # lane must not be mistaken for an exclusively lane-owned addition.
+    changed = _git(root, "diff", "--no-renames", "--name-only",
+                   M1_SOURCE_COMMIT, sha)
     if changed.returncode or any(
         not name.startswith(LANE + "/") for name in changed.stdout.splitlines()
     ):
