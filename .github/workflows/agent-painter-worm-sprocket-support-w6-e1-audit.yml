@@ -1,0 +1,137 @@
+name: WORM SPROCKET support independent W6 E1 source and pixel audit
+
+on:
+  pull_request:
+    branches: [research/612-worm-common]
+    paths:
+      - experiments/agent_painter/worm/support_sprocket/audit_w6_e1.py
+      - .github/workflows/agent-painter-worm-sprocket-support-w6-e1-audit.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: worm-sprocket-support-w6-e1-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  audit-original-W6-E1:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Verify exact support script and lightweight local self-tests
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/worm-sprocket-w6-e1
+          git rev-parse HEAD > evidence/worm-sprocket-w6-e1/source-commit.txt
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 -m py_compile experiments/agent_painter/worm/support_sprocket/audit_w6_e1.py
+          python3 experiments/agent_painter/worm/support_sprocket/audit_w6_e1.py --self-test
+      - name: Fetch sole immutable original primary E1 artifact with bounded redirected HTTPS
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, os, urllib.request, urllib.error, urllib.parse
+          artifact = 14175768454
+          request = urllib.request.Request(
+              f'https://api.github.com/repos/techrote/cybersand/actions/artifacts/{artifact}/zip',
+              headers={'Authorization': 'Bearer ' + os.environ['GITHUB_TOKEN'],
+                       'Accept': 'application/vnd.github+json',
+                       'X-GitHub-Api-Version': '2022-11-28'})
+          class NoRedirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self, req, fp, code, msg, headers, newurl):
+                  return None
+          try:
+              urllib.request.build_opener(NoRedirect).open(request, timeout=45)
+              raise RuntimeError('missing original GitHub artifact redirect')
+          except urllib.error.HTTPError as exc:
+              if exc.code not in (301,302,303,307,308):
+                  raise
+              target = exc.headers.get('Location','')
+          parsed = urllib.parse.urlparse(target)
+          domain = parsed.hostname or ''
+          if parsed.scheme != 'https' or not (
+              domain.endswith('.blob.core.windows.net') or
+              domain.endswith('.githubusercontent.com') or
+              domain.endswith('.github.com')):
+              raise ValueError('untrusted artifact redirect')
+          with urllib.request.urlopen(target, timeout=90) as source:
+              blob = source.read(600_001)
+          expected='b48f7d5d28d121d58a3bfdb1158ce73b28e8d1a4a45bb52a20d6c361304b7d8e'
+          if not 0 < len(blob) < 600_000 or hashlib.sha256(blob).hexdigest() != expected:
+              raise ValueError('original artifact length/digest mismatch')
+          open('/tmp/worm-w6-e1-original.zip', 'wb').write(blob)
+          print('Original E1 ZIP SHA256 verified:', expected)
+          PY
+      - name: Retrieve exact shepherd-owned W0 immutable source
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 origin 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          test "$(git rev-parse FETCH_HEAD)" = 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          git show 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61:experiments/agent_painter/worm/common/worm.py > /tmp/worm-w6-e1-w0.py
+          test "$(sha256sum /tmp/worm-w6-e1-w0.py | cut -c1-64)" = 81c3923cb38d7f196b99986806216388c34ebc27fd4976e168b3b370c25a323e
+      - name: Check all original model-score decisions, W0 state/pixels and six real galleries
+        run: |
+          set -euo pipefail
+          python3 experiments/agent_painter/worm/support_sprocket/audit_w6_e1.py \
+            --archive /tmp/worm-w6-e1-original.zip \
+            --trusted-w0 /tmp/worm-w6-e1-w0.py \
+            --output evidence/worm-sprocket-w6-e1 | tee evidence/worm-sprocket-w6-e1/console.txt
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          p=Path('evidence/worm-sprocket-w6-e1')
+          r=json.loads((p/'audit.json').read_text())
+          assert r['measured']['replays']==30
+          assert r['measured']['trained_decisions']==144
+          assert r['measured']['flat_decisions']==141
+          assert r['measured']['trained_same_obs_flat_differences']==46
+          assert len(list((p/'gallery').glob('*.png')))==6
+          assert r['optimizer_updates_this_audit']==0
+          assert r['sealed_FINAL_access'] is False
+          print('PASS source-matched W0 and score audit')
+          PY
+          sha256sum /tmp/worm-w6-e1-original.zip /tmp/worm-w6-e1-w0.py \
+            > evidence/worm-sprocket-w6-e1/original-input-sha256.txt
+      - name: Assert adversarial original-byte mutation fails closed
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import sys
+          sys.path.insert(0,'experiments/agent_painter/worm/support_sprocket')
+          import audit_w6_e1
+          original=Path('/tmp/worm-w6-e1-original.zip').read_bytes()
+          changed=bytearray(original)
+          changed[-1]^=1
+          mutant=Path('/tmp/worm-w6-e1-mutated.zip')
+          mutant.write_bytes(changed)
+          try:
+              audit_w6_e1.original_zip(mutant)
+          except ValueError as exc:
+              assert 'original E1 ZIP SHA-256' in str(exc)
+              print('PASS tampered source archive rejected')
+          else:
+              raise AssertionError('tampered artifact accepted')
+          PY
+      - name: Checksum retained audit evidence even on partial failure
+        if: always()
+        run: |
+          set -euo pipefail
+          (cd evidence/worm-sprocket-w6-e1 && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum) \
+            > evidence/worm-sprocket-w6-e1/SHA256SUMS.txt
+      - name: Retain bounded original-pixel evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: worm-sprocket-support-w6-e1-original-pixel-audit
+          path: evidence/worm-sprocket-w6-e1/
+          retention-days: 90
+          if-no-files-found: warn
