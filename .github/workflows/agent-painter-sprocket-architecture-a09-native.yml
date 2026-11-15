@@ -1,0 +1,164 @@
+name: SPROCKET A09 source-built native Art research (no TRAIN)
+on:
+  push:
+    branches: [codex/agent-painter-sprocket-568]
+    paths:
+      - experiments/agent_painter/lanes/sprocket/architecture-a09-native-request.json
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: sprocket-architecture-a09-native-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  exact-source-native:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+          lfs: true
+      - name: Refuse unstamped / changed request and create partial-evidence anchor
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$GITHUB_REF" = refs/heads/codex/agent-painter-sprocket-568
+          test "$GITHUB_REPOSITORY" = techrote/cybersand
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          mkdir -p evidence/a09-native/source evidence/a09-native/build
+          printf '%s\n' "$GITHUB_SHA" > evidence/a09-native/source/executed-head.txt
+          python3 - <<'PY'
+          import json
+          r=json.load(open('experiments/agent_painter/lanes/sprocket/architecture-a09-native-request.json'))
+          assert r=={
+            'schema':'cybersand.sprocket-a09-source-built-native-request/1',
+            'sequence':1, 'candidate':'A09',
+            'original_native_source_sha':'633920373a3d406a2ede61ce4137c324f76be23b',
+            'original_native_artifact_id':14076703326,
+            'original_native_zip_sha256':'50a9ad9b255b2a57180edf5558ca2b47dab9affd9ef9d2438f9011d648f81f39',
+            'source_screen_run_id':43678612406,
+            'source_screen_sha':'63375c2263a33bfa3cd35f9d470c46d5dfc6cc26',
+            'source_screen_artifact_id':14147236676,
+            'source_screen_zip_sha256':'96f90940c28a80e55c6a17119d15fccbdcb595d084807cb50d2c912bb14668e7',
+            'whole_structural_groups':1,'native_host_seed_views':2,
+            'model_training':False,'shared_train_admission':False,
+            'open_final':False,'draft_hold':True,
+          }
+          PY
+          python3 -m py_compile experiments/agent_painter/lanes/sprocket/architecture_a09_native_v1.py
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output evidence/a09-native/source/scheduling.json
+      - name: Fetch immutable public source archives, verify whole ZIP hashes, extract only visible split members
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          for item in "14076703326 source633.zip" "14147236676 screen.zip"; do
+            set -- $item
+            curl --fail --show-error --silent --location --retry 3 --max-time 300 \
+              -H "Authorization: Bearer $GH_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/techrote/cybersand/actions/artifacts/$1/zip" \
+              -o "evidence/a09-native/source/$2"
+          done
+          echo '50a9ad9b255b2a57180edf5558ca2b47dab9affd9ef9d2438f9011d648f81f39  evidence/a09-native/source/source633.zip' | sha256sum -c --strict
+          echo '96f90940c28a80e55c6a17119d15fccbdcb595d084807cb50d2c912bb14668e7  evidence/a09-native/source/screen.zip' | sha256sum -c --strict
+          python3 - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          from zipfile import ZipFile
+          root=Path('evidence/a09-native')
+          screen=root/'source/screen.zip'
+          with ZipFile(screen) as z:
+              matches=[n for n in z.namelist() if n=='source-screen.json' or n=='sprocket-a09/source-screen.json']
+              assert len(matches)==1, 'screen member count/name mismatch'
+              payload=z.read(matches[0])
+              decoded=json.loads(payload)
+              assert decoded['candidate_id']=='A09' and decoded['design_count']==1
+              assert decoded['sealed_final_members_accessed']==0
+              (root/'source/original-screen.json').write_bytes(payload)
+          with ZipFile(root/'source/source633.zip') as z:
+              m=z.read('corpus/admitted-corpus.json')
+              man=json.loads(m)
+              assert hashlib.sha256(m).hexdigest()=='2fdef5a3639606fb9af68319f9747a1de1e9a573da5c6197a2dcbc96579cb6cc'
+              assert man['source_sha']=='633920373a3d406a2ede61ce4137c324f76be23b'
+              wanted={'corpus/admitted-corpus.json':m}
+              for split in ('TRAIN','DEVELOPMENT'):
+                  key='corpus/'+man['split_files'][split]['path']
+                  assert '..' not in key and key.startswith('corpus/') and key.endswith('.jsonl')
+                  wanted[key]=z.read(key)
+                  assert hashlib.sha256(wanted[key]).hexdigest()==man['split_files'][split]['sha256']
+              for name,payload in wanted.items():
+                  target=root/'source633'/name
+                  target.parent.mkdir(parents=True,exist_ok=True)
+                  target.write_bytes(payload)
+              # FINAL is not read, extracted, CRC-tested or used.
+          print('Verified original whole ZIP custody and ONLY named TRAIN/DEV manifest members')
+          PY
+      - name: Preflight original structural identity and both native source candidates
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/sprocket-a09-native"
+          "$RUNNER_TEMP/sprocket-a09-native/bin/python" -m pip install 'Pillow==13.0.0'
+          "$RUNNER_TEMP/sprocket-a09-native/bin/python" -m pip check
+          "$RUNNER_TEMP/sprocket-a09-native/bin/python" -m unittest discover \
+            -s experiments/agent_painter/lanes/sprocket \
+            -p 'test_architecture_revision_v1.py' -v
+          "$RUNNER_TEMP/sprocket-a09-native/bin/python" experiments/agent_painter/lanes/sprocket/architecture_a09_native_v1.py \
+            --stage preflight --source-sha "$GITHUB_SHA" \
+            --corpus evidence/a09-native/source633/corpus \
+            --original-screen evidence/a09-native/source/original-screen.json \
+            --output evidence/a09-native/preflight
+          "$RUNNER_TEMP/sprocket-a09-native/bin/python" -m pip freeze --all > evidence/a09-native/source/pip-freeze.txt
+      - name: Build exact source native World and perform genuine Art replay
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git lfs install --local
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
+          echo '566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' | sha256sum -c --strict
+          "$RUNNER_TEMP/sprocket-a09-native/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt > evidence/a09-native/build/install-scons.log 2>&1
+          export GODOT_CPP_ROOT="$RUNNER_TEMP/sprocket-a09-godot-cpp"
+          export SCONS_PYTHON="$RUNNER_TEMP/sprocket-a09-native/bin/python"
+          export SCONS_JOBS=4
+          export CYBERSAND_REAL_CXX=/usr/bin/g++-13
+          export LINUX_CXX=/usr/bin/g++-13
+          export CYBERSAND_NATIVE_OUTPUT="$RUNNER_TEMP/sprocket-a09-native.so"
+          mkdir -p "$GODOT_CPP_ROOT"
+          git -C "$GODOT_CPP_ROOT" init
+          git -C "$GODOT_CPP_ROOT" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 600 git -C "$GODOT_CPP_ROOT" fetch --depth=1 origin 101ae38034304346a46ea9ea84ae156d3e860496 > evidence/a09-native/build/godot-cpp-fetch.log 2>&1
+          git -C "$GODOT_CPP_ROOT" checkout --detach FETCH_HEAD
+          if ! timeout 3600 bash tools/build_pinned_godot_cpp.sh linux > evidence/a09-native/build/godot-cpp.log 2>&1; then tail -80 evidence/a09-native/build/godot-cpp.log; exit 1; fi
+          if ! timeout 3600 bash tools/build_native_extension.sh > evidence/a09-native/build/native.log 2>&1; then tail -80 evidence/a09-native/build/native.log; exit 1; fi
+          cp "$CYBERSAND_NATIVE_OUTPUT" godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
+          bash tools/check_linux_runtime_floor.sh > evidence/a09-native/build/abi-floor.log 2>&1
+          python3 experiments/agent_painter/native/runtime.py stamp --source-sha "$GITHUB_SHA" --output evidence/a09-native/native-build.json
+          timeout 600 curl -fsSL --retry 3 -o "$RUNNER_TEMP/sprocket-a09-godot.zip" 'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
+          echo "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  $RUNNER_TEMP/sprocket-a09-godot.zip" | sha256sum -c --strict
+          mkdir -p "$RUNNER_TEMP/sprocket-a09-godot"
+          unzip -q "$RUNNER_TEMP/sprocket-a09-godot.zip" -d "$RUNNER_TEMP/sprocket-a09-godot"
+          GODOT_BIN="$RUNNER_TEMP/sprocket-a09-godot/Godot_v4.7-stable_linux.x86_64"
+          chmod +x "$GODOT_BIN"
+          "$GODOT_BIN" --version > evidence/a09-native/build/godot-version.txt
+          "$RUNNER_TEMP/sprocket-a09-native/bin/python" experiments/agent_painter/lanes/sprocket/architecture_a09_native_v1.py \
+            --stage execute --corpus evidence/a09-native/source633/corpus \
+            --original-screen evidence/a09-native/source/original-screen.json \
+            --output evidence/a09-native/executed --source-sha "$GITHUB_SHA" \
+            --godot "$GODOT_BIN" --runtime-manifest evidence/a09-native/native-build.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sprocket-architecture-a09-native-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            evidence/a09-native/source/scheduling.json
+            evidence/a09-native/source/executed-head.txt
+            evidence/a09-native/source/pip-freeze.txt
+            evidence/a09-native/build/
+            evidence/a09-native/native-build.json
+            evidence/a09-native/preflight/
+            evidence/a09-native/executed/
+          if-no-files-found: warn
+          retention-days: 90
