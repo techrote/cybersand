@@ -126,11 +126,20 @@ try {
     Require ([string]$Manifest.source_commit -match '^[0-9a-f]{40}$') 'Source SHA not pinned'
     $Summary.source=[string]$Manifest.source_commit
     $env:CYBERSAND_SOURCE_REVISION=$Summary.source
+    # Editor import may rewrite generated Godot *.import metadata. Preserve
+    # strict source/DLL/shader/test checks instead of refusing a package that
+    # was already opened legitimately in the Workbench.
+    $GeneratedMetadataSkipped=0
     foreach($HashEntry in $Manifest.files_sha256.PSObject.Properties) {
+        if ($HashEntry.Name.EndsWith('.import') -or $HashEntry.Name.StartsWith('godot/.godot/')) {
+            $GeneratedMetadataSkipped++
+            continue
+        }
         $Path=Join-Path $Root ($HashEntry.Name.Replace('/','\'))
         Require (Test-Path -LiteralPath $Path -PathType Leaf) "Missing package payload: $($HashEntry.Name)"
         Require ((Sha $Path) -eq [string]$HashEntry.Value) "Package payload hash drift: $($HashEntry.Name)"
     }
+    $Summary.import_metadata_excluded_from_integrity=$GeneratedMetadataSkipped
     $Native=Join-Path $Project 'addons\cybersand_native\bin\cybersand_native.windows.x86_64.dll'
     $Rapier=Join-Path $Project 'addons\godot-rapier2d\bin\libgodot_rapier.windows.x86_64-pc-windows-msvc.dll'
     Require ((Sha $Native) -eq $Manifest.native_sha256) 'Native runtime not source-qualified'
