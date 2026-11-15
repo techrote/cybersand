@@ -321,3 +321,40 @@ reductions, flat outcomes, conflicting metrics, and strict flags. Run with
 `python3 -m unittest discover -s experiments/driv3r/stage_d/guidance -p 'test_*.py' -v`.
 Unit tests are synthetic only; external M2 owner is responsible for complete
 exact-head and five-record M1 integration qualification.
+
+
+### Source-bound worm morphology pairing (15 November 2026)
+
+The standalone \`worm_morphology.py\` graph analyzer deliberately accepts
+**prevalidated** synthetic traces and cannot itself prove the start position,
+legal cardinal steps, World frame, guidance hash or source revision. Calling it
+on arbitrary authored coordinates can produce plausible-looking but invalid
+ink topology. The new \`worm_morphology_binding.py\` provides a strictly
+**offline** joined entrypoint: it first runs the existing source-/World-/scalar-
+bound \`worm_trace.audit_synthetic_worm_pair\` legality and movement audit,
+then computes static pen-intent topology from *those same traces*, requiring
+exact trajectory SHA-256 and agreement on pen-down moves and unique intended
+contact cells for **both** neutral and soft arms. Its result separately seals
+the full movement and morphology reports, carries the original pinned source,
+scenario, World and preference-field IDs, and explicitly refuses any
+native/model/material authority. It introduces an independently versioned
+\`d1b-worm-morphology-bound/1\` report without changing the accepted M1 schema
+or older read-only morphology protocol.
+
+Nine new adversarial stdlib methods in \`test_worm_morphology_binding.py\` cover
+valid joins and deterministic hashes; first-step teleport, mid-route diagonal
+or skipped cursor positions; lifted-only movement; initial STOP; tampered
+source/World/field hashes; malformed pen controls; and revisited pen intent.
+Run locally with:
+
+\`\`\`sh
+python3 -m unittest discover -s experiments/driv3r/stage_d/guidance -p 'test_worm_morphology_binding.py' -v
+python3 -m unittest discover -s experiments/driv3r/stage_d/guidance -p 'test_*.py' -v
+\`\`\`
+
+The new tests are **committed but not yet run as a complete real-source
+Python suite** in this environment. Existing GitHub Stage A/documentation
+checks do not prove that these tests ran. Morphology remains **synthetic
+intended contacts**, not real d1 selection, actual native ink, receipt-backed
+material or causal steering. Full M2 conformance and later owner-gated native
+work remain outstanding.
