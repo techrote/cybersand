@@ -16,6 +16,15 @@ from default current-answer retrieval and grants no implementation authority.
 Current clarified intent is separate in the
 [14 November owner decision record](decisions/2026-11-14-owner-authoring-intent.md).
 
+Native-resolution camera candidate: [controls and Windows acceptance](operations/native-pixel-scrolling.md),
+[presentation and sampling contract](systems/material-appearance-and-rendering.md#native-resolution-pixel-scrolling),
+[private coordinate interfaces](reference/interfaces-and-message-contracts.md#camera-presentation-and-picking)
+and [source/platform evidence](audits/2026-11-13-native-pixel-scrolling.md).
+The original #566 qualification remains historical. The independent
+[camera-stack reconciliation](operations/camera-stack-reconciliation.md) composes
+its camera with accepted #582/Flatten, a limited Engine Lab and strict receipts.
+The actor presentation repair remains owned by #609; this candidate is conditional.
+
 Current combined evaluation: [Materials Lab + Workbench integration](audits/2026-11-12-mat-auth-workbench-integration.md) preserves both current feature heads, shared manual/agent Undo/Redo and existing material/save contracts. Its own Windows/Linux/package qualification remains separate from each feature's preceding evidence.
 
 Materials Lab v1 review candidate: [desktop launch, inspection, authoring and native tests](operations/materials-lab-authoring.md),
@@ -34,16 +43,17 @@ material-only Flatten contract: two bytes per cell, unchanged live World, explic
 Save. The [qualification and Owner workflow](operations/gen008-flatten-qualification.md)
 keeps implementation evidence and human acceptance separate. Keep #548 Draft/HOLD.
 
-GEN-007 Architectural Generator [merge hold, owner-reviewed](systems/architectural-generator.md):
+GEN-007 Architectural Generator [accepted main, owner-reviewed](systems/architectural-generator.md):
 five simultaneous style columns, thirteen built-in presets, versioned native
 Terraces/Hive/Viaduct algorithms, deterministic zone allocation and source-bound
 preview/install. See the [Windows owner walkthrough](operations/architectural-generator-playtest.md).
 The [15 November runtime completion record](audits/2026-11-15-gen007-runtime-completion.md)
 binds source `6d6e2cd6` to the qualified Linux/Windows and packaged replay,
 four-file publication `99d7bd2b`, and verified Git LFS/runtime provenance.
-Final-head broad CI is recorded separately in PR #582. Routine native, Godot
-and publisher-guard regressions continue beyond the feature branch.
-No merge is authorised.
+The owner merged PR #582 at `018bd09503d7f079ddac52e225c2f7daf8d678bf` on
+15 November 2026. Its tree and retained runtime provenance are preserved by the
+[camera-stack reconciliation](operations/camera-stack-reconciliation.md).
+Routine native, Godot and publisher-guard regressions continue on main.
 
 EXPLORE-001 review candidate: [generated-map contract](systems/explore001-generated-playable-maps.md),
 [Windows candidate/playtest](operations/explore001-desktop-playtest.md), and

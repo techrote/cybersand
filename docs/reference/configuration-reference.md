@@ -4,11 +4,35 @@ document-kind: reference
 canonical-for: [current-configuration-values, adapter-worker-policy]
 status: Current
 scope: Exact native, adapter, fallback, presentation, and Web defaults; construction constraints and unimplemented production schema
-last-reviewed: 2026-11-05
+last-reviewed: 2026-11-15
 related-documents: [../operations/configuration-and-capacity-budgets.md, ../systems/world-storage-and-interest-region.md, ../systems/depth-layers-and-parallax.md, ../operations/deepworks-exhibition.md, ../architecture/rigid-body-and-cellular-coupling.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
 ---
 
 # Configuration reference
+
+## Reconciled Engine Lab experiments
+
+The [conditional camera-stack candidate](../operations/camera-stack-reconciliation.md)
+adds a second-layer Engine Lab window. `workbench_engine_lab.gd` and Main retain
+the launch-time settings for Restore baseline. Requested wall-clock cadence and
+achieved work are separate. Native/flight integration remains fixed at 1/60
+simulated seconds per completed step; rate changes can dilate simulated time.
+
+| Control | Bounds and persistence |
+| --- | --- |
+| Pixel, Rapier callback and publication targets | 1–240 Hz in the ordinary panel; advanced override up to 1000 Hz; current session |
+| FPS cap | 0 (uncapped) through 240; advanced up to 1000; current session |
+| VSync | Disabled, Enabled or Adaptive; backend may fall back; current session |
+| Native sample wake / Rapier completion wait | Existing defaults retained; optional experimental uncoupling does not promise achieved independent rates |
+| Render ACK | Mandatory immediately after successful upload; original #606 delayed countdown excluded |
+| Native workers | 0 (Auto) through 16; advanced up to 32; only explicit Save writes `user://cybersand-engine-lab-workers.json` for next launch |
+| Benchmark | Default 10 seconds; at most 60 seconds and 12,000 frame samples; aggregate measurements only while capturing |
+
+The saved worker JSON number must be finite, integral and within 0–32. JSON
+parsing represents integers as floating-point Variants; validation checks the
+value rather than requiring GDScript `int`. Session/World/selected-actor or
+settings changes invalidate benchmark comparisons. GPU present time, worker wait
+duration and backlog depth remain unmeasured; no absent measure is reported as zero.
 
 ## Architectural Generator project controls
 
@@ -19,6 +43,25 @@ corridor width and per-style fixed geometry. Zone shares measure assigned area;
 the finite 256-block native planner bound and ±2 percentage-point refusal are
 explicit. Legacy generation defaults are unchanged.
 
+## Camera effect buffer capacities
+
+**Current camera-branch candidate:** final material presentation uses the
+existing native-resolution CanvasItem and nearest world-cell texture. The
+[rendering contract](../systems/material-appearance-and-rendering.md#glow-and-vapour-during-fractional-scrolling)
+owns camera alignment; these bounds apply only to existing effect buffers.
+For world-view dimensions `W` by `H`,
+[Main](../../godot/scripts/main.gd) allocates:
+
+| Buffer | Dimensions and grid |
+| --- | --- |
+| Glow emission | `(max(80, ceil(W/2)) + 11)` by `(max(45, ceil(H/2)) + 11)` texels, each representing exactly 2 by 2 world cells |
+| Glow guard | 5 source texels on each side plus 1 far-edge texel; covers the composite's radius-4 taps and filtering footprint |
+| Vapour history, each ping-pong generation | `(W + 1)` by `(H + 1)` texels, aligned to integer world cells |
+
+Both vapour generations resize together and retire their old history. The
+world texture, simulation extent, native snapshot capacity and physics grid
+are unchanged. Runtime throughput remains an evidence question, recorded in
+the [camera audit](../audits/2026-11-13-native-pixel-scrolling.md).
 
 The bounded [desktop trial-body constructor](../architecture/liquid-prepared-setup-and-receipts.md#desktop-single-trial-body-preparation)
 has exactly one existing barrel8×14 or Ripper18×8 rectangle and uses the shared

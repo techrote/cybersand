@@ -10,6 +10,22 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+Camera integration: [camera-stack reconciliation and #609 handoff](../operations/camera-stack-reconciliation.md).
+This isolated candidate preserves accepted GEN-007/Flatten and keeps the physical rendering repair conditional.
+
+## Native display-pixel scrolling and fractional camera coordinates
+
+| Question | Canonical route |
+| --- | --- |
+| Why did magnified camera movement jump whole cells, and how does one-display-pixel scrolling stay sharp? | [Sampling and presentation](../systems/material-appearance-and-rendering.md#native-resolution-pixel-scrolling) |
+| How do PAINT, selection, clipboard, Art focus and cursor-centred zoom remain aligned at fractional origins? | [Picking and zoom](../systems/material-appearance-and-rendering.md#picking-and-zoom-at-fractional-camera-positions) and [private interface](interfaces-and-message-contracts.md#camera-presentation-and-picking) |
+| How are glow and vapour kept aligned without a full-resolution offscreen world? | [Effect alignment](../systems/material-appearance-and-rendering.md#glow-and-vapour-during-fractional-scrolling) and [buffer capacities](configuration-reference.md#camera-effect-buffer-capacities) |
+| How do I run and accept the Windows camera candidate, and which results remain pending? | [Camera runbook](../operations/native-pixel-scrolling.md) and its separately scoped [audit](../audits/2026-11-13-native-pixel-scrolling.md) |
+| Which cells does gameplay recording retain at fractional camera positions, and does its ROI move when I pan? | [Camera recording bounds](../operations/gameplay-recording.md#camera-recording-bounds) |
+
+The [camera retrieval questions](retrieval-questions-native-pixel-scrolling.json)
+are additive; frozen historical question sets are unchanged.
+
 For the combined #562 Materials Lab / #564 Workbench candidate, original source ancestry, shared history preservation, standalone evaluation and #563 merge-order boundaries, read the [combined qualification record](../audits/2026-11-12-mat-auth-workbench-integration.md).
 
 ## Materials Lab v1 review candidate — 2026-11-11

@@ -1,0 +1,277 @@
+name: CAMERA-STACK-RECON-001 exact-source graphical integration
+on:
+  push:
+    branches: [integration/camera-stack-reconciliation-20261115]
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '.github/workflows/camera-stack-reconciliation.yml'
+      - 'godot/**'
+      - 'native/**'
+      - 'tools/ci/package_camera_stack_windows.py'
+      - 'tools/ci/run_camera_stack_windows.ps1'
+      - 'tools/ci/test_camera_stack_package.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: camera-stack-${{ github.event_name == 'workflow_dispatch' && github.run_id || github.head_ref || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' || github.event_name == 'push' }}
+env:
+  SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+  ACCEPTED_MAIN: 018bd09503d7f079ddac52e225c2f7daf8d678bf
+  CYBERSAND_EVAL_SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+  CYBERSAND_SOURCE_REVISION: ${{ github.event.pull_request.head.sha || github.sha }}
+jobs:
+  linux-graphical:
+    if: github.event_name != 'pull_request' || github.head_ref == 'integration/camera-stack-reconciliation-20261115'
+    name: Linux native and real X11 cross-feature qualification
+    runs-on: ubuntu-24.04
+    timeout-minutes: 100
+    env:
+      LIBGL_ALWAYS_SOFTWARE: '1'
+      LP_NUM_THREADS: '2'
+      GALLIVM_PERF: nopt
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.SOURCE_SHA }}
+          fetch-depth: 0
+          lfs: true
+          persist-credentials: false
+      - name: Authenticate accepted native inputs and new application source
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          python3 tools/ci/package_camera_stack_windows.py preflight --source "$SOURCE_SHA" --platform linux > evidence/source-runtime.json
+          python3 tools/ci/test_camera_stack_package.py > evidence/package-guards.log 2>&1
+          python3 tools/ci/check_ci_provider_policy.py > evidence/ci-provider.json
+          git rev-parse HEAD HEAD^{tree} > evidence/source.txt
+      - name: Pinned Godot 4.7 and graphical display
+        run: |
+          set -euo pipefail
+          curl -fL --retry 3 --max-time 600 -o "$RUNNER_TEMP/godot.zip" 'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
+          echo '0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  '"$RUNNER_TEMP/godot.zip" | sha256sum -c --strict
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/camera-godot"
+          chmod +x "$RUNNER_TEMP/camera-godot/Godot_v4.7-stable_linux.x86_64"
+          echo "GODOT_BIN=$RUNNER_TEMP/camera-godot/Godot_v4.7-stable_linux.x86_64" >> "$GITHUB_ENV"
+          bash tools/ci/prepare_linux_display.sh > evidence/display-setup.log 2>&1
+      - name: Camera, recording, exact framebuffer and preserved effects
+        run: |
+          set -euo pipefail
+          xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
+            python3 tools/ci/run_workbench_qualification.py camera --godot "$GODOT_BIN" --project godot --evidence evidence/camera
+      - name: Native masks, clocks and graphical Engine Lab
+        if: success() || failure()
+        run: |
+          set -euo pipefail
+          xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' python3 - <<'PY'
+          import argparse,os,pathlib,sys
+          sys.path.insert(0,'tools/ci')
+          from run_workbench_qualification import Runner
+          root=pathlib.Path.cwd()
+          runner=Runner(argparse.Namespace(godot=pathlib.Path(os.environ['GODOT_BIN']),evidence=root/'evidence/clocks'))
+          runner.env['CYBERSAND_SOURCE_REVISION']=os.environ['SOURCE_SHA']
+          for label,script,marker,graphical in [
+              ('receipts','test_workbench_mask_receipt','WORKBENCH_MASK_RECEIPT_RESULT',False),
+              ('native-recording','test_camera_stack_recording','CAMERA_STACK_RECORDING_RESULT',True),
+              ('engine-lab','test_workbench_engine_lab','ENGINE_LAB_RESULT',True),
+              ('cross-clocks','test_camera_stack_clocks','CAMERA_STACK_CLOCKS_RESULT',True)]:
+              runner.godot(root/'godot',label,script,marker,graphical=graphical,
+                env={'CYBERSAND_ENGINE_LAB_SCREENSHOT':str(root/'evidence/clocks/engine-lab.png'),
+                     'CAMERA_STACK_RECORDING_OUTPUT':str(root/'evidence/clocks/recording')})
+          PY
+      - name: Accepted GEN-007 five-style generation and legacy/new-process reconstruction
+        if: success() || failure()
+        run: |
+          set -euo pipefail
+          xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
+            python3 tools/architecture/qualify.py --godot "$GODOT_BIN" --project godot --output evidence/architecture --graphical --legacy-regressions
+      - name: Flatten, subsequent edits and real new-process reopen/recovery
+        if: success() || failure()
+        run: |
+          set -euo pipefail
+          xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
+            python3 tools/ci/run_flatten_qualification.py --godot "$GODOT_BIN" --project godot --evidence evidence/flatten --cases 512x1
+      - name: Combined graphical PAINT and Agent Art authoring/reopen
+        if: success() || failure()
+        run: |
+          set -euo pipefail
+          xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' python3 - <<'PY'
+          import argparse,os,pathlib,sys
+          sys.path.insert(0,'tools/ci')
+          from run_workbench_qualification import Runner,combined_authoring
+          root=pathlib.Path.cwd()
+          runner=Runner(argparse.Namespace(godot=pathlib.Path(os.environ['GODOT_BIN']),evidence=root/'evidence/combined'))
+          runner.env['CYBERSAND_SOURCE_REVISION']=os.environ['SOURCE_SHA']
+          combined_authoring(runner,root/'godot','camera-main-combined',side=512)
+          PY
+      - name: Confirm retained source/runtime identity after execution
+        if: success() || failure()
+        run: python3 tools/ci/package_camera_stack_windows.py preflight --source "$SOURCE_SHA" --platform linux > evidence/source-runtime-after.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: camera-stack-linux-${{ env.SOURCE_SHA }}-${{ github.run_attempt }}
+          path: evidence/
+          if-no-files-found: warn
+          retention-days: 90
+  windows-package:
+    if: github.event_name != 'pull_request' || github.head_ref == 'integration/camera-stack-reconciliation-20261115'
+    name: Windows extracted evaluation and actual Test It.cmd execution
+    runs-on: windows-2022
+    timeout-minutes: 120
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.SOURCE_SHA }}
+          fetch-depth: 0
+          lfs: true
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Authenticate preserved main runtimes and package guards
+        run: |
+          $ErrorActionPreference = 'Stop'
+          New-Item -ItemType Directory -Force evidence,delivery | Out-Null
+          python tools/ci/package_camera_stack_windows.py preflight --source $env:SOURCE_SHA --platform windows > evidence/source-runtime.json
+          if ($LASTEXITCODE -ne 0) { throw 'Current native input/provenance mismatch' }
+          python tools/ci/test_camera_stack_package.py *> evidence/package-guards.log
+          if ($LASTEXITCODE -ne 0) { throw 'Package guards failed' }
+      - name: Acquire pinned engine, notices and licensed signed VC dependency
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $notices = Join-Path $env:RUNNER_TEMP 'camera-notices'
+          New-Item -ItemType Directory -Path $notices | Out-Null
+          curl.exe -fL --retry 3 --max-time 600 -o "$env:RUNNER_TEMP/godot-windows.zip" 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          if ($LASTEXITCODE -ne 0) { throw 'Engine download failed' }
+          $hash=(Get-FileHash "$env:RUNNER_TEMP/godot-windows.zip" -Algorithm SHA512).Hash.ToLowerInvariant()
+          if ($hash -ne '41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9') { throw 'Pinned engine archive hash mismatch' }
+          Expand-Archive "$env:RUNNER_TEMP/godot-windows.zip" "$env:RUNNER_TEMP/camera-engine"
+          foreach ($name in @('LICENSE.txt','COPYRIGHT.txt')) {
+            curl.exe -fL --retry 3 --max-time 300 -o (Join-Path $notices $name) "https://raw.githubusercontent.com/godotengine/godot/5b4e0cb0f/$name"
+            if ($LASTEXITCODE -ne 0) { throw 'Godot notice download failed' }
+          }
+          $runtime=Join-Path $notices 'Microsoft-Visual-C-Runtime-LICENSE.docx'
+          $developer=Join-Path $notices 'Microsoft-Visual-Studio-2022-LICENSE.docx'
+          curl.exe -fL --retry 3 --max-time 300 -o $runtime 'https://visualstudio.microsoft.com/wp-content/uploads/2021/09/Visual-C-Runtime-2015-2022-License-1.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Runtime licence download failed' }
+          curl.exe -fL --retry 3 --max-time 300 -o $developer 'https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Visual-Studio-2022-Enterprise-Professional-License-EN.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Developer licence download failed' }
+          ./tools/ci/stage_windows_vc_runtime.ps1 -Output "$env:RUNNER_TEMP/camera-vc" -License $runtime -DeveloperLicense $developer
+      - name: Capture complete same-platform accepted-main legacy reference
+        timeout-minutes: 12
+        run: |
+          $ErrorActionPreference='Stop'
+          $base=Join-Path $env:RUNNER_TEMP 'camera-accepted-main'
+          git worktree add --detach $base $env:ACCEPTED_MAIN
+          if ($LASTEXITCODE -ne 0) { throw 'Could not stage accepted-main reference' }
+          $engine=Join-Path $env:RUNNER_TEMP 'camera-engine/Godot_v4.7-stable_win64_console.exe'
+          $env:APPDATA=Join-Path $env:RUNNER_TEMP 'camera-main-userdata'
+          $env:XDG_DATA_HOME=$env:APPDATA
+          $env:CYBERSAND_LEGACY_OUTPUT=Join-Path $env:GITHUB_WORKSPACE 'evidence/accepted-main-legacy.json'
+          & $engine --headless --audio-driver Dummy --path "$base/godot" --editor --quit *> evidence/main-import.log
+          if ($LASTEXITCODE -ne 0) { throw 'Main import failed' }
+          & $engine --headless --audio-driver Dummy --path "$base/godot" --script "$base/tools/architecture/capture_legacy.gd" *> evidence/main-legacy.log
+          if ($LASTEXITCODE -ne 0) { throw 'Main legacy capture failed' }
+          $log=Get-Content evidence/main-legacy.log -Raw
+          if ($log -notmatch 'ARCHITECTURE_LEGACY checks=5 failures=0' -or $log -match 'SCRIPT ERROR:|Parse Error:') { throw 'Main reference lacks complete native execution' }
+          $data=Get-Content $env:CYBERSAND_LEGACY_OUTPUT -Raw | ConvertFrom-Json -AsHashtable
+          $data.source_commit=$env:ACCEPTED_MAIN
+          $data.platform='win32'
+          $data.complete=$true
+          $data.runtime_sha256=(Get-FileHash "$base/godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll" -Algorithm SHA256).Hash.ToLowerInvariant()
+          $data | ConvertTo-Json -Depth 25 | Set-Content $env:CYBERSAND_LEGACY_OUTPUT -Encoding utf8
+      - name: Create exact-source evaluation archive
+        run: |
+          $ErrorActionPreference='Stop'
+          $archive="delivery/CyberSand-Camera-Stack-Windows-$($env:SOURCE_SHA.Substring(0,12)).zip"
+          python tools/ci/package_camera_stack_windows.py build --source $env:SOURCE_SHA --godot-zip "$env:RUNNER_TEMP/godot-windows.zip" --notices "$env:RUNNER_TEMP/camera-notices" --vc "$env:RUNNER_TEMP/camera-vc" --legacy-reference evidence/accepted-main-legacy.json --output "$env:RUNNER_TEMP/camera-package" --archive $archive
+          if ($LASTEXITCODE -ne 0) { throw 'Exact-source package failed' }
+          Expand-Archive -LiteralPath $archive -DestinationPath 'C:\Camera Stack Evaluation'
+          python tools/ci/package_camera_stack_windows.py verify --output 'C:\Camera Stack Evaluation'
+          if ($LASTEXITCODE -ne 0) { throw 'Extracted package integrity failed' }
+      - name: Parse and invoke the actual packaged one-command runner
+        timeout-minutes: 95
+        run: |
+          $ErrorActionPreference='Stop'
+          $file='C:\Camera Stack Evaluation\Run-Camera-Stack.ps1'
+          $tokens=$null; $errors=$null
+          [System.Management.Automation.Language.Parser]::ParseFile($file,[ref]$tokens,[ref]$errors) | Out-Null
+          if (@($errors).Count -gt 0) { $errors | ForEach-Object { Write-Host $_ }; throw 'Bundled PowerShell does not parse' }
+          $env:CYBERSAND_TEST_AUTOMATED='1'
+          & cmd.exe /d /c '"C:\Camera Stack Evaluation\Test It.cmd" -Automated -RenderingDriver opengl3_angle'
+          if ($LASTEXITCODE -ne 0) { throw 'Actual installed Test It.cmd failed; preserve evidence' }
+          $reports=@(Get-ChildItem 'C:\Camera Stack Evaluation\Test-It-Results' -Recurse -Filter summary.json)
+          if ($reports.Count -ne 1) { throw 'Expected one complete test report' }
+          $report=Get-Content $reports[0].FullName -Raw | ConvertFrom-Json
+          if (-not $report.complete -or $report.status -ne 'passed' -or $report.source_commit -ne $env:SOURCE_SHA) { throw 'Installed source qualification incomplete' }
+          python tools/ci/package_camera_stack_windows.py verify --used --output 'C:\Camera Stack Evaluation'
+          if ($LASTEXITCODE -ne 0) { throw 'Package source changed during qualification' }
+      - name: Retain qualified owner evaluation
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CyberSand-Camera-Stack-Windows-${{ env.SOURCE_SHA }}
+          path: delivery/
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 90
+      - name: Retain original Windows failures and graphical receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: camera-stack-windows-evidence-${{ env.SOURCE_SHA }}-${{ github.run_attempt }}
+          path: |
+            evidence/
+            C:/Camera Stack Evaluation/Test-It-Results/
+          if-no-files-found: warn
+          retention-days: 90
+  linux-performance:
+    name: Same-host bounded ABBA and preserved historical shader control
+    needs: [linux-graphical, windows-package]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      LIBGL_ALWAYS_SOFTWARE: '1'
+      LP_NUM_THREADS: '2'
+      GALLIVM_PERF: nopt
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.SOURCE_SHA }}
+          fetch-depth: 0
+          lfs: true
+          persist-credentials: false
+      - name: Prepare immutable same-native application pair
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          python3 tools/ci/package_camera_stack_windows.py preflight --source "$SOURCE_SHA" --platform linux > evidence/source-runtime.json
+          git worktree add --detach "$RUNNER_TEMP/camera-main" "$ACCEPTED_MAIN"
+          curl -fL --retry 3 --max-time 600 -o "$RUNNER_TEMP/godot.zip" 'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
+          echo '0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  '"$RUNNER_TEMP/godot.zip" | sha256sum -c --strict
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/camera-godot"
+          chmod +x "$RUNNER_TEMP/camera-godot/Godot_v4.7-stable_linux.x86_64"
+          bash tools/ci/prepare_linux_display.sh > evidence/display-setup.log 2>&1
+          cmp godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so "$RUNNER_TEMP/camera-main/godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so"
+      - name: Measure four serial ABBA groups with adverse results retained
+        run: |
+          set -euo pipefail
+          xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
+            python3 tools/ci/run_integrated_camera_performance.py \
+              --baseline-repo "$RUNNER_TEMP/camera-main" --candidate-repo "$GITHUB_WORKSPACE" \
+              --godot "$RUNNER_TEMP/camera-godot/Godot_v4.7-stable_linux.x86_64" \
+              --output evidence/performance --cases slow_pan_512_palette,actor_follow_1024,active_2048_w4,manual_2048 \
+              --samples 240 --warmup 32 --order ABBA --timeout 600
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: camera-stack-linux-abba-${{ env.SOURCE_SHA }}-${{ github.run_attempt }}
+          path: evidence/
+          if-no-files-found: warn
+          retention-days: 90

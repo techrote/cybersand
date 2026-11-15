@@ -3,6 +3,13 @@ extends Control
 const Trial = preload("res://scripts/physical_actor_trial.gd")
 
 func _ready() -> void:
+	# A worker-count request only applies at the next new Workbench process.
+	# Read before Main constructs its SimulationWorker; defaults are unchanged.
+	var lab_path: String = "user://cybersand-engine-lab-workers.json"
+	if FileAccess.file_exists(lab_path):
+		var requested: int = engine_lab_worker_request(FileAccess.get_file_as_string(lab_path))
+		if requested >= 0:
+			ProjectSettings.set_setting("cybersand/native_worker_threads",requested)
 	# Keep existing direct-launch arguments compatible with the desktop wrapper.
 	var first_launch: bool = not get_tree().has_meta("cybersand_launch_args_consumed")
 	get_tree().set_meta("cybersand_launch_args_consumed", true)
@@ -97,3 +104,16 @@ func launch(destination: String) -> void:
 	elif destination == "player_playground": scene = "res://player_playground.tscn"
 	get_tree().set_meta("cybersand_feature", destination)
 	get_tree().change_scene_to_file(scene)
+
+
+# JSON numbers parse as float in Godot, including serialized integer values.
+# Reject malformed/fractional/out-of-range requests rather than truncating them.
+static func engine_lab_worker_request(text: String) -> int:
+	var candidate: Variant = JSON.parse_string(text)
+	if not candidate is Dictionary: return -1
+	var value: Variant = candidate.get("native_threads")
+	if not (value is int or value is float): return -1
+	var numeric: float = float(value)
+	if not is_finite(numeric) or numeric != floorf(numeric) or numeric < 0.0 or numeric > 32.0:
+		return -1
+	return int(numeric)

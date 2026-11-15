@@ -12,18 +12,18 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 ## GEN-008 Flatten / Bake History — 2026-11-13
 
-**Implementation candidate, Draft/HOLD:** issue #548 starts independently from
+**Accepted through PR #572 at `278415ff`:** issue #548 originally started from
 accepted `ac0d9fb944cb` (#564/#565). Its [canonical contract](../architecture/shared-workbench-authoring-data.md#flatten-and-storage-compatibility)
 captures complete native stored IDs into a uint16 little-endian authored baseline,
 retires old construction/history, and leaves the live World, tick and physical
 state unchanged. Explicit Save/Load uses standalone material-baseline v1 with
 legacy Setup-v2/generated-start-v1 compatibility. The [qualification runbook](../operations/gen008-flatten-qualification.md)
-links source-matched execution and Owner acceptance; no merge is authorized.
+links the original source-matched execution and Owner acceptance.
 The 11 November revised issue supersedes the former reset/respawn/rollback proposal.
 
 ## Architectural Generator Phase A/B + owner-refined v2 — 2026-11-15
 
-**PR #582 remains unmerged under explicit owner hold.** The
+**PR #582 was merged by the owner on 15 November 2026 at `018bd09503d7f079ddac52e225c2f7daf8d678bf`.** The
 [architectural generator specification](../systems/architectural-generator.md)
 describes thirteen composable presets, five simultaneous style columns,
 global automatic tunnel/door/window controls and per-preset native material
@@ -49,7 +49,24 @@ The [strict publication contract](../systems/architectural-generator.md#retained
 supersedes the previous source-only merge proposal. Routine native/Godot
 architecture tests and bounded publisher guards continue on accepted-main CI
 after integration; the full graphical/package campaign stays explicit.
-**Ready-for-review is a CI state; no merge is authorised.**
+The camera reconciliation preserves this accepted generator and its retained
+native runtime without changing the owner-accepted Viaduct v2.
+
+## Native-resolution camera candidate — 2026-11-13
+
+**Implemented unmerged candidate; owner acceptance pending.** The
+[camera presentation contract](../systems/material-appearance-and-rendering.md#native-resolution-pixel-scrolling)
+keeps continuous camera state, samples the nearest world cell after final-pixel
+translation and aligns picking, overlays, cursor zoom and small effect buffers.
+The original branch incorporated accepted #565 main `ac0d9fb9`; its
+[final integration record](../audits/2026-11-13-native-pixel-final-integration.md)
+retains that source-specific evidence. The [current reconciliation](../operations/camera-stack-reconciliation.md)
+is based on accepted #582 main and excludes the unaccepted guarded-live selector.
+It changes no native physics, material or save contract. The
+[runbook](../operations/native-pixel-scrolling.md) and
+[audit](../audits/2026-11-13-native-pixel-scrolling.md) distinguish implementation,
+source-built qualification, Windows delivery and human acceptance. Keep Draft;
+no merge or Ready promotion is authorized by this camera task.
 
 ## Materials Lab v1 — 2026-11-11
 

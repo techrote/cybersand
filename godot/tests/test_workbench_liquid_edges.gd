@@ -59,7 +59,7 @@ func click(button: Button) -> void:
 # Never reuse a screen coordinate calculated before that asynchronous sample.
 func world_click_point(pos: Vector2i) -> Vector2:
 	var content: Rect2 = host.view_content_rect()
-	var local: Vector2 = content.position+(Vector2(pos)+Vector2(0.5,0.5)-host.camera_origin.floor())*content.size/Vector2(host.current_view_size)
+	var local: Vector2 = content.position+(Vector2(pos)+Vector2(0.5,0.5)-host.presentation_camera_origin())*content.size/Vector2(host.current_view_size)
 	return host.world_view.get_global_transform()*local
 
 func click_world_cell(pos: Vector2i) -> bool:
@@ -75,8 +75,7 @@ func click_world_cell(pos: Vector2i) -> bool:
 		# Recalculate after each awaited frame, immediately before dispatch.
 		var point: Vector2 = world_click_point(pos)
 		var local: Vector2 = host.world_view.get_global_transform().affine_inverse()*point
-		var mapped: Vector2i = host.view_pixel_from_local_point(local)
-		if mapped.x >= 0: mapped += Vector2i(host.camera_origin.floor())
+		var mapped: Vector2i = host.world_cell_from_local_point(local)
 		if not require(mapped==pos,"live window-to-world brush target "+str(pos)+" mapped "+str(mapped)): return false
 		var event := InputEventMouseButton.new()
 		event.position = point

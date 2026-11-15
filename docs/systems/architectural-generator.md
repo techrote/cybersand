@@ -18,8 +18,9 @@ cell. The ordinary generated-start preview, confirmed World replacement, paintin
 and recipe-based save/reopen remain the authority. This source contract describes
 the candidate; platform execution and owner acceptance belong to its dated
 qualification report and [PR #582](https://github.com/techrote/cybersand/pull/582).
-The PR remains under an explicit **do not merge** instruction. Ready-for-review
-state permits full CI execution; it does not grant merge approval.
+The owner merged PR #582 on 15 November 2026 at
+`018bd09503d7f079ddac52e225c2f7daf8d678bf`. This accepted generator and its
+source-matched retained runtime remain unchanged by camera reconciliation.
 
 The [dated local qualification record](../audits/2026-11-14-architectural-generator-local.md)
 retains source identities, numerical comparisons and original native previews.

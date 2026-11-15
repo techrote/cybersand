@@ -78,21 +78,29 @@ func start_recording(
 		return ERR_ALREADY_IN_USE
 
 	_reset_session_state()
+	# The recording owns copied bounds, never a live World reference. Legacy
+	# callers retain the original extent when no explicit world size is given.
+	var world_extent: Vector2i = config.get(
+		"world_extent",
+		Vector2i(CyberCellWorld.WORLD_WIDTH, CyberCellWorld.WORLD_HEIGHT)
+	)
+	if world_extent.x <= 0 or world_extent.y <= 0:
+		return ERR_INVALID_PARAMETER
 	var requested_roi: Rect2i = config.get(
 		"roi",
-		Rect2i(0, 0, CyberCellWorld.WORLD_WIDTH, CyberCellWorld.WORLD_HEIGHT)
+		Rect2i(Vector2i.ZERO, world_extent)
 	)
-	var left: int = clampi(requested_roi.position.x, 0, CyberCellWorld.WORLD_WIDTH - 1)
-	var top: int = clampi(requested_roi.position.y, 0, CyberCellWorld.WORLD_HEIGHT - 1)
+	var left: int = clampi(requested_roi.position.x, 0, world_extent.x - 1)
+	var top: int = clampi(requested_roi.position.y, 0, world_extent.y - 1)
 	var right: int = clampi(
 		requested_roi.position.x + maxi(requested_roi.size.x, 1),
 		left + 1,
-		CyberCellWorld.WORLD_WIDTH
+		world_extent.x
 	)
 	var bottom: int = clampi(
 		requested_roi.position.y + maxi(requested_roi.size.y, 1),
 		top + 1,
-		CyberCellWorld.WORLD_HEIGHT
+		world_extent.y
 	)
 	_roi = Rect2i(left, top, right - left, bottom - top)
 	_roi_material_ids.resize(_roi.size.x * _roi.size.y)
@@ -117,6 +125,7 @@ func start_recording(
 		"capture_interval_usec": _capture_interval_usec,
 		"queue_capacity": _queue_capacity,
 		"roi": [_roi.position.x, _roi.position.y, _roi.size.x, _roi.size.y],
+		"world_extent": [world_extent.x, world_extent.y],
 		"retain_raw_ids": _retain_raw_ids,
 		"material_channels_retained": ["material_id"],
 		"visual_condition_channel": "intentionally omitted in REC-001 v2",
@@ -264,6 +273,13 @@ func ingest_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 		snapshot.render_snapshot_serial > 0
 		and snapshot.render_snapshot_serial > _last_render_snapshot_serial
 	):
+		# A newly started recorder can first receive a status-only snapshot of
+		# a publication Main already ACKed. The owner retains that serial but
+		# clears its immutable patch bytes. Wait for the requested full refresh;
+		# do not advance material identity or accept a malformed full refresh.
+		if not _primed and not snapshot.render_full_refresh \
+				and snapshot.render_patch_rectangles.is_empty() and snapshot.render_patch_cells.is_empty():
+			return
 		var patch_started: int = Time.get_ticks_usec()
 		var patch_error: String = _apply_render_publication(snapshot)
 		var patch_usec: int = Time.get_ticks_usec() - patch_started

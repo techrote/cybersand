@@ -786,8 +786,17 @@ func accept_equipment_feedback(snapshot_value: Dictionary) -> int:
 	return accepted
 
 
-func render_parts(display_frame: Dictionary = {}) -> Array:
+func render_parts(display_frame: Dictionary = {}, require_mask_receipt: bool = false) -> Array:
 	var result: Array = []
+	# Receipt-only extraction from #593 (9628729a): Main's Workbench path
+	# opts into strict identity. Geometry-inspection callers retain the
+	# original no-receipt API. No visual live-pose override is admitted here.
+	var strict_workbench: bool = require_mask_receipt and bridge is WorkbenchBridge
+	var workbench_frame_ok: bool = true
+	if strict_workbench:
+		workbench_frame_ok = display_frame.get("session",-1) == bridge._session \
+			and display_frame.get("epoch",-1) == bridge._epoch \
+			and display_frame.get("instances") is Dictionary
 	for index: int in range(_rigs.size()):
 		var parts: Array = _catalogue[index].parts
 		var actor_bodies: Array[RigidBody2D] = _rigs[index].bodies()
@@ -795,7 +804,23 @@ func render_parts(display_frame: Dictionary = {}) -> Array:
 		for part_index: int in range(actor_bodies.size()):
 			var body: RigidBody2D = actor_bodies[part_index]
 			var body_index: int = _body_offsets[index]+part_index
-			var physical_pose: Transform2D = bridge.display_pose(body_index,display_frame) if bridge is WorkbenchBridge else bridge.body_transform(body_index)
+			# Missing/stale receipts suppress this overlay part instead of
+			# falling back to a live RID from a different displayed material state.
+			var physical_pose: Transform2D
+			if strict_workbench:
+				if not workbench_frame_ok or body_index >= bridge._members.size():
+					continue
+				var member: Dictionary = bridge._members[body_index]
+				var instance: Dictionary = display_frame.instances.get(int(member.instance_id),{})
+				if instance.get("generation",-1) != member.generation \
+						or not instance.get("pose") is Transform2D:
+					continue
+				physical_pose = instance.pose
+				if not physical_pose.is_finite():
+					continue
+			else:
+				physical_pose = bridge.display_pose(body_index,display_frame) \
+					if bridge is WorkbenchBridge else bridge.body_transform(body_index)
 			if str(parts[part_index].get("shape","rectangle"))=="rectangle_union":
 				var shape_index: int=0
 				for child in body.get_children():

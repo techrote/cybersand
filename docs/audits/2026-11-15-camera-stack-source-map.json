@@ -1,0 +1,1517 @@
+{
+  "schema": "camera-stack-source-map-v1",
+  "accepted_main": "018bd09503d7f079ddac52e225c2f7daf8d678bf",
+  "intended_first_parent": "018bd09503d7f079ddac52e225c2f7daf8d678bf",
+  "intended_second_parent": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+  "component_heads": {
+    "566": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+    "593": "9628729af052b417aa8a64e56f7e7bcdf4f2e876",
+    "606": "2632422aa67ee9acdc347089cd54c36e518c713a",
+    "609": "01a8416761ba3477a2587d7b07a854945b0f0286"
+  },
+  "scope": "Changed retained files at source freeze; documentation/report files excluded from hash self-reference. Git tree is authoritative. Does not import or establish acceptance of moving #609 source.",
+  "files": [
+    {
+      "path": ".github/workflows/camera-stack-reconciliation.yml",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "reconciliation",
+          "commit": null,
+          "blob_sha256": null
+        }
+      ],
+      "candidate_sha256": "3d687c4c479d19be7d6ec69a6ee30a855214788863decdf839b981c95a8074c8",
+      "byte_identical_to_inspected_heads": [],
+      "reason": "Accepted-main reconciliation documentation, source custody or exact-source qualification; historical results remain qualified by their original source."
+    },
+    {
+      "path": "docs/README.md",
+      "disposition": "KEEP WITH MODIFICATION",
+      "origins": [
+        {
+          "component": "main",
+          "commit": "018bd09503d7f079ddac52e225c2f7daf8d678bf",
+          "blob_sha256": "c7ad423e39874c7a4ad322a67ff236229217cb0c14362c46898b9d9d87fabc6e"
+        },
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "3254e4520c98b85002bc6811e8daef0589a347822015337c9dcf6df6348b8970"
+        },
+        {
+          "component": "reconciliation",
+          "commit": null,
+          "blob_sha256": null
+        }
+      ],
+      "candidate_sha256": "22334593b262fac0c5473971b32544145eecfb0b0079e6cbdcf3571832589000",
+      "byte_identical_to_inspected_heads": [],
+      "reason": "Accepted-main reconciliation documentation, source custody or exact-source qualification; historical results remain qualified by their original source."
+    },
+    {
+      "path": "docs/audits/2026-11-13-native-pixel-final-integration.md",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "66a1541645dfe56bff8a5cf7c10869c8a81b27af4af1a7a6cab810672c43898f"
+        }
+      ],
+      "candidate_sha256": "66a1541645dfe56bff8a5cf7c10869c8a81b27af4af1a7a6cab810672c43898f",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Retain immutable historical evidence or reusable camera fixture verbatim."
+    },
+    {
+      "path": "docs/audits/2026-11-13-native-pixel-scrolling.md",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "77befe5d408e335373ecb7cd50d7239644d49ae347aec7e945fd4a8e1823f097"
+        }
+      ],
+      "candidate_sha256": "77befe5d408e335373ecb7cd50d7239644d49ae347aec7e945fd4a8e1823f097",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Retain immutable historical evidence or reusable camera fixture verbatim."
+    },
+    {
+      "path": "docs/audits/2026-11-15-camera-stack-reconciliation.md",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "reconciliation",
+          "commit": null,
+          "blob_sha256": null
+        }
+      ],
+      "candidate_sha256": "ee9e3db2a1c86727b0e6c4983350691b80c93a4e4461a170d023eab5fc3b5bb3",
+      "byte_identical_to_inspected_heads": [],
+      "reason": "Accepted-main reconciliation documentation, source custody or exact-source qualification; historical results remain qualified by their original source."
+    },
+    {
+      "path": "docs/audits/2026-11-15-camera-stack-source-inventory.json",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "reconciliation",
+          "commit": null,
+          "blob_sha256": null
+        }
+      ],
+      "candidate_sha256": "f88ff7453c767f7a803ad980cea36d156cb41a079819bd6b0c17f34e48a36a15",
+      "byte_identical_to_inspected_heads": [],
+      "reason": "Accepted-main reconciliation documentation, source custody or exact-source qualification; historical results remain qualified by their original source."
+    },
+    {
+      "path": "docs/operations/camera-stack-reconciliation.md",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "reconciliation",
+          "commit": null,
+          "blob_sha256": null
+        }
+      ],
+      "candidate_sha256": "318b04c8cc22ff62dd26b9abc78c5f617f898253b7c00e68e994012f86600a46",
+      "byte_identical_to_inspected_heads": [],
+      "reason": "Accepted-main reconciliation documentation, source custody or exact-source qualification; historical results remain qualified by their original source."
+    },
+    {
+      "path": "docs/operations/cybersand-codex-development-handover.md",
+      "disposition": "KEEP WITH MODIFICATION",
+      "origins": [
+        {
+          "component": "main",
+          "commit": "018bd09503d7f079ddac52e225c2f7daf8d678bf",
+          "blob_sha256": "4af84ec7a5b523676247d53946eec9e79e8ac2063323c300db7d487291db4ad9"
+        },
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "15cb8fb535bead80b9ab9790b7bbc27d4f7a1fc0aba9cebf7a42749adfbd447c"
+        },
+        {
+          "component": "reconciliation",
+          "commit": null,
+          "blob_sha256": null
+        }
+      ],
+      "candidate_sha256": "3b8a11fa7037c3f413e84c331522b991cb4bedf46899a6563065c2b32d5dc629",
+      "byte_identical_to_inspected_heads": [],
+      "reason": "Accepted-main reconciliation documentation, source custody or exact-source qualification; historical results remain qualified by their original source."
+    },
+    {
+      "path": "docs/operations/gameplay-recording.md",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "fdb493f4ee411365802ed5a3d1fbac3191fe864f3125cce9be0633fdd7306e1d"
+        }
+      ],
+      "candidate_sha256": "fdb493f4ee411365802ed5a3d1fbac3191fe864f3125cce9be0633fdd7306e1d",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Retain immutable historical evidence or reusable camera fixture verbatim."
+    },
+    {
+      "path": "docs/operations/local-build-and-validation.md",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "8d346f0d2b731f9da99b8be0c407a789fff2ffcd5041ab52089b75e0e6438915"
+        }
+      ],
+      "candidate_sha256": "8d346f0d2b731f9da99b8be0c407a789fff2ffcd5041ab52089b75e0e6438915",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Retain immutable historical evidence or reusable camera fixture verbatim."
+    },
+    {
+      "path": "docs/operations/native-pixel-scrolling.md",
+      "disposition": "KEEP WITH MODIFICATION",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "5c2902f0fdbe66334b224963568a566d73ed8e6eaffddef7d8c42a5cd3dca59b"
+        },
+        {
+          "component": "reconciliation",
+          "commit": null,
+          "blob_sha256": null
+        }
+      ],
+      "candidate_sha256": "88b6307d885c9bdd5fe090c0fd49c4f914cae27e0078f1a2c7166eccba93dfd0",
+      "byte_identical_to_inspected_heads": [],
+      "reason": "Accepted-main reconciliation documentation, source custody or exact-source qualification; historical results remain qualified by their original source."
+    },
+    {
+      "path": "docs/reference/configuration-reference.md",
+      "disposition": "KEEP WITH MODIFICATION",
+      "origins": [
+        {
+          "component": "main",
+          "commit": "018bd09503d7f079ddac52e225c2f7daf8d678bf",
+          "blob_sha256": "bee8124fee89b2cb426da2ff01e491cbe883ca2bd84aee4c16d7ce95b26fff5b"
+        },
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "ee2f449686a177c863b448dcb0cd82603145a724f05574d5b463dc817091efc7"
+        },
+        {
+          "component": "reconciliation",
+          "commit": null,
+          "blob_sha256": null
+        }
+      ],
+      "candidate_sha256": "302fc4babaf122a20267e72c5a13789dbb78d4eef21bba0143b45335230a473f",
+      "byte_identical_to_inspected_heads": [],
+      "reason": "Accepted-main reconciliation documentation, source custody or exact-source qualification; historical results remain qualified by their original source."
+    },
+    {
+      "path": "docs/reference/interfaces-and-message-contracts.md",
+      "disposition": "KEEP WITH MODIFICATION",
+      "origins": [
+        {
+          "component": "main",
+          "commit": "018bd09503d7f079ddac52e225c2f7daf8d678bf",
+          "blob_sha256": "728fcca4db909fb9bab59c39ba3bfb39159e14f8d45d2d718b52901638945fb8"
+        },
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "cb82df69d419f7389dc429e7e41e7518572f07b1b94732dd99bf3b0bd294e052"
+        },
+        {
+          "component": "reconciliation",
+          "commit": null,
+          "blob_sha256": null
+        }
+      ],
+      "candidate_sha256": "6a107cde1346e67aa57b5e8b6c0fb564d1620f29af8870891e05a9c1434c184b",
+      "byte_identical_to_inspected_heads": [],
+      "reason": "Accepted-main reconciliation documentation, source custody or exact-source qualification; historical results remain qualified by their original source."
+    },
+    {
+      "path": "docs/reference/retrieval-corpus.json",
+      "disposition": "KEEP WITH MODIFICATION",
+      "origins": [
+        {
+          "component": "main",
+          "commit": "018bd09503d7f079ddac52e225c2f7daf8d678bf",
+          "blob_sha256": "abc9fce8435b5d32ddce43e8e1470b51df5e86b9bf5c58b61bec6ea97c21f8cc"
+        },
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "9e184ab717486be011530b7cccfeb3bfed6f4838dca6de9913c98742144760ae"
+        },
+        {
+          "component": "reconciliation",
+          "commit": null,
+          "blob_sha256": null
+        }
+      ],
+      "candidate_sha256": "cdc7ce9b7667a06389b9ca541b620bf7238e0eb12330233fb73b065993156348",
+      "byte_identical_to_inspected_heads": [],
+      "reason": "Accepted-main reconciliation documentation, source custody or exact-source qualification; historical results remain qualified by their original source."
+    },
+    {
+      "path": "docs/reference/retrieval-index.md",
+      "disposition": "KEEP WITH MODIFICATION",
+      "origins": [
+        {
+          "component": "main",
+          "commit": "018bd09503d7f079ddac52e225c2f7daf8d678bf",
+          "blob_sha256": "5bbf58b54c5508f7b59d0a7cfcef03a577a6ad5b8c9c45c732ea09ea0abd8514"
+        },
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "f942e6ba92c44ceb182a30592efb89b91dd3b2c4fe108c0983ebd894efa9f749"
+        },
+        {
+          "component": "reconciliation",
+          "commit": null,
+          "blob_sha256": null
+        }
+      ],
+      "candidate_sha256": "2bffe9d19eb630f11bfcf25a78e6214a051be24ccdbfd56a87011c72115718b8",
+      "byte_identical_to_inspected_heads": [],
+      "reason": "Accepted-main reconciliation documentation, source custody or exact-source qualification; historical results remain qualified by their original source."
+    },
+    {
+      "path": "docs/reference/retrieval-questions-native-pixel-scrolling.json",
+      "disposition": "KEEP WITH MODIFICATION",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "72e0a1b49e3f6a8f44e0f46be6dd82f84b97f8d6c06980706f6e2c90e82461c8"
+        },
+        {
+          "component": "reconciliation",
+          "commit": null,
+          "blob_sha256": null
+        }
+      ],
+      "candidate_sha256": "79fb6f5722007f31e6c8fb20ae6e6611881def51edf522f8a01f078e3d489405",
+      "byte_identical_to_inspected_heads": [],
+      "reason": "Accepted-main reconciliation documentation, source custody or exact-source qualification; historical results remain qualified by their original source."
+    },
+    {
+      "path": "docs/reference/status-and-roadmap.md",
+      "disposition": "KEEP WITH MODIFICATION",
+      "origins": [
+        {
+          "component": "main",
+          "commit": "018bd09503d7f079ddac52e225c2f7daf8d678bf",
+          "blob_sha256": "84a153d146804bbca0999da0b0b9d762d07075a81cfbc6e7c93e788241c752e4"
+        },
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "7331f8cbfa5ef669692b98549f983619540cc7432831b5d98d2d7b1318ca5b15"
+        },
+        {
+          "component": "reconciliation",
+          "commit": null,
+          "blob_sha256": null
+        }
+      ],
+      "candidate_sha256": "22f826c95800184902b9f7947cc8234ec1510c2c7d9832f13b9e984fadaf54e6",
+      "byte_identical_to_inspected_heads": [],
+      "reason": "Accepted-main reconciliation documentation, source custody or exact-source qualification; historical results remain qualified by their original source."
+    },
+    {
+      "path": "docs/systems/architectural-generator.md",
+      "disposition": "KEEP WITH MODIFICATION",
+      "origins": [
+        {
+          "component": "main",
+          "commit": "018bd09503d7f079ddac52e225c2f7daf8d678bf",
+          "blob_sha256": "0dbb6514a1fb06290b45a3eab1152eb64daaab7b9edbdb17e67a56830bb0f74a"
+        },
+        {
+          "component": "reconciliation",
+          "commit": null,
+          "blob_sha256": null
+        }
+      ],
+      "candidate_sha256": "82702a4e21dafef7f0dbc6d73ca89a69c2ab601b1ea97f1ec8ac1915cdd4fac4",
+      "byte_identical_to_inspected_heads": [],
+      "reason": "Accepted-main reconciliation documentation, source custody or exact-source qualification; historical results remain qualified by their original source."
+    },
+    {
+      "path": "docs/systems/material-appearance-and-rendering.md",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "da6759147c8ce4d052fa8f5051436e7682e29153368eb6921f26242aa5bd0a2c"
+        }
+      ],
+      "candidate_sha256": "da6759147c8ce4d052fa8f5051436e7682e29153368eb6921f26242aa5bd0a2c",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Retain immutable historical evidence or reusable camera fixture verbatim."
+    },
+    {
+      "path": "godot/.godot/global_script_class_cache.cfg",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "40e0e4380d902f43aedc3b5c5dc855c479b97d9e91dbc06c890ab3a1403f812e"
+        }
+      ],
+      "candidate_sha256": "40e0e4380d902f43aedc3b5c5dc855c479b97d9e91dbc06c890ab3a1403f812e",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "godot/scripts/actor_prototype_overlay.gd",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "2ee614b7afa0725024d35efc1573a844f3d5f6ff438ff56b941724ca770c6e82"
+        }
+      ],
+      "candidate_sha256": "2ee614b7afa0725024d35efc1573a844f3d5f6ff438ff56b941724ca770c6e82",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "godot/scripts/art_batch_panel.gd",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "38c2308cf63b2544cf02783661576db7e077a0b5dfede953ac6900b223bf14ac"
+        }
+      ],
+      "candidate_sha256": "38c2308cf63b2544cf02783661576db7e077a0b5dfede953ac6900b223bf14ac",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "godot/scripts/blacksite_nine_presentation.gd",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "adfcfb7746539789edf407799ebaa3ebd8e47c6376548a4d456d9ce658830ba5"
+        }
+      ],
+      "candidate_sha256": "adfcfb7746539789edf407799ebaa3ebd8e47c6376548a4d456d9ce658830ba5",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "godot/scripts/feature_launcher.gd",
+      "disposition": "KEEP WITH MODIFICATION",
+      "origins": [
+        {
+          "component": "main",
+          "commit": "018bd09503d7f079ddac52e225c2f7daf8d678bf",
+          "blob_sha256": "438ac6aa34baabe1d88f310d8dbaabc887b505ccac5178cb0082431efa0e8c05"
+        },
+        {
+          "component": "606",
+          "commit": "2632422aa67ee9acdc347089cd54c36e518c713a",
+          "blob_sha256": "ffda8db1fc2b7b8ccdbe70d6664774ba8f813906be73a4cf92ca079bbd1acad9"
+        }
+      ],
+      "candidate_sha256": "0443f03a8af194bf009d0197cf82b2c12c2995811fbcce988ea8a31eb25a8d08",
+      "byte_identical_to_inspected_heads": [],
+      "reason": "Next-launch worker count from saved finite integral JSON number; no solver or native default change."
+    },
+    {
+      "path": "godot/scripts/gameplay_recorder.gd",
+      "disposition": "KEEP WITH MODIFICATION",
+      "origins": [
+        {
+          "component": "main",
+          "commit": "018bd09503d7f079ddac52e225c2f7daf8d678bf",
+          "blob_sha256": "d16aed6fdec7e5757522fd838ecc5e0c6f94ffdf4db2f71d6dabb3c4cb7b7c90"
+        },
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "48fb8b7aa3feb17792a70370df43b6f2a0a91e8823c1606945912791d414cefa"
+        }
+      ],
+      "candidate_sha256": "87a5febec0ba39cb3dd046271d8b491c5e385415959abec526cadb15f6c124ae",
+      "byte_identical_to_inspected_heads": [],
+      "reason": "Camera recording ROI; new seven-line unprimed status-receipt wait. Retain full-refresh priming and malformed-publication failure."
+    },
+    {
+      "path": "godot/scripts/main.gd",
+      "disposition": "KEEP WITH MODIFICATION",
+      "origins": [
+        {
+          "component": "main",
+          "commit": "018bd09503d7f079ddac52e225c2f7daf8d678bf",
+          "blob_sha256": "99a6d8fd9da3d453c0d89bd62aa6348dcc10f4f97353ed984c1836ba49792a78"
+        },
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "db564ac25ac7acec1aa01cc2349cd02e931ec2d64bbc8fe01a837d9f54501f90"
+        },
+        {
+          "component": "593",
+          "commit": "9628729af052b417aa8a64e56f7e7bcdf4f2e876",
+          "blob_sha256": "a4f2ae450b471cdad7243e644b607752fac201fe46d29ba5a25150d4bbe67618"
+        },
+        {
+          "component": "606",
+          "commit": "2632422aa67ee9acdc347089cd54c36e518c713a",
+          "blob_sha256": "e853d42926396bd6882ce2218042c3fa530501f929b5549daeea36d94feb9b97"
+        }
+      ],
+      "candidate_sha256": "b03b6df5b14f2244df0b2aa1eb0df0b56d5d766654067ebf7ca7489a3a11468a",
+      "byte_identical_to_inspected_heads": [],
+      "reason": "Retain accepted Flatten and source custody; camera ordering, strict receipt seam and bounded Lab hooks. Exclude guarded-live selector, temporal oracle, delayed ACK and trace source."
+    },
+    {
+      "path": "godot/scripts/microscenario_workbench.gd",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "105609292ec9720d45d1826a3532c6377aaf9809c38ce201b305ce5be0244234"
+        }
+      ],
+      "candidate_sha256": "105609292ec9720d45d1826a3532c6377aaf9809c38ce201b305ce5be0244234",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "godot/scripts/physical_actor_overlay.gd",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "07d6eda42299d491be5aab99b79682adaa6d41f2ddd4c340abe41da753e862fc"
+        }
+      ],
+      "candidate_sha256": "07d6eda42299d491be5aab99b79682adaa6d41f2ddd4c340abe41da753e862fc",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "godot/scripts/physical_actor_session.gd",
+      "disposition": "KEEP WITH MODIFICATION",
+      "origins": [
+        {
+          "component": "main",
+          "commit": "018bd09503d7f079ddac52e225c2f7daf8d678bf",
+          "blob_sha256": "e2c9f6e5bd92547c0f02cea2c2db22c816c1727013f07cd879d4b60be91d8c47"
+        },
+        {
+          "component": "593",
+          "commit": "9628729af052b417aa8a64e56f7e7bcdf4f2e876",
+          "blob_sha256": "3e085b5a8ac203b7e5a70fa03fa54c88f0c7c74bf9c50175a08636ae065ec48f"
+        }
+      ],
+      "candidate_sha256": "e95f564518eb29b4b03a9c60db3a3a04970e41188d495b9584c979b800bb56a2",
+      "byte_identical_to_inspected_heads": [],
+      "reason": "Receipt-only identity/finite-pose safety. No alternative live presentation poses or swept terrain oracle."
+    },
+    {
+      "path": "godot/scripts/pixel_camera_transform.gd",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "7afe5eb19e24bad3986db567d5da2a3967e3a463f86e1f15f797f98565bd4e7b"
+        }
+      ],
+      "candidate_sha256": "7afe5eb19e24bad3986db567d5da2a3967e3a463f86e1f15f797f98565bd4e7b",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "godot/scripts/playable_course_overlay.gd",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "93f6840a830afb3c2c79fedb979f75c62e25cbc4ef4cb02887a07a45bf7c0fa1"
+        }
+      ],
+      "candidate_sha256": "93f6840a830afb3c2c79fedb979f75c62e25cbc4ef4cb02887a07a45bf7c0fa1",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "godot/scripts/shared_workbench.gd",
+      "disposition": "KEEP WITH MODIFICATION",
+      "origins": [
+        {
+          "component": "main",
+          "commit": "018bd09503d7f079ddac52e225c2f7daf8d678bf",
+          "blob_sha256": "1dc55ceca214483cf52f8adf0a6a2e470cd676e2db8776391edeca800c586c37"
+        },
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "939e87fca429e34ab4293b27f145e43d11906ec3a2d05282038fcabb5378cca1"
+        },
+        {
+          "component": "606",
+          "commit": "2632422aa67ee9acdc347089cd54c36e518c713a",
+          "blob_sha256": "8f66683c0cf8c8d4c2083f58a6f3ce9c109c760b8a77872b80a6c9e08bbb5c4a"
+        }
+      ],
+      "candidate_sha256": "cf2952ac657ca4f8d75cba6acb2d99c574b527cbdd8dc8e621fc4eec35f49146",
+      "byte_identical_to_inspected_heads": [],
+      "reason": "Preserve GEN-007/Flatten authorship, camera projection and completed-step fences; independently expose sample wait and Rapier target controls."
+    },
+    {
+      "path": "godot/scripts/showcase_presentation.gd",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "05d070044708e83170a823a2e49dd94a1626387fd3fd6c223e8186a758648ade"
+        }
+      ],
+      "candidate_sha256": "05d070044708e83170a823a2e49dd94a1626387fd3fd6c223e8186a758648ade",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "godot/scripts/simulation_worker.gd",
+      "disposition": "KEEP WITH MODIFICATION",
+      "origins": [
+        {
+          "component": "main",
+          "commit": "018bd09503d7f079ddac52e225c2f7daf8d678bf",
+          "blob_sha256": "2cdb47c4958a3d98b3fec2f88bf95f252e6a9fc7473ee383b8dfd2f91ff6bb69"
+        },
+        {
+          "component": "606",
+          "commit": "2632422aa67ee9acdc347089cd54c36e518c713a",
+          "blob_sha256": "6e5d32f41bd867a0146aae57bc161943e65e11643af9365e8350d6b99e074b72"
+        }
+      ],
+      "candidate_sha256": "b8172f2c323d6bc81195db0f983f00dc66324f2d61fb47217bc7ac506c8f3b0e",
+      "byte_identical_to_inspected_heads": [],
+      "reason": "Mutex-protected requested native pacing and sample wake; retain accepted owner mailbox, shutdown and immediate successful-upload ACK."
+    },
+    {
+      "path": "godot/scripts/tower_panel.gd",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "f768cb510be7b69fd211da227e24db44da98ee727d1396aa2204b4d3c20bfe60"
+        }
+      ],
+      "candidate_sha256": "f768cb510be7b69fd211da227e24db44da98ee727d1396aa2204b4d3c20bfe60",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "godot/scripts/usable_overlay.gd",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "19a334be61ede09c5bb0c6641050423190e0d629c860236c4dc8d1af397219b6"
+        }
+      ],
+      "candidate_sha256": "19a334be61ede09c5bb0c6641050423190e0d629c860236c4dc8d1af397219b6",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "godot/scripts/web_demo_controller.gd",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "0f72aebdf8a664c8a236ac773d9d40215193af5f28303ea94e1206e2996396f1"
+        }
+      ],
+      "candidate_sha256": "0f72aebdf8a664c8a236ac773d9d40215193af5f28303ea94e1206e2996396f1",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "godot/scripts/workbench_engine_lab.gd",
+      "disposition": "KEEP WITH MODIFICATION",
+      "origins": [
+        {
+          "component": "606",
+          "commit": "2632422aa67ee9acdc347089cd54c36e518c713a",
+          "blob_sha256": "670ab47064c92dbef0c9154c7c5cff7635e502613ad08f913794e45329a496ee"
+        }
+      ],
+      "candidate_sha256": "e56b9d5a30ec334111c45b130e1d5f10496f51bd444a940518b472aec2c7dc91",
+      "byte_identical_to_inspected_heads": [],
+      "reason": "Control UI/aggregate sampler adapted without guard/ACK modes; measured uploads, completed rates, identity-fenced bounded captures and invalidation."
+    },
+    {
+      "path": "godot/scripts/workbench_paint_editor_controller.gd",
+      "disposition": "KEEP WITH MODIFICATION",
+      "origins": [
+        {
+          "component": "main",
+          "commit": "018bd09503d7f079ddac52e225c2f7daf8d678bf",
+          "blob_sha256": "9f5211db9fbc1dd09cbc305618d417145d121b003ef3c3e77ca396991080735c"
+        },
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "76d517e0e312426340db9ea82498796b33df1b095d68beb8c2edbb7a1af36e6d"
+        }
+      ],
+      "candidate_sha256": "4ce5c6a2371fb55a6c7c00e03c8c24d715cda0f236528c2f46a279835b5d535f",
+      "byte_identical_to_inspected_heads": [],
+      "reason": "Preserve accepted Flatten/reopen/material baseline logic while adopting displayed camera projection."
+    },
+    {
+      "path": "godot/scripts/workbench_paint_editor_overlay.gd",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "9559aee4464c46ead8249d19508a799cc2095f86b5dc7e464b17c1c568926a58"
+        }
+      ],
+      "candidate_sha256": "9559aee4464c46ead8249d19508a799cc2095f86b5dc7e464b17c1c568926a58",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "godot/shaders/blacksite_nine_backdrop.gdshader",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "a13519703a8972bacf4f83510b55ce06c4104f87e423a96c596abd2d2960c9d1"
+        }
+      ],
+      "candidate_sha256": "a13519703a8972bacf4f83510b55ce06c4104f87e423a96c596abd2d2960c9d1",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "godot/shaders/blacksite_nine_grade.gdshader",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "54b2dc619619ac604613dc2ea7925053347bf9668bd440f0c3f77893188538b8"
+        }
+      ],
+      "candidate_sha256": "54b2dc619619ac604613dc2ea7925053347bf9668bd440f0c3f77893188538b8",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "godot/shaders/glow_composite.gdshader",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "b282d72045c51f4ce544d9dacf06268be0b59399dd8097dead531152409019ec"
+        }
+      ],
+      "candidate_sha256": "b282d72045c51f4ce544d9dacf06268be0b59399dd8097dead531152409019ec",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "godot/shaders/material_palette.gdshader",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "b8e5542dae2c36fd6fbef0170a7b537bce5c853fc10920174cefe13dbec78d4f"
+        }
+      ],
+      "candidate_sha256": "b8e5542dae2c36fd6fbef0170a7b537bce5c853fc10920174cefe13dbec78d4f",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "godot/shaders/neon_reliquary_backdrop.gdshader",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "d4d8a7fe7c6d52b54dfb9f5476d6c31d041702235eee9752e946974ae3c62f0b"
+        }
+      ],
+      "candidate_sha256": "d4d8a7fe7c6d52b54dfb9f5476d6c31d041702235eee9752e946974ae3c62f0b",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "godot/tests/play_ui007_presentation_case.gd",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "3224ae8d3b31e307d95ea3f9bfd0b3aa560c398dca0b3ad6e80ea9b075feb1bf"
+        }
+      ],
+      "candidate_sha256": "3224ae8d3b31e307d95ea3f9bfd0b3aa560c398dca0b3ad6e80ea9b075feb1bf",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "godot/tests/run_integrated_camera_performance.gd",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "5de385d12cfc6eeb3b2f908d74d4b54a3c1a0cdf3a976ce08da8ce89f46c5325"
+        }
+      ],
+      "candidate_sha256": "5de385d12cfc6eeb3b2f908d74d4b54a3c1a0cdf3a976ce08da8ce89f46c5325",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "godot/tests/test_actor_prototype_integration.gd",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "7208173d5997b9bbbecb2d87725bd4afb71647caadf8ef645180d2f7aa8a415a"
+        }
+      ],
+      "candidate_sha256": "7208173d5997b9bbbecb2d87725bd4afb71647caadf8ef645180d2f7aa8a415a",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "godot/tests/test_actor_rig_integration.gd",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "8da122ee98bcadf74e1427c7aaf7b5d3a60ce2ce903011f67d529fc5f0b27a70"
+        }
+      ],
+      "candidate_sha256": "8da122ee98bcadf74e1427c7aaf7b5d3a60ce2ce903011f67d529fc5f0b27a70",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "godot/tests/test_art_panel_ui.gd",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "5111e86b07aa55fc196c07c9d482b2de7e55cc062dcbf33064ee9805d4b7758a"
+        }
+      ],
+      "candidate_sha256": "5111e86b07aa55fc196c07c9d482b2de7e55cc062dcbf33064ee9805d4b7758a",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "godot/tests/test_blacksite_nine_integration.gd",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "3594290a4b5e24dfd6c2ec5cb556720a8ff11728c1eff4e2671e8edd3a716a40"
+        }
+      ],
+      "candidate_sha256": "3594290a4b5e24dfd6c2ec5cb556720a8ff11728c1eff4e2671e8edd3a716a40",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "godot/tests/test_camera_stack_clocks.gd",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "reconciliation",
+          "commit": null,
+          "blob_sha256": null
+        }
+      ],
+      "candidate_sha256": "00834a3be17058fd264110a1a2b0eb75edd9cb44d8dfcb8bb563964a005c80e2",
+      "byte_identical_to_inspected_heads": [],
+      "reason": "New genuine native/Rapier mismatched-clock cases, live UI camera selection, identity and positive successful-upload ACK evidence."
+    },
+    {
+      "path": "godot/tests/test_camera_stack_recording.gd",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "reconciliation",
+          "commit": null,
+          "blob_sha256": null
+        }
+      ],
+      "candidate_sha256": "b0d5052f7faee9d207e2260532b0cb808d926161d14ac55ebdcf99352061a49c",
+      "byte_identical_to_inspected_heads": [],
+      "reason": "New native mounted-Main recording, full ROI readback, independent BMP decode, immutable initial ROI and snapshot identity evidence."
+    },
+    {
+      "path": "godot/tests/test_gameplay_recorder.gd",
+      "disposition": "KEEP WITH MODIFICATION",
+      "origins": [
+        {
+          "component": "main",
+          "commit": "018bd09503d7f079ddac52e225c2f7daf8d678bf",
+          "blob_sha256": "2495836fe39aa42e99cd215d5fa642add0bbe237b981fb6c6bf93a3708474bba"
+        },
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "c1a98479a6aed825ec757b6314115e0872d53aae1f98e2577f5a1cbdd028e337"
+        }
+      ],
+      "candidate_sha256": "338cd8dd1eacfcced4a968af8e599905f82312c60d38613183ffcf3b3b343343",
+      "byte_identical_to_inspected_heads": [],
+      "reason": "Preserve camera/recorder tests plus new startup and malformed-publication negative controls."
+    },
+    {
+      "path": "godot/tests/test_material_vapour_pipeline_render.gd",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "c33fc12e0ab697d7cb901f846d618918c53c223dcb513a4b9b772679df83dd45"
+        }
+      ],
+      "candidate_sha256": "c33fc12e0ab697d7cb901f846d618918c53c223dcb513a4b9b772679df83dd45",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "godot/tests/test_native_camera_effects_render.gd",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "3689f911142c0663aaa1fdc8a2a7dd60953407d4a1699e63ad90151c8009a617"
+        }
+      ],
+      "candidate_sha256": "3689f911142c0663aaa1fdc8a2a7dd60953407d4a1699e63ad90151c8009a617",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "godot/tests/test_native_pixel_camera.gd",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "8d2a0313c7997bef59bbaa51750696db4e04c413b91bc1a04bb9b5c3185ee3a1"
+        }
+      ],
+      "candidate_sha256": "8d2a0313c7997bef59bbaa51750696db4e04c413b91bc1a04bb9b5c3185ee3a1",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "godot/tests/test_native_pixel_scrolling_render.gd",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "1c03370749a6b7ac9ced67bb6d9ad107dc5837f709b00e72636be7a6e1c141e8"
+        }
+      ],
+      "candidate_sha256": "1c03370749a6b7ac9ced67bb6d9ad107dc5837f709b00e72636be7a6e1c141e8",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "godot/tests/test_paint_editor_generated_workbench.gd",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "56bc79aadf8d0576c8b0692c5ab205d6f9302d8fa332002f529d05f3d19831f3"
+        }
+      ],
+      "candidate_sha256": "56bc79aadf8d0576c8b0692c5ab205d6f9302d8fa332002f529d05f3d19831f3",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "godot/tests/test_paint_editor_workbench.gd",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "0e07608484207e1408fe03c799498255e17950fa903a4e4f4b3f95815a6cce9d"
+        }
+      ],
+      "candidate_sha256": "0e07608484207e1408fe03c799498255e17950fa903a4e4f4b3f95815a6cce9d",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "godot/tests/test_play_ui007_acrobat_render.gd",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "ea1f1a561c10b86f7f4965bc41f3781a1f94f61fadfec0306bb3efdb36df3b31"
+        }
+      ],
+      "candidate_sha256": "ea1f1a561c10b86f7f4965bc41f3781a1f94f61fadfec0306bb3efdb36df3b31",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "godot/tests/test_play_ui007_arcadelander_render.gd",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "406acefdc2d3afc1a59bcfc98840665cc7310f8b0830d8bf1948ef2a3dd74a6d"
+        }
+      ],
+      "candidate_sha256": "406acefdc2d3afc1a59bcfc98840665cc7310f8b0830d8bf1948ef2a3dd74a6d",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "godot/tests/test_play_ui007_jetbarrel_render.gd",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "6e947395e3569eafae09feba5fc26e9c436bcb0da4b087c5953360f372454923"
+        }
+      ],
+      "candidate_sha256": "6e947395e3569eafae09feba5fc26e9c436bcb0da4b087c5953360f372454923",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "godot/tests/test_play_ui007_stuntbuggy_render.gd",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "fcb8796ca648b15ee48abf1da91511f5fe35b4c72cddedfb64ce6f5e2c38cfb1"
+        }
+      ],
+      "candidate_sha256": "fcb8796ca648b15ee48abf1da91511f5fe35b4c72cddedfb64ce6f5e2c38cfb1",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "godot/tests/test_play_ui007_trialsbike_render.gd",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "fc9c81fc0f7d8e9dd607649ee896dd46d1cfc7ea21d682e4fccced3143c1c79f"
+        }
+      ],
+      "candidate_sha256": "fc9c81fc0f7d8e9dd607649ee896dd46d1cfc7ea21d682e4fccced3143c1c79f",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "godot/tests/test_workbench_combined_authoring.gd",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "f59e80e3174526ace3e55ec9e4da8410a4fcbecc7b4b7ace857e4444c6b5d927"
+        }
+      ],
+      "candidate_sha256": "f59e80e3174526ace3e55ec9e4da8410a4fcbecc7b4b7ace857e4444c6b5d927",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "godot/tests/test_workbench_engine_lab.gd",
+      "disposition": "KEEP WITH MODIFICATION",
+      "origins": [
+        {
+          "component": "606",
+          "commit": "2632422aa67ee9acdc347089cd54c36e518c713a",
+          "blob_sha256": "c75d7fb8562e6448d5470235f9b760b5c4d1fd3d565abceee90679d659308dcc"
+        }
+      ],
+      "candidate_sha256": "a0acf9d2a1f199952d402c2ea2462f74479ce276c27d1179840a914bfa324f92",
+      "byte_identical_to_inspected_heads": [],
+      "reason": "Adapted actual application tests for independent staging, persistence, bounded instrumentation and real renderer."
+    },
+    {
+      "path": "godot/tests/test_workbench_liquid_edges.gd",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "929936b9a766ea5e57e6e7b5b8ac3b153fe8070c05cd8ebc2016cc6909d04122"
+        }
+      ],
+      "candidate_sha256": "929936b9a766ea5e57e6e7b5b8ac3b153fe8070c05cd8ebc2016cc6909d04122",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "godot/tests/test_workbench_mask_receipt.gd",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "593",
+          "commit": "9628729af052b417aa8a64e56f7e7bcdf4f2e876",
+          "blob_sha256": null
+        },
+        {
+          "component": "reconciliation",
+          "commit": null,
+          "blob_sha256": null
+        }
+      ],
+      "candidate_sha256": "e26a22c2b24abff9d8cc9c2bcf731e954c6d51e1113e01d9811f4a2b0e665b31",
+      "byte_identical_to_inspected_heads": [],
+      "reason": "New native safety slice regression with deliberately different live pose, stale identities and reset; excludes guard/presentation smoothness assertions."
+    },
+    {
+      "path": "tools/ci/check_windows_evaluation_zip.ps1",
+      "disposition": "KEEP WITH MODIFICATION",
+      "origins": [
+        {
+          "component": "main",
+          "commit": "018bd09503d7f079ddac52e225c2f7daf8d678bf",
+          "blob_sha256": null
+        },
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "d57373acb528fc8cbd10c57171e83224ac46b3175a962eb3b862a61ac79e6398"
+        }
+      ],
+      "candidate_sha256": "ab2292fbbb1182c5bef9693f97c71c7669fd0704fae270643f110314b491f646",
+      "byte_identical_to_inspected_heads": [],
+      "reason": "Reconciled camera delta against accepted-main source; preserve intervening authoring functionality."
+    },
+    {
+      "path": "tools/ci/package_camera_stack_windows.py",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "reconciliation",
+          "commit": null,
+          "blob_sha256": null
+        }
+      ],
+      "candidate_sha256": "106490b2ec4e08f26f7bbf79caadd3455d69289ea4eff1bfe80e7533b1a44b32",
+      "byte_identical_to_inspected_heads": [],
+      "reason": "Accepted-main reconciliation documentation, source custody or exact-source qualification; historical results remain qualified by their original source."
+    },
+    {
+      "path": "tools/ci/run_camera_stack_windows.ps1",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "reconciliation",
+          "commit": null,
+          "blob_sha256": null
+        }
+      ],
+      "candidate_sha256": "3fb02a03462d9971c99dd29d6460cee1d5c591f1b1e6d2e787f93720cbba1669",
+      "byte_identical_to_inspected_heads": [],
+      "reason": "Accepted-main reconciliation documentation, source custody or exact-source qualification; historical results remain qualified by their original source."
+    },
+    {
+      "path": "tools/ci/run_integrated_camera_performance.py",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "053c016ec7bfab71875d30792a1d37bc5e957e87281efa61c09b8a26b58d4e3c"
+        }
+      ],
+      "candidate_sha256": "053c016ec7bfab71875d30792a1d37bc5e957e87281efa61c09b8a26b58d4e3c",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "tools/ci/run_workbench_qualification.py",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "1b581c71f67a17583ab4cbf5dad6cd905306134c738a92522aa3533920821b35"
+        }
+      ],
+      "candidate_sha256": "1b581c71f67a17583ab4cbf5dad6cd905306134c738a92522aa3533920821b35",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "tools/ci/test_camera_stack_package.py",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "reconciliation",
+          "commit": null,
+          "blob_sha256": null
+        }
+      ],
+      "candidate_sha256": "ef1ac41622ed7a207a1c907cf4fb096afeaf4b11e08a013bde6332536335b275",
+      "byte_identical_to_inspected_heads": [],
+      "reason": "Accepted-main reconciliation documentation, source custody or exact-source qualification; historical results remain qualified by their original source."
+    },
+    {
+      "path": "tools/ci/test_integrated_camera_performance.py",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "16d9a37292ab271bda92de17b8259a4f3a058ec062e82c29712c62a7a5c18124"
+        }
+      ],
+      "candidate_sha256": "16d9a37292ab271bda92de17b8259a4f3a058ec062e82c29712c62a7a5c18124",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    },
+    {
+      "path": "tools/material_catalogue/compatibility.py",
+      "disposition": "KEEP",
+      "origins": [
+        {
+          "component": "566",
+          "commit": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+          "blob_sha256": "febe5a5795a2575ef97a6bf1479216bedfdf64e3b08bee46ade1b2e032e0aa96"
+        }
+      ],
+      "candidate_sha256": "febe5a5795a2575ef97a6bf1479216bedfdf64e3b08bee46ade1b2e032e0aa96",
+      "byte_identical_to_inspected_heads": [
+        "566",
+        "593",
+        "606",
+        "609"
+      ],
+      "reason": "Byte-identical retained camera implementation or reusable qualification fixture; original commit ancestry retained."
+    }
+  ],
+  "excluded_components": [
+    {
+      "component": "566",
+      "disposition": "SUPERSEDED",
+      "paths": [
+        ".github/workflows/native-pixel-integrated-qualification.yml",
+        ".github/workflows/wb-art-paint-qualification.yml",
+        "tools/ci/native_pixel_integrated_qualification.py",
+        "tools/ci/test_native_pixel_integrated_qualification.py"
+      ],
+      "reason": "Historical campaign/base/runtime pins are superseded by exact-source accepted-main runner. Existing accepted-main wb-art-paint workflow retained."
+    },
+    {
+      "component": "593",
+      "disposition": "REQUIRES #609 EVIDENCE",
+      "paths": [
+        "godot/scripts/workbench_presentation_coherence.gd"
+      ],
+      "reason": "Owner physical acceptance failed; swept temporal selection, previous-texture scans and guarded-live algorithm excluded. Strict receipts retained separately."
+    },
+    {
+      "component": "606",
+      "disposition": "REJECT",
+      "mechanism": "Resettable delayed-ACK countdown",
+      "reason": "Each new upload can restart wait indefinitely. Immediate ACK retained; worker owns proven fixed-deadline repair."
+    },
+    {
+      "component": "609",
+      "disposition": "REQUIRES #609 EVIDENCE",
+      "paths": [
+        "godot/scripts/workbench_pose_trace.gd"
+      ],
+      "reason": "No moving implementation imported. One overlay seam and documented signature adaptation admit eventual root-cause-supported delta."
+    }
+  ],
+  "preserved_native_scope": [
+    "native/",
+    "godot/native_extension/",
+    "godot/addons/cybersand_native/",
+    "godot/addons/godot-rapier2d/",
+    "third_party/native-toolchain.lock.json",
+    "third_party/godot-runtime.lock.json",
+    "godot/third_party/rapier2d.lock.json"
+  ]
+}

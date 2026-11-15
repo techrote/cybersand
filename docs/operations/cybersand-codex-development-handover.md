@@ -21,10 +21,10 @@ preview/install/persistence. PR #582 now includes the accepted GEN-008 Flatten
 integration and qualifies their coexistence. Preserve the owner-accepted Arched
 Viaduct v2 geometry and the separate agent, streaming and camera/rendering work.
 
-The owner directed **fix and complete; do not merge**. The earlier source-only
-merge proposal is superseded: source-matched Linux/Windows libraries and their
-provenance are now retained on this PR branch, followed by fresh broad CI at the
-final PR head. The [publication contract](../systems/architectural-generator.md#retained-runtime-publication)
+The owner subsequently merged PR #582 on 15 November 2026 at
+`018bd09503d7f079ddac52e225c2f7daf8d678bf`. The earlier source-only merge
+proposal is superseded: source-matched Linux/Windows libraries and their
+provenance are retained in accepted main. The [publication contract](../systems/architectural-generator.md#retained-runtime-publication)
 requires exact build/execution input ledgers, target-OS native/graphical and
 package receipts, a branch-tip lease and exactly four runtime/provenance paths.
 The [completion record](../audits/2026-11-15-gen007-runtime-completion.md)
@@ -37,6 +37,19 @@ Ready-for-review enables full CI and grants no merge authority. Routine native,
 Godot and publisher-guard coverage is retained beyond the feature branch; the
 full graphical/package campaign remains explicit.
 
+## Native-resolution camera continuation — 2026-11-13
+
+The original camera branch retains its history and accepted #565 integration.
+The isolated [camera-stack reconciliation](camera-stack-reconciliation.md) now
+composes the camera foundation onto accepted #582/Flatten main; #609 retains
+sole ownership of the causal presentation repair. The strict receipt path is
+kept, while guarded-live selection and delayed ACK experiments are excluded. Start with the
+[camera runbook](native-pixel-scrolling.md) and
+[original source audit](../audits/2026-11-13-native-pixel-scrolling.md) and
+[final integration record](../audits/2026-11-13-native-pixel-final-integration.md). Preserve
+shared Undo/Redo and Art panel features, complete scoped Windows/Linux graphics
+and editing qualification, and keep the PR Draft until owner acceptance. Native
+sources and retained-runtime identity are not changed by camera presentation.
 
 ## Materials Lab Windows evaluation — 2026-11-12
 
