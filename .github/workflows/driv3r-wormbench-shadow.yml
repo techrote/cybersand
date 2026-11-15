@@ -1,0 +1,124 @@
+name: DRIV3R WORMBENCH Q4 + SLM shadow (no native painting)
+
+on:
+  pull_request:
+    paths:
+      - 'experiments/driv3r/wormbench/**'
+      - '.github/workflows/driv3r-wormbench-shadow.yml'
+  push:
+    branches: [research/570-slmworm-q4-shadow]
+    paths: ['experiments/driv3r/wormbench/qualification-request.json']
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: wormbench-shadow-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  cheap:
+    name: Validate bounded request and separate model adapters
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Source and approved M1/Q8 lineage
+        shell: bash
+        run: |
+          set -euo pipefail
+          git rev-parse HEAD
+          git merge-base --is-ancestor 313b836b3c9ce2c60e4659e3763df140f84347a6 HEAD
+          git merge-base --is-ancestor 8fa90de6be209ed0b7bd125039e6ec8b332fb1a6 HEAD
+          echo 'ebe2fa211148602c614cba0f0a40f285cba797784b70efa035832d833877f80d  experiments/driv3r/d_common/v1/interface.schema.json' | sha256sum -c --strict
+          python3 -m compileall -q experiments/driv3r/wormbench
+          python3 -m unittest experiments.driv3r.wormbench.test_shadow -v
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py
+      - name: Refuse uncontrolled inference/source changes
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          from experiments.driv3r.wormbench.shadow import MODELS,EXPECTED_DIGEST
+          p=Path('experiments/driv3r/wormbench/qualification-request.json')
+          r=json.loads(p.read_text())
+          assert r['schema']=='driv3r-slmworm-shadow/1'
+          assert r['owner_authorization']=='Try d1 Q4 performance and bring in SLMworms'
+          assert r['original_q8_artifact_digest']==EXPECTED_DIGEST
+          assert set(r['eligible_models'])==set(MODELS)
+          assert r['max_shadow_states_per_model']==72
+          assert r['max_concurrent_runners']==2
+          assert r['allow_native'] is False and r['allow_training'] is False
+          assert r['allow_paid_api'] is False and r['allow_merge'] is False
+          assert r['allow_production_change'] is False
+          print('Opt-in shadow inference owner gates and bounded resource concurrency: PASS')
+          PY
+
+  shadow:
+    name: Real local CPU inference — ${{ matrix.model }}
+    needs: cheap
+    if: github.repository == 'techrote/cybersand' && github.event_name == 'push' && github.ref == 'refs/heads/research/570-slmworm-q4-shadow'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        model: [d1-q4, lfm350, smol135, sprocket500]
+    env:
+      HF_HUB_DISABLE_TELEMETRY: '1'
+      HF_HUB_DISABLE_PROGRESS_BARS: '1'
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Obtain exact original native Q8 free observations
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          run-id: 43678354515
+          name: driv3r-worm-free-313b836b3c9ce2c60e4659e3763df140f84347a6-43678354515
+          repository: techrote/cybersand
+          github-token: ${{ github.token }}
+          path: original/free
+      - name: Obtain exact original native Q8 soft observations
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          run-id: 43678354515
+          name: driv3r-worm-soft-313b836b3c9ce2c60e4659e3763df140f84347a6-43678354515
+          repository: techrote/cybersand
+          github-token: ${{ github.token }}
+          path: original/soft
+      - name: Independently reconstruct and lock 72 original native decisions
+        run: |
+          python3 -m experiments.driv3r.wormbench.reference \
+            --root original --out frozen-q8-states.json
+      - name: Install pinned acquisition client (local runtime and HF weights only)
+        run: python3 -m pip install --user --disable-pip-version-check 'huggingface_hub==0.35.3' 'hf-xet==1.1.10'
+      - name: Run one source-bound worm brain on 72 original observation states
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          timeout --signal=TERM --kill-after=45 4200 python3 -m experiments.driv3r.wormbench.shadow \
+            --model '${{ matrix.model }}' \
+            --snapshots frozen-q8-states.json \
+            --request experiments/driv3r/wormbench/qualification-request.json \
+            --source-sha "$GITHUB_SHA" \
+            --output "evidence/${{ matrix.model }}"
+      - name: Retain actual model outputs, resources, failures and measured latencies
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: wormbench-shadow-${{ matrix.model }}-${{ github.sha }}-${{ github.run_id }}
+          path: |
+            evidence/
+            frozen-q8-states.json
+          if-no-files-found: warn
+          retention-days: 90
