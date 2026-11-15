@@ -10,6 +10,10 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+DRIV3R Stage A candidate: [resident d1 decision-controller and native Workbench contract](operations/driv3r-stage-a.md). Issue #570 owns its separate evidence and owner checkpoint; shared #568 painter branches retain their existing ownership. Keep Draft/HOLD.
+
+Owner-authorized DRIV3R continuation: [Stage B frozen evaluation, compaction and vector modulation](operations/driv3r-stage-b.md). The original Stage A checkpoint stays frozen; held-out geometry, ordinary-code baselines, paired probes and a predeclared usefulness gate govern any modest Stage C expansion.
+
 Agent-painter shared foundation: [three-family compiler, native pilot and hosted CPU handoff](operations/agent-painter-foundation.md). Issue #568 owns source-qualified results; #567 remains an unchanged historical donor.
 
 Current combined evaluation: [Materials Lab + Workbench integration](audits/2026-11-12-mat-auth-workbench-integration.md) preserves both current feature heads, shared manual/agent Undo/Redo and existing material/save contracts. Its own Windows/Linux/package qualification remains separate from each feature's preceding evidence.

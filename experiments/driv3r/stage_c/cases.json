@@ -1,0 +1,789 @@
+{
+  "schema": "driv3r-stage-c-pilot-v1",
+  "source_stage_b": "2ea0f09c8fbbead7386f47232b0a61cff59bdfdc",
+  "scope": "two one-tool model choices per authoring family; native replay and true graphical framebuffer",
+  "cases": [
+    {
+      "id": "c-pipework-bend",
+      "family": "pipework",
+      "fixture_source": "b-fuzzy-dev-bridge",
+      "cursor": [
+        12,
+        12
+      ],
+      "target": [
+        28,
+        28
+      ],
+      "objective": "Paint a continuous diameter-3 orthogonal pipe connecting the left inlet at (12,12), junction at (28,12), and lower outlet at (28,28). Include the bend; avoid thickening beyond 3 cells. Choose one complete bounded host tool, not arbitrary coordinates.",
+      "paraphrase": "Route one thin three-cell pipe from (12,12) horizontally to (28,12), then vertically to (28,28); a straight segment or oversized tube misses the requested geometry.",
+      "subgoal": "An exact 3-cell-wide elbow is requested; one offered pipework program must match this shape.",
+      "target_candidate_id": "PIPE_BEND_3",
+      "candidates": [
+        {
+          "id": "PIPE_STRAIGHT",
+          "profile": "straight3",
+          "label": "Single thin straight pipe from (12,12) to (28,12), without the downward outlet.",
+          "program": {
+            "version": 2,
+            "family": "pipework",
+            "variation": 0,
+            "components": [
+              {
+                "kind": "pipe_network",
+                "nodes": [
+                  [
+                    12,
+                    12
+                  ],
+                  [
+                    28,
+                    12
+                  ]
+                ],
+                "edges": [
+                  [
+                    0,
+                    1
+                  ]
+                ],
+                "diameter": 3,
+                "fittings": false
+              }
+            ],
+            "requirements": {
+              "connected": true,
+              "cycles": 0
+            }
+          }
+        },
+        {
+          "id": "PIPE_BEND_3",
+          "profile": "bend3",
+          "label": "Thin diameter-3 L pipe via (28,12) continuing down to (28,28).",
+          "program": {
+            "version": 2,
+            "family": "pipework",
+            "variation": 0,
+            "components": [
+              {
+                "kind": "pipe_network",
+                "nodes": [
+                  [
+                    12,
+                    12
+                  ],
+                  [
+                    28,
+                    12
+                  ],
+                  [
+                    28,
+                    28
+                  ]
+                ],
+                "edges": [
+                  [
+                    0,
+                    1
+                  ],
+                  [
+                    1,
+                    2
+                  ]
+                ],
+                "diameter": 3,
+                "fittings": false
+              }
+            ],
+            "requirements": {
+              "connected": true,
+              "cycles": 0
+            }
+          }
+        },
+        {
+          "id": "PIPE_BEND_5",
+          "profile": "bend5",
+          "label": "Same elbow route, but thicker diameter-5 tube.",
+          "program": {
+            "version": 2,
+            "family": "pipework",
+            "variation": 0,
+            "components": [
+              {
+                "kind": "pipe_network",
+                "nodes": [
+                  [
+                    12,
+                    12
+                  ],
+                  [
+                    28,
+                    12
+                  ],
+                  [
+                    28,
+                    28
+                  ]
+                ],
+                "edges": [
+                  [
+                    0,
+                    1
+                  ],
+                  [
+                    1,
+                    2
+                  ]
+                ],
+                "diameter": 5,
+                "fittings": false
+              }
+            ],
+            "requirements": {
+              "connected": true,
+              "cycles": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "c-pipework-junction",
+      "family": "pipework",
+      "fixture_source": "b-fuzzy-dev-support",
+      "cursor": [
+        12,
+        18
+      ],
+      "target": [
+        44,
+        18
+      ],
+      "objective": "Build a thin diameter-3 T-junction joining the left inlet (12,18), the center (28,18), a right outlet (44,18), and a down branch to (28,34). Do not use a diameter-5 trunk or leave out the right outlet.",
+      "paraphrase": "A three-cell-wide T network must cover both horizontal sides centered at (28,18) plus the downward leg to row 34, exactly, with no thick padding.",
+      "subgoal": "Compare legal thin L, thin T and fat T pipework graphs.",
+      "target_candidate_id": "PIPE_T_3",
+      "candidates": [
+        {
+          "id": "PIPE_L_3",
+          "profile": "elbow3",
+          "label": "Diameter-3 L network with no right-hand outlet.",
+          "program": {
+            "version": 2,
+            "family": "pipework",
+            "variation": 0,
+            "components": [
+              {
+                "kind": "pipe_network",
+                "nodes": [
+                  [
+                    12,
+                    18
+                  ],
+                  [
+                    28,
+                    18
+                  ],
+                  [
+                    28,
+                    34
+                  ]
+                ],
+                "edges": [
+                  [
+                    0,
+                    1
+                  ],
+                  [
+                    1,
+                    2
+                  ]
+                ],
+                "diameter": 3,
+                "fittings": false
+              }
+            ],
+            "requirements": {
+              "connected": true,
+              "cycles": 0
+            }
+          }
+        },
+        {
+          "id": "PIPE_T_5",
+          "profile": "tee5",
+          "label": "Complete T network but inflated to diameter 5.",
+          "program": {
+            "version": 2,
+            "family": "pipework",
+            "variation": 0,
+            "components": [
+              {
+                "kind": "pipe_network",
+                "nodes": [
+                  [
+                    12,
+                    18
+                  ],
+                  [
+                    28,
+                    18
+                  ],
+                  [
+                    28,
+                    34
+                  ],
+                  [
+                    44,
+                    18
+                  ]
+                ],
+                "edges": [
+                  [
+                    0,
+                    1
+                  ],
+                  [
+                    1,
+                    2
+                  ],
+                  [
+                    1,
+                    3
+                  ]
+                ],
+                "diameter": 5,
+                "fittings": false
+              }
+            ],
+            "requirements": {
+              "connected": true,
+              "cycles": 0
+            }
+          }
+        },
+        {
+          "id": "PIPE_T_3",
+          "profile": "tee3",
+          "label": "Complete thin diameter-3 T network including all three outlets.",
+          "program": {
+            "version": 2,
+            "family": "pipework",
+            "variation": 0,
+            "components": [
+              {
+                "kind": "pipe_network",
+                "nodes": [
+                  [
+                    12,
+                    18
+                  ],
+                  [
+                    28,
+                    18
+                  ],
+                  [
+                    28,
+                    34
+                  ],
+                  [
+                    44,
+                    18
+                  ]
+                ],
+                "edges": [
+                  [
+                    0,
+                    1
+                  ],
+                  [
+                    1,
+                    2
+                  ],
+                  [
+                    1,
+                    3
+                  ]
+                ],
+                "diameter": 3,
+                "fittings": false
+              }
+            ],
+            "requirements": {
+              "connected": true,
+              "cycles": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "c-architecture-door",
+      "family": "architecture",
+      "fixture_source": "b-fuzzy-held-vertical-link",
+      "cursor": [
+        12,
+        12
+      ],
+      "target": [
+        39,
+        33
+      ],
+      "objective": "Author a 28 by 22 outline room starting at (12,12), wall thickness 2, with one five-cell doorway in the RIGHT wall eight cells down. Keep every other wall intact and the doorway void; do not make a solid or bottom opening instead.",
+      "paraphrase": "Build the thin two-cell room frame [12,12,28,22] but subtract exactly one five-cell east-side doorway at offset 8; no other new material.",
+      "subgoal": "Only the right-wall doorway profile matches the intended orthographic room; all candidates are structurally legal.",
+      "target_candidate_id": "ROOM_RIGHT_DOOR",
+      "candidates": [
+        {
+          "id": "ROOM_SOLID",
+          "profile": "closed",
+          "label": "Frame the room [12,12,28,22] without openings.",
+          "program": {
+            "version": 2,
+            "family": "architecture",
+            "variation": 0,
+            "components": [
+              {
+                "kind": "room",
+                "box": [
+                  12,
+                  12,
+                  28,
+                  22
+                ],
+                "thickness": 2,
+                "openings": []
+              }
+            ],
+            "requirements": {
+              "route": [],
+              "clearance": 3,
+              "region": [
+                0,
+                0,
+                96,
+                96
+              ]
+            }
+          }
+        },
+        {
+          "id": "ROOM_BOTTOM_DOOR",
+          "profile": "bottom-door",
+          "label": "Frame the same room with a five-cell SOUTH opening at offset 8.",
+          "program": {
+            "version": 2,
+            "family": "architecture",
+            "variation": 0,
+            "components": [
+              {
+                "kind": "room",
+                "box": [
+                  12,
+                  12,
+                  28,
+                  22
+                ],
+                "thickness": 2,
+                "openings": [
+                  {
+                    "side": "bottom",
+                    "offset": 8,
+                    "size": 5
+                  }
+                ]
+              }
+            ],
+            "requirements": {
+              "route": [],
+              "clearance": 3,
+              "region": [
+                0,
+                0,
+                96,
+                96
+              ]
+            }
+          }
+        },
+        {
+          "id": "ROOM_RIGHT_DOOR",
+          "profile": "east-door",
+          "label": "Frame the room with a five-cell EAST/right-wall opening at offset 8.",
+          "program": {
+            "version": 2,
+            "family": "architecture",
+            "variation": 0,
+            "components": [
+              {
+                "kind": "room",
+                "box": [
+                  12,
+                  12,
+                  28,
+                  22
+                ],
+                "thickness": 2,
+                "openings": [
+                  {
+                    "side": "right",
+                    "offset": 8,
+                    "size": 5
+                  }
+                ]
+              }
+            ],
+            "requirements": {
+              "route": [],
+              "clearance": 3,
+              "region": [
+                0,
+                0,
+                96,
+                96
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "c-architecture-brace",
+      "family": "architecture",
+      "fixture_source": "b-fuzzy-held-narrow-support",
+      "cursor": [
+        12,
+        20
+      ],
+      "target": [
+        39,
+        36
+      ],
+      "objective": "Make one horizontal 28 by 2 ledge at [12,35,28,2], reinforced by a 2 by 15 vertical brace rising from [24,20]. The ledge alone is insufficient, and a shifted brace is incorrect.",
+      "paraphrase": "The target platform extends x12 through39 on rows35 and36, with a two-cell upright beneath the middle x24..25 from y20 through34. Choose the exact composite.",
+      "subgoal": "Select among ledge only, ledge plus centered upright, ledge plus displaced upright.",
+      "target_candidate_id": "PLATFORM_BRACE",
+      "candidates": [
+        {
+          "id": "PLATFORM_ALONE",
+          "profile": "ledge-only",
+          "label": "Place the thin [12,35,28,2] horizontal ledge only.",
+          "program": {
+            "version": 2,
+            "family": "architecture",
+            "variation": 0,
+            "components": [
+              {
+                "kind": "platform",
+                "box": [
+                  12,
+                  35,
+                  28,
+                  2
+                ]
+              }
+            ],
+            "requirements": {
+              "route": [],
+              "clearance": 3,
+              "region": [
+                0,
+                0,
+                96,
+                96
+              ]
+            }
+          }
+        },
+        {
+          "id": "PLATFORM_BRACE",
+          "profile": "centered-brace",
+          "label": "Place the thin ledge with a [24,20,2,15] vertical support.",
+          "program": {
+            "version": 2,
+            "family": "architecture",
+            "variation": 0,
+            "components": [
+              {
+                "kind": "platform",
+                "box": [
+                  12,
+                  35,
+                  28,
+                  2
+                ]
+              },
+              {
+                "kind": "support",
+                "box": [
+                  24,
+                  20,
+                  2,
+                  15
+                ]
+              }
+            ],
+            "requirements": {
+              "route": [],
+              "clearance": 3,
+              "region": [
+                0,
+                0,
+                96,
+                96
+              ]
+            }
+          }
+        },
+        {
+          "id": "PLATFORM_SHIFTED",
+          "profile": "shifted-brace",
+          "label": "Place the thin ledge but shift the upright to [30,20,2,15].",
+          "program": {
+            "version": 2,
+            "family": "architecture",
+            "variation": 0,
+            "components": [
+              {
+                "kind": "platform",
+                "box": [
+                  12,
+                  35,
+                  28,
+                  2
+                ]
+              },
+              {
+                "kind": "support",
+                "box": [
+                  30,
+                  20,
+                  2,
+                  15
+                ]
+              }
+            ],
+            "requirements": {
+              "route": [],
+              "clearance": 3,
+              "region": [
+                0,
+                0,
+                96,
+                96
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "c-greebles-vent",
+      "family": "greebles",
+      "fixture_source": "b-fuzzy-held-coverage",
+      "cursor": [
+        10,
+        10
+      ],
+      "target": [
+        33,
+        31
+      ],
+      "objective": "Detail a 24 by 22 panel at [10,10] using a thin border, four vent-style horizontal slots (density 3), and corner fasteners. Do not substitute inset plates, grille bars or shift the panel.",
+      "paraphrase": "Render the single aligned 24x22 vent panel with horizontal slats and fasteners, retaining open interior rather than vertical ribs or an offset copy.",
+      "subgoal": "Choose one finite host detail pattern; score the exact painted mask and preserved negative space.",
+      "target_candidate_id": "VENT_PANEL",
+      "candidates": [
+        {
+          "id": "RIB_PANEL",
+          "profile": "ribs",
+          "label": "Panel [10,10,24,22] with vertical rib detail and fasteners.",
+          "program": {
+            "version": 2,
+            "family": "greebles",
+            "variation": 0,
+            "components": [
+              {
+                "kind": "panel",
+                "box": [
+                  10,
+                  10,
+                  24,
+                  22
+                ],
+                "detail": "ribs",
+                "density": 3,
+                "border": 1,
+                "fasteners": true
+              }
+            ],
+            "requirements": {
+              "negative_space_min_percent": 30
+            }
+          }
+        },
+        {
+          "id": "VENT_PANEL",
+          "profile": "vent",
+          "label": "Panel [10,10,24,22] with horizontal vent slats and fasteners.",
+          "program": {
+            "version": 2,
+            "family": "greebles",
+            "variation": 0,
+            "components": [
+              {
+                "kind": "panel",
+                "box": [
+                  10,
+                  10,
+                  24,
+                  22
+                ],
+                "detail": "vent",
+                "density": 3,
+                "border": 1,
+                "fasteners": true
+              }
+            ],
+            "requirements": {
+              "negative_space_min_percent": 30
+            }
+          }
+        },
+        {
+          "id": "INSET_PANEL",
+          "profile": "inset",
+          "label": "Panel [10,10,24,22] with inset geometry instead of vent slats.",
+          "program": {
+            "version": 2,
+            "family": "greebles",
+            "variation": 0,
+            "components": [
+              {
+                "kind": "panel",
+                "box": [
+                  10,
+                  10,
+                  24,
+                  22
+                ],
+                "detail": "inset",
+                "density": 2,
+                "border": 1,
+                "fasteners": true
+              }
+            ],
+            "requirements": {
+              "negative_space_min_percent": 30
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "c-greebles-grille",
+      "family": "greebles",
+      "fixture_source": "b-fuzzy-held-dogleg",
+      "cursor": [
+        12,
+        12
+      ],
+      "target": [
+        39,
+        35
+      ],
+      "objective": "Build a detailed 28 by 24 machine panel [12,12,28,24] with a one-cell frame, grille (crosshatched vertical and horizontal bars), density 1 and four corner fasteners. A pure vertical rib or inset pattern is insufficient.",
+      "paraphrase": "Choose the framed cross-grid grille pattern for [12,12,28,24], not a rib-only or raised inset variant. Preserve the bounded exterior and interior voids.",
+      "subgoal": "Evaluate true crossbar grille geometry against other legal detailed-panel alternatives.",
+      "target_candidate_id": "GRILLE_PANEL",
+      "candidates": [
+        {
+          "id": "GRILLE_PANEL",
+          "profile": "grille",
+          "label": "Panel [12,12,28,24] with full grille bars, crossbars and fasteners.",
+          "program": {
+            "version": 2,
+            "family": "greebles",
+            "variation": 0,
+            "components": [
+              {
+                "kind": "panel",
+                "box": [
+                  12,
+                  12,
+                  28,
+                  24
+                ],
+                "detail": "grille",
+                "density": 1,
+                "border": 1,
+                "fasteners": true
+              }
+            ],
+            "requirements": {
+              "negative_space_min_percent": 30
+            }
+          }
+        },
+        {
+          "id": "RIBS_PANEL",
+          "profile": "ribs",
+          "label": "Panel [12,12,28,24] with only vertical ribs and fasteners.",
+          "program": {
+            "version": 2,
+            "family": "greebles",
+            "variation": 0,
+            "components": [
+              {
+                "kind": "panel",
+                "box": [
+                  12,
+                  12,
+                  28,
+                  24
+                ],
+                "detail": "ribs",
+                "density": 1,
+                "border": 1,
+                "fasteners": true
+              }
+            ],
+            "requirements": {
+              "negative_space_min_percent": 30
+            }
+          }
+        },
+        {
+          "id": "PLATES_PANEL",
+          "profile": "plates",
+          "label": "Panel [12,12,28,24] with alternating filled plates and fasteners.",
+          "program": {
+            "version": 2,
+            "family": "greebles",
+            "variation": 0,
+            "components": [
+              {
+                "kind": "panel",
+                "box": [
+                  12,
+                  12,
+                  28,
+                  24
+                ],
+                "detail": "plates",
+                "density": 1,
+                "border": 1,
+                "fasteners": true
+              }
+            ],
+            "requirements": {
+              "negative_space_min_percent": 30
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

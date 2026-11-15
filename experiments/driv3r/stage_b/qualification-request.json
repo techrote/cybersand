@@ -1,0 +1,20 @@
+{
+  "accepted_base": "ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742",
+  "accepted_stage_a_sha": "ee95f547f31fb1ac9cdd34536bf36dffe7af1d0c",
+  "catalog_sha256": {
+    "experiments/driv3r/stage_b/direct_cases.json": "894c0104dd4e03654b179ec4943df97d6e44ce50ba8bc1c63b7725bad2aaca8c",
+    "experiments/driv3r/stage_b/fuzzy_cases.json": "3bd532f44702ceccd14baa1cab4250b3ab8147def70788f836814c7d53850401",
+    "experiments/driv3r/stage_b/vector_cases.json": "a42be7631f8f6d77c83f4146f8ca66deab1ef2ff48c43408a0d06d6a6f107d92"
+  },
+  "foundation_sha": "2a565df45efc568eb96a2166e0b77f299e289625",
+  "model": "LiquidAI/d1-2B-GGUF",
+  "production_defaults": false,
+  "protocol_sha256": "2f792c16dc76a609edcfc91edd3bf48beffe9aa0efb5108caf54d78e87d1ec91",
+  "publish_research_evidence": true,
+  "quantization": "Q8_0",
+  "schedules": false,
+  "schema": "driv3r-stage-b-request-v1",
+  "sequence": 1,
+  "stage": "B",
+  "training": false
+}

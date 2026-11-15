@@ -1,0 +1,40 @@
+{
+  "schema": "driv3r-stage-b-protocol-v1",
+  "accepted_stage_a_sha": "ee95f547f31fb1ac9cdd34536bf36dffe7af1d0c",
+  "purpose": "Small frozen decision-control evaluation; exploratory usefulness, not artistic superiority or statistical population estimates",
+  "primary_encoding": "compact",
+  "runtime": {"cpu_threads": 2, "context_tokens": 4096, "physical_batch_tokens": 4096, "reason": "Tokenizer-only sizing found canonical vector comparison prompts above Stage A physical batch2048; context and weights remain unchanged"},
+  "development": {"direct": 2, "fuzzy": 2, "vector": 1, "policies": ["model", "geometric_or_fixed", "random_570"]},
+  "held_out": {"direct": 4, "fuzzy": 4, "vector": 3, "policies": ["model", "geometric_or_fixed", "random_570", "random_571", "random_572"]},
+  "random_seeds": [570, 571, 572],
+  "additional_baseline": "All held-out vector cases also run a conventional geometry-aware coverage/length selector using the same visible metrics; straight-only is not the strongest available comparator",
+  "limits": {"max_model_requests": 144, "max_campaign_seconds": 5400, "max_changed_cells_per_episode": 1024, "max_episode_seconds": 420, "request_seconds": 60, "direct_max_decisions": 8, "fuzzy_max_decisions": 1, "vector_max_decisions": 2},
+  "probes": {
+    "states": "First model decision of every case, and second vector decision when present, copied exactly from native episode journals",
+    "development": ["canonical", "compact_repeat", "original_stage_a", "without_host_metrics_direct_only"],
+    "held_out": ["canonical", "compact_repeat", "reverse_candidates", "objective_paraphrase", "without_host_metrics_direct_only"],
+    "encoding_pair_order": "canonical and compact_repeat call order alternates by fixed case/state index; both use the same exact audited state. First-use primary call cost is also retained separately",
+    "no_native_execution": true,
+    "order_control": "Identical observation bytes and candidate objects; only candidate array and named criteria insertion order are reversed",
+    "paraphrase_control": "Only objective text changes to its precommitted equivalent; observation geometry, budgets, history, candidates and state identity otherwise remain fixed",
+    "compaction_control": "Canonical and compact encode the identical semantic view, proven by decoder equality. Audit identifiers/program hashes are separated identically in both; original full records are always retained",
+    "ablation_control": "Direct-only removal of observation.geometry and computed candidate wall clearance, goal distance, offset error, retrace and changed-cell metrics. Raw crop, coordinates, target, history and task constraints remain"
+  },
+  "scoring": {
+    "direct": "Frozen case clearance/retrace/arrival requirements AND explicit policy STOP; native confirmed movement/material path; geometric local-search baseline receives the same observation",
+    "fuzzy": "Actual native required-cell coverage, allowed spill, four-neighbor connectivity and support predicates; graph termination alone never success",
+    "vector": "Correct target endpoint intent AND exact chosen-vector preservation, contiguous path, <=3x travel, frozen coverage/length preference and native material equality; planning transition has no native mutation",
+    "random": "Uniform seeded selection among sorted legal IDs including STOP (and fuzzy SKIP), reported as non-model baseline; three held-out seeds",
+    "all": "No repair or retry of poor legal choices. Invalid decisions, STOP, budget exhaustion, refusals and model failures are retained"
+  },
+  "stage_c_gate": {
+    "prerequisites": "All native custody, safety, replay and process-cleanup gates pass; no unintended material writes",
+    "family_success": {"direct": 3, "fuzzy": 3, "vector": 2},
+    "above_random": "At least one family meets its success threshold and its model success fraction strictly exceeds pooled three-seed random success fraction",
+    "robustness": "For that family, >=75% of paired reverse-order and >=75% of paired paraphrase probes retain the primary selected ID; at least one pair of each kind must exist",
+    "incremental_value": "Report separately whether direct exceeds or merely matches geometric baseline, and whether fuzzy/vector surpass fixed/straight policies. Matching ordinary code at higher cost is not evidence of direct incremental value",
+    "authorized_expansion": "If the exploratory useful-behavior gate passes, at most two new fixtures each for Pipework, Architecture and Greebles, at most three model actions per fixture, actual native receipts/replay and graphical Workbench inspection. No training or broad search"
+  },
+  "freeze_policy": "Catalogs, primary policy, seeds, scores and thresholds are committed before any held-out model inference. Development may reveal implementation defects; any repair must preserve held-out outcomes, declare affected runs and use a new exact source qualification",
+  "claims": ["Q8 only, official immutable weights/runtime", "One resident model for primary episodes and paired probes", "Native material PNGs are not framebuffer captures", "Small exploratory cohort; no generalization or statistical significance claim", "No scheduled workers, training, merge or production-default changes"]
+}

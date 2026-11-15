@@ -1,0 +1,13 @@
+{
+  "schema": "driv3r-stage-a-request-v1",
+  "sequence": 2,
+  "foundation_sha": "2a565df45efc568eb96a2166e0b77f299e289625",
+  "accepted_base": "ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742",
+  "model": "LiquidAI/d1-2B-GGUF",
+  "quantization": "Q8_0",
+  "stage": "A",
+  "training": false,
+  "schedules": false,
+  "production_defaults": false,
+  "publish_research_evidence": true
+}

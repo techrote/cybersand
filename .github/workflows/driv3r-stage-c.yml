@@ -1,0 +1,89 @@
+name: DRIV3R Stage C bounded graphical native qualification
+on:
+  push:
+    branches: [research/570-driv3r-stage-a]
+    paths: ['experiments/driv3r/stage_c/qualification-request.json']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: driv3r-stage-c-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  qualify:
+    name: Frozen Stage C Q8 Art and true graphical Workbench
+    # Ordinary PR checks reuse Stage A's cheap test discovery. No regular push,
+    # pull request or schedule acquires weights or starts this heavyweight job.
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/research/570-driv3r-stage-a' && (github.event_name == 'workflow_dispatch' || github.event_name == 'push')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 135
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Build pinned dependencies and execute the frozen Stage C campaign
+        # The outer bound reserves fifteen minutes for original failure evidence
+        # packaging/upload even when the source build or campaign reaches its cap.
+        run: timeout --signal=TERM --kill-after=60 7500 bash experiments/driv3r/ci_stage_c.sh
+      - name: Package original Stage C evidence and verify archived bytes
+        if: always()
+        run: |
+          set -euo pipefail
+          python3 -m experiments.driv3r.stage_c.provenance package --directory evidence/driv3r-stage-c --output release-stage-c --source-sha "$GITHUB_SHA"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: driv3r-stage-c-evidence-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            evidence/driv3r-stage-c/
+            release-stage-c/
+          if-no-files-found: error
+          retention-days: 90
+
+  publish-evidence:
+    name: Preserve completed Stage C research evidence
+    needs: qualify
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: driv3r-stage-c-evidence-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: downloaded
+      - name: Verify completed qualification and publish original research assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          cd downloaded/release-stage-c
+          sha256sum --check --strict SHA256SUMS.txt
+          python3 - <<'PY'
+          import json, os
+          manifest = json.load(open('MANIFEST.json'))
+          assert manifest['schema'] == 'driv3r-stage-c-publication-v1'
+          assert manifest['source_sha'] == os.environ['GITHUB_SHA']
+          assert manifest['publication_eligible'] is True
+          assert manifest['draft_hold'] is True and manifest['publication_is_acceptance'] is False
+          PY
+          tag="driv3r-stage-c-${GITHUB_SHA:0:12}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          cat > "$RUNNER_TEMP/driv3r-stage-c-release.md" <<'NOTES'
+          Original conditional Stage C evidence for issue #570: two model-selected native/graphical fixtures each for Pipework, Architecture and Greebles; separate genuine Godot framebuffer PNGs and stored-material readbacks.
+
+          Behavioral failures are retained without repair. The conditional Stage B gate is verified against its immutable preregistered original release and reported separately from Stage C native and graphical qualification. Inspect execution/summary.json and the original model/native records.
+
+          The ZIP retains exact source/model/runtime identities, model choices and distributions, native acknowledgements/material PNGs, distinct original framebuffer PNGs, six replays, safety regressions, negative outcomes and measured costs. Its SHA256 inventory binds original bytes.
+
+          Draft/HOLD. No merge, Ready promotion, training, scheduled workers, or production-default change. Any separately authorized conditional Stage C expansion requires its own recorded evidence.
+          NOTES
+          gh release create "$tag" ./* --target "$GITHUB_SHA" --prerelease --title "DRIV3R Stage C research (${GITHUB_SHA:0:12})" --notes-file "$RUNNER_TEMP/driv3r-stage-c-release.md"

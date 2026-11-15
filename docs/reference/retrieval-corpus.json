@@ -3,6 +3,8 @@
   "reviewed": "2026-11-13",
   "scope": "Explicit current-answer corpus; status and scope must accompany every chunk. Historical records are separately routed, never silently mixed into current answers.",
   "documents": [
+    "operations/driv3r-stage-a.md",
+    "operations/driv3r-stage-b.md",
     "operations/agent-painter-foundation.md",
     "operations/wb-art-paint-integrated-candidate.md",
     "systems/workbench-direct-art-batches.md",

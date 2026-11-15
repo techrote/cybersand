@@ -1,0 +1,95 @@
+{
+  "schema": "driv3r-stage-b-vector-cases-v1",
+  "study": "Two sequential choices: bounded direction/distance, then displacement-preserving path modulation",
+  "declared_bounds": {
+    "world": [512, 512],
+    "focus": [0, 0, 96, 96],
+    "material": 58,
+    "protected_rectangle": [40, 40, 8, 8],
+    "max_intent_choices_excluding_stop": 8,
+    "max_algorithm_choices_excluding_stop": 4,
+    "max_transverse_excursion": 2,
+    "max_travel_ratio": 3,
+    "max_frozen_distance": 10,
+    "max_frozen_travelled_length": 30,
+    "start_cell_is_painted": true
+  },
+  "cases": [
+    {
+      "id": "b-vector-dev-short",
+      "split": "development",
+      "fixture": {
+        "id": "b-vector-dev-short-v1",
+        "edits": [[20, 20, 1, 1, 58], [10, 30, 15, 1, 28]]
+      },
+      "start": [20, 20],
+      "target": [26, 20],
+      "distances": [6, 10],
+      "seed": 101,
+      "objective": "Choose a cardinal direction and distance to reach target (26,20) from (20,20), then choose a host path pattern. Paint a short connection covering at least 7 cells of region [20,20,7,1]. Travel at most 1.1 times the chosen straight distance. Coordinates increase right and down; planning alone neither moves nor paints.",
+      "paraphrase": "First pick the direction and length whose endpoint is (26,20), starting at (20,20). Then select a pattern that paints at least 7 cells inside rectangle [20,20,7,1] using no more than 110 percent of the straight distance. The first selection is only a plan; right and down increase coordinates.",
+      "preference": {
+        "coverage_region": [20, 20, 7, 1],
+        "minimum_coverage": 7,
+        "maximum_travel_ratio": 1.1
+      }
+    },
+    {
+      "id": "b-vector-heldout-band",
+      "split": "held_out",
+      "fixture": {
+        "id": "b-vector-heldout-band-v1",
+        "edits": [[60, 20, 1, 1, 58], [55, 14, 1, 13, 28]]
+      },
+      "start": [60, 20],
+      "target": [70, 20],
+      "distances": [6, 10],
+      "seed": 17,
+      "objective": "From (60,20), choose a cardinal direction and distance ending at (70,20), then choose a path pattern. Cover at least 12 cells in lower band [60,21,10,2] while keeping travel within 3 times the selected straight distance. The chosen displacement must remain exact. Right and down increase coordinates; the intent choice does not paint.",
+      "paraphrase": "Set an endpoint at (70,20) from start (60,20) using one offered direction/length. Next pick a modulation that paints 12 or more cells of rectangle [60,21,10,2], with total travel no greater than triple the direct distance. Preserve the selected endpoint exactly; the first choice is a no-paint plan.",
+      "preference": {
+        "coverage_region": [60, 21, 10, 2],
+        "minimum_coverage": 12,
+        "maximum_travel_ratio": 3.0
+      }
+    },
+    {
+      "id": "b-vector-heldout-narrow",
+      "split": "held_out",
+      "fixture": {
+        "id": "b-vector-heldout-narrow-v1",
+        "edits": [[20, 60, 1, 1, 58], [18, 50, 1, 25, 28], [22, 50, 1, 25, 28]]
+      },
+      "start": [20, 60],
+      "target": [20, 70],
+      "distances": [6, 10],
+      "seed": 73,
+      "objective": "Choose direction and distance from (20,60) to (20,70), then a path pattern inside the narrow protected corridor. Cover at least 30 cells in [19,60,3,11], with travel at most 3 times the chosen straight distance. Preserve the endpoint and do not touch the walls. The first choice only plans; right and down increase coordinates.",
+      "paraphrase": "Plan a cardinal displacement ending at (20,70) from (20,60). After that, choose a legal modulation with 30 or more painted cells in rectangle [19,60,3,11]. Its length may be at most triple the displacement length. Keep the protected corridor walls untouched and the selected endpoint unchanged; planning itself makes no marks.",
+      "preference": {
+        "coverage_region": [19, 60, 3, 11],
+        "minimum_coverage": 30,
+        "maximum_travel_ratio": 3.0
+      }
+    },
+    {
+      "id": "b-vector-heldout-jitter",
+      "split": "held_out",
+      "fixture": {
+        "id": "b-vector-heldout-jitter-v1",
+        "edits": [[64, 64, 1, 1, 58], [59, 68, 12, 1, 28]]
+      },
+      "start": [64, 64],
+      "target": [64, 58],
+      "distances": [6, 10],
+      "seed": 2718,
+      "objective": "Choose the cardinal direction and distance from (64,64) to (64,58), then a modulated path preserving that endpoint. Paint at least 11 cells of [63,58,3,7] while travelling no more than 2.4 times the straight distance. Choose using coverage and cost, without changing the planned displacement. Planning does not paint; right and down increase coordinates.",
+      "paraphrase": "First select a direction/length taking (64,64) to (64,58). Then select a path with at least 11 painted cells inside rectangle [63,58,3,7] and a travel length at most 240 percent of its direct length. Modulation must keep the chosen endpoint fixed. The first choice is only planning, and coordinates grow to the right and downward.",
+      "preference": {
+        "coverage_region": [63, 58, 3, 7],
+        "minimum_coverage": 11,
+        "maximum_travel_ratio": 2.4
+      }
+    }
+  ]
+}
