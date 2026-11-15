@@ -1,0 +1,20 @@
+{
+  "authority": "historical-non-authoritative",
+  "source_receipt": {
+    "authority": "historical-non-authoritative",
+    "artifact_id": 12288075182,
+    "run_id": 39472204492,
+    "sha256": "229f86f07a90ba83392b42a6a65abaceba3ad5da3ecd53f9e261307a22ac781b",
+    "bytes": 790623,
+    "zip_crc_ok": true,
+    "entries": [
+      "challenges.contexts.md",
+      "frozen.contexts.md",
+      "challenges.json",
+      "frozen.json"
+    ],
+    "verification": "original ZIP bytes/digest/CRC and member inventory; no new retrieval run and no correctness attestation of historical answer contexts",
+    "expires_at": "2026-11-19T18:09:09Z"
+  },
+  "qualification_limit": "Original retained observations inspected only; no candidate execution or present-platform qualification."
+}

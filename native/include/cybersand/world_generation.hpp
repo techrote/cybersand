@@ -23,6 +23,13 @@ inline constexpr std::uint32_t kTypedSchemaVersion = 2;
 inline constexpr std::uint32_t kTypedAlgorithmVersion = 3;
 inline constexpr std::uint32_t kHierarchySchemaVersion = 3;
 inline constexpr std::uint32_t kHierarchyAlgorithmVersion = 4;
+inline constexpr std::uint32_t kArchitecturalSchemaVersion = 4;
+inline constexpr std::uint32_t kArchitecturalAlgorithmVersion = 5;
+[[nodiscard]] constexpr std::uint32_t recipe_algorithm_version(std::uint32_t schema) noexcept {
+    return schema == kArchitecturalSchemaVersion ? kArchitecturalAlgorithmVersion :
+        schema == kHierarchySchemaVersion ? kHierarchyAlgorithmVersion :
+        schema == kTypedSchemaVersion ? kTypedAlgorithmVersion : kAlgorithmVersion;
+}
 // Brush geometry uses doubles; reject coordinates beyond the exact integer range
 // deliberately rather than silently aliasing distant chunks.
 inline constexpr std::int64_t kCoordinateLimit = (INT64_C(1) << 40);
@@ -163,6 +170,18 @@ struct Limits {
     std::uint64_t max_operations_per_chunk = 64'000'000;
 };
 
+// Schema 4 is an explicit raster-algorithm opt-in. Schema 1/2/3 retain these
+// defaults and their original fingerprints. Authored paths and required
+// semantic routes are independent of the automatic candidate macro network.
+struct ArchitecturalControls {
+    std::uint32_t version = 1;
+    bool automatic_tunnels = true;
+    bool automatic_doors = true;
+    // Zero preserves the District candidate's legacy room-derived aperture.
+    // Positive values are exact aperture widths in cells (2..64).
+    std::uint32_t door_width = 0;
+};
+
 struct Recipe {
     std::uint32_t schema = kSchemaVersion;
     std::uint64_t seed = 1;
@@ -170,6 +189,7 @@ struct Recipe {
     std::int32_t chunk_size = 128;
     Candidate candidate = Candidate::Strata;
     Parameters parameters;
+    ArchitecturalControls architecture;
     std::vector<Theme> catalogue; // empty selects the built-in catalogue
     ThemeSelection themes;
     std::vector<BrushStroke> strokes;

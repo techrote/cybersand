@@ -1,0 +1,8 @@
+{
+  "schema": "gen008-flatten-runtime-publish-request-v1",
+  "family": "shared-workbench-material-baseline",
+  "variant": "uint16le-stored-materials-same-live-world",
+  "scope": "source-matched-linux-windows-flatten-save-fresh-reopen-and-retained-regressions",
+  "intent": "publish-source-matched-runtimes",
+  "request_sequence": 5
+}

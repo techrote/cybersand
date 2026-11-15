@@ -9,6 +9,7 @@ from unittest import mock
 
 import check_m11_consistency as legacy
 import check_repository as current
+from test_historical_retrieval import HistoricalRetrievalTests
 
 class HistoricalChecks(unittest.TestCase):
     @classmethod

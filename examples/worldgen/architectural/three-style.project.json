@@ -1,0 +1,102 @@
+{
+  "format": "cybersand.architectural-project",
+  "version": 1,
+  "planner": "connected-hilbert-v1",
+  "seed": 161803,
+  "origin": [
+    0,
+    0
+  ],
+  "extent": [
+    1024,
+    1024
+  ],
+  "zone_scale": 64,
+  "automatic_tunnels": true,
+  "automatic_doors": true,
+  "automatic_windows": true,
+  "corridor_width": 12,
+  "styles": [
+    {
+      "enabled": true,
+      "share": 45.0,
+      "preset": {
+        "format": "cybersand.architectural-style",
+        "version": 1,
+        "id": "industrial-service",
+        "name": "Industrial Service",
+        "module": "vault",
+        "module_version": 2,
+        "theme": "industrial",
+        "geometry": {
+          "room_size": 32,
+          "floor_height": 32,
+          "wall_thickness": 2,
+          "door_width": 8,
+          "shaft_width": 12
+        },
+        "materials": {
+          "wall": 62,
+          "floor": 66,
+          "window": 72
+        },
+        "apertures": {},
+        "deterioration": 0.0
+      }
+    },
+    {
+      "enabled": true,
+      "share": 30.0,
+      "preset": {
+        "format": "cybersand.architectural-style",
+        "version": 1,
+        "id": "habitation-arcology",
+        "name": "Habitation / Arcology",
+        "module": "arcology",
+        "module_version": 2,
+        "theme": "industrial",
+        "geometry": {
+          "room_size": 64,
+          "floor_height": 48,
+          "wall_thickness": 3,
+          "door_width": 12,
+          "shaft_width": 16
+        },
+        "materials": {
+          "wall": 58,
+          "floor": 70,
+          "window": 121
+        },
+        "apertures": {},
+        "deterioration": 0.0
+      }
+    },
+    {
+      "enabled": true,
+      "share": 25.0,
+      "preset": {
+        "format": "cybersand.architectural-style",
+        "version": 1,
+        "id": "overgrown-ruins",
+        "name": "Overgrown / Ruined Construction",
+        "module": "arcology",
+        "module_version": 2,
+        "theme": "garden",
+        "geometry": {
+          "room_size": 96,
+          "floor_height": 64,
+          "wall_thickness": 3,
+          "door_width": 14,
+          "shaft_width": 10
+        },
+        "materials": {
+          "wall": 42,
+          "floor": 97,
+          "window": 55
+        },
+        "apertures": {},
+        "deterioration": 0.2
+      }
+    }
+  ]
+}

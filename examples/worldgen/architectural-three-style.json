@@ -1,0 +1,559 @@
+{
+	"architecture": {
+		"automatic_doors": true,
+		"automatic_tunnels": true,
+		"door_width": 0,
+		"version": 1
+	},
+	"candidate": "district_grammar",
+	"chunk_size": 128,
+	"fields": [
+		{
+			"id": "style-2-overgrown-ruins-damage",
+			"kind": "value_noise",
+			"parameters": {
+				"salt": 703,
+				"scale": 96
+			}
+		},
+		{
+			"id": "style-2-overgrown-ruins-retained",
+			"inputs": [
+				"style-2-overgrown-ruins-damage"
+			],
+			"kind": "band",
+			"parameters": {
+				"feather": 0,
+				"high": 0.8,
+				"low": 0
+			}
+		}
+	],
+	"modifiers": [
+		{
+			"application": "spatial:style-0-industrial-service-mask",
+			"bounds": [
+				0,
+				0,
+				1024,
+				1024
+			],
+			"id": "style-0-industrial-service-theme",
+			"themes": {
+				"weights": {
+					"industrial": 1
+				}
+			}
+		},
+		{
+			"application": "spatial:style-1-habitation-arcology-mask",
+			"bounds": [
+				0,
+				256,
+				512,
+				768
+			],
+			"id": "style-1-habitation-arcology-theme",
+			"themes": {
+				"weights": {
+					"industrial": 1
+				}
+			}
+		},
+		{
+			"application": "spatial:style-2-overgrown-ruins-mask",
+			"bounds": [
+				512,
+				512,
+				512,
+				512
+			],
+			"id": "style-2-overgrown-ruins-theme",
+			"themes": {
+				"weights": {
+					"garden": 1
+				}
+			}
+		},
+		{
+			"application": "spatial:style-2-overgrown-ruins-mask",
+			"bounds": [
+				512,
+				512,
+				512,
+				512
+			],
+			"exclusion": "style-2-overgrown-ruins-retained",
+			"id": "style-2-overgrown-ruins-voids",
+			"material": 0,
+			"priority": 10
+		}
+	],
+	"modules": [
+		{
+			"application": "spatial:style-0-industrial-service-mask",
+			"bounds": [
+				0,
+				0,
+				1024,
+				1024
+			],
+			"id": "style-0-industrial-service",
+			"module": "vault",
+			"parameters": {
+				"accent_material": 66,
+				"automatic_doors": 1,
+				"cell_size": 32,
+				"door_width": 8,
+				"wall": 2,
+				"wall_material": 62
+			},
+			"version": 2
+		},
+		{
+			"application": "spatial:style-1-habitation-arcology-mask",
+			"bounds": [
+				0,
+				256,
+				512,
+				768
+			],
+			"id": "style-1-habitation-arcology",
+			"module": "arcology",
+			"parameters": {
+				"accent_material": 70,
+				"automatic_doors": 1,
+				"automatic_windows": 1,
+				"bay_width": 64,
+				"door_width": 12,
+				"floor_height": 48,
+				"floor_material": 70,
+				"partition_material": 58,
+				"shaft_material": 70,
+				"shaft_width": 16,
+				"wall": 3,
+				"wall_material": 58,
+				"window_material": 121
+			},
+			"version": 2
+		},
+		{
+			"application": "spatial:style-2-overgrown-ruins-mask",
+			"bounds": [
+				512,
+				512,
+				512,
+				512
+			],
+			"id": "style-2-overgrown-ruins",
+			"module": "arcology",
+			"parameters": {
+				"accent_material": 97,
+				"automatic_doors": 1,
+				"automatic_windows": 1,
+				"bay_width": 96,
+				"door_width": 14,
+				"floor_height": 64,
+				"floor_material": 97,
+				"partition_material": 42,
+				"shaft_material": 97,
+				"shaft_width": 10,
+				"wall": 3,
+				"wall_material": 42,
+				"window_material": 55
+			},
+			"version": 2
+		}
+	],
+	"parameters": {
+		"corridor_width": 12,
+		"detail": 0.0,
+		"district_size": 256,
+		"room_size": 48,
+		"wall_thickness": 3
+	},
+	"schema": 4,
+	"seed": 161803,
+	"spatial": {
+		"assignments": [
+			{
+				"id": "connected-hilbert-v1",
+				"limits": {
+					"max_scratch_bytes": 262144,
+					"max_work": 1000000
+				},
+				"specification": {
+					"adjacency": [
+						[
+							7,
+							7,
+							7
+						],
+						[
+							7,
+							7,
+							7
+						],
+						[
+							7,
+							7,
+							7
+						],
+						[
+							7,
+							7,
+							7
+						]
+					],
+					"categories": [
+						"0000000000000001",
+						"0000000000000002",
+						"0000000000000003"
+					],
+					"cell_size": 64,
+					"domains": [
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						2,
+						2,
+						2,
+						2,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						2,
+						2,
+						2,
+						2,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						2,
+						1,
+						2,
+						2,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						2,
+						2,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						1,
+						2,
+						2,
+						2,
+						2,
+						2,
+						2,
+						2,
+						2,
+						4,
+						4,
+						4,
+						4,
+						4,
+						4,
+						4,
+						4,
+						2,
+						2,
+						2,
+						2,
+						2,
+						2,
+						2,
+						2,
+						4,
+						4,
+						4,
+						4,
+						4,
+						4,
+						4,
+						4,
+						2,
+						2,
+						2,
+						2,
+						2,
+						2,
+						2,
+						2,
+						4,
+						4,
+						4,
+						4,
+						4,
+						4,
+						4,
+						4,
+						2,
+						2,
+						2,
+						2,
+						2,
+						2,
+						2,
+						2,
+						4,
+						4,
+						4,
+						4,
+						4,
+						4,
+						4,
+						4,
+						2,
+						2,
+						2,
+						2,
+						2,
+						2,
+						2,
+						2,
+						4,
+						4,
+						4,
+						4,
+						4,
+						4,
+						4,
+						4,
+						2,
+						2,
+						2,
+						2,
+						2,
+						2,
+						2,
+						2,
+						4,
+						4,
+						4,
+						4,
+						4,
+						4,
+						4,
+						4,
+						2,
+						2,
+						2,
+						2,
+						2,
+						2,
+						2,
+						2,
+						4,
+						4,
+						4,
+						4,
+						4,
+						4,
+						4,
+						4,
+						2,
+						2,
+						2,
+						2,
+						2,
+						2,
+						2,
+						2,
+						4,
+						4,
+						4,
+						4,
+						4,
+						4,
+						4,
+						4
+					],
+					"height": 16,
+					"origin_x": 0,
+					"origin_y": 0,
+					"seed": "000000000002780b",
+					"width": 16
+				}
+			}
+		],
+		"nodes": [
+			{
+				"id": "architectural-zone",
+				"kind": "assigned_region",
+				"reference": "connected-hilbert-v1"
+			},
+			{
+				"id": "style-0-industrial-service-selected",
+				"inputs": [
+					"architectural-zone"
+				],
+				"kind": "category_is",
+				"value": {
+					"category": {
+						"domain": "0000000000000000",
+						"x": 1,
+						"y": 0
+					},
+					"type": "category"
+				}
+			},
+			{
+				"id": "style-0-industrial-service-mask",
+				"inputs": [
+					"style-0-industrial-service-selected"
+				],
+				"kind": "to_mask"
+			},
+			{
+				"id": "style-1-habitation-arcology-selected",
+				"inputs": [
+					"architectural-zone"
+				],
+				"kind": "category_is",
+				"value": {
+					"category": {
+						"domain": "0000000000000000",
+						"x": 2,
+						"y": 0
+					},
+					"type": "category"
+				}
+			},
+			{
+				"id": "style-1-habitation-arcology-mask",
+				"inputs": [
+					"style-1-habitation-arcology-selected"
+				],
+				"kind": "to_mask"
+			},
+			{
+				"id": "style-2-overgrown-ruins-selected",
+				"inputs": [
+					"architectural-zone"
+				],
+				"kind": "category_is",
+				"value": {
+					"category": {
+						"domain": "0000000000000000",
+						"x": 3,
+						"y": 0
+					},
+					"type": "category"
+				}
+			},
+			{
+				"id": "style-2-overgrown-ruins-mask",
+				"inputs": [
+					"style-2-overgrown-ruins-selected"
+				],
+				"kind": "to_mask"
+			}
+		]
+	},
+	"themes": {
+		"weights": {
+			"industrial": 1
+		}
+	}
+}

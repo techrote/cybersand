@@ -1,0 +1,23 @@
+{
+  "format": "cybersand.architectural-style",
+  "version": 1,
+  "id": "basalt-archive",
+  "name": "Basalt Archive",
+  "module": "vault",
+  "module_version": 2,
+  "theme": "basalt",
+  "geometry": {
+    "room_size": 64,
+    "floor_height": 64,
+    "wall_thickness": 4,
+    "door_width": 12,
+    "shaft_width": 0
+  },
+  "materials": {
+    "wall": 100,
+    "floor": 101,
+    "window": 123
+  },
+  "apertures": {},
+  "deterioration": 0.05
+}

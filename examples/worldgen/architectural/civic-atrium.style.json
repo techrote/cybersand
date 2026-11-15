@@ -1,0 +1,23 @@
+{
+  "format": "cybersand.architectural-style",
+  "version": 1,
+  "id": "civic-atrium",
+  "name": "Civic Atrium",
+  "module": "arcology",
+  "module_version": 2,
+  "theme": "ruins",
+  "geometry": {
+    "room_size": 80,
+    "floor_height": 56,
+    "wall_thickness": 2,
+    "door_width": 18,
+    "shaft_width": 0
+  },
+  "materials": {
+    "wall": 98,
+    "floor": 111,
+    "window": 120
+  },
+  "apertures": {},
+  "deterioration": 0
+}

@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-13
+last-reviewed: 2026-11-15
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -20,6 +20,34 @@ The camera branch retains its original history and now incorporates accepted
 shared Undo/Redo and Art panel features, complete scoped Windows/Linux graphics
 and editing qualification, and keep the PR Draft until owner acceptance. Native
 sources and retained-runtime identity are not changed by camera presentation.
+
+## Architectural Generator runtime repair — 2026-11-15
+
+The owner-authorized Phase A plus bounded Phase B implementation began at
+`ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742` on
+`feat/gen007-architectural-generator-ab`. Read the [architectural contract](../systems/architectural-generator.md)
+and [owner walkthrough](architectural-generator-playtest.md). Its focused
+project form uses existing native generation and ordinary Shared Workbench
+preview/install/persistence. PR #582 now includes the accepted GEN-008 Flatten
+integration and qualifies their coexistence. Preserve the owner-accepted Arched
+Viaduct v2 geometry and the separate agent, streaming and camera/rendering work.
+
+The owner directed **fix and complete; do not merge**. The earlier source-only
+merge proposal is superseded: source-matched Linux/Windows libraries and their
+provenance are now retained on this PR branch, followed by fresh broad CI at the
+final PR head. The [publication contract](../systems/architectural-generator.md#retained-runtime-publication)
+requires exact build/execution input ledgers, target-OS native/graphical and
+package receipts, a branch-tip lease and exactly four runtime/provenance paths.
+The [completion record](../audits/2026-11-15-gen007-runtime-completion.md)
+binds qualified source `6d6e2cd68490591fbdac3e17dab0caed49c84758` to four-file
+publication `99d7bd2b67ff49c33a6ca67c47b71507731fac35`, with actual retained Git
+LFS bytes verified and strict current source/runtime checks passing. The source
+incorporates main `dea4e53d`; both platform input ledgers agree. Fresh broad CI
+for the final documentation follow-up is recorded in PR #582 after it completes.
+Ready-for-review enables full CI and grants no merge authority. Routine native,
+Godot and publisher-guard coverage is retained beyond the feature branch; the
+full graphical/package campaign remains explicit.
+
 
 ## Materials Lab Windows evaluation — 2026-11-12
 

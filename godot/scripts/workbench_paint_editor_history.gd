@@ -2,9 +2,11 @@ extends RefCounted
 
 # PAINT-001 authored-start preflight. These are copied recipes, not native
 # receipts. The host installs a returned setup only after actual worker ACK.
-# No evolved World capture, standalone baseline or Flatten is performed here.
+# No World capture or Flatten is performed here; a previously adopted standalone
+# baseline is validated as one of the existing authored starting sources.
 const Setup = preload("res://scripts/workbench_setup.gd")
 const GeneratedMaps = preload("res://scripts/workbench_generated_map.gd")
+const MaterialBaseline = preload("res://scripts/workbench_material_baseline.gd")
 const MAX_CELLS := 262144
 
 
@@ -63,12 +65,14 @@ static func stamps(cells: PackedInt32Array, extent: Vector2i) -> Dictionary:
 
 
 # Full persistence admission precedes native writes. Ordinary Setup-v2 can
-# compact against its blank baseline. A generated start keeps ordered Empty
-# and material overlays; compacting those as a blank canvas would lose erasure.
+# compact against its blank baseline. Generated and flattened starts keep ordered
+# Empty/material overlays; blank-canvas compaction would lose their erasures.
 # For a partial native receipt, call this again with only the confirmed prefix.
 # If that prefix cannot fit, the host must block Save and offer Restore start.
 static func prepare(setup: Dictionary, cells: PackedInt32Array,
-		generated_packet: Dictionary = {}) -> Dictionary:
+		generated_packet: Dictionary = {}, material_baseline: Dictionary = {}) -> Dictionary:
+	if not generated_packet.is_empty() and not material_baseline.is_empty():
+		return _refuse("An authored start cannot require both a generator and a flattened baseline.")
 	var error: String = Setup.validate(setup)
 	if not error.is_empty(): return _refuse(error)
 	var native_limit: int = Setup.native_rectangle_budget()
@@ -76,7 +80,7 @@ static func prepare(setup: Dictionary, cells: PackedInt32Array,
 	if not encoded.accepted: return encoded
 	var candidate := setup.duplicate(true)
 	candidate.edits.append_array(encoded.stamps)
-	if generated_packet.is_empty():
+	if generated_packet.is_empty() and material_baseline.is_empty():
 		var row_bound := 0
 		for stamp: Array in candidate.edits:
 			# Each overwritten interval can split an older run into two. At
@@ -89,12 +93,17 @@ static func prepare(setup: Dictionary, cells: PackedInt32Array,
 		if candidate.edits.size() > native_limit:
 			return _refuse("This installed native runtime supports only %d starting rectangles; rebuild the GDExtension." % native_limit)
 	elif candidate.edits.size() > native_limit:
-		return _refuse("Generated-map starting paint exceeds the installed native limit of %d rectangles; rebuild the GDExtension." % native_limit)
-	if not generated_packet.is_empty():
+		return _refuse("Baseline starting paint exceeds the installed native limit of %d rectangles; rebuild the GDExtension." % native_limit)
+	if not generated_packet.is_empty() or not material_baseline.is_empty():
 		error = GeneratedMaps.edit_work_error(candidate)
 		if not error.is_empty(): return _refuse(error)
 	error = Setup.validate(candidate)
 	if not error.is_empty(): return _refuse(error)
+	if not material_baseline.is_empty():
+		error = MaterialBaseline.validate_document(candidate,material_baseline)
+		if not error.is_empty(): return _refuse(error)
+		return {"accepted":true,"error":"","setup":candidate,
+			"stamps":encoded.stamps,"cell_count":encoded.cell_count}
 	var body: String
 	if generated_packet.is_empty():
 		body = JSON.stringify(candidate)

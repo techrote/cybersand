@@ -1,0 +1,263 @@
+{
+  "schema_version": 1,
+  "authority": "historical-non-authoritative",
+  "created_utc": "2026-11-14T05:06:44.909187+00:00",
+  "status": "structural and containment checks passed; retrieval quality limitations explicit",
+  "accepted_main_sha": "ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742",
+  "coverage": {
+    "items": 582,
+    "full_assessments": 274,
+    "closed_reference": 308,
+    "families": 38,
+    "findings": 98,
+    "finding_types": {
+      "doctrine": 22,
+      "salvage": 37,
+      "negative": 30,
+      "opportunity": 9
+    },
+    "depths": {
+      "D2": 133,
+      "D3": 139,
+      "D4": 2
+    },
+    "protected": 74,
+    "lanes": {
+      "simulation": 112,
+      "state": 60,
+      "runtime": 85,
+      "governance": 17
+    }
+  },
+  "commands": [
+    {
+      "name": "history",
+      "command": "python3 tools/docs/engineering_history.py check",
+      "exit_code": 0,
+      "result": {
+        "status": "passed",
+        "scope_items": 274,
+        "ledger_items": 582,
+        "closed_reference_items": 308,
+        "findings": 98,
+        "protected_scope_items": 74,
+        "errors": [],
+        "limits": [
+          "Structural/source-link checks do not prove semantic correctness or owner acceptance",
+          "Historical closure and merge remain separately unauthorised"
+        ]
+      }
+    },
+    {
+      "name": "docs",
+      "command": "python3 tools/ci/check_docs.py",
+      "exit_code": 0,
+      "result": {
+        "status": "passed",
+        "documents": 132,
+        "navigation_link_documents": 8,
+        "canonical_claims": 257,
+        "local_links": 3880,
+        "heading_anchors": 749,
+        "questions": 32,
+        "errors": [],
+        "warnings": [],
+        "limitations": [
+          "Does not verify source semantics or runtime claims",
+          "Does not fetch external URLs",
+          "Does not rewrite or reattest historical audits",
+          "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+        ]
+      }
+    },
+    {
+      "name": "validation_contracts",
+      "command": "python3 -m unittest discover -s tools/ci -p test_validation_contracts.py -v",
+      "exit_code": 0,
+      "result": "29 tests passed, including 12 historical boundary regressions"
+    },
+    {
+      "name": "repository",
+      "command": "python3 tools/ci/check_repository.py",
+      "exit_code": 0,
+      "result": {
+        "status": "passed",
+        "scope": "current source/documentation and artifact identity",
+        "documentation": {
+          "status": "passed",
+          "documents": 132,
+          "navigation_link_documents": 8,
+          "canonical_claims": 257,
+          "local_links": 3880,
+          "heading_anchors": 749,
+          "questions": 32,
+          "errors": [],
+          "warnings": [],
+          "limitations": [
+            "Does not verify source semantics or runtime claims",
+            "Does not fetch external URLs",
+            "Does not rewrite or reattest historical audits",
+            "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+          ]
+        },
+        "materialized_runtime_files": [],
+        "unmaterialized_runtime_files": [
+          "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+          "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+          "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+          "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm"
+        ],
+        "errors": [],
+        "limitations": [
+          "Identity is not execution evidence; read the dated runtime acceptance report",
+          "Retained vendor binaries and platform execution have separate dated provenance",
+          "Historical M11 integrity is checked separately by check_m11_consistency.py"
+        ]
+      }
+    },
+    {
+      "name": "m11",
+      "command": "python3 tools/ci/check_m11_consistency.py",
+      "exit_code": 0,
+      "result": {
+        "status": "passed",
+        "scope": "historical M11 integrity; no current runtime acceptance",
+        "historical_source_commit": "05ea45fda7bdd7b0150eb86c4922c202e89e08f4",
+        "records_checked": 18,
+        "source_hashes_checked": 28,
+        "compare_working_tree": false,
+        "working_tree_differences": [],
+        "errors": []
+      }
+    },
+    {
+      "name": "retrieval",
+      "command": "python3 /workspace/scratch/d005f7a0322e/archaeology_private/run_m1_retrieval.py",
+      "exit_code": 0,
+      "result": "Full per-cohort outputs and corpus hashes retained in portable evidence bundle; summary below"
+    }
+  ],
+  "retrieval": {
+    "frozen": {
+      "summary": {
+        "questions": 32,
+        "canonical_hit_at_1": 19,
+        "canonical_hit_at_k": 30,
+        "mrr_at_k": 0.7318,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "document_count": 132,
+      "chunk_count": 1762,
+      "authority_errors": [],
+      "source_manifest_sha256": "a0829ecd3b436466042fe260dce4756e43c698dc833bd42b24aecac86cfb2216",
+      "retrieval_policy": "historical-isolation-v1",
+      "answer_sufficiency": "Not inferred from lexical hits; expected facts require source review.",
+      "missing_canonical_ids": [
+        "Q19",
+        "Q32"
+      ],
+      "fixture_sha256": "f2727cbe26633359798736537e06c7754db8c5588af90627f79c6bd798bbb6ec",
+      "evaluator_sha256": "3aa21de56d14efbf2755ef353a5a6ed3dd617f5c2e083fd44ca59a844292ef23",
+      "authority_policy_sha256": "677b852c3fbc9be4b166b1cd7847f322573f5a7c18ea9b6ddc72783b081786e0",
+      "full_result_bundle_path": "validation/retrieval/frozen.json"
+    },
+    "challenges": {
+      "summary": {
+        "questions": 164,
+        "canonical_hit_at_1": 129,
+        "canonical_hit_at_k": 162,
+        "mrr_at_k": 0.8713,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "document_count": 132,
+      "chunk_count": 1762,
+      "authority_errors": [],
+      "source_manifest_sha256": "a0829ecd3b436466042fe260dce4756e43c698dc833bd42b24aecac86cfb2216",
+      "retrieval_policy": "historical-isolation-v1",
+      "answer_sufficiency": "Not inferred from lexical hits; expected facts require source review.",
+      "missing_canonical_ids": [
+        "USABLE02",
+        "LCB03"
+      ],
+      "fixture_sha256": "37a9702dd65001d45ccc0b508bd713d5cffa435c8e8b5c8bc64a1eaf3ab25880",
+      "evaluator_sha256": "3aa21de56d14efbf2755ef353a5a6ed3dd617f5c2e083fd44ca59a844292ef23",
+      "authority_policy_sha256": "677b852c3fbc9be4b166b1cd7847f322573f5a7c18ea9b6ddc72783b081786e0",
+      "full_result_bundle_path": "validation/retrieval/challenges.json"
+    },
+    "owner": {
+      "summary": {
+        "questions": 6,
+        "canonical_hit_at_1": 4,
+        "canonical_hit_at_k": 4,
+        "mrr_at_k": 0.6667,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "document_count": 132,
+      "chunk_count": 1762,
+      "authority_errors": [],
+      "source_manifest_sha256": "a0829ecd3b436466042fe260dce4756e43c698dc833bd42b24aecac86cfb2216",
+      "retrieval_policy": "historical-isolation-v1",
+      "answer_sufficiency": "Not inferred from lexical hits; expected facts require source review.",
+      "missing_canonical_ids": [
+        "OI01",
+        "OI04"
+      ],
+      "fixture_sha256": "9fdb9037f4b992256d81a621968e83bc3cd34d6030f34d467461c817ead3b37d",
+      "evaluator_sha256": "3aa21de56d14efbf2755ef353a5a6ed3dd617f5c2e083fd44ca59a844292ef23",
+      "authority_policy_sha256": "677b852c3fbc9be4b166b1cd7847f322573f5a7c18ea9b6ddc72783b081786e0",
+      "full_result_bundle_path": "validation/retrieval/owner.json"
+    },
+    "historical": {
+      "summary": {
+        "questions": 10,
+        "canonical_hit_at_1": 7,
+        "canonical_hit_at_k": 10,
+        "mrr_at_k": 0.8033,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "document_count": 13,
+      "chunk_count": 331,
+      "authority_errors": [],
+      "source_manifest_sha256": "cc5d22a677d0f6e5c072965e276ae9143919b8b55dd79940eb10f069c62f13fa",
+      "retrieval_policy": "historical-isolation-v1",
+      "answer_sufficiency": "Not inferred from lexical hits; expected facts require source review.",
+      "missing_canonical_ids": [],
+      "fixture_sha256": "a0e5a6828dc014014cfdf0fcee9fb7d4fdf01d01ce050e1ade5ee4c759e9ad22",
+      "evaluator_sha256": "3aa21de56d14efbf2755ef353a5a6ed3dd617f5c2e083fd44ca59a844292ef23",
+      "authority_policy_sha256": "677b852c3fbc9be4b166b1cd7847f322573f5a7c18ea9b6ddc72783b081786e0",
+      "full_result_bundle_path": "validation/retrieval/historical.json"
+    }
+  },
+  "containment": {
+    "status": "passed",
+    "default_and_historical_checked": true,
+    "link_expansion": false,
+    "persistent_cache_read": false
+  },
+  "source_context": {
+    "companion_workspace_pin": "6a58311982941b75f46e22109a0829e5acb83c7e",
+    "companion_files": "Five authentic pinned files materialized outside source checkout for the existing documentation fixtures. No placeholders or repository changes to companion context.",
+    "unmaterialized_runtime_lfs_objects": 18
+  },
+  "limits": [
+    "132-document default corpus still contains known stale claims; broad reconciliation was not authorized.",
+    "Default owner-intent routes miss OI01 and OI04 in this lexical development cohort. Direct agent/navigation links are present; this is not a perfect retrieval claim.",
+    "Historical corpus hits do not prove answer correctness or authority. Cohorts are listed separately, not aggregated into an acceptance score.",
+    "No fresh native/Godot build, engine benchmark, gameplay evaluation or hosted workflow dispatch performed by investigators.",
+    "Normal PR CI results are separate and may be pending when this local receipt is published."
+  ]
+}

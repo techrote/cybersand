@@ -60,7 +60,12 @@ For the current combined Draft, standalone generator repairs, native stored-mate
 For shared baseline/edits/actors versus live session, Save versus Flatten,
 desktop/agent/remote convergence and the required combined regression, retrieve
 the [authoring data contract](../architecture/shared-workbench-authoring-data.md).
-It distinguishes Approved direction and Planned successors from current source.
+It distinguishes the current GEN-008 candidate from historical proposals. For
+the uint16 little-endian container, unchanged live World, authoring-generation
+fence, failure atomicity and legacy readers, use its
+[Flatten and storage section](../architecture/shared-workbench-authoring-data.md#flatten-and-storage-compatibility).
+The [qualification runbook](../operations/gen008-flatten-qualification.md) covers
+actual platform evidence and the manual Save/exit/reopen workflow.
 
 For GEN-007 preview/install, global coordinates, material receipts, authored-start
 save/reopen and capacity limits, retrieve the
@@ -69,6 +74,14 @@ For the Windows bundle launcher and manual acceptance procedure, retrieve the
 [candidate playtest guide](../operations/explore001-desktop-playtest.md).
 The dated [QA findings](../audits/2026-11-08-explore001-integration-qa.md) are
 historical evidence, separately scoped from accepted-main availability.
+
+For the optional GEN-007 Architectural Generator project (one to five coexisting
+style zones, geometry dimensions, independently configurable aperture flags,
+thirteen built-in presets, native algorithm v1/v2 and source identity), use the
+[architectural-generator contract](../systems/architectural-generator.md)
+and [owner evaluation guide](../operations/architectural-generator-playtest.md).
+PR #582 is a separate Draft/HOLD candidate; standalone qualification is not
+integrated-main or retained-runtime publication.
 
 ## Branch reconciliation and design choices
 
