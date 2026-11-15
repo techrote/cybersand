@@ -1,0 +1,65 @@
+name: WORM SPROCKET support four synthetic W0 process handshake
+on:
+  push:
+    branches:
+      - research/612-worm-sprocket-support
+    paths:
+      - experiments/agent_painter/worm/support_sprocket/fleet_four_v1.py
+      - experiments/agent_painter/worm/support_sprocket/test_fleet_four_v1.py
+      - .github/workflows/agent-painter-worm-sprocket-support-fleet-four-v1.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: worm-sprocket-support-fleet-four-${{ github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  four-w0-streams:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Python support tests: real processes + adversarial state/PNG replay
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/fleet-four-v1
+          git rev-parse HEAD > evidence/fleet-four-v1/source-commit.txt
+          sha256sum experiments/agent_painter/worm/common/worm.py > evidence/fleet-four-v1/host-source-hash.txt
+          python3 -m py_compile experiments/agent_painter/worm/support_sprocket/fleet_four_v1.py experiments/agent_painter/worm/support_sprocket/test_fleet_four_v1.py
+          python3 -m unittest discover -s experiments/agent_painter/worm/support_sprocket -p test_fleet_four_v1.py -v 2>&1 | tee evidence/fleet-four-v1/unittest.txt
+      - name: Execute exactly FOUR additional independent W0 workers, bounded 96 turns
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=5s 90s python3 experiments/agent_painter/worm/support_sprocket/fleet_four_v1.py --output evidence/fleet-four-v1/rollouts | tee evidence/fleet-four-v1/console.txt
+          python3 - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          root=Path("evidence/fleet-four-v1/rollouts")
+          m=json.loads((root/"manifest.json").read_text())
+          rt=json.loads((root/"runtime.json").read_text())
+          assert len(m["streams"]) == len(rt["streams"]) == 4
+          assert m["valid_model_processes"] == 0 and m["optimizer_updates"] == 0 and not m["native"]
+          assert rt["overlap_ns"] > 0
+          assert len(set(p["pid"] for p in rt["streams"].values())) == 4
+          assert len(list(root.glob("w0-*.png"))) == 4
+          assert len(list(root.glob("w0-*.json"))) == 4
+          for s in m["streams"]:
+              for typ in ("png","json"):
+                  data=(root/(s["stream_id"]+"."+typ)).read_bytes()
+                  assert hashlib.sha256(data).hexdigest() == s[typ+"_sha256"]
+              assert s["steps_executed"] <= 96 and s["signature"]["unique_cells"] >= 1
+          print("PASS: 4 concurrent process windows, 4 distinct seeded W0 PNGs and legal source-replayed receipts; 0 model residency")
+          PY
+      - name: Preserve original W0 PNGs, process-state and failed-run logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: worm-sprocket-support-four-W0-${{ github.sha }}
+          path: evidence/fleet-four-v1/
+          if-no-files-found: warn
+          retention-days: 90
