@@ -29,6 +29,18 @@ SPECS = {
         "op": "zero", "fraction": .50,
         "intent": "Erase half of selected every-fourth early/middle/late convolution-family tensors",
     },
+    "conv_scrape_10": {
+        "layers": (1, 5, 9, 13, 17, 21),
+        "suffixes": ("shortconv.in_proj", "shortconv.out_proj", "shortconv.conv"),
+        "op": "zero", "fraction": .10,
+        "intent": "Gentle 10% first-channel convolution scoop, same anatomy as the original 50% destructive specimen",
+    },
+    "conv_scrape_25": {
+        "layers": (1, 5, 9, 13, 17, 21),
+        "suffixes": ("shortconv.in_proj", "shortconv.out_proj", "shortconv.conv"),
+        "op": "zero", "fraction": .25,
+        "intent": "Moderate 25% first-channel convolution scoop, same anatomy as the original 50% destructive specimen",
+    },
     "attn_gouge": {
         "layers": (2, 6, 10, 14, 18, 22),
         "suffixes": ("attn_q", "attn_k", "attn_output", "attn_out", "attn_o"),
