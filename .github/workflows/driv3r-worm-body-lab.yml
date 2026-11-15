@@ -30,13 +30,16 @@ jobs:
         run: |
           set -euo pipefail
           python3 -m compileall -q experiments/driv3r/wormbrain/body_lab
-          python3 -m unittest -v experiments.driv3r.wormbrain.body_lab.test_preflight
+          python3 -m unittest -v experiments.driv3r.wormbrain.body_lab.test_preflight experiments.driv3r.wormbrain.body_lab.test_body_v2
       - name: Four synthetic original PNGs and source ledger
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p "$RUNNER_TEMP/bodylab"
           python3 -m experiments.driv3r.wormbrain.body_lab.preflight --out "$RUNNER_TEMP/bodylab/original-synthetic" > "$RUNNER_TEMP/bodylab/demo.log"
+          python3 -m experiments.driv3r.wormbrain.body_lab.body_v2 --out "$RUNNER_TEMP/bodylab/body-v2-synthetic" > "$RUNNER_TEMP/bodylab/body-v2.log"
+          grep -q '"native_128_turns_qualified": false' "$RUNNER_TEMP/bodylab/body-v2-synthetic/manifest.json"
+          grep -q '"verified_active_model_processes": 0' "$RUNNER_TEMP/bodylab/body-v2-synthetic/manifest.json"
           git rev-parse HEAD > "$RUNNER_TEMP/bodylab/source.txt"
           sha256sum experiments/driv3r/wormbrain/body_lab/*.py > "$RUNNER_TEMP/bodylab/source-files.sha256"
           grep -q '"verified_active_model_processes": 0' "$RUNNER_TEMP/bodylab/original-synthetic/manifest.json"
