@@ -80,7 +80,7 @@ jobs:
             "native_execution":False,
             "sealed_FINAL_opened":False,
             "Draft_HOLD":True,
-            "attempt":1,
+            "attempt":2,
           }
           PY
           python3 -m py_compile experiments/agent_painter/lanes/lfm25_vl/worm_w11_resident_capacity_v1.py experiments/agent_painter/lanes/lfm25_vl/worm_w12_fleet_v1.py
