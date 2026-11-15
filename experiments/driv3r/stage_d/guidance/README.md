@@ -1,5 +1,28 @@
 # D-1B: soft guidance and shadow critic — independent preparatory lane
 
+## 15 November 2026 — corrected four-arm sham isolation (offline only)
+
+The previous four-stream fleet preview had a **real experimental confound**:
+sham/critic neutralized mandatory u16 scalar guidance but left active optional
+signed preference in preference/all model views. New `fleet_samples.py` now
+neutralizes **all** optional preference fields for sham/critic (`u16le` and
+`i16le`), hashes their actual zero bytes, and preserves identical factual
+signed-distance/flow geometry across all arms. This keeps sham == critic and
+guidance == combined pre-choice byte identities while allowing genuine
+same-state preference-channel controls. The legal candidate set, material
+World, producer/source pin, optional M1 semantics, shadow-only critic and
+non-native authority flags remain unchanged. The fixture golden moves from
+`e81d076d67b94cbf25d70813cfb6eee2f40c5e218c67ad8b20a0ac4973b78b9b`
+to `dfaffcdceb26751e950b217daf64e55120097094fabead06af16c54f9946ba8e`.
+An independent Python reconstruction first reproduced the old digest exactly,
+then computed the corrected fixture digest, **not** the complete committed
+suite. Five adversarial tests added; authored full-suite minimum **220**.
+Full exact-head execution remains outstanding. See
+[fleet-sample-handoff.md](fleet-sample-handoff.md). No real resident worms,
+new Q8 inference, native material edits, material Undo, schema edits,
+training or merges were initiated.
+
+
 ## Original-native archive re-verification and recovery authority — 15 November 2026
 
 D-1B's archived #611 Q8/native auditor now independently replays the original
