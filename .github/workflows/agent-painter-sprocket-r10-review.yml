@@ -1,0 +1,87 @@
+name: SPROCKET R10 original native/split research custody (no TRAIN)
+on:
+  push:
+    branches: [codex/agent-painter-sprocket-568]
+    paths:
+      - experiments/agent_painter/lanes/sprocket/r10-visible-native-request.json
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: sprocket-r10-review-${{ github.ref }
+  cancel-in-progress: false
+jobs:
+  source-locked-review:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Verify source, request and host
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$GITHUB_REF" = refs/heads/codex/agent-painter-sprocket-568
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$GITHUB_REPOSITORY" = techrote/cybersand
+          test "$(git hash-object experiments/agent_painter/lanes/sprocket/rich_pipework_v2.py)" = 37d9b7d3f698d5e851e213043d8d43c5f2c9750a
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('experiments/agent_painter/lanes/sprocket/r10-visible-native-request.json')
+          j=json.loads(p.read_text())
+          assert j=={
+            'schema':'cybersand.sprocket-r10-original-review-request/1','sequence':1,
+            'original_corpus_producer_run':43506373969,'original_corpus_artifact':14076703326,
+            'original_native_research_run':43582224721,'original_native_research_artifact':14109121755,
+            'original_native_source':'ab101910921a7cf7f30b3dc83d150d214aaa060d',
+            'candidate':'R10','original_native_seed_views':2,'independent_compositions':1,
+            'review_only':True,'shared_train_admission':False,'model_inference':False,
+            'training':False,'final_opened':False,'draft_hold':True}
+          PY
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/sprocket-r10-scheduling.json
+      - name: Download ORIGINAL GitHub ZIP bytes by immutable artifact IDs
+        env:
+          GH_TOKEN: ${{ github.token }
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/r10-review/original
+          for item in "14076703326 corpus.zip" "14109121755 native.zip"; do
+            set -- $item
+            curl --fail --show-error --silent --location --retry 3 --max-time 240 \
+              -H "Authorization: Bearer $GH_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/techrote/cybersand/actions/artifacts/$1/zip" \
+              -o "evidence/r10-review/original/$2"
+          done
+          echo '50a9ad9b255b2a57180edf5558ca2b47dab9affd9ef9d2438f9011d648f81f39  evidence/r10-review/original/corpus.zip' | sha256sum -c --strict
+          echo 'f7e673c414487668598eb26dc618daa019b2fc83bc70ed373cd574049f20e53c  evidence/r10-review/original/native.zip' | sha256sum -c --strict
+          printf '%s\n' "$GITHUB_SHA" > evidence/r10-review/source-head.txt
+      - name: Strict two-original-archive proof and negative controls
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/sprocket-r10-review"
+          "$RUNNER_TEMP/sprocket-r10-review/bin/python" -m pip install 'Pillow==13.0.0'
+          "$RUNNER_TEMP/sprocket-r10-review/bin/python" -m pip check
+          export SPROCKET_R10_CORPUS_ZIP="$PWD/evidence/r10-review/original/corpus.zip"
+          export SPROCKET_R10_NATIVE_ZIP="$PWD/evidence/r10-review/original/native.zip"
+          "$RUNNER_TEMP/sprocket-r10-review/bin/python" -m unittest discover \
+             -s experiments/agent_painter/lanes/sprocket \
+             -p 'test_r10_split_native_review.py' -v
+          "$RUNNER_TEMP/sprocket-r10-review/bin/python" \
+            experiments/agent_painter/lanes/sprocket/r10_split_native_review.py \
+            --corpus-zip "$SPROCKET_R10_CORPUS_ZIP" --rich-zip "$SPROCKET_R10_NATIVE_ZIP" \
+            --output evidence/r10-review/receipt.json
+          "$RUNNER_TEMP/sprocket-r10-review/bin/python" -m pip freeze --all > evidence/r10-review/pip-freeze.txt
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sprocket-r10-original-review-${{ github.sha }-${{ github.run_id }-${{ github.run_attempt }
+          path: |
+            evidence/r10-review/receipt.json
+            evidence/r10-review/source-head.txt
+            evidence/r10-review/pip-freeze.txt
+          if-no-files-found: warn
+          retention-days: 90
