@@ -7,8 +7,10 @@ from copy import deepcopy
 
 try:
     from .worm_shift_nulls import audit_shifted_field_nulls
+    from .worm_morphology_binding import bind_synthetic_worm_morphology
 except ImportError:
     from experiments.driv3r.stage_d.guidance.worm_shift_nulls import audit_shifted_field_nulls
+    from experiments.driv3r.stage_d.guidance.worm_morphology_binding import bind_synthetic_worm_morphology
 
 
 def digest(o):
@@ -25,36 +27,19 @@ def stop(index):
 
 
 def synthetic_bound(field, free, soft, w=4, h=2):
-    guide_sha = hashlib.sha256(field).hexdigest()
-    routes, shapes = {}, {}
-    for arm, trace in (("free", free), ("soft", soft)):
-        ink = {tuple(i['to_xy']) for i in trace if i['action'] == 'MOVE' and i['pen_down']}
-        count = sum(i['action'] == 'MOVE' and i['pen_down'] for i in trace)
-        routes[arm] = {
-            "trajectory_sha256": digest(trace),
-            "pen_down_intent_reference": {"unique_target_cells": len(ink)},
-            "pen_down_intent_moves": count,
-        }
-        shapes[arm] = {"validated_trace_sha256": digest(trace),
-                       "distinct_intended_cells": len(ink),
-                       "intended_contact_moves": count}
-    movement = dict(arms=routes, frame=[0, 0, w, h], seed=570, initial_xy=[1, 1],
-                    reference_guidance_sha256=guide_sha,
-                    source_revision='a' * 40, scenario_sha256='b' * 64,
-                    initial_world_sha256='c' * 64,
-                    native_material_authority=False, model_inference_performed=False)
-    shape = dict(arms=shapes, native_material_verified=False,
-                 model_behavior_verified=False)
-    return dict(protocol='cybersand.driv3r.d1b-worm-morphology-bound/1',
-                evidence_class='source_bound_synthetic_ink_intent_only',
-                native_material_verified=False, model_behavior_verified=False,
-                native_undo_executions=0, source_revision='a' * 40,
-                scenario_sha256='b' * 64, initial_world_sha256='c' * 64,
-                guidance_sha256=guide_sha, frame=[0, 0, w, h], seed=570, initial_xy=[1, 1],
-                movement_audit_sha256=digest(movement),
-                morphology_audit_sha256=digest(shape),
-                movement_audit=movement, morphology_audit=shape)
+    """Produce an actually revalidated synthetic report, not a self-sealed fake."""
+    return bind_synthetic_worm_morphology(
+        guidance_u16le=field, width=w, height=h, origin_xy=[0, 0],
+        guidance_sha256=hashlib.sha256(field).hexdigest(),
+        initial_xy=[1, 1], initial_world_sha256="c" * 64,
+        scenario_sha256="b" * 64, source_revision="a" * 40, seed=570,
+        free_trace=free, soft_trace=soft)
 
+
+def reseal_subreports(report):
+    report['movement_audit_sha256'] = digest(report['movement_audit'])
+    report['morphology_audit_sha256'] = digest(report['morphology'])
+    return report
 
 class ShiftedFieldNullTests(unittest.TestCase):
     def setUp(self):
@@ -138,10 +123,48 @@ class ShiftedFieldNullTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'budget'):
             self.audit(max_null_shifts=True)
         tiny = struct.pack('<H', 4000)
-        report = synthetic_bound(tiny, [stop(1)], [stop(1)], w=1, h=1)
+        report = {**self.report, 'frame': [0, 0, 1, 1]}
         with self.assertRaisesRegex(ValueError, 'frame'):
             self.audit(guidance_u16le=tiny, free_trace=[stop(1)],
                        soft_trace=[stop(1)], bound_report=report)
+
+    def test_bound_report_replay_is_canonical(self):
+        expected = synthetic_bound(self.field, self.free, self.soft)
+        self.assertEqual(expected, self.report)
+        result = self.audit()
+        self.assertEqual(result['bound_movement_sha256'], digest(expected['movement_audit']))
+        self.assertEqual(result['bound_morphology_sha256'], digest(expected['morphology_audit']))
+
+    def test_reject_resealed_fabricated_legal_teleport(self):
+        # Prior implementation trusted matching self-supplied report hashes and
+        # target counts, so a teleporting synthetic trace could score as legal.
+        teleport = [step(1, 3, 1), stop(2)]
+        report = deepcopy(self.report)
+        route = report['movement_audit']['arms']['soft']
+        shape = report['morphology_audit']['arms']['soft']
+        route['trajectory_sha256'] = digest(teleport)
+        route['pen_down_intent_reference']['unique_target_cells'] = 1
+        route['pen_down_intent_moves'] = 1
+        shape['validated_trace_sha256'] = digest(teleport)
+        shape['distinct_intended_cells'] = 1
+        shape['intended_contact_moves'] = 1
+        reseal_subreports(report)
+        with self.assertRaisesRegex(ValueError, 'canonical'):
+            self.audit(bound_report=report, soft_trace=teleport)
+
+    def test_reject_resealed_forged_morphology_measurement(self):
+        report = deepcopy(self.report)
+        report['morphology_audit']['arms']['soft']['ink_cycle_rank'] = 123
+        reseal_subreports(report)
+        with self.assertRaisesRegex(ValueError, 'canonical source-bound replay mismatch'):
+            self.audit(bound_report=report)
+
+    def test_reject_resealed_forged_movement_summary(self):
+        report = deepcopy(self.report)
+        report['movement_audit']['arms']['soft']['revisits'] = 25
+        reseal_subreports(report)
+        with self.assertRaisesRegex(ValueError, 'canonical source-bound replay mismatch'):
+            self.audit(bound_report=report)
 
 
 if __name__ == '__main__':
