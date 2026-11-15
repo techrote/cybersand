@@ -92,7 +92,7 @@ func _run() -> void:
 		setup.selected = 1
 		setup.edits.append([260,345,5,1,58])
 		var previous_epoch: int = host._physical_epoch
-		if check(ui.apply(setup),"real authored World with real physical Kestrel requested") and \\
+		if check(ui.apply(setup),"real authored World with real physical Kestrel requested") and \
 				check(await until(func() -> bool:
 					return host.pending_microscenario_apply.is_empty() and
 						host._physical_epoch>previous_epoch and
