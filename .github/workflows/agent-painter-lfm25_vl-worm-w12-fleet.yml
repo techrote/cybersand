@@ -130,7 +130,7 @@ jobs:
           timeout --signal=TERM --kill-after=30s 900s "$RUNNER_TEMP/lfm-w12-fleet/bin/python" experiments/agent_painter/training/download_model.py --profile lfm25_vl --output "$RUNNER_TEMP/lfm-w12-model"
           cp "$RUNNER_TEMP/lfm-w12-model/download_receipt.json" evidence/diagnostics/model-download.json
           LFM25_SNAPSHOT="$RUNNER_TEMP/lfm-w12-model" "$RUNNER_TEMP/lfm-w12-fleet/bin/python" experiments/agent_painter/lanes/lfm25_vl/test_adapter.py > evidence/diagnostics/adapter-tests.txt 2>&1
-      - name: Four real model fleet: two independently loaded resident W10 models per VM
+      - name: 'Four real model fleet: two independently loaded resident W10 models per VM'
         env:
           PYTHONPATH: experiments/agent_painter/lanes/lfm25_vl:experiments/agent_painter/training
         run: |
