@@ -25,7 +25,7 @@ SPECS = {
     },
     "conv_scrape": {
         "layers": (1, 5, 9, 13, 17, 21),
-        "suffixes": ("ssm_in", "ssm_out", "ssm_conv1d", "conv1d", "conv_dw"),
+        "suffixes": ("shortconv.in_proj", "shortconv.out_proj", "shortconv.conv", "ssm_in", "ssm_out", "ssm_conv1d"),
         "op": "zero", "fraction": .50,
         "intent": "Erase half of selected every-fourth early/middle/late convolution-family tensors",
     },
