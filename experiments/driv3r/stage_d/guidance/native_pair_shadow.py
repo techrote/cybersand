@@ -154,6 +154,44 @@ def _verify_original_model_choice(turn: dict) -> None:
              "archived chosen ID differs from original Q8 response")
 
 
+def _verify_recovery_catalog(state: dict, offered: list[str], cursor: list[int],
+                             history: list[list[int]], edits: int, recoveries: int) -> None:
+    """Rebuild archived host recovery eligibility, without trusting model hints."""
+    _require(history and history[-1] == cursor and
+             state["recent_positions"] == history[-7:] and
+             state["already_inked_cells_this_run"] == len(history) - 1,
+             "archived cursor history/model context mismatch")
+    can_backtrack = (edits < 36 and recoveries < 8 and len(history) > 2 and
+                     sum(abs(a - b) for a, b in zip(cursor, history[-2])) == 1)
+    can_relocate = (edits < 36 and recoveries < 8 and len(history) > 5 and
+                    cursor != [12, 24])
+    _require(("BACKTRACK" in offered) == can_backtrack and
+             ("RELOCATE_START" in offered) == can_relocate,
+             "model menu disagrees with original host recovery legality")
+
+
+def _advance_replayed_history(history: list[list[int]], cursor: list[int],
+                              choice: str, destination: list[int]) -> None:
+    """Enforce the exact original native worm history transitions."""
+    _require(history and history[-1] == cursor, "replay history lost current cursor")
+    if choice in MOVES:
+        delta = MOVES[choice]
+        _require(destination == [cursor[0] + delta[0], cursor[1] + delta[1]],
+                 "replayed paint did not follow chosen cardinal control")
+        history.append(destination[:])
+    elif choice == "BACKTRACK":
+        _require(len(history) > 2 and destination == history[-2] and
+                 sum(abs(a - b) for a, b in zip(cursor, history[-2])) == 1,
+                 "backtrack did not return to legal previous host cursor")
+        history.pop()
+    elif choice == "RELOCATE_START":
+        _require(len(history) > 5 and cursor != [12, 24] and destination == [12, 24],
+                 "branch relocation did not return to original saved birth cursor")
+        history.append(destination[:])
+    else:
+        raise ValueError("unsupported historical worm control")
+
+
 def audit_arm(path: Path, expected_mode: str, expected_decisions: int = 36) -> dict:
     """Bind model-selected legal controls to actual archived native material changes."""
     _require(expected_mode in ("free", "soft") and type(expected_decisions) is int and
@@ -179,6 +217,7 @@ def audit_arm(path: Path, expected_mode: str, expected_decisions: int = 36) -> d
                  "initial full-World native material bytes mismatch")
         current_world = initial_world
         previous_cursor = [12, 24]
+        replay_history = [previous_cursor[:]]
         event_offset = 0
         edited = 0
         recoveries = 0
@@ -192,6 +231,8 @@ def audit_arm(path: Path, expected_mode: str, expected_decisions: int = 36) -> d
             t = _read_json(z, f"execution/model/turn-{i:02}.json")
             _verify_original_model_choice(t)
             state, choice = t["model_state"], t["chosen_candidate"]
+            _verify_recovery_catalog(state, t["exact_candidate_ids_in_presented_order"],
+                                     previous_cursor, replay_history, edited, recoveries)
             _require(t["index"] == i and t["mode"] == expected_mode and
                      state["position"] == previous_cursor and
                      state["native_world_material_sha256"] == current_world and
@@ -259,6 +300,7 @@ def audit_arm(path: Path, expected_mode: str, expected_decisions: int = 36) -> d
                      "native cursor step unexpectedly mutated material")
             _verify_world_readback(z, request, response, current_world,
                                    current_world, None)
+            _advance_replayed_history(replay_history, previous_cursor, choice, destination)
             observations.append({"index": i, "choice": choice,
                                  "from": previous_cursor[:], "to": destination[:],
                                  "world_after_sha256": current_world,
