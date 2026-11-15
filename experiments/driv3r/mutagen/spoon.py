@@ -176,7 +176,8 @@ def carve(donor: Path, output: Path, mode: str, proof: Path):
     if not matches:
         proof.write_text(json.dumps(receipt,indent=2,default=list)+"\n")
         raise GGUFError(f"No eligible actual tensor for {mode}; inspect GGUF inventory first")
-    donor_hash = hashlib.file_digest(donor.open("rb"),"sha256").hexdigest()
+    with donor.open("rb") as original_stream:
+        donor_hash = hashlib.file_digest(original_stream,"sha256").hexdigest()
     receipt["donor_sha256"]=donor_hash
     shutil.copyfile(donor,output)
     changes=[]
@@ -194,6 +195,7 @@ def carve(donor: Path, output: Path, mode: str, proof: Path):
                         block=np.ndarray((sub,34),dtype=np.uint8,buffer=mapped,offset=offset)
                         q=block[:,2:].view(np.int8)
                         mutate_values(q,spec["op"],spec.get("gain"))
+                        del q, block
                 elif t["type"] in (0,1):
                     dtype="<f4" if t["type"] == 0 else "<f2"
                     for start in range(0,count,65536):
@@ -201,13 +203,15 @@ def carve(donor: Path, output: Path, mode: str, proof: Path):
                         vals=np.ndarray((sub,),dtype=dtype,buffer=mapped,
                                         offset=t["offset"]+start*(4 if t["type"]==0 else 2))
                         mutate_values(vals,spec["op"],spec.get("gain"))
+                        del vals
                 changes.append({"name":t["name"],"elements_targeted":count,
                                 "type":t["type_name"],"total_elements":t["n_elements"]})
             mapped.flush()
     check=inspect(output)
     if check["bytes"] != meta["bytes"] or check["n_tensors"] != meta["n_tensors"] or check["data_offset"] != meta["data_offset"]:
         raise GGUFError("Mutated file's structure drifted")
-    mutated_hash=hashlib.file_digest(output.open("rb"),"sha256").hexdigest()
+    with output.open("rb") as mutant_stream:
+        mutated_hash=hashlib.file_digest(mutant_stream,"sha256").hexdigest()
     if mutated_hash==donor_hash:
         raise GGUFError("Mutagen produced no actual file changes")
     receipt.update({"status":"MUTATED_UNQUALIFIED_MODEL_INFERENCE_PENDING",
