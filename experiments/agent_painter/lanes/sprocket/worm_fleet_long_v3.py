@@ -61,7 +61,7 @@ def read_f1(path):
             lease="%s-%s-%d"%(obj["lease"],stage,index)
             c=json.loads((root/"results"/stage/lease/"complete.json").read_text())
             if (c["model_id"]!=f1.MODEL_ID or c["revision"]!=f1.REVISION or
-                c["real_trained_six_score_forwards"]<96 or c["optimizer_steps"]!=0 or
+                c["real_trained_six_score_forwards"]<1 or c["optimizer_steps"]!=0 or
                 c["source_faithful_W0_not_native"] is not True or
                 c["checkpoint_inventory_sha256"] is None):
                 raise ValueError("F1 worker/model receipt mismatch")
@@ -195,7 +195,7 @@ def run_fleet(args):
                 raise RuntimeError("live inference worker failed: "+x["lease"])
             c=json.loads((x["path"]/"complete.json").read_text())
             if (c["pid"]!=x["pid"] or c["seed"]!=x["seed"] or c["lease"]!=x["lease"] or
-                c["real_trained_six_score_forwards"]<1 or c["optimizer_steps"]!=0 or
+                c["real_trained_six_score_forwards"]<96 or c["optimizer_steps"]!=0 or
                 c["source_faithful_W0_not_native"] is not True):
                 raise ValueError("worker identity/receipt contract violated")
             stage["workers"].append({k:c[k] for k in
