@@ -55,7 +55,7 @@ class LfmWormSupportTests(unittest.TestCase):
             rows("final")
         with self.assertRaises(ValueError):
             rollout(2101, "pipework", 513, oracle)
-        with self.assertRaises(ValueError):
+        with self.assertRaises(TypeError):
             rollout(2101, "pipework", 3, lambda _: None)
 
     def test_real_pngs_equal_obstacle_and_decision_budgets(self):
