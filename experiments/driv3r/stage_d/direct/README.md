@@ -2,12 +2,38 @@
 
 **Status:** independent **development-only** preparatory fixtures and oracle policies, not native or model qualification. #570; [owner D roadmap](https://github.com/techrote/cybersand/issues/570#issuecomment-6877408001). The five-record [D-COMMON-001 contract](https://github.com/techrote/cybersand/pull/594) received **M1 owner acceptance on 14 Nov 2026** at source commit `8fa90de6be209ed0b7bd125039e6ec8b332fb1a6`, schema SHA-256 `ebe2fa211148602c614cba0f0a40f285cba797784b70efa035832d833877f80d` ([#570 freeze record](https://github.com/techrote/cybersand/issues/570#issuecomment-6881686675)). **M2 offline integration preparation is permitted; native/model experiments, merges and formal A1/A2/A3 comparisons are not.**
 
+## Committed M1 rename must not masquerade as a direct-lane-only change (15 November 2026)
+
+The original `qualification.source_fence` used `git diff --name-only
+<accepted-M1> HEAD`. On Git installations with rename detection enabled, a
+100%-identical file moved **from frozen `d_common/**` into
+`stage_d/direct/**` appears *only at its destination*, even though the
+accepted M1 source file was deleted. The previous exclusive-write check could
+therefore erroneously admit a committed shared-source deletion.
+
+The revised `d1a-exact-head-offline-qualification/2` gate uses
+`git diff --no-renames --name-only` against the same accepted immutable M1.
+Both the forbidden old-path deletion and lane addition are now visible.
+New `test_qualification.py` regressions create real temporary Git histories:
+(1) an unchanged shared-file rename must be rejected; (2) a legitimate
+direct-only committed addition must be admitted. They never touch actual M1
+files, external branches, held-out outcomes or native Worlds.
+
+**Verification limits:** an independently executed local Git fixture reproduced
+the false acceptance premise and exercised the repaired command: 2/2 scenario
+checks PASS. These scenarios are **not** claimed as executions of the two
+newly committed unittest methods. Source inspection at the new branch revision
+counts **154 authored test methods across 15 modules**. The complete
+source-matched 154-method Python suite is still unexecuted here; its actual
+first-pass log must be preserved. This is source-fence hardening, not a
+geometric-controller performance result or a native GO.
+
 ## Complete offline-source census and immutable-stack fence (15 November 2026)
 
 The launcher now refuses **partial discovery**, not merely a low aggregate
-unittest count. `inventory.py` anchors all 13 expected test modules and their
-source-method floors; 139 named unittest methods are now authored (the original
-130 plus seven census tests and two extra source-fence adversarial tests).
+unittest count. `inventory.py` anchors all 15 expected test modules and their
+source-method floors; 154 named unittest methods are now authored (the original
+130 plus subsequent census, routing-oracle and source-fence regressions).
 It statically parses the exact source files and requires the executed unittest
 count to equal the current parsed count. Missing/renamed modules, removed
 methods, symlinked source, parse failures, skipped tests and mismatched
