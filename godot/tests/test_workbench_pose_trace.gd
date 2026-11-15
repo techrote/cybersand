@@ -39,7 +39,7 @@ func _pure_projection() -> void:
 	var proj: Variant = Trace.projection(pose,snapped,content,size,window,shader)
 	check(proj is Dictionary and float(proj.residual_magnitude_px)<0.002,
 		"overlay and shader projection agree despite fractional camera and window stretch")
-	var wrong := Trace.projection(pose,snapped+Vector2(3,0),content,size,window,shader)
+	var wrong: Variant = Trace.projection(pose,snapped+Vector2(3,0),content,size,window,shader)
 	check(wrong is Dictionary and float(wrong.residual_magnitude_px)>5.0,
 		"projection residual detects a deliberately doubled/misapplied camera offset")
 	var a := Trace.new()
