@@ -1,0 +1,115 @@
+name: SMOL P01 original visible native proximity (read-only)
+on:
+  push:
+    branches: [codex/agent-painter-smol-568]
+    paths:
+      - experiments/agent_painter/lanes/smol/p01-native-visible-request.json
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: smol-p01-native-visible-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  original-native-visible-screen:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Verify source, single explicit request and review-only authority
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$GITHUB_REPOSITORY" = "techrote/cybersand"
+          test "$GITHUB_REF" = "refs/heads/codex/agent-painter-smol-568"
+          test "$RUNNER_ENVIRONMENT" = "github-hosted"
+          mkdir -p evidence/smol-p01-visible
+          printf '%s\n' 'FAIL_OR_INCOMPLETE_NO_ADMISSION' > evidence/smol-p01-visible/incomplete.txt
+          git rev-parse HEAD > evidence/smol-p01-visible/source-head.txt
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          path=Path("experiments/agent_painter/lanes/smol/p01-native-visible-request.json")
+          r=json.loads(path.read_text())
+          assert r == {
+            "schema":"cybersand.smol-p01-visible-original-native-request/1",
+            "sequence":1,
+            "original_corpus_run":43506373969,
+            "original_corpus_artifact":14076703326,
+            "original_P01_run":43601281142,
+            "original_P01_artifact":14117110667,
+            "structural_groups_under_review":1,
+            "two_host_seed_views":[104729,130363],
+            "allowed_splits":["TRAIN","DEVELOPMENT"],
+            "review_only":True,
+            "new_native_execution":False,
+            "optimizer_training":False,
+            "shared_train_admission":False,
+            "final_access":False,
+            "draft_hold":True,
+          }
+          PY
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/smol-p01-schedule.json
+      - name: Obtain two unchanged source-separated native archives
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/smol-p01-visible/original
+          curl -fLsS --retry 3 --max-time 240 \
+            -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14076703326/zip" \
+            -o evidence/smol-p01-visible/original/corpus.zip
+          curl -fLsS --retry 3 --max-time 240 \
+            -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14117110667/zip" \
+            -o evidence/smol-p01-visible/original/p01.zip
+          echo '50a9ad9b255b2a57180edf5558ca2b47dab9affd9ef9d2438f9011d648f81f39  evidence/smol-p01-visible/original/corpus.zip' | sha256sum -c --strict
+          echo '71ddc40478e06e3350f05eecd5e16ed77c082300f066be97bbccf8afb2370ff1  evidence/smol-p01-visible/original/p01.zip' | sha256sum -c --strict
+          sha256sum evidence/smol-p01-visible/original/{corpus,p01}.zip > evidence/smol-p01-visible/original-sha256.txt
+      - name: Execute original material and receipt verifier with adversarial tests
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/smol-p01-visible-venv"
+          "$RUNNER_TEMP/smol-p01-visible-venv/bin/python" -m pip install 'Pillow==13.0.0'
+          "$RUNNER_TEMP/smol-p01-visible-venv/bin/python" -m pip check
+          "$RUNNER_TEMP/smol-p01-visible-venv/bin/python" -m unittest discover \
+            -s experiments/agent_painter/lanes/smol -p test_p01_native_visible_proximity.py -v
+          "$RUNNER_TEMP/smol-p01-visible-venv/bin/python" \
+            experiments/agent_painter/lanes/smol/p01_native_visible_proximity.py \
+            --corpus-zip evidence/smol-p01-visible/original/corpus.zip \
+            --native-zip evidence/smol-p01-visible/original/p01.zip \
+            --proposals experiments/agent_painter/lanes/smol/curriculum_proposals_v2.json \
+            --offer experiments/agent_painter/lanes/smol/P01_SHARED_ADMISSION_REVIEW_OFFER.json \
+            --output evidence/smol-p01-visible/report.json
+          "$RUNNER_TEMP/smol-p01-visible-venv/bin/python" - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path("evidence/smol-p01-visible/report.json").read_text())
+          assert d["status"] == "READ_ONLY_SPLIT_AND_NATIVE_DIAGNOSTIC_HOLD"
+          assert d["comparisons"] == 8 and d["P01_original_native_seed_views"] == 2
+          assert d["original_visible_native_seed_views_read"] == 8
+          assert d["new_native_executions"] == d["new_shared_train_admissions"] == 0
+          assert d["new_optimizer_steps"] == d["model_generated_paintings"] == 0
+          assert d["split_safe_or_artistic_independence_approved"] is False
+          assert d["final_targets_or_images_opened"] is False
+          print(json.dumps(d["same_seed_comparisons"],sort_keys=True))
+          PY
+          "$RUNNER_TEMP/smol-p01-visible-venv/bin/python" -m pip freeze --all > evidence/smol-p01-visible/pip-freeze.txt
+          rm evidence/smol-p01-visible/incomplete.txt
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: smol-p01-visible-original-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            evidence/smol-p01-visible/report.json
+            evidence/smol-p01-visible/source-head.txt
+            evidence/smol-p01-visible/original-sha256.txt
+            evidence/smol-p01-visible/pip-freeze.txt
+            evidence/smol-p01-visible/incomplete.txt
+          if-no-files-found: warn
+          retention-days: 90
