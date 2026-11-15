@@ -262,7 +262,12 @@ def candidates(f: Fixture, pos: Point, lengths: tuple[int,...] = (1,)) -> tuple[
 def select_candidate(f: Fixture, pos: Point, options: tuple[Candidate,...],
                      policy: str, rng: random.Random) -> Candidate:
     if policy == "random_legal":
-        return rng.choice(options)  # STOP is present; no hidden policy advantage.
+        return rng.choice(options)  # Frozen original: STOP remains equiprobable.
+    if policy == "random_legal_persistent_v1":
+        # Distinct, explicitly versioned movement-complete chance control.
+        # Do not silently change the original early-STOP random baseline.
+        moving = [candidate for candidate in options if not candidate.stop]
+        return rng.choice(moving) if moving else options[0]
     if policy not in {"astar", "contour_astar"}:
         raise ValueError(f"Unknown policy {policy}")
     if pos == f.target:
@@ -365,7 +370,8 @@ def run_episode(f: Fixture, policy: str, seed: int = 0,
     its behavioral outcomes during synthetic preparation.
     """
     require_development_fixture(f)
-    if policy not in {"astar", "contour_astar", "random_legal"}:
+    if policy not in {"astar", "contour_astar", "random_legal",
+                      "random_legal_persistent_v1"}:
         raise ValueError("Unsupported offline policy")
     if type(seed) is not int or not 0 <= seed <= 4294967295:
         raise ValueError("Seed must be a bounded unsigned 32-bit integer")
@@ -428,7 +434,9 @@ def manifest() -> dict[str,Any]:
 def main() -> None:
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--manifest",action="store_true")
-    parser.add_argument("--policy",choices=("astar","contour_astar","random_legal"),default="astar")
+    parser.add_argument("--policy",choices=(
+        "astar", "contour_astar", "random_legal",
+        "random_legal_persistent_v1"),default="astar")
     parser.add_argument("--seed",type=int,default=0)
     parser.add_argument("--macro",action="store_true",help="Separate 1/2/4/8 segment arm")
     parser.add_argument("--output",type=Path,help="Output JSONL path (otherwise print summary)")

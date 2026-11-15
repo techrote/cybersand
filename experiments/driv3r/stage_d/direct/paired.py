@@ -13,7 +13,8 @@ from . import offline as d
 from . import trajectory
 
 VERSION = "d1a-paired-audit/1"
-POLICIES = frozenset(("astar", "contour_astar", "random_legal"))
+POLICIES = frozenset(("astar", "contour_astar", "random_legal",
+                      "random_legal_persistent_v1"))
 
 
 class EvidenceError(ValueError):
@@ -201,3 +202,28 @@ def run_development_pair(f: d.Fixture, seed: int = 0,
         "random_legal": d.run_episode(f, "random_legal", seed, macro_lengths),
     }
     return compare_matched(f, arms)
+
+
+def run_development_controls(f: d.Fixture, seed: int = 0,
+                             macro_lengths: tuple[int, ...] = (1,)) -> dict[str, Any]:
+    """Compare strong, original early-STOP random and persistent random controls.
+
+    This is a new DEVELOPMENT-only diagnostic, not a redefinition of the
+    original first-pass two-arm comparison or a model/native campaign.
+    Random policies share their seed and host legal menus but use distinct
+    explicitly declared termination policies.
+    """
+    _require(f.split == "development", "Held-out episode generation forbidden")
+    strong = "contour_astar" if f.task == "wall_offset" else "astar"
+    result = compare_matched(f, {
+        "geometric": d.run_episode(f, strong, seed, macro_lengths),
+        "random_legal": d.run_episode(f, "random_legal", seed, macro_lengths),
+        "random_persistent_v1": d.run_episode(
+            f, "random_legal_persistent_v1", seed, macro_lengths),
+    })
+    result["comparison_design"] = "d1a-three-offline-controls/1"
+    result["random_stop_policy"] = {
+        "random_legal": "STOP participates in every legal draw (frozen original)",
+        "random_persistent_v1": "STOP only if no movement action is legal",
+    }
+    return result
