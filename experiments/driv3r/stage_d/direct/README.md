@@ -2,6 +2,43 @@
 
 **Status:** independent **development-only** preparatory fixtures and oracle policies, not native or model qualification. #570; [owner D roadmap](https://github.com/techrote/cybersand/issues/570#issuecomment-6877408001). The five-record [D-COMMON-001 contract](https://github.com/techrote/cybersand/pull/594) received **M1 owner acceptance on 14 Nov 2026** at source commit `8fa90de6be209ed0b7bd125039e6ec8b332fb1a6`, schema SHA-256 `ebe2fa211148602c614cba0f0a40f285cba797784b70efa035832d833877f80d` ([#570 freeze record](https://github.com/techrote/cybersand/issues/570#issuecomment-6881686675)). **M2 offline integration preparation is permitted; native/model experiments, merges and formal A1/A2/A3 comparisons are not.**
 
+## Exact remaining-decision horizon (M2 offline diagnostic, 15 November 2026)
+
+**New lane-only source:** `horizon.py` and `test_horizon.py`, version
+`d1a-offline-decision-horizon/1`. For a frozen DEVELOPMENT trajectory, reverse
+breadth-first search computes the *exact minimum remaining cardinal action
+decisions* from every reachable cursor to the goal under the same host-like
+full-sweep legal macro menu (1 / 2 / 4 / 8). This is stronger than dividing
+the A* cell distance by maximum action length: full swept cells may hit
+material Z, protected cells, walls or World bounds. Legal straight macros
+are reversible in this synthetic grid, so one reverse search yields exact
+distance-to-go in *decisions* for every original cursor.
+
+The source-replay-verified analysis records initial budget feasibility,
+pre/post-choice slack against the 36-decision cap, the first point at which
+even an optimal *future* geometric continuation has insufficient decisions,
+and whether an original STOP is terminal and non-resumable. It **does not**
+restart the trace, repair a failed first pass, evaluate held-out policy
+outcomes, assume that geometric reachability proves good wall-following, or
+claim native material edits, native receipts, neural effectiveness or
+separate D-1A native campaign authorization.
+
+```sh
+python -m unittest experiments.driv3r.stage_d.direct.test_horizon -v
+python -m unittest discover -s experiments/driv3r/stage_d/direct -p 'test_*.py' -v
+```
+
+**Source-qualified local check:** `horizon.py` Git blob
+`d3e4840dcebda17b62bc6bbb84b4f7bd9297d036` and
+`test_horizon.py` Git blob
+`ac03f6a1c8a7c8927d649b69a8e368fa7f9f79e3` match locally
+syntax-compiled/tested bytes. Four pure-helper methods **PASS 4/4**
+(unit-vs-macro, obstacle detour, sealed wall, strict candidate admission);
+three DEVELOPMENT replay/STOP/held-out methods are authored but **not yet
+executed against the complete repository source**. Full lane now has
+**87 authored tests**, but an exact-current-HEAD 87-test suite result must
+not be claimed; the older 62/62 result is source-stale.
+
 ## Target-sweep contact versus terminal arrival (M2 offline diagnostic)
 
 The frozen `d1a-offline/1` score defines **arrival at the end of an admitted action**, not merely touching an endpoint during a 2/4/8-cell macro. A legal random macro can pass through the target and end beyond it. Treating that intermediate swept-cell contact as successful terminal arrival would overstate control quality; ignoring the contact entirely would lose a useful overshoot diagnostic.
