@@ -2,6 +2,26 @@
 
 **Research-only / Draft-HOLD.** This independent integration-owner cohort is stacked on M4 #608 source ad48cdba21d8b83fe5bb83caed68d4cb0ce1ca1b. The owner-accepted M1 contract and schema are immutable; do not write in D-1A #595, D-1B #596, D-2 #598, #568 or production native files.
 
+## First exact-source DEVELOPMENT findings (15 November 2026)
+
+Isolated [M5 test/audit run 43675043678](https://github.com/techrote/cybersand/actions/runs/43675043678) passed **18/18 unit tests**, regenerated all five matched cases and reconstructed the original synthetic material and legal candidate effects. Audited report SHA-256: dc3ad416aca00ec65850b8974ff49dbc13528085535316dc88f40e417388b373. Cohort SHA-256: 462e6f9f7a16ad090a273c370899476d5ea58f04b9a8cd0ab6f1ba78d15dcc88.
+
+| Controller | Goal reach, four physically reachable cases | Fresh cells across four | Recovery choices | New single-cell articulation points |
+| --- | ---: | ---: | ---: | ---: |
+| Strong A* | 4/4 | 74 | 3 | 70 |
+| Greedy / A1 proxy | 1/4 | 14 | 18 | 13 |
+| A2 preference proxy | 4/4 | 74 | 3 | 70 |
+| A3 geometry proxy | 4/4 | 74 | 3 | 70 |
+| A2 displaced-information ablation | 4/4 | 91 | 20 | 65 |
+| A3 displaced-information ablation | 2/4 | 108 | 26 | 53 |
+| Seeded random legal | 0/4 | 6 | 11 | 2 |
+
+The fifth, sealed negative case remains physically unreachable and is excluded from the reachability denominator; no policy is credited with completing it.
+
+**Scientific interpretation:** A2/A3 proxy guidance repairs a *weak local* procedural controller and changes actual synthetic material/goal completion, not only its route. But it supplies additional hard-mask-derived pathfinding information. Its aggregate scores are **identical to strong A***: zero demonstrated incremental benefit over well-engineered conventional code, and **zero actual neural evidence**. Connectedness alone was a weak aesthetic/engineering signal: 70/74 added cells were individual articulation points for each strong/proxy completed group, i.e. easily broken narrow traces. This is a meaningful **negative/limiting finding**, not an AI breakthrough.
+
+**Immediate next design:** contrast two genuine Q8 policies on matched source-qualified native states: (a) per-cell direct-drive, (b) *rare intervention* supervisor invoked only when a deterministic procedural routine stalls, diverges from user-authored intent or presents an aesthetic tradeoff. Keep strong A* or selected-wall controller, greedy and seeded random controls; compare not only reaching the destination but useful **native procedural steps per neural intervention**, robust stroke width/topology, independent art ratings, latency and total CPU/wall cost. Where deterministic code already solves a task perfectly and cheaply, d1 must provide additional artistic value to justify its use.
+
 ## Falsifiable research question
 
 **Can d1-2B add productive procedural painting after genuine blockages, beyond what strong deterministic controllers already achieve, at acceptable latency and cost?**
