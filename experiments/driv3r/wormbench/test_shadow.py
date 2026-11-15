@@ -4,10 +4,26 @@ import unittest
 from experiments.driv3r.backend import PINS
 from experiments.driv3r.wormbench.reference import canonical, EXPECTED_DIGEST, SOURCE_SHA
 from experiments.driv3r.wormbench.shadow import (
-    MODELS, MAX_ROWS, parse_chat_choice, choose_chat_prompt, verify_request,
+    MODELS, MAX_ROWS, parse_chat_choice, choose_chat_prompt, verify_request, legal_id_grammar,
 )
 
 class WormBenchTests(unittest.TestCase):
+    def test_grammar_is_exact_and_cannot_expand_native_legal_candidates(self):
+        self.assertEqual(legal_id_grammar(["MOVE_N","BACKTRACK","STOP"]),
+                         'root ::= "MOVE_N" | "BACKTRACK" | "STOP"')
+        for invalid in (["MOVE_N","MOVE_N"],["MOVE_N"],["MOVE_N","MOVE_S + 1"],
+                        ["MOVE_N","MOVE_W|STOP"]):
+            with self.assertRaises(ValueError):
+                legal_id_grammar(invalid)
+
+    def test_source_matched_smol_replacement_and_separate_sprocket_repair_arm(self):
+        self.assertEqual(MODELS["smol135"]["repository"],
+                         "QuantFactory/SmolLM2-135M-Instruct-GGUF")
+        self.assertEqual(MODELS["smol135"]["filename"],
+                         "SmolLM2-135M-Instruct.Q4_K_M.gguf")
+        self.assertEqual(MODELS["sprocket500"]["kind"],"chat")
+        self.assertEqual(MODELS["sprocket500-grammar"]["kind"],"chat_grammar")
+
     def test_q4_is_exact_optional_pin_and_never_default(self):
         self.assertEqual(PINS["model"]["quantization"],"Q8_0")
         self.assertTrue(PINS["optional_q4"]["filename"].endswith("-Q4_K_M.gguf"))
