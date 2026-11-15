@@ -1,5 +1,16 @@
 # D-1B: soft guidance and shadow critic — independent preparatory lane
 
+## Read-only line-worm soft-guidance response diagnostics — 15 November 2026
+
+Following the [owner's corrected DRIV3R intent](https://github.com/techrote/cybersand/issues/570#issuecomment-6889195672) ("slightly deranged line steering worm brain"), D-1B now provides **independent descriptive soft-guidance diagnostics** without redefining eccentric lines as failures or pretending A* is the artistic objective. New `worm_trace.py` accepts two **authored synthetic** paths from the same declared start/World/seed: neutral/free and soft/scalar-guided. It retains the SHA-256 of both traces, the exact original u16le reference field, the source/World/scenario identities, and separate **arm-visible numeric hashes** (all-zero scalar for free, original reference scalar for soft). The original nonzero preference is withheld from the free *model-visible* label; it is consulted only after the trace for posthoc evaluation.
+
+Report-only measures: turn handedness, 180-degree reversals, retraces, pen-up versus pen-down **intent**, early STOP/truncated/budget finish, mean contact against the same positive u16 reference, high-preference contact and independent-path divergence. All moves must be strictly four-connected, source/frame/field hashes are checked, booleans cannot masquerade as coordinates or pen state, STOP is terminal. Importantly, *pen-down intent is not a native material receipt*: no native candidate legality, painting, vision, model input delivery or causal control benefit is verified.
+
+**Exact-file local qualification:** `python3 -m unittest -v test_worm_trace.py` ran **8/8 PASS** against source/test bytes matching GitHub blob IDs `07a16df43c351ea8edb145c6d39836a9e21a9d51` and `3ac3f4faa347dda0932650520ad805e29427f8cf`. A tiny **deliberately authored fixture**, two MOVE steps and terminal STOP per arm, scored 0.0 average reference u16 preference for the free path versus 33,267.5 for the soft path, with only one high-threshold sample for soft. The example simply demonstrates correct accounting; it is **not evidence of actual d1 steering or a formal A/B result**. Neither this unit slice nor the generic Stage A CI qualifies the full D-1B exact-head suite or official five-record M1 conformance.
+
+Accepted immutable D-COMMON M1 source: `8fa90de6be209ed0b7bd125039e6ec8b332fb1a6`, schema `ebe2fa211148602c614cba0f0a40f285cba797784b70efa035832d833877f80d`. This lane remains **Draft/HOLD**, and the separate [wormbrain campaign #611](https://github.com/techrote/cybersand/pull/611) owns real native/model execution; its dispatch does not confer run authority on this lane. Only future integration-owned, original-source-fenced native/real-model traces may support actual behavioural comparisons, visual evaluation and receipt-based material counts. No native reversal, training, paid/model run, formal A/B, merge or Ready promotion.
+
+
 ## Frozen shadow snapshot identity audit — 15 November 2026
 
 A substantive cross-case consistency weakness in `feedback_audit.audit_shadow_cases`
