@@ -6,6 +6,7 @@ const PhysicalCatalog = preload("res://scripts/physical_actor_catalog.gd")
 const PhysicalSession = preload("res://scripts/physical_actor_session.gd")
 const WorkbenchBridge = preload("res://scripts/workbench_physics_bridge.gd")
 const WorkbenchPresentationCoherence = preload("res://scripts/workbench_presentation_coherence.gd")
+const WorkbenchPoseTrace = preload("res://scripts/workbench_pose_trace.gd")
 const PhysicalOverlay = preload("res://scripts/physical_actor_overlay.gd")
 const PhysicalLoadouts = preload("res://scripts/physical_usable_loadouts.gd")
 const PhysicalEquipment = preload("res://scripts/physical_usable_equipment.gd")
@@ -42,6 +43,9 @@ var physical_actor_overlay: CyberPhysicalActorOverlay
 var _workbench_wait_sample: int = -1
 var _workbench_collider_frame: int = -1
 var shared_workbench: Control
+# Opt-in physical presentation trace. Empty and inactive in normal operation.
+var workbench_pose_trace: RefCounted = WorkbenchPoseTrace.new()
+var _workbench_pose_trace_reasons: Dictionary = {}
 # ENGINE-LAB-001: opt-in live diagnostic pacing; default behavior unchanged.
 var engine_lab_wait_native_sample: bool = true
 var engine_lab_ack_delay_frames: int = 0
@@ -1959,6 +1963,9 @@ func _notification(what: int) -> void:
 
 
 func _exit_tree() -> void:
+	if workbench_pose_trace.active:
+		var saved: Dictionary = workbench_pose_trace.finish()
+		print("WORKBENCH_POSE_TRACE_EXIT ",JSON.stringify(saved))
 	if gameplay_recorder.is_active():
 		var stopped: Dictionary = gameplay_recorder.stop_recording()
 		print("REC-001 recording finalized at exit: ", JSON.stringify(stopped))
@@ -3171,10 +3178,129 @@ func _present_physical_actor_overlay(frame: Dictionary) -> void:
 	if shared_workbench != null and not _valid_workbench_mask_frame(frame):
 		presentation_frame = {}
 	var admitted: Dictionary = _safe_workbench_presentation_poses(presentation_frame)
-	physical_actor_overlay.present(
-		physical_actor_session.render_parts(presentation_frame,admitted,shared_workbench != null)
-			if physical_actor_session != null else [],
-		presentation_camera_origin(),current_view_size,view_content_rect())
+	var parts: Array = physical_actor_session.render_parts(
+		presentation_frame,admitted,shared_workbench != null) \
+			if physical_actor_session != null else []
+	var presented_origin: Vector2 = presentation_camera_origin()
+	var content: Rect2 = view_content_rect()
+	physical_actor_overlay.present(parts,presented_origin,current_view_size,content)
+	# Take the trace ONLY after selecting the actual parts/poses and camera for
+	# this draw submission. Never recompute, substitute or change a pose.
+	if workbench_pose_trace.active:
+		_workbench_trace_presentation_frame(frame,presentation_frame,admitted,
+			parts,presented_origin,content)
+
+
+func begin_workbench_pose_trace(settings: Dictionary = {}) -> bool:
+	if shared_workbench == null or physical_actor_session == null: return false
+	var identity: Dictionary = settings.duplicate(true)
+	identity["source_commit"] = OS.get_environment("CYBERSAND_SOURCE_REVISION")
+	identity["pose_mode"] = OS.get_environment("CYBERSAND_DIAG_FLYER_POSE")
+	identity["native_sha256"] = FileAccess.get_sha256("res://addons/cybersand_native/bin/" +
+		("cybersand_native.windows.x86_64.dll" if OS.get_name()=="Windows"
+			else "libcybersand_native.linux.x86_64.so"))
+	return workbench_pose_trace.begin(identity)
+
+
+func finish_workbench_pose_trace() -> Dictionary:
+	return workbench_pose_trace.finish()
+
+
+# The shader and overlay should agree spatially for *the same* actor pose;
+# the separate bound/live fields identify a disagreement in simulation time.
+func _workbench_trace_presentation_frame(original_frame: Dictionary,
+		frame: Dictionary, admitted: Dictionary, parts: Array,
+		presented_origin: Vector2, content: Rect2) -> void:
+	var bridge: Variant = physical_actor_session.bridge
+	if not bridge is WorkbenchBridge: return
+	var screen: Transform2D = _world_view_screen_transform()
+	var shader_map: Transform2D = presentation_camera_screen_transform()
+	var unsnapped: Vector2 = screen*content.position \
+		- shader_map.x*camera_origin.x-shader_map.y*camera_origin.y
+	var first_parts: Dictionary = {}
+	for part: Dictionary in parts:
+		var slot: int = int(part.get("physical_body_index",-1))
+		if slot >= 0 and not first_parts.has(slot):
+			first_parts[slot] = part
+	var rows: Array = []
+	var instances: Dictionary = frame.get("instances",{})
+	for slot: int in range(mini(bridge._members.size(),WorkbenchPoseTrace.MAX_BODIES)):
+		var member: Dictionary = bridge._members[slot]
+		var receipt: Dictionary = instances.get(int(member.instance_id),{})
+		var bound: Variant = receipt.get("pose",null)
+		var live: Transform2D = bridge.body_transform(slot)
+		var visible: bool = first_parts.has(slot)
+		var selected: Variant = (admitted[slot] if admitted.has(slot) else bound) \
+			if visible else null
+		var source: String = "hidden" if not visible \
+			else ("live" if admitted.has(slot) else "mask_bound")
+		var selected_projection: Variant = WorkbenchPoseTrace.projection(
+			selected,presented_origin,content,current_view_size,screen,shader_map)
+		var render_part: Variant = first_parts[slot].transform \
+			if visible else null
+		var part_projection: Variant = WorkbenchPoseTrace.projection(
+			render_part,presented_origin,content,current_view_size,screen,shader_map)
+		rows.append({"slot":slot,"instance_id":int(member.instance_id),
+			"generation":int(member.generation),
+			"receipt_generation":receipt.get("generation",-1),
+			"source":source,"visible":visible,
+			"guard_reason":str(_workbench_pose_trace_reasons.get(slot,
+				workbench_presentation_last.get("status","not_evaluated"))),
+			"bound":WorkbenchPoseTrace.pose_json(bound),
+			"live":WorkbenchPoseTrace.pose_json(live),
+			"selected":WorkbenchPoseTrace.pose_json(selected),
+			"first_drawn_part":WorkbenchPoseTrace.pose_json(render_part),
+			"screen_selected":selected_projection,
+			"screen_first_part":part_projection,
+			"selected_screen":selected_projection.get("overlay_px",null) \
+				if selected_projection is Dictionary else null,
+			"live_screen":WorkbenchPoseTrace.xy(shader_map*live.origin),
+			"bound_screen":WorkbenchPoseTrace.xy(shader_map*bound.origin) \
+				if bound is Transform2D and bound.is_finite() else null})
+	var pilot_id: int = shared_workbench.selected_id()
+	var pilot_state: Dictionary = shared_workbench.body_state(pilot_id) \
+		if pilot_id > 0 else {}
+	var pilot_position: Vector2 = pilot_state.get("position",Vector2.INF)
+	var now_usec: int = Time.get_ticks_usec()
+	var native_tick: int = latest_snapshot.tick_index if latest_snapshot != null else -1
+	var snapshot_serial: int = latest_snapshot.serial if latest_snapshot != null else -1
+	workbench_pose_trace.observe({"type":"frame","time_usec":now_usec,
+		"process_frame":Engine.get_process_frames(),
+		"physics_frame":Engine.get_physics_frames(),
+		"frame_delta_ms":frame_time_ms,
+		"native_tick":native_tick,"native_snapshot_serial":snapshot_serial,
+		"rapier_step":physical_actor_session.tick,
+		"camera_mode":shared_workbench._camera.selected,
+		"pilot_instance_id":pilot_id,
+		"pilot_live_position":WorkbenchPoseTrace.xy(pilot_position) \
+			if pilot_position.is_finite() else null,
+		"camera_requested":WorkbenchPoseTrace.xy(camera_origin),
+		"camera_presented":WorkbenchPoseTrace.xy(presented_origin),
+		"camera_screen_phase_px":WorkbenchPoseTrace.xy(shader_map.origin-unsnapped),
+		"shader_world_zero_screen_px":WorkbenchPoseTrace.xy(shader_map.origin),
+		"screen_transform_origin":WorkbenchPoseTrace.xy(screen.origin),
+		"screen_basis_x":WorkbenchPoseTrace.xy(screen.x),
+		"screen_basis_y":WorkbenchPoseTrace.xy(screen.y),
+		"shader_basis_x":WorkbenchPoseTrace.xy(shader_map.x),
+		"shader_basis_y":WorkbenchPoseTrace.xy(shader_map.y),
+		"view_world_cells":[current_view_size.x,current_view_size.y],
+		"content_rect":[content.position.x,content.position.y,content.size.x,content.size.y],
+		"mask_receipt_original_valid":_valid_workbench_mask_frame(original_frame),
+		"mask_receipt_render_valid":_valid_workbench_mask_frame(frame),
+		"mask_session":frame.get("session",-1),
+		"mask_epoch":frame.get("epoch",-1),
+		"mask_world_generation":frame.get("world_generation",-1),
+		"mask_revision":frame.get("revision",-1),
+		"uploaded_world_generation":last_uploaded_world_generation,
+		"uploaded_revision":last_uploaded_revision,
+		"uploaded_render_serial":last_uploaded_render_snapshot_serial,
+		"render_hz_target":render_snapshot_hz,
+		"blend_active":cadence_lod_enabled and render_snapshot_hz > 0 and \
+			now_usec-snapshot_blend_start_usec < 1000000.0/float(render_snapshot_hz),
+		"guard":workbench_presentation_last.duplicate(true),
+		"body_count":bridge._members.size(),
+		"truncated_bodies":maxi(0,bridge._members.size()-WorkbenchPoseTrace.MAX_BODIES),
+		"visible_part_count":parts.size(),"bodies":rows})
 
 
 # Native render ACK is mandatory. Delay only an accepted, uploaded serial.
@@ -3236,6 +3362,8 @@ func engine_lab_set_scripted_input(enabled: bool) -> bool:
 # may use live Rapier presentation; there is no unchecked fallback.
 func _safe_workbench_presentation_poses(frame: Dictionary) -> Dictionary:
 	var poses: Dictionary = {}
+	var tracing: bool = workbench_pose_trace.active
+	if tracing: _workbench_pose_trace_reasons.clear()
 	workbench_presentation_last = {"status":"inactive","safe_live":0,
 		"blocked_material":0,"blocked_unknown":0,"blocked_other":0,
 		"budget_vetoes":0,"cells_examined":0,"elapsed_usec":0}
@@ -3261,14 +3389,17 @@ func _safe_workbench_presentation_poses(frame: Dictionary) -> Dictionary:
 		var member: Dictionary = bridge._members[slot]
 		var entry: Dictionary = instances.get(int(member.instance_id),{})
 		if entry.get("generation",-1) != member.generation or not entry.get("pose") is Transform2D:
+			if tracing: _workbench_pose_trace_reasons[slot] = "actor_receipt_invalid"
 			summary.blocked_other += 1
 			continue
 		var bound_pose: Transform2D = entry.pose
 		var live_pose: Transform2D = bridge.body_transform(slot)
 		if bound_pose.is_equal_approx(live_pose):
+			if tracing: _workbench_pose_trace_reasons[slot] = "same_pose"
 			continue
 		var remaining: int = PRESENTATION_FRAME_SCAN_BUDGET-int(summary.cells_examined)
 		if remaining <= 0 or Time.get_ticks_usec() >= deadline_usec:
+			if tracing: _workbench_pose_trace_reasons[slot] = "shared_budget"
 			summary.budget_vetoes += 1
 			summary.blocked_other += 1
 			continue
@@ -3276,6 +3407,7 @@ func _safe_workbench_presentation_poses(frame: Dictionary) -> Dictionary:
 			bound_pose,live_pose,bridge._rects[slot],image,
 			_presentation_previous_occupied,_presentation_previous_unknown,blend_active,
 			mini(remaining,WorkbenchPresentationCoherence.MAX_SCAN_CELLS),deadline_usec)
+		if tracing: _workbench_pose_trace_reasons[slot] = str(decision.reason)
 		summary.cells_examined += int(decision.scanned)
 		if decision.safe:
 			poses[slot] = live_pose
