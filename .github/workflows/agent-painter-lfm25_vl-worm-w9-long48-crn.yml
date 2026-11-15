@@ -57,7 +57,7 @@ jobs:
           python3 - <<'PY'
           import json
           from pathlib import Path
-          r=json.loads(Path("experiments/agent_painter/lanes/lfm25_vl/worm-w9-scored-crn-request.json").read_text())
+          r=json.loads(Path("experiments/agent_painter/lanes/lfm25_vl/worm-w9-long48-crn-request.json").read_text())
           assert r == {
             "schema":"cybersand.worm.lfm-w9-long48-score-CRN/1",
             "producer_source":"c14731f875d7334eae213c2bd74230bd310e7167",
@@ -69,6 +69,7 @@ jobs:
             "model_sampler":"identical-W8-T2.5-70percent-score-30percent-flat-seed-tick-RNG",
             "expected_model_rollouts":6,
             "expected_flat_rollouts":6,
+            "attempt":2,
             "new_optimizer_updates":0,
             "native_execution":False,
             "sealed_FINAL_opened":False,
