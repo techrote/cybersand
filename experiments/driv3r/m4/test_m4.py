@@ -116,5 +116,41 @@ class M4OfflineTests(unittest.TestCase):
     def test_incomplete_comparison_cannot_claim_success(self):
         self.assertEqual(compare({"A1":summary("A1")})["status"],"INCOMPLETE")
 
+
+    def test_real_native_receipt_adapter_consumes_before_and_after_world_fences(self):
+        from unittest.mock import patch
+        from experiments.driv3r.m4.compare import draw
+        class Native:
+            def cursor_move(self, start, end):
+                return {"status":"completed","receipt":{"actual_changed_cells":0}}
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder)
+            (root/"native").mkdir()
+            (root/"native/actual.png").write_bytes(b"\x89PNG\r\n\x1a\n")
+            before={"world_id":"fixture:1","generation":1,"revision":3,"tick":0,
+                    "material_sha256":"a"*64,"world_material_sha256":"b"*64}
+            after={**before,"revision":4,"material_sha256":"c"*64,
+                   "world_material_sha256":"d"*64,"png_path":"actual.png"}
+            reply={"status":"completed",
+                   "receipt":{"actual_changed_cells":1,"readback_matches":True,
+                              "receipts_reconstruct_materials":True},
+                   "observation":after}
+            obs={"record_id":"obs-fixture"}
+            actions=[];receipts=[];artifacts=[];journal=[obs]
+            history=[[12,24]]
+            cursor={"from":[12,24],"to":[12,25],"index":0,"candidate":"MOVE_S"}
+            with patch("experiments.driv3r.m4.compare._native_action",return_value=reply):
+                result=draw(root,"fixture",Native(),journal,actions,receipts,artifacts,
+                            {},cursor,history,"MODEL_A1_0",obs,before,
+                            model=True,legal_hash="e"*64,present_hash="f"*64)
+            self.assertEqual(result["world_precondition"]["revision"],3)
+            self.assertEqual(result["world_postcondition"]["revision"],4)
+            self.assertEqual(result["actor"],"d1")
+            self.assertEqual(result["cursor_after"],[12,25])
+            self.assertEqual(len(actions),1)
+            self.assertEqual(len(receipts),1)
+            self.assertEqual(history,[[12,24],[12,25]])
+
+
 if __name__=="__main__":
     unittest.main()
