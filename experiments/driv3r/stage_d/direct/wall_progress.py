@@ -52,16 +52,18 @@ def _summarize_wall_progress(
         previous_in_band = in_band
     profile_rows = last_y - first_y + 1
     ordered = next_row - first_y
+    # Starting on the first qualified row is zero *traversal* progress.
+    ordered_progress = max(0.0, (ordered - 1) / (last_y - first_y))
     raw_progress = max(0.0, min(1.0,
         (max(p[1] for p in path) - first_y) / (last_y - first_y)))
     return {
         "profile_row_count": profile_rows,
         "ordered_band_qualified_rows": ordered,
-        "ordered_band_progress_fraction": round(ordered / profile_rows, 6),
+        "ordered_band_progress_fraction": round(ordered_progress, 6),
         "distinct_band_qualified_rows": len(qualified_rows),
         "distinct_band_row_coverage_fraction": round(len(qualified_rows) / profile_rows, 6),
         "ungated_max_y_progress_fraction": round(raw_progress, 6),
-        "ungated_minus_ordered_progress": round(raw_progress - ordered / profile_rows, 6),
+        "ungated_minus_ordered_progress": round(raw_progress - ordered_progress, 6),
         "off_band_path_cells": off_band_steps,
         "longest_consecutive_off_band_path_cells": longest_off_band_run,
         "band_exits": exits,

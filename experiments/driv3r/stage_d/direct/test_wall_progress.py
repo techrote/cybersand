@@ -13,6 +13,7 @@ class WallProgressTests(unittest.TestCase):
             lambda p: float(p[0] - 10))
         self.assertEqual(result["ungated_max_y_progress_fraction"], 1.0)
         self.assertEqual(result["ordered_band_qualified_rows"], 1)
+        self.assertEqual(result["ordered_band_progress_fraction"], 0.0)
         self.assertEqual(result["distinct_band_qualified_rows"], 1)
         self.assertGreater(result["ungated_minus_ordered_progress"], 0.7)
         self.assertEqual(result["first_band_exit_path_index"], 3)
@@ -22,6 +23,7 @@ class WallProgressTests(unittest.TestCase):
         result = w._summarize_wall_progress(path, 2, 6,
             lambda p: 20.0 if p == (30, 4) else 8.0)
         self.assertEqual(result["ordered_band_qualified_rows"], 5)
+        self.assertEqual(result["ordered_band_progress_fraction"], 1.0)
         self.assertEqual(result["distinct_band_qualified_rows"], 5)
         self.assertEqual(result["band_exits"], 1)
         self.assertEqual(result["band_reentries"], 1)
