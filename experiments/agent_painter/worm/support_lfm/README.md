@@ -42,3 +42,22 @@ pairs = evaluate_policy("lfm-raw-stepNN", choose, seeds=(2101,2102), steps=48)
 `choose` must invoke the genuine pinned model with the current observation. It MUST NOT see a DEVELOPMENT `target_action`, use answer repair, teacher fallback, hidden retries or altered host legality. W0 invokes the genuine policy once per decision through its immutable deep-copied observation and caps these evaluations at 512 actions; real-time native integration is a later separate W4 gate. If model outputs `"LEFT\n"`, it is **invalid** as a raw W0 action and remains invalid in the receipt.
 
 The workflow does **not** report model-vs-baseline because no model endpoint/explicit optimiser lease has been provided. Current output is support-source evidence only. LFM primary can consume exact corpus hash, prompt-v1 format, held-out action interface and W0 PNG schema before launching its own CPU model training. The owner-authoritative Art2 complete-scene FINAL remains sealed.
+
+## Raw-versus-applied action evaluation (15 November 2026)
+
+A learned policy can repeatedly emit literal `STRAIGHT` while the W0 host
+legally substitutes `RETRACE` (or `STOP`) when forward motion is blocked.
+Therefore, **applied-action diversity and host recovery are not model ability**.
+`statistics(record)` now additionally emits `raw_action_counts`,
+`raw_action_entropy_bits`, `max_same_raw_streak`,
+`raw_straight_fraction` and `host_fallback_count`. Always report raw and
+applied metrics separately for LFM W1/W2; preserve every original token/action
+receipt and never count fallback as an independently learned recovery.
+The gallery summary marks the additive `worm-lfm-raw-applied-metrics-v1` schema;
+W0 PNG/trace bytes and versioned v2 TRAIN/DEVELOPMENT teacher targets are unchanged.
+
+`checked_splits(train, dev)` now fails closed on literal TRAIN/DEVELOPMENT
+prompt overlap, including counterfactual companion rows, rather than requiring
+callers to remember a separate deduplication helper. The existing v1 corpus
+remains a retained negative example. This check does **not** prove semantic
+novelty across near-identical but non-equal local observations.

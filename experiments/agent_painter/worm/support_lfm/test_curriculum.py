@@ -13,11 +13,11 @@ from curriculum import (TRAIN_SEEDS, DEV_SEEDS, canonical, checked_splits,
 
 class LfmWormSupportTests(unittest.TestCase):
     def test_schema_and_reproducible_disjoint_seed_groups(self):
-        train, dev = rows("train", steps=16), rows("development", steps=16)
+        train, dev, _audit = split_distinct_actions()
         checked_splits(train, dev)
         self.assertFalse(set(TRAIN_SEEDS) & set(DEV_SEEDS))
         self.assertEqual(len({r["id"] for r in train+dev}), len(train+dev))
-        self.assertEqual(canonical(train), canonical(rows("train", steps=16)))
+        self.assertEqual(canonical(train), canonical(split_distinct_actions()[0]))
         self.assertTrue(all(r["target_action"] in r["observation"]["legal"] for r in train+dev))
         self.assertTrue(all("teacher" not in r["prompt"].lower() for r in train+dev))
 
@@ -91,6 +91,25 @@ class LfmWormSupportTests(unittest.TestCase):
         checked_splits(train + adverse_rows("train"),
                        dev + adverse_rows("development"))
 
+    def test_raw_literal_prompt_leakage_is_fail_closed(self):
+        train, dev = rows("train", steps=4), rows("development", steps=4)
+        self.assertTrue({r["prompt"] for r in train} & {r["prompt"] for r in dev})
+        with self.assertRaisesRegex(ValueError, "literal prompt"):
+            checked_splits(train, dev)
+
+    def test_raw_model_collapse_not_hidden_by_host_fallback(self):
+        # An endlessly repeated raw STRAIGHT eventually hits a boundary; host
+        # RETRACE is not evidence of learned action diversity or recovery.
+        rec = rollout(2101, "architecture", 120, lambda _: "STRAIGHT")
+        scores = statistics(rec)
+        self.assertEqual(scores["raw_action_counts"], {"STRAIGHT": 120})
+        self.assertEqual(scores["max_same_raw_streak"], 120)
+        self.assertEqual(scores["raw_action_entropy_bits"], 0)
+        self.assertEqual(scores["raw_straight_fraction"], 1)
+        self.assertGreater(scores["host_fallback_count"], 0)
+        self.assertGreater(scores["action_entropy_bits"], 0)
+        self.assertEqual(scores["invalid_raw_count"], scores["host_fallback_count"])
+
     def test_heldout_train_leakage_is_fail_closed(self):
         a = rows("train", 3)
         b = rows("development", 3)
@@ -109,8 +128,8 @@ class LfmWormSupportTests(unittest.TestCase):
         self.assertTrue(all(x["observation_source"].startswith("counterfactual")
                             for x in train + dev))
         self.assertTrue(all(x["target_action"] in x["host_legal"] for x in train + dev))
-        checked_splits(rows("train", 4) + train,
-                       rows("development", 4) + dev)
+        replay_train, replay_dev, _audit = split_distinct_actions()
+        checked_splits(replay_train + train, replay_dev + dev)
 
     def test_adverse_obstacle_and_recovery_action(self):
         o = {"heading":0, "family":"architecture", "tick":9,

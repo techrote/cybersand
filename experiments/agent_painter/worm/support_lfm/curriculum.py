@@ -249,6 +249,11 @@ def checked_splits(train: list[dict], dev: list[dict]) -> None:
             raise ValueError("unknown family")
         if item["target_action"] not in worm.ACTIONS:
             raise ValueError("unknown vocabulary")
+    # Separate obstacle-world seeds do NOT guarantee unseen model input bytes.
+    # This guard also includes counterfactual adverse rows supplied to callers.
+    literal_overlap = {r["prompt"] for r in train} & {r["prompt"] for r in dev}
+    if literal_overlap:
+        raise ValueError(f"literal prompt TRAIN/DEVELOPMENT overlap: {len(literal_overlap)}")
 
 
 def rollout(seed: int, family: str, steps: int, choose: Callable[[dict], str]) -> dict:
@@ -268,6 +273,7 @@ def statistics(record: dict) -> dict:
     m = record["metrics"]
     events = record["events"]
     applied = [e["applied"] for e in events]
+    raw = [e["raw_choice"] for e in events]
     longest = 0
     runlen = 0
     previous = None
@@ -276,8 +282,17 @@ def statistics(record: dict) -> dict:
         longest = max(longest, runlen)
         previous = action
     counts = Counter(applied)
+    raw_counts = Counter(raw)
     n = max(len(applied), 1)
     entropy = -sum((v/n)*math.log2(v/n) for v in counts.values())
+    raw_entropy = -sum((v/n)*math.log2(v/n) for v in raw_counts.values())
+    raw_streak = 0
+    raw_max_streak = 0
+    previous_raw = None
+    for choice in raw:
+        raw_streak = raw_streak + 1 if choice == previous_raw else 1
+        raw_max_streak = max(raw_max_streak, raw_streak)
+        previous_raw = choice
     no_fresh = sum(not fresh_directions(e["observation"]) for e in events)
     recoveries = sum(
         not fresh_directions(e["observation"]) and e["applied"] == "RETRACE"
@@ -287,6 +302,11 @@ def statistics(record: dict) -> dict:
         "decision_count": len(events),
         "invalid_raw_count": m["invalid_raw_choices"],
         "invalid_raw_rate": round(m["invalid_raw_choices"] / n, 5),
+        "raw_action_counts": dict(sorted(raw_counts.items())),
+        "raw_action_entropy_bits": round(raw_entropy, 5),
+        "max_same_raw_streak": raw_max_streak,
+        "raw_straight_fraction": round(raw_counts["STRAIGHT"] / n, 5),
+        "host_fallback_count": sum(not e["raw_legal"] for e in events),
         "unique_cells": m["unique_trail_cells"],
         "coverage_free_fraction": round(
             m["unique_trail_cells"] / (record["size"] ** 2 - len(record["obstacles"])), 6),
@@ -364,6 +384,7 @@ def save_gallery(out: Path, steps: int = 240,
         "version": VERSION, "contract": "cybersand.worm.observation-action/0-experimental",
         "host_source": COMMON_SOURCE_SHA, "native": False, "model_inference": False,
         "steps": steps, "seeds": list(seeds), "files": files, "reports": reports,
+        "metrics_version": "worm-lfm-raw-applied-metrics-v1",
         "scientific_note": "No model improvement claim; controls are non-learned. "
                            "Judge aesthetics from original PNGs independently of metrics.",
     }
