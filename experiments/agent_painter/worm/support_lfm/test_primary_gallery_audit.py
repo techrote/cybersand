@@ -101,7 +101,7 @@ class GalleryAuditTests(unittest.TestCase):
 
     def test_fake_control_rejected(self):
         name = f"greebles-random-{self.seed}.json"
-        self._edit(name, lambda obj: obj["events"][0].update(raw_choice="LEFT"))
+        self._edit(name, lambda obj: obj["events"][0].update(raw_choice="TELEPORT"))
         with self.assertRaisesRegex(ValueError, "host replay diverged"):
             a.audit(self.gallery, seed=self.seed, budget=self.budget)
 
