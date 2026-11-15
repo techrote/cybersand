@@ -188,6 +188,28 @@ class FleetSamplesTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "World/material"):
             build_four_streams(inputs)
 
+    def test_reject_world_alias_even_if_material_digest_differs(self):
+        # Old pair-only uniqueness check accepted a second nominally
+        # independent worm using the exact same World fingerprint.
+        inputs = [fixture(i) for i in range(4)]
+        inputs[3]["world_sha256"] = inputs[0]["world_sha256"]
+        self.assertNotEqual(inputs[3]["material_sha256"], inputs[0]["material_sha256"])
+        with self.assertRaisesRegex(ValueError, "source alias: World"):
+            build_four_streams(inputs)
+
+    def test_reject_material_alias_even_if_world_digest_differs(self):
+        inputs = [fixture(i) for i in range(4)]
+        inputs[3]["material_sha256"] = inputs[0]["material_sha256"]
+        self.assertNotEqual(inputs[3]["world_sha256"], inputs[0]["world_sha256"])
+        with self.assertRaisesRegex(ValueError, "source alias: material"):
+            build_four_streams(inputs)
+
+    def test_reject_mixed_source_revisions_with_distinct_worlds_and_seeds(self):
+        inputs = [fixture(i) for i in range(4)]
+        inputs[3]["source_revision"] = "f" * 40
+        with self.assertRaisesRegex(ValueError, "mixed source revisions"):
+            build_four_streams(inputs)
+
     def test_reject_critic_forged_receipt_flag_or_negative_violations(self):
         x = fixture()
         x["critic_cases"][0]["hypothetical_receipt_available"] = "native-verified"
