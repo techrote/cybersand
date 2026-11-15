@@ -5,6 +5,7 @@ on:
     paths:
       - experiments/agent_painter/worm/support_sprocket/observed_v2.py
       - .github/workflows/agent-painter-worm-sprocket-support-observed-v2.yml
+      - experiments/agent_painter/worm/support_sprocket/spatial_v1.py
 
 permissions:
   contents: read
@@ -35,6 +36,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 experiments/agent_painter/worm/support_sprocket/observed_v2.py --output evidence/v2 > evidence/v2/console.txt
+          python3 experiments/agent_painter/worm/support_sprocket/spatial_v1.py --gallery evidence/v2/gallery --output evidence/v2/spatial > evidence/v2/spatial-console.txt
           python3 - <<'PY'
           from pathlib import Path
           import json, hashlib
@@ -45,6 +47,12 @@ jobs:
           assert len(d['train_world_seeds'])==4 and len(d['development_world_seeds'])==2
           assert d['TRAIN']['rows']>0 and d['DEVELOPMENT']['rows']>0
           assert g['gallery_count']==36 and len(g['entries'])==36
+          s=json.loads((root/'spatial/spatial-report.json').read_text())
+          assert s['full96_png_json_pixel_replays']==36
+          assert s['prefix24_pngs']==36 and s['contact_sheets']==6
+          assert len(list((root/'spatial/prefix24').glob('*.png')))==36
+          assert len(list((root/'spatial/contact').glob('*.png')))==6
+          assert all(e['prefix24']['unique_cells']<=e['full96']['unique_cells'] for e in s['entries'])
           assert g['model_optimizer_steps']==0
           assert len(list((root/'gallery').glob('*.png')))==36
           assert len(list((root/'gallery').glob('*.json')))==37
