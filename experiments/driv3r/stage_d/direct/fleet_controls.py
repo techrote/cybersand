@@ -26,6 +26,7 @@ SLOTS = (
 MACROS = (1, 2, 4, 8)
 MAX_HORIZON = 128
 MAX_ORACLE_PROBES = 3_000_000
+EPISODE_ID_VERSION = "d1a-synthetic-episode-identity/1"
 
 
 class ControlRefused(ValueError):
@@ -35,6 +36,28 @@ class ControlRefused(ValueError):
 def digest(data: Any) -> str:
     return hashlib.sha256(json.dumps(data, sort_keys=True, separators=(",", ":"),
                                      allow_nan=False).encode("utf8")).hexdigest()
+
+
+def _source_fingerprints(offline: Any, oracle: Any, character: Any) -> dict[str, str]:
+    """Content identities for both completed and failed offline episodes."""
+    return {
+        "fleet_controls_source_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        "oracle_source_sha256": hashlib.sha256(Path(oracle.__file__).read_bytes()).hexdigest(),
+        "offline_source_sha256": hashlib.sha256(Path(offline.__file__).read_bytes()).hexdigest(),
+        "line_character_source_sha256": hashlib.sha256(Path(character.__file__).read_bytes()).hexdigest(),
+    }
+
+
+def _episode_run_id(slot: dict[str, Any], horizon: int, probe_cap: int,
+                    source_fingerprints: dict[str, str]) -> str:
+    """Distinguish actual synthetic episodes from the planned wrangler slot.
+
+    A 36/128 run, a changed oracle cap, or changed executed Python source
+    must not reuse a synthetic execution identity. This is never a model or
+    native lease/receipt identifier.
+    """
+    return digest([EPISODE_ID_VERSION, slot["synthetic_run_id"], horizon,
+                   probe_cap, source_fingerprints])
 
 
 def _lane_modules():
@@ -191,6 +214,8 @@ def run_matched_controls(slot: dict[str, Any], *, horizon: int = 36,
     f = _get_fixture(slot["fixture_id"])
     _, budget_oracle = _lane_modules()
     from . import offline, line_character
+    source_fingerprints = _source_fingerprints(offline, budget_oracle, line_character)
+    episode_id = _episode_run_id(slot, horizon, oracle_probe_cap, source_fingerprints)
     clearance = (lambda p: offline.wall_distance(f, p)) if f.task == "wall_offset" else None
     try:
         oracle = budget_oracle.bounded_optimal_route(
@@ -200,6 +225,7 @@ def run_matched_controls(slot: dict[str, Any], *, horizon: int = 36,
         return {
             "version": VERSION, "slot_index": slot["slot_index"],
             "synthetic_run_id": slot["synthetic_run_id"],
+            "episode_run_id": episode_id, **source_fingerprints,
             "horizon": horizon, "state": "ORACLE_RESOURCE_EXHAUSTED",
             "error": str(exc), "oracle_probe_cap": oracle_probe_cap,
             "arms": [], "native_qualified": False, "sequential_native_receipts": 0,
@@ -212,6 +238,7 @@ def run_matched_controls(slot: dict[str, Any], *, horizon: int = 36,
     return {
         "version": VERSION, "slot_index": slot["slot_index"],
         "synthetic_run_id": slot["synthetic_run_id"],
+        "episode_run_id": episode_id,
         "fixture_id": f.fixture_id, "fixture_sha256": f.sha256,
         "horizon": horizon, "state": "SYNTHETIC_CONTROLS_COMPLETE",
         "frozen_fixture_budget": f.budget, "source_kind": "synthetic_development_only",
@@ -221,10 +248,7 @@ def run_matched_controls(slot: dict[str, Any], *, horizon: int = 36,
                    "probe_cap": oracle["predecessor_probe_cap"],
                    "feasible_arrival_within_budget": oracle["feasible_arrival_within_budget"],
                    "optimal_cost_within_budget": oracle["optimal_cost_within_budget"]},
-        "oracle_source_sha256": hashlib.sha256(Path(budget_oracle.__file__).read_bytes()).hexdigest(),
-        "offline_source_sha256": hashlib.sha256(Path(offline.__file__).read_bytes()).hexdigest(),
-        "line_character_source_sha256": hashlib.sha256(
-            Path(line_character.__file__).read_bytes()).hexdigest(),
+        **source_fingerprints,
         "common_initial_legal_set_sha256": next(iter(first_menus), None),
         "arms": arms, "native_qualified": False,
         "sequential_native_receipts": 0, "model_outcome": None,
@@ -268,6 +292,9 @@ def compact_handoff(slots: tuple[dict[str, Any], ...],
     if len({s["synthetic_run_id"] for s in slots}) != 4:
         raise ControlRefused("Duplicate synthetic run identity")
     summary = []
+    cohort_horizons: set[int] = set()
+    cohort_caps: set[int] = set()
+    episode_ids: set[str] = set()
     for slot, report in zip(slots, reports):
         validate_slot(slot)
         if report.get("synthetic_run_id") != slot["synthetic_run_id"]:
@@ -286,7 +313,17 @@ def compact_handoff(slots: tuple[dict[str, Any], ...],
                 raise ControlRefused("Resource-exhaustion replay mismatch")
         else:
             raise ControlRefused("Unqualified report state")
+        cohort_horizons.add(report["horizon"])
+        actual_cap = (report["oracle"]["probe_cap"] if
+                      report["state"] == "SYNTHETIC_CONTROLS_COMPLETE"
+                      else report["oracle_probe_cap"])
+        cohort_caps.add(actual_cap)
+        episode_id = report.get("episode_run_id")
+        if not isinstance(episode_id, str) or len(episode_id) != 64 or episode_id in episode_ids:
+            raise ControlRefused("Duplicate or missing exact synthetic episode identity")
+        episode_ids.add(episode_id)
         summary.append({
+            "episode_run_id": episode_id,
             "wrangler_id": slot["wrangler_id"],
             "requested_model_family": slot["requested_model_family"],
             "synthetic_run_id": slot["synthetic_run_id"],
@@ -298,6 +335,7 @@ def compact_handoff(slots: tuple[dict[str, Any], ...],
             "oracle_objective": report.get("oracle", {}).get("objective"),
             "oracle_optimal_cost_within_budget": report.get("oracle", {}).get("optimal_cost_within_budget"),
             "oracle_feasible_arrival_within_budget": report.get("oracle", {}).get("feasible_arrival_within_budget"),
+            "fleet_controls_source_sha256": report.get("fleet_controls_source_sha256"),
             "oracle_source_sha256": report.get("oracle_source_sha256"),
             "offline_source_sha256": report.get("offline_source_sha256"),
             "line_character_source_sha256": report.get("line_character_source_sha256"),
@@ -320,8 +358,12 @@ def compact_handoff(slots: tuple[dict[str, Any], ...],
             "source_kind": "synthetic_development_only",
             "native_receipts": 0, "model_outcome": None,
         })
+    if len(cohort_horizons) != 1 or len(cohort_caps) != 1:
+        raise ControlRefused("Four-stream comparison requires the same horizon and oracle probe cap")
     return {
         "version": VERSION, "recipient_roles": ["Wormfleet Commander", "Worm Ethologist"],
+        "matched_horizon": next(iter(cohort_horizons)),
+        "matched_oracle_probe_cap": next(iter(cohort_caps)),
         "m1_commit": M1_COMMIT, "m1_schema_sha256": M1_SCHEMA_SHA256,
         "streams": summary, "native_64_logical_move_limit_unchanged": True,
         "four_loaded_models": False, "native_128_approved": False,
