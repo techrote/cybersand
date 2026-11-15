@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Owner-authorised WORMBRAIN 36-choice pilot, native d1-2B steering, no route objective.
-# No resident model or inference payload is acquired.
+# The pinned resident Q8 is acquired only after exact-source request admission.
 set -euo pipefail
 test -n "${RUNNER_TEMP:-}"
 test -n "${GITHUB_SHA:-}"
@@ -13,7 +13,7 @@ test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
 python3 - "$evidence/request.json" "$GITHUB_SHA" <<'PY'
 import json,os,pathlib,sys
 r=json.loads(pathlib.Path("experiments/driv3r/wormbrain/qualification-request.json").read_text())
-assert r["schema"]=="driv3r-worm-a1a2a3-36-request-v1"
+assert r["schema"]=="driv3r-wormbrain-pilot-request/1"
 assert r["owner_gate"]=="Owner-approved eccentric line-steering wormbrain native pilot"
 assert r["max_model_decisions_per_arm"]==36 and r["max_native_material_edits_per_arm"]==36
 assert r["max_recoveries_per_arm"]==8 and r["allow_model_and_native"] is True
