@@ -26,7 +26,7 @@ NATIVE_PREFIX = "sprocket-v3-native/"
 SEEDS = (104729, 130363)
 CANDIDATES = {"A07": 781, "A08": 924}
 GROUPS = {
-    "train": {"architecture/stair_and_landing/v1", "architecture/room_and_platform/v1"},
+    "train": {"architecture/stair_and_landing_hall/v1", "architecture/paired_doorway_rooms/v1"},
     "development": {"architecture/stacked_rooms_and_shaft/v1", "architecture/bridge_between_towers/v1"},
 }
 
