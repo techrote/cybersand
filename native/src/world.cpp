@@ -2351,6 +2351,10 @@ void World::set_with_quantity_kind(std::int64_t x, std::int64_t y, Material mate
 bool World::set_cell_state(std::int64_t x, std::int64_t y, Material material,
                            std::uint16_t state_a_value,
                            std::uint8_t state_b_value) {
+    // Validate the requested Water tuple before zero mass can normalize it to
+    // Empty and bypass write_cell's coherent-Water refusal.
+    if (wave_ != nullptr && material == Material::Water && state_b_value != 0U)
+        throw std::invalid_argument("wave_flow does not support coherent Water emission");
     // Setup normalization is an explicit pre-construction operation. A live
     // partial write never rounds, allocates a chunk or mutates the prior cell.
     if (material == Material::Water && whole_cell_water_enabled() && state_a_value != 0U &&

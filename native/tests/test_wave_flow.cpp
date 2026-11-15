@@ -133,6 +133,46 @@ void disabled_is_default_and_unsupported_is_refused() {
             "unsupported coherence state was not rejected before mutation");
 }
 
+void coherent_water_edits_refuse_before_zero_mass_normalization() {
+    for (const auto workers : {1U, 4U}) {
+        World world(config(workers));
+        box(world, 32, 32);
+        rect(world, 8, 20, 8, 11, Material::Water);
+        (void)world.tick(); // Refusal must preserve an active solver, including its flux.
+        const auto physical = world.physical_state_hash();
+        const auto state = world.state_hash();
+        const auto ledger = world.quantity_ledger();
+        const auto chunks = world.chunk_count();
+        const auto surface = world.hard_surface_revision();
+        // Occupied Water, hard terrain, resident Empty and an absent chunk.
+        for (const auto target : std::array<std::array<int, 2>, 4>{{
+                 {10, 30}, {0, 0}, {20, 10}, {2048, 2048}}}) {
+            for (const auto mass : {0U, 1U, 255U, 65535U}) {
+                bool refused = false;
+                try {
+                    (void)world.set_cell_state(target[0], target[1], Material::Water,
+                                               static_cast<std::uint16_t>(mass), 1);
+                } catch (const std::invalid_argument&) {
+                    refused = true;
+                }
+                require(refused, "coherent Water write bypassed admission through zero-mass normalization");
+                require(world.physical_state_hash() == physical && world.state_hash() == state &&
+                            world.quantity_ledger() == ledger && world.chunk_count() == chunks &&
+                            world.hard_surface_revision() == surface && !world.has_failed(),
+                        "refused coherent Water write changed state, quantity, allocation or health");
+            }
+        }
+        require(world.set_cell_state(10, 30, Material::Water, 0, 0) &&
+                    world.stored_material(10, 30) == Material::Empty,
+                "valid zero-mass Wave erasure was refused");
+    }
+    World ordinary{WorldConfig{}};
+    ordinary.set(10, 10, Material::Water);
+    require(ordinary.set_cell_state(10, 10, Material::Water, 0, 1) &&
+                ordinary.stored_material(10, 10) == Material::Empty,
+            "Wave refusal changed legacy zero-mass normalization");
+}
+
 void dam_break_conserves_and_spreads() {
     const int n = 256;
     World world(config(4, 3));
@@ -1150,6 +1190,7 @@ int main(int argc, char** argv) {
     };
     const Test tests[] = {
         {"disabled default and typed refusal", disabled_is_default_and_unsupported_is_refused},
+        {"coherent Water edits refuse before zero-mass normalization", coherent_water_edits_refuse_before_zero_mass_normalization},
         {"dam break conserves and spreads", dam_break_conserves_and_spreads},
         {"worker counts are cell identical", worker_counts_are_cell_identical},
         {"waves propagate and interfere", waves_propagate_and_interfere},
