@@ -125,8 +125,10 @@ def worker(args):
                                         is_trainable=False,local_files_only=True)
         e3.BUDGET=args.steps
         e3.STOP_DEFER_BEFORE=args.steps-2
+        inference_start_utc=time.time()
         record,receipts=e3.rollout(w0,tuned,tokenizer,adapter,
                                    args.family,args.seed,"trained",tokens)
+        inference_end_utc=time.time()
         if not receipts or len(receipts)!=record["steps_executed"]:
             raise ValueError("no genuine model decisions")
         if any(not x["model_forward"] or x["actual_W0_applied"]!=x["host_selected"] or
@@ -146,6 +148,8 @@ def worker(args):
                 "metrics":control["metrics"]}
         complete={**identity,**pin,"end_utc":time.time(),
            "wall_seconds":time.monotonic()-start_mono,
+           "inference_start_utc":inference_start_utc,
+           "inference_end_utc":inference_end_utc,
            "cpu_seconds":time.process_time()-start_cpu,
            "peak_rss_kib":resource.getrusage(resource.RUSAGE_SELF).ru_maxrss,
            "trained":{"steps":len(receipts),"invalid":sum(not r["selected_host_legal"] for r in receipts),
@@ -249,6 +253,10 @@ def run_group(args,stage,concurrent):
         raise
 
 def benchmark(args):
+    def cancel(sig,frame):
+        raise InterruptedError("host cancellation/timeout signal %d"%sig)
+    signal.signal(signal.SIGTERM,cancel)
+    signal.signal(signal.SIGINT,cancel)
     if args.steps!=STAGE_STEPS or args.deadline<=0:
         raise ValueError("F1 is only 8-step original-image residency preflight")
     args.output.mkdir(parents=True,exist_ok=False)
