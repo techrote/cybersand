@@ -1,0 +1,64 @@
+name: LFM2.5-VL C2c visible-native proximity research v3 (NOT TRAIN)
+on:
+  push:
+    branches: [codex/agent-painter-lfm25-vl-568]
+    paths:
+      - 'experiments/agent_painter/lanes/lfm25_vl/c2_offset_proposal_v3.json'
+      - 'experiments/agent_painter/lanes/lfm25_vl/c2_native_proximity_v3.py'
+      - 'experiments/agent_painter/lanes/lfm25_vl/test_c2_native_proximity_v3.py'
+      - '.github/workflows/agent-painter-lfm25_vl-c2-proximity.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: lfm25-c2c-proximity-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  visible-native-source-review-only:
+    name: C2c true geometry, original native masks, no FINAL/model/Art
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Verify actual source and preserved original C2 and C2b
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = "refs/heads/codex/agent-painter-lfm25-vl-568"
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git hash-object experiments/agent_painter/lanes/lfm25_vl/contrastive_proposals_v1.json)" = "226ce959c68a9e2649e88fe15c10713437cf82be"
+          echo "100dd9b188c2b2c96ab5d3680a929606b1dfd69f40cb524730f4da8915b739b2  experiments/agent_painter/lanes/lfm25_vl/c2_stepped_proposal_v2.json" | sha256sum --check
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/lfm-c2c-ci.json
+      - name: Initialize failure/partial receipt
+        run: |
+          mkdir -p evidence
+          printf '{"status":"FAIL_OR_INCOMPLETE_NO_ADMISSION","final_targets_opened":false,"native_executions":0,"admitted_train_groups":0,"optimizer_updates":0}\n' > evidence/c2c-source-native-proximity.json
+      - name: Run C2c adversarial source-only tests
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s experiments/agent_painter/lanes/lfm25_vl -p 'test_c2_native_proximity_v3.py' -v
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          run-id: '43506373969'
+          github-token: ${{ github.token }}
+          path: evidence/original-native
+      - name: Verify frozen visible-native material/receipt hashes, comparison and compiler
+        run: |
+          set -euo pipefail
+          python3 experiments/agent_painter/lanes/lfm25_vl/c2_native_proximity_v3.py \
+            --corpus evidence/original-native/corpus \
+            --receipt evidence/c2c-source-native-proximity.json
+      - name: Upload receipt even on failure; NEVER an admission
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: lfm-c2c-visible-native-source-${{ github.sha }}-${{ github.run_attempt }}
+          path: evidence/c2c-source-native-proximity.json
+          retention-days: 90
+          if-no-files-found: warn
