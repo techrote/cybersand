@@ -255,6 +255,30 @@ def model_presentation_hash(catalog: Mapping[str, Any],
     })
 
 
+
+def source_bound_model_presentation_hash(
+    catalog: Mapping[str, Any], before: Sequence[int], options: Sequence[Any], *,
+    width: int, height: int,
+    legal_cell: Callable[[tuple[int, int]], bool],
+    annotations: Mapping[str, Any] | None = None,
+    order: Sequence[str] | None = None,
+) -> str:
+    """Re-derive the entire legal menu before publishing a model view.
+
+    An unkeyed synthetic digest can be recomputed after replacing a legal
+    action with a structurally valid but blocked move. model_presentation_hash
+    checks geometry and internal consistency, not independent host admission.
+    Callers must supply separately retained origin, candidate options and
+    legality authority; never take these from the untrusted catalog.
+    This remains synthetic-only, not native Workbench authorization.
+    """
+    expected = legal_catalog(before, options, width=width, height=height,
+                             legal_cell=legal_cell)
+    _require(_canonical(catalog) == _canonical(expected),
+             "Presentation catalog differs from independently rederived legal menu")
+    return model_presentation_hash(expected, annotations=annotations, order=order)
+
+
 def preflight_episode(fixture: Any, record: dict[str, Any],
                       repo_root: Path | None = None) -> dict[str, Any]:
     """Replay-qualified, DEVELOPMENT-only bridge for M2 admission planning.
@@ -287,7 +311,9 @@ def preflight_episode(fixture: Any, record: dict[str, Any],
             "world_size": [fixture.width, fixture.height],
             "synthetic_legal_catalog_sha256":
                 host_shadow["synthetic_legal_catalog_sha256"],
-            "synthetic_model_menu_sha256": model_presentation_hash(host_shadow),
+            "synthetic_model_menu_sha256": source_bound_model_presentation_hash(
+                host_shadow, position, options, width=fixture.width,
+                height=fixture.height, legal_cell=fixture.legal),
             "replay_verified_offline_observation": source,
         }
         per_decision.append({

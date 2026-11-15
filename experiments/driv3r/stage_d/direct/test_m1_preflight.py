@@ -202,6 +202,60 @@ class CatalogPreflightTests(unittest.TestCase):
                 with self.assertRaisesRegex(m.PreflightError, "Movement"):
                     m.model_presentation_hash(forged)
 
+    def test_source_bound_presentation_rejects_rehashed_material_z_move(self):
+        # This forged move is structurally straight and within bounds, but
+        # passes through material Z. Unkeyed digest self-attestation alone
+        # cannot distinguish it from a real legal menu.
+        origin = (10, 7)  # x=11 is protected by the gate material-Z wall
+        self.assertTrue(self.f.legal(origin))
+        self.assertFalse(self.f.legal((11, 7)))
+        options = d.candidates(self.f, origin, (1, 2, 4, 8))
+        good = m.legal_catalog(origin, options, width=self.f.width,
+                               height=self.f.height, legal_cell=self.f.legal)
+        self.assertEqual(
+            m.source_bound_model_presentation_hash(
+                good, origin, options, width=self.f.width,
+                height=self.f.height, legal_cell=self.f.legal),
+            m.model_presentation_hash(good))
+        forged = copy.deepcopy(good)
+        move = next(row for row in forged["catalog"] if row["id"] == "N1")
+        move["id"] = "E1"
+        move["swept_xy"] = [[11, 7]]
+        move["cursor_after"] = [11, 7]
+        forged["catalog"].sort(key=lambda row: row["id"])
+        forged["synthetic_legal_catalog_sha256"] = m._hash(forged["catalog"])
+        # The old display-only helper deliberately cannot claim admission.
+        self.assertIsInstance(m.model_presentation_hash(forged), str)
+        with self.assertRaisesRegex(m.PreflightError, "rederived legal menu"):
+            m.source_bound_model_presentation_hash(
+                forged, origin, options, width=self.f.width,
+                height=self.f.height, legal_cell=self.f.legal)
+
+    def test_source_bound_presentation_rejects_rehashed_missing_candidate(self):
+        good = self.catalog()
+        forged = copy.deepcopy(good)
+        forged["catalog"] = [
+            row for row in forged["catalog"] if row["id"] != "W1"]
+        forged["synthetic_legal_catalog_sha256"] = m._hash(forged["catalog"])
+        self.assertIsInstance(m.model_presentation_hash(forged), str)
+        with self.assertRaisesRegex(m.PreflightError, "rederived legal menu"):
+            m.source_bound_model_presentation_hash(
+                forged, self.before, self.options, width=self.f.width,
+                height=self.f.height, legal_cell=self.f.legal)
+
+    def test_source_bound_presentation_retains_valid_soft_variations(self):
+        good = self.catalog()
+        ids = [item["id"] for item in good["catalog"]]
+        annotations = {ids[0]: {"soft_preference": 0.125}}
+        order = ids[::-1]
+        result = m.source_bound_model_presentation_hash(
+            good, self.before, self.options, width=self.f.width,
+            height=self.f.height, legal_cell=self.f.legal,
+            annotations=annotations, order=order)
+        self.assertEqual(result, m.model_presentation_hash(
+            good, annotations=annotations, order=order))
+        self.assertNotEqual(result, m.model_presentation_hash(good))
+
     def test_schema_digest_checks_actual_bytes(self):
         with tempfile.TemporaryDirectory() as temp:
             path = Path(temp)/"experiments/driv3r/d_common/v1/interface.schema.json"
