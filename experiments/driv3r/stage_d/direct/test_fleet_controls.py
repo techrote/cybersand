@@ -26,7 +26,11 @@ class FourStreamControls(unittest.TestCase):
         for key, value in (("active_worms", 4), ("resident_pid", 1),
                            ("model_checkpoint_sha256", "a"*64),
                            ("github_run_id", 123), ("native_qualified", True),
-                           ("native_receipt_artifact", "fake.zip")):
+                           ("native_receipt_artifact", "fake.zip"),
+                           ("native_128_turn_approved", True),
+                           ("native_logical_move_cap_unmodified", 128),
+                           ("policies", ["astar_or_contour"]),
+                           ("fixture_split", "heldout")):
             with self.subTest(key=key):
                 changed = dict(self.slots[0], **{key: value})
                 with self.assertRaises(fleet.ControlRefused):
