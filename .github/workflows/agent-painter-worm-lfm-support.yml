@@ -1,0 +1,80 @@
+name: Agent-painter WORM LFM SUPPORT source and gallery
+on:
+  push:
+    branches:
+      - research/612-worm-lfm-support
+    paths:
+      - experiments/agent_painter/worm/support_lfm/**
+      - experiments/agent_painter/worm/common/**
+      - .github/workflows/agent-painter-worm-lfm-support.yml
+  pull_request:
+    paths:
+      - experiments/agent_painter/worm/support_lfm/**
+      - experiments/agent_painter/worm/common/**
+      - .github/workflows/agent-painter-worm-lfm-support.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: worm-lfm-support-${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  curriculum-and-gallery:
+    name: Source tests + actual W0 PNG traces (no model/native)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact triggering revision
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Exact-head provenance
+        run: |
+          git rev-parse HEAD
+          python3 --version
+      - name: Compile and test support implementation
+        run: |
+          python3 -m compileall -q experiments/agent_painter/worm/support_lfm
+          python3 -m unittest discover -s experiments/agent_painter/worm/support_lfm -p 'test_curriculum.py' -v
+      - name: Generate source-replay curriculum and PNG gallery
+        run: |
+          python3 experiments/agent_painter/worm/support_lfm/curriculum.py --output "${RUNNER_TEMP}/worm-lfm-v1" --steps 240
+      - name: Independently check manifest files, seed separation and PNG bytes
+        env:
+          OUTPUT_DIR: ${{ runner.temp }}/worm-lfm-v1
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,os,pathlib
+          root=pathlib.Path(os.environ['OUTPUT_DIR'])
+          manifest=json.loads((root/'manifest.json').read_bytes())
+          assert manifest['version']=='worm-lfm-local-decisions-v1'
+          assert set(manifest['train_world_seeds']).isdisjoint(manifest['development_world_seeds'])
+          assert manifest['train_rows']>0 and manifest['development_rows']>0
+          for name, sha in manifest['hashes'].items():
+              data=(root/name).read_bytes()
+              assert hashlib.sha256(data).hexdigest()==sha
+              rows=[json.loads(line) for line in data.splitlines()]
+              assert len(rows)==manifest['train_rows' if name.startswith('train') else 'development_rows']
+              assert all(r['target_action'] in r['host_legal'] for r in rows)
+          summary=json.loads((root/'gallery'/'summary.json').read_bytes())
+          assert len(summary['reports'])==24
+          assert len([x for x in summary['files'] if x['file'].endswith('.png')])==24
+          for file in summary['files']:
+              raw=(root/'gallery'/file['file']).read_bytes()
+              assert hashlib.sha256(raw).hexdigest()==file['sha256']
+              if file['file'].endswith('.png'):
+                  assert raw[:8]==bytes((137,80,78,71,13,10,26,10))
+          print('WORM LFM source-only receipts PASS; train',manifest['train_rows'],
+                'dev',manifest['development_rows'],'PNG',manifest['gallery_png_count'])
+          PY
+      - name: Publish original PNGs, traces and split curriculum even after failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: worm-lfm-support-${{ github.sha }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/worm-lfm-v1/
+          if-no-files-found: warn
+          retention-days: 21
