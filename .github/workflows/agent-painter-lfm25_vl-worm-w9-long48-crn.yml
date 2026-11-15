@@ -69,7 +69,7 @@ jobs:
             "model_sampler":"identical-W8-T2.5-70percent-score-30percent-flat-seed-tick-RNG",
             "expected_model_rollouts":6,
             "expected_flat_rollouts":6,
-            "attempt":2,
+            "attempt":3,
             "new_optimizer_updates":0,
             "native_execution":False,
             "sealed_FINAL_opened":False,
