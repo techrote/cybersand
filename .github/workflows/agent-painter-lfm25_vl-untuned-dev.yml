@@ -1,0 +1,97 @@
+name: LFM2.5-VL untuned original DEVELOPMENT CPU first-pass pilot v1 (NO TRAIN)
+on:
+  push:
+    branches: [codex/agent-painter-lfm25-vl-568]
+    paths:
+      - 'experiments/agent_painter/lanes/lfm25_vl/untuned_development_pilot_v1.py'
+      - '.github/workflows/agent-painter-lfm25_vl-untuned-dev.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: lfm25-untuned-original-dev-v1-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  first-pass:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      OMP_DYNAMIC: 'FALSE'
+      MKL_DYNAMIC: 'FALSE'
+      ATEN_CPU_CAPABILITY: 'default'
+      MKL_CBWR: 'COMPATIBLE'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Exact owned branch, safety/provider and pre-download syntax gates
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = refs/heads/codex/agent-painter-lfm25-vl-568
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 -m py_compile experiments/agent_painter/lanes/lfm25_vl/untuned_development_pilot_v1.py
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/lfm-untuned-scheduling.json
+          mkdir -p evidence
+          printf '%s\n' '{"status":"FAIL_OR_INCOMPLETE_NO_NATIVE","optimizer_updates":0,"native_executions":0,"final_targets_opened":false}' > evidence/failure.json
+          git rev-parse HEAD > evidence/source.txt
+          lscpu > evidence/cpu.txt
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: agent-painter-native-633920373a3d406a2ede61ce4137c324f76be23b
+          run-id: '43506373969'
+          github-token: ${{ github.token }}
+          path: evidence/original-native
+      - name: Verify original visible split without reading FINAL files
+        run: |
+          set -euo pipefail
+          python3 experiments/agent_painter/lanes/lfm25_vl/untuned_development_pilot_v1.py \
+            --corpus evidence/original-native/corpus --output evidence/corpus-check --preflight-only
+      - name: Install model-specific pinned CPU dependencies
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/painter-untuned"
+          "$RUNNER_TEMP/painter-untuned/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/painter-untuned/bin/python" -m pip install -r experiments/agent_painter/training/requirements.lock
+          "$RUNNER_TEMP/painter-untuned/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torchvision==0.29.2+cpu'
+          "$RUNNER_TEMP/painter-untuned/bin/python" -m pip install -r experiments/agent_painter/training/requirements-lfm25_vl.lock
+          "$RUNNER_TEMP/painter-untuned/bin/python" -m pip check
+          "$RUNNER_TEMP/painter-untuned/bin/python" -m pip freeze --all > evidence/pip-freeze.txt
+      - name: Download exact full official pinned VL checkpoint and processor
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 900s "$RUNNER_TEMP/painter-untuned/bin/python" \
+            experiments/agent_painter/training/download_model.py --profile lfm25_vl --output "$RUNNER_TEMP/painter-model"
+          cp "$RUNNER_TEMP/painter-model/download_receipt.json" evidence/model-download.json
+      - name: Execute three frozen-selection untuned DEVELOPMENT first passes (NO TRAIN)
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 1200s "$RUNNER_TEMP/painter-untuned/bin/python" \
+            experiments/agent_painter/lanes/lfm25_vl/untuned_development_pilot_v1.py \
+            --corpus evidence/original-native/corpus --model "$RUNNER_TEMP/painter-model" \
+            --output evidence/raw-baseline
+          test -f evidence/raw-baseline/summary.json
+          test ! -f evidence/raw-baseline/INCOMPLETE.json
+          rm evidence/failure.json
+      - name: Retain source, original output and partial/failure evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: lfm25-untuned-original-dev-v1-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            evidence/failure.json
+            evidence/source.txt
+            evidence/cpu.txt
+            evidence/corpus-check/
+            evidence/pip-freeze.txt
+            evidence/model-download.json
+            evidence/raw-baseline/
+          retention-days: 90
+          if-no-files-found: warn
