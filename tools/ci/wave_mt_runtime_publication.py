@@ -59,6 +59,7 @@ engine.BUILD_EXACT = (set(engine.BUILD_EXACT) - {_old_workflow, _old_request}) |
     "tools/ci/execution_telemetry.py",
     "tools/ci/godot_scheduling.py",
     "tools/ci/godot_scheduling_profile.json",
+    "tools/ci/test_godot_attempt_custody.py",
     "godot/tests/support/ci_execution_policy.json",
     "native/bench/wave_mt_matrix.cpp",
     "native/bench/wave_default_off_pair.cpp",

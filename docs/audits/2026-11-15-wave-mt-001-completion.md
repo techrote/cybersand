@@ -306,3 +306,90 @@ Thirteen focused package/publication guards pass after this repair, including
 the real archive regression. The final Windows matrix uses four independently
 recorded 120-row scene groups; final acceptance also checks their complete
 480-row Cartesian coverage. No comparison group is split across hosts.
+
+## 2026-11-15: retained full qualification attempts and artifact isolation repair
+
+The subsequent [runtime publication run 43740816006](https://github.com/techrote/cybersand/actions/runs/43740816006)
+succeeded from builder `e76f2a5c4e313f9cb01fa4196968327204fb39e6`.
+Its source-matched native, target-OS, ABI-floor and extracted-package execution
+records were retained. The resulting candidate
+`67f769d281ce369e424cf4aa0ef6f3beebf7c3c3`, tree
+`665a48a4249d0ea2b271024c34d91cab2c103870`, then entered complete PR
+qualification. Ordinary PR jobs used merge-test commit
+`3e88a8dc6ab972c5db57d282560629967241537c`, whose tree exactly matches that
+candidate. These identities describe the retained attempts below; they do not
+qualify the next source candidate.
+
+### Godot attempt 1: dependency download reset
+
+[GDExtension run 43742182904, attempt 1](https://github.com/techrote/cybersand/actions/runs/43742182904/attempts/1)
+failed before Linux regression shard 10 could execute its tests. The
+[shard setup log](https://github.com/techrote/cybersand/actions/runs/43742182904/job/132905844688)
+records `curl` exit 56 at `2026-11-15T18:09:30Z`: receipt of the pinned Godot
+archive was interrupted by a connection reset. The existing `--retry 3`
+invocation did not retry that observed error. The
+[Linux coverage reducer](https://github.com/techrote/cybersand/actions/runs/43742182904/job/132908291415)
+then rejected the incomplete execution. This was a failed qualification
+attempt; successful sibling shards did not satisfy the missing shard.
+
+The failed setup ZIP, original job log, rejected coverage receipt and log,
+complete attempt snapshot and artifact inventory are retained as historical
+failure evidence. They are not substituted for a later complete execution.
+
+### Godot attempt 2: all test shards passed, aggregate rejected stale evidence
+
+The same candidate was rerun in
+[run 43742182904, attempt 2](https://github.com/techrote/cybersand/actions/runs/43742182904/attempts/2).
+All 23 Linux regression shard jobs and all 22 Windows headless regression shard
+jobs succeeded, including the new Wave contract, real-body/Needle and graphical
+execution. The workflow still failed:
+the [Linux coverage reducer](https://github.com/techrote/cybersand/actions/runs/43742182904/job/132914396644)
+correctly rejected a `run_attempt` identity mismatch.
+
+The Linux shard artifact names included the run ID but omitted the attempt.
+The reducer's download selection chose the numerically larger of two artifacts
+named `linux-godot-shard-11-43742182904`. The retained API metadata and the
+embedded `godot-regressions/shard-11/timings.json` establish the reversal:
+
+| Artifact ID | Creation time, UTC | Embedded execution attempt | Reducer selection |
+|---|---|---|---|
+| `14174380870` | `2026-11-15T18:11:45Z` | `1` | Selected stale artifact |
+| `14174033548` | `2026-11-15T18:32:11Z` | `2` | Required current artifact |
+
+Both shard reports completed successfully and bind the same source/tree, but
+they belong to different executions. Numeric artifact-ID order did not prove
+creation-time order or current-attempt membership. The reducer retained its
+attempt check and refused the mixed evidence. Neither a green shard nor an
+independent reconstruction of the correct artifact collection changes that
+hosted rejection into a passed workflow.
+
+All 56 original attempt-2 artifact ZIPs, their API-bound custody manifest,
+the failed reducer log/receipt and the two shard-11 identity proofs are retained.
+Archive custody passed; complete qualification failed. No passing attempt-2
+verification summary or independent final Astra verdict was issued.
+
+### Repair and remaining qualification
+
+The next source candidate binds previously unscoped GDExtension artifact upload
+names and matching named/pattern downloads to both `github.run_id` and
+`github.run_attempt`. This covers the Linux runtime, both regression shard
+families, build timings, Windows coverage and timing-reducer consumers; already
+scoped plan, native-candidate, ART and Linux-coverage artifacts retain their
+scope. A missing current-attempt artifact must remain a failure. The repair
+does not select a predecessor by numeric ID or relax embedded source, attempt,
+coverage or integrity checks.
+
+The two Linux Godot downloads also gain bounded retry of the observed reset
+class with `--retry-all-errors`, retaining the dependency preparation timeout,
+archive SHA-256 and engine-version checks. The Windows Wave workflow's ancillary
+`HEAD^{tree}` query receives explicit CMD quoting. These are CI execution and
+provenance repairs; native solver behavior, the protected-source transition
+hashes above and Claude's separate PR #617 remain unchanged.
+
+The new CI source requires fresh source-matched publication and complete
+qualification of its resulting exact HEAD/tree. Those builds, package
+re-execution, all applicable native/Godot/Water/control gates and the later
+independent Astra review are **pending** at this entry. Prior native,
+sanitizer, benchmark and target-OS successes remain attributed to their recorded
+source; they are not reported as future passes. Merge and auto-merge remain
+unauthorized.
