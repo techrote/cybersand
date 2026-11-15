@@ -16,8 +16,8 @@ permissions:
   contents: read
   actions: read
 concurrency:
-  group: engine-lab-${{ github.ref }}
-  cancel-in-progress: true
+  group: engine-lab-${{ github.event_name == 'workflow_dispatch' && github.run_id || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'push' }}
 jobs:
   linux-native:
     name: Linux native Engine Lab controls
