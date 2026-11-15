@@ -39,6 +39,10 @@ jobs:
         run: |
           python3 -m compileall -q experiments/agent_painter/worm/support_lfm
           python3 -m unittest discover -s experiments/agent_painter/worm/support_lfm -p 'test_curriculum.py' -v
+      - name: Verify model-gallery source-forensic evaluator and negative controls
+        run: |
+          python3 -m unittest discover -s experiments/agent_painter/worm/support_lfm -p 'test_primary_gallery_audit.py' -v
+          python3 experiments/agent_painter/worm/support_lfm/primary_gallery_audit.py --demo-out "${RUNNER_TEMP}/worm-lfm-v1/negative-controls" --seed 2101 --budget 32
       - name: Generate source-replay curriculum and PNG gallery
         run: |
           python3 experiments/agent_painter/worm/support_lfm/curriculum.py --output "${RUNNER_TEMP}/worm-lfm-v1" --steps 240

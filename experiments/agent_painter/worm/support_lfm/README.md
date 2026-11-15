@@ -61,3 +61,12 @@ prompt overlap, including counterfactual companion rows, rather than requiring
 callers to remember a separate deduplication helper. The existing v1 corpus
 remains a retained negative example. This check does **not** prove semantic
 novelty across near-identical but non-equal local observations.
+
+
+## Primary W3 model-gallery independent source replayer (support audit v1)
+
+Use `primary_gallery_audit.py --gallery <extracted-LFM-primary-W3-output>/gallery --seed 2101 --budget 32 --report audit.json` against **the original primary W3 artifact**, never hand-reconstructed first passes. The checker requires all 3 families × (model/random/wall/oracle), replays actual raw choices through the unchanged W0 host, compares complete observations, legal choices, positions, metrics and original PNG bytes, and validates EOS7/token-id/host first-pass receipt consistency. It reports paired **raw vs applied** metrics, action-streak/entropy, unique cells, branches, revisits, invalids, fallbacks and decision-count mismatches. Strict falsification cases are exercised in `test_primary_gallery_audit.py`.
+
+This check is **source-faithful Python W0 provenance**, not a second model evaluation or native Godot evidence. Tokenizer decoding, checkpoint tensors, model license, and genuine optimizer steps must still be verified separately from primary receipts. Comparisons represent one shared seed, not independent generalization; early model STOP means a nominal equal decision budget does not imply equal executed decisions. Do not call a less-complicated but visually amusing line a statistically superior controller.
+
+The support CI additionally produces **18 original W0 PNGs and 18 action traces** under `negative-controls/` for three themes against random/wall/oracle and three explicitly **untrained simulated failure selectors** (always STRAIGHT, always LEFT, illegal TELEPORT). These are visually useful reproducible bad behaviours, not secretly trained LFM outputs. Input W3 artifact content is NEVER downloaded or modified by this workflow. The support branch remains Draft/HOLD and does not dispatch any optimizer.
