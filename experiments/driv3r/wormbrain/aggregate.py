@@ -82,25 +82,76 @@ def compare(reports, traces):
     }
 
 
+M1_SCHEMA_SHA = "ebe2fa211148602c614cba0f0a40f285cba797784b70efa035832d833877f80d"
+
+
+def read_original_artifact(root: Path, mode: str, *, expected_source: str | None = None):
+    """Read the *actual* actions/upload-artifact layout.
+
+    ci_pilot.sh stores its output as evidence/driv3r-worm-<mode>/execution/.
+    The workflow uploads that evidence directory as the artifact root, so
+    the original summary lives at execution/execution/summary.json.
+    Original missing/partial arms must never be silently reported as complete.
+    """
+    base = root / mode
+    if not base.exists():
+        return None
+    original = base / "execution"
+    paths = {
+        "summary": original / "execution" / "summary.json",
+        "trace": original / "original-decisions.json",
+        "replay": original / "native-replay.json",
+        "bundle": original / "bundle-validation.json",
+    }
+    missing = [key for key, file in paths.items() if not file.is_file()]
+    if missing:
+        raise ValueError(f"Original {mode} artifact is partial: missing {missing}")
+    report = json.loads(paths["summary"].read_text())
+    trace = json.loads(paths["trace"].read_text())
+    replay = json.loads(paths["replay"].read_text())
+    bundle = json.loads(paths["bundle"].read_text())
+    if report.get("mode") != mode or report.get("status") not in ("PASS", "VALID_NO_INK"):
+        raise ValueError(f"Original {mode} summary is not an accepted native result")
+    if expected_source is not None and report.get("source_sha") != expected_source:
+        raise ValueError(f"Original {mode} source is not the pinned evidence commit")
+    if report.get("model_decisions") != len(trace):
+        raise ValueError(f"Original {mode} Q8 trace length differs from declared decisions")
+    if report.get("native_painted_cells", -1) > report.get("model_decisions", 0):
+        raise ValueError(f"Original {mode} native paint count exceeds actual model turns")
+    if report.get("original_model_pid_count") != 1 or not report.get("original_model_process_reaped"):
+        raise ValueError(f"Original {mode} resident Q8 process identity/cleanup incomplete")
+    if report.get("final_world_sha256") != replay.get("final_world_sha256"):
+        raise ValueError(f"Original {mode} independent native replay final World differs")
+    if replay.get("actual_independent_native_replay") is not True:
+        raise ValueError(f"Original {mode} independent native replay absent")
+    if replay.get("native_material_actions_replayed") != report.get("native_painted_cells"):
+        raise ValueError(f"Original {mode} replay material actions mismatch")
+    if bundle.get("schema_sha256") != M1_SCHEMA_SHA or bundle.get("evidence_bytes_verified") is not True:
+        raise ValueError(f"Original {mode} M1 material/receipt custody not qualified")
+    if len({t["index"] for t in trace}) != len(trace) or any(t["index"] != i for i,t in enumerate(trace)):
+        raise ValueError(f"Original {mode} Q8 decision sequence is missing/duplicated")
+    if not all(t["original_model_artifact"].startswith("model/turn-") for t in trace):
+        raise ValueError(f"Original {mode} raw model response references missing")
+    return report, trace
+
+
 def main():
     p=argparse.ArgumentParser()
     p.add_argument("--root",type=Path,required=True)
     p.add_argument("--output",type=Path,required=True)
+    p.add_argument("--expected-source",default=None,
+                   help="Immutable SHA of original evidence, not current comparator source")
     a=p.parse_args()
     reports={}
     traces={}
     for mode in MODES:
-        root=a.root/mode
-        s=root/"execution/summary.json"
-        t=root/"original-decisions.json"
-        if not s.is_file() or not t.is_file():
+        original = read_original_artifact(a.root, mode, expected_source=a.expected_source)
+        if original is None:
             continue
-        r=json.loads(s.read_text())
-        if r.get("mode") != mode:
-            continue
-        reports[mode]=r
-        traces[mode]=json.loads(t.read_text())
+        reports[mode], traces[mode] = original
     result=compare(reports,traces)
+    result["audit_kind"]="original_native_artifact_reconciliation_no_model_or_native_rerun"
+    result["evidence_source_sha"]=a.expected_source
     a.output.parent.mkdir(parents=True,exist_ok=True)
     a.output.write_text(json.dumps(result,sort_keys=True,indent=2)+"\n")
     print(json.dumps({k:v for k,v in result.items() if k in (
