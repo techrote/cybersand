@@ -110,7 +110,10 @@ def verify_episode(f: d.Fixture, record: dict[str, Any]) -> dict[str, Any]:
         _require(all(f.legal(p) for p in chosen.path),
                  "Unadmitted or blocked swept cell")
         if chosen.stop:
-            stop_reason = "policy_stop"
+            stop_reason = (
+                "no_legal_moves" if policy == "random_legal_persistent_v1"
+                and not any(not candidate.stop for candidate in expected_options)
+                else "policy_stop")
         else:
             path.extend(chosen.path)
             pos = chosen.path[-1]

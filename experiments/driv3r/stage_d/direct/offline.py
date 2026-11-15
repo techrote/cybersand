@@ -396,7 +396,11 @@ def run_episode(f: Fixture, policy: str, seed: int = 0,
         if choice not in options or any(not f.legal(p) for p in choice.path):
             raise AssertionError("Invalid host candidate or swept segment")
         if choice.stop:
-            stop = "policy_stop"
+            # A forced STOP with no legal movement is not a false voluntary
+            # STOP. Preserve the original random_legal first-pass semantics.
+            stop = ("no_legal_moves" if policy == "random_legal_persistent_v1"
+                    and not any(not candidate.stop for candidate in options)
+                    else "policy_stop")
         else:
             path.extend(choice.path)
             pos = choice.path[-1]

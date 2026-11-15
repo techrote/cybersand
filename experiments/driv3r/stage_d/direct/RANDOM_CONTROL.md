@@ -14,7 +14,9 @@ until there is no legal move. It has no knowledge of the goal, selected wall,
 visited cells or future geometry. The host supplies exactly the same
 cardinal candidate menu and full swept-cell hard legality as before, including
 1/2/4/8-cell macro arms. It stops on arrival, exhaustion of 36 decisions,
-or no available movement. It may oscillate, retrace and fail; failures are
+or no available movement. A forced STOP because the legal movement menu is empty records
+`no_legal_moves` (not the original `policy_stop` false-stop outcome).
+It may oscillate, retrace and fail; failures are
 retained. A goal-aware random policy would be a *different* research arm.
 
 `paired.run_development_controls()` independently replays three matched

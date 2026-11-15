@@ -50,6 +50,10 @@ class PersistentRandomControls(unittest.TestCase):
         chosen = d.select_candidate(self.route, self.route.start, (stop,),
                                     "random_legal_persistent_v1", random.Random(5))
         self.assertIs(chosen, stop)
+        score = d.score_episode(self.route, [self.route.start],
+                                1, "no_legal_moves")
+        self.assertEqual(score["stop_reason"], "no_legal_moves")
+        self.assertFalse(score["false_stop"])
 
     def test_seeded_replay_and_json_roundtrip(self):
         original = d.run_episode(self.route, "random_legal_persistent_v1",
