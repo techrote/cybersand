@@ -3219,7 +3219,10 @@ func _workbench_trace_presentation_frame(original_frame: Dictionary,
 		- shader_map.x*camera_origin.x-shader_map.y*camera_origin.y
 	var first_parts: Dictionary = {}
 	for part: Dictionary in parts:
-		var slot: int = int(part.get("physical_body_index",-1))
+		# Workbench admits exactly one rigid body per actor. The ordinary
+		# rectangular/circular render_parts rows identify actor_id, whereas
+		# rectangle unions additionally expose physical_body_index.
+		var slot: int = int(part.get("physical_body_index",part.get("actor_id",-1)))
 		if slot >= 0 and not first_parts.has(slot):
 			first_parts[slot] = part
 	var rows: Array = []
