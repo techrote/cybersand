@@ -66,6 +66,10 @@ def audit_shadow_cases(cases: list[dict], *, max_forward_decisions: int = 36,
              "invalid synthetic case collection")
     seen_ids: set[str] = set()
     seen_pairs: set[str] = set()
+    # An immutable frozen snapshot ID cannot name different objective metrics
+    # elsewhere in the same scenario. Case-level hashes alone do not enforce
+    # cross-case identity consistency; the input is synthetic, not native.
+    snapshot_metrics: dict[str, tuple[int | float, int, int]] = {}
     reference_counts = {c: 0 for c in sorted(CHOICES)}
     confusion = {r: {c: 0 for c in sorted(CHOICES)} for r in sorted(CHOICES)}
     failures = {"false_keep": 0, "false_undo": 0, "false_stop": 0,
@@ -99,6 +103,15 @@ def audit_shadow_cases(cases: list[dict], *, max_forward_decisions: int = 36,
         _snapshot(after)
         _require(before["snapshot_id"] != after["snapshot_id"],
                  "before/after synthetic snapshots must differ")
+        for snapshot in (before, after):
+            sid = snapshot["snapshot_id"]
+            measures = (snapshot["goal_score"], snapshot["violations"],
+                        snapshot["progress_cells"])
+            if sid in snapshot_metrics:
+                _require(snapshot_metrics[sid] == measures,
+                         "conflicting synthetic snapshot identity")
+            else:
+                snapshot_metrics[sid] = measures
         eligible = case["hypothetical_undo_eligible"]
         receipt = case["hypothetical_receipt_available"]
         _require(type(eligible) is bool and type(receipt) is bool,
