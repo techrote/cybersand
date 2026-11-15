@@ -27,14 +27,23 @@ It produces four **independently mutable** sample arms:
 
 | Arm | Pre-choice scalar | After-choice shadow critique |
 |---|---|---|
-| sham | u16 neutral zero | none |
+| sham | u16 neutral zero; all optional preference channels zero | none |
 | guidance | source-derived u16 positive scalar | none |
-| critic | u16 neutral zero | hypothetical KEEP/UNDO/STOP |
+| critic | u16 neutral zero; all optional preference channels zero | hypothetical KEEP/UNDO/STOP |
 | combined | source-derived u16 positive scalar | hypothetical KEEP/UNDO/STOP |
 
 The pre-choice **sham == critic** model views and
 **guidance == combined** model views have identical SHA-256 at every optional
-information level. The critic is strictly post-choice; **it cannot leak a
+information level. **Important correction:** the previous preview only zeroed
+its scalar core. Its sham *preference/all* variants still exposed the active
+signed-preference signal, confounding guidance-versus-sham experiments.
+Current sham/critic views now neutralize every registered preference channel
+(`u16le` attraction/avoidance and `i16le` signed preference) and hash the
+actual neutral little-endian bytes. Factual `geometry_metric` distance/flow
+channels remain *identical* in all arms. Thus preference/all views compare
+active versus neutral **preferences**, whereas geometry views compare the
+core scalar with identical geometry context. They are **not** geometry-blind
+controls. No semantic field or M1 contract byte was changed. The critic is strictly post-choice; **it cannot leak a
 suggested action or future metric into a controller's pre-choice prompt**.
 A proposed shadow UNDO is never actual native rollback.
 
@@ -77,14 +86,22 @@ synthetic World/material pairs; **4 arms × 4 optional-field views × 4
 source seeds = 64 pre-choice input previews**; eight post-choice shadow sets
 with three illustrative KEEP/UNDO/STOP cases each. Canonical bundle
 digest **excluding its self-digest**:
-e81d076d67b94cbf25d70813cfb6eee2f40c5e218c67ad8b20a0ac4973b78b9b.
+dfaffcdceb26751e950b217daf64e55120097094fabead06af16c54f9946ba8e.
+The earlier `e81d076d...` golden is superseded. The new digest was
+independently recomputed only after an offline Python reconstruction exactly
+reproduced the old golden, to check the serialization and 16-bit byte model.
 This digest is for the synthetic fixture, not a native artifact.
 
-**Local qualification on authored source bytes:** 16/16 focused stdlib tests
-passed; both new Git blobs were SHA-matched against the tested files.
-The fail-closed full-suite gate has been raised to **215 methods in
-20 modules**. The entire exact clean-checkout suite **has not been executed
-in this run**; do not cite Stage A or source-scope CI as full-suite proof.
+**Historical qualification:** 16/16 focused stdlib tests passed for the
+previous fixture source, with source-blob matching. The current repair adds
+**five** adversarial tests (all three optional preference encodings, factual
+geometry parity, neutral raw-byte hashes, and fixed golden custody), giving
+**21** fleet-fixture methods and a fail-closed full-suite minimum of
+**220 methods in 20 modules**. The independent fixture reconstruction matched
+the original golden and computed the repaired golden above, but it is **not**
+a run of the five new committed tests. The current exact-head clean-checkout
+full suite remains **unexecuted**; do not cite Stage A/source-scope CI or
+this separate reconstruction as full-suite proof.
 
 ## Commander integration / M2 handoff
 
