@@ -48,7 +48,7 @@ class GuidancePngStructureTests(unittest.TestCase):
         self.assertEqual(decode_png8(variant), decode_png8(self.original))
 
     def test_ancillary_before_ihdr_rejected_even_with_valid_crc(self):
-        png = _assemble([(b"tEXt", b"keyword\\x00value"), *self.parts])
+        png = _assemble([(b"tEXt", b"keyword\x00value"), *self.parts])
         with self.assertRaisesRegex(ValueError, "IHDR must be the first"):
             decode_png8(png)
 
@@ -56,14 +56,14 @@ class GuidancePngStructureTests(unittest.TestCase):
         head, (_, compressed), end = self.parts
         split = len(compressed) // 2
         png = _assemble([head, (b"IDAT", compressed[:split]),
-                         (b"tEXt", b"keyword\\x00value"),
+                         (b"tEXt", b"keyword\x00value"),
                          (b"IDAT", compressed[split:]), end])
         with self.assertRaisesRegex(ValueError, "IDAT chunks must be consecutive"):
             decode_png8(png)
 
     def test_trailing_ancillary_after_final_idat_is_valid(self):
         head, data, end = self.parts
-        png = _assemble([head, data, (b"tEXt", b"keyword\\x00value"), end])
+        png = _assemble([head, data, (b"tEXt", b"keyword\x00value"), end])
         self.assertEqual(decode_png8(png), decode_png8(self.original))
 
 
