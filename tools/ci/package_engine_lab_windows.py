@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the coherent Workbench Windows evaluation from one exact Git source."""
+"""Build the presentation-time Workbench evaluation from one exact Git source."""
 import argparse
 import hashlib
 import io
@@ -210,6 +210,7 @@ def launchers(output):
                 'set "CYBERSAND_EVAL_SOURCE_SHA='+SOURCE+'"\n'
                 'set "CYBERSAND_DIAG_FLYER_POSE='+mode+'"\n'
                 'set "CYBERSAND_DIAG_PRESENTATION='+selection+'"\n'
+                'set "CYBERSAND_DIAG_MATERIAL_TIMING='+selection+'"\n'
                 'set "CYBERSAND_DIAG_RENDER_CADENCE='+cadence+'"\n'
                 'echo CyberSand Workbench - '+('original presentation' if selection else 'coherent candidate')+'\n'
                 'echo Source '+SOURCE+'\n'
@@ -218,7 +219,7 @@ def launchers(output):
                 'start "" "%~dp0'+ENGINE+'" --path "%~dp0godot" -- --workbench\n')
         (output/name).write_bytes(script.replace("\n","\r\n").encode())
 
-GUIDE=r"""# CyberSand coherent Workbench - Windows evaluation
+GUIDE=r"""# CyberSand PRESENTATION-TIME-001 - Windows Workbench evaluation
 
 Application source: SOURCE_SHA
 Accepted-main base: ACCEPTED_MAIN_SHA
@@ -231,17 +232,24 @@ Extract this entire ZIP into a fresh writable directory. No separate Godot,
 Python, Git or repository installation is required.
 
 1. Double-click Open Workbench.cmd for the corrected interactive Shared Workbench.
-2. Fly a Needle in Free and Follow modes. Turn Thruster fire ON, then OFF.
-   Try fast movement, contact/dense materials, and normal camera pan/zoom.
-3. Close CyberSand completely. Open Original Presentation.cmd and repeat the
-   same setup/settings. This preserves the original guarded source selection
-   and live Follow while using the same physics, bounded material scans
+2. Fly a Needle quickly in Free and Follow selected modes. Rotate through large
+   angles, turn Thruster fire ON and OFF, and pass close to dense terrain.
+   Try Wall, Sand and Water contact and ordinary camera pan/zoom.
+3. For the independent-clock stress test, open Engine Lab and click
+   Uncouple Pixel + Rapier. Confirm both native-sample wait and sample-wake
+   controls are OFF, then set Pixel/native pacing to 2 Hz, Rapier to
+   120 callbacks/s and graphical presentation to 60 FPS. Repeat Free and
+   Follow movement and rotation. Click Restore baseline afterwards; it
+   restores the established physical pacing, including both controls ON.
+4. Close CyberSand completely. Open Original Presentation.cmd and repeat the
+   same setup/settings. This preserves the original guarded source selection,
+   live Follow and requested-rate material fade while using the same physics, bounded material scans
    and repaired ACK/history. Original retains coarse swept sampling; the
    corrected mode also uses bounded conservative refinement. This compares
    presentation policy and guards within the integrated application, not a
    byte-identical historical PR593 application.
-4. Open Mask Baseline.cmd supplies the older material-bound display comparison.
-5. Double-click Test It.cmd to collect six matched original/candidate pairs,
+5. Open Mask Baseline.cmd supplies the older material-bound display comparison.
+6. Double-click Test It.cmd to collect seven matched original/candidate pairs,
    ordinarily a few minutes on a hardware GPU. Slow machines can take longer.
    Results and the complete local ZIP appear under Test-It-Results.
    READ-RESULTS.txt gives achieved clocks, frame intervals and presentation CPU.
@@ -278,6 +286,8 @@ Owner decision: HOLD - physical review not yet performed
 | Free camera: coherence, jumps/reversals, Fire ON to OFF | |
 | Follow camera: coherence, camera motion, Fire ON to OFF | |
 | Fast Needle, contact and dense materials | |
+| Rotation, Wall / Sand / Water contact | |
+| 2 Hz native stress with Rapier 120 and graphics 60 | |
 | Pan, zoom, fractional scale and painting | |
 | Original presentation comparison | |
 | Materially preferable candidate? | |
@@ -358,6 +368,11 @@ def smoke(output,evidence):
         ("production",["--headless","--script","res://tests/test_pr593_mask_coherent_production.gd"],210,"PR593_PRODUCTION_POSE_RESULT"),
         ("crossfade",["--headless","--script","res://tests/test_pr593_mask_coherent_edit_crossfade.gd"],210,"PR593_NATIVE_EDIT_CROSSFADE_RESULT"),
         ("dense-budget",["--headless","--script","res://tests/test_pr593_mask_coherent_dense_budget.gd"],120,"PR593_GUARD_DENSE_BUDGET_RESULT"),
+        ("material-timing",["--headless","--script","res://tests/test_workbench_material_delivery_timing.gd",
+         "--","--material-timing-evidence="+str((evidence/"material-timing").resolve())],240,"MATERIAL_DELIVERY_TIMING_RESULT"),
+        ("presentation-history",["--headless","--script","res://tests/test_workbench_presentation_history.gd"],120,"WORKBENCH_PRESENTATION_HISTORY"),
+        ("independent-clocks",["--headless","--script","res://tests/test_workbench_independent_clocks.gd",
+         "--","--independent-clock-evidence="+str((evidence/"independent-clocks").resolve())],240,"INDEPENDENT_CLOCKS_RESULT"),
         ("temporal",["--headless","--script","res://tests/test_workbench_temporal_presentation.gd"],240,"TEMPORAL_PRESENTATION_RESULT"),
         ("temporal-dense",["--headless","--script","res://tests/test_workbench_temporal_dense.gd"],240,"TEMPORAL_DENSE_RESULT"),
         ("temporal-contact",["--headless","--script","res://tests/test_workbench_temporal_contact.gd"],240,"TEMPORAL_CONTACT_RESULT"),
@@ -399,6 +414,7 @@ def smoke(output,evidence):
         env=os.environ.copy()
         env["CYBERSAND_SOURCE_REVISION"]=SOURCE
         env["CYBERSAND_DIAG_PRESENTATION"]="legacy" if name in {"production","crossfade","dense-budget","cadence-contract","cadence-contract-graphical"} else ""
+        env["CYBERSAND_DIAG_MATERIAL_TIMING"]=env["CYBERSAND_DIAG_PRESENTATION"]
         env["CYBERSAND_DIAG_RENDER_CADENCE"]=""
         env["CYBERSAND_DIAG_FLYER_POSE"]=""
         if name=="temporal-dense":

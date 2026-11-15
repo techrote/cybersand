@@ -174,12 +174,12 @@ func mount(controller: Control,wb: Control) -> void:
 		func(value: int) -> void: host.engine_lab_set_rapier_hz(value))
 	_note(controls,"Each simulation/flight step retains fixed 1/60 seconds. Non-60 cadence changes wall-clock simulation speed.")
 	_check(controls,"wait_sample","Rapier waits for native sample completion (default)",
-		true,func(value: bool) -> void: host.engine_lab_wait_native_sample = value)
+		host.engine_lab_wait_native_sample,func(value: bool) -> void: host.engine_lab_wait_native_sample = value)
 	_check(controls,"sample_wake","Native worker wakes early on a new Rapier sample (default)",
-		true,func(value: bool) -> void:
+		bool(host.simulation_worker.engine_lab_pixel_pacing().sample_wake),func(value: bool) -> void:
 			host.simulation_worker.set_engine_lab_pixel_pacing(
 				int((_widgets["pixel"] as SpinBox).value),value))
-	_note(controls,"Uncheck both to let the clocks run most independently; native World and terrain safety remain authoritative.")
+	_note(controls,"Uncheck both for independent clocks. Stale responses and uninstalled terrain remain refused; asynchronous material contact needs separate qualification.")
 
 	_section(controls,"NATIVE WORKER TOPOLOGY (NEXT LAUNCH)")
 	var saved: int = int(ProjectSettings.get_setting("cybersand/native_worker_threads",0))
@@ -412,3 +412,11 @@ func _refresh() -> void:
 		float(state.fps_now),int(state.native_ticks),int(state.rapier_steps),
 		int(state.render_uploaded_serial),int(pace.target_hz),
 		int(state.guard.get("budget_vetoes",0))]
+	var timing: Dictionary = host.workbench_presentation_frame.get("material_timing",{})
+	if not timing.is_empty():
+		var material_age: int = int(timing.get("material_age_usec",-1))
+		var upload_interval: int = int(timing.get("upload_interval_usec",-1))
+		_status.text += "\nMaterial age %s  |  blend %.1f ms  |  measured upload interval %s" % [
+			"%.1f ms" % (float(material_age)/1000.0) if material_age>=0 else "unknown",
+			float(timing.get("blend_duration_usec",0))/1000.0,
+			"%.1f ms" % (float(upload_interval)/1000.0) if upload_interval>0 else "unknown"]

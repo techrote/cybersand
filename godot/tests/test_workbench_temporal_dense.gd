@@ -9,6 +9,27 @@ const Fleet = preload("res://scripts/gcr_review_fleet.gd")
 const Trace = preload("res://scripts/workbench_pose_trace.gd")
 const WAIT_MS: int = 90000
 const DENSE_BODIES: int = 8
+
+class BudgetHost extends "res://scripts/main.gd":
+	# Deterministic deadline pressure for one permanently unadmitted actor.
+	# Other actors still use the actual production clearance guard.
+	var exhaust_first_body: bool = false
+	var guard_queries_in_frame: int = 0
+	var exhausted_queries: int = 0
+	var peer_first_turns: int = 0
+	func _assess_workbench_presented_sweep(start: Transform2D, target: Transform2D,
+			rectangles: Array, context: Dictionary, summary: Dictionary) -> Dictionary:
+		if exhaust_first_body:
+			var first_query: bool = guard_queries_in_frame==0
+			guard_queries_in_frame += 1
+			if rectangles==physical_actor_session.bridge._rects[0]:
+				exhausted_queries += 1
+				summary.cells_examined = PRESENTATION_FRAME_SCAN_BUDGET
+				summary.budget_vetoes += 1
+				return {"safe":false,"reason":"shared_budget","scanned":0}
+			if first_query: peer_first_turns += 1
+		return super._assess_workbench_presented_sweep(start,target,rectangles,context,summary)
+
 var host: Control
 var ui: Control
 var checks: int = 0
@@ -23,6 +44,7 @@ var last_steps: Dictionary = {}
 var contact_slots: Dictionary = {}
 var previous_max_fps: int = 0
 var ordinary_progress: Dictionary = {}
+var budget_fairness: Dictionary = {}
 
 func _initialize() -> void:
 	previous_max_fps = Engine.max_fps
@@ -83,6 +105,7 @@ func install(setup: Dictionary) -> bool:
 	host.engine_lab_wait_native_sample = false
 	host.simulation_worker.set_engine_lab_pixel_pacing(1,false)
 	host.snapshot_blend_start_usec = Time.get_ticks_usec()-2000000
+	host.material_presentation_timeline.reset()
 	ui._camera.select(1)
 	ui._set_view(Vector2.ZERO,Vector2i(512,512))
 	last_steps.clear()
@@ -112,6 +135,11 @@ func controlled_step(offset: Vector2) -> void:
 	session.advance(bridge.fixed_delta())
 	bridge.step()
 	session.complete_step()
+	# This controlled fixture replaces Main's callback, so stamp the real
+	# completion here and retain every actual step just as Main does.
+	host._workbench_completed_step = session.tick
+	host._workbench_completed_step_usec = Time.get_ticks_usec()
+	for slot: int in range(spawns.size()): host._observe_workbench_presentation(slot)
 	check(session.tick==before+1,"controlled real Rapier step completes once")
 
 func refresh_receipt() -> bool:
@@ -321,6 +349,64 @@ func supported_compound() -> void:
 		await process_frame
 	check(admitted and int(last_steps.get(0,-1))>=6,"supported large compound does not permanently disappear at fine-scan cap")
 
+func permanent_budget_refusal() -> void:
+	print("TEMPORAL_DENSE_STAGE permanent bootstrap budget refusal")
+	var setup: Dictionary = Setup.fresh(PackedInt32Array(ui.applied.liquid_policy),Vector2i(512,512))
+	# Distinct real shapes identify the faulted actor without changing any RID.
+	setup.actors = [Setup.instance("scooper",1,Vector2(180,180)),Setup.instance("needle",2,Vector2(300,180))]
+	setup.next_id = 3
+	setup.selected = 2
+	if not await install(setup): return
+	for index: int in range(4):
+		host._process(1.0/60.0)
+		await process_frame
+	if not check(host._workbench_presentation_state.has(1),"budget peer initially has actual safe certificate"): return
+	var bridge = host.physical_actor_session.bridge
+	var physical_step: int = host.physical_actor_session.tick
+	var physical_pose: Transform2D = bridge.body_transform(1)
+	host.exhaust_first_body = true
+	host._workbench_presentation_state.erase(0)
+	var visible: int = 0
+	var hidden_run: int = 0
+	var max_hidden_run: int = 0
+	var decisions: Array[Dictionary] = []
+	for index: int in range(12):
+		# This presentation-only invalidation models revalidation after upload.
+		# Native bytes and physical state are unchanged, and the peer's real
+		# clearance must succeed again before it is allowed to appear.
+		host._workbench_presentation_state[1].material_key = []
+		host.guard_queries_in_frame = 0
+		host._process(1.0/60.0)
+		var frame: Dictionary = host.workbench_presentation_frame
+		var shown: bool = frame.poses.has(1)
+		if shown:
+			visible += 1
+			hidden_run = 0
+		else:
+			hidden_run += 1
+			max_hidden_run = maxi(max_hidden_run,hidden_run)
+		check(not frame.poses.has(0),"unproven expensive body remains suppressed "+str(index))
+		check(int(host.workbench_presentation_last.cells_examined)<=host.PRESENTATION_FRAME_SCAN_BUDGET,
+			"faulted shared guard budget remains bounded "+str(index))
+		if shown:
+			check(frame.poses[1].is_equal_approx(physical_pose) and int(frame.selected_steps[1])==physical_step,
+				"budget peer retains proven actual pose and monotonic step "+str(index))
+		decisions.append({"frame":index,"visible":shown,"source":frame.sources.get(1,"hidden"),
+			"reason":frame.reasons.get(1,""),"peer_first_turns":host.peer_first_turns})
+		await process_frame
+	host.exhaust_first_body = false
+	check(host.exhausted_queries>=12,"bootstrap fault consumes guard budget in every frame")
+	# Opportunity is deterministic; an OS interruption can still refuse an
+	# individual real query at the normal 2 ms deadline. Do not turn that
+	# legitimate refusal into a machine-speed-dependent scheduling oracle.
+	check(host.peer_first_turns==6,"retained suppressed peer gets first budget opportunity once per full actor rotation")
+	check(visible>=2,"recurring budget opportunities produce actual guarded peer presentations")
+	check(host.physical_actor_session.tick==physical_step and bridge.body_transform(1).is_equal_approx(physical_pose),
+		"guard scheduling leaves stopped authoritative physical state unchanged")
+	budget_fairness = {"frames":decisions,"peer_first_turns":host.peer_first_turns,
+		"visible_frames":visible,"max_hidden_run":max_hidden_run,
+		"scope":"Deterministic exhaustion for permanently unadmitted body; retained peer uses unchanged actual clearance guard."}
+
 func timing_summary() -> Dictionary:
 	var costs: Array[int] = []
 	var counts: Dictionary = {}
@@ -345,11 +431,13 @@ func _run() -> void:
 	check(str(source_before.native_runtime_sha256).length()==64,"actual native runtime identity recorded")
 	registry_before = Fleet.registry_snapshot()
 	host = load("res://main.tscn").instantiate()
+	host.set_script(BudgetHost)
 	root.add_child(host)
 	root.size = Vector2i(1280,800)
 	ui = host.shared_workbench
 	if check(await until(func() -> bool: return ui!=null and not ui.applied.is_empty()),"mounted real Workbench ready"):
 		await dense_series()
+		await permanent_budget_refusal()
 		await supported_compound()
 	check(Fleet.restore_registry(registry_before),"authored registry restored after bounded fixture")
 	check(source_before==identity(),"executed source and native runtime unchanged during fixture")
@@ -361,6 +449,7 @@ func _run() -> void:
 		check(file!=null,"dense evidence file opens")
 	var result: Dictionary = {"schema":"workbench-temporal-dense-v1","checks":checks,"failures":failures,
 		"source_identity":source_before,"summary":summary,"ordinary_progress":ordinary_progress,"observations":rows,
+		"budget_fairness":budget_fairness,
 		"scope":"Actual mounted Main/native World/Rapier. Controlled eight-body near-contact, genuine native full refresh, ordinary callbacks and supported authored compound; no clearance retries or physical GPU claim."}
 	if file!=null:
 		file.store_string(JSON.stringify(result,"  ")+"\n")
@@ -371,5 +460,5 @@ func _run() -> void:
 	await process_frame
 	await process_frame
 	print("TEMPORAL_DENSE_RESULT ",JSON.stringify({"checks":checks,"failures":failures,
-		"observations":rows.size(),"summary":summary}))
+		"observations":rows.size(),"summary":summary,"budget_fairness":budget_fairness}))
 	quit(int(not failures.is_empty()))

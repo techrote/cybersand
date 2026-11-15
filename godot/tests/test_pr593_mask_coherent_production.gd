@@ -204,7 +204,7 @@ func _run() -> void:
 					if require(_set_actual_rapier_pose(clear_pose),"restore clear actual Rapier RID"):
 						var invalid_frame: Dictionary = source_frame.duplicate(true)
 						invalid_frame["epoch"]=int(invalid_frame.get("epoch",0))+1
-						require(host._safe_workbench_presentation_poses(invalid_frame).is_empty(),
+						require(host._safe_workbench_presentation_poses(invalid_frame,false).is_empty(),
 							"real production admission rejects mismatched native epoch")
 						host._present_physical_actor_overlay(invalid_frame)
 						require(host.physical_actor_overlay._parts.is_empty(),

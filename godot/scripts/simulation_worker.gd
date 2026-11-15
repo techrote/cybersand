@@ -3211,6 +3211,10 @@ func _publish_snapshot(
 		var render_presentation: Dictionary = render_micro.get("presentation", {})
 		var render_profile: Dictionary = snapshot.lab_context.get("profile", {})
 		_pending_render_context = {
+			# This stamp travels with this material publication, not a newer
+			# status snapshot that happens to repeat its pending render payload.
+			"native_completed_usec":_last_native_tick_completed_usec \
+				if _last_native_tick_world_generation == _world_generation else -1,
 			"actor_prototypes": snapshot.actor_prototypes.duplicate(true),
 			"actor_usables": snapshot.actor_usables.duplicate(true),
 			"micro_active": bool(snapshot.lab_context.get("micro_active", false)),

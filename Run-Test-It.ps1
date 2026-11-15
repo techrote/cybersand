@@ -57,6 +57,7 @@ $PreviousSource=$env:CYBERSAND_SOURCE_REVISION
 $PreviousPose=$env:CYBERSAND_DIAG_FLYER_POSE
 $PreviousCadence=$env:CYBERSAND_DIAG_RENDER_CADENCE
 $PreviousPresentation=$env:CYBERSAND_DIAG_PRESENTATION
+$PreviousMaterialTiming=$env:CYBERSAND_DIAG_MATERIAL_TIMING
 $Start=Get-Date
 $Summary=@{schema='engine-lab-scripted-pose-test-it-v1';status='incomplete';complete=$false
     source='unverified';driver=$RenderingDriver;cases=@();errors=@();processes=@()
@@ -108,11 +109,28 @@ function Read-PoseStatistics([string]$Path) {
     $NativeAges=New-Object 'System.Collections.Generic.List[double]'
     $Sources=@{};$Reasons=@{};$Last=@{};$Holds=0;$Switches=0;$UploadChanges=0
     $ResolveCpu=New-Object 'System.Collections.Generic.List[double]'
+    $MaterialAges=New-Object 'System.Collections.Generic.List[double]'
+    $UploadAges=New-Object 'System.Collections.Generic.List[double]'
+    $SelectedAges=New-Object 'System.Collections.Generic.List[double]'
+    $VisibleHoldAges=New-Object 'System.Collections.Generic.List[double]'
+    $TimingUploads=@{};$TimingSources=@{};$Reentries=0;$MaxRecovery=0
     $FollowResidual=New-Object 'System.Collections.Generic.List[double]'
     $TemporalRewinds=0;$IntentionalHolds=0;$Withheld=0;$MissingSubmissions=0;$SelectedSteps=0;$UnknownSelectedSteps=0
     for($Index=0;$Index -lt $Frames.Count;$Index++) {
         $Frame=$Frames[$Index]
         $Contract=Field $Frame 'presentation'
+        $MaterialTiming=Field $Contract 'material_timing'
+        if($null -ne $MaterialTiming) {
+            $TimingSource=[string](Field $MaterialTiming 'timing_source' 'unknown')
+            if(-not $TimingSources.ContainsKey($TimingSource)){$TimingSources[$TimingSource]=0};$TimingSources[$TimingSource]++
+            $CurrentTiming=Field $MaterialTiming 'current'
+            $TimingSerial=Field $CurrentTiming 'serial'
+            if($null -ne $TimingSerial){$TimingUploads[([string](Field $CurrentTiming 'generation')+':'+[string]$TimingSerial)]=$MaterialTiming}
+            $MaterialAge=[double](Field $MaterialTiming 'material_age_usec' -1)
+            $UploadAge=[double](Field $MaterialTiming 'upload_age_usec' -1)
+            if($MaterialAge -ge 0){$MaterialAges.Add($MaterialAge/1000.0)}
+            if($UploadAge -ge 0){$UploadAges.Add($UploadAge/1000.0)}
+        }
         $ResolveTime=Field $Contract 'resolve_usec'
         if($null -ne $ResolveTime){$ResolveCpu.Add([double]$ResolveTime/1000.0)}
         $Built=[double](Field $Frame 'render_snapshot_built_usec' -1)
@@ -130,6 +148,13 @@ function Read-PoseStatistics([string]$Path) {
         foreach($Body in @($Frame.bodies)) {
             $Key=[string]$Body.slot;$Source=[string]$Body.source;$Reason=[string]$Body.guard_reason
             $SelectedStep=Field $Body 'presentation_step'
+            if($null -ne (Field $Body 'selected')) {
+                $SelectedAge=[double](Field $Body 'selected_age_usec' -1)
+                if($SelectedAge -ge 0){$SelectedAges.Add($SelectedAge/1000.0)}
+                if([bool](Field $Body 'intentional_hold' $false)){$VisibleHoldAges.Add([double](Field $Body 'hold_age_usec' 0)/1000.0)}
+            }
+            if([bool](Field $Body 'explicit_reentry' $false)){$Reentries++}
+            $MaxRecovery=[Math]::Max($MaxRecovery,[int](Field $Body 'recovery_attempts' 0))
             if($null -ne $SelectedStep -and [double]$SelectedStep -ge 0){$SelectedSteps++}
             elseif($null -ne (Field $Body 'selected')){$UnknownSelectedSteps++}
             if([bool](Field $Body 'presentation_source_rewind' $false)){$TemporalRewinds++}
@@ -213,6 +238,14 @@ function Read-PoseStatistics([string]$Path) {
         native_tick_wall_ms=(Distribution $NativeWall);texture_upload_cpu_call_ms=(Distribution $UploadWall)
         snapshot_age_at_upload_ms=(Distribution $UploadAges);upload_to_ack_issue_ms=(Distribution $AckLatencies)
         ack_latency_unavailable=$UnmatchedAcks;presentation_cpu_ms=(Distribution $ResolveCpu)
+        delivery_timing=@{observed_uploads=$TimingUploads.Count;timing_sources=$TimingSources
+            upload_interval_ms=(Distribution @($TimingUploads.Values|ForEach-Object{[double]$_.upload_interval_usec/1000.0}))
+            publication_interval_ms=(Distribution @($TimingUploads.Values|ForEach-Object{[double]$_.publication_interval_usec/1000.0}))
+            blend_duration_ms=(Distribution @($TimingUploads.Values|ForEach-Object{[double]$_.blend_duration_usec/1000.0}))
+            material_age_ms=(Distribution $MaterialAges);upload_age_ms=(Distribution $UploadAges)
+            selected_pose_age_ms=(Distribution $SelectedAges);visible_hold_age_ms=(Distribution $VisibleHoldAges)
+            explicit_reentries=$Reentries;max_recovery_attempts=$MaxRecovery
+            notice='Intervals count uploads once; ages count submitted frames. Unknown ages are omitted, not zero latency.'}
         selected_step_observations=$SelectedSteps;selected_step_unknown_visible_frames=$UnknownSelectedSteps
         selected_source_time_rewinds=$TemporalRewinds;intentional_hold_frames=$IntentionalHolds
         withheld_body_frames=$Withheld;follow_target_minus_selected_cells=(Distribution $FollowResidual)
@@ -235,11 +268,16 @@ function Compare-PhysicalSteps($Before,$After) {
         $Angles.Add([Math]::Abs([Math]::Atan2([Math]::Sin($A.angle-$B.angle),[Math]::Cos($A.angle-$B.angle))))
         if($A.native_tick_used -ne $B.native_tick_used){$DifferentNative++}
     }
+    $Complete=$Positions.Count -gt 0 -and $Positions.Count -eq $Velocities.Count -and $Positions.Count -eq $Angles.Count
+    $Within=$Complete -and ($Positions|Measure-Object -Maximum).Maximum -le 0.001 -and
+        ($Velocities|Measure-Object -Maximum).Maximum -le 0.001 -and ($Angles|Measure-Object -Maximum).Maximum -le 0.00001
+    $ComparisonStatus=if(-not $Complete){'unavailable'}elseif($DifferentNative -gt 0){'incomparable_native_input_schedule'}elseif($Within){'matched_within_tolerances'}else{'physical_trajectory_differs'}
     return @{comparison_clock='same completed Rapier step and body slot, fixed 1/60 simulated seconds per step'
         common_step_bodies=$Positions.Count;legacy_step_bodies=$Before.Count;repaired_step_bodies=$After.Count
         position_delta_cells=(Distribution $Positions);velocity_delta=(Distribution $Velocities)
         angle_delta_radians=(Distribution $Angles);different_native_tick_inputs=$DifferentNative
-        status=$(if($Positions.Count -eq 0){'unavailable'}elseif(($Positions|Measure-Object -Maximum).Maximum -gt 0.001){'physical_trajectory_differs'}else{'matched_within_0.001_cells'})}
+        tolerances=@{position_cells=0.001;velocity_cells_per_second=0.001;angle_radians=0.00001}
+        observed_deltas_within_tolerances=[bool]$Within;status=$ComparisonStatus}
 }
 function Save-Summary {
     $Summary.elapsed_seconds=[Math]::Round(((Get-Date)-$Start).TotalSeconds,3)
@@ -260,8 +298,20 @@ function Save-Summary {
         $Lines.Add(('  Main interval ms median/p95/p99: {0} / {1} / {2}; samples: {3}' -f (Field $Timing 'p50' 'n/a'),(Field $Timing 'p95' 'n/a'),(Field $Timing 'p99' 'n/a'),(Field $Timing 'count' 0)))
         $Lines.Add(('  Presentation CPU ms median/p95/p99: {0} / {1} / {2}; recorded source rewinds: {3}' -f (Field $Cpu 'p50' 'n/a'),(Field $Cpu 'p95' 'n/a'),(Field $Cpu 'p99' 'n/a'),$Stats.selected_source_time_rewinds))
         $Lines.Add(('  Intentional holds: {0}; withheld actor frames: {1}' -f $Stats.intentional_hold_frames,$Stats.withheld_body_frames))
+        $Delivery=Field $Stats 'delivery_timing'
+        $Lines.Add(('  Measured delivery/fade ms p95: upload {0}, publication {1}, blend {2}; observed uploads {3}' -f
+            (Field (Field $Delivery 'upload_interval_ms') 'p95' 'n/a'),(Field (Field $Delivery 'publication_interval_ms') 'p95' 'n/a'),
+            (Field (Field $Delivery 'blend_duration_ms') 'p95' 'n/a'),(Field $Delivery 'observed_uploads' 0)))
+        $Lines.Add(('  Selected pose age ms p95/max: {0}/{1}; visible hold max ms: {2}; explicit reentries {3}' -f
+            (Field (Field $Delivery 'selected_pose_age_ms') 'p95' 'n/a'),(Field (Field $Delivery 'selected_pose_age_ms') 'max' 'n/a'),
+            (Field (Field $Delivery 'visible_hold_age_ms') 'max' 'n/a'),(Field $Delivery 'explicit_reentries' 0)))
         $Lines.Add(('  Known selected steps: {0}; visible unknown source times: {1}; callbacks without a submission: {2}' -f $Stats.selected_step_observations,$Stats.selected_step_unknown_visible_frames,$Stats.callbacks_without_overlay_submission))
     }
+    foreach($Pair in @($Summary.pairs)) {
+        $Physical=$Pair.physical_trajectory
+        $Lines.Add(('Physical comparison {0}: {1}; differing native input steps: {2}' -f $Pair.condition,$Physical.status,$Physical.different_native_tick_inputs))
+    }
+    $Lines.Add('Incomparable native input schedules do not prove unchanged physics. Installed deterministic authority control provides a separate same-input check.')
     if($Summary.failures.Count -gt 0){$Lines.Add('Incomplete cases: '+$Summary.failures.Count+'; original logs are retained.')}
     [IO.File]::WriteAllLines((Join-Path $Output 'READ-RESULTS.txt'),$Lines.ToArray(),[Text.UTF8Encoding]::new($false))
 }
@@ -325,6 +375,7 @@ function Run-Case([string]$Family,[int]$Workers,[int]$Repeat,
     $env:CYBERSAND_DIAG_FLYER_POSE=$(if($Pose -eq 'mask'){'mask'}else{''})
     $env:CYBERSAND_DIAG_RENDER_CADENCE=$(if($Presentation -eq 'legacy'){'legacy'}else{''})
     $env:CYBERSAND_DIAG_PRESENTATION=$(if($PoseSelection -eq 'legacy'){'legacy'}else{''})
+    $env:CYBERSAND_DIAG_MATERIAL_TIMING=$(if($PoseSelection -eq 'legacy'){'legacy'}else{''})
     New-Item -ItemType Directory -Force -Path $env:APPDATA|Out-Null
     Write-Host "TEST IT | $Name | real 2048-square World / Needle physics tape" -ForegroundColor Cyan
     $Arguments=@('--rendering-driver',$RenderingDriver,'--rendering-method',
@@ -343,7 +394,8 @@ function Run-Case([string]$Family,[int]$Workers,[int]$Repeat,
     Require (Test-Path -LiteralPath $Trace -PathType Leaf) "$Name did not write pose JSONL"
     Require ($Data.complete -eq $true -and $Data.status -eq 'passed') "$Name incomplete"
     Require ($Data.source_sha -eq $Summary.source) "$Name source identity changed"
-    Require ($Data.presentation_mode -eq $PoseSelection -and $Data.cadence_mode -eq $Presentation) "$Name comparison arm differs"
+    Require ($Data.presentation_mode -eq $PoseSelection -and $Data.cadence_mode -eq $Presentation -and
+        $Data.material_timing_mode -eq $(if($PoseSelection -eq 'legacy'){'legacy'}else{'measured'})) "$Name comparison arm differs"
     if($FireMode -eq 'on-off') {
         $FireEvents=@($Data.fire_schedule.events)
         Require ($FireEvents.Count -eq 2 -and $FireEvents[0].observed_step -eq 0 -and $FireEvents[1].observed_step -eq 60 -and
@@ -372,6 +424,7 @@ function Run-Case([string]$Family,[int]$Workers,[int]$Repeat,
     }
     $Row=@{name=$Name;passed=$true;workers=$Workers;family=$Family;camera=$Camera;pose=$Pose
         condition=$Condition;cadence_mode=$Presentation;presentation_mode=$PoseSelection
+        material_timing_mode=$Data.material_timing_mode
         fire_schedule=$Data.fire_schedule;display=$Data.display
         pixel_target_hz=$PixelHz;publication_target_hz=$RenderHz;graphical_fps_target=$Fps
         rapier_callback_target_hz=$RapierHz;fixed_simulation_step_seconds=(1.0/60.0)
@@ -473,13 +526,21 @@ function Run-CoherenceMatrix {
             }
         }
         if($Rows.Count -eq 2) {
+            $Physical=Compare-PhysicalSteps $Trajectories.legacy $Trajectories.coherent
             $Summary.pairs+=@{condition=$Condition.name;legacy=$Rows.legacy.name;coherent=$Rows.coherent.name
-                physical_trajectory=(Compare-PhysicalSteps $Trajectories.legacy $Trajectories.coherent)
+                physical_trajectory=$Physical
                 legacy_statistics=$Rows.legacy.statistics;coherent_statistics=$Rows.coherent.statistics}
+            if($Physical.status -in @('unavailable','physical_trajectory_differs')) {
+                $Summary.failures+=@{condition=$Condition.name;presentation='physical-equivalence';error=$Physical.status}
+            }
             Save-Summary
         }
     }
     $script:LastTrajectory=@{}
+    $Summary.physical_comparison=@{
+        matched_pairs=@($Summary.pairs|Where-Object{$_.physical_trajectory.status -eq 'matched_within_tolerances'}).Count
+        incomparable_pairs=@($Summary.pairs|Where-Object{$_.physical_trajectory.status -eq 'incomparable_native_input_schedule'}|ForEach-Object{$_.condition})
+        notice='Different native input schedules are incomparable for physics equivalence; deterministic production authority control is separate.'}
     Require ($Summary.failures.Count -eq 0) 'One or more coherence cases were incomplete; all available evidence was retained'
 }
 try {
@@ -569,6 +630,7 @@ try {
     $env:CYBERSAND_DIAG_FLYER_POSE=$PreviousPose
     $env:CYBERSAND_DIAG_RENDER_CADENCE=$PreviousCadence
     $env:CYBERSAND_DIAG_PRESENTATION=$PreviousPresentation
+    $env:CYBERSAND_DIAG_MATERIAL_TIMING=$PreviousMaterialTiming
     try {
         Save-Summary
         Compress-Archive -LiteralPath $Output -DestinationPath $Zip -CompressionLevel Optimal

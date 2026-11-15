@@ -27,8 +27,38 @@ a previously certified stationary pose only while its certificate remains valid
 or after revalidation; otherwise the actor is withheld. The strict render receipt
 excludes withheld actors, preventing implicit fallback to an older material-bound
 pose. A newer native receipt may rejoin only with a later actual sampled Rapier
-step. Session/epoch/World replacement resets the timeline; temporary stale
-receipts do not erase an advanced selection. Picking uses the displayed actor.
+step and a clear sweep from the previous visible pose. Its safe endpoint alone
+cannot authorize a forward source-switch jump across material. Session/epoch/
+World replacement resets the timeline; temporary stale receipts do not erase
+an advanced selection. Picking uses the displayed actor.
+
+**PRESENTATION-TIME-001 continuation:** a separate value-only history retains at
+most 128 physical observations for each of the eight admitted actors. Each
+observation identifies the physical step, transform, linear/angular velocity,
+completed-step timestamp when known, observation time and native sample serial.
+The existing 2048-entry serial-to-step join remains separate from the bridge's
+two-record wrench authority fence. On a material or motion-capacity refusal,
+at most three chronological observed candidates can be swept from the last
+selected pose. These queries spend the original shared cell allowance and
+cooperative deadline. There is no expanding pose search or unchecked lerp.
+
+After a visible selection has lagged, recovery replays actual retained physical
+observations. Each graphical frame can advance by the number of newly completed
+physical steps since the previous graphical frame, plus at most one additional
+retained step to catch up. This bounds recovery speed using the observed clocks,
+without imposing latency on ordinary live motion. Recovery observations older
+than 100 ms are withheld instead of stretching visual delay indefinitely.
+
+A continuously refused pose may remain visible only while its material
+certificate is valid and for at most 100 ms. Thereafter the actor is explicitly
+withheld; Follow retains the last selected target. A current live or later native endpoint can
+re-enter after a withheld submission only after footprint clearance and a
+nondecreasing known physical step. A missing or expired native receipt cannot
+trap a safe stopped actor indefinitely; explicit live re-entry still checks
+both visible material textures. Such reacquisition is explicitly labelled,
+not reported as continuous motion. No generic smoothing or fixed display delay
+is imposed on clear live motion. Hold age, sampled-pose age, recovery attempts
+and suppressed reacquisition remain measurable in the frame trace.
 
 Near contact, a coarse sampled sweep can reject clear motion because its
 continuous-coverage dilation reaches nearby terrain. The coherent policy may
@@ -39,11 +69,22 @@ previous-texture refusals never become permission to draw. Successful refinement
 is recorded as `refined_swept_mask`. The original comparison retains coarse
 sampling, so its conservative false refusals remain observable.
 
-This is a monotonic presentation timeline, not physics interpolation or a visual
-offset. It preserves native material and Rapier authority. Unknown sample time
+The selected timeline is monotonic; no presentation observation owns physics. It preserves native material and Rapier authority. Unknown sample time
 stays unknown; a bounded sample-serial journal supplies provenance without
 equating native ticks to physical steps. `CYBERSAND_DIAG_PRESENTATION=legacy`
 retains the original independently followed guarded display for comparison.
+Material blending is also part of that frozen frame. The two accepted upload
+records retain generation, revision, serial, native tick/completion, generation
+time and CPU upload time. The duration uses the smaller positive interval of
+actual publication and upload delivery, clamped to 1–100 ms. Missing producer
+time falls back to measured upload intervals. A first upload or new World has
+no previous state to blend. Changing requested render Hz does not alter an
+in-progress measured fade. At 2 Hz the cap deliberately leaves discrete terrain
+updates; it does not invent intermediate native states. The guard checks both
+textures for exactly the same active-blend interval used by the shader.
+`CYBERSAND_DIAG_MATERIAL_TIMING=legacy` independently restores the old requested-
+Hz fade; the original-presentation launcher selects both diagnostic policies.
+
 The [Windows acceptance guide](../operations/camera-stack-coherence-acceptance.md)
 and [trace runbook](../operations/engine-lab-pose-tracing.md) distinguish automated
 contract checks from physical NVIDIA acceptance.
@@ -61,9 +102,21 @@ ordinary publication policy remain unchanged.
 
 Actual completion events distinguish native steps, immutable snapshot handoff,
 Main receipt, upload return, ACK and Godot post-draw. None measures hardware
-scanout. Workbench's normal Rapier/native sample handshake and one-step stale
-response fence remain; independent callback controls do not by themselves
-establish independent physical clocks. Use the [runbook](../operations/engine-lab-pose-tracing.md)
+scanout. The existing physical sample handshake remains the ordinary default in both
+presentation policies. A development attempt to disable it globally exposed
+scheduler-sensitive Scooper material loss in both old and new renderers; it was
+rejected rather than treating a physics regression as a display repair.
+**Uncouple Pixel + Rapier** in Engine Lab independently disables sample waiting
+and early native sample wake; the corrected coordinator is qualified at 2 Hz
+native and 120 Hz Rapier through those existing controls, without adding any
+coupling or slowing physics to pass presentation tests.
+
+Installed-terrain, failed-World, epoch, duplicate-result and one-step/0.5-cell
+stale-response fences remain authoritative. A slow native worker can reject
+late impulses; the presentation coordinator never makes them fresh. Native
+coupling still consumes each unique body sample once. Asynchronous material
+custody is a separate physical limitation, not solved by this display timeline.
+Use the [runbook](../operations/engine-lab-pose-tracing.md)
 for clock semantics and exact-source acceptance boundaries.
 
 ## Can rendering read native cells directly?

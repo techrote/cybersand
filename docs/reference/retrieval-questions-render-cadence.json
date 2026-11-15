@@ -1,7 +1,7 @@
 {
   "version": 1,
   "frozen_date": "2026-11-15",
-  "purpose": "Additive RENDER-CADENCE-001 development retrieval; independent of frozen historical questions. Runtime acceptance requires exact-source native execution and physical Windows GPU evidence.",
+  "purpose": "Current rendering cadence and PRESENTATION-TIME-001 retrieval; independent of frozen historical questions. Runtime acceptance requires exact-source native execution and physical Windows GPU evidence.",
   "questions": [
     {
       "id": "RENDER-CADENCE-001",
@@ -29,8 +29,8 @@
       ],
       "facts": [
         "Engine Lab alters callback rate while each completed flight step stays fixed at 1/60; compare physical trajectories by completed step and report simulated versus elapsed time.",
-        "Normal Workbench waits for native body-sample completion.",
-        "The lab counterfactual bypasses scheduling waits but retains native response age, geometry and epoch checks; it is not qualified asynchronous contact coupling."
+        "Ordinary physical pacing defaults are preserved. The existing Uncouple Pixel + Rapier controls disable sample wait and early wake; the corrected presentation is qualified at2Hz native and120Hz Rapier with both off.",
+        "The native response age, geometry, duplicate and epoch fences remain; late impulses can be rejected, and the native worker still consumes each unique actor sample once."
       ],
       "sources": [
         "../godot/scripts/main.gd::_physics_process",
@@ -71,6 +71,42 @@
         "../Test It.cmd",
         "../godot/tests/fixtures/engine_lab/render-cadence-conditions.json",
         "../tools/ci/run_render_cadence_matrix.py"
+      ]
+    },
+    {
+      "id": "PRESENTATION-TIME-001",
+      "query": "How can the Workbench advance an actor safely after a material veto without rewinding or teleporting to a newer native receipt?",
+      "canonical": [
+        "architecture/rendering-and-gameplay-bridges.md",
+        "operations/camera-stack-coherence-acceptance.md"
+      ],
+      "facts": [
+        "The frame follows the previously displayed pose and rejects physical-step rewind; Follow uses the selected display pose.",
+        "Up to128 immutable observations per admitted actor support at most3 swept recovery candidates within shared guard limits.",
+        "Visible native receipt advance needs continuous sweep; lag recovery advances by observed new physical steps plus at most one catch-up sample per graphical frame, with100ms recovery-age and hold bounds. Explicit withholding and safe nondecreasing endpoint reacquisition are recorded."
+      ],
+      "sources": [
+        "../godot/scripts/main.gd::_resolve_workbench_presentation_frame",
+        "../godot/scripts/workbench_presentation_history.gd",
+        "../godot/tests/test_workbench_temporal_presentation.gd"
+      ]
+    },
+    {
+      "id": "PRESENTATION-TIME-002",
+      "query": "Does material crossfade use requested snapshot Hz or the actual native publication and upload delivery interval?",
+      "canonical": [
+        "architecture/rendering-and-gameplay-bridges.md",
+        "operations/camera-stack-coherence-acceptance.md"
+      ],
+      "facts": [
+        "The corrected Workbench records actual publication/upload timestamps and uses the smaller measured positive interval, bounded to1–100ms.",
+        "The first upload and new World have no previous state to fade; invalid producer times fall back to observed upload spacing.",
+        "Shader blend and previous-texture safety come from one frozen frame; CYBERSAND_DIAG_MATERIAL_TIMING=legacy independently restores requested-rate timing."
+      ],
+      "sources": [
+        "../godot/scripts/workbench_material_timeline.gd",
+        "../godot/scripts/main.gd::_material_presentation_state",
+        "../godot/tests/test_workbench_material_delivery_timing.gd"
       ]
     }
   ]

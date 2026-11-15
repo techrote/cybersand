@@ -88,8 +88,9 @@ func _run() -> void:
 			menu._widgets.has("sample_wake"),"all requested controls exist")
 		check(host.engine_lab_wait_native_sample and
 			host.engine_lab_ack_delay_frames==0 and
+			bool(host.simulation_worker.engine_lab_pixel_pacing().sample_wake) and
 			int(host.simulation_worker.engine_lab_pixel_pacing().target_hz)==60,
-			"default coupling, ACK, and native tick unchanged")
+			"default physics coupling, ACK and native target remain unchanged")
 		menu._widgets["fps"].value = 144
 		check(Engine.max_fps==144,"UI changes live render FPS cap")
 		menu._widgets["pixel"].value = 30

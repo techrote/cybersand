@@ -14,6 +14,10 @@ Current Draft/HOLD evaluation: [coherent actor, terrain and camera Windows
 acceptance](operations/camera-stack-coherence-acceptance.md),
 [presentation contract](architecture/rendering-and-gameplay-bridges.md#coherent-workbench-presentation-frame)
 and [source-scoped evidence](audits/2026-11-15-camera-stack-coherence.md).
+The isolated PRESENTATION-TIME-001 continuation adds bounded actor history,
+explicit hold/suppression recovery, measured material delivery fades and
+independent-rate qualification while preserving physical pacing defaults; its
+package retains the exact source identity.
 The integrated candidate preserves accepted generator and Flatten features;
 physical NVIDIA acceptance and all merge decisions remain with the owner.
 

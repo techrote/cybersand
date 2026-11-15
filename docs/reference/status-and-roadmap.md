@@ -19,6 +19,11 @@ The [contract](../architecture/rendering-and-gameplay-bridges.md#coherent-workbe
 preserves native/physical authority; the [evaluation guide](../operations/camera-stack-coherence-acceptance.md)
 provides original/corrected comparisons. The candidate integrates accepted main
 `018bd09503d7` with current generator, Flatten, PAINT and persistence features.
+The isolated PRESENTATION-TIME-001 continuation adds bounded observed-pose
+recovery, a 100 ms hold limit with explicit withholding/re-entry, actual delivery-
+timed material fades, and qualification with independently configured native/
+Rapier clocks. Physical pacing defaults and native wrench/collider authority
+remain unchanged; existing asynchronous material-custody limitations are separate.
 Exact-source automated qualification and physical NVIDIA acceptance are separate;
 this does not authorize merging or changing any of the four Draft states.
 

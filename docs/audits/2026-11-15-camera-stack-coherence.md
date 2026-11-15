@@ -16,6 +16,83 @@ presentation and its qualification, not native material authority or Rapier law.
 The previous physical verdict remains a failed presentation until the owner
 evaluates this new source-matched application.
 
+## PRESENTATION-TIME-001 bounded timeline continuation
+
+The isolated `fix/presentation-time-001-20261115` continuation starts from
+integrated application `a514f369f3fcf03979182d5038114c6193310464`. It preserves
+the qualified `7c85b348f707` previous-texture history and fixed ACK deadline
+repairs through the integrated source; this is a content-preservation statement,
+not a claim that `7c85b348` is its Git ancestor. The active #609 branch and #582
+are not modified by this continuation.
+
+The coordinator now retains at most eight actors × 128 immutable observed poses,
+with step, transform, linear/angular velocity, completion/observation times and
+sample identity. A rejected live sweep can try at most three chronological
+observations within the existing shared 24,000-cell allowance and cooperative
+2 ms deadline. Admission rotates globally so a permanently unsafe new actor
+cannot always precede an actor recovering from suppression. A newer native
+receipt must also prove its swept route from the last visible pose; an endpoint
+receipt alone cannot cause a continuous forward source switch.
+
+After lag develops, visible recovery may advance by the actual number of newly
+completed physical steps plus one retained step per graphical submission.
+Playback age and continuous safe retention are limited to 100 ms. Expiry or
+missing proof produces an explicit withheld submission. Re-entry then requires
+current/previous material footprint clearance and a nondecreasing physical
+step; it is recorded as discontinuous reacquisition. These are bounded degraded
+states, not unconditional live drawing, fabricated poses or physical mutation.
+
+Two material delivery records now bind publication identity, World revision,
+native tick/completion, producer time and actual CPU upload time. Crossfade
+duration derives from measured delivery intervals with a 1–100 ms bound. The
+shader and guard use the same frame's frozen blend decision. Requested Hz no
+longer determines the ordinary Workbench fade; the independently selectable
+legacy diagnostic remains available for A/B testing.
+
+Development checks used pinned Godot 4.7 and the accepted-main retained native
+runtime on Linux. The new material clock and fixed-input authority control
+passed 113 checks; the bounded history helper passed 17. Actual Main independent
+clock arms completed 120 Rapier steps against 1–2 native ticks in both Free and
+Follow under both presentation modes. All four physical trajectory hashes were
+`545761c6a33211e68c2cdc11f6420af68a08503a9988b9e2454f5e3e2d11285b`, with zero
+component difference and zero coherent Follow-target residual. The paced Main
+fixture passed 490 checks across 52 observations, including real Wall refusal,
+translation/rotation, hold expiry and explicit live/native reacquisition.
+The eight-actor dense fixture passed 3,113 checks, with no hidden actors in
+ordinary motion, full-refresh, contact and large-compound observations. Its
+injected permanently unadmitted actor reproduced 0/12 peer presentations under
+the prior grouped order; global rotation gave the peer six first-budget turns
+and six genuine guarded presentations in 12 frames.
+These are development results on the parent plus delta, not final-source
+Windows or physical NVIDIA acceptance.
+
+An attempted global change to the existing sample-handshake defaults was
+rejected after the unchanged Scooper regression lost its carried material.
+A controlled 22 Hz native comparison retained 11 grains with the original
+sample wait and lost all 13 starting grains without it. The original renderer
+also lost its load asynchronously. The candidate therefore preserves physical
+pacing defaults and tests independent 2 Hz native / 120 Hz Rapier operation
+through the existing **Uncouple Pixel + Rapier** controls. It does not change
+native contact laws, stale-wrench fences or physics cadence to improve rendering.
+Asynchronous material custody remains a separate physical limitation.
+With the original defaults restored, the unchanged 73-assertion Workbench
+physics regression passed, including Scooper load, lift and lateral transport.
+
+One intermediate fixture accidentally allowed normal drawing before inspecting
+explicit re-entry; it was corrected to consume native uploads without extra
+draws. Another used a SceneTree timer as a wall-clock assertion; it now waits on
+the same monotonic clock as production. The manually stepped dense fixture
+initially omitted the new completed-step timestamp seam; supplying its actual
+completion observation removed unknown-time recovery failures without weakening
+the repeated-flicker assertions. Failed artifacts are retained. The
+final exact-source workflow and Windows package own release qualification;
+the owner still judges ordinary flight and retains the merge gate.
+
+The narrow frozen-blend fix independently published on #609 as `43f46c6` is
+also preserved: the Original diagnostic guard receives the frame's exact blend
+activity rather than sampling the clock again at a crossfade boundary. This
+does not move the continuation's base or modify the other active branch.
+
 ## Inputs and confirmed mechanism
 
 The verified starting PR heads were #566 `214de85adef2`, #593 `9628729af052`,

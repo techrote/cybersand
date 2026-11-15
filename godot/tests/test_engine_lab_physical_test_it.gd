@@ -126,6 +126,8 @@ func _initialize() -> void:
 		"legacy" if cadence_mode=="legacy" else "")
 	OS.set_environment("CYBERSAND_DIAG_PRESENTATION",
 		"legacy" if presentation_mode=="legacy" else "")
+	OS.set_environment("CYBERSAND_DIAG_MATERIAL_TIMING",
+		"legacy" if presentation_mode=="legacy" else "")
 	OS.set_environment("CYBERSAND_DIAG_FLYER_POSE",
 		"mask" if pose_mode=="mask" else "")
 	set_meta("cybersand_feature","shared_workbench")
@@ -292,6 +294,7 @@ func _finish(ui: Control) -> void:
 		"ack_gated_publication":ack_gated,"wait_native_sample":wait_sample,
 		"wake_on_rapier_sample":sample_wake,"smoothing":smoothing,
 		"cadence_mode":cadence_mode,"presentation_mode":presentation_mode,
+		"material_timing_mode":"legacy" if presentation_mode=="legacy" else "measured",
 		"fire_schedule":{"mode":fire_mode,"clock":"completed_Rapier_steps","events":fire_events},
 		"fixed_physics_step_seconds":1.0/60.0,
 		"physics_rate_semantics":"fixed_1_over_60_per_completed_step; 120_callback_target_is_not_normalized_120Hz_physics",
@@ -442,6 +445,7 @@ func _run() -> void:
 			"ack_gated_publication":ack_gated,"wait_native_sample":wait_sample,
 			"wake_on_rapier_sample":sample_wake,"smoothing":smoothing,"cadence_mode":cadence_mode,
 			"presentation_mode":presentation_mode,"fire_mode":fire_mode,
+			"material_timing_mode":"legacy" if presentation_mode=="legacy" else "measured",
 			"input_tape_identity":"original8_plus_cadence_30_90_120" if cadence_tape else "original8"}),
 			"bounded actual overlay pose trace armed"):
 		await _finish(ui)

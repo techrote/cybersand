@@ -30,12 +30,25 @@ application source and retained native builds.
 4. Close CyberSand completely. Open **Open Original Presentation.cmd**, use
    the same setup and settings, and repeat the movement. It restores the
    original guarded actor selection and live camera following. Both launchers
-   use the same physics, bounded material scans and repaired material history/ACK
-   behavior. The original also retains coarse swept-clearance sampling; the
+   use the same preserved physics pacing, bounded material scans and repaired
+   material history/ACK behavior. The original uses the requested-rate terrain
+   fade; the corrected version uses actual publication/upload intervals. The original also retains coarse swept-clearance sampling; the
    corrected version can refine a false near-contact veto conservatively.
    This compares the original temporal-selection/camera policy and coarse guard
    with the correction; it is not a byte-identical historical #593 build.
-5. **Open Mask Baseline.cmd** supplies the older material-bound display as an
+5. In the corrected Workbench, use Engine Lab to set **Native Pixel target tick cadence (Hz)** to
+   **2 Hz** while keeping Rapier at **120 Hz**. Click **Uncouple Pixel + Rapier**
+   so **Wait for native sample completion** and **Wake native worker early on a
+   new Rapier sample** are both off. Fly a fast Needle,
+   rotate near dense terrain, and repeat in Free and Follow. Add or cross Fire,
+   Wall, Sand and Water. Terrain will still update slowly; watch for backwards
+   actor snaps, unintended forward catch-up, clipping, long holds or blinking.
+   The coordinator can briefly retain a certified actor pose, then explicitly
+   hide it when safe continuous motion cannot be proved. Return native pacing
+   to its normal target and use **Restore baseline** for ordinary play. At
+   slow native cadence, existing asynchronous contact may lose carried material
+   or reject stale impulses; this visual repair does not change those laws.
+6. **Open Mask Baseline.cmd** supplies the older material-bound display as an
    additional comparison. Its lower motion cadence is expected when native
    material publication is slow.
 
@@ -48,7 +61,7 @@ automated capture completes.
 
 ## Collect the reproducible comparison
 
-Double-click **Test It.cmd**. It opens twelve successive test windows: six
+Double-click **Test It.cmd**. It opens fourteen successive test windows: seven
 matched original/corrected pairs, ordinarily a few minutes on a hardware GPU.
 Keep other CyberSand instances closed. A slow machine can take longer, and an
 unfinished case retains its partial logs instead of being called a pass.
@@ -60,12 +73,16 @@ unfinished case retains its partial logs instead of being called a pass.
 | `follow30` | Follow | 30 FPS | Fire OFF |
 | `follow120` | Follow | 120 FPS | Fire OFF |
 | `slow-native` | Follow | 60 FPS | 2 Hz native target; Fire OFF |
+| `slow-native-free` | Free | 60 FPS | 2 Hz native target; Fire OFF |
 | `delayed-ack` | Follow | 60 FPS | ACK delayed three rendered frames; Fire ON→OFF |
 
 All pairs use the original 2048×2048 World and the same tick-addressed Needle
 movement commands, including the labelled sustained-motion extension. Fire
 events are a separate schedule at completed Rapier steps 0 and 60. The usual
-targets are native 30 Hz, Rapier callbacks 120 Hz and publication 60 Hz. Rapier
+targets are native 30 Hz, Rapier callbacks 120 Hz and publication 60 Hz.
+Native sample-wake and Rapier sample-wait are both explicitly disabled in all
+comparison arms. Ordinary launch retains the original physical handshake; the
+comparison exercises the independently paced mode without changing that default. Rapier
 still advances 1/60 simulated second per completed step. The runner disables
 VSync only for its scripted pacing comparisons; requested rates are not claims
 about achieved performance.
@@ -90,8 +107,8 @@ of physical monitor scanout.
 
 **summary.json** and each case's receipt retain GPU/driver and Windows identity,
 Godot's display DPI/scale/refresh and VSync settings, source and file hashes,
-target and achieved clocks, Fire/tape identities, same-step physical trajectory
-comparisons, intentional holds, withheld poses and failures. Original JSONL
+target and achieved clocks, actual material delivery intervals/fade/age, Fire/tape identities, same-step physical trajectory
+comparisons, bounded history/recovery, explicit suppressed re-entry, intentional holds, withheld poses and failures. Original JSONL
 traces, logs and two untimed reference framebuffers remain alongside them.
 The runner also creates a ZIP of these local results; it does not upload it.
 
@@ -99,7 +116,9 @@ Fill in **ACCEPTANCE.md** with **PASS**, **FAIL** or **HOLD**, the settings you
 used, and any repeatable visual defect. Return that file and the results ZIP;
 if a visible problem remains, a short ordinary-play recording and the relevant
 case name are useful. The corrected scripted arms reject a recorded source
-rewind or a Follow target that differs from its selected actor pose. An
+rewind or a Follow target that differs from its selected actor pose. The same-step physical comparison checks position, rotation and velocity;
+an altered native-input schedule is labelled incomparable rather than silently
+accepted as identical physics. An
 unexplained visible actor jump still needs investigation even if these checks
 passed.
 

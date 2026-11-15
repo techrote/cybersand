@@ -27,7 +27,9 @@ the original evidence and real production-path counterexample. The original
 `fix/render-cadence-001-20261115` continuation repairs exact previous-texture
 history and delayed-ACK deadlines while preserving simulation law and collision
 gates. The [causal audit](../audits/2026-11-15-render-cadence-001.md) separates the
-bounded repair from the remaining coupled-physics architecture. Keep Draft/HOLD.
+bounded repair from that checkpoint's coupled-physics default. The current
+PRESENTATION-TIME-001 candidate preserves established physical pacing and supports
+the existing independent-clock controls in Engine Lab. Keep Draft/HOLD.
 
 ## Default coherent presentation comparison
 
@@ -97,10 +99,33 @@ limits copied material snapshots. These clocks are reported separately.
 not a validated real-time 1/120 integrator. Compare the same completed physical
 step and input tape, and report simulated seconds separately from wall seconds.
 
-The normal Workbench waits for the preceding native body sample. The explicitly
-uncoupled diagnostic arm keeps its existing stale-wrench and terrain-install
-refusals. A responsive air-flight result does not qualify asynchronous material
-contact. Changing a callback target does not prove the requested rate was met.
+The normal Workbench preserves its established preceding-native-sample wait and
+early worker wake. **Restore baseline** restores those physical pacing settings.
+Select **Uncouple Pixel + Rapier**, or uncheck both native-sample controls, to run
+the independently configurable mode. Both the original-presentation comparison
+and corrected presentation support the same pacing controls; neither presentation
+switch changes physical authority or either pacing control. The focused clock
+fixture explicitly selects those UI controls and proves that 2 Hz native and
+120 Hz Rapier targets remain independent in actual Main callbacks.
+
+The terrain-installation and failed/retired-owner gates remain mandatory. The
+Rapier bridge still rejects duplicate native wrenches, responses older than one
+physical step or one body sample, and responses whose sampled corners have moved
+more than half a cell. Slow native delivery can therefore discard contact responses.
+In controlled Scooper tests, changing only the existing wait/wake settings could
+lose the entire native Sand load under either presentation policy; established
+pacing retained load in both policies. The candidate therefore changes no physical
+pacing defaults. Independent air-flight results do not qualify asynchronous load
+custody or every material interaction. Native
+Workbench still requires a distinct body sample for each coupled native step:
+this presentation change does not permit replaying one body input as multiple
+native coupling ticks. Changing a callback target does not prove the requested
+rate was met. Compare achieved native and Rapier rates in the captured evidence.
+
+Engine Lab also shows the selected material's actual age, measured upload
+interval and bounded blend duration. The current blend uses observed delivery
+timing; `CYBERSAND_DIAG_MATERIAL_TIMING=legacy` retains the old requested-period
+blend for an isolated timing comparison. Neither mode invents new native states.
 
 The new default-off ACK gate holds material publication only. Native steps and
 status can continue; explicit resync and accepted World replacement bypass the

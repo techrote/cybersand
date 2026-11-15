@@ -46,6 +46,43 @@ def gap(a, b):
     return math.hypot(a[0] - b[0], a[1] - b[1])
 
 
+def delivery_statistics(frames):
+    uploads, sources = {}, Counter()
+    material_ages, upload_ages, selected_ages, held_ages = [], [], [], []
+    reentries = recovery_attempts = 0
+    for frame in frames:
+        timing = frame.get("presentation", {}).get("material_timing", {})
+        if timing:
+            sources[timing.get("timing_source", "unknown")] += 1
+            current = timing.get("current", {})
+            if current:
+                uploads[(current.get("generation"), current.get("serial"))] = timing
+            for target, key in ((material_ages, "material_age_usec"), (upload_ages, "upload_age_usec")):
+                value = timing.get(key, -1)
+                if isinstance(value, (int, float)) and value >= 0:
+                    target.append(value / 1000)
+        for body in frame.get("bodies", []):
+            if body.get("selected") is not None:
+                age = body.get("selected_age_usec", -1)
+                if isinstance(age, (int, float)) and age >= 0:
+                    selected_ages.append(age / 1000)
+                if body.get("intentional_hold"):
+                    held_ages.append(body.get("hold_age_usec", 0) / 1000)
+            reentries += bool(body.get("explicit_reentry", False))
+            recovery_attempts = max(recovery_attempts, body.get("recovery_attempts", 0))
+    def upload_distribution(key):
+        return distribution([item[key] / 1000 for item in uploads.values()
+                             if isinstance(item.get(key), (int, float)) and item[key] >= 0])
+    return {"observed_uploads": len(uploads), "timing_sources": dict(sources),
+            "upload_interval_ms": upload_distribution("upload_interval_usec"),
+            "publication_interval_ms": upload_distribution("publication_interval_usec"),
+            "blend_duration_ms": upload_distribution("blend_duration_usec"),
+            "material_age_ms": distribution(material_ages), "upload_age_ms": distribution(upload_ages),
+            "selected_pose_age_ms": distribution(selected_ages), "visible_hold_age_ms": distribution(held_ages),
+            "explicit_reentries": reentries, "max_recovery_attempts": recovery_attempts,
+            "notice": "Interval and blend distributions count each accepted upload once; ages count submitted frames. Unknown producer/sample ages are omitted, not zero latency."}
+
+
 def reduce_trace(path):
     rows = [json.loads(line) for line in Path(path).read_text(encoding="utf-8").splitlines() if line]
     need(len(rows) > 2 and rows[0]["type"] == "header" and rows[-1]["type"] == "summary", "Incomplete trace")
@@ -132,6 +169,7 @@ def reduce_trace(path):
             stats["event_rates_hz"][kind] = (len(times) - 1) * 1e6 / (times[-1] - times[0])
     from analyze_pose_trace import analyze_presentation_contract
     stats["presentation_contract"] = analyze_presentation_contract(frames)
+    stats["delivery_timing"] = delivery_statistics(frames)
     return stats, trajectory
 
 
@@ -148,12 +186,24 @@ def compare_steps(before, after):
         angle = a["angle"] - b["angle"]
         angles.append(abs(math.atan2(math.sin(angle), math.cos(angle))))
         changed_inputs += a["native_tick_used"] != b["native_tick_used"]
+    tolerances = {"position_cells": .001, "velocity_cells_per_second": .001,
+                  "angle_radians": .00001}
+    complete = len(positions) == len(velocities) == len(angles) == len(common) and bool(common)
+    within = complete and max(positions) <= tolerances["position_cells"] \
+        and max(velocities) <= tolerances["velocity_cells_per_second"] \
+        and max(angles) <= tolerances["angle_radians"]
+    # Independent native schedules can legitimately supply different wrench
+    # inputs at one Rapier step. Retain that distinction: neither a small
+    # position delta nor equal callback indices proves equivalent inputs.
+    status = "unavailable" if not complete else "incomparable_native_input_schedule" if changed_inputs \
+        else "matched_within_tolerances" if within else "physical_trajectory_differs"
     return {
         "comparison_clock": "same completed Rapier step and body slot; fixed 1/60 simulated seconds per step",
         "common_step_bodies": len(positions), "legacy_step_bodies": len(before), "repaired_step_bodies": len(after),
         "position_delta_cells": distribution(positions), "velocity_delta": distribution(velocities),
         "angle_delta_radians": distribution(angles), "different_native_tick_inputs": changed_inputs,
-        "status": "unavailable" if not positions else "physical_trajectory_differs" if max(positions) > .001 else "matched_within_0.001_cells",
+        "tolerances": tolerances, "observed_deltas_within_tolerances": within,
+        "status": status,
     }
 
 
@@ -167,6 +217,7 @@ def run_case(args, condition, presentation):
     pose_selection = presentation if args.coherence else "legacy"
     env.update({"CYBERSAND_SOURCE_REVISION": args.source_sha, "CYBERSAND_DIAG_RENDER_CADENCE": "legacy" if cadence == "legacy" else "",
                 "CYBERSAND_DIAG_PRESENTATION": "legacy" if pose_selection == "legacy" else "",
+                "CYBERSAND_DIAG_MATERIAL_TIMING": "legacy" if pose_selection == "legacy" else "",
                 "CYBERSAND_DIAG_FLYER_POSE": "mask" if condition["pose"] == "mask" else "",
                 "XDG_DATA_HOME": str(directory / "userdata"), "APPDATA": str(directory / "userdata")})
     params = {"family": "freemass", "workers": 1, "repeat": 1, "camera": condition["camera"], "pose": condition["pose"],
@@ -187,6 +238,8 @@ def run_case(args, condition, presentation):
     need(data["complete"] and data["status"] == "passed", f"{name}: incomplete receipt")
     need(data["source_sha"] == args.source_sha, "Source changed")
     need(data["presentation_mode"] == pose_selection and data["cadence_mode"] == cadence, "Wrong comparison arm")
+    need(data["material_timing_mode"] == ("legacy" if pose_selection == "legacy" else "measured"),
+         "Wrong material timing comparison arm")
     if condition.get("fire") == "on-off":
         fire = data["fire_schedule"]["events"]
         need(len(fire) == 2 and [e["observed_step"] for e in fire] == [0, 60]
@@ -215,7 +268,8 @@ def run_case(args, condition, presentation):
                  and residual["maximum"] is not None and residual["maximum"] <= 1e-6,
                  "Follow target differs from selected pose")
     result = {"name": name, "condition": condition, "cadence_mode": cadence,
-              "presentation_mode": pose_selection, "fire_schedule": data["fire_schedule"], "display": data["display"], "passed": True,
+              "presentation_mode": pose_selection, "material_timing_mode": data["material_timing_mode"],
+              "fire_schedule": data["fire_schedule"], "display": data["display"], "passed": True,
               "elapsed_seconds": time.monotonic() - start, "receipt_sha256": sha(receipt), "trace_sha256": sha(trace),
               "statistics": stats, "video_adapter": data["video_adapter"]}
     print("RENDER_CADENCE_PASS", name, json.dumps(stats, sort_keys=True), flush=True)
@@ -267,11 +321,20 @@ def main():
             write(report, summary)
         if len(trajectories) == 2:
             candidate = arms[1]
+            physical = compare_steps(trajectories["legacy"], trajectories[candidate])
             summary["pairs"].append({"condition": condition["name"], "legacy": results["legacy"]["name"], candidate: results[candidate]["name"],
-                                     "physical_trajectory": compare_steps(trajectories["legacy"], trajectories[candidate]),
+                                     "physical_trajectory": physical,
                                      "legacy_statistics": results["legacy"]["statistics"],
                                      "candidate_statistics": results[candidate]["statistics"]})
+            if args.coherence and physical["status"] in {"unavailable", "physical_trajectory_differs"}:
+                summary["failures"].append({"condition": condition["name"], "presentation": "physical-equivalence",
+                                            "error": physical["status"]})
             write(report, summary)
+    summary["physical_comparison"] = {
+        "matched_pairs": sum(p["physical_trajectory"]["status"] == "matched_within_tolerances" for p in summary["pairs"]),
+        "incomparable_pairs": [p["condition"] for p in summary["pairs"]
+                               if p["physical_trajectory"]["status"] == "incomparable_native_input_schedule"],
+        "notice": "Native input schedules are independently timed. Incomparable pairs do not establish unchanged physics; the deterministic production authority control supplies that separate proof."}
     summary["complete"] = not summary["failures"] and len(summary["cases"]) == 2 * len(conditions)
     summary["status"] = "passed" if summary["complete"] else "incomplete"
     write(report, summary)

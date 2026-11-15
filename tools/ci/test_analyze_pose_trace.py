@@ -4,6 +4,7 @@ import tempfile
 import unittest
 
 from analyze_pose_trace import analyze, compare_trajectories, main, read_trace
+from run_render_cadence_matrix import compare_steps, delivery_statistics
 
 
 def body(source, x, gap=10, residual=0):
@@ -58,6 +59,51 @@ def write_trace(path, frames, events=(), **footer):
 
 
 class FrameTraceAnalysisTests(unittest.TestCase):
+    def test_measured_delivery_counts_uploads_once_and_unknown_ages_separately(self):
+        rows = []
+        for serial, age in ((1, 10000), (1, 20000), (2, -1)):
+            rows.append({"presentation": {"material_timing": {
+                "current": {"generation": 1, "serial": serial}, "timing_source": "publication_and_upload",
+                "upload_interval_usec": 47000, "publication_interval_usec": 45000, "blend_duration_usec": 45000,
+                "material_age_usec": age, "upload_age_usec": 5000}},
+                "bodies": [{"selected": {"xy": [200, 220]}, "selected_age_usec": age,
+                            "intentional_hold": serial == 2, "hold_age_usec": 30000,
+                            "explicit_reentry": serial == 2, "recovery_attempts": 2}]})
+        result = delivery_statistics(rows)
+        self.assertEqual(result["observed_uploads"], 2)
+        self.assertEqual(result["blend_duration_ms"]["count"], 2)
+        self.assertEqual(result["blend_duration_ms"]["max"], 45)
+        self.assertEqual(result["material_age_ms"]["count"], 2)
+        self.assertEqual(result["selected_pose_age_ms"]["count"], 2)
+        self.assertEqual(result["visible_hold_age_ms"]["max"], 30)
+        self.assertEqual(result["explicit_reentries"], 1)
+        self.assertEqual(result["max_recovery_attempts"], 2)
+
+    def test_pair_physics_rejects_rotation_or_velocity_drift_at_equal_position(self):
+        original = {"xy": [200, 220], "velocity": [10, 2], "angle": 1.8, "native_tick_used": 7}
+        for field, changed in (("angle", 1.80002), ("velocity", [10.002, 2])):
+            candidate = dict(original, **{field: changed})
+            result = compare_steps({(65, 0): original}, {(65, 0): candidate})
+            self.assertEqual(result["status"], "physical_trajectory_differs")
+            self.assertEqual(result["position_delta_cells"]["max"], 0)
+            self.assertFalse(result["observed_deltas_within_tolerances"])
+
+    def test_pair_physics_labels_different_native_inputs_as_incomparable(self):
+        original = {"xy": [200, 220], "velocity": [10, 2], "angle": 1.8, "native_tick_used": 7}
+        candidate = dict(original, native_tick_used=8)
+        result = compare_steps({(65, 0): original}, {(65, 0): candidate})
+        self.assertEqual(result["status"], "incomparable_native_input_schedule")
+        self.assertTrue(result["observed_deltas_within_tolerances"])
+        self.assertEqual(result["different_native_tick_inputs"], 1)
+
+    def test_pair_physics_requires_complete_pose_velocity_and_common_steps(self):
+        original = {"xy": [200, 220], "velocity": [10, 2], "angle": 1.8, "native_tick_used": 7}
+        self.assertEqual(compare_steps({(65, 0): original}, {(65, 0): original})["status"],
+                         "matched_within_tolerances")
+        self.assertEqual(compare_steps({(65, 0): original}, {(66, 0): original})["status"], "unavailable")
+        self.assertEqual(compare_steps({(65, 0): original}, {(65, 0): dict(original, velocity=None)})["status"],
+                         "unavailable")
+
     def test_pose_switch_and_projection_error_have_distinct_attribution(self):
         frames = [frame(1, "mask_bound", 100), frame(2, "live", 113),
                   frame(3, "live", 130, residual=3)]

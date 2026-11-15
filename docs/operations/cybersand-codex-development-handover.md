@@ -28,6 +28,19 @@ and `766d52956013` (two-parent integration). The audit records their tree hashes
 later qualification fixes remain descendants and package manifests identify
 the exact evaluated application commit.
 
+### PRESENTATION-TIME-001 isolated continuation
+
+Branch `fix/presentation-time-001-20261115` starts from the integrated
+`a514f369f3fcf03979182d5038114c6193310464` implementation, which preserves the
+owner's qualified `7c85b348` fixes. It completes bounded observation history,
+continuous-sweep native rejoin, explicit hold expiry, actual material delivery
+timing and qualification through the existing independent clock controls.
+Original physical pacing defaults remain because globally disabling the native
+sample handshake exposed material-custody loss with both presentation modes. It does not write the separately
+active #609 branch or #582. The same canonical contract and owner guide cover
+these extensions; its own exact-source workflow/artifact is required before
+claiming candidate qualification. Keep Draft/HOLD and do not merge.
+
 ## Native-resolution camera continuation — 2026-11-13
 
 The camera branch retains its original history and now incorporates accepted

@@ -74,22 +74,24 @@ func _install(camera: String="free", spawn: Vector2=SPAWN) -> bool:
 	host.set_physics_process(false)
 	host.engine_lab_wait_native_sample=false
 	host.simulation_worker.set_engine_lab_pixel_pacing(1,false)
-	host.snapshot_blend_start_usec=Time.get_ticks_usec()-2000000
+	_expire_blend()
 	ui._camera.select(1 if camera=="follow" else 0)
 	ui._set_view(SPAWN-Vector2(VIEW)*0.5,VIEW)
 	host.paused=false
 	host.physical_actor_session.set_suspended(false)
 	return true
 
-func _move_actual(position: Vector2) -> Transform2D:
+func _move_actual(position: Vector2, angle: float = 0.0) -> Transform2D:
 	var session=host.physical_actor_session
 	var bridge=session.bridge
-	bridge.reset_body(0,position,0.0)
+	bridge.reset_body(0,position,angle)
 	session.set_suspended(false)
 	var before: int=session.tick
 	session.advance(bridge.fixed_delta())
 	bridge.step()
 	session.complete_step()
+	host._workbench_completed_step=session.tick
+	host._workbench_completed_step_usec=Time.get_ticks_usec()
 	check(session.tick==before+1,"controlled real Rapier step completes exactly once")
 	var observed: Transform2D=bridge.body_transform(0)
 	var physical: Transform2D=PhysicsServer2D.body_get_state(bridge._body_rids[0],PhysicsServer2D.BODY_STATE_TRANSFORM)
@@ -139,6 +141,9 @@ func _capture(label: String, full_process: bool=true, supplied: Dictionary={}) -
 		row.selected_step=resolved.get("selected_steps",{}).get(0,-1)
 		row.desired_step=resolved.get("desired_steps",{}).get(0,-1)
 		row.intentional_hold=resolved.get("intentional_holds",{}).get(0,false)
+		row.hold_age_usec=resolved.get("hold_age_usec",{}).get(0,0)
+		row.explicit_reentry=resolved.get("explicit_reentries",{}).get(0,false)
+		row.recovery_attempts=resolved.get("recovery_attempts",{}).get(0,0)
 		row.resolve_usec=resolved.get("resolve_usec",-1)
 		var target: Vector2=resolved.get("follow_target",Vector2.INF)
 		row.follow_target=Trace.xy(target) if target.is_finite() else null
@@ -245,6 +250,138 @@ func _long_clear_path() -> void:
 		check(_pose() is Transform2D and _pose().origin.distance_to(last.origin)<0.01,
 			"actor generation rejection does not rewind valid rejoin")
 
+func _bounded_native_rejoin() -> void:
+	if expect_legacy or not await _install("follow"): return
+	var clear: Transform2D=_move_actual(SPAWN+Vector2(5,0))
+	_capture("rejoin-initial-clear")
+	if not check(_pose() is Transform2D,"native-rejoin control has visible actor"): return
+	var shown_step: int=host.workbench_presentation_frame.selected_steps[0]
+	# A real completed physical step is now on the other side of the native
+	# Wall. Obtain its genuine mask receipt without submitting another draw.
+	# Endpoint clearance must not authorize the intervening displayed jump.
+	var far: Transform2D=_move_actual(SPAWN+Vector2(40,0))
+	host._publish_physical_body_state()
+	var serial: int=host._workbench_wait_sample
+	host.update_worker_frame_state()
+	if not check(await until(func() -> bool:
+		host.consume_worker_snapshot()
+		var frame: Dictionary=host.workbench_display_frame()
+		return host._valid_workbench_mask_frame(frame) and frame.instances.has(1) \
+			and frame.instances[1].get("sample",-1)==serial),
+		"newer native mask receipt arrives without intermediate display selection"): return
+	_expire_blend()
+	var blocked: Dictionary=_capture("native-endpoint-cannot-teleport",false,host.workbench_display_frame())
+	check(_pose() is Transform2D and _pose().origin.distance_to(clear.origin)<0.01,
+		"newer clear native endpoint cannot teleport consecutive visible frames across Wall")
+	check(int(blocked.selected_step)==shown_step and blocked.intentional_hold,
+		"failed continuous native rejoin retains the exact selected physical step")
+	var physical_step: int=host.physical_actor_session.tick
+	# SceneTree timers use frame delta and can outrun real wall time during a
+	# headless campaign. The production cap uses the monotonic wall clock.
+	var until_usec: int=Time.get_ticks_usec()+120000
+	while Time.get_ticks_usec()<until_usec:
+		await process_frame
+	var expired: Dictionary=_capture("native-rejoin-hold-expired",false,host.workbench_display_frame())
+	check(_pose()==null and str(expired.reason).begins_with("hold_expired:"),
+		"100ms retention cap explicitly suppresses an unadvanceable actor")
+	check(int(expired.hold_age_usec)>=100000,"actual hold age is recorded rather than nominal frame count")
+	var reentry: Dictionary=_capture("native-rejoin-after-suppression",false,host.workbench_display_frame())
+	check(_pose() is Transform2D and _pose().origin.distance_to(far.origin)<0.01,
+		"safe actual native endpoint may re-enter after explicit suppression")
+	check(reentry.explicit_reentry and reentry.reason=="native_receipt_reentry" \
+		and int(reentry.selected_step)>shown_step,
+		"discontinuous re-entry is identified and never rewinds physical time")
+	check(host.physical_actor_session.tick==physical_step \
+		and host.physical_actor_session.bridge.body_transform(0).is_equal_approx(far),
+		"bounded retention, suppression and re-entry leave physical authority unchanged")
+	# Stopped physics and an old/evicted native join must not leave a safe
+	# actor permanently invisible after the bounded hold. Keep the actual
+	# uploaded receipt, but deliberately exercise serial-journal retirement.
+	var newer: Transform2D=_move_actual(SPAWN+Vector2(80,0))
+	host._workbench_sample_steps.clear()
+	_capture("rejoin-missing-native-history",false,host.workbench_display_frame())
+	check(_pose() is Transform2D and _pose().is_equal_approx(far),
+		"missing native sample provenance cannot authorize a direct visible jump")
+	until_usec=Time.get_ticks_usec()+120000
+	while Time.get_ticks_usec()<until_usec:
+		await process_frame
+	_capture("rejoin-stopped-physics-suppressed",false,host.workbench_display_frame())
+	check(_pose()==null,"stopped physics still reaches the finite hold limit")
+	var stopped_reentry: Dictionary=_capture("rejoin-stopped-physics-endpoint",false,host.workbench_display_frame())
+	check(_pose() is Transform2D and _pose().is_equal_approx(newer) \
+		and stopped_reentry.explicit_reentry and stopped_reentry.reason=="explicit_live_reentry",
+		"known current physics may explicitly re-enter after complete footprint proof without a new native receipt")
+
+func _bounded_history_prefix() -> void:
+	if expect_legacy or not await _install("follow"): return
+	_move_actual(SPAWN+Vector2(5,0))
+	_capture("history-initial-clear")
+	_move_actual(SPAWN+Vector2(7,0),0.25)
+	host._observe_workbench_presentation(0)
+	var intermediate: Transform2D=_move_actual(SPAWN+Vector2(9,0),0.5)
+	host._observe_workbench_presentation(0)
+	var intermediate_step: int=host.physical_actor_session.tick
+	var refused: Transform2D=_move_actual(Vector2(260,300),1.0)
+	host._observe_workbench_presentation(0)
+	var physical_step: int=host.physical_actor_session.tick
+	var recovered: Dictionary=_capture("history-translating-rotating-prefix")
+	check(_pose() is Transform2D and _pose().is_equal_approx(intermediate),
+		"blocked latest pose advances to actual clear translating/rotating history endpoint")
+	check(recovered.source=="history" and int(recovered.selected_step)==intermediate_step \
+		and int(recovered.recovery_attempts)<=3,
+		"bounded recovery records the real historical step and attempt count")
+	check(host.physical_actor_session.tick==physical_step \
+		and host.physical_actor_session.bridge.body_transform(0).is_equal_approx(refused),
+		"historical presentation never changes latest physical pose or step")
+
+func _paced_recovery_after_contact() -> void:
+	if expect_legacy or not await _install("follow"): return
+	_move_actual(SPAWN+Vector2(5,0))
+	_capture("paced-initial-clear")
+	for index: int in range(1,10):
+		_move_actual(SPAWN+Vector2(5,-index),float(index)*0.03)
+		host._observe_workbench_presentation(0)
+	_move_actual(Vector2(260,300),0.6)
+	var blocked: Dictionary=_capture("paced-genuine-contact")
+	check(int(blocked.guard.blocked_material)>0 and blocked.source=="history",
+		"genuine native Wall veto leaves a bounded clear observed prefix")
+	var previous_step: int=int(blocked.selected_step)
+	var previous_desired: int=int(blocked.desired_step)
+	# Real physics leaves contact, but a delayed visual actor must not repay
+	# all retained history in one source switch to the now-clear newest pose.
+	var live: Transform2D=_move_actual(SPAWN+Vector2(5,-18),0.3)
+	var physical_step: int=host.physical_actor_session.tick
+	for index: int in range(3):
+		var row: Dictionary=_capture("paced-clear-contact-"+str(index))
+		var ceiling: int=previous_step+maxi(0,physical_step-previous_desired)+1
+		check(_pose() is Transform2D and int(row.selected_step)>previous_step \
+			and int(row.selected_step)<=ceiling,
+			"recovery advances at most newly completed steps plus one retained sample")
+		check(int(row.selected_step)<physical_step and row.source=="history",
+			"clear live endpoint cannot bypass remaining visible playback lag")
+		check(int(row.recovery_attempts)<=3,"paced playback retains three-attempt geometry bound")
+		previous_step=int(row.selected_step)
+		previous_desired=physical_step
+	check(host.physical_actor_session.tick==physical_step \
+		and host.physical_actor_session.bridge.body_transform(0).is_equal_approx(live),
+		"paced recovery does not change the stopped authoritative physical state")
+
+func _expire_blend() -> void:
+	host.snapshot_blend_start_usec=Time.get_ticks_usec()-2000000
+	if host.get("material_presentation_timeline") != null:
+		host.material_presentation_timeline.reset()
+
+func _activate_blend() -> void:
+	var now: int=Time.get_ticks_usec()
+	host.snapshot_blend_start_usec=now
+	if host.get("material_presentation_timeline") != null:
+		var timeline=host.material_presentation_timeline
+		timeline.reset()
+		timeline.accept_upload(host.last_uploaded_world_generation,host.last_uploaded_revision,
+			host.last_uploaded_render_snapshot_serial-1,host.latest_snapshot.tick_index,now-100000,now-100000,now-100000)
+		timeline.accept_upload(host.last_uploaded_world_generation,host.last_uploaded_revision,
+			host.last_uploaded_render_snapshot_serial,host.latest_snapshot.tick_index,now,now,now)
+
 func _real_unknown_previous() -> void:
 	if not await _install("follow"): return
 	OS.set_environment("CYBERSAND_DIAG_RENDER_CADENCE","legacy")
@@ -266,12 +403,12 @@ func _real_unknown_previous() -> void:
 	var frame: Dictionary=host.workbench_display_frame().duplicate(true)
 	var bound: Transform2D=frame.instances[1].pose
 	var live: Transform2D=_move_actual(bound.origin+Vector2(0,-5))
-	host.snapshot_blend_start_usec=Time.get_ticks_usec()-2000000
+	_expire_blend()
 	_capture("unknown-expired-clear",false,frame)
 	check(_pose() is Transform2D and _pose().origin.distance_to(live.origin)<0.01,
 		"exact native receipt admits live actor when previous texture is expired")
 	host.render_snapshot_hz=1
-	host.snapshot_blend_start_usec=Time.get_ticks_usec()
+	_activate_blend()
 	var active: Dictionary=_capture("unknown-active-veto",false,frame)
 	if expect_legacy:
 		check(_pose() is Transform2D and _pose().origin.distance_to(bound.origin)<0.01,
@@ -280,7 +417,7 @@ func _real_unknown_previous() -> void:
 		check(_pose()==null,"genuine previous-texture uncertainty withholds unprovable pose")
 		check(str(active.get("reason","")).contains("previous") or int(active.guard.get("blocked_unknown",0))>0,
 			"unknown old texture withholding has explicit safety reason")
-	host.snapshot_blend_start_usec=Time.get_ticks_usec()-2000000
+	_expire_blend()
 	_capture("unknown-expired-rejoin",false,frame)
 	check(_pose() is Transform2D and _pose().origin.distance_to(live.origin)<0.01,
 		"expired previous texture rejoins actual selected timeline")
@@ -325,7 +462,7 @@ func _paint_revalidates_hold() -> void:
 	var held_step: int=host.workbench_presentation_frame.selected_steps.get(0,-1)
 	var cell:=Vector2i(245,300)
 	if not await _native_paint(cell,6): return
-	host.snapshot_blend_start_usec=Time.get_ticks_usec()-2000000
+	_expire_blend()
 	var physical_before: Transform2D=host.physical_actor_session.bridge.body_transform(0)
 	var tick: int=host.physical_actor_session.tick
 	_capture("paint-occupied-held-footprint")
@@ -350,14 +487,14 @@ func _paint_revalidates_hold() -> void:
 		check(gpu_old!=null and gpu_old.get_pixel(cell.x,cell.y).r8==6,
 			"GPU previous texture still contains the actual erased Fire")
 	host.render_snapshot_hz=1
-	host.snapshot_blend_start_usec=Time.get_ticks_usec()
+	_activate_blend()
 	_capture("paint-old-fire-crossfade-active")
 	check(_pose()==null,"active actual previous-texture Fire forbids recertifying held actor")
 	var old_check: Dictionary=assess.callv([clear,clear,host.physical_actor_session.bridge._rects[0],
 		host.image,{},false,true,Clearance.MAX_SCAN_CELLS,0,previous,true])
 	check(not old_check.safe and old_check.reason=="material_in_swept_mask",
 		"stationary recertification refuses actual old-only Fire through active crossfade")
-	host.snapshot_blend_start_usec=Time.get_ticks_usec()-2000000
+	_expire_blend()
 	_capture("paint-old-fire-crossfade-expired")
 	var expired_check: Dictionary=assess.callv([clear,clear,host.physical_actor_session.bridge._rects[0],
 		host.image,{},false,false,Clearance.MAX_SCAN_CELLS,0,previous,true])
@@ -380,24 +517,26 @@ func _paint_revalidates_hold() -> void:
 	host._publish_physical_body_state()
 	var published_sample: int=host._workbench_wait_sample
 	host.update_worker_frame_state()
-	host.set_process(true)
+	host.set_process(false)
 	if not check(await until(func() -> bool:
+		host.consume_worker_snapshot()
 		var frame: Dictionary=host.workbench_display_frame()
 		return host._valid_workbench_mask_frame(frame) and frame.instances.has(1) \
 			and int(frame.instances[1].get("sample",-1))==published_sample),
 		"native completion returns actual published Rapier sample after PAINT"): return
 	host.set_process(false)
-	host.snapshot_blend_start_usec=Time.get_ticks_usec()-2000000
+	_expire_blend()
 	var received: Dictionary=host.workbench_display_frame().instances[1]
 	check(host._workbench_bound_step(received)==published_step,
 		"native mask receipt maps to exact published Rapier step, independently of native tick")
 	receipts.append({"sample":published_sample,"published_rapier_step":published_step,
 		"bound_rapier_step":host._workbench_bound_step(received),"native_tick":host.latest_snapshot.tick_index})
-	_capture("paint-cleared-resume")
+	var resumed: Dictionary=_capture("paint-cleared-resume")
 	check(_pose() is Transform2D and _pose().origin.distance_to(recovery.origin)<0.01,
 		"newer actual native receipt rejoins rapid movement without smoothing or clamping")
 	check(int(host.workbench_presentation_frame.selected_steps.get(0,-2))>=held_step,
 		"recomputed real native receipt rejoins without temporal rewind")
+	check(resumed.explicit_reentry,"80-cell controlled physical reset rejoins through explicit prior suppression")
 
 func _session_reset_at_world_edge() -> void:
 	if expect_legacy: return
@@ -426,6 +565,9 @@ func _run() -> void:
 		await _source_oscillation("free")
 		await _source_oscillation("follow")
 		await _long_clear_path()
+		await _bounded_history_prefix()
+		await _paced_recovery_after_contact()
+		await _bounded_native_rejoin()
 		await _real_unknown_previous()
 		await _paint_revalidates_hold()
 		await _session_reset_at_world_edge()

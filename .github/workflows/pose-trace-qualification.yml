@@ -1,7 +1,7 @@
-name: CAMERA-STACK-COHERENCE-001 source-matched Workbench and Windows evaluation
+name: PRESENTATION-TIME-001 source-matched Workbench and Windows evaluation
 on:
   push:
-    branches: [diagnostics/engine-lab-pose-trace-20261115, fix/camera-stack-coherence-20261115]
+    branches: [diagnostics/engine-lab-pose-trace-20261115, fix/camera-stack-coherence-20261115, fix/presentation-time-001-20261115]
     paths:
       - '.github/workflows/pose-trace-qualification.yml'
       - 'godot/**'
@@ -14,7 +14,7 @@ permissions:
   contents: read
   actions: read
 concurrency:
-  group: camera-coherence-${{ github.event_name == 'workflow_dispatch' && github.run_id || github.ref }}
+  group: presentation-time-${{ github.event_name == 'workflow_dispatch' && github.run_id || github.ref }}
   cancel-in-progress: ${{ github.event_name == 'push' }}
 env:
   CYBERSAND_EVAL_SOURCE_SHA: ${{ github.sha }}
@@ -92,12 +92,12 @@ jobs:
         if: success() || failure()
         run: |
           set -euo pipefail
-          xvfb-run -a -s '-screen 0 1600x1000x24 -nolisten tcp' python3 tools/ci/run_render_cadence_matrix.py --coherence --godot "$GODOT_BIN" --project godot --evidence evidence/comparison --source-sha "$GITHUB_SHA" --conditions follow60 free60 slow-native --timeout 900
+          xvfb-run -a -s '-screen 0 1600x1000x24 -nolisten tcp' python3 tools/ci/run_render_cadence_matrix.py --coherence --godot "$GODOT_BIN" --project godot --evidence evidence/comparison --source-sha "$GITHUB_SHA" --conditions follow60 free60 slow-native slow-native-free --timeout 900
           python3 tools/ci/package_engine_lab_windows.py preflight --platform linux > evidence/source-runtime-after.json
       - if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: Camera-Coherence-Linux-${{ github.run_id }}
+          name: Presentation-Time-Linux-${{ github.run_id }}
           path: evidence/
           if-no-files-found: warn
           retention-days: 90
@@ -146,11 +146,11 @@ jobs:
       - name: Build source-pinned Windows evaluation
         run: |
           set -euo pipefail
-          python tools/ci/package_engine_lab_windows.py build --godot-zip "$RUNNER_TEMP/godot-4.7-win.zip" --notices "$RUNNER_TEMP/coherence-notices" --vc "$RUNNER_TEMP/coherence-vc" --output "$RUNNER_TEMP/coherence-packed" --archive "delivery/CyberSand-Coherence-Windows-${GITHUB_SHA:0:12}.zip"
+          python tools/ci/package_engine_lab_windows.py build --godot-zip "$RUNNER_TEMP/godot-4.7-win.zip" --notices "$RUNNER_TEMP/coherence-notices" --vc "$RUNNER_TEMP/coherence-vc" --output "$RUNNER_TEMP/coherence-packed" --archive "delivery/CyberSand-Presentation-Time-Windows-${GITHUB_SHA:0:12}.zip"
       - name: Extract actual ZIP and verify installed payload
         shell: pwsh
         run: |
-          $archive = @(Get-ChildItem 'delivery/CyberSand-Coherence-Windows-*.zip')
+          $archive = @(Get-ChildItem 'delivery/CyberSand-Presentation-Time-Windows-*.zip')
           if ($archive.Count -ne 1 -or (Test-Path 'C:\cscoherence')) { throw 'Invalid package or non-fresh destination' }
           Expand-Archive -LiteralPath $archive[0].FullName -DestinationPath 'C:\cscoherence'
           python tools/ci/package_engine_lab_windows.py verify --output C:/cscoherence
@@ -178,7 +178,7 @@ jobs:
           $files = @(Get-ChildItem 'C:\cscoherence\Test-It-Results' -Recurse -Filter summary.json)
           if ($files.Count -ne 1) { throw 'Expected one complete Test It summary' }
           $result = Get-Content -LiteralPath $files[0].FullName -Raw | ConvertFrom-Json
-          if (-not $result.complete -or $result.status -ne 'passed' -or $result.source -ne $env:GITHUB_SHA -or @($result.cases).Count -ne 12 -or @($result.pairs).Count -ne 6) { throw 'Incomplete source-matched comparison' }
+          if (-not $result.complete -or $result.status -ne 'passed' -or $result.source -ne $env:GITHUB_SHA -or @($result.cases).Count -ne 14 -or @($result.pairs).Count -ne 7) { throw 'Incomplete source-matched comparison' }
           Write-Host ('COHERENCE_TEST_IT_PASS '+(@{source=$result.source;cases=@($result.cases).Count;pairs=@($result.pairs).Count;physical_acceptance=$result.physical_acceptance}|ConvertTo-Json -Compress))
       - name: Collect installed results under one artifact root
         if: always()
@@ -192,7 +192,7 @@ jobs:
           }
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: CyberSand-Coherence-Windows-${{ github.run_id }}
+          name: CyberSand-Presentation-Time-Windows-${{ github.run_id }}
           path: delivery/
           compression-level: 0
           if-no-files-found: error
@@ -200,7 +200,7 @@ jobs:
       - if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: Camera-Coherence-Windows-Evidence-${{ github.run_id }}
+          name: Presentation-Time-Windows-Evidence-${{ github.run_id }}
           path: evidence/
           if-no-files-found: warn
           retention-days: 90

@@ -31,8 +31,11 @@ def main():
     args = parser.parse_args()
     args.evidence = args.evidence.resolve()
     args.evidence.mkdir(parents=True, exist_ok=True)
-    legacy = {'CYBERSAND_DIAG_PRESENTATION': 'legacy'}
+    legacy = {'CYBERSAND_DIAG_PRESENTATION': 'legacy', 'CYBERSAND_DIAG_MATERIAL_TIMING': 'legacy'}
     cases = [
+        ('material-timing', 'test_workbench_material_delivery_timing', 'MATERIAL_DELIVERY_TIMING_RESULT', {}, False),
+        ('presentation-history', 'test_workbench_presentation_history', 'WORKBENCH_PRESENTATION_HISTORY', {}, False),
+        ('independent-clocks', 'test_workbench_independent_clocks', 'INDEPENDENT_CLOCKS_RESULT', {}, False),
         ('temporal', 'test_workbench_temporal_presentation', 'TEMPORAL_PRESENTATION_RESULT', {}, False),
         ('temporal-dense', 'test_workbench_temporal_dense', 'TEMPORAL_DENSE_RESULT', {}, False),
         ('temporal-contact', 'test_workbench_temporal_contact', 'TEMPORAL_CONTACT_RESULT', {}, False),
@@ -42,7 +45,7 @@ def main():
         ('legacy-production', 'test_pr593_mask_coherent_production', 'PR593_PRODUCTION_POSE_RESULT', legacy, False),
         ('legacy-crossfade', 'test_pr593_mask_coherent_edit_crossfade', 'PR593_NATIVE_EDIT_CROSSFADE_RESULT', legacy, False),
         ('legacy-dense', 'test_pr593_mask_coherent_dense_budget', 'PR593_GUARD_DENSE_BUDGET_RESULT', legacy, False),
-        ('cadence-contract', 'test_render_cadence_contract', 'RENDER_CADENCE_CONTRACT_RESULT', {}, False),
+        ('cadence-contract', 'test_render_cadence_contract', 'RENDER_CADENCE_CONTRACT_RESULT', legacy, False),
         ('cadence-worker', 'test_render_cadence_worker', 'RENDER_CADENCE_WORKER:', {}, False),
         ('ack-deadlines', 'test_render_ack_deadlines', 'RENDER_ACK_DEADLINES_RESULT', {}, False),
         ('camera-picking', 'test_native_pixel_camera', 'NATIVE_PIXEL_CAMERA_RESULT', {}, False),
@@ -81,6 +84,7 @@ def main():
         profile = args.evidence / ('paint-userdata' if name.startswith('paint-') else name + '-userdata')
         env = dict(os.environ, CYBERSAND_SOURCE_REVISION=source, XDG_DATA_HOME=str(profile), APPDATA=str(profile),
                    CYBERSAND_DIAG_PRESENTATION='', CYBERSAND_DIAG_RENDER_CADENCE='', CYBERSAND_DIAG_FLYER_POSE='',
+                   CYBERSAND_DIAG_MATERIAL_TIMING='',
                    CYBERSAND_TEST_ARTIFACT_DIR=str(folder / 'frames'))
         env.update(overrides)
         command = [str(args.godot.resolve()), '--audio-driver', 'Dummy', '--path', str(args.project.resolve())]
@@ -92,6 +96,9 @@ def main():
             flag = {'test_workbench_temporal_presentation': '--temporal-evidence=',
                     'test_workbench_temporal_dense': '--temporal-dense-evidence=',
                     'test_workbench_temporal_contact': '--temporal-contact-evidence='}[script]
+            command += ['--', flag + str(folder)]
+        elif script in ('test_workbench_material_delivery_timing','test_workbench_independent_clocks'):
+            flag = '--material-timing-evidence=' if script=='test_workbench_material_delivery_timing' else '--independent-clock-evidence='
             command += ['--', flag + str(folder)]
         row = {'name': name, 'command': command, 'graphical': graphical, 'status': 'failed'}
         started = time.monotonic()
