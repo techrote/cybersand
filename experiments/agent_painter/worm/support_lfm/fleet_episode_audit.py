@@ -64,7 +64,9 @@ def inspect(root, item, budget, worm):
     require(item.get("model_id") == "LiquidAI/LFM2.5-VL-450M" and
             item.get("model_revision") == MODEL_REV, "LFM model pin mismatch")
     require(item.get("w0_source_sha") == W0_SHA, "W0 source pin mismatch")
-    for name in ("source_sha", "checkpoint_sha256", "original_producer_zip_sha256"):
+    require(isinstance(item.get("source_sha"), str) and len(item["source_sha"]) == 40 and
+            all(c in "0123456789abcdef" for c in item["source_sha"]), "Git source commit SHA missing")
+    for name in ("checkpoint_sha256", "original_producer_zip_sha256"):
         require(valid_hash(item.get(name)), name + " missing")
     require(item.get("native_execution") is False and item.get("optimizer_updates") == 0,
             "this is inference-only and non-native")
