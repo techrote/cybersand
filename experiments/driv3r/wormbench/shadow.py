@@ -30,10 +30,13 @@ MODELS = {
     "lfm350": {"kind":"chat", "repository":"LiquidAI/LFM2.5-350M-GGUF",
                "filename":"LFM2.5-350M-Q4_K_M.gguf",
                "expected_sha256":"7e6f72643caafc9a68256686638c4d7916f2cec76d1df478d4c3ddcd95a6aed4"},
-    "smol135": {"kind":"chat", "repository":"tensorblock/SmolLM2-135M-Instruct-GGUF",
-                "filename":"SmolLM2-135M-Instruct-Q4_K_M.gguf"},
+    "smol135": {"kind":"chat", "repository":"QuantFactory/SmolLM2-135M-Instruct-GGUF",
+                "filename":"SmolLM2-135M-Instruct.Q4_K_M.gguf"},
     "sprocket500": {"kind":"chat", "repository":"kandivault/sprocket-500m",
                     "filename":"sprocket-500m-q4_k_m.gguf"},
+    "sprocket500-grammar":{"kind":"chat_grammar",
+               "repository":"kandivault/sprocket-500m",
+               "filename":"sprocket-500m-q4_k_m.gguf"},
 }
 MAX_ROWS = 72
 REQUEST_DEADLINE = 65
@@ -209,6 +212,15 @@ def parse_chat_choice(text, ids):
         pass
     return None
 
+def legal_id_grammar(ids):
+    """GGUF grammar restricts decoding to one EXACT source-offered legal ID."""
+    if (not isinstance(ids,list) or len(ids)<2 or len(ids)>32 or
+        any(not isinstance(x,str) or not x or
+            any(not (c.isalnum() and c.isascii() or c=="_") for c in x) for x in ids) or
+        len(set(ids)) != len(ids)):
+        raise ValueError("Invalid source-offered legal catalog for constrained decoding")
+    return "root ::= " + " | ".join(json.dumps(x) for x in ids)
+
 def _http_request(port, key, method, path, data=None, timeout=15):
     conn = http.client.HTTPConnection("127.0.0.1",port,timeout=timeout)
     try:
@@ -224,7 +236,7 @@ def _http_request(port, key, method, path, data=None, timeout=15):
     finally:
         conn.close()
 
-def slm_shadow(binary, model, rows, out):
+def slm_shadow(binary, model, rows, out, *, grammar_constrained=False):
     results = []
     with socket.socket() as s:
         s.bind(("127.0.0.1",0))
@@ -265,12 +277,15 @@ def slm_shadow(binary, model, rows, out):
                     d={"mode":row["mode"],"turn":row["turn"],
                        "q8_choice":row["q8_choice"],"status":"error"}
                     try:
-                        response=_http_request(port,key,"POST","/v1/chat/completions",
-                          {"messages":[{"role":"system","content":
+                        payload = {"messages":[{"role":"system","content":
                             "You are a quirky drawing worm choosing from a finite list."},
                             {"role":"user","content":prompt}],
                            "temperature":0,"max_tokens":24,"seed":570,
-                           "stream":False},timeout=REQUEST_DEADLINE)
+                           "stream":False}
+                        if grammar_constrained:
+                            payload["grammar"] = legal_id_grammar(row["candidate_ids"])
+                        response=_http_request(port,key,"POST","/v1/chat/completions",
+                                               payload, timeout=REQUEST_DEADLINE)
                         msg=response["choices"][0]["message"]["content"]
                         choice=parse_chat_choice(msg,row["candidate_ids"])
                         d.update({"status":"valid" if choice else "invalid",
@@ -322,8 +337,11 @@ def main():
         if args.model=="d1-q4":
             result,startup=q4_shadow(binary,model,rows,args.output)
         else:
-            result,startup=slm_shadow(binary,model,rows,args.output)
+            result,startup=slm_shadow(binary,model,rows,args.output,
+                                       grammar_constrained=args.model=="sprocket500-grammar")
         report=summarize(rows,result,identity,runtime,startup,time.monotonic()-started)
+        report["output_format_policy"]=("gbnf_exact_legal_id" if args.model=="sprocket500-grammar"
+                                         else "strict_literal_legal_id_only")
         report["status"]="complete_shadow_inference"
         return_code=0
     except Exception as exc:
