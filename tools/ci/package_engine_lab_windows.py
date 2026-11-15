@@ -278,14 +278,18 @@ def smoke(output,evidence):
         ("crossfade",["--headless","--script","res://tests/test_pr593_mask_coherent_edit_crossfade.gd"],210,"PR593_NATIVE_EDIT_CROSSFADE_RESULT"),
         ("dense-budget",["--headless","--script","res://tests/test_pr593_mask_coherent_dense_budget.gd"],120,"PR593_GUARD_DENSE_BUDGET_RESULT"),
         ("engine-lab",["--headless","--script","res://tests/test_workbench_engine_lab.gd"],180,"ENGINE_LAB_RESULT"),
+        ("engine-lab-gui",["--rendering-method","gl_compatibility","--script","res://tests/test_workbench_engine_lab.gd"],180,"ENGINE_LAB_RESULT"),
         ("graphical",["--rendering-method","gl_compatibility","--quit-after","180","--","--workbench"],120,"Rapier2D")
     ]
     report=[]
     for name,suffix,timeout,marker in cases:
         cmd=[str(console),"--path",str(project),*suffix]
         print("PR593_SMOKE_START",name,flush=True)
+        env=os.environ.copy()
+        if name=="engine-lab-gui":
+            env["CYBERSAND_ENGINE_LAB_SCREENSHOT"]=str((evidence/"engine-lab-popup.png").resolve())
         r=subprocess.run(cmd,cwd=output,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,
-                         timeout=timeout,text=True,errors="replace")
+                         timeout=timeout,text=True,errors="replace",env=env)
         file=evidence/(name+".log")
         file.write_text(r.stdout)
         need(r.returncode==0 and "SCRIPT ERROR:" not in r.stdout and
