@@ -2,17 +2,25 @@
 
 ## Commit-history write-scope qualification — 15 November 2026
 
-The offline qualifier now inspects every intermediate commit between frozen M1
-and this D-1B head, not just the final tree. An out-of-lane write followed by a
-revert still violates exclusive ownership. The `git log -m --no-renames
---name-only` command sees merge-parent and both rename-side changes. Two new
-unit fixtures challenge a reverted shared-file edit and allowed lane-only history.
-The minimum complete suite is now **170 tests**.
+The offline qualifier now inspects every **non-merge commit's** changed paths
+since accepted M1, so an out-of-lane edit followed by a revert cannot evade
+exclusive write ownership. GitHub's actual D-1B ancestry also contains the
+legitimate merge `08b4b67c` adopting accepted M1 as its second parent.
+Naive `git log -m` falsely flags those *incoming approved D-COMMON files* as
+D-1B writes. The fence therefore permits only an exact-M1-parent adoption merge,
+and separately requires its **result vs accepted M1** to contain D-1B lane
+paths only; unapproved merges or changed shared source fail closed. Renames
+remain unpaired for both commit and merge deltas.
 
-This is a source-provenance integrity guard, **not an executed full-suite run**.
-Complete exact-HEAD D-1B testing and M1 five-record conformance remain
-outstanding. Native/model/real Undo/production work is not authorised.
-
+A disposable local Git DAG reproduction confirmed the false positive for
+`git log -m`, successful detection of reverted unauthorized writes in
+`git log --no-merges --no-renames`, and the correct M1-relative merge
+comparison. Three adversarial fixtures cover accepted M1 adoption, foreign
+merge ancestry and modified shared content from merge resolution, in addition
+to the two prior historical-scope checks. **Complete-suite minimum: 173
+methods.** The source/test commits are not full-suite-executed evidence; an
+exact clean checkout and independent M2 five-record conformance remain
+outstanding. No native/model/Undo/production work is authorized.
 
 ## Frozen single-fork guidance/critic interaction probe — 15 November 2026
 

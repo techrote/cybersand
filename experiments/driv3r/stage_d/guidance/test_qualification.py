@@ -9,26 +9,26 @@ from experiments.driv3r.stage_d.guidance import qualification as q
 
 class QualificationTests(unittest.TestCase):
     def test_complete_pass(self):
-        self.assertTrue(q.parse_unittest("Ran 170 tests in 3.00s\n\nOK\n", 0)["passed"])
+        self.assertTrue(q.parse_unittest("Ran 173 tests in 3.00s\n\nOK\n", 0)["passed"])
 
     def test_missing_and_duplicate_footer(self):
-        for log in ("OK\n", "Ran 170 tests in 1.0s\nRan 170 tests in 1.0s\nOK\n"):
+        for log in ("OK\n", "Ran 173 tests in 1.0s\nRan 173 tests in 1.0s\nOK\n"):
             with self.subTest(log=log):
                 self.assertFalse(q.parse_unittest(log, 0)["passed"])
 
     def test_incomplete_cohort(self):
-        for count in (158, 167, 168, 169):
+        for count in (158, 167, 168, 169, 170, 172):
             with self.subTest(count=count):
                 self.assertFalse(q.parse_unittest(f"Ran {count} tests in 1.0s\n\nOK\n", 0)["passed"])
 
     def test_skips_are_not_passes(self):
-        self.assertFalse(q.parse_unittest("Ran 170 tests in 1.0s\n\nOK (skipped=1)\n", 0)["passed"])
+        self.assertFalse(q.parse_unittest("Ran 173 tests in 1.0s\n\nOK (skipped=1)\n", 0)["passed"])
 
     def test_failed_returncode_is_not_pass(self):
-        self.assertFalse(q.parse_unittest("Ran 170 tests in 1.0s\n\nOK\n", 1)["passed"])
+        self.assertFalse(q.parse_unittest("Ran 173 tests in 1.0s\n\nOK\n", 1)["passed"])
 
     def test_failed_suite_is_not_pass(self):
-        self.assertFalse(q.parse_unittest("Ran 170 tests in 1.0s\n\nFAILED (failures=1)\n", 1)["passed"])
+        self.assertFalse(q.parse_unittest("Ran 173 tests in 1.0s\n\nFAILED (failures=1)\n", 1)["passed"])
 
     def test_invalid_timeout_fails_before_access(self):
         for t in (True, 0, -1, 601, 3.1, "180"):
@@ -101,7 +101,7 @@ class QualificationTests(unittest.TestCase):
                     with self.assertRaisesRegex(q.QualificationError,
                                                 "commit history wrote outside"):
                         q.source_fence(Path("/missing"))
-        self.assertTrue(any(args[:5] == ("log", "-m", "--no-renames",
+        self.assertTrue(any(args[:5] == ("log", "--no-merges", "--no-renames",
                                          "--format=", "--name-only") for args in calls))
 
     def test_valid_history_reaches_module_discovery(self):
@@ -110,6 +110,8 @@ class QualificationTests(unittest.TestCase):
             if args[0] == "log":
                 return CompletedProcess(args, 0,
                     "experiments/driv3r/stage_d/guidance/qualification.py\n", "")
+            if args[:2] == ("rev-list", "--merges"):
+                return CompletedProcess(args, 0, "", "")
             return git(root, *args)
         digest = SimpleNamespace(hexdigest=lambda: q.M1_SCHEMA_SHA256)
         with patch.object(q, "_git", side_effect=fake_git):
@@ -119,6 +121,59 @@ class QualificationTests(unittest.TestCase):
                         with self.assertRaisesRegex(q.QualificationError,
                                                     "Required test modules missing"):
                             q.source_fence(Path("/missing"))
+
+    def _merged_m1_fence(self, *, parents, merge_diff):
+        git, _calls = self._mock_qualification_git()
+        merge = "c" * 40
+        def fake_git(root, *args):
+            if args[0] == "log":
+                return CompletedProcess(args, 0,
+                    "experiments/driv3r/stage_d/guidance/qualification.py\n", "")
+            if args[:2] == ("rev-list", "--merges"):
+                return CompletedProcess(args, 0, merge + "\n", "")
+            if args[:2] == ("rev-list", "--parents"):
+                return CompletedProcess(args, 0, merge + " " + "d" * 40 + " " + parents + "\n", "")
+            if args[0] == "diff" and len(args) > 4 and args[3] == q.M1_COMMIT and args[4] == merge:
+                return CompletedProcess(args, 0, merge_diff, "")
+            return git(root, *args)
+        return fake_git
+
+    def test_owner_accepted_m1_merge_is_not_false_foreign_write(self):
+        git = self._merged_m1_fence(
+            parents=q.M1_COMMIT,
+            merge_diff="experiments/driv3r/stage_d/guidance/qualification.py\n")
+        digest = SimpleNamespace(hexdigest=lambda: q.M1_SCHEMA_SHA256)
+        with patch.object(q, "_git", side_effect=git):
+            with patch.object(Path, "read_bytes", return_value=b"schema"):
+                with patch.object(q.hashlib, "sha256", return_value=digest):
+                    with patch.object(Path, "glob", return_value=[]):
+                        with self.assertRaisesRegex(q.QualificationError,
+                                                    "Required test modules missing"):
+                            q.source_fence(Path("/missing"))
+
+    def test_unapproved_other_merge_is_rejected(self):
+        git = self._merged_m1_fence(
+            parents="e" * 40,
+            merge_diff="experiments/driv3r/stage_d/guidance/qualification.py\n")
+        digest = SimpleNamespace(hexdigest=lambda: q.M1_SCHEMA_SHA256)
+        with patch.object(q, "_git", side_effect=git):
+            with patch.object(Path, "read_bytes", return_value=b"schema"):
+                with patch.object(q.hashlib, "sha256", return_value=digest):
+                    with self.assertRaisesRegex(q.QualificationError,
+                                                "not exact owner-accepted M1"):
+                        q.source_fence(Path("/missing"))
+
+    def test_m1_merge_resolution_may_not_change_shared_source(self):
+        git = self._merged_m1_fence(
+            parents=q.M1_COMMIT,
+            merge_diff="experiments/driv3r/d_common/v1/interface.schema.json\n")
+        digest = SimpleNamespace(hexdigest=lambda: q.M1_SCHEMA_SHA256)
+        with patch.object(q, "_git", side_effect=git):
+            with patch.object(Path, "read_bytes", return_value=b"schema"):
+                with patch.object(q.hashlib, "sha256", return_value=digest):
+                    with self.assertRaisesRegex(q.QualificationError,
+                                                "M1 adoption merge changed"):
+                        q.source_fence(Path("/missing"))
 
 if __name__ == "__main__":
     unittest.main()

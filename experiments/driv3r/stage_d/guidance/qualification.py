@@ -23,9 +23,9 @@ LANE = "experiments/driv3r/stage_d/guidance"
 SCHEMA = "experiments/driv3r/d_common/v1/interface.schema.json"
 M1_COMMIT = "8fa90de6be209ed0b7bd125039e6ec8b332fb1a6"
 M1_SCHEMA_SHA256 = "ebe2fa211148602c614cba0f0a40f285cba797784b70efa035832d833877f80d"
-# 168 previously committed methods plus 2 historical-scope regressions.
+# 170 previously committed methods plus 3 M1-merge-scoped history regressions.
 # Fail closed if a module disappears or the suite silently shortens.
-MIN_TESTS = 170
+MIN_TESTS = 173
 REQUIRED_MODULES = frozenset({
     "test_comparison.py", "test_feedback_audit.py", "test_feedback_edgecases.py",
     "test_fork_probe.py",
@@ -105,14 +105,31 @@ def source_fence(root: Path) -> tuple[str, int]:
     paths = [p for p in changed.splitlines() if p]
     if not paths or any(not p.startswith(LANE + "/") for p in paths):
         raise QualificationError("M1-to-head changes outside exclusive D-1B lane or empty")
-    # Final-tree-only scope can hide an unauthorized edit later reverted.
-    # Traverse all intermediate commits; -m includes merge-parent diffs and
-    # --no-renames reveals both source and destination of renamed paths.
-    history = _checked_git(root, "log", "-m", "--no-renames", "--format=",
-                           "--name-only", f"{M1_COMMIT}..{head}", "--")
+    # Non-merge commits must never write out of lane, even when a later
+    # revert hides that change from the final M1-to-HEAD tree diff.
+    history = _checked_git(root, "log", "--no-merges", "--no-renames",
+                           "--format=", "--name-only", f"{M1_COMMIT}..{head}", "--")
     historical_paths = [p for p in history.splitlines() if p]
     if not historical_paths or any(not p.startswith(LANE + "/") for p in historical_paths):
         raise QualificationError("commit history wrote outside exclusive D-1B lane or is empty")
+    # This branch deliberately merged the owner-accepted M1 source. The naive
+    # '-m' history check mistakes those approved incoming d_common files for
+    # worker writes. Allow precisely that merge and compare its result against
+    # M1, not against the D-1B first parent; reject any other merge ancestry.
+    merges = [m for m in _checked_git(root, "rev-list", "--merges",
+                                     f"{M1_COMMIT}..{head}").splitlines() if m]
+    if len(merges) > 1:
+        raise QualificationError("unapproved merge ancestry in D-1B history")
+    for merge in merges:
+        if not SHA.fullmatch(merge):
+            raise QualificationError("invalid merge SHA in D-1B history")
+        parents = _checked_git(root, "rev-list", "--parents", "-n", "1", merge).split()
+        if len(parents) != 3 or parents[0] != merge or parents[2] != M1_COMMIT:
+            raise QualificationError("merge is not exact owner-accepted M1 adoption")
+        merge_paths = _checked_git(root, "diff", "--no-renames", "--name-only",
+                                   M1_COMMIT, merge, "--").splitlines()
+        if any(not p.startswith(LANE + "/") for p in merge_paths):
+            raise QualificationError("M1 adoption merge changed frozen/shared paths")
     modules = {p.name for p in (root / LANE).glob("test_*.py")}
     if not REQUIRED_MODULES <= modules:
         raise QualificationError("Required test modules missing from checkout")
