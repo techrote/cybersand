@@ -51,5 +51,32 @@ class QualificationTests(unittest.TestCase):
                     q.run_qualification(Path("/unused"), value)
 
 
+    def test_dirty_shared_or_untracked_source_refused(self):
+        def fake_git(root, *args):
+            if args[0] == "rev-parse":
+                return CompletedProcess(args, 0, "a" * 40 + "\n", "")
+            if args[0] == "merge-base":
+                return CompletedProcess(args, 0, "", "")
+            return CompletedProcess(args, 0, "?? experiments/driv3r/d_common/untracked.py\n", "")
+        with patch.object(q, "_git", side_effect=fake_git), patch.object(q, "assert_approved_schema") as schema:
+            with self.assertRaisesRegex(q.QualificationError, "dirty"):
+                q.source_fence(Path("/unused"))
+            schema.assert_not_called()
+
+    def test_committed_nonlane_changes_refused_even_with_clean_worktree(self):
+        def fake_git(root, *args):
+            if args[0] == "rev-parse":
+                return CompletedProcess(args, 0, "a" * 40 + "\n", "")
+            if args[0] == "merge-base":
+                return CompletedProcess(args, 0, "", "")
+            if args[0] == "status":
+                return CompletedProcess(args, 0, "", "")
+            return CompletedProcess(args, 0, "experiments/driv3r/d_common/v1/validator.py\n", "")
+        with patch.object(q, "_git", side_effect=fake_git), patch.object(q, "assert_approved_schema") as schema:
+            with self.assertRaisesRegex(q.QualificationError, "outside D-1A lane"):
+                q.source_fence(Path("/unused"))
+            schema.assert_not_called()
+
+
 if __name__ == "__main__":
     unittest.main()
