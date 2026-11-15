@@ -1,5 +1,11 @@
 # D-1B: soft guidance and shadow critic — independent preparatory lane
 
+## Line-worm pen-intent separation — 15 November 2026
+
+The original `d1b-worm-trace-audit/1` pooled **all cursor MOVE destinations**, including movement with `pen_down=False`; high preference contact while lifted is real cursor contact but not intended painting. The explicitly versioned, D-1B-local **`d1b-worm-trace-audit/2`** preserves prior all-MOVE diagnostics while separately reporting unique and repeated pen-down target contacts, high-valued pen-down contacts and their mean u16 reference preference. First pen-down contact after a pen-up visit counts as novel *ink intent*. It also provides pen-down-only paired reference difference and movement/pen-down cardinality-matching flags. This changes no accepted D-COMMON M1 contract or shared native/backend schema.
+
+Four new stdlib regression tests exercise lifted-only contact, repeated pen-down cells, first pen contact after lifted transit and matched-pair accounting. These are **authored synthetic input intentions**, not native painted pixels, material acknowledgements, actual model visual access or causal d1 performance. Full exact-head lane qualification and M1 five-record conformance require separate execution.
+
 ## Read-only line-worm soft-guidance response diagnostics — 15 November 2026
 
 Following the [owner's corrected DRIV3R intent](https://github.com/techrote/cybersand/issues/570#issuecomment-6889195672) ("slightly deranged line steering worm brain"), D-1B now provides **independent descriptive soft-guidance diagnostics** without redefining eccentric lines as failures or pretending A* is the artistic objective. New `worm_trace.py` accepts two **authored synthetic** paths from the same declared start/World/seed: neutral/free and soft/scalar-guided. It retains the SHA-256 of both traces, the exact original u16le reference field, the source/World/scenario identities, and separate **arm-visible numeric hashes** (all-zero scalar for free, original reference scalar for soft). The original nonzero preference is withheld from the free *model-visible* label; it is consulted only after the trace for posthoc evaluation.

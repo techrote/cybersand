@@ -12,7 +12,7 @@ import json
 import re
 import struct
 
-PROTOCOL = "cybersand.driv3r.d1b-worm-trace-audit/1"
+PROTOCOL = "cybersand.driv3r.d1b-worm-trace-audit/2"
 _HASH = re.compile(r"[0-9a-f]{64}\Z")
 _REV = re.compile(r"[0-9a-f]{40}\Z")
 _DIRECTIONS = {(1, 0): 0, (0, 1): 1, (-1, 0): 2, (0, -1): 3}
@@ -82,6 +82,9 @@ def audit_synthetic_worm_pair(*, guidance_u16le: bytes, width: int, height: int,
         cursor = initial_xy[:]
         first_heading = prev_heading = None
         seen = {tuple(cursor)}
+        # Pen-up motion is a cursor visit, not a pen-down intent contact.
+        ink_seen = set()
+        ink_total = ink_unique_total = ink_high_moves = ink_high_unique = 0
         moving_samples = painted_intent = lifted_moves = 0
         low_count = high_count = repeated = turns = reversals = left = right = 0
         h_total = h_unique = 0
@@ -116,6 +119,14 @@ def audit_synthetic_worm_pair(*, guidance_u16le: bytes, width: int, height: int,
             else:
                 seen.add(key)
                 h_unique += value
+            if pen:
+                ink_total += value
+                ink_high_moves += int(value >= high_threshold)
+                # Count distinct intended ink destinations, not cursor visits.
+                if key not in ink_seen:
+                    ink_seen.add(key)
+                    ink_unique_total += value
+                    ink_high_unique += int(value >= high_threshold)
             heading = _DIRECTIONS[(dx, dy)]
             if first_heading is None:
                 first_heading = heading
@@ -145,12 +156,24 @@ def audit_synthetic_worm_pair(*, guidance_u16le: bytes, width: int, height: int,
             "mean_reference_guidance_all_moves_u16": h_total / moving_samples if moving_samples else None,
             "mean_reference_guidance_new_cells_u16":
                 h_unique / (len(seen) - 1) if len(seen) > 1 else None,
+            "pen_down_intent_reference": {
+                "unique_target_cells": len(ink_seen),
+                "revisited_target_moves": painted_intent - len(ink_seen),
+                "high_contact_moves": ink_high_moves,
+                "high_contact_unique_cells": ink_high_unique,
+                "mean_all_pen_down_moves_u16":
+                    ink_total / painted_intent if painted_intent else None,
+                "mean_unique_pen_down_target_cells_u16":
+                    ink_unique_total / len(ink_seen) if ink_seen else None,
+            },
             "last_xy": cursor,
         }
 
     free = evaluate(free_trace)
     soft = evaluate(soft_trace)
     both_observed = (free["movement_cells"] > 0 and soft["movement_cells"] > 0)
+    free_ink = free["pen_down_intent_reference"]["mean_all_pen_down_moves_u16"]
+    soft_ink = soft["pen_down_intent_reference"]["mean_all_pen_down_moves_u16"]
     return {
         "protocol": PROTOCOL, "evidence_class": "synthetic_authored_cursor_traces_only",
         "native_material_authority": False, "native_receipts_verified": False,
@@ -165,9 +188,16 @@ def audit_synthetic_worm_pair(*, guidance_u16le: bytes, width: int, height: int,
             "soft": guidance_sha256,
         },
         "arms": {"free": free, "soft": soft},
+        "matched_movement_counts": free["movement_cells"] == soft["movement_cells"],
+        "matched_pen_down_intent_counts":
+            free["pen_down_intent_moves"] == soft["pen_down_intent_moves"],
+        "posthoc_soft_minus_free_mean_reference_pen_down_intent_u16":
+            soft_ink - free_ink if free_ink is not None and soft_ink is not None else None,
         "posthoc_soft_minus_free_mean_reference_guidance_u16":
             (soft["mean_reference_guidance_all_moves_u16"] -
              free["mean_reference_guidance_all_moves_u16"]) if both_observed else None,
         "interpretation": "posthoc preference/contact and line-morphology comparison only; "
+                          "pen-down intent is not paint or verified native receipt; "
+                          "unequal move/ink budgets are descriptive not matched outcomes; "
                           "no inferred model exposure, native permission, painting or causal effect",
     }

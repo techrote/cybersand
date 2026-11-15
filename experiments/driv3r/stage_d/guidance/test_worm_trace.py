@@ -94,6 +94,47 @@ class WormTraceTests(unittest.TestCase):
         self.assertFalse(a["terminal_stop"])
         self.assertTrue(a["truncated_before_budget_without_stop"])
 
+    def test_lifted_motion_contact_does_not_imply_paint_intent_contact(self):
+        lifted = [move(1, 2, 1, False), move(2, 3, 1, False), stop(3)]
+        r = self.run_audit(soft_trace=lifted)
+        a = r["arms"]["soft"]
+        self.assertGreater(a["mean_reference_guidance_all_moves_u16"], 0)
+        self.assertEqual(a["high_reference_contact_moves"], 1)
+        self.assertEqual(a["pen_down_intent_reference"]["unique_target_cells"], 0)
+        self.assertIsNone(a["pen_down_intent_reference"]["mean_all_pen_down_moves_u16"])
+        self.assertIsNone(r["posthoc_soft_minus_free_mean_reference_pen_down_intent_u16"])
+        self.assertFalse(r["matched_pen_down_intent_counts"])
+
+    def test_pen_down_unique_cells_are_not_cursor_unique_cells(self):
+        trace = [move(1, 2, 1, False), move(2, 3, 1),
+                 move(3, 2, 1), move(4, 3, 1), stop(5)]
+        a = self.run_audit(soft_trace=trace)["arms"]["soft"]
+        p = a["pen_down_intent_reference"]
+        self.assertEqual(a["movement_cells"], 4)
+        self.assertEqual(a["pen_down_intent_moves"], 3)
+        self.assertEqual(p["unique_target_cells"], 2)
+        self.assertEqual(p["revisited_target_moves"], 1)
+        self.assertEqual(p["high_contact_moves"], 2)
+        self.assertEqual(p["high_contact_unique_cells"], 1)
+        self.assertEqual(p["mean_all_pen_down_moves_u16"], (65535 + 1000 + 65535) / 3)
+        self.assertEqual(p["mean_unique_pen_down_target_cells_u16"], (65535 + 1000) / 2)
+
+    def test_first_pen_contact_after_lift_counts_even_if_cursor_revisits(self):
+        trace = [move(1, 2, 1, False), move(2, 1, 1), stop(3)]
+        a = self.run_audit(free_trace=trace)["arms"]["free"]
+        self.assertEqual(a["revisits"], 1)
+        self.assertEqual(a["pen_down_intent_reference"]["unique_target_cells"], 1)
+        self.assertEqual(a["pen_down_intent_reference"]["revisited_target_moves"], 0)
+
+    def test_paired_ink_preference_and_cardinality_are_explicit(self):
+        r = self.run_audit()
+        self.assertEqual(r["protocol"], "cybersand.driv3r.d1b-worm-trace-audit/2")
+        self.assertTrue(r["matched_movement_counts"])
+        self.assertTrue(r["matched_pen_down_intent_counts"])
+        self.assertEqual(
+            r["posthoc_soft_minus_free_mean_reference_pen_down_intent_u16"],
+            r["posthoc_soft_minus_free_mean_reference_guidance_u16"])
+
 
 if __name__ == "__main__":
     unittest.main()
