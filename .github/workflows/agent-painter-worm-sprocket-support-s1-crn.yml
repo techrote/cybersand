@@ -1,0 +1,98 @@
+name: WORM SPROCKET support original S1 CRN counterfactual audit
+on:
+  push:
+    branches: [research/612-worm-sprocket-support]
+    paths:
+      - experiments/agent_painter/worm/support_sprocket/audit_s1_crn.py
+      - .github/workflows/agent-painter-worm-sprocket-support-s1-crn.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: worm-sprocket-support-s1-crn-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  source-pinned-s1-counterfactual:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Source, syntax, provider and scope checks
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/s1-crn
+          git rev-parse HEAD > evidence/s1-crn/support-source.txt
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 -m py_compile experiments/agent_painter/worm/support_sprocket/audit_s1_crn.py
+      - name: Download immutable original S1 artifact (read only)
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import os,urllib.request,urllib.error,urllib.parse
+          req=urllib.request.Request(
+              'https://api.github.com/repos/techrote/cybersand/actions/artifacts/14168225018/zip',
+              headers={'Authorization':'Bearer '+os.environ['GITHUB_TOKEN'],
+                       'Accept':'application/vnd.github+json',
+                       'X-GitHub-Api-Version':'2022-11-28'})
+          class NoRedirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self,req,fp,code,msg,headers,newurl): return None
+          try:
+              urllib.request.build_opener(NoRedirect).open(req,timeout=40)
+              raise RuntimeError('expected redirect')
+          except urllib.error.HTTPError as e:
+              if e.code not in (301,302,303,307,308): raise
+              signed=e.headers.get('Location','')
+          host=urllib.parse.urlparse(signed)
+          if host.scheme!='https' or not ((host.hostname or '').endswith('.blob.core.windows.net')
+              or (host.hostname or '').endswith('.githubusercontent.com')
+              or (host.hostname or '').endswith('.github.com')):
+              raise RuntimeError('untrusted artifact redirect domain')
+          with urllib.request.urlopen(signed,timeout=90) as resp:
+              blob=resp.read(500_001)
+          if not 0 < len(blob) < 500_000: raise RuntimeError('unbounded/missing artifact')
+          open('/tmp/immutable-s1-original.zip','wb').write(blob)
+          PY
+      - name: Pin exact W0 engine without modifying shepherd source
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 origin 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          test "$(git rev-parse FETCH_HEAD)" = 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          git show 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61:experiments/agent_painter/worm/common/worm.py > /tmp/immutable-w0.py
+          test "$(sha256sum /tmp/immutable-w0.py | cut -c1-64)" = 81c3923cb38d7f196b99986806216388c34ebc27fd4976e168b3b370c25a323e
+      - name: Audit source S1 and execute independent bounded W0 CRN counterfactuals
+        run: |
+          set -euo pipefail
+          python3 experiments/agent_painter/worm/support_sprocket/audit_s1_crn.py \
+            /tmp/immutable-s1-original.zip --trusted-w0 /tmp/immutable-w0.py \
+            --output evidence/s1-crn | tee evidence/s1-crn/console.txt
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path('evidence/s1-crn')
+          r=json.loads((root/'s1-crn-audit-report.json').read_text())
+          assert r['original_S1_greedy_unmasked_TOP_LEFT']==218
+          assert r['new_W0_counterfactual_rollouts']==24
+          assert len(r['first_step_family_pair_tests'])==6
+          assert len(list((root/'contact').glob('*.png')))==6
+          assert len(list((root/'counterfactual-w0').glob('*.png')))==24
+          assert all(row['spatial']['unique_cells']>=1 for row in r['outcomes'])
+          assert r['model_optimizer_updates']==r['Godot_native_paintings']==0
+          PY
+          sha256sum /tmp/immutable-s1-original.zip /tmp/immutable-w0.py > evidence/s1-crn/external-inputs-sha256.txt
+          (cd evidence/s1-crn && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum) > evidence/s1-crn/SHA256SUMS.txt
+      - name: Preserve success or partial failure artifacts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: worm-sprocket-support-s1-crn-independent
+          path: evidence/s1-crn/
+          retention-days: 30
+          if-no-files-found: warn
