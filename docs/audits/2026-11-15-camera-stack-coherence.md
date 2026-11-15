@@ -194,6 +194,16 @@ the standalone ZIP, verifies its payload, runs installed tests and executes the
 real `Test It.cmd`. Actual frame intervals, native/Rapier/publication rates and
 resolver CPU distributions are recorded separately from requested caps.
 
+The historical PR593 Linux/Windows campaigns require native source to remain
+identical to #566, and correctly rejected this accepted-main integration at
+that ancestry/source fence (runs 43757906431 / 43757906301). They are retained
+only for their isolated stack base. The integrated workflow carries their
+native-World, input, fleet, physics, production guard, crossfade and budget
+regressions while authenticating the current-main runtime instead. The ordinary
+Godot regression runner also discovers the new temporal test files automatically.
+This replaces an inapplicable old-runtime campaign, without weakening its source
+check or substituting the old native binary into the integrated application.
+
 The owner procedure is in the [acceptance guide](../operations/camera-stack-coherence-acceptance.md).
 Hosted Windows rendering and local Linux software rendering are qualification
 evidence only. Neither establishes physical NVIDIA smoothness, display timing,

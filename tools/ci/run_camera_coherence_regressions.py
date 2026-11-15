@@ -49,6 +49,10 @@ def main():
         ('paint-reopen', 'test_paint_editor_workbench', 'PAINT_EDITOR_WORKBENCH', {'PAINT_REOPEN': '1'}, False),
         ('failure-recovery', 'test_workbench_failure_recovery', 'WORKBENCH_FAILURE_RECOVERY', {}, False),
         ('material-catalogue', 'test_material_lab_catalogue', 'MATERIAL_LAB_CATALOGUE:', {}, False),
+        ('workbench-input', 'test_workbench_input', 'WORKBENCH_INPUT', {}, False),
+        ('workbench-fleet', 'test_workbench_fleet_session', 'WORKBENCH_FLEET', {}, False),
+        ('workbench-physics', 'test_workbench_physics_play', 'WORKBENCH_PHYSICS', {}, False),
+        ('native-world-clearance', 'test_pr566_mask_coherent_native_world', 'PR566_WORLD_CLEARANCE_RESULT', {}, False),
     ]
     if args.graphical:
         cases += [

@@ -4,26 +4,11 @@ name: PR566 mask-coherent flyer presentation candidate
 # Uses prequalified #566 Windows native runtime and physical Windows Godot
 # graphical rendering, independent of the preceding A/B experiment.
 on:
-  # PR #593 and #566 changes are qualified by pull_request; main by push.
-  # Avoid duplicate expensive eight-arm runs for every feature-branch commit.
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/pr566-mask-coherent-render.yml'
-      - 'godot/scripts/main.gd'
-      - 'godot/scripts/physical_actor_session.gd'
-      - 'godot/scripts/workbench_presentation_coherence.gd'
-      - 'godot/tests/test_workbench_presentation_coherence.gd'
-      - 'godot/tests/test_pr566_mask_coherent_native_world.gd'
-      - 'godot/tests/test_pr593_mask_coherent_production.gd'
-      - 'godot/tests/test_pr593_mask_coherent_edit_crossfade.gd'
-      - 'godot/tests/test_pr593_mask_coherent_dense_budget.gd'
-      - 'godot/tests/test_workbench_physics_play.gd'
-      - 'godot/tests/test_pr566_mask_coherent_ab.gd'
-      - 'tools/ci/run_pr566_mask_coherent_windows.py'
-      - 'tools/ci/reduce_pr566_mask_coherent_ab.py'
+  # Historical isolated #593 apparatus requires the exact #566 native source.
+  # Current-main integration uses pose-trace-qualification.yml, which retains
+  # these safety tests and verifies the accepted-main runtime's compiler inputs.
   pull_request:
-    branches: [codex/native-pixel-scrolling-20261113, main]
+    branches: [codex/native-pixel-scrolling-20261113]
     paths:
       - 'godot/scripts/main.gd'
       - 'godot/scripts/physical_actor_session.gd'
