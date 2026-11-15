@@ -1,5 +1,32 @@
 # D-1B: soft guidance and shadow critic — independent preparatory lane
 
+## Shifted-null canonical-replay integrity repair — 15 November 2026
+
+The earlier shifted-null reader checked its input report's internal SHA-256
+consistency but **did not independently replay motion or topology**. An
+adversarial producer could fabricate a teleporting trace, adjust the counts,
+re-seal both summaries, and obtain plausible posthoc u16 scores despite
+claiming the report came from the source-bound morphology validator.
+
+The reader now reruns `bind_synthetic_worm_morphology(...)` on the actual
+guidance bytes, original free/soft trajectories and recorded source/World/
+scenario/seed, using the report's explicit bounded decision cap and preference
+threshold; it requires exact equality with the fully reconstructed canonical
+report before scoring. Four new regression methods cover canonical positive
+replay and re-sealed teleport, fabricated morphology and fabricated movement
+summaries. Reports remain **self-reported synthetic input**, not proof of
+authentic native World state, actual material or model behaviour; independently
+trusted acquisition/provenance is still an M2/native-owner requirement.
+
+**Qualification boundary:** these new tests are committed but **not yet
+executed in this environment**. Run both focused and complete stdlib suites
+at the exact D-1B head:
+
+```sh
+python3 -m unittest discover -s experiments/driv3r/stage_d/guidance -p 'test_worm_shift_nulls.py' -v
+python3 -m unittest discover -s experiments/driv3r/stage_d/guidance -p 'test_*.py' -v
+```
+
 ## Shifted-field negative controls for synthetic worm ink — 15 November 2026
 
 New standalone, **read-only** worm_shift_nulls.py (d1b-worm-shift-nulls/1) measures whether the previously authored free/soft trajectories' distinct intended pen-down destinations happen to coincide with the original positive u16 preference field. It then holds **both trajectories fixed** and evaluates them against up to 32 deterministic, distinct **nonzero toroidal translations** of those same numeric field bytes. Each translation preserves the field's u16 histogram and changes only its spatial alignment; it does not change host geometry, legal candidates, the recorded trace, the native World, or any permission. Its permutation order is source/scenario/seed/field-hash-derived, reproducible, and never inferred from the observed scores.
