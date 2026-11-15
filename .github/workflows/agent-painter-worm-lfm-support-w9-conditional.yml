@@ -1,0 +1,65 @@
+name: WORM LFM support - W9 original conditional checkpoint audit
+on:
+  push:
+    branches: [research/612-worm-lfm-support]
+    paths:
+      - '.github/workflows/agent-painter-worm-lfm-support-w9-conditional.yml'
+      - 'experiments/agent_painter/worm/support_lfm/w9_original_conditional_audit.py'
+      - 'experiments/agent_painter/worm/support_lfm/test_w9_original_conditional_audit.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: worm-lfm-support-w9-original-checkpoint-audit
+  cancel-in-progress: false
+jobs:
+  audit:
+    name: Check original W9 paired optimizer/checkpoints, raw steering and static sensitivity
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Source-fence and CPU-only adversarial tests
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/w9-support-scheduling.json
+          python3 -m py_compile experiments/agent_painter/worm/support_lfm/w9_original_conditional_audit.py
+          PYTHONPATH=experiments/agent_painter/worm/support_lfm python3 -m unittest -v test_w9_original_conditional_audit
+      - name: Fetch pinned original completed W9 producer ZIP, no new training
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test "$(gh api repos/techrote/cybersand/actions/artifacts/14174385564 --jq .digest)" = "sha256:ddf10d2ed16f0456067bea6b86ef1846b6318a5dac07397512d159b718b388a8"
+          curl --fail --location --silent --show-error --retry 3 --connect-timeout 20 --max-time 300 \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14174385564/zip" \
+            -o "$RUNNER_TEMP/original-w9.zip"
+          echo "ddf10d2ed16f0456067bea6b86ef1846b6318a5dac07397512d159b718b388a8  $RUNNER_TEMP/original-w9.zip" | sha256sum -c
+      - name: Independently validate original W9 train/eval source data
+        run: |
+          set -euo pipefail
+          python3 experiments/agent_painter/worm/support_lfm/w9_original_conditional_audit.py \
+            --artifact "$RUNNER_TEMP/original-w9.zip" --out w9-conditional-audit | tee /tmp/w9-conditional-report.json
+          python3 - <<'PY'
+          import json
+          r=json.load(open("w9-conditional-audit/report.json"))
+          assert r["optimizer_updates"]==45 and r["backward_passes"]==90
+          assert r["checkpoint_members_verified"]==36
+          assert r["actual_model_online_decisions"]==r["original_model_PNGs"]==0
+          print("W9 original-checkpoint-only custody PASS; online utility not established")
+          PY
+      - name: Preserve audit receipts even on failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: worm-lfm-support-w9-original-conditional
+          path: w9-conditional-audit/
+          if-no-files-found: warn
+          retention-days: 45
