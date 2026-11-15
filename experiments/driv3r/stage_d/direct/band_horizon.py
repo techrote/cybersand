@@ -201,3 +201,127 @@ def audit_development_band_horizon(fixture: d.Fixture,
             "STOP, native execution and model utility are not proven"
         ),
     }
+
+
+MONOTONE_VERSION = "d1a-selected-wall-monotone-band-horizon/1"
+
+
+def exact_monotone_band_decisions(
+    width: int, height: int, target: tuple[int, int],
+    legal_cell: Callable[[tuple[int, int]], bool],
+    selected_clearance: Callable[[tuple[int, int]], float],
+    lengths: tuple[int, ...] = (1,),
+) -> dict[tuple[int, int], int]:
+    """Exact remaining macro decisions under an optional nondecreasing-Y rule.
+
+    This is a *strict control ablation*, not the normative definition of a
+    successful contour: legitimate obstacle recovery may need backward Y.
+    The entire swept macro remains within the identified 6–10-cell band.
+    Reverse BFS examines only backwards-horizontal or backwards-upstream
+    predecessors (Y does not decrease during forward travel). The complete
+    undirected band-reachable set safely screens intermediate macro cells.
+    """
+    from collections import deque
+
+    band_reachable = exact_band_decisions(
+        width, height, target, legal_cell, selected_clearance, lengths)
+    permitted = set(lengths)
+    maximum = max(lengths)
+    goal = tuple(target)
+    distances = {goal: 0}
+    pending = deque([goal])
+    while pending:
+        endpoint = pending.popleft()
+        next_cost = distances[endpoint] + 1
+        for dx, dy in ((1, 0), (-1, 0), (0, -1)):
+            for step in range(1, maximum + 1):
+                predecessor = (endpoint[0] + dx * step,
+                               endpoint[1] + dy * step)
+                # The legal swept segment is reversible. If any intermediate
+                # cell cannot reach the target within the strict band, the
+                # longer macro also cannot be a valid path to this endpoint.
+                if predecessor not in band_reachable:
+                    break
+                if step in permitted and predecessor not in distances:
+                    distances[predecessor] = next_cost
+                    pending.append(predecessor)
+    return distances
+
+
+def audit_development_monotone_band_horizon(
+    fixture: d.Fixture, episode: dict[str, Any],
+) -> dict[str, Any]:
+    """Supplementary replay-verified DEVELOPMENT-only monotone-Y ablation."""
+    custody = paired.verify_episode(fixture, episode)
+    if fixture.task != "wall_offset":
+        raise ValueError("Monotone band analysis requires a selected-wall fixture")
+    lengths = tuple(episode["macro_lengths"])
+    clearance = lambda p: d.wall_distance(fixture, p)
+    strict = exact_band_decisions(
+        fixture.width, fixture.height, fixture.target, fixture.legal,
+        clearance, lengths)
+    monotone = exact_monotone_band_decisions(
+        fixture.width, fixture.height, fixture.target, fixture.legal,
+        clearance, lengths)
+    prefix_band = 6.0 <= clearance(fixture.start) <= 10.0
+    prefix_nondecreasing_y = True
+    previous = tuple(fixture.start)
+    first_backward_step = None
+    first_budget_deficit = None
+    decision_rows = []
+    for event in episode["events"]:
+        index = event["seq"]
+        selected = next(item for item in event["observation"]["candidates"]
+                        if item["candidate_id"] == event["choice_id"])
+        for swept_index, raw in enumerate(selected["path"], 1):
+            point = tuple(raw)
+            prefix_band = prefix_band and 6.0 <= clearance(point) <= 10.0
+            if point[1] < previous[1]:
+                prefix_nondecreasing_y = False
+                if first_backward_step is None:
+                    first_backward_step = {
+                        "decision_index": index,
+                        "swept_step_in_decision": swept_index,
+                    }
+            previous = point
+        after = tuple(event["simulated_post_position"])
+        remaining = fixture.budget - index - 1
+        minimum = monotone.get(after)
+        feasible = minimum is not None and minimum <= remaining
+        if first_budget_deficit is None and not feasible:
+            first_budget_deficit = index
+        decision_rows.append({
+            "decision_index": index,
+            "original_choice_id": event["choice_id"],
+            "minimum_strict_band_decisions_after": strict.get(after),
+            "minimum_monotone_band_decisions_after": minimum,
+            "remaining_decisions_after": remaining,
+            "monotone_band_slack_after": (
+                None if minimum is None else remaining - minimum),
+            "hypothetical_monotone_completion_feasible": feasible,
+            "original_prefix_in_band": prefix_band,
+            "original_prefix_nondecreasing_y": prefix_nondecreasing_y,
+            "original_prefix_preserving_monotone_completion": (
+                prefix_band and prefix_nondecreasing_y and feasible
+                and event["choice_id"] != "STOP"),
+        })
+    return {
+        "version": MONOTONE_VERSION,
+        "evidence_class": "replay_verified_offline_geometry_only",
+        "fixture_sha256": fixture.sha256,
+        "verified_original_path_sha256": custody["path_sha256"],
+        "minimum_initial_strict_band_decisions": strict.get(fixture.start),
+        "minimum_initial_monotone_band_decisions": monotone.get(fixture.start),
+        "first_original_backward_y_step": first_backward_step,
+        "first_monotone_budget_deficit_index": first_budget_deficit,
+        "original_arrived": episode["metrics"]["arrived"],
+        "original_stop_reason": episode["metrics"]["stop_reason"],
+        "decision_horizons": decision_rows,
+        "native_qualified": False,
+        "model_evaluated": False,
+        "heldout_behavior_evaluated": False,
+        "sequential_native_receipts": 0,
+        "interpretation": (
+            "Strict Y-monotone continuous-band geometric lower bound only; "
+            "not a required contour strategy, native receipt or controller result"),
+    }
