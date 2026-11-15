@@ -155,6 +155,41 @@ jobs:
           set -euo pipefail
           python tools/ci/package_engine_lab_windows.py verify --output C:/csengine
           python tools/ci/package_engine_lab_windows.py smoke --output C:/csengine --evidence build/engine-lab-owner-smoke
+      - name: Parse bundled PowerShell and launch source-verified 2048-square scripted Test It
+        shell: pwsh
+        timeout-minutes: 35
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $script = 'C:\csengine\Run-Test-It.ps1'
+          $tokens = $null
+          $errors = $null
+          [System.Management.Automation.Language.Parser]::ParseFile($script, [ref]$tokens, [ref]$errors) | Out-Null
+          if (@($errors).Count -gt 0) {
+            $errors | ForEach-Object { Write-Host $_.ToString() }
+            throw 'Bundled Run-Test-It.ps1 does not parse'
+          }
+          Write-Host 'TEST_IT_POWERSHELL_PARSE PASS'
+          & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $script -Quick -RenderingDriver opengl3_angle -TimeoutSeconds 900
+          if ($LASTEXITCODE -ne 0) {
+            Get-ChildItem -Path 'C:\csengine\Test-It-Results' -Recurse -Filter '*.log' -ErrorAction SilentlyContinue |
+              Select-Object -Last 8 | ForEach-Object { Write-Host ('=== ' + $_.FullName); Get-Content $_.FullName -Tail 35 }
+            throw ('Actual Test It failed, exit code ' + $LASTEXITCODE)
+          }
+          $reports = @(Get-ChildItem 'C:\csengine\Test-It-Results' -Recurse -Filter 'summary.json')
+          if ($reports.Count -ne 1) { throw 'Expected one complete real Test It report' }
+          $result = Get-Content -LiteralPath $reports[0].FullName -Raw | ConvertFrom-Json
+          if (-not $result.complete -or $result.status -ne 'passed' -or @($result.cases).Count -ne 1) {
+            throw 'Scripted 2048 reference acceptance did not complete'
+          }
+          Write-Host ('TEST_IT_2048_NATIVE_NEEDLE_PASS '+ ($result | ConvertTo-Json -Depth 8 -Compress))
+      - name: Retain real Windows test script evidence on either outcome
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: Pose-Trace-Owner-Test-It-Results-${{ github.run_id }}
+          path: C:/csengine/Test-It-Results/
+          if-no-files-found: ignore
+          retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: CyberSand-Engine-Lab-Windows-${{ github.run_id }}
