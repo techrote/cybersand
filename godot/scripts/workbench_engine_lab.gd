@@ -144,7 +144,8 @@ func mount(controller: Control,wb: Control) -> void:
 	vsync.size_flags_horizontal = Control.SIZE_SHRINK_END
 	vsync.add_item("Disabled",DisplayServer.VSYNC_DISABLED)
 	vsync.add_item("Enabled",DisplayServer.VSYNC_ENABLED)
-	vsync.add_item("Adaptive (may fall back to Enabled)",DisplayServer.VSYNC_ADAPTIVE)
+	vsync.add_item("Adaptive",DisplayServer.VSYNC_ADAPTIVE)
+	vsync.tooltip_text = "Adaptive VSync may fall back to enabled depending on graphics driver."
 	vsync.select(_default_vsync if _default_vsync >= 0 and _default_vsync <= 2 else 1)
 	vsync.item_selected.connect(func(index: int) -> void:
 		if not _syncing: DisplayServer.window_set_vsync_mode(vsync.get_item_id(index)))
