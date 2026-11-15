@@ -63,7 +63,6 @@ jobs:
           retention-days: 14
 
   original-w12-fleet-replay:
-    if: github.event_name == 'push'
     runs-on: ubuntu-24.04
     timeout-minutes: 12
     steps:
