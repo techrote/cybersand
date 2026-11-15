@@ -6,6 +6,7 @@ All model-visible samples are bounded explicit tiles, not stippled PNG pixels.
 """
 from __future__ import annotations
 
+from copy import deepcopy
 from dataclasses import dataclass
 from hashlib import sha256
 import json
@@ -175,6 +176,9 @@ def make_shadow_arms(*, snapshot_id: str, world_sha256: str,
     geometry_copy = json.loads(json.dumps(validate_host_geometry(geometry),
                                           allow_nan=False, sort_keys=True))
     result = {}
+    # Each arm is independently frozen at construction. Shared mutable catalog
+    # or geometry objects would allow one consumer to alter the other controls
+    # while their recorded model-view SHA-256 values remain stale.
     for arm in ("A1", "A2", "A3"):
         used = [c for c in channels if c is first or
                 (arm == "A2" and c.signal_class == "preference") or
@@ -185,7 +189,8 @@ def make_shadow_arms(*, snapshot_id: str, world_sha256: str,
             "snapshot_id": snapshot_id, "world_sha256": world_sha256,
             "source_revision": source_revision,
             "legal_candidate_set_sha256": legal_sha,
-            "host_geometry": geometry_copy, "legal_candidates": catalog,
+            "host_geometry": deepcopy(geometry_copy),
+            "legal_candidates": deepcopy(catalog),
             "guidance": [c.descriptor(with_values=True) for c in used],
         }
         audit = {
