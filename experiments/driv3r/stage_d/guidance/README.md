@@ -1,5 +1,20 @@
 # D-1B: soft guidance and shadow critic — independent preparatory lane
 
+## Whole-checkout qualification integrity — 15 November 2026
+
+The CPU-only exact-HEAD launcher `qualification.py` now rejects **any**
+uncommitted or untracked file in the checkout, not only changes under this
+lane or the frozen schema. Otherwise, a dirty shared helper imported by tests
+could make the claimed commit SHA misrepresent the executed source. Its
+M1-to-HEAD path check also disables Git rename detection: a deletion outside
+this lane cannot be disguised as only an addition inside it. Two explicit
+adversarial unit tests cover these refusal paths. The minimum full-suite
+unittest count is now **159** (149 existing + 10 launcher tests). A genuinely
+clean exact checkout is required; documentation/Stage A CI alone does not
+qualify these tests. **The complete 159-method suite and separate five-record
+M1 integration conformance have not been run on this new exact source.**
+These safeguards change no D-COMMON schema or native/permission behaviour.
+
 ## Strict PNG guidance-import structure — 15 November 2026
 
 The import decoder now rejects PNG ancillary chunks *before* the required
