@@ -1,0 +1,61 @@
+name: WORM SPROCKET support independent F2 model-fleet receipts
+on:
+  push:
+    branches:
+      - research/612-worm-sprocket-support
+    paths:
+      - experiments/agent_painter/worm/support_sprocket/audit_f2_independent.py
+      - experiments/agent_painter/worm/support_sprocket/test_audit_f2_independent.py
+      - .github/workflows/agent-painter-worm-sprocket-support-f2-audit.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: worm-sprocket-support-f2-${{ github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  independently-check-f2:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Obtain immutable original four-model primary artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/f2-independent
+          git rev-parse HEAD > evidence/f2-independent/auditor-source.txt
+          curl --fail --show-error --silent --location --max-time 90 \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14182553073/zip" \
+            -o evidence/f2-independent/original.zip
+          echo "db96e9ddbf12ea1f075482a2daa116b50036e2aa48b1bc018771783d4aef884d  evidence/f2-independent/original.zip" | sha256sum --check
+      - name: Read and adversarially challenge actual immutable model evidence
+        env:
+          SPROCKET_F2_ORIGINAL_ZIP: "${{ github.workspace }}/evidence/f2-independent/original.zip"
+        run: |
+          set -euo pipefail
+          python3 -m py_compile experiments/agent_painter/worm/support_sprocket/audit_f2_independent.py experiments/agent_painter/worm/support_sprocket/test_audit_f2_independent.py
+          cd experiments/agent_painter/worm/support_sprocket
+          timeout --signal=TERM --kill-after=5s 60s python3 -m unittest test_audit_f2_independent -v 2>&1 | tee "$GITHUB_WORKSPACE/evidence/f2-independent/tests.txt"
+          python3 audit_f2_independent.py "$GITHUB_WORKSPACE/evidence/f2-independent/original.zip" \
+            --output "$GITHUB_WORKSPACE/evidence/f2-independent/report.json"
+      - name: Retain independently computed receipts, even on failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: worm-sprocket-support-F2-receipt-audit-${{ github.sha }}
+          path: |
+            evidence/f2-independent/auditor-source.txt
+            evidence/f2-independent/tests.txt
+            evidence/f2-independent/report.json
+          if-no-files-found: warn
+          retention-days: 90
