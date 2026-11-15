@@ -420,3 +420,16 @@ Morphology remains **synthetic
 intended contacts**, not real d1 selection, actual native ink, receipt-backed
 material or causal steering. Full M2 conformance and later owner-gated native
 work remain outstanding.
+
+
+## Exact-head CPU qualification launcher — 15 November 2026
+
+To address the repeated gap between focused test runs and a **complete** D-1B test result, this lane now supplies `qualification.py` and `test_qualification.py`. Run from a **clean exact Git checkout**:
+
+```sh
+python3 -m experiments.driv3r.stage_d.guidance.qualification --timeout-seconds 180
+```
+
+The stdlib-only launcher requires approved immutable M1 commit `8fa90de6be209ed0b7bd125039e6ec8b332fb1a6` in tested HEAD ancestry, the actual M1 schema bytes' SHA-256 `ebe2fa211148602c614cba0f0a40f285cba797784b70efa035832d833877f80d`, the D-1B adapter's matching frozen constants, clean lane/schema files, and *all* M1-to-HEAD changed paths contained inside `experiments/driv3r/stage_d/guidance/**`. It also requires all 16 expected test modules, at least **157 discovered test methods** (149 previously committed + eight new negative qualification regressions), no skipped methods and an unambiguous successful unittest footer. Source must remain identical and clean after the run. An exit-code-1 JSON refusal does not qualify anything. Complete first-pass logs are emitted to stderr and their SHA-256 recorded in the JSON stdout report; the exact commit, source-change count and command are included.
+
+New launcher unit tests challenge successful/incomplete/missing/duplicate/failed/skipped footers, invalid timeouts and non-ancestor M1. The eight focused test methods were exercised locally against a standalone runner copy before committing; **the new committed-byte exact-head launcher and the 157-method integrated suite have not yet been executed in a complete repository checkout**. Generic Stage A/docs/native-advisory Actions jobs are not substitutes for this suite. Neither this launcher nor a green unit result is official **M1 five-record conformance**: that requires the integration owner to validate the full synthetic journals against frozen M1 schema and semantics separately. No hosted/native/visual/model functionality, training, paid computation or material authority is involved.
