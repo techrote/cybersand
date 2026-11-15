@@ -12,6 +12,8 @@ var _syncing: bool = false
 var _status: Label
 var _output: TextEdit
 var _capturing: bool = false
+var _trace_running: bool = false
+var _trace_scripted: bool = false
 var _default_fps: int = 0
 var _default_vsync: int = 1
 var _default_rapier_hz: int = 60
@@ -214,6 +216,13 @@ func mount(controller: Control,wb: Control) -> void:
 	_button(tests,"Measure while I fly",func() -> void: start_benchmark(false))
 	_button(tests,"Repeatable four-direction input",func() -> void: start_benchmark(true))
 	_note(controls,"Scripted pilot: +X, -Y, -X, +Y, switching every 60 completed Rapier steps; same input sequence at every setting.")
+	_section(controls,"ACTUAL RENDERED-FRAME POSE TRACE (10 SECONDS)")
+	_note(controls,"Compare live/bound/drawn Rapier poses with requested and pixel-snapped camera offsets, guard reasons and framebuffer projection. Opt-in; no disk writes during flight.")
+	var pose_trace_buttons: HBoxContainer = _row(controls)
+	_button(pose_trace_buttons,"Trace poses: manual",func() -> void: start_pose_trace(false))
+	_button(pose_trace_buttons,"Trace poses: scripted",func() -> void: start_pose_trace(true))
+	_button(pose_trace_buttons,"Stop trace",finish_pose_trace)
+	_note(controls,"Writes JSON Lines to the local Godot user-data directory. Captures each Main overlay frame, up to the explicit 12,000-frame buffer; dropped frames are counted.")
 	_output = TextEdit.new()
 	_output.editable = false
 	_output.custom_minimum_size.y = 105
@@ -334,6 +343,40 @@ func start_benchmark(scripted: bool) -> void:
 		"guard":guard},"  ")
 	_status.text = "Saved "+ProjectSettings.globalize_path(filename) if file != null else "Capture completed, file could not be saved"
 	_capturing = false
+
+func start_pose_trace(scripted: bool) -> void:
+	if _capturing: return
+	if workbench.applied.is_empty() or host.paused:
+		_status.text = "Start Play before tracing the Workbench presentation."
+		return
+	if scripted and not host.engine_lab_set_scripted_input(true):
+		_status.text = "Select a human-controlled flyer and start Play before scripted tracing."
+		return
+	if not host.begin_workbench_pose_trace(configuration()):
+		if scripted: host.engine_lab_set_scripted_input(false)
+		_status.text = "Pose trace unavailable; install a physical Workbench session."
+		return
+	_trace_running = true
+	_trace_scripted = scripted
+	_capturing = true
+	_status.text = "Pose trace active: every displayed overlay frame, up to 10 seconds."
+	await get_tree().create_timer(BENCH_SECONDS).timeout
+	if _trace_running: finish_pose_trace()
+
+
+func finish_pose_trace() -> void:
+	if not _trace_running: return
+	_trace_running = false
+	if _trace_scripted: host.engine_lab_set_scripted_input(false)
+	_trace_scripted = false
+	_capturing = false
+	var report: Dictionary = host.finish_workbench_pose_trace()
+	_output.text = JSON.stringify(report,"  ")
+	_status.text = ("Pose trace saved: "+str(report.get("path","")) +
+		" | frames "+str(report.get("frames",0)) +
+		" | dropped "+str(report.get("dropped",0))) \
+		if report.get("status","")=="saved" else "Pose trace failed: "+JSON.stringify(report)
+
 
 func _refresh() -> void:
 	if host == null or _status == null or _capturing: return
