@@ -38,3 +38,18 @@ The first genuinely trained SPROCKET WORM policies learned legal EOS framing but
 These LOCAL counterfactuals are *not* executed world states, independent structures, native Art admissions, or actual learned decisions. Their coordinates/variants do not prove semantic novelty; they are diagnostic failure probes. Never optimize against DEVELOPMENT; the primary owns all eventual model-training leases/recipe revisions. The unchanged original v0 corpus remains separate.
 
 Six additional genuine **W0 source-faithful, model-free** 384×384 PNGs and paired JSON receipts replay a deliberately constant RIGHT raw controller on the same two gallery world seeds × three themes. Raw policy choices and host substitutions are recorded separately. This does **not** purport to reproduce the trained W2 model, whose own original online evaluation is authoritative. The support Actions workflow runs all tests and retains versioned JSONL/PNG/source SHA-256 evidence.
+
+## S1 independent frozen-score counterfactual (15 November 2026)
+
+Original S1: [hosted #43726271494, artifact #14168225018](https://github.com/techrote/cybersand/actions/runs/43726271494/artifacts/14168225018). Script `audit_s1_crn.py` pins its immutable original ZIP SHA-256 and exact shepherd W0 source SHA-256 from commit `4bb9d6e1d0d0d78183f87d1e3c29648edafacf61`. It verifies all 69 CRCs, 68 internal SHA-256 checks and 12 original W0 pixel-exact S1 PNGs.
+
+    python3 experiments/agent_painter/worm/support_sprocket/audit_s1_crn.py \
+        /path/to/original-S1.zip --trusted-w0 /path/to/immutable-w0.py --output /tmp/s1-crn
+
+With ZERO optimizer, checkpoint edits or model downloads, the audit compares **real first-step trained six-token logits** on genuinely identical host observations except family, or with identical prompt/logits across temperatures. This isolates first-step score sensitivity from the host RNG confound. Two obstacle seeds are two independent worlds, not six.
+
+It then executes **24 new bounded W0 host replays** (three families × two worlds × four counterfactual policies; ≤24 decisions each). The four variants apply the frozen original T1 per-tick six-logit tape at T1/T3, its time-mean prior at T3, or legal-action-uniform logits at T3. The host draws the same deterministic SHA-256 uniform for a given world seed and tick across family, temperature and ablations; six original-pixel contact sheets include the genuine first-party S1 T1/T3 gallery plus the four new control PNGs.
+
+**Scientific restriction:** after the first trajectory divergence the original logit tape is *off-policy*: those logits were not computed for the new observation. This experiment diagnoses host sampling and prior effects, NOT fresh live learned model-in-the-loop responses or model-conditioned closed-loop steering. It is W0 Python, not native Godot Art.
+
+Use `s1-crn-audit-report.json` for exact source custody, per-policy action histograms, STOP/survival denominators, bbox/radius and first-step logit/softmax total-variation measurements. Early STOP reduces executed actions below the 24-step allocation; do not compare raw coverage without those denominators. Send only substantive results to #612, cross-link #568; do not modify the shepherd-owned dashboard body. Keep PR Draft/HOLD.
