@@ -73,16 +73,15 @@ def admission(w0_path,checkpoint,model_path):
     from common import profile,sha256_file,verify_checkpoint
     from numerics import configure_cpu
     expected=profile("sprocket",require_supported=True)
-    configure_cpu(1)
+    numerical,_=configure_cpu(1)
     receipt=Path(model_path)/"download_receipt.json"
     if not receipt.is_file():
         raise ValueError("no original pinned model download receipt")
     if expected["model_id"]!=MODEL_ID or expected["revision"]!=REVISION or expected.get("subfolder","")!="":
         raise ValueError("wrong root-Instruct model identity")
-    if sha256_file(w0_path)!=sha256_file(w0_path) or not Path(w0_path).is_file():
+    if not Path(w0_path).is_file():
         raise ValueError("missing pinned W0")
     cfg=verify_checkpoint(checkpoint)["config"]
-    numerical,_=configure_cpu(1)
     required=(cfg.get("schema")=="cybersand.worm.sprocket-family-counterfactual-v6"
        and cfg.get("source_sha")==TRAIN_SOURCE and cfg.get("model")==expected
        and cfg.get("worm_common_git_commit")==W0_COMMIT
