@@ -16,6 +16,54 @@ func check(ok: bool, explanation: String) -> void:
 		failures.append(explanation)
 		push_error("ENGINE_LAB_001: "+explanation)
 
+func _validate_visible_layout() -> void:
+	# Regress the owner's 405-pixel screenshot: the previous HFlow rows
+	# collapsed one label to glyph width and stretched its SpinBox to ~700px.
+	menu.open()
+	await process_frame
+	await process_frame
+	await process_frame
+	check(menu.content_scale_mode == Window.CONTENT_SCALE_MODE_DISABLED,
+		"Engine Lab layout uses physical-pixel scaling")
+	if DisplayServer.get_name() != "headless" and not OS.has_feature("web") \
+			and DisplayServer.has_feature(DisplayServer.FEATURE_SUBWINDOWS):
+		check(menu.force_native,
+			"graphical Engine Lab runs as an independently sized native window")
+	for width: int in [900,760]:
+		menu.size = Vector2i(width,650)
+		await process_frame
+		await process_frame
+		for key: String in ["fps","render","ack","pixel","rapier","workers"]:
+			var field: SpinBox = menu._widgets[key]
+			var row: Control = field.get_parent()
+			var title_label: Label = row.get_child(0) as Label
+			check(row is HBoxContainer,
+				"%s uses a nonwrapping horizontal field row" % key)
+			check(title_label != null and
+				title_label.autowrap_mode == TextServer.AUTOWRAP_OFF and
+				title_label.size.x >= 300.0 and title_label.size.y <= 48.0,
+				"%s label remains horizontal at window width %d" % [key,width])
+			check(field.size.x >= 145.0 and field.size.y <= 50.0,
+				"%s SpinBox is bounded, not full-height" % key)
+			check(field.position.x >= title_label.position.x + title_label.size.x - 1.0,
+				"%s input follows label without overlap" % key)
+			check(field.position.x + field.size.x <= row.size.x + 2.0,
+				"%s input fits the content column" % key)
+		var vsync: OptionButton = menu._widgets["vsync"]
+		check(vsync.get_parent() is HBoxContainer and
+			vsync.size.y <= 50.0 and vsync.size.x >= 200.0,
+			"VSync selector keeps normal one-row dimensions")
+	if DisplayServer.get_name() != "headless":
+		await RenderingServer.frame_post_draw
+		var screenshot_path: String = OS.get_environment("CYBERSAND_ENGINE_LAB_SCREENSHOT")
+		if not screenshot_path.is_empty():
+			var capture: Image = menu.get_texture().get_image()
+			if capture != null and not capture.is_empty():
+				var result: Error = capture.save_png(screenshot_path)
+				check(result == OK,"graphical Engine Lab screenshot saved")
+	menu.hide()
+
+
 func _run() -> void:
 	set_meta("cybersand_feature","shared_workbench")
 	host = load("res://main.tscn").instantiate()
@@ -78,6 +126,7 @@ func _run() -> void:
 			"reset restores worker wake and Pixel target")
 		check(not host.engine_lab_set_scripted_input(true),
 			"scripted benchmark cannot seize a paused flyer")
+		await _validate_visible_layout()
 	host.queue_free()
 	await process_frame
 	await process_frame
