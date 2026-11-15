@@ -15,6 +15,7 @@
 #include "cybersand/settled_world_discovery.hpp"
 #include "cybersand/water_experiment_policy.hpp"
 #include "cybersand/water_cellular_yield.hpp"
+#include "cybersand/wave_flow.hpp"
 
 #include <array>
 #include <cstddef>
@@ -78,6 +79,9 @@ struct WorldConfig {
     // IN-B1 (experimental): signed-vertical inertial law for every IN material.
     // Requires an applied IN assignment; false keeps inertial_cellular_v1 exact.
     bool inertial_signed_vertical = false;
+    // WAVE-MT-001 wave_flow_v1 (experimental): opt-in bulk strip-parallel Water
+    // law. Disabled leaves every Current kernel, hash and format unchanged.
+    WaveFlowConfig wave_flow{};
 };
 
 struct ChunkCoord {
@@ -401,6 +405,10 @@ public:
     [[nodiscard]] PressureFlowLedger pressure_flow_ledger() const noexcept;
     [[nodiscard]] QuantityLedgerSnapshot quantity_ledger() const;
     [[nodiscard]] PressureFlowDiagnostics pressure_flow_diagnostics() const noexcept;
+    // WAVE-MT-001 wave_flow_v1: whether this World runs it, and cumulative
+    // diagnostic work/timing counters (all zero when disabled).
+    [[nodiscard]] bool wave_flow_enabled() const noexcept;
+    [[nodiscard]] WaveFlowDiagnostics wave_flow_diagnostics() const noexcept;
     // Opt-in W-CY owns only Water motion/quantity; material identity and hooks
     // remain Water. No sidecar is needed for its indivisible full-cell state.
     [[nodiscard]] bool water_cellular_yield_enabled() const noexcept { return water_cellular_yield_; }
@@ -512,6 +520,9 @@ private:
 
     struct Chunk;
     struct PressureChunk;
+    struct WaveChunk;
+    struct WaveHalf;
+    struct WaveState;
     struct PressureState;
     struct PressureCache;
     struct Address;
@@ -551,6 +562,15 @@ private:
     std::unique_ptr<PhysicsTotals> physics_totals_;
     std::unique_ptr<soliding::SettledWorldDiscoveryCoordinator> settled_discovery_;
     std::unique_ptr<PressureState> pressure_;
+    std::unique_ptr<WaveState> wave_;
+    void validate_wave_flow_config() const;
+    void advance_wave_flow(TickStats& stats);
+    void wave_column_task(std::size_t task_index) noexcept;
+    void wave_flux_task(std::size_t task_index) noexcept;
+    void wave_apply_task(std::size_t task_index) noexcept;
+    void wake_wave_chunk(Chunk& chunk) noexcept;
+    void wave_write_mass(Chunk& chunk, std::size_t at, std::int32_t before, std::int32_t after,
+                         WaveHalf& half) noexcept;
     bool inertial_enabled_ = false;
     bool granular_arrival_enabled_ = false;
     std::size_t granular_arrival_storage_bytes_ = 0;

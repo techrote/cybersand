@@ -2383,6 +2383,9 @@ void refuse_state(const char* detail) {
 }  // namespace
 
 std::vector<std::uint8_t> World::save_physical_state() const {
+    // wave_flow_v1 retained flux has no registered CYPS section: refuse rather
+    // than write a continuation that would silently drop authoritative state.
+    if (wave_ != nullptr) throw std::logic_error("wave_flow_v1 physical-state save is not admitted");
     require_healthy();
     if (tick_in_progress_) throw std::logic_error("cannot save during a world tick");
     if (settled_discovery_ != nullptr)

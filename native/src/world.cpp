@@ -332,6 +332,7 @@ struct World::Chunk {
     std::vector<Cell> cells;
     std::unique_ptr<std::vector<std::int16_t>> temperatures;
     std::unique_ptr<PressureChunk> pressure;
+    std::unique_ptr<WaveChunk> wave;
     std::unique_ptr<std::vector<InertialSlot>> inertial;
     // Tick in high 60 bits, 3x3 transport direction in low four. Zero is no witness.
     std::unique_ptr<std::vector<std::uint64_t>> granular_arrivals;
@@ -758,6 +759,7 @@ struct World::TransientObstacleState {
 
 #include "world_pressure_cache_state.inc"
 #include "world_pressure_state.inc"
+#include "world_wave.inc"
 
 World::World(WorldConfig config)
     : config_(config),
@@ -930,6 +932,16 @@ World::World(WorldConfig config)
                 config_.pressure_gas_compartment_capacity);
             pressure_->cache->dormant = selection->variant == LiquidSolverVariant::CachedDormant;
         }
+    }
+    if (config_.wave_flow.enabled) {
+        validate_wave_flow_config();
+        wave_ = std::make_unique<WaveState>();
+        wave_->maximum = config_.water_experiment_policy.maximum();
+        wave_->film = config_.water_experiment_policy.film() / 2;
+        wave_->sorted.reserve(config_.maximum_chunk_count);
+        wave_->grow.reserve(config_.maximum_chunk_count);
+        wave_->tasks.reserve(config_.maximum_chunk_count * 2U);
+        wave_->scratch.reserve(config_.maximum_chunk_count * 2U);
     }
     initialize_settled_discovery();
 }
@@ -1751,6 +1763,7 @@ World::Chunk& World::ensure_chunk(ChunkCoord coord) {
         if (pressure_->cache != nullptr) pressure_->cache->cold();
     }
     if (inertial_enabled_) chunk->inertial = std::make_unique<std::vector<InertialSlot>>(chunk->cells.size());
+    if (wave_ != nullptr) chunk->wave = std::make_unique<WaveChunk>(chunk->cells.size());
     if (granular_arrival_enabled_) {
         if (chunk->cells.size() > (std::numeric_limits<std::size_t>::max()-granular_arrival_storage_bytes_)/sizeof(std::uint64_t))
             throw std::runtime_error("arrival witness storage capacity overflow");
@@ -1970,6 +1983,8 @@ bool World::rule_is_active(Material material, std::uint16_t state_a_value,
     const auto& definition = MaterialRules::descriptor(material);
     if (!definition.current_rule_available) return false;
     const auto kernel = definition.kernel;
+    // wave_flow_v1 owns Water motion in bulk; the per-cell kernel never runs.
+    if (kernel == RuleKernel::Water && wave_ != nullptr) return false;
     switch (kernel) {
         case RuleKernel::None:
             return false;
@@ -2125,6 +2140,7 @@ void World::mark_hard_surface_dirty(const Address& target) noexcept {
 }
 
 void World::mark_cell_dirty(Chunk& chunk, std::int32_t local_x, std::int32_t local_y) {
+    wake_wave_chunk(chunk);
     if (chunk.pressure != nullptr)
         invalidate_pressure_input(chunk.pressure->coordinate, local_x, local_y, local_x, local_y, false);
     const auto block_x = local_x / config_.activity_block_size;
@@ -2430,6 +2446,7 @@ void World::clear_transient_obstacles() {
             const auto at = address(state.region.x + local_x, state.region.y + local_y);
             invalidate_pressure_input(at.chunk, at.local_x, at.local_y, at.local_x, at.local_y, true);
             // A mask change has no material write to wake its own block.
+            if (auto* masked = find_chunk(at.chunk); masked != nullptr) wake_wave_chunk(*masked);
             keep_cell_active(state.region.x + local_x, state.region.y + local_y, nullptr);
             wake_cell_neighborhood(state.region.x + local_x, state.region.y + local_y);
             witness_discovery_mask_cell(
@@ -2481,6 +2498,7 @@ bool World::set_transient_obstacle(std::int64_t x, std::int64_t y,
     const auto at = address(x, y);
     invalidate_pressure_input(at.chunk, at.local_x, at.local_y, at.local_x, at.local_y, true);
     state.occupied_indices.push_back(index);
+    if (auto* masked = find_chunk(at.chunk); masked != nullptr) wake_wave_chunk(*masked);
     keep_cell_active(x, y, nullptr);
     wake_cell_neighborhood(x, y);
     witness_discovery_mask_cell(x, y, true);
@@ -4527,6 +4545,8 @@ void World::begin_tick(TickStats& stats) {
     // Serial, deterministic gas topology and head preparation. It may wake
     // sleeping blocks, so it precedes the active-chunk list for this tick.
     if (pressure_ != nullptr) prepare_pressure_tick();
+    // Bulk strip-parallel Water rounds; they may wake blocks for other materials.
+    if (wave_ != nullptr) advance_wave_flow(stats);
 
     for (const auto& [coord, chunk] : chunks_) {
         if (chunk->active) {
@@ -4848,6 +4868,7 @@ void World::merge_job_effects(const JobEffects& effects) {
         if (chunk == nullptr) {
             throw std::logic_error("job effect references missing chunk");
         }
+        wake_wave_chunk(*chunk);
         if (!hard_surface_full_refresh_required_) {
             for (std::size_t word = 0; word < kHardSurfaceDirtyWordCount; ++word)
                 chunk->hard_surface_dirty_tiles[word] |=
