@@ -135,10 +135,10 @@ def main(args):
                                   "legal_raw": sum(x["legal_raw"] for x in receipts),
                                   "decisions": len(receipts)})
     write_json(out / "comparison.json", {"schema": "cybersand.worm.sprocket-steering-v3/rollout1",
-                "pinned_w0": contract.W0_COMMIT, "source_training": args.training_source,
+                "pinned_w0": objective.W0_COMMIT, "source_training": args.training_source,
                 "adapter_inventory_sha256": sha256_file(args.checkpoint / "inventory.json"),
                 "model": selected["model_id"], "revision": selected["revision"],
-                "v2_fresh_48_optimizer_steps": True, "learned_policy_source": "original unmodified greedy generations",
+                "v3_fresh_72_optimizer_steps": True, "learned_policy_source": "original unmodified greedy generations",
                 "budget_per_trajectory": args.steps, "seed_pairs": list(contract.EVAL_SEEDS),
                 "families": list(contract.FAMILIES), "rollouts": run_summaries,
                 "actual_native_art": False, "full_art_v2": False, "final_opened": False,
