@@ -1,0 +1,64 @@
+name: WORM LFM W7 independent held-out stimulus + W0 PNG controls
+on:
+  push:
+    branches: [research/612-worm-lfm-support]
+    paths:
+      - '.github/workflows/agent-painter-worm-lfm-support-w7-stimulus.yml'
+      - 'experiments/agent_painter/worm/support_lfm/stimulus_challenge_w7.py'
+      - 'experiments/agent_painter/worm/support_lfm/test_stimulus_challenge_w7.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: worm-lfm-support-w7-stimulus
+  cancel-in-progress: false
+jobs:
+  source-curriculum:
+    name: Four new W0 worlds; frozen paired prompts; 24 original PNGs; zero optimizer
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Exact W0 and host policy
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$(git hash-object experiments/agent_painter/worm/common/worm.py)" = 8979b6f0296e81051194bacc907992d38e006605
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/w7-ci-policy.json
+          python3 -m py_compile experiments/agent_painter/worm/support_lfm/stimulus_challenge_w7.py
+          python3 -m unittest discover -s experiments/agent_painter/worm/support_lfm -p test_stimulus_challenge_w7.py -v
+      - name: Generate actual W0 PNG controls and split-safe observation perturbations
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p w7-stimulus-artifacts
+          git rev-parse HEAD > w7-stimulus-artifacts/source-head.txt
+          python3 experiments/agent_painter/worm/support_lfm/stimulus_challenge_w7.py --generate w7-stimulus-artifacts/challenge-v1
+          python3 - <<'PY'
+          import hashlib,json,pathlib
+          out=pathlib.Path("w7-stimulus-artifacts/challenge-v1")
+          m=json.loads((out/"manifest.json").read_text())
+          rows=[json.loads(s) for s in (out/"challenge.jsonl").read_text().splitlines()]
+          assert len(rows)==96 and m["counterfactual_rows_not_host_executed"]==72
+          assert len(set(r["id"] for r in rows))==96 and m["world_count"]==4
+          assert m["challenge_sha256"]==hashlib.sha256((out/"challenge.jsonl").read_bytes()).hexdigest()
+          assert len(m["original_png_sha256"])==24
+          for name,digest in m["original_png_sha256"].items():
+              p=out/"w0-controls"/(name+".png")
+              assert hashlib.sha256(p.read_bytes()).hexdigest()==digest
+          print("24 source-faithful W0 baseline PNGs and 96 frozen prompts verified")
+          PY
+          (cd w7-stimulus-artifacts && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS.txt)
+      - name: Preserve actual PNG and adversarial evaluation interface
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: worm-lfm-support-w7-heldout-stimulus
+          path: w7-stimulus-artifacts/
+          retention-days: 30
+          if-no-files-found: warn
