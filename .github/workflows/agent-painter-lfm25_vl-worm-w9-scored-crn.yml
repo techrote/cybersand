@@ -1,0 +1,143 @@
+name: LFM2.5-VL WORM W9 conditional-CE checkpoint-only scored CRN vs flat W0
+on:
+  push:
+    branches: [codex/agent-painter-lfm25-vl-568]
+    paths:
+      - experiments/agent_painter/lanes/lfm25_vl/worm-w9-scored-crn-request.json
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: lfm25-vl-w9-step45-scored-crn-v1
+  cancel-in-progress: false
+
+jobs:
+  checkpoint-only-w0:
+    name: Zero-optimizer W9 conditional six-code scored vs flat actual W0 PNGs
+    runs-on: ubuntu-24.04
+    timeout-minutes: 46
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      OMP_DYNAMIC: 'FALSE'
+      MKL_DYNAMIC: 'FALSE'
+      ATEN_CPU_CAPABILITY: default
+      MKL_CBWR: COMPATIBLE
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - name: Checkout immutable evaluator source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Checkout pinned W0 host source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: techrote/cybersand
+          ref: 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          path: worm-w0
+          persist-credentials: false
+      - name: Checkout pinned LFM support curriculum
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: techrote/cybersand
+          ref: cc27b3206cb61f98432fa95b799c9b9ff508c2bc
+          path: worm-support
+          persist-credentials: false
+      - name: Source and lease preflight before expensive compute
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git -C worm-w0 rev-parse HEAD)" = 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          test "$(git hash-object worm-w0/experiments/agent_painter/worm/common/worm.py)" = 8979b6f0296e81051194bacc907992d38e006605
+          test "$(git -C worm-support rev-parse HEAD)" = cc27b3206cb61f98432fa95b799c9b9ff508c2bc
+          test "$(git hash-object worm-support/experiments/agent_painter/worm/support_lfm/curriculum.py)" = f205a3a9f33632aeaafa2daa8ce25b2484bc6032
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path("experiments/agent_painter/lanes/lfm25_vl/worm-w9-scored-crn-request.json").read_text())
+          assert r == {
+            "schema":"cybersand.worm.lfm-w9-score-CRN/1",
+            "producer_source":"c14731f875d7334eae213c2bd74230bd310e7167",
+            "producer_run":43743348779,
+            "checkpoint":"checkpoint-000045",
+            "model_revision":"fc6221ca597f3315e4f82fc2df606783267b34ba",
+            "world_seeds":[3101,3109,3119],
+            "steps_per_rollout":16,
+            "model_sampler":"identical-W8-T2.5-70percent-score-30percent-flat-seed-tick-RNG",
+            "expected_model_rollouts":9,
+            "expected_flat_rollouts":9,
+            "new_optimizer_updates":0,
+            "native_execution":False,
+            "sealed_FINAL_opened":False,
+            "Draft_HOLD":True,
+          }
+          PY
+          python3 -m py_compile experiments/agent_painter/lanes/lfm25_vl/worm_train_w9_v1.py experiments/agent_painter/lanes/lfm25_vl/worm_w7_sensitivity_eval_v1.py experiments/agent_painter/lanes/lfm25_vl/worm_w9_scored_crn_v1.py
+          PYTHONPATH=experiments/agent_painter/lanes/lfm25_vl:experiments/agent_painter/training python3 -m unittest -v experiments/agent_painter/lanes/lfm25_vl/test_worm_w9_scored_crn_v1.py
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/lfm-w9-gallery-scheduling.json
+          mkdir -p evidence/diagnostics
+          git rev-parse HEAD > evidence/diagnostics/evaluator-source.txt
+          git -C worm-w0 rev-parse HEAD > evidence/diagnostics/w0-source.txt
+          git -C worm-support rev-parse HEAD > evidence/diagnostics/support-source.txt
+          lscpu > evidence/diagnostics/cpu.txt
+      - name: Verify completed immutable original W9 run and download original checkpoint
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test "$(gh api repos/techrote/cybersand/actions/runs/43743348779 --jq .head_sha)" = c14731f875d7334eae213c2bd74230bd310e7167
+          test "$(gh api repos/techrote/cybersand/actions/runs/43743348779 --jq .conclusion)" = success
+          mkdir -p evidence/prior
+          gh run download 43743348779 -R techrote/cybersand --name lfm25-vl-worm-w9-paired-six-way-c14731f875d7334eae213c2bd74230bd310e7167-43743348779-1 --dir evidence/prior
+          test -f evidence/prior/worm-w9/checkpoint-000045/inventory.json
+          test -f evidence/prior/worm-w9/optimizer-pairs.jsonl
+          python3 - <<'PY'
+          import json,hashlib
+          from pathlib import Path
+          root=Path("evidence/prior/worm-w9")
+          m=json.loads((root/"corpus-manifest.json").read_text())
+          assert hashlib.sha256((root/"optimizer-pairs.jsonl").read_bytes()).hexdigest()==m["pair_sha256"]
+          s=json.loads((root/"summary.json").read_text())
+          assert s["status"]=="complete" and s["actual_optimizer_updates"]==45
+          assert s["real_backward_passes"]==90
+          assert s["source_sha"]=="c14731f875d7334eae213c2bd74230bd310e7167"
+          PY
+      - name: Install unchanged qualified one-thread CPU packages
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/lfm-w9-gallery"
+          "$RUNNER_TEMP/lfm-w9-gallery/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/lfm-w9-gallery/bin/python" -m pip install -r experiments/agent_painter/training/requirements.lock
+          "$RUNNER_TEMP/lfm-w9-gallery/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torchvision==0.29.2+cpu'
+          "$RUNNER_TEMP/lfm-w9-gallery/bin/python" -m pip install -r experiments/agent_painter/training/requirements-lfm25_vl.lock
+          "$RUNNER_TEMP/lfm-w9-gallery/bin/python" -m pip check
+          "$RUNNER_TEMP/lfm-w9-gallery/bin/python" -m pip freeze --all > evidence/diagnostics/pip-freeze.txt
+      - name: Download exact full official multimodal LFM and validate adapter
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 900s "$RUNNER_TEMP/lfm-w9-gallery/bin/python" experiments/agent_painter/training/download_model.py --profile lfm25_vl --output "$RUNNER_TEMP/lfm-w9-gallery-model"
+          cp "$RUNNER_TEMP/lfm-w9-gallery-model/download_receipt.json" evidence/diagnostics/model-download.json
+          LFM25_SNAPSHOT="$RUNNER_TEMP/lfm-w9-gallery-model" "$RUNNER_TEMP/lfm-w9-gallery/bin/python" experiments/agent_painter/lanes/lfm25_vl/test_adapter.py > evidence/diagnostics/adapter-tests.txt 2>&1
+      - name: Source-fenced W9 conditional six-code logits, original EOS7 and paired W0 PNGs
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=50s 1790s "$RUNNER_TEMP/lfm-w9-gallery/bin/python" experiments/agent_painter/lanes/lfm25_vl/worm_w9_scored_crn_v1.py \
+            --model "$RUNNER_TEMP/lfm-w9-gallery-model" \
+            --worm-root worm-w0/experiments/agent_painter/worm/common \
+            --support-root worm-support/experiments/agent_painter/worm/support_lfm \
+            --producer-root evidence/prior/worm-w9 \
+            --output evidence/w9-scored
+      - name: Always retain original gallery and partial/failure receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: lfm25-vl-worm-w9-scored-crn-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            evidence/w9-scored/
+            evidence/diagnostics/
+          if-no-files-found: warn
+          retention-days: 90
