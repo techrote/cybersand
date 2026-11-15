@@ -1,0 +1,27 @@
+name: DRIV3R Wormfleet source-only lease tests
+on:
+  push:
+    branches:
+      - research/570-wormfleet-inference
+    paths:
+      - 'experiments/driv3r/wormbrain/fleet/**'
+      - '.github/workflows/driv3r-wormfleet-tests.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: driv3r-wormfleet-tests
+  cancel-in-progress: true
+jobs:
+  test_only:
+    name: No-model four-lease and adverse receipt tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout exact source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Source-only policy and adversarial tests
+        run: |
+          set -euo pipefail
+          python3 -m py_compile experiments/driv3r/wormbrain/fleet/ledger.py experiments/driv3r/wormbrain/fleet/test_ledger.py
+          python3 -m unittest discover -s experiments/driv3r/wormbrain/fleet -p 'test_*.py' -v
