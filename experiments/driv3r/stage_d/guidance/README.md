@@ -1,5 +1,43 @@
 # D-1B: soft guidance and shadow critic — independent preparatory lane
 
+## Original-native archive re-verification and recovery authority — 15 November 2026
+
+D-1B's archived #611 Q8/native auditor now independently replays the original
+source's **host recovery eligibility and cursor history**, rather than accepting
+an arbitrary material-preserving BACKTRACK/RELOCATE destination. It binds the
+model-visible recent-history slice and inked-step count to recovered original
+history, reconstructs the legal recovery menu at each turn, and requires BACKTRACK
+to reach the actual predecessor or branch relocation to reach the saved
+[12,24] birth cursor. MOVE history transitions remain cardinal; neither
+guidance nor a model answer acquires native permissions.
+
+**Independent archive re-verification executed:** downloaded BOTH original ZIPs,
+SHA-256 `33083b56…9aac` (free) and `82d64e70…ca1` (soft).
+An independently coded, CPU-only script checked all 72 archived original raw Q8
+answer/probability/presentation bindings, scalar-hint coverage, 141 real
+apply/cursor event pairs and their complete 512×512 World material readbacks,
+33/33 free + 36/36 soft one-cell 0→58 edits, and all three free cursor-only
+recoveries. Every check passed. It reproduces the **13/36** nontrivial
+highest-guidance choices for the soft arm; the free arm's 33/33 figure is
+uninformative (the entire free field is zero). First original choice and
+material divergence are both zero-based decision 4. These are observations
+of ONE archived matched seed, not a causal or visual-quality result.
+All original ZIPs, SHA-256, event counts, world hashes, measured numbers and
+limitations are retained in
+[archive-reverification-2026-11-15.json](archive-reverification-2026-11-15.json).
+
+Six new committed adversarial recovery/history regression methods have **not**
+yet been run from an exact clean repo checkout; six source-equivalent local
+focused tests passed. The full suite now has **191 authored methods**
+(185 earlier + six), but exact-HEAD full-suite execution remains outstanding.
+The independent archive script is **not** a substitute for executing the
+committed full D-1B qualification and M1 five-record conformance. No new
+model/native run, actual Undo, image-conditioned d1 or formal A/B experiment
+occurred. The older report's 'pending re-verification' warning should be
+read as the earlier checkpoint; this section records the subsequent independent
+archival check.
+
+
 ## Original Q8 answer/complete-candidate binding — 15 November 2026
 
 The read-only original #611 native archive auditor now re-parses the **original
