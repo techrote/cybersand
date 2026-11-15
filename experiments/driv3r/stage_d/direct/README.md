@@ -2,6 +2,20 @@
 
 **Status:** independent **development-only** preparatory fixtures and oracle policies, not native or model qualification. #570; [owner D roadmap](https://github.com/techrote/cybersand/issues/570#issuecomment-6877408001). The five-record [D-COMMON-001 contract](https://github.com/techrote/cybersand/pull/594) received **M1 owner acceptance on 14 Nov 2026** at source commit `8fa90de6be209ed0b7bd125039e6ec8b332fb1a6`, schema SHA-256 `ebe2fa211148602c614cba0f0a40f285cba797784b70efa035832d833877f80d` ([#570 freeze record](https://github.com/techrote/cybersand/issues/570#issuecomment-6881686675)). **M2 offline integration preparation is permitted; native/model experiments, merges and formal A1/A2/A3 comparisons are not.**
 
+## Target-sweep contact versus terminal arrival (M2 offline diagnostic)
+
+The frozen `d1a-offline/1` score defines **arrival at the end of an admitted action**, not merely touching an endpoint during a 2/4/8-cell macro. A legal random macro can pass through the target and end beyond it. Treating that intermediate swept-cell contact as successful terminal arrival would overstate control quality; ignoring the contact entirely would lose a useful overshoot diagnostic.
+
+The lane-only `target_sweep.py` adds a **supplementary, replay-verified DEVELOPMENT diagnostic** without changing prior fixture source IDs, episode version, action selection or frozen scoring. It reports first target contact (global swept-cell step, decision index, within-macro offset), whether it occurred at the macro endpoint, total target contacts, post-contact movement, and the independently verified terminal-arrival flag. Adverse tests check interior overshoot, true endpoint contact, no contact/STOP, repeated contact, source verification and held-out rejection.
+
+```sh
+PYTHONPATH=. python -m unittest experiments.driv3r.stage_d.direct.test_target_sweep -v
+PYTHONPATH=. python -m unittest discover -s experiments/driv3r/stage_d/direct -p 'test_*.py' -q
+```
+
+**Qualification boundary:** six additional source-tree Python tests are authored, but the exact-head lane suite (now **71 methods**) has **not yet been run**. Four equivalent, manually reconstructed *pure sweep-accounting* smoke cases passed in an isolated Python runtime; this does **not** qualify the committed module or the full suite. No held-out policy results, native receipts, model inference, paid workload, formal A/B or production changes are claimed. Independent M2/M3 review and separate D-1A native campaign authorization remain necessary.
+
+
 ## Verified complete offline lane suite — 14 November 2026
 
 **Source qualification for code head `4c7d0ac5658354eb472f117d6886e15cbbfbec0b`: 62/62 Python unittest methods PASS (1.236 s, Python 3.13.5, isolated local lane-package reconstruction).** All **11 imported Python source files**, including `__init__.py` and five `test_*.py` files, were individually verified against their GitHub **Git blob SHA-1** using `git hash-object` before this final run. The executed suite:
