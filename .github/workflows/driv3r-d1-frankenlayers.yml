@@ -1,4 +1,4 @@
-name: "DRIV3R #619 Frankenlayers YOLO"
+name: "DRIV3R #619 Frankenlayers YOLO phase 2"
 
 on:
   pull_request:
@@ -36,7 +36,7 @@ jobs:
           python3 tools/ci/check_ci_scheduling_policy.py
 
   brain:
-    name: Real Q8 System One Frankenbrain — ${{ matrix.mode }}
+    name: Real Q8 System One Frankenbrain — ${{ matrix.label }}
     needs: cheap
     if: github.repository == 'techrote/cybersand' && github.event_name == 'push' && github.ref == 'refs/heads/research/619-d1-frankenlayers-yolo'
     runs-on: ubuntu-24.04
@@ -45,7 +45,19 @@ jobs:
       fail-fast: false
       max-parallel: 2
       matrix:
-        mode: [greyhound, scrambled_eggs, branchwitch]
+        include:
+          - label: skelehound
+            mode: skelehound
+            seed: 570
+          - label: aerohound
+            mode: aerohound
+            seed: 570
+          - label: branchwitch_seed571
+            mode: branchwitch
+            seed: 571
+          - label: branchwitch_seed619
+            mode: branchwitch
+            seed: 619
     env:
       PYTHONUNBUFFERED: '1'
       OMP_NUM_THREADS: '2'
@@ -58,30 +70,35 @@ jobs:
       - name: Admit exact owner-bounded destructive layer-flow request
         run: |
           set -euo pipefail
-          mkdir -p evidence/${{ matrix.mode }}
+          mkdir -p evidence/${{ matrix.label }}
           python3 - <<'PY'
           import json,os
           from pathlib import Path
           from experiments.driv3r.frankenlayers.patch_runtime import FLOWS
           r=json.loads(Path('experiments/driv3r/frankenlayers/run-request.json').read_text())
-          assert r['schema']=='cybersand-d1-frankenlayers-yolo-request/1'
-          assert r['owner_authorization']=='Do it now: GREYHOUND, SCRAMBLED EGGS, BRANCHWITCH'
+          assert r['schema']=='cybersand-d1-frankenlayers-yolo-request/2'
+          assert r['owner_authorization']=='Make SKELEHOUND, AEROHOUND, and test BRANCHWITCH buoyancy twice'
           assert r['q8_sha256']=='073313d92b53b0ac8193db6e906cb3c78a98183d244b15b7b8f5426115c6738c'
           assert r['llama_commit']=='8642541b255bfb5dc39cd351a178be09013a55d6'
-          assert r['modes']==['greyhound','scrambled_eggs','branchwitch']
+          assert r['experiments']==[
+              {'label':'skelehound','mode':'skelehound','seed':570},
+              {'label':'aerohound','mode':'aerohound','seed':570},
+              {'label':'branchwitch_seed571','mode':'branchwitch','seed':571},
+              {'label':'branchwitch_seed619','mode':'branchwitch','seed':619},
+          ]
           assert r['max_parallel']==2 and r['cpu_inference'] is True
           assert r['native_workbench'] is False and r['training'] is False
           assert r['paid_api'] is False and r['merge'] is False
-          assert set(r['flows'])==set(FLOWS)-{'stock'}
-          assert r['flows']=={k:list(v) for k,v in FLOWS.items() if k!='stock'}
-          Path('evidence/${{ matrix.mode }}/request.json').write_text(json.dumps(r,indent=2)+'\n')
+          assert set(r['flows'])=={'skelehound','aerohound','branchwitch'}
+          assert r['flows']=={k:list(FLOWS[k]) for k in ('skelehound','aerohound','branchwitch')}
+          Path('evidence/${{ matrix.label }}/request.json').write_text(json.dumps(r,indent=2)+'\n')
           PY
       - name: Obtain immutable Q8 donor and pinned runtime manifest
         run: |
           set -euo pipefail
           timeout --signal=TERM --kill-after=30 1250 python3 -m experiments.driv3r.backend acquire \
             --runtime-dir "$RUNNER_TEMP/d1-franken-donor" \
-            --evidence "evidence/${{ matrix.mode }}/donor-acquisition" --timeout-seconds 1200
+            --evidence "evidence/${{ matrix.label }}/donor-acquisition" --timeout-seconds 1200
           python3 - <<'PY'
           import json,hashlib,os
           from pathlib import Path
@@ -100,8 +117,8 @@ jobs:
           git -C "$LLAMA_ROOT" checkout --detach FETCH_HEAD
           test "$(git -C "$LLAMA_ROOT" rev-parse HEAD)" = 8642541b255bfb5dc39cd351a178be09013a55d6
           python3 -m experiments.driv3r.frankenlayers.patch_runtime \
-            --llama-root "$LLAMA_ROOT" --receipt "evidence/${{ matrix.mode }}/runtime-patch.json"
-          git -C "$LLAMA_ROOT" diff -- src/models/lfm3.cpp > "evidence/${{ matrix.mode }}/lfm3.patch"
+            --llama-root "$LLAMA_ROOT" --receipt "evidence/${{ matrix.label }}/runtime-patch.json"
+          git -C "$LLAMA_ROOT" diff -- src/models/lfm3.cpp > "evidence/${{ matrix.label }}/lfm3.patch"
       - name: Build the actually modified CPU inference runtime
         run: |
           set -euo pipefail
@@ -111,8 +128,8 @@ jobs:
             -DLLAMA_BUILD_TESTS=OFF -DLLAMA_BUILD_EXAMPLES=OFF
           cmake --build "$LLAMA_ROOT/build" --config Release --target llama-server -j2
           test -x "$LLAMA_ROOT/build/bin/llama-server"
-          sha256sum "$LLAMA_ROOT/build/bin/llama-server" > "evidence/${{ matrix.mode }}/llama-server.sha256"
-          ldd "$LLAMA_ROOT/build/bin/llama-server" > "evidence/${{ matrix.mode }}/llama-server.ldd.txt"
+          sha256sum "$LLAMA_ROOT/build/bin/llama-server" > "evidence/${{ matrix.label }}/llama-server.sha256"
+          ldd "$LLAMA_ROOT/build/bin/llama-server" > "evidence/${{ matrix.label }}/llama-server.ldd.txt"
       - name: Obtain unchanged source-pinned W0 legal-action host
         run: |
           set -euo pipefail
@@ -132,19 +149,19 @@ jobs:
           timeout --signal=TERM --kill-after=45 4200 python3 -m experiments.driv3r.frankenlayers.infer \
             --binary "$RUNNER_TEMP/franken-llama/build/bin/llama-server" \
             --model "$MODEL_PATH" --w0 "$RUNNER_TEMP/franken-w0.py" \
-            --mode '${{ matrix.mode }}' --source-sha "$GITHUB_SHA" \
-            --output "evidence/${{ matrix.mode }}/inference"
+            --mode '${{ matrix.mode }}' --seed '${{ matrix.seed }}' --source-sha "$GITHUB_SHA" \
+            --output "evidence/${{ matrix.label }}/inference"
       - name: Preserve original evidence and failures
         if: always()
         run: |
           set -euo pipefail
-          lscpu > "evidence/${{ matrix.mode }}/cpu.txt"
-          (cd "evidence/${{ matrix.mode }}" && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum) > "evidence/${{ matrix.mode }}/SHA256SUMS.txt"
+          lscpu > "evidence/${{ matrix.label }}/cpu.txt"
+          (cd "evidence/${{ matrix.label }}" && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum) > "evidence/${{ matrix.label }}/SHA256SUMS.txt"
       - name: Upload exact Frankenbrain evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: driv3r-franken-${{ matrix.mode }}-${{ github.sha }}-${{ github.run_id }}
-          path: evidence/${{ matrix.mode }}/
+          name: driv3r-franken-${{ matrix.label }}-${{ github.sha }}-${{ github.run_id }}
+          path: evidence/${{ matrix.label }}/
           if-no-files-found: warn
           retention-days: 90
