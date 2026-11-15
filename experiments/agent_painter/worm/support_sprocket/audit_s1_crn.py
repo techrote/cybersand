@@ -244,6 +244,12 @@ def run(artifact, trusted_w0, out):
                     require(len(decisions) == len(record["events"]), "callback receipt count")
                     require(all(e["raw_legal"] and e["applied"] == e["raw_choice"]
                                 for e in record["events"]), "W0 legal choices")
+                    replay = w0.run(seed, "replay", family, steps=24, size=96,
+                                    raw_actions=[event["raw_choice"] for event in record["events"]])
+                    require(record["trajectory"] == replay["trajectory"] and
+                            record["metrics"] == replay["metrics"] and
+                            w0.png_bytes(record) == w0.png_bytes(replay),
+                            "counterfactual original W0 exact action-tape pixel replay")
                     output_prefix = f"{family}-{seed}-{policy}"
                     png = w0.png_bytes(record)
                     pngname = f"counterfactual-w0/{output_prefix}.png"
@@ -274,6 +280,7 @@ def run(artifact, trusted_w0, out):
         "first_step_model_logit_delta_max": max(row["max_absolute_logit_delta"] for row in first_step),
         "new_W0_counterfactual_rollouts": len(results),
         "new_W0_counterfactual_pngs": len(results),
+        "counterfactual_original_W0_pixel_exact_action_replays": len(results),
         "original_pixel_six_policy_contact_sheets": 6,
         "crn": "sha256(world-seed,tick) shared across family/T/prior; NOT original S1 host RNG",
         "counterfactual_policy_misrepresentation_guard":
