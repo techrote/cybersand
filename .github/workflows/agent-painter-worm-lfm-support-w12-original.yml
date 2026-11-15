@@ -1,0 +1,103 @@
+name: WORM LFM support W12 original four-live inference evidence replay
+on:
+  push:
+    branches: [research/612-worm-lfm-support]
+    paths:
+      - experiments/agent_painter/worm/support_lfm/audit_w12_original.py
+      - .github/workflows/agent-painter-worm-lfm-support-w12-original.yml
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: worm-lfm-support-W12-original-read-only
+  cancel-in-progress: false
+jobs:
+  original-w12:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - name: Exact support source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Independently checkout pinned W0
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: techrote/cybersand
+          ref: 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          path: original-w0
+          persist-credentials: false
+      - name: Model-free source and pin preflight
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git -C original-w0 rev-parse HEAD)" = 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          test "$(git hash-object original-w0/experiments/agent_painter/worm/common/worm.py)" = 8979b6f0296e81051194bacc907992d38e006605
+          python3 -m py_compile experiments/agent_painter/worm/support_lfm/audit_w12_original.py
+          mkdir -p evidence/producer evidence/independent
+          git rev-parse HEAD > evidence/independent/support-source.txt
+          git -C original-w0 rev-parse HEAD > evidence/independent/w0-source.txt
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output evidence/independent/ci-scheduling.json
+      - name: Download original completed W12 Actions artifacts only
+        env:
+          GH_TOKEN: \${{ github.token }}
+        run: |
+          set -euo pipefail
+          test "$(gh api repos/techrote/cybersand/actions/runs/43766388326 --jq .head_sha)" = 0eea751c37d69589717681eca1703882d17587a9
+          test "$(gh api repos/techrote/cybersand/actions/runs/43766388326 --jq .conclusion)" = success
+          gh api repos/techrote/cybersand/actions/artifacts/14182048141/zip > evidence/producer/alpha.zip
+          gh api repos/techrote/cybersand/actions/artifacts/14182129882/zip > evidence/producer/beta.zip
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib, zipfile
+          for shard, expected in {
+             'alpha': '6e25c147117453e97fe3d27fe44e196abaf63cd9f026b276a0956895f384c079',
+             'beta': '54a3d314d6e45c9ec6395e0778462fa6e4392f8189662a14ee2cf348ca332d90',
+          }.items():
+              data = Path(f'evidence/producer/{shard}.zip').read_bytes()
+              assert hashlib.sha256(data).hexdigest() == expected, 'original producer ZIP SHA changed'
+              with zipfile.ZipFile(f'evidence/producer/{shard}.zip') as z:
+                  assert z.testzip() is None
+              print(shard, 'ORIGINAL ZIP byte integrity PASS')
+          PY
+      - name: Independently replay W0 and verify four genuine inference receipts
+        run: |
+          set -euo pipefail
+          python3 experiments/agent_painter/worm/support_lfm/audit_w12_original.py \
+            --alpha evidence/producer/alpha.zip \
+            --beta evidence/producer/beta.zip \
+            --w0-dir original-w0/experiments/agent_painter/worm/common \
+            --output evidence/independent/w12-original-audit.json
+          python3 - <<'PY'
+          import json, pathlib, zipfile, sys
+          sys.path.insert(0,'original-w0/experiments/agent_painter/worm/common')
+          import worm
+          root = pathlib.Path('evidence/independent/gallery')
+          root.mkdir(parents=True)
+          report=json.loads(pathlib.Path('evidence/independent/w12-original-audit.json').read_text())
+          assert report['original_W0_png_replays'] == 4
+          assert report['actual_model_score_forwards'] == 48
+          for shard in ('alpha','beta'):
+              with zipfile.ZipFile(f'evidence/producer/{shard}.zip') as z:
+                  prefix=f'w12-fleet/{shard}/'
+                  summary=json.loads(z.read(prefix+'summary.json'))
+                  for lease,seed in zip(summary['distinct_lease_ids'],summary['independent_seeds']):
+                      worker=f'{prefix}{lease}/'
+                      original=z.read(worker+'original-w0.png')
+                      (root / f'{shard}-{seed}-REAL-W12-model-score.png').write_bytes(original)
+                      fam=json.loads(z.read(worker+'completed.json'))['family']
+                      for policy in ('random','wall','fidget'):
+                          control=worm.run(seed=seed,family=fam,mode=policy,size=96,steps=12)
+                          (root / f'{shard}-{seed}-W0-{policy}-control.png').write_bytes(worm.png_bytes(control))
+          assert len(list(root.glob('*.png'))) == 16
+          print('Original model-score PNGs: 4; independent W0-only controls: 12')
+          PY
+      - name: Retain independent reproducibility artifacts, even if verification fails
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: worm-lfm-support-W12-original-four-live-audit-NO-MODEL
+          path: evidence/
+          if-no-files-found: warn
+          retention-days: 30
