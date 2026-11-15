@@ -1,0 +1,8 @@
+{
+  "schema": "gen007-architecture-runtime-publish-request-v1",
+  "family": "gen007-architectural-generator",
+  "variant": "v1-v2-thirteen-presets-five-style-cards",
+  "scope": "linux-windows-native-graphical-multistyle-flatten-owner-package",
+  "intent": "publish-source-matched-runtimes",
+  "request_sequence": 1
+}

@@ -135,6 +135,8 @@
     "operations/material-catalogue-shadow.md",
     "operations/materials-lab-authoring.md",
     "operations/material-liveness-investigation.md",
+    "systems/architectural-generator.md",
+    "operations/architectural-generator-playtest.md",
     "decisions/2026-11-14-owner-authoring-intent.md"
   ],
   "navigation": [

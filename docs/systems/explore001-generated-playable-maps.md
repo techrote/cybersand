@@ -25,6 +25,17 @@ launch and human playtest instructions. This remains a Draft source candidate;
 candidate runtime qualification and published retained-runtime provenance are
 separate gates.
 
+## Architectural project extension — 2026-11-14
+
+The [Architectural Generator](architectural-generator.md) adds a focused panel
+inside **New from generator**, using this same preview/install and generated-start
+v1 persistence boundary. Its embedded project compiles to a schema-4 native recipe
+with exact style quotas and versioned modules. No manifest migration or external
+preset dependency is introduced. An invalid/cancelled replacement now retains one
+prior verified preview; **Restore previous preview** explicitly restores its
+matching settings before installation can resume. The [owner guide](../operations/architectural-generator-playtest.md)
+provides toggle, three-style and fresh-process paint/reopen checks.
+
 ## Ordinary workbench workflow
 
 ### Standalone profile discovery repair — 2026-11-11

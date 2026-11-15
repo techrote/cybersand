@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-13
+last-reviewed: 2026-11-15
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -20,6 +20,36 @@ state unchanged. Explicit Save/Load uses standalone material-baseline v1 with
 legacy Setup-v2/generated-start-v1 compatibility. The [qualification runbook](../operations/gen008-flatten-qualification.md)
 links source-matched execution and Owner acceptance; no merge is authorized.
 The 11 November revised issue supersedes the former reset/respawn/rollback proposal.
+
+## Architectural Generator Phase A/B + owner-refined v2 — 2026-11-15
+
+**PR #582 remains unmerged under explicit owner hold.** The
+[architectural generator specification](../systems/architectural-generator.md)
+describes thirteen composable presets, five simultaneous style columns,
+global automatic tunnel/door/window controls and per-preset native material
+parameters, deterministic finite zone quotas, versioned Skyline Terraces,
+Cellular Hive and Arched Viaduct algorithms, and generated-start replay.
+The [owner walkthrough](../operations/architectural-generator-playtest.md)
+covers graphical preview, installation and save/reopen; owner assessment
+accepted the distinctive geometries while identifying future per-style
+palette and aperture authoring improvements. Arched Viaduct v2 remains the
+owner-accepted fixed reference. Source-matched Linux/Windows graphical and
+Windows packaged-copy qualification includes the integrated GEN-008 Flatten
+author/reopen and failure-recovery cases.
+
+The [runtime completion record](../audits/2026-11-15-gen007-runtime-completion.md)
+binds qualified source `6d6e2cd6` to actual four-file publication `99d7bd2b` on
+the existing PR branch. Linux/Windows native, graphical, multistyle, Flatten and
+extracted Windows package replay passed; the materialized Git LFS libraries and
+both provenance manifests pass strict current source/runtime verification.
+Final-head Documentation/provenance, palette and broad CI are recorded in
+PR #582 after the final documentation follow-up; this dated publication result
+does not substitute for those checks.
+The [strict publication contract](../systems/architectural-generator.md#retained-runtime-publication)
+supersedes the previous source-only merge proposal. Routine native/Godot
+architecture tests and bounded publisher guards continue on accepted-main CI
+after integration; the full graphical/package campaign stays explicit.
+**Ready-for-review is a CI state; no merge is authorised.**
 
 ## Materials Lab v1 — 2026-11-11
 

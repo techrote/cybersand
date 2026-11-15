@@ -54,6 +54,14 @@ For the Windows bundle launcher and manual acceptance procedure, retrieve the
 The dated [QA findings](../audits/2026-11-08-explore001-integration-qa.md) are
 historical evidence, separately scoped from accepted-main availability.
 
+For the optional GEN-007 Architectural Generator project (one to five coexisting
+style zones, geometry dimensions, independently configurable aperture flags,
+thirteen built-in presets, native algorithm v1/v2 and source identity), use the
+[architectural-generator contract](../systems/architectural-generator.md)
+and [owner evaluation guide](../operations/architectural-generator-playtest.md).
+PR #582 is a separate Draft/HOLD candidate; standalone qualification is not
+integrated-main or retained-runtime publication.
+
 ## Branch reconciliation and design choices
 
 For how agents reconcile stacked or long-running branches with main, and which
