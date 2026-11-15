@@ -62,12 +62,23 @@ jobs:
           assert (r["original_native_v4_cells"],r["original_native_v5_cells"],
                   r["added_v5_cells"],r["removed_v5_cells"]) == (524,662,138,0)
           assert r["distinct_architecture_compositions"] == 1 and r["v5_host_seed_views"] == 2
-          assert len(r["per_visible_original_architecture_group"]) == 4
+          assert r["reference_structural_groups"] == 4 and r["reference_native_seed_views"] == 8
+          views=r["per_visible_original_architecture_group"]
+          assert len(views) == 8
+          groups={(x["split"],x["group"]) for x in views}
+          assert len(groups) == 4
+          assert len({(x["split"],x["group"],x["reference_seed"]) for x in views}) == 8
+          assert all({x["reference_seed"] for x in views
+                      if (x["split"],x["group"]) == group} == {104729,130363}
+                     for group in groups)
+          assert all(len(x["reference_readback_sha256"]) == 64
+                     and len(x["reference_receipt_sha256"]) == 64
+                     and len(x["reference_png_sha256"]) == 64 for x in views)
           assert r["new_native_executions"] == r["new_train_admissions"] == r["new_optimizer_steps"] == 0
           assert r["model_generated_paintings"] == 0 and r["global_split_admission"] == "REVIEW_ONLY_HOLD"
           print("READ-ONLY original-v5 spatial witness PASS; global TRAIN admission HOLD")
           for x in r["per_visible_original_architecture_group"]:
-              print(f'{x["split"]}/{x["group"]}: v4 IoU {x["v4_iou"]:.6f} -> v5 {x["v5_iou"]:.6f}; '
+              print(f'{x["split"]}/{x["group"]}/seed{x["reference_seed"]}: v4 IoU {x["v4_iou"]:.6f} -> v5 {x["v5_iou"]:.6f}; '
                     f'near3 v4 {x["v4_near3"]:.6f} -> v5 {x["v5_near3"]:.6f}')
           PY
           rm -f evidence/void-a02-v5-spatial/{v4,v5,public}.zip
