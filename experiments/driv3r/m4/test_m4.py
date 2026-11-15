@@ -37,6 +37,14 @@ def summary(arm):
 
 
 class M4OfflineTests(unittest.TestCase):
+
+    def test_model_identity_is_the_exact_pinned_q8_gguf_not_reference_repository(self):
+        from experiments.driv3r.backend import PINS
+        self.assertEqual(PINS["model"]["repository"],"LiquidAI/d1-2B-GGUF")
+        self.assertEqual(PINS["model"]["quantization"],"Q8_0")
+        self.assertEqual(PINS["model"]["bytes"],1846240576)
+        self.assertEqual(len(PINS["model"]["sha256"]),64)
+
     def test_36_forward_decisions_are_strictly_bounded(self):
         self.assertEqual(MAX_DECISIONS,36)
         self.assertLessEqual(MAX_NATIVE_PAINT,64)
