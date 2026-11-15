@@ -16,30 +16,49 @@ var _default_fps: int = 0
 var _default_vsync: int = 1
 var _default_rapier_hz: int = 60
 
+# Short field labels must retain a horizontal minimum width. The original
+# HFlowContainer let the label shrink to one glyph and then expanded its
+# SpinBox to the label's many-line height (Owner Windows screenshot).
 func _label(parent: Control, caption: String) -> Label:
 	var item := Label.new()
 	item.text = caption
-	item.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	item.autowrap_mode = TextServer.AUTOWRAP_OFF
+	item.clip_text = true
+	item.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	parent.add_child(item)
 	return item
 
-func _row(parent: Control) -> HFlowContainer:
-	var result := HFlowContainer.new()
-	result.add_theme_constant_override("h_separation",10)
-	result.add_theme_constant_override("v_separation",3)
+# Explanatory prose is allowed to wrap, but only inside the full-width column.
+func _note(parent: Control, caption: String) -> Label:
+	var item := Label.new()
+	item.text = caption
+	item.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	item.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	parent.add_child(item)
+	return item
+
+func _row(parent: Control) -> HBoxContainer:
+	var result := HBoxContainer.new()
+	result.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	result.custom_minimum_size.y = 36
+	result.add_theme_constant_override("separation",12)
 	parent.add_child(result)
 	return result
 
 func _spin(parent: Control, key: String, title_text: String,
 		low: int, high: int, initial: int, callback: Callable) -> SpinBox:
-	var line: HFlowContainer = _row(parent)
-	_label(line,title_text)
+	var line: HBoxContainer = _row(parent)
+	var caption := _label(line,title_text)
+	caption.custom_minimum_size.x = 390
+	caption.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	var field := SpinBox.new()
 	field.min_value = float(low)
 	field.max_value = float(high)
 	field.step = 1
 	field.value = float(initial)
-	field.custom_minimum_size.x = 110
+	field.custom_minimum_size = Vector2(155,32)
+	field.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	field.size_flags_horizontal = Control.SIZE_SHRINK_END
 	line.add_child(field)
 	field.value_changed.connect(func(value: float) -> void:
 		if not _syncing: callback.call(int(value)))
@@ -50,6 +69,8 @@ func _check(parent: Control,key: String,title_text: String,
 		initial: bool,callback: Callable) -> CheckButton:
 	var field := CheckButton.new()
 	field.text = title_text
+	field.custom_minimum_size.y = 34
+	field.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	field.button_pressed = initial
 	field.toggled.connect(func(value: bool) -> void:
 		if not _syncing: callback.call(value))
@@ -60,21 +81,30 @@ func _check(parent: Control,key: String,title_text: String,
 func _button(parent: Control,caption: String,callback: Callable) -> Button:
 	var item := Button.new()
 	item.text = caption
+	item.custom_minimum_size.y = 32
+	item.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	item.pressed.connect(callback)
 	parent.add_child(item)
 	return item
 
 func _section(parent: Control,caption: String) -> void:
 	parent.add_child(HSeparator.new())
-	_label(parent,caption)
+	var heading := _label(parent,caption)
+	heading.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 
 func mount(controller: Control,wb: Control) -> void:
 	host = controller
 	workbench = wb
 	title = "CyberSand / Engine Lab / performance experiments"
-	size = Vector2i(770,690)
-	min_size = Vector2i(510,400)
+	size = Vector2i(900,730)
+	min_size = Vector2i(740,520)
 	transient = true
+	# The game viewport uses canvas_items scaling. A separate native Window
+	# needs physical-pixel layout, not a compressed copy of the game canvas.
+	force_native = not OS.has_feature("web") and DisplayServer.get_name() != "headless" \
+		and DisplayServer.has_feature(DisplayServer.FEATURE_SUBWINDOWS)
+	content_scale_mode = Window.CONTENT_SCALE_MODE_DISABLED
+	handle_input_locally = true
 	hide()
 	close_requested.connect(hide)
 	_default_fps = Engine.max_fps
@@ -87,22 +117,31 @@ func mount(controller: Control,wb: Control) -> void:
 		margin.add_theme_constant_override("margin_"+side,12)
 	add_child(margin)
 	var full := VBoxContainer.new()
+	full.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	margin.add_child(full)
-	_label(full,"ENGINE LAB · Live changes, current session · nonproduction experiment")
+	_note(full,"ENGINE LAB · Live changes, current session · nonproduction experiment")
 	var scroll := ScrollContainer.new()
+	scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
 	full.add_child(scroll)
 	var controls := VBoxContainer.new()
 	controls.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	controls.custom_minimum_size.x = 650
 	scroll.add_child(controls)
 
 	_section(controls,"DISPLAY / RENDER")
 	_spin(controls,"fps","Frame-rate cap (0 = uncapped)",0,240,Engine.max_fps,
 		func(value: int) -> void: Engine.max_fps = value)
-	var sync_row: HFlowContainer = _row(controls)
-	_label(sync_row,"VSync mode")
+	var sync_row: HBoxContainer = _row(controls)
+	var sync_label := _label(sync_row,"VSync mode")
+	sync_label.custom_minimum_size.x = 390
+	sync_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	var vsync := OptionButton.new()
+	vsync.custom_minimum_size = Vector2(220,32)
+	vsync.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	vsync.size_flags_horizontal = Control.SIZE_SHRINK_END
 	vsync.add_item("Disabled",DisplayServer.VSYNC_DISABLED)
 	vsync.add_item("Enabled",DisplayServer.VSYNC_ENABLED)
 	vsync.add_item("Adaptive (may fall back to Enabled)",DisplayServer.VSYNC_ADAPTIVE)
@@ -117,7 +156,7 @@ func mount(controller: Control,wb: Control) -> void:
 	_spin(controls,"ack","Render ACK delay (frame callbacks; 0 = immediate)",
 		0,4,host.engine_lab_ack_delay_frames,
 		func(value: int) -> void: host.engine_lab_set_ack_delay(value))
-	_label(controls,"ACK remains mandatory after upload; changing its delay alters back-pressure.")
+	_note(controls,"ACK remains mandatory after upload; changing its delay alters back-pressure.")
 
 	_section(controls,"PIXEL / RAPIER CLOCKS")
 	_spin(controls,"pixel","Native Pixel target tick cadence (Hz)",
@@ -127,14 +166,14 @@ func mount(controller: Control,wb: Control) -> void:
 	_spin(controls,"rapier","Rapier callback cadence (Hz)",
 		1,240,Engine.physics_ticks_per_second,
 		func(value: int) -> void: host.engine_lab_set_rapier_hz(value))
-	_label(controls,"Each simulation/flight step retains fixed 1/60 seconds. Non-60 cadence changes wall-clock simulation speed.")
+	_note(controls,"Each simulation/flight step retains fixed 1/60 seconds. Non-60 cadence changes wall-clock simulation speed.")
 	_check(controls,"wait_sample","Rapier waits for native sample completion (default)",
 		true,func(value: bool) -> void: host.engine_lab_wait_native_sample = value)
 	_check(controls,"sample_wake","Native worker wakes early on a new Rapier sample (default)",
 		true,func(value: bool) -> void:
 			host.simulation_worker.set_engine_lab_pixel_pacing(
 				int((_widgets["pixel"] as SpinBox).value),value))
-	_label(controls,"Uncheck both to let the clocks run most independently; native World and terrain safety remain authoritative.")
+	_note(controls,"Uncheck both to let the clocks run most independently; native World and terrain safety remain authoritative.")
 
 	_section(controls,"NATIVE WORKER TOPOLOGY (NEXT LAUNCH)")
 	var saved: int = int(ProjectSettings.get_setting("cybersand/native_worker_threads",0))
@@ -152,7 +191,7 @@ func mount(controller: Control,wb: Control) -> void:
 			for key: String in ["fps","render","pixel","rapier"]:
 				(_widgets[key] as SpinBox).max_value = 1000 if value else 240
 			(_widgets["workers"] as SpinBox).max_value = 32 if value else 16)
-	var actions: HFlowContainer = _row(controls)
+	var actions: HBoxContainer = _row(controls)
 	_button(actions,"Restore baseline",reset_baseline)
 	_button(actions,"Uncouple Pixel + Rapier",func() -> void:
 		_set_toggle("wait_sample",false)
@@ -167,16 +206,17 @@ func mount(controller: Control,wb: Control) -> void:
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED))
 
 	_section(controls,"10-SECOND REAL CLOCK / FLIGHT BENCHMARK")
-	_label(controls,"Capture actual completed native ticks, Rapier steps, render uploads, process frames, guard vetoes, and elapsed wall time.")
-	var tests: HFlowContainer = _row(controls)
+	_note(controls,"Capture actual completed native ticks, Rapier steps, render uploads, process frames, guard vetoes, and elapsed wall time.")
+	var tests: HBoxContainer = _row(controls)
 	_button(tests,"Measure while I fly",func() -> void: start_benchmark(false))
 	_button(tests,"Repeatable four-direction input",func() -> void: start_benchmark(true))
-	_label(controls,"Scripted pilot: +X, -Y, -X, +Y, switching every 60 completed Rapier steps; same input sequence at every setting.")
+	_note(controls,"Scripted pilot: +X, -Y, -X, +Y, switching every 60 completed Rapier steps; same input sequence at every setting.")
 	_output = TextEdit.new()
 	_output.editable = false
 	_output.custom_minimum_size.y = 105
+	_output.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	controls.add_child(_output)
-	_status = _label(full,"Ready.")
+	_status = _note(full,"Ready.")
 	var timer := Timer.new()
 	timer.wait_time = 0.5
 	timer.autostart = true
@@ -223,7 +263,7 @@ func reset_baseline() -> void:
 	_status.text = "Baseline rates, coupling and ACK restored. Saved worker setting unchanged."
 
 func open() -> void:
-	popup_centered_clamped(Vector2i(770,690),0.9)
+	popup_centered_clamped(Vector2i(900,730),0.95)
 	_refresh()
 
 func _sample() -> Dictionary:
