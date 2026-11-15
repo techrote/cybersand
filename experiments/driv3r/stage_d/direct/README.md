@@ -170,13 +170,28 @@ reach the target row far outside the prescribed 6–10-cell band and still
 score 1.0 raw vertical progress. Do **not** reinterpret that metric alone as
 successful wall tracing.
 
-`wall_progress.py` adds an independent, replay-verified DEVELOPMENT-only
-report: ordered in-band profile rows, unique in-band row coverage, off-band
-excursions and reentries, and the ungated/ordered progress gap. Distances are
-measured to the **selected wall**, not to nearby distractors. It preserves the
-original trajectory and original v1 score and makes no native or model claims.
-Five adversarial/integration regressions in `test_wall_progress.py` cover
-a far-from-wall 100%-vertical-progress false positive, off-band recovery,
-out-of-order row visits, real DEVELOPMENT replay, and held-out/tamper refusal.
-The three pure shape checks and helper syntax have local smoke qualification;
-the full source-matched lane suite remains a separate gate.
+`wall_progress.py` adds a separately versioned, replay-verified
+DEVELOPMENT-only diagnostic (now `d1a-selected-wall-ordered-progress/2`):
+ordered in-band profile rows, unique row coverage, off-band excursions and
+reentries, and the ungated/ordered progress gap. The v2 report additionally
+records the **longest physically continuous, forward-advancing in-band row
+run**, its start/end rows and fraction of required vertical traversal.
+Repeated lateral cells do not increase this run; reverse steps, band exits
+and sparse jumps reset continuity. Distances are measured to the **selected
+wall**, not nearby distractors. This is a descriptive longest-run diagnostic,
+not an assertion of clean end-to-end traversal or native controller success.
+
+**Deterministic counterexample:** a fully cardinal path visiting every
+selected-wall row in order can obtain **100% ordered in-band progress** while
+briefly leaving the 6–10-cell band between rows. Its longest uninterrupted
+forward in-band trace can cover only **50%** of the required vertical
+transitions. The supplementary fields do not change frozen v1 scores,
+original trajectories, fixture identities, policy choices or the M1 schema.
+
+Nine adversarial/integration tests are authored in `test_wall_progress.py`,
+including four new continuous-trace, detour, reverse-motion, and lateral/sparse
+cases. The **exact committed v2 helper blob** was locally syntax-compiled and
+passed seven independent pure-helper cases (four new, three original);
+source-matched full lane discovery and DEVELOPMENT replay/integration tests
+still require qualification. No held-out controller outcomes or real native
+receipts were executed.
