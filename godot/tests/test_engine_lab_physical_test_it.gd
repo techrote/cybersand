@@ -99,7 +99,7 @@ func _initialize() -> void:
 	if invalid_boolean or not OS.get_cmdline_user_args().has("--engine-lab-scripted") or \
 			family not in FAMILIES or camera_mode not in ["free","follow"] or \
 			pose_mode not in ["guarded","mask"] or workers not in [1,4] or \
-			repeat_id not in [1,2] or pixel_hz not in [30,60,120] or \
+			repeat_id not in [1,2] or pixel_hz not in [2,30,60,120] or \
 			render_hz not in [30,60,120] or fps_target not in [0,30,60,120] or \
 			rapier_hz not in [60,120] or ack_delay not in [0,3] or \
 			cadence_mode not in ["legacy","repaired"] or output.is_empty():

@@ -33,10 +33,16 @@ network download is needed. The same command from PowerShell is:
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Run-Test-It.ps1 -Cadence
 ~~~
 
-The focused matrix makes original/repaired pairs in separate processes for
+The focused matrix makes 18 original/repaired pairs (36 arms) in separate processes for
 Pixel 30/60/120, Rapier callbacks 60/120, graphical FPS 30/60/120/uncapped,
 material publication 30/60/120, Free/Follow, guarded/mask, ACK delay 0/3,
 ordinary/gated publication, material crossfade and the original sample handshake.
+The additional `native2` and `native2-free` counterfactuals request Pixel 2 Hz
+with responsive Rapier 120 callbacks in Follow and Free cameras. This deliberately
+low throughput uses the existing worker pacing control on the unchanged original
+World, below measured native capacity, without changing the native step law or
+adding artificial work. It supplements the required Pixel 30/60/120 targets,
+which can all achieve similar rates when native execution is capacity limited.
 Each row specifies all axes; this is an orthogonal causal matrix, not every
 possible combination. `-FullCadence` explicitly requests the larger factorial.
 `-Cadence -Quick` runs only the principal slow-native/responsive-Rapier pair.

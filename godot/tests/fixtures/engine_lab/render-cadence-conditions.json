@@ -1,6 +1,6 @@
 {
   "schema": "render-cadence-conditions-v1",
-  "semantics": "Requested rates are independent. Rapier uses fixed 1/60 simulated seconds per completed step; callbacks at 120 are not normalized real-time 120Hz physics. Each condition executes same-source legacy and repaired arms.",
+  "semantics": "Requested rates are independent. Rapier uses fixed 1/60 simulated seconds per completed step; callbacks at 120 are not normalized real-time 120Hz physics. Each condition executes same-source legacy and repaired arms. Pixel 2Hz is an additional deliberate low-throughput diagnostic outside the required Pixel 30/60/120 matrix; it uses existing pacing on the unchanged original World.",
   "conditions": [
     {
       "name": "baseline",
@@ -224,6 +224,34 @@
       "gated": false,
       "wait": true,
       "wake": true,
+      "smoothing": true
+    },
+    {
+      "name": "native2",
+      "pixel": 2,
+      "rapier": 120,
+      "fps": 60,
+      "publication": 60,
+      "camera": "follow",
+      "pose": "guarded",
+      "ack": 0,
+      "gated": false,
+      "wait": false,
+      "wake": false,
+      "smoothing": true
+    },
+    {
+      "name": "native2-free",
+      "pixel": 2,
+      "rapier": 120,
+      "fps": 60,
+      "publication": 60,
+      "camera": "free",
+      "pose": "guarded",
+      "ack": 0,
+      "gated": false,
+      "wait": false,
+      "wake": false,
       "smoothing": true
     }
   ]

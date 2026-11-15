@@ -176,8 +176,8 @@ Non-60 cadence intentionally changes simulation speed because the flight integra
 ## Automated Windows test script / Test It -> ZIP
 Click Test It -> ZIP in Engine Lab, or double-click Test It.cmd from
 this extracted folder. Both launch the SAME separate-process PowerShell
-runner with the '-Cadence' option. The 16-condition focused matrix executes
-32 same-source legacy/repaired arms in fresh processes. It preserves the exact
+runner with the '-Cadence' option. The 18-condition focused matrix executes
+36 same-source legacy/repaired arms in fresh processes. It preserves the exact
 2048-square reference World and original eight Needle commands at physics ticks
 0,2,4,6,8,10,12,14, then appends sustained motion at ticks 30,90,120.
 The original eight-command test remains available with -Quick, -Compare,
@@ -188,6 +188,11 @@ publication60 with native-sample waiting and early sample wake disabled.
 Separate conditions vary Pixel60/120, Rapier60, graphical30/120/uncapped,
 Free/Follow, guarded/mask, ordinary/delayed ACK, ACK-gated publication,
 publication30/120, smoothing off, and the original coupled waits.
+Two additional counterfactuals request Pixel2 in Free and Follow while keeping
+Rapier120 responsive. They deliberately lower native throughput below measured
+capacity using existing pacing on the unchanged original World. This 2Hz
+diagnostic supplements the required Pixel30/60/120 matrix; it changes no native
+step law and adds no artificial native work or sleep.
 Every target is reported separately from achieved monotonic-timestamp rates.
 Rapier still integrates a fixed 1/60 simulated second per completed step;
 120 callbacks is NOT normalized real-time120Hz physics. Physical comparisons

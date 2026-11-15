@@ -260,8 +260,16 @@ jobs:
           }
           Write-Host 'TEST_IT_POWERSHELL_PARSE PASS'
           $env:CYBERSAND_TEST_IT_NO_PAUSE='1'
-          & cmd.exe /d /s /c '""C:\csengine\Test It.cmd" -RenderingDriver opengl3_angle -TimeoutSeconds 900"'
-          $testItExit=$LASTEXITCODE
+          # Preserve cmd.exe's outer /c quotes without pwsh native-argument rewriting.
+          $command = [System.Diagnostics.ProcessStartInfo]::new()
+          $command.FileName = $env:ComSpec
+          $command.Arguments = '/d /s /c ""C:\csengine\Test It.cmd" -RenderingDriver opengl3_angle -TimeoutSeconds 900"'
+          $command.UseShellExecute = $false
+          $command.WorkingDirectory = 'C:\csengine'
+          $testIt = [System.Diagnostics.Process]::Start($command)
+          $testIt.WaitForExit()
+          $testItExit = $testIt.ExitCode
+          $testIt.Dispose()
           if ($testItExit -ne 0) {
             Get-ChildItem -Path 'C:\csengine\Test-It-Results' -Recurse -Filter '*.log' -ErrorAction SilentlyContinue |
               Select-Object -Last 8 | ForEach-Object { Write-Host ('=== ' + $_.FullName); Get-Content $_.FullName -Tail 35 }

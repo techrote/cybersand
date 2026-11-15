@@ -179,6 +179,49 @@ fixture misdeclared its Wall negative; correcting the authored rectangle made
 that negative actually test Wall. Original failed local logs remain external
 evidence, not reclassified passes.
 
+### First hosted execution and retained failure
+
+The first continuation commit was
+`9bc9e3f90b8391003660efbf4f4bf80e0d5eded0`,
+[run 43690752854](https://github.com/techrote/cybersand/actions/runs/43690752854).
+All three Linux graphical matrix shards completed. Windows built and extracted
+the exact-source archive and passed all 17 installed smoke cases, including
+PAINT (64 checks), fresh-process reopen (12), native camera (1,687), worker
+cadence (43), ACK deadlines (108), failure recovery and the graphical contract.
+The graphical contract passed 83 checks, retained eight original PNGs and two
+traces, and verified the previous GPU texture against the retained CPU image.
+The Windows software-renderer phase-only jump was approximately 13.9852 px
+under legacy and 0 under repair in both camera modes. Repaired active/expired
+framebuffers were pixel-identical. This is ANGLE/Microsoft Basic Render Driver
+evidence, not NVIDIA acceptance.
+
+That Windows job **failed** before starting the full Test It matrix: pwsh native
+argument marshalling corrupted the quoted command path containing a space.
+The PowerShell parser itself passed. The follow-up invokes the installed
+`Test It.cmd` through `ProcessStartInfo` with the exact raw cmd arguments and
+preserves its exit code. The failed run and smoke artifact 14152920604 remain
+unchanged. Successful smoke tests do not turn that failed campaign into a pass.
+
+In the first Linux baseline pair, measured Main submission/native/Rapier rates
+were 14.47/13.87/96.69 per second under legacy and 14.38/13.07/92.10 under repair.
+Unknown-history refusals fell from 90 to zero. Submitted/live separation p95
+fell from 7.7714 px to 0.000136 px, but this is a whole-capture statistic including
+near-static late frames. CPU upload-call median rose from 1.284 to 2.212 ms;
+retaining exact history has a real bandwidth/copy cost. Other tested conditions
+retained large material-veto transitions: the first gated-ACK3 repaired trace
+included a 70.61-px compensation change. The bounded fix does not remove those
+true occupancy/coherence holds, and a green evidence-capture job does not assert
+that physical trajectories match or that presentation has no outliers.
+
+The achieved native rates were below all requested 30/60/120 targets. Therefore
+two additional counterfactual controls, Pixel 2 Hz with Follow and Free camera,
+use the existing worker pacing API to create a deliberate throughput reduction
+on the same original World. They do not add native sleeps or change any physics
+law. The focused campaign now has 18 conditions/36 arms; the primary requested
+rates and the exhaustive matrix remain intact. Real-time control responsiveness
+also requires interval analysis: batched physical completions can have a high
+average rate while still being separated by long graphical-frame gaps.
+
 Exact-source CI uses the existing qualification workflow with its source/native
 guards preserved. Linux performs actual graphical native runs under Xvfb;
 Windows extracts and hashes the original deliverable, runs the installed
