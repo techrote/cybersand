@@ -34,21 +34,21 @@
     "skelehound": [
       0,
       1,
+      4,
       5,
       9,
       13,
-      17,
-      21,
+      18,
       23
     ],
     "aerohound": [
       0,
       2,
+      4,
       6,
       10,
       14,
-      18,
-      22,
+      20,
       23
     ],
     "branchwitch": [
@@ -100,6 +100,16 @@
     "previous_run_id": 43768313284,
     "failed_at_mutant_server_start": true,
     "repair_source": "fff1548993169c8cdf70b103bd74ec389e31ecfc",
+    "retry_matrix": [
+      "skelehound",
+      "aerohound"
+    ]
+  },
+  "hound_retry_3": {
+    "reason": "pure 8-layer spines caused unused attention-input buffers; retain one full and one sliding attention flavour in each sparse flow",
+    "previous_run_id": 43769247311,
+    "previous_result": "both compiled and entered model startup; ggml backend aborted on null unused attention input buffer",
+    "repair_source": "859ed65d15e6da4827f8262b6d776a6724ac072c",
     "retry_matrix": [
       "skelehound",
       "aerohound"
