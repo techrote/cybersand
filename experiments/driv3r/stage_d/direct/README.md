@@ -2,6 +2,16 @@
 
 **Status:** independent **development-only** preparatory fixtures and oracle policies, not native or model qualification. #570; [owner D roadmap](https://github.com/techrote/cybersand/issues/570#issuecomment-6877408001). The five-record [D-COMMON-001 contract](https://github.com/techrote/cybersand/pull/594) received **M1 owner acceptance on 14 Nov 2026** at source commit `8fa90de6be209ed0b7bd125039e6ec8b332fb1a6`, schema SHA-256 `ebe2fa211148602c614cba0f0a40f285cba797784b70efa035832d833877f80d` ([#570 freeze record](https://github.com/techrote/cybersand/issues/570#issuecomment-6881686675)). **M2 offline integration preparation is permitted; native/model experiments, merges and formal A1/A2/A3 comparisons are not.**
 
+## Exact-checkout offline qualification launcher (15 November 2026)
+
+The D-1A lane now contains a fail-closed CPU-only qualification launcher: `qualification.py` and eight direct regression methods. It checks (1) the accepted M1 source is an ancestor of HEAD, (2) the actual M1 schema bytes match the owner-approved SHA-256, and (3) the entire D-1A lane is clean before and after invoking normal unittest discovery. It refuses missing/ambiguous output, fewer than the 122 pre-harness methods, any skipped/failing test, timeout, and source changes during testing. The full original failure log is printed to stderr and its SHA-256 recorded in a JSON summary on stdout.
+
+```sh
+python3 -m experiments.driv3r.stage_d.direct.qualification > /tmp/d1a-qualification.json 2> /tmp/d1a-unittest.log
+```
+
+The JSON includes the exact tested commit, schema pin, total tests, exit/skip/timeout status, log digest, and explicit zero-native-receipt / no-held-out-outcome flags. No workflow, paid model, GPU, native World, or formal campaign is launched. **The new harness has not been run against the full committed D-1A dependency tree**; eight isolated harness tests passed using a stubbed M1 import, not source-matched complete-suite qualification. Do not count existing Stage A/docs checks as D-1A's own full-suite result. Preserve and report any genuine first-pass failures rather than silently editing or rerunning them away.
+
 ## Replay-gated synthetic cursor gallery (15 November 2026)
 
 `visualize.py` adds an **offline, DEVELOPMENT-only** raster comparison of the same strong contour/A* and seeded random-legal policies on identical original grids and 36-decision budgets. Seven frozen DEVELOPMENT topologies × two controls give **14 PNGs per seed/macro configuration**; the four sealed held-out families are **never dispatched** to controller evaluation. The output depicts **synthetic brush-up cursor movement only**, NOT Workbench PAINT, native material, a true framebuffer, resident d1 outputs, or aesthetically accepted artwork.
