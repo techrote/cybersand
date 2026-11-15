@@ -518,6 +518,22 @@ four depths, identical for one and four workers; the budgets are 9,000 to 4,000.
 - A one-to-three-unit cell at a ledge edge still cannot pour (a quarter of it
   rounds to zero). It is at rest, not stalled work.
 
+### Protected-source transition for this repair
+
+Reviewed source commit: `d3c2cacdf1c083b1c1bf0bfd0ed0e14690a48fe2`. Of the protected consumers only
+`native/src/world.cpp` changes, by three lines: at the end of
+`World::state_hash()` it calls `hash_wave_state`, which returns immediately for
+a World without Wave Flow. The solver changes themselves are in
+`native/src/world_wave.inc` and `native/include/cybersand/wave_flow.hpp`, which
+are not protected consumers. `world_pressure.inc` and `world_quantity.inc` keep
+the hashes admitted above. The immutable lock and every earlier transition are
+unchanged; this entry extends the chain, so integration still needs a merge
+commit that retains the named commits.
+
+| Protected path | Previously admitted LF SHA-256 | Reviewed LF SHA-256 |
+|---|---|---|
+| `native/src/world.cpp` | `9600f625792929db95481f45cca2233716df921ff5001a052d0839de043ff384` | `09a34956642a203ae9b725875f0773001ab70bc22b478a904588604c7de866c1` |
+
 ### Evidence level
 
 The measurements above are local, single-machine development results. They

@@ -356,6 +356,16 @@ REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
   'issue': 618,
   'pr': 618})
 
+# WAVE-MT-001 review repair: one conditional call that adds Wave solver state to
+# state_hash() for Wave Worlds only. Every other World keeps its hash stream.
+REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
+  'from_lf_sha256': '9600f625792929db95481f45cca2233716df921ff5001a052d0839de043ff384',
+  'to_lf_sha256': '09a34956642a203ae9b725875f0773001ab70bc22b478a904588604c7de866c1',
+  'source_commit': 'd3c2cacdf1c083b1c1bf0bfd0ed0e14690a48fe2',
+  'record': 'docs/audits/2026-11-15-wave-mt-001-completion.md',
+  'issue': 618,
+  'pr': 618},)
+
 class CompatibilityError(ValueError):
     """An actionable source or baseline mismatch; never repairs the source."""
 
