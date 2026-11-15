@@ -68,6 +68,10 @@ The spatial transform does not wait for a native tick or texture publication.
 Actor pose freshness is a separate temporal problem: following a live actor
 while displaying an older mask-bound actor can still produce judder. No new
 camera easing, speculative pose heuristic or physics law is introduced here.
+The retained palette crossfade also uses the requested publication interval to
+set its blend duration; that is a temporal assumption, independent of the
+camera's spatial mapping. Delayed publication and previous-texture lifetime must
+be reviewed with the eventual #609 repair, not inferred from a correct projection.
 
 Recording encloses the displayed fractional view, including partially visible
 right/bottom cells, and preserves that initial ROI for the session. It records
@@ -104,15 +108,39 @@ reconciliation SHA and loaded native runtime.
 The limited Engine Lab retains requested Pixel/native pacing, Rapier callback
 rate, render publication rate, FPS cap, VSync, native sample wake and the
 Workbench completed-native-sample wait control. These are experimental scheduling
-controls. The integrators still advance fixed **1/60 simulated seconds** per
-completed step; changing wall-clock targets can dilate simulation time.
+controls. FPS cap, Rapier callback cadence and main-window VSync apply to the
+current application process and survive a return to the feature launcher. Pixel
+pacing and material-publication targets belong to the current native owner.
+**Restore baseline** restores the values captured when that Lab was mounted,
+not necessarily project defaults; a new application process restores unsaved
+defaults. Only an explicitly saved worker request persists across application
+launches. Scene teardown retires the Lab capture and its session-bound scripted
+input. This process scope is retained from #606.
 
-Requested rates and achieved native ticks, completed Rapier steps, process frames
-and successful texture publications are reported separately. A publication serial
+The integrators still advance fixed **1/60 simulated seconds** per completed
+step; changing wall-clock targets can dilate simulation time.
+
+Requested rates and achieved Main-observed native ticks, completed actor-session
+steps after Rapier, process frames and successful texture publications are
+reported separately. The Lab's `rapier_steps` is `physical_actor_session.tick`;
+the enhanced external performance apparatus separately reads the bridge's
+completed `space_step` counter. A successful actor completion follows that step,
+but an actor completion refused after a flight-step fault can differ from a
+completed low-level Rapier step. The downstream trace must preserve that scope
+and qualify the fault path if it relies on either counter. A publication serial
 gap is not an upload count. Workbench still refuses to simulate the same prepared
 Rapier sample twice; sample wakes can also advance earlier than the requested
 Pixel interval. Therefore control independence does not promise arbitrary achieved
 rates or smooth motion under overload.
+
+Aggregate `valid=true` certifies identity/settings continuity and the capture's
+listed invalidation conditions. It does not certify absence of actor-step faults
+or equality of the actor and bridge counters: a flight fault can suspend the
+actor without pausing Main or failing the native owner. Before relying on this
+aggregate for faulted/refused-completion behavior, qualify a real fault-path
+negative control that retains both counters and proves explicit fault
+invalidation or separately labelled physics-step and actor-completion rates.
+The current qualified rate observations do not establish that fault-path gate.
 
 **ACK is immediate after successful upload.** The original #606 delayed-ACK
 countdown can restart on each newer upload and postpone acknowledgement
@@ -165,8 +193,9 @@ acceptance. The candidate must not be described as a stuttering repair.
 
 At audit, the worker's published continuation was
 `fix/render-cadence-001-20261115` at
-`d5397a7d2a1285bf6d2ade5f76e0e89e00e85c70`; this is separate from the original
-#609 PR tip. Its retained 2-Hz fixed-camera negative control still showed a
+`7c85b348f7077adbc7dbbf338f92683ac0df08f4` at the 09:50 UTC refresh;
+this is separate from the original #609 PR tip. Its application remains the
+`d5397a7d` result; the newer commit only extends its Windows matrix deadline. Its retained 2-Hz fixed-camera negative control still showed a
 364-ms pose hold and 88-pixel catch-up despite matching completed-step physical
 trajectories. Complete presentation remained **FAIL/HOLD**. Refresh the actual
 worker source and published evidence before admitting any delta.
@@ -184,8 +213,33 @@ The integration boundary is deliberately small:
    ACK changes as one ownership transaction. Any additional World-sized CPU image
    requires renewed memory/upload/frame measurements.
 5. Re-run receipt, camera/framebuffer, cross-clock, PAINT/Flatten/generator
-   regressions and source-matched Windows copied-package execution; then obtain
-   physical owner acceptance and explicit integration approval.
+   regressions and source-matched Windows copied-package execution. Changes to
+   Main or `render_parts()` also require the five PLAY-UI007 graphical navigation
+   cases, actor-prototype/actor-rig/Blacksite and affected physical-flight
+   rendering/session fixtures. Preserve receipt-free geometry inspection callers.
+6. For ACK/publication changes, repeat `test_camera_stack_recording.gd` and the
+   recorder/full-refresh regressions, including late attachment after an
+   already-ACKed empty status receipt. Then obtain physical owner acceptance
+   and explicit integration approval.
+
+The original diagnostic contract at `01a84167` provides the following interfaces
+for the worker-owned downstream delta; none is copied into this staging tree:
+
+| Surface | Retained contract for admission |
+| --- | --- |
+| `begin_workbench_pose_trace(settings)` / `finish_workbench_pose_trace()` | Bind application SHA, actual native-library SHA, engine and experiment settings; preserve opt-in operation |
+| `_workbench_trace_presentation_frame(...)` | Observe final overlay parts and the one presented camera after selection; never recompute an alternative pose for the trace |
+| `workbench_pose_trace.gd` | JSONL `cybersand-pose-trace-v1`: header, ordered frame rows, summary; at most 12,000 frames and 32 bodies with explicit drop, duplicate and body-truncation counts |
+| Frame identity | Process/physics frame, native tick/snapshot serial, completed Rapier step, session/epoch/World/material identities, uploaded serial, requested/presented camera and blend state |
+| Body evidence | Bound/live/selected/first-drawn-part poses, actual selector reason, projection residual and screen displacement; Main submissions are not GPU-present timestamps |
+| `engine_lab_reference_fixture.gd` | Reconstruct the 2048-square reference with 256 chunk receipts on accepted-main native bytes; original fixture JSON SHA-256 `b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954`, material SHA-256 `71610b37531531e284f069cf1e07c151283a441c9b0ff32a4fcc1dbb6c997a7a` |
+| Tick-addressed input tape | Compare identical input at completed Rapier steps, with epoch/World fences; wall-clock key timing is not trajectory equality |
+| Focused tests and analyzer | Requalify `test_workbench_pose_trace.gd`, `test_engine_lab_physical_test_it.gd`, `test_analyze_pose_trace.py` and the worker's final cadence/ACK tests together with its final schema |
+
+The current aggregate Engine Lab report is not a second pose trace. It exposes
+snapshot/material age and completed counts but explicitly leaves GPU-present
+time, worker wait duration and backlog depth unmeasured. Those remaining
+diagnostic fields belong to the worker's source-mapped trace integration.
 
 Do not merge the original four PRs sequentially: that would reintroduce excluded
 guard/default/ACK/packaging behaviour. The shortest future composition is this

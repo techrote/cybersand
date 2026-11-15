@@ -75,16 +75,18 @@
       "id": "PIXEL-CAMERA-005",
       "query": "How do I launch and accept the native-resolution pixel scrolling Windows evaluation, and can headless tests authorize its merge?",
       "canonical": [
-        "operations/native-pixel-scrolling.md"
+        "operations/native-pixel-scrolling.md",
+        "operations/camera-stack-reconciliation.md"
       ],
       "facts": [
-        "Use the camera-labelled qualified artifact, extract it completely and run Open Workbench.cmd.",
+        "Use the exact-source qualified camera-stack artifact on accepted GEN-007/Flatten main, extract it completely, run Test It.cmd and use Open Workbench.cmd for manual review; older #566 packages retain their original source scope.",
         "At 2x or greater magnification slowly middle-drag, test stationary edges, cursor zoom, editing, Undo/Redo, Art focus, following, resizing and physical Windows display scale.",
-        "Headless parsing does not qualify graphical motion, physical Windows scaling or human feel; the candidate remains Draft until owner acceptance."
+        "Headless parsing does not qualify graphical motion, physical Windows scaling or human feel. Existing PRs retain Draft/HOLD conditions; automated passes do not authorize merge or Ready promotion of the isolated reconciliation."
       ],
       "sources": [
         "../tools/ci/run_workbench_qualification.py",
-        "../.github/workflows/wb-art-paint-qualification.yml"
+        "../tools/ci/package_camera_stack_windows.py",
+        "../.github/workflows/camera-stack-reconciliation.yml"
       ]
     },
     {

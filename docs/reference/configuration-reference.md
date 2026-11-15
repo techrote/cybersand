@@ -14,25 +14,36 @@ related-documents: [../operations/configuration-and-capacity-budgets.md, ../syst
 
 The [conditional camera-stack candidate](../operations/camera-stack-reconciliation.md)
 adds a second-layer Engine Lab window. `workbench_engine_lab.gd` and Main retain
-the launch-time settings for Restore baseline. Requested wall-clock cadence and
+the values captured when the Lab mounts for Restore baseline. Requested wall-clock cadence and
 achieved work are separate. Native/flight integration remains fixed at 1/60
 simulated seconds per completed step; rate changes can dilate simulated time.
 
 | Control | Bounds and persistence |
 | --- | --- |
-| Pixel, Rapier callback and publication targets | 1–240 Hz in the ordinary panel; advanced override up to 1000 Hz; current session |
-| FPS cap | 0 (uncapped) through 240; advanced up to 1000; current session |
-| VSync | Disabled, Enabled or Adaptive; backend may fall back; current session |
+| Pixel and publication targets | 1–240 Hz in the ordinary panel; advanced override up to 1000 Hz; current native owner |
+| Rapier callback target | 1–240 Hz; advanced up to 1000 Hz; current application process, including later scene launches |
+| FPS cap | 0 (uncapped) through 240; advanced up to 1000; current application process |
+| VSync | Disabled, Enabled or Adaptive; backend may fall back; current main window / application process |
 | Native sample wake / Rapier completion wait | Existing defaults retained; optional experimental uncoupling does not promise achieved independent rates |
 | Render ACK | Mandatory immediately after successful upload; original #606 delayed countdown excluded |
-| Native workers | 0 (Auto) through 16; advanced up to 32; only explicit Save writes `user://cybersand-engine-lab-workers.json` for next launch |
+| Native workers | 0 (Auto) through 16; advanced up to 32; only explicit Save writes `user://cybersand-engine-lab-workers.json` for the next Workbench launch |
 | Benchmark | Default 10 seconds; at most 60 seconds and 12,000 frame samples; aggregate measurements only while capturing |
+
+Returning to the feature launcher does not restore engine-wide FPS, Rapier
+cadence or VSync. Restore baseline uses that Lab's mount-time values; a new
+application process resets unsaved settings. Capture and its scripted input
+are retired with their owning scene.
 
 The saved worker JSON number must be finite, integral and within 0–32. JSON
 parsing represents integers as floating-point Variants; validation checks the
 value rather than requiring GDScript `int`. Session/World/selected-actor or
 settings changes invalidate benchmark comparisons. GPU present time, worker wait
 duration and backlog depth remain unmeasured; no absent measure is reported as zero.
+The Lab's Rapier-labelled achieved rate counts completed actor-session ticks
+after Rapier; it is not the bridge's unconditional low-level step count. Aggregate
+validity does not explicitly reject an actor flight-step fault. The
+[counter-scope contract](../operations/camera-stack-reconciliation.md#engine-lab-scope-and-clock-semantics)
+states the distinction and the fault-path gate for a future trace integration.
 
 ## Architectural Generator project controls
 

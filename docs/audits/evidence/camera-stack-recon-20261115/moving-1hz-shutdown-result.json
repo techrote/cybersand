@@ -1,0 +1,40 @@
+{
+  "source_commit": "9a3546836fbdecf7c97e13395428ad147eb59f71",
+  "source_tree": "7c646e85163716bc9e244b2d145058a1ededb77b",
+  "status": "passed",
+  "exit_code": 0,
+  "completion": {
+    "checks": 16,
+    "failures": [],
+    "measurement_scope": "synchronous actual Main free/_exit_tree, including native worker join; observed bound, not hard real time",
+    "result": {
+      "actor_displacement_cells": 127.491882324219,
+      "fresh_native_owner_started": true,
+      "main_exit_tree_elapsed_ms": 1022.869,
+      "native_owner_thread_joined": true,
+      "native_ticks_after": 4,
+      "native_ticks_before": 2,
+      "paused_at_stop": false,
+      "pilot_active_at_stop": true,
+      "pixel_requested_hz": 1,
+      "rapier_requested_hz": 60,
+      "rapier_steps_after": 243,
+      "rapier_steps_before": 121,
+      "render_requested_hz": 60,
+      "sample_wake": false,
+      "wait_native_sample": false,
+      "worker_running_after_stop": false
+    },
+    "runtime": {
+      "display_server": "headless",
+      "godot": "4.7-stable (official)",
+      "os": "Linux"
+    },
+    "source_commit": "9a3546836fbdecf7c97e13395428ad147eb59f71",
+    "unmeasured": [
+      "GPU present time",
+      "worker wait duration",
+      "worker backlog depth"
+    ]
+  }
+}

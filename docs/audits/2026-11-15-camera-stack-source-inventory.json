@@ -428,7 +428,9 @@
         "1755b2195e4d38c6030ae287ac2eb8e070da62ef Resolve fractional-zoom samples and fitted edges in physical pixel coordinates",
         "a1a896bb45753c820e1d6109df57de4e65be33af Render continuous camera motion at native display-pixel resolution"
       ],
-      "already_identical_to_main": []
+      "already_identical_to_main": [],
+      "patch_equivalent_commits_on_accepted_main": [],
+      "independent_nonmerge_commits_checked_for_patch_equivalence": 16
     },
     "593": {
       "independent_base": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
@@ -574,7 +576,9 @@
         "162c9f14b2ae6a6eddbe3074c65746c5223fa2c5 feat(pr566): material-clear swept-mask gate for smooth live flyer presentation; track previous texture occupancy",
         "84e8cecbfe78ebb0e6a0afcf1236a905a88d8b23 feat(pr566): bounded fail-closed presentation clearance against swept native mask geometry"
       ],
-      "already_identical_to_main": []
+      "already_identical_to_main": [],
+      "patch_equivalent_commits_on_accepted_main": [],
+      "independent_nonmerge_commits_checked_for_patch_equivalence": 38
     },
     "606": {
       "independent_base": "9628729af052b417aa8a64e56f7e7bcdf4f2e876",
@@ -699,7 +703,9 @@
         "09caaf943db43b545de308a5cf1b4fc2cc545990 feat(engine-lab): unlock Workbench sample fence and expose render ACK, render rate, physics clock and reproducible input",
         "21304d18b615e93d8e4f6370b293ee130459afa4 feat(engine-lab): runtime native Pixel tick target and sample-wakeup control"
       ],
-      "already_identical_to_main": []
+      "already_identical_to_main": [],
+      "patch_equivalent_commits_on_accepted_main": [],
+      "independent_nonmerge_commits_checked_for_patch_equivalence": 16
     },
     "609": {
       "independent_base": "2632422aa67ee9acdc347089cd54c36e518c713a",
@@ -855,7 +861,9 @@
         "735b02e0cdca546f6ed7475084e6ecef91b088a9 diagnostics: capture submitted actor pose sources, camera raster phase and guard decisions each frame",
         "dec489ce6859ee9be543f5ce1eb1c38e5031d89e diagnostics: bounded opt-in per-overlay-frame pose and camera trace with projection residual"
       ],
-      "already_identical_to_main": []
+      "already_identical_to_main": [],
+      "patch_equivalent_commits_on_accepted_main": [],
+      "independent_nonmerge_commits_checked_for_patch_equivalence": 32
     }
   },
   "observed_on": "2026-11-15",
@@ -871,5 +879,81 @@
     "branch": "fix/render-cadence-001-20261115",
     "commit": "d5397a7d2a1285bf6d2ade5f76e0e89e00e85c70",
     "status": "Independent worker, not imported; published full presentation FAIL/HOLD"
-  }
+  },
+  "live_identity_refreshes": [
+    {
+      "checked_at_utc": "2026-11-15T09:50:43Z",
+      "accepted_main_unchanged": true,
+      "all_original_component_heads_unchanged": true,
+      "original_pr_states": "open/draft/unmerged",
+      "worker_head": "7c85b348f7077adbc7dbbf338f92683ac0df08f4",
+      "worker_application_equivalent_to": "d5397a7d2a1285bf6d2ade5f76e0e89e00e85c70",
+      "worker_delta": "Workflow timeout only; original failedWindowscampaignretained; replacementinprogress; completepresentationFAIL/HOLD."
+    },
+    {
+      "checked_at_utc": "2026-11-15 10:45:33 UTC",
+      "default_branch": "main",
+      "main": {
+        "sha": "018bd09503d7f079ddac52e225c2f7daf8d678bf",
+        "tree": "dd4eed8f95cfe21197a98fdc7ef663bee873dc94"
+      },
+      "pr566": {
+        "head": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+        "base": "ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742",
+        "base_ref": "main",
+        "head_ref": "codex/native-pixel-scrolling-20261113",
+        "state": "open",
+        "draft": true,
+        "merged": false,
+        "url": "https://github.com/techrote/cybersand/pull/566"
+      },
+      "pr593": {
+        "head": "9628729af052b417aa8a64e56f7e7bcdf4f2e876",
+        "base": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+        "base_ref": "codex/native-pixel-scrolling-20261113",
+        "head_ref": "codex/pr566-mask-coherent-flyer-20261114",
+        "state": "open",
+        "draft": true,
+        "merged": false,
+        "url": "https://github.com/techrote/cybersand/pull/593"
+      },
+      "pr606": {
+        "head": "2632422aa67ee9acdc347089cd54c36e518c713a",
+        "base": "9628729af052b417aa8a64e56f7e7bcdf4f2e876",
+        "base_ref": "codex/pr566-mask-coherent-flyer-20261114",
+        "head_ref": "feature/engine-lab-controls-20261114",
+        "state": "open",
+        "draft": true,
+        "merged": false,
+        "url": "https://github.com/techrote/cybersand/pull/606"
+      },
+      "pr609": {
+        "head": "01a8416761ba3477a2587d7b07a854945b0f0286",
+        "base": "2632422aa67ee9acdc347089cd54c36e518c713a",
+        "base_ref": "feature/engine-lab-controls-20261114",
+        "head_ref": "diagnostics/engine-lab-pose-trace-20261115",
+        "state": "open",
+        "draft": true,
+        "merged": false,
+        "url": "https://github.com/techrote/cybersand/pull/609"
+      },
+      "worker": {
+        "branch": "refs/heads/fix/render-cadence-001-20261115",
+        "sha": "7c85b348f7077adbc7dbbf338f92683ac0df08f4"
+      },
+      "worker_run": {
+        "sha": "7c85b348f7077adbc7dbbf338f92683ac0df08f4",
+        "status": "in_progress",
+        "conclusion": null,
+        "url": "https://github.com/techrote/cybersand/actions/runs/43700256160"
+      },
+      "candidate_run": {
+        "sha": "5b7cd745c98ef5354f2f6043d34c91cbe127a893",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/techrote/cybersand/actions/runs/43703292501"
+      }
+    }
+  ],
+  "pr_base_metadata_limit": "PR566 still reports base.sha ac0d9fb9 although freshly queried refs/heads/main is018bd095. PR metadata is retained verbatim; graph/merge-base/conflict analysis uses actual fetched commit objects, not that stale base field."
 }

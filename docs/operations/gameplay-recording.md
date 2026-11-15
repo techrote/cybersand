@@ -6,7 +6,7 @@ status: Current
 scope: REC-001 desktop material-state recording, ownership, bounded pressure, evidence format, controls and validation limits
 keywords: [recording, gameplay review, material state, immutable snapshot, bounded queue, dropped frames, REC-001]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/rendering-and-gameplay-bridges.md, microscenarios.md, testing-validation-and-replay.md]
-last-reviewed: 2026-11-13
+last-reviewed: 2026-11-15
 ---
 
 # Desktop gameplay state recording
@@ -41,6 +41,14 @@ Desktop builds expose a **Start Recording / F10** control. Starting a session:
 2. records runtime/source/configuration identity;
 3. requests one full immutable render publication to prime the private ROI;
 4. begins capture only after that full publication covers the ROI.
+
+Before that first full refresh, an already-ACKed owner status receipt can retain
+a positive render serial with both patch arrays empty. An unprimed recorder
+waits through a non-full receipt of that form without advancing material
+identity or writing a frame. A malformed full refresh, partially specified patch
+metadata, or a genuinely new empty publication after priming still goes through
+the ordinary validation and failure path. The source-bound native recording
+regression is recorded in the [reconciliation audit](../audits/2026-11-15-camera-stack-reconciliation.md).
 
 Interactive **Stop Recording / F10** closes admission and requests finalization.
 The bounded queue drains and the final manifest is written on the recorder thread

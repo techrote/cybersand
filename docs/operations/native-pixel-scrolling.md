@@ -16,7 +16,7 @@ in final framebuffer-pixel increments. At 4 display pixels per cell, one
 display-pixel movement no longer waits for a whole 4-pixel cell jump. Material
 cells retain nearest-neighbour edges and their existing native state.
 
-The final integration preserves the original camera branch and accepted main
+The historical #566 integration preserved the original camera branch and then-accepted main
 `ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742` through normal merge
 `b1e2e9b1ce0a93d9eda54cbc35d04257eba9dfa7`. Accepted #565 includes Materials
 Lab, native capability consumption, PAINT, agent authoring and chronological
@@ -40,16 +40,25 @@ original source/native identity and cannot qualify the reconciled application.
 
 ## Open the Windows candidate
 
-The earlier [qualified Windows evaluation archive](https://github.com/techrote/cybersand/actions/runs/43403189531/artifacts/14029270531)
+For the accepted GEN-007/Flatten application, use the exact-source Windows
+evaluation identified in the [current reconciliation record](../audits/2026-11-15-camera-stack-reconciliation.md).
+Extract the whole package to a fresh writable folder and run **Test It.cmd**.
+It runs the included graphical/native tests and saves the original evidence.
+Use **Open Workbench.cmd** for manual authoring, camera and Engine Lab evaluation.
+The current package retains accepted main's native binaries and provenance.
+
+Historical #566 packages remain source-labelled evidence. The earlier
+[qualified Windows evaluation archive](https://github.com/techrote/cybersand/actions/runs/43403189531/artifacts/14029270531)
 is for application source **`005124c5cd9a`**: 92,938,556 bytes from successful
 run 43403189531. It includes the fractional-camera recording correction, but
-predates accepted #565. The current combined download and exact qualification
+predates accepted #565. That branch's combined download and exact qualification
 are published in the [PR #566 delivery ledger](https://github.com/techrote/cybersand/pull/566).
 Do not treat the earlier archive as the final combined application.
 Extract the complete archive into a new writable folder, then double-click
 **Open Workbench.cmd**. Keep the bundled files together. The launcher imports
 the included project and opens the Workbench using its bundled Godot 4.7 and
-source-built native extension. The
+source-built native extension. Those historical packages do not contain the
+accepted GEN-007/Flatten reconciliation. The
 [dated ledger](../audits/2026-11-13-native-pixel-scrolling.md#refreshed-windows-installed-qualification-and-evaluation-build)
 records the verified ZIP checksum, full source/installation qualification and
 remaining physical acceptance gates. The earlier `a8f27357` camera archive
@@ -129,17 +138,15 @@ eight-invocation results retain their original source scope in the audit.
 
 The [integrated camera workflow](https://github.com/techrote/cybersand/blob/214de85adef2aaabc8e26de8612a3bf27cc1a081/.github/workflows/native-pixel-integrated-qualification.yml)
 is the original camera branch's source-built qualification entry point.
-It is retained at its immutable source link; current reconciliation uses its
-[own source-bound workflow](../../.github/workflows/camera-stack-reconciliation.yml). It rebuilds Linux
-and Windows native runtimes, preserves complete Materials Lab and Workbench
-coverage, runs source/installed camera cases, and packages the standalone
-combined application. It also executes the recorder's separate CLI override
-mode. Admission dispatches the unchanged full Documentation, Native, Godot and
-Palette workflows on the exact branch head while the PR remains Draft. A
-dispatch receipt proves only that execution was requested; inspect the actual
-resulting jobs. Performance uses independent same-host ABBA jobs and cannot
-withhold an otherwise valid Windows package solely because research apparatus
-fails. The final technical decision still records every failure or missing gate.
+It is retained at its immutable source link. Its old rebuild/full-admission
+campaign is historical evidence. Current reconciliation uses its
+[own source-bound workflow](../../.github/workflows/camera-stack-reconciliation.yml):
+it verifies and reuses accepted main's exact native inputs and retained binaries,
+runs source/installed camera and authoring cases, then executes the bundled
+Windows **Test It.cmd** from an extracted path containing spaces. It does not
+rebuild or publish native libraries. Performance runs after focused Linux and
+Windows correctness on the same accepted-main/candidate runtime pair. A pending
+run is not qualification; the dated record retains actual results and failures.
 
 ## Scope and limitations
 
