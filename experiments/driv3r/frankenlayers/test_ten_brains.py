@@ -1,7 +1,6 @@
 """M2 suite for 10 distinct source-ordered Frankenlayer controllers."""
 import unittest
 from experiments.driv3r.frankenlayers.patch_runtime import FLOWS
-from experiments.driv3r.frankenlayers.test_frankenlayers import FrankenLayerTests as Inherited
 
 
 class TenBrains(unittest.TestCase):
@@ -22,7 +21,14 @@ class TenBrains(unittest.TestCase):
                 self.assertEqual(f[0],0)
                 self.assertEqual(f[-1],23)
                 self.assertTrue(all(0<=n<24 for n in f))
-                self.assertTrue(all(a<=b for a,b in zip(f,f[1:])))
+                inversions=[(a,b) for a,b in zip(f,f[1:]) if a>b]
+                # BRANCHWITCH's original causal operation intentionally
+                # executes layer 10 AGAIN after layer 11. Preserve that
+                # source-qualified mutation rather than accidentally
+                # imposing a sorting invariant that rejects its parent.
+                self.assertEqual(inversions,[(11,10)] if
+                                 name.startswith("branchwitch") and
+                                 name!="branchwitch_no_repeat10" else [])
                 self.assertGreaterEqual(len(f),13)
                 self.assertLessEqual(len(f),21)
     def test_m2_mutants_are_one_change_from_original_flows(self):
