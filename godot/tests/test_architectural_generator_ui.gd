@@ -26,6 +26,12 @@ func write_json(path: String, value: Dictionary) -> void:
 func run() -> void:
 	root.size = Vector2i(1280,720)
 	root.content_scale_size = Vector2i.ZERO
+	# Native popups have no usable screen geometry under --headless; embed
+	# them in this explicit 1280x720 test viewport so the five-column fit
+	# assertion measures a real ScrollContainer viewport, not a 220px stub.
+	# Keep native windows in graphical runs for separate OS-window acceptance.
+	if DisplayServer.get_name() == "headless":
+		root.gui_embed_subwindows = true
 	var owner := Control.new()
 	root.add_child(owner)
 	var dialog := Dialog.new()
