@@ -12,7 +12,67 @@ from typing import Any, Callable
 
 from . import horizon, offline as d, paired
 
-VERSION = "d1a-selected-wall-band-horizon/1"
+VERSION = "d1a-selected-wall-band-horizon/2"
+
+
+def scan_swept_band_transitions(
+    start: tuple[int, int], sweeps: list[list[tuple[int, int]]],
+    selected_clearance: Callable[[tuple[int, int]], float],
+) -> dict[str, Any]:
+    """Count selected-wall band exits/reentries on every swept cell.
+
+    Endpoint-only horizon checks cannot tell whether an admitted long cursor
+    macro briefly left and reentered the band. This is an observed-path
+    diagnostic, not another legality policy or a reconstructed native edit.
+    """
+    if not callable(selected_clearance):
+        raise ValueError("Selected-wall clearance callback is required")
+
+    def inside(point: tuple[int, int]) -> bool:
+        distance = selected_clearance(point)
+        if type(distance) not in (int, float) or not isfinite(distance):
+            raise ValueError("Selected-wall clearance must be finite and numeric")
+        return 6.0 <= distance <= 10.0
+
+    previous = inside(start)
+    initial = previous
+    exits = reentries = outside = 0
+    first_exit = first_reentry = None
+    per_decision = []
+    for decision, cells in enumerate(sweeps):
+        event_exits = event_reentries = event_outside = 0
+        for swept_index, point in enumerate(cells, 1):
+            current = inside(point)
+            if not current:
+                outside += 1
+                event_outside += 1
+            if previous and not current:
+                exits += 1
+                event_exits += 1
+                if first_exit is None:
+                    first_exit = {"decision_index": decision,
+                                  "swept_step_in_decision": swept_index}
+            elif not previous and current:
+                reentries += 1
+                event_reentries += 1
+                if first_reentry is None:
+                    first_reentry = {"decision_index": decision,
+                                     "swept_step_in_decision": swept_index}
+            previous = current
+        per_decision.append({
+            "swept_band_exits": event_exits,
+            "swept_band_reentries": event_reentries,
+            "swept_out_of_band_cells": event_outside,
+        })
+    return {
+        "initial_in_band": initial,
+        "swept_band_exits": exits,
+        "swept_band_reentries": reentries,
+        "swept_out_of_band_cells": outside,
+        "first_swept_band_exit": first_exit,
+        "first_swept_band_reentry": first_reentry,
+        "per_decision": per_decision,
+    }
 
 
 def exact_band_decisions(width: int, height: int, target: tuple[int, int],
@@ -63,6 +123,16 @@ def audit_development_band_horizon(fixture: d.Fixture,
     restricted = exact_band_decisions(
         fixture.width, fixture.height, fixture.target, fixture.legal,
         lambda p: d.wall_distance(fixture, p), lengths)
+    # Replay-verified original sweeps can briefly leave and reenter the band
+    # inside one macro, even if both endpoint cursors appear admissible.
+    original_sweeps = [
+        next(item["path"] for item in event["observation"]["candidates"]
+             if item["candidate_id"] == event["choice_id"])
+        for event in episode["events"]
+    ]
+    swept_band = scan_swept_band_transitions(
+        fixture.start, original_sweeps,
+        lambda p: d.wall_distance(fixture, tuple(p)))
     rows = []
     first_band_deficit = None
     first_band_exit = None
@@ -99,6 +169,7 @@ def audit_development_band_horizon(fixture: d.Fixture,
                 original_prefix_in_band and band_feasible and
                 event["choice_id"] != "STOP"),
             "original_stop_is_terminal": event["choice_id"] == "STOP",
+            "original_swept_band_transitions": swept_band["per_decision"][index],
         })
     return {
         "version": VERSION,
@@ -112,6 +183,12 @@ def audit_development_band_horizon(fixture: d.Fixture,
         "minimum_initial_strict_band_decisions": restricted.get(fixture.start),
         "first_strict_band_budget_deficit_index": first_band_deficit,
         "first_loss_of_strict_band_reachability_index": first_band_exit,
+        "initial_cursor_within_selected_band": swept_band["initial_in_band"],
+        "first_swept_band_exit": swept_band["first_swept_band_exit"],
+        "first_swept_band_reentry": swept_band["first_swept_band_reentry"],
+        "swept_band_exit_count": swept_band["swept_band_exits"],
+        "swept_band_reentry_count": swept_band["swept_band_reentries"],
+        "swept_out_of_band_cells": swept_band["swept_out_of_band_cells"],
         "original_arrived": episode["metrics"]["arrived"],
         "original_stop_reason": episode["metrics"]["stop_reason"],
         "decision_horizons": rows,

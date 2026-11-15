@@ -6,6 +6,37 @@ from experiments.driv3r.stage_d.direct import band_horizon as b
 
 
 class BandHorizonTests(unittest.TestCase):
+    def test_swept_band_exit_and_reentry_inside_one_eight_cell_macro(self):
+        # Both endpoints are in-band; two intermediate swept cells are not.
+        sweep = [[(x, 1) for x in range(1, 9)]]
+        observed = b.scan_swept_band_transitions(
+            (0, 1), sweep, lambda p: 11.0 if p[0] in (3, 4) else 8.0)
+        self.assertEqual(observed["swept_band_exits"], 1)
+        self.assertEqual(observed["swept_band_reentries"], 1)
+        self.assertEqual(observed["swept_out_of_band_cells"], 2)
+        self.assertEqual(observed["first_swept_band_exit"],
+                         {"decision_index": 0, "swept_step_in_decision": 3})
+        self.assertEqual(observed["first_swept_band_reentry"],
+                         {"decision_index": 0, "swept_step_in_decision": 5})
+        self.assertEqual(observed["per_decision"][0]["swept_band_exits"], 1)
+
+    def test_swept_band_transitions_across_decisions_and_stop(self):
+        observed = b.scan_swept_band_transitions(
+            (0, 0), [[(1, 0), (2, 0)], [], [(3, 0), (4, 0)]],
+            lambda p: 11 if p[0] in (2, 3) else 8)
+        self.assertEqual(observed["swept_band_exits"], 1)
+        self.assertEqual(observed["swept_band_reentries"], 1)
+        self.assertEqual(observed["per_decision"][1]["swept_band_exits"], 0)
+        self.assertEqual(observed["first_swept_band_reentry"]["decision_index"], 2)
+
+    def test_swept_band_rejects_nonfinite_clearance(self):
+        self.assertEqual(b.scan_swept_band_transitions(
+            (0, 0), [[]], lambda p: 8)["swept_band_exits"], 0)
+        with self.assertRaises(ValueError):
+            b.scan_swept_band_transitions((0, 0), [], lambda p: float("nan"))
+        with self.assertRaises(ValueError):
+            b.scan_swept_band_transitions((0, 0), [], lambda p: True)
+
     def test_unblocked_band_accepts_eight_cell_macro(self):
         distances = b.exact_band_decisions(
             9, 3, (8, 1), lambda p: True,
@@ -60,6 +91,15 @@ class BandHorizonTests(unittest.TestCase):
                                  record["metrics"]["stop_reason"])
                 self.assertEqual(len(result["decision_horizons"]),
                                  len(record["events"]))
+                self.assertTrue(result["initial_cursor_within_selected_band"])
+                self.assertEqual(
+                    sum(row["original_swept_band_transitions"]["swept_band_exits"]
+                        for row in result["decision_horizons"]),
+                    result["swept_band_exit_count"])
+                self.assertEqual(
+                    sum(row["original_swept_band_transitions"]["swept_out_of_band_cells"]
+                        for row in result["decision_horizons"]),
+                    result["swept_out_of_band_cells"])
                 self.assertFalse(result["native_qualified"])
                 self.assertEqual(result["sequential_native_receipts"], 0)
                 for row in result["decision_horizons"]:
