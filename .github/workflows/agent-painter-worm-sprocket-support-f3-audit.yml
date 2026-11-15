@@ -1,0 +1,89 @@
+name: WORM SPROCKET support independent F3 long128 original-artifact replay
+on:
+  push:
+    branches:
+      - research/612-worm-sprocket-support
+    paths:
+      - experiments/agent_painter/worm/support_sprocket/audit_f3_original.py
+      - experiments/agent_painter/worm/support_sprocket/test_audit_f3_original.py
+      - .github/workflows/agent-painter-worm-sprocket-support-f3-audit.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: worm-sprocket-support-f3-${{ github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  original-receipt-replay:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Download pinned original four-resident 128-turn evidence, no model downloads
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/f3-independent
+          git rev-parse HEAD > evidence/f3-independent/auditor-source-sha.txt
+          curl --fail --silent --show-error --location --max-time 90 \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/techrote/cybersand/actions/artifacts/14183924474/zip \
+            -o evidence/f3-independent/original-f3.zip
+          echo "5eb64e5f7d5335809f631aa11caf9edbfcf1a67f546601d5d14e795cc61f7af6  evidence/f3-independent/original-f3.zip" | sha256sum -c -
+      - name: Independently replay actual W0 state, PNGs, source receipts and all 512 score decisions
+        env:
+          SPROCKET_F3_ORIGINAL_ZIP: "${{ github.workspace }}/evidence/f3-independent/original-f3.zip"
+        run: |
+          set -euo pipefail
+          python3 -m py_compile \
+            experiments/agent_painter/worm/support_sprocket/audit_f3_original.py \
+            experiments/agent_painter/worm/support_sprocket/test_audit_f3_original.py
+          cd experiments/agent_painter/worm/support_sprocket
+          timeout --signal=TERM --kill-after=5s 150s \
+            python3 -m unittest test_audit_f3_original -v \
+            2>&1 | tee "$GITHUB_WORKSPACE/evidence/f3-independent/adversarial-tests.txt"
+          timeout --signal=TERM --kill-after=5s 45s \
+            python3 audit_f3_original.py "$SPROCKET_F3_ORIGINAL_ZIP" \
+              --output "$GITHUB_WORKSPACE/evidence/f3-independent/audit-report.json" \
+            > "$GITHUB_WORKSPACE/evidence/f3-independent/audit-report-stdout.json"
+      - name: Retain original source-faithful W0 PNGs without redrawing or model execution
+        if: success()
+        run: |
+          python3 - <<'PY'
+          import pathlib, zipfile
+          original = pathlib.Path("evidence/f3-independent/original-f3.zip")
+          dest = pathlib.Path("evidence/f3-independent/original-W0-PNGs")
+          dest.mkdir(parents=True, exist_ok=True)
+          with zipfile.ZipFile(original) as z:
+              pictures = [n for n in z.namelist()
+                          if n.endswith(".png") and "/original-png-and-json/" in n]
+              assert len(pictures) == 16
+              for name in pictures:
+                  parts = name.split("/")
+                  slot = parts[0].replace("fleet-", "slot")
+                  seed = parts[2].split("-")[-1]
+                  file = pathlib.Path(name).name
+                  target = dest / (slot + "-" + seed + "-" + file)
+                  target.write_bytes(z.read(name))
+          PY
+      - name: Upload source-fenced audit receipts even on failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: worm-sprocket-support-F3-original-independent-${{ github.sha }}
+          path: |
+            evidence/f3-independent/auditor-source-sha.txt
+            evidence/f3-independent/adversarial-tests.txt
+            evidence/f3-independent/audit-report.json
+            evidence/f3-independent/audit-report-stdout.json
+            evidence/f3-independent/original-W0-PNGs/
+          if-no-files-found: warn
+          retention-days: 90
