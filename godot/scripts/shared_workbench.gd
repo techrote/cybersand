@@ -35,6 +35,7 @@ var _instances := OptionButton.new()
 var _material := OptionButton.new()
 var _response := OptionButton.new()
 var _camera := OptionButton.new()
+var _focus_pending: bool = false
 var _brush := SpinBox.new()
 var _fire := CheckButton.new()
 var _stream := CheckButton.new()
@@ -960,22 +961,38 @@ func _set_view(origin: Vector2, size: Vector2i) -> void:
 	# Panning/zooming only changes presentation. The Workbench's native active
 	# region is the fixed authored canvas, published once by Main each frame.
 
-func focus_selected() -> void:
+func focus_selected(presentation: Dictionary = {}) -> void:
+	if presentation.is_empty() and host != null:
+		presentation = host.workbench_presentation_frame
+	if presentation.is_empty() and host != null and host._workbench_presentation_mode() == "coherent":
+		_focus_pending = selected_id() > 0
+		return
+	if not presentation.is_empty() and str(presentation.get("policy","")) == "coherent":
+		if int(presentation.get("follow_instance_id",-1)) != selected_id():
+			_focus_pending = selected_id() > 0
+			return
+		var selected: Vector2 = presentation.get("follow_target",Vector2.INF)
+		_focus_pending = not selected.is_finite() and selected_id() > 0
+		if selected.is_finite(): _set_view(selected-Vector2(host.current_view_size)*0.5,host.current_view_size)
+		return
+	_focus_pending = false
 	var state := body_state(selected_id())
 	if not state.is_empty(): _set_view(Vector2(state.position)-Vector2(host.current_view_size)*0.5,host.current_view_size)
 
 func set_camera(index: int) -> void:
 	if applied.is_empty(): return
+	_focus_pending = false
 	if index == 2:
 		_set_view(Vector2.ZERO,Setup.extent_of(applied))
 	elif index == 1:
 		_set_view(host.camera_origin,ZOOMS[_zoom])
-		focus_selected()
+		focus_selected(host.workbench_presentation_frame)
 	else:
 		_set_view(host.camera_origin,ZOOMS[_zoom])
 
 func zoom_by(direction: int, local_anchor: Vector2 = Vector2.INF) -> void:
 	if applied.is_empty(): return
+	_focus_pending = false
 	var old_content: Rect2 = host.view_content_rect()
 	if not old_content.has_area(): return
 	if not local_anchor.is_finite() or not old_content.has_point(local_anchor):
@@ -1038,7 +1055,9 @@ func _world_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_MIDDLE:
 			_pan = event.pressed
-			if _pan: _camera.select(0)
+			if _pan:
+				_camera.select(0)
+				_focus_pending = false
 			return
 		if event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
 			zoom_by(-1 if event.button_index == MOUSE_BUTTON_WHEEL_UP else 1,event.position)
@@ -1072,8 +1091,8 @@ func _world_input(event: InputEvent) -> void:
 			move_selected()
 		4: place_source(pos)
 
-func update_camera() -> void:
-	if not applied.is_empty() and _camera.selected == 1: focus_selected()
+func update_camera(presentation: Dictionary = {}) -> void:
+	if not applied.is_empty() and (_camera.selected == 1 or _focus_pending): focus_selected(presentation)
 
 func _process(_delta: float) -> void:
 	if host == null: return

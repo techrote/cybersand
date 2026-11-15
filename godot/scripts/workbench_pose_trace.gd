@@ -17,6 +17,9 @@ var _duplicate_frames: int = 0
 var _last_process_frame: int = -1
 var _previous_screen: Dictionary = {}
 var _previous_source: Dictionary = {}
+var _previous_presentation_step: Dictionary = {}
+var _previous_presentation_identity: Dictionary = {}
+var _previous_frame_usec: int = -1
 var _events: Array[Dictionary] = []
 var _events_dropped: int = 0
 
@@ -61,6 +64,9 @@ func begin(settings: Dictionary = {}) -> bool:
 	_last_process_frame = -1
 	_previous_screen.clear()
 	_previous_source.clear()
+	_previous_presentation_step.clear()
+	_previous_presentation_identity.clear()
+	_previous_frame_usec = -1
 	_events.clear()
 	_events_dropped = 0
 	return true
@@ -85,19 +91,49 @@ func observe(row: Dictionary) -> void:
 	if process_frame <= _last_process_frame:
 		_duplicate_frames += 1
 		return
+	var callbacks_elapsed: int = process_frame-_last_process_frame if _last_process_frame >= 0 else 0
 	_last_process_frame = process_frame
 	if _frames.size() >= MAX_FRAMES:
 		_dropped += 1
 		return
 	var sample: Dictionary = row
 	sample["type"] = "frame"
+	var now_usec: int = int(sample.get("time_usec",-1))
+	sample["main_submission_interval_usec"] = now_usec-_previous_frame_usec \
+		if _previous_frame_usec >= 0 else null
+	sample["main_callbacks_since_previous_submission"] = callbacks_elapsed \
+		if _previous_frame_usec >= 0 else null
+	_previous_frame_usec = now_usec
+	var presentation: Dictionary = sample.get("presentation",{})
 	var bodies: Array = sample.get("bodies",[])
 	for body: Dictionary in bodies:
 		var slot: int = int(body.get("slot",-1))
 		var source: String = str(body.get("source","hidden"))
 		var screen: Variant = body.get("selected_screen",null)
 		var previous: Variant = _previous_screen.get(slot,null)
-		body["source_changed"] = _previous_source.has(slot) and _previous_source[slot] != source
+		var identity: Array = [presentation.get("session",sample.get("mask_session",-1)),
+			presentation.get("epoch",sample.get("mask_epoch",-1)),
+			presentation.get("world_generation",sample.get("uploaded_world_generation",-1)),
+			body.get("instance_id",-1),body.get("generation",-1)]
+		var step: Variant = body.get("presentation_step",null)
+		var same_timeline: bool = _previous_presentation_identity.get(slot,[]) == identity \
+			and not bool(body.get("timeline_reset",false))
+		if not same_timeline:
+			previous = null
+		var prior_step: Variant = _previous_presentation_step.get(slot,null)
+		var steps_known: bool = (step is float or step is int) \
+			and (prior_step is float or prior_step is int)
+		body["presentation_step_delta"] = float(step)-float(prior_step) \
+			if same_timeline and steps_known else null
+		body["presentation_source_rewind"] = body.presentation_step_delta != null \
+			and float(body.presentation_step_delta) < -0.000001
+		if screen == null or step == null:
+			_previous_presentation_step.erase(slot)
+		else:
+			_previous_presentation_step[slot] = step
+		_previous_presentation_identity[slot] = identity
+		body["source_changed"] = same_timeline and _previous_source.has(slot) \
+			and _previous_source[slot] != source
 		body["screen_step_px"] = [float(screen[0])-float(previous[0]),
 			float(screen[1])-float(previous[1])] if screen is Array \
 				and screen.size()==2 and previous is Array and previous.size()==2 else null
@@ -159,4 +195,6 @@ func finish(worker_events: Dictionary = {}) -> Dictionary:
 	_events.clear()
 	_previous_screen.clear()
 	_previous_source.clear()
+	_previous_presentation_step.clear()
+	_previous_presentation_identity.clear()
 	return report

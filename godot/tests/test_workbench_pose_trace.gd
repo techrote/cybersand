@@ -78,6 +78,10 @@ func _pure_projection() -> void:
 func _run() -> void:
 	_pure_projection()
 	var existing_mode: String = OS.get_environment("CYBERSAND_DIAG_FLYER_POSE")
+	var existing_presentation: String = OS.get_environment("CYBERSAND_DIAG_PRESENTATION")
+	# Preserve the original tracer's live/mask source-transition control.
+	# test_workbench_temporal_presentation owns the coherent timeline policy.
+	OS.set_environment("CYBERSAND_DIAG_PRESENTATION","legacy")
 	OS.set_environment("CYBERSAND_DIAG_FLYER_POSE","")
 	set_meta("cybersand_feature","shared_workbench")
 	host = load("res://main.tscn").instantiate()
@@ -174,6 +178,7 @@ func _run() -> void:
 				bridge.reset_body(0,bound_pose.origin,bound_pose.get_rotation())
 	host.queue_free()
 	OS.set_environment("CYBERSAND_DIAG_FLYER_POSE",existing_mode)
+	OS.set_environment("CYBERSAND_DIAG_PRESENTATION",existing_presentation)
 	await process_frame
 	await process_frame
 	print("POSE_TRACE_RESULT ",JSON.stringify({"schema":"pose-trace-production-v1",

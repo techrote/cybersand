@@ -39,6 +39,18 @@ def step_event(step, time, x=None):
                         "velocity": [60, 0], "angle": 0}]}
 
 
+def contract_frame(n, step, x, source="live", held=False, reset=False, generation=1):
+    row = moving_frame(n, x, x, 0)
+    row["presentation"] = {"policy": "coherent", "session": 1, "epoch": 1,
+                           "world_generation": 1, "resolve_usec": 100 + n,
+                           "follow_instance_id": 7, "follow_position": [x, 100]}
+    row["bodies"][0].update(presentation_step=step, desired_step=step+3,
+                             source=source, intentional_hold=held, timeline_reset=reset,
+                             source_reason="safe_hold" if held else "safe_advance",
+                             instance_id=7, generation=generation)
+    return row
+
+
 def write_trace(path, frames, events=(), **footer):
     lines = [{"type": "header", "schema": "cybersand-pose-trace-v1", "settings": {"test": True}},
              *frames, *events, {"type": "summary", "frames": len(frames), "dropped": 0, **footer}]
@@ -202,6 +214,67 @@ class FrameTraceAnalysisTests(unittest.TestCase):
         event["start_usec"] = 10001
         with self.assertRaisesRegex(ValueError,"precedes"):
             analyze([],events=[event])
+
+    def test_recorded_source_time_rewind_is_detected_without_camera_or_motion_heuristics(self):
+        rows = [contract_frame(1, 20, 100), contract_frame(2, 12, 95, "mask_bound"),
+                contract_frame(3, 21, 101)]
+        result = analyze(rows)["presentation_contract"]
+        self.assertEqual(result["source_time_rewind_count"], 1)
+        self.assertEqual(result["source_time_rewinds"][0]["backward_steps"], 8)
+        self.assertEqual(result["source_changes"], {"live->mask_bound": 1, "mask_bound->live": 1})
+
+    def test_legitimate_physical_reversal_is_not_a_timeline_rewind(self):
+        result = analyze([contract_frame(1, 20, 100), contract_frame(2, 21, 90),
+                          contract_frame(3, 22, 70)])["presentation_contract"]
+        self.assertEqual(result["source_time_rewind_count"], 0)
+        self.assertEqual(result["selected_step_observations"], 3)
+
+    def test_intentional_holds_have_distinct_duration_and_no_rewind(self):
+        rows = [contract_frame(1, 20, 100), contract_frame(2, 20, 100, "held", True),
+                contract_frame(3, 20, 100, "held", True), contract_frame(4, 21, 101)]
+        result = analyze(rows)["presentation_contract"]
+        self.assertEqual(result["intentional_hold_frames"], 2)
+        self.assertEqual(result["intentional_hold_duration_ms"]["maximum"], 20)
+        self.assertEqual(result["source_time_rewind_count"], 0)
+        self.assertEqual(result["source_reasons"]["safe_hold"], 2)
+
+    def test_follow_tracks_selected_pose_not_desired_live_pose(self):
+        rows = [contract_frame(1, 20, 100), contract_frame(2, 20, 100, "held", True)]
+        rows[1]["bodies"][0]["live_screen"] = [120,100]
+        good = analyze(rows)["presentation_contract"]
+        self.assertEqual(good["follow_target_minus_selected_px"]["maximum"], 0)
+        rows[1]["presentation"]["follow_position"] = [120, 100]
+        bad = analyze(rows)["presentation_contract"]
+        self.assertEqual(bad["follow_target_minus_selected_px"]["maximum"], 20)
+
+    def test_actor_replacement_and_explicit_reset_start_new_timelines(self):
+        rows = [contract_frame(1, 20, 100), contract_frame(2, 1, 0, generation=2),
+                contract_frame(3, 0, 400, generation=2, reset=True)]
+        result = analyze(rows)
+        self.assertEqual(result["presentation_contract"]["source_time_rewind_count"], 0)
+        self.assertEqual(result["presentation_contract"]["timeline_resets"], 2)
+        self.assertEqual(result["events"], 0)
+
+    def test_withheld_actor_breaks_continuity_and_is_explicit(self):
+        rows = [contract_frame(1, 20, 100), contract_frame(2, 20, 100, "hidden"),
+                contract_frame(3, 21, 200)]
+        rows[1]["bodies"][0].update(selected=None, selected_screen=None, source_reason="stale_generation")
+        result = analyze(rows)["presentation_contract"]
+        self.assertEqual(result["withheld_body_frames"], 1)
+        self.assertEqual(result["source_reasons"]["stale_generation"], 1)
+        self.assertEqual(result["source_time_rewind_count"], 0)
+
+    def test_legacy_trace_does_not_claim_unrecorded_source_time_or_stage_cost(self):
+        result = analyze([moving_frame(1,100,100,0),moving_frame(2,80,110,0)])["presentation_contract"]
+        self.assertEqual(result["selected_step_observations"], 0)
+        self.assertEqual(result["source_time_rewind_count"], 0)
+        self.assertEqual(result["resolve_cpu_ms"]["count"], 0)
+
+    def test_main_submission_intervals_and_missing_callback_indices_are_independent(self):
+        result = analyze([contract_frame(1,20,100),contract_frame(4,21,101)])["presentation_contract"]
+        self.assertEqual(result["main_submission_interval_ms"]["maximum"], 30)
+        self.assertEqual(result["callbacks_without_observed_submission"], 2)
+        self.assertEqual(result["resolve_cpu_ms"]["maximum"], .104)
 
 
 if __name__=="__main__":

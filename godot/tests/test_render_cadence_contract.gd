@@ -19,6 +19,7 @@ var observations: Array[Dictionary] = []
 var output: String = ""
 var original_cadence: String = ""
 var original_pose: String = ""
+var original_presentation: String = ""
 var source_bytes: PackedByteArray = PackedByteArray()
 var source_tick: int = -1
 var native_edits: Array[Dictionary] = []
@@ -31,6 +32,10 @@ func _initialize() -> void:
 	DirAccess.make_dir_recursive_absolute(output)
 	original_cadence = OS.get_environment("CYBERSAND_DIAG_RENDER_CADENCE")
 	original_pose = OS.get_environment("CYBERSAND_DIAG_FLYER_POSE")
+	original_presentation = OS.get_environment("CYBERSAND_DIAG_PRESENTATION")
+	# This retained causal control isolates the earlier texture-history repair.
+	# Keep its original mask fallback; the temporal fixture tests its successor.
+	OS.set_environment("CYBERSAND_DIAG_PRESENTATION","legacy")
 	OS.set_environment("CYBERSAND_DIAG_FLYER_POSE","")
 	_run.call_deferred()
 
@@ -279,6 +284,7 @@ func _run() -> void:
 		check(false,"contract evidence could not be written")
 	OS.set_environment("CYBERSAND_DIAG_RENDER_CADENCE",original_cadence)
 	OS.set_environment("CYBERSAND_DIAG_FLYER_POSE",original_pose)
+	OS.set_environment("CYBERSAND_DIAG_PRESENTATION",original_presentation)
 	host.queue_free()
 	await process_frame
 	await process_frame

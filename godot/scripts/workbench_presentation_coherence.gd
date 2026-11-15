@@ -44,7 +44,7 @@ static func assess(bound_pose: Transform2D, live_pose: Transform2D, rectangles: 
 		world_pixels: Image, previous_occupied: Dictionary = {},
 		previous_unknown: bool = false, previous_blend_active: bool = false,
 		max_scan_cells: int = MAX_SCAN_CELLS, deadline_usec: int = 0,
-		previous_world_pixels: Image = null) -> Dictionary:
+		previous_world_pixels: Image = null, require_footprint_clear: bool = false) -> Dictionary:
 	if world_pixels == null or world_pixels.is_empty() or rectangles.is_empty():
 		return _refuse("missing_world_or_geometry")
 	if not bound_pose.is_finite() or not live_pose.is_finite():
@@ -70,7 +70,10 @@ static func assess(bound_pose: Transform2D, live_pose: Transform2D, rectangles: 
 	var rotational_sweep: float = absf(angle) * radius
 	if displacement > MAX_SHIFT_CELLS or rotational_sweep > MAX_ROTATION_SWEEP_CELLS:
 		return _refuse("bounded_pose_delta")
-	if displacement <= EDGE_EPSILON and rotational_sweep <= EDGE_EPSILON:
+	# A native-bound pose is historically trusted by the caller. A retained
+	# presentation pose has no such authority after a material upload: its
+	# stationary footprint must be checked against both visible textures.
+	if not require_footprint_clear and displacement <= EDGE_EPSILON and rotational_sweep <= EDGE_EPSILON:
 		return {"safe":true,"reason":"same_pose","scanned":0}
 	var sweep: float = maxf(displacement,rotational_sweep)
 	var steps: int = clampi(ceili(sweep),1,MAX_SWEEP_STEPS)
@@ -99,6 +102,25 @@ static func assess(bound_pose: Transform2D, live_pose: Transform2D, rectangles: 
 	var last_x: int = ceili(maxf(bound_pose.origin.x,live_pose.origin.x)+radius+1.0)-1
 	var first_y: int = floori(minf(bound_pose.origin.y,live_pose.origin.y)-radius-1.0)
 	var last_y: int = ceili(maxf(bound_pose.origin.y,live_pose.origin.y)+radius+1.0)-1
+	if require_footprint_clear and displacement == 0.0 and rotational_sweep == 0.0:
+		# No rotation/translation interval exists for a stationary certificate.
+		# Use the actual collider bounds so a valid body touching a World edge
+		# is not rejected merely because its enclosing turning circle escapes.
+		var low := Vector2.INF
+		var high := -Vector2.INF
+		for rectangle: Dictionary in rectangles:
+			for sx: float in [-1.0,1.0]:
+				for sy: float in [-1.0,1.0]:
+					var corner: Vector2 = live_pose * (Vector2(rectangle.center) \
+						+ Vector2(rectangle.size)*Vector2(sx,sy)*0.5)
+					low = low.min(corner)
+					high = high.max(corner)
+		if low.x < 0.0 or low.y < 0.0 or high.x > world_pixels.get_width() or high.y > world_pixels.get_height():
+			return _refuse("outside_world")
+		first_x = floori(low.x)
+		first_y = floori(low.y)
+		last_x = ceili(high.x)-1
+		last_y = ceili(high.y)-1
 	if first_x < 0 or first_y < 0 or last_x >= world_pixels.get_width() or last_y >= world_pixels.get_height():
 		return _refuse("outside_world")
 	var columns: int = last_x-first_x+1

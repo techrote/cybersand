@@ -212,6 +212,113 @@ def _ages(frames, timestamp):
     return distribution(values)
 
 
+def presentation_identity(frame, body):
+    """A selected time is comparable only within the same actor lifetime."""
+    contract = frame.get("presentation", {})
+    return (contract.get("session", frame.get("mask_session")),
+            contract.get("epoch", frame.get("mask_epoch")),
+            contract.get("world_generation", frame.get("uploaded_world_generation")),
+            body.get("instance_id"), body.get("generation"))
+
+
+def analyze_presentation_contract(frames):
+    """Analyze explicit source time, independently of physical motion direction.
+
+    A real rebound or teleport can reverse spatial motion while simulation time
+    advances. Only a decreasing selected step within one uninterrupted actor
+    lifetime is a source rewind. Legacy traces have no selected-step proof and
+    retain their existing spatial/source-change diagnostics without inventing it.
+    """
+    previous, rewinds, holds, lag_steps = {}, [], [], []
+    source_changes, reasons, policies = Counter(), Counter(), Counter()
+    follow_residuals, follow_screen_residuals, resolve_costs = [], [], []
+    known = intentional = withheld = resets = follow_observations = 0
+    hold_starts = {}
+    for frame in frames:
+        contract = frame.get("presentation", {})
+        policies[str(contract.get("policy", "unrecorded"))] += 1
+        cost = number(contract.get("resolve_usec"))
+        if cost is not None and cost >= 0:
+            resolve_costs.append(cost / 1000)
+        now = number(frame.get("time_usec"))
+        follow_id = contract.get("follow_instance_id", frame.get("pilot_instance_id"))
+        follow_at = vector(contract.get("follow_position"))
+        for body in frame.get("bodies", []):
+            slot = int(body.get("slot", -1))
+            identity = presentation_identity(frame, body)
+            step = number(body.get("presentation_step"))
+            desired = number(body.get("desired_step", frame.get("rapier_step")))
+            source = str(body.get("source", "hidden"))
+            reason = str(body.get("source_reason", body.get("guard_reason", "unrecorded")))
+            reasons[reason] += 1
+            reset = bool(body.get("timeline_reset", False))
+            prior = previous.get(slot)
+            if reset or (prior is not None and prior["identity"] != identity):
+                resets += 1
+                if slot in hold_starts:
+                    started, last_held = hold_starts.pop(slot)
+                    holds.append((last_held - started) / 1000)
+                prior = None
+            held = bool(body.get("intentional_hold", False))
+            intentional += int(held)
+            selected = body.get("selected")
+            selected_at = vector(selected.get("xy")) if isinstance(selected, dict) else None
+            if selected_at is None:
+                withheld += 1
+                previous.pop(slot, None)
+                if slot in hold_starts:
+                    started, last_held = hold_starts.pop(slot)
+                    holds.append((last_held - started) / 1000)
+                continue
+            if step is not None:
+                known += 1
+                if desired is not None:
+                    lag_steps.append(desired-step)
+                if prior is not None and prior["step"] is not None and step < prior["step"]-1e-6:
+                    rewinds.append({"frame": frame.get("process_frame"), "time_usec": now,
+                                    "slot": slot, "prior_step": prior["step"], "selected_step": step,
+                                    "backward_steps": prior["step"]-step,
+                                    "prior_source": prior["source"], "source": source,
+                                    "source_reason": reason})
+            if prior is not None and prior["source"] != source:
+                source_changes[prior["source"] + "->" + source] += 1
+            if held and now is not None:
+                started = hold_starts.get(slot, (prior["time"] if prior and prior["time"] is not None else now, now))[0]
+                hold_starts[slot] = (started, now)
+            elif slot in hold_starts:
+                started, last_held = hold_starts.pop(slot)
+                holds.append((last_held-started) / 1000)
+            if follow_at is not None and body.get("instance_id") == follow_id:
+                follow_observations += 1
+                gap = vector_gap(follow_at, selected_at)
+                follow_residuals.append(gap)
+                bx, by = vector(frame.get("shader_basis_x")), vector(frame.get("shader_basis_y"))
+                if bx is not None and by is not None:
+                    delta = subtract(follow_at, selected_at)
+                    follow_screen_residuals.append(hypot(bx[0]*delta[0]+by[0]*delta[1],
+                                                        bx[1]*delta[0]+by[1]*delta[1]))
+            previous[slot] = {"identity": identity, "step": step, "source": source, "time": now}
+    for started, last_held in hold_starts.values():
+        holds.append((last_held-started) / 1000)
+    callback_gaps = [int(b["process_frame"])-int(a["process_frame"])-1
+                     for a, b in zip(frames, frames[1:])
+                     if number(a.get("process_frame")) is not None and number(b.get("process_frame")) is not None]
+    return {"policies": dict(policies), "selected_step_observations": known,
+            "source_time_rewind_count": len(rewinds), "source_time_rewinds": rewinds,
+            "source_changes": dict(source_changes), "source_reasons": dict(reasons),
+            "timeline_resets": resets, "intentional_hold_frames": intentional,
+            "intentional_hold_duration_ms": distribution(holds), "withheld_body_frames": withheld,
+            "desired_minus_selected_steps": distribution(lag_steps),
+            "follow_target_observations": follow_observations,
+            "follow_target_minus_selected_world_cells": distribution(follow_residuals),
+            "follow_target_minus_selected_px": distribution(follow_screen_residuals),
+            "resolve_cpu_ms": distribution(resolve_costs),
+            "main_submission_interval_ms": measured_rate([x.get("time_usec") for x in frames])["interval_ms"],
+            "callbacks_without_observed_submission": sum(max(0, n) for n in callback_gaps),
+            "submission_gaps_in_callback_index": sum(n > 0 for n in callback_gaps),
+            "interpretation": "Source time is recorded by the resolver; legacy captures without selected steps cannot prove monotonicity. Spatial reversals with advancing source time are not rewinds. Callback gaps count Main indices without an overlay observation, not missed physical GPU presents."}
+
+
 def paired_latency(events, before_kind, after_kind, cumulative=False):
     first = event_records(events, before_kind, "render_serial")
     after = event_records(events, after_kind, "render_serial")
@@ -326,10 +433,14 @@ def analyze(frames: list[dict], threshold_px: float = 8.0, events=None):
                        "relative": relative, "live_relative": live_relative,
                        "compensation": compensation, "time_usec": time_usec,
                        "basis": [frame.get("shader_basis_x"), frame.get("shader_basis_y")],
-                       "camera_mode": frame.get("camera_mode")}
+                       "camera_mode": frame.get("camera_mode"),
+                       "identity": presentation_identity(frame, body)}
             inside = actor_centre_inside_content(frame, selected)
             centre_visibility["unmeasured" if inside is None else ("inside" if inside else "outside")] += 1
             prior = last.get(slot)
+            if bool(body.get("timeline_reset", False)) or (prior and prior["identity"] != current["identity"]):
+                prior = None
+                hold_started.pop(slot, None)
             row = {"frame": number_frame, "time_usec": time_usec, "slot": slot,
                    "source": source, "guard_reason": body.get("guard_reason"),
                    "selected_screen_x": selected[0], "selected_screen_y": selected[1],
@@ -370,7 +481,8 @@ def analyze(frames: list[dict], threshold_px: float = 8.0, events=None):
                     elif current["camera_mode"] != prior["camera_mode"]:
                         cause = "camera_mode_change"
                     elif switched:
-                        cause = "live_vs_bound_source_switch"
+                        cause = "live_vs_bound_source_switch" if {source, prior["source"]} <= {"live", "mask_bound"} \
+                            else "presentation_source_change"
                     elif phase is not None and phase > 2.0:
                         cause = "camera_screen_phase_jump"
                     elif source == "mask_bound" and lag is not None and lag > threshold_px:
@@ -452,6 +564,7 @@ def analyze(frames: list[dict], threshold_px: float = 8.0, events=None):
         "live_to_mask_separation_px": distribution(lag_gaps),
         "selected_holds_while_live_moves": selected_holds_while_live_moves,
         "selected_hold_duration_ms": distribution(holds_ms),
+        "presentation_contract": analyze_presentation_contract(frames),
         "timeline": timeline,
         "interpretation": (
             "Projection is recomputed from intended submitted transforms; real framebuffer comparisons remain separate. "
