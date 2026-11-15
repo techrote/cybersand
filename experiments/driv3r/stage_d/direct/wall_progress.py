@@ -11,7 +11,7 @@ from typing import Any, Callable
 from . import offline as d
 from . import paired
 
-VERSION = "d1a-selected-wall-ordered-progress/1"
+VERSION = "d1a-selected-wall-ordered-progress/2"
 
 
 def _summarize_wall_progress(
