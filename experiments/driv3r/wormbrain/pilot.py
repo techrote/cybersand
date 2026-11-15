@@ -289,7 +289,6 @@ def gallery(root, initial, final, actions, traces):
     small.putpixel(tuple(endpoint), (253, 97, 129))
     enlarged = small.resize((768,768), resample=Image.Resampling.NEAREST)
     enlarged.save(root/"native-material.png")
-    bounds = [*START, *(v for point in points for v in point)]
     xs = [START[0],*[p[0] for p in points]]
     ys = [START[1],*[p[1] for p in points]]
     x0, x1 = max(0,min(xs)-6), min(crop,max(xs)+7)
@@ -328,7 +327,7 @@ def gallery(root, initial, final, actions, traces):
     return [
         _blob(root.parent, "gallery/native-material.png", "png"),
         _blob(root.parent, "gallery/worm-closeup.png", "png"),
-        *([_blob(root.parent, "gallery/worm-motion.gif", "gif")] if frames else []),
+        *([_blob(root.parent, "gallery/worm-motion.gif", "bin")] if frames else []),
     ]
 
 
@@ -540,8 +539,7 @@ def qualify(args):
             "elapsed_seconds":round(time.monotonic()-started,3),
             "limitations":["Worm turns are model-selected; no global goal or A* objective",
                            "PNG/GIF show stored native material and selected moves, not framebuffer",
-                           "One seed, two soft-guidance arms: exploratory line character, not
-statistical proof"],
+                           "One seed, two soft-guidance arms: exploratory line character, not statistical proof"],
         }
         _dump(root,"execution/summary.json",report)
         print(json.dumps({k:report[k] for k in (
