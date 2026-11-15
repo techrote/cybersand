@@ -64,9 +64,15 @@ func _pure_projection() -> void:
 			var line: String = file.get_line()
 			if not line.is_empty(): lines.append(line)
 		file.close()
-		check(lines.size()==4 and JSON.parse_string(lines[0]).type=="header" and
-			JSON.parse_string(lines[1]).type=="frame" if lines.size()==4 else false,
-			"JSON Lines includes header, both frame records and footer")
+		if lines.size()==4:
+			var header: Dictionary = JSON.parse_string(lines[0])
+			var first: Dictionary = JSON.parse_string(lines[1])
+			var last: Dictionary = JSON.parse_string(lines[3])
+			check(header.get("type","")=="header" and first.get("type","")=="frame"
+				and last.get("type","")=="summary",
+				"JSON Lines includes header, both frame records and footer")
+		else:
+			check(false,"JSON Lines must contain four lines")
 
 
 func _run() -> void:
