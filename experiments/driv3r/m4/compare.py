@@ -136,8 +136,9 @@ def draw(root,episode,native,journal,actions,receipts,artifacts,guide,
     moved=native.cursor_move(cursor["from"],target)
     _assert(moved["status"]=="completed" and moved["receipt"]["actual_changed_cells"]==0,
             "Brush-up cursor update changed native material")
-    act=_record_action(root,episode,len(journal),obs,before,cursor["from"],target,
-                        code,result,legal_sha=legal_hash or digest([_op(target)]))
+    act=_record_action(root,episode,len(journal),obs,before,result["observation"],
+                        cursor["from"],target,code,result,
+                        legal_sha=legal_hash or digest([_op(target)]))
     if model:
         act["actor"]="d1";act["candidate_id"]=cursor["candidate"]
         act["model_decision_ref"]=f"model-{cursor['index']:04d}"
