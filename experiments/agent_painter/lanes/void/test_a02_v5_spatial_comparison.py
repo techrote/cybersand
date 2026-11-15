@@ -1,9 +1,12 @@
 """Fail-closed, network-free source regressions for pinned A02 v5 spatial witness."""
 import unittest
+import json
+import hashlib
+from unittest.mock import patch
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from a02_v5_spatial_comparison import (need, mask, iou, proximity_fraction,
-                                       compare, visible_architecture, checked_zip)
+                                       compare, visible_architecture, checked_zip, SEEDS, SPLITS)
 
 
 class A02V5SpatialTests(unittest.TestCase):
@@ -44,7 +47,7 @@ class A02V5SpatialTests(unittest.TestCase):
             def read(self, name):
                 raise AssertionError("not permitted to read a sealed target")
         with self.assertRaisesRegex(ValueError, "sealed/unknown"):
-            visible_architecture(NoReads(), "FINAL")
+            visible_architecture(NoReads(), "FINAL", {})
 
     def test_v5_superset_does_not_imply_monotone_iou(self):
         # The original 138-cell addition may lower IoU against a peer that
@@ -52,17 +55,56 @@ class A02V5SpatialTests(unittest.TestCase):
         # Geometry/split identity, not a metric improvement, is the invariant.
         four = set(range(524))
         five = set(range(662))
-        result = compare(four, five, [
-            ("TRAIN", "overlaps-original", {0, 1}),
-            ("DEVELOPMENT", "overlaps-addition", {650, 651}),
-        ])
-        self.assertEqual(len(result), 2)
+        peers = [(split, group, seed, cells, "a" * 64, "b" * 64, "c" * 64)
+                 for split, group, cells in (("TRAIN", "overlaps-original", {0, 1}),
+                                             ("TRAIN", "second-train", {0, 1}),
+                                             ("DEVELOPMENT", "overlaps-addition", {650, 651}),
+                                             ("DEVELOPMENT", "second-dev", {650, 651}))
+                 for seed in SEEDS]
+        result = compare(four, five, peers)
+        self.assertEqual(len(result), 8)
         self.assertLess(result[0]["v5_iou"], result[0]["v4_iou"])
-        self.assertGreater(result[1]["v5_iou"], result[1]["v4_iou"])
+        self.assertGreater(result[4]["v5_iou"], result[4]["v4_iou"])
         self.assertEqual(result[0]["split"], "TRAIN")
-        self.assertEqual(result[1]["split"], "DEVELOPMENT")
+        self.assertEqual(result[4]["split"], "DEVELOPMENT")
+        self.assertEqual([r["reference_seed"] for r in result[:2]], list(SEEDS))
         with self.assertRaisesRegex(ValueError, "138-cell"):
-            compare(four, five - {0} | {700}, [("TRAIN", "toy", {0, 1})])
+            compare(four, five - {0} | {700}, peers)
+
+    def test_missing_second_seed_is_fail_closed(self):
+        """Twelve original rows and six groups are insufficient if a host seed is lost."""
+        groups = ["arch-A", "arch-B", "other-C", "other-D", "other-E", "other-F"]
+        rows = [{"group_id": group, "family": "architecture", "seed": seed,
+                 "id": f"{group}-{seed}"} for group in groups[:2] for seed in SEEDS]
+        rows.extend({"group_id": groups[2 + (i % 4)], "family": "pipework",
+                     "seed": SEEDS[i % 2], "id": f"other-{i}"} for i in range(8))
+        rows[3]["seed"] = SEEDS[0]  # duplicate (arch-B, seed0); omit seed1
+        payload = b"".join((json.dumps(row) + "\n").encode("utf-8") for row in rows)
+        digest = hashlib.sha256(payload).hexdigest()
+
+        class VisibleOnly:
+            def read(self, name):
+                if name != "corpus/train.jsonl":
+                    raise AssertionError("do not open native/FINAL when a split is incomplete")
+                return payload
+
+        manifest = {"source_sha": "633920373a3d406a2ede61ce4137c324f76be23b",
+                    "split_files": {"TRAIN": {"sha256": digest, "count": 12}},
+                    "structural_groups": {"TRAIN": groups}}
+        with patch.dict(SPLITS, {"TRAIN": digest}):
+            with self.assertRaisesRegex(ValueError, "both native seeds"):
+                visible_architecture(VisibleOnly(), "TRAIN", manifest)
+
+    def test_compare_rejects_missing_or_duplicated_reference_seed(self):
+        four, five = set(range(524)), set(range(662))
+        peers = [(split, group, seed, {5}, "a" * 64, "b" * 64, "c" * 64)
+                 for split, group in (("TRAIN", "A"), ("TRAIN", "B"),
+                                      ("DEVELOPMENT", "C"), ("DEVELOPMENT", "D"))
+                 for seed in SEEDS]
+        with self.assertRaisesRegex(ValueError, "eight original"):
+            compare(four, five, peers[:-1])
+        with self.assertRaisesRegex(ValueError, "duplicate or missing"):
+            compare(four, five, peers[:-1] + [peers[0]])
 
     def test_reject_nonoriginal_zip(self):
         with TemporaryDirectory() as tmp:
