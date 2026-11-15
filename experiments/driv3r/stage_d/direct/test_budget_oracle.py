@@ -3,7 +3,8 @@ import unittest
 from dataclasses import replace
 
 from experiments.driv3r.stage_d.direct.budget_oracle import (
-    bounded_optimal_route, audit_development_budget_route)
+    bounded_optimal_route, audit_development_budget_route,
+    PlanningBudgetExceeded)
 from experiments.driv3r.stage_d.direct import offline
 
 
@@ -92,6 +93,34 @@ class BudgetOracleTests(unittest.TestCase):
                        split="development")
         with self.assertRaisesRegex(ValueError, "Unpinned"):
             audit_development_budget_route(held)
+
+    def test_resource_cap_fails_explicitly_not_as_false_nonarrival(self):
+        with self.assertRaisesRegex(PlanningBudgetExceeded, "CPU probe cap"):
+            bounded_optimal_route(9, 9, (0, 0), (8, 8),
+                                  lambda p: True, decision_budget=36,
+                                  max_predecessor_probes=3)
+
+    def test_cap_does_not_change_successful_optimum(self):
+        args = (14, 3, (0, 1), (12, 1), lambda p: True)
+        normal = bounded_optimal_route(*args, decision_budget=3)
+        ample = bounded_optimal_route(
+            *args, decision_budget=3, max_predecessor_probes=100_000)
+        self.assertTrue(normal["feasible_arrival_within_budget"])
+        self.assertEqual(normal["optimal_cost_within_budget"],
+                         ample["optimal_cost_within_budget"])
+        self.assertEqual(normal["cursor_path"], ample["cursor_path"])
+        self.assertEqual(normal["predecessor_probes"],
+                         ample["predecessor_probes"])
+        self.assertLess(normal["predecessor_probes"],
+                        normal["predecessor_probe_cap"])
+
+    def test_invalid_cpu_probe_limits_are_refused(self):
+        for limit in (0, True, -1, 50_000_001, 1.5):
+            with self.subTest(limit=limit), self.assertRaisesRegex(
+                    ValueError, "probe cap"):
+                bounded_optimal_route(4, 2, (0, 0), (3, 0),
+                                      lambda p: True,
+                                      max_predecessor_probes=limit)
 
 
 if __name__ == "__main__":
