@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     env:
-      EVIDENCE: ${{ runner.temp }}/lfm-w4-original-forensics
+      EVIDENCE: evidence-w4
       ORIGINAL_RUN: '43706057786'
       ORIGINAL_ARTIFACT: '14159141242'
       ORIGINAL_SHA256: '6c06000a9532238b3a05d340af07153fee3c16aedee6e6dd256d114969578ad0'
@@ -159,6 +159,6 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: worm-lfm-support-w4-original-audit-${{ github.sha }}-${{ github.run_id }}
-          path: ${{ runner.temp }}/lfm-w4-original-forensics/
+          path: evidence-w4/
           retention-days: 30
           if-no-files-found: warn
