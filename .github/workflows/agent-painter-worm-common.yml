@@ -1,0 +1,50 @@
+name: WORM-001 deterministic baseline
+on:
+  push:
+    branches:
+      - research/612-worm-common
+    paths:
+      - experiments/agent_painter/worm/common/**
+      - .github/workflows/agent-painter-worm-common.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-and-gallery:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify source identity and CI runner policy
+        shell: bash
+        run: |
+          set -euo pipefail
+          git rev-parse HEAD
+          python3 --version
+          sha256sum experiments/agent_painter/worm/common/worm.py
+          python3 tools/ci/check_ci_provider_policy.py
+      - name: Bounded legality and determinism tests
+        run: python3 -m unittest discover -s experiments/agent_painter/worm/common -p 'test_worm.py' -v
+      - name: Produce real baseline PNG and JSON receipts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 experiments/agent_painter/worm/common/worm.py --seeds 11,29 --steps 420 --output evidence/worm001 | tee evidence-receipts.jsonl
+          test "$(find evidence/worm001 -maxdepth 1 -name '*.png' | wc -l)" -eq 18
+          test "$(find evidence/worm001 -maxdepth 1 -name '*.json' | wc -l)" -eq 18
+          git rev-parse HEAD > source-sha.txt
+          (cd evidence/worm001 && sha256sum *.png *.json) > evidence-sha256.txt
+      - name: Original gallery and failure receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: worm001-stdlib-baseline
+          path: |
+            evidence/worm001/
+            evidence-receipts.jsonl
+            evidence-sha256.txt
+            source-sha.txt
+          if-no-files-found: warn
+          retention-days: 30
