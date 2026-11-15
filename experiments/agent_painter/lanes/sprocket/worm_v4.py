@@ -20,7 +20,9 @@ SUPPORT_COMMIT = "2b6534ac21542805f4bda123f67e9624d21e39d7"
 W0_BLOB = "8979b6f0296e81051194bacc907992d38e006605"
 SUPPORT_BLOB = "4f879502921e26d526a8976f79954ffa636c1d4a"
 SCHEMA = "cybersand.worm.sprocket-steering-code-v4"
-SYSTEM = base.SYSTEM
+SYSTEM = ("You control a tiny procedural line drawing worm. Emit exactly one digit "
+          "followed by EOS: 0=STRAIGHT, 1=LEFT, 2=RIGHT, 3=BRANCH, 4=RETRACE, "
+          "5=STOP. Choose only a host-legal action from OBS; no other text.")
 ACTIONS = base.ACTIONS
 ACTION_TO_CODE = dict(zip(ACTIONS, ("0", "1", "2", "3", "4", "5")))
 CODE_TO_ACTION = {code: action for action, code in ACTION_TO_CODE.items()}
