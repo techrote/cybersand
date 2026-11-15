@@ -1,0 +1,59 @@
+name: WORM LFM support fleet four-episode evidence gate (source-only)
+on:
+  push:
+    branches:
+      - research/612-worm-lfm-support
+    paths:
+      - 'experiments/agent_painter/worm/support_lfm/**'
+      - '.github/workflows/agent-painter-worm-lfm-support-fleet.yml'
+  pull_request:
+    paths:
+      - 'experiments/agent_painter/worm/support_lfm/**'
+      - '.github/workflows/agent-painter-worm-lfm-support-fleet.yml'
+permissions:
+  contents: read
+jobs:
+  fleet-source-preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Source-only four-process audit regressions (not resident models)
+        run: |
+          python3 -m py_compile experiments/agent_painter/worm/support_lfm/fleet_episode_audit.py
+          python3 -m py_compile experiments/agent_painter/worm/support_lfm/capture_fleet_pulse.py
+          python3 -m py_compile experiments/agent_painter/worm/support_lfm/compare_fleet_capacity.py
+          python3 experiments/agent_painter/worm/support_lfm/test_fleet_episode_audit.py -v
+      - name: Generate actual original W0-only adverse/control PNGs
+        run: |
+          python3 experiments/agent_painter/worm/common/worm.py \
+            --output worm-lfm-fleet-w0-controls \
+            --seeds 51001,51002,51003,51004 \
+            --families greebles,pipework,architecture \
+            --modes random,wall,fidget \
+            --steps 16
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib,json
+          folder=Path("worm-lfm-fleet-w0-controls")
+          png=sorted(folder.glob("*.png"))
+          traces=sorted(folder.glob("*.json"))
+          assert len(png)==len(traces)==36
+          manifest={"schema":"worm-lfm-fleet-controls-only/1",
+                    "trained_model_inference":False,"resident_inference_processes":0,
+                    "native_godot":False,"decision_budget":16,
+                    "files":[{"path":str(p),"sha256":hashlib.sha256(p.read_bytes()).hexdigest()}
+                             for p in png+traces]}
+          (folder/"SHA256.json").write_text(json.dumps(manifest,indent=2,sort_keys=True)+"\n")
+          print("W0 source-only original PNG/trace pairs:",len(png))
+          PY
+      - name: Archive clearly labelled W0-only baseline gallery
+        uses: actions/upload-artifact@v4
+        with:
+          name: worm-lfm-fleet-W0-CONTROLS-NOT-MODELS
+          path: worm-lfm-fleet-w0-controls/
+          if-no-files-found: error
+          retention-days: 14
