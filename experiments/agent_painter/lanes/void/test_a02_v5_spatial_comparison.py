@@ -46,13 +46,21 @@ class A02V5SpatialTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "sealed/unknown"):
             visible_architecture(NoReads(), "FINAL")
 
-    def test_v5_cannot_be_counted_as_new_structure(self):
-        # Synthetic domains: v4 524 cells; v5 must add exactly 138 and retain all.
+    def test_v5_superset_does_not_imply_monotone_iou(self):
+        # The original 138-cell addition may lower IoU against a peer that
+        # overlaps only v4, while raising it against a peer in the added region.
+        # Geometry/split identity, not a metric improvement, is the invariant.
         four = set(range(524))
         five = set(range(662))
-        result = compare(four, five, [("TRAIN", "toy", {0, 1})])
-        self.assertEqual(len(result), 1)
-        self.assertGreater(result[0]["v5_iou"], result[0]["v4_iou"])
+        result = compare(four, five, [
+            ("TRAIN", "overlaps-original", {0, 1}),
+            ("DEVELOPMENT", "overlaps-addition", {650, 651}),
+        ])
+        self.assertEqual(len(result), 2)
+        self.assertLess(result[0]["v5_iou"], result[0]["v4_iou"])
+        self.assertGreater(result[1]["v5_iou"], result[1]["v4_iou"])
+        self.assertEqual(result[0]["split"], "TRAIN")
+        self.assertEqual(result[1]["split"], "DEVELOPMENT")
         with self.assertRaisesRegex(ValueError, "138-cell"):
             compare(four, five - {0} | {700}, [("TRAIN", "toy", {0, 1})])
 
