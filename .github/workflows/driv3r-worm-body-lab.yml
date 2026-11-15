@@ -30,7 +30,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 -m compileall -q experiments/driv3r/wormbrain/body_lab
-          python3 -m unittest -v experiments.driv3r.wormbrain.body_lab.test_preflight experiments.driv3r.wormbrain.body_lab.test_body_v2
+          python3 -m unittest -v experiments.driv3r.wormbrain.body_lab.test_preflight experiments.driv3r.wormbrain.body_lab.test_body_v2 experiments.driv3r.wormbrain.body_lab.test_native_inert_adapter
       - name: Four synthetic original PNGs and source ledger
         shell: bash
         run: |
