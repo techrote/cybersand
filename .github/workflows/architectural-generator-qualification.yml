@@ -9,6 +9,9 @@ on:
       - 'tools/architecture/**'
       - 'examples/worldgen/**'
       - 'docs/operations/architectural-generator-playtest.md'
+      - 'tools/ci/gen007_architectural_runtime_publication.py'
+      - 'tools/ci/gen007_architectural_publish_request.json'
+      - 'tools/ci/test_gen007_architectural_runtime_publication.py'
   workflow_dispatch:
 permissions:
   contents: read
@@ -26,7 +29,24 @@ env:
   LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
   RAPIER_WINDOWS_SHA256: b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7
 jobs:
+  publisher-guards:
+    name: GEN-007 fail-closed four-file publication guards
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Compile and challenge source-bound publisher
+        run: |
+          set -euo pipefail
+          python3 -m py_compile tools/ci/gen007_architectural_runtime_publication.py
+          python3 tools/ci/test_gen007_architectural_runtime_publication.py
+          python3 tools/ci/test_lcb001_shared_contract_runtime_publication.py
+          python3 tools/ci/check_ci_provider_policy.py
   linux:
+    needs: publisher-guards
     name: Linux native GEN-007 and graphical Workbench
     runs-on: ubuntu-24.04
     timeout-minutes: 180
@@ -93,6 +113,32 @@ jobs:
           xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
             python3 tools/ci/run_flatten_qualification.py --godot "$GODOT_BIN" --project godot \
               --evidence evidence/flatten-integration --cases 512x1
+      - name: Record and attest actual source-matched Linux library
+        if: github.event_name == 'push'
+        run: |
+          set -euo pipefail
+          mkdir -p build/gen007-publish-linux
+          {
+            echo "Ubuntu 24.04 Linux x86_64; pinned godot-cpp=$GODOT_CPP_COMMIT; SCons=4.10.1"
+            g++-13 --version | head -n 1
+            find "$RUNNER_TEMP/godot-cpp/bin" -maxdepth 1 -name 'libgodot-cpp*.a' -exec sha256sum '{}' ';'
+            sha256sum godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
+          } > evidence/native-publisher-toolchain.txt
+          python3 tools/ci/gen007_architectural_runtime_publication.py record --source-sha "$GITHUB_SHA" --platform linux \
+            --bundle build/gen007-publish-linux \
+            --runtime godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so \
+            --toolchain evidence/native-publisher-toolchain.txt
+          python3 tools/ci/gen007_architectural_runtime_publication.py accept --source-sha "$GITHUB_SHA" --platform linux \
+            --bundle build/gen007-publish-linux --qualification evidence/architecture \
+            --flatten evidence/flatten-integration --godot-archive "$RUNNER_TEMP/godot.zip"
+      - name: Preserve validated Linux native and graphical receipts
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: architecture-validated-linux-${{ github.run_id }}
+          path: build/gen007-publish-linux/
+          if-no-files-found: error
+          retention-days: 90
       - name: Retain original Linux results and actual native previews
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -102,6 +148,7 @@ jobs:
           if-no-files-found: error
           retention-days: 90
   windows-build:
+    needs: publisher-guards
     name: Pinned source-matched Windows DLL
     runs-on: ubuntu-24.04
     timeout-minutes: 120
@@ -152,6 +199,29 @@ jobs:
           timeout 3600 bash "$RUNNER_TEMP/architecture-immutable-base/tools/build_native_extension_windows.sh" > evidence/build-immutable-base.log 2>&1 || { tail -160 evidence/build-immutable-base.log; exit 1; }
           python3 "$RUNNER_TEMP/architecture-immutable-base/tools/ci/native_candidate_identity.py" "$GITHUB_WORKSPACE/build/architecture-windows-base" --create
           sha256sum "$GODOT_CPP_ROOT/bin/libgodot-cpp.windows.template_debug.x86_64.a" > evidence/shared-godot-cpp.sha256
+      - name: Bind cross-compiled Windows binary to pinned compiler and source
+        if: github.event_name == 'push'
+        run: |
+          set -euo pipefail
+          {
+            echo "Ubuntu 24.04 cross-target Windows x86_64; godot-cpp=$GODOT_CPP_COMMIT; SCons=4.10.1"
+            "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-g++" --version | head -n 1
+            echo "LLVM-MinGW archive SHA-256=$LLVM_MINGW_SHA256"
+            find "$RUNNER_TEMP/godot-cpp/bin" -maxdepth 1 -name 'libgodot-cpp*.a' -exec sha256sum '{}' ';'
+            sha256sum build/architecture-windows/cybersand_native.windows.x86_64.dll
+          } > evidence/native-publisher-toolchain.txt
+          python3 tools/ci/gen007_architectural_runtime_publication.py record --source-sha "$GITHUB_SHA" --platform windows \
+            --bundle build/gen007-publish-windows \
+            --runtime build/architecture-windows/cybersand_native.windows.x86_64.dll \
+            --toolchain evidence/native-publisher-toolchain.txt
+      - name: Retain Windows source-bound prepublication custody
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: architecture-prepublish-windows-${{ github.run_id }}
+          path: build/gen007-publish-windows/
+          if-no-files-found: error
+          retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: architecture-windows-runtime-${{ github.run_id }}
@@ -188,6 +258,12 @@ jobs:
         with:
           name: architecture-windows-base-${{ github.run_id }}
           path: build/architecture-windows-base
+      - name: Restore independently recorded Windows build custody
+        if: github.event_name == 'push'
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: architecture-prepublish-windows-${{ github.run_id }}
+          path: build/gen007-publish-windows
       - name: Verify and install same-source native runtime and official Godot
         shell: pwsh
         run: |
@@ -277,6 +353,21 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Delivered ZIP combined architecture/Flatten author and reopen failed' }
           python tools/architecture/qualify.py --godot (Join-Path $validation 'Godot_v4.7-stable_win64_console.exe') --project (Join-Path $validation 'godot') --output evidence/package --suite owner --graphical
           if ($LASTEXITCODE -ne 0) { throw 'Delivered ZIP author/reopen failed' }
+      - name: Attest Windows graphical native, Flatten and extracted owner package
+        if: github.event_name == 'push'
+        shell: pwsh
+        run: |
+          $archive = Join-Path $env:RUNNER_TEMP 'godot.zip'
+          python tools/ci/gen007_architectural_runtime_publication.py accept --source-sha $env:GITHUB_SHA --platform windows --bundle build/gen007-publish-windows --qualification evidence/architecture --flatten evidence/flatten-integration --package evidence/package --package-flatten evidence/package-flatten --godot-archive $archive
+          if ($LASTEXITCODE -ne 0) { throw 'GEN-007 Windows publication acceptance failed' }
+      - name: Retain validated Windows DLL and graphical/package receipts
+        if: github.event_name == 'push'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: architecture-validated-windows-${{ github.run_id }}
+          path: build/gen007-publish-windows/
+          if-no-files-found: error
+          retention-days: 90
       - name: Retain Windows owner evaluation ZIP and exact archive hash
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
@@ -294,3 +385,66 @@ jobs:
           path: evidence/
           if-no-files-found: error
           retention-days: 90
+
+
+  publish:
+    name: Atomically retain only two qualified native libraries and two provenance records
+    needs: [publisher-guards, linux, windows-build, windows]
+    if: github.event_name == 'push' && github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/feat/gen007-architectural-generator-ab'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - name: Checkout immutable built source, not a moving branch
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+      - name: Fence source SHA, exact branch, request and remote lease
+        run: |
+          set -euo pipefail
+          python3 tools/ci/test_gen007_architectural_runtime_publication.py
+          python3 tools/ci/gen007_architectural_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+          git lfs install --local
+      - name: Retrieve validated Linux runtime and receipts
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: architecture-validated-linux-${{ github.run_id }}
+          path: build/gen007-publish-linux
+      - name: Retrieve validated Windows runtime and receipts
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: architecture-validated-windows-${{ github.run_id }}
+          path: build/gen007-publish-windows
+      - name: Independently verify both receipts and stage only the four retained paths
+        run: |
+          set -euo pipefail
+          python3 tools/ci/gen007_architectural_runtime_publication.py stage --source-sha "$GITHUB_SHA" \
+            --linux-bundle build/gen007-publish-linux --windows-bundle build/gen007-publish-windows
+          git add -- godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so \
+            godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll \
+            godot/addons/cybersand_native/runtime-provenance.linux.json \
+            godot/addons/cybersand_native/runtime-provenance.json
+          python3 tools/ci/gen007_architectural_runtime_publication.py check-index --source-sha "$GITHUB_SHA"
+          git diff --check --cached
+          git diff --exit-code
+      - name: Commit onto unchanged PR branch only, never merge
+        run: |
+          set -euo pipefail
+          python3 tools/ci/gen007_architectural_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+          python3 tools/ci/gen007_architectural_runtime_publication.py check-index --source-sha "$GITHUB_SHA"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'build(gen007): retain exact-source Linux and Windows runtimes'
+          test "$(git rev-list --parents -n 1 HEAD)" = "$(git rev-parse HEAD) $GITHUB_SHA"
+          git push --force-with-lease="refs/heads/feat/gen007-architectural-generator-ab:$GITHUB_SHA" \
+            origin HEAD:refs/heads/feat/gen007-architectural-generator-ab
+          {
+            echo '### GEN-007 source-matched runtime publication'
+            echo "Built and qualified source: $GITHUB_SHA"
+            echo "Four-file publication commit: $(git rev-parse HEAD)"
+            echo 'Both target-OS graphical and native/Flatten and package replays passed. The PR remains unmerged.'
+          } >> "$GITHUB_STEP_SUMMARY"
