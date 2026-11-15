@@ -233,6 +233,30 @@ class SyntheticBody:
         return receipt
 
 
+
+def replay_synthetic_actions(lease, initial, options, actions, *,
+                             expected_final_sha256=None):
+    """Source-matched model-free receipt replay, NOT independent native readback."""
+    if type(actions) is not list or len(actions) > SYNTHETIC_TURN_CEILING:
+        raise Refusal("Bounded source-matched replay only")
+    b = SyntheticBody(lease, initial, options=options)
+    for record in actions:
+        if type(record) is not dict:
+            raise Refusal("Bad replay record")
+        observation = b.observation()
+        if record.get("offered_menu_digest") != observation["menu_digest"]:
+            raise Refusal("Replay offered-menu/source drift")
+        choice = record.get("selected_action_id")
+        raw = record.get("original_choice_response")
+        emitted = b.choose(choice, observation["menu_digest"],
+                           original_response=raw)
+        if emitted != record:
+            raise Refusal("Replay receipt mismatch, including original world hashes")
+    if expected_final_sha256 is not None and digest(b.material) != expected_final_sha256:
+        raise Refusal("Replay final material hash mismatch")
+    return b
+
+
 def synthetic_rollout(lease, *, options=BodyOptions(),
                       seed=570, turns=SYNTHETIC_TURN_CEILING):
     """Pure model-free seeded study, never evidence of a loaded model or Godot."""
@@ -283,6 +307,13 @@ def showcase(folder):
                       f"proposed-runner-{i//2}",f"body-world-{i}",
                       "NO_MODEL_ATTACHED",570)
         body = synthetic_rollout(lease,options=opts,seed=570)
+        # Original controller trace is replayed on a fresh isolated synthetic World.
+        # This is SAME-CODE evidence integrity, NOT independent native verification.
+        verified = replay_synthetic_actions(
+            lease, body.initial, opts, body.trace,
+            expected_final_sha256=digest(body.material))
+        if verified.material != body.material or verified.cursor != body.cursor:
+            raise Refusal("Four-arm body-v2 deterministic replay mismatch")
         png = _png(body.view())
         trace = {
             "classification": "MODEL-FREE SYNTHETIC, NOT NATIVE",
@@ -292,6 +323,9 @@ def showcase(folder):
             "active_resident_model_pids": [],
             "native_receipts": 0,
             "model_calls": 0,
+            "options": {"span":opts.span,"pen_up":opts.pen_up,
+                        "branch_anchors":opts.branch_anchors},
+            "source_matched_replay": True,
             "decisions": body.decisions,
             "logical_cursor_moves": body.logical_moves,
             "inked_cells_from_material_delta":
