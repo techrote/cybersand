@@ -352,9 +352,15 @@ python3 -m unittest discover -s experiments/driv3r/stage_d/guidance -p 'test_wor
 python3 -m unittest discover -s experiments/driv3r/stage_d/guidance -p 'test_*.py' -v
 ```
 
-The new tests are **committed but not yet run as a complete real-source
-Python suite** in this environment. Existing GitHub Stage A/documentation
-checks do not prove that these tests ran. Morphology remains **synthetic
+**Focused exact-source offline qualification:** 9/9 new stdlib methods
+PASS on Python 3.13.5, independently verified against the GitHub blob SHA-1
+of all four executed files: new binder `f8ff45bf6e04e1c8b6b4fbd17251205653955157`,
+new tests `48299964537c2d1deca35329bb869c10b1605b94`,
+`worm_trace.py` `009db1737f9bb5388d66a6b1a7157b38a05c46d5`,
+and `worm_morphology.py` `00352120d45b1c8a98e603fc15625f0962ea38f5`.
+The **complete D-1B exact-head suite remains unexecuted**: existing GitHub
+Stage A/documentation checks do not prove that it ran.
+Morphology remains **synthetic
 intended contacts**, not real d1 selection, actual native ink, receipt-backed
 material or causal steering. Full M2 conformance and later owner-gated native
 work remain outstanding.
