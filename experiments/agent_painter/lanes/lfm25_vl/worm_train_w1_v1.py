@@ -22,7 +22,7 @@ import sys
 import time
 
 HERE = Path(__file__).resolve().parent
-ROOT = HERE.parents[2]
+ROOT = HERE.parents[1]
 TRAINING = ROOT / "training"
 sys.path.insert(0, str(TRAINING))
 from common import canonical, profile, sha256_file, write_json
@@ -179,7 +179,7 @@ def main():
         raise ValueError("immutable output lease already exists")
     args.output.mkdir(parents=True)
     started = time.monotonic()
-    source = git("rev-parse", "HEAD", cwd=ROOT.parent)
+    source = git("rev-parse", "HEAD", cwd=ROOT.parents[1])
     write_json(args.output / "lease.json", {"experiment": "lfm-worm-w1-fresh-v1",
                "source_sha": source, "worm_sha": WORM_SHA,
                "github_run_id": os.environ.get("GITHUB_RUN_ID"),
