@@ -1,0 +1,87 @@
+name: WORM LFM support - W7 original receipt and anti-RIGHT probe
+on:
+  push:
+    branches: [research/612-worm-lfm-support]
+    paths:
+      - '.github/workflows/agent-painter-worm-lfm-support-w7-anti-right.yml'
+      - 'experiments/agent_painter/worm/support_lfm/w7_anti_right_audit.py'
+      - 'experiments/agent_painter/worm/support_lfm/test_w7_anti_right_audit.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: worm-lfm-support-w7-anti-right
+  cancel-in-progress: false
+jobs:
+  audit:
+    name: Original 96 first passes and 24 W0 PNGs; 15 distinct anti-RIGHT prompts; zero optimizer
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Source, no trainer, runner policy, adversarial tests
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$(git hash-object experiments/agent_painter/worm/common/worm.py)" = 8979b6f0296e81051194bacc907992d38e006605
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/w7-anti-right-policy.json
+          python3 -m py_compile experiments/agent_painter/worm/support_lfm/w7_anti_right_audit.py
+          python3 -m unittest discover -s experiments/agent_painter/worm/support_lfm -p 'test_w7_anti_right_audit.py' -v
+          mkdir -p audit-support
+          echo "$GITHUB_SHA" > audit-support/source-head.txt
+      - name: Freshly retrieve original W0 and W7 GitHub artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test "$(gh api repos/techrote/cybersand/actions/artifacts/14165324490 --jq .digest)" = "sha256:458db32c6239536f6cbd4f421fc76356f734be4f9b7f9efb850a208875f42794"
+          test "$(gh api repos/techrote/cybersand/actions/artifacts/14166972797 --jq .digest)" = "sha256:51f6b2cb5214b818864dc739a958da79f433075d7dc7c0b71e352aa0480ea6ff"
+          curl --fail --location --silent --show-error --retry 3 --connect-timeout 20 --max-time 180 \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14165324490/zip" \
+            -o "$RUNNER_TEMP/original-support.zip"
+          curl --fail --location --silent --show-error --retry 3 --connect-timeout 20 --max-time 180 \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14166972797/zip" \
+            -o "$RUNNER_TEMP/original-w7.zip"
+          echo "458db32c6239536f6cbd4f421fc76356f734be4f9b7f9efb850a208875f42794  $RUNNER_TEMP/original-support.zip" | sha256sum -c
+          echo "51f6b2cb5214b818864dc739a958da79f433075d7dc7c0b71e352aa0480ea6ff  $RUNNER_TEMP/original-w7.zip" | sha256sum -c
+      - name: Audit W7 original first passes and publish anti-RIGHT prompts and W0 PNGs
+        run: |
+          set -euo pipefail
+          python3 experiments/agent_painter/worm/support_lfm/w7_anti_right_audit.py \
+            --support-zip "$RUNNER_TEMP/original-support.zip" \
+            --primary-zip "$RUNNER_TEMP/original-w7.zip" \
+            --out audit-support/anti-right-v1 | tee audit-support/summary-stdout.json
+          python3 - <<'PY'
+          import json, pathlib, hashlib
+          p=pathlib.Path("audit-support/anti-right-v1")
+          r=json.loads((p/"report.json").read_text())
+          assert r["original_W7_first_pass_valid_code_and_EOS7"]==96
+          assert r["original_W7_raw_host_legal"]==95
+          assert r["original_W7_raw_RIGHT_count"]==96
+          assert r["original_legal_subset_masks_excluding_RIGHT"]==1
+          assert r["new_synthetic_masks_excluding_RIGHT"]==24
+          assert r["new_anti_right_unique_prompt_count"]==15
+          assert r["new_anti_right_repeated_provenance_cases"]==9
+          assert r["original_W0_PNGs_copied_byte_identical"]==24
+          assert len(list((p/"original-W0-PNG-and-trace").glob("*.png")))==24
+          assert r["new_model_first_passes"]==r["new_optimizer_updates"]==r["new_native_operations"]==0
+          x=(p/"anti-right-15-unique.jsonl").read_bytes()
+          assert hashlib.sha256(x).hexdigest()==r["new_anti_right_15_unique_sha256"]
+          assert len(x.splitlines())==15
+          print("Original first-pass/source audit and 15 unique anti-RIGHT prompts PASS")
+          PY
+      - name: Preserve original receipt audit, PNGs and failure evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: worm-lfm-support-w7-original-anti-right
+          path: audit-support/
+          if-no-files-found: warn
+          retention-days: 30
