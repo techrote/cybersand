@@ -171,6 +171,27 @@ def main():
                 write_json(args.output/"rolling-evidence.json",{
                     "records":records,"decisions":all_decisions,
                     "raw_greedy_starts":raw_starts,"new_optimizer_updates":0})
+    # Original PNG pixels only: six columns (seed × learned/flat), three themes.
+    # Human-readable labels sit outside the W0 raster; JSON/PNG originals stay intact.
+    from PIL import Image, ImageDraw
+    tile=384
+    title_h=30
+    montage=Image.new("RGB",(len(SEEDS)*2*tile,len(w7.FAMILIES)*(tile+title_h)),(24,24,24))
+    draw=ImageDraw.Draw(montage)
+    for iy,family in enumerate(w7.FAMILIES):
+        for ix,seed in enumerate(SEEDS):
+            for k,mode in enumerate(("learned","flat")):
+                x=(ix*2+k)*tile
+                y=iy*(tile+title_h)
+                draw.text((x+8,y+7),f"{family} / seed {seed} / {mode}",fill=(240,240,240))
+                stem=f"{family}-{mode}-{seed}"
+                with Image.open(gallery/(stem+".png")) as original:
+                    if original.mode!="RGB" or original.size!=(384,384):
+                        raise ValueError("W0 original PNG dimensions or colour changed")
+                    montage.paste(original,(x,y+title_h))
+    montage_path=gallery/"w9-scored-vs-flat-contact-sheet.png"
+    montage.save(montage_path)
+    montage_sha=sha256_file(montage_path)
     originals=[r for r in records if r["policy"]=="learned"]
     summary={"status":"complete",
         "original_optimizer_updates":45, "new_optimizer_updates":0,
@@ -182,6 +203,7 @@ def main():
         "raw_greedy_legal_count":sum(x["valid_first_pass"] for x in raw_starts),
         "raw_greedy_actions":dict(collections.Counter(x["raw_action"] for x in raw_starts)),
         "distinct_model_pngs":len({x["png_sha256"] for x in originals}),
+        "original_png_contact_sheet_sha256":montage_sha,
         "three_actual_obstacle_worlds_not_nine":True,
         "model_scores_vs_flat_same_world_tick":"W8 source-fixed CRN, T2.5, 70% model / 30% flat",
         "records":records,
