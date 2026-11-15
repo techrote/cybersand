@@ -147,6 +147,7 @@ class Q4Backend(ResidentDecisionBackend):
         super().__init__(binary, model, evidence_dir, **kwargs)
         # Explicit separate Q4 pin, checked by ResidentDecisionBackend.start().
         self.model_identity = dict(PINS["model"], **PINS["optional_q4"])
+        self.model_identity["quantization"] = "Q4_K_M"
 
 def q4_shadow(binary, model, rows, out):
     results = []
