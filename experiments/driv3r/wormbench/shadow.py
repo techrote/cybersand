@@ -32,6 +32,8 @@ MODELS = {
                "expected_sha256":"7e6f72643caafc9a68256686638c4d7916f2cec76d1df478d4c3ddcd95a6aed4"},
     "smol135": {"kind":"chat", "repository":"QuantFactory/SmolLM2-135M-Instruct-GGUF",
                 "filename":"SmolLM2-135M-Instruct.Q4_K_M.gguf"},
+    "smol135-grammar": {"kind":"chat_grammar", "repository":"QuantFactory/SmolLM2-135M-Instruct-GGUF",
+                "filename":"SmolLM2-135M-Instruct.Q4_K_M.gguf"},
     "sprocket500": {"kind":"chat", "repository":"kandivault/sprocket-500m",
                     "filename":"sprocket-500m-q4_k_m.gguf"},
     "sprocket500-grammar":{"kind":"chat_grammar",
@@ -338,9 +340,9 @@ def main():
             result,startup=q4_shadow(binary,model,rows,args.output)
         else:
             result,startup=slm_shadow(binary,model,rows,args.output,
-                                       grammar_constrained=args.model=="sprocket500-grammar")
+                                       grammar_constrained=MODELS[args.model]["kind"]=="chat_grammar")
         report=summarize(rows,result,identity,runtime,startup,time.monotonic()-started)
-        report["output_format_policy"]=("gbnf_exact_legal_id" if args.model=="sprocket500-grammar"
+        report["output_format_policy"]=("gbnf_exact_legal_id" if MODELS[args.model]["kind"]=="chat_grammar"
                                          else "strict_literal_legal_id_only")
         report["status"]="complete_shadow_inference"
         return_code=0
