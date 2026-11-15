@@ -215,5 +215,7 @@
   "merge": false,
   "ready": false,
   "production_default": false,
-  "preserve_original_failures": true
+  "preserve_original_failures": true,
+  "dispatch_attempt": 2,
+  "first_failed_preflight_run": 43768682038
 }
