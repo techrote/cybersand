@@ -1207,10 +1207,25 @@ func _input(event: InputEvent) -> void:
 	get_viewport().set_input_as_handled()
 
 func _pick(pos: Vector2i) -> void:
+	var presentation: Dictionary = host.workbench_presentation_frame
+	var coherent: bool = host._workbench_presentation_mode() == "coherent"
 	for a: Dictionary in applied.actors:
-		var state := body_state(int(a.id))
-		if state.is_empty(): continue
-		var local := (Vector2(pos)-Vector2(state.position)).rotated(-float(state.rotation))
+		var pose: Transform2D
+		if coherent:
+			# A safety hold can leave the live body ahead of its displayed pose.
+			# Hit-test the submitted actor, including its actual generation fence;
+			# withheld actors have no clickable visual footprint.
+			if not host._valid_workbench_mask_frame(presentation.get("mask_frame",{})): continue
+			var slot: int = host.physical_actor_session.slot_for_instance(int(a.id))
+			if not presentation.get("poses",{}).has(slot): continue
+			var member: Dictionary = host.physical_actor_session.bridge._members[slot]
+			if presentation.mask_frame.instances.get(int(a.id),{}).get("generation",-1) != member.generation: continue
+			pose = presentation.poses[slot]
+		else:
+			var state := body_state(int(a.id))
+			if state.is_empty(): continue
+			pose = Transform2D(float(state.rotation),Vector2(state.position))
+		var local := (Vector2(pos)-pose.origin).rotated(-pose.get_rotation())
 		if Setup.bounds(str(a.model)).grow(2).has_point(local):
 			select_instance(int(a.id))
 			return

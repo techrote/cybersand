@@ -255,7 +255,7 @@ class FrameTraceAnalysisTests(unittest.TestCase):
         self.assertEqual(result["presentation_contract"]["timeline_resets"], 2)
         self.assertEqual(result["events"], 0)
 
-    def test_withheld_actor_breaks_continuity_and_is_explicit(self):
+    def test_withheld_actor_is_explicit_and_preserves_source_time_continuity(self):
         rows = [contract_frame(1, 20, 100), contract_frame(2, 20, 100, "hidden"),
                 contract_frame(3, 21, 200)]
         rows[1]["bodies"][0].update(selected=None, selected_screen=None, source_reason="stale_generation")
@@ -263,6 +263,37 @@ class FrameTraceAnalysisTests(unittest.TestCase):
         self.assertEqual(result["withheld_body_frames"], 1)
         self.assertEqual(result["source_reasons"]["stale_generation"], 1)
         self.assertEqual(result["source_time_rewind_count"], 0)
+
+    def test_negative_source_step_is_unknown_and_does_not_erase_last_known_step(self):
+        rows = [contract_frame(1, 20, 100), contract_frame(2, -1, 100),
+                contract_frame(3, 12, 90)]
+        result = analyze(rows)["presentation_contract"]
+        self.assertEqual(result["selected_step_observations"], 2)
+        self.assertEqual(result["selected_step_unknown_visible_frames"], 1)
+        self.assertEqual(result["desired_minus_selected_steps"]["count"], 2)
+        self.assertEqual(result["source_time_rewind_count"], 1)
+        self.assertEqual(result["source_time_rewinds"][0]["prior_step"], 20)
+        self.assertEqual(result["source_time_rewinds"][0]["selected_step"], 12)
+
+    def test_hidden_gap_cannot_hide_source_time_rewind(self):
+        rows = [contract_frame(1, 20, 100), contract_frame(2, -1, 100, "hidden"),
+                contract_frame(3, 12, 90)]
+        rows[1]["bodies"][0].update(selected=None, selected_screen=None)
+        result = analyze(rows)["presentation_contract"]
+        self.assertEqual(result["withheld_body_frames"], 1)
+        self.assertEqual(result["source_time_rewind_count"], 1)
+        self.assertEqual(result["source_time_rewinds"][0]["backward_steps"], 8)
+
+    def test_actor_replacement_during_hidden_gap_does_reset_source_time(self):
+        for reset in (False, True):
+            with self.subTest(explicit_reset=reset):
+                rows = [contract_frame(1, 20, 100),
+                        contract_frame(2, -1, 100, "hidden", reset=reset, generation=1 if reset else 2),
+                        contract_frame(3, 1, 90, generation=1 if reset else 2)]
+                rows[1]["bodies"][0].update(selected=None, selected_screen=None)
+                result = analyze(rows)["presentation_contract"]
+                self.assertEqual(result["source_time_rewind_count"], 0)
+                self.assertEqual(result["timeline_resets"], 1)
 
     def test_legacy_trace_does_not_claim_unrecorded_source_time_or_stage_cost(self):
         result = analyze([moving_frame(1,100,100,0),moving_frame(2,80,110,0)])["presentation_contract"]

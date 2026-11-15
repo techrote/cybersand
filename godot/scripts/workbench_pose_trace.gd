@@ -116,20 +116,27 @@ func observe(row: Dictionary) -> void:
 			presentation.get("world_generation",sample.get("uploaded_world_generation",-1)),
 			body.get("instance_id",-1),body.get("generation",-1)]
 		var step: Variant = body.get("presentation_step",null)
+		var step_known: bool = (step is float or step is int) \
+			and is_finite(float(step)) and float(step) >= 0.0
+		if not step_known:
+			step = null
+			body["presentation_step"] = null
+		var visible: bool = screen is Array and screen.size() == 2
 		var same_timeline: bool = _previous_presentation_identity.get(slot,[]) == identity \
 			and not bool(body.get("timeline_reset",false))
 		if not same_timeline:
 			previous = null
+			_previous_presentation_step.erase(slot)
 		var prior_step: Variant = _previous_presentation_step.get(slot,null)
-		var steps_known: bool = (step is float or step is int) \
-			and (prior_step is float or prior_step is int)
+		var steps_known: bool = step_known and (prior_step is float or prior_step is int)
 		body["presentation_step_delta"] = float(step)-float(prior_step) \
-			if same_timeline and steps_known else null
+			if visible and same_timeline and steps_known else null
 		body["presentation_source_rewind"] = body.presentation_step_delta != null \
 			and float(body.presentation_step_delta) < -0.000001
-		if screen == null or step == null:
-			_previous_presentation_step.erase(slot)
-		else:
+		# A hidden or unknown-time row cannot erase the last visible known
+		# source step. Compare the next visible pose across that gap; only an
+		# actual actor lifetime change/reset starts a new time sequence.
+		if visible and step_known:
 			_previous_presentation_step[slot] = step
 		_previous_presentation_identity[slot] = identity
 		body["source_changed"] = same_timeline and _previous_source.has(slot) \

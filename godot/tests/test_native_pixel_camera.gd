@@ -652,6 +652,10 @@ func follow_same_frame() -> void:
 	follow_setup.selected = 1
 	if not check(bench.apply(follow_setup),"paused follow actor admitted"): return
 	if not await until(ready,"paused follow actor installed"): return
+	# Installation can precede a valid visible material receipt. Follow must
+	# use the selected presentation pose; wait for that real safety decision.
+	if not await until(func() -> bool: return host.workbench_presentation_frame.get("poses",{}).has(0),
+		"paused follow actor has a certified displayed pose"): return
 	var state: Dictionary = bench.body_state(1)
 	if not check(not state.is_empty(),"real selected actor supplies follow pose"): return
 	host.set_process(false)
@@ -660,9 +664,10 @@ func follow_same_frame() -> void:
 	bench._camera.select(1)
 	var old_origin: Vector2 = host.camera_origin
 	host._process(1.0/60.0)
-	var desired: Vector2 = host.clamped_camera_origin(Vector2(state.position)-Vector2(host.current_view_size)*0.5)
+	var selected: Vector2 = host.workbench_presentation_frame.follow_target
+	var desired: Vector2 = host.clamped_camera_origin(selected-Vector2(host.current_view_size)*0.5)
 	check(near(host.camera_origin,desired) and not near(host.camera_origin,old_origin),
-		"parent frame resolves selected-body follow before child processing")
+		"parent frame resolves displayed-body follow before child processing")
 	var presented: Vector2 = host.presentation_camera_origin()
 	check(near(host.world_shader.get_shader_parameter("camera_origin_px"),presented),
 		"terrain uniform contains this frame's followed camera")
@@ -686,15 +691,22 @@ func observe_moving_follow(first_step: int) -> void:
 		moving_follow_invalid = true
 		return
 	var position: Vector2 = state.position
-	var desired: Vector2 = host.clamped_camera_origin(position-Vector2(host.current_view_size)*0.5)
+	var selected: Vector2 = host.workbench_presentation_frame.follow_target
+	var desired: Vector2 = host.clamped_camera_origin(selected-Vector2(host.current_view_size)*0.5) \
+		if selected.is_finite() else host.camera_origin
 	var presented: Vector2 = host.presentation_camera_origin()
 	var terrain: Vector2 = host.world_shader.get_shader_parameter("camera_origin_px")
 	var label := "moving follow physics step " + str(step)
-	check(near(host.camera_origin,desired),label+" camera follows the current physics pose")
+	check(near(host.camera_origin,desired),label+" camera follows the actual selected presentation pose")
+	var poses: Dictionary = host.workbench_presentation_frame.poses
+	if poses.has(0):
+		check(near(selected,poses[0].origin),label+" Follow target equals the submitted actor pose")
 	check(near(terrain,presented),label+" terrain contains this frame's presented origin")
 	for overlay: Control in [host.physical_actor_overlay,host.actor_prototype_overlay,host.usable_overlay]:
 		check(near(overlay._origin,presented),label+" overlay shares the terrain origin: "+overlay.get_class())
 	moving_follow_receipts.append({"physics_step":step,"position":[position.x,position.y],
+		"selected":[selected.x,selected.y] if selected.is_finite() else null,
+		"source":host.workbench_presentation_frame.sources.get(0,"hidden"),
 		"camera_origin":[host.camera_origin.x,host.camera_origin.y],
 		"presented_origin":[presented.x,presented.y],"terrain_origin":[terrain.x,terrain.y]})
 

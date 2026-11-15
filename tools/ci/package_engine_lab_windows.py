@@ -1,21 +1,23 @@
 #!/usr/bin/env python3
-"""Build and verify PR593 physical Windows candidate from a fixed Git tree."""
+"""Build the coherent Workbench Windows evaluation from one exact Git source."""
 import argparse
 import hashlib
 import io
 import json
 import os
-from pathlib import Path
+import re
+from pathlib import Path, PurePosixPath
 import shutil
 import subprocess
 import tarfile
 import zipfile
 
 ROOT=Path(__file__).resolve().parents[2]
-SOURCE=os.environ.get("CYBERSAND_EVAL_SOURCE_SHA","9628729af052b417aa8a64e56f7e7bcdf4f2e876")
+SOURCE=os.environ.get("CYBERSAND_EVAL_SOURCE_SHA", "")
+ACCEPTED_MAIN="018bd09503d7f079ddac52e225c2f7daf8d678bf"
+MANIFEST="CAMERA-STACK-MANIFEST.json"
 PARENT="214de85adef2aaabc8e26de8612a3bf27cc1a081"
 NATIVE="godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll"
-NATIVE_HASH="6c7811b78c12e34a68931f83f2fd505c20078c089bce245a9be8be6e02e6d04d"
 RAPIER="godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
 RAPIER_HASH="b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
 ENGINE="Godot_v4.7-stable_win64.exe"
@@ -23,6 +25,13 @@ CONSOLE="Godot_v4.7-stable_win64_console.exe"
 ENGINE_VERSION="4.7.stable.official.5b4e0cb0f"
 ENGINE_ZIP_HASH=("41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e"
                  "6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9")
+PRESERVED=("native","godot/native_extension","godot/addons/cybersand_native",
+           "godot/addons/godot-rapier2d","third_party/native-toolchain.lock.json",
+           "third_party/godot-runtime.lock.json","godot/third_party/rapier2d.lock.json")
+APPLICATION=("godot/scripts","godot/tests","godot/shaders","godot/project.godot","godot/main.tscn",
+             "tools/ci/package_engine_lab_windows.py","tools/ci/run_render_cadence_matrix.py",
+             "tools/ci/analyze_pose_trace.py","Run-Test-It.ps1","Test It.cmd",
+             "docs/operations/camera-stack-coherence-acceptance.md")
 
 def need(ok,message):
     if not ok: raise RuntimeError(message)
@@ -36,48 +45,114 @@ def digest(file,algorithm="sha256"):
 def git(*args):
     return subprocess.check_output(["git",*args],cwd=ROOT,text=True).strip()
 
-def source_and_binaries(native_dir):
-    need(git("rev-parse",SOURCE)==SOURCE,"Pinned Git source does not exist")
-    subprocess.run(["git","merge-base","--is-ancestor",PARENT,SOURCE],cwd=ROOT,check=True)
-    subprocess.run(["git","diff","--exit-code",PARENT,SOURCE,"--","native","godot/native_extension",
-                    "godot/scripts/workbench_physics_bridge.gd",
-                    "godot/scripts/pixel_camera_transform.gd"],cwd=ROOT,check=True)
-    provenance=json.loads((native_dir/"runtime-provenance.json").read_text())
-    dll=native_dir/Path(NATIVE).name
-    need(provenance.get("source_commit")==PARENT and provenance.get("sha256")==NATIVE_HASH
-         and digest(dll)==NATIVE_HASH,"Unqualified native DLL")
-    sources=provenance.get("source_inputs",{})
-    need(isinstance(sources,dict) and len(sources)>20,"Unqualified source inputs")
-    for name,expected in sources.items():
-        file=ROOT/name
-        need(file.is_file(),"Native source not present: "+name)
-        need(hashlib.sha256(file.read_bytes().replace(b"\r\n",b"\n")).hexdigest()==expected,
-             "Native source drift: "+name)
-    rapier=ROOT/RAPIER
-    need(rapier.is_file() and digest(rapier)==RAPIER_HASH,"Missing pinned x64 Rapier")
-    return dll,rapier,provenance
+def safe_name(name):
+    path=PurePosixPath(name)
+    need(name and path.parts and str(path)==name and not path.is_absolute() and
+         ".." not in path.parts and "\\" not in name,"Unsafe package path: "+name)
+    need(all(part and not re.search(r'[<>:"|?*\x00-\x1f]',part) and not part.endswith(("."," ")) and
+             not re.fullmatch(r"(?i)(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(?:\..*)?",part)
+             for part in path.parts),"Windows-incompatible package path: "+name)
+    return path
 
-def project_from_git(output,dll,rapier):
-    # Git archive reads the exact #593 commit, not the separate packaging branch.
+def verify_runtime(root, provenance, kind="native"):
+    inputs=provenance.get("source_inputs",{})
+    need(isinstance(inputs,dict) and len(inputs)>0,"Missing runtime source-input ledger")
+    if kind=="native":
+        need(re.fullmatch(r"[0-9a-f]{40}",provenance.get("source_commit","")),"Native build identity missing")
+    elif kind=="rapier":
+        build=provenance.get("build_record",{})
+        need(provenance.get("schema_version")==1 and
+             provenance.get("status")=="source-matched-cooperative-bvh-backport" and
+             re.fullmatch(r"[0-9a-f]{40}",provenance.get("build_commit","")) and
+             build.get("source_sha")==provenance["build_commit"] and build.get("variant")=="patched" and
+             build.get("godot_version")==ENGINE_VERSION and build.get("join_regression_exit")==0 and
+             build.get("artifacts",{}).get(Path(provenance.get("artifact","")).name)==provenance.get("sha256"),
+             "Missing or inconsistent Rapier build-record identity")
+    else: raise RuntimeError("Unknown retained runtime kind: "+kind)
+    for name,expected in inputs.items():
+        relative=safe_name(name)
+        file=root/relative
+        need(file.is_file(),"Runtime source not present: "+name)
+        need(hashlib.sha256(file.read_bytes().replace(b"\r\n",b"\n")).hexdigest()==expected,
+             "Runtime source drift: "+name)
+    name=provenance.get("artifact","")
+    safe_name(name)
+    file=root/name
+    need(file.is_file() and digest(file)==provenance.get("sha256")
+         and file.stat().st_size==provenance.get("size"),"Runtime bytes differ from recorded build: "+name)
+
+
+def preflight(platform="windows"):
+    need(re.fullmatch(r"[0-9a-f]{40}",SOURCE or ""),"Full exact application source SHA required")
+    need(git("rev-parse","HEAD")==SOURCE,"Checkout is not the requested application source")
+    for parent in (PARENT,ACCEPTED_MAIN):
+        subprocess.run(["git","merge-base","--is-ancestor",parent,SOURCE],cwd=ROOT,check=True)
+    subprocess.run(["git","diff","--exit-code",ACCEPTED_MAIN,SOURCE,"--",*PRESERVED],cwd=ROOT,check=True)
+    # The helper and the application under test must be the archived source.
+    # Generated Godot caches are excluded from these source paths.
+    subprocess.run(["git","diff","--exit-code",SOURCE,"--",*PRESERVED,*APPLICATION],cwd=ROOT,check=True)
+    untracked=git("ls-files","--others","--exclude-standard","--",*APPLICATION).splitlines()
+    need(not any(Path(name).suffix in {".gd",".gdshader",".py",".ps1",".json",".md"} for name in untracked),
+         "Untracked application or qualification source prevents exact-source execution")
+    subprocess.run(["git","diff","--exit-code",PARENT,SOURCE,"--",
+                    "godot/scripts/workbench_physics_bridge.gd","godot/scripts/pixel_camera_transform.gd"],
+                   cwd=ROOT,check=True)
+    manifest=ROOT/"godot/addons/cybersand_native"/("runtime-provenance.json" if platform=="windows" else "runtime-provenance.linux.json")
+    provenance=json.loads(manifest.read_text())
+    need(re.fullmatch(r"[0-9a-f]{40}",provenance.get("source_commit","")),"Native build identity missing")
+    for name,expected in provenance.get("source_inputs",{}).items():
+        canonical=subprocess.check_output(["git","show",SOURCE+":"+name],cwd=ROOT)
+        need(hashlib.sha256(canonical.replace(b"\r\n",b"\n")).hexdigest()==expected,
+             "Exact source differs from retained native build: "+name)
+    verify_runtime(ROOT,provenance)
+    rapier=json.loads((ROOT/("godot/addons/godot-rapier2d/runtime-provenance."+platform+".json")).read_text())
+    verify_runtime(ROOT,rapier,"rapier")
+    return {"source_commit":SOURCE,"source_tree":git("rev-parse",SOURCE+"^{tree}"),
+            "accepted_main":ACCEPTED_MAIN,"native_build_commit":provenance["source_commit"],
+            "native_sha256":provenance["sha256"],"native_source_inputs":len(provenance["source_inputs"]),
+            "rapier_sha256":rapier["sha256"],"platform":platform,"physical_gpu_acceptance":"pending"}
+
+
+def source_and_binaries(native_dir=None):
+    identity=preflight("windows")
+    folder=ROOT/"godot/addons/cybersand_native"
+    provenance=json.loads((folder/"runtime-provenance.json").read_text())
+    dll=ROOT/NATIVE
+    if native_dir is not None:
+        staged=json.loads((native_dir/"runtime-provenance.json").read_text())
+        need(staged==provenance,"Staged runtime provenance differs from exact source")
+        dll=native_dir/Path(NATIVE).name
+        if not dll.is_file(): dll=native_dir/"bin"/Path(NATIVE).name
+    need(digest(dll)==identity["native_sha256"],"Unqualified staged native DLL")
+    return dll,ROOT/RAPIER,provenance
+
+
+def project_from_git(output,dll,rapier,provenance):
+    # Git archive reads the exact integrated source, never an uncommitted working copy.
     files=["godot","examples/worldgen","THIRD_PARTY_NOTICES.md","LICENSE_STATUS.md",
            "third_party/godot-runtime.lock.json","third_party/native-toolchain.lock.json",
            "third_party/rapier-bvh-build.lock.json",
            "docs/audits/2026-11-14-pr566-mask-coherent-presentation-qualification.md",
            "docs/audits/2026-11-15-render-cadence-001.md",
+           "docs/audits/2026-11-15-camera-stack-coherence.md",
            "docs/operations/engine-lab-pose-tracing.md",
+           "docs/operations/camera-stack-coherence-acceptance.md",
+           "docs/operations/native-pixel-scrolling.md",
            "docs/architecture/rendering-and-gameplay-bridges.md",
            "tools/ci/analyze_pose_trace.py",
            "tools/ci/run_render_cadence_matrix.py",
            "Run-Test-It.ps1","Test It.cmd"]
+    rapier_provenance=json.loads((ROOT/"godot/addons/godot-rapier2d/runtime-provenance.windows.json").read_text())
+    files=sorted(set(files+list(provenance["source_inputs"])+list(rapier_provenance["source_inputs"])))
     tar=subprocess.check_output(["git","archive","--format=tar",SOURCE,"--",*files],cwd=ROOT,timeout=90)
     count=0
     with tarfile.open(fileobj=io.BytesIO(tar)) as archive:
         for member in archive:
             if not member.isfile(): continue
             name=member.name
-            need(not name.startswith("/") and ".." not in Path(name).parts,"Unsafe archive path "+name)
+            safe_name(name)
             if name.startswith("godot/.godot/"): continue
-            if Path(name).suffix.lower() in {".dll",".so",".dylib",".wasm"} and name not in {NATIVE,RAPIER}:
+            if (Path(name).suffix.lower() in {".dll",".so",".dylib",".wasm"} or ".framework/" in name) and name not in {NATIVE,RAPIER}:
                 continue
             f=archive.extractfile(member)
             need(f is not None,"Unreadable source file "+name)
@@ -90,7 +165,7 @@ def project_from_git(output,dll,rapier):
             destination.parent.mkdir(parents=True,exist_ok=True)
             destination.write_bytes(body)
             count+=1
-    need(digest(output/NATIVE)==NATIVE_HASH and digest(output/RAPIER)==RAPIER_HASH,"Packaged DLL mismatch")
+    need(digest(output/NATIVE)==provenance["sha256"] and digest(output/RAPIER)==RAPIER_HASH,"Packaged DLL mismatch")
     recipes=list((output/"examples/worldgen").glob("*.json"))
     need({"gen007-deepworks.json","gen007-qualification.json"}<={p.name for p in recipes},
          "Missing generator profiles")
@@ -99,8 +174,8 @@ def project_from_git(output,dll,rapier):
     for r in recipes:
         need(isinstance(json.loads(r.read_text()),dict),"Malformed source recipe "+r.name)
         shutil.copyfile(r,target/r.name)
-    old=output/"godot/addons/cybersand_native/runtime-provenance.json"
-    if old.exists(): old.rename(old.with_name("retained-runtime-provenance.reference.json"))
+    verify_runtime(output,provenance)
+    verify_runtime(output,rapier_provenance,"rapier")
     return count
 
 def dependencies(output,engine_zip,notices,vc):
@@ -123,182 +198,107 @@ def dependencies(output,engine_zip,notices,vc):
         if file.is_file(): shutil.copyfile(file,output/file.name)
 
 def launchers(output):
-    for name,mode,cadence in (("Open Workbench.cmd","guarded",""),
-                      ("Open Guarded Workbench.cmd","guarded",""),
-                      ("Open Mask Baseline.cmd","mask",""),
-                      ("Open Original Cadence.cmd","guarded","legacy")):
+    for name,mode,selection,cadence in (
+            ("Open Workbench.cmd","guarded","", ""),
+            ("Open Coherent Workbench.cmd","guarded","", ""),
+            ("Open Guarded Workbench.cmd","guarded","", ""),
+            ("Open Original Presentation.cmd","guarded","legacy", ""),
+            ("Open Mask Baseline.cmd","mask","legacy", ""),
+            ("Open Original Cadence.cmd","guarded","legacy","legacy")):
         script=('@echo off\nsetlocal\ncd /d "%~dp0"\n'
                 'set "CYBERSAND_SOURCE_REVISION='+SOURCE+'"\n'
+                'set "CYBERSAND_EVAL_SOURCE_SHA='+SOURCE+'"\n'
                 'set "CYBERSAND_DIAG_FLYER_POSE='+mode+'"\n'
+                'set "CYBERSAND_DIAG_PRESENTATION='+selection+'"\n'
                 'set "CYBERSAND_DIAG_RENDER_CADENCE='+cadence+'"\n'
-                'echo CyberSand PR593 '+mode+' - '+SOURCE+'\n'
+                'echo CyberSand Workbench - '+('original presentation' if selection else 'coherent candidate')+'\n'
+                'echo Source '+SOURCE+'\n'
                 '"%~dp0'+CONSOLE+'" --headless --path "%~dp0godot" --editor --quit\n'
                 'if errorlevel 1 (echo Import failed. & pause & exit /b 1)\n'
                 'start "" "%~dp0'+ENGINE+'" --path "%~dp0godot" -- --workbench\n')
         (output/name).write_bytes(script.replace("\n","\r\n").encode())
-    gpu=("$ErrorActionPreference='Stop'\n"
-         "$os=Get-CimInstance Win32_OperatingSystem | Select Caption,Version,BuildNumber\n"
-         "$gpu=Get-CimInstance Win32_VideoController | Select Name,DriverVersion,CurrentHorizontalResolution,CurrentVerticalResolution,CurrentRefreshRate\n"
-         "'CyberSand PR593 '+[DateTime]::UtcNow.ToString('o') | Out-File (Join-Path $PSScriptRoot 'GPU-LOCAL-INFO.txt')\n"
-         "$os | Format-List | Out-File (Join-Path $PSScriptRoot 'GPU-LOCAL-INFO.txt') -Append\n"
-         "$gpu | Format-List | Out-File (Join-Path $PSScriptRoot 'GPU-LOCAL-INFO.txt') -Append\n")
-    (output/"Capture GPU information.ps1").write_text(gpu.replace("\n","\r\n"),encoding="utf-8")
 
-GUIDE="""# CyberSand RENDER-CADENCE-001 - Windows experimental evaluation
-
-This is an experimental evaluation candidate. No production release or merge acceptance.
+GUIDE=r"""# CyberSand coherent Workbench - Windows evaluation
 
 Application source: SOURCE_SHA
-Parent PR566 source: PARENT_SHA
+Accepted-main base: ACCEPTED_MAIN_SHA
+Native build: NATIVE_BUILD_SHA
 Native Windows DLL SHA256: NATIVE_SHA256
 Godot: 4.7.stable.official.5b4e0cb0f
 Rapier Windows x64 module SHA256: RAPIER_SHA256
 
-## Start
-Extract the INNER CyberSand-EngineLab-Windows-<source>.zip from the GitHub Actions
-artifact into a fresh writable folder, e.g. C:\\CyberSand593. Keep all files
-together. Double-click Open Guarded Workbench.cmd; it imports the project with
-the bundled Godot console, then launches the actual GUI Workbench.
+Extract this entire ZIP into a fresh writable directory. No separate Godot,
+Python, Git or repository installation is required.
 
-To compare the original uploaded-mask pose, CLOSE all running CyberSand
-instances, then double-click Open Mask Baseline.cmd.
-Open Workbench.cmd is an alias for the guarded launch mode.
-Open Original Cadence.cmd selects the same source's retained legacy presentation
-control. Ordinary launchers explicitly clear that override for the repaired arm.
-No separate Godot, Git, Python, native DLL or compiler installation is needed.
+1. Double-click Open Workbench.cmd for the corrected interactive Shared Workbench.
+2. Fly a Needle in Free and Follow modes. Turn Thruster fire ON, then OFF.
+   Try fast movement, contact/dense materials, and normal camera pan/zoom.
+3. Close CyberSand completely. Open Original Presentation.cmd and repeat the
+   same setup/settings. This preserves the original guarded source selection
+   and live Follow while using the same physics, optimized clearance oracle
+   and repaired ACK/history. It is a temporal-policy comparison, not a
+   byte-identical historical application.
+4. Open Mask Baseline.cmd supplies the older material-bound display comparison.
+5. Double-click Test It.cmd to collect six matched original/candidate pairs,
+   ordinarily a few minutes on a hardware GPU. Slow machines can take longer.
+   Results and the complete local ZIP appear under Test-It-Results.
+   READ-RESULTS.txt gives achieved clocks, frame intervals and presentation CPU.
 
-## Engine Lab controls
-Open the Workbench and click Engine Lab... on its top toolbar.
-Use the FPS cap, VSync, Pixel and Rapier tick targets, material publication target, ACK delay and coupling toggles LIVE. Native worker count is saved for the NEXT full launch.
-The advanced override enables rates up to 1000 Hz without repeated popups. The 10-second scripted benchmark saves actual-clock JSON in user data.
-Non-60 cadence intentionally changes simulation speed because the flight integrator stays fixed at 1/60 per completed step.
+Engine Lab keeps live FPS/VSync, Pixel/Rapier/publication pacing, ACK controls
+and opt-in manual/scripted pose tracing. The scripted comparison uses the exact
+2048-square Needle reference, 30/60/120 graphical targets, Free/Follow,
+2Hz native stress and delayed ACK. Fire toggles are separately recorded at
+completed Rapier steps 0 and 60. Target rates are not achieved-rate claims.
+Rapier still advances a fixed 1/60 simulated second per completed step.
 
-## Automated Windows test script / Test It -> ZIP
-Click Test It -> ZIP in Engine Lab, or double-click Test It.cmd from
-this extracted folder. Both launch the SAME separate-process PowerShell
-runner with the '-Cadence' option. The 18-condition focused matrix executes
-36 same-source legacy/repaired arms in fresh processes. It preserves the exact
-2048-square reference World and original eight Needle commands at physics ticks
-0,2,4,6,8,10,12,14, then appends sustained motion at ticks 30,90,120.
-The original eight-command test remains available with -Quick, -Compare,
-no flag, and -Full. The longer tape has a separate identity in every receipt.
+For a shorter central comparison, run Test It.cmd -Quick.
+The existing detailed cadence investigation remains available through:
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Run-Test-It.ps1 -Cadence
+Open Original Cadence.cmd additionally restores the older ACK/history behavior;
+it is a separate diagnostic, not the normal original-presentation comparison.
 
-The central counterfactual uses Pixel30, Rapier120 callbacks, graphical60,
-publication60 with native-sample waiting and early sample wake disabled.
-Separate conditions vary Pixel60/120, Rapier60, graphical30/120/uncapped,
-Free/Follow, guarded/mask, ordinary/delayed ACK, ACK-gated publication,
-publication30/120, smoothing off, and the original coupled waits.
-Two additional counterfactuals request Pixel2 in Free and Follow while keeping
-Rapier120 responsive. They deliberately lower native throughput below measured
-capacity using existing pacing on the unchanged original World. This 2Hz
-diagnostic supplements the required Pixel30/60/120 matrix; it changes no native
-step law and adds no artificial native work or sleep.
-Every target is reported separately from achieved monotonic-timestamp rates.
-Rapier still integrates a fixed 1/60 simulated second per completed step;
-120 callbacks is NOT normalized real-time120Hz physics. Physical comparisons
-match completed step/body identity and explicitly report trajectory differences.
-
-The two framebuffers per arm are acquired outside the timed capture so their
-readback/PNG cost is not misrepresented as rendering cadence. Raw frame/clock
-events, the original logs, independent PowerShell statistics and pair trajectory
-comparisons are retained. Graphical submissions/post-draw observations are not
-hardware scanout timestamps. A successful capture is not a smoothness verdict.
-
-The focused matrix can take tens of minutes on a software renderer. Each arm
-captures at least ten seconds and 144 Rapier steps, bounded to90 seconds of
-capture; every process is independently bounded and all failures are retained.
-For just the central matched pair:
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\\Run-Test-It.ps1" -Cadence -Quick
-For specific focused conditions:
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\\Run-Test-It.ps1" -Cadence -CadenceConditions gated-ack3
-The opt-in -FullCadence runs768 arms across the primary factorial axes;
-it is deliberately not the default. Publication60 and smoothing on stay explicit
-in that exhaustive primary-axis matrix; the focused matrix varies them separately.
-
-The user-facing offline script is Run-Test-It.ps1 in the package root.
-For the previously requested four Water-family x two-repeat suite, run:
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\\Run-Test-It.ps1"
-For the 16-case 1-vs-4 native worker matrix, append -Full.
-For a one-case source/instrumentation smoke, append -Quick.
-Each case regenerates the original source-verifiable 2048-square canvas,
-uses real Rapier/World and writes exact-tick input receipts and pose JSONL.
-The runner creates Test-It-Results/<timestamp>.zip, preserves failures,
-hardware/source identity, raw console logs and ALL case receipts.
-No extra tools, network access, installs or automatic uploads are required.
-It is not an unattended claim of physical acceptability.
-
-## Actual screen-frame pose trace
-Start Play with a selected Needle flyer. In Engine Lab, click Trace poses:
-manual or Trace poses: scripted. Both record every Main overlay frame for
-up to ten seconds, then save a bounded JSONL file to the local user data
-directory (the menu shows its path). No disk I/O occurs during flight.
-Compare Free / Follow and Guarded / Mask Baseline with matched settings.
-See docs/operations/engine-lab-pose-tracing.md for the full procedure,
-and tools/ci/analyze_pose_trace.py for causal event classification.
-This is an instrumentation build, not physical acceptance.
-
-## Physical acceptance
-- [ ] Confirm Windows 11 OS build, GPU model/driver, resolution/Hz,
-      Windows display scale and VSync; optionally run Capture GPU information.ps1.
-- [ ] Open Guarded mode and fly an active Kestrel at low and high speed.
-- [ ] Toggle Thruster Fire ON, then OFF; keep flying in Free camera.
-- [ ] Repeat Fire ON->OFF under Follow camera.
-- [ ] Pan/zoom; compare normal and rapid camera motion, resize the window.
-- [ ] Fly near hard walls and through material-dense Sand/Water/Fire/Smoke.
-- [ ] Capture any double image, visual holds, geometry separation or jank.
-- [ ] Close completely, repeat with Open Mask Baseline.cmd under matched setup.
-- [ ] Repeat pertinent settings at 100%, 125%, 150%, 200% scaling and VSync.
-- [ ] Record qualitative smoothness, GPU load and frame pacing if available.
-- [ ] Record your PASS/FAIL/HOLD and exact reproduction in ACCEPTANCE.md.
-
-Historical #593 hosted Windows ANGLE and Linux GL baseline evidence:
-https://github.com/techrote/cybersand/actions/runs/43648093562
-https://github.com/techrote/cybersand/actions/runs/43648093611
-
-Those older runs do not qualify this source. Use this package's exact-source
-workflow and source identity for its current automated disposition.
-Hosted runs are NOT proof of physical NVIDIA GPU quality or dense-world
-p95 performance. Conservative false refusals and material-contact holds remain
-possible. Keep #593 and #566 Draft/HOLD until owner authorization.
+The full practical acceptance guide is:
+docs/operations/camera-stack-coherence-acceptance.md
+Record your observations in ACCEPTANCE.md. Automated execution and hosted
+Windows rendering do not establish physical NVIDIA acceptance. This candidate
+and the camera PR stack remain Draft/HOLD; no merge is implied.
 """
-FEEDBACK="""# CyberSand PR593 - physical owner acceptance form
+FEEDBACK="""# CyberSand physical owner acceptance
 
 App source: SOURCE_SHA
-Owner physical review: NOT YET PERFORMED
+Owner decision: HOLD - physical review not yet performed
 
-| Field | Observed |
-|---|---|
-| Windows build | |
-| GPU / driver | |
-| Resolution and refresh rate | |
-| Windows display scaling | |
-| VSync | |
-| Scene/setup | |
-| Guarded Free camera, Fire ON->OFF | |
-| Guarded Follow camera, Fire ON->OFF | |
-| Fast flight and dense materials | |
-| Mask baseline comparison | |
-| Frame pacing / GPU load | |
-| Screenshot or video paths | |
+| Field | Observation |
+| --- | --- |
+| Windows build, NVIDIA GPU / driver | |
+| Resolution, refresh rate, Windows display scale | |
+| VSync / FPS target | |
+| Free camera: coherence, jumps/reversals, Fire ON to OFF | |
+| Follow camera: coherence, camera motion, Fire ON to OFF | |
+| Fast Needle, contact and dense materials | |
+| Pan, zoom, fractional scale and painting | |
+| Original presentation comparison | |
+| Materially preferable candidate? | |
+| Test-It-Results ZIP name | |
 | PASS / FAIL / HOLD | |
 
-Reproduction steps:
-
-Observed issues:
-
-Owner decision (initially HOLD):
+Reproduction steps and observed issues:
 """
 
 def files_map(root):
     return {p.relative_to(root).as_posix():digest(p) for p in sorted(root.rglob("*"))
-            if p.is_file() and p.name!="PR593-MANIFEST.json"}
+            if p.is_file() and p.name!=MANIFEST}
 
 def verify(output):
-    m=json.loads((output/"PR593-MANIFEST.json").read_text())
+    m=json.loads((output/MANIFEST).read_text())
+    need(m.get("schema")=="camera-stack-coherence-windows-v1" and m.get("accepted_main")==ACCEPTED_MAIN,
+         "Wrong integrated evaluation manifest")
     need(m.get("source_commit")==SOURCE and files_map(output)==m.get("files_sha256"),
          "Installed files are missing or changed")
-    need(digest(output/NATIVE)==NATIVE_HASH and digest(output/RAPIER)==RAPIER_HASH,"Installed native mismatch")
-    print("PR593_INSTALLED_INTEGRITY",len(m["files_sha256"]),SOURCE)
+    need(digest(output/NATIVE)==m["native_sha256"] and digest(output/RAPIER)==m["rapier_sha256"],"Installed native mismatch")
+    verify_runtime(output,json.loads((output/"godot/addons/cybersand_native/runtime-provenance.json").read_text()))
+    verify_runtime(output,json.loads((output/"godot/addons/godot-rapier2d/runtime-provenance.windows.json").read_text()),"rapier")
+    print("COHERENCE_INSTALLED_INTEGRITY",len(m["files_sha256"]),SOURCE)
     return m
 
 def build(args):
@@ -306,24 +306,26 @@ def build(args):
     need(not args.output.exists() and not args.archive.exists(),"Refusing to overwrite package")
     dll,rapier,provenance=source_and_binaries(args.native_stage)
     args.output.mkdir(parents=True)
-    count=project_from_git(args.output,dll,rapier)
+    count=project_from_git(args.output,dll,rapier,provenance)
     dependencies(args.output,args.godot_zip,args.notices,args.vc)
     launchers(args.output)
-    replacements={"SOURCE_SHA":SOURCE,"PARENT_SHA":PARENT,
-                  "NATIVE_SHA256":NATIVE_HASH,"RAPIER_SHA256":RAPIER_HASH}
+    replacements={"SOURCE_SHA":SOURCE,"ACCEPTED_MAIN_SHA":ACCEPTED_MAIN,
+                  "NATIVE_BUILD_SHA":provenance["source_commit"],
+                  "NATIVE_SHA256":provenance["sha256"],"RAPIER_SHA256":RAPIER_HASH}
     for name,data in (("READ-ME.md",GUIDE),("ACCEPTANCE.md",FEEDBACK)):
         for a,b in replacements.items():data=data.replace(a,b)
         (args.output/name).write_text(data,encoding="utf-8")
-    (args.output/"PR566-qualified-native-provenance.json").write_text(
+    (args.output/"retained-native-build-provenance.json").write_text(
         json.dumps(provenance,indent=2,sort_keys=True)+"\n")
-    identity={"schema":"engine-lab-001-windows-physical-v1","source_commit":SOURCE,
-              "source_tree":git("rev-parse",SOURCE+"^{tree}"),"parent_commit":PARENT,
+    identity={"schema":"camera-stack-coherence-windows-v1","source_commit":SOURCE,
+              "source_tree":git("rev-parse",SOURCE+"^{tree}"),"parent_commit":PARENT,"accepted_main":ACCEPTED_MAIN,
+              "native_build_commit":provenance["source_commit"],"native_source_inputs":len(provenance["source_inputs"]),
               "baseline_593_windows_run":43648093562,"baseline_593_linux_run":43648093611,
-              "native_sha256":NATIVE_HASH,"rapier_sha256":RAPIER_HASH,
+              "native_sha256":provenance["sha256"],"rapier_sha256":RAPIER_HASH,
               "godot_version":ENGINE_VERSION,"godot_zip_sha512":ENGINE_ZIP_HASH,
               "owner_gpu_acceptance":"pending","source_archive_files":count,
               "files_sha256":files_map(args.output)}
-    (args.output/"PR593-MANIFEST.json").write_text(json.dumps(identity,indent=2,sort_keys=True)+"\n")
+    (args.output/MANIFEST).write_text(json.dumps(identity,indent=2,sort_keys=True)+"\n")
     verify(args.output)
     args.archive.parent.mkdir(parents=True,exist_ok=True)
     paths=sorted(p for p in args.output.rglob("*") if p.is_file())
@@ -340,7 +342,7 @@ def build(args):
         "source_commit":SOURCE,"zip":args.archive.name,"sha256":archive_sha,
         "bytes":args.archive.stat().st_size,"members":len(names),
         "owner_physical_gpu_acceptance":"pending"},indent=2)+"\n")
-    print("PR593_PHYSICAL_PACKAGE",json.dumps({"source":SOURCE,"sha256":archive_sha,
+    print("COHERENCE_PHYSICAL_PACKAGE",json.dumps({"source":SOURCE,"sha256":archive_sha,
            "bytes":args.archive.stat().st_size,"files":len(names)}),flush=True)
 
 def smoke(output,evidence):
@@ -354,6 +356,15 @@ def smoke(output,evidence):
         ("production",["--headless","--script","res://tests/test_pr593_mask_coherent_production.gd"],210,"PR593_PRODUCTION_POSE_RESULT"),
         ("crossfade",["--headless","--script","res://tests/test_pr593_mask_coherent_edit_crossfade.gd"],210,"PR593_NATIVE_EDIT_CROSSFADE_RESULT"),
         ("dense-budget",["--headless","--script","res://tests/test_pr593_mask_coherent_dense_budget.gd"],120,"PR593_GUARD_DENSE_BUDGET_RESULT"),
+        ("temporal",["--headless","--script","res://tests/test_workbench_temporal_presentation.gd"],240,"TEMPORAL_PRESENTATION_RESULT"),
+        ("temporal-dense",["--headless","--script","res://tests/test_workbench_temporal_dense.gd"],240,"TEMPORAL_DENSE_RESULT"),
+        ("materials",["--headless","--script","res://tests/test_material_lab_catalogue.gd"],180,"MATERIAL_LAB_CATALOGUE"),
+        ("architecture-contract",["--headless","--script","res://tests/test_architectural_project_contract.gd"],180,"ARCHITECTURAL_PROJECT_CONTRACT"),
+        ("architecture-native",["--headless","--script","res://tests/test_architectural_generator.gd"],300,"ARCHITECTURE_RESULTS"),
+        ("architecture-author",["--rendering-method","gl_compatibility","--script","res://tests/test_architectural_generator.gd"],600,"ARCHITECTURE_RESULTS"),
+        ("architecture-reopen",["--rendering-method","gl_compatibility","--script","res://tests/test_architectural_generator.gd"],300,"ARCHITECTURE_RESULTS"),
+        ("flatten-author",["--headless","--script","res://tests/test_workbench_flatten.gd"],600,"FLATTEN_RESULT"),
+        ("flatten-reopen",["--headless","--script","res://tests/test_workbench_flatten.gd"],300,"FLATTEN_RESULT"),
         ("engine-lab",["--headless","--script","res://tests/test_workbench_engine_lab.gd"],180,"ENGINE_LAB_RESULT"),
         ("pose-trace",["--headless","--script","res://tests/test_workbench_pose_trace.gd"],180,"POSE_TRACE_RESULT"),
         ("cadence-contract",["--headless","--script","res://tests/test_render_cadence_contract.gd"],180,"RENDER_CADENCE_CONTRACT_RESULT"),
@@ -370,49 +381,85 @@ def smoke(output,evidence):
         ("graphical",["--rendering-method","gl_compatibility","--quit-after","180","--","--workbench"],120,"Rapier2D")
     ]
     report=[]
+    failures=[]
     for name,suffix,timeout,marker in cases:
+        if "--headless" not in suffix and "--rendering-driver" not in suffix:
+            suffix=["--rendering-driver","opengl3_angle",*suffix]
         cmd=[str(console),"--path",str(project),*suffix]
-        print("PR593_SMOKE_START",name,flush=True)
+        print("COHERENCE_SMOKE_START",name,flush=True)
         env=os.environ.copy()
         env["CYBERSAND_SOURCE_REVISION"]=SOURCE
+        env["CYBERSAND_DIAG_PRESENTATION"]="legacy" if name in {"production","crossfade","dense-budget","cadence-contract","cadence-contract-graphical"} else ""
+        env["CYBERSAND_DIAG_RENDER_CADENCE"]=""
+        env["CYBERSAND_DIAG_FLYER_POSE"]=""
+        if name=="temporal-dense":
+            env["CYBERSAND_TEMPORAL_DENSE_OUTPUT"]=str((evidence/"temporal-dense").resolve())
         group="paint-persistence" if name in {"paint-author","paint-reopen"} else name
+        if name in {"architecture-author","architecture-reopen"}: group="architecture-persistence"
+        if name in {"flatten-author","flatten-reopen"}: group="flatten-persistence"
         env["APPDATA"]=str((evidence/"userdata"/group).resolve())
         env["XDG_DATA_HOME"]=env["APPDATA"]
         if name in {"paint-author","paint-reopen"}:
             env["PAINT_REOPEN"]="1" if name=="paint-reopen" else ""
             env.pop("PAINT_CAPTURE_DIR",None)
+        if name.startswith("architecture-") and name!="architecture-contract":
+            env["CYBERSAND_ARCHITECTURE_PHASE"]=name.removeprefix("architecture-")
+            env["CYBERSAND_ARCHITECTURE_OUTPUT"]=str((evidence/"architecture").resolve())
+            env["CYBERSAND_ARCHITECTURE_REQUIRE_GRAPHICS"]="0" if name=="architecture-native" else "1"
+        if name.startswith("flatten-"):
+            env["FLATTEN_SIDE"]="512";env["FLATTEN_WORKERS"]="1"
+            env["FLATTEN_REOPEN"]="1" if name=="flatten-reopen" else "0"
         if name=="native-camera":
             env["CYBERSAND_TEST_ARTIFACT_DIR"]=str((evidence/"native-camera").resolve())
         if name=="engine-lab-gui":
             env["CYBERSAND_ENGINE_LAB_SCREENSHOT"]=str((evidence/"engine-lab-popup.png").resolve())
-        r=subprocess.run(cmd,cwd=output,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,
-                         timeout=timeout,text=True,errors="replace",env=env)
         file=evidence/(name+".log")
-        file.write_text(r.stdout)
-        need(r.returncode==0 and "SCRIPT ERROR:" not in r.stdout and
-             (marker is None or marker in r.stdout),"Installed "+name+" failed: "+r.stdout[-3500:])
-        if name=="cadence-contract-graphical":
-            folder=evidence/"cadence-contract"
-            contract=json.loads((folder/"contract.json").read_text())
-            need(not contract["failures"] and len(contract["observations"])==8,
-                 "Graphical cadence contract did not complete all eight observations")
-            need(len(list(folder.glob("*.png")))==8,"Missing eight original contract framebuffers")
-            for row in contract["observations"]:
-                need(row["graphical"] and digest(row["capture_path"])==row["capture_sha256"],
-                     "Graphical contract capture hash drift")
-            for arm in ("legacy","repair"):
-                need((folder/(arm+"-poses.jsonl")).stat().st_size>0,"Missing original contract trace: "+arm)
-        report.append({"name":name,"log_sha256":digest(file),"exit":r.returncode})
-        print("PR593_SMOKE_PASS",name,flush=True)
-    (evidence/"summary.json").write_text(json.dumps({
-        "source_commit":SOURCE,"acceptance":"physical GPU pending","cases":report},indent=2)+"\n")
+        try:
+            r=subprocess.run(cmd,cwd=output,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,
+                             timeout=timeout,text=True,errors="replace",env=env)
+            file.write_text(r.stdout,encoding="utf-8")
+            need(r.returncode==0 and "SCRIPT ERROR:" not in r.stdout and
+                 (marker is None or marker in r.stdout),"Installed "+name+" failed: "+r.stdout[-3500:])
+            if name=="cadence-contract-graphical":
+                folder=evidence/"cadence-contract"
+                contract=json.loads((folder/"contract.json").read_text())
+                need(not contract["failures"] and len(contract["observations"])==8,
+                     "Graphical cadence contract did not complete all eight observations")
+                need(len(list(folder.glob("*.png")))==8,"Missing eight original contract framebuffers")
+                for row in contract["observations"]:
+                    need(row["graphical"] and digest(row["capture_path"])==row["capture_sha256"],
+                         "Graphical contract capture hash drift")
+                for arm in ("legacy","repair"):
+                    need((folder/(arm+"-poses.jsonl")).stat().st_size>0,"Missing original contract trace: "+arm)
+            report.append({"name":name,"log_sha256":digest(file),"exit":r.returncode,"passed":True})
+            print("COHERENCE_SMOKE_PASS",name,flush=True)
+        except (RuntimeError,OSError,ValueError,subprocess.TimeoutExpired) as error:
+            if isinstance(error,subprocess.TimeoutExpired):
+                raw=error.stdout or b""
+                file.write_text(raw.decode("utf-8","replace") if isinstance(raw,bytes) else raw,encoding="utf-8")
+            failures.append({"name":name,"error":str(error)})
+            report.append({"name":name,"passed":False,"error":str(error),
+                           "log_sha256":digest(file) if file.exists() else None})
+            print("COHERENCE_SMOKE_FAIL",name,str(error),flush=True)
+        (evidence/"summary.json").write_text(json.dumps({
+            "source_commit":SOURCE,"acceptance":"physical GPU pending","cases":report,
+            "failures":failures,"complete":len(report)==len(cases) and not failures},indent=2)+"\n")
+    need(not failures,"Installed application failed one or more required cases; see smoke summary")
+
 
 def main():
+    global SOURCE
     p=argparse.ArgumentParser()
-    p.add_argument("command",choices=["build","verify","smoke"])
+    p.add_argument("command",choices=["preflight","build","verify","smoke"])
+    p.add_argument("--source")
+    p.add_argument("--platform",choices=["linux","windows"],default="windows")
     for name in ["native-stage","godot-zip","notices","vc","output","archive","evidence"]:
-        p.add_argument("--"+name,type=Path,required=name=="output")
+        p.add_argument("--"+name,type=Path)
     a=p.parse_args()
+    if a.source: SOURCE=a.source
+    if a.command=="preflight":
+        print(json.dumps(preflight(a.platform),indent=2));return
+    need(a.output is not None,"Output directory required")
     if a.command=="build":build(a)
     elif a.command=="verify":verify(a.output)
     else:

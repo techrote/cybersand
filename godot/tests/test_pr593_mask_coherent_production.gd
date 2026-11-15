@@ -21,6 +21,8 @@ var original_environment: String = ""
 
 
 func _initialize() -> void:
+	# Preserve the historical guard's oracle as an explicit baseline control.
+	OS.set_environment("CYBERSAND_DIAG_PRESENTATION","legacy")
 	_run.call_deferred()
 
 

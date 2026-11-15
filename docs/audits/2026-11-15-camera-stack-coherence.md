@@ -85,6 +85,29 @@ the source mismatch without resolving it. The retained diagnostic
 for matched evaluation. `CYBERSAND_DIAG_FLYER_POSE=mask` remains a separate original
 mask baseline. The older render-cadence diagnostic is independent of this choice.
 
+Independent multi-actor review found and corrected an intermediate availability
+regression: the full turning-circle scan exhausted the shared deadline and
+starved later bodies. The final oracle bounds the already proven sampled,
+dilated geometry tightly, precomputes inverse transforms, reads immutable bytes
+captured once per actual upload, and can prove a completely empty bounded region
+using native byte operations. Every queried cell remains charged to the shared
+24,000-cell budget. Admission rotates and bootstraps missing certificates first.
+Current/previous texture and upload identity is unchanged; no certificate is
+reused merely because a native revision number happens to match.
+
+The independent eight-actor native Workbench probe had 96/128 steady actor
+observations and 41/48 full-refresh observations hidden before that correction.
+Both paused and unpaused corrected runs displayed all 24 compound parts in all
+22 observations (176/176 actor selections), without budget retries. Resolver
+medians were 595.5–597 µs for steady frames and 799.5–1,345 µs after full refresh.
+Observed total maxima were 2.266–3.256 ms: the two-millisecond bound is a
+cooperative query deadline, not a hard whole-stage scheduling guarantee.
+Byte-capture cost is included in the consuming frame's resolver total and
+reported separately. Large nonempty/rotated custom geometry can still reach an
+explicit conservative capacity refusal; universal extreme-contact performance
+is not established. The comparison launcher shares the optimized oracle while
+restoring the original temporal selection and camera policy.
+
 ## Isolated actual production-path evidence
 
 Godot 4.7 on Linux loaded the source-matched #566 runtime
@@ -126,6 +149,34 @@ exits, complete logs, executed source hashes and source deltas. Exact final-sour
 hosted results belong to the workflow artifacts, not these earlier local counts.
 
 ## Integration, qualification and delivery boundary
+
+Local isolated checkpoint `a0315dc87` is published as source-identical commit
+`755c99beb9df26281fb5d2940b622370ef0856e8` (tree
+`5d48c9ecc4949c702bb42b68d97c7e41433f7922`). Local integration `6b92ad2d4`
+is source-identical to published merge
+`766d529560130344f3d7e686a3e33add15e3ccc6` (tree
+`1d3bfe21430b7fa0bf75917da1d8765e186a4f81`). Later qualification corrections
+are descendants; final manifests identify their exact application SHA.
+
+The final local temporal fixture passes 343 checks, including an 80-cell actual
+Rapier move rejoining through its newer native receipt without smoothing. The
+permanent dense fixture passes 3,227 checks across 150 submissions: eight fleet
+actors progress into genuine native terrain contact, 128/128 controlled moving
+selections are live, and the ordinary two-second phase has 947 live plus 13
+certified held selections with no withholding. A supported 128² compound also
+displays in all eight clear-space samples. A fresh-upload frame records three
+budget-withheld bodies at 2.992 ms, recovered on the next frame; the fixture
+retains this event, permits one isolated budget interruption, and rejects
+repeated disappearance. This is not a claim of universal zero flicker.
+
+Integrated local authoring checks preserve native PAINT/Undo/Redo and fresh
+reopen, material catalogue (1,348 assertions), pixel picking (1,699 checks),
+Flatten including failure/reopen/storage-fault cases, and combined 512² authoring
+with one and four native workers. Architecture native (812), project (1,952),
+UI (56), reopen (18), multistyle author/reopen (72/26), legacy generation and
+material equivalence pass. The separate headless architecture author phase
+retains four form-layout failures; its graphical campaign remains a required
+gate. These are tree-hashed local results, not final Windows acceptance.
 
 The integration preserves current main's generator, Flatten, material and
 authoring changes. Its retained native runtime was built at

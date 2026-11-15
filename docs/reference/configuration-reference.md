@@ -677,6 +677,19 @@ including specialized Ice sampling, belongs to
 
 ## Desktop presentation and pacing
 
+The unmerged [coherent Workbench frame](../architecture/rendering-and-gameplay-bridges.md#coherent-workbench-presentation-frame)
+is the candidate default. `CYBERSAND_DIAG_PRESENTATION=legacy` selects original
+guarded pose choice/live Follow. `CYBERSAND_DIAG_FLYER_POSE=mask` selects the older
+mask-bound baseline. `CYBERSAND_DIAG_RENDER_CADENCE=legacy` separately restores
+the earlier ACK/history behavior. These are process-local diagnostics, not save
+format or native physics settings. Main bounds sample provenance to 2,048 entries.
+Clearance remains limited to 24,000 cells and a 2,000 µs cooperative query deadline;
+the fine geometry scan permits at most 12,000 cells and 32 cells of pose displacement.
+A complete native byte proof of an empty region may use the shared cell budget
+instead. Bookkeeping, render-part construction and scheduler interruption mean
+the complete presentation stage can exceed the cooperative query deadline.
+Exhaustion is explicit, never permission to draw an unchecked live pose.
+
 Sources: [main.gd](../../godot/scripts/main.gd),
 [simulation_worker.gd](../../godot/scripts/simulation_worker.gd), and
 [project.godot](../../godot/project.godot).

@@ -13,6 +13,8 @@ var failures: Array[String] = []
 var receipts: Array[Dictionary] = []
 
 func _initialize() -> void:
+	# This fixture owns the original policy; the temporal fixture covers its successor.
+	OS.set_environment("CYBERSAND_DIAG_PRESENTATION","legacy")
 	_run.call_deferred()
 
 func require(ok: bool, label: String) -> bool:

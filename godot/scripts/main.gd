@@ -52,6 +52,7 @@ var workbench_presentation_frame: Dictionary = {}
 var _workbench_presentation_state: Dictionary = {}
 var _workbench_presentation_identity: Array = []
 var _workbench_presentation_policy: String = ""
+var _workbench_presentation_turn: int = 0
 var _workbench_follow_state: Dictionary = {}
 var _workbench_mapping_locked: bool = false
 # Sample serials are not Rapier steps. Retain their real correspondence at
@@ -1659,6 +1660,12 @@ var _presentation_previous_unknown: bool = true
 # retained before mutation, replaces the old global 'unknown after 16K cells'
 # shortcut. Swept queries still obey their existing local scan/time bounds.
 var _presentation_previous_image: Image
+# Immutable byte copies are taken once per upload, never once per actor query.
+# They follow the same current/previous GPU texture swap as the Image history.
+var _presentation_current_bytes := PackedByteArray()
+var _presentation_previous_bytes := PackedByteArray()
+var _presentation_upload_cache_usec: int = 0
+var _presentation_pending_cache_usec: int = 0
 var workbench_presentation_last: Dictionary = {}
 var workbench_presentation_totals: Dictionary = {
 	"frames":0,"safe_live":0,"blocked_material":0,"blocked_unknown":0,
@@ -3274,13 +3281,18 @@ func _assess_workbench_presented_sweep(start: Transform2D, target: Transform2D,
 	var result: Dictionary = WorkbenchPresentationCoherence.assess(start,target,
 		rectangles,image,_presentation_previous_occupied,_presentation_previous_unknown,
 		context.previous_blend_active,mini(remaining,WorkbenchPresentationCoherence.MAX_SCAN_CELLS),
-		context.deadline_usec,_presentation_previous_image,true)
+		context.deadline_usec,_presentation_previous_image,true,
+		_presentation_current_bytes,_presentation_previous_bytes,remaining)
 	summary.cells_examined += int(result.scanned)
 	return result
 
 
 func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 	var started_usec: int = Time.get_ticks_usec()
+	# Charge immutable byte capture once to the presentation frame consuming
+	# that upload. Its time was also included in the real upload interval.
+	var cache_usec: int = _presentation_pending_cache_usec
+	_presentation_pending_cache_usec = 0
 	var mode: String = _workbench_presentation_mode()
 	var blend: float = clampf(float(started_usec-snapshot_blend_start_usec) \
 		/ (1000000.0/float(maxi(render_snapshot_hz,1))),0.0,1.0) if cadence_lod_enabled else 1.0
@@ -3298,8 +3310,8 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 		"snapshot_blend":blend,"previous_blend_active":blend < 1.0,
 		"current_texture_id":texture.get_rid().get_id() if texture != null else 0,
 		"previous_texture_id":previous_texture.get_rid().get_id() if previous_texture != null else 0,
-		"deadline_usec":started_usec+PRESENTATION_FRAME_TIME_BUDGET_USEC,
-		"valid":false,"reason":"invalid_frame","resolve_usec":0}
+		"deadline_usec":started_usec+maxi(0,PRESENTATION_FRAME_TIME_BUDGET_USEC-cache_usec),
+		"valid":false,"reason":"invalid_frame","resolve_usec":0,"upload_cache_usec":cache_usec}
 	var summary: Dictionary = {"safe_live":0,"blocked_material":0,"blocked_unknown":0,
 		"blocked_other":0,"budget_vetoes":0,"cells_examined":0,"elapsed_usec":0,
 		"intentional_holds":0,"withheld":0}
@@ -3311,6 +3323,7 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 		_workbench_follow_state.clear()
 		_workbench_presentation_identity = identity
 		_workbench_presentation_policy = mode
+		_workbench_presentation_turn = 0
 	if bridge is WorkbenchBridge:
 		resolved.session = bridge._session
 		resolved.epoch = bridge._epoch
@@ -3322,7 +3335,18 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 			last_uploaded_render_snapshot_serial,resolved.current_texture_id,resolved.previous_texture_id,
 			resolved.previous_blend_active,_presentation_previous_unknown]
 		var legacy_poses: Dictionary = _safe_workbench_presentation_poses(frame) if mode != "coherent" else {}
-		for slot: int in range(bridge._members.size()):
+		# Rotate equally among admitted bodies, and bootstrap missing visual
+		# certificates before spending remaining work on already visible peers.
+		# A bounded deadline cannot permanently starve higher actor slots.
+		var admission_order: Array[int] = []
+		var retained_order: Array[int] = []
+		for offset: int in range(bridge._members.size()):
+			var slot: int = (offset+_workbench_presentation_turn) % bridge._members.size()
+			if _workbench_presentation_state.has(slot): retained_order.append(slot)
+			else: admission_order.append(slot)
+		admission_order.append_array(retained_order)
+		_workbench_presentation_turn = (_workbench_presentation_turn+1) % maxi(bridge._members.size(),1)
+		for slot: int in admission_order:
 			var member: Dictionary = bridge._members[slot]
 			var entry: Dictionary = frame.instances.get(int(member.instance_id),{})
 			resolved.sources[slot] = "hidden"
@@ -3433,8 +3457,9 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 		resolved.follow_target = pilot.get("position",Vector2.INF)
 		resolved.follow_source_step = physical_actor_session.tick if physical_actor_session != null else -1
 		resolved.follow_held = false
-	resolved.resolve_usec = Time.get_ticks_usec()-started_usec
-	if mode == "coherent":
+	resolved.selection_usec = Time.get_ticks_usec()-started_usec
+	resolved.resolve_usec = resolved.selection_usec+cache_usec
+	if mode == "coherent" or not resolved.valid:
 		summary.elapsed_usec = resolved.resolve_usec
 		workbench_presentation_totals.frames += 1
 		for key: String in summary:
@@ -3621,6 +3646,8 @@ func _workbench_trace_presentation_frame(original_frame: Dictionary,
 			"session":workbench_presentation_frame.session,"epoch":workbench_presentation_frame.epoch,
 			"world_generation":workbench_presentation_frame.world_generation,
 			"resolve_usec":workbench_presentation_frame.resolve_usec,
+			"selection_usec":workbench_presentation_frame.selection_usec,
+			"upload_cache_usec":workbench_presentation_frame.upload_cache_usec,
 			"follow_instance_id":workbench_presentation_frame.follow_instance_id,
 			"follow_position":WorkbenchPoseTrace.xy(workbench_presentation_frame.follow_target) \
 				if Vector2(workbench_presentation_frame.follow_target).is_finite() else null,
@@ -3685,8 +3712,8 @@ func _workbench_trace_presentation_frame(original_frame: Dictionary,
 		"previous_texture_bytes":_presentation_previous_image.get_width()*_presentation_previous_image.get_height()*render_channels \
 			if _presentation_previous_image != null else 0,
 		"render_hz_target":render_snapshot_hz,
-		"blend_active":cadence_lod_enabled and render_snapshot_hz > 0 and \
-			now_usec-snapshot_blend_start_usec < 1000000.0/float(render_snapshot_hz),
+		"blend_active":workbench_presentation_frame.previous_blend_active,
+		"snapshot_blend":workbench_presentation_frame.snapshot_blend,
 		"guard":workbench_presentation_last.duplicate(true),
 		"body_count":bridge._members.size(),
 		"truncated_bodies":maxi(0,bridge._members.size()-WorkbenchPoseTrace.MAX_BODIES),
@@ -5377,6 +5404,8 @@ func create_render_textures() -> void:
 	texture = ImageTexture.create_from_image(image)
 	previous_texture = ImageTexture.create_from_image(image)
 	_presentation_previous_image = null
+	_presentation_current_bytes = image.get_data()
+	_presentation_previous_bytes = _presentation_current_bytes
 
 
 func upload_texture(material_cells: PackedByteArray, world_revision: int) -> void:
@@ -5618,6 +5647,11 @@ func finish_texture_upload(world_revision: int, start_usec: int) -> void:
 	var old_current_texture: ImageTexture = texture
 	texture = previous_texture
 	previous_texture = old_current_texture
+	var cache_started_usec: int = Time.get_ticks_usec()
+	_presentation_previous_bytes = _presentation_current_bytes
+	_presentation_current_bytes = image.get_data()
+	_presentation_upload_cache_usec = Time.get_ticks_usec()-cache_started_usec
+	_presentation_pending_cache_usec += _presentation_upload_cache_usec
 	update_render_texture()
 	world_view.texture = texture
 	world_shader.set_shader_parameter("current_world_texture", texture)

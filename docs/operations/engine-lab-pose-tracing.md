@@ -2,7 +2,7 @@
 title: Engine Lab physical actor/camera frame trace
 status: Current
 document-kind: runbook
-scope: Experimental Draft/HOLD cadence repair and measurements on top of #609; not production or physical NVIDIA acceptance
+scope: Draft/HOLD coherent actor, terrain and camera candidate with retained cadence controls; physical NVIDIA acceptance pending
 canonical-for: [render-cadence-investigation]
 related-documents: [../audits/2026-11-15-render-cadence-001.md, ../architecture/rendering-and-gameplay-bridges.md, native-pixel-scrolling.md]
 last-reviewed: 2026-11-15
@@ -14,26 +14,50 @@ The 14 November owner Windows GPU evaluation of PR #593 **failed** with
 large, alternating actor-versus-terrain screen-space jumps. The owner later
 observed that lowering some tick/publication rates made the visible freezes
 last longer. This does not by itself establish an inverted camera offset,
-physics error, or pose-source switching; all remain hypotheses.
+physics error, or pose-source switching. The later inspected owner trace does
+confirm backward selected-pose transitions while Rapier moves forward, with
+negligible spatial projection error; it is not a time-aligned explanation of
+each earlier video spike.
 
-The original #609 tracer records what presentation has selected. Its separate
+The corrected presentation contract is owned by
+[rendering and gameplay bridges](../architecture/rendering-and-gameplay-bridges.md#coherent-workbench-presentation-frame).
+The [camera-stack audit](../audits/2026-11-15-camera-stack-coherence.md) records
+the original evidence and real production-path counterexample. The original
+#609 tracer records what presentation has selected. Its separate
 `fix/render-cadence-001-20261115` continuation repairs exact previous-texture
 history and delayed-ACK deadlines while preserving simulation law and collision
 gates. The [causal audit](../audits/2026-11-15-render-cadence-001.md) separates the
 bounded repair from the remaining coupled-physics architecture. Keep Draft/HOLD.
 
-## One-command source-matched cadence campaign
+## Default coherent presentation comparison
 
 Extract the exact-source Windows package into a fresh writable directory, close
 other CyberSand instances, and double-click **Test It.cmd**. It calls the bundled
-PowerShell 5.1 runner with `-Cadence`; no Python, Git, Godot installation or
-network download is needed. The same command from PowerShell is:
+PowerShell 5.1 runner with `-Coherence`; no Python, Git, Godot installation or
+network download is needed. Six matched original/coherent pairs cover Free and
+Follow, 30/60/120 FPS targets, Fire ON→OFF, deliberately slow native publication
+and delayed ACK. Both arms use repaired ACK/history behavior and the same
+movement tape. `Test It.cmd -Quick` selects one central pair. Use the
+[practical guide](camera-stack-coherence-acceptance.md) for ordinary gameplay
+comparison and the physical acceptance record.
+
+The corrected arms require measured known selected steps, no recorded source
+time reversal, and an aligned Follow target. Unknown visible timestamps remain
+explicit in the report. These automated contracts do not establish smooth
+physical display. `READ-RESULTS.txt` reports actual Main intervals and resolver
+CPU median/p95/p99 with counts; JSONL retains holds, withholding and missed Main
+presentation opportunities. Tracing remains opt-in for ordinary gameplay.
+
+## Retained source-matched cadence campaign
+
+For the earlier ACK/history investigation, explicitly run:
 
 ~~~powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Run-Test-It.ps1 -Cadence
 ~~~
 
-The focused matrix makes 18 original/repaired pairs (36 arms) in separate processes for
+This separate matrix retains original guarded actor presentation in both arms.
+It makes 18 original/repaired cadence pairs (36 arms) in separate processes for
 Pixel 30/60/120, Rapier callbacks 60/120, graphical FPS 30/60/120/uncapped,
 material publication 30/60/120, Free/Follow, guarded/mask, ACK delay 0/3,
 ordinary/gated publication, material crossfade and the original sample handshake.
@@ -88,14 +112,15 @@ old presentation defects for same-source controls; it never changes physics.
 ## Capture an actual physical test
 
 1. Extract the new source-locked Windows artifact into a fresh writable folder.
-   Start **Open Guarded Workbench.cmd**, select the same Needle flyer and 2048²
+   Start **Open Workbench.cmd**, select the same Needle flyer and 2048²
    world as the failed evaluation, and start Play.
 2. Click **Engine Lab…** and scroll to **ACTUAL RENDERED-FRAME POSE TRACE**.
    Click **Trace poses: manual**. Reproduce the stuttering for ten seconds.
    The trace stops automatically; **Stop trace** also closes the buffered
    capture immediately.
 3. Capture matched **Free camera** and **Follow selected** trials; compare
-   **Open Mask Baseline.cmd** to guarded mode using fresh processes.
+   **Open Original Presentation.cmd** to the corrected mode using fresh processes.
+   **Open Mask Baseline.cmd** is an additional material-bound control.
    Vary Pixel tick Hz and material publication Hz separately, then restore
    60Hz baseline before varying Rapier callback Hz. Non-60Hz Rapier deliberately
    changes physical wall-clock speed, not the constant 1/60 simulated timestep.
@@ -111,6 +136,10 @@ file IO for the trace.
 
 ## What one recorded Main frame contains
 
+- Resolved presentation policy, selected/desired Rapier steps, explicit source
+  reasons and holds, selected Follow target, resolver CPU cost and the exact
+  frozen texture blend used by the shader. Negative/unknown steps are not evidence
+  of temporal order. Known history survives hidden frames until identity/reset changes.
 - Monotonic timestamp, process/physics frame indices, rendered frame delta,
   completed native tick, Rapier step and native/uploaded snapshot serials
 - Requested floating-point camera origin, actually presented pixel-snapped

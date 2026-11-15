@@ -44,7 +44,10 @@ static func assess(bound_pose: Transform2D, live_pose: Transform2D, rectangles: 
 		world_pixels: Image, previous_occupied: Dictionary = {},
 		previous_unknown: bool = false, previous_blend_active: bool = false,
 		max_scan_cells: int = MAX_SCAN_CELLS, deadline_usec: int = 0,
-		previous_world_pixels: Image = null, require_footprint_clear: bool = false) -> Dictionary:
+		previous_world_pixels: Image = null, require_footprint_clear: bool = false,
+		current_material_bytes: PackedByteArray = PackedByteArray(),
+		previous_material_bytes: PackedByteArray = PackedByteArray(),
+		max_empty_scan_cells: int = 0) -> Dictionary:
 	if world_pixels == null or world_pixels.is_empty() or rectangles.is_empty():
 		return _refuse("missing_world_or_geometry")
 	if not bound_pose.is_finite() or not live_pose.is_finite():
@@ -90,43 +93,83 @@ static func assess(bound_pose: Transform2D, live_pose: Transform2D, rectangles: 
 	# Euclidean dilation. No material can escape between discrete samples.
 	# EDGE_EPSILON absorbs float32/world-cell centre rounding.
 	var padding: float = (displacement + rotational_sweep) / (2.0 * float(steps))
-	var poses: Array[Transform2D] = []
+	var inverse_poses: Array[Transform2D] = []
+	var boxes: Array[Vector4] = []
+	for rectangle: Dictionary in rectangles:
+		var centre: Vector2 = rectangle.center
+		var half: Vector2 = Vector2(rectangle.size)*0.5 + Vector2.ONE*(padding+EDGE_EPSILON)
+		boxes.append(Vector4(centre.x,centre.y,half.x,half.y))
+	var low := Vector2.INF
+	var high := -Vector2.INF
 	for i: int in range(steps+1):
+		if deadline_usec > 0 and Time.get_ticks_usec() >= deadline_usec:
+			return _refuse("time_budget")
 		var weight: float = float(i) / float(steps)
-		poses.append(Transform2D(bound_pose.get_rotation()+angle*weight,
-			bound_pose.origin.lerp(live_pose.origin,weight)))
-
-	# The bound is deliberately the complete turning radius; intermediate
-	# rotation cannot escape it, even when endpoint AABBs are narrower.
-	var first_x: int = floori(minf(bound_pose.origin.x,live_pose.origin.x)-radius-1.0)
-	var last_x: int = ceili(maxf(bound_pose.origin.x,live_pose.origin.x)+radius+1.0)-1
-	var first_y: int = floori(minf(bound_pose.origin.y,live_pose.origin.y)-radius-1.0)
-	var last_y: int = ceili(maxf(bound_pose.origin.y,live_pose.origin.y)+radius+1.0)-1
-	if require_footprint_clear and displacement == 0.0 and rotational_sweep == 0.0:
-		# No rotation/translation interval exists for a stationary certificate.
-		# Use the actual collider bounds so a valid body touching a World edge
-		# is not rejected merely because its enclosing turning circle escapes.
-		var low := Vector2.INF
-		var high := -Vector2.INF
-		for rectangle: Dictionary in rectangles:
-			for sx: float in [-1.0,1.0]:
-				for sy: float in [-1.0,1.0]:
-					var corner: Vector2 = live_pose * (Vector2(rectangle.center) \
-						+ Vector2(rectangle.size)*Vector2(sx,sy)*0.5)
-					low = low.min(corner)
-					high = high.max(corner)
-		if low.x < 0.0 or low.y < 0.0 or high.x > world_pixels.get_width() or high.y > world_pixels.get_height():
-			return _refuse("outside_world")
-		first_x = floori(low.x)
-		first_y = floori(low.y)
-		last_x = ceili(high.x)-1
-		last_y = ceili(high.y)-1
-	if first_x < 0 or first_y < 0 or last_x >= world_pixels.get_width() or last_y >= world_pixels.get_height():
+		var pose := Transform2D(bound_pose.get_rotation()+angle*weight,
+			bound_pose.origin.lerp(live_pose.origin,weight))
+		inverse_poses.append(pose.affine_inverse())
+		for box: Vector4 in boxes:
+			var centre: Vector2 = pose*Vector2(box.x,box.y)
+			var extent: Vector2 = pose.x.abs()*box.z+pose.y.abs()*box.w
+			low = low.min(centre-extent)
+			high = high.max(centre+extent)
+	# Every continuous pose is inside the already proven sampled dilations.
+	# Their union AABB is therefore sufficient; the old full turning circle
+	# scanned thousands of unrelated platform cells around wide thin actors.
+	var width: int = world_pixels.get_width()
+	var height: int = world_pixels.get_height()
+	if low.x < -EDGE_EPSILON*2.0 or low.y < -EDGE_EPSILON*2.0 \
+			or high.x > float(width)+EDGE_EPSILON*2.0 or high.y > float(height)+EDGE_EPSILON*2.0:
 		return _refuse("outside_world")
+	var first_x: int = maxi(0,floori(low.x))
+	var last_x: int = mini(width-1,ceili(high.x)-1)
+	var first_y: int = maxi(0,floori(low.y))
+	var last_y: int = mini(height-1,ceili(high.y)-1)
 	var columns: int = last_x-first_x+1
 	var rows: int = last_y-first_y+1
-	if max_scan_cells < 1 or columns * rows > max_scan_cells:
+	var cells: int = columns*rows
+	if max_scan_cells < 1:
 		return _refuse("scan_budget")
+	var pre_scanned: int = 0
+	# A complete zero rectangle is a stronger, cheaper clearance proof than
+	# testing each occupied centre against every rotated shape. These bounded
+	# copies/counts execute in native Image/PackedByteArray code. All channels
+	# must be zero (conservative for conditioned Empty); both GPU images count.
+	# Charge the whole rectangle to the shared frame cell budget even if this
+	# fast proof fails. The 12K fine-geometry cap remains unchanged.
+	if cells <= max_empty_scan_cells and (cells > max_scan_cells or cells*2 <= max_empty_scan_cells):
+		if deadline_usec > 0 and Time.get_ticks_usec() >= deadline_usec:
+			return _refuse("time_budget")
+		var region := Rect2i(first_x,first_y,columns,rows)
+		var bytes: PackedByteArray = world_pixels.get_region(region).get_data()
+		var clear: bool = not bytes.is_empty() and bytes.count(0)==bytes.size()
+		if clear and previous_blend_active:
+			if previous_world_pixels != null:
+				bytes = previous_world_pixels.get_region(region).get_data()
+				clear = not bytes.is_empty() and bytes.count(0)==bytes.size()
+			else:
+				clear = previous_occupied.is_empty()
+		pre_scanned = cells
+		if deadline_usec > 0 and Time.get_ticks_usec() >= deadline_usec:
+			return _refuse("time_budget",pre_scanned)
+		if clear:
+			return {"safe":true,"reason":"empty_swept_mask","scanned":pre_scanned,
+				"steps":steps,"dilation_cells":padding,"proof":"empty_bounds"}
+		max_scan_cells = mini(max_scan_cells,max_empty_scan_cells-pre_scanned)
+	if cells > max_scan_cells:
+		return _refuse("scan_budget",pre_scanned)
+	# Main supplies the immutable bytes retained once per actual upload. The
+	# independent/legacy API retains local Image reads; it must not copy an
+	# entire World once per actor merely to inspect this bounded footprint.
+	var stride: int = 1 if world_pixels.get_format()==Image.FORMAT_R8 else (2 if world_pixels.get_format()==Image.FORMAT_RG8 else 0)
+	var old_stride: int = 0
+	if current_material_bytes.is_empty(): stride = 0
+	if previous_blend_active and previous_world_pixels != null:
+		old_stride = 1 if previous_world_pixels.get_format()==Image.FORMAT_R8 else (2 if previous_world_pixels.get_format()==Image.FORMAT_RG8 else 0)
+		if previous_material_bytes.is_empty(): old_stride = 0
+	if (stride > 0 and current_material_bytes.size() != width*height*stride) \
+			or (old_stride > 0 and previous_material_bytes.size() != width*height*old_stride):
+		return _refuse("material_bytes_unbounded",pre_scanned)
 	var scanned: int = 0
 	for y: int in range(first_y,last_y+1):
 		for x: int in range(first_x,last_x+1):
@@ -135,19 +178,23 @@ static func assess(bound_pose: Transform2D, live_pose: Transform2D, rectangles: 
 			# just each body's rectangular scan. A timeout always refuses.
 			if deadline_usec > 0 and (scanned & 31) == 0 \
 					and Time.get_ticks_usec() >= deadline_usec:
-				return _refuse("time_budget",scanned)
+				return _refuse("time_budget",pre_scanned+scanned)
 			# Empty pixels need no shape testing. The exact previous image
 			# covers active crossfade material; the small-patch map is retained
 			# for legacy callers without an image.
-			var occupied: bool = world_pixels.get_pixel(x,y).r8 != 0
+			var cell_index: int = y*width+x
+			var occupied: bool = current_material_bytes[cell_index*stride] != 0 \
+				if stride > 0 else world_pixels.get_pixel(x,y).r8 != 0
 			if not occupied and previous_blend_active:
-				occupied = previous_world_pixels.get_pixel(x,y).r8 != 0 \
-					if previous_world_pixels != null \
-					else previous_occupied.has(y*world_pixels.get_width()+x)
+				occupied = previous_material_bytes[cell_index*old_stride] != 0 if old_stride > 0 \
+					else (previous_world_pixels.get_pixel(x,y).r8 != 0 if previous_world_pixels != null \
+					else previous_occupied.has(cell_index))
 			if not occupied: continue
 			var cell := Vector2(float(x)+0.5,float(y)+0.5)
-			for pose: Transform2D in poses:
-				if _touches_body(cell,pose,rectangles,padding):
-					return _refuse("material_in_swept_mask",scanned)
-	return {"safe":true,"reason":"empty_swept_mask","scanned":scanned,
+			for inverse_pose: Transform2D in inverse_poses:
+				var local: Vector2 = inverse_pose*cell
+				for box: Vector4 in boxes:
+					if absf(local.x-box.x)<=box.z and absf(local.y-box.y)<=box.w:
+						return _refuse("material_in_swept_mask",pre_scanned+scanned)
+	return {"safe":true,"reason":"empty_swept_mask","scanned":pre_scanned+scanned,
 		"steps":steps,"dilation_cells":padding}

@@ -10,6 +10,18 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Coherent Workbench evaluation — 2026-11-15
+
+**Implemented candidate; Draft/HOLD, physical acceptance pending.** The
+camera stack #566 → #593 → #606 → #609 now resolves actor safety and temporal
+selection before Follow and shares one final pixel mapping with native terrain.
+The [contract](../architecture/rendering-and-gameplay-bridges.md#coherent-workbench-presentation-frame)
+preserves native/physical authority; the [evaluation guide](../operations/camera-stack-coherence-acceptance.md)
+provides original/corrected comparisons. The candidate integrates accepted main
+`018bd09503d7` with current generator, Flatten, PAINT and persistence features.
+Exact-source automated qualification and physical NVIDIA acceptance are separate;
+this does not authorize merging or changing any of the four Draft states.
+
 ## Native-resolution camera candidate — 2026-11-13
 
 **Implemented unmerged candidate; owner acceptance pending.** The

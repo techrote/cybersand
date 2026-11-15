@@ -229,10 +229,10 @@ def analyze_presentation_contract(frames):
     lifetime is a source rewind. Legacy traces have no selected-step proof and
     retain their existing spatial/source-change diagnostics without inventing it.
     """
-    previous, rewinds, holds, lag_steps = {}, [], [], []
+    previous, known_steps, rewinds, holds, lag_steps = {}, {}, [], [], []
     source_changes, reasons, policies = Counter(), Counter(), Counter()
     follow_residuals, follow_screen_residuals, resolve_costs = [], [], []
-    known = intentional = withheld = resets = follow_observations = 0
+    known = unknown_visible = intentional = withheld = resets = follow_observations = 0
     hold_starts = {}
     for frame in frames:
         contract = frame.get("presentation", {})
@@ -248,17 +248,26 @@ def analyze_presentation_contract(frames):
             identity = presentation_identity(frame, body)
             step = number(body.get("presentation_step"))
             desired = number(body.get("desired_step", frame.get("rapier_step")))
+            # The resolver's negative sentinel means provenance is unknown,
+            # not an earlier valid simulation step.
+            step = step if step is not None and step >= 0 else None
+            desired = desired if desired is not None and desired >= 0 else None
             source = str(body.get("source", "hidden"))
             reason = str(body.get("source_reason", body.get("guard_reason", "unrecorded")))
             reasons[reason] += 1
             reset = bool(body.get("timeline_reset", False))
             prior = previous.get(slot)
-            if reset or (prior is not None and prior["identity"] != identity):
+            known_prior = known_steps.get(slot)
+            previous_identity = prior["identity"] if prior else known_prior["identity"] if known_prior else None
+            if reset or (previous_identity is not None and previous_identity != identity):
                 resets += 1
                 if slot in hold_starts:
                     started, last_held = hold_starts.pop(slot)
                     holds.append((last_held - started) / 1000)
                 prior = None
+                known_prior = None
+                previous.pop(slot, None)
+                known_steps.pop(slot, None)
             held = bool(body.get("intentional_hold", False))
             intentional += int(held)
             selected = body.get("selected")
@@ -274,12 +283,15 @@ def analyze_presentation_contract(frames):
                 known += 1
                 if desired is not None:
                     lag_steps.append(desired-step)
-                if prior is not None and prior["step"] is not None and step < prior["step"]-1e-6:
+                if known_prior is not None and step < known_prior["step"]-1e-6:
                     rewinds.append({"frame": frame.get("process_frame"), "time_usec": now,
-                                    "slot": slot, "prior_step": prior["step"], "selected_step": step,
-                                    "backward_steps": prior["step"]-step,
-                                    "prior_source": prior["source"], "source": source,
+                                    "slot": slot, "prior_step": known_prior["step"], "selected_step": step,
+                                    "backward_steps": known_prior["step"]-step,
+                                    "prior_source": known_prior["source"], "source": source,
                                     "source_reason": reason})
+                known_steps[slot] = {"identity": identity, "step": step, "source": source}
+            else:
+                unknown_visible += 1
             if prior is not None and prior["source"] != source:
                 source_changes[prior["source"] + "->" + source] += 1
             if held and now is not None:
@@ -304,6 +316,7 @@ def analyze_presentation_contract(frames):
                      for a, b in zip(frames, frames[1:])
                      if number(a.get("process_frame")) is not None and number(b.get("process_frame")) is not None]
     return {"policies": dict(policies), "selected_step_observations": known,
+            "selected_step_unknown_visible_frames": unknown_visible,
             "source_time_rewind_count": len(rewinds), "source_time_rewinds": rewinds,
             "source_changes": dict(source_changes), "source_reasons": dict(reasons),
             "timeline_resets": resets, "intentional_hold_frames": intentional,
@@ -316,7 +329,7 @@ def analyze_presentation_contract(frames):
             "main_submission_interval_ms": measured_rate([x.get("time_usec") for x in frames])["interval_ms"],
             "callbacks_without_observed_submission": sum(max(0, n) for n in callback_gaps),
             "submission_gaps_in_callback_index": sum(n > 0 for n in callback_gaps),
-            "interpretation": "Source time is recorded by the resolver; legacy captures without selected steps cannot prove monotonicity. Spatial reversals with advancing source time are not rewinds. Callback gaps count Main indices without an overlay observation, not missed physical GPU presents."}
+            "interpretation": "Source time is recorded by the resolver; absent/negative selected steps are unknown and cannot prove monotonicity. The last visible known step survives hidden/unknown gaps within one actor lifetime. Spatial reversals with advancing source time are not rewinds. Callback gaps count Main indices without an overlay observation, not missed physical GPU presents."}
 
 
 def paired_latency(events, before_kind, after_kind, cumulative=False):

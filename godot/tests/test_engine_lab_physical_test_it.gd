@@ -49,6 +49,9 @@ var wait_sample: bool = true
 var sample_wake: bool = true
 var smoothing: bool = true
 var cadence_mode: String = "repaired"
+var presentation_mode: String = "coherent"
+var fire_mode: String = "unchanged"
+var fire_events: Array[Dictionary] = []
 var cadence_tape: bool = false
 var input_tape: Array[Dictionary] = []
 var output: String = ""
@@ -94,6 +97,8 @@ func _initialize() -> void:
 		if arg.begins_with("--sample-wake="): sample_wake=arg.trim_prefix("--sample-wake=")=="1"
 		if arg.begins_with("--smoothing="): smoothing=arg.trim_prefix("--smoothing=")=="1"
 		if arg.begins_with("--cadence="): cadence_mode=arg.trim_prefix("--cadence=")
+		if arg.begins_with("--presentation="): presentation_mode=arg.trim_prefix("--presentation=")
+		if arg.begins_with("--fire-mode="): fire_mode=arg.trim_prefix("--fire-mode=")
 		if arg.begins_with("--cadence-tape="): cadence_tape=arg.trim_prefix("--cadence-tape=")=="1"
 		if arg.begins_with("--receipt="): output=arg.trim_prefix("--receipt=")
 	if invalid_boolean or not OS.get_cmdline_user_args().has("--engine-lab-scripted") or \
@@ -102,7 +107,9 @@ func _initialize() -> void:
 			repeat_id not in [1,2] or pixel_hz not in [2,30,60,120] or \
 			render_hz not in [30,60,120] or fps_target not in [0,30,60,120] or \
 			rapier_hz not in [60,120] or ack_delay not in [0,3] or \
-			cadence_mode not in ["legacy","repaired"] or output.is_empty():
+			cadence_mode not in ["legacy","repaired"] or \
+			presentation_mode not in ["legacy","coherent"] or \
+			fire_mode not in ["unchanged","off","on-off"] or output.is_empty():
 		push_error("TEST_IT: explicit verified graphical Test It arguments required")
 		quit(2)
 		return
@@ -117,6 +124,8 @@ func _initialize() -> void:
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 	OS.set_environment("CYBERSAND_DIAG_RENDER_CADENCE",
 		"legacy" if cadence_mode=="legacy" else "")
+	OS.set_environment("CYBERSAND_DIAG_PRESENTATION",
+		"legacy" if presentation_mode=="legacy" else "")
 	OS.set_environment("CYBERSAND_DIAG_FLYER_POSE",
 		"mask" if pose_mode=="mask" else "")
 	set_meta("cybersand_feature","shared_workbench")
@@ -214,6 +223,7 @@ func _capture_frame(label: String) -> void:
 
 
 func _finish(ui: Control) -> void:
+	if physics_frame.is_connected(_fire_schedule): physics_frame.disconnect(_fire_schedule)
 	var trace_receipt: Dictionary = {}
 	var trace_dest: String = output.trim_suffix(".json")+"-poses.jsonl"
 	if host!=null and is_instance_valid(host):
@@ -281,7 +291,8 @@ func _finish(ui: Control) -> void:
 		"requested_rapier_callback_hz":rapier_hz,"ack_delay_frames":ack_delay,
 		"ack_gated_publication":ack_gated,"wait_native_sample":wait_sample,
 		"wake_on_rapier_sample":sample_wake,"smoothing":smoothing,
-		"cadence_mode":cadence_mode,
+		"cadence_mode":cadence_mode,"presentation_mode":presentation_mode,
+		"fire_schedule":{"mode":fire_mode,"clock":"completed_Rapier_steps","events":fire_events},
 		"fixed_physics_step_seconds":1.0/60.0,
 		"physics_rate_semantics":"fixed_1_over_60_per_completed_step; 120_callback_target_is_not_normalized_120Hz_physics",
 		"capture_start_usec":capture_start_usec,"capture_end_usec":capture_end_usec,
@@ -309,6 +320,11 @@ func _finish(ui: Control) -> void:
 		"godot":Engine.get_version_info().get("string",""),
 		"video_adapter":RenderingServer.get_video_adapter_name(),
 		"render_driver":RenderingServer.get_current_rendering_driver_name(),
+		"display":{"dpi":DisplayServer.screen_get_dpi(),"scale":DisplayServer.screen_get_scale(),
+			"refresh_hz":DisplayServer.screen_get_refresh_rate(),
+			"screen_size":[DisplayServer.screen_get_size().x,DisplayServer.screen_get_size().y],
+			"window_size":[root.size.x,root.size.y],"window_content_scale":root.content_scale_factor,
+			"vsync_mode":DisplayServer.window_get_vsync_mode()},
 		"elapsed_seconds":float(Time.get_ticks_usec()-started_usec)/1000000.0,
 		"assertions":assertions,"failures":problems.duplicate()}
 	var writer: FileAccess=FileAccess.open(output,FileAccess.WRITE)
@@ -326,6 +342,27 @@ func _finish(ui: Control) -> void:
 	await process_frame
 	await process_frame
 	quit(int(not problems.is_empty()))
+
+
+func _set_fire(enabled: bool, requested_step: int) -> void:
+	var ui: Control = host.shared_workbench
+	# Use the same CheckButton signal as an owner click. Do not edit native
+	# cells or substitute a second input/physics owner.
+	ui._fire.button_pressed = enabled
+	check(ui.fire_enabled == enabled,"production Thruster fire toggle applied")
+	fire_events.append({"enabled":enabled,"requested_step":requested_step,
+		"observed_step":host.physical_actor_session.tick-capture_rapier_start,
+		"time_usec":Time.get_ticks_usec()})
+
+
+func _fire_schedule() -> void:
+	# SceneTree.physics_frame fires before Main's physics callback; this sees
+	# every completed-step index even when graphical FPS is lower than Rapier.
+	if fire_mode != "on-off" or fire_events.size() != 1 or host.paused: return
+	var step: int = host.physical_actor_session.tick-capture_rapier_start
+	if step >= 60:
+		check(step == 60,"Fire OFF occurs before completed-step 60 advances")
+		_set_fire(false,60)
 
 
 func _run() -> void:
@@ -404,6 +441,7 @@ func _run() -> void:
 			"fixed_physics_step_seconds":1.0/60.0,"ack_delay_frames":ack_delay,
 			"ack_gated_publication":ack_gated,"wait_native_sample":wait_sample,
 			"wake_on_rapier_sample":sample_wake,"smoothing":smoothing,"cadence_mode":cadence_mode,
+			"presentation_mode":presentation_mode,"fire_mode":fire_mode,
 			"input_tape_identity":"original8_plus_cadence_30_90_120" if cadence_tape else "original8"}),
 			"bounded actual overlay pose trace armed"):
 		await _finish(ui)
@@ -411,6 +449,9 @@ func _run() -> void:
 	capture_start_usec=Time.get_ticks_usec()
 	capture_native_start=host.latest_snapshot.tick_index
 	capture_rapier_start=host.physical_actor_session.tick
+	if fire_mode != "unchanged":
+		_set_fire(fire_mode == "on-off",0)
+		if fire_mode == "on-off": physics_frame.connect(_fire_schedule)
 	if not check(ui.toggle_pause(),"unpause real Native World and Rapier"):
 		await _finish(ui)
 		return
@@ -426,4 +467,6 @@ func _run() -> void:
 			check(false,"tick script refused: "+host.engine_lab_replay_error)
 			break
 		await process_frame
+	if physics_frame.is_connected(_fire_schedule): physics_frame.disconnect(_fire_schedule)
+	if fire_mode == "on-off": check(fire_events.size() == 2,"Fire ON then OFF schedule completed")
 	await _finish(ui)

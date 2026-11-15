@@ -177,6 +177,11 @@ func _source_oscillation(camera: String) -> void:
 		check(veto.get("intentional_hold",false),camera+" conservative hold is identified explicitly")
 		check(int(veto.get("selected_step",-1))==int(first.get("selected_step",-2)),
 			camera+" hold retains selected simulation step")
+		ui._pick(Vector2i(clear.origin))
+		check(ui.selected_id()==1,camera+" held actor is picked at its displayed position")
+		ui._pick(Vector2i(260,300))
+		check(ui.selected_id()==0,camera+" hidden live position does not steal actor picking")
+		ui.select_instance(1)
 	var recovery: Transform2D=_move_actual(bound.origin+Vector2(7,0))
 	var resumed: Dictionary=_capture(camera+"-clear-resume")
 	check(_pose() is Transform2D and _pose().origin.distance_to(recovery.origin)<0.01,
@@ -226,6 +231,9 @@ func _long_clear_path() -> void:
 			invalid[key]=int(invalid.get(key,-1))+1
 			_capture("invalid-"+key,false,invalid)
 			check(_pose()==null,"stale "+key+" withholds actor rather than unchecked live fallback")
+			ui._pick(Vector2i(last.origin))
+			check(ui.selected_id()==0,"withheld "+key+" actor has no selectable visual footprint")
+			ui.select_instance(1)
 			_capture("rejoin-"+key,false,valid)
 			check(_pose() is Transform2D and _pose().origin.distance_to(last.origin)<0.01,
 				"valid rejoin after "+key+" preserves advanced presentation timeline")
@@ -363,7 +371,11 @@ func _paint_revalidates_hold() -> void:
 	check(host.physical_actor_session.tick==tick \
 		and host.physical_actor_session.bridge.body_transform(0).is_equal_approx(physical_before),
 		"PAINT and visual withholding preserve authoritative physical state")
-	var recovery: Transform2D=_move_actual(SPAWN+Vector2(7,0))
+	# A genuine newer native receipt must also admit a rapid physical move
+	# beyond the per-render sweep limit; never clamp the authoritative pose.
+	var recovery: Transform2D=_move_actual(SPAWN+Vector2(0,-80))
+	check(recovery.origin.distance_to(clear.origin)>Clearance.MAX_SHIFT_CELLS,
+		"rapid recovery exceeds the incremental presentation sweep bound")
 	var published_step: int=host.physical_actor_session.tick
 	host._publish_physical_body_state()
 	var published_sample: int=host._workbench_wait_sample
@@ -383,7 +395,7 @@ func _paint_revalidates_hold() -> void:
 		"bound_rapier_step":host._workbench_bound_step(received),"native_tick":host.latest_snapshot.tick_index})
 	_capture("paint-cleared-resume")
 	check(_pose() is Transform2D and _pose().origin.distance_to(recovery.origin)<0.01,
-		"safe post-PAINT physical movement resumes at actual live pose")
+		"newer actual native receipt rejoins rapid movement without smoothing or clamping")
 	check(int(host.workbench_presentation_frame.selected_steps.get(0,-2))>=held_step,
 		"recomputed real native receipt rejoins without temporal rewind")
 

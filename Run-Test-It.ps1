@@ -6,6 +6,8 @@ param(
   [switch]$Full,
   [switch]$Compare,
   [switch]$Cadence,
+  [switch]$Coherence,
+  [string[]]$CoherenceConditions=@(),
   [switch]$FullCadence,
   [string[]]$CadenceConditions=@(),
   [ValidateSet('opengl3','opengl3_angle')][string]$RenderingDriver='opengl3',
@@ -45,7 +47,7 @@ try {
 }
 $Engine=Join-Path $Root 'Godot_v4.7-stable_win64_console.exe'
 $Project=Join-Path $Root 'godot'
-$ManifestFile=Join-Path $Root 'PR593-MANIFEST.json'
+$ManifestFile=Join-Path $Root 'CAMERA-STACK-MANIFEST.json'
 $Zip=$Output+'.zip'
 $Cases=Join-Path $Output 'cases'
 New-Item -ItemType Directory -Force -Path $Cases|Out-Null
@@ -54,6 +56,7 @@ $PreviousXdg=$env:XDG_DATA_HOME
 $PreviousSource=$env:CYBERSAND_SOURCE_REVISION
 $PreviousPose=$env:CYBERSAND_DIAG_FLYER_POSE
 $PreviousCadence=$env:CYBERSAND_DIAG_RENDER_CADENCE
+$PreviousPresentation=$env:CYBERSAND_DIAG_PRESENTATION
 $Start=Get-Date
 $Summary=@{schema='engine-lab-scripted-pose-test-it-v1';status='incomplete';complete=$false
     source='unverified';driver=$RenderingDriver;cases=@();errors=@();processes=@()
@@ -61,12 +64,16 @@ $Summary=@{schema='engine-lab-scripted-pose-test-it-v1';status='incomplete';comp
         home=$PSHOME;modules=$ModuleProvenance;validated_commands=$RequiredCommands}
     pairs=@();failures=@();physical_acceptance='pending_owner_NVIDIA_review'
     physics_rate_semantics='Fixed 1/60 second per completed Rapier step; 120 callbacks is not normalized 120Hz physics. Compare physical trajectories at equal completed steps.'
-    mode=$(if($FullCadence){'full-cadence'}elseif($Cadence){'cadence'}elseif($Quick){'quick'}elseif($Compare){'compare'}elseif($Full){'full'}else{'eight-case'})}
+    mode=$(if($Coherence){'coherence'}elseif($FullCadence){'full-cadence'}elseif($Cadence){'cadence'}elseif($Quick){'quick'}elseif($Compare){'compare'}elseif($Full){'full'}else{'eight-case'})}
 Write-Host ('TEST_IT_POWERSHELL_RUNTIME '+($Summary.powershell|ConvertTo-Json -Depth 5 -Compress))
 function Require([bool]$Ok,[string]$Message){if(-not $Ok){throw $Message}}
 function Sha([string]$Path){return (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash.ToLowerInvariant()}
 function Field($Object,[string]$Name,$Fallback=$null) {
     if($null -eq $Object){return $Fallback}
+    if($Object -is [System.Collections.IDictionary]) {
+        if($Object.Contains($Name)){return $Object[$Name]}
+        return $Fallback
+    }
     $Property=$Object.PSObject.Properties[$Name]
     if($null -eq $Property){return $Fallback}
     return $Property.Value
@@ -79,7 +86,8 @@ function Distribution($Values) {
     $Sorted=@($Values|ForEach-Object{[double]$_}|Sort-Object)
     if($Sorted.Count -eq 0){return $null}
     return @{count=$Sorted.Count;min=$Sorted[0];p50=$Sorted[[Math]::Max(0,[Math]::Ceiling($Sorted.Count*0.50)-1)]
-      p95=$Sorted[[Math]::Max(0,[Math]::Ceiling($Sorted.Count*0.95)-1)];max=$Sorted[-1]}
+      p95=$Sorted[[Math]::Max(0,[Math]::Ceiling($Sorted.Count*0.95)-1)]
+      p99=$Sorted[[Math]::Max(0,[Math]::Ceiling($Sorted.Count*0.99)-1)];max=$Sorted[-1]}
 }
 function Read-PoseStatistics([string]$Path) {
     # Independent PowerShell reduction; no Python/development tools needed.
@@ -99,8 +107,14 @@ function Read-PoseStatistics([string]$Path) {
     $SnapshotAges=New-Object 'System.Collections.Generic.List[double]'
     $NativeAges=New-Object 'System.Collections.Generic.List[double]'
     $Sources=@{};$Reasons=@{};$Last=@{};$Holds=0;$Switches=0;$UploadChanges=0
+    $ResolveCpu=New-Object 'System.Collections.Generic.List[double]'
+    $FollowResidual=New-Object 'System.Collections.Generic.List[double]'
+    $TemporalRewinds=0;$IntentionalHolds=0;$Withheld=0;$MissingSubmissions=0;$SelectedSteps=0;$UnknownSelectedSteps=0
     for($Index=0;$Index -lt $Frames.Count;$Index++) {
         $Frame=$Frames[$Index]
+        $Contract=Field $Frame 'presentation'
+        $ResolveTime=Field $Contract 'resolve_usec'
+        if($null -ne $ResolveTime){$ResolveCpu.Add([double]$ResolveTime/1000.0)}
         $Built=[double](Field $Frame 'render_snapshot_built_usec' -1)
         if($Built -ge 0){$SnapshotAges.Add(([double]$Frame.time_usec-$Built)/1000.0)}
         $Completed=[double](Field $Frame 'mask_native_completed_usec' -1)
@@ -110,10 +124,21 @@ function Read-PoseStatistics([string]$Path) {
             $Interval=([double]$Frame.time_usec-[double]$Prior.time_usec)/1000.0
             Require ($Interval -gt 0) 'Nonmonotonic frame timestamps'
             $Intervals.Add($Interval)
+            $MissingSubmissions+=[Math]::Max(0,[int]$Frame.process_frame-[int]$Prior.process_frame-1)
             if($Frame.uploaded_render_serial -ne $Prior.uploaded_render_serial){$UploadChanges++}
         }
         foreach($Body in @($Frame.bodies)) {
             $Key=[string]$Body.slot;$Source=[string]$Body.source;$Reason=[string]$Body.guard_reason
+            $SelectedStep=Field $Body 'presentation_step'
+            if($null -ne $SelectedStep -and [double]$SelectedStep -ge 0){$SelectedSteps++}
+            elseif($null -ne (Field $Body 'selected')){$UnknownSelectedSteps++}
+            if([bool](Field $Body 'presentation_source_rewind' $false)){$TemporalRewinds++}
+            if([bool](Field $Body 'intentional_hold' $false)){$IntentionalHolds++}
+            if($null -eq (Field $Body 'selected')){$Withheld++}
+            if((Field $Body 'instance_id' -1) -eq (Field $Contract 'follow_instance_id' -2)) {
+                $FollowGap=Gap (Field $Contract 'follow_position') (Field (Field $Body 'selected') 'xy')
+                if($null -ne $FollowGap){$FollowResidual.Add($FollowGap)}
+            }
             if(-not $Sources.ContainsKey($Source)){$Sources[$Source]=0};$Sources[$Source]++
             if(-not $Reasons.ContainsKey($Reason)){$Reasons[$Reason]=0};$Reasons[$Reason]++
             $Projection=Field $Body 'screen_selected'
@@ -187,7 +212,11 @@ function Read-PoseStatistics([string]$Path) {
         snapshot_age_at_presentation_ms=(Distribution $SnapshotAges);bound_native_age_at_presentation_ms=(Distribution $NativeAges)
         native_tick_wall_ms=(Distribution $NativeWall);texture_upload_cpu_call_ms=(Distribution $UploadWall)
         snapshot_age_at_upload_ms=(Distribution $UploadAges);upload_to_ack_issue_ms=(Distribution $AckLatencies)
-        ack_latency_unavailable=$UnmatchedAcks
+        ack_latency_unavailable=$UnmatchedAcks;presentation_cpu_ms=(Distribution $ResolveCpu)
+        selected_step_observations=$SelectedSteps;selected_step_unknown_visible_frames=$UnknownSelectedSteps
+        selected_source_time_rewinds=$TemporalRewinds;intentional_hold_frames=$IntentionalHolds
+        withheld_body_frames=$Withheld;follow_target_minus_selected_cells=(Distribution $FollowResidual)
+        callbacks_without_overlay_submission=$MissingSubmissions
         dropped_frames=[int]$Records[-1].dropped;duplicate_callbacks=[int]$Records[-1].duplicates
         actual_first_view=@($Frames[0].view_world_cells);actual_last_view=@($Frames[-1].view_world_cells)}
     return @{statistics=$Result;trajectory=$Trajectory}
@@ -217,6 +246,24 @@ function Save-Summary {
     [IO.File]::WriteAllText((Join-Path $Output 'summary.json'),
       (($Summary|ConvertTo-Json -Depth 28)+[Environment]::NewLine),
       [Text.UTF8Encoding]::new($false))
+    $Lines=New-Object 'System.Collections.Generic.List[string]'
+    $Lines.Add('CyberSand presentation comparison - local measured results')
+    $Lines.Add('Source: '+$Summary.source)
+    $Lines.Add('Capture status: '+$Summary.status+'; physical NVIDIA acceptance: PENDING OWNER REVIEW')
+    $Lines.Add('Rates below are achieved. VSync is disabled only for these scripted pacing cases.')
+    $Lines.Add('Main means overlay submission, not monitor scanout. See summary.json and raw traces for full evidence.')
+    $Lines.Add('')
+    foreach($Row in $Summary.cases) {
+        $Stats=$Row.statistics;$Timing=$Stats.frame_interval_ms;$Cpu=$Stats.presentation_cpu_ms
+        $Lines.Add($Row.name)
+        $Lines.Add(('  Main/native/Rapier Hz: {0:N2} / {1:N2} / {2:N2}' -f $Stats.achieved_overlay_fps,$Stats.achieved_native_hz,$Stats.achieved_rapier_hz))
+        $Lines.Add(('  Main interval ms median/p95/p99: {0} / {1} / {2}; samples: {3}' -f (Field $Timing 'p50' 'n/a'),(Field $Timing 'p95' 'n/a'),(Field $Timing 'p99' 'n/a'),(Field $Timing 'count' 0)))
+        $Lines.Add(('  Presentation CPU ms median/p95/p99: {0} / {1} / {2}; recorded source rewinds: {3}' -f (Field $Cpu 'p50' 'n/a'),(Field $Cpu 'p95' 'n/a'),(Field $Cpu 'p99' 'n/a'),$Stats.selected_source_time_rewinds))
+        $Lines.Add(('  Intentional holds: {0}; withheld actor frames: {1}' -f $Stats.intentional_hold_frames,$Stats.withheld_body_frames))
+        $Lines.Add(('  Known selected steps: {0}; visible unknown source times: {1}; callbacks without a submission: {2}' -f $Stats.selected_step_observations,$Stats.selected_step_unknown_visible_frames,$Stats.callbacks_without_overlay_submission))
+    }
+    if($Summary.failures.Count -gt 0){$Lines.Add('Incomplete cases: '+$Summary.failures.Count+'; original logs are retained.')}
+    [IO.File]::WriteAllLines((Join-Path $Output 'READ-RESULTS.txt'),$Lines.ToArray(),[Text.UTF8Encoding]::new($false))
 }
 function Quote([string]$Value) {
     if($Value.Length -eq 0){return '""'}
@@ -265,10 +312,11 @@ function Run-Case([string]$Family,[int]$Workers,[int]$Repeat,
                   [string]$Camera,[string]$Pose,[int]$PixelHz,[int]$RenderHz,
                   [int]$Fps=60,[int]$RapierHz=60,[int]$AckDelay=0,[bool]$AckGated=$false,
                   [bool]$WaitSample=$true,[bool]$SampleWake=$true,[bool]$Smoothing=$true,
-                  [string]$Presentation='repaired',[string]$Condition='legacy-suite',[bool]$CadenceTape=$false) {
+                  [string]$Presentation='repaired',[string]$Condition='legacy-suite',[bool]$CadenceTape=$false,
+                  [string]$PoseSelection='coherent',[string]$FireMode='unchanged') {
     # Keep paths short for Windows PowerShell 5.1 and Godot shader-cache names.
     # Every requested axis is still written in the receipt and summary.
-    $Name=$(if($Condition -eq 'legacy-suite'){"$Family-w$Workers-r$Repeat-$Camera-$Pose-p$PixelHz-u$RenderHz"}else{"$Condition-$Presentation"})
+    $Name=$(if($Condition -eq 'legacy-suite'){"$Family-w$Workers-r$Repeat-$Camera-$Pose-p$PixelHz-u$RenderHz"}elseif($Coherence){"$Condition-$PoseSelection"}else{"$Condition-$Presentation"})
     $Dir=Join-Path $Cases $Name
     New-Item -ItemType Directory -Force -Path $Dir|Out-Null
     $Receipt=Join-Path $Dir 'receipt.json'
@@ -276,6 +324,7 @@ function Run-Case([string]$Family,[int]$Workers,[int]$Repeat,
     $env:XDG_DATA_HOME=$env:APPDATA
     $env:CYBERSAND_DIAG_FLYER_POSE=$(if($Pose -eq 'mask'){'mask'}else{''})
     $env:CYBERSAND_DIAG_RENDER_CADENCE=$(if($Presentation -eq 'legacy'){'legacy'}else{''})
+    $env:CYBERSAND_DIAG_PRESENTATION=$(if($PoseSelection -eq 'legacy'){'legacy'}else{''})
     New-Item -ItemType Directory -Force -Path $env:APPDATA|Out-Null
     Write-Host "TEST IT | $Name | real 2048-square World / Needle physics tape" -ForegroundColor Cyan
     $Arguments=@('--rendering-driver',$RenderingDriver,'--rendering-method',
@@ -286,7 +335,7 @@ function Run-Case([string]$Family,[int]$Workers,[int]$Repeat,
        "--pixel-hz=$PixelHz","--publication-hz=$RenderHz","--fps=$Fps","--rapier-hz=$RapierHz",
        "--ack-delay=$AckDelay","--ack-gated=$([int]$AckGated)","--wait-sample=$([int]$WaitSample)",
        "--sample-wake=$([int]$SampleWake)","--smoothing=$([int]$Smoothing)","--cadence=$Presentation",
-       "--cadence-tape=$([int]$CadenceTape)","--receipt=$Receipt")
+       "--cadence-tape=$([int]$CadenceTape)","--presentation=$PoseSelection","--fire-mode=$FireMode","--receipt=$Receipt")
     Run-Godot $Name $Arguments $TimeoutSeconds $Dir
     Require (Test-Path -LiteralPath $Receipt -PathType Leaf) "$Name did not write a receipt"
     $Data=Get-Content -LiteralPath $Receipt -Raw -Encoding UTF8|ConvertFrom-Json
@@ -294,6 +343,12 @@ function Run-Case([string]$Family,[int]$Workers,[int]$Repeat,
     Require (Test-Path -LiteralPath $Trace -PathType Leaf) "$Name did not write pose JSONL"
     Require ($Data.complete -eq $true -and $Data.status -eq 'passed') "$Name incomplete"
     Require ($Data.source_sha -eq $Summary.source) "$Name source identity changed"
+    Require ($Data.presentation_mode -eq $PoseSelection -and $Data.cadence_mode -eq $Presentation) "$Name comparison arm differs"
+    if($FireMode -eq 'on-off') {
+        $FireEvents=@($Data.fire_schedule.events)
+        Require ($FireEvents.Count -eq 2 -and $FireEvents[0].observed_step -eq 0 -and $FireEvents[1].observed_step -eq 60 -and
+            $FireEvents[0].enabled -eq $true -and $FireEvents[1].enabled -eq $false) "$Name Fire schedule incomplete"
+    }
     Require ($Data.world_size[0] -eq 2048 -and $Data.world_size[1] -eq 2048) "$Name wrong World size"
     Require ($Data.reference.json_sha256 -eq 'b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954') "$Name wrong owner fixture"
     Require ($Data.reference.generated_material_sha256 -eq '71610b37531531e284f069cf1e07c151283a441c9b0ff32a4fcc1dbb6c997a7a') "$Name wrong generated World"
@@ -307,8 +362,17 @@ function Run-Case([string]$Family,[int]$Workers,[int]$Repeat,
     $Analysis=Read-PoseStatistics $Trace
     [IO.File]::WriteAllText((Join-Path $Dir 'analysis.json'),
         (($Analysis.statistics|ConvertTo-Json -Depth 28)+[Environment]::NewLine),[Text.UTF8Encoding]::new($false))
+    if($Coherence -and $PoseSelection -eq 'coherent') {
+        Require ($Analysis.statistics.selected_step_observations -gt 0 -and
+            $Analysis.statistics.selected_source_time_rewinds -eq 0) "$Name missing or rewinding selected presentation timeline"
+        if($Camera -eq 'follow') {
+            $Follow=$Analysis.statistics.follow_target_minus_selected_cells
+            Require ($null -ne $Follow -and [double](Field $Follow 'max' 1) -le 0.000001) "$Name Follow target differs from selected pose"
+        }
+    }
     $Row=@{name=$Name;passed=$true;workers=$Workers;family=$Family;camera=$Camera;pose=$Pose
-        condition=$Condition;cadence_mode=$Presentation
+        condition=$Condition;cadence_mode=$Presentation;presentation_mode=$PoseSelection
+        fire_schedule=$Data.fire_schedule;display=$Data.display
         pixel_target_hz=$PixelHz;publication_target_hz=$RenderHz;graphical_fps_target=$Fps
         rapier_callback_target_hz=$RapierHz;fixed_simulation_step_seconds=(1.0/60.0)
         ack_delay_frames=$AckDelay;ack_gated_publication=$AckGated;wait_native_sample=$WaitSample
@@ -334,7 +398,7 @@ function Run-CadencePair($Condition) {
         try {
             Run-Case 'freemass' 1 1 $Condition.camera $Condition.pose $Condition.pixel $Condition.publication `
                 $Condition.fps $Condition.rapier $Condition.ack $Condition.gated $Condition.wait $Condition.wake `
-                $Condition.smoothing $Presentation $Condition.name $true
+                $Condition.smoothing $Presentation $Condition.name $true 'legacy'
             $Rows[$Presentation]=$script:LastCaseRow
             $Trajectories[$Presentation]=$script:LastTrajectory
         }catch{
@@ -380,15 +444,57 @@ function Run-CadenceMatrix {
     foreach($Condition in $Selected){Run-CadencePair $Condition}
     Require ($Summary.failures.Count -eq 0) 'One or more cadence cases were incomplete; all independent cases and partial results are retained'
 }
+function Run-CoherenceMatrix {
+    $MatrixPath=Join-Path $Project 'tests\fixtures\engine_lab\coherence-conditions.json'
+    $Matrix=Get-Content -LiteralPath $MatrixPath -Raw -Encoding UTF8|ConvertFrom-Json
+    Require ($Matrix.schema -eq 'camera-stack-coherence-conditions-v1') 'Wrong coherence matrix schema'
+    $Conditions=@($Matrix.conditions)
+    if($Quick){$Conditions=@($Conditions|Where-Object{$_.name -eq 'follow60'})}
+    if($CoherenceConditions.Count -gt 0) {
+        foreach($Name in $CoherenceConditions){Require (@($Conditions|Where-Object{$_.name -eq $Name}).Count -eq 1) ('Unknown coherence condition: '+$Name)}
+        $Conditions=@($Conditions|Where-Object{$CoherenceConditions -contains $_.name})
+    }
+    $Summary.planned_conditions=$Conditions;$Summary.planned_cases=$Conditions.Count*2
+    $Summary.comparison='Original guarded presentation versus coherent timeline; both use repaired material history and ACK'
+    Save-Summary
+    Write-Host ('COHERENCE: '+$Conditions.Count+' matched pairs. Close other CyberSand windows; results stay local.') -ForegroundColor Cyan
+    foreach($Condition in $Conditions) {
+        $Rows=@{};$Trajectories=@{}
+        foreach($Selection in @('legacy','coherent')) {
+            try {
+                Run-Case 'freemass' 1 1 $Condition.camera $Condition.pose $Condition.pixel $Condition.publication `
+                    $Condition.fps $Condition.rapier $Condition.ack $Condition.gated $Condition.wait $Condition.wake `
+                    $Condition.smoothing 'repaired' $Condition.name $true $Selection $Condition.fire
+                $Rows[$Selection]=$script:LastCaseRow;$Trajectories[$Selection]=$script:LastTrajectory
+            }catch{
+                $Summary.failures+=@{condition=$Condition.name;presentation=$Selection;error=[string]$_.Exception.Message}
+                Write-Host ('CASE INCOMPLETE: '+$Condition.name+' '+$Selection+' '+$_.Exception.Message) -ForegroundColor Red
+                Save-Summary
+            }
+        }
+        if($Rows.Count -eq 2) {
+            $Summary.pairs+=@{condition=$Condition.name;legacy=$Rows.legacy.name;coherent=$Rows.coherent.name
+                physical_trajectory=(Compare-PhysicalSteps $Trajectories.legacy $Trajectories.coherent)
+                legacy_statistics=$Rows.legacy.statistics;coherent_statistics=$Rows.coherent.statistics}
+            Save-Summary
+        }
+    }
+    $script:LastTrajectory=@{}
+    Require ($Summary.failures.Count -eq 0) 'One or more coherence cases were incomplete; all available evidence was retained'
+}
 try {
-    Require (-not ($Quick -and ($Full -or $Compare -or $FullCadence)) -and -not ($Full -and $Compare)) 'Select compatible test modes; Quick may combine with Cadence only'
+    Require (-not ($Quick -and ($Full -or $Compare -or $FullCadence)) -and -not ($Full -and $Compare)) 'Select compatible test modes; Quick may combine with Cadence or Coherence'
     Require (-not (($Cadence -or $FullCadence) -and ($Full -or $Compare))) 'Cadence modes cannot combine with old Compare/Full modes'
     Require (-not ($Cadence -and $FullCadence)) 'Select Cadence or FullCadence'
+    Require (-not ($Coherence -and ($Cadence -or $FullCadence -or $Compare -or $Full))) 'Coherence may combine with Quick or CoherenceConditions only'
+    Require ($CoherenceConditions.Count -eq 0 -or $Coherence) 'CoherenceConditions requires Coherence'
     Require ($CadenceConditions.Count -eq 0 -or $Cadence -or $FullCadence) 'CadenceConditions requires a cadence mode'
     Require (Test-Path -LiteralPath $Engine -PathType Leaf) 'Bundled Godot console missing: extract inner ZIP completely'
-    Require (Test-Path -LiteralPath $ManifestFile -PathType Leaf) 'PR593-MANIFEST.json missing'
+    Require (Test-Path -LiteralPath $ManifestFile -PathType Leaf) 'CAMERA-STACK-MANIFEST.json missing'
     Require (Test-Path -LiteralPath (Join-Path $Project 'tests\test_engine_lab_physical_test_it.gd')) 'Test It GDScript is absent: use latest pose-test package'
     $Manifest=Get-Content -LiteralPath $ManifestFile -Raw -Encoding UTF8|ConvertFrom-Json
+    Require ($Manifest.schema -eq 'camera-stack-coherence-windows-v1' -and
+        $Manifest.accepted_main -eq '018bd09503d7f079ddac52e225c2f7daf8d678bf') 'Wrong integrated evaluation manifest'
     Require ([string]$Manifest.source_commit -match '^[0-9a-f]{40}$') 'Source SHA not pinned'
     $Summary.source=[string]$Manifest.source_commit
     $env:CYBERSAND_SOURCE_REVISION=$Summary.source
@@ -413,14 +519,18 @@ try {
     $Version=(& $Engine --version|Select-Object -First 1).Trim()
     Require ($Version -eq $Manifest.godot_version) 'Godot version not pinned'
     $Summary.godot_version=$Version
-    $Summary.gpu=@(Get-CimInstance Win32_VideoController|ForEach-Object{@{name=$_.Name;driver=$_.DriverVersion}})
+    $Summary.gpu=@(Get-CimInstance Win32_VideoController|ForEach-Object{@{name=$_.Name;driver=$_.DriverVersion
+        resolution=@($_.CurrentHorizontalResolution,$_.CurrentVerticalResolution);refresh_hz=$_.CurrentRefreshRate}})
+    $Summary.dpi_and_vsync_notice='Per-window Godot screen DPI, display scale, refresh rate and effective VSync enum are captured in each case display receipt. Scripted pacing disables VSync; manual review should also use your ordinary setting.'
     $Summary.windows=Get-CimInstance Win32_OperatingSystem|Select-Object Caption,Version,BuildNumber
     Save-Summary
     $env:APPDATA=Join-Path $Output 'import-userdata'
     $env:XDG_DATA_HOME=$env:APPDATA
     New-Item -ItemType Directory -Force -Path $env:APPDATA|Out-Null
     Run-Godot 'import' @('--headless','--path',$Project,'--editor','--quit') 240 $Output
-    if($Cadence -or $FullCadence) {
+    if($Coherence) {
+        Run-CoherenceMatrix
+    }elseif($Cadence -or $FullCadence) {
         Run-CadenceMatrix
     }elseif($Quick) {
         Run-Case 'freemass' 1 1 'follow' 'guarded' 60 60
@@ -458,6 +568,7 @@ try {
     $env:CYBERSAND_SOURCE_REVISION=$PreviousSource
     $env:CYBERSAND_DIAG_FLYER_POSE=$PreviousPose
     $env:CYBERSAND_DIAG_RENDER_CADENCE=$PreviousCadence
+    $env:CYBERSAND_DIAG_PRESENTATION=$PreviousPresentation
     try {
         Save-Summary
         Compress-Archive -LiteralPath $Output -DestinationPath $Zip -CompressionLevel Optimal

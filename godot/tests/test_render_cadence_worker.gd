@@ -50,7 +50,11 @@ func _run() -> void:
 	if initial==null: worker.stop_worker(); quit(failures); return
 	worker.set_frame_state(0.0,false,false,Vector2i(160,90),Vector2i.ZERO,Vector2i(320,180),0,0,false,false,true)
 	expect(await wait_native_events(worker,4),"actual native events arrive without consuming snapshots")
-	var held: CyberSimulationSnapshot = worker.take_latest_snapshot(initial.serial)
+	# The completion event is emitted before its immutable status handoff.
+	# Wait for that observed completion to reach the latest-value snapshot;
+	# consuming immediately after the event races the producer's publication.
+	var held: CyberSimulationSnapshot = await wait_snapshot(worker,func(s: CyberSimulationSnapshot) -> bool:
+		return s.tick_index>=initial.tick_index+4 and s.render_publication_gate_holds>0)
 	expect(held!=null and held.tick_index>=initial.tick_index+4 and held.render_publication_gate_holds>0,
 		"native ticks continue while render ACK gate holds")
 	if held==null: worker.stop_worker(); quit(failures); return

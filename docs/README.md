@@ -10,6 +10,13 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+Current Draft/HOLD evaluation: [coherent actor, terrain and camera Windows
+acceptance](operations/camera-stack-coherence-acceptance.md),
+[presentation contract](architecture/rendering-and-gameplay-bridges.md#coherent-workbench-presentation-frame)
+and [source-scoped evidence](audits/2026-11-15-camera-stack-coherence.md).
+The integrated candidate preserves accepted generator and Flatten features;
+physical NVIDIA acceptance and all merge decisions remain with the owner.
+
 Draft/HOLD actor/terrain cadence continuation of #609: [one-command Windows
 measurements and clock meanings](operations/engine-lab-pose-tracing.md) and
 [confirmed mechanisms, bounded repair and unresolved architecture](audits/2026-11-15-render-cadence-001.md).

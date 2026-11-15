@@ -1,57 +1,32 @@
-name: RENDER-CADENCE-001 exact-source native graphical A/B and Windows package
+name: CAMERA-STACK-COHERENCE-001 source-matched Workbench and Windows evaluation
 on:
   push:
-    branches: [diagnostics/engine-lab-pose-trace-20261115, fix/render-cadence-001-20261115]
+    branches: [diagnostics/engine-lab-pose-trace-20261115, fix/camera-stack-coherence-20261115]
     paths:
       - '.github/workflows/pose-trace-qualification.yml'
-      - 'godot/scripts/workbench_pose_trace.gd'
-      - 'godot/scripts/workbench_presentation_coherence.gd'
-      - 'godot/tests/test_workbench_pose_trace.gd'
-      - 'godot/tests/test_render_cadence_contract.gd'
-      - 'godot/tests/test_render_cadence_worker.gd'
-      - 'godot/tests/test_render_ack_deadlines.gd'
-      - 'godot/tests/test_paint_editor_workbench.gd'
-      - 'godot/tests/test_native_pixel_camera.gd'
-      - 'godot/tests/test_workbench_failure_recovery.gd'
-      - 'godot/tests/test_engine_lab_physical_test_it.gd'
-      - 'godot/scripts/engine_lab_reference_fixture.gd'
-      - 'godot/tests/fixtures/engine_lab/setup-gate-canvas.json'
-      - 'godot/tests/fixtures/engine_lab/render-cadence-conditions.json'
+      - 'godot/**'
+      - 'tools/ci/**'
       - 'Run-Test-It.ps1'
       - 'Test It.cmd'
-      - 'tools/ci/analyze_pose_trace.py'
-      - 'tools/ci/test_analyze_pose_trace.py'
-      - 'tools/ci/run_render_cadence_matrix.py'
-      - 'docs/operations/engine-lab-pose-tracing.md'
-      - 'docs/audits/2026-11-15-render-cadence-001.md'
-      - 'godot/scripts/main.gd'
-      - 'godot/scripts/shared_workbench.gd'
-      - 'godot/scripts/simulation_worker.gd'
-      - 'godot/scripts/simulation_snapshot.gd'
-      - 'godot/scripts/feature_launcher.gd'
-      - 'godot/scripts/workbench_engine_lab.gd'
-      - 'godot/tests/test_workbench_engine_lab.gd'
-      - 'tools/ci/package_engine_lab_windows.py'
+      - 'docs/**'
   workflow_dispatch:
 permissions:
   contents: read
   actions: read
 concurrency:
-  group: engine-lab-${{ github.ref }}
+  group: camera-coherence-${{ github.ref }}
   cancel-in-progress: true
+env:
+  CYBERSAND_EVAL_SOURCE_SHA: ${{ github.sha }}
+  CYBERSAND_SOURCE_REVISION: ${{ github.sha }}
 jobs:
-  linux-native:
-    name: Linux native graphical cadence pair shard ${{ matrix.shard }}
+  linux-workbench:
+    name: Linux actual presentation, authoring and matched 2048 comparison
     runs-on: ubuntu-24.04
-    timeout-minutes: 75
-    strategy:
-      fail-fast: false
-      matrix:
-        shard: [0, 1, 2]
+    timeout-minutes: 65
     env:
-      CYBERSAND_EVAL_SOURCE_SHA: ${{ github.sha }}
-      CYBERSAND_SOURCE_REVISION: ${{ github.sha }}
       LIBGL_ALWAYS_SOFTWARE: '1'
+      LP_NUM_THREADS: '2'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -59,134 +34,80 @@ jobs:
           persist-credentials: false
           lfs: false
           fetch-depth: 0
-      - name: Native immutable source and qualified SO
-        run: |
-          set -euo pipefail
-          git merge-base --is-ancestor 9628729af052b417aa8a64e56f7e7bcdf4f2e876 HEAD
-          git diff --exit-code 214de85adef2aaabc8e26de8612a3bf27cc1a081 HEAD -- native godot/native_extension godot/scripts/workbench_physics_bridge.gd godot/scripts/pixel_camera_transform.gd
-      - name: Exact-source documentation, dependency provenance and retrieval gates
-        if: matrix.shard == 0
+      - name: Materialize retained current-main runtimes and verify compiler inputs
         run: |
           set -euo pipefail
           mkdir -p evidence
+          git lfs install --local
+          git lfs pull --include='godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
+          python3 tools/ci/package_engine_lab_windows.py preflight --platform linux > evidence/source-runtime.json
+          git rev-parse HEAD HEAD^{tree} > evidence/source.txt
+      - name: Documentation, provenance, historical integrity and retrieval
+        run: |
+          set -euo pipefail
           git cat-file -e 6a58311982941b75f46e22109a0829e5acb83c7e^{commit} || git fetch --no-tags origin 6a58311982941b75f46e22109a0829e5acb83c7e
           python3 - <<'PY'
-          import hashlib,json,pathlib,subprocess
-          source='6a58311982941b75f46e22109a0829e5acb83c7e'
+          import pathlib,subprocess
           root=pathlib.Path.cwd()
-          paths=('SOURCE-PROVENANCE.json','docs/LOCAL_DEVELOPMENT.md','docs/WEB_THREADING.md','tools/dev.py','validation/browser-results.json')
-          records={}
-          for relative in paths:
-              data=subprocess.check_output(['git','show',source+':'+relative])
+          for relative in ('SOURCE-PROVENANCE.json','docs/LOCAL_DEVELOPMENT.md','docs/WEB_THREADING.md','tools/dev.py','validation/browser-results.json'):
               destination=root.parent/relative
               destination.parent.mkdir(parents=True,exist_ok=True)
-              destination.write_bytes(data)
-              records[relative]=hashlib.sha256(data).hexdigest()
-          result={'source_sha':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'companion_sha':source,'files_sha256':records}
-          (root/'evidence/companion-provenance.json').write_text(json.dumps(result,indent=2)+'\n')
+              destination.write_bytes(subprocess.check_output(['git','show','6a58311982941b75f46e22109a0829e5acb83c7e:'+relative]))
           PY
+          python3 tools/ci/check_ci_provider_policy.py > evidence/ci-provider.json
           python3 tools/ci/check_docs.py --json evidence/documentation.json
           python3 tools/ci/check_repository.py --json evidence/repository-provenance.json
-          python3 tools/ci/check_m11_consistency.py --json evidence/historical-m11-integrity.json
-          python3 tools/docs/retrieval_eval.py --output evidence/retrieval-frozen.json
-          python3 tools/docs/retrieval_eval.py --queries docs/reference/retrieval-questions-render-cadence.json --output evidence/retrieval-render-cadence.json
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
-        with:
-          name: native-pixel-integrated-runtime-attempt-1-linux-43537909868
-          repository: techrote/cybersand
-          run-id: 43537909868
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          path: build/pr566-linux
-      - name: Install pinned native and Godot
+          python3 tools/ci/check_m11_consistency.py --json evidence/historical-integrity.json
+          python3 tools/docs/retrieval_eval.py --output evidence/retrieval.json
+          python3 tools/ci/test_analyze_pose_trace.py > evidence/analyzer-tests.log 2>&1
+      - name: Pinned Godot and graphical display
         run: |
           set -euo pipefail
-          python3 - <<'PY'
-          import hashlib,json,pathlib
-          base=pathlib.Path('build/pr566-linux')
-          p=json.loads((base/'runtime-provenance.linux.json').read_text())
-          so=base/'libcybersand_native.linux.x86_64.so'
-          assert p['source_commit']=='214de85adef2aaabc8e26de8612a3bf27cc1a081'
-          assert hashlib.sha256(so.read_bytes()).hexdigest()==p['sha256']=='44c906356a98c84b09c01f6e83bcae2391a4c0e39c5c632431a4a3f4cc1578e9'
-          for path,sha in p['source_inputs'].items():
-              assert hashlib.sha256(pathlib.Path(path).read_bytes().replace(b'\r\n',b'\n')).hexdigest()==sha,path
+          curl -fL --retry 3 --max-time 600 -o "$RUNNER_TEMP/godot.zip" 'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
+          echo "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  $RUNNER_TEMP/godot.zip" | sha256sum -c --strict
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/coherence-godot"
+          chmod +x "$RUNNER_TEMP/coherence-godot/Godot_v4.7-stable_linux.x86_64"
+          echo "GODOT_BIN=$RUNNER_TEMP/coherence-godot/Godot_v4.7-stable_linux.x86_64" >> "$GITHUB_ENV"
+          bash tools/ci/prepare_linux_display.sh > evidence/display-setup.log 2>&1
+      - name: Import and actual production temporal, native-edit, camera and safety regressions
+        run: |
+          set -euo pipefail
+          timeout 240 "$GODOT_BIN" --headless --path godot --editor --quit > evidence/import.log 2>&1
+          xvfb-run -a -s '-screen 0 1600x1000x24 -nolisten tcp' python3 tools/ci/run_camera_coherence_regressions.py --godot "$GODOT_BIN" --project godot --evidence evidence/production --graphical
+      - name: Current-main generation, material reconstruction and authoring persistence
+        if: success() || failure()
+        run: |
+          set -euo pipefail
+          xvfb-run -a -s '-screen 0 1600x1000x24 -nolisten tcp' python3 tools/architecture/qualify.py --godot "$GODOT_BIN" --project godot --output evidence/architecture --graphical --legacy-regressions
+          xvfb-run -a -s '-screen 0 1600x1000x24 -nolisten tcp' python3 tools/ci/run_flatten_qualification.py --godot "$GODOT_BIN" --project godot --evidence evidence/flatten --cases 512x1
+          xvfb-run -a -s '-screen 0 1600x1000x24 -nolisten tcp' python3 - <<'PY'
+          import argparse,os,pathlib,sys
+          sys.path.insert(0,'tools/ci')
+          from run_workbench_qualification import Runner,combined_authoring
+          root=pathlib.Path.cwd()
+          runner=Runner(argparse.Namespace(godot=pathlib.Path(os.environ['GODOT_BIN']),evidence=root/'evidence/combined'))
+          combined_authoring(runner,root/'godot','coherent-workbench',side=512)
           PY
-          mkdir -p godot/addons/cybersand_native/bin
-          cp build/pr566-linux/libcybersand_native.linux.x86_64.so godot/addons/cybersand_native/bin/
-          git lfs install --local
-          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
-          echo '566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' | sha256sum -c --strict
-          curl -fL --retry 3 --max-time 600 -o "$RUNNER_TEMP/godot-4.7.zip" 'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
-          echo "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  $RUNNER_TEMP/godot-4.7.zip" | sha256sum -c --strict
-          unzip -q "$RUNNER_TEMP/godot-4.7.zip" -d "$RUNNER_TEMP"
-          GODOT_BIN="$(find "$RUNNER_TEMP" -maxdepth 1 -type f -name 'Godot_v4.7*' | head -1)"
-          chmod +x "$GODOT_BIN"
-          echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
-      - name: Import exact-source application
+      - name: Same-source original versus coherent presentation under unequal clocks
+        if: success() || failure()
         run: |
           set -euo pipefail
-          mkdir -p evidence
-          timeout 180 "$GODOT_BIN" --headless --path godot --editor --quit > evidence/import.log 2>&1 || { cat evidence/import.log; exit 1; }
-      - name: Exercise actual native controls, actor guards and cadence regressions
-        if: matrix.shard == 0
-        run: |
-          set -euo pipefail
-          timeout 180 "$GODOT_BIN" --headless --path godot --script res://tests/test_workbench_engine_lab.gd > evidence/engine-lab.log 2>&1 || { cat evidence/engine-lab.log; exit 1; }
-          grep -F ENGINE_LAB_RESULT evidence/engine-lab.log
-          timeout 180 "$GODOT_BIN" --headless --path godot --script res://tests/test_workbench_pose_trace.gd > evidence/pose-trace.log 2>&1 || { cat evidence/pose-trace.log; exit 1; }
-          grep -F POSE_TRACE_RESULT evidence/pose-trace.log
-          python3 tools/ci/test_analyze_pose_trace.py
-          for test in test_render_cadence_contract test_render_cadence_worker test_render_ack_deadlines test_workbench_presentation_coherence test_pr593_mask_coherent_production test_pr593_mask_coherent_edit_crossfade test_pr593_mask_coherent_dense_budget; do
-            timeout 240 "$GODOT_BIN" --headless --path godot --script "res://tests/$test.gd" > "evidence/$test.log" 2>&1 || { cat "evidence/$test.log"; exit 1; }
-            if grep -E 'SCRIPT ERROR:|Parse Error:' "evidence/$test.log"; then exit 1; fi
-            tail -n 8 "evidence/$test.log"
-          done
-          mkdir -p evidence/paint-userdata
-          XDG_DATA_HOME="$PWD/evidence/paint-userdata" timeout 600 "$GODOT_BIN" --headless --path godot --script res://tests/test_paint_editor_workbench.gd > evidence/paint-author.log 2>&1 || { cat evidence/paint-author.log; exit 1; }
-          PAINT_REOPEN=1 XDG_DATA_HOME="$PWD/evidence/paint-userdata" timeout 240 "$GODOT_BIN" --headless --path godot --script res://tests/test_paint_editor_workbench.gd > evidence/paint-reopen.log 2>&1 || { cat evidence/paint-reopen.log; exit 1; }
-          CYBERSAND_TEST_ARTIFACT_DIR="$PWD/evidence/native-camera" timeout 300 "$GODOT_BIN" --headless --path godot --script res://tests/test_native_pixel_camera.gd > evidence/native-camera.log 2>&1 || { cat evidence/native-camera.log; exit 1; }
-          timeout 300 "$GODOT_BIN" --headless --path godot --script res://tests/test_workbench_failure_recovery.gd > evidence/failure-recovery.log 2>&1 || { cat evidence/failure-recovery.log; exit 1; }
-          grep -F PAINT_EDITOR_WORKBENCH evidence/paint-author.log
-          grep -F PAINT_EDITOR_WORKBENCH evidence/paint-reopen.log
-          grep -F NATIVE_PIXEL_CAMERA_RESULT evidence/native-camera.log
-          grep -F WORKBENCH_FAILURE_RECOVERY evidence/failure-recovery.log
-          python3 tools/ci/check_ci_provider_policy.py
-      - name: Real graphical 2048 Needle source-matched legacy and repair pairs
-        run: |
-          set -euo pipefail
-          sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends xvfb xauth libgl1-mesa-dri
-          if [ '${{ matrix.shard }}' = '0' ]; then
-            xvfb-run -a -s '-screen 0 1600x1000x24' timeout 300 "$GODOT_BIN" --rendering-method gl_compatibility --audio-driver Dummy --max-fps 60 --path godot --script res://tests/test_render_cadence_contract.gd -- --render-cadence-evidence="$PWD/evidence/cadence-contract" > evidence/cadence-contract-graphical.log 2>&1 || { cat evidence/cadence-contract-graphical.log; exit 1; }
-            python3 - <<'PY'
-          import hashlib,json,pathlib
-          folder=pathlib.Path('evidence/cadence-contract')
-          result=json.loads((folder/'contract.json').read_text())
-          assert not result['failures'] and len(result['observations'])==8
-          assert len(list(folder.glob('*.png')))==8
-          for row in result['observations']:
-              assert row['graphical'] and hashlib.sha256(pathlib.Path(row['capture_path']).read_bytes()).hexdigest()==row['capture_sha256']
-          for arm in ('legacy','repair'):
-              assert (folder/(arm+'-poses.jsonl')).stat().st_size>0
-          print('GRAPHICAL_CADENCE_CONTRACT_ORIGINALS_PASS',result['checks'],'checks; 8 PNGs; 2 JSONLs')
-          PY
-          fi
-          xvfb-run -a -s '-screen 0 1600x1000x24' python3 tools/ci/run_render_cadence_matrix.py --godot "$GODOT_BIN" --project godot --evidence evidence/cadence --source-sha "$GITHUB_SHA" --shard-index '${{ matrix.shard }}' --shard-count 3 --timeout 900
+          xvfb-run -a -s '-screen 0 1600x1000x24 -nolisten tcp' python3 tools/ci/run_render_cadence_matrix.py --coherence --godot "$GODOT_BIN" --project godot --evidence evidence/comparison --source-sha "$GITHUB_SHA" --conditions follow60 free60 slow-native --timeout 900
+          python3 tools/ci/package_engine_lab_windows.py preflight --platform linux > evidence/source-runtime-after.json
       - if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: render-cadence-linux-shard-${{ matrix.shard }}-${{ github.run_id }}
+          name: Camera-Coherence-Linux-${{ github.run_id }}
           path: evidence/
-          if-no-files-found: ignore
-  windows-owner-package:
-    name: Windows portable Engine Lab build and installed test
+          if-no-files-found: warn
+          retention-days: 90
+  windows-evaluation:
+    name: Windows standalone application, installed tests and actual Test It.cmd
     runs-on: windows-2022
-    timeout-minutes: 110
+    timeout-minutes: 75
     defaults:
       run:
         shell: bash
-    env:
-      CYBERSAND_EVAL_SOURCE_SHA: ${{ github.sha }}
-      CYBERSAND_SOURCE_REVISION: ${{ github.sha }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -197,113 +118,81 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
-        with:
-          name: native-pixel-integrated-build-windows-43537909868-1
-          repository: techrote/cybersand
-          run-id: 43537909868
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          path: build/pr566-qualified
-      - name: Acquire pinned Godot, Rapier and notices
+      - name: Verify current-main DLL and source, acquire pinned engine
         run: |
           set -euo pipefail
+          mkdir -p evidence delivery
           git lfs install --local
-          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
-          echo 'b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7  godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' | sha256sum -c --strict
+          git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          python tools/ci/package_engine_lab_windows.py preflight --platform windows > evidence/source-runtime.json
+          python tools/ci/test_analyze_pose_trace.py > evidence/analyzer-tests.log 2>&1
           curl -fL --retry 3 --max-time 600 -o "$RUNNER_TEMP/godot-4.7-win.zip" 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
-          mkdir -p "$RUNNER_TEMP/lab-notices"
+          mkdir -p "$RUNNER_TEMP/coherence-notices"
           for name in LICENSE.txt COPYRIGHT.txt; do
-            curl -fL --retry 3 --max-time 300 -o "$RUNNER_TEMP/lab-notices/$name" "https://raw.githubusercontent.com/godotengine/godot/5b4e0cb0f/$name"
+            curl -fL --retry 3 --max-time 300 -o "$RUNNER_TEMP/coherence-notices/$name" "https://raw.githubusercontent.com/godotengine/godot/5b4e0cb0f/$name"
           done
-      - name: Stage licensed signed Microsoft runtime
+      - name: Stage signed licensed VC runtime
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
-          $notices = Join-Path $env:RUNNER_TEMP 'lab-notices'
+          $notices = Join-Path $env:RUNNER_TEMP 'coherence-notices'
           $runtime = Join-Path $notices 'Microsoft-Visual-C-Runtime-LICENSE.docx'
           $developer = Join-Path $notices 'Microsoft-Visual-Studio-2022-LICENSE.docx'
           curl.exe -fL --retry 3 -o $runtime 'https://visualstudio.microsoft.com/wp-content/uploads/2021/09/Visual-C-Runtime-2015-2022-License-1.docx'
           if ($LASTEXITCODE -ne 0) { throw 'Runtime licence download failed' }
           curl.exe -fL --retry 3 -o $developer 'https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Visual-Studio-2022-Enterprise-Professional-License-EN.docx'
           if ($LASTEXITCODE -ne 0) { throw 'Developer licence download failed' }
-          ./tools/ci/stage_windows_vc_runtime.ps1 -Output (Join-Path $env:RUNNER_TEMP 'lab-vc-runtime') -License $runtime -DeveloperLicense $developer
-      - name: Create standalone source-pinned Engine Lab ZIP
+          ./tools/ci/stage_windows_vc_runtime.ps1 -Output (Join-Path $env:RUNNER_TEMP 'coherence-vc') -License $runtime -DeveloperLicense $developer
+      - name: Build source-pinned Windows evaluation
         run: |
           set -euo pipefail
-          mkdir -p delivery
-          python tools/ci/test_analyze_pose_trace.py
-          python tools/ci/package_engine_lab_windows.py build --native-stage build/pr566-qualified --godot-zip "$RUNNER_TEMP/godot-4.7-win.zip" --notices "$RUNNER_TEMP/lab-notices" --vc "$RUNNER_TEMP/lab-vc-runtime" --output "$RUNNER_TEMP/engine-lab-packed" --archive "delivery/CyberSand-EngineLab-Windows-${GITHUB_SHA:0:12}.zip"
-      - name: Extract original deliverable ZIP to clean Windows folder
+          python tools/ci/package_engine_lab_windows.py build --godot-zip "$RUNNER_TEMP/godot-4.7-win.zip" --notices "$RUNNER_TEMP/coherence-notices" --vc "$RUNNER_TEMP/coherence-vc" --output "$RUNNER_TEMP/coherence-packed" --archive "delivery/CyberSand-Coherence-Windows-${GITHUB_SHA:0:12}.zip"
+      - name: Extract actual ZIP and verify installed payload
         shell: pwsh
         run: |
-          $archive=Get-ChildItem 'delivery/CyberSand-EngineLab-Windows-*.zip'
-          if (@($archive).Count -ne 1) { throw 'Exactly one package required' }
-          if (Test-Path 'C:\csengine') { throw 'Destination already exists' }
-          Expand-Archive -LiteralPath $archive.FullName -DestinationPath 'C:\csengine'
-      - name: Verify installed bytes and all physical UI smoke tests
+          $archive = @(Get-ChildItem 'delivery/CyberSand-Coherence-Windows-*.zip')
+          if ($archive.Count -ne 1 -or (Test-Path 'C:\cscoherence')) { throw 'Invalid package or non-fresh destination' }
+          Expand-Archive -LiteralPath $archive[0].FullName -DestinationPath 'C:\cscoherence'
+          python tools/ci/package_engine_lab_windows.py verify --output C:/cscoherence
+          if ($LASTEXITCODE -ne 0) { throw 'Installed payload mismatch' }
+      - name: Installed coherent presentation, safety and integrated authoring regressions
         run: |
           set -euo pipefail
-          python tools/ci/package_engine_lab_windows.py verify --output C:/csengine
-          python tools/ci/package_engine_lab_windows.py smoke --output C:/csengine --evidence build/engine-lab-owner-smoke
-      - name: Parse bundled PowerShell and run all focused installed cadence pairs
+          python tools/ci/package_engine_lab_windows.py smoke --output C:/cscoherence --evidence evidence/installed
+      - name: Execute the owner's real double-click command
         shell: pwsh
-        timeout-minutes: 85
+        timeout-minutes: 35
         run: |
           $ErrorActionPreference = 'Stop'
-          $script = 'C:\csengine\Run-Test-It.ps1'
-          $tokens = $null
-          $errors = $null
-          [System.Management.Automation.Language.Parser]::ParseFile($script, [ref]$tokens, [ref]$errors) | Out-Null
-          if (@($errors).Count -gt 0) {
-            $errors | ForEach-Object { Write-Host $_.ToString() }
-            throw 'Bundled Run-Test-It.ps1 does not parse'
-          }
-          Write-Host 'TEST_IT_POWERSHELL_PARSE PASS'
-          $env:CYBERSAND_TEST_IT_NO_PAUSE='1'
-          # Preserve cmd.exe's outer /c quotes without pwsh native-argument rewriting.
+          $env:CYBERSAND_TEST_IT_NO_PAUSE = '1'
           $command = [System.Diagnostics.ProcessStartInfo]::new()
           $command.FileName = $env:ComSpec
-          $command.Arguments = '/d /s /c ""C:\csengine\Test It.cmd" -RenderingDriver opengl3_angle -TimeoutSeconds 900"'
+          $command.Arguments = '/d /s /c ""C:\cscoherence\Test It.cmd" -RenderingDriver opengl3_angle -TimeoutSeconds 900"'
           $command.UseShellExecute = $false
-          $command.WorkingDirectory = 'C:\csengine'
-          $testIt = [System.Diagnostics.Process]::Start($command)
-          $testIt.WaitForExit()
-          $testItExit = $testIt.ExitCode
-          $testIt.Dispose()
-          if ($testItExit -ne 0) {
-            Get-ChildItem -Path 'C:\csengine\Test-It-Results' -Recurse -Filter '*.log' -ErrorAction SilentlyContinue |
-              Select-Object -Last 8 | ForEach-Object { Write-Host ('=== ' + $_.FullName); Get-Content $_.FullName -Tail 35 }
-            throw ('Actual Test It.cmd failed, exit code ' + $testItExit)
-          }
-          $reports = @(Get-ChildItem 'C:\csengine\Test-It-Results' -Recurse -Filter 'summary.json')
-          if ($reports.Count -ne 1) { throw 'Expected one complete real Test It report' }
-          $result = Get-Content -LiteralPath $reports[0].FullName -Raw | ConvertFrom-Json
-          $matrix = Get-Content 'C:\csengine\godot\tests\fixtures\engine_lab\render-cadence-conditions.json' -Raw | ConvertFrom-Json
-          $expectedPairs = @($matrix.conditions).Count
-          if (-not $result.complete -or $result.status -ne 'passed' -or @($result.cases).Count -ne (2*$expectedPairs) -or @($result.pairs).Count -ne $expectedPairs) {
-            throw 'Complete focused 2048 cadence matrix did not execute'
-          }
-          foreach ($pair in $result.pairs) {
-            if ($pair.physical_trajectory.common_step_bodies -lt 120) { throw ('Insufficient matched physical trajectory: '+$pair.condition) }
-          }
-          Write-Host ('TEST_IT_2048_CADENCE_EXECUTION_PASS '+ (@{source=$result.source;cases=@($result.cases).Count;pairs=@($result.pairs).Count;acceptance=$result.physical_acceptance} | ConvertTo-Json -Compress))
-      - name: Retain real Windows test script evidence on either outcome
-        if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        with:
-          name: Render-Cadence-Owner-Test-It-Results-${{ github.run_id }}
-          path: C:/csengine/Test-It-Results/
-          if-no-files-found: ignore
-          retention-days: 90
+          $command.WorkingDirectory = 'C:\cscoherence'
+          $process = [System.Diagnostics.Process]::Start($command)
+          $process.WaitForExit()
+          $code = $process.ExitCode
+          $process.Dispose()
+          if ($code -ne 0) { throw ('Actual Test It.cmd failed: '+$code) }
+          $files = @(Get-ChildItem 'C:\cscoherence\Test-It-Results' -Recurse -Filter summary.json)
+          if ($files.Count -ne 1) { throw 'Expected one complete Test It summary' }
+          $result = Get-Content -LiteralPath $files[0].FullName -Raw | ConvertFrom-Json
+          if (-not $result.complete -or $result.status -ne 'passed' -or $result.source -ne $env:GITHUB_SHA -or @($result.cases).Count -ne 12 -or @($result.pairs).Count -ne 6) { throw 'Incomplete source-matched comparison' }
+          Write-Host ('COHERENCE_TEST_IT_PASS '+(@{source=$result.source;cases=@($result.cases).Count;pairs=@($result.pairs).Count;physical_acceptance=$result.physical_acceptance}|ConvertTo-Json -Compress))
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: CyberSand-Engine-Lab-Windows-${{ github.run_id }}
+          name: CyberSand-Coherence-Windows-${{ github.run_id }}
           path: delivery/
           compression-level: 0
           if-no-files-found: error
+          retention-days: 90
       - if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: Engine-Lab-Windows-Logs-${{ github.run_id }}
-          path: build/engine-lab-owner-smoke/
-          if-no-files-found: ignore
+          name: Camera-Coherence-Windows-Evidence-${{ github.run_id }}
+          path: |
+            evidence/
+            C:/cscoherence/Test-It-Results/
+          if-no-files-found: warn
+          retention-days: 90

@@ -21,6 +21,9 @@ owns their sampling semantics.
 | Value or method | Coordinate meaning |
 | --- | --- |
 | `Main.camera_origin: Vector2` | Continuous requested world origin; retains drag and zoom remainder |
+| `Main.workbench_presentation_frame: Dictionary` | Resolved material/texture identity, selected actor poses and actual Rapier provenance, Follow target, frozen blend, camera mapping and explicit refusal/hold reasons for one rendering submission |
+| `Main._resolve_workbench_presentation_frame(frame)` | Selects safe monotonic actor state before Follow; does not mutate native material or physical state |
+| `Main._resolve_workbench_camera_mapping()` | Freezes the final requested-to-screen mapping for both terrain and actor overlay consumers |
 | `Main.presentation_camera_origin(): Vector2` | Bounds-clamped displayed origin after rounding the complete screen translation |
 | `Main.presentation_camera_screen_transform(): Transform2D` | Exact world-to-physical-screen basis and rounded translation, with world-bound precedence on clamped axes |
 | `Main.configure_pixel_camera(material)` | Supplies the physical sample map to the palette and scene masks without a native call |
@@ -36,6 +39,7 @@ owns their sampling semantics.
 | `world_zero_screen`, `world_units_per_screen_pixel` | Original rounded translation and shared reciprocal scale; never reconstructed from the inverse camera float |
 | `camera_origin_px` shader uniform | Fractional world origin for the standalone/fallback sampling convention; the name does not imply an integer input |
 
+Actor picking tests the actually displayed pose and excludes withheld actors.
 PAINT, selection and Art focus retain integer inclusive cell bounds. Agent
 observation metadata instead describes actual framebuffer crop edges using
 fractional world bounds. Simulation interest regions and native mutations keep

@@ -16,12 +16,13 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 | --- | --- |
 | Why can 60 graphical FPS coexist with 10–20 native and Rapier ticks? | [Cadence clock meanings](../operations/engine-lab-pose-tracing.md#what-the-rates-mean) |
 | What is repaired in the #609 continuation, and does it establish NVIDIA acceptance or independent 120-Hz physics? | [Bounded causal repair](../audits/2026-11-15-render-cadence-001.md) |
-| How do I collect source-matched Free/Follow, Pixel/Rapier/FPS and ACK comparisons without development tools? | [One-command campaign](../operations/engine-lab-pose-tracing.md#one-command-source-matched-cadence-campaign) |
+| How do I collect source-matched Free/Follow, Pixel/Rapier/FPS and ACK comparisons without development tools? | [One-command campaign](../operations/engine-lab-pose-tracing.md#retained-source-matched-cadence-campaign) |
 
 ## Native display-pixel scrolling and fractional camera coordinates
 
 | Question | Canonical route |
 | --- | --- |
+| Why can an actor jump backward while terrain stays still, and how does Follow track the displayed pose? | [Coherent Workbench frame](../architecture/rendering-and-gameplay-bridges.md#coherent-workbench-presentation-frame) and [Windows comparison](../operations/camera-stack-coherence-acceptance.md) |
 | Why did magnified camera movement jump whole cells, and how does one-display-pixel scrolling stay sharp? | [Sampling and presentation](../systems/material-appearance-and-rendering.md#native-resolution-pixel-scrolling) |
 | How do PAINT, selection, clipboard, Art focus and cursor-centred zoom remain aligned at fractional origins? | [Picking and zoom](../systems/material-appearance-and-rendering.md#picking-and-zoom-at-fractional-camera-positions) and [private interface](interfaces-and-message-contracts.md#camera-presentation-and-picking) |
 | How are glow and vapour kept aligned without a full-resolution offscreen world? | [Effect alignment](../systems/material-appearance-and-rendering.md#glow-and-vapour-during-fractional-scrolling) and [buffer capacities](configuration-reference.md#camera-effect-buffer-capacities) |

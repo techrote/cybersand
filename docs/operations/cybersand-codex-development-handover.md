@@ -10,6 +10,24 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Camera stack temporal coherence — 2026-11-15
+
+Continue the integrated #609 candidate through its
+[presentation contract](../architecture/rendering-and-gameplay-bridges.md#coherent-workbench-presentation-frame),
+[physical acceptance procedure](camera-stack-coherence-acceptance.md) and
+[dated evidence](../audits/2026-11-15-camera-stack-coherence.md). The isolated
+repair is `a0315dc87`; normal integration merge `6b92ad2d4` preserves accepted
+main `018bd09503d7`. Native source is unchanged against that main, so retained
+build `6d6e2cd` is reused only after all 93 compiler inputs and payload hashes
+match. Package manifests/workflow artifacts identify the later exact application
+source. Keep #566/#593/#606/#609 Draft/HOLD; the owner's real NVIDIA evaluation
+is a separate gate from hosted rendering and scripted correctness.
+
+Source-identical published checkpoints are `755c99beb9df` (isolated repair)
+and `766d52956013` (two-parent integration). The audit records their tree hashes;
+later qualification fixes remain descendants and package manifests identify
+the exact evaluated application commit.
+
 ## Native-resolution camera continuation — 2026-11-13
 
 The camera branch retains its original history and now incorporates accepted

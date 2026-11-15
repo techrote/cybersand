@@ -6,10 +6,38 @@ status: Current
 scope: Native publication outcomes, Godot render consumption and current gameplay commands; resource lifetime and wire layouts are linked
 keywords: [RenderBridge, GameplayBridge, RG8, immutable snapshot, full texture upload, backpressure, emission queue]
 related-documents: [data-ownership-and-lifetimes.md, rigid-body-and-cellular-coupling.md, ../reference/interfaces-and-message-contracts.md, ../systems/material-appearance-and-rendering.md]
-last-reviewed: 2026-10-19
+last-reviewed: 2026-11-15
 ---
 
 # Rendering and gameplay bridges
+
+## Coherent Workbench presentation frame
+
+**Current unmerged candidate; owner acceptance pending.** Main resolves one
+`workbench_presentation_frame` before camera Follow. It binds the uploaded
+material generation/revision/serial and current/previous texture identities to
+selected actor poses, actual sampled Rapier steps, explicit holds/withholds,
+the selected Follow target, frozen blend and final pixel camera mapping.
+The terrain shader and physical overlay consume that same submission mapping;
+snapping never writes back into the continuous requested camera origin.
+
+Each actor advances from its last selected pose only after conservative swept
+clearance against both genuinely visible material textures. Rejection retains
+a previously certified stationary pose only while its certificate remains valid
+or after revalidation; otherwise the actor is withheld. The strict render receipt
+excludes withheld actors, preventing implicit fallback to an older material-bound
+pose. A newer native receipt may rejoin only with a later actual sampled Rapier
+step. Session/epoch/World replacement resets the timeline; temporary stale
+receipts do not erase an advanced selection. Picking uses the displayed actor.
+
+This is a monotonic presentation timeline, not physics interpolation or a visual
+offset. It preserves native material and Rapier authority. Unknown sample time
+stays unknown; a bounded sample-serial journal supplies provenance without
+equating native ticks to physical steps. `CYBERSAND_DIAG_PRESENTATION=legacy`
+retains the original independently followed guarded display for comparison.
+The [Windows acceptance guide](../operations/camera-stack-coherence-acceptance.md)
+and [trace runbook](../operations/engine-lab-pose-tracing.md) distinguish automated
+contract checks from physical NVIDIA acceptance.
 
 ## Experimental cadence continuation of #609
 

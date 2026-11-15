@@ -36,7 +36,8 @@ def distribution(values):
     if not values:
         return None
     return {"count": len(values), "min": values[0], "p50": values[math.ceil(len(values) * .5) - 1],
-            "p95": values[math.ceil(len(values) * .95) - 1], "max": values[-1]}
+            "p95": values[math.ceil(len(values) * .95) - 1],
+            "p99": values[math.ceil(len(values) * .99) - 1], "max": values[-1]}
 
 
 def gap(a, b):
@@ -129,6 +130,8 @@ def reduce_trace(path):
         times = [value for value in times if value >= 0]
         if len(times) > 1 and times[-1] > times[0]:
             stats["event_rates_hz"][kind] = (len(times) - 1) * 1e6 / (times[-1] - times[0])
+    from analyze_pose_trace import analyze_presentation_contract
+    stats["presentation_contract"] = analyze_presentation_contract(frames)
     return stats, trajectory
 
 
@@ -160,14 +163,18 @@ def run_case(args, condition, presentation):
     directory.mkdir(parents=True, exist_ok=False)
     receipt = directory / "receipt.json"
     env = os.environ.copy()
-    env.update({"CYBERSAND_SOURCE_REVISION": args.source_sha, "CYBERSAND_DIAG_RENDER_CADENCE": "legacy" if presentation == "legacy" else "",
+    cadence = "repaired" if args.coherence else presentation
+    pose_selection = presentation if args.coherence else "legacy"
+    env.update({"CYBERSAND_SOURCE_REVISION": args.source_sha, "CYBERSAND_DIAG_RENDER_CADENCE": "legacy" if cadence == "legacy" else "",
+                "CYBERSAND_DIAG_PRESENTATION": "legacy" if pose_selection == "legacy" else "",
                 "CYBERSAND_DIAG_FLYER_POSE": "mask" if condition["pose"] == "mask" else "",
                 "XDG_DATA_HOME": str(directory / "userdata"), "APPDATA": str(directory / "userdata")})
     params = {"family": "freemass", "workers": 1, "repeat": 1, "camera": condition["camera"], "pose": condition["pose"],
               "pixel-hz": condition["pixel"], "publication-hz": condition["publication"], "fps": condition["fps"],
               "rapier-hz": condition["rapier"], "ack-delay": condition["ack"], "ack-gated": int(condition["gated"]),
               "wait-sample": int(condition["wait"]), "sample-wake": int(condition["wake"]), "smoothing": int(condition["smoothing"]),
-              "cadence": presentation, "cadence-tape": 1, "receipt": str(receipt)}
+              "cadence": cadence, "presentation": pose_selection, "fire-mode": condition.get("fire", "unchanged"),
+              "cadence-tape": 1, "receipt": str(receipt)}
     command = [str(args.godot), "--rendering-method", "gl_compatibility", "--audio-driver", "Dummy", "--max-fps", str(condition["fps"]),
                "--path", str(args.project), "--script", "res://tests/test_engine_lab_physical_test_it.gd", "--", "--engine-lab-scripted",
                *("--" + key + "=" + str(value) for key, value in params.items())]
@@ -179,6 +186,11 @@ def run_case(args, condition, presentation):
     data = json.loads(receipt.read_text(encoding="utf-8"))
     need(data["complete"] and data["status"] == "passed", f"{name}: incomplete receipt")
     need(data["source_sha"] == args.source_sha, "Source changed")
+    need(data["presentation_mode"] == pose_selection and data["cadence_mode"] == cadence, "Wrong comparison arm")
+    if condition.get("fire") == "on-off":
+        fire = data["fire_schedule"]["events"]
+        need(len(fire) == 2 and [e["observed_step"] for e in fire] == [0, 60]
+             and [e["enabled"] for e in fire] == [True, False], "Fire schedule incomplete")
     need(data["world_size"] == [2048, 2048] and data["view_size"] == [240, 135], "Wrong World/view")
     need(data["reference"]["json_sha256"] == "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954", "Wrong owner reference")
     need(data["reference"]["generated_material_sha256"] == "71610b37531531e284f069cf1e07c151283a441c9b0ff32a4fcc1dbb6c997a7a", "Wrong native World")
@@ -193,7 +205,16 @@ def run_case(args, condition, presentation):
     stats, trajectory = reduce_trace(trace)
     need(trajectory, "Missing completed-step physics events")
     write(directory / "analysis.json", stats)
-    result = {"name": name, "condition": condition, "cadence_mode": presentation, "passed": True,
+    if args.coherence and pose_selection == "coherent":
+        contract = stats["presentation_contract"]
+        need(contract["selected_step_observations"] > 0 and contract["source_time_rewind_count"] == 0,
+             "Missing or rewinding selected presentation timeline")
+        if condition["camera"] == "follow":
+            residual = contract["follow_target_minus_selected_world_cells"]
+            need(residual is not None and residual["max"] <= 1e-6,
+                 "Follow target differs from selected pose")
+    result = {"name": name, "condition": condition, "cadence_mode": cadence,
+              "presentation_mode": pose_selection, "fire_schedule": data["fire_schedule"], "display": data["display"], "passed": True,
               "elapsed_seconds": time.monotonic() - start, "receipt_sha256": sha(receipt), "trace_sha256": sha(trace),
               "statistics": stats, "video_adapter": data["video_adapter"]}
     print("RENDER_CADENCE_PASS", name, json.dumps(stats, sort_keys=True), flush=True)
@@ -209,29 +230,32 @@ def main():
     parser.add_argument("--shard-index", type=int, default=0)
     parser.add_argument("--shard-count", type=int, default=1)
     parser.add_argument("--conditions", nargs="*", default=[])
+    parser.add_argument("--coherence", action="store_true", help="Compare original guarded vs coherent timeline, preserving repaired ACK/history")
     parser.add_argument("--timeout", type=int, default=900)
     args = parser.parse_args()
     args.godot = args.godot.resolve()
     args.project = args.project.resolve()
     args.evidence = args.evidence.resolve()
     need(0 <= args.shard_index < args.shard_count, "Invalid shard")
-    matrix_file = args.project / "tests/fixtures/engine_lab/render-cadence-conditions.json"
+    matrix_file = args.project / "tests/fixtures/engine_lab" / (
+        "coherence-conditions.json" if args.coherence else "render-cadence-conditions.json")
     matrix = json.loads(matrix_file.read_text(encoding="utf-8"))
-    need(matrix["schema"] == "render-cadence-conditions-v1", "Wrong matrix schema")
+    need(matrix["schema"] == ("camera-stack-coherence-conditions-v1" if args.coherence else "render-cadence-conditions-v1"), "Wrong matrix schema")
     conditions = matrix["conditions"]
     names = [row["name"] for row in conditions]
     need(len(names) == len(set(names)) and set(args.conditions) <= set(names), "Unknown/duplicate condition")
     conditions = [row for i, row in enumerate(conditions) if i % args.shard_count == args.shard_index and (not args.conditions or row["name"] in args.conditions)]
     need(conditions, "Empty selected matrix")
     args.evidence.mkdir(parents=True, exist_ok=True)
-    summary = {"schema": "render-cadence-matrix-v1", "source_sha": args.source_sha, "matrix_sha256": sha(matrix_file),
+    summary = {"schema": "camera-stack-coherence-matrix-v1" if args.coherence else "render-cadence-matrix-v1", "source_sha": args.source_sha, "matrix_sha256": sha(matrix_file),
                "shard_index": args.shard_index, "shard_count": args.shard_count, "conditions": conditions, "cases": [], "pairs": [], "failures": [],
                "complete": False, "physical_gpu_acceptance": "pending_owner_NVIDIA_review", "physics_rate_semantics": matrix["semantics"]}
     report = args.evidence / "summary.json"
     write(report, summary)
     for condition in conditions:
         trajectories, results = {}, {}
-        for presentation in ("legacy", "repaired"):
+        arms = ("legacy", "coherent") if args.coherence else ("legacy", "repaired")
+        for presentation in arms:
             try:
                 result, trajectory = run_case(args, condition, presentation)
                 results[presentation], trajectories[presentation] = result, trajectory
@@ -241,8 +265,11 @@ def main():
                 print("RENDER_CADENCE_INCOMPLETE", condition["name"], presentation, str(error), flush=True)
             write(report, summary)
         if len(trajectories) == 2:
-            summary["pairs"].append({"condition": condition["name"], "legacy": results["legacy"]["name"], "repaired": results["repaired"]["name"],
-                                     "physical_trajectory": compare_steps(trajectories["legacy"], trajectories["repaired"])})
+            candidate = arms[1]
+            summary["pairs"].append({"condition": condition["name"], "legacy": results["legacy"]["name"], candidate: results[candidate]["name"],
+                                     "physical_trajectory": compare_steps(trajectories["legacy"], trajectories[candidate]),
+                                     "legacy_statistics": results["legacy"]["statistics"],
+                                     "candidate_statistics": results[candidate]["statistics"]})
             write(report, summary)
     summary["complete"] = not summary["failures"] and len(summary["cases"]) == 2 * len(conditions)
     summary["status"] = "passed" if summary["complete"] else "incomplete"
