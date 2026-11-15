@@ -70,7 +70,7 @@ def action_first_ids(tokenizer, framing, observation):
     prefix = framing.encode_prompt(tokenizer, prompt, worm_contract.SYSTEM)
     result = {}
     for action in worm_contract.ACTIONS:
-        row = {"prompt": prompt, "completion": action}
+        row = {"id": "surgery-first-token-" + action, "prompt": prompt, "completion": action}
         encoded = framing.encode_row(tokenizer, row, worm_contract.SYSTEM, 2048)
         if encoded["input_ids"][:len(prefix)] != prefix:
             raise ValueError("Model and action first-token prefixes diverged")
