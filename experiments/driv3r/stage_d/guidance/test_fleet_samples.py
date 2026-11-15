@@ -209,5 +209,71 @@ class FleetSamplesTests(unittest.TestCase):
             build_stream(x)
 
 
+    def test_all_optional_preference_signals_are_neutral_in_sham(self):
+        x = fixture()
+        x["optional_channels"]["soft_attraction/v1"] = [0, 100, 65535, 1]
+        x["optional_channels"]["soft_avoidance/v1"] = [65535, 3, 0, 99]
+        row = build_stream(x)
+        for arm in ("sham", "critic"):
+            for view in ("preference", "all"):
+                channels = row["arms"][arm]["views"][view]["model_view"]["guidance"]
+                preferences = [c for c in channels if c["signal_class"] == "preference"]
+                self.assertEqual(len(preferences), 4)
+                for c in preferences:
+                    self.assertTrue(all(v == 0 for v in c["values"]), (arm, view, c["semantic_id"]))
+            self.assertEqual(row["arms"][arm]["views"]["core"]["model_view"]["guidance"][0]["values"],
+                             [0, 0, 0, 0])
+        active = row["arms"]["guidance"]["views"]["all"]["model_view"]["guidance"]
+        self.assertTrue(all(any(v != 0 for v in c["values"])
+                            for c in active if c["signal_class"] == "preference"))
+
+    def test_sham_still_exposes_same_factual_geometry_metrics(self):
+        row = build_stream(fixture())
+        for view in ("geometry", "all"):
+            samples = {}
+            for arm in ARMS:
+                channels = row["arms"][arm]["views"][view]["model_view"]["guidance"]
+                samples[arm] = {c["semantic_id"]: (c["sample_sha256"], c["values"])
+                                for c in channels if c["signal_class"] == "geometry_metric"}
+            self.assertTrue(samples["sham"])
+            self.assertEqual(samples["sham"], samples["guidance"])
+            self.assertEqual(samples["sham"], samples["critic"])
+            self.assertEqual(samples["sham"], samples["combined"])
+
+    def test_sham_preference_hash_is_of_neutral_samples_not_active_source(self):
+        x = fixture()
+        row = build_stream(x)
+        neutral_raw = struct.pack("<4h", 0, 0, 0, 0)
+        active_raw = struct.pack("<4h", *x["optional_channels"]["signed_preference/v1"])
+        for arm in ("sham", "critic"):
+            by_id = {c["semantic_id"]: c for c in
+                     row["arms"][arm]["views"]["all"]["model_view"]["guidance"]}
+            pref = by_id["signed_preference/v1"]
+            self.assertEqual(pref["sample_sha256"], hashlib.sha256(neutral_raw).hexdigest())
+            self.assertNotEqual(pref["sample_sha256"], hashlib.sha256(active_raw).hexdigest())
+        guide = {c["semantic_id"]: c for c in
+                 row["arms"]["guidance"]["views"]["all"]["model_view"]["guidance"]}
+        self.assertEqual(guide["signed_preference/v1"]["sample_sha256"],
+                         hashlib.sha256(active_raw).hexdigest())
+
+    def test_all_view_ablation_diff_is_only_preference_signals(self):
+        row = build_stream(fixture())
+        for variant in VIEWS:
+            x = row["arms"]["sham"]["views"][variant]["model_view"]
+            y = row["arms"]["guidance"]["views"][variant]["model_view"]
+            self.assertEqual(set(x), set(y))
+            self.assertEqual({k: v for k, v in x.items() if k != "guidance"},
+                             {k: v for k, v in y.items() if k != "guidance"})
+            left = {c["semantic_id"]: c for c in x["guidance"]}
+            right = {c["semantic_id"]: c for c in y["guidance"]}
+            self.assertEqual(set(left), set(right))
+            for semantic in left:
+                self.assertEqual(left[semantic]["encoding"], right[semantic]["encoding"])
+                if left[semantic]["signal_class"] == "geometry_metric":
+                    self.assertEqual(left[semantic], right[semantic])
+                else:
+                    self.assertTrue(all(v == 0 for v in left[semantic]["values"]))
+
+
 if __name__ == "__main__":
     unittest.main()
