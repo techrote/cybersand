@@ -1,0 +1,84 @@
+name: WORM SPROCKET support observed-policy v2 W0 gallery and split audit
+on:
+  push:
+    branches: [research/612-worm-sprocket-support]
+    paths:
+      - experiments/agent_painter/worm/support_sprocket/observed_v2.py
+      - .github/workflows/agent-painter-worm-sprocket-support-observed-v2.yml
+
+permissions:
+  contents: read
+
+jobs:
+  observed-policy-v2:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Verify source W0 ownership, CI policy and Python syntax
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/v2
+          git rev-parse HEAD > evidence/v2/source-commit.txt
+          python3 tools/ci/check_ci_provider_policy.py
+          test "$(git hash-object experiments/agent_painter/worm/common/worm.py)" = 8979b6f0296e81051194bacc907992d38e006605
+          test "$(sha256sum experiments/agent_painter/worm/common/worm.py | cut -c1-64)" = 81c3923cb38d7f196b99986806216388c34ebc27fd4976e168b3b370c25a323e
+          python3 -m py_compile experiments/agent_painter/worm/support_sprocket/observed_v2.py
+      - name: Real deterministic 96x96 W0 replay, split-disjoint observed targets and galleries
+        run: |
+          set -euo pipefail
+          python3 experiments/agent_painter/worm/support_sprocket/observed_v2.py --output evidence/v2 > evidence/v2/console.txt
+          python3 - <<'PY'
+          from pathlib import Path
+          import json, hashlib
+          root=Path('evidence/v2')
+          d=json.loads((root/'dataset/manifest.json').read_text())
+          g=json.loads((root/'gallery/manifest.json').read_text())
+          assert d['split_observation_intersection']==0
+          assert len(d['train_world_seeds'])==4 and len(d['development_world_seeds'])==2
+          assert d['TRAIN']['rows']>0 and d['DEVELOPMENT']['rows']>0
+          assert g['gallery_count']==36 and len(g['entries'])==36
+          assert g['model_optimizer_steps']==0
+          assert len(list((root/'gallery').glob('*.png')))==36
+          assert len(list((root/'gallery').glob('*.json')))==37
+          for split in ('train','development'):
+              raw=(root/'dataset'/(split+'.jsonl')).read_bytes()
+              assert hashlib.sha256(raw).hexdigest()==d[split.upper()]['sha256']
+              rows=[json.loads(line) for line in raw.splitlines()]
+              assert len(rows)==d[split.upper()]['rows']
+              assert all(row['target'] in row['observation']['legal'] for row in rows)
+          assert all(item['policy'] in ('random','wall','fidget','groove','contour','corridor')
+                     for item in g['entries'])
+          for item in g['entries']:
+              stem=item['id']
+              p=(root/'gallery'/(stem+'.png')).read_bytes()
+              j=(root/'gallery'/(stem+'.json')).read_bytes()
+              assert p.startswith(b'\x89PNG\r\n\x1a\n')
+              assert hashlib.sha256(p).hexdigest()==item['sha256_png']
+              assert hashlib.sha256(j).hexdigest()==item['sha256_json']
+              record=json.loads(j)
+              assert record['size']==96 and record['step_budget']==96
+              assert record['metrics']==item['metrics']
+              if item['policy'] in ('groove','contour','corridor'):
+                  assert record['metrics']['invalid_raw_choices']==0
+                  assert record['events'][-1]['applied']=='STOP'
+          print('PASS 18 deterministic+pixel replay pairs, 36 actual W0 PNGs, W0-derived legal TRAIN/DEV, strict hashes')
+          print('TRAIN',d['TRAIN'])
+          print('DEVELOPMENT',d['DEVELOPMENT'])
+          print('cross_split_removed',d['identical_local_observations_removed_from_development'])
+          for family in ('greebles','pipework','architecture'):
+              for policy in ('random','wall','fidget','groove','contour','corridor'):
+                  rows=[x for x in g['entries'] if x['family']==family and x['policy']==policy]
+                  print('METRICS',family,policy,[(x['world_seed'],x['metrics']) for x in rows])
+          PY
+          (cd evidence/v2 && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum) > evidence/v2/SHA256SUMS.txt
+      - name: Preserve successes and partial failure evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: worm-sprocket-support-observed-v2
+          path: evidence/v2/
+          retention-days: 30
+          if-no-files-found: warn
