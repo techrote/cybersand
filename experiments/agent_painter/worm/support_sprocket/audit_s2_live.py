@@ -109,7 +109,7 @@ def audit(archive: Path, w0_path: Path) -> dict:
         assert (rec["family"], rec["seed"], rec["mode"]) == (family, seed, mode)
         assert rec["steps_executed"] <= 24
         assert len(rec["events"]) == rec["steps_executed"]
-        assert png.startswith(b"\\x89PNG\\r\\n\\x1a\\n")
+        assert png.startswith(b"\x89PNG\r\n\x1a\n")
         assert struct.unpack(">II", png[16:24]) == (384, 384)
         assert rec["metrics"] == rows[family, seed, mode]["metrics"]
         points = [tuple(p) for p in rec["trajectory"]]
