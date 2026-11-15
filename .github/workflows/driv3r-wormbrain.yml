@@ -1,0 +1,157 @@
+name: DRIV3R WORM real Q8 native line-steering pilot
+
+on:
+  pull_request:
+    paths:
+      - 'experiments/driv3r/wormbrain/**'
+      - '.github/workflows/driv3r-wormbrain.yml'
+  push:
+    branches: [research/570-wormbrain-native-pilot]
+    paths: ['experiments/driv3r/wormbrain/qualification-request.json']
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: driv3r-wormbrain-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  cheap:
+    name: Original source and tiny-worm interface smoke
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Check original accepted M1/M4 and no native provider changes
+        run: |
+          set -euo pipefail
+          git rev-parse HEAD
+          git merge-base --is-ancestor 8fa90de6be209ed0b7bd125039e6ec8b332fb1a6 HEAD
+          git merge-base --is-ancestor ad48cdba21d8b83fe5bb83caed68d4cb0ce1ca1b HEAD
+          echo 'ebe2fa211148602c614cba0f0a40f285cba797784b70efa035832d833877f80d  experiments/driv3r/d_common/v1/interface.schema.json' | sha256sum --check --strict
+      - name: Test real native contract adapters WITHOUT running model or Godot
+        run: |
+          set -euo pipefail
+          python3 -m pip install --user --disable-pip-version-check 'jsonschema==4.26.0' 'Pillow==13.0.0'
+          python3 -m compileall -q experiments/driv3r/wormbrain
+          bash -n experiments/driv3r/wormbrain/ci_pilot.sh
+          python3 -m unittest discover -s experiments/driv3r/wormbrain -p 'test_*.py' -v
+          python3 -m unittest discover -s experiments/driv3r/m4 -p 'test_*.py' -v
+          python3 -m unittest discover -s experiments/driv3r/d_common/v1 -p 'test_*.py' -v
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py
+
+  gate:
+    name: Admit original successful M4 actual native Q8 evidence
+    needs: cheap
+    if: github.repository == 'techrote/cybersand' && github.event_name == 'push' && github.ref == 'refs/heads/research/570-wormbrain-native-pilot'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Verify explicit owner wormbrain request
+        run: |
+          python3 - <<'PY'
+          import json
+          r=json.load(open('experiments/driv3r/wormbrain/qualification-request.json'))
+          assert r['schema']=='driv3r-wormbrain-pilot-request/1'
+          assert r['owner_gate']=='Owner-approved eccentric line-steering wormbrain native pilot'
+          assert r['m1_schema_sha256']=='ebe2fa211148602c614cba0f0a40f285cba797784b70efa035832d833877f80d'
+          assert r['m4_original_comparison_run_id']==43659680432
+          assert r['m4_source_sha']=='ad48cdba21d8b83fe5bb83caed68d4cb0ce1ca1b'
+          assert r['max_model_decisions_per_arm']==36 and r['max_native_material_edits_per_arm']==36
+          assert r['max_recoveries_per_arm']==8 and r['eligible_arms']==['free','soft']
+          assert r['allow_model_and_native'] is True
+          assert r['allow_training'] is False and r['allow_paid_external_api'] is False
+          assert r['allow_merge'] is False and r['allow_ready'] is False
+          print('Wormbrain native request/source/fixed bounds: PASS')
+          PY
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          run-id: 43659680432
+          name: driv3r-m4-comparison-ad48cdba21d8b83fe5bb83caed68d4cb0ce1ca1b-43659680432
+          repository: techrote/cybersand
+          github-token: ${{ github.token }}
+          path: prior-m4
+      - name: Independently admit original resident/native comparison gate
+        run: |
+          python3 - <<'PY'
+          import json
+          x=json.load(open('prior-m4/aggregate.json'))
+          assert x['status']=='COMPLETE_COMPARISON'
+          assert x['source_sha']=='ad48cdba21d8b83fe5bb83caed68d4cb0ce1ca1b'
+          assert x['same_initial_native_world'] is True
+          assert x['identical_first_host_legal_candidate_catalog'] is True
+          assert all(x['scores'][a]['actual_native_replay'] is True for a in ['A1','A2','A3'])
+          print('Previously qualified real model+native+replay comparator: PASS')
+          PY
+
+  native:
+    name: One actual wormbrain Q8/native episode — ${{ matrix.mode }}
+    needs: [cheap,gate]
+    if: github.repository == 'techrote/cybersand' && github.event_name == 'push'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 140
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        mode: [free,soft]
+    env:
+      DRIV3R_WORM_MODE: ${{ matrix.mode }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Source-build pinned Q8 and real Godot Workbench / retain genuine choices
+        run: timeout --signal=TERM --kill-after=60 7800 bash experiments/driv3r/wormbrain/ci_pilot.sh
+      - name: Always retain real original Q8, native material, gallery and failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: driv3r-worm-${{ matrix.mode }}-${{ github.sha }}-${{ github.run_id }}
+          path: evidence/driv3r-worm-${{ matrix.mode }}/
+          if-no-files-found: warn
+          retention-days: 90
+
+  compare:
+    name: Compare original worm line characters and native divergence (no A* scoring)
+    needs: [gate,native]
+    if: always() && needs.gate.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: driv3r-worm-*-${{ github.sha }}-${{ github.run_id }}
+          path: source-artifacts
+          merge-multiple: false
+      - name: Keep separate exact original evidence roots
+        run: |
+          set -euo pipefail
+          mkdir -p compared
+          for mode in free soft; do
+            original="source-artifacts/driv3r-worm-$mode-$GITHUB_SHA-$GITHUB_RUN_ID"
+            if test -d "$original"; then ln -s "../$original" "compared/$mode"; fi
+          done
+      - name: Compare only source-bound actual material and original Q8 turns
+        run: python3 -m experiments.driv3r.wormbrain.aggregate --root compared --output compared/aggregate.json
+      - name: Retain incomplete or completed comparison without art-quality claims
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: driv3r-worm-pair-${{ github.sha }}-${{ github.run_id }}
+          path: compared/aggregate.json
+          if-no-files-found: warn
+          retention-days: 90
