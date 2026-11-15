@@ -115,7 +115,7 @@ function Run-Case([string]$Family,[int]$Workers,[int]$Repeat,
         video_adapter=$Data.video_adapter;receipt_sha256=(Sha $Receipt);trace_sha256=(Sha $Trace)}
     $Summary.cases+=,$Row
     Save-Summary
-    Write-Host "PASS $Name — $($Row.rendered_pose_frames) trace frames" -ForegroundColor Green
+    Write-Host "PASS $Name - $($Row.rendered_pose_frames) trace frames" -ForegroundColor Green
 }
 try {
     Require (-not ($Quick -and ($Full -or $Compare)) -and -not ($Full -and $Compare)) 'Select only one test mode'
