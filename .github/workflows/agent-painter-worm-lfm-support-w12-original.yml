@@ -41,7 +41,7 @@ jobs:
           python3 tools/ci/check_ci_scheduling_policy.py --output evidence/independent/ci-scheduling.json
       - name: Download original completed W12 Actions artifacts only
         env:
-          GH_TOKEN: \${{ github.token }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           test "$(gh api repos/techrote/cybersand/actions/runs/43766388326 --jq .head_sha)" = 0eea751c37d69589717681eca1703882d17587a9
