@@ -90,9 +90,9 @@ jobs:
           p=Path('evidence/worm-sprocket-w6-e2')
           r=json.loads((p/'audit.json').read_text())
           assert r['measured']['replays']==30
-          assert r['measured']['trained_decisions']==144
-          assert r['measured']['flat_decisions']==141
-          assert r['measured']['trained_same_obs_flat_differences']==46
+          assert r['measured']['trained_decisions']==261
+          assert r['measured']['flat_decisions']==261
+          assert r['measured']['trained_same_obs_flat_differences']==75
           assert len(list((p/'gallery').glob('*.png')))==6
           assert r['optimizer_updates_this_audit']==0
           assert r['sealed_FINAL_access'] is False

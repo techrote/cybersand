@@ -76,7 +76,7 @@ def policy_legal(obs):
     original = obs["legal"]
     require(original and set(original) <= set(ACTIONS) and len(set(original)) == len(original),
             "invalid original W0 legal mask")
-    if obs["tick"] < 20 and len(original) > 1:
+    if obs["tick"] < 40 and len(original) > 1:
         return [a for a in original if a != "STOP"]
     return list(original)
 
