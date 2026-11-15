@@ -422,3 +422,26 @@ checks, not execution of the full committed source/dependency tree**.
 The lane now inventories **152 authored tests across 15 modules**, whose
 complete exact-branch execution remains outstanding. No native receipts,
 actual material, resident inference, paid workload or artist assessment.
+
+## Budget-constrained oracle: safe lexicographic cutoffs (15 November 2026)
+
+`budget_oracle.py` v2 eliminates unnecessary exact-k expansion for an
+already-reached target; for routing after the first feasible k; and for
+selected-wall tracing after reaching the **absolute zero band-departure and
+zero backward-step** lower bound. A later path must use more decisions and
+cannot beat those objectives. If early arrival crosses the selected-wall
+6–10-cell band or backtracks, the search continues: a later path may be
+better despite requiring more actions. Hard swept-cell checks and the
+existing geometric objectives are unchanged.
+
+Two new regression methods check zero-action and one-action optima with
+bounded geometry-callback counts; the original longer-in-band alternative
+test guards against premature cutoff. A separate **independent** Python
+unshortened-DP comparison matched optimum cost/decision count in **600/600**
+seeded small-grid routing and wall cases with blocked cells. In a 20×20
+12-layer scratch reconstruction, a single-cell route used 9 candidate
+expansions instead of 41,281 and an already-arrived start used 0 instead of
+40,512. These are **scratch comparator counts**, not measured committed-code
+runtime. The full source-matched D-1A suite, now **156 authored methods across
+15 test modules**, still requires clean-checkout execution. No inference,
+native painting, held-out behavioural evaluation or new owner authorization.

@@ -16,6 +16,35 @@ class BudgetOracleTests(unittest.TestCase):
         self.assertEqual(result["cursor_path"][-1], [10, 1])
         self.assertEqual(result["optimal_cost_within_budget"], [0, 0, 2, 10])
 
+    def test_zero_step_arrival_does_not_expand_the_global_budget(self):
+        visited = []
+        def legal(p):
+            visited.append(p)
+            return True
+        result = bounded_optimal_route(
+            20, 20, (7, 7), (7, 7), legal, decision_budget=36)
+        self.assertTrue(result["feasible_arrival_within_budget"])
+        self.assertEqual(result["optimal_cost_within_budget"], [0, 0, 0, 0])
+        self.assertEqual(result["cursor_path"], [[7, 7]])
+        self.assertEqual(result["decisions"], [])
+        self.assertEqual(visited, [(7, 7)])
+
+    def test_one_move_optimality_cutoff_for_routing_and_clean_wall(self):
+        for clearance in (None, lambda p: 8):
+            with self.subTest(wall=clearance is not None):
+                visited = []
+                def legal(p):
+                    visited.append(p)
+                    return True
+                result = bounded_optimal_route(
+                    20, 20, (0, 10), (1, 10), legal,
+                    selected_clearance=clearance, decision_budget=36)
+                self.assertTrue(result["feasible_arrival_within_budget"])
+                self.assertEqual(len(result["decisions"]), 1)
+                self.assertEqual(result["optimal_cost_within_budget"], [0, 0, 1, 1])
+                # One optimal predecessor layer, not a 36-layer search.
+                self.assertLess(len(visited), 40)
+
     def test_infeasible_horizon_is_not_a_false_success(self):
         result = bounded_optimal_route(12, 3, (0, 1), (10, 1),
                                        lambda p: True, decision_budget=1)

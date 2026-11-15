@@ -14,7 +14,7 @@ from typing import Callable
 
 from .macro_oracle import CARDINAL, VERSION as UNBOUNDED_VERSION, _require_menu
 
-VERSION = "d1a-decision-budget-constrained-oracle/1"
+VERSION = "d1a-decision-budget-constrained-oracle/2"
 Point = tuple[int, int]
 Cost = tuple[int, int, int, int]
 
@@ -70,6 +70,9 @@ def bounded_optimal_route(
     layers: list[dict[Point, Cost]] = [{target: (0, 0, 0, 0)}]
     choice: dict[tuple[int, Point], tuple[str, tuple[Point, ...]]] = {}
     for k in range(1, decision_budget + 1):
+        # An already-reached target attains the global zero-movement bound.
+        if start == target:
+            break
         current: dict[Point, Cost] = {}
         for endpoint, suffix in layers[-1].items():
             for direction, dx, dy in CARDINAL:
@@ -99,6 +102,15 @@ def bounded_optimal_route(
                                       for i in range(1, length+1))
                         choice[(k, predecessor)] = (forward + str(length), sweep)
         layers.append(current)
+        arrived = current.get(start)
+        # The first feasible k minimizes movement decisions in A->B routing.
+        # For wall following, zero off-band and zero backward swept cells
+        # are absolute lexicographic lower bounds; later k only adds decisions.
+        # Do not truncate a nonzero-band path: a longer route may be better.
+        if arrived is not None and (
+            selected_clearance is None or arrived[:2] == (0, 0)
+        ):
+            break
 
     feasible = [(cost, k) for k, state in enumerate(layers)
                 if (cost := state.get(start)) is not None]
