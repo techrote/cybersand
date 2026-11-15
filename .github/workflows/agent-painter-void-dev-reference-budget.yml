@@ -1,0 +1,87 @@
+name: VOID original DEVELOPMENT teacher byte budget (no model)
+
+on:
+  push:
+    branches: [codex/agent-painter-void-568]
+    paths:
+      - experiments/agent_painter/lanes/void/dev_reference_budget_request_v1.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: void-original-reference-${{ github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  original-dev-reference-budget:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Exact head, source-only bounds and adversarial self-tests
+        run: |
+          set -euo pipefail
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$GITHUB_REPOSITORY" = techrote/cybersand
+          test "$GITHUB_REF" = refs/heads/codex/agent-painter-void-568
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/void-budget-ci-policy.json
+          python3 -m py_compile experiments/agent_painter/lanes/void/adapter.py experiments/agent_painter/lanes/void/dev_reference_budget_audit.py
+          python3 experiments/agent_painter/lanes/void/dev_reference_budget_audit.py --self-test
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path('experiments/agent_painter/lanes/void/dev_reference_budget_request_v1.json').read_text())
+          assert x == {
+            'schema':'cybersand.void-original-development-reference-budget/1',
+            'sequence':1,'source_run':43506373969,'artifact_id':14076703326,
+            'source_sha':'633920373a3d406a2ede61ce4137c324f76be23b',
+            'split':'DEVELOPMENT','whole_structures':6,'native_seed_views':12,
+            'reference_only':True,'training':False,'inference':False,
+            'native_execution':False,'final_opened':False}
+          PY
+          mkdir -p evidence/void-original-reference-budget
+          echo INCOMPLETE_NO_MODEL_QUALITY_CLAIM > evidence/void-original-reference-budget/incomplete.txt
+          git rev-parse HEAD > evidence/void-original-reference-budget/exact-head.txt
+      - name: Download and hash original immutable source633 native artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          curl -fLsS --retry 3 --max-time 240 \
+            -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/techrote/cybersand/actions/artifacts/14076703326/zip \
+            -o "$RUNNER_TEMP/void-original-source633.zip"
+          echo '50a9ad9b255b2a57180edf5558ca2b47dab9affd9ef9d2438f9011d648f81f39  '"$RUNNER_TEMP/void-original-source633.zip" | sha256sum -c --strict
+      - name: Verify positive native visible DEVELOPMENT and VOID EOS258 reference lengths
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=20s 300s python3 \
+            experiments/agent_painter/lanes/void/dev_reference_budget_audit.py \
+            --zip "$RUNNER_TEMP/void-original-source633.zip" \
+            --output evidence/void-original-reference-budget/report.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path('evidence/void-original-reference-budget/report.json').read_text())
+          assert x['independent_requests']==6 and x['original_native_views_verified']==12
+          assert x['terminal_eos_id']==258 and len(x['groups'])==6
+          assert x['optimizer_updates']==x['model_generations']==x['native_model_paintings']==x['shared_train_admissions']==0
+          assert x['dev60_frozen'] is False and x['final_opened'] is False
+          print('Original teacher reference representability only; not model or native painter success')
+          PY
+          rm evidence/void-original-reference-budget/incomplete.txt
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: void-original-reference-budget-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/void-original-reference-budget/
+          if-no-files-found: warn
+          retention-days: 90
