@@ -63,7 +63,7 @@ def teacher_choice(obs: dict) -> str:
     validate_observation(obs)
     legal = obs["legal"]
     tick, heading, family = obs["tick"], obs["heading"], obs["family"]
-    if tick >= 80:
+    if tick >= 116:
         return "STOP"
 
     fresh = []
@@ -115,7 +115,7 @@ def synthetic_fixture(family: str, case: str) -> dict:
         base["local_5x5"] = ["#####", "#####", "##@##", "#####", "#####"]
         base["legal"] = ["STOP"]
     elif case == "deadline":
-        base["tick"] = 80
+        base["tick"] = 116
     else:
         raise ValueError("unknown fixture case")
     return base
