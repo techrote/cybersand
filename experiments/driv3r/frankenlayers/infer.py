@@ -166,7 +166,7 @@ def main():
     p.add_argument("--binary",type=Path,required=True)
     p.add_argument("--model",type=Path,required=True)
     p.add_argument("--w0",type=Path,required=True)
-    p.add_argument("--mode",choices=("greyhound","scrambled_eggs","branchwitch"),required=True)
+    p.add_argument("--mode",choices=tuple(k for k in FLOWS if k!="stock"),required=True)
     p.add_argument("--output",type=Path,required=True)
     p.add_argument("--seed",type=int,default=570)
     p.add_argument("--source-sha",required=True)
