@@ -1,0 +1,97 @@
+name: DRIV3R untuned SmolLM2 genuine 1-vs-2 resident inference
+on:
+  push:
+    branches: [research/570-wormfleet-inference]
+    paths:
+      - experiments/driv3r/wormbrain/fleet/smol-residency-request.json
+permissions:
+  contents: read
+concurrency:
+  group: driv3r-smol-residency-${{ github.sha }}
+  cancel-in-progress: false
+jobs:
+  smol-residency:
+    name: One model then two actual independent untuned SmolLM2 residents
+    runs-on: ubuntu-24.04
+    timeout-minutes: 28
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      OMP_DYNAMIC: 'FALSE'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Verify single-host bounded no-optimizer request and source-only policy
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 -m unittest discover -s experiments/driv3r/wormbrain/fleet -p 'test_*.py' -v
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/driv3r-smol-schedule.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          from importlib.machinery import SourceFileLoader
+          s=SourceFileLoader("bench","experiments/driv3r/wormbrain/fleet/smol_residency.py").load_module()
+          x=json.loads(Path("experiments/driv3r/wormbrain/fleet/smol-residency-request.json").read_text())
+          assert x=={"schema":s.SCHEMA,"model":s.MODEL,"model_revision":s.REV,
+                 "w0_source":s.W0_SOURCE,"seeds":list(s.SEEDS),"families":list(s.FAMILIES),
+                 "turns":s.TURNS,"training":False,"native":False,"runner_max":1,
+                 "models_per_runner_max":2,"attempt":1}
+          PY
+      - name: Fetch exact W0 host source without modifying historical branch
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 origin 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          test "$(git rev-parse FETCH_HEAD)" = 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          git show 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61:experiments/agent_painter/worm/common/worm.py > "$RUNNER_TEMP/pinned-w0.py"
+          test "$(git hash-object "$RUNNER_TEMP/pinned-w0.py")" = 8979b6f0296e81051194bacc907992d38e006605
+      - name: Install pinned CPU inference environment and download untuned SmolLM2 model
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/untuned-smol"
+          "$RUNNER_TEMP/untuned-smol/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/untuned-smol/bin/python" -m pip install 'transformers==5.22.2' 'huggingface-hub==2.4.0' 'safetensors==0.8.0'
+          "$RUNNER_TEMP/untuned-smol/bin/python" -m pip check
+          mkdir -p evidence/smol-residency
+          "$RUNNER_TEMP/untuned-smol/bin/python" - <<'PY'
+          from huggingface_hub import HfApi,snapshot_download
+          from pathlib import Path
+          import hashlib,json,os
+          model="HuggingFaceTB/SmolLM2-135M-Instruct"
+          revision="12fd25f77366fa6b3b4b768ec3050bf629380bac"
+          info=HfApi().model_info(model,revision=revision)
+          assert info.sha==revision
+          out=Path(os.environ["RUNNER_TEMP"])/"smol-pinned"
+          snapshot_download(model,revision=revision,local_dir=out,max_workers=2,allow_patterns=[
+            "*.safetensors","*.safetensors.index.json","config.json","generation_config.json",
+            "tokenizer*","special_tokens_map.json","added_tokens.json","vocab.*","merges.txt"])
+          inv={str(p.relative_to(out)):hashlib.sha256(p.read_bytes()).hexdigest() for p in out.rglob("*")
+               if p.is_file() and ".cache" not in p.parts}
+          assert any(n.endswith(".safetensors") for n in inv)
+          Path("evidence/smol-residency/model-download.json").write_text(json.dumps({
+            "model":model,"resolved_revision":info.sha,"file_sha256":inv},sort_keys=True,indent=2)+"\n")
+          PY
+      - name: Actual serial-versus-dual original W0 model-choice and PNG episodes
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 900s "$RUNNER_TEMP/untuned-smol/bin/python" experiments/driv3r/wormbrain/fleet/smol_residency.py \
+            --request experiments/driv3r/wormbrain/fleet/smol-residency-request.json \
+            --model-dir "$RUNNER_TEMP/smol-pinned" --w0 "$RUNNER_TEMP/pinned-w0.py" \
+            --out evidence/smol-residency/results --lease "${GITHUB_RUN_ID}-${GITHUB_SHA:0:12}"
+      - name: Preserve original outputs, logs, source, environment and failure evidence
+        if: always()
+        run: |
+          set -euo pipefail
+          (python3 --version; git rev-parse HEAD; date -u -Iseconds) > evidence/smol-residency/host.txt
+          (cd evidence/smol-residency && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum) > evidence/smol-residency/SHA256SUMS.txt
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: driv3r-untuned-smol-residency-${{ github.sha }}
+          path: evidence/smol-residency/
+          if-no-files-found: warn
+          retention-days: 90
