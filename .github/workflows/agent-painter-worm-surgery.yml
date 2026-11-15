@@ -1,0 +1,143 @@
+name: SPROCKET WORM-001 experimental neural surgery (targeted vs chaos)
+on:
+  push:
+    branches:
+      - research/612-sprocket-surgery
+    paths:
+      - experiments/agent_painter/worm/surgery/surgery-request-v1.json
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: sprocket-surgery-${{ github.sha }}
+  cancel-in-progress: false
+jobs:
+  neural-surgery:
+    name: SPROCKET W2 LoRA surgery — ${{ matrix.mode }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 47
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [targeted, chaos]
+    env:
+      ATEN_CPU_CAPABILITY: default
+      MKL_CBWR: COMPATIBLE
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      OMP_DYNAMIC: 'FALSE'
+      MKL_DYNAMIC: 'FALSE'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Prove immutable experimental request, exact branch and policy
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/worm-surgery
+          python3 - <<'PY'
+          import json, os, subprocess
+          from pathlib import Path
+          p=Path('experiments/agent_painter/worm/surgery/surgery-request-v1.json')
+          actual=json.loads(p.read_text())
+          expected={
+            'schema':'cybersand.worm.sprocket-neural-surgery/1',
+            'experiment':'sprocket-lobotomy-001',
+            'training_source':'7683d06d9ffb26417ffc9694a07e8cf25e165fc6',
+            'training_run':43697235301,
+            'training_artifact':'sprocket-worm-v2-7683d06d9ffb26417ffc9694a07e8cf25e165fc6',
+            'checkpoint':'checkpoint-000048',
+            'root_instruct_model_revision':'eb157d4ddddc4619e661d4a2426bb2dd000fc668',
+            'w0_source':'2be9fd02ee525f2eac999555d4e7392a1dbc739b',
+            'adapter_only':True,'full_base_unchanged':True,
+            'model_training':False,'native':False,'final_sealed':True,
+            'modes':['targeted','chaos'],'seeds':[211,223],'steps':12}
+          if actual!=expected: raise SystemExit('Surgery request differs from approved immutable lease')
+          if os.environ['GITHUB_REF']!='refs/heads/research/612-sprocket-surgery':
+            raise SystemExit('Surgery executed from wrong branch')
+          Path('evidence/worm-surgery/source.txt').write_text(
+              subprocess.check_output(['git','rev-parse','HEAD'],text=True))
+          Path('evidence/worm-surgery/request.json').write_text(
+              json.dumps(actual,sort_keys=True,indent=2)+'\n')
+          PY
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 -m py_compile experiments/agent_painter/worm/surgery/{core.py,surgery.py,test_surgery.py}
+      - name: Get original immutable 48-step W2 adapter from GitHub Actions
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: sprocket-worm-v2-7683d06d9ffb26417ffc9694a07e8cf25e165fc6
+          path: evidence/worm-surgery/w2-original
+          run-id: '43697235301'
+          github-token: ${{ github.token }}
+      - name: Verify W2 complete optimizer receipt and checkpoint inventory provenance
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, hashlib
+          from pathlib import Path
+          p=Path('evidence/worm-surgery/w2-original/campaign')
+          summary=json.loads((p/'summary.json').read_text())
+          config=json.loads((p/'preflight.json').read_text())['config']
+          assert summary['actual_training'] is True and summary['status']=='complete'
+          assert summary['steps']==summary['target_steps']==48
+          assert summary['checkpoint']=='checkpoint-000048'
+          assert summary['adapter_changed'] and summary['frozen_base_equal']
+          assert not summary['native_execution'] and not summary['sealed_final_opened']
+          assert config['schema']=='cybersand.worm.sprocket-steering-v2'
+          assert config['source_sha']=='7683d06d9ffb26417ffc9694a07e8cf25e165fc6'
+          assert config['model']['model_id']=='kandivault/sprocket-500m'
+          assert config['model']['revision']=='eb157d4ddddc4619e661d4a2426bb2dd000fc668'
+          assert config['worm_common_git_commit']=='2be9fd02ee525f2eac999555d4e7392a1dbc739b'
+          path=p/'checkpoint-000048/inventory.json'
+          assert hashlib.sha256(path.read_bytes()).hexdigest()=='2ef02292b9dbd290cd053b7fcdf54c0ebb4bcef91affacd133d7cd714bce3266'
+          print('W2 48-step source-fenced adapter qualified as destructive surgery donor only')
+          PY
+      - name: Fetch original W0 source with Git blob check
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 origin 2be9fd02ee525f2eac999555d4e7392a1dbc739b
+          test "$(git rev-parse FETCH_HEAD)" = 2be9fd02ee525f2eac999555d4e7392a1dbc739b
+          git show 2be9fd02ee525f2eac999555d4e7392a1dbc739b:experiments/agent_painter/worm/common/worm.py > "$RUNNER_TEMP/surgery-worm.py"
+          test "$(git hash-object "$RUNNER_TEMP/surgery-worm.py")" = 04b9cf0dae74bcc9898e3641418973787141814b
+          sha256sum "$RUNNER_TEMP/surgery-worm.py" > evidence/worm-surgery/worm-source.sha256
+      - name: Install pinned portable CPU FP32 environment
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/surgery-env"
+          "$RUNNER_TEMP/surgery-env/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/surgery-env/bin/python" -m pip install -r experiments/agent_painter/training/requirements.lock
+          "$RUNNER_TEMP/surgery-env/bin/python" -m pip check
+          "$RUNNER_TEMP/surgery-env/bin/python" -m pip freeze --all > evidence/worm-surgery/pip-freeze.txt
+          "$RUNNER_TEMP/surgery-env/bin/python" experiments/agent_painter/worm/surgery/test_surgery.py -v
+          lscpu > evidence/worm-surgery/cpu.txt
+      - name: Download and source-verify exact public root Instruct Sprocket
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 900s "$RUNNER_TEMP/surgery-env/bin/python" experiments/agent_painter/training/download_model.py --profile sprocket --output "$RUNNER_TEMP/surgery-model"
+          cp "$RUNNER_TEMP/surgery-model/download_receipt.json" evidence/worm-surgery/model-download.json
+      - name: One frozen W2 donor, sequential restored destructive arms (no training)
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 2360s "$RUNNER_TEMP/surgery-env/bin/python" experiments/agent_painter/worm/surgery/surgery.py \
+            --mode ${{ matrix.mode }} \
+            --model "$RUNNER_TEMP/surgery-model" \
+            --checkpoint evidence/worm-surgery/w2-original/campaign/checkpoint-000048 \
+            --w0 "$RUNNER_TEMP/surgery-worm.py" \
+            --steps 12 --deadline 2300 --output evidence/worm-surgery/${{ matrix.mode }}
+      - name: Preserve original source and per-arm evidence hashes
+        if: always()
+        run: |
+          set -euo pipefail
+          df -h > evidence/worm-surgery/disk-after.txt
+          (cd evidence/worm-surgery && find . -type f ! -name 'SHA256SUMS.txt' -print0 | sort -z | xargs -0 sha256sum) > evidence/worm-surgery/SHA256SUMS.txt
+      - name: Preserve negative, partial and successful original experiments
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: sprocket-worm-surgery-${{ matrix.mode }}-${{ github.sha }}
+          path: evidence/worm-surgery/
+          if-no-files-found: warn
+          retention-days: 90
