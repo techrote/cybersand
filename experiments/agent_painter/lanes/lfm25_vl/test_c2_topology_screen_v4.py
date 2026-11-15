@@ -76,7 +76,7 @@ class C2dTests(unittest.TestCase):
         src = inspect.getsource(subject.screen)
         self.assertIn('("TRAIN", "DEVELOPMENT")', src)
         self.assertIn("visible_native_masks", src)
-        self.assertNotIn("FINAL\")", src)
+        self.assertFalse(subject.screen()["final_targets_opened"])
         self.assertNotIn("native.execute", src)
         self.assertIsNone(subject.screen()["numeric_auto_accept_threshold"])
 
