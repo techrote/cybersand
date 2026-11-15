@@ -78,6 +78,28 @@ class WormMorphologyTests(unittest.TestCase):
         self.assertIsNone(p["first_different_cursor_choice_index"])
         self.assertEqual(p["first_different_pen_down_destination_index"], 1)
 
+    def test_stop_vs_truncated_arm_is_control_not_cursor_divergence(self):
+        # One arm records terminal STOP; the other has the same final cursor
+        # but a shorter, explicitly truncated synthetic observation.
+        free = [move(1, 1, 0), stop(2)]
+        soft = [move(1, 1, 0)]
+        for a, b in ((free, soft), (soft, free)):
+            with self.subTest(order=(len(a), len(b))):
+                result = compare_validated_traces(a, b)
+                self.assertEqual(result["first_different_control_index"], 2)
+                self.assertIsNone(result["first_different_cursor_choice_index"])
+                self.assertIsNone(result["first_different_pen_down_destination_index"])
+
+    def test_stop_vs_actual_extra_move_is_cursor_divergence(self):
+        free = [move(1, 1, 0), stop(2)]
+        soft = [move(1, 1, 0), move(2, 2, 0)]
+        for a, b in ((free, soft), (soft, free)):
+            with self.subTest(order=(a[-1]["action"], b[-1]["action"])):
+                result = compare_validated_traces(a, b)
+                self.assertEqual(result["first_different_control_index"], 2)
+                self.assertEqual(result["first_different_cursor_choice_index"], 2)
+                self.assertEqual(result["first_different_pen_down_destination_index"], 2)
+
     def test_malformed_and_fake_boolean_decisions_rejected(self):
         for bad in ([{"decision_index": True, "action": "STOP", "to_xy": [], "pen_down": False}],
                     [move(1, -1, 0)], [dict(move(1, 1, 0), pen_down=1)],

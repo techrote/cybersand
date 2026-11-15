@@ -111,8 +111,10 @@ def compare_validated_traces(free_trace: list[dict], soft_trace: list[dict]) -> 
         s = soft_trace[i] if i < len(soft_trace) else None
         if first_control is None and f != s:
             first_control = i + 1
-        fc = (f["action"], tuple(f["to_xy"])) if f else None
-        sc = (s["action"], tuple(s["to_xy"])) if s else None
+        # STOP versus a missing terminal record is a control/length difference,
+        # not a cursor movement; only MOVE destinations count as cursor choices.
+        fc = tuple(f["to_xy"]) if f is not None and f["action"] == "MOVE" else None
+        sc = tuple(s["to_xy"]) if s is not None and s["action"] == "MOVE" else None
         if first_cursor is None and fc != sc:
             first_cursor = i + 1
         fi = tuple(f["to_xy"]) if f and f["action"] == "MOVE" and f["pen_down"] else None
