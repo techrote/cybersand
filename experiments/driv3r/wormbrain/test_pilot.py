@@ -79,6 +79,14 @@ class WormPilotTests(unittest.TestCase):
         self.assertEqual(scent([65535]*(32*32), [90,90]),0)
         self.assertEqual(scent([65535]*(32*32), [8,20]),65535)
 
+    def test_native_bootstrap_and_owner_request_use_identical_schema(self):
+        script=Path(__file__).with_name("ci_pilot.sh").read_text()
+        req=json.loads(Path(__file__).with_name("qualification-request.json").read_text())
+        self.assertEqual(req["schema"],"driv3r-wormbrain-pilot-request/1")
+        self.assertIn('assert r["schema"]=="driv3r-wormbrain-pilot-request/1"',script)
+        self.assertIn('max_native_material_edits_per_arm"]==36',script)
+        self.assertNotIn("driv3r-worm-a1a2a3",script)
+
     def test_cardinal_turns_are_correct(self):
         self.assertEqual(turn_kind("E","E"),"straight")
         self.assertEqual(turn_kind("E","S"),"right turn")
