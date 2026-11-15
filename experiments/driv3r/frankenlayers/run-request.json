@@ -94,5 +94,15 @@
       "skelehound",
       "aerohound"
     ]
+  },
+  "hound_retry_2": {
+    "reason": "flow registry existed but generated C++ switch omitted skelehound/aerohound",
+    "previous_run_id": 43768313284,
+    "failed_at_mutant_server_start": true,
+    "repair_source": "fff1548993169c8cdf70b103bd74ec389e31ecfc",
+    "retry_matrix": [
+      "skelehound",
+      "aerohound"
+    ]
   }
 }
