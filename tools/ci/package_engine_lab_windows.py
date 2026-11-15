@@ -81,6 +81,7 @@ def project_from_git(output,dll,rapier):
             body=f.read()
             if name==NATIVE: body=dll.read_bytes()
             if name==RAPIER: body=rapier.read_bytes()
+            if name=="Test It.cmd": body=body.replace(b"\r\n",b"\n").replace(b"\n",b"\r\n")
             need(not body.startswith(b"version https://git-lfs.github.com/spec/v1\n"),"Unresolved LFS "+name)
             destination=output/name
             destination.parent.mkdir(parents=True,exist_ok=True)
