@@ -77,7 +77,9 @@ jobs:
             'max_parallel':10,'cpu_inference':True,
             'native_workbench':False,'training':False,'paid_api':False,
             'merge':False,'ready':False,'production_default':False,
-            'preserve_original_failures':True}
+            'preserve_original_failures':True,
+            'dispatch_attempt':2,
+            'first_failed_preflight_run':43768682038}
           if r!=expected: raise SystemExit('Unexpected ten-brain M2 cloud request')
           if os.getenv('GITHUB_REF')!='refs/heads/research/620-franken-mutagen-ten-brains':
               raise SystemExit('Wrong branch')
