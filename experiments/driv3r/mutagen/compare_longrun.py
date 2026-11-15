@@ -108,7 +108,10 @@ def compare(root,sha,out):
        "expected_arms":list(ARMS),"seeds":list(SEEDS),"families":list(FAMILIES),
        "all_arms_complete":all(source["status"]=="COMPLETE" for source in results.values()),
        "matched_arms":summaries,
-       "identical_initial_W0_observations_confirmed":True,
+       "identical_initial_W0_observations_confirmed":all(
+           all(a["completed"] for a in row["arms"].values())
+           and row["initial_observation_sha256"] is not None
+           for row in matched),
        "episode_comparisons":matched,
        "note":"Only identical *starting* worlds and source W0 semantics are matched. Later observations differ after model choices.",
        "not_native":True,"model_training":False,
