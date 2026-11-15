@@ -106,48 +106,112 @@ def native_v5(z):
     return masks[0]
 
 
-def visible_architecture(z, split):
+def original_evidence(z, path, expected_hash):
+    """Read only a selected visible native admission member and verify its SHA."""
+    need(isinstance(path, str) and isinstance(expected_hash, str),
+         "original visible native path/hash required")
+    name = PurePosixPath(path)
+    need(not name.is_absolute() and len(name.parts) >= 2
+         and name.parts[0] == "evidence" and ".." not in name.parts,
+         "unsafe original visible evidence path")
+    data = z.read("corpus/" + str(name))
+    need(sha(data) == expected_hash, "original visible native evidence SHA mismatch")
+    return data
+
+
+def visible_architecture(z, split, manifest):
     need(split in SPLITS, "sealed/unknown split refused")
+    need(manifest.get("source_sha") == PUBLIC_SOURCE
+         and manifest["split_files"][split]["sha256"] == SPLITS[split]
+         and manifest["split_files"][split]["count"] == 12,
+         "original corpus split/source identity differs")
     raw = z.read(f"corpus/{split.lower()}.jsonl")
     need(sha(raw) == SPLITS[split], "visible original split digest changed")
     rows = [json.loads(line) for line in raw.splitlines()]
     need(len(rows) == 12 and len({r["group_id"] for r in rows}) == 6,
          "original structural grouping changed")
-    selected = [r for r in rows if r["family"] == "architecture"
-                and r["seed"] == SEEDS[0]]
-    need(len(selected) == 2 and len({r["group_id"] for r in selected}) == 2,
-         "original Architecture groups changed")
-    return [(r["group_id"],
-             mask(z.read(f"corpus/evidence/{r['native_case_id']}.materials.i32le")))
-            for r in selected]
-
+    selected = [r for r in rows if r["family"] == "architecture"]
+    groups = {r["group_id"] for r in selected}
+    need(len(selected) == 4 and len(groups) == 2
+         and len({r["id"] for r in selected}) == 4
+         and {(r["group_id"], r["seed"]) for r in selected}
+             == {(group, seed) for group in groups for seed in SEEDS},
+         "original Architecture requires both native seeds for each of two groups")
+    need(groups <= set(manifest["structural_groups"][split]),
+         "original Architecture group escaped its visible split")
+    evidence = []
+    for row in sorted(selected, key=lambda r: (r["group_id"], r["seed"])):
+        need(row.get("split") == split
+             and row.get("structural_group", row["group_id"]) == row["group_id"],
+             "original visible row/structural group mismatch")
+        admission = row.get("native_admission", {})
+        need(admission.get("state") == "PASS"
+             and admission.get("native_execution") is True
+             and admission.get("verified") is True
+             and admission.get("source_sha") == PUBLIC_SOURCE
+             and admission.get("runtime_sha256") == manifest["runtime_sha256"],
+             "original visible native admission not source-bound")
+        paths = admission["paths"]
+        raw_mask = original_evidence(z, paths["readback"], admission["readback_sha256"])
+        receipt_raw = original_evidence(z, paths["receipt"], admission["receipt_sha256"])
+        original_evidence(z, paths["png"], admission["png_sha256"])
+        receipt = json.loads(receipt_raw)
+        need(receipt.get("id") == row["id"] and receipt.get("seed") == row["seed"]
+             and receipt.get("family") == "architecture"
+             and receipt.get("passed") is True
+             and receipt.get("program_sha256") == admission["program_sha256"]
+             and receipt.get("operations_sha256") == admission["operations_sha256"]
+             and receipt.get("crop_i32le_sha256") == admission["readback_sha256"]
+             and receipt.get("outside_area_cells") == 0
+             and receipt.get("unexpected_material_cells") == 0
+             and receipt.get("deterministic_replay_checked") is True,
+             "original visible native receipt not bound to seed/material")
+        evidence.append((row["group_id"], row["seed"], mask(raw_mask),
+                         admission["readback_sha256"], admission["receipt_sha256"],
+                         admission["png_sha256"]))
+    return evidence
 
 def compare(v4, v5, peers):
     need(len(v4) == 524 and len(v5) == 662 and v4 < v5
          and len(v5 - v4) == 138, "historical v4-to-v5 138-cell-only addition differs")
+    need(len(peers) == 8, "eight original Architecture seed views required")
+    keys = [(split, group, seed) for split, group, seed, *_ in peers]
+    groups = {(split, group) for split, group, _ in keys}
+    need(len(groups) == 4 and {split for split, _ in groups} == set(SPLITS)
+         and all(sum(part == split for part, _ in groups) == 2 for split in SPLITS)
+         and set(keys) == {(split, group, seed)
+                           for split, group in groups for seed in SEEDS},
+         "duplicate or missing reference seed/structural group")
     values = []
-    for split, name, other in peers:
-        values.append({"split": split, "group": name, "peer_cells": len(other),
+    for split, name, seed, other, material_hash, receipt_hash, png_hash in peers:
+        need(all(isinstance(h, str) and len(h) == 64 for h in
+                 (material_hash, receipt_hash, png_hash)),
+             "missing original reference evidence hashes")
+        values.append({"split": split, "group": name, "reference_seed": seed,
+                       "reference_readback_sha256": material_hash,
+                       "reference_receipt_sha256": receipt_hash,
+                       "reference_png_sha256": png_hash,
+                       "peer_cells": len(other),
                        "v4_iou": round(iou(v4, other), 6),
                        "v5_iou": round(iou(v5, other), 6),
                        "v4_near3": round(proximity_fraction(v4, other), 6),
                        "v5_near3": round(proximity_fraction(v5, other), 6)})
     return values
 
-
 def audit(v4_file, v5_file, public_file):
     with checked_zip(v4_file, V4_ZIP) as four, checked_zip(v5_file, V5_ZIP) as five, \
          checked_zip(public_file, PUBLIC_ZIP, public=True) as public:
         raw_manifest = public.read("corpus/admitted-corpus.json")
+        manifest = json.loads(raw_manifest)
         need(sha(raw_manifest) == MANIFEST and
-             json.loads(raw_manifest).get("source_sha") == PUBLIC_SOURCE,
+             manifest.get("source_sha") == PUBLIC_SOURCE,
              "original native corpus manifest/source mismatch")
         v4 = mask(four.read("void-v4-shaft-native/void-v4-A02-s104729.materials.i32le"))
         need(v4 == mask(four.read("void-v4-shaft-native/void-v4-A02-s130363.materials.i32le")),
              "v4 host seeds differ")
         v5 = native_v5(five)
-        peers = [(split, group, cells) for split in SPLITS
-                 for group, cells in visible_architecture(public, split)]
+        peers = [(split, group, seed, cells, readback_sha, receipt_sha, png_sha) for split in SPLITS
+                 for group, seed, cells, readback_sha, receipt_sha, png_sha in visible_architecture(public, split, manifest)]
         return {"status": "READ_ONLY_A02_V5_SPATIAL_COMPARISON",
                 "v4_zip_sha256": V4_ZIP, "v5_zip_sha256": V5_ZIP,
                 "public_zip_sha256": PUBLIC_ZIP, "native_corpus_manifest_sha256": MANIFEST,
@@ -155,6 +219,7 @@ def audit(v4_file, v5_file, public_file):
                 "original_native_v4_cells": len(v4), "original_native_v5_cells": len(v5),
                 "added_v5_cells": len(v5 - v4), "removed_v5_cells": len(v4 - v5),
                 "distinct_architecture_compositions": 1, "v5_host_seed_views": 2,
+                "reference_structural_groups": 4, "reference_native_seed_views": len(peers),
                 "per_visible_original_architecture_group": compare(v4, v5, peers),
                 "new_native_executions": 0, "new_train_admissions": 0,
                 "new_optimizer_steps": 0, "model_generated_paintings": 0,
