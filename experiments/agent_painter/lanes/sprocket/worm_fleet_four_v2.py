@@ -155,6 +155,7 @@ def run_fleet(args):
                 raise ValueError("worker identity/receipt contract violated")
             stage["workers"].append({k:c[k] for k in
                     ("pid","seed","family","lease","start_utc","end_utc",
+                     "inference_start_utc","inference_end_utc",
                      "real_trained_six_score_forwards","model_download_receipt_sha256",
                      "checkpoint_inventory_sha256","peak_rss_kib","wall_seconds")})
         if max_live!=2 or stage["completed"]!=2:
@@ -208,12 +209,12 @@ def audit(args):
         raise ValueError("four worms not using the same pinned model download identity")
     if len({w["checkpoint_inventory_sha256"] for _,w in workers})!=1:
         raise ValueError("four worms not on the same original checkpoint")
-    overlap_start=max(w["start_utc"] for _,w in workers)
-    overlap_end=min(w["end_utc"] for _,w in workers)
+    overlap_start=max(w["inference_start_utc"] for _,w in workers)
+    overlap_end=min(w["inference_end_utc"] for _,w in workers)
     complete=overlap_end>overlap_start+1
     result={"schema":"cybersand.worm.sprocket-4-live-evidence/1",
             "source_sha":args.expected_sha,"four_unique_job_pid_model_seed_leases":True,
-            "actual_four_interval_overlap_seconds":max(0,overlap_end-overlap_start),
+            "actual_four_MODEL_INFERENCE_interval_overlap_seconds":max(0,overlap_end-overlap_start),
             "four_actually_simultaneous":complete,"not_native":True,
             "optimizer_steps_this_run":0,"decision_bound":STEPS,
             "original_worm_processes":workers,"producer_failure_preserved":True}
