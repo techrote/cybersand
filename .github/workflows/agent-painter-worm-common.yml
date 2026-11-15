@@ -25,8 +25,8 @@ jobs:
           python3 --version
           sha256sum experiments/agent_painter/worm/common/worm.py
           python3 tools/ci/check_ci_provider_policy.py
-      - name: Bounded legality and determinism tests
-        run: python3 -m unittest discover -s experiments/agent_painter/worm/common -p 'test_worm.py' -v
+      - name: W0 legality, determinism and four-worm fleet evidence guards
+        run: python3 -m unittest discover -s experiments/agent_painter/worm/common -p 'test_*.py' -v
       - name: Produce real baseline PNG and JSON receipts
         shell: bash
         run: |
