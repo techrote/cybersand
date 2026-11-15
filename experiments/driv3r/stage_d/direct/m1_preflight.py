@@ -278,11 +278,24 @@ def preflight_episode(fixture: Any, record: dict[str, Any],
                                     height=fixture.height, legal_cell=fixture.legal)
         _require(event["choice_id"] in {o["id"] for o in host_shadow["catalog"]},
                  "Selected action is not on admitted catalog")
+        # The menu digest alone omits the goal, selected wall and prior path.
+        # Bind the full independently replay-verified offline observation to
+        # the immutable schema and menu. This is NOT native admission.
+        state_binding = {
+            "adapter_version": VERSION,
+            "m1_schema_sha256": M1_SCHEMA_SHA256,
+            "world_size": [fixture.width, fixture.height],
+            "synthetic_legal_catalog_sha256":
+                host_shadow["synthetic_legal_catalog_sha256"],
+            "synthetic_model_menu_sha256": model_presentation_hash(host_shadow),
+            "replay_verified_offline_observation": source,
+        }
         per_decision.append({
             "sequence": event["seq"],
             "cursor_before": list(position), "chosen_candidate_id": event["choice_id"],
             "offline_presentation_sha256": source["candidate_set_sha256"],
             "synthetic_legal_catalog_sha256": host_shadow["synthetic_legal_catalog_sha256"],
+            "synthetic_observation_presentation_sha256": _hash(state_binding),
             "native_legal_catalog_sha256": None,
             "native_observation_ref": None, "native_receipt_ref": None,
             "synthetic_cursor_after": list(event["simulated_post_position"]),

@@ -224,6 +224,47 @@ class CatalogPreflightTests(unittest.TestCase):
                                         x["native_legal_catalog_sha256"] is None
                                         for x in report["decision_preflights"]))
 
+    def test_full_observation_digest_binds_goal_wall_and_history(self):
+        # Two states with the same admitted local controls are NOT the same
+        # model decision problem. No forged native identity is introduced.
+        fixture = d.wall_fixture("step", "development")
+        trace = d.run_episode(fixture, "contour_astar")
+        report = m.preflight_episode(fixture, trace)
+        view = trace["events"][0]["observation"]
+        menu = m.legal_catalog(view["position"],
+                               d.candidates(fixture, tuple(view["position"]), (1,)),
+                               width=fixture.width, height=fixture.height,
+                               legal_cell=fixture.legal)
+        context = {
+            "adapter_version": m.VERSION,
+            "m1_schema_sha256": m.M1_SCHEMA_SHA256,
+            "world_size": [fixture.width, fixture.height],
+            "synthetic_legal_catalog_sha256": menu["synthetic_legal_catalog_sha256"],
+            "synthetic_model_menu_sha256": m.model_presentation_hash(menu),
+            "replay_verified_offline_observation": view,
+        }
+        expected = m._hash(context)
+        self.assertEqual(report["decision_preflights"][0][
+            "synthetic_observation_presentation_sha256"], expected)
+        for changed in ("target", "selected_wall_id", "path_sha256", "decision"):
+            alternate = copy.deepcopy(context)
+            altered_view = copy.deepcopy(view)
+            if changed == "target":
+                altered_view["target"] = [fixture.target[0] + 1, fixture.target[1]]
+            elif changed == "selected_wall_id":
+                altered_view["selected_wall_id"] = "different-wall"
+            elif changed == "path_sha256":
+                altered_view["path_sha256"] = "f" * 64
+            else:
+                altered_view["decision"] += 1
+            alternate["replay_verified_offline_observation"] = altered_view
+            with self.subTest(field=changed):
+                self.assertNotEqual(m._hash(alternate), expected)
+                forged = copy.deepcopy(trace)
+                forged["events"][0]["observation"] = altered_view
+                with self.assertRaises(ValueError):
+                    m.preflight_episode(fixture, forged)
+
     def test_tampered_offline_trajectory_refused(self):
         record = d.run_episode(self.f, "astar")
         forged = copy.deepcopy(record)

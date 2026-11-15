@@ -134,3 +134,14 @@ Four additional adversarial regressions cover constructor relabelling,
 dataclass-level relabelling/source mutation, replay entry and direct oracle
 continuation. They are **authored, not yet exact-source Python-qualified**.
 The frozen M1 schema and native authorisation gates are unchanged.
+
+### Replay-bound full-observation presentation digest (synthetic only)
+
+In addition to the synthetic legal-catalog membership hash, every DEVELOPMENT
+preflight now records `synthetic_observation_presentation_sha256`. This binds
+the exact independently replay-verified objective/target, selected wall,
+visited-path hash, decision budget, raw offered candidate ordering, World size,
+frozen M1 schema identity and separately sorted model-menu presentation.
+Identical local legal choices alone do **not** imply identical model input.
+No real native action, receipt, World revision or permission is conferred.
+The M1 source and schema remain frozen; native M2/M3 integration is independent.
