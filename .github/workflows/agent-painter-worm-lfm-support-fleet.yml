@@ -48,6 +48,9 @@ jobs:
                     "files":[{"path":p.relative_to(folder).as_posix(),"sha256":hashlib.sha256(p.read_bytes()).hexdigest()}
                              for p in png+traces]}
           (folder/"SHA256.json").write_text(json.dumps(manifest,indent=2,sort_keys=True)+"\n")
+          assert all((folder / x["path"]).is_file() and
+                     hashlib.sha256((folder / x["path"]).read_bytes()).hexdigest()==x["sha256"]
+                     for x in manifest["files"]), "invalid artifact-relative hash receipt"
           print("W0 source-only original PNG/trace pairs:",len(png))
           PY
       - name: Archive clearly labelled W0-only baseline gallery
