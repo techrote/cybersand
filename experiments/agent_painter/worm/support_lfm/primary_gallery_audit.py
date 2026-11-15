@@ -14,6 +14,7 @@ from pathlib import Path
 import subprocess
 
 from curriculum import COMMON_SOURCE_SHA, canonical, oracle, rollout, statistics, worm
+from motif_metrics import dominant_repeated_motif
 
 PINNED_W0_BLOB = "8979b6f0296e81051194bacc907992d38e006605"
 EXPECTED_POLICIES = ("model", "random", "wall", "oracle")
@@ -123,6 +124,7 @@ def audit(gallery: Path, *, seed: int = 2101, budget: int = 32) -> dict:
             members.append({"file": json_path.name, "sha256": hashlib.sha256(json_path.read_bytes()).hexdigest()})
             report = {"family": family, "seed": seed, "policy": policy,
                       "metrics": statistics(record),
+                      "raw_cycle": dominant_repeated_motif([e["raw_choice"] for e in record["events"]]),
                       "original_png_sha256": hashlib.sha256(png).hexdigest()}
             if policy == "model":
                 report.update(raw_legal_choices=legal, genuine_eos=eos,
@@ -152,16 +154,22 @@ def audit(gallery: Path, *, seed: int = 2101, budget: int = 32) -> dict:
                     model["raw_action_entropy_bits"] - other["raw_action_entropy_bits"], 5),
                 "model_max_same_raw_streak": model["max_same_raw_streak"],
                 "model_host_fallback_count": model["host_fallback_count"],
+                "model_raw_cycle": current["model"]["raw_cycle"],
+                "baseline_raw_cycle": current[baseline]["raw_cycle"],
+                "raw_cycle_span_fraction_delta": round(
+                    current["model"]["raw_cycle"]["fraction"] -
+                    current[baseline]["raw_cycle"]["fraction"], 6),
             })
     return {
-        "schema": "worm-lfm-primary-gallery-audit-v1",
+        "schema": "worm-lfm-primary-gallery-audit-v2",
         "source": COMMON_SOURCE_SHA, "host_blob": PINNED_W0_BLOB,
         "native": False, "trained_by_this_audit": False,
         "model_provenance": "external-primary-original-first-pass-unverified-weights",
         "seed": seed, "budget": budget, "families": list(worm.FAMILIES),
         "metrics": reports, "matched_pairs": pairs, "original_file_hashes": members,
         "limits": "One held-out W0 world seed, not independent multi-seed generalization. "
-                  "Host legal fallback is never model recovery. Reproduced PNG pixels "
+                  "Host legal fallback is never model recovery. Motif span is a raw action "
+                  "repetition diagnostic, not an art-quality score. Reproduced PNG pixels "
                   "are W0 Python-source-faithful, not Godot/native material readbacks. "
                   "Model token decode and checkpoint provenance require primary receipts.",
     }

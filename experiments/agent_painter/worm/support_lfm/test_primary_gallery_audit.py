@@ -7,6 +7,7 @@ import tempfile
 import unittest
 
 import primary_gallery_audit as a
+from motif_metrics import dominant_repeated_motif
 
 
 class GalleryAuditTests(unittest.TestCase):
@@ -57,6 +58,26 @@ class GalleryAuditTests(unittest.TestCase):
         self.assertEqual(len(data["original_file_hashes"]), 27)
         self.assertTrue(all(p["equal_requested_budget"] for p in data["matched_pairs"]))
         self.assertFalse(data["native"])
+        self.assertEqual(data["schema"], "worm-lfm-primary-gallery-audit-v2")
+        self.assertEqual(len(data["matched_pairs"]), 9)
+        self.assertEqual(data["metrics"][0]["raw_cycle"]["period"], 1)
+        self.assertEqual(data["metrics"][0]["raw_cycle"]["span"], self.budget)
+        self.assertIn("raw_cycle_span_fraction_delta", data["matched_pairs"][0])
+
+    def test_detects_multi_action_loop_not_only_constant_token(self):
+        pattern = ["BRANCH", "RETRACE", "RIGHT"]
+        data = dominant_repeated_motif(["STOP", "LEFT"] + pattern * 8 + ["STRAIGHT"])
+        self.assertEqual(data["period"], 3)
+        self.assertEqual(data["motif"], pattern)
+        self.assertEqual(data["start"], 2)
+        self.assertEqual(data["span"], 24)
+        self.assertEqual(data["full_repeats"], 8)
+        self.assertEqual(dominant_repeated_motif(["RIGHT"] * 32)["span"], 32)
+        self.assertEqual(dominant_repeated_motif(["LEFT", "RIGHT", "STOP"])["span"], 0)
+        with self.assertRaises(ValueError):
+            dominant_repeated_motif(["LEFT", None])
+        with self.assertRaises(ValueError):
+            dominant_repeated_motif(["LEFT"] * 513)
 
     def test_literal_raw_mutation_rejected(self):
         name = f"greebles-model-{self.seed}-raw-first-passes.json"

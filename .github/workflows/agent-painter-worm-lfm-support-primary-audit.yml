@@ -4,6 +4,7 @@ on:
     branches:
       - research/612-worm-lfm-support
     paths:
+      - experiments/agent_painter/worm/support_lfm/motif_metrics.py
       - experiments/agent_painter/worm/support_lfm/primary_gallery_audit.py
       - experiments/agent_painter/worm/support_lfm/test_primary_gallery_audit.py
       - .github/workflows/agent-painter-worm-lfm-support-primary-audit.yml
@@ -94,7 +95,7 @@ jobs:
           import json,os,pathlib
           root=pathlib.Path(os.environ['OUTPUT'])
           report=json.loads((root/'audit.json').read_bytes())
-          assert report['schema']=='worm-lfm-primary-gallery-audit-v1'
+          assert report['schema']=='worm-lfm-primary-gallery-audit-v2'
           assert len(report['metrics'])==12 and len(report['matched_pairs'])==9
           assert len(report['original_file_hashes'])==27
           print('ORIGINAL W3 MODEL-VS-MATCHED-CONTROL host replay PASS')
