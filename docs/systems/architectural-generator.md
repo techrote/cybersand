@@ -23,6 +23,9 @@ state permits full CI execution; it does not grant merge approval.
 
 The [dated local qualification record](../audits/2026-11-14-architectural-generator-local.md)
 retains source identities, numerical comparisons and original native previews.
+The [15 November runtime completion record](../audits/2026-11-15-gen007-runtime-completion.md)
+separately binds the integrated source, actual Windows/Linux execution,
+retained libraries and independently verified Windows owner package.
 
 ## Compatibility and native identity
 
@@ -303,6 +306,13 @@ explicit workflow dispatch. Headless regression coverage and publisher unit
 tests do not replace the full graphical publication campaign.
 
 ### Retained runtime publication
+
+**Published on the PR branch, 15 November 2026:** qualified source `6d6e2cd6`
+produced four-file publication `99d7bd2b`. Both retained libraries were downloaded
+from Git LFS and verified against their committed pointers, manifests and
+validated artifact bytes. Their manifests carry matching 93-native-input and
+814-build-input ledgers. The completion record above owns the exact identities
+and target-OS results; final-head broad CI remains in the PR evidence ledger.
 
 The owner-authorized repair publishes the source-matched Linux SO, Windows DLL
 and their two provenance records **on the existing PR branch**. It supersedes

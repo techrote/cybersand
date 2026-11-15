@@ -38,10 +38,11 @@ GEN-007 Architectural Generator [merge hold, owner-reviewed](systems/architectur
 five simultaneous style columns, thirteen built-in presets, versioned native
 Terraces/Hive/Viaduct algorithms, deterministic zone allocation and source-bound
 preview/install. See the [Windows owner walkthrough](operations/architectural-generator-playtest.md).
-The integrated GEN-008 candidate has source-matched Linux/Windows and packaged
-replay evidence. Strict retained-runtime publication on PR #582 and the new
-head's broad checks remain pending at this repair checkpoint. Routine native,
-Godot and publisher-guard regressions continue beyond the feature branch.
+The [15 November runtime completion record](audits/2026-11-15-gen007-runtime-completion.md)
+binds source `6d6e2cd6` to the qualified Linux/Windows and packaged replay,
+four-file publication `99d7bd2b`, and verified Git LFS/runtime provenance.
+Final-head broad CI is recorded separately in PR #582. Routine native, Godot
+and publisher-guard regressions continue beyond the feature branch.
 No merge is authorised.
 
 EXPLORE-001 review candidate: [generated-map contract](systems/explore001-generated-playable-maps.md),

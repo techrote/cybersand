@@ -37,9 +37,14 @@ owner-accepted fixed reference. Source-matched Linux/Windows graphical and
 Windows packaged-copy qualification includes the integrated GEN-008 Flatten
 author/reopen and failure-recovery cases.
 
-The current repair closes the retained-runtime publication path on the existing
-PR branch; its four-file publication and final-head Documentation/provenance,
-palette and broad CI remain pending until their actual receipts are verified.
+The [runtime completion record](../audits/2026-11-15-gen007-runtime-completion.md)
+binds qualified source `6d6e2cd6` to actual four-file publication `99d7bd2b` on
+the existing PR branch. Linux/Windows native, graphical, multistyle, Flatten and
+extracted Windows package replay passed; the materialized Git LFS libraries and
+both provenance manifests pass strict current source/runtime verification.
+Final-head Documentation/provenance, palette and broad CI are recorded in
+PR #582 after the final documentation follow-up; this dated publication result
+does not substitute for those checks.
 The [strict publication contract](../systems/architectural-generator.md#retained-runtime-publication)
 supersedes the previous source-only merge proposal. Routine native/Godot
 architecture tests and bounded publisher guards continue on accepted-main CI

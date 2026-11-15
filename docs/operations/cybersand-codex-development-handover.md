@@ -23,11 +23,16 @@ Viaduct v2 geometry and the separate agent, streaming and camera/rendering work.
 
 The owner directed **fix and complete; do not merge**. The earlier source-only
 merge proposal is superseded: source-matched Linux/Windows libraries and their
-provenance must be retained on this PR branch, followed by fresh broad CI at the
-publication head. The [publication contract](../systems/architectural-generator.md#retained-runtime-publication)
+provenance are now retained on this PR branch, followed by fresh broad CI at the
+final PR head. The [publication contract](../systems/architectural-generator.md#retained-runtime-publication)
 requires exact build/execution input ledgers, target-OS native/graphical and
 package receipts, a branch-tip lease and exactly four runtime/provenance paths.
-Publication and final-head qualification remain pending at this repair checkpoint.
+The [completion record](../audits/2026-11-15-gen007-runtime-completion.md)
+binds qualified source `6d6e2cd68490591fbdac3e17dab0caed49c84758` to four-file
+publication `99d7bd2b67ff49c33a6ca67c47b71507731fac35`, with actual retained Git
+LFS bytes verified and strict current source/runtime checks passing. The source
+incorporates main `dea4e53d`; both platform input ledgers agree. Fresh broad CI
+for the final documentation follow-up is recorded in PR #582 after it completes.
 Ready-for-review enables full CI and grants no merge authority. Routine native,
 Godot and publisher-guard coverage is retained beyond the feature branch; the
 full graphical/package campaign remains explicit.
