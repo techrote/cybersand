@@ -128,6 +128,50 @@ class FourStreamControls(unittest.TestCase):
         with self.assertRaises(fleet.ControlRefused):
             fleet.replay_matched_controls(self.slots[1], report)
 
+    def test_episode_identity_distinguishes_horizon_and_oracle_work_cap(self):
+        slot = self.slots[0]
+        a = fleet.run_matched_controls(slot, horizon=36, oracle_probe_cap=1)
+        b = fleet.run_matched_controls(slot, horizon=128, oracle_probe_cap=1)
+        c = fleet.run_matched_controls(slot, horizon=128, oracle_probe_cap=2)
+        self.assertEqual({r["state"] for r in (a, b, c)},
+                         {"ORACLE_RESOURCE_EXHAUSTED"})
+        self.assertEqual({r["synthetic_run_id"] for r in (a, b, c)},
+                         {slot["synthetic_run_id"]})
+        self.assertEqual(len({r["episode_run_id"] for r in (a, b, c)}), 3)
+        for result in (a, b, c):
+            self.assertEqual(result["native_qualified"], False)
+            self.assertEqual(result["arms"], [])
+            for source in ("fleet_controls_source_sha256", "oracle_source_sha256",
+                           "offline_source_sha256", "line_character_source_sha256"):
+                self.assertEqual(len(result[source]), 64)
+
+    def test_four_stream_handoff_rejects_mixed_horizon_and_probe_cap(self):
+        reports = [fleet.run_matched_controls(s, horizon=128,
+                                              oracle_probe_cap=1)
+                   for s in self.slots]
+        self.assertEqual(len({r["episode_run_id"] for r in reports}), 4)
+        handoff = fleet.compact_handoff(self.slots, tuple(reports))
+        self.assertEqual(handoff["matched_horizon"], 128)
+        self.assertEqual(handoff["matched_oracle_probe_cap"], 1)
+        self.assertEqual(len({r["episode_run_id"] for r in handoff["streams"]}), 4)
+        mismatched = reports[:]
+        mismatched[0] = fleet.run_matched_controls(self.slots[0], horizon=36,
+                                                    oracle_probe_cap=1)
+        with self.assertRaisesRegex(fleet.ControlRefused, "same horizon"):
+            fleet.compact_handoff(self.slots, tuple(mismatched))
+        mismatched[0] = fleet.run_matched_controls(self.slots[0], horizon=128,
+                                                    oracle_probe_cap=2)
+        with self.assertRaisesRegex(fleet.ControlRefused, "same horizon"):
+            fleet.compact_handoff(self.slots, tuple(mismatched))
+
+    def test_resource_exhaustion_identity_forgery_is_rejected(self):
+        reports = [fleet.run_matched_controls(s, horizon=128,
+                                              oracle_probe_cap=1)
+                   for s in self.slots]
+        reports[0]["episode_run_id"] = "f" * 64
+        with self.assertRaisesRegex(fleet.ControlRefused, "replay mismatch"):
+            fleet.compact_handoff(self.slots, tuple(reports))
+
     def test_handoff_retains_all_four_negative_resource_cases(self):
         reports = tuple(fleet.run_matched_controls(s, horizon=128,
                                                      oracle_probe_cap=1)
