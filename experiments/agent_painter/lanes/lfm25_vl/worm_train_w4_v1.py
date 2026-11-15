@@ -307,11 +307,12 @@ def main():
             # Prefer genuine W0 world observations where available.
             candidates.sort(key=lambda i: (rows["WORM_TRAIN"][i]["origin"] != "W0-observed", i))
             anchors.append(candidates[0])
-        selected = set(anchors)
+        # Do not shadow the pinned official LFM profile used by evaluation.
+        selected_indices = set(anchors)
         world = [i for i, r in group
-                 if r["origin"] == "W0-observed" and i not in selected]
+                 if r["origin"] == "W0-observed" and i not in selected_indices]
         adverse = [i for i, r in group
-                   if r["origin"] != "W0-observed" and i not in selected]
+                   if r["origin"] != "W0-observed" and i not in selected_indices]
         chooser.shuffle(world)
         chooser.shuffle(adverse)
         # 6 mandatory anchors + 42 natural local-action examples + 12
