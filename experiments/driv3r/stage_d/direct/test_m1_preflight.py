@@ -20,6 +20,7 @@ class CatalogPreflightTests(unittest.TestCase):
                                legal_cell=self.f.legal)
 
     def test_frozen_m1_identity_and_no_native_claim(self):
+        self.assertEqual(m.VERSION, "d1a-m1-offline-preflight/4")
         self.assertEqual(m.M1_SOURCE_COMMIT, "8fa90de6be209ed0b7bd125039e6ec8b332fb1a6")
         self.assertEqual(m.M1_SCHEMA_SHA256, "ebe2fa211148602c614cba0f0a40f285cba797784b70efa035832d833877f80d")
         result = self.catalog()

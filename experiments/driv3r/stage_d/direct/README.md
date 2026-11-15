@@ -137,6 +137,8 @@ The frozen M1 schema and native authorisation gates are unchanged.
 
 ### Replay-bound full-observation presentation digest (synthetic only)
 
+Adapter **v4** preserves the v3 directional/sweep admission invariants.
+
 In addition to the synthetic legal-catalog membership hash, every DEVELOPMENT
 preflight now records `synthetic_observation_presentation_sha256`. This binds
 the exact independently replay-verified objective/target, selected wall,

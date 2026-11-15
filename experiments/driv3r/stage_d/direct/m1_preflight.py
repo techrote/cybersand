@@ -15,7 +15,7 @@ from typing import Any, Callable, Mapping, Sequence
 M1_SOURCE_COMMIT = "8fa90de6be209ed0b7bd125039e6ec8b332fb1a6"
 M1_SCHEMA_SHA256 = "ebe2fa211148602c614cba0f0a40f285cba797784b70efa035832d833877f80d"
 M1_PROTOCOL = "cybersand.driv3r.d-common/1"
-VERSION = "d1a-m1-offline-preflight/3"
+VERSION = "d1a-m1-offline-preflight/4"
 _ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.:-]{0,95}$")
 
 
