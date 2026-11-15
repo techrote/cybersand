@@ -16,6 +16,11 @@ from default current-answer retrieval and grants no implementation authority.
 Current clarified intent is separate in the
 [14 November owner decision record](decisions/2026-11-14-owner-authoring-intent.md).
 
+Wave Flow PR #618: [native contract and limitations](architecture/wave-flow-v1.md),
+[desktop selection, real Rapier/Needle fixtures and Windows evaluation](operations/wave-flow-evaluation.md),
+and [source/runtime/CI/performance qualification ledger](audits/2026-11-15-wave-mt-001-completion.md).
+Experimental and default off; merge and human gameplay acceptance remain owner decisions.
+
 Current combined evaluation: [Materials Lab + Workbench integration](audits/2026-11-12-mat-auth-workbench-integration.md) preserves both current feature heads, shared manual/agent Undo/Redo and existing material/save contracts. Its own Windows/Linux/package qualification remains separate from each feature's preceding evidence.
 
 Materials Lab v1 review candidate: [desktop launch, inspection, authoring and native tests](operations/materials-lab-authoring.md),

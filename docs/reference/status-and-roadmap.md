@@ -150,18 +150,22 @@ GEN-008 candidate above now implements the revised contract independently of #54
 
 ## Wave flow Water solver (WAVE-MT-001) — 2026-11-15
 
-**Experimental draft, not on main; no default changed.** The
+**Experimental PR #618 candidate, not on main; no default changed.** The
 [wave flow reference](../architecture/wave-flow-v1.md) adds an opt-in bulk
 strip-parallel Water law (`WorldConfig::wave_flow`, `wave_flow_v1`) with a
 retained per-face flux. It has no pressure head field, flood fill or gas state.
-The [dated evidence](../audits/2026-11-15-wave-mt-001-wave-flow.md) records the
-source-matched complete-native-tick matrix against the four existing Water
-laws, measured constructive and destructive wave interference, exact Water
-conservation, cell-identical results for 1/2/4/6 workers, and the rejected
-candidates. It is **not** a `LiquidSolverPolicy` family, has no Godot selection
-path, no persistence and no real-Rapier, graphical or human qualification.
-Policy-family admission, runtime publication and an owner evaluation build
-remain open.
+PR #618 adds [Godot selection and a Windows evaluation route](../operations/wave-flow-evaluation.md),
+real Rapier/Needle fixture coverage, region pause/reentry, full retained-state
+identity, explicit save/restore refusal, uint16 mass readback and regressions
+for thin films, edits, capacity and worker seams. It is **not** a
+`LiquidSolverPolicy` family. Water-owned chemistry/coherence, lighter-fluid
+exchange, full buoyancy and physical persistence remain unsupported.
+
+The [completion ledger](../audits/2026-11-15-wave-mt-001-completion.md)
+owns the exact-source/runtime/CI/performance/review evidence and remaining
+acceptance for #618. The [original #617 evidence](../audits/2026-11-15-wave-mt-001-wave-flow.md)
+does not qualify later source. Policy-family/default promotion and human
+Windows/GPU acceptance remain separate owner decisions. Merge is not authorised.
 
 ## Ballistic Water, IN-B1 and workbench spray (#362) — 2026-11-05
 

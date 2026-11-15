@@ -23,8 +23,9 @@ struct WaveFlowParameters {
     // d = ceil(log2(responding rows)) <= 5: 1/8 for one row, 1/256 for 32.
     static constexpr std::int32_t kLevelShift = 3;
     static constexpr std::int32_t kSleepAfter = 30;     // quiet ticks before a chunk stops being solved
-    static constexpr std::int32_t kWakePeak = 2;        // smallest per-cell change that counts as motion
-    static constexpr std::int32_t kMaximumMass = 32'000; // overfill ceiling of the uint16 carrier
+    static constexpr std::int32_t kWakePeak = 1;        // even one conserved unit must finish travelling
+    static constexpr std::int32_t kMaximumMass = 32'000; // stop inflow to a sealed stack at this threshold
+    static constexpr std::int32_t kMaximumHead = 1 << 26; // bounded derived head for extreme sealed columns
     static constexpr std::uint8_t kMaximumSubsteps = 8;
 };
 
@@ -44,6 +45,8 @@ struct WaveFlowDiagnostics {
     std::uint64_t tasks = 0;            // strip tasks dispatched (all passes)
     std::uint64_t solved_chunks = 0;    // chunk visits (one per chunk per tick)
     std::uint64_t moved_units = 0;      // lateral mass units transferred
+    std::uint64_t capacity_refusals = 0; // missing neighbour admissions refused; quantity stays resident
+    std::uint64_t boundary_refusals = 0; // coordinate-fringe neighbours treated as walls
     std::uint64_t prepare_nanoseconds = 0;
     std::uint64_t column_nanoseconds = 0;
     std::uint64_t flux_nanoseconds = 0;

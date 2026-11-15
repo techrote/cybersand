@@ -11,6 +11,14 @@ last-reviewed: 2026-10-25
 
 # Interfaces and message contracts
 
+The experimental PR #618 [Wave Flow interface](../architecture/wave-flow-v1.md)
+adds versioned construction options and full uint16 Water mass readback without
+changing the existing C ABI. Legacy uint8 mass readback saturates at 255.
+Godot construction and diagnostic getters expose the applied override, complete
+state version, flux, sparse work and capacity outcomes; render consumers still
+receive copied values. See the [evaluation guide](../operations/wave-flow-evaluation.md)
+for actual selection and target-platform qualification boundaries.
+
 The new bounded desktop [trial-body continuation](../architecture/liquid-prepared-setup-and-receipts.md#desktop-single-trial-body-preparation)
 keeps the eleven-float body ABI unchanged. Main sends only copied values:
 `kind = trial_body`, barrel/Ripper arm, one valid actual rectangle packet,

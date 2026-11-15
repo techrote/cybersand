@@ -95,16 +95,24 @@ semaphore wake) are separate and need their own registration.
 
 ## Wave flow Water solver experiment (WAVE-MT-001) — 2026-11-15
 
-Experimental branch `claude/cybersand-wave-mt-001-9d38c0` (Draft PR) adds the
-opt-in `wave_flow_v1` bulk Water law described in the
-[wave flow reference](../architecture/wave-flow-v1.md); measurements, rejected
-candidates and open qualification are in the
-[dated record](../audits/2026-11-15-wave-mt-001-wave-flow.md). It is off by
-default, is not a policy family and has no Godot path. The branch edits
-`native/src/world.cpp`, `world.hpp` and `world_pressure.inc`, so published
-runtime provenance is stale for it and any reviewed protected-source transition
-must be re-chained before it could merge. Do not merge without the owner's
-decision.
+PR [#618](https://github.com/techrote/cybersand/pull/618), owned branch
+`codex/wave-mt-001-parallel-20261115`, completes the independent experimental
+`wave_flow_v1` candidate. Claude's original PR #617 remains separate. The
+[canonical contract](../architecture/wave-flow-v1.md) and
+[evaluation guide](wave-flow-evaluation.md) describe the native solver,
+versioned mass/configuration APIs, Godot selection, comparison fixtures and
+real Rapier/Needle paths. Wave Flow stays opt-in and default off, outside the
+production policy catalogue. Complete state identity includes retained flux;
+physical save and restore explicitly refuse Wave Worlds.
+
+The [completion record](../audits/2026-11-15-wave-mt-001-completion.md)
+separates repaired source, local tests, exact-source runtime publication,
+complete hosted qualification, fresh benchmarks and final independent review.
+The [original measurements](../audits/2026-11-15-wave-mt-001-wave-flow.md)
+are historical evidence for #617, not qualification of #618. Protected-source
+transitions retain their source commits and require a merge commit eventually;
+do not squash or rebase away that history. Human Windows/GPU acceptance remains
+separate. Do not merge or enable auto-merge without the owner's approval.
 
 ## Ballistic Water experiment (#362) — 2026-11-05
 

@@ -45,16 +45,21 @@ $(BUILD_DIR)/tests_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) $(TEST_SOURCES) $(
 	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined $(CORE_SOURCES) $(TEST_SOURCES) -o $@
 
 # WAVE-MT-001 wave_flow_v1: standalone regressions (own main; not part of TEST_SOURCES).
-.PHONY: wave-flow-test wave-flow-sanitize wave-flow-thread-sanitize
+.PHONY: wave-flow-test wave-flow-sanitize wave-flow-thread-sanitize wave-mt-matrix
 
-$(BUILD_DIR)/test_wave_flow: $(SIMULATION_SOURCES) $(CORE_HEADERS) native/tests/test_wave_flow.cpp | $(BUILD_DIR)
-	$(CXX) $(COMMON_FLAGS) -O2 -g -pthread $(SIMULATION_SOURCES) native/tests/test_wave_flow.cpp -o $@
+$(BUILD_DIR)/test_wave_flow: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_wave_flow.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O2 -g -pthread $(CORE_SOURCES) native/tests/test_wave_flow.cpp -o $@
 
-$(BUILD_DIR)/test_wave_flow_sanitized: $(SIMULATION_SOURCES) $(CORE_HEADERS) native/tests/test_wave_flow.cpp | $(BUILD_DIR)
-	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=address,undefined $(SIMULATION_SOURCES) native/tests/test_wave_flow.cpp -o $@
+$(BUILD_DIR)/test_wave_flow_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_wave_flow.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=address,undefined $(CORE_SOURCES) native/tests/test_wave_flow.cpp -o $@
 
-$(BUILD_DIR)/test_wave_flow_tsan: $(SIMULATION_SOURCES) $(CORE_HEADERS) native/tests/test_wave_flow.cpp | $(BUILD_DIR)
-	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=thread $(SIMULATION_SOURCES) native/tests/test_wave_flow.cpp -o $@
+$(BUILD_DIR)/test_wave_flow_tsan: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_wave_flow.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=thread $(CORE_SOURCES) native/tests/test_wave_flow.cpp -o $@
+
+$(BUILD_DIR)/wave_mt_matrix: $(SIMULATION_SOURCES) $(CORE_HEADERS) native/bench/wave_mt_matrix.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O3 -DNDEBUG -pthread $(SIMULATION_SOURCES) native/bench/wave_mt_matrix.cpp -o $@
+
+wave-mt-matrix: $(BUILD_DIR)/wave_mt_matrix
 
 wave-flow-test: $(BUILD_DIR)/test_wave_flow
 	./$(BUILD_DIR)/test_wave_flow

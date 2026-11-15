@@ -6,6 +6,9 @@ func _ready() -> void:
 	# Keep existing direct-launch arguments compatible with the desktop wrapper.
 	var first_launch: bool = not get_tree().has_meta("cybersand_launch_args_consumed")
 	get_tree().set_meta("cybersand_launch_args_consumed", true)
+	if first_launch and "--wave-flow" in OS.get_cmdline_user_args():
+		launch.call_deferred("wave_flow")
+		return
 	if first_launch and "--materials-lab" in OS.get_cmdline_user_args():
 		launch.call_deferred("materials_lab")
 		return
@@ -58,6 +61,7 @@ func _ready() -> void:
 	_button(column, "Actor sandbox — 46 articulated Rapier rigs / F5", "actors")
 	_button(column, "Materials sandbox / Experiment Tower — F9", "sandbox")
 	_button(column, "Liquid comparison — solver policies and protected Dam Break", "liquid_comparison")
+	_button(column, "Wave Flow — experimental Water, waves, native workers and real Needle", "wave_flow")
 	_button(column, "Thunderbowl — actor control arena", "thunderbowl")
 	_button(column, "Physical Thunderbowl — articulated actors, tools and scripted pilots", "physical_actors")
 	_button(column, "Physical usable course — 32 tools, payloads and processors", "physical_usables")
@@ -87,6 +91,7 @@ func _button(parent: Node, text: String, destination: String) -> void:
 func launch(destination: String) -> void:
 	var scene: String = "res://main.tscn"
 	if destination == "materials_lab": scene = "res://materials_lab.tscn"
+	elif destination == "wave_flow": scene = "res://wave_flow_evaluation.tscn"
 	elif destination == "flight_lab": scene = "res://flight_lab.tscn"
 	elif destination == "thunderbowl": scene = "res://examples/thunderbowl/thunderbowl.tscn"
 	elif destination in ["physical_actors", "physical_usables"]: scene = "res://examples/thunderbowl/physical_thunderbowl.tscn"

@@ -2,13 +2,18 @@
 // strip-parallel Water law. Build targets: make wave-flow-test /
 // wave-flow-sanitize / wave-flow-thread-sanitize.
 #include "cybersand/world.hpp"
+#include "cybersand/c_api.h"
 
+#include <algorithm>
+#include <array>
 #include <cmath>
 #include <cstdint>
 #include <cstdio>
 #include <exception>
 #include <functional>
+#include <limits>
 #include <memory>
+#include <random>
 #include <span>
 #include <stdexcept>
 #include <string>
@@ -87,8 +92,11 @@ void disabled_is_default_and_unsupported_is_refused() {
     expect_refusal([](WorldConfig& c) { c.wave_flow.substeps = 0; }, "zero substeps");
     expect_refusal([](WorldConfig& c) { c.wave_flow.substeps = 9; }, "nine substeps");
     expect_refusal([](WorldConfig& c) { c.backend = SimulationBackend::SerialInPlace; }, "serial backend");
+    expect_refusal([](WorldConfig& c) { c.backend = SimulationBackend::Buffered; }, "buffered backend");
     expect_refusal([](WorldConfig& c) { c.water_experiment_policy = WaterExperimentPolicy(6, 0); }, "6-bit mass");
     expect_refusal([](WorldConfig& c) { c.settled_discovery_enabled = true; }, "settled discovery");
+    expect_refusal([](WorldConfig& c) { c.ballistic_water.enabled = true; }, "ballistic Water");
+    expect_refusal([](WorldConfig& c) { c.transport_policy.configured = true; }, "custom cellular transport");
     expect_refusal([](WorldConfig& c) {
         auto words = LiquidSolverPolicy::default_request();
         words[21] = 2; // Water on whole-cell cellular_yield_v1
@@ -104,6 +112,25 @@ void disabled_is_default_and_unsupported_is_refused() {
         refused = true;
     }
     require(refused, "wave_flow physical-state save was not refused");
+
+    // Refusal must also cover loading a legacy image with a Wave execution
+    // request. Otherwise the loader can silently discard the requested law.
+    const auto legacy_image = ordinary.save_physical_state();
+    refused = false;
+    try {
+        (void)World::restore_physical_state(config(), legacy_image);
+    } catch (const std::invalid_argument&) {
+        refused = true;
+    }
+    require(refused, "legacy physical-state load silently accepted Wave execution");
+    refused = false;
+    try {
+        (void)wave.set_cell_state(4, 4, Material::Water, 255, 1);
+    } catch (const std::invalid_argument&) {
+        refused = true;
+    }
+    require(refused && wave.stored_material(4, 4) == Material::Empty,
+            "unsupported coherence state was not rejected before mutation");
 }
 
 void dam_break_conserves_and_spreads() {
@@ -152,6 +179,8 @@ void worker_counts_are_cell_identical() {
                             reference->stored_state_a(x, y) == other->stored_state_a(x, y),
                         "wave_flow result depends on the worker count (" + std::to_string(workers) + ")");
         require(reference->state_hash() == other->state_hash(), "state hash depends on the worker count");
+        require(reference->physical_state_hash() == other->physical_state_hash(),
+                "complete Wave state depends on the worker count");
     }
 }
 
@@ -293,6 +322,23 @@ void other_materials_still_interact() {
     check_well_formed(world, n, n, "sand");
 }
 
+void documented_water_owned_chemistry_is_disabled() {
+    // BareIron's contact rule is owned by the Water per-cell kernel. Wave's
+    // experimental limitation is explicit: it must not intermittently run that
+    // kernel (and therefore depend on activity scheduling or worker count).
+    for (const auto workers : {1U, 4U}) {
+        World world(config(workers));
+        rect(world, 0, 0, 8, 8, Material::Wall);
+        world.set(3, 4, Material::Water);
+        world.set(4, 4, Material::BareIron);
+        for (int t = 0; t < 300; ++t) (void)world.tick();
+        require(world.stored_material(4, 4) == Material::BareIron,
+                "Wave unexpectedly executed unsupported Water-owned corrosion");
+        require(world.water_quantity({0, 0, 8, 8}) == 255U,
+                "disabled Water-owned chemistry consumed Water");
+    }
+}
+
 // Spreading changes how many cells hold Water; the native quantity ledger must
 // follow, or a later erase or reaction underflows it.
 void ledger_population_follows_spreading() {
@@ -328,12 +374,421 @@ void chunk_capacity_is_an_explicit_outcome() {
     for (int tick = 0; tick < 300; ++tick) (void)world.tick();
     require(!world.has_failed(), "chunk capacity failed the World");
     require(world.chunk_count() <= 2U, "wave_flow exceeded the chunk capacity");
+    require(world.wave_flow_diagnostics().capacity_refusals > 0U,
+            "chunk capacity exhaustion had no explicit diagnostic outcome");
     require(world.water_quantity({-256, -256, 768, 768}) == before, "capacity limit changed the Water quantity");
+}
+
+void tiny_drops_cross_sleep_and_chunk_boundaries() {
+    // One, two and three mass units must fall farther than kSleepAfter, through
+    // previously dormant chunks. This catches the original peak>=2 sleep bug.
+    for (const auto workers : {1U, 4U}) {
+        World world(config(workers));
+        const int width = 132, height = 520;
+        box(world, width, height);
+        for (const int x : {63, 127}) {
+            rect(world, x - 1, 1, 1, height - 2, Material::Wall);
+            rect(world, x + 1, 1, 1, height - 2, Material::Wall);
+        }
+        for (int t = 0; t < 60; ++t) (void)world.tick();
+        require(world.wave_flow_diagnostics().last_solved_chunks == 0,
+                "empty shafts did not become dormant");
+        require(world.set_cell_state(63, 4, Material::Water, 1, 0), "one-unit drop refused");
+        require(world.set_cell_state(127, 9, Material::Water, 2, 0), "two-unit drop refused");
+        require(world.set_cell_state(63, 20, Material::Water, 3, 0), "three-unit drop refused");
+        for (int t = 0; t < 600; ++t) {
+            (void)world.tick();
+            require(world.water_quantity({0, 0, width, height}) == 6U,
+                    "tiny drops lost mass while crossing a dormant boundary");
+        }
+        require(world.stored_state_a(63, height - 2) == 4U &&
+                    world.stored_state_a(127, height - 2) == 2U,
+                "tiny drop stopped before reaching the bottom of its shaft");
+        require(world.wave_flow_diagnostics().last_solved_chunks == 0,
+                "settled tiny drops did not return to sleep");
+    }
+}
+
+void erasing_support_reactivates_a_dormant_film() {
+    World world(config());
+    const int width = 132, height = 270;
+    box(world, width, height);
+    rect(world, 126, 1, 1, height - 2, Material::Wall);
+    rect(world, 128, 1, 1, height - 2, Material::Wall);
+    world.set(127, 128, Material::Wall);
+    require(world.set_cell_state(127, 127, Material::Water, 1, 0), "film seed refused");
+    for (int t = 0; t < 80; ++t) (void)world.tick();
+    require(world.stored_state_a(127, 127) == 1U, "supported film moved");
+    require(world.wave_flow_diagnostics().last_solved_chunks == 0, "supported film did not sleep");
+    world.set(127, 128, Material::Empty);
+    for (int t = 0; t < height; ++t) (void)world.tick();
+    require(world.stored_state_a(127, height - 2) == 1U,
+            "removing support across a chunk seam did not wake the film");
+    require(world.water_quantity({0, 0, width, height}) == 1U,
+            "reactivated film changed quantity");
+}
+
+void region_pause_freezes_cells_and_reentry_resumes() {
+    for (const auto workers : {1U, 4U}) {
+        World world(config(workers, 2));
+        const int width = 256, height = 192;
+        box(world, width, height);
+        rect(world, 30, 20, 30, 30, Material::Water);
+        rect(world, 120, 20, 30, 30, Material::Water); // straddles selection edge
+        rect(world, 190, 20, 30, 30, Material::Water);
+        world.set_simulation_region(RectI64{0, 0, 128, height});
+        const auto before = world.water_quantity({0, 0, width, height});
+        const auto paused_quantity = world.water_quantity({128, 0, 128, height});
+        std::vector<std::uint16_t> paused;
+        for (int y = 0; y < height; ++y)
+            for (int x = 128; x < width; ++x) paused.push_back(world.stored_state_a(x, y));
+        for (int t = 0; t < 100; ++t) (void)world.tick();
+        require(world.water_quantity({0, 0, width, height}) == before, "region boundary lost quantity");
+        require(world.water_quantity({128, 0, 128, height}) == paused_quantity,
+                "Water crossed the paused-region boundary");
+        std::size_t at = 0;
+        for (int y = 0; y < height; ++y)
+            for (int x = 128; x < width; ++x)
+                require(world.stored_state_a(x, y) == paused[at++], "paused cell changed");
+        require(world.water_quantity({1, 100, 126, 90}) > 0U, "selected region did not advance");
+        world.set_simulation_region(std::nullopt);
+        for (int t = 0; t < 150; ++t) (void)world.tick();
+        require(world.water_quantity({0, 0, width, height}) == before, "region reentry lost quantity");
+        require(world.water_quantity({190, 20, 30, 30}) == 0U, "re-entered Water stayed frozen");
+    }
+}
+
+void fixed_seed_edits_masks_and_seams_conserve() {
+    // Reproduction seed is fixed and printed in the failure prefix. All edits
+    // are independently booked from stored cells, not from the quantity ledger.
+    constexpr std::uint32_t seed = 0x6185A17U;
+    const int left = -128, top = -64, width = 384, height = 256;
+    const RectI64 all{left, top, width, height};
+    const auto run = [&](std::uint32_t workers) {
+        auto world = std::make_unique<World>(config(workers, 3));
+        rect(*world, left, top, width, 1, Material::Wall);
+        rect(*world, left, top + height - 1, width, 1, Material::Wall);
+        rect(*world, left, top, 1, height, Material::Wall);
+        rect(*world, left + width - 1, top, 1, height, Material::Wall);
+        world->configure_transient_obstacles(all);
+        std::mt19937 random(seed);
+        std::uint64_t expected = 0;
+        constexpr std::array<int, 12> seams{-65, -64, -1, 0, 63, 64, 127, 128, 191, 192, 62, 129};
+        for (int t = 0; t < 240; ++t) {
+            world->clear_transient_obstacles();
+            if (t % 7 != 0) {
+                const int mx = 54 + (t % 82), my = 74 + (t % 29);
+                for (int y = my; y < my + 8; ++y)
+                    for (int x = mx; x < mx + 12; ++x) (void)world->set_transient_obstacle(x, y, 1);
+            }
+            for (int edit = 0; edit < 6; ++edit) {
+                const int x = seams[random() % seams.size()];
+                const int y = top + 1 + static_cast<int>(random() % static_cast<unsigned>(height - 2));
+                const auto before = world->water_quantity({x, y, 1, 1});
+                const auto choice = random() % 5U;
+                if (choice < 3U) {
+                    const auto units = static_cast<std::uint16_t>(1U + random() % 255U);
+                    (void)world->set_cell_state(x, y, Material::Water, units, 0);
+                } else {
+                    world->set(x, y, choice == 3U ? Material::Empty : Material::Wall);
+                }
+                const auto after = world->water_quantity({x, y, 1, 1});
+                require(expected >= before, "seed 0x6185A17 external edit book underflow");
+                expected = expected - before + after;
+            }
+            (void)world->tick();
+            require(!world->has_failed(), "seed 0x6185A17 World quarantined");
+            require(world->water_quantity(all) == expected,
+                    "seed 0x6185A17 seam/mask/edit quantity mismatch at tick " + std::to_string(t));
+            const auto ledger = world->quantity_ledger();
+            require(ledger.water_visible + ledger.water_overfill == expected,
+                    "seed 0x6185A17 ledger total mismatch");
+            if (t % 20 == 0) {
+                std::uint64_t population = 0;
+                for (int y = top; y < top + height; ++y)
+                    for (int x = left; x < left + width; ++x)
+                        if (world->stored_material(x, y) == Material::Water) {
+                            require(world->stored_state_a(x, y) > 0U, "seed 0x6185A17 zero-mass Water");
+                            ++population;
+                        }
+                require(ledger.material_cells[static_cast<std::size_t>(Material::Water)] == population,
+                        "seed 0x6185A17 Water population mismatch");
+            }
+        }
+        world->clear_transient_obstacles();
+        return world;
+    };
+    const auto reference = run(1);
+    for (const auto workers : {2U, 4U, 6U}) {
+        const auto concurrent = run(workers);
+        require(reference->physical_state_hash() == concurrent->physical_state_hash(),
+                "seed 0x6185A17 complete state depends on worker count " + std::to_string(workers));
+        require(reference->quantity_ledger() == concurrent->quantity_ledger(),
+                "seed 0x6185A17 ledger depends on worker count");
+    }
+}
+
+void physical_identity_names_wave_and_substeps() {
+    World ordinary{WorldConfig{}};
+    World one(config(1, 1)), three(config(1, 3));
+    require(ordinary.physical_state_hash_version() != one.physical_state_hash_version(),
+            "Wave reused the legacy complete-state identity version");
+    require(one.physical_state_hash() != ordinary.physical_state_hash(),
+            "complete-state identity omitted Wave selection");
+    require(one.physical_state_hash() != three.physical_state_hash(),
+            "complete-state identity omitted Wave substeps");
+    require(one.physical_state_format_version() == 0U,
+            "unsupported Wave save advertised a legacy wire format");
+}
+
+void paused_flux_is_retained_and_edits_retire_faces() {
+    World world(config(4));
+    const int width = 256, height = 128;
+    box(world, width, height);
+    rect(world, 1, 80, width - 2, 47, Material::Water);
+    rect(world, 48, 64, 32, 16, Material::Water);
+    for (int t = 0; t < 5; ++t) (void)world.tick();
+    struct Sample { Material material; std::uint16_t mass; std::int32_t flux; };
+    std::vector<Sample> before;
+    int witness_x = -1, witness_y = -1;
+    for (int y = 0; y < height; ++y)
+        for (int x = 0; x < width; ++x) {
+            const auto flux = world.wave_flow_flux(x, y);
+            before.push_back({world.stored_material(x, y), world.stored_state_a(x, y), flux});
+            if (flux != 0 && witness_x < 0) { witness_x = x; witness_y = y; }
+        }
+    require(witness_x >= 0, "paused-flux fixture generated no moving face");
+    const auto quantity = world.water_quantity({0, 0, width, height});
+    world.set_simulation_region(RectI64{1024, 1024, 64, 64});
+    for (int t = 0; t < 70; ++t) (void)world.tick();
+    std::size_t at = 0;
+    for (int y = 0; y < height; ++y)
+        for (int x = 0; x < width; ++x) {
+            const auto& sample = before[at++];
+            require(world.stored_material(x, y) == sample.material && world.stored_state_a(x, y) == sample.mass &&
+                        world.wave_flow_flux(x, y) == sample.flux,
+                    "paused Wave state decayed or moved");
+        }
+    const auto retired = world.water_quantity({witness_x, witness_y, 1, 1});
+    world.set(witness_x, witness_y, Material::Wall);
+    require(world.wave_flow_flux(witness_x, witness_y) == 0 &&
+                world.wave_flow_flux(witness_x - 1, witness_y) == 0,
+            "material edit retained flux through an invalid face");
+    world.set_simulation_region(std::nullopt);
+    for (int t = 0; t < 60; ++t) (void)world.tick();
+    require(world.water_quantity({0, 0, width, height}) == quantity - retired,
+            "resuming after a paused material edit changed unbooked Water");
+}
+
+void region_boundary_flux_freezes_while_source_falls() {
+    for (const int seam : {63, 127}) {
+        World world(config(4));
+        const int width = 192, height = 192;
+        box(world, width, height);
+        require(world.set_cell_state(seam, 20, Material::Water, 192, 0), "boundary source refused");
+        require(world.set_cell_state(seam + 1, 20, Material::Water, 64, 0), "boundary receiver refused");
+        (void)world.tick();
+        const auto flux = world.wave_flow_flux(seam, 21);
+        const auto receiver = world.stored_state_a(seam + 1, 21);
+        const auto quantity = world.water_quantity({0, 0, width, height});
+        require(flux != 0 && receiver != 0U, "partial-region fixture generated no boundary flux");
+        world.set_simulation_region(RectI64{0, 0, seam + 1, height});
+        for (int t = 0; t < 60; ++t) {
+            (void)world.tick();
+            require(world.wave_flow_flux(seam, 21) == flux,
+                    "falling included source erased a paused boundary face");
+            require(world.stored_state_a(seam + 1, 21) == receiver,
+                    "included source changed a paused receiver");
+            require(world.water_quantity({0, 0, width, height}) == quantity,
+                    "partially paused falling pair lost Water");
+        }
+        require(world.stored_state_a(seam, 21) == 0U,
+                "included source did not drain while its receiver was paused");
+        world.set_simulation_region(std::nullopt);
+        (void)world.tick();
+        require(world.stored_state_a(seam + 1, 21) == 0U,
+                "paused boundary receiver did not resume falling");
+        require(world.water_quantity({0, 0, width, height}) == quantity,
+                "boundary-face reentry lost Water");
+    }
+}
+
+void c_api_construction_and_overfill_are_lossless() {
+    auto cfg = cybersand_default_config_v2();
+    cfg.worker_threads = 4;
+    cfg.parallel_job_threshold = 2;
+    cybersand_wave_flow_config_v1 request{
+        sizeof(cybersand_wave_flow_config_v1), CYBERSAND_WAVE_FLOW_CONFIG_V1_ABI_VERSION, 1, 3};
+    cybersand_liquid_policy_refusal_v1 refusal{};
+    refusal.struct_size = sizeof(refusal);
+    const auto create = [&](const cybersand_wave_flow_config_v1& value) {
+        return std::unique_ptr<cybersand_world, decltype(&cybersand_world_destroy)>(
+            cybersand_world_create_with_wave_flow_v1(&cfg, &value, &refusal), &cybersand_world_destroy);
+    };
+    for (const int bad : {0, 1, 2, 3}) {
+        auto invalid = request;
+        if (bad == 0) invalid.struct_size = 1;
+        if (bad == 1) invalid.abi_version = 99;
+        if (bad == 2) invalid.enabled = 2;
+        if (bad == 3) invalid.substeps = 0;
+        const auto rejected = create(invalid);
+        require(rejected == nullptr && refusal.code != CYBERSAND_LIQUID_POLICY_ACCEPTED,
+                "C API accepted malformed Wave construction");
+    }
+    auto world = create(request);
+    require(world != nullptr && refusal.code == CYBERSAND_LIQUID_POLICY_ACCEPTED,
+            "C API rejected supported Wave construction");
+    const auto paint = [&](int x, int y, int width, int height, Material material) {
+        for (int yy = y; yy < y + height; ++yy)
+            for (int xx = x; xx < x + width; ++xx)
+                require(cybersand_world_set_v2(world.get(), xx, yy, static_cast<std::uint16_t>(material)) != 0,
+                        "C API fixture paint failed");
+    };
+    const int width = 160, height = 160;
+    paint(0, 0, width, 1, Material::Wall);
+    paint(0, height - 1, width, 1, Material::Wall);
+    paint(0, 0, 1, height, Material::Wall);
+    paint(width - 1, 0, 1, height, Material::Wall);
+    paint(50, 1, 60, height - 5, Material::Wall);
+    paint(1, 40, 49, height - 41, Material::Water);
+    paint(50, height - 4, 60, 3, Material::Water);
+    paint(110, 120, width - 111, height - 121, Material::Water);
+    const auto expected = (49U * 119U + 60U * 3U + 49U * 39U) * 255U;
+    bool overfilled = false;
+    for (int t = 0; t < 300; ++t) {
+        cybersand_tick_stats_v2 stats{};
+        require(cybersand_world_tick_v2(world.get(), &stats) != 0, "C API Wave tick failed");
+        if (t % 20 != 0 && t != 299) continue;
+        std::uint64_t total = 0;
+        for (int y = 0; y < height; ++y)
+            for (int x = 0; x < width; ++x) {
+                const auto wide = cybersand_world_liquid_mass_v2(world.get(), x, y);
+                const auto legacy = cybersand_world_liquid_mass(world.get(), x, y);
+                total += wide;
+                require(legacy == std::min<std::uint16_t>(wide, 255U),
+                        "legacy C API wrapped instead of saturating Water mass");
+                overfilled = overfilled || wide > 255U;
+            }
+        require(total == expected, "wide C API did not retain all sealed-passage Water");
+    }
+    require(overfilled, "C API overfill regression never produced overfill");
+    require(cybersand_world_liquid_mass_v2(nullptr, 0, 0) == 0U,
+            "wide C API null-world contract changed");
+}
+
+void extreme_legal_overfill_conserves_and_remains_editable() {
+    for (const auto workers : {1U, 4U}) {
+        World world(config(workers, 8));
+        // A sealed three-cell stack starts with far more than one uint16 top
+        // cell can retain. The column pass must distribute the retained excess
+        // without wrapping, clamping it away, or quarantining a legal state.
+        rect(world, 59, 59, 12, 8, Material::Wall);
+        require(world.set_cell_state(60, 60, Material::Water, 65535, 0), "upper overfill seed refused");
+        require(world.set_cell_state(60, 61, Material::Water, 65535, 0), "middle overfill seed refused");
+        require(world.set_cell_state(60, 62, Material::Water, 32000, 0), "lower overfill seed refused");
+        // Opposing high heads feed receivers across the x=64 worker strip.
+        for (int x = 61; x <= 69; ++x)
+            require(world.set_cell_state(x, 62, Material::Water,
+                        static_cast<std::uint16_t>(x % 2 == 0 ? 65535 : 1), 0), "lateral overfill seed refused");
+        const auto expected = world.water_quantity({59, 59, 12, 8});
+        for (int t = 0; t < 1100; ++t) {
+            (void)world.tick();
+            require(!world.has_failed(), "legal extreme overfill quarantined the World");
+            require(world.water_quantity({59, 59, 12, 8}) == expected,
+                    "extreme sealed overfill lost or created Water");
+        }
+        const auto ledger = world.quantity_ledger();
+        require(ledger.water_visible + ledger.water_overfill == expected,
+                "extreme overfill ledger mismatch");
+        std::int64_t edit_x = -1, edit_y = -1;
+        for (int y = 60; y <= 62; ++y)
+            for (int x = 60; x <= 69; ++x)
+                if (world.stored_material(x, y) == Material::Water && world.stored_state_a(x, y) > 256U) {
+                    edit_x = x; edit_y = y;
+                }
+        require(edit_x >= 0, "extreme overfill fixture stopped holding overfilled cells");
+        const auto mass = world.stored_state_a(edit_x, edit_y);
+        require(world.set_cell_state(edit_x, edit_y, Material::Water, static_cast<std::uint16_t>(mass - 1U), 0),
+                "metered removal from overfilled Water was refused");
+        require(world.water_quantity({59, 59, 12, 8}) == expected - 1U,
+                "metered overfill removal did not remove exactly one unit");
+        (void)world.tick();
+        require(world.water_quantity({59, 59, 12, 8}) == expected - 1U,
+                "overfill edit damaged subsequent continuation");
+    }
+    World legacy{WorldConfig{}};
+    bool refused = false;
+    try { (void)legacy.set_cell_state(0, 0, Material::Water, 256, 0); }
+    catch (const std::invalid_argument&) { refused = true; }
+    require(refused && legacy.chunk_count() == 0U, "Wave overfill admission changed default Water edits");
+}
+
+void coordinate_extrema_refuse_before_mutation() {
+    World world(config());
+    const auto hash = world.physical_state_hash();
+    for (const auto coordinate : {std::numeric_limits<std::int64_t>::min(),
+                                  std::numeric_limits<std::int64_t>::max()}) {
+        for (const bool vertical : {false, true}) {
+            bool refused = false;
+            try { world.set(vertical ? 0 : coordinate, vertical ? coordinate : 0, Material::Water); }
+            catch (const std::overflow_error&) { refused = true; }
+            require(refused, "Wave accepted a coordinate without arithmetic halo headroom");
+            require(world.chunk_count() == 0U && world.physical_state_hash() == hash,
+                    "coordinate-fringe refusal mutated the World");
+        }
+    }
+    // A very distant but valid sparse coordinate remains usable in both signs.
+    for (const std::int64_t offset : {-1'000'000'000'000LL, 1'000'000'000'000LL}) {
+        World far(config(1));
+        require(far.set_cell_state(offset, offset, Material::Water, 1, 0), "valid distant drop refused");
+        for (int t = 0; t < 70; ++t) (void)far.tick();
+        require(far.water_quantity({offset - 2, offset, 5, 80}) == 1U,
+                "distant sparse drop changed quantity");
+        require(far.stored_state_a(offset, offset + 70) == 1U,
+                "distant sparse drop did not descend at one cell per round");
+    }
+}
+
+void tall_extreme_column_preserves_head_sign() {
+    auto cfg = config(1);
+    cfg.chunk_size = 8;
+    cfg.activity_block_size = 8;
+    cfg.scheduling_core_size = 8;
+    cfg.maximum_chunk_count = 4300;
+    cfg.active_chunk_capacity = 4300;
+    cfg.active_core_capacity = 5000;
+    World world(cfg);
+    constexpr int height = 33024;
+    rect(world, 1, 0, 1, height, Material::Wall);
+    rect(world, 3, 0, 1, height, Material::Wall);
+    world.set(2, 0, Material::Wall);
+    world.set(2, height - 1, Material::Wall);
+    for (int y = 1; y < height - 1; ++y)
+        require(world.set_cell_state(2, y, Material::Water, 65535, 0), "tall overfill seed refused");
+    // Its positive physical head exceeds a signed 32-bit accumulator. An
+    // overflow would reverse the head and prevent discharge into this Empty
+    // receiver. The solver must bound the head without changing mass.
+    world.set(3, height - 2, Material::Empty);
+    world.set(4, height - 2, Material::Wall);
+    world.set(3, height - 1, Material::Wall);
+    const auto expected = static_cast<std::uint64_t>(height - 2) * 65535U;
+    (void)world.tick();
+    require(world.water_quantity({0, 0, 8, height}) == expected,
+            "tall extreme column lost Water");
+    require(world.stored_state_a(3, height - 2) > 0U,
+            "tall positive head overflowed or failed to discharge");
+    require(!world.has_failed(), "tall legal column quarantined the World");
 }
 
 }  // namespace
 
-int main() {
+int main(int argc, char** argv) {
+    std::string filter;
+    if (argc == 3 && std::string(argv[1]) == "--filter") filter = argv[2];
+    else if (argc != 1) {
+        std::fprintf(stderr, "usage: test_wave_flow [--filter name-substring]\n");
+        return 2;
+    }
     struct Test {
         const char* name;
         void (*function)();
@@ -347,19 +802,39 @@ int main() {
         {"sealed passage equalises", sealed_passage_equalises},
         {"bodies block water and receive contacts", bodies_block_water_and_receive_contacts},
         {"other materials still interact", other_materials_still_interact},
+        {"documented Water-owned chemistry is disabled", documented_water_owned_chemistry_is_disabled},
         {"ledger population follows spreading", ledger_population_follows_spreading},
         {"chunk capacity is an explicit outcome", chunk_capacity_is_an_explicit_outcome},
+        {"tiny drops cross sleep and chunk boundaries", tiny_drops_cross_sleep_and_chunk_boundaries},
+        {"erasing support reactivates a dormant film", erasing_support_reactivates_a_dormant_film},
+        {"region pause freezes cells and reentry resumes", region_pause_freezes_cells_and_reentry_resumes},
+        {"fixed-seed edits masks and seams conserve", fixed_seed_edits_masks_and_seams_conserve},
+        {"physical identity names Wave and substeps", physical_identity_names_wave_and_substeps},
+        {"paused flux is retained and edits retire faces", paused_flux_is_retained_and_edits_retire_faces},
+        {"region boundary flux freezes while source falls", region_boundary_flux_freezes_while_source_falls},
+        {"C API construction and overfill are lossless", c_api_construction_and_overfill_are_lossless},
+        {"extreme legal overfill conserves and remains editable", extreme_legal_overfill_conserves_and_remains_editable},
+        {"coordinate extrema refuse before mutation", coordinate_extrema_refuse_before_mutation},
+        {"tall extreme column preserves head sign", tall_extreme_column_preserves_head_sign},
     };
-    int failures = 0;
+    int failures = 0, executed = 0;
     for (const auto& test : tests) {
+        if (!filter.empty() && std::string(test.name).find(filter) == std::string::npos) continue;
+        ++executed;
         try {
             test.function();
             std::printf("PASS %s\n", test.name);
+            std::fflush(stdout);
         } catch (const std::exception& error) {
             ++failures;
             std::printf("FAIL %s: %s\n", test.name, error.what());
+            std::fflush(stdout);
         }
     }
-    std::printf("WAVE_FLOW: %d tests; %d failures\n", static_cast<int>(std::size(tests)), failures);
+    if (executed == 0) {
+        std::fprintf(stderr, "No Wave Flow tests matched the filter.\n");
+        return 2;
+    }
+    std::printf("WAVE_FLOW: %d tests; %d failures (%zu registered)\n", executed, failures, std::size(tests));
     return failures == 0 ? 0 : 1;
 }

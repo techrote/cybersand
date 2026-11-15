@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-15",
+  "purpose": "PR 618 current contract and evaluation routes; lexical retrieval is not runtime qualification.",
+  "questions": [
+    {
+      "id": "WAVE01",
+      "query": "How does Wave Flow retain face flux, conserve Water and parallelize without a pressure solve?",
+      "canonical": ["architecture/wave-flow-v1.md"],
+      "facts": ["Opt-in Water override with conserved fractional mass and retained horizontal flux.", "Disjoint strips and explicit pool barriers; production default unchanged."],
+      "sources": ["../native/src/world_wave.inc", "../native/include/cybersand/wave_flow.hpp"]
+    },
+    {
+      "id": "WAVE02",
+      "query": "How do I launch the Windows Wave Flow evaluation, select solver workers substeps and fly the real Needle?",
+      "canonical": ["operations/wave-flow-evaluation.md"],
+      "facts": ["Test It.cmd and the feature launcher enter the actual native evaluator.", "Controls reconstruct the selected native law; the authored Needle uses the actual Rapier bridge.", "Automated Windows execution does not establish human or physical GPU acceptance."],
+      "sources": ["../godot/scripts/wave_flow_evaluation.gd", "../godot/scripts/wave_flow_session.gd"]
+    },
+    {
+      "id": "WAVE03",
+      "query": "Can Wave Flow save or restore complete physical state, and does mass readback wrap above 255?",
+      "canonical": ["architecture/wave-flow-v1.md", "operations/wave-flow-evaluation.md"],
+      "facts": ["Physical save and restore explicitly refuse; complete hash6 includes retained flux.", "The compatible uint8 accessor saturates while versioned uint16 mass preserves overfill."],
+      "sources": ["../native/src/world_pressure.inc", "../native/src/c_api.cpp"]
+    }
+  ]
+}

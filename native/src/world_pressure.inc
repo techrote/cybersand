@@ -2270,6 +2270,26 @@ std::uint64_t World::physical_state_hash_impl(std::optional<LiquidStateProjectio
     std::sort(coordinates.begin(), coordinates.end());
     for (const auto coord : coordinates) {
         const auto* chunk = find_chunk(coord);
+        if (wave_ != nullptr) {
+            // Wave v6 binds its actual continuation, including previous full
+            // support, sparse eligibility and retained flux. Diagnostics and
+            // allocation capacities never enter this stream. Unlike legacy
+            // hashes, the experimental domain intentionally binds resident
+            // wave chunks because their paused/sleep state affects inclusion.
+            const auto& wave = *chunk->wave;
+            hash_integer(hash, std::uint8_t{0x57U});
+            hash_integer(hash, coord.x); hash_integer(hash, coord.y);
+            hash_integer(hash, wave.quiet);
+            hash_integer(hash, static_cast<std::uint8_t>(wave.woken));
+            for (const auto value : wave.clean) hash_integer(hash, static_cast<std::uint8_t>(value));
+            for (const auto value : wave.dry_reset) hash_integer(hash, static_cast<std::uint8_t>(value));
+            for (const auto value : wave.dry) hash_integer(hash, value);
+            for (std::size_t i = 0; i < wave.flux.size(); ++i) {
+                hash_integer(hash, wave.flux[i]);
+                hash_integer(hash, wave.weight[i]);
+                hash_integer(hash, wave.meta[i]);
+            }
+        }
         // Only non-default content enters the hash, so an allocated all-Empty,
         // inactive chunk is indistinguishable from an unallocated one.
         for (std::size_t index = 0; index < chunk->activity_blocks.size(); ++index) {
@@ -2331,6 +2351,11 @@ std::uint64_t World::physical_state_hash_impl(std::optional<LiquidStateProjectio
             hash_integer(hash, c.revision);
             hash_integer(hash, c.gauge);
         }
+    }
+    if (wave_ != nullptr) {
+        hash_integer(hash, WaveFlowParameters::kVersion);
+        hash_integer(hash, config_.wave_flow.substeps);
+        hash_integer(hash, wave_->round);
     }
     return hash;
 }
@@ -2584,6 +2609,8 @@ std::vector<std::uint8_t> World::save_physical_state() const {
 }
 
 std::unique_ptr<World> World::restore_physical_state(const WorldConfig& execution, std::span<const std::uint8_t> bytes) {
+    if (execution.wave_flow.enabled)
+        throw std::invalid_argument("wave_flow_v1 physical-state restore is not admitted");
     if (bytes.size() < 8U + 32U) refuse_state("payload is too short");
     const auto body = bytes.first(bytes.size() - 32U);
     const auto digest = Sha256::of(body);

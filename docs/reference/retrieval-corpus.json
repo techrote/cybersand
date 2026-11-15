@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewed": "2026-11-14",
+  "reviewed": "2026-11-15",
   "scope": "Explicit current-answer corpus; status and scope must accompany every chunk. Historical records are separately routed, never silently mixed into current answers.",
   "documents": [
     "operations/wb-art-paint-integrated-candidate.md",
@@ -25,6 +25,7 @@
     "architecture/pressure-flow-v1.md",
     "architecture/ballistic-water-v1.md",
     "architecture/wave-flow-v1.md",
+    "operations/wave-flow-evaluation.md",
     "architecture/inertial-cellular-v1.md",
     "architecture/simulation-tick-and-threading.md",
     "architecture/shared-workbench-authoring-data.md",
@@ -594,6 +595,10 @@
     {
       "path": "audits/2026-11-06-coupling-lockstep-feasibility.md",
       "reason": "Dated preregistered COUPLING-LOCKSTEP-001 feasibility evidence: async run-to-run races, opt-in lockstep same-host bit identity, Windows/Linux divergence sources and cost. Canonical current routing belongs to the determinism, threading, coupling and interface contracts."
+    },
+    {
+      "path": "audits/2026-11-15-wave-mt-001-completion.md",
+      "reason": "Dated PR #618 completion evidence: repaired native source, protected-source transitions, exact-source runtime publication, target-OS execution, Windows evaluation package, raw complete-tick benchmarks and independent acceptance. Retrieve current law and controls through the canonical Wave Flow contract and evaluation guide; pending or historical results never imply final-head qualification."
     },
     {
       "path": "audits/2026-11-15-wave-mt-001-wave-flow.md",

@@ -11,13 +11,19 @@
 // count. Chunks whose Water has been quiet stop being solved until woken.
 
 // Per-strip result of one tick for half of a chunk; reduced by the owner.
-struct alignas(64) World::WaveHalf {
+struct World::WaveHalf {
     std::int32_t min_x = 0, min_y = 0, max_x = -1, max_y = -1;
     std::int32_t peak = 0;
     std::int32_t non_empty_delta = 0;
     std::uint64_t moved = 0;
+    std::uint64_t changed = 0;
     std::uint32_t invalid = 0;
     std::uint32_t transitions = 0; // cells that became or stopped being Water
+    bool pending_flux = false;
+    // Separate neighbouring writers without over-aligning WaveChunk. C++17
+    // aligned allocation imports CXXABI_1.3.11, above the Linux runtime floor.
+    // A full cache line between counter sets works with ordinary allocation.
+    std::array<std::uint8_t, 64> separation{};
     void touch(std::int32_t x, std::int32_t y) noexcept {
         if (max_x < min_x) { min_x = max_x = x; min_y = max_y = y; return; }
         min_x = std::min(min_x, x); max_x = std::max(max_x, x);
@@ -40,12 +46,22 @@ struct World::WaveChunk {
     Chunk* right = nullptr;
     Chunk* above = nullptr;           // resident neighbour, solved or not
     Chunk* below = nullptr;
+    bool right_paused = false;
     std::uint32_t quiet = 0;
     bool woken = true;
     bool active = false;
     bool solve = false;
-    // A half that is entirely Empty with zeroed flux and derived state: its
-    // interior needs no work until something writes into it.
+    // Derived tick-local selected-core intersection, exclusive maxima.
+    std::int32_t min_x = 0, min_y = 0, max_x = 0, max_y = 0;
+    [[nodiscard]] bool included(std::int32_t x, std::int32_t y) const noexcept {
+        return x >= min_x && x < max_x && y >= min_y && y < max_y;
+    }
+    [[nodiscard]] bool right_face_paused(std::int32_t x, std::int32_t columns) const noexcept {
+        return x + 1 >= max_x && (max_x < columns || right_paused);
+    }
+    // A half that is entirely Empty with zeroed interior flux and derived
+    // state. A face at the selected-region boundary can retain paused flux.
+    // Its interior needs no work until something writes into it.
     std::array<bool, 2> clean{};
     // Per column: 0 unknown, 1 holds no Water (derived state is current),
     // 2 additionally holds nothing but Empty. A strip skips columns that are
@@ -79,6 +95,15 @@ struct World::WaveState {
 };
 
 namespace {
+
+[[nodiscard]] bool wave_chunk_coordinate_fits(ChunkCoord coord, std::int32_t size) noexcept {
+    // Keep a whole chunk of arithmetic headroom for neighbour/core halos.
+    // Explicitly refuse the extreme int64 fringe instead of wrapping it into
+    // a distant resident chunk when the moving front requests a neighbour.
+    const auto minimum = std::numeric_limits<std::int64_t>::min() / size + 1;
+    const auto maximum = (std::numeric_limits<std::int64_t>::max() - (size - 1)) / size - 1;
+    return coord.x >= minimum && coord.x <= maximum && coord.y >= minimum && coord.y <= maximum;
+}
 
 // Whole mass units moved through a face in one round. The sub-unit part of the
 // flux is resolved by a stateless per-face, per-round dither: the expected
@@ -114,9 +139,18 @@ void World::validate_wave_flow_config() const {
         throw std::invalid_argument("wave_flow does not support settled discovery");
     if (config_.ballistic_water.enabled)
         throw std::invalid_argument("wave_flow does not support ballistic_water_v1");
+    if (config_.transport_policy.configured)
+        throw std::invalid_argument("wave_flow does not support custom cellular transport policies");
 }
 
 bool World::wave_flow_enabled() const noexcept { return wave_ != nullptr; }
+
+std::int32_t World::wave_flow_flux(std::int64_t x, std::int64_t y) const noexcept {
+    if (wave_ == nullptr) return 0;
+    const auto at = address(x, y);
+    const auto* chunk = find_chunk(at.chunk);
+    return chunk == nullptr ? 0 : chunk->wave->flux[at.index];
+}
 
 WaveFlowDiagnostics World::wave_flow_diagnostics() const noexcept {
     if (wave_ == nullptr) return {};
@@ -126,12 +160,33 @@ WaveFlowDiagnostics World::wave_flow_diagnostics() const noexcept {
         if (chunk->wave == nullptr) continue;
         result.storage_bytes += chunk->wave->flux.capacity() * sizeof(std::int32_t) +
                                 chunk->wave->weight.capacity() * sizeof(std::int32_t) +
-                                chunk->wave->meta.capacity() + sizeof(WaveChunk);
+                                chunk->wave->meta.capacity() + chunk->wave->dry.capacity() + sizeof(WaveChunk);
     }
     for (const auto& scratch : wave_->scratch)
         result.storage_bytes += (scratch.mass.capacity() + scratch.weight.capacity()) * sizeof(std::int32_t) +
                                 scratch.flags.capacity();
+    result.storage_bytes += wave_->sorted.capacity() * sizeof(WaveState::Entry) +
+                            wave_->grow.capacity() * sizeof(ChunkCoord) +
+                            wave_->tasks.capacity() * sizeof(WaveState::Task) +
+                            wave_->scratch.capacity() * sizeof(WaveState::Scratch) + sizeof(WaveState);
     return result;
+}
+
+void World::reset_wave_cell(std::int64_t x, std::int64_t y) noexcept {
+    if (wave_ == nullptr) return;
+    const auto at = address(x, y);
+    if (auto* chunk = find_chunk(at.chunk); chunk != nullptr) {
+        chunk->wave->flux[at.index] = 0;
+        chunk->wave->weight[at.index] = 0;
+        chunk->wave->meta[at.index] = 0;
+        wake_wave_chunk(*chunk);
+    }
+    if (x == std::numeric_limits<std::int64_t>::min()) return;
+    const auto left = address(x - 1, y);
+    if (auto* chunk = find_chunk(left.chunk); chunk != nullptr) {
+        chunk->wave->flux[left.index] = 0;
+        wake_wave_chunk(*chunk);
+    }
 }
 
 void World::wake_wave_chunk(Chunk& chunk) noexcept {
@@ -169,7 +224,10 @@ void World::wave_column_task(std::size_t task_index) noexcept {
     bool skip[kMaximumGroup] = {}, empty[kMaximumGroup] = {};
     for (std::uint32_t c = 0; c < task.count && c < kMaximumGroup; ++c) {
         const auto base = static_cast<std::int32_t>(c) * size;
-        skip[c] = entries[c].chunk->wave->clean[task.half] && !(base < mask_last && base + size > mask_first);
+        const auto& wave = *entries[c].chunk->wave;
+        skip[c] = wave.clean[task.half] && wave.min_y == 0 && wave.max_y == size &&
+                  wave.min_x <= first_x && wave.max_x >= last_x &&
+                  !(base < mask_last && base + size > mask_first);
         empty[c] = true;
     }
 
@@ -181,6 +239,7 @@ void World::wave_column_task(std::size_t task_index) noexcept {
     }
 
     for (auto lx = first_x; lx < last_x; ++lx) {
+        if (lx < entries[0].chunk->wave->min_x || lx >= entries[0].chunk->wave->max_x) continue;
         const bool masked_column = mask_last > mask_first && origin_x + lx >= mask.x && origin_x + lx < mask.x + mask.width;
         if (!masked_column) {
             // A column that is dry in every chunk of the group cannot change:
@@ -188,7 +247,8 @@ void World::wave_column_task(std::size_t task_index) noexcept {
             // and both clear the mark.
             bool dry = true;
             for (std::uint32_t c = 0; c < task.count && dry; ++c)
-                dry = entries[c].chunk->wave->dry[static_cast<std::size_t>(lx)] != 0U;
+                dry = entries[c].chunk->wave->min_y == 0 && entries[c].chunk->wave->max_y == size &&
+                      entries[c].chunk->wave->dry[static_cast<std::size_t>(lx)] != 0U;
             if (dry) {
                 for (std::uint32_t c = 0; c < task.count && c < kMaximumGroup; ++c)
                     if (entries[c].chunk->wave->dry[static_cast<std::size_t>(lx)] != 2U) empty[c] = false;
@@ -211,6 +271,11 @@ void World::wave_column_task(std::size_t task_index) noexcept {
             for (std::int32_t ly = 0; ly < size; ++ly) {
                 const auto& cell = cells[static_cast<std::size_t>(ly) * static_cast<std::size_t>(size)];
                 const auto material = cell.material_value();
+                if (!chunk.wave->included(lx, ly)) {
+                    mass[base + ly] = -1;
+                    flags[base + ly] = 0;
+                    continue;
+                }
                 mass[base + ly] = material == Material::Water ? static_cast<std::int32_t>(cell.state_a_value())
                                   : material == Material::Empty ? 0 : -1;
                 flags[base + ly] = meta[static_cast<std::size_t>(ly) * static_cast<std::size_t>(size)] & WaveChunk::kFull;
@@ -233,40 +298,61 @@ void World::wave_column_task(std::size_t task_index) noexcept {
         // distance limit, so a hydrostatic stack never splits. Loose liquid
         // above anything else falls one cell per round. Excess is carried up
         // to the surface, or stays as overfill under a solid ceiling.
-        std::int32_t dst = -1, carry = 0;
+        std::int32_t dst = -1, segment_bottom = rows - 1;
+        std::int64_t carry = 0;
         bool chain = false;
+        // Usually overfill fits in the top cell. At extreme legal volumes it
+        // is spread down the same sealed segment, never wrapped or discarded.
+        // The segment originally held this quantity in uint16 cells, so it
+        // necessarily has room when every lateral receiver is bounded too.
+        const auto retain_overfill = [&](std::int32_t first, std::int32_t last) {
+            for (auto row = first; row <= last && carry != 0; ++row) {
+                const auto added = std::min(carry, std::int64_t{65535} - mass[row]);
+                mass[row] += static_cast<std::int32_t>(added);
+                carry -= added;
+            }
+            if (carry != 0) {
+                ++entries[0].chunk->wave->half[task.half].invalid;
+                carry = 0;
+            }
+        };
         for (auto r = rows - 1; r >= 0; --r) {
             if (mass[r] < 0) {
-                if (carry != 0) { mass[r + 1] += carry; carry = 0; }
+                retain_overfill(r + 1, segment_bottom);
+                segment_bottom = r - 1;
                 dst = -1;
                 chain = false;
                 continue;
             }
-            mass[r] += carry;
+            auto amount = static_cast<std::int64_t>(mass[r]) + carry;
             carry = 0;
-            if (mass[r] == 0) { dst = r; chain = false; continue; }
+            if (amount == 0) { dst = r; chain = false; continue; }
             if (dst > r && !chain) dst = r + 1;
-            while (dst > r && mass[r] > 0) {
+            while (dst > r && amount > 0) {
                 const auto room = maximum - mass[dst];
                 if (room <= 0) { --dst; continue; }
-                const auto moved = std::min(mass[r], room);
+                const auto moved = static_cast<std::int32_t>(std::min(amount, static_cast<std::int64_t>(room)));
                 mass[dst] += moved;
-                mass[r] -= moved;
+                amount -= moved;
             }
-            if (mass[r] > maximum) { carry = mass[r] - maximum; mass[r] = maximum; }
+            mass[r] = static_cast<std::int32_t>(std::min(amount, static_cast<std::int64_t>(maximum)));
+            carry = amount - mass[r];
             chain = flags[r] != 0U;
             if (dst <= r || mass[dst] >= maximum) dst = mass[r] < maximum ? r : -1;
         }
-        if (carry != 0) mass[0] += carry; // the group's top row: nothing solved above it
+        retain_overfill(0, segment_bottom);
 
         // Heads, top-down. The head of a wet cell is the weight of the liquid
         // resting on its floor: its own mass, plus what the cell above carries
         // if this cell is full. A unit moved sideways at a row then changes
         // potential energy by exactly the head difference for any stack of
         // full, thin or falling cells, so retained flux cannot gain energy.
-        std::int32_t carried = 0, index = 0;
+        // Accumulate in a wider temporary even though stored heads are bounded:
+        // long legal uint16 stacks must never overflow before saturation.
+        std::int64_t carried = 0;
+        std::int32_t index = 0;
         bool confined = false;
-        if (above != nullptr) {
+        if (above != nullptr && above->wave->included(lx, size - 1)) {
             const auto bottom = static_cast<std::size_t>(size - 1) * static_cast<std::size_t>(size) +
                                 static_cast<std::size_t>(lx);
             const auto meta = above->wave->meta[bottom];
@@ -291,17 +377,19 @@ void World::wave_column_task(std::size_t task_index) noexcept {
                     // Sealed overfill is stiff: scale by the rows that can respond.
                     std::int32_t responding = 1;
                     while (responding < P::kActiveRows && r + responding < rows && mass[r + responding] > 0) ++responding;
-                    carried = (value - maximum) * (P::kStiffness / responding - 1);
+                    carried = static_cast<std::int64_t>(value - maximum) *
+                              (P::kStiffness / responding - 1);
                 }
             }
-            carried = value + (value >= maximum ? carried : 0);
-            weight[r] = carried;
+            carried = std::min<std::int64_t>(P::kMaximumHead,
+                static_cast<std::int64_t>(value) + (value >= maximum ? carried : 0));
+            weight[r] = static_cast<std::int32_t>(carried);
             flags[r] = static_cast<std::uint8_t>(
                 WaveChunk::kWet | (value >= maximum ? WaveChunk::kFull : 0U) |
                 (index >= P::kActiveRows ? 0U : confined ? WaveChunk::kGainConfined : WaveChunk::kGainNormal));
             // A thin cell starts a new stack below it.
             if (value < maximum) { index = 0; confined = false; ceiling = false; continue; }
-            ++index;
+            index = std::min(index + 1, P::kActiveRows);
             ceiling = false;
         }
 
@@ -336,8 +424,10 @@ void World::wave_column_task(std::size_t task_index) noexcept {
                 any = any || mass[base + ly] != 0;
                 wet = wet || mass[base + ly] > 0;
             }
-            const auto mark = masked_column || wet ? std::uint8_t{0} : any ? std::uint8_t{1} : std::uint8_t{2};
-            if (mark != 0U && wave.dry[static_cast<std::size_t>(lx)] == 0U) {
+            const auto mark = masked_column || wet || wave.min_y != 0 || wave.max_y != size
+                ? std::uint8_t{0} : any ? std::uint8_t{1} : std::uint8_t{2};
+            if (mark != 0U && wave.dry[static_cast<std::size_t>(lx)] == 0U &&
+                !wave.right_face_paused(lx, size)) {
                 // Faces of a newly dry column are skipped from now on, so the
                 // flux a just-emptied cell still carries must not survive.
                 for (std::int32_t ly = 0; ly < size; ++ly)
@@ -352,6 +442,7 @@ void World::wave_column_task(std::size_t task_index) noexcept {
             for (std::int32_t ly = 0; ly < size; ++ly) {
                 const auto at = static_cast<std::size_t>(ly) * static_cast<std::size_t>(size) + static_cast<std::size_t>(lx);
                 const auto r = base + ly;
+                if (!wave.included(lx, ly)) continue;
                 wave.weight[at] = weight[r];
                 wave.meta[at] = flags[r];
                 if (mass[r] < 0) continue;
@@ -360,7 +451,9 @@ void World::wave_column_task(std::size_t task_index) noexcept {
                                         ? static_cast<std::int32_t>(cell.state_a_value()) : 0;
                 if (before == mass[r]) continue;
                 wave_write_mass(chunk, at, before, mass[r], half);
-                if (mass[r] == 0) wave.flux[at] = 0; // no strip reads flux during this pass
+                // The other side of a paused face retains this exact flux
+                // even when the selected source column drains vertically.
+                if (mass[r] == 0 && !wave.right_face_paused(lx, size)) wave.flux[at] = 0;
                 half.touch(lx, ly);
                 half.peak = std::max(half.peak, std::abs(mass[r] - before));
             }
@@ -369,12 +462,14 @@ void World::wave_column_task(std::size_t task_index) noexcept {
     // A half found entirely Empty becomes clean: zero its retained flux once.
     for (std::uint32_t c = 0; c < task.count && c < kMaximumGroup; ++c) {
         auto& wave = *entries[c].chunk->wave;
+        if (wave.min_y != 0 || wave.max_y != size || wave.min_x > first_x || wave.max_x < last_x) continue;
         if (!empty[c] || wave.clean[task.half]) continue;
         const auto base = static_cast<std::int32_t>(c) * size;
         if (base < mask_last && base + size > mask_first) continue;
+        const auto clear_end = wave.right_face_paused(last_x - 1, size) ? last_x - 1 : last_x;
         for (std::int32_t ly = 0; ly < size; ++ly)
             std::fill_n(wave.flux.data() + static_cast<std::size_t>(ly) * static_cast<std::size_t>(size) +
-                            static_cast<std::size_t>(first_x), last_x - first_x, 0);
+                            static_cast<std::size_t>(first_x), clear_end - first_x, 0);
         wave.clean[task.half] = true;
     }
 }
@@ -382,6 +477,7 @@ void World::wave_column_task(std::size_t task_index) noexcept {
 void World::wave_write_mass(Chunk& chunk, std::size_t at, std::int32_t before, std::int32_t after,
                             WaveHalf& half) noexcept {
     auto& cell = chunk.cells[at];
+    ++half.changed;
     // The limiters make this unreachable. If a defect ever produces a mass the
     // carrier cannot hold, the tick fails the World instead of wrapping it.
     if (after < 0 || after > 65535) {
@@ -438,9 +534,16 @@ void World::wave_flux_task(std::size_t task_index) noexcept {
         const auto origin_x = state.sorted[task.first + c].coord.x * size;
         const auto origin_y = state.sorted[task.first + c].coord.y * size;
         for (std::int32_t ly = 0; ly < size; ++ly) {
+            if (ly < wave.min_y || ly >= wave.max_y) continue;
             const auto row = static_cast<std::size_t>(ly) * stride;
             for (auto lx = start_x; lx < last_x; ++lx) {
+                if (lx < wave.min_x || lx >= wave.max_x) continue;
                 const auto i = row + static_cast<std::size_t>(lx);
+                // Exclusion freezes the face too. Its retained flux must not
+                // leak mass across the boundary or vanish while paused.
+                if (lx + 1 < size) {
+                    if (!wave.included(lx + 1, ly)) continue;
+                } else if (wave.right_paused || (right != nullptr && !right->wave->included(0, ly))) continue;
                 // No Water on either side. The face may still hold flux written
                 // while one side was wet, so it is cleared rather than assumed zero.
                 if (dry_face[lx]) { wave.flux[i] = 0; continue; }
@@ -478,7 +581,9 @@ void World::wave_flux_task(std::size_t task_index) noexcept {
                 if (code == 0U) { wave.flux[i] = 0; continue; }
                 const auto head = wave.weight[i] - other->wave->weight[j];
                 const auto previous = wave.flux[i];
-                auto flux = static_cast<std::int64_t>(previous) - previous / (1 << P::kDampShift) +
+                const auto damping = previous == 0 ? 0
+                    : (previous > 0 ? 1 : -1) * std::max(1, std::abs(previous) / (1 << P::kDampShift));
+                auto flux = static_cast<std::int64_t>(previous) - damping +
                             static_cast<std::int64_t>(head) * (code == WaveChunk::kGainConfined ? P::kGainConfined : P::kGain);
                 const bool rightward = flux > 0;
                 auto available = rightward ? a : b;
@@ -489,7 +594,8 @@ void World::wave_flux_task(std::size_t task_index) noexcept {
                     const auto at = rightward ? j : i;
                     bool floor = true;
                     if (ly + 1 < size) floor = (target->wave->meta[at + stride] & WaveChunk::kSolid) != 0U;
-                    else if (const auto* under = target->wave->below; under != nullptr)
+                    else if (const auto* under = target->wave->below; under != nullptr &&
+                             under->wave->included(static_cast<std::int32_t>(at - row), 0))
                         floor = (under->wave->meta[at - row] & WaveChunk::kSolid) != 0U;
                     if (floor) available -= film;
                     // Pouring into an empty cell is one-directional; a quarter of
@@ -505,9 +611,14 @@ void World::wave_flux_task(std::size_t task_index) noexcept {
                     available = std::min(available >> 1, std::max(P::kCoast, downhill));
                     if (((rightward ? meta_b : meta_a) >> WaveChunk::kDepthShift) == WaveChunk::kSaturated) available = 0;
                 }
+                // Two neighbours can send into a receiver concurrently. Each
+                // gets at most half of its remaining uint16 capacity; both
+                // strips evaluate this same pre-apply bound.
+                available = std::min(available, (65535 - destination_mass) / 2);
                 const auto cap = available <= 0 ? std::int64_t{0} : static_cast<std::int64_t>(available) << P::kFluxShift;
                 flux = rightward ? std::min(flux, cap) : std::max(flux, -cap);
                 wave.flux[i] = static_cast<std::int32_t>(flux);
+                wave.half[task.half].pending_flux = wave.half[task.half].pending_flux || flux != 0;
             }
         }
     }
@@ -530,17 +641,23 @@ void World::wave_apply_task(std::size_t task_index) noexcept {
         const auto origin_x = entry.coord.x * size;
         const auto origin_y = entry.coord.y * size;
         for (std::int32_t ly = 0; ly < size; ++ly) {
+            if (ly < wave.min_y || ly >= wave.max_y) continue;
             const auto row = static_cast<std::size_t>(ly) * stride;
             const auto y = origin_y + ly;
-            auto incoming = first_x > 0
-                ? wave_transfer(wave.flux[row + static_cast<std::size_t>(first_x) - 1U], origin_x + first_x - 1, y, round)
-                : left != nullptr ? wave_transfer(left->wave->flux[row + stride - 1U], origin_x - 1, y, round) : 0;
+            const auto begin_x = std::max(first_x, wave.min_x);
+            const auto end_x = std::min(last_x, wave.max_x);
+            auto incoming = begin_x > wave.min_x
+                ? wave_transfer(wave.flux[row + static_cast<std::size_t>(begin_x) - 1U], origin_x + begin_x - 1, y, round)
+                : begin_x == 0 && left != nullptr && left->wave->included(size - 1, ly)
+                    ? wave_transfer(left->wave->flux[row + stride - 1U], origin_x - 1, y, round) : 0;
             const bool clean = wave.clean[task.half];
-            for (auto lx = first_x; lx < last_x; ++lx) {
+            for (auto lx = begin_x; lx < end_x; ++lx) {
                 // Interior faces of a clean half carry nothing.
-                if (clean && lx == first_x + 1 && last_x - first_x > 2) { lx = last_x - 1; incoming = 0; }
+                if (clean && lx == begin_x + 1 && end_x - begin_x > 2) { lx = end_x - 1; incoming = 0; }
                 const auto i = row + static_cast<std::size_t>(lx);
-                const auto outgoing = wave_transfer(wave.flux[i], origin_x + lx, y, round);
+                const bool face_open = lx + 1 < wave.max_x ||
+                    (lx + 1 == size && wave.right != nullptr && wave.right->wave->included(0, ly));
+                const auto outgoing = face_open ? wave_transfer(wave.flux[i], origin_x + lx, y, round) : 0;
                 const auto delta = incoming - outgoing;
                 const auto magnitude = std::max(std::abs(incoming), std::abs(outgoing));
                 incoming = outgoing;
@@ -571,13 +688,40 @@ void World::advance_wave_flow(TickStats& stats) {
     const auto size = config_.chunk_size;
     const auto stride = static_cast<std::size_t>(size);
 
+    state.film = liquid_surface_adhesion_enabled_ ? config_.water_experiment_policy.film() / 2 : 0;
+    const auto included_chunk = [&](ChunkCoord coord, WaveChunk& wave) {
+        wave.min_x = wave.min_y = 0;
+        wave.max_x = wave.max_y = size;
+        if (!selected_core_region_) return true;
+        const auto ox = coord.x * size, oy = coord.y * size;
+        const auto first = scheduler_geometry_.core_for_cell(ox, oy);
+        const auto last = scheduler_geometry_.core_for_cell(ox + size - 1, oy + size - 1);
+        const auto& region = *selected_core_region_;
+        if (last.x < region.min_x || first.x > region.max_x ||
+            last.y < region.min_y || first.y > region.max_y) {
+            wave.max_x = wave.max_y = 0;
+            return false;
+        }
+        const auto core = config_.scheduling_core_size;
+        if (first.x < region.min_x)
+            wave.min_x = static_cast<std::int32_t>((region.min_x - first.x) * core - positive_mod(ox, core));
+        if (first.y < region.min_y)
+            wave.min_y = static_cast<std::int32_t>((region.min_y - first.y) * core - positive_mod(oy, core));
+        if (last.x > region.max_x)
+            wave.max_x = static_cast<std::int32_t>((region.max_x - first.x + 1) * core - positive_mod(ox, core));
+        if (last.y > region.max_y)
+            wave.max_y = static_cast<std::int32_t>((region.max_y - first.y + 1) * core - positive_mod(oy, core));
+        return true;
+    };
+
     // A chunk is active while its Water moved recently or an owner edit, kernel
     // write or body mask touched it. Active chunks and their eight neighbours
     // are solved, so motion can always enter a neighbour in the same tick.
     state.grow.clear();
     for (const auto& [coord, chunk] : chunks_) {
         auto& wave = *chunk->wave;
-        wave.active = wave.woken || wave.quiet < static_cast<std::uint32_t>(P::kSleepAfter);
+        wave.active = included_chunk(coord, wave) &&
+            (wave.woken || wave.quiet < static_cast<std::uint32_t>(P::kSleepAfter));
         wave.solve = false;
         if (!wave.active || chunk->non_empty_cell_count == 0U) continue;
         // Liquid on an edge row or column needs a resident destination. Workers
@@ -586,24 +730,39 @@ void World::advance_wave_flow(TickStats& stats) {
         bool edge[4] = {false, false, false, false}; // left, right, up, down
         for (std::int32_t k = 0; k < size; ++k) {
             const auto step = static_cast<std::size_t>(k);
-            edge[0] = edge[0] || cells[step * stride].material_value() == Material::Water;
-            edge[1] = edge[1] || cells[step * stride + stride - 1U].material_value() == Material::Water;
-            edge[2] = edge[2] || cells[step].material_value() == Material::Water;
-            edge[3] = edge[3] || cells[(stride - 1U) * stride + step].material_value() == Material::Water;
+            edge[0] = edge[0] || (wave.included(0, k) && cells[step * stride].material_value() == Material::Water);
+            edge[1] = edge[1] || (wave.included(size - 1, k) && cells[step * stride + stride - 1U].material_value() == Material::Water);
+            edge[2] = edge[2] || (wave.included(k, 0) && cells[step].material_value() == Material::Water);
+            edge[3] = edge[3] || (wave.included(k, size - 1) && cells[(stride - 1U) * stride + step].material_value() == Material::Water);
         }
         const ChunkCoord wanted[4] = {{coord.x - 1, coord.y}, {coord.x + 1, coord.y}, {coord.x, coord.y - 1}, {coord.x, coord.y + 1}};
-        for (std::size_t k = 0; k < 4U; ++k)
-            if (edge[k] && find_chunk(wanted[k]) == nullptr) state.grow.push_back(wanted[k]);
+        for (std::size_t k = 0; k < 4U; ++k) {
+            if (!edge[k] || find_chunk(wanted[k]) != nullptr) continue;
+            if (!wave_chunk_coordinate_fits(wanted[k], size)) { ++diagnostics.boundary_refusals; continue; }
+            // Do not allocate offscreen recipients for paused work.
+            if (selected_core_region_) {
+                const auto x = coord.x * size + (k == 0U ? -1 : k == 1U ? size : wave.min_x);
+                const auto y = coord.y * size + (k == 2U ? -1 : k == 3U ? size : wave.min_y);
+                const auto at = scheduler_geometry_.core_for_cell(x, y);
+                const auto& region = *selected_core_region_;
+                if (at.x < region.min_x || at.x > region.max_x || at.y < region.min_y || at.y > region.max_y) continue;
+            }
+            state.grow.push_back(wanted[k]);
+        }
     }
+    std::sort(state.grow.begin(), state.grow.end());
+    state.grow.erase(std::unique(state.grow.begin(), state.grow.end()), state.grow.end());
     for (const auto coord : state.grow) {
         // Capacity is an explicit outcome: an unadmitted neighbour stays a wall.
-        if (chunks_.size() >= config_.maximum_chunk_count) break;
-        (void)ensure_chunk(coord);
+        if (chunks_.size() >= config_.maximum_chunk_count) { ++diagnostics.capacity_refusals; continue; }
+        auto& created = ensure_chunk(coord);
+        created.wave->active = included_chunk(coord, *created.wave);
     }
 
     state.sorted.clear();
     for (const auto& [coord, chunk] : chunks_) {
         auto& wave = *chunk->wave;
+        if (!included_chunk(coord, wave)) { wave.solve = false; continue; }
         bool solve = wave.active;
         for (std::int64_t dy = -1; dy <= 1 && !solve; ++dy)
             for (std::int64_t dx = -1; dx <= 1 && !solve; ++dx) {
@@ -624,6 +783,8 @@ void World::advance_wave_flow(TickStats& stats) {
                state.sorted[first + count].coord.x == state.sorted[first].coord.x &&
                state.sorted[first + count].coord.y == state.sorted[first + count - 1U].coord.y + 1)
             ++count;
+        if (count > static_cast<std::size_t>(std::numeric_limits<std::int32_t>::max() / size))
+            throw std::length_error("wave_flow column exceeds its bounded scratch index range");
         state.tasks.push_back({static_cast<std::uint32_t>(first), static_cast<std::uint32_t>(count), 0U});
         state.tasks.push_back({static_cast<std::uint32_t>(first), static_cast<std::uint32_t>(count), 1U});
         tallest = std::max(tallest, count);
@@ -639,6 +800,11 @@ void World::advance_wave_flow(TickStats& stats) {
         wave.right = solved({entry.coord.x + 1, entry.coord.y});
         wave.above = find_chunk({entry.coord.x, entry.coord.y - 1});
         wave.below = find_chunk({entry.coord.x, entry.coord.y + 1});
+        wave.right_paused = false;
+        if (selected_core_region_) {
+            const auto right_core = scheduler_geometry_.core_for_cell((entry.coord.x + 1) * size, entry.coord.y * size);
+            wave.right_paused = right_core.x > selected_core_region_->max_x;
+        }
         wave.half = {};
     }
     // Scratch grows only when the tallest solved column grows.
@@ -700,6 +866,7 @@ void World::advance_wave_flow(TickStats& stats) {
         auto& wave = *chunk.wave;
         std::int32_t peak = 0, delta = 0;
         std::uint32_t transitions = 0;
+        bool pending_flux = false;
         WaveHalf bounds;
         for (const auto& half : wave.half) {
             peak = std::max(peak, half.peak);
@@ -707,10 +874,12 @@ void World::advance_wave_flow(TickStats& stats) {
             diagnostics.moved_units += half.moved;
             invalid += half.invalid;
             transitions += half.transitions;
+            pending_flux = pending_flux || half.pending_flux;
+            stats.moved_cells += half.changed;
             if (half.max_x >= half.min_x) { bounds.touch(half.min_x, half.min_y); bounds.touch(half.max_x, half.max_y); }
         }
         wave.woken = false;
-        if (peak >= P::kWakePeak) wave.quiet = 0;
+        if (peak >= P::kWakePeak || pending_flux) wave.quiet = 0;
         else if (wave.quiet < static_cast<std::uint32_t>(P::kSleepAfter)) ++wave.quiet;
         chunk.non_empty_cell_count = static_cast<std::size_t>(static_cast<std::int64_t>(chunk.non_empty_cell_count) + delta);
         population += delta;

@@ -1751,6 +1751,8 @@ void World::cover_chunk_directory(ChunkCoord first, ChunkCoord last) {
 }
 
 World::Chunk& World::ensure_chunk(ChunkCoord coord) {
+    if (wave_ != nullptr && !wave_chunk_coordinate_fits(coord, config_.chunk_size))
+        throw std::overflow_error("wave_flow chunk leaves no signed-coordinate halo headroom");
     if (auto* existing = find_chunk(coord); existing != nullptr) return *existing;
     if (chunks_.size() >= config_.maximum_chunk_count) {
         throw std::runtime_error("maximum chunk capacity exhausted");
@@ -2028,11 +2030,13 @@ bool World::write_cell(std::int64_t x, std::int64_t y, Material material,
                        QuantityCause quantity_cause) {
     if (material == Material::Water &&
         (state_a_value == 0U ||
-         state_a_value > config_.water_experiment_policy.maximum() ||
+         (wave_ == nullptr && state_a_value > config_.water_experiment_policy.maximum()) ||
          (whole_cell_water_enabled() && state_a_value != config_.water_experiment_policy.maximum()) ||
          state_b_value > config_.water_experiment_policy.coherence_ticks())) {
         throw std::logic_error("internal Water state outside experiment policy");
     }
+    if (wave_ != nullptr && material == Material::Water && state_b_value != 0U)
+        throw std::invalid_argument("wave_flow does not support coherent Water emission");
     if (material != Material::Empty && transient_obstacle_at(x, y) != 0U) return false;
     if (external && quantity_cause.kind == QuantityKind::KernelConversion &&
         quantity_cause.rule == kQuantityNoRule)
@@ -2051,6 +2055,7 @@ bool World::write_cell(std::int64_t x, std::int64_t y, Material material,
     // Any admitted non-transport write retires provenance, including no-op paint.
     if (chunk->granular_arrivals) (*chunk->granular_arrivals)[target.index] = 0;
     const auto before = cell.material_value();
+    if (effects == nullptr && (external || reaction_product || before != material)) reset_wave_cell(x, y);
     const auto old_overfill = chunk->pressure == nullptr ? std::uint16_t{0}
         : chunk->pressure->cells[target.index].overfill;
     const auto new_overfill = external || reaction_product || before != material
@@ -2291,6 +2296,7 @@ void World::set_with_quantity_kind(std::int64_t x, std::int64_t y, Material mate
         preflight_absent_quantity(material, material == Material::Water
             ? config_.water_experiment_policy.maximum() : std::uint16_t{0}, {kind, kQuantityNoRule});
     auto& chunk = ensure_chunk(target.chunk);
+    reset_wave_cell(x, y);
     if (chunk.granular_arrivals) (*chunk.granular_arrivals)[target.index] = 0;
     const auto previous_material = chunk.cells[target.index].material_value();
     const auto previous_overfill = chunk.pressure == nullptr ? std::uint16_t{0}
@@ -2350,7 +2356,7 @@ bool World::set_cell_state(std::int64_t x, std::int64_t y, Material material,
     if (material == Material::Water && whole_cell_water_enabled() && state_a_value != 0U &&
         state_a_value != config_.water_experiment_policy.maximum()) return false;
     if (material == Material::Water &&
-        (state_a_value > config_.water_experiment_policy.maximum() ||
+        ((wave_ == nullptr && state_a_value > config_.water_experiment_policy.maximum()) ||
          state_b_value > config_.water_experiment_policy.coherence_ticks()))
         throw std::invalid_argument("experimental Water state out of domain");
     if (material != Material::Water && state_a_value > 255)
@@ -2395,6 +2401,7 @@ void World::set_simulation_region(std::optional<RectI64> region) {
 void World::set_liquid_surface_adhesion_enabled(bool enabled) noexcept {
     if (liquid_surface_adhesion_enabled_ == enabled) return;
     liquid_surface_adhesion_enabled_ = enabled;
+    if (wave_ != nullptr) for (auto& entry : chunks_) wake_wave_chunk(*entry.second);
     if (pressure_ != nullptr && pressure_->cache != nullptr) pressure_->cache->cold();
     fence_discovery(soliding::ProducerReason::SemanticFence);
 }
@@ -3126,6 +3133,12 @@ void World::move_cell(std::int64_t from_x, std::int64_t from_y, std::int64_t to_
     }
     auto& source = *source_pointer;
     auto& destination = *destination_pointer;
+    // External displacement owns both endpoints exclusively. Ordinary phased
+    // material jobs leave face retirement to the next barriered Wave pass.
+    if (effects == nullptr) {
+        reset_wave_cell(from_x, from_y);
+        reset_wave_cell(to_x, to_y);
+    }
 
     const auto source_cell = source.cells[source_address.index];
     const auto destination_cell = destination.cells[destination_address.index];
@@ -3381,8 +3394,9 @@ std::uint16_t World::transfer_water(std::int64_t from_x, std::int64_t from_y,
         destination_cell.material_value() == Material::Water
             ? static_cast<std::uint16_t>(destination_cell.state_a_value())
             : std::uint16_t{0};
-    const auto capacity = static_cast<std::uint16_t>(
-        config_.water_experiment_policy.maximum() - destination_mass);
+    const auto capacity = destination_mass >= config_.water_experiment_policy.maximum()
+        ? std::uint16_t{0} : static_cast<std::uint16_t>(
+            config_.water_experiment_policy.maximum() - destination_mass);
     const auto amount = std::min({requested, source_mass, capacity});
     if (amount == 0) return 0;
 
@@ -4521,6 +4535,7 @@ void World::begin_tick(TickStats& stats) {
             const auto previous = clip_core_range(included, previous_core_region);
             if (included.min_x <= included.max_x && included.min_y <= included.max_y &&
                 included != previous) {
+                wake_wave_chunk(*chunk);
                 if (!block.active) record_physics(PhysicsEvent::BlockWake, Material::Empty, Material::Empty, 0, 0, nullptr);
                 block.active = true;
                 block.quiet_ticks = 0;

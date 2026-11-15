@@ -83,6 +83,8 @@ void CyberNativeCellWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("inspect_ballistic_parcels", "maximum"), &CyberNativeCellWorld::inspect_ballistic_parcels);
     ClassDB::bind_method(D_METHOD("get_water_experiment_policy"),
                          &CyberNativeCellWorld::get_water_experiment_policy);
+    ClassDB::bind_method(D_METHOD("get_wave_flow_status"), &CyberNativeCellWorld::get_wave_flow_status);
+    ClassDB::bind_method(D_METHOD("inspect_wave_flow_cell", "point"), &CyberNativeCellWorld::inspect_wave_flow_cell);
     ClassDB::bind_method(D_METHOD("get_liquid_solver_policy"),
                          &CyberNativeCellWorld::get_liquid_solver_policy);
     ClassDB::bind_method(D_METHOD("get_liquid_policy_session_generation"),
@@ -301,6 +303,7 @@ bool CyberNativeCellWorld::reset_demo_world() {
         config.physics_diagnostics = {};
         config.interaction_policy = {};
         config.liquid_solver_policy = {}; // The ordinary demo runs every liquid's default.
+        config.wave_flow = {}; // Returning from the evaluator retires its opt-in law.
         // Resetting to FreeMass also retires the PF-only gas-capacity profile.
         config.pressure_gas_compartment_capacity = cybersand::PressureFlowParameters::kCompartmentCapacity;
         config.maximum_rule_radius = kProtectedCurrentRuleRadius;
@@ -1688,10 +1691,41 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         const auto density = gain("density_limit", 1.6);
         if (density < 0.05 || cap <= 0) return false;
         cybersand::WorldConfig config;
+        const auto extent_value = options.get("extent", Vector2i{kWorldWidth, kWorldHeight});
+        if (extent_value.get_type() != Variant::VECTOR2I)
+            throw std::invalid_argument("diagnostic extent must be Vector2i");
+        const Vector2i extent = extent_value;
+        if (extent.x < 64 || extent.y < 64 || extent.x > 2048 || extent.y > 2048)
+            throw std::invalid_argument("diagnostic extent outside 64..2048");
+        if (options.has("wave_flow") && options["wave_flow"].get_type() != Variant::BOOL)
+            throw std::invalid_argument("wave_flow must be boolean");
+        if (options.has("wave_substeps") && options["wave_substeps"].get_type() != Variant::INT)
+            throw std::invalid_argument("wave_substeps must be integer");
+        const auto wave_substeps = static_cast<std::int64_t>(options.get("wave_substeps", 1));
+        if (wave_substeps < 1 || wave_substeps > cybersand::WaveFlowParameters::kMaximumSubsteps)
+            throw std::invalid_argument("wave_substeps outside 1..8");
+        config.wave_flow.enabled = options.get("wave_flow", false);
+        config.wave_flow.substeps = static_cast<std::uint8_t>(wave_substeps);
+        if (options.has("liquid_policy")) {
+            if (options["liquid_policy"].get_type() != Variant::PACKED_INT32_ARRAY)
+                throw std::invalid_argument("liquid_policy must be PackedInt32Array");
+            const PackedInt32Array request = options["liquid_policy"];
+            auto decoded = cybersand::LiquidSolverPolicy::decode(
+                std::span<const std::int32_t>{request.ptr(), static_cast<std::size_t>(request.size())});
+            if (!decoded.accepted()) throw std::invalid_argument(decoded.refusal.detail);
+            config.liquid_solver_policy = std::move(*decoded.policy);
+            for (const auto& assignment : config.liquid_solver_policy.assignments())
+                if (assignment.family == cybersand::LiquidSolverFamily::InertialCellularV1)
+                    config.maximum_rule_radius = cybersand::InertialParameters::kExecutionRadius;
+        }
+        if (options.has("workbench") && options["workbench"].get_type() != Variant::BOOL)
+            throw std::invalid_argument("workbench must be boolean");
+        const bool workbench = options.get("workbench", false);
         config.worker_threads = static_cast<std::uint32_t>(workers);
-        config.maximum_chunk_count = 128;
-        config.active_chunk_capacity = 128;
-        config.active_core_capacity = 1024;
+        config.maximum_chunk_count = std::max<std::size_t>(128,
+            static_cast<std::size_t>((extent.x + 127) / 128 + 2) * ((extent.y + 127) / 128 + 2));
+        config.active_chunk_capacity = config.maximum_chunk_count;
+        config.active_core_capacity = std::max<std::size_t>(1024, config.maximum_chunk_count * 4);
         config.parallel_job_threshold = 2;
         if (static_cast<bool>(options.get("serial", false))) config.backend = cybersand::SimulationBackend::SerialInPlace;
         config.physics_diagnostics.enabled = options.get("telemetry", true);
@@ -1712,12 +1746,20 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
                 {profile.ptr(),static_cast<std::size_t>(profile.size())});
         }
         auto candidate = std::make_unique<cybersand::World>(config);
-        candidate->reserve_region({0, 0, kWorldWidth, kWorldHeight});
-        candidate->configure_transient_obstacles({0, 0, kWorldWidth, kWorldHeight});
+        candidate->reserve_region({0, 0, extent.x, extent.y});
+        candidate->configure_transient_obstacles({0, 0, extent.x, extent.y}, workbench);
+        std::unique_ptr<Workbench> workbench_owner;
+        if (workbench) {
+            workbench_owner = std::make_unique<Workbench>();
+            workbench_owner->response = "LA-SELECTIVE";
+            candidate->enable_transient_granular_wrenches(true);
+            candidate->enable_granular_arrival_witness(true);
+            raster_indices_.reserve(static_cast<std::size_t>(extent.x) * extent.y);
+        }
         auto diagnostics = config.physics_diagnostics.enabled
             ? std::make_unique<BodyDiagnostics>() : nullptr;
         world_.swap(candidate);
-        workbench_.reset(); extent_ = {kWorldWidth,kWorldHeight};
+        workbench_ = std::move(workbench_owner); extent_ = extent;
         retire_liquid_construction_identity();
         ++liquid_policy_session_generation_;
         body_diagnostics_ = std::move(diagnostics);
@@ -1865,6 +1907,12 @@ Dictionary CyberNativeCellWorld::liquid_policy_receipt(
     // other admitted policy is a qualified LCB candidate (pressure reference).
     result["admission"] = policy == cybersand::LiquidSolverPolicy{} ? "current_defaults_only"
                                                                     : "qualified_candidate";
+    if (actual && actual->wave_flow_enabled()) result["admission"] = "experimental_wave_flow_v1";
+    if (actual && actual->wave_flow_enabled()) {
+        result["wave_flow_enabled"] = true;
+        result["effective_water_solver"] = "wave_flow_v1";
+        result["wave_substeps"] = static_cast<std::int64_t>(actual->config().wave_flow.substeps);
+    }
     auto id = [](std::string_view text) { return String(std::string(text).c_str()); };
     Array assignments;
     for (const auto& item : policy.assignments()) {
@@ -2141,6 +2189,10 @@ Dictionary CyberNativeCellWorld::get_liquid_run_receipt(const Dictionary& setup)
     add("simulation_region", region ? concat(region->x, ":", region->y, ":", region->width, ":", region->height)
                                      : std::string("unrestricted"));
     add("physical_state_hash_version", concat(world_->physical_state_hash_version()));
+    // Preserve every default-off receipt byte; the opt-in law has distinct
+    // authoritative execution inputs despite reusing the FreeMass carrier.
+    if (config.wave_flow.enabled)
+        add("wave_flow", concat(cybersand::WaveFlowParameters::kVersion, ":", config.wave_flow.substeps));
     if (world_->inertial_enabled())
         add("inertial_parameter_identity", cybersand::Sha256::hex(cybersand::inertial_extension_identity(world_->inertial_parameters())));
     for (const char* key : {"setup_hash", "seed", "normalization_receipt", "source_revision", "native_binary_sha256",
@@ -2177,6 +2229,49 @@ Dictionary CyberNativeCellWorld::get_liquid_solver_policy() const {
     if (world_ == nullptr) return {};
     return liquid_policy_receipt(world_->liquid_solver_policy(),
                                  static_cast<std::int64_t>(liquid_policy_session_generation_),world_.get());
+}
+
+Dictionary CyberNativeCellWorld::get_wave_flow_status() const {
+    Dictionary out;
+    if (!world_) return out;
+    const auto& config = world_->config();
+    const auto wave = world_->wave_flow_diagnostics();
+    const auto quantity = world_->quantity_ledger();
+    out["enabled"] = world_->wave_flow_enabled();
+    out["version"] = static_cast<std::int64_t>(cybersand::WaveFlowParameters::kVersion);
+    out["substeps"] = static_cast<std::int64_t>(config.wave_flow.substeps);
+    out["workers_requested"] = static_cast<std::int64_t>(config.worker_threads);
+    out["workers_observed"] = static_cast<std::int64_t>(last_stats_.worker_threads_observed);
+    out["maximum_participants"] = static_cast<std::int64_t>(wave.maximum_participants);
+    out["ticks"] = static_cast<std::int64_t>(wave.ticks);
+    out["rounds"] = static_cast<std::int64_t>(wave.rounds);
+    out["last_tasks"] = static_cast<std::int64_t>(wave.last_tasks);
+    out["last_solved_chunks"] = static_cast<std::int64_t>(wave.last_solved_chunks);
+    out["storage_bytes"] = static_cast<std::int64_t>(wave.storage_bytes);
+    out["capacity_refusals"] = static_cast<std::int64_t>(wave.capacity_refusals);
+    out["resident_cell_bytes"] = static_cast<std::int64_t>(world_->resident_cell_bytes());
+    out["active_chunks"] = static_cast<std::int64_t>(world_->active_chunk_count());
+    out["chunks"] = static_cast<std::int64_t>(world_->chunk_count());
+    out["water_quantity"] = String::num_uint64(quantity.water_visible + quantity.water_overfill + quantity.water_ballistic);
+    out["water_cells"] = static_cast<std::int64_t>(quantity.material_cells[static_cast<std::uint16_t>(cybersand::Material::Water)]);
+    out["native_tick_ms"] = simulation_time_ms_;
+    out["completed_tick"] = static_cast<std::int64_t>(world_->completed_tick_index());
+    out["physical_save_supported"] = !world_->wave_flow_enabled();
+    out["extent"] = extent_;
+    return out;
+}
+
+Dictionary CyberNativeCellWorld::inspect_wave_flow_cell(Vector2i point) const {
+    Dictionary out;
+    out["ok"] = false;
+    if (!world_ || world_->has_failed() || !in_bounds(point.x, point.y)) return out;
+    out["ok"] = true;
+    out["enabled"] = world_->wave_flow_enabled();
+    out["material"] = static_cast<std::int64_t>(world_->stored_material(point.x, point.y));
+    out["stored_mass"] = static_cast<std::int64_t>(world_->stored_state_a(point.x, point.y));
+    out["liquid_mass"] = static_cast<std::int64_t>(world_->liquid_mass(point.x, point.y));
+    out["face_flux"] = static_cast<std::int64_t>(world_->wave_flow_flux(point.x, point.y));
+    return out;
 }
 
 std::int64_t CyberNativeCellWorld::get_liquid_policy_session_generation() const {

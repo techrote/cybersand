@@ -409,6 +409,9 @@ public:
     // diagnostic work/timing counters (all zero when disabled).
     [[nodiscard]] bool wave_flow_enabled() const noexcept;
     [[nodiscard]] WaveFlowDiagnostics wave_flow_diagnostics() const noexcept;
+    // Copied retained right-face flux, in 1/4096 mass units per substep.
+    // Includes frozen/excluded faces; zero when the solver/chunk is absent.
+    [[nodiscard]] std::int32_t wave_flow_flux(std::int64_t x, std::int64_t y) const noexcept;
     // Opt-in W-CY owns only Water motion/quantity; material identity and hooks
     // remain Water. No sidecar is needed for its indivisible full-cell state.
     [[nodiscard]] bool water_cellular_yield_enabled() const noexcept { return water_cellular_yield_; }
@@ -460,7 +463,8 @@ public:
     static constexpr std::uint32_t kPhysicalStateHashVersion = 2;
     // BW-001 ballistic Worlds report and emit version4 (IN or not).
     [[nodiscard]] std::uint32_t physical_state_hash_version() const noexcept {
-        return config_.pressure_gas_compartment_capacity == PressureFlowParameters::kAdmittedCompartmentCapacity ? 5U
+        return config_.wave_flow.enabled ? 6U
+             : config_.pressure_gas_compartment_capacity == PressureFlowParameters::kAdmittedCompartmentCapacity ? 5U
              : config_.ballistic_water.enabled || inertial_parameters_.signed_vertical ? 4U
              : inertial_enabled_ ? 3U : 2U;
     }
@@ -483,7 +487,9 @@ public:
     // incompatible payloads; the caller's live World is never touched.
     static constexpr std::uint32_t kPhysicalStateFormatVersion = 2;
     [[nodiscard]] std::uint32_t physical_state_format_version() const noexcept {
-        return config_.pressure_gas_compartment_capacity == PressureFlowParameters::kAdmittedCompartmentCapacity ? 5U
+        // Zero explicitly means that exact physical continuation is unsupported.
+        return config_.wave_flow.enabled ? 0U
+             : config_.pressure_gas_compartment_capacity == PressureFlowParameters::kAdmittedCompartmentCapacity ? 5U
              : config_.ballistic_water.enabled || inertial_parameters_.signed_vertical ? 4U
              : inertial_enabled_ ? 3U : 2U;
     }
@@ -569,6 +575,7 @@ private:
     void wave_flux_task(std::size_t task_index) noexcept;
     void wave_apply_task(std::size_t task_index) noexcept;
     void wake_wave_chunk(Chunk& chunk) noexcept;
+    void reset_wave_cell(std::int64_t x, std::int64_t y) noexcept;
     void apply_wave_population(std::int64_t delta);
     void wave_write_mass(Chunk& chunk, std::size_t at, std::int32_t before, std::int32_t after,
                          WaveHalf& half) noexcept;

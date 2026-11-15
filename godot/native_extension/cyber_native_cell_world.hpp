@@ -108,6 +108,10 @@ public:
     [[nodiscard]] Dictionary workbench_coupling_results() const;
     [[nodiscard]] String get_last_tick_error() const;
     [[nodiscard]] Dictionary get_water_experiment_policy() const;
+    // Copied experimental construction, quantity and worker diagnostics. The
+    // caller is the exclusive World owner, between ticks.
+    [[nodiscard]] Dictionary get_wave_flow_status() const;
+    [[nodiscard]] Dictionary inspect_wave_flow_cell(Vector2i point) const;
     // Applied LCB-001 liquid solver policy receipt of the live World. The
     // generation counts committed World replacements; refusals never advance it.
     [[nodiscard]] Dictionary get_liquid_solver_policy() const;
