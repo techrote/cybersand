@@ -64,7 +64,8 @@ def project_from_git(output,dll,rapier):
            "third_party/rapier-bvh-build.lock.json",
            "docs/audits/2026-11-14-pr566-mask-coherent-presentation-qualification.md",
            "docs/operations/engine-lab-pose-tracing.md",
-           "tools/ci/analyze_pose_trace.py"]
+           "tools/ci/analyze_pose_trace.py",
+           "Run-Test-It.ps1","Test It.cmd"]
     tar=subprocess.check_output(["git","archive","--format=tar",SOURCE,"--",*files],cwd=ROOT,timeout=90)
     count=0
     with tarfile.open(fileobj=io.BytesIO(tar)) as archive:
@@ -163,6 +164,25 @@ Open the Workbench and click Engine Lab... on its top toolbar.
 Use the FPS cap, VSync, Pixel and Rapier tick targets, material publication target, ACK delay and coupling toggles LIVE. Native worker count is saved for the NEXT full launch.
 The advanced override enables rates up to 1000 Hz without repeated popups. The 10-second scripted benchmark saves actual-clock JSON in user data.
 Non-60 cadence intentionally changes simulation speed because the flight integrator stays fixed at 1/60 per completed step.
+
+## Automated Windows test script / Test It -> ZIP
+Click Test It -> ZIP in Engine Lab, or double-click Test It.cmd from
+this extracted folder. Both launch the SAME separate-process PowerShell
+runner with the '-Compare' option: exact 2048-square reference, eight
+Needle commands at physics ticks 0,2,4,6,8,10,12,14 and Free/Follow
+Guarded/Mask comparison, plus 30Hz and 120Hz pacing probes.
+
+The user-facing offline script is Run-Test-It.ps1 in the package root.
+For the previously requested four Water-family x two-repeat suite, run:
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\\Run-Test-It.ps1"
+For the 16-case 1-vs-4 native worker matrix, append -Full.
+For a one-case source/instrumentation smoke, append -Quick.
+Each case regenerates the original source-verifiable 2048-square canvas,
+uses real Rapier/World and writes exact-tick input receipts and pose JSONL.
+The runner creates Test-It-Results/<timestamp>.zip, preserves failures,
+hardware/source identity, raw console logs and ALL case receipts.
+No extra tools, network access, installs or automatic uploads are required.
+It is not an unattended claim of physical acceptability.
 
 ## Actual screen-frame pose trace
 Start Play with a selected Needle flyer. In Engine Lab, click Trace poses:
