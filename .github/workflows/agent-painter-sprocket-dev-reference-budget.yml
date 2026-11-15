@@ -1,0 +1,117 @@
+name: SPROCKET root Instruct DEVELOPMENT original teacher budget (no model)
+on:
+  push:
+    branches: [codex/agent-painter-sprocket-568]
+    paths:
+      - experiments/agent_painter/lanes/sprocket/dev-reference-budget-request.json
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: sprocket-dev-reference-budget-${{ github.sha }}
+  cancel-in-progress: false
+jobs:
+  pinned-reference-budget:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 11ba1f1915362d3d127edfbe37fe9e30c57eb8b9
+          path: shared-v2
+          persist-credentials: false
+      - name: Exact-head host, lease, source-only safety and tests
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git -C shared-v2 rev-parse HEAD)" = 11ba1f1915362d3d127edfbe37fe9e30c57eb8b9
+          test "$GITHUB_REPOSITORY" = techrote/cybersand
+          test "$GITHUB_REF" = refs/heads/codex/agent-painter-sprocket-568
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          request=json.loads(Path('experiments/agent_painter/lanes/sprocket/dev-reference-budget-request.json').read_text())
+          assert request == {
+            'schema':'cybersand.sprocket-dev-reference-budget-request/1',
+            'sequence':1, 'original_native_run':43506373969,
+            'original_artifact':14076703326,
+            'original_native_source':'633920373a3d406a2ede61ce4137c324f76be23b',
+            'model_revision':'eb157d4ddddc4619e661d4a2426bb2dd000fc668',
+            'shared_v2_source':'11ba1f1915362d3d127edfbe37fe9e30c57eb8b9',
+            'split':'DEVELOPMENT','independent_requests':6,'seed_views':12,
+            'reference_only':True, 'training':False, 'model_inference':False,
+            'native_execution':False, 'final_access':False, 'draft_hold':True
+          }
+          PY
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/sprocket-budget-policy.json
+          python3 -m py_compile experiments/agent_painter/lanes/sprocket/dev_reference_budget_audit.py
+          python3 experiments/agent_painter/lanes/sprocket/dev_reference_budget_audit.py --self-test
+          mkdir -p evidence/sprocket-dev-reference-budget
+          git rev-parse HEAD > evidence/sprocket-dev-reference-budget/source-head.txt
+          echo 'INCOMPLETE_NO_MODEL_CLAIM' > evidence/sprocket-dev-reference-budget/incomplete.txt
+      - name: Fetch opaque original source633 artifact and verify whole ZIP hash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/sprocket-original-dev"
+          curl -fLsS --retry 3 --max-time 240 \
+            -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/techrote/cybersand/actions/artifacts/14076703326/zip \
+            -o "$RUNNER_TEMP/sprocket-original-dev/source633.zip"
+          echo '50a9ad9b255b2a57180edf5558ca2b47dab9affd9ef9d2438f9011d648f81f39  '"$RUNNER_TEMP/sprocket-original-dev/source633.zip" | sha256sum -c --strict
+      - name: Isolated pinned tokenizer-only environment, no weights/credentials
+        env:
+          HF_HUB_DISABLE_XET: '1'
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/sprocket-budget-venv"
+          "$RUNNER_TEMP/sprocket-budget-venv/bin/python" -m pip install \
+            'huggingface-hub==2.4.0' 'tokenizers==0.23.3' 'transformers==5.22.2' \
+            'jinja2==3.1.6' 'markupsafe==3.0.3' \
+            'Pillow==13.0.0' 'PyYAML==6.0.3' 'jsonschema==4.26.0'
+          "$RUNNER_TEMP/sprocket-budget-venv/bin/python" -m pip check
+          "$RUNNER_TEMP/sprocket-budget-venv/bin/python" -m pip freeze --all > evidence/sprocket-dev-reference-budget/pip-freeze.txt
+          timeout --signal=TERM --kill-after=20s 600s "$RUNNER_TEMP/sprocket-budget-venv/bin/python" - <<'PY'
+          import os
+          from huggingface_hub import snapshot_download
+          snapshot_download(
+              repo_id='kandivault/sprocket-500m',
+              revision='eb157d4ddddc4619e661d4a2426bb2dd000fc668',
+              allow_patterns=['config.json','generation_config.json','tokenizer.json','tokenizer_config.json','special_tokens_map.json','chat_template.jinja','export_provenance.json','README.md'],
+              local_dir=os.environ['RUNNER_TEMP']+'/sprocket-budget-tokenizer')
+          PY
+      - name: Strict positive native DEVELOPMENT-only reference token budget
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=20s 600s "$RUNNER_TEMP/sprocket-budget-venv/bin/python" \
+            experiments/agent_painter/lanes/sprocket/dev_reference_budget_audit.py \
+            --zip "$RUNNER_TEMP/sprocket-original-dev/source633.zip" \
+            --snapshot "$RUNNER_TEMP/sprocket-budget-tokenizer" \
+            --shared shared-v2 --source "$GITHUB_SHA" \
+            --output evidence/sprocket-dev-reference-budget/report.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path('evidence/sprocket-dev-reference-budget/report.json').read_text())
+          assert x['independent_requests']==6 and x['native_seed_views']==12
+          assert x['eos_token_id']==5 and len(x['per_group'])==6
+          assert x['new_optimizer_steps']==x['new_model_outputs']==0
+          assert x['new_native_paintings']==x['new_shared_train_admissions']==0
+          assert x['final_opened'] is False and x['dev60_executed'] is False
+          print('Six authentic DEVELOPMENT reference budgets, not model success')
+          PY
+          rm evidence/sprocket-dev-reference-budget/incomplete.txt
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sprocket-dev-reference-budget-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/sprocket-dev-reference-budget/
+          if-no-files-found: warn
+          retention-days: 90
