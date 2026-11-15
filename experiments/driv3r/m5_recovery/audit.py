@@ -31,7 +31,7 @@ def verify(case, outcome):
     if not outcome["events"] or len(outcome["events"]) > case["max_decisions"]:
         raise ValueError("Invalid decision count")
     for i, event in enumerate(outcome["events"]):
-        if event["i"] != i or event["cursor_before"] != cursor:
+        if event["i"] != i or tuple(event["cursor_before"]) != cursor:
             raise ValueError("Cursor or event index forged")
         if event.get("model_identity") is not None or event.get("native_receipt") is not None:
             raise ValueError("Forged model/native evidence")
@@ -80,7 +80,7 @@ def verify(case, outcome):
         raise ValueError("Decision events unexpectedly changed")
     if digest(sorted(painted)) != outcome["final_material_sha256"]:
         raise ValueError("Final material forged")
-    if cursor == case["goal"] != outcome["terminated_at_goal"]:
+    if (cursor == case["goal"]) != outcome["terminated_at_goal"]:
         raise ValueError("Goal label forged")
     if new_after_recovery != outcome["productive_new_cells_after_recovery"]:
         raise ValueError("Recovery productivity forged")
