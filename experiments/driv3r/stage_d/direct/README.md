@@ -161,3 +161,22 @@ frozen M1 schema identity and separately sorted model-menu presentation.
 Identical local legal choices alone do **not** imply identical model input.
 No real native action, receipt, World revision or permission is conferred.
 The M1 source and schema remain frozen; native M2/M3 integration is independent.
+
+## Selected-wall progress: max-Y false-positive control (synthetic)
+
+The frozen v1 `route_progress_fraction` measures the largest row reached,
+not whether the cursor **followed the identified selected wall**. A path can
+reach the target row far outside the prescribed 6–10-cell band and still
+score 1.0 raw vertical progress. Do **not** reinterpret that metric alone as
+successful wall tracing.
+
+`wall_progress.py` adds an independent, replay-verified DEVELOPMENT-only
+report: ordered in-band profile rows, unique in-band row coverage, off-band
+excursions and reentries, and the ungated/ordered progress gap. Distances are
+measured to the **selected wall**, not to nearby distractors. It preserves the
+original trajectory and original v1 score and makes no native or model claims.
+Five adversarial/integration regressions in `test_wall_progress.py` cover
+a far-from-wall 100%-vertical-progress false positive, off-band recovery,
+out-of-order row visits, real DEVELOPMENT replay, and held-out/tamper refusal.
+The three pure shape checks and helper syntax have local smoke qualification;
+the full source-matched lane suite remains a separate gate.
