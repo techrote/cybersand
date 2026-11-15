@@ -13,7 +13,7 @@ import subprocess
 import time
 import traceback
 
-from experiments.driv3r.backend import parse_choice_response
+from experiments.driv3r.backend import PINS, parse_choice_response
 from experiments.driv3r.qualify import new_backend
 from experiments.driv3r.m3_history.native import HistorySession
 from experiments.driv3r.m3_native.qualify import (
@@ -190,8 +190,14 @@ def qualify(args):
     started=time.monotonic()
     episode=f"m4-guided-coverage-{args.arm}-seed570"
     model_manifest=json.loads(args.model_runtime_manifest.read_text())
-    _assert(model_manifest["model_identity"]["repository"]=="LiquidAI/d1-2B",
-            "Unpinned/unexpected model")
+    model_identity=model_manifest["model_identity"]
+    expected=PINS["model"]
+    _assert(model_identity["repository"]==expected["repository"]
+            and model_identity["revision"]==expected["revision"]
+            and model_identity["sha256"]==expected["sha256"]
+            and model_identity["bytes"]==expected["bytes"]
+            and model_identity["quantization"]=="Q8_0",
+            "Unpinned/unexpected official Q8 GGUF model")
     guide,values=make(root,episode,args.arm)
     journal=[guide];actions=[];receipts=[];artifacts=[];steps=[]
     original_cursor=START.copy();cursor=START.copy()
