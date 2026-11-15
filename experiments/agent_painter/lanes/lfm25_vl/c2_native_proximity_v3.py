@@ -148,10 +148,11 @@ def screen(corpus: Path | None = None) -> dict:
     doc = load_proposal()
     sem = v2.validate_stepped_structure(doc["program"])
     older = v2.read_document()
-    require(legacy.signature(doc["program"]) != legacy.signature(older["program"]),
-            "C2c duplicates C2b")
+    # Same required two-cross/two-elbow topology: structural signature matching
+    # C2b is expected, not evidence of identical geometry or global uniqueness.
     new_lines = centreline(doc["program"])
     older_lines = centreline(older["program"])
+    require(new_lines != older_lines, "C2c duplicates C2b centreline geometry")
     comparisons = []
     if corpus is not None:
         for split, group, seed, native, raw_sha in visible_native_masks(corpus):

@@ -20,8 +20,11 @@ class C2cSourceTests(unittest.TestCase):
         self.assertEqual(witness["elbows"], [[60, 31], [60, 62]])
         self.assertEqual(witness["cycle_count"], 0)
         self.assertEqual(len(subject.centreline(self.doc["program"])), 179)
-        self.assertNotEqual(subject.legacy.signature(self.doc["program"]),
-                            subject.legacy.signature(subject.v2.read_document()["program"]))
+        # These deliberate C2b->C2c revisions retain the same required topology.
+        self.assertEqual(subject.legacy.signature(self.doc["program"]),
+                         subject.legacy.signature(subject.v2.read_document()["program"]))
+        self.assertNotEqual(subject.centreline(self.doc["program"]),
+                            subject.centreline(subject.v2.read_document()["program"]))
 
     def test_positive_compiler_is_still_not_native_or_training(self):
         receipt = subject.screen()

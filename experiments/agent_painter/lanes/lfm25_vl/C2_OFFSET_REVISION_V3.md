@@ -1,11 +1,11 @@
 # C2c — wide-offset stepped Pipework repair (source-only, REVIEW/HOLD)
 
-15 November 2026 UTC. This additive proposal follows the independent [C2b P2 REVISE](https://github.com/techrote/cybersand/pull/575#issuecomment-6886211186): despite a real Z-step, C2b's sustained x=29/47/68 segments tracked held-out DEVELOPMENT's x=28/48/68 three-riser motif. **Preserve C2 original, C2b, original FAILED native producer, and every earlier source/CI receipt unchanged.** No native Art, model inference, optimizer, TRAIN admission or frozen candidate is claimed.
+15 November 2026 UTC. This additive **same-topology, different-geometry** proposal follows the independent [C2b P2 REVISE](https://github.com/techrote/cybersand/pull/575#issuecomment-6886211186): despite a real Z-step, C2b's sustained x=29/47/68 segments tracked held-out DEVELOPMENT's x=28/48/68 three-riser motif. **Preserve C2 original, C2b, original FAILED native producer, and every earlier source/CI receipt unchanged.** No native Art, model inference, optimizer, TRAIN admission or frozen candidate is claimed.
 
 ## C2c geometry and scope
 
 - Separately versioned literal proposal: `c2_offset_proposal_v3.json`. Two degree-four crosses at **(18,31)** and **(79,62)**; two actual degree-two elbow bends at **(60,31)** and **(60,62)**. A wider, left-heavy upper arm, shorter 31-cell central drop at x60 and right-side lower cross replace C2b's x29/47/68 riser-aligned contour.
-- Outer terminals: (6,31), (18,16), (18,47), (91,62), (79,46), (79,77). The ten-node tree has nine orthogonal edges, six leaves, two crosses, two elbows, zero cycles, width 3 and localized fitting collars. This is still **one authored research design**, regardless of host seed count.
+- Outer terminals: (6,31), (18,16), (18,47), (91,62), (79,46), (79,77). The ten-node tree has nine orthogonal edges, six leaves, two crosses, two elbows, zero cycles, width 3 and localized fitting collars. C2b and C2c deliberately share the same two-cross/two-elbow topological signature; they are versions of **one authored research design**, not independent new structures. The new spatial geometry is compared explicitly and requires human review.
 - Source preflight reuses v2 true topology/clearance validation plus native compiler/rasterized structure checks on two fixed host seeds. Neither compiler acceptance nor a valid graph proves native material success or artistic independence.
 - Independent reviewer/shepherd retain global whole-structure/split decision. The lane-owned comparison does **not** define an unapproved numerical admission threshold.
 
