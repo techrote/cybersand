@@ -144,7 +144,7 @@ class BodyV2(unittest.TestCase):
             for item in one["arms"]:
                 raw=(Path(folder)/"a"/item["trace"]).read_bytes()
                 png=(Path(folder)/"a"/item["png"]).read_bytes()
-                self.assertTrue(png.startswith(b"\\x89PNG\\r\\n\\x1a\\n"))
+                self.assertTrue(png.startswith(bytes([137,80,78,71,13,10,26,10])))
                 self.assertEqual(hashlib.sha256(raw).hexdigest(),
                                  item["trace_sha256"])
                 self.assertEqual(hashlib.sha256(png).hexdigest(),
@@ -153,9 +153,7 @@ class BodyV2(unittest.TestCase):
                 self.assertEqual(doc["model_calls"],0)
                 self.assertEqual(doc["native_receipts"],0)
                 self.assertLessEqual(doc["logical_cursor_moves"],512)
-                self.assertEqual(doc["initial_world_sha256"],
-                                 digest(SyntheticBody(lease("other"),blank()).initial.material)
-                                 if False else doc["initial_world_sha256"])
+                self.assertNotEqual(doc["initial_world_sha256"], doc["final_world_sha256"])
 
 
 if __name__=="__main__":
