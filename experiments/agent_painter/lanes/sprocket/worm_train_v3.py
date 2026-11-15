@@ -237,11 +237,14 @@ if __name__ == "__main__":
     a = p.parse_args()
     signal.signal(signal.SIGINT, stop_handler)
     signal.signal(signal.SIGTERM, stop_handler)
+    # sys.exit(0) raises SystemExit; do not label a completed campaign failed.
+    # A nonzero main() result still exits nonzero, preserving partial-run CI failure.
     try:
-        sys.exit(main(a))
+        exit_code = main(a)
     except BaseException as exc:
         if a.output.exists():
             write_json(a.output / "failure.json", {"type": type(exc).__name__, "error": str(exc),
                       "status": "FAILED_OR_INTERRUPTED",
                       "not_training_success": True})
         raise
+    raise SystemExit(exit_code)
