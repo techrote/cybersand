@@ -43,6 +43,25 @@ and the separately versioned movement-complete
 neural controller. After different selections, subsequent host menus belong to
 different simulated states and are never silently treated as matched.
 
+## Matched episode identity and four-cohort comparability
+
+The planned-slot `synthetic_run_id` remains the stable four-wrangler **recipe
+identity**, not evidence that a particular episode ran. New
+`episode_run_id` binds each actually computed synthetic report to that recipe,
+**decision horizon (36 vs 128), predecessor-probe cap, and SHA-256 of the
+executed fleet, oracle, offline geometry and line-character Python modules**.
+A 36-decision outcome, a separate 128-decision outcome and a changed resource
+cap cannot silently reuse the same episode ID; resource-exhausted reports
+also preserve their own episode/source identities without inventing oracle
+costs or policy trajectories.
+
+The compact Commander/Ethologist comparison now refuses a four-slot cohort
+with mixed horizons or oracle-probe limits; reports remain four distinct
+synthetic run records and retain every negative result. The original fixture
+hashes, STOP-inclusive random control, baseline trajectories, 64 native
+logical-move ceiling and M1 schema are unchanged. This is source-level
+preparation, **not proof that the 128 mode finished on a hosted CPU**.
+
 ## Separate 36- and 128-decision research boundaries
 
 The original 36-decision fixtures, structural split, SHA-256s, failed/early
@@ -80,7 +99,7 @@ python3 -m experiments.driv3r.stage_d.direct.fleet_controls --horizon 128 --orac
 The CLI invokes `qualification.source_fence` and fails on dirty or
 out-of-lane source. A **128 resource-cap failure exits nonzero**, preserving
 negative cases in the written JSON rather than declaring success. Existing
-`qualification` still must execute **all 188 authored source tests/18 modules** on the
+`qualification` still must execute **all 191 authored source tests/18 modules** on the
 committed checkout; Stage A/doc/source-scope green is not that evidence.
 Do not report these runs as completed until exact source, stdout/stderr,
 first-pass failures, Git commit and test footer have been collected.
