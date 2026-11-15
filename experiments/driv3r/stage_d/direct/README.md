@@ -2,6 +2,24 @@
 
 **Status:** independent **development-only** preparatory fixtures and oracle policies, not native or model qualification. #570; [owner D roadmap](https://github.com/techrote/cybersand/issues/570#issuecomment-6877408001). The five-record [D-COMMON-001 contract](https://github.com/techrote/cybersand/pull/594) received **M1 owner acceptance on 14 Nov 2026** at source commit `8fa90de6be209ed0b7bd125039e6ec8b332fb1a6`, schema SHA-256 `ebe2fa211148602c614cba0f0a40f285cba797784b70efa035832d833877f80d` ([#570 freeze record](https://github.com/techrote/cybersand/issues/570#issuecomment-6881686675)). **M2 offline integration preparation is permitted; native/model experiments, merges and formal A1/A2/A3 comparisons are not.**
 
+## Deterministic CPU-work cap for bounded geometry oracle (15 November 2026)
+
+The DEVELOPMENT-only `budget_oracle.py` now has an explicit, configurable
+search-work cap (`max_predecessor_probes`, 3,000,000 by default). The counter
+includes blocked/cached predecessor probes so a large open grid or 72/144-step
+horizon cannot silently consume unbounded CPU. Exhaustion raises the distinct
+`PlanningBudgetExceeded` error; it is **not** an unreachable-world result and
+must not enter arrival statistics as a completed planner outcome. Successful
+reports expose consumed probes and cap for reproducible economics. The cap is
+independent of native or learned-model execution; the owner-gated 36-decision
+native campaign remains on HOLD.
+
+Three new regression methods cover explicit cap exhaustion, a sufficient-cap
+plan preserving geometry and cost, and type/range rejection. **Authored test
+inventory: 159 methods / 15 modules.** Full clean exact-checkout execution and
+first-pass failure capture remain outstanding. Existing frozen DEVELOPMENT
+baseline outcomes, held-out fixtures and shared M1 records are unchanged.
+
 ## Committed M1 rename must not masquerade as a direct-lane-only change (15 November 2026)
 
 The original `qualification.source_fence` used `git diff --name-only
