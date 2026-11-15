@@ -1,0 +1,66 @@
+name: SPROCKET WORM F4 original-F3 posthoc logit audit
+on:
+  push:
+    branches:
+      - codex/agent-painter-sprocket-568
+    paths:
+      - .github/workflows/agent-painter-sprocket-worm-f4-posthoc.yml
+      - experiments/agent_painter/lanes/sprocket/worm_f3_posthoc_v1.py
+      - experiments/agent_painter/lanes/sprocket/test_worm_f3_posthoc_v1.py
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: sprocket-f4-original-f3
+  cancel-in-progress: false
+jobs:
+  original-f3-score-audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Retrieve exact original F3 combined model receipts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p f4-output
+          curl --fail --silent --show-error --location --retry 2 \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/techrote/cybersand/actions/artifacts/14183924474/zip \
+            --output f4-output/original-f3.zip
+          echo '5eb64e5f7d5335809f631aa11caf9edbfcf1a67f546601d5d14e795cc61f7af6  f4-output/original-f3.zip' | sha256sum -c -
+      - name: Independently reproduce 512 original model and flat choices
+        env:
+          F3_ORIGINAL_ZIP: f4-output/original-f3.zip
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s experiments/agent_painter/lanes/sprocket -p test_worm_f3_posthoc_v1.py -v 2>&1 | tee f4-output/tests.txt
+          python experiments/agent_painter/lanes/sprocket/worm_f3_posthoc_v1.py \
+            f4-output/original-f3.zip --output f4-output/report.json | tee f4-output/results.txt
+          python - <<'PY'
+          import json
+          x=json.load(open('f4-output/report.json'))
+          assert x['original_model_forwards']==512
+          assert x['verified_original_member_sha256']==62
+          assert x['totals']['learned_differs_from_flat']==149
+          assert x['totals']['learned_differs_from_frozen_first']==33
+          assert x['totals']['STOP_deferred']==504
+          assert x['no_new_forwards'] and x['no_optimizer_steps'] and x['not_native']
+          print('ORIGINAL F3 512 DECISION REPLAY PASS; ALTERNATIVES OFF-POLICY')
+          PY
+          sha256sum f4-output/report.json > f4-output/SHA256SUMS.txt
+      - name: Preserve F4 evidence, including failures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sprocket-worm-f4-f3-posthoc
+          path: |
+            f4-output/tests.txt
+            f4-output/results.txt
+            f4-output/report.json
+            f4-output/SHA256SUMS.txt
+          if-no-files-found: warn
+          retention-days: 30
