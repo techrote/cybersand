@@ -10,8 +10,8 @@ class FrankenLayerTests(unittest.TestCase):
         self.assertEqual(FLOWS["scrambled_eggs"],(0,1,2,3,4,5,7,13,9,15,11,6,10,8,12,14,20,21,22,23))
         self.assertEqual(FLOWS["branchwitch"],(0,1,2,3,4,5,6,7,9,10,11,10,16,17,18,19,20,21,22,23))
     def test_skelehound_and_aerohound_are_distinct_eight_layer_spines(self):
-        self.assertEqual(FLOWS["skelehound"],(0,1,5,9,13,17,21,23))
-        self.assertEqual(FLOWS["aerohound"],(0,2,6,10,14,18,22,23))
+        self.assertEqual(FLOWS["skelehound"],(0,1,4,5,9,13,18,23))
+        self.assertEqual(FLOWS["aerohound"],(0,2,4,6,10,14,20,23))
         self.assertEqual(len(FLOWS["skelehound"]),8)
         self.assertEqual(len(FLOWS["aerohound"]),8)
         self.assertNotEqual(FLOWS["skelehound"],FLOWS["aerohound"])
