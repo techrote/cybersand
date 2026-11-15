@@ -32,7 +32,7 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
-      - name: Check exact immutable v2 source lease and repository policy
+      - name: Check exact immutable v3 source lease and repository policy
         id: lease
         run: |
           set -euo pipefail
@@ -76,6 +76,8 @@ jobs:
           assert c['model']['model_id']=='kandivault/sprocket-500m'
           assert c['model']['revision']=='eb157d4ddddc4619e661d4a2426bb2dd000fc668'
           assert c['worm_common_git_commit']=='4bb9d6e1d0d0d78183f87d1e3c29648edafacf61'
+          assert c['worm_support_git_commit']=='2b6534ac21542805f4bda123f67e9624d21e39d7'
+          assert c['literal_train_eval_overlap']==0
           assert (p/'checkpoint-000072/inventory.json').is_file()
           print('Original 72 real steps and immutable checkpoint receipts accepted for visual evaluation only')
           PY
@@ -85,6 +87,7 @@ jobs:
           git fetch --no-tags --depth=1 origin 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
           test "$(git rev-parse FETCH_HEAD)" = 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
           git show 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61:experiments/agent_painter/worm/common/worm.py > "$RUNNER_TEMP/pinned-worm.py"
+          test "$(git hash-object \"$RUNNER_TEMP/pinned-worm.py\")" = 8979b6f0296e81051194bacc907992d38e006605
           sha256sum "$RUNNER_TEMP/pinned-worm.py" > evidence/worm-v3-eval/pinned-w0.sha256
           python3 -m py_compile "$RUNNER_TEMP/pinned-worm.py"
       - name: Install reviewed portable CPU FP32 and pinned Sprocket root model
