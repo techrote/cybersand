@@ -1,0 +1,142 @@
+name: SPROCKET WORM-001 F1 one-vs-two real CPU inference residency benchmark
+on:
+  push:
+    branches: [codex/agent-painter-sprocket-568]
+    paths:
+      - experiments/agent_painter/lanes/sprocket/worm-fleet-request-f1.json
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: sprocket-worm-fleet-f1-${{ github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  qualify:
+    name: Genuine W6 step24 model one vs two resident original W0 PNGs
+    runs-on: ubuntu-24.04
+    timeout-minutes: 85
+    env:
+      ATEN_CPU_CAPABILITY: default
+      MKL_CBWR: COMPATIBLE
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      OMP_DYNAMIC: 'FALSE'
+      MKL_DYNAMIC: 'FALSE'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Check F1 request, exclusive lane, source syntax, no optimizer
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/worm-fleet-f1
+          python3 - <<'PY'
+          import json,os,subprocess
+          from pathlib import Path
+          p=Path("experiments/agent_painter/lanes/sprocket/worm-fleet-request-f1.json")
+          obj=json.loads(p.read_text())
+          assert obj=={
+           "schema":"cybersand.worm.sprocket-fleet-capacity-request/f1",
+           "experiment":"one-versus-two-real-resident-root-Instruct-W6-8-step-PNG",
+           "model":"kandivault/sprocket-500m",
+           "model_revision":"eb157d4ddddc4619e661d4a2426bb2dd000fc668",
+           "checkpoint":"checkpoint-000024","producer_run":43743251862,
+           "producer_conclusion":"failed_exit_137_after_24_updates",
+           "train_source":"fbeece84ff2609e564bb43b7f40ecde1d80ef187",
+           "w0_source":"4bb9d6e1d0d0d78183f87d1e3c29648edafacf61",
+           "synthetic_not_native":True,"final_sealed":True,
+           "optimizer_steps_this_job":0,"steps_per_worm":8,"max_approved_future_bound":128,
+           "seeds":[6601,6619],"families":["greebles","pipework"],
+           "two_resident_before_four_way":True,"keep_draft_hold":True}
+          assert os.environ["GITHUB_REF"]=="refs/heads/codex/agent-painter-sprocket-568"
+          dest=Path("evidence/worm-fleet-f1")
+          (dest/"source-sha.txt").write_text(subprocess.check_output(["git","rev-parse","HEAD"],text=True))
+          (dest/"request.json").write_text(json.dumps(obj,indent=2,sort_keys=True)+"\n")
+          PY
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 -m py_compile experiments/agent_painter/lanes/sprocket/worm_fleet_capacity_v1.py
+          python3 experiments/agent_painter/lanes/sprocket/test_worm_score_v6_e3_eval.py
+          nproc; free -h
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: sprocket-worm-v6-fbeece84ff2609e564bb43b7f40ecde1d80ef187
+          path: evidence/previous-v6
+          run-id: '43743251862'
+          github-token: ${{ github.token }}
+      - name: Audit failed W6 producer, authentic updates, original optimizer and checkpoint
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          root=Path("evidence/previous-v6"); p=root/"campaign"
+          assert not (p/"summary.json").exists()
+          cfg=json.loads((p/"preflight.json").read_text())["config"]
+          assert cfg["source_sha"]=="fbeece84ff2609e564bb43b7f40ecde1d80ef187"
+          assert cfg["model"]["model_id"]=="kandivault/sprocket-500m"
+          assert cfg["model"]["revision"]=="eb157d4ddddc4619e661d4a2426bb2dd000fc668"
+          assert cfg["model"]["subfolder"]==""
+          assert cfg["worm_common_git_commit"]=="4bb9d6e1d0d0d78183f87d1e3c29648edafacf61"
+          assert cfg["synthetic_not_native"] is True and cfg["final_opened"] is False
+          assert json.loads((p/"lease.json").read_text())["run_id"]=="43743251862"
+          progress=[json.loads(x) for x in (p/"progress.jsonl").read_text().splitlines()]
+          assert len(progress)==24 and [r["step"] for r in progress]==list(range(1,25))
+          for step in (12,24):
+              ck=p/("checkpoint-%06d"%step)
+              inv=json.loads((ck/"inventory.json").read_text())
+              assert len(inv)>=8
+              for name,item in inv.items():
+                  f=ck/name
+                  assert f.stat().st_size==item["bytes"]
+                  assert hashlib.sha256(f.read_bytes()).hexdigest()==item["sha256"]
+          lines=(root/"SHA256SUMS.txt").read_text().splitlines()
+          assert len(lines)>=75
+          for line in lines:
+              h,name=line.split("  ",1)
+              assert hashlib.sha256((root/name.removeprefix("./")).read_bytes()).hexdigest()==h
+          print("W6 failed producer retained; real 24/24 AdamW receipts and checkpoint-24 custody PASS")
+          PY
+      - name: Fetch and attest exact original W0 engine-owned walker
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 origin 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          test "$(git rev-parse FETCH_HEAD)" = 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          git show 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61:experiments/agent_painter/worm/common/worm.py > "$RUNNER_TEMP/pinned-worm.py"
+          test "$(git hash-object "$RUNNER_TEMP/pinned-worm.py")" = 8979b6f0296e81051194bacc907992d38e006605
+          sha256sum "$RUNNER_TEMP/pinned-worm.py" > evidence/worm-fleet-f1/pinned-w0.sha256
+      - name: Install and receive original pinned root Instruct, CPU-only
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/painter-training"
+          "$RUNNER_TEMP/painter-training/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/painter-training/bin/python" -m pip install -r experiments/agent_painter/training/requirements.lock
+          "$RUNNER_TEMP/painter-training/bin/python" -m pip check
+          "$RUNNER_TEMP/painter-training/bin/python" -m pip freeze --all > evidence/worm-fleet-f1/pip-freeze.txt
+          timeout --signal=TERM --kill-after=30s 900s "$RUNNER_TEMP/painter-training/bin/python" experiments/agent_painter/training/download_model.py --profile sprocket --output "$RUNNER_TEMP/painter-model"
+          cp "$RUNNER_TEMP/painter-model/download_receipt.json" evidence/worm-fleet-f1/model-download.json
+      - name: Run two matched serial and two simultaneously resident actual model rollouts
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 4200s "$RUNNER_TEMP/painter-training/bin/python" experiments/agent_painter/lanes/sprocket/worm_fleet_capacity_v1.py \
+            --mode bench --model "$RUNNER_TEMP/painter-model" --w0 "$RUNNER_TEMP/pinned-worm.py" \
+            --checkpoint evidence/previous-v6/campaign/checkpoint-000024 \
+            --output evidence/worm-fleet-f1/results --lease "${GITHUB_RUN_ID}-${GITHUB_SHA}" \
+            --steps 8 --deadline 2000
+      - name: Preserve raw source, PID/lease, RSS, PNGs and failures
+        if: always()
+        run: |
+          set -euo pipefail
+          df -h > evidence/worm-fleet-f1/disk-after.txt
+          (cd evidence/worm-fleet-f1 && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum) > evidence/worm-fleet-f1/SHA256SUMS.txt
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sprocket-worm-fleet-f1-${{ github.sha }}
+          path: evidence/worm-fleet-f1/
+          if-no-files-found: warn
+          retention-days: 90
