@@ -222,6 +222,60 @@ rates and the exhaustive matrix remain intact. Real-time control responsiveness
 also requires interval analysis: batched physical completions can have a high
 average rate while still being separated by long graphical-frame gaps.
 
+### Deliberate low-native control and second retained Windows failure
+
+Commit `1de5335c9ac78e8a0197ccfb06a61a0d35bb06f6`,
+[run 43691622727](https://github.com/techrote/cybersand/actions/runs/43691622727),
+completed the additional Linux controls. The fixed-camera repaired arm achieved
+1.9963 native ticks/s and 120.811 completed Rapier steps/s. Its same-source
+Pixel-30 Free-camera control achieved 14.3063 and 99.045 respectively. Position,
+velocity, rotation and simulated time matched exactly at 995 common completed
+steps, including the entire first 144-step interval. Wall-time physical rates
+were different; this is identical motion by simulated time, not identical
+wall-time motion or evenly paced 120-Hz input responsiveness.
+
+Despite the unchanged physical trajectory and fixed camera, early submitted/live
+gap mean rose from 3.9955 to 29.2101 px and maximum from 42.914 to 88.491 px.
+The low-native repaired trace held the tick-1 bound pose through steps 87–122
+while live physics advanced, then returned to live at step 130 with an
+88.2936-px jump. That hold lasted 364.009 ms. The six held frames reported
+`material_in_swept_mask` with crossfade already inactive. Follow-camera Pixel-2
+also retained a 90.61-px compensation change. The guard's conservative
+bound-to-live sweep is an occupancy veto; it does not by itself prove that the
+actual nonlinear physical trajectory penetrated material.
+An independent reconstruction of the first refused cell from the scan count
+and Needle's 7-by-3 geometry found the long-hold witnesses outside both endpoint
+rectangles, admitted only by the final sweep sample's 0.657–0.714-cell dilation.
+No recorded completed physical pose in the corresponding interval covered those
+first witness cells. The raw per-frame material arrays and continuous
+within-step solver paths were not captured, so this does not prove clearance of
+every possible material cell or justify removing the conservative safety check.
+It does establish that these first refusals must not be labelled proven physical
+collisions. Snapshot age enlarges a conservative presentation sweep and feeds
+back into discontinuous old/live pose selection.
+
+This counterfactual confirms unresolved snapshot-age/pose-selection coherence
+after the targeted repair. Fixing the camera or retaining exact old texture
+history does not remove it. A whole-mission rendering acceptance **fails** this
+case; the bounded repairs and experiment apparatus remain useful, but must not
+be promoted as a complete solution.
+The Pixel-2 arms accepted no native response batches: 21 per-body age refusals
+were observed, with other attempts rejected as duplicate snapshots. This
+counterfactual does not qualify asynchronous native material contact, even
+though the observed Rapier trajectory matches its faster-native control.
+
+The second Windows job passed installed smoke again and successfully entered
+`Test It.cmd`, then failed before simulation because the intermediate process
+inherited PowerShell 7's module paths and Windows PowerShell 5.1 could not load
+`Get-FileHash`. The source-pinned failure receipt and ZIP are retained as
+artifact 14152538484. Microsoft's
+[module-path documentation](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_psmodulepath?view=powershell-7.6#starting-windows-powershell-from-powershell-7)
+describes this exact intermediate-process case. The runner now clears inherited
+`PSModulePath` within the command's `setlocal`, explicitly imports the running
+PowerShell's in-box modules, validates required commands, and records concise
+runtime/module provenance. Integrity checks are unchanged; bootstrap failures
+retain a plain receipt when JSON/archive support itself is unavailable.
+
 Exact-source CI uses the existing qualification workflow with its source/native
 guards preserved. Linux performs actual graphical native runs under Xvfb;
 Windows extracts and hashes the original deliverable, runs the installed
@@ -237,6 +291,9 @@ its exact-source Windows/Linux jobs and preserved-feature regressions complete.
 Full independently paced real-time physics/presentation remains **HOLD** pending
 an asynchronous coupling contract and real Windows NVIDIA acceptance. No merge
 or default physics change is authorized by this branch.
+The observed 2-Hz material control is a **FAIL for full presentation-coherence
+integration**, not merely a missing physical-GPU approval. Passing artifact and
+regression gates must not conceal that measured remaining failure.
 
 The required next architecture is a separately reviewed timestamped coupling
 boundary: completed native material/terrain epochs; completed Rapier states with

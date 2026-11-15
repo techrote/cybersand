@@ -13,11 +13,39 @@ param(
 )
 Set-StrictMode -Version Latest
 $ErrorActionPreference='Stop'
-$Root=(Resolve-Path -LiteralPath $PSScriptRoot).Path
+$Root=[IO.Path]::GetFullPath($PSScriptRoot)
+$Output=[IO.Path]::Combine($Root,'Test-It-Results',([DateTime]::Now.ToString('yyyyMMdd-HHmmss')+'-'+$PID))
+[void][IO.Directory]::CreateDirectory($Output)
+$ModuleProvenance=@()
+$RequiredCommands=@('Get-FileHash','Get-CimInstance','ConvertFrom-Json','ConvertTo-Json',
+    'Compress-Archive','Get-Date','Get-Content','New-Item','Resolve-Path','Join-Path',
+    'Test-Path','New-Object','Measure-Object','Sort-Object','Select-Object','Write-Host',
+    'Write-Warning','Out-Null','Where-Object','ForEach-Object')
+try {
+    # Explicit in-box paths also support direct PS1 invocation from a process
+    # that inherited PowerShell 7's PSModulePath. No module downloads/install.
+    foreach($ModuleName in @('Microsoft.PowerShell.Management','Microsoft.PowerShell.Utility',
+                             'CimCmdlets','Microsoft.PowerShell.Archive')) {
+        $ModuleManifest=[IO.Path]::Combine($PSHOME,'Modules',$ModuleName,($ModuleName+'.psd1'))
+        if(-not [IO.File]::Exists($ModuleManifest)){throw ('Missing in-box PowerShell module: '+$ModuleManifest)}
+        foreach($LoadedModule in @(Import-Module -Name $ModuleManifest -Force -PassThru -ErrorAction Stop)) {
+            $ModuleProvenance+=@{name=$LoadedModule.Name;version=[string]$LoadedModule.Version;path=$LoadedModule.Path}
+        }
+    }
+    foreach($CommandName in $RequiredCommands){[void](Get-Command -Name $CommandName -ErrorAction Stop)}
+}catch{
+    # A missing in-box JSON/archive module cannot produce the ordinary ZIP;
+    # preserve a plain receipt using only .NET and the already-created folder.
+    $BootstrapFailure='TEST IT BOOTSTRAP INCOMPLETE'+[Environment]::NewLine+
+        'PowerShell '+[string]$PSVersionTable.PSVersion+' at '+$PSHOME+[Environment]::NewLine+
+        $_.Exception.ToString()+[Environment]::NewLine
+    [IO.File]::WriteAllText([IO.Path]::Combine($Output,'bootstrap-failure.txt'),$BootstrapFailure,[Text.UTF8Encoding]::new($false))
+    [Console]::Error.WriteLine($BootstrapFailure)
+    exit 1
+}
 $Engine=Join-Path $Root 'Godot_v4.7-stable_win64_console.exe'
 $Project=Join-Path $Root 'godot'
 $ManifestFile=Join-Path $Root 'PR593-MANIFEST.json'
-$Output=Join-Path $Root ('Test-It-Results\'+(Get-Date -Format 'yyyyMMdd-HHmmss')+'-'+$PID)
 $Zip=$Output+'.zip'
 $Cases=Join-Path $Output 'cases'
 New-Item -ItemType Directory -Force -Path $Cases|Out-Null
@@ -29,9 +57,12 @@ $PreviousCadence=$env:CYBERSAND_DIAG_RENDER_CADENCE
 $Start=Get-Date
 $Summary=@{schema='engine-lab-scripted-pose-test-it-v1';status='incomplete';complete=$false
     source='unverified';driver=$RenderingDriver;cases=@();errors=@();processes=@()
+    powershell=@{version=[string]$PSVersionTable.PSVersion;edition=[string]$PSVersionTable.PSEdition
+        home=$PSHOME;modules=$ModuleProvenance;validated_commands=$RequiredCommands}
     pairs=@();failures=@();physical_acceptance='pending_owner_NVIDIA_review'
     physics_rate_semantics='Fixed 1/60 second per completed Rapier step; 120 callbacks is not normalized 120Hz physics. Compare physical trajectories at equal completed steps.'
     mode=$(if($FullCadence){'full-cadence'}elseif($Cadence){'cadence'}elseif($Quick){'quick'}elseif($Compare){'compare'}elseif($Full){'full'}else{'eight-case'})}
+Write-Host ('TEST_IT_POWERSHELL_RUNTIME '+($Summary.powershell|ConvertTo-Json -Depth 5 -Compress))
 function Require([bool]$Ok,[string]$Message){if(-not $Ok){throw $Message}}
 function Sha([string]$Path){return (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash.ToLowerInvariant()}
 function Field($Object,[string]$Name,$Fallback=$null) {

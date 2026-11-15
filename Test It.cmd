@@ -1,5 +1,8 @@
 @echo off
 setlocal
+rem An intermediate cmd can inherit incompatible PowerShell 7 module paths.
+rem Windows PowerShell constructs its in-box defaults when this is absent.
+set "PSModulePath="
 cd /d "%~dp0"
 echo CyberSand Test It: matched render-cadence repair and legacy controls
 echo The Windows PowerShell script will save a ZIP in Test-It-Results.
