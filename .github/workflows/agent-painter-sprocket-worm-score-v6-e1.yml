@@ -126,7 +126,7 @@ jobs:
              'post_optimization_summary_missing':True,
              'qualification':'step24 checkpoint only; NOT successful producer job or fully qualified training campaign',
              'native':False,'sealed_final_opened':False
-          },sort_keys=True,indent=2)+'\\n')
+          },sort_keys=True,indent=2)+'\n')
           print('Original W6 producer FAIL / exit137 retained; separately valid step24 optimizer/checkpoint evidence PASS')
           PY
       - name: Obtain original pinned W0 host and independently preserve its source
