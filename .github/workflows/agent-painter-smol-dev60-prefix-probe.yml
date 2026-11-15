@@ -1,0 +1,102 @@
+name: SMOL synthetic 60-prefix upstream-tokenizer transport qualification (NOT DEV60)
+on:
+  push:
+    branches: [codex/agent-painter-smol-568]
+    paths:
+      - experiments/agent_painter/lanes/smol/dev60-prefix-probe-request.json
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: smol-synthetic-prefix-${{ github.sha }}
+  cancel-in-progress: false
+jobs:
+  exact-pinned-synthetic-prefix:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 11ba1f1915362d3d127edfbe37fe9e30c57eb8b9
+          path: shared-v2
+          persist-credentials: false
+      - name: Source, narrow custody and 11 adversarial parser checks
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git -C shared-v2 rev-parse HEAD)" = 11ba1f1915362d3d127edfbe37fe9e30c57eb8b9
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$GITHUB_REPOSITORY" = techrote/cybersand
+          test "$GITHUB_REF" = refs/heads/codex/agent-painter-smol-568
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          req=json.loads(Path('experiments/agent_painter/lanes/smol/dev60-prefix-probe-request.json').read_text())
+          assert req == {
+            'schema':'cybersand.smol-synthetic-prefix-request/1',
+            'sequence':1, 'status':'SYNTHETIC-TRANSPORT-ONLY',
+            'model_revision':'12fd25f77366fa6b3b4b768ec3050bf629380bac',
+            'shared_source':'11ba1f1915362d3d127edfbe37fe9e30c57eb8b9',
+            'synthetic_groups':12, 'synthetic_requests':60, 'real_dev60_requests':0,
+            'training':False, 'inference':False, 'native':False,
+            'teacher_targets':False, 'final_access':False, 'draft_hold':True
+          }
+          PY
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/smol-prefix-policy.json
+          python3 -m py_compile experiments/agent_painter/lanes/smol/dev60_prefix_preflight.py
+          python3 -m unittest discover -s experiments/agent_painter/lanes/smol -p 'test_dev60_prefix_preflight.py' -v
+          mkdir -p evidence/smol-synthetic-prefix
+          git rev-parse HEAD > evidence/smol-synthetic-prefix/executed-source.txt
+          printf 'INCOMPLETE_NOT_DEV60\n' > evidence/smol-synthetic-prefix/status.txt
+      - name: Pinned tokenizer-only environment and genuine Hugging Face snapshot
+        env:
+          HF_HUB_DISABLE_XET: '1'
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/smol-prefix-venv"
+          "$RUNNER_TEMP/smol-prefix-venv/bin/python" -m pip install \
+            'huggingface-hub==2.4.0' 'tokenizers==0.23.3' 'transformers==5.22.2' \
+            'jinja2==3.1.6' 'markupsafe==3.0.3' 'PyYAML==6.0.3'
+          "$RUNNER_TEMP/smol-prefix-venv/bin/python" -m pip check
+          "$RUNNER_TEMP/smol-prefix-venv/bin/python" -m pip freeze --all > evidence/smol-synthetic-prefix/environment.txt
+          timeout --signal=TERM --kill-after=20s 600s "$RUNNER_TEMP/smol-prefix-venv/bin/python" - <<'PY'
+          import os
+          from huggingface_hub import snapshot_download
+          snapshot_download(repo_id='HuggingFaceTB/SmolLM2-135M-Instruct',
+              revision='12fd25f77366fa6b3b4b768ec3050bf629380bac',
+              allow_patterns=['config.json','tokenizer.json','tokenizer_config.json'],
+              local_dir=os.environ['RUNNER_TEMP']+'/smol-prefix-tokenizer')
+          PY
+      - name: Verify original pinned upstream framing and synthetic 60-row static context
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=20s 600s "$RUNNER_TEMP/smol-prefix-venv/bin/python" \
+            experiments/agent_painter/lanes/smol/dev60_prefix_preflight.py \
+            --tokenizer "$RUNNER_TEMP/smol-prefix-tokenizer" \
+            --shared shared-v2 --source-sha "$GITHUB_SHA" \
+            --output evidence/smol-synthetic-prefix/receipt.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path('evidence/smol-synthetic-prefix/receipt.json').read_text())
+          assert x['status']=='SYNTHETIC-ONLY-NOT-DEV60'
+          assert x['synthetic_requests']==60 and x['synthetic_groups']==12
+          assert x['real_dev60_requests']==x['independent_real_structures']==0
+          assert x['upstream_eos_token_id']==2 and x['minimum_provisional_headroom']>=0
+          assert not any(x[k] for k in ('reference_targets_checked','native_execution',
+                                        'training','model_inference','final_opened'))
+          assert len(x['records'])==60
+          Path('evidence/smol-synthetic-prefix/status.txt').write_text('PASS_SYNTHETIC_ONLY_NOT_DEV60\n')
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: smol-synthetic-prefix-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/smol-synthetic-prefix/
+          if-no-files-found: warn
+          retention-days: 90
