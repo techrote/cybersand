@@ -103,6 +103,37 @@ jobs:
           "$RUNNER_TEMP/lfm-worm/bin/python" -m pip install -r experiments/agent_painter/training/requirements-lfm25_vl.lock
           "$RUNNER_TEMP/lfm-worm/bin/python" -m pip check
           "$RUNNER_TEMP/lfm-worm/bin/python" -m pip freeze --all > evidence/diagnostics/pip-freeze.txt
+      - name: Reject malformed W6 synthetic/train splits before expensive base download
+        run: |
+          set -euo pipefail
+          "$RUNNER_TEMP/lfm-worm/bin/python" - <<'PY'
+          import sys, json
+          from pathlib import Path
+          sys.path.insert(0, "experiments/agent_painter/lanes/lfm25_vl")
+          import worm_train_w6_v1 as w6
+          worm = w6.worm_source(Path("worm-w0/experiments/agent_painter/worm/common"))
+          support = w6.support_source(Path("worm-support/experiments/agent_painter/worm/support_lfm"), worm)
+          rows, custody = w6.dataset(support)
+          train = rows["WORM_TRAIN"]
+          dev = rows["WORM_DEV"]
+          assert not {x["prompt"] for x in train} & {x["prompt"] for x in dev}
+          for family in w6.FAMILIES:
+              anti = [x for x in train if x["family"] == family and
+                  x["origin"] == "counterfactual-four-RIGHT-history-not-W0-replay"]
+              assert len(anti) >= 20, (family, len(anti))
+              assert len({x["completion"] for x in anti}) >= 2, family
+              assert all(x["completion"] in x["legal"] and x["completion"] != "RIGHT"
+                         and json.loads(x["prompt"])["last_actions"] == ["RIGHT"]*4
+                         for x in anti)
+              original = [x for x in train if x["family"] == family and
+                  x["origin"] != "counterfactual-four-RIGHT-history-not-W0-replay"]
+              for action, count in {"STRAIGHT":3,"LEFT":4,"RIGHT":3,
+                                    "BRANCH":4,"RETRACE":4,"STOP":2}.items():
+                  assert sum(x["completion"] == action for x in original) >= count, (family,action)
+          assert custody["anti_right4_is_synthetic_not_W0_or_native"] is True
+          print("W6 model-free source+TRAIN-only counterfactual audit PASS",
+                len(train), len(dev), custody["anti_right4_train_rows_by_family"])
+          PY
       - name: Download pinned FULL official multimodal LFM weights and source-verify processor
         run: |
           set -euo pipefail
