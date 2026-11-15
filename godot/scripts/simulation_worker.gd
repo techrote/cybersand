@@ -62,6 +62,10 @@ var _simulation_window_enabled: bool = true
 var _cadence_lod_enabled: bool = true
 var _liquid_surface_adhesion_enabled: bool = true
 var _render_snapshot_interval_usec: int = DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC
+# ENGINE-LAB-001: live request guarded by worker mutex, no alternate World owner.
+var _engine_lab_pixel_target_hz: int = 60
+var _engine_lab_pixel_interval_usec: int = TICK_INTERVAL_USEC
+var _engine_lab_sample_wake: bool = true
 var _rigid_body_states: PackedFloat32Array = PackedFloat32Array()
 var _rigid_body_epoch: int = 0
 # COUPLING-LOCKSTEP-001 opt-in fence (default off; see set_lockstep_coupling).
@@ -1736,6 +1740,23 @@ func _admit_physical_effects(packets: Array, epoch: int) -> Array:
 	return admitted
 
 
+func set_engine_lab_pixel_pacing(hz: int, sample_wake: bool) -> void:
+	_mutex.lock()
+	_engine_lab_pixel_target_hz = clampi(hz,1,1000)
+	_engine_lab_pixel_interval_usec = maxi(1,roundi(1000000.0/float(_engine_lab_pixel_target_hz)))
+	_engine_lab_sample_wake = sample_wake
+	_mutex.unlock()
+
+
+func engine_lab_pixel_pacing() -> Dictionary:
+	_mutex.lock()
+	var result: Dictionary = {"target_hz":_engine_lab_pixel_target_hz,
+		"interval_usec":_engine_lab_pixel_interval_usec,
+		"sample_wake":_engine_lab_sample_wake}
+	_mutex.unlock()
+	return result
+
+
 func set_render_snapshot_hz(render_hz: int) -> void:
 	_mutex.lock()
 	_render_snapshot_interval_usec = maxi(1, roundi(1000000.0 / maxf(float(render_hz), 1.0)))
@@ -2235,6 +2256,8 @@ func _worker_loop() -> void:
 		var local_cadence_enabled: bool = true
 		var local_liquid_adhesion_enabled: bool = true
 		var local_render_snapshot_interval_usec: int = DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC
+		var local_pixel_interval_usec: int = TICK_INTERVAL_USEC
+		var local_sample_wake: bool = true
 		var local_rigid_body_states: PackedFloat32Array = PackedFloat32Array()
 		var local_rigid_body_epoch: int = 0
 		var local_physical_effects: Array = []
@@ -2267,6 +2290,8 @@ func _worker_loop() -> void:
 		local_cadence_enabled = _cadence_lod_enabled
 		local_liquid_adhesion_enabled = _liquid_surface_adhesion_enabled
 		local_render_snapshot_interval_usec = _render_snapshot_interval_usec
+		local_pixel_interval_usec = _engine_lab_pixel_interval_usec
+		local_sample_wake = _engine_lab_sample_wake
 		var physical_wait: bool = not _prepared_physical_publication.is_empty() \
 			or not _lab_request.get("controlled_liquid_setup",{}).get("physical_owner",{}).is_empty()
 		local_rigid_body_states = _rigid_body_states
@@ -2565,9 +2590,9 @@ func _worker_loop() -> void:
 			# Main's publications pace a fenced owner; no wall-clock deadline.
 			next_tick_usec = Time.get_ticks_usec()
 			continue
-		next_tick_usec += TICK_INTERVAL_USEC
+		next_tick_usec += local_pixel_interval_usec
 		var now_usec: int = Time.get_ticks_usec()
-		if _workbench_extent != Vector2i.ZERO and not _simulation_failed:
+		if _workbench_extent != Vector2i.ZERO and not _simulation_failed and local_sample_wake:
 			# Workbench lock-step: Rapier steps only after this worker completes
 			# the published body sample. A free-running timer drifts in phase
 			# against the physics frame and misses alternate frames (exact 30 Hz
@@ -2580,7 +2605,7 @@ func _worker_loop() -> void:
 		var wait_usec: int = next_tick_usec - now_usec
 		if wait_usec > 0:
 			OS.delay_usec(wait_usec)
-		elif -wait_usec > TICK_INTERVAL_USEC * MAX_BACKLOG_TICKS:
+		elif -wait_usec > local_pixel_interval_usec * MAX_BACKLOG_TICKS:
 			_worker_overruns += 1
 			next_tick_usec = now_usec
 

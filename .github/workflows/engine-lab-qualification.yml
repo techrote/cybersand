@@ -1,0 +1,160 @@
+name: ENGINE-LAB-001 live clocks and Windows physical evaluation
+on:
+  push:
+    branches: [feature/engine-lab-controls-20261114]
+    paths:
+      - '.github/workflows/engine-lab-qualification.yml'
+      - 'godot/scripts/main.gd'
+      - 'godot/scripts/shared_workbench.gd'
+      - 'godot/scripts/simulation_worker.gd'
+      - 'godot/scripts/feature_launcher.gd'
+      - 'godot/scripts/workbench_engine_lab.gd'
+      - 'godot/tests/test_workbench_engine_lab.gd'
+      - 'tools/ci/package_engine_lab_windows.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: engine-lab-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  linux-native:
+    name: Linux native Engine Lab controls
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          lfs: false
+          fetch-depth: 0
+      - name: Native immutable source and qualified SO
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor 9628729af052b417aa8a64e56f7e7bcdf4f2e876 HEAD
+          git diff --exit-code 214de85adef2aaabc8e26de8612a3bf27cc1a081 HEAD -- native godot/native_extension godot/scripts/workbench_physics_bridge.gd godot/scripts/pixel_camera_transform.gd
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: native-pixel-integrated-runtime-attempt-1-linux-43537909868
+          repository: techrote/cybersand
+          run-id: 43537909868
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/pr566-linux
+      - name: Install pinned native and Godot
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib,json,pathlib
+          base=pathlib.Path('build/pr566-linux')
+          p=json.loads((base/'runtime-provenance.linux.json').read_text())
+          so=base/'libcybersand_native.linux.x86_64.so'
+          assert p['source_commit']=='214de85adef2aaabc8e26de8612a3bf27cc1a081'
+          assert hashlib.sha256(so.read_bytes()).hexdigest()==p['sha256']=='44c906356a98c84b09c01f6e83bcae2391a4c0e39c5c632431a4a3f4cc1578e9'
+          for path,sha in p['source_inputs'].items():
+              assert hashlib.sha256(pathlib.Path(path).read_bytes().replace(b'\r\n',b'\n')).hexdigest()==sha,path
+          PY
+          mkdir -p godot/addons/cybersand_native/bin
+          cp build/pr566-linux/libcybersand_native.linux.x86_64.so godot/addons/cybersand_native/bin/
+          git lfs install --local
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
+          echo '566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' | sha256sum -c --strict
+          curl -fL --retry 3 --max-time 600 -o "$RUNNER_TEMP/godot-4.7.zip" 'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
+          echo "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  $RUNNER_TEMP/godot-4.7.zip" | sha256sum -c --strict
+          unzip -q "$RUNNER_TEMP/godot-4.7.zip" -d "$RUNNER_TEMP"
+          GODOT_BIN="$(find "$RUNNER_TEMP" -maxdepth 1 -type f -name 'Godot_v4.7*' | head -1)"
+          chmod +x "$GODOT_BIN"
+          echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
+      - name: Exercise actual native Engine Lab control wiring
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          timeout 180 "$GODOT_BIN" --headless --path godot --editor --quit > evidence/import.log 2>&1 || { cat evidence/import.log; exit 1; }
+          timeout 180 "$GODOT_BIN" --headless --path godot --script res://tests/test_workbench_engine_lab.gd > evidence/engine-lab.log 2>&1 || { cat evidence/engine-lab.log; exit 1; }
+          grep -F ENGINE_LAB_RESULT evidence/engine-lab.log
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: engine-lab-linux-${{ github.run_id }}
+          path: evidence/
+          if-no-files-found: ignore
+  windows-owner-package:
+    name: Windows 11 portable Engine Lab build and installed test
+    needs: linux-native
+    runs-on: windows-2022
+    timeout-minutes: 110
+    defaults:
+      run:
+        shell: bash
+    env:
+      CYBERSAND_EVAL_SOURCE_SHA: ${{ github.sha }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          lfs: false
+          fetch-depth: 0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: native-pixel-integrated-build-windows-43537909868-1
+          repository: techrote/cybersand
+          run-id: 43537909868
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: build/pr566-qualified
+      - name: Acquire pinned Godot, Rapier and notices
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          echo 'b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7  godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' | sha256sum -c --strict
+          curl -fL --retry 3 --max-time 600 -o "$RUNNER_TEMP/godot-4.7-win.zip" 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          mkdir -p "$RUNNER_TEMP/lab-notices"
+          for name in LICENSE.txt COPYRIGHT.txt; do
+            curl -fL --retry 3 --max-time 300 -o "$RUNNER_TEMP/lab-notices/$name" "https://raw.githubusercontent.com/godotengine/godot/5b4e0cb0f/$name"
+          done
+      - name: Stage licensed signed Microsoft runtime
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $notices = Join-Path $env:RUNNER_TEMP 'lab-notices'
+          $runtime = Join-Path $notices 'Microsoft-Visual-C-Runtime-LICENSE.docx'
+          $developer = Join-Path $notices 'Microsoft-Visual-Studio-2022-LICENSE.docx'
+          curl.exe -fL --retry 3 -o $runtime 'https://visualstudio.microsoft.com/wp-content/uploads/2021/09/Visual-C-Runtime-2015-2022-License-1.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Runtime licence download failed' }
+          curl.exe -fL --retry 3 -o $developer 'https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Visual-Studio-2022-Enterprise-Professional-License-EN.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Developer licence download failed' }
+          ./tools/ci/stage_windows_vc_runtime.ps1 -Output (Join-Path $env:RUNNER_TEMP 'lab-vc-runtime') -License $runtime -DeveloperLicense $developer
+      - name: Create standalone source-pinned Engine Lab ZIP
+        run: |
+          set -euo pipefail
+          mkdir -p delivery
+          python tools/ci/package_engine_lab_windows.py build --native-stage build/pr566-qualified --godot-zip "$RUNNER_TEMP/godot-4.7-win.zip" --notices "$RUNNER_TEMP/lab-notices" --vc "$RUNNER_TEMP/lab-vc-runtime" --output "$RUNNER_TEMP/engine-lab-packed" --archive "delivery/CyberSand-EngineLab-Windows-${GITHUB_SHA:0:12}.zip"
+      - name: Extract original deliverable ZIP to clean Windows folder
+        shell: pwsh
+        run: |
+          $archive=Get-ChildItem 'delivery/CyberSand-EngineLab-Windows-*.zip'
+          if (@($archive).Count -ne 1) { throw 'Exactly one package required' }
+          if (Test-Path 'C:\csengine') { throw 'Destination already exists' }
+          Expand-Archive -LiteralPath $archive.FullName -DestinationPath 'C:\csengine'
+      - name: Verify installed bytes and all physical UI smoke tests
+        run: |
+          set -euo pipefail
+          python tools/ci/package_engine_lab_windows.py verify --output C:/csengine
+          python tools/ci/package_engine_lab_windows.py smoke --output C:/csengine --evidence build/engine-lab-owner-smoke
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CyberSand-Engine-Lab-Windows-${{ github.run_id }}
+          path: delivery/
+          compression-level: 0
+          if-no-files-found: error
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: Engine-Lab-Windows-Logs-${{ github.run_id }}
+          path: build/engine-lab-owner-smoke/
+          if-no-files-found: ignore
