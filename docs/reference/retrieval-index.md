@@ -10,6 +10,14 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+## Actor versus terrain stutter and independent clocks
+
+| Question | Canonical route |
+| --- | --- |
+| Why can 60 graphical FPS coexist with 10–20 native and Rapier ticks? | [Cadence clock meanings](../operations/engine-lab-pose-tracing.md#what-the-rates-mean) |
+| What is repaired in the #609 continuation, and does it establish NVIDIA acceptance or independent 120-Hz physics? | [Bounded causal repair](../audits/2026-11-15-render-cadence-001.md) |
+| How do I collect source-matched Free/Follow, Pixel/Rapier/FPS and ACK comparisons without development tools? | [One-command campaign](../operations/engine-lab-pose-tracing.md#one-command-source-matched-cadence-campaign) |
+
 ## Native display-pixel scrolling and fractional camera coordinates
 
 | Question | Canonical route |

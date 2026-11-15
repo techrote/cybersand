@@ -11,6 +11,24 @@ last-reviewed: 2026-10-19
 
 # Rendering and gameplay bridges
 
+## Experimental cadence continuation of #609
+
+The [RENDER-CADENCE-001 branch](../audits/2026-11-15-render-cadence-001.md)
+retains an exact CPU copy of the preceding Workbench GPU material image for
+bounded local swept clearance. It replaces a global unknown-history response
+to large patches; it does not interpolate native motion. Delayed upload ACKs
+use fixed frame deadlines. The optional diagnostic publication gate is off by
+default, holds only material extraction, and permits resync/World replacement
+without acknowledging an invalid upload. Native simulation authority and
+ordinary publication policy remain unchanged.
+
+Actual completion events distinguish native steps, immutable snapshot handoff,
+Main receipt, upload return, ACK and Godot post-draw. None measures hardware
+scanout. Workbench's normal Rapier/native sample handshake and one-step stale
+response fence remain; independent callback controls do not by themselves
+establish independent physical clocks. Use the [runbook](../operations/engine-lab-pose-tracing.md)
+for clock semantics and exact-source acceptance boundaries.
+
 ## Can rendering read native cells directly?
 
 **Current:** display consumers receive copied immutable data. They never retain

@@ -121,6 +121,18 @@ Converge admitted desktop/painting/agent/remote work incrementally into main,
 preserving active owners and qualifying each join. #548 material-only Flatten
 is an Approved semantic successor with Planned implementation, not part of #542.
 
+## Render cadence continuation of #609 — 2026-11-15
+
+The separate `fix/render-cadence-001-20261115` branch is Draft/HOLD.
+[RENDER-CADENCE-001](../audits/2026-11-15-render-cadence-001.md) repairs large-payload
+previous-texture uncertainty and delayed-ACK starvation, and extends the
+[original source-fenced Windows test](../operations/engine-lab-pose-tracing.md).
+It preserves native/physical law and existing collision fences. Default Workbench
+native/Rapier completion coupling, absent actor interpolation and genuine contact
+holds remain; the candidate is not a validated independent real-time 120-Hz
+physics mode. Physical NVIDIA acceptance and exact-source platform evidence must
+be reported separately. #582 is outside this diagnostic/repair branch.
+
 ## Ballistic Water, IN-B1 and workbench spray (#362) — 2026-11-05
 
 **Experimental draft, not on main; no default changed.** The

@@ -1,22 +1,33 @@
-name: POSE-TRACE-001 source-bound Rapier/camera tracing on Linux and Windows
+name: RENDER-CADENCE-001 exact-source native graphical A/B and Windows package
 on:
   push:
-    branches: [diagnostics/engine-lab-pose-trace-20261115]
+    branches: [diagnostics/engine-lab-pose-trace-20261115, fix/render-cadence-001-20261115]
     paths:
       - '.github/workflows/pose-trace-qualification.yml'
       - 'godot/scripts/workbench_pose_trace.gd'
+      - 'godot/scripts/workbench_presentation_coherence.gd'
       - 'godot/tests/test_workbench_pose_trace.gd'
+      - 'godot/tests/test_render_cadence_contract.gd'
+      - 'godot/tests/test_render_cadence_worker.gd'
+      - 'godot/tests/test_render_ack_deadlines.gd'
+      - 'godot/tests/test_paint_editor_workbench.gd'
+      - 'godot/tests/test_native_pixel_camera.gd'
+      - 'godot/tests/test_workbench_failure_recovery.gd'
       - 'godot/tests/test_engine_lab_physical_test_it.gd'
       - 'godot/scripts/engine_lab_reference_fixture.gd'
       - 'godot/tests/fixtures/engine_lab/setup-gate-canvas.json'
+      - 'godot/tests/fixtures/engine_lab/render-cadence-conditions.json'
       - 'Run-Test-It.ps1'
       - 'Test It.cmd'
       - 'tools/ci/analyze_pose_trace.py'
       - 'tools/ci/test_analyze_pose_trace.py'
+      - 'tools/ci/run_render_cadence_matrix.py'
       - 'docs/operations/engine-lab-pose-tracing.md'
+      - 'docs/audits/2026-11-15-render-cadence-001.md'
       - 'godot/scripts/main.gd'
       - 'godot/scripts/shared_workbench.gd'
       - 'godot/scripts/simulation_worker.gd'
+      - 'godot/scripts/simulation_snapshot.gd'
       - 'godot/scripts/feature_launcher.gd'
       - 'godot/scripts/workbench_engine_lab.gd'
       - 'godot/tests/test_workbench_engine_lab.gd'
@@ -30,9 +41,17 @@ concurrency:
   cancel-in-progress: true
 jobs:
   linux-native:
-    name: Linux native Engine Lab controls
+    name: Linux native graphical cadence pair shard ${{ matrix.shard }}
     runs-on: ubuntu-24.04
-    timeout-minutes: 45
+    timeout-minutes: 75
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2]
+    env:
+      CYBERSAND_EVAL_SOURCE_SHA: ${{ github.sha }}
+      CYBERSAND_SOURCE_REVISION: ${{ github.sha }}
+      LIBGL_ALWAYS_SOFTWARE: '1'
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -45,6 +64,32 @@ jobs:
           set -euo pipefail
           git merge-base --is-ancestor 9628729af052b417aa8a64e56f7e7bcdf4f2e876 HEAD
           git diff --exit-code 214de85adef2aaabc8e26de8612a3bf27cc1a081 HEAD -- native godot/native_extension godot/scripts/workbench_physics_bridge.gd godot/scripts/pixel_camera_transform.gd
+      - name: Exact-source documentation, dependency provenance and retrieval gates
+        if: matrix.shard == 0
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          git cat-file -e 6a58311982941b75f46e22109a0829e5acb83c7e^{commit} || git fetch --no-tags origin 6a58311982941b75f46e22109a0829e5acb83c7e
+          python3 - <<'PY'
+          import hashlib,json,pathlib,subprocess
+          source='6a58311982941b75f46e22109a0829e5acb83c7e'
+          root=pathlib.Path.cwd()
+          paths=('SOURCE-PROVENANCE.json','docs/LOCAL_DEVELOPMENT.md','docs/WEB_THREADING.md','tools/dev.py','validation/browser-results.json')
+          records={}
+          for relative in paths:
+              data=subprocess.check_output(['git','show',source+':'+relative])
+              destination=root.parent/relative
+              destination.parent.mkdir(parents=True,exist_ok=True)
+              destination.write_bytes(data)
+              records[relative]=hashlib.sha256(data).hexdigest()
+          result={'source_sha':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'companion_sha':source,'files_sha256':records}
+          (root/'evidence/companion-provenance.json').write_text(json.dumps(result,indent=2)+'\n')
+          PY
+          python3 tools/ci/check_docs.py --json evidence/documentation.json
+          python3 tools/ci/check_repository.py --json evidence/repository-provenance.json
+          python3 tools/ci/check_m11_consistency.py --json evidence/historical-m11-integrity.json
+          python3 tools/docs/retrieval_eval.py --output evidence/retrieval-frozen.json
+          python3 tools/docs/retrieval_eval.py --queries docs/reference/retrieval-questions-render-cadence.json --output evidence/retrieval-render-cadence.json
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           name: native-pixel-integrated-runtime-attempt-1-linux-43537909868
@@ -76,25 +121,64 @@ jobs:
           GODOT_BIN="$(find "$RUNNER_TEMP" -maxdepth 1 -type f -name 'Godot_v4.7*' | head -1)"
           chmod +x "$GODOT_BIN"
           echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
-      - name: Exercise actual native Engine Lab control wiring
+      - name: Import exact-source application
         run: |
           set -euo pipefail
           mkdir -p evidence
           timeout 180 "$GODOT_BIN" --headless --path godot --editor --quit > evidence/import.log 2>&1 || { cat evidence/import.log; exit 1; }
+      - name: Exercise actual native controls, actor guards and cadence regressions
+        if: matrix.shard == 0
+        run: |
+          set -euo pipefail
           timeout 180 "$GODOT_BIN" --headless --path godot --script res://tests/test_workbench_engine_lab.gd > evidence/engine-lab.log 2>&1 || { cat evidence/engine-lab.log; exit 1; }
           grep -F ENGINE_LAB_RESULT evidence/engine-lab.log
           timeout 180 "$GODOT_BIN" --headless --path godot --script res://tests/test_workbench_pose_trace.gd > evidence/pose-trace.log 2>&1 || { cat evidence/pose-trace.log; exit 1; }
           grep -F POSE_TRACE_RESULT evidence/pose-trace.log
           python3 tools/ci/test_analyze_pose_trace.py
+          for test in test_render_cadence_contract test_render_cadence_worker test_render_ack_deadlines test_workbench_presentation_coherence test_pr593_mask_coherent_production test_pr593_mask_coherent_edit_crossfade test_pr593_mask_coherent_dense_budget; do
+            timeout 240 "$GODOT_BIN" --headless --path godot --script "res://tests/$test.gd" > "evidence/$test.log" 2>&1 || { cat "evidence/$test.log"; exit 1; }
+            if grep -E 'SCRIPT ERROR:|Parse Error:' "evidence/$test.log"; then exit 1; fi
+            tail -n 8 "evidence/$test.log"
+          done
+          mkdir -p evidence/paint-userdata
+          XDG_DATA_HOME="$PWD/evidence/paint-userdata" timeout 600 "$GODOT_BIN" --headless --path godot --script res://tests/test_paint_editor_workbench.gd > evidence/paint-author.log 2>&1 || { cat evidence/paint-author.log; exit 1; }
+          PAINT_REOPEN=1 XDG_DATA_HOME="$PWD/evidence/paint-userdata" timeout 240 "$GODOT_BIN" --headless --path godot --script res://tests/test_paint_editor_workbench.gd > evidence/paint-reopen.log 2>&1 || { cat evidence/paint-reopen.log; exit 1; }
+          CYBERSAND_TEST_ARTIFACT_DIR="$PWD/evidence/native-camera" timeout 300 "$GODOT_BIN" --headless --path godot --script res://tests/test_native_pixel_camera.gd > evidence/native-camera.log 2>&1 || { cat evidence/native-camera.log; exit 1; }
+          timeout 300 "$GODOT_BIN" --headless --path godot --script res://tests/test_workbench_failure_recovery.gd > evidence/failure-recovery.log 2>&1 || { cat evidence/failure-recovery.log; exit 1; }
+          grep -F PAINT_EDITOR_WORKBENCH evidence/paint-author.log
+          grep -F PAINT_EDITOR_WORKBENCH evidence/paint-reopen.log
+          grep -F NATIVE_PIXEL_CAMERA_RESULT evidence/native-camera.log
+          grep -F WORKBENCH_FAILURE_RECOVERY evidence/failure-recovery.log
+          python3 tools/ci/check_ci_provider_policy.py
+      - name: Real graphical 2048 Needle source-matched legacy and repair pairs
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends xvfb xauth libgl1-mesa-dri
+          if [ '${{ matrix.shard }}' = '0' ]; then
+            xvfb-run -a -s '-screen 0 1600x1000x24' timeout 300 "$GODOT_BIN" --rendering-method gl_compatibility --audio-driver Dummy --max-fps 60 --path godot --script res://tests/test_render_cadence_contract.gd -- --render-cadence-evidence="$PWD/evidence/cadence-contract" > evidence/cadence-contract-graphical.log 2>&1 || { cat evidence/cadence-contract-graphical.log; exit 1; }
+            python3 - <<'PY'
+          import hashlib,json,pathlib
+          folder=pathlib.Path('evidence/cadence-contract')
+          result=json.loads((folder/'contract.json').read_text())
+          assert not result['failures'] and len(result['observations'])==8
+          assert len(list(folder.glob('*.png')))==8
+          for row in result['observations']:
+              assert row['graphical'] and hashlib.sha256(pathlib.Path(row['capture_path']).read_bytes()).hexdigest()==row['capture_sha256']
+          for arm in ('legacy','repair'):
+              assert (folder/(arm+'-poses.jsonl')).stat().st_size>0
+          print('GRAPHICAL_CADENCE_CONTRACT_ORIGINALS_PASS',result['checks'],'checks; 8 PNGs; 2 JSONLs')
+          PY
+          fi
+          xvfb-run -a -s '-screen 0 1600x1000x24' python3 tools/ci/run_render_cadence_matrix.py --godot "$GODOT_BIN" --project godot --evidence evidence/cadence --source-sha "$GITHUB_SHA" --shard-index '${{ matrix.shard }}' --shard-count 3 --timeout 900
       - if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: engine-lab-linux-${{ github.run_id }}
+          name: render-cadence-linux-shard-${{ matrix.shard }}-${{ github.run_id }}
           path: evidence/
           if-no-files-found: ignore
   windows-owner-package:
-    name: Windows 11 portable Engine Lab build and installed test
-    needs: linux-native
+    name: Windows portable Engine Lab build and installed test
     runs-on: windows-2022
     timeout-minutes: 110
     defaults:
@@ -102,6 +186,7 @@ jobs:
         shell: bash
     env:
       CYBERSAND_EVAL_SOURCE_SHA: ${{ github.sha }}
+      CYBERSAND_SOURCE_REVISION: ${{ github.sha }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -160,9 +245,9 @@ jobs:
           set -euo pipefail
           python tools/ci/package_engine_lab_windows.py verify --output C:/csengine
           python tools/ci/package_engine_lab_windows.py smoke --output C:/csengine --evidence build/engine-lab-owner-smoke
-      - name: Parse bundled PowerShell and launch source-verified 2048-square scripted Test It
+      - name: Parse bundled PowerShell and run all focused installed cadence pairs
         shell: pwsh
-        timeout-minutes: 35
+        timeout-minutes: 85
         run: |
           $ErrorActionPreference = 'Stop'
           $script = 'C:\csengine\Run-Test-It.ps1'
@@ -174,24 +259,31 @@ jobs:
             throw 'Bundled Run-Test-It.ps1 does not parse'
           }
           Write-Host 'TEST_IT_POWERSHELL_PARSE PASS'
-          & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $script -Quick -RenderingDriver opengl3_angle -TimeoutSeconds 900
-          if ($LASTEXITCODE -ne 0) {
+          $env:CYBERSAND_TEST_IT_NO_PAUSE='1'
+          & cmd.exe /d /s /c '""C:\csengine\Test It.cmd" -RenderingDriver opengl3_angle -TimeoutSeconds 900"'
+          $testItExit=$LASTEXITCODE
+          if ($testItExit -ne 0) {
             Get-ChildItem -Path 'C:\csengine\Test-It-Results' -Recurse -Filter '*.log' -ErrorAction SilentlyContinue |
               Select-Object -Last 8 | ForEach-Object { Write-Host ('=== ' + $_.FullName); Get-Content $_.FullName -Tail 35 }
-            throw ('Actual Test It failed, exit code ' + $LASTEXITCODE)
+            throw ('Actual Test It.cmd failed, exit code ' + $testItExit)
           }
           $reports = @(Get-ChildItem 'C:\csengine\Test-It-Results' -Recurse -Filter 'summary.json')
           if ($reports.Count -ne 1) { throw 'Expected one complete real Test It report' }
           $result = Get-Content -LiteralPath $reports[0].FullName -Raw | ConvertFrom-Json
-          if (-not $result.complete -or $result.status -ne 'passed' -or @($result.cases).Count -ne 1) {
-            throw 'Scripted 2048 reference acceptance did not complete'
+          $matrix = Get-Content 'C:\csengine\godot\tests\fixtures\engine_lab\render-cadence-conditions.json' -Raw | ConvertFrom-Json
+          $expectedPairs = @($matrix.conditions).Count
+          if (-not $result.complete -or $result.status -ne 'passed' -or @($result.cases).Count -ne (2*$expectedPairs) -or @($result.pairs).Count -ne $expectedPairs) {
+            throw 'Complete focused 2048 cadence matrix did not execute'
           }
-          Write-Host ('TEST_IT_2048_NATIVE_NEEDLE_PASS '+ ($result | ConvertTo-Json -Depth 8 -Compress))
+          foreach ($pair in $result.pairs) {
+            if ($pair.physical_trajectory.common_step_bodies -lt 120) { throw ('Insufficient matched physical trajectory: '+$pair.condition) }
+          }
+          Write-Host ('TEST_IT_2048_CADENCE_EXECUTION_PASS '+ (@{source=$result.source;cases=@($result.cases).Count;pairs=@($result.pairs).Count;acceptance=$result.physical_acceptance} | ConvertTo-Json -Compress))
       - name: Retain real Windows test script evidence on either outcome
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: Pose-Trace-Owner-Test-It-Results-${{ github.run_id }}
+          name: Render-Cadence-Owner-Test-It-Results-${{ github.run_id }}
           path: C:/csengine/Test-It-Results/
           if-no-files-found: ignore
           retention-days: 90

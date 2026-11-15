@@ -30,6 +30,7 @@ const MAX_PENDING_RENDER_PATCHES: int = 256
 const MAX_BRUSH_FOOTPRINT_CELLS: int = 4096
 const MAX_PENDING_BRUSH_COMMANDS: int = 8
 const PARTICIPATION_SAMPLE_INTERVAL_USEC: int = 250000
+const RENDER_CADENCE_TRACE_CAPACITY: int = 16384
 
 var _thread: Thread = Thread.new()
 var _mutex: Mutex = Mutex.new()
@@ -66,6 +67,25 @@ var _render_snapshot_interval_usec: int = DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC
 var _engine_lab_pixel_target_hz: int = 60
 var _engine_lab_pixel_interval_usec: int = TICK_INTERVAL_USEC
 var _engine_lab_sample_wake: bool = true
+# RENDER-CADENCE-001: diagnostic publication policy, never a native tick gate.
+var _engine_lab_ack_gated_publication: bool = false
+# Trace state is exchanged only under _mutex. Each capture has a generation so
+# an owner turn begun before finish/restart cannot append to the new capture.
+var _render_cadence_trace_active: bool = false
+var _render_cadence_trace_generation: int = 0
+var _render_cadence_trace_events: Array[Dictionary] = []
+var _render_cadence_trace_dropped: int = 0
+var _render_cadence_trace_started_usec: int = 0
+var _render_cadence_trace_last_ack: int = -1
+# These completion values are exclusively written by the native owner. A
+# paused/status-only publication retains them instead of inventing a new tick.
+var _last_native_tick_started_usec: int = -1
+var _last_native_tick_completed_usec: int = -1
+var _last_native_tick_world_generation: int = -1
+var _last_native_tick_body_sample: int = -1
+var _last_native_tick_body_publication: int = -1
+var _last_native_tick_lateness_usec: int = 0
+var _render_publication_gate_holds: int = 0
 var _rigid_body_states: PackedFloat32Array = PackedFloat32Array()
 var _rigid_body_epoch: int = 0
 # COUPLING-LOCKSTEP-001 opt-in fence (default off; see set_lockstep_coupling).
@@ -1349,7 +1369,9 @@ func _capture_workbench_result() -> void:
 		if row.instance_id != member.instance_id or row.generation != member.generation or int(states[offset+10]) != row.sample: return
 		poses[int(row.instance_id)] = {"pose":Transform2D(states[offset+3],row.com),"sample":int(row.sample),"generation":int(row.generation)}
 	_workbench_display = {"session":int(packet.session),"epoch":int(packet.epoch),"sample_tick":int(packet.sample_tick),
-		"tick":int(_world.tick_index),"revision":int(_world.revision),"world_generation":_world_generation,"instances":poses}
+		"tick":int(_world.tick_index),"revision":int(_world.revision),"world_generation":_world_generation,"instances":poses,
+		"native_completed_usec":_last_native_tick_completed_usec
+			if _last_native_tick_world_generation == _world_generation else -1}
 
 
 func _consume_workbench_emissions(paused: bool, sample: Dictionary) -> void:
@@ -1745,6 +1767,72 @@ func set_engine_lab_pixel_pacing(hz: int, sample_wake: bool) -> void:
 	_engine_lab_pixel_target_hz = clampi(hz,1,1000)
 	_engine_lab_pixel_interval_usec = maxi(1,roundi(1000000.0/float(_engine_lab_pixel_target_hz)))
 	_engine_lab_sample_wake = sample_wake
+	_mutex.unlock()
+
+
+func set_engine_lab_ack_gated_publication(enabled: bool) -> void:
+	_mutex.lock()
+	_engine_lab_ack_gated_publication = enabled
+	_mutex.unlock()
+
+
+func begin_render_cadence_trace() -> bool:
+	_mutex.lock()
+	if _render_cadence_trace_active:
+		_mutex.unlock()
+		return false
+	_render_cadence_trace_generation += 1
+	_render_cadence_trace_active = true
+	_render_cadence_trace_events = []
+	_render_cadence_trace_dropped = 0
+	_render_cadence_trace_started_usec = Time.get_ticks_usec()
+	_render_cadence_trace_last_ack = -1
+	_mutex.unlock()
+	return true
+
+
+# Swap the bounded value buffer; no disk I/O and no World access on Main.
+# `dropped` is cumulative for the current capture, not reset by a drain.
+func take_render_cadence_events() -> Dictionary:
+	_mutex.lock()
+	var result: Dictionary = _take_render_cadence_events_locked(false)
+	_mutex.unlock()
+	return result
+
+
+func finish_render_cadence_trace() -> Dictionary:
+	_mutex.lock()
+	_render_cadence_trace_active = false
+	var result: Dictionary = _take_render_cadence_events_locked(true)
+	_mutex.unlock()
+	return result
+
+
+func _take_render_cadence_events_locked(finished: bool) -> Dictionary:
+	var result: Dictionary = {"events":_render_cadence_trace_events,
+		"dropped":_render_cadence_trace_dropped,"capacity":RENDER_CADENCE_TRACE_CAPACITY,
+		"generation":_render_cadence_trace_generation,
+		"started_usec":_render_cadence_trace_started_usec,
+		"ended_usec":Time.get_ticks_usec() if finished else 0}
+	_render_cadence_trace_events = []
+	return result
+
+
+# The dictionaries contain scalar/value fields only. The worker never mutates
+# a recorded dictionary after append, including after Main drains the buffer.
+func _append_render_cadence_event_locked(event: Dictionary, generation: int) -> void:
+	if not _render_cadence_trace_active or generation != _render_cadence_trace_generation:
+		return
+	if _render_cadence_trace_events.size() >= RENDER_CADENCE_TRACE_CAPACITY:
+		_render_cadence_trace_dropped += 1
+		return
+	_render_cadence_trace_events.append(event)
+
+
+func _append_render_cadence_event(event: Dictionary, generation: int) -> void:
+	if generation <= 0: return
+	_mutex.lock()
+	_append_render_cadence_event_locked(event,generation)
 	_mutex.unlock()
 
 
@@ -2257,7 +2345,9 @@ func _worker_loop() -> void:
 		var local_liquid_adhesion_enabled: bool = true
 		var local_render_snapshot_interval_usec: int = DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC
 		var local_pixel_interval_usec: int = TICK_INTERVAL_USEC
+		var local_pixel_target_hz: int = 60
 		var local_sample_wake: bool = true
+		var local_trace_generation: int = 0
 		var local_rigid_body_states: PackedFloat32Array = PackedFloat32Array()
 		var local_rigid_body_epoch: int = 0
 		var local_physical_effects: Array = []
@@ -2291,7 +2381,9 @@ func _worker_loop() -> void:
 		local_liquid_adhesion_enabled = _liquid_surface_adhesion_enabled
 		local_render_snapshot_interval_usec = _render_snapshot_interval_usec
 		local_pixel_interval_usec = _engine_lab_pixel_interval_usec
+		local_pixel_target_hz = _engine_lab_pixel_target_hz
 		local_sample_wake = _engine_lab_sample_wake
+		local_trace_generation = _render_cadence_trace_generation if _render_cadence_trace_active else 0
 		var physical_wait: bool = not _prepared_physical_publication.is_empty() \
 			or not _lab_request.get("controlled_liquid_setup",{}).get("physical_owner",{}).is_empty()
 		local_rigid_body_states = _rigid_body_states
@@ -2552,10 +2644,35 @@ func _worker_loop() -> void:
 							local_jetpack_active,
 							_world
 						)
+				var native_tick_started_usec: int = Time.get_ticks_usec()
 				if _world.has_method(&"has_failed"):
 					_simulation_failed = not bool(_world.simulation_tick())
 				else:
 					_world.simulation_tick()
+				var native_tick_completed_usec: int = Time.get_ticks_usec()
+				if not _simulation_failed:
+					_last_native_tick_started_usec = native_tick_started_usec
+					_last_native_tick_completed_usec = native_tick_completed_usec
+					_last_native_tick_world_generation = _world_generation
+					_last_native_tick_body_sample = workbench_serial
+					_last_native_tick_body_publication = local_body_publication
+					_last_native_tick_lateness_usec = maxi(0,native_tick_started_usec-next_tick_usec)
+				if local_trace_generation > 0:
+					_mutex.lock()
+					var offered_body_sample: int = int(_workbench_sample.states[10]) \
+						if not _workbench_sample.is_empty() and not _workbench_sample.states.is_empty() else -1
+					_append_render_cadence_event_locked({
+						"kind":"native_tick" if not _simulation_failed else "native_tick_failed",
+						"start_usec":native_tick_started_usec,"completed_usec":native_tick_completed_usec,
+						"worker_turn_started_usec":step_start_usec,"tick_index":int(_world.tick_index),
+						"world_generation":_world_generation,"revision":int(_world.revision),
+						"body_sample":workbench_serial,"offered_body_sample":offered_body_sample,
+						"body_publication":local_body_publication,"offered_body_publication":_rigid_body_publication,
+						"requested_hz":local_pixel_target_hz,"requested_interval_usec":local_pixel_interval_usec,
+						"sample_wake":local_sample_wake,"deadline_usec":next_tick_usec,
+						"lateness_usec":maxi(0,native_tick_started_usec-next_tick_usec),
+						"scheduler_overruns":_worker_overruns},local_trace_generation)
+					_mutex.unlock()
 				lockstep_ticked = _lockstep_record_tick(local_body_publication, not _simulation_failed)
 				if not _simulation_failed and _workbench_extent != Vector2i.ZERO:
 					_capture_workbench_result()
@@ -2628,9 +2745,32 @@ func _publish_snapshot(
 	var render_serial_before: int = _pending_render_snapshot_serial
 	var render_generation_advanced: bool = false
 	var acknowledged_render_serial: int = 0
+	var ack_observed_usec: int = 0
+	var ack_gated_publication: bool = false
+	var trace_generation: int = 0
+	var offered_body_sample: int = -1
+	var offered_body_publication: int = 0
+	var render_exchange_started_usec: int = 0
+	var render_exchange_completed_usec: int = 0
 	var render_full_refresh_requested: bool = false
 	_mutex.lock()
 	acknowledged_render_serial = _acknowledged_render_snapshot_serial
+	ack_observed_usec = Time.get_ticks_usec()
+	ack_gated_publication = _engine_lab_ack_gated_publication
+	trace_generation = _render_cadence_trace_generation if _render_cadence_trace_active else 0
+	offered_body_sample = int(_workbench_sample.states[10]) \
+		if not _workbench_sample.is_empty() and not _workbench_sample.states.is_empty() else -1
+	offered_body_publication = _rigid_body_publication
+	if trace_generation > 0 and acknowledged_render_serial > _render_cadence_trace_last_ack:
+		_append_render_cadence_event_locked({"kind":"worker_ack",
+			"start_usec":ack_observed_usec,"completed_usec":ack_observed_usec,
+			"render_serial":acknowledged_render_serial,"previous_serial":_render_cadence_trace_last_ack,
+			"initial_observation":_render_cadence_trace_last_ack < 0,
+			"world_generation":_world_generation,"tick_index":int(_world.tick_index),
+			"pending_render_serial":_pending_render_snapshot_serial,
+			"pending_patch_count":_pending_render_patch_rectangles.size()/RENDER_PATCH_METADATA_STRIDE,
+			"pending_patch_bytes":_pending_render_patch_cells.size()},trace_generation)
+		_render_cadence_trace_last_ack = acknowledged_render_serial
 	render_full_refresh_requested = _render_full_refresh_requested
 	_render_full_refresh_requested = false
 	_mutex.unlock()
@@ -2644,14 +2784,29 @@ func _publish_snapshot(
 		and acknowledged_render_serial >= _pending_render_snapshot_serial
 	):
 		_clear_pending_render_patches()
-	if (
+	var render_due: bool = (
 		force_render_full_refresh
 		or (
 			_world.revision != _snapshot_world_revision
 			and now_usec - _last_render_snapshot_usec >= render_snapshot_interval_usec
 		)
-	):
+	)
+	var render_gate_holding: bool = render_due and ack_gated_publication \
+		and _pending_render_snapshot_serial > acknowledged_render_serial and not force_render_full_refresh
+	# A rejected upload cannot be ACKed. Explicit resync and accepted World
+	# replacement must therefore bypass this diagnostic-only publication gate;
+	# otherwise a missing/corrupt payload would prevent its own repair forever.
+	if render_gate_holding:
+		_render_publication_gate_holds += 1
+		if trace_generation > 0:
+			_append_render_cadence_event({"kind":"render_gate_hold",
+				"start_usec":now_usec,"completed_usec":Time.get_ticks_usec(),
+				"world_generation":_world_generation,"tick_index":int(_world.tick_index),
+				"revision":int(_world.revision),"pending_render_serial":_pending_render_snapshot_serial,
+				"acknowledged_render_serial":acknowledged_render_serial},trace_generation)
+	if render_due and not render_gate_holding:
 		var render_exchange_start_usec: int = Time.get_ticks_usec()
+		render_exchange_started_usec = render_exchange_start_usec
 		if _world.has_method(&"take_render_snapshot"):
 			var render_packet: Dictionary = _take_native_render_snapshot(
 				force_render_full_refresh
@@ -2696,9 +2851,8 @@ func _publish_snapshot(
 			_pending_render_worker_step_time_ms = worker_step_time_ms
 			_pending_render_worker_overruns = _worker_overruns
 			render_generation_advanced = true
-		render_exchange_time_ms = float(
-			Time.get_ticks_usec() - render_exchange_start_usec
-		) / 1000.0
+		render_exchange_completed_usec = Time.get_ticks_usec()
+		render_exchange_time_ms = float(render_exchange_completed_usec-render_exchange_start_usec)/1000.0
 	var current_hard_surface_revision: int = int(_world.hard_surface_revision)
 	# The workbench lock-step steps Rapier only against the current revision,
 	# so a throttled packet would cap the whole session at the throttle rate
@@ -2751,11 +2905,26 @@ func _publish_snapshot(
 	_snapshot_serial += 1
 	snapshot.serial = _snapshot_serial
 	snapshot.published_usec = Time.get_ticks_usec()
+	if _last_native_tick_world_generation == _world_generation:
+		snapshot.last_native_tick_started_usec = _last_native_tick_started_usec
+		snapshot.last_native_tick_completed_usec = _last_native_tick_completed_usec
+		snapshot.last_native_tick_world_generation = _last_native_tick_world_generation
+		snapshot.last_native_tick_body_sample = _last_native_tick_body_sample
+		snapshot.last_native_tick_body_publication = _last_native_tick_body_publication
+		snapshot.last_native_tick_lateness_usec = _last_native_tick_lateness_usec
 	snapshot.world_revision = _snapshot_world_revision
 	snapshot.simulation_world_revision = int(_world.revision)
 	snapshot.hard_surface_revision = _snapshot_hard_surface_revision
 	snapshot.cells = _snapshot_cells
 	snapshot.render_snapshot_serial = _pending_render_snapshot_serial
+	snapshot.render_acknowledged_serial = acknowledged_render_serial
+	snapshot.render_ack_observed_usec = ack_observed_usec
+	snapshot.render_publication_ack_gated = ack_gated_publication
+	snapshot.render_publication_gate_holds = _render_publication_gate_holds
+	snapshot.render_pending_patch_count = _pending_render_patch_rectangles.size()/RENDER_PATCH_METADATA_STRIDE
+	snapshot.render_pending_patch_bytes = _pending_render_patch_cells.size()
+	snapshot.offered_body_sample = offered_body_sample
+	snapshot.offered_body_publication = offered_body_publication
 	snapshot.render_world_generation = _pending_render_world_generation
 	snapshot.render_channels = _pending_render_channels
 	snapshot.render_full_refresh = _pending_render_full_refresh
@@ -2945,6 +3114,19 @@ func _publish_snapshot(
 	) / 1000.0
 
 	_mutex.lock()
+	snapshot.worker_handoff_usec = Time.get_ticks_usec()
+	if render_generation_advanced and trace_generation > 0:
+		_append_render_cadence_event_locked({"kind":"render_publication",
+			"start_usec":render_exchange_started_usec,"completed_usec":render_exchange_completed_usec,
+			"handoff_usec":snapshot.worker_handoff_usec,"snapshot_serial":snapshot.serial,
+			"render_serial":snapshot.render_snapshot_serial,"world_generation":snapshot.render_world_generation,
+			"tick_index":snapshot.render_tick_index,"revision":snapshot.world_revision,
+			"generated_usec":snapshot.render_generated_usec,"body_sample":snapshot.last_native_tick_body_sample,
+			"acknowledged_render_serial":acknowledged_render_serial,"ack_gated":ack_gated_publication,
+			"forced_refresh_bypasses_ack":ack_gated_publication and force_render_full_refresh
+				and render_serial_before > acknowledged_render_serial,
+			"patch_count":snapshot.render_pending_patch_count,"patch_bytes":snapshot.render_pending_patch_bytes,
+			"full_refresh":snapshot.render_full_refresh},trace_generation)
 	_published_snapshot = snapshot
 	_mutex.unlock()
 
@@ -2985,6 +3167,7 @@ func _publish_failure_snapshot() -> void:
 	snapshot.last_tick_error = str(_world.get_last_tick_error())
 	_mutex.lock()
 	_pending_emissions.clear()
+	snapshot.worker_handoff_usec = Time.get_ticks_usec()
 	_published_snapshot = snapshot
 	_mutex.unlock()
 

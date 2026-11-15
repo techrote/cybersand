@@ -3,6 +3,8 @@ extends SceneTree
 # One fresh real World and Needle per process. This is the same owner-provided
 # 2048-square source and eight tick-addressed actions as ENG-LAB Test It;
 # the active overlay trace is on PR609 and has no physics ownership.
+# Cadence mode preserves those eight entries and explicitly appends three
+# sustained commands; its longer tape has a separate receipt identity.
 const Reference = preload("res://scripts/engine_lab_reference_fixture.gd")
 const Tape: Array[Dictionary] = [
 	{"tick":0,"move":[0.0,0.0]},
@@ -14,6 +16,11 @@ const Tape: Array[Dictionary] = [
 	{"tick":12,"move":[0.70710678,-0.70710678]},
 	{"tick":14,"move":[0.0,0.0]}
 ]
+const CadenceExtension: Array[Dictionary] = [
+	{"tick":30,"move":[1.0,0.0]},
+	{"tick":90,"move":[0.0,-1.0]},
+	{"tick":120,"move":[1.0,0.0]}
+]
 const FAMILIES: Dictionary = {
 	"freemass":{"family":"freemass_v1","variant":"reference"},
 	"pressure":{"family":"pressure_flow_v1","variant":"cached_dormant"},
@@ -24,6 +31,8 @@ const VIEW := Vector2i(240,135)
 const MAX_SETUP_MSEC: int = 240000
 const PHYSICS_TARGET: int = 24
 const CAPTURE_MSEC: int = 10000
+const CADENCE_MAX_CAPTURE_MSEC: int = 90000
+const CADENCE_PHYSICS_TARGET: int = 144
 
 var family: String = ""
 var camera_mode: String = ""
@@ -32,6 +41,16 @@ var workers: int = 1
 var repeat_id: int = 1
 var pixel_hz: int = 60
 var render_hz: int = 60
+var fps_target: int = 60
+var rapier_hz: int = 60
+var ack_delay: int = 0
+var ack_gated: bool = false
+var wait_sample: bool = true
+var sample_wake: bool = true
+var smoothing: bool = true
+var cadence_mode: String = "repaired"
+var cadence_tape: bool = false
+var input_tape: Array[Dictionary] = []
 var output: String = ""
 var problems: Array[String] = []
 var assertions: int = 0
@@ -41,10 +60,24 @@ var fixture: Dictionary = {}
 var native_radius: int = 2
 var started_usec: int = 0
 var _waiting_epoch: int = -1
+var capture_start_usec: int = 0
+var capture_end_usec: int = 0
+var capture_native_start: int = 0
+var capture_rapier_start: int = 0
+var capture_native_end: int = -1
+var capture_rapier_end: int = -1
+var final_sample: Dictionary = {}
+var actual_view: Vector2i = Vector2i.ZERO
+var captures: Array[Dictionary] = []
+var _capture_images: Array[Image] = []
 
 
 func _initialize() -> void:
+	var invalid_boolean: bool=false
 	for arg: String in OS.get_cmdline_user_args():
+		for prefix: String in ["--ack-gated=","--wait-sample=","--sample-wake=","--smoothing=","--cadence-tape="]:
+			if arg.begins_with(prefix) and arg.trim_prefix(prefix) not in ["0","1"]:
+				invalid_boolean=true
 		if arg.begins_with("--family="): family=arg.trim_prefix("--family=")
 		if arg.begins_with("--camera="): camera_mode=arg.trim_prefix("--camera=")
 		if arg.begins_with("--pose="): pose_mode=arg.trim_prefix("--pose=")
@@ -52,17 +85,38 @@ func _initialize() -> void:
 		if arg.begins_with("--repeat="): repeat_id=int(arg.trim_prefix("--repeat="))
 		if arg.begins_with("--pixel-hz="): pixel_hz=int(arg.trim_prefix("--pixel-hz="))
 		if arg.begins_with("--render-hz="): render_hz=int(arg.trim_prefix("--render-hz="))
+		if arg.begins_with("--publication-hz="): render_hz=int(arg.trim_prefix("--publication-hz="))
+		if arg.begins_with("--fps="): fps_target=int(arg.trim_prefix("--fps="))
+		if arg.begins_with("--rapier-hz="): rapier_hz=int(arg.trim_prefix("--rapier-hz="))
+		if arg.begins_with("--ack-delay="): ack_delay=int(arg.trim_prefix("--ack-delay="))
+		if arg.begins_with("--ack-gated="): ack_gated=arg.trim_prefix("--ack-gated=")=="1"
+		if arg.begins_with("--wait-sample="): wait_sample=arg.trim_prefix("--wait-sample=")=="1"
+		if arg.begins_with("--sample-wake="): sample_wake=arg.trim_prefix("--sample-wake=")=="1"
+		if arg.begins_with("--smoothing="): smoothing=arg.trim_prefix("--smoothing=")=="1"
+		if arg.begins_with("--cadence="): cadence_mode=arg.trim_prefix("--cadence=")
+		if arg.begins_with("--cadence-tape="): cadence_tape=arg.trim_prefix("--cadence-tape=")=="1"
 		if arg.begins_with("--receipt="): output=arg.trim_prefix("--receipt=")
-	if not OS.get_cmdline_user_args().has("--engine-lab-scripted") or \
+	if invalid_boolean or not OS.get_cmdline_user_args().has("--engine-lab-scripted") or \
 			family not in FAMILIES or camera_mode not in ["free","follow"] or \
 			pose_mode not in ["guarded","mask"] or workers not in [1,4] or \
 			repeat_id not in [1,2] or pixel_hz not in [30,60,120] or \
-			render_hz not in [30,60,120] or output.is_empty():
+			render_hz not in [30,60,120] or fps_target not in [0,30,60,120] or \
+			rapier_hz not in [60,120] or ack_delay not in [0,3] or \
+			cadence_mode not in ["legacy","repaired"] or output.is_empty():
 		push_error("TEST_IT: explicit verified graphical Test It arguments required")
 		quit(2)
 		return
 	ProjectSettings.set_setting("cybersand/native_worker_threads",workers)
-	Engine.max_fps=60
+	input_tape=Tape.duplicate(true)
+	if cadence_tape: input_tape.append_array(CadenceExtension.duplicate(true))
+	Engine.max_fps=fps_target
+	# The measured axes are explicit: FPS is graphical callbacks, publication
+	# is immutable material delivery, Rapier remains fixed 1/60 per step.
+	# Disable VSync for requested FPS experiments; record achieved rates.
+	if DisplayServer.get_name()!="headless":
+		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
+	OS.set_environment("CYBERSAND_DIAG_RENDER_CADENCE",
+		"legacy" if cadence_mode=="legacy" else "")
 	OS.set_environment("CYBERSAND_DIAG_FLYER_POSE",
 		"mask" if pose_mode=="mask" else "")
 	set_meta("cybersand_feature","shared_workbench")
@@ -139,10 +193,34 @@ func _actor_snapshot(ui: Control) -> Dictionary:
 		"last_error":str(host.physical_actor_session.last_error)}
 
 
+func _capture_frame(label: String) -> void:
+	if DisplayServer.get_name()=="headless": return
+	# Two bounded reference images, outside the measured interval. GPU readback
+	# can stall, so neither image acquisition nor PNG encoding is timed as FPS.
+	await RenderingServer.frame_post_draw
+	var image: Image=root.get_texture().get_image()
+	if not check(image!=null and not image.is_empty(),"graphical framebuffer "+label):
+		return
+	_capture_images.append(image)
+	captures.append({"label":label,"wall_usec":Time.get_ticks_usec(),
+		"process_frame":Engine.get_process_frames(),
+		"rapier_step":host.physical_actor_session.tick,
+		"native_tick":host.latest_snapshot.tick_index,
+		"uploaded_serial":host.last_uploaded_render_snapshot_serial,
+		"camera_origin":[host.camera_origin.x,host.camera_origin.y],
+		"view_cells":[host.current_view_size.x,host.current_view_size.y],
+		"width":image.get_width(),"height":image.get_height(),
+		"measurement":"outside_timed_capture"})
+
+
 func _finish(ui: Control) -> void:
 	var trace_receipt: Dictionary = {}
 	var trace_dest: String = output.trim_suffix(".json")+"-poses.jsonl"
 	if host!=null and is_instance_valid(host):
+		capture_end_usec=Time.get_ticks_usec()
+		capture_native_end=host.latest_snapshot.tick_index if host.latest_snapshot!=null else -1
+		capture_rapier_end=host.physical_actor_session.tick if host.physical_actor_session!=null else -1
+		final_sample=_actor_snapshot(ui) if ui!=null and is_instance_valid(ui) else {}
 		host.engine_lab_end_tape()
 		if host.workbench_pose_trace.active:
 			trace_receipt=host.finish_workbench_pose_trace()
@@ -160,22 +238,30 @@ func _finish(ui: Control) -> void:
 						check(false,"could not copy pose JSONL into test evidence")
 			else:
 				check(false,"pose trace could not save")
+		if host.physical_actor_session!=null and host.latest_snapshot!=null:
+			if not host.paused and ui!=null: ui.toggle_pause()
+			await _capture_frame("after")
+	for i: int in captures.size():
+		var capture_path: String=output.trim_suffix(".json")+"-"+str(captures[i].label)+".png"
+		if check(_capture_images[i].save_png(capture_path)==OK,"save framebuffer "+str(captures[i].label)):
+			captures[i]["path"]=capture_path
+			captures[i]["sha256"]=FileAccess.get_sha256(capture_path)
+	_capture_images.clear()
 	var tape: Dictionary=host.engine_lab_tape_receipt() \
 		if host!=null and is_instance_valid(host) else {}
 	var events: Array=tape.get("events",[])
-	var tape_complete: bool=events.size()==Tape.size()
+	var tape_complete: bool=events.size()==input_tape.size()
 	if tape_complete:
-		for i: int in Tape.size():
-			if int(events[i].get("requested_physical_tick",-1))!=int(Tape[i].tick) or \
-					int(events[i].get("accepted_physical_tick",-1))!=int(Tape[i].tick):
+		for i: int in input_tape.size():
+			if int(events[i].get("requested_physical_tick",-1))!=int(input_tape[i].tick) or \
+					int(events[i].get("accepted_physical_tick",-1))!=int(input_tape[i].tick):
 				tape_complete=false
-	if not check(tape_complete,"all 8 requested actions accepted at exactly intended physics ticks"):
+	if not check(tape_complete,"all %d requested actions accepted at exactly intended physics ticks" % input_tape.size()):
 		pass
-	var end_tick: int=host.physical_actor_session.tick if host!=null and \
-		is_instance_valid(host) and host.physical_actor_session!=null else 0
-	check(end_tick>=PHYSICS_TARGET,"at least 24 completed Rapier steps")
-	var native_ticks: int=host.latest_snapshot.tick_index if host!=null and \
-		is_instance_valid(host) and host.latest_snapshot!=null else -1
+	var end_tick: int=maxi(capture_rapier_end,0)
+	check(end_tick>=(CADENCE_PHYSICS_TARGET if cadence_tape else PHYSICS_TARGET),
+		"required completed Rapier steps after exact input tape")
+	var native_ticks: int=capture_native_end
 	check(native_ticks>0,"positive native World tick progression")
 	var trace_filesize: int=FileAccess.get_file_as_bytes(trace_dest).size() \
 		if FileAccess.file_exists(trace_dest) else 0
@@ -191,14 +277,26 @@ func _finish(ui: Control) -> void:
 		"family":family,"workers":workers,"repeat":repeat_id,
 		"camera":camera_mode,"pose_mode":pose_mode,
 		"requested_pixel_hz":pixel_hz,"requested_render_hz":render_hz,
+		"requested_publication_hz":render_hz,"requested_graphical_fps":fps_target,
+		"requested_rapier_callback_hz":rapier_hz,"ack_delay_frames":ack_delay,
+		"ack_gated_publication":ack_gated,"wait_native_sample":wait_sample,
+		"wake_on_rapier_sample":sample_wake,"smoothing":smoothing,
+		"cadence_mode":cadence_mode,
 		"fixed_physics_step_seconds":1.0/60.0,
-		"world_size":[WORLD.x,WORLD.y],"view_size":[VIEW.x,VIEW.y],
+		"physics_rate_semantics":"fixed_1_over_60_per_completed_step; 120_callback_target_is_not_normalized_120Hz_physics",
+		"capture_start_usec":capture_start_usec,"capture_end_usec":capture_end_usec,
+		"capture_wall_seconds":float(capture_end_usec-capture_start_usec)/1000000.0,
+		"capture_native_tick_start":capture_native_start,"capture_rapier_step_start":capture_rapier_start,
+		"completed_simulation_seconds":float(end_tick-capture_rapier_start)/60.0,
+		"world_size":[WORLD.x,WORLD.y],"requested_view_size":[VIEW.x,VIEW.y],
+		"view_size":[actual_view.x,actual_view.y],"framebuffer_captures":captures,
 		"reference":{"json_sha256":Reference.FILE_SHA256,
 			"generated_material_sha256":str(fixture.get("material_sha256","")),
 			"native_receipts":int(fixture.get("generation_receipt_count",0)),
 			"generation_seconds":float(fixture.get("generation_seconds",0)),
 			"installed_generated_sha256":str(actual_generation.get("sha256",""))},
-		"input_tape":{"script":Tape,"observed":events,
+		"input_tape":{"script":input_tape,"original_eight":Tape,"observed":events,
+			"identity":"original8_plus_cadence_30_90_120" if cadence_tape else "original8",
 			"clock":"completed_Rapier_physics_ticks_since_first_unpaused_step",
 			"complete":tape_complete,"error":tape.get("error","")},
 		"native_ticks":native_ticks,"rapier_steps":end_tick,
@@ -207,7 +305,7 @@ func _finish(ui: Control) -> void:
 		"trace_file":trace_dest,
 		"trace":trace_receipt,
 		"actor_initial":initial_sample,
-		"actor_last":_actor_snapshot(ui) if ui!=null and is_instance_valid(ui) else {},
+		"actor_last":final_sample,
 		"godot":Engine.get_version_info().get("string",""),
 		"video_adapter":RenderingServer.get_video_adapter_name(),
 		"render_driver":RenderingServer.get_current_rendering_driver_name(),
@@ -274,28 +372,53 @@ func _run() -> void:
 		"actual reference Needle is selected")
 	check(ui._generated_active.get("sha256","")==Reference.OUTPUT_SHA256,
 		"actual installed generated cells preserve owner reference")
-	ui._set_view(Vector2.ZERO,VIEW)
 	var want_follow: bool=camera_mode=="follow"
 	ui._camera.select(1 if want_follow else 0)
 	ui.set_camera(1 if want_follow else 0)
-	host.simulation_worker.set_engine_lab_pixel_pacing(pixel_hz,true)
+	# set_camera restores the UI zoom. Apply our identical view afterwards, and
+	# centre Free on the real actor rather than leaving it outside the viewport.
+	var actor_state: Dictionary=ui.body_state(1)
+	var actor_position: Vector2=actor_state.get("position",Vector2(200,200))
+	ui._set_view(actor_position-Vector2(VIEW)*0.5,VIEW)
+	await process_frame
+	await process_frame
+	actual_view=host.current_view_size
+	check(actual_view==VIEW,"requested matched view survives production camera/layout")
+	host.engine_lab_wait_native_sample=wait_sample
+	host.simulation_worker.set_engine_lab_pixel_pacing(pixel_hz,sample_wake)
 	host.engine_lab_set_render_hz(render_hz)
+	host.engine_lab_set_rapier_hz(rapier_hz)
+	host.engine_lab_set_ack_delay(ack_delay)
+	host.simulation_worker.set_engine_lab_ack_gated_publication(ack_gated)
+	host.cadence_lod_enabled=smoothing
+	await _capture_frame("before")
 	initial_sample=_actor_snapshot(ui)
-	if not check(host.engine_lab_begin_tape(Tape),
-			"exact eight-action tick tape armed inside real Workbench command owner"):
+	if not check(host.engine_lab_begin_tape(input_tape),
+			"exact tick tape armed inside real Workbench command owner"):
 		await _finish(ui)
 		return
 	if not check(host.begin_workbench_pose_trace({
 			"test_it":true,"family":family,"workers":workers,"camera":camera_mode,
-			"pose":pose_mode,"pixel_hz":pixel_hz,"render_hz":render_hz}),
+			"pose":pose_mode,"pixel_hz":pixel_hz,"render_hz":render_hz,
+			"publication_hz":render_hz,"fps_target":fps_target,"rapier_callback_hz":rapier_hz,
+			"fixed_physics_step_seconds":1.0/60.0,"ack_delay_frames":ack_delay,
+			"ack_gated_publication":ack_gated,"wait_native_sample":wait_sample,
+			"wake_on_rapier_sample":sample_wake,"smoothing":smoothing,"cadence_mode":cadence_mode,
+			"input_tape_identity":"original8_plus_cadence_30_90_120" if cadence_tape else "original8"}),
 			"bounded actual overlay pose trace armed"):
 		await _finish(ui)
 		return
+	capture_start_usec=Time.get_ticks_usec()
+	capture_native_start=host.latest_snapshot.tick_index
+	capture_rapier_start=host.physical_actor_session.tick
 	if not check(ui.toggle_pause(),"unpause real Native World and Rapier"):
 		await _finish(ui)
 		return
 	var start: int=Time.get_ticks_msec()
-	while Time.get_ticks_msec()-start<CAPTURE_MSEC:
+	while Time.get_ticks_msec()-start<(CADENCE_MAX_CAPTURE_MSEC if cadence_tape else CAPTURE_MSEC):
+		if Time.get_ticks_msec()-start>=CAPTURE_MSEC and \
+				(not cadence_tape or host.physical_actor_session.tick-capture_rapier_start>=CADENCE_PHYSICS_TARGET):
+			break
 		if host.simulation_worker.has_failed(): 
 			check(false,"native simulation failed during scripted input")
 			break

@@ -63,8 +63,11 @@ def project_from_git(output,dll,rapier):
            "third_party/godot-runtime.lock.json","third_party/native-toolchain.lock.json",
            "third_party/rapier-bvh-build.lock.json",
            "docs/audits/2026-11-14-pr566-mask-coherent-presentation-qualification.md",
+           "docs/audits/2026-11-15-render-cadence-001.md",
            "docs/operations/engine-lab-pose-tracing.md",
+           "docs/architecture/rendering-and-gameplay-bridges.md",
            "tools/ci/analyze_pose_trace.py",
+           "tools/ci/run_render_cadence_matrix.py",
            "Run-Test-It.ps1","Test It.cmd"]
     tar=subprocess.check_output(["git","archive","--format=tar",SOURCE,"--",*files],cwd=ROOT,timeout=90)
     count=0
@@ -120,12 +123,14 @@ def dependencies(output,engine_zip,notices,vc):
         if file.is_file(): shutil.copyfile(file,output/file.name)
 
 def launchers(output):
-    for name,mode in (("Open Workbench.cmd","guarded"),
-                      ("Open Guarded Workbench.cmd","guarded"),
-                      ("Open Mask Baseline.cmd","mask")):
+    for name,mode,cadence in (("Open Workbench.cmd","guarded",""),
+                      ("Open Guarded Workbench.cmd","guarded",""),
+                      ("Open Mask Baseline.cmd","mask",""),
+                      ("Open Original Cadence.cmd","guarded","legacy")):
         script=('@echo off\nsetlocal\ncd /d "%~dp0"\n'
                 'set "CYBERSAND_SOURCE_REVISION='+SOURCE+'"\n'
                 'set "CYBERSAND_DIAG_FLYER_POSE='+mode+'"\n'
+                'set "CYBERSAND_DIAG_RENDER_CADENCE='+cadence+'"\n'
                 'echo CyberSand PR593 '+mode+' - '+SOURCE+'\n'
                 '"%~dp0'+CONSOLE+'" --headless --path "%~dp0godot" --editor --quit\n'
                 'if errorlevel 1 (echo Import failed. & pause & exit /b 1)\n'
@@ -139,7 +144,7 @@ def launchers(output):
          "$gpu | Format-List | Out-File (Join-Path $PSScriptRoot 'GPU-LOCAL-INFO.txt') -Append\n")
     (output/"Capture GPU information.ps1").write_text(gpu.replace("\n","\r\n"),encoding="utf-8")
 
-GUIDE="""# CyberSand Engine Lab - Windows 11 experimental performance evaluation
+GUIDE="""# CyberSand RENDER-CADENCE-001 - Windows experimental evaluation
 
 This is an experimental evaluation candidate. No production release or merge acceptance.
 
@@ -158,6 +163,8 @@ the bundled Godot console, then launches the actual GUI Workbench.
 To compare the original uploaded-mask pose, CLOSE all running CyberSand
 instances, then double-click Open Mask Baseline.cmd.
 Open Workbench.cmd is an alias for the guarded launch mode.
+Open Original Cadence.cmd selects the same source's retained legacy presentation
+control. Ordinary launchers explicitly clear that override for the repaired arm.
 No separate Godot, Git, Python, native DLL or compiler installation is needed.
 
 ## Engine Lab controls
@@ -169,9 +176,39 @@ Non-60 cadence intentionally changes simulation speed because the flight integra
 ## Automated Windows test script / Test It -> ZIP
 Click Test It -> ZIP in Engine Lab, or double-click Test It.cmd from
 this extracted folder. Both launch the SAME separate-process PowerShell
-runner with the '-Compare' option: exact 2048-square reference, eight
-Needle commands at physics ticks 0,2,4,6,8,10,12,14 and Free/Follow
-Guarded/Mask comparison, plus 30Hz and 120Hz pacing probes.
+runner with the '-Cadence' option. The 16-condition focused matrix executes
+32 same-source legacy/repaired arms in fresh processes. It preserves the exact
+2048-square reference World and original eight Needle commands at physics ticks
+0,2,4,6,8,10,12,14, then appends sustained motion at ticks 30,90,120.
+The original eight-command test remains available with -Quick, -Compare,
+no flag, and -Full. The longer tape has a separate identity in every receipt.
+
+The central counterfactual uses Pixel30, Rapier120 callbacks, graphical60,
+publication60 with native-sample waiting and early sample wake disabled.
+Separate conditions vary Pixel60/120, Rapier60, graphical30/120/uncapped,
+Free/Follow, guarded/mask, ordinary/delayed ACK, ACK-gated publication,
+publication30/120, smoothing off, and the original coupled waits.
+Every target is reported separately from achieved monotonic-timestamp rates.
+Rapier still integrates a fixed 1/60 simulated second per completed step;
+120 callbacks is NOT normalized real-time120Hz physics. Physical comparisons
+match completed step/body identity and explicitly report trajectory differences.
+
+The two framebuffers per arm are acquired outside the timed capture so their
+readback/PNG cost is not misrepresented as rendering cadence. Raw frame/clock
+events, the original logs, independent PowerShell statistics and pair trajectory
+comparisons are retained. Graphical submissions/post-draw observations are not
+hardware scanout timestamps. A successful capture is not a smoothness verdict.
+
+The focused matrix can take tens of minutes on a software renderer. Each arm
+captures at least ten seconds and 144 Rapier steps, bounded to90 seconds of
+capture; every process is independently bounded and all failures are retained.
+For just the central matched pair:
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\\Run-Test-It.ps1" -Cadence -Quick
+For specific focused conditions:
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\\Run-Test-It.ps1" -Cadence -CadenceConditions gated-ack3
+The opt-in -FullCadence runs768 arms across the primary factorial axes;
+it is deliberately not the default. Publication60 and smoothing on stay explicit
+in that exhaustive primary-axis matrix; the focused matrix varies them separately.
 
 The user-facing offline script is Run-Test-It.ps1 in the package root.
 For the previously requested four Water-family x two-repeat suite, run:
@@ -209,11 +246,13 @@ This is an instrumentation build, not physical acceptance.
 - [ ] Record qualitative smoothness, GPU load and frame pacing if available.
 - [ ] Record your PASS/FAIL/HOLD and exact reproduction in ACCEPTANCE.md.
 
-The hosted Windows ANGLE and Linux GL CI passed at this exact app source:
+Historical #593 hosted Windows ANGLE and Linux GL baseline evidence:
 https://github.com/techrote/cybersand/actions/runs/43648093562
 https://github.com/techrote/cybersand/actions/runs/43648093611
 
-These hosted runs are NOT proof of physical NVIDIA GPU quality or dense-world
+Those older runs do not qualify this source. Use this package's exact-source
+workflow and source identity for its current automated disposition.
+Hosted runs are NOT proof of physical NVIDIA GPU quality or dense-world
 p95 performance. Conservative false refusals and material-contact holds remain
 possible. Keep #593 and #566 Draft/HOLD until owner authorization.
 """
@@ -312,6 +351,16 @@ def smoke(output,evidence):
         ("dense-budget",["--headless","--script","res://tests/test_pr593_mask_coherent_dense_budget.gd"],120,"PR593_GUARD_DENSE_BUDGET_RESULT"),
         ("engine-lab",["--headless","--script","res://tests/test_workbench_engine_lab.gd"],180,"ENGINE_LAB_RESULT"),
         ("pose-trace",["--headless","--script","res://tests/test_workbench_pose_trace.gd"],180,"POSE_TRACE_RESULT"),
+        ("cadence-contract",["--headless","--script","res://tests/test_render_cadence_contract.gd"],180,"RENDER_CADENCE_CONTRACT_RESULT"),
+        ("cadence-worker",["--headless","--script","res://tests/test_render_cadence_worker.gd"],180,"RENDER_CADENCE_WORKER:"),
+        ("ack-deadlines",["--headless","--script","res://tests/test_render_ack_deadlines.gd"],180,"RENDER_ACK_DEADLINES_RESULT"),
+        ("paint-author",["--headless","--script","res://tests/test_paint_editor_workbench.gd"],600,"PAINT_EDITOR_WORKBENCH"),
+        ("paint-reopen",["--headless","--script","res://tests/test_paint_editor_workbench.gd"],240,"PAINT_EDITOR_WORKBENCH"),
+        ("native-camera",["--headless","--script","res://tests/test_native_pixel_camera.gd"],300,"NATIVE_PIXEL_CAMERA_RESULT"),
+        ("failure-recovery",["--headless","--script","res://tests/test_workbench_failure_recovery.gd"],300,"WORKBENCH_FAILURE_RECOVERY"),
+        ("cadence-contract-graphical",["--rendering-driver","opengl3_angle","--rendering-method","gl_compatibility",
+         "--audio-driver","Dummy","--max-fps","60","--script","res://tests/test_render_cadence_contract.gd",
+         "--","--render-cadence-evidence="+str((evidence/"cadence-contract").resolve())],300,"RENDER_CADENCE_CONTRACT_RESULT"),
         ("engine-lab-gui",["--rendering-method","gl_compatibility","--script","res://tests/test_workbench_engine_lab.gd"],180,"ENGINE_LAB_RESULT"),
         ("graphical",["--rendering-method","gl_compatibility","--quit-after","180","--","--workbench"],120,"Rapier2D")
     ]
@@ -320,6 +369,15 @@ def smoke(output,evidence):
         cmd=[str(console),"--path",str(project),*suffix]
         print("PR593_SMOKE_START",name,flush=True)
         env=os.environ.copy()
+        env["CYBERSAND_SOURCE_REVISION"]=SOURCE
+        group="paint-persistence" if name in {"paint-author","paint-reopen"} else name
+        env["APPDATA"]=str((evidence/"userdata"/group).resolve())
+        env["XDG_DATA_HOME"]=env["APPDATA"]
+        if name in {"paint-author","paint-reopen"}:
+            env["PAINT_REOPEN"]="1" if name=="paint-reopen" else ""
+            env.pop("PAINT_CAPTURE_DIR",None)
+        if name=="native-camera":
+            env["CYBERSAND_TEST_ARTIFACT_DIR"]=str((evidence/"native-camera").resolve())
         if name=="engine-lab-gui":
             env["CYBERSAND_ENGINE_LAB_SCREENSHOT"]=str((evidence/"engine-lab-popup.png").resolve())
         r=subprocess.run(cmd,cwd=output,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,
@@ -328,6 +386,17 @@ def smoke(output,evidence):
         file.write_text(r.stdout)
         need(r.returncode==0 and "SCRIPT ERROR:" not in r.stdout and
              (marker is None or marker in r.stdout),"Installed "+name+" failed: "+r.stdout[-3500:])
+        if name=="cadence-contract-graphical":
+            folder=evidence/"cadence-contract"
+            contract=json.loads((folder/"contract.json").read_text())
+            need(not contract["failures"] and len(contract["observations"])==8,
+                 "Graphical cadence contract did not complete all eight observations")
+            need(len(list(folder.glob("*.png")))==8,"Missing eight original contract framebuffers")
+            for row in contract["observations"]:
+                need(row["graphical"] and digest(row["capture_path"])==row["capture_sha256"],
+                     "Graphical contract capture hash drift")
+            for arm in ("legacy","repair"):
+                need((folder/(arm+"-poses.jsonl")).stat().st_size>0,"Missing original contract trace: "+arm)
         report.append({"name":name,"log_sha256":digest(file),"exit":r.returncode})
         print("PR593_SMOKE_PASS",name,flush=True)
     (evidence/"summary.json").write_text(json.dumps({

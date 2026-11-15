@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-15",
+  "purpose": "Additive RENDER-CADENCE-001 development retrieval; independent of frozen historical questions. Runtime acceptance requires exact-source native execution and physical Windows GPU evidence.",
+  "questions": [
+    {
+      "id": "RENDER-CADENCE-001",
+      "query": "Why do large material uploads make guarded actors jump between live and mask-bound positions even in empty space?",
+      "canonical": [
+        "operations/engine-lab-pose-tracing.md",
+        "architecture/rendering-and-gameplay-bridges.md"
+      ],
+      "facts": [
+        "The original large-patch history shortcut marked previous texture occupancy unknown globally during each crossfade.",
+        "The repair retains the exact pre-mutation CPU image corresponding to the prior GPU texture and checks occupancy locally within unchanged collision budgets.",
+        "It does not change physics, camera transform formulas or native authority."
+      ],
+      "sources": [
+        "../godot/scripts/main.gd::_capture_previous_presentation_occupancy",
+        "../godot/scripts/workbench_presentation_coherence.gd::assess"
+      ]
+    },
+    {
+      "id": "RENDER-CADENCE-002",
+      "query": "Does selecting Rapier 120 in Engine Lab establish real-time 120 Hz physics independent of Pixel 30?",
+      "canonical": [
+        "operations/engine-lab-pose-tracing.md",
+        "architecture/rendering-and-gameplay-bridges.md"
+      ],
+      "facts": [
+        "Engine Lab alters callback rate while each completed flight step stays fixed at 1/60; compare physical trajectories by completed step and report simulated versus elapsed time.",
+        "Normal Workbench waits for native body-sample completion.",
+        "The lab counterfactual bypasses scheduling waits but retains native response age, geometry and epoch checks; it is not qualified asynchronous contact coupling."
+      ],
+      "sources": [
+        "../godot/scripts/main.gd::_physics_process",
+        "../godot/scripts/physical_actor_session.gd",
+        "../godot/scripts/simulation_worker.gd"
+      ]
+    },
+    {
+      "id": "RENDER-CADENCE-003",
+      "query": "Why did delayed render ACKs never arrive under continuous uploads, and do fixed ACK deadlines measure GPU completion?",
+      "canonical": [
+        "operations/engine-lab-pose-tracing.md",
+        "architecture/rendering-and-gameplay-bridges.md"
+      ],
+      "facts": [
+        "The legacy countdown reset on every upload and could starve.",
+        "Fixed process-frame deadlines retire accepted uploads without postponement and preserve bounded storage.",
+        "ACK marks CPU upload submission, not a GPU fence; ordinary patch retention can still accumulate when delayed ACKs lag the newest serial."
+      ],
+      "sources": [
+        "../godot/scripts/main.gd::_engine_lab_pump_ack",
+        "../godot/scripts/simulation_worker.gd"
+      ]
+    },
+    {
+      "id": "RENDER-CADENCE-004",
+      "query": "How do I run the exact-source Windows render cadence comparison and can hosted software-renderer CI establish NVIDIA acceptance?",
+      "canonical": [
+        "operations/engine-lab-pose-tracing.md"
+      ],
+      "facts": [
+        "Extract the complete portable package and double-click Test It.cmd; bundled PowerShell captures the source-fenced 2048-square reference with matched deterministic Needle input.",
+        "The focused matrix pairs legacy and repaired presentation across independently recorded Pixel, Rapier callback, FPS, publication, camera, pose and ACK controls.",
+        "Original traces, receipts and framebuffers must be retained; hosted Windows/Linux execution does not establish physical NVIDIA acceptance."
+      ],
+      "sources": [
+        "../Run-Test-It.ps1",
+        "../Test It.cmd",
+        "../godot/tests/fixtures/engine_lab/render-cadence-conditions.json",
+        "../tools/ci/run_render_cadence_matrix.py"
+      ]
+    }
+  ]
+}

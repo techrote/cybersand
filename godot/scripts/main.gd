@@ -51,6 +51,14 @@ var engine_lab_wait_native_sample: bool = true
 var engine_lab_ack_delay_frames: int = 0
 var _engine_lab_pending_ack_serial: int = 0
 var _engine_lab_pending_ack_frames: int = 0
+# Each accepted upload owns a fixed deadline. Later uploads cannot restart it.
+# At most five due-frame buckets exist (the UI delay is bounded to 0..4).
+var _engine_lab_ack_queue: Array[Dictionary] = []
+var _engine_lab_last_ack_serial: int = 0
+var _engine_lab_last_ack_usec: int = 0
+var _cadence_upload: Dictionary = {}
+var _cadence_received_usec: int = 0
+var _cadence_physics_hold_counts: Dictionary = {}
 var engine_lab_scripted_input: bool = false
 var _engine_lab_scripted_start_tick: int = 0
 # Test It uses source-fenced, physics-tick-indexed inputs, not wall-clock keys.
@@ -1631,6 +1639,10 @@ const PRESENTATION_FRAME_SCAN_BUDGET: int = 24000
 const PRESENTATION_FRAME_TIME_BUDGET_USEC: int = 2000
 var _presentation_previous_occupied: Dictionary = {}
 var _presentation_previous_unknown: bool = true
+# Exact CPU counterpart of previous_world_texture. One World-sized image,
+# retained before mutation, replaces the old global 'unknown after 16K cells'
+# shortcut. Swept queries still obey their existing local scan/time bounds.
+var _presentation_previous_image: Image
 var workbench_presentation_last: Dictionary = {}
 var workbench_presentation_totals: Dictionary = {
 	"frames":0,"safe_live":0,"blocked_material":0,"blocked_unknown":0,
@@ -1974,7 +1986,7 @@ func _notification(what: int) -> void:
 
 func _exit_tree() -> void:
 	if workbench_pose_trace.active:
-		var saved: Dictionary = workbench_pose_trace.finish()
+		var saved: Dictionary = finish_workbench_pose_trace()
 		print("WORKBENCH_POSE_TRACE_EXIT ",JSON.stringify(saved))
 	if gameplay_recorder.is_active():
 		var stopped: Dictionary = gameplay_recorder.stop_recording()
@@ -2048,6 +2060,7 @@ func _physics_process(_delta: float) -> void:
 		# The retained manually stepped space stays at its actual prior pose.
 		# Do not reconfigure its equipment, revoke its leases or publish stale
 		# body frames while the separate replacement graph is being prepared.
+		_cadence_physics_hold("preparing_actor")
 		return
 	var single_step: bool = shared_workbench != null and shared_workbench.step_requested and paused
 	if physical_actor_session != null:
@@ -2062,14 +2075,23 @@ func _physics_process(_delta: float) -> void:
 		# callback. Its native terrain revision, sample fence and wrench must
 		# all belong to the same publication.
 		physics_snapshot = simulation_worker.take_latest_snapshot(0)
-		if physics_snapshot == null or physics_snapshot.simulation_failed or physics_snapshot.rigid_body_epoch != _body_owner_epoch(): return
-		if not str(physics_snapshot.lab_context.get("workbench_refusal","")).is_empty(): return
-		if not _workbench_terrain_installed(physics_snapshot): return
+		if physics_snapshot == null or physics_snapshot.simulation_failed or physics_snapshot.rigid_body_epoch != _body_owner_epoch():
+			_cadence_physics_hold("missing_failed_or_wrong_epoch")
+			return
+		if not str(physics_snapshot.lab_context.get("workbench_refusal","")).is_empty():
+			_cadence_physics_hold("native_refusal")
+			return
+		if not _workbench_terrain_installed(physics_snapshot):
+			_cadence_physics_hold("terrain_installation")
+			return
 		if paused and not single_step:
 			_workbench_wait_sample = -1
+			_cadence_physics_hold("paused")
 			return
 		# A single step can restart a previously unpublished paused frame.
-		if engine_lab_wait_native_sample and _workbench_wait_sample >= 0 and physics_snapshot.lab_context.get("workbench_completed_sample",-1) != _workbench_wait_sample and not single_step: return
+		if engine_lab_wait_native_sample and _workbench_wait_sample >= 0 and physics_snapshot.lab_context.get("workbench_completed_sample",-1) != _workbench_wait_sample and not single_step:
+			_cadence_physics_hold("native_sample")
+			return
 	if paused or simulation_worker.has_failed():
 		physical_trial_input.armed = false
 	if simulation_worker.has_failed():
@@ -2096,6 +2118,7 @@ func _physics_process(_delta: float) -> void:
 				return # Skip this physics frame: no step and no new publication.
 			elif fenced_snapshot != null:
 				physics_snapshot = fenced_snapshot
+		var cadence_step_started_usec: int = Time.get_ticks_usec() if workbench_pose_trace.active else 0
 		apply_latest_rigid_body_results(physics_snapshot)
 		if physical_actor_session != null:
 			physical_actor_session.advance(rapier_bridge.fixed_delta())
@@ -2105,10 +2128,12 @@ func _physics_process(_delta: float) -> void:
 		if physical_actor_session != null:
 			var before_completed_tick: int = physical_actor_session.tick
 			physical_actor_session.complete_step()
+			var cadence_step_completed_usec: int = Time.get_ticks_usec() if workbench_pose_trace.active else 0
 			# A gate visited and left between two rendered frames must still
 			# count. This callback owns actual completed Rapier observations.
 			if physical_actor_session.tick > before_completed_tick:
 				_record_completed_playable_course_step()
+				_cadence_rapier_completed(cadence_step_started_usec,cadence_step_completed_usec,physics_snapshot)
 	_publish_physical_body_state()
 	if single_step and pending_microscenario_apply.is_empty() and worker_start_error == OK and (physical_actor_session == null or _physical_terrain_ready):
 		shared_workbench.step_requested = false
@@ -3058,6 +3083,11 @@ func consume_worker_snapshot() -> void:
 	if not worker_publication_counter.observe(snapshot.serial):
 		return
 	latest_snapshot = snapshot
+	_cadence_received_usec = Time.get_ticks_usec()
+	if workbench_pose_trace.active:
+		workbench_pose_trace.observe_event({"event":"main_receipt","time_usec":_cadence_received_usec,
+			"snapshot_serial":snapshot.serial,"render_serial":snapshot.render_snapshot_serial,
+			"native_tick":snapshot.tick_index,"worker_handoff_usec":snapshot.worker_handoff_usec})
 	_reconcile_actor_prototype_reset()
 	tower_context = snapshot.lab_context
 	if shared_workbench != null and not str(tower_context.get("workbench_refusal","")).is_empty():
@@ -3202,18 +3232,87 @@ func _present_physical_actor_overlay(frame: Dictionary) -> void:
 
 
 func begin_workbench_pose_trace(settings: Dictionary = {}) -> bool:
-	if shared_workbench == null or physical_actor_session == null: return false
+	if shared_workbench == null or physical_actor_session == null or latest_snapshot == null: return false
 	var identity: Dictionary = settings.duplicate(true)
 	identity["source_commit"] = OS.get_environment("CYBERSAND_SOURCE_REVISION")
 	identity["pose_mode"] = OS.get_environment("CYBERSAND_DIAG_FLYER_POSE")
 	identity["native_sha256"] = FileAccess.get_sha256("res://addons/cybersand_native/bin/" +
 		("cybersand_native.windows.x86_64.dll" if OS.get_name()=="Windows"
 			else "libcybersand_native.linux.x86_64.so"))
-	return workbench_pose_trace.begin(identity)
+	identity["render_cadence_mode"] = "legacy" if _legacy_render_cadence() else "repaired"
+	identity["fixed_physics_delta"] = rapier_bridge.fixed_delta()
+	identity["clock_notice"] = "Rapier targets alter callbacks; fixed 1/60 steps are compared by simulation index. CPU upload ACK and frame_post_draw are not GPU fences or scanout."
+	if not workbench_pose_trace.begin(identity): return false
+	_cadence_physics_hold_counts.clear()
+	if not simulation_worker.begin_render_cadence_trace():
+		# Do not finish/drain a worker capture owned by another caller.
+		workbench_pose_trace.finish()
+		return false
+	if not RenderingServer.frame_post_draw.is_connected(_cadence_frame_post_draw):
+		RenderingServer.frame_post_draw.connect(_cadence_frame_post_draw)
+	return true
 
 
 func finish_workbench_pose_trace() -> Dictionary:
-	return workbench_pose_trace.finish()
+	if not workbench_pose_trace.active: return {}
+	if RenderingServer.frame_post_draw.is_connected(_cadence_frame_post_draw):
+		RenderingServer.frame_post_draw.disconnect(_cadence_frame_post_draw)
+	var worker_events: Dictionary = simulation_worker.finish_render_cadence_trace()
+	return workbench_pose_trace.finish(worker_events)
+
+
+func _legacy_render_cadence() -> bool:
+	return OS.get_environment("CYBERSAND_DIAG_RENDER_CADENCE") == "legacy"
+
+
+func _cadence_frame_post_draw() -> void:
+	if not workbench_pose_trace.active: return
+	workbench_pose_trace.observe_event({"event":"framebuffer_draw",
+		"time_usec":Time.get_ticks_usec(),"process_frame":Engine.get_process_frames(),
+		"rendered_frames":Engine.get_frames_drawn(),
+		"render_serial":last_uploaded_render_snapshot_serial})
+
+
+func _cadence_physics_hold(reason: String) -> void:
+	if not workbench_pose_trace.active: return
+	_cadence_physics_hold_counts[reason] = int(_cadence_physics_hold_counts.get(reason,0))+1
+	workbench_pose_trace.observe_event({"event":"rapier_hold","reason":reason,
+		"time_usec":Time.get_ticks_usec(),"physics_frame":Engine.get_physics_frames(),
+		"waiting_body_sample":_workbench_wait_sample})
+
+
+func _cadence_rapier_completed(started_usec: int, completed_usec: int,
+		snapshot: CyberSimulationSnapshot) -> void:
+	if not workbench_pose_trace.active or physical_actor_session == null: return
+	var bridge: Variant = physical_actor_session.bridge
+	if not bridge is WorkbenchBridge: return
+	var bodies: Array[Dictionary] = []
+	for slot: int in range(mini(bridge._members.size(),WorkbenchPoseTrace.MAX_BODIES)):
+		var pose: Transform2D = bridge.body_transform(slot)
+		bodies.append({"slot":slot,"instance_id":int(bridge._members[slot].instance_id),
+			"xy":WorkbenchPoseTrace.xy(pose.origin),"angle":pose.get_rotation(),
+			"velocity":WorkbenchPoseTrace.xy(bridge.body_linear_velocity(slot))})
+	workbench_pose_trace.observe_event({"event":"rapier_step","start_usec":started_usec,
+		"time_usec":completed_usec,"observed_usec":Time.get_ticks_usec(),
+		"step":physical_actor_session.tick,
+		"session":bridge._session,"epoch":bridge._epoch,
+		"world_generation":snapshot.render_world_generation if snapshot != null else -1,
+		"fixed_delta":rapier_bridge.fixed_delta(),
+		"simulation_time_sec":physical_actor_session.tick*rapier_bridge.fixed_delta(),
+		"native_tick_used":snapshot.tick_index if snapshot != null else -1,
+		"native_response":_cadence_response_json(bridge.last_application),
+		"input_tape_index":_engine_lab_last_replay_segment,"bodies":bodies})
+
+
+func _cadence_response_json(application: Dictionary) -> Dictionary:
+	# Retain admission/refusal counts without putting Variant Vector2 objects
+	# into JSON or confusing a rejected stale response with an applied impulse.
+	var responses: Array[Dictionary] = []
+	for row: Dictionary in application.get("bodies",[]):
+		responses.append({"id":row.get("id",-1),"sample":row.get("sample",-1),
+			"age":row.get("age",-1),"refusal":row.get("refusal","")})
+	return {"accepted":application.get("accepted",false),
+		"refusal":application.get("refusal",""),"bodies":responses}
 
 
 # The shader and overlay should agree spatially for *the same* actor pose;
@@ -3257,6 +3356,8 @@ func _workbench_trace_presentation_frame(original_frame: Dictionary,
 			"generation":int(member.generation),
 			"receipt_generation":receipt.get("generation",-1),
 			"source":source,"visible":visible,
+			"onscreen_center":visible and selected is Transform2D and content.has_point(
+				PixelCamera.world_to_local(selected.origin,presented_origin,current_view_size,content)),
 			"guard_reason":str(_workbench_pose_trace_reasons.get(slot,
 				workbench_presentation_last.get("status","not_evaluated"))),
 			"bound":WorkbenchPoseTrace.pose_json(bound),
@@ -3307,6 +3408,34 @@ func _workbench_trace_presentation_frame(original_frame: Dictionary,
 		"uploaded_world_generation":last_uploaded_world_generation,
 		"uploaded_revision":last_uploaded_revision,
 		"uploaded_render_serial":last_uploaded_render_snapshot_serial,
+		"snapshot_received_usec":_cadence_received_usec,
+		"native_snapshot_published_usec":latest_snapshot.worker_handoff_usec,
+		"native_completed_usec":latest_snapshot.last_native_tick_completed_usec,
+		"native_tick_wall_usec":latest_snapshot.last_native_tick_completed_usec-latest_snapshot.last_native_tick_started_usec,
+		"native_scheduler_lateness_usec":latest_snapshot.last_native_tick_lateness_usec,
+		"native_tick_body_sample":latest_snapshot.last_native_tick_body_sample,
+		"offered_body_sample":latest_snapshot.offered_body_sample,
+		"worker_step_time_ms":latest_snapshot.worker_step_time_ms,
+		"native_tick_time_ms":latest_snapshot.simulation_time_ms,
+		"mask_native_completed_usec":frame.get("native_completed_usec",-1),
+		"render_snapshot_built_usec":_cadence_upload.get("generated_usec",-1),
+		"upload_started_usec":_cadence_upload.get("start_usec",-1),
+		"upload_completed_usec":_cadence_upload.get("completed_usec",-1),
+		"upload_native_tick":_cadence_upload.get("native_tick",-1),
+		"upload_full_refresh":_cadence_upload.get("full_refresh",false),
+		"last_ack_issued_usec":_engine_lab_last_ack_usec,
+		"last_ack_issued_serial":_engine_lab_last_ack_serial,
+		"render_ack_pending":_engine_lab_pending_ack_serial,
+		"worker_ack_serial":latest_snapshot.render_acknowledged_serial,
+		"worker_ack_observed_usec":latest_snapshot.render_ack_observed_usec,
+		"worker_pending_patch_bytes":latest_snapshot.render_pending_patch_bytes,
+		"worker_pending_patch_count":latest_snapshot.render_pending_patch_count,
+		"ack_gated_publication":latest_snapshot.render_publication_ack_gated,
+		"ack_gate_holds":latest_snapshot.render_publication_gate_holds,
+		"physics_hold_counts":_cadence_physics_hold_counts.duplicate(),
+		"previous_texture_known":not _presentation_previous_unknown,
+		"previous_texture_bytes":_presentation_previous_image.get_width()*_presentation_previous_image.get_height()*render_channels \
+			if _presentation_previous_image != null else 0,
 		"render_hz_target":render_snapshot_hz,
 		"blend_active":cadence_lod_enabled and render_snapshot_hz > 0 and \
 			now_usec-snapshot_blend_start_usec < 1000000.0/float(render_snapshot_hz),
@@ -3316,20 +3445,61 @@ func _workbench_trace_presentation_frame(original_frame: Dictionary,
 		"visible_part_count":parts.size(),"bodies":rows})
 
 
+# This ACK releases retained CPU publication data after successful upload
+# submission. ImageTexture.update returning is NOT a GPU completion fence.
+func _issue_render_ack(serial: int, uploaded_usec: int = 0, due_frame: int = -1) -> void:
+	if serial <= _engine_lab_last_ack_serial: return
+	simulation_worker.acknowledge_render_snapshot(serial)
+	_engine_lab_last_ack_serial = serial
+	_engine_lab_last_ack_usec = Time.get_ticks_usec()
+	if workbench_pose_trace.active:
+		workbench_pose_trace.observe_event({"event":"render_ack","render_serial":serial,
+			"time_usec":_engine_lab_last_ack_usec,"uploaded_usec":uploaded_usec,
+			"due_frame":due_frame,"process_frame":Engine.get_process_frames()})
+
+
 # Native render ACK is mandatory. Delay only an accepted, uploaded serial.
 func _engine_lab_ack_uploaded_snapshot(serial: int) -> void:
 	if engine_lab_ack_delay_frames == 0:
-		simulation_worker.acknowledge_render_snapshot(serial)
+		_issue_render_ack(serial,Time.get_ticks_usec(),Engine.get_process_frames())
 		return
+	if not _legacy_render_cadence():
+		var due: int = Engine.get_process_frames()+engine_lab_ack_delay_frames
+		var pending: Dictionary = {"serial":serial,"due_frame":due,
+			"uploaded_usec":Time.get_ticks_usec()}
+		# Several uploads in a single process callback have the same deadline;
+		# acknowledging its newest serial also retires its earlier uploads.
+		for index: int in _engine_lab_ack_queue.size():
+			if int(_engine_lab_ack_queue[index].due_frame)==due:
+				_engine_lab_ack_queue[index] = pending
+				_engine_lab_pending_ack_serial = maxi(_engine_lab_pending_ack_serial,serial)
+				return
+		_engine_lab_ack_queue.append(pending)
+		_engine_lab_pending_ack_serial = maxi(_engine_lab_pending_ack_serial,serial)
+		return
+	# Same-source negative control: retained #609 restart-on-every-upload bug.
 	_engine_lab_pending_ack_serial = maxi(_engine_lab_pending_ack_serial,serial)
 	_engine_lab_pending_ack_frames = engine_lab_ack_delay_frames
 
 
 func _engine_lab_pump_ack() -> void:
+	if not _legacy_render_cadence():
+		var waiting: Array[Dictionary] = []
+		var frame: int = Engine.get_process_frames()
+		for pending: Dictionary in _engine_lab_ack_queue:
+			if int(pending.due_frame) <= frame:
+				_issue_render_ack(int(pending.serial),int(pending.uploaded_usec),int(pending.due_frame))
+			else:
+				waiting.append(pending)
+		_engine_lab_ack_queue = waiting
+		_engine_lab_pending_ack_serial = 0
+		for pending: Dictionary in waiting:
+			_engine_lab_pending_ack_serial = maxi(_engine_lab_pending_ack_serial,int(pending.serial))
+		return
 	if _engine_lab_pending_ack_serial <= 0: return
 	_engine_lab_pending_ack_frames -= 1
 	if _engine_lab_pending_ack_frames > 0: return
-	simulation_worker.acknowledge_render_snapshot(_engine_lab_pending_ack_serial)
+	_issue_render_ack(_engine_lab_pending_ack_serial)
 	_engine_lab_pending_ack_serial = 0
 	_engine_lab_pending_ack_frames = 0
 
@@ -3337,9 +3507,10 @@ func _engine_lab_pump_ack() -> void:
 func engine_lab_set_ack_delay(frames: int) -> void:
 	engine_lab_ack_delay_frames = clampi(frames,0,4)
 	if engine_lab_ack_delay_frames == 0 and _engine_lab_pending_ack_serial > 0:
-		simulation_worker.acknowledge_render_snapshot(_engine_lab_pending_ack_serial)
+		_issue_render_ack(_engine_lab_pending_ack_serial)
 		_engine_lab_pending_ack_serial = 0
 		_engine_lab_pending_ack_frames = 0
+		_engine_lab_ack_queue.clear()
 
 
 func engine_lab_set_render_hz(target_hz: int) -> void:
@@ -3508,7 +3679,8 @@ func _safe_workbench_presentation_poses(frame: Dictionary) -> Dictionary:
 		var decision: Dictionary = WorkbenchPresentationCoherence.assess(
 			bound_pose,live_pose,bridge._rects[slot],image,
 			_presentation_previous_occupied,_presentation_previous_unknown,blend_active,
-			mini(remaining,WorkbenchPresentationCoherence.MAX_SCAN_CELLS),deadline_usec)
+			mini(remaining,WorkbenchPresentationCoherence.MAX_SCAN_CELLS),deadline_usec,
+			_presentation_previous_image)
 		if tracing: _workbench_pose_trace_reasons[slot] = str(decision.reason)
 		summary.cells_examined += int(decision.scanned)
 		if decision.safe:
@@ -3547,6 +3719,7 @@ func consume_render_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 	# Shared production upload/ACK path, exercised by rendered qualification.
 	if snapshot.render_snapshot_serial > last_uploaded_render_snapshot_serial:
 		record_render_payload(snapshot)
+		var upload_started_usec: int = Time.get_ticks_usec()
 		var render_uploaded: bool = upload_texture_patches(
 			snapshot.render_patch_rectangles,
 			snapshot.render_patch_cells,
@@ -3554,6 +3727,13 @@ func consume_render_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 			snapshot.render_channels
 		)
 		if render_uploaded:
+			_cadence_upload = {"event":"texture_upload","render_serial":snapshot.render_snapshot_serial,
+				"start_usec":upload_started_usec,"completed_usec":Time.get_ticks_usec(),
+				"generated_usec":snapshot.render_generated_usec,"native_tick":snapshot.render_tick_index,
+				"revision":snapshot.world_revision,"world_generation":snapshot.render_world_generation,
+				"full_refresh":snapshot.render_full_refresh,"patch_bytes":snapshot.render_patch_cells.size()}
+			if workbench_pose_trace.active:
+				workbench_pose_trace.observe_event(_cadence_upload.duplicate())
 			# Only an accepted World replacement invalidates presentation history.
 			# Full refreshes also occur during resync and every fallback frame.
 			if snapshot.render_world_generation != last_uploaded_world_generation:
@@ -4933,16 +5113,16 @@ func view_content_rect() -> Rect2:
 func create_render_textures() -> void:
 	texture = ImageTexture.create_from_image(image)
 	previous_texture = ImageTexture.create_from_image(image)
+	_presentation_previous_image = null
 
 
 func upload_texture(material_cells: PackedByteArray, world_revision: int) -> void:
 	if image == null or texture == null or previous_texture == null:
 		return
 	var start_usec: int = Time.get_ticks_usec()
-	# This legacy full-image update cannot cheaply retain every old pixel;
-	# refuse speculative live poses until the shader's old-texture fade ends.
 	_presentation_previous_occupied.clear()
-	_presentation_previous_unknown = true
+	_presentation_previous_image = image.duplicate() if shared_workbench != null and not _legacy_render_cadence() else null
+	_presentation_previous_unknown = _presentation_previous_image == null
 	image.set_data(
 		world_extent.x,
 		world_extent.y,
@@ -4979,14 +5159,20 @@ func upload_texture_patches(
 func _capture_previous_presentation_occupancy(rectangles: PackedInt32Array) -> void:
 	_presentation_previous_occupied.clear()
 	_presentation_previous_unknown = false
+	_presentation_previous_image = null
 	if image == null or texture == null or previous_texture == null:
 		_presentation_previous_unknown = true
 		return
+	if shared_workbench != null and not _legacy_render_cadence():
+		# Bind precisely the image that becomes previous_world_texture when the
+		# GPU slots swap. Preserve it through CPU patch mutation. Full refreshes
+		# and delayed ACK accumulation no longer imply unknown local occupancy.
+		_presentation_previous_image = image.duplicate()
 	var changed: int = 0
 	for offset: int in range(0,rectangles.size(),RENDER_PATCH_METADATA_STRIDE):
 		var cells: int = int(rectangles[offset+2])*int(rectangles[offset+3])
 		if cells > PRESENTATION_PREVIOUS_PATCH_LIMIT-changed:
-			_presentation_previous_unknown = true
+			_presentation_previous_unknown = _presentation_previous_image == null
 			return
 		changed += cells
 	for offset: int in range(0,rectangles.size(),RENDER_PATCH_METADATA_STRIDE):

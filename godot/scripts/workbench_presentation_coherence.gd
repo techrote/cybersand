@@ -43,7 +43,8 @@ static func _touches_body(point: Vector2, pose: Transform2D, rectangles: Array,
 static func assess(bound_pose: Transform2D, live_pose: Transform2D, rectangles: Array,
 		world_pixels: Image, previous_occupied: Dictionary = {},
 		previous_unknown: bool = false, previous_blend_active: bool = false,
-		max_scan_cells: int = MAX_SCAN_CELLS, deadline_usec: int = 0) -> Dictionary:
+		max_scan_cells: int = MAX_SCAN_CELLS, deadline_usec: int = 0,
+		previous_world_pixels: Image = null) -> Dictionary:
 	if world_pixels == null or world_pixels.is_empty() or rectangles.is_empty():
 		return _refuse("missing_world_or_geometry")
 	if not bound_pose.is_finite() or not live_pose.is_finite():
@@ -51,6 +52,9 @@ static func assess(bound_pose: Transform2D, live_pose: Transform2D, rectangles: 
 	if not _is_rigid(bound_pose) or not _is_rigid(live_pose):
 		return _refuse("nonrigid_pose")
 	if previous_blend_active and previous_unknown:
+		return _refuse("previous_texture_unbounded")
+	if previous_blend_active and previous_world_pixels != null \
+			and (previous_world_pixels.is_empty() or previous_world_pixels.get_size()!=world_pixels.get_size()):
 		return _refuse("previous_texture_unbounded")
 	var radius: float = 0.0
 	for rectangle: Variant in rectangles:
@@ -110,11 +114,14 @@ static func assess(bound_pose: Transform2D, live_pose: Transform2D, rectangles: 
 			if deadline_usec > 0 and (scanned & 31) == 0 \
 					and Time.get_ticks_usec() >= deadline_usec:
 				return _refuse("time_budget",scanned)
-			# Empty pixels need no shape testing. Previous material is tracked
-			# only where last accepted patch replaced a nonempty old cell.
+			# Empty pixels need no shape testing. The exact previous image
+			# covers active crossfade material; the small-patch map is retained
+			# for legacy callers without an image.
 			var occupied: bool = world_pixels.get_pixel(x,y).r8 != 0
 			if not occupied and previous_blend_active:
-				occupied = previous_occupied.has(y*world_pixels.get_width()+x)
+				occupied = previous_world_pixels.get_pixel(x,y).r8 != 0 \
+					if previous_world_pixels != null \
+					else previous_occupied.has(y*world_pixels.get_width()+x)
 			if not occupied: continue
 			var cell := Vector2(float(x)+0.5,float(y)+0.5)
 			for pose: Transform2D in poses:

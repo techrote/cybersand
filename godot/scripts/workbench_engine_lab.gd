@@ -361,7 +361,7 @@ func launch_test_it() -> void:
 		_status.text = "Missing packaged Run-Test-It.ps1; extract the complete current ZIP."
 		return
 	var process: int = OS.create_process("powershell.exe",
-		PackedStringArray(["-NoProfile","-ExecutionPolicy","Bypass","-File",test_file,"-Compare"]),true)
+		PackedStringArray(["-NoProfile","-ExecutionPolicy","Bypass","-File",test_file,"-Cadence"]),true)
 	if process <= 0:
 		_status.text = "Failed to start Test It PowerShell process; run Test It.cmd instead."
 		return

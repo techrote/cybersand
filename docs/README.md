@@ -10,6 +10,12 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+Draft/HOLD actor/terrain cadence continuation of #609: [one-command Windows
+measurements and clock meanings](operations/engine-lab-pose-tracing.md) and
+[confirmed mechanisms, bounded repair and unresolved architecture](audits/2026-11-15-render-cadence-001.md).
+Previous-texture history and ACK deadlines are presentation repairs; independently
+paced material contact and physical NVIDIA acceptance remain separate gates.
+
 Native-resolution camera candidate: [controls and Windows acceptance](operations/native-pixel-scrolling.md),
 [presentation and sampling contract](systems/material-appearance-and-rendering.md#native-resolution-pixel-scrolling),
 [private coordinate interfaces](reference/interfaces-and-message-contracts.md#camera-presentation-and-picking)
