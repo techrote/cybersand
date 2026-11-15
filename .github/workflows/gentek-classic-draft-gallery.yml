@@ -2,8 +2,6 @@ name: GENTEK-CLASSIC-001 draft native gallery
 on:
   push:
     branches: [experiment/gentek-classic-001-20261115]
-  pull_request:
-    types: [opened, synchronize, reopened]
     paths:
       - 'native/**'
       - 'godot/**'
@@ -15,10 +13,7 @@ permissions:
   pull-requests: read
 jobs:
   gallery:
-    if: >-
-      (github.event_name == 'push' && github.ref_name == 'experiment/gentek-classic-001-20261115') ||
-      (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository &&
-       github.head_ref == 'experiment/gentek-classic-001-20261115')
+    if: github.ref_name == 'experiment/gentek-classic-001-20261115'
     runs-on: ubuntu-24.04
     timeout-minutes: 120
     env:
@@ -28,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: ${{ github.head_ref || github.ref_name }}
+          ref: ${{ github.ref_name }}
           fetch-depth: 0
       - name: Focused native tests
         run: timeout 3600 make -j2 worldgen-test CXX=g++-13
@@ -80,11 +75,9 @@ jobs:
           set -euo pipefail
           mkdir -p docs/images/gentek-classic
           cp build/gentek-classic-gallery/classic-gentek-*.png docs/images/gentek-classic/
-          cp build/gentek-classic-gallery/architecture-native.json docs/images/gentek-classic/
-          git add docs/images/gentek-classic
+           git add docs/images/gentek-classic
           if git diff --cached --quiet; then exit 0; fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git commit -m 'docs(gentek): publish CLASSIC-001 native preview gallery'
-          target_branch="${GITHUB_HEAD_REF:-$GITHUB_REF_NAME}"
-          git push origin HEAD:"$target_branch"
+          git push origin HEAD:"$GITHUB_REF_NAME"
