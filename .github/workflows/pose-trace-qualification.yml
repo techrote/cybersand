@@ -180,7 +180,7 @@ jobs:
   windows-owner-package:
     name: Windows portable Engine Lab build and installed test
     runs-on: windows-2022
-    timeout-minutes: 110
+    timeout-minutes: 140
     defaults:
       run:
         shell: bash
@@ -247,7 +247,9 @@ jobs:
           python tools/ci/package_engine_lab_windows.py smoke --output C:/csengine --evidence build/engine-lab-owner-smoke
       - name: Parse bundled PowerShell and run all focused installed cadence pairs
         shell: pwsh
-        timeout-minutes: 85
+        # The installed software-renderer run measures 142-176 seconds per arm.
+        # All 36 arms plus final archive collection need more than 85 minutes.
+        timeout-minutes: 110
         run: |
           $ErrorActionPreference = 'Stop'
           $script = 'C:\csengine\Run-Test-It.ps1'
