@@ -30,6 +30,13 @@ def _summarize_wall_progress(
     reentries = 0
     previous_in_band = None
     first_exit_index = None
+    # This counts a *physically continuous* advancing in-band row run.
+    # Mere visits to every row can otherwise conceal long off-band detours.
+    previous_forward_row = None
+    consecutive_forward_rows = 0
+    longest_forward_rows = 0
+    longest_forward_start_row = None
+    longest_forward_end_row = None
     for cell_index, point in enumerate(path):
         clearance = selected_wall_distance(point)
         in_band = 6.0 <= clearance <= 10.0
@@ -37,6 +44,24 @@ def _summarize_wall_progress(
             qualified_rows.add(point[1])
             if point[1] == next_row:
                 next_row += 1
+        if in_band and first_y <= point[1] <= last_y:
+            if previous_forward_row is None:
+                consecutive_forward_rows = 1
+            elif point[1] == previous_forward_row + 1:
+                consecutive_forward_rows += 1
+            elif point[1] != previous_forward_row:
+                # A backward move or a sparse row jump starts a new run.
+                consecutive_forward_rows = 1
+            previous_forward_row = point[1]
+            if consecutive_forward_rows > longest_forward_rows:
+                longest_forward_rows = consecutive_forward_rows
+                longest_forward_start_row = point[1] - consecutive_forward_rows + 1
+                longest_forward_end_row = point[1]
+        else:
+            # Departing the selected band or the target's row range severs
+            # continuity, even if later row visits complete ordered coverage.
+            consecutive_forward_rows = 0
+            previous_forward_row = None
         if not in_band:
             off_band_steps += 1
             current_off_band_run += 1
@@ -60,6 +85,11 @@ def _summarize_wall_progress(
         "profile_row_count": profile_rows,
         "ordered_band_qualified_rows": ordered,
         "ordered_band_progress_fraction": round(ordered_progress, 6),
+        "longest_contiguous_forward_band_rows": longest_forward_rows,
+        "longest_contiguous_forward_band_progress_fraction": round(
+            max(0, longest_forward_rows - 1) / (last_y - first_y), 6),
+        "longest_contiguous_forward_band_start_row": longest_forward_start_row,
+        "longest_contiguous_forward_band_end_row": longest_forward_end_row,
         "distinct_band_qualified_rows": len(qualified_rows),
         "distinct_band_row_coverage_fraction": round(len(qualified_rows) / profile_rows, 6),
         "ungated_max_y_progress_fraction": round(raw_progress, 6),
