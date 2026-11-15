@@ -46,7 +46,7 @@ jobs:
           p=Path("experiments/agent_painter/lanes/sprocket/worm-fleet-request-f3.json")
           x=json.loads(p.read_text())
           assert x=={
-            "schema":"cybersand.worm.sprocket-fleet-request/f2",
+            "schema":"cybersand.worm.sprocket-fleet-request/f3",
             "experiment":"four-separate-trained-model-inference-128-turn-real-png-worms",
             "model":"kandivault/sprocket-500m",
             "model_revision":"eb157d4ddddc4619e661d4a2426bb2dd000fc668",
@@ -58,6 +58,7 @@ jobs:
             "f1_run":43765853789,
             "f2_source":"b44038a2e26850bf5f97457243f1b2f9c018d2ca",
             "f2_run":43766586563,
+            "preflight_revision":2,
             "four_seeds":[8111,8123,8147,8161],
             "four_families":["greebles","pipework","architecture","greebles"],
             "per_worm_decisions":128,
@@ -73,7 +74,7 @@ jobs:
             json.dumps(x,indent=2,sort_keys=True)+"\n")
           PY
           python3 tools/ci/check_ci_provider_policy.py
-          python3 -m py_compile experiments/agent_painter/lanes/sprocket/worm_fleet_capacity_v1.py experiments/agent_painter/lanes/sprocket/worm_fleet_long_v3.py experiments/agent_painter/lanes/sprocket/worm_fleet_long_v3.py
+          python3 -m py_compile experiments/agent_painter/lanes/sprocket/worm_fleet_capacity_v1.py experiments/agent_painter/lanes/sprocket/worm_fleet_four_v2.py experiments/agent_painter/lanes/sprocket/worm_fleet_long_v3.py
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           name: sprocket-worm-fleet-f1-9b4627d8f3602627291d5939f4787b5976b6c195
