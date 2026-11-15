@@ -37,8 +37,8 @@ def percentile(values,p):
     return values[lo]+(values[hi]-values[lo])*(x-lo)
 
 class Server:
-    def __init__(self,binary:Path,model:Path,mode:str,root:Path):
-        self.binary=binary.resolve(); self.model=model.resolve(); self.mode=mode; self.root=root
+    def __init__(self,binary:Path,model:Path,mode:str,root:Path,seed:int):
+        self.binary=binary.resolve(); self.model=model.resolve(); self.mode=mode; self.root=root; self.seed=seed
         self.proc=None; self.log=None; self.tmp=None; self.key=None; self.port=None; self.startup=None
     def __enter__(self):
         self.root.mkdir(parents=True,exist_ok=True)
@@ -91,7 +91,7 @@ class Server:
         legal=obs["legal"]; criteria={a:ACTION_DESCRIPTIONS[a] for a in legal}
         state={"identity":"small slightly deranged CyberSand drawing worm",
                "objective":"make an odd continuing line, not optimal pathfinding",
-               "seed":SEED,"family":obs["family"],"tick":obs["tick"],
+               "seed":self.seed,"family":obs["family"],"tick":obs["tick"],
                "x":obs["x"],"y":obs["y"],"heading":obs["heading"],
                "local_5x5":obs["local_5x5"],"last_actions":obs["last_actions"],
                "legal_actions":legal}
@@ -123,13 +123,13 @@ def load_w0(path):
     if tuple(m.ACTIONS)!=tuple(ACTION_DESCRIPTIONS): raise ValueError("W0 action contract changed")
     return m
 
-def run_arm(binary,model,w0,mode,out):
+def run_arm(binary,model,w0,mode,out,seed):
     calls=[]; experiments=[]
     t0=time.monotonic()
-    with Server(binary,model,mode,out/"process") as server:
+    with Server(binary,model,mode,out/"process",seed) as server:
         for family in FAMILIES:
             family_calls=[]
-            record=w0.run(SEED,mode="callback",family=family,steps=STEPS,
+            record=w0.run(seed,mode="callback",family=family,steps=STEPS,
                           selector=lambda obs:server.choose(obs,family_calls))
             png=w0.png_bytes(record)
             (out/f"{mode}-{family}.png").write_bytes(png)
@@ -168,6 +168,7 @@ def main():
     p.add_argument("--w0",type=Path,required=True)
     p.add_argument("--mode",choices=("greyhound","scrambled_eggs","branchwitch"),required=True)
     p.add_argument("--output",type=Path,required=True)
+    p.add_argument("--seed",type=int,default=570)
     p.add_argument("--source-sha",required=True)
     a=p.parse_args()
     from experiments.driv3r.backend import PINS
@@ -175,11 +176,11 @@ def main():
     if a.output.exists(): raise RuntimeError("Refuse evidence overwrite")
     a.output.mkdir(parents=True)
     w0=load_w0(a.w0)
-    stock=run_arm(a.binary,a.model,w0,"stock",a.output/"stock")
-    mutant=run_arm(a.binary,a.model,w0,a.mode,a.output/a.mode)
+    stock=run_arm(a.binary,a.model,w0,"stock",a.output/"stock",a.seed)
+    mutant=run_arm(a.binary,a.model,w0,a.mode,a.output/a.mode,a.seed)
     report={"schema":"cybersand-d1-frankenlayers-yolo/1","source_sha":a.source_sha,
             "q8_sha256":PINS["model"]["sha256"],"llama_source_commit":"8642541b255bfb5dc39cd351a178be09013a55d6",
-            "mode":a.mode,"stock":stock,"mutant":mutant,
+            "mode":a.mode,"seed":a.seed,"stock":stock,"mutant":mutant,
             "speedup_p50":stock["p50_seconds"]/mutant["p50_seconds"] if mutant["p50_seconds"] else None,
             "actual_systemone_inference":True,"native_workbench":False,"training":False}
     write_json(a.output/"comparison.json",report)
