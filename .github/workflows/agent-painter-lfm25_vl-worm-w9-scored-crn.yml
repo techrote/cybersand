@@ -76,7 +76,7 @@ jobs:
           }
           PY
           python3 -m py_compile experiments/agent_painter/lanes/lfm25_vl/worm_train_w9_v1.py experiments/agent_painter/lanes/lfm25_vl/worm_w7_sensitivity_eval_v1.py experiments/agent_painter/lanes/lfm25_vl/worm_w9_scored_crn_v1.py
-          PYTHONPATH=experiments/agent_painter/lanes/lfm25_vl:experiments/agent_painter/training python3 -m unittest -v experiments/agent_painter/lanes/lfm25_vl/test_worm_w9_scored_crn_v1.py
+          PYTHONPATH=experiments/agent_painter/lanes/lfm25_vl:experiments/agent_painter/training python3 -m unittest -v experiments/agent_painter/lanes/lfm25_vl/test_worm_w8_scored_crn_v1.py
           python3 tools/ci/check_ci_provider_policy.py
           python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/lfm-w9-gallery-scheduling.json
           mkdir -p evidence/diagnostics
