@@ -44,6 +44,27 @@ $(BUILD_DIR)/libcybersand.so: $(CORE_SOURCES) $(CORE_HEADERS) | $(BUILD_DIR)
 $(BUILD_DIR)/tests_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) $(TEST_SOURCES) $(TEST_HEADERS) | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined $(CORE_SOURCES) $(TEST_SOURCES) -o $@
 
+# WAVE-MT-001 wave_flow_v1: standalone regressions (own main; not part of TEST_SOURCES).
+.PHONY: wave-flow-test wave-flow-sanitize wave-flow-thread-sanitize
+
+$(BUILD_DIR)/test_wave_flow: $(SIMULATION_SOURCES) $(CORE_HEADERS) native/tests/test_wave_flow.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O2 -g -pthread $(SIMULATION_SOURCES) native/tests/test_wave_flow.cpp -o $@
+
+$(BUILD_DIR)/test_wave_flow_sanitized: $(SIMULATION_SOURCES) $(CORE_HEADERS) native/tests/test_wave_flow.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=address,undefined $(SIMULATION_SOURCES) native/tests/test_wave_flow.cpp -o $@
+
+$(BUILD_DIR)/test_wave_flow_tsan: $(SIMULATION_SOURCES) $(CORE_HEADERS) native/tests/test_wave_flow.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=thread $(SIMULATION_SOURCES) native/tests/test_wave_flow.cpp -o $@
+
+wave-flow-test: $(BUILD_DIR)/test_wave_flow
+	./$(BUILD_DIR)/test_wave_flow
+
+wave-flow-sanitize: $(BUILD_DIR)/test_wave_flow_sanitized
+	UBSAN_OPTIONS=halt_on_error=1 ./$(BUILD_DIR)/test_wave_flow_sanitized
+
+wave-flow-thread-sanitize: $(BUILD_DIR)/test_wave_flow_tsan
+	TSAN_OPTIONS=halt_on_error=1 ./$(BUILD_DIR)/test_wave_flow_tsan
+
 .PHONY: material-baseline-test material-baseline-sanitize
 
 $(BUILD_DIR)/test_material_baseline: $(SIMULATION_SOURCES) $(CORE_HEADERS) native/tests/test_material_baseline.cpp | $(BUILD_DIR)

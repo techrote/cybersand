@@ -16,6 +16,7 @@ struct World::WaveHalf {
     std::int32_t peak = 0;
     std::int32_t non_empty_delta = 0;
     std::uint64_t moved = 0;
+    std::uint32_t invalid = 0;
     void touch(std::int32_t x, std::int32_t y) noexcept {
         if (max_x < min_x) { min_x = max_x = x; min_y = max_y = y; return; }
         min_x = std::min(min_x, x); max_x = std::max(max_x, x);
@@ -26,7 +27,10 @@ struct World::WaveHalf {
 struct World::WaveChunk {
     static constexpr std::uint8_t kGainMask = 3, kGainNormal = 1, kGainConfined = 2;
     static constexpr std::uint8_t kFull = 4, kSolid = 8, kWet = 16;
-    explicit WaveChunk(std::size_t count) : flux(count, 0), weight(count, 0), meta(count, 0) {}
+    // Bits 5-7: ceil(log2) of the responding rows of the cell's stack (0..5).
+    static constexpr std::uint8_t kDepthShift = 5;
+    explicit WaveChunk(std::size_t count, std::size_t columns)
+        : flux(count, 0), weight(count, 0), meta(count, 0), dry(columns, 0) {}
     std::vector<std::int32_t> flux;   // authoritative: retained flux through the right face
     std::vector<std::int32_t> weight; // derived: head above the cell floor, in mass units
     std::vector<std::uint8_t> meta;   // derived: gain code, full, solid, wet
@@ -38,6 +42,14 @@ struct World::WaveChunk {
     bool woken = true;
     bool active = false;
     bool solve = false;
+    // A half that is entirely Empty with zeroed flux and derived state: its
+    // interior needs no work until something writes into it.
+    std::array<bool, 2> clean{};
+    // Per column: 0 unknown, 1 holds no Water (derived state is current),
+    // 2 additionally holds nothing but Empty. A strip skips columns that are
+    // dry in every chunk of its group. Each half owns its own columns.
+    std::vector<std::uint8_t> dry;
+    std::array<bool, 2> dry_reset{true, true};
     std::array<WaveHalf, 2> half{};
 };
 
@@ -121,7 +133,10 @@ WaveFlowDiagnostics World::wave_flow_diagnostics() const noexcept {
 }
 
 void World::wake_wave_chunk(Chunk& chunk) noexcept {
-    if (chunk.wave != nullptr) chunk.wave->woken = true;
+    if (chunk.wave == nullptr) return;
+    chunk.wave->woken = true;
+    chunk.wave->clean = {};
+    chunk.wave->dry_reset = {true, true};
 }
 
 void World::wave_column_task(std::size_t task_index) noexcept {
@@ -141,11 +156,53 @@ void World::wave_column_task(std::size_t task_index) noexcept {
     auto* weight = scratch.weight.data();
     auto* flags = scratch.flags.data();
     auto* const above = entries[0].chunk->wave->above;
+    // Body masks: only the rows of this strip inside the mask region are probed.
+    const auto& mask = transient_obstacles_->region;
+    std::int32_t mask_first = 0, mask_last = 0;
+    if (state.mask_present) {
+        mask_first = static_cast<std::int32_t>(std::clamp<std::int64_t>(mask.y - origin_y, 0, rows));
+        mask_last = static_cast<std::int32_t>(std::clamp<std::int64_t>(mask.y + mask.height - origin_y, 0, rows));
+    }
+    constexpr std::uint32_t kMaximumGroup = 64;
+    bool skip[kMaximumGroup] = {}, empty[kMaximumGroup] = {};
+    for (std::uint32_t c = 0; c < task.count && c < kMaximumGroup; ++c) {
+        const auto base = static_cast<std::int32_t>(c) * size;
+        skip[c] = entries[c].chunk->wave->clean[task.half] && !(base < mask_last && base + size > mask_first);
+        empty[c] = true;
+    }
+
+    for (std::uint32_t c = 0; c < task.count; ++c) {
+        auto& wave = *entries[c].chunk->wave;
+        if (!wave.dry_reset[task.half]) continue;
+        std::fill_n(wave.dry.data() + first_x, last_x - first_x, std::uint8_t{0});
+        wave.dry_reset[task.half] = false;
+    }
 
     for (auto lx = first_x; lx < last_x; ++lx) {
+        const bool masked_column = mask_last > mask_first && origin_x + lx >= mask.x && origin_x + lx < mask.x + mask.width;
+        if (!masked_column) {
+            // A column that is dry in every chunk of the group cannot change:
+            // liquid enters it only through the apply pass or an owner edit,
+            // and both clear the mark.
+            bool dry = true;
+            for (std::uint32_t c = 0; c < task.count && dry; ++c)
+                dry = entries[c].chunk->wave->dry[static_cast<std::size_t>(lx)] != 0U;
+            if (dry) {
+                for (std::uint32_t c = 0; c < task.count && c < kMaximumGroup; ++c)
+                    if (entries[c].chunk->wave->dry[static_cast<std::size_t>(lx)] != 2U) empty[c] = false;
+                continue;
+            }
+        }
         // Gather the column: -1 solid, 0 empty, otherwise Water mass.
         for (std::uint32_t c = 0; c < task.count; ++c) {
             const auto& chunk = *entries[c].chunk;
+            if (c < kMaximumGroup && skip[c]) {
+                // A clean half is all Empty by definition: no cell is read.
+                const auto base = static_cast<std::size_t>(c) * static_cast<std::size_t>(size);
+                std::fill_n(mass + base, size, 0);
+                std::fill_n(flags + base, size, std::uint8_t{0});
+                continue;
+            }
             const auto* cells = chunk.cells.data() + lx;
             const auto* meta = chunk.wave->meta.data() + lx;
             const auto base = static_cast<std::int32_t>(c) * size;
@@ -157,9 +214,15 @@ void World::wave_column_task(std::size_t task_index) noexcept {
                 flags[base + ly] = meta[static_cast<std::size_t>(ly) * static_cast<std::size_t>(size)] & WaveChunk::kFull;
             }
         }
-        if (state.mask_present) {
-            for (std::int32_t r = 0; r < rows; ++r)
-                if (transient_obstacle_at(origin_x + lx, origin_y + r) != 0U) mass[r] = -1;
+        if (masked_column) {
+            for (auto r = mask_first; r < mask_last; ++r) {
+                const auto body = transient_obstacle_at(origin_x + lx, origin_y + r);
+                if (body == 0U) continue;
+                // Water resting on a body presses it down (the existing contract).
+                if (r > 0 && mass[r - 1] > 0)
+                    record_transient_contact(body, Material::Water, 0, 1, origin_x + lx, origin_y + r - 1);
+                mass[r] = -1;
+            }
         }
 
         // Settle, bottom-up. `dst` is the lowest cell that may still receive.
@@ -240,12 +303,45 @@ void World::wave_column_task(std::size_t task_index) noexcept {
             ceiling = false;
         }
 
+        // Depth class of every stack: how many rows respond together. A shallow
+        // layer may level a larger share of its head difference per round than
+        // a deep one without overshooting.
+        for (std::int32_t r = 0; r < rows;) {
+            if ((flags[r] & WaveChunk::kWet) == 0U) { ++r; continue; }
+            auto end = r;
+            while (end + 1 < rows && (flags[end] & WaveChunk::kFull) != 0U && (flags[end + 1] & WaveChunk::kWet) != 0U) ++end;
+            const auto length = std::min(end - r + 1, P::kActiveRows);
+            std::uint8_t depth = 0;
+            while ((1 << depth) < length) ++depth;
+            for (auto k = r; k <= end && k < r + P::kActiveRows; ++k)
+                flags[k] = static_cast<std::uint8_t>(flags[k] | (depth << WaveChunk::kDepthShift));
+            r = end + 1;
+        }
+
         // Scatter: write changed cells, derived weight and meta.
         for (std::uint32_t c = 0; c < task.count; ++c) {
             auto& chunk = *entries[c].chunk;
             auto& wave = *chunk.wave;
             auto& half = wave.half[task.half];
             const auto base = static_cast<std::int32_t>(c) * size;
+            bool any = false, wet = false;
+            for (std::int32_t ly = 0; ly < size; ++ly) {
+                any = any || mass[base + ly] != 0;
+                wet = wet || mass[base + ly] > 0;
+            }
+            const auto mark = masked_column || wet ? std::uint8_t{0} : any ? std::uint8_t{1} : std::uint8_t{2};
+            if (mark != 0U && wave.dry[static_cast<std::size_t>(lx)] == 0U) {
+                // Faces of a newly dry column are skipped from now on, so the
+                // flux a just-emptied cell still carries must not survive.
+                for (std::int32_t ly = 0; ly < size; ++ly)
+                    wave.flux[static_cast<std::size_t>(ly) * static_cast<std::size_t>(size) + static_cast<std::size_t>(lx)] = 0;
+            }
+            wave.dry[static_cast<std::size_t>(lx)] = mark;
+            if (c < kMaximumGroup) {
+                // A clean half stays untouched unless liquid settled into it.
+                if (skip[c] && !any) continue;
+                if (any) { empty[c] = false; wave.clean[task.half] = false; skip[c] = false; }
+            }
             for (std::int32_t ly = 0; ly < size; ++ly) {
                 const auto at = static_cast<std::size_t>(ly) * static_cast<std::size_t>(size) + static_cast<std::size_t>(lx);
                 const auto r = base + ly;
@@ -263,11 +359,28 @@ void World::wave_column_task(std::size_t task_index) noexcept {
             }
         }
     }
+    // A half found entirely Empty becomes clean: zero its retained flux once.
+    for (std::uint32_t c = 0; c < task.count && c < kMaximumGroup; ++c) {
+        auto& wave = *entries[c].chunk->wave;
+        if (!empty[c] || wave.clean[task.half]) continue;
+        const auto base = static_cast<std::int32_t>(c) * size;
+        if (base < mask_last && base + size > mask_first) continue;
+        for (std::int32_t ly = 0; ly < size; ++ly)
+            std::fill_n(wave.flux.data() + static_cast<std::size_t>(ly) * static_cast<std::size_t>(size) +
+                            static_cast<std::size_t>(first_x), last_x - first_x, 0);
+        wave.clean[task.half] = true;
+    }
 }
 
 void World::wave_write_mass(Chunk& chunk, std::size_t at, std::int32_t before, std::int32_t after,
                             WaveHalf& half) noexcept {
     auto& cell = chunk.cells[at];
+    // The limiters make this unreachable. If a defect ever produces a mass the
+    // carrier cannot hold, the tick fails the World instead of wrapping it.
+    if (after < 0 || after > 65535) {
+        ++half.invalid;
+        after = std::clamp(after, 0, 65535);
+    }
     if (after == 0) {
         cell = Chunk::Cell::for_material(Material::Empty);
         cell.set_epoch(update_epoch_);
@@ -276,6 +389,9 @@ void World::wave_write_mass(Chunk& chunk, std::size_t at, std::int32_t before, s
         --half.non_empty_delta;
         return;
     }
+    const auto column = at % static_cast<std::size_t>(config_.chunk_size);
+    chunk.wave->clean[column < static_cast<std::size_t>(config_.chunk_size / 2) ? 0U : 1U] = false;
+    chunk.wave->dry[column] = 0;
     if (before == 0) {
         cell = Chunk::Cell::for_material(Material::Water);
         cell.set_state_b(0);
@@ -298,10 +414,27 @@ void World::wave_flux_task(std::size_t task_index) noexcept {
         auto& chunk = *state.sorted[task.first + c].chunk;
         auto& wave = *chunk.wave;
         const auto* right = wave.right;
+        // Interior faces of a clean half are Empty|Empty with zero flux.
+        const auto start_x = wave.clean[task.half] ? last_x - 1 : first_x;
+        // Faces whose two columns are both dry (and not reset since) are skipped.
+        bool dry_face[1024] = {};
+        if (!state.mask_present && size <= 1024 && !wave.dry_reset[0] && !wave.dry_reset[1]) {
+            for (auto lx = start_x; lx < last_x; ++lx) {
+                const auto mine = wave.dry[static_cast<std::size_t>(lx)] != 0U;
+                const auto theirs = lx + 1 < size ? wave.dry[static_cast<std::size_t>(lx) + 1U] != 0U
+                    : right != nullptr && !right->wave->dry_reset[0] && right->wave->dry[0] != 0U;
+                dry_face[lx] = mine && theirs;
+            }
+        }
+        const auto origin_x = state.sorted[task.first + c].coord.x * size;
+        const auto origin_y = state.sorted[task.first + c].coord.y * size;
         for (std::int32_t ly = 0; ly < size; ++ly) {
             const auto row = static_cast<std::size_t>(ly) * stride;
-            for (auto lx = first_x; lx < last_x; ++lx) {
+            for (auto lx = start_x; lx < last_x; ++lx) {
                 const auto i = row + static_cast<std::size_t>(lx);
+                // No Water on either side. The face may still hold flux written
+                // while one side was wet, so it is cleared rather than assumed zero.
+                if (dry_face[lx]) { wave.flux[i] = 0; continue; }
                 const Chunk* other = &chunk;
                 auto j = i + 1U;
                 if (lx + 1 == size) {
@@ -313,6 +446,14 @@ void World::wave_flux_task(std::size_t task_index) noexcept {
                 const auto meta_a = wave.meta[i], meta_b = other->wave->meta[j];
                 if (((meta_a | meta_b) & WaveChunk::kSolid) != 0U || ((meta_a | meta_b) & WaveChunk::kWet) == 0U) {
                     wave.flux[i] = 0;
+                    // Water leaning on a body pushes it sideways (the existing contract).
+                    if (state.mask_present && ((meta_a | meta_b) & WaveChunk::kWet) != 0U) {
+                        const bool wet_left = (meta_a & WaveChunk::kWet) != 0U;
+                        const auto body = transient_obstacle_at(origin_x + lx + (wet_left ? 1 : 0), origin_y + ly);
+                        if (body != 0U)
+                            record_transient_contact(body, Material::Water, wet_left ? 1 : -1, 0,
+                                                     origin_x + lx + (wet_left ? 0 : 1), origin_y + ly);
+                    }
                     continue;
                 }
                 const auto a = (meta_a & WaveChunk::kWet) != 0U ? static_cast<std::int32_t>(chunk.cells[i].state_a_value()) : 0;
@@ -350,7 +491,8 @@ void World::wave_flux_task(std::size_t task_index) noexcept {
                     // against or beyond its head difference. Larger transfers are
                     // limited to a share of that difference, so bulk flow relaxes
                     // without overshoot while small flow keeps its momentum.
-                    const auto downhill = (head > 0) == rightward ? std::abs(head) >> P::kLevelShift : 0;
+                    const auto depth = std::max(meta_a >> WaveChunk::kDepthShift, meta_b >> WaveChunk::kDepthShift);
+                    const auto downhill = (head > 0) == rightward ? std::abs(head) >> (P::kLevelShift + depth) : 0;
                     available = std::min(available >> 1, std::max(P::kCoast, downhill));
                     if (destination_mass >= P::kMaximumMass) available = 0;
                 }
@@ -384,7 +526,10 @@ void World::wave_apply_task(std::size_t task_index) noexcept {
             auto incoming = first_x > 0
                 ? wave_transfer(wave.flux[row + static_cast<std::size_t>(first_x) - 1U], origin_x + first_x - 1, y, round)
                 : left != nullptr ? wave_transfer(left->wave->flux[row + stride - 1U], origin_x - 1, y, round) : 0;
+            const bool clean = wave.clean[task.half];
             for (auto lx = first_x; lx < last_x; ++lx) {
+                // Interior faces of a clean half carry nothing.
+                if (clean && lx == first_x + 1 && last_x - first_x > 2) { lx = last_x - 1; incoming = 0; }
                 const auto i = row + static_cast<std::size_t>(lx);
                 const auto outgoing = wave_transfer(wave.flux[i], origin_x + lx, y, round);
                 const auto delta = incoming - outgoing;
@@ -539,6 +684,7 @@ void World::advance_wave_flow(TickStats& stats) {
 
     // Owner-side reduction: activity, render dirtiness and occupancy.
     started = Clock::now();
+    std::uint64_t invalid = 0;
     for (const auto& entry : state.sorted) {
         auto& chunk = *entry.chunk;
         auto& wave = *chunk.wave;
@@ -548,6 +694,7 @@ void World::advance_wave_flow(TickStats& stats) {
             peak = std::max(peak, half.peak);
             delta += half.non_empty_delta;
             diagnostics.moved_units += half.moved;
+            invalid += half.invalid;
             if (half.max_x >= half.min_x) { bounds.touch(half.min_x, half.min_y); bounds.touch(half.max_x, half.max_y); }
         }
         wave.woken = false;
@@ -586,4 +733,5 @@ void World::advance_wave_flow(TickStats& stats) {
         wake_cell_neighborhood(origin_x + bounds.max_x, origin_y + bounds.max_y, false);
     }
     diagnostics.merge_nanoseconds += elapsed(started);
+    if (invalid != 0) throw std::runtime_error("wave_flow produced a Water mass outside its carrier");
 }

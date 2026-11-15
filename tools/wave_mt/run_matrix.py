@@ -6,7 +6,7 @@ failures, are appended to the output CSV unchanged; nothing is filtered.
 
     python tools/wave_mt/run_matrix.py --out results.csv \
         --sizes 1024 2048 --scenes dam wave idle sparse \
-        --solvers 1:0 2:0 4:0 3:2 5:0 --workers 1 2 4 6 0 --repeats 2
+        --solvers 1:0 2:0 4:0 3:2 5:0 5:0:3 --workers 1 2 4 6 0 --repeats 2
 """
 from __future__ import annotations
 
@@ -24,7 +24,7 @@ def main() -> int:
     parser.add_argument("--out", required=True)
     parser.add_argument("--sizes", nargs="+", type=int, default=[1024])
     parser.add_argument("--scenes", nargs="+", default=["dam"])
-    parser.add_argument("--solvers", nargs="+", default=["1:0"], help="family:variant")
+    parser.add_argument("--solvers", nargs="+", default=["1:0"], help="family:variant[:substeps]; family 5 is wave_flow_v1")
     parser.add_argument("--workers", nargs="+", type=int, default=[1, 4], help="0 = Auto")
     parser.add_argument("--repeats", type=int, default=2)
     parser.add_argument("--warm", type=int, default=30)
@@ -43,10 +43,11 @@ def main() -> int:
             for size in args.sizes:
                 for scene in args.scenes:
                     for solver in args.solvers:
-                        family, variant = solver.split(":")
+                        family, variant, *rest = solver.split(":")
+                        substeps = rest[0] if rest else "1"
                         for workers in args.workers:
                             warm = args.idle_warm if scene == "idle" else args.warm
-                            command = [args.exe, str(size), scene, family, variant, str(workers), str(warm), str(args.ticks)]
+                            command = [args.exe, str(size), scene, family, variant, str(workers), str(warm), str(args.ticks), substeps]
                             try:
                                 done = subprocess.run(command, capture_output=True, text=True, timeout=args.timeout)
                                 row = done.stdout.strip()

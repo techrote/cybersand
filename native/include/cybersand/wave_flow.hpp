@@ -19,7 +19,9 @@ struct WaveFlowParameters {
     static constexpr std::int32_t kStiffness = 256;     // ...so their overfill can be 8x stiffer
     static constexpr std::int32_t kDampShift = 7;       // flux loses 1/128 per tick
     static constexpr std::int32_t kCoast = 16;          // units a face may carry on inertia alone
-    static constexpr std::int32_t kLevelShift = 9;      // share of a head difference moved per row
+    // A face may level 1/2^(kLevelShift + d) of its head difference per round,
+    // d = ceil(log2(responding rows)) <= 5: 1/8 for one row, 1/256 for 32.
+    static constexpr std::int32_t kLevelShift = 3;
     static constexpr std::int32_t kSleepAfter = 30;     // quiet ticks before a chunk stops being solved
     static constexpr std::int32_t kWakePeak = 2;        // smallest per-cell change that counts as motion
     static constexpr std::int32_t kMaximumMass = 32'000; // overfill ceiling of the uint16 carrier

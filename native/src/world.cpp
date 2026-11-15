@@ -1763,7 +1763,7 @@ World::Chunk& World::ensure_chunk(ChunkCoord coord) {
         if (pressure_->cache != nullptr) pressure_->cache->cold();
     }
     if (inertial_enabled_) chunk->inertial = std::make_unique<std::vector<InertialSlot>>(chunk->cells.size());
-    if (wave_ != nullptr) chunk->wave = std::make_unique<WaveChunk>(chunk->cells.size());
+    if (wave_ != nullptr) chunk->wave = std::make_unique<WaveChunk>(chunk->cells.size(), static_cast<std::size_t>(config_.chunk_size));
     if (granular_arrival_enabled_) {
         if (chunk->cells.size() > (std::numeric_limits<std::size_t>::max()-granular_arrival_storage_bytes_)/sizeof(std::uint64_t))
             throw std::runtime_error("arrival witness storage capacity overflow");
