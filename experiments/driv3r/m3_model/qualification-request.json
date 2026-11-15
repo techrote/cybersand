@@ -1,0 +1,23 @@
+{
+  "schema": "driv3r-m3-model-short-request-v1",
+  "owner_gate": "M3 4 resident d1-Q8 decisions in real native Workbench",
+  "authorized_by": "CyberSand owner: run short model-selected native then 36-decision A1/A2/A3 comparisons",
+  "frozen_m1_source_sha": "8fa90de6be209ed0b7bd125039e6ec8b332fb1a6",
+  "frozen_m1_schema_sha256": "ebe2fa211148602c614cba0f0a40f285cba797784b70efa035832d833877f80d",
+  "qualified_m3_history_sha": "98320dab1e248820576c30dd6da5591d2e6ad9a4",
+  "max_model_requests": 4,
+  "max_native_actions": 4,
+  "max_live_native_sessions": 2,
+  "max_model_instances": 1,
+  "allow_model": true,
+  "allow_training": false,
+  "allow_formal_AB": false,
+  "allow_36_decision_runs": false,
+  "allow_paid_api": false,
+  "model_checkpoint": "LiquidAI/d1-2B pinned official Q8 GGUF",
+  "native_venue": "source-matched persistent Godot headless Workbench",
+  "requirement": "genuine model choice then host validation then actual native readback",
+  "strict_gate_min_model_selected_native_actions": 2,
+  "original_failures_retained": true,
+  "no_merge_or_ready": true
+}
