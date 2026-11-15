@@ -119,16 +119,26 @@ func _run() -> void:
 				bridge.reset_body(0,bound_pose.origin+Vector2(0,1),
 					bound_pose.get_rotation())
 				host.snapshot_blend_start_usec = Time.get_ticks_usec()-1000000
+				# Main's normal _process callback resolves workbench_display_frame()
+				# before passing it here. Holding its exact valid receipt fixed
+				# prevents asynchronous worker replacement from changing the
+				# control variable between our two deliberately selected modes.
+				check(host._valid_workbench_mask_frame(bound_frame),
+					"real bound frame valid for uploaded material revision")
 				await process_frame
-				host._process(0.0)
-				var drawn_live: Transform2D = host.physical_actor_overlay._parts[0].transform
-				check(drawn_live.origin.distance_to(bound_pose.origin+Vector2(0,1))<0.01,
-					"observed overlay uses cleared real Rapier pose")
+				host._present_physical_actor_overlay(bound_frame)
+				var first_parts: Array = host.physical_actor_overlay._parts
+				if check(not first_parts.is_empty(),"real live overlay contains physical Kestrel"):
+					var drawn_live: Transform2D = first_parts[0].transform
+					check(drawn_live.origin.distance_to(bound_pose.origin+Vector2(0,1))<0.01,
+						"overlay uses admitted cleared real Rapier pose")
 				OS.set_environment("CYBERSAND_DIAG_FLYER_POSE","mask")
 				await process_frame
-				host._process(0.0)
-				check(host.physical_actor_overlay._parts[0].transform.origin.distance_to(
-					bound_pose.origin)<0.01,"mask baseline selects actual bound receipt")
+				host._present_physical_actor_overlay(bound_frame)
+				var second_parts: Array = host.physical_actor_overlay._parts
+				if check(not second_parts.is_empty(),"real mask-bound overlay contains physical Kestrel"):
+					check(second_parts[0].transform.origin.distance_to(bound_pose.origin)<0.01,
+						"mask baseline selects actual bound receipt")
 				OS.set_environment("CYBERSAND_DIAG_FLYER_POSE","")
 				var tracer = host.workbench_pose_trace
 				check(tracer.total_frames()==2,
@@ -139,10 +149,15 @@ func _run() -> void:
 					check(first.bodies[0].source=="live" and
 						second.bodies[0].source=="mask_bound" and
 						second.bodies[0].source_changed,
-						"real guard source transition captured on consecutive rendered frames")
-					check(float(first.bodies[0].screen_selected.residual_magnitude_px)<0.01
-						and float(second.bodies[0].screen_selected.residual_magnitude_px)<0.01,
-						"actual render pose agrees with shader mapping in both modes")
+						"real guard source transition captured (got %s then %s, reasons %s / %s)" %
+						[first.bodies[0].source,second.bodies[0].source,
+							first.bodies[0].guard_reason,second.bodies[0].guard_reason])
+					var projection_a: Variant = first.bodies[0].get("screen_selected",null)
+					var projection_b: Variant = second.bodies[0].get("screen_selected",null)
+					check(projection_a is Dictionary and projection_b is Dictionary
+						and float(projection_a.get("residual_magnitude_px",999.0))<0.01
+						and float(projection_b.get("residual_magnitude_px",999.0))<0.01,
+						"actual overlay and shader projection agree in both modes")
 					check(first.mask_receipt_render_valid and second.mask_receipt_render_valid
 						and first.uploaded_revision==second.uploaded_revision,
 						"real native revision and frame identity retained across pose switch")
