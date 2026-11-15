@@ -1,15 +1,14 @@
 """Offline matched scent ablation for the D-2 wayward line worm.
 
 No model/native calls. Frozen v1 wayward scoring is intentionally reproduced with
-exactly one intervention: the u16 soft guide field. Hard geometry, RNG, action
-catalogue, pen rhythm and stopping conditions remain unchanged. V1 attract parity
+the soft u16 guide field as the primary intervention. Explicit gain arms also
+alter the guide weight; hard geometry, RNG, action catalogue and pen rhythm
+are unchanged. V1 attract parity
 is asserted in tests. All outputs are DEVELOPMENT-only, never native receipts.
 """
 from __future__ import annotations
 
 import argparse
-import hashlib
-import json
 from pathlib import Path
 
 from worm_sketch import (DIRS, RNG, VERSION as BASE_VERSION, canonical, digest,
