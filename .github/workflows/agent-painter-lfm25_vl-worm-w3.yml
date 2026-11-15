@@ -1,0 +1,119 @@
+name: LFM2.5-VL WORM-001 W3 source-fenced support-v2 CPU LoRA
+on:
+  push:
+    branches: [codex/agent-painter-lfm25-vl-568]
+    paths:
+      - experiments/agent_painter/lanes/lfm25_vl/worm-w3-request.json
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: lfm25-vl-worm-w3-support-v2-fresh-v1
+  cancel-in-progress: false
+
+jobs:
+  train-one-vm:
+    name: WORM W3 genuine pinned CPU steps and raw rollouts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 48
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      OMP_DYNAMIC: 'FALSE'
+      MKL_DYNAMIC: 'FALSE'
+      ATEN_CPU_CAPABILITY: default
+      MKL_CBWR: COMPATIBLE
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - name: Checkout exact LFM Draft source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Checkout frozen shepherd W0 host-only observation action contract
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: techrote/cybersand
+          ref: 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          path: worm-w0
+          persist-credentials: false
+      - name: Checkout frozen LFM support v2 corpus and raw gallery metrics
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: techrote/cybersand
+          ref: cc27b3206cb61f98432fa95b799c9b9ff508c2bc
+          path: worm-support
+          persist-credentials: false
+      - name: Exact-head and immutable fresh W3 request preflight
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git -C worm-w0 rev-parse HEAD)" = 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          test "$(git hash-object worm-w0/experiments/agent_painter/worm/common/worm.py)" = 8979b6f0296e81051194bacc907992d38e006605
+          test "$(git -C worm-support rev-parse HEAD)" = cc27b3206cb61f98432fa95b799c9b9ff508c2bc
+          test "$(git hash-object worm-support/experiments/agent_painter/worm/support_lfm/curriculum.py)" = f205a3a9f33632aeaafa2daa8ce25b2484bc6032
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path("experiments/agent_painter/lanes/lfm25_vl/worm-w3-request.json")
+          request = json.loads(p.read_text(encoding="utf-8"))
+          assert request == {
+            "schema": "cybersand.worm.lfm-w3-request/1",
+            "previous_W2_success_run": 43697631014,
+            "experiment": "lfm-worm-w3-support-v2-fresh-v1",
+            "model_id": "LiquidAI/LFM2.5-VL-450M",
+            "revision": "fc6221ca597f3315e4f82fc2df606783267b34ba",
+            "worm_source": "4bb9d6e1d0d0d78183f87d1e3c29648edafacf61",
+            "support_source": "cc27b3206cb61f98432fa95b799c9b9ff508c2bc",
+            "objective": "local-steering-oracle-plus-adverse-balanced",
+            "steps": 90,
+            "deadline_seconds": 1600,
+            "CPU_vm_limit": 1,
+            "fresh_from_parent": True,
+            "sealed_FINAL_opened": False,
+            "Draft_HOLD": True
+          }, "unexpected WORM W3 experiment request"
+          print("WORM W3 fresh-only one-runner lease validated; old Art v2 holds unaffected")
+          PY
+          python3 -m py_compile experiments/agent_painter/lanes/lfm25_vl/worm_train_w3_v1.py
+          python3 -m unittest discover -s worm-w0/experiments/agent_painter/worm/common -p test_worm.py -v
+          python3 -m unittest discover -s worm-support/experiments/agent_painter/worm/support_lfm -p test_curriculum.py -v
+          python3 tools/ci/check_ci_provider_policy.py
+          mkdir -p evidence/diagnostics
+          git rev-parse HEAD > evidence/diagnostics/source-sha.txt
+          git -C worm-w0 rev-parse HEAD > evidence/diagnostics/worm-source-sha.txt
+          git -C worm-support rev-parse HEAD > evidence/diagnostics/support-source-sha.txt
+          lscpu > evidence/diagnostics/cpu.txt
+          df -h > evidence/diagnostics/disk-before.txt
+      - name: Install pinned qualified LFM CPU training stack
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/lfm-worm"
+          "$RUNNER_TEMP/lfm-worm/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/lfm-worm/bin/python" -m pip install -r experiments/agent_painter/training/requirements.lock
+          "$RUNNER_TEMP/lfm-worm/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torchvision==0.29.2+cpu'
+          "$RUNNER_TEMP/lfm-worm/bin/python" -m pip install -r experiments/agent_painter/training/requirements-lfm25_vl.lock
+          "$RUNNER_TEMP/lfm-worm/bin/python" -m pip check
+          "$RUNNER_TEMP/lfm-worm/bin/python" -m pip freeze --all > evidence/diagnostics/pip-freeze.txt
+      - name: Download pinned FULL official multimodal LFM weights and source-verify processor
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 900s "$RUNNER_TEMP/lfm-worm/bin/python" experiments/agent_painter/training/download_model.py --profile lfm25_vl --output "$RUNNER_TEMP/lfm-worm-model"
+          cp "$RUNNER_TEMP/lfm-worm-model/download_receipt.json" evidence/diagnostics/model-download.json
+          LFM25_SNAPSHOT="$RUNNER_TEMP/lfm-worm-model" "$RUNNER_TEMP/lfm-worm/bin/python" experiments/agent_painter/lanes/lfm25_vl/test_adapter.py > evidence/diagnostics/adapter-tests.txt 2>&1
+      - name: Real bounded fresh W3 WORM optimizer / novel-first-pass / paired PNG run
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=45s 1840s "$RUNNER_TEMP/lfm-worm/bin/python" experiments/agent_painter/lanes/lfm25_vl/worm_train_w3_v1.py             --model "$RUNNER_TEMP/lfm-worm-model"             --worm-root worm-w0/experiments/agent_painter/worm/common             --support-root worm-support/experiments/agent_painter/worm/support_lfm             --output evidence/worm-training             --steps 90 --deadline 1600
+      - name: Preserve original run artifact and partial/failure evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: lfm25-vl-worm-w3-support-v2-fresh-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            evidence/worm-training/
+            evidence/diagnostics/
+          if-no-files-found: warn
+          retention-days: 90
