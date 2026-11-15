@@ -23,9 +23,9 @@ LANE = "experiments/driv3r/stage_d/guidance"
 SCHEMA = "experiments/driv3r/d_common/v1/interface.schema.json"
 M1_COMMIT = "8fa90de6be209ed0b7bd125039e6ec8b332fb1a6"
 M1_SCHEMA_SHA256 = "ebe2fa211148602c614cba0f0a40f285cba797784b70efa035832d833877f80d"
-# 149 previously committed test methods plus 8 launcher regression methods.
+# 149 previously committed test methods plus 10 launcher regression methods.
 # Fail closed if a module disappears or the suite silently shortens.
-MIN_TESTS = 157
+MIN_TESTS = 159
 REQUIRED_MODULES = frozenset({
     "test_comparison.py", "test_feedback_audit.py", "test_feedback_edgecases.py",
     "test_geometry_guard.py", "test_guidance.py", "test_information.py",
@@ -92,11 +92,15 @@ def source_fence(root: Path) -> tuple[str, int]:
         raise QualificationError("Frozen M1 schema bytes unavailable") from exc
     if digest != M1_SCHEMA_SHA256:
         raise QualificationError("Frozen M1 schema bytes differ from owner acceptance")
-    dirty = _checked_git(root, "status", "--porcelain", "--untracked-files=all", "--", LANE, SCHEMA)
+    # All imported project code is part of the exact-source claim. Checking only
+    # the lane and schema would miss a dirty shared module imported by a test.
+    dirty = _checked_git(root, "status", "--porcelain", "--untracked-files=all")
     if dirty:
-        raise QualificationError("Working-tree guidance or schema changes invalidate source pin")
-    changed = _checked_git(root, "diff", "--name-only", "--diff-filter=ACDMRTUXB",
-                           M1_COMMIT, head, "--")
+        raise QualificationError("Dirty worktree invalidates exact-source qualification")
+    # Disable rename detection so an out-of-lane deletion cannot masquerade
+    # as an in-lane-only addition in --name-only output.
+    changed = _checked_git(root, "diff", "--no-renames", "--name-only",
+                           "--diff-filter=ACDMRTUXB", M1_COMMIT, head, "--")
     paths = [p for p in changed.splitlines() if p]
     if not paths or any(not p.startswith(LANE + "/") for p in paths):
         raise QualificationError("M1-to-head changes outside exclusive D-1B lane or empty")
