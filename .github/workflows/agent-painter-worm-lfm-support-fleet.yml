@@ -12,6 +12,7 @@ on:
       - '.github/workflows/agent-painter-worm-lfm-support-fleet.yml'
 permissions:
   contents: read
+  actions: read
 jobs:
   fleet-source-preflight:
     runs-on: ubuntu-latest
@@ -60,3 +61,78 @@ jobs:
           path: worm-lfm-fleet-w0-controls/
           if-no-files-found: error
           retention-days: 14
+
+  original-w12-fleet-replay:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - name: Checkout current support audit source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Checkout original immutable W0 authority
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: techrote/cybersand
+          ref: 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          path: original-w0
+          persist-credentials: false
+      - name: Source/policy preflight without model or optimizer
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git -C original-w0 rev-parse HEAD)" = 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          test "$(git hash-object original-w0/experiments/agent_painter/worm/common/worm.py)" = 8979b6f0296e81051194bacc907992d38e006605
+          python3 -m py_compile experiments/agent_painter/worm/support_lfm/audit_w12_original.py
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/lfm-w12-ci-policy.json
+          mkdir -p evidence/producer evidence/independent/gallery
+          git rev-parse HEAD > evidence/independent/support-source.txt
+          git -C original-w0 rev-parse HEAD > evidence/independent/w0-source.txt
+      - name: Download fixed original W12 artifacts; refuse producer revision drift
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test "$(gh api repos/techrote/cybersand/actions/runs/43766388326 --jq .head_sha)" = 0eea751c37d69589717681eca1703882d17587a9
+          test "$(gh api repos/techrote/cybersand/actions/runs/43766388326 --jq .conclusion)" = success
+          gh api repos/techrote/cybersand/actions/artifacts/14182048141/zip > evidence/producer/alpha.zip
+          gh api repos/techrote/cybersand/actions/artifacts/14182129882/zip > evidence/producer/beta.zip
+      - name: Independently replay all four original model-scored PNGs and controls
+        run: |
+          set -euo pipefail
+          python3 experiments/agent_painter/worm/support_lfm/audit_w12_original.py \
+            --alpha evidence/producer/alpha.zip \
+            --beta evidence/producer/beta.zip \
+            --w0-dir original-w0/experiments/agent_painter/worm/common \
+            --output evidence/independent/w12-original-audit.json
+          python3 - <<'PY'
+          import json, pathlib, zipfile, sys
+          sys.path.insert(0, 'original-w0/experiments/agent_painter/worm/common')
+          import worm
+          gallery=pathlib.Path('evidence/independent/gallery')
+          report=json.loads(pathlib.Path('evidence/independent/w12-original-audit.json').read_text())
+          assert report['original_W0_png_replays']==4 and report['actual_model_score_forwards']==48
+          for shard in ('alpha','beta'):
+              with zipfile.ZipFile(f'evidence/producer/{shard}.zip') as z:
+                  p=f'w12-fleet/{shard}/'
+                  summary=json.loads(z.read(p+'summary.json'))
+                  for lease,seed in zip(summary['distinct_lease_ids'],summary['independent_seeds']):
+                      base=p+lease+'/'
+                      (gallery/f'{seed}-ORIGINAL-W12-trained-score.png').write_bytes(z.read(base+'original-w0.png'))
+                      fam=json.loads(z.read(base+'completed.json'))['family']
+                      for mode in ('random','wall','fidget'):
+                          ctl=worm.run(seed=seed,family=fam,mode=mode,steps=12,size=96)
+                          (gallery/f'{seed}-W0-{mode}-control.png').write_bytes(worm.png_bytes(ctl))
+          assert len(list(gallery.glob('*.png')))==16
+          print('Four original model-scored W0 PNGs + 12 source-faithful matched W0 controls')
+          PY
+      - name: Preserve original producer and independent evidence even on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: worm-lfm-W12-four-live-ORIGINAL-support-NO-optimizer
+          path: evidence/
+          retention-days: 30
+          if-no-files-found: warn
