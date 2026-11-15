@@ -1,5 +1,36 @@
 # D-1B: soft guidance and shadow critic — independent preparatory lane
 
+## Frozen single-fork guidance/critic interaction probe — 15 November 2026
+
+The lane-local fork_probe.py compares **one identical, source-declared legal candidate
+catalogue** under four synthetic configurations: geometry-only, geometry plus
+positive u16 guide, geometry plus post-choice shadow critic, and combined.
+The critic cannot change a proposed candidate, issue native operations or
+roll back material. Candidate before-states must be identical. The catalogue,
+hypothetical outcomes and World/guide digests are **fixture-declared**, not
+independently authenticated native receipts or D-COMMON M1 records.
+
+In a deliberate misleading-guide fixture, geometry selects a progressing
+"safe" move. Guide gain 1 preserves that choice, while gain 2 attracts the
+synthetic controller to a higher-u16 "trap" that regresses the supplied
+objective. A post-choice deterministic critic labels safe KEEP and trapped
+hypothetical UNDO when both eligibility and receipt flags are supplied;
+without the hypothetical receipt the trapped case is STOP. **No actual Undo
+occurs**. Neither steering nor critique is learned d1 behaviour.
+
+**Focused qualification:** 9/9 actual Python unittest methods PASS in an
+isolated package checkout using the repository's normal unittest-discovery
+shape. The executed new implementation/test and imported shadow policy are
+byte-identical to the GitHub blobs 6d8b0414 / 8af38935 / baccf7f3.
+Adversarial fixtures cover candidate reordering, shared-before-state
+enforcement, numeric bounds, provenance shape, absent hypothetical receipts
+and separated legal-ID/target versus effect digests. The complete D-1B test
+inventory is now **168** methods (159 existing + 9). **The complete exact-HEAD
+suite remains unexecuted**; Stage A CI does not discover it.
+
+The M1 schema/native/backend, #568 painter lanes, frozen Stage A/B/C evidence
+and production defaults remain untouched.
+
 ## Whole-checkout qualification integrity — 15 November 2026
 
 The CPU-only exact-HEAD launcher `qualification.py` now rejects **any**
