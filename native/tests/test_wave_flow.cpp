@@ -749,6 +749,133 @@ void coordinate_extrema_refuse_before_mutation() {
     }
 }
 
+// A mask and resident Water may each be legal while the distance between
+// their origins exceeds INT64_MAX. A remote body must behave exactly like
+// the unmasked control; exercise both row clipping and column membership.
+void check_distant_mask_transport(std::int64_t water_origin, std::int64_t mask_origin) {
+    constexpr int drops = 32, spacing = 16, ticks = 16;
+    for (const bool vertical : {true, false}) {
+        const auto run = [&](std::uint32_t workers) {
+            World reference(config(1)), masked(config(workers));
+            const std::int64_t x = vertical ? 0 : water_origin;
+            const std::int64_t y = vertical ? water_origin : 0;
+            for (int drop = 0; drop < drops; ++drop) {
+                const auto at_x = x + drop * spacing;
+                require(reference.set_cell_state(at_x, y, Material::Water, 1, 0) &&
+                            masked.set_cell_state(at_x, y, Material::Water, 1, 0),
+                        "distant-mask fixture rejected legal Water");
+            }
+            const RectI64 mask{vertical ? 0 : mask_origin, vertical ? mask_origin : 0, 2, 2};
+            masked.configure_transient_obstacles(mask);
+            require(masked.set_transient_obstacle(mask.x, mask.y, 1), "distant mask body refused");
+            const RectI64 observed{x - 2, y - 1, (drops - 1) * spacing + 5, ticks + 4};
+            for (int tick = 0; tick < ticks; ++tick) {
+                (void)reference.tick();
+                (void)masked.tick();
+                require(!reference.has_failed() && !masked.has_failed(), "distant mask quarantined a World");
+                require(masked.water_quantity(observed) == drops && reference.water_quantity(observed) == drops,
+                        "distant mask changed the Water quantity");
+                const auto ledger = masked.quantity_ledger();
+                require(ledger.water_visible + ledger.water_overfill + ledger.water_ballistic == drops,
+                        "distant mask damaged the quantity ledger");
+                for (std::int64_t dy = 0; dy < observed.height; ++dy)
+                    for (std::int64_t dx = 0; dx < observed.width; ++dx) {
+                        const auto px = observed.x + dx, py = observed.y + dy;
+                        require(reference.stored_material(px, py) == masked.stored_material(px, py) &&
+                                    reference.stored_state_a(px, py) == masked.stored_state_a(px, py) &&
+                                    reference.wave_flow_flux(px, py) == masked.wave_flow_flux(px, py),
+                                "remote body changed local Wave transport");
+                    }
+            }
+            require(reference.stored_material(x, y) == Material::Empty,
+                    "distant-mask control never transported Water");
+            require(masked.transient_contact_count(1) == 0U, "remote body received a local Water contact");
+            require(workers == 1U || masked.wave_flow_diagnostics().maximum_participants > 1U,
+                    "distant-mask parallel fixture had only one participant");
+            return masked.physical_state_hash();
+        };
+        require(run(1) == run(4), "distant-mask continuation depends on the worker count");
+    }
+}
+
+void distant_positive_masks_preserve_wave_transport() {
+    check_distant_mask_transport(-5'000'000'000'000'000'000LL, 5'000'000'000'000'000'000LL);
+}
+
+void distant_negative_masks_preserve_wave_transport() {
+    check_distant_mask_transport(5'000'000'000'000'000'000LL, -5'000'000'000'000'000'000LL);
+}
+
+// Four separated, one-cell-wide shafts distinguish real body support from
+// mere non-crashing clipping. First/last mask columns must block; immediately
+// outside columns must remain open. Only representable cells with normal
+// Wave halo headroom are occupied, even when a mask's mathematical exclusive
+// endpoint lies beyond INT64_MAX.
+void mask_overlap_at_signed_bounds_preserves_bodies() {
+    const auto check = [&](RectI64 mask, bool overflowing_x) {
+        const std::array<std::int64_t, 4> xs = overflowing_x
+            ? std::array<std::int64_t, 4>{mask.x - 1, mask.x, mask.x + 128, mask.x + 256}
+            : std::array<std::int64_t, 4>{mask.x - 1, mask.x, mask.x + 63, mask.x + 64};
+        const std::array<bool, 4> occupied{false, true, true, overflowing_x};
+        const auto run = [&](std::uint32_t workers) {
+            World world(config(workers));
+            world.configure_transient_obstacles(mask);
+            for (std::size_t shaft = 0; shaft < xs.size(); ++shaft) {
+                const auto x = xs[shaft];
+                const auto receiver_y = mask.y + 4 + static_cast<std::int64_t>(shaft) * 20;
+                for (int dy = -2; dy <= 6; ++dy) {
+                    world.set(x - 1, receiver_y + dy, Material::Wall);
+                    world.set(x + 1, receiver_y + dy, Material::Wall);
+                }
+                world.set(x, receiver_y - 2, Material::Wall);
+                world.set(x, receiver_y + 6, Material::Wall);
+                require(world.set_cell_state(x, receiver_y - 1, Material::Water, 255, 0),
+                        "signed-bound mask fixture rejected legal Water");
+                const auto body = static_cast<std::uint16_t>(shaft + 1U);
+                require(world.set_transient_obstacle(x, receiver_y, body) == occupied[shaft],
+                        "mask first/last/outside column membership differs");
+            }
+            for (int tick = 0; tick < 12; ++tick) {
+                (void)world.tick();
+                require(!world.has_failed(), "overlapping signed-bound mask quarantined the World");
+                const auto ledger = world.quantity_ledger();
+                require(ledger.water_visible + ledger.water_overfill + ledger.water_ballistic == 4U * 255U,
+                        "overlapping signed-bound mask lost or created Water");
+                for (std::size_t shaft = 0; shaft < xs.size(); ++shaft) {
+                    if (!occupied[shaft]) continue;
+                    const auto y = mask.y + 4 + static_cast<std::int64_t>(shaft) * 20;
+                    require(world.stored_state_a(xs[shaft], y - 1) == 255U &&
+                                world.stored_material(xs[shaft], y) == Material::Empty,
+                            "signed-bound body failed to hold Water outside its occupied cell");
+                }
+            }
+            for (std::size_t shaft = 0; shaft < xs.size(); ++shaft) {
+                const auto y = mask.y + 4 + static_cast<std::int64_t>(shaft) * 20;
+                const auto body = static_cast<std::uint16_t>(shaft + 1U);
+                if (occupied[shaft]) {
+                    require(world.transient_contact_count(body) > 0U && world.transient_contact_impulse_y(body) > 0,
+                            "signed-bound body received no downward Water contact");
+                } else {
+                    require(world.stored_material(xs[shaft], y - 1) == Material::Empty &&
+                                world.stored_state_a(xs[shaft], y + 5) == 255U &&
+                                world.transient_contact_count(body) == 0U,
+                            "Water outside the signed-bound mask did not descend freely");
+                }
+            }
+            return world.physical_state_hash();
+        };
+        require(run(1) == run(4), "signed-bound mask continuation depends on the worker count");
+    };
+    constexpr auto minimum = std::numeric_limits<std::int64_t>::min();
+    constexpr auto maximum = std::numeric_limits<std::int64_t>::max();
+    check({minimum + 256, minimum + 256, 64, 96}, false);
+    check({maximum - 384, maximum - 384, 64, 96}, false);
+    // Exercise the x and y endpoint hazards independently, then together.
+    check({maximum - 512, maximum - 512, 1024, 96}, true);
+    check({maximum - 512, maximum - 512, 64, 1024}, false);
+    check({maximum - 512, maximum - 512, 1024, 1024}, true);
+}
+
 void tall_extreme_column_preserves_head_sign() {
     auto cfg = config(1);
     cfg.chunk_size = 8;
@@ -1043,6 +1170,9 @@ int main(int argc, char** argv) {
         {"C API construction and overfill are lossless", c_api_construction_and_overfill_are_lossless},
         {"extreme legal overfill conserves and remains editable", extreme_legal_overfill_conserves_and_remains_editable},
         {"coordinate extrema refuse before mutation", coordinate_extrema_refuse_before_mutation},
+        {"distant positive masks preserve Wave transport", distant_positive_masks_preserve_wave_transport},
+        {"distant negative masks preserve Wave transport", distant_negative_masks_preserve_wave_transport},
+        {"mask overlap at signed bounds preserves bodies", mask_overlap_at_signed_bounds_preserves_bodies},
         {"tall extreme column preserves head sign", tall_extreme_column_preserves_head_sign},
         {"disturbed water reaches exact rest", disturbed_water_reaches_exact_rest},
         {"films level and rest", films_level_and_rest},

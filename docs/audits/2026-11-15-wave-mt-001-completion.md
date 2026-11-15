@@ -622,3 +622,103 @@ evaluation package. The prior publication and any predecessor CI results are
 retained as intermediate evidence and cannot qualify the resulting final
 HEAD. Complete hosted qualification and the fresh independent Astra review
 remain required at that final source identity.
+
+
+## 2026-11-15: independent Astra distant-mask overflow repair
+
+The fresh, explicitly selected `gpt-6-astra` review of
+`da577a6cdbad608d08487fa5f3e3ec49ed955ec4` returned **BLOCK** on
+`ASTRA-618-001` after that exact candidate had passed its complete automated
+matrix and retained evidence readbacks. The reviewed tree was
+`51d323ef85b4fb18b96ccdeea05d005f89bcb799`. The original report, specialist
+reproduction and principal reviewer's independent execution are preserved.
+Those automated passes and publication 7 remain evidence for the blocked
+source; they do not qualify this repair.
+
+### Confirmed failure and repair
+
+`World::wave_column_task` subtracted the transient mask origin from the strip
+origin in signed int64 before applying `std::clamp`. A legal Water cell at
+y = -5,000,000,000,000,000,000 and a legal occupied 2-by-2 mask at
+y = +5,000,000,000,000,000,000 overflowed on the first tick under GCC UBSan.
+Both setup operations were admitted. The whole-chunk halo admission bounds
+individual coordinates; it cannot bound the distance between unrelated valid
+origins. The x membership expression also formed a potentially overflowing
+mask endpoint. The existing generic mask accessors already used safe unsigned
+relative distances.
+
+The repair adds `wave_clip_mask_axis`, used for both axes. Signed ordering
+selects the direction, unsigned subtraction represents the full nonnegative
+distance, and each returned local index is bounded by the strip's int32 span
+before narrowing. The helper never forms a global endpoint. This preserves
+normal mask geometry and supports accepted masks whose mathematical endpoint
+exceeds int64 while only representable occupied cells are accessed. The
+existing clean-half skip, strip ownership, barriers and law version 2 remain
+unchanged. The helper adds no allocation or shared mutable state.
+
+The repaired `native/src/world_wave.inc` SHA-256 is
+`8c5af5633fd9093360f5be353ae3b0c0bcbeb1464a4497cc4e459b20ba6c6fa9`.
+The adjacent selected-core clipping and chunk-local halo calculations were
+inspected; no second concrete clipping defect was established. This is not a
+claim of exhaustive validation of all generic geometry.
+
+### Regression and evidence scope
+
+Three source-registered World cases extend the standalone suite from 26 to 29:
+
+- `distant positive masks preserve Wave transport`;
+- `distant negative masks preserve Wave transport`;
+- `mask overlap at signed bounds preserves bodies`.
+
+They cover both opposite-sign distant orderings in x and y, comparison with
+unmasked Water transport, actual near-limit body support, first/last/outside
+mask columns, mathematical endpoint overflow, quantity and healthy continuation,
+and equivalent one/four-worker physical identity. Full physical hashes compare
+worlds with equivalent mask state; unmasked controls compare local Water cells,
+flux and quantity instead. Ordinary-coordinate masks and selected-region
+semantics retain their existing regressions. No assertion is weakened.
+
+An actual C++ extraction of the new helper passed 109,480 boundary/random cases
+against arbitrary-precision interval arithmetic under GCC C++20 with
+`-O2 -Wall -Wextra -Werror -fsanitize=undefined
+-fno-sanitize-recover=undefined`, seed `0x618001`, exit 0 and empty diagnostics.
+The source hash was unchanged during the run. Some helper cases deliberately
+exceed the narrower World admission range; they prove arithmetic behavior, not
+public World admission. The proof, raw inputs/output, compile command and
+receipt are retained separately from World regression execution.
+
+The complete original Astra review remains immutable, including its first
+invalid-reserve scratch setup and corrected successful defect reproduction.
+Local old-source red controls and repaired World execution have their own
+source/compiler/command/result receipts in the PR evidence. All three new
+regressions fail on the frozen reviewed source under UBSan with their respective
+signed-overflow diagnostics. On the repaired source, the same three cases and
+the complete 29-case optimized normal suite pass; the full suite took 120.709
+seconds with unchanged source/executable hashes and empty stderr. The new test
+source SHA-256 is
+`508e7b6ad56e4ec2c340ef530fb6823caa647ab966393a602cfad5d2e3939f3a`.
+These local results do not substitute for the complete hosted sanitizer matrix
+or final-HEAD qualification. The first review
+also corrected a report claim: the negative wave probe establishes an inverted
+trough arrival, not an explicit reflection assertion. The 120 Hz Godot check
+verifies clock settings; it does not establish sustained actor contacts at
+every unequal native/Rapier rate. Neither limitation is hidden by the repair.
+
+### Documentation and renewed qualification
+
+The current mask contract is updated in the existing Wave architecture page.
+Its ownership, interface, capacity, policy/default and dependency routes are
+unchanged, so no new canonical page or programme ordering is introduced. A new
+boundary-contract retrieval question is retained separately from the unchanged
+32-question frozen evaluation. It retrieves the correct mask section at rank 1;
+manual readback also checks the existing halo-admission qualification. The
+frozen lexical evaluation yields 19/32 canonical hits at 1 and 30/32 at 5;
+these are retrieval measurements, not automatic answer-correctness claims.
+
+The protected `world.cpp` bytes remain at the reviewed
+`09a34956642a203ae9b725875f0773001ab70bc22b478a904588604c7de866c1`
+transition. No compatibility record or historical hash is rewritten. Publication
+request 8 rebuilds both source-sensitive runtimes and the Windows evaluation
+package. All invalidated exact-HEAD gates and a fresh independent Astra review
+are required after that publication. Wave remains opt-in/default off, Claude's
+separate PR #617 is untouched, and no merge or auto-merge is authorized.

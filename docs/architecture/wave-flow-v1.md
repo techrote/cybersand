@@ -219,6 +219,14 @@ body masks remain transient solid barriers; stored Water under a body is retaine
 Masks wake affected chunks, and copied contact observations use the existing
 native contact accumulator. No native pool worker accesses Godot or Rapier objects.
 
+`World::wave_column_task` clips each mask axis to its bounded local strip before
+probing cells. `wave_clip_mask_axis` uses signed ordering and unsigned relative
+distances, then narrows only values bounded by the strip size. It never forms a
+global mask endpoint. Valid sparse origins may be more than `INT64_MAX` apart,
+and a configured mask's mathematical endpoint may exceed the signed range;
+only representable occupied cells are accessed. A distant, disjoint mask covers
+no strip cells. This avoids overflow before a clamp could take effect.
+
 ## State, memory and identity
 
 | Storage | Per cell | Kind |

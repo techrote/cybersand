@@ -106,6 +106,26 @@ namespace {
     return coord.x >= minimum && coord.x <= maximum && coord.y >= minimum && coord.y <= maximum;
 }
 
+// Clip one positive-length mask axis to a strip's bounded local indices. The
+// signed ordering makes each unsigned subtraction the exact nonnegative
+// distance, even when the origins are more than INT64_MAX apart. Never form a
+// global endpoint: an accepted mask may extend beyond the signed coordinate
+// range, while only its representable occupied cells can be accessed.
+[[nodiscard]] std::array<std::int32_t, 2> wave_clip_mask_axis(
+    std::int64_t origin, std::int32_t count, std::int64_t start, std::int64_t extent) noexcept {
+    const auto span = static_cast<std::uint64_t>(count);
+    const auto length = static_cast<std::uint64_t>(extent);
+    if (start >= origin) {
+        const auto distance = static_cast<std::uint64_t>(start) - static_cast<std::uint64_t>(origin);
+        const auto first = std::min(distance, span);
+        const auto last = first + std::min(length, span - first);
+        return {static_cast<std::int32_t>(first), static_cast<std::int32_t>(last)};
+    }
+    const auto distance = static_cast<std::uint64_t>(origin) - static_cast<std::uint64_t>(start);
+    const auto last = distance >= length ? std::uint64_t{0} : std::min(length - distance, span);
+    return {0, static_cast<std::int32_t>(last)};
+}
+
 // Whole mass units moved through a face in one round. The sub-unit part of the
 // flux is resolved by a stateless additive threshold sequence over rows and
 // rounds, with a per-column offset. For a constant flux, the average transfer
@@ -257,9 +277,14 @@ void World::wave_column_task(std::size_t task_index) noexcept {
     // Body masks: only the rows of this strip inside the mask region are probed.
     const auto& mask = transient_obstacles_->region;
     std::int32_t mask_first = 0, mask_last = 0;
+    std::int32_t mask_first_x = 0, mask_last_x = 0;
     if (state.mask_present) {
-        mask_first = static_cast<std::int32_t>(std::clamp<std::int64_t>(mask.y - origin_y, 0, rows));
-        mask_last = static_cast<std::int32_t>(std::clamp<std::int64_t>(mask.y + mask.height - origin_y, 0, rows));
+        const auto clipped_y = wave_clip_mask_axis(origin_y, rows, mask.y, mask.height);
+        mask_first = clipped_y[0];
+        mask_last = clipped_y[1];
+        const auto clipped_x = wave_clip_mask_axis(origin_x, size, mask.x, mask.width);
+        mask_first_x = clipped_x[0];
+        mask_last_x = clipped_x[1];
     }
     constexpr std::uint32_t kMaximumGroup = 64;
     bool skip[kMaximumGroup] = {}, empty[kMaximumGroup] = {};
@@ -281,7 +306,7 @@ void World::wave_column_task(std::size_t task_index) noexcept {
 
     for (auto lx = first_x; lx < last_x; ++lx) {
         if (lx < entries[0].chunk->wave->min_x || lx >= entries[0].chunk->wave->max_x) continue;
-        const bool masked_column = mask_last > mask_first && origin_x + lx >= mask.x && origin_x + lx < mask.x + mask.width;
+        const bool masked_column = mask_last > mask_first && lx >= mask_first_x && lx < mask_last_x;
         if (!masked_column) {
             // A column that is dry in every chunk of the group cannot change:
             // liquid enters it only through the apply pass or an owner edit,
