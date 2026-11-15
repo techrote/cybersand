@@ -74,6 +74,7 @@ func observe(row: Dictionary) -> void:
 		_dropped += 1
 		return
 	var sample: Dictionary = row
+	sample["type"] = "frame"
 	var bodies: Array = sample.get("bodies",[])
 	for body: Dictionary in bodies:
 		var slot: int = int(body.get("slot",-1))
