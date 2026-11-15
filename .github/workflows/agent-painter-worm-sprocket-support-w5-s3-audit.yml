@@ -1,8 +1,8 @@
 name: WORM SPROCKET support independent W5 S3 original paired images
 
 on:
-  push:
-    branches: [research/612-worm-sprocket-support]
+  pull_request:
+    branches: [research/612-worm-common]
     paths:
       - experiments/agent_painter/worm/support_sprocket/audit_w5_s3_paired.py
       - .github/workflows/agent-painter-worm-sprocket-support-w5-s3-audit.yml
