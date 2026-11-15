@@ -45,7 +45,7 @@ jobs:
           manifest={"schema":"worm-lfm-fleet-controls-only/1",
                     "trained_model_inference":False,"resident_inference_processes":0,
                     "native_godot":False,"decision_budget":16,
-                    "files":[{"path":str(p),"sha256":hashlib.sha256(p.read_bytes()).hexdigest()}
+                    "files":[{"path":p.relative_to(folder).as_posix(),"sha256":hashlib.sha256(p.read_bytes()).hexdigest()}
                              for p in png+traces]}
           (folder/"SHA256.json").write_text(json.dumps(manifest,indent=2,sort_keys=True)+"\n")
           print("W0 source-only original PNG/trace pairs:",len(png))
