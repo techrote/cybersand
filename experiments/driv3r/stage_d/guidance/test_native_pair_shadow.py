@@ -144,5 +144,69 @@ class OriginalModelBindingTests(unittest.TestCase):
             s._verify_original_model_choice(t)
 
 
+
+class OriginalHostRecoveryReplayTests(unittest.TestCase):
+    """Original #611 host rules, not model-selected or native-authored authority."""
+
+    @staticmethod
+    def _state(history):
+        return {"recent_positions": history[-7:],
+                "already_inked_cells_this_run": len(history) - 1}
+
+    def test_real_backtrack_host_menu_and_replayed_history(self):
+        history = [[12, 24], [12, 25], [13, 25]]
+        s._verify_recovery_catalog(self._state(history), ["BACKTRACK", "MOVE_N", "STOP"],
+                                   history[-1], history, 2, 0)
+        s._advance_replayed_history(history, [13, 25], "BACKTRACK", [12, 25])
+        self.assertEqual(history, [[12, 24], [12, 25]])
+        s._verify_recovery_catalog(self._state(history), ["MOVE_E", "STOP"],
+                                   history[-1], history, 2, 1)
+
+    def test_omitted_or_illegal_recovery_option_fails(self):
+        history = [[12, 24], [12, 25], [13, 25]]
+        with self.assertRaisesRegex(ValueError, "host recovery legality"):
+            s._verify_recovery_catalog(self._state(history), ["MOVE_N", "STOP"],
+                                       history[-1], history, 2, 0)
+        short = [[12, 24]]
+        with self.assertRaisesRegex(ValueError, "host recovery legality"):
+            s._verify_recovery_catalog(self._state(short), ["BACKTRACK", "STOP"],
+                                       short[-1], short, 0, 0)
+
+    def test_resealed_fake_model_history_rejected(self):
+        history = [[12, 24], [12, 25], [13, 25]]
+        forged = self._state(history)
+        forged["recent_positions"] = [[99, 99]]
+        with self.assertRaisesRegex(ValueError, "history/model context"):
+            s._verify_recovery_catalog(forged, ["BACKTRACK", "STOP"],
+                                       history[-1], history, 2, 0)
+
+    def test_forged_backtrack_target_rejected_without_history_mutation(self):
+        history = [[12, 24], [12, 25], [13, 25]]
+        with self.assertRaisesRegex(ValueError, "backtrack did not return"):
+            s._advance_replayed_history(history, [13, 25], "BACKTRACK", [12, 24])
+        self.assertEqual(history, [[12, 24], [12, 25], [13, 25]])
+
+    def test_saved_birth_branch_relocation_and_cap(self):
+        history = [[12, 24], [12, 25], [13, 25], [14, 25], [15, 25], [16, 25]]
+        s._verify_recovery_catalog(self._state(history),
+                                   ["BACKTRACK", "RELOCATE_START", "STOP"],
+                                   history[-1], history, 5, 0)
+        with self.assertRaisesRegex(ValueError, "original saved birth cursor"):
+            s._advance_replayed_history(history, [16, 25], "RELOCATE_START", [13, 25])
+        s._advance_replayed_history(history, [16, 25], "RELOCATE_START", [12, 24])
+        self.assertEqual(history[-1], [12, 24])
+        s._verify_recovery_catalog(self._state(history), ["STOP"],
+                                   history[-1], history, 5, 8)
+
+    def test_cardinal_move_appends_one_step_and_rejects_teleport(self):
+        history = [[12, 24]]
+        with self.assertRaisesRegex(ValueError, "cardinal control"):
+            s._advance_replayed_history(history, [12, 24], "MOVE_E", [15, 24])
+        self.assertEqual(history, [[12, 24]])
+        s._advance_replayed_history(history, [12, 24], "MOVE_E", [13, 24])
+        self.assertEqual(history, [[12, 24], [13, 24]])
+
+
+
 if __name__ == '__main__':
     unittest.main()
