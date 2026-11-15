@@ -23,8 +23,13 @@ jobs:
           mkdir -p evidence/v2
           git rev-parse HEAD > evidence/v2/source-commit.txt
           python3 tools/ci/check_ci_provider_policy.py
-          test "$(git hash-object experiments/agent_painter/worm/common/worm.py)" = 8979b6f0296e81051194bacc907992d38e006605
-          test "$(sha256sum experiments/agent_painter/worm/common/worm.py | cut -c1-64)" = 81c3923cb38d7f196b99986806216388c34ebc27fd4976e168b3b370c25a323e
+          # #614 intentionally retains its earlier stacked W0. Use the callback
+          # addition at the exact shepherd source without modifying common/**.
+          git fetch --no-tags --depth=1 origin 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          test "$(git rev-parse FETCH_HEAD)" = 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          git show 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61:experiments/agent_painter/worm/common/worm.py > "$RUNNER_TEMP/pinned-w0.py"
+          test "$(sha256sum "$RUNNER_TEMP/pinned-w0.py" | cut -c1-64)" = 81c3923cb38d7f196b99986806216388c34ebc27fd4976e168b3b370c25a323e
+          echo "SPROCKET_W0_PINNED_PATH=$RUNNER_TEMP/pinned-w0.py" >> "$GITHUB_ENV"
           python3 -m py_compile experiments/agent_painter/worm/support_sprocket/observed_v2.py
       - name: Real deterministic 96x96 W0 replay, split-disjoint observed targets and galleries
         run: |
