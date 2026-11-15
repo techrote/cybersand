@@ -1,0 +1,72 @@
+name: DRIV3R M5 forced-recovery offline challenge
+
+on:
+  push:
+    branches:
+      - research/570-m5-forced-recovery-controls
+    paths:
+      - "experiments/driv3r/m5_recovery/**"
+      - ".github/workflows/driv3r-m5-recovery.yml"
+  pull_request:
+    paths:
+      - "experiments/driv3r/m5_recovery/**"
+      - ".github/workflows/driv3r-m5-recovery.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: driv3r-m5-offline-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  synthetic-challenge:
+    name: Exact-source Python smoke and non-native control report
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Print source identity and check immutable M1 schema
+        run: |
+          git rev-parse HEAD
+          python3 - <<'PY'
+          import hashlib
+          from pathlib import Path
+          schema=Path("experiments/driv3r/d_common/v1/interface.schema.json")
+          expected="ebe2fa211148602c614cba0f0a40f285cba797784b70efa035832d833877f80d"
+          assert hashlib.sha256(schema.read_bytes()).hexdigest()==expected
+          print("Frozen M1 schema: PASS")
+          PY
+      - name: M5 bounded synthetic-only regression
+        run: python3 -m unittest discover -s experiments/driv3r/m5_recovery -p 'test_*.py' -v
+      - name: Generate deterministic matched-case and control report
+        run: |
+          python3 -m experiments.driv3r.m5_recovery.challenge --output m5-results/development.json > m5-results.stdout.json
+          test -s m5-results/development.json
+          python3 - <<'PY'
+          import json
+          o=json.load(open("m5-results/development.json"))
+          assert o["evidence_class"]=="synthetic_only"
+          assert not o["native_qualified"] and not o["model_qualified"]
+          assert len(o["cases"])==5
+          print("M5 synthetic report SHA:",o["cohort_sha256"])
+          for case,arms in o["cases"].items():
+              print(case,{name:{"goal":arm["terminated_at_goal"],
+                                  "recoveries":arm["recovery_interventions"]}
+                          for name,arm in arms.items()})
+          PY
+      - name: Independent synthetic material replay and fragility audit
+        run: |
+          python3 -m experiments.driv3r.m5_recovery.audit --output m5-results/independent-audit.json
+          test -s m5-results/independent-audit.json
+      - name: Always retain successful or failed original synthetic evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: driv3r-m5-offline-${{ github.sha }}-${{ github.run_id }}
+          path: |
+            m5-results/development.json
+            m5-results/independent-audit.json
+            m5-results.stdout.json
+          if-no-files-found: warn
+          retention-days: 90
