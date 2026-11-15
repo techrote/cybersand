@@ -50,15 +50,26 @@ jobs:
           import hashlib,json,os,pathlib
           root=pathlib.Path(os.environ['OUTPUT_DIR'])
           manifest=json.loads((root/'manifest.json').read_bytes())
-          assert manifest['version']=='worm-lfm-local-decisions-v1'
+          assert manifest['version']=='worm-lfm-local-decisions-v2'
           assert set(manifest['train_world_seeds']).isdisjoint(manifest['development_world_seeds'])
           assert manifest['train_rows']>0 and manifest['development_rows']>0
+          assert manifest['dedup_audit']['literal_cross_split_prompt_overlap']==0
+          assert manifest['dedup_audit']['distinct_overlapping_prompt_count']>0
+          train_rows=[json.loads(x) for x in (root/'train-v2.jsonl').read_bytes().splitlines()]
+          dev_rows=[json.loads(x) for x in (root/'development-v2.jsonl').read_bytes().splitlines()]
+          train_prompts={r['prompt'] for r in train_rows}
+          dev_prompts={r['prompt'] for r in dev_rows}
+          assert len(train_prompts)==len(train_rows)
+          assert len(dev_prompts)==len(dev_rows)
+          assert train_prompts.isdisjoint(dev_prompts)
+          assert len({r['world_group'] for r in train_rows})==12
+          assert len({r['world_group'] for r in dev_rows})==6
           for name, sha in manifest['hashes'].items():
               data=(root/name).read_bytes()
               assert hashlib.sha256(data).hexdigest()==sha
               rows=[json.loads(line) for line in data.splitlines()]
-              expected = {'train.jsonl':'train_rows',
-                          'development.jsonl':'development_rows',
+              expected = {'train-v2.jsonl':'train_rows',
+                          'development-v2.jsonl':'development_rows',
                           'adverse-train.jsonl':'adverse_train_rows',
                           'adverse-development.jsonl':'adverse_development_rows'}[name]
               assert len(rows)==manifest[expected]
