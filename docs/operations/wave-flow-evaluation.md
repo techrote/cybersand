@@ -15,6 +15,12 @@ Windows evaluation package with **Test It.cmd**. A source checkout with its
 matching native runtime accepts `Godot --path godot -- --wave-flow`. The ordinary
 sandbox and production Water default remain unchanged.
 
+The ZIP's `candidate-manifest.json` records the source commit and SHA-256 of
+every delivered file. `source-built-runtime-provenance.json` records the actual
+native build toolchain and target-OS validation; `qualification/runtime/`
+contains the corresponding execution report and original logs. The separate
+retained runtime reference describes historical bytes, not the delivered DLL.
+
 Choose a scene, solver, worker count, Wave substeps and size, then press **Reset
 scene**. Every reset constructs a new native World from the same fixture.
 Press **Run**, **Pause** or **Single tick**. Space toggles pause; **Disturb pool**

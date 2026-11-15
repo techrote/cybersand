@@ -103,8 +103,12 @@ The hosted Windows matrix measures complete `World::tick()` calls with one
 fresh process per row on the same machine/compiler/build. It covers 256²,
 1024² and 2048²; dam, repeated wave disturbance, disconnected sparse reservoirs
 and idle pools; FreeMass, Inertial, PressureFlow cached/dormant, and Wave substeps
-1 and 3; requested workers 1/2/4/6; two repeats, 30 warm-up ticks and 60 measured
-ticks (240 warm-up for idle). Every measured law uses the same allocation
+1 and 3; requested workers 1/2/4/6; two repeats, 30 warm-up ticks and 180 measured
+ticks (240 warm-up for idle). The active-wave measurement includes repeated
+disturbances at ticks 91 and 181, after its warm-up disturbance at tick 1.
+The original proposed 60-tick window would have ended before either measured
+disturbance; the pre-activation coverage audit corrected it before the full
+campaign. Every measured law uses the same allocation
 instrumentation and quantity/ledger closure checks.
 
 Raw CSV, per-row JSONL, executable/source/tree/compiler/machine identities,
@@ -114,6 +118,23 @@ Phase timings include only the measurement window. The runner fails on malformed
 or missing rows, timeout, nonzero exit, mass/accounting mismatch or source
 mutation. It preserves failed rows and logs instead of dropping negative results.
 The reducer reports matched ratios; targets are evaluated from actual output.
+
+A separate same-host default-off control compiles a byte-identical, common-API
+FreeMass harness against exact accepted main
+`018bd09503d7f079ddac52e225c2f7daf8d678bf` and the candidate, with identical
+g++-13 settings. It runs 256² and 1024² dams, 2048² disconnected basins and a
+2048² idle pool, workers 1/4, three alternating baseline/candidate repeats:
+48 fresh processes. It retains complete-tick percentiles, quantity and state
+identity, participants, source/harness/executable/compiler/machine identities,
+raw rows and failures. Equality of legacy behavior is checked separately from
+the observed timing ratios; no new arbitrary performance threshold creates a
+pass. Rolling historical CI timings and the older PressureFlow baseline are
+not substituted for this current-main comparison.
+Both matched performance campaigns are scoped to non-Draft PR #618 or an
+explicit manual dispatch. Routine Linux sanitizer/correctness and Windows
+native regression jobs remain active for applicable ordinary changes; this
+dated baseline and the large matrix do not become mandatory work for every
+unrelated future native edit.
 
 The local 20-row 256² apparatus smoke used deliberately short eight-tick
 measurement windows with concurrent development work. All rows passed quantity
@@ -220,3 +241,35 @@ changes the adapter's runtime inputs and therefore requests fresh builds of
 both targets. The Wave native law and protected-source hashes are unchanged.
 The benchmark reducer also now refuses interrupted/truncated campaigns whose
 planned/completed/retained row counts disagree; its nine contract tests pass.
+
+## Retained publication attempt 2 and package repair
+
+Source `148b7b5f8b14989f6edb99225bae1814dfea2c49`, tree
+`8d9284cd31ef8586f41907df7fe48ddcbdf88353`, ran in
+[publication attempt 43735958089](https://github.com/techrote/cybersand/actions/runs/43735958089).
+All 22 native cases again passed in normal, ASan/UBSan (including leak checking)
+and TSan. Both pinned builds and the unchanged Linux ABI floor passed. Both
+actual target OSes passed Wave's 4,986 assertions and all nine required sections,
+plus the three unchanged legacy controls.
+
+The extracted Windows package passed import, the same 4,986-assertion Wave
+suite, and the delivered `Test It.cmd` startup with the required evaluation
+marker. The final payload-custody check then correctly rejected an input
+rewrite: Godot regenerated the tracked Rapier `Radial2D.svg.import` sidecar.
+This attempt therefore failed, and no runtime append or qualified owner ZIP
+was published. Functional startup alone did not satisfy package integrity.
+
+The package repair removes only the reviewed, reproducible Rapier import
+sidecars from the active delivered project before its final manifest is made.
+Their original identities remain recorded; authored image assets, UID files,
+scripts and binaries retain complete byte checks. The initial extracted
+inventory must still exactly match its manifest, and every delivered byte must
+remain unchanged after execution. Generated import output is never admitted as
+trusted delivered source. Focused guards cover omitted metadata, retained
+authored files, unexpected payload changes and post-execution corruption.
+Pinned Godot 4.7 import/readback experiments also confirmed identical decoded
+pixel hashes, dimensions and formats for all four images with and without the
+sidecars. The ZIP now includes the verified target-OS runtime provenance,
+toolchain record, execution report and original five focused logs. Eleven
+publication/package guard tests pass, alongside the thirty unchanged shared
+publisher guards; hosted execution of the new package remains required.
