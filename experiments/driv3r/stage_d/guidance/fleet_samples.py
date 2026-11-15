@@ -168,10 +168,24 @@ def build_stream(source: dict) -> dict:
     _check(any(guide["values"]), "real guidance must differ from neutral sham")
     zeros = _channel("positive_scalar/v1", [0] * (frame[2] * frame[3]), frame,
                      source["source_revision"], source["seed"])
+    # Keep factual geometry metrics identical in every arm, but neutralize
+    # EVERY preference signal for sham/critic. Otherwise the optional "all"
+    # view contains active signed attraction/avoidance in its alleged control:
+    # a confounded guidance-vs-sham comparison even with a zero scalar core.
+    # Neutralization retains each channel's registered M1 encoding, tile
+    # dimensions, producer identity and seed while hashing the actual zero
+    # sample bytes. The original active signal never enters a sham model view.
+    neutral_optional = [
+        _channel(d["semantic_id"], [0] * (frame[2] * frame[3]), frame,
+                 source["source_revision"], source["seed"])
+        if d["signal_class"] == "preference" else d
+        for d in optional
+    ]
     arms = {}
     for arm in ARMS:
-        core = guide if arm in ("guidance", "combined") else zeros
-        channels = [core] + optional
+        active = arm in ("guidance", "combined")
+        core = guide if active else zeros
+        channels = [core] + (optional if active else neutral_optional)
         variants = {}
         for variant in VIEWS:
             used = [d for d in channels if d is core or
