@@ -112,10 +112,17 @@ jobs:
           retention-days: 90
 
   windows:
-    name: Windows Wave Flow tests and complete tick comparison
+    name: Windows Wave Flow ${{ matrix.scene }}
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
     runs-on: windows-2022
     timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        # Each performance scene retains all 120 matched rows on one host.
+        # Other ordinary changes run the native suite once, without a campaign.
+        scene: ${{ fromJSON((github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.number == 618 && github.event.pull_request.draft == false)) && '["dam","wave","sparse","idle"]' || '["correctness"]') }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -166,7 +173,7 @@ jobs:
           Get-CimInstance Win32_Processor | Format-List Name,NumberOfCores,NumberOfLogicalProcessors | Out-File build/wave-evidence/cpu.txt
           python tools/wave_mt/test_matrix.py
           if ($LASTEXITCODE -ne 0) { throw 'Benchmark apparatus failure' }
-          python tools/wave_mt/run_matrix.py --exe build/wave_mt_matrix.exe --out build/wave-evidence/matrix.csv --sizes 256 1024 2048 --scenes dam wave sparse idle --solvers 1:0 4:0 3:2 5:0 5:0:3 --workers 1 2 4 6 --repeats 2 --warm 30 --ticks 180 --idle-warm 240 --timeout 900 --build-label "MSVC /std:c++20 /O2 /DNDEBUG"
+          python tools/wave_mt/run_matrix.py --exe build/wave_mt_matrix.exe --out build/wave-evidence/matrix.csv --sizes 256 1024 2048 --scenes "${{ matrix.scene }}" --solvers 1:0 4:0 3:2 5:0 5:0:3 --workers 1 2 4 6 --repeats 2 --warm 30 --ticks 180 --idle-warm 240 --timeout 900 --build-label "MSVC /std:c++20 /O2 /DNDEBUG"
           if ($LASTEXITCODE -ne 0) { throw 'Native benchmark execution/conservation failed' }
           python tools/wave_mt/summarise.py build/wave-evidence/matrix.csv | Out-File -Encoding utf8 build/wave-evidence/summary.md
           if ($LASTEXITCODE -ne 0) { throw 'Native benchmark reduction failed' }
@@ -174,7 +181,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: wave-native-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          name: wave-native-windows-${{ matrix.scene }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/wave-evidence/
           if-no-files-found: error
           retention-days: 90

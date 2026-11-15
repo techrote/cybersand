@@ -2,10 +2,13 @@
 """Challenge missing or forged Wave Flow qualification, preserving shared guards."""
 import hashlib
 import inspect
+import io
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
+import tarfile
 import tempfile
 from types import SimpleNamespace
 import unittest
@@ -20,9 +23,9 @@ import package_wave_flow_candidate as package
 class WaveRuntimeTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        # Explore packages Git-tree bytes, not platform checkout line endings.
-        # Read the same committed blobs so Windows autocrlf cannot manufacture
-        # an apparent change to the reviewed generated-metadata fingerprints.
+        # The Wave wrapper forces canonical archive text. Read these reviewed
+        # blobs for unit fixtures; the real-archive regression below separately
+        # exercises Git's conversion under inherited Windows-style settings.
         names = [*package.REGENERATED_RAPIER_IMPORTS,
                  *[name.removesuffix(".import") for name in package.REGENERATED_RAPIER_IMPORTS]]
         cls.committed_import_inputs = {
@@ -91,6 +94,13 @@ class WaveRuntimeTests(unittest.TestCase):
             inherited.assert_called_once()
             self.assertIn(str(package.ROOT / "tools/package_explore001_candidate.py"),
                           inherited.call_args.args[0])
+            child_environment = inherited.call_args.kwargs["env"]
+            count = int(child_environment["GIT_CONFIG_COUNT"])
+            self.assertEqual(child_environment[f"GIT_CONFIG_KEY_{count - 2}"], "core.autocrlf")
+            self.assertEqual(child_environment[f"GIT_CONFIG_VALUE_{count - 2}"], "false")
+            self.assertEqual(child_environment[f"GIT_CONFIG_KEY_{count - 1}"], "core.eol")
+            self.assertEqual(child_environment[f"GIT_CONFIG_VALUE_{count - 1}"], "lf")
+            self.assertEqual(child_environment["GIT_LFS_SKIP_SMUDGE"], "1")
             admission.assert_called_once_with(bundle, "windows", "1" * 40, validated=True)
         self.assertEqual((root / "source-built-runtime-provenance.json").read_bytes(),
                          profile.engine.manifest_path(bundle, "windows").read_bytes())
@@ -291,6 +301,72 @@ class WaveRuntimeTests(unittest.TestCase):
                     with self.assertRaisesRegex(RuntimeError, message):
                         package.stage_runtime_evidence(bundle, root, identity)
                 self.assertEqual(package.files(root), before)
+
+    def test_archive_overrides_append_without_mutating_inherited_configuration(self):
+        inherited = {"GIT_CONFIG_COUNT": "3", "GIT_CONFIG_KEY_0": "core.autocrlf",
+                     "GIT_CONFIG_VALUE_0": "true", "GIT_CONFIG_KEY_1": "core.eol",
+                     "GIT_CONFIG_VALUE_1": "crlf", "GIT_CONFIG_KEY_2": "fixture.preserved",
+                     "GIT_CONFIG_VALUE_2": "existing", "GIT_LFS_SKIP_SMUDGE": "0"}
+        with patch.dict(os.environ, inherited):
+            before = dict(os.environ)
+            actual = package.archive_environment()
+            self.assertEqual(dict(os.environ), before)
+        for key, value in inherited.items():
+            if key not in {"GIT_CONFIG_COUNT", "GIT_LFS_SKIP_SMUDGE"}:
+                self.assertEqual(actual[key], value)
+        self.assertEqual(actual["GIT_CONFIG_COUNT"], "5")
+        self.assertEqual(actual["GIT_CONFIG_KEY_3"], "core.autocrlf")
+        self.assertEqual(actual["GIT_CONFIG_VALUE_3"], "false")
+        self.assertEqual(actual["GIT_CONFIG_KEY_4"], "core.eol")
+        self.assertEqual(actual["GIT_CONFIG_VALUE_4"], "lf")
+        self.assertEqual(actual["GIT_LFS_SKIP_SMUDGE"], "1")
+
+    def test_real_git_archive_under_crlf_retains_pins_and_explicit_attributes(self):
+        inherited = {"GIT_CONFIG_COUNT": "2", "GIT_CONFIG_KEY_0": "core.autocrlf",
+                     "GIT_CONFIG_VALUE_0": "true", "GIT_CONFIG_KEY_1": "core.eol",
+                     "GIT_CONFIG_VALUE_1": "crlf"}
+        with tempfile.TemporaryDirectory() as temporary, patch.dict(os.environ, inherited):
+            repository = Path(temporary) / "source"
+            repository.mkdir()
+            def git(*arguments, environment=None):
+                return subprocess.check_output(["git", "-C", str(repository), *arguments],
+                                               env=environment, stderr=subprocess.PIPE)
+            git("init")
+            payload = dict(self.committed_import_inputs)
+            payload.update({".gitattributes": b"* text=auto\n*.gd text eol=lf\n*.cmd text eol=crlf\n*.bin -text\n",
+                            "godot/fixture.gd": b"extends Node\n",
+                            "godot/fixture.gd.uid": b"uid://authored-identity\n",
+                            "launch.cmd": b"@echo off\nexit /b 0\n",
+                            "binary.bin": b"\x00retained\r\nbytes\n"})
+            for name, data in payload.items():
+                path = repository / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(data)
+            git("add", ".")
+            git("-c", "user.name=Archive Fixture", "-c", "user.email=fixture@example.invalid",
+                "-c", "commit.gpgsign=false", "commit", "-m", "archive conversion fixture")
+            configuration = (repository / ".git/config").read_bytes()
+            def archive(environment):
+                with tarfile.open(fileobj=io.BytesIO(git("archive", "HEAD", environment=environment))) as tar:
+                    return {entry.name: tar.extractfile(entry).read() for entry in tar if entry.isfile()}
+            converted = archive(dict(os.environ))
+            canonical = archive(package.archive_environment())
+            extracted = Path(temporary) / "canonical-package"
+            for name, data in canonical.items():
+                path = extracted / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(data)
+            for name, expected in package.REGENERATED_RAPIER_IMPORTS.items():
+                self.assertIn(b"\r\n", converted[name])
+                self.assertNotEqual(hashlib.sha256(converted[name]).hexdigest(), expected)
+                self.assertEqual(canonical[name], self.committed_import_inputs[name])
+                self.assertEqual(hashlib.sha256(canonical[name]).hexdigest(), expected)
+            self.assertEqual(package.omit_regenerated_imports(extracted), package.REGENERATED_RAPIER_IMPORTS)
+            self.assertEqual(canonical["godot/fixture.gd"], payload["godot/fixture.gd"])
+            self.assertEqual(canonical["godot/fixture.gd.uid"], payload["godot/fixture.gd.uid"])
+            self.assertEqual(canonical["launch.cmd"], payload["launch.cmd"].replace(b"\n", b"\r\n"))
+            self.assertEqual(canonical["binary.bin"], payload["binary.bin"])
+            self.assertEqual((repository / ".git/config").read_bytes(), configuration)
 
 
 if __name__ == "__main__":

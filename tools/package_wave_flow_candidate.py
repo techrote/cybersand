@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -45,14 +46,34 @@ def files(root: Path) -> dict[str, str]:
             if path.is_file() and path != root / "candidate-manifest.json"}
 
 
+def archive_environment() -> dict[str, str]:
+    environment = os.environ.copy()
+    count = environment.get("GIT_CONFIG_COUNT", "0")
+    publication.engine.require(count.isdecimal(), "Invalid inherited Git environment configuration count")
+    offset = int(count)
+    # git archive applies working-tree conversion, including host autocrlf.
+    # Append child-only overrides; preserve preceding configuration and explicit
+    # .gitattributes eol settings (for example the intended CRLF launchers).
+    for key, value in (("core.autocrlf", "false"), ("core.eol", "lf")):
+        environment[f"GIT_CONFIG_KEY_{offset}"] = key
+        environment[f"GIT_CONFIG_VALUE_{offset}"] = value
+        offset += 1
+    environment["GIT_CONFIG_COUNT"] = str(offset)
+    # Archive pointers without downloading excluded platform libraries. The
+    # inherited packager copies and verifies only admitted, materialized LFS.
+    environment["GIT_LFS_SKIP_SMUDGE"] = "1"
+    return environment
+
+
 def omit_regenerated_imports(root: Path) -> dict[str, str]:
     omitted = {}
     for name, expected in REGENERATED_RAPIER_IMPORTS.items():
         path = root / name
         if not path.exists():
             continue
-        publication.engine.require(path.is_file() and not path.is_symlink() and sha(path) == expected,
-                                   "Reviewed Rapier import settings changed: " + name)
+        observed = sha(path) if path.is_file() and not path.is_symlink() else "not a regular file"
+        publication.engine.require(observed == expected,
+                                   f"Reviewed Rapier import settings changed: {name}; expected={expected}; observed={observed}")
         source = path.with_suffix("")
         publication.engine.require(source.is_file() and not source.is_symlink(),
                                    "Regenerated import requires its source image: " + name)
@@ -104,7 +125,7 @@ def build(args) -> None:
                "--native-candidate", str(args.native_candidate),
                "--vc-runtime", str(args.vc_runtime), "--output", str(args.output),
                "--readme", "docs/operations/wave-flow-evaluation.md"]
-    subprocess.run(command, cwd=ROOT, check=True, timeout=600)
+    subprocess.run(command, cwd=ROOT, check=True, timeout=600, env=archive_environment())
     path = args.output / "candidate-manifest.json"
     manifest = json.loads(path.read_text(encoding="utf-8"))
     publication.engine.require(manifest.get("files_sha256") == files(args.output),

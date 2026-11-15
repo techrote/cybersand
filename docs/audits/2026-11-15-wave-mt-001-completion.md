@@ -100,7 +100,10 @@ remain separate from automated headless execution.
 ## Benchmark method and retained negatives
 
 The hosted Windows matrix measures complete `World::tick()` calls with one
-fresh process per row on the same machine/compiler/build. It covers 256²,
+fresh process per row. Four scene groups run in parallel; every size, law,
+worker count and repeat for one scene stays on the same host/compiler/build.
+Each group's source, executable and hardware identity is retained separately;
+comparative timings are never pooled across those hosts. It covers 256²,
 1024² and 2048²; dam, repeated wave disturbance, disconnected sparse reservoirs
 and idle pools; FreeMass, Inertial, PressureFlow cached/dormant, and Wave substeps
 1 and 3; requested workers 1/2/4/6; two repeats, 30 warm-up ticks and 180 measured
@@ -273,3 +276,33 @@ sidecars. The ZIP now includes the verified target-OS runtime provenance,
 toolchain record, execution report and original five focused logs. Eleven
 publication/package guard tests pass, alongside the thirty unchanged shared
 publisher guards; hosted execution of the new package remains required.
+
+## Retained publication attempt 3 and archive portability repair
+
+Source `4127c6926f84dacb8d841ffeedc11d5d6d30c0eb`, tree
+`04fbc787c89b1ed3e44a22a850ebd196eee61e46`, ran in
+[publication attempt 43739210349](https://github.com/techrote/cybersand/actions/runs/43739210349).
+All three 22-case native modes passed. Windows passed the four focused runtime
+suites and admitted the validated runtime provenance for packaging, but the
+new sidecar fingerprint guard rejected the inherited archive before package
+execution. No qualified ZIP or runtime append was published.
+
+The cause was archive text conversion, not an authored import-setting change.
+An actual `git archive` reproduction with `core.autocrlf=true` and
+`core.eol=crlf` produced the same logical Rapier metadata with 44 CRLF lines
+(1,118 bytes); explicit false/LF settings produced the reviewed 1,074 bytes
+and the original SHA-256. Reading raw Git blobs in the original unit fixture
+had not exercised archive conversion.
+
+The Wave wrapper now scopes canonical text settings to the inherited packager
+process and preserves explicit `.gitattributes` line-ending declarations.
+It also skips archive-time LFS smudging; the shared packager still reads and
+verifies the already materialized required target payloads explicitly. The four reviewed
+sidecar fingerprints remain byte-exact. New regressions exercise a real Git
+archive under inherited Windows-style conversion and verify authored files,
+explicit CRLF attributes and LFS handling. The shared Explore packager and
+native source remain unchanged.
+Thirteen focused package/publication guards pass after this repair, including
+the real archive regression. The final Windows matrix uses four independently
+recorded 120-row scene groups; final acceptance also checks their complete
+480-row Cartesian coverage. No comparison group is split across hosts.
