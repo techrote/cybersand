@@ -95,9 +95,11 @@ semaphore wake) are separate and need their own registration.
 
 ## Wave flow Water solver experiment (WAVE-MT-001) — 2026-11-15
 
-PR [#618](https://github.com/techrote/cybersand/pull/618), owned branch
-`codex/wave-mt-001-parallel-20261115`, completes the independent experimental
-`wave_flow_v1` candidate. Claude's original PR #617 remains separate. The
+PR [#631](https://github.com/techrote/cybersand/pull/631), owned branch
+`astra/wave-mt-001-669-finisher`, takes over the repaired experimental
+`wave_flow_v1` candidate exactly from #618 at `2a4edafa1c0b81b1f654bab28baae0e511c9a761`.
+The [takeover record](../audits/2026-11-15-wave-mt-001-astra-takeover.md) and
+PR #631 ledger own final qualification. PR #617 and #618 remain read-only. The
 [canonical contract](../architecture/wave-flow-v1.md) and
 [evaluation guide](wave-flow-evaluation.md) describe the native solver,
 versioned mass/configuration APIs, Godot selection, comparison fixtures and

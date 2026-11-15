@@ -116,7 +116,28 @@ class WaveRuntimeTests(unittest.TestCase):
             with self.subTest(name=name):
                 self.assertEqual(inspect.getsource(getattr(profile.engine, name)),
                                  inspect.getsource(getattr(shared, name)))
-        self.assertEqual(profile.engine.BRANCH, "codex/wave-mt-001-parallel-20261115")
+        self.assertEqual(profile.engine.BRANCH, "astra/wave-mt-001-669-finisher")
+
+    def test_takeover_publication_refuses_the_previous_owners_branch(self):
+        source, tree = "1" * 40, "2" * 40
+        branch = profile.engine.BRANCH
+        workflow = "techrote/cybersand/" + profile.engine.WORKFLOW + "@refs/heads/"
+        environment = {
+            "GITHUB_REPOSITORY": "techrote/cybersand", "GITHUB_EVENT_NAME": "push",
+            "GITHUB_REF": "refs/heads/" + branch, "GITHUB_WORKFLOW_REF": workflow + branch,
+            "GITHUB_SHA": source, "GITHUB_RUN_ID": "631", "GITHUB_RUN_ATTEMPT": "1",
+        }
+        def git(*arguments):
+            self.assertEqual(arguments[0], "rev-parse")
+            return ((source if arguments[1] == "HEAD" else tree) + "\n").encode()
+        with patch.object(profile.engine, "git", side_effect=git), patch.dict(os.environ, environment):
+            self.assertEqual(profile.engine.context(source)["source_tree"], tree)
+            for key, value in {
+                "GITHUB_REF": "refs/heads/codex/wave-mt-001-parallel-20261115",
+                "GITHUB_WORKFLOW_REF": workflow + "codex/wave-mt-001-parallel-20261115",
+            }.items():
+                with self.subTest(key=key), patch.dict(os.environ, {key: value}), self.assertRaises(RuntimeError):
+                    profile.engine.context(source)
 
     def test_all_wave_sections_required(self):
         valid = {key: True for key in profile.WAVE_SECTIONS}

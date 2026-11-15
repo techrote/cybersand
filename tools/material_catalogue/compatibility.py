@@ -366,6 +366,16 @@ REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
   'issue': 618,
   'pr': 618},)
 
+# PR631 admission repair: reject unsupported coherent Water before zero-mass
+# normalization. Wave numerical law and all default-off writes are unchanged.
+REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
+  'from_lf_sha256': '09a34956642a203ae9b725875f0773001ab70bc22b478a904588604c7de866c1',
+  'to_lf_sha256': '911ac9df96c34f7bbc24e9de8b53099ba779ff6cc999c6ff349b61e4379ee143',
+  'source_commit': '66b7107dca129b85f5bcb1099b4d60149f87f429',
+  'record': 'docs/audits/2026-11-15-wave-mt-001-astra-takeover.md',
+  'issue': 631,
+  'pr': 631},)
+
 class CompatibilityError(ValueError):
     """An actionable source or baseline mismatch; never repairs the source."""
 

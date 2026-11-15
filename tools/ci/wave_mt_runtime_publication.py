@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Source-matched Wave Flow runtime publication on the owned PR #618 branch.
+"""Source-matched Wave Flow runtime publication on the owned PR #631 branch.
 
 Reuse the existing source/input, target-OS, LFS and four-file publication guards.
 An explicit versioned request arms builds; this helper never pushes or merges.
@@ -20,10 +20,10 @@ engine = module_from_spec(_spec)
 _spec.loader.exec_module(engine)
 _old_workflow, _old_request = engine.WORKFLOW, engine.REQUEST
 _shared_markers = dict(engine.CASE_MARKERS)
-engine.BRANCH = "codex/wave-mt-001-parallel-20261115"
+engine.BRANCH = "astra/wave-mt-001-669-finisher"
 engine.WORKFLOW = ".github/workflows/wave-mt-runtime-publication.yml"
 engine.REQUEST = "tools/ci/wave_mt_publish_request.json"
-engine.EVIDENCE = "docs/audits/2026-11-15-wave-mt-001-completion.md"
+engine.EVIDENCE = "docs/audits/2026-11-15-wave-mt-001-astra-takeover.md"
 engine.PRESSURE_CASE = "godot/tests/test_wave_flow.gd"
 engine.BUNDLE_PREFIX = "wave-mt-runtime-attempt-" + os.environ.get("GITHUB_RUN_ATTEMPT", "1")
 engine.REQUEST_VALUE = {
@@ -48,6 +48,7 @@ engine.EXECUTION_SCOPE = (
 )
 engine.BUILD_EXACT = (set(engine.BUILD_EXACT) - {_old_workflow, _old_request}) | {
     engine.WORKFLOW, engine.REQUEST, engine.EVIDENCE,
+    "docs/audits/2026-11-15-wave-mt-001-completion.md",
     ".github/workflows/wave-flow.yml",
     "tools/ci/wave_mt_runtime_publication.py",
     "tools/ci/test_wave_mt_runtime_publication.py",

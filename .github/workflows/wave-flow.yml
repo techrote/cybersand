@@ -68,10 +68,10 @@ jobs:
 
   default-off:
     name: Paired default-off Water against accepted main
-    # This dated accepted-main control belongs to PR618 and explicit campaigns.
+    # This dated accepted-main control belongs to PR618, its PR631 handoff and explicit campaigns.
     if: >-
       github.event_name == 'workflow_dispatch' ||
-      (github.event_name == 'pull_request' && github.event.pull_request.number == 618 &&
+      (github.event_name == 'pull_request' && (github.event.pull_request.number == 618 || github.event.pull_request.number == 631) &&
        github.event.pull_request.draft == false)
     runs-on: ubuntu-24.04
     timeout-minutes: 180
@@ -122,7 +122,7 @@ jobs:
       matrix:
         # Each performance scene retains all 120 matched rows on one host.
         # Other ordinary changes run the native suite once, without a campaign.
-        scene: ${{ fromJSON((github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.number == 618 && github.event.pull_request.draft == false)) && '["dam","wave","sparse","idle"]' || '["correctness"]') }}
+        scene: ${{ fromJSON((github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && (github.event.pull_request.number == 618 || github.event.pull_request.number == 631) && github.event.pull_request.draft == false)) && '["dam","wave","sparse","idle"]' || '["correctness"]') }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -150,10 +150,10 @@ jobs:
           type build\wave-evidence\native.log
       - name: Build complete tick comparison executable
         # Keep routine Windows correctness; the full performance campaign is
-        # scoped to PR618 or an explicit dispatch, not every later native edit.
+        # scoped to PR618/PR631 or an explicit dispatch, not every later native edit.
         if: >-
           github.event_name == 'workflow_dispatch' ||
-          (github.event_name == 'pull_request' && github.event.pull_request.number == 618 &&
+          (github.event_name == 'pull_request' && (github.event.pull_request.number == 618 || github.event.pull_request.number == 631) &&
            github.event.pull_request.draft == false)
         shell: cmd
         run: |
@@ -167,7 +167,7 @@ jobs:
       - name: Measure matched complete native ticks including negative results
         if: >-
           github.event_name == 'workflow_dispatch' ||
-          (github.event_name == 'pull_request' && github.event.pull_request.number == 618 &&
+          (github.event_name == 'pull_request' && (github.event.pull_request.number == 618 || github.event.pull_request.number == 631) &&
            github.event.pull_request.draft == false)
         shell: pwsh
         run: |

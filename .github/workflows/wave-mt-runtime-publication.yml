@@ -13,7 +13,7 @@ on:
       - 'tools/ci/lcb001_shared_contract_runtime_publication.py'
       - 'tools/ci/test_wave_mt_runtime_publication.py'
   push:
-    branches: [codex/wave-mt-001-parallel-20261115]
+    branches: [astra/wave-mt-001-669-finisher]
     # Explicit source-bound publication request; normal native edits do not dispatch a publisher.
     # Workflow/helper changes run lightweight guards; absent request means no build.
     paths:
@@ -45,7 +45,7 @@ defaults:
 jobs:
   publisher-guards:
     name: validate staged publisher without building runtimes
-    if: github.repository == 'techrote/cybersand' && ((github.event_name == 'push' && github.ref == 'refs/heads/codex/wave-mt-001-parallel-20261115') || (github.event_name == 'pull_request' && github.head_ref == 'codex/wave-mt-001-parallel-20261115' && github.base_ref == 'main'))
+    if: github.repository == 'techrote/cybersand' && ((github.event_name == 'push' && github.ref == 'refs/heads/astra/wave-mt-001-669-finisher') || (github.event_name == 'pull_request' && github.head_ref == 'astra/wave-mt-001-669-finisher' && github.base_ref == 'main'))
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
@@ -65,7 +65,7 @@ jobs:
   admission:
     needs: publisher-guards
     name: require an explicit Wave Flow publication request
-    if: github.repository == 'techrote/cybersand' && github.event_name == 'push' && github.ref == 'refs/heads/codex/wave-mt-001-parallel-20261115'
+    if: github.repository == 'techrote/cybersand' && github.event_name == 'push' && github.ref == 'refs/heads/astra/wave-mt-001-669-finisher'
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     outputs:
@@ -136,7 +136,7 @@ jobs:
   linux:
     needs: admission
     name: build and execute the Linux Wave Flow runtime
-    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/wave-mt-001-parallel-20261115' && needs.admission.outputs.armed == 'true'
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/astra/wave-mt-001-669-finisher' && needs.admission.outputs.armed == 'true'
     runs-on: ubuntu-24.04
     # Complete native build, import and all four unshortened current-policy cases.
     timeout-minutes: 360
@@ -221,7 +221,7 @@ jobs:
   windows-build:
     needs: admission
     name: cross-build the Windows Wave Flow runtime
-    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/wave-mt-001-parallel-20261115' && needs.admission.outputs.armed == 'true'
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/astra/wave-mt-001-669-finisher' && needs.admission.outputs.armed == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 120
     outputs:
@@ -306,7 +306,7 @@ jobs:
   windows-execution:
     name: execute Windows Wave Flow cases
     needs: windows-build
-    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/wave-mt-001-parallel-20261115'
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/astra/wave-mt-001-669-finisher'
     runs-on: windows-2022
     timeout-minutes: 300
     env:
@@ -409,7 +409,7 @@ jobs:
   publish:
     name: fast-forward the source branch with both validated runtimes
     needs: [native-wave, linux, windows-execution]
-    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/wave-mt-001-parallel-20261115'
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/astra/wave-mt-001-669-finisher'
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     permissions:
@@ -464,7 +464,7 @@ jobs:
           # the built SHA. The lease atomically refuses any changed remote tip,
           # including a concurrent reset; it cannot overwrite concurrent work.
           # The LFS pre-push hook uploads only the new runtime objects.
-          git push --force-with-lease="refs/heads/codex/wave-mt-001-parallel-20261115:$GITHUB_SHA" origin HEAD:refs/heads/codex/wave-mt-001-parallel-20261115
+          git push --force-with-lease="refs/heads/astra/wave-mt-001-669-finisher:$GITHUB_SHA" origin HEAD:refs/heads/astra/wave-mt-001-669-finisher
           {
             echo '### Wave Flow runtime publication'
             echo "Built source: $GITHUB_SHA"

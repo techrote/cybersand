@@ -10,9 +10,10 @@ related-documents: [liquid-solver-family-policy.md, pressure-flow-v1.md, inertia
 
 # Wave flow Water solver (experimental)
 
-**Status:** experimental implementation on PR #618,
-`codex/wave-mt-001-parallel-20261115`, **not on main**. The independent original
-Claude PR #617 remains separate. `WorldConfig::wave_flow` opts in; a World that
+**Status:** experimental implementation completed through PR #618 and handed
+to [PR #631](https://github.com/techrote/cybersand/pull/631) on
+`astra/wave-mt-001-669-finisher`, **not on main**. The original PR #617 and
+inherited PR #618 remain separate. `WorldConfig::wave_flow` opts in; a World that
 does not enable it keeps its existing kernels, physical hashes and save formats,
 and allocates no Wave storage. This is not another `LiquidSolverPolicy` family
 and does not change the default Water solver.
@@ -22,7 +23,8 @@ substep selection, representative scenarios and copied native diagnostics.
 Exact physical save/restore remains explicitly unsupported; authored scenarios
 can be reconstructed, but this is not continuation of a running Wave World.
 The [completion evidence](../audits/2026-11-15-wave-mt-001-completion.md) owns
-actual resulting-source qualification. The
+historical implementation evidence; the [Astra takeover record](../audits/2026-11-15-wave-mt-001-astra-takeover.md)
+and PR #631 ledger own resulting-source qualification. The
 [original evidence](../audits/2026-11-15-wave-mt-001-wave-flow.md) is historical:
 its timings and platform results do not qualify a later #618 candidate.
 
@@ -284,8 +286,10 @@ when wave flow is requested with any of:
 - a configured custom cellular transport policy, whose cadence/direction
   semantics Wave does not implement.
 
-A nonzero Water coherence byte is explicitly refused before mutation. Coherent
-jets require a different law; accepting an immortal countdown would be misleading.
+A nonzero Water coherence byte is explicitly refused before mutation, including
+a zero-mass Water tuple that would otherwise normalize to Empty. Ordinary
+zero-mass erasure without coherence remains valid. Coherent jets require a
+different law; accepting an immortal countdown would be misleading.
 Wave chunk admission also refuses the extreme signed-coordinate fringe unless
 there is one complete chunk of halo headroom before each int64 endpoint.
 Neighbour growth at that bound records `boundary_refusals` and retains quantity;

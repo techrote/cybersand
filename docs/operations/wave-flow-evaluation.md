@@ -2,7 +2,7 @@
 title: Wave Flow evaluation
 status: Current
 document-kind: guide
-scope: Experimental PR 618 Wave Flow desktop controls, comparative fixtures, actual native diagnostics and explicit unsupported physical persistence and material behavior
+scope: Experimental PR 631 Wave Flow desktop controls inherited from PR 618, comparative fixtures, actual native diagnostics and explicit unsupported physical persistence and material behavior
 canonical-for: [wave-flow-evaluation]
 last-reviewed: 2026-11-15
 related-documents: [../architecture/wave-flow-v1.md, lcb-manual-comparison-ux.md, ../architecture/rigid-body-and-cellular-coupling.md]
@@ -14,6 +14,13 @@ Open **Wave Flow** from the desktop feature launcher, or start the supplied
 Windows evaluation package with **Test It.cmd**. A source checkout with its
 matching native runtime accepts `Godot --path godot -- --wave-flow`. The ordinary
 sandbox and production Water default remain unchanged.
+
+PR #631 owns the current source-qualified package. `Test It.cmd` opens the
+dedicated Wave Flow evaluator directly, with the existing Workbench actor and
+native coupling infrastructure. Wave is not added to the ordinary Shared
+Workbench solver menu. Use the package linked in the final
+[PR qualification ledger](https://github.com/techrote/cybersand/pull/631),
+whose source commit and digest distinguish it from predecessor packages.
 
 The ZIP's `candidate-manifest.json` records the source commit and SHA-256 of
 every delivered file. `source-built-runtime-provenance.json` records the actual

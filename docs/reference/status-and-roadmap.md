@@ -150,7 +150,7 @@ GEN-008 candidate above now implements the revised contract independently of #54
 
 ## Wave flow Water solver (WAVE-MT-001) — 2026-11-15
 
-**Experimental PR #618 candidate, not on main; no default changed.** The
+**Experimental PR #631 candidate inherited from #618, not on main; no default changed.** The
 [wave flow reference](../architecture/wave-flow-v1.md) adds an opt-in bulk
 strip-parallel Water law (`WorldConfig::wave_flow`, `wave_flow_v1`) with a
 retained per-face flux. It has no pressure head field, flood fill or gas state.
@@ -163,7 +163,9 @@ exchange, full buoyancy and physical persistence remain unsupported.
 
 The [completion ledger](../audits/2026-11-15-wave-mt-001-completion.md)
 owns the exact-source/runtime/CI/performance/review evidence and remaining
-acceptance for #618. The [original #617 evidence](../audits/2026-11-15-wave-mt-001-wave-flow.md)
+acceptance for #618. [PR #631's takeover record](../audits/2026-11-15-wave-mt-001-astra-takeover.md)
+and its PR ledger now own resulting-source qualification and independent review;
+the predecessor branches remain unchanged. The [original #617 evidence](../audits/2026-11-15-wave-mt-001-wave-flow.md)
 does not qualify later source. Policy-family/default promotion and human
 Windows/GPU acceptance remain separate owner decisions. Merge is not authorised.
 
