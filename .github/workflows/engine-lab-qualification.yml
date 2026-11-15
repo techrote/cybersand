@@ -17,7 +17,7 @@ permissions:
   actions: read
 concurrency:
   group: engine-lab-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 jobs:
   linux-native:
     name: Linux native Engine Lab controls
