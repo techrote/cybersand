@@ -1,0 +1,133 @@
+name: LFM2.5-VL WORM W8 fresh paired-legal contrast CPU LoRA
+on:
+  push:
+    branches: [codex/agent-painter-lfm25-vl-568]
+    paths:
+      - experiments/agent_painter/lanes/lfm25_vl/worm-w8-request.json
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: lfm25-vl-worm-w8-fresh-paired-legal-contrast-v1
+  cancel-in-progress: false
+
+jobs:
+  w8-one-vm:
+    name: W8 180 genuine CPU AdamW updates and short strict raw response probe
+    runs-on: ubuntu-24.04
+    timeout-minutes: 62
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      OMP_DYNAMIC: 'FALSE'
+      MKL_DYNAMIC: 'FALSE'
+      ATEN_CPU_CAPABILITY: default
+      MKL_CBWR: COMPATIBLE
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - name: Checkout exactly one new W8 experiment source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Checkout original frozen W0 host source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: techrote/cybersand
+          ref: 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          path: worm-w0
+          persist-credentials: false
+      - name: Checkout original LFM support v2 curriculum
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: techrote/cybersand
+          ref: cc27b3206cb61f98432fa95b799c9b9ff508c2bc
+          path: worm-support
+          persist-credentials: false
+      - name: Exact source, W0 and immutable W8 one-VM request preflight
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git -C worm-w0 rev-parse HEAD)" = 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          test "$(git hash-object worm-w0/experiments/agent_painter/worm/common/worm.py)" = 8979b6f0296e81051194bacc907992d38e006605
+          test "$(git -C worm-support rev-parse HEAD)" = cc27b3206cb61f98432fa95b799c9b9ff508c2bc
+          test "$(git hash-object worm-support/experiments/agent_painter/worm/support_lfm/curriculum.py)" = f205a3a9f33632aeaafa2daa8ce25b2484bc6032
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path("experiments/agent_painter/lanes/lfm25_vl/worm-w8-request.json").read_text())
+          assert r["schema"]=="cybersand.worm.lfm-w8-request/1"
+          assert r["experiment"]=="lfm-worm-w8-paired-legal-contrast-fresh-v1"
+          assert r["steps"]==180 and r["epochs"]==2 and r["deadline_seconds"]==2750
+          assert r["original_W0_TRAIN_states"]==r["synthetic_TRAIN_legal_exclusions"]==45
+          assert r["one_hosted_CPU_VM"] and r["fresh_full_model_from_pinned_parent"]
+          assert r["model_id"]=="LiquidAI/LFM2.5-VL-450M"
+          assert r["revision"]=="fc6221ca597f3315e4f82fc2df606783267b34ba"
+          assert r["W0_source"]=="4bb9d6e1d0d0d78183f87d1e3c29648edafacf61"
+          assert r["support_source"]=="cc27b3206cb61f98432fa95b799c9b9ff508c2bc"
+          assert r["Draft_HOLD"] and not r["sealed_FINAL_opened"] and not r["native_execution"]
+          PY
+          python3 -m py_compile experiments/agent_painter/lanes/lfm25_vl/worm_train_w8_v1.py
+          python3 -m unittest discover -s worm-w0/experiments/agent_painter/worm/common -p test_worm.py -v
+          python3 -m unittest discover -s worm-support/experiments/agent_painter/worm/support_lfm -p test_curriculum.py -v
+          python3 tools/ci/check_ci_provider_policy.py
+          mkdir -p evidence/diagnostics
+          git rev-parse HEAD > evidence/diagnostics/source-sha.txt
+          git -C worm-w0 rev-parse HEAD > evidence/diagnostics/w0-source.txt
+          git -C worm-support rev-parse HEAD > evidence/diagnostics/support-source.txt
+          lscpu > evidence/diagnostics/cpu.txt
+          df -h > evidence/diagnostics/disk-before.txt
+      - name: Install original pinned CPU numerical dependency profile
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/lfm-w8"
+          "$RUNNER_TEMP/lfm-w8/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/lfm-w8/bin/python" -m pip install -r experiments/agent_painter/training/requirements.lock
+          "$RUNNER_TEMP/lfm-w8/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torchvision==0.29.2+cpu'
+          "$RUNNER_TEMP/lfm-w8/bin/python" -m pip install -r experiments/agent_painter/training/requirements-lfm25_vl.lock
+          "$RUNNER_TEMP/lfm-w8/bin/python" -m pip check
+          "$RUNNER_TEMP/lfm-w8/bin/python" -m pip freeze --all > evidence/diagnostics/pip-freeze.txt
+      - name: Audit distinct paired TRAIN before expensive model download
+        run: |
+          set -euo pipefail
+          "$RUNNER_TEMP/lfm-w8/bin/python" - <<'PY'
+          import sys
+          from pathlib import Path
+          sys.path.insert(0,"experiments/agent_painter/lanes/lfm25_vl")
+          import worm_train_w8_v1 as v8
+          worm=v8.w7.worm_source(Path("worm-w0/experiments/agent_painter/worm/common"))
+          support=v8.w7.support_source(Path("worm-support/experiments/agent_painter/worm/support_lfm"),worm)
+          splits,_=v8.w7.dataset(support)
+          paired=v8.paired_training_rows(splits)
+          assert len(paired)==45
+          assert len({r["prompt"] for p in paired for r in p})==90
+          assert all(a["completion"]!=b["completion"] for a,b in paired)
+          print("W8 strict TRAIN-source, pair and split audit PASS",len(paired))
+          PY
+      - name: Download exact complete official multimodal LFM model and verify adapter
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 900s "$RUNNER_TEMP/lfm-w8/bin/python" experiments/agent_painter/training/download_model.py --profile lfm25_vl --output "$RUNNER_TEMP/lfm-w8-model"
+          cp "$RUNNER_TEMP/lfm-w8-model/download_receipt.json" evidence/diagnostics/model-download.json
+          LFM25_SNAPSHOT="$RUNNER_TEMP/lfm-w8-model" "$RUNNER_TEMP/lfm-w8/bin/python" experiments/agent_painter/lanes/lfm25_vl/test_adapter.py > evidence/diagnostics/adapter-tests.txt 2>&1
+          df -h > evidence/diagnostics/disk-before-training.txt
+      - name: Finite fresh 180-step AdamW, checkpoint every 45 and raw 18-case DEV
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=60s 3050s "$RUNNER_TEMP/lfm-w8/bin/python" experiments/agent_painter/lanes/lfm25_vl/worm_train_w8_v1.py \
+            --model "$RUNNER_TEMP/lfm-w8-model" \
+            --worm-root worm-w0/experiments/agent_painter/worm/common \
+            --support-root worm-support/experiments/agent_painter/worm/support_lfm \
+            --output evidence/worm-w8 --steps 180 --deadline 2750
+      - name: Always retain original checkpoint/partial/failure receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: lfm25-vl-worm-w8-paired-contrast-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            evidence/worm-w8/
+            evidence/diagnostics/
+          if-no-files-found: warn
+          retention-days: 90

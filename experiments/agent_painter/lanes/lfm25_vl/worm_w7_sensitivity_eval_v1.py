@@ -217,7 +217,8 @@ def main():
         "model_revision": selected["revision"],
         "challenge_sha256": CHALLENGE_SHA256, "requests": len(rows),
         "independent_obstacle_seeds": len(support.SEEDS),
-        "raw_valid_eos": sum(x["eos_terminated"] and x["valid_first_pass"] for x in answers),
+        "raw_valid_eos": sum(x["eos_terminated"] and x["raw_text"] in w7.CODE_ACTIONS
+                             for x in answers),  # grammar/EOS independent of host legality
         "raw_legal": sum(x["raw_legal"] for x in answers),
         "raw_action_codes": {digit: sum(x["raw_text"] == digit for x in answers)
                              for digit in "012345"},
