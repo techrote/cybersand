@@ -82,8 +82,9 @@ class SpoonTests(unittest.TestCase):
         spoon.carve(self.donor,path,"mlp_scoop",self.dir/"result.json")
         with self.assertRaises(spoon.GGUFError):
             spoon.carve(self.donor,path,"mlp_scoop",self.dir/"again.json")
+        (self.dir/"broken.gguf").write_bytes(b"GGUF")
         with self.assertRaises(spoon.GGUFError):
-            spoon.inspect(self.dir/"again.json")
+            spoon.inspect(self.dir/"broken.gguf")
 
 
 if __name__=="__main__":
