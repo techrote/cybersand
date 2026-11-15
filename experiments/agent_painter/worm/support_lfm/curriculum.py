@@ -20,7 +20,7 @@ COMMON = HERE.parent / "common"
 sys.path.insert(0, str(COMMON))
 import worm  # W0 shared contract; this file never modifies it
 
-VERSION = "worm-lfm-local-decisions-v1"
+VERSION = "worm-lfm-local-decisions-v2"
 COMMON_SOURCE_SHA = "4bb9d6e1d0d0d78183f87d1e3c29648edafacf61"
 TRAIN_SEEDS = tuple(range(1101, 1113))
 DEV_SEEDS = tuple(range(2101, 2107))
@@ -178,6 +178,58 @@ def rows(split: str, steps: int = 32) -> list[dict]:
     return result
 
 
+
+def split_distinct_actions() -> tuple[list[dict], list[dict], dict]:
+    """V2: literal prompt-disjoint, duplicate-free local supervision.
+
+    V1's disjoint world seeds were insufficient: different worlds can expose
+    precisely the same local 5x5/heading/history prompt. Preserve that negative
+    v1 artifact; never quietly treat identical prompt bytes as held-out.
+    Keep first deterministic source row for each prompt, with labels verified.
+    """
+    raw_train, raw_dev = rows("train"), rows("development")
+    dev_map: dict[str, dict] = {}
+    for row in raw_dev:
+        old = dev_map.get(row["prompt"])
+        if old is not None and old["target_action"] != row["target_action"]:
+            raise ValueError("conflicting DEVELOPMENT label for identical prompt")
+        dev_map.setdefault(row["prompt"], row)
+    train_map: dict[str, dict] = {}
+    overlap_groups: set[str] = set()
+    discarded_overlapping = 0
+    for row in raw_train:
+        old = train_map.get(row["prompt"])
+        if old is not None and old["target_action"] != row["target_action"]:
+            raise ValueError("conflicting TRAIN label for identical prompt")
+        if row["prompt"] in dev_map:
+            overlap_groups.add(row["world_group"])
+            discarded_overlapping += 1
+            continue
+        train_map.setdefault(row["prompt"], row)
+    if set(train_map).intersection(dev_map):
+        raise ValueError("leaked literal prompt between TRAIN and DEVELOPMENT")
+    output_train, output_dev = list(train_map.values()), list(dev_map.values())
+    if not output_train or not output_dev:
+        raise ValueError("empty deduplicated split")
+    audit = {
+        "raw_train_rows": len(raw_train),
+        "raw_development_rows": len(raw_dev),
+        "train_rows": len(output_train),
+        "development_rows": len(output_dev),
+        "removed_train_for_exact_development_prompt": discarded_overlapping,
+        "distinct_overlapping_prompt_count": len(
+            {r["prompt"] for r in raw_train} & set(dev_map)),
+        "removed_duplicate_train_rows_after_collision_filter":
+            len(raw_train) - discarded_overlapping - len(output_train),
+        "removed_duplicate_development_rows": len(raw_dev) - len(output_dev),
+        "literal_cross_split_prompt_overlap": 0,
+        "retained_train_worlds": sorted({r["world_group"] for r in output_train}),
+        "retained_development_worlds": sorted({r["world_group"] for r in output_dev}),
+        "overlap_affected_train_world_groups": sorted(overlap_groups),
+    }
+    return output_train, output_dev, audit
+
+
 def checked_splits(train: list[dict], dev: list[dict]) -> None:
     if not train or not dev:
         raise ValueError("empty split")
@@ -327,11 +379,11 @@ def main() -> None:
     if not 1 <= args.steps <= 512:
         parser.error("steps must be 1..512")
     args.output.mkdir(parents=True, exist_ok=True)
-    train, dev = rows("train"), rows("development")
+    train, dev, dedup_audit = split_distinct_actions()
     adverse_train, adverse_dev = adverse_rows("train"), adverse_rows("development")
     checked_splits(train + adverse_train, dev + adverse_dev)
     hashes = {}
-    for name, data in (("train.jsonl", train), ("development.jsonl", dev),
+    for name, data in (("train-v2.jsonl", train), ("development-v2.jsonl", dev),
                        ("adverse-train.jsonl", adverse_train),
                        ("adverse-development.jsonl", adverse_dev)):
         raw = b"".join(canonical(r) for r in data)
@@ -342,7 +394,8 @@ def main() -> None:
         "version": VERSION, "prompt_version": PROMPT_VERSION,
         "host_source": COMMON_SOURCE_SHA, "train_world_seeds": list(TRAIN_SEEDS),
         "development_world_seeds": list(DEV_SEEDS), "train_rows": len(train),
-        "development_rows": len(dev), "adverse_train_rows": len(adverse_train),
+        "development_rows": len(dev), "dedup_audit": dedup_audit,
+        "adverse_train_rows": len(adverse_train),
         "adverse_development_rows": len(adverse_dev), "hashes": hashes,
         "gallery_png_count": sum(f["file"].endswith(".png") for f in gallery["files"]),
         "gallery_manifest_sha256": hashlib.sha256(canonical(gallery)).hexdigest(),
