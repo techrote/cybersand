@@ -361,3 +361,38 @@ or native Workbench control passed. The complete authored D-1A inventory is
 now **146** tests across 14 modules, still requiring exact-branch checkout
 qualification. The existing v1 episode policies and first-pass trajectories
 are unchanged; held-out outcomes remain sealed.
+
+
+## Budget-constrained wall fidelity (additional synthetic oracle)
+
+The previous unbounded reverse-Dijkstra `macro_oracle.py` chooses the
+lexicographically best eventual route and then truncates at 36 actions. For
+selected-wall tracing, an uninterrupted 6–10-cell offset path can require
+more decisions than allowed, while a slightly less faithful route could
+**arrive** within the decision budget. Do not rank an unreachable-on-budget
+ideal route as a successful 36-decision baseline.
+
+The separate `budget_oracle.py` solves the exact *bounded arrival* problem
+with an exact-k reverse dynamic program, retaining the number of decisions as
+a state dimension rather than collapsing long and short paths. Each swept
+cell must pass immutable hard legality. Among routes arriving within the
+budget, the objective minimizes (out-of-selected-band cells, backwards-Y
+cells, decisions, swept distance); A→B instead minimizes decisions/distance.
+An impossible-to-complete episode is explicitly returned as **infeasible**;
+the solver never fabricates progress, repairs recorded trajectories or
+inspects held-out policy outcomes. The original A*/contour/random baselines,
+unbounded oracle, v1 scores and M1 schema are unchanged.
+
+**First-pass test history:** an initial isolated six-test run could not
+import the absent real `offline` module; a minimal isolated dependency was
+then supplied. This exposed a real parenthesization bug in the new wrapper:
+the conditional was inside a lambda and returned `None` for routing cases.
+After fixing the conditional to select either a lambda or `None`, all
+**6/6 newly authored tests passed** in the isolated Python runtime with
+stubbed existing dependencies. A separate **120/120 small-grid brute-force**
+comparison agreed with the newly authored exact-source algorithm. Both new
+Python files match their committed Git blob bytes. These are **focused local
+checks, not execution of the full committed source/dependency tree**.
+The lane now inventories **152 authored tests across 15 modules**, whose
+complete exact-branch execution remains outstanding. No native receipts,
+actual material, resident inference, paid workload or artist assessment.
