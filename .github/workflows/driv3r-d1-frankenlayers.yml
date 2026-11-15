@@ -52,12 +52,6 @@ jobs:
           - label: aerohound
             mode: aerohound
             seed: 570
-          - label: branchwitch_seed571
-            mode: branchwitch
-            seed: 571
-          - label: branchwitch_seed619
-            mode: branchwitch
-            seed: 619
     env:
       PYTHONUNBUFFERED: '1'
       OMP_NUM_THREADS: '2'
