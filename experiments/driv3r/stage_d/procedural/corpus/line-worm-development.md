@@ -18,7 +18,7 @@ Three 80×80 scenarios (open, slit walls, chamber ring) × two seeds (23,79) × 
 | Seeded random legal | 6 | 78–141 | 109.5 | 34–92 | 108–192 |
 | Wayward steering | 6 | 30–44 | 38 | 161–167 | 192 each |
 
-All six `wayward` trajectories have distinct trajectory hashes, as do the six random trajectories. The low-turn straight controller has only three distinct trajectories across scenes and seeds. Two random seed-79 episodes terminate early on the explicit repeated-local-oscillation STOP condition; they remain in the denominator. The output gallery shows longer purposeful-looking but sometimes awkward loops in the wayward arm, versus near-rectangular perimeter strokes for stubborn and small turbulent clusters for random. This is **descriptive visual inspection only**, not a quantitative preference or proof of neural benefit. The soft guidance and the chosen turn score are engineered developmental preferences, **not** a calibrated reward or a model.
+All six `wayward` trajectories have distinct trajectory hashes, as do the six random trajectories. The low-turn straight controller has only three distinct trajectories across scenes and seeds. Three random seed-79 episodes terminate early on the explicit repeated-local-oscillation STOP condition; they remain in the denominator. The output gallery shows longer purposeful-looking but sometimes awkward loops in the wayward arm, versus near-rectangular perimeter strokes for stubborn and small turbulent clusters for random. This is **descriptive visual inspection only**, not a quantitative preference or proof of neural benefit. The soft guidance and the chosen turn score are engineered developmental preferences, **not** a calibrated reward or a model.
 
 ## Qualification and custody
 
