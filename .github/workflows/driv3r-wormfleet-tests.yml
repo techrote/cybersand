@@ -11,7 +11,7 @@ permissions:
   contents: read
 concurrency:
   group: driv3r-wormfleet-tests
-  cancel-in-progress: true
+  cancel-in-progress: false
 jobs:
   test_only:
     name: No-model four-lease and adverse receipt tests
