@@ -158,7 +158,7 @@ def main(args):
         "checkpoint_inventory_sha256":sha256_file(args.checkpoint/"inventory.json"),
         "model":selected["model_id"],"revision":selected["revision"],
         "W0_common_commit":objective.W0_COMMIT,
-        "host_policy":"score six actual digit class logits; W0 legal mask; explicit STOP deferral before tick20; SHA256 common draw",
+        "host_policy":"score six actual digit class logits; W0 legal mask; explicit STOP deferral before tick40; SHA256 common draw",
         "host_flat_ablation":"same world seed and host RNG; masks match only at identical observation, not across diverged paths; no model forward",
         "selected_temperature":TEMPERATURE,"seed_groups":list(WORLD_SEEDS),
         "families":list(contract.FAMILIES),"steps_per_trajectory":BUDGET,
