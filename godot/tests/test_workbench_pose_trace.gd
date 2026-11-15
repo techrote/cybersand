@@ -96,15 +96,15 @@ func _run() -> void:
 			"real authored World with real physical Kestrel requested")
 		if installed:
 			installed = check(await until(func() -> bool:
-				return host.pending_microscenario_apply.is_empty() and
+				return (host.pending_microscenario_apply.is_empty() and
 					host._physical_epoch>previous_epoch and
-					host.physical_actor_session!=null and host._physical_terrain_ready),
+					host.physical_actor_session!=null and host._physical_terrain_ready)),
 				"physical native installation accepted")
 		if installed:
-			if check(await until(func() -> bool: return host.image!=null and
+			if check(await until(func() -> bool: return (host.image!=null and
 					host.latest_snapshot!=null and
 					host.last_uploaded_revision==host.latest_snapshot.world_revision and
-					not host.workbench_display_frame().is_empty()),
+					not host.workbench_display_frame().is_empty())),
 					"uploaded texture and bound pose receipt ready"):
 				host.set_process(false)
 				host.set_physics_process(false)
