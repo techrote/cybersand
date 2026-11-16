@@ -1,0 +1,124 @@
+name: LFM350 GP350-006 real paired-logit margin CPU optimizer and W0 galleries
+on:
+  push:
+    branches: [research/lfm-game-policy-350m]
+    paths:
+      - experiments/driv3r/lfm_game_policy/gp350-006-request.json
+permissions:
+  contents: read
+concurrency:
+  group: lfm350-primary-one-optimizer-gp350006
+  cancel-in-progress: false
+jobs:
+  paired-margin:
+    name: One full pinned LFM350, 96 real AdamW steps + independent W0 rolls
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      OMP_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      MKL_DYNAMIC: 'FALSE'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+      HF_HUB_DISABLE_TELEMETRY: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: techrote/cybersand
+          ref: 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          path: pinned-w0
+          persist-credentials: false
+      - name: Immutable source, W0 custody, synthetic contrast and action-contract preflight
+        run: |
+          set -euo pipefail
+          mkdir -p gp350-006-evidence
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git -C pinned-w0 rev-parse HEAD)" = 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          test "$(git hash-object pinned-w0/experiments/agent_painter/worm/common/worm.py)" = 8979b6f0296e81051194bacc907992d38e006605
+          python3 -m py_compile experiments/driv3r/lfm_game_policy/{lfm350,gp350_triad,gp350_geometry_contrast_train,gp350_paired_margin_train}.py
+          python3 experiments/driv3r/lfm_game_policy/gp350_paired_margin_train.py --self-test \
+            --w0 pinned-w0/experiments/agent_painter/worm/common/worm.py \
+            --out "$RUNNER_TEMP/no-evidence" --cache "$RUNNER_TEMP/no-model"
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path("experiments/driv3r/lfm_game_policy/gp350-006-request.json").read_text())
+          assert r == {
+            "schema":"driv3r.lfm350.gp350006-request/1",
+            "experiment":"GP350-006", "training":True,
+            "model":"LiquidAI/LFM2.5-350M",
+            "revision":"9921cd4d82c0e3986887aa4b376f9446729ef8a3",
+            "fresh_parent":True,"optimizer_steps":96,
+            "real_backward_passes":96,"gradient_model_forwards":288,
+            "loss":"paired-relative-margin-plus-masked-cross-entropy",
+            "representation":"forward_two_cell_from_local_5x5",
+            "synthetic_not_native":True,"native":False,
+            "train_seeds":list(range(3101,3113)),
+            "heldout_seeds":[9103,9119,9137],
+            "rollout_seeds":[9503,9521,9539],
+            "one_hosted_CPU_VM":True, "no_paid_GPU":True,
+            "draft_hold":True, "lease_attempt":1}
+          PY
+          python3 tools/ci/check_ci_provider_policy.py
+          (git rev-parse HEAD; date -u -Iseconds; python3 --version) > gp350-006-evidence/source-host.txt
+      - name: Pinned full-LFM CPU dependencies, license evidence
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/gp350006"
+          "$RUNNER_TEMP/gp350006/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/gp350006/bin/python" -m pip install \
+            'transformers==5.22.2' 'peft==0.21.2' 'accelerate==1.15.0' \
+            'huggingface-hub==2.4.0' 'safetensors==0.8.0'
+          "$RUNNER_TEMP/gp350006/bin/python" -m pip check
+          "$RUNNER_TEMP/gp350006/bin/python" -m pip freeze --all > gp350-006-evidence/pip-freeze.txt
+          echo 'LiquidAI/LFM2.5-350M under LFM Open License v1.0; attribution: Liquid AI.' > gp350-006-evidence/attribution.txt
+      - name: Real optimizer 96-step contrastive LoRA and stock/trained/control W0 PNGs
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=40s 2250s \
+            "$RUNNER_TEMP/gp350006/bin/python" experiments/driv3r/lfm_game_policy/gp350_paired_margin_train.py \
+              --w0 pinned-w0/experiments/agent_painter/worm/common/worm.py \
+              --cache "$RUNNER_TEMP/gp350006-pinned-full-parent" \
+              --out gp350-006-evidence/original-experiment \
+              --deadline 1950
+      - name: Verify actual AdamW receipts, frozen base, three checkpoints, original PNGs
+        if: success()
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,os
+          from pathlib import Path
+          root=Path("gp350-006-evidence/original-experiment")
+          d=json.loads((root/"summary.json").read_text())
+          assert d["source_sha"]==os.environ["GITHUB_SHA"]
+          assert d["status"]=="complete" and d["updates"]==96
+          assert d["backward_passes"]==96 and d["gradient_model_forwards"]==288
+          assert d["frozen_reference_unchanged"] and d["adapter_numerically_changed"]
+          assert d["native_paint"]==0 and d["host"]=="synthetic_W0_only"
+          assert len(d["stock"])==len(d["trained"])==9
+          assert len(d["controls"])==27 and d["original_pngs"]==45
+          updates=[json.loads(x) for x in (root/"optimizer.jsonl").read_text().splitlines()]
+          assert len(updates)==96 and [u["step"] for u in updates]==list(range(1,97))
+          assert all(u["real_backward_passes"]==1 and u["actual_adamw_steps"]==1
+                     and u["grad_norm"]>0 for u in updates)
+          for step in (32,64,96):
+              assert (root/f"adapter-step-{step}/adapter_model.safetensors").is_file()
+          for name, digest in d["adapter_sha256"].items():
+              assert hashlib.sha256((root/name).read_bytes()).hexdigest()==digest
+          for row in d["stock"]+d["trained"]+d["controls"]:
+              png=(root/row["png"]).read_bytes()
+              assert png.startswith(b"\x89PNG\r\n\x1a\n")
+              assert hashlib.sha256(png).hexdigest()==row["png_sha256"]
+          assert d["stock_probe"]["decisions"]==d["trained_probe"]["decisions"]==108
+          print("GP350-006 REAL 96 ADAMW / 288 GRADIENT FORWARDS / 45 ORIGINAL PNGs PASS")
+          PY
+      - name: Always upload original immutable checkpoints, scores, PNGs and failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gp350-006-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: gp350-006-evidence/
+          if-no-files-found: warn
+          retention-days: 90
