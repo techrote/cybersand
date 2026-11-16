@@ -325,7 +325,9 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         // never inherited from the replaced World. Absent keeps every default.
         config->ballistic_water = {};
         config->inertial_signed_vertical = false;
-        for (const char* key : {"workbench_ballistic", "workbench_inertial_signed", "workbench_face_release"}) {
+        config->wave_flow = {};
+        for (const char* key : {"workbench_ballistic", "workbench_inertial_signed", "workbench_face_release",
+                                "workbench_wave_flow"}) {
             if (!options.has(key)) continue;
             if (!workbench || options[key].get_type() != Variant::BOOL)
                 throw std::invalid_argument("Experimental Water options require the workbench and a boolean value");
@@ -334,6 +336,39 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         config->inertial_signed_vertical = options.get("workbench_inertial_signed", false);
         config->ballistic_water.face_release = config->ballistic_water.enabled &&
             static_cast<bool>(options.get("workbench_face_release", false));
+        config->wave_flow.enabled = options.get("workbench_wave_flow", false);
+        struct WaveKnob {
+            const char* key;
+            std::int32_t cybersand::WaveFlowConfig::*member;
+        };
+        for (const WaveKnob knob : {
+                WaveKnob{"workbench_wave_substeps", &cybersand::WaveFlowConfig::substeps},
+                WaveKnob{"workbench_wave_active_rows", &cybersand::WaveFlowConfig::active_rows},
+                WaveKnob{"workbench_wave_gain", &cybersand::WaveFlowConfig::gain},
+                WaveKnob{"workbench_wave_gain_confined", &cybersand::WaveFlowConfig::gain_confined},
+                WaveKnob{"workbench_wave_stiffness", &cybersand::WaveFlowConfig::stiffness},
+                WaveKnob{"workbench_wave_damp_shift", &cybersand::WaveFlowConfig::damp_shift},
+                WaveKnob{"workbench_wave_coast", &cybersand::WaveFlowConfig::coast},
+                WaveKnob{"workbench_wave_level_shift", &cybersand::WaveFlowConfig::level_shift},
+                WaveKnob{"workbench_wave_sleep_after", &cybersand::WaveFlowConfig::sleep_after},
+                WaveKnob{"workbench_wave_wake_peak", &cybersand::WaveFlowConfig::wake_peak},
+                WaveKnob{"workbench_wave_rest_head", &cybersand::WaveFlowConfig::rest_head},
+                WaveKnob{"workbench_wave_stick", &cybersand::WaveFlowConfig::stick},
+                WaveKnob{"workbench_wave_calm", &cybersand::WaveFlowConfig::calm},
+                WaveKnob{"workbench_wave_calm_damp_shift", &cybersand::WaveFlowConfig::calm_damp_shift},
+                WaveKnob{"workbench_wave_maximum_mass", &cybersand::WaveFlowConfig::maximum_mass},
+                WaveKnob{"workbench_wave_empty_pour_shift", &cybersand::WaveFlowConfig::empty_pour_shift},
+                WaveKnob{"workbench_wave_flow_share_shift", &cybersand::WaveFlowConfig::flow_share_shift},
+                WaveKnob{"workbench_wave_adhesion_shift", &cybersand::WaveFlowConfig::adhesion_shift}}) {
+            if (!options.has(knob.key)) continue;
+            if (!workbench || !config->wave_flow.enabled || options[knob.key].get_type() != Variant::INT)
+                throw std::invalid_argument("Wave Flow tuning requires an enabled workbench Wave Flow and integer values");
+            const auto value = static_cast<std::int64_t>(options[knob.key]);
+            if (value < std::numeric_limits<std::int32_t>::min() ||
+                value > std::numeric_limits<std::int32_t>::max())
+                throw std::invalid_argument("Wave Flow tuning does not fit the native integer range");
+            config->wave_flow.*(knob.member) = static_cast<std::int32_t>(value);
+        }
         // WCX-FR workbench tuning: explicit integers inside the native admission
         // bounds; absent keys keep the ballistic_water_v1 defaults.
         struct FaceKnob { const char* key; std::int64_t low, high; };
@@ -821,6 +856,28 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         }
         pending->receipt["solver_state_extensions"] = extensions;
         pending->receipt["worker_threads"] = static_cast<std::int64_t>(config->worker_threads);
+        Dictionary wave_flow;
+        const auto& wave = pending->world->config().wave_flow;
+        wave_flow["enabled"] = wave.enabled;
+        wave_flow["substeps"] = wave.substeps;
+        wave_flow["active_rows"] = wave.active_rows;
+        wave_flow["gain"] = wave.gain;
+        wave_flow["gain_confined"] = wave.gain_confined;
+        wave_flow["stiffness"] = wave.stiffness;
+        wave_flow["damp_shift"] = wave.damp_shift;
+        wave_flow["coast"] = wave.coast;
+        wave_flow["level_shift"] = wave.level_shift;
+        wave_flow["sleep_after"] = wave.sleep_after;
+        wave_flow["wake_peak"] = wave.wake_peak;
+        wave_flow["rest_head"] = wave.rest_head;
+        wave_flow["stick"] = wave.stick;
+        wave_flow["calm"] = wave.calm;
+        wave_flow["calm_damp_shift"] = wave.calm_damp_shift;
+        wave_flow["maximum_mass"] = wave.maximum_mass;
+        wave_flow["empty_pour_shift"] = wave.empty_pour_shift;
+        wave_flow["flow_share_shift"] = wave.flow_share_shift;
+        wave_flow["adhesion_shift"] = wave.adhesion_shift;
+        pending->receipt["wave_flow"] = wave_flow;
         pending->receipt["maximum_rule_radius"] = static_cast<std::int64_t>(pending->world->config().maximum_rule_radius);
         pending->receipt["completed_tick"] = static_cast<std::int64_t>(facts->values().completed_tick);
         pending->receipt["region"] = region;

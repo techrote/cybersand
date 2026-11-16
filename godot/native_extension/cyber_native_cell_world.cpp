@@ -1710,7 +1710,33 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         if (wave_substeps < 1 || wave_substeps > cybersand::WaveFlowParameters::kMaximumSubsteps)
             throw std::invalid_argument("wave_substeps outside 1..8");
         config.wave_flow.enabled = options.get("wave_flow", false);
-        config.wave_flow.substeps = static_cast<std::uint8_t>(wave_substeps);
+        config.wave_flow.substeps = static_cast<std::int32_t>(wave_substeps);
+        const auto wave_integer = [&options](const char* key, std::int32_t fallback) {
+            if (!options.has(key)) return fallback;
+            if (options[key].get_type() != Variant::INT)
+                throw std::invalid_argument(std::string(key) + " must be integer");
+            const auto value = static_cast<std::int64_t>(options[key]);
+            if (value < std::numeric_limits<std::int32_t>::min() || value > std::numeric_limits<std::int32_t>::max())
+                throw std::invalid_argument(std::string(key) + " outside native integer range");
+            return static_cast<std::int32_t>(value);
+        };
+        config.wave_flow.active_rows = wave_integer("wave_active_rows", config.wave_flow.active_rows);
+        config.wave_flow.gain = wave_integer("wave_gain", config.wave_flow.gain);
+        config.wave_flow.gain_confined = wave_integer("wave_gain_confined", config.wave_flow.gain_confined);
+        config.wave_flow.stiffness = wave_integer("wave_stiffness", config.wave_flow.stiffness);
+        config.wave_flow.damp_shift = wave_integer("wave_damp_shift", config.wave_flow.damp_shift);
+        config.wave_flow.coast = wave_integer("wave_coast", config.wave_flow.coast);
+        config.wave_flow.level_shift = wave_integer("wave_level_shift", config.wave_flow.level_shift);
+        config.wave_flow.sleep_after = wave_integer("wave_sleep_after", config.wave_flow.sleep_after);
+        config.wave_flow.wake_peak = wave_integer("wave_wake_peak", config.wave_flow.wake_peak);
+        config.wave_flow.rest_head = wave_integer("wave_rest_head", config.wave_flow.rest_head);
+        config.wave_flow.stick = wave_integer("wave_stick", config.wave_flow.stick);
+        config.wave_flow.calm = wave_integer("wave_calm", config.wave_flow.calm);
+        config.wave_flow.calm_damp_shift = wave_integer("wave_calm_damp_shift", config.wave_flow.calm_damp_shift);
+        config.wave_flow.maximum_mass = wave_integer("wave_maximum_mass", config.wave_flow.maximum_mass);
+        config.wave_flow.empty_pour_shift = wave_integer("wave_empty_pour_shift", config.wave_flow.empty_pour_shift);
+        config.wave_flow.flow_share_shift = wave_integer("wave_flow_share_shift", config.wave_flow.flow_share_shift);
+        config.wave_flow.adhesion_shift = wave_integer("wave_adhesion_shift", config.wave_flow.adhesion_shift);
         if (options.has("liquid_policy")) {
             if (options["liquid_policy"].get_type() != Variant::PACKED_INT32_ARRAY)
                 throw std::invalid_argument("liquid_policy must be PackedInt32Array");
@@ -2247,6 +2273,25 @@ Dictionary CyberNativeCellWorld::get_wave_flow_status() const {
     out["enabled"] = world_->wave_flow_enabled();
     out["version"] = static_cast<std::int64_t>(cybersand::WaveFlowParameters::kVersion);
     out["substeps"] = static_cast<std::int64_t>(config.wave_flow.substeps);
+    Dictionary parameters;
+    parameters["active_rows"] = config.wave_flow.active_rows;
+    parameters["gain"] = config.wave_flow.gain;
+    parameters["gain_confined"] = config.wave_flow.gain_confined;
+    parameters["stiffness"] = config.wave_flow.stiffness;
+    parameters["damp_shift"] = config.wave_flow.damp_shift;
+    parameters["coast"] = config.wave_flow.coast;
+    parameters["level_shift"] = config.wave_flow.level_shift;
+    parameters["sleep_after"] = config.wave_flow.sleep_after;
+    parameters["wake_peak"] = config.wave_flow.wake_peak;
+    parameters["rest_head"] = config.wave_flow.rest_head;
+    parameters["stick"] = config.wave_flow.stick;
+    parameters["calm"] = config.wave_flow.calm;
+    parameters["calm_damp_shift"] = config.wave_flow.calm_damp_shift;
+    parameters["maximum_mass"] = config.wave_flow.maximum_mass;
+    parameters["empty_pour_shift"] = config.wave_flow.empty_pour_shift;
+    parameters["flow_share_shift"] = config.wave_flow.flow_share_shift;
+    parameters["adhesion_shift"] = config.wave_flow.adhesion_shift;
+    out["parameters"] = parameters;
     out["workers_requested"] = static_cast<std::int64_t>(config.worker_threads);
     out["workers_observed"] = static_cast<std::int64_t>(last_stats_.worker_threads_observed);
     out["maximum_participants"] = static_cast<std::int64_t>(wave.maximum_participants);
