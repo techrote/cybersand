@@ -4,7 +4,7 @@ status: Current
 document-kind: audit
 scope: Failed physical candidate, actual physics-progress evidence, collider scheduling correction and exact-source qualification limits
 canonical-for: []
-last-reviewed: 2026-11-15
+last-reviewed: 2026-11-16
 related-documents: [2026-11-15-camera-stack-coherence.md, ../architecture/rendering-and-gameplay-bridges.md, ../operations/camera-stack-coherence-acceptance.md, ../operations/engine-lab-pose-tracing.md]
 ---
 
@@ -353,3 +353,84 @@ coherence audit retains its source-scoped results with this later failure linked
 Native ownership/wire format, World persistence and the fixed coupling law require
 no change. The documentation/retrieval gates and source/runtime preflight apply
 to the final corrective checkpoint, not just this preliminary record.
+
+## Hosted corrective checkpoint and reporting follow-up — 2026-11-16
+
+Source `30660f7da126eec95a2df8c5b432a4fa05a49a86`, tree
+`6a8273fa91908850fc8ccde1fb974fdfee8347f1`, completed Actions run
+`43779233966` successfully: all 31 Linux production cases, accepted-main
+generator/Flatten/persistence checks, ten Linux flight arms, all 37 extracted
+Windows application cases and the actual PowerShell 5.1 double-click workflow's
+sixteen arms/eight pairs. All native/runtime identities matched before and after.
+This is functional qualification with unresolved performance, not physical acceptance.
+
+The Windows package contains 1,059 authenticated payload files and 1,023 tracked
+source files, with all 93 native and four Rapier source inputs verified. Its ZIP
+was 92,576,044 bytes, SHA256
+`1594158bb303f6f5427294661188d5529e8524f6cb326e6fb472a35a3a9b33ef`.
+It is retained as the checkpoint with the reporting defect described below.
+
+Independent raw analysis finds all 755 Windows coherent submissions live and
+aligned, with no known source rewinds or withholding; all 3,349 shared physical
+states match the original-presentation arms. On Linux, 629 of 630 coherent
+submissions are visible with no known rewinds; all 3,032 common physical states
+match. The missing Linux Free submission is a time-budget refusal lasting until
+the next submission 127.810 ms later, a real remaining flicker risk on that host.
+
+Windows ordinary coupled Follow/Free achieve 12.473/12.642 completed steps/s.
+Follow median/p95/max gaps are 80.050/89.930/117.099 ms; Free is
+79.995/82.777/97.097 ms. Fifteen of sixteen Windows arms report at least one
+100 ms gap. Terrain-installation holds are zero in that campaign; native-sample
+waits and callback opportunities remain. The uncoupled Follow60 arm reaches
+384.219 ms completion gaps and 107.730 ms p95 inside the timed solver call,
+versus 0.026 ms flush and 0.554 ms presentation-resolver p95. These are wall
+times including scheduling, not proof of solver CPU consumption or an inner lock.
+
+Windows used Server 2022/ANGLE/WARP with an AMD EPYC 9V45 virtual machine,
+two physical/four logical cores, Auto capacity four and startup/effective VSync1.
+Its 1024x768 desktop clamps the normal requested 1920x1080 window to 1028x749;
+the ordinary 480x270 view remains. Linux used Xeon 6975P-C/four logical cores and
+llvmpipe at 1920x1080. Linux ordinary coupled Follow/Free each have 143/143 gaps
+above 100 ms, about 7.4 steps/s and zero terrain-installation holds. Their mean
+post-handoff callback waits are about 111/109 ms. None is NVIDIA acceptance.
+
+A single bounded partial-upload diagnostic retained a fixture-equivalent native24
+receipt with nine tightly packed patches, 143,934 bytes and 71,967 visible cells.
+Its first 25 physical states and 24 native associations match both retained arms.
+Original witness bytes were not retained and upload occurred one physical step
+later, so byte identity and allocator/callback equivalence are not claimed. The
+fresh upload took 3.599 ms; four predetermined real Main/Image/Texture replays
+took 5.549/2.023/1.880/2.152 ms, passing 36 byte/history/slot checks. Neither the
+16,384-cell previous-history scan nor padded bytewise compaction executes for
+this packet. The 37.537 ms tail did not recur; sampled Linux CPU counters were
+too coarsely updated for stage attribution. No additional speculative repair or
+rerun followed. The original long frame remains unresolved evidence.
+
+The final Windows audit found one reporting error in every one of the sixteen
+arms: `Sort-Object -Property gap_ms` does not order the newly constructed
+Hashtable witnesses correctly in Windows PowerShell 5.1. For example, Follow
+coherent reported 80.138 ms/step97 first, whereas the actual maximum is
+117.099 ms/step9. All other physics-progress fields and all other statistics
+match the independent packaged Python reducer. Local PowerShell 7.7 had not
+exposed this platform discrepancy. Original reports and the audit failure are
+retained, including an earlier audit-helper whitelist omission for four inbox
+Windows DLLs; that omission was not an application or runtime failure.
+
+The narrow correction sorts explicit numeric gap keys descending, then start
+time and step ascending. Its new CI harness extracts actual packaged production
+functions, checks four unsorted/tied/pause/missing-completion fixtures and replays
+all sixteen preserved raw traces, recursively comparing every field with Python.
+The immediate successor's entire Godot/native/dependency trees must equal this
+qualified checkpoint, and its exact corrected runner hash and changed-file list
+are fenced. Only then may the existing application suite be reused under its
+original source label. Actual Windows PowerShell 5.1 must reproduce the old
+witness-only failure, pass the corrected replay and pass a freshly packaged
+`Test It.cmd -Quick` plus reduction of both new traces. New package/run identities
+and completion are recorded in Draft #609 after that scoped campaign finishes.
+Other changes, or `force_full`, select the complete application campaign.
+
+This reporting checkpoint changes no presentation mapping, material safety,
+physics law, native source or owner preference. Canonical trace/acceptance guides,
+roadmap, handover and index are updated; existing physics retrieval questions
+still describe the unchanged physical and presentation contracts. The known
+physics/presentation tails and the owner's physical FAIL/HOLD remain open.

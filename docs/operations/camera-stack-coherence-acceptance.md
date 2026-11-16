@@ -5,7 +5,7 @@ document-kind: runbook
 scope: Standalone Draft/HOLD evaluation; physical Windows 11 NVIDIA acceptance remains an owner decision
 canonical-for: [camera-stack-coherence-physical-acceptance]
 related-documents: [engine-lab-pose-tracing.md, native-pixel-scrolling.md, ../architecture/rendering-and-gameplay-bridges.md]
-last-reviewed: 2026-11-15
+last-reviewed: 2026-11-16
 ---
 
 # Evaluate coherent Workbench presentation on Windows
@@ -16,6 +16,13 @@ did not establish continuous physics. The corrective candidate adds terrain
 installation/RID reuse and tests the actual coupled interactive defaults; the
 owner's physical acceptance remains required. See the
 [freeze investigation](../audits/2026-11-15-workbench-physics-freezes.md).
+
+The `30660f7da126` application passed hosted functional qualification, with
+remaining actual physics gaps and a software-renderer withholding observation.
+Its PowerShell 5.1 report also ranked the largest-gap examples incorrectly;
+the subsequent reporting correction preserves the valid distributions and counts.
+Use the exact replacement artifact linked by Draft #609. Hosted completion and
+correctly ranked reports remain separate from a smoothness or physical GPU pass.
 
 Extract the complete evaluation ZIP into a fresh writable folder. Everything
 needed to run CyberSand and collect the comparison is included. No Godot,

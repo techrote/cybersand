@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-15
+last-reviewed: 2026-11-16
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -17,7 +17,11 @@ rejected delivered `43f46c6e5ec9` for repeated 100–1000 ms actor/Rapier freeze
 The [follow-up](../audits/2026-11-15-workbench-physics-freezes.md) separates actual
 native/terrain waits from previously qualified pose selection, removes avoidable
 collider recreation and render-bound installation waits, and adds coupled-default
-qualification. Native World throughput still constrains coupled physical speed.
+qualification. Native work, publication and Main/render callback latency still
+constrain coupled physical speed. Source `30660f7da126` passed 31 Linux and 37
+installed Windows cases, plus ten/sixteen flight arms; timing concerns remain.
+Its Windows PowerShell 5.1 largest-gap witness defect is corrected separately
+with raw-trace replay and a rebuilt package, retaining the original evidence.
 The
 camera stack #566 → #593 → #606 → #609 now resolves actor safety and temporal
 selection before Follow and shares one final pixel mapping with native terrain.

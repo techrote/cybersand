@@ -10,6 +10,11 @@ on:
       - 'Test It.cmd'
       - 'docs/**'
   workflow_dispatch:
+    inputs:
+      force_full:
+        description: Re-run the full application campaign instead of eligible reporting-only reuse
+        type: boolean
+        default: false
 permissions:
   contents: read
   actions: read
@@ -20,8 +25,24 @@ env:
   CYBERSAND_EVAL_SOURCE_SHA: ${{ github.sha }}
   CYBERSAND_SOURCE_REVISION: ${{ github.sha }}
 jobs:
+  qualification-scope:
+    name: Verify exact application source and required qualification scope
+    runs-on: ubuntu-24.04
+    outputs:
+      report_only: ${{ steps.scope.outputs.report_only }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          lfs: false
+          fetch-depth: 0
+      - id: scope
+        run: python3 tools/ci/qualify_test_it_reporting.py scope --force-full '${{ github.event.inputs.force_full || false }}' --github-output "$GITHUB_OUTPUT"
   linux-workbench:
     name: Linux actual presentation, authoring and matched 2048 comparison
+    needs: qualification-scope
+    if: needs.qualification-scope.outputs.report_only != 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 65
     env:
@@ -104,8 +125,11 @@ jobs:
           retention-days: 90
   windows-evaluation:
     name: Windows standalone application, installed tests and actual Test It.cmd
+    needs: qualification-scope
     runs-on: windows-2022
     timeout-minutes: 75
+    env:
+      CYBERSAND_REPORT_ONLY: ${{ needs.qualification-scope.outputs.report_only }}
     defaults:
       run:
         shell: bash
@@ -157,9 +181,26 @@ jobs:
           python tools/ci/package_engine_lab_windows.py verify --output C:/cscoherence
           if ($LASTEXITCODE -ne 0) { throw 'Installed payload mismatch' }
       - name: Installed coherent presentation, safety and integrated authoring regressions
+        if: env.CYBERSAND_REPORT_ONLY != 'true'
         run: |
           set -euo pipefail
           python tools/ci/package_engine_lab_windows.py smoke --output C:/cscoherence --evidence evidence/installed
+      - name: Authenticate retained application qualification with identical Godot and native source
+        id: reuse
+        if: env.CYBERSAND_REPORT_ONLY == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python tools/ci/qualify_test_it_reporting.py fetch --output evidence/report-reuse --github-output "$GITHUB_OUTPUT"
+      - name: Reproduce original witness defect and verify corrected Windows PowerShell 5.1 reduction
+        if: env.CYBERSAND_REPORT_ONLY == 'true'
+        run: |
+          set -euo pipefail
+          baseline_exit=0
+          python tools/ci/test_test_it_physics_reducer.py --powershell powershell.exe --test-it evidence/report-reuse/baseline-Run-Test-It.ps1 --evidence-root '${{ steps.reuse.outputs.replay_root }}' --output evidence/report-reducer/baseline --require-windows-powershell51 || baseline_exit=$?
+          python tools/ci/qualify_test_it_reporting.py check-negative --report evidence/report-reducer/baseline/summary.json --exit-code "$baseline_exit" > evidence/report-reducer/expected-negative.json
+          python tools/ci/test_test_it_physics_reducer.py --powershell powershell.exe --test-it C:/cscoherence/Run-Test-It.ps1 --evidence-root '${{ steps.reuse.outputs.replay_root }}' --output evidence/report-reducer/corrected --require-windows-powershell51
       - name: Execute the owner's real double-click command
         shell: pwsh
         timeout-minutes: 45
@@ -168,7 +209,8 @@ jobs:
           $env:CYBERSAND_TEST_IT_NO_PAUSE = '1'
           $command = [System.Diagnostics.ProcessStartInfo]::new()
           $command.FileName = $env:ComSpec
-          $command.Arguments = '/d /s /c ""C:\cscoherence\Test It.cmd" -RenderingDriver opengl3_angle -TimeoutSeconds 900"'
+          $quick = if ($env:CYBERSAND_REPORT_ONLY -eq 'true') { ' -Quick' } else { '' }
+          $command.Arguments = '/d /s /c ""C:\cscoherence\Test It.cmd"'+$quick+' -RenderingDriver opengl3_angle -TimeoutSeconds 900"'
           $command.UseShellExecute = $false
           $command.WorkingDirectory = 'C:\cscoherence'
           $process = [System.Diagnostics.Process]::Start($command)
@@ -179,7 +221,11 @@ jobs:
           $files = @(Get-ChildItem 'C:\cscoherence\Test-It-Results' -Recurse -Filter summary.json)
           if ($files.Count -ne 1) { throw 'Expected one complete Test It summary' }
           $result = Get-Content -LiteralPath $files[0].FullName -Raw | ConvertFrom-Json
-          if (-not $result.complete -or $result.status -ne 'passed' -or $result.source -ne $env:GITHUB_SHA -or @($result.cases).Count -ne 16 -or @($result.pairs).Count -ne 8) { throw 'Incomplete source-matched comparison' }
+          $expectedCases = if ($env:CYBERSAND_REPORT_ONLY -eq 'true') { 2 } else { 16 }
+          $expectedPairs = if ($env:CYBERSAND_REPORT_ONLY -eq 'true') { 1 } else { 8 }
+          if (-not $result.complete -or $result.status -ne 'passed' -or $result.source -ne $env:GITHUB_SHA -or @($result.cases).Count -ne $expectedCases -or @($result.pairs).Count -ne $expectedPairs) { throw 'Incomplete source-matched comparison' }
+          python tools/ci/test_test_it_physics_reducer.py --powershell powershell.exe --test-it C:/cscoherence/Run-Test-It.ps1 --evidence-root $files[0].Directory.FullName --output evidence/report-reducer/new-captures --require-windows-powershell51
+          if ($LASTEXITCODE -ne 0) { throw 'New installed capture reduction mismatch' }
           Write-Host ('COHERENCE_TEST_IT_PASS '+(@{source=$result.source;cases=@($result.cases).Count;pairs=@($result.pairs).Count;physical_acceptance=$result.physical_acceptance}|ConvertTo-Json -Compress))
       - name: Collect installed results under one artifact root
         if: always()

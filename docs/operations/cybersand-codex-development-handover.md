@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-15
+last-reviewed: 2026-11-16
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -19,6 +19,14 @@ The earlier all-live pose result did not qualify actual physical progress or the
 launcher's native-sample handshake. Do not disable the one-step feedback fence
 to obtain higher rates; the corrective collider path and coupled-default tests
 must retain it. No physical acceptance or merge authority has been granted.
+
+The corrective application `30660f7da126` passed hosted 31-case Linux and
+37-case installed Windows qualification, but real physics gaps and one Linux
+withholding remain. Its PowerShell 5.1 largest-gap witness ranking was incorrect
+in all sixteen captured arms while other statistics matched raw reduction.
+The immediate runner-only follow-up preserves the qualified Godot/native trees,
+replays old and corrected reducers on Windows 5.1, and rebuilds/tests the actual
+Quick package. Do not relabel reused application results as new executions.
 
 Continue the integrated #609 candidate through its
 [presentation contract](../architecture/rendering-and-gameplay-bridges.md#coherent-workbench-presentation-frame),

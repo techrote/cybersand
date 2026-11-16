@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-11-15
+last-reviewed: 2026-11-16
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, operations/atlas-agent-runner.md, architecture/pressure-optimization.md]
 ---
 
@@ -19,6 +19,9 @@ physical NVIDIA acceptance and all merge decisions remain with the owner.
 The delivered `43f46c6e5ec9` failed the owner's physical evaluation with repeated
 actor/Rapier freezes. The [active correction](audits/2026-11-15-workbench-physics-freezes.md)
 distinguishes actual completed-step stalls from presentation-source continuity.
+The `30660f7da126` functional campaign retains its performance concerns; the
+subsequent Windows PowerShell 5.1 witness-ranking correction has a narrowly
+fenced reporting/packaging qualification, with unchanged application source.
 
 Draft/HOLD actor/terrain cadence continuation of #609: [one-command Windows
 measurements and clock meanings](operations/engine-lab-pose-tracing.md) and

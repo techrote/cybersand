@@ -171,7 +171,13 @@ function Read-PhysicsProgress($Frames,$Events) {
         step_work_ms=(Physics-Distribution @($Steps|Where-Object{$null -ne (Field $_ 'start_usec')}|ForEach-Object{((Event-Time $_)-[double]$_.start_usec)/1000.0}))
         solver_ms=(Physics-Distribution @($Steps|Where-Object{$null -ne (Field $_ 'solver_usec')}|ForEach-Object{[double]$_.solver_usec/1000.0}))
         flush_ms=(Physics-Distribution @($Steps|Where-Object{$null -ne (Field $_ 'flush_usec')}|ForEach-Object{[double]$_.flush_usec/1000.0}))
-        largest_active_gaps=@($Active|Sort-Object -Property gap_ms -Descending|Select-Object -First 10)
+        # Windows PowerShell 5.1 does not resolve Hashtable keys through a
+        # property-name sort. Read numeric keys explicitly; equal gaps retain
+        # chronological order, matching the Python analyzer's stable sort.
+        largest_active_gaps=@($Active|Sort-Object -Property `
+            @{Expression={[double]$_['gap_ms']};Descending=$true}, `
+            @{Expression={[double]$_['start_usec']};Ascending=$true}, `
+            @{Expression={[long]$_['step']};Ascending=$true}|Select-Object -First 10)
         meaning='Wall-clock physical completions, separate from visual pose holds. Hold reasons are observed gates, not complete causal attribution. Step/solver timers include possible OS descheduling; no GPU scanout is measured.'}
 }
 function Read-PoseStatistics([string]$Path) {

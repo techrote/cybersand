@@ -5,7 +5,7 @@ document-kind: runbook
 scope: Draft/HOLD coherent presentation and physics-progress investigation; delivered candidate failed physical acceptance
 canonical-for: [render-cadence-investigation]
 related-documents: [../audits/2026-11-15-render-cadence-001.md, ../architecture/rendering-and-gameplay-bridges.md, native-pixel-scrolling.md]
-last-reviewed: 2026-11-15
+last-reviewed: 2026-11-16
 ---
 
 # Engine Lab: locate Rapier and native-pixel camera divergence
@@ -60,6 +60,26 @@ Reports separately expose consecutive physical completion gaps, native/terrain
 hold reasons and solver/flush call timings. Missing completion rows and intervals
 spanning an explicit pause cannot certify an active physical freeze. Zero selected
 source rewinds or holds cannot certify continuous physics either.
+
+The `largest_active_gaps` witnesses are ranked by numeric gap duration, with
+chronological ordering for equal durations. Windows PowerShell 5.1 needs explicit
+Hashtable key expressions for this sort. The `30660f7da126` report used a property
+name and selected the wrong ten witnesses in all sixteen retained captures;
+its distributions, threshold counts and other statistics matched independent
+raw-trace reduction. Preserve those original reports. The corrected runner is
+checked against Python on actual Windows PowerShell 5.1, using all sixteen raw
+traces plus unsorted, tied, pause and missing-completion fixtures. These are
+reporting checks, not evidence that physical freezing is resolved.
+
+The immediate reporting-only successor can reuse the fully qualified application's
+tests only when its entire Godot, native and dependency source trees are identical
+to `30660f7da126`, its runner has the reviewed correction's exact hash, and every
+other changed file is an explicitly permitted qualification/documentation file.
+CI authenticates the prior successful run and artifact checksum, reproduces the
+old witness-only failure, verifies the corrected packaged reducer, rebuilds the
+standalone ZIP and executes its actual `Test It.cmd -Quick`. Prior full-suite
+results retain their original source labels. Other source changes use the full
+campaign; `force_full` also requests it explicitly.
 
 ## Retained source-matched cadence campaign
 
