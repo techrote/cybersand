@@ -31,8 +31,11 @@ class SignedFeedbackTests(unittest.TestCase):
     def test_zero_strength_is_inactive(self):
         a=HostAdvice(self.world);a.issue_backtrack(self.world,0.)
         self.assertEqual(a.active(self.world),0)
+        self.assertEqual(self.world.recovery_cue_ttl,0)
         a.issue_continue(self.world,0.)
         self.assertEqual(a.active(self.world),0)
+        _,x=observe(self.world,.35,a)
+        self.assertEqual(x[8,23],0.)
 
     def test_material_cannot_be_modified_by_countermand(self):
         a=HostAdvice(self.world)
