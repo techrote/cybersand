@@ -79,17 +79,46 @@ class ClosedLoopTests(unittest.TestCase):
     def test_forged_rehashed_receipt_refused_by_source_replay(self):
         folder=self.root/'data'
         produce(folder,worlds_per_scenario=10,budget=32,image_worlds=0)
-        path=folder/'train.receipts.jsonl'
+        eligible_path=folder/'train.eligible.jsonl'
+        eligible_lines=eligible_path.read_text().splitlines()
+        source=json.loads(eligible_lines[0]);record_id=source['record_id']
+        paths=[folder/'train.receipts.jsonl',eligible_path]
+        manifest_path=folder/'manifest.json';manifest=json.loads(manifest_path.read_text())
+        for path in paths:
+            lines=path.read_text().splitlines()
+            matched=False
+            for i,line in enumerate(lines):
+                row=json.loads(line)
+                if row['record_id']==record_id:
+                    row['receipt']['position_after']=[0,0]
+                    lines[i]=canonical(row);matched=True;break
+            self.assertTrue(matched)
+            payload=('\n'.join(lines)+'\n').encode()
+            path.write_bytes(payload)
+            manifest['files'][path.name]['sha256']=hashlib.sha256(payload).hexdigest()
+            manifest['files'][path.name]['bytes']=len(payload)
+        manifest_path.write_text(canonical(manifest)+'\n')
+        with self.assertRaisesRegex(ValueError,'replay mismatch'):
+            audit(folder,replay=True)
+
+    def test_forged_rehashed_train_label_rejected_from_eligible_copy(self):
+        folder=self.root/'data'
+        produce(folder,worlds_per_scenario=10,budget=32,image_worlds=0)
+        path=folder/'train.eligible.jsonl'
         lines=path.read_text().splitlines()
-        poisoned=json.loads(lines[0]);poisoned['receipt']['position_after']=[0,0]
-        lines[0]=canonical(poisoned)
+        modified=json.loads(lines[0])
+        alternatives=[a for a in modified['observation']['legal'] if a!=modified['target_action']]
+        self.assertTrue(alternatives)
+        modified['target_action']=alternatives[0]
+        lines[0]=canonical(modified)
         payload=('\n'.join(lines)+'\n').encode()
         path.write_bytes(payload)
-        manifest_path=folder/'manifest.json';manifest=json.loads(manifest_path.read_text())
+        manifest_path=folder/'manifest.json'
+        manifest=json.loads(manifest_path.read_text())
         manifest['files'][path.name]['sha256']=hashlib.sha256(payload).hexdigest()
         manifest['files'][path.name]['bytes']=len(payload)
         manifest_path.write_text(canonical(manifest)+'\n')
-        with self.assertRaisesRegex(ValueError,'replay mismatch'):
+        with self.assertRaisesRegex(ValueError,'eligible row not present identically'):
             audit(folder,replay=True)
 
     def test_bounds_and_rejected_bad_labels(self):
