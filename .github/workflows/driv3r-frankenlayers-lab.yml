@@ -1,4 +1,4 @@
-name: "DRIV3R Frankenlayers Lab — Wave 16 frozen-Q4 residual repair"
+name: "DRIV3R Frankenlayers Lab — Wave 17 causal-shield Q4 residual ablation"
 on:
   pull_request:
     paths:
@@ -22,6 +22,7 @@ on:
       - 'experiments/driv3r/frankenlayers_lab/run-request-wave14.json'
       - 'experiments/driv3r/frankenlayers_lab/run-request-wave15.json'
       - 'experiments/driv3r/frankenlayers_lab/run-request-wave16.json'
+      - 'experiments/driv3r/frankenlayers_lab/run-request-wave17.json'
       - '.github/workflows/driv3r-frankenlayers-lab.yml'
 
 permissions:
@@ -46,7 +47,7 @@ jobs:
           set -euo pipefail
           git merge-base --is-ancestor 67bc90e685f3311f73b6dbb3b0f6773d10e64623 HEAD
           python3 -m compileall -q experiments/driv3r/frankenlayers_lab
-          python3 -m unittest experiments.driv3r.frankenlayers.test_frankenlayers experiments.driv3r.frankenlayers_lab.test_lab experiments.driv3r.frankenlayers_lab.test_holdout experiments.driv3r.frankenlayers_lab.test_counterfactual experiments.driv3r.frankenlayers_lab.test_lowbit experiments.driv3r.frankenlayers_lab.test_lowbit_causal experiments.driv3r.frankenlayers_lab.test_iq2 experiments.driv3r.frankenlayers_lab.test_iq2_causal experiments.driv3r.frankenlayers_lab.test_q4_causal experiments.driv3r.frankenlayers_lab.test_repair -v
+          python3 -m unittest experiments.driv3r.frankenlayers.test_frankenlayers experiments.driv3r.frankenlayers_lab.test_lab experiments.driv3r.frankenlayers_lab.test_holdout experiments.driv3r.frankenlayers_lab.test_counterfactual experiments.driv3r.frankenlayers_lab.test_lowbit experiments.driv3r.frankenlayers_lab.test_lowbit_causal experiments.driv3r.frankenlayers_lab.test_iq2 experiments.driv3r.frankenlayers_lab.test_iq2_causal experiments.driv3r.frankenlayers_lab.test_q4_causal experiments.driv3r.frankenlayers_lab.test_repair experiments.driv3r.frankenlayers_lab.test_guarded -v
           python3 - <<'PY'
           import json
           from pathlib import Path
@@ -330,6 +331,24 @@ jobs:
           assert w16["quant"]==w15["quant"]
           assert w16["max_parallel"]==1 and w16["timeout_minutes"]<=95 and w16["no_game_changes"]
           assert not any(w16[k] for k in ("paid_api","paid_gpu","merge","ready"))
+          # Wave 17: real trained residual, causal shield and new held-out world.
+          from experiments.driv3r.frankenlayers_lab.infer_guarded import EVAL_SEED as S17,EVAL_FAMILY as F17
+          w17=json.loads(Path("experiments/driv3r/frankenlayers_lab/run-request-wave17.json").read_text())
+          assert w17["schema"]=="frankenlayers-wave17-causal-shield-real-model-ablation/1"
+          assert w17["lineage"]["wave16_source_sha"]=="7834780d96830b46001934fa78b4a58eb4702b1f"
+          assert w17["lineage"]["wave16_success_run"]==43938680776
+          assert w17["lineage"]["wave16_artifact"]==14265151517
+          assert w17["lineage"]["wave16_archive_sha256"]=="5c24c6993b7800ca73fdec60b6bdf1352e758928f2a5334b08e9818d5a7cf0e8"
+          for key in ("llama_commit","model_q8_sha256","w0_commit"):
+              assert w17["lineage"][key]==r["lineage"][key]
+          assert w17["quant"]==w16["quant"] and w17["train"]==w16["train"]
+          assert w17["test_host"]["seed"]==S17==4979 and w17["test_host"]["fixed_family"]==F17=="greebles"
+          assert not w17["test_host"]["native_game"]
+          assert w17["arms"]==["q8_stock","q4_stock","q4_mutant_raw","q4_mutant_strong","q4_mutant_guarded"]
+          assert w17["experiments"]==[dict(label="aero4_no2_q4_causal_shield",
+              mode=MODE,flow=list(LAB_FLOWS[MODE]),quant="q4_k_m",seed=S17)]
+          assert w17["max_parallel"]==1 and w17["timeout_minutes"]<=95 and w17["no_game_changes"]
+          assert not any(w17[k] for k in ("paid_api","paid_gpu","merge","ready"))
           PY
           python3 tools/ci/check_ci_provider_policy.py
           python3 tools/ci/check_ci_scheduling_policy.py
@@ -344,7 +363,7 @@ jobs:
           test ! -s /tmp/unexpected.txt
 
   brain:
-    name: Learned Q4 residual repair / ${{ matrix.mode }}
+    name: Learned Q4 causal shield / ${{ matrix.mode }}
     if: github.repository == 'techrote/cybersand' && github.event_name == 'push' && github.ref == 'refs/heads/research/619-frankenlayers-lab'
     needs: cheap
     runs-on: ubuntu-24.04
@@ -354,10 +373,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - mode: aero4_no2_q4_learned_repair
+          - mode: aero4_no2_q4_causal_shield
             flow: aero4_no2
             quant: q4_k_m
-            seed: 3891
+            seed: 4979
     env:
       OMP_NUM_THREADS: '2'
       MKL_NUM_THREADS: '2'
@@ -430,7 +449,7 @@ jobs:
           PY
         env:
           MATRIX_MODE: ${{ matrix.mode }}
-      - name: Real-model residual training and disjoint four-arm evaluation
+      - name: Real-model training and five-arm causal-shield ablation
         run: |
           set -euo pipefail
           MODEL_PATH="$(python3 - <<'PY'
@@ -439,7 +458,7 @@ jobs:
           print(json.loads(Path(os.environ['RUNNER_TEMP']+'/d1-lab-donor/runtime-manifest.json').read_text())['model'])
           PY
           )"
-          timeout --signal=TERM --kill-after=45 4200 python3 -m experiments.driv3r.frankenlayers_lab.infer_repair             --binary "$RUNNER_TEMP/franken-lab-llama/build/bin/llama-server"             --model-q8 "$MODEL_PATH"             --model-q4 "$RUNNER_TEMP/franken-lab-q4/d1-2B-from-Q8-Q4_K_M.gguf"             --quant-receipt "evidence/${{ matrix.mode }}/quantize-receipt.json"             --w0 "$RUNNER_TEMP/franken-w0.py"             --mode "${{ matrix.flow }}" --seed "${{ matrix.seed }}" --source-sha "$GITHUB_SHA"             --output "evidence/${{ matrix.mode }}/inference"
+          timeout --signal=TERM --kill-after=45 4200 python3 -m experiments.driv3r.frankenlayers_lab.infer_guarded             --binary "$RUNNER_TEMP/franken-lab-llama/build/bin/llama-server"             --model-q8 "$MODEL_PATH"             --model-q4 "$RUNNER_TEMP/franken-lab-q4/d1-2B-from-Q8-Q4_K_M.gguf"             --quant-receipt "evidence/${{ matrix.mode }}/quantize-receipt.json"             --w0 "$RUNNER_TEMP/franken-w0.py"             --mode "${{ matrix.flow }}" --seed "${{ matrix.seed }}" --source-sha "$GITHUB_SHA"             --output "evidence/${{ matrix.mode }}/inference"
       - name: Retain true failure evidence and checksums
         if: always()
         run: |
