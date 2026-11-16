@@ -39,7 +39,7 @@ jobs:
       - name: Actual pretrained Mamba inference and supervised policy-head training
         run: python -m experiments.driv3r.model_zoo.mamba130.run --out $RUNNER_TEMP/mz-mamba --train-seeds 8 --steps 14 --episode-steps 16
       - name: Actual pretrained Mamba paired-goal training versus game-feature baseline
-        run: python -m experiments.driv3r.model_zoo.mamba130.run_counterfactual --out $RUNNER_TEMP/mz-mamba-v2 --train-seeds 24 --steps 12 --epochs 60
+        run: python -m experiments.driv3r.model_zoo.mamba130.run_counterfactual --out $RUNNER_TEMP/mz-mamba-v2 --train-seeds 24 --steps 12 --epochs 200
       - name: Verify new MZ-002 trained checkpoint and counterfactual controls
         run: |
           python - <<'PY'
@@ -51,8 +51,8 @@ jobs:
           assert r['model_revision'].startswith('1e76775')
           assert r['backbone_parameters']>=100_000_000
           assert r['train_examples']>=500 and r['dev_examples']>=200
-          assert len(r['Mamba']['training_losses'])==60
-          assert len(r['hand_feature_control']['training_losses'])==60
+          assert len(r['Mamba']['training_losses'])==200
+          assert len(r['hand_feature_control']['training_losses'])==200
           assert r['Mamba']['dev']['paired']['changed_target_pairs']>=50
           assert (p/'mamba130_counterfactual_heads.pt').stat().st_size>2000
           assert (p/'paired_rollouts.png').stat().st_size>1000
