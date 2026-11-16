@@ -1,0 +1,65 @@
+name: DRIV3R fleet training FT-001 two-runner CPU benchmark
+
+on:
+  push:
+    branches: [research/570-fleet-training-throughput-001]
+    paths:
+      - .github/workflows/driv3r-fleet-training-ft001.yml
+      - experiments/driv3r/fleet_training/request.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: driv3r-fleet-training-ft001
+  cancel-in-progress: false
+
+jobs:
+  bounded-population-optimizer:
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        shard: [alpha, beta]
+    name: FT-001 ${{ matrix.shard }} original population SGD 1-vs-2
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      NUMEXPR_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Checkout immutable Population Game Policy Trainer experiment
+        uses: actions/checkout@v4
+        with:
+          repository: techrote/cybersand
+          ref: 534cd8ffac6fbe33a714ae03a62c16045bf10259
+          path: upstream
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pinned NumPy only (no paid model/API or GPU)
+        run: python -m pip install --disable-pip-version-check numpy==2.3.5
+      - name: Adversarial request/authenticity unit preflight
+        run: python -m unittest discover -s experiments/driv3r/fleet_training -p 'test_*.py' -v
+      - name: Train real Adam game-policy population and measure concurrent optimizer residency
+        run: |
+          python experiments/driv3r/fleet_training/fleet_bench.py \
+            --request experiments/driv3r/fleet_training/request.json \
+            --upstream upstream \
+            --runner ${{ matrix.shard }} \
+            --output "${RUNNER_TEMP}/ft001-${{ matrix.shard }}"
+      - name: Preserve source matched CPU optimizer checkpoints, trajectories, metrics and failure logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ft001-population-${{ matrix.shard }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/ft001-${{ matrix.shard }}/
+          if-no-files-found: warn
+          retention-days: 14
