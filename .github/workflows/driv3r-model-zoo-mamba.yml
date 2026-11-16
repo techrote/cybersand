@@ -29,6 +29,8 @@ jobs:
           python-version: '3.11'
       - name: Source-only contract tests
         run: python -m unittest -v experiments.driv3r.model_zoo.mamba130.test_world
+      - name: Counterfactual-goal and cheap-feature control tests
+        run: python -m unittest -v experiments.driv3r.model_zoo.mamba130.test_counterfactual
       - name: Install pinned CPU dependencies
         run: |
           python -m pip install --upgrade pip
@@ -36,6 +38,25 @@ jobs:
           python -m pip install 'transformers==4.51.3' 'huggingface_hub==0.34.4' 'pillow==11.3.0' 'safetensors==0.5.3' 'tokenizers==0.21.4'
       - name: Actual pretrained Mamba inference and supervised policy-head training
         run: python -m experiments.driv3r.model_zoo.mamba130.run --out $RUNNER_TEMP/mz-mamba --train-seeds 8 --steps 14 --episode-steps 16
+      - name: Actual pretrained Mamba paired-goal training versus game-feature baseline
+        run: python -m experiments.driv3r.model_zoo.mamba130.run_counterfactual --out $RUNNER_TEMP/mz-mamba-v2 --train-seeds 24 --steps 12 --epochs 60
+      - name: Verify new MZ-002 trained checkpoint and counterfactual controls
+        run: |
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          p=Path(os.environ['RUNNER_TEMP'])/'mz-mamba-v2'
+          r=json.loads((p/'results-v2.json').read_text())
+          assert r['source_sha']==os.environ['GITHUB_SHA']
+          assert r['model_revision'].startswith('1e76775')
+          assert r['backbone_parameters']>=100_000_000
+          assert r['train_examples']>=500 and r['dev_examples']>=200
+          assert len(r['Mamba']['training_losses'])==60
+          assert len(r['hand_feature_control']['training_losses'])==60
+          assert r['Mamba']['dev']['paired']['changed_target_pairs']>=50
+          assert (p/'mamba130_counterfactual_heads.pt').stat().st_size>2000
+          assert (p/'paired_rollouts.png').stat().st_size>1000
+          PY
       - name: Ensure real optimizer output and source manifest exist
         run: |
           python - <<'PY'
@@ -56,5 +77,13 @@ jobs:
         with:
           name: mz001-mamba130-${{ github.sha }}
           path: ${{ runner.temp }}/mz-mamba/**
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Retain MZ-002 goal-swap training / paired-world evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mz002-mamba-counterfactual-${{ github.sha }}
+          path: ${{ runner.temp }}/mz-mamba-v2/**
           if-no-files-found: warn
           retention-days: 14
