@@ -335,3 +335,13 @@ Windows owner evaluation must independently inspect actual layout, interactive
 controls, paint/erase and save/reopen. No general architectural solver,
 variable-size room packing, semantic route generator, automatic edit rebase,
 streaming World, camera optimization or agent authoring is included.
+
+## Rosework Gatehouse showcase branch — 16 November 2026
+
+The isolated GENTEK-SHOWCASE-ROSEWORK-001 Draft adds `rosework_gatehouse` v1,
+the **Rosework Gatehouse** built-in and standalone preset, and a 73-way CLASSIC
+uniqueness gate. It keeps schema 4, native material authority and the existing UI.
+Its [source and qualification runbook](../operations/gentek-rosework-showcase.md)
+explains integer circular rings, six/eight/twelve-spoke programmes, pointed petal
+apertures, controls, source-bound previews and independent parent comparison.
+This is branch-current research; no merge or Ready promotion is authorised.

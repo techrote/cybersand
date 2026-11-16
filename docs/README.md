@@ -10,6 +10,9 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+Isolated CLASSIC research: [Rosework Gatehouse showcase](operations/gentek-rosework-showcase.md)
+adds radial native architecture on its own Draft / HOLD branch based on #624.
+
 For deliberate historical research, use the isolated
 [engineering archaeology index](history/engineering/README.md). It is excluded
 from default current-answer retrieval and grants no implementation authority.

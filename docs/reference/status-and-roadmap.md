@@ -10,6 +10,14 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Rosework Gatehouse — isolated Draft showcase, 16 November 2026
+
+The [Rosework runbook](../operations/gentek-rosework-showcase.md) describes
+branch-current `rosework_gatehouse` v1, radial material geometry and the separate
+exact-source qualification campaign. The branch starts at CLASSIC #624 head
+`615828b28337f85e4663e03ba479616db4ddf764`; that parent and sibling showcases
+remain untouched. Owner aesthetic review, Ready and merge remain held.
+
 ## GEN-008 Flatten / Bake History — 2026-11-13
 
 **Implementation candidate, Draft/HOLD:** issue #548 starts independently from
