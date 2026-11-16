@@ -15,7 +15,7 @@ from experiments.driv3r.frankenlayers.infer import load_w0, run_arm, write_json
 from experiments.driv3r.frankenlayers_lab.flows import LAB_FLOWS, validate_flows
 
 # Qualified Q8 survivors; all Q4 attempts require original same-runner Q8/Q4 controls.
-QUANT_MODES = ("aero6", "skele6", "aero5_no23", "tailflip4", "echo4")
+QUANT_MODES = ("aero6", "skele6", "aero5_no23", "tailflip4", "echo4", "aero4_no10")
 
 def validate_quant_receipt(receipt: dict, q8: Path, q4: Path) -> None:
     if receipt.get("schema") != "cybersand-franken-q4-requant/1":

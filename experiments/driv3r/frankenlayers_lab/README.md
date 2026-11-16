@@ -66,3 +66,20 @@ Wave 5 checks a new four-layer deletion, a five-layer reordered tail,
 ECHO4-Q4, and AERO5-Q4 at another seed. New modes are speculative and run
 against the unchanged W0 legal-action host with pinned same-runner stock controls.
 No CyberSand game/native/Workbench modifications or production promotion.
+
+## Wave 5 verified, wave 6: four-layer Q4 frontier
+
+The original Wave-5 archives pass 150/150 individual SHA-256 file checks.
+AERO4_NO10 `0,2,4,20` survives 48/48 Q8 choices, with 25 BRANCH, 6
+RETRACE and 17 RIGHT at 0.5850s p50 (7.35x same-runner Q8 stock).
+Greebles and architecture produce identical choices, while pipework differs:
+there is limited input-conditioning, not proven strategy. AERO5_TAILFLIP
+produced 48 RIGHT (a fixed four-cell circle). ECHO4-Q4 produced 48 STRAIGHT,
+losing its earlier Q8 LEFT/STRAIGHT variation. AERO5-Q4 seed 571 survived
+48/48 choices (27 BRANCH, 10 RETRACE, 11 RIGHT) at 0.5012s p50, or 7.19x
+same-runner Q8 stock.
+
+Wave 6 tests Q4_K_M compression and second-seed reproducibility of the newly
+viable four-layer AERO4_NO10, plus the speculative distinct AERO4_NO2 deletion.
+No model has passed held-out spatial recovery, native Workbench, or learned
+strategy gates; training remains a separate model-only next phase.
