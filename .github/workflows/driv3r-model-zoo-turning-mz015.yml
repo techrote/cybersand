@@ -50,7 +50,7 @@ jobs:
         run: |
           python -m experiments.driv3r.model_zoo.turning_maps_mz015.run \
             --train-seeds 128 --test-seeds 16 --rollout-seeds 8 \
-            --updates 600 --batch 16 --out "$RUNNER_TEMP/mz015"
+            --updates 1800 --batch 16 --out "$RUNNER_TEMP/mz015"
       - name: Independent checkpoint reload and evidence integrity
         run: |
           python - <<'PY'
@@ -61,7 +61,7 @@ jobs:
           out=Path(os.environ["RUNNER_TEMP"])/"mz015"
           m=json.loads((out/"metrics.json").read_text())
           assert m["source_sha"]==os.environ["GITHUB_SHA"]
-          assert m["updates_per_model"]==600
+          assert m["updates_per_model"]==1800
           assert m["train_seed_families"]==128
           assert m["checkpoint_sha256"]==hashlib.sha256((out/"models.pt").read_bytes()).hexdigest()
           ckpt=torch.load(out/"models.pt",map_location="cpu",weights_only=True)
@@ -76,6 +76,9 @@ jobs:
               assert v["episodes"]==32
               assert 0<=v["clean"]<=32
               assert sum(row["n"] for row in v["by_rotation"].values())==32
+              assert sum(row["n"] for row in v["by_mirror"].values())==32
+              assert sum(row["n"] for row in v["by_memory_rule"].values())==32
+              assert "mineral_fork_accuracy" in m["scores"][k]["test"]
           assert all(v["matches"]==v["episodes"] for v in m["cached_full_parity"].values())
           print("Exact-head source, reloaded model weights, cached parity and evidence PASS")
           PY
