@@ -1,0 +1,126 @@
+name: LFM350 GP350-004 original checkpoint geometry sensitivity and 48-turn W0 gallery
+on:
+  push:
+    branches: [research/lfm-game-policy-350m]
+    paths:
+      - experiments/driv3r/lfm_game_policy/gp350-004-request.json
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: lfm350-gp350004-one-resident-checkpoint-only
+  cancel-in-progress: false
+jobs:
+  original-geometry:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      OMP_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      MKL_DYNAMIC: 'FALSE'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+      HF_HUB_DISABLE_TELEMETRY: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: techrote/cybersand
+          ref: 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          path: pinned-w0
+          persist-credentials: false
+      - name: Exact source/W0 custody and geometry preflight
+        run: |
+          set -euo pipefail
+          mkdir -p gp350-004-evidence
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git -C pinned-w0 rev-parse HEAD)" = 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          test "$(git hash-object pinned-w0/experiments/agent_painter/worm/common/worm.py)" = 8979b6f0296e81051194bacc907992d38e006605
+          python3 -m py_compile experiments/driv3r/lfm_game_policy/{lfm350,gp350_triad,gp350_geometry_eval}.py
+          python3 - <<'PY'
+          import json,sys
+          from pathlib import Path
+          loc=Path("experiments/driv3r/lfm_game_policy")
+          sys.path.insert(0,str(loc))
+          import gp350_geometry_eval as g
+          w0=g.c.load_w0(Path("pinned-w0/experiments/agent_painter/worm/common/worm.py"))
+          probes=g.sampled_probes(w0)
+          assert len(probes)==36
+          assert all(g.outer_variant(p["obs"],"#") is not None for p in probes)
+          obj=json.loads((loc/"gp350-004-request.json").read_text())
+          assert obj=={
+            "schema":"driv3r.lfm350.gp350004-request/1",
+            "model":"LiquidAI/LFM2.5-350M",
+            "model_revision":"9921cd4d82c0e3986887aa4b376f9446729ef8a3",
+            "producer_source":"5d5e4a5a559f0b3adb340a5a5bde6e3775938500",
+            "producer_run":43791775878,
+            "producer_adapter_sha256":"57ecb1bb4f0df95c34fc9ddba457094eb06fcb2f34690bb34b9453140ba9b187",
+            "eval_seeds":[9503,9521,9539],
+            "48_turns":True,"outer_ring_synthetic":True,
+            "optimizer_updates":0,"native":False,"draft_hold":True,"attempt":1}
+          print("GP350-004: 36 W0-observed probe states PASS")
+          PY
+          python3 tools/ci/check_ci_provider_policy.py
+          (git rev-parse HEAD; date -u -Iseconds; python3 --version) > gp350-004-evidence/source-host.txt
+      - name: Fetch immutable original GP350-003 rank8 adapter
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/gp350004-parent"
+          gh run download 43791775878 --repo techrote/cybersand \
+            --name gp350-003-5d5e4a5a559f0b3adb340a5a5bde6e3775938500-43791775878-1 \
+            --dir "$RUNNER_TEMP/gp350004-parent"
+          test "$(sha256sum "$RUNNER_TEMP/gp350004-parent/original-experiment/adapter-step-72/adapter_model.safetensors" | cut -d' ' -f1)" = 57ecb1bb4f0df95c34fc9ddba457094eb06fcb2f34690bb34b9453140ba9b187
+          cp "$RUNNER_TEMP/gp350004-parent/original-experiment/summary.json" gp350-004-evidence/producer-original-summary.json
+      - name: Install exact pinned CPU dependencies
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/gp350004-venv"
+          "$RUNNER_TEMP/gp350004-venv/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/gp350004-venv/bin/python" -m pip install \
+            'transformers==5.22.2' 'peft==0.21.2' 'accelerate==1.15.0' \
+            'huggingface-hub==2.4.0' 'safetensors==0.8.0'
+          "$RUNNER_TEMP/gp350004-venv/bin/python" -m pip check
+          "$RUNNER_TEMP/gp350004-venv/bin/python" -m pip freeze --all > gp350-004-evidence/pip-freeze.txt
+      - name: Genuine full-model scored geometry contrasts and 48-turn W0 rollouts
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 2150s \
+            "$RUNNER_TEMP/gp350004-venv/bin/python" experiments/driv3r/lfm_game_policy/gp350_geometry_eval.py \
+              --w0 pinned-w0/experiments/agent_painter/worm/common/worm.py \
+              --adapter "$RUNNER_TEMP/gp350004-parent/original-experiment/adapter-step-72" \
+              --cache "$RUNNER_TEMP/gp350004-full-pin" \
+              --out gp350-004-evidence/original-experiment
+      - name: Verify all original PNGs, host decisions and source identities
+        if: success()
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,os
+          from pathlib import Path
+          p=Path("gp350-004-evidence/original-experiment")
+          d=json.loads((p/"summary.json").read_text())
+          assert d["status"]=="complete" and d["source_sha"]==os.environ["GITHUB_SHA"]
+          assert d["model"]=="LiquidAI/LFM2.5-350M"
+          assert d["original_adapter_sha256"]=="57ecb1bb4f0df95c34fc9ddba457094eb06fcb2f34690bb34b9453140ba9b187"
+          assert d["no_additional_optimizer_updates"]==d["native_paint"]==0
+          assert len(d["stock"])==len(d["trained"])==9 and len(d["controls"])==36
+          assert d["original_png_count"]==54 and d["W0_host_legal_applications"]
+          assert d["stock_geometry"]["pairs"]==d["trained_geometry"]["pairs"]==72
+          for item in d["stock"]+d["trained"]+d["controls"]:
+              data=(p/item["png"]).read_bytes()
+              assert data.startswith(b"\x89PNG\r\n\x1a\n")
+              assert hashlib.sha256(data).hexdigest()==item["png_sha256"]
+          assert all(x["illegal_applications"]==0 for x in d["stock"]+d["trained"])
+          print("GP350-004 ORIGINAL 54 PNGs and W0 legal choices PASS")
+          PY
+      - name: Always upload original, partial failures and source/pip receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gp350-004-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: gp350-004-evidence/
+          if-no-files-found: warn
+          retention-days: 90
