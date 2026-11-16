@@ -1,0 +1,140 @@
+name: LFM350 GP350-009-R immutable partial-artifact recovery
+on:
+  push:
+    branches: [research/lfm-game-policy-350m]
+    paths: [experiments/driv3r/lfm_game_policy/gp350-009-recovery-request.json]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: lfm350-primary-gp350009-recovery
+  cancel-in-progress: false
+jobs:
+  finish:
+    name: Replay original stages / pinned full LFM step64 / W0 PNGs
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      OMP_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+      HF_HUB_DISABLE_TELEMETRY: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: techrote/cybersand
+          ref: 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          path: pinned-w0
+          persist-credentials: false
+      - name: Source fence, synthetic host and immutable request
+        run: |
+          set -euo pipefail
+          mkdir -p gp350-009r-evidence
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git -C pinned-w0 rev-parse HEAD)" = 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          test "$(git hash-object pinned-w0/experiments/agent_painter/worm/common/worm.py)" = 8979b6f0296e81051194bacc907992d38e006605
+          python3 -m py_compile experiments/driv3r/lfm_game_policy/{lfm350,gp350_paired_margin_train,gp350_observed_replay_train,gp350_obstacle_exposure_eval,gp350_checkpoint_selection_eval,gp350_checkpoint_recovery}.py
+          python3 experiments/driv3r/lfm_game_policy/gp350_checkpoint_recovery.py --self-test --w0 pinned-w0/experiments/agent_painter/worm/common/worm.py
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path("experiments/driv3r/lfm_game_policy/gp350-009-recovery-request.json").read_text())
+          assert r["schema"]=="driv3r.lfm350.gp350009-recovery-request/1"
+          assert r["model"]=="LiquidAI/LFM2.5-350M"
+          assert r["model_revision"]=="9921cd4d82c0e3986887aa4b376f9446729ef8a3"
+          assert r["source_run"]==43838034564 and r["source_artifact"]==14213783262
+          assert r["source_head"]=="d8f017e81e553c9d92d6995d470e8a50e191238e"
+          assert r["source_zip_sha256"]=="dce8cbbc7c5e0145f64974c4a3969d141fb50c6a807a1d14a1b7f8b55a64b805"
+          assert r["adapter_sha256"]=="340979ffae0a0dce48be57bbd42d908f5b0c0c04399653381c1818d14dafb497"
+          assert r["existing_source_stages"]==["stock","gp350006","gp350008-step32"]
+          assert r["fresh_model_stage"]=="gp350008-step64"
+          assert r["turns"]==64 and r["total_expected_pngs"]==84
+          assert r["expected_old_complete_model_episodes"]==36
+          assert r["fresh_model_episodes"]==12 and r["optimizer_steps"]==0
+          assert not r["native"] and not r["vision"] and not r["paid_gpu"] and r["draft_hold"]
+          PY
+          python3 tools/ci/check_ci_provider_policy.py
+          (git rev-parse HEAD; date -u -Iseconds; python3 --version) > gp350-009r-evidence/source-host.txt
+      - name: Original artifact and adapter custody
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api repos/techrote/cybersand/actions/artifacts/14213783262 > gp350-009r-evidence/parent-artifact-metadata.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          v=json.loads(Path('gp350-009r-evidence/parent-artifact-metadata.json').read_text())
+          assert v['id']==14213783262
+          assert v['name']=='gp350-009-d8f017e81e553c9d92d6995d470e8a50e191238e-43838034564-1'
+          assert v['digest']=='sha256:dce8cbbc7c5e0145f64974c4a3969d141fb50c6a807a1d14a1b7f8b55a64b805'
+          assert v['workflow_run']['id']==43838034564
+          assert v['workflow_run']['head_sha']=='d8f017e81e553c9d92d6995d470e8a50e191238e'
+          assert v['expired'] is False
+          PY
+          gh run download 43838034564 --repo techrote/cybersand --name gp350-009-d8f017e81e553c9d92d6995d470e8a50e191238e-43838034564-1 --dir gp350-009r-evidence/original-failed-run
+          gh run download 43820731360 --repo techrote/cybersand --name gp350-008-9bb5ab6e03d8b01d30b4bc78f50c71cb6f328211-43820731360-1 --dir gp350-009r-evidence/parent008
+          test -f gp350-009r-evidence/original-failed-run/original-experiment/lease.json
+          test "$(sha256sum gp350-009r-evidence/parent008/original-experiment/adapter-step-64/adapter_model.safetensors | cut -d' ' -f1)" = 340979ffae0a0dce48be57bbd42d908f5b0c0c04399653381c1818d14dafb497
+      - name: Pinned CPU full-model package and attribution
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/gp350009r"
+          "$RUNNER_TEMP/gp350009r/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/gp350009r/bin/python" -m pip install 'transformers==5.22.2' 'peft==0.21.2' 'accelerate==1.15.0' 'huggingface-hub==2.4.0' 'safetensors==0.8.0'
+          "$RUNNER_TEMP/gp350009r/bin/python" -m pip check
+          "$RUNNER_TEMP/gp350009r/bin/python" -m pip freeze --all > gp350-009r-evidence/pip-freeze.txt
+          echo 'LiquidAI/LFM2.5-350M under LFM Open License v1.0. Attribution: Liquid AI.' > gp350-009r-evidence/attribution.txt
+      - name: Byte replay and genuine full-model final checkpoint inference
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=40s 1720s "$RUNNER_TEMP/gp350009r/bin/python" experiments/driv3r/lfm_game_policy/gp350_checkpoint_recovery.py \
+            --w0 pinned-w0/experiments/agent_painter/worm/common/worm.py \
+            --old gp350-009r-evidence/original-failed-run/original-experiment \
+            --adapter gp350-009r-evidence/parent008/original-experiment/adapter-step-64 \
+            --cache "$RUNNER_TEMP/gp350009r-model" \
+            --out gp350-009r-evidence/completed-experiment --deadline 1800
+      - name: Qualify 84 original PNGs and full source-provenanced decision count
+        if: success()
+        run: |
+          python3 - <<'PY'
+          import json,hashlib,os
+          from pathlib import Path
+          p=Path('gp350-009r-evidence/completed-experiment')
+          r=json.loads((p/'summary.json').read_text())
+          assert r['source_sha']==os.environ['GITHUB_SHA'] and r['status']=='complete'
+          assert r['source_original_artifact']==14213783262
+          assert r['reused_stage_score_forwards']==2520 and r['fresh_step64_score_forwards']==840
+          assert r['original_scored_total']==3360 and r['original_pngs']==84
+          assert r['stage64_overlapping_pngs_exact']>=3 and len(r['stages'])==4
+          assert all(len(v['episodes'])==12 and v['probe']['n']==72 for v in r['stages'].values())
+          rows=[x for v in r['stages'].values() for x in v['episodes']]+r['controls']
+          assert len(rows)==84 and all(x['host_illegal']==0 for x in rows)
+          for x in rows: assert hashlib.sha256((p/x['png']).read_bytes()).hexdigest()==x['png_sha256']
+          assert r['optimizer_updates']==0 and r['d1_matched']=='NOT RUN' and not r['native']
+          print('GP350-009-R: original W0 replay and real model completed', flush=True)
+          PY
+      - name: Always retain original completed or partial outputs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gp350-009r-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: gp350-009r-evidence/completed-experiment/
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Always retain provenance receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gp350-009r-provenance-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            gp350-009r-evidence/source-host.txt
+            gp350-009r-evidence/parent-artifact-metadata.json
+            gp350-009r-evidence/attribution.txt
+            gp350-009r-evidence/pip-freeze.txt
+          if-no-files-found: warn
+          retention-days: 90
