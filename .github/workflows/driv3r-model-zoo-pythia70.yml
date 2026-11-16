@@ -42,8 +42,8 @@ jobs:
         run: |
           python -m experiments.driv3r.model_zoo.pythia70.run \
             --out "$RUNNER_TEMP/mz004-pythia70" --train-seeds 14 --dev-seeds 4 \
-            --steps 9 --epochs 140 --tune-steps 48 --batch-size 8 \
-            --rollout-steps 16
+            --steps 9 --epochs 140 --tune-steps 96 --batch-size 16 \
+            --head-extra-lr 0.0002 --backbone-lr 0.00004 --rollout-steps 16
       - name: Assert original forward, gradients, controls, checkpoint and images
         run: |
           python - <<'PY'
@@ -57,12 +57,13 @@ jobs:
           assert 20_000_000<=r['backbone_parameters']<=150_000_000
           assert 100_000<=r['trainable_backbone_parameters']<1_000_000
           assert len(r['selected_trainable_names'])==4
+          assert r['head_extra_lr']==0.0002 and r['backbone_lr']==0.00004
           assert r['train_examples']>=100 and r['test_examples']>=40
           assert r['forward_calls']>=r['train_examples']
           assert len(r['frozen_head_losses'])==140
           assert len(r['structured_losses'])==140
-          assert len(r['frozen_extra_losses'])==48
-          assert len(r['tuned_losses'])==48
+          assert len(r['frozen_extra_losses'])==96
+          assert len(r['tuned_losses'])==96
           assert all(k in r['score'] for k in ('frozen_head','frozen_extra','structured','tuned_last_block','majority'))
           assert r['score']['tuned_last_block']['test']['paired']['changed_target_pairs']>20
           ck=p/'pythia70_game_adapter.pt'
