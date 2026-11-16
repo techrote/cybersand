@@ -707,7 +707,7 @@ Sources: [main.gd](../../godot/scripts/main.gd),
 | `HARD_SURFACE_REBUILD_INTERVAL` | 0.10 s, controller sync cooldown |
 | `HARD_SURFACE_CHUNKS_PER_FRAME` | 32 rebuilt chunks; unchanged queued chunks no longer count against it |
 | `HARD_SURFACE_FRAME_BUDGET_USEC` | 750, checked between chunk rebuilds |
-| `WORKBENCH_HARD_SURFACE_CHUNKS_PER_FRAME` / `..._FRAME_BUDGET_USEC` | 128 / 4000, workbench lock-step only, while Rapier is blocked on the current terrain |
+| `WORKBENCH_HARD_SURFACE_CHUNKS_PER_FRAME` / `..._FRAME_BUDGET_USEC` | 128 changed chunks / 4000 µs cooperative allowance per actual physics callback, workbench lock-step only, while Rapier is blocked on the current terrain. The historical constant names remain; one indivisible chunk can overrun the allowance and several callbacks can occur within a rendered frame. |
 | `MAX_PENDING_RENDER_PATCHES` | 256 before full-refresh recovery |
 | Pending render-byte recovery threshold | Greater than 2,097,152 bytes |
 | `RENDER_PATCH_METADATA_STRIDE` | 6 integers |

@@ -59,6 +59,7 @@ jobs:
           python3 tools/ci/check_repository.py --json evidence/repository-provenance.json
           python3 tools/ci/check_m11_consistency.py --json evidence/historical-integrity.json
           python3 tools/docs/retrieval_eval.py --output evidence/retrieval.json
+          python3 tools/docs/retrieval_eval.py --queries docs/reference/retrieval-questions-physics-pacing.json --output evidence/retrieval-physics-pacing.json
           python3 tools/ci/test_analyze_pose_trace.py > evidence/analyzer-tests.log 2>&1
       - name: Pinned Godot and graphical display
         run: |
@@ -92,7 +93,7 @@ jobs:
         if: success() || failure()
         run: |
           set -euo pipefail
-          xvfb-run -a -s '-screen 0 1600x1000x24 -nolisten tcp' python3 tools/ci/run_render_cadence_matrix.py --coherence --godot "$GODOT_BIN" --project godot --evidence evidence/comparison --source-sha "$GITHUB_SHA" --conditions follow60 free60 slow-native --timeout 900
+          xvfb-run -a -s '-screen 0 1920x1080x24 -nolisten tcp' python3 tools/ci/run_render_cadence_matrix.py --coherence --godot "$GODOT_BIN" --project godot --evidence evidence/comparison --source-sha "$GITHUB_SHA" --conditions follow60 free60 slow-native interactive-follow interactive-free --timeout 900
           python3 tools/ci/package_engine_lab_windows.py preflight --platform linux > evidence/source-runtime-after.json
       - if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -161,7 +162,7 @@ jobs:
           python tools/ci/package_engine_lab_windows.py smoke --output C:/cscoherence --evidence evidence/installed
       - name: Execute the owner's real double-click command
         shell: pwsh
-        timeout-minutes: 35
+        timeout-minutes: 45
         run: |
           $ErrorActionPreference = 'Stop'
           $env:CYBERSAND_TEST_IT_NO_PAUSE = '1'
@@ -178,7 +179,7 @@ jobs:
           $files = @(Get-ChildItem 'C:\cscoherence\Test-It-Results' -Recurse -Filter summary.json)
           if ($files.Count -ne 1) { throw 'Expected one complete Test It summary' }
           $result = Get-Content -LiteralPath $files[0].FullName -Raw | ConvertFrom-Json
-          if (-not $result.complete -or $result.status -ne 'passed' -or $result.source -ne $env:GITHUB_SHA -or @($result.cases).Count -ne 12 -or @($result.pairs).Count -ne 6) { throw 'Incomplete source-matched comparison' }
+          if (-not $result.complete -or $result.status -ne 'passed' -or $result.source -ne $env:GITHUB_SHA -or @($result.cases).Count -ne 16 -or @($result.pairs).Count -ne 8) { throw 'Incomplete source-matched comparison' }
           Write-Host ('COHERENCE_TEST_IT_PASS '+(@{source=$result.source;cases=@($result.cases).Count;pairs=@($result.pairs).Count;physical_acceptance=$result.physical_acceptance}|ConvertTo-Json -Compress))
       - name: Collect installed results under one artifact root
         if: always()

@@ -12,7 +12,13 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 ## Coherent Workbench evaluation — 2026-11-15
 
-**Implemented candidate; Draft/HOLD, physical acceptance pending.** The
+**Implemented candidate; Draft/HOLD, physical acceptance FAILED.** The owner
+rejected delivered `43f46c6e5ec9` for repeated 100–1000 ms actor/Rapier freezes.
+The [follow-up](../audits/2026-11-15-workbench-physics-freezes.md) separates actual
+native/terrain waits from previously qualified pose selection, removes avoidable
+collider recreation and render-bound installation waits, and adds coupled-default
+qualification. Native World throughput still constrains coupled physical speed.
+The
 camera stack #566 → #593 → #606 → #609 now resolves actor safety and temporal
 selection before Follow and shares one final pixel mapping with native terrain.
 The [contract](../architecture/rendering-and-gameplay-bridges.md#coherent-workbench-presentation-frame)

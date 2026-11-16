@@ -241,19 +241,30 @@ Python, Git or repository installation is required.
    presentation policy and guards within the integrated application, not a
    byte-identical historical PR593 application.
 4. Open Mask Baseline.cmd supplies the older material-bound display comparison.
-5. Double-click Test It.cmd to collect six matched original/candidate pairs,
-   ordinarily a few minutes on a hardware GPU. Slow machines can take longer.
+5. Double-click Test It.cmd to collect eight matched original/candidate pairs,
+   rebuilding the exact World for every arm. Allow several minutes; slow
+   machines can take longer.
    Results and the complete local ZIP appear under Test-It-Results.
-   READ-RESULTS.txt gives achieved clocks, frame intervals and presentation CPU.
+   READ-RESULTS.txt gives achieved clocks, completed Rapier step gaps, physics
+   gate reasons, frame intervals and presentation CPU. A complete capture
+   does not mean that gameplay passed physical smoothness evaluation.
 
 Engine Lab keeps live FPS/VSync, Pixel/Rapier/publication pacing, ACK controls
 and opt-in manual/scripted pose tracing. The scripted comparison uses the exact
-2048-square Needle reference, 30/60/120 graphical targets, Free/Follow,
-2Hz native stress and delayed ACK. Fire toggles are separately recorded at
+2048-square Needle reference. Two Free/Follow pairs use the fresh interactive
+defaults: native60/Rapier60, native sample wait/wake ON, Auto workers, ordinary
+window/zoom and startup VSync. Six retained pacing pairs cover 30/60/120
+graphical targets, Free/Follow, 2Hz native stress and delayed ACK with wait/wake
+OFF, one worker and VSync OFF. Fire toggles are separately recorded at
 completed Rapier steps 0 and 60. Target rates are not achieved-rate claims.
 Rapier still advances a fixed 1/60 simulated second per completed step.
+Each case records CPU, logical processors, requested/resolved native workers,
+GPU, driver, DPI, VSync and renderer. Test It leaves your saved Engine Lab worker
+preference unchanged and reports it separately. Auto in the fresh test profile
+can differ from a previously saved explicit worker request in your ordinary
+launcher. Hosted ANGLE/software rendering differs from a physical NVIDIA GPU.
 
-For a shorter central comparison, run Test It.cmd -Quick.
+For just the coupled default Follow comparison, run Test It.cmd -Quick.
 The existing detailed cadence investigation remains available through:
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Run-Test-It.ps1 -Cadence
 Open Original Cadence.cmd additionally restores the older ACK/history behavior;
@@ -268,16 +279,19 @@ and the camera PR stack remain Draft/HOLD; no merge is implied.
 FEEDBACK="""# CyberSand physical owner acceptance
 
 App source: SOURCE_SHA
-Owner decision: HOLD - physical review not yet performed
+Prior physical result: FAIL - source 43f46c6e5ec9 had frequent physics freezes.
+Corrective candidate owner decision: HOLD - this source not yet physically evaluated.
 
 | Field | Observation |
 | --- | --- |
 | Windows build, NVIDIA GPU / driver | |
+| CPU model, logical processors, requested/resolved native workers | |
 | Resolution, refresh rate, Windows display scale | |
 | VSync / FPS target | |
 | Free camera: coherence, jumps/reversals, Fire ON to OFF | |
 | Follow camera: coherence, camera motion, Fire ON to OFF | |
 | Fast Needle, contact and dense materials | |
+| Physical freezing or long gaps (separate from visual source holds) | |
 | Pan, zoom, fractional scale and painting | |
 | Original presentation comparison | |
 | Materially preferable candidate? | |
@@ -382,6 +396,11 @@ def smoke(output,evidence):
         ("workbench-input",["--headless","--script","res://tests/test_workbench_input.gd"],240,"WORKBENCH_INPUT"),
         ("workbench-fleet",["--headless","--script","res://tests/test_workbench_fleet_session.gd"],240,"WORKBENCH_FLEET"),
         ("workbench-physics",["--headless","--script","res://tests/test_workbench_physics_play.gd"],600,"WORKBENCH_PHYSICS"),
+        ("physics-pacing",["--headless","--audio-driver","Dummy","--script","res://tests/test_workbench_physics_pacing.gd"],300,"PHYSICS_PACING_RESULT"),
+        ("rapier-manual",["--headless","--script","res://tests/test_rapier_manual_step.gd"],180,"Rapier2D manual-step coupling fixture passed"),
+        ("terrain-packet",["--headless","--script","res://tests/test_hard_surface_incremental_packet.gd"],180,"HARD_SURFACE_INCREMENTAL"),
+        ("full-material-upload",["--headless","--audio-driver","Dummy","--script","res://tests/test_render_full_upload.gd"],180,"RENDER_FULL_UPLOAD:"),
+        ("actor-integration",["--headless","--script","res://tests/test_physical_actor_integration.gd"],300,"Physical actor integration:"),
         ("native-world-clearance",["--headless","--script","res://tests/test_pr566_mask_coherent_native_world.gd"],240,"PR566_WORLD_CLEARANCE_RESULT"),
         ("cadence-contract-graphical",["--rendering-driver","opengl3_angle","--rendering-method","gl_compatibility",
          "--audio-driver","Dummy","--max-fps","60","--script","res://tests/test_render_cadence_contract.gd",
@@ -405,6 +424,10 @@ def smoke(output,evidence):
             env["CYBERSAND_TEMPORAL_DENSE_OUTPUT"]=str((evidence/"temporal-dense").resolve())
         if name in {"temporal-contact","temporal-contact-graphical"}:
             env["CYBERSAND_TEMPORAL_CONTACT_OUTPUT"]=str((evidence/name).resolve())
+        if name=="physics-pacing":
+            env["CYBERSAND_PHYSICS_PACING_OUTPUT"]=str((evidence/name).resolve())
+        if name=="full-material-upload":
+            env["CYBERSAND_FULL_UPLOAD_OUTPUT"]=str((evidence/name/"full-upload.json").resolve())
         group="paint-persistence" if name in {"paint-author","paint-reopen"} else name
         if name in {"architecture-author","architecture-reopen"}: group="architecture-persistence"
         if name in {"flatten-author","flatten-reopen"}: group="flatten-persistence"
@@ -431,6 +454,26 @@ def smoke(output,evidence):
             file.write_text(r.stdout,encoding="utf-8")
             need(r.returncode==0 and "SCRIPT ERROR:" not in r.stdout and
                  (marker is None or marker in r.stdout),"Installed "+name+" failed: "+r.stdout[-3500:])
+            if name=="full-material-upload":
+                upload=json.loads((evidence/name/"full-upload.json").read_text())
+                need(upload["source_sha"]==SOURCE and upload["failures"]==0 and upload["assertions"]>0,
+                     "Installed full material upload source/assertions not verified")
+                need(upload["main_sha256"]==digest(project/"scripts/main.gd") and
+                     {row["channels"] for row in upload["measurements"]}=={1,2} and
+                     all(row["side"]==2048 and len(row["samples"])==12 for row in upload["measurements"]),
+                     "Installed full material upload did not cover exact R8/RG8 source and workload")
+            if name=="physics-pacing":
+                folder=evidence/name
+                pacing=json.loads((folder/"physics-pacing.json").read_text())
+                need(pacing.get("schema")=="workbench-physics-pacing-v1" and
+                     not pacing["failures"] and pacing["checks"]>0 and len(pacing["phases"])==4,
+                     "Installed production physics pacing did not complete all four phases")
+                need(all(row["wait_native_sample"] and row["sample_wake"] for row in pacing["phases"]),
+                     "Production pacing phases did not retain default native coupling")
+                need(pacing["source_identity"]["source_sha"]==SOURCE and pacing["completed_steps"],
+                     "Production pacing source/completed physics evidence missing")
+                need((folder/"physics-pacing-poses.jsonl").stat().st_size>0,
+                     "Original production physics pacing trace missing")
             if name=="cadence-contract-graphical":
                 folder=evidence/"cadence-contract"
                 contract=json.loads((folder/"contract.json").read_text())

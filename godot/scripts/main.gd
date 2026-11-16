@@ -41,7 +41,6 @@ var physical_rig_id: StringName = &""
 var physical_actor_session: CyberPhysicalActorSession
 var physical_actor_overlay: CyberPhysicalActorOverlay
 var _workbench_wait_sample: int = -1
-var _workbench_collider_frame: int = -1
 var shared_workbench: Control
 # Opt-in physical presentation trace. Empty and inactive in normal operation.
 var workbench_pose_trace = WorkbenchPoseTrace.new()
@@ -1664,6 +1663,14 @@ var _presentation_previous_image: Image
 # They follow the same current/previous GPU texture swap as the Image history.
 var _presentation_current_bytes := PackedByteArray()
 var _presentation_previous_bytes := PackedByteArray()
+# An upload serial or GPU slot is not a material-content identity. These IDs
+# follow exact byte values (including size/format) through the two GPU slots.
+# IDs are never recycled; comparisons happen once per upload, not per actor.
+var _presentation_content_serial: int = 0
+var _presentation_current_content_id: int = 0
+var _presentation_previous_content_id: int = 0
+var _presentation_current_content_shape := Vector3i.ZERO
+var _presentation_previous_content_shape := Vector3i.ZERO
 var _presentation_upload_cache_usec: int = 0
 var _presentation_pending_cache_usec: int = 0
 var workbench_presentation_last: Dictionary = {}
@@ -2105,21 +2112,21 @@ func _physics_process(_delta: float) -> void:
 		# all belong to the same publication.
 		physics_snapshot = simulation_worker.take_latest_snapshot(0)
 		if physics_snapshot == null or physics_snapshot.simulation_failed or physics_snapshot.rigid_body_epoch != _body_owner_epoch():
-			_cadence_physics_hold("missing_failed_or_wrong_epoch")
+			_cadence_physics_hold("missing_failed_or_wrong_epoch",physics_snapshot)
 			return
 		if not str(physics_snapshot.lab_context.get("workbench_refusal","")).is_empty():
-			_cadence_physics_hold("native_refusal")
+			_cadence_physics_hold("native_refusal",physics_snapshot)
 			return
 		if not _workbench_terrain_installed(physics_snapshot):
-			_cadence_physics_hold("terrain_installation")
+			_cadence_physics_hold("terrain_installation",physics_snapshot)
 			return
 		if paused and not single_step:
 			_workbench_wait_sample = -1
-			_cadence_physics_hold("paused")
+			_cadence_physics_hold("paused",physics_snapshot)
 			return
 		# A single step can restart a previously unpublished paused frame.
 		if engine_lab_wait_native_sample and _workbench_wait_sample >= 0 and physics_snapshot.lab_context.get("workbench_completed_sample",-1) != _workbench_wait_sample and not single_step:
-			_cadence_physics_hold("native_sample")
+			_cadence_physics_hold("native_sample",physics_snapshot)
 			return
 	if paused or simulation_worker.has_failed():
 		physical_trial_input.armed = false
@@ -3290,6 +3297,28 @@ func _assess_workbench_presented_sweep(start: Transform2D, target: Transform2D,
 	return result
 
 
+func _workbench_visible_material_contents(previous_active: bool) -> Array[int]:
+	var contents: Array[int] = []
+	if _presentation_current_content_id <= 0:
+		return contents
+	# An identity cannot stand in for missing genuine previous-texture history.
+	if previous_active and (_presentation_previous_unknown or _presentation_previous_content_id <= 0):
+		return contents
+	contents.append(_presentation_current_content_id)
+	if previous_active and _presentation_previous_content_id != _presentation_current_content_id:
+		contents.append(_presentation_previous_content_id)
+	return contents
+
+
+func _workbench_material_certificate_covers(certified: Array, required: Array) -> bool:
+	if required.is_empty():
+		return false
+	for content_id: int in required:
+		if not certified.has(content_id):
+			return false
+	return true
+
+
 func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 	var started_usec: int = Time.get_ticks_usec()
 	# Charge immutable byte capture once to the presentation frame consuming
@@ -3334,9 +3363,8 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 		resolved.mask_frame = frame
 		resolved.valid = true
 		resolved.reason = "resolved"
-		var material_key: Array = [last_uploaded_world_generation,last_uploaded_revision,
-			last_uploaded_render_snapshot_serial,resolved.current_texture_id,resolved.previous_texture_id,
-			resolved.previous_blend_active,_presentation_previous_unknown]
+		var material_contents: Array[int] = _workbench_visible_material_contents(resolved.previous_blend_active)
+		resolved["material_contents"] = material_contents.duplicate()
 		var legacy_poses: Dictionary = _safe_workbench_presentation_poses(frame,resolved.previous_blend_active) if mode != "coherent" else {}
 		# Rotate equally among admitted bodies, and bootstrap missing visual
 		# certificates before spending remaining work on already visible peers.
@@ -3379,7 +3407,8 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 			var initial: bool = previous.is_empty()
 			resolved.timeline_resets[slot] = initial
 			var anchor: Transform2D = bound if initial else previous.pose
-			var certificate_valid: bool = not initial and previous.get("material_key",[]) == material_key
+			var certificate_valid: bool = not initial and _workbench_material_certificate_covers(
+				previous.get("material_contents",[]),material_contents)
 			var selected: Variant = null
 			var selected_step: int = -1
 			var reason: String = ""
@@ -3430,8 +3459,13 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 			if selected != null:
 				resolved.poses[slot] = selected
 				resolved.selected_steps[slot] = selected_step
+				# A held/unchanged pose retains its already checked contents. A new
+				# pose receives only the contents this frame's sweep actually checked.
+				var certified_contents: Array = previous.get("material_contents",[]) \
+					if certificate_valid and selected == anchor else material_contents
 				_workbench_presentation_state[slot] = {"pose":selected,"step":selected_step,
-					"instance_id":member.instance_id,"generation":member.generation,"material_key":material_key}
+					"instance_id":member.instance_id,"generation":member.generation,
+					"material_contents":certified_contents.duplicate()}
 			else:
 				summary.withheld += 1
 		# Remove withheld instances from a copied render receipt. render_parts'
@@ -3535,12 +3569,22 @@ func _cadence_frame_post_draw() -> void:
 		"render_serial":last_uploaded_render_snapshot_serial})
 
 
-func _cadence_physics_hold(reason: String) -> void:
+func _cadence_physics_hold(reason: String, snapshot: CyberSimulationSnapshot = null) -> void:
 	if not workbench_pose_trace.active: return
 	_cadence_physics_hold_counts[reason] = int(_cadence_physics_hold_counts.get(reason,0))+1
 	workbench_pose_trace.observe_event({"event":"rapier_hold","reason":reason,
 		"time_usec":Time.get_ticks_usec(),"physics_frame":Engine.get_physics_frames(),
-		"waiting_body_sample":_workbench_wait_sample})
+		"process_frame":Engine.get_process_frames(),
+		"step":physical_actor_session.tick if physical_actor_session != null else -1,
+		"waiting_body_sample":_workbench_wait_sample,
+		"completed_body_sample":snapshot.lab_context.get("workbench_completed_sample",-1) if snapshot != null else -1,
+		"required_hard_revision":snapshot.lab_context.get("workbench_hard_surface_revision",-1) if snapshot != null else -1,
+		"packet_hard_revision":snapshot.hard_surface_revision if snapshot != null else -1,
+		# This revision is queued, not installed, while pending chunks remain.
+		"queued_hard_revision":last_hard_surface_revision,
+		"pending_hard_chunks":rapier_bridge.pending_hard_surface_chunks(),
+		"last_collider_call_usec":roundi(rapier_bridge.last_hard_surface_build_time_ms()*1000.0),
+		"waits_for_native_sample":engine_lab_wait_native_sample})
 
 
 func _cadence_rapier_completed(started_usec: int, completed_usec: int,
@@ -3560,6 +3604,10 @@ func _cadence_rapier_completed(started_usec: int, completed_usec: int,
 		"session":bridge._session,"epoch":bridge._epoch,
 		"world_generation":snapshot.render_world_generation if snapshot != null else -1,
 		"fixed_delta":rapier_bridge.fixed_delta(),
+		"solver_usec":roundi(rapier_bridge.last_step_time_ms()*1000.0),
+		"flush_usec":roundi(rapier_bridge.last_flush_time_ms()*1000.0),
+		"hard_surface_shapes":rapier_bridge.hard_surface_shape_count(),
+		"pending_hard_chunks":rapier_bridge.pending_hard_surface_chunks(),
 		"simulation_time_sec":physical_actor_session.tick*rapier_bridge.fixed_delta(),
 		"native_tick_used":snapshot.tick_index if snapshot != null else -1,
 		"native_response":_cadence_response_json(bridge.last_application),
@@ -3648,6 +3696,7 @@ func _workbench_trace_presentation_frame(original_frame: Dictionary,
 		"presentation":{"policy":workbench_presentation_frame.policy,
 			"session":workbench_presentation_frame.session,"epoch":workbench_presentation_frame.epoch,
 			"world_generation":workbench_presentation_frame.world_generation,
+			"material_contents":workbench_presentation_frame.get("material_contents",[]),
 			"resolve_usec":workbench_presentation_frame.resolve_usec,
 			"selection_usec":workbench_presentation_frame.selection_usec,
 			"upload_cache_usec":workbench_presentation_frame.upload_cache_usec,
@@ -3662,6 +3711,7 @@ func _workbench_trace_presentation_frame(original_frame: Dictionary,
 		"frame_delta_ms":frame_time_ms,
 		"native_tick":native_tick,"native_snapshot_serial":snapshot_serial,
 		"rapier_step":physical_actor_session.tick,
+		"paused":paused,
 		"camera_mode":shared_workbench._camera.selected,
 		"pilot_instance_id":pilot_id,
 		"pilot_live_position":WorkbenchPoseTrace.xy(pilot_position) \
@@ -4054,8 +4104,10 @@ func _workbench_terrain_installed(snapshot: CyberSimulationSnapshot) -> bool:
 	# A worker publication without the latest geometry cannot release Rapier.
 	if rapier_bridge.pending_hard_surface_chunks() == 0 and snapshot.hard_surface_revision == required and last_hard_surface_revision != required:
 		sync_hard_surface_colliders(snapshot)
-	if rapier_bridge.pending_hard_surface_chunks() > 0 and _workbench_collider_frame != Engine.get_process_frames():
-		_workbench_collider_frame = Engine.get_process_frames()
+	# Pending terrain may progress at every actual physics callback. A slow
+	# render frame must not make otherwise available callbacks idle behind this
+	# independent native-feedback fence. Each call keeps the existing allowance.
+	if rapier_bridge.pending_hard_surface_chunks() > 0:
 		rapier_bridge.process_hard_surface_collider_budget(WORKBENCH_HARD_SURFACE_CHUNKS_PER_FRAME,WORKBENCH_HARD_SURFACE_FRAME_BUDGET_USEC)
 	if last_hard_surface_revision != required or rapier_bridge.pending_hard_surface_chunks() != 0: return false
 	_physical_terrain_ready = true
@@ -5409,8 +5461,14 @@ func create_render_textures() -> void:
 	texture = ImageTexture.create_from_image(image)
 	previous_texture = ImageTexture.create_from_image(image)
 	_presentation_previous_image = null
+	_presentation_previous_unknown = true
 	_presentation_current_bytes = image.get_data()
 	_presentation_previous_bytes = _presentation_current_bytes
+	_presentation_content_serial += 1
+	_presentation_current_content_id = _presentation_content_serial
+	_presentation_previous_content_id = _presentation_current_content_id
+	_presentation_current_content_shape = Vector3i(image.get_width(),image.get_height(),image.get_format())
+	_presentation_previous_content_shape = _presentation_current_content_shape
 
 
 func upload_texture(material_cells: PackedByteArray, world_revision: int) -> void:
@@ -5494,6 +5552,20 @@ func apply_render_patches_to_image(
 	if not last_render_patch_validation_error.is_empty():
 		return false
 	_capture_previous_presentation_occupancy(patch_rectangles)
+	# A single exact whole-image payload already has the layout set_data needs.
+	# The old CPU image was retained above, before replacing these bytes. Avoid
+	# slicing another full array, constructing a patch Image and blitting it
+	# back into an equally sized image. Partial, padded, trailing-data and
+	# multiple-patch publications retain the existing compaction path below.
+	if patch_rectangles.size() == RENDER_PATCH_METADATA_STRIDE \
+			and patch_rectangles[0] == 0 and patch_rectangles[1] == 0 \
+			and patch_rectangles[2] == world_extent.x and patch_rectangles[3] == world_extent.y \
+			and patch_rectangles[4] == 0 and patch_rectangles[5] == world_extent.x * patch_channels \
+			and patch_cells.size() == world_extent.x * world_extent.y * patch_channels \
+			and image.get_width() == world_extent.x and image.get_height() == world_extent.y \
+			and image.get_format() == render_image_format and not image.has_mipmaps():
+		image.set_data(world_extent.x, world_extent.y, false, render_image_format, patch_cells)
+		return true
 	for metadata_offset: int in range(
 		0,
 		patch_rectangles.size(),
@@ -5653,8 +5725,24 @@ func finish_texture_upload(world_revision: int, start_usec: int) -> void:
 	texture = previous_texture
 	previous_texture = old_current_texture
 	var cache_started_usec: int = Time.get_ticks_usec()
+	var next_bytes: PackedByteArray = image.get_data()
+	var next_shape := Vector3i(image.get_width(),image.get_height(),image.get_format())
+	var next_content_id: int = 0
+	# Exact equality is the proof. Revisions can change without material edits,
+	# and slots swap on every upload; neither invalidates an unchanged footprint.
+	if next_shape == _presentation_current_content_shape and next_bytes == _presentation_current_bytes:
+		next_content_id = _presentation_current_content_id
+	elif next_shape == _presentation_previous_content_shape and next_bytes == _presentation_previous_bytes:
+		next_content_id = _presentation_previous_content_id
+	if next_content_id <= 0:
+		_presentation_content_serial += 1
+		next_content_id = _presentation_content_serial
 	_presentation_previous_bytes = _presentation_current_bytes
-	_presentation_current_bytes = image.get_data()
+	_presentation_previous_content_id = _presentation_current_content_id
+	_presentation_previous_content_shape = _presentation_current_content_shape
+	_presentation_current_bytes = next_bytes
+	_presentation_current_content_id = next_content_id
+	_presentation_current_content_shape = next_shape
 	_presentation_upload_cache_usec = Time.get_ticks_usec()-cache_started_usec
 	_presentation_pending_cache_usec += _presentation_upload_cache_usec
 	update_render_texture()

@@ -51,6 +51,10 @@ var smoothing: bool = true
 var cadence_mode: String = "repaired"
 var presentation_mode: String = "coherent"
 var fire_mode: String = "unchanged"
+var display_profile: String = "scripted"
+var requested_view: Vector2i = VIEW
+var startup_display: Dictionary = {}
+var cpu_identity: Dictionary = {}
 var fire_events: Array[Dictionary] = []
 var cadence_tape: bool = false
 var input_tape: Array[Dictionary] = []
@@ -99,29 +103,42 @@ func _initialize() -> void:
 		if arg.begins_with("--cadence="): cadence_mode=arg.trim_prefix("--cadence=")
 		if arg.begins_with("--presentation="): presentation_mode=arg.trim_prefix("--presentation=")
 		if arg.begins_with("--fire-mode="): fire_mode=arg.trim_prefix("--fire-mode=")
+		if arg.begins_with("--display-profile="): display_profile=arg.trim_prefix("--display-profile=")
 		if arg.begins_with("--cadence-tape="): cadence_tape=arg.trim_prefix("--cadence-tape=")=="1"
 		if arg.begins_with("--receipt="): output=arg.trim_prefix("--receipt=")
 	if invalid_boolean or not OS.get_cmdline_user_args().has("--engine-lab-scripted") or \
 			family not in FAMILIES or camera_mode not in ["free","follow"] or \
-			pose_mode not in ["guarded","mask"] or workers not in [1,4] or \
+			pose_mode not in ["guarded","mask"] or workers not in [0,1,4] or \
 			repeat_id not in [1,2] or pixel_hz not in [2,30,60,120] or \
 			render_hz not in [30,60,120] or fps_target not in [0,30,60,120] or \
 			rapier_hz not in [60,120] or ack_delay not in [0,3] or \
 			cadence_mode not in ["legacy","repaired"] or \
 			presentation_mode not in ["legacy","coherent"] or \
+			display_profile not in ["scripted","interactive-default"] or \
 			fire_mode not in ["unchanged","off","on-off"] or output.is_empty():
 		push_error("TEST_IT: explicit verified graphical Test It arguments required")
 		quit(2)
 		return
+	cpu_identity={"model":OS.get_processor_name(),"logical_processors":OS.get_processor_count()}
+	startup_display={"max_fps":Engine.max_fps,"rapier_callback_hz":Engine.physics_ticks_per_second,
+		"project_vsync_mode":int(ProjectSettings.get_setting("display/window/vsync/vsync_mode",DisplayServer.VSYNC_ENABLED)),
+		"project_window_size":[int(ProjectSettings.get_setting("display/window/size/window_width_override",0)),
+			int(ProjectSettings.get_setting("display/window/size/window_height_override",0))],
+		"project_native_worker_request":int(ProjectSettings.get_setting("cybersand/native_worker_threads",0))}
+	# Each case has a fresh isolated user directory. Zero is the native Auto
+	# request used by a fresh interactive launcher, not a request for zero tasks.
+	# The owner's saved worker preference is never read or changed by this case.
 	ProjectSettings.set_setting("cybersand/native_worker_threads",workers)
 	input_tape=Tape.duplicate(true)
 	if cadence_tape: input_tape.append_array(CadenceExtension.duplicate(true))
-	Engine.max_fps=fps_target
+	if display_profile=="interactive-default":
+		if not check(fps_target==Engine.max_fps,"interactive graphical cap is the process-start default"):
+			quit(2)
+			return
+	else:
+		Engine.max_fps=fps_target
 	# The measured axes are explicit: FPS is graphical callbacks, publication
 	# is immutable material delivery, Rapier remains fixed 1/60 per step.
-	# Disable VSync for requested FPS experiments; record achieved rates.
-	if DisplayServer.get_name()!="headless":
-		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 	OS.set_environment("CYBERSAND_DIAG_RENDER_CADENCE",
 		"legacy" if cadence_mode=="legacy" else "")
 	OS.set_environment("CYBERSAND_DIAG_PRESENTATION",
@@ -200,6 +217,27 @@ func _actor_snapshot(ui: Control) -> Dictionary:
 		"velocity":[velocity.x,velocity.y] if velocity.is_finite() else null,
 		"angle":state.get("rotation",null),
 		"last_error":str(host.physical_actor_session.last_error)}
+
+
+func _native_worker_identity() -> Dictionary:
+	var snapshot: CyberSimulationSnapshot=host.latest_snapshot \
+		if host!=null and is_instance_valid(host) else null
+	return {"requested":workers,"selection":"Auto" if workers==0 else "explicit",
+		"observed_request":snapshot.native_worker_request if snapshot!=null else -1,
+		"resolved_capacity":snapshot.scheduler_thread_capacity_hint if snapshot!=null else -1,
+		"profile":"fresh isolated test profile; owner preference unchanged",
+		"meaning":"Resolved native pool capacity, not measured task participation or CPU utilization"}
+
+
+func _effective_pacing() -> Dictionary:
+	if host==null or not is_instance_valid(host): return {}
+	var native: Dictionary=host.simulation_worker.engine_lab_pixel_pacing()
+	return {"pixel_hz":int(native.target_hz),"sample_wake":bool(native.sample_wake),
+		"wait_native_sample":host.engine_lab_wait_native_sample,
+		"rapier_callback_hz":Engine.physics_ticks_per_second,"graphical_fps_cap":Engine.max_fps,
+		"publication_hz":host.render_snapshot_hz,"ack_delay_frames":host.engine_lab_ack_delay_frames,
+		"ack_gated_publication":host.latest_snapshot.render_publication_ack_gated if host.latest_snapshot!=null else null,
+		"smoothing":host.cadence_lod_enabled}
 
 
 func _capture_frame(label: String) -> void:
@@ -285,6 +323,8 @@ func _finish(ui: Control) -> void:
 		"complete":problems.is_empty(),
 		"source_sha":source_revision,
 		"family":family,"workers":workers,"repeat":repeat_id,
+		"cpu":cpu_identity,"native_workers":_native_worker_identity(),
+		"effective_pacing":_effective_pacing(),
 		"camera":camera_mode,"pose_mode":pose_mode,
 		"requested_pixel_hz":pixel_hz,"requested_render_hz":render_hz,
 		"requested_publication_hz":render_hz,"requested_graphical_fps":fps_target,
@@ -299,7 +339,7 @@ func _finish(ui: Control) -> void:
 		"capture_wall_seconds":float(capture_end_usec-capture_start_usec)/1000000.0,
 		"capture_native_tick_start":capture_native_start,"capture_rapier_step_start":capture_rapier_start,
 		"completed_simulation_seconds":float(end_tick-capture_rapier_start)/60.0,
-		"world_size":[WORLD.x,WORLD.y],"requested_view_size":[VIEW.x,VIEW.y],
+		"world_size":[WORLD.x,WORLD.y],"requested_view_size":[requested_view.x,requested_view.y],
 		"view_size":[actual_view.x,actual_view.y],"framebuffer_captures":captures,
 		"reference":{"json_sha256":Reference.FILE_SHA256,
 			"generated_material_sha256":str(fixture.get("material_sha256","")),
@@ -320,11 +360,13 @@ func _finish(ui: Control) -> void:
 		"godot":Engine.get_version_info().get("string",""),
 		"video_adapter":RenderingServer.get_video_adapter_name(),
 		"render_driver":RenderingServer.get_current_rendering_driver_name(),
-		"display":{"dpi":DisplayServer.screen_get_dpi(),"scale":DisplayServer.screen_get_scale(),
+		"display":{"profile":display_profile,"startup":startup_display,"server":DisplayServer.get_name(),
+			"vsync_policy":"process-start default" if display_profile=="interactive-default" else "disabled for pacing experiment",
+			"dpi":DisplayServer.screen_get_dpi(),"scale":DisplayServer.screen_get_scale(),
 			"refresh_hz":DisplayServer.screen_get_refresh_rate(),
 			"screen_size":[DisplayServer.screen_get_size().x,DisplayServer.screen_get_size().y],
 			"window_size":[root.size.x,root.size.y],"window_content_scale":root.content_scale_factor,
-			"vsync_mode":DisplayServer.window_get_vsync_mode()},
+			"vsync_mode":DisplayServer.window_get_vsync_mode() if DisplayServer.get_name()!="headless" else -1},
 		"elapsed_seconds":float(Time.get_ticks_usec()-started_usec)/1000000.0,
 		"assertions":assertions,"failures":problems.duplicate()}
 	var writer: FileAccess=FileAccess.open(output,FileAccess.WRITE)
@@ -366,10 +408,20 @@ func _fire_schedule() -> void:
 
 
 func _run() -> void:
+	# SceneTree._initialize can still see a temporary 100x100 root. Observe the
+	# actual started window before applying case-only display changes. The
+	# requested project VSync and effective driver mode remain separate facts.
+	await process_frame
+	startup_display["window_size"]=[root.size.x,root.size.y]
+	startup_display["vsync_mode"]=DisplayServer.window_get_vsync_mode() if DisplayServer.get_name()!="headless" else -1
+	startup_display["capture_stage"]="first process frame, before case display overrides and Main construction"
+	if display_profile=="scripted" and DisplayServer.get_name()!="headless":
+		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 	host=load("res://main.tscn").instantiate()
 	root.add_child(host)
-	root.mode=Window.MODE_WINDOWED
-	root.size=Vector2i(1600,900)
+	if display_profile=="scripted":
+		root.mode=Window.MODE_WINDOWED
+		root.size=Vector2i(1600,900)
 	if not check(await _until(Callable(self,"_ready_initial"),MAX_SETUP_MSEC),
 			"initial source-bound Workbench ready"):
 		await _finish(null)
@@ -412,15 +464,26 @@ func _run() -> void:
 	var want_follow: bool=camera_mode=="follow"
 	ui._camera.select(1 if want_follow else 0)
 	ui.set_camera(1 if want_follow else 0)
+	requested_view=host.current_view_size if display_profile=="interactive-default" else VIEW
 	# set_camera restores the UI zoom. Apply our identical view afterwards, and
 	# centre Free on the real actor rather than leaving it outside the viewport.
 	var actor_state: Dictionary=ui.body_state(1)
 	var actor_position: Vector2=actor_state.get("position",Vector2(200,200))
-	ui._set_view(actor_position-Vector2(VIEW)*0.5,VIEW)
+	ui._set_view(actor_position-Vector2(requested_view)*0.5,requested_view)
 	await process_frame
 	await process_frame
 	actual_view=host.current_view_size
-	check(actual_view==VIEW,"requested matched view survives production camera/layout")
+	check(actual_view==requested_view,"requested matched view survives production camera/layout")
+	if display_profile=="interactive-default":
+		check(actual_view==Vector2i(480,270),"interactive Workbench starts at its normal zoom")
+		check(Engine.physics_ticks_per_second==rapier_hz and host.engine_lab_wait_native_sample==wait_sample,
+			"coupled physics requests equal the untouched production defaults")
+		var default_native: Dictionary=host.simulation_worker.engine_lab_pixel_pacing()
+		check(int(default_native.target_hz)==pixel_hz and bool(default_native.sample_wake)==sample_wake,
+			"native pacing requests equal the untouched production defaults")
+	var worker_identity: Dictionary=_native_worker_identity()
+	check(int(worker_identity.observed_request)==workers and int(worker_identity.resolved_capacity)>0,
+		"requested native workers and resolved pool capacity recorded from real snapshot")
 	host.engine_lab_wait_native_sample=wait_sample
 	host.simulation_worker.set_engine_lab_pixel_pacing(pixel_hz,sample_wake)
 	host.engine_lab_set_render_hz(render_hz)
@@ -436,6 +499,7 @@ func _run() -> void:
 		return
 	if not check(host.begin_workbench_pose_trace({
 			"test_it":true,"family":family,"workers":workers,"camera":camera_mode,
+			"cpu":cpu_identity,"native_workers":worker_identity,"display_profile":display_profile,
 			"pose":pose_mode,"pixel_hz":pixel_hz,"render_hz":render_hz,
 			"publication_hz":render_hz,"fps_target":fps_target,"rapier_callback_hz":rapier_hz,
 			"fixed_physics_step_seconds":1.0/60.0,"ack_delay_frames":ack_delay,

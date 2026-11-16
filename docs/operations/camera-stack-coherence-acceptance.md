@@ -10,6 +10,13 @@ last-reviewed: 2026-11-15
 
 # Evaluate coherent Workbench presentation on Windows
 
+**Physical verdict: FAIL/HOLD.** The owner rejected application `43f46c6e5ec9`
+with repeated 100–1000 ms actor/Rapier freezes. Its earlier automated pose checks
+did not establish continuous physics. The corrective candidate adds terrain
+installation/RID reuse and tests the actual coupled interactive defaults; the
+owner's physical acceptance remains required. See the
+[freeze investigation](../audits/2026-11-15-workbench-physics-freezes.md).
+
 Extract the complete evaluation ZIP into a fresh writable folder. Everything
 needed to run CyberSand and collect the comparison is included. No Godot,
 Python, Git or repository installation is needed. Keep the included source and
@@ -48,13 +55,15 @@ automated capture completes.
 
 ## Collect the reproducible comparison
 
-Double-click **Test It.cmd**. It opens twelve successive test windows: six
+Double-click **Test It.cmd**. It opens sixteen successive test windows: eight
 matched original/corrected pairs, ordinarily a few minutes on a hardware GPU.
 Keep other CyberSand instances closed. A slow machine can take longer, and an
 unfinished case retains its partial logs instead of being called a pass.
 
 | Pair | Camera | Graphical target | Special condition |
 | --- | --- | --- | --- |
+| `interactive-follow` | Follow | Ordinary VSync/display default | Coupled native 60 / Rapier 60, Auto workers, Fire ON→OFF |
+| `interactive-free` | Free | Ordinary VSync/display default | Coupled native 60 / Rapier 60, Auto workers, Fire ON→OFF |
 | `follow60` | Follow | 60 FPS | Fire ON→OFF |
 | `free60` | Free | 60 FPS | Fire ON→OFF |
 | `follow30` | Follow | 30 FPS | Fire OFF |
@@ -65,12 +74,16 @@ unfinished case retains its partial logs instead of being called a pass.
 All pairs use the original 2048×2048 World and the same tick-addressed Needle
 movement commands, including the labelled sustained-motion extension. Fire
 events are a separate schedule at completed Rapier steps 0 and 60. The usual
-targets are native 30 Hz, Rapier callbacks 120 Hz and publication 60 Hz. Rapier
+targets for the six earlier diagnostic pairs are native 30 Hz, Rapier callbacks
+120 Hz and publication 60 Hz, with the native-sample wait disabled. Those six
+pairs alone do not exercise ordinary interactive physics. The two interactive
+pairs retain the native-sample handshake, automatic worker request, initial VSync
+and normal window/view size. Every case records its actual settings. Rapier
 still advances 1/60 simulated second per completed step. The runner disables
-VSync only for its scripted pacing comparisons; requested rates are not claims
+VSync only for the earlier pacing comparisons; requested rates are not claims
 about achieved performance.
 
-For one shorter central pair, run `Test It.cmd -Quick`. The previous ACK/history
+For the shorter coupled Follow pair, run `Test It.cmd -Quick`. The previous ACK/history
 investigation remains available with:
 
 ~~~powershell
@@ -84,11 +97,15 @@ It is a separate diagnostic from **Open Original Presentation.cmd**.
 
 Open the new timestamped folder under **Test-It-Results**. **READ-RESULTS.txt**
 lists achieved native ticks, Rapier steps and Main overlay submissions per
-second, measured frame intervals and presentation CPU time. Median, p95 and
+second, measured frame intervals and presentation CPU time. Actual completed-step
+gaps and native-sample/terrain-installation hold counts are reported separately
+from visual holds. A continuously selected live pose can still represent stopped
+physics; zero visual holds must not be read as smooth physical motion. Median, p95 and
 p99 values include their sample count. Main submissions are not measurements
 of physical monitor scanout.
 
-**summary.json** and each case's receipt retain GPU/driver and Windows identity,
+**summary.json** and each case's receipt retain CPU, requested/resolved worker,
+GPU/driver and Windows identity,
 Godot's display DPI/scale/refresh and VSync settings, source and file hashes,
 target and achieved clocks, Fire/tape identities, same-step physical trajectory
 comparisons, intentional holds, withheld poses and failures. Original JSONL

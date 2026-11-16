@@ -99,6 +99,43 @@ class FrameTraceAnalysisTests(unittest.TestCase):
         self.assertEqual(result["native_tick_wall_ms"]["maximum"], 5)
         self.assertIsNone(result["rates"]["physical_gpu_present"])
 
+    def test_live_visual_source_does_not_hide_physics_freeze(self):
+        frames = [contract_frame(n, 1, 100) for n in range(1, 13)]
+        for row in frames:
+            row["rapier_step"] = 1
+        events = [step_event(1, 10000), step_event(2, 130000),
+                  {"event": "rapier_hold", "time_usec": 20000,
+                   "reason": "terrain_installation", "pending_hard_chunks": 400},
+                  {"event": "rapier_hold", "time_usec": 110000,
+                   "reason": "terrain_installation", "pending_hard_chunks": 100}]
+        events[1].update(solver_usec=60, flush_usec=10)
+        result = analyze(frames, events=events)
+        self.assertEqual(result["presentation_contract"]["intentional_hold_frames"], 0)
+        progress = result["physics_progress"]
+        self.assertEqual(progress["active_completed_step_gap_ms"]["maximum"], 120)
+        self.assertEqual(progress["active_gaps_at_least_100ms"], 1)
+        self.assertEqual(progress["main_intervals_without_physics_progress"], 11)
+        witness = progress["largest_active_gaps"][0]
+        self.assertEqual(witness["hold_reasons"], {"terrain_installation": 2})
+        self.assertEqual(witness["step_work_ms"], .1)
+        self.assertEqual(witness["solver_ms"], .06)
+
+    def test_pause_and_missing_steps_are_not_reported_as_measured_active_freezes(self):
+        events = [step_event(1, 10000), step_event(2, 1010000),
+                  step_event(5, 2010000),
+                  {"event": "rapier_hold", "time_usec": 500000, "reason": "paused"}]
+        progress = analyze([], events=events)["physics_progress"]
+        self.assertEqual(progress["pause_spanning_intervals"], 1)
+        self.assertEqual(progress["unmeasured_intervals_with_missing_completions"], 1)
+        self.assertEqual(progress["active_gaps_at_least_100ms"], 0)
+        self.assertIsNone(progress["active_completed_step_gap_ms"]["maximum"])
+
+    def test_frame_only_capture_cannot_certify_physics_step_continuity(self):
+        progress = analyze([frame(1, "live", 100), frame(2, "live", 101)])["physics_progress"]
+        self.assertEqual(progress["consecutive_step_intervals"], 0)
+        self.assertIsNone(progress["active_completed_step_gap_ms"]["maximum"])
+        self.assertEqual(progress["observed_main_intervals"], 0)
+
     def test_camera_translation_cancels_in_actor_terrain_relative_measurements(self):
         result = analyze([moving_frame(1, 100, 100, 0), moving_frame(2, 101, 101, 1),
                           moving_frame(3, 102, 102, 2)])

@@ -53,6 +53,11 @@ def main():
         ('workbench-input', 'test_workbench_input', 'WORKBENCH_INPUT', {}, False),
         ('workbench-fleet', 'test_workbench_fleet_session', 'WORKBENCH_FLEET', {}, False),
         ('workbench-physics', 'test_workbench_physics_play', 'WORKBENCH_PHYSICS', {}, False),
+        ('physics-pacing', 'test_workbench_physics_pacing', 'PHYSICS_PACING_RESULT', {}, False),
+        ('rapier-manual', 'test_rapier_manual_step', 'Rapier2D manual-step', {}, False),
+        ('terrain-packet', 'test_hard_surface_incremental_packet', 'HARD_SURFACE_INCREMENTAL', {}, False),
+        ('full-material-upload', 'test_render_full_upload', 'RENDER_FULL_UPLOAD:', {}, False),
+        ('actor-integration', 'test_physical_actor_integration', 'Physical actor integration:', {}, False),
         ('native-world-clearance', 'test_pr566_mask_coherent_native_world', 'PR566_WORLD_CLEARANCE_RESULT', {}, False),
     ]
     if args.graphical:
@@ -93,6 +98,10 @@ def main():
                     'test_workbench_temporal_dense': '--temporal-dense-evidence=',
                     'test_workbench_temporal_contact': '--temporal-contact-evidence='}[script]
             command += ['--', flag + str(folder)]
+        elif script == 'test_workbench_physics_pacing':
+            command += ['--', '--physics-pacing-evidence=' + str(folder)]
+        elif script == 'test_render_full_upload':
+            command += ['--', '--render-full-upload-evidence=' + str(folder / 'full-upload.json')]
         row = {'name': name, 'command': command, 'graphical': graphical, 'status': 'failed'}
         started = time.monotonic()
         try:

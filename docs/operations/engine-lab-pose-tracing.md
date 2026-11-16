@@ -2,13 +2,20 @@
 title: Engine Lab physical actor/camera frame trace
 status: Current
 document-kind: runbook
-scope: Draft/HOLD coherent actor, terrain and camera candidate with retained cadence controls; physical NVIDIA acceptance pending
+scope: Draft/HOLD coherent presentation and physics-progress investigation; delivered candidate failed physical acceptance
 canonical-for: [render-cadence-investigation]
 related-documents: [../audits/2026-11-15-render-cadence-001.md, ../architecture/rendering-and-gameplay-bridges.md, native-pixel-scrolling.md]
 last-reviewed: 2026-11-15
 ---
 
 # Engine Lab: locate Rapier and native-pixel camera divergence
+
+**15 November follow-up:** the owner rejected `43f46c6e5ec9` for repeated
+100–1000 ms physical/actor freezes. The prior six-pair presentation comparison
+disabled native-sample waiting while the interactive launcher enabled it.
+Existing hosted traces also contain real terrain-installation physics holds
+despite zero visual holds. The [freeze audit](../audits/2026-11-15-workbench-physics-freezes.md)
+records that qualification gap and the conservative collider/scheduling repair.
 
 The 14 November owner Windows GPU evaluation of PR #593 **failed** with
 large, alternating actor-versus-terrain screen-space jumps. The owner later
@@ -34,10 +41,12 @@ bounded repair from the remaining coupled-physics architecture. Keep Draft/HOLD.
 Extract the exact-source Windows package into a fresh writable directory, close
 other CyberSand instances, and double-click **Test It.cmd**. It calls the bundled
 PowerShell 5.1 runner with `-Coherence`; no Python, Git, Godot installation or
-network download is needed. Six matched original/coherent pairs cover Free and
+network download is needed. Eight matched original/coherent pairs cover Free and
 Follow, 30/60/120 FPS targets, Fire ON→OFF, deliberately slow native publication
-and delayed ACK. Both arms use repaired ACK/history behavior and the same
-movement tape. `Test It.cmd -Quick` selects one central pair. Use the
+and delayed ACK. Two pairs use coupled native60/Rapier60/Auto-worker interactive
+defaults; the previous six retain their explicitly uncoupled diagnostic settings.
+Both arms use repaired ACK/history behavior and the same movement tape.
+`Test It.cmd -Quick` selects coupled interactive Follow. Use the
 [practical guide](camera-stack-coherence-acceptance.md) for ordinary gameplay
 comparison and the physical acceptance record.
 
@@ -47,6 +56,10 @@ explicit in the report. These automated contracts do not establish smooth
 physical display. `READ-RESULTS.txt` reports actual Main intervals and resolver
 CPU median/p95/p99 with counts; JSONL retains holds, withholding and missed Main
 presentation opportunities. Tracing remains opt-in for ordinary gameplay.
+Reports separately expose consecutive physical completion gaps, native/terrain
+hold reasons and solver/flush call timings. Missing completion rows and intervals
+spanning an explicit pause cannot certify an active physical freeze. Zero selected
+source rewinds or holds cannot certify continuous physics either.
 
 ## Retained source-matched cadence campaign
 

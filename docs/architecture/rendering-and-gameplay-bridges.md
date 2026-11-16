@@ -13,7 +13,9 @@ last-reviewed: 2026-11-15
 
 ## Coherent Workbench presentation frame
 
-**Current unmerged candidate; owner acceptance pending.** Main resolves one
+**Current unmerged candidate; physical acceptance FAIL/HOLD.** The owner rejected
+the delivered `43f46c6e5ec9` application because of repeated physical/actor
+freezes. Its pose-selection checks did not qualify physics cadence. Main resolves one
 `workbench_presentation_frame` before camera Follow. It binds the uploaded
 material generation/revision/serial and current/previous texture identities to
 selected actor poses, actual sampled Rapier steps, explicit holds/withholds,
@@ -29,6 +31,25 @@ excludes withheld actors, preventing implicit fallback to an older material-boun
 pose. A newer native receipt may rejoin only with a later actual sampled Rapier
 step. Session/epoch/World replacement resets the timeline; temporary stale
 receipts do not erase an advanced selection. Picking uses the displayed actor.
+
+Held-pose certificates identify actual texture contents, rather than upload
+serials or ping-pong GPU resource IDs. Each upload compares exact immutable bytes
+and image dimensions/format against at most the two retained texture contents.
+New content receives a monotonic identity; creating textures never recycles an
+old identity. A selected pose can retain its certificate only when every content
+currently visible in the shader was already checked for that exact pose. This
+allows a hold across a byte-identical refresh or the end of a crossfade, without
+another scan. Changed content, an uncertified old texture or unknown active
+previous-texture history still requires a successful check. The existing actor,
+session, epoch and World fences remain separate and mandatory. Byte-comparison
+cost is charged to the same presentation allowance; the allowance was not raised.
+
+A validated, single, tightly packed full-World material patch replaces the CPU
+image data directly after preserving the actual previous image. It avoids an
+extra full payload slice, temporary patch image and whole-image blit. Validation,
+GPU upload/swap and revision/ACK behavior are unchanged. Partial, padded,
+offset and multi-patch payloads retain the ordinary patch path. Both R8 material
+IDs and RG8 material/effect bytes remain exact and independently owned.
 
 Near contact, a coarse sampled sweep can reject clear motion because its
 continuous-coverage dilation reaches nearby terrain. The coherent policy may
@@ -47,6 +68,39 @@ retains the original independently followed guarded display for comparison.
 The [Windows acceptance guide](../operations/camera-stack-coherence-acceptance.md)
 and [trace runbook](../operations/engine-lab-pose-tracing.md) distinguish automated
 contract checks from physical NVIDIA acceptance.
+
+## Workbench physics progress and terrain installation
+
+**Current corrective candidate:** `Main._workbench_terrain_installed` services
+pending terrain on each actual physics callback. The old once-per-render-frame
+restriction made available physics callbacks idle during a slow render interval.
+The existing 128 changed-chunk and 4,000 microsecond cooperative allowance still
+applies to each call. A chunk operation can exceed that deadline; this is not a
+hard maximum. Rapier does not step until the complete required native hard-surface
+revision has been installed.
+
+`CyberRapierPhysicsBridge._replace_hard_surface_chunk_shapes` preserves attached
+shape RIDs for exact unchanged rectangles, including duplicate rectangles. It
+removes only obsolete shapes and adds only new geometry. Packet order and actual
+PhysicsServer body-shape index order are tracked separately, so removal cannot
+mistake a retained rectangle for a changed one. Repeated identical owned packets
+neither restart pending installation nor rebuild completed geometry. Caller
+mutation cannot change the copied accepted packet or its equality certificate.
+
+The normal native-sample handshake, fixed 1/60 physical step, one-step wrench-age
+limit and geometry/owner/epoch checks remain unchanged. This removes unnecessary
+collider work and a rendering-dependent wait; it does not make a native World
+whose ticks exceed 16.7 ms sustain 60 coupled physical steps per second. The
+uncoupled Engine Lab diagnostic remains an experiment, not a contact-qualified
+default replacement. No new interpolation or pose extrapolation hides these waits.
+
+The opt-in trace separates selected-pose holds from actual `rapier_hold` events
+and consecutive physical completion gaps. Hold events identify the exact required,
+packet and queued terrain revisions, pending chunks and native sample. Completed
+steps also expose existing Rapier solver/flush timers. These are wall-clock CPU
+call observations, potentially including OS descheduling, not GPU scanout.
+See the [freeze investigation](../audits/2026-11-15-workbench-physics-freezes.md)
+for the failed candidate, controlled regressions and remaining performance limits.
 
 ## Experimental cadence continuation of #609
 

@@ -10,6 +10,13 @@ related-documents: [../architecture/rendering-and-gameplay-bridges.md, ../operat
 
 # CAMERA-STACK-COHERENCE-001
 
+**Later physical outcome:** the owner rejected the delivered `43f46c6e5ec9`
+application for repeated 100–1000 ms actor/Rapier freezes. The implementation
+and source-scoped pose evidence below remain historical results; the pending
+acceptance wording records their original checkpoint. The
+[freeze follow-up](2026-11-15-workbench-physics-freezes.md) owns the new blocking
+failure, the missed interactive-default coverage and corrective qualification.
+
 **Implemented candidate; Draft/HOLD. Physical Windows NVIDIA acceptance remains
 pending.** This work continues #566 → #593 → #606 → #609. It changes desktop
 presentation and its qualification, not native material authority or Rapier law.

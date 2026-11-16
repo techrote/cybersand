@@ -130,8 +130,16 @@ def reduce_trace(path):
         times = [value for value in times if value >= 0]
         if len(times) > 1 and times[-1] > times[0]:
             stats["event_rates_hz"][kind] = (len(times) - 1) * 1e6 / (times[-1] - times[0])
-    from analyze_pose_trace import analyze_presentation_contract
+    from analyze_pose_trace import analyze_physics_progress, analyze_presentation_contract
     stats["presentation_contract"] = analyze_presentation_contract(frames)
+    stats["physics_progress"] = analyze_physics_progress(frames, events)
+    progress = stats["physics_progress"]
+    stats["physics_timing_observation"] = (
+        "unavailable_no_consecutive_active_steps" if not progress["active_completed_step_gap_ms"]["count"] else
+        "performance_concern_100ms_plus" if progress["active_gaps_at_least_100ms"] else
+        "no_100ms_gap_observed_not_acceptance")
+    stats["physics_hold_reasons"] = dict(Counter(
+        row.get("reason", "unknown") for row in events if row.get("event") == "rapier_hold"))
     return stats, trajectory
 
 
@@ -169,15 +177,24 @@ def run_case(args, condition, presentation):
                 "CYBERSAND_DIAG_PRESENTATION": "legacy" if pose_selection == "legacy" else "",
                 "CYBERSAND_DIAG_FLYER_POSE": "mask" if condition["pose"] == "mask" else "",
                 "XDG_DATA_HOME": str(directory / "userdata"), "APPDATA": str(directory / "userdata")})
-    params = {"family": "freemass", "workers": 1, "repeat": 1, "camera": condition["camera"], "pose": condition["pose"],
+    display_profile = condition.get("display_profile", "scripted")
+    workers = condition.get("workers", 1)
+    params = {"family": "freemass", "workers": workers, "repeat": 1, "camera": condition["camera"], "pose": condition["pose"],
               "pixel-hz": condition["pixel"], "publication-hz": condition["publication"], "fps": condition["fps"],
               "rapier-hz": condition["rapier"], "ack-delay": condition["ack"], "ack-gated": int(condition["gated"]),
               "wait-sample": int(condition["wait"]), "sample-wake": int(condition["wake"]), "smoothing": int(condition["smoothing"]),
               "cadence": cadence, "presentation": pose_selection, "fire-mode": condition.get("fire", "unchanged"),
-              "cadence-tape": 1, "receipt": str(receipt)}
-    command = [str(args.godot), "--rendering-method", "gl_compatibility", "--audio-driver", "Dummy", "--max-fps", str(condition["fps"]),
-               "--path", str(args.project), "--script", "res://tests/test_engine_lab_physical_test_it.gd", "--", "--engine-lab-scripted",
-               *("--" + key + "=" + str(value) for key, value in params.items())]
+              "display-profile": display_profile, "cadence-tape": 1, "receipt": str(receipt)}
+    command = [str(args.godot)]
+    if display_profile == "scripted":
+        command += ["--rendering-method", "gl_compatibility", "--audio-driver", "Dummy", "--max-fps", str(condition["fps"])]
+    if getattr(args, "rendering_driver", None):
+        command += ["--rendering-driver", args.rendering_driver]
+    command += ["--path", str(args.project), "--script", "res://tests/test_engine_lab_physical_test_it.gd", "--", "--engine-lab-scripted",
+                *("--" + key + "=" + str(value) for key, value in params.items())]
+    write(directory / "case.json", {"name": name, "source_sha": args.source_sha, "condition": condition,
+                                   "command": command, "isolated_user_profile": env["APPDATA"],
+                                   "rendering_driver_override": getattr(args, "rendering_driver", None)})
     print("RENDER_CADENCE_START", name, flush=True)
     start = time.monotonic()
     with (directory / "console.log").open("w", encoding="utf-8") as log:
@@ -187,11 +204,24 @@ def run_case(args, condition, presentation):
     need(data["complete"] and data["status"] == "passed", f"{name}: incomplete receipt")
     need(data["source_sha"] == args.source_sha, "Source changed")
     need(data["presentation_mode"] == pose_selection and data["cadence_mode"] == cadence, "Wrong comparison arm")
+    need(data["native_workers"]["requested"] == workers and data["native_workers"]["observed_request"] == workers
+         and data["native_workers"]["resolved_capacity"] > 0, "Native worker request/capacity not verified")
+    need(data["cpu"]["model"] and data["cpu"]["logical_processors"] > 0, "CPU identity missing")
+    effective = data["effective_pacing"]
+    need(effective["pixel_hz"] == condition["pixel"] and effective["rapier_callback_hz"] == condition["rapier"]
+         and effective["wait_native_sample"] == condition["wait"] and effective["sample_wake"] == condition["wake"]
+         and effective["graphical_fps_cap"] == condition["fps"] and effective["publication_hz"] == condition["publication"]
+         and effective["ack_delay_frames"] == condition["ack"] and effective["ack_gated_publication"] == condition["gated"]
+         and effective["smoothing"] == condition["smoothing"], "Effective pacing differs from requested settings")
+    need(data["display"]["profile"] == display_profile, "Wrong display profile")
+    if display_profile == "interactive-default":
+        need(data["display"]["vsync_mode"] == data["display"]["startup"]["vsync_mode"], "Changed ordinary startup VSync")
     if condition.get("fire") == "on-off":
         fire = data["fire_schedule"]["events"]
         need(len(fire) == 2 and [e["observed_step"] for e in fire] == [0, 60]
              and [e["enabled"] for e in fire] == [True, False], "Fire schedule incomplete")
-    need(data["world_size"] == [2048, 2048] and data["view_size"] == [240, 135], "Wrong World/view")
+    expected_view = [480, 270] if display_profile == "interactive-default" else [240, 135]
+    need(data["world_size"] == [2048, 2048] and data["view_size"] == expected_view, "Wrong World/view")
     need(data["reference"]["json_sha256"] == "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954", "Wrong owner reference")
     need(data["reference"]["generated_material_sha256"] == "71610b37531531e284f069cf1e07c151283a441c9b0ff32a4fcc1dbb6c997a7a", "Wrong native World")
     need(data["reference"]["native_receipts"] == 256, "Missing generation receipts")
@@ -204,6 +234,7 @@ def run_case(args, condition, presentation):
     trace = receipt.with_name("receipt-poses.jsonl")
     stats, trajectory = reduce_trace(trace)
     need(trajectory, "Missing completed-step physics events")
+    need(stats["physics_progress"]["consecutive_step_intervals"] > 0, "Missing exact completed Rapier intervals")
     write(directory / "analysis.json", stats)
     if args.coherence and pose_selection == "coherent":
         contract = stats["presentation_contract"]
@@ -216,6 +247,8 @@ def run_case(args, condition, presentation):
                  "Follow target differs from selected pose")
     result = {"name": name, "condition": condition, "cadence_mode": cadence,
               "presentation_mode": pose_selection, "fire_schedule": data["fire_schedule"], "display": data["display"], "passed": True,
+              "cpu": data["cpu"], "native_workers": data["native_workers"], "effective_pacing": effective,
+              "render_driver": data["render_driver"],
               "elapsed_seconds": time.monotonic() - start, "receipt_sha256": sha(receipt), "trace_sha256": sha(trace),
               "statistics": stats, "video_adapter": data["video_adapter"]}
     print("RENDER_CADENCE_PASS", name, json.dumps(stats, sort_keys=True), flush=True)
@@ -232,6 +265,8 @@ def main():
     parser.add_argument("--shard-count", type=int, default=1)
     parser.add_argument("--conditions", nargs="*", default=[])
     parser.add_argument("--coherence", action="store_true", help="Compare original guarded vs coherent timeline, preserving repaired ACK/history")
+    parser.add_argument("--rendering-driver", choices=["opengl3", "opengl3_angle"],
+                        help="Explicit graphical driver override; otherwise preserve the project/platform default")
     parser.add_argument("--timeout", type=int, default=900)
     args = parser.parse_args()
     args.godot = args.godot.resolve()
@@ -251,6 +286,8 @@ def main():
     summary = {"schema": "camera-stack-coherence-matrix-v1" if args.coherence else "render-cadence-matrix-v1", "source_sha": args.source_sha, "matrix_sha256": sha(matrix_file),
                "shard_index": args.shard_index, "shard_count": args.shard_count, "conditions": conditions, "cases": [], "pairs": [], "failures": [],
                "complete": False, "physical_gpu_acceptance": "pending_owner_NVIDIA_review", "physics_rate_semantics": matrix["semantics"]}
+    summary["rendering_driver_override"] = args.rendering_driver
+    summary["case_profile_notice"] = "Fresh isolated profiles leave owner preferences unchanged. Auto0 matches a fresh launcher; saved explicit worker overrides differ. Functional completion does not establish smooth physics or physical GPU acceptance."
     report = args.evidence / "summary.json"
     write(report, summary)
     for condition in conditions:

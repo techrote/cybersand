@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-15",
+  "purpose": "Additive owner-reported physics-freeze retrieval. Separate from the previously frozen pose and cadence questions.",
+  "questions": [
+    {
+      "id": "PHYSICS-PACING-001",
+      "query": "Does zero visual pose holds or source rewinds prove that Workbench Rapier has no freezes?",
+      "canonical": ["operations/engine-lab-pose-tracing.md", "architecture/rendering-and-gameplay-bridges.md"],
+      "facts": [
+        "A continuously selected live pose can remain unchanged because native-sample or terrain-installation gates prevent physical steps.",
+        "Measure consecutive physical completion intervals and explicit physics hold reasons separately from selected visual pose holds.",
+        "The owner physically rejected source43f46 despite its passing pose checks, and the original six scripted comparison pairs did not exercise the interactive native-sample handshake."
+      ],
+      "sources": ["../godot/scripts/main.gd::_physics_process", "../tools/ci/analyze_pose_trace.py::analyze_physics_progress"]
+    },
+    {
+      "id": "PHYSICS-PACING-002",
+      "query": "How does the Workbench terrain collider repair preserve contact safety while removing avoidable physical stalls?",
+      "canonical": ["architecture/rendering-and-gameplay-bridges.md"],
+      "facts": [
+        "Exact unchanged rectangle shapes retain attached RIDs, with actual server shape order tracked separately from native packet order.",
+        "Pending terrain may progress on each actual physics callback within the existing cooperative budget; complete required native terrain installation remains mandatory before a step.",
+        "The fixed timestep, native-sample wait and one-step native feedback age remain unchanged, so native World throughput still constrains coupled physical speed."
+      ],
+      "sources": ["../godot/scripts/main.gd::_workbench_terrain_installed", "../godot/scripts/rapier_physics_bridge.gd::_replace_hard_surface_chunk_shapes", "../godot/scripts/workbench_physics_bridge.gd::apply_packet"]
+    },
+    {
+      "id": "PHYSICS-PACING-003",
+      "query": "When can an actor keep a certified visible pose across a Workbench texture refresh without ignoring old GPU material?",
+      "canonical": ["architecture/rendering-and-gameplay-bridges.md"],
+      "facts": [
+        "Exact immutable bytes and image dimensions/format establish content identities independently of upload serials and ping-pong texture RIDs.",
+        "A held pose can reuse its certificate only when every currently visible current/previous content identity is already certified for that exact pose.",
+        "Changed or unknown active previous material still requires clearance, while session, epoch, World and actor-generation fences remain mandatory."
+      ],
+      "sources": ["../godot/scripts/main.gd::_workbench_visible_material_contents", "../godot/scripts/main.gd::_workbench_material_certificate_covers", "../godot/scripts/main.gd::finish_texture_upload"]
+    }
+  ]
+}

@@ -9,6 +9,7 @@ readable, but cannot supply exact native/Rapier completion intervals.
 from __future__ import annotations
 
 import argparse
+from bisect import bisect_right
 from collections import Counter
 import csv
 import json
@@ -155,6 +156,67 @@ def completed_rate(rows, identity):
         elapsed = (event_time(rows[-1]) - event_time(rows[0])) / 1e6
         result["hz"] = round(delta / elapsed, 6) if elapsed > 0 else None
     return result
+
+
+def analyze_physics_progress(frames, events):
+    """Completed physics time is independent of the selected visual source.
+
+    A still-authoritative live pose can be submitted many times while a native
+    or terrain gate prevents the next physical step. Report those gaps even
+    when the presentation contract has no holds or source reversals.
+    """
+    steps = event_records(events, "rapier_step", "step")
+    holds = event_records(events, "rapier_hold")
+    hold_times = [event_time(row) for row in holds]
+    main_times = sorted(float(row["time_usec"]) for row in frames
+                        if number(row.get("time_usec")) is not None)
+    intervals, skipped = [], 0
+    for previous, current in zip(steps, steps[1:]):
+        if int(current["step"]) != int(previous["step"]) + 1:
+            # Missing completion events cannot prove how long one step waited.
+            skipped += 1
+            continue
+        start, end = event_time(previous), event_time(current)
+        between = holds[bisect_right(hold_times, start):bisect_right(hold_times, end)]
+        reasons = Counter(row.get("reason", "unknown") for row in between)
+        work_start = number(current.get("start_usec"))
+        interval = {
+            "previous_step": previous["step"], "step": current["step"],
+            "start_usec": start, "end_usec": end, "gap_ms": (end-start)/1000,
+            "hold_reasons": dict(reasons), "includes_pause": "paused" in reasons,
+            "main_submissions": bisect_right(main_times, end)-bisect_right(main_times, start),
+            "step_work_ms": (end-work_start)/1000 if work_start is not None else None,
+        }
+        for field in ("solver_usec", "flush_usec"):
+            value = number(current.get(field))
+            interval[field.replace("_usec", "_ms")] = value/1000 if value is not None else None
+        intervals.append(interval)
+    active = [row for row in intervals if not row["includes_pause"]]
+    known_frames = [(row.get("rapier_step"), bool(row.get("paused", False))) for row in frames
+                    if number(row.get("rapier_step")) is not None]
+    unchanged = sum(a[0] == b[0] and not a[1] and not b[1]
+                    for a, b in zip(known_frames, known_frames[1:]))
+    return {
+        "consecutive_step_intervals": len(intervals),
+        "unmeasured_intervals_with_missing_completions": skipped,
+        "pause_spanning_intervals": len(intervals)-len(active),
+        "active_completed_step_gap_ms": distribution([row["gap_ms"] for row in active]),
+        "active_gaps_at_least_100ms": sum(row["gap_ms"] >= 100 for row in active),
+        "active_gaps_at_least_250ms": sum(row["gap_ms"] >= 250 for row in active),
+        "active_gaps_at_least_1000ms": sum(row["gap_ms"] >= 1000 for row in active),
+        "main_intervals_without_physics_progress": unchanged,
+        "observed_main_intervals": max(0, len(known_frames)-1),
+        "step_work_ms": distribution([(event_time(row)-float(row["start_usec"]))/1000
+                                      for row in steps if number(row.get("start_usec")) is not None]),
+        "solver_ms": distribution([float(row["solver_usec"])/1000 for row in steps
+                                   if number(row.get("solver_usec")) is not None]),
+        "flush_ms": distribution([float(row["flush_usec"])/1000 for row in steps
+                                  if number(row.get("flush_usec")) is not None]),
+        "largest_active_gaps": sorted(active, key=lambda row: row["gap_ms"], reverse=True)[:10],
+        "meaning": "Wall-clock physical completions, separate from visual pose holds. "
+                   "Hold reasons are observed gates, not complete causal attribution. "
+                   "Step/solver timers include possible OS descheduling; no GPU scanout is measured.",
+    }
 
 
 def observed_counter_rate(frames, field):
@@ -569,6 +631,7 @@ def analyze(frames: list[dict], threshold_px: float = 8.0, events=None):
         "event_types": dict(Counter(x.get("event", "unknown") for x in events)),
         "physics_hold_reasons": dict(Counter(x.get("reason", "unknown") for x in events
                                               if x.get("event") == "rapier_hold")),
+        "physics_progress": analyze_physics_progress(frames, events),
         "native_response_refusals": dict(Counter(x.get("native_response", {}).get("refusal", "unknown")
                                                  for x in rapier if not x.get("native_response", {}).get("accepted", False))),
         "actor_relative_to_static_world_step_px": distribution(relative_steps),

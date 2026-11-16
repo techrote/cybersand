@@ -23,6 +23,8 @@ var last_steps: Dictionary = {}
 var contact_slots: Dictionary = {}
 var previous_max_fps: int = 0
 var ordinary_progress: Dictionary = {}
+var lineage_controls: Dictionary = {}
+var lineage_native_edits: Array[Dictionary] = []
 
 func _initialize() -> void:
 	previous_max_fps = Engine.max_fps
@@ -186,9 +188,74 @@ func capture(label: String, submit: bool, verify_material: bool=true) -> Diction
 		"previous_blend_active":frame.previous_blend_active,"selection_usec":frame.selection_usec,
 		"upload_cache_usec":frame.upload_cache_usec,"resolve_usec":frame.resolve_usec,
 		"guard":host.workbench_presentation_last.duplicate(true),"decisions":decisions,
-		"visible_parts":host.physical_actor_overlay._parts.size()}
+		"visible_parts":host.physical_actor_overlay._parts.size(),
+		"material_contents":frame.get("material_contents",[]),
+		"current_content_id":content_id("current"),"previous_content_id":content_id("previous"),
+		"current_texture_id":frame.get("current_texture_id",0),"previous_texture_id":frame.get("previous_texture_id",0)}
 	rows.append(row)
 	return row
+
+func content_id(which: String) -> int:
+	# Diagnostics are optional on the preserved pre-fix implementation. Its
+	# negative must fail on actual disappearing actors, not a missing new API.
+	var value: Variant = host.get("_presentation_"+which+"_content_id")
+	return int(value) if value is int else -1
+
+func exhausted_capture(label: String) -> Dictionary:
+	# Controlled deadline stimulus only: the real native images, GPU slots,
+	# actor receipts and physical geometry are unchanged. This models an upload
+	# consuming the whole guard allowance without a machine-speed threshold.
+	var charged: int = host.PRESENTATION_FRAME_TIME_BUDGET_USEC+1000
+	host._presentation_pending_cache_usec = charged
+	var row: Dictionary = capture(label,true)
+	row["controlled_budget_exhaustion_usec"] = charged
+	check(int(row.guard.cells_examined)==0,label+" performs no extra clearance scans after exhausted deadline")
+	return row
+
+func identical_refresh_budget_controls() -> void:
+	print("TEMPORAL_DENSE_STAGE unchanged content and exhausted deadline")
+	var prior_poses: Dictionary = host.workbench_presentation_frame.poses.duplicate(true)
+	var prior_steps: Dictionary = host.workbench_presentation_frame.selected_steps.duplicate()
+	var bytes: PackedByteArray = host.image.get_data()
+	var revision: int = host.last_uploaded_revision
+	var current: int = content_id("current")
+	if not await refresh_receipt(): return
+	check(host.image.get_data()==bytes and host._presentation_previous_image!=null \
+		and host._presentation_previous_image.get_data()==bytes and host.last_uploaded_revision==revision,
+		"actual native full refresh leaves both GPU source images byte-identical")
+	if current>=0:
+		check(content_id("current")==current and content_id("previous")==current,
+			"unchanged upload and actual old GPU slot share the certified content identity")
+	controlled_step(Vector2(0.8,0))
+	host.snapshot_blend_start_usec = Time.get_ticks_usec()
+	var held: Dictionary = exhausted_capture("unchanged-refresh-budget-hold")
+	check(held.valid and held.previous_blend_active,"exhausted-budget control has valid native receipt and active previous texture")
+	for slot: int in range(DENSE_BODIES):
+		check(held.decisions[slot].source=="held" and host.workbench_presentation_frame.poses.has(slot) \
+			and host.workbench_presentation_frame.poses[slot]==prior_poses.get(slot) \
+			and held.decisions[slot].step==prior_steps.get(slot,-2),
+			"unchanged bytes keep prior certified actor visible without scans slot "+str(slot))
+	# A known image's pixels do not grant permission to ignore an explicit
+	# unavailable-history state. This is a labelled provenance-fault stimulus.
+	var prior_unknown: bool = host._presentation_previous_unknown
+	host._presentation_previous_unknown = true
+	host.snapshot_blend_start_usec = Time.get_ticks_usec()
+	var unknown: Dictionary = exhausted_capture("unchanged-refresh-unknown-history")
+	unknown["controlled_previous_history_unavailable"] = true
+	check(unknown.valid and unknown.previous_blend_active,"unknown-history negative retains the real otherwise-valid receipt")
+	for decision: Dictionary in unknown.decisions:
+		check(decision.source=="hidden","unknown active old GPU history withholds even previously certified content slot "+str(decision.slot))
+	host._presentation_previous_unknown = prior_unknown
+	host.snapshot_blend_start_usec = Time.get_ticks_usec()-2000000
+	var expired: Dictionary = exhausted_capture("unchanged-refresh-expired-history-hold")
+	check(not expired.previous_blend_active,"previous history expiry removes the old-texture obligation")
+	for slot: int in range(DENSE_BODIES):
+		check(expired.decisions[slot].source=="held" and expired.decisions[slot].step==prior_steps.get(slot,-2),
+			"expired identical previous texture preserves certified hold slot "+str(slot))
+	lineage_controls["unchanged_refresh"] = {"material_revision":revision,
+		"original_content_id":current,"current_content_id":content_id("current"),
+		"previous_content_id":content_id("previous"),"real_upload_serial":host.last_uploaded_render_snapshot_serial,
+		"controlled_deadline":true,"controlled_unknown_history":true}
 
 func assert_clear_series(series: Array[Dictionary], label: String, same_material: bool) -> void:
 	for slot: int in range(DENSE_BODIES):
@@ -228,6 +295,7 @@ func dense_series() -> void:
 		steady.append(capture("dense-steady-"+str(index),true))
 		await process_frame
 	assert_clear_series(steady,"steady",true)
+	await identical_refresh_budget_controls()
 	var refreshed: Array[Dictionary] = []
 	for index: int in range(6):
 		if not await refresh_receipt(): break
@@ -291,6 +359,119 @@ func dense_series() -> void:
 		var pose: Transform2D = host.physical_actor_session.bridge.body_transform(slot)
 		check(pose.origin.y>spawns[slot].y+0.1,"actual gravity displacement survives presentation for slot "+str(slot))
 
+func lineage_native_paint(cell: Vector2i, material: int) -> bool:
+	host.paused = true
+	host.update_worker_frame_state()
+	if not check(await until(func() -> bool:
+		var value: CyberSimulationSnapshot = host.simulation_worker.take_latest_snapshot(0)
+		return value!=null and value.paused),"content-lineage native owner acknowledges pause"): return false
+	var state: Dictionary = host.simulation_worker.paint_state()
+	var queued: Dictionary = host.simulation_worker.paint_queue({"kind":"edit",
+		"cells":PackedInt32Array([cell.x,cell.y,material]),"expected_generation":state.generation,
+		"expected_revision":state.revision,"expected_tick":state.tick})
+	if not check(queued.get("status","")=="queued","content-lineage real native PAINT queued"): return false
+	if not check(await until(func() -> bool: return host.simulation_worker.paint_state().receipt_ready),
+		"content-lineage native PAINT receipt completes"): return false
+	var receipt: Dictionary = host.simulation_worker.paint_take_result()
+	lineage_native_edits.append({"cell":[cell.x,cell.y],"material":material,"receipt":receipt})
+	if not check(receipt.get("status","")=="completed" and receipt.get("after")==PackedInt32Array([material]),
+		"content-lineage authoritative edit readback matches requested material"): return false
+	return check(await until(func() -> bool:
+		host.consume_worker_snapshot()
+		return host.image.get_pixel(cell.x,cell.y).r8==material),
+		"content-lineage material reaches genuine texture upload without resolving a new pose")
+
+func lineage_renew_native_receipt() -> bool:
+	# PAINT invalidates the old actor/material receipt. Obtain a genuine native
+	# completion for the actual away pose, retaining the existing presentation
+	# certificate by consuming snapshots without running Main's resolver.
+	host.physical_actor_session.set_suspended(false)
+	host.paused = false
+	host.simulation_worker.set_engine_lab_pixel_pacing(60,true)
+	host._publish_physical_body_state()
+	var sample: int = host._workbench_wait_sample
+	host.update_worker_frame_state()
+	var ready: bool = await until(func() -> bool:
+		host.consume_worker_snapshot()
+		var frame: Dictionary = host.workbench_display_frame()
+		return host._valid_workbench_mask_frame(frame) and frame.instances.has(1) \
+			and frame.instances[1].get("sample",-1)==sample)
+	host.paused = true
+	host.update_worker_frame_state()
+	return check(ready,"content-lineage safety query uses a new valid actual native actor/material receipt")
+
+func changed_previous_content_controls() -> void:
+	print("TEMPORAL_DENSE_STAGE actual current/previous content subset")
+	var setup: Dictionary = Setup.fresh(PackedInt32Array(ui.applied.liquid_policy),Vector2i(512,512))
+	spawns.assign([Vector2(240,240)])
+	setup.actors = [Setup.instance("needle",1,spawns[0])]
+	setup.next_id = 2
+	setup.selected = 1
+	if not await install(setup): return
+	ui._camera.select(0)
+	controlled_step(Vector2(5,0))
+	var established: Dictionary = capture("content-A-certified",true)
+	if not check(established.valid and established.decisions[0].source=="live",
+		"real clear Needle pose obtains initial content certificate"): return
+	var anchor: Transform2D = host.workbench_presentation_frame.poses[0]
+	var anchor_step: int = host.workbench_presentation_frame.selected_steps[0]
+	var clear_bytes: PackedByteArray = host.image.get_data()
+	var content_a: int = content_id("current")
+	controlled_step(Vector2(30,0))
+	var away: Transform2D = host.physical_actor_session.bridge.body_transform(0)
+	var physical_tick: int = host.physical_actor_session.tick
+	# This cell is inside the certified visual pose, outside both the old native
+	# mask at x240 and actual away RID at x270. Ordinary native PAINT admits it.
+	var cell := Vector2i(246,240)
+	if not await lineage_native_paint(cell,98): return
+	if not await lineage_renew_native_receipt(): return
+	check(host._workbench_presentation_state[0].pose==anchor,
+		"renewing actual native receipt does not overwrite retained visual certificate")
+	var rectangles: Array = host.physical_actor_session.bridge._rects[0]
+	check(not footprint_clear(anchor,rectangles,host.image) and footprint_clear(away,rectangles,host.image),
+		"actual painted B obstructs certified anchor footprint while leaving actual away body clear")
+	var content_b: int = content_id("current")
+	if content_a>=0:
+		check(content_b!=content_a,"actual newly painted material has a distinct content identity")
+	host.snapshot_blend_start_usec = Time.get_ticks_usec()-2000000
+	var changed: Dictionary = exhausted_capture("content-B-current-exhausted")
+	changed["expected_safety_withholding"] = true
+	check(changed.valid and changed.decisions[0].source=="hidden",
+		"new material under certified footprint withholds despite valid actual native receipt")
+	if not await lineage_native_paint(cell,0): return
+	if not await lineage_renew_native_receipt(): return
+	check(host.image.get_data()==clear_bytes and host._presentation_previous_image!=null \
+		and host._presentation_previous_image.get_pixel(cell.x,cell.y).r8==98,
+		"native erase restores exact clear A while genuine previous GPU source retains obstructing B")
+	check(footprint_clear(anchor,rectangles,host.image) \
+		and not footprint_clear(anchor,rectangles,host._presentation_previous_image),
+		"actual anchor footprint is clear in current A and obstructed by genuine previous B")
+	if DisplayServer.get_name()!="headless":
+		var gpu_old: Image = host.previous_texture.get_image()
+		check(gpu_old!=null and gpu_old.get_pixel(cell.x,cell.y).r8==98,
+			"actual previous GPU texture retains erased Marble in content-B negative")
+	if content_a>=0:
+		check(content_id("current")==content_a and content_id("previous")==content_b,
+			"A-to-B-to-A upload reuses exact current A identity and preserves genuine previous B identity")
+	host.render_snapshot_hz = 1
+	host.snapshot_blend_start_usec = Time.get_ticks_usec()
+	var old: Dictionary = exhausted_capture("content-A-current-B-previous-exhausted")
+	old["expected_safety_withholding"] = true
+	check(old.valid and old.previous_blend_active and old.decisions[0].source=="hidden",
+		"valid clear-current receipt cannot reuse A-only certificate while actual obstructing B remains visible")
+	host.snapshot_blend_start_usec = Time.get_ticks_usec()-2000000
+	var expired: Dictionary = exhausted_capture("content-A-previous-B-expired-hold")
+	check(expired.valid and not expired.previous_blend_active and expired.decisions[0].source=="held" \
+		and host.workbench_presentation_frame.poses.get(0)==anchor and expired.decisions[0].step==anchor_step,
+		"expired old B permits prior certified A hold at exhausted deadline without rewinding its timeline")
+	check(host.physical_actor_session.tick==physical_tick and host.physical_actor_session.bridge.body_transform(0)==away,
+		"content publication and certificate holds leave completed Rapier state untouched")
+	check(Vector2(host.workbench_presentation_frame.follow_target)==anchor.origin,
+		"Follow targets held certified A rather than independently sampled away body")
+	lineage_controls["changed_previous"] = {"content_a":content_a,"content_b":content_b,
+		"current_content_id":content_id("current"),"previous_content_id":content_id("previous"),
+		"certified_step":anchor_step,"actual_rapier_step":physical_tick,"all_receipts_native":true}
+
 func supported_compound() -> void:
 	print("TEMPORAL_DENSE_STAGE supported 128-square compound")
 	# This goes through the shipped bounded registry validation, normal setup,
@@ -350,6 +531,7 @@ func _run() -> void:
 	ui = host.shared_workbench
 	if check(await until(func() -> bool: return ui!=null and not ui.applied.is_empty()),"mounted real Workbench ready"):
 		await dense_series()
+		await changed_previous_content_controls()
 		await supported_compound()
 	check(Fleet.restore_registry(registry_before),"authored registry restored after bounded fixture")
 	check(source_before==identity(),"executed source and native runtime unchanged during fixture")
@@ -361,7 +543,8 @@ func _run() -> void:
 		check(file!=null,"dense evidence file opens")
 	var result: Dictionary = {"schema":"workbench-temporal-dense-v1","checks":checks,"failures":failures,
 		"source_identity":source_before,"summary":summary,"ordinary_progress":ordinary_progress,"observations":rows,
-		"scope":"Actual mounted Main/native World/Rapier. Controlled eight-body near-contact, genuine native full refresh, ordinary callbacks and supported authored compound; no clearance retries or physical GPU claim."}
+		"lineage_controls":lineage_controls,"lineage_native_edits":lineage_native_edits,
+		"scope":"Actual mounted Main/native World/Rapier. Eight-body near-contact, native full refresh, ordinary callbacks and authored compound; labelled exhausted-deadline/history controls and native A-to-B-to-A safety; no clearance retries or physical GPU claim."}
 	if file!=null:
 		file.store_string(JSON.stringify(result,"  ")+"\n")
 		file.close()

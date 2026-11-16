@@ -12,6 +12,14 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 ## Camera stack temporal coherence — 2026-11-15
 
+**Owner physical FAIL:** delivered `43f46c6e5ec9` repeatedly freezes actors/Rapier
+for approximately 100–1000 ms. Continue from the
+[physics-freeze investigation](../audits/2026-11-15-workbench-physics-freezes.md).
+The earlier all-live pose result did not qualify actual physical progress or the
+launcher's native-sample handshake. Do not disable the one-step feedback fence
+to obtain higher rates; the corrective collider path and coupled-default tests
+must retain it. No physical acceptance or merge authority has been granted.
+
 Continue the integrated #609 candidate through its
 [presentation contract](../architecture/rendering-and-gameplay-bridges.md#coherent-workbench-presentation-frame),
 [physical acceptance procedure](camera-stack-coherence-acceptance.md) and

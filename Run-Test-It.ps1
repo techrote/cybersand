@@ -15,6 +15,7 @@ param(
 )
 Set-StrictMode -Version Latest
 $ErrorActionPreference='Stop'
+$ExplicitRenderingDriver=$PSBoundParameters.ContainsKey('RenderingDriver')
 $Root=[IO.Path]::GetFullPath($PSScriptRoot)
 $Output=[IO.Path]::Combine($Root,'Test-It-Results',([DateTime]::Now.ToString('yyyyMMdd-HHmmss')+'-'+$PID))
 [void][IO.Directory]::CreateDirectory($Output)
@@ -89,6 +90,90 @@ function Distribution($Values) {
       p95=$Sorted[[Math]::Max(0,[Math]::Ceiling($Sorted.Count*0.95)-1)]
       p99=$Sorted[[Math]::Max(0,[Math]::Ceiling($Sorted.Count*0.99)-1)];max=$Sorted[-1]}
 }
+function Physics-Distribution($Values) {
+    # Match analyze_pose_trace.py's interpolated quantiles, independently of
+    # the retained nearest-rank summaries used by the older pacing suite.
+    $Sorted=@($Values|ForEach-Object{[double]$_}|Sort-Object)
+    $Result=@{count=$Sorted.Count;minimum=$null;median=$null;p95=$null;p99=$null;maximum=$null;mean=$null}
+    if($Sorted.Count -eq 0){return $Result}
+    $Result.minimum=[Math]::Round($Sorted[0],6);$Result.maximum=[Math]::Round($Sorted[-1],6)
+    $Result.mean=[Math]::Round([double]($Sorted|Measure-Object -Average).Average,6)
+    foreach($Entry in @(@('median',0.5),@('p95',0.95),@('p99',0.99))) {
+        $Index=($Sorted.Count-1)*[double]$Entry[1];$Low=[int][Math]::Floor($Index)
+        $High=[Math]::Min($Low+1,$Sorted.Count-1)
+        $Result[[string]$Entry[0]]=[Math]::Round($Sorted[$Low]+($Sorted[$High]-$Sorted[$Low])*($Index-$Low),6)
+    }
+    return $Result
+}
+function Event-Time($Event) {
+    $Value=Field $Event 'time_usec' (Field $Event 'completed_usec')
+    if($null -eq $Value){return $null}
+    $Time=[double]$Value
+    if($Time -ge 0 -and -not [double]::IsInfinity($Time) -and -not [double]::IsNaN($Time)){return $Time}
+    return $null
+}
+function Read-PhysicsProgress($Frames,$Events) {
+    # A displayed live pose may conceal stopped physics. Measure only exact,
+    # consecutive completed-step events; do not infer completions from frames.
+    $Steps=New-Object 'System.Collections.Generic.List[object]'
+    $Seen=@{}
+    foreach($Event in @($Events|Where-Object{(Field $_ 'event') -eq 'rapier_step' -and
+            $null -ne (Event-Time $_)}|Sort-Object -Property {Event-Time $_})) {
+        $Key=Field $Event 'step'
+        if($null -eq $Key -or $Seen.ContainsKey([string]$Key)){continue}
+        $Seen[[string]$Key]=$true;$Steps.Add($Event)
+    }
+    $Holds=@($Events|Where-Object{(Field $_ 'event') -eq 'rapier_hold' -and
+        $null -ne (Event-Time $_)}|Sort-Object -Property {Event-Time $_})
+    $MainTimes=@($Frames|ForEach-Object{[double]$_.time_usec}|Sort-Object)
+    $Intervals=New-Object 'System.Collections.Generic.List[object]'
+    $Missing=0;$HoldIndex=0;$MainIndex=0
+    for($Index=1;$Index -lt $Steps.Count;$Index++) {
+        $Before=$Steps[$Index-1];$After=$Steps[$Index]
+        if([long]$After.step -ne [long]$Before.step+1){$Missing++;continue}
+        $Begin=Event-Time $Before;$End=Event-Time $After
+        Require ($End -ge $Begin) 'Nonmonotonic completed physics timestamps'
+        $Reasons=@{}
+        while($HoldIndex -lt $Holds.Count -and (Event-Time $Holds[$HoldIndex]) -le $Begin){$HoldIndex++}
+        while($HoldIndex -lt $Holds.Count -and (Event-Time $Holds[$HoldIndex]) -le $End) {
+            $Reason=[string](Field $Holds[$HoldIndex] 'reason' 'unknown')
+            if(-not $Reasons.ContainsKey($Reason)){$Reasons[$Reason]=0};$Reasons[$Reason]++
+            $HoldIndex++
+        }
+        while($MainIndex -lt $MainTimes.Count -and $MainTimes[$MainIndex] -le $Begin){$MainIndex++}
+        $Submissions=0
+        while($MainIndex -lt $MainTimes.Count -and $MainTimes[$MainIndex] -le $End){$Submissions++;$MainIndex++}
+        $WorkStart=Field $After 'start_usec'
+        $Interval=@{previous_step=$Before.step;step=$After.step;start_usec=$Begin;end_usec=$End
+            gap_ms=($End-$Begin)/1000.0;hold_reasons=$Reasons;includes_pause=$Reasons.ContainsKey('paused')
+            main_submissions=$Submissions;step_work_ms=$(if($null -ne $WorkStart){($End-[double]$WorkStart)/1000.0}else{$null})}
+        foreach($FieldName in @('solver','flush')) {
+            $Value=Field $After ($FieldName+'_usec')
+            $Interval[$FieldName+'_ms']=$(if($null -ne $Value){[double]$Value/1000.0}else{$null})
+        }
+        $Intervals.Add($Interval)
+    }
+    $Active=@($Intervals|Where-Object{-not $_.includes_pause})
+    $KnownFrames=@($Frames|Where-Object{$null -ne (Field $_ 'rapier_step')})
+    $Unchanged=0
+    for($Index=1;$Index -lt $KnownFrames.Count;$Index++) {
+        $Before=$KnownFrames[$Index-1];$After=$KnownFrames[$Index]
+        if($Before.rapier_step -eq $After.rapier_step -and
+            -not [bool](Field $Before 'paused' $false) -and -not [bool](Field $After 'paused' $false)){$Unchanged++}
+    }
+    return @{consecutive_step_intervals=$Intervals.Count;unmeasured_intervals_with_missing_completions=$Missing
+        pause_spanning_intervals=$Intervals.Count-$Active.Count
+        active_completed_step_gap_ms=(Physics-Distribution @($Active|ForEach-Object{$_.gap_ms}))
+        active_gaps_at_least_100ms=@($Active|Where-Object{$_.gap_ms -ge 100}).Count
+        active_gaps_at_least_250ms=@($Active|Where-Object{$_.gap_ms -ge 250}).Count
+        active_gaps_at_least_1000ms=@($Active|Where-Object{$_.gap_ms -ge 1000}).Count
+        main_intervals_without_physics_progress=$Unchanged;observed_main_intervals=[Math]::Max(0,$KnownFrames.Count-1)
+        step_work_ms=(Physics-Distribution @($Steps|Where-Object{$null -ne (Field $_ 'start_usec')}|ForEach-Object{((Event-Time $_)-[double]$_.start_usec)/1000.0}))
+        solver_ms=(Physics-Distribution @($Steps|Where-Object{$null -ne (Field $_ 'solver_usec')}|ForEach-Object{[double]$_.solver_usec/1000.0}))
+        flush_ms=(Physics-Distribution @($Steps|Where-Object{$null -ne (Field $_ 'flush_usec')}|ForEach-Object{[double]$_.flush_usec/1000.0}))
+        largest_active_gaps=@($Active|Sort-Object -Property gap_ms -Descending|Select-Object -First 10)
+        meaning='Wall-clock physical completions, separate from visual pose holds. Hold reasons are observed gates, not complete causal attribution. Step/solver timers include possible OS descheduling; no GPU scanout is measured.'}
+}
 function Read-PoseStatistics([string]$Path) {
     # Independent PowerShell reduction; no Python/development tools needed.
     $Records=@(Get-Content -LiteralPath $Path -Encoding UTF8|Where-Object{$_ -ne ''}|ForEach-Object{ConvertFrom-Json -InputObject $_})
@@ -158,7 +243,7 @@ function Read-PoseStatistics([string]$Path) {
             $Last[$Key]=$Body
         }
     }
-    $Counts=@{};$Trajectory=@{};$EventTimes=@{};$UploadsBySerial=@{};$UnmatchedAcks=0
+    $Counts=@{};$Trajectory=@{};$EventTimes=@{};$UploadsBySerial=@{};$UnmatchedAcks=0;$PhysicsHolds=@{}
     # Legacy delayed ACK rows have uploaded_usec=0. Join the captured upload
     # identity instead; an upload before capture has no measured latency here.
     foreach($Event in $Events) {
@@ -173,6 +258,10 @@ function Read-PoseStatistics([string]$Path) {
     foreach($Event in $Events) {
         $Kind=[string](Field $Event 'event' 'unknown')
         if(-not $Counts.ContainsKey($Kind)){$Counts[$Kind]=0};$Counts[$Kind]++
+        if($Kind -eq 'rapier_hold') {
+            $Reason=[string](Field $Event 'reason' 'unknown')
+            if(-not $PhysicsHolds.ContainsKey($Reason)){$PhysicsHolds[$Reason]=0};$PhysicsHolds[$Reason]++
+        }
         $EventTime=[double](Field $Event 'time_usec' (Field $Event 'completed_usec' -1))
         if(-not $EventTimes.ContainsKey($Kind)){$EventTimes[$Kind]=New-Object 'System.Collections.Generic.List[double]'}
         if($EventTime -ge 0){$EventTimes[$Kind].Add($EventTime)}
@@ -209,6 +298,7 @@ function Read-PoseStatistics([string]$Path) {
         screen_step_px=(Distribution $ScreenSteps);submitted_to_live_gap_px=(Distribution $SourceLag)
         projection_residual_px=(Distribution $Residuals);selected_world_pose_holds=$Holds
         source_switches=$Switches;source_counts=$Sources;guard_reasons=$Reasons;event_counts=$Counts;event_rates_hz=$EventRates
+        physics_progress=(Read-PhysicsProgress $Frames $Events);physics_hold_reasons=$PhysicsHolds
         snapshot_age_at_presentation_ms=(Distribution $SnapshotAges);bound_native_age_at_presentation_ms=(Distribution $NativeAges)
         native_tick_wall_ms=(Distribution $NativeWall);texture_upload_cpu_call_ms=(Distribution $UploadWall)
         snapshot_age_at_upload_ms=(Distribution $UploadAges);upload_to_ack_issue_ms=(Distribution $AckLatencies)
@@ -219,6 +309,11 @@ function Read-PoseStatistics([string]$Path) {
         callbacks_without_overlay_submission=$MissingSubmissions
         dropped_frames=[int]$Records[-1].dropped;duplicate_callbacks=[int]$Records[-1].duplicates
         actual_first_view=@($Frames[0].view_world_cells);actual_last_view=@($Frames[-1].view_world_cells)}
+    $Result.physics_timing_observation=$(if($Result.physics_progress.active_completed_step_gap_ms.count -eq 0){
+        'unavailable_no_consecutive_active_steps'
+    }elseif($Result.physics_progress.active_gaps_at_least_100ms -gt 0){
+        'performance_concern_100ms_plus'
+    }else{'no_100ms_gap_observed_not_acceptance'})
     return @{statistics=$Result;trajectory=$Trajectory}
 }
 function Compare-PhysicalSteps($Before,$After) {
@@ -241,8 +336,33 @@ function Compare-PhysicalSteps($Before,$After) {
         angle_delta_radians=(Distribution $Angles);different_native_tick_inputs=$DifferentNative
         status=$(if($Positions.Count -eq 0){'unavailable'}elseif(($Positions|Measure-Object -Maximum).Maximum -gt 0.001){'physical_trajectory_differs'}else{'matched_within_0.001_cells'})}
 }
+function Read-LauncherWorkerPreference {
+    # FeatureLauncher reads this one file before Main is constructed. Inspect
+    # the ordinary profile without copying it into cases or changing it.
+    $Preference=@{requested=0;status='no saved override; Auto';exists=$false
+        meaning='Ordinary launcher request only. Each case records its actual resolved native pool separately.'}
+    if([string]::IsNullOrEmpty($PreviousAppData)){$Preference.status='APPDATA unavailable';return $Preference}
+    $ProjectText=Get-Content -LiteralPath (Join-Path $Project 'project.godot') -Raw -Encoding UTF8
+    $Match=[regex]::Match($ProjectText,'(?m)^config/name="([^"]+)"')
+    Require $Match.Success 'Cannot identify ordinary Godot user-data directory'
+    $UserProfileFolder=Join-Path (Join-Path $PreviousAppData 'Godot\app_userdata') $Match.Groups[1].Value
+    $Preference.path=Join-Path $UserProfileFolder 'cybersand-engine-lab-workers.json'
+    if(-not (Test-Path -LiteralPath $Preference.path -PathType Leaf)){return $Preference}
+    $Preference.exists=$true
+    try {
+        $Preference.sha256=Sha $Preference.path
+        $Saved=Get-Content -LiteralPath $Preference.path -Raw -Encoding UTF8|ConvertFrom-Json
+        $Value=Field $Saved 'native_threads'
+        if(($Value -is [int] -or $Value -is [long]) -and $Value -ge 0 -and $Value -le 32) {
+            $Preference.requested=[int]$Value
+            $Preference.status=$(if($Value -eq 0){'saved Auto request'}else{'saved explicit worker request'})
+        }else{$Preference.status='invalid saved value; launcher retains Auto'}
+    }catch{$Preference.status='unreadable saved preference';$Preference.error=[string]$_.Exception.Message}
+    return $Preference
+}
 function Save-Summary {
     $Summary.elapsed_seconds=[Math]::Round(((Get-Date)-$Start).TotalSeconds,3)
+    $Summary.physics_timing_concerns=@($Summary.cases|Where-Object{$_.statistics.physics_timing_observation -eq 'performance_concern_100ms_plus'}).Count
     [IO.File]::WriteAllText((Join-Path $Output 'summary.json'),
       (($Summary|ConvertTo-Json -Depth 28)+[Environment]::NewLine),
       [Text.UTF8Encoding]::new($false))
@@ -250,18 +370,63 @@ function Save-Summary {
     $Lines.Add('CyberSand presentation comparison - local measured results')
     $Lines.Add('Source: '+$Summary.source)
     $Lines.Add('Capture status: '+$Summary.status+'; physical NVIDIA acceptance: PENDING OWNER REVIEW')
-    $Lines.Add('Rates below are achieved. VSync is disabled only for these scripted pacing cases.')
+    $Lines.Add('A complete capture is not a physics smoothness or physical NVIDIA acceptance result.')
+    $Lines.Add(('Cases with measured active physics gaps of at least 100ms: {0}. These are performance concerns even when capture completes.' -f $Summary.physics_timing_concerns))
+    $Lines.Add('Rates below are achieved. Coupled defaults preserve startup VSync; the six pacing experiments disable it.')
     $Lines.Add('Main means overlay submission, not monitor scanout. See summary.json and raw traces for full evidence.')
+    $Lines.Add('Rapier targets count callbacks per second; each completed step still advances 1/60 simulated second.')
+    foreach($CpuIdentity in @(Field $Summary 'cpu' @())) {
+        $Lines.Add(('CPU: {0}; logical processors: {1}; physical cores: {2}' -f $CpuIdentity.model,$CpuIdentity.logical_processors,$CpuIdentity.physical_cores))
+    }
+    $Preference=Field $Summary 'launcher_worker_preference'
+    if($null -ne $Preference) {
+        $Lines.Add(('Ordinary launcher worker request: {0} ({1}). Case profiles are isolated; your saved setting is unchanged.' -f $Preference.requested,$Preference.status))
+    }
     $Lines.Add('')
     foreach($Row in $Summary.cases) {
         $Stats=$Row.statistics;$Timing=$Stats.frame_interval_ms;$Cpu=$Stats.presentation_cpu_ms
+        $Physics=Field $Stats 'physics_progress';$Gaps=Field $Physics 'active_completed_step_gap_ms'
+        $PhysicsHolds=Field $Stats 'physics_hold_reasons' @{}
         $Lines.Add($Row.name)
+        $TimingDescription=$(if($Stats.physics_timing_observation -eq 'performance_concern_100ms_plus'){
+            'PERFORMANCE CONCERN: active completed-step gaps reached at least 100ms.'
+        }elseif($Stats.physics_timing_observation -eq 'unavailable_no_consecutive_active_steps'){
+            'UNAVAILABLE: no exact consecutive active completed-step intervals.'
+        }else{'No 100ms gap observed; this alone is not a gameplay acceptance result.'})
+        $Lines.Add('  Physics: '+$TimingDescription)
+        $WorkerRequest=$(if($Row.native_workers.requested -eq 0){'Auto (0)'}else{[string]$Row.native_workers.requested})
+        $Lines.Add(('  Profile: {0}; renderer: {1}; VSync enum: {2}; window: {3}; native workers requested/resolved: {4} / {5}' -f
+            $Row.display.profile,$Row.render_driver,$Row.display.vsync_mode,($Row.display.window_size -join 'x'),$WorkerRequest,$Row.native_workers.resolved_capacity))
+        $DisplayStartup=Field $Row.display 'startup'
+        $Lines.Add(('  VSync enum project/start/effective: {0} / {1} / {2}; started window: {3}' -f
+            (Field $DisplayStartup 'project_vsync_mode' 'unrecorded'),(Field $DisplayStartup 'vsync_mode' 'unrecorded'),
+            $Row.display.vsync_mode,((Field $DisplayStartup 'window_size' @('unrecorded')) -join 'x')))
+        $Lines.Add(('  Native/Rapier targets: {0} / {1}; wait for native sample: {2}; wake on sample: {3}' -f
+            $Row.pixel_target_hz,$Row.rapier_callback_target_hz,$Row.wait_native_sample,$Row.wake_on_rapier_sample))
         $Lines.Add(('  Main/native/Rapier Hz: {0:N2} / {1:N2} / {2:N2}' -f $Stats.achieved_overlay_fps,$Stats.achieved_native_hz,$Stats.achieved_rapier_hz))
         $Lines.Add(('  Main interval ms median/p95/p99: {0} / {1} / {2}; samples: {3}' -f (Field $Timing 'p50' 'n/a'),(Field $Timing 'p95' 'n/a'),(Field $Timing 'p99' 'n/a'),(Field $Timing 'count' 0)))
+        $Lines.Add(('  Completed Rapier gap ms median/p95/p99/max: {0} / {1} / {2} / {3}; consecutive active intervals: {4}' -f
+            (Field $Gaps 'median' 'n/a'),(Field $Gaps 'p95' 'n/a'),(Field $Gaps 'p99' 'n/a'),(Field $Gaps 'maximum' 'n/a'),(Field $Gaps 'count' 0)))
+        $Lines.Add(('  Active gaps at least 100 / 250 / 1000 ms: {0} / {1} / {2}; Main intervals without physical progress: {3} / {4}' -f
+            $Physics.active_gaps_at_least_100ms,$Physics.active_gaps_at_least_250ms,$Physics.active_gaps_at_least_1000ms,
+            $Physics.main_intervals_without_physics_progress,$Physics.observed_main_intervals))
+        $Lines.Add(('  Physics hold callbacks: native_sample={0}; terrain_installation={1}; paused={2}; all reasons: {3}' -f
+            (Field $PhysicsHolds 'native_sample' 0),(Field $PhysicsHolds 'terrain_installation' 0),(Field $PhysicsHolds 'paused' 0),($PhysicsHolds|ConvertTo-Json -Compress)))
+        $Lines.Add(('  Excluded pause-spanning intervals: {0}; unmeasured intervals with missing completions: {1}' -f
+            $Physics.pause_spanning_intervals,$Physics.unmeasured_intervals_with_missing_completions))
+        foreach($Stage in @('step_work_ms','solver_ms','flush_ms')) {
+            $Work=Field $Physics $Stage
+            $Lines.Add(('  {0} median/p95/p99/max: {1} / {2} / {3} / {4}; samples: {5}' -f
+                $Stage,(Field $Work 'median' 'n/a'),(Field $Work 'p95' 'n/a'),(Field $Work 'p99' 'n/a'),(Field $Work 'maximum' 'n/a'),(Field $Work 'count' 0)))
+        }
         $Lines.Add(('  Presentation CPU ms median/p95/p99: {0} / {1} / {2}; recorded source rewinds: {3}' -f (Field $Cpu 'p50' 'n/a'),(Field $Cpu 'p95' 'n/a'),(Field $Cpu 'p99' 'n/a'),$Stats.selected_source_time_rewinds))
-        $Lines.Add(('  Intentional holds: {0}; withheld actor frames: {1}' -f $Stats.intentional_hold_frames,$Stats.withheld_body_frames))
+        $Lines.Add(('  Visual selection only - intentional holds: {0}; withheld actor frames: {1}' -f $Stats.intentional_hold_frames,$Stats.withheld_body_frames))
         $Lines.Add(('  Known selected steps: {0}; visible unknown source times: {1}; callbacks without a submission: {2}' -f $Stats.selected_step_observations,$Stats.selected_step_unknown_visible_frames,$Stats.callbacks_without_overlay_submission))
+        $Lines.Add('')
     }
+    $Lines.Add('Physics hold reasons identify observed gates, not complete causes. Solver timers include possible OS descheduling.')
+    $Lines.Add('Zero visual holds or zero 100ms gaps alone does not establish continuous or acceptable gameplay.')
+    $Lines.Add('Compare your ordinary interactive renderer, VSync, worker setting and gameplay separately; hosted software rendering is not physical NVIDIA evidence.')
     if($Summary.failures.Count -gt 0){$Lines.Add('Incomplete cases: '+$Summary.failures.Count+'; original logs are retained.')}
     [IO.File]::WriteAllLines((Join-Path $Output 'READ-RESULTS.txt'),$Lines.ToArray(),[Text.UTF8Encoding]::new($false))
 }
@@ -313,7 +478,7 @@ function Run-Case([string]$Family,[int]$Workers,[int]$Repeat,
                   [int]$Fps=60,[int]$RapierHz=60,[int]$AckDelay=0,[bool]$AckGated=$false,
                   [bool]$WaitSample=$true,[bool]$SampleWake=$true,[bool]$Smoothing=$true,
                   [string]$Presentation='repaired',[string]$Condition='legacy-suite',[bool]$CadenceTape=$false,
-                  [string]$PoseSelection='coherent',[string]$FireMode='unchanged') {
+                  [string]$PoseSelection='coherent',[string]$FireMode='unchanged',[string]$DisplayProfile='scripted') {
     # Keep paths short for Windows PowerShell 5.1 and Godot shader-cache names.
     # Every requested axis is still written in the receipt and summary.
     $Name=$(if($Condition -eq 'legacy-suite'){"$Family-w$Workers-r$Repeat-$Camera-$Pose-p$PixelHz-u$RenderHz"}elseif($Coherence){"$Condition-$PoseSelection"}else{"$Condition-$Presentation"})
@@ -327,15 +492,22 @@ function Run-Case([string]$Family,[int]$Workers,[int]$Repeat,
     $env:CYBERSAND_DIAG_PRESENTATION=$(if($PoseSelection -eq 'legacy'){'legacy'}else{''})
     New-Item -ItemType Directory -Force -Path $env:APPDATA|Out-Null
     Write-Host "TEST IT | $Name | real 2048-square World / Needle physics tape" -ForegroundColor Cyan
-    $Arguments=@('--rendering-driver',$RenderingDriver,'--rendering-method',
-       'gl_compatibility','--audio-driver','Dummy','--max-fps',[string]$Fps,
-       '--path',$Project,'--script','res://tests/test_engine_lab_physical_test_it.gd',
+    $Arguments=@()
+    if($DisplayProfile -eq 'scripted') {
+        $Arguments+=@('--rendering-driver',$RenderingDriver,'--rendering-method',
+            'gl_compatibility','--audio-driver','Dummy','--max-fps',[string]$Fps)
+    }elseif($ExplicitRenderingDriver){$Arguments+=@('--rendering-driver',$RenderingDriver)}
+    $Arguments+=@('--path',$Project,'--script','res://tests/test_engine_lab_physical_test_it.gd',
        '--','--engine-lab-scripted',"--family=$Family","--workers=$Workers",
        "--repeat=$Repeat","--camera=$Camera","--pose=$Pose",
        "--pixel-hz=$PixelHz","--publication-hz=$RenderHz","--fps=$Fps","--rapier-hz=$RapierHz",
        "--ack-delay=$AckDelay","--ack-gated=$([int]$AckGated)","--wait-sample=$([int]$WaitSample)",
        "--sample-wake=$([int]$SampleWake)","--smoothing=$([int]$Smoothing)","--cadence=$Presentation",
-       "--cadence-tape=$([int]$CadenceTape)","--presentation=$PoseSelection","--fire-mode=$FireMode","--receipt=$Receipt")
+       "--cadence-tape=$([int]$CadenceTape)","--presentation=$PoseSelection","--fire-mode=$FireMode",
+       "--display-profile=$DisplayProfile","--receipt=$Receipt")
+    $CaseIdentity=@{name=$Name;source=$Summary.source;arguments=$Arguments;isolated_user_profile=$env:APPDATA
+        requested_native_workers=$Workers;display_profile=$DisplayProfile;rendering_driver_override=$(if($DisplayProfile -eq 'scripted' -or $ExplicitRenderingDriver){$RenderingDriver}else{$null})}
+    [IO.File]::WriteAllText((Join-Path $Dir 'case.json'),(($CaseIdentity|ConvertTo-Json -Depth 8)+[Environment]::NewLine),[Text.UTF8Encoding]::new($false))
     Run-Godot $Name $Arguments $TimeoutSeconds $Dir
     Require (Test-Path -LiteralPath $Receipt -PathType Leaf) "$Name did not write a receipt"
     $Data=Get-Content -LiteralPath $Receipt -Raw -Encoding UTF8|ConvertFrom-Json
@@ -344,6 +516,18 @@ function Run-Case([string]$Family,[int]$Workers,[int]$Repeat,
     Require ($Data.complete -eq $true -and $Data.status -eq 'passed') "$Name incomplete"
     Require ($Data.source_sha -eq $Summary.source) "$Name source identity changed"
     Require ($Data.presentation_mode -eq $PoseSelection -and $Data.cadence_mode -eq $Presentation) "$Name comparison arm differs"
+    Require ($Data.native_workers.requested -eq $Workers -and $Data.native_workers.observed_request -eq $Workers -and
+        $Data.native_workers.resolved_capacity -gt 0) "$Name native worker selection not verified"
+    Require ($Data.cpu.logical_processors -gt 0 -and -not [string]::IsNullOrWhiteSpace([string]$Data.cpu.model)) "$Name CPU identity missing"
+    Require ($Data.effective_pacing.pixel_hz -eq $PixelHz -and $Data.effective_pacing.rapier_callback_hz -eq $RapierHz -and
+        $Data.effective_pacing.wait_native_sample -eq $WaitSample -and $Data.effective_pacing.sample_wake -eq $SampleWake -and
+        $Data.effective_pacing.graphical_fps_cap -eq $Fps -and $Data.effective_pacing.publication_hz -eq $RenderHz -and
+        $Data.effective_pacing.ack_delay_frames -eq $AckDelay -and $Data.effective_pacing.ack_gated_publication -eq $AckGated -and
+        $Data.effective_pacing.smoothing -eq $Smoothing) "$Name effective pacing differs from requested settings"
+    Require ($Data.display.profile -eq $DisplayProfile) "$Name display profile differs"
+    if($DisplayProfile -eq 'interactive-default') {
+        Require ($Data.display.vsync_mode -eq $Data.display.startup.vsync_mode) "$Name changed the ordinary startup VSync setting"
+    }
     if($FireMode -eq 'on-off') {
         $FireEvents=@($Data.fire_schedule.events)
         Require ($FireEvents.Count -eq 2 -and $FireEvents[0].observed_step -eq 0 -and $FireEvents[1].observed_step -eq 60 -and
@@ -357,9 +541,11 @@ function Run-Case([string]$Family,[int]$Workers,[int]$Repeat,
     Require ($Data.input_tape.complete -eq $true -and @($Data.input_tape.observed).Count -eq $ExpectedInputs) "$Name missed exact physics-tick inputs"
     Require ($Data.native_ticks -gt 0 -and $Data.rapier_steps -ge 24) "$Name no positive native/Rapier progress"
     Require ($Data.trace.frames -gt 0) "$Name missing frame-level diagnostic trace"
-    Require ($Data.view_size[0] -eq 240 -and $Data.view_size[1] -eq 135) "$Name actual view does not match requested framing"
+    $ExpectedView=$(if($DisplayProfile -eq 'interactive-default'){@(480,270)}else{@(240,135)})
+    Require ($Data.view_size[0] -eq $ExpectedView[0] -and $Data.view_size[1] -eq $ExpectedView[1]) "$Name actual view does not match requested framing"
     Require (@($Data.framebuffer_captures).Count -eq 2) "$Name did not capture both actual framebuffers"
     $Analysis=Read-PoseStatistics $Trace
+    Require ($Analysis.statistics.physics_progress.consecutive_step_intervals -gt 0) "$Name missing exact completed Rapier intervals"
     [IO.File]::WriteAllText((Join-Path $Dir 'analysis.json'),
         (($Analysis.statistics|ConvertTo-Json -Depth 28)+[Environment]::NewLine),[Text.UTF8Encoding]::new($false))
     if($Coherence -and $PoseSelection -eq 'coherent') {
@@ -372,19 +558,24 @@ function Run-Case([string]$Family,[int]$Workers,[int]$Repeat,
     }
     $Row=@{name=$Name;passed=$true;workers=$Workers;family=$Family;camera=$Camera;pose=$Pose
         condition=$Condition;cadence_mode=$Presentation;presentation_mode=$PoseSelection
-        fire_schedule=$Data.fire_schedule;display=$Data.display
+        fire_schedule=$Data.fire_schedule;display=$Data.display;cpu=$Data.cpu;native_workers=$Data.native_workers
+        effective_pacing=$Data.effective_pacing;render_driver=$Data.render_driver
         pixel_target_hz=$PixelHz;publication_target_hz=$RenderHz;graphical_fps_target=$Fps
         rapier_callback_target_hz=$RapierHz;fixed_simulation_step_seconds=(1.0/60.0)
         ack_delay_frames=$AckDelay;ack_gated_publication=$AckGated;wait_native_sample=$WaitSample
         wake_on_rapier_sample=$SampleWake;smoothing=$Smoothing;statistics=$Analysis.statistics
         actual_native_ticks=$Data.native_ticks;actual_rapier_steps=$Data.rapier_steps
         rendered_pose_frames=$Data.trace.frames;dropped=$Data.trace.dropped
-        video_adapter=$Data.video_adapter;receipt_sha256=(Sha $Receipt);trace_sha256=(Sha $Trace)}
+        video_adapter=$Data.video_adapter;receipt_sha256=(Sha $Receipt);trace_sha256=(Sha $Trace);case_sha256=(Sha (Join-Path $Dir 'case.json'))}
     $Summary.cases+=,$Row
     $script:LastCaseRow=$Row
     $script:LastTrajectory=$Analysis.trajectory
     Save-Summary
-    Write-Host "PASS $Name - $($Row.rendered_pose_frames) trace frames" -ForegroundColor Green
+    Write-Host "CAPTURE COMPLETE $Name - $($Row.rendered_pose_frames) trace frames" -ForegroundColor Cyan
+    if($Analysis.statistics.physics_timing_observation -eq 'performance_concern_100ms_plus') {
+        Write-Host ('PERFORMANCE CONCERN {0}: {1} active Rapier gaps at least 100ms; maximum {2}ms. See READ-RESULTS.txt.' -f
+            $Name,$Analysis.statistics.physics_progress.active_gaps_at_least_100ms,$Analysis.statistics.physics_progress.active_completed_step_gap_ms.maximum) -ForegroundColor Yellow
+    }
 }
 function Cadence-Condition([string]$Name,$Overrides=@{}) {
     $Row=@{name=$Name;pixel=30;rapier=120;fps=60;publication=60;camera='follow';pose='guarded'
@@ -449,7 +640,7 @@ function Run-CoherenceMatrix {
     $Matrix=Get-Content -LiteralPath $MatrixPath -Raw -Encoding UTF8|ConvertFrom-Json
     Require ($Matrix.schema -eq 'camera-stack-coherence-conditions-v1') 'Wrong coherence matrix schema'
     $Conditions=@($Matrix.conditions)
-    if($Quick){$Conditions=@($Conditions|Where-Object{$_.name -eq 'follow60'})}
+    if($Quick){$Conditions=@($Conditions|Where-Object{$_.name -eq $Matrix.quick_condition})}
     if($CoherenceConditions.Count -gt 0) {
         foreach($Name in $CoherenceConditions){Require (@($Conditions|Where-Object{$_.name -eq $Name}).Count -eq 1) ('Unknown coherence condition: '+$Name)}
         $Conditions=@($Conditions|Where-Object{$CoherenceConditions -contains $_.name})
@@ -462,9 +653,9 @@ function Run-CoherenceMatrix {
         $Rows=@{};$Trajectories=@{}
         foreach($Selection in @('legacy','coherent')) {
             try {
-                Run-Case 'freemass' 1 1 $Condition.camera $Condition.pose $Condition.pixel $Condition.publication `
+                Run-Case 'freemass' ([int](Field $Condition 'workers' 1)) 1 $Condition.camera $Condition.pose $Condition.pixel $Condition.publication `
                     $Condition.fps $Condition.rapier $Condition.ack $Condition.gated $Condition.wait $Condition.wake `
-                    $Condition.smoothing 'repaired' $Condition.name $true $Selection $Condition.fire
+                    $Condition.smoothing 'repaired' $Condition.name $true $Selection $Condition.fire ([string](Field $Condition 'display_profile' 'scripted'))
                 $Rows[$Selection]=$script:LastCaseRow;$Trajectories[$Selection]=$script:LastTrajectory
             }catch{
                 $Summary.failures+=@{condition=$Condition.name;presentation=$Selection;error=[string]$_.Exception.Message}
@@ -519,9 +710,15 @@ try {
     $Version=(& $Engine --version|Select-Object -First 1).Trim()
     Require ($Version -eq $Manifest.godot_version) 'Godot version not pinned'
     $Summary.godot_version=$Version
+    $Summary.cpu=@(Get-CimInstance Win32_Processor|ForEach-Object{@{model=$_.Name
+        logical_processors=$_.NumberOfLogicalProcessors;physical_cores=$_.NumberOfCores;architecture=$_.Architecture}})
+    $Summary.launcher_worker_preference=Read-LauncherWorkerPreference
     $Summary.gpu=@(Get-CimInstance Win32_VideoController|ForEach-Object{@{name=$_.Name;driver=$_.DriverVersion
         resolution=@($_.CurrentHorizontalResolution,$_.CurrentVerticalResolution);refresh_hz=$_.CurrentRefreshRate}})
-    $Summary.dpi_and_vsync_notice='Per-window Godot screen DPI, display scale, refresh rate and effective VSync enum are captured in each case display receipt. Scripted pacing disables VSync; manual review should also use your ordinary setting.'
+    $Summary.dpi_and_vsync_notice='Each case records DPI, scale, refresh, window size, startup/effective VSync and renderer. Coupled interactive-default cases preserve startup VSync/window/zoom; six retained pacing cases disable VSync and use a smaller matched view. Driver/desktop differences remain explicit; hosted software rendering is not physical NVIDIA acceptance.'
+    $Summary.rendering_driver_request=@{driver=$RenderingDriver;explicit_override=$ExplicitRenderingDriver
+        interactive_default=$(if($ExplicitRenderingDriver){'explicit command-line override'}else{'project/platform default; no driver override'})}
+    $Summary.case_profile_notice='Fresh isolated profiles preserve the owner saved settings. Auto0 reproduces a fresh launcher default, not a saved explicit worker override. Native pool capacity is not CPU utilization.'
     $Summary.windows=Get-CimInstance Win32_OperatingSystem|Select-Object Caption,Version,BuildNumber
     Save-Summary
     $env:APPDATA=Join-Path $Output 'import-userdata'

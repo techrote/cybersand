@@ -16,6 +16,9 @@ acceptance](operations/camera-stack-coherence-acceptance.md),
 and [source-scoped evidence](audits/2026-11-15-camera-stack-coherence.md).
 The integrated candidate preserves accepted generator and Flatten features;
 physical NVIDIA acceptance and all merge decisions remain with the owner.
+The delivered `43f46c6e5ec9` failed the owner's physical evaluation with repeated
+actor/Rapier freezes. The [active correction](audits/2026-11-15-workbench-physics-freezes.md)
+distinguishes actual completed-step stalls from presentation-source continuity.
 
 Draft/HOLD actor/terrain cadence continuation of #609: [one-command Windows
 measurements and clock meanings](operations/engine-lab-pose-tracing.md) and
