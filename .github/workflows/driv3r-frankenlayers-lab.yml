@@ -1,4 +1,4 @@
-name: "DRIV3R Frankenlayers Lab — Q4 bridge counterfactual wave"
+name: "DRIV3R Frankenlayers Lab — Wave 15 terminal shunt and echo"
 on:
   pull_request:
     paths:
@@ -20,6 +20,7 @@ on:
       - 'experiments/driv3r/frankenlayers_lab/run-request-wave12.json'
       - 'experiments/driv3r/frankenlayers_lab/run-request-wave13.json'
       - 'experiments/driv3r/frankenlayers_lab/run-request-wave14.json'
+      - 'experiments/driv3r/frankenlayers_lab/run-request-wave15.json'
       - '.github/workflows/driv3r-frankenlayers-lab.yml'
 
 permissions:
@@ -289,6 +290,25 @@ jobs:
           ]
           assert w14["max_parallel"]==2 and w14["timeout_minutes"]<=95
           assert w14["no_game_changes"] and not any(w14[k] for k in ("paid_api","paid_gpu","merge","ready"))
+          # Wave 15 is a new immutable request; never retroactively modify older runs.
+          from experiments.driv3r.frankenlayers_lab.flows import WAVE15_FLOWS
+          w15=json.loads(Path("experiments/driv3r/frankenlayers_lab/run-request-wave15.json").read_text())
+          assert w15["schema"]=="frankenlayers-wave15-q4-reorder-and-echo-matched-geometry/1"
+          assert w15["lineage"]["wave14_source_sha"]=="00f12efcb6cd9a53b77ef381d2d512487cef0bc6"
+          assert w15["lineage"]["wave14_success_run"]==43916995562
+          assert w15["lineage"]["wave14_artifacts"]==[14256180124,14255401097]
+          for key in ("llama_commit","model_q8_sha256","w0_commit"):
+              assert w15["lineage"][key]==r["lineage"][key]
+          assert w15["quant"]==w14["quant"] and w15["test_host"]==w14["test_host"]
+          assert w15["experiments"]==[
+              dict(label=label,mode=mode,flow=list(WAVE15_FLOWS[mode]),quant="q4_k_m",seed=CAUSAL_SEED)
+              for label,mode in (
+                ("aero4_no2_tailflip_q4_causal","aero4_no2_tailflip"),
+                ("aero5_no2_echo10_q4_causal","aero5_no2_echo10"),
+              )
+          ]
+          assert w15["max_parallel"]==2 and w15["timeout_minutes"]<=95 and w15["no_game_changes"]
+          assert not any(w15[k] for k in ("paid_api","paid_gpu","merge","ready"))
           PY
           python3 tools/ci/check_ci_provider_policy.py
           python3 tools/ci/check_ci_scheduling_policy.py
@@ -303,7 +323,7 @@ jobs:
           test ! -s /tmp/unexpected.txt
 
   brain:
-    name: Q4_K_M bridge held-out geometry / ${{ matrix.mode }}
+    name: Q4_K_M terminal shunt/echo geometry / ${{ matrix.mode }}
     if: github.repository == 'techrote/cybersand' && github.event_name == 'push' && github.ref == 'refs/heads/research/619-frankenlayers-lab'
     needs: cheap
     runs-on: ubuntu-24.04
@@ -313,12 +333,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - mode: aero4_no2_q4_causal
-            flow: aero4_no2
+          - mode: aero4_no2_tailflip_q4_causal
+            flow: aero4_no2_tailflip
             quant: q4_k_m
             seed: 2718
-          - mode: aero4_bridge_q4_causal
-            flow: aero4_bridge
+          - mode: aero5_no2_echo10_q4_causal
+            flow: aero5_no2_echo10
             quant: q4_k_m
             seed: 2718
     env:

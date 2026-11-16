@@ -21,7 +21,7 @@ from experiments.driv3r.frankenlayers_lab.counterfactual import (
 from experiments.driv3r.frankenlayers_lab.flows import LAB_FLOWS, validate_flows
 from experiments.driv3r.frankenlayers_lab.infer_quant import validate_quant_receipt
 
-MODES = ("aero4_no2", "aero4_bridge")
+MODES = ("aero4_no2", "aero4_bridge", "aero4_no2_tailflip", "aero5_no2_echo10")
 
 ACTION_COUNT = len(paired.ACTION_DESCRIPTIONS)
 MAX_DECISIONS = STEPS * 2 * len(PAIRS)

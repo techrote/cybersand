@@ -2,7 +2,7 @@
 import unittest
 
 from experiments.driv3r.frankenlayers_lab.counterfactual import SEED, STEPS, PAIRS
-from experiments.driv3r.frankenlayers_lab.flows import LAB_FLOWS, WAVE14_FLOWS, validate_flows
+from experiments.driv3r.frankenlayers_lab.flows import LAB_FLOWS, WAVE14_FLOWS, WAVE15_FLOWS, validate_flows
 from experiments.driv3r.frankenlayers_lab.infer_q4_causal import MODES, MAX_DECISIONS, make_report, pareto_axis
 
 
@@ -25,8 +25,14 @@ class Wave14Q4Tests(unittest.TestCase):
         self.assertEqual(STEPS, 36)
         self.assertEqual(MAX_DECISIONS, 216)
         self.assertEqual(len(PAIRS), 3)
-        self.assertEqual(set(MODES), {"aero4_no2", "aero4_bridge"})
+        self.assertEqual(set(MODES), {"aero4_no2", "aero4_bridge", "aero4_no2_tailflip", "aero5_no2_echo10"})
         self.assertEqual(WAVE14_FLOWS, {"aero4_bridge": (0, 2, 10, 20)})
+        self.assertEqual(WAVE15_FLOWS, {
+            "aero4_no2_tailflip": (0, 4, 20, 10),
+            "aero5_no2_echo10": (0, 4, 10, 20, 10),
+        })
+        self.assertEqual(len(set(WAVE15_FLOWS["aero5_no2_echo10"])), 4)
+        self.assertNotEqual(tuple(sorted(WAVE15_FLOWS["aero4_no2_tailflip"])), WAVE15_FLOWS["aero4_no2_tailflip"])
         self.assertEqual(LAB_FLOWS["aero4_no2"], (0, 4, 10, 20))
 
     def test_derived_geometry_and_terminal_axes(self):
