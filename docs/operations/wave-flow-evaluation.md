@@ -38,6 +38,18 @@ claimed to match or improve PressureFlow's appearance or kinetics.
    replacement acknowledges the new native configuration; refused settings show
    the reason and preserve the old World. Tuning itself is staged until Apply.
 
+**APPLIED · active settings match** compares the active solver, Wave values,
+workers and relevant construction controls with authoritative native readback.
+Ballistic Water, IN signed, Face release, Fine cores, active face tuning,
+PressureFlow capacity and effective rule-radius changes remain **STAGED** until
+they actually match the new World. The radius tooltip shows the picker request,
+the effective value after the solver's minimum, and the native value.
+**Round Water on this Apply only** stays staged until its native construction
+receipt is acknowledged and the one-shot checkbox clears. Hover the status for
+the named differences and requested/native values. Dormant settings remain
+preferences for their own law; they do not
+configure the currently selected alternative.
+
 Apply preserves the live stored cellular inventory and actors when the requested
 law can represent them. Rebuilding a Wave World resets its retained face flux,
 sleep state and tick counters;

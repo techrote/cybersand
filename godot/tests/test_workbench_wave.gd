@@ -222,9 +222,184 @@ func native_validation() -> void:
 		require(world.simulation_tick(),"retained native World remains usable after refused conversion")
 	sections.native_validation = failures.size() == start
 
+func liquid_selection_status() -> bool:
+	var start := failures.size()
+	var spray: RefCounted = panel.water_spray
+	var liquids: Control = panel._liquids
+	var before := generation()
+	var native_policy: Dictionary = host.tower_context.get("liquid_solver_policy",{}).duplicate(true)
+	var native: Dictionary = wave().duplicate(true)
+	require(native_policy.get("maximum_rule_radius",0) == 2,"initial FreeMass has native radius two")
+	liquids.geometry_picker.select(1)
+	liquids.geometry_picker.item_selected.emit(1)
+	spray.refresh(host.tower_context)
+	require(spray._wave_status.text.contains("STAGED") and not spray._wave_status.text.contains("APPLIED") \
+		and spray._wave_status.tooltip_text.contains("Rule radius: requested 3; effective 3"),
+		"geometry selection is staged against authoritative native radius")
+	require(generation() == before and wave() == native and host.tower_context.liquid_solver_policy == native_policy,
+		"staged rule geometry preserves the complete native readback and owner")
+	if not require(spray._apply_wave(),"radius-three construction requested") or not await installed_after(before,"radius-three Apply"):
+		return false
+	spray.refresh(host.tower_context)
+	require(host.tower_context.liquid_solver_policy.get("maximum_rule_radius",0) == 3 \
+		and spray._wave_status.text.contains("APPLIED"),"native radius three is positively installed before APPLIED")
+	var tick: int = host.latest_snapshot.tick_index
+	require(panel.step_once(),"radius-three World accepts a real native tick")
+	await until(func() -> bool: return idle() and int(host.latest_snapshot.tick_index) == tick+1,"radius-three native tick completed")
+	before = generation()
+	native = wave().duplicate(true)
+	native_policy = host.tower_context.liquid_solver_policy.duplicate(true)
+	liquids.normalize_water.button_pressed = true
+	spray.refresh(host.tower_context)
+	require(spray._wave_status.text.contains("STAGED") and not spray._wave_status.text.contains("APPLIED") \
+		and spray._wave_status.tooltip_text.contains("Round Water on next Apply"),
+		"one-shot Water rounding is pending even when persistent settings match")
+	require(generation() == before and wave() == native and host.tower_context.liquid_solver_policy == native_policy,
+		"pending one-shot rounding does not impersonate native mutation")
+	if not require(spray._apply_wave(),"one-shot normalization requested") or not await installed_after(before,"one-shot normalization Apply"):
+		return false
+	var normalized: Dictionary = host.tower_context.get("liquid_construction_receipt",{}).get("normalization",{})
+	spray.refresh(host.tower_context)
+	require(normalized.get("rule","") == "water-normalize-v1" and str(normalized.get("receipt_hash","")).length() == 64,
+		"actual native construction receipt records the one-shot normalization")
+	require(not liquids.normalize_water.button_pressed and spray._wave_status.text.contains("APPLIED"),
+		"one-shot action clears only after acknowledged native installation")
+	before = generation()
+	liquids.geometry_picker.select(0)
+	liquids.geometry_picker.item_selected.emit(0)
+	if not require(spray._apply_wave(),"restore radius-two construction requested") or not await installed_after(before,"radius-two restore"):
+		return false
+	require(host.tower_context.liquid_solver_policy.get("maximum_rule_radius",0) == 2 \
+		and host.tower_context.get("liquid_construction_receipt",{}).get("normalization",{}).is_empty(),
+		"restored geometry reads back from native without repeating consumed rounding")
+	observe("construction_status_geometry_normalization")
+	return failures.size() == start
+
+func construction_status() -> bool:
+	if not await liquid_selection_status(): return false
+	var start := failures.size()
+	var spray: RefCounted = panel.water_spray
+	var saved: Dictionary = host.workbench_water_options.duplicate(true)
+	var saved_signed: bool = spray._inertial_signed_preference
+	var native: Dictionary = wave().get("construction_options",{}).duplicate(true)
+	var before := generation()
+	spray.refresh(host.tower_context)
+	require(spray._wave_status.text.contains("APPLIED"),"initial active construction settings match native")
+	# All four actual controls share Apply. A pending edit must never be called
+	# APPLIED just because the Wave values, policy and worker count still match.
+	for item: Array in [["workbench_ballistic","Ballistic Water",spray._ballistic],
+		["workbench_inertial_signed","IN signed",spray._signed],
+		["workbench_face_release","Face release",spray._face],
+		["workbench_fine_cores","Fine cores",spray._fine]]:
+		var key: String = item[0]
+		var toggle: CheckButton = item[2]
+		require(native.get(key) is bool,"authoritative native construction flag exists: "+key)
+		var initial: bool = bool(native.get(key,false))
+		toggle.button_pressed = not initial
+		spray.refresh(host.tower_context)
+		require(spray._wave_status.text.contains("STAGED") and not spray._wave_status.text.contains("APPLIED"),
+			"unapplied "+key+" is visibly staged")
+		require(spray._wave_status.tooltip_text.contains(str(item[1])),"staged difference identifies "+key)
+		require(generation() == before and wave().get("construction_options",{}) == native,
+			"staging "+key+" preserves native construction and owner")
+		toggle.set_pressed_no_signal(initial)
+		host.workbench_water_options = saved.duplicate(true)
+		spray._inertial_signed_preference = saved_signed
+	for invalid_workers: Variant in [float(wave().workers_requested)+0.5,str(wave().workers_requested)]:
+		host.workbench_water_options["workbench_worker_threads"] = invalid_workers
+		spray.refresh(host.tower_context)
+		require(spray._wave_status.text.contains("STAGED") and spray._wave_status.tooltip_text.contains("Pool workers"),
+			"invalid worker type cannot impersonate an applied integer request")
+		require(generation() == before and wave().get("construction_options",{}) == native,
+			"invalid staged worker type leaves the actual World unchanged")
+		host.workbench_water_options = saved.duplicate(true)
+	# Apply a real ballistic/face World, then distinguish each numeric change
+	# from its old native value. Idle face preferences do not configure Wave.
+	spray._ballistic.button_pressed = true
+	spray._face.button_pressed = true
+	if not require(spray._apply_wave(),"ballistic face settings requested") or not await installed_after(before,"ballistic face Apply"):
+		return false
+	native = wave().get("construction_options",{}).duplicate(true)
+	require(native.get("workbench_ballistic",false) and native.get("workbench_face_release",false),
+		"ballistic and face flags read back from the replacement World")
+	before = generation()
+	for spec: Array in spray.FACE_SPINS:
+		var key: String = spec[0]
+		var initial: int = int(host.workbench_water_options[key])
+		require(native.get(key) == initial,"applied native face tuning: "+key)
+		spray._fields[key].value = initial+int(spec[4])
+		spray.refresh(host.tower_context)
+		require(spray._wave_status.text.contains("STAGED") and spray._wave_status.tooltip_text.contains(str(spec[1])),
+			"unapplied face tuning is visibly staged: "+key)
+		require(generation() == before and wave().get("construction_options",{}) == native,
+			"staged face tuning preserves the World: "+key)
+		spray._fields[key].value = initial
+	var tuned := {"workbench_face_budget":501,"workbench_face_speed":224,
+		"workbench_face_period":2,"workbench_face_min_height":7}
+	for key: String in tuned: spray._fields[key].value = tuned[key]
+	spray._fine.button_pressed = true
+	if not require(spray._apply_wave(),"face tuning and fine cores requested") or not await installed_after(before,"face/fine Apply"):
+		return false
+	native = wave().get("construction_options",{}).duplicate(true)
+	for key: String in tuned: require(native.get(key) == tuned[key],"native changed face tuning: "+key)
+	require(native.get("workbench_fine_cores",false) and wave().get("scheduling_core_size",0) == 32,
+		"fine cores read back as actual native 32-cell geometry")
+	var tick: int = host.latest_snapshot.tick_index
+	require(panel.step_once(),"configured non-Wave World accepts a real tick")
+	await until(func() -> bool: return idle() and int(host.latest_snapshot.tick_index) == tick+1,"configured non-Wave tick completed")
+	require(wave().get("construction_options",{}) == native and not host.simulation_worker.has_failed(),
+		"native construction readback remains authoritative after real simulation")
+	observe("construction_status_ballistic_face")
+	# Return to ordinary geometry without promoting inactive face values.
+	host.workbench_water_options = saved.duplicate(true)
+	for toggle: CheckButton in [spray._ballistic,spray._face,spray._fine,spray._signed]: toggle.set_pressed_no_signal(false)
+	spray._inertial_signed_preference = saved_signed
+	before = generation()
+	if not require(spray._apply_wave(),"restore ordinary construction requested") or not await installed_after(before,"ordinary construction restore"):
+		return false
+	require(wave().get("scheduling_core_size",0) == 64,"ordinary construction restores native 64-cell cores")
+	# Capacity is active only under PressureFlow. A same-law live capacity change
+	# still refuses, and a fresh authored construction can explicitly apply it.
+	require(spray._stage_solver("pressure_flow_v1","cached"),"stage capacity readback PressureFlow")
+	before = generation()
+	if not require(spray._apply_wave(),"PressureFlow capacity baseline requested") or not await installed_after(before,"PressureFlow capacity baseline"):
+		return false
+	native = wave().get("construction_options",{}).duplicate(true)
+	require(native.get("pressure_gas_compartment_capacity",0) == 1024,"native default PF capacity")
+	spray._pf_c2048.button_pressed = true
+	spray.refresh(host.tower_context)
+	require(spray._wave_status.text.contains("STAGED") and spray._wave_status.tooltip_text.contains("PF compartment capacity"),
+		"unapplied PF capacity is visibly staged")
+	before = generation()
+	spray._apply_wave()
+	await until(idle,"same-law capacity refusal settled")
+	spray.refresh(host.tower_context)
+	require(generation() == before and wave().get("construction_options",{}) == native \
+		and spray._wave_status.text.contains("REFUSED"),"capacity refusal preserves owner and truthful status")
+	var fresh: Dictionary = Setup.fresh(panel._liquids.requested_policy,Vector2i(512,512))
+	if not require(panel.apply(fresh),"fresh PF capacity construction requested") or not await installed_after(before,"fresh PF capacity construction"):
+		return false
+	require(wave().get("construction_options",{}).get("pressure_gas_compartment_capacity",0) == 2048,
+		"fresh constructor actually applies PF capacity")
+	observe("construction_status_pressure_capacity")
+	spray._stage_plain_freemass()
+	before = generation()
+	if not require(spray._apply_wave(),"restore FreeMass after capacity comparison") or not await installed_after(before,"capacity comparison restore"):
+		return false
+	spray.refresh(host.tower_context)
+	require(wave().get("construction_options",{}).get("pressure_gas_compartment_capacity",0) == 1024 \
+		and host.workbench_water_options.get("pressure_gas_compartment_capacity",0) == 2048 \
+		and spray._wave_status.text.contains("APPLIED"),"inactive PF capacity preference does not falsely mark FreeMass staged")
+	host.workbench_water_options = saved
+	spray._pf_c2048.set_pressed_no_signal(false)
+	spray._inertial_signed_preference = saved_signed
+	for spec: Array in spray.FACE_SPINS: spray._fields[spec[0]].set_value_no_signal(int(saved.get(spec[0],spec[5])))
+	return failures.size() == start
+
 func activation() -> bool:
 	var start := failures.size()
 	require(not wave().get("enabled",true),"ordinary Workbench starts with Wave off")
+	if not await construction_status(): return false
 	var recipe: Dictionary = Setup.fresh(panel._liquids.bridge.default_liquid_policy(),Vector2i(512,512))
 	recipe.edits = [[0,220,256,4,Setup.WALL],[0,0,4,220,Setup.WALL],[252,0,4,220,Setup.WALL],
 		[4,100,96,120,Setup.WATER],[100,180,152,40,Setup.WATER]]
@@ -243,6 +418,18 @@ func activation() -> bool:
 	sections.activation = require(wave().get("enabled",false),"Workbench activates native Wave") and failures.size() == start
 	start = failures.size()
 	matches(TUNING,"first Apply")
+	var accepted_rounds: int = int(TUNING.substeps)
+	var active: Dictionary = wave().duplicate(true)
+	for malformed: Variant in [{"unexpected":2},[2],"2",2.5]:
+		host.workbench_water_options.workbench_wave_substeps = malformed
+		panel.water_spray.refresh(host.tower_context)
+		require(panel.water_spray._wave_status.text.contains("STAGED") \
+			and panel.water_spray._wave_status.text.contains("invalid rounds") \
+			and not panel.water_spray._wave_status.text.contains("APPLIED"),
+			"malformed rounds cannot abort refresh and retain a stale APPLIED label: "+str(malformed))
+		require(wave() == active,"staging malformed rounds leaves authoritative native state unchanged")
+	host.workbench_water_options.workbench_wave_substeps = accepted_rounds
+	panel.water_spray.refresh(host.tower_context)
 	sections.parameters = failures.size() == start
 	start = failures.size()
 	require(int(wave().get("workers_requested",0)) == 4,"Workbench requested workers applied natively")
@@ -346,7 +533,8 @@ func invalid_recovery() -> void:
 	var image: PackedByteArray = host.image.get_data()
 	var applied: Dictionary = panel.applied.duplicate(true)
 	var before := generation()
-	for bad: Dictionary in [{"workbench_wave_substeps":0},{"workbench_wave_active_rows":33},
+	for bad: Dictionary in [{"workbench_wave_substeps":0},{"workbench_wave_substeps":{}},
+		{"workbench_wave_substeps":[3]},{"workbench_wave_active_rows":33},
 		{"workbench_wave_stiffness":1},{"workbench_wave_gain":1.5},{"workbench_wave_gain":"64"},
 		{"workbench_wave_flow":"yes"},{"workbench_worker_threads":33}]:
 		host.workbench_water_options = saved.duplicate(true)
@@ -407,6 +595,19 @@ func solver_switch() -> void:
 			if int(row.material) == Setup.WATER: water = row
 		require(water.get("applied_family","") == family and water.get("applied_variant","") == variant,
 			"native law readback "+family)
+		if family == "inertial_cellular_v1":
+			# The ordinary Apply path raises the selected radius to the policy's
+			# minimum. A picker-only change below that minimum is an explicit no-op.
+			before = generation()
+			panel._liquids.geometry_picker.select(0)
+			panel._liquids.geometry_picker.item_selected.emit(0)
+			panel.water_spray.refresh(host.tower_context)
+			require(panel.water_spray._wave_status.text.contains("APPLIED") \
+				and panel.water_spray._wave_status.tooltip_text.contains("Rule radius: requested 2; effective 3") \
+				and host.tower_context.liquid_solver_policy.get("maximum_rule_radius",0) == 3 \
+				and generation() == before,"status compares effective policy-minimum geometry and exposes the raw request")
+			panel._liquids.geometry_picker.select(1)
+			panel._liquids.geometry_picker.item_selected.emit(1)
 		for key: String in TUNING:
 			require(host.workbench_water_options.get("workbench_wave_"+key) == saved.get("workbench_wave_"+key),
 				family+" does not overwrite staged Wave "+key)

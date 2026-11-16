@@ -2275,6 +2275,20 @@ Dictionary CyberNativeCellWorld::get_wave_flow_status() const {
     out["healthy"] = !world_->has_failed();
     out["transport_configured"] = config.transport_policy.configured;
     out["pressure_gas_compartment_capacity"] = static_cast<std::int64_t>(config.pressure_gas_compartment_capacity);
+    // The shared Apply action also owns non-Wave construction controls. Read
+    // them from this World, never from the last submitted Workbench request.
+    Dictionary construction;
+    construction["workbench_ballistic"] = world_->ballistic_water_enabled();
+    construction["workbench_inertial_signed"] = world_->inertial_parameters().signed_vertical;
+    construction["workbench_face_release"] = config.ballistic_water.face_release;
+    construction["workbench_fine_cores"] = config.scheduling_core_size == 32;
+    construction["workbench_face_budget"] = static_cast<std::int64_t>(config.ballistic_water.face_budget);
+    construction["workbench_face_speed"] = static_cast<std::int64_t>(config.ballistic_water.face_speed);
+    construction["workbench_face_period"] = static_cast<std::int64_t>(config.ballistic_water.face_period);
+    construction["workbench_face_min_height"] = static_cast<std::int64_t>(config.ballistic_water.face_min_height);
+    construction["pressure_gas_compartment_capacity"] = static_cast<std::int64_t>(config.pressure_gas_compartment_capacity);
+    out["construction_options"] = construction;
+    out["scheduling_core_size"] = static_cast<std::int64_t>(config.scheduling_core_size);
     out["version"] = static_cast<std::int64_t>(cybersand::WaveFlowParameters::kVersion);
     out["substeps"] = static_cast<std::int64_t>(config.wave_flow.substeps);
     Dictionary parameters;

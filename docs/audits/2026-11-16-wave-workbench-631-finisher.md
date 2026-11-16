@@ -140,6 +140,115 @@ runtime libraries and their two provenance manifests after both platforms pass.
 Full Native, Godot, Wave, Water, renderer, material and provenance gates remain
 required for the resulting source, followed by independent GPT-6 Astra review.
 
+## Retained Q qualification and independent-review correction
+
+Candidate `93a5e85dc9d5459a5f9cce00839b64090a1a0573`, complete tree
+`1035c8ae3c30fb50dafd483916f1c21b59200e2d`, completed its full controlled Ready
+qualification and returned to Draft. All six Native families, Wave's complete
+Linux/Windows/default-off matrix, Windows Godot, Water, material/provenance and
+palette gates passed. Linux Godot retained one failure in the existing Deepworks
+render fixture: three visible atmosphere pixels in D1 against its unchanged
+minimum of four. [Run 43831136663](https://github.com/techrote/cybersand/actions/runs/43831136663)
+and its original logs remain failed; the original runner did not retain that
+RGB frame. This source was not delivered as a qualified owner candidate.
+
+A fresh independent GPT-6 Astra review also reproduced a shared-status defect:
+staging Ballistic Water left the native owner unchanged, correctly, but the
+new main status still said `APPLIED`. Its comparison covered Wave, policy and
+workers while omitting other construction controls. An unchanged asserting
+probe against Q recorded twenty checks with four failures, one each for
+Ballistic Water, IN signed, Face release and Fine cores. The corrected development
+runtime/UI recorded twenty checks with zero failures using the same probe.
+
+The native diagnostic now copies these flags, actual scheduling geometry,
+face-release parameters and compartment capacity from the authoritative World.
+The panel compares every applicable staged construction value, including its
+type, and identifies differences. Dormant law preferences do not become active
+requests. The Workbench regression additionally exercises real replacement and
+ticks, each face control, fine-core reset, same-law capacity refusal, fresh
+capacity application and return to a non-pressure law. This changes diagnostics
+and presentation only; the native solver arithmetic remains unchanged.
+
+An interim independent review identified two further omissions in the same
+status contract: the visible geometry selector and one-shot Water rounding.
+A separate unchanged-Q probe recorded fourteen checks with two failures while
+the native radius, owner and normalization state remained unchanged. The status
+now compares the exact effective radius consumed by Apply, including the
+policy's minimum, with native `maximum_rule_radius`; its tooltip exposes both
+the raw selection and effective value. Checked one-shot normalization remains
+staged until successful construction clears it, even for zero net mass change.
+The regression applies radius three, executes a native tick, applies and reads
+the normalization receipt, then restores radius two without repeating rounding.
+It also checks an Inertial minimum-radius no-op without false staging.
+
+The review additionally found that formatting a malformed container-valued
+rounds request through `int(...)` could abort the refresh and retain stale
+`APPLIED` text. The formatter now identifies invalid types without conversion.
+The regression stages Dictionary and Array values, requires truthful status,
+and exercises native typed refusal with unchanged ownership and state.
+A separate unchanged-Q probe first enabled Wave and completed one native tick
+with two rounds, then reproduced both malformed-type failures: eighteen checks,
+two failures. The same three external probes passed unchanged against the
+corrected development runtime/UI: construction toggles 20/0, geometry/one-shot
+rounding 14/0, and malformed rounds 18/0. These are local red/green controls,
+not substitutes for publication-source or final-head qualification.
+
+The independent review separately verified all Q package payload hashes,
+runtime input ledgers and the complete Native aggregate, and exercised retained
+uint16 Water on all four halo sides through a real conserving tick and atomic
+non-Wave refusal. Its Q verdict remained HOLD. Later corrected source requires
+fresh publication, full qualification and a final independent verdict; the Q
+results are historical evidence rather than substitutes for that work.
+
+## Retained Deepworks failure and corridor repair
+
+The failed Q frame was not captured, so its exact three-pixel result cannot be
+reconstructed from the original run. Native comparison instead established that
+the starting runtime and Q produced identical four-layer RG8 packets at the
+first D1 pulse, effects tick 46; the other three Worlds remained at tick zero
+and Wave was disabled. Six actual Smoke cells existed. Two, at (234,930) and
+(234,931), projected behind foreground Steel Plate relief. The other fifteen
+districts had no corresponding first-pulse obstruction.
+
+A single [hosted diagnostic, run 43837114552](https://github.com/techrote/cybersand/actions/runs/43837114552),
+used immutable Q and two explicitly declared scene variants: the authored source
+at x235 and a D1-only counterfactual at x238. Each used all sixty-one effects
+presentation phases from 0 through 60 seconds, Hybrid and Stack controls, and
+one unchanged set of native packets. All 488 original PNGs were independently
+decoded; all 1,464 sampled on/off pairs matched their recorded values.
+
+| Diagnostic observation | Authored Q | D1 source x238 |
+|---|---:|---:|
+| Visible native cells, Hybrid | 4 at every phase | 5–6 |
+| Visible native cells, Stack | 6 at every phase | 5–6 |
+| Signed RGB contribution differences between modes | 122 of 366 | 0 of 366 |
+
+The authored differences were exactly the two obstructed cells at every phase;
+the other four cells matched. Both corrected modes retained five visible cells
+at phases 10 and 12 because one cell was naturally below the original channel
+threshold. These results prove the relief obstruction and its clearance, but do
+**not** reproduce or explain the additional missing pixel in the original Q
+failure. That failed result remains retained without relabelling it as a pass.
+
+The original diagnostic archive was 1,127,610,664 bytes, SHA-256
+`d869c6f262eff3d827eb46439abc3740d479a087573ead1c8abbc29ffee261df`.
+A separate [read-only byte-transfer run 43838931542](https://github.com/techrote/cybersand/actions/runs/43838931542)
+partitioned that existing archive to satisfy the connector transfer limit;
+reassembly reproduced its exact digest before extraction. It did not rerun any
+simulation or rendering. Temporary diagnostic and transfer workflows are
+removed from the candidate source; the original runs and evidence remain.
+
+The permanent scene repair moves only D1's six-cell source three cells right,
+without changing material, quantity, source timing or native laws. The rendered
+regression keeps all original district checks and thresholds, pins presentation
+phases for reproducibility, and adds all sixty-one same-packet Hybrid/Stack
+comparisons. Every native cell's signed on/off RGB contribution must match the
+unobstructed control. Native ownership, state, ticks, packet bytes and serials
+must remain unchanged. Full normal district frames, all phase witness crops,
+first-phase/first-failure full context and raw packets are retained through the
+standard CI artifact directory. This new source requires a fresh published
+runtime, full final-source qualification and independent review.
+
 ## Documentation and remaining limits
 
 Current contracts live in the [Wave reference](../architecture/wave-flow-v1.md)

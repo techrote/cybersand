@@ -57,6 +57,12 @@ const FACE_SPINS := [
 	["workbench_face_period", "Face period", 1, 64, 1, 1],
 	["workbench_face_min_height", "Face min h", 2, 64, 1, 4],
 ]
+const CONSTRUCTION_SWITCHES := [
+	["workbench_ballistic", "Ballistic Water"],
+	["workbench_inertial_signed", "IN signed"],
+	["workbench_face_release", "Face release"],
+	["workbench_fine_cores", "Fine cores"],
+]
 # Every kinetic Wave constant that is safe to vary without changing the fixed
 # point representation or violating the two-face conservation bound.
 const WAVE_SPINS := [
@@ -637,19 +643,40 @@ func _refresh_wave(context: Dictionary) -> void:
 	var native_workers := int(wave.get("workers_requested",1))
 	if not host.workbench_water_options.has("workbench_worker_threads"):
 		_worker_threads.set_value_no_signal(clampi(native_workers,1,32))
-	var requested_workers := int(host.workbench_water_options.get("workbench_worker_threads",native_workers))
-	if requested_workers != native_workers: changes.append("Pool workers")
+	var worker_request: Variant = host.workbench_water_options.get("workbench_worker_threads",native_workers)
+	var requested_workers := int(worker_request) if worker_request is int else 0
+	if not worker_request is int or requested_workers != native_workers: changes.append("Pool workers")
 	var applied_name := str(_workbench._water_identity(context))
-	var requested_name := "Wave ON ×%d" % int(host.workbench_water_options.get("workbench_wave_substeps",1)) if requested else "Wave OFF"
+	var requested_rounds: Variant = host.workbench_water_options.get("workbench_wave_substeps",1)
+	var requested_name := "Wave OFF"
+	if requested:
+		requested_name = "Wave ON ×%d" % requested_rounds if requested_rounds is int else "Wave ON · invalid rounds"
 	if _workbench._liquids != null and _workbench._liquids.bridge != null:
 		var policy: PackedInt32Array = _workbench._liquids.requested_policy
-		var native_policy := PackedInt32Array(context.get("liquid_solver_policy",{}).get("envelope",[]))
+		var native_settings: Dictionary = context.get("liquid_solver_policy",{})
+		var native_policy := PackedInt32Array(native_settings.get("envelope",[]))
 		if not policy.is_empty() and policy != native_policy: changes.append("Water policy")
+		var validation: Dictionary = _workbench._liquids.bridge.validate_liquid_policy(policy)
+		if not validation.get("accepted",false): changes.append("invalid Water policy")
+		# Apply consumes the effective radius after the policy's minimum. Show
+		# both the picker and effective request, then compare to the real World.
+		var requested_radius: int = _workbench._liquids.geometry_picker.get_selected_id()
+		var minimum_radius: int = int(validation.get("receipt",{}).get("minimum_rule_radius",2))
+		var effective_radius: int = maxi(requested_radius,minimum_radius)
+		var native_radius: Variant = native_settings.get("maximum_rule_radius")
+		if not native_radius is int or native_radius != effective_radius: changes.append("Rule radius")
+		actual_values.append("Rule radius: requested %d; effective %d (policy minimum %d); native %s" % [
+			requested_radius,effective_radius,minimum_radius,str(native_radius) if native_radius is int else "unavailable"])
+		# Rounding is a one-shot construction action, not a persistent law flag.
+		# Even zero net mass change must wait for its successful native receipt.
+		if _workbench._liquids.normalize_water.button_pressed:
+			changes.append("Round Water on next Apply")
+			actual_values.append("Water rounding: requested for next Apply; not yet consumed")
 		if not requested:
-			var validation: Dictionary = _workbench._liquids.bridge.validate_liquid_policy(policy)
 			for assignment: Dictionary in validation.get("receipt",{}).get("assignments",[]):
 				if int(assignment.get("material",-1)) == CyberCellWorld.WATER:
 					requested_name = "%s/%s" % [str(assignment.get("applied_family","")).trim_suffix("_v1"),assignment.get("applied_variant","")]
+	_construction_status(wave,changes,actual_values)
 	var pending: bool = not host.pending_microscenario_apply.is_empty()
 	if _wave_request_serial > 0 and not pending:
 		_wave_request_serial = 0
@@ -660,7 +687,7 @@ func _refresh_wave(context: Dictionary) -> void:
 		else:
 			_fallback_message = "Native rebuild completed. " + ("Requested selection/values match native readback." if changes.is_empty() else "Some requested values differ; inspect highlighted native values.")
 		_wave_notice.text = _fallback_message
-	var outcome := "PREPARING" if pending else ("APPLIED" if changes.is_empty() else "STAGED · %d differences" % changes.size())
+	var outcome := "PREPARING" if pending else ("APPLIED · active settings match" if changes.is_empty() else "STAGED · %d differences" % changes.size())
 	var refusal := str(host.microscenario_error)
 	if not pending and not refusal.is_empty(): outcome = "REFUSED · " + refusal
 	var worker_failed: bool = host.simulation_worker != null and host.simulation_worker.has_failed()
@@ -671,8 +698,33 @@ func _refresh_wave(context: Dictionary) -> void:
 		int(wave.get("completed_tick",0)),int(wave.get("ticks",0)),int(wave.get("rounds",0)),native_workers,requested_workers,
 		int(wave.get("workers_observed",0)),int(wave.get("maximum_participants",0)),float(wave.get("native_tick_ms",0.0)),
 		int(wave.get("last_solved_chunks",0)),int(wave.get("last_tasks",0))]
-	_wave_status.tooltip_text = _wave_status.text + "\n" + _fallback_message + "\n" + "\n".join(actual_values) \
+	_wave_status.tooltip_text = _wave_status.text + "\n" + _fallback_message \
+		+ ("\nStaged differences: " + ", ".join(changes) if not changes.is_empty() else "") + "\n" + "\n".join(actual_values) \
 		+ "\nWave storage %d bytes · capacity refusals %d · quantity %s · generation %d\nObserved participants are native task claimants, not CPU utilization. Timings are complete native ticks." % [
 			int(wave.get("storage_bytes",0)),int(wave.get("capacity_refusals",0)),str(wave.get("water_quantity","?")),int(wave.get("session_generation",0))]
 	_wave_dialog_status.text = _wave_status.text
 	_wave_dialog_status.tooltip_text = _wave_status.tooltip_text
+
+func _construction_status(wave: Dictionary, changes: Array[String], actual_values: Array[String]) -> void:
+	var actual: Dictionary = wave.get("construction_options",{})
+	for spec: Array in CONSTRUCTION_SWITCHES:
+		var key: String = spec[0]
+		var requested: Variant = host.workbench_water_options.get(key,false)
+		var native_value: Variant = actual.get(key)
+		if not native_value is bool or not requested is bool or native_value != requested:
+			changes.append(str(spec[1]))
+		actual_values.append("%s: requested %s; native %s" % [spec[1],str(requested),str(native_value) if native_value is bool else "unavailable"])
+	# Dormant tuning belongs to its own law and is not an active construction
+	# request. Compare it only when the same admission path will consume it.
+	if _option_on("workbench_ballistic") and _option_on("workbench_face_release"):
+		for spec: Array in FACE_SPINS:
+			_construction_number(actual,str(spec[0]),str(spec[1]),int(spec[5]),changes,actual_values)
+	if not _option_on("workbench_wave_flow") and _requested_water_family() == "pressure_flow_v1":
+		_construction_number(actual,"pressure_gas_compartment_capacity","PF compartment capacity",1024,changes,actual_values)
+
+func _construction_number(actual: Dictionary, key: String, label: String, fallback: int,
+		changes: Array[String], actual_values: Array[String]) -> void:
+	var requested: Variant = host.workbench_water_options.get(key,fallback)
+	var native_value: Variant = actual.get(key)
+	if not requested is int or not native_value is int or requested != native_value: changes.append(label)
+	actual_values.append("%s: requested %s; native %s" % [label,str(requested),str(native_value) if native_value is int else "unavailable"])
