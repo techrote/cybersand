@@ -1,0 +1,117 @@
+name: LFM350 GP350-002 checkpoint-only paired-world conditioning (no optimizer)
+on:
+  push:
+    branches: [research/lfm-game-policy-350m]
+    paths:
+      - experiments/driv3r/lfm_game_policy/gp350-002-request.json
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: lfm350-gp350002-checkpoint-only-one-vm
+  cancel-in-progress: false
+jobs:
+  matched-family:
+    name: Real trained/stock full-LFM inference, three themes per identical W0 world
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      OMP_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      MKL_DYNAMIC: 'FALSE'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+      HF_HUB_DISABLE_TELEMETRY: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: techrote/cybersand
+          ref: 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          path: pinned-w0
+          persist-credentials: false
+      - name: Exact inference-only immutable request and W0 source tests
+        run: |
+          set -euo pipefail
+          mkdir -p gp350-002-evidence
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git -C pinned-w0 rev-parse HEAD)" = 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          test "$(git hash-object pinned-w0/experiments/agent_painter/worm/common/worm.py)" = 8979b6f0296e81051194bacc907992d38e006605
+          python3 -m py_compile experiments/driv3r/lfm_game_policy/lfm350.py experiments/driv3r/lfm_game_policy/gp350_eval.py
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          data=json.loads(Path("experiments/driv3r/lfm_game_policy/gp350-002-request.json").read_text())
+          assert data=={
+            "schema":"driv3r.lfm350.gp350002-request/1",
+            "training":False,
+            "model":"LiquidAI/LFM2.5-350M",
+            "model_revision":"9921cd4d82c0e3986887aa4b376f9446729ef8a3",
+            "producer_run_id":43789213200,
+            "producer_source":"f2d2d6a4b70f97de1d633ae43f37cd5b307d4978",
+            "original_adapter_sha256":"53fc6646b586712a794707ecf649167ea94f3af8be82963380886dc63ac9d72d",
+            "seeds":[9503,9521,9539],"families":["greebles","pipework","architecture"],
+            "max_turns":12,"real_optimizers":0,"native":False,"draft_hold":True,
+            "request_attempt":1}
+          PY
+          python3 tools/ci/check_ci_provider_policy.py
+          (git rev-parse HEAD; date -u -Iseconds; python3 --version) > gp350-002-evidence/host.txt
+      - name: Fetch immutable ORIGINAL GP350-001 trained checkpoint artifact from GitHub
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/gp350-producer"
+          gh run download 43789213200 --repo techrote/cybersand \
+            --name gp350-001-f2d2d6a4b70f97de1d633ae43f37cd5b307d4978-43789213200-1 \
+            --dir "$RUNNER_TEMP/gp350-producer"
+          test "$(sha256sum "$RUNNER_TEMP/gp350-producer/original-experiment/adapter-step-24/adapter_model.safetensors" | cut -d' ' -f1)" = 53fc6646b586712a794707ecf649167ea94f3af8be82963380886dc63ac9d72d
+          cp "$RUNNER_TEMP/gp350-producer/original-experiment/summary.json" gp350-002-evidence/producer-summary.json
+      - name: Pinned CPU model-only inference dependency install
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/gp350-eval"
+          "$RUNNER_TEMP/gp350-eval/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/gp350-eval/bin/python" -m pip install \
+            'transformers==5.22.2' 'peft==0.21.2' 'accelerate==1.15.0' \
+            'huggingface-hub==2.4.0' 'safetensors==0.8.0'
+          "$RUNNER_TEMP/gp350-eval/bin/python" -m pip check
+          "$RUNNER_TEMP/gp350-eval/bin/python" -m pip freeze --all > gp350-002-evidence/pip-freeze.txt
+      - name: Real full-model checkpoint-only on-policy family counterfactuals + original PNGs
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 1100s \
+            "$RUNNER_TEMP/gp350-eval/bin/python" experiments/driv3r/lfm_game_policy/gp350_eval.py \
+              --producer "$RUNNER_TEMP/gp350-producer/original-experiment" \
+              --w0 pinned-w0/experiments/agent_painter/worm/common/worm.py \
+              --model-cache "$RUNNER_TEMP/gp350-eval-model" \
+              --out gp350-002-evidence/original-counterfactual
+      - name: Verify all 18 original PNGs, source and unique family controls
+        if: success()
+        run: |
+          python3 - <<'PY'
+          import json,hashlib,os
+          from pathlib import Path
+          p=Path("gp350-002-evidence/original-counterfactual")
+          d=json.loads((p/"summary.json").read_text())
+          assert d["source_sha"]==os.environ["GITHUB_SHA"]
+          assert d["new_optimizer_updates"]==0 and d["native_PAINT"]==0
+          assert d["original_pngs"]==d["model_episodes"]==18
+          assert len(d["counterfactual_groups"])==6
+          assert d["full_model_genuine_scored_forwards"]>0
+          for item in d["original_episodes"]:
+            b=(p/item["png"]).read_bytes()
+            assert b.startswith(b"\x89PNG\r\n\x1a\n")
+            assert hashlib.sha256(b).hexdigest()==item["png_sha256"]
+          print("GP350-002 ORIGINAL ON-POLICY ORIGINAL 18 PNGs VERIFIED")
+          PY
+      - name: Always retain W2 original inference records, partial failure output, no optimizer
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gp350-002-inference-original
+          path: gp350-002-evidence/
+          if-no-files-found: warn
+          retention-days: 90
