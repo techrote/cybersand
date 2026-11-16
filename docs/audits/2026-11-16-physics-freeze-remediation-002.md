@@ -38,9 +38,9 @@ bytes but introduced shader cost and retained expensive Windows submission
 spans; its rejected results are recorded below.
 
 The current candidate uses Godot 4.7's experimental drawable-texture API on the
-qualified Linux/Windows OpenGL/ANGLE compatibility paths. Two persistent linear
+Linux/Windows OpenGL/ANGLE compatibility paths under qualification. Two persistent linear
 RGBA8 targets retain exact logical R8/RG8 current/previous material values. A
-bounded set of R8/RG8 staging textures receives one immutable atlas upload per
+bounded set of R8/RG8 staging arrays receives one immutable atlas-layer upload per
 publication, followed by GPU rectangle copies into the recycled history target.
 A dense update uses one full staging upload and one whole-World copy. The
 production path never reads GPU pixels back to construct an update.
@@ -49,8 +49,9 @@ At 2048²,128² tiles bound dirty tracking to 256 entries. Recycled histories re
 all accumulated dirties and skip byte-identical cached tiles. A single changed
 tile uploads 32 KiB instead of 8 MiB. The two history targets, staging resources and
 retirement sink occupied 44,728,324 logical GPU texture bytes in the one-stage
-e61 checkpoint. The bounded two-stage experiment described below occupies
-55,902,212 bytes, excluding driver
+e61 checkpoint. The bounded two-ImageTexture experiment occupies 55,902,212 bytes.
+Its array-only staging successor occupies 55,902,213 bytes, including a separate
+1-byte R8 source dummy and excluding driver
 allocation overhead. CPU submission bytes exclude GPU source reads and RGBA8
 target writes; the latter are reported as a logical estimate, not bandwidth.
 Upload Images remain immutable while RenderingServer may retain queued refs.
@@ -63,6 +64,9 @@ The material catalogue compatibility guard is retained without a waiver.
 A small separate `texture_blit` Shader uses nearest integer source texels,
 blend-disabled output and direct per-call coordinates. It writes exact R/G,
 zero B and opaque A into a linear target; SRGB targets are rejected.
+Only this copy shader samples a Texture2DArray. Each size class owns one fixed
+array and one fixed sampler material; default two-layer rotation does not
+redefine texture storage or change the ordinary World sampling shaders.
 
 The pinned [DrawableTexture2D resource implementation](https://github.com/godotengine/godot/blob/4.7-stable/scene/resources/drawable_texture_2d.cpp),
 [GLES3 texture storage](https://github.com/godotengine/godot/blob/4.7-stable/drivers/gles3/storage/texture_storage.cpp),
@@ -73,6 +77,11 @@ single-target calls and ends each changed batch with a 1×1 sink copy: the engin
 otherwise leaves large targets attached to its persistent framebuffer after
 resource release. The tiny copy is included in submission timing. No resource
 queue, unbounded allocation stream or global publication cache is introduced.
+The pinned GLES3 source uses `glTexImage2D` for ordinary ImageTexture updates
+and `glTexSubImage3D` for array-layer updates. This is an API/storage distinction,
+not proof of a specific driver wait or guaranteed nonblocking behavior. A
+separate ordinary source0 dummy avoids the blit API's fixed 2D source binding;
+the array sampler is bound once per pool through the custom material interface.
 
 `auto|full|blit` selects publication. Unsupported platforms/backends/capacities
 and detectable resource failures reconstruct both exact full ImageTextures from
@@ -308,6 +317,73 @@ arms. It preserves complete captures and compares the exact1..144 physical
 prefix. Whole-frame, callback and physical-completion tails determine adoption;
 a shorter staging call alone does not. Full exact-source qualification follows
 only after a mechanism is justified.
+
+The exact image-pool source `f32327823318f6e990eb1ca44eef3ced0813219a`
+(tree `b97855bebb1c47fbd129412f27c58d7cb9a323c8`) completed
+[Windows run 43849638986](https://github.com/techrote/cybersand/actions/runs/43849638986).
+All six arms and all 15 exact physical-prefix comparisons passed; observer drops
+were zero. The performance disposition is **FAIL**, independent of the green
+capture workflow. Each row contains 144 physical completions and 143 gaps:
+
+| Order / mode | Rapier steps/s | Physical gap p95 / max ms | Gaps ≥100 / ≥250 ms | Frame interval p95 ms |
+| --- | ---: | --- | --- | ---: |
+| 0 full | 9.906029 | 112.547 / 114.367 | 107 / 0 | 121.825 |
+| 1 one image | 10.637135 | 185.941 / 273.054 | 59 / 1 | 205.237 |
+| 2 two images | 11.221502 | 190.254 / 286.775 | 43 / 1 | 269.851 |
+| 3 two images | 10.166239 | 191.472 / 267.580 | 57 / 1 | 274.604 |
+| 4 one image | 10.217736 | 195.508 / 275.521 | 58 / 5 | 227.652 |
+| 5 full | 9.434847 | 112.670 / 114.134 | 124 / 0 | 116.854 |
+
+Two images reduced sparse staging calls ≥100 ms to 14/90 and 16/99, versus
+29/97 and 24/93 for one image. Main callback medians fell to about 4.1 ms from
+86–88 ms for full uploads, but callback p95 remained about 171 ms versus 97 ms.
+The physical and frame tails worsened materially. Bounded reuse therefore does
+not qualify as the repair. The complete raw capture, including all extra
+completions and native/material stages, is retained in artifact `14217259007`,
+SHA256 `7d2f9478b0b446540e0f70d72a17e9e334909e36155c0c0907d4d1e87d4241e4`.
+
+## Array-only staging experiment
+
+The successor to `f32327823318f6e990eb1ca44eef3ced0813219a` changes only the staging
+upload primitive and its copy shader, retaining both 2D histories, dirty repair,
+material certificates, ACK transaction, original appearance shaders and physical
+coupling. One fixed array per size class contains one or two layers. Full-image
+aliases share the same pool/cursor. Resource kind, actual array RID and layer
+are reported separately; zero-change submissions report layer −1 and RID 0.
+Preflight checks owned array/material/sampler identity, dimensions, layers,
+format, no mipmaps, cursor bounds and source/output separation. Direct per-copy
+coordinates encode height and layer exactly within the existing height <16384
+bound. The separate source dummy and tiny output retirement sink remain owned
+for the publisher lifetime. Initialization accounting includes the dummy byte.
+
+The frozen external Linux prototype passed 402 GPU assertions, including R8/RG8
+values, both layer counts, NPOT histories, 2048² sparse/dense copies and eight
+exact appearance comparisons. A separate maximum-height gate passed 30 checks
+and read back both packed heights 16383 and 32767. The applied production-shaped
+helper/shader/test subsequently passed 876 graphical assertions and 19 headless
+assertions, with no failures or tested-source changes. All eight original
+appearance pairs remained byte-identical. Actual Windows/ANGLE qualification
+is a separate gate before its timing comparison.
+
+The external render-plus-publication probe contains no native or Rapier
+simulation. Across all 32 recorded frames per arm, sparse frame medians were
+315.526/261.955 ms for image staging and 231.484/216.837 ms for array staging;
+dense medians were 504.556/364.048 versus 378.738/352.277 ms. Publication medians
+were mixed. Startup outliers remain in the raw capture, including a 15,701.450 ms
+image-arm frame, a 1,229.142 ms array-arm frame and a 45.799 ms array staging call.
+The original summaries also retain the 24 frames after eight startup samples;
+those subsets are not physical completion evidence. The capture's exact source
+predates the later material-RID guard and dummy-byte accounting, which are
+preserved as separate deltas. These results justify a controlled Windows trial,
+not an end-to-end freeze-remediation claim.
+
+The next Windows probe first requires actual GPU material/history/appearance
+correctness, then runs full/array1/array2/array2/array1/full with the same complete
+observer, ordinary coupled 2048² Needle inputs and exact 1..144 physical prefix.
+Shared array RIDs and distinct bounded layers are validated explicitly. All
+raw completions, startup records, callback/frame/physical tails and unsuccessful
+attempts remain available. Adoption requires independent review of those tails
+and final exact-source application qualification.
 
 ## Final qualification and evidence interpretation
 

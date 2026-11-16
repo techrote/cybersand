@@ -205,8 +205,8 @@ packet before constructing/blitting patches. It updates a persistent CPU Image.
 On qualified desktop OpenGL/ANGLE backends, two linear RGBA8 drawable textures
 retain the exact logical R8/RG8 current and previous material values. All six
 appearance shaders retain ordinary 2D sampling. Changed tiles are packed into
-one of a bounded set of R8/RG8 staging textures; that staging texture is uploaded
-once before GPU rectangle copies update the recycled history plane. A dense
+one layer of a bounded R8/RG8 staging array; that layer is uploaded once before
+GPU rectangle copies update the recycled history plane. A dense
 publication uses one full staging upload and one whole-plane GPU copy. This
 avoids CPU texture updates to the material planes sampled by the preceding draw.
 
@@ -214,17 +214,29 @@ At 2048²,128² tiles bound the dirty index to 256 entries. The recycled slot re
 all accumulated changes from its retained contents; exact unchanged tile bytes
 skip submission. One changed tile submits32 KiB of RG8 staging data instead of an
 8 MiB World image. GPU copies also read staging pixels and write RGBA8 targets:
-CPU upload bytes are not total GPU traffic. Each staging size class now owns
-two fixed ImageTextures and rotates only after upload, copies and retirement
-are submitted. A diagnostic one-resource control remains available through
+CPU upload bytes are not total GPU traffic. Each staging size class owns one
+fixed Texture2DArray with two layers and rotates only after upload, copies and
+retirement are submitted. A diagnostic one-layer control remains available through
 `CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS=1`; the experimental default is two.
 The exact-size full source aliases the same pool/cursor; non-square or NPOT
 sources retain a separate bounded full pool. Rejected and byte-identical
 publications do not advance a cursor. This increases reuse distance without
 asserting that GPU work has completed. The two histories, staging size
-classes and 1×1 retirement target occupy 55,902,212 logical GPU texture bytes at
+classes, 1×1 retirement target and separate 1-byte source dummy occupy
+55,902,213 logical GPU texture bytes at
 2048² RG8, excluding driver overhead. A final tiny blit prevents the engine's
 persistent framebuffer attachment from retaining a released large history plane.
+
+Only the copy shader samples an array. Its sampler is fixed once per pool;
+ordinary World appearance still samples the original 2D history interface.
+The Godot 4.7 GLES3 implementation updates an array layer with
+`glTexSubImage3D`, while its ordinary `ImageTexture.update` path calls
+`glTexImage2D`. The change avoids redefining staging storage on every upload;
+it does not establish a nonblocking driver call. The separate ordinary source
+dummy satisfies the blit API's source0 binding without binding an array as a
+2D texture. Resource/layer identity and exact byte readback are qualification
+requirements. The source implementation and rejected alternatives are linked
+in the remediation audit below.
 
 `CYBERSAND_MATERIAL_PUBLICATION=auto|full|blit` and Engine Lab select the path.
 Unsupported platforms/backends/capacities and detectable resource validation
@@ -234,7 +246,7 @@ so latent device loss is not claimed to be synchronously detectable. The
 fallback's `ImageTexture.update` still updates the full plane regardless of
 patch area (8 MiB at 2048² RG8). Neither CPU patch size nor elapsed call timing
 alone establishes measured GPU bandwidth or a driver-wait cause. The superseded
-array design and its negative performance evidence remain in the
+full-World array-sampling design and its negative performance evidence remain in the
 [remediation audit](../audits/2026-11-16-physics-freeze-remediation-002.md).
 
 Desktop acknowledges a render serial only after successful consumption.

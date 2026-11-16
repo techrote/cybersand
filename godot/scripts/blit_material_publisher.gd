@@ -2,7 +2,7 @@ class_name CyberBlitMaterialPublisher
 extends RefCounted
 
 # Godot 4.7 desktop Compatibility publication. CPU data enters a bounded
-# R8/RG8 staging pool, then ordered GPU copies update two linear RGBA8 material
+# R8/RG8 array staging pool, then ordered GPU copies update two linear RGBA8 material
 # histories. Ordinary 2D palette/effect sampling remains unchanged. No CPU
 # upload targets a material history, and no draw samples its own output.
 # Main owns the publisher; each public Texture2D owns its drawable and keeps
@@ -40,9 +40,12 @@ class MaterialPlane extends Texture2D:
 		return owner != null and owner.replace_plane(source, self)
 
 class StagingPool extends RefCounted:
-	var textures: Array[ImageTexture] = []
-	var owned_object_ids := PackedInt64Array()
-	var owned_rids: Array[RID] = []
+	var texture: Texture2DArray
+	var owned_object_id: int = 0
+	var owned_rid: RID
+	var material: ShaderMaterial
+	var owned_material_id: int = 0
+	var owned_material_rid: RID
 	var extent := Vector2i.ZERO
 	var next_slot: int = 0
 
@@ -54,7 +57,7 @@ var channels: int = 2
 var tile_side: int = MIN_TILE_SIDE
 var columns: int = 0
 var rows: int = 0
-# One or two fixed upload resources per size class. Alternation provides
+# One fixed array per size class with one or two layers. Alternation provides
 # reuse distance; it is not a GPU fence or a promise of nonblocking updates.
 var staging_slots: int = 2
 var staging: Dictionary = {}
@@ -64,7 +67,11 @@ var _full_staging_pool_id: int = 0
 var retirement_sink: DrawableTexture2D
 var retirement_owned_id: int = 0
 var retirement_owned_rid: RID
-var copy_material: ShaderMaterial
+# Required ordinary source0 stays disjoint from every sampled array and output.
+# The custom array sampler is bound once per pool at texture unit 1.
+var dummy_source: ImageTexture
+var dummy_owned_id: int = 0
+var dummy_owned_rid: RID
 var last_update: Dictionary = {}
 
 
@@ -103,8 +110,10 @@ func _setup(source: Image, preceding: Image) -> bool:
 		if columns * rows <= MAX_TILES: break
 		tile_side *= 2
 		if tile_side > MAX_TILE_SIDE: return false
-	copy_material = ShaderMaterial.new()
-	copy_material.shader = COPY_SHADER
+	dummy_source = ImageTexture.create_from_image(Image.create(1,1,false,Image.FORMAT_R8))
+	if dummy_source == null or not dummy_source.get_rid().is_valid(): return false
+	dummy_owned_id = dummy_source.get_instance_id()
+	dummy_owned_rid = dummy_source.get_rid()
 	retirement_sink = DrawableTexture2D.new()
 	retirement_sink.setup(1,1,DrawableTexture2D.DRAWABLE_FORMAT_RGBA8,Color(0,0,0,1),false)
 	retirement_owned_id = retirement_sink.get_instance_id()
@@ -149,14 +158,15 @@ func _setup(source: Image, preceding: Image) -> bool:
 	if not pools.has(full_staging): pools.append(full_staging)
 	var sink_rids: Array[RID] = [retirement_sink.get_rid()]
 	for pool: StagingPool in pools:
-		var source_rids: Array[RID] = [pool.textures[0].get_rid()]
+		var source_rids: Array[RID] = [dummy_source.get_rid()]
 		RenderingServer.texture_drawable_blit_rect(sink_rids,Rect2i(0,0,1,1),
-			copy_material.get_rid(),Color(0,0,1,1),source_rids,0)
+			pool.material.get_rid(),Color(0,0,1,1),source_rids,0)
 		pool.next_slot = staging_slots - 1
 	initialized["priming_usec"] = Time.get_ticks_usec()-priming_started
 	initialized["priming_blit_calls"] = pools.size()
-	initialized["initialization_staging_zero_bytes"] = gpu_storage_bytes()-extent.x*extent.y*8-4
-	initialized["submitted_bytes"] += initialized.initialization_staging_zero_bytes
+	initialized["initialization_staging_zero_bytes"] = gpu_storage_bytes()-extent.x*extent.y*8-5
+	initialized["initialization_dummy_source_bytes"] = 1
+	initialized["submitted_bytes"] += initialized.initialization_staging_zero_bytes+initialized.initialization_dummy_source_bytes
 	initialized["initialization"] = true
 	initialized["initialization_usec"] = Time.get_ticks_usec()-setup_started
 	# Setup also includes resource allocation and zero initialization, so its
@@ -169,28 +179,34 @@ func _setup(source: Image, preceding: Image) -> bool:
 func _new_staging_pool(size: Vector2i) -> StagingPool:
 	var pool := StagingPool.new()
 	pool.extent = size
-	# Initialization data is immutable across both queued creations.
 	var zero := Image.create(size.x,size.y,false,logical_format)
-	for slot: int in range(staging_slots):
-		var stage: ImageTexture = ImageTexture.create_from_image(zero)
-		if stage == null or not stage.get_rid().is_valid(): return null
-		pool.textures.append(stage)
-		pool.owned_object_ids.append(stage.get_instance_id())
-		pool.owned_rids.append(stage.get_rid())
+	var layers: Array[Image] = []
+	for slot: int in range(staging_slots): layers.append(zero)
+	pool.texture = Texture2DArray.new()
+	if pool.texture.create_from_images(layers) != OK or not pool.texture.get_rid().is_valid(): return null
+	pool.owned_object_id = pool.texture.get_instance_id()
+	pool.owned_rid = pool.texture.get_rid()
+	pool.material = ShaderMaterial.new()
+	pool.material.shader = COPY_SHADER
+	pool.material.set_shader_parameter("staging_array",pool.texture)
+	pool.owned_material_id = pool.material.get_instance_id()
+	pool.owned_material_rid = pool.material.get_rid()
 	return pool
 
 
 func _valid_staging_pool(pool: StagingPool, size: Vector2i) -> bool:
-	if pool == null or pool.extent != size or pool.textures.size() != staging_slots \
-			or pool.owned_object_ids.size() != staging_slots or pool.owned_rids.size() != staging_slots \
-			or pool.next_slot < 0 or pool.next_slot >= staging_slots: return false
-	for slot: int in range(staging_slots):
-		var stage: ImageTexture = pool.textures[slot]
-		if stage == null or stage.get_instance_id() != pool.owned_object_ids[slot] \
-				or stage.get_rid() != pool.owned_rids[slot] or not stage.get_rid().is_valid() \
-				or Vector2i(stage.get_size()) != size or stage.get_format() != logical_format: return false
-		if slot > 0 and stage.get_rid() == pool.textures[0].get_rid(): return false
-	return true
+	if pool == null or pool.extent != size or pool.next_slot < 0 or pool.next_slot >= staging_slots: return false
+	var stage: Texture2DArray = pool.texture
+	if stage == null or stage.get_instance_id() != pool.owned_object_id \
+			or stage.get_rid() != pool.owned_rid or not stage.get_rid().is_valid() \
+			or Vector2i(stage.get_width(),stage.get_height()) != size \
+			or stage.get_format() != logical_format or stage.get_layers() != staging_slots or stage.has_mipmaps(): return false
+	if pool.material == null or not pool.material.get_rid().is_valid() \
+			or pool.material.get_instance_id() != pool.owned_material_id \
+			or pool.material.get_rid() != pool.owned_material_rid \
+			or pool.material.shader != COPY_SHADER or COPY_SHADER.get_mode() != Shader.MODE_TEXTURE_BLIT \
+			or pool.material.get_shader_parameter("staging_array") != stage: return false
+	return stage.get_rid() != dummy_source.get_rid() and stage.get_rid() != retirement_sink.get_rid()
 
 
 func _new_plane() -> MaterialPlane:
@@ -228,17 +244,21 @@ func _valid_state() -> bool:
 	if tile_side < MIN_TILE_SIDE or tile_side > MAX_TILE_SIDE or (tile_side & (tile_side-1)) != 0 \
 			or columns <= 0 or rows <= 0 or columns*rows > MAX_TILES \
 			or columns != ceili(float(extent.x)/tile_side) or rows != ceili(float(extent.y)/tile_side): return false
-	if copy_material == null or copy_material.shader == null or copy_material.shader.get_mode() != Shader.MODE_TEXTURE_BLIT \
-			or retirement_sink == null or not retirement_sink.get_rid().is_valid() \
+	if dummy_source == null or dummy_source.get_instance_id() != dummy_owned_id \
+			or dummy_source.get_rid() != dummy_owned_rid or not dummy_source.get_rid().is_valid() \
+			or Vector2i(dummy_source.get_size()) != Vector2i.ONE or dummy_source.get_format() != Image.FORMAT_R8: return false
+	if retirement_sink == null or not retirement_sink.get_rid().is_valid() \
 			or retirement_sink.get_instance_id() != retirement_owned_id or retirement_sink.get_rid() != retirement_owned_rid \
-			or Vector2i(retirement_sink.get_size()) != Vector2i.ONE or retirement_sink.get_use_mipmaps(): return false
+			or Vector2i(retirement_sink.get_size()) != Vector2i.ONE or retirement_sink.get_use_mipmaps() \
+			or retirement_sink.get_rid() == dummy_source.get_rid(): return false
 	for plane: MaterialPlane in [current,previous]:
 		if plane == null or plane.drawable == null or not plane.drawable.get_rid().is_valid() \
 				or plane.drawable.get_instance_id() != plane.owned_object_id or plane.drawable.get_rid() != plane.owned_rid \
 				or plane.extent != extent or plane.logical_format != logical_format \
 				or Vector2i(plane.drawable.get_size()) != extent or plane.drawable.get_use_mipmaps() \
 				or plane.bytes.size() != columns*rows or plane.pending.size() != columns*rows \
-				or plane.drawable.get_rid() == retirement_sink.get_rid(): return false
+				or plane.drawable.get_rid() == retirement_sink.get_rid() \
+				or plane.drawable.get_rid() == dummy_source.get_rid(): return false
 	if staging.size() != _staging_pool_ids.size(): return false
 	for capacity: int in staging:
 		if capacity not in CAPACITIES: return false
@@ -290,6 +310,8 @@ func _finish_metrics() -> void:
 	last_update["tile_side"] = tile_side
 	last_update["tile_count"] = columns*rows
 	last_update["staging_slots"] = staging_slots
+	last_update["staging_backend"] = "texture2d_array"
+	last_update["staging_layer"] = last_update.get("staging_slot",-1)
 
 
 func _submit(source: Image, destinations: Array[MaterialPlane]) -> bool:
@@ -331,10 +353,9 @@ func _submit(source: Image, destinations: Array[MaterialPlane]) -> bool:
 	var pool: StagingPool = full_staging if whole else staging.get(capacity) as StagingPool
 	if pool == null: return false
 	var slot: int = pool.next_slot
-	var stage: ImageTexture = pool.textures[slot]
+	var stage: Texture2DArray = pool.texture
 	var stage_size: Vector2i = extent if whole else Vector2i(atlas_side,atlas_side)
-	if stage == null or Vector2i(stage.get_size()) != stage_size \
-			or stage.get_format() != logical_format or not stage.get_rid().is_valid(): return false
+	if not _valid_staging_pool(pool,stage_size): return false
 	for plane: MaterialPlane in destinations:
 		if plane.drawable.get_rid() == stage.get_rid(): return false
 	if retirement_sink.get_rid() == stage.get_rid(): return false
@@ -351,15 +372,15 @@ func _submit(source: Image, destinations: Array[MaterialPlane]) -> bool:
 				Vector2i((item%atlas_columns)*tile_side,(item/atlas_columns)*tile_side))
 	last_update.atlas_assembly_usec = Time.get_ticks_usec()-started
 	started = Time.get_ticks_usec()
-	stage.update(atlas)
+	stage.update_layer(atlas,slot)
 	last_update.staging_upload_usec = Time.get_ticks_usec()-started
-	var source_rids: Array[RID] = [stage.get_rid()]
+	var source_rids: Array[RID] = [dummy_source.get_rid()]
 	started = Time.get_ticks_usec()
 	if whole:
 		for plane: MaterialPlane in destinations:
 			var output_rids: Array[RID] = [plane.drawable.get_rid()]
 			RenderingServer.texture_drawable_blit_rect(output_rids,Rect2i(Vector2i.ZERO,extent),
-				copy_material.get_rid(),Color(0,0,extent.x,extent.y),source_rids,0)
+				pool.material.get_rid(),Color(0,0,extent.x,extent.y+16384*slot),source_rids,0)
 		last_update.gpu_blit_calls = destinations.size()
 		last_update.blit_pixels = extent.x*extent.y*destinations.size()
 	else:
@@ -371,7 +392,7 @@ func _submit(source: Image, destinations: Array[MaterialPlane]) -> bool:
 			for plane: MaterialPlane in destinations:
 				var output_rids: Array[RID] = [plane.drawable.get_rid()]
 				RenderingServer.texture_drawable_blit_rect(output_rids,Rect2i(position,size),
-					copy_material.get_rid(),Color(source_origin.x,source_origin.y,size.x,size.y),source_rids,0)
+					pool.material.get_rid(),Color(source_origin.x,source_origin.y,size.x,size.y+16384*slot),source_rids,0)
 			last_update.blit_pixels += size.x*size.y*destinations.size()
 		last_update.gpu_blit_calls = changed.size()*destinations.size()
 	# Godot's persistent FBO retains attachments while unbound. Always detach
@@ -379,7 +400,7 @@ func _submit(source: Image, destinations: Array[MaterialPlane]) -> bool:
 	# Single-target calls throughout ensure no hidden second MRT attachment.
 	var sink_rids: Array[RID] = [retirement_sink.get_rid()]
 	RenderingServer.texture_drawable_blit_rect(sink_rids,Rect2i(0,0,1,1),
-		copy_material.get_rid(),Color(0,0,1,1),source_rids,0)
+		pool.material.get_rid(),Color(0,0,1,1+16384*slot),source_rids,0)
 	last_update.retirement_blit_calls = 1
 	last_update.estimated_retirement_write_bytes = 4
 	last_update.gpu_blit_submit_usec = Time.get_ticks_usec()-started
@@ -403,18 +424,19 @@ func _submit(source: Image, destinations: Array[MaterialPlane]) -> bool:
 func resource_identity() -> Array[int]:
 	var ids: Array[int] = [current.get_rid().get_id(),previous.get_rid().get_id()]
 	ids.append(retirement_sink.get_rid().get_id())
+	ids.append(dummy_source.get_rid().get_id())
 	var pools: Array = staging.values()
 	if not pools.has(full_staging): pools.append(full_staging)
 	for pool: StagingPool in pools:
-		for stage: ImageTexture in pool.textures: ids.append(stage.get_rid().get_id())
+		ids.append(pool.texture.get_rid().get_id())
 	ids.sort()
 	return ids
 
 
 func gpu_storage_bytes() -> int:
-	var bytes: int = extent.x*extent.y*4*2+4
+	var bytes: int = extent.x*extent.y*4*2+5
 	var pools: Array = staging.values()
 	if full_staging != null and not pools.has(full_staging): pools.append(full_staging)
 	for pool: StagingPool in pools:
-		if pool != null: bytes += pool.extent.x*pool.extent.y*channels*pool.textures.size()
+		if pool != null: bytes += pool.extent.x*pool.extent.y*channels*staging_slots
 	return bytes

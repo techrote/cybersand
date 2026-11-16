@@ -285,10 +285,17 @@ func _owner_and_format_contract(channels: int) -> void:
 	publisher.previous.drawable = foreign
 	check(not publisher.publish(changed,areas), "foreign valid-RID SRGB target is refused")
 	publisher.previous.drawable = target
-	var stage: ImageTexture = publisher.staging[1].textures[0]
-	publisher.staging[1].textures[0] = ImageTexture.create_from_image(Image.create(side,side,false,format))
+	var stage: Texture2DArray = publisher.staging[1].texture
+	var foreign_stage := Texture2DArray.new()
+	var stage_images: Array[Image] = [Image.create(side,side,false,format)]
+	check(foreign_stage.create_from_images(stage_images) == OK, "foreign array fixture created")
+	publisher.staging[1].texture = foreign_stage
 	check(not publisher.publish(changed,areas), "foreign staging allocation is refused")
-	publisher.staging[1].textures[0] = stage
+	publisher.staging[1].texture = stage
+	var dummy: ImageTexture = publisher.dummy_source
+	publisher.dummy_source = ImageTexture.create_from_image(Image.create(1,1,false,Image.FORMAT_R8))
+	check(not publisher.publish(changed,areas), "foreign source0 dummy is refused")
+	publisher.dummy_source = dummy
 	check(publisher.current.get_image().get_data() == before
 		and publisher.resource_identity() == resources, "rejected mutations leave actual histories and owned resources unchanged")
 	check(publisher.current.update(previous), "legacy direct texture update routes through the same exact GPU copy")
@@ -310,7 +317,7 @@ func _staging_pool_contract(slots: int, extent: Vector2i) -> void:
 	OS.set_environment("CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS", setting)
 	var publisher: Publisher = host._material_blit_publisher
 	check(publisher != null and publisher.staging_slots == slots,
-		"diagnostic staging selector creates exactly the requested resource count")
+		"diagnostic staging selector creates exactly the requested array layer count")
 	if publisher == null:
 		_release(host)
 		return
@@ -328,16 +335,41 @@ func _staging_pool_contract(slots: int, extent: Vector2i) -> void:
 	publisher.staging[1] = foreign_pool
 	check(not publisher.publish(host.image,areas), "foreign matching-size pool is rejected by owner identity")
 	publisher.staging[1] = sparse_pool
-	if slots == 2:
-		var alternate: ImageTexture = sparse_pool.textures[1]
-		sparse_pool.textures[1] = sparse_pool.textures[0]
-		check(not publisher.publish(host.image,areas), "replaced second staging slot is rejected before upload")
-		sparse_pool.textures[1] = alternate
+	# Exercise structure checks independently of identity and sampler checks:
+	# temporarily retain the adversarial object as the declared owner resource.
+	var saved_array: Texture2DArray = sparse_pool.texture
+	var saved_id: int = sparse_pool.owned_object_id
+	var saved_rid: RID = sparse_pool.owned_rid
+	for mutation: String in ["layers","shape","format","mipmaps"]:
+		var size: Vector2i = sparse_pool.extent + (Vector2i.ONE if mutation == "shape" else Vector2i.ZERO)
+		var format: Image.Format = Image.FORMAT_R8 if mutation == "format" else Image.FORMAT_RG8
+		var image := Image.create(size.x,size.y,mutation == "mipmaps",format)
+		var layers: Array[Image] = []
+		for layer: int in range(3 if mutation == "layers" else slots): layers.append(image)
+		var wrong := Texture2DArray.new()
+		check(wrong.create_from_images(layers) == OK, "adversarial array structure fixture "+mutation)
+		sparse_pool.texture = wrong
+		sparse_pool.owned_object_id = wrong.get_instance_id()
+		sparse_pool.owned_rid = wrong.get_rid()
+		sparse_pool.material.set_shader_parameter("staging_array",wrong)
+		check(not publisher.publish(host.image,areas), "array structure rejected before update_layer: "+mutation)
+		sparse_pool.texture = saved_array
+		sparse_pool.owned_object_id = saved_id
+		sparse_pool.owned_rid = saved_rid
+		sparse_pool.material.set_shader_parameter("staging_array",saved_array)
+	sparse_pool.material.set_shader_parameter("staging_array",null)
+	check(not publisher.publish(host.image,areas), "foreign fixed sampler association refused")
+	sparse_pool.material.set_shader_parameter("staging_array",saved_array)
+	var material_rid: RID = sparse_pool.owned_material_rid
+	sparse_pool.owned_material_rid = RID()
+	check(not publisher.publish(host.image,areas), "invalid retained copy material RID refused")
+	sparse_pool.owned_material_rid = material_rid
 	check(sparse_pool.next_slot == first_cursor and publisher.previous.pending == pending_before,
 		"rejected pool mutations preserve cursor and pending coverage")
 	_check_gpu(host,unchanged,unchanged,"rejected staging mutation")
 	var stage_ids: Dictionary = {}
 	var last_slots: Dictionary = {}
+	var seen_layers: Dictionary = {}
 	var sequence: Array[Dictionary] = []
 	# Consecutive sparse, seam and dense edits exercise recurring capacities.
 	# Inherited dirty coverage may increase the chosen class; the receipt
@@ -349,21 +381,29 @@ func _staging_pool_contract(slots: int, extent: Vector2i) -> void:
 		var record: Dictionary = _patch(host,area,6+turn,200-turn,
 			"staging%d %s update%d" % [slots,str(extent),turn])
 		check(record.staging_slots == slots and record.staging_slot >= 0 and record.staging_slot < slots
-			and record.staging_resource_rid > 0, "nonempty receipt identifies its actual bounded stage")
+			and record.staging_resource_rid > 0 and record.staging_backend == "texture2d_array"
+			and record.staging_layer == record.staging_slot, "nonempty receipt identifies its actual array/layer")
 		var key: int = int(record.atlas_capacity)
 		if last_slots.has(key):
 			check(record.staging_slot == (int(last_slots[key])+1)%slots,
-				"each recurring capacity alternates only its own staging resources")
+				"each recurring capacity alternates only its own array layers")
 		last_slots[key] = record.staging_slot
-		var slot_key: String = "%d:%d" % [key,record.staging_slot]
-		if stage_ids.has(slot_key):
-			check(stage_ids[slot_key] == record.staging_resource_rid,
-				"capacity/slot identity is stable across repeated publications")
-		stage_ids[slot_key] = record.staging_resource_rid
-		sequence.append({"capacity":key,"slot":record.staging_slot,"rid":record.staging_resource_rid,
+		if stage_ids.has(key):
+			check(stage_ids[key] == record.staging_resource_rid,
+				"all recurring layers share the one owned array RID per capacity")
+		else:
+			check(not stage_ids.values().has(record.staging_resource_rid),
+				"different size classes own distinct arrays")
+		stage_ids[key] = record.staging_resource_rid
+		if not seen_layers.has(key): seen_layers[key] = {}
+		seen_layers[key][record.staging_layer] = true
+		sequence.append({"capacity":key,"slot":record.staging_slot,"layer":record.staging_layer,
+			"kind":record.staging_backend,"rid":record.staging_resource_rid,
 			"bytes":record.submitted_bytes,"whole":record.whole_gpu_copy})
 		check(resources == publisher.resource_identity(), "publication allocates no additional staging resources")
 	check(last_slots.has(1) and last_slots.has(4), "independent sparse capacities were exercised")
+	for capacity: int in seen_layers:
+		check(seen_layers[capacity].size() == slots, "every allocated layer was exercised in each recurring capacity")
 	# Align both histories, then verify byte-identical uploads do not consume
 	# a slot or falsely report a GPU source resource.
 	for turn: int in range(2):
@@ -375,8 +415,9 @@ func _staging_pool_contract(slots: int, extent: Vector2i) -> void:
 	check(host.upload_texture_patches(host._full_material_rectangle(),host.image.get_data(),
 		host.last_uploaded_revision+1,2), "zero-change publication accepted")
 	var empty: Dictionary = host.material_publication_status()
-	check(empty.submitted_bytes == 0 and empty.staging_slot == -1 and empty.staging_resource_rid == 0,
-		"zero-change receipt does not invent a staging submission")
+	check(empty.submitted_bytes == 0 and empty.staging_slot == -1 and empty.staging_layer == -1
+		and empty.staging_resource_rid == 0 and empty.staging_backend == "texture2d_array",
+		"zero-change receipt retains array kind without inventing a layer submission")
 	for capacity: int in publisher.staging:
 		check(publisher.staging[capacity].next_slot == cursors[capacity],
 			"zero-change publication preserves each capacity cursor")
@@ -400,12 +441,12 @@ func _large_sparse_transfer() -> void:
 		"2048² RG8 uses 128² tiles and 256 bounded tile records")
 	var resources: Array[int] = host._material_blit_publisher.resource_identity()
 	var slots: int = host._material_blit_publisher.staging_slots
-	var expected_bytes: int = 33554436+11173888*slots
+	var expected_bytes: int = 33554437+11173888*slots
 	check(host._material_blit_publisher.gpu_storage_bytes() == expected_bytes,
 		"2048² allocation includes the configured number of bounded staging resources")
 	check(host._material_blit_publisher.full_staging == host._material_blit_publisher.staging[256],
 		"2048² full image and capacity256 share the same resource pool and cursor")
-	check(resources.size() == 3+5*slots, "history, sink and every staging resource are individually counted")
+	check(resources.size() == 9, "two histories, sink, source0 dummy and five arrays are individually counted")
 	var result: Dictionary = _patch(host, Rect2i(1023, 1024, 1, 1), 3, 77, "2048² single cell")
 	check(result.gpu_blit_calls == 1 and result.retirement_blit_calls == 1, "sparse copy includes bounded retirement draw")
 	check(result.updated_tiles == 1 and result.submitted_bytes == 32768,
@@ -432,6 +473,37 @@ func _large_sparse_transfer() -> void:
 		"publication":result})
 	_release(host)
 	large_completed = true
+
+
+func _packed_height_contract() -> void:
+	var setting: String = OS.get_environment("CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS")
+	OS.set_environment("CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS","2")
+	var size := Vector2i(1,16383)
+	var current := Image.create_from_data(size.x,size.y,false,Image.FORMAT_RG8,_pattern(size,2,31))
+	var previous := Image.create_from_data(size.x,size.y,false,Image.FORMAT_RG8,_pattern(size,2,7))
+	var publisher: Publisher = Publisher.create_pair(current,previous)
+	OS.set_environment("CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS",setting)
+	check(publisher != null, "maximum supported copy height initializes distinct histories")
+	if publisher == null: return
+	check(publisher.current.get_image().get_data() == current.get_data()
+		and publisher.previous.get_image().get_data() == previous.get_data(),
+		"initial maximum-height GPU histories remain exact")
+	var resources: Array[int] = publisher.resource_identity()
+	var seen: Dictionary = {}
+	for turn: int in range(4):
+		previous = current
+		current = Image.create_from_data(size.x,size.y,false,Image.FORMAT_RG8,_pattern(size,2,63+turn))
+		check(publisher.publish(current,[]), "maximum-height whole copy accepted")
+		var record: Dictionary = publisher.last_update
+		check(record.whole_gpu_copy and record.staging_layer in [0,1], "whole copy uses a validated packed layer")
+		seen[record.staging_layer] = true
+		check(publisher.current.get_image().get_data() == current.get_data()
+			and publisher.previous.get_image().get_data() == previous.get_data(),
+			"maximum-height current and previous bytes exactly survive packed coordinates")
+		check(publisher.resource_identity() == resources, "maximum-height publication retains bounded resources")
+		observations.append({"label":"packed copy height", "packed_height":16383+16384*int(record.staging_layer),
+			"publication":record.duplicate()})
+	check(seen.has(0) and seen.has(1), "packed heights 16383 and 32767 both reach actual GPU readback")
 
 
 func _view(host: Control, shader_path: String, blend: float) -> SubViewport:
@@ -576,6 +648,7 @@ func _run() -> void:
 			_staging_pool_contract(slots,Vector2i(256,256))
 			_staging_pool_contract(slots,Vector2i(317,259))
 		_large_sparse_transfer()
+		_packed_height_contract()
 		check(histories_completed == 2 and large_completed, "all history and transfer tests reached completion")
 		check(await _shader_equivalence() == true and shader_pairs_completed == 8, "all shader comparisons reached completion")
 	var report := {"godot":Engine.get_version_info(), "display":DisplayServer.get_name(),

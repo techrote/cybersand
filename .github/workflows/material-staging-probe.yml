@@ -1,4 +1,4 @@
-name: MATERIAL-STAGING-REUSE-001 focused Windows comparison
+name: MATERIAL-ARRAY-STAGING-001 focused Windows comparison
 on:
   push:
     branches: [diagnostics/material-staging-reuse-20261116]
@@ -14,10 +14,10 @@ env:
   CYBERSAND_CI_WATCHDOG_SCALE: '1'
 jobs:
   windows-staging:
-    name: Windows full / one-slot / two-slot staging, forward and reverse
+    name: Windows full / one-layer / two-layer array staging, forward and reverse
     runs-on: windows-2022
     # Six independent 900-second process watchdogs plus preparation, import
-    # and artifact headroom. None is a physical performance acceptance limit.
+    # targeted GPU correctness and artifact headroom. None is a physical performance acceptance limit.
     timeout-minutes: 130
     defaults:
       run:
@@ -65,6 +65,83 @@ jobs:
           if version!=ENGINE_VERSION: raise RuntimeError('Wrong Godot version')
           pathlib.Path('evidence/godot.json').write_text(json.dumps({'version':version,'executable':str(godot),'executable_sha256':digest(godot),'archive_sha512':ENGINE_ZIP_HASH},indent=2)+'\n')
           with open(os.environ['GITHUB_ENV'],'a',encoding='utf-8') as target: target.write('GODOT_BIN='+godot.as_posix()+'\n')
+          PY
+      - name: Import exact project for the targeted GPU correctness gate
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json,os,pathlib,re,subprocess,time
+          folder=pathlib.Path('evidence/material-gpu-correctness')
+          folder.mkdir(parents=True,exist_ok=True)
+          command=[os.environ['GODOT_BIN'],'--headless','--path',str(pathlib.Path('godot').resolve()),'--editor','--quit']
+          receipt={'source_sha':os.environ['GITHUB_SHA'],'command':command,'timeout_seconds':240,'complete':False}
+          path=folder/'import.json'
+          path.write_text(json.dumps(receipt,indent=2)+'\n')
+          started=time.monotonic()
+          try:
+              with (folder/'import.log').open('w',encoding='utf-8') as log:
+                  result=subprocess.run(command,stdout=log,stderr=subprocess.STDOUT,timeout=240)
+              receipt['exit_code']=result.returncode
+              text=(folder/'import.log').read_text(errors='replace')
+              if result.returncode!=0 or re.search(r'SCRIPT ERROR:|SHADER ERROR:|Parse Error:|Failed to load script|Failed loading resource:',text):
+                  raise RuntimeError('Project import failed; inspect retained import.log')
+              receipt['complete']=True
+          except Exception as error:
+              receipt['error']=str(error)
+              raise
+          finally:
+              receipt['elapsed_seconds']=time.monotonic()-started
+              path.write_text(json.dumps(receipt,indent=2)+'\n')
+          PY
+      - name: Verify actual ANGLE material bytes history and eight shader pairs
+        run: |
+          set -euo pipefail
+          # This selects one actual graphical test with its established 600s
+          # process watchdog. A failed gate prevents all performance arms.
+          python -u tools/ci/run_camera_coherence_regressions.py --godot "$GODOT_BIN" --project godot --evidence evidence/material-gpu-correctness --graphical --cases material-tiles-graphical 2>&1 | tee evidence/material-gpu-correctness/runner.log
+          python - <<'PY'
+          import hashlib,json,os,pathlib,re,sys
+          sys.path.insert(0,'tools/ci')
+          from run_physics_freeze_comparison import need
+          folder=pathlib.Path('evidence/material-gpu-correctness')
+          summary=json.loads((folder/'summary.json').read_text())
+          casefolder=folder/'material-tiles-graphical'
+          report=json.loads((casefolder/'material-tiles.json').read_text())
+          text=(casefolder/'console.log').read_text(errors='replace')
+          need(summary.get('complete') is True and summary.get('source_sha')==os.environ['GITHUB_SHA'],'Wrong or incomplete GPU gate source')
+          cases=summary.get('cases',[])
+          need(len(cases)==1 and cases[0].get('name')=='material-tiles-graphical' and cases[0].get('graphical') is True,'Wrong GPU gate selection')
+          case=cases[0]
+          need(case.get('status')=='passed' and case.get('exit_code')==0,'GPU gate process failed')
+          need(hashlib.sha256((casefolder/'console.log').read_bytes()).hexdigest()==case['log_sha256'],'GPU gate log differs from executed receipt')
+          command=case['command']
+          need('--headless' not in command and command[command.index('--rendering-driver')+1]=='opengl3_angle','GPU gate did not launch ANGLE')
+          need(report.get('display')=='Windows' and report.get('driver')=='opengl3_angle','GPU gate did not execute Windows ANGLE')
+          need(report.get('godot',{}).get('major')==4 and report['godot'].get('minor')==7,'GPU gate used the wrong Godot version')
+          completions=re.findall(r'^MATERIAL_TILE_PUBLICATION: (\d+) assertions, (\d+) failures\s*$',text,re.M)
+          need(len(completions)==1 and int(completions[0][0])==report.get('assertions') and int(completions[0][1])==report.get('failures')==0,'GPU gate marker/JSON disagree or report failures')
+          need(report['assertions']>0,'Vacuous GPU gate')
+          need({'scripts/main.gd','scripts/blit_material_publisher.gd','tests/test_material_tile_publication.gd'}<=summary.get('executed_files_sha256',{}).keys(),'Missing GPU gate executed-source identities')
+          for relative,expected in summary['executed_files_sha256'].items():
+              need(hashlib.sha256((pathlib.Path('godot')/relative).read_bytes()).hexdigest()==expected,'GPU gate executed source changed: '+relative)
+          observations=report.get('observations',[])
+          shaders=[row for row in observations if 'shader' in row]
+          expected={('material_palette',0.0),('material_palette',0.37),('material_palette',1.0)}
+          expected.update((name,0.37) for name in ('material_emission','material_vapour_trail','blacksite_nine_backdrop','blacksite_nine_grade','neon_reliquary_backdrop'))
+          need(len(shaders)==8 and {(row['shader'],round(row['blend'],2)) for row in shaders}==expected,'Missing or duplicate appearance comparison')
+          need(all(re.fullmatch(r'[0-9a-f]{64}',row.get('full_sha256','')) and row['full_sha256']==row.get('blit_sha256') for row in shaders),'GPU appearance bytes differ')
+          need(sum(row.get('label')=='edit after World replacement' for row in observations)==2,'Both exact R8/RG8 history sequences did not complete')
+          pools=[row for row in observations if row.get('label')=='staging pool sequence']
+          need(len(pools)==4 and {(row.get('staging_slots'),tuple(row.get('extent',[]))) for row in pools}=={(slots,extent) for slots in (1,2) for extent in ((256,256),(317,259))},'Missing square/NPOT one/two-layer resource coverage')
+          heights=[row for row in observations if row.get('label')=='packed copy height']
+          need(len(heights)==4 and {row.get('packed_height') for row in heights}=={16383,32767},'Missing packed layer-height GPU boundaries')
+          dense=[row for row in observations if row.get('label')=='dense 2048² full refresh']
+          need(len(dense)==1 and dense[0]['publication'].get('submitted_bytes')==8388608,'Missing complete 2048² full-refresh proof')
+          publications=[row['publication'] for row in observations if 'publication' in row]
+          need(publications and all(row.get('staging_backend')=='texture2d_array' for row in publications),'Wrong GPU staging resource kind')
+          verified={'source_sha':summary['source_sha'],'complete':True,'scope':'Actual Windows ANGLE GPU correctness; no physical NVIDIA acceptance','assertions':report['assertions'],'failures':0,'shader_pairs':len(shaders),'history_sequences':2,'resource_pool_sequences':len(pools),'packed_height_cases':len(heights),'full_refresh_bytes':dense[0]['publication']['submitted_bytes'],'report_sha256':hashlib.sha256((casefolder/'material-tiles.json').read_bytes()).hexdigest(),'log_sha256':case['log_sha256']}
+          (folder/'verified-gpu-gate.json').write_text(json.dumps(verified,indent=2)+'\n')
+          print('MATERIAL_ARRAY_GPU_GATE',json.dumps(verified,sort_keys=True))
           PY
       - name: Run six serial ordinary coupled 2048 Follow arms
         run: |

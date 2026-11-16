@@ -345,10 +345,11 @@ render read path.
 
 [main.gd](../../godot/scripts/main.gd) validates patches and updates a persistent
 CPU Image. The unmerged PHYSICS-FREEZE-REMEDIATION-002 candidate uses bounded
-R8/RG8 staging uploads and GPU rectangle copies into two linear RGBA8 drawable
+R8/RG8 array-layer staging uploads and GPU rectangle copies into two linear RGBA8 drawable
 history planes on qualified desktop compatibility backends. Exact logical
 material/condition bytes are preserved; the six original appearance shaders
-retain ordinary 2D sampling. Reused slots repair accumulated dirty tiles and
+retain ordinary 2D sampling. Arrays are used only by the small copy shader.
+Reused slots repair accumulated dirty tiles and
 skip byte-identical contents. The
 [publication contract](../architecture/rendering-and-gameplay-bridges.md#does-a-small-dirty-patch-mean-a-small-gpu-upload)
 owns capacity, history, mode switching and fallback. The retained full
