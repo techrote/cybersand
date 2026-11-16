@@ -61,3 +61,13 @@ An additional independent **local rerun from these exact source bytes** regenera
 The dedicated `[M5]` job in `.github/workflows/driv3r-tiny-policy-pretrained-cpu.yml` is separately gated and fail-closed: regenerate and source-verify M3 checkpoints, run actual bounded M5 AdamW optimization and original PNG receipt production, independently replay model/control choices, then upload checkpoint/receipt artifacts (retention 21 days). This is CPU research only and cannot silently rerun the separate M1/M2 pretrained jobs.
 
 **Qualification status until that exact-HEAD hosted job succeeds:** local source-byte identity PASS; local 1,449-file reproducibility PASS; hosted source/run/artifact pending. No native gameplay, production integration, FINAL use, or model promotion.
+
+### Hosted M5 checkpoint-identity caveat and repaired CPU lineage
+
+The first hosted attempt, [run #43819296015](https://github.com/techrote/cybersand/actions/runs/43819296015), genuinely regenerated all three M3 checkpoints but **failed closed** when their hashes were compared with the earlier local M3 reference: linear matched, MLP and convolutional differed. It is a failed qualification, not a successful M5 optimizer run. The generated divergent checkpoints are preserved in the failure artifact.
+
+The repaired workflow **does not silently accept/relabel these as the original M3 weights**. It records a separate `m3_reference_status.json`, then M5 can explicitly use `--m3-rebuilt-from-source` only when the M3 source-run's `report.json` confirms the synthetic protocol, zero illegal choices and exact checkpoint hash identities. The M5 result retains the actual M3 SHA-256 lineage and producer-report hash. Its independent audit fails if this lineage is inconsistent. Without the flag, the exact original M3 SHA-256s remain mandatory.
+
+Locally exercised the new explicit source-rebuild path: **9/9 M5 contract/adversarial tests**, another real M5 optimization, and **720/720 original receipt/PNG/model decisions fully audited**. On that local CPU, the source rebuild happened to reproduce the original M3 hashes and all three original M5 checkpoint hashes; that does not imply the GitHub runner must do so. The subsequent hosted job is qualified or rejected independently under its actual SHA/source identity.
+
+No weights/checkpoints are committed to Git. No native host or production files are modified, and no model is promoted.
