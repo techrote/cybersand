@@ -19,9 +19,11 @@ jobs:
       PYTHONHASHSEED: '0'
       OMP_NUM_THREADS: '1'
       MKL_NUM_THREADS: '1'
+      QL_SOURCE_SHA: ${{ github.event.pull_request.head.sha }}
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.pull_request.head.sha }}
           persist-credentials: false
       - uses: actions/setup-python@v5
         with:
@@ -61,7 +63,8 @@ jobs:
           from pathlib import Path
           root=Path('ql005-out')
           r=json.loads((root/'results.json').read_text())
-          assert r['source_sha']==os.environ['GITHUB_SHA']
+          assert r['source_sha']==os.environ['QL_SOURCE_SHA']
+          assert os.popen('git rev-parse HEAD').read().strip()==os.environ['QL_SOURCE_SHA']
           assert r['pinned_sources']['ql003']=='9b4103c48127e5c8538403e2a4d9e2525fbe8755'
           assert r['pinned_sources']['ql004']=='e421d69bf16d9e567f02815707c9743713e0d13b'
           assert min(r['verified_original_manifest_entries'])>=100
