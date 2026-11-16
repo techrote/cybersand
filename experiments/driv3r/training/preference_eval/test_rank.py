@@ -36,6 +36,20 @@ class PreferenceProxyTests(unittest.TestCase):
         self.assertLess(a['train_loss_curve'][-1][1], a['train_loss_curve'][0][1])
         self.assertGreater(rank.evaluate(a,pairs)['correct'],len(pairs)//2)
 
+
+    def test_w13_archive_shards_and_model_free_controls(self):
+        for (family, seed), rows in self.worlds.items():
+            archives={r['original_archive_sha256'] for r in rows}
+            self.assertEqual(len(archives),1)
+            if family=='lfm_w13':
+                expected=('36fa8876f249b0263d19dc40bea17731e8a4776da9cc82400189a876980380ff'
+                          if seed in (6143,6167) else
+                          '0e69b23c100a00b438d4e2d9d07fa4550e276368e0ad4635e38a6c858f79b95e')
+                self.assertEqual(archives,{expected})
+            else:
+                self.assertEqual(archives,{'5eb64e5f7d5335809f631aa11caf9edbfcf1a67f546601d5d14e795cc61f7af6'})
+            self.assertEqual(sum(x['evidence_class'].startswith('trained-model-forward') for x in rows),1)
+
     def test_original_source_sha_mismatch_fails_closed(self):
         orig=(HERE/'source_features.csv').read_bytes()
         with tempfile.TemporaryDirectory() as tmp:
