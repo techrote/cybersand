@@ -91,12 +91,17 @@ def _validate(lease, original, snapshot, expected_source_sha, decisions):
     return ink
 
 
-def _available(lease, original, snapshot, opts, expected_source_sha, decisions):
+def _available(lease, original, snapshot, opts, expected_source_sha, decisions,
+               decision_ceiling, material_ceiling):
     if not isinstance(opts, BodyOptions):
         raise Refusal("Explicit movement options required")
     ink = _validate(lease, original, snapshot, expected_source_sha, decisions)
+    if (type(decision_ceiling) is not int or not 1 <= decision_ceiling <= BASELINE[0]
+            or type(material_ceiling) is not int or not 0 <= material_ceiling <= BASELINE[1]
+            or ink > material_ceiling):
+        raise Refusal("Commander episode ceiling invalid or already exceeded")
     available = {"STOP": ()}
-    if decisions >= BASELINE[0]:
+    if decisions >= decision_ceiling:
         return available, ink
     owned = {
         (i % original.width, i // original.width)
@@ -126,20 +131,24 @@ def _available(lease, original, snapshot, opts, expected_source_sha, decisions):
                     and snapshot.material.material[y * original.width + x] == 0):
                 blank_prefix.append(cell)
                 if (snapshot.logical_moves + step <= BASELINE[2]
-                        and ink + step <= BASELINE[1]):
+                        and ink + step <= material_ceiling):
                     available[f"INK_{name}_{step}"] = tuple(blank_prefix)
     return available, ink
 
 
 def offered(lease, original, snapshot, *, options=BodyOptions(),
-            expected_source_sha, decisions):
+            expected_source_sha, decisions,
+            decision_ceiling=BASELINE[0], material_ceiling=BASELINE[1]):
     """Bind a host-offered action catalog to one *exact* source/epoch/World."""
     actions, ink = _available(
-        lease, original, snapshot, options, expected_source_sha, decisions)
+        lease, original, snapshot, options, expected_source_sha, decisions,
+        decision_ceiling, material_ceiling)
     token = _hash({
         "schema": SCHEMA, "lease": lease.id, "source": expected_source_sha,
         "snapshot": snapshot.fingerprint(), "decisions": decisions,
-        "existing_ink": ink, "options": {
+        "existing_ink": ink,
+        "decision_ceiling": decision_ceiling, "material_ceiling": material_ceiling,
+        "options": {
             "span": options.span, "pen_up": options.pen_up,
             "anchors": options.branch_anchors},
         "actions": actions,
@@ -152,15 +161,18 @@ def offered(lease, original, snapshot, *, options=BodyOptions(),
 
 
 def prepare(lease, original, snapshot, action, offer_token, *,
-            options=BodyOptions(), expected_source_sha, decisions):
+            options=BodyOptions(), expected_source_sha, decisions,
+            decision_ceiling=BASELINE[0], material_ceiling=BASELINE[1]):
     """Plan one tiny action as ordered one-cell RPCs; NEVER execute them."""
     offered_now = offered(lease, original, snapshot, options=options,
                           expected_source_sha=expected_source_sha,
-                          decisions=decisions)
+                          decisions=decisions, decision_ceiling=decision_ceiling,
+                          material_ceiling=material_ceiling)
     if offer_token != offered_now["offer_token"]:
         raise Refusal("Stale or cross-worm offer token")
     actions, ink = _available(lease, original, snapshot, options,
-                              expected_source_sha, decisions)
+                              expected_source_sha, decisions,
+                              decision_ceiling, material_ceiling)
     if type(action) is not str or action not in actions:
         raise Refusal("Model may submit only current host-offered ID")
     path = actions[action]
