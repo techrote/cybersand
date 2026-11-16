@@ -115,8 +115,8 @@ def train(torch,w0,support,parent,w9head,out):
                 rbce=calibrated_branch_loss(torch,model,rx,rmask,rp,rn,rng)
                 # Rehearse W13's non-BRANCH distribution to avoid erasing
                 # LEFT/RIGHT/RETRACE while suppressing false-positive BRANCH.
-                with torch.no_grad():old=frozen(x[ids])[:,:3]
-                new=model(x[ids])[:,:3]
+                with torch.no_grad():old=frozen(x[ids])[:,[0,1,2,4,5]]
+                new=model(x[ids])[:,[0,1,2,4,5]]
                 reg=torch.nn.functional.mse_loss(new-new.mean(1,keepdim=True),
                                                    old-old.mean(1,keepdim=True))
                 loss=.30*ce+.25*bce+.20*rce+.20*rbce+.05*reg
