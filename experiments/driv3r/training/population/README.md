@@ -140,3 +140,47 @@ learning, not a pretrained SLM/adapter, not native CyberSand painting, and
 not human-rated aesthetic improvement. A synthetic novelty scalar should
 only be credited if it beats the amplitude-matched sham on untouched worlds.
 No CyberSand game code or production content changes; Draft/HOLD only.
+
+
+## P6 — genuine multigeneration MAP-Elites parent selection, with matched random/reward controls
+
+Run P0 first, then `population_p6.py --p0-output /tmp/population-evidence
+--output /tmp/population-evidence/p6_634 --seed 634`. The dedicated workflow
+executes independent seed cohorts 634/635.
+
+Three real-evolution treatments each train 3 successive generations × 4 offspring
+in all six niches, starting from the exact same P0 model. At generation zero,
+mutation seeds, source parent, train-world seeds and optimizer targets are
+identical across arms. At subsequent generations the parent-selection rule
+differs: **reward PBT** breeds the best selection-reward ancestor;
+**MAP-Elites** samples the reward-best occupant uniformly across
+predeclared *selection-only* topology archive cells; **random-parent control**
+samples from the previous offspring generation independently of reward/bins.
+All three receive genuine on-policy/teacher-augmented Adam updates (no post-hoc
+weight-labeling). Their common curriculum alternates ordinary synthetic game
+worlds with an adversarial cul-de-sac/protected-material scenario.
+
+Track every mutated source checkpoint, exact initial and final model hashes,
+actual Adam-update count, training decision count, archive occupancy by
+generation, reward-ranked and archive-selected portfolio IDs, original synthetic
+SVG/JSON trajectories, untouched held-out 48-decision pairwise diversity,
+challenge retrace rates, held-out phenotype bins, and explicit weaknesses.
+Each portfolio contains the same number of candidate policies, padded from
+selection reward if too few archive cells emerge; report that undercoverage
+rather than claiming bins that do not exist. Distinct train, repeated-selection,
+and holdout seed streams have SHA-256 manifests. All trained checkpoints
+remain in immutable Actions artifacts, never Git history.
+
+**Important:** This is *not* emergent proof of learned aesthetics or a native
+CyberSand training run. Phenotype bins are handcrafted and selection data is
+reused across generations, potentially overfitting. MAP-Elites is evolutionary
+archive pressure; it is NOT self-play, policy-gradient RL or pretrained SLM
+training. After generation zero the ancestral choices change the training
+state distributions, so results are a comparative algorithm experiment, not
+a tightly controlled single-causal-variable ablation. Host masking guarantees
+legal actions and says nothing about learned safety.
+
+P7 candidate: distinguish archive-parent coverage effects from stochastic
+ancestry with independent cohorts and evolve real learned trajectory embeddings;
+continue the separately owned student-SLM distillation lane. Never touch
+CyberSand game code/content; PR remains Draft/HOLD.
