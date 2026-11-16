@@ -5,10 +5,6 @@ on:
     paths:
       - 'experiments/driv3r/training/distillation/**'
       - '.github/workflows/driv3r-game-distillation-curriculum.yml'
-  pull_request:
-    paths:
-      - 'experiments/driv3r/training/distillation/**'
-      - '.github/workflows/driv3r-game-distillation-curriculum.yml'
 permissions:
   contents: read
   actions: read
@@ -17,7 +13,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   student-cpu:
-    name: Immutable original d1 source → 450 Adam steps → synthetic gameplay gallery
+    name: Immutable original d1 source → 450 Adam + 300 repair steps → synthetic gameplay gallery
     runs-on: ubuntu-24.04
     timeout-minutes: 18
     env:
@@ -56,6 +52,15 @@ jobs:
           python3 -m experiments.driv3r.training.distillation.lab --out "$RUNNER_TEMP/distilled-student" --steps 450
           cp "$DRIV3R_TEACHER_CORPUS" "$RUNNER_TEMP/distilled-student/original_teachers.jsonl"
           git rev-parse HEAD > "$RUNNER_TEMP/distilled-student/source-commit.txt"
+          (cd "$RUNNER_TEMP/distilled-student" && sha256sum * > SHA256SUMS.txt)
+      - name: Genuine 300-update on-policy adverse-state repair and matched synthetic evaluation
+        run: |
+          set -euo pipefail
+          DRIV3R_TEACHER_CORPUS="$RUNNER_TEMP/distill-source/original_teachers.jsonl" \
+            python3 -m experiments.driv3r.training.distillation.repair \
+            --input "$RUNNER_TEMP/distilled-student/student.npz" \
+            --out "$RUNNER_TEMP/distilled-student" --steps 300
+          rm -f "$RUNNER_TEMP/distilled-student/SHA256SUMS.txt"
           (cd "$RUNNER_TEMP/distilled-student" && sha256sum * > SHA256SUMS.txt)
       - name: Immutable original research checkpoint and negative controls (never Git)
         if: always()
