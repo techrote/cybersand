@@ -8,12 +8,13 @@ on:
       - 'experiments/driv3r/quant_lab/quant_worm.py'
       - 'experiments/driv3r/quant_lab/QL002.md'
       - '.github/workflows/driv3r-quant-lab-ql002.yml'
+      - '.github/workflows/driv3r-quant-lab-ql001.yml'
   workflow_dispatch:
 permissions:
   contents: read
 concurrency:
   group: ql002-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name != 'workflow_dispatch' }}
 jobs:
   learned-six-action-precision-ladder:
     runs-on: ubuntu-24.04
