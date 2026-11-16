@@ -7,6 +7,9 @@ extends SceneTree
 const Setup = preload("res://scripts/workbench_setup.gd")
 const Bridge = preload("res://scripts/workbench_physics_bridge.gd")
 const WAIT_MS: int = 30000
+# Initial ordinary Workbench installation has the same bounded setup allowance
+# as the pacing fixture. This is not a physical-progress or render-hold budget.
+const STARTUP_WAIT_MS: int = 90000
 
 class StalledRenderWorker extends "res://scripts/simulation_worker.gd":
 	var probe_mutex: Mutex = Mutex.new()
@@ -105,6 +108,7 @@ var worker: StalledRenderWorker
 var checks: int = 0
 var failures: Array[String] = []
 var observations: Array[Dictionary] = []
+var startup: Dictionary = {}
 
 func _initialize() -> void:
 	Engine.max_fps = 60
@@ -278,14 +282,43 @@ func owner_retirement_during_render() -> void:
 
 func _run() -> void:
 	set_meta("cybersand_feature","shared_workbench")
+	var scene_started_usec: int = Time.get_ticks_usec()
 	host = load("res://main.tscn").instantiate()
 	host.set_script(ObservingHost)
 	worker = StalledRenderWorker.new()
 	host.simulation_worker = worker
 	root.add_child(host)
 	root.size = Vector2i(1280,800)
-	if check(await until(func() -> bool: return host.shared_workbench != null \
-		and not host.shared_workbench.applied.is_empty()),"ordinary Workbench starts"):
+	var readiness_started_usec: int = Time.get_ticks_usec()
+	var ready: bool = await until(func() -> bool: return host.shared_workbench != null \
+		and not host.shared_workbench.applied.is_empty(),STARTUP_WAIT_MS)
+	var readiness_finished_usec: int = Time.get_ticks_usec()
+	var full: CyberSimulationSnapshot = worker.take_latest_snapshot(0)
+	var physical: CyberSimulationSnapshot = worker.take_latest_physics_snapshot()
+	var paint: Dictionary = worker.paint_state()
+	startup = {"ready_before_watchdog":ready,"readiness_watchdog_msec":STARTUP_WAIT_MS,
+		"scene_setup_elapsed_msec":float(readiness_started_usec-scene_started_usec)/1000.0,
+		"readiness_wait_elapsed_msec":float(readiness_finished_usec-readiness_started_usec)/1000.0,
+		"total_elapsed_msec":float(readiness_finished_usec-scene_started_usec)/1000.0,
+		"observed_state_usec":Time.get_ticks_usec(),"process_frames":Engine.get_process_frames(),
+		"physics_callbacks":host.callbacks,"worker_start_error":int(host.worker_start_error),
+		"worker_failed":worker.has_failed(),"workbench_available":host.shared_workbench!=null,
+		"workbench_applied":host.shared_workbench!=null and not host.shared_workbench.applied.is_empty(),
+		"workbench_message":str(host.shared_workbench.message) if host.shared_workbench!=null else "",
+		"owner_error":host.microscenario_error,"physical_epoch":host._physical_epoch,
+		"physical_owner_available":host.physical_actor_session!=null,
+		"terrain_ready":host._physical_terrain_ready,"transition_busy":paint.get("transition_busy",false),
+		"pending_request_serial":host.pending_microscenario_apply.get("serial",-1),
+		"pending_request_fields":host.pending_microscenario_apply.keys(),
+		"graphical_snapshot_serial":full.serial if full!=null else -1,
+		"graphical_native_tick":full.tick_index if full!=null else -1,
+		"physics_snapshot_serial":physical.serial if physical!=null else -1,
+		"physics_native_tick":physical.tick_index if physical!=null else -1,
+		"meaning":"Setup wall time and observed owner state; no CPU, shader, driver or gameplay-performance attribution."}
+	print("PHYSICS_PUBLICATION_STARTUP ",JSON.stringify(startup))
+	full = null
+	physical = null
+	if check(ready,"ordinary Workbench starts"):
 		check(host.engine_lab_wait_native_sample and worker.engine_lab_pixel_pacing().sample_wake,
 			"ordinary native wait/wake remains enabled")
 		await stalled_completion(true)
@@ -299,7 +332,7 @@ func _run() -> void:
 	check(not worker._thread.is_started() and worker.take_latest_physics_snapshot() == null,
 		"shutdown joins worker and retires physical publication without graphical fallback")
 	var report: Dictionary = {"schema":"workbench-physics-publication-v1","checks":checks,
-		"failures":failures,"observations":observations,"godot":Engine.get_version_info().string,
+		"failures":failures,"observations":observations,"startup":startup,"godot":Engine.get_version_info().string,
 		"platform":OS.get_name(),"display":DisplayServer.get_name(),
 		"source_commit":OS.get_environment("CYBERSAND_SOURCE_REVISION")}
 	var output: String = OS.get_environment("CYBERSAND_PHYSICS_PUBLICATION_OUTPUT")

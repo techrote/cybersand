@@ -419,6 +419,7 @@ def smoke(output,evidence):
         ("physics-publication-graphical",["--rendering-method","gl_compatibility","--audio-driver","Dummy","--script","res://tests/test_workbench_physics_publication.gd"],300,"PHYSICS_PUBLICATION_RESULT"),
         ("physics-pacing-graphical",["--rendering-method","gl_compatibility","--audio-driver","Dummy","--script","res://tests/test_workbench_physics_pacing.gd"],600,"PHYSICS_PACING_RESULT"),
         ("material-tiles",["--headless","--audio-driver","Dummy","--script","res://tests/test_material_tile_publication.gd"],300,"MATERIAL_TILE_PUBLICATION:"),
+        ("palette-compile-bounds",["--headless","--audio-driver","Dummy","--script","res://tests/test_palette_shader_compile_bounds.gd"],180,"PALETTE_COMPILE_BOUNDS_RESULT"),
         ("material-tiles-graphical",["--rendering-method","gl_compatibility","--audio-driver","Dummy","--script","res://tests/test_material_tile_publication.gd"],600,"MATERIAL_TILE_PUBLICATION:"),
         ("rapier-manual",["--headless","--script","res://tests/test_rapier_manual_step.gd"],180,"Rapier2D manual-step coupling fixture passed"),
         ("terrain-packet",["--headless","--script","res://tests/test_hard_surface_incremental_packet.gd"],180,"HARD_SURFACE_INCREMENTAL"),
@@ -479,7 +480,7 @@ def smoke(output,evidence):
             r=subprocess.run(cmd,cwd=output,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,
                              timeout=timeout,text=True,errors="replace",env=env)
             file.write_text(r.stdout,encoding="utf-8")
-            need(r.returncode==0 and "SCRIPT ERROR:" not in r.stdout and
+            need(r.returncode==0 and "SCRIPT ERROR:" not in r.stdout and "SHADER ERROR:" not in r.stdout and
                  (marker is None or marker in r.stdout),"Installed "+name+" failed: "+r.stdout[-3500:])
             if name=="full-material-upload":
                 upload=json.loads((evidence/name/"full-upload.json").read_text())
@@ -489,16 +490,20 @@ def smoke(output,evidence):
                      {row["channels"] for row in upload["measurements"]}=={1,2} and
                      all(row["side"]==2048 and len(row["samples"])==12 for row in upload["measurements"]),
                      "Installed full material upload did not cover exact R8/RG8 source and workload")
-            if name=="physics-pacing":
+            if name.startswith("physics-pacing"):
                 folder=evidence/name
                 pacing=json.loads((folder/"physics-pacing.json").read_text())
                 need(pacing.get("schema")=="workbench-physics-pacing-v1" and
-                     not pacing["failures"] and pacing["checks"]>0 and len(pacing["phases"])==4,
-                     "Installed production physics pacing did not complete all four phases")
+                     not pacing["failures"] and pacing["checks"]>0 and len(pacing["phases"])==5,
+                     "Installed production physics pacing did not complete all five phases")
                 need(all(row["wait_native_sample"] and row["sample_wake"] for row in pacing["phases"]),
                      "Production pacing phases did not retain default native coupling")
                 need(pacing["source_identity"]["source_sha"]==SOURCE and pacing["completed_steps"],
                      "Production pacing source/completed physics evidence missing")
+                recovery=pacing["phases"][-1]
+                need(recovery["required_contact_slot"]==0 and recovery["required_contact_observations"]>0 and
+                     recovery["contact_recovery"]["reason"]=="contact" and recovery["completed_steps"]<=360,
+                     "Selected Needle did not complete bounded physical contact recovery")
                 need((folder/"physics-pacing-poses.jsonl").stat().st_size>0,
                      "Original production physics pacing trace missing")
             if name=="cadence-contract-graphical":

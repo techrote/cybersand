@@ -344,8 +344,11 @@ render read path.
 [main.gd](../../godot/scripts/main.gd) validates patches and updates a persistent
 CPU Image. The unmerged PHYSICS-FREEZE-REMEDIATION-002 candidate uses bounded
 current/previous texture arrays on the qualified compatibility renderer;
-exact integer tile sampling preserves RG8 bytes and neighbour access across
-tile boundaries. Reused slots repair the union of current and preceding dirty
+exact normalized nearest sampling at texel centres preserves RG8 bytes and
+neighbour access across tile boundaries. Power-of-two tile dimensions make the
+coordinate scaling exact. A bounded per-material tiled Shader specialization
+removes repeated mode branches while preserving the original Shader and uniforms
+for full fallback. Reused slots repair the union of current and preceding dirty
 tiles and skip byte-identical layers. The
 [publication contract](../architecture/rendering-and-gameplay-bridges.md#does-a-small-dirty-patch-mean-a-small-gpu-upload)
 owns capacity, history, mode switching and fallback. The retained full

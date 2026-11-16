@@ -10,6 +10,7 @@ const MAX_LAYERS: int = 256
 const MIN_TILE_SIDE: int = 64
 const MAX_TILE_SIDE: int = 1024
 const PATCH_STRIDE: int = 6
+const MaterialShaders = preload("res://scripts/palette_shader_selector.gd")
 
 var layers: Texture2DArray
 var tile_side: int = MIN_TILE_SIDE
@@ -119,6 +120,11 @@ func update_regions(source: Image, rectangles: PackedInt32Array) -> bool:
 		"submitted_bytes":0, "tile_assembly_usec":0, "backend_submit_usec":0}
 	if source == null or source.get_size() != extent or source.has_mipmaps() \
 			or source.get_format() != image_format or layers == null \
+			or tile_side < MIN_TILE_SIDE or tile_side > MAX_TILE_SIDE \
+			or (tile_side & (tile_side - 1)) != 0 \
+			or columns <= 0 or columns > MAX_LAYERS or rows <= 0 or rows > MAX_LAYERS \
+			or columns * rows > MAX_LAYERS \
+			or columns != ceili(float(extent.x) / tile_side) or rows != ceili(float(extent.y) / tile_side) \
 			or not layers.get_rid().is_valid() or layers.get_layers() != columns * rows \
 			or layers.get_width() != tile_side or layers.get_height() != tile_side \
 			or layers.get_format() != image_format or layers.has_mipmaps() \
@@ -175,6 +181,7 @@ func update_regions(source: Image, rectangles: PackedInt32Array) -> bool:
 static func bind_shader(shader: ShaderMaterial, current: Texture2D, previous: Texture2D = null) -> void:
 	if shader == null: return
 	var tiled: bool = current is CyberTiledMaterialTexture
+	MaterialShaders.select_material_shader(shader, tiled)
 	shader.set_shader_parameter("material_tiles_enabled", tiled)
 	if not tiled:
 		shader.set_shader_parameter("current_material_tiles", null)
@@ -183,6 +190,7 @@ static func bind_shader(shader: ShaderMaterial, current: Texture2D, previous: Te
 	var plane := current as CyberTiledMaterialTexture
 	shader.set_shader_parameter("current_material_tiles", plane.layers)
 	shader.set_shader_parameter("material_tile_side", plane.tile_side)
+	shader.set_shader_parameter("material_inverse_tile_side", 1.0 / float(plane.tile_side))
 	shader.set_shader_parameter("material_tile_columns", plane.columns)
 	shader.set_shader_parameter("material_texture_size", Vector2(plane.extent))
 	shader.set_shader_parameter("previous_material_tiles",

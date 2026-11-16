@@ -56,6 +56,7 @@ def main():
         ('physics-pacing', 'test_workbench_physics_pacing', 'PHYSICS_PACING_RESULT', {}, False),
         ('physics-publication', 'test_workbench_physics_publication', 'PHYSICS_PUBLICATION_RESULT', {}, False),
         ('material-tiles', 'test_material_tile_publication', 'MATERIAL_TILE_PUBLICATION:', {}, False),
+        ('palette-compile-bounds', 'test_palette_shader_compile_bounds', 'PALETTE_COMPILE_BOUNDS_RESULT', {}, False),
         ('rapier-manual', 'test_rapier_manual_step', 'Rapier2D manual-step', {}, False),
         ('terrain-packet', 'test_hard_surface_incremental_packet', 'HARD_SURFACE_INCREMENTAL', {}, False),
         ('full-material-upload', 'test_render_full_upload', 'RENDER_FULL_UPLOAD:', {}, False),

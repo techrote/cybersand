@@ -2765,9 +2765,13 @@ void fragment() {
 	vec2 world_pixel = floor(continuous_world_pixel);
 	vec2 cell_fraction = fract(continuous_world_pixel);
 	vec2 world_uv = (world_pixel + vec2(0.5)) / world_size_px;
+#ifdef CYBER_MATERIAL_TILES
+	vec2 cell_sample = cyber_material_array_sample(current_material_tiles, world_uv).rg;
+#else
 	vec2 cell_sample = material_tiles_enabled
 		? cyber_material_array_sample(current_material_tiles, world_uv).rg
 		: texture(TEXTURE, world_uv).rg;
+#endif
 	vec2 previous_cell_sample = cyber_material_previous(previous_world_texture, world_uv).rg;
 	int stored_material_id = int(floor(cell_sample.r * 255.0 + 0.5));
 	int previous_stored_material_id = int(floor(previous_cell_sample.r * 255.0 + 0.5));

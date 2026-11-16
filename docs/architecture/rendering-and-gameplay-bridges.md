@@ -204,8 +204,11 @@ validates dimensions, channel count, offsets and exact byte sizes for the full
 packet before constructing/blitting patches. It updates a persistent CPU Image.
 On the qualified OpenGL/ANGLE compatibility backend, two bounded
 `Texture2DArray` resources represent current and previous whole-World material.
-World texels map to exact integer tile/layer coordinates in all six material
-shader consumers. At2048²,128² tiles require256 layers. A reused slot checks the
+World texels map to exact tile/layer coordinates in all six material shader
+consumers. Validated power-of-two tile sides permit exact normalized texel-centre
+coordinates with nearest filtering. Each material retains its base Shader and
+one tiled specialization, without reallocating or reassigning it per publication.
+At2048²,128² tiles require256 layers. A reused slot checks the
 union of this publication's dirty tiles and those changed on the previous
 publication; exact unchanged tile bytes skip `update_layer`. This repairs the
 two-publication-old slot without losing previous/current shader history.

@@ -19,6 +19,7 @@ class ObservingHost extends "res://scripts/main.gd":
 	var pilot_action: Dictionary = {}
 	var last_gate: String = ""
 	var emitter_seen: Dictionary = {}
+	var contact_recovery: Dictionary = {}
 
 	func _publish_workbench_keyboard() -> void:
 		if pilot_action.is_empty():
@@ -36,6 +37,22 @@ class ObservingHost extends "res://scripts/main.gd":
 		var prior_holds: Dictionary = _cadence_physics_hold_counts.duplicate()
 		last_gate = ""
 		super._physics_process(delta)
+		# Stop at an actual completed callback, including when several physics
+		# callbacks occur before the next process frame. This keeps the recovery
+		# bound in physical steps rather than renderer opportunities.
+		if not contact_recovery.is_empty() and not bool(contact_recovery.complete) \
+				and physical_actor_session.tick>before and not completed.is_empty():
+			var last: Dictionary = completed.back()
+			var slot: int = int(contact_recovery.slot)
+			var contact: bool = slot>=0 and slot<last.contacts.size() and int(last.contacts[slot])>0
+			var elapsed_steps: int = physical_actor_session.tick-int(contact_recovery.first_step)
+			if contact or elapsed_steps>=int(contact_recovery.maximum_steps):
+				contact_recovery.complete = true
+				contact_recovery.contact = contact
+				contact_recovery.completed_step = physical_actor_session.tick
+				contact_recovery.reason = "contact" if contact else "physical_step_limit"
+				paused = true
+				update_worker_frame_state()
 		for reason: String in _cadence_physics_hold_counts:
 			if int(_cadence_physics_hold_counts[reason])>int(prior_holds.get(reason,0)):
 				last_gate = reason
@@ -359,7 +376,8 @@ func distribution(values: Array) -> Dictionary:
 	return {"count":sorted.size(),"median":sorted[int((sorted.size()-1)*0.5)],
 		"p95":sorted[int(ceil((sorted.size()-1)*0.95))],"p99":sorted[int(ceil((sorted.size()-1)*0.99))],"maximum":sorted.back()}
 
-func run_phase(label: String, fps: int, physics_hz: int, minimum_steps: int, minimum_msec: int) -> void:
+func run_phase(label: String, fps: int, physics_hz: int, minimum_steps: int, minimum_msec: int,
+		options: Dictionary = {}) -> void:
 	print("PHYSICS_PACING_STAGE ",label)
 	Engine.max_fps = fps
 	host.engine_lab_set_rapier_hz(physics_hz)
@@ -367,26 +385,38 @@ func run_phase(label: String, fps: int, physics_hz: int, minimum_steps: int, min
 	host.set_process(true)
 	host.set_physics_process(true)
 	var first: int = host.physical_actor_session.tick
+	var contact_required: bool = bool(options.get("contact_required",true))
+	var contact_slot: int = int(options.get("contact_slot",-1))
+	var recovery_maximum_steps: int = int(options.get("recovery_maximum_steps",0))
+	var watchdog_msec: int = int(options.get("watchdog_msec",10000))
+	host.contact_recovery = {"first_step":first,"maximum_steps":recovery_maximum_steps,
+		"slot":contact_slot,"complete":false,"contact":false,"completed_step":first,"reason":"running"} \
+		if recovery_maximum_steps>0 else {}
 	var first_native: int = snapshot().tick_index
 	var started: int = Time.get_ticks_usec()
 	host.paused = false
 	host.update_worker_frame_state()
 	check(await until(func() -> bool:
+		if recovery_maximum_steps>0: return bool(host.contact_recovery.complete)
 		return host.physical_actor_session.tick-first>=minimum_steps \
-			and Time.get_ticks_usec()-started>=minimum_msec*1000,10000),label+" real completed steps progress before watchdog")
+			and Time.get_ticks_usec()-started>=minimum_msec*1000,watchdog_msec),label+" real completed steps progress before watchdog")
 	var stopped: int = Time.get_ticks_usec()
 	var interval: Array = []
 	var native_work: Array = []
 	var last: int = -1
 	var completed_count: int = 0
 	var contact_count: int = 0
+	var required_contact_count: int = 0
 	for row: Dictionary in host.completed:
 		if row.phase!=label: continue
 		completed_count += 1
 		if last>=0: interval.append(float(row.time_usec-last)/1000.0)
 		last = row.time_usec
 		native_work.append(float(row.native_step_usec)/1000.0)
-		for count: int in row.contacts: contact_count += int(count>0)
+		for slot: int in range(row.contacts.size()):
+			var touching: int = int(int(row.contacts[slot])>0)
+			contact_count += touching
+			if contact_slot<0 or slot==contact_slot: required_contact_count += touching
 		check(row.pending_chunks==0 and row.required_revision==row.packet_revision \
 			and row.required_revision==row.installed_revision,label+" completed step uses fully installed required terrain")
 		for response: Dictionary in row.response.bodies:
@@ -409,10 +439,20 @@ func run_phase(label: String, fps: int, physics_hz: int, minimum_steps: int, min
 		"elapsed_msec":float(stopped-started)/1000.0,"completed_steps":completed_count,
 		"native_ticks":snapshot().tick_index-first_native,"physics_callbacks":callback_count,"main_frames":main_count,
 		"completed_step_interval_ms":distribution(interval),"used_native_tick_work_ms":distribution(native_work),
-		"physics_gate_counts":gates,"visual_held_body_frames":visual_holds,"contact_observations":contact_count})
+		"physics_gate_counts":gates,"visual_held_body_frames":visual_holds,"contact_observations":contact_count,
+		"contact_required":contact_required,"required_contact_slot":contact_slot,
+		"required_contact_observations":required_contact_count,"minimum_completed_steps":minimum_steps,
+		"minimum_elapsed_msec":minimum_msec,"watchdog_msec":watchdog_msec,
+		"fixed_delta":host.rapier_bridge.fixed_delta(),
+		"completed_simulation_seconds":completed_count*host.rapier_bridge.fixed_delta(),
+		"contact_recovery":host.contact_recovery.duplicate(true)})
 	check(host.engine_lab_wait_native_sample and host.simulation_worker.engine_lab_pixel_pacing().sample_wake,
 		label+" preserves default native-sample handshake")
-	check(contact_count>0,label+" actual hard-terrain contact is observed")
+	if contact_required:
+		check(required_contact_count>0,label+" actual required actor hard-terrain contact is observed")
+	if recovery_maximum_steps>0:
+		check(completed_count<=recovery_maximum_steps,label+" recovery obeys the completed physical-step bound")
+	host.contact_recovery.clear()
 	if stale_snapshot==null and snapshot().lab_context.get("workbench_gcr",{}).get("valid",false): stale_snapshot = snapshot()
 	host.paused = true
 	host.update_worker_frame_state()
@@ -443,8 +483,16 @@ func fire_contact() -> void:
 	check(snapshot().hard_surface_revision>target.hard_surface_revision,"real native Fire/Ice interaction changes hard terrain")
 	ui._fire.button_pressed = false
 	host.pilot_action.clear()
-	await run_phase("fire-off-contact",60,60,30,1200)
+	# This retained flight window begins while Needle is still ascending.
+	# Thirty fixed steps cannot promise a new collision; preserve its timing
+	# evidence, then require actual selected-Needle contact in bounded recovery.
+	await run_phase("fire-off-flight",60,60,30,1200,{"contact_required":false})
 	check(not ui.fire_enabled,"Fire OFF transition preserves ordinary Workbench control")
+	host.pilot_action = {"move":Vector2.ZERO,"primary":false,"effort":1.0}
+	await run_phase("fire-off-recovery-contact",60,60,0,0,
+		{"contact_slot":0,"recovery_maximum_steps":360,"watchdog_msec":120000})
+	host.pilot_action.clear()
+	check(not ui.fire_enabled,"neutral contact recovery keeps Fire OFF")
 
 func packet_fences() -> void:
 	print("PHYSICS_PACING_STAGE native packet fences")

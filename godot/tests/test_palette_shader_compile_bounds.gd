@@ -52,6 +52,61 @@ func _count_calls(code: String, name: String) -> int:
 	return expression.search_all(code).size()
 
 
+func _material_specialization_contract(palette: Shader, bounded: Shader) -> void:
+	var material := ShaderMaterial.new()
+	material.shader = bounded
+	material.set_shader_parameter("world_size_px", Vector2(317, 259))
+	material.set_shader_parameter("snapshot_blend", 0.37)
+	var changes: Array[int] = [0]
+	material.changed.connect(func(): changes[0] += 1)
+	CyberPaletteShader.select_material_shader(material, true)
+	var tiled: Shader = material.shader
+	var identity: Dictionary = CyberPaletteShader.provenance(tiled)
+	_expect(tiled != bounded and tiled.code.begins_with(
+		CyberPaletteShader.BOUNDED_CROSSFADE_DEFINE + CyberPaletteShader.MATERIAL_TILES_DEFINE),
+		"tiled specialization must preserve the ANGLE compile bound")
+	_expect(identity.source_bound and identity.source_file_bound
+		and identity.variant == "angle_bounded_crossfade" and identity.material_sampling == "tiled_specialized"
+		and CyberPaletteShader.source_shader(tiled) == palette,
+		"tiled ANGLE provenance must retain its actual file and both transformations")
+	_expect(material.get_shader_parameter("world_size_px") == Vector2(317, 259)
+		and is_equal_approx(float(material.get_shader_parameter("snapshot_blend")), 0.37),
+		"specialization must preserve existing matching uniform values")
+	var after_creation: int = changes[0]
+	for publication: int in range(8): CyberPaletteShader.select_material_shader(material, true)
+	_expect(material.shader == tiled and changes[0] == after_creation,
+		"ordinary publications must neither allocate nor reassign the selected Shader")
+	CyberPaletteShader.select_material_shader(material, false)
+	_expect(material.shader == bounded and material.get_shader_parameter("world_size_px") == Vector2(317, 259),
+		"full fallback must restore the original Shader and preserve uniforms")
+	CyberPaletteShader.select_material_shader(material, true)
+	_expect(material.shader == tiled, "live mode switches must reuse the owned bounded shader pair")
+	_expect(CyberPaletteShader.palette_for_driver(tiled, "opengl3_angle") == bounded
+		and CyberPaletteShader.palette_for_driver(tiled, "opengl3") == palette,
+		"renderer reselection must resolve through material specialization")
+	tiled.code += "\n// independently mutated material variant\n"
+	_expect(not CyberPaletteShader.provenance(tiled).source_bound,
+		"material variant mutation must invalidate source custody")
+	CyberPaletteShader.select_material_shader(material, true)
+	_expect(material.shader != tiled and CyberPaletteShader.provenance(material.shader).source_bound,
+		"mutated owned specialization must be rebuilt from its exact base")
+	tiled = null
+	var retired: WeakRef = weakref(material.shader)
+	var replacement := Shader.new()
+	replacement.code = palette.code
+	material.shader = replacement
+	CyberPaletteShader.select_material_shader(material, true)
+	_expect(retired.get_ref() == null and CyberPaletteShader.source_shader(material.shader) == replacement,
+		"external Shader replacement must release the old variant and retain new resource custody")
+	var old_variant: Shader = material.shader
+	replacement.code += "\n// edited actual base resource\n"
+	_expect(not CyberPaletteShader.provenance(old_variant).source_bound,
+		"base edit must invalidate the old material specialization")
+	CyberPaletteShader.select_material_shader(material, true)
+	_expect(material.shader != old_variant and CyberPaletteShader.provenance(material.shader).source_bound,
+		"base edit must replace the single owned tiled specialization")
+
+
 func _run() -> void:
 	var palette: Shader = load(PALETTE_PATH) as Shader
 	Context.emit(get_script().resource_path, palette)
@@ -122,6 +177,7 @@ func _run() -> void:
 		"equal shader bytes must not steal a different source resource's custody")
 	_expect(CyberPaletteShader.palette_for_driver(repaired, "opengl3") == editable,
 		"native reselection after source edit must retain its actual source")
+	_material_specialization_contract(palette, bounded)
 	print("PALETTE_COMPILE_BOUNDS_RESULT ", JSON.stringify({"assertions":_assertions,
 		"failures":_failures, "production_variant":CyberPaletteShader.provenance(bounded)}))
 

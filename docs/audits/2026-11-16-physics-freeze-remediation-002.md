@@ -56,7 +56,10 @@ bounded map and conservative refusal.
 
 Current/previous CPU history and material-content certificates remain separate
 from GPU resource identities. All six material shader consumers use the same
-integer global-texel→tile/layer lookup, including cross-tile neighbours.
+global-texel→tile/layer lookup, including cross-tile neighbours. The follow-up
+uses normalized nearest texel-centre sampling with an exact power-of-two
+reciprocal. Each material caches its base Shader and one tiled specialization;
+unchanged publications neither construct nor reassign Shader resources.
 
 The default is `auto` on qualified OpenGL/ANGLE; `full` retains the whole-image
 path and `tiled` requests arrays subject to compatibility/capacity checks.
@@ -120,6 +123,56 @@ sampler; it interpolated material IDs. The corrected fixture uses production
 ColorRect/nearest sampling. The failure PNGs/logs remain evidence and are not
 claimed successful production output. No cosmetic material/physics change was
 made to hide the mismatch.
+
+## Rejected first checkpoint and follow-up
+
+Checkpoint `e2a489a20a9585ca5a56d82ac526aee75d7ae322` (tree
+`b7cc284381b29021788555842fa80c3b04cd326a`) is **not a successful performance
+candidate**. Its complete Linux and Windows source ABBA evidence is retained in
+[Actions 43825168135](https://github.com/techrote/cybersand/actions/runs/43825168135).
+All four 144-step matched pairs per host retained exact recorded physical bodies
+and native associations; there were no missing native/Rapier completions. This
+correctness result does not turn adverse timing into acceptance.
+
+On Windows WARP, the first Follow pair changed Rapier9.529→9.678 steps/s but
+median/p95/p99/max gaps111.714/116.227/152.027/153.021→
+124.282/139.505/223.397/254.968ms. Across all four Windows candidate arms,
+material-upload medians98.323–102.439ms exceeded the controls85.669–86.829ms.
+Backend submission scopes alone had medians94.917–98.793ms despite a median
+360,448 submitted bytes. These are elapsed call scopes, not isolated GPU or
+CPU time. Prior-render synchronization is a plausible dependency, not a proven
+attribution. Linux llvmpipe also regressed: Follow controls7.595/7.276 steps/s
+versus candidates5.562/5.466. A local Follow ABBA independently reproduced that
+direction; it was stopped after all four Follow arms, leaving Free unqualified.
+
+A separate render-only probe reproduced added array sampling cost without any
+native work or timed uploads. Integer division plus `texelFetch` was slower;
+shift/mask addressing helped but remained insufficient. The adopted follow-up
+uses normalized nearest sampling and a cached tiled Shader specialization.
+Mixed-material forward/reverse median frame-post-draw intervals changed from
+shift/texelFetch284.541/264.262ms to normalized-specialized204.090/191.512ms;
+full-texture controls were210.966/174.355ms. Actual framebuffer bytes matched.
+An open-flight probe still showed a full-versus-tiled cost gap. These software
+renderer probes justify the shader repair but establish neither end-to-end
+physics improvement nor physical NVIDIA acceptance. Negative alternatives and
+raw timings remain retained.
+
+The e2 integrated run also exposed two qualification failures. The pacing
+fixture required fresh contact while its Needle was still physically airborne
+after Fire OFF. The repaired oracle retains that original flight window and
+adds neutral-input recovery, requiring fresh selected-Needle contact within
+360 actual fixed steps and a separate wall watchdog. It changes no physics law.
+The Windows publication fixture rejected initial readiness at its30s setup
+allowance; the available log does not identify the blocking startup subsystem.
+Only initial readiness now uses the pacing fixture's existing90s allowance and
+records actual setup/owner state. The later30s waits,5s injected graphical hold,
+150ms observation window and64 behavioral assertions remain unchanged.
+
+The normalized graphical material gate passed224 assertions with all eight
+nonvacuous appearance comparisons exact, plus19 headless fallback assertions.
+The39-assertion cache/provenance/lifetime gate is included in both integrated
+platform case lists. Final source performance and complete application gates
+must still decide the follow-up's disposition.
 
 ## Final qualification and evidence interpretation
 

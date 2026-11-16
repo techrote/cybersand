@@ -190,6 +190,20 @@ func _history_and_fallback(channels: int) -> void:
 	check(not str(host.material_publication_status().fallback_reason).is_empty(),
 		"detected fallback reason is observable")
 	_check_gpu(host, exact, old, "recovered full update")
+	# A corrupted tile size must not submit geometrically different
+	# sampling uniforms or acknowledge an array update using the wrong map.
+	check(host.set_material_publication_mode("tiled"), "size adversary restores a valid tiled pair")
+	host.previous_texture.tile_side -= 1
+	var invalid_old: PackedByteArray = host.image.get_data()
+	var invalid_new := _pattern(host.world_extent, channels, 31)
+	var invalid_revision: int = host.last_uploaded_revision + 1
+	check(host.upload_texture_patches(host._full_material_rectangle(), invalid_new,
+		invalid_revision, channels), "non-power-of-two tile side recovers through full publication")
+	check(host.texture is ImageTexture and host.previous_texture is ImageTexture,
+		"invalid address mapping retires both tiled resources")
+	check(host.last_uploaded_revision == invalid_revision,
+		"fallback acknowledges the actual full publication revision")
+	_check_gpu(host, invalid_new, invalid_old, "recovered invalid tile side")
 	var retired_content: int = host._presentation_current_content_id
 	host.world_extent = Vector2i(129, 71)
 	host.image = Image.create_from_data(129, 71, false, host.render_image_format,

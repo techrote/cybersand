@@ -19,8 +19,10 @@ permissions:
   contents: read
   actions: read
 concurrency:
-  group: camera-coherence-${{ github.event_name == 'workflow_dispatch' && github.run_id || github.ref }}
-  cancel-in-progress: ${{ github.event_name == 'push' }}
+  # Preserve failed/superseded exact-source measurements while a repaired
+  # candidate qualifies; distinct commits must not erase one another's evidence.
+  group: camera-coherence-${{ github.event_name == 'workflow_dispatch' && github.run_id || github.sha }}
+  cancel-in-progress: false
 env:
   CYBERSAND_EVAL_SOURCE_SHA: ${{ github.sha }}
   CYBERSAND_SOURCE_REVISION: ${{ github.sha }}
@@ -193,6 +195,7 @@ jobs:
           set -euo pipefail
           python tools/ci/package_engine_lab_windows.py smoke --output C:/cscoherence --evidence evidence/installed
       - name: Execute the actual ordinary and comparison Workbench launchers
+        if: success() || failure()
         shell: powershell
         run: ./tools/ci/test_packaged_workbench_launchers.ps1 -Application C:/cscoherence -Evidence evidence/launchers
       - name: Authenticate retained application qualification with identical Godot and native source
@@ -212,6 +215,7 @@ jobs:
           python tools/ci/qualify_test_it_reporting.py check-negative --report evidence/report-reducer/baseline/summary.json --exit-code "$baseline_exit" > evidence/report-reducer/expected-negative.json
           python tools/ci/test_test_it_physics_reducer.py --powershell powershell.exe --test-it C:/cscoherence/Run-Test-It.ps1 --evidence-root '${{ steps.reuse.outputs.replay_root }}' --output evidence/report-reducer/corrected --require-windows-powershell51
       - name: Execute the owner's real double-click command
+        if: success() || failure()
         shell: pwsh
         timeout-minutes: 45
         run: |
