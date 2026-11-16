@@ -252,3 +252,54 @@ jobs:
           path: ${{ runner.temp }}/tiny-m11/
           retention-days: 21
           if-no-files-found: error
+
+  m14-dagger-source-qualified:
+    if: contains(github.event.head_commit.message, '[M14]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install bounded CPU-only research dependencies
+        run: |
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch==2.10.0
+          python -m pip install numpy==2.3.5 pillow==12.3.0
+      - name: Record exact HEAD and verify causal/legal action contract
+        env:
+          OMP_NUM_THREADS: '2'
+          MKL_NUM_THREADS: '2'
+        run: |
+          mkdir -p "${{ runner.temp }}/tiny-m14"
+          git rev-parse HEAD | tee "${{ runner.temp }}/tiny-m14/source_sha.txt"
+          python -VV | tee "${{ runner.temp }}/tiny-m14/python_version.txt"
+          python -c 'import torch,numpy,PIL; print(torch.__version__,numpy.__version__,PIL.__version__)' | tee "${{ runner.temp }}/tiny-m14/dependencies.txt"
+          sha256sum experiments/driv3r/training/tiny_policy/{core,m14_dagger,audit_m14_dagger,test_m14_dagger}.py | tee "${{ runner.temp }}/tiny-m14/source_hashes.txt"
+          python -m unittest experiments.driv3r.training.tiny_policy.test_core experiments.driv3r.training.tiny_policy.test_m14_dagger -v
+      - name: Train four genuine BC/DAgger policy variants and render original evidence
+        timeout-minutes: 10
+        env:
+          OMP_NUM_THREADS: '2'
+          MKL_NUM_THREADS: '2'
+        run: |
+          timeout --signal=TERM --kill-after=15s 560s python -u -m experiments.driv3r.training.tiny_policy.m14_dagger --steps 160 --out "${{ runner.temp }}/tiny-m14/trial" | tee "${{ runner.temp }}/tiny-m14/training.log"
+      - name: Independent checkpoint/state/action/PNG audit
+        timeout-minutes: 6
+        env:
+          OMP_NUM_THREADS: '2'
+          MKL_NUM_THREADS: '2'
+        run: |
+          timeout --signal=TERM --kill-after=15s 300s python -u -m experiments.driv3r.training.tiny_policy.audit_m14_dagger --input "${{ runner.temp }}/tiny-m14/trial" | tee "${{ runner.temp }}/tiny-m14/audit.json"
+      - name: Preserve source-matched research checkpoints, PNGs, receipts and failure evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tiny-m14-dagger-${{ github.sha }}
+          path: ${{ runner.temp }}/tiny-m14/
+          retention-days: 21
+          if-no-files-found: error
