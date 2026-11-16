@@ -12,7 +12,6 @@ from pathlib import Path
 import random
 import zipfile
 
-import recovery_curriculum as rc
 from recovery_curriculum import (ACTIONS, BUDGET, DIRS, FAMILIES, apply,
                                  augmented_features, distance_field, fit,
                                  legal_state, make_world, observation, oracle,
@@ -99,11 +98,6 @@ def decide_model(obs,vec,model):
     return max((a for a in obs['legal'] if a in classes),
                key=lambda a:(scores[classes.index(a)],-ACTIONS.index(a)))
 
-
-def patched_decide(policy,obs,visit,vec=None,model=None,rng=None):
-    if policy=='random':return rng.choice([a for a in obs['legal'] if a!='STOP'] or ['STOP'])
-    return decide_model(obs,vec,model)
-rc.decide=patched_decide
 
 
 def collect_corrections(seeds,vec,model,budget=160):
