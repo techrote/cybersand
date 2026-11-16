@@ -52,7 +52,7 @@ jobs:
         run: |
           python -m experiments.driv3r.model_zoo.spatial_paint_mz013.run \
             --out "$RUNNER_TEMP/mz013" --train-seeds 96 --eval-seeds 12 \
-            --rollout-seeds 3 --updates 220 --batch 12
+            --rollout-seeds 3 --updates 700 --batch 12
       - name: Checkpoint integrity, source exactness and independent TEST reproduction
         run: |
           python - <<'PY'
@@ -66,7 +66,7 @@ jobs:
           assert report["schema"]==mz.SCHEMA
           assert report["source_sha"]==os.environ["GITHUB_SHA"]
           assert report["parent_sha"]==mz.PARENT_SHA
-          assert report["training"]["updates_per_model"]==220
+          assert report["training"]["updates_per_model"]==700
           assert report["training"]["train_episodes"]==96*4*2
           assert report["training"]["test_episodes"]==12*4*2
           assert report["training"]["shifted_episodes"]==12*4*2
