@@ -31,3 +31,37 @@ OPENBLAS_NUM_THREADS=1 python3 -m experiments.driv3r.training.distillation.lab -
 ```
 
 Source-only files live under this path; the dedicated `driv3r-game-distillation-curriculum.yml` GitHub Actions workflow retrieves/verifies immutable parent artifacts, trains a new student, records `student.npz`, `metrics.json`, `rollouts.jsonl`, gallery PNG, original teacher JSONL, source-HEAD identity and artifact SHA256SUMS. No paid API, GPU or native authoring. **Do not promote a faithful-parent or trained-model freeze:** original 16-turn parent evidence shares one seed; new source-pinned parent episodes in obstacle-adverse worlds, 64–128 turn W0 closed loop, and real expressive-recovery comparisons remain the next falsification gate.
+
+
+## D004 — trap-aware style retention, still synthetic only
+
+The `trap_rebalance` lane starts from the immutable D003 style-restored
+checkpoint. It generates new seed-disjoint on-policy states with stock/GREYHOUND/
+BRANCHWITCH/synthetic-AEROHOUND styles and protected cells, walls, revisits,
+dead ends and dynamic trap closures. It combines *checkpoint-derived* D003 style
+probabilities, D002 recovery probabilities and explicitly synthetic one-step
+novelty targets. No new d1 parent, LFM, Sprocket or AEROHOUND forward is run.
+
+Each of three mixing fractions (0.15, 0.30, 0.45) receives 180 genuine
+float32 Adam updates; the winner is selected only on obstacle seeds 1017–1024
+before evaluation on untouched 3001–3016. Training uses seeds 65–112.
+D004 additionally archives original replayed 80-decision trajectories,
+seed-block paired confidence intervals, CPU checkpoints, a reproducible
+soft-target corpus (including legal menus), protected-cell adversarial tests,
+and actual synthetic-model PNG comparisons. STOP remains legally available.
+
+Reproduce after the D001 → D002 → D003 source-matched steps:
+
+```sh
+OPENBLAS_NUM_THREADS=1 python3 -m experiments.driv3r.training.distillation.trap_rebalance \
+  --base evidence-student/student.npz \
+  --repair evidence-student/repair_student.npz \
+  --restored evidence-student/style_restored_student.npz \
+  --style-metrics evidence-student/style_rehearsal_metrics.json \
+  --out evidence-student --steps 180
+```
+
+Interpretation: *synthetic exploration/style experiments*, not evidence of
+faithful Frankenbrain trait transfer or a native CyberSand-compatible policy.
+Keep Draft/HOLD, no game/production changes; archived model binaries remain
+in Actions artifacts only.
