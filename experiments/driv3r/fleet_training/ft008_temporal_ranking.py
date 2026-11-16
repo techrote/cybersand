@@ -182,7 +182,10 @@ def train_matched(pop, policies, niche, seed, began):
                         for arm, policy in policies.items():
                             policy.teach(Xcf, supervised_targets(pop, niche, w, Xcf,
                                                                 menu, arm, t))
-                action = ft006.teacher_choice(pop, w, menu, rng)
+                chosen_index = ft006.teacher_choice(pop, w, menu, rng)
+                if type(chosen_index) is not int or not 0 <= chosen_index < len(menu):
+                    raise AssertionError("Training scaffold index outside host-legal menu")
+                action = menu[chosen_index]
                 if action not in w.legal():
                     raise AssertionError("Training scaffold exceeded host authority")
                 w.step(action)
