@@ -1,1 +1,1 @@
-"""External synthetic game-policy GRU research (not CyberSand game code)."""\n
+"""External synthetic game-policy GRU research (not CyberSand game code)."""
