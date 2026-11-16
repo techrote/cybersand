@@ -1,0 +1,145 @@
+name: LFM2.5-VL WORM W15 fresh same-local-state three-family LoRA CPU diagnostic
+on:
+  push:
+    branches: [codex/agent-painter-lfm25-vl-568]
+    paths:
+      - experiments/agent_painter/lanes/lfm25_vl/worm-w15-request.json
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: lfm25-vl-worm-w15-matched-family-conditional-fresh-v1
+  cancel-in-progress: false
+
+jobs:
+  w15-one-vm:
+    name: W15 45 genuine AdamW pair updates with unchanged W0 state across themes
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      OMP_DYNAMIC: 'FALSE'
+      MKL_DYNAMIC: 'FALSE'
+      ATEN_CPU_CAPABILITY: default
+      MKL_CBWR: COMPATIBLE
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - name: Checkout immutable W15 single experiment source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Checkout original frozen W0 host source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: techrote/cybersand
+          ref: 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          path: worm-w0
+          persist-credentials: false
+      - name: Checkout original LFM support v2 curriculum
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: techrote/cybersand
+          ref: cc27b3206cb61f98432fa95b799c9b9ff508c2bc
+          path: worm-support
+          persist-credentials: false
+      - name: Exact W15 source, W0 and request preflight
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git -C worm-w0 rev-parse HEAD)" = 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          test "$(git hash-object worm-w0/experiments/agent_painter/worm/common/worm.py)" = 8979b6f0296e81051194bacc907992d38e006605
+          test "$(git -C worm-support rev-parse HEAD)" = cc27b3206cb61f98432fa95b799c9b9ff508c2bc
+          test "$(git hash-object worm-support/experiments/agent_painter/worm/support_lfm/curriculum.py)" = f205a3a9f33632aeaafa2daa8ce25b2484bc6032
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path("experiments/agent_painter/lanes/lfm25_vl/worm-w15-request.json").read_text())
+          assert r == {
+            "schema":"cybersand.worm.lfm-w15-three-family-contrast-request/1",
+            "experiment":"lfm-worm-w15-three-family-fixed-world-contrast-fresh-v1",
+            "model":"LiquidAI/LFM2.5-VL-450M",
+            "revision":"fc6221ca597f3315e4f82fc2df606783267b34ba",
+            "W0_source":"4bb9d6e1d0d0d78183f87d1e3c29648edafacf61",
+            "support_source":"cc27b3206cb61f98432fa95b799c9b9ff508c2bc",
+            "base_checkpoint":"fresh-full-pinned-parent-NOT-W10-resume",
+            "family_targets":{"greebles":"BRANCH","pipework":"STRAIGHT","architecture":"LEFT"},
+            "observed_TRAIN_anchor_states":15,
+            "synthetic_family_contrast_pairs":45,
+            "optimizer_AdamW_steps":45,
+            "genuine_backward_passes":90,
+            "checkpoint_steps":[15,30,45],
+            "training_deadline_seconds":2400,
+            "one_4vCPU_hosted_VM":True,
+            "native_execution":False,
+            "FINAL_opened":False,
+            "draft_hold":True,
+            "lease_attempt":1}
+          PY
+          python3 -m py_compile experiments/agent_painter/lanes/lfm25_vl/worm_train_w15_v1.py
+          python3 -m unittest discover -s worm-w0/experiments/agent_painter/worm/common -p test_worm.py -v
+          python3 -m unittest discover -s worm-support/experiments/agent_painter/worm/support_lfm -p test_curriculum.py -v
+          python3 tools/ci/check_ci_provider_policy.py
+          mkdir -p evidence/diagnostics
+          git rev-parse HEAD > evidence/diagnostics/source-sha.txt
+          git -C worm-w0 rev-parse HEAD > evidence/diagnostics/w0-source.txt
+          git -C worm-support rev-parse HEAD > evidence/diagnostics/support-source.txt
+          lscpu > evidence/diagnostics/cpu.txt
+          df -h > evidence/diagnostics/disk-before.txt
+      - name: Install original pinned CPU numerical dependency profile
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/lfm-w15"
+          "$RUNNER_TEMP/lfm-w15/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/lfm-w15/bin/python" -m pip install -r experiments/agent_painter/training/requirements.lock
+          "$RUNNER_TEMP/lfm-w15/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torchvision==0.29.2+cpu'
+          "$RUNNER_TEMP/lfm-w15/bin/python" -m pip install -r experiments/agent_painter/training/requirements-lfm25_vl.lock
+          "$RUNNER_TEMP/lfm-w15/bin/python" -m pip check
+          "$RUNNER_TEMP/lfm-w15/bin/python" -m pip freeze --all > evidence/diagnostics/pip-freeze.txt
+      - name: Audit matched same-state three-family TRAIN and heldout leakage before model download
+        run: |
+          set -euo pipefail
+          PYTHONPATH=experiments/agent_painter/lanes/lfm25_vl:experiments/agent_painter/training "$RUNNER_TEMP/lfm-w15/bin/python" - <<'PY'
+          from pathlib import Path
+          import worm_train_w15_v1 as w
+          worm=w.w7.worm_source(Path("worm-w0/experiments/agent_painter/worm/common"))
+          support=w.w7.support_source(Path("worm-support/experiments/agent_painter/worm/support_lfm"),worm)
+          splits,provenance=w.w7.dataset(support)
+          pairs,heldout,audit=w.build_data(splits)
+          assert len(pairs)==45 and len(heldout)>=3 and audit["TRAIN_distinct_fixed_local_states"]==15
+          assert audit["TRAIN_DEV_prompt_overlap"]==0 and audit["original_W0_teacher_targets_reused"] is False
+          for a,b in pairs:
+              x=w.plain_observation(a);y=w.plain_observation(b)
+              assert w.immutable_state_key(x)==w.immutable_state_key(y)
+              assert a["completion"]!=b["completion"]
+              assert a["completion"] in a["legal"] and b["completion"] in b["legal"]
+          print("W15 actual W0 TRAIN / synthetic family target matched-geometry preflight PASS",audit)
+          PY
+      - name: Download exact complete official multimodal LFM model and verify adapter
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 900s "$RUNNER_TEMP/lfm-w15/bin/python" experiments/agent_painter/training/download_model.py --profile lfm25_vl --output "$RUNNER_TEMP/lfm-w15-model"
+          cp "$RUNNER_TEMP/lfm-w15-model/download_receipt.json" evidence/diagnostics/model-download.json
+          LFM25_SNAPSHOT="$RUNNER_TEMP/lfm-w15-model" "$RUNNER_TEMP/lfm-w15/bin/python" experiments/agent_painter/lanes/lfm25_vl/test_adapter.py > evidence/diagnostics/adapter-tests.txt 2>&1
+          df -h > evidence/diagnostics/disk-before-training.txt
+      - name: Finite fresh 45 genuine paired-CE AdamW, checkpoint 15/30/45 and heldout family contrast probes
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=60s 2700s "$RUNNER_TEMP/lfm-w15/bin/python" experiments/agent_painter/lanes/lfm25_vl/worm_train_w15_v1.py \
+            --model "$RUNNER_TEMP/lfm-w15-model" \
+            --worm-root worm-w0/experiments/agent_painter/worm/common \
+            --support-root worm-support/experiments/agent_painter/worm/support_lfm \
+            --output evidence/worm-w15 --steps 45 --deadline 2400
+      - name: Always retain original checkpoint/partial/failure receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: lfm25-vl-worm-w15-family-conditional-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            evidence/worm-w15/
+            evidence/diagnostics/
+          if-no-files-found: warn
+          retention-days: 90
