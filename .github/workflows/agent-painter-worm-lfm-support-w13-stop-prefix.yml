@@ -1,0 +1,105 @@
+name: WORM LFM support W13 first-divergence STOP visual counterfactual
+on:
+  push:
+    branches: [research/612-worm-lfm-support]
+    paths:
+      - experiments/agent_painter/worm/support_lfm/w13_stop_first_divergence.py
+      - experiments/agent_painter/worm/support_lfm/test_w13_stop_first_divergence.py
+      - .github/workflows/agent-painter-worm-lfm-support-w13-stop-prefix.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: worm-lfm-support-w13-stop-prefix-read-only
+  cancel-in-progress: false
+jobs:
+  replay-first-divergence:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - name: Exact support source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Frozen W0 host for genuine PNG first-decision replay
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: techrote/cybersand
+          ref: 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          path: frozen-w0
+          persist-credentials: false
+      - name: Validate source pins and bounded no-optimizer scope
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git -C frozen-w0 rev-parse HEAD)" = 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          test "$(git hash-object frozen-w0/experiments/agent_painter/worm/common/worm.py)" = 8979b6f0296e81051194bacc907992d38e006605
+          python3 -m py_compile experiments/agent_painter/worm/support_lfm/{audit_w13_original,w13_stop_first_divergence,test_w13_stop_first_divergence}.py
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_ci_scheduling_policy.py --output /tmp/worm-w13-stop-scheduling.json
+          mkdir -p evidence/original evidence/independent
+          git rev-parse HEAD > evidence/independent/support-source-SHA.txt
+          git -C frozen-w0 rev-parse HEAD > evidence/independent/w0-source-SHA.txt
+      - name: Reuse immutable original 512-model-forward producer evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test "$(gh api repos/techrote/cybersand/actions/runs/43771476464 --jq .head_sha)" = 245290cab2352381dbd1eaf16374c577138b4ade
+          test "$(gh api repos/techrote/cybersand/actions/runs/43771476464 --jq .conclusion)" = success
+          gh api repos/techrote/cybersand/actions/artifacts/14185385444/zip > evidence/original/alpha.zip
+          gh api repos/techrote/cybersand/actions/artifacts/14185425004/zip > evidence/original/beta.zip
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib,zipfile
+          for shard, pin in {
+              "alpha": "0e69b23c100a00b438d4e2d9d07fa4550e276368e0ad4635e38a6c858f79b95e",
+              "beta": "36fa8876f249b0263d19dc40bea17731e8a4776da9cc82400189a876980380ff",
+          }.items():
+              z=Path(f"evidence/original/{shard}.zip")
+              assert hashlib.sha256(z.read_bytes()).hexdigest()==pin
+              with zipfile.ZipFile(z) as bundle:
+                  assert bundle.testzip() is None
+              print("Immutable original W13 model scorer artifact verified:", shard)
+          PY
+      - name: Test STOP and non-STOP earliest divergence using original W0
+        run: |
+          python3 experiments/agent_painter/worm/support_lfm/test_w13_stop_first_divergence.py frozen-w0/experiments/agent_painter/worm/common
+      - name: Render FOUR genuine W0 first-difference PNG pairs
+        run: |
+          set -euo pipefail
+          python3 experiments/agent_painter/worm/support_lfm/w13_stop_first_divergence.py \
+            --alpha evidence/original/alpha.zip \
+            --beta evidence/original/beta.zip \
+            --w0-dir frozen-w0/experiments/agent_painter/worm/common \
+            --output evidence/independent
+          python3 - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          root=Path("evidence/independent")
+          report=json.loads((root/"W13-stop-first-divergence.json").read_text())
+          assert report["schema"]=="cybersand.worm.lfm-w13-stop-first-divergence/1"
+          assert report["genuine_archived_model_forwards"]==512
+          assert report["new_model_forwards"]==report["new_optimizer_updates"]==0
+          assert len(report["episodes"])==4
+          images=sorted((root/"first-divergence-PAIR-PNGs").glob("*.png"))
+          assert len(images)==8
+          for row in report["episodes"]:
+              for item in row["pair_pngs"].values():
+                  path=root/"first-divergence-PAIR-PNGs"/item["filename"]
+                  b=path.read_bytes()
+                  assert b.startswith(b"\x89PNG\r\n\x1a\n")
+                  assert hashlib.sha256(b).hexdigest()==item["sha256"]
+          manifest={p.relative_to(root).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in images}
+          (root/"PNG-source-SHA256-manifest.json").write_text(json.dumps(manifest,sort_keys=True,indent=2)+"\n")
+          print("Real W0 equal-budget first-difference PNG pairs:",len(images))
+          PY
+      - name: Retain original evidence and standalone PNG pairs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: worm-lfm-W13-first-divergence-W0-pairs-NO-NEW-MODEL
+          path: evidence/
+          if-no-files-found: warn
+          retention-days: 30
