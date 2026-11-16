@@ -20,6 +20,10 @@ See the [engineering record](../audits/2026-11-16-physics-freeze-remediation-002
 for source boundaries, adversarial checks and matched qualification. The exact
 final CI/artifact ledger is on PR609; software-renderer tests cannot grant
 physical Windows11 NVIDIA acceptance. Preserve the Draft/HOLD owner gate.
+Independent staging ring3 shortens upload calls, but source e519's frame markers
+show much of the delay later in the frame and physical tails remain unqualified.
+The controlled spare-target successor preserves two visible histories and keeps
+two physical targets as its default; it is not an accepted performance remedy.
 
 ## Coherent Workbench evaluation — 2026-11-15
 

@@ -20,6 +20,16 @@ class ObservingHost extends "res://scripts/main.gd":
 	var last_gate: String = ""
 	var emitter_seen: Dictionary = {}
 	var contact_recovery: Dictionary = {}
+	var brush_admissions: Array[Dictionary] = []
+
+	func queue_brush_mutation(x: int, y: int, radius: int, material: int,
+			flags: int = CyberCellWorld.EMISSION_FLAG_NONE) -> bool:
+		var accepted: bool = super.queue_brush_mutation(x,y,radius,material,flags)
+		if observing:
+			brush_admissions.append({"phase":phase,"time_usec":Time.get_ticks_usec(),
+				"cell":[x,y],"radius":radius,"material":material,"accepted":accepted,
+				"step":physical_actor_session.tick,"paused":paused})
+		return accepted
 
 	func _publish_workbench_keyboard() -> void:
 		if pilot_action.is_empty():
@@ -96,6 +106,18 @@ class ObservingHost extends "res://scripts/main.gd":
 			"pending_chunks":rapier_bridge.pending_hard_surface_chunks(),
 			"response":_cadence_response_json(physical_actor_session.bridge.last_application),
 			"contacts":contacts,"positions":positions})
+		if phase=="live-erasing-flight":
+			var packet: Dictionary = snapshot.lab_context.get("workbench_gcr",{})
+			var owners: Array = []
+			for row: Dictionary in packet.get("rows",[]):
+				owners.append({"instance_id":row.get("instance_id",-1),"generation":row.get("generation",-1),
+					"sample":row.get("sample",-1)})
+			completed.back()["owner"] = {"session":physical_actor_session.bridge._session,
+				"epoch":_physical_epoch,"world_generation":snapshot.physics_world_generation,
+				"snapshot_epoch":snapshot.rigid_body_epoch,"response_session":packet.get("session",-1),
+				"response_epoch":packet.get("epoch",-1),"valid":packet.get("valid",false),
+				"completed_sample":snapshot.lab_context.get("workbench_completed_sample",-1),"bodies":owners,
+				"accepted_samples":Array(physical_actor_session.bridge._accepted_samples)}
 		for receipt: Dictionary in snapshot.lab_context.get("workbench_emitters",[]):
 			if not receipt.has_all(["tick","sequence","nozzle"]): continue
 			var key: String = str(receipt.tick)+":"+str(receipt.sequence)+":"+str(receipt.nozzle)
@@ -122,6 +144,7 @@ var source_before: Dictionary = {}
 var original_fps: int
 var original_physics_hz: int
 var stale_snapshot: CyberSimulationSnapshot
+var live_erasing: Dictionary = {}
 
 func _initialize() -> void:
 	original_fps = Engine.max_fps
@@ -398,8 +421,10 @@ func run_phase(label: String, fps: int, physics_hz: int, minimum_steps: int, min
 	host.update_worker_frame_state()
 	check(await until(func() -> bool:
 		if recovery_maximum_steps>0: return bool(host.contact_recovery.complete)
+		var additional: Callable = options.get("completion_predicate",Callable())
 		return host.physical_actor_session.tick-first>=minimum_steps \
-			and Time.get_ticks_usec()-started>=minimum_msec*1000,watchdog_msec),label+" real completed steps progress before watchdog")
+			and Time.get_ticks_usec()-started>=minimum_msec*1000 \
+			and (not additional.is_valid() or additional.call()),watchdog_msec),label+" real completed steps progress before watchdog")
 	var stopped: int = Time.get_ticks_usec()
 	var interval: Array = []
 	var native_work: Array = []
@@ -494,6 +519,216 @@ func fire_contact() -> void:
 	host.pilot_action.clear()
 	check(not ui.fire_enabled,"neutral contact recovery keeps Fire OFF")
 
+func disc_material(image: Image, cell: Vector2i, radius: int, material: int) -> bool:
+	if image==null: return false
+	for y: int in range(-radius,radius+1):
+		for x: int in range(-radius,radius+1):
+			if x*x+y*y<=radius*radius and image.get_pixel(cell.x+x,cell.y+y).r8!=material: return false
+	return true
+
+func bytes_sha256(bytes: PackedByteArray) -> String:
+	var hashing := HashingContext.new()
+	hashing.start(HashingContext.HASH_SHA256)
+	hashing.update(bytes)
+	return hashing.finish().hex_encode()
+
+func live_erasing_input() -> void:
+	if live_erasing.is_empty() or host.paused or host.phase!="live-erasing-flight": return
+	var step: int = host.physical_actor_session.tick
+	var elapsed_steps: int = step-int(live_erasing.first_step)
+	if step>int(live_erasing.get("checked_step",live_erasing.first_step)):
+		live_erasing.checked_step = step
+		var airborne: bool = int(host.completed.back().contacts[0])==0
+		live_erasing.airborne_streak = int(live_erasing.get("airborne_streak",0))+1 if airborne else 0
+		if not live_erasing.has("flight_start_step") and int(live_erasing.airborne_streak)>=4:
+			live_erasing.flight_start_step = step
+	var flight_steps: int = step-int(live_erasing.get("flight_start_step",step+1))
+	for edit: Dictionary in live_erasing.edits:
+		if edit.has("requested_step") or flight_steps<int(edit.at_step): continue
+		var cell := Vector2i(edit.cell[0],edit.cell[1])
+		var prior: CyberSimulationSnapshot = host.simulation_worker.take_latest_physics_snapshot()
+		edit.requested_step = step
+		edit.time_usec = Time.get_ticks_usec()
+		edit.native_tick_before = prior.tick_index
+		edit.revision_before = prior.simulation_world_revision
+		edit.hard_revision_before = prior.hard_surface_revision
+		edit.world_generation = prior.physics_world_generation
+		ui._brush.value = int(edit.radius)
+		var screen_point: Vector2 = host.presentation_camera_screen_transform()*(Vector2(cell)+Vector2(0.5,0.5))
+		var point: Vector2 = host._world_view_screen_transform().affine_inverse()*screen_point
+		var mapped: Vector2i = host.world_cell_from_local_point(point)
+		edit.mapped_cell = [mapped.x,mapped.y]
+		edit.paint_mode_active = ui.paint_editor.paint_mode_active()
+		edit.paused = host.paused
+		var actor_position: Vector2 = host.physical_actor_session.bridge.body_transform(0).origin
+		edit.actor_position = [actor_position.x,actor_position.y]
+		edit.actor_contacts = int(host.completed.back().contacts[0])
+		var before: int = host.brush_admissions.size()
+		# The ordinary non-PAINT right-button path remains available while
+		# playing. Positive PAINT remains paused-only; do not bypass its guard.
+		for pressed: bool in [true,false]:
+			var event := InputEventMouseButton.new()
+			event.button_index = MOUSE_BUTTON_RIGHT
+			event.pressed = pressed
+			event.position = point
+			ui._world_input(event)
+		edit.queue_receipts = host.brush_admissions.slice(before).duplicate(true)
+	if elapsed_steps>=int(live_erasing.maximum_steps):
+		live_erasing.limit_reached = true
+		host.paused = true
+		host.update_worker_frame_state()
+
+func live_erasing_publication() -> void:
+	if live_erasing.is_empty() or host.paused or host.phase!="live-erasing-flight": return
+	var current: CyberSimulationSnapshot = host.latest_snapshot
+	if current==null or host.last_uploaded_render_snapshot_serial!=current.render_snapshot_serial \
+			or host.last_uploaded_revision!=current.world_revision \
+			or host.last_uploaded_world_generation!=current.render_world_generation: return
+	if int(live_erasing.get("checked_render_serial",-1))==host.last_uploaded_render_snapshot_serial: return
+	live_erasing.checked_render_serial = host.last_uploaded_render_snapshot_serial
+	for edit: Dictionary in live_erasing.edits:
+		if not edit.has("requested_step") or edit.has("publication"): continue
+		var cell := Vector2i(edit.cell[0],edit.cell[1])
+		if current.world_revision<=int(edit.revision_before) \
+				or not disc_material(host.image,cell,int(edit.radius),0): continue
+		edit.publication = {"time_usec":Time.get_ticks_usec(),"step":host.physical_actor_session.tick,
+			"native_tick":current.tick_index,"render_tick":current.render_tick_index,
+			"snapshot_serial":current.serial,"render_serial":current.render_snapshot_serial,
+			"revision":host.last_uploaded_revision,"world_generation":host.last_uploaded_world_generation,
+			"hard_revision":current.hard_surface_revision,"paused":host.paused,
+			"region_sha256":bytes_sha256(
+				host.image.get_region(Rect2i(cell-Vector2i.ONE*int(edit.radius),
+				Vector2i.ONE*(int(edit.radius)*2+1))).get_data())}
+
+func live_erasing_flight() -> void:
+	if not await pause_callbacks(): return
+	var edits: Array[Dictionary] = [
+		{"label":"small-live-erase","at_step":6,"cell":[480,480],"radius":2},
+		{"label":"large-live-erase","at_step":18,"cell":[768,768],"radius":24}]
+	var cells := PackedInt32Array()
+	for edit: Dictionary in edits:
+		var count: int = 0
+		for y: int in range(-int(edit.radius),int(edit.radius)+1):
+			for x: int in range(-int(edit.radius),int(edit.radius)+1):
+				if x*x+y*y>int(edit.radius)*int(edit.radius): continue
+				cells.append_array(PackedInt32Array([int(edit.cell[0])+x,int(edit.cell[1])+y,58]))
+				count += 1
+		edit.footprint_cells = count
+	var prepared: CyberSimulationSnapshot = await native_edit(cells,"paused hard discs for ordinary live erasing")
+	if prepared==null: return
+	host.set_process(true)
+	host.set_physics_process(true)
+	if not check(await until(func() -> bool:
+		return host.last_hard_surface_revision==prepared.hard_surface_revision \
+			and host.rapier_bridge.pending_hard_surface_chunks()==0 \
+			and edits.all(func(edit: Dictionary) -> bool:
+				return disc_material(host.image,Vector2i(edit.cell[0],edit.cell[1]),int(edit.radius),58))),
+		"both live-erasure targets have actual published hard material and installed colliders"): return
+	var brush_before: float = ui._brush.value
+	var tool_before: int = ui._tool.selected
+	ui._tool.select(2) # Ordinary actor-selection mode retains right-button erasing.
+	ui._camera.select(0)
+	ui.set_camera(0)
+	# A supported closer Free view gives every target cell at least one pixel;
+	# a 1024-cell overview can legitimately skip cells on a smaller display.
+	ui._set_view(Vector2(320,320),Vector2i(512,512))
+	await process_frame
+	var bridge = host.physical_actor_session.bridge
+	var initial_position: Vector2 = bridge.body_transform(0).origin
+	live_erasing = {"first_step":host.physical_actor_session.tick,"maximum_steps":90,"limit_reached":false,
+		"session":bridge._session,"epoch":host._physical_epoch,"world_generation":prepared.physics_world_generation,
+		"native_tick_before":prepared.tick_index,"edits":edits,
+		"initial_position":[initial_position.x,initial_position.y],"initial_accepted_samples":Array(bridge._accepted_samples),
+		"instances":bridge._members.map(func(member: Dictionary) -> int: return int(member.instance_id)),
+		"camera_scope":"Free view shows the edit targets; Needle flies offscreen. Earlier Follow phases cover visible actor/camera behavior.",
+		"input_path":"ordinary non-PAINT _world_input right button -> paint(material 0) -> queue_brush_mutation",
+		"receipt_scope":"Observed queue acceptance and exact publication footprint; no PAINT history transaction."}
+	# Needle uses body-oriented thrust. With primary released, ordinary S
+	# requests reverse propulsion; auxiliary is the existing level assist. This
+	# separates the actor from the sparse ceiling without changing its state.
+	host.pilot_action = {"move":Vector2.DOWN,"primary":false,"auxiliary":true,"effort":1.0}
+	live_erasing.pilot_action = {"move":[0,1],"primary":false,"auxiliary":true,"effort":1.0}
+	live_erasing.controller_scope = "ordinary reverse body thrust with level assist; actual airborne completions start the edit tape"
+	physics_frame.connect(live_erasing_input)
+	process_frame.connect(live_erasing_publication)
+	await run_phase("live-erasing-flight",60,60,48,0,{"contact_required":false,"watchdog_msec":60000,
+		"completion_predicate":func() -> bool:
+			return live_erasing.limit_reached or (live_erasing.has("flight_start_step") \
+				and host.physical_actor_session.tick>=int(live_erasing.flight_start_step)+26 \
+				and edits.all(func(edit: Dictionary) -> bool: return edit.has("publication")))})
+	physics_frame.disconnect(live_erasing_input)
+	process_frame.disconnect(live_erasing_publication)
+	host.pilot_action.clear()
+	check(not live_erasing.limit_reached,"live erasing publishes both targets before the 90-completion bound")
+	var final_position: Vector2 = bridge.body_transform(0).origin
+	live_erasing.final_position = [final_position.x,final_position.y]
+	var actual: Array = host.completed.filter(func(row: Dictionary) -> bool: return row.phase=="live-erasing-flight")
+	check(final_position.distance_to(initial_position)>0.25 and actual.any(func(row: Dictionary) -> bool:
+		return int(row.contacts[0])==0),"authoritative Needle moves through real airborne steps during live erasing")
+	var accepted_samples: Array = live_erasing.initial_accepted_samples.duplicate()
+	for row: Dictionary in actual:
+		var owner: Dictionary = row.owner
+		check(owner.session==live_erasing.session and owner.response_session==owner.session \
+			and owner.epoch==live_erasing.epoch and owner.response_epoch==owner.epoch and owner.snapshot_epoch==owner.epoch \
+			and owner.world_generation==live_erasing.world_generation and owner.valid \
+			and owner.bodies.map(func(body: Dictionary) -> int: return int(body.instance_id))==live_erasing.instances \
+			and row.response.refusal.is_empty() \
+			and row.response.bodies.map(func(body: Dictionary) -> int: return int(body.id))==[1,2] \
+			and owner.accepted_samples.size()==2 \
+			and owner.bodies.all(func(body: Dictionary) -> bool:
+				return body.generation==owner.epoch and body.sample==owner.completed_sample),
+			"live erasing retains native feedback session, epoch, generation and completed-sample association")
+		for response: Dictionary in row.response.bodies:
+			var slot: int = int(response.id)-1
+			if response.refusal.is_empty():
+				var forward: int = posmod(int(response.sample)-int(accepted_samples[slot]),bridge.SAMPLE_SERIAL_LIMIT)
+				check(response.sample==owner.completed_sample and response.age>=0 and response.age<=Bridge.MAX_AGE \
+					and forward>0 and forward<=bridge.SAMPLE_SERIAL_LIMIT/2 \
+					and owner.accepted_samples[slot]==response.sample,"live erasing accepts only the associated advancing safe-age native sample")
+			else:
+				check(owner.accepted_samples[slot]==accepted_samples[slot],
+					"live erasing refused response consumes no additional accepted sample authority")
+				if response.refusal=="duplicate":
+					check(response.sample==accepted_samples[slot],"duplicate refusal preserves the already applied sample identity")
+		accepted_samples = owner.accepted_samples.duplicate()
+	for edit: Dictionary in edits:
+		check(live_erasing.has("flight_start_step") \
+			and edit.get("requested_step",-1)==int(live_erasing.get("flight_start_step",-1))+int(edit.at_step),
+			str(edit.label)+" uses its exact completed-step trigger")
+		check(edit.get("mapped_cell",[])==edit.cell and not edit.get("paused",true) \
+			and not edit.get("paint_mode_active",true) and edit.get("queue_receipts",[]).size()==1,
+			str(edit.label)+" reaches the ordinary playing right-button pointer path exactly once")
+		check(int(edit.get("actor_contacts",-1))==0,str(edit.label)+" is requested during actual airborne Needle flight")
+		for receipt: Dictionary in edit.get("queue_receipts",[]):
+			check(receipt.accepted and receipt.cell==edit.cell and receipt.radius==edit.radius \
+				and receipt.material==0 and not receipt.paused and receipt.step==edit.requested_step,
+				str(edit.label)+" production queue acknowledges the intended live erasure")
+		if check(edit.has("publication"),str(edit.label)+" exact erased footprint is published while playing"):
+			var publication: Dictionary = edit.publication
+			check(not publication.paused and publication.world_generation==live_erasing.world_generation \
+				and publication.hard_revision>int(edit.hard_revision_before),str(edit.label)+" material publication retains owner and new hard geometry")
+			check(actual.any(func(row: Dictionary) -> bool:
+				return row.step>=int(edit.requested_step)+8 and row.native_tick>int(edit.native_tick_before) \
+					and row.required_revision>=int(publication.hard_revision)),
+				str(edit.label)+" native and Rapier continue with the erased terrain fully installed")
+	if await pause_callbacks():
+		exact_geometry(snapshot().hard_surface_chunk_rectangles,"completed ordinary live erasing")
+		check(host.image.get_data()==host._presentation_current_bytes,"live-erasure uploaded image and safety certificate agree")
+		# Readback is deliberately after the live phase, never in its timing sample.
+		if DisplayServer.get_name()!="headless":
+			await RenderingServer.frame_post_draw
+			var current: Image = host.texture.get_image()
+			var previous: Image = host.previous_texture.get_image()
+			check(current!=null and current.get_data()==host._presentation_current_bytes,
+				"live-erasure current GPU material equals the acknowledged safety bytes")
+			check(previous!=null and previous.get_data()==host._presentation_previous_bytes,
+				"live-erasure previous GPU material equals the preserved history bytes")
+			live_erasing.gpu_history_readback_after_phase = current!=null and previous!=null
+	ui._brush.value = brush_before
+	ui._tool.select(tool_before)
+	observations.append({"label":"live-erasing-flight","receipt":live_erasing.duplicate(true)})
+	live_erasing.clear()
+
 func packet_fences() -> void:
 	print("PHYSICS_PACING_STAGE native packet fences")
 	if not await pause_callbacks(): return
@@ -567,6 +802,7 @@ func _run() -> void:
 		await terrain_progress()
 		await run_phase("render-30-physics-120",30,120,45,1200)
 		await fire_contact()
+		await live_erasing_flight()
 		await packet_fences()
 		check(host.completed.all(func(row: Dictionary) -> bool:
 			return row.pending_chunks==0 and row.required_revision==row.packet_revision \

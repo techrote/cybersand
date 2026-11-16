@@ -20,6 +20,10 @@ required terrain. Source-matched ABBA compares actual completion events; no
 mailbox publication count is physical progression. Preserve all raw failed
 attempts, the final exact-source PR/artifact ledger, and Draft/HOLD on all four
 stack PRs. No physical NVIDIA acceptance or merge authority is implied.
+The e519 ring3 experiment shortens publication calls but does not qualify frame
+or physical tails; later frame-marker time must not be omitted. The optional
+third-history-target transaction, manual-update repair and live-erasing coverage
+require their own exact-source Windows/Linux qualification before delivery.
 
 ## Camera stack temporal coherence — 2026-11-15
 

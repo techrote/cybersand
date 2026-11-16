@@ -5803,12 +5803,10 @@ func reject_render_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 
 
 func finish_texture_upload(world_revision: int, start_usec: int) -> void:
-	# Ping-pong two GPU textures. The shader blends movable occupancy from the
-	# previous snapshot to the current one, masking the intentional two-cell
-	# sparse-flight leap without changing authoritative physics or collisions.
-	var old_current_texture: Texture2D = texture
-	texture = previous_texture
-	previous_texture = old_current_texture
+	# Prepare and commit the GPU pair before advancing logical certificates.
+	# During a rejected transaction the old current bytes/shape still identify
+	# the exact previous image needed by the verified full fallback.
+	update_render_texture()
 	var cache_started_usec: int = Time.get_ticks_usec()
 	var next_bytes: PackedByteArray = image.get_data()
 	var next_shape := Vector3i(image.get_width(),image.get_height(),image.get_format())
@@ -5830,7 +5828,6 @@ func finish_texture_upload(world_revision: int, start_usec: int) -> void:
 	_presentation_current_content_shape = next_shape
 	_presentation_upload_cache_usec = Time.get_ticks_usec()-cache_started_usec
 	_presentation_pending_cache_usec += _presentation_upload_cache_usec
-	update_render_texture()
 	_bind_material_texture_consumers()
 	snapshot_blend_start_usec = Time.get_ticks_usec()
 	last_uploaded_revision = world_revision
@@ -5843,17 +5840,24 @@ func update_render_texture() -> void:
 		for offset: int in range(0, _material_pending_rectangles.size(), 6):
 			regions.append(Rect2i(_material_pending_rectangles[offset], _material_pending_rectangles[offset+1],
 				_material_pending_rectangles[offset+2], _material_pending_rectangles[offset+3]))
-		# finish_texture_upload has swapped Main's references already. The owner
-		# installs every pending tile in the recycled slot, then advances its pair.
-		if _material_blit_publisher != null and texture == _material_blit_publisher.previous \
-				and previous_texture == _material_blit_publisher.current \
-				and _material_blit_publisher.publish(image, regions):
-			_material_publication_last = _material_blit_publisher.last_update.duplicate()
-			return
+		# No yield or external callback separates preparation, commitment,
+		# binding and ACK. Only the committed owner determines visible roles.
+		if _material_blit_publisher != null and texture == _material_blit_publisher.current \
+				and previous_texture == _material_blit_publisher.previous:
+			var prepared: MaterialPublisher.PreparedPublication = _material_blit_publisher.prepare_publication(image,regions)
+			if prepared != null and _material_blit_publisher.commit_publication(prepared):
+				texture = _material_blit_publisher.current
+				previous_texture = _material_blit_publisher.previous
+				_material_publication_last = _material_blit_publisher.last_update.duplicate()
+				return
 		# A structural rejection publishes both exact CPU histories with the
 		# verified full path before the revision is acknowledged.
 		_material_publication_fallback = "blit update validation failed"
-		var recovery_previous: Image = _material_previous_cpu_image()
+		# Certificates have not advanced: use OLD CURRENT, never old previous
+		# or the spare's content, even when copies succeeded before rejection.
+		var recovery_previous: Image = Image.create_from_data(_presentation_current_content_shape.x,
+			_presentation_current_content_shape.y,false,_presentation_current_content_shape.z,
+			_presentation_current_bytes)
 		var recovery_started: int = Time.get_ticks_usec()
 		texture = ImageTexture.create_from_image(image)
 		previous_texture = ImageTexture.create_from_image(recovery_previous)
@@ -5862,6 +5866,10 @@ func update_render_texture() -> void:
 			"tile_assembly_usec":0, "backend_submit_usec":Time.get_ticks_usec() - recovery_started,
 			"recovery_rebuilt_pair":true}
 		return
+	# The verified full path retains its ordinary two-texture ping-pong.
+	var old_current_texture: Texture2D = texture
+	texture = previous_texture
+	previous_texture = old_current_texture
 	var started: int = Time.get_ticks_usec()
 	(texture as ImageTexture).update(image)
 	_material_publication_last = {"mode":"full", "submitted_bytes":image.get_width() * image.get_height() * render_channels,
@@ -5945,6 +5953,8 @@ func material_publication_status() -> Dictionary:
 		result["tile_side"] = _material_blit_publisher.tile_side
 		result["tile_count"] = _material_blit_publisher.columns * _material_blit_publisher.rows
 		result["allocated_gpu_bytes"] = _material_blit_publisher.gpu_storage_bytes()
+		result["history_targets"] = _material_blit_publisher.history_targets
+		result["spare_texture_rid"] = _material_publication_rid(_material_blit_publisher.spare).get_id()
 		result["current_texture_rid"] = _material_publication_rid(texture).get_id()
 		result["previous_texture_rid"] = _material_publication_rid(previous_texture).get_id()
 	return result

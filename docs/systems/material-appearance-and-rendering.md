@@ -352,6 +352,9 @@ retain ordinary 2D sampling. Arrays are used only by the small copy shader.
 Exact adjacent copies coalesce only within both source and destination rows;
 upload bytes and written pixel area stay unchanged. This successor remains
 under performance evaluation after the shared-array candidate failed timing.
+An optional third physical target retains the same two visible histories through
+an explicit prepare/commit transaction; its larger dirty union and memory remain
+part of qualification. The ordinary target count stays two.
 Reused slots repair accumulated dirty tiles and
 skip byte-identical contents. The
 [publication contract](../architecture/rendering-and-gameplay-bridges.md#does-a-small-dirty-patch-mean-a-small-gpu-upload)

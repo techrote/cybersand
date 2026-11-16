@@ -21,6 +21,55 @@ ROOT = Path(__file__).resolve().parents[2]
 ERRORS = re.compile(r"SCRIPT ERROR:|SHADER ERROR:|Parse Error:|Failed to load script|Failed loading resource:")
 
 
+def validate_material_history_receipt(report, text):
+    """Shared receipt gate for source tests and the freshly extracted package."""
+    def need(value, message):
+        if not value:
+            raise RuntimeError(message)
+
+    completions = re.findall(r'^MATERIAL_HISTORY_TRANSACTION: (\d+) assertions, (\d+) failures\s*$', text, re.M)
+    need(len(completions) == 1 and int(completions[0][0]) == report.get('assertions')
+         and report['assertions'] >= 223 and int(completions[0][1]) == report.get('failures') == 0
+         and not ERRORS.search(text), 'Material history transaction marker/JSON failed or incomplete')
+    rows = report.get('observations', [])
+    need(isinstance(rows, list) and all(isinstance(row, dict) for row in rows), 'Invalid material history observations')
+    transitions = [row for row in rows if row.get('label') == 'three-transition coverage']
+    need(len(transitions) == 14 and {(row.get('channels'), row.get('turn')) for row in transitions}
+         == {(channels, turn) for channels in (1, 2) for turn in range(7)},
+         'Missing disjoint/erasing three-target transition coverage')
+    for channels in (1, 2):
+        publications = [row.get('publication', {}) for row in transitions if row['channels'] == channels]
+        need(all(p.get('history_targets') == 3 and p.get('staging_slots') == 3
+                 and p.get('staging_backend') == 'texture2d_array' and p.get('staging_resource_layers') == 1
+                 and p.get('staging_layer') == 0 and p.get('copy_mode') == 'runs' for p in publications),
+             'Transaction did not exercise the specified three-target independent-array route')
+        targets = [p.get('history_target_rid') for p in publications]
+        need(all(isinstance(rid, (int, float)) and rid > 0 and int(rid) == rid for rid in targets)
+             and len(set(targets)) == 3 and all(targets.count(rid) >= 2 for rid in set(targets)),
+             'Transaction did not reuse every history target')
+    spare = [row for row in rows if row.get('label') == 'retained spare direct update']
+    need(len(spare) == 2 and {row.get('channels') for row in spare} == {1, 2},
+         'Missing retained-spare direct update repair')
+    fallback = [row for row in rows if row.get('label') == 'post-prepare fallback']
+    need(len(fallback) == 2 and {row.get('history_targets') for row in fallback} == {2, 3},
+         'Missing two/three-target post-prepare fallback')
+    need(all(row.get('publication', {}).get('backend') == 'full'
+             and row['publication'].get('requested_mode') == 'blit'
+             and row['publication'].get('recovery_rebuilt_pair') is True
+             and row['publication'].get('fallback_reason') == 'blit update validation failed' for row in fallback),
+         'Post-prepare failure did not rebuild the verified full-update history pair')
+    for row in transitions + spare + fallback:
+        need(all(isinstance(row.get(key), str) and re.fullmatch(r'[0-9a-f]{64}', row[key])
+                 for key in ('current_sha256', 'previous_sha256')), 'Missing actual GPU history hashes')
+    hooks = [row for row in rows if row.get('label') == 'render-copy virtual hooks']
+    need(len(hooks) == 1 and hooks[0].get('dropped') == 0 and hooks[0].get('events')
+         == ['texture_begin', 'texture_update_begin', 'texture_update_end', 'texture_success'],
+         'Material transaction bypassed production render-copy observer hooks')
+    return {'assertions': report['assertions'], 'failures': 0, 'transition_rows': len(transitions),
+            'retained_spare_cases': len(spare), 'fallback_history_targets': [2, 3],
+            'render_copy_hooks': hooks[0]['events'], 'gpu_history_hash_rows': len(transitions + spare + fallback)}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--godot', type=Path, required=True)
@@ -72,6 +121,9 @@ def main():
             ('camera-effects', 'test_native_camera_effects_render', 'NATIVE_CAMERA_EFFECTS_RESULT', {}, True),
             ('physics-publication-graphical', 'test_workbench_physics_publication', 'PHYSICS_PUBLICATION_RESULT', {}, True),
             ('material-tiles-graphical', 'test_material_tile_publication', 'MATERIAL_TILE_PUBLICATION:', {}, True),
+            ('material-history-graphical', 'test_material_history_transaction', 'MATERIAL_HISTORY_TRANSACTION:',
+             {'CYBERSAND_DIAG_MATERIAL_HISTORY_TARGETS': '2', 'CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS': '3',
+              'CYBERSAND_DIAG_MATERIAL_COPY_MODE': 'runs'}, True),
             ('physics-pacing-graphical', 'test_workbench_physics_pacing', 'PHYSICS_PACING_RESULT', {}, True),
         ]
     names = {row[0] for row in cases}
@@ -98,6 +150,8 @@ def main():
             env['CYBERSAND_PHYSICS_PUBLICATION_OUTPUT'] = str(folder / 'physics-publication.json')
         elif script == 'test_material_tile_publication':
             env['CYBERSAND_MATERIAL_TILE_OUTPUT'] = str(folder / 'material-tiles.json')
+        elif script == 'test_material_history_transaction':
+            env['CYBERSAND_MATERIAL_HISTORY_OUTPUT'] = str(folder / 'material-history.json')
         command = [str(args.godot.resolve()), '--audio-driver', 'Dummy', '--path', str(args.project.resolve())]
         command += (['--rendering-method', 'gl_compatibility', '--rendering-driver',
                      'opengl3_angle' if os.name == 'nt' else 'opengl3', '--max-fps', '60']
@@ -115,16 +169,24 @@ def main():
         row = {'name': name, 'command': command, 'graphical': graphical, 'status': 'failed'}
         started = time.monotonic()
         try:
-            with (folder / 'console.log').open('w') as log:
+            with (folder / 'console.log').open('w', encoding='utf-8') as log:
                 result = subprocess.run(command, env=env, cwd=ROOT, stdout=log, stderr=subprocess.STDOUT, timeout=600)
             row['exit_code'] = result.returncode
-            text = (folder / 'console.log').read_text(errors='replace')
+            text = (folder / 'console.log').read_text(encoding='utf-8', errors='replace')
             completions = [line for line in text.splitlines() if line.startswith(marker + ' ')]
             if result.returncode != 0 or ERRORS.search(text) or not completions:
                 raise RuntimeError('Test did not complete successfully; inspect retained console.log')
             row['completion'] = completions[-1]
+            if script == 'test_material_history_transaction':
+                receipt = folder / 'material-history.json'
+                row['material_history'] = validate_material_history_receipt(
+                    json.loads(receipt.read_text(encoding='utf-8')), text)
+                row['receipt_sha256'] = hashlib.sha256(receipt.read_bytes()).hexdigest()
+                row['environment'] = overrides
+                if os.name == 'nt' and 'ANGLE' not in text:
+                    raise RuntimeError('Material history test did not execute the requested Windows ANGLE backend')
             row['status'] = 'passed'
-        except (RuntimeError, OSError, subprocess.TimeoutExpired) as error:
+        except (RuntimeError, OSError, ValueError, KeyError, TypeError, subprocess.TimeoutExpired) as error:
             row['error'] = str(error)
         row['elapsed_seconds'] = time.monotonic() - started
         row['log_sha256'] = hashlib.sha256((folder / 'console.log').read_bytes()).hexdigest()

@@ -39,6 +39,17 @@ class MaterialPlane extends Texture2D:
 		var owner: RefCounted = _publisher.get_ref() if _publisher != null else null
 		return owner != null and owner.replace_plane(source, self)
 
+# A prepared token retains only plane resources and an owner identity. The
+# publisher owns at most one token; there is no token -> publisher reference.
+class PreparedPublication extends RefCounted:
+	var _owner_id: int = 0
+	var _sequence: int = 0
+	var _current: MaterialPlane
+	var _previous: MaterialPlane
+	var _spare: MaterialPlane
+	var _destination: MaterialPlane
+	var _metrics: Dictionary = {}
+
 class StagingResource extends RefCounted:
 	var texture: Texture2DArray
 	var owned_object_id: int = 0
@@ -55,6 +66,12 @@ class StagingPool extends RefCounted:
 
 var current: MaterialPlane
 var previous: MaterialPlane
+var spare: MaterialPlane
+# Provisional external experiment: two logical histories, two or three
+# physical targets. A spare gives reuse distance, not GPU completion proof.
+var history_targets: int = 2
+var _prepared_publication: PreparedPublication
+var _publication_sequence: int = 0
 var extent := Vector2i.ZERO
 var logical_format: Image.Format = Image.FORMAT_RG8
 var channels: int = 2
@@ -100,7 +117,7 @@ func _valid_source(source: Image) -> bool:
 func _setup(source: Image, preceding: Image) -> bool:
 	var setup_started: int = Time.get_ticks_usec()
 	# A fresh owner is required for every World replacement and mode switch.
-	if current != null or previous != null or not staging.is_empty(): return false
+	if current != null or previous != null or spare != null or not staging.is_empty(): return false
 	if source == null or source.is_empty() or source.has_mipmaps() \
 			or source.get_format() not in [Image.FORMAT_R8, Image.FORMAT_RG8]: return false
 	if source.get_width() >= 16384 or source.get_height() >= 16384: return false
@@ -108,6 +125,7 @@ func _setup(source: Image, preceding: Image) -> bool:
 			or preceding.get_format() != source.get_format() or preceding.has_mipmaps(): return false
 	extent = source.get_size()
 	logical_format = source.get_format()
+	history_targets = 3 if OS.get_environment("CYBERSAND_DIAG_MATERIAL_HISTORY_TARGETS") == "3" else 2
 	var requested_slots: String = OS.get_environment("CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS")
 	staging_slots = int(requested_slots) if requested_slots in ["1","2","3"] else 3
 	copy_mode = "tiles" if OS.get_environment("CYBERSAND_DIAG_MATERIAL_COPY_MODE") == "tiles" else "runs"
@@ -140,14 +158,17 @@ func _setup(source: Image, preceding: Image) -> bool:
 	_full_staging_pool_id = full_staging.get_instance_id()
 	current = _new_plane()
 	previous = _new_plane()
-	if current == null or previous == null: return false
+	if history_targets == 3: spare = _new_plane()
+	if current == null or previous == null or (history_targets == 3 and spare == null): return false
 	var initialized: Dictionary = {}
 	var identical: bool = source.get_data() == preceding.get_data()
 	if identical:
-		if not _submit(source, [current, previous]): return false
+		if not _submit(source, _owned_planes()): return false
 		initialized = last_update.duplicate()
 	else:
-		if not _submit(source, [current]): return false
+		var matching_current: Array[MaterialPlane] = [current]
+		if spare != null: matching_current.append(spare)
+		if not _submit(source, matching_current): return false
 		initialized = last_update.duplicate()
 		if not _submit(preceding, [previous]): return false
 		for key: String in ["submitted_bytes", "atlas_assembly_usec", "staging_upload_usec",
@@ -162,7 +183,7 @@ func _setup(source: Image, preceding: Image) -> bool:
 	# resource. Distinct histories may already have used0 and1: preserve the
 	# still-unused2 in a three-resource ring. This gives reuse distance only;
 	# all initialization uploads and preparation remain in the setup receipt.
-	initialized["copy_destinations"] = 2
+	initialized["copy_destinations"] = history_targets
 	var priming_started: int = Time.get_ticks_usec()
 	var pools: Array = staging.values()
 	if not pools.has(full_staging): pools.append(full_staging)
@@ -174,7 +195,7 @@ func _setup(source: Image, preceding: Image) -> bool:
 		pool.next_slot = maxi(1,pool.next_slot)%staging_slots
 	initialized["priming_usec"] = Time.get_ticks_usec()-priming_started
 	initialized["priming_blit_calls"] = pools.size()
-	initialized["initialization_staging_zero_bytes"] = gpu_storage_bytes()-extent.x*extent.y*8-5
+	initialized["initialization_staging_zero_bytes"] = gpu_storage_bytes()-extent.x*extent.y*4*history_targets-5
 	initialized["initialization_dummy_source_bytes"] = 1
 	initialized["submitted_bytes"] += initialized.initialization_staging_zero_bytes+initialized.initialization_dummy_source_bytes
 	initialized["initialization"] = true
@@ -260,7 +281,14 @@ func _tile(source: Image, index: int) -> Image:
 	return image
 
 
+func _owned_planes() -> Array[MaterialPlane]:
+	var result: Array[MaterialPlane] = [current,previous]
+	if history_targets == 3: result.append(spare)
+	return result
+
+
 func _valid_state() -> bool:
+	if history_targets not in [2,3] or (history_targets == 2 and spare != null): return false
 	if staging_slots not in [1,2,3] or copy_mode not in ["tiles","runs"]: return false
 	if extent.x <= 0 or extent.y <= 0 or extent.x >= 16384 or extent.y >= 16384 \
 			or logical_format not in [Image.FORMAT_R8,Image.FORMAT_RG8] \
@@ -275,7 +303,8 @@ func _valid_state() -> bool:
 			or retirement_sink.get_instance_id() != retirement_owned_id or retirement_sink.get_rid() != retirement_owned_rid \
 			or Vector2i(retirement_sink.get_size()) != Vector2i.ONE or retirement_sink.get_use_mipmaps() \
 			or retirement_sink.get_rid() == dummy_source.get_rid(): return false
-	for plane: MaterialPlane in [current,previous]:
+	var history_ids: Dictionary = {}
+	for plane: MaterialPlane in _owned_planes():
 		if plane == null or plane.drawable == null or not plane.drawable.get_rid().is_valid() \
 				or plane.drawable.get_instance_id() != plane.owned_object_id or plane.drawable.get_rid() != plane.owned_rid \
 				or plane.extent != extent or plane.logical_format != logical_format \
@@ -283,6 +312,8 @@ func _valid_state() -> bool:
 				or plane.bytes.size() != columns*rows or plane.pending.size() != columns*rows \
 				or plane.drawable.get_rid() == retirement_sink.get_rid() \
 				or plane.drawable.get_rid() == dummy_source.get_rid(): return false
+		if history_ids.has(plane.get_rid()): return false
+		history_ids[plane.get_rid()] = true
 	if staging.size() != _staging_pool_ids.size(): return false
 	for capacity: int in staging:
 		if capacity not in CAPACITIES: return false
@@ -296,8 +327,9 @@ func _valid_state() -> bool:
 	# material. Only an equal-size full atlas shares its existing pool/cursor.
 	var pools: Array = staging.values()
 	if not pools.has(full_staging): pools.append(full_staging)
-	var texture_ids: Dictionary = {current.get_rid():true, previous.get_rid():true,
-		retirement_sink.get_rid():true, dummy_source.get_rid():true}
+	var texture_ids: Dictionary = history_ids.duplicate()
+	texture_ids[retirement_sink.get_rid()] = true
+	texture_ids[dummy_source.get_rid()] = true
 	var material_ids: Dictionary = {}
 	for pool: StagingPool in pools:
 		for resource: StagingResource in pool.resources:
@@ -309,13 +341,13 @@ func _valid_state() -> bool:
 	return current.get_rid() != previous.get_rid()
 
 
-func publish(source: Image, rectangles: Array[Rect2i]) -> bool:
-	if not _valid_source(source) or not _valid_state(): return false
-	# Validate every rectangle before touching pending coverage or resources.
+func prepare_publication(source: Image, rectangles: Array[Rect2i]) -> PreparedPublication:
+	if _prepared_publication != null or not _valid_source(source) or not _valid_state(): return null
+	# Every input and every target is checked before pending state changes.
 	for area: Rect2i in rectangles:
 		if area.size.x <= 0 or area.size.y <= 0 or area.position.x < 0 or area.position.y < 0 \
-				or area.end.x > extent.x or area.end.y > extent.y: return false
-	for plane: MaterialPlane in [current, previous]:
+				or area.end.x > extent.x or area.end.y > extent.y: return null
+	for plane: MaterialPlane in _owned_planes():
 		if rectangles.is_empty():
 			plane.pending.fill(1)
 		else:
@@ -324,20 +356,58 @@ func publish(source: Image, rectangles: Array[Rect2i]) -> bool:
 				var last: Vector2i = (area.end - Vector2i.ONE) / tile_side
 				for y: int in range(first.y,last.y+1):
 					for x: int in range(first.x,last.x+1): plane.pending[y*columns+x] = 1
-	if not _submit(source, [previous]): return false
-	var retired: MaterialPlane = previous
-	previous = current
-	current = retired
+	var destination: MaterialPlane = spare if history_targets == 3 else previous
+	if not _submit(source,[destination]): return null
+	# The visible roles remain unchanged until commit. There is one bounded
+	# outstanding token and no owner reference in it that could form a cycle.
+	_publication_sequence += 1
+	var prepared := PreparedPublication.new()
+	prepared._owner_id = get_instance_id()
+	prepared._sequence = _publication_sequence
+	prepared._current = current
+	prepared._previous = previous
+	prepared._spare = spare
+	prepared._destination = destination
+	prepared._metrics = last_update.duplicate()
+	_prepared_publication = prepared
+	return prepared
+
+
+func commit_publication(prepared: PreparedPublication) -> bool:
+	if prepared == null or prepared != _prepared_publication \
+			or prepared._owner_id != get_instance_id() or prepared._sequence != _publication_sequence \
+			or prepared._current != current or prepared._previous != previous or prepared._spare != spare \
+			or prepared._destination != (spare if history_targets == 3 else previous) \
+			or not _valid_state(): return false
+	var old_current: MaterialPlane = current
+	var old_previous: MaterialPlane = previous
+	current = prepared._destination
+	previous = old_current
+	if history_targets == 3: spare = old_previous
+	last_update = prepared._metrics.duplicate()
+	_prepared_publication = null
 	return true
 
 
+func publish(source: Image, rectangles: Array[Rect2i]) -> bool:
+	# Existing direct users retain the synchronous convenience API. Main uses
+	# the explicit prepare/commit pair and binds only a committed publication.
+	var prepared: PreparedPublication = prepare_publication(source,rectangles)
+	return prepared != null and commit_publication(prepared)
+
+
 func replace_plane(source: Image, destination: MaterialPlane) -> bool:
-	if not _valid_source(source) or not _valid_state() or destination not in [current,previous]: return false
-	# Direct Texture2D.update() does not advance Main's source/history identity.
-	# Keep both slots conservatively dirty for the next normal publication.
-	current.pending.fill(1)
-	previous.pending.fill(1)
-	return _submit(source, [destination])
+	if _prepared_publication != null or not _valid_source(source) or not _valid_state() \
+			or destination not in _owned_planes(): return false
+	# A legacy caller may retain a wrapper that has become the spare. Its
+	# source is independent of Main's authoritative CPU image/certificates.
+	for plane: MaterialPlane in _owned_planes(): plane.pending.fill(1)
+	if not _submit(source,[destination]): return false
+	# _submit clears its destination. Re-invalidate ALL targets afterwards,
+	# so a later authoritative sparse patch cannot retain unrelated bytes
+	# introduced by the direct caller outside that patch.
+	for plane: MaterialPlane in _owned_planes(): plane.pending.fill(1)
+	return true
 
 
 func _finish_metrics() -> void:
@@ -352,6 +422,9 @@ func _finish_metrics() -> void:
 	last_update["staging_layer"] = 0 if int(last_update.get("staging_slot",-1)) >= 0 else -1
 	last_update["staging_resource_layers"] = 1
 	last_update["copy_mode"] = copy_mode
+	last_update["history_targets"] = history_targets
+	last_update["history_storage_bytes"] = extent.x*extent.y*4*history_targets
+	last_update["maximum_history_cache_bytes"] = columns*rows*tile_side*tile_side*channels*history_targets
 
 
 func _submit(source: Image, destinations: Array[MaterialPlane]) -> bool:
@@ -366,8 +439,9 @@ func _submit(source: Image, destinations: Array[MaterialPlane]) -> bool:
 		"coalesced_gpu_blit_calls_saved":0, "uncoalesced_blit_pixels":0}
 	if not _valid_source(source) or not _valid_state() or destinations.is_empty(): return false
 	for plane: MaterialPlane in destinations:
-		if plane not in [current,previous]: return false
+		if plane not in _owned_planes(): return false
 	last_update.copy_destinations = destinations.size()
+	last_update["history_target_rid"] = destinations[0].get_rid().get_id()
 	var changed := PackedInt32Array()
 	var images: Array[Image] = []
 	var bytes: Array[PackedByteArray] = []
@@ -492,7 +566,8 @@ func _submit(source: Image, destinations: Array[MaterialPlane]) -> bool:
 
 
 func resource_identity() -> Array[int]:
-	var ids: Array[int] = [current.get_rid().get_id(),previous.get_rid().get_id()]
+	var ids: Array[int] = []
+	for plane: MaterialPlane in _owned_planes(): ids.append(plane.get_rid().get_id())
 	ids.append(retirement_sink.get_rid().get_id())
 	ids.append(dummy_source.get_rid().get_id())
 	var pools: Array = staging.values()
@@ -505,7 +580,7 @@ func resource_identity() -> Array[int]:
 
 
 func gpu_storage_bytes() -> int:
-	var bytes: int = extent.x*extent.y*4*2+5
+	var bytes: int = extent.x*extent.y*4*history_targets+5
 	var pools: Array = staging.values()
 	if full_staging != null and not pools.has(full_staging): pools.append(full_staging)
 	for pool: StagingPool in pools:

@@ -10,7 +10,7 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
-PR609 publication-remediation candidate: [bounded dirty GPU layers and early
+PR609 publication-remediation candidate: [bounded GPU material publication and early
 physical completion](audits/2026-11-16-physics-freeze-remediation-002.md), the
 [production contract](architecture/rendering-and-gameplay-bridges.md) and
 [Windows evaluation](operations/camera-stack-coherence-acceptance.md).

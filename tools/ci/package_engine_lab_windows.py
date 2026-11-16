@@ -30,7 +30,7 @@ PRESERVED=("native","godot/native_extension","godot/addons/cybersand_native",
            "third_party/godot-runtime.lock.json","godot/third_party/rapier2d.lock.json")
 APPLICATION=("godot/scripts","godot/tests","godot/shaders","godot/project.godot","godot/main.tscn",
              "tools/ci/package_engine_lab_windows.py","tools/ci/run_render_cadence_matrix.py",
-             "tools/ci/run_physics_freeze_comparison.py",
+             "tools/ci/run_physics_freeze_comparison.py","tools/ci/run_camera_coherence_regressions.py",
              "tools/ci/analyze_pose_trace.py","Run-Test-It.ps1","Test It.cmd",
              "docs/operations/camera-stack-coherence-acceptance.md")
 
@@ -418,8 +418,8 @@ def smoke(output,evidence):
         ("cadence-contract",["--headless","--script","res://tests/test_render_cadence_contract.gd"],180,"RENDER_CADENCE_CONTRACT_RESULT"),
         ("cadence-worker",["--headless","--script","res://tests/test_render_cadence_worker.gd"],180,"RENDER_CADENCE_WORKER:"),
         ("ack-deadlines",["--headless","--script","res://tests/test_render_ack_deadlines.gd"],180,"RENDER_ACK_DEADLINES_RESULT"),
-        ("paint-author",["--headless","--script","res://tests/test_paint_editor_workbench.gd"],600,"PAINT_EDITOR_WORKBENCH"),
-        ("paint-reopen",["--headless","--script","res://tests/test_paint_editor_workbench.gd"],240,"PAINT_EDITOR_WORKBENCH"),
+        ("paint-author",["--rendering-method","gl_compatibility","--audio-driver","Dummy","--script","res://tests/test_paint_editor_workbench.gd"],600,"PAINT_EDITOR_WORKBENCH"),
+        ("paint-reopen",["--rendering-method","gl_compatibility","--audio-driver","Dummy","--script","res://tests/test_paint_editor_workbench.gd"],240,"PAINT_EDITOR_WORKBENCH"),
         ("native-camera",["--headless","--script","res://tests/test_native_pixel_camera.gd"],300,"NATIVE_PIXEL_CAMERA_RESULT"),
         ("failure-recovery",["--headless","--script","res://tests/test_workbench_failure_recovery.gd"],300,"WORKBENCH_FAILURE_RECOVERY"),
         ("workbench-input",["--headless","--script","res://tests/test_workbench_input.gd"],240,"WORKBENCH_INPUT"),
@@ -432,6 +432,7 @@ def smoke(output,evidence):
         ("material-tiles",["--headless","--audio-driver","Dummy","--script","res://tests/test_material_tile_publication.gd"],300,"MATERIAL_TILE_PUBLICATION:"),
         ("palette-compile-bounds",["--headless","--audio-driver","Dummy","--script","res://tests/test_palette_shader_compile_bounds.gd"],180,"PALETTE_COMPILE_BOUNDS_RESULT"),
         ("material-tiles-graphical",["--rendering-method","gl_compatibility","--audio-driver","Dummy","--script","res://tests/test_material_tile_publication.gd"],600,"MATERIAL_TILE_PUBLICATION:"),
+        ("material-history-graphical",["--rendering-method","gl_compatibility","--audio-driver","Dummy","--script","res://tests/test_material_history_transaction.gd"],600,"MATERIAL_HISTORY_TRANSACTION:"),
         ("rapier-manual",["--headless","--script","res://tests/test_rapier_manual_step.gd"],180,"Rapier2D manual-step coupling fixture passed"),
         ("terrain-packet",["--headless","--script","res://tests/test_hard_surface_incremental_packet.gd"],180,"HARD_SURFACE_INCREMENTAL"),
         ("full-material-upload",["--headless","--audio-driver","Dummy","--script","res://tests/test_render_full_upload.gd"],180,"RENDER_FULL_UPLOAD:"),
@@ -465,6 +466,11 @@ def smoke(output,evidence):
             env["CYBERSAND_PHYSICS_PUBLICATION_OUTPUT"]=str((evidence/(name+".json")).resolve())
         if name.startswith("material-tiles"):
             env["CYBERSAND_MATERIAL_TILE_OUTPUT"]=str((evidence/(name+".json")).resolve())
+        if name=="material-history-graphical":
+            env["CYBERSAND_MATERIAL_HISTORY_OUTPUT"]=str((evidence/(name+".json")).resolve())
+            env["CYBERSAND_DIAG_MATERIAL_HISTORY_TARGETS"]="2"
+            env["CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS"]="3"
+            env["CYBERSAND_DIAG_MATERIAL_COPY_MODE"]="runs"
         if name=="full-material-upload":
             env["CYBERSAND_FULL_UPLOAD_OUTPUT"]=str((evidence/name/"full-upload.json").resolve())
         group="paint-persistence" if name in {"paint-author","paint-reopen"} else name
@@ -474,7 +480,7 @@ def smoke(output,evidence):
         env["XDG_DATA_HOME"]=env["APPDATA"]
         if name in {"paint-author","paint-reopen"}:
             env["PAINT_REOPEN"]="1" if name=="paint-reopen" else ""
-            env.pop("PAINT_CAPTURE_DIR",None)
+            env["PAINT_CAPTURE_DIR"]=str((evidence/name/"frames").resolve())
         if name.startswith("architecture-") and name!="architecture-contract":
             env["CYBERSAND_ARCHITECTURE_PHASE"]=name.removeprefix("architecture-")
             env["CYBERSAND_ARCHITECTURE_OUTPUT"]=str((evidence/"architecture").resolve())
@@ -493,6 +499,35 @@ def smoke(output,evidence):
             file.write_text(r.stdout,encoding="utf-8")
             need(r.returncode==0 and "SCRIPT ERROR:" not in r.stdout and "SHADER ERROR:" not in r.stdout and
                  (marker is None or marker in r.stdout),"Installed "+name+" failed: "+r.stdout[-3500:])
+            detail={}
+            if name=="material-history-graphical":
+                from run_camera_coherence_regressions import validate_material_history_receipt
+                receipt=evidence/(name+".json")
+                transaction=validate_material_history_receipt(json.loads(receipt.read_text(encoding="utf-8")),r.stdout)
+                need("--headless" not in cmd and "opengl3_angle" in cmd and "ANGLE" in r.stdout,
+                     "Installed material transaction did not execute the requested Windows ANGLE backend")
+                detail={"command":cmd,"graphical":True,"material_history":transaction,
+                        "receipt_sha256":digest(receipt),
+                        "executed_files_sha256":{name:digest(project/name) for name in
+                            ("scripts/main.gd","scripts/blit_material_publisher.gd","tests/test_material_history_transaction.gd")}}
+            if name in {"paint-author","paint-reopen"}:
+                completions=[line for line in r.stdout.splitlines() if line.startswith("PAINT_EDITOR_WORKBENCH ")]
+                need(bool(completions),"Installed graphical PAINT completion missing")
+                paint=json.loads(completions[-1].split(" ",1)[1])
+                need(not paint["failures"] and paint["checks"]>0 and
+                     paint["reopen"]==("1" if name=="paint-reopen" else ""),
+                     "Installed graphical PAINT author/reopen phase did not complete")
+                need("--headless" not in cmd and "opengl3_angle" in cmd and "ANGLE" in r.stdout,
+                     "Installed PAINT pair did not execute the requested graphical Windows backend")
+                frames=[]
+                if name=="paint-author":
+                    for label in ("paint001-mixed-stamp-preview","paint001-mounted-editor"):
+                        frame=evidence/name/"frames"/(label+".png")
+                        need(frame.is_file() and frame.read_bytes().startswith(b"\x89PNG\r\n\x1a\n"),
+                             "Installed PAINT framebuffer missing: "+label)
+                        frames.append({"path":str(frame),"sha256":digest(frame)})
+                detail={"command":cmd,"graphical":True,"paint_completion":paint,"framebuffers":frames,
+                        "test_sha256":digest(project/"tests/test_paint_editor_workbench.gd")}
             if name=="full-material-upload":
                 upload=json.loads((evidence/name/"full-upload.json").read_text())
                 need(upload["source_sha"]==SOURCE and upload["failures"]==0 and upload["assertions"]>0,
@@ -505,16 +540,30 @@ def smoke(output,evidence):
                 folder=evidence/name
                 pacing=json.loads((folder/"physics-pacing.json").read_text())
                 need(pacing.get("schema")=="workbench-physics-pacing-v1" and
-                     not pacing["failures"] and pacing["checks"]>0 and len(pacing["phases"])==5,
-                     "Installed production physics pacing did not complete all five phases")
+                     not pacing["failures"] and pacing["checks"]>0 and len(pacing["phases"])==6,
+                     "Installed production physics pacing did not complete all six phases")
                 need(all(row["wait_native_sample"] and row["sample_wake"] for row in pacing["phases"]),
                      "Production pacing phases did not retain default native coupling")
                 need(pacing["source_identity"]["source_sha"]==SOURCE and pacing["completed_steps"],
                      "Production pacing source/completed physics evidence missing")
-                recovery=pacing["phases"][-1]
+                phase_map={row["label"]:row for row in pacing["phases"]}
+                need(set(phase_map)=={"interactive-default-60","render-30-physics-120","fire-on-contact",
+                                     "fire-off-flight","fire-off-recovery-contact","live-erasing-flight"},
+                     "Installed production pacing phase identities missing or duplicated")
+                recovery=phase_map["fire-off-recovery-contact"]
                 need(recovery["required_contact_slot"]==0 and recovery["required_contact_observations"]>0 and
                      recovery["contact_recovery"]["reason"]=="contact" and recovery["completed_steps"]<=360,
                      "Selected Needle did not complete bounded physical contact recovery")
+                live=[row["receipt"] for row in pacing["observations"] if row["label"]=="live-erasing-flight"]
+                need(len(live)==1 and not live[0]["limit_reached"] and
+                     48<=phase_map["live-erasing-flight"]["completed_steps"]<=90 and
+                     [edit["footprint_cells"] for edit in live[0]["edits"]]==[13,1793] and
+                     all(edit.get("publication") and len(edit.get("queue_receipts",[]))==1
+                         for edit in live[0]["edits"]),
+                     "Ordinary small/large live-erasing input, native progress and publication evidence missing")
+                if name=="physics-pacing-graphical":
+                    need(live[0].get("gpu_history_readback_after_phase"),
+                         "Installed live erasing did not verify actual current/previous GPU history")
                 need((folder/"physics-pacing-poses.jsonl").stat().st_size>0,
                      "Original production physics pacing trace missing")
             if name=="cadence-contract-graphical":
@@ -528,7 +577,7 @@ def smoke(output,evidence):
                          "Graphical contract capture hash drift")
                 for arm in ("legacy","repair"):
                     need((folder/(arm+"-poses.jsonl")).stat().st_size>0,"Missing original contract trace: "+arm)
-            report.append({"name":name,"log_sha256":digest(file),"exit":r.returncode,"passed":True})
+            report.append({"name":name,"log_sha256":digest(file),"exit":r.returncode,"passed":True,**detail})
             print("COHERENCE_SMOKE_PASS",name,flush=True)
         except (RuntimeError,OSError,ValueError,subprocess.TimeoutExpired) as error:
             if isinstance(error,subprocess.TimeoutExpired):

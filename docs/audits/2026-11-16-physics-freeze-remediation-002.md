@@ -483,6 +483,134 @@ both the matched prefix and whole capture are required. All stalls and failed
 attempts remain in the raw evidence. Physical and frame tails determine whether
 any configuration advances; shorter staging calls alone cannot qualify it.
 
+Source `e519aadaddd21df59a19dedec99de8c0542ed62f`, tree
+`d805b9d4c8e5831377d4e9c8129e04868a41d8c7`, completed
+[Windows run 43860751240](https://github.com/techrote/cybersand/actions/runs/43860751240).
+The actual ANGLE gate passed 1,649 assertions, all 28 recorded physical-state
+and native-association pairs were exact, and resource/copy checks passed with
+zero observer drops or fallback. Independent disposition is **retain ring3 as
+a component candidate; reject this source as a completed freeze repair**.
+
+| Order / mode | Native / Rapier / Main Hz | Physical p95 / p99 / max ms | Gaps ≥100 / ≥250 ms | Frame p95 ms |
+| --- | --- | --- | --- | ---: |
+| 0 full | 9.913 / 9.885 / 7.612 | 137.180 / 218.980 / 232.060 | 99 / 0 | 210.018 |
+| 1 ring1 | 10.564 / 10.551 / 7.648 | 223.284 / 246.278 / 284.072 | 58 / 2 | 259.020 |
+| 2 ring2 | 11.028 / 11.071 / 7.887 | 219.067 / 248.556 / 349.756 | 51 / 2 | 306.881 |
+| 3 ring3 | 10.173 / 10.222 / 7.927 | 135.446 / 209.469 / 344.515 | 95 / 1 | 227.599 |
+| 4 ring3 | 10.584 / 10.596 / 7.841 | 139.456 / 262.347 / 340.256 | 93 / 2 | 220.503 |
+| 5 ring2 | 11.321 / 11.331 / 7.677 | 209.021 / 257.725 / 332.001 | 50 / 5 | 256.226 |
+| 6 ring1 | 9.649 / 9.627 / 7.819 | 218.595 / 249.948 / 255.961 | 72 / 2 | 258.671 |
+| 7 full | 9.799 / 9.784 / 7.535 | 132.321 / 144.303 / 155.437 | 106 / 0 | 147.028 |
+
+Every row uses the exact first 144 physical completions and 143 gaps. There are
+no ≥1000 ms gaps. The last full control's unmatched extra step 145 remains in
+its whole capture. The host is an AMD EPYC 7763 VM with four logical processors,
+native Auto capacity four, and Windows software ANGLE; these are not NVIDIA data.
+
+Ring3's upload p95 falls to 5.609/5.745 ms from 120.730/116.071 ms in the full
+controls; Main callback p95 falls to 7.217/7.265 ms from 119.271/117.354 ms.
+All sparse capacity-16 staging calls stay at or below 0.100 ms. Two forward
+dense calls still take 109.351/134.118 ms; reverse ring3 has none ≥50 ms.
+Sparse copy counts fall from 976 to 302 and 861 to 254 with unchanged copied
+pixel area. These are demonstrated submitted-work and elapsed-call changes,
+not an isolated coalescing timing effect or measured GPU execution.
+
+Crucially, same-process-frame joins show Main-end to `frame_post_draw` median
+95.368/95.552 ms in ring3 versus 8.015/7.578 ms in full controls; ring3 p95 is
+112.686/114.007 ms and maximum 326.546/319.122 ms. Much of the observed delay
+appears later in the frame. This interval includes engine/render work, other
+callbacks, driver waits and OS scheduling; the marker is not a GPU fence or
+scanout. Short publication calls therefore do not establish end-to-end repair.
+
+The ring3 physical mailbox becomes ready about 0.45 ms after native completion
+(p95 about 0.53 ms). Ready-mailbox to physics-admission p95 remains
+101.703/100.829 ms, with virtually no intervening native-sample holds. Across
+all eight arms, only two such holds occur after the complete mailbox timestamp,
+6/8 microseconds later, within the snapshot-read/publication race. Existing
+evidence supports missing Main callback opportunities, not a stale gate that
+could safely be disabled. Rare preceding graphical exchanges still delay the
+next native tick, including one 86.711 ms overlap in ring3; they do not explain
+the recurring post-Main interval. No exclusive CPU/GPU attribution is made.
+
+The authenticated raw artifact is `14223264355`, 11,363,683 bytes, SHA256
+`8102aed382bfcebed69cfd8328a970dfc88c9d70b46d8f0c31b93c1ef366c867`.
+Independent review retains full distributions, hold reasons, all extra and
+superseded publications, frame-marker joins and exact physical-state comparisons.
+
+### Manual texture-wrapper history regression
+
+Additional review found that a manual retained-wrapper update marked both
+targets dirty before submission, but successful submission cleared the changed
+target again. Its later sparse reuse could retain a manually changed texel
+outside the new patch. An exact e519 GPU reproducer retained RG `[77,99]` where
+the authoritative image required `[0,0]`. Ordinary Workbench publication does
+not call this compatibility route, so the matched timing captures remain valid.
+
+The narrow reviewed fix re-marks every owned target dirty after the manual
+submission. It changes no Main CPU bytes, content certificate, revision or ACK.
+The identical R8/RG8 retained-current/previous regression is 100 checks with
+18 failures before the fix and 100/0 after it, including five later sparse
+publications. The fixed full Linux graphical gate is 1,753/0, with all eight
+original appearance pairs exact. The negative and fixed source/receipt hashes
+are retained separately; final integration requires this repair and exact-source CI.
+
+## Controlled spare-history experiment
+
+The e519 result leaves a specific hypothesis to test: writing the formerly
+previous target may encounter outstanding work that samples both visible
+histories. `CYBERSAND_DIAG_MATERIAL_HISTORY_TARGETS=3` adds one bounded spare
+target while keeping exactly two visible histories. Two targets remain the
+default. The experiment holds the independent staging ring at three resources
+and copy mode at exact horizontal runs; its order is full/H2/H3/H3/H2/full.
+It requires actual Windows ANGLE material and transaction gates before timing,
+then all fifteen exact 144-step physical-state/association comparisons.
+
+Preparation validates every input and owned target and writes the destination;
+one bounded token records the original roles and destination. Commit accepts
+only that publisher's outstanding sequence and rotates current, previous and,
+when present, spare. Main commits and binds the histories before advancing the
+content certificates and upload ACK, with no intervening yield. A rejected
+transaction reconstructs the full fallback from the new CPU image and the old
+current certificate. The token retains its planes, but plane ownership is weak
+and does not keep the publisher or staging resources alive. The reviewed manual
+wrapper invalidation repair above is included.
+
+The source-bound external Linux GPU gates passed 223 transaction assertions,
+2,017 material assertions with two targets and 2,063 with three; the headless
+unsupported-backend gate passed 19 assertions. Each of the eight simultaneous
+original full/blit shader pairs matched exactly. The unchanged neon backdrop
+uses engine TIME, so its hashes across separate processes are not an appearance
+equivalence criterion. These are correctness gates, not performance results.
+
+For a 2048² RG8 World, three staging resources per capacity with two history
+targets own 67,076,101 bytes of texture payload; the spare increases this to
+83,853,317. Maximum logical CPU tile-cache content grows from 16,777,216 to
+25,165,824 bytes. Each destination accumulates its own dirty union, so the spare
+can also increase uploaded tiles and capacity. The comparison retains this
+additional work, all physical/frame tails and the existing Main-end-to-draw
+marker spans. A shorter publication call alone cannot qualify this experiment.
+
+The combined ordinary-gameplay regression also exercises small and large live
+erasures through `_world_input`, its real screen-to-World mapping and the native
+brush queue while the Needle is airborne. Positive PAINT authoring retains its
+existing paused-only policy. The test uses ordinary reverse thrust and level
+assist, a four-sample airborne precondition, exact +6/+18 physical-step input
+triggers, and the unchanged 90-step/60-second bounds. Both GPU history targets
+must match their CPU content certificates after live publication. Separate
+checks retain dense contact, Fire ON/OFF, Follow/Free, pause/single-step
+and two-body feedback checks. This 1024² functional case does not replace the
+matched 2048² performance workload.
+
+The first combined H2 attempt failed five live-edit assertions: its prior input
+was forward body-oriented thrust plus turning, not Cartesian downward motion.
+Airborne flight began only 76 steps into the bounded phase, so the second trigger
+fell beyond the existing limit. The unchanged failed capture is retained. The
+input-only reverse-thrust correction passed 1,015 checks with H2 and 1,003 with
+H3, all with zero failures and unchanged runtime hashes. Both checked edit
+windows span 57 completed steps; phase summaries separately record 58 and 57
+because their final observation boundaries differ. These results establish the
+tested gameplay paths and material/terrain validity, not smooth performance.
+
 ## Final qualification and evidence interpretation
 
 `run_physics_freeze_comparison.py` extracts immutable c1ad source, authenticates
