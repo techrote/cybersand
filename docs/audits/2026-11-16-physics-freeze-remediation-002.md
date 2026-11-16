@@ -385,6 +385,25 @@ raw completions, startup records, callback/frame/physical tails and unsuccessful
 attempts remain available. Adoption requires independent review of those tails
 and final exact-source application qualification.
 
+The first array checkpoint, `5248469b6472f9a039e9bfa5a2ae0d2dc4fdca75`
+(tree `79c914fe1f48d9594bbf19440862d388a58f2e54`), ran the actual Windows/ANGLE
+GPU test in [run 43852642559](https://github.com/techrote/cybersand/actions/runs/43852642559):
+876 assertions, zero failures, all eight appearance hashes exact, both logical
+history formats, all four pool/extent cases, four packed-height cases and the
+8 MiB dense refresh. Independent review matched all 607 executed script/shader
+hashes to that exact source and verified the process exit, marker and log hash.
+The workflow then **failed in report validation before any timing arm ran**.
+The receipt is UTF-8 without a BOM; Python's Windows default cp1252 decoding
+changed its `2048²` label to `2048Â²`, so the exact dense-refresh label check
+refused otherwise valid evidence. The successor changes exactly four text reads
+to explicit UTF-8, retaining every acceptance condition. Replaying the original
+and corrected validators against untouched Windows receipts and reconstructed
+exact source hashes reproduces failure then success. No runtime change is
+included in that repair. The failed-run artifact is `14217549415`, SHA256
+`68baa789175676d030e9cb882c6a6b017a7ae8756e3a618616ae271760aea5fd`.
+This checkpoint supplies actual GPU correctness evidence, no physical timing
+result, and no performance or physical-hardware approval.
+
 ## Final qualification and evidence interpretation
 
 `run_physics_freeze_comparison.py` extracts immutable c1ad source, authenticates

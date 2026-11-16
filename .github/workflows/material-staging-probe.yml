@@ -82,7 +82,7 @@ jobs:
               with (folder/'import.log').open('w',encoding='utf-8') as log:
                   result=subprocess.run(command,stdout=log,stderr=subprocess.STDOUT,timeout=240)
               receipt['exit_code']=result.returncode
-              text=(folder/'import.log').read_text(errors='replace')
+              text=(folder/'import.log').read_text(encoding='utf-8',errors='replace')
               if result.returncode!=0 or re.search(r'SCRIPT ERROR:|SHADER ERROR:|Parse Error:|Failed to load script|Failed loading resource:',text):
                   raise RuntimeError('Project import failed; inspect retained import.log')
               receipt['complete']=True
@@ -104,10 +104,10 @@ jobs:
           sys.path.insert(0,'tools/ci')
           from run_physics_freeze_comparison import need
           folder=pathlib.Path('evidence/material-gpu-correctness')
-          summary=json.loads((folder/'summary.json').read_text())
+          summary=json.loads((folder/'summary.json').read_text(encoding='utf-8'))
           casefolder=folder/'material-tiles-graphical'
-          report=json.loads((casefolder/'material-tiles.json').read_text())
-          text=(casefolder/'console.log').read_text(errors='replace')
+          report=json.loads((casefolder/'material-tiles.json').read_text(encoding='utf-8'))
+          text=(casefolder/'console.log').read_text(encoding='utf-8',errors='replace')
           need(summary.get('complete') is True and summary.get('source_sha')==os.environ['GITHUB_SHA'],'Wrong or incomplete GPU gate source')
           cases=summary.get('cases',[])
           need(len(cases)==1 and cases[0].get('name')=='material-tiles-graphical' and cases[0].get('graphical') is True,'Wrong GPU gate selection')
