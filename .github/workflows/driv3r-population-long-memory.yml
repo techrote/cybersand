@@ -1,0 +1,63 @@
+name: DRIV3R long-gap cue-grammar memory research (P12)
+on:
+  push:
+    branches:
+      - research/570-population-game-policy-001
+    paths:
+      - 'experiments/driv3r/training/population/population_p12.py'
+      - 'experiments/driv3r/training/population/test_population_p12.py'
+      - '.github/workflows/driv3r-population-long-memory.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  p12-cpu-memory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pinned CPU dependencies
+        run: |
+          python -m pip install --disable-pip-version-check numpy==2.3.5
+          python -m pip install --disable-pip-version-check torch==2.7.1 --index-url https://download.pytorch.org/whl/cpu
+      - name: Test P12 host-legality, information and optimizer guards
+        env:
+          OPENBLAS_NUM_THREADS: '1'
+          OMP_NUM_THREADS: '1'
+          MKL_NUM_THREADS: '1'
+        run: |
+          python -m unittest discover -s experiments/driv3r/training/population -p test_population_p12.py -v
+      - name: Train matched P12 cohorts including all negative controls
+        env:
+          OPENBLAS_NUM_THREADS: '1'
+          OMP_NUM_THREADS: '1'
+          MKL_NUM_THREADS: '1'
+        run: |
+          mkdir -p /tmp/population-p12-evidence/source
+          git rev-parse HEAD > /tmp/population-p12-evidence/source/head.txt
+          python --version > /tmp/population-p12-evidence/source/python-version.txt 2>&1
+          python -m pip freeze > /tmp/population-p12-evidence/source/pip-freeze.txt
+          for f in population_lab.py population_p1.py population_p10.py population_p11.py population_p12.py test_population_p12.py P12_REPORT.md; do
+            cp "experiments/driv3r/training/population/$f" /tmp/population-p12-evidence/source/
+          done
+          for seed in 649 650; do
+            python experiments/driv3r/training/population/population_p12.py \
+              --output "/tmp/population-p12-evidence/p12_${seed}" \
+              --seed "${seed}" --train-worlds 48 --validation-worlds 16 \
+              --heldout-worlds 24 --epochs 16 --width 40 \
+              > "/tmp/population-p12-evidence/p12_${seed}-stdout.txt"
+            (cd "/tmp/population-p12-evidence/p12_${seed}" && sha256sum -c manifest.sha256)
+          done
+          (cd /tmp/population-p12-evidence && find . -type f ! -name OVERALL.sha256 -print0 | sort -z | xargs -0 sha256sum > OVERALL.sha256)
+          (cd /tmp/population-p12-evidence && sha256sum -c OVERALL.sha256)
+      - name: Publish immutable source-matched checkpoints and original traces
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: population-p12-cpu-memory-${{ github.sha }}
+          path: /tmp/population-p12-evidence/
+          if-no-files-found: warn
+          retention-days: 90

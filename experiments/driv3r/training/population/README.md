@@ -362,3 +362,11 @@ TRAIN, validation and held-out world seeds is tested; dynamic student
 trajectories are never fed back into optimization. Do not promote small
 cross-cohort reward differences to genuine game or artistic superiority.
 **Draft/HOLD; no game-side edits, no merge or Ready promotion.**
+
+## P12 — Withheld cue grammar and long-gap memory (local research checkpoint)
+
+P12 extends P11's short, supervised order probe into **six-branch-action paired histories followed by 9–17 common legal distractor actions**. Counterfactual worlds have identical painted/retrace geometry, host-menu observations and final eight history tokens, but demand opposite E/W decisions. The model is trained on *only next-action cross entropy* (no explicit auxiliary order classification). Its GRU sees 32 action tokens; matched last-eight, shuffled-order and state-only negative controls cannot distinguish the pairs.
+
+Three cue grammars use the same E/W/N survey vocabulary; the N-first grammar is held out, as is the longest distractor chain. Two local scratch-trained cohorts (649 and 650, 4 models each, 4,608 AdamW updates combined) reached **100%** in-distribution full-history accuracy and **50%** for all information-blind controls. On the unseen N-first grammar, cohort 649 reached **100%**, but cohort 650 fell to **50%**. This inconsistent zero-shot grammar transfer is an important negative finding: do not claim reliable compositional generalization. All host-issued actions were legal by masking.
+
+See `P12_REPORT.md` for cohort-level measurements and limitations. Run `python -m unittest discover -s experiments/driv3r/training/population -p test_population_p12.py -v` and the opt-in `.github/workflows/driv3r-population-long-memory.yml`. These are artificial single-decision synthetic memory probes, **not** native CyberSand, full missions, or pretrained SLMs. Keep Draft/HOLD; no game integration and no merge.
