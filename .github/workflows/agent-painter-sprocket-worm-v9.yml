@@ -2,7 +2,7 @@ name: SPROCKET WORM-001 W9 three-wave auxiliary training and pinned-root fusion
 on:
   push:
     branches: [codex/agent-painter-sprocket-568]
-    paths: [experiments/agent_painter/lanes/sprocket/worm-request-v9.json]
+    paths: [experiments/agent_painter/lanes/sprocket/worm-request-v9-r1.json]
 permissions:
   contents: read
 concurrency:
@@ -32,9 +32,9 @@ jobs:
           python3 - <<'PY'
           import json,os,subprocess
           from pathlib import Path
-          req=json.loads(Path("experiments/agent_painter/lanes/sprocket/worm-request-v9.json").read_text())
+          req=json.loads(Path("experiments/agent_painter/lanes/sprocket/worm-request-v9-r1.json").read_text())
           expected={"schema":"cybersand.worm.sprocket-aux-geom/9",
-            "experiment":"W9-three-stage-geometric-residual-frozen-root",
+            "experiment":"W9-three-stage-geometric-residual-frozen-root-r1",
             "model":"kandivault/sprocket-500m",
             "revision":"eb157d4ddddc4619e661d4a2426bb2dd000fc668",
             "subfolder":"","eos_id":5,
@@ -75,6 +75,13 @@ jobs:
           "$RUNNER_TEMP/w9-venv/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
           "$RUNNER_TEMP/w9-venv/bin/python" -m pip install -r experiments/agent_painter/training/requirements.lock
           "$RUNNER_TEMP/w9-venv/bin/python" -m pip check
+          "$RUNNER_TEMP/w9-venv/bin/python" - <<'PY'
+          import sys
+          sys.path.insert(0,"experiments/agent_painter/lanes/sprocket")
+          import torch, worm_train_v9 as w9
+          assert tuple(w9.model_class(torch)()(torch.zeros((2,142))).shape)==(2,6)
+          print("W9 real torch matrix shape smoke PASS")
+          PY
           "$RUNNER_TEMP/w9-venv/bin/python" -m pip freeze --all > evidence/w9/environment.txt
       - name: Download and verify exact pinned root Instruct model
         run: |
