@@ -1,0 +1,100 @@
+name: SPROCKET WORM-001 W9 three-wave auxiliary training and pinned-root fusion
+on:
+  push:
+    branches: [codex/agent-painter-sprocket-568]
+    paths: [experiments/agent_painter/lanes/sprocket/worm-request-v9.json]
+permissions:
+  contents: read
+concurrency:
+  group: sprocket-worm-v9-${{ github.sha }}
+  cancel-in-progress: false
+jobs:
+  train-w9:
+    name: W9 real 360-step residual-head optimizer and pinned root model W0 rollouts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    env:
+      ATEN_CPU_CAPABILITY: default
+      MKL_CBWR: COMPATIBLE
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      OMP_DYNAMIC: 'FALSE'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Verify immutable one-shot W9 ownership and experiment lease
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/w9
+          python3 - <<'PY'
+          import json,os,subprocess
+          from pathlib import Path
+          req=json.loads(Path("experiments/agent_painter/lanes/sprocket/worm-request-v9.json").read_text())
+          expected={"schema":"cybersand.worm.sprocket-aux-geom/9",
+            "experiment":"W9-three-stage-geometric-residual-frozen-root",
+            "model":"kandivault/sprocket-500m",
+            "revision":"eb157d4ddddc4619e661d4a2426bb2dd000fc668",
+            "subfolder":"","eos_id":5,
+            "w0_commit":"4bb9d6e1d0d0d78183f87d1e3c29648edafacf61",
+            "support_commit":"2b6534ac21542805f4bda123f67e9624d21e39d7",
+            "real_aux_head_optimizer_updates":360,"root_lora_updates":0,
+            "fused_root_forward_required":True,"same_seed_root_vs_fused":1601,
+            "synthetic_not_native":True,"sealed_final_forbidden":True,"draft_hold":True}
+          if req != expected: raise SystemExit("unapproved W9 request")
+          if os.getenv("GITHUB_REF")!="refs/heads/codex/agent-painter-sprocket-568": raise SystemExit("wrong lane")
+          sha=subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip()
+          Path("evidence/w9/lease.json").write_text(json.dumps({
+            "source_sha":sha,"request":req,"run_id":os.getenv("GITHUB_RUN_ID"),
+            "attempt":os.getenv("GITHUB_RUN_ATTEMPT"),"one_process_one_vm":True},indent=2)+"\n")
+          print("W9 immutable one-shot lease",sha)
+          PY
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 -m py_compile experiments/agent_painter/lanes/sprocket/worm_train_v9.py experiments/agent_painter/lanes/sprocket/test_worm_train_v9.py
+      - name: Fetch exact shared W0 and support as immutable READ-ONLY test dependencies
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/worm/common" "$RUNNER_TEMP/worm/support_sprocket"
+          git fetch --no-tags --depth=1 origin 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          test "$(git rev-parse FETCH_HEAD)" = 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          git show 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61:experiments/agent_painter/worm/common/worm.py > "$RUNNER_TEMP/worm/common/worm.py"
+          test "$(git hash-object "$RUNNER_TEMP/worm/common/worm.py")" = 8979b6f0296e81051194bacc907992d38e006605
+          git fetch --no-tags --depth=1 origin 2b6534ac21542805f4bda123f67e9624d21e39d7
+          test "$(git rev-parse FETCH_HEAD)" = 2b6534ac21542805f4bda123f67e9624d21e39d7
+          git show 2b6534ac21542805f4bda123f67e9624d21e39d7:experiments/agent_painter/worm/support_sprocket/curriculum.py > "$RUNNER_TEMP/worm/support_sprocket/curriculum.py"
+          test "$(git hash-object "$RUNNER_TEMP/worm/support_sprocket/curriculum.py")" = 4f879502921e26d526a8976f79954ffa636c1d4a
+          cp "$RUNNER_TEMP/worm/common/worm.py" evidence/w9/source-pinned-W0.py
+          cp "$RUNNER_TEMP/worm/support_sprocket/curriculum.py" evidence/w9/source-pinned-support.py
+          python3 experiments/agent_painter/lanes/sprocket/test_worm_train_v9.py --w0 "$RUNNER_TEMP/worm/common/worm.py" --support "$RUNNER_TEMP/worm/support_sprocket/curriculum.py"
+      - name: Install reviewed pinned CPU-only model stack
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/w9-venv"
+          "$RUNNER_TEMP/w9-venv/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/w9-venv/bin/python" -m pip install -r experiments/agent_painter/training/requirements.lock
+          "$RUNNER_TEMP/w9-venv/bin/python" -m pip check
+          "$RUNNER_TEMP/w9-venv/bin/python" -m pip freeze --all > evidence/w9/environment.txt
+      - name: Download and verify exact pinned root Instruct model
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 900s "$RUNNER_TEMP/w9-venv/bin/python" experiments/agent_painter/training/download_model.py --profile sprocket --output "$RUNNER_TEMP/w9-model"
+          cp "$RUNNER_TEMP/w9-model/download_receipt.json" evidence/w9/model-download.json
+      - name: Genuine 3-wave auxiliary-head optimizer and fused root neural W0 PNGs
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 3200s "$RUNNER_TEMP/w9-venv/bin/python" experiments/agent_painter/lanes/sprocket/worm_train_v9.py --model "$RUNNER_TEMP/w9-model" --w0 "$RUNNER_TEMP/worm/common/worm.py" --support "$RUNNER_TEMP/worm/support_sprocket/curriculum.py" --output evidence/w9/campaign
+      - name: Hash all completed and partially failed original evidence
+        if: always()
+        run: |
+          set -euo pipefail
+          df -h > evidence/w9/disk-after.txt
+          (cd evidence/w9 && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum) > evidence/w9/SHA256SUMS.txt
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sprocket-worm-v9-${{ github.sha }}
+          path: evidence/w9/
+          if-no-files-found: warn
+          retention-days: 90
