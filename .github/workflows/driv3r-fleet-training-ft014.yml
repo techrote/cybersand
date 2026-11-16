@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   train-sidecar:
-    name: FT-014 synthetic game-policy STOP gate seed ${{{ matrix.seed }} cohort ${{{ matrix.cohort }}
+    name: FT-014 synthetic game-policy STOP gate seed ${{ matrix.seed }} cohort ${{ matrix.cohort }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     strategy:
@@ -26,7 +26,7 @@ jobs:
         seed: [9401, 9403]
         cohort: [navigation, art]
     concurrency:
-      group: driv3r-ft014-${{{ github.ref }}-${{{ matrix.seed }}-${{{ matrix.cohort }}
+      group: driv3r-ft014-${{ github.ref }}-${{ matrix.seed }}-${{ matrix.cohort }}
       cancel-in-progress: false
     env:
       OMP_NUM_THREADS: "1"
@@ -61,10 +61,10 @@ jobs:
           mkdir -p "$RUNNER_TEMP/ft014-original" "$RUNNER_TEMP/ft003-original"
           git rev-parse HEAD > "$RUNNER_TEMP/ft014-original/exact-head.txt"
           sha256sum experiments/driv3r/fleet_training/{ft014_stop_sidecar.py,request_ft014.json,test_ft014_stop_sidecar.py} > "$RUNNER_TEMP/ft014-original/owned-source.sha256"
-          printf 'FT014 run=%s attempt=%s job=%s seed=%s cohort=%s head=%s\n' "$GITHUB_RUN_ID" "$GITHUB_RUN_ATTEMPT" "$GITHUB_JOB" "${{{ matrix.seed }}" "${{{ matrix.cohort }}" "$GITHUB_SHA" > "$RUNNER_TEMP/ft014-original/lease.txt"
+          printf 'FT014 run=%s attempt=%s job=%s seed=%s cohort=%s head=%s\n' "$GITHUB_RUN_ID" "$GITHUB_RUN_ATTEMPT" "$GITHUB_JOB" "${{ matrix.seed }}" "${{ matrix.cohort }}" "$GITHUB_SHA" > "$RUNNER_TEMP/ft014-original/lease.txt"
       - name: Obtain immutable upstream trained FT-003 model archive
         env:
-          GH_TOKEN: ${{{ github.token }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           curl --fail --silent --show-error --location --retry 2 -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" -o "$RUNNER_TEMP/ft003-original.zip" "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14194214028/zip"
@@ -74,12 +74,12 @@ jobs:
       - name: Train two matched STOP heads for three independent frozen policies and evaluate OOD
         run: |
           set -euo pipefail
-          python experiments/driv3r/fleet_training/ft014_stop_sidecar.py --request experiments/driv3r/fleet_training/request_ft014.json --upstream upstream --ft003 "$RUNNER_TEMP/ft003-original" --output "$RUNNER_TEMP/ft014-original/run" --seed ${{{ matrix.seed }} --cohort ${{{ matrix.cohort }}
+          python experiments/driv3r/fleet_training/ft014_stop_sidecar.py --request experiments/driv3r/fleet_training/request_ft014.json --upstream upstream --ft003 "$RUNNER_TEMP/ft003-original" --output "$RUNNER_TEMP/ft014-original/run" --seed ${{ matrix.seed }} --cohort ${{ matrix.cohort }}
       - name: Preserve gate weights, legal-action receipts, galleries and failed jobs
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: ft014-${{{ matrix.seed }}-${{{ matrix.cohort }}-${{{ github.run_id }}
-          path: ${{{ runner.temp }}/ft014-original/
+          name: ft014-${{ matrix.seed }}-${{ matrix.cohort }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/ft014-original/
           if-no-files-found: warn
           retention-days: 14
