@@ -302,6 +302,26 @@ jobs:
             done
             test -s "$RUN_DIR/return-budget-seed${seed}/SHA256SUMS.json"
           done
+      - name: Variable-depth budget/depth generalization (matched DEV-only actions)
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ '${{ inputs.mode || 'full' }}' == 'smoke' ]]; then
+            updates=1; quick=--quick
+          else
+            updates=30; quick=
+          fi
+          for seed in 596 597; do
+            python -m experiments.driv3r.training.long_horizon.return_generalization_lab \
+              --out "$RUN_DIR/return-gen-seed${seed}" --seed "$seed" \
+              --updates "$updates" $quick
+            python -m experiments.driv3r.training.long_horizon.return_generalization_lab \
+              --verify "$RUN_DIR/return-gen-seed${seed}"
+            for arm in blind budget_only raw_counters engineered; do
+              test -s "$RUN_DIR/return-gen-seed${seed}/${arm}-seed${seed}.npz"
+            done
+            test -s "$RUN_DIR/return-gen-seed${seed}/SHA256SUMS.json"
+          done
       - name: Store checkpoint, original traces, galleries, metrics and failure evidence
         if: always()
         uses: actions/upload-artifact@v4
