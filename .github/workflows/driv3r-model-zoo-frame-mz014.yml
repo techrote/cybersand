@@ -90,6 +90,16 @@ jobs:
           assert all(v["episodes"]==12 for a in s.values() for v in a.values())
           print("Independent source, checkpoint, untransformed baseline and frame response PASS")
           PY
+      - name: Render original frozen-controller trajectories
+        run: |
+          python -m experiments.driv3r.model_zoo.frame_audit_mz014.render "$RUNNER_TEMP/mz014"
+          python - <<'PY'
+          import os,xml.etree.ElementTree as ET
+          from pathlib import Path
+          svg=Path(os.environ["RUNNER_TEMP"],"mz014","trajectories.svg")
+          assert ET.parse(svg).getroot().tag.endswith("svg")
+          print("Original trajectory gallery PASS")
+          PY
       - name: Preserve original metrics, research report, source and provenance
         if: always()
         uses: actions/upload-artifact@v4
