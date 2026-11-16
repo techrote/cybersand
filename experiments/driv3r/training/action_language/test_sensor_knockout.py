@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 from sensor_knockout import SEED,PANELS,evaluate,audit
-from material_corridors import ARMS,KINDS,Model,episode
+from material_corridors import ARMS,KINDS,Model,episode,run
 
 class SensorKnockoutTests(unittest.TestCase):
     def test_frozen_weight_sensor_toggle_changes_only_observation(self):
@@ -19,14 +19,15 @@ class SensorKnockoutTests(unittest.TestCase):
         self.assertEqual(len(ARMS),6)
         self.assertEqual(len(KINDS),2)
     def test_evaluate_and_audit_tampering(self):
-        # Uses the real frozen GAL-010 checkpoint archive, no retraining.
-        source=Path(__file__).resolve().parents[1]/'results'/'checkpoints'
-        if not source.exists():self.skipTest('GAL-010 checkpoint archive not present')
+        # Generate disposable mini-checkpoints: CI must not depend on local artifacts.
         with tempfile.TemporaryDirectory() as path:
-            m=evaluate(source,path,n=5)
-            self.assertEqual(audit(source,path)['episodes'],6*2*3*5)
+            run(Path(path)/'baseline',train_worlds=4,eval_worlds=4,gallery=0)
+            source=Path(path)/'baseline'/'checkpoints'
+            out=Path(path)/'knockout'
+            m=evaluate(source,out,n=5)
+            self.assertEqual(audit(source,out)['episodes'],6*2*3*5)
             self.assertEqual(len(m['paired']),6*2*2)
-            f=Path(path)/'receipts.json';f.write_text(f.read_text()+' ')
-            with self.assertRaises(ValueError):audit(source,path)
+            f=out/'receipts.json';f.write_text(f.read_text()+' ')
+            with self.assertRaises(ValueError):audit(source,out)
 
 if __name__=='__main__':unittest.main()
