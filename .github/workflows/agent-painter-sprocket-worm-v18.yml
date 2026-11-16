@@ -1,0 +1,89 @@
+name: SPROCKET WORM-001 W18 external material/protected-mask policy trainer
+on:
+  push:
+    branches: [codex/agent-painter-sprocket-568]
+    paths: [experiments/agent_painter/lanes/sprocket/worm-request-v18.json]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: sprocket-worm-v18-${{ github.sha }}
+  cancel-in-progress: false
+jobs:
+  experiment:
+    name: W18 320 genuine CPU updates and 63 original synthetic-material paintings
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      ATEN_CPU_CAPABILITY: default
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Verify immutable source, owner boundary, and one-host lease
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/w18
+          python3 - <<'PY'
+          import json,os,subprocess
+          from pathlib import Path
+          r=json.loads(Path('experiments/agent_painter/lanes/sprocket/worm-request-v18.json').read_text())
+          assert r['schema']=='cybersand.worm.sprocket-synthetic-material-overlay/18'
+          assert r['root']=='kandivault/sprocket-500m'
+          assert r['revision']=='eb157d4ddddc4619e661d4a2426bb2dd000fc668'
+          assert r['eos']==5 and r['real_aux_adamw_steps']==320
+          assert r['root_optimizer_steps']==r['root_forwards']==r['lora_steps']==0
+          assert r['training_vms']==1 and r['optimizers_per_vm']==1
+          assert r['draft_hold'] and not r['native'] and not r['sealed_final_opened']
+          assert os.environ['GITHUB_REF']=='refs/heads/codex/agent-painter-sprocket-568'
+          sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+          assert sha==os.environ['GITHUB_SHA']
+          Path('evidence/w18/lease.json').write_text(json.dumps({'sha':sha,
+            'run_id':os.environ['GITHUB_RUN_ID'],'attempt':os.environ['GITHUB_RUN_ATTEMPT'],
+            'single_optimizer':True,'request':r},indent=2)+'\n')
+          PY
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 -m py_compile experiments/agent_painter/lanes/sprocket/worm_train_v18.py
+          python3 experiments/agent_painter/lanes/sprocket/worm_train_v18.py --smoke-only
+      - name: Admit ORIGINAL immutable W17 full-state parent checkpoint
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/w17"
+          gh run download 43871037458 --repo techrote/cybersand --name sprocket-worm-v17-4536980993be7af5052b1c78dad5adb74e865855 --dir "$RUNNER_TEMP/w17"
+          echo '3d0fe44f303851db6f34f489eb17ff2b1f6dc5a5cfe569b0637716306594aec3  '"$RUNNER_TEMP/w17/campaign/closed-loop-history-retention.pt" | sha256sum -c -
+          cp "$RUNNER_TEMP/w17/campaign/summary.json" evidence/w18/original-W17-summary.json
+      - name: Retrieve original read-only W0 host SHA and execute host qualification
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/w18"
+          git fetch --no-tags --depth=1 origin 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          git show 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61:experiments/agent_painter/worm/common/worm.py > "$RUNNER_TEMP/w18/pinned-W0.py"
+          echo '81c3923cb38d7f196b99986806216388c34ebc27fd4976e168b3b370c25a323e  '"$RUNNER_TEMP/w18/pinned-W0.py" | sha256sum -c -
+          cp "$RUNNER_TEMP/w18/pinned-W0.py" evidence/w18/original-pinned-W0.py
+      - name: Install single-thread pinned CPU-only torch
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/w18-venv"
+          "$RUNNER_TEMP/w18-venv/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/w18-venv/bin/python" -m pip check
+          "$RUNNER_TEMP/w18-venv/bin/python" -m pip freeze --all > evidence/w18/environment.txt
+      - name: Execute two genuine model-side training waves, held-out material+protected rollouts
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 1800s "$RUNNER_TEMP/w18-venv/bin/python" experiments/agent_painter/lanes/sprocket/worm_train_v18.py --w17 "$RUNNER_TEMP/w17/campaign/closed-loop-history-retention.pt" --w0 "$RUNNER_TEMP/w18/pinned-W0.py" --output evidence/w18/campaign
+      - name: Preserve original input/output SHA inventory, including partial failures
+        if: always()
+        run: |
+          set -euo pipefail
+          (cd evidence/w18 && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum) > evidence/w18/SHA256SUMS.txt
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sprocket-worm-v18-${{ github.sha }}
+          path: evidence/w18/
+          retention-days: 90
+          if-no-files-found: warn
