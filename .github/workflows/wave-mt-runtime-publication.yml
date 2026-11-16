@@ -209,7 +209,7 @@ jobs:
           LIBGL_ALWAYS_SOFTWARE: '1'
         run: |
           set -euo pipefail
-          tools/ci/prepare_linux_display.sh
+          bash tools/ci/prepare_linux_display.sh
           xvfb-run -a -s '-screen 0 1600x1000x24' \
             python3 tools/wave_mt/run_workbench_render.py \
               --godot "$RUNNER_TEMP/godot-linux/Godot_v4.7-stable_linux.x86_64" \
