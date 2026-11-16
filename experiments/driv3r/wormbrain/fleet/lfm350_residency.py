@@ -12,6 +12,7 @@ import smol_residency as base
 MODEL = "LiquidAI/LFM2.5-350M"
 REV = "9921cd4d82c0e3986887aa4b376f9446729ef8a3"
 SCHEMA = "driv3r.lfm350-residency/1"
+W0_SOURCE = base.W0_SOURCE
 SEEDS = (4201, 4219)
 FAMILIES = ("architecture", "greebles")
 TURNS = 8

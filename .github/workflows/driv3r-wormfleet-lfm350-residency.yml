@@ -49,7 +49,7 @@ jobs:
           test "$(git rev-parse FETCH_HEAD)" = 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
           git show 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61:experiments/agent_painter/worm/common/worm.py > "$RUNNER_TEMP/pinned-w0.py"
           test "$(git hash-object "$RUNNER_TEMP/pinned-w0.py")" = 8979b6f0296e81051194bacc907992d38e006605
-      - name: Install pinned CPU inference environment and download untuned SmolLM2 model
+      - name: Install pinned CPU inference environment and download untuned LFM2.5-350M model
         run: |
           set -euo pipefail
           python3 -m venv "$RUNNER_TEMP/untuned-lfm350"
