@@ -1,0 +1,80 @@
+name: DRIV3R FT-004 frozen-checkpoint long-horizon and OOD policy evaluation
+
+on:
+  push:
+    branches: [research/570-fleet-training-throughput-001]
+    paths:
+      - .github/workflows/driv3r-fleet-training-ft004.yml
+      - experiments/driv3r/fleet_training/request_ft004.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: driv3r-ft004-frozen-checkpoint-ood
+  cancel-in-progress: false
+
+jobs:
+  original-transfer-evaluation:
+    name: Real frozen 24-unit policy inference on shifted material worlds
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      NUMEXPR_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Checkout immutable population trainer read-only
+        uses: actions/checkout@v4
+        with:
+          repository: techrote/cybersand
+          ref: 534cd8ffac6fbe33a714ae03a62c16045bf10259
+          path: upstream
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install bounded fixed CPU dependencies, no optimizer
+        run: python -m pip install --disable-pip-version-check numpy==2.3.5 PyYAML==6.0.2
+      - name: Source-only negative cases and policy/schedule gates
+        run: |
+          python -m compileall -q experiments/driv3r/fleet_training
+          python -m unittest discover -s experiments/driv3r/fleet_training -p 'test_*.py' -v
+          python tools/ci/check_ci_provider_policy.py
+          python tools/ci/check_ci_scheduling_policy.py
+      - name: Retrieve exact FT-003 original model checkpoints from immutable Actions artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/ft003-original" "$RUNNER_TEMP/ft004-evidence"
+          curl --fail --silent --show-error --location --retry 2 \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            -o "$RUNNER_TEMP/ft003-original.zip" \
+            "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14194214028/zip"
+          echo "fec6d5e254a0bbe590b44ba26bbb7427960af507a5c6fe78b1d7e5fe5389c910  $RUNNER_TEMP/ft003-original.zip" | sha256sum -c -
+          unzip -q "$RUNNER_TEMP/ft003-original.zip" -d "$RUNNER_TEMP/ft003-original"
+          sha256sum "$RUNNER_TEMP/ft003-original.zip" > "$RUNNER_TEMP/ft004-evidence/original-archive.sha256"
+          git rev-parse HEAD > "$RUNNER_TEMP/ft004-evidence/current-source.txt"
+      - name: Run fresh-world, 60-turn, dense obstacles and shifted protected-cell evaluation
+        run: |
+          python experiments/driv3r/fleet_training/ft004_shift.py \
+            --request experiments/driv3r/fleet_training/request_ft004.json \
+            --upstream upstream \
+            --ft003 "$RUNNER_TEMP/ft003-original" \
+            --output "$RUNNER_TEMP/ft004-evidence/evaluation"
+      - name: Retain original model-scored trajectories, galleries, replay and failure logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ft004-original-${{ github.run_id }}
+          path: ${{ runner.temp }}/ft004-evidence/
+          if-no-files-found: warn
+          retention-days: 14
