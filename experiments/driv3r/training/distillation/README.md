@@ -65,3 +65,55 @@ Interpretation: *synthetic exploration/style experiments*, not evidence of
 faithful Frankenbrain trait transfer or a native CyberSand-compatible policy.
 Keep Draft/HOLD, no game/production changes; archived model binaries remain
 in Actions artifacts only.
+
+## D005 — frontier rescue (source + hosted Actions qualification)
+
+`frontier_rescue.py` extends D004 with bounded short-horizon synthetic
+frontier/recovery labels, protected-cell exclusions, hard negative states and
+D003 behavioural rehearsal. The teacher oracle may look ahead four cells
+through painted corridors, but the 5,142-parameter student observes only
+the existing **100-element local observation**; those oracle-only variables
+must never be presented as student observations or genuine parent logits.
+
+**Disjoint seed ranges:** train 113–176, validation 1025–1032,
+test 4001–4016. Three candidate mixing fractions (0.15/0.30/0.45) each
+receive 160 real CPU Adam updates (480 total); choose on validation only.
+All checkpoints are kept in Actions artifacts rather than Git. Original
+D001–D004 model pins are checked against D004 metrics before training.
+
+Prior **local-only** D005 preflight (2026-11-16, not yet source-HEAD Actions
+qualification): 64,361 synthesized training observations, 3,391 harder
+squeeze/dead-end states, and 1,152 matched 80-decision held-out episodes.
+Validation selected 0.30; the local checkpoint SHA-256 was
+`c2fc59df4e49e4ded91cb26533c3cc55e1dfeba8accb1963e738e9f45c2c82ad`.
+Paired test mean (D004→D005): normal cells 70.22→72.14 and branches
+25.92→28.39; dynamic traps 62.78→63.89 cells and 18.34→22.19 branches;
+protected squeeze 16.89→17.08 cells and 5.69→7.27 branches. Coverage
+intervals overlapped zero; squeeze revisits remain severe. Local original
+action receipts and 24 PNGs replayed byte-for-byte, but these are **synthetic
+external-host student decisions, not native CyberSand nor source-parent
+forwards**. Source/environment variation may change exact hosted hashes.
+
+To rerun after D004 in the dedicated workflow:
+
+```sh
+OPENBLAS_NUM_THREADS=1 python3 -m experiments.driv3r.training.distillation.frontier_rescue \
+  --base evidence-student/student.npz \
+  --repair evidence-student/repair_student.npz \
+  --restored evidence-student/style_restored_student.npz \
+  --rebalance evidence-student/trap_rebalanced_student.npz \
+  --source-metrics evidence-student/trap_rebalance_metrics.json \
+  --out evidence-student --steps 160
+```
+
+The stage saves `frontier_corpus.npz`, three distinct candidate checkpoints,
+the validation-selected student, independent rollouts, adverse PNG galleries,
+original action/PNG replay evidence and a recursive SHA-256 manifest.
+The workflow is scoped to this research branch and cancels obsolete
+push-triggered runs; it must not modify or merge game code.
+
+**Research gate remains HOLD:** the 144 archived stock/GREYHOUND/BRANCHWITCH
+parent decisions all derive from source seed 570; no fresh parent execution,
+true AEROHOUND or LFM/Sprocket teacher mixture, native host qualification,
+or faithful parent-trait transfer is claimed. The next falsification priority
+is seed-independent real teacher trajectories and protected-squeeze recovery.
