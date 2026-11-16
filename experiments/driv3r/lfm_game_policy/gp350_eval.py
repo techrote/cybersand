@@ -75,6 +75,8 @@ def main():
     base=AutoModelForCausalLM.from_pretrained(args.model_cache,trust_remote_code=False,
                                               local_files_only=True,dtype=torch.float32)
     check(base.config.model_type=="lfm2","unexpected full model")
+    # Pure inference: eval() alone does not clear PyTorch parameters.requires_grad.
+    base.requires_grad_(False)
     base.eval()
     output=[]
     first_by_world={}
