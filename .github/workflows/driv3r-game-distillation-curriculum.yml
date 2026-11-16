@@ -10,10 +10,10 @@ permissions:
   actions: read
 concurrency:
   group: driv3r-distill-student-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 jobs:
   student-cpu:
-    name: Immutable original d1 source → 450 Adam + 300 repair + 3×160 rehearsal steps → synthetic gameplay gallery
+    name: Immutable original d1 source → 450 Adam + 300 repair + D003/004/005 bounded students → synthetic gameplay galleries
     runs-on: ubuntu-24.04
     timeout-minutes: 25
     env:
@@ -88,6 +88,20 @@ jobs:
             --out "$RUNNER_TEMP/distilled-student" --steps 180
           rm -f "$RUNNER_TEMP/distilled-student/SHA256SUMS.txt"
           (cd "$RUNNER_TEMP/distilled-student" && sha256sum * > SHA256SUMS.txt)
+      - name: D005 genuine 3x160 Adam frontier rescue; disjoint 4001-4016 evidence
+        env:
+          DRIV3R_TEACHER_CORPUS: ${{ runner.temp }}/distill-source/original_teachers.jsonl
+        run: |
+          set -euo pipefail
+          python3 -m experiments.driv3r.training.distillation.frontier_rescue \
+            --base "$RUNNER_TEMP/distilled-student/student.npz" \
+            --repair "$RUNNER_TEMP/distilled-student/repair_student.npz" \
+            --restored "$RUNNER_TEMP/distilled-student/style_restored_student.npz" \
+            --rebalance "$RUNNER_TEMP/distilled-student/trap_rebalanced_student.npz" \
+            --source-metrics "$RUNNER_TEMP/distilled-student/trap_rebalance_metrics.json" \
+            --out "$RUNNER_TEMP/distilled-student" --steps 160
+          rm -f "$RUNNER_TEMP/distilled-student/SHA256SUMS.txt"
+          (cd "$RUNNER_TEMP/distilled-student" && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS.txt)
       - name: Immutable original research checkpoint and negative controls (never Git)
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
