@@ -335,3 +335,11 @@ Windows owner evaluation must independently inspect actual layout, interactive
 controls, paint/erase and save/reopen. No general architectural solver,
 variable-size room packing, semantic route generator, automatic edit rebase,
 streaming World, camera optimization or agent authoring is included.
+
+## Branch-local Metabolist Spine showcase
+
+The isolated Draft/HOLD [Metabolist Spine experiment](../research/gentek-metabolist-001.md)
+adds a schema-4/v1 preset with six rooted attachment families around a continuous
+service core. Existing room/floor/wall, window and door controls remain the owner
+interface. Its source and native/Godot evidence are qualified independently;
+this branch does not modify the 72 CLASSIC parent algorithms or Viaduct v1/v2.

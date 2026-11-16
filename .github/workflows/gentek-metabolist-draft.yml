@@ -1,0 +1,183 @@
+name: GENTEK-METABOLIST Draft qualification
+
+on:
+  push:
+    branches: [experiment/gentek-showcase-metabolist-001]
+    paths:
+      - 'native/**'
+      - 'godot/**'
+      - 'tools/architecture/**'
+      - 'examples/worldgen/architectural/**'
+      - 'Makefile'
+      - '.github/workflows/gentek-metabolist-draft.yml'
+
+permissions:
+  contents: read
+  actions: read
+
+defaults:
+  run:
+    shell: bash
+
+concurrency:
+  group: gentek-metabolist-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  native:
+    if: github.ref_name == 'experiment/gentek-showcase-metabolist-001'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - name: Preserve every native generation gate
+        run: |
+          mkdir -p build/metabolist-ci
+          timeout 3600 make -j2 worldgen-test CXX=g++-13 2>&1 | tee build/metabolist-ci/worldgen.log
+      - name: Qualify Metabolist and compare immutable parent outputs
+        run: |
+          timeout 3600 python3 tools/architecture/qualify_metabolist.py --compiler g++-13 --output build/metabolist-qualification
+      - name: Install pinned native-preview PNG dependency
+        run: |
+          python3 -m venv "$RUNNER_TEMP/metabolist-render"
+          "$RUNNER_TEMP/metabolist-render/bin/python" -m pip install --require-hashes -r tools/architecture/requirements-render-linux.txt
+      - name: Render complete exact-source native campaign
+        run: |
+          timeout 1800 "$RUNNER_TEMP/metabolist-render/bin/python" tools/architecture/render_metabolist_spine.py --compiler g++-13 --require-clean-source --output build/metabolist-spine-gallery
+      - name: Retain native source, cells, images, executable and qualification
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: metabolist-native-${{ github.run_id }}
+          path: |
+            build/metabolist-spine-gallery/
+            build/metabolist-qualification/
+            build/metabolist-ci/
+            build/metabolist-render/metabolist_spine_export
+            build/metabolist-render/build-identity.json
+          if-no-files-found: error
+          retention-days: 90
+
+  godot:
+    if: github.ref_name == 'experiment/gentek-showcase-metabolist-001'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+      GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
+      GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - name: Fetch pinned runtime dependencies
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
+          echo '566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' | sha256sum -c --strict
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          git init "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 600 git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+      - name: Build this exact source as a Linux GDExtension
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: '2'
+          CYBERSAND_REAL_CXX: /usr/bin/g++-13
+          LINUX_CXX: /usr/bin/g++-13
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
+        run: |
+          mkdir -p build/metabolist-godot-gallery
+          timeout 3600 bash tools/build_pinned_godot_cpp.sh linux 2>&1 | tee build/metabolist-godot-gallery/godot-cpp-build.log
+          timeout 3600 bash tools/build_native_extension.sh 2>&1 | tee build/metabolist-godot-gallery/native-extension-build.log
+          cp "$CYBERSAND_NATIVE_OUTPUT" godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
+          cp "$CYBERSAND_NATIVE_OUTPUT" build/metabolist-godot-gallery/
+      - name: Qualify ordinary selectable preset and all 73 CLASSIC native maps
+        run: |
+          set -euo pipefail
+          curl -fL --retry 3 -o "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum -c --strict
+          mkdir -p "$RUNNER_TEMP/godot"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          GODOT_BIN="$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64"
+          chmod +x "$GODOT_BIN"
+          timeout 1800 "$GODOT_BIN" --headless --path godot --script res://tests/test_architectural_project_contract.gd 2>&1 | tee build/metabolist-godot-gallery/project-contract.log
+          CYBERSAND_ARCHITECTURE_PHASE=native CYBERSAND_ARCHITECTURE_OUTPUT="$GITHUB_WORKSPACE/build/metabolist-godot-gallery" timeout 3600 "$GODOT_BIN" --headless --path godot --script res://tests/test_architectural_generator.gd 2>&1 | tee build/metabolist-godot-gallery/native-gallery.log
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, re
+          root = pathlib.Path.cwd()
+          out = root / 'build/metabolist-godot-gallery'
+          for name in ['project-contract.log', 'native-gallery.log']:
+              log = (out / name).read_text()
+              assert not re.search(r'SCRIPT ERROR:|Parse Error:|Failed to load script', log), name
+          assert re.search(r'ARCHITECTURAL_PROJECT_CONTRACT.*failures=0', (out / 'project-contract.log').read_text())
+          report = json.loads((out / 'architecture-native.json').read_text())
+          assert report['failures'] == 0
+          assert len(list(out.glob('classic-gentek-*.png'))) == 73
+          sources = {}
+          for directory in ['native/src', 'native/include', 'godot/native_extension']:
+              for path in sorted((root / directory).rglob('*')):
+                  if path.is_file() and path.suffix in ['.cpp', '.hpp', '.h', '.inc']:
+                      sources[str(path.relative_to(root))] = hashlib.sha256(path.read_bytes()).hexdigest()
+          binary = out / 'libcybersand_native.linux.x86_64.so'
+          identity = {'source_commit': os.environ['GITHUB_SHA'], 'godot_cpp_commit': os.environ['GODOT_CPP_COMMIT'],
+                      'godot_archive_sha256': os.environ['GODOT_SHA256'], 'inputs': sources,
+                      'library_sha256': hashlib.sha256(binary.read_bytes()).hexdigest(),
+                      'scope': 'source-built Linux headless native/ordinary project qualification'}
+          (out / 'runtime-identity.json').write_text(json.dumps(identity, indent=2) + '\n')
+          PY
+      - name: Retain source-built Godot runtime and ordinary preset evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: metabolist-godot-${{ github.run_id }}
+          path: build/metabolist-godot-gallery/
+          if-no-files-found: error
+          retention-days: 90
+
+  verify:
+    needs: [native, godot]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: metabolist-native-${{ github.run_id }}
+          path: native
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: metabolist-godot-${{ github.run_id }}
+          path: godot
+      - name: Bind standalone campaign to ordinary Workbench preset output
+        run: |
+          python3 - <<'PY'
+          import json, os, pathlib
+          native = json.loads(pathlib.Path('native/metabolist-spine-gallery/manifest.json').read_text())
+          godot = json.loads(pathlib.Path('godot/architecture-native.json').read_text())
+          runtime = json.loads(pathlib.Path('godot/runtime-identity.json').read_text())
+          assert native['source']['commit'] == runtime['source_commit'] == os.environ['GITHUB_SHA']
+          assert native['source']['uncommitted_source_paths'] == []
+          assert native['render_count'] >= 50 and godot['failures'] == 0
+          hero = next(case for case in native['cases'] if case['name'] == '01-hero-512')
+          builtin = next(case for case in godot['cases'] if case.get('case') == 'gentek-classic-001' and case.get('algorithm') == 'metabolist_spine')
+          assert hero['material_sha256'] == builtin['material_sha256']
+          verification = {'source_commit': os.environ['GITHUB_SHA'], 'passed': True,
+                          'native_pngs': native['render_count'], 'godot_checks': godot['checks'],
+                          'ordinary_preset_material_sha256': hero['material_sha256']}
+          pathlib.Path('metabolist-source-verification.json').write_text(json.dumps(verification, indent=2) + '\n')
+          print(json.dumps(verification))
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: metabolist-source-verification-${{ github.run_id }}
+          path: metabolist-source-verification.json
+          if-no-files-found: error
+          retention-days: 90
