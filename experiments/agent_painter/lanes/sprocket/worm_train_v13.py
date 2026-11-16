@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""W12: two actual AdamW waves to counter W10 greedy BRANCH collapse.
+"""W13: legal-conditioned BRANCH contrast plus sampled on-policy recovery.
 
-Frozen root Instruct; train a 142x64x64x6 auxiliary W10-continuation head.
-W0 observations are synthetic game-like host-owned local geometry, never native.
+Continue verified W12 auxiliary head; frozen root-Instruct identity, zero root
+forwards/updates. Synthetic W0 observations and engine-owned action legality.
 """
 from __future__ import annotations
 import argparse, hashlib, json, os, random, resource, sys, time
@@ -156,7 +156,7 @@ def train(torch,w0,support,args,out):
             rm=legal_mask(torch,replay)
             rpositives,rnegatives=eligible_indices(replay)
             write_json(out/"replay-manifest.json",{
-                "source_controllers":list(("w9-greedy","w10-t07")),
+                "source_controllers":list(("w9-greedy","w13-stage1-t07")),
                 "closed_loop_worlds":manifest,
                 "actual_replay_rows":len(replay),
                 "label_counts":dict(Counter(r["action"] for r in replay)),
