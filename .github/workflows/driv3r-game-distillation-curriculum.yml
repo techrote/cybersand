@@ -15,7 +15,7 @@ jobs:
   student-cpu:
     name: Immutable original d1 source → 450 Adam + 300 repair + D003/004/005/006 bounded students → D007 STOP repair + synthetic galleries
     runs-on: ubuntu-24.04
-    timeout-minutes: 25
+    timeout-minutes: 35
     env:
       OPENBLAS_NUM_THREADS: '1'
       OMP_NUM_THREADS: '1'
@@ -135,6 +135,15 @@ jobs:
             --frontier "$RUNNER_TEMP/distilled-student/frontier_student.npz" \
             --exhaustion "$RUNNER_TEMP/distilled-student/exhaustion_student.npz" \
             --out "$RUNNER_TEMP/distilled-student"
+          rm -f "$RUNNER_TEMP/distilled-student/SHA256SUMS.txt"
+          (cd "$RUNNER_TEMP/distilled-student" && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS.txt)
+      - name: D017 genuine 3x200 Adam source-Q8 branch gates, 1152 matched synthetic episodes
+        run: |
+          set -euo pipefail
+          python3 -m experiments.driv3r.training.distillation.source_parent_branch_gate \
+            --corpus "$RUNNER_TEMP/distill-source/original_teachers.jsonl" \
+            --d007 "$RUNNER_TEMP/distilled-student/stop_repaired_student.npz" \
+            --out "$RUNNER_TEMP/distilled-student" --steps 200
           rm -f "$RUNNER_TEMP/distilled-student/SHA256SUMS.txt"
           (cd "$RUNNER_TEMP/distilled-student" && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS.txt)
       - name: Immutable original research checkpoint and negative controls (never Git)
