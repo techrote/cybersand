@@ -84,3 +84,25 @@ on-policy state distributions may mediate their effects. Within-arm archive
 updates are sequential across members. These models are tiny neural MLPs,
 **not** pretrained language models or learned SLM adapters. Native game code
 and content remain completely untouched. Draft/HOLD only.
+
+## P4 — online trajectory-level feedback (synthetic only)
+
+`population_p4.py` tests whether an **observed completed-episode phenotype**
+is more useful than sham feedback for learning distinctive CyberSand-style
+game decisions. Four matched arms: reward-only supervised Adam; shuffled
+sham feedback; observed trajectory-novelty feedback; previously successful
+hand-authored morphology teacher. All run with fixed P0 parents, the same
+member seeds, training-world splits, finite host-legal action menus and
+reward-based selection. Report 30- and 60-decision held-out dispersion,
+nonstop-random and P0 controls, original gallery traces, model lineage and
+replayable exact-source results. Entire feedback archive is TRAIN-only.
+Novelty is derived from observed trajectories, although its numeric
+descriptor is still engineered; post-episode updates use supervised targets
+and are **not** presented as policy-gradient RL. Sham controls random
+feedback, not all possible sources of model stochasticity.
+
+P4 does **not** establish learned aesthetic preference, generalization to
+real CyberSand, native Workbench execution or any pretrained SLM adaptation.
+Do not claim that trajectory-level novelty works unless it beats its sham
+control on independent held-out game trajectories. The workflow retains all
+weights and negative cases, without changing game code/content.
