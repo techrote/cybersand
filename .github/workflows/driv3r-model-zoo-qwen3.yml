@@ -1,0 +1,80 @@
+name: MZ-005 Qwen3-0.6B pretrained game-policy trainer (research only)
+on:
+  push:
+    branches:
+      - 'research/model-zoo-qwen3-mz005'
+    paths:
+      - 'experiments/driv3r/model_zoo/qwen3/**'
+      - '.github/workflows/driv3r-model-zoo-qwen3.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: mz005-qwen3-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  qwen3-cpu:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 48
+    env:
+      HF_HUB_DISABLE_TELEMETRY: '1'
+      TOKENIZERS_PARALLELISM: 'false'
+      OMP_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify source-only game world and controls
+        run: |
+          python -m unittest -v experiments.driv3r.model_zoo.mamba130.test_world
+          python -m unittest -v experiments.driv3r.model_zoo.mamba130.test_counterfactual
+          python -m unittest -v experiments.driv3r.model_zoo.qwen3.test_qwen3
+      - name: Install pinned CPU research dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install 'torch==2.5.1' --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install 'transformers==4.57.3' 'pillow==11.3.0'
+          python -m pip freeze > "$RUNNER_TEMP/mz005-resolved-packages.txt"
+      - name: Pretrained real Qwen3 forward and two matched optimizer curricula
+        run: |
+          python -m experiments.driv3r.model_zoo.qwen3.run \
+            --out "$RUNNER_TEMP/mz005-qwen3" \
+            --train-seeds 14 --dev-seeds 4 --steps 9 --epochs 140 --rollout-steps 16
+      - name: Verify model, training, original traces, checksum and controls
+        run: |
+          python - <<'PY'
+          import os, json, hashlib
+          from pathlib import Path
+          p=Path(os.environ['RUNNER_TEMP'])/'mz005-qwen3'
+          r=json.loads((p/'results.json').read_text())
+          assert r['schema']=='MZ005-QWEN3-GAME-v1'
+          assert r['source_sha']==os.environ['GITHUB_SHA']
+          assert r['revision']=='c1899de289a04d12100db370d81485cdf75e47ca'
+          assert 400_000_000<=r['pretrained_parameters']<=800_000_000
+          assert r['backbone_trainable_parameters']==0
+          assert 1000<r['trained_head_parameters']<1_000_000
+          assert len(r['qwen_losses'])==len(r['structured_losses'])==140
+          assert r['train_examples']>=100 and r['test_examples']>=40
+          assert r['pretrained_forward_calls']>=r['train_examples']+r['dev_examples']+r['test_examples']
+          assert r['scores']['qwen3']['test']['paired']['changed_target_pairs']>20
+          assert all(k in r['scores'] for k in ('qwen3','structured','majority'))
+          assert len(r['traces'])==16
+          assert all(t['turns']>0 for t in r['traces'])
+          ck=p/'qwen3_game_head.pt'
+          assert ck.stat().st_size>100000
+          assert hashlib.sha256(ck.read_bytes()).hexdigest()==r['checkpoint_sha256']
+          from PIL import Image
+          with Image.open(p/'rollouts.png') as im:
+              im.verify()
+          PY
+      - name: Retain original research checkpoint/metrics/gallery
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mz005-qwen3-${{ github.sha }}
+          path: ${{ runner.temp }}/mz005-qwen3/**
+          if-no-files-found: warn
+          retention-days: 14
