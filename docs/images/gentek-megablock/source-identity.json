@@ -2,18 +2,20 @@
   "binary_sha256": "6d6e45b0440f2d850e09ace4006122a11406ec29f97fc770ae14a5a7cdfb16ce",
   "compiler": "g++ (Debian 14.2.0-19) 14.2.0",
   "compiler_flags": "-std=c++20 -O2 -g -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Werror",
-  "git_head": "aedf1ba98b0a07669c1781ec4c5519072d5ca949",
+  "git_head": "c846223ee0411662268f0a40942fd5e31002da6f",
   "git_status": "",
-  "git_tree": "bb692ebf048a3d7b46af3a27706a899ad57c0bf6",
-  "input_ledger_sha256": "1c71c4d8e856a69d2cd473c5d01f229178e15330a6d9838d6e6bf7d5bfa165d2",
+  "git_tree": "8077dc18e35f82a2f30bbc300b9cc32afe1a41f8",
+  "input_ledger_sha256": "b403d9e2a963f9e53522879523a56dc96f4e94557b648c3b2fd9ad5e5e274f26",
   "inputs_sha256": {
     ".github/workflows/gentek-megablock-draft-gallery.yml": "9dc65c8e0ed3c33c843e2e3ee59ef64a7f8c8041216d474b21e1c01ab3efadda",
     "Makefile": "cf83dd34fe5c5a9e3f882ed7ea90b4202c2f213da72e45d0c39c4004fba2b1c0",
     "examples/worldgen/architectural/seeded-typology-megablock.style.json": "ac33f5b9f4cd7cdc616d31adaca213707d26baa8666498a645bb07454e7a9703",
+    "godot/native_extension/cyber_world_generator.cpp": "9637e6949d1faf7a810d6346043026c227548b00619c59650d17b52c1ff919aa",
+    "godot/native_extension/cyber_world_generator.hpp": "8be2561cb5e81dee79b55fbe6431f3f50fca1ba89e4ec693fe12f4bed71e0822",
     "godot/scripts/architectural_generator_project.gd": "1408bd411fc1187aa58f4b28c9bde0958c7ef0536d23c6188d5cdd7cc7f9bc5f",
     "godot/scripts/material_appearance_lut.gd": "1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a",
     "godot/tests/test_architectural_generator.gd": "7bd59d831e835e19fd546bf739d67405307e04eaf9171531e98db5e2135f1f2a",
-    "godot/tests/test_architectural_project_contract.gd": "08584752d76347240f90c9da05f407ef5a0c9f8c493ae98d01e6365c3cd54451",
+    "godot/tests/test_architectural_project_contract.gd": "d0446f1fb789044dfc47dec418cb27720822cb45bded6be9594ea912f05193e7",
     "godot/tests/test_megablock_project.gd": "9406b71bd2c2da56357db24b991e0516995182332dc5315e764f57161d64a7ab",
     "native/include/cybersand/ballistic_water.hpp": "763481a1ab20619e29600df3afeec170dd07bcd4717aba59c4abcc7f2dcca76b",
     "native/include/cybersand/bounded_ordered_index.hpp": "79105fd5fe6f3a7f1bda463984aec01b2d067400957c60f88e38db86cc180147",
@@ -88,7 +90,7 @@
     "tools/build_native_extension.sh": "9a38d32c93c8562803ea92d23903cdb40ce7a7e7d5a5ac5a36763c5f97153585",
     "tools/build_pinned_godot_cpp.sh": "72552f5aa59e418b4fd84b21e27d3e35c0217603ba0d553d58bdeb70c49520ea",
     "tools/requirements-build.txt": "6ef2d94fd9f11d4b4e95730c9c14468c739f51f22d175212b5019edd9dbe7409",
-    "tools/worldgen/gentek_megablock_campaign.py": "be3859144e12c9ac4afb8af82391b0d5ebc060bbd0477edc2ac1e5f24f0045c7"
+    "tools/worldgen/gentek_megablock_campaign.py": "4fd70d6b124a258dd96c757ffc92c7e9a8b4b422fecab1130f09b25ac8705221"
   },
   "linked_objects_sha256": {
     "build/worldgen-objects/normal/generation_fields.o": "8639d8d013cddf00766b19df46f036b5a248da1483d89d2320ae17c5dada6892",
@@ -104,6 +106,6 @@
   "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
   "processor": "",
   "python": "3.12.14",
-  "recorded_at_utc": "2026-11-16T22:32:37.708390+00:00",
+  "recorded_at_utc": "2026-11-16T22:43:02.389515+00:00",
   "source_state": "clean_commit"
 }

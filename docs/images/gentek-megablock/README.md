@@ -1,20 +1,24 @@
 # Seeded Typology Megablock — native gallery
 
 **Draft / HOLD.** These are actual native material-cell previews from clean source
-`aedf1ba98b0a07669c1781ec4c5519072d5ca949`, tree
-`bb692ebf048a3d7b46af3a27706a899ad57c0bf6`. Frozen parent #624 is
+`c846223ee0411662268f0a40942fd5e31002da6f`, tree
+`8077dc18e35f82a2f30bbc300b9cc32afe1a41f8`. Frozen parent #624 is
 `615828b28337f85e4663e03ba479616db4ddf764`.
 
-The [implementation contract](../../research/gentek-showcase-megablock-001.md) explains the programme, shared interfaces, existing controls and scope of guarantees. The complete source-matched hosted artifact, raw maps, build logs and offline HTML index are retained by [qualification run 43969027723](https://github.com/techrote/cybersand/actions/runs/43969027723). Platform results are recorded in PR #665 after the run completes.
+The [implementation contract](../../research/gentek-showcase-megablock-001.md) explains the programme, shared interfaces, existing controls and scope of guarantees. The complete source-matched hosted artifact, raw maps, build logs and offline HTML index are retained by [qualification run 43972648873](https://github.com/techrote/cybersand/actions/runs/43972648873). Both Linux and Windows qualification jobs passed. See the [qualification record](qualification.md) and [independent review](independent-review.md) for actual counts, the repaired first-run failure and execution limits.
 
 ## Key evidence
 
+- [Completed qualification and known limits](qualification.md)
+- [All twelve native requirements and parent-oracle provenance](native-validation.md)
+- [Independent source, visual, artifact and platform review](independent-review.md)
 - [32-seed survey, full SHA-256 hashes and warnings](seed-survey.md)
 - [Machine-readable survey](seed-survey.csv)
 - [Readable programmes for the eight showcase seeds](showcase-programmes.md)
 - [All survey supercell programmes](typology-programmes.json)
 - [Performance comparison](performance.md)
 - [Exact source, binary and input ledger](source-identity.json)
+- [Independent machine verification of both hosted artifacts](megablock-independent-hosted-verification.json)
 
 ## Heroes and comparison
 

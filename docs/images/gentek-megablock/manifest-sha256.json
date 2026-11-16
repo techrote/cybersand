@@ -1,6 +1,6 @@
 {
   "files": {
-    "README.md": "3a90a66074180f43b9a24137dab11cf260cf978d87487f756f98f817e6a1139d",
+    "README.md": "ee4fde7ea943951440997d2a84eb40228d45d387ae69f6f251f753ec308dd968",
     "benchmark-bridgehouse.png": "91e182abae1ca6ed7c558087c5d3f6f6a79605a4db9de198a6dae4879075f428",
     "benchmark-cantilever_spine.png": "e20e13deefacc29560de9c88770a6618bb9d7b97334336129070bbf120c6bea6",
     "benchmark-seeded_typology_megablock.png": "86e48c4423b87394c079b6156bb0b20824bbb19093341b2ada0ef3da018247ff",
@@ -17,12 +17,18 @@
     "heavy-structure.png": "1cac8d3617ffc16a4eb126389f1d9b22977244dd46066625999cc66f967cb419",
     "hero-1024.png": "1e400f30282e8799bb1762b09cd45090862db397f8862577691a6f62c4f8df61",
     "hero-512.png": "86e48c4423b87394c079b6156bb0b20824bbb19093341b2ada0ef3da018247ff",
+    "independent-review.md": "fad225c594f274a177cf4f0eb3569d5e433f675d00175f99b857d06b672eb00a",
     "landscape.png": "f291cafa08ae1b66b105dbf9ef4e9be969aae9d8bd4ea91411338fcd2681d6ae",
     "large-lots.png": "972cf3dd446081c550970b050b3032fea2c3ee08322b124f5e64c7934aa9e9aa",
+    "megablock-independent-artifact-verification.json": "b2899efd4a70d2009511e0d36a51aa8e258cfa346877efa0fac81430ae56f586",
+    "megablock-independent-final-artifact-verification.json": "45b2ea5d3e29d46d4b516818a0a860be4285fc77b3430a350134fd143e29cc61",
+    "megablock-independent-hosted-verification.json": "984342d585e27eb97755927e41d3c12f94e1b4754c5849756d3bb2f8ce944248",
+    "native-validation.md": "1c8e3af9a5e5f8e594ed152b9b67b9a7e8e309cc24b17b1774beec04b3fff700",
     "negative-origin.png": "86e48c4423b87394c079b6156bb0b20824bbb19093341b2ada0ef3da018247ff",
     "parameter-controls.png": "2b5404eaaafcd4c31940b8613d31468f1183dbff74d775d8050a26305eab3f73",
-    "performance.json": "213aecb2a5cb12a9b45454a8e2c93f4513e8fa66f7891af95cc5af0e095adc68",
-    "performance.md": "390ed6144675c8bf6eb9d71698212f8310f14fe84e865a28804964f7d4d01976",
+    "performance.json": "acc85c1c7083071a55d8bb2fe30fc70b325921bb06dd8d329b4fcea086da88e6",
+    "performance.md": "924c2efd3c4c0cc30d913659d9879fbdeddbf07946e22ff5525de55fc04ce6f6",
+    "qualification.md": "01cfd32493d23f2debe30d8a9882e246acf32a9ad63d138c14149ebaf0e0dd7b",
     "seed-00.png": "86e48c4423b87394c079b6156bb0b20824bbb19093341b2ada0ef3da018247ff",
     "seed-01.png": "f64e6f897ecaf68a761a4b3a36708c574f3eafe20c253cd73dfa15c2b623b056",
     "seed-02.png": "2fd75bc325dc794249939b351709e4e65fac8deea72a13bd888352d06f190fcc",
@@ -57,11 +63,11 @@
     "seed-31.png": "3772145160ef44ba37eb400bc685e4b4d62c4157b94e38ac94f5925151f79a91",
     "seed-diversity.png": "e7c2d6f64923cc4a79d4427004d9784b2f455f84a76c7b4aca9f1dcae42c6690",
     "seed-survey.csv": "141980ac6c97f5cbeb75b21d3517a66643a6db7530b5a92931e342d99f7997ba",
-    "seed-survey.json": "bb8fb87bef45fb3ef6018b7bf02e85bb88548ba965131eb97bd83c387c7f2d4d",
+    "seed-survey.json": "edbe71bee97deac0b8e70e87b028cdb2fc435ca0cc138f3a76fdfcfc00823901",
     "seed-survey.md": "39418a89b8df37bf5f3165202183eab94c62d5cc1a9d488fa3614270d71c1079",
     "short-programme.png": "56c0f72670d3e4b97f67277327d610185df4ef069b6ba232f1ac6bba8e308586",
-    "showcase-programmes.md": "0d530bd89e1378c041c71130017d9aa21e1598924c556526b055c4128dcb2d2d",
-    "source-identity.json": "4abf163667638bc4e00ed5464bddf521cac31ab3a84abaca799f4fee1d69247d",
+    "showcase-programmes.md": "6a15cecb3123a5879cfa134c93a3fb59e950be82254cf4354ffbfe6af5c74d60",
+    "source-identity.json": "4de9698d4756b7b5ad420b56f526d201679fbb63f8d15b660d9a2a52c9e71007",
     "survey-contact-00-15.png": "394b5877ecd2075c6fb93c9a1eccd95b6dacaa265e21e0a32d925eff31e6c8ee",
     "survey-contact-16-31.png": "86cddacfa8dc5800add5604fe1296c505c56c3299027d8ef1f92f7a51893fc02",
     "tall-programme.png": "3d52d8d0f5d293bce56e4e6f4628b80bd873fadcf023c1496f7e21707141b057",
@@ -70,6 +76,6 @@
     "windows-off.png": "6f6f53808a9fc3b0cd2c31c6bd09706fa801f2a9e7fe65fa917295bb71a342f2",
     "windows-on.png": "86e48c4423b87394c079b6156bb0b20824bbb19093341b2ada0ef3da018247ff"
   },
-  "input_ledger_sha256": "1c71c4d8e856a69d2cd473c5d01f229178e15330a6d9838d6e6bf7d5bfa165d2",
-  "source_commit": "aedf1ba98b0a07669c1781ec4c5519072d5ca949"
+  "input_ledger_sha256": "b403d9e2a963f9e53522879523a56dc96f4e94557b648c3b2fd9ad5e5e274f26",
+  "source_commit": "c846223ee0411662268f0a40942fd5e31002da6f"
 }

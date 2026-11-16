@@ -1,106 +1,106 @@
 [
   {
     "cells": 262144,
-    "direct_sampler_median_ms": 6.536545,
+    "direct_sampler_median_ms": 8.683173,
     "direct_sampler_ms": [
-      6.536545,
-      6.535853,
-      6.490257,
-      6.768305,
-      6.677964
+      8.723181,
+      8.683173,
+      8.592558,
+      8.550647,
+      8.97377
     ],
-    "direct_sampler_ns_per_cell": 24.934940338134766,
-    "generator_median_ms": 144.993429,
+    "direct_sampler_ns_per_cell": 33.12367630004883,
+    "generator_median_ms": 169.012733,
     "generator_raster_ms": [
-      142.193757,
-      144.540312,
-      144.993429,
-      145.892042,
-      151.97146
+      172.680717,
+      159.454963,
+      169.012733,
+      210.476009,
+      160.243662
     ],
     "module": "seeded_typology_megablock"
   },
   {
     "cells": 262144,
-    "direct_sampler_median_ms": 2.863927,
+    "direct_sampler_median_ms": 2.951091,
     "direct_sampler_ms": [
-      2.863927,
-      2.844228,
-      2.758181,
-      3.510399,
-      3.583417
+      2.957651,
+      2.886375,
+      3.051979,
+      2.841489,
+      2.951091
     ],
-    "direct_sampler_ns_per_cell": 10.92501449584961,
-    "generator_median_ms": 141.003855,
+    "direct_sampler_ns_per_cell": 11.257518768310547,
+    "generator_median_ms": 166.527801,
     "generator_raster_ms": [
-      145.370153,
-      138.666403,
-      145.559983,
-      138.04678,
-      141.003855
+      143.009815,
+      181.316099,
+      182.744604,
+      166.527801,
+      135.875898
     ],
     "module": "cantilever_spine"
   },
   {
     "cells": 262144,
-    "direct_sampler_median_ms": 1.750418,
+    "direct_sampler_median_ms": 1.501553,
     "direct_sampler_ms": [
-      1.767473,
-      1.750418,
-      1.743217,
-      1.903463,
-      1.729366
+      1.486871,
+      1.454584,
+      1.501553,
+      1.525879,
+      1.54634
     ],
-    "direct_sampler_ns_per_cell": 6.677314758300781,
-    "generator_median_ms": 136.744072,
+    "direct_sampler_ns_per_cell": 5.727970123291016,
+    "generator_median_ms": 135.815599,
     "generator_raster_ms": [
-      152.981361,
-      136.744072,
-      136.500384,
-      136.122026,
-      136.965979
+      154.04252,
+      173.923589,
+      134.983923,
+      135.815599,
+      135.11156
     ],
     "module": "staggered_balcony"
   },
   {
     "cells": 262144,
-    "direct_sampler_median_ms": 1.646254,
+    "direct_sampler_median_ms": 1.62116,
     "direct_sampler_ms": [
-      1.614728,
-      1.605905,
-      1.734444,
-      1.646254,
-      1.720183
+      1.633649,
+      1.603273,
+      1.591466,
+      1.670794,
+      1.62116
     ],
-    "direct_sampler_ns_per_cell": 6.279960632324219,
-    "generator_median_ms": 138.398825,
+    "direct_sampler_ns_per_cell": 6.184234619140625,
+    "generator_median_ms": 156.099368,
     "generator_raster_ms": [
-      138.398825,
-      137.169097,
-      136.724863,
-      140.512286,
-      144.183717
+      155.056916,
+      157.221827,
+      170.203817,
+      156.099368,
+      137.791701
     ],
     "module": "bridgehouse"
   },
   {
     "cells": 262144,
-    "direct_sampler_median_ms": 2.193903,
+    "direct_sampler_median_ms": 2.935297,
     "direct_sampler_ms": [
-      2.065295,
-      2.193903,
-      2.122889,
-      2.199912,
-      5.538574
+      3.181466,
+      3.247107,
+      2.935297,
+      2.243998,
+      2.234995
     ],
-    "direct_sampler_ns_per_cell": 8.369075775146484,
-    "generator_median_ms": 153.609879,
+    "direct_sampler_ns_per_cell": 11.197269439697266,
+    "generator_median_ms": 139.059101,
     "generator_raster_ms": [
-      163.933026,
-      147.547505,
-      176.556002,
-      140.354602,
-      153.609879
+      157.519576,
+      155.250977,
+      136.361224,
+      139.059101,
+      138.624009
     ],
     "module": "stacked_arcade"
   }

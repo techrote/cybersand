@@ -1,6 +1,6 @@
 # Predetermined showcase programmes
 
-Source: `aedf1ba98b0a07669c1781ec4c5519072d5ca949`. Each table reports supercell (0,0); bands are listed top to bottom. All 32 seeds and every intersecting supercell are in [typology-programmes.json](typology-programmes.json).
+Source: `c846223ee0411662268f0a40942fd5e31002da6f`. Each table reports supercell (0,0); bands are listed top to bottom. All 32 seeds and every intersecting supercell are in [typology-programmes.json](typology-programmes.json).
 
 ## Seed 0
 
