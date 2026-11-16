@@ -42,6 +42,10 @@ jobs:
         run: python experiments/driv3r/training/population/population_p2.py --p0-output /tmp/population-evidence --output /tmp/population-evidence/p2_625 --seed 625 --members 3 --train-episodes 18 --selection-episodes 8 --holdout-episodes 12
       - name: Replicate P2 with independent unseen worlds and population (cohort 626)
         run: python experiments/driv3r/training/population/population_p2.py --p0-output /tmp/population-evidence --output /tmp/population-evidence/p2_626 --seed 626 --members 3 --train-episodes 18 --selection-episodes 8 --holdout-episodes 12
+      - name: Train P3 four-arm causal ablation with 60-step heldout stress (cohort 627)
+        run: python experiments/driv3r/training/population/population_p3.py --p0-output /tmp/population-evidence --output /tmp/population-evidence/p3_627 --seed 627 --members 3 --train-episodes 18 --selection-episodes 8 --holdout-episodes 12 --long-horizon 60
+      - name: Replicate P3 independently with unseen worlds and matched four-arm policies (cohort 628)
+        run: python experiments/driv3r/training/population/population_p3.py --p0-output /tmp/population-evidence --output /tmp/population-evidence/p3_628 --seed 628 --members 3 --train-episodes 18 --selection-episodes 8 --holdout-episodes 12 --long-horizon 60
       - name: Retain exact experimental source for reproducibility
         run: |
           mkdir -p /tmp/population-evidence/source
