@@ -10,6 +10,17 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Publication remediation candidate — 2026-11-16
+
+PR609's PHYSICS-FREEZE-REMEDIATION-002 adds bounded current/previous material
+texture arrays and early immutable physical completion after required terrain,
+before graphical packet work. The full texture and combined-publication controls
+retain equivalent physical laws, fixed timestep and strict native feedback.
+See the [engineering record](../audits/2026-11-16-physics-freeze-remediation-002.md)
+for source boundaries, adversarial checks and matched qualification. The exact
+final CI/artifact ledger is on PR609; software-renderer tests cannot grant
+physical Windows11 NVIDIA acceptance. Preserve the Draft/HOLD owner gate.
+
 ## Coherent Workbench evaluation — 2026-11-15
 
 **Implemented candidate; Draft/HOLD, physical acceptance FAILED.** The owner

@@ -415,6 +415,7 @@ func _commit_controlled_liquid_candidate(bridge: Variant, token: int, request_re
 		# commands queued for the previous World are discarded here.
 		_workbench_equipment_commands.clear()
 		_workbench_equipment.reset()
+		_published_physics_snapshot = null
 		_workbench_result = {}
 		_workbench_consumed_sample = {}
 		_workbench_display = {}
@@ -955,6 +956,12 @@ static func _freeze_capture(value: Variant) -> void:
 		value.make_read_only()
 
 var _published_snapshot: CyberSimulationSnapshot
+# One immutable native/terrain completion, independent of material extraction.
+# The matching graphical publication uses the same globally reserved serial.
+# Native ownership stays here; the mailbox contains no World, RID or Node.
+var _published_physics_snapshot: CyberSimulationSnapshot
+var _combined_physics_publication: bool = OS.get_environment("CYBERSAND_DIAG_PHYSICS_PUBLICATION") == "combined"
+var _publication_detail_trace: bool = OS.get_environment("CYBERSAND_DIAG_COMMON_OBSERVER") != "1"
 var _snapshot_serial: int = 0
 var _snapshot_cells: PackedByteArray = PackedByteArray()
 var _snapshot_world_revision: int = -1
@@ -1129,11 +1136,15 @@ func stop_worker() -> void:
 		return
 	_mutex.lock()
 	_running = false
+	_published_physics_snapshot = null
 	_lab_request_revision += 1
 	_paint_epoch += 1
 	_invalidate_art_locked("Simulation worker stopped")
 	_mutex.unlock()
 	_thread.wait_to_finish()
+	_mutex.lock()
+	_published_physics_snapshot = null
+	_mutex.unlock()
 	_actor_session.set_suspended(true)
 
 
@@ -1723,6 +1734,7 @@ func set_physical_actor_epoch(epoch: int) -> void:
 	_mutex.unlock()
 
 func _set_physical_actor_epoch_locked(epoch: int) -> void:
+	_published_physics_snapshot = null
 	_physical_effect_epoch = maxi(0, epoch)
 	_pending_physical_effects.clear()
 	_pending_physical_usables.clear()
@@ -2390,6 +2402,24 @@ func take_latest_snapshot(after_serial: int) -> CyberSimulationSnapshot:
 	return result
 
 
+func physics_publication_mode() -> String:
+	_mutex.lock()
+	var result: String = "combined" if _combined_physics_publication else "early"
+	_mutex.unlock()
+	return result
+
+
+func take_latest_physics_snapshot() -> CyberSimulationSnapshot:
+	_mutex.lock()
+	# Null is a real retirement/missing-publication fence. Never recover a
+	# retired physical owner by falling back to its old graphical snapshot.
+	var result: CyberSimulationSnapshot = _published_physics_snapshot
+	if _combined_physics_publication and result != null:
+		result = _published_snapshot
+	_mutex.unlock()
+	return result
+
+
 func acknowledge_render_snapshot(render_snapshot_serial: int) -> void:
 	if render_snapshot_serial <= 0:
 		return
@@ -2855,6 +2885,96 @@ func _worker_loop() -> void:
 			next_tick_usec = now_usec
 
 
+func _refresh_hard_surface_snapshot(force_refresh: bool, rigid_body_epoch: int, now_usec: int) -> float:
+	var current_hard_surface_revision: int = int(_world.hard_surface_revision)
+	# The workbench lock-step steps Rapier only against the current revision,
+	# so a throttled packet would cap the whole session at the throttle rate
+	# whenever reactions edit hard terrain every tick (about 4 ticks/s). Its
+	# native packet is cached per revision; other modes keep the throttle.
+	var workbench_lockstep: bool = _workbench_extent != Vector2i.ZERO
+	if (
+		force_refresh
+		or rigid_body_epoch != _snapshot_hard_surface_epoch
+		or _snapshot_hard_surface_revision < 0
+		or (current_hard_surface_revision != _snapshot_hard_surface_revision
+			and (workbench_lockstep
+				or now_usec - _last_hard_surface_snapshot_usec >= HARD_SURFACE_SNAPSHOT_INTERVAL_USEC))
+	):
+		var hard_surface_start_usec: int = Time.get_ticks_usec()
+		# A new physical owner/reset cannot acknowledge a retained terrain
+		# packet from its predecessor, even inside the ordinary edit throttle.
+		if _world.has_method(&"get_hard_surface_chunk_rectangles"):
+			_snapshot_hard_surface_chunk_rectangles = PackedInt32Array(
+				_world.get_hard_surface_chunk_rectangles()
+			)
+			_snapshot_hard_surface_chunk_rectangles_valid = true
+		elif _world.has_method(&"get_hard_surface_rectangles"):
+			_snapshot_hard_surface_rectangles = PackedInt32Array(
+				_world.get_hard_surface_rectangles()
+			)
+			_snapshot_hard_surface_rectangles_valid = true
+		_snapshot_hard_surface_revision = current_hard_surface_revision
+		_snapshot_hard_surface_epoch = rigid_body_epoch
+		_last_hard_surface_snapshot_usec = now_usec
+		return float(Time.get_ticks_usec() - hard_surface_start_usec) / 1000.0
+	return 0.0
+
+
+func _publish_workbench_physics_snapshot(paused: bool, rigid_body_epoch: int,
+		trace_generation: int) -> CyberSimulationSnapshot:
+	var snapshot: CyberSimulationSnapshot = CyberSimulationSnapshot.new()
+	snapshot.serial = _snapshot_serial
+	snapshot.published_usec = Time.get_ticks_usec()
+	snapshot.rigid_body_epoch = rigid_body_epoch
+	snapshot.physics_world_generation = _world_generation
+	snapshot.simulation_world_revision = int(_world.revision)
+	snapshot.tick_index = int(_world.tick_index)
+	snapshot.paused = paused
+	snapshot.hard_surface_revision = _snapshot_hard_surface_revision
+	snapshot.hard_surface_rectangles = _snapshot_hard_surface_rectangles
+	snapshot.hard_surface_rectangles_valid = _snapshot_hard_surface_rectangles_valid
+	snapshot.hard_surface_chunk_rectangles = _snapshot_hard_surface_chunk_rectangles
+	snapshot.hard_surface_chunk_rectangles_valid = _snapshot_hard_surface_chunk_rectangles_valid
+	if _last_native_tick_world_generation == _world_generation:
+		snapshot.last_native_tick_started_usec = _last_native_tick_started_usec
+		snapshot.last_native_tick_completed_usec = _last_native_tick_completed_usec
+		snapshot.last_native_tick_world_generation = _last_native_tick_world_generation
+		snapshot.last_native_tick_body_sample = _last_native_tick_body_sample
+		snapshot.last_native_tick_body_publication = _last_native_tick_body_publication
+		snapshot.last_native_tick_lateness_usec = _last_native_tick_lateness_usec
+	snapshot.lab_context = {
+		"workbench_gcr":_workbench_result.duplicate(true),
+		"workbench_hard_surface_revision":int(_world.hard_surface_revision),
+		"workbench_completed_sample":_workbench_completed_sample,
+		"workbench_refusal":_workbench_refusal,
+		"workbench_step_serial":_workbench_step_serial,
+	}
+	_mutex.lock()
+	snapshot.lab_context["workbench_emitters"] = _workbench_emitter_receipts.duplicate(true)
+	_mutex.unlock()
+	_freeze_capture(snapshot.lab_context)
+	_mutex.lock()
+	# Main can retire an owner or stop while copied values are assembled. A
+	# late old-owner completion cannot repopulate its cleared mailbox.
+	if not _running or rigid_body_epoch != _physical_effect_epoch \
+		or _workbench_sample.get("epoch",-1) != rigid_body_epoch:
+		_mutex.unlock()
+		return null
+	snapshot.physics_handoff_usec = Time.get_ticks_usec()
+	snapshot.worker_handoff_usec = snapshot.physics_handoff_usec
+	_published_physics_snapshot = snapshot
+	if trace_generation > 0 and _publication_detail_trace:
+		_append_render_cadence_event_locked({"kind":"physics_publication",
+			"start_usec":snapshot.published_usec,"completed_usec":snapshot.physics_handoff_usec,
+			"snapshot_serial":snapshot.serial,"world_generation":_world_generation,
+			"tick_index":snapshot.tick_index,"revision":snapshot.simulation_world_revision,
+			"body_sample":_workbench_completed_sample,"required_hard_revision":int(_world.hard_surface_revision),
+			"packet_hard_revision":snapshot.hard_surface_revision,
+			"native_completed_usec":snapshot.last_native_tick_completed_usec},trace_generation)
+	_mutex.unlock()
+	return snapshot
+
+
 func _publish_snapshot(
 	worker_step_time_ms: float,
 	paused: bool,
@@ -2866,6 +2986,9 @@ func _publish_snapshot(
 	if _simulation_failed:
 		_publish_failure_snapshot()
 		return
+	# Reserve exactly one identity for both publications from this owner turn.
+	# The physical bridge's duplicate fence must never see competing sequences.
+	_snapshot_serial += 1
 	var copy_start_usec: int = Time.get_ticks_usec()
 	var now_usec: int = Time.get_ticks_usec()
 	var render_exchange_time_ms: float = 0.0
@@ -2912,6 +3035,19 @@ func _publish_snapshot(
 		and acknowledged_render_serial >= _pending_render_snapshot_serial
 	):
 		_clear_pending_render_patches()
+	# Physics requires complete native terrain and the response to its exact
+	# preceding sample. Material packing/accumulation is not part of that law.
+	# Publish only after all post-tick authoring work and required geometry, then
+	# let the main physics callback overlap the remaining graphical work.
+	var workbench_physics: bool = _workbench_extent != Vector2i.ZERO
+	var physics_completion: CyberSimulationSnapshot
+	if workbench_physics:
+		hard_surface_packet_time_ms = _refresh_hard_surface_snapshot(force_render_full_refresh, rigid_body_epoch, now_usec)
+		physics_completion = _publish_workbench_physics_snapshot(paused, rigid_body_epoch, trace_generation)
+	else:
+		_mutex.lock()
+		_published_physics_snapshot = null
+		_mutex.unlock()
 	var render_due: bool = (
 		force_render_full_refresh
 		or (
@@ -2981,39 +3117,9 @@ func _publish_snapshot(
 			render_generation_advanced = true
 		render_exchange_completed_usec = Time.get_ticks_usec()
 		render_exchange_time_ms = float(render_exchange_completed_usec-render_exchange_start_usec)/1000.0
+	if not workbench_physics:
+		hard_surface_packet_time_ms = _refresh_hard_surface_snapshot(force_render_full_refresh, rigid_body_epoch, now_usec)
 	var current_hard_surface_revision: int = int(_world.hard_surface_revision)
-	# The workbench lock-step steps Rapier only against the current revision,
-	# so a throttled packet would cap the whole session at the throttle rate
-	# whenever reactions edit hard terrain every tick (about 4 ticks/s). Its
-	# native packet is cached per revision; other modes keep the throttle.
-	var workbench_lockstep: bool = _workbench_extent != Vector2i.ZERO
-	if (
-		force_render_full_refresh
-		or rigid_body_epoch != _snapshot_hard_surface_epoch
-		or _snapshot_hard_surface_revision < 0
-		or (current_hard_surface_revision != _snapshot_hard_surface_revision
-			and (workbench_lockstep
-				or now_usec - _last_hard_surface_snapshot_usec >= HARD_SURFACE_SNAPSHOT_INTERVAL_USEC))
-	):
-		var hard_surface_start_usec: int = Time.get_ticks_usec()
-		# A new physical owner/reset cannot acknowledge a retained terrain
-		# packet from its predecessor, even inside the ordinary edit throttle.
-		if _world.has_method(&"get_hard_surface_chunk_rectangles"):
-			_snapshot_hard_surface_chunk_rectangles = PackedInt32Array(
-				_world.get_hard_surface_chunk_rectangles()
-			)
-			_snapshot_hard_surface_chunk_rectangles_valid = true
-		elif _world.has_method(&"get_hard_surface_rectangles"):
-			_snapshot_hard_surface_rectangles = PackedInt32Array(
-				_world.get_hard_surface_rectangles()
-			)
-			_snapshot_hard_surface_rectangles_valid = true
-		_snapshot_hard_surface_revision = current_hard_surface_revision
-		_snapshot_hard_surface_epoch = rigid_body_epoch
-		_last_hard_surface_snapshot_usec = now_usec
-		hard_surface_packet_time_ms = float(
-			Time.get_ticks_usec() - hard_surface_start_usec
-		) / 1000.0
 	var copy_time_ms: float = float(Time.get_ticks_usec() - copy_start_usec) / 1000.0
 	var publication_start_usec: int = Time.get_ticks_usec()
 
@@ -3030,9 +3136,11 @@ func _publish_snapshot(
 	snapshot.actor_prototype_status = _actor_prototype_status
 	snapshot.actor_prototype_reset_serial = _actor_prototype_result_serial
 	snapshot.actor_prototype_reset_applied = _actor_prototype_reset_applied
-	_snapshot_serial += 1
 	snapshot.serial = _snapshot_serial
 	snapshot.published_usec = Time.get_ticks_usec()
+	if physics_completion != null:
+		snapshot.physics_world_generation = physics_completion.physics_world_generation
+		snapshot.physics_handoff_usec = physics_completion.physics_handoff_usec
 	if _last_native_tick_world_generation == _world_generation:
 		snapshot.last_native_tick_started_usec = _last_native_tick_started_usec
 		snapshot.last_native_tick_completed_usec = _last_native_tick_completed_usec
@@ -3296,6 +3404,7 @@ func _publish_failure_snapshot() -> void:
 	_mutex.lock()
 	_pending_emissions.clear()
 	snapshot.worker_handoff_usec = Time.get_ticks_usec()
+	_published_physics_snapshot = snapshot if _running else null
 	_published_snapshot = snapshot
 	_mutex.unlock()
 

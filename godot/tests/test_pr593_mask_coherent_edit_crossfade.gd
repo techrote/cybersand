@@ -50,6 +50,14 @@ func _native_edit(id: int) -> bool:
 		and receipt.get("after",PackedInt32Array())==PackedInt32Array([id]),
 		"native World confirms material "+str(id))
 
+# Match the production history selection. The exact retained image supersedes
+# the bounded legacy dictionary whenever it is available.
+func _previous_occupied(pixel: Vector2i) -> bool:
+	var retained: Image = host._presentation_previous_image
+	if retained != null:
+		return retained.get_pixel(pixel.x,pixel.y).r8 != 0
+	return host._presentation_previous_occupied.has(pixel.y*host.image.get_width()+pixel.x)
+
 func _shown() -> Vector2:
 	var parts: Array = host.physical_actor_overlay._parts
 	return parts[0].transform.origin if parts.size()==1 else Vector2.INF
@@ -78,7 +86,6 @@ func _run() -> void:
 				require(host.paused,"native editing while physics paused")
 				require(host.cadence_lod_enabled,"real material crossfade enabled")
 				host.render_snapshot_hz=1
-				var pixel_id: int = CELL.y*host.image.get_width()+CELL.x
 				var original_frame: Dictionary = host.workbench_display_frame().duplicate(true)
 				if await _native_edit(6):
 					if require(await until(func() -> bool:
@@ -87,7 +94,7 @@ func _run() -> void:
 						if await _native_edit(0):
 							if require(await until(func() -> bool:
 									return host.image.get_pixel(CELL.x,CELL.y).r8==0 \
-										and host._presentation_previous_occupied.has(pixel_id) \
+										and _previous_occupied(CELL) \
 										and not host._presentation_previous_unknown),
 									"native erase creates tracked old-only Fire pixel"):
 								# A headless DisplayServer cannot establish actual GPU texture
@@ -109,10 +116,10 @@ func _run() -> void:
 									require(old_pixel==0 or old_pixel==6,
 										"graphical old GPU readback is empty or prior Fire")
 									require(old_pixel==0
-										or host._presentation_previous_occupied.has(pixel_id),
+										or _previous_occupied(CELL),
 										"visible prior GPU Fire is covered by guard history")
 								else:
-									require(host._presentation_previous_occupied.has(pixel_id) \
+									require(_previous_occupied(CELL) \
 										and not host._presentation_previous_unknown,
 										"headless previous material captured from pre-patch CPU image")
 								var frame: Dictionary = host.workbench_display_frame().duplicate(true)
@@ -132,7 +139,8 @@ func _run() -> void:
 								var valid_after_edit: bool = host._valid_workbench_mask_frame(frame)
 								var pixel_clearance: Dictionary = Clearance.assess(bound,proposed_pose,
 									bridge._rects[0],host.image,host._presentation_previous_occupied,
-									host._presentation_previous_unknown,true)
+									host._presentation_previous_unknown,true,Clearance.MAX_SCAN_CELLS,0,
+									host._presentation_previous_image)
 								require(not pixel_clearance.safe and pixel_clearance.reason=="material_in_swept_mask",
 									"actual previous GPU Fire cell blocks the geometrically swept native mask")
 								host.snapshot_blend_start_usec=Time.get_ticks_usec()
@@ -150,7 +158,8 @@ func _run() -> void:
 								host.snapshot_blend_start_usec=Time.get_ticks_usec()-2000000
 								var after_blend: Dictionary = Clearance.assess(bound,proposed_pose,
 									bridge._rects[0],host.image,host._presentation_previous_occupied,
-									host._presentation_previous_unknown,false)
+									host._presentation_previous_unknown,false,Clearance.MAX_SCAN_CELLS,0,
+									host._presentation_previous_image)
 								require(after_blend.safe,
 									"after crossfade expiry old-only Fire no longer blocks empty swept World")
 								host._present_physical_actor_overlay(frame)

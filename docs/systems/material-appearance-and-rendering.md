@@ -342,9 +342,16 @@ and requests a full refresh after rejection. Pthreads do not create a mutable
 render read path.
 
 [main.gd](../../godot/scripts/main.gd) validates patches and updates a persistent
-CPU Image, then calls `ImageTexture.update(image)`. At 1024² RG8 this uploads
-2,097,152 bytes for each changed publication, even for a small dirty patch.
-Patch count/copied KiB therefore measures bridge work, not GPU upload traffic.
+CPU Image. The unmerged PHYSICS-FREEZE-REMEDIATION-002 candidate uses bounded
+current/previous texture arrays on the qualified compatibility renderer;
+exact integer tile sampling preserves RG8 bytes and neighbour access across
+tile boundaries. Reused slots repair the union of current and preceding dirty
+tiles and skip byte-identical layers. The
+[publication contract](../architecture/rendering-and-gameplay-bridges.md#does-a-small-dirty-patch-mean-a-small-gpu-upload)
+owns capacity, history, mode switching and fallback. The retained full
+`ImageTexture.update(image)` fallback still submits2,097,152 bytes at1024² RG8
+even for a tiny edit. Native patch bytes therefore remain distinct from actual
+layer submissions; elapsed upload calls are not isolated GPU measurements.
 No second mutable world image is introduced by shader neighbor sampling.
 
 ## Temporal smoothing and glow

@@ -360,6 +360,8 @@ func _finish(ui: Control) -> void:
 		"godot":Engine.get_version_info().get("string",""),
 		"video_adapter":RenderingServer.get_video_adapter_name(),
 		"render_driver":RenderingServer.get_current_rendering_driver_name(),
+		"material_publication":host.material_publication_status(),
+		"physics_publication":host.simulation_worker.physics_publication_mode(),
 		"display":{"profile":display_profile,"startup":startup_display,"server":DisplayServer.get_name(),
 			"vsync_policy":"process-start default" if display_profile=="interactive-default" else "disabled for pacing experiment",
 			"dpi":DisplayServer.screen_get_dpi(),"scale":DisplayServer.screen_get_scale(),

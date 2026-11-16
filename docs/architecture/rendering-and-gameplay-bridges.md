@@ -6,7 +6,7 @@ status: Current
 scope: Native publication outcomes, Godot render consumption and current gameplay commands; resource lifetime and wire layouts are linked
 keywords: [RenderBridge, GameplayBridge, RG8, immutable snapshot, full texture upload, backpressure, emission queue]
 related-documents: [data-ownership-and-lifetimes.md, rigid-body-and-cellular-coupling.md, ../reference/interfaces-and-message-contracts.md, ../systems/material-appearance-and-rendering.md]
-last-reviewed: 2026-11-15
+last-reviewed: 2026-11-16
 ---
 
 # Rendering and gameplay bridges
@@ -70,6 +70,26 @@ and [trace runbook](../operations/engine-lab-pose-tracing.md) distinguish automa
 contract checks from physical NVIDIA acceptance.
 
 ## Workbench physics progress and terrain installation
+
+**PHYSICS-FREEZE-REMEDIATION-002 candidate:** the exclusive worker publishes a
+bounded immutable physical completion after post-tick edits and required hard
+geometry are ready, before render extraction and patch packing. Main's physics
+callback consumes this separate slot. Both physical and graphical snapshots from
+one owner turn share a single reserved serial; independent physical generation
+and handoff fields never impersonate uploaded material identity. Failure
+quarantines both slots and owner retirement clears the physical slot without
+falling back to older graphical state. An older graphical terrain packet cannot
+replace newer installed geometry. `CYBERSAND_DIAG_PHYSICS_PUBLICATION=combined`
+retains the previous completion dependency for controlled comparison.
+
+This overlaps graphical publication with the next eligible physical callback.
+The native owner still completes graphical packing before its next tick; its
+ordinary sample wake remains the existing bounded polling behavior. No thread
+pool, native law, callback timestep, or feedback-age policy changes. All live
+Rapier objects stay main-thread owned. Publication cost and main-thread renderer
+waits can still limit callbacks. The
+[remediation evidence](../audits/2026-11-16-physics-freeze-remediation-002.md)
+separates proven overlap from end-to-end performance and physical acceptance.
 
 **Current corrective candidate:** `Main._workbench_terrain_installed` services
 pending terrain on each actual physics callback. The old once-per-render-frame
@@ -179,11 +199,27 @@ change leaves retention, overflow, publication and ACK policy unchanged.
 
 ## Does a small dirty patch mean a small GPU upload?
 
-No. **Current:** [main `apply_render_patches_to_image`](../../godot/scripts/main.gd)
+**Current unmerged remediation candidate:** [main `apply_render_patches_to_image`](../../godot/scripts/main.gd)
 validates dimensions, channel count, offsets and exact byte sizes for the full
 packet before constructing/blitting patches. It updates a persistent CPU Image.
-`upload_texture_patches` then calls `ImageTexture.update` on the **full** backing
-image. A 1024×1024 RG8 upload is 2,097,152 bytes regardless of a tiny edit.
+On the qualified OpenGL/ANGLE compatibility backend, two bounded
+`Texture2DArray` resources represent current and previous whole-World material.
+World texels map to exact integer tile/layer coordinates in all six material
+shader consumers. At2048²,128² tiles require256 layers. A reused slot checks the
+union of this publication's dirty tiles and those changed on the previous
+publication; exact unchanged tile bytes skip `update_layer`. This repairs the
+two-publication-old slot without losing previous/current shader history.
+The renderer submits only changed layers, using the GLES3 depth-one subimage
+path. Full initialization and dense changes can still touch every layer.
+
+`CYBERSAND_MATERIAL_PUBLICATION=auto|full|tiled` and Engine Lab select the path.
+Unsupported rendering backends/capacities and detectable array validation
+failures retain the whole-ImageTexture fallback; switching modes reconstructs
+both exact retained histories. Godot's layer-update API returns no error result,
+so latent device loss is not claimed to be synchronously detectable. The
+fallback's `ImageTexture.update` still updates the full plane regardless of
+patch area (8MiB at2048² RG8). Neither CPU patch size nor elapsed call timing
+alone establishes transferred GPU bytes or a driver-wait cause.
 
 Desktop acknowledges a render serial only after successful consumption.
 Malformed/empty/stale or unacceptable full-refresh data is rejected and requests
@@ -218,9 +254,9 @@ without changing cell state. `K` controls presentation smoothing; `H` controls
 publication cadence. Neither is a strict simulation-accuracy switch.
 [Appearance](../systems/material-appearance-and-rendering.md) owns shader details.
 
-**Planned:** true GPU subregion submission, palette-change records, measured
-compression/coalescing and tuned production snapshot defaults. Lower native
-copy volume does not establish any of those features.
+**Planned:** finer subregion submission within a tile, palette-change records,
+measured compression/coalescing and tuned production snapshot defaults. The
+bounded layer implementation does not establish these separate features.
 
 ## Which gameplay command path exists today?
 

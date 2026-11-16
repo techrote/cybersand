@@ -44,7 +44,7 @@ jobs:
     needs: qualification-scope
     if: needs.qualification-scope.outputs.report_only != 'true'
     runs-on: ubuntu-24.04
-    timeout-minutes: 65
+    timeout-minutes: 95
     env:
       LIBGL_ALWAYS_SOFTWARE: '1'
       LP_NUM_THREADS: '2'
@@ -82,6 +82,7 @@ jobs:
           python3 tools/docs/retrieval_eval.py --output evidence/retrieval.json
           python3 tools/docs/retrieval_eval.py --queries docs/reference/retrieval-questions-physics-pacing.json --output evidence/retrieval-physics-pacing.json
           python3 tools/ci/test_analyze_pose_trace.py > evidence/analyzer-tests.log 2>&1
+          python3 tools/ci/test_physics_freeze_comparison.py > evidence/comparison-tests.log 2>&1
       - name: Pinned Godot and graphical display
         run: |
           set -euo pipefail
@@ -116,6 +117,11 @@ jobs:
           set -euo pipefail
           xvfb-run -a -s '-screen 0 1920x1080x24 -nolisten tcp' python3 tools/ci/run_render_cadence_matrix.py --coherence --godot "$GODOT_BIN" --project godot --evidence evidence/comparison --source-sha "$GITHUB_SHA" --conditions follow60 free60 slow-native interactive-follow interactive-free --timeout 900
           python3 tools/ci/package_engine_lab_windows.py preflight --platform linux > evidence/source-runtime-after.json
+      - name: Matched control and candidate physical progression with ordinary coupling
+        if: success() || failure()
+        run: |
+          set -euo pipefail
+          xvfb-run -a -s '-screen 0 1920x1080x24 -nolisten tcp' python3 tools/ci/run_physics_freeze_comparison.py --godot "$GODOT_BIN" --project godot --evidence evidence/physics-freeze-abba --source-sha "$GITHUB_SHA" --rendering-driver opengl3
       - if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
@@ -127,7 +133,7 @@ jobs:
     name: Windows standalone application, installed tests and actual Test It.cmd
     needs: qualification-scope
     runs-on: windows-2022
-    timeout-minutes: 75
+    timeout-minutes: 105
     env:
       CYBERSAND_REPORT_ONLY: ${{ needs.qualification-scope.outputs.report_only }}
     defaults:
@@ -151,6 +157,7 @@ jobs:
           git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
           python tools/ci/package_engine_lab_windows.py preflight --platform windows > evidence/source-runtime.json
           python tools/ci/test_analyze_pose_trace.py > evidence/analyzer-tests.log 2>&1
+          python tools/ci/test_physics_freeze_comparison.py > evidence/comparison-tests.log 2>&1
           curl -fL --retry 3 --max-time 600 -o "$RUNNER_TEMP/godot-4.7-win.zip" 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
           mkdir -p "$RUNNER_TEMP/coherence-notices"
           for name in LICENSE.txt COPYRIGHT.txt; do
@@ -185,6 +192,9 @@ jobs:
         run: |
           set -euo pipefail
           python tools/ci/package_engine_lab_windows.py smoke --output C:/cscoherence --evidence evidence/installed
+      - name: Execute the actual ordinary and comparison Workbench launchers
+        shell: powershell
+        run: ./tools/ci/test_packaged_workbench_launchers.ps1 -Application C:/cscoherence -Evidence evidence/launchers
       - name: Authenticate retained application qualification with identical Godot and native source
         id: reuse
         if: env.CYBERSAND_REPORT_ONLY == 'true'
@@ -221,12 +231,17 @@ jobs:
           $files = @(Get-ChildItem 'C:\cscoherence\Test-It-Results' -Recurse -Filter summary.json)
           if ($files.Count -ne 1) { throw 'Expected one complete Test It summary' }
           $result = Get-Content -LiteralPath $files[0].FullName -Raw | ConvertFrom-Json
-          $expectedCases = if ($env:CYBERSAND_REPORT_ONLY -eq 'true') { 2 } else { 16 }
-          $expectedPairs = if ($env:CYBERSAND_REPORT_ONLY -eq 'true') { 1 } else { 8 }
+          $expectedCases = if ($env:CYBERSAND_REPORT_ONLY -eq 'true') { 2 } else { 4 }
+          $expectedPairs = if ($env:CYBERSAND_REPORT_ONLY -eq 'true') { 1 } else { 2 }
           if (-not $result.complete -or $result.status -ne 'passed' -or $result.source -ne $env:GITHUB_SHA -or @($result.cases).Count -ne $expectedCases -or @($result.pairs).Count -ne $expectedPairs) { throw 'Incomplete source-matched comparison' }
           python tools/ci/test_test_it_physics_reducer.py --powershell powershell.exe --test-it C:/cscoherence/Run-Test-It.ps1 --evidence-root $files[0].Directory.FullName --output evidence/report-reducer/new-captures --require-windows-powershell51
           if ($LASTEXITCODE -ne 0) { throw 'New installed capture reduction mismatch' }
           Write-Host ('COHERENCE_TEST_IT_PASS '+(@{source=$result.source;cases=@($result.cases).Count;pairs=@($result.pairs).Count;physical_acceptance=$result.physical_acceptance}|ConvertTo-Json -Compress))
+      - name: Same-host Windows source-matched physical progression ABBA
+        if: env.CYBERSAND_REPORT_ONLY != 'true' && (success() || failure())
+        run: |
+          set -euo pipefail
+          python tools/ci/run_physics_freeze_comparison.py --godot C:/cscoherence/Godot_v4.7-stable_win64_console.exe --project C:/cscoherence/godot --evidence evidence/physics-freeze-abba --source-sha "$GITHUB_SHA" --rendering-driver opengl3_angle
       - name: Collect installed results under one artifact root
         if: always()
         shell: pwsh

@@ -30,6 +30,7 @@ PRESERVED=("native","godot/native_extension","godot/addons/cybersand_native",
            "third_party/godot-runtime.lock.json","godot/third_party/rapier2d.lock.json")
 APPLICATION=("godot/scripts","godot/tests","godot/shaders","godot/project.godot","godot/main.tscn",
              "tools/ci/package_engine_lab_windows.py","tools/ci/run_render_cadence_matrix.py",
+             "tools/ci/run_physics_freeze_comparison.py",
              "tools/ci/analyze_pose_trace.py","Run-Test-It.ps1","Test It.cmd",
              "docs/operations/camera-stack-coherence-acceptance.md")
 
@@ -92,7 +93,7 @@ def preflight(platform="windows"):
     # Generated Godot caches are excluded from these source paths.
     subprocess.run(["git","diff","--exit-code",SOURCE,"--",*PRESERVED,*APPLICATION],cwd=ROOT,check=True)
     untracked=git("ls-files","--others","--exclude-standard","--",*APPLICATION).splitlines()
-    need(not any(Path(name).suffix in {".gd",".gdshader",".py",".ps1",".json",".md"} for name in untracked),
+    need(not any(Path(name).suffix in {".gd",".gdshader",".gdshaderinc",".py",".ps1",".json",".md"} for name in untracked),
          "Untracked application or qualification source prevents exact-source execution")
     subprocess.run(["git","diff","--exit-code",PARENT,SOURCE,"--",
                     "godot/scripts/workbench_physics_bridge.gd","godot/scripts/pixel_camera_transform.gd"],
@@ -135,6 +136,8 @@ def project_from_git(output,dll,rapier,provenance):
            "docs/audits/2026-11-14-pr566-mask-coherent-presentation-qualification.md",
            "docs/audits/2026-11-15-render-cadence-001.md",
            "docs/audits/2026-11-15-camera-stack-coherence.md",
+           "docs/audits/2026-11-15-workbench-physics-freezes.md",
+           "docs/audits/2026-11-16-physics-freeze-remediation-002.md",
            "docs/operations/engine-lab-pose-tracing.md",
            "docs/operations/camera-stack-coherence-acceptance.md",
            "docs/operations/native-pixel-scrolling.md",
@@ -198,24 +201,33 @@ def dependencies(output,engine_zip,notices,vc):
         if file.is_file(): shutil.copyfile(file,output/file.name)
 
 def launchers(output):
-    for name,mode,selection,cadence in (
-            ("Open Workbench.cmd","guarded","", ""),
-            ("Open Coherent Workbench.cmd","guarded","", ""),
-            ("Open Guarded Workbench.cmd","guarded","", ""),
-            ("Open Original Presentation.cmd","guarded","legacy", ""),
-            ("Open Mask Baseline.cmd","mask","legacy", ""),
-            ("Open Original Cadence.cmd","guarded","legacy","legacy")):
+    for name,mode,selection,cadence,material,physics in (
+            ("Open Workbench.cmd","guarded","", "","auto",""),
+            ("Open Publication Control.cmd","guarded","", "","full","combined"),
+            ("Open Full Texture Control.cmd","guarded","", "","full",""),
+            ("Open Coherent Workbench.cmd","guarded","", "","auto",""),
+            ("Open Guarded Workbench.cmd","guarded","", "","auto",""),
+            ("Open Original Presentation.cmd","guarded","legacy", "","auto",""),
+            ("Open Mask Baseline.cmd","mask","legacy", "","auto",""),
+            ("Open Original Cadence.cmd","guarded","legacy","legacy","full","combined")):
         script=('@echo off\nsetlocal\ncd /d "%~dp0"\n'
                 'set "CYBERSAND_SOURCE_REVISION='+SOURCE+'"\n'
                 'set "CYBERSAND_EVAL_SOURCE_SHA='+SOURCE+'"\n'
                 'set "CYBERSAND_DIAG_FLYER_POSE='+mode+'"\n'
                 'set "CYBERSAND_DIAG_PRESENTATION='+selection+'"\n'
                 'set "CYBERSAND_DIAG_RENDER_CADENCE='+cadence+'"\n'
+                'set "CYBERSAND_MATERIAL_PUBLICATION='+material+'"\n'
+                'set "CYBERSAND_DIAG_PHYSICS_PUBLICATION='+physics+'"\n'
+                'set "CYBERSAND_DIAG_COMMON_OBSERVER="\n'
                 'echo CyberSand Workbench - '+('original presentation' if selection else 'coherent candidate')+'\n'
                 'echo Source '+SOURCE+'\n'
                 '"%~dp0'+CONSOLE+'" --headless --path "%~dp0godot" --editor --quit\n'
                 'if errorlevel 1 (echo Import failed. & pause & exit /b 1)\n'
-                'start "" "%~dp0'+ENGINE+'" --path "%~dp0godot" -- --workbench\n')
+                'if defined CYBERSAND_LAUNCH_TEST_WAIT (\n'
+                '  start "" /wait "%~dp0'+ENGINE+'" --path "%~dp0godot" %* -- --workbench\n'
+                '  exit /b\n'
+                ')\n'
+                'start "" "%~dp0'+ENGINE+'" --path "%~dp0godot" %* -- --workbench\n')
         (output/name).write_bytes(script.replace("\n","\r\n").encode())
 
 GUIDE=r"""# CyberSand coherent Workbench - Windows evaluation
@@ -230,45 +242,51 @@ Rapier Windows x64 module SHA256: RAPIER_SHA256
 Extract this entire ZIP into a fresh writable directory. No separate Godot,
 Python, Git or repository installation is required.
 
-1. Double-click Open Workbench.cmd for the corrected interactive Shared Workbench.
+1. Double-click Open Workbench.cmd for the repaired interactive Shared Workbench.
 2. Fly a Needle in Free and Follow modes. Turn Thruster fire ON, then OFF.
    Try fast movement, contact/dense materials, and normal camera pan/zoom.
-3. Close CyberSand completely. Open Original Presentation.cmd and repeat the
-   same setup/settings. This preserves the original guarded source selection
-   and live Follow while using the same physics, bounded material scans
-   and repaired ACK/history. Original retains coarse swept sampling; the
-   corrected mode also uses bounded conservative refinement. This compares
-   presentation policy and guards within the integrated application, not a
-   byte-identical historical PR593 application.
-4. Open Mask Baseline.cmd supplies the older material-bound display comparison.
-5. Double-click Test It.cmd to collect eight matched original/candidate pairs,
-   rebuilding the exact World for every arm. Allow several minutes; slow
-   machines can take longer.
+   Paint small and large areas while playing; pause, single-step, Undo/Redo,
+   Save and reopen in a fresh process.
+3. Close CyberSand. Open Publication Control.cmd uses full texture uploads
+   and the combined native/graphical handoff in the same reviewed source.
+   Repeat the same setup. Both modes retain coherent presentation, fixed-step
+   authoritative Rapier physics and the normal native-sample safety wait.
+4. Open Full Texture Control.cmd isolates full texture uploads while keeping
+   the early physics handoff. Engine Lab also switches texture modes live;
+   it reports the active backend and any fallback reason.
+5. Double-click Test It.cmd for two matched Free/Follow publication pairs
+   (four fresh application windows). Test It.cmd -Quick runs the Follow pair.
    Results and the complete local ZIP appear under Test-It-Results.
-   READ-RESULTS.txt gives achieved clocks, completed Rapier step gaps, physics
-   gate reasons, frame intervals and presentation CPU. A complete capture
-   does not mean that gameplay passed physical smoothness evaluation.
+   READ-RESULTS.txt gives actual completed native/Rapier rates, physical gap
+   distributions and hold reasons, upload stages, and frame cadence.
+   A complete capture does not mean gameplay passed physical evaluation.
 
-Engine Lab keeps live FPS/VSync, Pixel/Rapier/publication pacing, ACK controls
-and opt-in manual/scripted pose tracing. The scripted comparison uses the exact
-2048-square Needle reference. Two Free/Follow pairs use the fresh interactive
-defaults: native60/Rapier60, native sample wait/wake ON, Auto workers, ordinary
-window/zoom and startup VSync. Six retained pacing pairs cover 30/60/120
-graphical targets, Free/Follow, 2Hz native stress and delayed ACK with wait/wake
-OFF, one worker and VSync OFF. Fire toggles are separately recorded at
-completed Rapier steps 0 and 60. Target rates are not achieved-rate claims.
-Rapier still advances a fixed 1/60 simulated second per completed step.
-Each case records CPU, logical processors, requested/resolved native workers,
-GPU, driver, DPI, VSync and renderer. Test It leaves your saved Engine Lab worker
-preference unchanged and reports it separately. Auto in the fresh test profile
-can differ from a previously saved explicit worker request in your ordinary
-launcher. Hosted ANGLE/software rendering differs from a physical NVIDIA GPU.
+Automatic material publication uses bounded dirty tile arrays on the qualified
+OpenGL/ANGLE backend and retains full texture fallback. Current and previous
+material images, shader crossfade, collision masks and revision ACKs are preserved.
+Large changes/full initialization can still be expensive. The early physical
+mailbox removes graphical packet work from the completion handoff but does not
+remove native computation, required terrain installation, strict feedback age,
+or the need for actual main-thread physics callbacks.
 
-For just the coupled default Follow comparison, run Test It.cmd -Quick.
-The existing detailed cadence investigation remains available through:
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Run-Test-It.ps1 -Cadence
-Open Original Cadence.cmd additionally restores the older ACK/history behavior;
-it is a separate diagnostic, not the normal original-presentation comparison.
+The comparison uses the exact original 2048-square Needle reference, native 60/
+Rapier 60 requests, native wait/wake ON, Auto workers, normal window/zoom and
+startup VSync. Fire toggles at completed steps 0/60. Both arms use the same input
+tape and require exact equality of all recorded common physical states and
+feedback associations. It compares modes within one source; the CI evidence
+separately compares the old c1ad source against this application on one host.
+Configured rates are not achieved rates; Rapier retains fixed 1/60 simulated
+seconds per completed step. Upload-stage timers are elapsed calls and include
+possible waiting/descheduling, not isolated CPU execution or GPU transfer time.
+
+Every case records CPU, native worker request/capacity, GPU/driver, DPI, VSync,
+renderer and source. Your saved worker preference stays unchanged. Hosted
+ANGLE/software rendering does not establish physical Windows 11 NVIDIA acceptance.
+Engine Lab retains FPS/VSync, Pixel/Rapier/publication pacing and local pose traces.
+The earlier temporal-policy comparison remains explicitly available:
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Run-Test-It.ps1 -Coherence
+The earlier cadence investigation uses -Cadence. Open Original Presentation.cmd
+retains the old visual source policy; it is separate from publication controls.
 
 The full practical acceptance guide is:
 docs/operations/camera-stack-coherence-acceptance.md
@@ -293,7 +311,7 @@ Corrective candidate owner decision: HOLD - this source not yet physically evalu
 | Fast Needle, contact and dense materials | |
 | Physical freezing or long gaps (separate from visual source holds) | |
 | Pan, zoom, fractional scale and painting | |
-| Original presentation comparison | |
+| Publication Control / Full Texture Control comparison | |
 | Materially preferable candidate? | |
 | Test-It-Results ZIP name | |
 | PASS / FAIL / HOLD | |
@@ -397,6 +415,11 @@ def smoke(output,evidence):
         ("workbench-fleet",["--headless","--script","res://tests/test_workbench_fleet_session.gd"],240,"WORKBENCH_FLEET"),
         ("workbench-physics",["--headless","--script","res://tests/test_workbench_physics_play.gd"],600,"WORKBENCH_PHYSICS"),
         ("physics-pacing",["--headless","--audio-driver","Dummy","--script","res://tests/test_workbench_physics_pacing.gd"],300,"PHYSICS_PACING_RESULT"),
+        ("physics-publication",["--headless","--audio-driver","Dummy","--script","res://tests/test_workbench_physics_publication.gd"],300,"PHYSICS_PUBLICATION_RESULT"),
+        ("physics-publication-graphical",["--rendering-method","gl_compatibility","--audio-driver","Dummy","--script","res://tests/test_workbench_physics_publication.gd"],300,"PHYSICS_PUBLICATION_RESULT"),
+        ("physics-pacing-graphical",["--rendering-method","gl_compatibility","--audio-driver","Dummy","--script","res://tests/test_workbench_physics_pacing.gd"],600,"PHYSICS_PACING_RESULT"),
+        ("material-tiles",["--headless","--audio-driver","Dummy","--script","res://tests/test_material_tile_publication.gd"],300,"MATERIAL_TILE_PUBLICATION:"),
+        ("material-tiles-graphical",["--rendering-method","gl_compatibility","--audio-driver","Dummy","--script","res://tests/test_material_tile_publication.gd"],600,"MATERIAL_TILE_PUBLICATION:"),
         ("rapier-manual",["--headless","--script","res://tests/test_rapier_manual_step.gd"],180,"Rapier2D manual-step coupling fixture passed"),
         ("terrain-packet",["--headless","--script","res://tests/test_hard_surface_incremental_packet.gd"],180,"HARD_SURFACE_INCREMENTAL"),
         ("full-material-upload",["--headless","--audio-driver","Dummy","--script","res://tests/test_render_full_upload.gd"],180,"RENDER_FULL_UPLOAD:"),
@@ -424,8 +447,12 @@ def smoke(output,evidence):
             env["CYBERSAND_TEMPORAL_DENSE_OUTPUT"]=str((evidence/"temporal-dense").resolve())
         if name in {"temporal-contact","temporal-contact-graphical"}:
             env["CYBERSAND_TEMPORAL_CONTACT_OUTPUT"]=str((evidence/name).resolve())
-        if name=="physics-pacing":
+        if name.startswith("physics-pacing"):
             env["CYBERSAND_PHYSICS_PACING_OUTPUT"]=str((evidence/name).resolve())
+        if name.startswith("physics-publication"):
+            env["CYBERSAND_PHYSICS_PUBLICATION_OUTPUT"]=str((evidence/(name+".json")).resolve())
+        if name.startswith("material-tiles"):
+            env["CYBERSAND_MATERIAL_TILE_OUTPUT"]=str((evidence/(name+".json")).resolve())
         if name=="full-material-upload":
             env["CYBERSAND_FULL_UPLOAD_OUTPUT"]=str((evidence/name/"full-upload.json").resolve())
         group="paint-persistence" if name in {"paint-author","paint-reopen"} else name

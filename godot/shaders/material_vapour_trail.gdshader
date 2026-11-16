@@ -1,6 +1,8 @@
 shader_type canvas_item;
 render_mode unshaded;
 
+#include "res://shaders/material_tile_sampling.gdshaderinc"
+
 // Presentation-only vapour persistence. Two half-float SubViewports ping-pong
 // once per rendered frame: each frame keeps the brighter of the current Steam/
 // Smoke coverage and the reprojected, slightly risen and diffused previous
@@ -32,7 +34,7 @@ void fragment() {
 	vec2 view_pixel = floor(UV * view_size_px);
 	vec2 world_pixel = camera_origin_px + view_pixel;
 	vec2 clamped = clamp(world_pixel, vec2(0.0), world_size_px - vec2(1.0));
-	vec2 cell = texture(world_texture, (clamped + vec2(0.5)) / world_size_px).rg;
+	vec2 cell = cyber_material_current(world_texture, (clamped + vec2(0.5)) / world_size_px).rg;
 	int material_id = int(floor(cell.r * 255.0 + 0.5));
 	float condition = condition_projection_enabled > 0.5 ? cell.g : 0.8;
 	float steam = material_id == 22 ? 0.55 + 0.45 * condition : 0.0;

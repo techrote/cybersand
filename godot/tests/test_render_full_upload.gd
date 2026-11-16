@@ -238,7 +238,8 @@ func _measure_full_uploads(channels: int) -> void:
 			"reported_upload_ms":host.upload_time_ms,
 			"content_cache_usec":host._presentation_upload_cache_usec,
 			"content_id":host._presentation_current_content_id,
-			"previous_content_id":host._presentation_previous_content_id})
+			"previous_content_id":host._presentation_previous_content_id,
+			"material_publication":host.material_publication_status()})
 	measurements.append({"channels":channels, "side":SIDE,
 		"payload_bytes":a.size(), "samples":rows})
 	_release_host(host)

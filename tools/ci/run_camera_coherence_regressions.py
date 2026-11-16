@@ -18,7 +18,7 @@ import sys
 import time
 
 ROOT = Path(__file__).resolve().parents[2]
-ERRORS = re.compile(r"SCRIPT ERROR:|Parse Error:|Failed to load script|Failed loading resource:")
+ERRORS = re.compile(r"SCRIPT ERROR:|SHADER ERROR:|Parse Error:|Failed to load script|Failed loading resource:")
 
 
 def main():
@@ -54,6 +54,8 @@ def main():
         ('workbench-fleet', 'test_workbench_fleet_session', 'WORKBENCH_FLEET', {}, False),
         ('workbench-physics', 'test_workbench_physics_play', 'WORKBENCH_PHYSICS', {}, False),
         ('physics-pacing', 'test_workbench_physics_pacing', 'PHYSICS_PACING_RESULT', {}, False),
+        ('physics-publication', 'test_workbench_physics_publication', 'PHYSICS_PUBLICATION_RESULT', {}, False),
+        ('material-tiles', 'test_material_tile_publication', 'MATERIAL_TILE_PUBLICATION:', {}, False),
         ('rapier-manual', 'test_rapier_manual_step', 'Rapier2D manual-step', {}, False),
         ('terrain-packet', 'test_hard_surface_incremental_packet', 'HARD_SURFACE_INCREMENTAL', {}, False),
         ('full-material-upload', 'test_render_full_upload', 'RENDER_FULL_UPLOAD:', {}, False),
@@ -67,6 +69,9 @@ def main():
             ('legacy-crossfade-graphical', 'test_pr593_mask_coherent_edit_crossfade', 'PR593_NATIVE_EDIT_CROSSFADE_RESULT', legacy, True),
             ('camera-framebuffer', 'test_native_pixel_scrolling_render', 'NATIVE_PIXEL_SCROLLING_RESULT', {}, True),
             ('camera-effects', 'test_native_camera_effects_render', 'NATIVE_CAMERA_EFFECTS_RESULT', {}, True),
+            ('physics-publication-graphical', 'test_workbench_physics_publication', 'PHYSICS_PUBLICATION_RESULT', {}, True),
+            ('material-tiles-graphical', 'test_material_tile_publication', 'MATERIAL_TILE_PUBLICATION:', {}, True),
+            ('physics-pacing-graphical', 'test_workbench_physics_pacing', 'PHYSICS_PACING_RESULT', {}, True),
         ]
     names = {row[0] for row in cases}
     if args.cases and not set(args.cases) <= names:
@@ -76,7 +81,7 @@ def main():
               'physical_gpu_acceptance': 'pending_owner',
               'executed_files_sha256': {p.relative_to(args.project).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
                  for folder in ('scripts', 'shaders', 'tests') for p in sorted((args.project / folder).rglob('*'))
-                 if p.is_file() and p.suffix in ('.gd', '.gdshader')},
+                 if p.is_file() and p.suffix in ('.gd', '.gdshader', '.gdshaderinc')},
               'source_delta': subprocess.check_output(['git', 'diff', '--stat'], cwd=ROOT, text=True)}
     for name, script, marker, overrides, graphical in cases:
         if args.cases and name not in args.cases:
@@ -88,6 +93,10 @@ def main():
                    CYBERSAND_DIAG_PRESENTATION='', CYBERSAND_DIAG_RENDER_CADENCE='', CYBERSAND_DIAG_FLYER_POSE='',
                    CYBERSAND_TEST_ARTIFACT_DIR=str(folder / 'frames'))
         env.update(overrides)
+        if script == 'test_workbench_physics_publication':
+            env['CYBERSAND_PHYSICS_PUBLICATION_OUTPUT'] = str(folder / 'physics-publication.json')
+        elif script == 'test_material_tile_publication':
+            env['CYBERSAND_MATERIAL_TILE_OUTPUT'] = str(folder / 'material-tiles.json')
         command = [str(args.godot.resolve()), '--audio-driver', 'Dummy', '--path', str(args.project.resolve())]
         command += (['--rendering-method', 'gl_compatibility', '--rendering-driver',
                      'opengl3_angle' if os.name == 'nt' else 'opengl3', '--max-fps', '60']

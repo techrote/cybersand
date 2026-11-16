@@ -1,6 +1,8 @@
 shader_type canvas_item;
 render_mode unshaded;
 
+#include "res://shaders/material_tile_sampling.gdshaderinc"
+
 // The same absolute-world backdrop is sampled in overview, tile and follow
 // views. No per-camera parallax, vignette, tile tint or time-dependent grain can
 // introduce an edge discontinuity. Only published Empty cells receive scenery.
@@ -84,8 +86,8 @@ void fragment() {
 	}
 	vec2 world_pixel = floor(continuous_world_pixel);
 	vec2 sample_uv = (world_pixel + vec2(0.5)) / vec2(1024.0);
-	float current_id = floor(texture(current_world_texture, sample_uv).r * 255.0 + 0.5);
-	float previous_id = floor(texture(previous_world_texture, sample_uv).r * 255.0 + 0.5);
+	float current_id = floor(cyber_material_current(current_world_texture, sample_uv).r * 255.0 + 0.5);
+	float previous_id = floor(cyber_material_previous(previous_world_texture, sample_uv).r * 255.0 + 0.5);
 	bool player = all(greaterThanEqual(world_pixel, player_origin_px))
 		&& all(lessThan(world_pixel, player_origin_px + player_size_px));
 	if (current_id > 0.5 || (previous_id > 0.5 && snapshot_blend < 0.999) || player) {

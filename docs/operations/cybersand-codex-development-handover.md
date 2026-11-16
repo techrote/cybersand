@@ -10,6 +10,17 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Publication remediation — 2026-11-16
+
+Continue PR609's bounded dirty material arrays and separate immutable physics
+completion mailbox from the [remediation record](../audits/2026-11-16-physics-freeze-remediation-002.md).
+Use the updated [publication controls and owner runbook](camera-stack-coherence-acceptance.md).
+Both repairs preserve the fixed physical timestep, native sample wait/age and
+required terrain. Source-matched ABBA compares actual completion events; no
+mailbox publication count is physical progression. Preserve all raw failed
+attempts, the final exact-source PR/artifact ledger, and Draft/HOLD on all four
+stack PRs. No physical NVIDIA acceptance or merge authority is implied.
+
 ## Camera stack temporal coherence — 2026-11-15
 
 **Owner physical FAIL:** delivered `43f46c6e5ec9` repeatedly freezes actors/Rapier

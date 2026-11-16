@@ -188,7 +188,19 @@ func install() -> bool:
 func pause_callbacks() -> bool:
 	host.paused = true
 	host.update_worker_frame_state()
-	if not check(await until(func() -> bool: return snapshot()!=null and snapshot().paused),"native owner acknowledges pause"): return false
+	# A retained graphical frame can still say paused after early physical
+	# publication has resumed. Fence after issuing pause, then require a new
+	# owner turn and the same native source that PAINT will validate. An older
+	# paused frame cannot acknowledge this transition or an in-flight tick.
+	var prior: CyberSimulationSnapshot = snapshot()
+	var pause_serial: int = prior.serial if prior != null else -1
+	if not check(await until(func() -> bool:
+		var current: CyberSimulationSnapshot = snapshot()
+		var paint: Dictionary = host.simulation_worker.paint_state()
+		return current!=null and current.serial>pause_serial and current.paused \
+			and bool(paint.paused) and int(paint.tick)==current.tick_index \
+			and int(paint.revision)==current.simulation_world_revision),
+		"fresh native owner acknowledges pause and matching PAINT source"): return false
 	host.set_physics_process(false)
 	host.set_process(false)
 	return true

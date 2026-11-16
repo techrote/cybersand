@@ -58,6 +58,7 @@ static func provenance(palette: Shader) -> Dictionary:
 		"source_path":source.resource_path,
 		"source_sha256":source.code.sha256_text(),
 		"source_file_sha256":file_hash,
+		"material_sampling_include_sha256":FileAccess.get_sha256("res://shaders/material_tile_sampling.gdshaderinc"),
 		"source_file_bound":not file_hash.is_empty() and file_hash == source.code.sha256_text(),
 		"variant_sha256":palette.code.sha256_text(),
 		"variant":"angle_bounded_crossfade" if bounded else "full_crossfade",

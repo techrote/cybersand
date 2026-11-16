@@ -216,6 +216,8 @@ func refresh() -> void:
 	overlay.size = content.size
 	shader.set_shader_parameter("current_world_texture", host.texture)
 	shader.set_shader_parameter("previous_world_texture", host.previous_texture)
+	if host.has_method("configure_material_textures"):
+		host.configure_material_textures(shader)
 	shader.set_shader_parameter("view_size_px", Vector2(host.current_view_size))
 	# The backdrop's occupancy mask must use the terrain's presentation origin.
 	var origin: Vector2 = host.presentation_camera_origin() if host.has_method("presentation_camera_origin") else Vector2(host.camera_origin)

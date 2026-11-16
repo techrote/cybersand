@@ -7,6 +7,7 @@ param(
   [switch]$Compare,
   [switch]$Cadence,
   [switch]$Coherence,
+  [switch]$Publication,
   [string[]]$CoherenceConditions=@(),
   [switch]$FullCadence,
   [string[]]$CadenceConditions=@(),
@@ -16,6 +17,7 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference='Stop'
 $ExplicitRenderingDriver=$PSBoundParameters.ContainsKey('RenderingDriver')
+if(-not ($Coherence -or $Cadence -or $FullCadence -or $Full -or $Compare)){$Publication=$true}
 $Root=[IO.Path]::GetFullPath($PSScriptRoot)
 $Output=[IO.Path]::Combine($Root,'Test-It-Results',([DateTime]::Now.ToString('yyyyMMdd-HHmmss')+'-'+$PID))
 [void][IO.Directory]::CreateDirectory($Output)
@@ -58,6 +60,8 @@ $PreviousSource=$env:CYBERSAND_SOURCE_REVISION
 $PreviousPose=$env:CYBERSAND_DIAG_FLYER_POSE
 $PreviousCadence=$env:CYBERSAND_DIAG_RENDER_CADENCE
 $PreviousPresentation=$env:CYBERSAND_DIAG_PRESENTATION
+$PreviousMaterialPublication=$env:CYBERSAND_MATERIAL_PUBLICATION
+$PreviousPhysicsPublication=$env:CYBERSAND_DIAG_PHYSICS_PUBLICATION
 $Start=Get-Date
 $Summary=@{schema='engine-lab-scripted-pose-test-it-v1';status='incomplete';complete=$false
     source='unverified';driver=$RenderingDriver;cases=@();errors=@();processes=@()
@@ -65,7 +69,7 @@ $Summary=@{schema='engine-lab-scripted-pose-test-it-v1';status='incomplete';comp
         home=$PSHOME;modules=$ModuleProvenance;validated_commands=$RequiredCommands}
     pairs=@();failures=@();physical_acceptance='pending_owner_NVIDIA_review'
     physics_rate_semantics='Fixed 1/60 second per completed Rapier step; 120 callbacks is not normalized 120Hz physics. Compare physical trajectories at equal completed steps.'
-    mode=$(if($Coherence){'coherence'}elseif($FullCadence){'full-cadence'}elseif($Cadence){'cadence'}elseif($Quick){'quick'}elseif($Compare){'compare'}elseif($Full){'full'}else{'eight-case'})}
+    mode=$(if($Publication){'publication'}elseif($Coherence){'coherence'}elseif($FullCadence){'full-cadence'}elseif($Cadence){'cadence'}elseif($Quick){'quick'}elseif($Compare){'compare'}elseif($Full){'full'}else{'eight-case'})}
 Write-Host ('TEST_IT_POWERSHELL_RUNTIME '+($Summary.powershell|ConvertTo-Json -Depth 5 -Compress))
 function Require([bool]$Ok,[string]$Message){if(-not $Ok){throw $Message}}
 function Sha([string]$Path){return (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash.ToLowerInvariant()}
@@ -164,6 +168,7 @@ function Read-PhysicsProgress($Frames,$Events) {
     return @{consecutive_step_intervals=$Intervals.Count;unmeasured_intervals_with_missing_completions=$Missing
         pause_spanning_intervals=$Intervals.Count-$Active.Count
         active_completed_step_gap_ms=(Physics-Distribution @($Active|ForEach-Object{$_.gap_ms}))
+        active_gaps_at_least_50ms=@($Active|Where-Object{$_.gap_ms -ge 50}).Count
         active_gaps_at_least_100ms=@($Active|Where-Object{$_.gap_ms -ge 100}).Count
         active_gaps_at_least_250ms=@($Active|Where-Object{$_.gap_ms -ge 250}).Count
         active_gaps_at_least_1000ms=@($Active|Where-Object{$_.gap_ms -ge 1000}).Count
@@ -283,11 +288,20 @@ function Read-PoseStatistics([string]$Path) {
             }else{$UnmatchedAcks++}
         }
         if($Kind -eq 'rapier_step') {
+            foreach($Required in @('step','native_tick_used','epoch','session','world_generation','native_response','hard_surface_shapes','pending_hard_chunks','input_tape_index','fixed_delta','simulation_time_sec','bodies')) {
+                Require ($null -ne (Field $Event $Required)) ('Incomplete physical association record: '+$Required)
+            }
+            Require (@($Event.bodies).Count -gt 0) 'Physical completion has no actor state records'
             foreach($Body in @(Field $Event 'bodies' @())) {
+                foreach($Required in @('slot','instance_id','xy','angle','velocity')) {
+                    Require ($null -ne (Field $Body $Required)) ('Incomplete physical actor state: '+$Required)
+                }
+                Require (@($Body.xy).Count -eq 2 -and @($Body.velocity).Count -eq 2) 'Incomplete physical vectors'
                 $Key=([string]$Event.step)+':'+([string]$Body.slot)
                 Require (-not $Trajectory.ContainsKey($Key)) ('Duplicate completed Rapier event '+$Key)
                 $Trajectory[$Key]=@{xy=@($Body.xy);velocity=@($Body.velocity);angle=[double]$Body.angle
-                    native_tick_used=(Field $Event 'native_tick_used' -1)}
+                    native_tick_used=(Field $Event 'native_tick_used' -1)
+                    feedback=(@{native_response=(Field $Event 'native_response');epoch=(Field $Event 'epoch');session=(Field $Event 'session');world_generation=(Field $Event 'world_generation');hard_surface_shapes=(Field $Event 'hard_surface_shapes');pending_hard_chunks=(Field $Event 'pending_hard_chunks');instance_id=(Field $Body 'instance_id');fixed_delta=(Field $Event 'fixed_delta');input_tape_index=(Field $Event 'input_tape_index');simulation_time_sec=(Field $Event 'simulation_time_sec')}|ConvertTo-Json -Depth 15 -Compress)}
             }
         }
     }
@@ -315,6 +329,14 @@ function Read-PoseStatistics([string]$Path) {
         callbacks_without_overlay_submission=$MissingSubmissions
         dropped_frames=[int]$Records[-1].dropped;duplicate_callbacks=[int]$Records[-1].duplicates
         actual_first_view=@($Frames[0].view_world_cells);actual_last_view=@($Frames[-1].view_world_cells)}
+    $PublicationRows=@($Events|Where-Object{(Field $_ 'event') -eq 'texture_upload' -and $null -ne (Field $_ 'material_publication')}|ForEach-Object{Field $_ 'material_publication'})
+    $PublicationScopes=@{}
+    foreach($Scope in @('image_patch_usec','content_cache_usec','tile_assembly_usec','backend_submit_usec')) {
+        $Values=@($PublicationRows|Where-Object{$null -ne (Field $_ $Scope)}|ForEach-Object{[double](Field $_ $Scope)/1000.0})
+        $PublicationScopes[$Scope]=Distribution $Values
+    }
+    $Result.material_publication_elapsed_ms=$PublicationScopes
+    $Result.material_submitted_bytes=Distribution @($PublicationRows|ForEach-Object{[double](Field $_ 'submitted_bytes' 0)})
     $Result.physics_timing_observation=$(if($Result.physics_progress.active_completed_step_gap_ms.count -eq 0){
         'unavailable_no_consecutive_active_steps'
     }elseif($Result.physics_progress.active_gaps_at_least_100ms -gt 0){
@@ -322,11 +344,28 @@ function Read-PoseStatistics([string]$Path) {
     }else{'no_100ms_gap_observed_not_acceptance'})
     return @{statistics=$Result;trajectory=$Trajectory}
 }
-function Compare-PhysicalSteps($Before,$After) {
+function Compare-PhysicalSteps($Before,$After,[int]$RequiredSteps=24) {
+    $BeforeSteps=@($Before.Keys|ForEach-Object{[long]($_.Split(':')[0])}|Sort-Object -Unique)
+    $AfterSteps=@($After.Keys|ForEach-Object{[long]($_.Split(':')[0])}|Sort-Object -Unique)
+    Require ($BeforeSteps.Count -gt 0 -and $AfterSteps.Count -gt 0) 'Missing physical completion records'
+    Require ($BeforeSteps[0] -eq $AfterSteps[0]) 'Compared captures start at different physical steps'
+    Require ($BeforeSteps[0] -eq 1) 'Compared captures omit initial physical completions'
+    foreach($Steps in @(@{values=$BeforeSteps},@{values=$AfterSteps})) {
+        $Values=$Steps.values
+        Require ($Values.Count -eq $Values[-1]-$Values[0]+1) 'Missing intermediate physical completion records'
+    }
+    $Last=[Math]::Min($BeforeSteps[-1],$AfterSteps[-1])
+    Require ($Last -ge $RequiredSteps) 'Compared captures omit required physical completions'
+    for($Step=[long]$BeforeSteps[0];$Step -le $Last;$Step++) {
+        $Prefix=([string]$Step)+':'
+        $BeforeSlots=@($Before.Keys|Where-Object{$_.StartsWith($Prefix)}|Sort-Object)
+        $AfterSlots=@($After.Keys|Where-Object{$_.StartsWith($Prefix)}|Sort-Object)
+        Require (($BeforeSlots -join ',') -ceq ($AfterSlots -join ',')) ('Missing or changed actor slots at step '+$Step)
+    }
     $Positions=New-Object 'System.Collections.Generic.List[double]'
     $Velocities=New-Object 'System.Collections.Generic.List[double]'
     $Angles=New-Object 'System.Collections.Generic.List[double]'
-    $DifferentNative=0
+    $DifferentNative=0;$DifferentFeedback=0
     foreach($Key in $Before.Keys) {
         if(-not $After.ContainsKey($Key)){continue}
         $A=$Before[$Key];$B=$After[$Key]
@@ -335,11 +374,14 @@ function Compare-PhysicalSteps($Before,$After) {
         if($null -ne $Velocity){$Velocities.Add($Velocity)}
         $Angles.Add([Math]::Abs([Math]::Atan2([Math]::Sin($A.angle-$B.angle),[Math]::Cos($A.angle-$B.angle))))
         if($A.native_tick_used -ne $B.native_tick_used){$DifferentNative++}
+        if((Field $A 'feedback' '') -cne (Field $B 'feedback' '')){$DifferentFeedback++}
     }
     return @{comparison_clock='same completed Rapier step and body slot, fixed 1/60 simulated seconds per step'
         common_step_bodies=$Positions.Count;legacy_step_bodies=$Before.Count;repaired_step_bodies=$After.Count
         position_delta_cells=(Distribution $Positions);velocity_delta=(Distribution $Velocities)
         angle_delta_radians=(Distribution $Angles);different_native_tick_inputs=$DifferentNative
+        different_feedback=$DifferentFeedback
+        exact=($Positions.Count -gt 0 -and ($Positions|Measure-Object -Maximum).Maximum -eq 0 -and ($Velocities|Measure-Object -Maximum).Maximum -eq 0 -and ($Angles|Measure-Object -Maximum).Maximum -eq 0 -and $DifferentNative -eq 0 -and $DifferentFeedback -eq 0)
         status=$(if($Positions.Count -eq 0){'unavailable'}elseif(($Positions|Measure-Object -Maximum).Maximum -gt 0.001){'physical_trajectory_differs'}else{'matched_within_0.001_cells'})}
 }
 function Read-LauncherWorkerPreference {
@@ -400,6 +442,16 @@ function Save-Summary {
             'UNAVAILABLE: no exact consecutive active completed-step intervals.'
         }else{'No 100ms gap observed; this alone is not a gameplay acceptance result.'})
         $Lines.Add('  Physics: '+$TimingDescription)
+        $Material=Field $Row 'material_publication'
+        $Lines.Add(('  Material publication: requested={0}, backend={1}, last submitted bytes={2}; physics handoff={3}' -f
+            (Field $Material 'requested_mode' 'unrecorded'),(Field $Material 'backend' 'unrecorded'),
+            (Field $Material 'submitted_bytes' 'unrecorded'),(Field $Row 'physics_publication' 'unrecorded')))
+        foreach($Scope in @('image_patch_usec','content_cache_usec','tile_assembly_usec','backend_submit_usec')) {
+            $ScopeTiming=Field (Field $Stats 'material_publication_elapsed_ms') $Scope
+            $Lines.Add(('  {0} elapsed ms median/p95/max: {1} / {2} / {3}' -f $Scope,
+                (Field $ScopeTiming 'p50' 'n/a'),(Field $ScopeTiming 'p95' 'n/a'),(Field $ScopeTiming 'max' 'n/a')))
+        }
+
         $WorkerRequest=$(if($Row.native_workers.requested -eq 0){'Auto (0)'}else{[string]$Row.native_workers.requested})
         $Lines.Add(('  Profile: {0}; renderer: {1}; VSync enum: {2}; window: {3}; native workers requested/resolved: {4} / {5}' -f
             $Row.display.profile,$Row.render_driver,$Row.display.vsync_mode,($Row.display.window_size -join 'x'),$WorkerRequest,$Row.native_workers.resolved_capacity))
@@ -413,8 +465,8 @@ function Save-Summary {
         $Lines.Add(('  Main interval ms median/p95/p99: {0} / {1} / {2}; samples: {3}' -f (Field $Timing 'p50' 'n/a'),(Field $Timing 'p95' 'n/a'),(Field $Timing 'p99' 'n/a'),(Field $Timing 'count' 0)))
         $Lines.Add(('  Completed Rapier gap ms median/p95/p99/max: {0} / {1} / {2} / {3}; consecutive active intervals: {4}' -f
             (Field $Gaps 'median' 'n/a'),(Field $Gaps 'p95' 'n/a'),(Field $Gaps 'p99' 'n/a'),(Field $Gaps 'maximum' 'n/a'),(Field $Gaps 'count' 0)))
-        $Lines.Add(('  Active gaps at least 100 / 250 / 1000 ms: {0} / {1} / {2}; Main intervals without physical progress: {3} / {4}' -f
-            $Physics.active_gaps_at_least_100ms,$Physics.active_gaps_at_least_250ms,$Physics.active_gaps_at_least_1000ms,
+        $Lines.Add(('  Active gaps at least 50 / 100 / 250 / 1000 ms: {0} / {1} / {2} / {3}; Main intervals without physical progress: {4} / {5}' -f
+            $Physics.active_gaps_at_least_50ms,$Physics.active_gaps_at_least_100ms,$Physics.active_gaps_at_least_250ms,$Physics.active_gaps_at_least_1000ms,
             $Physics.main_intervals_without_physics_progress,$Physics.observed_main_intervals))
         $Lines.Add(('  Physics hold callbacks: native_sample={0}; terrain_installation={1}; paused={2}; all reasons: {3}' -f
             (Field $PhysicsHolds 'native_sample' 0),(Field $PhysicsHolds 'terrain_installation' 0),(Field $PhysicsHolds 'paused' 0),($PhysicsHolds|ConvertTo-Json -Compress)))
@@ -430,7 +482,7 @@ function Save-Summary {
         $Lines.Add(('  Known selected steps: {0}; visible unknown source times: {1}; callbacks without a submission: {2}' -f $Stats.selected_step_observations,$Stats.selected_step_unknown_visible_frames,$Stats.callbacks_without_overlay_submission))
         $Lines.Add('')
     }
-    $Lines.Add('Physics hold reasons identify observed gates, not complete causes. Solver timers include possible OS descheduling.')
+    $Lines.Add('Physics hold reasons identify observed gates, not complete causes. Material and solver scopes are elapsed wall calls, including possible waits and OS descheduling; they do not isolate CPU execution or GPU transfer time.')
     $Lines.Add('Zero visual holds or zero 100ms gaps alone does not establish continuous or acceptable gameplay.')
     $Lines.Add('Compare your ordinary interactive renderer, VSync, worker setting and gameplay separately; hosted software rendering is not physical NVIDIA evidence.')
     if($Summary.failures.Count -gt 0){$Lines.Add('Incomplete cases: '+$Summary.failures.Count+'; original logs are retained.')}
@@ -512,7 +564,7 @@ function Run-Case([string]$Family,[int]$Workers,[int]$Repeat,
        "--cadence-tape=$([int]$CadenceTape)","--presentation=$PoseSelection","--fire-mode=$FireMode",
        "--display-profile=$DisplayProfile","--receipt=$Receipt")
     $CaseIdentity=@{name=$Name;source=$Summary.source;arguments=$Arguments;isolated_user_profile=$env:APPDATA
-        requested_native_workers=$Workers;display_profile=$DisplayProfile;rendering_driver_override=$(if($DisplayProfile -eq 'scripted' -or $ExplicitRenderingDriver){$RenderingDriver}else{$null})}
+        requested_native_workers=$Workers;display_profile=$DisplayProfile;material_publication=$env:CYBERSAND_MATERIAL_PUBLICATION;physics_publication=$env:CYBERSAND_DIAG_PHYSICS_PUBLICATION;rendering_driver_override=$(if($DisplayProfile -eq 'scripted' -or $ExplicitRenderingDriver){$RenderingDriver}else{$null})}
     [IO.File]::WriteAllText((Join-Path $Dir 'case.json'),(($CaseIdentity|ConvertTo-Json -Depth 8)+[Environment]::NewLine),[Text.UTF8Encoding]::new($false))
     Run-Godot $Name $Arguments $TimeoutSeconds $Dir
     Require (Test-Path -LiteralPath $Receipt -PathType Leaf) "$Name did not write a receipt"
@@ -554,7 +606,7 @@ function Run-Case([string]$Family,[int]$Workers,[int]$Repeat,
     Require ($Analysis.statistics.physics_progress.consecutive_step_intervals -gt 0) "$Name missing exact completed Rapier intervals"
     [IO.File]::WriteAllText((Join-Path $Dir 'analysis.json'),
         (($Analysis.statistics|ConvertTo-Json -Depth 28)+[Environment]::NewLine),[Text.UTF8Encoding]::new($false))
-    if($Coherence -and $PoseSelection -eq 'coherent') {
+    if(($Coherence -or $Publication) -and $PoseSelection -eq 'coherent') {
         Require ($Analysis.statistics.selected_step_observations -gt 0 -and
             $Analysis.statistics.selected_source_time_rewinds -eq 0) "$Name missing or rewinding selected presentation timeline"
         if($Camera -eq 'follow') {
@@ -566,6 +618,7 @@ function Run-Case([string]$Family,[int]$Workers,[int]$Repeat,
         condition=$Condition;cadence_mode=$Presentation;presentation_mode=$PoseSelection
         fire_schedule=$Data.fire_schedule;display=$Data.display;cpu=$Data.cpu;native_workers=$Data.native_workers
         effective_pacing=$Data.effective_pacing;render_driver=$Data.render_driver
+        material_publication=(Field $Data 'material_publication');physics_publication=(Field $Data 'physics_publication')
         pixel_target_hz=$PixelHz;publication_target_hz=$RenderHz;graphical_fps_target=$Fps
         rapier_callback_target_hz=$RapierHz;fixed_simulation_step_seconds=(1.0/60.0)
         ack_delay_frames=$AckDelay;ack_gated_publication=$AckGated;wait_native_sample=$WaitSample
@@ -641,6 +694,46 @@ function Run-CadenceMatrix {
     foreach($Condition in $Selected){Run-CadencePair $Condition}
     Require ($Summary.failures.Count -eq 0) 'One or more cadence cases were incomplete; all independent cases and partial results are retained'
 }
+function Run-PublicationMatrix {
+    $MatrixPath=Join-Path $Project 'tests\fixtures\engine_lab\coherence-conditions.json'
+    $Matrix=Get-Content -LiteralPath $MatrixPath -Raw -Encoding UTF8|ConvertFrom-Json
+    Require ($Matrix.schema -eq 'camera-stack-coherence-conditions-v1') 'Unknown publication condition schema'
+    $Conditions=@($Matrix.conditions|Where-Object{$_.name -in @('interactive-follow','interactive-free')})
+    if($Quick){$Conditions=@($Conditions|Where-Object{$_.name -eq 'interactive-follow'})}
+    Require ($Conditions.Count -eq $(if($Quick){1}else{2})) 'Missing ordinary publication comparison conditions'
+    $Summary.planned_conditions=$Conditions;$Summary.planned_cases=$Conditions.Count*2
+    $Summary.comparison='Same reviewed source: full texture/combined publication control versus automatic dirty tiles/early physics publication; both coherent, fixed-step and strictly coupled. This control does not restore the historical binary.'
+    Save-Summary
+    foreach($Condition in $Conditions) {
+        $Rows=@{};$Trajectories=@{}
+        foreach($Arm in @('control','candidate')) {
+            try {
+                $env:CYBERSAND_MATERIAL_PUBLICATION=$(if($Arm -eq 'control'){'full'}else{'auto'})
+                $env:CYBERSAND_DIAG_PHYSICS_PUBLICATION=$(if($Arm -eq 'control'){'combined'}else{''})
+                Run-Case 'freemass' ([int]$Condition.workers) 1 $Condition.camera $Condition.pose $Condition.pixel $Condition.publication `
+                    $Condition.fps $Condition.rapier $Condition.ack $Condition.gated $Condition.wait $Condition.wake `
+                    $Condition.smoothing 'repaired' ($Condition.name+'-'+$Arm) $true 'coherent' $Condition.fire $Condition.display_profile
+                $Rows[$Arm]=$script:LastCaseRow;$Trajectories[$Arm]=$script:LastTrajectory
+                Require ($Rows[$Arm].material_publication.requested_mode -eq $env:CYBERSAND_MATERIAL_PUBLICATION) 'Material publication control did not reach the runtime'
+                Require ($Rows[$Arm].physics_publication -eq $(if($Arm -eq 'control'){'combined'}else{'early'})) 'Physics publication control did not reach the runtime'
+            }catch{
+                $Summary.failures+=@{condition=$Condition.name;arm=$Arm;error=[string]$_.Exception.Message}
+                Write-Host ('CASE INCOMPLETE: '+$Condition.name+' '+$Arm+' '+$_.Exception.Message) -ForegroundColor Red
+                Save-Summary
+            }
+        }
+        if($Rows.Count -eq 2) {
+            $Comparison=Compare-PhysicalSteps $Trajectories.control $Trajectories.candidate 144
+            $Summary.pairs+=@{condition=$Condition.name;control=$Rows.control.name;candidate=$Rows.candidate.name
+                physical_trajectory=$Comparison;control_statistics=$Rows.control.statistics;candidate_statistics=$Rows.candidate.statistics}
+            if(-not $Comparison.exact){$Summary.failures+=@{condition=$Condition.name;error='Physical states or native feedback associations differ; inspect the preserved comparison and raw traces'}}
+            Save-Summary
+        }
+    }
+    $script:LastTrajectory=@{}
+    Require ($Summary.failures.Count -eq 0) 'Publication comparison is incomplete; all original evidence is retained'
+}
+
 function Run-CoherenceMatrix {
     $MatrixPath=Join-Path $Project 'tests\fixtures\engine_lab\coherence-conditions.json'
     $Matrix=Get-Content -LiteralPath $MatrixPath -Raw -Encoding UTF8|ConvertFrom-Json
@@ -680,6 +773,7 @@ function Run-CoherenceMatrix {
     Require ($Summary.failures.Count -eq 0) 'One or more coherence cases were incomplete; all available evidence was retained'
 }
 try {
+    Require (-not ($Publication -and ($Coherence -or $Cadence -or $FullCadence -or $Full -or $Compare))) 'Publication may combine with Quick only'
     Require (-not ($Quick -and ($Full -or $Compare -or $FullCadence)) -and -not ($Full -and $Compare)) 'Select compatible test modes; Quick may combine with Cadence or Coherence'
     Require (-not (($Cadence -or $FullCadence) -and ($Full -or $Compare))) 'Cadence modes cannot combine with old Compare/Full modes'
     Require (-not ($Cadence -and $FullCadence)) 'Select Cadence or FullCadence'
@@ -731,7 +825,9 @@ try {
     $env:XDG_DATA_HOME=$env:APPDATA
     New-Item -ItemType Directory -Force -Path $env:APPDATA|Out-Null
     Run-Godot 'import' @('--headless','--path',$Project,'--editor','--quit') 240 $Output
-    if($Coherence) {
+    if($Publication) {
+        Run-PublicationMatrix
+    }elseif($Coherence) {
         Run-CoherenceMatrix
     }elseif($Cadence -or $FullCadence) {
         Run-CadenceMatrix
@@ -772,6 +868,8 @@ try {
     $env:CYBERSAND_DIAG_FLYER_POSE=$PreviousPose
     $env:CYBERSAND_DIAG_RENDER_CADENCE=$PreviousCadence
     $env:CYBERSAND_DIAG_PRESENTATION=$PreviousPresentation
+    $env:CYBERSAND_MATERIAL_PUBLICATION=$PreviousMaterialPublication
+    $env:CYBERSAND_DIAG_PHYSICS_PUBLICATION=$PreviousPhysicsPublication
     try {
         Save-Summary
         Compress-Archive -LiteralPath $Output -DestinationPath $Zip -CompressionLevel Optimal

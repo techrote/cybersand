@@ -8,125 +8,87 @@ related-documents: [engine-lab-pose-tracing.md, native-pixel-scrolling.md, ../ar
 last-reviewed: 2026-11-16
 ---
 
-# Evaluate coherent Workbench presentation on Windows
+# Evaluate Workbench publication and physical progression on Windows
 
-**Physical verdict: FAIL/HOLD.** The owner rejected application `43f46c6e5ec9`
-with repeated 100–1000 ms actor/Rapier freezes. Its earlier automated pose checks
-did not establish continuous physics. The corrective candidate adds terrain
-installation/RID reuse and tests the actual coupled interactive defaults; the
-owner's physical acceptance remains required. See the
-[freeze investigation](../audits/2026-11-15-workbench-physics-freezes.md).
+**Physical acceptance remains HOLD.** The owner rejected source `43f46c6e5ec9`
+for repeated100–1000ms freezes. The later `c1ad4910a074` correction still has
+long physical completion gaps. PHYSICS-FREEZE-REMEDIATION-002 adds bounded dirty
+GPU layers and an early native physics completion mailbox. Its
+[engineering record](../audits/2026-11-16-physics-freeze-remediation-002.md)
+and the exact-source PR609 artifact ledger distinguish functional qualification,
+measured improvement, and the owner's physical Windows11 NVIDIA decision.
 
-The `30660f7da126` application passed hosted functional qualification, with
-remaining actual physics gaps and a software-renderer withholding observation.
-Its PowerShell 5.1 report also ranked the largest-gap examples incorrectly;
-the subsequent reporting correction preserves the valid distributions and counts.
-Use the exact replacement artifact linked by Draft #609. Hosted completion and
-correctly ranked reports remain separate from a smoothness or physical GPU pass.
+Extract the full inner application ZIP into a fresh writable directory.
+Godot4.7, native/Rapier and VC runtime dependencies are included. No separate
+Godot, Python, Git or repository installation is needed. Keep the payload intact;
+`CAMERA-STACK-MANIFEST.json` records its source tree and every packaged file hash.
 
-Extract the complete evaluation ZIP into a fresh writable folder. Everything
-needed to run CyberSand and collect the comparison is included. No Godot,
-Python, Git or repository installation is needed. Keep the included source and
-runtime files together; `CAMERA-STACK-MANIFEST.json` identifies their exact
-application source and retained native builds.
+## Ordinary gameplay acceptance
 
-## Compare ordinary gameplay
+1. Close other CyberSand instances. Run **Open Workbench.cmd**, keep ordinary
+   native/Rapier wait and wake enabled, and start with your usual FPS/VSync.
+2. Fly a Needle continuously using Free and Follow cameras. Turn Thruster fire
+   ON then OFF. Try dense material, near-terrain flight and actual hard contact.
+3. Paint a small patch and a large area during simulation. Check material
+   appearance, crossfade, actor/terrain alignment, and actual physical progress.
+   Pause/resume, single-step, reset, Undo/Redo, Save, then fully exit and reopen.
+4. Close the application and run **Open Publication Control.cmd** with identical
+   settings. This uses full texture uploads and combined graphical/physical
+   publication within the same reviewed source. Both paths retain coherent
+   presentation, fixed-step physics and the normal native-sample safety fence.
+5. **Open Full Texture Control.cmd** retains early physical publication while
+   forcing whole-texture uploads. Engine Lab also switches texture modes live
+   and reports the effective backend and any fallback. This isolates publication
+   choices; these launchers do not reconstruct a historical binary.
 
-1. Close other CyberSand windows and double-click **Open Workbench.cmd**.
-   This opens the corrected Shared Workbench. Use **Engine Lab** to keep the
-   FPS, VSync and tick settings visible. Start with your ordinary VSync setting.
-2. Select a Needle, play, and fly through open space and near dense terrain.
-   Try **Free camera** and **Follow selected**. Turn **Thruster fire** ON, then
-   OFF while moving quickly. Watch the actor against fixed terrain edges.
-3. Pan and zoom. Check both 1× and a fractional or greater pixel scale. Pause
-   and resume; try **Restore start**. Paint a small visible patch, then Undo
-   and Redo it. Confirm that the pointer still selects the intended cells.
-4. Close CyberSand completely. Open **Open Original Presentation.cmd**, use
-   the same setup and settings, and repeat the movement. It restores the
-   original guarded actor selection and live camera following. Both launchers
-   use the same physics, bounded material scans and repaired material history/ACK
-   behavior. The original also retains coarse swept-clearance sampling; the
-   corrected version can refine a false near-contact veto conservatively.
-   This compares the original temporal-selection/camera policy and coarse guard
-   with the correction; it is not a byte-identical historical #593 build.
-5. **Open Mask Baseline.cmd** supplies the older material-bound display as an
-   additional comparison. Its lower motion cadence is expected when native
-   material publication is slow.
+A stable-looking actor with no actual movement is still a freeze. Look for long
+pauses, catch-up, disappearance, material corruption or unsafe contact. A visible
+regression is **FAIL** even when all automated captures complete. Full refresh,
+initial allocation, dense changes and slow native computation can remain costly.
 
-Judge whether the corrected version is materially preferable: terrain and
-actors should move together; the previous large jumps and immediate reversals
-should disappear; camera motion should remain aligned to framebuffer pixels.
-Look for flicker, disappearance, long pauses or clipping near dense material,
-especially during Fire ON→OFF. A clear regression is a **FAIL** even when the
-automated capture completes.
+## Run the local comparison
 
-## Collect the reproducible comparison
+Double-click **Test It.cmd**. It runs four fresh application processes: control
+and candidate in Free and Follow. Both use the original2048² World, matched
+Needle input tape, Fire ON→OFF at completed steps0/60, automatic native workers,
+native60/Rapier60 targets, normal window/zoom and initial VSync. Native sample
+wait/wake stays enabled throughout. The physical step remains fixed1/60 second;
+configured targets are not achieved throughput claims.
 
-Double-click **Test It.cmd**. It opens sixteen successive test windows: eight
-matched original/corrected pairs, ordinarily a few minutes on a hardware GPU.
-Keep other CyberSand instances closed. A slow machine can take longer, and an
-unfinished case retains its partial logs instead of being called a pass.
+**Test It.cmd -Quick** runs only the coupled Follow pair. The script is compatible
+with Windows PowerShell5.1 and writes only local results. Fresh test profiles do
+not change your saved worker preference. An explicit worker setting in ordinary
+play may differ from Auto used by the repeatable capture.
 
-| Pair | Camera | Graphical target | Special condition |
-| --- | --- | --- | --- |
-| `interactive-follow` | Follow | Ordinary VSync/display default | Coupled native 60 / Rapier 60, Auto workers, Fire ON→OFF |
-| `interactive-free` | Free | Ordinary VSync/display default | Coupled native 60 / Rapier 60, Auto workers, Fire ON→OFF |
-| `follow60` | Follow | 60 FPS | Fire ON→OFF |
-| `free60` | Free | 60 FPS | Fire ON→OFF |
-| `follow30` | Follow | 30 FPS | Fire OFF |
-| `follow120` | Follow | 120 FPS | Fire OFF |
-| `slow-native` | Follow | 60 FPS | 2 Hz native target; Fire OFF |
-| `delayed-ack` | Follow | 60 FPS | ACK delayed three rendered frames; Fire ON→OFF |
-
-All pairs use the original 2048×2048 World and the same tick-addressed Needle
-movement commands, including the labelled sustained-motion extension. Fire
-events are a separate schedule at completed Rapier steps 0 and 60. The usual
-targets for the six earlier diagnostic pairs are native 30 Hz, Rapier callbacks
-120 Hz and publication 60 Hz, with the native-sample wait disabled. Those six
-pairs alone do not exercise ordinary interactive physics. The two interactive
-pairs retain the native-sample handshake, automatic worker request, initial VSync
-and normal window/view size. Every case records its actual settings. Rapier
-still advances 1/60 simulated second per completed step. The runner disables
-VSync only for the earlier pacing comparisons; requested rates are not claims
-about achieved performance.
-
-For the shorter coupled Follow pair, run `Test It.cmd -Quick`. The previous ACK/history
-investigation remains available with:
+The prior visual-policy and cadence investigations remain explicitly available:
 
 ~~~powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Run-Test-It.ps1 -Coherence
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Run-Test-It.ps1 -Cadence
 ~~~
 
-**Open Original Cadence.cmd** restores that older ACK/history behavior too.
-It is a separate diagnostic from **Open Original Presentation.cmd**.
+**Open Original Presentation.cmd** retains the earlier temporal source selection
+and live Follow policy. It is a separate visual comparison from publication
+controls. The older uncoupled cadence cases are not ordinary-play acceptance.
 
 ## Read and return the result
 
-Open the new timestamped folder under **Test-It-Results**. **READ-RESULTS.txt**
-lists achieved native ticks, Rapier steps and Main overlay submissions per
-second, measured frame intervals and presentation CPU time. Actual completed-step
-gaps and native-sample/terrain-installation hold counts are reported separately
-from visual holds. A continuously selected live pose can still represent stopped
-physics; zero visual holds must not be read as smooth physical motion. Median, p95 and
-p99 values include their sample count. Main submissions are not measurements
-of physical monitor scanout.
+Under **Test-It-Results**, **READ-RESULTS.txt** reports measured native and Rapier
+completions, Main submissions, median/p95/p99/maximum physical gaps, counts at
+50/100/250/1000ms, observed hold reasons, and publication stage durations.
+Elapsed call scopes include possible waits and OS descheduling. They do not
+isolate GPU execution, transfer bandwidth, or physical monitor scanout.
 
-**summary.json** and each case's receipt retain CPU, requested/resolved worker,
-GPU/driver and Windows identity,
-Godot's display DPI/scale/refresh and VSync settings, source and file hashes,
-target and achieved clocks, Fire/tape identities, same-step physical trajectory
-comparisons, intentional holds, withheld poses and failures. Original JSONL
-traces, logs and two untimed reference framebuffers remain alongside them.
-The runner also creates a ZIP of these local results; it does not upload it.
+**summary.json** and raw JSONL retain actual source/runtime/CPU/GPU/driver,
+requested/resolved workers, VSync/DPI, publication mode, input tape and Fire
+identities. The comparison checks a complete common step prefix and exact
+recorded position, orientation, linear velocity and native admission associations.
+It does not record every hidden Rapier internal or numeric native force/torque.
+Missing completions, changed recorded states or a failed case prevent a complete
+comparison. Performance concerns stay visible even when correctness passes.
 
-Fill in **ACCEPTANCE.md** with **PASS**, **FAIL** or **HOLD**, the settings you
-used, and any repeatable visual defect. Return that file and the results ZIP;
-if a visible problem remains, a short ordinary-play recording and the relevant
-case name are useful. The corrected scripted arms reject a recorded source
-rewind or a Follow target that differs from its selected actor pose. An
-unexplained visible actor jump still needs investigation even if these checks
-passed.
-
-Hosted Windows qualification does not establish physical NVIDIA acceptance.
-The owner retains the acceptance and merge gate; the camera PR stack remains
-Draft/HOLD and unmerged during this evaluation.
+Return the automatically created results ZIP and **ACCEPTANCE.md**, marked
+**PASS**, **FAIL** or **HOLD**. Include settings and reproduction steps, plus an
+ordinary-play recording if a visible freeze remains. Successful hosted WARP or
+llvmpipe execution is not physical NVIDIA acceptance. All four PRs remain
+Draft/HOLD and unmerged until the owner's decision.

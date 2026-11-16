@@ -18,6 +18,7 @@ var _test_it_process_pid: int = -1
 var _default_fps: int = 0
 var _default_vsync: int = 1
 var _default_rapier_hz: int = 60
+var _publication_status: Label
 
 # Short field labels must retain a horizontal minimum width. The original
 # HFlowContainer let the label shrink to one glyph and then expanded its
@@ -156,6 +157,25 @@ func mount(controller: Control,wb: Control) -> void:
 		if not _syncing: DisplayServer.window_set_vsync_mode(vsync.get_item_id(index)))
 	sync_row.add_child(vsync)
 	_widgets["vsync"] = vsync
+	var publication_row: HBoxContainer = _row(controls)
+	var publication_label := _label(publication_row,"Material texture updates")
+	publication_label.custom_minimum_size.x = 390
+	publication_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var publication := OptionButton.new()
+	publication.custom_minimum_size = Vector2(220,32)
+	publication.add_item("Automatic (dirty tiles)")
+	publication.add_item("Full texture control")
+	publication.add_item("Dirty tiles")
+	publication.tooltip_text = "Compare publication cost in the current session. Physics coupling and the material history stay intact."
+	publication.item_selected.connect(func(index: int) -> void:
+		if _syncing: return
+		var mode: String = ["auto","full","tiled"][index]
+		if not host.set_material_publication_mode(mode):
+			_status.text = "Texture mode could not be changed; the current material history is retained."
+		_refresh_publication())
+	publication_row.add_child(publication)
+	_widgets["publication"] = publication
+	_publication_status = _note(controls,"")
 	_spin(controls,"render","Material snapshot publication target (Hz)",
 		1,240,host.render_snapshot_hz,
 		func(value: int) -> void: host.engine_lab_set_render_hz(value))
@@ -274,6 +294,8 @@ func reset_baseline() -> void:
 	host.engine_lab_set_ack_delay(0)
 	host.engine_lab_wait_native_sample = true
 	host.simulation_worker.set_engine_lab_pixel_pacing(60,true)
+	host.set_material_publication_mode("auto")
+	_refresh_publication()
 	_status.text = "Baseline rates, coupling and ACK restored. Saved worker setting unchanged."
 
 func open() -> void:
@@ -298,6 +320,7 @@ func configuration() -> Dictionary:
 		"pixel_target_hz":pacing.target_hz,"native_wake_on_sample":pacing.sample_wake,
 		"render_target_hz":host.render_snapshot_hz,
 		"render_ack_delay_frames":host.engine_lab_ack_delay_frames,
+		"material_publication":host.material_publication_status(),
 		"rapier_waits_for_native_sample":host.engine_lab_wait_native_sample,
 		"native_workers_current_request":int(ProjectSettings.get_setting("cybersand/native_worker_threads",0)),
 		"native_workers_next_launch":int((_widgets["workers"] as SpinBox).value)}
@@ -361,7 +384,7 @@ func launch_test_it() -> void:
 		_status.text = "Missing packaged Run-Test-It.ps1; extract the complete current ZIP."
 		return
 	var process: int = OS.create_process("powershell.exe",
-		PackedStringArray(["-NoProfile","-ExecutionPolicy","Bypass","-File",test_file,"-Coherence"]),true)
+		PackedStringArray(["-NoProfile","-ExecutionPolicy","Bypass","-File",test_file,"-Publication"]),true)
 	if process <= 0:
 		_status.text = "Failed to start Test It PowerShell process; run Test It.cmd instead."
 		return
@@ -404,8 +427,21 @@ func finish_pose_trace() -> void:
 		if report.get("status","")=="saved" else "Pose trace failed: "+JSON.stringify(report)
 
 
+func _refresh_publication() -> void:
+	if host == null or _publication_status == null: return
+	var state: Dictionary = host.material_publication_status()
+	var modes: Array[String] = ["auto","full","tiled"]
+	var index: int = modes.find(str(state.get("requested_mode","auto")))
+	_syncing = true
+	(_widgets["publication"] as OptionButton).select(maxi(0,index))
+	_syncing = false
+	_publication_status.text = "Active: %s | last update: %s bytes%s" % [
+		str(state.get("backend","pending")),str(state.get("submitted_bytes",0)),
+		(" | "+str(state.fallback_reason)) if not str(state.get("fallback_reason","")).is_empty() else ""]
+
 func _refresh() -> void:
 	if host == null or _status == null or _capturing: return
+	_refresh_publication()
 	var state: Dictionary = _sample()
 	var pace: Dictionary = host.simulation_worker.engine_lab_pixel_pacing()
 	_status.text = "FPS %.0f  |  native tick %d  |  Rapier step %d  |  render serial %d  |  Pixel target %dHz  |  guard vetoes %d" % [

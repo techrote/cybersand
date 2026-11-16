@@ -85,11 +85,20 @@ func _run() -> void:
 			menu._widgets.has("render") and menu._widgets.has("ack") and
 			menu._widgets.has("pixel") and menu._widgets.has("rapier") and
 			menu._widgets.has("workers") and menu._widgets.has("wait_sample") and
-			menu._widgets.has("sample_wake"),"all requested controls exist")
+			menu._widgets.has("sample_wake") and menu._widgets.has("publication"),"all requested controls exist")
 		check(host.engine_lab_wait_native_sample and
 			host.engine_lab_ack_delay_frames==0 and
 			int(host.simulation_worker.engine_lab_pixel_pacing().target_hz)==60,
 			"default coupling, ACK, and native tick unchanged")
+		var before_publication_revision: int = host.last_uploaded_revision
+		menu._widgets["publication"].item_selected.emit(1)
+		check(host.material_publication_status().requested_mode=="full" and
+			host.last_uploaded_revision==before_publication_revision,
+			"live full texture control retains the accepted material revision")
+		menu._widgets["publication"].item_selected.emit(0)
+		check(host.material_publication_status().requested_mode=="auto" and
+			host.last_uploaded_revision==before_publication_revision,
+			"live automatic publication restores selection without a native edit")
 		menu._widgets["fps"].value = 144
 		check(Engine.max_fps==144,"UI changes live render FPS cap")
 		menu._widgets["pixel"].value = 30

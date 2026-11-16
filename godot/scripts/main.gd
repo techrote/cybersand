@@ -1,5 +1,6 @@
 extends Control
 
+const MaterialTexture = preload("res://scripts/tiled_material_texture.gd")
 const PixelCamera = preload("res://scripts/pixel_camera_transform.gd")
 const PhysicalTrial = preload("res://scripts/physical_actor_trial.gd")
 const PhysicalCatalog = preload("res://scripts/physical_actor_catalog.gd")
@@ -1033,8 +1034,7 @@ func _microscenario_installed(definition: Dictionary) -> void:
 			image = Image.create_empty(extent.x,extent.y,false,render_image_format)
 			create_render_textures()
 			world_view.texture = texture
-			world_shader.set_shader_parameter("current_world_texture",texture)
-			world_shader.set_shader_parameter("previous_world_texture",previous_texture)
+			configure_material_textures(world_shader)
 		shared_workbench.installed(pending_microscenario_apply.workbench)
 	elif showcase_presentation != null:
 		showcase_presentation.installed(definition)
@@ -1637,8 +1637,14 @@ var lockstep_main_fenced_steps: int = 0
 var lockstep_main_unfenced_steps: int = 0
 
 var image: Image
-var texture: ImageTexture
-var previous_texture: ImageTexture
+var texture: Texture2D
+var previous_texture: Texture2D
+var _material_publication_mode: String = ""
+var _material_publication_fallback: String = ""
+var _material_publication_last: Dictionary = {}
+var _material_pending_rectangles := PackedInt32Array()
+var _material_previous_rectangles := PackedInt32Array()
+var _material_image_patch_usec: int = 0
 var material_appearance_lut: ImageTexture
 var material_appearance_program: ImageTexture
 var render_channels: int = 1
@@ -1959,8 +1965,7 @@ func _ready() -> void:
 	material_appearance_lut = CyberMaterialAppearanceLut.create_texture()
 	material_appearance_program = CyberMaterialAppearanceLut.create_program_texture()
 	world_view.texture = texture
-	world_shader.set_shader_parameter("current_world_texture", texture)
-	world_shader.set_shader_parameter("previous_world_texture", previous_texture)
+	configure_material_textures(world_shader)
 	world_shader.set_shader_parameter("material_lut", material_appearance_lut)
 	world_shader.set_shader_parameter("material_program_lut", material_appearance_program)
 	world_shader.set_shader_parameter(
@@ -2028,7 +2033,12 @@ func _exit_tree() -> void:
 	rapier_bridge.shutdown()
 
 
+var _publication_detail_trace: bool = OS.get_environment("CYBERSAND_DIAG_COMMON_OBSERVER") != "1"
+var _launcher_ready_receipt: String = OS.get_environment("CYBERSAND_LAUNCH_READY_RECEIPT")
+var _launcher_ready_frames: int = 0
+
 func _process(delta: float) -> void:
+	var callback_started_usec: int = Time.get_ticks_usec() if workbench_pose_trace.active and _publication_detail_trace else 0
 	_workbench_mapping_locked = false
 	_engine_lab_pump_ack()
 	if shared_workbench == null:
@@ -2089,6 +2099,46 @@ func _process(delta: float) -> void:
 		refresh_actor_prototypes()
 		maximum_frame_time_ms = frame_time_ms
 		maximum_collider_time_ms = 0.0
+	if callback_started_usec > 0 and workbench_pose_trace.active:
+		workbench_pose_trace.observe_event({"event":"main_callback",
+			"start_usec":callback_started_usec,"time_usec":Time.get_ticks_usec(),
+			"process_frame":Engine.get_process_frames()})
+	if not _launcher_ready_receipt.is_empty(): _write_launcher_ready_receipt()
+
+
+# Opt-in installed-launcher qualification. Ordinary sessions never enter this
+# path. A loaded extension banner alone does not prove Workbench installation.
+func _write_launcher_ready_receipt() -> void:
+	if shared_workbench == null or shared_workbench.applied.is_empty() \
+		or not pending_microscenario_apply.is_empty() or _pending_physical_candidate != null \
+		or worker_start_error != OK or not rapier_bridge.is_initialized() \
+		or latest_snapshot == null or latest_snapshot.simulation_failed \
+		or last_uploaded_revision < 0 or last_uploaded_world_generation < 0 \
+		or last_uploaded_world_generation != latest_snapshot.render_world_generation \
+		or rapier_bridge.pending_hard_surface_chunks() != 0:
+		_launcher_ready_frames = 0
+		return
+	if physical_actor_session != null and (_actor_reset_receipt != 0 or not _physical_terrain_ready):
+		_launcher_ready_frames = 0
+		return
+	_launcher_ready_frames += 1
+	if _launcher_ready_frames < 2: return
+	var receipt := {"source":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
+		"workbench_installed":true,"world_generation":last_uploaded_world_generation,
+		"uploaded_revision":last_uploaded_revision,"snapshot_serial":latest_snapshot.serial,
+		"native_tick":latest_snapshot.tick_index,"pending_hard_chunks":0,
+		"material_publication":material_publication_status(),
+		"physics_publication":simulation_worker.physics_publication_mode()}
+	var output := FileAccess.open(_launcher_ready_receipt, FileAccess.WRITE)
+	_launcher_ready_receipt = ""
+	if output == null:
+		push_error("Installed launcher could not write its readiness receipt")
+		get_tree().quit(1)
+		return
+	output.store_string(JSON.stringify(receipt)+"\n")
+	output.close()
+	print("WORKBENCH_LAUNCH_READY ", JSON.stringify(receipt))
+	if OS.get_environment("CYBERSAND_LAUNCH_QUIT_AFTER_READY") == "1": get_tree().quit()
 
 
 func _physics_process(_delta: float) -> void:
@@ -2107,10 +2157,10 @@ func _physics_process(_delta: float) -> void:
 	publish_actor_usable_input()
 	var physics_snapshot: CyberSimulationSnapshot = latest_snapshot
 	if shared_workbench != null and physical_actor_session != null:
-		# Physics can consume an immutable completion before the next render
-		# callback. Its native terrain revision, sample fence and wrench must
-		# all belong to the same publication.
-		physics_snapshot = simulation_worker.take_latest_snapshot(0)
+		# Physics consumes the bounded native/terrain mailbox before material
+		# extraction and upload complete. Terrain, sample and wrench still
+		# belong to one immutable owner turn and the ordinary strict fence.
+		physics_snapshot = simulation_worker.take_latest_physics_snapshot()
 		if physics_snapshot == null or physics_snapshot.simulation_failed or physics_snapshot.rigid_body_epoch != _body_owner_epoch():
 			_cadence_physics_hold("missing_failed_or_wrong_epoch",physics_snapshot)
 			return
@@ -3340,8 +3390,8 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 		"native_tick":latest_snapshot.tick_index if latest_snapshot != null else -1,
 		"rapier_step":physical_actor_session.tick if physical_actor_session != null else -1,
 		"snapshot_blend":blend,"previous_blend_active":blend < 1.0,
-		"current_texture_id":texture.get_rid().get_id() if texture != null else 0,
-		"previous_texture_id":previous_texture.get_rid().get_id() if previous_texture != null else 0,
+		"current_texture_id":_material_publication_rid(texture).get_id(),
+		"previous_texture_id":_material_publication_rid(previous_texture).get_id(),
 		"deadline_usec":started_usec+maxi(0,PRESENTATION_FRAME_TIME_BUDGET_USEC-cache_usec),
 		"valid":false,"reason":"invalid_frame","resolve_usec":0,"upload_cache_usec":cache_usec}
 	var summary: Dictionary = {"safe_live":0,"blocked_material":0,"blocked_unknown":0,
@@ -3602,7 +3652,10 @@ func _cadence_rapier_completed(started_usec: int, completed_usec: int,
 		"time_usec":completed_usec,"observed_usec":Time.get_ticks_usec(),
 		"step":physical_actor_session.tick,
 		"session":bridge._session,"epoch":bridge._epoch,
-		"world_generation":snapshot.render_world_generation if snapshot != null else -1,
+		"world_generation":(snapshot.physics_world_generation if snapshot.physics_world_generation >= 0
+			else snapshot.render_world_generation) if snapshot != null else -1,
+		"physics_publication_usec":snapshot.physics_handoff_usec if snapshot != null else 0,
+		"native_completed_usec":snapshot.last_native_tick_completed_usec if snapshot != null else -1,
 		"fixed_delta":rapier_bridge.fixed_delta(),
 		"solver_usec":roundi(rapier_bridge.last_step_time_ms()*1000.0),
 		"flush_usec":roundi(rapier_bridge.last_flush_time_ms()*1000.0),
@@ -4061,7 +4114,8 @@ func consume_render_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 				"start_usec":upload_started_usec,"completed_usec":Time.get_ticks_usec(),
 				"generated_usec":snapshot.render_generated_usec,"native_tick":snapshot.render_tick_index,
 				"revision":snapshot.world_revision,"world_generation":snapshot.render_world_generation,
-				"full_refresh":snapshot.render_full_refresh,"patch_bytes":snapshot.render_patch_cells.size()}
+				"full_refresh":snapshot.render_full_refresh,"patch_bytes":snapshot.render_patch_cells.size(),
+				"material_publication":material_publication_status()}
 			if workbench_pose_trace.active:
 				workbench_pose_trace.observe_event(_cadence_upload.duplicate())
 			# Only an accepted World replacement invalidates presentation history.
@@ -4122,6 +4176,16 @@ func sync_hard_surface_colliders(snapshot: CyberSimulationSnapshot = null) -> vo
 		or snapshot.hard_surface_revision == last_hard_surface_revision
 	):
 		return
+	if shared_workbench != null and physical_actor_session != null:
+		if snapshot.rigid_body_epoch != _body_owner_epoch(): return
+		# A later physical completion may already have installed newer terrain
+		# while the full graphical snapshot was being assembled. Direct callers
+		# and the render callback must never roll that geometry backwards.
+		var newest: CyberSimulationSnapshot = simulation_worker.take_latest_physics_snapshot()
+		if newest == null: return
+		if newest.rigid_body_epoch == snapshot.rigid_body_epoch \
+			and newest.serial > snapshot.serial and newest.hard_surface_revision != snapshot.hard_surface_revision:
+			return
 	if physical_actor_session != null and not _physical_terrain_ready \
 		and (snapshot.rigid_body_epoch != _physical_epoch or _actor_reset_receipt != 0
 			or not pending_microscenario_apply.is_empty()):
@@ -5458,8 +5522,9 @@ func view_content_rect() -> Rect2:
 
 
 func create_render_textures() -> void:
-	texture = ImageTexture.create_from_image(image)
-	previous_texture = ImageTexture.create_from_image(image)
+	_create_material_texture_pair(image, image)
+	_material_pending_rectangles.clear()
+	_material_previous_rectangles.clear()
 	_presentation_previous_image = null
 	_presentation_previous_unknown = true
 	_presentation_current_bytes = image.get_data()
@@ -5485,6 +5550,8 @@ func upload_texture(material_cells: PackedByteArray, world_revision: int) -> voi
 		render_image_format,
 		material_cells
 	)
+	_material_pending_rectangles = _full_material_rectangle()
+	_material_image_patch_usec = Time.get_ticks_usec() - start_usec
 	finish_texture_upload(world_revision, start_usec)
 
 
@@ -5504,13 +5571,16 @@ func upload_texture_patches(
 		patch_channels
 	):
 		return false
+	_material_pending_rectangles = patch_rectangles.duplicate()
+	_material_image_patch_usec = Time.get_ticks_usec() - start_usec
 	finish_texture_upload(world_revision, start_usec)
 	return true
 
 
 # Called against the old CPU image before its patches are applied. Outside
 # these rectangles the old and new GPU textures contain the same material.
-# Retain old *nonempty* pixels only, subject to a strict scan/memory budget.
+# Retain the exact image for Workbench. Legacy callers without an image keep
+# the bounded map of old nonempty pixels.
 func _capture_previous_presentation_occupancy(rectangles: PackedInt32Array) -> void:
 	_presentation_previous_occupied.clear()
 	_presentation_previous_unknown = false
@@ -5523,6 +5593,11 @@ func _capture_previous_presentation_occupancy(rectangles: PackedInt32Array) -> v
 		# GPU slots swap. Preserve it through CPU patch mutation. Full refreshes
 		# and delayed ACK accumulation no longer imply unknown local occupancy.
 		_presentation_previous_image = image.duplicate()
+		# Both production clearance policies use the exact previous Image (or
+		# its immutable byte cache) whenever it exists. Building the legacy map
+		# as well only repeats up to 16,384 GDScript pixel reads/dictionary writes.
+		# If retention failed, continue through the conservative legacy fallback.
+		if _presentation_previous_image != null: return
 	var changed: int = 0
 	for offset: int in range(0,rectangles.size(),RENDER_PATCH_METADATA_STRIDE):
 		var cells: int = int(rectangles[offset+2])*int(rectangles[offset+3])
@@ -5721,7 +5796,7 @@ func finish_texture_upload(world_revision: int, start_usec: int) -> void:
 	# Ping-pong two GPU textures. The shader blends movable occupancy from the
 	# previous snapshot to the current one, masking the intentional two-cell
 	# sparse-flight leap without changing authoritative physics or collisions.
-	var old_current_texture: ImageTexture = texture
+	var old_current_texture: Texture2D = texture
 	texture = previous_texture
 	previous_texture = old_current_texture
 	var cache_started_usec: int = Time.get_ticks_usec()
@@ -5746,18 +5821,131 @@ func finish_texture_upload(world_revision: int, start_usec: int) -> void:
 	_presentation_upload_cache_usec = Time.get_ticks_usec()-cache_started_usec
 	_presentation_pending_cache_usec += _presentation_upload_cache_usec
 	update_render_texture()
-	world_view.texture = texture
-	world_shader.set_shader_parameter("current_world_texture", texture)
-	world_shader.set_shader_parameter("previous_world_texture", previous_texture)
-	if glow_source_shader != null:
-		glow_source_shader.set_shader_parameter("world_texture", texture)
+	_material_previous_rectangles = _material_pending_rectangles
+	_bind_material_texture_consumers()
 	snapshot_blend_start_usec = Time.get_ticks_usec()
 	last_uploaded_revision = world_revision
 	upload_time_ms = float(Time.get_ticks_usec() - start_usec) / 1000.0
 
 
 func update_render_texture() -> void:
-	texture.update(image)
+	if texture is MaterialTexture:
+		# The recycled slot still contains t-2. Both t-2 -> t-1 and t-1 -> t
+		# dirty tiles must be installed from the new complete CPU image.
+		var regions: PackedInt32Array = _material_pending_rectangles.duplicate()
+		regions.append_array(_material_previous_rectangles)
+		if (texture as MaterialTexture).update_regions(image, regions):
+			_material_publication_last = (texture as MaterialTexture).last_update.duplicate()
+			return
+		# Any detected structural rejection retires both arrays. Restore both
+		# exact history images before binding or acknowledging this publication.
+		_material_publication_fallback = "tiled update validation failed"
+		var recovery_previous: Image = _material_previous_cpu_image()
+		var recovery_started: int = Time.get_ticks_usec()
+		texture = ImageTexture.create_from_image(image)
+		previous_texture = ImageTexture.create_from_image(recovery_previous)
+		_material_publication_last = {"mode":"full", "submitted_bytes":image.get_width() * image.get_height() * render_channels * 2,
+			"tile_assembly_usec":0, "backend_submit_usec":Time.get_ticks_usec() - recovery_started,
+			"recovery_rebuilt_pair":true}
+		return
+	var started: int = Time.get_ticks_usec()
+	(texture as ImageTexture).update(image)
+	_material_publication_last = {"mode":"full", "submitted_bytes":image.get_width() * image.get_height() * render_channels,
+		"candidate_layers":1, "updated_layers":1, "tile_count":1,
+		"tile_assembly_usec":0, "backend_submit_usec":Time.get_ticks_usec() - started}
+
+
+func _full_material_rectangle() -> PackedInt32Array:
+	return PackedInt32Array([0, 0, world_extent.x, world_extent.y, 0, world_extent.x * render_channels])
+
+
+func _material_previous_cpu_image() -> Image:
+	return Image.create_from_data(_presentation_previous_content_shape.x,
+		_presentation_previous_content_shape.y, false,
+		_presentation_previous_content_shape.z, _presentation_previous_bytes)
+
+
+func _create_material_texture_pair(current: Image, previous: Image) -> void:
+	if _material_publication_mode.is_empty():
+		_material_publication_mode = OS.get_environment("CYBERSAND_MATERIAL_PUBLICATION").to_lower()
+		if _material_publication_mode not in ["auto", "full", "tiled"]: _material_publication_mode = "auto"
+	_material_publication_fallback = ""
+	var new_current: Texture2D
+	var new_previous: Texture2D
+	if _material_publication_mode != "full":
+		if MaterialTexture.supported_driver():
+			new_current = MaterialTexture.create_from_material(current)
+			new_previous = MaterialTexture.create_from_material(previous) if new_current != null else null
+			if new_current == null or new_previous == null:
+				_material_publication_fallback = "array creation or capacity refused"
+		else:
+			_material_publication_fallback = "renderer not qualified for tiled publication"
+	if new_current == null or new_previous == null:
+		new_current = ImageTexture.create_from_image(current)
+		new_previous = ImageTexture.create_from_image(previous)
+	texture = new_current
+	previous_texture = new_previous
+	var initialized_bytes: int = (current.get_width() * current.get_height()
+		+ previous.get_width() * previous.get_height()) * render_channels
+	if texture is MaterialTexture:
+		var tiled := texture as MaterialTexture
+		initialized_bytes = 2 * tiled.columns * tiled.rows * tiled.tile_side * tiled.tile_side * render_channels
+	# Initialization has no stage-split timing probe. Omit those fields rather
+	# than turning unknown setup time into a measured zero-duration update.
+	_material_publication_last = {"mode":"tiled" if texture is MaterialTexture else "full",
+		"submitted_bytes":initialized_bytes, "initialization":true}
+
+
+func _material_publication_rid(value: Texture2D) -> RID:
+	if value is MaterialTexture: return (value as MaterialTexture).publication_rid()
+	return value.get_rid() if value != null else RID()
+
+
+func configure_material_textures(shader: ShaderMaterial, single: bool = false) -> void:
+	if shader == null: return
+	if single:
+		shader.set_shader_parameter("world_texture", texture)
+	else:
+		shader.set_shader_parameter("current_world_texture", texture)
+		shader.set_shader_parameter("previous_world_texture", previous_texture)
+	MaterialTexture.bind_shader(shader, texture, previous_texture)
+
+
+func _bind_material_texture_consumers() -> void:
+	if world_view != null: world_view.texture = texture
+	configure_material_textures(world_shader)
+	configure_material_textures(glow_source_shader, true)
+	for shader: ShaderMaterial in vapour_trail_shaders:
+		configure_material_textures(shader, true)
+
+
+func material_publication_status() -> Dictionary:
+	var result: Dictionary = _material_publication_last.duplicate()
+	result["requested_mode"] = _material_publication_mode
+	result["backend"] = "tiled" if texture is MaterialTexture else "full"
+	result["fallback_reason"] = _material_publication_fallback
+	result["driver"] = RenderingServer.get_current_rendering_driver_name()
+	if not result.get("initialization", false):
+		result["image_patch_usec"] = _material_image_patch_usec
+		result["content_cache_usec"] = _presentation_upload_cache_usec
+	result["timing_scope"] = "elapsed wall calls including possible waits/descheduling; not GPU completion"
+	if texture is MaterialTexture:
+		result["tile_side"] = (texture as MaterialTexture).tile_side
+		result["tile_count"] = (texture as MaterialTexture).columns * (texture as MaterialTexture).rows
+		result["current_array_rid"] = _material_publication_rid(texture).get_id()
+		result["previous_array_rid"] = _material_publication_rid(previous_texture).get_id()
+	return result
+
+
+func set_material_publication_mode(mode: String) -> bool:
+	if mode not in ["auto", "full", "tiled"] or image == null: return false
+	_material_publication_mode = mode
+	_create_material_texture_pair(image, _material_previous_cpu_image())
+	# A newly constructed previous slot contains the preceding material image;
+	# its unknown dirty delta is bounded by this explicit whole-plane coverage.
+	_material_previous_rectangles = _full_material_rectangle()
+	_bind_material_texture_consumers()
+	return mode != "tiled" or texture is MaterialTexture
 
 
 func update_shader_parameters() -> void:
@@ -6072,7 +6260,7 @@ func setup_glow_pipeline() -> void:
 	world_view.add_child(glow_overlay)
 	set_glow_enabled(glow_enabled)
 	setup_vapour_trail_pipeline()
-	glow_source_shader.set_shader_parameter("world_texture", texture)
+	configure_material_textures(glow_source_shader, true)
 	glow_source_shader.set_shader_parameter(
 		"material_program_lut",
 		material_appearance_program
@@ -6176,7 +6364,7 @@ func update_vapour_trail() -> void:
 	# uses the fractional presentation origin. This is not camera quantization.
 	var origin: Vector2 = presentation_camera_origin().floor()
 	var shader_material: ShaderMaterial = vapour_trail_shaders[target]
-	shader_material.set_shader_parameter("world_texture", texture)
+	configure_material_textures(shader_material, true)
 	shader_material.set_shader_parameter(
 		"world_size_px", Vector2(world_extent.x, world_extent.y))
 	shader_material.set_shader_parameter("view_size_px", Vector2(history_size))

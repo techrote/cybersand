@@ -201,6 +201,7 @@ def analyze_physics_progress(frames, events):
         "unmeasured_intervals_with_missing_completions": skipped,
         "pause_spanning_intervals": len(intervals)-len(active),
         "active_completed_step_gap_ms": distribution([row["gap_ms"] for row in active]),
+        "active_gaps_at_least_50ms": sum(row["gap_ms"] >= 50 for row in active),
         "active_gaps_at_least_100ms": sum(row["gap_ms"] >= 100 for row in active),
         "active_gaps_at_least_250ms": sum(row["gap_ms"] >= 250 for row in active),
         "active_gaps_at_least_1000ms": sum(row["gap_ms"] >= 1000 for row in active),

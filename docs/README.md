@@ -10,6 +10,14 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+PR609 publication-remediation candidate: [bounded dirty GPU layers and early
+physical completion](audits/2026-11-16-physics-freeze-remediation-002.md), the
+[production contract](architecture/rendering-and-gameplay-bridges.md) and
+[Windows evaluation](operations/camera-stack-coherence-acceptance.md).
+Actual completed physics and source-matched tail latency are distinct from
+visual continuity. Physical Windows11 NVIDIA acceptance remains with the owner;
+all four camera-stack PRs stay Draft/HOLD.
+
 Current Draft/HOLD evaluation: [coherent actor, terrain and camera Windows
 acceptance](operations/camera-stack-coherence-acceptance.md),
 [presentation contract](architecture/rendering-and-gameplay-bridges.md#coherent-workbench-presentation-frame)
