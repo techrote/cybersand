@@ -54,7 +54,7 @@ jobs:
             "original_adapter_sha256":"53fc6646b586712a794707ecf649167ea94f3af8be82963380886dc63ac9d72d",
             "seeds":[9503,9521,9539],"families":["greebles","pipework","architecture"],
             "max_turns":12,"real_optimizers":0,"native":False,"draft_hold":True,
-            "request_attempt":1}
+            "request_attempt":2}
           PY
           python3 tools/ci/check_ci_provider_policy.py
           (git rev-parse HEAD; date -u -Iseconds; python3 --version) > gp350-002-evidence/host.txt
