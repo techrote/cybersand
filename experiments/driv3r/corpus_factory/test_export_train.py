@@ -169,6 +169,47 @@ class TrainExportTests(unittest.TestCase):
         self._expect_rehashed_source_refusal(
             'train.worlds.jsonl', corrupt, 'world fixture')
 
+    def test_rehashed_heading_without_changing_trail_is_refused(self):
+        # A valid-range but wrong heading passes local-grid and receipt checks;
+        # it must not become an allegedly faithful TRAIN observation.
+        def corrupt(rows):
+            row = rows[0]
+            obs = row['observation']
+            obs['heading'] = (obs['heading'] + 1) % 4
+            row['input_sha256'] = observed_fingerprint(obs)
+        self._expect_rehashed_source_refusal(
+            'train.decisions.jsonl', corrupt, 'deterministic producer replay')
+
+    def test_rehashed_forged_host_legal_menu_is_refused(self):
+        def corrupt(rows):
+            row = rows[0]
+            obs = row['observation']
+            self.assertNotIn('RETRACE', obs['legal'])  # first tick: no history
+            obs['legal'].append('RETRACE')
+            row['input_sha256'] = observed_fingerprint(obs)
+        self._expect_rehashed_source_refusal(
+            'train.decisions.jsonl', corrupt, 'deterministic producer replay')
+
+    def test_rehashed_forged_teacher_action_and_receipt_is_refused(self):
+        # The old validator checked receipt self-consistency but did not
+        # recompute which choice the seeded teacher actually selected.
+        def corrupt(rows):
+            row = rows[0]
+            other = next(a for a in row['observation']['legal']
+                         if a != row['target_action'])
+            row['target_action'] = other
+            row['receipt']['raw_choice'] = other
+            row['receipt']['applied'] = other
+        self._expect_rehashed_source_refusal(
+            'train.decisions.jsonl', corrupt, 'deterministic producer replay')
+
+    def test_rehashed_episode_branch_history_is_refused(self):
+        def corrupt(rows):
+            ep = rows[0]
+            ep['branch_points'] = [[4, 4]] if ep['branch_points'] != [[4, 4]] else []
+        self._expect_rehashed_source_refusal(
+            'train.episodes.jsonl', corrupt, 'deterministic producer replay')
+
     def test_refuse_source_tree_output(self):
         with self.assertRaisesRegex(ValueError,'overwrite source'):
             export(self.corpus, self.corpus / 'new_export')
