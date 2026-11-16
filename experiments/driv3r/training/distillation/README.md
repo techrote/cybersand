@@ -117,3 +117,47 @@ parent decisions all derive from source seed 570; no fresh parent execution,
 true AEROHOUND or LFM/Sprocket teacher mixture, native host qualification,
 or faithful parent-trait transfer is claimed. The next falsification priority
 is seed-independent real teacher trajectories and protected-squeeze recovery.
+
+## D-STUDENT-006: explicit exhaustion versus premature STOP (16 November 2026)
+
+The external protected-squeeze environment frequently consumes ~56 of its
+80 decisions after exhausting the local reachable pocket. D005 lacks effective
+STOP preference. D006 tests whether a 5,142-parameter MLP can learn
+**conservative early termination** instead of retracing/overpainting forever.
+
+Implementation: exhaustion_recovery.py; regression: test_exhaustion_recovery.py.
+Inputs are the source-matched D005 trained checkpoint and frontier_metrics.json,
+with exact SHA-256 checks. The oracle/evaluator computes an external BFS through
+traversable cells, **also treating STOP-only host menus as exhausted**.
+Geometric reachability can differ from future six-action reachability
+(heading/BRANCH/RETRACE), so this is a conservative synthetic diagnostic,
+NOT a native CyberSand API. The MLP receives only the original 100 local
+features; full-map reachability is a teacher label, not an inference feature.
+
+Corpus: 48 training seeds 177..224 x four styles x three scenarios x
+D005/flat-legal controllers; hard negatives include paint-filled local
+windows with still-reachable distant frontier. Validation seeds 1041..1048
+select a mixture; test seeds 5001..5016 remain disjoint from earlier tests.
+Three genuine 140-Adam-update candidates have mixtures 0.35/0.60/0.85.
+All action choices obey the synthetic host legal menu.
+
+Local research preflight against the previously hosted D005 checkpoint:
+91,596 examples, 12,522 exhausted positives, 16,244 difficult live
+negatives, 420 real Adam updates. Validation selected 0.85. Across 64 unseen
+squeeze episodes, D005 -> D006: unique cells 17.02 -> 15.45, branches
+7.38 -> 6.62, justified STOP 0% -> 84.4%, and wasted decisions after
+exhaustion 55.69 -> 6.83. D006 prematurely STOPs in **15.6%** of squeeze
+episodes. Normal coverage increases 69.78 -> 72.13 while dynamic-trap
+coverage decreases 64.02 -> 63.00. The premature STOP and lost squeeze
+coverage are negative findings; do not claim a coverage improvement.
+These are local preflight results, not hosted/native acceptance.
+
+Reproduction: python3 -m experiments.driv3r.training.distillation.exhaustion_recovery
+--base /path/to/frontier_student.npz --metrics /path/to/frontier_metrics.json
+--out /path/to/new_evidence --steps 140 (put arguments on the same shell line).
+
+The EXISTING single read-only distillation Actions workflow now runs D006
+after D005 and uploads action receipts, original PNGs, candidate/checkpoint
+weights, corpus, metrics and SHA256SUMS. Model binaries stay in immutable
+Actions artifacts, NEVER Git. No new parent d1, AEROHOUND, LFM/Sprocket
+or native CyberSand inference took place. Draft/HOLD, no merge.
