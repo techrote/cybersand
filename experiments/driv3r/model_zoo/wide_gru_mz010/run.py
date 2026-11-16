@@ -243,11 +243,11 @@ def main():
     p.add_argument("--train-seeds", type=int, default=160)
     p.add_argument("--eval-seeds", type=int, default=24)
     p.add_argument("--rollout-seeds", type=int, default=8)
-    p.add_argument("--updates", type=int, default=500)
-    p.add_argument("--batch", type=int, default=8)
+    p.add_argument("--updates", type=int, default=800)
+    p.add_argument("--batch", type=int, default=48)
     p.add_argument("--hidden", type=int, default=1504)
     p.add_argument("--layers", type=int, default=2)
-    p.add_argument("--wide-lr", type=float, default=.0012)
+    p.add_argument("--wide-lr", type=float, default=.002)
     run(p.parse_args())
 
 
