@@ -12,7 +12,8 @@ import hashlib
 import json
 from pathlib import Path
 
-from corpus import ACTIONS, SOURCE, VERSION, audit, canonical, digest, partition
+from corpus import (ACTIONS, SOURCE, VERSION, audit, canonical, digest,
+                    partition, world as regenerate_world, local_grid)
 
 FIELDS = (
     'x', 'y', 'heading', 'local_5x5', 'legal', 'last_actions', 'family',
@@ -72,7 +73,7 @@ def validate_row(row, train_groups):
 
 
 
-def validate_lineage(row, obs, action, worlds, episodes):
+def validate_lineage(row, obs, action, worlds, episodes, rendered_worlds):
     """Cross-check *all* prompt fields against immutable audited world/episode receipts.
 
     The producer's v1 input_sha256 covers model-local features but omits x/y,
@@ -121,6 +122,18 @@ def validate_lineage(row, obs, action, worlds, episodes):
             or type(obs['goal_reached']) is not bool
             or obs['goal_reached'] != (before == world['goal'])):
         raise ValueError('inconsistent observed goal information')
+    # A manifest/row SHA can be recomputed after accidental or deliberate
+    # edits. Verify that every local material/protection/symbolic channel
+    # reflects the deterministic original world and painted trail, rather
+    # than merely trusting a self-consistent (rehashable) observation.
+    obstacles, protected, materials = rendered_worlds[group]
+    visited = {tuple(p) for p in ep['trail'][:tick + 1]}
+    symbolic, material, immutable = local_grid(
+        (obs['x'], obs['y']), visited, obstacles, protected, materials, 96)
+    if (obs['local_5x5'] != symbolic
+            or obs['local_material_5x5'] != material
+            or obs['local_protected_5x5'] != immutable):
+        raise ValueError('local observation disagrees with reconstructed world/trail')
 
 def load_train(root):
     root = Path(root)
@@ -133,6 +146,7 @@ def load_train(root):
         raise ValueError('trained-model trace contamination')
     groups = set()
     worlds = {}
+    rendered_worlds = {}
     for line in (root / 'train.worlds.jsonl').read_text().splitlines():
         w = json.loads(line)
         group = w['world_group_id']
@@ -142,8 +156,15 @@ def load_train(root):
             raise ValueError('non-TRAIN world partition')
         if group in groups:
             raise ValueError('duplicate TRAIN world group')
+        original, obstacles, protected, materials, _ = regenerate_world(
+            w['generator_seed'], w['scenario'])
+        if (any(w.get(key) != value for key, value in original.items())
+                or w.get('world_id') != digest(original)[:24]
+                or w.get('world_group_id') != f"{w['scenario']}:{w['generator_seed']}"):
+            raise ValueError('TRAIN world fixture differs from deterministic generator')
         groups.add(group)
         worlds[group] = w
+        rendered_worlds[group] = (obstacles, protected, materials)
     episodes = {}
     for line in (root / 'train.episodes.jsonl').read_text().splitlines():
         ep = json.loads(line)
@@ -163,7 +184,7 @@ def load_train(root):
     for line in (root / 'train.decisions.jsonl').read_text().splitlines():
         row = json.loads(line)
         obs, action = validate_row(row, groups)
-        validate_lineage(row, obs, action, worlds, episodes)
+        validate_lineage(row, obs, action, worlds, episodes, rendered_worlds)
         fingerprint = row['input_sha256']
         if fingerprint in seen:
             raise ValueError('duplicate input in training source')
