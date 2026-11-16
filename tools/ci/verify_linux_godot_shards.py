@@ -12,6 +12,7 @@ import subprocess
 import execution_policy
 import run_godot_regressions as runner
 import verify_retained_play_readback
+import verify_render_upload577_refusal
 
 
 def require(condition: bool, message: str) -> None:
@@ -42,6 +43,7 @@ def verify(root: Path, *, cases: list, source: str, tree: str, runtime: dict,
     seen = set()
     observed = []
     originals = []
+    intentional_readbacks = []
     for path in paths:
         report = json.loads(path.read_text(encoding="utf-8"))
         identity = report.get("identity", {})
@@ -77,11 +79,36 @@ def verify(root: Path, *, cases: list, source: str, tree: str, runtime: dict,
             log = local_file(path.parent, row.get("log"))
             require(digest(log) == row.get("log_sha256"), "Original Linux log changed")
             text = log.read_text(encoding="utf-8", errors="replace")
-            require("ERROR:" not in text and not re.search(r"\bskipped\b|^\s*SKIP\b", text, re.I | re.M),
-                    "Original Linux log contains an error or skipped check")
+            refusal = case.name == verify_render_upload577_refusal.SCRIPT.removesuffix(".gd")
+            if refusal:
+                require(not re.search(r"\bskipped\b|^\s*SKIP\b", text, re.I | re.M),
+                        "Original Linux log contains an error or skipped check")
+            else:
+                require("ERROR:" not in text and not re.search(r"\bskipped\b|^\s*SKIP\b", text, re.I | re.M),
+                        "Original Linux log contains an error or skipped check")
             require(isinstance(row.get("command"), list)
                     and row["command"][1:] == runner.case_command("GODOT", case, "linux")[1:],
                     "Linux original command differs from source")
+            if refusal:
+                diagnostic = row.get("intentional_diagnostics")
+                receipt_name = case.name + "-receipt.json"
+                require(case.requires_display and offset > 0 and isinstance(diagnostic, dict)
+                        and set(diagnostic) == {"status", "expected_error_count", "receipt", "receipt_sha256"}
+                        and diagnostic.get("status") == "passed"
+                        and type(diagnostic.get("expected_error_count")) is int
+                        and diagnostic["expected_error_count"] == 8
+                        and diagnostic.get("receipt") == receipt_name,
+                        "Missing exact retained refusal diagnostic contract")
+                receipt_path = local_file(path.parent, receipt_name)
+                require(digest(receipt_path) == diagnostic.get("receipt_sha256"),
+                        "Retained refusal receipt seal changed")
+                data = verify_render_upload577_refusal.verify_retained(text,
+                    json.loads(receipt_path.read_text(encoding="utf-8")), source=source,
+                    engine_path=row["command"][0], godot_version=godot_version)
+                intentional_readbacks.append({"case": case.name, "checks": data["checks"],
+                    "expected_error_count": 8, "log_sha256": digest(log),
+                    "receipt_sha256": digest(receipt_path),
+                    "engine_sha256": verify_render_upload577_refusal.LINUX_GODOT_EXECUTABLE_SHA256})
             if offset:
                 if runner.case_readback_contract(case) is not None:
                     verify_retained_play_readback.verify(case, row, path.parent, source, "Linux",
@@ -92,6 +119,7 @@ def verify(root: Path, *, cases: list, source: str, tree: str, runtime: dict,
     return {"schema": "linux-godot-coverage-v1", "status": "passed", "source_sha": source,
         "source_tree": tree, "run_id": run_id, "run_attempt": attempt, "shard_count": shard_count,
         "case_count": len(observed), "cases": observed, "originals": originals,
+        "intentional_diagnostic_readbacks": intentional_readbacks,
         "source_inputs_verified": len(tested_inputs),
         "execution_policy": execution_policy.identity()}
 
