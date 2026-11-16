@@ -1,0 +1,67 @@
+name: DRIV3R relational-order mission memory (P13)
+on:
+  push:
+    branches:
+      - research/570-population-game-policy-001
+    paths:
+      - 'experiments/driv3r/training/population/population_p13.py'
+      - 'experiments/driv3r/training/population/test_population_p13.py'
+      - 'experiments/driv3r/training/population/P13_REPORT.md'
+      - '.github/workflows/driv3r-population-relational-missions.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  p13-cpu-research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install CPU-only pinned dependencies
+        run: |
+          python -m pip install --disable-pip-version-check numpy==2.3.5
+          python -m pip install --disable-pip-version-check torch==2.7.1 --index-url https://download.pytorch.org/whl/cpu
+      - name: Test P13 synthetic host legality and paired information guards
+        env:
+          OPENBLAS_NUM_THREADS: '1'
+          OMP_NUM_THREADS: '1'
+          MKL_NUM_THREADS: '1'
+        run: python -m unittest discover -s experiments/driv3r/training/population -p test_population_p13.py -v
+      - name: Real CPU training and closed-loop held-out missions
+        env:
+          OPENBLAS_NUM_THREADS: '1'
+          OMP_NUM_THREADS: '1'
+          MKL_NUM_THREADS: '1'
+        run: |
+          mkdir -p /tmp/p13-evidence/source
+          git rev-parse HEAD > /tmp/p13-evidence/source/exact-head.txt
+          python --version > /tmp/p13-evidence/source/python-version.txt 2>&1
+          python -m pip freeze > /tmp/p13-evidence/source/pip-freeze.txt
+          for s in 652 653; do
+            python experiments/driv3r/training/population/population_p13.py \
+              --output "/tmp/p13-evidence/cohort_${s}" --seed "${s}" \
+              --train-worlds 12 --validation-worlds 6 --heldout-worlds 6 \
+              --epochs 10 --width 32
+            (cd "/tmp/p13-evidence/cohort_${s}" && sha256sum -c manifest.sha256)
+          done
+      - name: Preserve source and full manifest even on failure
+        if: always()
+        run: |
+          mkdir -p /tmp/p13-evidence/source
+          for f in population_lab.py population_p10.py population_p11.py population_p12.py population_p13.py test_population_p13.py P13_REPORT.md; do
+            cp "experiments/driv3r/training/population/${f}" /tmp/p13-evidence/source/ || true
+          done
+          if test -d /tmp/p13-evidence; then
+            (cd /tmp/p13-evidence && find . -type f ! -name OVERALL.sha256 -print0 | sort -z | xargs -0 sha256sum) > /tmp/p13-evidence/OVERALL.sha256
+          fi
+      - name: Archive immutable model checkpoints, failed cases and trajectory galleries
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: population-p13-relational-mission-evidence
+          path: /tmp/p13-evidence
+          retention-days: 14
+          if-no-files-found: warn
