@@ -95,8 +95,7 @@ jobs:
           PY
       - name: Trained-phase causal ablation on original and shifted held-out worlds
         run: |
-          python -m experiments.driv3r.model_zoo.phase_state_mz012.ablate \\
-            --input "$RUNNER_TEMP/mz012"
+          python -m experiments.driv3r.model_zoo.phase_state_mz012.ablate --input "$RUNNER_TEMP/mz012"
           python - <<'PY'
           import json,os
           from pathlib import Path

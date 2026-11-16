@@ -79,7 +79,7 @@ def run(evidence):
             "Synthetic host and CPU timing only; no native game changes",
         ],
     }
-    (out/"phase_ablation.json").write_text(json.dumps(result, indent=2)+"\\n")
+    (out/"phase_ablation.json").write_text(json.dumps(result, indent=2)+chr(10))
     print(json.dumps({
         "checkpoint_sha256": result["checkpoint_sha256"],
         "phase_statistics": stats,
