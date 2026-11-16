@@ -1,6 +1,6 @@
 # Megatruss Station — native material gallery
 
-Source commit: `0059f5e62592ed1fa8c46429fbc816cfb26f4b27`. Input ledger: `5b78a93866e11831222455db4f9db2cee7b27c346eb493ed2330639bec5bab53`.
+Source commit: `279bc4634b1d2b3a47f747c628163e419a728be7`. Input ledger: `8689d760e11dfbe5ec7114b343ff09396c69a5e441dd5eaa4732cc83f90ee6ec`.
 
 These PNGs map actual native material bytes through the ordinary preview palette.
 

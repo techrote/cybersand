@@ -1,167 +1,239 @@
 {
-  "source": "0059f5e62592ed1fa8c46429fbc816cfb26f4b27",
-  "source_input_sha256": "5b78a93866e11831222455db4f9db2cee7b27c346eb493ed2330639bec5bab53",
-  "artifact_sha256": "f93b0e89ab3bf47a087dc55fc520851d623964578c6ad9e409269e19cbd70ded",
-  "artifact_files": 81,
-  "exact_material_array_matches": 21,
-  "exact_png_matches": 24,
-  "different_pngs": [],
-  "benchmark": {
-    "benchmark": "ordinary-native-generate",
-    "checksum": 92136827790701744,
-    "configuration": {
-      "accent_material": 65,
-      "bay_width": 64,
-      "chunk_size": 64,
-      "floor_height": 96,
-      "floor_material": 62,
-      "schema": 4,
-      "seed": 271828,
-      "wall": 3,
-      "wall_material": 58,
-      "window_material": 121
+  "source_commit": "279bc4634b1d2b3a47f747c628163e419a728be7",
+  "source_input_sha256": "8689d760e11dfbe5ec7114b343ff09396c69a5e441dd5eaa4732cc83f90ee6ec",
+  "artifact_id": 14278331044,
+  "run_id": 43969089140,
+  "artifact_url": "https://github.com/techrote/cybersand/actions/runs/43969089140/artifacts/14278331044",
+  "zip_sha256": "3817ee901f5fc77cc52726f5b1b2c6081735792ed7684c49a60a9267fbb8985a",
+  "zip_bytes": 1738108,
+  "zip_entries": 81,
+  "material_arrays_equal": 21,
+  "pngs_equal": 24,
+  "verified": [
+    {
+      "name": "01-hero-512.png",
+      "sha256": "204fffdd9072fcc2bb1394fafd181b0a89eef4e413d91437290da8ee22f342b9",
+      "exact_bytes_equal": true
     },
-    "results": [
-      {
-        "extent": 512,
-        "logical_operations_per_cell": 472,
-        "max_ms": 123.393516,
-        "median_ms": 123.16488,
-        "min_ms": 123.030458,
-        "module": "trestle",
-        "trials_ms": [
-          123.103187,
-          123.16488,
-          123.358123,
-          123.235063,
-          123.030458,
-          123.132185,
-          123.393516
-        ]
-      },
-      {
-        "extent": 512,
-        "logical_operations_per_cell": 476,
-        "max_ms": 124.230661,
-        "median_ms": 124.033431,
-        "min_ms": 123.794464,
-        "module": "space_frame",
-        "trials_ms": [
-          123.833288,
-          123.863327,
-          124.033431,
-          124.230661,
-          123.794464,
-          124.15887,
-          124.066857
-        ]
-      },
-      {
-        "extent": 512,
-        "logical_operations_per_cell": 484,
-        "max_ms": 124.752542,
-        "median_ms": 124.631965,
-        "min_ms": 124.155462,
-        "module": "arcade",
-        "trials_ms": [
-          124.155462,
-          124.436944,
-          124.385059,
-          124.752542,
-          124.670208,
-          124.69892,
-          124.631965
-        ]
-      },
-      {
-        "extent": 512,
-        "logical_operations_per_cell": 664,
-        "max_ms": 127.160646,
-        "median_ms": 126.620883,
-        "min_ms": 126.451517,
-        "module": "megatruss_station",
-        "trials_ms": [
-          126.796219,
-          126.451517,
-          126.620883,
-          126.465124,
-          127.160646,
-          126.992556,
-          126.5673
-        ]
-      },
-      {
-        "extent": 1024,
-        "logical_operations_per_cell": 472,
-        "max_ms": 543.556424,
-        "median_ms": 491.114284,
-        "min_ms": 481.342486,
-        "module": "trestle",
-        "trials_ms": [
-          486.01783,
-          483.535562,
-          481.342486,
-          527.481444,
-          543.556424,
-          491.114284,
-          496.879
-        ]
-      },
-      {
-        "extent": 1024,
-        "logical_operations_per_cell": 476,
-        "max_ms": 535.424234,
-        "median_ms": 491.784968,
-        "min_ms": 485.881166,
-        "module": "space_frame",
-        "trials_ms": [
-          485.881166,
-          487.855719,
-          491.784968,
-          490.491171,
-          535.424234,
-          527.578728,
-          494.845274
-        ]
-      },
-      {
-        "extent": 1024,
-        "logical_operations_per_cell": 484,
-        "max_ms": 539.62471,
-        "median_ms": 497.568038,
-        "min_ms": 487.318332,
-        "module": "arcade",
-        "trials_ms": [
-          491.510988,
-          487.318332,
-          491.857652,
-          497.568038,
-          539.62471,
-          535.422495,
-          499.687635
-        ]
-      },
-      {
-        "extent": 1024,
-        "logical_operations_per_cell": 664,
-        "max_ms": 510.807614,
-        "median_ms": 503.219503,
-        "min_ms": 495.854557,
-        "module": "megatruss_station",
-        "trials_ms": [
-          499.667378,
-          495.854557,
-          496.318555,
-          510.807614,
-          507.434507,
-          504.604392,
-          503.219503
-        ]
-      }
-    ],
-    "timed_scope": "complete native chunk generation, allocation and content hashing; preparation excluded",
-    "trial_order": "rotating-module-order",
-    "warm_trials": 7,
-    "warmup_trials": 1
-  }
+    {
+      "name": "01-hero-512.cells",
+      "sha256": "96f92d7b7325a9b8d13ca2c2d539ac6960d274bad056228e06b1f70b4f4a7171",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "02-hero-landscape.png",
+      "sha256": "653e7c76dd2cbedd9de3537b1324c541b11ea6c541277f4d1e0ae67c5023b49d",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "02-hero-landscape.cells",
+      "sha256": "e936cae6b796e46840acf170a102f77f21ce4b13e70634db2156f988bbdd51f1",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "03-hero-large.png",
+      "sha256": "fd5d534a1f6c34e941316f0024e5fb73b1829194b45a38e053e6f948003d1364",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "03-hero-large.cells",
+      "sha256": "df7548589054218105a8897477c4caaa293d4fec18c93f0bf6c4e3e1f52c0c48",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "04-seed-1.png",
+      "sha256": "09ba238d1d8be5a5974619532efa24174797ac3ab20d189f4efd12fe24fcb9bb",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "04-seed-1.cells",
+      "sha256": "eb8e7deff6584a807d93fc3342300151cfd680efd1333dbe1104ff0b3ca87324",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "05-seed-7.png",
+      "sha256": "4aeda01f6f4be341a2d2a2469fd185f99f4305159d21367584ee89b8b9ecaa61",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "05-seed-7.cells",
+      "sha256": "0bc5d3c58eb1ce8efc3d6eabe15a47b5f705df07869134b8737b5c137b79b978",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "06-seed-19.png",
+      "sha256": "25c011227f035bd58792115f424285f1813d69859513072704c2bf341ae5b7b6",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "06-seed-19.cells",
+      "sha256": "5819a0ed3a4a49e5b2f4147311d06acd495391f20848f463dfcee16587b4d8fc",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "07-seed-42.png",
+      "sha256": "98c0b45ad6b496b8c3c14f45540e3b7c31317c5049245c25f6565e99e6ed8264",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "07-seed-42.cells",
+      "sha256": "ec4f569749c752ada77a0f1d6db39e789906be927a57cbc32096949ae710b1d5",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "08-seed-271828.png",
+      "sha256": "204fffdd9072fcc2bb1394fafd181b0a89eef4e413d91437290da8ee22f342b9",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "08-seed-271828.cells",
+      "sha256": "96f92d7b7325a9b8d13ca2c2d539ac6960d274bad056228e06b1f70b4f4a7171",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "09-seed-8675309.png",
+      "sha256": "fb34ff0e88f8f2215a8f1975ab0d8ff0a13039e58f7264e5a82226a9910b9290",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "09-seed-8675309.cells",
+      "sha256": "bb9713f2b7bb2a8a2c205ca34c994b4ecfe7411811485c9e7007b82bde5a2284",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "10-compact-bays.png",
+      "sha256": "b7b9ca0fe0fde4444f304edfd655451fceb48264f56b220ea6be0be29755873b",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "10-compact-bays.cells",
+      "sha256": "5ec1937771ca735141e9338916c84646dc369590ebbcfbc26a67276c5ea5faa5",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "11-broad-bays.png",
+      "sha256": "0bc1562ed0944956720dfdc9cbc7fb1b55951b61d95f53f6b2f9ce86b88acb6e",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "11-broad-bays.cells",
+      "sha256": "c5a932ba9162c6bc01ea0e5b597601284b9e2cb6826f6d6d79a1affd41648db2",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "12-shallow-station.png",
+      "sha256": "683e30963cfc6eb109fbc6ff55032ae800ea286cfd55da7c227c4aa41f7aa9f7",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "12-shallow-station.cells",
+      "sha256": "bc949873dc95bff4e26fa74e1dc3dc8d92ac72c19f2f0eb915455aaa0351077f",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "13-tall-station.png",
+      "sha256": "3bef3d6070d6e96d77004a52a4d3114f19d5ffb1153b63e4ff77084dfe24b272",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "13-tall-station.cells",
+      "sha256": "eee1c2d4bd2c25a0bd98b56731660eb5271767db7b2c959949737a2be0a59804",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "14-thin-members.png",
+      "sha256": "2936f088f8ca3deabb708c8b9329c6b25f88af3466311948f81a05ba9fd45e66",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "14-thin-members.cells",
+      "sha256": "7370c60a3b172cabe46ca3b47eed7bf7618755360d203a6a899d0b56a744ba09",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "15-heavy-members.png",
+      "sha256": "bf112d0c7448a5dfc46137e5aedaa1af06801b37b77eb002f88880980816b6c7",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "15-heavy-members.cells",
+      "sha256": "6f3f664a0615626438cea3264e1e6b40e5f1f08264f87befb215dd3a8a686c6a",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "16-glazing-on.png",
+      "sha256": "204fffdd9072fcc2bb1394fafd181b0a89eef4e413d91437290da8ee22f342b9",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "16-glazing-on.cells",
+      "sha256": "96f92d7b7325a9b8d13ca2c2d539ac6960d274bad056228e06b1f70b4f4a7171",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "17-glazing-off.png",
+      "sha256": "05f7db64129620e140075405db3aac09b7e5d1a2b7996f4351b2c69e889261c4",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "17-glazing-off.cells",
+      "sha256": "be1c1d7cf80bba1c4759fccaf333c3b5250c784839c0b1daae2c7547dd94b4c3",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "18-portals-off.png",
+      "sha256": "ed0b383e0692a99f02d71bc3b41737f6b8b7dd3aa51c4d7a5f2259b7e0890c41",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "18-portals-off.cells",
+      "sha256": "64cdd679f5f55a1a7b4e09a43bd0355e5b1149a5c7d3bfbf39d903d0c95d3c7d",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "19-negative-origin.png",
+      "sha256": "e8d0dc4a2774bdf3481d5b7da57ea01b576c9fec6c647ea07407712a2a052268",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "19-negative-origin.cells",
+      "sha256": "54f5a15b4bc108e389dcb31c76ee95bcfc8a9ccc502c657b5c164c4d5d65ad4e",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "20-steel-trestle-comparison.png",
+      "sha256": "8a6c67682c85d9d756c679b80b99f53561c3d87a2dd662a01ef0fc38e10151c0",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "20-steel-trestle-comparison.cells",
+      "sha256": "cd1a3c8500c5a8cf1197ea8f31851f6c5bc6b15d68f7a6be070d16492bb30720",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "21-space-frame-comparison.png",
+      "sha256": "4b180060c344ae319af2582f4af1c6f590ca40b2c5dbb099e65b257700617264",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "21-space-frame-comparison.cells",
+      "sha256": "92fda737c165b116308303b540758dc1f7490bb516ab97088c246a6cb0e66b31",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "23-contact-heroes-seeds.png",
+      "sha256": "833f8f74d758f4abf3e86f9fa26be3ec3ec8f6c4ead88a34f746c81a23fc8f5f",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "24-contact-controls.png",
+      "sha256": "05afa3293f6376f3c0972b17dc293d02e8badfea6427141207913ae46bd78959",
+      "exact_bytes_equal": true
+    },
+    {
+      "name": "22-comparison-identical-scale.png",
+      "sha256": "49b9d8ba230ad7ddafecbbd4b19c2d737b9399558159864401ce46fe48000965",
+      "exact_bytes_equal": true
+    }
+  ]
 }

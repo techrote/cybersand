@@ -131,8 +131,10 @@ python3 tools/architecture/render_megatruss_station.py --require-clean-source --
 ```
 
 Qualified implementation source is
-`0059f5e62592ed1fa8c46429fbc816cfb26f4b27`, tree
-`e7e187ca6d26b3698f9d9b5dfda179403025a4a7`.
+`279bc4634b1d2b3a47f747c628163e419a728be7`, tree
+`a0839f7bcad328770e522b5ddda3e45b91b5b222`. The sampler and preset are
+byte-identical to the initially qualified `0059f5e62592ed1fa8c46429fbc816cfb26f4b27`;
+the repair changes only adapter catalogue metadata and its contract test.
 Both the local and hosted focused qualification passed **1,499 assertions / 18 named gates**.
 The measured minimum protected clear hall was 221 × 86 cells across the sampled
 signed supercells and seeds. Representative primary/secondary cross-sections
@@ -149,9 +151,20 @@ and is not labelled a pass. The successful rerun retained ASan/UBSan and used
 [legacy comparison](megatruss-station-001/local-legacy-comparison.json) and
 [sanitizer report](megatruss-station-001/local-sanitizer.json).
 
-The source-built Godot/preset parity and final-head Documentation outcomes are
-recorded separately in [PR #663](https://github.com/techrote/cybersand/pull/663)
-and [qualification run 43966787362](https://github.com/techrote/cybersand/actions/runs/43966787362).
+The [isolated local Godot 4.7 confirmation](megatruss-station-001/local-runtime-qualification.json)
+passed 2,829 project-contract checks and 2,490 native-gallery checks with zero
+failures, producing 73 distinct CLASSIC material hashes. All 72 parent builtin
+pixel buffers were preserved. Megatruss matched the standalone hero exactly.
+This local build records its GCC14/linker drift explicitly. The authoritative
+[GCC13 hosted qualification](megatruss-station-001/hosted-runtime-qualification.json)
+then passed the same 2,829 contract and 2,490 gallery checks, with 73 unique maps
+and all 72 parent previews preserved. Its [exact-source parity result](megatruss-station-001/hosted-source-verification.json)
+binds the ordinary preset and standalone hero to source `279bc4634b1d2b3a47f747c628163e419a728be7`
+and material SHA-256 `96f92d7b7325a9b8d13ca2c2d539ac6960d274bad056228e06b1f70b4f4a7171`.
+The [fresh Linux runtime artifact](https://github.com/techrote/cybersand/actions/runs/43969089140/artifacts/14276434716)
+retains the library, its 94 verified source hashes, logs and native maps.
+All three jobs in [qualification run 43969089140](https://github.com/techrote/cybersand/actions/runs/43969089140) passed.
+Final-head Documentation results are recorded separately in [PR #663](https://github.com/techrote/cybersand/pull/663).
 Evidence-only gallery/report commits do not change the tested source inputs.
 
 ## Performance and visual campaign
@@ -169,12 +182,12 @@ Hosted Ubuntu/GCC13 medians from the qualified native artifact:
 
 | Native generator | 512×512 | 1024×1024 |
 | --- | ---: | ---: |
-| Steel Trestle | 123.165 ms | 491.114 ms |
-| Space Frame | 124.033 ms | 491.785 ms |
-| Arched Viaduct v2 | 124.632 ms | 497.568 ms |
-| Megatruss Station | 126.621 ms | 503.220 ms |
+| Steel Trestle | 129.180 ms | 517.466 ms |
+| Space Frame | 130.166 ms | 521.100 ms |
+| Arched Viaduct v2 | 130.801 ms | 524.311 ms |
+| Megatruss Station | 133.138 ms | 532.987 ms |
 
-The measured overhead versus Trestle is about 2.8% / 2.5% on this runner.
+The measured overhead versus Trestle is about 3.1% / 3.0% on this runner.
 These are whole generation-path measurements, including allocation and content
 hashing, not a sampler-only microbenchmark or universal performance guarantee.
 The diagnostic benchmark uses shell58/deck62/glass121/accent65 for every module;
@@ -200,13 +213,15 @@ embeds the hero, all seed/scale/control contrasts and identical-scale comparison
 The [retained full-resolution gallery](../images/gentek-megatruss/GALLERY.md) and
 [manifest](../images/gentek-megatruss/manifest.json) preserve all 24 PNGs and their
 source/material hashes. The source-input digest is
-`5b78a93866e11831222455db4f9db2cee7b27c346eb493ed2330639bec5bab53`.
-The [hosted native artifact](https://github.com/techrote/cybersand/actions/runs/43966787362/artifacts/14276247051)
+`8689d760e11dfbe5ec7114b343ff09396c69a5e441dd5eaa4732cc83f90ee6ec`.
+The [hosted native artifact](https://github.com/techrote/cybersand/actions/runs/43969089140/artifacts/14278331044)
 retains all raw cells, receipts, source ZIP and the tested executable. Its ZIP
-SHA-256 is `f93b0e89ab3bf47a087dc55fc520851d623964578c6ad9e409269e19cbd70ded`.
+SHA-256 is `3817ee901f5fc77cc52726f5b1b2c6081735792ed7684c49a60a9267fbb8985a`.
 
 All 21 hosted native arrays and all 24 PNGs match the independently reviewed
-local campaign byte for byte. The complete 512² hero matches the landscape
+local campaign byte for byte. The [metadata-repair comparison](megatruss-station-001/metadata-repair-comparison.json)
+confirms that regeneration at the repaired commit preserves every image and
+native array exactly while binding the updated source-input ledger. The complete 512² hero matches the landscape
 for 262,144 common cells; landscape/large hero match for 524,288; the signed
 and positive landscapes match for 131,072 common world cells. These capture
 comparisons independently demonstrate cross-boundary and changed-extent phase
@@ -231,15 +246,25 @@ complementary strip, with witnesses for both odd and even panels. The reviewer a
 repaired piped CI commands that could mask gate failure; the workflow now uses
 an explicit pipe-failing Bash shell.
 
-The final [independent review](megatruss-station-001/independent-review.json)
-accepts the native implementation and visual campaign with no remaining blocking
-findings. The reviewer independently ran all 1,499 checks, compared parent
+The first source-built Godot run then exposed a catalogue-metadata omission
+for Megatruss and an inherited test error that classified the original 72
+CLASSIC styles as legacy. The [recorded repair](megatruss-station-001/runtime-metadata-repair.json)
+adds the missing schema-4 marker, shares the unchanged ordered 73-style test
+fixture, and explicitly requires every CLASSIC v1 identity while rejecting
+invented v2 entries. Native geometry and legacy metadata semantics are unchanged.
+The independent reviewer verified that adapter metadata and native admission
+now agree on all 76 schema-4-only families (73 CLASSIC plus three existing families).
+
+The [independent review](megatruss-station-001/independent-review.json)
+accepts the native implementation, visual campaign and source-built runtime
+with no remaining blocking findings. The reviewer independently ran all 1,499 checks, compared parent
 snapshots, verified 67 qualification and 84 gallery source hashes against
 immutable Git blobs, decoded every native PNG pixel against the material palette,
 and inspected every original and composite. The primary/secondary hierarchy,
 station voids, seeded programmes, source readability and proportional cost passed
-that review. Source-built Godot equality remains a distinct hosted result, not
-a claim inferred from the standalone native test.
+that review. The reviewer also inspected both local and hosted source-built
+Godot evidence, verified runtime source and library identities, and checked
+73-map uniqueness, parent preview preservation and exact Megatruss material parity.
 
 ## Remaining limits
 
@@ -255,3 +280,8 @@ The inherited parent Windows DLL and Linux SO predate this module. Only a fresh
 source-built runtime can select it successfully. The hosted Linux headless
 qualification and native PNGs do not establish physical Windows owner acceptance
 or authorize retained runtime publication, a merge, or Ready promotion.
+The default repository checker still reports four retained-runtime/source
+mismatches (two files for each platform); the [parent diagnosis](megatruss-station-001/retained-runtime-parent-diagnosis.json)
+confirms all four also exist at the immutable parent. This is not counted as a
+passing gate. The existing Documentation workflow skips published-runtime
+provenance while a PR is Draft; that policy and all Ready gates remain unchanged.
