@@ -43,7 +43,7 @@ func mount(controller: Control, _workbench: Control) -> void:
 	_strategy.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.add_child(_strategy)
 	_strategy.item_selected.connect(_select_strategy)
-	_note(column, "Changing strategy keeps the current world and texture history. Use the separate launchers for comparisons from the same fresh start.")
+	_note(column, "Changing strategy keeps the current world and texture history. First candidate activation prepares material shaders and can take several seconds. Use the separate launchers for comparisons from the same fresh start.")
 	var fps := SpinBox.new()
 	fps.min_value = 0
 	fps.max_value = 240

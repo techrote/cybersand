@@ -34,6 +34,7 @@ var start_native_capture_counters: Dictionary = {}
 var native_capture_result: Dictionary = {}
 var camera_stress_samples: Array[Dictionary] = []
 var ack_recovery: Dictionary = {}
+var shader_preparation_at_measurement: Dictionary = {}
 
 func _initialize() -> void:
 	start_usec = Time.get_ticks_usec()
@@ -175,7 +176,7 @@ func synthetic_update(frame: int) -> void:
 		"transition":
 			# Alternating dense/sparse bursts exercise both transfer directions
 			# and the candidate's cooldown. Inputs are strategy-independent.
-			rects=[Rect2i(0,0,side,side)] if frame%12<2 else [Rect2i(96,96,8,8)]
+			rects.append(Rect2i(0,0,side,side) if frame%12<2 else Rect2i(96,96,8,8))
 		"coverage":
 			var phase_frames:=maxi(16,int(config.frames)/6)
 			var sample_frame:=maxi(0,frame-int(config.warmup))
@@ -281,6 +282,9 @@ func finish() -> void:
 		"requested_workers":config.workers,
 		"initial_native_tick":start_native_tick,"initial_rapier_step":start_rapier_step,
 		"setup_ms":float(setup_usec)/1000.0,"elapsed_ms":float(Time.get_ticks_usec()-start_usec)/1000.0,
+		"shader_preparation":host.render_shader_preparation.duplicate(true) if host!=null else {},
+		"shader_preparation_at_measurement":shader_preparation_at_measurement,
+		"preparation_scope":"Detached renderer seam uses the declared unchanged fixture warmup; no Main startup preparation." if synthetic else "Actual Main initialization; all preparation cost is included in setup and complete process time.",
 		"frames":frames,"uploads":host.upload_samples if host!=null else [],
 		"publications":host.publication_samples if host!=null else [],"actions":actions,
 		"actor_input_tape":"completed-physical-step: 60 powered / 60 neutral; period 120" if config.workload=="actor" else "none",
@@ -374,6 +378,14 @@ func run() -> void:
 		if synthetic: synthetic_update(i)
 		await RenderingServer.frame_post_draw
 	setup_usec=Time.get_ticks_usec()-start_usec
+	shader_preparation_at_measurement=host.render_shader_preparation.duplicate(true)
+	if not synthetic and config.strategy=="hybrid":
+		require(bool(shader_preparation_at_measurement.get("prepared",false)),"mounted hybrid completed explicit startup shader preparation")
+	else:
+		require(shader_preparation_at_measurement.is_empty(),"baseline and detached fixtures perform no Main shader preparation")
+	if not failures.is_empty():
+		await finish()
+		return
 	if not synthetic and config.workload in ["active","dormant","actor"]: require(bench.toggle_pause(),"native simulation starts after identical paused warmup")
 	start_native_tick=host.latest_snapshot.tick_index if host.latest_snapshot!=null else 0
 	start_rapier_step=host.physical_actor_session.tick if host.physical_actor_session!=null else 0
@@ -401,6 +413,7 @@ func run() -> void:
 	if not synthetic and config.workload in ["manual","burst"]:
 		require(pending_action.is_empty(),"all native edit acknowledgements completed inside measured frames")
 	host.measuring=false
+	require(host.render_shader_preparation==shader_preparation_at_measurement,"shader preparation did not change inside the measured window")
 	if not synthetic:
 		native_capture_result=host.simulation_worker.profile_end()
 		require(native_capture_result.dropped_samples==0,"all native capture observations retained")
@@ -413,6 +426,8 @@ func run() -> void:
 			observe_action()
 			return pending_action.is_empty(),"final native edit and render acknowledgement",90000)
 	require(frames.size()==config.frames,"all frame samples collected")
+	if synthetic:
+		require(host.upload_samples.size()==config.frames,"one accepted synthetic publication per measured input")
 	if not synthetic and config.workload in ["active","dormant","actor"]:
 		require(frames.back().tick>frames.front().tick,"native simulation progressed")
 	if not synthetic and config.workload in ["manual","burst"]:

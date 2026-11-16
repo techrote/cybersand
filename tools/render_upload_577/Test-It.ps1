@@ -77,13 +77,21 @@ try {
     # Native stderr redirection through PS5.1's pipeline can turn harmless
     # engine warnings into terminating NativeCommandError records.
     $importProcess = Start-Process -FilePath $engine -ArgumentList @('--headless','--audio-driver','Dummy','--path',('"'+$project+'"'),'--editor','--quit') -WorkingDirectory $root -PassThru -RedirectStandardOutput $importLog -RedirectStandardError $importErrors
+    # PS5.1 redirected Start-Process can otherwise lose its exit-code handle:
+    # https://github.com/PowerShell/PowerShell/issues/5421
+    $importHandle = $importProcess.Handle
+    if ($null -eq $importHandle -or $importHandle -eq [IntPtr]::Zero) { throw 'Cannot retain the import process handle.' }
     if (-not $importProcess.WaitForExit(300000)) {
         & taskkill.exe /PID $importProcess.Id /T /F | Out-Null
         throw 'Project import timed out.'
     }
     $importProcess.Refresh()
     $importText = (Get-Content -LiteralPath $importLog -Raw) + (Get-Content -LiteralPath $importErrors -Raw)
-    if ($importProcess.ExitCode -ne 0 -or $importText -match 'SCRIPT ERROR:|Parse Error:|Failed to load script') { throw 'Project import failed.' }
+    Write-Json (Join-Path $output 'import-process.json') @{exit_code=$importProcess.ExitCode;stdout='import.log';stderr='import-stderr.log'}
+    if ($importProcess.ExitCode -ne 0 -or $importText -match 'SCRIPT ERROR:|Parse Error:|Failed to load script') {
+        Write-Host ($importText.Substring([Math]::Max(0,$importText.Length-6000)))
+        throw ('Project import failed with exit '+$importProcess.ExitCode+'. Original stdout/stderr are retained.')
+    }
     foreach ($case in $cases) {
         $phase = 0
         foreach ($strategy in @('full','hybrid','hybrid','full')) {
@@ -110,6 +118,8 @@ try {
                 ('--frames='+$frames),'--warmup=30','--channels=2',('--output="'+$jsonPath+'"'))
             $watch = [Diagnostics.Stopwatch]::StartNew()
             $process = Start-Process -FilePath $engine -ArgumentList $arguments -WorkingDirectory $root -PassThru -RedirectStandardOutput $stdout -RedirectStandardError $stderr
+            $captureHandle = $process.Handle
+            if ($null -eq $captureHandle -or $captureHandle -eq [IntPtr]::Zero) { throw ('Cannot retain capture process handle: '+$label) }
             $timedOut = $false
             try {
                 while (-not $process.WaitForExit(250)) {
@@ -133,7 +143,25 @@ try {
                 $data.final_strategy.active -ne $strategy -or -not $data.final_current_texture_matches_cpu -or
                 $data.context.display_server -eq 'headless') { throw ('Capture identity/correctness failed: '+$label) }
             if ($RenderingDriver -and $data.context.backend -ne $RenderingDriver) { throw ('Capture backend differs: '+$label) }
-            $row = [ordered]@{case=$case;phase=$phase;strategy=$strategy;folder=$label; frame_ms=(Get-Quantiles @($data.frames | ForEach-Object {$_.frame_ms})); publication_ms=(Get-Quantiles @($data.uploads | ForEach-Object {$_.upload_ms})); submission_ms=(Get-Quantiles @($data.uploads | ForEach-Object {$_.submit_ms}));material_age_ms=(Get-Quantiles @($data.frames | Where-Object {$null -ne $_.displayed_material_age_ms} | ForEach-Object {$_.displayed_material_age_ms}))}
+            $preparation = $data.shader_preparation
+            if (($preparation | ConvertTo-Json -Depth 50 -Compress) -ne
+                ($data.shader_preparation_at_measurement | ConvertTo-Json -Depth 50 -Compress)) {
+                throw ('Shader preparation changed inside the measured window: '+$label)
+            }
+            $preparationMs = 0.0
+            $preparationRuns = 0
+            if ($strategy -eq 'hybrid' -and $data.cohort -eq 'mounted_native_workbench') {
+                if (-not $preparation.prepared -or $preparation.error -or $preparation.runs -lt 1 -or
+                    $preparation.total_initialization_usec -lt $preparation.initialization_usec -or
+                    $preparation.initialization_usec -le 0 -or $preparation.total_initialization_usec -gt $data.setup_ms*1000.0) {
+                    throw ('Shader preparation/cost receipt failed: '+$label)
+                }
+                $preparationMs = $preparation.total_initialization_usec / 1000.0
+                $preparationRuns = $preparation.runs
+            } elseif (@($preparation.PSObject.Properties).Count -ne 0) {
+                throw ('Unexpected baseline/detached shader preparation: '+$label)
+            }
+            $row = [ordered]@{case=$case;phase=$phase;strategy=$strategy;folder=$label; setup_ms=$data.setup_ms;benchmark_elapsed_ms=$data.elapsed_ms;process_elapsed_ms=$processReceipt.elapsed_seconds*1000.0;shader_preparation_ms=$preparationMs;shader_preparation_runs=$preparationRuns;frame_ms=(Get-Quantiles @($data.frames | ForEach-Object {$_.frame_ms})); publication_ms=(Get-Quantiles @($data.uploads | ForEach-Object {$_.upload_ms})); submission_ms=(Get-Quantiles @($data.uploads | ForEach-Object {$_.submit_ms}));material_age_ms=(Get-Quantiles @($data.frames | Where-Object {$null -ne $_.displayed_material_age_ms} | ForEach-Object {$_.displayed_material_age_ms}))}
             foreach ($key in @('observed_ticks_per_second','rapier_steps_per_second','accepted_updates_per_second','transport_full_publications','native_full_refreshes')) {
                 if ($data.PSObject.Properties.Name -contains $key) { $row[$key]=$data.$key }
             }
@@ -151,6 +179,7 @@ try {
     $report = @('CyberSand material publication comparison',('Source '+$manifest.source_commit),'','Per-arm milliseconds (read with native/physics cadence and material age):')
     foreach ($row in $rows) {
         $report += ('{0}: frame p50 {1:N3}, p95 {2:N3}, p99 {3:N3}, max {4:N3}; publication p95 {5:N3}' -f $row.folder,$row.frame_ms.p50,$row.frame_ms.p95,$row.frame_ms.p99,$row.frame_ms.maximum,$row.publication_ms.p95)
+        $report += ('  Setup {0:N1} ms, including shader preparation {1:N1} ms across {2} runs; complete process {3:N1} ms.' -f $row.setup_ms,$row.shader_preparation_ms,$row.shader_preparation_runs,$row.process_elapsed_ms)
     }
     $report += @('',('Failure: '+$failure),'Full source/runtime/hardware identities and raw observations accompany this file. Hosted or automatic completion does not establish physical smoothness acceptance.')
     [IO.File]::WriteAllLines((Join-Path $output 'READ-RESULTS.txt'),$report,[Text.UTF8Encoding]::new($false))

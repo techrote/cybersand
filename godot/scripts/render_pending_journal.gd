@@ -164,6 +164,15 @@ func payload() -> Dictionary:
 					cells.append_array(_cache.get_region(region).get_data())
 				if not regions.is_empty():
 					_stats.sparse_cache_payloads += 1
+	elif _batches.size() == 1:
+		# A single capture already has packet-relative offsets. Do not flatten
+		# its bytes again, especially for an 8 MiB full plane and older ACKs.
+		# Packed arrays alias on GDScript assignment; duplicate() creates an
+		# independent value using Godot's copy-on-write backing storage.
+		var batch: Dictionary = _batches[0]
+		rectangles = batch.rectangles.duplicate()
+		cells = batch.cells.duplicate()
+		full = bool(batch.full_refresh)
 	else:
 		for batch: Dictionary in _batches:
 			var source: PackedInt32Array = batch.rectangles

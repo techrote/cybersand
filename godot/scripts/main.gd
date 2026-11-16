@@ -1,6 +1,7 @@
 extends Control
 
 const RenderUploadHybrid = preload("res://scripts/material_upload_hybrid.gd")
+const RenderUploadShaderPrepare = preload("res://scripts/material_upload_shader_prepare.gd")
 
 const PhysicalTrial = preload("res://scripts/physical_actor_trial.gd")
 const PhysicalCatalog = preload("res://scripts/physical_actor_catalog.gd")
@@ -1603,6 +1604,11 @@ var _render_upload_local_serial: int = 0
 var accepted_render_publications: int = 0
 var last_accepted_render_usec: int = -1
 var render_cpu_image_mode: String = "patches"
+var render_shader_preparation: Dictionary = {}
+var _render_shader_preparation_key: String = ""
+var _render_shader_preparation_running: bool = false
+var _render_shader_preparation_total_usec: int = 0
+var _render_shader_preparation_runs: int = 0
 var material_appearance_lut: ImageTexture
 var material_appearance_program: ImageTexture
 var render_channels: int = 1
@@ -1914,6 +1920,15 @@ func _ready() -> void:
 	elif latest_snapshot != null:
 		reject_render_snapshot(latest_snapshot)
 	update_shader_parameters()
+	if _render_upload_hybrid != null and not _prepare_render_upload_shaders():
+		# The initial pair is still compact and complete. Keep those accepted
+		# resources if preparation fails; never introduce a cold sparse path.
+		_render_upload_disabled_reason = str(render_shader_preparation.get("error", "shader preparation failed"))
+		_render_upload_hybrid.close()
+		_render_upload_hybrid = null
+		render_upload_status.active = "full"
+		render_upload_status.fallback_reason = _render_upload_disabled_reason
+	_report_render_upload_state()
 	update_status()
 	if recovery.has("selection"):
 		_restore_failed_playable_selection.call_deferred(recovery)
@@ -4507,7 +4522,41 @@ func _report_render_upload_state() -> void:
 	state["renderer"] = RenderingServer.get_current_rendering_method()
 	state["driver"] = RenderingServer.get_current_rendering_driver_name()
 	state["video_adapter"] = RenderingServer.get_video_adapter_name() if DisplayServer.get_name() != "headless" else "headless"
+	state["shader_preparation"] = render_shader_preparation.duplicate(true)
 	print("RENDER_UPLOAD_STATE ", JSON.stringify(state))
+
+
+func _prepare_render_upload_shaders() -> bool:
+	# Explicit initialization/activation only. Ordinary publication, dense
+	# fallback and World replacement never call force_draw or read back here.
+	# Detached byte-contract fixtures have no mounted materials to prepare.
+	if not is_inside_tree():
+		return true
+	if _render_shader_preparation_running:
+		return false
+	var vapour: ShaderMaterial = vapour_trail_shaders[0] if not vapour_trail_shaders.is_empty() else null
+	var key_parts := PackedStringArray([str(render_channels), str(get_viewport().use_hdr_2d)])
+	for material: ShaderMaterial in [world_shader, glow_source_shader, vapour]:
+		if material == null or material.shader == null:
+			key_parts.append("none")
+		else:
+			var shader: Shader = material.shader
+			key_parts.append("%d:%d:%s" % [shader.get_instance_id(), shader.get_rid().get_id(), shader.code.sha256_text()])
+	var key := "|".join(key_parts)
+	if key == _render_shader_preparation_key and bool(render_shader_preparation.get("prepared", false)):
+		return true
+	_render_shader_preparation_running = true
+	var result: Dictionary = RenderUploadShaderPrepare.prepare(self, world_shader,
+		glow_source_shader, vapour, render_channels, get_viewport().use_hdr_2d)
+	_render_shader_preparation_running = false
+	_render_shader_preparation_total_usec += int(result.initialization_usec)
+	_render_shader_preparation_runs += 1
+	result["total_initialization_usec"] = _render_shader_preparation_total_usec
+	result["runs"] = _render_shader_preparation_runs
+	render_shader_preparation = result
+	if bool(result.prepared):
+		_render_shader_preparation_key = key
+	return bool(result.prepared)
 
 
 func _requested_render_upload_strategy() -> String:
@@ -4535,6 +4584,8 @@ func set_render_upload_strategy(strategy: String) -> bool:
 			or texture == null or previous_texture == null or _render_upload_fallback_pending:
 		return false
 	if strategy == str(render_upload_status.get("active", "full")):
+		if strategy == "hybrid" and not _prepare_render_upload_shaders():
+			return false
 		render_upload_strategy_override = strategy
 		_render_upload_disabled_reason = ""
 		render_upload_status = {"requested": strategy, "active": strategy, "fallback_reason": ""}
@@ -4550,6 +4601,9 @@ func set_render_upload_strategy(strategy: String) -> bool:
 		candidate = RenderUploadHybrid.new()
 		if not candidate.initialize(image, last_uploaded_render_snapshot_serial,
 				last_uploaded_world_generation, texture, previous_texture):
+			candidate.close()
+			return false
+		if not _prepare_render_upload_shaders():
 			candidate.close()
 			return false
 		next_current = candidate.current

@@ -10,6 +10,20 @@ import run_regressions
 
 
 class QualificationTests(unittest.TestCase):
+    def test_preparation_requires_real_mounted_hybrid_and_visible_setup_cost(self):
+        prepared = {"prepared": True, "error": "", "runs": 1,
+                    "initialization_usec": 10000, "total_initialization_usec": 10000}
+        data = {"cohort": "mounted_native_workbench", "strategy": "hybrid", "setup_ms": 20,
+                "shader_preparation": prepared, "shader_preparation_at_measurement": prepared}
+        run_campaign.verify_shader_preparation(data)
+        run_campaign.verify_shader_preparation(dict(data, strategy="full", shader_preparation={}, shader_preparation_at_measurement={}))
+        run_campaign.verify_shader_preparation(dict(data, cohort="deterministic_renderer_seam", shader_preparation={}, shader_preparation_at_measurement={}))
+        for bad in [dict(data, shader_preparation={}), dict(data, strategy="full"),
+                    dict(data, setup_ms=9), dict(data, cohort="deterministic_renderer_seam"),
+                    dict(data, shader_preparation_at_measurement={})]:
+            with self.assertRaises(ValueError):
+                run_campaign.verify_shader_preparation(bad)
+
     def test_only_exact_intentional_refusal_diagnostics_are_allowed(self):
         expected = run_regressions.REFUSAL_ERRORS
         log = "\n".join(expected)

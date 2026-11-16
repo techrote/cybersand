@@ -22,6 +22,7 @@ const MAX_PENDING_STAGING_BYTES := 16 * 1024 * 1024
 const MAX_PENDING_BATCHES := 32
 const MAX_POOLED_STAGING_BYTES := 2 * 1024 * 1024
 const MAX_POOLED_STAGING_TEXTURES := 16
+const STAGING_RETIRE_DRAW_BOUNDARIES := 3
 
 var current: Texture2D
 var previous: Texture2D
@@ -46,10 +47,11 @@ var _drawable_slot := 1
 var _sparse_streak := 0
 var _sparse_mode := false
 var _copy_material: ShaderMaterial
-var _staging_batches: Array[Array] = []
+var _staging_batches: Array[Dictionary] = []
 var _pending_staging_bytes := 0
 var _source_pool: Array[ImageTexture] = []
 var _pooled_bytes := 0
+var _completed_draw_boundaries := 0
 var _seed_blits_total := 0
 var _compact_publications_total := 0
 var _partial_publications_total := 0
@@ -121,6 +123,7 @@ func initialize(image: Image, serial: int = 0, generation: int = -1,
 		"logical_staging_bytes": _full_bytes() * 2, "destination_write_bytes": _full_bytes() * 2,
 		"blit_count": 0, "seed_blit_count": 0, "texture_allocations": 2,
 		"resident_target_bytes": _resident_bytes(), "completion_measured": false}
+	last_metrics.merge(_staging_metrics(), true)
 	return true
 
 
@@ -213,7 +216,8 @@ func publish(image: Image, rectangles: PackedInt32Array, serial: int,
 	for index: int in range(regions.size()):
 		target.blit_rect(regions[index], staging[index], Color.WHITE, 0, _copy_material)
 	var submitted_usec := Time.get_ticks_usec()
-	_staging_batches.append(staging)
+	_staging_batches.append({"textures": staging, "bytes": staging_bytes,
+		"retire_after_draw": _completed_draw_boundaries + STAGING_RETIRE_DRAW_BOUNDARIES})
 	_pending_staging_bytes += staging_bytes
 	candidate_dirty[target_slot].fill(0)
 	_dirty_slots = candidate_dirty
@@ -393,17 +397,31 @@ func _take_source(size: Vector2i) -> ImageTexture:
 
 
 func _release_staging() -> void:
-	# Sources become reusable only after the engine frame boundary. This is command
-	# lifetime management, not a claim of a GPU fence or completed physical DMA.
-	for batch: Array in _staging_batches:
-		for source: ImageTexture in batch:
+	# A completed engine draw boundary is not a GPU fence. Keep recently sampled
+	# source storage out of the reuse pool for three such boundaries to avoid
+	# immediately updating storage still in the driver queue. This delays only
+	# storage reuse: publication, visible history and ACK acceptance are unchanged.
+	_completed_draw_boundaries += 1
+	while not _staging_batches.is_empty() \
+			and int(_staging_batches[0].retire_after_draw) <= _completed_draw_boundaries:
+		var batch: Dictionary = _staging_batches.pop_front()
+		_pending_staging_bytes -= int(batch.bytes)
+		for source: ImageTexture in batch.textures:
 			var bytes := source.get_width() * source.get_height() * _channels
 			if _source_pool.size() < MAX_POOLED_STAGING_TEXTURES \
 					and _pooled_bytes + bytes <= MAX_POOLED_STAGING_BYTES:
 				_source_pool.append(source)
 				_pooled_bytes += bytes
-	_staging_batches.clear()
-	_pending_staging_bytes = 0
+
+
+func _staging_metrics() -> Dictionary:
+	return {"staging_retirement_draw_boundaries": STAGING_RETIRE_DRAW_BOUNDARIES,
+		"completed_draw_boundaries": _completed_draw_boundaries,
+		"pending_staging_batches": _staging_batches.size(),
+		"pending_staging_bytes": _pending_staging_bytes,
+		"pooled_staging_textures": _source_pool.size(), "pooled_staging_bytes": _pooled_bytes,
+		"resident_staging_bytes": _pending_staging_bytes + _pooled_bytes,
+		"resident_texture_logical_bytes": _resident_bytes() + _pending_staging_bytes + _pooled_bytes}
 
 
 func _check_canary() -> Dictionary:
@@ -443,6 +461,7 @@ func _resident_bytes() -> int:
 
 
 func _accepted() -> Dictionary:
+	last_metrics.merge(_staging_metrics(), true)
 	return {"accepted": true, "current": current, "previous": previous,
 		"metrics": last_metrics.duplicate(true), "error": ""}
 
@@ -460,6 +479,7 @@ func close() -> void:
 	_source_pool.clear()
 	_pending_staging_bytes = 0
 	_pooled_bytes = 0
+	_completed_draw_boundaries = 0
 	_compact.clear()
 	_drawables.clear()
 	_dirty_slots.clear()

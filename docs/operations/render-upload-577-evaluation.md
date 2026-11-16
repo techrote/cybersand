@@ -40,6 +40,26 @@ does not seed; excessive history coverage, fragmentation or staging pressure
 returns to the compact path. The criteria are bounded implementation choices,
 not a claimed universal hardware optimum.
 
+Candidate startup explicitly prepares the actual palette, emission and vapour
+shaders for all compact/drawable current/previous format combinations. It uses
+three temporary 2-by-2 offscreen viewports and completes their draws with tiny
+readbacks, then releases their resources. This happens after ordinary sampler
+uniforms are populated. Successful preparation is cached by Shader identity,
+code, channel format and HDR context; ordinary publications and World resets do
+not repeat it. First explicit live activation can incur the same cost. Baseline
+startup does not prepare these optional formats.
+
+This preparation moves observed first-use draw work into initialization. It is
+not an end-to-end speedup: preparation has a measurable startup cost, and one
+prepared local software-renderer run took longer overall.
+That wall time includes ordinary cold work in other active viewports, so it is
+not by itself the incremental startup cost versus baseline. Setup, complete
+process elapsed time and every first interactive publication remain in the
+receipts. The helper calls the documented `RenderingServer.force_draw()` API,
+which redraws all active viewports and emits draw signals; it does not replay
+Main or physics callbacks. Original visible material bindings and accepted
+publication identities remain unchanged during preparation.
+
 R8/RG8 array layers would permit compact tile replacement but would require
 changing all current/previous material and effect samplers. RenderingDevice
 solutions do not supply a universal Compatibility backend. The selected first
@@ -78,10 +98,21 @@ validated command submission, not measured GPU completion or device-loss proof.
 Native World, material laws, physics stepping, collider invalidation and camera
 coordinates remain owned by their existing implementations.
 
+A journal containing one source capture keeps that packet's existing offsets
+and publishes independent packed-array values without flattening its bytes into
+another array. `duplicate()` preserves producer/consumer mutation isolation while
+using the pinned engine's copy-on-write storage. Multiple retained captures still
+use ordered packet assembly. This avoids repeated full-plane materialization
+when an older ACK arrives; it does not gate capture or advance an ACK.
+
 ## Bounds and observations
 
 The journal has at most 4,096 tiles. Sparse staging is bounded to 32 submitted
-batches / 16 MiB and is retained through the rendering frame boundary. A reusable
+batches / 16 MiB and is retained across three completed rendering-frame
+boundaries before reuse. This delays storage recycling, never material
+submission or ACK delivery. A frame boundary is not a GPU-completion fence;
+the bounded retention policy is qualified with actual frame and freshness
+measurements. A reusable
 pool retains at most 16 staging textures / 2 MiB. A 2048-square RG8 compact pair
 has 16 MiB nominal target storage; the lazy drawable pair adds 32 MiB. These are
 logical resource sizes, not physical VRAM or total process RSS measurements.

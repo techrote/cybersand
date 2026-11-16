@@ -162,7 +162,10 @@ viewports and camera transforms create no native cell or actor authority.
 The opt-in [RENDER-UPLOAD-577 candidate](../operations/render-upload-577-evaluation.md)
 adds main-owned compact/drawable publication resources and an independently
 versioned history journal for each sparse destination. Submitted staging textures
-are immutable until the frame boundary, then may enter a bounded reuse pool.
+are immutable across three completed draw boundaries, then may enter a bounded
+reuse pool. These boundaries are storage-retirement observations, not GPU fences.
+Explicit shader preparation owns and releases temporary Main-thread viewports
+and canvas items without replacing the live materials' accepted bindings.
 The simulation owner alone owns the optional pending capture journal/CPU cache;
 published value arrays keep the existing immutable handoff. ACK prefix retirement
 never transfers native cell authority or changes Rapier/collider ownership.

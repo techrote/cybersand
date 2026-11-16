@@ -25,6 +25,7 @@ func _init() -> void:
 
 func _run() -> void:
 	for count: int in [1, 2]:
+		_test_single_packet_isolation(count)
 		_test_prefix_and_overlap(count)
 		_test_cache_and_recovery(count)
 	_test_capacity_without_full_base()
@@ -70,6 +71,53 @@ func _apply(image: Image, packet: Dictionary) -> void:
 		image.blit_rect(Image.create_from_data(region.size.x, region.size.y, false,
 			Image.FORMAT_RG8 if count == 2 else Image.FORMAT_R8, data),
 			Rect2i(Vector2i.ZERO, region.size), region.position)
+
+
+func _test_single_packet_isolation(count: int) -> void:
+	var journal := Journal.new()
+	journal.configure(Vector2i(128, 128), 1)
+	var packet: Dictionary = _patch(Rect2i(0, 0, 128, 128), count, 11, true)
+	var original_cells: PackedByteArray = packet.cells.duplicate()
+	var original_rectangles: PackedInt32Array = packet.rectangles.duplicate()
+	_expect(journal.append(packet, 10), "single complete packet admitted")
+	# Mutating the producer's arrays must never alter retained source authority.
+	packet.cells[0] = 201
+	packet.rectangles[0] = 37
+	var first: Dictionary = journal.payload()
+	_expect(first.cells == original_cells and first.rectangles == original_rectangles
+		and first.full_refresh, "single payload isolates producer mutations")
+	# The payload is a separate packed-array value, not the retained batch's
+	# mutable wrapper. An older ACK rebuild must still recover the original.
+	first.cells[1] = 202
+	first.rectangles[1] = 23
+	journal.retire(5)
+	var rebuilt: Dictionary = journal.payload()
+	_expect(rebuilt.cells == original_cells and rebuilt.rectangles == original_rectangles,
+		"older ACK rebuild isolates consumer mutations")
+	var held_cells: PackedByteArray = rebuilt.cells
+	var held_rectangles: PackedInt32Array = rebuilt.rectangles
+	var replacement: Dictionary = _patch(Rect2i(0, 0, 128, 128), count, 19, true)
+	_expect(journal.append(replacement, 11), "next complete packet replaces pending source")
+	var latest: Dictionary = journal.payload()
+	_expect(latest.cells == replacement.cells and held_cells == original_cells
+		and held_rectangles == original_rectangles, "later capture preserves retained publication values")
+	journal.retire(11)
+	_expect(journal.payload().cells.is_empty() and held_cells == original_cells,
+		"latest ACK drains journal without changing retained publication")
+	# One sparse packet can retain padding and nonzero offsets without repacking.
+	var sparse: Dictionary = _patch(Rect2i(4, 7, 3, 2), count, 29, false, 5)
+	var prefixed := PackedByteArray([90, 91, 92])
+	prefixed.append_array(sparse.cells)
+	sparse.cells = prefixed
+	sparse.rectangles[4] = 3
+	_expect(journal.append(sparse, 12), "single padded nonzero-offset packet admitted")
+	var sparse_payload: Dictionary = journal.payload()
+	var expected := Image.create(128, 128, false, Image.FORMAT_RG8 if count == 2 else Image.FORMAT_R8)
+	var actual: Image = expected.duplicate()
+	_apply(expected, sparse)
+	_apply(actual, sparse_payload)
+	_expect(actual.get_data() == expected.get_data() and not sparse_payload.full_refresh,
+		"single sparse payload preserves exact offsets and row padding")
 
 
 func _test_prefix_and_overlap(count: int) -> void:

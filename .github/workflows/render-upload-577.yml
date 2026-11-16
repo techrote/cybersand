@@ -88,7 +88,7 @@ jobs:
             rounds: 1
           - group: long-active
             cases: active_2048_w4
-            frames: 1200
+            frames: 4800
             rounds: 1
     env:
       LIBGL_ALWAYS_SOFTWARE: '1'
@@ -164,7 +164,7 @@ jobs:
             rounds: 1
           - group: long-active
             cases: active_2048_w4
-            frames: 1200
+            frames: 4800
             rounds: 1
     env:
       CAMPAIGN_GROUP: ${{ matrix.group }}
@@ -308,9 +308,12 @@ jobs:
         run: |
           $ErrorActionPreference = 'Stop'
           & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $env:RUNNER_TEMP '577-package\tools\render_upload_577\Test-It.ps1') -Quick -RenderingDriver opengl3_angle
-          if ($LASTEXITCODE -ne 0) { throw 'Installed Test It comparison failed' }
-          New-Item -ItemType Directory -Path 'build\render-upload-577-installed' -Force | Out-Null
-          Copy-Item -Path (Join-Path $env:RUNNER_TEMP '577-package\Test-It-Results\*') -Destination 'build\render-upload-577-installed' -Recurse
+          $comparisonExit = $LASTEXITCODE
+          if (Test-Path (Join-Path $env:RUNNER_TEMP '577-package\Test-It-Results')) {
+            New-Item -ItemType Directory -Path 'build\render-upload-577-installed' -Force | Out-Null
+            Copy-Item -Path (Join-Path $env:RUNNER_TEMP '577-package\Test-It-Results\*') -Destination 'build\render-upload-577-installed' -Recurse
+          }
+          if ($comparisonExit -ne 0) { throw ('Installed Test It comparison failed with exit '+$comparisonExit) }
       - if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:

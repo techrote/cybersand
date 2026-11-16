@@ -109,7 +109,7 @@ without changing cell state. `K` controls presentation smoothing; `H` controls
 publication cadence. Neither is a strict simulation-accuracy switch.
 [Appearance](../systems/material-appearance-and-rendering.md) owns shader details.
 
-**Planned:** true GPU subregion submission, palette-change records, measured
+**Planned:** production promotion of GPU subregion publication, palette-change records, measured
 compression/coalescing and tuned production snapshot defaults. Lower native
 copy volume does not establish any of those features.
 

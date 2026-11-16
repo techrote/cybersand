@@ -33,6 +33,7 @@ func _run() -> void:
 	await process_frame
 	for fmt: Image.Format in [Image.FORMAT_R8, Image.FORMAT_RG8]:
 		await _sequence(fmt)
+		await _retirement_sequence(fmt)
 	_finish()
 
 
@@ -169,6 +170,55 @@ func _sequence(fmt: Image.Format) -> void:
 	_check_publication(h, adopted, source, old, label + " first publication after adoption")
 	_check_texture(accepted_current, old, label + " adopted source remains immutable")
 	h.close()
+
+
+func _retirement_sequence(fmt: Image.Format) -> void:
+	var h := Hybrid.new()
+	var source := _pattern(fmt)
+	var channels := 1 if fmt == Image.FORMAT_R8 else 2
+	var label := ("R8" if channels == 1 else "RG8") + " staging retirement"
+	_expect(h.initialize(source, 0, 1), label + " initializes")
+	if not h.initialized:
+		return
+	var rect := Rect2i(7, 11, 1, 1)
+	var metadata := _metadata([rect], channels)
+	for serial: int in range(1, 4):
+		source.fill_rect(rect, Color8(serial, serial + 3, 0, 255))
+		_expect(h.publish(source, metadata, serial, 1, false).accepted, label + " entry dwell")
+	var sources: Array[RID] = []
+	for index: int in range(12):
+		var old: Image = source.duplicate()
+		source.fill_rect(rect, Color8(index + 11, 230 - index, 0, 255))
+		var accepted: Dictionary = h.publish(source, metadata, index + 4, 1, false)
+		_check_publication(h, accepted, source, old, label + " publication " + str(index))
+		if not accepted.accepted:
+			break
+		var staging: ImageTexture = h._staging_batches.back().textures[0]
+		var rid := staging.get_rid()
+		if index < 3:
+			_expect(not sources.has(rid), label + " recent source is not overwritten " + str(index))
+		else:
+			_expect(rid == sources[index - 3], label + " eligible storage reused without allocation " + str(index))
+			_expect(accepted.metrics.texture_allocations == 0, label + " steady update does not allocate " + str(index))
+		sources.append(rid)
+		_expect(accepted.metrics.staging_retirement_draw_boundaries == 3,
+			label + " reported retirement span")
+		_expect(accepted.metrics.resident_staging_bytes <= 3 * 64 * 64 * channels,
+			label + " steady staging remains bounded")
+		var current_rid: RID = h.current.get_rid()
+		var previous_rid: RID = h.previous.get_rid()
+		await RenderingServer.frame_post_draw
+		_expect(h.accepted_serial == index + 4 and h.current.get_rid() == current_rid \
+			and h.previous.get_rid() == previous_rid,
+			label + " retirement does not publish or advance history " + str(index))
+		if index < 2:
+			_expect(h._source_pool.is_empty() and h._pending_staging_bytes > 0,
+				label + " source remains retained before third draw " + str(index))
+	_expect(h._texture_allocations_total == 7, label + " two compact two drawable three staging allocations")
+	h.close()
+	_expect(h._staging_batches.is_empty() and h._source_pool.is_empty() \
+		and h._pending_staging_bytes == 0 and h._pooled_bytes == 0,
+		label + " close releases pending and reusable storage")
 
 
 func _pattern(fmt: Image.Format) -> Image:

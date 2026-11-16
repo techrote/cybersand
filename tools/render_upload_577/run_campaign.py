@@ -408,7 +408,16 @@ def reduce_runs(runs: list[dict]) -> list[dict]:
                 modes[mode] = modes.get(mode, 0) + 1
             row["strategies"][strategy] = {
                 "publication_mode_counts": modes,
+                "api_call_metrics_ms": {
+                    key.removesuffix("_usec"): summary([float(u["metrics"][key]) / 1000.0 for u in uploads
+                                                        if key in u.get("metrics", {})])
+                    for key in ("source_create_usec", "source_update_usec", "texture_submit_usec", "texture_update_usec")},
                 "arms": len(arms), "frame_metrics": numeric_columns(frames), "upload_metrics": numeric_columns(uploads),
+                "repeat_setup_ms": [arm["data"].get("setup_ms") for arm in arms],
+                "repeat_benchmark_elapsed_ms": [arm["data"].get("elapsed_ms") for arm in arms],
+                "repeat_process_elapsed_ms": [arm["process"]["elapsed_s"] * 1000.0 for arm in arms],
+                "repeat_shader_preparation_ms": [arm["data"].get("shader_preparation", {}).get("total_initialization_usec", 0) / 1000.0 for arm in arms],
+                "repeat_shader_preparation_runs": [arm["data"].get("shader_preparation", {}).get("runs", 0) for arm in arms],
                 "publication_metrics": numeric_columns(publications), "action_metrics": numeric_columns(actions),
                 "publication_metrics_scope": "Observed immutable snapshot publications; repeated native-tick observations are not distinct completed work",
                 "repeat_native_tick_ms": [arm["data"].get("distinct_observed_native_tick_ms") for arm in arms],
@@ -555,6 +564,25 @@ def verify_ack_observations(data: dict) -> None:
             raise ValueError("ACK fault recovery did not converge to current authoritative material")
 
 
+def verify_shader_preparation(data: dict) -> None:
+    preparation = data.get("shader_preparation")
+    if not isinstance(preparation, dict):
+        raise ValueError("Missing explicit shader preparation receipt")
+    if data.get("shader_preparation_at_measurement") != preparation:
+        raise ValueError("Shader preparation changed inside the measured window")
+    mounted = data.get("cohort") == "mounted_native_workbench"
+    if data.get("strategy") == "hybrid" and mounted:
+        if (preparation.get("prepared") is not True or preparation.get("error")
+                or type(preparation.get("runs")) is not int or preparation["runs"] < 1):
+            raise ValueError("Mounted hybrid did not complete explicit startup preparation")
+        values = [preparation.get("initialization_usec"), preparation.get("total_initialization_usec")]
+        if (any(type(v) not in (int, float) or not math.isfinite(v) or v <= 0 for v in values)
+                or values[1] < values[0] or values[1] > data.get("setup_ms", -1) * 1000.0):
+            raise ValueError("Shader preparation cost is missing or excluded from setup timing")
+    elif preparation:
+        raise ValueError("Baseline/detached cohort unexpectedly performed Main shader preparation")
+
+
 def verify_runtime_result(data: dict, engine: dict, source: dict, *, process: dict, rendering_driver: str,
                           config: dict | None, frames: int | None, strategy: str | None,
                           fixture_sha256: str | None = None) -> dict:
@@ -611,6 +639,7 @@ def verify_runtime_result(data: dict, engine: dict, source: dict, *, process: di
     verify_native_capture_accounting(data)
     verify_actor_input_tape(data)
     verify_ack_observations(data)
+    verify_shader_preparation(data)
     samples = data.get("frames")
     if not isinstance(samples, list) or len(samples) != frames:
         raise ValueError("Runtime frame samples incomplete")

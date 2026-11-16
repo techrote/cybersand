@@ -14,6 +14,7 @@ from run_campaign import (ROOT, child_environment, engine_identity, execute,
 
 
 CASES = [
+    ("preparation-lifecycle", "test_render_upload_577_preparation_lifecycle.gd", "RENDER_UPLOAD_577_PREPARATION_LIFECYCLE ", {}, "preparation-lifecycle"),
     ("queued-history", "test_render_upload_577_queued_history.gd", "RENDER_UPLOAD_577_QUEUED_HISTORY ", {}, "queued-history"),
     ("main-refusal", "test_render_upload_577_refusal.gd", "RENDER_UPLOAD_577_REFUSAL ", {}, "main-refusal"),
     ("ack-graphical", "test_render_upload_577_ack_graphical.gd", "RENDER_UPLOAD_577_ACK ", {}, "ack-graphical"),
@@ -50,6 +51,10 @@ REFUSAL_ERRORS = tuple(
 def verify_independent_result(name: str, script: str, data: dict) -> None:
     paths = {"res://scripts/material_upload_hybrid.gd", "res://shaders/material_upload_copy.gdshader",
              "res://tests/" + script}
+    if name == "preparation-lifecycle":
+        paths = {"res://scripts/main.gd", "res://scripts/material_upload_hybrid.gd",
+                 "res://scripts/material_upload_shader_prepare.gd", "res://scripts/simulation_worker.gd",
+                 "res://tests/" + script}
     if name == "main-refusal":
         paths.update({"res://scripts/main.gd", "res://scripts/simulation_worker.gd"})
     expected_sources = {p: sha(ROOT / p.replace("res://", "godot/")) for p in paths}
@@ -69,6 +74,24 @@ def verify_independent_result(name: str, script: str, data: dict) -> None:
                 or data.get("checks") != 166 or data.get("cases") != expected_cases
                 or data.get("expected_error_messages") != [e.removeprefix("ERROR: ") for e in REFUSAL_ERRORS]):
             raise ValueError("Main refusal/recovery corpus or intentional diagnostics differ")
+    elif name == "preparation-lifecycle":
+        cases = data.get("cases", [])
+        expected = {(2, "hybrid", "native-phased"), (2, "full", "native-phased"),
+                    (1, "hybrid", "gdscript-serial-fallback")}
+        if (data.get("schema") != "render-upload-577-independent-preparation-lifecycle-v1"
+                or data.get("checks") != 123 or len(cases) != 3
+                or {(c.get("channels"), c.get("initial_strategy"), c.get("backend")) for c in cases} != expected):
+            raise ValueError("Actual Main preparation lifecycle corpus is incomplete or changed")
+        for case in cases:
+            preparation = case.get("preparation", {})
+            observations = case.get("observations", [])
+            if (case.get("preparation_runs") != 1 or preparation.get("prepared") is not True
+                    or preparation.get("channels") != case["channels"]
+                    or preparation.get("temporary_viewport_count") != 3 or preparation.get("readback_count") != 12
+                    or case.get("ack") != case.get("final_serial") or case.get("final_serial", 0) <= 0
+                    or not observations or any(o.get("unchanged") is not True or o.get("result") is not True
+                                              or o.get("accepted_before") != o.get("accepted_after") for o in observations)):
+                raise ValueError("Shader preparation changed accepted material/binding identity or failed to complete")
 
 
 def main() -> int:
@@ -105,8 +128,8 @@ def main() -> int:
     for strategy in strategies:
         for name, script, marker, additions, profile in cases:
             internal_pair = name == "ack-graphical"
-            independent = name in {"queued-history", "main-refusal"}
-            mounted = name not in {"handoff", "generation", "palette", "vapour", "pending-compaction", "ack-graphical", "queued-history", "main-refusal"}
+            independent = name in {"queued-history", "main-refusal", "preparation-lifecycle"}
+            mounted = name not in {"handoff", "generation", "palette", "vapour", "pending-compaction", "ack-graphical", "queued-history", "main-refusal", "preparation-lifecycle"}
             if strategy == "hybrid" and not mounted:
                 continue
             label = ("independent" if independent else "paired" if internal_pair else strategy) + "-" + name
@@ -117,7 +140,8 @@ def main() -> int:
             env["CYBERSAND_TEST_ARTIFACT_DIR"] = str(output / label / "captures")
             row = {"label": label, "strategy": "internal hybrid R8/RG8 corpus" if independent else "internal full/hybrid pair" if internal_pair else strategy,
                    "script": script, "passed": False,
-                   "scope": "independent GPU history/refusal correctness" if independent else
+                   "scope": "independent actual-Main preparation lifecycle correctness" if name == "preparation-lifecycle" else
+                            "independent GPU history/refusal correctness" if independent else
                             "native/Main/GPU readback-serialized ACK correctness" if internal_pair else
                             "mounted real Workbench" if mounted else "existing isolated ownership/shader control"}
             print("RENDER_UPLOAD_577_REGRESSION_START", label, flush=True)
