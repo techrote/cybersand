@@ -13,7 +13,8 @@ from pathlib import Path
 
 import rank
 
-PAINTED_GEOMETRY_KEYS = ('cells', 'xspan', 'yspan', 'edges', 'junctions', 'cycles',\n                         'endpoints', 'components', 'diagonal_contacts', 'western_cells')
+PAINTED_GEOMETRY_KEYS = ('cells', 'xspan', 'yspan', 'edges', 'junctions', 'cycles',
+                         'endpoints', 'components', 'diagonal_contacts', 'western_cells')
 CONTROL_NAMES = ('random', 'fidget', 'wall')
 AXES = ('spatial_extent', 'local_weave')
 
