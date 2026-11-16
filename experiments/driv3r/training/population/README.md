@@ -324,3 +324,41 @@ python experiments/driv3r/training/population/population_p9.py --p0-output /tmp/
 ```
 
 **Draft/HOLD, no merge, no production or CyberSand game/content changes.**
+
+## P10 — CPU-only action-token sequence student distillation (synthetic research)
+
+`population_p10.py` trains **from-scratch** recurrent action-token students on
+finite host-legal action menus and teaches six niches simultaneously from the
+original P0 optimizer-trained MLP teachers plus fixed-seed mutated teacher
+variants. This is a real gradient-trained small recurrent sequence **student**,
+not an adapted/pretrained text SLM. Unlike P0–P9's direct candidate-feature
+MLPs, the token-GRU student consumes the most recent eight executed action
+tokens as well as 20-feature legal candidate observations and niche labels.
+Its output is constrained to the host-provided legal actions at every step.
+
+Matched controls share identical initial parameter tensors and student
+training data/order: (a) state-only candidate scorer; (b) actual past-action
+GRU; (c) GRU with training-only action-history order randomly permuted, while
+preserving each history's token multiset and padding. P10 compares two
+holdouts: original geometry and a staggered-wall/goal-shift geometry family
+not present in training. Original P0 teacher rollout is also evaluated on the
+same held-out worlds. Models, distinct seed cohort splits, optimizer updates,
+cross-entropy, per-niche synthetic utility, legal-action traces, SVG galleries,
+and SHA-256 manifests are retained, including weak/negative controls.
+
+Requires optional **CPU PyTorch**; the original NumPy-only population
+training workflow remains independent. Exact-source P10 is qualified by
+`.github/workflows/driv3r-population-students.yml`, which installs pinned
+CPU PyTorch, rebuilds P0 teachers, and runs cohorts 643/644/645. Manual
+reproduction after original P0 training:
+
+    OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 python experiments/driv3r/training/population/population_p10.py --p0-output /tmp/population-p0 --output /tmp/population-p10-643 --seed 643 --train-worlds 24 --validation-worlds 6 --heldout-worlds 8 --epochs 6 --teacher-variants 3 --width 40 --horizon 40
+
+Interpretation: P10 is **teacher imitation under handcrafted synthetic rewards**,
+not RL, a pretrained language-model adapter, learned aesthetics, source-faithful
+material physics, or native CyberSand gameplay. Host masking ensures menu
+legality only, not a learned safety guarantee. Source-level independence of
+TRAIN, validation and held-out world seeds is tested; dynamic student
+trajectories are never fed back into optimization. Do not promote small
+cross-cohort reward differences to genuine game or artistic superiority.
+**Draft/HOLD; no game-side edits, no merge or Ready promotion.**
