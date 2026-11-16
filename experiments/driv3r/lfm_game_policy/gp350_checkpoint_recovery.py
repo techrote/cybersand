@@ -48,9 +48,9 @@ def check_probe(probe):
     rows=probe["rows"]
     fail_if(all(r["raw"]==c.ACTIONS[max(range(6),key=lambda i:r["six_logits"][i])]
         and r["match"]==(r["legal"]==r["target"])
-        and r["raw_legal"]==(r["raw"] in c.ACTIONS)
         for r in rows),"retained probe logits/decisions invalid")
-    # raw_legal in older probes is menu-dependent, not general action validity.
+    # Raw legality depends on each W0 observation's action menu; it is
+    # independently checked using the source W0 observations, not ACTIONS.
     fail_if(probe["teacher_matches"]==sum(r["match"] for r in rows),
             "heldout teacher score mismatch")
     fail_if(probe["marker_target_matches"]==
