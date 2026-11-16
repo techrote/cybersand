@@ -1,0 +1,110 @@
+name: PR661 Water Lab isolated Godot UI qualification
+
+# Source-scoped, Draft-safe execution. This is intentionally limited to the
+# Water Lab feature branch; native PR #631 and main stay untouched.
+on:
+  push:
+    branches: [experiment/waterlab-631-consolidated-ui]
+    paths:
+      - '.github/workflows/waterlab-661-ui-qualification.yml'
+      - 'godot/scripts/workbench_water_lab.gd'
+      - 'godot/scripts/shared_workbench.gd'
+      - 'godot/scripts/workbench_water_spray_panel.gd'
+      - 'godot/scripts/workbench_liquid_equipment_panel.gd'
+      - 'godot/tests/test_workbench_wave.gd'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: waterlab-661-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
+  GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+  GODOT_VERSION: 4.7.stable.official.5b4e0cb0f
+  GODOT_SILENCE_ROOT_WARNING: '1'
+
+jobs:
+  workbench-linux:
+    name: Source-bound Water Lab Godot import and native Workbench regressions
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout exact feature-branch source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+          persist-credentials: false
+
+      - name: Materialize frozen PR631 native and Rapier Linux libraries
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include="godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" --exclude=""
+          echo "02ce6d93f72711cba7a3fd037cd494234109637f4d5739498c591c64735afa1a  godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so" | sha256sum --check --strict
+          echo "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" | sha256sum --check --strict
+
+      - name: Download pinned official Godot 4.7
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/godot"
+          timeout 480 curl --fail --location --retry 3 --retry-all-errors --retry-delay 2 --output "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          GODOT_BIN="$(find "$RUNNER_TEMP/godot" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
+          test -n "$GODOT_BIN"
+          chmod +x "$GODOT_BIN"
+          test "$("$GODOT_BIN" --version)" = "$GODOT_VERSION"
+          echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
+
+      - name: Import complete Godot project at exact HEAD
+        run: |
+          set -euo pipefail
+          mkdir -p build/waterlab-661
+          git rev-parse HEAD HEAD^{tree} | tee build/waterlab-661/source.txt
+          timeout 240 "$GODOT_BIN" --headless --path godot --editor --quit 2>&1 | tee build/waterlab-661/import.log
+          ! grep -E 'SCRIPT ERROR:|Parse Error:' build/waterlab-661/import.log
+
+      - name: Original authored Workbench canvas regression
+        run: |
+          set -euo pipefail
+          timeout 900 "$GODOT_BIN" --headless --path godot --script res://tests/test_workbench_canvas.gd 2>&1 | tee build/waterlab-661/canvas.log
+
+      - name: Full Wave Workbench regression including Water Lab UI assertions
+        run: |
+          set -euo pipefail
+          timeout 900 "$GODOT_BIN" --headless --path godot --script res://tests/test_workbench_wave.gd 2>&1 | tee build/waterlab-661/wave.log
+
+      - name: Independently inspect actual test result records
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, re
+          root = pathlib.Path("build/waterlab-661")
+          canvas = (root/"canvas.log").read_text(errors="replace")
+          match = re.search(r"WORKBENCH_CANVAS\s+(\d+)\s+checks,\s+(\d+)\s+failures", canvas)
+          assert match and int(match[1]) >= 194 and int(match[2]) == 0, "original canvas regression incomplete"
+          wave = (root/"wave.log").read_text(errors="replace")
+          records = [line.split("WORKBENCH_WAVE_RESULT ",1)[1]
+                     for line in wave.splitlines() if "WORKBENCH_WAVE_RESULT " in line]
+          assert len(records) == 1, "Wave Workbench final result absent/duplicated"
+          result = json.loads(records[0])
+          assert result["failures"] == 0 and result["assertions"] >= 1115, "Wave Workbench regression failed or skipped new UI assertions"
+          assert result["real_workbench"] and result["native_ticks"] > 0, "No native Workbench ticks"
+          assert all(result["sections"].values()), "Required Wave sections not completed"
+          print("PR661 qualification", json.dumps({"canvas_assertions":int(match[1]),
+              "wave_assertions":result["assertions"],"native_ticks":result["native_ticks"],
+              "source":(root/"source.txt").read_text().strip().splitlines()}))
+          PY
+
+      - name: Retain source, original output and failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: waterlab-661-linux-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/waterlab-661/
+          if-no-files-found: warn
+          retention-days: 30
