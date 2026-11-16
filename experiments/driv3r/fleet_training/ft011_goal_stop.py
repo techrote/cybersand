@@ -274,7 +274,7 @@ def run(request, upstream, frozen, output, seed):
         for niche in base.NICHES:
             source_ckpt = frozen / f"dose_48/{seed}/models/{niche}.json"
             policies = {arm:shift.load_policy(pop, source_ckpt) for arm in ARMS}
-            train_exposure, heldouts, auto_seeds = [], [], []
+            train_exposure, heldouts_by_scenario = [], {}
             for scenario in SCENARIOS:
                 training = goal_cases(pop,"TRAIN",seed,niche,scenario,
                                       TRAIN_PER_GROUP,used)
@@ -288,8 +288,7 @@ def run(request, upstream, frozen, output, seed):
                 details = train_group(pop,policies,niche,training,{"scenario":scenario},began)
                 sample = details.pop("sample")
                 train_exposure.append({"scenario":scenario,**details})
-                heldouts.extend(heldout)
-                auto_seeds.extend(a_seeds)
+                heldouts_by_scenario[scenario] = heldout
                 if sample is not None:
                     d = output/"training"/niche/scenario
                     d.mkdir(parents=True,exist_ok=True)
@@ -313,7 +312,7 @@ def run(request, upstream, frozen, output, seed):
                     "teacher_nonterminal_exposures":sum(r["nonterminal_examples"]
                                                       for r in train_exposure)})
             for scenario in SCENARIOS:
-                h = goal_cases_readback(heldouts,scenario,pop)
+                h = heldouts_by_scenario[scenario]
                 test = heldout_group(pop,policies,niche,scenario,h,output,began)
                 autos = [world_seed(pop,"AUTONOMOUS",seed,niche,scenario,i)
                          for i in range(AUTO_PER_GROUP)]
@@ -362,12 +361,6 @@ def run(request, upstream, frozen, output, seed):
             for p in sorted(output.rglob("*"))
             if p.is_file() and p.name!="SHA256SUMS"))
     return report
-
-
-def goal_cases_readback(heldouts, scenario, pop):
-    # No new world generation or reselection after training.
-    return [(sid,route) for sid,route in heldouts
-            if goal.legal_route(pop,shift.world_for(pop,sid,scenario)) == route]
 
 
 if __name__ == "__main__":
