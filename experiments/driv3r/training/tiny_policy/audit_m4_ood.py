@@ -55,5 +55,4 @@ def main():
     result=audit(parser.parse_args().archive)
     print(json.dumps(result,sort_keys=True,indent=2))
 
-
 if __name__=='__main__':main()
