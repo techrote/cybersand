@@ -33,5 +33,11 @@
   "draft_hold": true,
   "no_merge": true,
   "source_replayed": true,
-  "improved_comparability_over_prior_stock": "GP350009 stock 64-turn evidence was on different sizes and seeds; this run explicitly matches GP350012 OOD 128-turn geometry."
+  "improved_comparability_over_prior_stock": "GP350009 stock 64-turn evidence was on different sizes and seeds; this run explicitly matches GP350012 OOD 128-turn geometry.",
+  "retry": {
+    "reason": "GP350-012-S first run #43903630289 failed only in frozen reference fingerprint check: unadapted full-LFM parameter names lacked PEFT base_model.model. prefix",
+    "source_repair_commit": "3e473a3920e4d747c6b823504ff22e04664ecf20",
+    "evidence_preserved_artifact_id": 14243285863,
+    "scope": "same pinned full model and same 12 OOD worlds / 128-turn source W0 protocol; no optimizer; no game edits"
+  }
 }
