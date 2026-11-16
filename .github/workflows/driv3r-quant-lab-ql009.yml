@@ -44,7 +44,7 @@ jobs:
         run: |
           python experiments/driv3r/quant_lab/quant_worm.py --self-test
           python experiments/driv3r/quant_lab/ql009_sparse_lowrank.py --self-test
-      - name: Perform 144 genuine low-rank optimizer updates and original W0-like trials
+      - name: Perform 192 genuine low-rank optimizer updates and original W0-like trials
         run: |
           python experiments/driv3r/quant_lab/ql009_sparse_lowrank.py \
             --parent ql003-source --out ql009-out --steps 48 --horizon 96
@@ -61,19 +61,19 @@ jobs:
           assert result['source_sha']==sha
           assert result['parent_source_sha']=='9b4103c48127e5c8538403e2a4d9e2525fbe8755'
           assert result['parent_manifest_verified']>=330
-          assert result['optimizer_updates']==144
+          assert result['optimizer_updates']==192
           assert result['heldout_n']==4352
-          assert len(result['variants'])==5 and len(result['controls'])==3
-          assert result['original_png_n']==132
+          assert len(result['variants'])==6 and len(result['controls'])==3
+          assert result['original_png_n']==144
           for label,info in result['training'].items():
-              assert info['steps']==48 and info['adam_nonzero_moment_tensors']==3
+              assert info['steps']==48 and info['adam_nonzero_moment_tensors']==(2 if info['frozen_output_bias'] else 3)
               assert info['parent_q1_q4_codes_unchanged'] and info['patch_frobenius_norm']>0
               checkpoint=torch.load(root/'models'/(label+'-optimizer.pt'),
                                     map_location='cpu', weights_only=False)
               assert len(checkpoint['trace'])==48
               assert checkpoint['source_sha']==sha
           raw=json.loads((root/'raw_decisions.json').read_text())
-          assert len(raw)==result['first_pass_trajectory_count']==132
+          assert len(raw)==result['first_pass_trajectory_count']==144
           assert all(row['first_pass'] and all(t['chosen'] in t['legal']
                      for t in row['steps']) for row in raw)
           assert all('STOP' in row['steps'][0]['legal'] for row in raw if row['steps'])
@@ -85,7 +85,7 @@ jobs:
               data=(root/entry['path']).read_bytes()
               assert len(data)==entry['bytes']
               assert hashlib.sha256(data).hexdigest()==entry['sha256']
-          assert len(list((root/'gallery').glob('*.png')))==132
+          assert len(list((root/'gallery').glob('*.png')))==144
           print('QL009 EXACT HEAD PASS',sha,'entries',len(manifest),
                 'original PNGs',result['original_png_n'])
           PY
