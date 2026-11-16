@@ -1,4 +1,4 @@
-name: "DRIV3R Frankenlayers Lab — sparse and Q4 mutant wave"
+name: "DRIV3R Frankenlayers Lab — calibrated IQ3 counterfactual wave"
 on:
   pull_request:
     paths:
@@ -17,6 +17,7 @@ on:
       - 'experiments/driv3r/frankenlayers_lab/run-request-wave8.json'
       - 'experiments/driv3r/frankenlayers_lab/run-request-wave9.json'
       - 'experiments/driv3r/frankenlayers_lab/run-request-wave10.json'
+      - 'experiments/driv3r/frankenlayers_lab/run-request-wave12.json'
       - '.github/workflows/driv3r-frankenlayers-lab.yml'
 
 permissions:
@@ -41,7 +42,7 @@ jobs:
           set -euo pipefail
           git merge-base --is-ancestor 67bc90e685f3311f73b6dbb3b0f6773d10e64623 HEAD
           python3 -m compileall -q experiments/driv3r/frankenlayers_lab
-          python3 -m unittest experiments.driv3r.frankenlayers.test_frankenlayers experiments.driv3r.frankenlayers_lab.test_lab experiments.driv3r.frankenlayers_lab.test_holdout experiments.driv3r.frankenlayers_lab.test_counterfactual experiments.driv3r.frankenlayers_lab.test_lowbit -v
+          python3 -m unittest experiments.driv3r.frankenlayers.test_frankenlayers experiments.driv3r.frankenlayers_lab.test_lab experiments.driv3r.frankenlayers_lab.test_holdout experiments.driv3r.frankenlayers_lab.test_counterfactual experiments.driv3r.frankenlayers_lab.test_lowbit experiments.driv3r.frankenlayers_lab.test_lowbit_causal -v
           python3 - <<'PY'
           import json
           from pathlib import Path
@@ -222,6 +223,31 @@ jobs:
                 quant="iq3_xs",seed=570)]
           assert w11["max_parallel"]==1 and w11["timeout_minutes"]<=95
           assert w11["no_game_changes"] and not any(w11[k] for k in ("paid_api","paid_gpu","merge","ready"))
+          # Wave 12: immutable causal IQ3 pilot replication; no inference before this check.
+          w12=json.loads(Path("experiments/driv3r/frankenlayers_lab/run-request-wave12.json").read_text())
+          assert w12["schema"]=="frankenlayers-wave12-calibrated-iq3-matched-geometry/1"
+          assert w12["lineage"]["wave11_source_sha"]=="01ae051b14ba7a8767b53df56af54d5e80f49198"
+          assert w12["lineage"]["wave11_success_run"]==43885385220
+          assert w12["lineage"]["wave11_artifact_id"]==14234559968
+          for key in ("llama_commit","model_q8_sha256","w0_commit"):
+            assert w12["lineage"][key]==r["lineage"][key]
+          assert w12["quant"]["target"]=="IQ3_XS" and w12["quant"]["input"]=="Q8_0"
+          assert w12["quant"]["imatrix_source"]=="pinned Q8 stock, train-only game-state prompts"
+          assert w12["quant"]["calibration_seeds"]==[101,103,107,109]
+          assert w12["quant"]["calibration_rows"]==96 and w12["quant"]["calibration_chunks"]==8
+          assert w12["test_host"]=={
+            "seed":CAUSAL_SEED,"fixed_family":CAUSAL_FAMILY,
+            "steps_per_variant":CAUSAL_STEPS,
+            "scenarios":list(PAIRS),"synthetic_obstacles_only":True,"native_game":False}
+          assert w12["experiments"]==[
+            dict(label=label,mode=mode,flow=list(LAB_FLOWS[mode]),quant="iq3_xs",seed=CAUSAL_SEED)
+            for label,mode in (
+              ("aero4_no10_iq3_causal","aero4_no10"),
+              ("aero4_no2_iq3_causal","aero4_no2"),
+            )
+          ]
+          assert w12["max_parallel"]==2 and w12["timeout_minutes"]<=95
+          assert w12["no_game_changes"] and not any(w12[k] for k in ("paid_api","paid_gpu","merge","ready"))
           PY
           python3 tools/ci/check_ci_provider_policy.py
           python3 tools/ci/check_ci_scheduling_policy.py
@@ -236,20 +262,24 @@ jobs:
           test ! -s /tmp/unexpected.txt
 
   brain:
-    name: calibrated IQ3_XS pilot / ${{ matrix.mode }}
+    name: calibrated IQ3_XS held-out geometry / ${{ matrix.mode }}
     if: github.repository == 'techrote/cybersand' && github.event_name == 'push' && github.ref == 'refs/heads/research/619-frankenlayers-lab'
     needs: cheap
     runs-on: ubuntu-24.04
     timeout-minutes: 95
     strategy:
-      max-parallel: 1
+      max-parallel: 2
       fail-fast: false
       matrix:
         include:
-          - mode: aero4_no10_iq3_cal_s570
+          - mode: aero4_no10_iq3_causal
             flow: aero4_no10
             quant: iq3_xs
-            seed: 570
+            seed: 2718
+          - mode: aero4_no2_iq3_causal
+            flow: aero4_no2
+            quant: iq3_xs
+            seed: 2718
     env:
       OMP_NUM_THREADS: '2'
       MKL_NUM_THREADS: '2'
@@ -347,7 +377,7 @@ jobs:
           PY
         env:
           MATRIX_MODE: ${{ matrix.mode }}
-      - name: Source-pinned Q8-stock IQ3-stock IQ3-mutant W0 game-policy triad
+      - name: Source-pinned Q8-stock IQ3-stock IQ3-mutant held-out causal triad
         run: |
           set -euo pipefail
           MODEL_PATH="$(python3 - <<'PY'
@@ -356,7 +386,7 @@ jobs:
           print(json.loads(Path(os.environ['RUNNER_TEMP']+'/d1-lab-donor/runtime-manifest.json').read_text())['model'])
           PY
           )"
-          timeout --signal=TERM --kill-after=45 4200 python3 -m experiments.driv3r.frankenlayers_lab.infer_lowbit \
+          timeout --signal=TERM --kill-after=45 4200 python3 -m experiments.driv3r.frankenlayers_lab.infer_lowbit_causal \
             --binary "$RUNNER_TEMP/franken-lab-llama/build/bin/llama-server" \
             --model-q8 "$MODEL_PATH" \
             --model-iq3 "$RUNNER_TEMP/franken-lab-iq3/d1-2B-from-Q8-IQ3_XS.gguf" \
@@ -373,7 +403,7 @@ jobs:
           mkdir -p "evidence/${{ matrix.mode }}"
           lscpu > "evidence/${{ matrix.mode }}/cpu.txt"
           (cd "evidence/${{ matrix.mode }}" && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum) > "evidence/${{ matrix.mode }}/SHA256SUMS.txt"
-      - name: Upload original per-carcass W0 evidence
+      - name: Upload original per-carcass matched-geometry evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
