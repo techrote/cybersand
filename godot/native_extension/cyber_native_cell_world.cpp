@@ -1710,7 +1710,7 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         if (wave_substeps < 1 || wave_substeps > cybersand::WaveFlowParameters::kMaximumSubsteps)
             throw std::invalid_argument("wave_substeps outside 1..8");
         config.wave_flow.enabled = options.get("wave_flow", false);
-        config.wave_flow.substeps = static_cast<std::int32_t>(wave_substeps);
+        config.wave_flow.substeps = static_cast<std::uint8_t>(wave_substeps);
         const auto wave_integer = [&options](const char* key, std::int32_t fallback) {
             if (!options.has(key)) return fallback;
             if (options[key].get_type() != Variant::INT)

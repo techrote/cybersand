@@ -337,12 +337,20 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         config->ballistic_water.face_release = config->ballistic_water.enabled &&
             static_cast<bool>(options.get("workbench_face_release", false));
         config->wave_flow.enabled = options.get("workbench_wave_flow", false);
+        if (options.has("workbench_wave_substeps")) {
+            if (!workbench || !config->wave_flow.enabled ||
+                options["workbench_wave_substeps"].get_type() != Variant::INT)
+                throw std::invalid_argument("Wave Flow substeps require an enabled workbench Wave Flow and an integer");
+            const auto value = static_cast<std::int64_t>(options["workbench_wave_substeps"]);
+            if (value < 1 || value > cybersand::WaveFlowParameters::kMaximumSubsteps)
+                throw std::invalid_argument("Wave Flow substeps outside 1..8");
+            config->wave_flow.substeps = static_cast<std::uint8_t>(value);
+        }
         struct WaveKnob {
             const char* key;
             std::int32_t cybersand::WaveFlowConfig::*member;
         };
         for (const WaveKnob knob : {
-                WaveKnob{"workbench_wave_substeps", &cybersand::WaveFlowConfig::substeps},
                 WaveKnob{"workbench_wave_active_rows", &cybersand::WaveFlowConfig::active_rows},
                 WaveKnob{"workbench_wave_gain", &cybersand::WaveFlowConfig::gain},
                 WaveKnob{"workbench_wave_gain_confined", &cybersand::WaveFlowConfig::gain_confined},
