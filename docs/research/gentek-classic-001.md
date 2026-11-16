@@ -92,3 +92,12 @@ All are version 1 and reuse the existing project/preset compiler, five style
 cards, native preview/install and saved-start path. They do not self-assemble,
 negotiate zone boundaries or inspect live World cells. Viaduct v1/v2 and the
 other accepted algorithms remain unchanged.
+
+## Independently stacked Cathedral showcase
+
+The [Cathedral Megaframe showcase](gentek-showcase-cathedral-001.md) adds one
+larger teaching sampler on its own Draft/HOLD branch, making the catalogue
+**73 in that branch**. The frozen CLASSIC parent remains the 72-module batch.
+Cathedral coordinates a four-bay frame, primary void, subsidiary arcades and
+clerestory detail through the same schema-4 contract; it does not change any
+existing module/version or grant merge authority.

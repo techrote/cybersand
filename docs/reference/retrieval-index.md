@@ -62,6 +62,12 @@ and [owner evaluation guide](../operations/architectural-generator-playtest.md).
 PR #582 is a separate Draft/HOLD candidate; standalone qualification is not
 integrated-main or retained-runtime publication.
 
+For the independently stacked Cathedral Megaframe teaching sampler, its four
+nested scales, parameter meanings, seed scope and native material evidence, use
+the [Cathedral showcase](../research/gentek-showcase-cathedral-001.md).
+It is Draft research on the CLASSIC parent; the parent remains 72 modules and
+the Cathedral branch has 73. This is not Gentek self-assembly or a new editor.
+
 ## Branch reconciliation and design choices
 
 For how agents reconcile stacked or long-running branches with main, and which

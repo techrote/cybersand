@@ -1313,3 +1313,148 @@ public:
         return p_.shell;
     }
 };
+
+// 73. Cathedral Megaframe: four nested scales share one immutable supercell.
+// Local Y points down. Integer lens inequalities give pointed, curved arches
+// without square roots, per-cell randomness, neighbour queries or allocation.
+class CathedralMegaframe final : public FeatureSampler {
+    ArchitectureForm p_;
+    std::uint64_t seed_;
+    std::int64_t span_, height_, radius_, spring_, rise_, mass_, fine_;
+
+    static bool beneath_arch(std::int64_t dx, std::int64_t y,
+            std::int64_t spring, std::int64_t radius, std::int64_t rise) noexcept {
+        if (dx >= radius) return false;
+        if (y >= spring) return true;
+        const auto dy = spring - y;
+        if (dy > rise) return false;
+        const auto u = dx + radius;
+        return 3 * radius * radius * dy * dy + rise * rise * u * u <=
+            4 * radius * radius * rise * rise;
+    }
+public:
+    CathedralMegaframe(const ModuleInstance& i, std::uint64_t seed)
+        : p_(i), seed_(seed), span_(4*p_.bay), height_(3*p_.level),
+          radius_(3*p_.bay/2), spring_(7*p_.level/4), rise_(5*p_.level/4),
+          mass_(2*p_.wall+p_.bay/32), fine_(std::max<std::int64_t>(1,p_.wall/2)) {
+        require(p_.bay >= 6*p_.wall+16 && p_.level >= 6*p_.wall+16,
+            "cathedral_megaframe needs bay/floor at least 6 * wall + 16 cells");
+    }
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+
+        // SUPERFRAME: four base bays, three storeys, one protected nave.
+        const auto mx=positive_mod(x,span_), my=positive_mod(y,height_);
+        const auto cell_x=floor_div(x,span_), cell_y=floor_div(y,height_);
+        const auto center=span_/2, dx=std::abs(mx-center), edge=std::min(mx,span_-mx);
+        const auto base=height_-p_.wall, clerestory_top=p_.level/8;
+        if (my>=base) return p_.deck;
+
+        // SEEDED VARIATION: one choice per supercell; shared boundary towers
+        // use the boundary's own key so adjacent frames agree at their seam.
+        const auto choice=hash_xy(seed_,cell_x,cell_y,7301);
+        const auto boundary=cell_x+(mx>center?1:0);
+        const auto tower=hash_xy(seed_,boundary,cell_y,7302);
+        const auto tower_top=(tower&1U)?p_.level/12:p_.level/3;
+        const auto tower_width=p_.bay/8+p_.wall;
+
+        // BUTTRESSES: broad lower steps, a lighter upper tower, and a curved
+        // flying rib landing on the primary pier (not a full-height diagonal).
+        auto buttress_width=my>=2*p_.level?p_.bay/4+p_.wall:
+            (my>=p_.level?p_.bay/6+p_.wall:tower_width);
+        if (my>=tower_top && my<tower_top+p_.level/8)
+            buttress_width=fine_+(tower_width-fine_)*(my-tower_top)/(p_.level/8);
+        if (my>=tower_top && edge<=buttress_width) {
+            const auto portal_radius=std::min(p_.door/2,buttress_width-fine_-1);
+            if (p_.doors && my>base-p_.level/3 &&
+                beneath_arch(edge,my,base-p_.level/6,portal_radius,p_.level/6))
+                return Material::Empty;
+            if (my<tower_top+fine_ || std::abs(my-p_.level)<=fine_ ||
+                std::abs(my-2*p_.level)<=fine_ || edge>buttress_width-fine_)
+                return p_.accent;
+            return p_.shell;
+        }
+        const auto fly_end=p_.bay/2, fly_start=tower_width;
+        if (edge>=fly_start && edge<=fly_end) {
+            const auto t=edge-fly_start, width=fly_end-fly_start;
+            const auto fly_y=p_.level+3*p_.level/8-
+                (3*p_.level/8)*t*(2*width-t)/(width*width);
+            const auto next=std::min(t+1,width);
+            const auto next_y=p_.level+3*p_.level/8-
+                (3*p_.level/8)*next*(2*width-next)/(width*width);
+            if (my>=next_y-p_.wall && my<=fly_y+p_.wall) return p_.accent;
+        }
+
+        // PRIMARY PIERS + RIB: a thick lens-shaped pointed arch, with a
+        // continuous inner accent and piers carrying the high clerestory.
+        const auto pier_distance=std::abs(dx-(radius_-mass_/2));
+        // Continue to the supercell ceiling: vertically repeated frames share
+        // these load paths rather than floating below the preceding deck.
+        if (pier_distance<=mass_/2)
+            return pier_distance<=fine_?p_.accent:p_.shell;
+        const bool outer=beneath_arch(dx,my,spring_,radius_,rise_);
+        // Contract the inner aperture by one raster column. Adjacent columns
+        // then overlap even at the valid narrow/tall limit; no World lookup.
+        const bool opening=beneath_arch(dx+1,my,spring_,radius_-mass_,rise_-mass_);
+        if (outer && !opening)
+            return beneath_arch(dx+1,my,spring_,radius_-mass_+fine_,rise_-mass_+fine_)
+                ?p_.accent:p_.shell;
+
+        // INTERMEDIATE RIB: a second, slender curved order nested within the
+        // main frame. Its legs meet the side galleries and continue to base.
+        const auto inner_radius=radius_-mass_-p_.bay/12;
+        const auto inner_rise=rise_-mass_-p_.level/10;
+        if (beneath_arch(dx,my,spring_,inner_radius,inner_rise) &&
+            !beneath_arch(dx+1,my,spring_,inner_radius-fine_,inner_rise-fine_))
+            return p_.accent;
+
+        // CLERESTORY: a high horizontal band of small framed lancets. The
+        // off state fills glass with shell; every load path and aperture mask
+        // outside the glazing stays identical. No glass occupies the nave.
+        const auto sill=p_.level/2, pitch=p_.bay/((choice&2U)?3:4);
+        if (dx<=radius_ && my>=clerestory_top && my<=sill) {
+            const auto local=positive_mod(mx-(center-radius_),pitch);
+            const auto window_dx=std::abs(local-pitch/2), window_radius=pitch/2-fine_;
+            const auto window_spring=sill-2*fine_, window_rise=sill-clerestory_top-4*fine_;
+            if (my>=sill-fine_ || my<=clerestory_top+fine_) return p_.deck;
+            if (local<=fine_ || local>=pitch-fine_) return p_.shell;
+            if (beneath_arch(window_dx,my,window_spring,window_radius,window_rise))
+                return p_.windows?p_.glazing:p_.shell;
+            if (beneath_arch(window_dx,my,window_spring,window_radius+fine_,window_rise+fine_))
+                return p_.accent;
+            return Material::Empty;
+        }
+
+        // SECONDARY ARCADE: two lower openings per side; these support a
+        // triforium with half-bay frequency, leaving a whole central bay void.
+        const auto arcade_pitch=p_.bay/2, gallery=2*p_.level;
+        const bool side_aisle=edge>=p_.bay/2 && edge<=3*p_.bay/2;
+        if (side_aisle && my>=gallery && my<base) {
+            const auto local=positive_mod(edge-p_.bay/2,arcade_pitch);
+            const auto sub_dx=std::abs(local-arcade_pitch/2);
+            const auto sub_spring=gallery+p_.level/2;
+            const auto sub_radius=arcade_pitch/2, sub_rise=p_.level/2-p_.wall;
+            if (beneath_arch(sub_dx,my,sub_spring,sub_radius,sub_rise) &&
+                !beneath_arch(sub_dx+1,my,sub_spring,sub_radius-p_.wall,sub_rise-p_.wall))
+                return p_.shell;
+            if (local<=p_.wall || local>=arcade_pitch-p_.wall) return p_.accent;
+        }
+
+        // GALLERIES: two side datums, with bounded asymmetry. Each terminal
+        // is a supported arcade pier; no deck crosses the central nave.
+        const bool extended=((choice>>2U)&1U)==static_cast<std::uint64_t>(mx>center);
+        const auto upper_end=extended?3*p_.bay/2:p_.bay;
+        if (edge<=3*p_.bay/2 && std::abs(my-gallery)<=p_.wall) return p_.deck;
+        if (edge<=upper_end && std::abs(my-3*p_.level/2)<=fine_) return p_.deck;
+        if (std::abs(edge-upper_end)<=fine_ && my>=3*p_.level/2 && my<=gallery)
+            return p_.shell;
+
+        // TERTIARY: short balustrade posts grow from the triforium deck;
+        // smaller spacing changes with room_size, independently of storeys.
+        const auto detail_pitch=std::max<std::int64_t>(4,p_.bay/8);
+        if (edge<=3*p_.bay/2 && my<gallery-p_.wall && my>=gallery-p_.level/8 &&
+            positive_mod(edge,detail_pitch)<=fine_) return p_.accent;
+        return Material::Empty;
+    }
+};

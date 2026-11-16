@@ -1236,6 +1236,7 @@ ModuleRegistry ModuleRegistry::builtins() {
     r.add({"barrel_arcade", 1, 44, [](const auto& i, auto) { return std::make_shared<BarrelArcade>(i); }});
     r.add({"buttress_crown", 1, 40, [](const auto& i, auto) { return std::make_shared<ButtressCrown>(i); }});
     r.add({"triptych_arcade", 1, 48, [](const auto& i, auto) { return std::make_shared<TriptychArcade>(i); }});
+    r.add({"cathedral_megaframe", 1, 192, [](const auto& i, auto seed) { return std::make_shared<CathedralMegaframe>(i, seed); }});
     return r;
 }
 
@@ -1269,7 +1270,7 @@ std::vector<std::string> Generator::builtin_modules() {
         "ziggurat_arcade", "corbel_arcade", "chain_vault", "ring_pier",
         "folded_plate_hall", "space_frame", "crossbeam_stack", "yoke_bridge",
         "lantern_tower", "spine_arcade", "cascade_terrace", "inverted_trestle",
-        "cranked_beam", "barrel_arcade", "buttress_crown", "triptych_arcade"};
+        "cranked_beam", "barrel_arcade", "buttress_crown", "triptych_arcade", "cathedral_megaframe"};
 }
 
 std::shared_ptr<const Generator> Generator::compile(Recipe recipe, const ModuleRegistry& registry) {
@@ -1521,7 +1522,7 @@ std::shared_ptr<const Generator> Generator::compile(Recipe recipe, const ModuleR
             m.module == "crossbeam_stack" || m.module == "yoke_bridge" || m.module == "lantern_tower" ||
             m.module == "spine_arcade" || m.module == "cascade_terrace" || m.module == "inverted_trestle" ||
             m.module == "cranked_beam" || m.module == "barrel_arcade" || m.module == "buttress_crown" ||
-            m.module == "triptych_arcade";
+            m.module == "triptych_arcade" || m.module == "cathedral_megaframe";
         if (schema4_architecture && (m.version == 1 || m.version == 2))
             require(recipe.schema == kArchitecturalSchemaVersion, "new architectural modules require schema 4");
         if ((m.module == "arcology" || m.module == "vault") && m.version == 2) {
