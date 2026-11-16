@@ -52,7 +52,7 @@ jobs:
           assert r['source_sha']==os.environ['GITHUB_SHA']
           assert r['revision']=='16136bb51c0cf16356f410956d38b48f249c73e1'
           assert r['backbone_parameters']>=100_000_000
-          assert len(r['code_audit'])==3
+          assert len(r['code_audit'])==4 and r['code_audit']['tokenizer_patch'].startswith('eval -> ast.literal_eval')
           assert len(r['rwkv_losses'])==140 and len(r['structured_losses'])==140
           assert r['train_examples']>=100 and r['test_examples']>=40
           assert r['forward_calls']>100
