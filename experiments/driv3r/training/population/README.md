@@ -232,3 +232,54 @@ experiment neural aesthetic learning.
 All implementation remains in `experiments/driv3r/training/population/**`
 and its research-only workflow. No game-side file may be modified. Draft/HOLD;
 do not merge or promote Ready.
+
+## P8 — train-only neural temporal-order encoder versus four ancestry controls
+
+`population_p8.py` trains a three-dimensional *nonlinear neural temporal
+convolutional* representation with NumPy Adam. It sees only ordered sequences
+of six host-legal game actions, including STOP and RETRACE, over a fixed
+30-decision window. TRAIN-only challenge/ordinary synthetic game trajectories
+are contrasted against **action-count-preserving reversed and shuffled
+transcripts** in a three-class supervised classification task. All temporal
+weights, optimizer steps, training losses, original/permuted classification
+accuracy, embedding variances, and quartile boundaries are frozen before
+opening selection or held-out worlds. Encoder VALIDATION worlds are independent
+of its TRAIN worlds and all P8 policy splits. The fitted P7 PCA projection is
+also fit on distinct TRAIN-only probe worlds.
+
+Five comparators start from matched P0 niche champions and identical
+generation-zero mutation/training seeds: reward-best PBT, handcrafted topology
+MAP, TRAIN-only PCA MAP, the new frozen neural temporal MAP, and random
+previous-generation ancestry. They train via real teacher-augmented Adam on
+mixed standard/dead-end/protected/goal-switch synthetic worlds. Parent choice
+changes after generation zero. Final portfolios have matched size and are
+frozen before holdout evaluation. Preserve all lineage, mutated source SHA,
+final model SHA, per-candidate training steps, selection archive cardinality,
+untouched held-out 48-decision diversity/reward, challenge RETRACE counts,
+frozen-encoder-space diversity, and original synthetic SVG/JSON trajectories.
+
+The bounded independent cohorts 638/639 each use two generations × three
+offspring × five arms × six niches = 180 policies, 360 combined, plus 160
+encoder Adam updates per cohort. The two local source-matched campaigns
+produced 51,468 **policy** optimizer steps. Mean held-out trajectory diversity:
+reward-PBT 0.481132; raw MAP 0.487688; linear PCA MAP 0.517058;
+neural temporal MAP **0.525994**; random-parent 0.498964. However, the
+neural MAP result differed substantially between cohorts, and encoder
+independent validation accuracy was only 0.3741 and 0.4407 against a
+one-in-three nominal chance baseline. These are **exploratory synthetic
+results only**; modest average benefits are not evidence of reliable
+emergent aesthetics, temporal reasoning, or general game capability.
+
+Reproduce after P0 (NumPy 2.3.5; BLAS one thread):
+
+    OPENBLAS_NUM_THREADS=1 python experiments/driv3r/training/population/population_p8.py --p0-output /tmp/population-evidence --output /tmp/population-evidence/p8_638 --seed 638 --generations 2 --offspring 3 --train-episodes 5 --selection-episodes 4 --holdout-episodes 4 --horizon 48 --portfolio 3 --encoder-steps 160 --probe-count 6 --probe-worlds 4
+    OPENBLAS_NUM_THREADS=1 python experiments/driv3r/training/population/population_p8.py --p0-output /tmp/population-evidence --output /tmp/population-evidence/p8_639 --seed 639 --generations 2 --offspring 3 --train-episodes 5 --selection-episodes 4 --holdout-episodes 4 --horizon 48 --portfolio 3 --encoder-steps 160 --probe-count 6 --probe-worlds 4
+
+**Limitations and guardrail:** a three-class ordering discriminator can exploit
+trivial action-transition statistics; it is neither an aesthetic judge nor a
+pretrained language model. Higher archive occupancy does not establish more
+useful game behaviour. Synthetic actions are host-masked, not internally
+safe. This is not reinforcement learning, self-play, native CyberSand, or
+SLM-student training. Retain bad and quirky models equally. Everything stays
+inside the population research lane and its isolated workflow; Draft/HOLD,
+no merge or game-side modifications.

@@ -15,7 +15,7 @@ permissions:
 jobs:
   population:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 55
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -66,6 +66,14 @@ jobs:
         env:
           OPENBLAS_NUM_THREADS: '1'
         run: python experiments/driv3r/training/population/population_p7.py --p0-output /tmp/population-evidence --output /tmp/population-evidence/p7_637 --seed 637 --generations 3 --offspring 4 --train-episodes 8 --selection-episodes 5 --holdout-episodes 6 --horizon 48 --portfolio 4
+      - name: P8 TRAIN-only neural temporal encoder and five-arm population, cohort 638
+        env:
+          OPENBLAS_NUM_THREADS: '1'
+        run: python experiments/driv3r/training/population/population_p8.py --p0-output /tmp/population-evidence --output /tmp/population-evidence/p8_638 --seed 638 --generations 2 --offspring 3 --train-episodes 5 --selection-episodes 4 --holdout-episodes 4 --horizon 48 --portfolio 3 --encoder-steps 160 --probe-count 6 --probe-worlds 4
+      - name: P8 independent neural temporal encoder and held-out cohort 639
+        env:
+          OPENBLAS_NUM_THREADS: '1'
+        run: python experiments/driv3r/training/population/population_p8.py --p0-output /tmp/population-evidence --output /tmp/population-evidence/p8_639 --seed 639 --generations 2 --offspring 3 --train-episodes 5 --selection-episodes 4 --holdout-episodes 4 --horizon 48 --portfolio 3 --encoder-steps 160 --probe-count 6 --probe-worlds 4
       - name: Retain exact experimental source for reproducibility
         run: |
           mkdir -p /tmp/population-evidence/source
