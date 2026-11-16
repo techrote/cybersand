@@ -1,4 +1,4 @@
-name: "DRIV3R Frankenlayers Lab — calibrated IQ3 counterfactual wave"
+name: "DRIV3R Frankenlayers Lab — calibrated IQ2 counterfactual wave"
 on:
   pull_request:
     paths:
@@ -18,6 +18,7 @@ on:
       - 'experiments/driv3r/frankenlayers_lab/run-request-wave9.json'
       - 'experiments/driv3r/frankenlayers_lab/run-request-wave10.json'
       - 'experiments/driv3r/frankenlayers_lab/run-request-wave12.json'
+      - 'experiments/driv3r/frankenlayers_lab/run-request-wave13.json'
       - '.github/workflows/driv3r-frankenlayers-lab.yml'
 
 permissions:
@@ -42,7 +43,7 @@ jobs:
           set -euo pipefail
           git merge-base --is-ancestor 67bc90e685f3311f73b6dbb3b0f6773d10e64623 HEAD
           python3 -m compileall -q experiments/driv3r/frankenlayers_lab
-          python3 -m unittest experiments.driv3r.frankenlayers.test_frankenlayers experiments.driv3r.frankenlayers_lab.test_lab experiments.driv3r.frankenlayers_lab.test_holdout experiments.driv3r.frankenlayers_lab.test_counterfactual experiments.driv3r.frankenlayers_lab.test_lowbit experiments.driv3r.frankenlayers_lab.test_lowbit_causal -v
+          python3 -m unittest experiments.driv3r.frankenlayers.test_frankenlayers experiments.driv3r.frankenlayers_lab.test_lab experiments.driv3r.frankenlayers_lab.test_holdout experiments.driv3r.frankenlayers_lab.test_counterfactual experiments.driv3r.frankenlayers_lab.test_lowbit experiments.driv3r.frankenlayers_lab.test_lowbit_causal experiments.driv3r.frankenlayers_lab.test_iq2 experiments.driv3r.frankenlayers_lab.test_iq2_causal -v
           python3 - <<'PY'
           import json
           from pathlib import Path
@@ -248,6 +249,27 @@ jobs:
           ]
           assert w12["max_parallel"]==2 and w12["timeout_minutes"]<=95
           assert w12["no_game_changes"] and not any(w12[k] for k in ("paid_api","paid_gpu","merge","ready"))
+          # Wave 13 calibrated IQ2: only two pre-registered four-layer carcasses.
+          w13=json.loads(Path("experiments/driv3r/frankenlayers_lab/run-request-wave13.json").read_text())
+          assert w13["schema"]=="frankenlayers-wave13-calibrated-iq2-matched-geometry/1"
+          assert w13["lineage"]["wave12_source_sha"]=="408e85a5a7464c0c70e40fecf30bec081948f63b"
+          assert w13["lineage"]["wave12_success_run"]==43895653253
+          assert w13["lineage"]["wave12_artifacts"]==[14241756780,14244410809]
+          for key in ("llama_commit","model_q8_sha256","w0_commit"):
+            assert w13["lineage"][key]==r["lineage"][key]
+          assert w13["quant"]==dict(target="IQ2_XS",input="Q8_0",allow_requantize=True,
+              imatrix_source="pinned Q8 stock, train-only game-state prompts",
+              calibration_rows=96,calibration_chunks=8,calibration_seeds=[101,103,107,109],lossy_conversion=True)
+          assert w13["test_host"]==w12["test_host"]
+          assert w13["experiments"]==[
+              dict(label=label,mode=mode,flow=list(LAB_FLOWS[mode]),quant="iq2_xs",seed=CAUSAL_SEED)
+              for label,mode in (
+                ("aero4_no10_iq2_causal","aero4_no10"),
+                ("aero4_no2_iq2_causal","aero4_no2"),
+              )
+          ]
+          assert w13["max_parallel"]==2 and w13["timeout_minutes"]<=95
+          assert w13["no_game_changes"] and not any(w13[k] for k in ("paid_api","paid_gpu","merge","ready"))
           PY
           python3 tools/ci/check_ci_provider_policy.py
           python3 tools/ci/check_ci_scheduling_policy.py
@@ -262,7 +284,7 @@ jobs:
           test ! -s /tmp/unexpected.txt
 
   brain:
-    name: calibrated IQ3_XS held-out geometry / ${{ matrix.mode }}
+    name: calibrated IQ2_XS held-out geometry / ${{ matrix.mode }}
     if: github.repository == 'techrote/cybersand' && github.event_name == 'push' && github.ref == 'refs/heads/research/619-frankenlayers-lab'
     needs: cheap
     runs-on: ubuntu-24.04
@@ -272,13 +294,13 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - mode: aero4_no10_iq3_causal
+          - mode: aero4_no10_iq2_causal
             flow: aero4_no10
-            quant: iq3_xs
+            quant: iq2_xs
             seed: 2718
-          - mode: aero4_no2_iq3_causal
+          - mode: aero4_no2_iq2_causal
             flow: aero4_no2
-            quant: iq3_xs
+            quant: iq2_xs
             seed: 2718
     env:
       OMP_NUM_THREADS: '2'
@@ -338,7 +360,7 @@ jobs:
             > "evidence/${{ matrix.mode }}/imatrix.log" 2>&1
           test -s "$IMATRIX"
           sha256sum "$CALIBRATION" "$IMATRIX" > "evidence/${{ matrix.mode }}/calibration.sha256"
-      - name: Requantise pinned Q8 donor to calibrated IQ3_XS
+      - name: Requantise pinned Q8 donor to calibrated IQ2_XS
         run: |
           set -euo pipefail
           MODEL_PATH="$(python3 - <<'PY'
@@ -347,29 +369,29 @@ jobs:
           print(json.loads(Path(os.environ['RUNNER_TEMP']+'/d1-lab-donor/runtime-manifest.json').read_text())['model'])
           PY
           )"
-          mkdir -p "$RUNNER_TEMP/franken-lab-iq3"
-          IQ3_MODEL="$RUNNER_TEMP/franken-lab-iq3/d1-2B-from-Q8-IQ3_XS.gguf"
+          mkdir -p "$RUNNER_TEMP/franken-lab-iq2"
+          IQ2_MODEL="$RUNNER_TEMP/franken-lab-iq2/d1-2B-from-Q8-IQ2_XS.gguf"
           timeout --signal=TERM --kill-after=20 1000 "$RUNNER_TEMP/franken-lab-llama/build/bin/llama-quantize" \
-            --imatrix "evidence/${{ matrix.mode }}/imatrix.gguf" --allow-requantize "$MODEL_PATH" "$IQ3_MODEL" IQ3_XS 2 \
+            --imatrix "evidence/${{ matrix.mode }}/imatrix.gguf" --allow-requantize "$MODEL_PATH" "$IQ2_MODEL" IQ2_XS 2 \
             > "evidence/${{ matrix.mode }}/quantize.log" 2>&1
-          test -s "$IQ3_MODEL"
+          test -s "$IQ2_MODEL"
           python3 - <<'PY'
           import json,os
           from pathlib import Path
           from experiments.driv3r.backend import PINS,sha256_file
           src=Path(json.loads(Path(os.environ['RUNNER_TEMP']+'/d1-lab-donor/runtime-manifest.json').read_text())['model'])
-          out=Path(os.environ['RUNNER_TEMP']+'/franken-lab-iq3/d1-2B-from-Q8-IQ3_XS.gguf')
+          out=Path(os.environ['RUNNER_TEMP']+'/franken-lab-iq2/d1-2B-from-Q8-IQ2_XS.gguf')
           assert sha256_file(src)==PINS['model']['sha256']
           calib=Path('evidence/'+os.environ['MATRIX_MODE']+'/calibration.txt')
           mat=Path('evidence/'+os.environ['MATRIX_MODE']+'/imatrix.gguf')
           assert calib.stat().st_size>15000 and mat.stat().st_size>1000
-          receipt={'schema':'frankenlayers-iq3-requant/2','quant':'IQ3_XS',
+          receipt={'schema':'frankenlayers-iq2-requant/2','quant':'IQ2_XS',
                    'allow_requantize':True,'source_kind':'immutable Q8 donor, not FP16',
                    'imatrix_source':'Q8 donor, train-only synthetic game prompts',
                    'calibration_chunks':8,
                    'calibration_sha256':sha256_file(calib),'imatrix_sha256':sha256_file(mat),
                    'q8_sha256':sha256_file(src),'q8_bytes':src.stat().st_size,
-                   'iq3_sha256':sha256_file(out),'iq3_bytes':out.stat().st_size,
+                   'iq2_sha256':sha256_file(out),'iq2_bytes':out.stat().st_size,
                    'llama_commit':'8642541b255bfb5dc39cd351a178be09013a55d6'}
           dest=Path('evidence/'+os.environ['MATRIX_MODE']+'/quantize-receipt.json')
           dest.write_text(json.dumps(receipt,indent=2,sort_keys=True)+'\n')
@@ -377,7 +399,7 @@ jobs:
           PY
         env:
           MATRIX_MODE: ${{ matrix.mode }}
-      - name: Source-pinned Q8-stock IQ3-stock IQ3-mutant held-out causal triad
+      - name: Source-pinned Q8-stock IQ2-stock IQ2-mutant held-out causal triad
         run: |
           set -euo pipefail
           MODEL_PATH="$(python3 - <<'PY'
@@ -386,10 +408,10 @@ jobs:
           print(json.loads(Path(os.environ['RUNNER_TEMP']+'/d1-lab-donor/runtime-manifest.json').read_text())['model'])
           PY
           )"
-          timeout --signal=TERM --kill-after=45 4200 python3 -m experiments.driv3r.frankenlayers_lab.infer_lowbit_causal \
+          timeout --signal=TERM --kill-after=45 4200 python3 -m experiments.driv3r.frankenlayers_lab.infer_iq2_causal \
             --binary "$RUNNER_TEMP/franken-lab-llama/build/bin/llama-server" \
             --model-q8 "$MODEL_PATH" \
-            --model-iq3 "$RUNNER_TEMP/franken-lab-iq3/d1-2B-from-Q8-IQ3_XS.gguf" \
+            --model-iq2 "$RUNNER_TEMP/franken-lab-iq2/d1-2B-from-Q8-IQ2_XS.gguf" \
             --quant-receipt "evidence/${{ matrix.mode }}/quantize-receipt.json" \
             --imatrix "evidence/${{ matrix.mode }}/imatrix.gguf" \
             --calibration "evidence/${{ matrix.mode }}/calibration.txt" \
