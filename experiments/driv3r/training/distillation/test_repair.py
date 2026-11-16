@@ -1,7 +1,7 @@
 """Unit tests use synthetic test fixture, not an original parent model."""
 import unittest
 import numpy as np
-from . import lab,repair
+from experiments.driv3r.training.distillation import lab,repair
 MOCK={(s,f,t):{"probabilities":{a:1/6 for a in lab.ACTIONS}}
       for s in ("stock","greyhound","branchwitch")
       for f in ("greebles","pipework","architecture") for t in range(16)}
