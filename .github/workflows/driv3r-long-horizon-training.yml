@@ -190,6 +190,24 @@ jobs:
             test -s "$RUN_DIR/live-path-seed${seed}/live.npz"
             test -s "$RUN_DIR/live-path-seed${seed}/executed.npz"
           done
+      - name: Dual-clock versus executed-clock matched recovery training (DEV only)
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ '${{ inputs.mode || 'full' }}' == 'smoke' ]]; then
+            updates=2
+          else
+            updates=30
+          fi
+          for seed in 582 583; do
+            python -m experiments.driv3r.training.long_horizon.dual_clock_lab \
+              --output "$RUN_DIR/dual-clock-seed${seed}" \
+              --seed "$seed" --worlds 1 --updates "$updates"
+            python -m experiments.driv3r.training.long_horizon.dual_clock_lab \
+              --verify "$RUN_DIR/dual-clock-seed${seed}"
+            test -s "$RUN_DIR/dual-clock-seed${seed}/dual_clock.npz"
+            test -s "$RUN_DIR/dual-clock-seed${seed}/executed_clock.npz"
+          done
       - name: Store checkpoint, original traces, galleries, metrics and failure evidence
         if: always()
         uses: actions/upload-artifact@v4
