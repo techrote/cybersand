@@ -1,0 +1,85 @@
+name: "DRIV3R original Frankenbrain parents → tiny distillation (research)"
+on:
+  push:
+    branches: [research/driv3r-game-distill-student-001]
+    paths:
+      - 'experiments/driv3r/training/distillation/original_parent_probe.py'
+      - 'experiments/driv3r/training/distillation/franken_source_distill.py'
+      - 'experiments/driv3r/training/distillation/direct_parent_distill.py'
+      - 'experiments/driv3r/training/distillation/test_franken_source_distill.py'
+      - '.github/workflows/driv3r-original-parent-distillation.yml'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: driv3r-original-parent-distill-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  cpu-source-distillation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Pinned CPU dependencies
+        run: python3 -m pip install --disable-pip-version-check numpy==2.2.6 pillow==11.3.0
+      - name: Fast source, legal-action and bounded-training guards
+        run: python3 -m unittest experiments.driv3r.training.distillation.test_franken_source_distill -v
+      - name: Acquire exact original model-forward artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/source-zips" "$RUNNER_TEMP/real-parent-students"
+          for artifact_id in 14183378085 14183572553 14183612319 14183671417 14183687090 14183852344 14184017182 14184211222 14184295982 14184395599; do
+            gh api -H 'Accept: application/vnd.github+json' "repos/techrote/cybersand/actions/artifacts/${artifact_id}/zip" > "$RUNNER_TEMP/source-zips/source-parent-${artifact_id}.zip"
+          done
+          gh api -H 'Accept: application/vnd.github+json' 'repos/techrote/cybersand/actions/artifacts/14181164165/zip' > "$RUNNER_TEMP/source-zips/greyhound-original.zip"
+          gh api -H 'Accept: application/vnd.github+json' 'repos/techrote/cybersand/actions/artifacts/14182441899/zip' > "$RUNNER_TEMP/source-zips/branchwitch-original.zip"
+          gh api -H 'Accept: application/vnd.github+json' 'repos/techrote/cybersand/actions/artifacts/14224117941/zip' > "$RUNNER_TEMP/source-zips/d007.zip"
+          unzip -p "$RUNNER_TEMP/source-zips/d007.zip" 'stop_repaired_student.npz' > "$RUNNER_TEMP/source-zips/d007.npz"
+          test "$(sha256sum "$RUNNER_TEMP/source-zips/d007.npz" | cut -d' ' -f1)" = '1a4a35f8f15f979b8460121d31021d562a457de78d86de9b9d2fedbcec05e38f'
+          python3 -m experiments.driv3r.training.distillation.prepare_corpus \
+            "$RUNNER_TEMP/source-zips/greyhound-original.zip" \
+            "$RUNNER_TEMP/source-zips/branchwitch-original.zip" \
+            "$RUNNER_TEMP/source-zips/original_teachers.jsonl"
+          test "$(sha256sum "$RUNNER_TEMP/source-zips/original_teachers.jsonl" | cut -d' ' -f1)" = '140342c16a0b8c6c8d2c3bc6071767885b15096d5a53bbf304979f3015c86522'
+      - name: D013 144 original d1 source-forward transfer and OOD failure controls
+        run: |
+          set -euo pipefail
+          python3 -m experiments.driv3r.training.distillation.original_parent_probe \
+            --source "$RUNNER_TEMP/source-zips/original_teachers.jsonl" \
+            --d007 "$RUNNER_TEMP/source-zips/d007.npz" \
+            --out "$RUNNER_TEMP/real-parent-students/d013" --steps 300
+      - name: D014 ten distinct real Q8 Frankenbrain graph identity challenge
+        run: |
+          set -euo pipefail
+          python3 -m experiments.driv3r.training.distillation.franken_source_distill \
+            --sources "$RUNNER_TEMP/source-zips" \
+            --out "$RUNNER_TEMP/real-parent-students/d014" --steps 360
+      - name: D015 explicit source-persona baseline and late-tick holdout
+        run: |
+          set -euo pipefail
+          python3 -m experiments.driv3r.training.distillation.direct_parent_distill \
+            --sources "$RUNNER_TEMP/source-zips" \
+            --out "$RUNNER_TEMP/real-parent-students/d015" --steps 480
+      - name: Manifest original source identities and candidate evidence
+        if: always()
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/real-parent-students"
+          git rev-parse HEAD > "$RUNNER_TEMP/real-parent-students/source-commit.txt"
+          (cd "$RUNNER_TEMP/real-parent-students" && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS.txt)
+      - name: Immutable real-parent corpus, trained checkpoints, negative controls and trajectories
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: driv3r-real-source-d013-d015-${{ github.run_id }}
+          path: ${{ runner.temp }}/real-parent-students/
+          retention-days: 90
+          if-no-files-found: warn
