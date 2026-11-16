@@ -151,7 +151,8 @@ def score_state(policy, features, menu, tick, state_hash, world_id, early_index)
     original_margin = float(ref[stop] - max(ref[i] for i in alternatives))
     return {
         "world_seed": world_id, "tick": tick, "state_sha256": state_hash,
-        "host_legal_menu": menu, "original_early": float(features[0, early_index]),
+        "host_legal_menu": menu, "original_features": features.tolist(),
+        "original_early": float(features[0, early_index]),
         "original_scores": [float(x) for x in ref],
         "original_choice": menu[int(np.argmax(ref))],
         "original_stop_margin": original_margin,
