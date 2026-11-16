@@ -65,6 +65,38 @@ struct WaveFlowParameters {
     static constexpr std::int32_t kMaximumAdhesionShift = 8;
 };
 
+// WAVE-WATERWALL-001 exposed-face spill (experimental, off by default). An
+// approximation, not physics: Water resting beside open air discharges through
+// that face at a share of the cell per round, unsupported Water falls several
+// cells per round and stays a coherent stream unless it is dense, and bulk
+// flow running down a real surface slope may exceed the wave coast limit.
+// No storage is added; every transfer uses the existing conserved faces.
+struct WaveSpillConfig {
+    static constexpr std::int32_t kMaximumFall = 8;
+    static constexpr std::int32_t kMaximumShareShift = 8;
+    static constexpr std::int32_t kMaximumDraw = 127;
+    static constexpr std::int32_t kMaximumDrawHead = 65535;
+    static constexpr std::int32_t kMaximumStream = 255;
+    static constexpr std::int32_t kMaximumLaunchBudget = 4096;
+    static constexpr std::int32_t kMaximumLaunchSpeed = 512;
+    static constexpr std::uint32_t kLaunchCandidatesPerTask = 512;
+    bool enabled = false;
+    std::int32_t fall = 3;         // cells unsupported Water falls per round, 1..8
+    std::int32_t share_shift = 1;  // an exposed face sheds 1/2^n of its cell per round, 1..8
+    std::int32_t draw = 64;        // units per round a bulk face may carry, 0..127 (0: coast only)
+    std::int32_t draw_head = 255;  // adverse head (mass units) above which the coast limit applies again
+    std::int32_t stream = 128;     // falling Water denser than this (mass units) spreads sideways, 0..255
+    // Hybrid release, used only when ballistic_water_v1 is enabled on the same
+    // World: an exposed face beside Empty air hands its share to one ballistic
+    // parcel thrown outward at launch_speed / 256 of sqrt(2 g h), instead of
+    // moving it through the face. Bounded per tick; a refused or deferred
+    // launch leaves the Water in its cell and the next tick spills natively.
+    std::int32_t launch_min = 16;      // smallest share (mass units) worth a parcel, 1..255
+    std::int32_t launch_budget = 256;  // parcels launched per tick, 0..4096 (0: never launch)
+    std::int32_t launch_speed = 256;   // / 256 of sqrt(2 g h), 0..512
+    [[nodiscard]] bool operator==(const WaveSpillConfig&) const = default;
+};
+
 struct WaveFlowConfig {
     bool enabled = false;
     // Keep the historical byte width: the physical hash binds integer width.
@@ -86,6 +118,7 @@ struct WaveFlowConfig {
     std::int32_t empty_pour_shift = WaveFlowParameters::kEmptyPourShift;
     std::int32_t flow_share_shift = WaveFlowParameters::kFlowShareShift;
     std::int32_t adhesion_shift = WaveFlowParameters::kAdhesionShift;
+    WaveSpillConfig spill{};
     [[nodiscard]] bool operator==(const WaveFlowConfig&) const = default;
 };
 
@@ -109,6 +142,17 @@ struct WaveFlowDiagnostics {
     std::uint32_t last_solved_chunks = 0;
     std::uint32_t maximum_participants = 0; // distinct pool workers in one dispatch
     std::uint64_t storage_bytes = 0;     // solver-owned side storage currently allocated
+    // WAVE-WATERWALL-001 spill, appended; all zero while spill is disabled.
+    std::uint64_t spill_units = 0;       // mass units moved through exposed faces (resting donor, open receiver)
+    std::uint64_t relief_units = 0;      // mass units dense falling Water shed sideways
+    std::uint64_t spill_faces = 0;       // exposed-face transfers (face-rounds that moved at least one unit)
+    std::uint64_t last_falling_units = 0; // Water mass that was unsupported in the last round
+    std::uint64_t last_falling_cells = 0;
+    std::uint64_t launched_parcels = 0;  // hybrid: exposed-face shares handed to ballistic parcels
+    std::uint64_t launched_units = 0;
+    std::uint64_t launch_refusals = 0;   // launches the parcel owner refused (capacity, spawn cell); Water stayed
+    std::uint64_t launch_deferrals = 0;  // nominated faces beyond the per-tick budget or the per-strip list
+    std::uint64_t launch_nanoseconds = 0;
 };
 
 }  // namespace cybersand

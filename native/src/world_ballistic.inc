@@ -144,7 +144,14 @@ World::BallisticCell World::classify_ballistic_cell(std::int64_t x, std::int64_t
     }
     const auto material = chunk->cells[target.index].material_value();
     if (material == Material::Empty) return BallisticCell::Free;
-    if (material == Material::Water) return BallisticCell::Water;
+    if (material == Material::Water) {
+        // Wave spill: Water that is itself falling is not a surface to land on.
+        // A parcel passes it and merges with resting Water or meets a solid.
+        if (chunk->wave != nullptr && config_.wave_flow.spill.enabled &&
+            (chunk->wave->meta[target.index] >> WaveChunk::kDepthShift) == WaveChunk::kFalling)
+            return BallisticCell::Free;
+        return BallisticCell::Water;
+    }
     if (MaterialRules::descriptor(material).state == MaterialState::Gas) return BallisticCell::Free;
     return BallisticCell::Solid;
 }
@@ -203,7 +210,8 @@ BallisticLaunchResult World::launch_ballistic_water_internal(std::int64_t source
     }
     const auto mass = static_cast<std::uint32_t>(cell.state_a_value());
     const auto maximum = static_cast<std::uint32_t>(config_.water_experiment_policy.maximum());
-    std::uint32_t quantity = std::min(mass, maximum_quantity);
+    // A wave_flow_v1 cell may hold overfill above one cell; a parcel never does.
+    std::uint32_t quantity = std::min(std::min(mass, maximum_quantity), maximum);
     if (whole_cell_water_enabled()) quantity = maximum_quantity >= maximum ? mass : 0U;
     if (quantity == 0U) { result.outcome = BallisticLaunchOutcome::InsufficientQuantity; return result; }
     ballistic_write_water(source_x, source_y, static_cast<std::uint16_t>(mass - quantity));
@@ -285,7 +293,8 @@ bool World::deposit_ballistic_parcel(BallisticParcel& parcel, std::int64_t cx, s
             after = static_cast<std::uint16_t>(amount);
         } else if (material == Material::Water && !whole) {
             const auto mass = cell.state_a_value();
-            amount = std::min<std::uint32_t>(remaining, static_cast<std::uint32_t>(maximum - mass));
+            // An overfilled wave_flow_v1 cell has no room (never a wrapped one).
+            amount = mass >= maximum ? 0U : std::min<std::uint32_t>(remaining, static_cast<std::uint32_t>(maximum - mass));
             after = static_cast<std::uint16_t>(mass + amount);
         }
         if (amount == 0U) return;
@@ -318,6 +327,25 @@ bool World::deposit_ballistic_parcel(BallisticParcel& parcel, std::int64_t cx, s
     for (const auto& offset : kBallisticDepositOrder) {
         if (remaining == 0U) break;
         if (std::abs(offset[0]) > radius || std::abs(offset[1]) > radius) continue;
+        if (wave_ != nullptr && (std::abs(offset[0]) + std::abs(offset[1])) > 1) {
+            // Wave spill: Water may not land beyond a wall one cell thick or
+            // squeeze through a diagonal gap. A ring cell needs an open cell
+            // between it and the parcel (wave_flow_v1 Worlds only).
+            const auto passable = [&](std::int64_t px, std::int64_t py) {
+                if (transient_obstacle_at(px, py) != 0U || find_chunk(address(px, py).chunk) == nullptr) return false;
+                const auto material = stored_material(px, py);
+                return material == Material::Empty || material == Material::Water ||
+                       MaterialRules::descriptor(material).state == MaterialState::Gas;
+            };
+            const auto sx = offset[0] > 0 ? 1 : offset[0] < 0 ? -1 : 0, sy = offset[1] > 0 ? 1 : offset[1] < 0 ? -1 : 0;
+            const bool far_x = std::abs(offset[0]) > 1, far_y = std::abs(offset[1]) > 1;
+            bool reachable = false;
+            if (!far_x && !far_y) reachable = passable(cx + sx, cy) || passable(cx, cy + sy);
+            else if (far_x && far_y) reachable = passable(cx + sx, cy + sy) && (passable(cx + sx, cy) || passable(cx, cy + sy));
+            else if (far_x) reachable = passable(cx + sx, cy) && (sy == 0 || passable(cx + sx, cy + sy) || passable(cx + 2 * sx, cy));
+            else reachable = passable(cx, cy + sy) && (sx == 0 || passable(cx + sx, cy + sy) || passable(cx, cy + 2 * sy));
+            if (!reachable) continue;
+        }
         try_cell(cx + offset[0], cy + offset[1]);
     }
     if (remaining != 0U) {

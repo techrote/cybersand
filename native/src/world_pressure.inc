@@ -2390,6 +2390,15 @@ std::uint64_t World::physical_state_hash_impl(std::optional<LiquidStateProjectio
             hash_integer(hash, tune.empty_pour_shift); hash_integer(hash, tune.flow_share_shift);
             hash_integer(hash, tune.adhesion_shift);
         }
+        if (tune.spill.enabled) {
+            // WAVE-WATERWALL-001: absent while disabled, so the qualified
+            // Wave stream is unchanged. Parcels are bound by the ballistic block.
+            for (const char c : std::string_view{"wave-spill-v1"}) hash_byte(hash, static_cast<std::uint8_t>(c));
+            for (const auto value : {tune.spill.fall, tune.spill.share_shift, tune.spill.draw, tune.spill.draw_head,
+                                     tune.spill.stream, tune.spill.launch_min, tune.spill.launch_budget,
+                                     tune.spill.launch_speed}) hash_integer(hash, value);
+            hash_integer(hash, static_cast<std::uint8_t>(wave_->launch_backoff));
+        }
         hash_integer(hash, wave_->round);
     }
     return hash;
