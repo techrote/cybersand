@@ -1,0 +1,146 @@
+name: DRIV3R long-horizon synthetic CPU training (Draft/HOLD)
+
+on:
+  pull_request:
+    paths:
+      - 'experiments/driv3r/training/long_horizon/**'
+      - '.github/workflows/driv3r-long-horizon-training.yml'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Run bounded full training or cheap smoke'
+        type: choice
+        options: [full, smoke]
+        default: full
+  push:
+    branches:
+      - 'research/driv3r-long-horizon-*'
+    paths:
+      - 'experiments/driv3r/training/long_horizon/**'
+      - '.github/workflows/driv3r-long-horizon-training.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: driv3r-lh-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  bounded-cpu:
+    name: Exact-head deterministic unit tests + real 36/72/128 CPU optimizer
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PYTHONHASHSEED: '0'
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      HF_HUB_OFFLINE: '1'
+      TRANSFORMERS_OFFLINE: '1'
+      RUN_DIR: ${{ runner.temp }}/driv3r-long-horizon-${{ github.run_id }}-${{ github.run_attempt }}
+    steps:
+      - name: Checkout exact source (never a production merge)
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Confirm exact commit identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          head=$(git rev-parse HEAD)
+          expected='${{ github.event.pull_request.head.sha || github.sha }}'
+          test "$head" = "$expected"
+          echo "Exact source: $head"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install CPU-only numerical dependency (no model downloads)
+        run: python -m pip install --disable-pip-version-check --no-input numpy==2.2.6
+      - name: Run complete lane unit tests
+        run: python -m unittest -v \
+          experiments.driv3r.training.long_horizon.test_long_horizon \
+          experiments.driv3r.training.long_horizon.test_intervention_lab \
+          experiments.driv3r.training.long_horizon.test_intent_lab
+      - name: Run actual bounded CPU optimizer, write immutable artifact inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ '${{ inputs.mode || 'full' }}' == 'smoke' ]]; then
+            python -m experiments.driv3r.training.long_horizon.train \
+              --output "$RUN_DIR" --seed 570 --quick
+          else
+            python -m experiments.driv3r.training.long_horizon.train \
+              --output "$RUN_DIR" --seed 570 --n-worlds-per-family 9 \
+              --updates-per-stage 180 --batch 64
+          fi
+          test -s "$RUN_DIR/tiny-ranker-36-72-128.npz"
+          test -s "$RUN_DIR/report.json"
+          test -s "$RUN_DIR/SHA256SUMS.json"
+          sha256sum "$RUN_DIR/tiny-ranker-36-72-128.npz"
+      - name: Predeclared equal-update curriculum ablation (development only)
+        shell: bash
+        run: |
+          set -euo pipefail
+          for seed in 570 571; do
+            if [[ '${{ inputs.mode || 'full' }}' == 'smoke' ]]; then
+              worlds=2; updates=15
+            else
+              worlds=9; updates=180
+            fi
+            python -m experiments.driv3r.training.long_horizon.compare_curricula \
+              --output "$RUN_DIR/curriculum-ablation-seed${seed}" \
+              --seed-start "$seed" --seed-count 1 \
+              --train-worlds-per-family "$worlds" --updates-per-stage "$updates" \
+              --dev-worlds-per-family 1
+            python -m experiments.driv3r.training.long_horizon.verify_ablation \
+              "$RUN_DIR/curriculum-ablation-seed${seed}"
+          done
+          test -s "$RUN_DIR/curriculum-ablation-seed570/flat_128-seed570.npz"
+          test -s "$RUN_DIR/curriculum-ablation-seed571/staged_36_72_128-seed571.npz"
+      - name: Run real optimizer stress ablation and verify every original path (DEV only)
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ '${{ inputs.mode || 'full' }}' == 'smoke' ]]; then
+            worlds=2; updates=10
+          else
+            worlds=4; updates=100
+          fi
+          python -m experiments.driv3r.training.long_horizon.intervention_lab \
+            --output "$RUN_DIR/intervention-stress" --seed 572 \
+            --train-worlds-per-family "$worlds" --dev-worlds-per-family 1 \
+            --updates-per-stage "$updates"
+          python -m experiments.driv3r.training.long_horizon.verify_intervention \
+            "$RUN_DIR/intervention-stress"
+          python -m experiments.driv3r.training.long_horizon.paired_geometry \
+            "$RUN_DIR/intervention-stress" \
+            --output "$RUN_DIR/intervention-paired-geometry.json" \
+            --gallery "$RUN_DIR/intervention-original-gallery.png"
+          test -s "$RUN_DIR/intervention-stress/ordinary_offpolicy_013-seed572.npz"
+          test -s "$RUN_DIR/intervention-stress/stress_offpolicy_040-seed572.npz"
+      - name: Run matched three-intent model controllability training and source-replay audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ '${{ inputs.mode || 'full' }}' == 'smoke' ]]; then
+            worlds=1; updates=3
+          else
+            worlds=2; updates=25
+          fi
+          python -m experiments.driv3r.training.long_horizon.intent_lab \
+            --output "$RUN_DIR/intent-ablation" --seed-start 573 --seed-count 1 \
+            --train-worlds-per-family "$worlds" --dev-worlds-per-family 1 \
+            --updates-per-stage "$updates"
+          python -m experiments.driv3r.training.long_horizon.verify_intent \
+            "$RUN_DIR/intent-ablation"
+          test -s "$RUN_DIR/intent-ablation/intent_aware_cross_features-seed573.npz"
+      - name: Store checkpoint, original traces, galleries, metrics and failure evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: driv3r-long-horizon-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.RUN_DIR }}/
+          if-no-files-found: warn
+          retention-days: 45
