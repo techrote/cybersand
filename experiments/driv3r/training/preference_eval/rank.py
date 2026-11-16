@@ -162,6 +162,10 @@ def main():
              'margin':p['proxy_margin']})
     (out/'pairwise_proxy.json').write_text(json.dumps(pair_export,indent=2,sort_keys=True)+'\n')
     (out/'results.json').write_text(json.dumps(report,indent=2,sort_keys=True)+'\n')
+    # Separate P2: predict future observed W0 events from first-64 host receipts.
+    # Source-frozen, model-side tiny CPU head; never a human aesthetic reward.
+    import trajectory_p2
+    trajectory_p2.run(out)
     print(json.dumps(report,indent=2))
 
 if __name__=='__main__': main()
