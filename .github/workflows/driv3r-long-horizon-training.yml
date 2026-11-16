@@ -208,6 +208,24 @@ jobs:
             test -s "$RUN_DIR/dual-clock-seed${seed}/dual_clock.npz"
             test -s "$RUN_DIR/dual-clock-seed${seed}/executed_clock.npz"
           done
+      - name: STOP-margin calibration vs matched executed-clock control (DEV only)
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ '${{ inputs.mode || 'full' }}' == 'smoke' ]]; then
+            updates=2
+          else
+            updates=30
+          fi
+          for seed in 584 585; do
+            python -m experiments.driv3r.training.long_horizon.stop_calibration_lab \
+              --output "$RUN_DIR/stop-margin-seed${seed}" \
+              --seed "$seed" --updates "$updates"
+            python -m experiments.driv3r.training.long_horizon.stop_calibration_lab \
+              --verify "$RUN_DIR/stop-margin-seed${seed}"
+            test -s "$RUN_DIR/stop-margin-seed${seed}/dual_clock.npz"
+            test -s "$RUN_DIR/stop-margin-seed${seed}/executed_clock.npz"
+          done
       - name: Store checkpoint, original traces, galleries, metrics and failure evidence
         if: always()
         uses: actions/upload-artifact@v4
