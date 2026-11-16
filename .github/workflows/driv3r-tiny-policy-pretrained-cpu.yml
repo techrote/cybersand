@@ -303,3 +303,54 @@ jobs:
           path: ${{ runner.temp }}/tiny-m14/
           retention-days: 21
           if-no-files-found: error
+
+  m15-pretrained-goal:
+    if: contains(github.event.head_commit.message, '[M15]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 29
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        model: [smollm2-135m, opt-125m, pythia-160m]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install pinned CPU-only transformer research runtime
+        run: |
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch==2.10.0
+          python -m pip install numpy==2.3.5 pillow==12.3.0 transformers==4.51.3 huggingface_hub==0.30.2
+      - name: Record exact source and run host legal-contract tests
+        env:
+          OMP_NUM_THREADS: '2'
+          MKL_NUM_THREADS: '2'
+        run: |
+          mkdir -p "${{ runner.temp }}/tiny-m15/${{ matrix.model }}"
+          git rev-parse HEAD | tee "${{ runner.temp }}/tiny-m15/${{ matrix.model }}/source_sha.txt"
+          python -VV | tee "${{ runner.temp }}/tiny-m15/${{ matrix.model }}/python_version.txt"
+          python -c 'import torch,numpy,transformers; print(torch.__version__,numpy.__version__,transformers.__version__)' | tee "${{ runner.temp }}/tiny-m15/${{ matrix.model }}/dependencies.txt"
+          sha256sum experiments/driv3r/training/tiny_policy/{core,m14_dagger,pretrained_cpu,m15_pretrained_goal}.py | tee "${{ runner.temp }}/tiny-m15/${{ matrix.model }}/source_hashes.txt"
+          python -m unittest experiments.driv3r.training.tiny_policy.test_core experiments.driv3r.training.tiny_policy.test_m14_dagger -v
+      - name: Train two real pinned-pretrained action heads and replay blind synthetic goals
+        timeout-minutes: 23
+        env:
+          OMP_NUM_THREADS: '2'
+          MKL_NUM_THREADS: '2'
+          TOKENIZERS_PARALLELISM: 'false'
+          HF_HUB_DISABLE_TELEMETRY: '1'
+        run: |
+          timeout --signal=TERM --kill-after=15s 1320s python -u -m experiments.driv3r.training.tiny_policy.m15_pretrained_goal \
+            --model "${{ matrix.model }}" --out "${{ runner.temp }}/tiny-m15/${{ matrix.model }}/trial" \
+            | tee "${{ runner.temp }}/tiny-m15/${{ matrix.model }}/training.log"
+      - name: Preserve exact-head pretrained checkpoint heads, hash manifests and original trajectories
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tiny-m15-${{ matrix.model }}-${{ github.sha }}
+          path: ${{ runner.temp }}/tiny-m15/${{ matrix.model }}/
+          retention-days: 21
+          if-no-files-found: error
