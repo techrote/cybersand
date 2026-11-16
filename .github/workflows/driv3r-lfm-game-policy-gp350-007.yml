@@ -1,0 +1,131 @@
+name: LFM350 GP350-007 original obstacle-exposure checkpoint evaluation
+on:
+  push:
+    branches: [research/lfm-game-policy-350m]
+    paths:
+      - experiments/driv3r/lfm_game_policy/gp350-007-request.json
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: lfm350-primary-one-model-gp350007
+  cancel-in-progress: false
+jobs:
+  obstacle-evidence:
+    name: Full pinned LFM350 stock vs GP350006 LoRA, 64-turn smaller-world W0 images
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      OMP_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      MKL_DYNAMIC: 'FALSE'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+      HF_HUB_DISABLE_TELEMETRY: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: techrote/cybersand
+          ref: 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          path: pinned-w0
+          persist-credentials: false
+      - name: Exact-source and original W0 synthetic host safety preflight
+        run: |
+          set -euo pipefail
+          mkdir -p gp350-007-evidence
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git -C pinned-w0 rev-parse HEAD)" = 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          test "$(git hash-object pinned-w0/experiments/agent_painter/worm/common/worm.py)" = 8979b6f0296e81051194bacc907992d38e006605
+          python3 -m py_compile experiments/driv3r/lfm_game_policy/{lfm350,gp350_paired_margin_train,gp350_obstacle_exposure_eval}.py
+          python3 experiments/driv3r/lfm_game_policy/gp350_obstacle_exposure_eval.py --self-test \
+            --w0 pinned-w0/experiments/agent_painter/worm/common/worm.py \
+            --out "$RUNNER_TEMP/unused" --cache "$RUNNER_TEMP/no-model"
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          req=json.loads(Path("experiments/driv3r/lfm_game_policy/gp350-007-request.json").read_text())
+          assert req == {
+            "schema":"driv3r.lfm350.gp350007-request/1",
+            "experiment":"GP350-007", "optimizer_steps":0,
+            "model":"LiquidAI/LFM2.5-350M",
+            "revision":"9921cd4d82c0e3986887aa4b376f9446729ef8a3",
+            "prior_run":43806503356,"prior_artifact":14199280586,
+            "adapter_sha256":"436159bd6508063221d31d46f057b5fba7ee5b6f05b27edf003c54e76863898c",
+            "sizes":[32,48],"seeds":[9503,9521],"families":["greebles","pipework","architecture"],
+            "turn_budget":64,"source_W0_only":True,"native":False,
+            "paid_GPU":False,"draft_hold":True}
+          PY
+          python3 tools/ci/check_ci_provider_policy.py
+          (git rev-parse HEAD; date -u -Iseconds; python3 --version) > gp350-007-evidence/source-host.txt
+      - name: Retrieve original immutable GP350006 rank8 adapter, verify hash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh run download 43806503356 --repo techrote/cybersand \
+            --name gp350-006-74fc997484cd1414dfc7a8be09d85a4daefb8554-43806503356-1 \
+            --dir gp350-007-evidence/prior-immutable
+          sha256sum gp350-007-evidence/prior-immutable/original-experiment/adapter-step-96/adapter_model.safetensors
+          test "$(sha256sum gp350-007-evidence/prior-immutable/original-experiment/adapter-step-96/adapter_model.safetensors | cut -d' ' -f1)" = 436159bd6508063221d31d46f057b5fba7ee5b6f05b27edf003c54e76863898c
+      - name: Install pinned full-LFM350 CPU model environment
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/gp350007"
+          "$RUNNER_TEMP/gp350007/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/gp350007/bin/python" -m pip install \
+            'transformers==5.22.2' 'peft==0.21.2' 'accelerate==1.15.0' \
+            'huggingface-hub==2.4.0' 'safetensors==0.8.0'
+          "$RUNNER_TEMP/gp350007/bin/python" -m pip check
+          "$RUNNER_TEMP/gp350007/bin/python" -m pip freeze --all > gp350-007-evidence/pip-freeze.txt
+          echo 'LiquidAI/LFM2.5-350M under LFM Open License v1.0; attribution Liquid AI.' > gp350-007-evidence/attribution.txt
+      - name: Run genuine stock and immutable trained full-model forwards and original W0 paintings
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=40s 1650s \
+            "$RUNNER_TEMP/gp350007/bin/python" experiments/driv3r/lfm_game_policy/gp350_obstacle_exposure_eval.py \
+              --w0 pinned-w0/experiments/agent_painter/worm/common/worm.py \
+              --adapter gp350-007-evidence/prior-immutable/original-experiment/adapter-step-96 \
+              --cache "$RUNNER_TEMP/gp350007-full-pinned-parent" \
+              --out gp350-007-evidence/original-experiment --deadline 1800
+      - name: Verify original all-case replay, model receipts, PNGs and raw-versus-host legality
+        if: success()
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,os
+          from pathlib import Path
+          root=Path("gp350-007-evidence/original-experiment")
+          s=json.loads((root/"summary.json").read_text())
+          assert s["source_sha"] == os.environ["GITHUB_SHA"]
+          assert s["status"]=="complete" and s["optimizer_steps"]==0
+          assert s["adapter_sha256"]=="436159bd6508063221d31d46f057b5fba7ee5b6f05b27edf003c54e76863898c"
+          assert s["host"]=="original synthetic W0 only"
+          assert not s["native_paint"] and s["original_pngs"]==60
+          assert len(s["stock"])==len(s["trained"])==12 and len(s["controls"])==36
+          actions=("STRAIGHT","LEFT","RIGHT","BRANCH","RETRACE","STOP")
+          for row in s["stock"]+s["trained"]+s["controls"]:
+              data=(root/row["png"]).read_bytes()
+              assert data.startswith(b"\x89PNG\r\n\x1a\n")
+              assert hashlib.sha256(data).hexdigest()==row["png_sha256"]
+              assert row["host_illegal"]==0
+          for row in s["stock"]+s["trained"]:
+              rec=json.loads((root/row["png"].replace(".png",".json")).read_text())
+              ds=rec["decisions"]
+              assert len(ds)==row["decisions"]
+              for d in ds:
+                  scores=d["six_logits"]
+                  assert d["raw"]==actions[max(range(6),key=lambda i:scores[i])]
+                  assert d["applied"] in d["observation"]["legal"]
+                  assert d["applied"]==max(d["observation"]["legal"],key=lambda a:scores[actions.index(a)])
+          print("GP350-007 ORIGINAL MODEL FORWARDS / 60 PNGs / replay and legal mask PASS")
+          PY
+      - name: Always preserve original source, trained adapter custody, scores, PNGs, failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gp350-007-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: gp350-007-evidence/
+          if-no-files-found: warn
+          retention-days: 90
