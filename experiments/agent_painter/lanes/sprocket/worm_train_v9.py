@@ -49,7 +49,7 @@ def features(obs):
     recent = obs["last_actions"]
     v += [sum(a == move for a in recent)/4 for move in ACTIONS]
     v += [float(bool(recent) and recent[-1] == move) for move in ACTIONS]
-    if len(v) != 136:
+    if len(v) != 142:
         raise AssertionError("unexpected W9 feature dimensionality: "+str(len(v)))
     return v
 
