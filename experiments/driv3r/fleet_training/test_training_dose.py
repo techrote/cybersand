@@ -37,6 +37,10 @@ class TestTrainingDose(unittest.TestCase):
         with self.assertRaises(AssertionError):
             d.validate_split(x,9401,12,self.req)
 
+    def test_upstream_heldout_uses_test_seed_namespace(self):
+        self.assertEqual(d.expected_seed_hash(9401,"heldout",12),
+                         "72f4d195538cf58ebfbd8c865b1d35340efd4413fb0c71e006c7ef1d140a0dec")
+
     def test_matched_holdout_controls_must_agree(self):
         def result(dose):
             scores = {k: {"mean_reward": 1.0, "mean_painted": 3,
