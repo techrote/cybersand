@@ -50,6 +50,8 @@ jobs:
           assert r["training"]["nonzero_optimizer_moment_tensors"] > 0
           assert r["repair"]["nonzero_optimizer_moment_tensors"] > 0
           assert len(r["variants"]) == 12
+          assert 0 <= r['heldout_majority_teacher_accuracy'] <= 1
+          assert all('heldout_balanced_recall_supported_classes' in v and 'heldout_per_action' in v for v in r['variants'].values())
           assert len(r["baselines"]) == 4
           rows=json.loads((root/"decisions.json").read_text())
           assert len(rows) == 144
