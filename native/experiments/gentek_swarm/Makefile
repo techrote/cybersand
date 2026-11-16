@@ -6,8 +6,9 @@ FLAGS := -std=c++20 -Wall -Wextra -Wpedantic -Werror -I$(ROOT)/native/include -D
 SOURCES := common.cpp fixtures.cpp meshing.cpp io.cpp frameweaver.cpp mosaic.cpp receptor.cpp negotiated.cpp $(ROOT)/native/src/generation_spatial.cpp
 HEADERS := swarm.hpp negotiated.hpp $(wildcard $(ROOT)/native/include/cybersand/*.hpp)
 
-.PHONY: all test sanitize clean
+.PHONY: all test sanitize admission test-admission sanitize-admission clean
 all: $(BUILD)/gentek_swarm $(BUILD)/test_gentek_swarm $(BUILD)/gentek_negotiated $(BUILD)/test_gentek_negotiated
+admission: $(BUILD)/gentek_admission $(BUILD)/test_gentek_admission
 
 $(BUILD):
 	mkdir -p $(BUILD)
@@ -27,6 +28,21 @@ $(BUILD)/test_gentek_negotiated: $(SOURCES) negotiated_tests.cpp $(HEADERS) | $(
 $(BUILD)/test_gentek_negotiated_sanitized: $(SOURCES) negotiated_tests.cpp $(HEADERS) | $(BUILD)
 	$(CXX) $(FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined $(SOURCES) negotiated_tests.cpp -o $@
 
+$(BUILD)/gentek_admission: $(SOURCES) admission_main.cpp $(HEADERS) | $(BUILD)
+	$(CXX) $(FLAGS) -O2 $(SOURCES) admission_main.cpp -o $@
+
+$(BUILD)/test_gentek_admission: $(SOURCES) admission_tests.cpp $(HEADERS) | $(BUILD)
+	$(CXX) $(FLAGS) -O2 $(SOURCES) admission_tests.cpp -o $@
+
+$(BUILD)/test_gentek_admission_sanitized: $(SOURCES) admission_tests.cpp $(HEADERS) | $(BUILD)
+	$(CXX) $(FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined $(SOURCES) admission_tests.cpp -o $@
+
+test-admission: $(BUILD)/test_gentek_admission
+	$(BUILD)/test_gentek_admission
+
+sanitize-admission: $(BUILD)/test_gentek_admission_sanitized
+	ASAN_OPTIONS=detect_leaks=0:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1 $(BUILD)/test_gentek_admission_sanitized
+
 test: $(BUILD)/test_gentek_swarm
 	$(BUILD)/test_gentek_swarm
 
@@ -37,4 +53,4 @@ sanitize: $(BUILD)/test_gentek_swarm_sanitized
 	ASAN_OPTIONS=detect_leaks=0:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1 $(BUILD)/test_gentek_swarm_sanitized
 
 clean:
-	rm -f $(BUILD)/gentek_swarm $(BUILD)/test_gentek_swarm $(BUILD)/test_gentek_swarm_sanitized
+	rm -f $(BUILD)/gentek_swarm $(BUILD)/test_gentek_swarm $(BUILD)/test_gentek_swarm_sanitized $(BUILD)/gentek_negotiated $(BUILD)/test_gentek_negotiated $(BUILD)/test_gentek_negotiated_sanitized $(BUILD)/gentek_admission $(BUILD)/test_gentek_admission $(BUILD)/test_gentek_admission_sanitized

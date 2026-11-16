@@ -172,6 +172,29 @@ def unpack_source(archive, destination):
                 raise ValueError("Predecessor source archive contains a non-file/link entry")
 
 
+class CommandCancelled(Exception):
+    """A supervising runner sent SIGTERM while this command was active."""
+
+
+def stop_command_group(process, grace_seconds=5):
+    """Stop only the launched command group, allowing a nested runner to forward cancellation."""
+    if grace_seconds:
+        try:
+            os.killpg(process.pid, signal.SIGTERM)
+        except ProcessLookupError:
+            pass
+        try:
+            process.wait(timeout=grace_seconds)
+        except subprocess.TimeoutExpired:
+            pass
+    # Also kill surviving same-group children if their leader exited on TERM.
+    try:
+        os.killpg(process.pid, signal.SIGKILL)
+    except ProcessLookupError:
+        pass
+    process.wait(timeout=10)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", required=True, type=Path, help="Fresh, empty evidence directory outside the repository")
@@ -229,26 +252,65 @@ def main():
         env["ASAN_OPTIONS"] = "detect_leaks=0:halt_on_error=1"
         env["UBSAN_OPTIONS"] = "halt_on_error=1"
         error = None
+        process = None
+        cancelled = waiting = False
+        prior_sigterm = signal.getsignal(signal.SIGTERM)
+
+        def cancel_command(_signal, _frame):
+            nonlocal cancelled
+            cancelled = True
+            # Do not interrupt Popen before it returns the child's identity.
+            # The pending flag is checked immediately after that assignment.
+            if process is not None:
+                try:
+                    os.killpg(process.pid, signal.SIGKILL)
+                except ProcessLookupError:
+                    pass
+            if waiting:
+                raise CommandCancelled()
+
+        signal.signal(signal.SIGTERM, cancel_command)
         try:
             with log.open("w") as stream:
-                # A timeout kills the whole compiler/make process group, so a
-                # child cannot continue consuming work after its deadline.
-                process = subprocess.Popen(argv, cwd=cwd, stdout=stream, stderr=subprocess.STDOUT,
-                                           env=env, start_new_session=True)
                 try:
+                    if cancelled:
+                        raise CommandCancelled()
+                    process = subprocess.Popen(argv, cwd=cwd, stdout=stream, stderr=subprocess.STDOUT,
+                                               env=env, start_new_session=True)
+                    waiting = True
+                    if cancelled:
+                        raise CommandCancelled()
                     receipt["exit_code"] = process.wait(timeout=timeout)
                     receipt["outcome"] = "PASS" if process.returncode == 0 else "FAIL"
+                except CommandCancelled:
+                    waiting = False
+                    if process is not None:
+                        # The outer runner is granting this supervisor a short
+                        # grace period. Its compiler/test group must stop now.
+                        stop_command_group(process, grace_seconds=0)
+                    receipt["exit_code"] = process.returncode if process is not None else None
+                    receipt["outcome"] = "CANCELLED"
+                    receipt["cancellation_signal"] = "SIGTERM"
+                    error = f"{label} cancelled by supervising runner"
                 except subprocess.TimeoutExpired:
-                    os.killpg(process.pid, signal.SIGKILL)
-                    process.wait(timeout=10)
+                    waiting = False
+                    stop_command_group(process)
                     receipt["exit_code"] = process.returncode
                     receipt["outcome"] = "TIMEOUT"
+                    receipt["termination_grace_seconds"] = 5
                     error = f"{label} exceeded its {timeout}s deadline"
+                finally:
+                    waiting = False
         except Exception as exception:
             receipt["outcome"] = "ERROR"
             receipt["error"] = str(exception)
             error = f"{label}: {exception}"
         finally:
+            if cancelled:
+                receipt["outcome"] = "CANCELLED"
+                receipt["cancellation_signal"] = "SIGTERM"
+                error = f"{label} cancelled by supervising runner"
+            signal.signal(signal.SIGTERM, prior_sigterm)
             receipt["elapsed_seconds"] = round(time.monotonic() - started, 3)
             receipt["finished_utc"] = now()
             receipt["log_sha256"] = fingerprint(log) if log.exists() else None

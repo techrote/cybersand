@@ -2,6 +2,11 @@
 
 **Isolated native research. Draft / HOLD. No product acceptance.**
 
+The original full-offer findings below remain the qualified control record at
+`21617b14253cc6dcf35a83ded558565c8db517f5`. The owner subsequently authorized the
+[bounded optional-offer admission follow-up](OPTIONAL-OFFERS.md); its separate
+report records the new comparison without replacing these findings.
+
 This is a separate stacked successor to [PR #625](https://github.com/techrote/cybersand/pull/625),
 starting at exactly `345ecc3ef939523f247b3eb192aa7502bd4d83ca` (tree
 `53d267b89e0c7ac934e5c4c57c65b28984e64a21`). The predecessor branch

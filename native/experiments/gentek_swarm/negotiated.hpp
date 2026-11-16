@@ -76,6 +76,54 @@ struct NegotiatedResult {
     std::vector<std::string> notes;
     std::uint64_t digest{}, work{};
 };
+
+// Optional-offer admission is a separate bounded experiment. The original C
+// result and its serializer/digest remain unchanged. A preparation is one frozen
+// matched case; ranking never reads a categorical assignment or solver outcome.
+enum class AdmissionMode { Full, OptionalCap, LeaveOneOut };
+struct AdmissionPolicy {
+    AdmissionMode mode = AdmissionMode::Full;
+    std::uint32_t optional_cap{}, omitted_optional_id{};
+};
+struct SlotAdmission {
+    std::uint32_t slot_id{};
+    bool mandatory = false, selected = false, witness_found = false;
+    int rank = -1, nearest_forward_distance = -1; // optional ranks are zero-based
+    Point witness_source{}, witness_peer{};
+    std::string reason;
+};
+struct AdmissionSelection {
+    AdmissionPolicy policy;
+    Status status = Status::Complete;
+    std::vector<std::uint32_t> selected_ids;
+    std::vector<SlotAdmission> decisions;
+    std::uint64_t work{}, work_limit = 2'000'000, digest{};
+    std::uint64_t ranking_work{}, selection_work{}, join_work_limit{};
+    std::uint64_t structural_work_upper_bound{}, solver_work_limit{};
+    bool diagnostic = false;
+    std::string reason;
+};
+struct PreparedAdmission {
+    NegotiatedResult prepared;
+    std::vector<SlotAdmission> ranking;
+    std::uint64_t ranking_work{}, ranking_digest{}, input_digest{};
+    Status status = Status::Complete;
+    std::string reason;
+};
+struct AdmissionResult {
+    NegotiatedResult candidate;
+    AdmissionSelection admission;
+    std::uint64_t digest{};
+};
+PreparedAdmission prepare_admission(const Fixture&, const Profile&, std::uint64_t,
+                                    const std::string&, bool reverse = false);
+AdmissionResult negotiate_admission(const PreparedAdmission&, const AdmissionPolicy&,
+                                    bool reverse = false, bool finish = false,
+                                    // Zero: original ceiling; 2M: registered lower-only diagnostic.
+                                    std::uint64_t diagnostic_solver_ceiling = 0);
+const char* name(AdmissionMode) noexcept;
+void write_admission_json(const std::string&, const AdmissionResult&);
+
 NegotiatedResult negotiate(const Fixture&, const Profile&, std::uint64_t,
                            const std::string&, bool reverse = false,
                            bool force_hard = false, bool finish = true);

@@ -2,6 +2,8 @@
 #include <algorithm>
 #include <array>
 #include <bit>
+#include <cmath>
+#include <limits>
 #include <set>
 #include <tuple>
 
@@ -67,12 +69,18 @@ std::vector<int> components(const Request& q,const std::vector<Material>& cells)
     }
     return labels;
 }
-void final_join(NegotiatedResult& out,const Request& fq,const Request& mq) {
+void final_join(NegotiatedResult& out,const Request& fq,const Request& mq,
+                const std::vector<TransitionSlot>* admitted = nullptr,
+                std::uint64_t join_work_limit = 2'000'000) {
     auto& a=out.final_frame; auto& b=out.final_mosaic;
     const auto& f=out.control.fixture;
     std::set<Point> used;
     for(const auto& slot:out.frame.slots) {
         Seam seam;seam.left_affordance=slot.id;seam.a=slot.a;
+        if(admitted&&std::none_of(admitted->begin(),admitted->end(),[&](const auto& s){return s.id==slot.id;})) {
+            seam.reason="not admitted: optional-offer policy omitted this slot; no shared join attempted";
+            out.seams.push_back(std::move(seam));continue;
+        }
         const auto response=std::find_if(out.mosaic.responses.begin(),out.mosaic.responses.end(),[&](const auto& r){return r.slot_id==slot.id;});
         if(response==out.mosaic.responses.end()||!response->satisfied) {
             seam.reason="unresolved: MOSAIC did not select a compatible material response";
@@ -95,7 +103,7 @@ void final_join(NegotiatedResult& out,const Request& fq,const Request& mq) {
             for(const auto& path:routes(p,seam.b,slot.facing,response->facing)) {
                 bool legal=true;
                 for(auto v:path) {
-                    if(out.work>=2'000'000) {legal=false;out.metrics["shared_exhausted"]=1;break;}
+                    if(out.work>=join_work_limit) {legal=false;out.metrics["shared_exhausted"]=1;break;}
                     ++out.work;
                     if(!inside(fq,v)||!in_rect(v,slot.envelope)) {legal=false;break;}
                     const auto i=index(fq,v);
@@ -206,9 +214,11 @@ void residual_finish(NegotiatedResult& out,const Request& basis,bool enabled) {
 const char* name(SlotKind k) noexcept {
     switch(k){case SlotKind::PointSocket:return "point_socket";case SlotKind::BearingSegment:return "bearing_segment";case SlotKind::PassageOpening:return "passage_opening";}return "invalid";
 }
-NegotiatedResult negotiate(const Fixture& f,const Profile& p,std::uint64_t seed,
-                           const std::string& source,bool reverse,bool force_hard,bool finish) {
-    NegotiatedResult out;out.control=mesh(f,Kind::Frameweaver,Kind::Mosaic,p,seed,source,reverse);
+static NegotiatedResult prepare_case(const Fixture& f,const Profile& p,std::uint64_t seed,
+                                     const std::string& source,bool reverse,bool force_hard,bool defer_control=false) {
+    NegotiatedResult out;
+    if(defer_control)out.control.fixture=f;
+    else out.control=mesh(f,Kind::Frameweaver,Kind::Mosaic,p,seed,source,reverse);
     if(force_hard)out.offer_policy="all-hard";
     auto fq=request_for(f,Kind::Frameweaver,0,p,seed,source);
     auto mq=request_for(f,Kind::Mosaic,1,p,seed,source);
@@ -219,7 +229,15 @@ NegotiatedResult negotiate(const Fixture& f,const Profile& p,std::uint64_t seed,
     if(mq.neighbors.protected_geometry.empty())mq.neighbors.protected_geometry.assign(f.side.size(),0);
     for(const auto& slot:out.frame.slots)for(auto v:slot.clearance)if(inside(mq,v))mq.neighbors.protected_geometry[index(mq,v)]=1;
     out.frame_request=fq;out.mosaic_request=mq;
-    auto offers=out.frame.slots;if(reverse)std::reverse(offers.begin(),offers.end());
+    return out;
+}
+
+static NegotiatedResult finish_case(NegotiatedResult out,bool reverse,bool finish,
+                                    const std::vector<TransitionSlot>* admitted = nullptr,
+                                    std::uint64_t join_work_limit = 2'000'000) {
+    const auto& f=out.control.fixture;
+    auto fq=out.frame_request,mq=out.mosaic_request;
+    auto offers=admitted?*admitted:out.frame.slots;if(reverse)std::reverse(offers.begin(),offers.end());
     if(reverse){out.no_offers=negotiate_mosaic(mq,{});out.mosaic=negotiate_mosaic(mq,offers);}
     else{out.mosaic=negotiate_mosaic(mq,offers);out.no_offers=negotiate_mosaic(mq,{});}
     std::sort(out.frame.slots.begin(),out.frame.slots.end(),[](const auto& a,const auto& b){return a.id<b.id;});
@@ -244,7 +262,7 @@ NegotiatedResult negotiate(const Fixture& f,const Profile& p,std::uint64_t seed,
     }
     for(std::size_t i=0;i<std::min(out.mosaic.categories.size(),out.no_offers.categories.size());++i)
         out.metrics["counterfactual_changed_tiles_total"]+=out.mosaic.categories[i]>=0&&out.no_offers.categories[i]>=0&&out.mosaic.categories[i]!=out.no_offers.categories[i];
-    if(usable(out.final_frame)&&usable(out.final_mosaic))final_join(out,fq,mq);
+    if(usable(out.final_frame)&&usable(out.final_mosaic))final_join(out,fq,mq,admitted,join_work_limit);
     finish_result(fq,out.final_frame);finish_result(mq,out.final_mosaic);
     if(out.final_frame.status==Status::Blocked&&out.final_frame.unresolved_joints==0&&!out.final_frame.instances.empty()) {
         out.final_frame.status=Status::Complete;out.final_frame.termination="all mandatory joints qualified after negotiated final validation";
@@ -322,5 +340,270 @@ NegotiatedResult negotiate(const Fixture& f,const Profile& p,std::uint64_t seed,
     }
     for(const auto& s:out.seams){integer(s.left_affordance);integer(s.right_affordance);point(s.a);point(s.b);integer(s.joined);text(s.reason);integer(s.cells.size());for(auto v:s.cells)point(v);}
     return out;
+}
+NegotiatedResult negotiate(const Fixture& f,const Profile& p,std::uint64_t seed,
+                           const std::string& source,bool reverse,bool force_hard,bool finish) {
+    return finish_case(prepare_case(f,p,seed,source,reverse,force_hard),reverse,finish);
+}
+
+namespace {
+constexpr std::uint64_t admission_shared_limit=2'000'000;
+// Charge the same finite selection allowance for every policy. Eight visits
+// plus 8*8 ordering comparisons cover the bounded selection and ID ordering.
+constexpr std::uint64_t admission_selection_charge=max_transition_slots+max_transition_slots*max_transition_slots;
+
+struct AdmissionHash {
+    std::uint64_t value=0x41444d495353494fULL;
+    void integer(std::uint64_t x) {value=mix(value^x);}
+    void text(const std::string& s) {integer(s.size());for(unsigned char c:s)integer(c);}
+    void point(Point p) {integer(static_cast<std::uint64_t>(p.x));integer(static_cast<std::uint64_t>(p.y));}
+    template<class T> void numbers(const std::vector<T>& v) {
+        integer(v.size());for(auto x:v)integer(static_cast<std::uint64_t>(x));
+    }
+    void boundary(const Boundary& b) {
+        numbers(b.protected_geometry);numbers(b.transition);integer(b.hard.size());
+        for(const auto& a:b.hard) {
+            integer(a.id);integer(a.instance);point(a.a);point(a.b);point(a.facing);
+            integer(static_cast<unsigned>(a.family));integer(a.required);integer(std::bit_cast<std::uint64_t>(a.strength));text(a.tag);
+        }
+        integer(b.soft.size());for(const auto& a:b.soft) {
+            point(a.point);point(a.direction);integer(std::bit_cast<std::uint64_t>(a.strength));text(a.preference);
+        }
+    }
+    void result(const Result& r) {
+        integer(static_cast<unsigned>(r.gentek));text(r.implementation);text(r.definition_fingerprint);text(r.source_identity);
+        integer(r.seed);integer(r.request_digest);integer(r.material_digest);integer(r.digest);
+        integer(r.width);integer(r.height);integer(static_cast<unsigned>(r.status));text(r.termination);
+        numbers(r.cells);numbers(r.roles);numbers(r.provenance);integer(r.instances.size());
+        for(const auto& i:r.instances) {
+            integer(i.id);text(i.kind);point(i.origin);integer(i.orientation);integer(i.structural);integer(i.damaged);
+            integer(i.cells.size());for(auto p:i.cells)point(p);text(i.reason);
+        }
+        integer(r.connectors.size());for(const auto& c:r.connectors) {
+            integer(c.id);integer(c.instance);integer(static_cast<unsigned>(c.family));point(c.a);point(c.b);point(c.facing);
+            integer(c.required);integer(c.fulfilled);integer(c.counterpart);text(c.state);
+        }
+        integer(r.attachments.size());for(const auto& a:r.attachments) {
+            integer(a.instance);point(a.point);point(a.target);text(a.kind);text(a.reason);
+        }
+        boundary(r.boundary);
+        for(const auto* entries:{&r.metrics,&r.rejected}) {integer(entries->size());for(const auto& [k,v]:*entries){text(k);integer(v);}}
+        integer(r.notes.size());for(const auto& note:r.notes)text(note);
+        integer(r.work);integer(r.candidates);integer(r.solver_work);integer(static_cast<std::uint64_t>(r.backtracks));
+        integer(r.protected_violations);integer(r.illegal_overlaps);integer(r.unresolved_joints);
+    }
+    void slot(const TransitionSlot& s) {
+        integer(s.id);integer(s.instance);integer(s.connector);integer(static_cast<unsigned>(s.kind));
+        point(s.a);point(s.b);point(s.facing);point({s.envelope.x,s.envelope.y});point({s.envelope.w,s.envelope.h});
+        integer(s.clearance.size());for(auto p:s.clearance)point(p);
+        integer(s.required);integer(s.hard);integer(std::bit_cast<std::uint64_t>(s.strength));text(s.owner);text(s.reason);
+    }
+    void decision(const SlotAdmission& d) {
+        integer(d.slot_id);integer(d.mandatory);integer(d.selected);integer(d.witness_found);
+        integer(static_cast<std::uint64_t>(d.rank));integer(static_cast<std::uint64_t>(d.nearest_forward_distance));
+        point(d.witness_source);point(d.witness_peer);text(d.reason);
+    }
+};
+
+bool admission_shape(const NegotiatedResult& n,std::string& reason) {
+    const auto invalid=[&](const std::string& why){reason=why;return false;};
+    const auto& fq=n.frame_request;const auto& mq=n.mosaic_request;const auto& f=n.control.fixture;
+    if(!validate_request(fq,reason)||!validate_request(mq,reason))return false;
+    const auto count=static_cast<std::size_t>(fq.width)*static_cast<std::size_t>(fq.height);
+    if(fq.gentek!=Kind::Frameweaver||mq.gentek!=Kind::Mosaic||fq.width!=mq.width||fq.height!=mq.height||
+       f.width!=fq.width||f.height!=fq.height||f.side.size()!=count||f.context.size()!=count||
+       f.protected_void.size()!=count||f.transition.size()!=count||
+       fq.context!=f.context||mq.context!=f.context||fq.protected_void!=f.protected_void||mq.protected_void!=f.protected_void||
+       fq.transition!=f.transition||mq.transition!=f.transition||fq.origin!=mq.origin||
+       mq.neighbor_cells!=n.frame.result.cells||n.frame.slots.size()>max_transition_slots)
+        return invalid("admission requires the intact finite matched frame/peer preparation");
+    for(const auto* r:{&n.frame.core,&n.frame.result}) {
+        const auto size=r->cells.size();
+        if((size!=count&&!(r==&n.frame.core&&size==0))||r->roles.size()!=size||r->provenance.size()!=size||
+           (!r->boundary.protected_geometry.empty()&&r->boundary.protected_geometry.size()!=count)||
+           (!r->boundary.transition.empty()&&r->boundary.transition.size()!=count)||
+           r->instances.size()>fq.limits.max_instances||
+           r->connectors.size()>static_cast<std::size_t>(fq.limits.max_instances)*fq.limits.max_connectors_per_instance||
+           r->boundary.hard.size()>fq.limits.max_affordances||r->boundary.soft.size()>fq.limits.max_affordances||
+           r->attachments.size()>2048||r->metrics.size()>256||r->rejected.size()>256||r->notes.size()>128)
+            return invalid("invalid bounded frozen FRAMEWEAVER arrays or receipts");
+        for(const auto& part:r->instances)if(part.cells.size()>count)
+            return invalid("invalid bounded frozen FRAMEWEAVER footprint");
+    }
+    if(mq.neighbors.protected_geometry.size()!=count||n.frame.reservation_rejections.size()>1024||
+       !n.mosaic.attempts.empty()||!n.mosaic.domains.empty()||!n.mosaic.categories.empty()||
+       !n.no_offers.attempts.empty()||!n.seams.empty()||!n.metrics.empty()||!n.cells.empty())
+        return invalid("admission preparation must precede candidate MOSAIC solving and final joins");
+    std::set<std::uint32_t> ids;
+    for(const auto& s:n.frame.slots) {
+        const auto& b=s.envelope;
+        if(s.id==0||!ids.insert(s.id).second||s.instance==0||s.connector==0||
+           !inside(fq,s.a)||!inside(fq,s.b)||
+           (s.kind!=SlotKind::PointSocket&&s.kind!=SlotKind::BearingSegment)||
+           std::abs(static_cast<std::int64_t>(s.facing.x))+std::abs(static_cast<std::int64_t>(s.facing.y))!=1||
+           (s.a.x!=s.b.x&&s.a.y!=s.b.y)||(s.b.x-s.a.x)*s.facing.x+(s.b.y-s.a.y)*s.facing.y!=0||
+           distance(s.a,s.b)>32||(s.kind==SlotKind::PointSocket)!=(s.a==s.b)||
+           b.x<0||b.y<0||b.w<1||b.h<1||b.w>64||b.h>64||b.x>fq.width-b.w||b.y>fq.height-b.h||
+           !in_rect(s.a,b)||!in_rect(s.b,b)||s.clearance.size()>4096||s.owner!="FRAMEWEAVER"||s.reason.size()>512||
+           !std::isfinite(s.strength)||s.strength<0||s.strength>1||(s.required&&!s.hard))
+            return invalid("invalid frozen reservation or softened required mechanical condition");
+        const auto connector=std::find_if(n.frame.result.connectors.begin(),n.frame.result.connectors.end(),[&](const auto& c){
+            return c.id==s.connector&&c.instance==s.instance&&c.a==s.a&&c.b==s.b&&c.facing==s.facing&&c.required==s.required;
+        });
+        if(connector==n.frame.result.connectors.end())return invalid("reservation has no exact frozen mechanical connector");
+        for(auto p:line(s.a,s.b))if(n.frame.result.cells[index(fq,p)]==Material::Empty||
+                                   (!mq.eligible.empty()&&mq.eligible[index(mq,p)]))
+            return invalid("reservation source is not immutable foreign-owned material");
+        for(auto p:s.clearance)if(!inside(mq,p)||!in_rect(p,b)||
+            (!mq.protected_void[index(mq,p)]&&!mq.neighbors.protected_geometry[index(mq,p)]))
+            return invalid("full original reservation clearance was not preserved");
+    }
+    reason.clear();return true;
+}
+
+// Hash the actual frozen geometry/masks/graph rather than trusting cached result
+// digests. This is a mutation guard for this one case container, not a new IR.
+std::uint64_t admission_input_digest(const NegotiatedResult& n) {
+    AdmissionHash h;
+    for(const auto* q:{&n.frame_request,&n.mosaic_request}) {
+        h.integer(begin_result(*q,"admission-input-identity").request_digest);h.text(q->definition_fingerprint);
+    }
+    const auto& f=n.control.fixture;
+    h.text(f.id);h.integer(f.width);h.integer(f.height);h.integer(f.digest);
+    h.numbers(f.side);h.numbers(f.context);h.numbers(f.protected_void);h.numbers(f.transition);
+    h.result(n.frame.core);h.result(n.frame.result);h.integer(n.frame.slots.size());
+    for(const auto& slot:n.frame.slots)h.slot(slot);
+    h.integer(n.frame.reservation_rejections.size());for(const auto& r:n.frame.reservation_rejections)h.text(r);
+    h.integer(n.control.digest);h.text(n.offer_policy);return h.value;
+}
+std::uint64_t admission_ranking_digest(const PreparedAdmission& p) {
+    AdmissionHash h;h.integer(p.ranking_work);h.integer(p.ranking.size());
+    for(const auto& row:p.ranking)h.decision(row);
+    return h.value;
+}
+void finish_admission_digest(AdmissionResult& r) {
+    auto& a=r.admission;AdmissionHash h;
+    h.integer(static_cast<unsigned>(a.policy.mode));h.integer(a.policy.optional_cap);h.integer(a.policy.omitted_optional_id);
+    h.integer(static_cast<unsigned>(a.status));h.text(a.reason);h.numbers(a.selected_ids);
+    h.integer(a.decisions.size());for(const auto& d:a.decisions)h.decision(d);
+    h.integer(a.work);h.integer(a.work_limit);h.integer(a.ranking_work);h.integer(a.selection_work);h.integer(a.join_work_limit);
+    h.integer(a.structural_work_upper_bound);h.integer(a.solver_work_limit);h.integer(a.diagnostic);
+    a.digest=h.value;r.digest=mix(a.digest^r.candidate.digest);
+}
+} // namespace
+
+const char* name(AdmissionMode mode) noexcept {
+    switch(mode) {
+    case AdmissionMode::Full:return "full";
+    case AdmissionMode::OptionalCap:return "optional-cap";
+    case AdmissionMode::LeaveOneOut:return "leave-one-out";
+    }
+    return "invalid";
+}
+
+PreparedAdmission prepare_admission(const Fixture& f,const Profile& p,std::uint64_t seed,
+                                    const std::string& source,bool reverse) {
+    PreparedAdmission out;out.prepared=prepare_case(f,p,seed,source,reverse,false,true);
+    if(!admission_shape(out.prepared,out.reason)) {out.status=Status::Invalid;return out;}
+    const auto& mq=out.prepared.mosaic_request;
+    for(const auto& slot:out.prepared.frame.slots) {
+        ++out.ranking_work;SlotAdmission row;row.slot_id=slot.id;row.mandatory=slot.required||slot.hard;
+        if(row.mandatory)row.reason="required or already-hard mechanical condition retained outside optional ranking";
+        else {
+            int best=std::numeric_limits<int>::max();
+            // These are prospective eligible exposed cells, not solved native
+            // motifs or certified contacts. The score is only a Manhattan lower
+            // bound: it neither searches a path nor tests any category predicate.
+            for(int y=slot.envelope.y;y<slot.envelope.y+slot.envelope.h;++y)
+                for(int x=slot.envelope.x;x<slot.envelope.x+slot.envelope.w;++x) {
+                    ++out.ranking_work;
+                    const Point peer{x,y};
+                    const Point source_point{std::clamp(x,std::min(slot.a.x,slot.b.x),std::max(slot.a.x,slot.b.x)),
+                                             std::clamp(y,std::min(slot.a.y,slot.b.y),std::max(slot.a.y,slot.b.y))};
+                    if(!allowed(mq,peer)||!transition_at(mq,peer)||allowed(mq,{x-slot.facing.x,y-slot.facing.y})||
+                       (x-source_point.x)*slot.facing.x+(y-source_point.y)*slot.facing.y<=0)continue;
+                    const auto score=distance(source_point,peer);
+                    if(!row.witness_found||std::tuple{score,peer,source_point}<std::tuple{best,row.witness_peer,row.witness_source}) {
+                        best=score;row.witness_found=true;row.witness_peer=peer;row.witness_source=source_point;
+                    }
+                }
+            if(row.witness_found) {
+                row.nearest_forward_distance=best;
+                row.reason="Manhattan lower bound to a prospective exposed eligible peer face; no category or path feasibility tested";
+            } else row.reason="no prospective exposed eligible peer face in envelope; ranked last and still consumes a cap position";
+        }
+        out.ranking.push_back(std::move(row));
+    }
+    out.ranking_work+=max_transition_slots*max_transition_slots;
+    std::sort(out.ranking.begin(),out.ranking.end(),[](const auto& a,const auto& b){
+        return std::tuple{!a.mandatory,!a.witness_found,a.nearest_forward_distance,a.slot_id}<
+               std::tuple{!b.mandatory,!b.witness_found,b.nearest_forward_distance,b.slot_id};
+    });
+    int rank=0;for(auto& row:out.ranking)if(!row.mandatory)row.rank=rank++;
+    out.ranking_digest=admission_ranking_digest(out);
+    // Even the historical B control is generated only after this immutable
+    // ranking exists; no MOSAIC solve can feed back into the ranking.
+    out.prepared.control=mesh(f,Kind::Frameweaver,Kind::Mosaic,p,seed,source,reverse);
+    out.input_digest=admission_input_digest(out.prepared);
+    out.reason="one frozen frame and full clearance masks; optional geometry ranking fixed before candidate solving";
+    return out;
+}
+
+AdmissionResult negotiate_admission(const PreparedAdmission& prepared,const AdmissionPolicy& policy,
+                                    bool reverse,bool finish,std::uint64_t diagnostic_solver_ceiling) {
+    AdmissionResult out;auto& a=out.admission;a.policy=policy;
+    a.diagnostic=diagnostic_solver_ceiling!=0;
+    const auto invalid=[&](const std::string& why) {
+        a.status=Status::Invalid;a.reason=why;
+        // Reject before invoking either categorical solve or shared joining.
+        out.candidate.mosaic.result.status=Status::Invalid;out.candidate.mosaic.result.termination=why;
+        finish_admission_digest(out);return out;
+    };
+    std::string reason;
+    if(prepared.status!=Status::Complete||!admission_shape(prepared.prepared,reason))
+        return invalid("invalid frozen admission preparation: "+(reason.empty()?prepared.reason:reason));
+    if(prepared.ranking.size()!=prepared.prepared.frame.slots.size()||prepared.ranking_work>admission_shared_limit-admission_selection_charge||
+       prepared.input_digest!=admission_input_digest(prepared.prepared)||prepared.ranking_digest!=admission_ranking_digest(prepared))
+        return invalid("frozen admission inputs or rank-once receipts were modified");
+    switch(policy.mode) {
+    case AdmissionMode::Full:
+        if(policy.optional_cap||policy.omitted_optional_id)return invalid("full policy cannot carry a cap or omitted ID");
+        break;
+    case AdmissionMode::OptionalCap:
+        if(policy.optional_cap>max_transition_slots||policy.omitted_optional_id)return invalid("optional cap must be within 0..8 and carry no omitted ID");
+        break;
+    case AdmissionMode::LeaveOneOut: {
+        if(policy.optional_cap||!policy.omitted_optional_id)return invalid("leave-one-out requires exactly one nonzero optional ID and no cap");
+        const auto slot=std::find_if(prepared.prepared.frame.slots.begin(),prepared.prepared.frame.slots.end(),[&](const auto& s){return s.id==policy.omitted_optional_id;});
+        if(slot==prepared.prepared.frame.slots.end()||slot->required||slot->hard)return invalid("leave-one-out may omit only an existing optional, non-hard reservation");
+        break;
+    }
+    default:return invalid("unknown admission policy");
+    }
+    const auto& fq=prepared.prepared.frame_request;const auto& mq=prepared.prepared.mosaic_request;
+    if(diagnostic_solver_ceiling&&(diagnostic_solver_ceiling!=2'000'000||diagnostic_solver_ceiling>mq.limits.max_solver_work))
+        return invalid("the registered equal-first-budget diagnostic requires exactly 2M without increasing the primary request");
+    a.solver_work_limit=diagnostic_solver_ceiling?diagnostic_solver_ceiling:mq.limits.max_solver_work;
+    a.structural_work_upper_bound=fq.limits.max_work+mq.limits.max_work+mq.limits.max_solver_work+admission_shared_limit;
+    a.ranking_work=prepared.ranking_work;a.selection_work=admission_selection_charge;a.work=a.ranking_work+a.selection_work;
+    a.join_work_limit=admission_shared_limit-a.work;a.decisions=prepared.ranking;
+    for(auto& row:a.decisions) {
+        row.selected=row.mandatory||policy.mode==AdmissionMode::Full||
+            (policy.mode==AdmissionMode::OptionalCap&&row.rank>=0&&static_cast<std::uint32_t>(row.rank)<policy.optional_cap)||
+            (policy.mode==AdmissionMode::LeaveOneOut&&row.slot_id!=policy.omitted_optional_id);
+        if(row.selected)a.selected_ids.push_back(row.slot_id);
+        row.reason+=row.mandatory?"; retained hard by every policy":row.selected?"; selected by fixed policy":"; omitted by fixed policy; no solver influence or shared join authority";
+    }
+    std::sort(a.selected_ids.begin(),a.selected_ids.end());
+    std::vector<TransitionSlot> offers;
+    for(const auto& slot:prepared.prepared.frame.slots)if(std::binary_search(a.selected_ids.begin(),a.selected_ids.end(),slot.id)) {
+        offers.push_back(slot);if(slot.required||slot.hard)offers.back().hard=true;
+    }
+    auto candidate=prepared.prepared;
+    if(diagnostic_solver_ceiling)candidate.mosaic_request.limits.max_solver_work=diagnostic_solver_ceiling;
+    out.candidate=finish_case(std::move(candidate),reverse,finish,&offers,a.join_work_limit);
+    a.reason="fixed admission applied once; no outcome-dependent subset search, rank refill, or enlarged structural work ceiling";
+    if(a.diagnostic)a.reason+="; separately labelled lower-only solver-budget diagnostic";
+    finish_admission_digest(out);return out;
 }
 } // namespace cybersand::gentek_swarm

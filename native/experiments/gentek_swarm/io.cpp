@@ -63,8 +63,8 @@ void mosaic_plan(std::ostream& o,const MosaicPlan& p) {
     });o<<'}';
 }
 }
-void write_negotiated_json(const std::string& path,const NegotiatedResult& n) {
-    auto o=output(path);o<<"{\"schema\":2,\"type\":\"negotiated\",\"predecessor\":";str(o,swarm001_predecessor);
+static void negotiated(std::ostream& o,const NegotiatedResult& n) {
+    o<<"{\"schema\":2,\"type\":\"negotiated\",\"predecessor\":";str(o,swarm001_predecessor);
     o<<",\"digest\":";str(o,hex(n.digest));o<<",\"offer_policy\":";str(o,n.offer_policy);o<<",\"control\":";pair(o,n.control);
     o<<",\"frame_request\":";request(o,n.frame_request);o<<",\"mosaic_request\":";request(o,n.mosaic_request);
     o<<",\"residual_request\":";request(o,n.residual_request);
@@ -78,5 +78,32 @@ void write_negotiated_json(const std::string& path,const NegotiatedResult& n) {
     o<<",\"metrics\":";stats(o,n.metrics);o<<",\"notes\":";array(o,n.notes,str);
     o<<",\"seams\":";array(o,n.seams,[](auto& s,const auto& a){s<<"{\"left_affordance\":"<<a.left_affordance<<",\"right_affordance\":"<<a.right_affordance<<",\"a\":";point(s,a.a);s<<",\"b\":";point(s,a.b);s<<",\"joined\":"<<(a.joined?"true":"false")<<",\"reason\":";str(s,a.reason);s<<",\"cells\":";array(s,a.cells,point);s<<'}';});
     o<<"}\n";if(!o)throw std::runtime_error("negotiated evidence write failed");
+}
+void write_negotiated_json(const std::string& path,const NegotiatedResult& n) {
+    auto o=output(path);negotiated(o,n);
+}
+void write_admission_json(const std::string& path,const AdmissionResult& n) {
+    auto o=output(path);const auto& a=n.admission;const auto& q=n.candidate.frame_request;
+    o<<"{\"schema\":3,\"type\":\"optional_offer_admission\",\"frozen_c_source\":";
+    str(o,"21617b14253cc6dcf35a83ded558565c8db517f5");
+    o<<",\"digest\":";str(o,hex(n.digest));
+    o<<",\"control_file\":";str(o,"controls-c/full_control_"+q.fixture+"_"+q.profile.name+"_"+std::to_string(q.seed)+".json");
+    o<<",\"admission\":{\"mode\":";str(o,name(a.policy.mode));
+    o<<",\"optional_cap\":"<<a.policy.optional_cap<<",\"omitted_optional_id\":"<<a.policy.omitted_optional_id;
+    o<<",\"status\":";str(o,name(a.status));o<<",\"reason\":";str(o,a.reason);
+    o<<",\"diagnostic\":"<<(a.diagnostic?"true":"false")<<",\"budget_mode\":";
+    str(o,a.diagnostic?"equal-first-budget-2m":"primary");
+    o<<",\"digest\":";str(o,hex(a.digest));o<<",\"selected_ids\":";numbers(o,a.selected_ids);
+    o<<",\"work\":"<<a.work<<",\"work_limit\":"<<a.work_limit<<",\"ranking_work\":"<<a.ranking_work
+     <<",\"selection_work\":"<<a.selection_work<<",\"join_work_limit\":"<<a.join_work_limit
+     <<",\"structural_work_upper_bound\":"<<a.structural_work_upper_bound<<",\"solver_work_limit\":"<<a.solver_work_limit;
+    o<<",\"decisions\":";array(o,a.decisions,[](auto& s,const auto& d){
+        s<<"{\"slot_id\":"<<d.slot_id<<",\"mandatory\":"<<(d.mandatory?"true":"false")
+         <<",\"selected\":"<<(d.selected?"true":"false")<<",\"witness_found\":"<<(d.witness_found?"true":"false")
+         <<",\"rank\":"<<d.rank<<",\"nearest_forward_distance\":"<<d.nearest_forward_distance;
+        s<<",\"witness_source\":";point(s,d.witness_source);s<<",\"witness_peer\":";point(s,d.witness_peer);
+        s<<",\"reason\":";str(s,d.reason);s<<'}';
+    });o<<"},\"candidate\":";negotiated(o,n.candidate);o<<"}\n";
+    if(!o)throw std::runtime_error("admission evidence write failed");
 }
 } // namespace cybersand::gentek_swarm
