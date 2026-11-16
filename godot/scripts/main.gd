@@ -1,5 +1,7 @@
 extends Control
 
+const RenderUploadHybrid = preload("res://scripts/material_upload_hybrid.gd")
+
 const PhysicalTrial = preload("res://scripts/physical_actor_trial.gd")
 const PhysicalCatalog = preload("res://scripts/physical_actor_catalog.gd")
 const PhysicalSession = preload("res://scripts/physical_actor_session.gd")
@@ -1583,8 +1585,24 @@ var lockstep_main_fenced_steps: int = 0
 var lockstep_main_unfenced_steps: int = 0
 
 var image: Image
-var texture: ImageTexture
-var previous_texture: ImageTexture
+var texture: Texture2D
+var previous_texture: Texture2D
+# RENDER-UPLOAD-577: opt-in sparse/dense publication. Omission preserves
+# accepted-main ImageTexture publication and worker pending policy.
+var render_upload_strategy_override: String = ""
+var render_upload_status: Dictionary = {"requested": "full", "active": "full", "fallback_reason": ""}
+var render_upload_metrics: Dictionary = {}
+var _render_upload_hybrid: RefCounted
+var _render_upload_context: Dictionary = {}
+var _render_upload_context_pending: bool = false
+var _render_upload_rectangles := PackedInt32Array()
+var _render_upload_last_ok: bool = true
+var _render_upload_fallback_pending: bool = false
+var _render_upload_disabled_reason: String = ""
+var _render_upload_local_serial: int = 0
+var accepted_render_publications: int = 0
+var last_accepted_render_usec: int = -1
+var render_cpu_image_mode: String = "patches"
 var material_appearance_lut: ImageTexture
 var material_appearance_program: ImageTexture
 var render_channels: int = 1
@@ -1833,6 +1851,7 @@ func _ready() -> void:
 	update_worker_frame_state()
 	_publish_physical_body_state()
 	simulation_worker.set_render_snapshot_hz(render_snapshot_hz)
+	simulation_worker.set_render_pending_compaction_enabled(_requested_render_pending_compaction())
 	worker_start_error = simulation_worker.start_worker(CHARACTER_SPAWN)
 	if worker_start_error != OK:
 		for body: RigidBody2D in rigid_bodies:
@@ -1928,6 +1947,9 @@ func _notification(what: int) -> void:
 
 
 func _exit_tree() -> void:
+	if _render_upload_hybrid != null:
+		_render_upload_hybrid.close()
+		_render_upload_hybrid = null
 	if gameplay_recorder.is_active():
 		var stopped: Dictionary = gameplay_recorder.stop_recording()
 		print("REC-001 recording finalized at exit: ", JSON.stringify(stopped))
@@ -3153,6 +3175,9 @@ func consume_render_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 
 
 func record_render_payload(snapshot: CyberSimulationSnapshot) -> void:
+	_render_upload_context = {"serial": snapshot.render_snapshot_serial,
+		"generation": snapshot.render_world_generation, "full": snapshot.render_full_refresh}
+	_render_upload_context_pending = true
 	var publication_usec: int = Time.get_ticks_usec()
 	if last_render_publication_usec >= 0 and publication_usec > last_render_publication_usec:
 		var instantaneous_hz: float = 1000000.0 / float(
@@ -4430,8 +4455,131 @@ func view_content_rect() -> Rect2:
 
 
 func create_render_textures() -> void:
+	if _render_upload_hybrid != null:
+		_render_upload_hybrid.close()
+		_render_upload_hybrid = null
+	_render_upload_fallback_pending = false
+	var requested := _requested_render_upload_strategy()
+	render_upload_status = {"requested": requested, "active": "full", "fallback_reason": ""}
+	if requested == "hybrid":
+		if not _render_upload_disabled_reason.is_empty():
+			render_upload_status.fallback_reason = _render_upload_disabled_reason
+		elif DisplayServer.get_name() == "headless":
+			render_upload_status.fallback_reason = "hybrid experiment requires a graphical backend"
+		elif not ClassDB.class_exists(&"DrawableTexture2D"):
+			render_upload_status.fallback_reason = "pinned DrawableTexture2D API unavailable"
+		else:
+			var candidate = RenderUploadHybrid.new()
+			var serial: int = int(_render_upload_context.get("serial", 0))
+			var generation: int = int(_render_upload_context.get("generation", -1))
+			if candidate.initialize(image, serial, generation):
+				_render_upload_hybrid = candidate
+				texture = candidate.current
+				previous_texture = candidate.previous
+				_render_upload_local_serial = serial
+				_render_upload_context_pending = false
+				render_upload_status.active = "hybrid"
+				render_upload_status["canary"] = candidate.canary_result.duplicate(true)
+				render_upload_metrics = candidate.last_metrics.duplicate(true)
+				_report_render_upload_state()
+				return
+			render_upload_status.fallback_reason = candidate.last_error
+			candidate.close()
+	elif requested != "full":
+		render_upload_status.fallback_reason = "unknown strategy; using full ImageTexture publication"
 	texture = ImageTexture.create_from_image(image)
 	previous_texture = ImageTexture.create_from_image(image)
+	_render_upload_context_pending = false
+	render_upload_metrics = {"mode": "full_initialize", "logical_staging_bytes": world_extent.x * world_extent.y * render_channels * 2,
+		"completion_measured": false}
+	_report_render_upload_state()
+
+
+func _report_render_upload_state() -> void:
+	# Private research admission/fallback receipt; ordinary launches stay quiet.
+	# This is emitted only at lifecycle transitions, never per successful update.
+	if render_upload_status.get("requested", "full") != "hybrid":
+		return
+	var state := render_upload_status.duplicate(true)
+	state["process_id"] = OS.get_process_id()
+	state["dimensions"] = [world_extent.x, world_extent.y]
+	state["display_server"] = DisplayServer.get_name()
+	state["renderer"] = RenderingServer.get_current_rendering_method()
+	state["driver"] = RenderingServer.get_current_rendering_driver_name()
+	state["video_adapter"] = RenderingServer.get_video_adapter_name() if DisplayServer.get_name() != "headless" else "headless"
+	print("RENDER_UPLOAD_STATE ", JSON.stringify(state))
+
+
+func _requested_render_upload_strategy() -> String:
+	if not render_upload_strategy_override.is_empty():
+		return render_upload_strategy_override
+	for argument: String in OS.get_cmdline_user_args():
+		if argument.begins_with("--render-upload="):
+			return argument.trim_prefix("--render-upload=")
+	return "full"
+
+
+func _requested_render_pending_compaction() -> bool:
+	# Separate override enables publication-only A/B and ACK policy-only tests.
+	for argument: String in OS.get_cmdline_user_args():
+		if argument == "--render-pending=compact": return true
+		if argument == "--render-pending=baseline": return false
+	return _requested_render_upload_strategy() == "hybrid"
+
+
+func set_render_upload_strategy(strategy: String) -> bool:
+	# An explicit Engine Lab choice adopts the complete accepted GPU pair. It
+	# must not turn a mode change into an apparent material publication or reset
+	# the current fade. The exceptional previous-image readback is switch-only.
+	if strategy not in ["full", "hybrid"] or image == null \
+			or texture == null or previous_texture == null or _render_upload_fallback_pending:
+		return false
+	if strategy == str(render_upload_status.get("active", "full")):
+		render_upload_strategy_override = strategy
+		_render_upload_disabled_reason = ""
+		render_upload_status = {"requested": strategy, "active": strategy, "fallback_reason": ""}
+		simulation_worker.set_render_pending_compaction_enabled(_requested_render_pending_compaction())
+		_report_render_upload_state()
+		return true
+	var next_current: Texture2D
+	var next_previous: Texture2D
+	var candidate: RefCounted
+	if strategy == "hybrid":
+		if DisplayServer.get_name() == "headless" or not ClassDB.class_exists(&"DrawableTexture2D"):
+			return false
+		candidate = RenderUploadHybrid.new()
+		if not candidate.initialize(image, last_uploaded_render_snapshot_serial,
+				last_uploaded_world_generation, texture, previous_texture):
+			candidate.close()
+			return false
+		next_current = candidate.current
+		next_previous = candidate.previous
+	else:
+		var previous_image: Image = previous_texture.get_image()
+		if previous_image == null or previous_image.is_empty() or previous_image.get_size() != world_extent:
+			return false
+		previous_image.convert(render_image_format)
+		next_current = ImageTexture.create_from_image(image)
+		next_previous = ImageTexture.create_from_image(previous_image)
+		if next_current == null or next_previous == null:
+			return false
+	var retired: RefCounted = _render_upload_hybrid
+	_render_upload_hybrid = candidate
+	texture = next_current
+	previous_texture = next_previous
+	render_upload_strategy_override = strategy
+	_render_upload_disabled_reason = ""
+	render_upload_status = {"requested": strategy, "active": strategy, "fallback_reason": ""}
+	world_view.texture = texture
+	world_shader.set_shader_parameter("current_world_texture", texture)
+	world_shader.set_shader_parameter("previous_world_texture", previous_texture)
+	if glow_source_shader != null:
+		glow_source_shader.set_shader_parameter("world_texture", texture)
+	if retired != null:
+		retired.close()
+	simulation_worker.set_render_pending_compaction_enabled(_requested_render_pending_compaction())
+	_report_render_upload_state()
+	return true
 
 
 func upload_texture(material_cells: PackedByteArray, world_revision: int) -> void:
@@ -4445,6 +4593,8 @@ func upload_texture(material_cells: PackedByteArray, world_revision: int) -> voi
 		render_image_format,
 		material_cells
 	)
+	_render_upload_rectangles = PackedInt32Array([0, 0, world_extent.x, world_extent.y, 0,
+		world_extent.x * render_channels])
 	finish_texture_upload(world_revision, start_usec)
 
 
@@ -4464,8 +4614,9 @@ func upload_texture_patches(
 		patch_channels
 	):
 		return false
+	_render_upload_rectangles = patch_rectangles
 	finish_texture_upload(world_revision, start_usec)
-	return true
+	return _render_upload_last_ok
 
 
 func apply_render_patches_to_image(
@@ -4480,6 +4631,21 @@ func apply_render_patches_to_image(
 	)
 	if not last_render_patch_validation_error.is_empty():
 		return false
+	render_cpu_image_mode = "patches"
+	# Adapted from #609's validated full-image path. Keep this new accepted-main
+	# optimization opt-in; partial/padded/trailing-data packets retain validation
+	# and row compaction. A #609 join must retain its previous-image capture here.
+	if _requested_render_upload_strategy() == "hybrid" \
+			and patch_rectangles.size() == RENDER_PATCH_METADATA_STRIDE \
+			and patch_rectangles[0] == 0 and patch_rectangles[1] == 0 \
+			and patch_rectangles[2] == world_extent.x and patch_rectangles[3] == world_extent.y \
+			and patch_rectangles[4] == 0 and patch_rectangles[5] == world_extent.x * patch_channels \
+			and patch_cells.size() == world_extent.x * world_extent.y * patch_channels \
+			and image.get_size() == world_extent and image.get_format() == render_image_format \
+			and not image.has_mipmaps():
+		image.set_data(world_extent.x, world_extent.y, false, render_image_format, patch_cells)
+		render_cpu_image_mode = "full_set_data"
+		return true
 	for metadata_offset: int in range(
 		0,
 		patch_rectangles.size(),
@@ -4635,10 +4801,15 @@ func finish_texture_upload(world_revision: int, start_usec: int) -> void:
 	# Ping-pong two GPU textures. The shader blends movable occupancy from the
 	# previous snapshot to the current one, masking the intentional two-cell
 	# sparse-flight leap without changing authoritative physics or collisions.
-	var old_current_texture: ImageTexture = texture
-	texture = previous_texture
-	previous_texture = old_current_texture
+	_render_upload_last_ok = true
+	if _render_upload_hybrid == null:
+		var old_current_texture: Texture2D = texture
+		texture = previous_texture
+		previous_texture = old_current_texture
 	update_render_texture()
+	_render_upload_context_pending = false
+	if not _render_upload_last_ok:
+		return
 	world_view.texture = texture
 	world_shader.set_shader_parameter("current_world_texture", texture)
 	world_shader.set_shader_parameter("previous_world_texture", previous_texture)
@@ -4646,11 +4817,96 @@ func finish_texture_upload(world_revision: int, start_usec: int) -> void:
 		glow_source_shader.set_shader_parameter("world_texture", texture)
 	snapshot_blend_start_usec = Time.get_ticks_usec()
 	last_uploaded_revision = world_revision
+	accepted_render_publications += 1
+	last_accepted_render_usec = Time.get_ticks_usec()
+	render_upload_metrics["cpu_image_mode"] = render_cpu_image_mode
 	upload_time_ms = float(Time.get_ticks_usec() - start_usec) / 1000.0
 
 
 func update_render_texture() -> void:
-	texture.update(image)
+	if _render_upload_hybrid != null:
+		var context := _next_render_upload_context()
+		if _render_upload_fallback_pending:
+			_recover_full_render_publication(context)
+			return
+		var result: Dictionary = _render_upload_hybrid.publish(image, _render_upload_rectangles,
+			int(context.serial), int(context.generation), bool(context.full))
+		if not result.accepted:
+			_render_upload_last_ok = false
+			_render_upload_fallback_pending = true
+			last_render_patch_validation_error = str(result.error)
+			render_upload_status.fallback_reason = str(result.error)
+			_render_upload_disabled_reason = str(result.error)
+			render_upload_status["waiting_for_full_refresh"] = true
+			_report_render_upload_state()
+			return
+		texture = result.current
+		previous_texture = result.previous
+		render_upload_metrics = result.metrics
+		return
+	var start_usec := Time.get_ticks_usec()
+	(texture as ImageTexture).update(image)
+	render_upload_metrics = {"mode": "full_update", "logical_staging_bytes": world_extent.x * world_extent.y * render_channels,
+		"texture_update_usec": Time.get_ticks_usec() - start_usec, "completion_measured": false}
+
+
+func _next_render_upload_context() -> Dictionary:
+	if _render_upload_context_pending:
+		_render_upload_local_serial = maxi(_render_upload_local_serial, int(_render_upload_context.serial))
+		return _render_upload_context
+	# Existing synchronous/fixture calls have no worker render serial. Their
+	# complete CPU image still advances one local publication ordinal per call.
+	_render_upload_local_serial = maxi(_render_upload_local_serial,
+		int(_render_upload_hybrid.accepted_serial)) + 1
+	return {"serial": _render_upload_local_serial,
+		"generation": _render_upload_hybrid.accepted_generation,
+		"full": _render_upload_has_complete_rectangle()}
+
+
+func _render_upload_has_complete_rectangle() -> bool:
+	for offset: int in range(0, _render_upload_rectangles.size(), RENDER_PATCH_METADATA_STRIDE):
+		if _render_upload_rectangles[offset] == 0 and _render_upload_rectangles[offset + 1] == 0 \
+				and _render_upload_rectangles[offset + 2] == world_extent.x \
+				and _render_upload_rectangles[offset + 3] == world_extent.y:
+			return true
+	return false
+
+
+func _recover_full_render_publication(context: Dictionary) -> void:
+	# A refused candidate does not change either accepted drawable. Keep that
+	# valid display until native supplies an explicit complete refresh. Only this
+	# exceptional recovery reads GPU data; normal publications never do.
+	if int(context.serial) <= int(_render_upload_hybrid.accepted_serial) \
+			or int(context.generation) < int(_render_upload_hybrid.accepted_generation):
+		_render_upload_last_ok = false
+		last_render_patch_validation_error = "hybrid fallback refuses stale publication identity"
+		return
+	if not bool(context.full) or not _render_upload_has_complete_rectangle():
+		_render_upload_last_ok = false
+		last_render_patch_validation_error = "hybrid fallback is waiting for a complete native refresh"
+		return
+	var old_current: Image = texture.get_image()
+	if old_current == null or old_current.is_empty() or old_current.get_size() != world_extent:
+		_render_upload_last_ok = false
+		last_render_patch_validation_error = "hybrid fallback could not preserve the last accepted current image"
+		return
+	old_current.convert(render_image_format)
+	var fallback_previous := ImageTexture.create_from_image(old_current)
+	var fallback_current := ImageTexture.create_from_image(image)
+	if fallback_previous == null or fallback_current == null:
+		_render_upload_last_ok = false
+		last_render_patch_validation_error = "hybrid fallback ImageTexture allocation failed"
+		return
+	texture = fallback_current
+	previous_texture = fallback_previous
+	_render_upload_hybrid.close()
+	_render_upload_hybrid = null
+	_render_upload_fallback_pending = false
+	render_upload_status.active = "full"
+	render_upload_status["waiting_for_full_refresh"] = false
+	render_upload_metrics = {"mode": "full_recovery", "logical_staging_bytes": world_extent.x * world_extent.y * render_channels * 2,
+		"exceptional_readback": true, "completion_measured": false}
+	_report_render_upload_state()
 
 
 func update_shader_parameters() -> void:

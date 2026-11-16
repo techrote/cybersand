@@ -961,6 +961,12 @@ var _published_render_patch_rectangles: PackedInt32Array = PackedInt32Array()
 var _published_render_patch_cells: PackedByteArray = PackedByteArray()
 var _acknowledged_render_snapshot_serial: int = 0
 var _render_full_refresh_requested: bool = false
+const RenderPendingJournal = preload("res://scripts/render_pending_journal.gd")
+# Mutex-owned request; the journal and CPU cache belong only to this owner.
+var _render_pending_compaction_requested: bool = false
+var _render_pending_compaction_active: bool = false
+var _render_pending_journal: RefCounted
+var _render_pending_synced_version: int = -1
 var _fallback_render_snapshot_serial: int = 0
 var _snapshot_hard_surface_revision: int = -1
 var _snapshot_hard_surface_epoch: int = -1
@@ -2298,6 +2304,12 @@ func request_render_full_refresh() -> void:
 	_mutex.unlock()
 
 
+func set_render_pending_compaction_enabled(enabled: bool) -> void:
+	_mutex.lock()
+	_render_pending_compaction_requested = enabled
+	_mutex.unlock()
+
+
 func _apply_emissions(local_emissions: Array, local_cell_emissions: Array) -> void:
 	for emission_command: Vector4i in local_emissions:
 		_world.emit_disc(
@@ -2732,15 +2744,19 @@ func _publish_snapshot(
 	var render_generation_advanced: bool = false
 	var acknowledged_render_serial: int = 0
 	var render_full_refresh_requested: bool = false
+	var compact_render_pending: bool = false
 	_mutex.lock()
 	acknowledged_render_serial = _acknowledged_render_snapshot_serial
 	render_full_refresh_requested = _render_full_refresh_requested
 	_render_full_refresh_requested = false
+	compact_render_pending = _render_pending_compaction_requested
 	_mutex.unlock()
 	_observe_render_acknowledgement(acknowledged_render_serial)
+	_update_render_pending_policy(compact_render_pending, acknowledged_render_serial)
 	force_render_full_refresh = (
 		force_render_full_refresh or render_full_refresh_requested
 		or _world_generation != _pending_render_world_generation
+		or (_render_pending_compaction_active and _render_pending_journal.needs_full_capture)
 	)
 	if (
 		_pending_render_snapshot_serial > 0
@@ -2760,7 +2776,10 @@ func _publish_snapshot(
 				force_render_full_refresh
 			)
 			_append_native_render_packet(render_packet)
-			if (
+			if _render_pending_compaction_active:
+				if _render_pending_journal.needs_full_capture:
+					_append_native_render_packet(_take_native_render_snapshot(true))
+			elif (
 				_pending_render_patch_cells.size()
 				> maxi(CyberCellWorld.WORLD_WIDTH * CyberCellWorld.WORLD_HEIGHT,_workbench_extent.x*_workbench_extent.y) * 2
 				or _pending_render_patch_rectangles.size()
@@ -2994,6 +3013,8 @@ func _publish_snapshot(
 			"current":_water_current_integer if _water_lab_active else 0,
 		},
 	}
+	if _render_pending_compaction_active:
+		snapshot.lab_context["render_pending"] = _render_pending_journal.statistics()
 	if _workbench_extent != Vector2i.ZERO:
 		snapshot.lab_context["workbench_gcr"] = _workbench_result
 		snapshot.lab_context["workbench_display"] = _workbench_display
@@ -3106,6 +3127,53 @@ func _clear_pending_render_patches() -> void:
 	_pending_render_patch_rectangles = PackedInt32Array()
 	_pending_render_patch_cells = PackedByteArray()
 	_pending_render_payload_generation += 1
+	# The optional journal already retired this exact ACK before this clear.
+	# Do not clear its outstanding refusal/full-recovery request with an old ACK.
+
+
+func _update_render_pending_policy(enabled: bool, acknowledged_serial: int) -> void:
+	# The legacy R8 owner already publishes complete images and never accumulates
+	# native patch batches. Keep that route exactly as it was.
+	enabled = enabled and _world.has_method(&"take_render_snapshot")
+	if not enabled:
+		_render_pending_compaction_active = false
+		_render_pending_journal = null
+		_render_pending_synced_version = -1
+		return
+	var extent: Vector2i = _workbench_extent if _workbench_extent != Vector2i.ZERO \
+		else Vector2i(CyberCellWorld.WORLD_WIDTH, CyberCellWorld.WORLD_HEIGHT)
+	if _render_pending_journal == null:
+		_render_pending_journal = RenderPendingJournal.new()
+		_render_pending_synced_version = -1
+		if not _render_pending_journal.configure(extent, _world_generation):
+			_render_pending_compaction_active = false
+			_render_pending_journal = null
+			return
+		if not _pending_render_patch_cells.is_empty() and _pending_render_world_generation == _world_generation:
+			# Enabling with an outstanding baseline packet retains it as one
+			# conservative capture. No historical serial is invented for its parts.
+			_render_pending_journal.append({"rectangles": _pending_render_patch_rectangles,
+				"cells": _pending_render_patch_cells, "channels": _pending_render_channels,
+				"full_refresh": _pending_render_full_refresh}, _pending_render_snapshot_serial)
+	elif not _render_pending_journal.configure(extent, _world_generation):
+		_render_pending_compaction_active = false
+		_render_pending_journal = null
+		return
+	_render_pending_compaction_active = true
+	_render_pending_journal.retire(acknowledged_serial)
+	_sync_render_pending_journal()
+
+
+func _sync_render_pending_journal() -> void:
+	if _render_pending_synced_version == _render_pending_journal.payload_version:
+		return
+	var packet: Dictionary = _render_pending_journal.payload()
+	_pending_render_patch_rectangles = packet.get("rectangles", PackedInt32Array())
+	_pending_render_patch_cells = packet.get("cells", PackedByteArray())
+	_pending_render_full_refresh = bool(packet.get("full_refresh", false))
+	_pending_render_channels = int(packet.get("channels", _pending_render_channels))
+	_pending_render_payload_generation += 1
+	_render_pending_synced_version = _render_pending_journal.payload_version
 
 
 func _refresh_published_render_payload() -> void:
@@ -3131,6 +3199,12 @@ func _append_native_render_packet(packet: Dictionary) -> void:
 	var packet_serial: int = int(packet.get("serial", 0))
 	var packet_channels: int = int(packet.get("channels", 2))
 	var packet_full_refresh: bool = bool(packet.get("full_refresh", false))
+	if _render_pending_compaction_active:
+		var serial: int = maxi(_pending_render_snapshot_serial + 1, packet_serial)
+		if _render_pending_journal.append(packet, serial):
+			_pending_render_snapshot_serial = serial
+			_sync_render_pending_journal()
+		return
 	if packet_full_refresh:
 		_pending_render_patch_rectangles = packet_rectangles
 		_pending_render_patch_cells = packet_cells

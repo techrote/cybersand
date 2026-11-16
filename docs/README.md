@@ -10,6 +10,10 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+Opt-in publication candidate: [RENDER-UPLOAD-577 owner evaluation](operations/render-upload-577-evaluation.md)
+describes the compact dense fallback, sparse temporal history, ACK prefix
+coalescing, matched comparison procedure and separate physical hardware gate.
+
 For deliberate historical research, use the isolated
 [engineering archaeology index](history/engineering/README.md). It is excluded
 from default current-answer retrieval and grants no implementation authority.

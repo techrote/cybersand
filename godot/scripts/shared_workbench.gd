@@ -23,6 +23,7 @@ var _flatten_status: Dictionary = {"status":"idle"}
 var _flatten_button: Button
 var _flatten_confirmation := ConfirmationDialog.new()
 var art_batches: Window
+var engine_lab: Window
 var host: Control
 var applied: Dictionary = {}
 var pilot_slot := -1
@@ -195,6 +196,12 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_button(row,"New blank",new_canvas)
 	_button(row,"New from generator…",func() -> void: _generated_dialog.open_new())
 	_button(row,"Materials Lab…",open_materials_lab)
+	engine_lab = preload("res://scripts/workbench_engine_lab.gd").new()
+	engine_lab.name = "EngineLab"
+	engine_lab.hide()
+	add_child(engine_lab)
+	engine_lab.mount(host, self)
+	_button(row,"Engine Lab…",func() -> void: engine_lab.open())
 	_picker(row,_camera,["Free camera","Follow selected","Overview"],func(i: int) -> void: set_camera(i))
 	_button(row,"−",func() -> void: zoom_by(1))
 	_button(row,"+",func() -> void: zoom_by(-1))

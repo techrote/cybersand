@@ -10,6 +10,16 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Material publication candidate — 2026-11-16
+
+Issue #577 now has a dedicated implementation from accepted main `018bd095`.
+The [opt-in evaluation](../operations/render-upload-577-evaluation.md) combines
+compact dense/full publication with bounded sparse temporal targets and an
+independent ACK-prefix retention policy. Production rendering defaults, native
+laws and physical stepping remain unchanged. Exact-source graphical performance,
+independent review and the Windows owner package are separate qualification
+gates recorded in its Draft PR. #609/#628/#631 remain independently owned.
+
 ## GEN-008 Flatten / Bake History — 2026-11-13
 
 **Implementation candidate, Draft/HOLD:** issue #548 starts independently from

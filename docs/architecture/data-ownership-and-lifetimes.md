@@ -159,6 +159,14 @@ viewports and camera transforms create no native cell or actor authority.
 
 ## Who may mutate each resource?
 
+The opt-in [RENDER-UPLOAD-577 candidate](../operations/render-upload-577-evaluation.md)
+adds main-owned compact/drawable publication resources and an independently
+versioned history journal for each sparse destination. Submitted staging textures
+are immutable until the frame boundary, then may enter a bounded reuse pool.
+The simulation owner alone owns the optional pending capture journal/CPU cache;
+published value arrays keep the existing immutable handoff. ACK prefix retirement
+never transfers native cell authority or changes Rapier/collider ownership.
+
 **Current:** each selected cellular world has one external owner. In the ordinary
 desktop sandbox that is `CyberSimulationWorker`; on Web it is the main-thread controller.
 Native World coordinates its internal jobs. Queries, export, publication and

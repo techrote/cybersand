@@ -1,0 +1,355 @@
+name: RENDER-UPLOAD-577 hybrid qualification and Windows evaluation
+
+on:
+  push:
+    branches: [perf/render-upload-577-finisher-20261116]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: render-upload-577-${{ github.run_id }}
+  cancel-in-progress: false
+
+env:
+  GODOT_SILENCE_ROOT_WARNING: '1'
+  PYTHONUTF8: '1'
+  CYBERSAND_CI_WATCHDOG_SCALE: '1'
+  RENDER_UPLOAD_SOURCE: ${{ github.sha }}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  guards:
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/perf/render-upload-577-finisher-20261116'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    outputs:
+      dispatch_broad: ${{ steps.request.outputs.dispatch_broad }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.RENDER_UPLOAD_SOURCE }}
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Source, provider and qualification admission
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$RENDER_UPLOAD_SOURCE"
+          git merge-base --is-ancestor 018bd09503d7f079ddac52e225c2f7daf8d678bf HEAD
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 -m unittest discover -s tools/render_upload_577 -p 'test_*.py'
+      - id: request
+        name: Read final qualification request
+        run: |
+          python3 - <<'PY'
+          import json,os
+          r=json.load(open('tools/render_upload_577/qualification-request.json'))
+          assert r['schema']==1 and r['branch']=='perf/render-upload-577-finisher-20261116'
+          assert r['accepted_main']=='018bd09503d7f079ddac52e225c2f7daf8d678bf'
+          assert type(r['dispatch_broad']) is bool and type(r['request']) is int and r['request']>0
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:
+              f.write('dispatch_broad='+str(r['dispatch_broad']).lower()+'\n')
+          PY
+
+  linux:
+    needs: guards
+    name: Linux OpenGL / ${{ matrix.group }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        include:
+          - group: sparse
+            cases: sparse_512_w1,sparse_1024_w1,sparse_2048_w1,sparse_1024_w1_r8,repeated_2048_w1,regions_2048_w1
+            frames: 180
+            rounds: 1
+          - group: dense-authoring
+            cases: dense_2048_w1,full_2048_w1,transition_2048_w1,manual_2048_w1,burst_2048_w1,dormant_2048_w1
+            frames: 180
+            rounds: 1
+          - group: active
+            cases: active_512_w1,active_512_w4,active_1024_w1,active_1024_w4,active_2048_w1,active_2048_w4
+            frames: 180
+            rounds: 1
+          - group: families-actors
+            cases: active_2048_w1_pressure_flow_v1,active_2048_w4_pressure_flow_v1,active_1024_w1_inertial_cellular_v1,actor_1024_w1,actor_2048_w4_pressure_flow_v1
+            frames: 180
+            rounds: 1
+          - group: ack-faults
+            cases: manual_1024_w1_ack_delayed150,manual_1024_w1_ack_withheld
+            frames: 180
+            rounds: 1
+          - group: long-active
+            cases: active_2048_w4
+            frames: 1200
+            rounds: 1
+    env:
+      LIBGL_ALWAYS_SOFTWARE: '1'
+      LP_NUM_THREADS: '2'
+      GALLIVM_PERF: nopt
+      CAMPAIGN_GROUP: ${{ matrix.group }}
+      CAMPAIGN_CASES: ${{ matrix.cases }}
+      CAMPAIGN_FRAMES: ${{ matrix.frames }}
+      CAMPAIGN_ROUNDS: ${{ matrix.rounds }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.RENDER_UPLOAD_SOURCE }}
+          fetch-depth: 0
+          lfs: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Pinned runtime and actual graphical display
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include='godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
+          curl -fL --retry 3 --max-time 600 -o "$RUNNER_TEMP/godot.zip" 'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
+          echo "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          chmod +x "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64"
+          bash tools/ci/prepare_linux_display.sh
+      - name: Exact material history and same-host sequential ABBA
+        run: |
+          set -euo pipefail
+          xvfb-run -a -s '-screen 0 1280x960x24' python3 tools/render_upload_577/run_campaign.py \
+            --godot "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" --source-sha "$RENDER_UPLOAD_SOURCE" \
+            --output "build/render-upload-577-$CAMPAIGN_GROUP" --cache-root "$RUNNER_TEMP/profiles" \
+            --cases "$CAMPAIGN_CASES" --frames "$CAMPAIGN_FRAMES" --warmup 30 --rounds "$CAMPAIGN_ROUNDS" --timeout 1800
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: render-upload-577-linux-${{ matrix.group }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/render-upload-577-*/
+          if-no-files-found: error
+          retention-days: 90
+
+  windows:
+    needs: guards
+    name: Windows ANGLE / ${{ matrix.group }}
+    runs-on: windows-2022
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        include:
+          - group: sparse
+            cases: sparse_512_w1,sparse_1024_w1,sparse_2048_w1,sparse_1024_w1_r8,repeated_2048_w1,regions_2048_w1
+            frames: 180
+            rounds: 1
+          - group: dense-authoring
+            cases: dense_2048_w1,full_2048_w1,transition_2048_w1,manual_2048_w1,burst_2048_w1,dormant_2048_w1
+            frames: 180
+            rounds: 1
+          - group: active
+            cases: active_512_w1,active_512_w4,active_1024_w1,active_1024_w4,active_2048_w1,active_2048_w4
+            frames: 180
+            rounds: 1
+          - group: families-actors
+            cases: active_2048_w1_pressure_flow_v1,active_2048_w4_pressure_flow_v1,active_1024_w1_inertial_cellular_v1,actor_1024_w1,actor_2048_w4_pressure_flow_v1
+            frames: 180
+            rounds: 1
+          - group: ack-faults
+            cases: manual_1024_w1_ack_delayed150,manual_1024_w1_ack_withheld
+            frames: 180
+            rounds: 1
+          - group: long-active
+            cases: active_2048_w4
+            frames: 1200
+            rounds: 1
+    env:
+      CAMPAIGN_GROUP: ${{ matrix.group }}
+      CAMPAIGN_CASES: ${{ matrix.cases }}
+      CAMPAIGN_FRAMES: ${{ matrix.frames }}
+      CAMPAIGN_ROUNDS: ${{ matrix.rounds }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.RENDER_UPLOAD_SOURCE }}
+          fetch-depth: 0
+          lfs: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Materialize and authenticate exact platform dependencies
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          curl -fL --retry 3 --max-time 600 -o "$RUNNER_TEMP/godot-577.zip" 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          python - <<'PY'
+          import os,pathlib,sys
+          sys.path.insert(0,'tools/ci')
+          from run_windows_godot_regressions import prepare_godot
+          prepare_godot(pathlib.Path(os.environ['RUNNER_TEMP'])/'godot-577.zip')
+          PY
+      - name: Exact material history and same-host sequential ABBA
+        run: |
+          set -euo pipefail
+          python tools/render_upload_577/run_campaign.py \
+            --godot "$RUNNER_TEMP/godot-577/Godot_v4.7-stable_win64_console.exe" --source-sha "$RENDER_UPLOAD_SOURCE" \
+            --output "build/render-upload-577-$CAMPAIGN_GROUP" --cache-root "$RUNNER_TEMP/profiles" \
+            --rendering-driver opengl3_angle --cases "$CAMPAIGN_CASES" --frames "$CAMPAIGN_FRAMES" --warmup 30 --rounds "$CAMPAIGN_ROUNDS" --timeout 1800
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: render-upload-577-windows-${{ matrix.group }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/render-upload-577-*/
+          if-no-files-found: error
+          retention-days: 90
+
+  linux-regressions:
+    needs: guards
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    env:
+      LIBGL_ALWAYS_SOFTWARE: '1'
+      LP_NUM_THREADS: '2'
+      GALLIVM_PERF: nopt
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.RENDER_UPLOAD_SOURCE }}
+          fetch-depth: 0
+          lfs: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Provision pinned native runtime and graphics
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include='godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
+          curl -fL --retry 3 --max-time 600 -o "$RUNNER_TEMP/godot.zip" 'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
+          echo "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          chmod +x "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64"
+          bash tools/ci/prepare_linux_display.sh
+      - name: Real Workbench author, physics, Flatten and fresh-process reopen
+        run: |
+          set -euo pipefail
+          xvfb-run -a -s '-screen 0 1280x960x24' python3 tools/render_upload_577/run_regressions.py \
+            --godot "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" --source-sha "$RENDER_UPLOAD_SOURCE" \
+            --output build/render-upload-577-regressions --timeout 1800
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: render-upload-577-linux-regressions-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/render-upload-577-regressions/
+          if-no-files-found: error
+          retention-days: 90
+
+  windows-package:
+    needs: guards
+    runs-on: windows-2022
+    timeout-minutes: 150
+    env:
+      CYBERSAND_LAB_CXX: 'C:\mingw64\bin\g++.exe'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.RENDER_UPLOAD_SOURCE }}
+          fetch-depth: 0
+          lfs: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Exact native runtime, Godot and licences
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          curl -fL --retry 3 --max-time 600 -o "$RUNNER_TEMP/godot-577.zip" 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          python - <<'PY'
+          import os,pathlib,sys
+          sys.path.insert(0,'tools/ci')
+          from run_windows_godot_regressions import prepare_godot
+          prepare_godot(pathlib.Path(os.environ['RUNNER_TEMP'])/'godot-577.zip')
+          PY
+          mkdir -p "$RUNNER_TEMP/577-notices"
+          for name in LICENSE.txt COPYRIGHT.txt; do
+            curl -fL --retry 3 --max-time 300 -o "$RUNNER_TEMP/577-notices/$name" "https://raw.githubusercontent.com/godotengine/godot/5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/$name"
+          done
+      - name: Stage signed Visual C++ redistributable and licence proof
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $notices = Join-Path $env:RUNNER_TEMP '577-notices'
+          $runtime = Join-Path $notices 'Microsoft-Visual-C-Runtime-LICENSE.docx'
+          $developer = Join-Path $notices 'Microsoft-Visual-Studio-2022-LICENSE.docx'
+          curl.exe -fL --retry 3 -o $runtime 'https://visualstudio.microsoft.com/wp-content/uploads/2021/09/Visual-C-Runtime-2015-2022-License-1.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'VC runtime licence download failed' }
+          curl.exe -fL --retry 3 -o $developer 'https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Visual-Studio-2022-Enterprise-Professional-License-EN.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'VS developer licence download failed' }
+          ./tools/ci/stage_windows_vc_runtime.ps1 -Output (Join-Path $env:RUNNER_TEMP '577-vc') -License $runtime -DeveloperLicense $developer
+      - name: Real graphical Workbench and saved-authoring regressions
+        run: |
+          set -euo pipefail
+          python tools/render_upload_577/run_regressions.py --godot "$RUNNER_TEMP/godot-577/Godot_v4.7-stable_win64_console.exe" \
+            --source-sha "$RENDER_UPLOAD_SOURCE" --output build/render-upload-577-regressions --timeout 1800
+      - name: Source-matched self-contained Windows evaluation package
+        run: |
+          set -euo pipefail
+          python tools/render_upload_577/package_windows.py --source-sha "$RENDER_UPLOAD_SOURCE" \
+            --godot-zip "$RUNNER_TEMP/godot-577.zip" --notices "$RUNNER_TEMP/577-notices" --vc "$RUNNER_TEMP/577-vc" \
+            --output "$RUNNER_TEMP/577-package" --archive "delivery/CyberSand-RenderUpload577-Windows-${RENDER_UPLOAD_SOURCE:0:12}.zip"
+          python tools/render_upload_577/package_windows.py --source-sha "$RENDER_UPLOAD_SOURCE" --output "$RUNNER_TEMP/577-package" --verify
+      - name: Run packaged actual PowerShell 5.1 comparison
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $env:RUNNER_TEMP '577-package\tools\render_upload_577\Test-It.ps1') -Quick -RenderingDriver opengl3_angle
+          if ($LASTEXITCODE -ne 0) { throw 'Installed Test It comparison failed' }
+          New-Item -ItemType Directory -Path 'build\render-upload-577-installed' -Force | Out-Null
+          Copy-Item -Path (Join-Path $env:RUNNER_TEMP '577-package\Test-It-Results\*') -Destination 'build\render-upload-577-installed' -Recurse
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: render-upload-577-windows-package-${{ github.run_id }}-${{ github.run_attempt }}
+          path: delivery/
+          if-no-files-found: ignore
+          retention-days: 90
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: render-upload-577-windows-regressions-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/render-upload-577-*/
+          if-no-files-found: error
+          retention-days: 90
+
+  dispatch-broad:
+    needs: [guards, linux-regressions, windows-package]
+    if: needs.guards.outputs.dispatch_broad == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      actions: write
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.RENDER_UPLOAD_SOURCE }}
+          persist-credentials: false
+      - name: Dispatch unchanged full gates while preserving Draft
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          python3 tools/render_upload_577/dispatch_broad.py --source-sha "$RENDER_UPLOAD_SOURCE" --output dispatch-receipt.json
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: render-upload-577-broad-dispatch-${{ github.run_id }}-${{ github.run_attempt }}
+          path: dispatch-receipt.json
+          if-no-files-found: error
+          retention-days: 90

@@ -285,11 +285,12 @@
         "systems/material-appearance-and-rendering.md"
       ],
       "facts": [
-        "Current RG8 CPU patches are sparse, but ImageTexture.update uploads the whole 1024-square two-byte texture (2,097,152 bytes).",
-        "True GPU subregion upload is not implemented; patch work and GPU upload cost must be measured separately."
+        "The default RG8 CPU patches are sparse, but ImageTexture.update uploads the whole two-byte texture: 2,097,152 bytes at 1024 square and 8,388,608 bytes at 2048 square.",
+        "The opt-in RENDER-UPLOAD-577 hybrid uses bounded sparse drawable history and a compact dense/full fallback. Its entry seeds, CPU patch work, GPU call intervals, frame tails and material age must be measured separately; production defaults and physical hardware acceptance remain unchanged."
       ],
       "sources": [
         "../godot/scripts/main.gd::upload_texture_patches",
+        "../godot/scripts/material_upload_hybrid.gd",
         "../godot/scripts/web_demo_controller.gd"
       ]
     },

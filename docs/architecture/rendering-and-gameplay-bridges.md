@@ -113,6 +113,17 @@ publication cadence. Neither is a strict simulation-accuracy switch.
 compression/coalescing and tuned production snapshot defaults. Lower native
 copy volume does not establish any of those features.
 
+**Current opt-in candidate, 2026-11-16:** `--render-upload=hybrid` selects the
+[bounded RENDER-UPLOAD-577 evaluation](../operations/render-upload-577-evaluation.md).
+Dense/full publications retain the compact R8/RG8 path; sustained sparse changes
+may use two independently journalled drawable targets. Explicit entry seeds and
+every missed history region are accounted for. The default remains full-image
+submission. Its separately selectable pending-prefix journal retires accepted
+ACK prefixes without gating native capture and has a bounded CPU cache for ACK
+starvation. Native material/physics authority and accepted-publication ACKs are
+unchanged. Source implementation, graphical performance and physical owner
+acceptance remain separate claims.
+
 ## Which gameplay command path exists today?
 
 **Current desktop:** main-thread methods replace frame state and copied body
