@@ -7,7 +7,7 @@ import shutil
 import tempfile
 import unittest
 
-from corpus import build, canonical, audit
+from corpus import build, canonical, audit, partition
 from export_train import export, FIELDS, observed_fingerprint
 
 
@@ -100,6 +100,46 @@ class TrainExportTests(unittest.TestCase):
             self.assertEqual(audit(changed)['audit'], 'PASS')
             with self.assertRaisesRegex(ValueError, 'non-TRAIN or non-synthetic'):
                 export(changed, Path(td) / 'refused')
+
+
+    def _expect_rehashed_source_refusal(self, filename, mutate, expected):
+        with tempfile.TemporaryDirectory() as td:
+            changed = Path(td) / 'forged'
+            shutil.copytree(self.corpus, changed)
+            file = changed / filename
+            rows = [json.loads(x) for x in file.read_text().splitlines()]
+            mutate(rows)
+            payload = ''.join(canonical(row) + '\\n' for row in rows).encode()
+            file.write_bytes(payload)
+            mf = changed / 'manifest.json'
+            manifest = json.loads(mf.read_text())
+            manifest['files'][filename]['sha256'] = hashlib.sha256(payload).hexdigest()
+            manifest['files'][filename]['bytes'] = len(payload)
+            mf.write_text(canonical(manifest) + '\\n')
+            self.assertEqual(audit(changed)['audit'], 'PASS')
+            with self.assertRaisesRegex(ValueError, expected):
+                export(changed, Path(td) / 'refused')
+
+    def test_rehashed_observable_position_tamper_refused(self):
+        def corrupt(rows):
+            rows[0]['observation']['x'] += 1
+        self._expect_rehashed_source_refusal('train.decisions.jsonl', corrupt,
+                                            'trail/receipt')
+
+    def test_rehashed_observable_budget_tamper_refused(self):
+        def corrupt(rows):
+            rows[0]['observation']['budget_remaining'] += 2
+        self._expect_rehashed_source_refusal('train.decisions.jsonl', corrupt,
+                                            'position/heading/budget')
+
+    def test_rehashed_dev_partition_disguised_as_train_refused(self):
+        def corrupt(rows):
+            candidate = 0
+            while partition(f'partition-forgery:{candidate}') == 'train':
+                candidate += 1
+            rows[0]['world_group_id'] = f'partition-forgery:{candidate}'
+        self._expect_rehashed_source_refusal('train.worlds.jsonl', corrupt,
+                                            'world partition')
 
     def test_refuse_source_tree_output(self):
         with self.assertRaisesRegex(ValueError,'overwrite source'):

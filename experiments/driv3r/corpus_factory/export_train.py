@@ -12,7 +12,7 @@ import hashlib
 import json
 from pathlib import Path
 
-from corpus import ACTIONS, SOURCE, VERSION, audit, canonical, digest
+from corpus import ACTIONS, SOURCE, VERSION, audit, canonical, digest, partition
 
 FIELDS = (
     'x', 'y', 'heading', 'local_5x5', 'legal', 'last_actions', 'family',
@@ -71,6 +71,57 @@ def validate_row(row, train_groups):
     return obs, action
 
 
+
+def validate_lineage(row, obs, action, worlds, episodes):
+    """Cross-check *all* prompt fields against immutable audited world/episode receipts.
+
+    The producer's v1 input_sha256 covers model-local features but omits x/y,
+    tick, remaining budget and goal-reached status. Those omitted values must
+    not be accepted merely because an attacker rehashed the source manifest.
+    """
+    group = row['world_group_id']
+    world = worlds.get(group)
+    ep = episodes.get(row.get('episode_id'))
+    if world is None or ep is None:
+        raise ValueError('missing world/episode provenance')
+    tick = obs['tick']
+    if type(tick) is not int or not 0 <= tick < ep['steps']:
+        raise ValueError('invalid source episode tick')
+    if (row.get('record_id') != f"{ep['episode_id']}:{tick:04d}"
+            or row.get('world_id') != world['world_id']
+            or ep.get('world_id') != world['world_id']
+            or ep.get('world_group_id') != group
+            or ep.get('split') != 'train'
+            or ep.get('scenario') != world['scenario']
+            or row.get('scenario') != world['scenario']
+            or row.get('family') != ep.get('family')
+            or obs['family'] != ep.get('family')):
+        raise ValueError('inconsistent world/episode source lineage')
+    if (type(obs['x']) is not int or type(obs['y']) is not int
+            or not 0 <= obs['x'] < 96 or not 0 <= obs['y'] < 96
+            or type(obs['heading']) is not int or not 0 <= obs['heading'] < 4
+            or type(obs['budget_remaining']) is not int
+            or obs['budget_remaining'] != ep['step_budget'] - tick):
+        raise ValueError('inconsistent observable position/heading/budget')
+    if (len(obs['last_actions']) > 4
+            or any(a not in ACTIONS for a in obs['last_actions'])
+            or obs['local_5x5'][2][2] != '@'
+            or 'STOP' not in obs['legal']):
+        raise ValueError('invalid observable WORM host state')
+    before, after = ep['trail'][tick], ep['trail'][tick + 1]
+    receipt = row['receipt']
+    if ([obs['x'], obs['y']] != before
+            or receipt.get('position_before') != before
+            or receipt.get('position_after') != after
+            or receipt.get('raw_choice') != action
+            or receipt.get('raw_legal') is not True):
+        raise ValueError('observation/trail/receipt divergence')
+    delta = [world['goal'][0] - obs['x'], world['goal'][1] - obs['y']]
+    if (obs['goal_delta'] != delta
+            or type(obs['goal_reached']) is not bool
+            or obs['goal_reached'] != (before == world['goal'])):
+        raise ValueError('inconsistent observed goal information')
+
 def load_train(root):
     root = Path(root)
     audited = audit(root)
@@ -81,16 +132,38 @@ def load_train(root):
     if manifest.get('claims', {}).get('trained_model_records') != 0:
         raise ValueError('trained-model trace contamination')
     groups = set()
+    worlds = {}
     for line in (root / 'train.worlds.jsonl').read_text().splitlines():
         w = json.loads(line)
-        if w.get('split') != 'train' or w.get('evidence_class') not in (None, 'synthetic-host-heuristic'):
-            raise ValueError('non-TRAIN world')
-        groups.add(w['world_group_id'])
+        group = w['world_group_id']
+        if (w.get('split') != 'train'
+                or w.get('evidence_class') not in (None, 'synthetic-host-heuristic')
+                or partition(group) != 'train'):
+            raise ValueError('non-TRAIN world partition')
+        if group in groups:
+            raise ValueError('duplicate TRAIN world group')
+        groups.add(group)
+        worlds[group] = w
+    episodes = {}
+    for line in (root / 'train.episodes.jsonl').read_text().splitlines():
+        ep = json.loads(line)
+        eid = ep['episode_id']
+        if (ep.get('split') != 'train'
+                or ep.get('evidence_class') != 'synthetic-host-heuristic'
+                or ep.get('world_group_id') not in groups
+                or eid in episodes
+                or type(ep.get('steps')) is not int
+                or type(ep.get('step_budget')) is not int
+                or not 0 < ep['steps'] <= ep['step_budget']
+                or len(ep.get('trail', [])) != ep['steps'] + 1):
+            raise ValueError('invalid TRAIN episode source')
+        episodes[eid] = ep
     rows = []
     seen = set()
     for line in (root / 'train.decisions.jsonl').read_text().splitlines():
         row = json.loads(line)
         obs, action = validate_row(row, groups)
+        validate_lineage(row, obs, action, worlds, episodes)
         fingerprint = row['input_sha256']
         if fingerprint in seen:
             raise ValueError('duplicate input in training source')
