@@ -1,5 +1,11 @@
 """Research-only held-out W0 scenario source tests; no model downloads."""
 import unittest
+from pathlib import Path
+from tempfile import TemporaryDirectory
+from unittest.mock import patch
+
+from experiments.driv3r.frankenlayers import infer as paired
+from experiments.driv3r.frankenlayers_lab.flows import LAB_FLOWS
 
 from experiments.driv3r.frankenlayers_lab.holdout import (
     CASES, HOLDOUT_SEED, SIZE, STEPS, ChallengeHost, overlay_obstacles, summarize,
@@ -18,7 +24,9 @@ class MiniW0:
         obs = {"legal": ["STRAIGHT", "STOP"], "family": family}
         assert selector(obs) == "STRAIGHT"
         return {"size": size, "seed": seed, "family": family,
-                "obstacles": sorted(blocks), "events": []}
+                "obstacles": sorted(blocks), "events": [{"applied": "STRAIGHT"}],
+                "metrics": {"new_steps": 1, "terminated_by_stop": False,
+                            "total_revisit_contacts": 0, "invalid_raw_choices": 0}}
 
     def png_bytes(self, record):
         return b"png"
@@ -55,6 +63,47 @@ class HeldoutTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             host.run(seed=570, mode="callback", family="greebles",
                      steps=STEPS, selector=lambda obs: "STRAIGHT")
+
+    def test_parent_run_arm_contract_without_model_download(self):
+        """Catch parent call-signature drift before expensive four-model jobs."""
+        class FakeServer:
+            def __init__(self, binary, model, mode, root, seed):
+                self.root = root
+
+            def __enter__(self):
+                self.root.mkdir(parents=True, exist_ok=True)
+                return self
+
+            def choose(self, observation, records):
+                assert "STRAIGHT" in observation["legal"]
+                records.append({"status": "ok", "choice": "STRAIGHT",
+                                "latency_seconds": 0.01, "input_tokens_per_second": 100.0})
+                return "STRAIGHT"
+
+            def __exit__(self, *args):
+                return False
+
+        host = ChallengeHost(MiniW0())
+        previous_steps, previous_families = paired.STEPS, paired.FAMILIES
+        with TemporaryDirectory() as tmp, patch.object(paired, "Server", FakeServer), \
+                patch.dict(paired.FLOWS, LAB_FLOWS):
+            try:
+                paired.STEPS, paired.FAMILIES = STEPS, tuple(CASES)
+                # Deliberately call the *actual* inherited runner, whose seed
+                # argument is positional. A keyword-only wrapper fails here.
+                arm = paired.run_arm(Path("no-binary"), Path("no-model"), host,
+                                     "aero4_no10", Path(tmp) / "arm", HOLDOUT_SEED)
+            finally:
+                paired.STEPS, paired.FAMILIES = previous_steps, previous_families
+            summary = summarize(arm)
+            self.assertEqual(summary["episodes"], 3)
+            self.assertEqual(summary["legal_choice_count"], 3)
+            self.assertEqual(summary["new_steps"], 3)
+            self.assertEqual(summary["distinct_world_action_sequences"], 1)
+            self.assertEqual(summary["early_stop_episodes"], 0)
+            self.assertEqual(summary["full_length_episodes"], 0)
+            for family in CASES:
+                self.assertTrue((Path(tmp) / "arm" / f"aero4_no10-{family}.json").exists())
 
     def test_summarize_is_descriptive_not_competence_claim(self):
         arm = {"valid_decisions": 6, "experiments": [

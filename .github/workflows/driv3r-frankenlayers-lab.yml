@@ -14,6 +14,7 @@ on:
       - 'experiments/driv3r/frankenlayers_lab/run-request-wave5.json'
       - 'experiments/driv3r/frankenlayers_lab/run-request-wave6.json'
       - 'experiments/driv3r/frankenlayers_lab/run-request-wave7.json'
+      - 'experiments/driv3r/frankenlayers_lab/run-request-wave8.json'
       - '.github/workflows/driv3r-frankenlayers-lab.yml'
 
 permissions:
@@ -159,6 +160,16 @@ jobs:
                  quant=quant,seed=HOLDOUT_SEED)
             for label,mode,quant in expected
           ]
+          w8=json.loads(Path("experiments/driv3r/frankenlayers_lab/run-request-wave8.json").read_text())
+          assert w8["schema"]=="cybersand-d1-frankenlayers-lab-wave8-holdout-repair/1"
+          assert w8["lineage"]["failed_wave7_source_sha"]=="3d0d5d0281dcc7497d0a3a8c173a998a3991d296"
+          assert w8["lineage"]["failed_wave7_run"]==43847173709
+          for key in ("llama_commit","model_q8_sha256","w0_commit"):
+            assert w8["lineage"][key]==r["lineage"][key]
+          assert w8["experiments"]==w7["experiments"]
+          assert w8["test_host"]==w7["test_host"]
+          assert w8["max_parallel"]==2 and w8["timeout_minutes"]<=95 and w8["no_game_changes"]
+          assert not any(w8[k] for k in ("paid_api","paid_gpu","merge","ready"))
           PY
           python3 tools/ci/check_ci_provider_policy.py
           python3 tools/ci/check_ci_scheduling_policy.py

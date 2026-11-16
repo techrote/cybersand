@@ -65,7 +65,9 @@ class ChallengeHost:
     def __init__(self, w0):
         self.w0 = w0
 
-    def run(self, *, seed, mode, family, steps, selector):
+    def run(self, seed, *, mode, family, steps, selector):
+        # The pinned parent infer.run_arm() passes seed positionally. Mirror
+        # that exact call contract; all remaining arguments stay keyword-only.
         if seed != HOLDOUT_SEED or steps != STEPS or mode != "callback":
             raise ValueError("Held-out episode contract changed")
         original = self.w0.initial_world
