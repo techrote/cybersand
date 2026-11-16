@@ -71,7 +71,7 @@ struct WaveFlowConfig {
 struct WaveFlowDiagnostics {
     std::uint64_t ticks = 0, rounds = 0, tasks = 0, solved_chunks = 0, moved_units = 0;
     std::uint64_t prepare_nanoseconds = 0, column_nanoseconds = 0, flux_nanoseconds = 0;
-    std::uint64_t apply_nanoseconds = 0, merge_nanoseconds = 0, storage_bytes = 0, capacity_refusals = 0;
+    std::uint64_t apply_nanoseconds = 0, merge_nanoseconds = 0, storage_bytes = 0, capacity_refusals = 0, boundary_refusals = 0;
     std::uint32_t maximum_participants = 0, last_tasks = 0, last_solved_chunks = 0;
     [[nodiscard]] bool operator==(const WaveFlowDiagnostics&) const = default;
 };
