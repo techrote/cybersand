@@ -331,12 +331,26 @@ function Read-PoseStatistics([string]$Path) {
         actual_first_view=@($Frames[0].view_world_cells);actual_last_view=@($Frames[-1].view_world_cells)}
     $PublicationRows=@($Events|Where-Object{(Field $_ 'event') -eq 'texture_upload' -and $null -ne (Field $_ 'material_publication')}|ForEach-Object{Field $_ 'material_publication'})
     $PublicationScopes=@{}
-    foreach($Scope in @('image_patch_usec','content_cache_usec','tile_assembly_usec','backend_submit_usec')) {
+    foreach($Scope in @('image_patch_usec','content_cache_usec','tile_assembly_usec','atlas_assembly_usec','backend_submit_usec','staging_upload_usec','gpu_blit_submit_usec')) {
         $Values=@($PublicationRows|Where-Object{$null -ne (Field $_ $Scope)}|ForEach-Object{[double](Field $_ $Scope)/1000.0})
         $PublicationScopes[$Scope]=Distribution $Values
     }
     $Result.material_publication_elapsed_ms=$PublicationScopes
-    $Result.material_submitted_bytes=Distribution @($PublicationRows|ForEach-Object{[double](Field $_ 'submitted_bytes' 0)})
+    $Result.material_backend_modes=@{}
+    $Result.material_fallback_reasons=@{}
+    foreach($PublicationRow in $PublicationRows) {
+        $Backend=[string](Field $PublicationRow 'backend' (Field $PublicationRow 'mode' 'unknown'))
+        if(-not $Result.material_backend_modes.ContainsKey($Backend)){$Result.material_backend_modes[$Backend]=0}
+        $Result.material_backend_modes[$Backend]++
+        $Fallback=[string](Field $PublicationRow 'fallback_reason' '')
+        if($Fallback) {
+            if(-not $Result.material_fallback_reasons.ContainsKey($Fallback)){$Result.material_fallback_reasons[$Fallback]=0}
+            $Result.material_fallback_reasons[$Fallback]++
+        }
+    }
+    $Result.material_submitted_bytes=Distribution @($PublicationRows|Where-Object{$null -ne (Field $_ 'submitted_bytes')}|ForEach-Object{[double](Field $_ 'submitted_bytes')})
+    $Result.material_estimated_target_write_bytes=Distribution @($PublicationRows|Where-Object{$null -ne (Field $_ 'estimated_target_write_bytes')}|ForEach-Object{[double](Field $_ 'estimated_target_write_bytes')})
+    $Result.material_allocated_gpu_bytes=Distribution @($PublicationRows|Where-Object{$null -ne (Field $_ 'allocated_gpu_bytes')}|ForEach-Object{[double](Field $_ 'allocated_gpu_bytes')})
     $Result.physics_timing_observation=$(if($Result.physics_progress.active_completed_step_gap_ms.count -eq 0){
         'unavailable_no_consecutive_active_steps'
     }elseif($Result.physics_progress.active_gaps_at_least_100ms -gt 0){
@@ -443,15 +457,19 @@ function Save-Summary {
         }else{'No 100ms gap observed; this alone is not a gameplay acceptance result.'})
         $Lines.Add('  Physics: '+$TimingDescription)
         $Material=Field $Row 'material_publication'
-        $Lines.Add(('  Material publication: requested={0}, backend={1}, last submitted bytes={2}; physics handoff={3}' -f
+        $Lines.Add(('  Material publication: requested={0}, backend={1}, last CPU upload bytes={2}; physics handoff={3}' -f
             (Field $Material 'requested_mode' 'unrecorded'),(Field $Material 'backend' 'unrecorded'),
             (Field $Material 'submitted_bytes' 'unrecorded'),(Field $Row 'physics_publication' 'unrecorded')))
-        foreach($Scope in @('image_patch_usec','content_cache_usec','tile_assembly_usec','backend_submit_usec')) {
+        foreach($Scope in @('image_patch_usec','content_cache_usec','tile_assembly_usec','atlas_assembly_usec','backend_submit_usec','staging_upload_usec','gpu_blit_submit_usec')) {
             $ScopeTiming=Field (Field $Stats 'material_publication_elapsed_ms') $Scope
             $Lines.Add(('  {0} elapsed ms median/p95/max: {1} / {2} / {3}' -f $Scope,
                 (Field $ScopeTiming 'p50' 'n/a'),(Field $ScopeTiming 'p95' 'n/a'),(Field $ScopeTiming 'max' 'n/a')))
         }
 
+        $Lines.Add('  Timing scopes overlap: backend includes staging upload and GPU blit/retirement submission; assembly aliases must not be added. These are elapsed wall calls, not isolated CPU/GPU execution.')
+        $Lines.Add(('  Logical GPU target-write bytes median: {0}; allocated GPU texture bytes maximum: {1}. These are estimates, not measured bandwidth.' -f
+            (Field (Field $Stats 'material_estimated_target_write_bytes') 'p50' 'n/a'),
+            (Field (Field $Stats 'material_allocated_gpu_bytes') 'max' 'n/a')))
         $WorkerRequest=$(if($Row.native_workers.requested -eq 0){'Auto (0)'}else{[string]$Row.native_workers.requested})
         $Lines.Add(('  Profile: {0}; renderer: {1}; VSync enum: {2}; window: {3}; native workers requested/resolved: {4} / {5}' -f
             $Row.display.profile,$Row.render_driver,$Row.display.vsync_mode,($Row.display.window_size -join 'x'),$WorkerRequest,$Row.native_workers.resolved_capacity))
@@ -702,7 +720,7 @@ function Run-PublicationMatrix {
     if($Quick){$Conditions=@($Conditions|Where-Object{$_.name -eq 'interactive-follow'})}
     Require ($Conditions.Count -eq $(if($Quick){1}else{2})) 'Missing ordinary publication comparison conditions'
     $Summary.planned_conditions=$Conditions;$Summary.planned_cases=$Conditions.Count*2
-    $Summary.comparison='Same reviewed source: full texture/combined publication control versus automatic dirty tiles/early physics publication; both coherent, fixed-step and strictly coupled. This control does not restore the historical binary.'
+    $Summary.comparison='Same reviewed source: full texture/combined publication control versus automatic staged GPU rectangle copies/early physics publication; both coherent, fixed-step and strictly coupled. This control does not restore the historical binary.'
     Save-Summary
     foreach($Condition in $Conditions) {
         $Rows=@{};$Trajectories=@{}
@@ -716,6 +734,11 @@ function Run-PublicationMatrix {
                 $Rows[$Arm]=$script:LastCaseRow;$Trajectories[$Arm]=$script:LastTrajectory
                 Require ($Rows[$Arm].material_publication.requested_mode -eq $env:CYBERSAND_MATERIAL_PUBLICATION) 'Material publication control did not reach the runtime'
                 Require ($Rows[$Arm].physics_publication -eq $(if($Arm -eq 'control'){'combined'}else{'early'})) 'Physics publication control did not reach the runtime'
+                $ExpectedBackend=$(if($Arm -eq 'control'){'full'}else{'blit'})
+                $BackendModes=$Rows[$Arm].statistics.material_backend_modes
+                Require ($Rows[$Arm].material_publication.backend -eq $ExpectedBackend -and
+                    $BackendModes.Count -eq 1 -and $BackendModes.ContainsKey($ExpectedBackend) -and
+                    $Rows[$Arm].statistics.material_fallback_reasons.Count -eq 0) 'Capture did not exercise the expected material backend throughout. Full fallback is valid application behavior but cannot qualify this incremental-publication comparison.'
             }catch{
                 $Summary.failures+=@{condition=$Condition.name;arm=$Arm;error=[string]$_.Exception.Message}
                 Write-Host ('CASE INCOMPLETE: '+$Condition.name+' '+$Arm+' '+$_.Exception.Message) -ForegroundColor Red

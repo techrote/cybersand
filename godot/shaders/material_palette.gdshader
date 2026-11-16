@@ -1,8 +1,6 @@
 shader_type canvas_item;
 render_mode unshaded;
 
-#include "res://shaders/material_tile_sampling.gdshaderinc"
-
 // Rendering has its own view of the world. Panning changes only these uniforms;
 // it does not move or copy the cellular backing store.
 uniform vec2 world_size_px = vec2(1024.0, 1024.0);
@@ -175,8 +173,8 @@ int sampled_material_id(vec2 pixel, bool previous_snapshot) {
 	// Relief reads the same snapshot as the material being shaded, so the old
 	// side of a crossfade keeps its own neighbourhood. Same four reads.
 	float stored = previous_snapshot
-		? cyber_material_previous(previous_world_texture, world_uv).r
-		: cyber_material_current(current_world_texture, world_uv).r;
+		? texture(previous_world_texture, world_uv).r
+		: texture(current_world_texture, world_uv).r;
 	return int(floor(stored * 255.0 + 0.5));
 }
 
@@ -1763,7 +1761,7 @@ vec4 apply_material_flair(
 
 vec2 sampled_cell(vec2 pixel) {
 	vec2 clamped_pixel = clamp(floor(pixel), vec2(0.0), world_size_px - vec2(1.0));
-	return cyber_material_current(current_world_texture, (clamped_pixel + vec2(0.5)) / world_size_px).rg;
+	return texture(current_world_texture, (clamped_pixel + vec2(0.5)) / world_size_px).rg;
 }
 
 int cell_material(vec2 cell) {
@@ -2023,9 +2021,9 @@ int sampled_water_condition_byte(vec2 pixel, bool previous_snapshot) {
 	vec2 world_uv = (clamped_pixel + vec2(0.5)) / world_size_px;
 	vec2 cell_sample;
 	if (previous_snapshot) {
-		cell_sample = cyber_material_previous(previous_world_texture, world_uv).rg;
+		cell_sample = texture(previous_world_texture, world_uv).rg;
 	} else {
-		cell_sample = cyber_material_current(current_world_texture, world_uv).rg;
+		cell_sample = texture(current_world_texture, world_uv).rg;
 	}
 	int material_id = int(floor(cell_sample.r * 255.0 + 0.5));
 	if (material_id != 3) return 0;
@@ -2765,14 +2763,8 @@ void fragment() {
 	vec2 world_pixel = floor(continuous_world_pixel);
 	vec2 cell_fraction = fract(continuous_world_pixel);
 	vec2 world_uv = (world_pixel + vec2(0.5)) / world_size_px;
-#ifdef CYBER_MATERIAL_TILES
-	vec2 cell_sample = cyber_material_array_sample(current_material_tiles, world_uv).rg;
-#else
-	vec2 cell_sample = material_tiles_enabled
-		? cyber_material_array_sample(current_material_tiles, world_uv).rg
-		: texture(TEXTURE, world_uv).rg;
-#endif
-	vec2 previous_cell_sample = cyber_material_previous(previous_world_texture, world_uv).rg;
+	vec2 cell_sample = texture(TEXTURE, world_uv).rg;
+	vec2 previous_cell_sample = texture(previous_world_texture, world_uv).rg;
 	int stored_material_id = int(floor(cell_sample.r * 255.0 + 0.5));
 	int previous_stored_material_id = int(floor(previous_cell_sample.r * 255.0 + 0.5));
 	float condition = cell_sample.g;

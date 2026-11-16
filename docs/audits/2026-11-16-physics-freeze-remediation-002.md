@@ -32,42 +32,54 @@ identify the final source/tree, exact-HEAD Actions runs and downloadable payload
 ## Established causes and implemented repair
 
 The old CPU patch path still calls `ImageTexture.update` for the complete World
-plane. At 2048² RG8 this is 8 MiB per changed publication. Exact Godot 4.7 GLES3
-source maps the ordinary 2D update to `glTexImage2D`, while a texture-array layer
-update maps to `glTexSubImage3D` with depth 1. These API/source facts establish a
-real bounded submission mechanism, not the cause of every observed wall span.
-The implementation can be inspected in the pinned [Godot 4.7 GLES3 texture
-storage](https://github.com/godotengine/godot/blob/4.7-stable/drivers/gles3/storage/texture_storage.cpp)
-and [ImageTextureLayered implementation](https://github.com/godotengine/godot/blob/4.7-stable/scene/resources/image_texture.cpp).
+plane. At 2048² RG8 this is 8 MiB per changed publication. CPU patch size does
+not imply partial GPU upload. The first array-based repair reduced submitted
+bytes but introduced shader cost and retained expensive Windows submission
+spans; its rejected results are recorded below.
 
-The candidate represents current/previous material as two bounded arrays, at
-most 256 layers each. Tile side starts at 64 and grows to fit the layer budget;
-2048² uses 128²×256. Two 1×1 Canvas carriers preserve the existing Texture2D
-interface without uploading a full material plane through that interface.
-Actual array RIDs and exact GPU reconstruction are separately observable.
-The production path never uses GPU readback to assemble an update.
+The current candidate uses Godot 4.7's experimental drawable-texture API on the
+qualified Linux/Windows OpenGL/ANGLE compatibility paths. Two persistent linear
+RGBA8 targets retain exact logical R8/RG8 current/previous material values. A
+bounded set of R8/RG8 staging textures receives one immutable atlas upload per
+publication, followed by GPU rectangle copies into the recycled history target.
+A dense update uses one full staging upload and one whole-World copy. The
+production path never reads GPU pixels back to construct an update.
 
-Each recycled slot repairs the union of current dirty rectangles and the
-preceding publication's changes, then compares exact cached tile bytes before
-issuing an update. Thus a two-publication-old slot cannot leak stale texels.
-When an exact previous CPU image is retained, publication also skips the
-redundant legacy per-cell occupancy-map scan. The legacy path retains its
-bounded map and conservative refusal.
+At 2048²,128² tiles bound dirty tracking to 256 entries. Recycled histories repair
+all accumulated dirties and skip byte-identical cached tiles. A single changed
+tile uploads 32 KiB instead of 8 MiB. The two history targets, staging resources and
+retirement sink occupy 44,728,324 logical GPU texture bytes, excluding driver
+allocation overhead. CPU submission bytes exclude GPU source reads and RGBA8
+target writes; the latter are reported as a logical estimate, not bandwidth.
+Upload Images remain immutable while RenderingServer may retain queued refs.
 
-Current/previous CPU history and material-content certificates remain separate
-from GPU resource identities. All six material shader consumers use the same
-global-texel→tile/layer lookup, including cross-tile neighbours. The follow-up
-uses normalized nearest texel-centre sampling with an exact power-of-two
-reciprocal. Each material caches its base Shader and one tiled specialization;
-unchanged publications neither construct nor reassign Shader resources.
+All six original appearance shaders are restored byte-for-byte from c1ad;
+material indexing, crossfading, neighbour reads and effects retain ordinary 2D
+sampling. In particular, the protected palette returns to its existing reviewed
+SHA256 `b8e5542dae2c36fd6fbef0170a7b537bce5c853fc10920174cefe13dbec78d4f`.
+The material catalogue compatibility guard is retained without a waiver.
+A small separate `texture_blit` Shader uses nearest integer source texels,
+blend-disabled output and direct per-call coordinates. It writes exact R/G,
+zero B and opaque A into a linear target; SRGB targets are rejected.
 
-The default is `auto` on qualified OpenGL/ANGLE; `full` retains the whole-image
-path and `tiled` requests arrays subject to compatibility/capacity checks.
-Detectable structural failure reconstructs both full textures from the exact
-retained CPU histories and retires superseded array resources. `update_layer`
-has no error return: arbitrary asynchronous driver/device loss cannot be
-claimed detectable at submission. Full initialization/dense updates remain
-potentially expensive. No unbounded upload queue or GPU allocation stream exists.
+The pinned [DrawableTexture2D resource implementation](https://github.com/godotengine/godot/blob/4.7-stable/scene/resources/drawable_texture_2d.cpp),
+[GLES3 texture storage](https://github.com/godotengine/godot/blob/4.7-stable/drivers/gles3/storage/texture_storage.cpp),
+[blit shader](https://github.com/godotengine/godot/blob/4.7-stable/drivers/gles3/shaders/tex_blit.glsl)
+and [API contract](https://github.com/godotengine/godot/blob/4.7-stable/doc/classes/DrawableTexture2D.xml)
+identify this mechanism and its experimental status. The implementation uses
+single-target calls and ends each changed batch with a 1×1 sink copy: the engine
+otherwise leaves large targets attached to its persistent framebuffer after
+resource release. The tiny copy is included in submission timing. No resource
+queue, unbounded allocation stream or global publication cache is introduced.
+
+`auto|full|blit` selects publication. Unsupported platforms/backends/capacities
+and detectable resource failures reconstruct both exact full ImageTextures from
+retained CPU histories. The void blit API cannot prove that arbitrary later
+GPU/device failure was detected. Cold first use, full initialization and dense
+copies remain separately measured risks. Current/previous content certificates,
+revision ACKs and safe presentation/collision masking retain their identities.
+The exact previous CPU Image also avoids the redundant legacy per-cell
+occupancy scan; callers without that image retain conservative bounded checks.
 
 Previously `_publish_snapshot` completed graphical extraction and packing
 before exposing native completion to Main physics. The candidate publishes one
@@ -86,24 +98,24 @@ No uncoupled default, extrapolated pose or changed physics law is introduced.
 ## Focused local evidence and negative results
 
 These observations are Linux llvmpipe on Xeon Platinum 8370C, not physical NVIDIA.
-The c1ad control uses the original2048² Needle geometry/tape, Fire ON→OFF and
-ordinary coupled defaults. Each capture records144 completed steps/143 gaps.
+The c1ad control uses the original 2048² Needle geometry/tape, Fire ON→OFF and
+ordinary coupled defaults. Each capture records 144 completed steps/143 gaps.
 
-| Control | Rapier steps/s | Gap median/p95/p99/max ms | Gaps≥100/250/1000ms |
+| Control | Rapier steps/s | Gap median/p95/p99/max ms | Gaps≥100/250/1000 ms |
 | --- | ---: | --- | --- |
 | Follow |4.032671|224.336 /353.776100 /522.577620 /587.134|143 /53 /0|
 | Free |4.052381|235.405 /340.267000 /427.180380 /606.582|143 /59 /0|
 
-Follow native tick median was28.099ms, while completion→next physical admission
-median was 191.996ms. Typical upload spans were only about 4 ms in these captures.
+Follow native tick median was28.099 ms, while completion→next physical admission
+median was 191.996 ms. Typical upload spans were only about 4 ms in these captures.
 The complete gap is therefore not attributable to the upload call or native
 computation alone. Software shader/frame execution and unmeasured scheduling
 remain material. No sum of overlapping scopes is used as causal accounting.
 
 A frozen same-source full-texture combined→early handoff pair matched all 144
 recorded positions, orientations, linear velocities and native associations.
-Rapier rate3.713→4.061Hz; median gap266.834→241.552ms; p95337.724→306.890ms;
-maximum490.397→427.990ms; gaps≥250ms94→62. Every143 gap still exceeded100ms.
+Rapier rate3.713→4.061 Hz; median gap266.834→241.552 ms; p95 337.724→306.890 ms;
+maximum490.397→427.990 ms; gaps≥250ms94→62. Every 143 gap still exceeded100 ms.
 Native and upload timings also varied between these sequential arms, so the
 whole difference cannot be isolated to scheduling. This is developmental
 source-delta evidence, not the final source ABBA result or playable acceptance.
@@ -136,9 +148,9 @@ correctness result does not turn adverse timing into acceptance.
 
 On Windows WARP, the first Follow pair changed Rapier9.529→9.678 steps/s but
 median/p95/p99/max gaps111.714/116.227/152.027/153.021→
-124.282/139.505/223.397/254.968ms. Across all four Windows candidate arms,
-material-upload medians98.323–102.439ms exceeded the controls85.669–86.829ms.
-Backend submission scopes alone had medians94.917–98.793ms despite a median
+124.282/139.505/223.397/254.968 ms. Across all four Windows candidate arms,
+material-upload medians98.323–102.439 ms exceeded the controls85.669–86.829 ms.
+Backend submission scopes alone had medians94.917–98.793 ms despite a median
 360,448 submitted bytes. These are elapsed call scopes, not isolated GPU or
 CPU time. Prior-render synchronization is a plausible dependency, not a proven
 attribution. Linux llvmpipe also regressed: Follow controls7.595/7.276 steps/s
@@ -150,8 +162,8 @@ native work or timed uploads. Integer division plus `texelFetch` was slower;
 shift/mask addressing helped but remained insufficient. The adopted follow-up
 uses normalized nearest sampling and a cached tiled Shader specialization.
 Mixed-material forward/reverse median frame-post-draw intervals changed from
-shift/texelFetch284.541/264.262ms to normalized-specialized204.090/191.512ms;
-full-texture controls were210.966/174.355ms. Actual framebuffer bytes matched.
+shift/texelFetch284.541/264.262 ms to normalized-specialized204.090/191.512 ms;
+full-texture controls were210.966/174.355 ms. Actual framebuffer bytes matched.
 An open-flight probe still showed a full-versus-tiled cost gap. These software
 renderer probes justify the shader repair but establish neither end-to-end
 physics improvement nor physical NVIDIA acceptance. Negative alternatives and
@@ -166,13 +178,75 @@ The Windows publication fixture rejected initial readiness at its30s setup
 allowance; the available log does not identify the blocking startup subsystem.
 Only initial readiness now uses the pacing fixture's existing90s allowance and
 records actual setup/owner state. The later30s waits,5s injected graphical hold,
-150ms observation window and64 behavioral assertions remain unchanged.
+150 ms observation window and64 behavioral assertions remain unchanged.
 
 The normalized graphical material gate passed224 assertions with all eight
 nonvacuous appearance comparisons exact, plus19 headless fallback assertions.
 The39-assertion cache/provenance/lifetime gate is included in both integrated
 platform case lists. Final source performance and complete application gates
 must still decide the follow-up's disposition.
+
+## Drawable follow-up and retained limitations
+
+The exact 6f57 full/tiled same-source ABBA matched all144 recorded steps in both
+pairs but produced mixed timing. Forward full→tiled changed4.073→3.962 steps/s,
+median230.341→238.794 ms and p95 317.124→317.502 ms. Reverse full→tiled changed
+4.029→4.665 steps/s, median222.376→211.545 ms and p95 364.004→244.881 ms. Every
+143 gap in every arm still exceeded100 ms. This is not a uniform repair.
+
+A standalone drawable prototype passed 113 actual GPU/appearance assertions,
+including all byte values in R8/RG8, current/previous history, NPOT edges, seams,
+Canvas clipping interleaving, eight nonvacuous shader outputs, sparse/dense2048²
+updates, and invalid layout/sink/SRGB rejection. Its first NPOT sparse calls
+included48–58 ms blit spans. Initial parse/type mistakes and all cold observations
+are retained, not presented as warmed results.
+
+The first warmed drawable prototype exposed another negative: mutable custom
+copy uniforms caused repeated material-buffer updates, and dense publication
+spans reached about 35 ms on llvmpipe. A contained direct-coordinate variant uses
+the API's per-call `MODULATE` vector instead. A matched forward/reverse isolated
+copy probe, independently reduced with conventional interpolated quantiles,
+reduced sparse submission medians 4.1555/3.3250→1.0055/1.0845 ms and dense
+29.7500/31.8970→5.7860/5.9125 ms with exact pixels. First direct dense staging calls
+of 42.647/77.197 ms remain in the evidence. Dense whole-frame intervals remained
+about 49–53 ms. This reduces time inside the submission call but does not establish
+lower total GPU work or end-to-end physical improvement. Source-qualified
+Workbench and Windows comparisons, including cold/dense costs, remain required.
+
+The integrated production gate then passed 293 actual GPU/appearance assertions,
+including all eight nonvacuous comparisons after restoring the original shaders.
+Headless history/fallback passed 18, full-upload coverage 264, palette bounds 27,
+vapour callers 26 and native-camera effect callers 62. These are working-source
+development gates; final exact-HEAD platform runs remain the qualification gate.
+Production setup primes each fixed staging source with a tiny sink copy and
+reports that preparation inside initialization. This does not guarantee a
+nonblocking first edit: the final correctness run retained a 63.019 ms staging
+upload for the immediate first 2048² sparse update despite only 32 KiB submitted
+(copy submission 0.420 ms). Its following dense update took 10.619 ms overall.
+These observations remain visible alongside warmed results.
+
+Independent raw joins on World generation, native tick, revision and body sample
+showed that graphical handoff finished at least 121.924 ms before the next Rapier
+step started in the first three 6f57 arms. Render exchange medians were 0.609–0.707 ms
+and post-exchange snapshot tails about 1.0–1.2 ms. Under the unchanged sample
+contract, another packing worker cannot remove that demonstrated idle period:
+the next authoritative physical feedback did not yet exist. This is a conclusion
+about those captures, not proof that packing can never limit another workload.
+Godot's Main loop batches physics callbacks before process/render; merely moving
+uploads to its experimental Separate render thread retains a later Main sync
+barrier and does not grant independent physical progression through a long wait.
+
+The 6f57 Windows installed suite and actual PowerShell5.1 Test It.cmd passed, but
+the ordinary launcher test hit its 300s readiness watchdog. An actual configured
+feature-launcher reproduction proved the blank Workbench was fully installed:
+it had zero authored actors and intentionally no physical owner/initialized
+Rapier. The diagnostic readiness gate incorrectly required that bridge anyway.
+The narrow fix permits the valid blank state while requiring an adopted owner,
+initialized bridge, reset fence and complete terrain whenever actors are
+configured. Four missing-owner attempts refuse; restoring the blank setup emits
+a receipt, and the ordinary headless entry exits successfully. This corrects a
+qualification gate, not gameplay physics. Genuine final Windows launchers must
+still execute successfully.
 
 ## Final qualification and evidence interpretation
 
@@ -181,7 +255,7 @@ its reused native/Rapier inputs, verifies every executed candidate source, and
 runs serial ABBA on each host for ordinary Follow/Free. It requires contiguous
 completed-step prefixes and matching actor slots, then exact equality of all
 recorded positions/orientations/linear velocities and native admission fields.
-It retains full-arm and common-prefix distributions,50/100/250/1000ms counts,
+It retains full-arm and common-prefix distributions,50/100/250/1000 ms counts,
 actual rates, missing/duplicate completions, hold reasons, stage timings and
 native-completion→physical-admission delay. It does not observe every hidden
 Rapier state or numeric native force/torque value.
@@ -193,9 +267,9 @@ Elapsed scopes include OS descheduling and possible backend waits; none is an
 isolated CPU execution, GPU completion, transfer-bandwidth or scanout measure.
 Evidence includes adverse tails and failures, not only averages.
 
-Targeted array qualification covers R8/RG8, non-power-of-two extents, tile seams,
+Targeted drawable qualification covers R8/RG8, non-power-of-two extents, tile seams,
 recycled histories, effect-only edits, full resync, live mode switching, malformed
-array fallback, bounded2048² submissions and actual pixels from all shader
+resource fallback, bounded2048² submissions and actual pixels from all shader
 consumers. Physical publication tests exercise real native/Rapier owners and
 negative lifetime/terrain/sample cases. The integrated suite retains PAINT,
 Undo/Redo, fresh reopen, failure recovery, generator/Flatten/Materials Lab,

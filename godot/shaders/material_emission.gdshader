@@ -1,8 +1,6 @@
 shader_type canvas_item;
 render_mode unshaded;
 
-#include "res://shaders/material_tile_sampling.gdshaderinc"
-
 // Downsampled presentation-only light source. It reads the same immutable RG8
 // snapshot as the palette pass and never creates Light2D nodes or simulation
 // feedback. One low-resolution fragment performs a bounded sixteen-cell,
@@ -69,7 +67,7 @@ float flair_emission_multiplier(int flair, vec2 pixel) {
 vec3 emission_at(vec2 world_pixel) {
 	vec2 clamped_pixel = clamp(world_pixel, vec2(0.0), world_size_px - vec2(1.0));
 	vec2 world_uv = (floor(clamped_pixel) + vec2(0.5)) / world_size_px;
-	vec2 cell = cyber_material_current(world_texture, world_uv).rg;
+	vec2 cell = texture(world_texture, world_uv).rg;
 	int material_id = int(floor(cell.r * 255.0 + 0.5));
 	float condition = cell.g * condition_projection_enabled;
 	float program_v = (float(material_id) + 0.5) / 256.0;

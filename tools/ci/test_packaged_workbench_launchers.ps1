@@ -45,11 +45,13 @@ foreach($Name in @('Open Workbench.cmd','Open Publication Control.cmd','Open Ful
             throw ('Graphical launcher did not run the production application cleanly: '+$Name)
         }
         $Ready=Get-Content -LiteralPath $Receipt -Raw|ConvertFrom-Json
-        $ExpectedBackend=if($Name -eq 'Open Workbench.cmd'){'tiled'}else{'full'}
+        $ExpectedBackend=if($Name -eq 'Open Workbench.cmd'){'blit'}else{'full'}
         $ExpectedPhysics=if($Name -eq 'Open Publication Control.cmd'){'combined'}else{'early'}
         if(-not $Ready.workbench_installed -or $Ready.source -ne $env:CYBERSAND_EVAL_SOURCE_SHA -or
            $Ready.world_generation -lt 0 -or $Ready.uploaded_revision -lt 0 -or $Ready.pending_hard_chunks -ne 0 -or
-           $Ready.material_publication.backend -ne $ExpectedBackend -or $Ready.physics_publication -ne $ExpectedPhysics) {
+           $Ready.material_publication.backend -ne $ExpectedBackend -or $Ready.physics_publication -ne $ExpectedPhysics -or
+           $Ready.physics_required -ne ($Ready.authored_actor_count -gt 0) -or
+           ($Ready.physics_required -and -not $Ready.rapier_initialized)) {
             throw ('Launched Workbench identity or publication mode mismatch: '+$Name)
         }
         $Rows+=@{launcher=$Name;actual_graphical_cmd_exit=$Code;ready=$Ready;

@@ -1,8 +1,6 @@
 shader_type canvas_item;
 render_mode unshaded, blend_mul;
 
-#include "res://shaders/material_tile_sampling.gdshaderinc"
-
 // Scene-only exposure and a bounded, eight-sample recess shadow. This consumes
 // immutable render textures and multiplies appearance; it changes no material,
 // collision, rule, publication or player state. Absolute world samples keep the
@@ -21,7 +19,7 @@ uniform vec2 player_size_px = vec2(8.0,14.0);
 uniform float snapshot_blend = 1.0;
 
 float material_at(vec2 point) {
-	return floor(cyber_material_current(current_world_texture, (point + vec2(0.5)) / vec2(1024.0)).r * 255.0 + 0.5);
+	return floor(texture(current_world_texture, (point + vec2(0.5)) / vec2(1024.0)).r * 255.0 + 0.5);
 }
 
 float air(vec2 point) {
@@ -38,7 +36,7 @@ void fragment() {
 	vec2 p = floor(continuous_world_pixel);
 	float id = material_at(p);
 	if (id < 0.5 && snapshot_blend < 0.999) {
-		id = floor(cyber_material_previous(previous_world_texture, (p + vec2(0.5)) / vec2(1024.0)).r * 255.0 + 0.5);
+		id = floor(texture(previous_world_texture, (p + vec2(0.5)) / vec2(1024.0)).r * 255.0 + 0.5);
 	}
 	bool player = all(greaterThanEqual(p, player_origin_px))
 		&& all(lessThan(p, player_origin_px + player_size_px));

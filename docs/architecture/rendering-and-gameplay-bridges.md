@@ -202,27 +202,33 @@ change leaves retention, overflow, publication and ACK policy unchanged.
 **Current unmerged remediation candidate:** [main `apply_render_patches_to_image`](../../godot/scripts/main.gd)
 validates dimensions, channel count, offsets and exact byte sizes for the full
 packet before constructing/blitting patches. It updates a persistent CPU Image.
-On the qualified OpenGL/ANGLE compatibility backend, two bounded
-`Texture2DArray` resources represent current and previous whole-World material.
-World texels map to exact tile/layer coordinates in all six material shader
-consumers. Validated power-of-two tile sides permit exact normalized texel-centre
-coordinates with nearest filtering. Each material retains its base Shader and
-one tiled specialization, without reallocating or reassigning it per publication.
-At2048²,128² tiles require256 layers. A reused slot checks the
-union of this publication's dirty tiles and those changed on the previous
-publication; exact unchanged tile bytes skip `update_layer`. This repairs the
-two-publication-old slot without losing previous/current shader history.
-The renderer submits only changed layers, using the GLES3 depth-one subimage
-path. Full initialization and dense changes can still touch every layer.
+On qualified desktop OpenGL/ANGLE backends, two linear RGBA8 drawable textures
+retain the exact logical R8/RG8 current and previous material values. All six
+appearance shaders retain ordinary 2D sampling. Changed tiles are packed into
+one of a bounded set of R8/RG8 staging textures; that staging texture is uploaded
+once before GPU rectangle copies update the recycled history plane. A dense
+publication uses one full staging upload and one whole-plane GPU copy. This
+avoids CPU texture updates to the material planes sampled by the preceding draw.
 
-`CYBERSAND_MATERIAL_PUBLICATION=auto|full|tiled` and Engine Lab select the path.
-Unsupported rendering backends/capacities and detectable array validation
+At 2048²,128² tiles bound the dirty index to 256 entries. The recycled slot repairs
+all accumulated changes from its retained contents; exact unchanged tile bytes
+skip submission. One changed tile submits32 KiB of RG8 staging data instead of an
+8 MiB World image. GPU copies also read staging pixels and write RGBA8 targets:
+CPU upload bytes are not total GPU traffic. The two histories, staging size
+classes and 1×1 retirement target occupy 44,728,324 logical GPU texture bytes at
+2048² RG8, excluding driver overhead. A final tiny blit prevents the engine's
+persistent framebuffer attachment from retaining a released large history plane.
+
+`CYBERSAND_MATERIAL_PUBLICATION=auto|full|blit` and Engine Lab select the path.
+Unsupported platforms/backends/capacities and detectable resource validation
 failures retain the whole-ImageTexture fallback; switching modes reconstructs
-both exact retained histories. Godot's layer-update API returns no error result,
+both exact retained histories. Godot's drawable-blit API returns no error result,
 so latent device loss is not claimed to be synchronously detectable. The
 fallback's `ImageTexture.update` still updates the full plane regardless of
-patch area (8MiB at2048² RG8). Neither CPU patch size nor elapsed call timing
-alone establishes transferred GPU bytes or a driver-wait cause.
+patch area (8 MiB at 2048² RG8). Neither CPU patch size nor elapsed call timing
+alone establishes measured GPU bandwidth or a driver-wait cause. The superseded
+array design and its negative performance evidence remain in the
+[remediation audit](../audits/2026-11-16-physics-freeze-remediation-002.md).
 
 Desktop acknowledges a render serial only after successful consumption.
 Malformed/empty/stale or unacceptable full-refresh data is rejected and requests

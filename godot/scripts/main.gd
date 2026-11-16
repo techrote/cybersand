@@ -1,6 +1,6 @@
 extends Control
 
-const MaterialTexture = preload("res://scripts/tiled_material_texture.gd")
+const MaterialPublisher = preload("res://scripts/blit_material_publisher.gd")
 const PixelCamera = preload("res://scripts/pixel_camera_transform.gd")
 const PhysicalTrial = preload("res://scripts/physical_actor_trial.gd")
 const PhysicalCatalog = preload("res://scripts/physical_actor_catalog.gd")
@@ -1639,11 +1639,11 @@ var lockstep_main_unfenced_steps: int = 0
 var image: Image
 var texture: Texture2D
 var previous_texture: Texture2D
+var _material_blit_publisher: MaterialPublisher
 var _material_publication_mode: String = ""
 var _material_publication_fallback: String = ""
 var _material_publication_last: Dictionary = {}
 var _material_pending_rectangles := PackedInt32Array()
-var _material_previous_rectangles := PackedInt32Array()
 var _material_image_patch_usec: int = 0
 var material_appearance_lut: ImageTexture
 var material_appearance_program: ImageTexture
@@ -2111,14 +2111,23 @@ func _process(delta: float) -> void:
 func _write_launcher_ready_receipt() -> void:
 	if shared_workbench == null or shared_workbench.applied.is_empty() \
 		or not pending_microscenario_apply.is_empty() or _pending_physical_candidate != null \
-		or worker_start_error != OK or not rapier_bridge.is_initialized() \
+		or worker_start_error != OK or rapier_start_error != OK \
 		or latest_snapshot == null or latest_snapshot.simulation_failed \
 		or last_uploaded_revision < 0 or last_uploaded_world_generation < 0 \
 		or last_uploaded_world_generation != latest_snapshot.render_world_generation \
 		or rapier_bridge.pending_hard_surface_chunks() != 0:
 		_launcher_ready_frames = 0
 		return
-	if physical_actor_session != null and (_actor_reset_receipt != 0 or not _physical_terrain_ready):
+	# A freshly installed blank Workbench deliberately retires its unused
+	# reference-body bridge. Authored actors still require the adopted live
+	# owner, initialized Rapier space and complete collision terrain.
+	var authored_actor_count: int = shared_workbench.applied.get("actors",[]).size()
+	var physics_required: bool = authored_actor_count > 0
+	if physics_required != (physical_actor_session != null):
+		_launcher_ready_frames = 0
+		return
+	if physics_required and (not rapier_bridge.is_initialized() \
+		or _actor_reset_receipt != 0 or not _physical_terrain_ready):
 		_launcher_ready_frames = 0
 		return
 	_launcher_ready_frames += 1
@@ -2127,6 +2136,8 @@ func _write_launcher_ready_receipt() -> void:
 		"workbench_installed":true,"world_generation":last_uploaded_world_generation,
 		"uploaded_revision":last_uploaded_revision,"snapshot_serial":latest_snapshot.serial,
 		"native_tick":latest_snapshot.tick_index,"pending_hard_chunks":0,
+		"physics_required":physics_required,"authored_actor_count":authored_actor_count,
+		"rapier_initialized":rapier_bridge.is_initialized(),
 		"material_publication":material_publication_status(),
 		"physics_publication":simulation_worker.physics_publication_mode()}
 	var output := FileAccess.open(_launcher_ready_receipt, FileAccess.WRITE)
@@ -5524,7 +5535,6 @@ func view_content_rect() -> Rect2:
 func create_render_textures() -> void:
 	_create_material_texture_pair(image, image)
 	_material_pending_rectangles.clear()
-	_material_previous_rectangles.clear()
 	_presentation_previous_image = null
 	_presentation_previous_unknown = true
 	_presentation_current_bytes = image.get_data()
@@ -5821,7 +5831,6 @@ func finish_texture_upload(world_revision: int, start_usec: int) -> void:
 	_presentation_upload_cache_usec = Time.get_ticks_usec()-cache_started_usec
 	_presentation_pending_cache_usec += _presentation_upload_cache_usec
 	update_render_texture()
-	_material_previous_rectangles = _material_pending_rectangles
 	_bind_material_texture_consumers()
 	snapshot_blend_start_usec = Time.get_ticks_usec()
 	last_uploaded_revision = world_revision
@@ -5829,21 +5838,26 @@ func finish_texture_upload(world_revision: int, start_usec: int) -> void:
 
 
 func update_render_texture() -> void:
-	if texture is MaterialTexture:
-		# The recycled slot still contains t-2. Both t-2 -> t-1 and t-1 -> t
-		# dirty tiles must be installed from the new complete CPU image.
-		var regions: PackedInt32Array = _material_pending_rectangles.duplicate()
-		regions.append_array(_material_previous_rectangles)
-		if (texture as MaterialTexture).update_regions(image, regions):
-			_material_publication_last = (texture as MaterialTexture).last_update.duplicate()
+	if texture is MaterialPublisher.MaterialPlane:
+		var regions: Array[Rect2i] = []
+		for offset: int in range(0, _material_pending_rectangles.size(), 6):
+			regions.append(Rect2i(_material_pending_rectangles[offset], _material_pending_rectangles[offset+1],
+				_material_pending_rectangles[offset+2], _material_pending_rectangles[offset+3]))
+		# finish_texture_upload has swapped Main's references already. The owner
+		# installs every pending tile in the recycled slot, then advances its pair.
+		if _material_blit_publisher != null and texture == _material_blit_publisher.previous \
+				and previous_texture == _material_blit_publisher.current \
+				and _material_blit_publisher.publish(image, regions):
+			_material_publication_last = _material_blit_publisher.last_update.duplicate()
 			return
-		# Any detected structural rejection retires both arrays. Restore both
-		# exact history images before binding or acknowledging this publication.
-		_material_publication_fallback = "tiled update validation failed"
+		# A structural rejection publishes both exact CPU histories with the
+		# verified full path before the revision is acknowledged.
+		_material_publication_fallback = "blit update validation failed"
 		var recovery_previous: Image = _material_previous_cpu_image()
 		var recovery_started: int = Time.get_ticks_usec()
 		texture = ImageTexture.create_from_image(image)
 		previous_texture = ImageTexture.create_from_image(recovery_previous)
+		_material_blit_publisher = null
 		_material_publication_last = {"mode":"full", "submitted_bytes":image.get_width() * image.get_height() * render_channels * 2,
 			"tile_assembly_usec":0, "backend_submit_usec":Time.get_ticks_usec() - recovery_started,
 			"recovery_rebuilt_pair":true}
@@ -5851,7 +5865,7 @@ func update_render_texture() -> void:
 	var started: int = Time.get_ticks_usec()
 	(texture as ImageTexture).update(image)
 	_material_publication_last = {"mode":"full", "submitted_bytes":image.get_width() * image.get_height() * render_channels,
-		"candidate_layers":1, "updated_layers":1, "tile_count":1,
+		"candidate_tiles":1, "updated_tiles":1, "tile_count":1,
 		"tile_assembly_usec":0, "backend_submit_usec":Time.get_ticks_usec() - started}
 
 
@@ -5868,36 +5882,31 @@ func _material_previous_cpu_image() -> Image:
 func _create_material_texture_pair(current: Image, previous: Image) -> void:
 	if _material_publication_mode.is_empty():
 		_material_publication_mode = OS.get_environment("CYBERSAND_MATERIAL_PUBLICATION").to_lower()
-		if _material_publication_mode not in ["auto", "full", "tiled"]: _material_publication_mode = "auto"
+		if _material_publication_mode not in ["auto", "full", "blit"]: _material_publication_mode = "auto"
 	_material_publication_fallback = ""
-	var new_current: Texture2D
-	var new_previous: Texture2D
+	var publisher: MaterialPublisher
 	if _material_publication_mode != "full":
-		if MaterialTexture.supported_driver():
-			new_current = MaterialTexture.create_from_material(current)
-			new_previous = MaterialTexture.create_from_material(previous) if new_current != null else null
-			if new_current == null or new_previous == null:
-				_material_publication_fallback = "array creation or capacity refused"
+		if MaterialPublisher.supported_driver():
+			publisher = MaterialPublisher.create_pair(current, previous)
+			if publisher == null:
+				_material_publication_fallback = "drawable pair creation or capacity refused"
 		else:
-			_material_publication_fallback = "renderer not qualified for tiled publication"
-	if new_current == null or new_previous == null:
-		new_current = ImageTexture.create_from_image(current)
-		new_previous = ImageTexture.create_from_image(previous)
-	texture = new_current
-	previous_texture = new_previous
-	var initialized_bytes: int = (current.get_width() * current.get_height()
-		+ previous.get_width() * previous.get_height()) * render_channels
-	if texture is MaterialTexture:
-		var tiled := texture as MaterialTexture
-		initialized_bytes = 2 * tiled.columns * tiled.rows * tiled.tile_side * tiled.tile_side * render_channels
-	# Initialization has no stage-split timing probe. Omit those fields rather
-	# than turning unknown setup time into a measured zero-duration update.
-	_material_publication_last = {"mode":"tiled" if texture is MaterialTexture else "full",
-		"submitted_bytes":initialized_bytes, "initialization":true}
+			_material_publication_fallback = "platform or renderer not qualified for blit publication"
+	if publisher != null:
+		texture = publisher.current
+		previous_texture = publisher.previous
+		_material_publication_last = publisher.last_update.duplicate()
+	else:
+		var setup_started: int = Time.get_ticks_usec()
+		texture = ImageTexture.create_from_image(current)
+		previous_texture = ImageTexture.create_from_image(previous)
+		_material_publication_last = {"mode":"full", "initialization":true,
+			"initialization_usec":Time.get_ticks_usec()-setup_started,
+			"submitted_bytes":(current.get_width()*current.get_height()+previous.get_width()*previous.get_height())*render_channels}
+	_material_blit_publisher = publisher
 
 
 func _material_publication_rid(value: Texture2D) -> RID:
-	if value is MaterialTexture: return (value as MaterialTexture).publication_rid()
 	return value.get_rid() if value != null else RID()
 
 
@@ -5908,7 +5917,6 @@ func configure_material_textures(shader: ShaderMaterial, single: bool = false) -
 	else:
 		shader.set_shader_parameter("current_world_texture", texture)
 		shader.set_shader_parameter("previous_world_texture", previous_texture)
-	MaterialTexture.bind_shader(shader, texture, previous_texture)
 
 
 func _bind_material_texture_consumers() -> void:
@@ -5922,30 +5930,32 @@ func _bind_material_texture_consumers() -> void:
 func material_publication_status() -> Dictionary:
 	var result: Dictionary = _material_publication_last.duplicate()
 	result["requested_mode"] = _material_publication_mode
-	result["backend"] = "tiled" if texture is MaterialTexture else "full"
+	result["backend"] = "blit" if texture is MaterialPublisher.MaterialPlane else "full"
 	result["fallback_reason"] = _material_publication_fallback
 	result["driver"] = RenderingServer.get_current_rendering_driver_name()
+	result["logical_source_format"] = "R8" if render_channels == 1 else "RG8"
+	result["gpu_storage_format"] = "RGBA8_LINEAR" if texture is MaterialPublisher.MaterialPlane else result.logical_source_format
 	if not result.get("initialization", false):
 		result["image_patch_usec"] = _material_image_patch_usec
 		result["content_cache_usec"] = _presentation_upload_cache_usec
 	result["timing_scope"] = "elapsed wall calls including possible waits/descheduling; not GPU completion"
-	if texture is MaterialTexture:
-		result["tile_side"] = (texture as MaterialTexture).tile_side
-		result["tile_count"] = (texture as MaterialTexture).columns * (texture as MaterialTexture).rows
-		result["current_array_rid"] = _material_publication_rid(texture).get_id()
-		result["previous_array_rid"] = _material_publication_rid(previous_texture).get_id()
+	result["timing_aliases"] = "tile_assembly=atlas_assembly; backend_submit=staging_upload+gpu_blit_submit; do not add aliases twice"
+	result["byte_scope"] = "submitted_bytes counts CPU staging uploads; target write bytes are estimates, not measured bandwidth"
+	if _material_blit_publisher != null:
+		result["tile_side"] = _material_blit_publisher.tile_side
+		result["tile_count"] = _material_blit_publisher.columns * _material_blit_publisher.rows
+		result["allocated_gpu_bytes"] = _material_blit_publisher.gpu_storage_bytes()
+		result["current_texture_rid"] = _material_publication_rid(texture).get_id()
+		result["previous_texture_rid"] = _material_publication_rid(previous_texture).get_id()
 	return result
 
 
 func set_material_publication_mode(mode: String) -> bool:
-	if mode not in ["auto", "full", "tiled"] or image == null: return false
+	if mode not in ["auto", "full", "blit"] or image == null: return false
 	_material_publication_mode = mode
 	_create_material_texture_pair(image, _material_previous_cpu_image())
-	# A newly constructed previous slot contains the preceding material image;
-	# its unknown dirty delta is bounded by this explicit whole-plane coverage.
-	_material_previous_rectangles = _full_material_rectangle()
 	_bind_material_texture_consumers()
-	return mode != "tiled" or texture is MaterialTexture
+	return mode != "blit" or texture is MaterialPublisher.MaterialPlane
 
 
 func update_shader_parameters() -> void:

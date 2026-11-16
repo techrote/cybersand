@@ -184,7 +184,8 @@ def reduction(path, maximum_step=None):
     uploads = [e for e in events if e.get("event") == "texture_upload"]
     publication = [e["material_publication"] for e in uploads if isinstance(e.get("material_publication"), dict)]
     components = {name: distribution([p[name] / 1000 for p in publication if isinstance(p.get(name), (int, float))])
-                  for name in ("image_patch_usec", "content_cache_usec", "tile_assembly_usec", "backend_submit_usec")}
+                  for name in ("image_patch_usec", "content_cache_usec", "tile_assembly_usec", "atlas_assembly_usec",
+                               "backend_submit_usec", "staging_upload_usec", "gpu_blit_submit_usec")}
     rates = {}
     for name, rows in (("rapier", steps), ("native", [e for e in events if e.get("event") == "native_tick"]),
                        ("main", frames)):
@@ -208,9 +209,15 @@ def reduction(path, maximum_step=None):
             "render_publications": len(publication_ids),
             "duplicate_render_publications": len(publication_ids)-len(set(publication_ids)),
             "backend_modes": dict(Counter(p.get("backend", p.get("mode", "unknown")) for p in publication)),
+            "fallback_reasons": dict(Counter(p["fallback_reason"] for p in publication if p.get("fallback_reason"))),
             "submitted_bytes": distribution([p["submitted_bytes"] for p in publication if "submitted_bytes" in p]),
+            "estimated_gpu_target_write_bytes": distribution([p["estimated_target_write_bytes"] for p in publication
+                                                               if "estimated_target_write_bytes" in p]),
+            "allocated_gpu_bytes": distribution([p["allocated_gpu_bytes"] for p in publication if "allocated_gpu_bytes" in p]),
             "observer_drops": {k: footer.get(k, 0) for k in ("dropped", "events_dropped", "worker_events_dropped")},
-            "meaning": "Measured event completion rates and elapsed call scopes, not isolated CPU/GPU execution or physical display scanout."}, physical_states(events)
+            "meaning": "Measured event completion rates and elapsed call scopes, not isolated CPU/GPU execution or physical display scanout. "
+                       "Backend submission includes staging upload and blit/retirement submission; assembly aliases and child scopes must not be summed. "
+                       "Submitted bytes count CPU texture uploads; GPU target-write bytes are a logical estimate, not measured bandwidth."}, physical_states(events)
 
 
 def main():
@@ -280,6 +287,10 @@ def main():
                 report["cases"].append(row)
                 arms.append((row, states))
                 write(output, report)
+                if arm == "candidate":
+                    need(set(reduced["backend_modes"]) == {"blit"} and not reduced["fallback_reasons"],
+                         "Candidate capture did not exercise blit throughout; automatic full fallback remains valid application behavior, "
+                         "but cannot qualify this incremental-publication comparison")
             for index in range(0, len(arms), 2):
                 first, second = arms[index:index+2]
                 left, right = (first, second) if first[0]["arm"] == "control" else (second, first)

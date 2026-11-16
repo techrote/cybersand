@@ -13,7 +13,7 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 ## Publication remediation candidate — 2026-11-16
 
 PR609's PHYSICS-FREEZE-REMEDIATION-002 adds bounded current/previous material
-texture arrays and early immutable physical completion after required terrain,
+staging uploads/GPU rectangle copies and early immutable physical completion after required terrain,
 before graphical packet work. The full texture and combined-publication controls
 retain equivalent physical laws, fixed timestep and strict native feedback.
 See the [engineering record](../audits/2026-11-16-physics-freeze-remediation-002.md)

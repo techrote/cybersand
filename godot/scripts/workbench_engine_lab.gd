@@ -163,13 +163,13 @@ func mount(controller: Control,wb: Control) -> void:
 	publication_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	var publication := OptionButton.new()
 	publication.custom_minimum_size = Vector2(220,32)
-	publication.add_item("Automatic (dirty tiles)")
+	publication.add_item("Automatic (incremental)")
 	publication.add_item("Full texture control")
-	publication.add_item("Dirty tiles")
-	publication.tooltip_text = "Compare publication cost in the current session. Physics coupling and the material history stay intact."
+	publication.add_item("Incremental GPU updates")
+	publication.tooltip_text = "Compare bounded staging uploads and GPU rectangle copies with full texture updates. Physics coupling and the material history stay intact."
 	publication.item_selected.connect(func(index: int) -> void:
 		if _syncing: return
-		var mode: String = ["auto","full","tiled"][index]
+		var mode: String = ["auto","full","blit"][index]
 		if not host.set_material_publication_mode(mode):
 			_status.text = "Texture mode could not be changed; the current material history is retained."
 		_refresh_publication())
@@ -430,7 +430,7 @@ func finish_pose_trace() -> void:
 func _refresh_publication() -> void:
 	if host == null or _publication_status == null: return
 	var state: Dictionary = host.material_publication_status()
-	var modes: Array[String] = ["auto","full","tiled"]
+	var modes: Array[String] = ["auto","full","blit"]
 	var index: int = modes.find(str(state.get("requested_mode","auto")))
 	_syncing = true
 	(_widgets["publication"] as OptionButton).select(maxi(0,index))

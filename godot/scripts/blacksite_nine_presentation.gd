@@ -229,8 +229,6 @@ func refresh() -> void:
 	overlay.size = content.size
 	shader.set_shader_parameter("current_world_texture", host.texture)
 	shader.set_shader_parameter("previous_world_texture", host.previous_texture)
-	if host.has_method("configure_material_textures"):
-		host.configure_material_textures(shader)
 	shader.set_shader_parameter("view_size_px", Vector2(host.current_view_size))
 	# Main resolves camera translation at display-pixel granularity. Reuse that
 	# exact origin for both backdrop and grade; standalone hosts stay continuous.
@@ -248,8 +246,6 @@ func refresh() -> void:
 	for parameter: String in ["current_world_texture", "previous_world_texture", "view_size_px",
 		"camera_origin_px", "snapshot_blend", "player_origin_px", "player_size_px"]:
 		grade_shader.set_shader_parameter(parameter, shader.get_shader_parameter(parameter))
-	if host.has_method("configure_material_textures"):
-		host.configure_material_textures(grade_shader)
 	if host.has_method("configure_pixel_camera"):
 		host.configure_pixel_camera(grade_shader)
 

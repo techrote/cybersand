@@ -62,12 +62,12 @@
         "operations/camera-stack-coherence-acceptance.md"
       ],
       "facts": [
-        "Two bounded current/previous texture arrays update only changed layers and repair the dirty union when reusing an older slot; exact full-image fallback remains available.",
+        "Bounded R8/RG8 staging uploads and GPU rectangle copies update exact current/previous logical material histories in linear RGBA8 targets; recycled slots repair accumulated dirties and exact full-image fallback remains available.",
         "The immutable physical mailbox is published after required terrain and before graphical packet work; fixed timestep and strict native-sample feedback remain mandatory.",
         "Test It compares actual completed physical steps and complete common recorded states; mailbox publications, configured rates and software rendering are not physical NVIDIA acceptance."
       ],
       "sources": [
-        "../godot/scripts/tiled_material_texture.gd::update_regions",
+        "../godot/scripts/blit_material_publisher.gd::publish",
         "../godot/scripts/simulation_worker.gd::take_latest_physics_snapshot",
         "../tools/ci/run_physics_freeze_comparison.py::exact_common_states"
       ]

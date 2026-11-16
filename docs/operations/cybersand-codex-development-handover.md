@@ -12,7 +12,7 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 ## Publication remediation — 2026-11-16
 
-Continue PR609's bounded dirty material arrays and separate immutable physics
+Continue PR609's bounded staging/GPU material copies and separate immutable physics
 completion mailbox from the [remediation record](../audits/2026-11-16-physics-freeze-remediation-002.md).
 Use the updated [publication controls and owner runbook](camera-stack-coherence-acceptance.md).
 Both repairs preserve the fixed physical timestep, native sample wait/age and

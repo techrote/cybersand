@@ -3,8 +3,8 @@ title: Material appearance and rendering
 document-kind: contract
 canonical-for: [material-visual-projection, palette-program-appearance, render-upload-cost, native-resolution-camera-presentation]
 status: Current
-scope: Native RG8 presentation, palette/program LUTs, shader flair, temporal smoothing, glow, and current GPU upload limitation
-last-reviewed: 2026-11-13
+scope: Native RG8 presentation, palette/program LUTs, shader flair, temporal smoothing, glow, and bounded material publication
+last-reviewed: 2026-11-16
 related-documents: [material-visual-pattern-library.md, ../reference/material-effects-register.md, themed-construction-materials.md, materials-and-rule-kernels.md, ../architecture/rendering-and-gameplay-bridges.md, ../architecture/item-authored-material-programs.md]
 ---
 
@@ -12,9 +12,11 @@ related-documents: [material-visual-pattern-library.md, ../reference/material-ef
 
 **Current:** native material identity and one derived condition byte form an
 immutable RG8 presentation stream. GPU shaders create variation, animation,
-relief, and emission without changing physics. CPU patch copies are dirty-region
-proportional, but each changed GPU texture update still uploads the full 1024²
-RG8 image. True GPU subregion writes are **Planned**.
+relief, and emission without changing physics. Accepted-main/Web and the retained
+full fallback use whole-image GPU updates despite dirty CPU patches. The
+unmerged PHYSICS-FREEZE-REMEDIATION-002 desktop candidate instead uploads bounded
+staging data and copies dirty rectangles on the GPU; its exact history, storage
+tradeoff and fallback are specified under [dirty bytes versus GPU upload](#dirty-bytes-versus-gpu-upload).
 
 This page owns appearance and cost semantics at the
 [secured checkpoint](../operations/source-checkpoint-and-recovery.md).
@@ -343,23 +345,23 @@ render read path.
 
 [main.gd](../../godot/scripts/main.gd) validates patches and updates a persistent
 CPU Image. The unmerged PHYSICS-FREEZE-REMEDIATION-002 candidate uses bounded
-current/previous texture arrays on the qualified compatibility renderer;
-exact normalized nearest sampling at texel centres preserves RG8 bytes and
-neighbour access across tile boundaries. Power-of-two tile dimensions make the
-coordinate scaling exact. A bounded per-material tiled Shader specialization
-removes repeated mode branches while preserving the original Shader and uniforms
-for full fallback. Reused slots repair the union of current and preceding dirty
-tiles and skip byte-identical layers. The
+R8/RG8 staging uploads and GPU rectangle copies into two linear RGBA8 drawable
+history planes on qualified desktop compatibility backends. Exact logical
+material/condition bytes are preserved; the six original appearance shaders
+retain ordinary 2D sampling. Reused slots repair accumulated dirty tiles and
+skip byte-identical contents. The
 [publication contract](../architecture/rendering-and-gameplay-bridges.md#does-a-small-dirty-patch-mean-a-small-gpu-upload)
 owns capacity, history, mode switching and fallback. The retained full
 `ImageTexture.update(image)` fallback still submits2,097,152 bytes at1024² RG8
 even for a tiny edit. Native patch bytes therefore remain distinct from actual
-layer submissions; elapsed upload calls are not isolated GPU measurements.
+staging submissions; GPU target writes are additional traffic, and elapsed
+upload/blit calls are not isolated GPU measurements.
 No second mutable world image is introduced by shader neighbor sampling.
 
 ## Temporal smoothing and glow
 
-Two RG8 textures alternate on accepted snapshots. The shader may evaluate
+Two logical material histories alternate on accepted snapshots (RG8 full
+textures, or exact RG values in linear RGBA8 drawable targets). The shader may evaluate
 previous and current material appearance during transitions. Only pixels whose
 displayed material changes and where either side is temporally smoothed are
 crossfaded. **Current since 2026-10-18:** each side's neighbour relief reads its

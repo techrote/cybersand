@@ -261,9 +261,14 @@ Python, Git or repository installation is required.
    distributions and hold reasons, upload stages, and frame cadence.
    A complete capture does not mean gameplay passed physical evaluation.
 
-Automatic material publication uses bounded dirty tile arrays on the qualified
-OpenGL/ANGLE backend and retains full texture fallback. Current and previous
-material images, shader crossfade, collision masks and revision ACKs are preserved.
+Automatic material publication uploads bounded R8/RG8 staging data and copies
+dirty rectangles on the GPU into linear RGBA8 history textures. The qualified
+desktop OpenGL/ANGLE path retains exact material/condition bytes and the original
+appearance shaders; unsupported or detectably invalid resources use full texture
+fallback. Current/previous history, crossfade, collision masks and revision ACKs
+are preserved. At 2048-square RG8, one changed tile submits 32KiB instead of 8MiB;
+the two histories and bounded staging/retirement resources occupy about42.7MiB
+of logical GPU texture storage. GPU copy writes are additional traffic.
 Large changes/full initialization can still be expensive. The early physical
 mailbox removes graphical packet work from the completion handoff but does not
 remove native computation, required terrain installation, strict feedback age,

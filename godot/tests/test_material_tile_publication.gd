@@ -1,10 +1,10 @@
 extends SceneTree
 
-# Production Main publication, actual array readback and pixel-equivalent
+# Production Main publication, actual drawable readback and pixel-equivalent
 # terrain/effect/mask shaders. This is a correctness/transfer-volume gate;
 # software-renderer timing is not physical Windows/NVIDIA acceptance.
 const Main = preload("res://scripts/main.gd")
-const Tiled = preload("res://scripts/tiled_material_texture.gd")
+const Publisher = preload("res://scripts/blit_material_publisher.gd")
 const Palette = preload("res://scripts/palette_shader_selector.gd")
 const Clearance = preload("res://scripts/workbench_presentation_coherence.gd")
 const Appearance = preload("res://scripts/material_appearance_lut.gd")
@@ -79,14 +79,14 @@ func _patch(host: Control, area: Rect2i, value: int, condition: int, label: Stri
 	expected.blit_rect(patch, Rect2i(Vector2i.ZERO, area.size), area.position)
 	var metadata := PackedInt32Array([area.position.x, area.position.y, area.size.x, area.size.y,
 		0, area.size.x * host.render_channels])
-	var prior_array: RID = host._material_publication_rid(host.texture)
-	var prior_previous_array: RID = host._material_publication_rid(host.previous_texture)
+	var prior_current_rid: RID = host._material_publication_rid(host.texture)
+	var prior_previous_rid: RID = host._material_publication_rid(host.previous_texture)
 	check(host.upload_texture_patches(metadata, patch.get_data(), host.last_uploaded_revision + 1,
 		host.render_channels), label + " accepted")
 	_check_gpu(host, expected.get_data(), old, label)
-	check(host._material_publication_rid(host.texture) == prior_previous_array and
-		host._material_publication_rid(host.previous_texture) == prior_array,
-		label + " exact bounded array pair swapped")
+	check(host._material_publication_rid(host.texture) == prior_previous_rid and
+		host._material_publication_rid(host.previous_texture) == prior_current_rid,
+		label + " exact bounded drawable pair swapped")
 	var result: Dictionary = host.material_publication_status()
 	observations.append({"label":label, "publication":result})
 	return result
@@ -143,16 +143,16 @@ func _occupancy_history_contract() -> void:
 
 
 func _history_and_fallback(channels: int) -> void:
-	var host: Control = _host(Vector2i(317, 259), channels, "tiled", 5)
-	check(host.texture is Tiled, "graphical production selected tiled publication")
-	check(host.texture.columns * host.texture.rows <= 256, "array within guaranteed layer minimum")
-	check(host.texture.get_rid() != host.texture.publication_rid(),
-		"Canvas carrier and actual material array identities are distinct")
+	var host: Control = _host(Vector2i(317, 259), channels, "blit", 5)
+	check(host.texture is Publisher.MaterialPlane, "graphical production selected blit publication")
+	check(host._material_blit_publisher.columns * host._material_blit_publisher.rows <= 256, "dirty tile count within bounded capacity")
+	check(host.texture.get_rid() == host.texture.drawable.get_rid(),
+		"public texture RID is the actual drawable history")
 	_check_gpu(host, host.image.get_data(), host.image.get_data(), "initial NPOT plane")
 	var first: Dictionary = _patch(host, Rect2i(63, 63, 2, 2), 6, 251, "four-tile seam")
-	check(first.updated_layers == 4, "a four-tile seam submits exactly four layers")
+	check(first.updated_tiles == 4, "a four-tile seam submits exactly four tiles")
 	var second: Dictionary = _patch(host, Rect2i(257, 140, 1, 1), 3, 173, "disjoint recycled slot")
-	check(second.updated_layers == 5, "recycled slot restores preceding four tiles and the new tile")
+	check(second.updated_tiles == 5, "recycled slot restores preceding four tiles and the new tile")
 	_patch(host, Rect2i(316, 258, 1, 1), 127, 255, "bottom right padded tile")
 	_patch(host, Rect2i(316, 258, 1, 1), 127, 1, "condition-only edit")
 	var unchanged: PackedByteArray = host.image.get_data()
@@ -161,46 +161,49 @@ func _history_and_fallback(channels: int) -> void:
 			host.last_uploaded_revision + 1, channels), "byte-identical full resync accepted")
 		_check_gpu(host, unchanged, unchanged, "full resync")
 	check(host.material_publication_status().submitted_bytes == 0,
-		"resync of two identical slots submits no unchanged layers")
+		"resync of two identical slots submits no unchanged tiles")
 	var current_id: int = host._presentation_current_content_id
 	var previous_id: int = host._presentation_previous_content_id
-	for mode: String in ["full", "tiled", "full", "tiled"]:
+	for mode: String in ["full", "blit", "full", "blit"]:
 		check(host.set_material_publication_mode(mode), "live publication mode switch " + mode)
 		_check_gpu(host, unchanged, unchanged, "mode switch " + mode)
 		check(host._presentation_current_content_id == current_id
 			and host._presentation_previous_content_id == previous_id,
 			"mode switch preserves exact content identity")
 	_patch(host, Rect2i(0, 0, 1, 1), 19, 99, "post-switch edit")
-	# The next target slot has a valid RID and matching count but wrong extent.
-	# Godot's void update_layer would reject it; our preflight must recover
-	# before marking a layer cache or acknowledging a fabricated publication.
-	var broken: Texture2DArray = Texture2DArray.new()
-	var wrong: Array[Image] = []
-	for layer: int in range(host.previous_texture.columns * host.previous_texture.rows):
-		wrong.append(Image.create(1, 1, false, host.render_image_format))
-	check(broken.create_from_images(wrong) == OK, "valid-RID wrong-shape adversary constructed")
-	host.previous_texture.layers = broken
+	var distinct_current: PackedByteArray = host.image.get_data()
+	var distinct_previous: PackedByteArray = host._presentation_previous_bytes
+	for mode: String in ["full", "blit"]:
+		check(host.set_material_publication_mode(mode), "different-history live mode switch "+mode)
+		_check_gpu(host, distinct_current, distinct_previous, "different-history mode switch "+mode)
+	_patch(host, Rect2i(200, 240, 1, 1), 7, 155, "first recycled slot after different-history switch")
+	# A foreign valid drawable must be refused before any copy/ACK. Ownership
+	# and shape checks avoid accepting a void backend call that did no work.
+	var broken := DrawableTexture2D.new()
+	broken.setup(1,1,DrawableTexture2D.DRAWABLE_FORMAT_RGBA8,Color.BLACK,false)
+	check(broken.get_rid().is_valid(), "valid-RID wrong-shape adversary constructed")
+	host.previous_texture.drawable = broken
 	var old: PackedByteArray = host.image.get_data()
 	var exact := _pattern(host.world_extent, channels, 19)
 	check(host.upload_texture_patches(host._full_material_rectangle(), exact,
 		host.last_uploaded_revision + 1, channels), "structurally failed tile path uses full fallback")
 	check(host.texture is ImageTexture and host.previous_texture is ImageTexture
 		and host.material_publication_status().backend == "full",
-		"failure retires both arrays and reports full fallback")
+		"failure retires both drawable targets and reports full fallback")
 	check(not str(host.material_publication_status().fallback_reason).is_empty(),
 		"detected fallback reason is observable")
 	_check_gpu(host, exact, old, "recovered full update")
 	# A corrupted tile size must not submit geometrically different
-	# sampling uniforms or acknowledge an array update using the wrong map.
-	check(host.set_material_publication_mode("tiled"), "size adversary restores a valid tiled pair")
-	host.previous_texture.tile_side -= 1
+	# copy coordinates or acknowledge an drawable update using the wrong map.
+	check(host.set_material_publication_mode("blit"), "size adversary restores a valid drawable pair")
+	host._material_blit_publisher.tile_side -= 1
 	var invalid_old: PackedByteArray = host.image.get_data()
 	var invalid_new := _pattern(host.world_extent, channels, 31)
 	var invalid_revision: int = host.last_uploaded_revision + 1
 	check(host.upload_texture_patches(host._full_material_rectangle(), invalid_new,
 		invalid_revision, channels), "non-power-of-two tile side recovers through full publication")
 	check(host.texture is ImageTexture and host.previous_texture is ImageTexture,
-		"invalid address mapping retires both tiled resources")
+		"invalid address mapping retires both drawable resources")
 	check(host.last_uploaded_revision == invalid_revision,
 		"fallback acknowledges the actual full publication revision")
 	_check_gpu(host, invalid_new, invalid_old, "recovered invalid tile side")
@@ -208,10 +211,10 @@ func _history_and_fallback(channels: int) -> void:
 	host.world_extent = Vector2i(129, 71)
 	host.image = Image.create_from_data(129, 71, false, host.render_image_format,
 		_pattern(host.world_extent, channels, 43))
-	host._material_publication_mode = "tiled"
+	host._material_publication_mode = "blit"
 	host.create_render_textures()
 	host._bind_material_texture_consumers()
-	check(host.texture is Tiled and host.texture.columns * host.texture.rows == 6,
+	check(host.texture is Publisher.MaterialPlane and host._material_blit_publisher.columns * host._material_blit_publisher.rows == 6,
 		"World replacement creates a bounded pair for the new extent")
 	check(host._presentation_current_content_id > retired_content,
 		"World replacement never recycles material content identities")
@@ -221,12 +224,94 @@ func _history_and_fallback(channels: int) -> void:
 	histories_completed += 1
 
 
+func _owner_and_format_contract(channels: int) -> void:
+	var extent := Vector2i(33,19)
+	var format: Image.Format = Image.FORMAT_R8 if channels == 1 else Image.FORMAT_RG8
+	var current_bytes := PackedByteArray()
+	var previous_bytes := PackedByteArray()
+	current_bytes.resize(extent.x*extent.y*channels)
+	previous_bytes.resize(current_bytes.size())
+	for index: int in range(current_bytes.size()):
+		current_bytes[index] = index%256
+		previous_bytes[index] = 255-index%256
+	var current := Image.create_from_data(extent.x,extent.y,false,format,current_bytes)
+	var previous := Image.create_from_data(extent.x,extent.y,false,format,previous_bytes)
+	var publisher: Publisher = Publisher.create_pair(current,previous)
+	check(publisher != null, "all-byte distinct-history factory accepted")
+	if publisher == null: return
+	check(publisher.current.get_image().get_data() == current_bytes
+		and publisher.previous.get_image().get_data() == previous_bytes,
+		"every 0..255 logical material/condition byte survives GPU copies in both histories")
+	var physical: Image = publisher.current.drawable.get_image()
+	check(physical.get_format() == Image.FORMAT_RGBA8 and not physical.has_mipmaps(),
+		"actual GPU storage is linear RGBA8 without mipmaps")
+	var rgba: PackedByteArray = physical.get_data()
+	var exact_padding: bool = true
+	for pixel: int in range(extent.x*extent.y):
+		if rgba[pixel*4+2] != 0 or rgba[pixel*4+3] != 255 \
+				or (channels == 1 and rgba[pixel*4+1] != 0): exact_padding = false
+	check(exact_padding, "copy shader writes exact RG/zero/opaque channels without blending")
+	var resources: Array[int] = publisher.resource_identity()
+	var ids: Array[RID] = [publisher.current.get_rid(),publisher.previous.get_rid()]
+	var changed: Image = current.duplicate()
+	changed.set_pixel(32,18,Color(2.0/255.0,3.0/255.0,0,1))
+	var areas: Array[Rect2i] = [Rect2i(32,18,1,1)]
+	check(publisher.publish(changed,areas), "first sparse publication after distinct-history factory accepted")
+	check(publisher.current.get_image().get_data() == changed.get_data()
+		and publisher.previous.get_image().get_data() == current_bytes,
+		"new sparse update reconciles all inherited previous-history differences")
+	check(publisher.current.get_rid() == ids[1] and publisher.previous.get_rid() == ids[0]
+		and publisher.resource_identity() == resources, "pair rotates while all bounded GPU resources remain stable")
+	var before: PackedByteArray = publisher.current.get_image().get_data()
+	var side: int = publisher.tile_side
+	publisher.tile_side = 0
+	check(not publisher.publish(changed,areas), "zero tile side refused before division")
+	publisher.tile_side = side
+	var columns: int = publisher.columns
+	publisher.columns += 1
+	check(not publisher.publish(changed,areas), "invalid tile layout refused before dirty indexing")
+	publisher.columns = columns
+	var pending: PackedByteArray = publisher.previous.pending
+	publisher.previous.pending = PackedByteArray()
+	check(not publisher.publish(changed,areas), "invalid pending capacity refused before dirty indexing")
+	publisher.previous.pending = pending
+	var sink: DrawableTexture2D = publisher.retirement_sink
+	publisher.retirement_sink = publisher.current.drawable
+	check(not publisher.publish(changed,areas), "history cannot become the retirement sink")
+	publisher.retirement_sink = sink
+	var target: DrawableTexture2D = publisher.previous.drawable
+	var foreign := DrawableTexture2D.new()
+	foreign.setup(extent.x,extent.y,DrawableTexture2D.DRAWABLE_FORMAT_RGBA8_SRGB,Color.BLACK,false)
+	publisher.previous.drawable = foreign
+	check(not publisher.publish(changed,areas), "foreign valid-RID SRGB target is refused")
+	publisher.previous.drawable = target
+	var stage: ImageTexture = publisher.staging[1]
+	publisher.staging[1] = ImageTexture.create_from_image(Image.create(side,side,false,format))
+	check(not publisher.publish(changed,areas), "foreign staging allocation is refused")
+	publisher.staging[1] = stage
+	check(publisher.current.get_image().get_data() == before
+		and publisher.resource_identity() == resources, "rejected mutations leave actual histories and owned resources unchanged")
+	check(publisher.current.update(previous), "legacy direct texture update routes through the same exact GPU copy")
+	check(publisher.current.get_image().get_data() == previous_bytes,
+		"legacy update exposes actual updated GPU material bytes")
+	var retained: Texture2D = publisher.current
+	var owner: WeakRef = weakref(publisher)
+	publisher = null
+	check(owner.get_ref() == null, "retained public texture does not keep publisher/staging alive")
+	check(retained.get_image().get_data() == previous_bytes,
+		"retained public texture independently owns its actual drawable history")
+	check(not retained.update(current), "texture refuses updates after its publisher retires")
+
+
 func _large_sparse_transfer() -> void:
-	var host: Control = _host(Vector2i(2048, 2048), 2, "tiled")
-	check(host.texture.tile_side == 128 and host.texture.layers.get_layers() == 256,
-		"2048² RG8 uses 128² tiles and 256 fixed layers")
+	var host: Control = _host(Vector2i(2048, 2048), 2, "blit")
+	check(host._material_blit_publisher.tile_side == 128 and host._material_blit_publisher.columns * host._material_blit_publisher.rows == 256,
+		"2048² RG8 uses 128² tiles and 256 bounded tile records")
+	var resources: Array[int] = host._material_blit_publisher.resource_identity()
+	check(host._material_blit_publisher.gpu_storage_bytes() == 44728324, "2048² fixed RGBA8 histories and RG8 stages allocate 44,728,324 bytes")
 	var result: Dictionary = _patch(host, Rect2i(1023, 1024, 1, 1), 3, 77, "2048² single cell")
-	check(result.updated_layers == 1 and result.submitted_bytes == 32768,
+	check(result.gpu_blit_calls == 1 and result.retirement_blit_calls == 1, "sparse copy includes bounded retirement draw")
+	check(result.updated_tiles == 1 and result.submitted_bytes == 32768,
 		"single changed cell submits 32KiB instead of complete 8MiB plane")
 	var old: PackedByteArray = host.image.get_data()
 	var prior_current: RID = host._material_publication_rid(host.texture)
@@ -234,16 +319,19 @@ func _large_sparse_transfer() -> void:
 	var dense: PackedByteArray = _pattern(host.world_extent, 2, 77)
 	var started: int = Time.get_ticks_usec()
 	check(host.upload_texture_patches(host._full_material_rectangle(), dense, 2, 2),
-		"dense2048² RG8 full refresh accepted")
+		"dense 2048² RG8 full refresh accepted")
 	var elapsed: int = Time.get_ticks_usec() - started
-	_check_gpu(host, dense, old, "dense2048² full refresh")
+	_check_gpu(host, dense, old, "dense 2048² full refresh")
 	result = host.material_publication_status()
-	check(result.updated_layers == 256 and result.submitted_bytes == 8388608,
-		"dense2048² refresh submits all256 layers and exactly8MiB")
+	check(result.gpu_blit_calls == 1 and result.retirement_blit_calls == 1 and result.whole_gpu_copy, "dense update uses one full GPU copy and one retirement draw")
+	check(resources == host._material_blit_publisher.resource_identity(), "dense and sparse updates allocate no new GPU resources")
+	check(result.estimated_target_write_bytes == 16777216 and result.gpu_storage_format == "RGBA8_LINEAR", "physical RGBA writes reported separately from logical RG staging bytes")
+	check(result.updated_tiles == 256 and result.submitted_bytes == 8388608,
+		"dense 2048² refresh submits all 256 tiles and exactly 8MiB")
 	check(host._material_publication_rid(host.texture) == prior_previous
 		and host._material_publication_rid(host.previous_texture) == prior_current,
-		"dense full refresh retains the bounded array pair")
-	observations.append({"label":"dense2048² full refresh", "elapsed_usec":elapsed,
+		"dense full refresh retains the bounded drawable pair")
+	observations.append({"label":"dense 2048² full refresh", "elapsed_usec":elapsed,
 		"publication":result})
 	_release(host)
 	large_completed = true
@@ -300,21 +388,21 @@ func _view(host: Control, shader_path: String, blend: float) -> SubViewport:
 
 
 func _shader_equivalence() -> bool:
-	var tiled: Control = _host(Vector2i(317, 259), 2, "tiled", 0)
+	var blit: Control = _host(Vector2i(317, 259), 2, "blit", 0)
 	var full: Control = _host(Vector2i(317, 259), 2, "full", 0)
 	var previous := Image.create_from_data(317, 259, false, Image.FORMAT_RG8,
-		_pattern(tiled.world_extent, 2, 0))
+		_pattern(blit.world_extent, 2, 0))
 	var current := Image.create_from_data(317, 259, false, Image.FORMAT_RG8,
-		_pattern(tiled.world_extent, 2, 31))
+		_pattern(blit.world_extent, 2, 31))
 	for plane: Image in [previous, current]:
 		# Backdrops require common Empty material, while crossfades also need
-		# old-only/current-only cells. These regions cross actual array seams.
+		# old-only/current-only cells. These regions cross actual staging tile seams.
 		plane.fill_rect(Rect2i(16, 16, 90, 90), Color(0, 0, 0, 1))
 	previous.fill_rect(Rect2i(63, 12, 8, 10), Color(6.0 / 255.0, 1.0, 0, 1))
 	current.fill_rect(Rect2i(63, 12, 8, 10), Color(0, 0, 0, 1))
 	previous.fill_rect(Rect2i(12, 63, 10, 8), Color(0, 0, 0, 1))
 	current.fill_rect(Rect2i(12, 63, 10, 8), Color(6.0 / 255.0, 0.75, 0, 1))
-	for host: Control in [tiled, full]:
+	for host: Control in [blit, full]:
 		check(host.upload_texture_patches(host._full_material_rectangle(), previous.get_data(), 1, 2),
 			"nonvacuous previous shader plane published")
 		check(host.upload_texture_patches(host._full_material_rectangle(), current.get_data(), 2, 2),
@@ -324,7 +412,7 @@ func _shader_equivalence() -> bool:
 		var blends: Array = [0.0, 0.37, 1.0] if filename == "material_palette" else [0.37]
 		for blend: float in blends:
 			var a: SubViewport = _view(full, "res://shaders/" + filename + ".gdshader", blend)
-			var b: SubViewport = _view(tiled, "res://shaders/" + filename + ".gdshader", blend)
+			var b: SubViewport = _view(blit, "res://shaders/" + filename + ".gdshader", blend)
 			await process_frame
 			await RenderingServer.frame_post_draw
 			var expected: Image = a.get_texture().get_image()
@@ -333,20 +421,20 @@ func _shader_equivalence() -> bool:
 				var artifact_dir: String = OS.get_environment("CYBERSAND_MATERIAL_TILE_OUTPUT").get_base_dir()
 				if not artifact_dir.is_empty():
 					expected.save_png(artifact_dir.path_join(filename + "-full.png"))
-					actual.save_png(artifact_dir.path_join(filename + "-tiled.png"))
+					actual.save_png(artifact_dir.path_join(filename + "-blit.png"))
 			check(_nontrivial_pixels(expected),
 				"shader oracle draws nontrivial visible content: " + filename)
 			check(expected != null and actual != null and expected.get_data() == actual.get_data(),
-				"exact full/tiled shader pixels: %s blend %.2f" % [filename, blend])
+				"exact full/blit shader pixels: %s blend %.2f" % [filename, blend])
 			shader_pairs_completed += 1
 			observations.append({"shader":filename, "blend":blend,
 				"full_sha256":_sha(expected.get_data()),
-				"tiled_sha256":_sha(actual.get_data())})
+				"blit_sha256":_sha(actual.get_data())})
 			a.queue_free()
 			b.queue_free()
 			await process_frame
 	_release(full)
-	_release(tiled)
+	_release(blit)
 	return true
 
 
@@ -378,13 +466,15 @@ func _run() -> void:
 	OS.set_environment("CYBERSAND_DIAG_RENDER_CADENCE", "repaired")
 	_occupancy_history_contract()
 	if DisplayServer.get_name() == "headless":
-		var host: Control = _host(Vector2i(73, 65), 2, "tiled")
+		var host: Control = _host(Vector2i(73, 65), 2, "blit")
 		check(host.texture is ImageTexture and host.previous_texture is ImageTexture,
 			"unsupported driver deterministically uses verified full pair")
 		check(not str(host.material_publication_status().fallback_reason).is_empty(), "fallback explained")
 		_release(host)
 	else:
-		for channels: int in [1, 2]: _history_and_fallback(channels)
+		for channels: int in [1, 2]:
+			_history_and_fallback(channels)
+			_owner_and_format_contract(channels)
 		_large_sparse_transfer()
 		check(histories_completed == 2 and large_completed, "all history and transfer tests reached completion")
 		check(await _shader_equivalence() == true and shader_pairs_completed == 8, "all shader comparisons reached completion")
@@ -392,12 +482,15 @@ func _run() -> void:
 		"driver":RenderingServer.get_current_rendering_driver_name(),
 		"assertions":assertions, "failures":failures, "observations":observations,
 		"scope":("Unsupported/headless driver full fallback only; graphical cases not run." if DisplayServer.get_name() == "headless"
-			else "Actual GPU array readback and production shader equality; no physical GPU acceptance.")}
+			else "Actual GPU drawable readback and production shader equality; no physical GPU acceptance.")}
 	var output: String = OS.get_environment("CYBERSAND_MATERIAL_TILE_OUTPUT")
 	if not output.is_empty():
 		DirAccess.make_dir_recursive_absolute(output.get_base_dir())
 		var file: FileAccess = FileAccess.open(output, FileAccess.WRITE)
 		check(file != null, "output opened")
-		if file != null: file.store_string(JSON.stringify(report, "\t"))
+		if file != null:
+			report["assertions"] = assertions
+			report["failures"] = failures
+			file.store_string(JSON.stringify(report, "\t"))
 	print("MATERIAL_TILE_PUBLICATION: %d assertions, %d failures" % [assertions, failures])
 	quit(failures)
