@@ -169,7 +169,7 @@ def trajectory(torch,model,seed,fam,kind,heads,tok,backbone,out):
             permitted=legal if idx==len(goals) or not any(a!=4 for a in legal) else tuple(a for a in legal if a!=4)
             a=max(permitted,key=lambda k:(float(logits[k]),-k))
         if a not in legal:raise AssertionError("Illegal action")
-        row={"before":before,"legal":[ACTIONS[j] for j in legal],
+        row={"before_sha256":before,"legal":[ACTIONS[j] for j in legal],
              "goal_index":idx,"observation_sha256":sha(prompt(w,goals,idx).encode())}
         row.update(w.apply(int(a)))
         events.append(row)
@@ -183,7 +183,7 @@ def trajectory(torch,model,seed,fam,kind,heads,tok,backbone,out):
     test=world(seed,fam,"eval");target=reachable(test);position=0
     for row in events:
         position=advance(test,target,position)
-        assert test.state_sha256()==row["before"]
+        assert test.state_sha256()==row["before_sha256"]
         assert [ACTIONS[i] for i in test.legal()]==row["legal"]
         assert row["goal_index"]==position
         assert sha(prompt(test,target,position).encode())==row["observation_sha256"]
