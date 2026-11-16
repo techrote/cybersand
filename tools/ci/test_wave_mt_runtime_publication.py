@@ -206,7 +206,7 @@ class WaveRuntimeTests(unittest.TestCase):
             launcher_text = (root / "Test It.cmd").read_text(encoding="utf-8")
             self.assertIn("-- --workbench", launcher_text)
             self.assertNotIn("-- --wave-flow", launcher_text)
-            self.assertIn("SHARED_WORKBENCH_LAUNCH_READY", (ROOT / "godot/scripts/feature_launcher.gd").read_text(encoding="utf-8"))
+            self.assertIn("SHARED_WORKBENCH_LAUNCH_READY", (package.ROOT / "godot/scripts/feature_launcher.gd").read_text(encoding="utf-8"))
             qualification = manifest["runtime_qualification"]
             self.assertEqual(qualification["provenance"], "source-built-runtime-provenance.json")
             self.assertEqual(qualification["validation"], "qualification/runtime/validation.json")
