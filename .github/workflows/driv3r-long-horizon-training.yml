@@ -172,6 +172,24 @@ jobs:
           test -s "$RUN_DIR/history-motif/history_aware.npz"
           test -s "$RUN_DIR/history-motif/history_blind.npz"
           test -s "$RUN_DIR/history-motif/SHA256SUMS.json"
+      - name: Matched live-stack vs executed-history training and exact original replay (DEV only)
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ '${{ inputs.mode || 'full' }}' == 'smoke' ]]; then
+            worlds=1; updates=1
+          else
+            worlds=2; updates=60
+          fi
+          for seed in 579 580; do
+            python -m experiments.driv3r.training.long_horizon.live_path_probe \
+              --output "$RUN_DIR/live-path-seed${seed}" --seed "$seed" \
+              --worlds "$worlds" --updates "$updates"
+            python -m experiments.driv3r.training.long_horizon.live_path_probe \
+              --verify "$RUN_DIR/live-path-seed${seed}"
+            test -s "$RUN_DIR/live-path-seed${seed}/live.npz"
+            test -s "$RUN_DIR/live-path-seed${seed}/executed.npz"
+          done
       - name: Store checkpoint, original traces, galleries, metrics and failure evidence
         if: always()
         uses: actions/upload-artifact@v4
