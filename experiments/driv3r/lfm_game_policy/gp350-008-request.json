@@ -43,5 +43,7 @@
   "original_W0_PNGs": 60,
   "native": false,
   "paid_GPU": false,
-  "draft_hold": true
+  "draft_hold": true,
+  "lease_attempt": 2,
+  "preflight_repair": "Architecture has no BRANCH teacher target; use actual legal corners"
 }
