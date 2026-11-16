@@ -7,10 +7,15 @@ import os
 import unittest
 from pathlib import Path
 
-import p11_stop_only_clock as p
+try:
+    import torch
+except ImportError:
+    torch=None
+if torch is not None:
+    import p11_stop_only_clock as p
 
 SOURCE=os.environ.get('P11_W16_SOURCE')
-@unittest.skipUnless(SOURCE,'requires immutable W16 original producer ZIP')
+@unittest.skipUnless(SOURCE and torch is not None,'requires immutable W16 original producer ZIP and CPU PyTorch')
 class P11RealHeadTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
