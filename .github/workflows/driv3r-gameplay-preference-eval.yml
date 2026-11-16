@@ -1,4 +1,4 @@
-name: DRIV3R Gameplay Preference P1 source-fenced proxy qualification
+name: DRIV3R Gameplay Preference P1-P3 bounded research qualification
 
 # Dedicated model-research-only workflow. No native Godot, model downloads,
 # external API, gameplay content changes or secrets.
@@ -38,6 +38,9 @@ jobs:
       - name: Train original source-feature pairwise proxy heads (no worm inference)
         run: |
           python3 experiments/driv3r/training/preference_eval/rank.py --output-dir "$RUNNER_TEMP/pref-p1"
+      - name: Train and audit P3 legal-material trapped-world comparison (external synthetic only)
+        run: |
+          python3 experiments/driv3r/training/preference_eval/recovery_p3.py --output "$RUNNER_TEMP/pref-p1/p3"
       - name: Run P1 source-fenced cross-family falsification
         run: |
           python3 experiments/driv3r/training/preference_eval/diagnose_proxies.py --output "$RUNNER_TEMP/pref-p1/falsification.json"
@@ -50,7 +53,8 @@ jobs:
           git status --short > "$RUNNER_TEMP/pref-p1/worktree_status.txt"
           sha256sum experiments/driv3r/training/preference_eval/*.py experiments/driv3r/training/preference_eval/source_features.csv > "$RUNNER_TEMP/pref-p1/SOURCE_SHA256SUMS.txt"
           (cd "$RUNNER_TEMP/pref-p1" && sha256sum *.json > CHECKPOINT_AND_RESULT_SHA256SUMS.txt) || true
-          echo 'Labels are algorithmic geometry proxies, not human votes; original PNG archives were NOT fetched by this workflow.' > "$RUNNER_TEMP/pref-p1/TRUTH_BOUNDARY.txt"
+          (cd "$RUNNER_TEMP/pref-p1/p3" && sha256sum *ranker.json p3-report.json > P3_CHECKPOINT_SHA256SUMS.txt) || true
+          echo 'P0-P2 use frozen original W0-derived features; P3 is a separate external synthetic trapped-world experiment with CPU-trained weak-label heads. No human votes, no native game, no real pretrained worm forwards, no new source archives.' > "$RUNNER_TEMP/pref-p1/TRUTH_BOUNDARY.txt"
       - name: Preserve exact-run trained heads and negative-control result
         if: ${{ always() }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
