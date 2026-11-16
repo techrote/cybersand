@@ -184,3 +184,51 @@ P7 candidate: distinguish archive-parent coverage effects from stochastic
 ancestry with independent cohorts and evolve real learned trajectory embeddings;
 continue the separately owned student-SLM distillation lane. Never touch
 CyberSand game code/content; PR remains Draft/HOLD.
+
+
+## P7 — fitted spatial/action embeddings versus raw MAP, random ancestry and reward PBT
+
+`population_p7.py` adds a **four-arm, three-generation, genuine Adam-trained**
+breeding comparison across the same six game-facing synthetic-policy niches.
+Controls are reward-winner PBT, raw P6 topology MAP-Elites, uniformly random
+previous-generation ancestry and **learned-embedding MAP-Elites**. Every
+generation trains four mutated offspring per niche/arm and alternates standard
+and dead-end/protected-region synthetic game curricula. The two independent
+cohorts (636/637) train 576 small neural candidates. They do not mutate the
+actual CyberSand game or claim native integration.
+
+The **train-only fitted encoder** measures each policy's synthetic 5×5 spatial
+paint footprint plus its six action frequencies, learns three PCA directions
+from independent P0/mutated-probe TRAIN worlds, and freezes quartile cell
+boundaries before any selection/holdout decisions. This is an unsupervised
+*linear* learned projection of deliberately chosen descriptors, **not** a
+neural reward model, learned aesthetics, pretrained SLM, reinforcement learning
+or self-play. The raw-MAP control uses the P6 fixed handcrafted topology bins.
+All arms use identical generation-zero weights, mutation seeds and
+training-world seeds, though differing ancestry subsequently changes
+on-policy state visitation.
+
+Selection/parent choice and archive construction use exclusively selection
+worlds; the fitted encoder uses an independent train-only seed stream.
+Held-out 48-step reward/diversity and adversarial recovery are computed only
+after choosing each final four-member portfolio. Archive cardinality is
+reported as coverage, never as proof of visual interestingness. P0, training,
+encoder, selection and holdout streams are checked for disjointness.
+Preserve weights, exact lineage, hashes, PCA parameters/quantiles, occupied
+cells, original trajectory SVG/JSON and negative results in Actions artifacts.
+
+After P0:
+
+    python experiments/driv3r/training/population/population_p7.py --p0-output /tmp/population-evidence --output /tmp/population-evidence/p7_636 --seed 636 --generations 3 --offspring 4 --train-episodes 8 --selection-episodes 5 --holdout-episodes 6 --horizon 48 --portfolio 4
+    python experiments/driv3r/training/population/population_p7.py --p0-output /tmp/population-evidence --output /tmp/population-evidence/p7_637 --seed 637 --generations 3 --offspring 4 --train-episodes 8 --selection-episodes 5 --holdout-episodes 6 --horizon 48 --portfolio 4
+
+**Interpretation gate:** compare learned MAP against raw MAP *and* random
+ancestry on identical held-out horizons, not just against reward-PBT.
+Higher selection archive occupancy is not necessarily higher held-out
+diversity. Retain negative results. Next work can attempt richer learned
+temporal encoders or actual student-SLM training, but do not call this PCA
+experiment neural aesthetic learning.
+
+All implementation remains in `experiments/driv3r/training/population/**`
+and its research-only workflow. No game-side file may be modified. Draft/HOLD;
+do not merge or promote Ready.
