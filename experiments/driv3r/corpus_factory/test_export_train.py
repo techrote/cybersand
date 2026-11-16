@@ -109,13 +109,13 @@ class TrainExportTests(unittest.TestCase):
             file = changed / filename
             rows = [json.loads(x) for x in file.read_text().splitlines()]
             mutate(rows)
-            payload = ''.join(canonical(row) + '\\n' for row in rows).encode()
+            payload = ''.join(canonical(row) + '\n' for row in rows).encode()
             file.write_bytes(payload)
             mf = changed / 'manifest.json'
             manifest = json.loads(mf.read_text())
             manifest['files'][filename]['sha256'] = hashlib.sha256(payload).hexdigest()
             manifest['files'][filename]['bytes'] = len(payload)
-            mf.write_text(canonical(manifest) + '\\n')
+            mf.write_text(canonical(manifest) + '\n')
             self.assertEqual(audit(changed)['audit'], 'PASS')
             with self.assertRaisesRegex(ValueError, expected):
                 export(changed, Path(td) / 'refused')
