@@ -63,6 +63,28 @@ jobs:
           ck = p/'gru19m_game_policy.pt'
           assert ck.stat().st_size > 40_000_000
           assert hashlib.sha256(ck.read_bytes()).hexdigest() == r['checkpoint_sha256']
+          import torch
+          from experiments.driv3r.model_zoo.gru_game.run import (
+              make_network, make_control, observations)
+          from experiments.driv3r.model_zoo.mamba130.counterfactual import samples
+          from experiments.driv3r.model_zoo.mamba130.run_counterfactual import measure
+          saved = torch.load(ck, map_location='cpu', weights_only=True)
+          assert saved['schema'] == r['schema'] and saved['source_sha'] == r['source_sha']
+          assert saved['updates'] == r['updates']
+          torch.set_num_threads(2)
+          net = make_network(torch)
+          net.load_state_dict(saved['recurrent_weights'], strict=True)
+          net.eval()
+          baseline = make_control(torch)
+          baseline.load_state_dict(saved['structured_control'], strict=True)
+          baseline.eval()
+          rows = samples(range(1200, 1208), 10)
+          features = torch.tensor(observations(rows), dtype=torch.float32)
+          with torch.inference_mode():
+              n = net(features).argmax(-1).tolist()
+              b = baseline(features[:, -1, :]).argmax(-1).tolist()
+          assert measure(rows, n) == r['scores']['gru']['test']
+          assert measure(rows, b) == r['scores']['structured']['test']
           from PIL import Image
           with Image.open(p/'rollouts.png') as im: im.verify()
           PY
