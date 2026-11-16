@@ -244,6 +244,26 @@ jobs:
             test -s "$RUN_DIR/trap-prevent-seed${seed}/baseline-seed${seed}.npz"
             test -s "$RUN_DIR/trap-prevent-seed${seed}/local_escape_sensor-seed${seed}.npz"
           done
+      - name: Train bounded connected-frontier versus local/no-sensor controls (DEV only)
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ '${{ inputs.mode || 'full' }}' == 'smoke' ]]; then
+            updates=2; trainworlds=1
+          else
+            updates=50; trainworlds=2
+          fi
+          for seed in 588 589; do
+            python -m experiments.driv3r.training.long_horizon.frontier_viability_lab \
+              --out "$RUN_DIR/frontier-seed${seed}" --seed "$seed" \
+              --updates "$updates" --train-worlds "$trainworlds" --dev-worlds 1
+            python -m experiments.driv3r.training.long_horizon.frontier_viability_lab \
+              --verify "$RUN_DIR/frontier-seed${seed}"
+            for arm in blind local frontier; do
+              test -s "$RUN_DIR/frontier-seed${seed}/${arm}-seed${seed}.npz"
+            done
+            test -s "$RUN_DIR/frontier-seed${seed}/SHA256SUMS.json"
+          done
       - name: Store checkpoint, original traces, galleries, metrics and failure evidence
         if: always()
         uses: actions/upload-artifact@v4
