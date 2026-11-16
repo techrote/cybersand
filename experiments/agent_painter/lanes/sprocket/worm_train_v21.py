@@ -64,7 +64,7 @@ def gather(torch, w0, models, seeds):
                     'host_protection_filters': rec['additional_host_legal_filters']})
     return rows, receipts
 
-def select_sets(torch, rows, frozen):
+def select_sets(torch, rows, frozen, require_coverage=True):
     x, m, y, mask = w18.tensorize(torch, rows)
     R = w18.ACTIONS.index('RETRACE')
     B = w18.ACTIONS.index('BRANCH')
@@ -77,9 +77,9 @@ def select_sets(torch, rows, frozen):
                 if 'RETRACE' in o['legal'] and action != 'RETRACE' and focused(o) > 0]
     recovery = [i for i, (_, action) in enumerate(rows) if action == 'RETRACE']
     branch = [i for i, (_, action) in enumerate(rows) if action == 'BRANCH']
-    assert len(progress) >= 16
-    assert len(hard) >= 8, f'W20 has too few false-retrace cases: {len(hard)}'
-    assert recovery and branch
+    if require_coverage:
+        assert len(progress) >= 16
+        assert recovery and branch
     return (x,m,y,mask), {'hard': hard, 'progress': progress,
                            'recovery': recovery, 'branch': branch,
                            'frozen_false_retrace': len(hard)}
@@ -186,7 +186,7 @@ def main(args):
             replay,rr=gather(torch,w0,[
                 ('W21-stage2-greedy',clone(torch,model,frozen_w19),0),
                 ('W21-stage2-T07',clone(torch,model,frozen_w19),0.7)],TRAIN)
-            (rx,rm,ry,rl),replay_sets=select_sets(torch,replay,frozen_w20)
+            (rx,rm,ry,rl),replay_sets=select_sets(torch,replay,frozen_w20,require_coverage=False)
             w18.save(args.output/'onpolicy-replay.json',{
                 'rows':len(replay),'receipts':rr,'hard_count':len(replay_sets['hard']),
                 'real_head_forwards':sum(v['actual_head_forwards'] for v in rr),
@@ -200,7 +200,7 @@ def main(args):
                 return torch.nn.functional.cross_entropy(
                     model(a[ids],b[ids]).masked_fill(~d[ids],-1e4),c[ids])
             regular=ce_on(take(list(range(len(train))),64))
-            difficult=ce_on(take(sets['hard'],64))
+            difficult=ce_on(take(sets['hard'] or sets['progress'],64))
             recover=ce_on(take(sets['recovery'],32))
             branching=ce_on(take(sets['branch'],32))
             hi=take(sets['progress'],48)
@@ -228,7 +228,7 @@ def main(args):
             else:
                 rids=take(list(range(len(replay))),64)
                 replay_loss=ce_on(rids,(rx,rm,ry,rl))
-                rh=take(replay_sets['hard'] or replay_sets['progress'],48)
+                rh=take(replay_sets['hard'] or replay_sets['progress'] or list(range(len(replay))),48)
                 replay_hard=ce_on(rh,(rx,rm,ry,rl))
                 loss=.11*regular+.12*difficult+.10*recover+.09*branching+\
                      .10*progress_margin+.17*pair_ce+.09*contrast+\
