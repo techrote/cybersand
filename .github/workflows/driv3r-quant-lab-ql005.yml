@@ -1,8 +1,6 @@
 name: QL-005 actual packed Q1 XNOR worm plus bounded activation repair (research only)
 on:
-  push:
-    branches:
-      - 'research/driv3r-quant-lab-*'
+  pull_request:
     paths:
       - 'experiments/driv3r/quant_lab/ql005_bitserial.py'
       - '.github/workflows/driv3r-quant-lab-ql005.yml'
@@ -73,8 +71,7 @@ jobs:
           receipts=json.loads((root/'raw_decisions.json').read_text())
           assert len(receipts)==144
           assert all(x['first_pass'] for x in receipts)
-          assert all(set(s['chosen'] for s in x['steps']).issubset(set(s['legal'][0] for s in x['steps']) |
-                   set(a for s in x['steps'] for a in s['legal'])) for x in receipts)
+          assert all(s['chosen'] in s['legal'] for x in receipts for s in x['steps'])
           for v in r['repair'].values():
               assert v['steps']==40 and v['nonzero_moment_tensors']>=2
               assert v['packed_weight_codes_unchanged'] and v['forward_parity_max_abs']<2e-5
