@@ -1,0 +1,126 @@
+name: SPROCKET WORM-001 W10 motif-replay continuation
+on:
+  push:
+    branches: [codex/agent-painter-sprocket-568]
+    paths: [experiments/agent_painter/lanes/sprocket/worm-request-v10-r1.json]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: sprocket-worm-v10-${{ github.sha }}
+  cancel-in-progress: false
+jobs:
+  experiment:
+    name: W10 checkpoint admission, 320 optimizer steps and original held-out rollouts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 100
+    env:
+      ATEN_CPU_CAPABILITY: default
+      MKL_CBWR: COMPATIBLE
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      OMP_DYNAMIC: 'FALSE'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Qualify immutable source and one-shot experiment
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/w10
+          python3 - <<'PY'
+          import json,os,subprocess
+          from pathlib import Path
+          req=json.loads(Path("experiments/agent_painter/lanes/sprocket/worm-request-v10-r1.json").read_text())
+          expected={"schema":"cybersand.worm.sprocket-motif-continuation/10",
+            "experiment":"W10-motif-replay-frozen-root-320-steps-r1",
+            "root":"kandivault/sprocket-500m",
+            "revision":"eb157d4ddddc4619e661d4a2426bb2dd000fc668",
+            "subfolder":"","eos_id":5,"parent_run_id":43800891190,
+            "parent_artifact_id":14197445694,
+            "parent_sha":"9a6c7956377c22fda3c0599da7645fd796d03569",
+            "parent_head_checkpoint_sha256":"5c09762f77580064b23a49b1daefef1e181a69d1318bcfbaa8a071ee2e75d4",
+            "W0_commit":"4bb9d6e1d0d0d78183f87d1e3c29648edafacf61",
+            "support_commit":"2b6534ac21542805f4bda123f67e9624d21e39d7",
+            "new_head_optimizer_updates":320,"root_optimizer_updates":0,
+            "root_neural_forward_required":True,"heldout_world_seeds":[1709,1721,1733],
+            "native":False,"sealed_final_access":False,"draft_hold":True}
+          assert req==expected,"wrong W10 lease request"
+          assert os.environ["GITHUB_REF"]=="refs/heads/codex/agent-painter-sprocket-568"
+          source=subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip()
+          Path("evidence/w10/lease.json").write_text(json.dumps({"source_sha":source,
+            "run_id":os.environ.get("GITHUB_RUN_ID"),"attempt":os.environ.get("GITHUB_RUN_ATTEMPT"),
+            "one_vm":True,"one_optimizer_process":True,"request":req},indent=2)+"\n")
+          PY
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 -m py_compile experiments/agent_painter/lanes/sprocket/worm_train_v10.py
+      - name: Admit actual immutable W9 optimizer checkpoint
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/w9-original"
+          gh run download 43800891190 --repo techrote/cybersand --name sprocket-worm-v9-9a6c7956377c22fda3c0599da7645fd796d03569 --dir "$RUNNER_TEMP/w9-original"
+          echo '5c09762f77580064b23a49b1daefef1e181a69d1318bcfbaa8a071ee2e75d4  '"$RUNNER_TEMP/w9-original/campaign/onpolicy-replay.pt" | sha256sum -c -
+          python3 - "$RUNNER_TEMP/w9-original" <<'PY'
+          import json,sys
+          from pathlib import Path
+          p=json.loads((Path(sys.argv[1])/"campaign/preflight.json").read_text())
+          assert p["source_sha"]=="9a6c7956377c22fda3c0599da7645fd796d03569"
+          assert p["source_sha256"]=="215dedd4b3ab8d2ca6885e08f9ca51a59e683d97b0adafce6f054a7c10025552"
+          assert p["lora_updates"]==0 and p["root_frozen"] is True
+          PY
+          cp "$RUNNER_TEMP/w9-original/campaign/preflight.json" evidence/w10/original-w9-preflight.json
+          sha256sum "$RUNNER_TEMP/w9-original/campaign/onpolicy-replay.pt" > evidence/w10/parent-checkpoint.sha256
+      - name: Pin READ-ONLY W0 and support source
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/worm/common" "$RUNNER_TEMP/worm/support_sprocket"
+          git fetch --no-tags --depth=1 origin 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          test "$(git rev-parse FETCH_HEAD)" = 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          git show 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61:experiments/agent_painter/worm/common/worm.py > "$RUNNER_TEMP/worm/common/worm.py"
+          git fetch --no-tags --depth=1 origin 2b6534ac21542805f4bda123f67e9624d21e39d7
+          test "$(git rev-parse FETCH_HEAD)" = 2b6534ac21542805f4bda123f67e9624d21e39d7
+          git show 2b6534ac21542805f4bda123f67e9624d21e39d7:experiments/agent_painter/worm/support_sprocket/curriculum.py > "$RUNNER_TEMP/worm/support_sprocket/curriculum.py"
+          cp "$RUNNER_TEMP/worm/common/worm.py" evidence/w10/source-pinned-W0.py
+          cp "$RUNNER_TEMP/worm/support_sprocket/curriculum.py" evidence/w10/source-pinned-support.py
+          python3 experiments/agent_painter/lanes/sprocket/test_worm_train_v9.py --w0 "$RUNNER_TEMP/worm/common/worm.py" --support "$RUNNER_TEMP/worm/support_sprocket/curriculum.py"
+      - name: Install pinned CPU dependencies and shape-test
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/w10-venv"
+          "$RUNNER_TEMP/w10-venv/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/w10-venv/bin/python" -m pip install -r experiments/agent_painter/training/requirements.lock
+          "$RUNNER_TEMP/w10-venv/bin/python" -m pip check
+          "$RUNNER_TEMP/w10-venv/bin/python" - <<'PY'
+          import sys
+          sys.path.insert(0,"experiments/agent_painter/lanes/sprocket")
+          import torch,worm_train_v9 as w9,worm_train_v10 as w10
+          assert tuple(w9.model_class(torch)()(torch.zeros((2,142))).shape)==(2,6)
+          assert w10.UPDATES_PER_WAVE*2==320
+          PY
+          "$RUNNER_TEMP/w10-venv/bin/python" -m pip freeze --all > evidence/w10/environment.txt
+      - name: Download exact frozen root Instruct model
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 900s "$RUNNER_TEMP/w10-venv/bin/python" experiments/agent_painter/training/download_model.py --profile sprocket --output "$RUNNER_TEMP/w10-model"
+          cp "$RUNNER_TEMP/w10-model/download_receipt.json" evidence/w10/model-download.json
+      - name: Real optimizer and held-out original model PNG rollouts
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 4800s "$RUNNER_TEMP/w10-venv/bin/python" experiments/agent_painter/lanes/sprocket/worm_train_v10.py --parent "$RUNNER_TEMP/w9-original/campaign/onpolicy-replay.pt" --model "$RUNNER_TEMP/w10-model" --w0 "$RUNNER_TEMP/worm/common/worm.py" --support "$RUNNER_TEMP/worm/support_sprocket/curriculum.py" --output evidence/w10/campaign
+      - name: Hash complete and partially failed results
+        if: always()
+        run: |
+          set -euo pipefail
+          df -h > evidence/w10/disk-after.txt
+          (cd evidence/w10 && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum) > evidence/w10/SHA256SUMS.txt
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sprocket-worm-v10-${{ github.sha }}
+          path: evidence/w10/
+          if-no-files-found: warn
+          retention-days: 90
