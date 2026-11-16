@@ -248,6 +248,7 @@ def run(args):
         "training_ray2":dict(collections.Counter(r["ray2"] for r in training)),
         "heldout_ray2":dict(collections.Counter(r["ray2"] for r in sample)),
         "branch_training_rows":sum(map(len,branches.values())),
+        "selective_branching_and_GP006_retention":True,
         "matched_except_marker":False,
         "pairs_are_distinct_actual_W0_observations":True,
         "pair_buckets":{f"{family}/{mark}":len(v)
@@ -295,18 +296,52 @@ def run(args):
     rng=random.Random(3510011)
     for bucket in pairs.values():rng.shuffle(bucket)
     for bucket in branches.values():rng.shuffle(bucket)
-    optimizer=torch.optim.AdamW(trainable,lr=3e-4,weight_decay=.01,betas=(.9,.95))
+    # Real BRANCH-positive versus branch-legal nonbranch observations.
+    negatives={}
+    for fam in ("greebles","pipework"):
+        options=[r for r in training if r["observation"]["family"]==fam
+                 and "BRANCH" in r["observation"]["legal"] and r["target"]!="BRANCH"]
+        c.check(len(options)>=8 and branches[fam],
+                "need source-W0 branch positives and legal negatives "+fam)
+        period=7 if fam=="greebles" else 17
+        windows=(0,1) if fam=="greebles" else (16,)
+        matched=[r for r in options if r["observation"]["tick"]%period in windows]
+        negatives[fam]=matched if matched else options
+        rng.shuffle(negatives[fam])
+    # Snapshot GP006 action distributions on real W0 pressure observations.
+    # Frozen parent logits are stored once, then no second model is resident.
+    retention=[r for r in training if r["ray2"] in ("#","+")
+               and r["target"]!="BRANCH"]
+    c.check(len(retention)>=24,"too few W0 parent pressure anchors")
+    rng.shuffle(retention)
+    retention=retention[:24]
+    model.eval()
+    with torch.inference_mode():
+        parent_logits=[prev.rich_score(model,tok,ids,r["observation"]).detach().cpu()
+                       for r in retention]
+    parent_digest=c.sha_bytes(c.canonical(
+        [[float(v) for v in z] for z in parent_logits]).encode())
+    c.save_json(out/"frozen-gp006-parent-logits.json",{
+        "parent_adapter_sha256":PARENT_ADAPTER,"real_W0_anchors":len(retention),
+        "parent_logits_sha256":parent_digest,"one_resident_model":True})
+    optimizer=torch.optim.AdamW(trainable,lr=2e-4,weight_decay=.01,betas=(.9,.95))
     visits=collections.Counter()
     progress=[]
     for step in range(STEPS):
         if CANCELLED or time.monotonic()-started>args.deadline-540:
             break
         fam=c.FAMILIES[step%3]
-        is_branch=step%4==3 and fam in ("greebles","pipework")
+        is_branch=step%3!=0 and fam in ("greebles","pipework")
         marker=("#","+")[(step//3)%2]
         if is_branch:
             data=branches[fam]
-            batch=[data[visits[(fam,"branch")]%len(data)]]
+            positive=data[visits[(fam,"branch")]%len(data)]
+            negative=negatives[fam][visits[(fam,"neg")]%len(negatives[fam])]
+            c.check(positive["target"]=="BRANCH" and negative["target"]!="BRANCH"
+                    and "BRANCH" in negative["observation"]["legal"],
+                    "illegal or misleading branch counterexample")
+            batch=[positive,negative]
+            visits[(fam,"neg")]+=1
             visits[(fam,"branch")]+=1
         else:
             data=pairs[(fam,marker)]
@@ -331,7 +366,19 @@ def run(args):
         else:
             margin=None
             loss=celoss
-        c.check(torch.isfinite(loss).item(),"nonfinite replay CE/margin")
+        # KL regularizes legal GP006 logits on original W0 observed pressure
+        # states, reducing collapse of proven anticipatory obstacle steering.
+        idx=step%len(retention)
+        obs=retention[idx]["observation"]
+        anchor_z=prev.rich_score(model,tok,ids,obs)
+        selection=torch.tensor([c.ACTIONS.index(a) for a in obs["legal"]])
+        temperature=1.7
+        ref=parent_logits[idx].index_select(0,selection)/temperature
+        pred=anchor_z.index_select(0,selection)/temperature
+        preserve=F.kl_div(F.log_softmax(pred,dim=0),
+                          F.softmax(ref,dim=0),reduction="sum")*temperature**2
+        loss=.65*loss+.35*preserve
+        c.check(torch.isfinite(loss).item(),"nonfinite replay CE/margin/KL")
         loss.backward()
         grads=[p.grad for p in trainable if p.grad is not None]
         c.check(grads and any(torch.count_nonzero(g).item() for g in grads),
@@ -341,7 +388,8 @@ def run(args):
         optimizer.step()
         rec={"step":step+1,"family":fam,"real_state_markers":[r["ray2"] for r in batch],
              "targets":[r["target"] for r in batch],
-             "real_gradient_forwards":len(batch),"actual_adamw_updates":1,
+             "real_gradient_forwards":len(batch)+1,"actual_adamw_updates":1,
+              "branch_pos_neg":is_branch,"GP006_pressure_KL":float(preserve.detach()),
              "backward_passes":1,"loss":float(loss.detach()),
              "ce":float(celoss.detach()),"margin":None if margin is None else float(margin.detach()),
              "grad_norm":norm}
@@ -400,6 +448,8 @@ def run(args):
         "frozen_full_parent_unchanged":True,"adapter_updated":True,
         "native":False,"host":"original synthetic W0 only",
         "d1_matched":"NOT RUN","vision_conditioned":False,
+        "parent_logits_sha256":parent_digest,"parent_W0_anchors":len(retention),
+        "branch_positive_negative_updates":sum(r["branch_pos_neg"] for r in progress),
         "wall_seconds":time.monotonic()-started,
         "cpu_seconds":time.process_time(),
         "peak_rss_kib":resource.getrusage(resource.RUSAGE_SELF).ru_maxrss})
@@ -414,6 +464,8 @@ def self_test(w0_path):
     c.check({r["seed"] for r in a}.isdisjoint({r["seed"] for r in d}),
             "train/dev leak")
     c.check(len(x)==72 and len(pairs)==6,"bad curriculum shape")
+    c.check(all(branches[f] for f in ("greebles","pipework")),
+            "no real W0 positive branch samples")
     c.check(all(r["target"] in r["observation"]["legal"] for r in a+d),
             "illegal teacher")
     c.check(any(r["ray2"]=="+" for r in a) and
