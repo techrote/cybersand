@@ -1,0 +1,80 @@
+name: DRIV3R population game-policy research (synthetic)
+
+on:
+  push:
+    branches:
+      - research/570-population-game-policy-001
+    paths:
+      - 'experiments/driv3r/training/population/**'
+      - '.github/workflows/driv3r-population-training.yml'
+  workflow_dispatch:
+    inputs:
+      seed:
+        description: 'Bounded synthetic campaign seed'
+        type: number
+        default: 619
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  test-and-train:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install isolated research dependency
+        run: python -m pip install --disable-pip-version-check --only-binary=:all: numpy==2.3.5
+      - name: Source-only safety and reproducibility tests
+        run: python -m unittest discover -s experiments/driv3r/training/population -p 'test_*.py' -v
+      - name: Run actual bounded neural population training
+        shell: bash
+        env:
+          RESEARCH_SEED: ${{ github.event.inputs.seed || '619' }}
+        run: |
+          set -euo pipefail
+          test "${RESEARCH_SEED}" -ge 0
+          test "${RESEARCH_SEED}" -le 2147483647
+          python experiments/driv3r/training/population/population_lab.py \
+            --output "${RUNNER_TEMP}/population-evidence" \
+            --seed "${RESEARCH_SEED}" \
+            --population 3 --train-episodes 36 \
+            --selection-episodes 8 --test-episodes 12
+          git rev-parse HEAD > "${RUNNER_TEMP}/population-evidence/source-commit.txt"
+          python -m pip freeze > "${RUNNER_TEMP}/population-evidence/python-versions.txt"
+          (cd "${RUNNER_TEMP}/population-evidence" && find . -type f -print0 | sort -z | xargs -0 sha256sum) > "${RUNNER_TEMP}/population-evidence-sha256.txt"
+      - name: Verify original artifacts and split/provenance invariants
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          p = Path(os.environ['RUNNER_TEMP']) / 'population-evidence'
+          m = json.loads((p/'results.json').read_text())
+          assert m['kind'] == 'SYNTHETIC_NEURAL_POLICY_TRAINING'
+          assert m['native'] is False and m['language_model'] is False
+          assert m['candidate_count'] == 24
+          assert (m['train_seed_count'],m['selection_seed_count'],m['heldout_seed_count']) == (36,8,12)
+          assert len(m['selection_lineage']) == 24
+          assert len(list((p/'models').glob('*.json'))) == 6
+          assert len(list((p/'gallery').glob('*.svg'))) == 6
+          assert len(list((p/'gallery').glob('*-trajectory.json'))) == 6
+          assert all(abs(m['heldout_champions'][n]['mean_reward']) < 1e8 for n in m['niches'])
+          print('Source-bound, synthetic-only, 24 candidates/6 trained champions: VERIFIED')
+          PY
+      - name: Preserve checkpoints and original experiment evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: population-game-policy-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/population-evidence/
+            ${{ runner.temp }}/population-evidence-sha256.txt
+          if-no-files-found: warn
+          retention-days: 14
