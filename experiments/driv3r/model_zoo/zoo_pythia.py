@@ -6,6 +6,7 @@ import argparse
 import contextlib
 import hashlib
 import json
+import math
 import os
 import random
 import resource
@@ -186,21 +187,26 @@ def train(args):
     def select(w,step,stock):
         ctx=model.disable_adapter() if stock else contextlib.nullcontext()
         encoded=tokenizer(w.prompt(step),return_tensors="pt",truncation=True,max_length=128)
+        token_count=int(encoded["input_ids"].numel())
+        t0=time.perf_counter()
         with torch.no_grad(),ctx:
             model.eval()
             scores=model(**encoded).logits[0,-1,ids]
+        duration_ms=(time.perf_counter()-t0)*1000
         legal=w.legal()
         allowed=torch.tensor([a in legal for a in ACTIONS],dtype=torch.bool)
         chosen=int(scores.masked_fill(~allowed,-1e9).argmax())
         raw=int(scores.argmax())
-        return ACTIONS[chosen],ACTIONS[raw] not in legal
+        return ACTIONS[chosen],ACTIONS[raw] not in legal,duration_ms,token_count
     def rollouts(tag,stock):
-        runs=[]; illegal_preferences=0; count=0
+        runs=[]; illegal_preferences=0; count=0; latencies=[]; input_tokens=[]
         for seed in range(9000,9006):
             w=World(seed)
             for step in range(24):
                 if w.stopped: break
-                a,illegal=select(w,step,stock)
+                a,illegal,ms,ntokens=select(w,step,stock)
+                latencies.append(ms)
+                input_tokens.append(ntokens)
                 illegal_preferences+=int(illegal)
                 count+=1
                 w.apply(a)
@@ -209,11 +215,19 @@ def train(args):
             runs.append({"seed":seed,"decisions":len(w.trace),"painted_cells":len(w.ink),
                          "actions":[t["action"] for t in w.trace],"stopped":w.stopped,
                          "png":png.name,"png_sha256":sha(png)})
+        ordered=sorted(latencies)
+        def percentile(p):
+            return round(ordered[min(len(ordered)-1,max(0,math.ceil(p*len(ordered))-1))],3)
         return {"episodes":runs,"decision_count":count,"unmasked_illegal_preferences":illegal_preferences,
                 "host_executed_illegal_actions":0,
+                "p50_forward_ms":percentile(.50),"p95_forward_ms":percentile(.95),
+                "mean_input_tokens":round(sum(input_tokens)/len(input_tokens),2),
+                "input_token_per_second":round(sum(input_tokens)/(sum(latencies)/1000),2),
                 "mean_painted":sum(x["painted_cells"] for x in runs)/len(runs)}
     baseline=rollouts("stock",True)
     optimizer=torch.optim.AdamW([p for p in model.parameters() if p.requires_grad],lr=args.lr)
+    counts=torch.bincount(labels,minlength=6)
+    weights=(len(labels)/(6*counts.clamp_min(1))).clamp(max=3.0).float()
     losses=[]
     for step in range(args.steps):
         model.train()
@@ -221,7 +235,7 @@ def train(args):
         batch={k:v[idx] for k,v in features.items()}
         last=batch["attention_mask"].sum(1)-1
         logits=model(**batch).logits[torch.arange(args.batch),last][:,ids]
-        loss=F.cross_entropy(logits,labels[idx])
+        loss=F.cross_entropy(logits,labels[idx],weight=weights)
         optimizer.zero_grad(set_to_none=True)
         loss.backward()
         torch.nn.utils.clip_grad_norm_([p for p in model.parameters() if p.requires_grad],1.)
@@ -230,15 +244,20 @@ def train(args):
         if (step+1)%8==0: print(json.dumps({"step":step+1,"loss":round(losses[-1],5)}),flush=True)
     adapted=rollouts("adapted",False)
     def score_heldout(stock):
-        correct=0
+        correct=0; per_action={a:{"correct":0,"n":0} for a in ACTIONS}
         for prompt,target,_ in heldout:
             ctx=model.disable_adapter() if stock else contextlib.nullcontext()
             with torch.no_grad(),ctx:
                 model.eval()
                 inputs=tokenizer(prompt,return_tensors="pt",truncation=True,max_length=128)
                 scores=model(**inputs).logits[0,-1,ids]
-            correct+=ACTIONS[int(scores.argmax())]==target
-        return {"unmasked_action_accuracy":correct/len(heldout),"n":len(heldout)}
+            hit=ACTIONS[int(scores.argmax())]==target
+            correct+=hit
+            per_action[target]["n"]+=1
+            per_action[target]["correct"]+=int(hit)
+        balanced=sum(row["correct"]/row["n"] for row in per_action.values() if row["n"])/sum(row["n"]>0 for row in per_action.values())
+        return {"unmasked_action_accuracy":correct/len(heldout),"balanced_action_accuracy":balanced,
+                "per_action":per_action,"n":len(heldout)}
     heldscores={"stock":score_heldout(True),"adapted":score_heldout(False)}
     model.save_pretrained(output/"adapter",safe_serialization=True)
     files=[{"path":str(p.relative_to(output)),"sha256":sha(p),"size":p.stat().st_size}
@@ -250,6 +269,10 @@ def train(args):
         "legal_actions":"host constrained; model original illegal preferences separately reported",
         "train_examples":len(training),"heldout_examples":len(heldout),
         "train_steps":args.steps,"batch":args.batch,"seed":args.seed,
+        "class_counts":dict(zip(ACTIONS,counts.tolist())),
+        "class_weights":dict(zip(ACTIONS,weights.tolist())),
+        "loss_first8_mean":sum(losses[:8])/min(len(losses),8),
+        "loss_last8_mean":sum(losses[-8:])/min(len(losses),8),
         "action_tokens":dict(zip(ACTIONS,ids.tolist())),"loss_first":losses[0],"loss_last":losses[-1],
         "heldout":heldscores,"stock":baseline,"adapted":adapted,
         "adapter_files":files,"duration_seconds":round(time.monotonic()-started,2),

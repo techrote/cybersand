@@ -39,7 +39,7 @@ jobs:
         run: python experiments/driv3r/model_zoo/zoo_pythia.py --self-test
       - name: Real pretrained model load and bounded LoRA training
         run: |
-          python experiments/driv3r/model_zoo/zoo_pythia.py --output model-zoo-out --steps 48 --batch 4
+          python experiments/driv3r/model_zoo/zoo_pythia.py --output model-zoo-out --steps 256 --batch 6
       - name: Validate result provenance and original PNG bytes
         if: success()
         run: |
@@ -49,7 +49,7 @@ jobs:
           r=json.loads((root/'results.json').read_text())
           assert r['source_sha']==os.environ['GITHUB_SHA']
           assert r['model_revision']=='e93a9faa9c77e5d09219f6c868bfc7a1bd65593c'
-          assert r['train_steps']==48 and r['adapter_files']
+          assert r['train_steps']==256 and r['adapter_files']
           assert r['heldout']['stock']['n']>0
           for row in r['adapter_files']:
               p=root/row['path']
