@@ -56,7 +56,7 @@ seeds/action budgets. Always show held-out teacher agreement **and** unique
 cells, retraces, traversed-edge branch nodes, same-world family footprint IoU,
 STOP and original drawings. Training agreement is not artistic usefulness.
 
-## Explicit pretrained-model boundary / next gate
+## Historical M0 pretrained-model boundary (superseded by M1/M2)
 
 This M0 **has not loaded or trained any 20M–300M pretrained LLM**. It is an
 actual tiny-head training and host-mask smoke, not a fabricated SmolLM2 result.
@@ -81,3 +81,46 @@ collapses to similar paths across theme labels. A 96-cell limit ensures finite
 execution but does not mean early STOP/generalization is proven. Typical
 synthetic worm output is a short scribble or a straight wall-following path,
 not recognizable artwork or a production-quality CyberSand game policy.
+
+## M1/M2 outcomes and M3 curriculum (16 November 2026)
+
+M1 independently loaded frozen, revision-pinned pretrained SmolLM2-135M,
+OPT-125M and Pythia-160M, trained actual linear action heads, and retained
+checkpoints and rollouts as Actions artifacts. M2 applied those immutable heads
+to four new world-seed groups with protected-gate/cul-de-sac obstacles.
+**All three failed promotion** on matched original-host synthetic game paths;
+better teacher agreement did not imply better artwork or new-world coverage.
+See PR #634's M1/M2 evidence comments and immutable hosted artifacts. OPT's
+license is research-only/non-commercial: do not promote to a product.
+
+M3 adds `m3_curriculum.py` and `test_m3_curriculum.py`, a **new CPU-only
+head training experiment**, not additional pretrained/LoRA work. It uses the
+same imported `core.py` 162-feature, 96×96, host-legal action contract, four
+small synthetic obstacle templates, real protected STOP-only fixtures, and
+world-seed-disjoint TRAIN/DEV/EVAL groups. Each training seed contributes
+oracle, random and wall behaviour states labelled by the same deliberately
+imperfect 5×5-local recovery oracle. This reduces pure on-oracle covariate
+shift. Its 64-action evaluation window is **not** native qualification.
+
+Run from repo root with PyTorch, NumPy and Pillow installed:
+
+```bash
+python -m unittest experiments.driv3r.training.tiny_policy.test_m3_curriculum -v
+python -m experiments.driv3r.training.tiny_policy.m3_curriculum --epochs 5 --out /new/nonexistent/path
+```
+
+The *local* CPU experiment used PyTorch 2.10.0+cpu (not a GitHub-hosted
+qualification). It produced 23,160 TRAIN / 4,632 DEV / 4,632 EVAL
+state-action examples, 230 real AdamW updates each for a linear, MLP and
+convolutional head, and 24 matched original-pixel 64-action trajectories
+per policy. Closed-loop unique-cell means were **57.79 linear / 56.12
+MLP / 56.50 conv**, versus **27.08 random / 31.88 wall**; the
+recovery oracle averaged 59.83. All applied actions were host-legal and
+no trained head STOPped early in these 24 trials. **Counterexample: the
+untrained conv baseline averaged 57.38 cells from mostly straight paths,
+with zero branch nodes, showing that coverage alone is inadequate.**
+M3 is synthetic, not a 20–300M backbone result, and cannot be compared
+numerically with M2's different 48-action worlds. There is no game-side
+change, original native corpus, admitted FINAL, production rollout, or
+M3 GitHub Actions artifact from this local run. Code is retained to run
+a later independently qualified hosted trial; checkpoints remain outside Git.
