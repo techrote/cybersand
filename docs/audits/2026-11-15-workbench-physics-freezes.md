@@ -420,7 +420,7 @@ The narrow correction sorts explicit numeric gap keys descending, then start
 time and step ascending. Its new CI harness extracts actual packaged production
 functions, checks four unsorted/tied/pause/missing-completion fixtures and replays
 all sixteen preserved raw traces, recursively comparing every field with Python.
-The immediate successor's entire Godot/native/dependency trees must equal this
+Each specifically fenced successor's entire Godot/native/dependency trees must equal this
 qualified checkpoint, and its exact corrected runner hash and changed-file list
 are fenced. Only then may the existing application suite be reused under its
 original source label. Actual Windows PowerShell 5.1 must reproduce the old
@@ -428,6 +428,28 @@ witness-only failure, pass the corrected replay and pass a freshly packaged
 `Test It.cmd -Quick` plus reduction of both new traces. New package/run identities
 and completion are recorded in Draft #609 after that scoped campaign finishes.
 Other changes, or `force_full`, select the complete application campaign.
+
+The first reporting attempt, `5a34cf35c12f40e9aa13513188908e7d3765730f`,
+ran in Actions `43784599316`. Windows PowerShell 5.1 reproduced the old ranking
+defect (1,463 registered witness-only differences), passed the corrected sixteen
+traces and four fixtures, and completed the installed `Test It.cmd -Quick` with
+both cases and its results ZIP. The final independent comparison failed on one
+field: coherent `flush_ms.mean`, Python 0.024813 versus PowerShell 0.024812 ms.
+The binary difference marginally exceeded the checker's intended 0.000001 ms
+tolerance at the serialized rounding boundary. This is a reporting-check failure,
+not an application crash or a physical-performance pass. The failed run and its
+complete raw captures are retained; no delivery artifact was published by it.
+Its evidence artifact is `14189709756`, 49,003,962 bytes, SHA256
+`dd5c05479b1aea9d581cc60f0c45bd57ff4d74a8575521b5faf03057df9f28f8`.
+
+That new hosted Quick capture still contains 86 original-presentation and 78
+coherent completion gaps of at least 100 ms out of 143 intervals each, with
+maxima 311.479/157.325 ms. It does not establish frozen-physics resolution.
+The narrowly fenced follow-up preserves the failed commit as its sole parent,
+keeps the application and corrected runner identical, and changes only the
+checker, reuse fence and these two explanatory documents. The decimal boundary
+requires a justified comparator regression, followed by the same real Windows
+replay and newly installed Quick gate; it is not waived by rerunning a capture.
 
 This reporting checkpoint changes no presentation mapping, material safety,
 physics law, native source or owner preference. Canonical trace/acceptance guides,

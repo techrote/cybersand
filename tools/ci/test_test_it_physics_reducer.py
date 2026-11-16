@@ -8,6 +8,8 @@ directory. Python is a CI dependency, not a requirement of the owner runner.
 from __future__ import annotations
 
 import argparse
+from decimal import Decimal
+from fractions import Fraction
 import hashlib
 import json
 import math
@@ -17,6 +19,11 @@ import subprocess
 import sys
 
 from analyze_pose_trace import analyze_physics_progress, read_trace
+
+
+ROUNDED_DISTRIBUTIONS = {"active_completed_step_gap_ms", "step_work_ms", "solver_ms", "flush_ms"}
+ROUNDED_STATISTICS = {"minimum", "median", "p95", "p99", "maximum", "mean"}
+OUTPUT_QUANTUM_MS = Decimal("0.000001")  # Six decimal places in milliseconds: one nanosecond.
 
 
 POWERSHELL = r"""
@@ -83,9 +90,15 @@ def fixtures():
     result = [{"name": "unsorted_hashtable_gaps_ties_top10", "frames": [], "events": shuffled}]
     now = 1_000_000
     fractional = [step(0, now)]
-    for number, gap in enumerate([125, 1000, 10, 125, 1000, 125], 1):
+    for number, gap in enumerate([125, 1000, 10, 125, 1000, 125, 250, 1000,
+                                  125, 10, 125, 250, 125, 1000, 125], 1):
         now += gap
         fractional.append(step(number, now))
+    # Exact mean 397/16000 ms = 0.0248125: the observed Windows5.1/Python
+    # halfway rounding boundary, using integer timer samples as production does.
+    for number, event in enumerate(fractional):
+        event["flush_usec"] = 22 if number == 0 else 25
+    assert Fraction(sum(event["flush_usec"] for event in fractional), len(fractional)*1000) == Fraction(397, 16000)
     result.append({"name": "fractional_milliseconds_equal_gaps", "frames": [],
                    "events": list(reversed(fractional))})
     result.append({"name": "pause_and_missing_completions", "frames": [
@@ -103,23 +116,77 @@ def fixtures():
     return result
 
 
-def differences(expected, actual, path=""):
+def differences(expected, actual, path="", rounding_differences=None):
     if isinstance(expected, dict) and isinstance(actual, dict):
         if expected.keys() != actual.keys():
             yield {"path": path, "expected_keys": sorted(expected), "actual_keys": sorted(actual)}
         for key in sorted(expected.keys() & actual.keys()):
-            yield from differences(expected[key], actual[key], path+"."+key)
+            yield from differences(expected[key], actual[key], path+"."+key, rounding_differences)
     elif isinstance(expected, list) and isinstance(actual, list):
         if len(expected) != len(actual):
             yield {"path": path, "expected_length": len(expected), "actual_length": len(actual)}
         for i, (left, right) in enumerate(zip(expected, actual)):
-            yield from differences(left, right, f"{path}[{i}]")
+            yield from differences(left, right, f"{path}[{i}]", rounding_differences)
     elif (isinstance(expected, (int, float)) and not isinstance(expected, bool)
           and isinstance(actual, (int, float)) and not isinstance(actual, bool)):
-        if not math.isclose(expected, actual, rel_tol=1e-10, abs_tol=1e-6):
+        if not math.isfinite(expected) or not math.isfinite(actual):
+            yield {"path": path, "error": "Nonfinite numeric value"}
+            return
+        parts = path.split(".")
+        rounded = len(parts) >= 2 and parts[-2] in ROUNDED_DISTRIBUTIONS and parts[-1] in ROUNDED_STATISTICS
+        if rounded:
+            # Compare the decimal output quantum itself. Binary subtraction of
+            # 0.024813 and 0.024812 exceeds 1e-6 by about 1e-18, despite exactly
+            # one output unit of difference. No relative or enlarged epsilon.
+            left, right = Decimal(str(expected)), Decimal(str(actual))
+            delta = abs(left-right)
+            matched = (left.as_tuple().exponent >= -6 and right.as_tuple().exponent >= -6
+                       and delta <= OUTPUT_QUANTUM_MS)
+            if matched and delta and rounding_differences is not None:
+                rounding_differences.append({"path": path, "expected": expected, "actual": actual,
+                    "decimal_difference_ms": str(delta), "allowed_quantum_ms": str(OUTPUT_QUANTUM_MS)})
+        elif expected == actual:
+            return
+        elif (isinstance(expected, int) or isinstance(actual, int) or ".largest_active_gaps[" in path
+              or ".physics_progress." in path or path.startswith("fixtures.")
+              or parts[-1] in {"count", "step", "previous_step", "start_usec", "end_usec", "time_usec", "completed_usec"}):
+            # Counts, identities, timestamps and all unrounded physics witnesses
+            # are exact. The distribution allowance never reaches this branch.
+            matched = False
+        else:
+            # Retain the existing comparison for other derived screen/rate
+            # statistics across PowerShell's different JSON double serializers.
+            matched = math.isclose(expected, actual, rel_tol=1e-10, abs_tol=1e-6)
+        if not matched:
             yield {"path": path, "expected": expected, "actual": actual}
-    elif expected != actual:
+    elif ((isinstance(expected, bool) or isinstance(actual, bool)) and type(expected) is not type(actual)) or expected != actual:
         yield {"path": path, "expected": expected, "actual": actual}
+
+
+def check_comparison_boundaries():
+    checks = [
+        ("one_decimal_quantum", 0.024813, 0.024812, "probe.flush_ms.mean", True),
+        ("one_decimal_quantum_reverse", 0.024812, 0.024813, "probe.flush_ms.mean", True),
+        ("two_decimal_quanta_rejected", 0.024813, 0.024811, "probe.flush_ms.mean", False),
+        ("extra_precision_rejected", 0.024813, 0.0248121, "probe.flush_ms.mean", False),
+        ("equal_extra_precision_rejected", 0.0248121, 0.0248121, "probe.flush_ms.mean", False),
+        ("count_exact", 144, 145, "probe.flush_ms.count", False),
+        ("boolean_count_rejected", 0, False, "probe.flush_ms.count", False),
+        ("large_step_identity_exact", 10**12, 10**12+1, "probe.largest_active_gaps[0].step", False),
+        ("timestamp_exact", 50000000.0, 50000000.000001, "probe.largest_active_gaps[0].start_usec", False),
+        ("witness_gap_exact", 0.024813, 0.024812, "probe.largest_active_gaps[0].gap_ms", False),
+        ("witness_order_exact", [{"step": 2, "gap_ms": 1200}, {"step": 5, "gap_ms": 1200}],
+         [{"step": 5, "gap_ms": 1200}, {"step": 2, "gap_ms": 1200}], "probe.largest_active_gaps", False),
+        ("nan_rejected", float("nan"), float("nan"), "probe.flush_ms.mean", False),
+        ("infinity_rejected", float("inf"), float("inf"), "probe.flush_ms.mean", False),
+    ]
+    result = []
+    for name, expected, actual, path, should_match in checks:
+        matched = not list(differences(expected, actual, path))
+        if matched != should_match:
+            raise AssertionError("Comparator boundary failed: "+name)
+        result.append({"name": name, "passed": True})
+    return result
 
 
 def without_witnesses(statistics):
@@ -143,8 +210,14 @@ def main():
     report = {"schema": "test-it-physics-reducer-replay-v1", "complete": False, "passed": False,
               "runner": str(args.test_it.resolve()), "runner_sha256": sha(args.test_it),
               "analyzer_sha256": sha(Path(__file__).with_name("analyze_pose_trace.py")),
-              "fixtures": [], "traces": [], "failures": []}
+              "fixtures": [], "traces": [], "failures": [], "rounding_differences": [],
+              "comparison_policy": {"rounded_distribution_quantum_ms": str(OUTPUT_QUANTUM_MS),
+                  "rounded_distributions": sorted(ROUNDED_DISTRIBUTIONS),
+                  "rounded_statistics": sorted(ROUNDED_STATISTICS),
+                  "counts_timestamps_steps_witness_values_and_order": "exact",
+                  "meaning": "One decimal output unit only for six-place rounded physics summaries; every accepted difference is retained."}}
     try:
+        report["comparison_boundary_checks"] = check_comparison_boundaries()
         samples = fixtures()
         expected_fixtures = {sample["name"]: analyze_physics_progress(sample["frames"], sample["events"])
                              for sample in samples}
@@ -191,7 +264,7 @@ def main():
         if actual["runner_sha256"] != report["runner_sha256"]:
             raise ValueError("Reducer source changed during replay")
         for name, expected in expected_fixtures.items():
-            failures = list(differences(expected, actual["fixtures"][name], "fixtures."+name))
+            failures = list(differences(expected, actual["fixtures"][name], "fixtures."+name, report["rounding_differences"]))
             report["failures"].extend(failures)
             report["fixtures"].append({"name": name, "passed": not failures})
         for trace in traces:
@@ -201,11 +274,11 @@ def main():
             reduced = actual["traces"][name]
             if reduced["trace_sha256"] != prior[name]["trace_sha256"]:
                 raise ValueError("Trace changed during replay: "+name)
-            failures = list(differences(expected, reduced["statistics"]["physics_progress"], name+".physics_progress"))
+            failures = list(differences(expected, reduced["statistics"]["physics_progress"], name+".physics_progress", report["rounding_differences"]))
             # Only ranked witnesses should change from the original PS5.1
             # reduction. Check all other original statistics, not just gaps.
             failures += list(differences(without_witnesses(prior[name]["statistics"]),
-                                         without_witnesses(reduced["statistics"]), name+".unchanged_statistics"))
+                                         without_witnesses(reduced["statistics"]), name+".unchanged_statistics", report["rounding_differences"]))
             report["failures"].extend(failures)
             report["traces"].append({"name": name, "trace_sha256": reduced["trace_sha256"], "passed": not failures,
                 "original_witnesses_differ": prior[name]["statistics"]["physics_progress"]["largest_active_gaps"] != expected["largest_active_gaps"],

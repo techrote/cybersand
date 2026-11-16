@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fence the one reporting-only successor of the fully qualified 30660 source.
+"""Fence the reviewed reporting-only successors of qualified application 30660.
 
 Every other source change selects the complete application campaign. Reused
 results keep their original source labels; they are never relabelled as reruns.
@@ -17,6 +17,7 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parents[2]
 BASE = "30660f7da126eec95a2df8c5b432a4fa05a49a86"
+REPORTING_ATTEMPT = "5a34cf35c12f40e9aa13513188908e7d3765730f"
 RUN = 43779233966
 ARTIFACT = 14188373052
 ARTIFACT_SHA = "6c95e19d08aa208a3812bcb1c93ad3c098d6d7f10a538bac46add44d21d29474"
@@ -29,6 +30,11 @@ ALLOWED = {
     "docs/operations/camera-stack-coherence-acceptance.md",
     "docs/reference/status-and-roadmap.md", "docs/README.md",
     "docs/operations/cybersand-codex-development-handover.md",
+}
+REPLAY_FOLLOWUP_ALLOWED = {
+    "tools/ci/qualify_test_it_reporting.py", "tools/ci/test_test_it_physics_reducer.py",
+    "docs/audits/2026-11-15-workbench-physics-freezes.md",
+    "docs/operations/engine-lab-pose-tracing.md",
 }
 
 
@@ -62,17 +68,29 @@ def scope(force_full=False):
     source = git("rev-parse", "HEAD").decode().strip()
     parents = git("show", "-s", "--format=%P", source).decode().strip().split()
     changes = git("diff", "--name-only", BASE, source).decode().splitlines()
+    incremental = git("diff", "--name-only", REPORTING_ATTEMPT, source).decode().splitlines()
+    # The first attempt is retained as a failed CI checkpoint: its fresh capture
+    # exposed a one-decimal-unit floating-point comparison boundary. Its only
+    # permitted successor repairs that CI harness and documents the failure.
+    # No arbitrary descendant can enter this reuse profile.
+    reporting_lineage = parents == [BASE] or (
+        parents == [REPORTING_ATTEMPT]
+        and git("show", "-s", "--format=%P", REPORTING_ATTEMPT).decode().strip() == BASE
+        and bool(incremental) and set(incremental).issubset(REPLAY_FOLLOWUP_ALLOWED)
+        and "tools/ci/test_test_it_physics_reducer.py" in incremental)
     runner = git("show", source + ":Run-Test-It.ps1").replace(b"\r\n", b"\n")
     runner_sha = hashlib.sha256(runner).hexdigest()
     trees = {name: {"qualified": git("rev-parse", BASE + ":" + name).decode().strip(),
                     "candidate": git("rev-parse", source + ":" + name).decode().strip()}
              for name in ("godot", "native", "third_party")}
     same_trees = all(row["qualified"] == row["candidate"] for row in trees.values())
-    reporting_only = (not force_full and parents == [BASE] and bool(changes)
+    reporting_only = (not force_full and reporting_lineage and bool(changes)
                       and set(changes).issubset(ALLOWED) and "Run-Test-It.ps1" in changes
                       and runner_sha == FIXED_RUNNER_SHA and same_trees)
     return {"source": source, "qualified_source": BASE, "parents": parents,
             "report_only": reporting_only, "force_full": force_full,
+            "reviewed_reporting_lineage": reporting_lineage,
+            "changes_since_reporting_attempt": incremental,
             "changed_paths": changes, "runner_normalized_sha256": runner_sha,
             "application_trees": trees, "application_trees_identical": same_trees,
             "qualified_run": RUN,
@@ -99,7 +117,7 @@ class GitHubRedirect(urllib.request.HTTPRedirectHandler):
 
 def acquire(args):
     proof = scope()
-    need(proof["report_only"], "Source is not the exact reporting-only successor")
+    need(proof["report_only"], "Source is not a reviewed reporting-only successor")
     token = os.environ.get("GH_TOKEN", "")
     need(token, "Actions read token unavailable")
     opener = urllib.request.build_opener(GitHubRedirect())

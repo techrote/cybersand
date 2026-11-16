@@ -71,15 +71,20 @@ checked against Python on actual Windows PowerShell 5.1, using all sixteen raw
 traces plus unsorted, tied, pause and missing-completion fixtures. These are
 reporting checks, not evidence that physical freezing is resolved.
 
-The immediate reporting-only successor can reuse the fully qualified application's
+The specifically fenced reporting-only successors can reuse the qualified application's
 tests only when its entire Godot, native and dependency source trees are identical
 to `30660f7da126`, its runner has the reviewed correction's exact hash, and every
 other changed file is an explicitly permitted qualification/documentation file.
 CI authenticates the prior successful run and artifact checksum, reproduces the
 old witness-only failure, verifies the corrected packaged reducer, rebuilds the
 standalone ZIP and executes its actual `Test It.cmd -Quick`. Prior full-suite
-results retain their original source labels. Other source changes use the full
-campaign; `force_full` also requests it explicitly.
+results retain their original source labels. The first reporting attempt,
+`5a34cf35c12f`, passed the retained replay and actual installed Quick capture,
+but failed its new-trace parity check at a one-last-decimal rounding boundary
+(0.024812 versus 0.024813 ms mean flush time). That failed run is retained. Its
+single permitted follow-up changes only the replay checker, source-scope fence
+and two explanatory documents; the runner and application remain byte-identical.
+Other source changes use the full campaign; `force_full` also requests it explicitly.
 
 ## Retained source-matched cadence campaign
 
