@@ -378,6 +378,7 @@ void geometric_hierarchy() {
     });
     gate("carrier_support_roots_and_lower_void", [&] {
         std::set<std::vector<Material>> district_shapes;
+        int verified_bridges=0;
         for(std::uint64_t seed=0;seed<32;++seed)for(const int wall:{1,5}) {
             const int width=384,height=448;
             auto r=recipe("suspended_arcology",64,64,wall,seed);r.modules[0].parameters["automatic_windows"]=0;
@@ -396,8 +397,21 @@ void geometric_hierarchy() {
                 occupied_panels+=occupied_panel?1:0;if(occupied_panel)district_shapes.insert(std::move(silhouette));
             }
             check(occupied_panels>=2&&occupied_panels<=5,"at least two supported districts and one genuinely empty attachment slot");
+            // A bridge is the only solid crossing a panel boundary at the
+            // lower district datum. Detect it from material, then require a
+            // continuous floor through both complete adjacent districts.
+            int selected=0;
+            for(const int y0:{288,320})for(int boundary=64;boundary<width;boundary+=64) {
+                if(cells[static_cast<std::size_t>(y0*width+boundary)]==Material::Empty)continue;
+                ++selected;++verified_bridges;bool joined=true;
+                for(int y=y0;y<y0+wall;++y)for(int x=boundary-56;x<=boundary+56;++x)
+                    joined=joined && cells[static_cast<std::size_t>(y*width+x)]!=Material::Empty;
+                check(joined,"bridge floor is continuous through both occupied district endpoints");
+            }
+            check(selected==1,"one real supported district bridge is exercised for every seed and thickness");
         }
         check(district_shapes.size()>=10,"seeded district silhouettes are heterogeneous across the survey");
+        measurements.emplace_back("bridge_programmes_verified",verified_bridges);
     });
 }
 
