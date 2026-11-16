@@ -1,0 +1,103 @@
+name: SPROCKET WORM-001 W16 dual-retention game-policy trainer
+on:
+  push:
+    branches: [codex/agent-painter-sprocket-568]
+    paths: [experiments/agent_painter/lanes/sprocket/worm-request-v16.json]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: sprocket-worm-v16-${{ github.sha }}
+  cancel-in-progress: false
+jobs:
+  experiment:
+    name: W16 320 real CPU AdamW updates plus 99 original held-out 128-turn paintings
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    env:
+      ATEN_CPU_CAPABILITY: default
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      TOKENIZERS_PARALLELISM: 'false'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Validate source receipt, owner gate, single optimizer lease and preflight
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/w16
+          python3 - <<'PY'
+          import json, os, subprocess
+          from pathlib import Path
+          q = json.loads(Path("experiments/agent_painter/lanes/sprocket/worm-request-v16.json").read_text())
+          assert q["schema"] == "cybersand.worm.sprocket-branch-history-dual-retention/16"
+          assert q["root"] == "kandivault/sprocket-500m"
+          assert q["revision"] == "eb157d4ddddc4619e661d4a2426bb2dd000fc668" and q["eos"] == 5
+          assert q["real_aux_adamw_steps"] == 320 and q["root_updates"] == 0
+          assert q["max_training_vms"] == 1 and q["one_optimizer_process"] is True
+          assert q["train"] == [347,349,353,359] and q["heldout"] == [2609,2617,2621]
+          assert q["draft_hold"] and not q["native"] and not q["final_opened"]
+          assert q["W15_sha256"] == "a2b521f99a9bda90ad471d980aaf3b3372c69cbe54269c54885e145114addcba"
+          assert os.environ["GITHUB_REF"] == "refs/heads/codex/agent-painter-sprocket-568"
+          sha = subprocess.check_output(["git","rev-parse","HEAD"], text=True).strip()
+          assert sha == os.environ["GITHUB_SHA"]
+          Path("evidence/w16/lease.json").write_text(json.dumps({
+            "source_sha": sha, "run_id": os.environ["GITHUB_RUN_ID"],
+            "attempt": os.environ["GITHUB_RUN_ATTEMPT"],
+            "lease": sha + ":" + os.environ["GITHUB_RUN_ID"] + ":" + os.environ["GITHUB_RUN_ATTEMPT"],
+            "unique_one_vm_lease": True, "optimizers_per_vm": 1,
+            "synthetic_host": True, "native": False, "request": q}, indent=2) + "\n")
+          PY
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 -m py_compile experiments/agent_painter/lanes/sprocket/worm_train_v16.py
+          python3 experiments/agent_painter/lanes/sprocket/worm_train_v16.py --smoke-only
+      - name: Admit SHA-pinned ORIGINAL W14 and W15 immutable optimizer checkpoints
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/w14" "$RUNNER_TEMP/w15"
+          gh run download 43820283061 --repo techrote/cybersand --name sprocket-worm-v14-0463bc31a40a41b51277e86c3d9932fb281f3d39 --dir "$RUNNER_TEMP/w14"
+          gh run download 43833124076 --repo techrote/cybersand --name sprocket-worm-v15-c5688e05117f052fa4a99ad51938f845f81509aa --dir "$RUNNER_TEMP/w15"
+          echo '1c4decfe00fb89f8ccd44269cb6693c5706dcd793705f925a75143fbc3392c35  '"$RUNNER_TEMP/w14/campaign/diverse-motif-replay.pt" | sha256sum -c -
+          echo 'a2b521f99a9bda90ad471d980aaf3b3372c69cbe54269c54885e145114addcba  '"$RUNNER_TEMP/w15/campaign/onpolicy-motif-replay.pt" | sha256sum -c -
+          cp "$RUNNER_TEMP/w15/campaign/provenance.json" evidence/w16/original-W15-provenance.json
+          cp "$RUNNER_TEMP/w15/campaign/summary.json" evidence/w16/original-W15-summary.json
+      - name: Retrieve and hash original READ-ONLY synthetic host and support data
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/worm/common" "$RUNNER_TEMP/worm/support_sprocket"
+          git fetch --no-tags --depth=1 origin 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          git show 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61:experiments/agent_painter/worm/common/worm.py > "$RUNNER_TEMP/worm/common/worm.py"
+          git fetch --no-tags --depth=1 origin 2b6534ac21542805f4bda123f67e9624d21e39d7
+          git show 2b6534ac21542805f4bda123f67e9624d21e39d7:experiments/agent_painter/worm/support_sprocket/curriculum.py > "$RUNNER_TEMP/worm/support_sprocket/curriculum.py"
+          echo '81c3923cb38d7f196b99986806216388c34ebc27fd4976e168b3b370c25a323e  '"$RUNNER_TEMP/worm/common/worm.py" | sha256sum -c -
+          echo 'c555c55ea4fc4bc303159fd3268cef4a0b7d9e5c006e19918ea3433d1f7c95d6  '"$RUNNER_TEMP/worm/support_sprocket/curriculum.py" | sha256sum -c -
+          cp "$RUNNER_TEMP/worm/common/worm.py" evidence/w16/pinned-W0.py
+          cp "$RUNNER_TEMP/worm/support_sprocket/curriculum.py" evidence/w16/pinned-support.py
+          python3 experiments/agent_painter/lanes/sprocket/test_worm_train_v10.py --w0 "$RUNNER_TEMP/worm/common/worm.py" --support "$RUNNER_TEMP/worm/support_sprocket/curriculum.py"
+      - name: Install pinned single-thread CPU PyTorch environment
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/w16-venv"
+          "$RUNNER_TEMP/w16-venv/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/w16-venv/bin/python" -m pip install -r experiments/agent_painter/training/requirements.lock
+          "$RUNNER_TEMP/w16-venv/bin/python" -m pip check
+          "$RUNNER_TEMP/w16-venv/bin/python" -m pip freeze --all > evidence/w16/environment.txt
+      - name: Genuine dual-wave optimizer and 128-turn original PNG/JSON controller gallery
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 2400s "$RUNNER_TEMP/w16-venv/bin/python" experiments/agent_painter/lanes/sprocket/worm_train_v16.py --w15 "$RUNNER_TEMP/w15/campaign/onpolicy-motif-replay.pt" --w14 "$RUNNER_TEMP/w14/campaign/diverse-motif-replay.pt" --w0 "$RUNNER_TEMP/worm/common/worm.py" --support "$RUNNER_TEMP/worm/support_sprocket/curriculum.py" --output evidence/w16/campaign
+      - name: Preserve immutable original SHA inventory, including partial/failed evidence
+        if: always()
+        run: |
+          set -euo pipefail
+          (cd evidence/w16 && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum) > evidence/w16/SHA256SUMS.txt
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sprocket-worm-v16-${{ github.sha }}
+          path: evidence/w16/
+          if-no-files-found: warn
+          retention-days: 90
