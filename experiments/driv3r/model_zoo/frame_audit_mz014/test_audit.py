@@ -8,7 +8,7 @@ from experiments.driv3r.model_zoo.frame_audit_mz014.audit import transform, MODE
 class FrameAuditTests(unittest.TestCase):
     def test_transform_is_bijective_on_action_and_patch(self):
         w = parent.World(7000, 1, 0, ood=True)
-        for _, (h, v) in MODES.items():
+        for _, (h, v, _) in MODES.items():
             z, perm = transform(w.observe(), w, h, v)
             self.assertEqual(sorted(perm), list(range(8)))
             mask = z[131:139]
