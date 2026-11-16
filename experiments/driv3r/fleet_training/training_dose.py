@@ -48,7 +48,9 @@ def validated_request(r):
 def expected_seed_hash(seed, split, n):
     values = []
     for i in range(n):
-        msg = "|".join(map(str, (seed, split, i))).encode()
+        # Upstream names the held-out seed domain "test" while reporting it as "heldout".
+        domain = "test" if split == "heldout" else split
+        msg = "|".join(map(str, (seed, domain, i))).encode()
         values.append(int.from_bytes(hashlib.sha256(msg).digest()[:8], "big") % (2**32))
     return hashlib.sha256(json.dumps(values).encode()).hexdigest()
 
