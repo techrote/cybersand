@@ -62,7 +62,7 @@ jobs:
           chmod +x "$GODOT_BIN"
           mkdir -p build/gentek-classic-gallery
           CYBERSAND_ARCHITECTURE_PHASE=native CYBERSAND_ARCHITECTURE_OUTPUT="$GITHUB_WORKSPACE/build/gentek-classic-gallery"             timeout 3600 "$GODOT_BIN" --headless --path godot --script res://tests/test_architectural_generator.gd
-          test "$(find build/gentek-classic-gallery -maxdepth 1 -name 'classic-gentek-*.png' | wc -l)" -eq 8
+          test "$(find build/gentek-classic-gallery -maxdepth 1 -name 'classic-gentek-*.png' | wc -l)" -eq 24
       - name: Retain complete evidence
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
@@ -75,7 +75,7 @@ jobs:
           set -euo pipefail
           mkdir -p docs/images/gentek-classic
           cp build/gentek-classic-gallery/classic-gentek-*.png docs/images/gentek-classic/
-           git add docs/images/gentek-classic
+          git add docs/images/gentek-classic
           if git diff --cached --quiet; then exit 0; fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'

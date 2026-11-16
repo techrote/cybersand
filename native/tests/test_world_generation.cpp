@@ -1201,8 +1201,11 @@ void independent_architectural_algorithms() {
 
 
 void classic_architectural_genteks() {
-    const std::array<std::string,8> ids{"trestle","stacked_arcade","flying_buttress",
-        "sawtooth_gallery","cantilever_spine","rib_vault","nested_arcade","suspended_deck"};
+    const std::array<std::string,24> ids{"trestle","stacked_arcade","flying_buttress",
+        "sawtooth_gallery","cantilever_spine","rib_vault","nested_arcade","suspended_deck",
+        "bowstring_truss","diamond_truss","portal_frame","ladder_bridge","stepped_aqueduct","split_pier",
+        "cable_gallery","clerestory_hall","mushroom_deck","zigzag_bridge","scalloped_vault","lattice_tower",
+        "offset_arcade","bridgehouse","forked_gantry","buttress_wall"};
     std::set<std::vector<Material>> unique;
     for (const auto& id : ids) {
         Recipe recipe; recipe.schema=kArchitecturalSchemaVersion; recipe.candidate=Candidate::Strata;
@@ -1228,7 +1231,7 @@ void classic_architectural_genteks() {
         auto invalid=recipe; invalid.schema=kHierarchySchemaVersion;
         rejects([&]{(void)Generator::compile(invalid);},id+" requires schema 4");
     }
-    require(unique.size()==ids.size(),"eight classic Genteks produce distinct native geometry");
+    require(unique.size()==ids.size(),"twenty-four classic Genteks produce distinct native geometry");
 }
 
 void refined_architectural_details() {

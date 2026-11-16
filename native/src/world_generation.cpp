@@ -1172,6 +1172,22 @@ ModuleRegistry ModuleRegistry::builtins() {
     r.add({"rib_vault", 1, 48, [](const auto& i, auto) { return std::make_shared<RibVault>(i); }});
     r.add({"nested_arcade", 1, 60, [](const auto& i, auto) { return std::make_shared<NestedArcade>(i); }});
     r.add({"suspended_deck", 1, 44, [](const auto& i, auto) { return std::make_shared<SuspendedDeck>(i); }});
+    r.add({"bowstring_truss", 1, 52, [](const auto& i, auto) { return std::make_shared<BowstringTruss>(i); }});
+    r.add({"diamond_truss", 1, 48, [](const auto& i, auto) { return std::make_shared<DiamondTruss>(i); }});
+    r.add({"portal_frame", 1, 36, [](const auto& i, auto) { return std::make_shared<PortalFrame>(i); }});
+    r.add({"ladder_bridge", 1, 36, [](const auto& i, auto) { return std::make_shared<LadderBridge>(i); }});
+    r.add({"stepped_aqueduct", 1, 48, [](const auto& i, auto) { return std::make_shared<SteppedAqueduct>(i); }});
+    r.add({"split_pier", 1, 40, [](const auto& i, auto) { return std::make_shared<SplitPier>(i); }});
+    r.add({"cable_gallery", 1, 52, [](const auto& i, auto) { return std::make_shared<CableGallery>(i); }});
+    r.add({"clerestory_hall", 1, 36, [](const auto& i, auto) { return std::make_shared<ClerestoryHall>(i); }});
+    r.add({"mushroom_deck", 1, 36, [](const auto& i, auto) { return std::make_shared<MushroomDeck>(i); }});
+    r.add({"zigzag_bridge", 1, 40, [](const auto& i, auto) { return std::make_shared<ZigzagBridge>(i); }});
+    r.add({"scalloped_vault", 1, 44, [](const auto& i, auto) { return std::make_shared<ScallopedVault>(i); }});
+    r.add({"lattice_tower", 1, 48, [](const auto& i, auto) { return std::make_shared<LatticeTower>(i); }});
+    r.add({"offset_arcade", 1, 56, [](const auto& i, auto) { return std::make_shared<OffsetArcade>(i); }});
+    r.add({"bridgehouse", 1, 48, [](const auto& i, auto) { return std::make_shared<Bridgehouse>(i); }});
+    r.add({"forked_gantry", 1, 40, [](const auto& i, auto) { return std::make_shared<ForkedGantry>(i); }});
+    r.add({"buttress_wall", 1, 40, [](const auto& i, auto) { return std::make_shared<ButtressWall>(i); }});
     return r;
 }
 
@@ -1189,7 +1205,11 @@ std::vector<Theme> Generator::builtin_themes() {
 std::vector<std::string> Generator::builtin_modules() {
     return {"arcology", "vault", "aqueduct", "terraced", "hex_hive", "arcade",
         "trestle", "stacked_arcade", "flying_buttress", "sawtooth_gallery",
-        "cantilever_spine", "rib_vault", "nested_arcade", "suspended_deck"};
+        "cantilever_spine", "rib_vault", "nested_arcade", "suspended_deck",
+        "bowstring_truss", "diamond_truss", "portal_frame", "ladder_bridge",
+        "stepped_aqueduct", "split_pier", "cable_gallery", "clerestory_hall",
+        "mushroom_deck", "zigzag_bridge", "scalloped_vault", "lattice_tower",
+        "offset_arcade", "bridgehouse", "forked_gantry", "buttress_wall"};
 }
 
 std::shared_ptr<const Generator> Generator::compile(Recipe recipe, const ModuleRegistry& registry) {
@@ -1419,7 +1439,13 @@ std::shared_ptr<const Generator> Generator::compile(Recipe recipe, const ModuleR
             m.module == "terraced" || m.module == "hex_hive" || m.module == "arcade" ||
             m.module == "trestle" || m.module == "stacked_arcade" || m.module == "flying_buttress" ||
             m.module == "sawtooth_gallery" || m.module == "cantilever_spine" ||
-            m.module == "rib_vault" || m.module == "nested_arcade" || m.module == "suspended_deck";
+            m.module == "rib_vault" || m.module == "nested_arcade" || m.module == "suspended_deck" ||
+            m.module == "bowstring_truss" || m.module == "diamond_truss" || m.module == "portal_frame" ||
+            m.module == "ladder_bridge" || m.module == "stepped_aqueduct" || m.module == "split_pier" ||
+            m.module == "cable_gallery" || m.module == "clerestory_hall" || m.module == "mushroom_deck" ||
+            m.module == "zigzag_bridge" || m.module == "scalloped_vault" || m.module == "lattice_tower" ||
+            m.module == "offset_arcade" || m.module == "bridgehouse" || m.module == "forked_gantry" ||
+            m.module == "buttress_wall";
         if (schema4_architecture && (m.version == 1 || m.version == 2))
             require(recipe.schema == kArchitecturalSchemaVersion, "new architectural modules require schema 4");
         if ((m.module == "arcology" || m.module == "vault") && m.version == 2) {

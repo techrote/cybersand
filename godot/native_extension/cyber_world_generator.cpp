@@ -892,7 +892,13 @@ Dictionary CyberWorldGenerator::get_catalogue() const {
             module == "terraced" || module == "hex_hive" || module == "arcade" ||
             module == "trestle" || module == "stacked_arcade" || module == "flying_buttress" ||
             module == "sawtooth_gallery" || module == "cantilever_spine" ||
-            module == "rib_vault" || module == "nested_arcade" || module == "suspended_deck";
+            module == "rib_vault" || module == "nested_arcade" || module == "suspended_deck" ||
+            module == "bowstring_truss" || module == "diamond_truss" || module == "portal_frame" ||
+            module == "ladder_bridge" || module == "stepped_aqueduct" || module == "split_pier" ||
+            module == "cable_gallery" || module == "clerestory_hall" || module == "mushroom_deck" ||
+            module == "zigzag_bridge" || module == "scalloped_vault" || module == "lattice_tower" ||
+            module == "offset_arcade" || module == "bridgehouse" || module == "forked_gantry" ||
+            module == "buttress_wall";
         const bool has_v2 = module == "arcology" || module == "vault" ||
             module == "terraced" || module == "hex_hive" || module == "arcade";
         if (schema4_only) item["minimum_recipe_schema"] = gen::kArchitecturalSchemaVersion;

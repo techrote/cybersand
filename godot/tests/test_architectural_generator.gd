@@ -325,7 +325,10 @@ func native_algorithm_gallery() -> void:
 
 func classic_gentek_gallery() -> void:
 	var ids: Array[String] = ["trestle","stacked_arcade","flying_buttress","sawtooth_gallery",
-		"cantilever_spine","rib_vault","nested_arcade","suspended_deck"]
+		"cantilever_spine","rib_vault","nested_arcade","suspended_deck",
+		"bowstring_truss","diamond_truss","portal_frame","ladder_bridge","stepped_aqueduct","split_pier",
+		"cable_gallery","clerestory_hall","mushroom_deck","zigzag_bridge","scalloped_vault","lattice_tower",
+		"offset_arcade","bridgehouse","forked_gantry","buttress_wall"]
 	var builtins: Array = Project.builtin_presets()
 	var hashes := {}
 	var samples := {}
@@ -352,8 +355,8 @@ func classic_gentek_gallery() -> void:
 		report.cases.append({"case":"gentek-classic-001","algorithm":algorithm,"preset_id":style.id,
 			"module_version":int(style.module_version),"seed":project.seed,"material_sha256":data.material_sha256,
 			"recipe_sha256":data.recipe_sha256,"preview_colour_and_png_us":png_us})
-	check(samples.size() == 8 and hashes.size() == 8, "eight classic Genteks render distinct native maps")
-	if samples.size() == 8:
+	check(samples.size() == 24 and hashes.size() == 24, "twenty-four classic Genteks render distinct native maps")
+	if samples.size() == 24:
 		for algorithm: String in ids:
 			if algorithm == "trestle": continue
 			var delta: int = changed_cells(samples[algorithm],samples["trestle"],true)

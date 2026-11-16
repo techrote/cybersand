@@ -42,7 +42,23 @@ static func builtin_presets() -> Array:
 		_preset("cantilever-spine","Cantilever Spine","cantilever_spine","industrial",96,72,3,10,0,130,114,121,0.0,1),
 		_preset("rib-vault","Rib Vault","rib_vault","basalt",80,80,3,10,0,100,101,123,0.0,1),
 		_preset("nested-arcade","Nested Arcade","nested_arcade","ruins",96,80,3,10,0,104,119,120,0.0,1),
-		_preset("suspended-deck","Suspended Deck","suspended_deck","industrial",96,72,3,10,0,62,66,121,0.0,1)
+		_preset("suspended-deck","Suspended Deck","suspended_deck","industrial",96,72,3,10,0,62,66,121,0.0,1),
+		_preset("bowstring-truss","Bowstring Truss","bowstring_truss","industrial",96,72,3,10,0,62,114,121,0.0,1),
+		_preset("diamond-truss","Diamond Truss","diamond_truss","industrial",96,72,3,10,0,130,114,121,0.0,1),
+		_preset("portal-frame","Portal Frame","portal_frame","industrial",80,72,3,10,0,58,66,121,0.0,1),
+		_preset("ladder-bridge","Ladder Bridge","ladder_bridge","industrial",80,64,2,10,0,113,114,121,0.0,1),
+		_preset("stepped-aqueduct","Stepped Aqueduct","stepped_aqueduct","ruins",96,80,3,12,0,98,104,120,0.0,1),
+		_preset("split-pier","Split Pier","split_pier","ruins",80,80,3,10,0,104,119,120,0.0,1),
+		_preset("cable-gallery","Cable Gallery","cable_gallery","industrial",112,72,2,10,0,130,114,121,0.0,1),
+		_preset("clerestory-hall","Clerestory Hall","clerestory_hall","industrial",96,80,3,12,0,58,111,121,0.0,1),
+		_preset("mushroom-deck","Mushroom Deck","mushroom_deck","industrial",96,80,4,12,0,58,66,120,0.0,1),
+		_preset("zigzag-bridge","Zigzag Bridge","zigzag_bridge","industrial",96,72,3,10,0,62,113,121,0.0,1),
+		_preset("scalloped-vault","Scalloped Vault","scalloped_vault","ruins",96,80,3,10,0,98,119,120,0.0,1),
+		_preset("lattice-tower","Lattice Tower","lattice_tower","industrial",80,96,2,10,0,130,114,121,0.0,1),
+		_preset("offset-arcade","Offset Arcade","offset_arcade","ruins",96,80,3,10,0,104,111,120,0.0,1),
+		_preset("bridgehouse","Bridgehouse","bridgehouse","ruins",96,80,3,10,0,98,119,121,0.0,1),
+		_preset("forked-gantry","Forked Gantry","forked_gantry","industrial",96,80,3,10,0,62,114,121,0.0,1),
+		_preset("buttress-wall","Buttress Wall","buttress_wall","ruins",96,80,4,12,0,104,98,120,0.0,1)
 	]
 
 static func default_project() -> Dictionary:
@@ -89,7 +105,11 @@ static func validate_preset(preset: Variant) -> String:
 		return "Style name must be a nonempty string of at most 128 characters."
 	if not preset.module is String or preset.module not in ["arcology","vault","terraced","hex_hive","arcade",
 			"trestle","stacked_arcade","flying_buttress","sawtooth_gallery",
-			"cantilever_spine","rib_vault","nested_arcade","suspended_deck"]:
+			"cantilever_spine","rib_vault","nested_arcade","suspended_deck",
+			"bowstring_truss","diamond_truss","portal_frame","ladder_bridge",
+			"stepped_aqueduct","split_pier","cable_gallery","clerestory_hall",
+			"mushroom_deck","zigzag_bridge","scalloped_vault","lattice_tower",
+			"offset_arcade","bridgehouse","forked_gantry","buttress_wall"]:
 		return "Unknown native architectural module."
 	var allowed_versions: Array = [2] if preset.module in ["arcology","vault"] else \
 		([1,2] if preset.module in ["terraced","hex_hive","arcade"] else [1])
@@ -314,7 +334,10 @@ static func compile(input: Variant) -> Dictionary:
 			"accent_material":preset.materials.floor}
 		if preset.module in ["vault","terraced","hex_hive","arcade","trestle","stacked_arcade",
 				"flying_buttress","sawtooth_gallery","cantilever_spine","rib_vault",
-				"nested_arcade","suspended_deck"]:
+				"nested_arcade","suspended_deck","bowstring_truss","diamond_truss","portal_frame",
+				"ladder_bridge","stepped_aqueduct","split_pier","cable_gallery","clerestory_hall",
+				"mushroom_deck","zigzag_bridge","scalloped_vault","lattice_tower","offset_arcade",
+				"bridgehouse","forked_gantry","buttress_wall"]:
 			# One global geometric anchor, independently clipped by a zone mask.
 			# Avoid restarting rooms/arches at every zone's bounding rectangle.
 			bounds = [project.origin[0],project.origin[1],extent.x,extent.y]

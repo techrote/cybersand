@@ -176,7 +176,10 @@ func new_native_algorithms() -> void:
 
 func classic_genteks() -> void:
 	var ids: Array[String] = ["trestle","stacked_arcade","flying_buttress","sawtooth_gallery",
-		"cantilever_spine","rib_vault","nested_arcade","suspended_deck"]
+		"cantilever_spine","rib_vault","nested_arcade","suspended_deck",
+		"bowstring_truss","diamond_truss","portal_frame","ladder_bridge","stepped_aqueduct","split_pier",
+		"cable_gallery","clerestory_hall","mushroom_deck","zigzag_bridge","scalloped_vault","lattice_tower",
+		"offset_arcade","bridgehouse","forked_gantry","buttress_wall"]
 	var presets: Array = Project.builtin_presets()
 	var hashes := {}
 	for module: String in ids:
@@ -205,7 +208,7 @@ func classic_genteks() -> void:
 			var digest: String = Store.digest(chunk.cells)
 			check(not hashes.has(digest), "classic first-chunk geometry differs: " + module)
 			hashes[digest] = module
-	check(hashes.size() == 8, "eight classic Genteks produce distinct first-chunk material geometry")
+	check(hashes.size() == 24, "twenty-four classic Genteks produce distinct first-chunk material geometry")
 
 func planner_invariants() -> void:
 	for seed: int in range(64):
