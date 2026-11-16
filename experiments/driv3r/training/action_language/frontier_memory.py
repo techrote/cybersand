@@ -327,4 +327,3 @@ if __name__=='__main__':
     args=p.parse_args()
     if args.audit:print(json.dumps(audit(args.output),indent=2))
     else:print(json.dumps(run(args.output,args.train,args.eval,args.gallery)['summary'],indent=2))
-
