@@ -196,3 +196,59 @@ jobs:
             ${{ runner.temp }}/tiny-m5/audit.json
           retention-days: 21
           if-no-files-found: error
+
+  m11-temporal-source-qualified:
+    if: contains(github.event.head_commit.message, '[M11]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install bounded CPU-only research dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch==2.10.0
+          python -m pip install numpy==2.3.5 pillow==12.3.0
+      - name: Capture exact source and verify tiny-host legality/causality
+        env:
+          OMP_NUM_THREADS: '2'
+          MKL_NUM_THREADS: '2'
+        run: |
+          mkdir -p "${{ runner.temp }}/tiny-m11"
+          git rev-parse HEAD | tee "${{ runner.temp }}/tiny-m11/source_sha.txt"
+          python -VV | tee "${{ runner.temp }}/tiny-m11/python_version.txt"
+          python -c 'import torch,numpy,PIL; print(torch.__version__,numpy.__version__,PIL.__version__)' | tee "${{ runner.temp }}/tiny-m11/dependencies.txt"
+          sha256sum experiments/driv3r/training/tiny_policy/*.py | tee "${{ runner.temp }}/tiny-m11/source_hashes.txt"
+          python -m unittest experiments.driv3r.training.tiny_policy.test_core experiments.driv3r.training.tiny_policy.test_m11_memory_policy -v
+      - name: Train all three actual temporal optimizer cohorts, evaluate blind topologies
+        timeout-minutes: 10
+        env:
+          OMP_NUM_THREADS: '2'
+          MKL_NUM_THREADS: '2'
+        run: |
+          timeout --signal=TERM --kill-after=15s 560s python -u -m experiments.driv3r.training.tiny_policy.m11_memory_policy \
+            --out "${{ runner.temp }}/tiny-m11/trial" \
+            | tee "${{ runner.temp }}/tiny-m11/training-log.txt"
+      - name: Independently recompute checkpoint actions and validate original PNG receipts
+        timeout-minutes: 6
+        env:
+          OMP_NUM_THREADS: '2'
+          MKL_NUM_THREADS: '2'
+        run: |
+          timeout --signal=TERM --kill-after=15s 320s python -u -m experiments.driv3r.training.tiny_policy.audit_m11_memory_policy \
+            --input "${{ runner.temp }}/tiny-m11/trial" \
+            | tee "${{ runner.temp }}/tiny-m11/audit.json"
+      - name: Upload immutable source-matched research checkpoints and full original evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tiny-m11-temporal-${{ github.sha }}
+          path: ${{ runner.temp }}/tiny-m11/
+          retention-days: 21
+          if-no-files-found: error
