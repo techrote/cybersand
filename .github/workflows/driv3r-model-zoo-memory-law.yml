@@ -1,0 +1,104 @@
+name: MZ-008 game memory small-vs-19M recurrent research (no game edits)
+on:
+  push:
+    branches:
+      - 'research/model-zoo-history-law-mz008'
+    paths:
+      - 'experiments/driv3r/model_zoo/memory_gate/**'
+      - '.github/workflows/driv3r-model-zoo-memory-law.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: mz008-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name != 'workflow_dispatch' }}
+jobs:
+  memory-cpu:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [small, large]
+    env:
+      OMP_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pinned CPU research environment
+        run: |
+          python -m pip install 'torch==2.5.1' --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install 'pillow==11.3.0'
+          python -m pip freeze > "$RUNNER_TEMP/mz008-resolved-packages.txt"
+      - name: Verify source-fenced world contract and both recurrent architectures
+        run: |
+          python -m unittest -v experiments.driv3r.model_zoo.mamba130.test_world
+          python -m unittest -v experiments.driv3r.model_zoo.memory_gate.test_memory_gate
+      - name: Train and evaluate the actual recurrent model and two controls
+        run: |
+          python -m experiments.driv3r.model_zoo.memory_gate.run \
+            --arch "${{ matrix.arch }}" \
+            --out "$RUNNER_TEMP/mz008-${{ matrix.arch }}" \
+            --train-seeds 100 --dev-seeds 18 --steps 18 \
+            --updates 550 --batch-size 64 --eval-batch 128 --lr 0.001
+      - name: Independently reload exact-source checkpoint and reproduce TEST
+        run: |
+          python - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          import torch
+          from PIL import Image
+          from experiments.driv3r.model_zoo.memory_gate.run import (
+              make_networks, make_rows, metrics)
+          arch = "${{ matrix.arch }}"
+          p = Path(os.environ['RUNNER_TEMP']) / ('mz008-'+arch)
+          r = json.loads((p/'results.json').read_text())
+          assert r['schema'] == 'MZ008-TRANSIENT-LAW-v1'
+          assert r['source_sha'] == os.environ['GITHUB_SHA']
+          assert r['updates'] == 550
+          assert r['train_examples'] > 2000 and r['test_examples'] > 200
+          assert len(r['losses']['recurrent']) == len(r['losses']['flat']) == len(r['losses']['current']) == 550
+          assert r['scores']['oracle']['test']['accuracy'] == 1.0
+          assert r['scores']['majority']['test']['accuracy'] == 0.25
+          assert r['scores']['current']['test']['accuracy'] <= 0.28
+          assert r['scores']['flat']['test']['accuracy'] >= 0.75
+          assert r['scores']['recurrent']['test']['pairs']['law_swap']['changed_pairs'] > 100
+          assert all(r['scores'][name]['test']['raw_invalid'] == 0 for name in
+                     ('recurrent', 'flat', 'current'))
+          ck = p/(arch+'_memory_policy.pt')
+          assert hashlib.sha256(ck.read_bytes()).hexdigest() == r['checkpoint_sha256']
+          torch.set_num_threads(2)
+          saved = torch.load(ck, map_location='cpu', weights_only=True)
+          assert saved['source_sha'] == r['source_sha'] and saved['arch'] == arch
+          recurrent, flat, current = make_networks(torch, arch)
+          recurrent.load_state_dict(saved['recurrent'])
+          flat.load_state_dict(saved['flat'])
+          current.load_state_dict(saved['current'])
+          recurrent.eval(); flat.eval(); current.eval()
+          rows = make_rows(range(7000,7018),18)
+          features = torch.tensor([q[0] for q in rows], dtype=torch.float32)
+          with torch.inference_mode():
+              preds = []
+              for i in range(0,len(rows),128):
+                  preds.extend(recurrent(features[i:i+128]).argmax(-1).tolist())
+              actual = metrics(rows,preds)
+          assert actual == r['scores']['recurrent']['test'], (actual,r['scores']['recurrent']['test'])
+          with Image.open(Path(os.environ['RUNNER_TEMP'])/
+                          ('mz008-'+arch)/'counterfactual_gallery.png') as im:
+              im.verify()
+          print('checkpoint TEST reproduced:',arch,actual['accuracy'])
+          PY
+      - name: Preserve checkpoint, original traces, metrics and gallery
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mz008-${{ matrix.arch }}-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/mz008-${{ matrix.arch }}/**
+            ${{ runner.temp }}/mz008-resolved-packages.txt
+          if-no-files-found: warn
+          retention-days: 14
