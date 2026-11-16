@@ -264,6 +264,25 @@ jobs:
             done
             test -s "$RUN_DIR/frontier-seed${seed}/SHA256SUMS.json"
           done
+      - name: Recovery-balanced versus uniform legal correction sampling (DEV only)
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ '${{ inputs.mode || 'full' }}' == 'smoke' ]]; then
+            updates=2
+          else
+            updates=60
+          fi
+          for seed in 592 593; do
+            python -m experiments.driv3r.training.long_horizon.recovery_balance_lab \
+              --out "$RUN_DIR/recovery-balance-seed${seed}" --seed "$seed" --updates "$updates"
+            python -m experiments.driv3r.training.long_horizon.recovery_balance_lab \
+              --verify "$RUN_DIR/recovery-balance-seed${seed}"
+            for arm in uniform recovery_balanced; do
+              test -s "$RUN_DIR/recovery-balance-seed${seed}/${arm}-${seed}.npz"
+            done
+            test -s "$RUN_DIR/recovery-balance-seed${seed}/SHA256SUMS.json"
+          done
       - name: Store checkpoint, original traces, galleries, metrics and failure evidence
         if: always()
         uses: actions/upload-artifact@v4
