@@ -113,6 +113,7 @@ def episode(pop, frozen, gates, seed, niche, scenario, arm, trace=False):
                 w.switched and ending=="voluntary_nongoal_stop")
         elif w.steps+1==w.max_steps:
             ending="horizon_exhausted"
+        was_switched=bool(w.switched)
         before=shift.state_digest(w)
         sum_utility+=float(pop.utility(niche,feature,w))
         w.step(act)
@@ -122,8 +123,7 @@ def episode(pop, frozen, gates, seed, niche, scenario, arm, trace=False):
         if trace:
             turns.append({"turn":w.steps,"menu":menu,"choice":act,
                           "before":before,"after":shift.state_digest(w),
-                          "at_goal_before":at_goal,"after_switch_before":bool(
-                              w.switched if False else w.steps>=(w.max_steps//2)+1)})
+                          "at_goal_before":at_goal,"after_switch_before":was_switched})
     if ending=="continuing":
         raise AssertionError("Unclassified episode end")
     result={
