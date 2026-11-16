@@ -191,11 +191,14 @@ class FourWormWrangler:
                   self.native_source_sha), "External snapshot/lease not isolated")
         # Independently check original/source/protection and initial material.
         offered(ident.lease, initial, snapshot,
-                expected_source_sha=self.native_source_sha, decisions=0)
+                expected_source_sha=self.native_source_sha, decisions=0,
+                decision_ceiling=min(ident.decision_budget, BASELINE[0]),
+                material_ceiling=min(ident.material_budget, BASELINE[1]))
         self.sessions[lease_id] = {
             "initial": initial, "snapshot": snapshot, "decisions": 0,
-            "pending": None, "raw_outputs": [], "fixture_receipts": [],
-            "stopped": False,
+            "pending": None, "pending_raw_output": None,
+            "raw_outputs": [], "original_output_bytes": [],
+            "fixture_receipts": [], "stopped": False,
         }
 
     def offer(self, lease_id, *, options=BodyOptions()):
@@ -203,10 +206,13 @@ class FourWormWrangler:
         session = self._session(lease_id)
         _require(session["pending"] is None and not session["stopped"],
                  "Cannot offer during an unfinished or stopped episode")
-        return offered(self.identities[lease_id].lease, session["initial"],
+        ident = self.identities[lease_id]
+        return offered(ident.lease, session["initial"],
                        session["snapshot"], options=options,
                        expected_source_sha=self.native_source_sha,
-                       decisions=session["decisions"])
+                       decisions=session["decisions"],
+                       decision_ceiling=min(ident.decision_budget, BASELINE[0]),
+                       material_ceiling=min(ident.material_budget, BASELINE[1]))
 
     def submit(self, lease_id, action, token, raw_model_output, *,
                options=BodyOptions()):
@@ -224,7 +230,9 @@ class FourWormWrangler:
         plan = prepare(ident.lease, session["initial"], session["snapshot"],
                        action, token, options=options,
                        expected_source_sha=self.native_source_sha,
-                       decisions=session["decisions"])
+                       decisions=session["decisions"],
+                       decision_ceiling=min(ident.decision_budget, BASELINE[0]),
+                       material_ceiling=min(ident.material_budget, BASELINE[1]))
         ink_after = plan["new_ink_before"] + sum(
             op["kind"] == "PAINT_ONE" for op in plan["operations"])
         _require(ink_after <= min(ident.material_budget, BASELINE[1]),
@@ -235,6 +243,7 @@ class FourWormWrangler:
         plan["model_sha256"] = ident.model_sha256
         plan["checkpoint_sha256"] = ident.checkpoint_sha256
         session["pending"] = plan
+        session["pending_raw_output"] = bytes(raw_model_output)
         return json.loads(json.dumps(plan))
 
     def accept_fixture(self, lease_id, rows):
@@ -248,9 +257,11 @@ class FourWormWrangler:
         session["snapshot"] = end
         session["decisions"] += 1
         session["raw_outputs"].append(session["pending"]["raw_model_output_sha256"])
+        session["original_output_bytes"].append(session["pending_raw_output"])
         session["fixture_receipts"].append(checked["terminal_fingerprint"])
         session["stopped"] = session["pending"]["selected_action"] == "STOP"
         session["pending"] = None
+        session["pending_raw_output"] = None
         return {"evidence_class": "mock-external-transcript-checked",
                 "model_execution_verified": False, "native_authenticated": False,
                 "decisions_recorded": session["decisions"],
