@@ -62,6 +62,11 @@ and [owner evaluation guide](../operations/architectural-generator-playtest.md).
 PR #582 is a separate Draft/HOLD candidate; standalone qualification is not
 integrated-main or retained-runtime publication.
 
+For the isolated Rosework Gatehouse v1 radial showcase, its existing controls,
+integer petal geometry and exact-source native evidence, retrieve the
+[Rosework showcase runbook](../operations/gentek-rosework-showcase.md). It is a
+Draft / HOLD sibling of #624, not merged application availability.
+
 ## Branch reconciliation and design choices
 
 For how agents reconcile stacked or long-running branches with main, and which

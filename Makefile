@@ -297,3 +297,10 @@ $(BUILD_DIR)/test_generation_planes: $(GENERATION_OPT_THREADED_OBJECTS) $(CORE_H
 
 $(BUILD_DIR)/test_generation_planes_sanitized: $(GENERATION_SAN_THREADED_OBJECTS) $(CORE_HEADERS) native/tests/test_generation_planes.cpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=address,undefined $(GENERATION_SAN_THREADED_OBJECTS) native/tests/test_generation_planes.cpp -o $@
+
+# Isolated GENTEK-SHOWCASE-ROSEWORK-001 native qualification.
+$(BUILD_DIR)/test_rosework_gatehouse: $(GENERATION_OPT_OBJECTS) $(CORE_HEADERS) native/tests/test_rosework_gatehouse.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O2 -g -Werror -pthread $(GENERATION_OPT_OBJECTS) native/tests/test_rosework_gatehouse.cpp -o $@
+
+$(BUILD_DIR)/test_rosework_gatehouse_sanitized: $(GENERATION_SAN_OBJECTS) $(CORE_HEADERS) native/tests/test_rosework_gatehouse.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -pthread $(GENERATION_SAN_OBJECTS) native/tests/test_rosework_gatehouse.cpp -o $@

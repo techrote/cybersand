@@ -106,7 +106,8 @@ static func builtin_presets() -> Array:
 		_preset("cranked-beam","Cranked Beam","cranked_beam","industrial",96,80,3,10,0,113,114,121,0.0,1),
 		_preset("barrel-arcade","Barrel Arcade","barrel_arcade","ruins",96,88,3,10,0,98,111,120,0.0,1),
 		_preset("buttress-crown","Buttress Crown","buttress_crown","ruins",96,96,4,12,0,104,98,120,0.0,1),
-		_preset("triptych-arcade","Triptych Arcade","triptych_arcade","ruins",108,88,3,10,0,98,119,120,0.0,1)
+		_preset("triptych-arcade","Triptych Arcade","triptych_arcade","ruins",108,88,3,10,0,98,119,120,0.0,1),
+		_preset("rosework-gatehouse","Rosework Gatehouse","rosework_gatehouse","ruins",128,80,3,10,0,100,119,55,0.0,1)
 	]
 
 static func default_project() -> Dictionary:
@@ -169,7 +170,7 @@ static func validate_preset(preset: Variant) -> String:
 			"ziggurat_arcade","corbel_arcade","chain_vault","ring_pier",
 			"folded_plate_hall","space_frame","crossbeam_stack","yoke_bridge",
 			"lantern_tower","spine_arcade","cascade_terrace","inverted_trestle",
-			"cranked_beam","barrel_arcade","buttress_crown","triptych_arcade"]:
+			"cranked_beam","barrel_arcade","buttress_crown","triptych_arcade","rosework_gatehouse"]:
 		return "Unknown native architectural module."
 	var allowed_versions: Array = [2] if preset.module in ["arcology","vault"] else \
 		([1,2] if preset.module in ["terraced","hex_hive","arcade"] else [1])
@@ -407,7 +408,7 @@ static func compile(input: Variant) -> Dictionary:
 				"a_frame_hall","butterfly_hall","ziggurat_arcade","corbel_arcade","chain_vault",
 				"ring_pier","folded_plate_hall","space_frame","crossbeam_stack","yoke_bridge",
 				"lantern_tower","spine_arcade","cascade_terrace","inverted_trestle",
-				"cranked_beam","barrel_arcade","buttress_crown","triptych_arcade"]:
+				"cranked_beam","barrel_arcade","buttress_crown","triptych_arcade","rosework_gatehouse"]:
 			# One global geometric anchor, independently clipped by a zone mask.
 			# Avoid restarting rooms/arches at every zone's bounding rectangle.
 			bounds = [project.origin[0],project.origin[1],extent.x,extent.y]
