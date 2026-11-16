@@ -343,6 +343,7 @@ jobs:
           TOKENIZERS_PARALLELISM: 'false'
           HF_HUB_DISABLE_TELEMETRY: '1'
         run: |
+          set -o pipefail
           timeout --signal=TERM --kill-after=15s 1320s python -u -m experiments.driv3r.training.tiny_policy.m15_pretrained_goal \
             --model "${{ matrix.model }}" --out "${{ runner.temp }}/tiny-m15/${{ matrix.model }}/trial" \
             | tee "${{ runner.temp }}/tiny-m15/${{ matrix.model }}/training.log"
