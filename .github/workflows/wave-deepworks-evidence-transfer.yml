@@ -1,0 +1,163 @@
+name: Wave finisher lossless Deepworks evidence transfer
+
+on:
+  push:
+    branches: [astra/wave-mt-001-669-finisher]
+    paths:
+      - '.github/workflows/wave-deepworks-evidence-transfer.yml'
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: wave-deepworks-evidence-transfer-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  transfer:
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/astra/wave-mt-001-669-finisher'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: Download the original completed diagnostic archive once
+        timeout-minutes: 8
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p evidence-index
+          timeout 420 python3 - <<'PY'
+          import json, os, sys, urllib.error, urllib.parse, urllib.request
+          from pathlib import Path
+
+          # Authorization is used only for the literal GitHub API endpoints.
+          # Redirects are intercepted; the artifact host receives a new request
+          # without Authorization. The signed Location is never logged or saved.
+          class NoRedirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self, request, response, code, message, headers, new_url):
+                  return None
+
+          try:
+              api = 'https://api.github.com/repos/techrote/cybersand/actions/artifacts/14211158121'
+              headers = {'Authorization': 'Bearer ' + os.environ['GH_TOKEN'], 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28'}
+              opener = urllib.request.build_opener(NoRedirect())
+              with opener.open(urllib.request.Request(api, headers=headers), timeout=60) as response:
+                  metadata = json.load(response)
+              Path('evidence-index/original-artifact-metadata.json').write_text(json.dumps(metadata, indent=2) + '\n')
+              try:
+                  opener.open(urllib.request.Request(api + '/zip', headers=headers), timeout=60)
+                  raise RuntimeError('Expected the artifact API redirect')
+              except urllib.error.HTTPError as response:
+                  if response.code not in (301, 302, 303, 307, 308):
+                      raise RuntimeError('Artifact API refused download') from None
+                  location = response.headers['Location']
+              assert urllib.parse.urlsplit(location).scheme == 'https'
+              archive = Path(os.environ['RUNNER_TEMP']) / 'deepworks-original.zip'
+              with urllib.request.urlopen(location, timeout=60) as response, archive.open('wb') as output:
+                  while True:
+                      data = response.read(8 * 1024 * 1024)
+                      if not data:
+                          break
+                      output.write(data)
+          except Exception as error:
+              print('Artifact transfer acquisition failed: ' + type(error).__name__, file=sys.stderr)
+              sys.exit(1)
+          PY
+
+      - name: Verify original bytes and split into three bounded byte chunks
+        timeout-minutes: 3
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+
+          archive = Path(os.environ['RUNNER_TEMP']) / 'deepworks-original.zip'
+          metadata = json.loads(Path('evidence-index/original-artifact-metadata.json').read_text())
+          expected_sha = 'd869c6f262eff3d827eb46439abc3740d479a087573ead1c8abbc29ffee261df'
+          expected_size = 1127610664
+          assert os.environ['GITHUB_RUN_ATTEMPT'] == '1'
+          assert metadata['id'] == 14211158121 and metadata['workflow_run']['id'] == 43837114552
+          assert metadata['workflow_run']['head_sha'] == 'cc17fcf9798a3953e2f86212f4943aa36aedb1f2'
+          assert metadata['digest'] == 'sha256:' + expected_sha and metadata['size_in_bytes'] == expected_size
+          assert not metadata['expired'] and archive.stat().st_size == expected_size
+          with archive.open('rb') as stream:
+              assert hashlib.file_digest(stream, 'sha256').hexdigest() == expected_sha
+          chunks = []
+          chunk_bytes = 384 * 1024 * 1024
+          with archive.open('rb') as stream:
+              for index in range(3):
+                  directory = Path(f'chunk-{index:02d}')
+                  directory.mkdir()
+                  path = directory / f'original.zip.part-{index:02d}'
+                  hasher = hashlib.sha256()
+                  size = 0
+                  with path.open('wb') as output:
+                      while size < chunk_bytes:
+                          data = stream.read(min(8 * 1024 * 1024, chunk_bytes - size))
+                          if not data:
+                              break
+                          output.write(data)
+                          hasher.update(data)
+                          size += len(data)
+                  assert 0 < size <= chunk_bytes
+                  chunks.append({'index': index, 'file': path.name, 'bytes': size, 'sha256': hasher.hexdigest()})
+              assert stream.read(1) == b''
+          assert sum(part['bytes'] for part in chunks) == expected_size
+          result = {
+              'schema': 'lossless-original-artifact-byte-transfer-v1',
+              'status': 'original_archive_authenticated_and_partitioned',
+              'original_run_id': 43837114552,
+              'original_artifact_id': 14211158121,
+              'original_head_sha': 'cc17fcf9798a3953e2f86212f4943aa36aedb1f2',
+              'original_archive_sha256': expected_sha,
+              'original_archive_bytes': expected_size,
+              'transfer_run_id': os.environ['GITHUB_RUN_ID'],
+              'transfer_source': os.environ['GITHUB_SHA'],
+              'chunks': chunks,
+              'scope': 'Read-only byte transfer of an already completed diagnostic. No simulation, renderer execution, project source mutation, new qualification, or replacement of original negative evidence.',
+          }
+          Path('evidence-index/transfer.json').write_text(json.dumps(result, indent=2) + '\n')
+          print(json.dumps(result, sort_keys=True))
+          PY
+
+      - name: Retain original byte chunk zero
+        timeout-minutes: 4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: deepworks-original-part-00-${{ github.run_id }}-${{ github.run_attempt }}
+          path: chunk-00/
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Retain original byte chunk one
+        timeout-minutes: 4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: deepworks-original-part-01-${{ github.run_id }}-${{ github.run_attempt }}
+          path: chunk-01/
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Retain original byte chunk two
+        timeout-minutes: 4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: deepworks-original-part-02-${{ github.run_id }}-${{ github.run_attempt }}
+          path: chunk-02/
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Retain the original identity and transfer manifest
+        if: always()
+        timeout-minutes: 2
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: deepworks-original-transfer-index-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence-index/
+          if-no-files-found: error
+          retention-days: 90
