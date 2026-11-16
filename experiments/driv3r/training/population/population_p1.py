@@ -127,7 +127,7 @@ def choose_survivors(records):
         if key not in archive or r["selection"]["mean_reward"] > archive[key]["selection"]["mean_reward"]:
             archive[key] = r
     chosen = {}
-    for niche in NICHES:
+    for niche in sorted({r["niche"] for r in records}):
         group = [r for r in records if r["niche"] == niche]
         reward_best = max(group, key=lambda r: (r["selection"]["mean_reward"], r["id"]))
         rvals = [r["selection"]["mean_reward"] for r in group]
@@ -160,9 +160,8 @@ def observation_probe(policy, niche, seeds):
     This is a static-action-prior *ablation*, not a causal feature-attribution
     experiment or a direct test of learning to respond to goals.
     """
-    divergence = [], [], [], []
     changed, compared, after_changed, after_compared = 0, 0, 0, 0
-    total_l1, frozen_scores, normal_scores = 0., [], []
+    total_l1, frozen_scores = 0., []
     for s in seeds:
         initial, default = frozen_action_scores(policy, s)
         w = World.generate(s)
@@ -181,8 +180,6 @@ def observation_probe(policy, niche, seeds):
                 after_changed += int(dynamic != frozen)
             total_l1 += float(np.abs(live_p - static_p).sum()) / 2
             w.step(menu[dynamic])
-        normal_scores.append(sum(utility(niche, np.asarray(w0), World.generate(s))
-                                 for w0 in []))  # unused: avoid scoring post-step worlds
         # Paired separate rollouts, with exact initial score map and legal masks.
         frozen_world = World.generate(s)
         cumulative = 0.
