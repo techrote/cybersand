@@ -122,9 +122,16 @@ World::WorkbenchLiquidTransfer World::inherit_workbench_liquid_state(const World
         const auto first_x=coord.x*size, first_y=coord.y*size;
         const bool interior_chunk=first_x>=0 && first_y>=0 &&
             first_x<=canvas.width-size && first_y<=canvas.height-size;
-        if (interior_chunk && !source.pressure_ && !origin->inertial) continue;
+        if (interior_chunk && !source.pressure_ && !origin->inertial && !(source.wave_ && !wave_)) continue;
         for (std::size_t i=0; i<origin->cells.size(); ++i) {
             const auto material = origin->cells[i].material_value();
+            // The Wave carrier's uint16 inventory cannot be represented by a
+            // legacy visible lane. This includes retained halo cells: refuse
+            // before any normalization arithmetic or clipping can erase it.
+            if (source.wave_ && !wave_ && material == Material::Water &&
+                origin->cells[i].state_a_value() > maximum)
+                throw std::invalid_argument(
+                    "Retained Wave Water overfill exceeds the target law's cell capacity; load a comparison scene with the requested solver");
             const auto x=first_x+static_cast<std::int64_t>(i%size);
             const auto y=first_y+static_cast<std::int64_t>(i/size);
             const bool exterior=!interior_chunk && (x<0 || y<0 || x>=canvas.width || y>=canvas.height);

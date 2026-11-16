@@ -408,8 +408,13 @@ void World::validate_quantity_ledger(bool scan_authority) const {
             quantity_.kinds[0] != WaterQuantityFlow{seed.normalization_produced, seed.normalization_consumed})
             throw std::invalid_argument("quantity construction binding mismatch");
         const auto prepared_water = quantity_.prepared_material_cells[static_cast<std::uint8_t>(Material::Water)];
-        if (prepared_water > std::numeric_limits<std::uint64_t>::max() / maximum ||
-            seed.expected_final_water < prepared_water || seed.expected_final_water > prepared_water * maximum ||
+        // A prepared Wave owner preserves the complete uint16 stored carrier,
+        // including conserved overfill retained during a Workbench retune.
+        // Other laws keep their nominal visible-cell construction bound.
+        const auto prepared_maximum = wave_ != nullptr
+            ? static_cast<std::uint64_t>(std::numeric_limits<std::uint16_t>::max()) : maximum;
+        if (prepared_water > std::numeric_limits<std::uint64_t>::max() / prepared_maximum ||
+            seed.expected_final_water < prepared_water || seed.expected_final_water > prepared_water * prepared_maximum ||
             ((seed.normalization_receipt_digest || whole_cell_water_enabled()) &&
              seed.expected_final_water != prepared_water * maximum))
             throw std::invalid_argument("quantity prepared Water population does not match initial mass");
