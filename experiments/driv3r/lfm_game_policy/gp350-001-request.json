@@ -32,5 +32,5 @@
   "one_cpu_vm": true,
   "native": false,
   "draft_hold": true,
-  "lease_attempt": 1
+  "lease_attempt": 2
 }
