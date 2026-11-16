@@ -13,7 +13,7 @@ from pathlib import Path
 
 import rank
 
-FEATURE_KEYS = rank.FEATURES + ('components',)
+PAINTED_GEOMETRY_KEYS = ('cells', 'xspan', 'yspan', 'edges', 'junctions', 'cycles',\n                         'endpoints', 'components', 'diagonal_contacts', 'western_cells')
 CONTROL_NAMES = ('random', 'fidget', 'wall')
 AXES = ('spatial_extent', 'local_weave')
 
@@ -21,7 +21,7 @@ AXES = ('spatial_extent', 'local_weave')
 def signature(item):
     """Geometry summary, NOT an original PNG or turn-sequence digest."""
     f = item['features']
-    return tuple(f[key] for key in FEATURE_KEYS)
+    return tuple(f[key] for key in PAINTED_GEOMETRY_KEYS)
 
 
 def diagnose(path):
@@ -53,7 +53,7 @@ def diagnose(path):
             'distinct_wall_control_feature_vectors': len(clusters),
             'largest_repeated_wall_feature_vector': max(map(len, clusters.values())),
             'wall_feature_aliases': [sorted(ids) for ids in clusters.values() if len(ids) > 1],
-            'wall_comparison_warning': 'Repeated geometry summaries span model families/worlds; holdout-world accuracy is not independent morphological generalization',
+            'wall_comparison_warning': 'Painted-shape geometry summaries repeat across model families/worlds even where obstacle contacts differ; holdout-world accuracy is not independent morphological generalization',
             'loop_warning': '4-neighbour cycles in final painted pixels are not observed chronological pen loops or intentional revisits',
         },
         'axes': {}
