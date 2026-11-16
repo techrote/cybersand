@@ -19,7 +19,6 @@ import torch.nn.functional as F
 from quant_worm import (ACTIONS, FAMILIES, WormWorld, digest, load_packed,
                         unpack_codes, rollout, timing)
 from ql002_branch_retrace import examples, assess
-from ql003_surgery import OpeningPrior
 from ql004_integer_repair import meta
 from ql005_bitserial import (PackedBitSerialQ1, q1_shapes, verified_source)
 
@@ -119,7 +118,7 @@ class GatedQ1STE(nn.Module):
                        self.gains.detach().tolist(),self.correction.detach().tolist())
 
 
-def train_repair(path, data, teacher, original, steps, seed, penalty):
+def train_repair(path, data, original, steps, seed, penalty):
     torch.manual_seed(seed)
     net=GatedQ1STE(path)
     optimizer=torch.optim.AdamW(net.parameters(),lr=.012,weight_decay=0.)
@@ -132,7 +131,6 @@ def train_repair(path, data, teacher, original, steps, seed, penalty):
         ix=torch.multinomial(sample_weight,128,replacement=True)
         out=net(x[ix])
         with torch.no_grad():
-            tlogit=teacher(x[ix])
             prior=original(x[ix])
         loss=F.cross_entropy(out,y[ix])+penalty*F.kl_div(
              F.log_softmax(out,dim=-1),F.softmax(prior,dim=-1),reduction="batchmean")
@@ -157,16 +155,11 @@ def train_repair(path, data, teacher, original, steps, seed, penalty):
     report={"steps":steps,"seed":seed,"penalty":penalty,
        "parameters_updated":12,"nonzero_optimizer_moment_tensors":moments,
        "loss_first":traces[0]["loss"],"loss_last":traces[-1]["loss"],
-       "packed_q1_bits_unchanged":True,"reference_fp32_teacher":True,
+       "packed_q1_bits_unchanged":True,
+       "training_target":"host-legal synthetic oracle action labels, NOT logits of a pretrained teacher",
        "gates":saved.thresholds.tolist(),"gains":saved.gains.tolist(),
        "correction":saved.correction.tolist(),"inference_parity_max_abs":parity}
     return saved,state,report,traces
-
-
-def paired_novelty(reports,original):
-    """Same-state host-mask predictions, no off-policy rollout causal claim."""
-    return {k: v["heldout"]["accuracy"] if "accuracy" in v["heldout"] else None
-            for k,v in reports.items()}
 
 
 def run(args):
@@ -198,7 +191,7 @@ def run(args):
     training={}
     for label,penalty in (("q1-gate-ce-repair",0.),
                           ("q1-gate-personality-repair",1.5)):
-        net,opt,diagnostic,trace=train_repair(source,train,teacher,original,
+        net,opt,diagnostic,trace=train_repair(source,train,original,
                                               args.steps,80606,penalty)
         variants[label]=net
         training[label]=diagnostic
@@ -281,6 +274,7 @@ def run(args):
       "new_optimizer_updates":2*args.steps,
       "train_n":len(train[1]),"heldout_n":len(held[1]),
       "heldout_histogram":held_hist,
+      "heldout_metric_target":"synthetic oracle labels from examples(), not QL-003 neural logits",
       "visual_seeds":list(seeds),"visual_horizon":96,
       "variants":reports,"controls":controls,"repairs":training,
       "first_pass_png_n":len(list((out/"gallery").glob("*.png"))),
