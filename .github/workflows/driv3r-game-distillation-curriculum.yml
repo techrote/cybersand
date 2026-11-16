@@ -13,7 +13,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   student-cpu:
-    name: Immutable original d1 source → 450 Adam + 300 repair + D003/004/005/006 bounded students → synthetic gameplay galleries
+    name: Immutable original d1 source → 450 Adam + 300 repair + D003/004/005/006 bounded students → D007 STOP repair + synthetic galleries
     runs-on: ubuntu-24.04
     timeout-minutes: 25
     env:
@@ -119,6 +119,22 @@ jobs:
             --base "$RUNNER_TEMP/distilled-student/frontier_student.npz" \
             --metrics "$RUNNER_TEMP/distilled-student/frontier_metrics.json" \
             --out "$RUNNER_TEMP/distilled-student" --steps 140
+          rm -f "$RUNNER_TEMP/distilled-student/SHA256SUMS.txt"
+          (cd "$RUNNER_TEMP/distilled-student" && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS.txt)
+      - name: D007 local STOP hard-negative repair — three real bounded Adam students, new test worlds
+        env:
+          DRIV3R_TEACHER_CORPUS: ${{ runner.temp }}/distill-source/original_teachers.jsonl
+        run: |
+          set -euo pipefail
+          python3 -m experiments.driv3r.training.distillation.stop_repair \
+            --frontier "$RUNNER_TEMP/distilled-student/frontier_student.npz" \
+            --exhaustion "$RUNNER_TEMP/distilled-student/exhaustion_student.npz" \
+            --exhaustion-metrics "$RUNNER_TEMP/distilled-student/exhaustion_metrics.json" \
+            --out "$RUNNER_TEMP/distilled-student" --steps 120
+          python3 -m experiments.driv3r.training.distillation.audit_stop_repair \
+            --frontier "$RUNNER_TEMP/distilled-student/frontier_student.npz" \
+            --exhaustion "$RUNNER_TEMP/distilled-student/exhaustion_student.npz" \
+            --out "$RUNNER_TEMP/distilled-student"
           rm -f "$RUNNER_TEMP/distilled-student/SHA256SUMS.txt"
           (cd "$RUNNER_TEMP/distilled-student" && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS.txt)
       - name: Immutable original research checkpoint and negative controls (never Git)
