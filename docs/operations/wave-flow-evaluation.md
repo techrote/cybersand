@@ -128,3 +128,22 @@ Implementation: [evaluation screen](../../godot/scripts/wave_flow_evaluation.gd)
 [shared fixture owner](../../godot/scripts/wave_flow_session.gd),
 [native adapter](../../godot/native_extension/cyber_native_cell_world.cpp), and
 [source-built regression](../../godot/tests/test_wave_flow.gd).
+
+
+## Primary evaluation route: Shared Workbench
+
+The standalone Wave evaluator remains a regression/diagnostic fixture. Human
+feel evaluation now belongs in the normal Shared Workbench.
+
+Open Workbench and use **Water solver lab**. **Wave Flow** stages the required
+FreeMass carrier; **PF cached**, **PF dormant** and **FreeMass** are direct
+comparison shortcuts. **Apply solver / tuning** rebuilds the current Workbench
+World while retaining the authored cells. A Wave rebuild resets retained face
+momentum, so compare from equivalent authored/reset states when judging kinetics.
+
+All safe kinetic controls are exposed. **Qualified v2** is the old qualified
+point; **Lively**, **Pressure-ish** and **Heavy** are deliberately exploratory
+starting points, not qualified recommendations. The status line reports the
+actual applied Wave parameters, native tick time, solved chunks and task count.
+Wave remains incompatible with Ballistic Water and custom cellular transport;
+native admission refuses invalid combinations and out-of-range values.

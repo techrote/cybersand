@@ -129,6 +129,8 @@ func builtin_water() -> bool:
 	# the native adapter admits them only inside its bounds, with face release.
 	for key: String in main.FACE_TUNING:
 		check(main.workbench_water_options.get(key) is int,"panel seeds "+key)
+	for key: String in main.WAVE_TUNING:
+		check(main.workbench_water_options.get(key) is int,"Wave panel seeds "+key)
 	var seeded: Dictionary = main.workbench_water_options.duplicate()
 	main.workbench_water_options.merge({"workbench_ballistic":true,"workbench_face_release":true,"workbench_face_budget":0},true)
 	panel._name.text = Setup.DEFAULT_LABEL
@@ -144,6 +146,33 @@ func builtin_water() -> bool:
 	var launched := int(main.tower_context.get("water_spray",{}).get("ledger",{}).get("launched_quantity",0))
 	check(launched > 0,"tuned face release launches parcels (%d)" % launched)
 	await until(installed,"paused after face release")
+	# Wave Flow now runs in the actual authored Workbench rather than only the
+	# rigid evaluator. Bounds fail closed; a valid tuned rebuild publishes exact
+	# applied parameters and continues real body/cell simulation.
+	main.workbench_water_options = seeded.duplicate()
+	main.workbench_water_options.merge({"workbench_ballistic":false,"workbench_face_release":false,
+		"workbench_wave_flow":true,"workbench_wave_active_rows":33},true)
+	panel._name.text = Setup.DEFAULT_LABEL
+	if panel.load_setup(): await until(func(): return main.pending_microscenario_apply.is_empty(),"out-of-bounds Wave tuning")
+	check(not str(main.microscenario_error).is_empty(),"Wave active rows 33 refused by native admission")
+	main.workbench_water_options.workbench_wave_active_rows = 32
+	main.workbench_water_options.workbench_wave_substeps = 2
+	main.workbench_water_options.workbench_wave_gain = 48
+	loaded = check(panel.load_setup(),"Workbench Wave rebuild / "+panel.message)
+	panel._name.text = test_name
+	if not loaded or not await until(installed,"Workbench Wave installed"): return false
+	var wave: Dictionary = main.tower_context.get("wave_flow",{})
+	check(wave.get("enabled",false) and int(wave.get("substeps",0)) == 2,
+		"Workbench Wave enabled with two rounds: "+str(wave))
+	check(int(wave.get("parameters",{}).get("gain",0)) == 48 and int(wave.get("parameters",{}).get("active_rows",0)) == 32,
+		"Workbench Wave tuning readback matches request: "+str(wave.get("parameters",{})))
+	var wave_tick: int = main.latest_snapshot.tick_index
+	panel.toggle_pause()
+	await until(func(): return int(main.latest_snapshot.tick_index) >= wave_tick+30,"Workbench Wave ticks")
+	panel.toggle_pause()
+	check(not main.simulation_worker.has_failed(),"Workbench Wave simulates with authored actors/terrain")
+	await until(installed,"paused after Workbench Wave")
+	main.workbench_water_options = seeded
 	# Fine scheduling cores: workbench-only boolean construction option.
 	main.workbench_water_options = {"workbench_fine_cores":true}
 	panel._name.text = Setup.DEFAULT_LABEL

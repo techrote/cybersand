@@ -371,3 +371,27 @@ Source: [`wave_flow.hpp`](../../native/include/cybersand/wave_flow.hpp),
 `rule_is_active`, `mark_cell_dirty`, `merge_job_effects`, body-mask edits).
 Regressions: [`test_wave_flow.cpp`](../../native/tests/test_wave_flow.cpp)
 (`make wave-flow-test`, `wave-flow-sanitize`, `wave-flow-thread-sanitize`).
+
+
+## Workbench authoring tuning
+
+Wave Flow remains an experimental overlay on the `freemass_v1` Water carrier,
+but the development Workbench now exposes its kinetic tuning profile directly.
+The historical qualified-v2 constants remain the defaults. A Workbench rebuild
+may vary substeps, active response depth, open/confined gain, sealed stiffness,
+normal/calm damping, coasting, levelling, sleep/wake thresholds, rest/stick
+thresholds, calm threshold, sealed saturation mass, empty/wet donor shares and
+surface-film scaling.
+
+The fixed-point flux width, absolute head clamp, two-face safety rules and native
+bounds are not authoring controls. Empty-pour and wet-flow share shifts are
+bounded at one or greater so two opposing faces cannot overdraw one donor in one
+apply pass. Active rows remain at most 32 because the per-cell depth code is a
+three-bit derived field.
+
+Changing any Wave tuning in Workbench constructs a new exclusive World and
+retains the authored cell inventory through the existing prepared replacement
+transaction. Retained Wave face momentum is intentionally not migrated: tuning
+starts a new law state. Non-default tuning is included in `state_hash()` and
+the physical identity. The exact qualified-v2 parameter point retains its
+historical hash path.
