@@ -13,7 +13,7 @@ class MaterialCorridorTests(unittest.TestCase):
                 cells,_=make_corridor(seed,kind)
                 self.assertIn(START,cells);self.assertEqual(33,len(cells))
                 for at in cells:
-                    n=sum(p in cells for p in ((at[0]+1,at[1]),(at[0]-1,at[1]+1),(at[0],at[1]+1),(at[0],at[1]-1)))
+                    n=sum(p in cells for p in ((at[0]+1,at[1]),(at[0]-1,at[1]),(at[0],at[1]+1),(at[0],at[1]-1)))
                     self.assertLessEqual(n,2 if kind=='path' else 4)
                 if kind=='tree':self.assertGreaterEqual(sum(sum(p in cells for p in ((at[0]+1,at[1]),(at[0]-1,at[1]),(at[0],at[1]+1),(at[0],at[1]-1)))>=3 for at in cells),2)
     def test_determinism(self):
