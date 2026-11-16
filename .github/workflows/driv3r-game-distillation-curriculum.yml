@@ -42,7 +42,15 @@ jobs:
           DRIV3R_TEACHER_CORPUS: ${{ runner.temp }}/distill-source/original_teachers.jsonl
         run: |
           set -euo pipefail
-          python3 -m unittest discover -s experiments/driv3r/training/distillation -p 'test_*.py' -v
+          python3 - <<'PY'
+          import importlib, pathlib, unittest
+          root = pathlib.Path('experiments/driv3r/training/distillation')
+          modules = [importlib.import_module('experiments.driv3r.training.distillation.' + p.stem)
+                     for p in sorted(root.glob('test_*.py'))]
+          suite = unittest.TestSuite(unittest.defaultTestLoader.loadTestsFromModule(m) for m in modules)
+          result = unittest.TextTestRunner(verbosity=2).run(suite)
+          raise SystemExit(0 if result.wasSuccessful() else 1)
+          PY
       - name: Genuine 450-update tiny neural student, held-out synthetic controls
         env:
           DRIV3R_TEACHER_CORPUS: ${{ runner.temp }}/distill-source/original_teachers.jsonl
