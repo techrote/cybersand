@@ -122,7 +122,7 @@ def run(checkpoint, out_dir, train_instances=240, eval_seeds=16, epochs=10):
     tuned,steps,losses,count=train(base,x,y,epochs=epochs)
     tuned_records=evaluate_hard(tuned,seeds=eval_seeds)
     out_path=out_dir/'guidance_recovery_cue_calibrated.safetensors'
-    save_file({k:v.detach().cpu().contiguous() for k,v in tuned.state_dict().items()},str(out_path),metadata={'schema':SCHEMA,'seed':'911'})
+    save_file({k:v.detach().cpu().contiguous() for k,v in tuned.state_dict().items()},str(out_path),metadata={'provenance':json.dumps({'schema':SCHEMA,'seed':911},sort_keys=True,separators=(',',':'))})
     metrics={'schema':SCHEMA,'synthetic_only':True,'no_native_undo':True,
       'initial_sha256':hashlib.sha256(Path(checkpoint).read_bytes()).hexdigest(),
       'checkpoint_sha256':hashlib.sha256(out_path.read_bytes()).hexdigest(),
