@@ -46,17 +46,17 @@ def select_trainable(parameter_names):
     """
     names = list(parameter_names)
     layers = [int(m.group(1)) for name in names
-              if (m := re.search(r"(?:^|\\.)layers\\.(\\d+)\\.", name))]
+              if (m := re.search(r"(?:^|\.)layers\.(\d+)\.", name))]
     if len(set(layers)) < 20:
         raise RuntimeError("ModernBERT encoder-layer manifest not recognized")
     last = max(layers)
     selected = []
     for name in names:
-        m = re.search(r"(?:^|\\.)layers\\.(\\d+)\\.", name)
+        m = re.search(r"(?:^|\.)layers\.(\d+)\.", name)
         top = name.split(".")[0]
         if (m and int(m.group(1)) == last) or top in ("head", "classifier"):
             selected.append(name)
-    if not any(re.search(r"(?:^|\\.)layers\\.%d\\." % last, n) for n in selected):
+    if not any(re.search(r"(?:^|\.)layers\.%d\." % last, n) for n in selected):
         raise RuntimeError("no pretrained encoder block selected")
     if not any(n.split(".")[0] in ("head", "classifier") for n in selected):
         raise RuntimeError("no classifier selected")
@@ -156,9 +156,9 @@ def experiment(args):
         raise RuntimeError("unexpected trainable-layer parameter count: " + str(count))
     optimizer = torch.optim.AdamW([
         {"params": [p for n, p in trainable if re.search(
-            r"(?:^|\\.)layers\\.%d\\." % last_layer, n)], "lr": 8e-5},
+            r"(?:^|\.)layers\.%d\." % last_layer, n)], "lr": 8e-5},
         {"params": [p for n, p in trainable if not re.search(
-            r"(?:^|\\.)layers\\.%d\\." % last_layer, n)], "lr": 7e-4},
+            r"(?:^|\.)layers\.%d\." % last_layer, n)], "lr": 7e-4},
     ], weight_decay=0.01)
     hist = torch.bincount(y, minlength=len(ACTIONS)).float()
     weights = torch.zeros(len(ACTIONS))
