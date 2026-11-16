@@ -58,6 +58,14 @@ jobs:
         run: python experiments/driv3r/training/population/population_p6.py --p0-output /tmp/population-evidence --output /tmp/population-evidence/p6_634 --seed 634 --generations 3 --offspring 4 --train-episodes 8 --selection-episodes 5 --holdout-episodes 6 --horizon 48 --portfolio 4
       - name: Replicate P6 with independently held-out worlds (cohort 635)
         run: python experiments/driv3r/training/population/population_p6.py --p0-output /tmp/population-evidence --output /tmp/population-evidence/p6_635 --seed 635 --generations 3 --offspring 4 --train-episodes 8 --selection-episodes 5 --holdout-episodes 6 --horizon 48 --portfolio 4
+      - name: P7 fitted train-only spatial/action encoder vs three ancestry controls, cohort 636
+        env:
+          OPENBLAS_NUM_THREADS: '1'
+        run: python experiments/driv3r/training/population/population_p7.py --p0-output /tmp/population-evidence --output /tmp/population-evidence/p7_636 --seed 636 --generations 3 --offspring 4 --train-episodes 8 --selection-episodes 5 --holdout-episodes 6 --horizon 48 --portfolio 4
+      - name: P7 independent fitted encoder and held-out cohort 637
+        env:
+          OPENBLAS_NUM_THREADS: '1'
+        run: python experiments/driv3r/training/population/population_p7.py --p0-output /tmp/population-evidence --output /tmp/population-evidence/p7_637 --seed 637 --generations 3 --offspring 4 --train-episodes 8 --selection-episodes 5 --holdout-episodes 6 --horizon 48 --portfolio 4
       - name: Retain exact experimental source for reproducibility
         run: |
           mkdir -p /tmp/population-evidence/source
