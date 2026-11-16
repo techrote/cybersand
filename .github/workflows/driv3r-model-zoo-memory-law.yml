@@ -6,6 +6,11 @@ on:
     paths:
       - 'experiments/driv3r/model_zoo/memory_gate/**'
       - '.github/workflows/driv3r-model-zoo-memory-law.yml'
+  pull_request:
+    types: [opened, reopened, synchronize, edited]
+    paths:
+      - 'experiments/driv3r/model_zoo/memory_gate/**'
+      - '.github/workflows/driv3r-model-zoo-memory-law.yml'
   workflow_dispatch:
 permissions:
   contents: read
