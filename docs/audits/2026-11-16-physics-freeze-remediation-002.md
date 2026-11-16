@@ -796,6 +796,43 @@ readiness and process watchdog remains in force; a failed arm remains failed.
 The original failed receipts and both after-startup frame-gap maxima are kept.
 This diagnostic comparison does not grant engineering or physical acceptance.
 
+The controlled comparison completed at
+`1f6bcc9c57dd335860eaf939bd33cb9329524c0d`, tree
+`01b4075a94f1ec5cc780969eb9f6d0b6c2c57026`, in
+[run 43906528622](https://github.com/techrote/cybersand/actions/runs/43906528622).
+All four graphical authoring cases passed 66 checks and all four fresh-process
+reopens passed 12. The strict after-run ledger checked all 1,068 original files,
+including the manifest, with zero changed bytes. This qualifies the canonical
+LF export repair prospectively; the missing 5455 after-bytes remain unknown.
+
+| Profile-cold pair, execution order | First author draw signal span | Author readiness wait | Reopen readiness wait |
+|---|---:|---:|---:|
+| Full, first | 44.185 s | 45.277 s | 2.022 s |
+| Auto/blit, second | 46.567 s | 47.953 s | 1.980 s |
+| Auto/blit, third | 46.371 s | 47.704 s | 2.053 s |
+| Full, fourth | 50.473 s | 51.653 s | 1.916 s |
+
+All 32 first-boundary material observations prove the requested full/full or
+auto/blit backend without fallback. First draws share the paused 1024-square
+bootstrap World, RG8, native tick zero, and matching World/revision/render and
+worker metadata; auto uses three independent staging resources and copy runs.
+Workbench subsequently installs its 2048-square World. Actual cell bytes are
+not independently hashed by this startup observer. Profiles are isolated, while
+machine/driver caches are not reset. First author Main callbacks are only
+1.905–2.441 ms; one auto reopen still records a 162.043 ms Main callback.
+
+The severe first-draw elapsed cost occurs in both modes in this bounded sample.
+It supplies no evidence for a publisher-specific startup repair and does not
+identify CPU, GPU, shader, driver or scheduling execution. No startup draw is
+hidden or deferred, no readiness limit is increased, and the production runtime
+remains unchanged. The earlier failures and the shared cold-start risk remain
+part of qualification. The authenticated evidence artifact
+[14246088200](https://github.com/techrote/cybersand/actions/runs/43906528622/artifacts/14246088200)
+contains 232 checked files; archive SHA256 is
+`90210c8f4da2d6732e4681d901fd8be36fbe16f12dfff98db58aaccc3b604838`.
+Final exact-source integrated Linux/Windows qualification remains required;
+these startup observations cannot qualify physical progression or NVIDIA.
+
 ## Final qualification and evidence interpretation
 
 `run_physics_freeze_comparison.py` extracts immutable c1ad source, authenticates
