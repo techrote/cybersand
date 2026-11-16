@@ -125,6 +125,8 @@ from the programme rather than independent small-scale noise.
 | `native/src/generation_architecture_megablock.inc` | Immutable material sampler and shared interface geometry |
 | `native/src/world_generation.cpp` | Schema-4 registry/admission and v1 builtin identity |
 | `godot/scripts/architectural_generator_project.gd` | Existing preset list, validation and compiler mapping |
+| `godot/native_extension/cyber_world_generator.cpp` | Advertises the new module's existing schema-4 requirement in the native catalogue |
+| `godot/tests/test_architectural_project_contract.gd` | All 73 CLASSIC entries, accurate schema metadata and preserved legacy variants |
 | `godot/tests/test_megablock_project.gd` | Standalone/builtin parity, controls, partial crops and clearance refusal |
 | `native/tests/test_seeded_typology_megablock.cpp` | Determinism, parent-output oracles, geometry/interface checks |
 | `native/tools/gentek_megablock_capture.cpp` | Actual native material capture, programme reporting and bounded timings |

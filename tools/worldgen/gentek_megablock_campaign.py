@@ -104,6 +104,8 @@ def source_identity(compiler: str, binary: Path) -> dict:
         [ROOT / "native/tools/gentek_megablock_capture.cpp", Path(__file__).resolve(),
          ROOT / "godot/scripts/material_appearance_lut.gd", ROOT / "Makefile",
          ROOT / "godot/scripts/architectural_generator_project.gd",
+         ROOT / "godot/native_extension/cyber_world_generator.cpp",
+         ROOT / "godot/native_extension/cyber_world_generator.hpp",
          ROOT / "godot/tests/test_architectural_generator.gd",
          ROOT / "godot/tests/test_architectural_project_contract.gd",
          ROOT / "godot/tests/test_megablock_project.gd",
