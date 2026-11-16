@@ -1,0 +1,61 @@
+name: DRIV3R Gameplay Preference P1 source-fenced proxy qualification
+
+# Dedicated model-research-only workflow. No native Godot, model downloads,
+# external API, gameplay content changes or secrets.
+on:
+  push:
+    branches:
+      - research/driv3r-preference-eval-proxy-20261116
+    paths:
+      - 'experiments/driv3r/training/preference_eval/**'
+      - '.github/workflows/driv3r-gameplay-preference-eval.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: driv3r-pref-p1-${{ github.ref }}-${{ github.event_name }}
+  cancel-in-progress: false
+
+jobs:
+  p1-source-proxy:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out exact research HEAD
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Set up Python 3.12
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify source syntax and run adversarial original-feature tests
+        run: |
+          python3 -m compileall -q experiments/driv3r/training/preference_eval
+          python3 -m unittest discover -s experiments/driv3r/training/preference_eval -p 'test_*.py' -v
+      - name: Train original source-feature pairwise proxy heads (no worm inference)
+        run: |
+          python3 experiments/driv3r/training/preference_eval/rank.py --output-dir "$RUNNER_TEMP/pref-p1"
+      - name: Run P1 source-fenced cross-family falsification
+        run: |
+          python3 experiments/driv3r/training/preference_eval/diagnose_proxies.py --output "$RUNNER_TEMP/pref-p1/falsification.json"
+      - name: Record source and trained-checkpoint hashes
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/pref-p1"
+          git rev-parse HEAD > "$RUNNER_TEMP/pref-p1/EXECUTED_SOURCE_SHA.txt"
+          git status --short > "$RUNNER_TEMP/pref-p1/worktree_status.txt"
+          sha256sum experiments/driv3r/training/preference_eval/*.py experiments/driv3r/training/preference_eval/source_features.csv > "$RUNNER_TEMP/pref-p1/SOURCE_SHA256SUMS.txt"
+          (cd "$RUNNER_TEMP/pref-p1" && sha256sum *.json > CHECKPOINT_AND_RESULT_SHA256SUMS.txt) || true
+          echo 'Labels are algorithmic geometry proxies, not human votes; original PNG archives were NOT fetched by this workflow.' > "$RUNNER_TEMP/pref-p1/TRUTH_BOUNDARY.txt"
+      - name: Preserve exact-run trained heads and negative-control result
+        if: ${{ always() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: driv3r-gameplay-preference-p1-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pref-p1/
+          if-no-files-found: warn
+          retention-days: 30
