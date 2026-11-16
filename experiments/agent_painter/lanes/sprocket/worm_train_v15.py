@@ -21,7 +21,7 @@ from common import profile,sha256_file,write_json
 from numerics import configure_cpu
 
 VERSION="sprocket-w15-short-history-motif-contrast-v1"
-W14_SHA="1c4decfe00fb89f8ccd44269cb6693c5706dcd793705f925a75143fbc49e"
+W14_SHA="1c4decfe00fb89f8ccd44269cb6693c5706dcd793705f925a75143fbc3392c35"
 W13_SHA=w14.W13_SHA
 W9_SHA=w14.W9_SHA
 W0_SHA=w14.W0_SHA
@@ -139,7 +139,6 @@ def train(torch,w0,support,w14head,out):
     train_pairs=contrast_pairs(train_rows,support)
     heldout_pairs=contrast_pairs(heldout,support)
     assert set(TRAIN_SEEDS).isdisjoint(HELDOUT)
-    assert not {r["observation"]["tick"] for r in []}  # no hidden future input
     x,y=w9.as_tensors(torch,train_rows)
     mask=w13.legal_mask(torch,train_rows)
     groups=w13.class_rows(train_rows)
