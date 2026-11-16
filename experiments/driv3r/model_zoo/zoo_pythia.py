@@ -145,7 +145,7 @@ def episodes(seeds):
 def self_test():
     train=episodes(range(1000,1048))
     held=episodes(range(9000,9012))
-    assert train and held and not set(x[0] for x in train).intersection(x[0] for x in held)
+    assert train and held and not set(x[2] for x in train).intersection(x[2] for x in held)
     w=World(9)
     try: w.apply("MAGIC")
     except ValueError: pass
@@ -177,8 +177,8 @@ def train(args):
     if len(set(ids.tolist()))!=6: raise AssertionError("Action tokens collide")
     training=episodes(range(1000,1048))
     heldout=episodes(range(9000,9012))
-    if set(x[0] for x in training).intersection(x[0] for x in heldout):
-        raise AssertionError("Synthetic train/heldout prompt leakage")
+    if set(x[2] for x in training).intersection(x[2] for x in heldout):
+        raise AssertionError("Synthetic train/heldout world identity leakage")
     features=tokenizer([x[0] for x in training],padding=True,truncation=True,max_length=128,return_tensors="pt")
     labels=torch.tensor([ACTIONS.index(x[1]) for x in training])
     model=get_peft_model(model,LoraConfig(r=4,lora_alpha=8,lora_dropout=0,
