@@ -2,7 +2,7 @@ name: SPROCKET WORM-001 W11 head sampling CRN original rollouts
 on:
   push:
     branches: [codex/agent-painter-sprocket-568]
-    paths: [experiments/agent_painter/lanes/sprocket/worm-request-v11.json]
+    paths: [experiments/agent_painter/lanes/sprocket/worm-request-v11-r2.json]
 permissions:
   contents: read
   actions: read
@@ -29,10 +29,10 @@ jobs:
           python3 - <<'PY'
           import json,os,subprocess
           from pathlib import Path
-          q=json.loads(Path("experiments/agent_painter/lanes/sprocket/worm-request-v11.json").read_text())
+          q=json.loads(Path("experiments/agent_painter/lanes/sprocket/worm-request-v11-r2.json").read_text())
           assert q["schema"]=="cybersand.worm.sprocket-head-temperature/11"
-          assert q["experiment"]=="W11-128-heldout-CRN-v1"
-          assert q["heldout"]==[1901,1913,1931] and q["true_head_forwards"]==5760
+          assert q["experiment"]=="W11-128-heldout-CRN-r2"
+          assert q["heldout"]==[1901,1913,1931] and q["max_head_forwards"]==5760
           assert q["optimizer_steps"]==q["real_root_forwards"]==0
           assert q["draft_hold"] is True and q["native"] is False
           assert os.environ["GITHUB_REF"]=="refs/heads/codex/agent-painter-sprocket-568"

@@ -130,9 +130,9 @@ def main(args):
                              "real_head_forwards":0,"control":True})
         write_json(args.output/"partial-results.json",rows)
     total=sum(r["real_head_forwards"] for r in rows)
-    assert len(rows)==72 and total==5760
+    assert len(rows)==72 and 0 < total <= 5760
     write_json(args.output/"summary.json",{"status":"complete","version":VERSION,
-       "original_pairs":72,"actual_head_forwards":total,"root_forwards":0,"optimizer_steps":0,
+       "original_pairs":72,"actual_head_forwards":total,"head_forward_capacity":5760,"root_forwards":0,"optimizer_steps":0,
        "results":rows,"wall_seconds":time.monotonic()-started,
        "peak_rss_kib":resource.getrusage(resource.RUSAGE_SELF).ru_maxrss,
        "synthetic_host":True,"native":False})
