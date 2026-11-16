@@ -437,7 +437,13 @@ func activation() -> bool:
 	var before := generation()
 	if not require(panel.apply(recipe),"ordinary authored Water start requested / "+str(panel.message)) or \
 		not await installed_after(before,"authored Water start"): return false
-	panel.water_spray._wave.button_pressed = true
+	# Exercise the actual visible dropdown instead of the hidden legacy toggle.
+	panel.water_spray._studio_solver.select(1)
+	panel.water_spray._studio_solver.item_selected.emit(1)
+	require(host.workbench_water_options.get("workbench_wave_flow",false),
+		"visible Water-law picker stages Wave Flow")
+	require(not wave().get("enabled",true),
+		"Wave remains native OFF until Apply is acknowledged")
 	for key: String in TUNING:
 		var field: SpinBox = panel.water_spray._wave_fields.get("workbench_wave_"+key)
 		if not require(field != null,"tuning field exists "+key): return false
