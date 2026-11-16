@@ -1,0 +1,18 @@
+{
+  "source": "0059f5e62592ed1fa8c46429fbc816cfb26f4b27",
+  "tree": "e7e187ca6d26b3698f9d9b5dfda179403025a4a7",
+  "input_sha256": "5b78a93866e11831222455db4f9db2cee7b27c346eb493ed2330639bec5bab53",
+  "input_count": 84,
+  "render_count": 21,
+  "visual_review_identity": "all 21 native bytes and all 24 PNG files exactly equal visually reviewed campaign",
+  "files": {
+    "manifest.json": "927d5c3eafd057f12e63a88a72cd09d1b2c132648d9d2dc5b917b25030cb88c8",
+    "source-inputs.json": "de664de71be9371052951f8434a272debf11426ca5e4c23179cd9d776e70c1de",
+    "exact-source-inputs.zip": "dd57fda14bb94038bcd9463a9439d2933fb7d1f9c85172f40f4d07833b55546e",
+    "station-programmes.json": "262c995829a89e5ffe67e0f834f49d675aa0d79a7e2060a8c06316faf3ae2bdc",
+    "01-hero-512.png": "204fffdd9072fcc2bb1394fafd181b0a89eef4e413d91437290da8ee22f342b9",
+    "02-hero-landscape.png": "653e7c76dd2cbedd9de3537b1324c541b11ea6c541277f4d1e0ae67c5023b49d",
+    "03-hero-large.png": "fd5d534a1f6c34e941316f0024e5fb73b1829194b45a38e053e6f948003d1364",
+    "22-comparison-identical-scale.png": "49b9d8ba230ad7ddafecbbd4b19c2d737b9399558159864401ce46fe48000965"
+  }
+}
