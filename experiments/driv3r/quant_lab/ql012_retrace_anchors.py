@@ -112,9 +112,10 @@ def audited_rollout(model, name, seed, family, root, probability, horizon=96):
             values = None
             raw = None
             desired = None
-            override = False
             order = ("STRAIGHT", "RIGHT", "LEFT", "BRANCH", "RETRACE", "STOP")
-            action = next(a for a in order if a in menu)
+            desired_wall = next(a for a in order if a in menu)
+            override = rng.random() < probability
+            action = rng.choice(menu) if override else desired_wall
         assert action in menu
         pos = list(w.pos)
         w.apply(action)
