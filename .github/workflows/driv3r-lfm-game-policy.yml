@@ -60,7 +60,7 @@ jobs:
               "one_cpu_vm":True,
               "native":False,
               "draft_hold":True,
-              "lease_attempt":1}
+              "lease_attempt":2}
           PY
           python3 experiments/driv3r/lfm_game_policy/lfm350.py --self-test \
             --w0 pinned-w0/experiments/agent_painter/worm/common/worm.py
@@ -109,7 +109,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: gp350-001-${{ github.sha }-${{ github.run_id }-${{ github.run_attempt }
+          name: gp350-001-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: gp350-evidence/
           if-no-files-found: warn
           retention-days: 90
