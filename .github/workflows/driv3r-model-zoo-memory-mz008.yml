@@ -1,0 +1,85 @@
+name: MZ-008 delayed-cue game-memory training (research only)
+on:
+  push:
+    branches: ['research/model-zoo-memory-mz008']
+    paths:
+      - 'experiments/driv3r/model_zoo/memory_probe/**'
+      - '.github/workflows/driv3r-model-zoo-memory-mz008.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: mz008-memory-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name != 'workflow_dispatch' }}
+jobs:
+  memory-cpu:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      OMP_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pinned CPU Torch
+        run: |
+          python -m pip install 'torch==2.5.1' --index-url https://download.pytorch.org/whl/cpu
+          python -m pip freeze > "$RUNNER_TEMP/mz008-resolved-packages.txt"
+      - name: Validate source-fenced delayed-cue contract, gradients and ablations
+        run: |
+          python -m unittest -v experiments.driv3r.model_zoo.memory_probe.test_memory
+      - name: Train GRU and current-only control with matched minibatches
+        run: |
+          python -m experiments.driv3r.model_zoo.memory_probe.run \
+            --out "$RUNNER_TEMP/mz008" --train-worlds 96 --eval-worlds 24 \
+            --updates 550 --batch 64 --hidden 128 --layers 2
+      - name: Independently re-score checkpoint and verify historical dependence
+        run: |
+          python - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          import torch
+          from experiments.driv3r.model_zoo.memory_probe.run import models, dataset, balanced_scores
+          p = Path(os.environ['RUNNER_TEMP']) / 'mz008'
+          r = json.loads((p/'results.json').read_text())
+          assert r['schema'] == 'MZ008-DELAYED-CUE-GAME-v1'
+          assert r['source_sha'] == os.environ['GITHUB_SHA']
+          assert r['training']['updates'] == 550
+          assert r['training']['test_examples'] == 192
+          assert r['scores']['recurrent']['accuracy'] >= .80
+          for name in ('current_only', 'erase_history', 'remove_beacon', 'remove_inversion'):
+              assert r['scores']['recurrent']['accuracy'] - r['scores'][name]['accuracy'] >= .20
+          assert r['beacon_flip_target_correct'] >= .80
+          ck = p/'memory_policy.pt'
+          assert hashlib.sha256(ck.read_bytes()).hexdigest() == r['checkpoint_sha256']
+          saved = torch.load(ck, map_location='cpu', weights_only=True)
+          assert saved['source_sha'] == r['source_sha']
+          net, baseline = models(torch, saved['architecture']['hidden'],
+                                 saved['architecture']['layers'])
+          net.load_state_dict(saved['weights'], strict=True)
+          baseline.load_state_dict(saved['control'], strict=True)
+          net.eval(); baseline.eval()
+          rows = dataset(range(5000,5024))
+          x = torch.tensor([row[0] for row in rows], dtype=torch.float32)
+          with torch.inference_mode():
+              n = net(x).argmax(-1).tolist()
+              b = baseline(x[:, -1]).argmax(-1).tolist()
+          assert balanced_scores(n, rows) == {
+              key:value for key,value in r['scores']['recurrent'].items() if key != 'cue_pairs'}
+          assert balanced_scores(b, rows) == {
+              key:value for key,value in r['scores']['current_only'].items() if key != 'cue_pairs'}
+          print('Checkpoint source, SHA256, history causality and independent score replay verified')
+          PY
+      - name: Retain original checkpoint and metrics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mz008-memory-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/mz008/**
+            ${{ runner.temp }}/mz008-resolved-packages.txt
+          if-no-files-found: warn
+          retention-days: 14
