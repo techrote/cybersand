@@ -4,7 +4,7 @@ on:
     branches:
       - 'research/driv3r-quant-lab-*'
     paths:
-      - 'experiments/driv3r/quant_lab/**'
+      - 'experiments/driv3r/quant_lab/quant_worm.py'
       - '.github/workflows/driv3r-quant-lab-ql001.yml'
   workflow_dispatch:
 permissions:
