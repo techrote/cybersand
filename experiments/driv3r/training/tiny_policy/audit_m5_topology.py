@@ -12,7 +12,7 @@ from PIL import Image
 from .core import ACTIONS,DELTA,FAMILIES,choose_random,choose_wall,raster
 from .m3_curriculum import models as m3_models
 from .m5_topology_train import (PROTOCOL,TRAIN_SEEDS,DEV_SEEDS,EVAL_SEEDS,M4_SEEDS,
-    TURNS,BUDGET,POLICIES,ORIGINAL_M3_SHA,maze_world,geometry_sha,oracle,novel)
+    TURNS,BUDGET,POLICIES,ORIGINAL_M3_SHA,maze_world,geometry_sha,oracle,novel,validated_m3_lineage)
 from .m4_ood import world as m4_world
 
 
@@ -60,8 +60,12 @@ def audit(root,m3_directory):
         raise ValueError("Optimizer receipt mismatch")
     expected_new={key:row["checkpoint_sha256"] for key,row in report["models"].items()}
     if set(expected_new)!={"linear","mlp","conv"}:raise ValueError("Missing trained architecture")
+    m3_hashes,m3_report_sha=validated_m3_lineage(m3_directory,report.get("m3_source_rebuild",False))
+    if (report.get("m3_checkpoint_sha256",ORIGINAL_M3_SHA)!=m3_hashes
+            or report.get("m3_report_sha256")!=m3_report_sha):
+        raise ValueError("Reported M3 regeneration lineage does not match source evidence")
     torch.manual_seed(730)
-    old=load_heads(torch,m3_directory,ORIGINAL_M3_SHA,"tiny-policy-m3-curriculum-cpu-v1")
+    old=load_heads(torch,m3_directory,m3_hashes,"tiny-policy-m3-curriculum-cpu-v1")
     new=load_heads(torch,root/"checkpoints",expected_new,PROTOCOL)
     # Verify same exact source-disjoint training checkpoint identity across all models.
     for name in new:
