@@ -1,28 +1,23 @@
-name: DRIV3R fleet training FT-001 two-runner CPU benchmark
+name: DRIV3R fleet training FT-002 same-clock four-resident CPU qualification
 
 on:
   push:
     branches: [research/570-fleet-training-throughput-001]
     paths:
       - .github/workflows/driv3r-fleet-training-ft001.yml
-      - experiments/driv3r/fleet_training/request.json
+      - experiments/driv3r/fleet_training/request_quad.json
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: driv3r-fleet-training-ft001
+  group: driv3r-fleet-training-ft002
   cancel-in-progress: false
 
 jobs:
-  bounded-population-optimizer:
-    strategy:
-      fail-fast: false
-      max-parallel: 2
-      matrix:
-        shard: [alpha, beta]
-    name: FT-001 ${{ matrix.shard }} original population SGD 1-vs-2
+  four-resident-optimizer:
+    name: FT-002 four independent real CPU Adam game-policy residents
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
@@ -34,7 +29,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
-      - name: Checkout immutable Population Game Policy Trainer experiment
+      - name: Immutable read-only game-policy trainer source
         uses: actions/checkout@v4
         with:
           repository: techrote/cybersand
@@ -44,22 +39,21 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install pinned NumPy only (no paid model/API or GPU)
+      - name: Pinned dependency
         run: python -m pip install --disable-pip-version-check numpy==2.3.5
-      - name: Adversarial request/authenticity unit preflight
+      - name: Fail-closed source/lease and CPU pulse tests
         run: python -m unittest discover -s experiments/driv3r/fleet_training -p 'test_*.py' -v
-      - name: Train real Adam game-policy population and measure concurrent optimizer residency
+      - name: Run 1 vs 2 vs 4 real training process epochs on one ordinary CPU runner
         run: |
-          python experiments/driv3r/fleet_training/fleet_bench.py \
-            --request experiments/driv3r/fleet_training/request.json \
+          python experiments/driv3r/fleet_training/four_resident.py \
+            --request experiments/driv3r/fleet_training/request_quad.json \
             --upstream upstream \
-            --runner ${{ matrix.shard }} \
-            --output "${RUNNER_TEMP}/ft001-${{ matrix.shard }}"
-      - name: Preserve source matched CPU optimizer checkpoints, trajectories, metrics and failure logs
+            --output "${RUNNER_TEMP}/ft002-four-resident"
+      - name: Preserve trained original model checkpoints, four PID pulse evidence, negative outcomes and gallery
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: ft001-population-${{ matrix.shard }}-${{ github.run_id }}
-          path: ${{ runner.temp }}/ft001-${{ matrix.shard }}/
+          name: ft002-four-resident-${{ github.run_id }}
+          path: ${{ runner.temp }}/ft002-four-resident/
           if-no-files-found: warn
           retention-days: 14
