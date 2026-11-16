@@ -4,6 +4,19 @@ extends SceneTree
 # measured zone connectivity/quotas and native admission of exact edge seeds.
 const Project = preload("res://scripts/architectural_generator_project.gd")
 const Store = preload("res://scripts/workbench_generated_map.gd")
+const CLASSIC_GENTEK_IDS: Array[String] = ["trestle","stacked_arcade","flying_buttress","sawtooth_gallery",
+		"cantilever_spine","rib_vault","nested_arcade","suspended_deck",
+		"bowstring_truss","diamond_truss","portal_frame","ladder_bridge","stepped_aqueduct","split_pier",
+		"cable_gallery","clerestory_hall","mushroom_deck","zigzag_bridge","scalloped_vault","lattice_tower",
+		"offset_arcade","bridgehouse","forked_gantry","buttress_wall",
+		"fan_truss","pratt_truss","vierendeel_frame","suspension_pylon","harp_bridge","double_cantilever",
+		"stepped_buttress","colonnade","basilica","crenellated_bridge","pointed_arcade","inverted_arch",
+		"hourglass_pier","tripod_frame","chevron_hall","hanging_arcade","shelf_stack","staggered_balcony",
+		"monopod_tower","wedge_gallery","crown_bridge","zigzag_pier","drum_vault","pyramidal_frame",
+		"warren_truss","kingpost_frame","queenpost_frame","lenticular_bridge","radial_stay_bridge","twin_mast_bridge",
+		"a_frame_hall","butterfly_hall","ziggurat_arcade","corbel_arcade","chain_vault","ring_pier",
+		"folded_plate_hall","space_frame","crossbeam_stack","yoke_bridge","lantern_tower","spine_arcade",
+		"cascade_terrace","inverted_trestle","cranked_beam","barrel_arcade","buttress_crown","triptych_arcade","suspended_arcology"]
 var checks := 0
 var failures := 0
 
@@ -175,19 +188,7 @@ func new_native_algorithms() -> void:
 		"three new native algorithms produce materially distinct deterministic geometry")
 
 func classic_genteks() -> void:
-	var ids: Array[String] = ["trestle","stacked_arcade","flying_buttress","sawtooth_gallery",
-		"cantilever_spine","rib_vault","nested_arcade","suspended_deck",
-		"bowstring_truss","diamond_truss","portal_frame","ladder_bridge","stepped_aqueduct","split_pier",
-		"cable_gallery","clerestory_hall","mushroom_deck","zigzag_bridge","scalloped_vault","lattice_tower",
-		"offset_arcade","bridgehouse","forked_gantry","buttress_wall",
-		"fan_truss","pratt_truss","vierendeel_frame","suspension_pylon","harp_bridge","double_cantilever",
-		"stepped_buttress","colonnade","basilica","crenellated_bridge","pointed_arcade","inverted_arch",
-		"hourglass_pier","tripod_frame","chevron_hall","hanging_arcade","shelf_stack","staggered_balcony",
-		"monopod_tower","wedge_gallery","crown_bridge","zigzag_pier","drum_vault","pyramidal_frame",
-		"warren_truss","kingpost_frame","queenpost_frame","lenticular_bridge","radial_stay_bridge","twin_mast_bridge",
-		"a_frame_hall","butterfly_hall","ziggurat_arcade","corbel_arcade","chain_vault","ring_pier",
-		"folded_plate_hall","space_frame","crossbeam_stack","yoke_bridge","lantern_tower","spine_arcade",
-		"cascade_terrace","inverted_trestle","cranked_beam","barrel_arcade","buttress_crown","triptych_arcade"]
+	var ids: Array[String] = CLASSIC_GENTEK_IDS
 	var presets: Array = Project.builtin_presets()
 	var hashes := {}
 	for module: String in ids:
@@ -216,7 +217,7 @@ func classic_genteks() -> void:
 			var digest: String = Store.digest(chunk.cells)
 			check(not hashes.has(digest), "classic first-chunk geometry differs: " + module)
 			hashes[digest] = module
-	check(hashes.size() == 72, "seventy-two classic Genteks produce distinct first-chunk material geometry")
+	check(hashes.size() == 73, "seventy-three classic Genteks produce distinct first-chunk material geometry")
 
 func planner_invariants() -> void:
 	for seed: int in range(64):
@@ -299,7 +300,7 @@ func native_identity_edges() -> void:
 	for entry: Dictionary in catalogue.modules:
 		var identity: String = str(entry.id) + ":" + str(entry.version)
 		versions[identity] = true
-		var architectural: bool = str(entry.id) in ["terraced", "hex_hive", "arcade"]
+		var architectural: bool = str(entry.id) in ["terraced", "hex_hive", "arcade"] or str(entry.id) in CLASSIC_GENTEK_IDS
 		var versioned_legacy: bool = str(entry.id) in ["arcology", "vault"] and int(entry.version) == 2
 		if architectural or versioned_legacy:
 			check(int(entry.get("minimum_recipe_schema", -1)) == 4,
