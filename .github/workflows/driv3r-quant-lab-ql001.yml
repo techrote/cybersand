@@ -33,7 +33,7 @@ jobs:
           python -m pip install 'numpy==2.1.3' 'Pillow==11.1.0'
       - name: Host legality and bit packing contract
         run: python experiments/driv3r/quant_lab/quant_worm.py --self-test
-      - name: Real optimizer, QAT repair, 10 quant variants and 126 genuine synthetic PNGs
+      - name: Real optimizer, QAT repair, 12 trained/untuned quant variants and 144 genuine synthetic PNGs
         run: |
           python experiments/driv3r/quant_lab/quant_worm.py \
             --out quant-lab-out --steps 450 --repair-steps 100
@@ -49,11 +49,11 @@ jobs:
           assert r["repair"]["steps"] == 100
           assert r["training"]["nonzero_optimizer_moment_tensors"] > 0
           assert r["repair"]["nonzero_optimizer_moment_tensors"] > 0
-          assert len(r["variants"]) == 10
+          assert len(r["variants"]) == 12
           assert len(r["baselines"]) == 4
           rows=json.loads((root/"decisions.json").read_text())
-          assert len(rows) == 126
-          assert len(list((root/"gallery").glob("*.png"))) == 126
+          assert len(rows) == 144
+          assert len(list((root/"gallery").glob("*.png"))) == 144
           inventory=json.loads((root/"MANIFEST.json").read_text())
           assert inventory
           for row in inventory:
