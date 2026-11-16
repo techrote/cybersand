@@ -55,9 +55,11 @@ jobs:
       - name: Git exact-head scope guard
         run: |
           set -euo pipefail
-          git diff --name-only 67bc90e685f3311f73b6dbb3b0f6773d10e64623...HEAD |
-            grep -vE '^(experiments/driv3r/frankenlayers_lab/|[.]github/workflows/driv3r-frankenlayers-lab[.]yml$)' |
-            tee /tmp/unexpected.txt
+          git diff --name-only 67bc90e685f3311f73b6dbb3b0f6773d10e64623...HEAD > /tmp/changed.txt
+          if grep -vE '^(experiments/driv3r/frankenlayers_lab/|[.]github/workflows/driv3r-frankenlayers-lab[.]yml$)' /tmp/changed.txt > /tmp/unexpected.txt; then
+            cat /tmp/unexpected.txt
+            exit 1
+          fi
           test ! -s /tmp/unexpected.txt
 
   brain:
