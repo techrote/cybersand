@@ -267,8 +267,10 @@ desktop OpenGL/ANGLE path retains exact material/condition bytes and the origina
 appearance shaders; unsupported or detectably invalid resources use full texture
 fallback. Current/previous history, crossfade, collision masks and revision ACKs
 are preserved. At 2048-square RG8, one changed tile submits 32KiB instead of 8MiB;
-the two histories and bounded staging/retirement resources occupy about42.7MiB
+the two histories and bounded staging/retirement resources occupy about53.3MiB
 of logical GPU texture storage. GPU copy writes are additional traffic.
+Two fixed staging resources per size class alternate after submission. This
+increases reuse distance; it is not a GPU fence or a nonblocking guarantee.
 Large changes/full initialization can still be expensive. The early physical
 mailbox removes graphical packet work from the completion handoff but does not
 remove native computation, required terrain installation, strict feedback age,

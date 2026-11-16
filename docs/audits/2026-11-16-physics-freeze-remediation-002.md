@@ -48,7 +48,9 @@ production path never reads GPU pixels back to construct an update.
 At 2048²,128² tiles bound dirty tracking to 256 entries. Recycled histories repair
 all accumulated dirties and skip byte-identical cached tiles. A single changed
 tile uploads 32 KiB instead of 8 MiB. The two history targets, staging resources and
-retirement sink occupy 44,728,324 logical GPU texture bytes, excluding driver
+retirement sink occupied 44,728,324 logical GPU texture bytes in the one-stage
+e61 checkpoint. The bounded two-stage experiment described below occupies
+55,902,212 bytes, excluding driver
 allocation overhead. CPU submission bytes exclude GPU source reads and RGBA8
 target writes; the latter are reported as a logical estimate, not bandwidth.
 Upload Images remain immutable while RenderingServer may retain queued refs.
@@ -247,6 +249,65 @@ configured. Four missing-owner attempts refuse; restoring the blank setup emits
 a receipt, and the ordinary headless entry exits successfully. This corrects a
 qualification gate, not gameplay physics. Genuine final Windows launchers must
 still execute successfully.
+
+## Rejected e61 checkpoint and bounded staging experiment
+
+Source `e61f3b6e40fe7c6152a440369a536fb8bf551055`, tree
+`3b199dc357a58b5bd1765615d65215c4fff255ba`, passed the complete
+[Linux/Windows application campaign 43838952079](https://github.com/techrote/cybersand/actions/runs/43838952079).
+Both hosts passed material293 and physical-publication64 assertions, all eight
+actual appearance comparisons, source ABBA state/association checks and ordinary
+contact recovery. Windows also passed all three real graphical launchers and
+the real Desktop PowerShell5.1 Test It.cmd (four captures, two pairs). The
+unchanged palette guard passed in
+[43838963413](https://github.com/techrote/cybersand/actions/runs/43838963413), whose
+synthetic merge tree exactly equals e61. Its separate Draft-gated provenance
+step was skipped; the application preflight authenticated the runtime inputs.
+
+Independent raw timing review nevertheless **rejects e61 for the freeze target**.
+All four Windows source pairs retained exact144-step recorded bodies and native
+associations, but p95 physical gaps changed140.56→227.17,139.40→218.96,
+139.37→215.62 and137.67→200.51 ms. Candidate gaps≥250 ms numbered4/3/2/1;
+each control had zero. The improved rates and median gaps do not offset those
+recurrent tails. Staging calls≥100 ms numbered45/98,43/93,47/97 and44/96,
+with maxima301.798–320.478 ms; blit submission medians were about0.36 ms.
+
+This is ordinary sparse-update evidence, not only full refresh: the512KiB,
+16-tile staging class had≥100 ms calls38/83,37/80,40/82 and38/82, frequently
+alternating approximately0.08 ms with100–220 ms. Actual Test It independently
+repeated the pattern. Its callback median improved from about94 to6 ms, while
+p95 worsened from121–127 to199–203 ms. The delay is observed inside the staging
+update call; resource-specific GPU waiting, global backend synchronization and
+OS descheduling are not individually isolated by these scopes.
+
+Final e61 Linux source ABBA remained mixed at roughly7.3–7.6 completed steps/s.
+Every143-gap arm exceeded100 ms, none reached250 ms, and candidate material
+calls stayed below13 ms. The local same-source full/blit pair also remained
+mixed, including a1,002 ms candidate gap and worse p95. All raw evidence,
+rejected packages and independent reductions remain retained.
+
+The next controlled experiment gives each staging size class two fixed source
+textures. A publication uploads one immutable atlas into the selected resource,
+copies into the same two authoritative histories, performs sink retirement,
+then advances that pool's cursor. Full-size aliases share the cursor; NPOT full
+sources use a separate bounded pool. Initialization primes one resource per
+class and starts the two-resource path with its alternate. This increases
+reuse distance and does not constitute a GPU fence. It adds11,173,888 logical
+GPU bytes at2048² RG8, for55,902,212 total. One/two resources are selected with
+`CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS=1|2`; two is the unaccepted experimental
+default. Metrics record the slot and actual staging RID.
+
+The targeted local gate passed785 graphical assertions and18 headless fallback
+assertions, including exact history/appearance, recurring-capacity alternation,
+shared and separate full pools, malformed second-slot/pool/cursor rejection,
+no-op cursor preservation and fallback ACK correctness. Independent static
+review found no blocker for the experiment. This is not performance approval.
+The dedicated Windows probe uses one source and full observer configuration,
+ordinary coupled2048² Needle/Follow inputs, and serial full/one/two/two/one/full
+arms. It preserves complete captures and compares the exact1..144 physical
+prefix. Whole-frame, callback and physical-completion tails determine adoption;
+a shorter staging call alone does not. Full exact-source qualification follows
+only after a mechanism is justified.
 
 ## Final qualification and evidence interpretation
 

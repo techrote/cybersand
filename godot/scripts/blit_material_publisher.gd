@@ -39,6 +39,13 @@ class MaterialPlane extends Texture2D:
 		var owner: RefCounted = _publisher.get_ref() if _publisher != null else null
 		return owner != null and owner.replace_plane(source, self)
 
+class StagingPool extends RefCounted:
+	var textures: Array[ImageTexture] = []
+	var owned_object_ids := PackedInt64Array()
+	var owned_rids: Array[RID] = []
+	var extent := Vector2i.ZERO
+	var next_slot: int = 0
+
 var current: MaterialPlane
 var previous: MaterialPlane
 var extent := Vector2i.ZERO
@@ -47,10 +54,13 @@ var channels: int = 2
 var tile_side: int = MIN_TILE_SIDE
 var columns: int = 0
 var rows: int = 0
+# One or two fixed upload resources per size class. Alternation provides
+# reuse distance; it is not a GPU fence or a promise of nonblocking updates.
+var staging_slots: int = 2
 var staging: Dictionary = {}
-var _staging_identities: Dictionary = {}
-var _full_stage_identity: Array[int] = []
-var full_stage: ImageTexture
+var _staging_pool_ids: Dictionary = {}
+var full_staging: StagingPool
+var _full_staging_pool_id: int = 0
 var retirement_sink: DrawableTexture2D
 var retirement_owned_id: int = 0
 var retirement_owned_rid: RID
@@ -85,6 +95,7 @@ func _setup(source: Image, preceding: Image) -> bool:
 			or preceding.get_format() != source.get_format() or preceding.has_mipmaps(): return false
 	extent = source.get_size()
 	logical_format = source.get_format()
+	staging_slots = 1 if OS.get_environment("CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS") == "1" else 2
 	channels = 1 if logical_format == Image.FORMAT_R8 else 2
 	while true:
 		columns = ceili(float(extent.x) / tile_side)
@@ -100,16 +111,16 @@ func _setup(source: Image, preceding: Image) -> bool:
 	retirement_owned_rid = retirement_sink.get_rid()
 	for capacity: int in CAPACITIES:
 		var side: int = int(sqrt(float(capacity))) * tile_side
-		var image := Image.create(side, side, false, logical_format)
-		staging[capacity] = ImageTexture.create_from_image(image)
-		if not staging[capacity].get_rid().is_valid(): return false
-		_staging_identities[capacity] = [staging[capacity].get_instance_id(), staging[capacity].get_rid().get_id()]
+		var pool: StagingPool = _new_staging_pool(Vector2i(side,side))
+		if pool == null: return false
+		staging[capacity] = pool
+		_staging_pool_ids[capacity] = pool.get_instance_id()
+		if pool.extent == extent: full_staging = pool
 		if capacity >= columns * rows: break
-	for stage: ImageTexture in staging.values():
-		if Vector2i(stage.get_size()) == extent: full_stage = stage
-	if full_stage == null:
-		full_stage = ImageTexture.create_from_image(Image.create(extent.x,extent.y,false,logical_format))
-	_full_stage_identity = [full_stage.get_instance_id(), full_stage.get_rid().get_id()]
+	if full_staging == null:
+		full_staging = _new_staging_pool(extent)
+		if full_staging == null: return false
+	_full_staging_pool_id = full_staging.get_instance_id()
 	current = _new_plane()
 	previous = _new_plane()
 	if current == null or previous == null: return false
@@ -129,18 +140,21 @@ func _setup(source: Image, preceding: Image) -> bool:
 	# The preceding slot may differ anywhere after a live mode switch. Its
 	# first reuse must compare all tiles against the next complete CPU image.
 	if not identical: previous.pending.fill(1)
-	# Prime each fixed source binding during setup. This is production work,
-	# not a benchmark warmup; its measured cost belongs to initialization.
+	# Prime one resource per class during setup, then start the two-resource
+	# path on its alternate. The priming draw must not immediately precede a
+	# CPU overwrite of the same resource. The one-resource control retains
+	# the previous behavior; all preparation cost remains in initialization.
 	var priming_started: int = Time.get_ticks_usec()
-	var stages: Array = staging.values()
-	if not stages.has(full_stage): stages.append(full_stage)
+	var pools: Array = staging.values()
+	if not pools.has(full_staging): pools.append(full_staging)
 	var sink_rids: Array[RID] = [retirement_sink.get_rid()]
-	for stage: ImageTexture in stages:
-		var source_rids: Array[RID] = [stage.get_rid()]
+	for pool: StagingPool in pools:
+		var source_rids: Array[RID] = [pool.textures[0].get_rid()]
 		RenderingServer.texture_drawable_blit_rect(sink_rids,Rect2i(0,0,1,1),
 			copy_material.get_rid(),Color(0,0,1,1),source_rids,0)
+		pool.next_slot = staging_slots - 1
 	initialized["priming_usec"] = Time.get_ticks_usec()-priming_started
-	initialized["priming_blit_calls"] = stages.size()
+	initialized["priming_blit_calls"] = pools.size()
 	initialized["initialization_staging_zero_bytes"] = gpu_storage_bytes()-extent.x*extent.y*8-4
 	initialized["submitted_bytes"] += initialized.initialization_staging_zero_bytes
 	initialized["initialization"] = true
@@ -149,6 +163,33 @@ func _setup(source: Image, preceding: Image) -> bool:
 	# duration is not reconstructed by summing the upload component scopes.
 	last_update = initialized
 	_finish_metrics()
+	return true
+
+
+func _new_staging_pool(size: Vector2i) -> StagingPool:
+	var pool := StagingPool.new()
+	pool.extent = size
+	# Initialization data is immutable across both queued creations.
+	var zero := Image.create(size.x,size.y,false,logical_format)
+	for slot: int in range(staging_slots):
+		var stage: ImageTexture = ImageTexture.create_from_image(zero)
+		if stage == null or not stage.get_rid().is_valid(): return null
+		pool.textures.append(stage)
+		pool.owned_object_ids.append(stage.get_instance_id())
+		pool.owned_rids.append(stage.get_rid())
+	return pool
+
+
+func _valid_staging_pool(pool: StagingPool, size: Vector2i) -> bool:
+	if pool == null or pool.extent != size or pool.textures.size() != staging_slots \
+			or pool.owned_object_ids.size() != staging_slots or pool.owned_rids.size() != staging_slots \
+			or pool.next_slot < 0 or pool.next_slot >= staging_slots: return false
+	for slot: int in range(staging_slots):
+		var stage: ImageTexture = pool.textures[slot]
+		if stage == null or stage.get_instance_id() != pool.owned_object_ids[slot] \
+				or stage.get_rid() != pool.owned_rids[slot] or not stage.get_rid().is_valid() \
+				or Vector2i(stage.get_size()) != size or stage.get_format() != logical_format: return false
+		if slot > 0 and stage.get_rid() == pool.textures[0].get_rid(): return false
 	return true
 
 
@@ -180,6 +221,7 @@ func _tile(source: Image, index: int) -> Image:
 
 
 func _valid_state() -> bool:
+	if staging_slots not in [1,2]: return false
 	if extent.x <= 0 or extent.y <= 0 or extent.x >= 16384 or extent.y >= 16384 \
 			or logical_format not in [Image.FORMAT_R8,Image.FORMAT_RG8] \
 			or channels != (1 if logical_format == Image.FORMAT_R8 else 2): return false
@@ -197,16 +239,15 @@ func _valid_state() -> bool:
 				or Vector2i(plane.drawable.get_size()) != extent or plane.drawable.get_use_mipmaps() \
 				or plane.bytes.size() != columns*rows or plane.pending.size() != columns*rows \
 				or plane.drawable.get_rid() == retirement_sink.get_rid(): return false
+	if staging.size() != _staging_pool_ids.size(): return false
 	for capacity: int in staging:
-		var stage: ImageTexture = staging[capacity] as ImageTexture
-		var identity: Array = _staging_identities.get(capacity, [])
+		if capacity not in CAPACITIES: return false
+		var pool: StagingPool = staging[capacity] as StagingPool
+		if pool == null or pool.get_instance_id() != int(_staging_pool_ids.get(capacity,0)): return false
 		var side: int = int(sqrt(float(capacity)))*tile_side
-		if capacity not in CAPACITIES or stage == null or identity.size() != 2 \
-				or stage.get_instance_id() != identity[0] or stage.get_rid().get_id() != identity[1] \
-				or Vector2i(stage.get_size()) != Vector2i(side,side) or stage.get_format() != logical_format: return false
-	if full_stage == null or _full_stage_identity.size() != 2 \
-			or full_stage.get_instance_id() != _full_stage_identity[0] or full_stage.get_rid().get_id() != _full_stage_identity[1] \
-			or Vector2i(full_stage.get_size()) != extent or full_stage.get_format() != logical_format: return false
+		if not _valid_staging_pool(pool,Vector2i(side,side)): return false
+	if full_staging == null or full_staging.get_instance_id() != _full_staging_pool_id \
+			or not _valid_staging_pool(full_staging,extent): return false
 	return current.get_rid() != previous.get_rid()
 
 
@@ -248,6 +289,7 @@ func _finish_metrics() -> void:
 	last_update["gpu_storage_format"] = "RGBA8_LINEAR"
 	last_update["tile_side"] = tile_side
 	last_update["tile_count"] = columns*rows
+	last_update["staging_slots"] = staging_slots
 
 
 func _submit(source: Image, destinations: Array[MaterialPlane]) -> bool:
@@ -256,7 +298,8 @@ func _submit(source: Image, destinations: Array[MaterialPlane]) -> bool:
 		"submitted_bytes":0, "atlas_capacity":0, "atlas_assembly_usec":0,
 		"staging_upload_usec":0, "gpu_blit_submit_usec":0, "gpu_blit_calls":0,
 		"blit_pixels":0, "estimated_target_write_bytes":0, "allocated_gpu_bytes":gpu_storage_bytes(),
-		"retirement_blit_calls":0, "estimated_retirement_write_bytes":0}
+		"retirement_blit_calls":0, "estimated_retirement_write_bytes":0,
+		"staging_slot":-1, "staging_resource_rid":0}
 	if not _valid_source(source) or not _valid_state() or destinations.is_empty(): return false
 	for plane: MaterialPlane in destinations:
 		if plane not in [current,previous]: return false
@@ -285,7 +328,10 @@ func _submit(source: Image, destinations: Array[MaterialPlane]) -> bool:
 	var atlas_columns: int = int(sqrt(float(capacity)))
 	var atlas_side: int = atlas_columns * tile_side
 	var whole: bool = atlas_side*atlas_side >= extent.x*extent.y
-	var stage: ImageTexture = full_stage if whole else staging.get(capacity) as ImageTexture
+	var pool: StagingPool = full_staging if whole else staging.get(capacity) as StagingPool
+	if pool == null: return false
+	var slot: int = pool.next_slot
+	var stage: ImageTexture = pool.textures[slot]
 	var stage_size: Vector2i = extent if whole else Vector2i(atlas_side,atlas_side)
 	if stage == null or Vector2i(stage.get_size()) != stage_size \
 			or stage.get_format() != logical_format or not stage.get_rid().is_valid(): return false
@@ -345,6 +391,11 @@ func _submit(source: Image, destinations: Array[MaterialPlane]) -> bool:
 	last_update.estimated_target_write_bytes = 4*last_update.blit_pixels
 	last_update.whole_gpu_copy = whole
 	last_update.atlas_capacity = capacity
+	last_update.staging_slot = slot
+	last_update.staging_resource_rid = stage.get_rid().get_id()
+	# Rotate only after upload, all copies and retirement have been submitted.
+	# Byte-identical and rejected publications never consume a staging slot.
+	pool.next_slot = (slot+1)%staging_slots
 	_finish_metrics()
 	return true
 
@@ -352,14 +403,18 @@ func _submit(source: Image, destinations: Array[MaterialPlane]) -> bool:
 func resource_identity() -> Array[int]:
 	var ids: Array[int] = [current.get_rid().get_id(),previous.get_rid().get_id()]
 	ids.append(retirement_sink.get_rid().get_id())
-	for capacity: int in staging: ids.append(staging[capacity].get_rid().get_id())
-	if not staging.values().has(full_stage): ids.append(full_stage.get_rid().get_id())
+	var pools: Array = staging.values()
+	if not pools.has(full_staging): pools.append(full_staging)
+	for pool: StagingPool in pools:
+		for stage: ImageTexture in pool.textures: ids.append(stage.get_rid().get_id())
 	ids.sort()
 	return ids
 
 
 func gpu_storage_bytes() -> int:
 	var bytes: int = extent.x*extent.y*4*2+4
-	for capacity: int in staging: bytes += capacity*tile_side*tile_side*channels
-	if full_stage != null and not staging.values().has(full_stage): bytes += extent.x*extent.y*channels
+	var pools: Array = staging.values()
+	if full_staging != null and not pools.has(full_staging): pools.append(full_staging)
+	for pool: StagingPool in pools:
+		if pool != null: bytes += pool.extent.x*pool.extent.y*channels*pool.textures.size()
 	return bytes

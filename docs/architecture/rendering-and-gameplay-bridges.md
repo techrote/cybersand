@@ -214,8 +214,15 @@ At 2048²,128² tiles bound the dirty index to 256 entries. The recycled slot re
 all accumulated changes from its retained contents; exact unchanged tile bytes
 skip submission. One changed tile submits32 KiB of RG8 staging data instead of an
 8 MiB World image. GPU copies also read staging pixels and write RGBA8 targets:
-CPU upload bytes are not total GPU traffic. The two histories, staging size
-classes and 1×1 retirement target occupy 44,728,324 logical GPU texture bytes at
+CPU upload bytes are not total GPU traffic. Each staging size class now owns
+two fixed ImageTextures and rotates only after upload, copies and retirement
+are submitted. A diagnostic one-resource control remains available through
+`CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS=1`; the experimental default is two.
+The exact-size full source aliases the same pool/cursor; non-square or NPOT
+sources retain a separate bounded full pool. Rejected and byte-identical
+publications do not advance a cursor. This increases reuse distance without
+asserting that GPU work has completed. The two histories, staging size
+classes and 1×1 retirement target occupy 55,902,212 logical GPU texture bytes at
 2048² RG8, excluding driver overhead. A final tiny blit prevents the engine's
 persistent framebuffer attachment from retaining a released large history plane.
 

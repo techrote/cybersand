@@ -285,10 +285,10 @@ func _owner_and_format_contract(channels: int) -> void:
 	publisher.previous.drawable = foreign
 	check(not publisher.publish(changed,areas), "foreign valid-RID SRGB target is refused")
 	publisher.previous.drawable = target
-	var stage: ImageTexture = publisher.staging[1]
-	publisher.staging[1] = ImageTexture.create_from_image(Image.create(side,side,false,format))
+	var stage: ImageTexture = publisher.staging[1].textures[0]
+	publisher.staging[1].textures[0] = ImageTexture.create_from_image(Image.create(side,side,false,format))
 	check(not publisher.publish(changed,areas), "foreign staging allocation is refused")
-	publisher.staging[1] = stage
+	publisher.staging[1].textures[0] = stage
 	check(publisher.current.get_image().get_data() == before
 		and publisher.resource_identity() == resources, "rejected mutations leave actual histories and owned resources unchanged")
 	check(publisher.current.update(previous), "legacy direct texture update routes through the same exact GPU copy")
@@ -303,12 +303,109 @@ func _owner_and_format_contract(channels: int) -> void:
 	check(not retained.update(current), "texture refuses updates after its publisher retires")
 
 
+func _staging_pool_contract(slots: int, extent: Vector2i) -> void:
+	var setting: String = OS.get_environment("CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS")
+	OS.set_environment("CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS", str(slots))
+	var host: Control = _host(extent,2,"blit",3)
+	OS.set_environment("CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS", setting)
+	var publisher: Publisher = host._material_blit_publisher
+	check(publisher != null and publisher.staging_slots == slots,
+		"diagnostic staging selector creates exactly the requested resource count")
+	if publisher == null:
+		_release(host)
+		return
+	var resources: Array[int] = publisher.resource_identity()
+	var square: bool = extent == Vector2i(256,256)
+	check((publisher.full_staging == publisher.staging[16]) if square
+		else not publisher.staging.values().has(publisher.full_staging),
+		"full staging aliases a matching atlas and is separate for NPOT dimensions")
+	var sparse_pool: Publisher.StagingPool = publisher.staging[1]
+	var first_cursor: int = sparse_pool.next_slot
+	var unchanged: PackedByteArray = host.image.get_data()
+	var pending_before: PackedByteArray = publisher.previous.pending.duplicate()
+	var areas: Array[Rect2i] = [Rect2i(2,2,1,1)]
+	var foreign_pool: Publisher.StagingPool = publisher._new_staging_pool(sparse_pool.extent)
+	publisher.staging[1] = foreign_pool
+	check(not publisher.publish(host.image,areas), "foreign matching-size pool is rejected by owner identity")
+	publisher.staging[1] = sparse_pool
+	if slots == 2:
+		var alternate: ImageTexture = sparse_pool.textures[1]
+		sparse_pool.textures[1] = sparse_pool.textures[0]
+		check(not publisher.publish(host.image,areas), "replaced second staging slot is rejected before upload")
+		sparse_pool.textures[1] = alternate
+	check(sparse_pool.next_slot == first_cursor and publisher.previous.pending == pending_before,
+		"rejected pool mutations preserve cursor and pending coverage")
+	_check_gpu(host,unchanged,unchanged,"rejected staging mutation")
+	var stage_ids: Dictionary = {}
+	var last_slots: Dictionary = {}
+	var sequence: Array[Dictionary] = []
+	# Consecutive sparse, seam and dense edits exercise recurring capacities.
+	# Inherited dirty coverage may increase the chosen class; the receipt
+	# identifies the actual pool used, rather than assuming the new rect alone.
+	for turn: int in range(12):
+		var area := Rect2i(2,2,1,1)
+		if turn in [2,3,6,7]: area = Rect2i(63,63,2,2)
+		if turn in [8,9,10,11]: area = Rect2i(Vector2i.ZERO,extent)
+		var record: Dictionary = _patch(host,area,6+turn,200-turn,
+			"staging%d %s update%d" % [slots,str(extent),turn])
+		check(record.staging_slots == slots and record.staging_slot >= 0 and record.staging_slot < slots
+			and record.staging_resource_rid > 0, "nonempty receipt identifies its actual bounded stage")
+		var key: int = int(record.atlas_capacity)
+		if last_slots.has(key):
+			check(record.staging_slot == (int(last_slots[key])+1)%slots,
+				"each recurring capacity alternates only its own staging resources")
+		last_slots[key] = record.staging_slot
+		var slot_key: String = "%d:%d" % [key,record.staging_slot]
+		if stage_ids.has(slot_key):
+			check(stage_ids[slot_key] == record.staging_resource_rid,
+				"capacity/slot identity is stable across repeated publications")
+		stage_ids[slot_key] = record.staging_resource_rid
+		sequence.append({"capacity":key,"slot":record.staging_slot,"rid":record.staging_resource_rid,
+			"bytes":record.submitted_bytes,"whole":record.whole_gpu_copy})
+		check(resources == publisher.resource_identity(), "publication allocates no additional staging resources")
+	check(last_slots.has(1) and last_slots.has(4), "independent sparse capacities were exercised")
+	# Align both histories, then verify byte-identical uploads do not consume
+	# a slot or falsely report a GPU source resource.
+	for turn: int in range(2):
+		check(host.upload_texture_patches(host._full_material_rectangle(),host.image.get_data(),
+			host.last_uploaded_revision+1,2), "same-byte staging resync accepted")
+	var cursors: Dictionary = {}
+	for capacity: int in publisher.staging: cursors[capacity] = publisher.staging[capacity].next_slot
+	var full_cursor: int = publisher.full_staging.next_slot
+	check(host.upload_texture_patches(host._full_material_rectangle(),host.image.get_data(),
+		host.last_uploaded_revision+1,2), "zero-change publication accepted")
+	var empty: Dictionary = host.material_publication_status()
+	check(empty.submitted_bytes == 0 and empty.staging_slot == -1 and empty.staging_resource_rid == 0,
+		"zero-change receipt does not invent a staging submission")
+	for capacity: int in publisher.staging:
+		check(publisher.staging[capacity].next_slot == cursors[capacity],
+			"zero-change publication preserves each capacity cursor")
+	check(publisher.full_staging.next_slot == full_cursor, "zero-change publication preserves full staging cursor")
+	var previous: PackedByteArray = host.image.get_data()
+	var bad: Publisher.StagingPool = publisher.staging[1]
+	bad.next_slot = slots
+	check(host.upload_texture_patches(PackedInt32Array([1,1,1,1,0,2]),PackedByteArray([5,7]),
+		host.last_uploaded_revision+1,2), "invalid staging cursor uses Main full fallback")
+	check(host.texture is ImageTexture and host.previous_texture is ImageTexture
+		and host._material_blit_publisher == null, "cursor rejection retires publisher before ACK")
+	_check_gpu(host,host.image.get_data(),previous,"staging cursor fallback")
+	observations.append({"label":"staging pool sequence", "staging_slots":slots,
+		"extent":[extent.x,extent.y],"sequence":sequence,"resource_count":resources.size()})
+	_release(host)
+
+
 func _large_sparse_transfer() -> void:
 	var host: Control = _host(Vector2i(2048, 2048), 2, "blit")
 	check(host._material_blit_publisher.tile_side == 128 and host._material_blit_publisher.columns * host._material_blit_publisher.rows == 256,
 		"2048² RG8 uses 128² tiles and 256 bounded tile records")
 	var resources: Array[int] = host._material_blit_publisher.resource_identity()
-	check(host._material_blit_publisher.gpu_storage_bytes() == 44728324, "2048² fixed RGBA8 histories and RG8 stages allocate 44,728,324 bytes")
+	var slots: int = host._material_blit_publisher.staging_slots
+	var expected_bytes: int = 33554436+11173888*slots
+	check(host._material_blit_publisher.gpu_storage_bytes() == expected_bytes,
+		"2048² allocation includes the configured number of bounded staging resources")
+	check(host._material_blit_publisher.full_staging == host._material_blit_publisher.staging[256],
+		"2048² full image and capacity256 share the same resource pool and cursor")
+	check(resources.size() == 3+5*slots, "history, sink and every staging resource are individually counted")
 	var result: Dictionary = _patch(host, Rect2i(1023, 1024, 1, 1), 3, 77, "2048² single cell")
 	check(result.gpu_blit_calls == 1 and result.retirement_blit_calls == 1, "sparse copy includes bounded retirement draw")
 	check(result.updated_tiles == 1 and result.submitted_bytes == 32768,
@@ -475,6 +572,9 @@ func _run() -> void:
 		for channels: int in [1, 2]:
 			_history_and_fallback(channels)
 			_owner_and_format_contract(channels)
+		for slots: int in [1,2]:
+			_staging_pool_contract(slots,Vector2i(256,256))
+			_staging_pool_contract(slots,Vector2i(317,259))
 		_large_sparse_transfer()
 		check(histories_completed == 2 and large_completed, "all history and transfer tests reached completion")
 		check(await _shader_equivalence() == true and shader_pairs_completed == 8, "all shader comparisons reached completion")
