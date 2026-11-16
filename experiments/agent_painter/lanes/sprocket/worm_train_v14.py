@@ -58,6 +58,14 @@ def data_receipt(rows):
             [r["observation"] for r in rows],sort_keys=True,
             separators=(",",":")).encode()).hexdigest()}
 
+def save_checkpoint(torch,head,opt,out,stage,metrics):
+    path=out/(stage+".pt")
+    torch.save({"version":VERSION,"stage":stage,"root_frozen":True,
+                "head":head.state_dict(),"optimizer":opt.state_dict(),
+                "torch_rng_state":torch.random.get_rng_state(),
+                "heldout_metrics":metrics},path)
+    return {"file":path.name,"sha256":sha256_file(path),"bytes":path.stat().st_size}
+
 def train(torch,w0,support,parent,w9head,out):
     rng=random.Random(140014)
     torch.manual_seed(140014)
@@ -130,7 +138,7 @@ def train(torch,w0,support,parent,w9head,out):
             "teacher":w9.accuracy(torch,model,heldout),
             "branch":w13.branch_diagnostic(torch,model,heldout),
             "classes":w13.class_recall(torch,model,heldout)}
-        measure["checkpoint"]=w13.stage_checkpoint(torch,model,opt,out,stage,measure)
+        measure["checkpoint"]=save_checkpoint(torch,model,opt,out,stage,measure)
         stages.append(measure)
         write_json(out/"stage-progress.json",stages)
     return frozen,stage1,model,stages,hist
