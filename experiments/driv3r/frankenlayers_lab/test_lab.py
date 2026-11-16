@@ -4,7 +4,7 @@ from pathlib import Path
 import unittest
 
 from experiments.driv3r.frankenlayers_lab.flows import (
-    LAB_FLOWS, WAVE1_FLOWS, WAVE2_FLOWS, WAVE3_FLOWS, validate_flows,
+    LAB_FLOWS, WAVE1_FLOWS, WAVE2_FLOWS, WAVE3_FLOWS, WAVE5_FLOWS, validate_flows,
 )
 from experiments.driv3r.frankenlayers_lab.patch_lab import ATTN_GUARD, TARGET, patch
 
@@ -13,7 +13,8 @@ class FrankenLabTests(unittest.TestCase):
         validate_flows()
         self.assertEqual({k:len(v) for k,v in LAB_FLOWS.items()},
             {"skele6":6,"aero6":6,"skele4":4,"aero4":4,"tailspin4":4,"needle4":4,
-             "tailflip4":4,"echo4":4,"aero5_no20":5,"aero5_no23":5})
+             "tailflip4":4,"echo4":4,"aero5_no20":5,"aero5_no23":5,
+             "aero4_no10":4,"aero5_tailflip":5})
         self.assertEqual(WAVE1_FLOWS["skele4"], (0,4,18,23))
         self.assertEqual(WAVE1_FLOWS["aero4"], (0,4,20,23))
         self.assertEqual(WAVE2_FLOWS["tailspin4"], (0,4,18,20))
@@ -22,6 +23,8 @@ class FrankenLabTests(unittest.TestCase):
         self.assertEqual(WAVE3_FLOWS["echo4"], (0,4,18,4))
         self.assertEqual(WAVE3_FLOWS["aero5_no20"], (0,2,4,10,23))
         self.assertEqual(WAVE3_FLOWS["aero5_no23"], (0,2,4,10,20))
+        self.assertEqual(WAVE5_FLOWS["aero4_no10"],(0,2,4,20))
+        self.assertEqual(WAVE5_FLOWS["aero5_tailflip"],(0,2,4,20,10))
         self.assertEqual(len(set(WAVE3_FLOWS["echo4"])),3)
         self.assertNotEqual(tuple(sorted(WAVE3_FLOWS["tailflip4"])),WAVE3_FLOWS["tailflip4"])
         self.assertTrue(all(layers[0]==0 for layers in LAB_FLOWS.values()))
@@ -42,7 +45,7 @@ class FrankenLabTests(unittest.TestCase):
 
     def test_wave4_quant_candidates_source_qualified(self):
         from experiments.driv3r.frankenlayers_lab.infer_quant import QUANT_MODES
-        self.assertEqual(set(QUANT_MODES), {"aero6", "skele6", "aero5_no23", "tailflip4"})
+        self.assertEqual(set(QUANT_MODES), {"aero6", "skele6", "aero5_no23", "tailflip4", "echo4"})
         self.assertEqual(LAB_FLOWS["aero5_no23"], (0, 2, 4, 10, 20))
         self.assertEqual(LAB_FLOWS["tailflip4"], (0, 4, 20, 18))
 
@@ -57,6 +60,10 @@ class FrankenLabTests(unittest.TestCase):
             validate_flows(mutated)
         mutated=dict(LAB_FLOWS)
         mutated["tailflip4"] = (0,4,18,20)
+        with self.assertRaises(ValueError):
+            validate_flows(mutated)
+        mutated=dict(LAB_FLOWS)
+        mutated["aero5_tailflip"] = (0,2,4,10,20)
         with self.assertRaises(ValueError):
             validate_flows(mutated)
 

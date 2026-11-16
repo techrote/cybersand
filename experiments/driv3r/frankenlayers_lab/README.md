@@ -53,3 +53,16 @@ turns. Wave 4 tries Q4_K_M requantisation of AERO5_NO23 and TAILFLIP4, plus
 seed-571 replication of AERO5_NO23 and ECHO4. Quantised checkpoints remain
 out of Git history; Q4 is made from immutable Q8 (not FP16). Game code is
 read-only and all W0 projections are synthetic, not native acceptance.
+
+## Wave 4 verified, wave 5 dispatched
+
+Four original Wave-4 archives verified 150/150 content hashes: five-layer AERO5
+survives Q4 (48 nonterminal decisions, 29 BRANCH/11 RETRACE/8 RIGHT), whereas
+TAILFLIP4 Q4 ends after five alternating branch/retrace moves in each world.
+The Q8 seed-571 AERO5 and ECHO4 remain nonterminal, though broader responsiveness
+remains unproven. [Details and archived evidence](results-2026-11-16.md).
+
+Wave 5 checks a new four-layer deletion, a five-layer reordered tail,
+ECHO4-Q4, and AERO5-Q4 at another seed. New modes are speculative and run
+against the unchanged W0 legal-action host with pinned same-runner stock controls.
+No CyberSand game/native/Workbench modifications or production promotion.

@@ -11,6 +11,7 @@ on:
       - 'experiments/driv3r/frankenlayers_lab/run-request-wave2.json'
       - 'experiments/driv3r/frankenlayers_lab/run-request-wave3.json'
       - 'experiments/driv3r/frankenlayers_lab/run-request-wave4.json'
+      - 'experiments/driv3r/frankenlayers_lab/run-request-wave5.json'
       - '.github/workflows/driv3r-frankenlayers-lab.yml'
 
 permissions:
@@ -39,7 +40,7 @@ jobs:
           python3 - <<'PY'
           import json
           from pathlib import Path
-          from experiments.driv3r.frankenlayers_lab.flows import WAVE1_FLOWS, WAVE2_FLOWS, WAVE3_FLOWS
+          from experiments.driv3r.frankenlayers_lab.flows import WAVE1_FLOWS, WAVE2_FLOWS, WAVE3_FLOWS, WAVE5_FLOWS
           p=Path("experiments/driv3r/frankenlayers_lab/run-request.json")
           r=json.loads(p.read_text())
           assert r["schema"]=="cybersand-d1-frankenlayers-lab-request/1"
@@ -97,6 +98,23 @@ jobs:
               ("echo4_s571","echo4","q8",571),
             )
           ]
+          w5=json.loads(Path("experiments/driv3r/frankenlayers_lab/run-request-wave5.json").read_text())
+          assert w5["schema"]=="cybersand-d1-frankenlayers-lab-wave5/1"
+          assert w5["lineage"]["wave4_source_sha"]=="b6fae6dd81cef49c0f60f8589e2d643daa3bd8b6"
+          assert w5["lineage"]["wave4_run"]==43808813584
+          for key in ("llama_commit","model_q8_sha256","w0_commit"):
+            assert w5["lineage"][key]==r["lineage"][key]
+          assert w5["max_parallel"]==2 and w5["timeout_minutes"]<=95 and w5["no_game_changes"]
+          assert not any(w5[k] for k in ("paid_api","paid_gpu","merge","ready"))
+          assert w5["experiments"]==[
+            dict(label=label,mode=mode,flow=list((WAVE5_FLOWS if mode in WAVE5_FLOWS else WAVE3_FLOWS)[mode]),quant=quant,seed=seed)
+            for label,mode,quant,seed in (
+              ("aero4_no10","aero4_no10","q8",570),
+              ("aero5_tailflip","aero5_tailflip","q8",570),
+              ("echo4_q4","echo4","q4_k_m",570),
+              ("aero5_no23_q4_s571","aero5_no23","q4_k_m",571),
+            )
+          ]
           PY
           python3 tools/ci/check_ci_provider_policy.py
           python3 tools/ci/check_ci_scheduling_policy.py
@@ -121,21 +139,21 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - mode: aero5_no23_q4
-            flow: aero5_no23
-            quant: q4_k_m
-            seed: 570
-          - mode: tailflip4_q4
-            flow: tailflip4
-            quant: q4_k_m
-            seed: 570
-          - mode: aero5_no23_s571
-            flow: aero5_no23
+          - mode: aero4_no10
+            flow: aero4_no10
             quant: q8
-            seed: 571
-          - mode: echo4_s571
+            seed: 570
+          - mode: aero5_tailflip
+            flow: aero5_tailflip
+            quant: q8
+            seed: 570
+          - mode: echo4_q4
             flow: echo4
-            quant: q8
+            quant: q4_k_m
+            seed: 570
+          - mode: aero5_no23_q4_s571
+            flow: aero5_no23
+            quant: q4_k_m
             seed: 571
     env:
       OMP_NUM_THREADS: '2'
