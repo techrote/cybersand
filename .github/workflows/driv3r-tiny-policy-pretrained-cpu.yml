@@ -113,3 +113,72 @@ jobs:
           path: ${{ runner.temp }}/tiny-m2/
           retention-days: 21
           if-no-files-found: error
+
+  m5-source-matched-cpu:
+    if: contains(github.event.head_commit.message, '[M5]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install source-matched local CPU optimizer dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch==2.10.0
+          python -m pip install numpy==2.3.5 pillow==12.3.0
+      - name: Record exact source and run bounded adversarial contract tests
+        env:
+          OMP_NUM_THREADS: '2'
+          MKL_NUM_THREADS: '2'
+        run: |
+          mkdir -p "${{ runner.temp }}/tiny-m5"
+          git rev-parse HEAD | tee "${{ runner.temp }}/tiny-m5/source_sha.txt"
+          python -VV | tee "${{ runner.temp }}/tiny-m5/python_version.txt"
+          python -c 'import torch,numpy,PIL; print(torch.__version__,numpy.__version__,PIL.__version__)' | tee "${{ runner.temp }}/tiny-m5/dependencies.txt"
+          sha256sum experiments/driv3r/training/tiny_policy/*.py | tee "${{ runner.temp }}/tiny-m5/source_hashes.txt"
+          python -m unittest experiments.driv3r.training.tiny_policy.test_core experiments.driv3r.training.tiny_policy.test_m3_curriculum experiments.driv3r.training.tiny_policy.test_m4_ood experiments.driv3r.training.tiny_policy.test_m5_topology -v
+      - name: Regenerate M3 checkpoints before M5, fail closed on source/checkpoint mismatch
+        timeout-minutes: 6
+        env:
+          OMP_NUM_THREADS: '2'
+          MKL_NUM_THREADS: '2'
+        run: |
+          timeout --signal=TERM --kill-after=15s 330s python -u -m experiments.driv3r.training.tiny_policy.m3_curriculum \
+            --out "${{ runner.temp }}/tiny-m5/m3-regenerated"
+          cd "${{ runner.temp }}/tiny-m5/m3-regenerated/checkpoints"
+          printf '%s  linear.pt\n%s  mlp.pt\n%s  conv.pt\n' \
+            a5d1ec8f5f956c05968f7b5b538952e68d89b861d337a48559e0de759fc32435 \
+            1b2c9cea0b99fffde0b3ebd39942835540880d93a6e70ce1518ff39c508ceeb5 \
+            b44a97d0a6af84010280bf83e22c481afa15546d8b1575ef4c855d5bb6661d6d | sha256sum -c -
+      - name: Train M5 real CPU heads, render originals and fully audit all trajectory receipts
+        timeout-minutes: 9
+        env:
+          OMP_NUM_THREADS: '2'
+          MKL_NUM_THREADS: '2'
+        run: |
+          timeout --signal=TERM --kill-after=15s 480s python -u -m experiments.driv3r.training.tiny_policy.m5_topology_train \
+            --output "${{ runner.temp }}/tiny-m5/m5-evidence" \
+            --m3-checkpoints "${{ runner.temp }}/tiny-m5/m3-regenerated/checkpoints"
+          timeout --signal=TERM --kill-after=15s 210s python -u -m experiments.driv3r.training.tiny_policy.audit_m5_topology \
+            --input "${{ runner.temp }}/tiny-m5/m5-evidence" \
+            --m3-checkpoints "${{ runner.temp }}/tiny-m5/m3-regenerated/checkpoints" \
+            | tee "${{ runner.temp }}/tiny-m5/audit.json"
+      - name: Preserve generated checkpoints, original PNGs and negative evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tiny-m5-source-qualified-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/tiny-m5/source_sha.txt
+            ${{ runner.temp }}/tiny-m5/python_version.txt
+            ${{ runner.temp }}/tiny-m5/dependencies.txt
+            ${{ runner.temp }}/tiny-m5/source_hashes.txt
+            ${{ runner.temp }}/tiny-m5/m3-regenerated/checkpoints/
+            ${{ runner.temp }}/tiny-m5/m5-evidence/
+            ${{ runner.temp }}/tiny-m5/audit.json
+          retention-days: 21
+          if-no-files-found: error
