@@ -91,6 +91,12 @@ void disabled_is_default_and_unsupported_is_refused() {
 
     expect_refusal([](WorldConfig& c) { c.wave_flow.substeps = 0; }, "zero substeps");
     expect_refusal([](WorldConfig& c) { c.wave_flow.substeps = 9; }, "nine substeps");
+    expect_refusal([](WorldConfig& c) { c.wave_flow.active_rows = 0; }, "zero active rows");
+    expect_refusal([](WorldConfig& c) { c.wave_flow.active_rows = 33; }, "thirty-three active rows");
+    expect_refusal([](WorldConfig& c) { c.wave_flow.stiffness = 1; }, "stiffness below active rows");
+    expect_refusal([](WorldConfig& c) { c.wave_flow.empty_pour_shift = 0; }, "unsafe empty-pour share");
+    expect_refusal([](WorldConfig& c) { c.wave_flow.flow_share_shift = 0; }, "unsafe two-face share");
+    expect_refusal([](WorldConfig& c) { c.wave_flow.maximum_mass = 254; }, "carrier saturation below full Water");
     expect_refusal([](WorldConfig& c) { c.backend = SimulationBackend::SerialInPlace; }, "serial backend");
     expect_refusal([](WorldConfig& c) { c.backend = SimulationBackend::Buffered; }, "buffered backend");
     expect_refusal([](WorldConfig& c) { c.water_experiment_policy = WaterExperimentPolicy(6, 0); }, "6-bit mass");
@@ -1167,6 +1173,11 @@ void state_hash_binds_retained_momentum() {
     // Different rounds per tick is a different law even before the first tick.
     World one(config(1, 1)), three(config(1, 3));
     require(one.state_hash() != three.state_hash(), "state hash ignores the Wave substep count");
+    auto tuned_config = config(1, 1);
+    tuned_config.wave_flow.gain += 1;
+    World tuned(tuned_config);
+    require(one.state_hash() != tuned.state_hash(), "state hash ignores Wave authoring tuning");
+    require(one.physical_state_hash() != tuned.physical_state_hash(), "physical identity ignores Wave authoring tuning");
     // Worlds without Wave Flow keep their historical hash definition.
     WorldConfig plain;
     World first(plain), second(plain);

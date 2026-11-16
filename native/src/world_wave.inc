@@ -149,8 +149,31 @@ namespace {
 void World::validate_wave_flow_config() const {
     if (!config_.wave_flow.enabled) return;
     using P = WaveFlowParameters;
-    if (config_.wave_flow.substeps == 0U || config_.wave_flow.substeps > P::kMaximumSubsteps)
+    const auto& tune = config_.wave_flow;
+    if (tune.substeps < 1 || tune.substeps > P::kMaximumSubsteps)
         throw std::invalid_argument("wave_flow substeps must be between 1 and 8");
+    if (tune.active_rows < 1 || tune.active_rows > P::kMaximumActiveRows)
+        throw std::invalid_argument("wave_flow active_rows must be between 1 and 32");
+    if (tune.gain < 0 || tune.gain > P::kMaximumGain || tune.gain_confined < 0 || tune.gain_confined > P::kMaximumGain)
+        throw std::invalid_argument("wave_flow gains outside 0..512");
+    if (tune.stiffness < tune.active_rows || tune.stiffness > P::kMaximumStiffness)
+        throw std::invalid_argument("wave_flow stiffness must be at least active_rows and at most 4096");
+    if (tune.damp_shift < 0 || tune.damp_shift > P::kMaximumDampingShift ||
+        tune.calm_damp_shift < 0 || tune.calm_damp_shift > P::kMaximumDampingShift)
+        throw std::invalid_argument("wave_flow damping shifts outside 0..16");
+    if (tune.coast < 0 || tune.coast > P::kMaximumCoast || tune.level_shift < 0 || tune.level_shift > P::kMaximumLevelShift)
+        throw std::invalid_argument("wave_flow coast/level tuning outside native bounds");
+    if (tune.sleep_after < 1 || tune.sleep_after > P::kMaximumSleepAfter || tune.wake_peak < 0 || tune.wake_peak > P::kMaximumWakePeak)
+        throw std::invalid_argument("wave_flow sleep/wake tuning outside native bounds");
+    if (tune.rest_head < 0 || tune.rest_head > P::kMaximumRestHead || tune.stick < 0 || tune.stick > P::kMaximumStick ||
+        tune.calm < 0 || tune.calm > P::kMaximumCalm)
+        throw std::invalid_argument("wave_flow rest/calm tuning outside native bounds");
+    if (tune.maximum_mass < config_.water_experiment_policy.maximum() || tune.maximum_mass > P::kMaximumTunedMass)
+        throw std::invalid_argument("wave_flow maximum_mass outside the Water carrier range");
+    if (tune.empty_pour_shift < 1 || tune.empty_pour_shift > P::kMaximumPourShift ||
+        tune.flow_share_shift < 1 || tune.flow_share_shift > P::kMaximumPourShift ||
+        tune.adhesion_shift < 0 || tune.adhesion_shift > P::kMaximumAdhesionShift)
+        throw std::invalid_argument("wave_flow pour/share/adhesion shifts outside native bounds");
     if (config_.backend != SimulationBackend::PhasedInPlace)
         throw std::invalid_argument("wave_flow requires the phased in-place backend");
     if (config_.water_experiment_policy.mass_bits() != 8U)
@@ -206,6 +229,25 @@ void World::hash_wave_state(std::uint64_t& hash) const {
     for (const char c : std::string_view{"wave_flow_v1"}) hash_byte(hash, static_cast<std::uint8_t>(c));
     hash_integer(hash, WaveFlowParameters::kVersion);
     hash_integer(hash, config_.wave_flow.substeps);
+    const auto& tune = config_.wave_flow;
+    const bool tuned = tune.active_rows != WaveFlowParameters::kActiveRows ||
+        tune.gain != WaveFlowParameters::kGain || tune.gain_confined != WaveFlowParameters::kGainConfined ||
+        tune.stiffness != WaveFlowParameters::kStiffness || tune.damp_shift != WaveFlowParameters::kDampShift ||
+        tune.coast != WaveFlowParameters::kCoast || tune.level_shift != WaveFlowParameters::kLevelShift ||
+        tune.sleep_after != WaveFlowParameters::kSleepAfter || tune.wake_peak != WaveFlowParameters::kWakePeak ||
+        tune.rest_head != WaveFlowParameters::kRestHead || tune.stick != WaveFlowParameters::kStick ||
+        tune.calm != WaveFlowParameters::kCalm || tune.calm_damp_shift != WaveFlowParameters::kCalmDampShift ||
+        tune.maximum_mass != WaveFlowParameters::kMaximumMass || tune.empty_pour_shift != WaveFlowParameters::kEmptyPourShift ||
+        tune.flow_share_shift != WaveFlowParameters::kFlowShareShift || tune.adhesion_shift != WaveFlowParameters::kAdhesionShift;
+    if (tuned) {
+        for (const char c : std::string_view{"wave-authoring-tuning-v1"}) hash_byte(hash, static_cast<std::uint8_t>(c));
+        hash_integer(hash, tune.active_rows); hash_integer(hash, tune.gain); hash_integer(hash, tune.gain_confined);
+        hash_integer(hash, tune.stiffness); hash_integer(hash, tune.damp_shift); hash_integer(hash, tune.coast);
+        hash_integer(hash, tune.level_shift); hash_integer(hash, tune.sleep_after); hash_integer(hash, tune.wake_peak);
+        hash_integer(hash, tune.rest_head); hash_integer(hash, tune.stick); hash_integer(hash, tune.calm);
+        hash_integer(hash, tune.calm_damp_shift); hash_integer(hash, tune.maximum_mass);
+        hash_integer(hash, tune.empty_pour_shift); hash_integer(hash, tune.flow_share_shift); hash_integer(hash, tune.adhesion_shift);
+    }
     hash_integer(hash, wave_->round);
     std::vector<ChunkCoord> coordinates;
     coordinates.reserve(chunks_.size());
@@ -424,7 +466,7 @@ void World::wave_column_task(std::size_t task_index) noexcept {
             const auto meta = above->wave->meta[bottom];
             if ((meta & WaveChunk::kFull) != 0U) {
                 carried = above->wave->weight[bottom];
-                index = P::kActiveRows;
+                index = config_.wave_flow.active_rows;
             } else if ((meta & WaveChunk::kSolid) != 0U) {
                 index = -1; // a solid ceiling
             }
@@ -442,9 +484,9 @@ void World::wave_column_task(std::size_t task_index) noexcept {
                 if (value > maximum) {
                     // Sealed overfill is stiff: scale by the rows that can respond.
                     std::int32_t responding = 1;
-                    while (responding < P::kActiveRows && r + responding < rows && mass[r + responding] > 0) ++responding;
+                    while (responding < config_.wave_flow.active_rows && r + responding < rows && mass[r + responding] > 0) ++responding;
                     carried = static_cast<std::int64_t>(value - maximum) *
-                              (P::kStiffness / responding - 1);
+                              (config_.wave_flow.stiffness / responding - 1);
                 }
             }
             carried = std::min<std::int64_t>(P::kMaximumHead,
@@ -452,10 +494,10 @@ void World::wave_column_task(std::size_t task_index) noexcept {
             weight[r] = static_cast<std::int32_t>(carried);
             flags[r] = static_cast<std::uint8_t>(
                 WaveChunk::kWet | (value >= maximum ? WaveChunk::kFull : 0U) |
-                (index >= P::kActiveRows ? 0U : confined ? WaveChunk::kGainConfined : WaveChunk::kGainNormal));
+                (index >= config_.wave_flow.active_rows ? 0U : confined ? WaveChunk::kGainConfined : WaveChunk::kGainNormal));
             // A thin cell starts a new stack below it.
             if (value < maximum) { index = 0; confined = false; ceiling = false; continue; }
-            index = std::min(index + 1, P::kActiveRows);
+            index = std::min(index + 1, config_.wave_flow.active_rows);
             ceiling = false;
         }
 
@@ -466,15 +508,15 @@ void World::wave_column_task(std::size_t task_index) noexcept {
             if ((flags[r] & WaveChunk::kWet) == 0U) { ++r; continue; }
             auto end = r;
             while (end + 1 < rows && (flags[end] & WaveChunk::kFull) != 0U && (flags[end + 1] & WaveChunk::kWet) != 0U) ++end;
-            const auto length = std::min(end - r + 1, P::kActiveRows);
+            const auto length = std::min(end - r + 1, config_.wave_flow.active_rows);
             std::uint8_t depth = 0;
             while ((1 << depth) < length) ++depth;
             // Overfill collects in the top cell of a sealed stack while inflow
             // arrives at any row, so a stack at the carrier ceiling is marked
             // whole and refuses further inflow.
-            const bool saturated = mass[r] >= P::kMaximumMass;
+            const bool saturated = mass[r] >= config_.wave_flow.maximum_mass;
             if (saturated) depth = WaveChunk::kSaturated;
-            for (auto k = r; k <= end && (saturated || k < r + P::kActiveRows); ++k)
+            for (auto k = r; k <= end && (saturated || k < r + config_.wave_flow.active_rows); ++k)
                 flags[k] = static_cast<std::uint8_t>(flags[k] | (depth << WaveChunk::kDepthShift));
             r = end + 1;
         }
@@ -668,7 +710,7 @@ void World::wave_flux_task(std::size_t task_index) noexcept {
                     if (supported(&chunk, i) && supported(other, j)) {
                         const auto difference = a - b;
                         const auto spare = std::max(0, std::max(a, b) - film);
-                        const auto units = std::abs(difference) <= P::kRestHead
+                        const auto units = std::abs(difference) <= config_.wave_flow.rest_head
                             ? 0 : std::min((std::abs(difference) + 2) >> 2, spare);
                         const auto direct = (difference > 0 ? units : -units) * (1 << P::kFluxShift);
                         wave.flux[i] = direct;
@@ -684,13 +726,13 @@ void World::wave_flux_task(std::size_t task_index) noexcept {
                 // absorbed instead of ringing at the solver's low damping.
                 const auto speed = std::abs(previous);
                 const auto damping = previous == 0 ? 0
-                    : (previous > 0 ? 1 : -1) * std::max(1, speed >> (speed < P::kCalm ? P::kCalmDampShift : P::kDampShift));
+                    : (previous > 0 ? 1 : -1) * std::max(1, speed >> (speed < config_.wave_flow.calm ? config_.wave_flow.calm_damp_shift : config_.wave_flow.damp_shift));
                 auto flux = static_cast<std::int64_t>(previous) - damping +
-                            static_cast<std::int64_t>(head) * (code == WaveChunk::kGainConfined ? P::kGainConfined : P::kGain);
+                            static_cast<std::int64_t>(head) * (code == WaveChunk::kGainConfined ? config_.wave_flow.gain_confined : config_.wave_flow.gain);
                 // Rest rule: one unit cannot level a one-unit step (it only
                 // flips it), so a small flux across such a step is discarded.
                 // Larger flux retains its wave inertia until damping calms it.
-                if (a != 0 && b != 0 && std::abs(head) <= P::kRestHead && std::abs(flux) < P::kStick) flux = 0;
+                if (a != 0 && b != 0 && std::abs(head) <= config_.wave_flow.rest_head && std::abs(flux) < config_.wave_flow.stick) flux = 0;
                 const bool rightward = flux > 0;
                 auto available = rightward ? a : b;
                 const auto destination_mass = rightward ? b : a;
@@ -703,15 +745,15 @@ void World::wave_flux_task(std::size_t task_index) noexcept {
                     if (rightward ? supported(&chunk, i) : supported(other, j)) available -= film;
                     // Pouring into an empty cell is one-directional; a quarter of
                     // the cell per round cannot invert a pair of columns.
-                    available >>= 2;
+                    available >>= config_.wave_flow.empty_pour_shift;
                 } else {
                     // Inertia is bounded: a face may coast at most kCoast units
                     // against or beyond its head difference. Larger transfers are
                     // limited to a share of that difference, so bulk flow relaxes
                     // without overshoot while small flow keeps its momentum.
                     const auto depth = std::max(meta_a >> WaveChunk::kDepthShift, meta_b >> WaveChunk::kDepthShift);
-                    const auto downhill = (head > 0) == rightward ? std::abs(head) >> (P::kLevelShift + depth) : 0;
-                    available = std::min(available >> 1, std::max(P::kCoast, downhill));
+                    const auto downhill = (head > 0) == rightward ? std::abs(head) >> (config_.wave_flow.level_shift + depth) : 0;
+                    available = std::min(available >> config_.wave_flow.flow_share_shift, std::max(config_.wave_flow.coast, downhill));
                     if (((rightward ? meta_b : meta_a) >> WaveChunk::kDepthShift) == WaveChunk::kSaturated) available = 0;
                 }
                 // Two neighbours can send into a receiver concurrently. Each
@@ -791,7 +833,7 @@ void World::advance_wave_flow(TickStats& stats) {
     const auto size = config_.chunk_size;
     const auto stride = static_cast<std::size_t>(size);
 
-    state.film = liquid_surface_adhesion_enabled_ ? config_.water_experiment_policy.film() / 2 : 0;
+    state.film = liquid_surface_adhesion_enabled_ ? config_.water_experiment_policy.film() >> config_.wave_flow.adhesion_shift : 0;
     const auto included_chunk = [&](ChunkCoord coord, WaveChunk& wave) {
         wave.min_x = wave.min_y = 0;
         wave.max_x = wave.max_y = size;
@@ -824,7 +866,7 @@ void World::advance_wave_flow(TickStats& stats) {
     for (const auto& [coord, chunk] : chunks_) {
         auto& wave = *chunk->wave;
         wave.active = included_chunk(coord, wave) &&
-            (wave.woken || wave.quiet < static_cast<std::uint32_t>(P::kSleepAfter));
+            (wave.woken || wave.quiet < static_cast<std::uint32_t>(config_.wave_flow.sleep_after));
         wave.solve = false;
         if (!wave.active || chunk->non_empty_cell_count == 0U) continue;
         // Liquid on an edge row or column needs a resident destination. Workers
@@ -982,8 +1024,8 @@ void World::advance_wave_flow(TickStats& stats) {
             if (half.max_x >= half.min_x) { bounds.touch(half.min_x, half.min_y); bounds.touch(half.max_x, half.max_y); }
         }
         wave.woken = false;
-        if (peak >= P::kWakePeak || pending_flux) wave.quiet = 0;
-        else if (wave.quiet < static_cast<std::uint32_t>(P::kSleepAfter)) ++wave.quiet;
+        if (peak >= config_.wave_flow.wake_peak || pending_flux) wave.quiet = 0;
+        else if (wave.quiet < static_cast<std::uint32_t>(config_.wave_flow.sleep_after)) ++wave.quiet;
         chunk.non_empty_cell_count = static_cast<std::size_t>(static_cast<std::int64_t>(chunk.non_empty_cell_count) + delta);
         population += delta;
         if (bounds.max_x < bounds.min_x) continue;
@@ -1000,7 +1042,7 @@ void World::advance_wave_flow(TickStats& stats) {
         }
         // Other materials react to Water that arrived or left: keep the
         // touched activity blocks (and their border neighbours) scheduled.
-        if (peak < P::kWakePeak && transitions == 0U) continue;
+        if (peak < config_.wave_flow.wake_peak && transitions == 0U) continue;
         const auto block = config_.activity_block_size;
         // One cell of margin: a neighbour of a changed cell may sit in the next block.
         const auto wake_min_x = std::max(bounds.min_x - 1, 0), wake_max_x = std::min(bounds.max_x + 1, size - 1);
