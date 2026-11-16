@@ -164,45 +164,48 @@ def goal_distances(goal, obstacles, protected, size):
 
 def teacher(legal, moves, fresh, visited, history, goal, distances, tick, scenario, rng, pos):
     """Bounded *synthetic heuristic*, not an optimal-policy assertion."""
-    if pos == goal:
-        return 'STOP', {a: (100 if a == 'STOP' else -100) for a in legal}
+    if (pos == goal and scenario != 'long_history') or (scenario == 'long_history' and goal in visited and tick >= 128):
+        return 'STOP', {a: (1000 if a == 'STOP' else -1000) for a in legal}
     scores = {}
     for action in legal:
         if action == 'STOP':
-            score = -100.0
+            score = -1000.0
         elif action == 'RETRACE':
-            p = history[-1][0] if history else pos
-            score = 4.0 if not fresh else -8.0
-            score -= distances.get(p, 10000) * 0.18
+            # Unwind real stack dead ends. Never fabricate an illegal backstep.
+            score = 250.0 if not fresh else -500.0
         else:
-            a = action
-            if a == 'BRANCH':
-                a = next((a for a in ('RIGHT','LEFT','STRAIGHT') if a in fresh), 'STRAIGHT')
-            p = moves[a][0]
-            score = 26.0 - distances.get(p, 10000)*0.5
-            score += 12.0 if p not in visited else -7.0
-            score += 2.5 if action == 'BRANCH' else 0.0
-            if scenario in ('motif','long_history'):
-                score += (4.0 if action in ('LEFT','BRANCH') else 0.0)
-            if scenario == 'deceptive' and tick < 10:
-                score += (14.0 if action == 'STRAIGHT' else 0.0)
+            arm = action
+            if action == 'BRANCH':
+                arm = next((a for a in ('RIGHT','LEFT','STRAIGHT') if a in fresh), 'STRAIGHT')
+            destination = moves[arm][0]
+            score = -4.0 * distances.get(destination, 10000)
+            score += 28.0 if destination not in visited else -75.0
+            if action == 'BRANCH':
+                # Branches should be occasional structures, not 60% of labels.
+                score += (14.0 if tick % 17 == 0 else -24.0)
+            if scenario in ('motif', 'long_history') and action in ('LEFT', 'RIGHT'):
+                score += 4.0
+            if scenario == 'deceptive' and tick < 15 and action == 'STRAIGHT':
+                score += 26.0
+            if scenario == 'deadend' and tick < 23 and action == 'STRAIGHT':
+                score += 80.0
         scores[action] = round(score, 5)
-    best = max(a for a in legal if a != 'STOP') if not scores else max(scores, key=lambda a: (scores[a], -ACTIONS.index(a)))
-    # For artistic exploration, deterministic low-amplitude wobbles can change top choices.
-    if scenario in ('motif', 'long_history') and tick % 13 in (5, 8):
-        admissible = [a for a in ('LEFT','RIGHT','BRANCH') if a in legal and scores[a] > -25]
-        if admissible:
-            best = rng.choice(admissible)
+    best = max(scores, key=lambda a: (scores[a], -ACTIONS.index(a)))
+    # An occasional deterministic wobble supplies original texture variation.
+    if scenario in ('motif', 'long_history') and tick % 19 == 7:
+        alternate = [a for a in ('LEFT','RIGHT','BRANCH') if a in legal and scores[a] > scores[best] - 8.0]
+        if alternate:
+            best = rng.choice(alternate)
     return best, scores
-
 
 def difficulty(world_record, distance):
     d = distance[tuple(world_record['goal'])]
-    blocks = len(world_record['obstacles']) + len(world_record['protected'])
-    if blocks >= 1100 or d >= 95:
+    scenario = world_record['scenario']
+    if scenario in ('deadend', 'protected', 'long_history') or d >= 95:
         return 'hard'
-    return 'medium' if blocks >= 600 or d >= 55 else 'easy'
-
+    if scenario in ('deceptive', 'motif') or d >= 70:
+        return 'medium'
+    return 'easy'
 
 def episode(seed, scenario, family, policy='heuristic', budget=160):
     if budget < 4 or budget > 4096 or family not in ('greebles','pipework','architecture'):
@@ -263,7 +266,7 @@ def episode(seed, scenario, family, policy='heuristic', budget=160):
     info = {'schema':VERSION,'split':split,'world_group_id':group,'world_id':world_id,
             'episode_id':eid,'scenario':scenario,'family':family,'policy':policy,
             'difficulty':w['difficulty'],'steps':len(rows),'step_budget':budget,
-            'goal_reached':pos==tuple(w['goal']), 'terminated_by_stop':stop,
+            'goal_reached':tuple(w['goal']) in visited, 'at_goal_at_stop':pos==tuple(w['goal']), 'terminated_by_stop':stop,
             'unique_trail_cells':len(visited),'branches':len(branches),
             'retraces':past.count('RETRACE'), 'protected_count':len(protected),
             'evidence_class':'synthetic-host-heuristic','trail':[list(p) for p in trail],
