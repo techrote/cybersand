@@ -1,4 +1,4 @@
-name: LFM350 GP350-014 W0 cul-de-sac RETRACE / GP006 KL / 72 AdamW
+name: LFM350 GP350-014 W0 cul-de-sac RETRACE / GP013 KL / 72 AdamW
 on:
   push:
     branches: [research/lfm-game-policy-350m]
@@ -57,7 +57,7 @@ jobs:
           assert req["dev_seeds"]==[9103,9119,9137]
           assert req["eval_seeds"]==[9503,9521] and req["sizes"]==[32,48]
           assert req["natural_W0_observations"] and req["synthetic_teacher_not_native"]
-          assert req["branch_legal_negative_contrasts"] and req["retrace_legal_positive_negative_contrasts"] and req["GP006_pressure_KL"]
+          assert req["branch_legal_negative_contrasts"] and req["retrace_legal_positive_negative_contrasts"] and req["GP013_pressure_KL"]
           assert req["original_W0_PNGs"]==60 and not req["native"] and not req["paid_GPU"] and req["draft_hold"]
           PY
           python3 tools/ci/check_ci_provider_policy.py
