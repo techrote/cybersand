@@ -38,5 +38,12 @@
   "draft_hold": true,
   "d1_matched": "NOT RUN",
   "W0_pinned_source_sha": "4bb9d6e1d0d0d78183f87d1e3c29648edafacf61",
-  "notes": "Exact model and adapters are separately hash verified. Synthetic W0 host only. Trainable weights are never modified."
+  "notes": "Exact model and adapters are separately hash verified. Synthetic W0 host only. Trainable weights are never modified.",
+  "retry": {
+    "attempt": 2,
+    "source_failure_run_id": 43831908764,
+    "failure_artifact_id": 14209591788,
+    "failure": "immutable evidence file collision after gp350006 stage",
+    "correction": "distinct write-once partial-summary-<stage>.json evidence; no model/adapter/eval contract changes"
+  }
 }
