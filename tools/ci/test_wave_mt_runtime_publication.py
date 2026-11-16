@@ -203,7 +203,10 @@ class WaveRuntimeTests(unittest.TestCase):
                         self.assertEqual((root / name).read_bytes(), data)
                         self.assertEqual(package.sha(root / name), manifest["files_sha256"][name])
             self.assertEqual(manifest["files_sha256"], package.files(root))
-            self.assertIn("-- --wave-flow", (root / "Test It.cmd").read_text(encoding="utf-8"))
+            launcher_text = (root / "Test It.cmd").read_text(encoding="utf-8")
+            self.assertIn("-- --workbench", launcher_text)
+            self.assertNotIn("-- --wave-flow", launcher_text)
+            self.assertIn("SHARED_WORKBENCH_LAUNCH_READY", (ROOT / "godot/scripts/feature_launcher.gd").read_text(encoding="utf-8"))
             qualification = manifest["runtime_qualification"]
             self.assertEqual(qualification["provenance"], "source-built-runtime-provenance.json")
             self.assertEqual(qualification["validation"], "qualification/runtime/validation.json")
