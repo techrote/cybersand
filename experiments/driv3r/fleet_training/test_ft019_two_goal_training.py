@@ -73,7 +73,7 @@ class TestFT019(unittest.TestCase):
             @staticmethod
             def stable_seed(*args):return 19877
         source=[(np.eye(2,20),np.array([1.,0.]))]
-        with patch.object(ft.shift,"load_policy",return_value=Policy()):
+        with patch.object(ft.shift,"load_policy",side_effect=lambda *_: Policy()):
             p,m=ft.fit(Pop(),Path("unused"),"legal_route",source,[],9401,"navigator")
             self.assertEqual(m["adam_updates"],ft.UPDATES)
             self.assertEqual(p.updates,ft.UPDATES)

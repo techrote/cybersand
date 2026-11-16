@@ -178,11 +178,11 @@ def fit(pop,checkpoint,arm,teacher,recovery,seed,niche):
     if not teacher:raise ValueError("No valid legal-route training examples")
     if arm=="recovery_rehearsal" and not recovery:
         raise ValueError("No legally recoverable on-policy states; preserve negative")
-    rng=np.random.default_rng(pop.stable_seed(ID,"ORDER",seed,niche,arm))
+    rng=np.random.default_rng(pop.stable_seed(ID,"MATCHED_ORDER",seed,niche))
     losses=[]
     for step in range(UPDATES):
         cases=recovery if (arm=="recovery_rehearsal" and step%3==0) else teacher
-        X,y=cases[int(rng.integers(len(cases)))]
+        X,y=cases[int(rng.integers(0,2**32)) % len(cases)]
         losses.append(float(p.teach(X,y)))
     if p.updates!=UPDATES or not np.isfinite(np.asarray(losses)).all():
         raise AssertionError("Actual Adam update count/gradient failure")
