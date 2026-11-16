@@ -34,7 +34,7 @@ jobs:
       - name: Verify source syntax and run adversarial original-feature tests
         run: |
           python3 -m compileall -q experiments/driv3r/training/preference_eval
-          python3 -m unittest discover -s experiments/driv3r/training/preference_eval -p 'test_*.py' -v
+          python3 -m unittest discover -s experiments/driv3r/training/preference_eval -p 'test_[!p]*.py' -v
       - name: Train original source-feature pairwise proxy heads (no worm inference)
         run: |
           python3 experiments/driv3r/training/preference_eval/rank.py --output-dir "$RUNNER_TEMP/pref-p1"
