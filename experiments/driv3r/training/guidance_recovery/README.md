@@ -141,3 +141,29 @@ python experiments/driv3r/training/guidance_recovery/hard_recovery.py \
 - Synthetic trap dataset SHA-256 \`d7f9e4344ce28cf1f6283017cf1f72506662ebb4f2d144f2907799b2316d6803\`; source \`hard_recovery.py\` SHA-256 \`96c80ee1c17e49f251807316d8ca2926951ce0a52f6f815a2b743a26b81e95e8\`; full record hashes are in generated \`hard_metrics.json\`.
 - Output \`hard_metrics.json\`, \`hard_trajectories.json\` and binary remain **off Git history**. They have not been delivered as an immutable GitHub Actions artifact; that requires a separately owned workflow/handoff rather than editing shared workflow files from this lane.
 - Synthetic BACKTRACK only repositions a cursor and changes its history. **No painted material is ever undone**. Legality remains host-recomputed; candidate scalar scores never alter forbidden materials.
+
+
+## Iteration 3 — matched host-cue calibration, negative evidence retained (16 Nov 2026)
+
+New source: `cue_calibration.py` and `test_cue_calibration.py`, exclusively within this research lane. Starts from the **actual previous hard-trap checkpoint** SHA-256 `3c3163428b796561fc5f56fd50d0be0a76c6f17ce0d8d3b1871205de0c568b33`. It never changes the CyberSand game, native materials, Workbench, contracts, shared workflows, or production settings.
+
+**Experimental method:** For 240 source-isolated synthetic trap instances (only depths 2/3 and rotations 0/1 in training), replay the exact same initial World, legal candidate list, personality, scalar-hint arm (0/.35/1), and deterministic teacher decisions with **host recovery cue absent/present**. At real dead ends both labels demand lawful BACKTRACK; on an open productive corridor both labels demand INK, including occasional false cues under artificial stuckness. Preserve older stochastic imitation as a style anchor. Depth 4, rotations 2/3 and held-out seeds are evaluated, not fitted. This paired-target task probes cue *noninterference*, **not** whether a model can distinguish genuinely necessary corrective advice from misleading advice in all cases.
+
+**Actual CPU experiment:** 4,080 paired examples + replayed imitation curriculum (16,745 mixed examples), 880 further AdamW steps over 10 epochs. Cross-entropy 0.68905 → 0.65508. The saved 24,108-byte model SHA-256 is `8c8625a1bd8daed03e00188687dbba9732634c7bf7b8e7be5a4fa21cb310ac09`; source SHA-256 `cbd183e5542f171f0c1dc310b75af2fe92d136d70e24cf399d5a3bc271369f92`; paired dataset SHA-256 `e4e1e599a2cbad5734ed2d277aa481f1d9979d13a49d1c0bc047bf7b7d51f663`. Fixed a real custody defect discovered during replay: `safetensors` multi-key metadata had nondeterministic JSON key ordering, producing different file hashes despite identical tensors. A single canonical provenance metadata value now yields **byte-identical checkpoints, metrics, and trace files on two complete independent train/eval runs**.
+
+Held-out hard-trap clean-history unwinds (out of 96 matched seeds/depth/personality combinations per arm/cue):
+
+| Guidance | Previous uncued → calibrated uncued | Previous cued → calibrated cued |
+| --- | --- | --- |
+| 0.00 | 76 → 73 | 64 → 73 |
+| 0.35 | 78 → 71 | 64 → 72 |
+| 1.00 | 79 → 72 | 63 → 73 |
+
+The harmful cue gap largely disappears, **but uncued performance regresses**. On 32 held-out first-step states per guidance arm, greedy false-cue BACKTRACK falls from 16/32 cued to 0/32 cued; the matched depth-4 trapped state still selects BACKTRACK 32/32 with or without cue. Across original short worm episodes the signed turn-personality gap at strong/no-cue falls 0.0411 → 0.0175: **personality preservation remains unresolved and may have worsened**. No illegal actions were admitted by the synthetic host. The earlier short-detour criterion is still saturated and is not a useful demonstration of recovery.
+
+**Reproduce without paid services** (run from this directory with NumPy, PyTorch CPU, safetensors installed, after obtaining and hashing the two preceding checkpoints):
+```sh
+python -m unittest discover -v -p 'test_*.py'
+python cue_calibration.py --checkpoint /path/to/guidance_recovery_hard_finetuned.safetensors --out /tmp/driv3r-cue-calibration --train-instances 240 --eval-seeds 16 --epochs 10
+```
+29/29 unit tests passed locally from the source matching committed Git blobs. The model binary and complete per-decision trajectory records remain in the local owner-deliverable ZIP, **not Git history or a GitHub Actions artifact**; workflow-side immutable upload needs a separately authorized source owner. No real CyberSand native execution, actual material rollback, visual d1 inference, paid service, or four resident worms is implied.
