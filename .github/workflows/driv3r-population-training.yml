@@ -38,6 +38,10 @@ jobs:
               --seed "${cohort_seed}" \
               --offspring 4 --train-episodes 18 --selection-episodes 8 --holdout-episodes 12
           done
+      - name: Train P2 matched optimizer-time novelty versus reward-only population (cohort 625)
+        run: python experiments/driv3r/training/population/population_p2.py --p0-output /tmp/population-evidence --output /tmp/population-evidence/p2_625 --seed 625 --members 3 --train-episodes 18 --selection-episodes 8 --holdout-episodes 12
+      - name: Replicate P2 with independent unseen worlds and population (cohort 626)
+        run: python experiments/driv3r/training/population/population_p2.py --p0-output /tmp/population-evidence --output /tmp/population-evidence/p2_626 --seed 626 --members 3 --train-episodes 18 --selection-episodes 8 --holdout-episodes 12
       - name: Retain exact experimental source for reproducibility
         run: |
           mkdir -p /tmp/population-evidence/source
