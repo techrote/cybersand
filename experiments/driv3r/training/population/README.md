@@ -38,3 +38,20 @@ Output directory must not exist. Original synthetic research artifacts are produ
 4. Extend materials/observations using **READ-ONLY** real CyberSand schemas. Any new game-side interface must be proposed as a handoff, not implemented here.
 
 Draft/HOLD only. No merge, game edits, paid API/GPU spending or production provider modifications.
+
+
+## P1 — actual retraining, novelty archive, and observation ablations
+
+Run the P0 command first, then run:
+
+    python experiments/driv3r/training/population/population_p1.py --p0-output /tmp/population-619 --output /tmp/population-620 --seed 620 --offspring 4 --train-episodes 18 --selection-episodes 8 --holdout-episodes 12
+
+P1 reloads all six exact P0 champion neural checkpoints, builds four new offspring per niche (mutation + retraining, substantial parameter perturbation, and cross-niche weight mixing + retraining), and **executes actual Adam optimizer updates**. It retains all 30 evaluated policy weights and their lineage, selection metrics and model digests, not just six champions. Mixing identical-shape MLP weights is an exploratory control; it does not establish that arbitrary transformer checkpoints/adapters can be merged.
+
+Selection and held-out seeds are newly derived and disjoint from P1 training seeds. Each candidate is evaluated on **selection-only** worlds, with a 14-dimensional movement/topology/spatial descriptor. k-nearest-neighbour novelty and discretized behaviour bins form a conservative archive. Two survivors per niche are compared on fresh held-out worlds: reward-only selection, and 55% within-niche reward + 45% novelty selection. A larger descriptor distance does not imply higher human artistic preference. Any diminished reward is reported, not concealed. This is an *archive over candidate evaluations*, not a claim of population-wide evolutionary convergence.
+
+An observation-dependence ablation replays each selected policy with its initial action-score prior held fixed while preserving the current host-legal action menu. Reports include choice divergence on **identical encountered states**, probability total variation, the post-goal-switch divergence and a separate frozen-prior rollout reward. It asks whether changing observations influence the policy's actions; it does **not** prove the model learnt goal reasoning, and the static prior maps previously unseen actions to the initial mean score.
+
+The original held-out trajectories and SVGs for BOTH selection policies, original per-candidate weight JSON, seed-hash manifest and failed/weak candidates are retained inside the same immutable Actions evidence bundle. The P0 baselines (nonstop random, persistent and privileged synthetic oracle) are rerun on new P1 holdouts. Nothing here uses native Workbench, performs real-game training, imports Godot code or changes game content.
+
+P2 priority: train a true sub-1B SLM/adapter as a student on legal-choice trajectories; compare frozen-input/teacher-distilled samples with train/selection/heldout controls. Keep P1 MLP evidence separate from claims about actual language-model capabilities.
