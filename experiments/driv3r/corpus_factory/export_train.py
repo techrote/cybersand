@@ -13,7 +13,8 @@ import json
 from pathlib import Path
 
 from corpus import (ACTIONS, SOURCE, VERSION, audit, canonical, digest,
-                    partition, world as regenerate_world, local_grid)
+                    partition, world as regenerate_world, episode as regenerate_episode,
+                    local_grid)
 
 FIELDS = (
     'x', 'y', 'heading', 'local_5x5', 'legal', 'last_actions', 'family',
@@ -179,18 +180,42 @@ def load_train(root):
                 or len(ep.get('trail', [])) != ep['steps'] + 1):
             raise ValueError('invalid TRAIN episode source')
         episodes[eid] = ep
+    # Recreate the complete, canonical synthetic teacher trajectories from
+    # the producer's pinned seed/scenario/family/budget, not from editable JSONL
+    # observations. The v1 source audit is a checksum check, and omitted source
+    # fields (heading, legal menu, history, teacher labels) can otherwise be
+    # forged together with a newly computed manifest.
+    expected_row_hashes = {}
+    for ep in episodes.values():
+        group = ep['world_group_id']
+        w = worlds[group]
+        replay_w, replay_ep, replay_rows = regenerate_episode(
+            w['generator_seed'], w['scenario'], ep['family'],
+            policy='heuristic', budget=ep['step_budget'])
+        if replay_w != w or replay_ep != ep:
+            raise ValueError('TRAIN episode differs from deterministic producer replay')
+        for generated in replay_rows:
+            rid = generated['record_id']
+            if rid in expected_row_hashes:
+                raise ValueError('duplicate producer replay record ID')
+            expected_row_hashes[rid] = digest(generated)
     rows = []
     seen = set()
     for line in (root / 'train.decisions.jsonl').read_text().splitlines():
         row = json.loads(line)
         obs, action = validate_row(row, groups)
         validate_lineage(row, obs, action, worlds, episodes, rendered_worlds)
+        if expected_row_hashes.get(row.get('record_id')) != digest(row):
+            raise ValueError('TRAIN decision differs from deterministic producer replay')
         fingerprint = row['input_sha256']
         if fingerprint in seen:
             raise ValueError('duplicate input in training source')
         seen.add(fingerprint)
         rows.append((row, obs, action))
-    return rows, hashlib.sha256(manifest_bytes).hexdigest(), audited
+    replay_stats = {'episodes': len(episodes),
+                    'candidate_decisions': len(expected_row_hashes),
+                    'matched_train_decisions': len(rows)}
+    return rows, hashlib.sha256(manifest_bytes).hexdigest(), audited, replay_stats
 
 
 def export(root, output, per_action_cap=800, per_world_cap=80, sampler_seed=0):
@@ -200,7 +225,7 @@ def export(root, output, per_action_cap=800, per_world_cap=80, sampler_seed=0):
         raise ValueError('export must not overwrite source corpus')
     if per_action_cap < 1 or per_world_cap < 1:
         raise ValueError('selection caps must be positive')
-    rows, manifest_sha, audited = load_train(root)
+    rows, manifest_sha, audited, replay_stats = load_train(root)
     # Stable worldwide pseudo-random order without replacement. Action and
     # world quotas prevent the STRAIGHT-rich original from monopolising data.
     ranked = sorted(rows, key=lambda triple: hashlib.sha256(
@@ -252,6 +277,7 @@ def export(root, output, per_action_cap=800, per_world_cap=80, sampler_seed=0):
         'native_game_records': 0, 'model_optimizer_steps': 0,
         'source_manifest_sha256': manifest_sha,
         'source_audit': audited,
+        'deterministic_producer_replay': replay_stats,
         'source': SOURCE,
         'selection': {'per_action_cap': per_action_cap,
                       'per_world_cap': per_world_cap, 'sampler_seed': sampler_seed},
