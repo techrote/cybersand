@@ -20,10 +20,13 @@ from experiments.driv3r.model_zoo.spatial_paint_mz013 import run as parent
 PARENT_SHA = "66b30e6fd3799bc331f2ce066ed106720bbcb262"
 CHECKPOINT_SHA = "10d9c62370abebaa9d2f644cfe620dda77bbaf651491701b01a78dff7b5aed11"
 MODES = {
-    "original": (False, False),
-    "horizontal_mirror": (True, False),
-    "vertical_mirror": (False, True),
-    "rotation_180": (True, True),
+    "original": (False, False, "normal"),
+    "horizontal_mirror": (True, False, "normal"),
+    "vertical_mirror": (False, True, "normal"),
+    "rotation_180": (True, True, "normal"),
+    # Independent causal controls: isolate coordinate vs orientation/action effects.
+    "horizontal_mirror_keep_x": (True, False, "keep_x"),
+    "x_coordinate_only": (False, False, "flip_x"),
 }
 
 
@@ -58,7 +61,8 @@ def transform(obs, world, horizontal=False, vertical=False):
     return z, perm
 
 
-def play(net, seed, cue, invert, *, horizontal=False, vertical=False):
+def play(net, seed, cue, invert, *, horizontal=False, vertical=False,
+         x_control="normal"):
     world = parent.World(seed, cue, invert, ood=True)
     state = None
     raw_illegal = 0
@@ -66,6 +70,12 @@ def play(net, seed, cue, invert, *, horizontal=False, vertical=False):
     with torch.inference_mode():
         for _ in range(parent.MAX_T):
             obs, perm = transform(world.observe(), world, horizontal, vertical)
+            if x_control == "keep_x":
+                obs[125] = world.x / 26
+            elif x_control == "flip_x":
+                obs[125] = (world.width - 1 - world.x) / 26
+            else:
+                assert x_control == "normal"
             if hasattr(net, "step"):
                 logits, state = net.step(obs[None, :], state)
                 logits = logits[0]
@@ -95,8 +105,9 @@ def play(net, seed, cue, invert, *, horizontal=False, vertical=False):
 
 def evaluate(net, seeds):
     outputs = {}
-    for name, (horizontal, vertical) in MODES.items():
-        episodes = [play(net, s, cue, inv, horizontal=horizontal, vertical=vertical)
+    for name, (horizontal, vertical, x_control) in MODES.items():
+        episodes = [play(net, s, cue, inv, horizontal=horizontal,
+                         vertical=vertical, x_control=x_control)
                     for s in seeds for cue in range(2) for inv in range(2)]
         outputs[name] = {
             "episodes": len(episodes),
