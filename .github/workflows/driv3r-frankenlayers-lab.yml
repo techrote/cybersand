@@ -10,6 +10,7 @@ on:
       - 'experiments/driv3r/frankenlayers_lab/run-request.json'
       - 'experiments/driv3r/frankenlayers_lab/run-request-wave2.json'
       - 'experiments/driv3r/frankenlayers_lab/run-request-wave3.json'
+      - 'experiments/driv3r/frankenlayers_lab/run-request-wave4.json'
       - '.github/workflows/driv3r-frankenlayers-lab.yml'
 
 permissions:
@@ -79,6 +80,23 @@ jobs:
               dict(label=k,mode=k,flow=list(v),quant="q8",seed=570)
               for k,v in WAVE3_FLOWS.items()
           ]
+          w4=json.loads(Path("experiments/driv3r/frankenlayers_lab/run-request-wave4.json").read_text())
+          assert w4["schema"]=="cybersand-d1-frankenlayers-lab-wave4/1"
+          assert w4["lineage"]["wave3_source_sha"]=="61e316986f95672793c324b9df489a905994bb69"
+          assert w4["lineage"]["wave3_run"]==43802923136
+          for key in ("llama_commit","model_q8_sha256","w0_commit"):
+            assert w4["lineage"][key]==r["lineage"][key]
+          assert w4["max_parallel"]==2 and w4["timeout_minutes"]<=95 and w4["no_game_changes"]
+          assert not any(w4[k] for k in ("paid_api","paid_gpu","merge","ready"))
+          assert w4["experiments"]==[
+            dict(label=label,mode=mode,flow=list(WAVE3_FLOWS[mode]),quant=quant,seed=seed)
+            for label,mode,quant,seed in (
+              ("aero5_no23_q4","aero5_no23","q4_k_m",570),
+              ("tailflip4_q4","tailflip4","q4_k_m",570),
+              ("aero5_no23_s571","aero5_no23","q8",571),
+              ("echo4_s571","echo4","q8",571),
+            )
+          ]
           PY
           python3 tools/ci/check_ci_provider_policy.py
           python3 tools/ci/check_ci_scheduling_policy.py
@@ -103,18 +121,22 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - mode: tailflip4
+          - mode: aero5_no23_q4
+            flow: aero5_no23
+            quant: q4_k_m
+            seed: 570
+          - mode: tailflip4_q4
             flow: tailflip4
-            quant: q8
-          - mode: echo4
-            flow: echo4
-            quant: q8
-          - mode: aero5_no20
-            flow: aero5_no20
-            quant: q8
-          - mode: aero5_no23
+            quant: q4_k_m
+            seed: 570
+          - mode: aero5_no23_s571
             flow: aero5_no23
             quant: q8
+            seed: 571
+          - mode: echo4_s571
+            flow: echo4
+            quant: q8
+            seed: 571
     env:
       OMP_NUM_THREADS: '2'
       MKL_NUM_THREADS: '2'
@@ -206,13 +228,13 @@ jobs:
               --model-q4 "$RUNNER_TEMP/franken-lab-q4/d1-2B-from-Q8-Q4_K_M.gguf" \
               --quant-receipt "evidence/${{ matrix.mode }}/quantize-receipt.json" \
               --w0 "$RUNNER_TEMP/franken-w0.py" \
-              --mode "${{ matrix.flow }}" --seed 570 --source-sha "$GITHUB_SHA" \
+              --mode "${{ matrix.flow }}" --seed "${{ matrix.seed }}" --source-sha "$GITHUB_SHA" \
               --output "evidence/${{ matrix.mode }}/inference"
           else
             timeout --signal=TERM --kill-after=45 4200 python3 -m experiments.driv3r.frankenlayers_lab.infer \
               --binary "$RUNNER_TEMP/franken-lab-llama/build/bin/llama-server" \
               --model "$MODEL_PATH" --w0 "$RUNNER_TEMP/franken-w0.py" \
-              --mode "${{ matrix.flow }}" --seed 570 --source-sha "$GITHUB_SHA" \
+              --mode "${{ matrix.flow }}" --seed "${{ matrix.seed }}" --source-sha "$GITHUB_SHA" \
               --output "evidence/${{ matrix.mode }}/inference"
           fi
       - name: Retain true failure evidence and checksums

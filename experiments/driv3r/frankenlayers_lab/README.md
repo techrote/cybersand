@@ -42,3 +42,14 @@ the pinned Q8 donor and records a same-runner Q8-stock/Q4-stock/Q4-AERO6
 triad. The new quantised model is a **requantisation** and is not equivalent to
 an F16-source Q4. Large generated model files are kept out of Git history.
 All model transforms and hashes appear in original Actions evidence.
+
+## Wave 3 findings and wave 4 strategy
+
+Source-fenced [results](results-2026-11-16.md) establish that five-layer
+AERO5_NO23 is alive with 48 legal, nonterminal BRANCH/RETRACE/RIGHT actions;
+four-layer TAILFLIP4 also survives, but gives a nearly world-invariant BRANCH
+personality. Four-execution ECHO4 survives and has some world-conditioned LEFT
+turns. Wave 4 tries Q4_K_M requantisation of AERO5_NO23 and TAILFLIP4, plus
+seed-571 replication of AERO5_NO23 and ECHO4. Quantised checkpoints remain
+out of Git history; Q4 is made from immutable Q8 (not FP16). Game code is
+read-only and all W0 projections are synthetic, not native acceptance.

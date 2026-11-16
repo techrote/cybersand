@@ -14,6 +14,9 @@ from experiments.driv3r.frankenlayers.patch_runtime import FLOWS
 from experiments.driv3r.frankenlayers.infer import load_w0, run_arm, write_json
 from experiments.driv3r.frankenlayers_lab.flows import LAB_FLOWS, validate_flows
 
+# Qualified Q8 survivors; all Q4 attempts require original same-runner Q8/Q4 controls.
+QUANT_MODES = ("aero6", "skele6", "aero5_no23", "tailflip4")
+
 def validate_quant_receipt(receipt: dict, q8: Path, q4: Path) -> None:
     if receipt.get("schema") != "cybersand-franken-q4-requant/1":
         raise ValueError("Invalid quantisation receipt schema")
@@ -35,7 +38,7 @@ def main() -> None:
     p.add_argument("--model-q4",type=Path,required=True)
     p.add_argument("--quant-receipt",type=Path,required=True)
     p.add_argument("--w0",type=Path,required=True)
-    p.add_argument("--mode",choices=("aero6","skele6"),required=True)
+    p.add_argument("--mode",choices=QUANT_MODES,required=True)
     p.add_argument("--output",type=Path,required=True)
     p.add_argument("--seed",type=int,default=570)
     p.add_argument("--source-sha",required=True)

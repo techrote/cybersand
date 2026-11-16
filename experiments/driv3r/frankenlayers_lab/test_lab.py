@@ -40,6 +40,12 @@ class FrankenLabTests(unittest.TestCase):
             with self.subTest(name=name,kind="tampered"),self.assertRaises(ValueError):
                 validate_flows(mutated)
 
+    def test_wave4_quant_candidates_source_qualified(self):
+        from experiments.driv3r.frankenlayers_lab.infer_quant import QUANT_MODES
+        self.assertEqual(set(QUANT_MODES), {"aero6", "skele6", "aero5_no23", "tailflip4"})
+        self.assertEqual(LAB_FLOWS["aero5_no23"], (0, 2, 4, 10, 20))
+        self.assertEqual(LAB_FLOWS["tailflip4"], (0, 4, 20, 18))
+
     def test_wave3_nonmonotonic_and_duplicate_guard(self):
         mutated=dict(LAB_FLOWS)
         mutated["needle4"] = WAVE3_FLOWS["echo4"]
