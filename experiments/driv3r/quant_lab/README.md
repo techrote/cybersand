@@ -9,7 +9,7 @@ This deliberately small first experiment trains a 27→64→64→6 neural action
 - python experiments/driv3r/quant_lab/quant_worm.py --self-test
 - python experiments/driv3r/quant_lab/quant_worm.py --out quant-lab-out --steps 450 --repair-steps 100
 
-Requires CPU PyTorch 2.5.1, numpy 2.1.3, Pillow 11.1.0 and Python 3.11. CI uses pinned dependencies and uploads all checkpoints, optimizer state, packed NPZ binaries, SHA-256 inventory, raw model-score/host-choice receipts, results.json and **126 original synthetic 25x25 PNGs** to an immutable Actions artifact (not git). Train seeds 1100–1163; held-out 8100–8123; nine visual cases: seed 8101/8107/8113 × three style prompts. Every model and control receives the same starting worlds and 64-turn cap, but trajectories diverge; comparison is **not paired same-state counterfactual**.
+Requires CPU PyTorch 2.5.1, numpy 2.1.3, Pillow 11.1.0 and Python 3.11. CI uses pinned dependencies and uploads all checkpoints, optimizer state, packed NPZ binaries, SHA-256 inventory, raw model-score/host-choice receipts, results.json and **126 original synthetic 25x25 PNGs** to an immutable Actions artifact (not git). Train seeds 1100–1163; held-out 8100–8123; nine visual cases: seed 8101/8107/8113 × three style prompts. Every model and control receives the same starting worlds, **identical host random-draw stream for a fixed world seed across families**, and 64-turn cap; subsequent states diverge, so trajectories are **not paired same-state counterfactuals**. Model-free RANDOM/WALL/FIDGET are family-label negative controls. An earlier provisional artifact used differing family RNG streams and must NOT be used to claim family-conditioned morphology.
 
 ## Real precision ladder
 
