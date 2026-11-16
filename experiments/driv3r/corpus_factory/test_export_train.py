@@ -72,13 +72,13 @@ class TrainExportTests(unittest.TestCase):
             file = changed / 'train.decisions.jsonl'
             rows = [json.loads(x) for x in file.read_text().splitlines()]
             rows[0]['observation']['heading'] = (rows[0]['observation']['heading'] + 1) % 4
-            payload = ''.join(canonical(row)+'\\n' for row in rows).encode()
+            payload = ''.join(canonical(row)+'\n' for row in rows).encode()
             file.write_bytes(payload)
             mf = changed / 'manifest.json'
             manifest = json.loads(mf.read_text())
             manifest['files'][file.name]['sha256'] = hashlib.sha256(payload).hexdigest()
             manifest['files'][file.name]['bytes'] = len(payload)
-            mf.write_text(canonical(manifest) + '\\n')
+            mf.write_text(canonical(manifest) + '\n')
             self.assertEqual(audit(changed)['audit'], 'PASS')
             with self.assertRaisesRegex(ValueError, 'fingerprint'):
                 export(changed, Path(td) / 'refused')
@@ -90,13 +90,13 @@ class TrainExportTests(unittest.TestCase):
             file = changed / 'train.decisions.jsonl'
             rows = [json.loads(x) for x in file.read_text().splitlines()]
             rows[0]['evidence_class'] = 'model-generated-policy-trace'
-            payload = ''.join(canonical(row)+'\\n' for row in rows).encode()
+            payload = ''.join(canonical(row)+'\n' for row in rows).encode()
             file.write_bytes(payload)
             mf = changed / 'manifest.json'
             manifest = json.loads(mf.read_text())
             manifest['files'][file.name]['sha256'] = hashlib.sha256(payload).hexdigest()
             manifest['files'][file.name]['bytes'] = len(payload)
-            mf.write_text(canonical(manifest) + '\\n')
+            mf.write_text(canonical(manifest) + '\n')
             self.assertEqual(audit(changed)['audit'], 'PASS')
             with self.assertRaisesRegex(ValueError, 'non-TRAIN or non-synthetic'):
                 export(changed, Path(td) / 'refused')
