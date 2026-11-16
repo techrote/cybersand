@@ -1,0 +1,149 @@
+name: LFM350 GP350-012 128-turn OOD source-W0 policy stress
+on:
+  push:
+    branches: [research/lfm-game-policy-350m]
+    paths: [experiments/driv3r/lfm_game_policy/gp350-012-request.json]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: lfm350-primary-gp350012-${{ github.sha }}
+  cancel-in-progress: false
+jobs:
+  source-matched-128:
+    name: OOD 128-turn source W0 / ${{ matrix.stage }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        include:
+          - stage: gp350006
+            parent_run: '43806503356'
+            parent_name: gp350-006-74fc997484cd1414dfc7a8be09d85a4daefb8554-43806503356-1
+            adapter_subdir: original-experiment/adapter-step-96
+            expected_adapter_sha: 436159bd6508063221d31d46f057b5fba7ee5b6f05b27edf003c54e76863898c
+          - stage: gp350010-step24
+            parent_run: '43854890883'
+            parent_name: gp350-010-ad5781667e2b4fdd29521a21bcd13adda5d5511c-43854890883-1
+            adapter_subdir: original-experiment/adapter-step-24
+            expected_adapter_sha: 047b2bacb61f6f04fb359e4d9839f6c198a17ba7db6dfb451d88e48846c66430
+    env:
+      OMP_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+      HF_HUB_DISABLE_TELEMETRY: '1'
+      PYTHONHASHSEED: '0'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: techrote/cybersand
+          ref: 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          path: pinned-w0
+          persist-credentials: false
+      - name: Immutable source/W0, request and OOD curriculum self-test
+        run: |
+          set -euo pipefail
+          mkdir -p gp350-012-evidence
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git -C pinned-w0 rev-parse HEAD)" = 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          test "$(git hash-object pinned-w0/experiments/agent_painter/worm/common/worm.py)" = 8979b6f0296e81051194bacc907992d38e006605
+          python3 -m py_compile experiments/driv3r/lfm_game_policy/{lfm350,gp350_paired_margin_train,gp350_selective_branch_train,gp350_ood_128_eval}.py
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          req=json.loads(Path("experiments/driv3r/lfm_game_policy/gp350-012-request.json").read_text())
+          assert req["schema"]=="driv3r.lfm350.gp350012-request/1"
+          assert req["model"]=="LiquidAI/LFM2.5-350M"
+          assert req["revision"]=="9921cd4d82c0e3986887aa4b376f9446729ef8a3"
+          assert req["policy_stages"]==["gp350006","gp350010-step24"]
+          assert req["OOD_sizes"]==[24,64] and req["OOD_seeds"]==[9803,9821]
+          assert req["steps_per_episode"]==128 and req["episodes_per_stage"]==12
+          assert req["decision_budget"]==3072 and req["optimizer_updates"]==0
+          assert req["synthetic_W0_only"] and not req["native"] and not req["paid_GPU"]
+          assert req["draft_hold"] and req["matched_d1"]=="NOT RUN"
+          PY
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 experiments/driv3r/lfm_game_policy/gp350_ood_128_eval.py --self-test \
+            --w0 pinned-w0/experiments/agent_painter/worm/common/worm.py \
+            --stage ${{ matrix.stage }} --cache "$RUNNER_TEMP/not-required" \
+            --adapter "$RUNNER_TEMP/not-required" --out "$RUNNER_TEMP/not-required"
+          (git rev-parse HEAD; date -u -Iseconds; python3 --version) > gp350-012-evidence/source-host.txt
+      - name: Retrieve immutable parent adapter and verify SHA256
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh run download ${{ matrix.parent_run }} --repo techrote/cybersand \
+            --name ${{ matrix.parent_name }} --dir gp350-012-evidence/original-parent
+          test "$(sha256sum gp350-012-evidence/original-parent/${{ matrix.adapter_subdir }}/adapter_model.safetensors | cut -d' ' -f1)" = ${{ matrix.expected_adapter_sha }}
+      - name: Install pinned CPU LFM350 environment
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/gp350012"
+          "$RUNNER_TEMP/gp350012/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/gp350012/bin/python" -m pip install \
+            'transformers==5.22.2' 'peft==0.21.2' 'accelerate==1.15.0' \
+            'huggingface-hub==2.4.0' 'safetensors==0.8.0'
+          "$RUNNER_TEMP/gp350012/bin/python" -m pip check
+          "$RUNNER_TEMP/gp350012/bin/python" -m pip freeze --all > gp350-012-evidence/pip-freeze.txt
+          echo 'LiquidAI/LFM2.5-350M under LFM Open License v1.0. Attribution: Liquid AI.' > gp350-012-evidence/attribution.txt
+      - name: Actual full-model frozen 128-turn OOD inference and source W0 replay
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=40s 2370s \
+            "$RUNNER_TEMP/gp350012/bin/python" experiments/driv3r/lfm_game_policy/gp350_ood_128_eval.py \
+              --w0 pinned-w0/experiments/agent_painter/worm/common/worm.py \
+              --stage ${{ matrix.stage }} \
+              --adapter gp350-012-evidence/original-parent/${{ matrix.adapter_subdir }} \
+              --cache "$RUNNER_TEMP/gp350012-full-model" \
+              --out gp350-012-evidence/original-experiment --deadline 2250
+      - name: Verify completed model decisions, host legality, original pixels and score receipts
+        if: success()
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,math,os
+          from pathlib import Path
+          p=Path("gp350-012-evidence/original-experiment")
+          s=json.loads((p/"summary.json").read_text())
+          assert s["source_sha"]==os.environ["GITHUB_SHA"] and s["status"]=="complete"
+          assert s["steps_per_episode"]==128 and len(s["episodes"])==12
+          assert len(s["controls"])==36 and s["original_pngs"]==48
+          assert s["model_decisions"]==sum(r["decisions"] for r in s["episodes"])
+          assert s["optimizer_steps"]==0 and not s["native"] and not s["vision"]
+          for row in s["episodes"]+s["controls"]:
+              png=(p/row["png"]).read_bytes()
+              assert png[:8]==b"\x89PNG\r\n\x1a\n"
+              assert hashlib.sha256(png).hexdigest()==row["png_sha256"]
+              assert row["host_illegal"]==0
+          for row in s["episodes"]:
+              record=json.loads((p/(row["png"][:-4]+".json")).read_text())
+              scores=record["decisions"]
+              assert len(scores)==row["decisions"] and 0<len(scores)<=128
+              assert len(record["record"]["events"])==len(scores)
+              for decision,event in zip(scores,record["record"]["events"]):
+                  z=decision["six_logits"]
+                  acts=("STRAIGHT","LEFT","RIGHT","BRANCH","RETRACE","STOP")
+                  assert len(z)==6 and all(math.isfinite(v) for v in z)
+                  assert decision["raw"]==acts[max(range(6),key=lambda i:z[i])]
+                  assert decision["applied"]==max(decision["obs"]["legal"],key=lambda a:z[acts.index(a)])
+                  assert decision["applied"]==event["raw_choice"]==event["applied"]
+                  assert event["raw_legal"]
+          probes=json.loads((p/"heldout-probes.json").read_text())["items"]
+          assert len(probes)==s["probe_n"] and s["probe_n"]>=24
+          assert all(len(x["six_logits"])==6 for x in probes)
+          print("GP350012 source/W0/adapter/128-step legality replay and PNG receipts PASS")
+          PY
+      - name: Always preserve original successful or failure evidence, no model binaries in Git
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gp350-012-${{ matrix.stage }}-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: gp350-012-evidence/
+          if-no-files-found: warn
+          retention-days: 90
