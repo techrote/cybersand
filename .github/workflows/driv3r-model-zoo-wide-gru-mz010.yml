@@ -14,7 +14,7 @@ concurrency:
 jobs:
   cpu-research:
     runs-on: ubuntu-24.04
-    timeout-minutes: 45
+    timeout-minutes: 60
     env:
       OMP_NUM_THREADS: '2'
       MKL_NUM_THREADS: '2'
@@ -51,7 +51,7 @@ jobs:
         run: |
           python -m experiments.driv3r.model_zoo.wide_gru_mz010.run \
             --out "$RUNNER_TEMP/mz010" --train-seeds 160 --eval-seeds 24 \
-            --rollout-seeds 8 --updates 500 --batch 8
+            --rollout-seeds 8 --updates 800 --batch 48
       - name: Independently reload source-matched checkpoint and verify outcomes
         run: |
           python - <<'PY'
@@ -66,7 +66,7 @@ jobs:
           assert r['schema'] == SCHEMA
           assert r['source_sha'] == os.environ['GITHUB_SHA']
           assert r['parent_source_sha'] == PARENT_HEAD
-          assert r['training']['updates_per_model'] == 500
+          assert r['training']['updates_per_model'] == 800
           assert r['training']['seed_families_split_disjoint']
           assert r['training']['test_episodes'] == 24*4*3
           assert 20_000_000 <= r['parameters']['wide'] <= 24_000_000
