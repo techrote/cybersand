@@ -40,7 +40,7 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install bounded fixed CPU dependency
-        run: python -m pip install --disable-pip-version-check numpy==2.3.5
+        run: python -m pip install --disable-pip-version-check numpy==2.3.5 PyYAML==6.0.2
       - name: Fail-closed lease, source, split and regression tests
         run: |
           python -m compileall -q experiments/driv3r/fleet_training
