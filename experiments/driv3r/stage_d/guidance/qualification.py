@@ -7,6 +7,7 @@ Never launches model inference, native execution, training, APIs or formal A/B.
 """
 from __future__ import annotations
 
+import ast
 import hashlib
 import json
 import os
@@ -23,19 +24,32 @@ LANE = "experiments/driv3r/stage_d/guidance"
 SCHEMA = "experiments/driv3r/d_common/v1/interface.schema.json"
 M1_COMMIT = "8fa90de6be209ed0b7bd125039e6ec8b332fb1a6"
 M1_SCHEMA_SHA256 = "ebe2fa211148602c614cba0f0a40f285cba797784b70efa035832d833877f80d"
-# 199 prior methods + 16 four-stream methods + five sham cue-isolation/golden regressions.
-# Fail closed if a module disappears or the suite silently shortens.
-MIN_TESTS = 220
-REQUIRED_MODULES = frozenset({
-    "test_comparison.py", "test_feedback_audit.py", "test_feedback_edgecases.py",
-    "test_fork_probe.py",
-    "test_geometry_guard.py", "test_guidance.py", "test_information.py",
-    "test_m1_compat.py", "test_png_structure.py", "test_shadow_policy.py",
-    "test_snapshot_identity.py", "test_trajectory_audit.py", "test_worm_morphology.py",
-    "test_worm_morphology_binding.py", "test_worm_shift_nulls.py", "test_worm_trace.py",
-    "test_qualification.py", "test_native_pair_shadow.py",
-    "test_native_guidance_rank.py", "test_fleet_samples.py",
-})
+# Exact-source structural inventory: 20 test modules, 224 methods.
+# A global count of >=220 masked missing tests from the actual 223-method tree.
+REQUIRED_METHOD_COUNTS = {
+    "test_comparison.py": 9,
+    "test_feedback_audit.py": 10,
+    "test_feedback_edgecases.py": 6,
+    "test_fleet_samples.py": 24,
+    "test_fork_probe.py": 9,
+    "test_geometry_guard.py": 5,
+    "test_guidance.py": 18,
+    "test_information.py": 11,
+    "test_m1_compat.py": 16,
+    "test_native_guidance_rank.py": 8,
+    "test_native_pair_shadow.py": 18,
+    "test_png_structure.py": 4,
+    "test_qualification.py": 16,
+    "test_shadow_policy.py": 5,
+    "test_snapshot_identity.py": 5,
+    "test_trajectory_audit.py": 13,
+    "test_worm_morphology.py": 12,
+    "test_worm_morphology_binding.py": 9,
+    "test_worm_shift_nulls.py": 14,
+    "test_worm_trace.py": 12,
+}
+MIN_TESTS = 224
+REQUIRED_MODULES = frozenset(REQUIRED_METHOD_COUNTS)
 SHA = re.compile(r"[a-f0-9]{40}\Z")
 FOOTER = re.compile(r"^Ran ([0-9]+) tests? in [0-9.]+s$", re.MULTILINE)
 SKIP = re.compile(r"\bskipped=([0-9]+)\b")
@@ -75,6 +89,41 @@ def _checked_git(root: Path, *args: str) -> str:
     if result.returncode != 0:
         raise QualificationError("Git query failed: " + " ".join(args[:2]))
     return result.stdout
+
+
+
+def _validate_test_inventory(root: Path) -> int:
+    """Structural test-source preflight; not an executed-suite result."""
+    directory = root / LANE
+    modules = {p.name for p in directory.glob("test_*.py")}
+    if modules != set(REQUIRED_METHOD_COUNTS):
+        raise QualificationError("Required test modules missing or unregistered")
+    total = 0
+    for filename, expected in sorted(REQUIRED_METHOD_COUNTS.items()):
+        try:
+            tree = ast.parse((directory / filename).read_text(encoding="utf-8"),
+                             filename=filename)
+        except (OSError, UnicodeError, SyntaxError) as exc:
+            raise QualificationError("Invalid test inventory source: " + filename) from exc
+        count = 0
+        for node in tree.body:
+            if not isinstance(node, ast.ClassDef):
+                continue
+            methods = [m for m in node.body
+                       if isinstance(m, (ast.FunctionDef, ast.AsyncFunctionDef))
+                       and m.name.startswith("test_")]
+            if len({m.name for m in methods}) != len(methods):
+                raise QualificationError("Duplicate shadowed test inventory: " + filename)
+            if any(isinstance(m, ast.AsyncFunctionDef) for m in methods):
+                raise QualificationError("Async test inventory unsupported: " + filename)
+            count += len(methods)
+        if count != expected:
+            raise QualificationError("Changed test inventory: " + filename +
+                                     f" expected {expected}, found {count}")
+        total += count
+    if total != MIN_TESTS:
+        raise QualificationError("Test inventory differs from declared minimum")
+    return total
 
 
 def source_fence(root: Path) -> tuple[str, int]:
@@ -131,9 +180,7 @@ def source_fence(root: Path) -> tuple[str, int]:
                                    M1_COMMIT, merge, "--").splitlines()
         if any(not p.startswith(LANE + "/") for p in merge_paths):
             raise QualificationError("M1 adoption merge changed frozen/shared paths")
-    modules = {p.name for p in (root / LANE).glob("test_*.py")}
-    if not REQUIRED_MODULES <= modules:
-        raise QualificationError("Required test modules missing from checkout")
+    _validate_test_inventory(root)
     return head, len(paths)
 
 
