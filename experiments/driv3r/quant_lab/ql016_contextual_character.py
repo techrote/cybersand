@@ -78,7 +78,7 @@ class CharacterIsland(nn.Module):
         codes = (((a / safe).clamp(-1., 1.) + 1.) * levels / 2.).round()
         decoded = (codes * (2. / levels) - 1.) * scales
         decoded = torch.where(scales > 0, decoded, torch.zeros_like(decoded))
-        return a + (decoded - a).detach()
+        return (a + (decoded - a).detach()) * self.mask
 
     def correction(self, x):
         fresh, deep, prior = bucket(x)
@@ -111,6 +111,7 @@ class CharacterIsland(nn.Module):
         assert np.array_equal(rebuilt, codes)
         decoded = ((rebuilt.astype(np.float32) * (2. / levels)) - 1.) * scales[:, None, None, None]
         decoded[scales == 0] = 0.
+        decoded *= self.mask.numpy()
         assert np.allclose(decoded, self.quant_table().detach().numpy(), atol=6e-7, rtol=0)
         return {"bits": self.bits, "bytes": len(packed) + scales.nbytes,
                 "packed": np.frombuffer(packed, dtype=np.uint8).copy(),
