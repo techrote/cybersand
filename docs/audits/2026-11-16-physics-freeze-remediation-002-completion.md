@@ -222,3 +222,20 @@ on Linux despite its81 functional assertions completing. That run is not a pass.
 Native popup lifecycle, VSync controls, actual rendering and package launch paths
 remain integration gates; neither this source repair nor the faster Linux
 physics results authorize a Windows default before those gates complete.
+
+The first custom-engine build at `106c845a087e3e309cedac5cbdb76cc7e0db625e`
+compiled successfully in2315.8seconds in
+[Actions43972621937](https://github.com/techrote/cybersand/actions/runs/43972621937),
+then failed the import-classification gate before version, public API or
+application execution. The GUI import table contained the inbox Windows Runtime
+`combase.dll`, which the initial explicit system-DLL list omitted. Microsoft
+documents that DLL for
+[RoGetActivationFactory](https://learn.microsoft.com/windows/win32/api/roapi/nf-roapi-rogetactivationfactory)
+on Windows8/Server2012 and later. The repair adds only `combase`; unknown imports
+and external CRT dependencies remain rejected, with the exact executable/DLL
+mapping now included in the failure message. It does not change engine source,
+build flags or dependency archives. The failed evidence artifact14282916594
+has SHA256`c549d9bf36ce4291772704ff9a5af43cd31781440e0665e0855485fa09153868`.
+Its `complete:false` receipt remains a failure. Subsequent incomplete build
+outputs are separately quarantined for inspection and cannot satisfy the
+complete-provenance restoration gate.

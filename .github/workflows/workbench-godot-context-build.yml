@@ -47,6 +47,7 @@ jobs:
           persist-credentials: false
           lfs: false
       - name: Authenticate dependencies, apply the reviewed EGL repair and compile Windows x64
+        id: engine_build
         run: |
           set -euo pipefail
           python -u tools/ci/build_workbench_godot.py --source-dir engine-source-build --output "$RUNNER_TEMP/workbench-engine" --evidence evidence/engine-build
@@ -94,4 +95,12 @@ jobs:
           name: Workbench-Godot-Context-Evidence-${{ github.run_id }}-attempt-${{ github.run_attempt }}
           path: evidence/
           if-no-files-found: error
+          retention-days: 90
+      - name: Quarantine incomplete engine output for failed-build inspection
+        if: failure() && steps.engine_build.outcome == 'failure'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: INCOMPLETE-Workbench-Godot-${{ github.sha }}-${{ github.run_id }}-attempt-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/workbench-engine/
+          if-no-files-found: warn
           retention-days: 90

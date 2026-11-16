@@ -22,7 +22,9 @@ import urllib.request
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[2]
-SYSTEM_DLLS = set("""advapi32 avrt bcrypt bcryptprimitives cfgmgr32 comctl32 comdlg32
+# ComBase is the inbox Windows Runtime implementation (Windows 8 / Server 2012+):
+# https://learn.microsoft.com/windows/win32/api/roapi/nf-roapi-rogetactivationfactory
+SYSTEM_DLLS = set("""advapi32 avrt bcrypt bcryptprimitives cfgmgr32 combase comctl32 comdlg32
 crypt32 d3d9 d3d11 d3dcompiler_47 dcomp dbghelp dnsapi dsound dwmapi dwrite dxgi dxguid
 gdi32 hid imm32 iphlpapi kernel32 mincore mpr msimg32 msvcrt ncrypt netapi32 normaliz
 ntdll ole32 oleacc oleaut32 opengl32 powrprof propsys psapi rpcrt4 runtimeobject sapi
@@ -304,8 +306,10 @@ def build(args: argparse.Namespace) -> None:
         provenance["executables"] = {p.name: {**file_record(p), "pe": pe_imports(p)} for p in (gui, console)}
         require(provenance["executables"][gui.name]["pe"]["subsystem"] == 2, "GUI subsystem mismatch")
         require(provenance["executables"][console.name]["pe"]["subsystem"] == 3, "Console subsystem mismatch")
-        require(all(not row["pe"]["unresolved_non_system_imports"] for row in provenance["executables"].values()),
-                "Unexpected dynamic dependency; static import closure failed")
+        unresolved = {name: row["pe"]["unresolved_non_system_imports"]
+                      for name, row in provenance["executables"].items()
+                      if row["pe"]["unresolved_non_system_imports"]}
+        require(not unresolved, f"Unexpected dynamic dependencies; static import closure failed: {unresolved}")
         version = run([str(console), "--version"], output, evidence, "custom-version").strip()
         require(version == lock["version"], f"Custom version mismatch: {version!r}")
         provenance["version"] = version
