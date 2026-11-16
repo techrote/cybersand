@@ -1,6 +1,6 @@
 """MZ-009 contract tests: legal masks, hidden causality, recovery and training."""
 import unittest
-from mz009.run import ACTIONS, MAX_STEPS, World, episode, dataset, networks, to_tensors
+from experiments.driv3r.model_zoo.material_forks_mz009.run import ACTIONS, MAX_STEPS, World, episode, dataset, networks, to_tensors
 
 
 class MaterialForkTests(unittest.TestCase):
