@@ -335,3 +335,10 @@ Windows owner evaluation must independently inspect actual layout, interactive
 controls, paint/erase and save/reopen. No general architectural solver,
 variable-size room packing, semantic route generator, automatic edit rebase,
 streaming World, camera optimization or agent authoring is included.
+
+## Branch-local Interlock Brutalism showcase
+
+The isolated Draft/HOLD [Interlock Brutalism experiment](../research/gentek-interlock-001.md)
+adds one schema-4/v1 architectural style through the existing controls and
+ordinary native preview/install path. Its source-built native/Godot evidence is
+qualified independently, with original 72 CLASSIC and Viaduct v1/v2 preservation.
