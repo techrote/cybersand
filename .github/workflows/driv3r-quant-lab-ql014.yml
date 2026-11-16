@@ -1,0 +1,117 @@
+name: QL-014 frontier-conditioned Q1 Q2 Q4 QAT policy lab (research)
+on:
+  pull_request:
+    paths:
+      - 'experiments/driv3r/quant_lab/ql014_frontier_qat.py'
+      - '.github/workflows/driv3r-quant-lab-ql014.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: ql014-frontier-qat
+  cancel-in-progress: ${{ github.event_name != 'workflow_dispatch' }}
+jobs:
+  ql014-frontier-qat:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 28
+    env:
+      PYTHONHASHSEED: '0'
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      QL_SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pinned free CPU dependencies
+        run: |
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.5.1'
+          python -m pip install 'numpy==2.1.3' 'Pillow==11.1.0'
+      - name: Read immutable original QL-003 Q1 and Q4 weights
+        uses: actions/download-artifact@v4
+        with:
+          name: ql003-franken-quant
+          run-id: 43795394633
+          repository: techrote/cybersand
+          github-token: ${{ github.token }}
+          path: ql003-source
+      - name: Test exact bitpack, unpack, zero rows, real host and parent
+        run: |
+          python experiments/driv3r/quant_lab/quant_worm.py --self-test
+          python experiments/driv3r/quant_lab/ql014_frontier_qat.py --self-test
+      - name: Fit FP32 table and three real post-quant QAT repairs, evaluate trajectories
+        run: |
+          python experiments/driv3r/quant_lab/ql014_frontier_qat.py --parent ql003-source --out ql014-out --fp-steps 64 --qat-steps 48
+      - name: Verify exact HEAD, immutable parent, real QAT moments, packed codes and legal action provenance
+        run: |
+          python - <<'PY'
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          import numpy as np
+          import torch
+          p=Path('ql014-out')
+          r=json.loads((p/'results.json').read_text())
+          sha=os.environ['QL_SOURCE_SHA']
+          assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==sha
+          assert r['source_sha']==sha
+          assert r['parent_source_sha']=='9b4103c48127e5c8538403e2a4d9e2525fbe8755'
+          assert r['parent_manifest_entries']>=330
+          assert r['optimizer_updates']==208 and r['heldout_n']==4352
+          assert len(r['variants'])==6 and r['original_png_n']==216
+          assert r['first_pass_trajectories']==216
+          for name,bits,updates in (('fp32-table',32,64),('qat-q4-table',4,48),
+                                     ('qat-q2-table',2,48),('qat-q1-table',1,48)):
+              ck=torch.load(p/'models'/(name+'-optimizer.pt'),
+                            map_location='cpu',weights_only=False)
+              assert ck['source_sha']==sha and ck['parent_source_sha']==r['parent_source_sha']
+              assert ck['bits']==bits and ck['updates']==updates
+              assert len(ck['trace'])==updates and len(ck['optimizer']['state'])==1
+              assert bool(torch.count_nonzero(next(iter(ck['optimizer']['state'].values()))['exp_avg']))
+              assert torch.isfinite(ck['table_fp32']).all()
+              assert ck['parent_q1_sha256']==r['parent_q1_sha256']
+              assert ck['parent_q4_sha256']==r['parent_q4_sha256']
+              if bits!=32:
+                  packed=np.load(p/'models'/(name+'-packed.npz'))
+                  assert int(packed['bits'])==bits
+                  assert len(packed['packed'])==24*bits//8
+                  assert packed['scales'].shape==(4,)
+                  assert ck['packed_payload']['bytes']==len(packed['packed'])+16
+                  assert np.array_equal(ck['packed_payload']['packed'],packed['packed'])
+                  assert np.array_equal(ck['packed_payload']['scales'],packed['scales'])
+          rows=json.loads((p/'raw_decisions.json').read_text())
+          assert len(rows)==216
+          assert all(row['first_pass'] and all(
+             step['chosen'] in step['legal'] and 'STOP' in step['legal']
+             for step in row['steps']) for row in rows)
+          assert len(set((r['policy'],r['seed'],r['family'],r['override_rate']) for r in rows))==216
+          for name,v in r['variants'].items():
+              assert v['heldout']['host_masked_legal']==4352
+              assert v['conditional']['total_host_masked_legal']==4352
+              assert v['random_10pct']['n_episodes']==18
+              assert v['no_random_diagnostic']['n_episodes']==18
+              assert v['no_random_diagnostic']['total_host_overrides']==0
+              if name.startswith('qat-'):
+                  assert v['trained_steps']==48 and v['trainable_params']==24
+          assert hashlib.sha256((p/'raw_decisions.json').read_bytes()).hexdigest()==r['raw_decisions_sha256']
+          manifest=json.loads((p/'MANIFEST.json').read_text())
+          assert len({e['path'] for e in manifest})==len(manifest)
+          for e in manifest:
+              b=(p/e['path']).read_bytes()
+              assert len(b)==e['bytes'] and hashlib.sha256(b).hexdigest()==e['sha256']
+          assert len(list((p/'gallery').glob('*.png')))==216
+          print('QL014 EXACT-HEAD QAT PASS',sha,'actions',sum(len(row['steps']) for row in rows),
+                'manifest',len(manifest),'PNG',r['original_png_n'])
+          PY
+      - name: Retain QAT optimizer checkpoints, genuinely packed models, all first-pass trajectories and negative findings
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ql014-frontier-bitpack-qat-exact-head
+          path: ql014-out/
+          retention-days: 21
+          if-no-files-found: warn
