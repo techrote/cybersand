@@ -55,7 +55,7 @@ class IQ2ScreenTests(unittest.TestCase):
                 if path == q8: return PINS["model"]["sha256"]
                 if path == iq2: return "test-iq2-bytes"
                 return hashlib.sha256(path.read_bytes()).hexdigest()
-            with patch("experiments.driv3r.frankenlayers_lab.infer_lowbit.sha256_file",
+            with patch("experiments.driv3r.frankenlayers_lab.infer_iq2.sha256_file",
                        side_effect=digest):
                 validate_iq2_receipt(receipt, q8, iq2, imatrix, calibration)
                 for field,bad in (("quant", "Q4_K_M"),("allow_requantize", False),
