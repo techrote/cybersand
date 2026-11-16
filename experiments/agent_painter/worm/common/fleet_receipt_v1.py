@@ -115,6 +115,7 @@ def summarise_fleet(leases: list[dict], *, sampled_utc_ns: int) -> dict:
     live_pid_keys = set()
     statuses = Counter()
     per_wrangler = defaultdict(int)
+    per_runner = defaultdict(Counter)
     for x in leases:
         validate_identity(x)
         if x['lease_id'] in ids:
@@ -127,9 +128,24 @@ def summarise_fleet(leases: list[dict], *, sampled_utc_ns: int) -> dict:
                 raise ValueError('one resident PID counted twice')
             live_pid_keys.add(key)
             per_wrangler[x['wrangler_id']] += 1
+            per_runner[x['wrangler_id']][x['runner_id']] += 1
+    four_reported = bool(per_wrangler) and all(n >= 4 for n in per_wrangler.values())
+    cross_runner_four = any(sum(counts.values()) >= 4 and len(counts) > 1
+                            for counts in per_runner.values())
+    # Supplied PID/UTC fields are unauthenticated telemetry, not proof.
+    # In particular, cross-VM monotonic timestamps have unrelated epochs.
+    # Original on-runner progress plus independent common-time liveness
+    # evidence must be verified externally before a four-active claim.
     return dict(contract=CONTRACT, sampled_utc_ns=sampled_utc_ns,
                 status_counts=dict(sorted(statuses.items())),
                 active_resident_models=len(live_pid_keys),
                 active_per_wrangler=dict(sorted(per_wrangler.items())),
-                four_active_per_wrangler_proven=bool(per_wrangler) and all(n >= 4 for n in per_wrangler.values()),
-                caveat='source-verified runner samples required; synthetic W0 is never model capacity')
+                active_per_wrangler_runner={
+                    wrangler: dict(sorted(counts.items()))
+                    for wrangler, counts in sorted(per_runner.items())},
+                four_active_per_wrangler_reported=four_reported,
+                four_active_per_wrangler_proven=False,
+                cross_runner_four_requires_independent_clock_witness=cross_runner_four,
+                caveat=('UNVERIFIED telemetry counts only: externally verify real model '
+                        'weights, source, PIDs, forward progress and common-time '
+                        'cross-runner concurrency; synthetic W0 is not model capacity'))

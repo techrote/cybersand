@@ -30,7 +30,20 @@ class FleetTests(unittest.TestCase):
     def test_four_distinct_model_process_slots(self):
         a = [mock_model(i) for i in range(4)]
         s = summarise_fleet(a, sampled_utc_ns=NOW)
-        self.assertTrue(s['four_active_per_wrangler_proven'])
+        self.assertEqual(s['active_resident_models'], 4)
+        self.assertTrue(s['four_active_per_wrangler_reported'])
+        self.assertFalse(s['four_active_per_wrangler_proven'])
+
+    def test_two_runner_two_model_reports_not_proven(self):
+        # Mocked 2+2 telemetry cannot prove cross-VM simultaneous execution.
+        a = [mock_model(i) for i in range(4)]
+        a[2]['runner_id'] = a[3]['runner_id'] = 'runnerB'
+        s = summarise_fleet(a, sampled_utc_ns=NOW)
+        self.assertEqual(s['active_per_wrangler_runner'],
+                         {'test-model-wrangler': {'runnerA': 2, 'runnerB': 2}})
+        self.assertTrue(s['four_active_per_wrangler_reported'])
+        self.assertFalse(s['four_active_per_wrangler_proven'])
+        self.assertTrue(s['cross_runner_four_requires_independent_clock_witness'])
 
     def test_synthetic_fake_model_cannot_count(self):
         x = mock_model(1)
