@@ -335,3 +335,14 @@ Windows owner evaluation must independently inspect actual layout, interactive
 controls, paint/erase and save/reopen. No general architectural solver,
 variable-size room packing, semantic route generator, automatic edit rebase,
 streaming World, camera optimization or agent authoring is included.
+
+## Seeded Typology Megablock showcase
+
+**Current on the isolated Draft showcase branch:** `seeded_typology_megablock` v1
+adds one preset through the existing schema-4 project/compiler path. Its 4×4 lot
+programme selects cores, atria, bridges, habitation and supports from the seed,
+with shared deck interfaces and no mutable World or neighbouring-chunk state.
+The [showcase contract](../research/gentek-showcase-megablock-001.md) owns exact
+programme guarantees, clipping/shaft limits, controls and qualification. The
+CLASSIC catalogue on this branch is 73; the frozen 72-module parent PR #624 and
+Viaduct v1/v2 outputs remain independent baselines. No UI or schema was added.
