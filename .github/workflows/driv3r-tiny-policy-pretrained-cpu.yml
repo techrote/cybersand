@@ -1,0 +1,59 @@
+name: DRIV3R tiny policy frozen pretrained CPU M1
+on:
+  push:
+    branches: [research/tiny-policy-trainer-20261116-m0]
+    paths:
+      - 'experiments/driv3r/training/tiny_policy/**'
+      - '.github/workflows/driv3r-tiny-policy-pretrained-cpu.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: tiny-policy-m1-${{ github.ref }}-${{ github.sha }}
+  cancel-in-progress: false
+jobs:
+  frozen-cohort:
+    if: github.ref == 'refs/heads/research/tiny-policy-trainer-20261116-m0'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        model: [smollm2-135m, opt-125m, pythia-160m]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pinned CPU dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch==2.6.0
+          python -m pip install numpy==2.1.3 pillow==11.1.0 transformers==4.51.3 huggingface_hub==0.30.2
+      - name: Original source and CPU contract receipt
+        run: |
+          mkdir -p "${{ runner.temp }}/tiny-m1/${{ matrix.model }}"
+          git rev-parse HEAD | tee "${{ runner.temp }}/tiny-m1/${{ matrix.model }}/source_sha.txt"
+          sha256sum experiments/driv3r/training/tiny_policy/*.py | tee "${{ runner.temp }}/tiny-m1/${{ matrix.model }}/source_hashes.txt"
+          python -m unittest experiments.driv3r.training.tiny_policy.test_core -v
+      - name: Bounded pretrained frozen-backbone action-head training and original trajectories
+        timeout-minutes: 19
+        env:
+          HF_HUB_DISABLE_TELEMETRY: '1'
+          TOKENIZERS_PARALLELISM: 'false'
+          OMP_NUM_THREADS: '2'
+          MKL_NUM_THREADS: '2'
+        run: |
+          timeout --signal=TERM --kill-after=15s 1050s python -u -m experiments.driv3r.training.tiny_policy.pretrained_cpu \
+            --model "${{ matrix.model }}" --out "${{ runner.temp }}/tiny-m1/${{ matrix.model }}/trial"
+      - name: Upload originals and failures, no pretrained weights
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tiny-m1-${{ matrix.model }}-${{ github.sha }}
+          path: ${{ runner.temp }}/tiny-m1/${{ matrix.model }}/
+          retention-days: 21
+          if-no-files-found: error
