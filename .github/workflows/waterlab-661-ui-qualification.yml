@@ -19,7 +19,7 @@ permissions:
 
 concurrency:
   group: waterlab-661-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 env:
   GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
@@ -105,6 +105,81 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: waterlab-661-linux-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/waterlab-661/
+          if-no-files-found: warn
+          retention-days: 30
+
+  workbench-windows:
+    name: Windows Water Lab native Workbench acceptance
+    runs-on: windows-2022
+    timeout-minutes: 45
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout exact feature source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+          persist-credentials: false
+      - name: Select Python 3.12
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Pull and verify frozen PR631 Windows runtime
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include="godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+          echo "746164e8c1e43fd8edd037fa2c1686fdc8b43f328826166ffcc2272d6e955da4  godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll" | sha256sum --check --strict
+          echo "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7  godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" | sha256sum --check --strict
+      - name: Download and verify official Windows Godot
+        env:
+          GODOT_WINDOWS_URL: https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
+        run: |
+          set -euo pipefail
+          mkdir -p build/waterlab-661
+          git rev-parse HEAD HEAD^{tree} > build/waterlab-661/source.txt
+          curl --fail --location --retry 3 --connect-timeout 60 --max-time 600 --output "$RUNNER_TEMP/godot-windows.zip" "$GODOT_WINDOWS_URL"
+          powershell.exe -NoProfile -Command "Expand-Archive -LiteralPath '$RUNNER_TEMP/godot-windows.zip' -DestinationPath '$RUNNER_TEMP/godot-windows' -Force"
+          GODOT_WIN="$RUNNER_TEMP/godot-windows/Godot_v4.7-stable_win64_console.exe"
+          test -f "$GODOT_WIN"
+          test "$("$GODOT_WIN" --version)" = "4.7.stable.official.5b4e0cb0f"
+          echo "GODOT_WIN=$GODOT_WIN" >> "$GITHUB_ENV"
+      - name: Native Windows import and original Workbench regressions
+        run: |
+          python - <<'PY'
+          import json, os, pathlib, re, subprocess, sys
+          root=pathlib.Path("build/waterlab-661")
+          godot=os.environ["GODOT_WIN"]
+          for name,flags in [
+             ("import",["--headless","--path","godot","--editor","--quit"]),
+             ("canvas",["--headless","--path","godot","--script","res://tests/test_workbench_canvas.gd"]),
+             ("wave",["--headless","--path","godot","--script","res://tests/test_workbench_wave.gd"])]:
+              result=subprocess.run([godot,*flags],stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,errors="replace",timeout=900)
+              text=result.stdout
+              (root/(name+".log")).write_text(text,encoding="utf-8")
+              print(name,"exit",result.returncode,"tail",text[-1800:],flush=True)
+              if result.returncode!=0: sys.exit(result.returncode or 1)
+              if name=="import" and re.search(r"SCRIPT ERROR:|Parse Error:",text): sys.exit(1)
+              if name=="canvas":
+                  m=re.search(r"WORKBENCH_CANVAS\s+(\d+)\s+checks,\s+(\d+)\s+failures",text)
+                  if not (m and int(m[1]) >= 194 and int(m[2]) == 0): sys.exit("Original canvas regression incomplete")
+              if name=="wave":
+                  records=[line.split("WORKBENCH_WAVE_RESULT ",1)[1]
+                      for line in text.splitlines() if "WORKBENCH_WAVE_RESULT " in line]
+                  if len(records)!=1: sys.exit("Wave result absent or duplicated")
+                  w=json.loads(records[0])
+                  if w["failures"] or w["assertions"]<1115 or w["native_ticks"]<=0 or not all(w["sections"].values()):
+                      sys.exit("Native Windows Wave Workbench regression failed")
+                  print("WINDOWS WATER LAB QUALIFIED",json.dumps({"assertions":w["assertions"],"native_ticks":w["native_ticks"]}))
+          PY
+      - name: Retain Windows source and original test results
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: waterlab-661-windows-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/waterlab-661/
           if-no-files-found: warn
           retention-days: 30
