@@ -306,12 +306,9 @@ def run(checkpoint,out_dir,train_instances=288,eval_seeds=24,epochs=14):
       'prior_style':aggregate(evaluation(initial,seeds=8)[0]),
       'updated_style':aggregate(evaluation(model,seeds=8)[0]),
       'torch':torch.__version__,'numpy':np.__version__}
-    (out/'positive_correction_metrics.json').write_text(json.dumps(metric,sort_keys=True,indent=2)+'
-')
-    (out/'positive_correction_first_action_receipts.json').write_text(json.dumps({'before':before,'after':after},sort_keys=True,indent=2)+'
-')
-    (out/'positive_correction_rollout_receipts.json').write_text(json.dumps({'before':old_rollouts,'after':new_rollouts},sort_keys=True,indent=2)+'
-')
+    (out/'positive_correction_metrics.json').write_text(json.dumps(metric,sort_keys=True,indent=2)+'\n')
+    (out/'positive_correction_first_action_receipts.json').write_text(json.dumps({'before':before,'after':after},sort_keys=True,indent=2)+'\n')
+    (out/'positive_correction_rollout_receipts.json').write_text(json.dumps({'before':old_rollouts,'after':new_rollouts},sort_keys=True,indent=2)+'\n')
     return metric
 
 
