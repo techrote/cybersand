@@ -10,7 +10,7 @@ permissions:
   actions: read
 concurrency:
   group: ql005-bitserial-activation-repair
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name != 'workflow_dispatch' }}
 jobs:
   bitserial:
     runs-on: ubuntu-24.04
@@ -19,11 +19,11 @@ jobs:
       PYTHONHASHSEED: '0'
       OMP_NUM_THREADS: '1'
       MKL_NUM_THREADS: '1'
-      QL_SOURCE_SHA: ${{ github.event.pull_request.head.sha }}
+      QL_SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
       - uses: actions/setup-python@v5
         with:
