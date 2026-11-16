@@ -55,3 +55,32 @@ An observation-dependence ablation replays each selected policy with its initial
 The original held-out trajectories and SVGs for BOTH selection policies, original per-candidate weight JSON, seed-hash manifest and failed/weak candidates are retained inside the same immutable Actions evidence bundle. The P0 baselines (nonstop random, persistent and privileged synthetic oracle) are rerun on new P1 holdouts. Nothing here uses native Workbench, performs real-game training, imports Godot code or changes game content.
 
 P2 priority: train a true sub-1B SLM/adapter as a student on legal-choice trajectories; compare frozen-input/teacher-distilled samples with train/selection/heldout controls. Keep P1 MLP evidence separate from claims about actual language-model capabilities.
+
+
+## P3 — factorial rarity/morphology causal dissection
+
+Run P0 first, then:
+
+    python experiments/driv3r/training/population/population_p3.py --p0-output /tmp/population-619 --output /tmp/population-627 --seed 627 --members 3 --train-episodes 18 --selection-episodes 8 --holdout-episodes 12 --long-horizon 60
+
+P3 tests four **matched, real-Adam-trained** policy populations: reward-only,
+**rarity-only**, **morphology-only**, and the **combined** P2-inspired teacher-target intervention.
+Each matched member starts from the identical mutated P0 champion and shares the
+same seed streams, optimizer and selection rule. The only controlled difference
+is the teacher-score intervention. Each arm has a separate training-only
+state/action visitation archive; no held-out information is allowed into it.
+Selection-only worlds decide champions before untouched held-out worlds are
+opened. All offspring weights, optimizer steps, training bins, selection
+scores, 30-step reward/diversity, original 60-step synthetic gallery SVG/JSON,
+and long-horizon measures are retained. Two fixed independent cohorts
+(627 and 628) run in GitHub Actions. The 60-step stress is **synthetic only**:
+its longer clock does not correspond to a qualified native PAINT operation.
+
+**Interpretation warnings:** the six niche utilities are handcrafted proxies,
+rarity is a coarse visit-count bonus and morphology uses hand-coded styles;
+novelty/diversity does not imply human preference or useful CyberSand art.
+Four-arm teacher targets isolate direct interventions, but different generated
+on-policy state distributions may mediate their effects. Within-arm archive
+updates are sequential across members. These models are tiny neural MLPs,
+**not** pretrained language models or learned SLM adapters. Native game code
+and content remain completely untouched. Draft/HOLD only.
