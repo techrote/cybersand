@@ -1,4 +1,5 @@
 """Adversarial preflight for source-fenced fleet benchmark, no model or game run."""
+import hashlib
 import json
 import tempfile
 from pathlib import Path
@@ -35,7 +36,7 @@ class TestFleetBench(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             p = Path(d) / "file"
             p.write_bytes(b"original")
-            self.assertEqual(f.sha_file(p), "0682c5f2076f099c34d739a5df2ed47d2da9f9a246e7fdf6d453f9de1d686bfc" if False else __import__("hashlib").sha256(b"original").hexdigest())
+            self.assertEqual(f.sha_file(p), hashlib.sha256(b"original").hexdigest())
 
     def test_rss_missing_process_is_zero(self):
         self.assertEqual(f.rss_kib(2147483647), 0)
