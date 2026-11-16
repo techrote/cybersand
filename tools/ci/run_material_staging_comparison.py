@@ -97,7 +97,7 @@ def validate_copy_metrics(p, copy_mode="runs"):
     updated, tile_side, tiles = p["updated_tiles"], p["tile_side"], p["tile_count"]
     need(1 <= updated <= tiles and tiles * tile_side ** 2 == 2048 ** 2,
          "Copy counters no longer describe the fixed tile-aligned World")
-    capacity = next((n for n in (1, 4, 16, 64, 256) if n >= updated), None)
+    capacity = next((n for n in (1, 4, 16, 64, 128, 256) if n >= updated), None)
     need(capacity is not None and p["atlas_capacity"] == capacity,
          "Copy planning increased staging capacity beyond the unchanged tile list")
     need(isinstance(p.get("whole_gpu_copy"), bool), "Missing whole-copy distinction")
@@ -148,7 +148,7 @@ def validate_publications(events, backend, slots):
         slot, layer, rid, capacity, submitted = (p[k] for k in identity_keys)
         need(all(integer(v) for v in (slot, layer, rid, capacity, submitted)) and submitted >= 0,
              "Invalid staging resource or byte counters")
-        expected_payload = 33554437 + 11173888 * slots
+        expected_payload = 33554437 + 15368192 * slots
         need(integer(p.get("allocated_gpu_bytes")) and p["allocated_gpu_bytes"] == expected_payload,
              "GPU texture payload estimate differs from the bounded 2048-square ring")
         allocation.add(p["allocated_gpu_bytes"])
@@ -431,7 +431,7 @@ def self_test():
     import unittest
 
     def event(slot, rid, *, slots=2, capacity=16, initialization=False):
-        updated = capacity // 4 + 1 if capacity else 0
+        updated = {0: 0, 1: 1, 4: 2, 16: 5, 64: 17, 128: 65, 256: 129}[capacity]
         whole = capacity == 256
         runs = (1 if whole or updated == 1 else max(1, updated // 2)) if capacity else 0
         baseline = 1 if whole else updated
@@ -442,7 +442,7 @@ def self_test():
                     "staging_resource_layers": 1, "staging_slot": slot, "staging_resource_rid": rid,
                     "atlas_capacity": capacity, "submitted_bytes": capacity * 128 * 128 * 2,
                     "tile_side": 128, "tile_count": 256, "updated_tiles": updated,
-                    "logical_source_format": "RG8", "allocated_gpu_bytes": 33554437 + 11173888 * slots,
+                    "logical_source_format": "RG8", "allocated_gpu_bytes": 33554437 + 15368192 * slots,
                     "staging_upload_usec": 10, "initialization": initialization,
                     "copy_mode": "runs", "copy_destinations": 2 if initialization else 1,
                     "copy_run_count": runs, "whole_gpu_copy": whole, "gpu_blit_calls": runs,
@@ -467,7 +467,7 @@ def self_test():
         def test_three_slots_all_recur_as_independent_one_layer_resources(self):
             result = validate_publications([event(i % 3, 11 + i % 3, slots=3) for i in range(6)], "blit", 3)
             self.assertEqual({row["staging_slot"] for row in result["resource_ledger"]}, {0, 1, 2})
-            self.assertEqual(result["allocated_gpu_bytes"], [67076101])
+            self.assertEqual(result["allocated_gpu_bytes"], [79659013])
 
         def test_one_slot_control_reuses_one_resource(self):
             result = validate_publications([event(0, 11, slots=1) for _ in range(4)], "blit", 1)
@@ -489,6 +489,13 @@ def self_test():
             p = event(0, 11, capacity=256)["material_publication"]
             self.assertEqual(validate_copy_metrics(p), {"sparse": False, "coalesced": False})
             p["coalesced_gpu_blit_calls_saved"] = 255
+            with self.assertRaises(RuntimeError):
+                validate_copy_metrics(p)
+
+        def test_rectangular_capacity_refuses_unnecessary_full_staging(self):
+            p = event(0, 11, capacity=128)["material_publication"]
+            self.assertEqual(validate_copy_metrics(p), {"sparse": True, "coalesced": True})
+            p["atlas_capacity"] = 256
             with self.assertRaises(RuntimeError):
                 validate_copy_metrics(p)
 

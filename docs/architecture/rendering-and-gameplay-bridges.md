@@ -206,28 +206,42 @@ On qualified desktop OpenGL/ANGLE backends, two linear RGBA8 drawable textures
 retain the exact logical R8/RG8 current and previous material values. All six
 appearance shaders retain ordinary 2D sampling. Changed tiles are packed into
 one layer of a bounded R8/RG8 staging array; that layer is uploaded once before
-GPU rectangle copies update the recycled history plane. A dense
-publication uses one full staging upload and one whole-plane GPU copy. This
+GPU rectangle copies update the recycled history plane. When the selected
+staging area reaches the World area, publication uses one full staging upload
+and one whole-plane GPU copy. A native full-packet flag still goes through the
+same exact per-tile comparison; it does not force a full GPU upload. This
 avoids CPU texture updates to the material planes sampled by the preceding draw.
 
-At 2048²,128² tiles bound the dirty index to 256 entries. The recycled slot repairs
+At 2048², 128² tiles bound the dirty index to 256 entries. The recycled slot repairs
 all accumulated changes from its retained contents; exact unchanged tile bytes
-skip submission. One changed tile submits32 KiB of RG8 staging data instead of an
+skip submission. One changed tile submits 32 KiB of RG8 staging data instead of an
 8 MiB World image. GPU copies also read staging pixels and write RGBA8 targets:
 CPU upload bytes are not total GPU traffic. Each staging size class owns a fixed
 ring of independent Texture2DArray resources, each with exactly one layer and
-its own fixed sampler material. The ring rotates only after upload, copies and
+its own fixed sampler material. Capacities are 1, 4, 16, 64, 128 and 256 tiles;
+the 128-tile class is a 16×8 rectangle, while the other classes are square.
+Selection uses the exact changed-tile count in the recycled slot, including its
+accumulated history differences. At 2048² RG8, 65–128 changed tiles therefore
+submit a 2048×1024, 4 MiB atlas and copy only the changed destination tiles,
+instead of rounding up to an 8 MiB upload and a whole-World copy. The extra
+class is allocated and primed during pair creation; its zero uploads, storage
+and preparation time remain included in initialization receipts. There is no
+first-use allocation deferred into gameplay.
+
+The ring rotates only after upload, copies and
 retirement are submitted. `CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS=1|2|3` selects
 the diagnostic resource count; the provisional default is three. This successor
 is under performance evaluation; the earlier shared-array layers failed the
 matched Windows physical and frame-tail comparison.
-The exact-size full source aliases the same pool/cursor; non-square or NPOT
-sources retain a separate bounded full pool. Rejected and byte-identical
+An exact-size full source aliases its matching pool/cursor, including a
+2048×1024 World matching the rectangular class; other extents retain a separate
+bounded full pool. Rejected and byte-identical
 publications do not advance a cursor. This increases reuse distance without
 asserting that GPU work has completed. The two histories, staging size
 classes, 1×1 retirement target and separate 1-byte source dummy occupy
-67,076,101 logical GPU texture bytes at
-2048² RG8, excluding driver overhead. A final tiny blit prevents the engine's
+79,659,013 logical GPU texture bytes at 2048² RG8 with three staging resources
+per class, excluding driver overhead. The rectangular class adds 12,582,912
+bytes to that configuration. A final tiny blit prevents the engine's
 persistent framebuffer attachment from retaining a released large history plane.
 
 The final evaluation design retains two physical history targets. A controlled
@@ -263,7 +277,36 @@ failures retain the whole-ImageTexture fallback; switching modes reconstructs
 both exact retained histories. Godot's drawable-blit API returns no error result,
 so latent device loss is not claimed to be synchronously detectable. The
 fallback's `ImageTexture.update` still updates the full plane regardless of
-patch area (8 MiB at 2048² RG8). Neither CPU patch size nor elapsed call timing
+patch area (8 MiB at 2048² RG8). Full creation, updates and recovery submit an
+immutable Image snapshot rather than Main's subsequently mutated CPU Image.
+Godot can retain an Image reference in a separate RenderingServer queue; a
+later same-frame edit must not change the bytes of a preceding upload. The
+blit path likewise retains a fresh sparse atlas or duplicated full source.
+This ownership rule adds no production fence or GPU readback and does not
+select or qualify an experimental rendering-thread mode.
+
+The [material GPU regression](../../godot/tests/test_material_tile_publication.gd)
+checks the 64/65/123/128/129 boundaries, clipped NPOT tiles, rectangular
+full-source aliasing, resource identity, exact histories and unchanged shader
+pixels. The [queued-publication regression](../../godot/tests/test_material_threaded_publication.gd)
+holds the rendering queue with a bounded watchdog and verifies full, fallback,
+mode-switch, reset and manual-wrapper histories after release. These are
+correctness and transfer-work gates; they do not establish gameplay cadence.
+
+The same queued-Image ownership rule applies to the shared
+[depth surface](../../godot/scripts/depth/depth_layer_surface.gd), reachable
+through F2 navigation to Depth, Semantic Depth and Deepworks. It retains its
+mutable 1024² RG8 CPU atlas but submits an immutable snapshot at texture creation
+and each accepted update. Packet validation, generation/serial accounting,
+one-shot background baking and appearance are unchanged. The
+[depth queue regression](../../godot/tests/test_depth_threaded_publication.gd)
+reads GPU bytes between two queued publications, then verifies the final atlas
+and visible surface. Construction stays outside its queue gate because the
+existing LUT setup performs a synchronous GPU readback. This closes a shared
+renderer lifetime defect; it adds snapshot/copy work and claims no Depth
+performance improvement or general separate-thread qualification.
+
+Neither CPU patch size nor elapsed call timing
 alone establishes measured GPU bandwidth or a driver-wait cause. The superseded
 full-World array-sampling design and its negative performance evidence remain in the
 [remediation audit](../audits/2026-11-16-physics-freeze-remediation-002.md).
@@ -304,6 +347,45 @@ publication cadence. Neither is a strict simulation-accuracy switch.
 **Planned:** finer subregion submission within a tile, palette-change records,
 measured compression/coalescing and tuned production snapshot defaults. The
 bounded layer implementation does not establish these separate features.
+
+## Default-font atlas publication
+
+**Current unmerged candidate:** the supported startup setting
+`gui/theme/default_font_generate_mipmaps=true` protects the embedded default
+font's queued atlas Images. In pinned Godot 4.7, TextServerAdvanced's ordinary
+non-mipmap upload passes its mutable glyph-atlas Image directly to RenderingServer.
+Later glyph rasterization can mutate that same Image. The mipmap path duplicates
+the atlas, generates mip levels on the copy and submits that independent Image.
+The mutable source atlas stays without mipmaps, so later dirty uploads repeat
+the snapshot. The setting is consumed during default-theme initialization;
+changing ProjectSettings after startup alone does not configure an existing font.
+
+The default theme and ThemeDB fallback share this configured FontFile. System
+fallback fonts requested through TextServerAdvanced inherit its mipmap flag.
+Independently authored FontFiles still need their own configuration; this setting
+does not protect unrelated mutable Image producers. It adds atlas-copy and mipmap
+generation work and approximately one-third additional atlas texture storage for
+a complete mip chain. World material formats, shaders and sampling are unchanged.
+
+The [font regression](../../godot/tests/test_default_font_mipmap_publication.gd)
+uses distinct copies of the actual default FontFile and real Labels/Buttons at
+13, 16, 24 and 32 pixels. On the pinned Linux Compatibility/llvmpipe run, initial
+and later nearest-filtered UI pixels and actual GPU mip0 atlas bytes were exact
+with mipmaps off/on. A bounded separate-thread queue test retained the submitted
+atlas bytes while later rasterization mutated the source. Separate-mode UI also
+matched the retained Safe-mode pixels. This qualifies those appearance and
+ownership checks, not lower-mip readback, all font configurations or general
+render-thread safety. The project's ordinary Canvas filter remains NEAREST.
+
+The original full-application separate-thread crash was localized to an engine
+texture update, but its texture identity remains unproven. A successful font
+workaround trial does not establish that the crashing texture was a font atlas.
+Godot still labels separate rendering experimental; end-to-end application,
+Windows and physical-device qualification remain separate gates.
+
+Primary implementation: [ThemeDB initialization](https://github.com/godotengine/godot/blob/4.7-stable/scene/theme/theme_db.cpp),
+[TextServerAdvanced atlas submission](https://github.com/godotengine/godot/blob/4.7-stable/modules/text_server_adv/text_server_adv.cpp)
+and [system-fallback key](https://github.com/godotengine/godot/blob/4.7-stable/modules/text_server_adv/text_server_adv.h).
 
 ## Which gameplay command path exists today?
 

@@ -17,6 +17,10 @@ GPU layers and an early native physics completion mailbox. Its
 [engineering record](../audits/2026-11-16-physics-freeze-remediation-002.md)
 and the exact-source PR609 artifact ledger distinguish functional qualification,
 measured improvement, and the owner's physical Windows11 NVIDIA decision.
+The [completion follow-up](../audits/2026-11-16-physics-freeze-remediation-002-completion.md)
+adds rectangular staging, immutable queued-image ownership and a controlled
+renderer-aware scheduling trial. Its local software-renderer improvement is
+separate from exact-source Windows qualification and owner acceptance.
 
 Extract the full inner application ZIP into a fresh writable directory.
 Godot4.7, native/Rapier and VC runtime dependencies are included. No separate

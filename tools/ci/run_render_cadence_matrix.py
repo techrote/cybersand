@@ -186,6 +186,10 @@ def run_case(args, condition, presentation):
               "cadence": cadence, "presentation": pose_selection, "fire-mode": condition.get("fire", "unchanged"),
               "display-profile": display_profile, "cadence-tape": 1, "receipt": str(receipt)}
     command = [str(args.godot)]
+    render_thread = getattr(args, "render_thread", None)
+    if render_thread is not None:
+        need(render_thread in ("safe", "separate"), "Invalid rendering thread control")
+        command += ["--render-thread", render_thread]
     if display_profile == "scripted":
         command += ["--rendering-method", "gl_compatibility", "--audio-driver", "Dummy", "--max-fps", str(condition["fps"])]
     if getattr(args, "rendering_driver", None):
@@ -194,6 +198,7 @@ def run_case(args, condition, presentation):
                 *("--" + key + "=" + str(value) for key, value in params.items())]
     write(directory / "case.json", {"name": name, "source_sha": args.source_sha, "condition": condition,
                                    "command": command, "isolated_user_profile": env["APPDATA"],
+                                   "render_thread_override": render_thread,
                                    "rendering_driver_override": getattr(args, "rendering_driver", None)})
     print("RENDER_CADENCE_START", name, flush=True)
     start = time.monotonic()

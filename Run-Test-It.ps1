@@ -62,6 +62,7 @@ $PreviousCadence=$env:CYBERSAND_DIAG_RENDER_CADENCE
 $PreviousPresentation=$env:CYBERSAND_DIAG_PRESENTATION
 $PreviousMaterialPublication=$env:CYBERSAND_MATERIAL_PUBLICATION
 $PreviousPhysicsPublication=$env:CYBERSAND_DIAG_PHYSICS_PUBLICATION
+$PreviousNativeRendezvous=$env:CYBERSAND_DIAG_NATIVE_RENDEZVOUS
 $PreviousMaterialStagingSlots=$env:CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS
 $PreviousMaterialHistoryTargets=$env:CYBERSAND_DIAG_MATERIAL_HISTORY_TARGETS
 $PreviousMaterialCopyMode=$env:CYBERSAND_DIAG_MATERIAL_COPY_MODE
@@ -588,7 +589,7 @@ function Run-Case([string]$Family,[int]$Workers,[int]$Repeat,
     $CaseIdentity=@{name=$Name;source=$Summary.source;arguments=$Arguments;isolated_user_profile=$env:APPDATA
         requested_native_workers=$Workers;display_profile=$DisplayProfile;material_publication=$env:CYBERSAND_MATERIAL_PUBLICATION;physics_publication=$env:CYBERSAND_DIAG_PHYSICS_PUBLICATION
         material_staging_slots=$env:CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS;material_history_targets=$env:CYBERSAND_DIAG_MATERIAL_HISTORY_TARGETS
-        material_copy_mode=$env:CYBERSAND_DIAG_MATERIAL_COPY_MODE;common_observer=$env:CYBERSAND_DIAG_COMMON_OBSERVER;rendering_driver_override=$(if($DisplayProfile -eq 'scripted' -or $ExplicitRenderingDriver){$RenderingDriver}else{$null})}
+        native_rendezvous=$env:CYBERSAND_DIAG_NATIVE_RENDEZVOUS;material_copy_mode=$env:CYBERSAND_DIAG_MATERIAL_COPY_MODE;common_observer=$env:CYBERSAND_DIAG_COMMON_OBSERVER;rendering_driver_override=$(if($DisplayProfile -eq 'scripted' -or $ExplicitRenderingDriver){$RenderingDriver}else{$null})}
     [IO.File]::WriteAllText((Join-Path $Dir 'case.json'),(($CaseIdentity|ConvertTo-Json -Depth 8)+[Environment]::NewLine),[Text.UTF8Encoding]::new($false))
     Run-Godot $Name $Arguments $TimeoutSeconds $Dir
     Require (Test-Path -LiteralPath $Receipt -PathType Leaf) "$Name did not write a receipt"
@@ -726,6 +727,7 @@ function Run-PublicationMatrix {
     $env:CYBERSAND_DIAG_MATERIAL_HISTORY_TARGETS=''
     $env:CYBERSAND_DIAG_MATERIAL_COPY_MODE=''
     $env:CYBERSAND_DIAG_COMMON_OBSERVER='0'
+    $env:CYBERSAND_DIAG_NATIVE_RENDEZVOUS=''
     $Summary.publication_controls=@{staging_slots='source default';history_targets='source default';copy_mode='source default';detailed_observer=$true}
     $MatrixPath=Join-Path $Project 'tests\fixtures\engine_lab\coherence-conditions.json'
     $Matrix=Get-Content -LiteralPath $MatrixPath -Raw -Encoding UTF8|ConvertFrom-Json
@@ -858,6 +860,7 @@ try {
     $Summary.case_profile_notice='Fresh isolated profiles preserve the owner saved settings. Auto0 reproduces a fresh launcher default, not a saved explicit worker override. Native pool capacity is not CPU utilization.'
     $Summary.windows=Get-CimInstance Win32_OperatingSystem|Select-Object Caption,Version,BuildNumber
     Save-Summary
+    $env:CYBERSAND_DIAG_NATIVE_RENDEZVOUS=''
     $env:APPDATA=Join-Path $Output 'import-userdata'
     $env:XDG_DATA_HOME=$env:APPDATA
     New-Item -ItemType Directory -Force -Path $env:APPDATA|Out-Null
@@ -907,6 +910,7 @@ try {
     $env:CYBERSAND_DIAG_PRESENTATION=$PreviousPresentation
     $env:CYBERSAND_MATERIAL_PUBLICATION=$PreviousMaterialPublication
     $env:CYBERSAND_DIAG_PHYSICS_PUBLICATION=$PreviousPhysicsPublication
+    $env:CYBERSAND_DIAG_NATIVE_RENDEZVOUS=$PreviousNativeRendezvous
     $env:CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS=$PreviousMaterialStagingSlots
     $env:CYBERSAND_DIAG_MATERIAL_HISTORY_TARGETS=$PreviousMaterialHistoryTargets
     $env:CYBERSAND_DIAG_MATERIAL_COPY_MODE=$PreviousMaterialCopyMode

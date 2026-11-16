@@ -218,6 +218,7 @@ def launchers(output):
                 'set "CYBERSAND_DIAG_RENDER_CADENCE='+cadence+'"\n'
                 'set "CYBERSAND_MATERIAL_PUBLICATION='+material+'"\n'
                 'set "CYBERSAND_DIAG_PHYSICS_PUBLICATION='+physics+'"\n'
+                'set "CYBERSAND_DIAG_NATIVE_RENDEZVOUS="\n'
                 'set "CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS="\n'
                 'set "CYBERSAND_DIAG_MATERIAL_HISTORY_TARGETS="\n'
                 'set "CYBERSAND_DIAG_MATERIAL_COPY_MODE="\n'
@@ -276,8 +277,10 @@ desktop OpenGL/ANGLE path retains exact material/condition bytes and the origina
 appearance shaders; unsupported or detectably invalid resources use full texture
 fallback. Current/previous history, crossfade, collision masks and revision ACKs
 are preserved. At 2048-square RG8, one changed tile submits 32KiB instead of 8MiB;
-the two histories and bounded staging/retirement resources occupy about64.0MiB
+the two histories and bounded staging/retirement resources occupy about 76.0 MiB
 of logical GPU texture storage. GPU copy writes are additional traffic.
+Changes affecting 65–128 of the 128-square tiles use a preallocated 16-by-8-tile
+atlas, submitting 4 MiB instead of 8 MiB. Larger changes retain full-size staging.
 Three independent one-layer staging arrays per size class rotate after submission.
 Each has its own fixed sampler. Adjacent copies merge only inside both source
 and destination rows, without extra upload bytes or destination pixels.
@@ -399,6 +402,59 @@ def build(args):
     print("COHERENCE_PHYSICAL_PACKAGE",json.dumps({"source":SOURCE,"sha256":archive_sha,
            "bytes":args.archive.stat().st_size,"files":len(names)}),flush=True)
 
+def validate_publication_regression_receipt(name,receipt,project,source):
+    """Require completed adversarial phases, not only a successful log marker."""
+    data=json.loads(receipt.read_text(encoding="utf-8"))
+    if name=="material-threaded-graphical":
+        need(data.get("assertions",0)>0 and data.get("failures")==0 and
+             data.get("cases_completed")==14 and isinstance(data.get("separate"),bool),
+             "Queued material ownership cases are incomplete")
+        need(data.get("gates_completed")== (14 if data["separate"] else 0) and
+             data.get("display")!="headless" and len(data.get("observations",[]))==14,
+             "Queued material ownership lacks actual graphical phases")
+    elif name.startswith("font-mipmap-"):
+        separate="separate" in name
+        need(data.get("schema")=="default-font-mipmap-publication-v1" and
+             data.get("assertions",0)>0 and data.get("failures")==0 and
+             data.get("pairs_completed")==2 and data.get("separate") is separate,
+             "Default-font appearance phases are incomplete")
+        need(data.get("source")==source and data.get("test_sha256")==digest(project/"tests/test_default_font_mipmap_publication.gd") and
+             data.get("display")!="headless" and data.get("original_default_mipmaps") is True,
+             "Default-font receipt does not bind the actual application setting/source")
+        need(not separate or data.get("ownership_completed") is True,
+             "Separate-font immutable queue ownership was not exercised")
+    elif name.startswith("native-rendezvous-"):
+        need(data.get("schema")=="workbench-physics-publication-v1" and
+             data.get("source_commit")==source and data.get("checks",0)>0 and data.get("failures")==[],
+             "Actual Main rendezvous integration did not complete")
+        rows={row["mode"]:row for row in data.get("observations",[])}
+        need({"combined-rendezvous","early-rendezvous","rendezvous-budget-summary"}<=rows.keys(),
+             "Missing actual Main held-publication or budget phases")
+        need(rows["combined-rendezvous"]["physical_admissions_during_hold"]==0 and
+             rows["early-rendezvous"]["physical_admissions_during_hold"]==1 and
+             rows["rendezvous-budget-summary"]["waits"]>0,
+             "Actual Main rendezvous integration was vacuous or admitted extra physics")
+    elif name.startswith("native-render-overlap"):
+        separate=name.endswith("-graphical")
+        need(data.get("source")==source and data.get("checks",0)>0 and data.get("failures")==[] and
+             data.get("separate_render_thread") is separate, "Render-overlap marker gate did not complete in the required mode")
+        queues=[row for row in data.get("observations",[]) if row.get("case")=="actual-native-render-queue"]
+        need(len(queues)==1 and queues[0].get("executed") is separate,
+             "Actual queued native marker lifetime was not exercised")
+    elif name.startswith("depth-threaded-"):
+        separate="separate" in name
+        need(data.get("schema")=="depth-threaded-publication-v1" and data.get("source")==source and
+             data.get("assertions",0)>0 and data.get("failures")==0 and data.get("separate") is separate and
+             data.get("cases_completed")==2 and data.get("captures_completed")==4 and
+             data.get("gates_completed")== (4 if separate else 0), "Depth queued-image phases are incomplete")
+        need(data.get("test_sha256")==digest(project/"tests/test_depth_threaded_publication.gd") and
+             data.get("surface_sha256")==digest(project/"scripts/depth/depth_layer_surface.gd") and
+             data.get("display")!="headless", "Depth queued-image receipt has wrong source or backend")
+    else:
+        raise RuntimeError("Unknown publication receipt: "+name)
+    return {"receipt_sha256":digest(receipt),"receipt":data}
+
+
 def smoke(output,evidence):
     verify(output)
     evidence.mkdir(parents=True,exist_ok=True)
@@ -436,11 +492,20 @@ def smoke(output,evidence):
         ("workbench-physics",["--headless","--script","res://tests/test_workbench_physics_play.gd"],600,"WORKBENCH_PHYSICS"),
         ("physics-pacing",["--headless","--audio-driver","Dummy","--script","res://tests/test_workbench_physics_pacing.gd"],300,"PHYSICS_PACING_RESULT"),
         ("physics-publication",["--headless","--audio-driver","Dummy","--script","res://tests/test_workbench_physics_publication.gd"],300,"PHYSICS_PUBLICATION_RESULT"),
+        ("native-rendezvous",["--headless","--audio-driver","Dummy","--script","res://tests/test_workbench_native_rendezvous.gd"],180,"NATIVE_RENDEZVOUS:"),
+        ("native-rendezvous-integration",["--headless","--audio-driver","Dummy","--script","res://tests/test_workbench_native_rendezvous_integration.gd"],300,"PHYSICS_PUBLICATION_RESULT"),
+        ("native-render-overlap",["--headless","--render-thread","safe","--audio-driver","Dummy","--script","res://tests/test_workbench_native_render_overlap.gd"],180,"NATIVE_RENDER_OVERLAP:"),
+        ("native-render-overlap-graphical",["--rendering-method","gl_compatibility","--render-thread","separate","--audio-driver","Dummy","--script","res://tests/test_workbench_native_render_overlap.gd"],300,"NATIVE_RENDER_OVERLAP:"),
         ("physics-publication-graphical",["--rendering-method","gl_compatibility","--audio-driver","Dummy","--script","res://tests/test_workbench_physics_publication.gd"],300,"PHYSICS_PUBLICATION_RESULT"),
         ("physics-pacing-graphical",["--rendering-method","gl_compatibility","--audio-driver","Dummy","--script","res://tests/test_workbench_physics_pacing.gd"],600,"PHYSICS_PACING_RESULT"),
         ("material-tiles",["--headless","--audio-driver","Dummy","--script","res://tests/test_material_tile_publication.gd"],300,"MATERIAL_TILE_PUBLICATION:"),
         ("palette-compile-bounds",["--headless","--audio-driver","Dummy","--script","res://tests/test_palette_shader_compile_bounds.gd"],180,"PALETTE_COMPILE_BOUNDS_RESULT"),
         ("material-tiles-graphical",["--rendering-method","gl_compatibility","--audio-driver","Dummy","--script","res://tests/test_material_tile_publication.gd"],600,"MATERIAL_TILE_PUBLICATION:"),
+        ("material-threaded-graphical",["--rendering-method","gl_compatibility","--render-thread","safe","--audio-driver","Dummy","--script","res://tests/test_material_threaded_publication.gd"],600,"MATERIAL_THREADED_PUBLICATION:"),
+        ("font-mipmap-safe-graphical",["--rendering-method","gl_compatibility","--render-thread","safe","--audio-driver","Dummy","--script","res://tests/test_default_font_mipmap_publication.gd"],300,"DEFAULT_FONT_MIPMAP_PUBLICATION:"),
+        ("font-mipmap-separate-graphical",["--rendering-method","gl_compatibility","--render-thread","separate","--audio-driver","Dummy","--script","res://tests/test_default_font_mipmap_publication.gd"],300,"DEFAULT_FONT_MIPMAP_PUBLICATION:"),
+        ("depth-threaded-safe-graphical",["--rendering-method","gl_compatibility","--render-thread","safe","--audio-driver","Dummy","--script","res://tests/test_depth_threaded_publication.gd"],300,"DEPTH_THREADED_PUBLICATION:"),
+        ("depth-threaded-separate-graphical",["--rendering-method","gl_compatibility","--render-thread","separate","--audio-driver","Dummy","--script","res://tests/test_depth_threaded_publication.gd"],300,"DEPTH_THREADED_PUBLICATION:"),
         ("rapier-manual",["--headless","--script","res://tests/test_rapier_manual_step.gd"],180,"Rapier2D manual-step coupling fixture passed"),
         ("terrain-packet",["--headless","--script","res://tests/test_hard_surface_incremental_packet.gd"],180,"HARD_SURFACE_INCREMENTAL"),
         ("full-material-upload",["--headless","--audio-driver","Dummy","--script","res://tests/test_render_full_upload.gd"],180,"RENDER_FULL_UPLOAD:"),
@@ -470,10 +535,22 @@ def smoke(output,evidence):
             env["CYBERSAND_TEMPORAL_CONTACT_OUTPUT"]=str((evidence/name).resolve())
         if name.startswith("physics-pacing"):
             env["CYBERSAND_PHYSICS_PACING_OUTPUT"]=str((evidence/name).resolve())
-        if name.startswith("physics-publication"):
+        if name.startswith("physics-publication") or name=="native-rendezvous-integration":
             env["CYBERSAND_PHYSICS_PUBLICATION_OUTPUT"]=str((evidence/(name+".json")).resolve())
         if name.startswith("material-tiles"):
             env["CYBERSAND_MATERIAL_TILE_OUTPUT"]=str((evidence/(name+".json")).resolve())
+        if name=="material-threaded-graphical":
+            env["CYBERSAND_MATERIAL_QUEUE_THREAD"]="safe"
+            env["CYBERSAND_MATERIAL_QUEUE_OUTPUT"]=str((evidence/(name+".json")).resolve())
+        if name.startswith("native-render-overlap"):
+            env["CYBERSAND_NATIVE_RENDER_OVERLAP_OUTPUT"]=str((evidence/(name+".json")).resolve())
+        if name.startswith("font-mipmap-"):
+            env["CYBERSAND_FONT_MIPMAP_THREAD"]="separate" if "separate" in name else "safe"
+            env["CYBERSAND_FONT_MIPMAP_OUTPUT"]=str((evidence/name).resolve())
+            env["CYBERSAND_FONT_MIPMAP_REFERENCE"]=str((evidence/"font-mipmap-safe-graphical").resolve()) if "separate" in name else ""
+        if name.startswith("depth-threaded-"):
+            env["CYBERSAND_DEPTH_QUEUE_THREAD"]="separate" if "separate" in name else "safe"
+            env["CYBERSAND_DEPTH_QUEUE_OUTPUT"]=str((evidence/(name+".json")).resolve())
         if name=="full-material-upload":
             env["CYBERSAND_FULL_UPLOAD_OUTPUT"]=str((evidence/name/"full-upload.json").resolve())
         group="paint-persistence" if name in {"paint-author","paint-reopen"} else name
@@ -503,6 +580,10 @@ def smoke(output,evidence):
             need(r.returncode==0 and "SCRIPT ERROR:" not in r.stdout and "SHADER ERROR:" not in r.stdout and
                  (marker is None or marker in r.stdout),"Installed "+name+" failed: "+r.stdout[-3500:])
             detail={}
+            if name=="material-threaded-graphical" or name=="native-rendezvous-integration" or name.startswith(("native-render-overlap","depth-threaded-")):
+                detail=validate_publication_regression_receipt(name,evidence/(name+".json"),project,SOURCE)
+            elif name.startswith("font-mipmap-"):
+                detail=validate_publication_regression_receipt(name,evidence/name/"result.json",project,SOURCE)
             if name in {"paint-author","paint-reopen"}:
                 completions=[line for line in r.stdout.splitlines() if line.startswith("PAINT_EDITOR_WORKBENCH ")]
                 need(bool(completions),"Installed graphical PAINT completion missing")

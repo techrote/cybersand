@@ -49,6 +49,11 @@ provides original/corrected comparisons. The candidate integrates accepted main
 `018bd09503d7` with current generator, Flatten, PAINT and persistence features.
 Exact-source automated qualification and physical NVIDIA acceptance are separate;
 this does not authorize merging or changing any of the four Draft states.
+The [16 November completion follow-up](../audits/2026-11-16-physics-freeze-remediation-002-completion.md)
+adds a bounded128-tile staging class, queued-image ownership repairs and a
+default-off renderer-aware native rendezvous. A controlled local trial improved
+genuine physical completion tails, with software frame-cadence tradeoffs; the
+exact-source desktop campaign and physical owner gate remain separate.
 
 ## Native-resolution camera candidate — 2026-11-13
 

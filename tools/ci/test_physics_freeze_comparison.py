@@ -172,6 +172,25 @@ class PhysicalEquivalenceTests(unittest.TestCase):
             with self.subTest(field=key), self.assertRaises(RuntimeError):
                 compare(events, deepcopy(events))
 
+    def test_equally_invalid_authoritative_numbers_cannot_certify_equivalence(self):
+        for value in (None, float("nan"), float("inf"), -float("inf"), True, "0"):
+            for key in ("fixed_delta", "simulation_time_sec", "angle", "xy", "velocity"):
+                events = completions()
+                if key in ("fixed_delta", "simulation_time_sec"):
+                    events[0][key] = value
+                else:
+                    events[0]["bodies"][0][key] = [value, 0] if key in ("xy", "velocity") else value
+                with self.subTest(field=key, value=value), self.assertRaises(RuntimeError):
+                    compare(events, deepcopy(events))
+
+    def test_malformed_vectors_cannot_certify_equivalence(self):
+        for value in (None, [], [0], [0, 0, 0], {"x": 0, "y": 0}):
+            for key in ("xy", "velocity"):
+                events = completions()
+                events[0]["bodies"][0][key] = value
+                with self.subTest(field=key, value=value), self.assertRaises(RuntimeError):
+                    compare(events, deepcopy(events))
+
 
 class TraceReductionTests(unittest.TestCase):
     def write_trace(self, path, physical, native_ticks=None):

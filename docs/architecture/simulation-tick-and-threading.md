@@ -6,7 +6,7 @@ status: Current
 scope: Desktop, Web and native stage ordering, fixed quanta, failure behavior and permitted thread access
 keywords: [fixed tick, desktop worker, Web synchronous, Rapier order, character order, tick failure, backlog]
 related-documents: [data-ownership-and-lifetimes.md, determinism-and-boundary-transfers.md, rigid-body-and-cellular-coupling.md, ../operations/web-threading.md]
-last-reviewed: 2026-11-05
+last-reviewed: 2026-11-16
 ---
 
 # Simulation tick and threading
@@ -327,3 +327,130 @@ The main-thread Rapier owner takes its completion acknowledgement and body wrenc
 The [dated workbench measurements](../audits/2026-11-04-workbench-boundary-and-pacing.md) separate render cadence, completed physics ticks, fixed-work native throughput and process CPU usage.
 
 The workbench reference pressure-column callback captures failures into a fixed value rather than retaining `std::exception_ptr`. It records a standard exception category and at most a [192-byte diagnostic](../reference/configuration-reference.md#workbench-pressure-column-scratch), with explicit truncation. After the unchanged dispatch barrier drains, the owner reconstructs the standard exception; `World::tick()` then applies the existing failed-world quarantine. Unknown/custom exception types normalize as described in the [ABI repair and qualification](../audits/2026-11-04-workbench394-ready-validation.md). No worker calls Godot, and the successful pressure algorithm/counters and material ownership remain unchanged.
+
+## Workbench native completion and bounded render overlap
+
+**Current Workbench ownership:** native cells remain exclusively owned by
+[`CyberSimulationWorker`](../../godot/scripts/simulation_worker.gd); the live actor
+session, controller work, collider installation and manual Rapier step remain on
+Main. The worker publishes a bounded immutable physical completion after the
+native tick, pending authoring edits and required collider geometry are complete.
+That completion shares its snapshot serial with the later graphical packet but
+grants no material-upload authority. Retiring the World or actor owner clears this
+physical mailbox; a retained graphical packet cannot restore retired authority.
+The worker can complete the next required native sample without waiting for Main
+to acknowledge a material upload. Unacknowledged graphical changes retain the
+existing bounded accumulation and full-refresh fallback.
+
+**Default-off scheduling experiment:**
+[`WorkbenchNativeRendezvous`](../../godot/scripts/workbench_native_rendezvous.gd)
+can use part of an already scheduled catch-up callback to wait for that exact
+native completion. Selecting it does not create callbacks, accumulate another
+physical clock, change the fixed `1/60` integration step, or allow uncoupled
+physics. The selector and Godot rendering-thread selection are independent:
+
+| `CYBERSAND_DIAG_NATIVE_RENDEZVOUS` | Policy | Shared requested wait limit per process frame |
+| --- | --- | --- |
+| Empty, `0`, or an unrecognized value | Off; existing callback admission | No added wait |
+| `1` | Retained fixed-window comparison | 16,667 µs, in either rendering-thread mode |
+| `render-overlap` | Wait only while the preceding render-queue marker remains pending | 66,667 µs maximum; no overlap wait in Safe mode |
+
+Godot's `--render-thread safe` or `--render-thread separate` selects the rendering
+owner. `Main.native_rendezvous_status()` reports the actual rendering-thread
+relationship, selected policy, limit, fixed timestep and strict sample-wait
+setting. A requested Separate mode alone is insufficient evidence that the
+renderer is executing separately. Godot 4.7 also marks its Separate rendering
+thread experimental. Whole-application compatibility, immutable queued image
+ownership, appearance and lifetime qualification remain required; successful
+marker tests do not establish those properties for every renderer or UI resource.
+
+### Callback order and the independence limit
+
+Stock Godot 4.7 performs the scheduled physics callbacks, Main processing and
+then `RenderingServer.sync()` before submitting the next draw. Separate rendering
+therefore permits overlap with the following iteration's existing callback batch;
+it does not supply an independent Main callback clock during an indefinitely
+blocked render. See pinned [Main iteration](https://github.com/godotengine/godot/blob/5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/main/main.cpp)
+and [RenderingServer queue/sync](https://github.com/godotengine/godot/blob/5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/servers/rendering/rendering_server_default.cpp).
+
+In `render-overlap` mode, the first Main physics callback of a process frame
+queues one native `Semaphore.post` through `RenderingServer.call_on_render_thread`.
+The call follows earlier rendering commands in the same queue. A second or later
+already scheduled callback may wait only while that marker is pending and the
+ordinary admission path is waiting for its exact native sample. Main checks and
+latches marker completion before polling, after polling and before requesting a
+sleep. A completed marker ends the overlap window; it cannot be consumed once
+and subsequently mistaken for a pending marker. Safe mode queues no marker and
+creates no overlap deadline.
+
+The marker certifies that earlier RenderingServer calls returned. It is not a GPU
+completion fence, scanout observation, or identity for a particular displayed
+frame. Commands submitted after the marker can still delay the iteration's final
+sync. Separate rendering also defers `frame_post_draw` delivery to Main, so Main's
+current process-frame counter is not a certified identity for that earlier draw.
+The trace records this association as unavailable and retains the actual callback
+delivery counter separately.
+
+### Marker and mailbox lifetime
+
+A standard Godot `Callable` retains an object identifier rather than owning a
+`RefCounted` target. The queued callback therefore uses
+`marker.post.unbind(1).bind(marker)`: the outer native bind retains a strong Variant
+reference to the Semaphore, and the inner native unbind removes that reference
+argument before invoking the native `post()` method. No GDScript closure, helper
+state or scene object is accessed by this rendering-thread callback. If Main or
+the helper retires first, the queued callback still owns its target until it
+returns. The Semaphore owns no callback, so this arrangement has no ownership
+cycle. The [pinned bind/unbind implementation](https://github.com/godotengine/godot/blob/5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/core/variant/callable_bind.cpp)
+defines this retention and argument order.
+
+Each process frame gets a distinct marker. If a prior marker is still pending
+when another frame identity arrives, the helper refuses overlap for that frame
+and retains the one outstanding marker. It does not grow a queue of markers or
+reuse stale semaphore counts. Godot's normal per-iteration sync should have
+drained the earlier marker; the explicit refusal also protects unusual lifecycle
+or caller ordering. The worker mailbox reader uses `Mutex.try_lock()` and returns
+only an immutable reference; it never waits while holding the worker mutex or
+reads mutable native World storage.
+
+### Physical admission and finite waiting
+
+Every successful observation must match the awaited physical sample, session,
+epoch and World generation, with a valid native response and matching body-row
+samples. Worker failure, retirement, pause, reset and owner transitions refuse the
+wait. A locally paused status publication caused by having no new body sample is
+distinct from a user pause. Main repeats its owner/failure and complete required
+terrain checks after receiving a fresh packet; the existing bridge still owns
+layout, feedback-age and duplicate-application checks. No partial collider queue,
+old feedback, speculative collision result or fabricated pose permits a step.
+Pause and single-step keep their existing contracts.
+
+All waits in a process frame share one absolute deadline. Nonblocking mailbox and
+semaphore checks are separated by requested sleeps of at most 250 µs because the
+Godot 4.7 script Semaphore has no timed wait. The requested sleep total is bounded;
+OS descheduling and observation overhead can make the actual wall interval longer.
+It is not a hard realtime latency guarantee. The overlap policy returns as soon
+as it observes the render-queue marker, even when budget remains. The normal
+callback path can admit a subsequently available sample without another wait.
+There is no new production `force_sync()` or GPU readback in this mechanism.
+
+The retained fixed-window trials increased actual completed Rapier throughput
+but worsened the physical p95 gap in both Safe and Separate rendering; the Safe
+trial also reduced Main submission cadence. Those are negative default-adoption
+results. A higher average alone does not qualify this scheduling repair, and the
+overlap mechanism remains an opt-in experiment until matched whole-application
+completion gaps, frame cadence, physical-state equivalence and platform execution
+support it. The [freeze-remediation evidence](../audits/2026-11-15-workbench-physics-freezes.md)
+owns dated source/runtime identities, failed attempts and actual results.
+
+The focused [rendezvous guard regression](../../godot/tests/test_workbench_native_rendezvous.gd)
+and [render-marker regression](../../godot/tests/test_workbench_native_render_overlap.gd)
+exercise deadlines, asynchronous sample publication, owner refusal, marker
+completion and native callback ownership. The latter retires the producer scope
+while the real separate render queue is held, requires the Semaphore to remain
+alive through its queued callback, and requires it to be released after the queue
+drains. Test-only queue drains are not part of production scheduling. Actual
+Main admission, terrain, pause, reset and shutdown are additionally checked by
+the [publication integration fixture](../../godot/tests/test_workbench_native_rendezvous_integration.gd)
+with the retained fixed-window selector. The matched application capture must
+separately exercise the render-overlap policy.

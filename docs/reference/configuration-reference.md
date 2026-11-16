@@ -4,7 +4,7 @@ document-kind: reference
 canonical-for: [current-configuration-values, adapter-worker-policy]
 status: Current
 scope: Exact native, adapter, fallback, presentation, and Web defaults; construction constraints and unimplemented production schema
-last-reviewed: 2026-11-13
+last-reviewed: 2026-11-16
 related-documents: [../operations/configuration-and-capacity-budgets.md, ../systems/world-storage-and-interest-region.md, ../systems/depth-layers-and-parallax.md, ../operations/deepworks-exhibition.md, ../architecture/rigid-body-and-cellular-coupling.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -701,8 +701,8 @@ Sources: [main.gd](../../godot/scripts/main.gd),
 | Output/window viewport | 1920×1080, logical view aspect-fitted |
 | `SIMULATION_HZ` / `FIXED_TIMESTEP` | 60 / 1÷60 s |
 | `TICK_INTERVAL_USEC` / `MAX_BACKLOG_TICKS` | 16667 / 3 |
-| Render publication choices/default | 30/45/60 Hz; default 45 |
-| `DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC` | 22222 |
+| Render publication choices/default | 30/45/60 Hz; default 60 |
+| `DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC` | 16667 |
 | `HARD_SURFACE_SNAPSHOT_INTERVAL_USEC` | 250000, desktop extraction sampling; not applied under the workbench lock-step, which publishes every changed hard-surface revision |
 | `HARD_SURFACE_REBUILD_INTERVAL` | 0.10 s, controller sync cooldown |
 | `HARD_SURFACE_CHUNKS_PER_FRAME` | 32 rebuilt chunks; unchanged queued chunks no longer count against it |
@@ -716,6 +716,68 @@ The 750 µs check excludes extraction and packet validation/copy/queueing; a sin
 chunk can exceed it. Pending limits trigger recovery after accumulation and are
 not process-wide allocation ceilings. Target pacing does not guarantee actual
 60 ticks/s.
+
+### Experimental coupled scheduling controls
+
+Normal Workbench uses Godot's Safe renderer and does not add a native rendezvous
+wait. `CYBERSAND_DIAG_NATIVE_RENDEZVOUS=1` selects the retained fixed16 experiment;
+`render-overlap` selects the renderer-aware experiment. Empty or `0` disables
+both. Ordinary Windows launchers and Test It clear inherited experimental
+selectors. These controls do not alter saved levels or native/Rapier laws.
+
+The fixed16 experiment permits at most 16,667 µs of requested waiting across all
+already scheduled catch-up callbacks in one Main process frame. It improved
+local completed-step averages but worsened frame cadence and physical p95 in
+the retained trials, so it is not the source default.
+
+The `render-overlap` experiment requires the explicit Godot command-line option
+`--render-thread separate`. Its callbacks share a 66,667 µs deadline and poll
+at most every 250 µs. Waiting stops when a native Semaphore marker proves that
+earlier RenderingServer commands have returned, when the exact native sample
+arrives, or when an owner/refusal/deadline fence applies. Safe rendering creates
+no marker and receives no overlap wait. Only one marker may remain queued;
+its bound native callable retains the Semaphore across owner retirement.
+The marker does not certify GPU completion, a displayed frame or scanout.
+
+Both policies retain the actual engine callback count, fixed 1/60 physical step,
+complete required terrain, strict native feedback association and owner fences.
+Requested wait bounds are cooperative; OS descheduling can exceed wall-time
+deadlines. Godot still synchronizes with its render queue each Main iteration,
+and its separate renderer is experimental. These are controlled evaluation
+mechanisms, not an achieved-throughput or physical-hardware acceptance claim.
+See [simulation scheduling](../architecture/simulation-tick-and-threading.md)
+and [the implementation](../../godot/scripts/workbench_native_rendezvous.gd).
+
+### Material publication capacities
+
+**Current unmerged remediation candidate:** these process-local publication
+controls do not change native cells, Rapier laws or saved level content.
+[CyberBlitMaterialPublisher](../../godot/scripts/blit_material_publisher.gd)
+owns the staging bounds; the
+[rendering contract](../architecture/rendering-and-gameplay-bridges.md#does-a-small-dirty-patch-mean-a-small-gpu-upload)
+owns exact history, validation, fallback and timing semantics.
+
+| Setting or capacity | Candidate value |
+|---|---|
+| `CYBERSAND_MATERIAL_PUBLICATION` | `auto` by default; `full` and `blit` are explicit selections. Unsupported backends or detectable structural failure use the full path. |
+| `CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS` | Diagnostic `1`, `2` or `3`; default `3` independent one-layer array resources per allocated size class |
+| `CYBERSAND_DIAG_MATERIAL_COPY_MODE` | Exact horizontal `runs` by default; diagnostic `tiles` keeps separate tile copies |
+| Tile side / tile count | Power-of-two side from 64 through 1024; at most 256 tiles. A 2048² World uses 128² tiles. |
+| Staging capacities | 1, 4, 16, 64, 128 and 256 tiles; 128 uses a 16×8 tile rectangle, other classes are square. Allocate only through the first capacity covering the World tile count. |
+| 2048² RG8 texture payload, default three resources | 79,659,013 bytes including two linear RGBA8 histories, all staging classes, retirement target and source dummy; excludes driver overhead. The 128-tile class accounts for 12,582,912 bytes. |
+
+At 2048² RG8, 65–128 exact changed tiles use a 4 MiB staging upload. Changes
+above that range can still select the 8 MiB full path. Size classes and their
+priming work are prepared during pair creation; no unbounded resource queue is
+introduced. CPU staging bytes exclude the additional GPU copies and target
+writes, and the resource ring is not a GPU-completion fence.
+
+The candidate also sets `gui/theme/default_font_generate_mipmaps=true` at
+startup. This makes the pinned engine submit copied default-font atlas Images;
+it adds copy/mipmap work and mip storage. The
+[font contract and regression](../architecture/rendering-and-gameplay-bridges.md#default-font-atlas-publication)
+record the exact nearest-filtered appearance check and its limits. This setting
+does not select a different rendering-thread mode.
 
 ## Web quality
 

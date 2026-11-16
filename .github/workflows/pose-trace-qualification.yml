@@ -227,7 +227,7 @@ jobs:
           $command.UseShellExecute = $false
           $command.WorkingDirectory = 'C:\cscoherence'
           $command.EnvironmentVariables['CYBERSAND_TEST_IT_NO_PAUSE'] = '1'
-          $inheritedSelectors = @{CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS='1';CYBERSAND_DIAG_MATERIAL_HISTORY_TARGETS='3';CYBERSAND_DIAG_MATERIAL_COPY_MODE='tiles';CYBERSAND_DIAG_COMMON_OBSERVER='1'}
+          $inheritedSelectors = @{CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS='1';CYBERSAND_DIAG_MATERIAL_HISTORY_TARGETS='3';CYBERSAND_DIAG_MATERIAL_COPY_MODE='tiles';CYBERSAND_DIAG_COMMON_OBSERVER='1';CYBERSAND_DIAG_NATIVE_RENDEZVOUS='render-overlap'}
           $callerSelectors = @{}
           foreach ($key in $inheritedSelectors.Keys) {
             $callerSelectors[$key] = [Environment]::GetEnvironmentVariable($key,'Process')
@@ -251,8 +251,13 @@ jobs:
           if (-not $result.complete -or $result.status -ne 'passed' -or $result.source -ne $env:GITHUB_SHA -or @($result.cases).Count -ne $expectedCases -or @($result.pairs).Count -ne $expectedPairs) { throw 'Incomplete source-matched comparison' }
           function Assert-PublicationSelectorReceipt($row,[string]$caseDirectory) {
             $case = Get-Content -LiteralPath (Join-Path $caseDirectory 'case.json') -Raw -Encoding UTF8 | ConvertFrom-Json
-            if (-not [string]::IsNullOrEmpty([string]$case.material_staging_slots) -or -not [string]::IsNullOrEmpty([string]$case.material_history_targets) -or -not [string]::IsNullOrEmpty([string]$case.material_copy_mode) -or $case.common_observer -ne '0') { throw ('Test It retained inherited probe settings: '+$row.name) }
+            if (-not [string]::IsNullOrEmpty([string]$case.material_staging_slots) -or -not [string]::IsNullOrEmpty([string]$case.material_history_targets) -or -not [string]::IsNullOrEmpty([string]$case.material_copy_mode) -or -not [string]::IsNullOrEmpty([string]$case.native_rendezvous) -or $case.common_observer -ne '0') { throw ('Test It retained inherited probe settings: '+$row.name) }
             $records = @(Get-Content -LiteralPath (Join-Path $caseDirectory 'receipt-poses.jsonl') -Encoding UTF8 | Where-Object { $_ -ne '' } | ForEach-Object { ConvertFrom-Json -InputObject $_ })
+            $headers = @($records | Where-Object { $_.type -eq 'header' })
+            $waits = @($records | Where-Object { $_.type -eq 'event' -and $_.event -eq 'native_rendezvous' })
+            if ($headers.Count -ne 1) { throw ('Missing unique actual trace header: '+$row.name) }
+            $scheduling = $headers[0].settings.native_rendezvous
+            if ($null -eq $scheduling -or $scheduling.mode -ne 'off' -or $scheduling.enabled -isnot [bool] -or $scheduling.separate_render_thread -isnot [bool] -or $scheduling.enabled -or $scheduling.separate_render_thread -or $waits.Count -ne 0) { throw ('Publication comparison retained experimental scheduling or lacks actual mode evidence: '+$row.name) }
             $callbacks = @($records | Where-Object { $_.type -eq 'event' -and $_.event -eq 'main_callback' }).Count
             $mailboxes = @($records | Where-Object { $_.type -eq 'event' -and $_.event -eq 'physics_publication' }).Count
             if ($callbacks -lt 1 -or $mailboxes -lt 1 -or $row.statistics.event_counts.main_callback -ne $callbacks -or $row.statistics.event_counts.physics_publication -ne $mailboxes) { throw ('Detailed actual callback/mailbox evidence is absent or inconsistent: '+$row.name) }

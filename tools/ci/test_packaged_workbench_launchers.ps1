@@ -10,7 +10,7 @@ $Rows=@()
 # Inject probe-only overrides into the invoked cmd process, never this caller.
 # The actual package launchers must select the reviewed source defaults.
 $InheritedSelectors=@{CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS='1';CYBERSAND_DIAG_MATERIAL_HISTORY_TARGETS='3'
-    CYBERSAND_DIAG_MATERIAL_COPY_MODE='tiles';CYBERSAND_DIAG_COMMON_OBSERVER='1'}
+    CYBERSAND_DIAG_MATERIAL_COPY_MODE='tiles';CYBERSAND_DIAG_COMMON_OBSERVER='1';CYBERSAND_DIAG_NATIVE_RENDEZVOUS='1'}
 $CallerSelectors=@{}
 foreach($Key in $InheritedSelectors.Keys){$CallerSelectors[$Key]=[Environment]::GetEnvironmentVariable($Key,'Process')}
 $SelectorProbe=@{injected_child_environment=$InheritedSelectors;caller_environment=$CallerSelectors
@@ -60,6 +60,7 @@ foreach($Name in @('Open Workbench.cmd','Open Publication Control.cmd','Open Ful
         if(-not $Ready.workbench_installed -or $Ready.source -ne $env:CYBERSAND_EVAL_SOURCE_SHA -or
            $Ready.world_generation -lt 0 -or $Ready.uploaded_revision -lt 0 -or $Ready.pending_hard_chunks -ne 0 -or
            $Ready.material_publication.backend -ne $ExpectedBackend -or $Ready.physics_publication -ne $ExpectedPhysics -or
+           $Ready.native_rendezvous.mode -ne 'off' -or $Ready.native_rendezvous.enabled -or $Ready.native_rendezvous.separate_render_thread -or
            $Ready.physics_required -ne ($Ready.authored_actor_count -gt 0) -or
            ($Ready.physics_required -and -not $Ready.rapier_initialized)) {
             throw ('Launched Workbench identity or publication mode mismatch: '+$Name)

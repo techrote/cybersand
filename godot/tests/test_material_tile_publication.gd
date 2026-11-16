@@ -552,12 +552,12 @@ func _large_sparse_transfer() -> void:
 		"2048² RG8 uses 128² tiles and 256 bounded tile records")
 	var resources: Array[int] = host._material_blit_publisher.resource_identity()
 	var slots: int = host._material_blit_publisher.staging_slots
-	var expected_bytes: int = 33554437+11173888*slots
+	var expected_bytes: int = 33554437+15368192*slots
 	check(host._material_blit_publisher.gpu_storage_bytes() == expected_bytes,
 		"2048² allocation includes the configured number of bounded staging resources")
 	check(host._material_blit_publisher.full_staging == host._material_blit_publisher.staging[256],
 		"2048² full image and capacity256 share the same resource pool and cursor")
-	check(resources.size() == 4+5*slots, "two histories, sink, dummy and every independent array RID are counted")
+	check(resources.size() == 4+6*slots, "two histories, sink, dummy and every independent array RID are counted")
 	var result: Dictionary = _patch(host, Rect2i(1023, 1024, 1, 1), 3, 77, "2048² single cell")
 	check(result.gpu_blit_calls == 1 and result.retirement_blit_calls == 1, "sparse copy includes bounded retirement draw")
 	check(result.updated_tiles == 1 and result.submitted_bytes == 32768,
@@ -587,6 +587,110 @@ func _large_sparse_transfer() -> void:
 		"publication":result})
 	_release(host)
 	large_completed = true
+
+
+func _rectangular_staging_contract(expect_rectangular: bool = true) -> bool:
+	var expected_capacities: Array[int] = [64,128,128,128,256]
+	if not expect_rectangular: expected_capacities.assign([64,256,256,256,256])
+	var counts: Array[int] = [64,65,123,128,129]
+	for size: Vector2i in [Vector2i(2048,2048),Vector2i(2053,1027)]:
+		var host: Control = _host(size,2,"blit",17)
+		var publisher: Publisher = host._material_blit_publisher
+		check(publisher != null and publisher.tile_side == 128,"rectangular fixture uses128-cell tiles")
+		if publisher == null:
+			_release(host)
+			continue
+		var resources: Array[int] = publisher.resource_identity()
+		var allocation: int = publisher.gpu_storage_bytes()
+		var initial_status: Dictionary = host.material_publication_status()
+		var baseline: PackedByteArray = host.image.get_data()
+		var initial_rid_pair: Array[RID] = [host.texture.get_rid(),host.previous_texture.get_rid()]
+		if expect_rectangular:
+			check(publisher.staging.has(128) and publisher.staging[128].extent == Vector2i(2048,1024),
+				"128-class has an explicit16-by8 rectangular tile extent")
+			var pool: Publisher.StagingPool = publisher.staging[128]
+			var cursor: int = pool.next_slot
+			var pending: PackedByteArray = publisher.previous.pending.duplicate()
+			pool.extent = Vector2i(1024,2048)
+			check(not publisher.publish(host.image,[]),"same-area wrong rectangular orientation rejected before submission")
+			check(pool.next_slot == cursor and publisher.previous.pending == pending,
+				"invalid rectangle preserves cursor and pending coverage")
+			pool.extent = Vector2i(2048,1024)
+		for case_index: int in range(counts.size()):
+			var count: int = counts[case_index]
+			if size.x != 2048 and count != 123: continue
+			# Restore both physical slots exactly before each isolated boundary.
+			# Full packet metadata still compares bytes; it does not force uploads.
+			for reset: int in range(2):
+				check(host.upload_texture_patches(host._full_material_rectangle(),baseline,
+					host.last_uploaded_revision+1,2),"rectangular boundary histories reset")
+			var expected: Image = host.image.duplicate()
+			var metadata := PackedInt32Array()
+			var cells := PackedByteArray()
+			var changed_indices := PackedInt32Array()
+			var copied_pixels: int = 0
+			for item: int in range(count):
+				var index: int = item
+				if size.x != 2048 and item == count-1: index = publisher.columns*publisher.rows-1
+				changed_indices.append(index)
+				var origin := Vector2i((index%publisher.columns)*128,(index/publisher.columns)*128)
+				var tile_size := Vector2i(mini(128,size.x-origin.x),mini(128,size.y-origin.y))
+				var point: Vector2i = origin+tile_size-Vector2i.ONE
+				# Derive a different material and condition byte from the actual old
+				# cell, so every intended tile differs even with nontrivial padding.
+				var old: Color = expected.get_pixelv(point)
+				var value: int = (old.r8+1)%132
+				var condition: int = (old.g8+1)%256
+				metadata.append_array(PackedInt32Array([point.x,point.y,1,1,cells.size(),2]))
+				cells.append(value)
+				cells.append(condition)
+				expected.set_pixelv(point,Color(float(value)/255.0,float(condition)/255.0,0,1))
+				copied_pixels += tile_size.x*tile_size.y
+			var started: int = Time.get_ticks_usec()
+			check(host.upload_texture_patches(metadata,cells,host.last_uploaded_revision+1,2),
+				"rectangular boundary publication accepted")
+			var elapsed: int = Time.get_ticks_usec()-started
+			var record: Dictionary = host.material_publication_status()
+			var capacity: int = expected_capacities[case_index]
+			var whole: bool = capacity*128*128 >= size.x*size.y
+			var expected_bytes: int = size.x*size.y*2 if whole else capacity*128*128*2
+			var expected_pixels: int = size.x*size.y if whole else copied_pixels
+			check(record.updated_tiles == count and record.atlas_capacity == capacity,
+				"exact dirty count selects the expected bounded capacity")
+			check(record.whole_gpu_copy == whole and record.submitted_bytes == expected_bytes,
+				"rectangle submits exact bytes without promoting65..128 tiles to a fullWorld copy")
+			check(record.blit_pixels == expected_pixels and record.uncoalesced_blit_pixels == expected_pixels,
+				"rectangular copy writes only the exact clipped destination tiles")
+			if expect_rectangular and capacity == 128:
+				check(record.staging_width == 2048 and record.staging_height == 1024,
+					"receipt records the actual rectangular staging dimensions")
+			check(publisher.resource_identity() == resources and publisher.gpu_storage_bytes() == allocation,
+				"all boundary updates retain the preallocated bounded resource set")
+			check(host.texture.get_rid() in initial_rid_pair and host.previous_texture.get_rid() in initial_rid_pair,
+				"rectangular publication retains both material history resources")
+			_check_gpu(host,expected.get_data(),baseline,"rectangular%d %s"%[count,str(size)])
+			observations.append({"label":"rectangular staging boundary","extent":[size.x,size.y],
+				"changed_tiles":count,"changed_indices":changed_indices,"elapsed_usec":elapsed,
+				"publication":record,"initialization":initial_status,"expected_rectangular":expect_rectangular,
+				"current_sha256":_sha(host.texture.get_image().get_data()),
+				"previous_sha256":_sha(host.previous_texture.get_image().get_data()),
+				"expected_current_sha256":_sha(expected.get_data()),"expected_previous_sha256":_sha(baseline)})
+		_release(host)
+	if expect_rectangular:
+		var alias_host: Control = _host(Vector2i(2048,1024),2,"blit",29)
+		var alias: Publisher = alias_host._material_blit_publisher
+		check(alias.full_staging == alias.staging[128],"equal-size rectangular fullWorld shares onepool andcursor")
+		var alias_resources: Array[int] = alias.resource_identity()
+		var before: PackedByteArray = alias_host.image.get_data()
+		var next: PackedByteArray = _pattern(alias_host.world_extent,2,77)
+		check(alias_host.upload_texture_patches(alias_host._full_material_rectangle(),next,1,2),
+			"aliased rectangular dense publication accepted")
+		_check_gpu(alias_host,next,before,"rectangular full alias")
+		check(alias.resource_identity() == alias_resources and alias_host.material_publication_status().whole_gpu_copy,
+			"aliased dense update retains the one-copy fullWorld baseline")
+		observations.append({"label":"rectangular full alias","publication":alias_host.material_publication_status()})
+		_release(alias_host)
+	return true
 
 
 func _maximum_height_contract() -> void:
@@ -844,6 +948,7 @@ func _run() -> void:
 			_staging_pool_contract(slots,Vector2i(256,256))
 			_staging_pool_contract(slots,Vector2i(317,259))
 		_large_sparse_transfer()
+		check(_rectangular_staging_contract() == true,"all rectangular staging cases completed")
 		_maximum_height_contract()
 		_horizontal_copy_contract()
 		check(histories_completed == 2 and large_completed, "all history and transfer tests reached completion")

@@ -2420,6 +2420,24 @@ func take_latest_physics_snapshot() -> CyberSimulationSnapshot:
 	return result
 
 
+func try_read_physics_mailbox() -> Dictionary:
+	# Bounded native-rendezvous experiment. No live World reads, payload copies,
+	# blocking mutex acquisition or retirement fallback are allowed here.
+	if not _mutex.try_lock(): return {"status":"contended"}
+	var result: Dictionary = {"status":"retired"}
+	if _running and _published_physics_snapshot != null:
+		if _paused or _reset_requested or _world_change_inflight or not _lab_request.is_empty() \
+				or not _prepared_physical_publication.is_empty() \
+				or not _prepared_physical_frame_hold.is_empty():
+			result = {"status":"transition"}
+		else:
+			result = {"status":"active", "epoch":_workbench_sample.get("epoch", -1),
+				"session":_workbench_sample.get("session", -1),
+				"snapshot":_published_snapshot if _combined_physics_publication else _published_physics_snapshot}
+	_mutex.unlock()
+	return result
+
+
 func acknowledge_render_snapshot(render_snapshot_serial: int) -> void:
 	if render_snapshot_serial <= 0:
 		return

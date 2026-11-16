@@ -10,7 +10,11 @@ extends RefCounted
 const MAX_TILES: int = 256
 const MIN_TILE_SIDE: int = 64
 const MAX_TILE_SIDE: int = 1024
-const CAPACITIES: Array[int] = [1, 4, 16, 64, 256]
+const CAPACITIES: Array[int] = [1, 4, 16, 64, 128, 256]
+const CAPACITY_TILE_EXTENTS: Dictionary = {
+	1:Vector2i(1,1), 4:Vector2i(2,2), 16:Vector2i(4,4),
+	64:Vector2i(8,8), 128:Vector2i(16,8), 256:Vector2i(16,16),
+}
 const COPY_SHADER = preload("res://shaders/material_publication_blit.gdshader")
 
 class MaterialPlane extends Texture2D:
@@ -127,8 +131,10 @@ func _setup(source: Image, preceding: Image) -> bool:
 	retirement_owned_id = retirement_sink.get_instance_id()
 	retirement_owned_rid = retirement_sink.get_rid()
 	for capacity: int in CAPACITIES:
-		var side: int = int(sqrt(float(capacity))) * tile_side
-		var pool: StagingPool = _new_staging_pool(Vector2i(side,side))
+		# The 128-tile rectangle bounds the measured 65..128-tile case without
+		# rounding it to a full 256-tile World. Allocate and prime it here so
+		# its bounded storage/setup cost is visible before interactive uploads.
+		var pool: StagingPool = _new_staging_pool(_capacity_extent(capacity))
 		if pool == null: return false
 		staging[capacity] = pool
 		_staging_pool_ids[capacity] = pool.get_instance_id()
@@ -210,6 +216,10 @@ func _new_staging_pool(size: Vector2i) -> StagingPool:
 	return pool
 
 
+func _capacity_extent(capacity: int) -> Vector2i:
+	return CAPACITY_TILE_EXTENTS.get(capacity,Vector2i.ZERO)*tile_side
+
+
 func _valid_staging_pool(pool: StagingPool, size: Vector2i) -> bool:
 	if pool == null or pool.extent != size or pool.next_slot < 0 or pool.next_slot >= staging_slots \
 			or pool.resources.size() != staging_slots or pool.owned_resource_ids.size() != staging_slots: return false
@@ -288,8 +298,7 @@ func _valid_state() -> bool:
 		if capacity not in CAPACITIES: return false
 		var pool: StagingPool = staging[capacity] as StagingPool
 		if pool == null or pool.get_instance_id() != int(_staging_pool_ids.get(capacity,0)): return false
-		var side: int = int(sqrt(float(capacity)))*tile_side
-		if not _valid_staging_pool(pool,Vector2i(side,side)): return false
+		if not _valid_staging_pool(pool,_capacity_extent(capacity)): return false
 	if full_staging == null or full_staging.get_instance_id() != _full_staging_pool_id \
 			or not _valid_staging_pool(full_staging,extent): return false
 	# Distinct capacity pools and slots must not alias a texture or sampler
@@ -364,7 +373,7 @@ func _finish_metrics() -> void:
 func _submit(source: Image, destinations: Array[MaterialPlane]) -> bool:
 	var started: int = Time.get_ticks_usec()
 	last_update = {"mode":"blit", "candidate_tiles":0, "updated_tiles":0,
-		"submitted_bytes":0, "atlas_capacity":0, "atlas_assembly_usec":0,
+		"submitted_bytes":0, "atlas_capacity":0, "staging_width":0, "staging_height":0, "atlas_assembly_usec":0,
 		"staging_upload_usec":0, "gpu_blit_submit_usec":0, "gpu_blit_calls":0,
 		"blit_pixels":0, "estimated_target_write_bytes":0, "allocated_gpu_bytes":gpu_storage_bytes(),
 		"retirement_blit_calls":0, "estimated_retirement_write_bytes":0,
@@ -395,17 +404,20 @@ func _submit(source: Image, destinations: Array[MaterialPlane]) -> bool:
 		last_update.atlas_assembly_usec = Time.get_ticks_usec()-started
 		_finish_metrics()
 		return true
-	var capacity: int = 1
-	while capacity < changed.size(): capacity *= 4
-	var atlas_columns: int = int(sqrt(float(capacity)))
-	var atlas_side: int = atlas_columns * tile_side
-	var whole: bool = atlas_side*atlas_side >= extent.x*extent.y
+	var capacity: int = MAX_TILES
+	for candidate: int in CAPACITIES:
+		if candidate >= changed.size():
+			capacity = candidate
+			break
+	var atlas_size: Vector2i = _capacity_extent(capacity)
+	var atlas_columns: int = atlas_size.x/tile_side
+	var whole: bool = atlas_size.x*atlas_size.y >= extent.x*extent.y
 	var pool: StagingPool = full_staging if whole else staging.get(capacity) as StagingPool
 	if pool == null: return false
 	var slot: int = pool.next_slot
 	var resource: StagingResource = pool.resources[slot]
 	var stage: Texture2DArray = resource.texture
-	var stage_size: Vector2i = extent if whole else Vector2i(atlas_side,atlas_side)
+	var stage_size: Vector2i = extent if whole else atlas_size
 	if not _valid_staging_pool(pool,stage_size): return false
 	for plane: MaterialPlane in destinations:
 		if plane.drawable.get_rid() == stage.get_rid(): return false
@@ -417,7 +429,7 @@ func _submit(source: Image, destinations: Array[MaterialPlane]) -> bool:
 		# Dense publication uses one full GPU copy, not hundreds of tile draws.
 		atlas = source.duplicate()
 	else:
-		atlas = Image.create(atlas_side,atlas_side,false,logical_format)
+		atlas = Image.create(atlas_size.x,atlas_size.y,false,logical_format)
 		for item: int in range(changed.size()):
 			atlas.blit_rect(images[item],Rect2i(0,0,tile_side,tile_side),
 				Vector2i((item%atlas_columns)*tile_side,(item/atlas_columns)*tile_side))
@@ -489,6 +501,8 @@ func _submit(source: Image, destinations: Array[MaterialPlane]) -> bool:
 	last_update.estimated_target_write_bytes = 4*last_update.blit_pixels
 	last_update.whole_gpu_copy = whole
 	last_update.atlas_capacity = capacity
+	last_update.staging_width = stage_size.x
+	last_update.staging_height = stage_size.y
 	last_update.staging_slot = slot
 	last_update.staging_resource_rid = stage.get_rid().get_id()
 	# Rotate only after upload, all copies and retirement have been submitted.

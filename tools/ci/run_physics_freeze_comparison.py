@@ -13,6 +13,7 @@ from collections import Counter
 import hashlib
 import io
 import json
+import math
 import os
 from pathlib import Path
 import shutil
@@ -119,6 +120,9 @@ def verify_runtime_project(source, project):
 
 
 def physical_states(events):
+    def finite_number(value):
+        return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
+
     states = {}
     for event in events:
         if event.get("event") != "rapier_step":
@@ -127,6 +131,8 @@ def physical_states(events):
                     "hard_surface_shapes", "pending_hard_chunks", "input_tape_index", "fixed_delta", "simulation_time_sec", "bodies"}
         need(required <= event.keys(), "Incomplete physical completion association record")
         need(bool(event["bodies"]), "Physical completion has no actor state records")
+        need(all(finite_number(event[key]) for key in ("fixed_delta", "simulation_time_sec")),
+             "Physical completion has a nonfinite or missing physical clock")
         step = int(event["step"])
         # Timing and Main callback indices are observations, not physical state.
         associations = {key: event.get(key) for key in
@@ -135,6 +141,9 @@ def physical_states(events):
                         if key in event}
         for body in event.get("bodies", []):
             need({"slot", "instance_id", "xy", "angle", "velocity"} <= body.keys(), "Incomplete physical actor state record")
+            need(finite_number(body["angle"]) and all(isinstance(body[key], list) and len(body[key]) == 2
+                 and all(finite_number(value) for value in body[key]) for key in ("xy", "velocity")),
+                 "Physical actor has a nonfinite, missing or malformed authoritative pose/velocity")
             key = (step, int(body["slot"]))
             need(key not in states, "Duplicate physical completion/body " + str(key))
             states[key] = {"body": body, "associations": associations}
@@ -244,6 +253,9 @@ def main():
     os.environ["CYBERSAND_DIAG_COMMON_OBSERVER"] = "1"
     os.environ["CYBERSAND_MATERIAL_PUBLICATION"] = "auto"
     os.environ["CYBERSAND_DIAG_PHYSICS_PUBLICATION"] = ""
+    for selector in ("CYBERSAND_DIAG_NATIVE_RENDEZVOUS", "CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS",
+                     "CYBERSAND_DIAG_MATERIAL_HISTORY_TARGETS", "CYBERSAND_DIAG_MATERIAL_COPY_MODE"):
+        os.environ[selector] = ""
     report = {"schema": "physics-freeze-remediation-comparison-v1", "control": CONTROL,
               "candidate": args.source_sha, "candidate_tree": git("rev-parse", "HEAD^{tree}").decode().strip(),
               "order": "AB" if args.single_pair else "ABBA", "cases": [], "comparisons": [], "failures": [],

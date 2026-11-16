@@ -16,6 +16,7 @@ import re
 import subprocess
 import sys
 import time
+from package_engine_lab_windows import validate_publication_regression_receipt
 
 ROOT = Path(__file__).resolve().parents[2]
 ERRORS = re.compile(r"SCRIPT ERROR:|SHADER ERROR:|Parse Error:|Failed to load script|Failed loading resource:")
@@ -27,6 +28,7 @@ def main():
     parser.add_argument('--project', type=Path, default=ROOT / 'godot')
     parser.add_argument('--evidence', type=Path, required=True)
     parser.add_argument('--graphical', action='store_true')
+    parser.add_argument('--render-thread', choices=('safe', 'separate'))
     parser.add_argument('--cases', nargs='*')
     args = parser.parse_args()
     args.evidence = args.evidence.resolve()
@@ -60,6 +62,9 @@ def main():
         ('rapier-manual', 'test_rapier_manual_step', 'Rapier2D manual-step', {}, False),
         ('terrain-packet', 'test_hard_surface_incremental_packet', 'HARD_SURFACE_INCREMENTAL', {}, False),
         ('full-material-upload', 'test_render_full_upload', 'RENDER_FULL_UPLOAD:', {}, False),
+        ('native-rendezvous', 'test_workbench_native_rendezvous', 'NATIVE_RENDEZVOUS:', {}, False),
+        ('native-rendezvous-integration', 'test_workbench_native_rendezvous_integration', 'PHYSICS_PUBLICATION_RESULT', {}, False),
+        ('native-render-overlap', 'test_workbench_native_render_overlap', 'NATIVE_RENDER_OVERLAP:', {}, False),
         ('actor-integration', 'test_physical_actor_integration', 'Physical actor integration:', {}, False),
         ('native-world-clearance', 'test_pr566_mask_coherent_native_world', 'PR566_WORLD_CLEARANCE_RESULT', {}, False),
     ]
@@ -72,6 +77,15 @@ def main():
             ('camera-effects', 'test_native_camera_effects_render', 'NATIVE_CAMERA_EFFECTS_RESULT', {}, True),
             ('physics-publication-graphical', 'test_workbench_physics_publication', 'PHYSICS_PUBLICATION_RESULT', {}, True),
             ('material-tiles-graphical', 'test_material_tile_publication', 'MATERIAL_TILE_PUBLICATION:', {}, True),
+            ('material-threaded-graphical', 'test_material_threaded_publication', 'MATERIAL_THREADED_PUBLICATION:', {}, True),
+            ('font-mipmap-safe-graphical', 'test_default_font_mipmap_publication', 'DEFAULT_FONT_MIPMAP_PUBLICATION:', {}, True),
+            ('font-mipmap-separate-graphical', 'test_default_font_mipmap_publication', 'DEFAULT_FONT_MIPMAP_PUBLICATION:', {}, True),
+            ('depth-threaded-safe-graphical', 'test_depth_threaded_publication', 'DEPTH_THREADED_PUBLICATION:', {}, True),
+            ('depth-threaded-separate-graphical', 'test_depth_threaded_publication', 'DEPTH_THREADED_PUBLICATION:', {}, True),
+            ('paint-author-graphical', 'test_paint_editor_workbench', 'PAINT_EDITOR_WORKBENCH', {'PAINT_REOPEN': ''}, True),
+            ('paint-reopen-graphical', 'test_paint_editor_workbench', 'PAINT_EDITOR_WORKBENCH', {'PAINT_REOPEN': '1'}, True),
+            ('native-rendezvous-graphical', 'test_workbench_native_rendezvous_integration', 'PHYSICS_PUBLICATION_RESULT', {}, True),
+            ('native-render-overlap-graphical', 'test_workbench_native_render_overlap', 'NATIVE_RENDER_OVERLAP:', {}, True),
             ('physics-pacing-graphical', 'test_workbench_physics_pacing', 'PHYSICS_PACING_RESULT', {}, True),
         ]
     names = {row[0] for row in cases}
@@ -89,16 +103,37 @@ def main():
             continue
         folder = args.evidence / name
         folder.mkdir(exist_ok=True)
-        profile = args.evidence / ('paint-userdata' if name.startswith('paint-') else name + '-userdata')
+        profile = args.evidence / (('paint-graphical-userdata' if graphical else 'paint-userdata')
+                                   if name.startswith('paint-') else name + '-userdata')
         env = dict(os.environ, CYBERSAND_SOURCE_REVISION=source, XDG_DATA_HOME=str(profile), APPDATA=str(profile),
                    CYBERSAND_DIAG_PRESENTATION='', CYBERSAND_DIAG_RENDER_CADENCE='', CYBERSAND_DIAG_FLYER_POSE='',
                    CYBERSAND_TEST_ARTIFACT_DIR=str(folder / 'frames'))
         env.update(overrides)
-        if script == 'test_workbench_physics_publication':
+        render_thread = args.render_thread
+        if script in ('test_workbench_physics_publication', 'test_workbench_native_rendezvous_integration'):
             env['CYBERSAND_PHYSICS_PUBLICATION_OUTPUT'] = str(folder / 'physics-publication.json')
         elif script == 'test_material_tile_publication':
             env['CYBERSAND_MATERIAL_TILE_OUTPUT'] = str(folder / 'material-tiles.json')
+        elif script == 'test_material_threaded_publication':
+            env['CYBERSAND_MATERIAL_QUEUE_THREAD'] = args.render_thread or 'safe'
+            env['CYBERSAND_MATERIAL_QUEUE_OUTPUT'] = str(folder / 'material-threaded.json')
+        elif script == 'test_default_font_mipmap_publication':
+            render_thread = 'separate' if 'separate' in name else 'safe'
+            env['CYBERSAND_FONT_MIPMAP_THREAD'] = render_thread
+            env['CYBERSAND_FONT_MIPMAP_OUTPUT'] = str(folder)
+            env['CYBERSAND_FONT_MIPMAP_REFERENCE'] = str(args.evidence / 'font-mipmap-safe-graphical') if render_thread == 'separate' else ''
+        elif script == 'test_workbench_native_render_overlap':
+            render_thread = 'separate' if graphical else 'safe'
+            env['CYBERSAND_NATIVE_RENDER_OVERLAP_OUTPUT'] = str(folder / 'render-overlap.json')
+        elif script == 'test_depth_threaded_publication':
+            render_thread = 'separate' if 'separate' in name else 'safe'
+            env['CYBERSAND_DEPTH_QUEUE_THREAD'] = render_thread
+            env['CYBERSAND_DEPTH_QUEUE_OUTPUT'] = str(folder / 'depth-threaded.json')
+        if name.startswith('paint-'):
+            env['PAINT_CAPTURE_DIR'] = str(folder / 'frames')
         command = [str(args.godot.resolve()), '--audio-driver', 'Dummy', '--path', str(args.project.resolve())]
+        if render_thread is not None:
+            command += ['--render-thread', render_thread]
         command += (['--rendering-method', 'gl_compatibility', '--rendering-driver',
                      'opengl3_angle' if os.name == 'nt' else 'opengl3', '--max-fps', '60']
                     if graphical else ['--headless'])
@@ -123,6 +158,16 @@ def main():
             if result.returncode != 0 or ERRORS.search(text) or not completions:
                 raise RuntimeError('Test did not complete successfully; inspect retained console.log')
             row['completion'] = completions[-1]
+            if script == 'test_material_threaded_publication':
+                row['receipt'] = validate_publication_regression_receipt(name, folder / 'material-threaded.json', args.project, source)
+            elif script == 'test_default_font_mipmap_publication':
+                row['receipt'] = validate_publication_regression_receipt(name, folder / 'result.json', args.project, source)
+            elif script == 'test_workbench_native_rendezvous_integration':
+                row['receipt'] = validate_publication_regression_receipt(name, folder / 'physics-publication.json', args.project, source)
+            elif script == 'test_workbench_native_render_overlap':
+                row['receipt'] = validate_publication_regression_receipt(name, folder / 'render-overlap.json', args.project, source)
+            elif script == 'test_depth_threaded_publication':
+                row['receipt'] = validate_publication_regression_receipt(name, folder / 'depth-threaded.json', args.project, source)
             row['status'] = 'passed'
         except (RuntimeError, OSError, ValueError, KeyError, TypeError, subprocess.TimeoutExpired) as error:
             row['error'] = str(error)

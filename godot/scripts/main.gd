@@ -8,6 +8,7 @@ const PhysicalSession = preload("res://scripts/physical_actor_session.gd")
 const WorkbenchBridge = preload("res://scripts/workbench_physics_bridge.gd")
 const WorkbenchPresentationCoherence = preload("res://scripts/workbench_presentation_coherence.gd")
 const WorkbenchPoseTrace = preload("res://scripts/workbench_pose_trace.gd")
+const WorkbenchNativeRendezvous = preload("res://scripts/workbench_native_rendezvous.gd")
 const PhysicalOverlay = preload("res://scripts/physical_actor_overlay.gd")
 const PhysicalLoadouts = preload("res://scripts/physical_usable_loadouts.gd")
 const PhysicalEquipment = preload("res://scripts/physical_usable_equipment.gd")
@@ -42,6 +43,11 @@ var physical_rig_id: StringName = &""
 var physical_actor_session: CyberPhysicalActorSession
 var physical_actor_overlay: CyberPhysicalActorOverlay
 var _workbench_wait_sample: int = -1
+var _workbench_native_rendezvous = WorkbenchNativeRendezvous.new()
+# Separate renderer selection is independently controlled by Godot's existing
+# --render-thread option. This scheduling experiment is never enabled silently.
+var _workbench_native_rendezvous_selection: String = OS.get_environment("CYBERSAND_DIAG_NATIVE_RENDEZVOUS")
+var _workbench_native_rendezvous_enabled: bool = _workbench_native_rendezvous_selection in ["1", "render-overlap"]
 var shared_workbench: Control
 # Opt-in physical presentation trace. Empty and inactive in normal operation.
 var workbench_pose_trace = WorkbenchPoseTrace.new()
@@ -2138,6 +2144,7 @@ func _write_launcher_ready_receipt() -> void:
 		"native_tick":latest_snapshot.tick_index,"pending_hard_chunks":0,
 		"physics_required":physics_required,"authored_actor_count":authored_actor_count,
 		"rapier_initialized":rapier_bridge.is_initialized(),
+		"native_rendezvous":native_rendezvous_status(),
 		"material_publication":material_publication_status(),
 		"physics_publication":simulation_worker.physics_publication_mode()}
 	var output := FileAccess.open(_launcher_ready_receipt, FileAccess.WRITE)
@@ -2153,6 +2160,9 @@ func _write_launcher_ready_receipt() -> void:
 
 
 func _physics_process(_delta: float) -> void:
+	if _workbench_native_rendezvous_enabled:
+		_workbench_native_rendezvous.begin_callback(Engine.get_process_frames(),
+			_workbench_native_rendezvous_selection == "render-overlap")
 	if _pending_physical_candidate != null:
 		# The retained manually stepped space stays at its actual prior pose.
 		# Do not reconfigure its equipment, revoke its leases or publish stale
@@ -2187,8 +2197,43 @@ func _physics_process(_delta: float) -> void:
 			return
 		# A single step can restart a previously unpublished paused frame.
 		if engine_lab_wait_native_sample and _workbench_wait_sample >= 0 and physics_snapshot.lab_context.get("workbench_completed_sample",-1) != _workbench_wait_sample and not single_step:
-			_cadence_physics_hold("native_sample",physics_snapshot)
-			return
+			if _workbench_native_rendezvous_enabled and _workbench_native_rendezvous.callback_count > 1 \
+					and _actor_reset_receipt == 0 and pending_microscenario_apply.is_empty() \
+					and worker_start_error == OK and _physical_terrain_ready:
+				var expected := {"sample":_workbench_wait_sample, "epoch":_body_owner_epoch(),
+					"world_generation":physics_snapshot.physics_world_generation,
+					"session":physical_actor_session.bridge._session}
+				var waited: Dictionary = _workbench_native_rendezvous.wait_for_sample(
+					simulation_worker.try_read_physics_mailbox, expected)
+				if workbench_pose_trace.active:
+					var event: Dictionary = waited.duplicate()
+					event.erase("snapshot")
+					event.merge({"event":"native_rendezvous", "time_usec":waited.completed_usec,
+						"physics_frame":Engine.get_physics_frames(), "sample":expected.sample,
+						"epoch":expected.epoch, "session":expected.session,
+						"world_generation":expected.world_generation})
+					workbench_pose_trace.observe_event(event)
+				if waited.status == "ready":
+					physics_snapshot = waited.snapshot
+					# No input, scene or physics work ran on another thread. Still
+					# repeat every owner/terrain gate after observing a NEW packet.
+					if paused or physical_actor_session == null or _pending_physical_candidate != null \
+							or _body_owner_epoch() != expected.epoch \
+							or physical_actor_session.bridge._session != expected.session \
+							or physics_snapshot.simulation_failed \
+							or physics_snapshot.rigid_body_epoch != _body_owner_epoch() \
+							or physics_snapshot.physics_world_generation != expected.world_generation:
+						_cadence_physics_hold("missing_failed_or_wrong_epoch",physics_snapshot)
+						return
+					if not str(physics_snapshot.lab_context.get("workbench_refusal", "")).is_empty():
+						_cadence_physics_hold("native_refusal",physics_snapshot)
+						return
+					if not _workbench_terrain_installed(physics_snapshot):
+						_cadence_physics_hold("terrain_installation",physics_snapshot)
+						return
+			if physics_snapshot.lab_context.get("workbench_completed_sample",-1) != _workbench_wait_sample:
+				_cadence_physics_hold("native_sample",physics_snapshot)
+				return
 	if paused or simulation_worker.has_failed():
 		physical_trial_input.armed = false
 	if simulation_worker.has_failed():
@@ -3598,6 +3643,7 @@ func begin_workbench_pose_trace(settings: Dictionary = {}) -> bool:
 			else "libcybersand_native.linux.x86_64.so"))
 	identity["render_cadence_mode"] = "legacy" if _legacy_render_cadence() else "repaired"
 	identity["fixed_physics_delta"] = rapier_bridge.fixed_delta()
+	identity["native_rendezvous"] = native_rendezvous_status()
 	identity["clock_notice"] = "Rapier targets alter callbacks; fixed 1/60 steps are compared by simulation index. CPU upload ACK and frame_post_draw are not GPU fences or scanout."
 	if not workbench_pose_trace.begin(identity): return false
 	_cadence_physics_hold_counts.clear()
@@ -3622,12 +3668,35 @@ func _legacy_render_cadence() -> bool:
 	return OS.get_environment("CYBERSAND_DIAG_RENDER_CADENCE") == "legacy"
 
 
+func native_rendezvous_status() -> Dictionary:
+	var overlap: bool = _workbench_native_rendezvous_selection == "render-overlap"
+	var separate: bool = not RenderingServer.is_on_render_thread()
+	return {"enabled":_workbench_native_rendezvous_enabled,
+		"mode":"render-overlap" if overlap else ("fixed16" if _workbench_native_rendezvous_enabled else "off"),
+		"max_frame_wait_usec":WorkbenchNativeRendezvous.MAX_RENDER_OVERLAP_WAIT_USEC if overlap else WorkbenchNativeRendezvous.MAX_FRAME_WAIT_USEC,
+		"poll_usec":WorkbenchNativeRendezvous.POLL_USEC,
+		"separate_render_thread":separate,
+		"render_overlap_available":overlap and separate,
+		"render_marker_meaning":"Earlier RenderingServer calls returned; not GPU completion, scanout or a draw identity.",
+		"fixed_physics_delta":rapier_bridge.fixed_delta(),
+		"waits_for_native_sample":engine_lab_wait_native_sample}
+
+
 func _cadence_frame_post_draw() -> void:
 	if not workbench_pose_trace.active: return
+	# Separate rendering queues this signal back to Main. Delivery can occur
+	# after another submission; Engine's current frame/serial is not the draw's
+	# identity. Preserve delivery timing without inventing a same-frame join.
+	var inline_render: bool = RenderingServer.is_on_render_thread()
 	workbench_pose_trace.observe_event({"event":"framebuffer_draw",
-		"time_usec":Time.get_ticks_usec(),"process_frame":Engine.get_process_frames(),
+		"time_usec":Time.get_ticks_usec(),
+		"process_frame":Engine.get_process_frames() if inline_render else -1,
+		"callback_process_frame":Engine.get_process_frames(),
+		"draw_identity_associated":inline_render,
+		"signal_delivery":"inline_main" if inline_render else "main_deferred",
 		"rendered_frames":Engine.get_frames_drawn(),
-		"render_serial":last_uploaded_render_snapshot_serial})
+		"render_serial":last_uploaded_render_snapshot_serial,
+		"render_serial_is_current_submission":true})
 
 
 func _cadence_physics_hold(reason: String, snapshot: CyberSimulationSnapshot = null) -> void:
@@ -5855,7 +5924,7 @@ func update_render_texture() -> void:
 		_material_publication_fallback = "blit update validation failed"
 		var recovery_previous: Image = _material_previous_cpu_image()
 		var recovery_started: int = Time.get_ticks_usec()
-		texture = ImageTexture.create_from_image(image)
+		texture = ImageTexture.create_from_image(image.duplicate())
 		previous_texture = ImageTexture.create_from_image(recovery_previous)
 		_material_blit_publisher = null
 		_material_publication_last = {"mode":"full", "submitted_bytes":image.get_width() * image.get_height() * render_channels * 2,
@@ -5863,7 +5932,10 @@ func update_render_texture() -> void:
 			"recovery_rebuilt_pair":true}
 		return
 	var started: int = Time.get_ticks_usec()
-	(texture as ImageTexture).update(image)
+	# RenderingServer may retain this Image until a separate render owner
+	# executes the queued upload. Main mutates image on the next publication;
+	# give the queue an immutable snapshot, just as the blit staging path does.
+	(texture as ImageTexture).update(image.duplicate())
 	_material_publication_last = {"mode":"full", "submitted_bytes":image.get_width() * image.get_height() * render_channels,
 		"candidate_tiles":1, "updated_tiles":1, "tile_count":1,
 		"tile_assembly_usec":0, "backend_submit_usec":Time.get_ticks_usec() - started}
@@ -5898,8 +5970,10 @@ func _create_material_texture_pair(current: Image, previous: Image) -> void:
 		_material_publication_last = publisher.last_update.duplicate()
 	else:
 		var setup_started: int = Time.get_ticks_usec()
-		texture = ImageTexture.create_from_image(current)
-		previous_texture = ImageTexture.create_from_image(previous)
+		# Initial creation is queued too. These inputs may alias Main's mutable
+		# image, including reset/mode-switch followed by another same-frame edit.
+		texture = ImageTexture.create_from_image(current.duplicate())
+		previous_texture = ImageTexture.create_from_image(previous.duplicate())
 		_material_publication_last = {"mode":"full", "initialization":true,
 			"initialization_usec":Time.get_ticks_usec()-setup_started,
 			"submitted_bytes":(current.get_width()*current.get_height()+previous.get_width()*previous.get_height())*render_channels}
