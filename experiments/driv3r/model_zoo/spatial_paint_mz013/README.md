@@ -32,9 +32,11 @@ strictly causal. This is not a pretrained SLM or a language-model checkpoint.
 It is a proper 20M-range transformer architecture trained directly on a common
 host-legal decision curriculum.
 
+A previous exact-HEAD 220-update pilot on commit 2a045a554641c9a593c7a6fbe7f72f26ed56959d is preserved as Actions run 43921685156 / artifact 14253737899. It failed to train the 20M transformer into competent hidden-cue branching (46.43% on TEST), while the diagonal recurrence reached 85.71%. This second 700-update run tests the finite-budget undertraining hypothesis without silently replacing that negative result.
+
 Compare against a 2-layer input-gated diagonal recurrent controller,
 a two-layer GRU and a current-state MLP. All four receive identical seeded
-minibatches and **220 actual AdamW updates** on CPU. The curriculum has 96
+minibatches and **700 actual AdamW updates** on CPU. The curriculum has 96
 train-seed families, disjoint DEV/TEST families of 12 each, a separately
 shifted-spacing TEST, explicit injected-error trajectories, 8 actions and
 the same weighted per-action loss. Checkpoints and error cases are preserved.
@@ -57,7 +59,7 @@ From repository root:
 python -m pip install 'torch==2.5.1' --index-url https://download.pytorch.org/whl/cpu
 python -m unittest -v experiments.driv3r.model_zoo.spatial_paint_mz013.test_spatial
 python -m experiments.driv3r.model_zoo.spatial_paint_mz013.run --out mz013-evidence \
-  --train-seeds 96 --eval-seeds 12 --rollout-seeds 3 --updates 220 --batch 12
+  --train-seeds 96 --eval-seeds 12 --rollout-seeds 3 --updates 700 --batch 12
 ~~~
 
 The dedicated workflow source-fences every changed path against exact base
