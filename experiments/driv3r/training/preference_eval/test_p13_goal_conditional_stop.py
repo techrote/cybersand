@@ -3,13 +3,14 @@ from __future__ import annotations
 import copy
 import io
 import json
+import os
 from pathlib import Path
 import unittest
 import zipfile
 import torch
 import p13_goal_conditional_stop as p
 
-SOURCE=Path(__file__).parent.parent/'immutable-P11-source'/'P11-hosted-43918309938.zip'
+SOURCE=Path(os.environ.get('P13_P11_ARTIFACT', str(Path(__file__).parent.parent/'immutable-P11-source'/'P11-hosted-43918309938.zip')))
 
 class GoalPreferenceTests(unittest.TestCase):
     def test_exhaustive_goal_contract(self):
