@@ -85,17 +85,17 @@ against exact committed exporter source; do not infer exporter qualification.
 
 The v1 teacher's **observable family signal is nearly absent**. Exact matched-state analysis of the independently reproduced 4,313-message **TRAIN-only** export found 815 within-world pre-action contexts repeated across at least two family tokens. Only **3/815 (0.368%)** had different recorded teacher action labels; 812 had the same label. This is a selected TRAIN slice, not proof about all unexported producer decisions. It reinforces the full-source visual finding that 122/180 worlds rendered identically across families.
 
-New scoped [family_contrast_probe.py](family_contrast_probe.py) accepts **only the already verified TRAIN-only export ZIP**, verifies its member hashes, row counts, source manifest class and per-input SHA, and produces a separate family-signal audit. Optional \`--emit-probes\` creates deliberately counterfactual, host-legal **single-step** preference triples: same source state with greebles→BRANCH, pipework→STRAIGHT, architecture→LEFT/RIGHT alternating by 8-tick phase. These are **NOT original teacher actions, NOT host-applied trajectories, NOT native receipts, NOT success/quality evidence**. They are an opt-in diagnostic or experimental TRAIN curriculum, never a DEV/heldout benchmark; never evaluate on their original source worlds.
+New scoped [family_contrast_probe.py](family_contrast_probe.py) accepts **only the already verified TRAIN-only export ZIP**, verifies its member hashes, row counts, source manifest class and per-input SHA, and produces a separate family-signal audit. Optional `--emit-probes` creates deliberately counterfactual, host-legal **single-step** preference triples: same source state with greebles→BRANCH, pipework→STRAIGHT, architecture→LEFT/RIGHT alternating by 8-tick phase. These are **NOT original teacher actions, NOT host-applied trajectories, NOT native receipts, NOT success/quality evidence**. They are an opt-in diagnostic or experimental TRAIN curriculum, never a DEV/heldout benchmark; never evaluate on their original source worlds.
 
-A real run used \`--cap 480 --per-world 6 --seed 0 --emit-probes\`: **480 distinct source states / 131 TRAIN source worlds / 1,440 host-legal single-step prompts**, balanced across three family tokens; bounded quotas and deterministic hash-based sampling. Independent second-run file hashes and a separate native-safety boundary remain required for any later promotion. This is explicitly a new experimental data class, not a replacement for v1's 4,313 authentic synthetic-teacher examples.
+A real run used `--cap 480 --per-world 6 --seed 0 --emit-probes`: **480 distinct source states / 131 TRAIN source worlds / 1,440 host-legal single-step prompts**, balanced across three family tokens; bounded quotas and deterministic hash-based sampling. Independent second-run file hashes and a separate native-safety boundary remain required for any later promotion. This is explicitly a new experimental data class, not a replacement for v1's 4,313 authentic synthetic-teacher examples.
 
 Reproduce from the previously issued TRAIN-only ZIP:
 
-\`\`\`sh
+```sh
 python3 -m unittest discover -s experiments/driv3r/corpus_factory -p 'test_family_contrast_probe.py' -v
 python3 experiments/driv3r/corpus_factory/family_contrast_probe.py \
   /path/to/cybersand_game_corpus_v1_train_only.zip \
   --output /tmp/cs-family-contrast-v1 --emit-probes --cap 480 --per-world 6 --seed 0
-\`\`\`
+```
 
 Five exact-Git-blob-matched local tests PASS; GitHub Actions corpus-specific qualification **not claimed**. The output report and two optional JSONLs carry their own SHA-256 manifest, source export ZIP hash, original corpus manifest hash and non-execution provenance. Trainer consumption requires explicit WORM/DRIV3R model-owner opt-in; do not silently combine counterfactual one-step labels with the original teacher or held-out evaluation. No optimizer was started.
