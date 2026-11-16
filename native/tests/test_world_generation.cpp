@@ -1201,14 +1201,18 @@ void independent_architectural_algorithms() {
 
 
 void classic_architectural_genteks() {
-    const std::array<std::string,48> ids{"trestle","stacked_arcade","flying_buttress","sawtooth_gallery","cantilever_spine","rib_vault",
+    const std::array<std::string,72> ids{"trestle","stacked_arcade","flying_buttress","sawtooth_gallery","cantilever_spine","rib_vault",
         "nested_arcade","suspended_deck","bowstring_truss","diamond_truss","portal_frame","ladder_bridge",
         "stepped_aqueduct","split_pier","cable_gallery","clerestory_hall","mushroom_deck","zigzag_bridge",
         "scalloped_vault","lattice_tower","offset_arcade","bridgehouse","forked_gantry","buttress_wall",
         "fan_truss","pratt_truss","vierendeel_frame","suspension_pylon","harp_bridge","double_cantilever",
         "stepped_buttress","colonnade","basilica","crenellated_bridge","pointed_arcade","inverted_arch",
         "hourglass_pier","tripod_frame","chevron_hall","hanging_arcade","shelf_stack","staggered_balcony",
-        "monopod_tower","wedge_gallery","crown_bridge","zigzag_pier","drum_vault","pyramidal_frame"};
+        "monopod_tower","wedge_gallery","crown_bridge","zigzag_pier","drum_vault","pyramidal_frame",
+        "warren_truss","kingpost_frame","queenpost_frame","lenticular_bridge","radial_stay_bridge","twin_mast_bridge",
+        "a_frame_hall","butterfly_hall","ziggurat_arcade","corbel_arcade","chain_vault","ring_pier",
+        "folded_plate_hall","space_frame","crossbeam_stack","yoke_bridge","lantern_tower","spine_arcade",
+        "cascade_terrace","inverted_trestle","cranked_beam","barrel_arcade","buttress_crown","triptych_arcade"};
     std::set<std::vector<Material>> unique;
     for (const auto& id : ids) {
         Recipe recipe; recipe.schema=kArchitecturalSchemaVersion; recipe.candidate=Candidate::Strata;
@@ -1234,7 +1238,7 @@ void classic_architectural_genteks() {
         auto invalid=recipe; invalid.schema=kHierarchySchemaVersion;
         rejects([&]{(void)Generator::compile(invalid);},id+" requires schema 4");
     }
-    require(unique.size()==ids.size(),"forty-eight classic Genteks produce distinct native geometry");
+    require(unique.size()==ids.size(),"seventy-two classic Genteks produce distinct native geometry");
 }
 
 void refined_architectural_details() {

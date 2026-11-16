@@ -2,7 +2,7 @@
 title: GENTEK-CLASSIC-001 compact architectural sampler batch
 status: Draft
 document-kind: research
-scope: Forty-eight compact schema-4 native Genteks using the existing Architectural Generator pipeline
+scope: Seventy-two compact schema-4 native Genteks using the existing Architectural Generator pipeline
 last-reviewed: 2026-11-15
 related-documents: [../systems/architectural-generator.md, ../systems/procedural-world-generation.md]
 ---
@@ -63,6 +63,30 @@ kept deliberately compact in `native/src/generation_architecture_classic.inc`.
 | Zigzag Pier | `zigzag_pier` | Single load path switching left/right by vertical quarter |
 | Drum Vault | `drum_vault` | Rounded barrel shell with straight side walls |
 | Pyramidal Frame | `pyramidal_frame` | Triangular outer frame with internal horizontal ties |
+| Warren Truss | `warren_truss` | Triangular diagonals repeat between two long chords |
+| Kingpost Frame | `kingpost_frame` | Central post with two rafters forming a triangular frame |
+| Queenpost Frame | `queenpost_frame` | Paired posts support a tie and sloping outer rafters |
+| Lenticular Bridge | `lenticular_bridge` | Upper and lower quadratic chords form a lens |
+| Radial Stay Bridge | `radial_stay_bridge` | Central hub radiates stays to both sides of a deck |
+| Twin Mast Bridge | `twin_mast_bridge` | Paired masts and crossed stays frame the central span |
+| A-Frame Hall | `a_frame_hall` | Steep A-frame roof continues into side supports |
+| Butterfly Hall | `butterfly_hall` | Inverted-V roof drains toward the centre |
+| Ziggurat Arcade | `ziggurat_arcade` | Stepped outer mass contains a tall central slot |
+| Corbel Arcade | `corbel_arcade` | Opening narrows upward in discrete corbel steps |
+| Chain Vault | `chain_vault` | Alternating hanging curves form a chain-like roof |
+| Ring Pier | `ring_pier` | Thick diamond-ring support around an empty core |
+| Folded Plate Hall | `folded_plate_hall` | Continuous folded roof alternates high and low ridges |
+| Space Frame | `space_frame` | Twin chords linked by dense alternating X members |
+| Crossbeam Stack | `crossbeam_stack` | Central spine carrying four alternating long crossbeams |
+| Yoke Bridge | `yoke_bridge` | Paired piers support a high yoke and lower deck |
+| Lantern Tower | `lantern_tower` | Narrow shaft expands into a glazed upper lantern |
+| Spine Arcade | `spine_arcade` | Central spine sprouts alternating half-arches |
+| Cascade Terrace | `cascade_terrace` | Four offset decks cascade downward across each bay |
+| Inverted Trestle | `inverted_trestle` | High carrier deck sends V-braces downward |
+| Cranked Beam | `cranked_beam` | Thick beam follows a four-segment angular path |
+| Barrel Arcade | `barrel_arcade` | Rounded barrel roof over repeated open wall bays |
+| Buttress Crown | `buttress_crown` | Stepped outer buttresses rise into a narrow crown |
+| Triptych Arcade | `triptych_arcade` | Three pointed openings of unequal widths share one bay |
 
 All are version 1 and reuse the existing project/preset compiler, five style
 cards, native preview/install and saved-start path. They do not self-assemble,

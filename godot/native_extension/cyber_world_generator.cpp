@@ -906,7 +906,15 @@ Dictionary CyberWorldGenerator::get_catalogue() const {
             module == "chevron_hall" || module == "hanging_arcade" || module == "shelf_stack" ||
             module == "staggered_balcony" || module == "monopod_tower" || module == "wedge_gallery" ||
             module == "crown_bridge" || module == "zigzag_pier" || module == "drum_vault" ||
-            module == "pyramidal_frame";
+            module == "pyramidal_frame" || module == "warren_truss" || module == "kingpost_frame" ||
+            module == "queenpost_frame" || module == "lenticular_bridge" || module == "radial_stay_bridge" ||
+            module == "twin_mast_bridge" || module == "a_frame_hall" || module == "butterfly_hall" ||
+            module == "ziggurat_arcade" || module == "corbel_arcade" || module == "chain_vault" ||
+            module == "ring_pier" || module == "folded_plate_hall" || module == "space_frame" ||
+            module == "crossbeam_stack" || module == "yoke_bridge" || module == "lantern_tower" ||
+            module == "spine_arcade" || module == "cascade_terrace" || module == "inverted_trestle" ||
+            module == "cranked_beam" || module == "barrel_arcade" || module == "buttress_crown" ||
+            module == "triptych_arcade";
         const bool has_v2 = module == "arcology" || module == "vault" ||
             module == "terraced" || module == "hex_hive" || module == "arcade";
         if (schema4_only) item["minimum_recipe_schema"] = gen::kArchitecturalSchemaVersion;

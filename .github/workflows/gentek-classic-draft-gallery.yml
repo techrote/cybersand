@@ -62,7 +62,7 @@ jobs:
           chmod +x "$GODOT_BIN"
           mkdir -p build/gentek-classic-gallery
           CYBERSAND_ARCHITECTURE_PHASE=native CYBERSAND_ARCHITECTURE_OUTPUT="$GITHUB_WORKSPACE/build/gentek-classic-gallery"             timeout 3600 "$GODOT_BIN" --headless --path godot --script res://tests/test_architectural_generator.gd
-          test "$(find build/gentek-classic-gallery -maxdepth 1 -name 'classic-gentek-*.png' | wc -l)" -eq 48
+          test "$(find build/gentek-classic-gallery -maxdepth 1 -name 'classic-gentek-*.png' | wc -l)" -eq 72
       - name: Retain complete evidence
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:

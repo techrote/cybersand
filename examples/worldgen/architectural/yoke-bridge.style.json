@@ -1,0 +1,23 @@
+{
+  "format": "cybersand.architectural-style",
+  "version": 1,
+  "id": "yoke-bridge",
+  "name": "Yoke Bridge",
+  "module": "yoke_bridge",
+  "module_version": 1,
+  "theme": "ruins",
+  "geometry": {
+    "room_size": 96,
+    "floor_height": 88,
+    "wall_thickness": 3,
+    "door_width": 10,
+    "shaft_width": 0
+  },
+  "materials": {
+    "wall": 104,
+    "floor": 119,
+    "window": 120
+  },
+  "apertures": {},
+  "deterioration": 0
+}

@@ -332,7 +332,11 @@ func classic_gentek_gallery() -> void:
 		"fan_truss","pratt_truss","vierendeel_frame","suspension_pylon","harp_bridge","double_cantilever",
 		"stepped_buttress","colonnade","basilica","crenellated_bridge","pointed_arcade","inverted_arch",
 		"hourglass_pier","tripod_frame","chevron_hall","hanging_arcade","shelf_stack","staggered_balcony",
-		"monopod_tower","wedge_gallery","crown_bridge","zigzag_pier","drum_vault","pyramidal_frame"]
+		"monopod_tower","wedge_gallery","crown_bridge","zigzag_pier","drum_vault","pyramidal_frame",
+		"warren_truss","kingpost_frame","queenpost_frame","lenticular_bridge","radial_stay_bridge","twin_mast_bridge",
+		"a_frame_hall","butterfly_hall","ziggurat_arcade","corbel_arcade","chain_vault","ring_pier",
+		"folded_plate_hall","space_frame","crossbeam_stack","yoke_bridge","lantern_tower","spine_arcade",
+		"cascade_terrace","inverted_trestle","cranked_beam","barrel_arcade","buttress_crown","triptych_arcade"]
 	var builtins: Array = Project.builtin_presets()
 	var hashes := {}
 	var samples := {}
@@ -359,8 +363,8 @@ func classic_gentek_gallery() -> void:
 		report.cases.append({"case":"gentek-classic-001","algorithm":algorithm,"preset_id":style.id,
 			"module_version":int(style.module_version),"seed":project.seed,"material_sha256":data.material_sha256,
 			"recipe_sha256":data.recipe_sha256,"preview_colour_and_png_us":png_us})
-	check(samples.size() == 48 and hashes.size() == 48, "forty-eight classic Genteks render distinct native maps")
-	if samples.size() == 48:
+	check(samples.size() == 72 and hashes.size() == 72, "seventy-two classic Genteks render distinct native maps")
+	if samples.size() == 72:
 		for algorithm: String in ids:
 			if algorithm == "trestle": continue
 			var delta: int = changed_cells(samples[algorithm],samples["trestle"],true)
