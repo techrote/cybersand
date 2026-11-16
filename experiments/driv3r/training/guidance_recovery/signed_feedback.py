@@ -39,6 +39,8 @@ class HostAdvice:
 
     def issue_backtrack(self,w,strength=1.,ttl=9):
         self._validate(strength,ttl)
+        if strength==0.:
+            self.cancel(w);return
         w.issue_recovery_cue(12)
         self.context=Context(w,steps=ttl)
         self.directive=1
@@ -49,6 +51,8 @@ class HostAdvice:
 
     def issue_continue(self,w,strength=1.,ttl=6):
         self._validate(strength,ttl)
+        if strength==0.:
+            self.cancel(w);return
         # Host supersedes its previous advisory, without reversing applied ink.
         w.recovery_cue_ttl=0
         self.context=None
