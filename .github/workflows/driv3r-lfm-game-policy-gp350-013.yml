@@ -1,0 +1,131 @@
+name: LFM350 GP350-013 W0 cul-de-sac RETRACE / GP006 KL / 48 AdamW
+on:
+  push:
+    branches: [research/lfm-game-policy-350m]
+    paths: [experiments/driv3r/lfm_game_policy/gp350-013-request.json]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: lfm350-primary-single-optimizer-gp350013
+  cancel-in-progress: false
+jobs:
+  recover-trapped:
+    name: Pinned full LFM350 + original GP006 rank8 LoRA, W0 trapped RETRACE and parent-pressure KL
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      OMP_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+      HF_HUB_DISABLE_TELEMETRY: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: techrote/cybersand
+          ref: 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          path: pinned-w0
+          persist-credentials: false
+      - name: Exact source/W0 and trapped recovery pressure-retention preflight
+        run: |
+          set -euo pipefail
+          mkdir -p gp350-013-evidence
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git -C pinned-w0 rev-parse HEAD)" = 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          test "$(git hash-object pinned-w0/experiments/agent_painter/worm/common/worm.py)" = 8979b6f0296e81051194bacc907992d38e006605
+          python3 -m py_compile experiments/driv3r/lfm_game_policy/{lfm350,gp350_paired_margin_train,gp350_selective_branch_train}.py
+          python3 experiments/driv3r/lfm_game_policy/gp350_recovery_train.py --self-test \
+            --w0 pinned-w0/experiments/agent_painter/worm/common/worm.py \
+            --out "$RUNNER_TEMP/no-evidence" --cache "$RUNNER_TEMP/no-model"
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          req=json.loads(Path("experiments/driv3r/lfm_game_policy/gp350-013-request.json").read_text())
+          assert req["schema"]=="driv3r.lfm350.gp350013-request/1"
+          assert req["model"]=="LiquidAI/LFM2.5-350M"
+          assert req["revision"]=="9921cd4d82c0e3986887aa4b376f9446729ef8a3"
+          assert req["from_weights_run"]==43806503356
+          assert req["from_weights_artifact"]==14199280586
+          assert req["from_weights_adapter_sha256"]=="436159bd6508063221d31d46f057b5fba7ee5b6f05b27edf003c54e76863898c"
+          assert req["new_optimizer_not_exact_resume"] is True
+          assert req["steps"]==48 and req["checkpoint_steps"]==[16,32,48]
+          assert req["train_seeds"]==list(range(3101,3113))
+          assert req["dev_seeds"]==[9103,9119,9137]
+          assert req["eval_seeds"]==[9503,9521] and req["sizes"]==[32,48]
+          assert req["natural_W0_observations"] and req["synthetic_teacher_not_native"]
+          assert req["branch_legal_negative_contrasts"] and req["retrace_legal_positive_negative_contrasts"] and req["GP006_pressure_KL"]
+          assert req["original_W0_PNGs"]==60 and not req["native"] and not req["paid_GPU"] and req["draft_hold"]
+          PY
+          python3 tools/ci/check_ci_provider_policy.py
+          (git rev-parse HEAD; date -u -Iseconds; python3 --version) > gp350-013-evidence/source-host.txt
+      - name: Retrieve immutable GP350006 LoRA and check original hash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh run download 43806503356 --repo techrote/cybersand \
+            --name gp350-006-74fc997484cd1414dfc7a8be09d85a4daefb8554-43806503356-1 \
+            --dir gp350-013-evidence/original-parent
+          test "$(sha256sum gp350-013-evidence/original-parent/original-experiment/adapter-step-96/adapter_model.safetensors | cut -d' ' -f1)" = 436159bd6508063221d31d46f057b5fba7ee5b6f05b27edf003c54e76863898c
+      - name: Install pinned LFM350 CPU environment and attribution
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/gp350013"
+          "$RUNNER_TEMP/gp350013/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/gp350013/bin/python" -m pip install \
+            'transformers==5.22.2' 'peft==0.21.2' 'accelerate==1.15.0' \
+            'huggingface-hub==2.4.0' 'safetensors==0.8.0'
+          "$RUNNER_TEMP/gp350013/bin/python" -m pip check
+          "$RUNNER_TEMP/gp350013/bin/python" -m pip freeze --all > gp350-013-evidence/pip-freeze.txt
+          echo 'LiquidAI/LFM2.5-350M under LFM Open License v1.0. Attribution: Liquid AI.' > gp350-013-evidence/attribution.txt
+      - name: Full-model genuine 48 AdamW steps with trapped recovery and 60 original W0 PNGs
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=40s 2350s \
+            "$RUNNER_TEMP/gp350013/bin/python" experiments/driv3r/lfm_game_policy/gp350_recovery_train.py \
+              --w0 pinned-w0/experiments/agent_painter/worm/common/worm.py \
+              --adapter gp350-013-evidence/original-parent/original-experiment/adapter-step-96 \
+              --cache "$RUNNER_TEMP/gp350013-full-model" \
+              --out gp350-013-evidence/original-experiment --deadline 1950
+      - name: Check real optimizer updates, frozen parent, trained adapter and original images
+        if: success()
+        run: |
+          python3 - <<'PY'
+          import json,hashlib,os
+          from pathlib import Path
+          p=Path("gp350-013-evidence/original-experiment")
+          s=json.loads((p/"summary.json").read_text())
+          assert s["source_sha"]==os.environ["GITHUB_SHA"]
+          assert s["status"]=="complete" and s["updates"]==48
+          assert s["backwards"]==48 and s["real_gradient_forwards"]>96
+          assert s["frozen_full_parent_unchanged"] and s["adapter_updated"]
+          assert s["parent_adapter_sha256"]=="436159bd6508063221d31d46f057b5fba7ee5b6f05b27edf003c54e76863898c"
+          assert not s["native"] and s["original_pngs"]==60
+          assert s["parent_W0_anchors"]==24 and s["recovery_positive_negative_updates"]>0
+          assert len(s["baseline"])==len(s["trained"])==12 and len(s["controls"])==36
+          progress=[json.loads(x) for x in (p/"optimizer.jsonl").read_text().splitlines()]
+          assert len(progress)==48 and [x["step"] for x in progress]==list(range(1,49))
+          assert all(x["grad_norm"]>0 and x["actual_adamw_updates"]==1 for x in progress)
+          for row in s["baseline"]+s["trained"]+s["controls"]:
+              img=(p/row["png"]).read_bytes()
+              assert img[:8]==b"\x89PNG\r\n\x1a\n"
+              assert hashlib.sha256(img).hexdigest()==row["png_sha256"]
+              assert row["host_illegal"]==0
+          for file,digest in s["adapter_sha256"].items():
+              assert hashlib.sha256((p/file).read_bytes()).hexdigest()==digest
+          for step in (16,32,48):
+              assert (p/f"adapter-step-{step}/adapter_model.safetensors").is_file()
+          print("GP350013 real AdamW recovery and W0 PNG validation PASS")
+          PY
+      - name: Always preserve original source, model, optimizer, W0 images or failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gp350-013-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: gp350-013-evidence/
+          if-no-files-found: warn
+          retention-days: 90
