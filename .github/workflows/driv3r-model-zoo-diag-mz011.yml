@@ -1,0 +1,107 @@
+name: MZ-011 diagonal gated-state closed-loop game memory (HOLD)
+on:
+  push:
+    branches: ['research/model-zoo-diagonal-state-mz011']
+    paths:
+      - 'experiments/driv3r/model_zoo/diag_state_mz011/**'
+      - '.github/workflows/driv3r-model-zoo-diag-mz011.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: mz011-diagonal-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name != 'workflow_dispatch' }}
+jobs:
+  cpu-research:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      OMP_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      OPENBLAS_NUM_THREADS: '2'
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Research-only exact-parent change fence
+        run: |
+          git diff --name-only 3a4eded62900aad3df91fd9b2a1ae28bbb4a0c0e HEAD > "$RUNNER_TEMP/mz011-changes.txt"
+          cat "$RUNNER_TEMP/mz011-changes.txt"
+          python - <<'PY'
+          from pathlib import Path
+          import os
+          files = Path(os.environ['RUNNER_TEMP'], 'mz011-changes.txt').read_text().splitlines()
+          allowed = 'experiments/driv3r/model_zoo/diag_state_mz011/'
+          workflow = '.github/workflows/driv3r-model-zoo-diag-mz011.yml'
+          assert files and all(p.startswith(allowed) or p == workflow for p in files), files
+          print('Exact-parent research-only scope guard passed')
+          PY
+      - name: Install pinned CPU-only PyTorch
+        run: |
+          python -m pip install 'torch==2.5.1' --index-url https://download.pytorch.org/whl/cpu
+          python -m pip freeze > "$RUNNER_TEMP/mz011-packages.txt"
+      - name: Verify inherited procedural host and gated-state contracts
+        run: |
+          python -m unittest -v \
+            experiments.driv3r.model_zoo.material_forks_mz009.test_world \
+            experiments.driv3r.model_zoo.diag_state_mz011.test_diag
+      - name: Real matched training and closed-loop evaluation
+        run: |
+          python -m experiments.driv3r.model_zoo.diag_state_mz011.run \
+            --out "$RUNNER_TEMP/mz011" --train-seeds 160 --eval-seeds 24 \
+            --rollout-seeds 8 --updates 800 --batch 48
+      - name: Independently reload all trained weights and verify exact scores
+        run: |
+          python - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          import torch
+          from experiments.driv3r.model_zoo.material_forks_mz009 import run as env
+          from experiments.driv3r.model_zoo.diag_state_mz011.run import (
+              PARENT_HEAD, SCHEMA, build_models, parameter_counts)
+          torch.set_num_threads(2)
+          out = Path(os.environ['RUNNER_TEMP'], 'mz011')
+          r = json.loads((out/'metrics.json').read_text())
+          assert r['schema'] == SCHEMA
+          assert r['source_sha'] == os.environ['GITHUB_SHA']
+          assert r['parent_source_sha'] == PARENT_HEAD
+          assert r['training']['updates_per_model'] == 800
+          assert r['training']['batch'] == 48
+          assert r['training']['disjoint_split_families']
+          assert r['training']['test_episodes'] == 24*4*3
+          assert r['cached_vs_prefix_episode_parity']['matched'] == r['cached_vs_prefix_episode_parity']['episodes']
+          assert hashlib.sha256((out/'models.pt').read_bytes()).hexdigest() == r['checkpoint_sha256']
+          saved = torch.load(out/'models.pt', map_location='cpu', weights_only=True)
+          assert saved['schema'] == SCHEMA
+          assert saved['source_sha'] == r['source_sha']
+          assert saved['parent_source_sha'] == PARENT_HEAD
+          assert tuple(saved['actions']) == env.ACTIONS
+          models = build_models(torch, saved['hidden'])
+          assert parameter_counts(models) == r['parameters']
+          x, y = env.to_tensors(torch, env.dataset(range(5000, 5024)))
+          for name, net in models.items():
+              net.load_state_dict(saved['models'][name], strict=True)
+              net.eval()
+              with torch.inference_mode():
+                  actual = env.class_scores(net(x), y, x)
+              assert actual == r['scores'][name]['test'], (name, actual, r['scores'][name]['test'])
+              assert r['rollouts'][name]['episodes'] == 32
+          import xml.etree.ElementTree as ET
+          assert ET.parse(out/'trajectories.svg').getroot().tag.endswith('svg')
+          print('All trained model weights, TEST scores and original SVG independently verified')
+          PY
+      - name: Preserve checkpoint, metrics, loss traces, gallery and dependencies
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mz011-diagonal-gated-state-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/mz011/**
+            ${{ runner.temp }}/mz011-packages.txt
+            ${{ runner.temp }}/mz011-changes.txt
+          if-no-files-found: warn
+          retention-days: 14
