@@ -39,6 +39,9 @@ def selftest(path):
     c.check(len(probe) == 72, "heldout W0 probe inventory mismatch")
     c.check(all(row["target"] in row["observation"]["legal"] for row in probe),
             "illegal heldout teacher target")
+    # Stage receipts must never collide; save_json is write-once by design.
+    partials=["partial-summary-"+name+".json" for name in STAGES]
+    c.check(len(partials)==len(set(partials)), "stage partial receipts collide")
     print(c.canonical({"GP350009_SELFTEST": "PASS", "heldout_rows":len(probe),
         "original_W0":True, "checkpoint_only":True, "source_fenced":True}), flush=True)
 
@@ -141,9 +144,14 @@ def run(args):
              "raw_illegal":probe["raw_illegal"],
              "marker_target_matches":probe["marker_target_matches"]},
              "episodes":episodes,"stats":summarise(episodes)}
-        c.save_json(out/"partial-summary.json",{"stages_completed":list(summaries),
+        # Keep every stage receipt immutable: save_json deliberately rejects overwrites.
+        # The previous shared partial-summary.json failed after stage two.
+        c.save_json(out/("partial-summary-"+stage+".json"),{
+            "stage":stage,"stages_completed":list(summaries),
             "source_sha":os.getenv("GITHUB_SHA"),
-            "no_success_claim_until_full_evaluation":True})
+            "no_success_claim_until_full_evaluation":True,
+            "stats":summaries[stage]["stats"],
+            "probe":summaries[stage]["probe"]})
     controls=[]
     for size in SIZES:
         for seed in SEEDS:
