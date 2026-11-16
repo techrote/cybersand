@@ -34,6 +34,9 @@ material-only Flatten contract: two bytes per cell, unchanged live World, explic
 Save. The [qualification and Owner workflow](operations/gen008-flatten-qualification.md)
 keeps implementation evidence and human acceptance separate. Keep #548 Draft/HOLD.
 
+Isolated Draft/HOLD showcase: [Interlaced Viaduct](operations/gentek-interlaced-viaduct.md)
+adds two composed structural systems to the ordinary CLASSIC generator path.
+
 GEN-007 Architectural Generator [merge hold, owner-reviewed](systems/architectural-generator.md):
 five simultaneous style columns, thirteen built-in presets, versioned native
 Terraces/Hive/Viaduct algorithms, deterministic zone allocation and source-bound
