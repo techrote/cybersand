@@ -1,0 +1,63 @@
+name: DRIV3R FT-003 matched training-dose heldout policy comparison
+
+on:
+  push:
+    branches: [research/570-fleet-training-throughput-001]
+    paths:
+      - .github/workflows/driv3r-fleet-training-ft003.yml
+      - experiments/driv3r/fleet_training/request_dose.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: driv3r-fleet-training-ft003-dose
+  cancel-in-progress: false
+
+jobs:
+  matched-dose-cpu-training:
+    name: FT-003 real two-resident matched 12 vs 48 training episodes
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      NUMEXPR_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Pin read-only source of real population training
+        uses: actions/checkout@v4
+        with:
+          repository: techrote/cybersand
+          ref: 534cd8ffac6fbe33a714ae03a62c16045bf10259
+          path: upstream
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install bounded fixed CPU dependency
+        run: python -m pip install --disable-pip-version-check numpy==2.3.5
+      - name: Fail-closed lease, source, split and regression tests
+        run: |
+          python -m compileall -q experiments/driv3r/fleet_training
+          python -m unittest discover -s experiments/driv3r/fleet_training -p 'test_*.py' -v
+          python tools/ci/check_ci_provider_policy.py
+          python tools/ci/check_ci_scheduling_policy.py
+      - name: Train four real model instances, two simultaneously, compare matched heldout worlds
+        run: |
+          python experiments/driv3r/fleet_training/training_dose.py \
+            --request experiments/driv3r/fleet_training/request_dose.json \
+            --upstream upstream \
+            --output "${RUNNER_TEMP}/ft003-original"
+      - name: Preserve original checkpoints, policy trajectories, receipts and failure evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ft003-original-${{ github.run_id }}
+          path: ${{ runner.temp }}/ft003-original/
+          if-no-files-found: warn
+          retention-days: 14
