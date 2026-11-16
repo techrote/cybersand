@@ -111,6 +111,18 @@ def teacher_data(seedset, budget=BUDGET):
     return rows, worlds, dict(hard), dict(labels), dict(counters)
 
 
+def augmented_features(obs):
+    result=features(obs, True)
+    dx,dy=obs['goal_delta']; heading=obs['heading']
+    # Explicit relative goal orientation rather than exposing privileged BFS.
+    forward=dx*DIRS[heading][0]+dy*DIRS[heading][1]
+    right=dx*DIRS[(heading+1)%4][0]+dy*DIRS[(heading+1)%4][1]
+    for key,val in (('forward',forward),('right',right)):
+        result['relative:'+key+':sign:'+str((val>0)-(val<0))]=1
+        result['relative:'+key+':magnitude:'+str(min(12,abs(val)//5))]=1
+    return result
+
+
 def write_train_export(rows, worlds, destination):
     """Immutable TRAIN-only chat corpus; removes same-state cross-family duplications.
 
@@ -170,18 +182,6 @@ def write_train_export(rows, worlds, destination):
     return {'artifact_name':destination.name,'sha256':sha(destination.read_bytes()),
             'rows':len(clean),'duplicates_removed':len(rows)-len(clean),
             'hard_negative_records':len(distractors),'world_groups':len(worlds)}
-
-
-def augmented_features(obs):
-    result=features(obs, True)
-    dx,dy=obs['goal_delta']; heading=obs['heading']
-    # Explicit relative goal orientation rather than exposing privileged BFS.
-    forward=dx*DIRS[heading][0]+dy*DIRS[heading][1]
-    right=dx*DIRS[(heading+1)%4][0]+dy*DIRS[(heading+1)%4][1]
-    for key,val in (('forward',forward),('right',right)):
-        result['relative:'+key+':sign:'+str((val>0)-(val<0))]=1
-        result['relative:'+key+':magnitude:'+str(min(12,abs(val)//5))]=1
-    return result
 
 
 def fit(rows, epochs=24):
