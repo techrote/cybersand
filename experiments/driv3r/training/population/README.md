@@ -294,7 +294,7 @@ approaches and goal reversals. Cards 6/7 are **heldout geometry templates** neve
 offered during training. All actual game actions remain host-mask legal
 (N/E/S/W/RETRACE/STOP); no Godot/native/Workbench code or game assets are touched.
 
-Two generations with three offspring per niche per arm; every mutated offspring
+Three independent cohorts (640, 641, 642), each with two generations and three offspring per niche per arm; every mutated offspring
 is actually trained with teacher-augmented on-policy-state Adam. Three controlled
 scenario-assignment treatments are compared: uniformly sampled candidate card;
 maximal frozen-parent hardness; and maximal *current-policy* hardness. Every arm
@@ -305,7 +305,7 @@ utility oracle, plus early-STOP penalty. The experiment is *not* reinforcement
 learning or true multi-agent self-play, and the environment opponent itself is
 an adaptive scenario selector, not a trained neural generator.
 
-Each of the 216 policies in cohorts 640/641 (108 per cohort) saves its actual
+Each of the 324 policies in cohorts 640/641/642 (108 per cohort) saves its actual
 weights, parent/seed/optimizer lineage, per-episode candidate difficulty vector,
 selected challenge card, and selection metrics. After selection/parent evolution
 is frozen, untouched-world evaluations compare all three arms on familiar
@@ -320,6 +320,7 @@ Reproduce from a P0 folder produced by the population baseline:
 ```sh
 python experiments/driv3r/training/population/population_p9.py --p0-output /tmp/population-evidence --output /tmp/population-evidence/p9_640 --seed 640 --generations 2 --offspring 3 --train-episodes 7 --selection-episodes 4 --holdout-episodes 6 --horizon 40 --portfolio 2 --proposals 3
 python experiments/driv3r/training/population/population_p9.py --p0-output /tmp/population-evidence --output /tmp/population-evidence/p9_641 --seed 641 --generations 2 --offspring 3 --train-episodes 7 --selection-episodes 4 --holdout-episodes 6 --horizon 40 --portfolio 2 --proposals 3
+python experiments/driv3r/training/population/population_p9.py --p0-output /tmp/population-evidence --output /tmp/population-evidence/p9_642 --seed 642 --generations 2 --offspring 3 --train-episodes 7 --selection-episodes 4 --holdout-episodes 6 --horizon 40 --portfolio 2 --proposals 3
 ```
 
 **Draft/HOLD, no merge, no production or CyberSand game/content changes.**

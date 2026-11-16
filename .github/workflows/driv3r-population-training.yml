@@ -82,6 +82,10 @@ jobs:
         env:
           OPENBLAS_NUM_THREADS: '1'
         run: python experiments/driv3r/training/population/population_p9.py --p0-output /tmp/population-evidence --output /tmp/population-evidence/p9_641 --seed 641 --generations 2 --offspring 3 --train-episodes 7 --selection-episodes 4 --holdout-episodes 6 --horizon 40 --portfolio 2 --proposals 3
+      - name: P9 third independent challenge-curriculum replication, cohort 642
+        env:
+          OPENBLAS_NUM_THREADS: '1'
+        run: python experiments/driv3r/training/population/population_p9.py --p0-output /tmp/population-evidence --output /tmp/population-evidence/p9_642 --seed 642 --generations 2 --offspring 3 --train-episodes 7 --selection-episodes 4 --holdout-episodes 6 --horizon 40 --portfolio 2 --proposals 3
       - name: Retain exact experimental source for reproducibility
         run: |
           mkdir -p /tmp/population-evidence/source
