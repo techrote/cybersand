@@ -39,6 +39,8 @@ class P3Tests(unittest.TestCase):
         self.assertTrue(any(i%4==3 for i in test))
     def test_real_adam_optimisation_and_ablation(self):
         pairs=p.make_training(range(1000,1012))
+        self.assertEqual({y for _,y in pairs},{0,1})
+        self.assertEqual(sum(y for _,y in pairs)*2,len(pairs))
         a=p.fit(pairs,steps=40);b=p.fit(pairs,steps=40)
         self.assertEqual(a,b)
         self.assertLess(a['loss'][-1][1],a['loss'][0][1])

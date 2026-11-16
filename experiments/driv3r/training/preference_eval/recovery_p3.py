@@ -121,7 +121,8 @@ def make_training(seed_range):
                 good=ordered[0]
                 for bad in ordered[1:]:
                     if weak_label(w,good)-weak_label(w,bad)>.15:
-                        pairs.append((tuple(x-y for x,y in zip(features(w,good),features(w,bad))),1))
+                        diff=tuple(x-y for x,y in zip(features(w,good),features(w,bad)))
+                        pairs.extend(((diff,1),(tuple(-d for d in diff),0)))
             a=choice(w,'greedy')
             advance(w,a)
             if w['stopped']:break
@@ -131,10 +132,10 @@ def fit(pairs,steps=240,lr=.08,disabled=()):
     w=[0.]*len(FEATURES);m=[0.]*len(FEATURES);v=[0.]*len(FEATURES);history=[]
     for it in range(1,steps+1):
         grad=[.02*t for t in w];loss=0.
-        for x,_ in pairs:
+        for x,y in pairs:
             z=max(-30,min(30,sum(a*b for a,b in zip(w,x))));p=1/(1+math.exp(-z))
-            loss-=math.log(max(1e-12,p))
-            for j in range(len(w)):grad[j]+=(p-1)*x[j]/len(pairs)
+            loss-=y*math.log(max(1e-12,p))+(1-y)*math.log(max(1e-12,1-p))
+            for j in range(len(w)):grad[j]+=(p-y)*x[j]/len(pairs)
         for j,g in enumerate(grad):
             if j in disabled:continue
             m[j]=.9*m[j]+.1*g;v[j]=.999*v[j]+.001*g*g
@@ -181,7 +182,8 @@ def render_png(w,scale=8):
     return b'\x89PNG\r\n\x1a\n'+chunk(b'IHDR',struct.pack('!2I5B',n,n,8,2,0,0,0))+chunk(b'IDAT',zlib.compress(raw,9))+chunk(b'IEND',b'')
 
 def heldout_agreement(pairs,weights):
-    return {'pairs':len(pairs),'correct':sum(sum(w*v for w,v in zip(weights,x))>0 for x,_ in pairs),
+    return {'pairs':len(pairs),'constant_label_baseline_correct':max(sum(y for _,y in pairs),sum(1-y for _,y in pairs)),
+            'correct':sum((sum(w*v for w,v in zip(weights,x))>0)==bool(y) for x,y in pairs),
             'label_origin':'same predetermined weak-label formula, no human preference'}
 
 def main(output):
