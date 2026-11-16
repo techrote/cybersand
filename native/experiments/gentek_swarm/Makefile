@@ -1,13 +1,13 @@
 ROOT := ../../..
 CXX ?= g++
 BUILD ?= /tmp/gentek-swarm-build
-DEFINITION_HASH := $(shell python3 -c 'import hashlib; from pathlib import Path; paths=sorted(Path(".").glob("*.cpp"))+[Path("swarm.hpp"),Path("../../../native/src/generation_spatial.cpp"),Path("../../../native/include/cybersand/material.hpp"),Path("../../../native/include/cybersand/generation_spatial.hpp"),Path("../../../native/include/cybersand/generation_numeric.hpp")]; print(hashlib.sha256(b"".join(str(p).encode()+b"\0"+p.read_bytes() for p in paths)).hexdigest())')
+DEFINITION_HASH := $(shell python3 -c 'import hashlib; from pathlib import Path; paths=sorted(Path(".").glob("*.cpp"))+sorted(Path(".").glob("*.hpp"))+[Path("../../../native/src/generation_spatial.cpp"),Path("../../../native/include/cybersand/material.hpp"),Path("../../../native/include/cybersand/generation_spatial.hpp"),Path("../../../native/include/cybersand/generation_numeric.hpp")]; print(hashlib.sha256(b"".join(str(p).encode()+b"\0"+p.read_bytes() for p in paths)).hexdigest())')
 FLAGS := -std=c++20 -Wall -Wextra -Wpedantic -Werror -I$(ROOT)/native/include -DGENTEK_DEFINITION_SHA256=\"$(DEFINITION_HASH)\"
-SOURCES := common.cpp fixtures.cpp meshing.cpp io.cpp frameweaver.cpp mosaic.cpp receptor.cpp $(ROOT)/native/src/generation_spatial.cpp
-HEADERS := swarm.hpp $(wildcard $(ROOT)/native/include/cybersand/*.hpp)
+SOURCES := common.cpp fixtures.cpp meshing.cpp io.cpp frameweaver.cpp mosaic.cpp receptor.cpp negotiated.cpp $(ROOT)/native/src/generation_spatial.cpp
+HEADERS := swarm.hpp negotiated.hpp $(wildcard $(ROOT)/native/include/cybersand/*.hpp)
 
 .PHONY: all test sanitize clean
-all: $(BUILD)/gentek_swarm $(BUILD)/test_gentek_swarm
+all: $(BUILD)/gentek_swarm $(BUILD)/test_gentek_swarm $(BUILD)/gentek_negotiated $(BUILD)/test_gentek_negotiated
 
 $(BUILD):
 	mkdir -p $(BUILD)
@@ -17,6 +17,15 @@ $(BUILD)/gentek_swarm: $(SOURCES) main.cpp $(HEADERS) | $(BUILD)
 
 $(BUILD)/test_gentek_swarm: $(SOURCES) tests.cpp $(HEADERS) | $(BUILD)
 	$(CXX) $(FLAGS) -O2 $(SOURCES) tests.cpp -o $@
+
+$(BUILD)/gentek_negotiated: $(SOURCES) negotiated_main.cpp $(HEADERS) | $(BUILD)
+	$(CXX) $(FLAGS) -O2 $(SOURCES) negotiated_main.cpp -o $@
+
+$(BUILD)/test_gentek_negotiated: $(SOURCES) negotiated_tests.cpp $(HEADERS) | $(BUILD)
+	$(CXX) $(FLAGS) -O2 $(SOURCES) negotiated_tests.cpp -o $@
+
+$(BUILD)/test_gentek_negotiated_sanitized: $(SOURCES) negotiated_tests.cpp $(HEADERS) | $(BUILD)
+	$(CXX) $(FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined $(SOURCES) negotiated_tests.cpp -o $@
 
 test: $(BUILD)/test_gentek_swarm
 	$(BUILD)/test_gentek_swarm

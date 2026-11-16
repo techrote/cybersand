@@ -1,4 +1,4 @@
-#include "swarm.hpp"
+#include "negotiated.hpp"
 #include <fstream>
 #include <iomanip>
 #include <stdexcept>
@@ -25,7 +25,58 @@ void result(std::ostream& o,const Result& r){o<<"{\"gentek\":";str(o,name(r.gent
 std::ofstream output(const std::string& path){std::ofstream o(path,std::ios::binary);if(!o)throw std::runtime_error("cannot create evidence "+path);o<<std::setprecision(17);return o;}
 }
 void write_result_json(const std::string& path,const Request& r,const Result& s){auto o=output(path);o<<"{\"schema\":1,\"type\":\"single\",\"request\":";request(o,r);o<<",\"result\":";result(o,s);o<<"}\n";if(!o)throw std::runtime_error("evidence write failed");}
-void write_pair_json(const std::string& path,const PairResult& p){auto o=output(path);o<<"{\"schema\":1,\"type\":\"pair\",\"fixture\":";str(o,p.fixture.id);o<<",\"fixture_digest\":";str(o,hex(p.fixture.digest));o<<",\"digest\":";str(o,hex(p.digest));o<<",\"policy\":";str(o,p.policy);o<<",\"left_request\":";request(o,p.left_request);o<<",\"right_request\":";request(o,p.right_request);o<<",\"left\":";result(o,p.left);o<<",\"right\":";result(o,p.right);o<<",\"initial_left\":";result(o,p.initial_left);o<<",\"initial_right\":";result(o,p.initial_right);o<<",\"clipped_left\":";result(o,p.clipped_left);o<<",\"clipped_right\":";result(o,p.clipped_right);
+static void pair(std::ostream& o,const PairResult& p){o<<"{\"schema\":1,\"type\":\"pair\",\"fixture\":";str(o,p.fixture.id);o<<",\"fixture_digest\":";str(o,hex(p.fixture.digest));o<<",\"digest\":";str(o,hex(p.digest));o<<",\"policy\":";str(o,p.policy);o<<",\"left_request\":";request(o,p.left_request);o<<",\"right_request\":";request(o,p.right_request);o<<",\"left\":";result(o,p.left);o<<",\"right\":";result(o,p.right);o<<",\"initial_left\":";result(o,p.initial_left);o<<",\"initial_right\":";result(o,p.initial_right);o<<",\"clipped_left\":";result(o,p.clipped_left);o<<",\"clipped_right\":";result(o,p.clipped_right);
     o<<",\"cells\":";numbers(o,p.cells);o<<",\"initial_cells\":";numbers(o,p.initial_cells);o<<",\"clipped_cells\":";numbers(o,p.clipped_cells);o<<",\"side\":";numbers(o,p.fixture.side);o<<",\"work\":"<<p.work<<",\"conflicts\":"<<p.conflicts<<",\"protected_violations\":"<<p.protected_violations<<",\"bridges\":"<<p.bridges<<",\"typed_contacts\":"<<p.typed_contacts<<",\"bridge_cells\":"<<p.bridge_cells<<",\"unresolved_seams\":"<<p.unresolved_seams<<",\"seams\":";
     array(o,p.seams,[](auto& s,const auto& a){s<<"{\"left_affordance\":"<<a.left_affordance<<",\"right_affordance\":"<<a.right_affordance<<",\"a\":";point(s,a.a);s<<",\"b\":";point(s,a.b);s<<",\"joined\":"<<(a.joined?"true":"false")<<",\"reason\":";str(s,a.reason);s<<",\"cells\":";array(s,a.cells,point);s<<'}';});o<<"}\n";if(!o)throw std::runtime_error("evidence write failed");}
+void write_pair_json(const std::string& path,const PairResult& p){auto o=output(path);pair(o,p);}
+
+namespace {
+void slot(std::ostream& o,const TransitionSlot& s) {
+    o<<"{\"id\":"<<s.id<<",\"instance\":"<<s.instance<<",\"connector\":"<<s.connector<<",\"kind\":";str(o,name(s.kind));
+    o<<",\"a\":";point(o,s.a);o<<",\"b\":";point(o,s.b);o<<",\"facing\":";point(o,s.facing);
+    o<<",\"envelope\":["<<s.envelope.x<<','<<s.envelope.y<<','<<s.envelope.w<<','<<s.envelope.h<<"],\"clearance\":";array(o,s.clearance,point);
+    o<<",\"required\":"<<(s.required?"true":"false")<<",\"hard\":"<<(s.hard?"true":"false")<<",\"strength\":"<<s.strength;
+    o<<",\"owner\":";str(o,s.owner);o<<",\"reason\":";str(o,s.reason);o<<'}';
+}
+void mosaic_plan(std::ostream& o,const MosaicPlan& p) {
+    o<<"{\"result\":";result(o,p.result);o<<",\"categories\":[";
+    for(std::size_t i=0;i<p.categories.size();++i){if(i)o<<',';o<<p.categories[i];}o<<"],\"domains\":";
+    array(o,p.domains,[](auto& s,const auto& d){
+        s<<"{\"tile\":"<<d.tile<<",\"origin\":";point(s,d.origin);
+        s<<",\"original_domain\":"<<d.original_domain<<",\"hard_domain\":"<<d.hard_domain<<",\"preferred_domain\":"<<d.preferred_domain
+         <<",\"modified_domain\":"<<d.modified_domain<<",\"selected\":"<<d.selected<<",\"selected_name\":";
+        str(s,d.selected<0?"unselected":mosaic_category_name(static_cast<unsigned>(d.selected)));
+        s<<",\"preference_satisfied\":"<<(d.preference_satisfied?"true":"false")<<",\"fallback\":"<<(d.fallback?"true":"false")<<",\"influences\":";
+        array(s,d.influences,[](auto& t,const auto& i){t<<"{\"slot_id\":"<<i.slot_id<<",\"compatible_domain\":"<<i.compatible_domain
+            <<",\"hard\":"<<(i.hard?"true":"false")<<",\"admitted\":"<<(i.admitted?"true":"false")<<",\"contact\":";
+            point(t,i.contact);t<<",\"reason\":";str(t,i.reason);t<<'}';});s<<'}';
+    });
+    o<<",\"attempts\":";array(o,p.attempts,[](auto& s,const auto& a){
+        s<<"{\"policy\":";str(s,a.policy);s<<",\"status\":";str(s,name(a.status));s<<",\"reason\":";str(s,a.reason);
+        s<<",\"attempted\":"<<(a.attempted?"true":"false")<<",\"work_observed\":"<<(a.work_observed?"true":"false")
+         <<",\"work\":"<<(a.work_observed?std::to_string(a.work):"null")<<",\"work_limit\":"<<a.work_limit<<'}';
+    });
+    o<<",\"responses\":";array(o,p.responses,[](auto& s,const auto& r){
+        s<<"{\"slot_id\":"<<r.slot_id<<",\"tile\":"<<r.tile<<",\"admitted\":"<<(r.admitted?"true":"false")
+         <<",\"satisfied\":"<<(r.satisfied?"true":"false")<<",\"compatible_domain\":"<<r.compatible_domain<<",\"contact\":";
+        point(s,r.contact);s<<",\"facing\":";point(s,r.facing);s<<",\"reason\":";str(s,r.reason);s<<'}';
+    });o<<'}';
+}
+}
+void write_negotiated_json(const std::string& path,const NegotiatedResult& n) {
+    auto o=output(path);o<<"{\"schema\":2,\"type\":\"negotiated\",\"predecessor\":";str(o,swarm001_predecessor);
+    o<<",\"digest\":";str(o,hex(n.digest));o<<",\"offer_policy\":";str(o,n.offer_policy);o<<",\"control\":";pair(o,n.control);
+    o<<",\"frame_request\":";request(o,n.frame_request);o<<",\"mosaic_request\":";request(o,n.mosaic_request);
+    o<<",\"residual_request\":";request(o,n.residual_request);
+    o<<",\"frame\":{\"core\":";result(o,n.frame.core);o<<",\"result\":";result(o,n.frame.result);
+    o<<",\"slots\":";array(o,n.frame.slots,slot);o<<",\"reservation_rejections\":";array(o,n.frame.reservation_rejections,str);o<<'}';
+    o<<",\"mosaic\":";mosaic_plan(o,n.mosaic);o<<",\"no_offers\":";mosaic_plan(o,n.no_offers);
+    o<<",\"final_frame\":";result(o,n.final_frame);o<<",\"final_mosaic\":";result(o,n.final_mosaic);
+    o<<",\"residual\":";result(o,n.residual);
+    o<<",\"planned_cells\":";numbers(o,n.planned_cells);o<<",\"cells\":";numbers(o,n.cells);
+    o<<",\"finished_cells\":";numbers(o,n.finished_cells);o<<",\"no_offer_cells\":";numbers(o,n.no_offer_cells);
+    o<<",\"metrics\":";stats(o,n.metrics);o<<",\"notes\":";array(o,n.notes,str);
+    o<<",\"seams\":";array(o,n.seams,[](auto& s,const auto& a){s<<"{\"left_affordance\":"<<a.left_affordance<<",\"right_affordance\":"<<a.right_affordance<<",\"a\":";point(s,a.a);s<<",\"b\":";point(s,a.b);s<<",\"joined\":"<<(a.joined?"true":"false")<<",\"reason\":";str(s,a.reason);s<<",\"cells\":";array(s,a.cells,point);s<<'}';});
+    o<<"}\n";if(!o)throw std::runtime_error("negotiated evidence write failed");
+}
 } // namespace cybersand::gentek_swarm
