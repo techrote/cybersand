@@ -54,6 +54,9 @@ func water_lab_ui() -> void:
 	require(not lab.window.visible,"Water Lab starts closed to preserve canvas space")
 	require(lab.pages["solvers"].is_ancestor_of(panel.water_spray._scene_picker),
 		"solver and comparison scene picker are in Water Lab")
+	require(lab.pages["solvers"].is_ancestor_of(panel.water_spray._studio_solver)
+		and panel.water_spray._studio_solver.item_count == 7,
+		"one integrated Water-law picker replaces the button cluster")
 	require(lab.pages["wave"].is_ancestor_of(panel.water_spray._wave_fields["workbench_wave_gain"]),
 		"Wave tuning is integrated, not a second popup")
 	require(lab.pages["transport"].is_ancestor_of(panel.water_spray._ballistic),
@@ -64,7 +67,7 @@ func water_lab_ui() -> void:
 		"complete per-material policy editor is in Water Lab")
 	require(lab.pages["status"].is_ancestor_of(panel.water_spray._wave_status),
 		"native applied/staged readback persists across all tabs")
-	require(not panel.water_spray._wave_window.is_inside_tree() 		and not panel.water_spray._spray_window.is_inside_tree(),
+	require(not (panel.water_spray._wave_window.is_inside_tree() or panel.water_spray._spray_window.is_inside_tree()),
 		"Wave and spray do not create auxiliary windows")
 	lab.select_tab(1)
 	require(lab.tabs.current_tab == 1,"Wave tab is navigable")

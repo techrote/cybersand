@@ -17,6 +17,7 @@ var _pf_c2048 := CheckButton.new()
 var _face := CheckButton.new()
 var _fine := CheckButton.new()
 var _wave := CheckButton.new()
+var _studio_solver := OptionButton.new()
 var _wave_preset := OptionButton.new()
 var _worker_threads := SpinBox.new()
 var _wave_status := Label.new()
@@ -128,11 +129,23 @@ func build(owner: Control, parent: Control, row_factory: Callable, jet_point: Ca
 	_wave.button_pressed = _option_on("workbench_wave_flow")
 	_wave.toggled.connect(_set_wave)
 	_wave.focus_mode = Control.FOCUS_NONE
-	row.add_child(_wave)
-	_button(row,"PF cached",func() -> void: _stage_solver("pressure_flow_v1","cached"))
-	_button(row,"PF dormant",func() -> void: _stage_solver("pressure_flow_v1","cached_dormant"))
-	_button(row,"Inertial",func() -> void: _stage_solver("inertial_cellular_v1","reference"))
-	_button(row,"FreeMass",_stage_plain_freemass)
+	if embedded:
+		# One discoverable law selector replaces the historical button cluster.
+		for name: String in ["FreeMass · original","Wave Flow · experimental",
+			"PressureFlow · reference","PressureFlow · cached",
+			"PressureFlow · dormant","Inertial cellular","Other · advanced policy"]:
+			_studio_solver.add_item(name)
+		_studio_solver.set_item_disabled(6,true)
+		_studio_solver.custom_minimum_size.x = 260
+		_studio_solver.tooltip_text = "Stage the Water law; the native Applied status below is authoritative. Wave Flow retains the FreeMass carrier."
+		_studio_solver.item_selected.connect(_choose_studio_solver)
+		row.add_child(_studio_solver)
+	else:
+		row.add_child(_wave)
+		_button(row,"PF cached",func() -> void: _stage_solver("pressure_flow_v1","cached"))
+		_button(row,"PF dormant",func() -> void: _stage_solver("pressure_flow_v1","cached_dormant"))
+		_button(row,"Inertial",func() -> void: _stage_solver("inertial_cellular_v1","reference"))
+		_button(row,"FreeMass",_stage_plain_freemass)
 	if not embedded:
 		_button(row,"Apply solver / tuning",_apply_wave)
 		_button(row,"Wave tuning…",func() -> void: _show_controls(_wave_window))
@@ -500,6 +513,43 @@ func _requested_water_family() -> String:
 			return str(assignment.get("applied_family",""))
 	return ""
 
+func _choose_studio_solver(index: int) -> void:
+	var admitted := false
+	match index:
+		0: admitted = _stage_solver("freemass_v1","reference")
+		1:
+			_wave.button_pressed = true
+			admitted = _option_on("workbench_wave_flow")
+		2: admitted = _stage_solver("pressure_flow_v1","reference")
+		3: admitted = _stage_solver("pressure_flow_v1","cached")
+		4: admitted = _stage_solver("pressure_flow_v1","cached_dormant")
+		5: admitted = _stage_solver("inertial_cellular_v1","reference")
+	if not admitted:
+		_fallback_message = "Requested Water law was not staged. Check the refusal/status before applying."
+		_wave_notice.text = _fallback_message
+	_sync_studio_solver()
+
+func _sync_studio_solver() -> void:
+	if _studio_solver.item_count == 0: return
+	var option := 6 # other/whole-cell policy is available in Advanced.
+	if _option_on("workbench_wave_flow"):
+		option = 1
+	else:
+		var family := _requested_water_family()
+		var variant := "reference"
+		if _workbench != null and _workbench._liquids != null and _workbench._liquids.bridge != null:
+			var checked: Dictionary = _workbench._liquids.bridge.validate_liquid_policy(_workbench._liquids.requested_policy)
+			for assignment: Dictionary in checked.get("receipt",{}).get("assignments",[]):
+				if int(assignment.get("material",-1)) == CyberCellWorld.WATER:
+					variant = str(assignment.get("applied_variant","reference"))
+					break
+		match family:
+			"freemass_v1": option = 0
+			"inertial_cellular_v1": option = 5
+			"pressure_flow_v1":
+				option = 2 if variant == "reference" else (3 if variant == "cached" else 4)
+	_studio_solver.select(option)
+
 func _remember_inertial_signed() -> void:
 	if not _option_on("workbench_wave_flow") and _requested_water_family() == "inertial_cellular_v1":
 		_inertial_signed_preference = _option_on("workbench_inertial_signed")
@@ -598,6 +648,7 @@ func request(settings: Dictionary) -> bool:
 	return host.simulation_worker.queue_water_spray(settings)
 
 func refresh(context: Dictionary) -> void:
+	_sync_studio_solver()
 	_refresh_wave(context)
 	var spray: Dictionary = context.get("water_spray", {})
 	if spray.is_empty():
