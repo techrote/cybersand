@@ -1,0 +1,23 @@
+{
+  "assertions": 204424,
+  "gates": [
+    "same_seed_and_reverse_chunk_order",
+    "work_slicing_and_zero_budget",
+    "chunk_partition_and_signed_coordinates",
+    "negative_origin_translation_identity",
+    "parallel_requests_and_cancellation",
+    "large_signed_coordinate_stability",
+    "thirty_two_seeds_have_distinct_coherent_geometry",
+    "control_dimensions_change_geometry",
+    "windows_only_remove_glazing",
+    "doors_only_open_outer_service_portals",
+    "schema_version_material_and_clearance_refusal",
+    "continuous_core_and_every_attachment_rooted_across_32_seeds"
+  ],
+  "measurements": {
+    "seed_count": 32,
+    "verified_bridge_instances": 45,
+    "wall_settings": 3
+  },
+  "status": "pass"
+}
