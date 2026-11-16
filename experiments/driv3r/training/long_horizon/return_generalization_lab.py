@@ -245,7 +245,7 @@ def verify_episode(ep,model,sp):
             raise ValueError('host replay mismatch')
     expected='BACKTRACK' if cap>=ep['depth'] else 'RELOCATE_START'
     if (ep['fork']!=fork or ep['fork_correct']!=(fork==expected) or ep['expected_fork']!=expected
-        or ep['final_sha']!=w.state_sha() or ep['trace_sha256']!=digest([r['event'] for r in ep['rows'])
+        or ep['final_sha']!=w.state_sha() or ep['trace_sha256']!=digest([r['event'] for r in ep['rows']])
         or ep['ink']!=[list(p) for p in sorted(w.ink)]
         or ep['metrics']!=w.metrics(h)
         or ep['actions']!=dict(sorted(Counter(r['event']['chosen'] for r in ep['rows']).items()))):
