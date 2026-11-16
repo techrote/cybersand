@@ -158,7 +158,7 @@ def run(source,out):
       for gate in ('late','open'):
         rr=[r for r in results if r['clock']==clock and r['gate']==gate]
         summary.append({'clock':clock,'gate':gate,'n':len(rr),
-            'early_stop':sum(r['stop'] and r['steps']<124 for r in rr),
+            'early_stop':sum(r['stop'] and r['steps']<=124 for r in rr),
             'mean_new':sum(r['new'] for r in rr)/len(rr),
             'mean_branch':sum(r['branches'] for r in rr)/len(rr)})
     report={'schema':'driv3r-preference-P10-genuine-frozen-head-factorial/v1',
