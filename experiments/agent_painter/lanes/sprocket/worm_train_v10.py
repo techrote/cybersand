@@ -161,7 +161,7 @@ def head_rollout(w0,torch,head,seed,family,name):
         with torch.no_grad():
             raw=head(torch.tensor([w9.features(obs)],dtype=torch.float32))[0].tolist()
         legal=[a for a in obs["legal"] if a!="STOP" or obs["tick"]>=124]
-        selected=max(legal,key=lambda a:raw[ACTIONS.index(a)])
+        selected=max(legal,key=lambda a:raw[ACTIONS.index(a)]) if legal else "STOP"
         decisions.append({"tick":obs["tick"],"raw_six_scores":raw,
                           "legal":list(obs["legal"]),"selected":selected})
         return selected
@@ -184,6 +184,7 @@ def root_rollout(w0,torch,head,root,tok,adapter,token_ids,seed,family,name,weigh
         combined=[raw[i]+weight*(aux[i]-sum(aux)/6) for i in range(6)]
         legal=[a for a in obs["legal"] if a!="STOP" or obs["tick"]>=44]
         draw=host_draw(family,seed,obs["tick"],2.25)
+        if not legal: legal=["STOP"]
         selected,_=sample_scores(combined,legal,2.25,draw)
         decisions.append({"tick":obs["tick"],"root_logits":raw,"head_logits":aux,
                           "selection_logits":combined,"host_legal":legal,
