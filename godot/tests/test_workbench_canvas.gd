@@ -147,19 +147,28 @@ func builtin_water() -> bool:
 	check(launched > 0,"tuned face release launches parcels (%d)" % launched)
 	await until(installed,"paused after face release")
 	# Wave Flow now runs in the actual authored Workbench rather than only the
-	# rigid evaluator. Bounds fail closed; a valid tuned rebuild publishes exact
-	# applied parameters and continues real body/cell simulation.
+	# rigid evaluator. Exercise the same live liquid-rebuild transaction the
+	# Water solver lab uses: stage the required FreeMass carrier, then apply
+	# tuning while retaining the authored canvas and actors.
+	var wave_request: PackedInt32Array = PackedInt32Array(panel.applied.liquid_policy)
+	var wave_found := false
+	for option: Dictionary in panel._liquids.bridge.liquid_policy_assignment_choices(wave_request,Setup.WATER):
+		if option.family == "freemass_v1" and option.variant == "reference" and option.accepted:
+			panel._liquids.requested_policy = PackedInt32Array(option.request)
+			wave_found = true
+			break
+	if not check(wave_found,"FreeMass carrier available for Workbench Wave"): return false
 	main.workbench_water_options = seeded.duplicate()
 	main.workbench_water_options.merge({"workbench_ballistic":false,"workbench_face_release":false,
 		"workbench_wave_flow":true,"workbench_wave_active_rows":33},true)
-	panel._name.text = Setup.DEFAULT_LABEL
-	if panel.load_setup(): await until(func(): return main.pending_microscenario_apply.is_empty(),"out-of-bounds Wave tuning")
-	check(not str(main.microscenario_error).is_empty(),"Wave active rows 33 refused by native admission")
+	var before_wave_refusal: Dictionary = panel.applied.duplicate(true)
+	if panel.apply_liquids(): await until(func(): return main.pending_microscenario_apply.is_empty(),"out-of-bounds Wave tuning")
+	check(not str(main.microscenario_error).is_empty() and panel.applied == before_wave_refusal,
+		"Wave active rows 33 refused before replacing live Workbench")
 	main.workbench_water_options.workbench_wave_active_rows = 32
 	main.workbench_water_options.workbench_wave_substeps = 2
 	main.workbench_water_options.workbench_wave_gain = 48
-	loaded = check(panel.load_setup(),"Workbench Wave rebuild / "+panel.message)
-	panel._name.text = test_name
+	loaded = check(panel.apply_liquids(),"Workbench Wave rebuild / "+panel.message)
 	if not loaded or not await until(installed,"Workbench Wave installed"): return false
 	var wave: Dictionary = main.tower_context.get("wave_flow",{})
 	check(wave.get("enabled",false) and int(wave.get("substeps",0)) == 2,
