@@ -44,13 +44,29 @@ Using identical legal menus, swap the ordered-history member of each matched pai
 
 The factorized model exhibits the expected reversible XOR signature. The attention model exhibits an *inverted* signature on this unseen grammar: still sensitive to both inputs but learns the wrong mapping. This provides stronger evidence than raw mission success alone; none of it establishes autonomous material/obstacle planning.
 
+## Independent checkpoint replay and niche-conditioned diversity
+
+A second **inference-only replay program**, `p15_diversity_audit.py`, reloads every saved neural checkpoint, independently reconstructs all 2,880 held-out missions from the recorded seeds, and checks **exact agreement** with each training run's episode count, total issued action count and successful mission count. It reproduced **11,004/11,004 host-legal actions** with no protected/obstacle painting, confirming the original closed-loop metrics rather than simply trusting the first JSON summary.
+
+For each fixed (world, card, goal, survey order) context, the audit runs all six niche-conditioned variants and measures the **normalized four-action Hamming distance** between their trajectories. This is a deliberately narrow behavioural-diversity statistic, *not artistic creativity or independent policy diversity*; in this synthetic test the teacher itself defines only an even/odd niche parity rule.
+
+| Mode | Mean distinct niche traces / six | Mean within-context niche Hamming |
+|---|---:|---:|
+| Pairwise baseline | 1.427 | 0.1281 |
+| Factorized order/goal | **1.906** | **0.2734** |
+| Learned attention | 1.531 | 0.1509 |
+| Shuffled-history attention | 1.063 | 0.0073 |
+| State-only attention | 1.000 | 0.0000 |
+
+The factorized model more often separates required niche-parity decisions, while the state-only model collapses to the same sequence across all six labels. Treat these results as **conditioning sensitivity, not six independently evolved artistic personalities**. This audit's independent replay is now part of the reproducible Actions artifact.
+
 ## Provenance and limitations
 
 Local source SHA-256 (P15 initial qualified run):
 
 - `population_p15.py`: `73e2c45a6b6ccbaf199b8f90b1d117540fc8d2a23cc07e0e137bc82a8534f54c`
 - `test_population_p15.py`: `8b6a3cc95d6ae770ad1e07c3d5145b70a2f4f616ec4377dd1a03eed5f162be64`
-- `driv3r-population-seed-replication.yml`: `64b9d0870b2dcb5f704c6d91df7ee0ef0507febc0ad48041050daf2230bc4760`
+- `driv3r-population-seed-replication.yml`: see source-matched Actions artifact and git blob for the final workflow revision.
 
 `results.json`, `metrics.csv`, trained `.pt` checkpoints, per-model episode JSON/SVG traces and SHA-256 manifests are retained. The contact sheet is assembled from actual P15 checkpoint-executed P0 synthetic trajectories across six niche conditioning labels and is **not native CyberSand evidence**. All six niches were retained; no unusual but functioning personalities were culled. The six niche labels are not yet independently verified as divergent artistic behaviour. Their visible micro-trajectories can be extremely similar.
 
