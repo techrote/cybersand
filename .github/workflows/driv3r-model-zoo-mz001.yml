@@ -6,10 +6,6 @@ on:
     paths:
       - 'experiments/driv3r/model_zoo/**'
       - '.github/workflows/driv3r-model-zoo-mz001.yml'
-  pull_request:
-    paths:
-      - 'experiments/driv3r/model_zoo/**'
-      - '.github/workflows/driv3r-model-zoo-mz001.yml'
   workflow_dispatch:
 permissions:
   contents: read
@@ -18,9 +14,17 @@ concurrency:
   cancel-in-progress: true
 jobs:
   train-pythia70:
-    name: CPU real LoRA, source-pinned Pythia-70M
+    name: Pythia-70M legal-mask LoRA / ${{ matrix.variant }}
     runs-on: ubuntu-24.04
     timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - variant: legal-plain
+            gamma: '0.0'
+          - variant: legal-mild
+            gamma: '0.25'
     env:
       HF_HUB_DISABLE_TELEMETRY: '1'
       TOKENIZERS_PARALLELISM: 'false'
@@ -39,7 +43,7 @@ jobs:
         run: python experiments/driv3r/model_zoo/zoo_pythia.py --self-test
       - name: Real pretrained model load and bounded LoRA training
         run: |
-          python experiments/driv3r/model_zoo/zoo_pythia.py --output model-zoo-out --steps 256 --batch 6
+          python experiments/driv3r/model_zoo/zoo_pythia.py --output model-zoo-out --steps 160 --batch 6 --lr 0.00025 --balance-gamma ${{ matrix.gamma }}
       - name: Validate result provenance and original PNG bytes
         if: success()
         run: |
@@ -49,8 +53,9 @@ jobs:
           r=json.loads((root/'results.json').read_text())
           assert r['source_sha']==os.environ['GITHUB_SHA']
           assert r['model_revision']=='e93a9faa9c77e5d09219f6c868bfc7a1bd65593c'
-          assert r['train_steps']==256 and r['adapter_files']
+          assert r['train_steps']==160 and r['adapter_files']
           assert r['heldout']['stock']['n']>0
+          assert 'host_legal_accuracy' in r['heldout']['adapted']
           for row in r['adapter_files']:
               p=root/row['path']
               assert hashlib.sha256(p.read_bytes()).hexdigest()==row['sha256']
@@ -66,7 +71,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: mz001-pythia70-${{ github.sha }}
+          name: mz001-${{ matrix.variant }}-${{ github.sha }}
           path: model-zoo-out/
           if-no-files-found: warn
           retention-days: 14

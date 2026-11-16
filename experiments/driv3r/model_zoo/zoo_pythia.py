@@ -182,6 +182,14 @@ def train(args):
         raise AssertionError("Synthetic train/heldout world identity leakage")
     features=tokenizer([x[0] for x in training],padding=True,truncation=True,max_length=128,return_tensors="pt")
     labels=torch.tensor([ACTIONS.index(x[1]) for x in training])
+    def permitted(prompt):
+        menu=prompt.split("Legal: ",1)[1].split(". Choice:",1)[0]
+        flags=[f"{CODES[i].strip()}={name}" in menu for i,name in enumerate(ACTIONS)]
+        if not flags or not flags[-1]: raise AssertionError("Expected STOP in host menu")
+        return flags
+    train_allowed=torch.tensor([permitted(x[0]) for x in training],dtype=torch.bool)
+    if not all(train_allowed[i,labels[i]] for i in range(len(training))):
+        raise AssertionError("Synthetic teacher escaped host legal actions")
     model=get_peft_model(model,LoraConfig(r=4,lora_alpha=8,lora_dropout=0,
                           target_modules=["query_key_value"],task_type="CAUSAL_LM",bias="none"))
     def select(w,step,stock):
@@ -227,7 +235,7 @@ def train(args):
     baseline=rollouts("stock",True)
     optimizer=torch.optim.AdamW([p for p in model.parameters() if p.requires_grad],lr=args.lr)
     counts=torch.bincount(labels,minlength=6)
-    weights=(len(labels)/(6*counts.clamp_min(1))).clamp(max=3.0).float()
+    weights=(len(labels)/(6*counts.clamp_min(1))).pow(args.balance_gamma).clamp(max=1.6).float()
     losses=[]
     for step in range(args.steps):
         model.train()
@@ -235,7 +243,8 @@ def train(args):
         batch={k:v[idx] for k,v in features.items()}
         last=batch["attention_mask"].sum(1)-1
         logits=model(**batch).logits[torch.arange(args.batch),last][:,ids]
-        loss=F.cross_entropy(logits,labels[idx],weight=weights)
+        scores=logits.masked_fill(~train_allowed[idx],-1e9)
+        loss=F.cross_entropy(scores,labels[idx],weight=weights)
         optimizer.zero_grad(set_to_none=True)
         loss.backward()
         torch.nn.utils.clip_grad_norm_([p for p in model.parameters() if p.requires_grad],1.)
@@ -244,7 +253,7 @@ def train(args):
         if (step+1)%8==0: print(json.dumps({"step":step+1,"loss":round(losses[-1],5)}),flush=True)
     adapted=rollouts("adapted",False)
     def score_heldout(stock):
-        correct=0; per_action={a:{"correct":0,"n":0} for a in ACTIONS}
+        correct=0; legal_correct=0; per_action={a:{"correct":0,"n":0,"legal_correct":0} for a in ACTIONS}
         for prompt,target,_ in heldout:
             ctx=model.disable_adapter() if stock else contextlib.nullcontext()
             with torch.no_grad(),ctx:
@@ -252,11 +261,17 @@ def train(args):
                 inputs=tokenizer(prompt,return_tensors="pt",truncation=True,max_length=128)
                 scores=model(**inputs).logits[0,-1,ids]
             hit=ACTIONS[int(scores.argmax())]==target
+            allowed=torch.tensor(permitted(prompt),dtype=torch.bool)
+            legal_hit=ACTIONS[int(scores.masked_fill(~allowed,-1e9).argmax())]==target
             correct+=hit
+            legal_correct+=legal_hit
             per_action[target]["n"]+=1
             per_action[target]["correct"]+=int(hit)
+            per_action[target]["legal_correct"]+=int(legal_hit)
         balanced=sum(row["correct"]/row["n"] for row in per_action.values() if row["n"])/sum(row["n"]>0 for row in per_action.values())
-        return {"unmasked_action_accuracy":correct/len(heldout),"balanced_action_accuracy":balanced,
+        legal_balanced=sum(row["legal_correct"]/row["n"] for row in per_action.values() if row["n"])/sum(row["n"]>0 for row in per_action.values())
+        return {"unmasked_action_accuracy":correct/len(heldout),"host_legal_accuracy":legal_correct/len(heldout),
+                "balanced_action_accuracy":balanced,"host_legal_balanced_accuracy":legal_balanced,
                 "per_action":per_action,"n":len(heldout)}
     heldscores={"stock":score_heldout(True),"adapted":score_heldout(False)}
     model.save_pretrained(output/"adapter",safe_serialization=True)
@@ -264,11 +279,12 @@ def train(args):
            for p in sorted((output/"adapter").rglob("*")) if p.is_file()]
     result={"experiment":"MZ-001","source_sha":os.getenv("GITHUB_SHA","local"),
         "model":MODEL_ID,"model_revision":MODEL_REV,
-        "architecture":"GPTNeoXForCausalLM","weights_training":"real LoRA qkv; cross-entropy among six atomic action IDs",
+        "architecture":"GPTNeoXForCausalLM","weights_training":"real LoRA qkv; cross-entropy over host-legal atomic action IDs; weighted by gamma",
         "synthetic_world":"13x13 generated toy grid, NOT Godot/native Workbench",
         "legal_actions":"host constrained; model original illegal preferences separately reported",
         "train_examples":len(training),"heldout_examples":len(heldout),
         "train_steps":args.steps,"batch":args.batch,"seed":args.seed,
+        "learning_rate":args.lr,"balance_gamma":args.balance_gamma,
         "class_counts":dict(zip(ACTIONS,counts.tolist())),
         "class_weights":dict(zip(ACTIONS,weights.tolist())),
         "loss_first8_mean":sum(losses[:8])/min(len(losses),8),
@@ -289,6 +305,7 @@ if __name__=="__main__":
     ap.add_argument("--seed",type=int,default=13007)
     ap.add_argument("--steps",type=int,default=48)
     ap.add_argument("--batch",type=int,default=4)
-    ap.add_argument("--lr",type=float,default=0.001)
+    ap.add_argument("--lr",type=float,default=0.00025)
+    ap.add_argument("--balance-gamma",type=float,default=0.0)
     arguments=ap.parse_args()
     self_test() if arguments.self_test else train(arguments)

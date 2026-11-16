@@ -25,3 +25,11 @@ python experiments/driv3r/model_zoo/zoo_pythia.py --output model-zoo-out --steps
 
 ## Historical first wave (unweighted 48 steps)
 Exact source `f4c399338cdcdb324f995d33310b448b2ee79d1a`, [successful run 43788084986](https://github.com/techrote/cybersand/actions/runs/43788084986), artifact 14190837843: held-out unmasked teacher imitation stock 167/276 (60.51%), adapted 169/276 (61.23%). Original seed-matched six-world synthetic rollouts: mean painted stock 13.17 versus adapted 20.17. The adapted model largely avoided premature STOPs, which is a behavioural observation, not proof of improved planning. All executed actions host-legal. Later class-balanced results are separate experiments, not retroactively attributed to this wave.
+
+## MZ-001 negative second wave (256 steps, aggressive balancing)
+
+Preserve these as negative evidence, **not as promoted policies**. Exact research HEAD `a6e6e8b65c5531631059ba174df7e2f5ac203a8c`; two independent successful CI executions used the same source and seed but exhibited numerically different trained outcomes. [Run 43788512619](https://github.com/techrote/cybersand/actions/runs/43788512619) preserved 256-step adapter and 12 PNGs, with held-out raw action accuracy falling to 20.65% and **all six adapted rollouts choosing STOP immediately**, compared with stock 60.51% and mean 13.17 painted cells. [Run 43788507548](https://github.com/techrote/cybersand/actions/runs/43788507548) retained a distinct checkpoint/PNG set with 17.75% held-out accuracy and 3.33 painted cells mean. This is a fragile model/training configuration, not a success covered by green CI. Initial stock trajectories agreed across runs; trained adapter hashes, loss paths and adapted behaviours did not. Do not claim bitwise reproducibility across hosted runners.
+
+## Third wave: legal-action-aware LoRA
+
+Compare 160-step, learning-rate 2.5e-4 runs with the *host legal mask included in the training loss*, against two balancing exponents (gamma=0 unweighted, gamma=0.25 mildly weighted). Preserve both full outputs and use held-out **host-constrained accuracy**, per-action recall, unmasked preferences, original 6-world rollouts and p50/p95 CPU forward latency. These are still synthetic game-controller experiments, not native PAINT or trained artistic intelligence. We do not cherry-pick one run as a generality claim.
