@@ -378,6 +378,10 @@ func _commit_controlled_liquid_candidate(bridge: Variant, token: int, request_re
 			and token == int(_pending_physical_liquid.get("token",0)) and bool(_prepared_physical_ready.get("ready",false))
 	var committed: bool = bridge.commit_liquid_world(_world, token) if current else false
 	if committed:
+		_scheduler_thread_capacity_hint = int(_world.get_worker_threads())
+		var accepted_setup: Dictionary = command.get("controlled_liquid_setup",{})
+		if accepted_setup.has("workbench_worker_threads"):
+			_native_worker_request = int(accepted_setup.workbench_worker_threads)
 		_pending_emissions.clear()
 		_pending_cell_emissions.clear()
 		_paint_epoch += 1

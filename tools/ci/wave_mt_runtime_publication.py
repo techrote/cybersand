@@ -23,7 +23,7 @@ _shared_markers = dict(engine.CASE_MARKERS)
 engine.BRANCH = "astra/wave-mt-001-669-finisher"
 engine.WORKFLOW = ".github/workflows/wave-mt-runtime-publication.yml"
 engine.REQUEST = "tools/ci/wave_mt_publish_request.json"
-engine.EVIDENCE = "docs/audits/2026-11-15-wave-mt-001-astra-takeover.md"
+engine.EVIDENCE = "docs/audits/2026-11-16-wave-workbench-631-finisher.md"
 engine.PRESSURE_CASE = "godot/tests/test_wave_flow.gd"
 engine.BUNDLE_PREFIX = "wave-mt-runtime-attempt-" + os.environ.get("GITHUB_RUN_ATTEMPT", "1")
 engine.REQUEST_VALUE = {
@@ -35,6 +35,8 @@ engine.REQUEST_VALUE = {
 }
 engine.CASE_MARKERS = {
     "test_wave_flow": r"(?m)^WAVE_FLOW: [1-9][0-9]* assertions; 0 failures; completed=(.+)$",
+    "test_workbench_canvas": r"(?m)^WORKBENCH_CANVAS [1-9][0-9]* checks, 0 failures\s*$",
+    "test_workbench_wave": r"(?m)^WORKBENCH_WAVE_RESULT (.+)$",
     "test_liquid_solver_policy": _shared_markers["test_liquid_solver_policy"],
     "test_lcb_pressure_reference": _shared_markers["test_lcb_pressure_reference"],
     "test_liquid_pressure_rapier": r"(?m)^LIQUID_PRESSURE_RAPIER: [1-9][0-9]* assertions; 0 failures\s*$",
@@ -43,11 +45,14 @@ engine.CASE_TIMEOUTS = {}
 engine.EXECUTION_SCOPE = (
     "Exact-source Linux/Windows Godot 4.7 import, experimental Wave Flow construction, "
     "selection, mass/region/state/refusal contracts and real Rapier/Needle fixtures; "
+    "ordinary Shared Workbench native activation, tuning, actual ticks, replacement "
+    "lifecycle, invalid-setting recovery and Water-law comparisons; "
     "unchanged liquid-policy and PressureFlow/Rapier controls. Complete ordinary "
     "Native, sanitizer, Godot and Water gates remain separately required."
 )
 engine.BUILD_EXACT = (set(engine.BUILD_EXACT) - {_old_workflow, _old_request}) | {
     engine.WORKFLOW, engine.REQUEST, engine.EVIDENCE,
+    "docs/audits/2026-11-15-wave-mt-001-astra-takeover.md",
     "docs/audits/2026-11-15-wave-mt-001-completion.md",
     ".github/workflows/wave-flow.yml",
     "tools/ci/wave_mt_runtime_publication.py",
@@ -69,12 +74,19 @@ engine.BUILD_EXACT = (set(engine.BUILD_EXACT) - {_old_workflow, _old_request}) |
     "tools/wave_mt/test_matrix.py",
     "tools/wave_mt/run_default_off_pair.py",
     "tools/wave_mt/test_default_off_pair.py",
+    "tools/wave_mt/run_workbench_render.py",
     "tools/material_catalogue/compatibility.py",
     "docs/operations/wave-flow-evaluation.md",
 }
 WAVE_SECTIONS = {
     "native_configuration", "mass_readback", "region_pause", "state_identity",
     "save_refusal", "solver_comparison", "fixtures", "rapier_contact", "needle_contact",
+}
+WORKBENCH_WAVE_SECTIONS = {
+    "activation", "parameters", "workers_substeps", "runtime_apply",
+    "regeneration", "scenario_change", "pause_resume", "invalid_recovery",
+    "solver_switch", "comparison_scenes", "native_validation",
+    "failure_recovery",
 }
 _verify_shared = engine.verify_case_results
 
@@ -91,11 +103,47 @@ def verify_wave_summary(output: str) -> None:
                    "Incomplete Wave Flow, real Rapier or Needle execution")
 
 
+def verify_workbench_canvas_summary(output: str) -> None:
+    engine.require(len(re.findall(engine.CASE_MARKERS["test_workbench_canvas"], output)) == 1,
+                   "Missing unique successful Shared Workbench canvas summary")
+
+
+def verify_workbench_wave_summary(output: str) -> None:
+    summaries = re.findall(engine.CASE_MARKERS["test_workbench_wave"], output)
+    engine.require(len(summaries) == 1, "Missing unique Workbench Wave completion summary")
+    try:
+        result = json.loads(summaries[0])
+    except (ValueError, TypeError) as error:
+        raise RuntimeError("Malformed Workbench Wave completion summary") from error
+    engine.require(isinstance(result, dict)
+                   and type(result.get("assertions")) is int and result["assertions"] > 0
+                   and type(result.get("failures")) is int and result["failures"] == 0
+                   and result.get("real_workbench") is True
+                   and type(result.get("native_ticks")) is int and result["native_ticks"] > 0,
+                   "Workbench Wave did not execute successfully in the real native Workbench")
+    sections = result.get("sections")
+    engine.require(isinstance(sections, dict) and set(sections) == WORKBENCH_WAVE_SECTIONS
+                   and all(value is True for value in sections.values()),
+                   "Incomplete Workbench Wave configuration/lifecycle coverage")
+    engine.require(isinstance(result.get("observations"), list) and len(result["observations"]) > 0,
+                   "Workbench Wave has no authoritative native observations")
+    native = [item.get("native") for item in result["observations"] if isinstance(item, dict)]
+    engine.require(any(isinstance(item, dict) and item.get("enabled") is True
+                       and type(item.get("ticks")) is int and item["ticks"] > 0
+                       and type(item.get("rounds")) is int and item["rounds"] >= item["ticks"]
+                       and type(item.get("substeps")) is int and 1 <= item["substeps"] <= 8
+                       and isinstance(item.get("parameters"), dict) and bool(item["parameters"])
+                       for item in native),
+                   "Workbench Wave has no active native tick/round/parameter witness")
+
+
 def verify_case_results(directory: Path, report: dict) -> None:
     _verify_shared(directory, report)
     engine.require(report.get("scope") == engine.EXECUTION_SCOPE,
                    "Runtime qualification scope differs")
     verify_wave_summary((directory / "test_wave_flow.log").read_text(encoding="utf-8"))
+    verify_workbench_canvas_summary((directory / "test_workbench_canvas.log").read_text(encoding="utf-8"))
+    verify_workbench_wave_summary((directory / "test_workbench_wave.log").read_text(encoding="utf-8"))
 
 
 def focused_cases(discovered):

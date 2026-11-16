@@ -387,6 +387,24 @@ REVIEWED_TRANSITIONS += ({'path': 'native/src/world_pressure.inc',
   'issue': 631,
   'pr': 631},)
 
+# PR631 Workbench finisher: Wave-only construction bounds preserve uint16
+# inventory and refuse conversion to a law that cannot represent retained cells.
+# Catalogue IDs, payload/hash encodings, legacy bounds and numerical laws stay fixed.
+REVIEWED_TRANSITIONS += ({'path': 'native/src/world_pressure.inc',
+  'from_lf_sha256': 'ccd3c773992560a22989a3009c5dc383e4a16cc83d6dd21be0ca4b5111a842b4',
+  'to_lf_sha256': '9ee31ffc4ea89b50f78e39eecc8f5c9be5944bcbc2f6ead48698c714564b7067',
+  'source_commit': '1ca6da11427291a87409f7583df8cb4831a03bca',
+  'record': 'docs/audits/2026-11-16-wave-workbench-631-finisher.md',
+  'issue': 631,
+  'pr': 631},
+ {'path': 'native/src/world_quantity.inc',
+  'from_lf_sha256': '1dc5ac99aacb1bac6a41edb0aa7479ed4dbef2b493e1d26b02e185aaff9c3e1d',
+  'to_lf_sha256': '75f9743ee614fd6e5ee6ae96d3f35445b3162e19c9f7686b9eefc29f97e52dae',
+  'source_commit': '1ca6da11427291a87409f7583df8cb4831a03bca',
+  'record': 'docs/audits/2026-11-16-wave-workbench-631-finisher.md',
+  'issue': 631,
+  'pr': 631},)
+
 class CompatibilityError(ValueError):
     """An actionable source or baseline mismatch; never repairs the source."""
 

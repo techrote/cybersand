@@ -1,28 +1,88 @@
 {
   "version": 1,
   "frozen_date": "2026-11-15",
-  "purpose": "PR 618 current contract and evaluation routes; lexical retrieval is not runtime qualification.",
+  "purpose": "PR 631 current Wave contract and Workbench evaluation routes; WAVE02 expected launcher facts corrected on 2026-11-16 while preserving its original query; additive Workbench questions are separate from the frozen baseline. Lexical retrieval is not runtime qualification.",
   "questions": [
     {
       "id": "WAVE01",
       "query": "How does Wave Flow retain face flux, conserve Water and parallelize without a pressure solve?",
-      "canonical": ["architecture/wave-flow-v1.md"],
-      "facts": ["Opt-in Water override with conserved fractional mass and retained horizontal flux.", "Disjoint strips and explicit pool barriers; production default unchanged."],
-      "sources": ["../native/src/world_wave.inc", "../native/include/cybersand/wave_flow.hpp"]
+      "canonical": [
+        "architecture/wave-flow-v1.md"
+      ],
+      "facts": [
+        "Opt-in Water override with conserved fractional mass and retained horizontal flux.",
+        "Disjoint strips and explicit pool barriers; production default unchanged."
+      ],
+      "sources": [
+        "../native/src/world_wave.inc",
+        "../native/include/cybersand/wave_flow.hpp"
+      ]
     },
     {
       "id": "WAVE02",
       "query": "How do I launch the Windows Wave Flow evaluation, select solver workers substeps and fly the real Needle?",
-      "canonical": ["operations/wave-flow-evaluation.md"],
-      "facts": ["Test It.cmd and the feature launcher enter the actual native evaluator.", "Controls reconstruct the selected native law; the authored Needle uses the actual Rapier bridge.", "Automated Windows execution does not establish human or physical GPU acceptance."],
-      "sources": ["../godot/scripts/wave_flow_evaluation.gd", "../godot/scripts/wave_flow_session.gd"]
+      "canonical": [
+        "operations/wave-flow-evaluation.md"
+      ],
+      "facts": [
+        "Open Workbench.cmd opens the ordinary Shared Workbench, whose Water solver lab stages Wave tuning and reports actual native activation.",
+        "The retained standalone fixture provides the authored Needle and Rapier regression route; it is separate from ordinary Workbench human evaluation.",
+        "Apply reconstructs the selected native law and resets Wave face momentum; automated Windows execution does not establish human or physical GPU acceptance."
+      ],
+      "sources": [
+        "../tools/package_wave_flow_candidate.py",
+        "../godot/scripts/workbench_water_spray_panel.gd",
+        "../godot/scripts/wave_flow_session.gd"
+      ]
     },
     {
       "id": "WAVE03",
       "query": "Can Wave Flow save or restore complete physical state, and does mass readback wrap above 255?",
-      "canonical": ["architecture/wave-flow-v1.md", "operations/wave-flow-evaluation.md"],
-      "facts": ["Physical save and restore explicitly refuse; complete hash6 includes retained flux.", "The compatible uint8 accessor saturates while versioned uint16 mass preserves overfill."],
-      "sources": ["../native/src/world_pressure.inc", "../native/src/c_api.cpp"]
+      "canonical": [
+        "architecture/wave-flow-v1.md",
+        "operations/wave-flow-evaluation.md"
+      ],
+      "facts": [
+        "Physical save and restore explicitly refuse; complete hash6 includes retained flux.",
+        "The compatible uint8 accessor saturates while versioned uint16 mass preserves overfill."
+      ],
+      "sources": [
+        "../native/src/world_pressure.inc",
+        "../native/src/c_api.cpp"
+      ]
+    },
+    {
+      "id": "WAVE04",
+      "query": "Why could Workbench request Wave Flow but native readback stay disabled, and how is successful Apply proved?",
+      "canonical": [
+        "architecture/wave-flow-v1.md",
+        "operations/wave-flow-evaluation.md"
+      ],
+      "facts": [
+        "Decoded exact Baseline transport is admitted as the native default; custom policies remain refused before replacement.",
+        "A positive replacement receipt plus enabled native configuration and advancing ticks or rounds establish activation; requested controls are separate."
+      ],
+      "sources": [
+        "../godot/native_extension/cyber_prepared_liquid_world.hpp",
+        "../godot/tests/test_workbench_wave.gd"
+      ]
+    },
+    {
+      "id": "WAVE05",
+      "query": "Can I tune Wave rounds workers gain damping and sleep in normal Workbench and compare PressureFlow on the same Water scene?",
+      "canonical": [
+        "operations/wave-flow-evaluation.md",
+        "architecture/wave-flow-v1.md"
+      ],
+      "facts": [
+        "Bounded controls expose supported Wave parameters; Apply and reset are explicit, and each law retains its own settings.",
+        "Built-in Water comparison scenes remain editable ordinary Workbench canvases.",
+        "Rebuilding a Wave World resets retained flux; physical save continuation, pressure gas behavior, full buoyancy and falling-Water lateral momentum remain unsupported."
+      ],
+      "sources": [
+        "../godot/scripts/workbench_water_spray_panel.gd",
+        "../godot/scripts/shared_workbench.gd"
+      ]
     }
   ]
 }

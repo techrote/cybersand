@@ -1,6 +1,7 @@
 extends VBoxContainer
 
 const Setup = preload("res://scripts/workbench_setup.gd")
+const WaterComparisonScenes = preload("res://scripts/workbench_water_comparison_scenes.gd")
 const GeneratedMaps = preload("res://scripts/workbench_generated_map.gd")
 const MaterialBaseline = preload("res://scripts/workbench_material_baseline.gd")
 const PaintEditor = preload("res://scripts/workbench_paint_editor_controller.gd")
@@ -16,6 +17,8 @@ var _materials_lab_panel: Control
 var _generated_active: Dictionary = {}
 var _pending_generated: Dictionary = {}
 var _pending_retain_generated := false
+var _pending_water_comparison := ""
+var _pending_staged_liquid_selection: Dictionary = {}
 var _material_baseline: Dictionary = {}
 var _pending_material_baseline: Dictionary = {}
 var _flatten_request: Dictionary = {}
@@ -487,7 +490,8 @@ func _exit_tree() -> void:
 # saved spawn recipe intact. A deliberate restore/load uses saved spawns.
 func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 		convert_liquid_inventory: bool = false, resume_play: bool = false,
-		generated_packet: Dictionary = {}, material_baseline: Dictionary = {}) -> bool:
+		generated_packet: Dictionary = {}, material_baseline: Dictionary = {},
+		apply_staged_water: bool = true) -> bool:
 	if busy(): return refuse("Wait for the current owner transaction.")
 	if preserve and paint_editor != null and paint_editor.recovery_required():
 		return refuse("Undo the partial paint edit or Restore start before retaining the live World.")
@@ -549,10 +553,16 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 	# Publish the current owner view before preparation captures its settings
 	# revision; the first rendered frame must not invalidate startup construction.
 	host.update_worker_frame_state()
+	var retained_selection := {}
+	if not apply_staged_water and _liquids != null:
+		retained_selection = {"policy":_liquids.requested_policy.duplicate(),
+			"normalize":_liquids.normalize_water.button_pressed,"geometry":_liquids.geometry_picker.selected,
+			"dirty":_liquids._dirty}
 	var ok: bool = host.workbench_apply(candidate,definitions,runs,Setup.extent_of(candidate),
 		PackedInt32Array(candidate.liquid_policy),candidate.normalize,int(candidate.rule_radius),
-		str(candidate.response),preserve,convert_liquid_inventory,resume_play,generation,material_packet)
+		str(candidate.response),preserve,convert_liquid_inventory,resume_play,generation,material_packet,apply_staged_water)
 	if not ok: return refuse(host.microscenario_error)
+	_pending_staged_liquid_selection = retained_selection
 	_pending_generated = generated_packet.duplicate(true)
 	_pending_material_baseline = material_baseline.duplicate(false)
 	_pending_retain_generated = preserve
@@ -573,9 +583,28 @@ func new_canvas() -> bool:
 	if _liquids == null or _liquids.bridge == null: return refuse("Native policy interface unavailable.")
 	if not applied.is_empty() and not host.simulation_worker.has_failed() and not _editable(): return false
 	var size := Vector2i(int(_extent[0].value),int(_extent[1].value))
-	var candidate := Setup.fresh(_liquids.bridge.default_liquid_policy(),size)
+	var policy: PackedInt32Array = _liquids.bridge.default_liquid_policy() if applied.is_empty() else PackedInt32Array(applied.liquid_policy)
+	var candidate := Setup.fresh(policy,size)
+	if not applied.is_empty(): candidate.rule_radius = int(applied.rule_radius)
 	if host.simulation_worker.has_failed(): return host.workbench_restart(candidate)
-	return apply(candidate)
+	return apply(candidate,false,0,false,false,{},{},applied.is_empty())
+
+func load_water_comparison(scene_id: String) -> bool:
+	if not _editable(): return false
+	if _liquids == null or _liquids.bridge == null: return refuse("Native policy interface unavailable.")
+	var policy: PackedInt32Array = _liquids.requested_policy
+	if policy.is_empty(): policy = PackedInt32Array(applied.liquid_policy)
+	var checked: Dictionary = _liquids.bridge.validate_liquid_policy(policy)
+	if not checked.get("accepted",false): return refuse(str(checked.get("refusal",{})))
+	var candidate := WaterComparisonScenes.create(scene_id,policy)
+	if candidate.is_empty(): return refuse("Unknown Water comparison scene.")
+	candidate.rule_radius = maxi(int(candidate.rule_radius),int(checked.receipt.get("minimum_rule_radius",2)))
+	# Explicit Load resets the authored scene with the requested law/tuning.
+	# It never silently chooses a solver or modifies another law's options.
+	if not apply(candidate): return false
+	_pending_water_comparison = scene_id
+	message = "Preparing Water comparison scene with requested solver / tuning…"
+	return true
 
 func installed(candidate: Dictionary) -> void:
 	if art_batches != null: art_batches.executor.canvas_changed()
@@ -596,11 +625,18 @@ func installed(candidate: Dictionary) -> void:
 	_reload_rollback.clear()
 	var policy: Dictionary = host.tower_context.get("liquid_solver_policy",{})
 	if policy.has("envelope"): applied.liquid_policy = Array(policy.envelope)
-	_liquids.requested_policy = PackedInt32Array(applied.liquid_policy)
-	_liquids._dirty = false
+	if _pending_staged_liquid_selection.is_empty():
+		_liquids.requested_policy = PackedInt32Array(applied.liquid_policy)
+		_liquids._dirty = false
+		_liquids.geometry_picker.select(1 if int(applied.rule_radius) == 3 else 0)
+		_liquids.normalize_water.set_pressed_no_signal(false)
+	else:
+		_liquids.requested_policy = _pending_staged_liquid_selection.policy
+		_liquids._dirty = bool(_pending_staged_liquid_selection.dirty) or _liquids.requested_policy != PackedInt32Array(applied.liquid_policy)
+		_liquids.geometry_picker.select(int(_pending_staged_liquid_selection.geometry))
+		_liquids.normalize_water.set_pressed_no_signal(bool(_pending_staged_liquid_selection.normalize))
+	_pending_staged_liquid_selection.clear()
 	_liquids._refresh_choices()
-	_liquids.geometry_picker.select(1 if int(applied.rule_radius) == 3 else 0)
-	_liquids.normalize_water.set_pressed_no_signal(false)
 	if not _saved_view.is_empty():
 		host.camera_origin = _saved_view.origin
 		host.current_view_size = _saved_view.size
@@ -628,6 +664,13 @@ func installed(candidate: Dictionary) -> void:
 	select_instance(selected_id(),true)
 	if not applied.source.is_empty():
 		host.workbench_source(Vector2i(applied.source[0],applied.source[1]),int(applied.source[2]),"configure")
+	if not _pending_water_comparison.is_empty():
+		var scene := WaterComparisonScenes.description(_pending_water_comparison)
+		_name.text = "water-" + _pending_water_comparison
+		_camera.select(2)
+		set_camera(2)
+		message = "%s · %s" % [str(scene.get("label","Water comparison")),str(scene.get("help",""))]
+		_pending_water_comparison = ""
 	equipment.installed(applied)
 	for i: int in 3:
 		host.world_shader.set_shader_parameter("rigid_body_data_%d" % i,Vector4(-1000,-1000,0,0))
@@ -705,6 +748,8 @@ func _inventory_report(receipt: Dictionary, rounded_on_apply: bool) -> String:
 
 
 func _water_identity(context: Dictionary) -> String:
+	if bool(context.get("wave_flow",{}).get("enabled",false)):
+		return "Wave Flow (FreeMass carrier)"
 	for assignment: Dictionary in context.get("liquid_solver_policy",{}).get("assignments",[]):
 		if int(assignment.material)==CyberCellWorld.WATER:
 			return "%s/%s" % [str(assignment.applied_family).trim_suffix("_v1"),assignment.applied_variant]
@@ -763,7 +808,7 @@ func _reveal_selected() -> void:
 
 
 func _change_actor(candidate: Dictionary, id: int, label: String) -> bool:
-	if not apply(candidate,true,id,false,not host.paused): return false
+	if not apply(candidate,true,id,false,not host.paused,{},{},false): return false
 	_actor_action = label
 	message = "Preparing %s #%d…" % [str(actor(candidate,id).model).capitalize(),id]
 	return true
@@ -812,7 +857,7 @@ func remove_selected() -> bool:
 	var next := applied.duplicate(true)
 	next.actors.erase(actor(next,selected_id()))
 	next.selected = 0
-	return apply(next,true,0,false,not host.paused)
+	return apply(next,true,0,false,not host.paused,{},{},false)
 
 func save_spawn() -> bool:
 	if not _editable(): return false
@@ -855,7 +900,7 @@ func restore_start() -> bool:
 		if not _generated_active.is_empty() or not _material_baseline.is_empty():
 			return refuse("Native owner failed. Save the settled authored start, then restart the application and Load it.")
 		return host.workbench_restart(applied)
-	return apply(applied,false,0,false,false,_generated_active,_material_baseline)
+	return apply(applied,false,0,false,false,_generated_active,_material_baseline,false)
 
 func apply_settings() -> bool:
 	if not _editable(): return false
@@ -864,7 +909,7 @@ func apply_settings() -> bool:
 	var a := actor(next,selected_id())
 	if not a.is_empty():
 		for key: String in _fields: a.options[key] = _fields[key].value
-	return apply(next,true,0,false,not host.paused)
+	return apply(next,true,0,false,not host.paused,{},{},false)
 
 func defaults() -> bool:
 	if not _editable(): return false
@@ -872,7 +917,7 @@ func defaults() -> bool:
 	next.response = Setup.RESPONSES[0]
 	var a := actor(next,selected_id())
 	if not a.is_empty(): a.options = Setup.DEFAULT_OPTIONS.duplicate()
-	return apply(next,true,0,false,not host.paused)
+	return apply(next,true,0,false,not host.paused,{},{},false)
 
 func reload_definitions(manifest: String = Fleet.DEFAULT_MANIFEST) -> bool:
 	if not _editable(): return false
@@ -881,7 +926,7 @@ func reload_definitions(manifest: String = Fleet.DEFAULT_MANIFEST) -> bool:
 	var next := applied.duplicate(true)
 	for a: Dictionary in next.actors:
 		if a.model != Setup.BARREL: a.hash = Fleet.definition_hash(Fleet.index_for_id(a.model))
-	if not apply(next,true,selected_id(),false,not host.paused):
+	if not apply(next,true,selected_id(),false,not host.paused,{},{},false):
 		Fleet.restore_registry(previous)
 		return false
 	_reload_rollback = previous
@@ -892,14 +937,18 @@ func apply_liquids() -> bool:
 	var next := applied.duplicate(true)
 	var validation: Dictionary = _liquids.bridge.validate_liquid_policy(_liquids.requested_policy)
 	if not validation.get("accepted",false): return refuse(str(validation.get("refusal",{})))
-	if bool(host.workbench_water_options.get("workbench_wave_flow",false)):
+	var wave_requested: Variant = host.workbench_water_options.get("workbench_wave_flow",false)
+	if not wave_requested is bool: return refuse("Wave Flow selection requires a boolean value.")
+	if wave_requested:
 		var water_family := ""
 		for assignment: Dictionary in validation.get("receipt",{}).get("assignments",[]):
 			if int(assignment.get("material",-1)) == CyberCellWorld.WATER:
 				water_family = str(assignment.get("applied_family",""))
 		if water_family != "freemass_v1":
 			return refuse("Wave Flow is an overlay on the FreeMass Water carrier. Choose FreeMass or turn Wave Flow off.")
-		if bool(host.workbench_water_options.get("workbench_ballistic",false)):
+		var ballistic_requested: Variant = host.workbench_water_options.get("workbench_ballistic",false)
+		if not ballistic_requested is bool: return refuse("Ballistic Water selection requires a boolean value.")
+		if ballistic_requested:
 			return refuse("Wave Flow and Ballistic Water are mutually exclusive; turn Ballistic Water off before rebuilding.")
 	next.liquid_policy = Array(_liquids.requested_policy)
 	next.normalize = _liquids.normalize_water.button_pressed
@@ -907,7 +956,7 @@ func apply_liquids() -> bool:
 	if not apply(next,true,0,true,not host.paused): return false
 	_liquid_action = true
 	message = ("Preparing Wave Flow tuning… retained cells stay; face momentum resets."
-		if bool(host.workbench_water_options.get("workbench_wave_flow",false))
+		if wave_requested
 		else "Preparing liquid settings…")
 	return true
 
@@ -1019,6 +1068,8 @@ func load_equipment_start(label: String, ballistic: bool = true, preset_label: S
 	if _liquids == null or _liquids.bridge == null: return refuse("Native policy interface unavailable.")
 	if label not in Setup.EQUIPMENT_LABELS: return refuse("Unknown equipment start.")
 	if not host.simulation_worker.has_failed() and not _editable(): return false
+	if host.workbench_water_options.get("workbench_wave_flow",false) != false:
+		return refuse("Liquid equipment presets select Inertial or PressureFlow with Ballistic Water. Turn Wave Flow off before loading one.")
 	if preset_label.is_empty(): preset_label = EQUIPMENT_PRESETS[label]
 	var policy: PackedInt32Array = _liquids.bridge.default_liquid_policy()
 	var note := ""
@@ -1244,6 +1295,8 @@ func _process(_delta: float) -> void:
 		_pending_generated.clear()
 		_pending_material_baseline.clear()
 		_pending_retain_generated = false
+		_pending_water_comparison = ""
+		_pending_staged_liquid_selection.clear()
 		_actor_action = ""
 		_liquid_action = false
 		_saved_view.clear()

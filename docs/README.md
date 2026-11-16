@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-11-15
+last-reviewed: 2026-11-16
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, operations/atlas-agent-runner.md, architecture/pressure-optimization.md]
 ---
 
@@ -17,8 +17,8 @@ Current clarified intent is separate in the
 [14 November owner decision record](decisions/2026-11-14-owner-authoring-intent.md).
 
 Wave Flow PR #631 (inherited from #618): [native contract and limitations](architecture/wave-flow-v1.md),
-[desktop selection, real Rapier/Needle fixtures and Windows evaluation](operations/wave-flow-evaluation.md),
-and [Astra takeover and qualification custody](audits/2026-11-15-wave-mt-001-astra-takeover.md).
+[Shared Workbench tuning, Water comparison scenes and Windows evaluation](operations/wave-flow-evaluation.md),
+and [Workbench repair and qualification custody](audits/2026-11-16-wave-workbench-631-finisher.md).
 Experimental and default off; merge and human gameplay acceptance remain owner decisions.
 
 Current combined evaluation: [Materials Lab + Workbench integration](audits/2026-11-12-mat-auth-workbench-integration.md) preserves both current feature heads, shared manual/agent Undo/Redo and existing material/save contracts. Its own Windows/Linux/package qualification remains separate from each feature's preceding evidence.

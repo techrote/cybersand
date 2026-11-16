@@ -101,7 +101,7 @@ def stage_runtime_evidence(bundle: Path, destination: Path, identity: dict) -> d
     inputs.update({evidence + name: bundle / name for name in log_names})
     payload = {name: path.read_bytes() for name, path in inputs.items()}
     # Bind the exact bytes being copied to the admitted report, including all
-    # four focused logs and import. Keep the verifier's real platform/source
+    # required focused logs and import. Keep the verifier's real platform/source
     # checks; copying a compiler string alone cannot qualify a runtime.
     publication.engine.require(json.loads(payload[provenance_name]) == provenance,
                                "Validated runtime provenance changed before packaging")
@@ -147,9 +147,9 @@ def build(args) -> None:
         'if not "%wave_exit%"=="0" if not "%~1"=="--headless" pause\n'
         'exit /b %wave_exit%\n'
     )
-    (args.output / "Test It.cmd").write_text(launcher, encoding="utf-8", newline="\r\n")
+    (args.output / "Open Workbench.cmd").write_text(launcher, encoding="utf-8", newline="\r\n")
     manifest.update(purpose="Experimental Wave Flow in Shared Workbench; merge requires owner approval",
-                    launcher="Test It.cmd", regenerated_imports_sha256=omitted,
+                    launcher="Open Workbench.cmd", regenerated_imports_sha256=omitted,
                     runtime_qualification=qualification,
                     files_sha256=files(args.output))
     path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
@@ -159,7 +159,7 @@ def build(args) -> None:
 def verify(package: Path) -> dict:
     path = package / "candidate-manifest.json"
     manifest = json.loads(path.read_text(encoding="utf-8"))
-    publication.engine.require(manifest.get("launcher") == "Test It.cmd",
+    publication.engine.require(manifest.get("launcher") == "Open Workbench.cmd",
                                "Wrong evaluation launcher")
     publication.engine.require(manifest.get("files_sha256") == files(package),
                                "Extracted evaluation payload differs from its SHA-256 manifest")
@@ -197,7 +197,7 @@ def qualify(args) -> None:
             # The shared runner retains process-tree cleanup, telemetry and the
             # full watchdog. Its cwd is the extracted package, so CMD exercises
             # the delivered launcher including its own import and error path.
-            return ["cmd.exe", "/d", "/c", "call", "Test It.cmd",
+            return ["cmd.exe", "/d", "/c", "call", "Open Workbench.cmd",
                     "--headless", "--quit-after", "120"]
         return ordinary_command(binary, case, platform)
 
@@ -206,6 +206,10 @@ def qualify(args) -> None:
     cases = [
         runner.Case("import", ("--editor", "--quit"), policy.watchdog_seconds("godot_import_seconds"), 3),
         runner.Case("test_wave_flow", ("--script", "res://tests/test_wave_flow.gd"),
+                    policy.watchdog_seconds("complex_fixture_seconds"), 60),
+        runner.Case("test_workbench_canvas", ("--script", "res://tests/test_workbench_canvas.gd"),
+                    policy.watchdog_seconds("complex_fixture_seconds"), 60),
+        runner.Case("test_workbench_wave", ("--script", "res://tests/test_workbench_wave.gd"),
                     policy.watchdog_seconds("complex_fixture_seconds"), 60),
         runner.Case("launcher", (),
                     policy.watchdog_seconds("ordinary_case_seconds"), 10),
@@ -222,6 +226,10 @@ def qualify(args) -> None:
                                    "Extracted evaluation execution failed: " + case.name)
         if case.name == "test_wave_flow":
             publication.verify_wave_summary((output / "test_wave_flow.log").read_text(encoding="utf-8"))
+        if case.name == "test_workbench_canvas":
+            publication.verify_workbench_canvas_summary((output / "test_workbench_canvas.log").read_text(encoding="utf-8"))
+        if case.name == "test_workbench_wave":
+            publication.verify_workbench_wave_summary((output / "test_workbench_wave.log").read_text(encoding="utf-8"))
         if case.name == "launcher":
             publication.engine.require("SHARED_WORKBENCH_LAUNCH_READY" in (output / "launcher.log").read_text(encoding="utf-8"),
                                        "Launcher did not enter the Shared Workbench")

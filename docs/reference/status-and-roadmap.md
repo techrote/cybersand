@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-15
+last-reviewed: 2026-11-16
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -149,6 +149,16 @@ was an Approved semantic successor at that dated checkpoint; the 13 November
 GEN-008 candidate above now implements the revised contract independently of #542.
 
 ## Wave flow Water solver (WAVE-MT-001) — 2026-11-15
+
+**Shared Workbench continuation, 2026-11-16:** the owner now evaluates Wave in
+the ordinary Workbench using `Open Workbench.cmd`, editable Water comparison
+scenes and bounded tuning. The [finisher record](../audits/2026-11-16-wave-workbench-631-finisher.md)
+retains the two activation/readback failures at `3889cdd5`, the exact Baseline
+transport admission repair and the requirement for actual native ticks and
+positive replacement receipts. Earlier dedicated-evaluator qualification does
+not qualify this integration. Final source, runtime publication, full CI and
+independent review are recorded on PR #631; owner evaluation and merge remain
+separate gates.
 
 **Experimental PR #631 candidate inherited from #618, not on main; no default changed.** The
 [wave flow reference](../architecture/wave-flow-v1.md) adds an opt-in bulk

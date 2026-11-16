@@ -1,0 +1,555 @@
+extends SceneTree
+
+# Real Shared Workbench ownership, native application and subsequent ticks.
+# A completed request is not necessarily an accepted request: every successful
+# rebuild below requires a new authoritative World generation as well as idle UI.
+const Setup = preload("res://scripts/workbench_setup.gd")
+const Contract = preload("res://scripts/microscenario_contract.gd")
+const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
+const DAM = "res://tests/fixtures/lcb/lcb.dam.water.freemass.reference.v1.json"
+const TUNING := {
+	"substeps":2,"active_rows":24,"gain":48,"gain_confined":12,"stiffness":512,
+	"damp_shift":9,"coast":40,"level_shift":2,"sleep_after":47,"wake_peak":2,
+	"rest_head":3,"stick":256,"calm":768,"calm_damp_shift":4,"maximum_mass":30600,
+	"empty_pour_shift":3,"flow_share_shift":2,"adhesion_shift":2,
+}
+const INVALID_KNOBS := {
+	"substeps":9,"active_rows":33,"gain":513,"gain_confined":513,"stiffness":4097,
+	"damp_shift":17,"coast":65536,"level_shift":17,"sleep_after":3601,"wake_peak":65536,
+	"rest_head":65536,"stick":65536,"calm":65536,"calm_damp_shift":17,"maximum_mass":65536,
+	"empty_pour_shift":0,"flow_share_shift":0,"adhesion_shift":9,
+}
+var host: Control
+var panel: Control
+var checks := 0
+var failures: Array[String] = []
+var observations: Array[Dictionary] = []
+var sections := {"activation":false,"parameters":false,"workers_substeps":false,
+	"runtime_apply":false,"regeneration":false,"scenario_change":false,
+	"pause_resume":false,"invalid_recovery":false,"solver_switch":false,
+	"comparison_scenes":false,"native_validation":false,"failure_recovery":false}
+var native_ticks := 0
+var started_usec := 0
+
+func _initialize() -> void:
+	started_usec = Time.get_ticks_usec()
+	run.call_deferred()
+
+func require(ok: bool, detail: String) -> bool:
+	checks += 1
+	if not ok:
+		failures.append(detail)
+		push_error("WORKBENCH_WAVE: " + detail)
+	return ok
+
+func idle() -> bool:
+	return panel != null and not panel.applied.is_empty() and not panel.busy() \
+		and host.pending_microscenario_apply.is_empty()
+
+func generation() -> int:
+	return int(host.latest_snapshot.render_world_generation) if host.latest_snapshot != null else -1
+
+func wave() -> Dictionary:
+	return host.tower_context.get("wave_flow",{})
+
+func until(predicate: Callable, label: String, allow_failure := false) -> bool:
+	var deadline := Time.get_ticks_msec()+Watchdogs.milliseconds("operation_seconds")
+	while Time.get_ticks_msec() < deadline:
+		if predicate.call(): return require(true,label)
+		if not allow_failure and is_instance_valid(host) and host.simulation_worker.has_failed(): break
+		await process_frame
+	return require(false,label+" / "+(str(host.microscenario_error) if is_instance_valid(host) else "no host"))
+
+func installed_after(before: int, label: String) -> bool:
+	if not await until(idle,label+" request settled"): return false
+	return require(generation() > before and str(host.microscenario_error).is_empty(),
+		label+" positively installed / "+str(host.microscenario_error)+" / "+str(panel.message))
+
+func observe(stage: String) -> void:
+	observations.append({"stage":stage,"generation":generation(),"native":wave().duplicate(true),
+		"worker_failed":host.simulation_worker.has_failed(),"paused":host.paused,
+		"water_family":native_water_family(),
+		"inertial_signed":host.tower_context.get("water_spray",{}).get("inertial_signed",false),
+		"construction_receipt_hash":host.tower_context.get("liquid_construction_receipt",{}).get("receipt_hash","")})
+
+func native_water_family() -> String:
+	for row: Dictionary in host.tower_context.get("liquid_solver_policy",{}).get("assignments",[]):
+		if int(row.material) == Setup.WATER: return str(row.get("applied_family",""))
+	return ""
+
+func matches(values: Dictionary, label: String) -> bool:
+	var before := failures.size()
+	var actual := wave()
+	require(actual.get("enabled",false),label+" actual native Wave enabled")
+	panel.water_spray.refresh(host.tower_context)
+	for key: String in values:
+		var readback: int = int(actual.get(key,-1)) if key == "substeps" \
+			else int(actual.get("parameters",{}).get(key,-1))
+		require(readback == int(values[key]),label+" native "+key+"=%d requested=%d" % [readback,int(values[key])])
+		var shown: Label = panel.water_spray._wave_applied_fields.get("workbench_wave_"+key)
+		require(shown != null and shown.text == "native %d" % readback,label+" visible authoritative readback "+key)
+	return failures.size() == before
+
+func step_wave(count: int, label: String) -> bool:
+	var start := failures.size()
+	var before: Dictionary = wave().duplicate(true)
+	var old_generation := generation()
+	var quantity := str(before.get("water_quantity","missing"))
+	for i: int in count:
+		var tick: int = host.latest_snapshot.tick_index
+		if not require(panel.step_once(),label+" single tick admitted"): return false
+		if not await until(func() -> bool: return idle() and int(host.latest_snapshot.tick_index) >= tick+1,
+			label+" actual native tick acknowledged"): return false
+		require(int(host.latest_snapshot.tick_index) == tick+1,label+" one requested step is one native tick")
+		require(generation() == old_generation,label+" stepping retains World")
+		require(str(wave().get("water_quantity","missing")) == quantity,label+" native Water quantity conserved")
+	var after := wave()
+	var ticks := int(after.get("ticks",0))-int(before.get("ticks",0))
+	var rounds := int(after.get("rounds",0))-int(before.get("rounds",0))
+	native_ticks += maxi(0,ticks)
+	require(ticks == count,label+" actual Wave tick count")
+	require(rounds == count*int(after.get("substeps",0)),label+" actual substep rounds")
+	require(int(after.get("last_tasks",0)) > 0 and int(after.get("maximum_participants",0)) > 0,
+		label+" native workers performed Wave tasks")
+	require(not host.simulation_worker.has_failed(),label+" healthy owner")
+	observe(label)
+	return failures.size() == start
+
+func native_validation() -> void:
+	var start := failures.size()
+	var world: Variant = ClassDB.instantiate(&"CyberNativeCellWorld")
+	var bridge: Variant = ClassDB.instantiate(&"CyberDemoBridge")
+	var checked: Dictionary = Contract.validate(Contract.parse(FileAccess.get_file_as_string(DAM)).definition)
+	var options := {"workbench_extent":Vector2i(256,256),"workbench_response":"LA-SELECTIVE",
+		"workbench_sample":{"session":1,"epoch":1,"states":PackedFloat64Array(),"geometry":PackedFloat64Array(),"bodies":[]},
+		"region":PackedInt32Array([0,0,256,256]),"intent":"exploratory","definition_hash":checked.hash,
+		"initial_bodies":PackedFloat32Array(),"workbench_wave_flow":true,"workbench_worker_threads":4}
+	for key: String in TUNING: options["workbench_wave_"+key] = TUNING[key]
+	var cells := PackedInt32Array([0,220,256,4,58,0,0,4,220,58,252,0,4,220,58,
+		4,100,96,120,3,100,180,152,40,3])
+	var args := [world,cells,checked.transport.packed,PackedInt32Array(checked.definition.water_semantics),
+		PackedInt32Array(),bridge.default_liquid_policy(),options]
+	var token: int = bridge.callv("prepare_liquid_world",args)
+	if not require(token > 0 and bridge.commit_liquid_world(world,token),
+		"native ordinary Baseline transport admits Wave / "+str(bridge.get_last_error())): return
+	var actual: Dictionary = world.get_wave_flow_status()
+	require(actual.enabled and actual.substeps == 2 and actual.workers_requested == 4,"native applied constructor readback")
+	for key: String in TUNING:
+		if key != "substeps": require(int(actual.parameters.get(key,-1)) == int(TUNING[key]),"native constructor "+key)
+	require(world.simulation_tick(),"native configured World ticks")
+	var before: String = world.get_physical_state_hash()
+	var revision: int = world.get_revision()
+	var old_generation: int = world.get_liquid_policy_session_generation()
+	var invalid: Array[Dictionary] = []
+	for key: String in INVALID_KNOBS: invalid.append({"workbench_wave_"+key:INVALID_KNOBS[key]})
+	invalid.append_array([{"workbench_wave_substeps":0},{"workbench_wave_gain":1.5},
+		{"workbench_wave_gain":"48"},{"workbench_wave_flow":"yes"},{"workbench_wave_stiffness":1},
+		{"workbench_worker_threads":0},{"workbench_worker_threads":33},{"workbench_worker_threads":1.5},
+		{"workbench_ballistic":true}])
+	for bad: Dictionary in invalid:
+		var candidate := options.duplicate(true)
+		candidate.merge(bad,true)
+		args[6] = candidate
+		token = bridge.callv("prepare_liquid_world",args)
+		require(token == 0 and not str(bridge.get_last_error()).is_empty(),"native invalid configuration explicitly refused "+str(bad))
+		if token > 0: bridge.discard_liquid_world(world,token)
+		require(world.get_physical_state_hash() == before and world.get_revision() == revision \
+			and world.get_liquid_policy_session_generation() == old_generation,"native refusal is atomic "+str(bad))
+	# Canonicalizing the exact Baseline must never admit a genuinely edited profile.
+	var custom: PackedInt32Array = checked.transport.packed.duplicate()
+	custom[1] = 1 # valid sampled-lateral choice, genuinely different from Baseline
+	args[2] = custom
+	args[6] = options
+	token = bridge.callv("prepare_liquid_world",args)
+	require(token == 0,"custom cellular transport remains refused")
+	if token > 0: bridge.discard_liquid_world(world,token)
+	require(world.get_physical_state_hash() == before and world.get_revision() == revision,"custom transport refusal preserves World")
+	args[2] = checked.transport.packed
+	token = bridge.callv("prepare_liquid_world",args)
+	require(token > 0 and bridge.commit_liquid_world(world,token) and world.simulation_tick(),"native recovery accepts valid configuration and ticks")
+	var single: Variant = ClassDB.instantiate(&"CyberNativeCellWorld")
+	args[0] = single
+	var one_worker := options.duplicate(true)
+	one_worker.workbench_worker_threads = 1
+	args[6] = one_worker
+	token = bridge.callv("prepare_liquid_world",args)
+	if require(token > 0 and bridge.commit_liquid_world(single,token) and single.simulation_tick(),"one-worker comparison admitted"):
+		var quantity: String = world.get_wave_flow_status().water_quantity
+		for tick: int in 12:
+			require(world.simulation_tick() and single.simulation_tick(),"both tuned native worker configurations tick")
+			require(world.get_physical_state_hash() == single.get_physical_state_hash(),"all-parameter tuned Wave is deterministic at workers 1/4")
+			require(str(world.get_wave_flow_status().water_quantity) == quantity and str(single.get_wave_flow_status().water_quantity) == quantity,
+				"tuned native worker comparison conserves exact quantity")
+	# Inspect the owned native fixture directly: material rendering alone cannot
+	# prove preservation of each uint16 mass after Wave has created overfill.
+	var retained_cells: Dictionary = world.water_experiment_observation(Vector2i.ZERO,Vector2i(256,256))
+	var peak := 0
+	for y: int in range(100,220):
+		for x: int in range(4,252): peak = maxi(peak,int(world.inspect_wave_flow_cell(Vector2i(x,y)).stored_mass))
+	require(peak > 255,"retained native fixture positively contains uint16 overfill before retuning")
+	var retained := options.duplicate(true)
+	retained.workbench_retain_cells = true
+	retained.workbench_wave_gain = 64
+	retained.workbench_wave_substeps = 3
+	retained.workbench_worker_threads = 2
+	args[0] = world
+	args[1] = PackedInt32Array()
+	args[6] = retained
+	token = bridge.callv("prepare_liquid_world",args)
+	if require(token > 0 and bridge.commit_liquid_world(world,token),"retained native Wave retuning accepts actual fullmass / "+str(bridge.get_last_error())):
+		var after: Dictionary = world.water_experiment_observation(Vector2i.ZERO,Vector2i(256,256))
+		require(after.content_hash == retained_cells.content_hash and after.water_integer == retained_cells.water_integer,
+			"retained native retune preserves exact per-cell uint16 content and total quantity")
+		actual = world.get_wave_flow_status()
+		require(actual.enabled and actual.substeps == 3 and actual.parameters.gain == 64 and actual.workers_requested == 2,
+			"retained native retune installs requested parameters and workers")
+		before = world.get_physical_state_hash()
+		revision = world.get_revision()
+		old_generation = world.get_liquid_policy_session_generation()
+		for normalization: String in ["","water-normalize-v1"]:
+			var incompatible := retained.duplicate(true)
+			for key: String in TUNING: incompatible.erase("workbench_wave_"+key)
+			incompatible.workbench_wave_flow = false
+			if not normalization.is_empty(): incompatible.normalization = normalization
+			args[6] = incompatible
+			token = bridge.callv("prepare_liquid_world",args)
+			require(token == 0 and str(bridge.get_last_error()).to_lower().contains("wave water overfill"),
+				"non-Wave target cannot erase stored overfill, including explicit normalization / "+str(bridge.get_last_error()))
+			if token > 0: bridge.discard_liquid_world(world,token)
+			require(world.get_physical_state_hash() == before and world.get_revision() == revision \
+				and world.get_liquid_policy_session_generation() == old_generation,
+				"refused live target conversion preserves complete physical identity and native generation")
+		require(world.simulation_tick(),"retained native World remains usable after refused conversion")
+	sections.native_validation = failures.size() == start
+
+func activation() -> bool:
+	var start := failures.size()
+	require(not wave().get("enabled",true),"ordinary Workbench starts with Wave off")
+	var recipe: Dictionary = Setup.fresh(panel._liquids.bridge.default_liquid_policy(),Vector2i(512,512))
+	recipe.edits = [[0,220,256,4,Setup.WALL],[0,0,4,220,Setup.WALL],[252,0,4,220,Setup.WALL],
+		[4,100,96,120,Setup.WATER],[100,180,152,40,Setup.WATER]]
+	var before := generation()
+	if not require(panel.apply(recipe),"ordinary authored Water start requested / "+str(panel.message)) or \
+		not await installed_after(before,"authored Water start"): return false
+	panel.water_spray._wave.button_pressed = true
+	for key: String in TUNING:
+		var field: SpinBox = panel.water_spray._wave_fields.get("workbench_wave_"+key)
+		if not require(field != null,"tuning field exists "+key): return false
+		field.value = int(TUNING[key])
+	main_worker_request(4)
+	before = generation()
+	panel.water_spray._apply_wave()
+	if not await installed_after(before,"Wave Apply"): return false
+	sections.activation = require(wave().get("enabled",false),"Workbench activates native Wave") and failures.size() == start
+	start = failures.size()
+	matches(TUNING,"first Apply")
+	sections.parameters = failures.size() == start
+	start = failures.size()
+	require(int(wave().get("workers_requested",0)) == 4,"Workbench requested workers applied natively")
+	await step_wave(6,"initial Wave")
+	require(int(wave().get("workers_observed",0)) >= 1 and int(wave().get("workers_observed",0)) <= 4,
+		"native worker participation is bounded by requested team")
+	sections.workers_substeps = failures.size() == start
+	return sections.activation and sections.parameters and sections.workers_substeps
+
+func main_worker_request(count: int) -> void:
+	var field: Variant = panel.water_spray.get("_worker_threads")
+	if field != null: field.value = count
+	else: host.workbench_water_options["workbench_worker_threads"] = count
+
+func runtime_and_lifecycle() -> void:
+	var start := failures.size()
+	var tuned := TUNING.duplicate()
+	tuned.gain = 64
+	tuned.substeps = 3
+	panel.water_spray._wave_fields.workbench_wave_gain.value = 64
+	panel.water_spray._wave_fields.workbench_wave_substeps.value = 3
+	main_worker_request(1)
+	require(int(wave().parameters.gain) == 48 and int(wave().substeps) == 2,"staged edits do not impersonate native application")
+	var before := generation()
+	var quantity: String = wave().water_quantity
+	panel.water_spray._apply_wave()
+	if not await installed_after(before,"runtime Wave retune"): return
+	require(str(wave().water_quantity) == quantity,"retuning after real Wave overfill retains the exact full native quantity")
+	matches(tuned,"runtime retune")
+	require(int(wave().workers_requested) == 1,"runtime worker change is authoritative")
+	await step_wave(4,"retuned Wave")
+	var defaults := {}
+	if require(panel.water_spray.has_method(&"_reset_wave_defaults"),"explicit Reset tuning action exists"):
+		panel.water_spray._reset_wave_defaults()
+		for spec: Array in panel.water_spray.WAVE_SPINS:
+			defaults[str(spec[0]).trim_prefix("workbench_wave_")] = int(spec[5])
+			require(host.workbench_water_options.get(str(spec[0])) == int(spec[5]),"Reset stages default "+str(spec[0]))
+		matches(tuned,"staged Reset preserves running law")
+		before = generation()
+		panel.water_spray._apply_wave()
+		if not await installed_after(before,"Apply reset tuning"): return
+		matches(defaults,"applied Reset")
+		for key: String in tuned: panel.water_spray._wave_fields["workbench_wave_"+key].value = int(tuned[key])
+		before = generation()
+		panel.water_spray._apply_wave()
+		if not await installed_after(before,"restore experimental tuning"): return
+		matches(tuned,"experimental tuning restored")
+	sections.runtime_apply = failures.size() == start
+	start = failures.size()
+	var tick := int(wave().ticks)
+	var rounds := int(wave().rounds)
+	for i: int in 5: await process_frame
+	require(host.paused and int(wave().ticks) == tick and int(wave().rounds) == rounds,"pause freezes native Wave counters")
+	require(panel.toggle_pause(),"resume requested")
+	await until(func() -> bool: return int(wave().get("ticks",0)) >= tick+5,"resume executes Wave ticks")
+	require(panel.toggle_pause(),"pause requested")
+	await until(idle,"pause owner settled")
+	native_ticks += maxi(0,int(wave().ticks)-tick)
+	require(int(wave().rounds)-rounds == (int(wave().ticks)-tick)*3,"resume uses configured substeps")
+	matches(tuned,"pause/resume")
+	observe("pause_resume")
+	sections.pause_resume = failures.size() == start
+	start = failures.size()
+	# Staging an invalid alternative must not leak into an unrelated rebuild.
+	# Restore and New canvas use the accepted constructor settings until Apply.
+	var staged: Dictionary = host.workbench_water_options.duplicate(true)
+	host.workbench_water_options.workbench_wave_gain = 1000000
+	host.workbench_water_options.workbench_wave_flow = false
+	before = generation()
+	if not require(panel.restore_start(),"Restore start requested") or not await installed_after(before,"Restore start"): return
+	matches(tuned,"restored World")
+	require(int(wave().workers_requested) == 1,"Restore start retains requested worker team")
+	require(host.workbench_water_options.get("workbench_wave_gain") == 1000000 \
+		and not host.workbench_water_options.get("workbench_wave_flow",true),"Restore preserves pending edits separately from accepted settings")
+	await step_wave(2,"restored Wave")
+	sections.regeneration = failures.size() == start
+	start = failures.size()
+	before = generation()
+	for axis: int in 2: panel._extent[axis].value = 640
+	if not require(panel.new_canvas(),"new canvas requested") or not await installed_after(before,"new canvas"): return
+	matches(tuned,"new canvas")
+	require(wave().extent == Vector2i(640,640),"new canvas is actual native extent")
+	# Inactive Wave tuning does not configure another law. Re-select Wave before
+	# requesting the malformed pending gain to test its own active validation.
+	host.workbench_water_options.workbench_wave_flow = true
+	before = generation()
+	var queued: bool = panel.apply_liquids()
+	if queued: await until(idle,"explicit invalid staged Apply settled")
+	require(not queued or not str(host.microscenario_error).is_empty(),"explicit Apply refuses staged invalid settings")
+	require(generation() == before and wave().enabled and int(wave().parameters.gain) == 64,
+		"staged refusal retains the newly generated accepted World")
+	host.workbench_water_options = staged
+	sections.scenario_change = failures.size() == start
+
+func invalid_recovery() -> void:
+	var start := failures.size()
+	# Paused copies: refusals must preserve the active generation and material
+	# projection, the installed recipe and native applied settings/counters.
+	var saved: Dictionary = host.workbench_water_options.duplicate(true)
+	var active: Dictionary = wave().duplicate(true)
+	var image: PackedByteArray = host.image.get_data()
+	var applied: Dictionary = panel.applied.duplicate(true)
+	var before := generation()
+	for bad: Dictionary in [{"workbench_wave_substeps":0},{"workbench_wave_active_rows":33},
+		{"workbench_wave_stiffness":1},{"workbench_wave_gain":1.5},{"workbench_wave_gain":"64"},
+		{"workbench_wave_flow":"yes"},{"workbench_worker_threads":33}]:
+		host.workbench_water_options = saved.duplicate(true)
+		host.workbench_water_options.merge(bad,true)
+		var queued: bool = panel.apply_liquids()
+		if queued: await until(idle,"invalid Apply settled "+str(bad))
+		require(not queued or not str(host.microscenario_error).is_empty(),"invalid settings visibly refused "+str(bad))
+		require(generation() == before and panel.applied == applied and host.image.get_data() == image,
+			"invalid settings preserve owner and cells "+str(bad))
+		require(wave() == active,"invalid settings preserve authoritative Wave readback "+str(bad))
+		require(not host.simulation_worker.has_failed(),"invalid settings leave owner usable")
+	host.workbench_water_options = saved
+	panel.water_spray._apply_wave()
+	if await installed_after(before,"recovery Apply"):
+		require(wave().enabled and int(wave().substeps) == 3,"valid request recovers after refusal")
+	sections.invalid_recovery = failures.size() == start
+
+func solver_switch() -> void:
+	var start := failures.size()
+	var saved: Dictionary = host.workbench_water_options.duplicate(true)
+	# Produce real Wave uint16 overfill. Legacy Water domains cannot always carry
+	# that volume in the same cells. Refuse the live switch, preserve it exactly,
+	# then prove ordinary authored-scene replacement offers a useful comparison.
+	var recipe: Dictionary = Setup.fresh(panel._liquids.bridge.default_liquid_policy(),Vector2i(512,512))
+	recipe.edits = [[0,220,256,4,Setup.WALL],[0,0,4,220,Setup.WALL],[252,0,4,220,Setup.WALL],
+		[4,100,96,120,Setup.WATER],[100,180,152,40,Setup.WATER]]
+	var before := generation()
+	if not require(panel.apply(recipe),"moving Wave switch fixture requested") or \
+		not await installed_after(before,"moving Wave switch fixture"): return
+	if not await step_wave(6,"pre-switch overfill"): return
+	var retained: Dictionary = wave().duplicate(true)
+	var cells: PackedByteArray = host.image.get_data()
+	before = generation()
+	panel.water_spray._stage_plain_freemass()
+	panel.water_spray._apply_wave()
+	if not await until(idle,"live Wave-to-FreeMass refusal settled"): return
+	var refusal := str(host.microscenario_error).to_lower()
+	require(refusal.contains("wave") and refusal.contains("overfill"),"unrepresentable live Wave switch explains its overfill refusal")
+	require(generation() == before and wave() == retained and host.image.get_data() == cells,
+		"refused Wave switch preserves native configuration, counters, cells and exact quantity")
+	observe("switch_refused_fullmass")
+	# Fresh authored Water is full-cell and representable by every comparison
+	# family. Loading a scene explicitly applies the staged target selection.
+	before = generation()
+	if not require(panel.load_water_comparison("interference"),"same ordinary scene with staged FreeMass requested") or \
+		not await installed_after(before,"fresh FreeMass comparison"): return
+	require(not wave().enabled,"fresh scene actually switches off Wave")
+	for family: String in ["pressure_flow_v1","freemass_v1","inertial_cellular_v1","cellular_yield_v1"]:
+		var variant := "cached" if family == "pressure_flow_v1" else "reference"
+		if family == "freemass_v1": panel.water_spray._stage_plain_freemass()
+		elif not require(panel.water_spray._stage_solver(family,variant),"stage comparison "+family): continue
+		before = generation()
+		panel.water_spray._apply_wave()
+		if not await installed_after(before,"comparison "+family): continue
+		require(not wave().get("enabled",true),family+" has no Wave overlay")
+		var water: Dictionary = {}
+		for row: Dictionary in host.tower_context.get("liquid_solver_policy",{}).get("assignments",[]):
+			if int(row.material) == Setup.WATER: water = row
+		require(water.get("applied_family","") == family and water.get("applied_variant","") == variant,
+			"native law readback "+family)
+		for key: String in TUNING:
+			require(host.workbench_water_options.get("workbench_wave_"+key) == saved.get("workbench_wave_"+key),
+				family+" does not overwrite staged Wave "+key)
+	await solver_preference_cycle()
+	panel.water_spray._wave.button_pressed = true
+	before = generation()
+	panel.water_spray._apply_wave()
+	if await installed_after(before,"return to Wave"):
+		require(wave().enabled and int(wave().parameters.gain) == 64 and int(wave().substeps) == 3,
+			"return to Wave restores its independent tuning")
+	sections.solver_switch = failures.size() == start
+
+func preference_apply(family: String, signed_vertical: bool, label: String) -> bool:
+	var before := generation()
+	if not require(panel.water_spray._apply_wave(),label+" Apply admitted") or not await installed_after(before,label): return false
+	var is_wave := family == "wave_flow_v1"
+	var carrier := "freemass_v1" if is_wave else family
+	var spray: Dictionary = host.tower_context.get("water_spray",{})
+	require(wave().enabled == is_wave and native_water_family() == carrier,label+" actual native law")
+	require(spray.has("inertial_signed") and spray.inertial_signed == signed_vertical,
+		label+" actual native signed-vertical flag")
+	var receipt: Dictionary = host.tower_context.get("liquid_construction_receipt",{})
+	require(receipt.get("kind","") == "applied_run" and str(receipt.get("receipt_hash","")).length() == 64 \
+		and receipt.get("wave_flow",{}).get("enabled",not is_wave) == is_wave,label+" committed native constructor receipt")
+	observe(label)
+	return true
+
+func solver_preference_cycle() -> void:
+	# A signed Inertial preference must survive a comparison visit without being
+	# passed to incompatible FreeMass/Pressure/Wave constructors. All readbacks
+	# below come from actual replacement Worlds, not cached checkbox state.
+	if not require(panel.water_spray._stage_solver("inertial_cellular_v1","reference"),"stage signed Inertial comparison"): return
+	panel.water_spray._signed.button_pressed = true
+	if not await preference_apply("inertial_cellular_v1",true,"inertial_signed_on"): return
+	panel.water_spray._wave.button_pressed = true
+	if not await preference_apply("wave_flow_v1",false,"signed_preference_wave"): return
+	for family: String in ["pressure_flow_v1","freemass_v1","inertial_cellular_v1"]:
+		var variant := "cached" if family == "pressure_flow_v1" else "reference"
+		if not require(panel.water_spray._stage_solver(family,variant),"stage signed-preference target "+family): return
+		if not await preference_apply(family,family == "inertial_cellular_v1","signed_preference_"+family): return
+	panel.water_spray._signed.button_pressed = false
+	if not await preference_apply("inertial_cellular_v1",false,"inertial_signed_explicit_off"): return
+	panel.water_spray._wave.button_pressed = true
+	if not await preference_apply("wave_flow_v1",false,"unsigned_preference_wave"): return
+	if not require(panel.water_spray._stage_solver("pressure_flow_v1","cached"),"stage Pressure after explicit signed off"): return
+	if not await preference_apply("pressure_flow_v1",false,"unsigned_preference_pressure"): return
+	if not require(panel.water_spray._stage_solver("inertial_cellular_v1","reference"),"return to explicitly unsigned Inertial"): return
+	await preference_apply("inertial_cellular_v1",false,"inertial_explicit_off_retained")
+
+func comparison_scenes() -> void:
+	var start := failures.size()
+	if not require(panel.has_method(&"load_water_comparison"),"comparison scenes belong to ordinary Workbench"): return
+	for scene_id: String in ["interference","impacts","sparse","cascade"]:
+		var before := generation()
+		if not require(panel.load_water_comparison(scene_id),"load interactive "+scene_id): continue
+		if not await installed_after(before,"interactive "+scene_id): continue
+		require(wave().get("enabled",false),scene_id+" retains active Wave selection")
+		require(int(wave().get("water_quantity","0")) > 0,scene_id+" has native Water")
+		if scene_id == "cascade": require(wave().extent == Vector2i(2048,1024),"large scene native extent")
+		await step_wave(2,"scene_"+scene_id)
+	sections.comparison_scenes = failures.size() == start
+
+func failed_owner_recovery() -> void:
+	var start := failures.size()
+	# The constructor consumes a deliberately tiny existing diagnostic capacity;
+	# restore the setting before either host enters the tree. The failure itself
+	# is a real native tick, and recovery creates an ordinary unmodified Main.
+	host.queue_free()
+	await process_frame
+	await process_frame
+	const CAPACITY := "cybersand/native_active_core_capacity"
+	var previous: Variant = ProjectSettings.get_setting(CAPACITY,null)
+	ProjectSettings.set_setting(CAPACITY,1)
+	set_meta("cybersand_feature","shared_workbench")
+	host = load("res://main.tscn").instantiate()
+	ProjectSettings.set_setting(CAPACITY,previous)
+	root.add_child(host)
+	current_scene = host
+	panel = host.shared_workbench
+	if not await until(idle,"capacity-one Workbench installed"): return
+	panel.water_spray._wave.button_pressed = true
+	for key: String in TUNING: panel.water_spray._wave_fields["workbench_wave_"+key].value = TUNING[key]
+	main_worker_request(4)
+	var recipe: Dictionary = Setup.fresh(panel._liquids.bridge.default_liquid_policy(),Vector2i(512,512))
+	recipe.edits = [[20,20,8,8,Setup.SAND],[160,20,8,8,Setup.SAND],[0,240,256,4,Setup.WALL],
+		[0,0,4,240,Setup.WALL],[252,0,4,240,Setup.WALL],[4,180,248,60,Setup.WATER]]
+	var before := generation()
+	if not require(panel.apply(recipe),"capacity fixture with Wave admitted") or \
+		not await installed_after(before,"capacity fixture"): return
+	matches(TUNING,"accepted configuration before native failure")
+	var old_id := host.get_instance_id()
+	var old_worker: RefCounted = host.simulation_worker
+	if not require(panel.step_once(),"real native failing tick requested"): return
+	if not await until(func() -> bool: return old_worker.has_failed() and host.latest_snapshot.simulation_failed,
+		"actual native capacity fault is published",true): return
+	require(str(host.latest_snapshot.last_tick_error).contains("active scheduling-core capacity exhausted"),
+		"native fault is the deliberate capacity failure")
+	panel.water_spray.refresh(host.tower_context)
+	require(panel.water_spray._wave_status.text.contains("NATIVE WORLD FAILED") \
+		and panel.water_spray._wave_status.text.contains("last completed native readback"),
+		"failed owner status identifies the frozen last-completed readback instead of reporting APPLIED")
+	# An unsubmitted malformed choice must not become the recovered law.
+	host.workbench_water_options.workbench_wave_gain = 1000000
+	host.workbench_water_options.workbench_wave_flow = false
+	if not require(panel.restore_start(),"failed owner Restore start queues scene replacement"): return
+	if not await until(func() -> bool: return current_scene != null and current_scene.get_instance_id() != old_id,
+		"whole Main replaced after native failure",true): return
+	host = current_scene
+	panel = host.shared_workbench
+	if not await until(idle,"fresh recovered Workbench installed"): return
+	require(not old_worker._thread.is_started(),"failed native worker was joined")
+	require(host.simulation_worker != old_worker and not host.simulation_worker.has_failed() and host.paused,
+		"recovery owns a distinct healthy paused worker")
+	matches(TUNING,"recovered accepted Wave configuration")
+	require(int(wave().get("workers_requested",0)) == 4,"recovery retains accepted worker team")
+	require(int(host.workbench_water_options.get("workbench_wave_gain",0)) == 48 \
+		and host.workbench_water_options.get("workbench_wave_flow",false),"recovery discards unsubmitted invalid settings")
+	await step_wave(3,"recovered Wave")
+	sections.failure_recovery = failures.size() == start
+
+func run() -> void:
+	native_validation()
+	root.size = Vector2i(1600,900)
+	change_scene_to_file("res://feature_launcher.tscn")
+	await scene_changed
+	if "--workbench" not in OS.get_cmdline_user_args(): current_scene.launch("shared_workbench")
+	await scene_changed
+	host = current_scene
+	panel = host.shared_workbench
+	if await until(idle,"ordinary Workbench installed") and await activation():
+		await runtime_and_lifecycle()
+		await invalid_recovery()
+		await solver_switch()
+		await comparison_scenes()
+		await failed_owner_recovery()
+	for section: String in sections: require(bool(sections[section]),"required section completed: "+section)
+	var result := {"schema":"workbench-wave-631-v1","assertions":checks,"failures":failures.size(),
+		"failure_details":failures,"sections":sections,"real_workbench":true,"native_ticks":native_ticks,
+		"observations":observations,"platform":OS.get_name(),"godot":Engine.get_version_info().string,
+		"elapsed_ms":(Time.get_ticks_usec()-started_usec)/1000.0}
+	if host != null:
+		host.queue_free()
+		await process_frame
+		await process_frame
+	print("WORKBENCH_WAVE_RESULT ",JSON.stringify(result))
+	quit(0 if failures.is_empty() else 1)

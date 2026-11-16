@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-15
+last-reviewed: 2026-11-16
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -94,6 +94,16 @@ steps (input capture, terrain-installation fence, workbench measurement,
 semaphore wake) are separate and need their own registration.
 
 ## Wave flow Water solver experiment (WAVE-MT-001) — 2026-11-15
+
+The 16 November [Workbench finisher](../audits/2026-11-16-wave-workbench-631-finisher.md)
+supersedes the earlier dedicated-evaluator handoff for human testing. Ordinary
+Workbench Apply must receive a positive native replacement receipt and show
+the actual World configuration; an empty pending request alone is not success.
+Exact Baseline transport is admitted for Wave, custom transport remains refused,
+and the source-matched publisher executes both the original canvas regression
+and the focused Workbench Wave lifecycle suite before producing the Windows
+`Open Workbench.cmd` package. Final full-source CI and independent review remain
+separate from publication. Keep Draft/HOLD after the controlled CI transition.
 
 PR [#631](https://github.com/techrote/cybersand/pull/631), owned branch
 `astra/wave-mt-001-669-finisher`, takes over the repaired experimental

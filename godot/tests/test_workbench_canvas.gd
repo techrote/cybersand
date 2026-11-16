@@ -168,8 +168,11 @@ func builtin_water() -> bool:
 	main.workbench_water_options.workbench_wave_active_rows = 32
 	main.workbench_water_options.workbench_wave_substeps = 2
 	main.workbench_water_options.workbench_wave_gain = 48
+	var before_wave_generation: int = main.latest_snapshot.render_world_generation
 	loaded = check(panel.apply_liquids(),"Workbench Wave rebuild / "+panel.message)
 	if not loaded or not await until(installed,"Workbench Wave installed"): return false
+	check(main.microscenario_error.is_empty() and int(main.latest_snapshot.render_world_generation) > before_wave_generation,
+		"Workbench Wave positively acknowledged, not merely a completed refusal / "+main.microscenario_error)
 	var wave: Dictionary = main.tower_context.get("wave_flow",{})
 	check(wave.get("enabled",false) and int(wave.get("substeps",0)) == 2,
 		"Workbench Wave enabled with two rounds: "+str(wave))
@@ -181,6 +184,9 @@ func builtin_water() -> bool:
 	panel.toggle_pause()
 	check(not main.simulation_worker.has_failed(),"Workbench Wave simulates with authored actors/terrain")
 	await until(installed,"paused after Workbench Wave")
+	wave = main.tower_context.get("wave_flow",{})
+	check(int(wave.get("ticks",0)) >= 30 and int(wave.get("rounds",0)) == 2*int(wave.get("ticks",0)),
+		"actual Workbench Wave ticks and two native rounds per tick: "+str(wave))
 	main.workbench_water_options = seeded
 	# Fine scheduling cores: workbench-only boolean construction option.
 	main.workbench_water_options = {"workbench_fine_cores":true}

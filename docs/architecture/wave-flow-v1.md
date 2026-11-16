@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Experimental-branch WAVE-MT-001 wave_flow_v1 opt-in bulk strip-parallel Water law; mechanism, ownership, parallel execution, state and memory, admission and refusal, limits and the candidate comparison that selected it; not on main, no default changed, not a policy family yet
 canonical-for: [wave-flow-v1]
-last-reviewed: 2026-11-15
+last-reviewed: 2026-11-16
 related-documents: [liquid-solver-family-policy.md, pressure-flow-v1.md, inertial-cellular-v1.md, simulation-tick-and-threading.md, rigid-body-and-cellular-coupling.md, ../audits/2026-11-15-wave-mt-001-wave-flow.md, ../audits/2026-11-15-wave-mt-001-completion.md]
 ---
 
@@ -395,3 +395,53 @@ transaction. Retained Wave face momentum is intentionally not migrated: tuning
 starts a new law state. Non-default tuning is included in `state_hash()` and
 the physical identity. The exact qualified-v2 parameter point retains its
 historical hash path.
+
+Live Wave cells can contain more than 255 mass units after ordinary simulation
+ticks. Prepared Wave reconstruction uses the explicit `WaveStored16` setup
+domain: Water mass 1–65,535, coherence zero, and the unchanged eight-bit quantity
+scale. This is selected only for enabled Wave Worlds and never enters Water
+normalization. Retuning retains every stored mass unit; the generic fractional
+and whole-cell setup limits remain unchanged. A live switch to a law that cannot
+represent an overfilled Wave cell refuses without changing the old World. Use
+**Load / reset scene** to compare that law from the same authored scene instead.
+
+### Ordinary Workbench configuration ownership
+
+The Water solver in `workbench_water_spray_panel.gd` stages requested values.
+`Main.workbench_apply` passes their original types through the simulation owner
+and `MicroScenarioHost.install` to
+`CyberDemoBridge::prepare_liquid_candidate`. Native preparation validates the
+complete request and owns a private candidate World. Successful commit swaps
+that World once; refusal preserves the old World and its native state. A cleared
+pending request is not evidence of acceptance: the copied application receipt
+must positively acknowledge the matching request/generation.
+
+Workbench's schema-1 Baseline transport is a resolved table, and `unpack()` marks
+it configured. Wave's qualified law rejects custom transport. The adapter
+therefore recognizes only the exact Baseline values (all pair fields, horizontal
+limits, cadence and the native Mercury period) and maps that representation to
+native default transport for Wave. A changed value remains a custom-policy
+refusal. This resolves PR #631's initial activation failure without weakening
+the native law's custom-transport restriction.
+
+Pool workers are a bounded integer construction option, 1–32; changing the value
+prepares a new pool before commit. Applied status is copied from the actual
+World: enabled law, parameter values, substeps, configured workers, observed
+participants, session generation, completed ticks/rounds, health, storage,
+capacity refusals and native tick time. Participant counts describe observed
+task claimants, not CPU utilization or simultaneous execution. Invalid types and
+out-of-range values are explicit refusals, not silently substituted defaults.
+
+Wave tuning is retained across ordinary scene reconstruction and restart from
+the accepted construction settings. Unsubmitted or refused panel edits are not
+an accepted reset state. Pause/resume does not reconstruct the World. An explicit
+Apply or scene reset creates a new law state and clears retained face flux.
+Its Wave tick counters and sleep state also restart; material reconstruction is not exact physical continuation. The panel keeps
+Wave tuning separate from other Water-law settings and displays requested and
+native values independently.
+
+The [owner guide](../operations/wave-flow-evaluation.md) describes editable
+comparison scenes and the ordinary Windows launcher. The
+[dated finisher record](../audits/2026-11-16-wave-workbench-631-finisher.md)
+retains the original failures; final-source execution and independent review
+remain separate source-bound evidence.

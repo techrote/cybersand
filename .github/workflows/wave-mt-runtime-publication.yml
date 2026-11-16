@@ -138,7 +138,7 @@ jobs:
     name: build and execute the Linux Wave Flow runtime
     if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/astra/wave-mt-001-669-finisher' && needs.admission.outputs.armed == 'true'
     runs-on: ubuntu-24.04
-    # Complete native build, import and all four unshortened current-policy cases.
+    # Complete native build, import, Workbench and unchanged policy/actor controls.
     timeout-minutes: 360
     outputs:
       artifact_attempt: ${{ steps.artifact.outputs.attempt }}
@@ -203,6 +203,17 @@ jobs:
           set -euo pipefail
           timeout 10m curl --fail --location --retry 3 --connect-timeout 60 --max-time 600 --output "$RUNNER_TEMP/godot-linux.zip" "$GODOT_URL"
           python3 tools/ci/wave_mt_runtime_publication.py test --platform linux --source-sha "$GITHUB_SHA" --godot-archive "$RUNNER_TEMP/godot-linux.zip" --bundle build/wave-mt-linux
+
+      - name: Execute actual rendered Shared Workbench and Wave controls
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+        run: |
+          set -euo pipefail
+          tools/ci/prepare_linux_display.sh
+          xvfb-run -a -s '-screen 0 1600x1000x24' \
+            python3 tools/wave_mt/run_workbench_render.py \
+              --godot "$RUNNER_TEMP/godot-linux/Godot_v4.7-stable_linux.x86_64" \
+              --source-sha "$GITHUB_SHA" --bundle build/wave-mt-linux
 
       - name: Record artifact attempt
         if: always()
@@ -445,6 +456,7 @@ jobs:
       - name: Verify complete matching provenance and stage only the four runtime paths
         run: |
           set -euo pipefail
+          python3 tools/wave_mt/run_workbench_render.py --verify-only --source-sha "$GITHUB_SHA" --bundle build/wave-mt-linux
           python3 tools/ci/wave_mt_runtime_publication.py stage --source-sha "$GITHUB_SHA" --linux-bundle build/wave-mt-linux --windows-bundle build/wave-mt-windows
           git add -- godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll godot/addons/cybersand_native/runtime-provenance.linux.json godot/addons/cybersand_native/runtime-provenance.json
           python3 tools/ci/wave_mt_runtime_publication.py check-index --source-sha "$GITHUB_SHA"

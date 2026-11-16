@@ -2271,6 +2271,10 @@ Dictionary CyberNativeCellWorld::get_wave_flow_status() const {
     const auto wave = world_->wave_flow_diagnostics();
     const auto quantity = world_->quantity_ledger();
     out["enabled"] = world_->wave_flow_enabled();
+    out["session_generation"] = static_cast<std::int64_t>(liquid_policy_session_generation_);
+    out["healthy"] = !world_->has_failed();
+    out["transport_configured"] = config.transport_policy.configured;
+    out["pressure_gas_compartment_capacity"] = static_cast<std::int64_t>(config.pressure_gas_compartment_capacity);
     out["version"] = static_cast<std::int64_t>(cybersand::WaveFlowParameters::kVersion);
     out["substeps"] = static_cast<std::int64_t>(config.wave_flow.substeps);
     Dictionary parameters;

@@ -28,6 +28,31 @@ inline Dictionary encoding(const cybersand::receipt::ReceiptEncoding& value, con
 inline String digest(const cybersand::Sha256::Digest& value) {
     return String(cybersand::Sha256::hex(value).c_str());
 }
+
+// Workbench's schema-1 Baseline is a fully resolved transport table, so
+// unpack() marks it configured even though its behavior is the native default.
+// Wave deliberately refuses custom transport. Admit only this exact Baseline
+// representation and canonicalize it at the adapter boundary; never relax the
+// numerical law's custom-transport refusal or drop a caller's actual tuning.
+inline bool is_workbench_baseline_transport(const cybersand::TransportPolicy& policy) {
+    constexpr std::array<std::uint8_t, 9> powders{2, 13, 14, 19, 23, 25, 26, 27, 29};
+    constexpr auto mercury = static_cast<std::uint8_t>(cybersand::Material::Mercury);
+    const cybersand::TransportPair defaults;
+    const auto mercury_period = cybersand::InteractionPolicy{}.mercury_exchange_period;
+    for (std::size_t source = 0; source < cybersand::TransportPolicy::materials; ++source) {
+        if (policy.horizontal[source] != 2 || policy.cadence[source] != 1) return false;
+        const bool powder = std::find(powders.begin(), powders.end(), source) != powders.end();
+        for (std::size_t target = 0; target < cybersand::TransportPolicy::materials; ++target) {
+            const auto& pair = policy.pairs[source * cybersand::TransportPolicy::materials + target];
+            const auto permeability = source == mercury || (powder && target == mercury)
+                ? mercury_period : 1U;
+            if (pair.mixing != defaults.mixing || pair.carrying != defaults.carrying ||
+                pair.pickup != defaults.pickup || pair.packing != defaults.packing ||
+                pair.erosion != defaults.erosion || pair.permeability != permeability) return false;
+        }
+    }
+    return true;
+}
 } // namespace prepared_liquid_detail
 
 inline std::int64_t CyberDemoBridge::prepare_liquid_world(
@@ -263,6 +288,17 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         if (default_demo && seed != 0)
             throw std::invalid_argument("The native default demo recipe has fixed seed zero");
         auto config = std::make_unique<cybersand::WorldConfig>(adapter->world_->config());
+        if (options.has("workbench_worker_threads")) {
+            if (!workbench || options["workbench_worker_threads"].get_type() != Variant::INT)
+                throw std::invalid_argument("Workbench worker threads require a workbench integer");
+            const auto workers = static_cast<std::int64_t>(options["workbench_worker_threads"]);
+            if (workers < 1 || workers > 32)
+                throw std::invalid_argument("Workbench worker threads outside 1..32");
+#if defined(__EMSCRIPTEN__) && !defined(__EMSCRIPTEN_PTHREADS__)
+            if (workers != 1) throw std::invalid_argument("This Web runtime supports one native worker");
+#endif
+            config->worker_threads = static_cast<std::uint32_t>(workers);
+        }
         // Explicit capacity belongs to the prepared World, never the mutable v1
         // liquid policy envelope. Invalid types and bounds refuse before staging.
         if (options.has("pressure_gas_compartment_capacity") &&
@@ -272,7 +308,16 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
             options.get("pressure_gas_compartment_capacity", std::int64_t{1024}));
         if (gas_capacity != 1024 && gas_capacity != 2048)
             throw std::invalid_argument("Unsupported pressure gas capacity (1024 or 2048)");
-        if (retain && adapter->world_->config().pressure_gas_compartment_capacity != gas_capacity)
+        const auto destination_water = decoded.policy->assignment(static_cast<std::uint16_t>(cybersand::Material::Water));
+        const bool destination_pressure = destination_water &&
+            destination_water->family == cybersand::LiquidSolverFamily::PressureFlowV1;
+        // An explicit family conversion already retires/constructs the PF owner
+        // and reports its gas/overfill inventory. A capacity-only change while
+        // retaining that owner still requires a fresh World.
+        const bool pressure_owner_changes = convert && changed_policy &&
+            adapter->world_->pressure_flow_enabled() != destination_pressure;
+        if (retain && adapter->world_->config().pressure_gas_compartment_capacity != gas_capacity &&
+            !pressure_owner_changes)
             throw std::invalid_argument("Retained gas capacity change requires a fresh World");
         config->pressure_gas_compartment_capacity = static_cast<std::uint16_t>(gas_capacity);
         config->workbench_parallel_pressure_heads = workbench;
@@ -337,6 +382,11 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         config->ballistic_water.face_release = config->ballistic_water.enabled &&
             static_cast<bool>(options.get("workbench_face_release", false));
         config->wave_flow.enabled = options.get("workbench_wave_flow", false);
+        if (config->wave_flow.enabled && config->transport_policy.configured) {
+            if (!prepared_liquid_detail::is_workbench_baseline_transport(config->transport_policy))
+                throw std::invalid_argument("Workbench Wave Flow requires the exact Baseline transport profile; custom transport is not supported");
+            config->transport_policy = {};
+        }
         if (options.has("workbench_wave_substeps")) {
             if (!workbench || !config->wave_flow.enabled ||
                 options["workbench_wave_substeps"].get_type() != Variant::INT)
@@ -606,6 +656,17 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
             (water_assignment->family == cybersand::LiquidSolverFamily::CellularYieldV1 ||
              water_assignment->family == cybersand::LiquidSolverFamily::InertialCellularV1);
         const bool normalize_water = !rule.is_empty() || (convert && whole_water);
+        // Wave's conserved stored mass can legitimately exceed the nominal
+        // 255-unit cell after real ticks. Retuning a Wave owner preserves that
+        // uint16 payload exactly. Other laws have no corresponding carrier;
+        // refuse a retained conversion before normalization could truncate it.
+        if (retain && adapter->world_->wave_flow_enabled() && !config->wave_flow.enabled) {
+            const auto nominal_mass = config->water_experiment_policy.maximum();
+            for (const auto& cell : input.cells)
+                if (cell.material == cybersand::Material::Water && cell.state_a > nominal_mass)
+                    throw std::invalid_argument(
+                        "Retained Wave Water overfill exceeds the target law's cell capacity; load a comparison scene with the requested solver");
+        }
         auto result = std::make_unique<cybersand::PreparedWorldBuilder::Result>(cybersand::PreparedWorldBuilder::prepare(
             *config, input, normalize_water ? cybersand::normalization::NormalizationOptIn::WaterNormalizeV1 :
                 cybersand::normalization::NormalizationOptIn::None, limits));
@@ -886,6 +947,7 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         wave_flow["flow_share_shift"] = wave.flow_share_shift;
         wave_flow["adhesion_shift"] = wave.adhesion_shift;
         pending->receipt["wave_flow"] = wave_flow;
+        if (wave.enabled) pending->receipt["wave_transport_admission"] = "workbench_baseline_to_native_defaults_v1";
         pending->receipt["maximum_rule_radius"] = static_cast<std::int64_t>(pending->world->config().maximum_rule_radius);
         pending->receipt["completed_tick"] = static_cast<std::int64_t>(facts->values().completed_tick);
         pending->receipt["region"] = region;
@@ -923,6 +985,19 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         const auto token = pending->token;
         adapter->pending_liquid_world_ = std::move(pending);
         return static_cast<std::int64_t>(token);
+    } catch (const cybersand::LiquidPolicyRefused& error) {
+        refuse_liquid_policy(error.refusal());
+        return 0;
+    } catch (const std::invalid_argument& error) {
+        refuse_liquid_policy({cybersand::LiquidPolicyRefusalCode::MalformedPolicy, std::nullopt, error.what()});
+        return 0;
+    } catch (const std::length_error& error) {
+        refuse_liquid_policy({cybersand::LiquidPolicyRefusalCode::CapacityRefused, std::nullopt, error.what()});
+        return 0;
+    } catch (const std::bad_alloc&) {
+        refuse_liquid_policy({cybersand::LiquidPolicyRefusalCode::CapacityRefused, std::nullopt,
+                             "Workbench preparation allocation refused"});
+        return 0;
     } catch (const std::exception& error) {
         error_ = String(error.what());
         return 0;
@@ -946,6 +1021,7 @@ inline bool CyberDemoBridge::commit_liquid_world(const Ref<CyberNativeCellWorld>
     // No allocations, capture, configuration changes or host callbacks after
     // this fence. All final native facts and copied receipts were prepared.
     adapter->world_.swap(pending->world);
+    adapter->worker_threads_ = adapter->world_->config().worker_threads;
     adapter->workbench_.swap(pending->workbench);
     adapter->extent_ = pending->extent;
     adapter->default_demo_recipe_active_ = pending->reset_demo_coupling;

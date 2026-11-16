@@ -3,6 +3,7 @@
 // wave-flow-sanitize / wave-flow-thread-sanitize.
 #include "cybersand/world.hpp"
 #include "cybersand/c_api.h"
+#include "cybersand/prepared_world.hpp"
 
 #include <algorithm>
 #include <array>
@@ -24,6 +25,87 @@ using namespace cybersand;
 
 void require(bool condition, const std::string& message) {
     if (!condition) throw std::runtime_error(message);
+}
+
+void prepared_uint16_payload_and_quantity_are_lossless() {
+    using namespace normalization;
+    FinalSetupInput input;
+    input.mass_bits = 8;
+    input.setup.seed = 631;
+    input.setup.domain = {0, 0, 64, 64};
+    input.cells = {{10, 20, Material::Water, 1, 0, 200},
+                   {11, 20, Material::Water, 255, 0, 200},
+                   {12, 20, Material::Water, 256, 0, 200},
+                   {13, 20, Material::Water, 65535, 0, 200}};
+    // Keep the subsequent tick's inventory inside the declared finite domain.
+    // Without a floor, Wave's gravity pass legitimately falls into the halo.
+    for (std::int64_t x = 0; x < 64; ++x) {
+        input.cells.push_back({x, 0, Material::Wall, 0, 0, 200});
+        input.cells.push_back({x, 63, Material::Wall, 0, 0, 200});
+    }
+    for (std::int64_t y = 1; y < 63; ++y) {
+        input.cells.push_back({0, y, Material::Wall, 0, 0, 200});
+        input.cells.push_back({63, y, Material::Wall, 0, 0, 200});
+    }
+    const auto original = input.cells;
+    WorldConfig cfg;
+    cfg.wave_flow.enabled = true;
+    cfg.worker_threads = 4;
+    auto result = PreparedWorldBuilder::prepare(cfg, input, NormalizationOptIn::None);
+    require(std::holds_alternative<PreparedWorld>(result), "prepared Wave World refused legal uint16 stored Water");
+    auto prepared = std::get<PreparedWorld>(std::move(result));
+    const auto& candidate = prepared.world();
+    require(input.cells == original, "prepared Wave World mutated caller tuples");
+    for (const auto& cell : input.cells)
+        require(candidate.stored_material(cell.x, cell.y) == cell.material &&
+                    candidate.stored_state_a(cell.x, cell.y) == cell.state_a &&
+                    candidate.stored_state_b(cell.x, cell.y) == cell.state_b,
+                "prepared Wave World truncated or altered a boundary tuple");
+    require(candidate.water_quantity({0, 0, 64, 64}) == 66047, "prepared Wave World changed exact fullmass quantity");
+    require(!prepared.setup().normalization_receipt(), "prepared Wave World silently normalized its input");
+    const auto facts = receipt::capture_native_facts(candidate, prepared.setup().setup_descriptor());
+    require(facts.values().prepared_native_payload == prepared.setup().native_payload_hash(),
+            "prepared Wave payload hash does not bind actual native cells");
+    const auto ledger = candidate.quantity_ledger();
+    require(ledger.baseline_water == 66047 && ledger.water_visible + ledger.water_overfill == 66047 &&
+                ledger.construction && ledger.construction->expected_final_water == 66047 &&
+                ledger.construction->prepared_payload_digest == prepared.setup().native_payload_hash() &&
+                ledger.construction->prepared_setup_identity == prepared.setup().setup_hash() &&
+                ledger.construction->normalization_produced == 0 && ledger.construction->normalization_consumed == 0 &&
+                !ledger.construction->normalization_receipt_digest,
+            "prepared Wave ledger lost quantity or fabricated setup conversion");
+    const auto before = candidate.physical_state_hash();
+    const auto refused_setup = [&](const WorldConfig& settings, const FinalSetupInput& invalid, NormalizationOptIn opt_in) {
+        const auto rejected = PreparedWorldBuilder::prepare(settings, invalid, opt_in);
+        const auto* refusal = std::get_if<ConstructionRefusal>(&rejected);
+        require(refusal != nullptr && refusal->policy_refusal() &&
+                    refusal->policy_refusal()->code == LiquidPolicyRefusalCode::MalformedPolicy,
+                "invalid prepared uint16 domain was not explicitly refused");
+        require(candidate.physical_state_hash() == before && candidate.quantity_ledger() == ledger,
+                "refused candidate mutated existing prepared World");
+    };
+    auto ordinary = cfg;
+    ordinary.wave_flow.enabled = false;
+    refused_setup(ordinary, input, NormalizationOptIn::None);
+    refused_setup(ordinary, input, NormalizationOptIn::WaterNormalizeV1);
+    refused_setup(cfg, input, NormalizationOptIn::WaterNormalizeV1);
+    auto invalid = input; invalid.cells[0].state_a = 0;
+    refused_setup(cfg, invalid, NormalizationOptIn::None);
+    invalid = input; invalid.cells[0].state_b = 1;
+    refused_setup(cfg, invalid, NormalizationOptIn::None);
+    invalid = input; invalid.mass_bits = 7;
+    refused_setup(cfg, invalid, NormalizationOptIn::None);
+    invalid = input; invalid.cells[2].material = Material::Oil;
+    refused_setup(cfg, invalid, NormalizationOptIn::None);
+    invalid = input;
+    for (auto& cell : invalid.cells) if (cell.material == Material::Water) cell.state_a = 255;
+    require(std::holds_alternative<PreparedWorld>(PreparedWorldBuilder::prepare(ordinary, invalid, NormalizationOptIn::None)),
+            "ordinary nominal Water construction regressed");
+    auto world = prepared.take_world();
+    (void)world->tick();
+    require(!world->has_failed() && world->wave_flow_diagnostics().ticks == 1 &&
+                world->water_quantity({0, 0, 64, 64}) == 66047,
+            "prepared uint16 Wave World cannot execute a conserving native tick");
 }
 
 WorldConfig config(std::uint32_t workers = 4, std::uint8_t substeps = 1) {
@@ -1230,6 +1312,7 @@ int main(int argc, char** argv) {
         {"films level and rest", films_level_and_rest},
         {"supported film uses an adhesion threshold", supported_film_uses_an_adhesion_threshold},
         {"state hash binds retained momentum", state_hash_binds_retained_momentum},
+        {"prepared uint16 payload and quantity are lossless", prepared_uint16_payload_and_quantity_are_lossless},
     };
     int failures = 0, executed = 0;
     for (const auto& test : tests) {

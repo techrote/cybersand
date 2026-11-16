@@ -51,7 +51,11 @@ struct FinalSetupInput {
 // The admitted native family determines this requirement. Explicit conversion
 // is also allowed for a Fractional comparator so both arms share one prepared
 // payload. None never normalizes silently. No live World is accepted here.
-enum class WaterQuantityRegime : std::uint8_t { Fractional = 0, WholeCell = 1 };
+// Wave stores conserved visible Water in the complete uint16 lane. It is an
+// explicit construction domain, not a relaxation of either legacy regime and
+// never an input to water-normalize-v1. The World builder selects it only for
+// an opted-in Wave owner; the tuple/payload identity still hashes every bit.
+enum class WaterQuantityRegime : std::uint8_t { Fractional = 0, WholeCell = 1, WaveStored16 = 2 };
 enum class NormalizationOptIn : std::uint8_t { None = 0, WaterNormalizeV1 = 1 };
 enum class RefusalCode : std::uint8_t {
     MalformedPolicy, UnknownParameter, CapacityRefused, NormalizationRequired
@@ -225,10 +229,15 @@ public:
         };
         if (input.mass_bits < 3U || input.mass_bits > 8U)
             return refuse(RefusalCode::MalformedPolicy, "Water mass_bits must be 3..8", std::uint16_t{3});
-        if (regime != WaterQuantityRegime::Fractional && regime != WaterQuantityRegime::WholeCell)
+        if (regime != WaterQuantityRegime::Fractional && regime != WaterQuantityRegime::WholeCell &&
+            regime != WaterQuantityRegime::WaveStored16)
             return refuse(RefusalCode::UnknownParameter, "unknown Water quantity regime", std::uint16_t{3});
         if (opt_in != NormalizationOptIn::None && opt_in != NormalizationOptIn::WaterNormalizeV1)
             return refuse(RefusalCode::UnknownParameter, "unknown Water setup normalization rule", std::uint16_t{3});
+        const bool wave_storage = regime == WaterQuantityRegime::WaveStored16;
+        if (wave_storage && (input.mass_bits != 8U || opt_in != NormalizationOptIn::None))
+            return refuse(RefusalCode::MalformedPolicy,
+                          "Wave stored Water requires mass_bits 8 and forbids quantity normalization", std::uint16_t{3});
         if (limits.maximum_side > kMaximumWorkbenchSide || limits.maximum_cells > std::size_t{limits.maximum_side} * limits.maximum_side || input.cells.size() > limits.maximum_cells)
             return refuse(RefusalCode::CapacityRefused, "final setup exceeds normalization preparation budget");
         try { setup::validate_setup_descriptor(input.setup); }
@@ -262,7 +271,8 @@ public:
             if (cell.material == Material::Empty && (cell.state_a != 0 || cell.state_b != 0))
                 return refuse(RefusalCode::MalformedPolicy, "final setup Empty state lanes must be zero", material);
             if (cell.material == Material::Water) {
-                if (cell.state_a == 0 || cell.state_a > maximum || cell.state_b > 12U)
+                if (cell.state_a == 0 || (!wave_storage && cell.state_a > maximum) ||
+                    cell.state_b > (wave_storage ? 0U : 12U))
                     return refuse(RefusalCode::MalformedPolicy, "final setup Water state is outside its declared domain", std::uint16_t{3});
                 fractional_water = fractional_water || cell.state_a != maximum;
             } else if (cell.state_a > 255U) {

@@ -18,9 +18,37 @@ import lcb001_shared_contract_runtime_publication as shared
 import wave_mt_runtime_publication as profile
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import package_wave_flow_candidate as package
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "wave_mt"))
+import run_workbench_render as graphical
 
 
 class WaveRuntimeTests(unittest.TestCase):
+    def test_graphical_receipt_requires_exact_source_and_original_captures(self):
+        # Admission fixtures only; these PNG signatures are not render evidence.
+        source = "7" * 40
+        case = "test_workbench_wave_render"
+        summary = "WORKBENCH_WAVE_RENDER " + json.dumps({"assertions": 12, "failures": 0, "captures": 6})
+        with tempfile.TemporaryDirectory() as temporary, patch.dict(os.environ, {"GITHUB_SHA": source}):
+            root = Path(temporary)
+            captures = [{"screenshot": f"fixture-{index}.png"} for index in range(6)]
+            for capture in captures:
+                (root / capture["screenshot"]).write_bytes(b"\x89PNG\r\n\x1a\nUNIT ADMISSION FIXTURE")
+            path = root / "workbench-wave-render.json"
+            receipt = {"source_commit": source, "failures": 0, "captures": captures}
+            path.write_text(json.dumps(receipt))
+            self.assertEqual(len(graphical.verify_capture(root, case, summary)["screenshots_sha256"]), 6)
+            for mutation in [{"source_commit": "8" * 40}, {"failures": False},
+                             {"captures": captures[:5]}, {"captures": [captures[0]] * 6},
+                             {"captures": [*captures[:5], {"screenshot": "../escape.png"}]}]:
+                with self.subTest(mutation=mutation):
+                    path.write_text(json.dumps(receipt | mutation))
+                    with self.assertRaises(RuntimeError):
+                        graphical.verify_capture(root, case, summary)
+            path.write_text(json.dumps(receipt))
+            (root / captures[0]["screenshot"]).unlink()
+            with self.assertRaisesRegex(RuntimeError, "Missing original"):
+                graphical.verify_capture(root, case, summary)
+
     @classmethod
     def setUpClass(cls):
         # The Wave wrapper forces canonical archive text. Read these reviewed
@@ -159,15 +187,59 @@ class WaveRuntimeTests(unittest.TestCase):
             with self.assertRaises(RuntimeError):
                 profile.verify_wave_summary(bad)
 
+    def test_all_workbench_sections_and_actual_native_ticks_required(self):
+        valid = {"assertions": 55, "failures": 0, "real_workbench": True, "native_ticks": 6,
+                 "sections": {key: True for key in profile.WORKBENCH_WAVE_SECTIONS},
+                 "observations": [{"stage": "activated", "generation": 2,
+                                   "native": {"enabled": True, "ticks": 6, "rounds": 12,
+                                              "substeps": 2, "parameters": {"gain": 48}}}]}
+
+        def output(value):
+            return "WORKBENCH_WAVE_RESULT " + json.dumps(value) + "\n"
+
+        profile.verify_workbench_wave_summary(output(valid))
+        for key in valid["sections"]:
+            for bad in (False, 1, "true", None):
+                with self.subTest(section=key, value=bad), self.assertRaises(RuntimeError):
+                    profile.verify_workbench_wave_summary(output(
+                        valid | {"sections": valid["sections"] | {key: bad}}))
+            sections = dict(valid["sections"])
+            del sections[key]
+            with self.assertRaises(RuntimeError):
+                profile.verify_workbench_wave_summary(output(valid | {"sections": sections}))
+        for change in ({"assertions": 0}, {"assertions": True}, {"failures": 1},
+                       {"failures": False}, {"real_workbench": False}, {"real_workbench": 1},
+                       {"native_ticks": 0}, {"native_ticks": True}, {"observations": []},
+                       {"observations": [{"native": {"enabled": False, "ticks": 0, "rounds": 0}}]}):
+            with self.subTest(change=change), self.assertRaises(RuntimeError):
+                profile.verify_workbench_wave_summary(output(valid | change))
+        for change in ({"enabled": False}, {"ticks": 0}, {"rounds": 0},
+                       {"substeps": 0}, {"parameters": {}}):
+            observation = valid["observations"][0]
+            with self.subTest(native_change=change), self.assertRaises(RuntimeError):
+                profile.verify_workbench_wave_summary(output(valid | {
+                    "observations": [observation | {"native": observation["native"] | change}]}))
+        for bad in ("", output(valid) * 2, "WORKBENCH_WAVE_RESULT {oops}\n"):
+            with self.assertRaises(RuntimeError):
+                profile.verify_workbench_wave_summary(bad)
+
+    def test_original_canvas_failure_cannot_qualify_publication(self):
+        profile.verify_workbench_canvas_summary("WORKBENCH_CANVAS 192 checks, 0 failures\n")
+        for bad in ("", "WORKBENCH_CANVAS 192 checks, 2 failures\n",
+                    "WORKBENCH_CANVAS 0 checks, 0 failures\n",
+                    "WORKBENCH_CANVAS 192 checks, 0 failures\n" * 2):
+            with self.assertRaises(RuntimeError):
+                profile.verify_workbench_canvas_summary(bad)
+
     def test_extracted_package_rejects_changed_or_missing_payload(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             runtime = root / profile.engine.RUNTIMES["windows"]
             runtime.parent.mkdir(parents=True)
             runtime.write_bytes(b"MZ-test-candidate")
-            launcher = root / "Test It.cmd"
+            launcher = root / "Open Workbench.cmd"
             launcher.write_text("verified launcher\n", encoding="utf-8")
-            manifest = {"launcher": "Test It.cmd", "native_sha256": package.sha(runtime),
+            manifest = {"launcher": "Open Workbench.cmd", "native_sha256": package.sha(runtime),
                         "files_sha256": package.files(root)}
             manifest_path = root / "candidate-manifest.json"
             manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
@@ -203,7 +275,7 @@ class WaveRuntimeTests(unittest.TestCase):
                         self.assertEqual((root / name).read_bytes(), data)
                         self.assertEqual(package.sha(root / name), manifest["files_sha256"][name])
             self.assertEqual(manifest["files_sha256"], package.files(root))
-            launcher_text = (root / "Test It.cmd").read_text(encoding="utf-8")
+            launcher_text = (root / "Open Workbench.cmd").read_text(encoding="utf-8")
             self.assertIn("-- --workbench", launcher_text)
             self.assertNotIn("-- --wave-flow", launcher_text)
             self.assertIn("SHARED_WORKBENCH_LAUNCH_READY", (package.ROOT / "godot/scripts/feature_launcher.gd").read_text(encoding="utf-8"))
