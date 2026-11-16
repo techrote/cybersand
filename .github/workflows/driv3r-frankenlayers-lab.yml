@@ -42,7 +42,7 @@ jobs:
           python3 - <<'PY'
           import json
           from pathlib import Path
-          from experiments.driv3r.frankenlayers_lab.flows import WAVE1_FLOWS, WAVE2_FLOWS, WAVE3_FLOWS, WAVE5_FLOWS, WAVE6_FLOWS
+          from experiments.driv3r.frankenlayers_lab.flows import WAVE1_FLOWS, WAVE2_FLOWS, WAVE3_FLOWS, WAVE5_FLOWS, WAVE6_FLOWS, LAB_FLOWS
           p=Path("experiments/driv3r/frankenlayers_lab/run-request.json")
           r=json.loads(p.read_text())
           assert r["schema"]=="cybersand-d1-frankenlayers-lab-request/1"
