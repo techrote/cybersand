@@ -820,7 +820,6 @@ void World::wave_apply_task(std::size_t task_index) noexcept {
 }
 
 void World::advance_wave_flow(TickStats& stats) {
-    using P = WaveFlowParameters;
     using Clock = std::chrono::steady_clock;
     const auto elapsed = [](Clock::time_point from) {
         return static_cast<std::uint64_t>(
