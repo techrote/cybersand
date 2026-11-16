@@ -1,0 +1,64 @@
+name: DRIV3R paired-order memory students (P11)
+on:
+  push:
+    branches:
+      - research/570-population-game-policy-001
+    paths:
+      - 'experiments/driv3r/training/population/**'
+      - '.github/workflows/driv3r-population-memory.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  p11-cpu-memory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install CPU-only source-pinned dependencies
+        run: |
+          python -m pip install --disable-pip-version-check numpy==2.3.5
+          python -m pip install --disable-pip-version-check torch==2.7.1 --index-url https://download.pytorch.org/whl/cpu
+      - name: Run P11 matched-pair host-legality and optimizer tests
+        run: python -m unittest discover -s experiments/driv3r/training/population -p test_population_p11.py -v
+      - name: Train three independent order-memory cohorts and negative controls
+        env:
+          OPENBLAS_NUM_THREADS: '1'
+          OMP_NUM_THREADS: '1'
+          MKL_NUM_THREADS: '1'
+        run: |
+          mkdir -p /tmp/population-p11-evidence
+          for seed in 646 647 648; do
+            python experiments/driv3r/training/population/population_p11.py \
+              --output "/tmp/population-p11-evidence/p11_${seed}" \
+              --seed "${seed}" --train-worlds 80 --validation-worlds 24 \
+              --heldout-worlds 36 --epochs 18 --width 40
+          done
+      - name: Audit each cohort manifest
+        run: |
+          for seed in 646 647 648; do
+            (cd "/tmp/population-p11-evidence/p11_${seed}" && sha256sum -c manifest.sha256)
+          done
+      - name: Preserve source, environment, failures and package manifest
+        if: always()
+        run: |
+          mkdir -p /tmp/population-p11-evidence/source
+          for file in population_lab.py population_p10.py population_p11.py test_population_p11.py P11_REPORT.md; do
+            cp "experiments/driv3r/training/population/${file}" /tmp/population-p11-evidence/source/
+          done
+          git rev-parse HEAD > /tmp/population-p11-evidence/source-commit.txt
+          python -m pip freeze > /tmp/population-p11-evidence/python-versions.txt
+          (cd /tmp/population-p11-evidence && find . -type f -print0 | sort -z | xargs -0 sha256sum) > /tmp/population-p11-sha256.txt
+      - name: Archive immutable CPU checkpoints and original trajectories
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: population-p11-order-memory-evidence
+          path: |
+            /tmp/population-p11-evidence
+            /tmp/population-p11-sha256.txt
+          retention-days: 14
+          if-no-files-found: warn
