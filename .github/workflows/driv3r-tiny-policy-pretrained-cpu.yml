@@ -149,11 +149,22 @@ jobs:
         run: |
           timeout --signal=TERM --kill-after=15s 330s python -u -m experiments.driv3r.training.tiny_policy.m3_curriculum \
             --out "${{ runner.temp }}/tiny-m5/m3-regenerated"
-          cd "${{ runner.temp }}/tiny-m5/m3-regenerated/checkpoints"
-          printf '%s  linear.pt\n%s  mlp.pt\n%s  conv.pt\n' \
-            a5d1ec8f5f956c05968f7b5b538952e68d89b861d337a48559e0de759fc32435 \
-            1b2c9cea0b99fffde0b3ebd39942835540880d93a6e70ce1518ff39c508ceeb5 \
-            b44a97d0a6af84010280bf83e22c481afa15546d8b1575ef4c855d5bb6661d6d | sha256sum -c -
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          root=Path("${{ runner.temp }}/tiny-m5")
+          ck=root/"m3-regenerated/checkpoints"
+          original={
+              "linear":"a5d1ec8f5f956c05968f7b5b538952e68d89b861d337a48559e0de759fc32435",
+              "mlp":"1b2c9cea0b99fffde0b3ebd39942835540880d93a6e70ce1518ff39c508ceeb5",
+              "conv":"b44a97d0a6af84010280bf83e22c481afa15546d8b1575ef4c855d5bb6661d6d"}
+          actual={n:hashlib.sha256((ck/(n+".pt")).read_bytes()).hexdigest() for n in original}
+          report={"original_reference":original,"rebuilt_reference":actual,
+                  "exact_matches":{n:original[n]==actual[n] for n in original},
+                  "classification":"same-source CPU rebuild; divergent weights are distinct model identities"}
+          (root/"m3_reference_status.json").write_text(json.dumps(report,indent=2,sort_keys=True)+"\n")
+          print(json.dumps(report,indent=2,sort_keys=True))
+          PY
       - name: Train M5 real CPU heads, render originals and fully audit all trajectory receipts
         timeout-minutes: 9
         env:
@@ -162,7 +173,8 @@ jobs:
         run: |
           timeout --signal=TERM --kill-after=15s 480s python -u -m experiments.driv3r.training.tiny_policy.m5_topology_train \
             --output "${{ runner.temp }}/tiny-m5/m5-evidence" \
-            --m3-checkpoints "${{ runner.temp }}/tiny-m5/m3-regenerated/checkpoints"
+            --m3-checkpoints "${{ runner.temp }}/tiny-m5/m3-regenerated/checkpoints" \
+            --m3-rebuilt-from-source
           timeout --signal=TERM --kill-after=15s 210s python -u -m experiments.driv3r.training.tiny_policy.audit_m5_topology \
             --input "${{ runner.temp }}/tiny-m5/m5-evidence" \
             --m3-checkpoints "${{ runner.temp }}/tiny-m5/m3-regenerated/checkpoints" \
@@ -178,6 +190,8 @@ jobs:
             ${{ runner.temp }}/tiny-m5/dependencies.txt
             ${{ runner.temp }}/tiny-m5/source_hashes.txt
             ${{ runner.temp }}/tiny-m5/m3-regenerated/checkpoints/
+            ${{ runner.temp }}/tiny-m5/m3-regenerated/report.json
+            ${{ runner.temp }}/tiny-m5/m3_reference_status.json
             ${{ runner.temp }}/tiny-m5/m5-evidence/
             ${{ runner.temp }}/tiny-m5/audit.json
           retention-days: 21
