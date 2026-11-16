@@ -13,9 +13,9 @@ concurrency:
   cancel-in-progress: false
 jobs:
   student-cpu:
-    name: Immutable original d1 source → 450 Adam + 300 repair steps → synthetic gameplay gallery
+    name: Immutable original d1 source → 450 Adam + 300 repair + 3×160 rehearsal steps → synthetic gameplay gallery
     runs-on: ubuntu-24.04
-    timeout-minutes: 18
+    timeout-minutes: 25
     env:
       OPENBLAS_NUM_THREADS: '1'
       OMP_NUM_THREADS: '1'
@@ -60,6 +60,19 @@ jobs:
             python3 -m experiments.driv3r.training.distillation.repair \
             --input "$RUNNER_TEMP/distilled-student/student.npz" \
             --out "$RUNNER_TEMP/distilled-student" --steps 300
+          rm -f "$RUNNER_TEMP/distilled-student/SHA256SUMS.txt"
+          (cd "$RUNNER_TEMP/distilled-student" && sha256sum * > SHA256SUMS.txt)
+      - name: Genuine D003 multi-candidate style rehearsal and disjoint evaluation
+        env:
+          DRIV3R_TEACHER_CORPUS: ${{ runner.temp }}/distill-source/original_teachers.jsonl
+        run: |
+          set -euo pipefail
+          python3 -m experiments.driv3r.training.distillation.style_restore \
+            --base "$RUNNER_TEMP/distilled-student/student.npz" \
+            --repair "$RUNNER_TEMP/distilled-student/repair_student.npz" \
+            --corpus "$RUNNER_TEMP/distilled-student/repair_train_corpus.npz" \
+            --repair-metrics "$RUNNER_TEMP/distilled-student/repair_metrics.json" \
+            --out "$RUNNER_TEMP/distilled-student" --steps 160
           rm -f "$RUNNER_TEMP/distilled-student/SHA256SUMS.txt"
           (cd "$RUNNER_TEMP/distilled-student" && sha256sum * > SHA256SUMS.txt)
       - name: Immutable original research checkpoint and negative controls (never Git)
