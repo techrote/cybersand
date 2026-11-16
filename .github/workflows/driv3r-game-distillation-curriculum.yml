@@ -1,0 +1,63 @@
+name: "DRIV3R game distillation — original Q8 anchored student (research)"
+on:
+  push:
+    branches: [research/driv3r-game-distill-student-001]
+    paths:
+      - 'experiments/driv3r/training/distillation/**'
+      - '.github/workflows/driv3r-game-distillation-curriculum.yml'
+  pull_request:
+    paths:
+      - 'experiments/driv3r/training/distillation/**'
+      - '.github/workflows/driv3r-game-distillation-curriculum.yml'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: driv3r-distill-student-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  student-cpu:
+    name: Immutable original d1 source → 450 Adam steps → synthetic gameplay gallery
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      DRIV3R_TEACHER_CORPUS: ${{ runner.temp }}/distill-source/original_teachers.jsonl
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: CPU dependencies
+        run: python3 -m pip install --disable-pip-version-check numpy==2.2.6 pillow==11.3.0
+      - name: Original real d1 teacher acquisition, exact immutable ZIP check
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/distill-source"
+          gh api -H 'Accept: application/vnd.github+json' repos/techrote/cybersand/actions/artifacts/14181164165/zip > "$RUNNER_TEMP/distill-source/greyhound.zip"
+          gh api -H 'Accept: application/vnd.github+json' repos/techrote/cybersand/actions/artifacts/14182441899/zip > "$RUNNER_TEMP/distill-source/branchwitch.zip"
+          python3 -m experiments.driv3r.training.distillation.prepare_corpus "$RUNNER_TEMP/distill-source/greyhound.zip" "$RUNNER_TEMP/distill-source/branchwitch.zip" "$DRIV3R_TEACHER_CORPUS"
+          test "$(sha256sum "$DRIV3R_TEACHER_CORPUS" | cut -d' ' -f1)" = '140342c16a0b8c6c8d2c3bc6071767885b15096d5a53bbf304979f3015c86522'
+      - name: Deterministic legality, protected-cell and split tests
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s experiments/driv3r/training/distillation -p 'test_*.py' -v
+      - name: Genuine 450-update tiny neural student, held-out synthetic controls
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/distilled-student"
+          python3 -m experiments.driv3r.training.distillation.lab --out "$RUNNER_TEMP/distilled-student" --steps 450
+          cp "$DRIV3R_TEACHER_CORPUS" "$RUNNER_TEMP/distilled-student/original_teachers.jsonl"
+          git rev-parse HEAD > "$RUNNER_TEMP/distilled-student/source-commit.txt"
+          (cd "$RUNNER_TEMP/distilled-student" && sha256sum * > SHA256SUMS.txt)
+      - name: Immutable original research checkpoint and negative controls (never Git)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: driv3r-distillation-student-001-${{ github.run_id }}
+          path: ${{ runner.temp }}/distilled-student/
+          retention-days: 90
+          if-no-files-found: warn
