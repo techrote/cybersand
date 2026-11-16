@@ -106,7 +106,8 @@ static func builtin_presets() -> Array:
 		_preset("cranked-beam","Cranked Beam","cranked_beam","industrial",96,80,3,10,0,113,114,121,0.0,1),
 		_preset("barrel-arcade","Barrel Arcade","barrel_arcade","ruins",96,88,3,10,0,98,111,120,0.0,1),
 		_preset("buttress-crown","Buttress Crown","buttress_crown","ruins",96,96,4,12,0,104,98,120,0.0,1),
-		_preset("triptych-arcade","Triptych Arcade","triptych_arcade","ruins",108,88,3,10,0,98,119,120,0.0,1)
+		_preset("triptych-arcade","Triptych Arcade","triptych_arcade","ruins",108,88,3,10,0,98,119,120,0.0,1),
+		_preset("megatruss-station","Megatruss Station","megatruss_station","industrial",64,96,3,10,0,58,65,121,0.0,1)
 	]
 
 static func default_project() -> Dictionary:
@@ -169,7 +170,7 @@ static func validate_preset(preset: Variant) -> String:
 			"ziggurat_arcade","corbel_arcade","chain_vault","ring_pier",
 			"folded_plate_hall","space_frame","crossbeam_stack","yoke_bridge",
 			"lantern_tower","spine_arcade","cascade_terrace","inverted_trestle",
-			"cranked_beam","barrel_arcade","buttress_crown","triptych_arcade"]:
+			"cranked_beam","barrel_arcade","buttress_crown","triptych_arcade","megatruss_station"]:
 		return "Unknown native architectural module."
 	var allowed_versions: Array = [2] if preset.module in ["arcology","vault"] else \
 		([1,2] if preset.module in ["terraced","hex_hive","arcade"] else [1])
@@ -199,6 +200,8 @@ static func validate_preset(preset: Variant) -> String:
 		return "This Gentek needs floor height at least 4 × wall thickness + 12 cells."
 	if preset.module == "sawtooth_gallery" and int(g.room_size)/2 < 2*int(g.wall_thickness)+4:
 		return "Sawtooth Gallery needs half-bay width at least 2 × wall thickness + 4 cells."
+	if preset.module == "megatruss_station" and (int(g.room_size) < 4*int(g.wall_thickness)+24 or int(g.floor_height) < 8*int(g.wall_thickness)+32):
+		return "Megatruss Station needs room size at least 4 × wall thickness + 24 and floor height at least 8 × wall thickness + 32 cells."
 	error = _keys(preset.materials,["wall","floor","window"],["wall","floor","window"],"Style materials")
 	if not error.is_empty(): return error
 	for key: String in preset.materials:
@@ -407,7 +410,7 @@ static func compile(input: Variant) -> Dictionary:
 				"a_frame_hall","butterfly_hall","ziggurat_arcade","corbel_arcade","chain_vault",
 				"ring_pier","folded_plate_hall","space_frame","crossbeam_stack","yoke_bridge",
 				"lantern_tower","spine_arcade","cascade_terrace","inverted_trestle",
-				"cranked_beam","barrel_arcade","buttress_crown","triptych_arcade"]:
+				"cranked_beam","barrel_arcade","buttress_crown","triptych_arcade","megatruss_station"]:
 			# One global geometric anchor, independently clipped by a zone mask.
 			# Avoid restarting rooms/arches at every zone's bounding rectangle.
 			bounds = [project.origin[0],project.origin[1],extent.x,extent.y]

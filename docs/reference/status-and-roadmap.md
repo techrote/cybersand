@@ -51,6 +51,16 @@ architecture tests and bounded publisher guards continue on accepted-main CI
 after integration; the full graphical/package campaign stays explicit.
 **Ready-for-review is a CI state; no merge is authorised.**
 
+## Megatruss Station CLASSIC showcase — 2026-11-16
+
+**Draft / HOLD, separately stacked on #624.** The
+[showcase record](../research/gentek-showcase-megatruss-001.md) documents a six-bay
+macro hierarchy, three vertical bands and subordinate
+station programmes using `megatruss_station` v1. It remains an ordinary GEN-007
+style. The parent seventy-two samplers and accepted Viaduct v1/v2 are preserved;
+source-qualified evidence is separate from owner acceptance and no merge or
+Ready promotion is authorised.
+
 ## Materials Lab v1 — 2026-11-11
 
 Separate [PR #563](https://github.com/techrote/cybersand/pull/563) replaces the

@@ -1,0 +1,38 @@
+{
+  "assertions": 1499,
+  "gates": [
+    "same_seed_and_reverse_chunk_order",
+    "work_slicing_and_zero_budget",
+    "chunk_partition_and_signed_coordinates",
+    "bounds_do_not_rephase_station",
+    "parallel_requests_and_cancellation",
+    "large_signed_coordinate_stability",
+    "six_seed_programmes_and_negative_space",
+    "wall_thickness_controls_mass",
+    "glazing_toggle_is_local_material_substitution",
+    "portals_toggle_without_rephasing_structure",
+    "invalid_recipe_and_version_refusal",
+    "primary_chords_main_decks_and_transfer_cores",
+    "three_bay_primary_diagonal_continuity",
+    "protected_station_hall_rectangle",
+    "three_spatial_frequencies_and_member_mass",
+    "crossed_secondary_even_and_odd_panels",
+    "room_size_moves_macro_support_interval",
+    "floor_height_moves_chords_and_deck_hierarchy"
+  ],
+  "measurements": {
+    "base_bay_width": 64,
+    "clear_hall_height": 86,
+    "lower_chord_y": 144,
+    "main_transit_deck_y": 240,
+    "minimum_clear_hall_width": 221,
+    "primary_diagonal_horizontal_run": 192,
+    "primary_member_measured_cells": 13,
+    "secondary_member_measured_cells": 2,
+    "secondary_panel_pitch": 16,
+    "supercell_height": 288,
+    "supercell_repeat_width": 384,
+    "upper_chord_y": 48
+  },
+  "status": "pass"
+}

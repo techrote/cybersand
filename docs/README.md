@@ -45,6 +45,10 @@ Final-head broad CI is recorded separately in PR #582. Routine native, Godot
 and publisher-guard regressions continue beyond the feature branch.
 No merge is authorised.
 
+Draft CLASSIC showcase: [Megatruss Station](research/gentek-showcase-megatruss-001.md)
+organizes six bays into a world-phased mega-frame with subordinate decks,
+secondary trusses, suspended galleries and protected station halls.
+
 EXPLORE-001 review candidate: [generated-map contract](systems/explore001-generated-playable-maps.md),
 [Windows candidate/playtest](operations/explore001-desktop-playtest.md), and
 [independent integration QA](audits/2026-11-08-explore001-integration-qa.md).

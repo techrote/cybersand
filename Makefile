@@ -207,6 +207,20 @@ $(BUILD_DIR)/test_generation_fields: $(BUILD_DIR)/worldgen-objects/normal/genera
 $(BUILD_DIR)/test_generation_modifiers: $(GENERATION_OPT_OBJECTS) $(CORE_HEADERS) native/tests/test_generation_modifiers.cpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O2 -g -Werror $(GENERATION_OPT_OBJECTS) native/tests/test_generation_modifiers.cpp -o $@
 
+.PHONY: megatruss-station-test megatruss-station-sanitize
+
+$(BUILD_DIR)/test_megatruss_station: $(GENERATION_OPT_OBJECTS) $(CORE_HEADERS) native/tests/test_megatruss_station.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O2 -g -Werror $(GENERATION_OPT_OBJECTS) native/tests/test_megatruss_station.cpp -o $@
+
+megatruss-station-test: $(BUILD_DIR)/test_megatruss_station
+	./$(BUILD_DIR)/test_megatruss_station
+
+$(BUILD_DIR)/test_megatruss_station_sanitized: $(GENERATION_SAN_OBJECTS) $(CORE_HEADERS) native/tests/test_megatruss_station.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined $(GENERATION_SAN_OBJECTS) native/tests/test_megatruss_station.cpp -o $@
+
+megatruss-station-sanitize: $(BUILD_DIR)/test_megatruss_station_sanitized
+	ASAN_OPTIONS=$${ASAN_OPTIONS:-detect_leaks=1:strict_string_checks=1} UBSAN_OPTIONS=$${UBSAN_OPTIONS:-halt_on_error=1} ./$(BUILD_DIR)/test_megatruss_station_sanitized
+
 worldgen-test: $(BUILD_DIR)/test_generation_planes $(BUILD_DIR)/test_generation_grammar $(BUILD_DIR)/test_generation_typed_integration $(BUILD_DIR)/test_generation_typed $(BUILD_DIR)/test_generation_spatial $(BUILD_DIR)/test_world_generation $(BUILD_DIR)/test_world_generation_install $(BUILD_DIR)/test_generation_fields $(BUILD_DIR)/test_generation_modifiers
 	./$(BUILD_DIR)/test_world_generation
 	./$(BUILD_DIR)/test_world_generation_install

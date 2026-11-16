@@ -161,6 +161,45 @@ maximum charged operations to 160 million per 128-cell chunk, within the
 native 1-billion hard bound. One-to-three-style recipe identities retain
 the existing default budget.
 
+## CLASSIC Megatruss Station research preset
+
+**Draft / HOLD, GENTEK-SHOWCASE-MEGATRUSS-001:** the stacked CLASSIC branch adds
+`megatruss_station` v1 as an ordinary selectable style. The preset ID is
+`megatruss-station`; the [showcase record](../research/gentek-showcase-megatruss-001.md)
+owns its experimental evidence and limits. This is the seventy-third CLASSIC
+sampler, alongside the unchanged seventy-two parent samplers. It uses existing
+schema 4, immutable native sampling and the same project/preset compiler.
+
+Unlike the older bounds-relative CLASSIC examples, this sampler derives its
+six-bay, three-band supercell entirely from signed **absolute world coordinates**.
+Bounds and style masks only clip geometry; changing a zone rectangle cannot reset
+its phase. At the hero settings, the supercell is 384 × 288 cells, the base bay is
+64 cells, each primary diagonal crosses 192 cells and the secondary pitch is
+16 cells. Seeded programme choices belong to whole supercells, not individual braces.
+
+| Existing control | Megatruss interpretation |
+| --- | --- |
+| Room size | Base bay B; macro repeat is 6B and secondary panel pitch is floor(B/4) |
+| Floor height | Major band L; station height 3L, chords at L/2 and 3L/2, main deck at 5L/2 |
+| Wall thickness | Primary half-width 2w, pier half-width 3w, secondary half-width max(1, floor(w/2)) |
+| Automatic windows | Glazing in bounded service pods, concourse and crown; Off restores shell cells only |
+| Automatic doors | Service apertures in enclosures; decks, chords and transfer piers stay continuous |
+| Shaft width | Optional world-phased centre shaft in each supercell; 0 preserves uninterrupted spans |
+
+Room size must be at least `4w + 24`, and floor height at least `8w + 32`.
+The built-in uses B=64, L=96, w=3, door width 10, shaft 0, no deterioration,
+Reinforced Concrete (58), Rusted Steel (65), and Frosted Glass (121). As with
+other style presets, the floor material also supplies the accent role.
+No material definitions, new controls, neighbour queries or runtime World state
+are involved. Automatic tunnels and deliberately enabled shafts/deterioration
+remain independent carving controls and can interrupt otherwise continuous members.
+
+The finite style mask may crop a mega-span; this sampler does not negotiate
+interfaces, adapt to territory shape, or certify gameplay/physical support.
+Source-built runtime qualification is required: the inherited parent DLL/SO
+cannot load a newly introduced module. Headless native-material PNGs demonstrate
+geometry, not graphical Windows owner acceptance or retained runtime publication.
+
 ## Project and preset format
 
 The compiler is
