@@ -1,0 +1,60 @@
+name: MZ-001 Mamba 130M game policy onboarding (research only)
+on:
+  push:
+    branches:
+      - 'research/model-zoo-mamba130'
+    paths:
+      - 'experiments/driv3r/model_zoo/**'
+      - '.github/workflows/driv3r-model-zoo-mamba.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: mz-mamba130-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  onboard:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      HF_HUB_DISABLE_TELEMETRY: '1'
+      TOKENIZERS_PARALLELISM: 'false'
+      OMP_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Source-only contract tests
+        run: python -m unittest -v experiments.driv3r.model_zoo.mamba130.test_world
+      - name: Install pinned CPU dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install 'torch==2.5.1' --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install 'transformers==4.51.3' 'huggingface_hub==0.34.4' 'pillow==11.3.0' 'safetensors==0.5.3' 'tokenizers==0.21.4'
+      - name: Actual pretrained Mamba inference and supervised policy-head training
+        run: python -m experiments.driv3r.model_zoo.mamba130.run --out $RUNNER_TEMP/mz-mamba --train-seeds 8 --steps 14 --episode-steps 16
+      - name: Ensure real optimizer output and source manifest exist
+        run: |
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          p=Path(os.environ['RUNNER_TEMP'])/'mz-mamba'
+          r=json.loads((p/'results.json').read_text())
+          assert r['backbone_parameters']>=100_000_000
+          assert r['trained_head_parameters']>1000
+          assert r['model_revision'].startswith('1e76775')
+          assert r['train_count']>=100 and len(r['losses'])==14
+          assert (p/'mamba130_game_head.pt').stat().st_size>2000
+          assert (p/'heldout_worlds.png').stat().st_size>1000
+          PY
+      - name: Retain original model training and game-trace evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mz001-mamba130-${{ github.sha }}
+          path: ${{ runner.temp }}/mz-mamba/**
+          if-no-files-found: warn
+          retention-days: 14
