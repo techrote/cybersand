@@ -377,6 +377,7 @@ void geometric_hierarchy() {
         }
     });
     gate("rooted_projections_and_bounded_bridge_programmes", [&] {
+        int verified_bridges=0;
         for(std::uint64_t seed=0;seed<32;++seed) for(const int wall:{1,5}) {
             const int width=256,height=384;
             auto r=recipe("interlock_brutalism",64,64,wall,seed);
@@ -392,14 +393,38 @@ void geometric_hierarchy() {
             check(empty>static_cast<std::size_t>(160*height/2),"central void retains more than half empty cells at thin/heavy settings");
             check(sealed<=2*wall,"no more than one narrow shared bridge seals a chamber row");
             // A connected open region must span at least two floors, including heavy settings.
-            int largest_span=0;std::size_t largest=0;std::vector<unsigned char> visited(cells.size());
+            bool substantial_region=false;std::vector<unsigned char> visited(cells.size());
             for(int y=0;y<height;++y)for(int x=48;x<208;++x){const auto i=static_cast<std::size_t>(y*width+x);if(visited[i]||cells[i]!=Material::Empty)continue;
                 const auto region=reachable(cells,width,height,{i},true);int lo=height,hi=0;std::size_t count=0;
                 for(std::size_t n=0;n<region.size();++n)if(region[n]){visited[n]=1;++count;const int ry=static_cast<int>(n/static_cast<std::size_t>(width));lo=std::min(lo,ry);hi=std::max(hi,ry);}
-                largest=std::max(largest,count);largest_span=std::max(largest_span,hi-lo+1);
+                substantial_region=substantial_region || (hi-lo+1>=128 && count>static_cast<std::size_t>(width*height/5));
             }
-            check(largest_span>=128 && largest>static_cast<std::size_t>(width*height/5),"large continuous stepped chamber survives the opposing structures");
+            check(substantial_region,"one connected chamber satisfies both the two-floor span and substantial area");
+            // Identify inner full-height core columns from emitted cells, without
+            // asking the private seed programme where it placed either core.
+            int left_edge=0,right_edge=width-1;
+            for(int x=0;x<width;++x) if(x<64 || x>=192) {
+                bool continuous=true;
+                for(int y=0;y<height;++y)continuous=continuous && cells[static_cast<std::size_t>(y*width+x)]!=Material::Empty;
+                if(continuous && x<64)left_edge=x;
+                if(continuous && x>=192)right_edge=std::min(right_edge,x);
+            }
+            int selected=0;
+            for(const int band:{3,4}) {
+                const int y0=band*64+32;
+                // These two probes lie beyond either single cantilever's reach.
+                const bool connection=cells[static_cast<std::size_t>(y0*width+80)]!=Material::Empty &&
+                    cells[static_cast<std::size_t>(y0*width+176)]!=Material::Empty;
+                if(!connection)continue;
+                ++selected;++verified_bridges;bool joined=true;
+                for(int y=y0;y<y0+2*wall;++y)for(int x=left_edge;x<=right_edge;++x)
+                    joined=joined && cells[static_cast<std::size_t>(y*width+x)]!=Material::Empty;
+                check(joined,"selected bridge has uninterrupted material to both independently detected core endpoints");
+            }
+            check(selected<=1,"at most one complete bridge programme per chamber");
         }
+        check(verified_bridges>=8,"endpoint qualification exercised many bridge-bearing seeds at both thicknesses");
+        measurements.emplace_back("bridge_programmes_verified",verified_bridges);
     });
 }
 
