@@ -48,7 +48,8 @@ def source_inputs() -> dict[str, str]:
     for name in ("godot/scripts/architectural_generator_project.gd",
                  "examples/worldgen/architectural/rosework-gatehouse.style.json",
                  "tools/architecture/requirements-render-linux.txt",
-                 "tools/architecture/qualify_rosework.py", "Makefile",
+                 "tools/architecture/qualify_rosework.py", "tools/architecture/test_qualify_rosework.py", "Makefile",
+                 "godot/native_extension/cyber_world_generator.cpp",
                  "native/tests/test_rosework_gatehouse.cpp", "native/tests/test_world_generation.cpp",
                  "godot/tests/test_architectural_generator.gd",
                  "godot/tests/test_architectural_project_contract.gd",
@@ -226,14 +227,18 @@ def main() -> None:
     args = parser.parse_args()
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=True)
+    frozen_head = git("rev-parse", "HEAD")
+    frozen_tree = git("rev-parse", "HEAD^{tree}")
     inputs = source_inputs()
     changed = []
     for path, actual in inputs.items():
-        tracked = subprocess.run(["git", "show", "HEAD:" + path], cwd=ROOT, capture_output=True)
+        tracked = subprocess.run(["git", "show", frozen_head + ":" + path], cwd=ROOT, capture_output=True)
         if tracked.returncode or sha(tracked.stdout) != actual:
             changed.append(path)
     if args.require_clean_source and changed:
         raise RuntimeError("source must be committed before qualification: " + ", ".join(changed))
+    if args.require_clean_source and git("status", "--porcelain", "--untracked-files=all", "--", *sorted(inputs)):
+        raise RuntimeError("source input index and working tree must be clean before rendering")
     executable, build = build_executable(output, inputs, args.compiler, args.no_build)
     cases = campaign(args.seed, args.bay, args.floor, args.wall)
     if args.only:
@@ -247,9 +252,9 @@ def main() -> None:
     if not args.only:
         composites.extend([overview(output, cases[:9], "28-contact-heroes-seeds"),
                            overview(output, cases[9:18], "29-contact-controls"), comparison(output), *details(output)])
-    if source_inputs() != inputs:
+    if source_inputs() != inputs or git("rev-parse", "HEAD") != frozen_head or git("rev-parse", "HEAD^{tree}") != frozen_tree:
         raise RuntimeError("source changed during rendering; discard this campaign and rerun")
-    source = {"commit": git("rev-parse", "HEAD"), "tree": git("rev-parse", "HEAD^{tree}"),
+    source = {"commit": frozen_head, "tree": frozen_tree,
               "parent_commit": PARENT, "input_sha256": digest_ledger(inputs), "inputs": inputs,
               "uncommitted_source_paths": changed}
     manifest = {"schema": "cybersand.rosework-gatehouse-evidence-v1", "created_utc": datetime.now(timezone.utc).isoformat(),

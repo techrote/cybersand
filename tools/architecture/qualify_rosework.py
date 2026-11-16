@@ -24,6 +24,8 @@ SOURCES = [
     "native/src/generation_grammar.cpp", "native/src/generation_planes.cpp",
 ]
 TEST = "native/tests/test_rosework_gatehouse.cpp"
+DRIVER = "tools/architecture/qualify_rosework.py"
+DRIVER_TEST = "tools/architecture/test_qualify_rosework.py"
 
 
 def run(command: list[str], cwd: Path, *, timeout: int = 900) -> str:
@@ -43,27 +45,58 @@ def save(path: Path, data: dict) -> None:
     path.write_text(json.dumps(data, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--compiler", default="g++")
-    parser.add_argument("--output", type=Path, default=Path("build/rosework-qualification"))
-    parser.add_argument("--parent-ref", default=PARENT)
-    parser.add_argument("--skip-benchmark", action="store_true")
-    args = parser.parse_args()
-    root = Path(__file__).resolve().parents[2]
-    output = args.output.resolve()
-    output.mkdir(parents=True, exist_ok=True)
-    parent_sha = run(["git", "rev-parse", f"{args.parent_ref}^{{commit}}"], root).strip()
-    if not re.fullmatch(r"[0-9a-f]{40}", args.parent_ref) or parent_sha != args.parent_ref:
-        raise ValueError("--parent-ref must be an immutable full 40-character commit SHA")
-    source_sha = run(["git", "rev-parse", "HEAD"], root).strip()
+def source_input_paths(root: Path) -> list[str]:
+    return sorted({*SOURCES, TEST, DRIVER, DRIVER_TEST, "Makefile",
+                   *(str(path.relative_to(root))
+                     for directory in (root / "native/include", root / "native/src")
+                     for path in directory.rglob("*")
+                     if path.is_file() and path.suffix in {".hpp", ".h", ".inc"})})
+
+
+def capture_source_identity(root: Path) -> dict:
+    """Bind clean on-disk inputs to their actual committed bytes before use."""
+    paths = source_input_paths(root)
+    head = run(["git", "rev-parse", "HEAD", "HEAD^{tree}"], root).splitlines()
+    status_command = ["git", "status", "--porcelain", "--untracked-files=all",
+                      "--ignored", "--", *paths]
+    if run(status_command, root).strip():
+        raise RuntimeError("Qualification source inputs must be clean and tracked before use")
+    inputs = {path: digest((root / path).read_bytes()) for path in paths}
+
+    # Compare bytes as well as Git status: preserved timestamps, an ignored new
+    # header or an index refresh must not hide uncommitted build inputs.
+    archive = subprocess.run(["git", "archive", "--format=tar", head[0], "--", *paths],
+                             cwd=root, capture_output=True, check=True, timeout=60).stdout
+    committed = {}
+    with tarfile.open(fileobj=io.BytesIO(archive)) as package:
+        for member in package.getmembers():
+            if member.isfile() and member.name in inputs:
+                stream = package.extractfile(member)
+                assert stream is not None
+                committed[member.name] = digest(stream.read())
+    if committed != inputs:
+        raise RuntimeError("Qualification input bytes do not match the recorded HEAD")
+    if run(["git", "rev-parse", "HEAD", "HEAD^{tree}"], root).splitlines() != head or \
+            run(status_command, root).strip():
+        raise RuntimeError("Qualification source changed while capturing its identity")
+    return {"commit": head[0], "tree": head[1], "inputs": inputs,
+            "input_sha256": digest(json.dumps(inputs, sort_keys=True,
+                                               separators=(",", ":")).encode())}
+
+
+def require_unchanged_source(root: Path, before: dict) -> dict:
+    # Enumerate again so newly added headers cannot escape the original ledger.
+    after = capture_source_identity(root)
+    if after != before:
+        raise RuntimeError("Qualification source HEAD, tree or inputs changed during execution")
+    return after
+
+
+def qualify(root: Path, args: argparse.Namespace, output: Path,
+            parent_sha: str, source: dict) -> dict:
     compiler_version = run([args.compiler, "--version"], root).splitlines()[0]
-    input_paths = sorted({*SOURCES, TEST, "Makefile", str(Path(__file__).relative_to(root)),
-                          *(str(path.relative_to(root)) for path in (root / "native/include").rglob("*.hpp")),
-                          *(str(path.relative_to(root)) for path in (root / "native/include").rglob("*.h")),
-                          *(str(path.relative_to(root)) for path in (root / "native/src").glob("*.inc"))})
-    source_inputs_before = {path: digest((root / path).read_bytes()) for path in input_paths}
-    run(["make", "-j2", "build/test_rosework_gatehouse", f"CXX={args.compiler}"], root)
+    candidate_build_command = ["make", "-B", "-j2", "build/test_rosework_gatehouse", f"CXX={args.compiler}"]
+    (output / "candidate-build.log").write_text(run(candidate_build_command, root))
     candidate = root / "build/test_rosework_gatehouse"
     native = json.loads(run([str(candidate)], root))
     save(output / "native-tests.json", native)
@@ -133,25 +166,51 @@ def main() -> None:
     if not args.skip_benchmark:
         benchmark = json.loads(run([str(candidate), "--benchmark"], root))
         save(output / "benchmark.json", benchmark)
-    if run(["git", "rev-parse", "HEAD"], root).strip() != source_sha:
-        raise RuntimeError("HEAD changed during qualification; rerun against the frozen source")
-    source_inputs = {path: digest((root / path).read_bytes()) for path in input_paths}
-    if source_inputs != source_inputs_before:
-        raise RuntimeError("source inputs changed during qualification; discard and rerun")
-    tracked_status = run(["git", "status", "--porcelain", "--untracked-files=all", "--", *input_paths], root)
-    report = {"status": "pass", "source_commit": source_sha, "source_inputs_dirty": bool(tracked_status),
-              "source_inputs_sha256": source_inputs, "parent_source": parent_sha,
-              "compiler": compiler_version, "platform": platform.platform(),
+    return {"status": "pass", "source_commit": source["commit"], "source_tree": source["tree"], "source_inputs_dirty": False,
+              "source_inputs_sha256": source["inputs"], "parent_source": parent_sha,
+              "candidate_build_command": candidate_build_command, "compiler": compiler_version, "platform": platform.platform(),
               "candidate_binary_sha256": digest(candidate.read_bytes()),
               "parent_binary_sha256": parent_binary_sha256,
               "native": native, "legacy": {key: value for key, value in legacy.items()
                                             if key not in {"module_receipts", "parent_fixture", "candidate_fixture"}},
               "viaduct": viaduct, "benchmark": benchmark,
               "scope": "Native CPU GEN-007 material generation; no physical GPU or owner aesthetic acceptance"}
-    save(output / "qualification.json", report)
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--compiler", default="g++")
+    parser.add_argument("--output", type=Path, default=Path("build/rosework-qualification"))
+    parser.add_argument("--parent-ref", default=PARENT)
+    parser.add_argument("--skip-benchmark", action="store_true")
+    args = parser.parse_args()
+    root = Path(__file__).resolve().parents[2]
+    parent_sha = run(["git", "rev-parse", f"{args.parent_ref}^{{commit}}"], root).strip()
+    if not re.fullmatch(r"[0-9a-f]{40}", args.parent_ref) or parent_sha != args.parent_ref:
+        raise ValueError("--parent-ref must be an immutable full 40-character commit SHA")
+
+    # Refuse dirty inputs before compiling or running any native executable.
+    source = capture_source_identity(root)
+    output = args.output.resolve()
+    output.parent.mkdir(parents=True, exist_ok=True)
+    # A failed or concurrently changed run must not overwrite prior successful
+    # evidence, including intermediate test results and legacy cell snapshots.
+    with tempfile.TemporaryDirectory(prefix="rosework-qualification-", dir=output.parent) as temporary:
+        staging = Path(temporary)
+        report = qualify(root, args, staging, parent_sha, source)
+        after = require_unchanged_source(root, source)
+        report["source_verification"] = {
+            "before": {key: value for key, value in source.items() if key != "inputs"},
+            "after": {key: value for key, value in after.items() if key != "inputs"},
+            "clean_before_and_after": True, "identical_inputs_head_and_tree": True}
+        save(staging / "qualification.json", report)
+        output.mkdir(parents=True, exist_ok=True)
+        for artifact in staging.iterdir():
+            artifact.replace(output / artifact.name)
     print(json.dumps({"status": "pass", "output": str(output / "qualification.json"),
-                      "assertions": native["assertions"], "legacy_cells_compared": expected_cells,
-                      "parent_source": parent_sha, "source_commit": source_sha}))
+                      "assertions": report["native"]["assertions"],
+                      "legacy_cells_compared": report["legacy"]["cells_compared"],
+                      "parent_source": parent_sha, "source_commit": source["commit"]}))
 
 
 if __name__ == "__main__":
