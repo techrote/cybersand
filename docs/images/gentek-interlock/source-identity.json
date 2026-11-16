@@ -1,0 +1,11 @@
+{
+  "qualified_source_commit": "9b8609d8011a95bb9516f02f3a67d2feaff6dee9",
+  "qualified_source_tree": "05298c6f01fb25317b261f83987556b40f108550",
+  "parent_commit": "615828b28337f85e4663e03ba479616db4ddf764",
+  "branch": "experiment/gentek-showcase-interlock-001",
+  "evidence_scope": "This directory contains evidence only; the source-input ledger identifies every qualified input independently of a later documentation commit.",
+  "native_captures": 63,
+  "derived_pngs": 4,
+  "source_input_digest": "84d0c812a29581659e3f698f27a45bc7ad9b13df8e415941300e91a4fffcd698",
+  "qualification_directory": "interlock-qualification-final"
+}
