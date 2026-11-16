@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
-"""Assemble and independently execute the source-matched Wave Flow Windows ZIP.
+"""Assemble and independently execute the source-matched Wave Flow Workbench ZIP.
 
 The existing desktop packager owns engine, native, LFS and VC runtime custody.
-This adapter supplies the Wave Flow launcher and a complete payload manifest.
+This adapter supplies the normal Shared Workbench launcher and a complete payload
+manifest. The old dedicated Wave fixture remains in the payload for regression
+use but is no longer the human evaluation entry point.
 """
 from __future__ import annotations
 
@@ -140,13 +142,13 @@ def build(args) -> None:
         'if errorlevel 1 (\n'
         '  if not "%~1"=="--headless" pause\n'
         '  exit /b 1\n)\n'
-        f'"%~dp0{console}" --path "%~dp0godot" %* -- --wave-flow\n'
+        f'"%~dp0{console}" --path "%~dp0godot" %* -- --workbench\n'
         'set "wave_exit=%errorlevel%"\n'
         'if not "%wave_exit%"=="0" if not "%~1"=="--headless" pause\n'
         'exit /b %wave_exit%\n'
     )
     (args.output / "Test It.cmd").write_text(launcher, encoding="utf-8", newline="\r\n")
-    manifest.update(purpose="Experimental Wave Flow Windows evaluation; merge requires owner approval",
+    manifest.update(purpose="Experimental Wave Flow in Shared Workbench; merge requires owner approval",
                     launcher="Test It.cmd", regenerated_imports_sha256=omitted,
                     runtime_qualification=qualification,
                     files_sha256=files(args.output))
@@ -221,8 +223,8 @@ def qualify(args) -> None:
         if case.name == "test_wave_flow":
             publication.verify_wave_summary((output / "test_wave_flow.log").read_text(encoding="utf-8"))
         if case.name == "launcher":
-            publication.engine.require("WAVE_FLOW_EVALUATION_READY" in (output / "launcher.log").read_text(encoding="utf-8"),
-                                       "Launcher did not construct the Wave Flow evaluation")
+            publication.engine.require("SHARED_WORKBENCH_LAUNCH_READY" in (output / "launcher.log").read_text(encoding="utf-8"),
+                                       "Launcher did not enter the Shared Workbench")
     verify_original_payload(package, manifest, report["manifest_sha256"])
     report["status"] = "passed"
     report["payload_unchanged"] = True
