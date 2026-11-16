@@ -331,7 +331,7 @@ def run(args):
         if CANCELLED or time.monotonic()-started>args.deadline-540:
             break
         fam=c.FAMILIES[step%3]
-        is_branch=step%3!=0 and fam in ("greebles","pipework")
+        is_branch=(step%2==0) and fam in ("greebles","pipework")
         marker=("#","+")[(step//3)%2]
         if is_branch:
             data=branches[fam]
