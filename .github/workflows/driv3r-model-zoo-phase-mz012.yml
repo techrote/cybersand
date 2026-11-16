@@ -93,6 +93,20 @@ jobs:
           assert ET.parse(out/"trajectories.svg").getroot().tag.endswith("svg")
           print("Exact source / checkpoints / both held-out domains / SVG PASS")
           PY
+      - name: Trained-phase causal ablation on original and shifted held-out worlds
+        run: |
+          python -m experiments.driv3r.model_zoo.phase_state_mz012.ablate \\
+            --input "$RUNNER_TEMP/mz012"
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          p=Path(os.environ["RUNNER_TEMP"],"mz012","phase_ablation.json")
+          a=json.loads(p.read_text())
+          assert a["source_sha"]==os.environ["GITHUB_SHA"]
+          assert len(a["conditions"])==5
+          assert a["conditions"]["trained"]["shifted_closed_loop"]["episodes"]==32
+          print("Trained-phase intervention / source provenance verified")
+          PY
       - name: Preserve original checkpoint, metrics, trajectory and source manifest
         if: always()
         uses: actions/upload-artifact@v4
