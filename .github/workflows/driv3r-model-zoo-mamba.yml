@@ -11,7 +11,7 @@ permissions:
   contents: read
 concurrency:
   group: mz-mamba130-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name != 'workflow_dispatch' }}
 jobs:
   onboard:
     runs-on: ubuntu-24.04

@@ -11,7 +11,7 @@ permissions:
   contents: read
 concurrency:
   group: mz003-rwkv7-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name != 'workflow_dispatch' }}
 jobs:
   rwkv7-cpu:
     runs-on: ubuntu-24.04

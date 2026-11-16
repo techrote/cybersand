@@ -11,7 +11,7 @@ permissions:
   contents: read
 concurrency:
   group: mz006-modernbert-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name != 'workflow_dispatch' }}
 jobs:
   modernbert-cpu:
     runs-on: ubuntu-24.04
@@ -43,8 +43,8 @@ jobs:
         run: |
           python -m experiments.driv3r.model_zoo.modernbert.run \
             --out "$RUNNER_TEMP/mz006-modernbert" \
-            --train-seeds 14 --dev-seeds 4 --steps 9 --updates 96 \
-            --batch-size 8 --eval-batch 8 --rollout-steps 16
+            --train-seeds 14 --dev-seeds 4 --steps 9 --updates 320 --warmup-updates 120 \
+            --batch-size 16 --eval-batch 8 --rollout-steps 16
       - name: Verify exact source, pretrained weights, optimizer and original evidence
         run: |
           python - <<'PY'
@@ -58,7 +58,7 @@ jobs:
           assert 140_000_000<=r['encoder_parameters']<=170_000_000
           assert 500_000<=r['trainable_parameters']<=15_000_000
           assert r['pretrained_layer_tuned']>=20
-          assert len(r['training_losses'])==len(r['frozen_head_losses'])==len(r['structured_losses'])==96
+          assert len(r['training_losses'])==320 and len(r['warmup_losses'])==120 and len(r['frozen_head_losses'])==len(r['structured_losses'])==440
           assert r['train_examples']>=400 and r['test_examples']>=100
           assert r['scores']['modernbert_tuned']['test']['paired']['changed_target_pairs']>=100
           assert all(x in r['scores'] for x in ('modernbert_tuned','modernbert_frozen','structured','majority'))

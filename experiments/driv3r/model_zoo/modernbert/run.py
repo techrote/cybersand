@@ -140,11 +140,11 @@ def experiment(args):
     frozen_x = cached_features(enc_train)
     frozen_d = cached_features(enc_dev)
     frozen_t = cached_features(enc_test)
-    frozen_head, frozen_losses = fit(torch, frozen_x, y, args.updates, 42019)
+    frozen_head, frozen_losses = fit(torch, frozen_x, y, args.updates + args.warmup_updates, 42019)
     h_x = torch.tensor([raw_features(p) for p in train_prompts], dtype=torch.float32)
     h_d = torch.tensor([raw_features(p) for p in dev_prompts], dtype=torch.float32)
     h_t = torch.tensor([raw_features(p) for p in test_prompts], dtype=torch.float32)
-    cheap, cheap_losses = fit(torch, h_x, y, args.updates, 42019)
+    cheap, cheap_losses = fit(torch, h_x, y, args.updates + args.warmup_updates, 42019)
 
     chosen, last_layer = select_trainable([n for n, _ in model.named_parameters()])
     for name, parameter in model.named_parameters():
@@ -154,42 +154,62 @@ def experiment(args):
     count = sum(p.numel() for _, p in trainable)
     if not 500_000 <= count <= 15_000_000:
         raise RuntimeError("unexpected trainable-layer parameter count: " + str(count))
-    optimizer = torch.optim.AdamW([
-        {"params": [p for n, p in trainable if re.search(
-            r"(?:^|\.)layers\.%d\." % last_layer, n)], "lr": 8e-5},
-        {"params": [p for n, p in trainable if not re.search(
-            r"(?:^|\.)layers\.%d\." % last_layer, n)], "lr": 7e-4},
-    ], weight_decay=0.01)
+    layer_names = {n for n, _ in trainable if f".layers.{last_layer}." in n}
+    layer_params = [p for n, p in trainable if n in layer_names]
+    head_params = [p for n, p in trainable if n not in layer_names]
+    if len(layer_names) < 8 or len(head_params) < 2:
+        raise RuntimeError("failed to partition pretrained block and classifier")
     hist = torch.bincount(y, minlength=len(ACTIONS)).float()
     weights = torch.zeros(len(ACTIONS))
     present = hist > 0
     weights[present] = (hist[present].sum() / hist[present]).sqrt()
     weights[present] /= weights[present].mean()
-    losses = []
-    train_ms = []
     perm = torch.randperm(len(y))
     cursor = 0
-    # All earlier encoder layers remain frozen and deterministic; the last
-    # genuine pretrained encoder block receives optimizer gradients.
-    model.eval()
-    for step in range(args.updates):
+    def take_batch():
+        nonlocal perm, cursor
         if cursor + args.batch_size > len(y):
             perm = torch.randperm(len(y))
             cursor = 0
         ids = perm[cursor:cursor + args.batch_size]
         cursor += args.batch_size
-        batch = {k: v[ids] for k, v in enc_train.items()}
+        return ids, {k: v[ids] for k, v in enc_train.items()}
+    def update(optimizer):
+        ids, batch = take_batch()
         tic = time.perf_counter()
         optimizer.zero_grad(set_to_none=True)
         outputs = model(**batch)
         loss = torch.nn.functional.cross_entropy(outputs.logits, y[ids], weight=weights)
         if not torch.isfinite(loss):
-            raise RuntimeError("nonfinite pretrained-layer optimizer loss")
+            raise RuntimeError("nonfinite optimizer loss")
         loss.backward()
-        torch.nn.utils.clip_grad_norm_([p for _, p in trainable], 1.0)
+        torch.nn.utils.clip_grad_norm_([p for p in model.parameters() if p.requires_grad], 1.0)
         optimizer.step()
-        losses.append(round(float(loss.detach()), 5))
-        train_ms.append((time.perf_counter() - tic) * 1000)
+        return round(float(loss.detach()), 5), (time.perf_counter() - tic) * 1000
+
+    # Stage 1: warm up the new, randomly initialized classifier to avoid
+    # immediately perturbing a good pretrained representation with a bad head.
+    # Stage 2: unfreeze a real pretrained encoder block at a conservative LR.
+    model.eval()
+    for parameter in layer_params:
+        parameter.requires_grad_(False)
+    warmup_opt = torch.optim.AdamW(head_params, lr=1e-3, weight_decay=.01)
+    warmup_losses, train_ms = [], []
+    for _ in range(args.warmup_updates):
+        loss, elapsed = update(warmup_opt)
+        warmup_losses.append(loss)
+        train_ms.append(elapsed)
+    for parameter in layer_params:
+        parameter.requires_grad_(True)
+    tune_opt = torch.optim.AdamW([
+        {"params": layer_params, "lr": 5e-5},
+        {"params": head_params, "lr": 2e-4},
+    ], weight_decay=.01)
+    losses = []
+    for _ in range(args.updates):
+        loss, elapsed = update(tune_opt)
+        losses.append(loss)
+        train_ms.append(elapsed)
     model.eval()
 
     prediction_ms = []
@@ -269,7 +289,7 @@ def experiment(args):
         "trainable_state": {n: p.detach().cpu() for n, p in trainable},
         "frozen_head": frozen_head.state_dict(),
         "structured_head": cheap.state_dict(),
-        "train_seeds": args.train_seeds, "updates": args.updates,
+        "train_seeds": args.train_seeds, "updates": args.updates, "warmup_updates": args.warmup_updates,
     }, checkpoint)
     corpus = json.dumps({"train": train, "dev": dev, "test": test}, sort_keys=True).encode()
     result = {
@@ -280,7 +300,7 @@ def experiment(args):
         "trainable_manifest": chosen, "load_seconds": load_seconds,
         "train_examples": len(train), "dev_examples": len(dev), "test_examples": len(test),
         "train_histogram": class_histogram(train), "updates": args.updates,
-        "batch_size": args.batch_size,
+        "batch_size": args.batch_size, "warmup_updates": args.warmup_updates, "warmup_losses": warmup_losses,
         "training_losses": losses, "frozen_head_losses": frozen_losses,
         "structured_losses": cheap_losses,
         "scores": scores,
@@ -306,7 +326,7 @@ def experiment(args):
         "# MZ-006 ModernBERT-base pretrained-layer game training\n\n"
         f"Git source {source_sha}, model {MODEL}@{PIN}.\n\n"
         f"Real pretrained last block {last_layer} + classifier, {count} trained parameters.\n\n"
-        f"TRAIN/DEV/TEST {len(train)}/{len(dev)}/{len(test)}; {args.updates} optimizer steps.\n\n"
+        f"TRAIN/DEV/TEST {len(train)}/{len(dev)}/{len(test)}; {args.warmup_updates} head warmup + {args.updates} encoder optimizer steps.\n\n"
         f"Tuned TEST {json.dumps(scores['modernbert_tuned']['test'])}\n\n"
         f"Frozen TEST {json.dumps(scores['modernbert_frozen']['test'])}\n\n"
         f"Structured TEST {json.dumps(scores['structured']['test'])}\n\n"
@@ -315,7 +335,7 @@ def experiment(args):
         "Research synthetic games only. No CyberSand game code/content changed. Draft/HOLD.\n")
     print(json.dumps({k: v for k, v in result.items()
                       if k not in ("traces", "training_losses", "frozen_head_losses",
-                                   "structured_losses", "trainable_manifest")},
+                                   "structured_losses", "warmup_losses", "trainable_manifest")},
                      indent=2), flush=True)
 
 
@@ -325,8 +345,9 @@ def main():
     ap.add_argument("--train-seeds", type=int, default=14)
     ap.add_argument("--dev-seeds", type=int, default=4)
     ap.add_argument("--steps", type=int, default=9)
-    ap.add_argument("--updates", type=int, default=96)
-    ap.add_argument("--batch-size", type=int, default=8)
+    ap.add_argument("--updates", type=int, default=320)
+    ap.add_argument("--warmup-updates", type=int, default=120)
+    ap.add_argument("--batch-size", type=int, default=16)
     ap.add_argument("--eval-batch", type=int, default=8)
     ap.add_argument("--rollout-steps", type=int, default=16)
     experiment(ap.parse_args())

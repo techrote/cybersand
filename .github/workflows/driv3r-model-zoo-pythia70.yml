@@ -11,7 +11,7 @@ permissions:
   contents: read
 concurrency:
   group: mz004-pythia70-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name != 'workflow_dispatch' }}
 jobs:
   pythia70-cpu:
     runs-on: ubuntu-24.04
