@@ -53,8 +53,10 @@ class PackedBitSerialQ1:
     Other selected layers are deliberately decoded-FP32 hybrid controls.
     Python integer bit_count is a REFERENCE kernel, not a SIMD speedup.
     """
-    def __init__(self, archive, bit_layers="abc", gains=(1.,1.,1.), correction=None):
+    def __init__(self, archive, bit_layers="abc", gains=(1.,1.,1.), correction=None,
+                 zero_aware=False):
         self.bit_layers = bit_layers
+        self.zero_aware = zero_aware
         self.gains = np.asarray(gains,dtype=np.float32)
         self.correction = np.zeros(len(ACTIONS),np.float32) if correction is None else np.asarray(correction,np.float32)
         self.layers = []
@@ -87,9 +89,20 @@ class PackedBitSerialQ1:
                     assert len(z)==d
                     sign_word=int.from_bytes(np.packbits((z>=0).astype(np.uint8),
                                              bitorder="little").tobytes(),"little")
-                    multiplier=np.float32(np.abs(z).mean()*self.gains[index])
-                    z=np.asarray([(d-2*(word ^ sign_word).bit_count())*s*multiplier+b
-                        for word,s,b in zip(rows,scales,bias)],dtype=np.float32)
+                    if self.zero_aware:
+                        # 2 bitplanes: activation sign and nonzero. Crucial for
+                        # sparse one-hot material/legal/heading/family features.
+                        active=z!=0
+                        active_word=int.from_bytes(np.packbits(active.astype(np.uint8),
+                                                 bitorder="little").tobytes(),"little")
+                        count=active_word.bit_count()
+                        multiplier=np.float32((np.abs(z[active]).mean() if count else 0.)*self.gains[index])
+                        z=np.asarray([(count-2*((word ^ sign_word)&active_word).bit_count())*s*multiplier+b
+                            for word,s,b in zip(rows,scales,bias)],dtype=np.float32)
+                    else:
+                        multiplier=np.float32(np.abs(z).mean()*self.gains[index])
+                        z=np.asarray([(d-2*(word ^ sign_word).bit_count())*s*multiplier+b
+                            for word,s,b in zip(rows,scales,bias)],dtype=np.float32)
                 else:
                     z=weights @ z + bias
                 if index<2: z=np.tanh(z)
@@ -99,8 +112,9 @@ class PackedBitSerialQ1:
 
 class STEActivationRepair(nn.Module):
     """Only three activation gains and six output biases train; Q1 codes fixed."""
-    def __init__(self, packed_path):
+    def __init__(self, packed_path, zero_aware=False):
         super().__init__()
+        self.zero_aware=zero_aware
         with np.load(packed_path,allow_pickle=False) as f:
             for k in LAYERS:
                 shape=tuple(q1_shapes()[k]["shape"])
@@ -114,7 +128,12 @@ class STEActivationRepair(nn.Module):
     def forward(self,x):
         for i,k in enumerate(LAYERS):
             signed=torch.where(x>=0,torch.ones_like(x),-torch.ones_like(x))
-            q=signed*x.abs().mean(dim=-1,keepdim=True)
+            if self.zero_aware:
+                active=(x!=0)
+                mean_abs=x.abs().sum(dim=-1,keepdim=True)/active.sum(dim=-1,keepdim=True).clamp(min=1)
+                q=signed*active.to(x.dtype)*mean_abs
+            else:
+                q=signed*x.abs().mean(dim=-1,keepdim=True)
             # Straight-through activation quantization, real quantized forward.
             x=F.linear((x+(q-x).detach())*self.gains[i],
                        getattr(self,k+"_weight"),getattr(self,k+"_bias"))
@@ -122,9 +141,9 @@ class STEActivationRepair(nn.Module):
         return x+self.correction
 
 
-def repair(source, train, reference, steps, seed, personality_kl):
+def repair(source, train, reference, steps, seed, personality_kl, zero_aware=False):
     torch.manual_seed(seed)
-    model=STEActivationRepair(source)
+    model=STEActivationRepair(source,zero_aware=zero_aware)
     opt=torch.optim.AdamW(model.parameters(),lr=.012,weight_decay=0.)
     x,y,_=train
     counts=torch.bincount(y,minlength=len(ACTIONS)).float()
@@ -143,7 +162,7 @@ def repair(source, train, reference, steps, seed, personality_kl):
     moments=sum(int(torch.count_nonzero(s["exp_avg"]).item()>0)
                 for s in opt.state.values())
     result=PackedBitSerialQ1(source,gains=model.gains.detach().tolist(),
-                             correction=model.correction.detach().tolist())
+                             correction=model.correction.detach().tolist(),zero_aware=zero_aware)
     with torch.no_grad():
         check=torch.randn(18,27)
         difference=float((model(check)-result(check)).abs().max())
@@ -152,7 +171,7 @@ def repair(source, train, reference, steps, seed, personality_kl):
     return result, {"optimizer":"AdamW","steps":steps,"seed":seed,
         "loss_first":losses[0],"loss_last":losses[-1],
         "nonzero_moment_tensors":moments,"trained_parameters":9,
-        "personality_kl":personality_kl,
+        "personality_kl":personality_kl,"zero_aware":zero_aware,
         "gains":model.gains.detach().tolist(),
         "output_correction":model.correction.detach().tolist(),
         "forward_parity_max_abs":difference,
@@ -185,6 +204,10 @@ def self_test():
         out=binary(torch.randn(5,27))
         assert out.shape==(5,len(ACTIONS)) and bool(torch.isfinite(out).all())
         assert f(torch.randn(2,27)).shape==(2,len(ACTIONS))
+        zero_aware=PackedBitSerialQ1(path,zero_aware=True)
+        ste=STEActivationRepair(path,zero_aware=True)
+        check=torch.randn(4,27);check[0,::2]=0
+        assert float((zero_aware(check)-ste(check)).abs().max())<2e-5
     print("QL005 bitpacked XNOR/popcount and STE-parity self-test PASS")
 
 
@@ -211,14 +234,19 @@ def run(args):
        "q1-fp32-decode":ref,
        "q1-int8-activation":Int8ActivationPackedPolicy(q1_path,meta("bal-q1",prior)),
        "q1-xnor-all":PackedBitSerialQ1(q1_path),
+       "q1-xnor-zero-aware":PackedBitSerialQ1(q1_path,zero_aware=True),
        "q1-xnor-hidden":PackedBitSerialQ1(q1_path,"bc"),
        "q1-xnor-middle":PackedBitSerialQ1(q1_path,"b"),
        "franken-q1-xnor-all":PackedBitSerialQ1(frank_path),
+       "franken-q1-xnor-zero-aware":PackedBitSerialQ1(frank_path,zero_aware=True),
        "prior-distilled-q1-xnor-all":PackedBitSerialQ1(distilled_path),
+       "prior-distilled-q1-xnor-zero-aware":PackedBitSerialQ1(distilled_path,zero_aware=True),
     }
     opt_reports={}
-    for name,kl in (("q1-xnor-ce-repair",0.),("q1-xnor-personality-repair",1.5)):
-        net,diag,optimizer=repair(q1_path,train,ref,args.steps,77207,kl)
+    for name,kl,za in (("q1-xnor-ce-repair",0.,False),
+                       ("q1-xnor-personality-repair",1.5,False),
+                       ("q1-xnor-zero-aware-repair",1.5,True)):
+        net,diag,optimizer=repair(q1_path,train,ref,args.steps,77207,kl,zero_aware=za)
         variants[name]=net
         opt_reports[name]=diag
         torch.save({"optimizer":optimizer,"diagnostic":diag,
@@ -276,7 +304,7 @@ def run(args):
        "verified_original_manifest_entries":[verified_a,verified_b],
        "source_archive_hashes":{"q1":digest(q1_path),"frank":digest(frank_path),
                     "distilled":digest(distilled_path)},
-       "new_optimizer_updates":2*args.steps,"repair":opt_reports,
+       "new_optimizer_updates":3*args.steps,"repair":opt_reports,
        "heldout_n":len(y),"heldout_teacher_histogram":hist,
        "visual_seeds":list(visual_seeds),"horizon":96,
        "variants":reports,"controls":controls,
@@ -285,7 +313,8 @@ def run(args):
        "limitations":[
           "This is actual packed Python integer XNOR/popcount, not an optimized C/C++ SIMD kernel",
           "Q1 per-row scalar weight codes, not GGUF IQ1/IQ2/IQ3 and not a pretrained SLM",
-          "Activation sign destroys magnitude, especially sparse input feature channels",
+          "Sign-only A1 destroys zero-valued sparse features; A1Z two-bitplane sign+nonzero recovers sparsity at extra activation-bit cost",
+          "A1Z is ternary activation quantization, NOT a one-bit activation or an IQ1 codec",
           "Gains and correction remain float32 and are included in runtime working memory",
           "No native Godot/CyberSand painting; external synthetic host-legal W0-like worlds",
           "STOP is never suppressed; differing episode lengths constrain aesthetic comparisons",
@@ -298,7 +327,7 @@ def run(args):
                 if p.is_file() and p.name!="MANIFEST.json"]
     (root/"MANIFEST.json").write_text(json.dumps(inventory,indent=2)+"\n")
     print(json.dumps({"status":"QL005_COMPLETE","source_sha":results["source_sha"],
-        "optimizer_updates":2*args.steps,"heldout":len(y),"pngs":len(list((root/"gallery").glob("*.png"))),
+        "optimizer_updates":3*args.steps,"heldout":len(y),"pngs":len(list((root/"gallery").glob("*.png"))),
         "variant_summary":{k:{"cells":v["mean_cells"],"stopped":v["stopped"],
           "branch":v["actions"].get("BRANCH",0),"retrace":v["actions"].get("RETRACE",0),
           "ms":v["latency"]["same_process_p50_ms"]} for k,v in reports.items()}},
