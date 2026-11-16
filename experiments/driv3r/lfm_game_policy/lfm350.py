@@ -234,14 +234,17 @@ def rollouts(w0, model, tokenizer, ids, output, stage):
     return episodes
 
 def base_fingerprint(model):
-    import torch
+    """Fingerprint identical pretrained tensors in stock and PEFT-wrapped LFM350."""
     names=[]
     for n,p in model.named_parameters():
         if "lora_" in n:
             continue
-        if n.endswith("weight") and (n.startswith("base_model.model.model.embed_tokens")
-                                     or n.startswith("base_model.model.model.layers.0.")):
-            names.append((n,sha_bytes(p.detach().cpu().reshape(-1)[:1024].numpy().tobytes())))
+        # PEFT prefixes the same full pretrained model by "base_model.model.".
+        # Canonicalize its name so an unadapted stock control is also audited.
+        stem=n.removeprefix("base_model.model.")
+        if stem.endswith("weight") and (stem.startswith("model.embed_tokens")
+                                       or stem.startswith("model.layers.0.")):
+            names.append((stem,sha_bytes(p.detach().cpu().reshape(-1)[:1024].numpy().tobytes())))
     check(names, "frozen reference fingerprint missing")
     return names
 
