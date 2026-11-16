@@ -354,5 +354,4 @@ def main():
     report=experiment(a.out,epochs=a.epochs)
     print(json.dumps({k:report[k] for k in ('status','splits','models','policies','wall_seconds')},indent=2))
 
-
 if __name__=='__main__':main()
