@@ -251,7 +251,7 @@ def arrays(torch, records):
 
 
 def score(torch, net, x, y, batch=16):
-    correct = n = branches = fork_ok = paint = paint_ok = illegal = 0
+    correct = n = branches = fork_ok = mineral_forks = mineral_ok = paint = paint_ok = illegal = 0
     with torch.inference_mode():
         for j in range(0, len(y), batch):
             yy = y[j:j+batch]
@@ -261,17 +261,27 @@ def score(torch, net, x, y, batch=16):
             pred = net(xx).argmax(-1)
             valid = labels != -100
             forks = (labels == UP) | (labels == DOWN) | (labels == LEFT) | (labels == RIGHT)
+            # A true mineral fork is a movement into an adjacent material-2/3 cell,
+            # rather than the ordinary route-following movement majority class.
+            mineral = torch.zeros_like(valid)
+            for a, (dx, dy) in DIRECTIONS.items():
+                base = ((2+dy)*5 + (2+dx))*5
+                mineral |= (labels == a) & ((xx[:, :, base+2] + xx[:, :, base+3]) > .5)
             paints = labels == PAINT
             correct += int(((pred == labels)&valid).sum())
             n += int(valid.sum())
             branches += int(forks.sum())
             fork_ok += int(((pred == labels)&forks).sum())
+            mineral_forks += int(mineral.sum())
+            mineral_ok += int(((pred == labels)&mineral).sum())
             paint += int(paints.sum())
             paint_ok += int(((pred == labels)&paints).sum())
             mask = xx[:, :, 131:139]
             illegal += int(((mask.gather(-1, pred.unsqueeze(-1)).squeeze(-1)<.5)&valid).sum())
     return dict(accuracy=round(correct/max(1,n),5),
                 move_accuracy=round(fork_ok/max(1,branches),5),
+                mineral_fork_accuracy=round(mineral_ok/max(1,mineral_forks),5),
+                mineral_fork_count=mineral_forks,
                 paint_accuracy=round(paint_ok/max(1,paint),5),
                 illegal_raw=illegal, decisions=n)
 
@@ -301,7 +311,8 @@ def play(torch, net, seed, cue, inv, *, ood=False, recent=None):
     return dict(success=success, clean=success and w.collisions == 0,
                 collisions=w.collisions, paints=len(w.painted),
                 raw_illegal=raw_illegal, steps=w.tick, trace=w.trace,
-                stations=w.stations, rotation=w.rotation, mirror=w.mirror)
+                stations=w.stations, rotation=w.rotation, mirror=w.mirror,
+                cue=w.cue, invert=w.invert, safe=w.safe)
 
 
 def rollout(torch, net, seeds, ood=False, recent=None):
@@ -312,12 +323,24 @@ def rollout(torch, net, seeds, ood=False, recent=None):
     for r in range(4):
         portion = [v for v in entries if v["rotation"] == r]
         per_orientation[str(r)] = dict(n=len(portion), clean=sum(v["clean"] for v in portion))
+    mirror_scores = {}
+    for m in (False,True):
+        subset = [e for e in entries if e["mirror"] == m]
+        mirror_scores[str(m)] = dict(n=len(subset), clean=sum(e["clean"] for e in subset),
+                                     collisions=sum(e["collisions"] for e in subset))
+    cue_scores = {}
+    for c in (0,1):
+        for inv in (0,1):
+            subset = [e for e in entries if (e["cue"],e["invert"]) == (c,inv)]
+            cue_scores[f"{c}-{inv}"] = dict(n=len(subset), clean=sum(e["clean"] for e in subset),
+                                           collisions=sum(e["collisions"] for e in subset))
     return dict(episodes=n, clean=sum(e["clean"] for e in entries),
                 success=sum(e["success"] for e in entries),
                 collisions=sum(e["collisions"] for e in entries),
                 paints=sum(e["paints"] for e in entries),
                 raw_illegal=sum(e["raw_illegal"] for e in entries),
-                by_rotation=per_orientation, examples=entries[:4])
+                by_rotation=per_orientation, by_mirror=mirror_scores,
+                by_memory_rule=cue_scores, examples=entries[:4])
 
 
 def latency(torch, net, steps=48):
@@ -454,7 +477,7 @@ if __name__=="__main__":
     p.add_argument("--train-seeds",type=int,default=128)
     p.add_argument("--test-seeds",type=int,default=16)
     p.add_argument("--rollout-seeds",type=int,default=8)
-    p.add_argument("--updates",type=int,default=600)
+    p.add_argument("--updates",type=int,default=1800)
     p.add_argument("--batch",type=int,default=16)
     p.add_argument("--lr",type=float,default=.002)
     run(p.parse_args())
