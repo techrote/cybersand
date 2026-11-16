@@ -196,7 +196,6 @@ def paired_cue_response(records):
         out[f'{arm:.2f}']={'pairs':len(pairs),'cue_only_successes':sum(v[True] and not v[False] for v in pairs),'uncued_only_successes':sum(v[False] and not v[True] for v in pairs),'both_successes':sum(v[False] and v[True] for v in pairs)}
     return out
 
-
 def summarize(records):
     out={}
     for arm in ARMS:
