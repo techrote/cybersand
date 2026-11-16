@@ -45,6 +45,12 @@ Final-head broad CI is recorded separately in PR #582. Routine native, Godot
 and publisher-guard regressions continue beyond the feature branch.
 No merge is authorised.
 
+Stacked research: [Cathedral Megaframe](research/gentek-showcase-cathedral-001.md)
+adds one hierarchical v1 sampler above the frozen 72-member CLASSIC catalogue.
+It preserves the current five-card UI and native authority. Its own native
+material campaign, source ledger and independent review qualify the Draft
+candidate; owner visual acceptance and merge remain separate.
+
 EXPLORE-001 review candidate: [generated-map contract](systems/explore001-generated-playable-maps.md),
 [Windows candidate/playtest](operations/explore001-desktop-playtest.md), and
 [independent integration QA](audits/2026-11-08-explore001-integration-qa.md).

@@ -10,6 +10,17 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Cathedral Megaframe showcase — 2026-11-16
+
+**Independently stacked Draft/HOLD research:**
+[GENTEK-SHOWCASE-CATHEDRAL-001](../research/gentek-showcase-cathedral-001.md)
+extends parent #624 at `615828b28337f85e4663e03ba479616db4ddf764` with one
+`cathedral_megaframe` v1 sampler and the existing style-preset path. Its
+four nested scales, bounded supercell seed choices and native material
+qualification are specific to this research branch (73 CLASSIC modules).
+The parent 72-module branch, Viaduct v1/v2 and sibling showcases remain unchanged.
+No merge or Ready promotion is authorized.
+
 ## GEN-008 Flatten / Bake History — 2026-11-13
 
 **Implementation candidate, Draft/HOLD:** issue #548 starts independently from
