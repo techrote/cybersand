@@ -1,0 +1,41 @@
+{
+  "source_commit": "eb376b267a619226a572af5aa01d99c9b011391c",
+  "checks": [
+    {
+      "name": "docs",
+      "exit": 0,
+      "command": [
+        "python3",
+        "tools/ci/check_docs.py"
+      ],
+      "log": "docs.log"
+    },
+    {
+      "name": "ci-policy",
+      "exit": 0,
+      "command": [
+        "python3",
+        "tools/ci/check_ci_provider_policy.py"
+      ],
+      "log": "ci-policy.log"
+    },
+    {
+      "name": "m11",
+      "exit": 1,
+      "command": [
+        "python3",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "log": "m11.log"
+    },
+    {
+      "name": "repository",
+      "exit": 1,
+      "command": [
+        "python3",
+        "tools/ci/check_repository.py"
+      ],
+      "log": "repository.log"
+    }
+  ]
+}

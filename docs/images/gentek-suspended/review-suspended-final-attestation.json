@@ -1,0 +1,25 @@
+{
+  "status": "pass",
+  "source_commit": "eb376b267a619226a572af5aa01d99c9b011391c",
+  "source_tree": "043fe628ffd86e0ee8d261c19ee6570773a4363a",
+  "parent_commit": "615828b28337f85e4663e03ba479616db4ddf764",
+  "gallery": "/workspace/scratch/cc652fa2efec/cybersand-suspended/build/suspended-arcology-gallery-final",
+  "source_input_count": 87,
+  "native_capture_count": 62,
+  "composite_count": 4,
+  "native_pixels_independently_mapped": 18014208,
+  "qualification": {
+    "file": "/workspace/scratch/cc652fa2efec/cybersand-suspended/build/suspended-qualification-final/qualification.json",
+    "source_commit": "eb376b267a619226a572af5aa01d99c9b011391c",
+    "input_count": 70,
+    "assertions": 26265,
+    "snapshots": [
+      {
+        "kind": "legacy",
+        "bytes": 7290498,
+        "sha256": "8fddb3ea313387c627e9fdcef8c55127df80a9b66c5acca3dbe37ce1f410f31a"
+      }
+    ]
+  },
+  "errors": []
+}
