@@ -84,6 +84,38 @@ class ShardingTests(unittest.TestCase):
         shards, _ = subject.build_shard_plan(cases, 4)
         self.assertEqual(sum(case.requires_display for shard in shards for case in shard), 1)
 
+    def test_upload_gpu_cases_keep_complete_rendered_coverage(self):
+        graphical = {
+            "test_material_upload_hybrid",
+            "test_render_upload_577_ack_graphical",
+            "test_render_upload_577_preparation_lifecycle",
+            "test_render_upload_577_queued_history",
+            "test_render_upload_577_refusal",
+        }
+        cases = subject.discover_cases()
+        found = {case.name: case for case in cases}
+        self.assertTrue(graphical.issubset(found))
+        for name in graphical:
+            with self.subTest(name=name):
+                case = found[name]
+                self.assertTrue(case.requires_display)
+                command = subject.case_command("godot", case, "linux")
+                self.assertNotIn("--headless", command)
+                self.assertEqual(command[command.index("--display-driver") + 1], "x11")
+                self.assertEqual(command[command.index("--rendering-method") + 1], "gl_compatibility")
+        for name in ("test_material_upload_hybrid_plan", "test_render_pending_compaction"):
+            self.assertFalse(found[name].requires_display)
+        shards, _ = subject.build_shard_plan(cases, 4)
+        selected = [case.name for shard in shards for case in shard if case.name in graphical]
+        self.assertCountEqual(selected, graphical)
+        # Windows' explicit headless inventory uses this same declaration;
+        # its dedicated577 graphical workflow continues to own these cases.
+        import run_windows_godot_regressions as windows
+        report = {}
+        windows.plan_cases(report, cases, shard_count=4, shard_index=0)
+        self.assertTrue(graphical.issubset(report["out_of_scope_graphical_cases"]))
+        self.assertTrue(graphical.isdisjoint(report["applicable_cases"]))
+
     def test_render_command_requires_a_display_and_compatibility_renderer(self):
         case = subject.Case("test_pixels_render", ("--script", "test.gd"), 180, 5, True)
         command = subject.case_command("godot", case, "linux")
@@ -1075,6 +1107,107 @@ class ReadbackRegistrationTests(unittest.TestCase):
                      "docs/reference/liquid-solver-capability-matrix.json"):
             self.assertIn(path, windows.INPUT_SCOPES)
         self.assertIn("native/include", windows.INPUT_SCOPES)
+
+
+class Upload577RefusalGateTests(unittest.TestCase):
+    def setUp(self):
+        import verify_render_upload577_refusal as verifier
+        self.verifier = verifier
+        self.existing = verifier._existing_verifier()
+        self.source = "a" * 40
+        self.script = "test_render_upload_577_refusal.gd"
+        paths = ["res://scripts/main.gd", "res://scripts/material_upload_hybrid.gd",
+                 "res://scripts/simulation_worker.gd", "res://shaders/material_upload_copy.gdshader",
+                 "res://tests/" + self.script]
+        self.data = {
+            "schema": "render-upload-577-independent-main-refusal-v1", "ok": True,
+            "checks": 166, "failures": [],
+            "cases": [{"accepted": 11, "ack": 15, "channels": c, "final_mode": "full_update",
+                       "final_serial": 15, "refused": 4} for c in (1, 2)],
+            "expected_error_messages": [line.removeprefix("ERROR: ") for line in self.existing.REFUSAL_ERRORS],
+            "source_files_sha256": {p: subject.sha256(subject.ROOT / p.replace("res://", "godot/")) for p in paths},
+            # Parser/process controls only; the separate graphical execution
+            # supplies real Godot/source-bound receipts, never this unit data.
+            "context": {"source_revision": self.source, "display_server": "X11", "backend": "opengl3",
+                        "fixture": "res://tests/" + self.script,
+                        "fixture_sha256": subject.sha256(subject.ROOT / "godot/tests" / self.script),
+                        "engine_path": str(Path(sys.executable).resolve()),
+                        "engine_sha256": subject.sha256(Path(sys.executable).resolve())},
+        }
+
+    def output(self, data=None, errors=None):
+        return "\n".join(self.existing.REFUSAL_ERRORS if errors is None else errors) + "\n" + \
+            self.verifier.MARKER + json.dumps(self.data if data is None else data) + "\n"
+
+    def test_exact_corpus_and_source_bound_receipt_pass(self):
+        self.assertEqual(self.verifier.verify(self.output(), sys.executable, self.source), self.data)
+
+    def test_missing_reordered_extra_or_script_error_fails(self):
+        expected = list(self.existing.REFUSAL_ERRORS)
+        for errors in (expected[:-1], [expected[1], expected[0], *expected[2:]],
+                       expected + ["ERROR: unexpected driver failure"],
+                       expected + ["SCRIPT ERROR: assertion failed"]):
+            with self.subTest(errors=errors), self.assertRaises(ValueError):
+                self.verifier.verify(self.output(errors=errors), sys.executable, self.source)
+
+    def test_bare_parse_and_resource_errors_cannot_be_overridden(self):
+        for diagnostic in ("Parse Error: unexpected invalid token",
+                           "Failed to load script: unexpected.gd",
+                           "Failed loading resource: res://unexpected.tres"):
+            with self.subTest(diagnostic=diagnostic), self.assertRaises(ValueError):
+                self.verifier.verify(self.output() + diagnostic + "\n", sys.executable, self.source)
+
+    def test_missing_duplicate_malformed_or_nonobject_receipt_fails(self):
+        errors = "\n".join(self.existing.REFUSAL_ERRORS) + "\n"
+        for output in (errors, self.output() + self.verifier.MARKER + json.dumps(self.data) + "\n",
+                       errors + self.verifier.MARKER + "{broken}\n",
+                       errors + self.verifier.MARKER + "[]\n"):
+            with self.subTest(output=output[-100:]), self.assertRaises(ValueError):
+                self.verifier.verify(output, sys.executable, self.source)
+
+    def test_bad_corpus_or_source_runtime_identity_fails(self):
+        mutations = [
+            lambda d: d.update(ok=False), lambda d: d.update(failures=["assertion"]),
+            lambda d: d.update(checks=165), lambda d: d["cases"][0].update(ack=14),
+            lambda d: d["expected_error_messages"].pop(),
+            lambda d: d["source_files_sha256"].update({"res://scripts/main.gd": "0" * 64}),
+            lambda d: d["context"].update(source_revision="b" * 40),
+            lambda d: d["context"].update(display_server="headless"),
+            lambda d: d["context"].update(backend="dummy"),
+            lambda d: d["context"].update(engine_sha256="0" * 64),
+            lambda d: d["context"].update(engine_path="/wrong/runtime"),
+            lambda d: d["context"].update(fixture="res://tests/test_other.gd"),
+            lambda d: d["context"].update(fixture_sha256="0" * 64),
+            lambda d: d.update(context=None),
+        ]
+        for index, mutation in enumerate(mutations):
+            data = json.loads(json.dumps(self.data))
+            mutation(data)
+            with self.subTest(index=index), self.assertRaises(ValueError):
+                self.verifier.verify(self.output(data=data), sys.executable, self.source)
+        with self.assertRaises(ValueError):
+            self.verifier.verify(self.output(), sys.executable, "")
+
+    def test_runner_preserves_exit_and_other_fixture_error_rules(self):
+        for name, exit_code, passed in (("test_render_upload_577_refusal", 0, True),
+                                        ("test_render_upload_577_refusal", 1, False),
+                                        ("ordinary_fixture", 0, False)):
+            with self.subTest(name=name, exit_code=exit_code), tempfile.TemporaryDirectory() as directory:
+                case = subject.Case(name, (), 10, 1, True)
+                command = [sys.executable, "-c", "import sys; print(" + repr(self.output()) + "); sys.exit(" + str(exit_code) + ")"]
+                env = dict(os.environ, CYBERSAND_SOURCE_REVISION=self.source)
+                with redirect_stdout(io.StringIO()), mock.patch.object(subject, "case_command", return_value=command):
+                    record, failed = subject.run_case(sys.executable, case, Path(directory), "case", env=env)
+                self.assertEqual(not failed, passed)
+                self.assertEqual(record["returncode"], exit_code)
+                if name == "test_render_upload_577_refusal":
+                    evidence = record["intentional_diagnostics"]
+                    self.assertEqual(evidence["status"], "passed")
+                    receipt = Path(directory) / evidence["receipt"]
+                    self.assertEqual(subject.sha256(receipt), evidence["receipt_sha256"])
+                    self.assertEqual(json.loads(receipt.read_text()), self.data)
+                else:
+                    self.assertTrue(record["diagnostic_error"])
 
 
 if __name__ == "__main__":

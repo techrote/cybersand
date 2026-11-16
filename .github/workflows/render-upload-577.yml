@@ -79,7 +79,7 @@ jobs:
             frames: 180
             rounds: 1
           - group: families-actors
-            cases: active_2048_w1_pressure_flow_v1,active_2048_w4_pressure_flow_v1,active_1024_w1_inertial_cellular_v1,actor_1024_w1,actor_2048_w4_pressure_flow_v1
+            cases: active_2048_w1_pressure_flow_v1_pressure_dam_v1,active_2048_w4_pressure_flow_v1_pressure_dam_v1,active_1024_w1_inertial_cellular_v1,actor_1024_w1,actor_2048_w4_pressure_flow_v1_pressure_dam_v1
             frames: 180
             rounds: 1
           - group: ack-faults
@@ -155,7 +155,7 @@ jobs:
             frames: 180
             rounds: 1
           - group: families-actors
-            cases: active_2048_w1_pressure_flow_v1,active_2048_w4_pressure_flow_v1,active_1024_w1_inertial_cellular_v1,actor_1024_w1,actor_2048_w4_pressure_flow_v1
+            cases: active_2048_w1_pressure_flow_v1_pressure_dam_v1,active_2048_w4_pressure_flow_v1_pressure_dam_v1,active_1024_w1_inertial_cellular_v1,actor_1024_w1,actor_2048_w4_pressure_flow_v1_pressure_dam_v1
             frames: 180
             rounds: 1
           - group: ack-faults

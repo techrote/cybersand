@@ -27,6 +27,8 @@ NATIVE = "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll"
 RAPIER = "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
 BOOTSTRAP = frozenset({"godot/.godot/.gdignore", "godot/.godot/extension_list.cfg",
                        "godot/.godot/global_script_class_cache.cfg"})
+PORTABLE_TOOLS = frozenset({"tools/render_upload_577/Test-It.ps1",
+                            "tools/render_upload_577/Validate-Health.ps1"})
 PRESERVED = ("native", "godot/native_extension", "godot/addons/cybersand_native",
              "godot/addons/godot-rapier2d", "godot/shaders/material_palette.gdshader",
              "godot/shaders/material_emission.gdshader", "godot/shaders/material_vapour_trail.gdshader",
@@ -87,7 +89,7 @@ def stage_source(output: Path, identity: dict) -> None:
     source = identity["source_commit"]
     paths = ["godot", "examples/worldgen", "THIRD_PARTY_NOTICES.md", "LICENSE_STATUS.md",
              "third_party/godot-runtime.lock.json", "third_party/native-toolchain.lock.json",
-             "third_party/rapier-bvh-build.lock.json", "tools/render_upload_577/Test-It.ps1"]
+             "third_party/rapier-bvh-build.lock.json", *sorted(PORTABLE_TOOLS)]
     paths += list(identity["native"]["source_inputs"])
     paths += list(identity["rapier"]["source_inputs"])
     body = subprocess.check_output(["git", "archive", "--format=tar", source, "--", *sorted(set(paths))],
@@ -112,6 +114,8 @@ def stage_source(output: Path, identity: dict) -> None:
             target.write_bytes(data)
     need(all((output / name).is_file() for name in BOOTSTRAP),
          "Portable Godot extension/class bootstrap missing")
+    need(all((output / name).is_file() for name in PORTABLE_TOOLS),
+         "Portable Test It entry or health validator missing")
     profiles = output / "godot/authoring/worldgen"
     profiles.mkdir(parents=True, exist_ok=True)
     recipes = sorted((output / "examples/worldgen").glob("*.json"))
@@ -148,7 +152,7 @@ def stage_dependencies(output: Path, engine_zip: Path, notices: Path, vc: Path) 
 def launchers(output: Path, source: str) -> None:
     for name, strategy in (("Open Workbench.cmd", "full"), ("Open Baseline Workbench.cmd", "full"),
                            ("Open Candidate Workbench.cmd", "hybrid")):
-        preparation_notice = ('echo Candidate startup prepares material shaders. This can take several seconds.\n'
+        preparation_notice = ('echo Candidate startup prepares material shaders. Software graphics can take tens of seconds.\n'
                               if strategy == "hybrid" else '')
         data = ('@echo off\nsetlocal\ncd /d "%~dp0"\n'
                 'set "CYBERSAND_SOURCE_REVISION=' + source + '"\n'
@@ -177,7 +181,7 @@ No separate Python, Godot, Git or development tools are required.
 * `Open Candidate Workbench.cmd` opts into hybrid sparse/dense publication and
   bounded pending-patch coalescing. Production defaults remain unchanged.
   Its startup, or first live activation through Engine Lab, prepares the actual
-  material shaders before editing. This can take several seconds on software
+  material shaders before editing. This can take tens of seconds on software
   graphics hosts. Test It records this cost in setup and complete process time;
   it is not included in the subsequent steady-state publication distributions.
 * `Open Baseline Workbench.cmd` explicitly selects the same control as the normal entry.
@@ -200,6 +204,30 @@ between arms. Run baseline, candidate, candidate, baseline in that order.
    camera. Look for missing/new-old terrain patches, stale terrain, actor gaps
    and changes in physical progression.
 
+## Evaluation status and retained negative results
+
+Overall performance qualification remains **HOLD**. This is an isolated opt-in
+owner evaluation candidate. On hosted Windows software graphics, the retained
+mixed two-dense/ten-sparse burst fixture was repeatably slower: frame p95 was
+about 21 ms for baseline and 40 ms for hybrid, with p99 about 22 ms and 59 ms.
+Sparse changes can benefit while frequent dense-to-sparse transitions can lose.
+Keep the baseline selectable and report the kinds of edits that cause pauses.
+The retained source535 run is
+https://github.com/techrote/cybersand/actions/runs/43830573784 .
+
+Mounted hybrid preparation on that software host reached about 45–50 seconds.
+This is included in setup and complete process time, not presented as a free
+steady-state improvement. Physical Windows 11/NVIDIA results remain outstanding.
+
+The current collector refuses native failure, finite-body refusal and confirmed
+automatic stops, retaining the original native error and attempted tick. The
+prior PressureFlow scatter exceeded the unchanged native gas-compartment
+capacity at attempted tick24 and cannot qualify continuous activity. The new
+`pressure_dam_v1` comparison uses a separately identified open-gate derivative
+of the registered LCB dam geometry. Its results must not be compared as if they
+used the prior scatter. The original scatter remains an executable negative
+control; FreeMass heavy scatter is unchanged.
+
 The candidate uses partial drawable publication only while the bounded sparse
 plan is worthwhile. Dense/full images use ordinary compact R8/RG8 ImageTexture
 updates. Moving between resource types has explicit initialization cost; the
@@ -220,6 +248,7 @@ def verify(folder: Path, source: str | None = None) -> dict:
         need(manifest.get("source_commit") == source, "Package source differs")
     need(files_map(folder) == manifest["files_sha256"], "Missing or changed package payload")
     need(BOOTSTRAP <= set(manifest["files_sha256"]), "Package lacks portable Godot bootstrap")
+    need(PORTABLE_TOOLS <= set(manifest["files_sha256"]), "Package lacks portable Test It entry or health validator")
     for kind in ("native", "rapier"):
         runtime = manifest[kind]
         need(digest(folder / runtime["artifact"]) == runtime["sha256"], kind + " runtime mismatch")

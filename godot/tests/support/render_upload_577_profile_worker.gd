@@ -17,6 +17,15 @@ var _profile_last_requested_ack := 0
 var _profile_observed_ack := 0
 var _profile_next_ack_observation := 0
 
+func profile_owner_state() -> Dictionary:
+	# Requested pause intent is distinct from a publication's local_paused:
+	# an already prepared Workbench actor sample legitimately pauses one local
+	# iteration while waiting for Main. Both fields below are mutex-owned.
+	_mutex.lock()
+	var result: Dictionary={"thread_running":_running,"requested_paused":_paused}
+	_mutex.unlock()
+	return result
+
 func profile_begin(ack_mode: String = "normal") -> Dictionary:
 	_profile_mutex.lock()
 	_profile_samples.clear()

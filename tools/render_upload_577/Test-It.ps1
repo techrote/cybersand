@@ -33,6 +33,7 @@ foreach ($property in $manifest.files_sha256.PSObject.Properties) {
         throw ('Package file missing or changed: ' + $property.Name)
     }
 }
+. (Join-Path $PSScriptRoot 'Validate-Health.ps1')
 $stamp = (Get-Date).ToUniversalTime().ToString('yyyyMMdd-HHmmss') + '-' + [Guid]::NewGuid().ToString('N').Substring(0,8)
 $output = Join-Path $root ('Test-It-Results\' + $stamp)
 New-Item -ItemType Directory -Path $output | Out-Null
@@ -54,18 +55,22 @@ if (-not $Quick) {
         @{name='full';size=2048;workers=1;family='freemass_v1'},
         @{name='active';size=2048;workers=1;family='freemass_v1'},
         @{name='active';size=2048;workers=4;family='freemass_v1'},
-        @{name='active';size=2048;workers=4;family='pressure_flow_v1'},
+        @{name='active';size=2048;workers=4;family='pressure_flow_v1';fixture='pressure_dam_v1'},
         @{name='actor';size=1024;workers=1;family='freemass_v1'},
         @{name='manual';size=1024;workers=1;family='freemass_v1';ack='delayed150'},
         @{name='manual';size=1024;workers=1;family='freemass_v1';ack='withheld'}
     )
 }
-foreach ($case in $cases) { if (-not $case.ContainsKey('ack')) { $case.ack='normal' } }
+foreach ($case in $cases) {
+    if (-not $case.ContainsKey('ack')) { $case.ack='normal' }
+    if (-not $case.ContainsKey('fixture')) { $case.fixture='workload_v1' }
+}
 $frames = 180
 $engine = Join-Path $root 'Godot_v4.7-stable_win64_console.exe'
 $project = Join-Path $root 'godot'
 $rows = [Collections.Generic.List[object]]::new()
 $failure = $null
+$failureHealth = $null
 $oldVariables = @{}
 $variableNames = @('CYBERSAND_SOURCE_REVISION','CYBERSAND_SOURCE_SHA','APPDATA','LOCALAPPDATA','XDG_DATA_HOME','XDG_CONFIG_HOME','XDG_CACHE_HOME')
 foreach ($name in $variableNames) { $oldVariables[$name] = [Environment]::GetEnvironmentVariable($name,'Process') }
@@ -95,7 +100,7 @@ try {
     foreach ($case in $cases) {
         $phase = 0
         foreach ($strategy in @('full','hybrid','hybrid','full')) {
-            $label = '{0}_{1}_w{2}_{3}_ack_{4}-{5}-{6}' -f $case.name,$case.size,$case.workers,$case.family,$case.ack,$phase,$strategy
+            $label = '{0}_{1}_w{2}_{3}_{4}_ack_{5}-{6}-{7}' -f $case.name,$case.size,$case.workers,$case.family,$case.fixture,$case.ack,$phase,$strategy
             Write-Host ('Collecting ' + $label)
             $folder = Join-Path $output $label
             New-Item -ItemType Directory -Path $folder | Out-Null
@@ -115,6 +120,7 @@ try {
                 ('--strategy='+$strategy),('--render-upload='+$strategy),('--size='+$case.size),
                 ('--workers='+$case.workers),('--family='+$case.family),('--workload='+$case.name),
                 ('--ack='+$case.ack),
+                ('--fixture='+$case.fixture),
                 ('--frames='+$frames),'--warmup=30','--channels=2',('--output="'+$jsonPath+'"'))
             $watch = [Diagnostics.Stopwatch]::StartNew()
             $process = Start-Process -FilePath $engine -ArgumentList $arguments -WorkingDirectory $root -PassThru -RedirectStandardOutput $stdout -RedirectStandardError $stderr
@@ -135,7 +141,13 @@ try {
             $processReceipt = [ordered]@{command=@($engine)+$arguments; elapsed_seconds=$watch.Elapsed.TotalSeconds; exit_code=$process.ExitCode; timed_out=$timedOut}
             Write-Json (Join-Path $folder 'process.json') $processReceipt
             $text = (Get-Content -LiteralPath $stdout -Raw) + (Get-Content -LiteralPath $stderr -Raw)
-            if ($timedOut -or $process.ExitCode -ne 0 -or $text -match 'SCRIPT ERROR:|Parse Error:|Failed to load script|(?m)^ERROR:') { throw ('Capture failed: '+$label) }
+            if ($timedOut -or $process.ExitCode -ne 0 -or $text -match 'SCRIPT ERROR:|Parse Error:|Failed to load script|(?m)^ERROR:') {
+                if (Test-Path -LiteralPath $jsonPath) {
+                    $failedReceipt = Get-Content -LiteralPath $jsonPath -Raw | ConvertFrom-Json
+                    if ($failedReceipt.PSObject.Properties.Name -contains 'native_health') { $failureHealth=$failedReceipt.native_health }
+                }
+                throw ('Capture failed: '+$label+'; original stdout/stderr and any native health receipt are retained.')
+            }
             if (-not (Test-Path -LiteralPath $jsonPath)) { throw ('Capture receipt missing: '+$label) }
             $data = Get-Content -LiteralPath $jsonPath -Raw | ConvertFrom-Json
             if (-not $data.ok -or $data.failures.Count -ne 0 -or $data.frames.Count -ne $frames -or
@@ -143,6 +155,10 @@ try {
                 $data.final_strategy.active -ne $strategy -or -not $data.final_current_texture_matches_cpu -or
                 $data.context.display_server -eq 'headless') { throw ('Capture identity/correctness failed: '+$label) }
             if ($RenderingDriver -and $data.context.backend -ne $RenderingDriver) { throw ('Capture backend differs: '+$label) }
+            $expectedCase = @{size=$case.size;workload=$case.name;workers=$case.workers;family=$case.family;
+                              channels=2;ack=$case.ack;fixture=$case.fixture}
+            Assert-RenderUploadRequestedCase $data $expectedCase $strategy
+            Assert-RenderUploadHealth $data
             $preparation = $data.shader_preparation
             if (($preparation | ConvertTo-Json -Depth 50 -Compress) -ne
                 ($data.shader_preparation_at_measurement | ConvertTo-Json -Depth 50 -Compress)) {
@@ -175,7 +191,7 @@ try {
     Write-Host ('Capture stopped: ' + $failure)
 } finally {
     foreach ($name in $variableNames) { [Environment]::SetEnvironmentVariable($name,$oldVariables[$name],'Process') }
-    Write-Json (Join-Path $output 'summary.json') @{complete=($null -eq $failure -and $rows.Count -eq $cases.Count*4);failure=$failure;arms=@($rows.ToArray());limits='Sequential same-host ABBA. CPU duration is not GPU time or scanout. Shader caches and asynchronous native progress are recorded in raw receipts.'}
+    Write-Json (Join-Path $output 'summary.json') @{complete=($null -eq $failure -and $rows.Count -eq $cases.Count*4);failure=$failure;native_health_failure=$failureHealth;arms=@($rows.ToArray());limits='Sequential same-host ABBA. CPU duration is not GPU time or scanout. Shader caches and asynchronous native progress are recorded in raw receipts.'}
     $report = @('CyberSand material publication comparison',('Source '+$manifest.source_commit),'','Per-arm milliseconds (read with native/physics cadence and material age):')
     foreach ($row in $rows) {
         $report += ('{0}: frame p50 {1:N3}, p95 {2:N3}, p99 {3:N3}, max {4:N3}; publication p95 {5:N3}' -f $row.folder,$row.frame_ms.p50,$row.frame_ms.p95,$row.frame_ms.p99,$row.frame_ms.maximum,$row.publication_ms.p95)

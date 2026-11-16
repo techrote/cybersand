@@ -11,9 +11,12 @@ import sys
 
 from run_campaign import (ROOT, child_environment, engine_identity, execute,
                           retained_runtime_identity, sha, source_identity, verify_runtime_result, write)
+from health_qualification import run_failure_control
+from health_validation_cases import validation_cases
 
 
 CASES = [
+    ("helper-history", "test_material_upload_hybrid.gd", "MATERIAL_UPLOAD_HYBRID ", {}, "helper-history"),
     ("preparation-lifecycle", "test_render_upload_577_preparation_lifecycle.gd", "RENDER_UPLOAD_577_PREPARATION_LIFECYCLE ", {}, "preparation-lifecycle"),
     ("queued-history", "test_render_upload_577_queued_history.gd", "RENDER_UPLOAD_577_QUEUED_HISTORY ", {}, "queued-history"),
     ("main-refusal", "test_render_upload_577_refusal.gd", "RENDER_UPLOAD_577_REFUSAL ", {}, "main-refusal"),
@@ -49,6 +52,9 @@ REFUSAL_ERRORS = tuple(
 
 
 def verify_independent_result(name: str, script: str, data: dict) -> None:
+    if name == "helper-history":
+        verify_helper_history(data)
+        return
     paths = {"res://scripts/material_upload_hybrid.gd", "res://shaders/material_upload_copy.gdshader",
              "res://tests/" + script}
     if name == "preparation-lifecycle":
@@ -94,6 +100,53 @@ def verify_independent_result(name: str, script: str, data: dict) -> None:
                 raise ValueError("Shader preparation changed accepted material/binding identity or failed to complete")
 
 
+def helper_history_record_labels() -> list[str]:
+    labels = []
+    for fmt in ("R8", "RG8"):
+        labels.extend([fmt + " initial current", fmt + " initial previous"])
+        publications = ([f"sparse {i}" for i in range(12)]
+                        + [f"dense alternating {i}" for i in range(12)]
+                        + [f"sparse reentry {i}" for i in range(9)]
+                        + ["full refresh", "generation replacement"]
+                        + [f"retained staging {i}" for i in range(42)])
+        for publication in publications:
+            labels.extend(fmt + " " + publication + suffix for suffix in (" current", " previous", ""))
+        labels.append(fmt + " adopted previous")
+        labels.extend(fmt + " first publication after adoption" + suffix for suffix in (" current", " previous", ""))
+        labels.append(fmt + " adopted source remains immutable")
+        for i in range(12):
+            labels.extend(fmt + f" staging retirement publication {i}" + suffix for suffix in (" current", " previous", ""))
+    return labels
+
+
+def verify_helper_history(data: dict) -> None:
+    """Retain the existing full R8/RG8 publication corpus in both OS gates."""
+    records = data.get("records", [])
+    if (data.get("schema") != "material-upload-hybrid-correctness-v1"
+            or data.get("ok") is not True or data.get("failures") != []
+            or data.get("checks") != 1514
+            or not isinstance(records, list) or any(not isinstance(record, dict) for record in records)
+            or [record.get("case") for record in records] != helper_history_record_labels()):
+        raise ValueError("Helper current/previous history corpus is incomplete or changed")
+    for record in records:
+        readback = record["case"].endswith((" current", " previous", "source remains immutable"))
+        if not readback:
+            if (set(record) != {"case", "metrics"} or not isinstance(record["metrics"], dict)
+                    or record["metrics"].get("mode") not in {"compact_full", "transition_seed", "partial_blit"}):
+                raise ValueError("Helper history omitted a valid publication mode")
+        elif (set(record) != {"case", "equal", "actual_sha256", "expected_sha256"}
+              or record.get("equal") is not True
+              or record.get("actual_sha256") != record.get("expected_sha256")
+              or re.fullmatch(r"[0-9a-f]{64}", record.get("actual_sha256", "")) is None):
+            raise ValueError("Helper current/previous GPU contents differ or lack a digest")
+    shader = data.get("context", {}).get("shader", {})
+    expected = sha(ROOT / "godot/shaders/material_upload_copy.gdshader")
+    if (shader.get("source_bound") is not True or shader.get("source_file_bound") is not True
+            or shader.get("source_path") != "res://shaders/material_upload_copy.gdshader"
+            or any(shader.get(key) != expected for key in ("source_file_sha256", "source_sha256", "variant_sha256"))):
+        raise ValueError("Helper readback shader is not bound to the checked-out copy source")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--godot", required=True, type=Path)
@@ -125,11 +178,35 @@ def main() -> int:
     basic = [engine["launcher"]["path"], "--audio-driver", "Dummy", "--path", str(ROOT / "godot")]
     execute([*basic, "--headless", "--editor", "--import", "--quit"], env, output / "import", args.timeout)
     failures = []
+    # Once per OS, retain the real legacy native failure and prove that both
+    # collectors refuse it. It is never counted as a successful timing arm.
+    if args.cases == "all":
+        try:
+            negative = run_failure_control(engine, source, output / "native-failure-control",
+                                          output.parent / (output.name + "-userdata"), args.rendering_driver, args.timeout)
+            report["native_failure_control"] = negative
+            if os.name == "nt":
+                write(output / "health-validator-cases.json", validation_cases())
+                process = execute(["powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File",
+                    str(ROOT / "tools/render_upload_577/Test-Health.ps1"), "-Cases", str(output / "health-validator-cases.json"),
+                    "-NegativeReceipt", str(output / "native-failure-control/runtime.json")],
+                    os.environ.copy(), output / "powershell-health-validator", 60)
+                text = (output / "powershell-health-validator/process.log").read_text(encoding="utf-8", errors="replace")
+                marker = "RENDER_UPLOAD_577_HEALTH_VALIDATOR "
+                results = [json.loads(line.removeprefix(marker)) for line in text.splitlines() if line.startswith(marker)]
+                if (len(results) != 1 or results[0].get("checks") != len(validation_cases()) + 1
+                        or not results[0].get("powershell", "").startswith("5.1.")):
+                    raise ValueError("Actual Windows PowerShell 5.1 health admission controls did not complete")
+                report["powershell_health_validator"] = {"result": results[0], "process": process}
+        except Exception as error:
+            failures.append("native-health-admission-control")
+            report["native_health_control_failure"] = type(error).__name__ + ": " + str(error)
+        write(output / "regressions.json", report)
     for strategy in strategies:
         for name, script, marker, additions, profile in cases:
             internal_pair = name == "ack-graphical"
-            independent = name in {"queued-history", "main-refusal", "preparation-lifecycle"}
-            mounted = name not in {"handoff", "generation", "palette", "vapour", "pending-compaction", "ack-graphical", "queued-history", "main-refusal", "preparation-lifecycle"}
+            independent = name in {"helper-history", "queued-history", "main-refusal", "preparation-lifecycle"}
+            mounted = name not in {"handoff", "generation", "palette", "vapour", "pending-compaction", "ack-graphical", "helper-history", "queued-history", "main-refusal", "preparation-lifecycle"}
             if strategy == "hybrid" and not mounted:
                 continue
             label = ("independent" if independent else "paired" if internal_pair else strategy) + "-" + name

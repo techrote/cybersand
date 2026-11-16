@@ -9,8 +9,9 @@ const ProfileWorker = preload("res://tests/support/render_upload_577_profile_wor
 const Setup = preload("res://scripts/workbench_setup.gd")
 const Stats = preload("res://scripts/worker_benchmark.gd")
 const Context = preload("res://tests/palette_qualification_context.gd")
+const PRESSURE_DAM_SOURCE := "res://tests/fixtures/lcb/lcb.dam.water.freemass.reference.v1.json"
 const SYNTHETIC := ["sparse","regions","dense","full","repeated","coverage","transition"]
-var config := {"strategy":"full","size":512,"workload":"sparse","frames":240,"warmup":30,"workers":1,"family":"freemass_v1","channels":2,"ack":"normal","output":""}
+var config := {"strategy":"full","size":512,"workload":"sparse","frames":240,"warmup":30,"workers":1,"family":"freemass_v1","channels":2,"ack":"normal","fixture":"workload_v1","output":""}
 var host: Control
 var bench: Control
 var editor: Control
@@ -35,6 +36,12 @@ var native_capture_result: Dictionary = {}
 var camera_stress_samples: Array[Dictionary] = []
 var ack_recovery: Dictionary = {}
 var shader_preparation_at_measurement: Dictionary = {}
+var fixture_identity: Dictionary = {}
+var native_play_requested := false
+var worker_running_observed := false
+var native_health := {"schema":"render-upload-577-native-health-v1","applicable":false,
+	"before":{},"after_timing":{},"final":{},"first_failure":{},"failure_observations":0,
+	"scope":"Read-only worker.has_failed and latest immutable worker publication, independently of Main consumption; no native World access"}
 
 func _initialize() -> void:
 	start_usec = Time.get_ticks_usec()
@@ -45,6 +52,7 @@ func _initialize() -> void:
 			if pair[0] in ["size","frames","warmup","workers","channels"]: config[pair[0]]=int(pair[1])
 			elif config.has(pair[0]): config[pair[0]]=pair[1]
 	synthetic = str(config.workload) in SYNTHETIC
+	native_health.applicable=not synthetic
 	ProjectSettings.set_setting("cybersand/native_worker_threads",int(config.workers))
 	Engine.max_fps=0
 	run.call_deferred()
@@ -65,9 +73,70 @@ func until(predicate: Callable, message: String, timeout_ms := 90000) -> bool:
 	var end := Time.get_ticks_msec()+timeout_ms
 	while Time.get_ticks_msec()<end:
 		if predicate.call(): return true
-		if host != null and host.simulation_worker.has_failed(): break
+		if host != null and host.simulation_worker.has_failed():
+			observe_native_health("setup_or_recovery",-1)
+			break
 		await process_frame
 	return require(false,message)
+
+func snapshot_health(snapshot: CyberSimulationSnapshot) -> Dictionary:
+	if snapshot==null: return {"available":false}
+	return {"available":true,"snapshot_serial":snapshot.serial,"published_usec":snapshot.published_usec,
+		"tick_index":snapshot.tick_index,"simulation_world_revision":snapshot.simulation_world_revision,
+		"world_revision":snapshot.world_revision,"render_world_generation":snapshot.render_world_generation,
+		"render_snapshot_serial":snapshot.render_snapshot_serial,"render_tick_index":snapshot.render_tick_index,
+		"backend_name":snapshot.backend_name,"simulation_failed":snapshot.simulation_failed,
+		"failed_tick_index":snapshot.failed_tick_index,"tick_failure_count":snapshot.tick_failure_count,
+		"last_tick_error":snapshot.last_tick_error,"paused":snapshot.paused,
+		"workbench_refusal":str(snapshot.lab_context.get("workbench_refusal",""))}
+
+func observe_native_health(stage: String, frame: int) -> Dictionary:
+	if synthetic or host==null: return {}
+	# Main may still hold a healthy snapshot on the frame when the worker first
+	# publishes failure. Neither the consumed snapshot nor final tick alone is
+	# an adequate health oracle. This API returns an immutable value and does
+	# not remove/consume the worker publication or change native timing laws.
+	var worker_failed: bool=host.simulation_worker.has_failed()
+	var owner_state: Dictionary=host.simulation_worker.profile_owner_state()
+	var published: Dictionary=snapshot_health(host.simulation_worker.take_latest_snapshot(-1))
+	var consumed: Dictionary=snapshot_health(host.latest_snapshot)
+	var previously_running:=worker_running_observed
+	if bool(owner_state.thread_running) and not bool(owner_state.requested_paused):
+		worker_running_observed=true
+	var row: Dictionary={"stage":stage,"frame":frame,"observed_usec":Time.get_ticks_usec(),
+		"expect_running":native_play_requested,"worker_has_failed":worker_failed,
+		"worker_owner_state":owner_state,
+		"worker_running_observed_before":previously_running,"worker_running_observed":worker_running_observed,
+		"main_paused":host.paused,"main_error":host.microscenario_error,
+		"workbench_refusal":str(host.tower_context.get("workbench_refusal","")),
+		"workbench_message":str(bench.message) if bench!=null else "",
+		"worker_snapshot":published,"main_snapshot":consumed,"reasons":[]}
+	if worker_failed: row.reasons.append("worker_has_failed")
+	for key: String in ["worker_snapshot","main_snapshot"]:
+		var value: Dictionary=row[key]
+		if not bool(value.get("available",false)):
+			row.reasons.append(key+"_missing")
+			continue
+		if bool(value.simulation_failed) or int(value.tick_failure_count)>0 or not str(value.last_tick_error).is_empty():
+			row.reasons.append(key+"_native_failure")
+		if not str(value.workbench_refusal).is_empty(): row.reasons.append(key+"_workbench_refusal")
+	if not str(row.workbench_refusal).is_empty(): row.reasons.append("main_workbench_refusal")
+	if not str(row.main_error).is_empty(): row.reasons.append("main_apparatus_error")
+	if native_play_requested and host.paused: row.reasons.append("unexpected_main_pause")
+	# Snapshot.paused can be a normal actor-sample handoff. Only the separate
+	# mutex-owned requested pause intent confirms a stopped owner. The initial
+	# Play handshake may still carry the prior paused intent.
+	if native_play_requested and previously_running and bool(owner_state.requested_paused):
+		row.reasons.append("unexpected_worker_pause")
+	if stage!="final_after_worker_join" and not bool(owner_state.thread_running):
+		row.reasons.append("unexpected_worker_stop")
+	row.healthy=row.reasons.is_empty()
+	if not row.healthy:
+		native_health.failure_observations=int(native_health.failure_observations)+1
+		if native_health.first_failure.is_empty():
+			native_health.first_failure=row.duplicate(true)
+			require(false,"native owner failed or stopped; see native_health.first_failure")
+	return row
 
 func settled() -> bool:
 	return not editor.busy() and not host.simulation_worker.paint_state().busy and not art.active \
@@ -124,15 +193,37 @@ func native_fixture() -> Dictionary:
 	var setup: Dictionary=Setup.fresh(policy,Vector2i(side,side))
 	if config.family=="inertial_cellular_v1": setup.rule_radius=3
 	var edits: Array=setup.edits
-	edits.append_array([[0,0,side,2,58],[0,0,2,side,58],[side-2,0,2,side,58],[0,side-2,side,2,58]])
-	if config.workload in ["active","actor"]:
+	fixture_identity={"id":str(config.fixture),"geometry":"original workload-specific recipe",
+		"source":"res://scripts/worker_benchmark.gd" if config.workload in ["active","actor"] else get_script().resource_path}
+	if config.fixture=="pressure_dam_v1":
+		# Geometry-only derivative of the registered Dam Break. Keep the native
+		# Workbench policy/capacities and default material laws unchanged. The
+		# original gate is already open, exactly as after its tick-zero erase.
+		var source_text:=FileAccess.get_file_as_string(PRESSURE_DAM_SOURCE)
+		var source: Dictionary=JSON.parse_string(source_text)
+		var scale:=side/1024
+		for index: int in range(0,35,5):
+			edits.append([int(source.rectangles[index])*scale,int(source.rectangles[index+1])*scale,
+				int(source.rectangles[index+2])*scale,int(source.rectangles[index+3])*scale,int(source.rectangles[index+4])])
+		var water: Array=source.partial_water_fills
+		require(int(water[4])==255 and int(water[5])==0,"registered dam uses full Water cells with zero coherence")
+		edits.append([int(water[0])*scale,int(water[1])*scale,int(water[2])*scale,int(water[3])*scale,3])
+		fixture_identity={"id":"pressure_dam_v1","source":PRESSURE_DAM_SOURCE,
+			"source_sha256":FileAccess.get_sha256(PRESSURE_DAM_SOURCE),
+			"canonical_source_sha256":source_text.replace("\r\n","\n").sha256_text(),
+			"geometry":"registered 1024 dam scaled uniformly; gate already open; Workbench policy/laws unchanged",
+			"scale":scale,"water_cells":int(water[2])*int(water[3])*scale*scale,"base_edits":edits.duplicate(true),
+			"comparison_scope":"distinct fixture; never compare against legacy scattered PressureFlow performance"}
+	else:
+		edits.append_array([[0,0,side,2,58],[0,0,2,side,58],[side-2,0,2,side,58],[0,side-2,side,2,58]])
+	if config.workload in ["active","actor"] and config.fixture!="pressure_dam_v1":
 		var rectangles: PackedInt32Array=Stats.fixture(side)
 		for index: int in range(20,rectangles.size(),5):
 			edits.append([rectangles[index],rectangles[index+1],rectangles[index+2],rectangles[index+3],rectangles[index+4]])
 	elif config.workload in ["dormant","burst"]:
 		# Isolated active area in an otherwise mostly dormant finite World.
 		edits.append_array([[80,80,28,24,2],[120,80,28,24,3],[72,180,100,3,58]])
-	else:
+	elif config.workload not in ["active","actor"]:
 		for y: int in range(24,side-40,128):
 			for x: int in range(24,side-40,128): edits.append([x,y,24,16,58])
 	if config.workload=="actor":
@@ -212,7 +303,8 @@ func native_action(frame: int) -> void:
 	if config.workload not in ["manual","burst"]: return
 	var target_actions:=mini(16,ceili(float(config.frames)/8.0)) if config.workload=="manual" else mini(8,maxi(1,int(config.frames)/8))
 	if config.workload=="burst" and action_index>=target_actions:
-		if settled() and host.paused: require(bench.toggle_pause(),"burst resumes simulation")
+		if settled() and host.paused:
+			native_play_requested=require(bench.toggle_pause(),"burst resumes simulation") or native_play_requested
 		return
 	if action_index>=target_actions: return
 	if not pending_action.is_empty() or not settled() or frame%(8 if config.workload=="manual" else 2)!=0: return
@@ -260,8 +352,9 @@ func observe_action() -> void:
 		actions.append(pending_action.duplicate())
 		pending_action.clear()
 
-func frame_record(index: int, duration: int, before_uploads: int) -> Dictionary:
+func frame_record(index: int, duration: int, before_uploads: int, health: Dictionary) -> Dictionary:
 	return {"frame":index,"frame_ms":float(duration)/1000.0,
+		"native_health":health,
 		"coverage_fraction":coverage_fraction,"coverage_phase_frame":coverage_phase_frame,
 		"upload_count":host.upload_samples.size()-before_uploads,
 		"main_ms":float(host.main_usec)/1000.0,"shader_update_ms":float(host.shader_usec)/1000.0,
@@ -273,11 +366,47 @@ func frame_record(index: int, duration: int, before_uploads: int) -> Dictionary:
 		"accepted_render_serial":host.last_uploaded_render_snapshot_serial,
 		"displayed_material_age_ms":float(Time.get_ticks_usec()-host.last_accepted_generated_usec)/1000.0 if host.last_accepted_generated_usec>0 else null}
 
+func terminal_progress_observations() -> Dictionary:
+	if synthetic or frames.is_empty(): return {}
+	var elapsed_ms:=0.0
+	var last_native_advance_ms:=0.0
+	var last_physical_advance_ms:=0.0
+	var last_native_advance_frame:=-1
+	var last_physical_advance_frame:=-1
+	var tick:=start_native_tick
+	var step:=start_rapier_step
+	for frame: Dictionary in frames:
+		elapsed_ms+=float(frame.frame_ms)
+		if int(frame.tick)>tick:
+			last_native_advance_ms=elapsed_ms
+			last_native_advance_frame=int(frame.frame)
+		if int(frame.rapier_step)>step:
+			last_physical_advance_ms=elapsed_ms
+			last_physical_advance_frame=int(frame.frame)
+		tick=int(frame.tick)
+		step=int(frame.rapier_step)
+	return {"last_observed_native_tick":tick,"last_observed_rapier_step":step,
+		"last_native_advance_frame":last_native_advance_frame,"last_physical_advance_frame":last_physical_advance_frame,
+		"trailing_native_unchanged_frames":frames.size()-1-last_native_advance_frame,
+		"trailing_physical_unchanged_frames":frames.size()-1-last_physical_advance_frame,
+		"terminal_native_unchanged_observed_ms":elapsed_ms-last_native_advance_ms,
+		"terminal_physical_unchanged_observed_ms":elapsed_ms-last_physical_advance_ms,
+		"last_displayed_material_age_ms":frames.back().displayed_material_age_ms,
+		"scope":"Rendered-frame counter observations and retained terminal intervals; not hidden/suppressed frames, GPU scanout or a universal starvation threshold"}
+
 func finish() -> void:
+	if host!=null and not synthetic:
+		# Joining is outside the measured window. Retain any in-flight tick's
+		# failure before writing the receipt; no owner can fail after this check.
+		host.set_process(false)
+		host.simulation_worker.stop_worker()
+		native_health.final=observe_native_health("final_after_worker_join",-1)
 	var result: Dictionary={"schema":"render-upload-577-benchmark-v1","ok":failures.is_empty(),"failures":failures,
 		"config":config,"strategy":config.strategy,"size":config.size,"workload":config.workload,"workers":config.workers,
 		"context":Context.identity(get_script().resource_path,host.world_shader.shader if host!=null else null),
-		"fixture_sha256":fixture_sha,"initial_image_sha256":initialized_image_sha,
+		"fixture_sha256":fixture_sha,"fixture_identity":fixture_identity,"initial_image_sha256":initialized_image_sha,
+		"native_health":native_health,
+		"terminal_progress_observations":terminal_progress_observations(),
 		"cohort":"deterministic_renderer_seam" if synthetic else "mounted_native_workbench",
 		"requested_workers":config.workers,
 		"initial_native_tick":start_native_tick,"initial_rapier_step":start_rapier_step,
@@ -367,6 +496,11 @@ func run() -> void:
 	if not require(config.ack in ["normal","delayed150","withheld"] and (config.ack=="normal" or config.workload=="manual"),"ACK faults use the paused fixed-edit workload"):
 		await finish()
 		return
+	if not require(config.fixture in ["workload_v1","pressure_dam_v1","legacy_scatter_v1"],"declared fixture") or \
+		not require(config.fixture!="pressure_dam_v1" or (config.family=="pressure_flow_v1" and config.workload in ["active","actor"] and config.size in [1024,2048]),"pressure dam fixture family/size/workload") or \
+		not require(config.fixture!="legacy_scatter_v1" or config.workload in ["active","actor"],"legacy scatter fixture workload"):
+		await finish()
+		return
 	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 	root.size=Vector2i(960,720)
 	if synthetic: create_synthetic()
@@ -386,10 +520,12 @@ func run() -> void:
 	if not failures.is_empty():
 		await finish()
 		return
-	if not synthetic and config.workload in ["active","dormant","actor"]: require(bench.toggle_pause(),"native simulation starts after identical paused warmup")
+	if not synthetic and config.workload in ["active","dormant","actor"]:
+		native_play_requested=require(bench.toggle_pause(),"native simulation starts after identical paused warmup")
 	start_native_tick=host.latest_snapshot.tick_index if host.latest_snapshot!=null else 0
 	start_rapier_step=host.physical_actor_session.tick if host.physical_actor_session!=null else 0
 	if not synthetic: start_native_capture_counters=host.simulation_worker.profile_begin(str(config.ack))
+	if not synthetic: native_health.before=observe_native_health("before",-1)
 	if config.workload=="actor":
 		host.pilot_start_step=start_rapier_step
 		host.pilot_enabled=true
@@ -406,7 +542,8 @@ func run() -> void:
 			upload.post_draw_observed_usec=now
 			upload.submit_to_post_draw_ms=float(now-int(upload.end_usec))/1000.0
 			upload.material_to_post_draw_ms=float(now-int(upload.material_generated_usec))/1000.0 if int(upload.material_generated_usec)>0 else null
-		frames.append(frame_record(index,now-previous_frame_usec,before_uploads))
+		var health: Dictionary=observe_native_health("frame",index)
+		frames.append(frame_record(index,now-previous_frame_usec,before_uploads,health))
 		previous_frame_usec=now
 		if not synthetic: observe_action()
 		if not failures.is_empty(): break
@@ -415,10 +552,15 @@ func run() -> void:
 	host.measuring=false
 	require(host.render_shader_preparation==shader_preparation_at_measurement,"shader preparation did not change inside the measured window")
 	if not synthetic:
+		native_health.after_timing=observe_native_health("after_timing",-1)
 		native_capture_result=host.simulation_worker.profile_end()
 		require(native_capture_result.dropped_samples==0,"all native capture observations retained")
+	if not failures.is_empty():
+		await finish()
+		return
 	if config.workload=="actor":
 		require(not host.pilot_samples.is_empty(),"physical input tape observed")
+		require(not frames.is_empty() and int(frames.back().rapier_step)>start_rapier_step,"actor completed physical steps during timing")
 		for sample: Dictionary in host.pilot_samples:
 			require(bool(sample.accepted),"physical step input admitted")
 	if not synthetic and not pending_action.is_empty():

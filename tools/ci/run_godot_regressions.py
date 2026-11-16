@@ -29,6 +29,18 @@ DEFAULT_UNKNOWN_WEIGHT_SECONDS = scheduling.UNKNOWN_SECONDS
 # its exact working-tree inputs in addition to the existing Git/runtime identity.
 INPUT_SCOPES = ("tools/material_catalogue", "materials/catalogue")
 
+# These source-bound GPU/history fixtures use names without the `_render` suffix.
+# Keep them in complete Linux discovery with real frame submission. Windows'
+# headless inventory records them explicitly out of scope; the dedicated #577
+# Windows graphical gate executes the same fixtures with the retained runtime.
+DISPLAY_REQUIRED_CASES = frozenset({
+    "test_material_upload_hybrid",
+    "test_render_upload_577_ack_graphical",
+    "test_render_upload_577_preparation_lifecycle",
+    "test_render_upload_577_queued_history",
+    "test_render_upload_577_refusal",
+})
+
 
 def tested_inputs(root: Path, *, timeout: float | None = None) -> dict[str, str]:
     allowance = execution_policy.watchdog_seconds("operation_seconds") if timeout is None else timeout
@@ -122,18 +134,22 @@ def _weight(name: str, *, profile: dict | None = None, root: Path = ROOT) -> flo
     return scheduling.estimate(name, fallback, profile or scheduling.load_profile(), root=root)[0]
 
 
+def _requires_display(name: str) -> bool:
+    return name.endswith("_render") or name in DISPLAY_REQUIRED_CASES
+
+
 def discover_cases(root: Path = ROOT) -> list[Case]:
     profile = scheduling.load_profile(root / "tools/ci/godot_scheduling_profile.json")
     cases = [
         Case(
             p.stem,
             ("--script", "res://tests/" + p.name),
-            execution_policy.case_seconds(p.stem, p.stem.endswith("_render"),
+            execution_policy.case_seconds(p.stem, _requires_display(p.stem),
                 complex_fixture="support/ci_execution_policy.gd" in p.read_text(encoding="utf-8")),
             _weight(p.stem, profile=profile, root=root),
             # Actual-pixel fixtures use this suffix so newly added render tests
             # cannot silently inherit the headless server's no-frame shortcut.
-            requires_display=p.stem.endswith("_render"),
+            requires_display=_requires_display(p.stem),
         )
         for p in sorted((root / "godot/tests").glob("test_*.gd"))
     ]
@@ -678,6 +694,25 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
     output = log_path.read_text(encoding="utf-8", errors="replace")
     print(output, end="", flush=True)
     diagnostic_error = "SCRIPT ERROR:" in output or "ERROR:" in output
+    intentional_diagnostics = None
+    if case.name == "test_render_upload_577_refusal":
+        # This one adversarial fixture invokes unchanged production refusals.
+        # Admit only its complete, source/runtime-bound 166-check corpus and
+        # the exact eight diagnostics in order; global error handling stays
+        # strict for every other fixture and every unexpected error.
+        from verify_render_upload577_refusal import verify as verify_upload_refusal
+        intentional_diagnostics = {"status": "failed"}
+        try:
+            receipt = verify_upload_refusal(output, godot,
+                process_env.get("CYBERSAND_SOURCE_REVISION", ""))
+            receipt_path = output_dir / (case.name + "-receipt.json")
+            write_json(receipt_path, receipt)
+            intentional_diagnostics.update(status="passed", expected_error_count=8,
+                receipt=receipt_path.name, receipt_sha256=sha256(receipt_path))
+            diagnostic_error = False
+        except (OSError, ValueError, KeyError, TypeError, ImportError) as error:
+            intentional_diagnostics["error"] = f"{type(error).__name__}: {error}"
+            diagnostic_error = True
     skip_messages = [
         line for line in output.splitlines()
         if re.search(r"\bskipped\b|^\s*SKIP\b", line, flags=re.IGNORECASE)
@@ -721,6 +756,8 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
         "last_heartbeat": diagnostics.last_progress(output),
         "diagnostics": case.name + "-diagnostics" if (output_dir / (case.name + "-diagnostics")).exists() else None,
     }
+    if intentional_diagnostics is not None:
+        record["intentional_diagnostics"] = intentional_diagnostics
     contract = case_readback_contract(case)
     if not failed and contract is not None:
         # The engine footer is necessary but insufficient for this adversarial

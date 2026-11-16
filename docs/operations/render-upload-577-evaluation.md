@@ -124,6 +124,26 @@ only `blit_submit_usec` with full `ImageTexture.update()` would omit candidate
 work. Logical bytes are not measured PCIe traffic; `frame_post_draw` is not
 physical scanout. Final texture readback runs outside timed cohorts.
 
+Every mounted native comparison records the exclusive owner's failure state,
+its latest snapshot and Main's consumed snapshot separately. Native failure,
+Workbench refusal or an unexpected automatic stop makes the arm fail. A final
+matching texture cannot turn a failed simulation into an accepted performance
+run. Renderer-only fixtures explicitly declare native health inapplicable.
+
+The original interleaved Sand/Water PressureFlow fixture at checkpoint
+`535cae2e437f3a19687a6d90265e279ea3732af0` exhausted the ordinary 1,024 gas
+compartment capacity at attempted tick 24 in both upload policies. Its old
+collector incorrectly reported success after rendering the stopped state. Those
+receipts remain negative evidence and cannot qualify continuous activity. The
+repaired collector retains this fixture as `legacy_scatter_v1` for rejection
+checks. New PressureFlow comparisons use the separately identified
+`pressure_dam_v1`: the registered LCB dam geometry scaled to the canvas, with its
+gate open. At 2048-square size it starts with 122,880 connected Water cells.
+The native laws, cached-dormant policy and ordinary capacity are unchanged.
+Only matched runs of this same new fixture may be compared; its timings are not
+an improvement claim against the failed scatter fixture. The heavy FreeMass
+Sand/Water fixture remains unchanged.
+
 ## Workbench comparison
 
 The self-contained Windows package provides `Open Workbench.cmd` for the full

@@ -46,11 +46,12 @@ ORDER = ("full", "hybrid", "hybrid", "full")
 
 
 def case(workload: str, size: int = 2048, workers: int = 1, family: str = "freemass_v1", channels: int = 2,
-         ack: str = "normal") -> dict:
+         ack: str = "normal", fixture: str = "workload_v1") -> dict:
     suffix = (("_" + family if family != "freemass_v1" else "") + ("_r8" if channels == 1 else "")
-              + ("_ack_" + ack if ack != "normal" else ""))
+              + ("_ack_" + ack if ack != "normal" else "")
+              + ("_" + fixture if fixture != "workload_v1" else ""))
     return {"id": f"{workload}_{size}_w{workers}{suffix}", "workload": workload,
-            "size": size, "workers": workers, "family": family, "channels": channels, "ack": ack}
+            "size": size, "workers": workers, "family": family, "channels": channels, "ack": ack, "fixture": fixture}
 
 
 CASES = [
@@ -61,9 +62,10 @@ CASES = [
     case("active", 512, 1), case("active", 512, 4),
     case("active", 1024, 1), case("active", 1024, 4),
     case("active", 2048, 1), case("active", 2048, 4),
-    case("active", 2048, 1, "pressure_flow_v1"), case("active", 2048, 4, "pressure_flow_v1"),
+    case("active", 2048, 1, "pressure_flow_v1", fixture="pressure_dam_v1"),
+    case("active", 2048, 4, "pressure_flow_v1", fixture="pressure_dam_v1"),
     case("active", 1024, 1, "inertial_cellular_v1"),
-    case("actor", 1024, 1), case("actor", 2048, 4, "pressure_flow_v1"),
+    case("actor", 1024, 1), case("actor", 2048, 4, "pressure_flow_v1", fixture="pressure_dam_v1"),
     case("manual", 1024, ack="delayed150"), case("manual", 1024, ack="withheld"),
 ]
 
@@ -242,7 +244,7 @@ def validate_process_errors(output_text: str, expected_error_lines: tuple[str, .
 
 
 def execute(command: list[str], env: dict, folder: Path, timeout: float, *,
-            expected_error_lines: tuple[str, ...] = ()) -> dict:
+            expected_error_lines: tuple[str, ...] = (), expected_exit_code: int = 0) -> dict:
     folder.mkdir(parents=True, exist_ok=False)
     log = folder / "process.log"
     started = time.perf_counter()
@@ -287,18 +289,21 @@ def execute(command: list[str], env: dict, folder: Path, timeout: float, *,
               "launcher_pid": child.pid, "engine_pid": engine_pid, "process_samples": samples,
               "peak_rss_bytes": max((int(row.get("peak_rss_bytes") or 0) for row in available), default=None),
               "cpu_seconds": max((float(row.get("cpu_seconds") or 0) for row in available), default=None),
-              "process_counter_scope": "Actual direct Godot process including native threads; approximately 100 ms polling; startup/setup included"}
+              "process_counter_scope": ("Actual direct Godot process including native threads; approximately 100 ms polling; startup/setup included"
+                                        if engine_pid is not None else
+                                        "Launcher process only; no Godot PID announced; these samples do not identify a Godot runtime")}
     output_text = log.read_text(encoding="utf-8", errors="replace")
     result["renderer_banners"] = [line for line in output_text.splitlines()
                                   if line.startswith(("OpenGL API ", "Vulkan ", "Direct3D "))]
     result["intentional_error_lines"] = list(expected_error_lines)
+    result["expected_exit_code"] = expected_exit_code
     write(folder / "process.json", result)
     error_failure = None
     try:
         validate_process_errors(output_text, expected_error_lines)
     except ValueError as error:
         error_failure = str(error)
-    if child.returncode != 0 or timed_out or error_failure:
+    if child.returncode != expected_exit_code or timed_out or error_failure:
         raise RuntimeError(f"Process failed at {folder.name}: exit={child.returncode}; timeout={timed_out}; {output_text[-2500:]}")
     if result["diagnostic_capture_started"]:
         raise RuntimeError("Timing cohort contaminated by watchdog diagnostics: " + folder.name)
@@ -533,6 +538,117 @@ def verify_actor_input_tape(data: dict) -> None:
         seen.add(index)
     if not seen:
         raise ValueError("Actor workload did not observe an admitted physical input")
+    previous = data["initial_rapier_step"]
+    for frame in data.get("frames", []):
+        current = frame.get("rapier_step")
+        if type(current) is not int or current < previous:
+            raise ValueError("Actor completed-step observations are absent or regress")
+        previous = current
+    if previous <= data["initial_rapier_step"]:
+        raise ValueError("Actor workload did not complete a physical step during timing")
+
+
+def verify_native_health(data: dict) -> None:
+    """Admit original per-frame owner health, not a final success flag or FPS.
+
+    The worker may fail one Main callback before its failure snapshot is
+    consumed. Both observations are therefore mandatory and independently
+    checked. An initial paused handshake is allowed; a confirmed later stop is
+    not. No arbitrary tick-rate/terminal-gap threshold is imposed.
+    """
+    workload = data.get("workload")
+    if type(workload) is not str or workload not in SYNTHETIC_WORKLOADS | {"manual", "burst", "active", "dormant", "actor"}:
+        raise ValueError("Native health lacks a known workload identity")
+    expected_cohort = "deterministic_renderer_seam" if workload in SYNTHETIC_WORKLOADS else "mounted_native_workbench"
+    if data.get("cohort") != expected_cohort:
+        raise ValueError("Native health cohort differs from the workload")
+    health = data.get("native_health")
+    frames = data.get("frames")
+    if not isinstance(health, dict) or health.get("schema") != "render-upload-577-native-health-v1":
+        raise ValueError("Missing original native health observations")
+    if not isinstance(frames, list) or not frames:
+        raise ValueError("Missing per-frame native health observations")
+    if health.get("first_failure") != {} or type(health.get("failure_observations")) is not int or health["failure_observations"] != 0:
+        raise ValueError("Native health retained a failed or stopped owner")
+    if data.get("cohort") == "deterministic_renderer_seam":
+        if (health.get("applicable") is not False
+                or any(health.get(k) != {} for k in ("before", "after_timing", "final"))
+                or any(f.get("native_health") != {} for f in frames)):
+            raise ValueError("Synthetic cohort cannot claim native owner health")
+        return
+    if data.get("cohort") != "mounted_native_workbench" or health.get("applicable") is not True:
+        raise ValueError("Native health applicability differs from the cohort")
+    observations = [("before", -1, health.get("before"))]
+    observations += [("frame", i, f.get("native_health")) for i, f in enumerate(frames)]
+    observations += [("after_timing", -1, health.get("after_timing")),
+                     ("final_after_worker_join", -1, health.get("final"))]
+    running = False
+    play_requested = False
+    observed_usec = -1
+    integer_fields = ("snapshot_serial", "published_usec", "tick_index", "simulation_world_revision",
+                      "world_revision", "render_world_generation", "render_snapshot_serial", "render_tick_index",
+                      "failed_tick_index", "tick_failure_count")
+    for stage, index, row in observations:
+        if (not isinstance(row, dict) or row.get("stage") != stage
+                or type(row.get("frame")) is not int or row["frame"] != index):
+            raise ValueError("Native health observation missing or associated with another frame")
+        if (type(row.get("observed_usec")) is not int or row["observed_usec"] < observed_usec
+                or row.get("healthy") is not True or row.get("reasons") != []
+                or row.get("worker_has_failed") is not False):
+            raise ValueError("Native health observation records failure or invalid order")
+        observed_usec = row["observed_usec"]
+        if any(type(row.get(k)) is not bool for k in
+               ("expect_running", "worker_running_observed_before", "worker_running_observed", "main_paused")):
+            raise ValueError("Native health lacks explicit owner/play state")
+        if (not isinstance(row.get("workbench_refusal"), str) or row["workbench_refusal"]
+                or row.get("main_error") != ""
+                or not isinstance(row.get("workbench_message"), str)):
+            raise ValueError("Native health lacks original Workbench status or records refusal")
+        for key in ("worker_snapshot", "main_snapshot"):
+            snapshot = row.get(key)
+            if (not isinstance(snapshot, dict) or snapshot.get("available") is not True
+                    or snapshot.get("backend_name") != "native-phased"
+                    or any(type(snapshot.get(k)) is not int or snapshot[k] < 0 for k in integer_fields)
+                    or type(snapshot.get("paused")) is not bool
+                    or snapshot.get("simulation_failed") is not False
+                    or snapshot.get("failed_tick_index") != 0 or snapshot.get("tick_failure_count") != 0
+                    or snapshot.get("last_tick_error") != "" or snapshot.get("workbench_refusal") != ""):
+                raise ValueError("Original " + key + " is missing, failed, or refused")
+        if row["worker_running_observed_before"] != running:
+            raise ValueError("Native running-state history was lost")
+        owner = row.get("worker_owner_state", {})
+        if any(type(owner.get(k)) is not bool for k in ("thread_running", "requested_paused")):
+            raise ValueError("Native requested owner state is missing")
+        if stage != "final_after_worker_join" and not owner["thread_running"]:
+            raise ValueError("Native worker thread stopped during timing")
+        if stage == "final_after_worker_join" and owner["thread_running"]:
+            raise ValueError("Final native health was not observed after worker join")
+        if row["expect_running"] and (row["main_paused"] or (running and owner["requested_paused"])):
+            raise ValueError("Native owner stopped after Play was requested")
+        running = running or (owner["thread_running"] and not owner["requested_paused"])
+        if row["worker_running_observed"] != running:
+            raise ValueError("Native running-state observation disagrees with its source")
+        if play_requested and not row["expect_running"]:
+            raise ValueError("Native Play request was silently withdrawn")
+        play_requested = row["expect_running"]
+        if data.get("workload") in ("active", "dormant", "actor") and not play_requested:
+            raise ValueError("Active workload did not request continued native play")
+        if data.get("workload") == "manual" and play_requested:
+            raise ValueError("Paused manual workload unexpectedly requested play")
+    if data.get("workload") in ("active", "dormant", "actor"):
+        if not running or frames[-1].get("tick", -1) <= data.get("initial_native_tick", -1):
+            raise ValueError("Active workload did not observe native progress")
+    if data.get("workload") == "actor":
+        previous = data.get("initial_rapier_step")
+        if type(previous) is not int:
+            raise ValueError("Actor lacks its initial completed-step identity")
+        for frame in frames:
+            current = frame.get("rapier_step")
+            if type(current) is not int or current < previous:
+                raise ValueError("Actor completed-step observations are absent or regress")
+            previous = current
+        if previous <= data["initial_rapier_step"]:
+            raise ValueError("Actor workload did not complete a physical step during timing")
 
 
 def verify_ack_observations(data: dict) -> None:
@@ -583,6 +699,19 @@ def verify_shader_preparation(data: dict) -> None:
         raise ValueError("Baseline/detached cohort unexpectedly performed Main shader preparation")
 
 
+def verify_requested_case(data: dict, config: dict, strategy: str) -> None:
+    """Bind reported fields to the caller's independently selected workload."""
+    actual = data.get("config")
+    if not isinstance(actual, dict):
+        raise ValueError("Runtime lacks its explicit requested configuration")
+    for key in ("size", "workload", "workers", "family", "channels", "ack", "fixture"):
+        if type(actual.get(key)) is not type(config[key]) or actual[key] != config[key]:
+            raise ValueError("Runtime configuration differs from requested " + key)
+    if (actual.get("strategy") != strategy or data.get("strategy") != strategy
+            or data.get("workload") != config["workload"]):
+        raise ValueError("Runtime top-level workload/strategy differs from the requested case")
+
+
 def verify_runtime_result(data: dict, engine: dict, source: dict, *, process: dict, rendering_driver: str,
                           config: dict | None, frames: int | None, strategy: str | None,
                           fixture_sha256: str | None = None) -> dict:
@@ -611,12 +740,7 @@ def verify_runtime_result(data: dict, engine: dict, source: dict, *, process: di
         raise ValueError("Executed fixture differs from its authenticated source")
     if config is None:
         return graphics
-    actual = data.get("config", data)
-    for key in ("size", "workload", "workers", "family", "channels", "ack"):
-        if actual.get(key) != config[key]:
-            raise ValueError("Runtime configuration differs from requested " + key)
-    if actual.get("strategy") != strategy:
-        raise ValueError("Runtime used another publication strategy")
+    verify_requested_case(data, config, strategy)
     for key in ("fixture_sha256", "initial_image_sha256", "final_image_sha256"):
         if not re.fullmatch(r"[0-9a-f]{64}", str(data.get(key, ""))):
             raise ValueError("Missing authenticated fixture image identity: " + key)
@@ -640,6 +764,7 @@ def verify_runtime_result(data: dict, engine: dict, source: dict, *, process: di
     verify_actor_input_tape(data)
     verify_ack_observations(data)
     verify_shader_preparation(data)
+    verify_native_health(data)
     samples = data.get("frames")
     if not isinstance(samples, list) or len(samples) != frames:
         raise ValueError("Runtime frame samples incomplete")
@@ -737,6 +862,7 @@ def main() -> int:
                                    "--family=" + config["family"],
                                    "--channels=" + str(config["channels"]),
                                    "--ack=" + config["ack"],
+                                   "--fixture=" + config["fixture"],
                                    "--render-upload=" + strategy,
                                    "--output=" + str(folder / "runtime.json")]
                         print("BEGIN " + label, flush=True)
