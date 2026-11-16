@@ -1,0 +1,126 @@
+name: LFM350 GP350-015 early recovery checkpoint selection
+on:
+  push:
+    branches: [research/lfm-game-policy-350m]
+    paths: [experiments/driv3r/lfm_game_policy/gp350-015-request.json]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: lfm350-gp350015-checkpoint-eval
+  cancel-in-progress: false
+jobs:
+  compare-frozen-adapters:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 65
+    env:
+      OMP_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+      HF_HUB_DISABLE_TELEMETRY: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: techrote/cybersand
+          ref: 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          path: pinned-w0
+          persist-credentials: false
+      - name: Download immutable GP350014 original source and adapters
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p gp350-015-evidence/original-source
+          gh run download 43933507612 --repo techrote/cybersand \
+            --name gp350-014-b384826fca4eb6e5f315e341cd688ec8b3bd29c5-43933507612-1 \
+            --dir gp350-015-evidence/original-source
+      - name: Source, curriculum, adapter custody and request preflight
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git -C pinned-w0 rev-parse HEAD)" = 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          test "$(git hash-object pinned-w0/experiments/agent_painter/worm/common/worm.py)" = 8979b6f0296e81051194bacc907992d38e006605
+          python3 -m py_compile experiments/driv3r/lfm_game_policy/{lfm350,gp350_paired_margin_train,gp350_recovery_boost_train,gp350015_recovery_checkpoint_eval}.py
+          python3 experiments/driv3r/lfm_game_policy/gp350015_recovery_checkpoint_eval.py --self-test \
+            --w0 pinned-w0/experiments/agent_painter/worm/common/worm.py \
+            --source gp350-015-evidence/original-source \
+            --cache "$RUNNER_TEMP/no-model" --out "$RUNNER_TEMP/no-evidence"
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path("experiments/driv3r/lfm_game_policy/gp350-015-request.json").read_text())
+          assert r["schema"]=="driv3r.lfm350.gp350015-request/1"
+          assert r["source_run"]==43933507612 and r["source_artifact"]==14261975494
+          assert r["source_sha"]=="b384826fca4eb6e5f315e341cd688ec8b3bd29c5"
+          assert r["checkpoint_steps"]==[18,36,54] and r["archive_step72_reference_only"]
+          assert r["model"]=="LiquidAI/LFM2.5-350M"
+          assert r["revision"]=="9921cd4d82c0e3986887aa4b376f9446729ef8a3"
+          assert r["new_optimizer_steps"]==0 and r["original_W0_PNGs"]==36
+          assert r["heldout_general_probes_per_checkpoint"]==72 and r["heldout_balanced_recovery_probes_per_checkpoint"]==48
+          assert r["model_rollout_turns"]==64 and r["model_rollouts_per_checkpoint"]==12
+          assert not r["native"] and not r["paid_GPU"] and r["draft_hold"]
+          PY
+          python3 tools/ci/check_ci_provider_policy.py
+          (git rev-parse HEAD; date -u -Iseconds; python3 --version) > gp350-015-evidence/source-host.txt
+      - name: Install pinned model-only CPU inference dependencies
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/gp350015"
+          "$RUNNER_TEMP/gp350015/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/gp350015/bin/python" -m pip install \
+            'transformers==5.22.2' 'peft==0.21.2' 'accelerate==1.15.0' \
+            'huggingface-hub==2.4.0' 'safetensors==0.8.0'
+          "$RUNNER_TEMP/gp350015/bin/python" -m pip check
+          "$RUNNER_TEMP/gp350015/bin/python" -m pip freeze --all > gp350-015-evidence/pip-freeze.txt
+          echo 'LiquidAI/LFM2.5-350M under LFM Open License v1.0; attribution: Liquid AI.' > gp350-015-evidence/attribution.txt
+      - name: Run frozen full LFM350 checkpoint scores and W0 rollouts
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=40s 3350s \
+            "$RUNNER_TEMP/gp350015/bin/python" experiments/driv3r/lfm_game_policy/gp350015_recovery_checkpoint_eval.py \
+              --w0 pinned-w0/experiments/agent_painter/worm/common/worm.py \
+              --source gp350-015-evidence/original-source \
+              --cache "$RUNNER_TEMP/gp350015-full-model" \
+              --out gp350-015-evidence/original-experiment --deadline 3100
+      - name: Validate fresh 2304 decisions and 36 original W0 PNGs
+        if: success()
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,os
+          from pathlib import Path
+          p=Path("gp350-015-evidence/original-experiment")
+          s=json.loads((p/"summary.json").read_text())
+          assert s["status"]=="complete" and s["source_sha"]==os.environ["GITHUB_SHA"]
+          assert s["new_optimizer_steps"]==0 and s["new_model_decisions"]==2304
+          assert s["new_heldout_probes"]==360 and s["original_pngs"]==36
+          assert s["original_source_sha"]=="b384826fca4eb6e5f315e341cd688ec8b3bd29c5"
+          assert s["original_parent_and_step72_not_rescored"] and not s["native"]
+          stages=s["fresh_checkpoint_stages"]
+          assert set(stages)=={"gp350014-step18","gp350014-step36","gp350014-step54"}
+          for stage in stages.values():
+            assert len(stage["episodes"])==12
+            assert stage["recovery"]["counts"]["positive"]==24
+            assert stage["recovery"]["counts"]["negative"]==24
+            assert stage["on_policy"]["total"]["decisions"]==768
+            for row in stage["episodes"]:
+              img=(p/row["png"]).read_bytes()
+              assert hashlib.sha256(img).hexdigest()==row["png_sha256"]
+              assert row["host_illegal"]==0
+          print("GP350015 frozen full-model and W0 checkpoint evidence PASS")
+          PY
+      - name: Always upload immutable original evidence or failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gp350-015-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            gp350-015-evidence/source-host.txt
+            gp350-015-evidence/pip-freeze.txt
+            gp350-015-evidence/attribution.txt
+            gp350-015-evidence/original-experiment/
+          if-no-files-found: warn
+          retention-days: 90
