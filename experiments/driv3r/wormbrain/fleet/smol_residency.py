@@ -174,7 +174,7 @@ def phase(args, label, concurrent):
     def spawn(i):
         lease = "%s-%s-%d" % (args.lease, label, i)
         dest = directory/lease
-        cmd = [sys.executable, __file__, "--worker", "--model-dir", str(args.model_dir),
+        cmd = [sys.executable, os.environ.get("DRIV3R_RESIDENCY_ENTRYPOINT", __file__), "--worker", "--model-dir", str(args.model_dir),
           "--w0", str(args.w0), "--out", str(dest), "--go", str(go), "--lease", lease,
           "--phase", label, "--seed", str(SEEDS[i]), "--family", FAMILIES[i]]
         log = (directory/(lease+".log")).open("w")
