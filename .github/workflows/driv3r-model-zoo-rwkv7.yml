@@ -1,0 +1,70 @@
+name: MZ-003 RWKV-7 pretrained game policy (research only)
+on:
+  push:
+    branches:
+      - 'research/model-zoo-rwkv7-mz003'
+    paths:
+      - 'experiments/driv3r/model_zoo/rwkv7/**'
+      - '.github/workflows/driv3r-model-zoo-rwkv7.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: mz003-rwkv7-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  rwkv7-cpu:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 38
+    env:
+      HF_HUB_DISABLE_TELEMETRY: '1'
+      TOKENIZERS_PARALLELISM: 'false'
+      OMP_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Game authority, goal swap, pinned-code source tests
+        run: |
+          python -m unittest -v experiments.driv3r.model_zoo.mamba130.test_world
+          python -m unittest -v experiments.driv3r.model_zoo.mamba130.test_counterfactual
+          python -m unittest -v experiments.driv3r.model_zoo.rwkv7.test_rwkv7
+      - name: Install CPU pretrained model dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install 'torch==2.5.1' --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install 'transformers==4.57.3' 'huggingface_hub==0.34.4' 'pillow==11.3.0' 'safetensors==0.5.3' 'tokenizers==0.22.1' 'accelerate==1.11.0'
+      - name: Pinned RWKV-7 pretrained forward and real paired-policy training
+        run: |
+          python -m experiments.driv3r.model_zoo.rwkv7.run \
+            --out "$RUNNER_TEMP/mz003-rwkv7" --train-seeds 14 --dev-seeds 4 \
+            --steps 9 --epochs 140 --rollout-steps 16
+      - name: Verify nonempty model, training and gallery evidence
+        run: |
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          p=Path(os.environ['RUNNER_TEMP'])/'mz003-rwkv7'
+          r=json.loads((p/'results.json').read_text())
+          assert r['source_sha']==os.environ['GITHUB_SHA']
+          assert r['revision']=='16136bb51c0cf16356f410956d38b48f249c73e1'
+          assert r['backbone_parameters']>=100_000_000
+          assert len(r['code_audit'])==3
+          assert len(r['rwkv_losses'])==140 and len(r['structured_losses'])==140
+          assert r['train_examples']>=100 and r['test_examples']>=40
+          assert r['forward_calls']>100
+          assert r['score']['rwkv']['test']['paired']['changed_target_pairs']>20
+          assert (p/'rwkv7_game_head.pt').stat().st_size>2000
+          assert (p/'rollouts.png').stat().st_size>1000
+          PY
+      - name: Retain original model research evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mz003-rwkv7-${{ github.sha }}
+          path: ${{ runner.temp }}/mz003-rwkv7/**
+          if-no-files-found: warn
+          retention-days: 14
