@@ -39,6 +39,7 @@ jobs:
           timeout 3600 make -j2 worldgen-test CXX=g++-13 2>&1 | tee build/metabolist-ci/worldgen.log
       - name: Qualify Metabolist and compare immutable parent outputs
         run: |
+          python3 tools/architecture/test_metabolist_provenance.py
           timeout 3600 python3 tools/architecture/qualify_metabolist.py --compiler g++-13 --output build/metabolist-qualification
       - name: Install pinned native-preview PNG dependency
         run: |

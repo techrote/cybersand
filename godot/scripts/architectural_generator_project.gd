@@ -200,6 +200,10 @@ static func validate_preset(preset: Variant) -> String:
 		return "This Gentek needs floor height at least 4 × wall thickness + 12 cells."
 	if preset.module == "sawtooth_gallery" and int(g.room_size)/2 < 2*int(g.wall_thickness)+4:
 		return "Sawtooth Gallery needs half-bay width at least 2 × wall thickness + 4 cells."
+	if preset.module == "metabolist_spine" and int(g.room_size) < 6*int(g.wall_thickness)+24:
+		return "Metabolist Spine needs room size at least %d cells at this wall thickness for rooted attachments." % (6*int(g.wall_thickness)+24)
+	if preset.module == "metabolist_spine" and int(g.floor_height) < 6*int(g.wall_thickness)+28:
+		return "Metabolist Spine needs floor height at least %d cells at this wall thickness for rooted attachments." % (6*int(g.wall_thickness)+28)
 	error = _keys(preset.materials,["wall","floor","window"],["wall","floor","window"],"Style materials")
 	if not error.is_empty(): return error
 	for key: String in preset.materials:

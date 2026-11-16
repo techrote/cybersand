@@ -46,9 +46,11 @@ def source_inputs() -> dict[str, str]:
              for p in directory.rglob("*") if p.is_file() and p.suffix in {".hpp", ".h", ".cpp", ".inc"}}
     paths.update([ROOT / EXPORTER, Path(__file__).resolve(), ROOT / PALETTE])
     for name in ("godot/scripts/architectural_generator_project.gd",
+                 "godot/native_extension/cyber_world_generator.cpp",
                  "examples/worldgen/architectural/metabolist-spine.style.json",
                  "tools/architecture/requirements-render-linux.txt",
-                 "tools/architecture/qualify_metabolist.py", "Makefile",
+                 "tools/architecture/qualify_metabolist.py",
+                 "tools/architecture/test_metabolist_provenance.py", "Makefile",
                  "native/tests/test_metabolist_spine.cpp", "native/tests/test_world_generation.cpp",
                  "godot/tests/test_architectural_generator.gd",
                  "godot/tests/test_architectural_project_contract.gd",
@@ -249,10 +251,12 @@ def main() -> None:
     args = parser.parse_args()
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=True)
+    source_head = git("rev-parse", "HEAD")
+    source_tree = git("rev-parse", "HEAD^{tree}")
     inputs = source_inputs()
     changed = []
     for path, actual in inputs.items():
-        tracked = subprocess.run(["git", "show", "HEAD:" + path], cwd=ROOT, capture_output=True)
+        tracked = subprocess.run(["git", "show", source_head + ":" + path], cwd=ROOT, capture_output=True)
         if tracked.returncode or sha(tracked.stdout) != actual:
             changed.append(path)
     if args.require_clean_source and changed:
@@ -275,9 +279,10 @@ def main() -> None:
             overview(output, cases[36:46], "contact-controls"),
             overview(output, [cases[-3],cases[-2],cases[-1],cases[1]], "contact-comparisons"),
             *details(output)])
-    if source_inputs() != inputs:
-        raise RuntimeError("source changed during rendering; discard this campaign and rerun")
-    source = {"commit": git("rev-parse", "HEAD"), "tree": git("rev-parse", "HEAD^{tree}"),
+    if (source_inputs() != inputs or git("rev-parse", "HEAD") != source_head or
+            git("rev-parse", "HEAD^{tree}") != source_tree):
+        raise RuntimeError("source inputs, HEAD or tree changed during rendering; discard this campaign and rerun")
+    source = {"commit": source_head, "tree": source_tree,
               "parent_commit": PARENT, "input_sha256": digest_ledger(inputs), "inputs": inputs,
               "uncommitted_source_paths": changed}
     manifest = {"schema": "cybersand.metabolist-spine-evidence-v1", "created_utc": datetime.now(timezone.utc).isoformat(),

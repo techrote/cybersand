@@ -43,6 +43,33 @@ def save(path: Path, data: dict) -> None:
     path.write_text(json.dumps(data, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
+def source_identity(root: Path) -> dict:
+    """Bind all consumed source bytes to a clean immutable Git commit."""
+    paths = sorted({*SOURCES, TEST, "Makefile", "tools/architecture/qualify_metabolist.py",
+                    *(str(path.relative_to(root)) for path in (root / "native/include").rglob("*.hpp")),
+                    *(str(path.relative_to(root)) for path in (root / "native/include").rglob("*.h")),
+                    *(str(path.relative_to(root)) for path in (root / "native/src").glob("*.inc"))})
+    head = run(["git", "rev-parse", "HEAD"], root).strip()
+    tree = run(["git", "rev-parse", "HEAD^{tree}"], root).strip()
+    dirty = run(["git", "status", "--porcelain", "--untracked-files=all", "--", *paths], root)
+    if dirty:
+        raise RuntimeError("qualification requires committed clean source inputs:\n" + dirty)
+    inputs = {path: digest((root / path).read_bytes()) for path in paths}
+    # Compare actual bytes too: status alone may be defeated by cached stat data
+    # or assume-unchanged flags. Every source input must exist in this exact HEAD.
+    for path, actual in inputs.items():
+        committed = subprocess.run(["git", "show", head + ":" + path], cwd=root,
+                                   capture_output=True, check=False, timeout=30)
+        if committed.returncode or digest(committed.stdout) != actual:
+            raise RuntimeError("source input does not match HEAD: " + path)
+    return {"commit": head, "tree": tree, "inputs": inputs}
+
+
+def require_unchanged_source(root: Path, before: dict) -> None:
+    if source_identity(root) != before:
+        raise RuntimeError("source inputs, HEAD or tree changed during qualification; discard and rerun")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--compiler", default="g++")
@@ -56,9 +83,12 @@ def main() -> None:
     parent_sha = run(["git", "rev-parse", f"{args.parent_ref}^{{commit}}"], root).strip()
     if not re.fullmatch(r"[0-9a-f]{40}", args.parent_ref) or parent_sha != args.parent_ref:
         raise ValueError("--parent-ref must be an immutable full 40-character commit SHA")
-    source_sha = run(["git", "rev-parse", "HEAD"], root).strip()
+    source_before = source_identity(root)
+    source_sha = source_before["commit"]
     compiler_version = run([args.compiler, "--version"], root).splitlines()[0]
-    run(["make", "-j2", "build/test_metabolist_spine", f"CXX={args.compiler}"], root)
+    # Rebuild consumed objects even when mtimes are unchanged: a cached make
+    # target cannot attest which compiler or flags produced its existing bytes.
+    run(["make", "-B", "-j2", "build/test_metabolist_spine", f"CXX={args.compiler}"], root)
     candidate = root / "build/test_metabolist_spine"
     native = json.loads(run([str(candidate)], root))
     save(output / "native-tests.json", native)
@@ -129,13 +159,10 @@ def main() -> None:
     if not args.skip_benchmark:
         benchmark = json.loads(run([str(candidate), "--benchmark"], root))
         save(output / "benchmark.json", benchmark)
-    input_paths = sorted({*SOURCES, TEST, "Makefile", str(Path(__file__).relative_to(root)),
-                          *(str(path.relative_to(root)) for path in (root / "native/include").rglob("*.hpp")),
-                          *(str(path.relative_to(root)) for path in (root / "native/include").rglob("*.h")),
-                          *(str(path.relative_to(root)) for path in (root / "native/src").glob("*.inc"))})
-    source_inputs = {path: digest((root / path).read_bytes()) for path in input_paths}
-    tracked_status = run(["git", "status", "--porcelain", "--untracked-files=all", "--", *input_paths], root)
-    report = {"status": "pass", "source_commit": source_sha, "source_inputs_dirty": bool(tracked_status),
+    require_unchanged_source(root, source_before)
+    source_inputs = source_before["inputs"]
+    report = {"status": "pass", "source_commit": source_sha, "source_tree": source_before["tree"], "source_inputs_dirty": False,
+              "source_identity_checked_before_and_after": True,
               "source_inputs_sha256": source_inputs, "parent_source": parent_sha,
               "compiler": compiler_version, "platform": platform.platform(),
               "candidate_binary_sha256": digest(candidate.read_bytes()),
