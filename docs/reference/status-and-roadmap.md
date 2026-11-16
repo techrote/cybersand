@@ -22,8 +22,11 @@ final CI/artifact ledger is on PR609; software-renderer tests cannot grant
 physical Windows11 NVIDIA acceptance. Preserve the Draft/HOLD owner gate.
 Independent staging ring3 shortens upload calls, but source e519's frame markers
 show much of the delay later in the frame and physical tails remain unqualified.
-The controlled spare-target successor preserves two visible histories and keeps
-two physical targets as its default; it is not an accepted performance remedy.
+The controlled third-target source `6656f436b38a` worsens p99/max physics gaps in
+both run orders. It is rejected and removed from the delivery candidate. The
+smaller two-history/ring3 design retains the manual-update repair, early physical
+mailbox and ordinary live-erasing qualification. Exact-source engineering gates
+and the owner's physical performance gate remain distinct; see PR609's ledger.
 
 ## Coherent Workbench evaluation — 2026-11-15
 

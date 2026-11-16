@@ -220,17 +220,28 @@ jobs:
         timeout-minutes: 45
         run: |
           $ErrorActionPreference = 'Stop'
-          $env:CYBERSAND_TEST_IT_NO_PAUSE = '1'
           $command = [System.Diagnostics.ProcessStartInfo]::new()
           $command.FileName = $env:ComSpec
           $quick = if ($env:CYBERSAND_REPORT_ONLY -eq 'true') { ' -Quick' } else { '' }
           $command.Arguments = '/d /s /c ""C:\cscoherence\Test It.cmd"'+$quick+' -RenderingDriver opengl3_angle -TimeoutSeconds 900"'
           $command.UseShellExecute = $false
           $command.WorkingDirectory = 'C:\cscoherence'
+          $command.EnvironmentVariables['CYBERSAND_TEST_IT_NO_PAUSE'] = '1'
+          $inheritedSelectors = @{CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS='1';CYBERSAND_DIAG_MATERIAL_HISTORY_TARGETS='3';CYBERSAND_DIAG_MATERIAL_COPY_MODE='tiles';CYBERSAND_DIAG_COMMON_OBSERVER='1'}
+          $callerSelectors = @{}
+          foreach ($key in $inheritedSelectors.Keys) {
+            $callerSelectors[$key] = [Environment]::GetEnvironmentVariable($key,'Process')
+            $command.EnvironmentVariables[$key] = $inheritedSelectors[$key]
+          }
+          New-Item -ItemType Directory -Path 'evidence/test-it-selector-probe' -Force | Out-Null
+          @{injected_child_environment=$inheritedSelectors;caller_environment=$callerSelectors;scope='Actual Test It.cmd and Windows PowerShell5.1; overrides are child-scoped'} | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath 'evidence/test-it-selector-probe/request.json' -Encoding UTF8
           $process = [System.Diagnostics.Process]::Start($command)
           $process.WaitForExit()
           $code = $process.ExitCode
           $process.Dispose()
+          foreach ($key in $inheritedSelectors.Keys) {
+            if (-not [object]::Equals([Environment]::GetEnvironmentVariable($key,'Process'),$callerSelectors[$key])) { throw ('Test It gate changed its caller environment: '+$key) }
+          }
           if ($code -ne 0) { throw ('Actual Test It.cmd failed: '+$code) }
           $files = @(Get-ChildItem 'C:\cscoherence\Test-It-Results' -Recurse -Filter summary.json)
           if ($files.Count -ne 1) { throw 'Expected one complete Test It summary' }
@@ -238,6 +249,30 @@ jobs:
           $expectedCases = if ($env:CYBERSAND_REPORT_ONLY -eq 'true') { 2 } else { 4 }
           $expectedPairs = if ($env:CYBERSAND_REPORT_ONLY -eq 'true') { 1 } else { 2 }
           if (-not $result.complete -or $result.status -ne 'passed' -or $result.source -ne $env:GITHUB_SHA -or @($result.cases).Count -ne $expectedCases -or @($result.pairs).Count -ne $expectedPairs) { throw 'Incomplete source-matched comparison' }
+          function Assert-PublicationSelectorReceipt($row,[string]$caseDirectory) {
+            $case = Get-Content -LiteralPath (Join-Path $caseDirectory 'case.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+            if (-not [string]::IsNullOrEmpty([string]$case.material_staging_slots) -or -not [string]::IsNullOrEmpty([string]$case.material_history_targets) -or -not [string]::IsNullOrEmpty([string]$case.material_copy_mode) -or $case.common_observer -ne '0') { throw ('Test It retained inherited probe settings: '+$row.name) }
+            $records = @(Get-Content -LiteralPath (Join-Path $caseDirectory 'receipt-poses.jsonl') -Encoding UTF8 | Where-Object { $_ -ne '' } | ForEach-Object { ConvertFrom-Json -InputObject $_ })
+            $callbacks = @($records | Where-Object { $_.type -eq 'event' -and $_.event -eq 'main_callback' }).Count
+            $mailboxes = @($records | Where-Object { $_.type -eq 'event' -and $_.event -eq 'physics_publication' }).Count
+            if ($callbacks -lt 1 -or $mailboxes -lt 1 -or $row.statistics.event_counts.main_callback -ne $callbacks -or $row.statistics.event_counts.physics_publication -ne $mailboxes) { throw ('Detailed actual callback/mailbox evidence is absent or inconsistent: '+$row.name) }
+            $uploads = @($records | Where-Object { $_.type -eq 'event' -and $_.event -eq 'texture_upload' } | ForEach-Object { $_.material_publication })
+            if ($uploads.Count -lt 1) { throw ('No actual material publication evidence: '+$row.name) }
+            if (-not $row.condition.EndsWith('-candidate') -and -not $row.condition.EndsWith('-control')) { throw ('Unknown actual publication arm: '+$row.condition) }
+            $expectedBackend = if ($row.condition.EndsWith('-candidate')) { 'blit' } else { 'full' }
+            foreach ($publication in $uploads) {
+              if ($null -eq $publication -or $publication.backend -ne $expectedBackend) { throw ('Material backend changed in actual capture: '+$row.name) }
+              if ($expectedBackend -eq 'blit' -and ($publication.staging_slots -ne 3 -or $publication.copy_mode -ne 'runs')) { throw ('Actual material upload retained inherited probe settings: '+$row.name) }
+            }
+            $observedSlots = @(); $observedCopyModes = @()
+            if ($expectedBackend -eq 'blit') { $observedSlots = @($uploads | ForEach-Object { $_.staging_slots } | Sort-Object -Unique); $observedCopyModes = @($uploads | ForEach-Object { $_.copy_mode } | Sort-Object -Unique) }
+            return @{name=$row.name;main_callbacks=$callbacks;physics_mailboxes=$mailboxes;actual_uploads=$uploads.Count;backend=$expectedBackend;staging_slots=$observedSlots;copy_modes=$observedCopyModes;trace_sha256=$row.trace_sha256;case_sha256=$row.case_sha256}
+          }
+          $selectorRows = @()
+          foreach ($row in $result.cases) {
+            $selectorRows += Assert-PublicationSelectorReceipt $row (Join-Path $files[0].Directory.FullName ('cases/'+$row.name))
+            @{source=$result.source;injected_child_environment=$inheritedSelectors;caller_environment_unchanged=$true;cases=$selectorRows} | ConvertTo-Json -Depth 10 | Set-Content -LiteralPath 'evidence/test-it-selector-probe/actual-receipts.json' -Encoding UTF8
+          }
           python tools/ci/test_test_it_physics_reducer.py --powershell powershell.exe --test-it C:/cscoherence/Run-Test-It.ps1 --evidence-root $files[0].Directory.FullName --output evidence/report-reducer/new-captures --require-windows-powershell51
           if ($LASTEXITCODE -ne 0) { throw 'New installed capture reduction mismatch' }
           Write-Host ('COHERENCE_TEST_IT_PASS '+(@{source=$result.source;cases=@($result.cases).Count;pairs=@($result.pairs).Count;physical_acceptance=$result.physical_acceptance}|ConvertTo-Json -Compress))

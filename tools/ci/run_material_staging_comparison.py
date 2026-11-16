@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
-"""Same-source Windows material publication probes with fixed physical inputs.
+"""Same-source, eight-arm Windows independent-array staging ring probe.
 
 Full and one/two/three independent one-layer array rings run in forward/reverse order.
 Row coalescing is held constant across ring arms; runs versus tiles is not isolated.
---history-comparison instead runs full/two/three history targets in forward and
-reverse order, holding the three staging resources and coalesced copies constant.
 The primary comparison is exactly completed physical steps 1..144; every raw
 completion and whole-capture tail is retained. Functional completion is not a
 performance pass or physical Windows 11/NVIDIA acceptance.
@@ -39,7 +37,6 @@ HARNESS = (
     ".github/workflows/material-staging-probe.yml",
 )
 ORDER = ("full", "ring1", "ring2", "ring3", "ring3", "ring2", "ring1", "full")
-HISTORY_ORDER = ("full", "history2", "history3", "history3", "history2", "full")
 REQUIRED_STEPS = 144
 MINIMUM_COALESCED_PUBLICATIONS = 4
 ENVIRONMENT = {
@@ -125,65 +122,7 @@ def validate_copy_metrics(p, copy_mode="runs"):
     return {"sparse": not whole, "coalesced": not whole and runs < updated}
 
 
-def validate_history_publications(uploads, targets, staging_rids):
-    """Validate committed roles, including zero-transfer commits, from Main.
-
-    This checks bounded ownership/rotation evidence; exact GPU material histories
-    are qualified separately by the real graphical transaction and byte gates.
-    """
-    need(targets in (2, 3), "Unsupported history target treatment")
-    previous, owned = None, None
-    counts, records = Counter(), []
-    initialized = False
-    for event in uploads:
-        p = event["material_publication"]
-        need(integer(p.get("history_targets")) and p["history_targets"] == targets,
-             "Actual history target count differs from the requested treatment")
-        expected = {"history_storage_bytes": targets * 2048 ** 2 * 4,
-                    "maximum_history_cache_bytes": targets * 256 * 128 ** 2 * 2}
-        need(all(integer(p.get(key)) and p[key] == value for key, value in expected.items()),
-             "History storage/cache bound differs from the fixed RG8 World")
-        names = ("current_texture_rid", "previous_texture_rid", "spare_texture_rid", "history_target_rid")
-        need(all(integer(p.get(key)) for key in names), "Missing or invalid actual history resource identity")
-        current, previous_rid, spare, target = (int(p[key]) for key in names)
-        roles = (current, previous_rid, spare)
-        active = {current, previous_rid} | ({spare} if targets == 3 else set())
-        need(current > 0 and previous_rid > 0 and (spare > 0 if targets == 3 else spare == 0)
-             and len(active) == targets, "Visible/spare history resources are missing or aliased")
-        need(not active & staging_rids, "History target aliases a staging resource")
-        need(target in active, "Prepared destination is outside the owned history resources")
-        need(owned is None or owned == active, "History resource allocation changed in a fixed World")
-        owned = active
-        if p.get("initialization", False):
-            need(not initialized and not records, "Unexpected history reinitialization in the fixed workload")
-            initialized, previous = True, roles
-            continue
-        need(target == current, "Committed current history is not the prepared destination")
-        if previous is not None:
-            expected_roles = ((previous[1], previous[0], 0) if targets == 2
-                              else (previous[2], previous[0], previous[1]))
-            need(roles == expected_roles, "History roles do not rotate exactly once per publication")
-        need(integer(p.get("candidate_tiles")) and integer(p.get("updated_tiles"))
-             and 0 <= p["updated_tiles"] <= p["candidate_tiles"] <= 256,
-             "Invalid actual dirty-union comparison/updated tile counts")
-        previous = roles
-        counts[current] += 1
-        records.append({"render_serial": event.get("render_serial"), "native_tick": event.get("native_tick"),
-                        "completed_usec": event_time(event), "history_targets": targets,
-                        **{name: p[name] for name in names}, "candidate_tiles": p["candidate_tiles"],
-                        "updated_tiles": p["updated_tiles"], "atlas_capacity": p["atlas_capacity"],
-                        "submitted_bytes": p["submitted_bytes"], "no_change": p["submitted_bytes"] == 0})
-    need(len(counts) == targets and min(counts.values()) >= 2,
-         "Every owned history target must recur at least twice")
-    return {"history_targets": targets, "owned_resource_rids": sorted(owned),
-            "target_commit_counts": {str(key): value for key, value in sorted(counts.items())},
-            "history_storage_bytes": targets * 2048 ** 2 * 4,
-            "maximum_history_cache_bytes": targets * 256 * 128 ** 2 * 2,
-            "cache_meaning": "Declared maximum cached tile payload, not measured process memory",
-            "ordinary_commit_records": records}
-
-
-def validate_publications(events, backend, slots, history_targets=None):
+def validate_publications(events, backend, slots):
     uploads = [e for e in events if e.get("event") == "texture_upload"]
     need(bool(uploads), "No material publications were observed")
     generations = {e.get("world_generation") for e in uploads}
@@ -209,7 +148,7 @@ def validate_publications(events, backend, slots, history_targets=None):
         slot, layer, rid, capacity, submitted = (p[k] for k in identity_keys)
         need(all(integer(v) for v in (slot, layer, rid, capacity, submitted)) and submitted >= 0,
              "Invalid staging resource or byte counters")
-        expected_payload = (history_targets or 2) * 16777216 + 5 + 11173888 * slots
+        expected_payload = 33554437 + 11173888 * slots
         need(integer(p.get("allocated_gpu_bytes")) and p["allocated_gpu_bytes"] == expected_payload,
              "GPU texture payload estimate differs from the bounded 2048-square ring")
         allocation.add(p["allocated_gpu_bytes"])
@@ -254,10 +193,7 @@ def validate_publications(events, backend, slots, history_targets=None):
         need(len(allocation) == 1, "GPU allocation estimate changes within fixed staging workload")
         need(any(count >= max(4, slots * 2) for count in counts.values()), "Insufficient repeated staging reuse")
         need(coalesced >= MINIMUM_COALESCED_PUBLICATIONS, "Fewer than four ordinary sparse publications exercised coalescing")
-    history = (validate_history_publications(uploads, history_targets, set(reverse))
-               if backend == "blit" and history_targets is not None else None)
     return {"backend": backend, "staging_backend": "texture2d_array" if backend == "blit" else None,
-            "history": history,
             "staging_slots": slots, "staging_resource_layers": 1 if backend == "blit" else None,
             "copy_mode": "runs" if backend == "blit" else None,
             "upload_events": len(uploads), "world_generation": next(iter(generations)),
@@ -268,18 +204,6 @@ def validate_publications(events, backend, slots, history_targets=None):
                                  "staging_layer": 0, "staging_resource_layers": 1, "staging_resource_rid": value}
                                 for key, value in sorted(resources.items())],
             "ordinary_upload_records": records}
-
-
-def publication_work_statistics(events):
-    rows = [e["material_publication"] for e in events if e.get("event") == "texture_upload"
-            and e.get("material_publication", {}).get("backend") == "blit"
-            and not e["material_publication"].get("initialization", False)]
-    keys = ("candidate_tiles", "updated_tiles", "atlas_capacity", "submitted_bytes", "blit_pixels", "copy_run_count")
-    return {"ordinary_commits_including_noops": len(rows),
-            "history_targets": dict(Counter(p.get("history_targets") for p in rows)),
-            "actual_work": {key: {"distribution": distribution([p[key] for p in rows]),
-                                   "total": sum(p[key] for p in rows)} for key in keys},
-            "meaning": "Actual dirty-union and copy work, including zero-transfer commits. Extra work for a third history target is retained, not normalized away."}
 
 
 def copy_statistics(events):
@@ -324,88 +248,10 @@ def staging_statistics(events):
                        "Only initialization=true is excluded from these steady staging groups; physical/frame tails exclude no stalls."}
 
 
-def existing_marker_spans(events, maximum_step=None):
-    """Associate existing clocks without interpreting wall spans as GPU/CPU work."""
-    steps = sorted((e for e in events if e.get("event") == "rapier_step"
-                    and (maximum_step is None or 1 <= e["step"] <= maximum_step)), key=lambda e: e["step"])
-    need(bool(steps), "No completed physical steps for existing-marker joins")
-    begin, end = event_time(steps[0]), event_time(steps[-1])
-
-    def unique(kind, key):
-        rows = [e for e in events if e.get("event") == kind]
-        result = {key(e): e for e in rows}
-        need(len(result) == len(rows), "Duplicate " + kind + " identity prevents an unambiguous marker join")
-        return result
-
-    callbacks = unique("main_callback", lambda e: e["process_frame"])
-    draws = unique("framebuffer_draw", lambda e: e["process_frame"])
-    selected = {key: row for key, row in callbacks.items()
-                if maximum_step is None or begin <= event_time(row) <= end}
-    frame_rows, outside, boundary_censored = [], [], 0
-    for key, callback in sorted(selected.items()):
-        draw = draws.get(key)
-        if draw is None or (maximum_step is not None and not begin <= event_time(draw) <= end):
-            boundary_censored += 1
-            continue
-        elapsed = (event_time(draw) - event_time(callback)) / 1000
-        need(elapsed >= 0, "frame_post_draw precedes the same-frame Main callback end")
-        frame_rows.append({"process_frame": key, "callback_start_usec": callback["start_usec"],
-                           "callback_end_usec": event_time(callback), "frame_post_draw_usec": event_time(draw),
-                           "callback_end_to_frame_post_draw_ms": elapsed})
-    need(bool(frame_rows), "No complete same-frame Main callback to frame_post_draw joins")
-    for left, right in zip(sorted(selected), sorted(selected)[1:]):
-        if left not in draws:
-            continue
-        start, finish = event_time(draws[left]), selected[right]["start_usec"]
-        if maximum_step is not None and not begin <= start <= finish <= end:
-            continue
-        need(finish >= start, "Next Main callback starts before preceding frame_post_draw")
-        outside.append((finish - start) / 1000)
-
-    natives = unique("native_tick", lambda e: (e["world_generation"], e["tick_index"]))
-    publications = defaultdict(list)
-    for e in events:
-        if e.get("event") == "physics_publication":
-            publications[(e["world_generation"], e["tick_index"], e["body_sample"])].append(e)
-    admissions = []
-    for prior, step in zip(steps, steps[1:]):
-        key = (step["world_generation"], step["native_tick_used"])
-        need(key in natives, "Missing associated native completion for physical admission")
-        native = natives[key]
-        bodies = step.get("native_response", {}).get("bodies", [])
-        need(bool(bodies) and all(b.get("sample") == native["body_sample"] for b in bodies),
-             "Native completion and physical feedback samples differ")
-        complete = sorted((p for p in publications[(*key, native["body_sample"])]
-                           if event_time(native) <= event_time(p) <= step["start_usec"]
-                           and p["required_hard_revision"] == p["packet_hard_revision"]), key=event_time)
-        need(bool(complete), "No associated complete physical mailbox before admission")
-        used = [p for p in complete if event_time(p) == step["physics_publication_usec"]]
-        need(len(used) == 1, "Admitted mailbox timestamp is missing or ambiguous")
-        first = complete[0]
-        admissions.append({"step": step["step"], "world_generation": key[0], "native_tick": key[1],
-                           "body_sample": native["body_sample"], "native_completed_usec": event_time(native),
-                           "first_complete_mailbox_usec": event_time(first),
-                           "used_mailbox_usec": step["physics_publication_usec"], "rapier_start_usec": step["start_usec"],
-                           "physical_completion_to_next_native_start_ms": (native["start_usec"] - event_time(prior)) / 1000,
-                           "native_completed_to_first_mailbox_ms": (event_time(first) - event_time(native)) / 1000,
-                           "first_mailbox_to_admission_ms": (step["start_usec"] - event_time(first)) / 1000})
-    return {"callback_end_to_frame_post_draw_ms": distribution([r["callback_end_to_frame_post_draw_ms"] for r in frame_rows]),
-            "frame_post_draw_to_next_callback_start_ms": distribution(outside),
-            "frame_join_rows": frame_rows, "boundary_censored_frame_joins": boundary_censored,
-            "admission_spans_ms": {key: distribution([r[key] for r in admissions]) for key in
-                                   ("physical_completion_to_next_native_start_ms", "native_completed_to_first_mailbox_ms", "first_mailbox_to_admission_ms")},
-            "admission_rows": admissions,
-            "meaning": "Existing same-process-frame markers and exact World/tick/sample associations. Wall intervals include other callbacks, backend waits and OS scheduling; neither frame_post_draw nor mailbox timestamp is a GPU fence. Mailbox time is just before assignment/unlock. Step 1 bootstrap is excluded from admission joins; prefix frame joins must fit wholly between completions 1 and 144."}
-
-
 def timed_reduction(trace, maximum_step=None):
     reduced, states = reduction(trace, maximum_step)
     header, frames, footer = read_trace(trace)
     events = footer["_events"]
-    reduced["existing_marker_spans"] = existing_marker_spans(events, maximum_step)
-    recorded_steps = [e["step"] for e in events if e.get("event") == "rapier_step"]
-    reduced["recorded_physics_steps_total"] = len(recorded_steps)
-    reduced["extra_physics_steps_after_144"] = [step for step in recorded_steps if step > REQUIRED_STEPS]
     if maximum_step is not None:
         steps = [e for e in events if e.get("event") == "rapier_step" and 1 <= int(e["step"]) <= maximum_step]
         need(len(steps) == maximum_step, "Missing exact 1..144 physical comparison prefix")
@@ -418,7 +264,6 @@ def timed_reduction(trace, maximum_step=None):
     reduced["event_counts"] = dict(Counter(e.get("event", "unknown") for e in events))
     reduced["staging"] = staging_statistics(events)
     reduced["copy_coalescing"] = copy_statistics(events)
-    reduced["publication_work"] = publication_work_statistics(events)
     need(reduced["main_callback_elapsed_ms"]["count"] > 0, "Full common observer did not record Main callback durations")
     need(not any(reduced["observer_drops"].values()), "Observer overflow invalidates staging comparison")
     return reduced, states, header, events
@@ -457,19 +302,13 @@ def main():
     parser.add_argument("--source-sha", required=True)
     parser.add_argument("--rendering-driver", choices=["opengl3", "opengl3_angle"], default="opengl3_angle")
     parser.add_argument("--timeout", type=int, default=900)
-    parser.add_argument("--history-comparison", action="store_true",
-                        help="Compare two/three history targets with three staging slots and identical copy policy")
     args = parser.parse_args()
-    order = HISTORY_ORDER if args.history_comparison else ORDER
     args.project, args.evidence, args.godot = (p.resolve() for p in (args.project, args.evidence, args.godot))
     need(not args.evidence.exists(), "Use a fresh evidence directory; failed attempts must remain intact")
     args.evidence.mkdir(parents=True)
     output = args.evidence / "summary.json"
-    report = {"schema": "material-history-target-comparison-v1" if args.history_comparison else "material-independent-array-ring-comparison-v1",
-              "source": args.source_sha, "history_comparison": args.history_comparison,
-              "order": list(order), "required_physical_prefix": [1, REQUIRED_STEPS],
-              "treatment": ("Two versus three owned history targets; independent staging slots fixed at three; same transaction code"
-                            if args.history_comparison else "One/two/three independent staging slots; history targets fixed at two"),
+    report = {"schema": "material-independent-array-ring-comparison-v1", "source": args.source_sha,
+              "order": list(ORDER), "required_physical_prefix": [1, REQUIRED_STEPS],
               "copy_mode_timing_scope": "runs held constant across ring arms; tiles control appears only in the GPU correctness gate",
               "minimum_ordinary_coalesced_publications": MINIMUM_COALESCED_PUBLICATIONS,
               "copy_coverage_gate_meaning": "Feature exercise only; failure retains raw evidence as unexercised coverage and does not justify changing the fixed workload",
@@ -508,20 +347,15 @@ def main():
         report["condition_sha256"] = sha(conditions_path)
         states_by_arm, common_host = {}, None
         with environment(ENVIRONMENT):
-            for index, arm in enumerate(order):
+            for index, arm in enumerate(ORDER):
                 need(fingerprint(args.project, args.godot, report["runtimes"]) == before, "Source/runtime/harness changed before arm")
-                backend = "full" if arm == "full" else "blit"
-                slots = 3 if args.history_comparison else (1 if arm == "full" else int(arm[-1]))
-                history_targets = int(arm[-1]) if args.history_comparison and arm != "full" else 2
+                backend, slots = ("full", None) if arm == "full" else ("blit", int(arm[-1]))
                 arm_env = {"CYBERSAND_MATERIAL_PUBLICATION": backend,
-                           "CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS": str(slots),
-                           "CYBERSAND_DIAG_MATERIAL_HISTORY_TARGETS": str(history_targets)}
+                           "CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS": str(slots or 1)}
                 directory = args.evidence / f"{index}-{arm}"
                 trace = directory / "cases/interactive-follow-coherent/receipt-poses.jsonl"
                 receipt_path = trace.with_name("receipt.json")
-                row = {"order": index, "arm": arm, "backend": backend,
-                       "staging_slots": slots if backend == "blit" else None,
-                       "history_targets": history_targets if backend == "blit" else None,
+                row = {"order": index, "arm": arm, "backend": backend, "staging_slots": slots,
                        "environment": {**ENVIRONMENT, **arm_env}, "status": "running", "trace": str(trace)}
                 report["cases"].append(row)
                 write(output, report)
@@ -534,19 +368,16 @@ def main():
                     need(receipt["physics_publication"] == "early", "Arm did not use actual early physical publication")
                     final = receipt["material_publication"]
                     need(final.get("backend") == backend and not final.get("fallback_reason"), "Final material mode readback differs")
-                    if backend == "blit":
+                    if slots is not None:
                         need(final.get("staging_slots") == slots, "Final staging slot readback differs")
                         need(final.get("staging_backend") == "texture2d_array", "Final staging resource kind differs")
                         need(final.get("staging_resource_layers") == 1 and final.get("copy_mode") == "runs",
                              "Final ring resource or copy mode differs")
-                        need(final.get("history_targets") == history_targets, "Final actual history target count differs")
                     row["whole_capture"], _, header, events = timed_reduction(trace)
                     need(header.get("settings", {}).get("source_commit") == args.source_sha, "Trace source identity differs")
-                    row["publication_validation"] = validate_publications(
-                        events, backend, slots if backend == "blit" else None,
-                        history_targets if backend == "blit" else None)
+                    row["publication_validation"] = validate_publications(events, backend, slots)
                     row["matched_144"], states, _, _ = timed_reduction(trace, REQUIRED_STEPS)
-                    if backend == "blit":
+                    if slots is not None:
                         need(row["matched_144"]["copy_coalescing"]["coalescing_exercised"],
                              "Coalescing was not repeatedly exercised inside the exact physical comparison prefix")
                     equality = exact_common_states(states, states, required_steps=REQUIRED_STEPS)
@@ -571,12 +402,11 @@ def main():
                 report["physical_comparisons"].append({"left_order": left, "right_order": right, **equality})
                 if not equality["exact"]:
                     report["failures"].append({"physical_comparison": [left, right], "error": "Physical state or feedback/terrain associations differ"})
-        halves = ((0, 1, 2), (5, 4, 3)) if args.history_comparison else ((0, 1, 2, 3), (7, 6, 5, 4))
-        for indices in halves:
+        for indices in ((0, 1, 2, 3), (7, 6, 5, 4)):
             for left, right in combinations(indices, 2):
                 if all(report["cases"][i]["status"] == "passed" for i in (left, right)):
                     report["contrasts"].append(contrast(report["cases"][left], report["cases"][right]))
-        report["complete"] = len(report["cases"]) == len(order) and all(row["status"] == "passed" for row in report["cases"]) and not report["failures"]
+        report["complete"] = len(report["cases"]) == len(ORDER) and all(row["status"] == "passed" for row in report["cases"]) and not report["failures"]
     except (RuntimeError, OSError, ValueError, KeyError, TypeError, StopIteration, subprocess.SubprocessError) as error:
         report["failures"].append({"scope": "campaign", "error": str(error)})
     finally:
@@ -611,7 +441,7 @@ def self_test():
                     "staging_backend": "texture2d_array", "staging_layer": 0 if capacity else -1,
                     "staging_resource_layers": 1, "staging_slot": slot, "staging_resource_rid": rid,
                     "atlas_capacity": capacity, "submitted_bytes": capacity * 128 * 128 * 2,
-                    "tile_side": 128, "tile_count": 256, "updated_tiles": updated, "candidate_tiles": updated,
+                    "tile_side": 128, "tile_count": 256, "updated_tiles": updated,
                     "logical_source_format": "RG8", "allocated_gpu_bytes": 33554437 + 11173888 * slots,
                     "staging_upload_usec": 10, "initialization": initialization,
                     "copy_mode": "runs", "copy_destinations": 2 if initialization else 1,
@@ -620,24 +450,6 @@ def self_test():
                     "blit_pixels": pixels, "uncoalesced_blit_pixels": pixels,
                     "estimated_target_write_bytes": 4 * pixels, "retirement_blit_calls": int(capacity > 0),
                     "estimated_retirement_write_bytes": 4 * int(capacity > 0)}}
-
-    def history_events(targets, *, noop=False, larger_union=False):
-        rows, roles, stage_turn = [], (1001, 1002, 1003 if targets == 3 else 0), 0
-        for index in range(9):
-            is_noop = noop and index == 3
-            capacity = 0 if is_noop else (64 if larger_union else 16)
-            row = event(-1 if is_noop else stage_turn % 3,
-                        0 if is_noop else 11 + stage_turn % 3, slots=3, capacity=capacity)
-            stage_turn += int(not is_noop)
-            roles = (roles[1], roles[0], 0) if targets == 2 else (roles[2], roles[0], roles[1])
-            row["material_publication"].update(
-                history_targets=targets, history_storage_bytes=targets * 2048 ** 2 * 4,
-                maximum_history_cache_bytes=targets * 256 * 128 ** 2 * 2,
-                allocated_gpu_bytes=targets * 16777216 + 5 + 11173888 * 3,
-                current_texture_rid=roles[0], previous_texture_rid=roles[1], spare_texture_rid=roles[2],
-                history_target_rid=roles[0])
-            rows.append(row)
-        return rows
 
     class EvidenceGuards(unittest.TestCase):
         def valid(self):
@@ -695,66 +507,6 @@ def self_test():
             rows[0]["material_publication"].update(copy_run_count=5, gpu_blit_calls=5, coalesced_gpu_blit_calls_saved=0)
             with self.assertRaisesRegex(RuntimeError, "Fewer than four"):
                 validate_publications(rows, "blit", 2)
-
-        def test_two_and_three_history_targets_rotate_including_noop(self):
-            for targets, payload in ((2, 67076101), (3, 83853317)):
-                with self.subTest(targets=targets):
-                    result = validate_publications(history_events(targets, noop=True), "blit", 3, targets)
-                    self.assertEqual(result["allocated_gpu_bytes"], [payload])
-                    self.assertEqual(len(result["history"]["owned_resource_rids"]), targets)
-                    self.assertEqual(len(result["history"]["ordinary_commit_records"]), 9)
-                    self.assertEqual(result["no_change_events"], 1)
-
-        def test_actual_extra_dirty_union_work_is_preserved(self):
-            small, larger = history_events(2), history_events(3, larger_union=True)
-            validate_publications(small, "blit", 3, 2)
-            validate_publications(larger, "blit", 3, 3)
-            before, after = (publication_work_statistics(rows) for rows in (small, larger))
-            self.assertGreater(after["actual_work"]["updated_tiles"]["total"], before["actual_work"]["updated_tiles"]["total"])
-            self.assertGreater(after["actual_work"]["submitted_bytes"]["total"], before["actual_work"]["submitted_bytes"]["total"])
-
-        def test_malformed_history_treatments_are_refused(self):
-            mutations = [
-                ("missing history count", lambda rows: rows[0]["material_publication"].pop("history_targets")),
-                ("wrong history count", lambda rows: rows[0]["material_publication"].update(history_targets=2)),
-                ("missing spare", lambda rows: rows[0]["material_publication"].pop("spare_texture_rid")),
-                ("aliased visible roles", lambda rows: rows[0]["material_publication"].update(previous_texture_rid=1003)),
-                ("aliased stage", lambda rows: rows[0]["material_publication"].update(spare_texture_rid=11)),
-                ("wrong prepared destination", lambda rows: rows[0]["material_publication"].update(history_target_rid=1001)),
-                ("wrong storage payload", lambda rows: rows[0]["material_publication"].update(history_storage_bytes=1)),
-                ("wrong cache bound", lambda rows: rows[0]["material_publication"].update(maximum_history_cache_bytes=1)),
-                ("hidden allocation", lambda rows: rows[1]["material_publication"].update(spare_texture_rid=2000)),
-                ("roles do not rotate", lambda rows: rows[1]["material_publication"].update(current_texture_rid=1003, previous_texture_rid=1001, spare_texture_rid=1002, history_target_rid=1003)),
-                ("noop does not rotate", lambda rows: rows[3]["material_publication"].update(current_texture_rid=1001, previous_texture_rid=1002, spare_texture_rid=1003, history_target_rid=1001)),
-                ("invalid dirty union", lambda rows: rows[0]["material_publication"].update(candidate_tiles=0)),
-            ]
-            for name, mutate in mutations:
-                with self.subTest(name=name):
-                    rows = history_events(3, noop=True)
-                    mutate(rows)
-                    with self.assertRaises(RuntimeError):
-                        validate_publications(rows, "blit", 3, 3)
-            rows = history_events(2)
-            rows[0]["material_publication"]["spare_texture_rid"] = 1003
-            with self.assertRaises(RuntimeError):
-                validate_publications(rows, "blit", 3, 2)
-
-        def test_existing_markers_require_actual_same_frame_draws(self):
-            events = [
-                {"event": "rapier_step", "step": 1, "time_usec": 100},
-                {"event": "native_tick", "world_generation": 3, "tick_index": 1,
-                 "body_sample": 2, "time_usec": 120, "start_usec": 110},
-                {"event": "physics_publication", "world_generation": 3, "tick_index": 1,
-                 "body_sample": 2, "time_usec": 130, "required_hard_revision": 5, "packet_hard_revision": 5},
-                {"event": "main_callback", "process_frame": 1, "time_usec": 140, "start_usec": 105},
-                {"event": "framebuffer_draw", "process_frame": 1, "time_usec": 145},
-                {"event": "rapier_step", "step": 2, "world_generation": 3, "native_tick_used": 1,
-                 "time_usec": 150, "start_usec": 140, "physics_publication_usec": 130,
-                 "native_response": {"bodies": [{"sample": 2}]}},
-            ]
-            self.assertEqual(len(existing_marker_spans(events, 2)["frame_join_rows"]), 1)
-            with self.assertRaisesRegex(RuntimeError, "No complete same-frame"):
-                existing_marker_spans([e for e in events if e["event"] != "framebuffer_draw"], 2)
 
         def test_malformed_or_unexercised_treatments_are_refused(self):
             mutations = [

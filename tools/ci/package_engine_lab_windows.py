@@ -218,6 +218,9 @@ def launchers(output):
                 'set "CYBERSAND_DIAG_RENDER_CADENCE='+cadence+'"\n'
                 'set "CYBERSAND_MATERIAL_PUBLICATION='+material+'"\n'
                 'set "CYBERSAND_DIAG_PHYSICS_PUBLICATION='+physics+'"\n'
+                'set "CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS="\n'
+                'set "CYBERSAND_DIAG_MATERIAL_HISTORY_TARGETS="\n'
+                'set "CYBERSAND_DIAG_MATERIAL_COPY_MODE="\n'
                 'set "CYBERSAND_DIAG_COMMON_OBSERVER="\n'
                 'echo CyberSand Workbench - '+('original presentation' if selection else 'coherent candidate')+'\n'
                 'echo Source '+SOURCE+'\n'
@@ -242,11 +245,17 @@ Rapier Windows x64 module SHA256: RAPIER_SHA256
 Extract this entire ZIP into a fresh writable directory. No separate Godot,
 Python, Git or repository installation is required.
 
-1. Double-click Open Workbench.cmd for the repaired interactive Shared Workbench.
+PHYSICAL HOLD: earlier hosted component trials shortened publication calls
+without eliminating physics or frame stalls. PR #609 records exact-source
+results; physical Windows 11/NVIDIA acceptance remains the owner's gate.
+
+1. Double-click Open Workbench.cmd for the evaluation Shared Workbench.
 2. Fly a Needle in Free and Follow modes. Turn Thruster fire ON, then OFF.
    Try fast movement, contact/dense materials, and normal camera pan/zoom.
-   Paint small and large areas while playing; pause, single-step, Undo/Redo,
-   Save and reopen in a fresh process.
+   Choose the Select body tool, then use right-button erasing on small and
+   large areas while playing.
+   Pause to add materials with PAINT and exercise Undo/Redo. Also check
+   pause/resume, single-step and reset, then Save and reopen in a fresh process.
 3. Close CyberSand. Open Publication Control.cmd uses full texture uploads
    and the combined native/graphical handoff in the same reviewed source.
    Repeat the same setup. Both modes retain coherent presentation, fixed-step
@@ -432,7 +441,6 @@ def smoke(output,evidence):
         ("material-tiles",["--headless","--audio-driver","Dummy","--script","res://tests/test_material_tile_publication.gd"],300,"MATERIAL_TILE_PUBLICATION:"),
         ("palette-compile-bounds",["--headless","--audio-driver","Dummy","--script","res://tests/test_palette_shader_compile_bounds.gd"],180,"PALETTE_COMPILE_BOUNDS_RESULT"),
         ("material-tiles-graphical",["--rendering-method","gl_compatibility","--audio-driver","Dummy","--script","res://tests/test_material_tile_publication.gd"],600,"MATERIAL_TILE_PUBLICATION:"),
-        ("material-history-graphical",["--rendering-method","gl_compatibility","--audio-driver","Dummy","--script","res://tests/test_material_history_transaction.gd"],600,"MATERIAL_HISTORY_TRANSACTION:"),
         ("rapier-manual",["--headless","--script","res://tests/test_rapier_manual_step.gd"],180,"Rapier2D manual-step coupling fixture passed"),
         ("terrain-packet",["--headless","--script","res://tests/test_hard_surface_incremental_packet.gd"],180,"HARD_SURFACE_INCREMENTAL"),
         ("full-material-upload",["--headless","--audio-driver","Dummy","--script","res://tests/test_render_full_upload.gd"],180,"RENDER_FULL_UPLOAD:"),
@@ -466,11 +474,6 @@ def smoke(output,evidence):
             env["CYBERSAND_PHYSICS_PUBLICATION_OUTPUT"]=str((evidence/(name+".json")).resolve())
         if name.startswith("material-tiles"):
             env["CYBERSAND_MATERIAL_TILE_OUTPUT"]=str((evidence/(name+".json")).resolve())
-        if name=="material-history-graphical":
-            env["CYBERSAND_MATERIAL_HISTORY_OUTPUT"]=str((evidence/(name+".json")).resolve())
-            env["CYBERSAND_DIAG_MATERIAL_HISTORY_TARGETS"]="2"
-            env["CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS"]="3"
-            env["CYBERSAND_DIAG_MATERIAL_COPY_MODE"]="runs"
         if name=="full-material-upload":
             env["CYBERSAND_FULL_UPLOAD_OUTPUT"]=str((evidence/name/"full-upload.json").resolve())
         group="paint-persistence" if name in {"paint-author","paint-reopen"} else name
@@ -500,16 +503,6 @@ def smoke(output,evidence):
             need(r.returncode==0 and "SCRIPT ERROR:" not in r.stdout and "SHADER ERROR:" not in r.stdout and
                  (marker is None or marker in r.stdout),"Installed "+name+" failed: "+r.stdout[-3500:])
             detail={}
-            if name=="material-history-graphical":
-                from run_camera_coherence_regressions import validate_material_history_receipt
-                receipt=evidence/(name+".json")
-                transaction=validate_material_history_receipt(json.loads(receipt.read_text(encoding="utf-8")),r.stdout)
-                need("--headless" not in cmd and "opengl3_angle" in cmd and "ANGLE" in r.stdout,
-                     "Installed material transaction did not execute the requested Windows ANGLE backend")
-                detail={"command":cmd,"graphical":True,"material_history":transaction,
-                        "receipt_sha256":digest(receipt),
-                        "executed_files_sha256":{name:digest(project/name) for name in
-                            ("scripts/main.gd","scripts/blit_material_publisher.gd","tests/test_material_history_transaction.gd")}}
             if name in {"paint-author","paint-reopen"}:
                 completions=[line for line in r.stdout.splitlines() if line.startswith("PAINT_EDITOR_WORKBENCH ")]
                 need(bool(completions),"Installed graphical PAINT completion missing")

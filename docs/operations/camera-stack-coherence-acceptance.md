@@ -29,9 +29,12 @@ Godot, Python, Git or repository installation is needed. Keep the payload intact
    native/Rapier wait and wake enabled, and start with your usual FPS/VSync.
 2. Fly a Needle continuously using Free and Follow cameras. Turn Thruster fire
    ON then OFF. Try dense material, near-terrain flight and actual hard contact.
-3. Paint a small patch and a large area during simulation. Check material
-   appearance, crossfade, actor/terrain alignment, and actual physical progress.
-   Pause/resume, single-step, reset, Undo/Redo, Save, then fully exit and reopen.
+3. Choose **Select body** in the tool menu. While simulation runs, use
+   right-button erasing on a small patch and a large area. Check material
+   appearance, crossfade, actor/terrain
+   alignment, and actual physical progress. Pause to add materials with PAINT
+   and exercise Undo/Redo; positive PAINT retains its pause requirement. Also
+   check pause/resume, single-step and reset, then Save, fully exit and reopen.
 4. Close the application and run **Open Publication Control.cmd** with identical
    settings. This uses full texture uploads and combined graphical/physical
    publication within the same reviewed source. Both paths retain coherent

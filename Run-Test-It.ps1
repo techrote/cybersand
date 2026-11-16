@@ -62,6 +62,10 @@ $PreviousCadence=$env:CYBERSAND_DIAG_RENDER_CADENCE
 $PreviousPresentation=$env:CYBERSAND_DIAG_PRESENTATION
 $PreviousMaterialPublication=$env:CYBERSAND_MATERIAL_PUBLICATION
 $PreviousPhysicsPublication=$env:CYBERSAND_DIAG_PHYSICS_PUBLICATION
+$PreviousMaterialStagingSlots=$env:CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS
+$PreviousMaterialHistoryTargets=$env:CYBERSAND_DIAG_MATERIAL_HISTORY_TARGETS
+$PreviousMaterialCopyMode=$env:CYBERSAND_DIAG_MATERIAL_COPY_MODE
+$PreviousCommonObserver=$env:CYBERSAND_DIAG_COMMON_OBSERVER
 $Start=Get-Date
 $Summary=@{schema='engine-lab-scripted-pose-test-it-v1';status='incomplete';complete=$false
     source='unverified';driver=$RenderingDriver;cases=@();errors=@();processes=@()
@@ -582,7 +586,9 @@ function Run-Case([string]$Family,[int]$Workers,[int]$Repeat,
        "--cadence-tape=$([int]$CadenceTape)","--presentation=$PoseSelection","--fire-mode=$FireMode",
        "--display-profile=$DisplayProfile","--receipt=$Receipt")
     $CaseIdentity=@{name=$Name;source=$Summary.source;arguments=$Arguments;isolated_user_profile=$env:APPDATA
-        requested_native_workers=$Workers;display_profile=$DisplayProfile;material_publication=$env:CYBERSAND_MATERIAL_PUBLICATION;physics_publication=$env:CYBERSAND_DIAG_PHYSICS_PUBLICATION;rendering_driver_override=$(if($DisplayProfile -eq 'scripted' -or $ExplicitRenderingDriver){$RenderingDriver}else{$null})}
+        requested_native_workers=$Workers;display_profile=$DisplayProfile;material_publication=$env:CYBERSAND_MATERIAL_PUBLICATION;physics_publication=$env:CYBERSAND_DIAG_PHYSICS_PUBLICATION
+        material_staging_slots=$env:CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS;material_history_targets=$env:CYBERSAND_DIAG_MATERIAL_HISTORY_TARGETS
+        material_copy_mode=$env:CYBERSAND_DIAG_MATERIAL_COPY_MODE;common_observer=$env:CYBERSAND_DIAG_COMMON_OBSERVER;rendering_driver_override=$(if($DisplayProfile -eq 'scripted' -or $ExplicitRenderingDriver){$RenderingDriver}else{$null})}
     [IO.File]::WriteAllText((Join-Path $Dir 'case.json'),(($CaseIdentity|ConvertTo-Json -Depth 8)+[Environment]::NewLine),[Text.UTF8Encoding]::new($false))
     Run-Godot $Name $Arguments $TimeoutSeconds $Dir
     Require (Test-Path -LiteralPath $Receipt -PathType Leaf) "$Name did not write a receipt"
@@ -713,6 +719,14 @@ function Run-CadenceMatrix {
     Require ($Summary.failures.Count -eq 0) 'One or more cadence cases were incomplete; all independent cases and partial results are retained'
 }
 function Run-PublicationMatrix {
+    # The owner comparison selects the source defaults for experimental material
+    # controls. Inherited probe settings must not silently select another design
+    # or suppress the callback/mailbox evidence. Restore the caller in finally.
+    $env:CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS=''
+    $env:CYBERSAND_DIAG_MATERIAL_HISTORY_TARGETS=''
+    $env:CYBERSAND_DIAG_MATERIAL_COPY_MODE=''
+    $env:CYBERSAND_DIAG_COMMON_OBSERVER='0'
+    $Summary.publication_controls=@{staging_slots='source default';history_targets='source default';copy_mode='source default';detailed_observer=$true}
     $MatrixPath=Join-Path $Project 'tests\fixtures\engine_lab\coherence-conditions.json'
     $Matrix=Get-Content -LiteralPath $MatrixPath -Raw -Encoding UTF8|ConvertFrom-Json
     Require ($Matrix.schema -eq 'camera-stack-coherence-conditions-v1') 'Unknown publication condition schema'
@@ -893,6 +907,10 @@ try {
     $env:CYBERSAND_DIAG_PRESENTATION=$PreviousPresentation
     $env:CYBERSAND_MATERIAL_PUBLICATION=$PreviousMaterialPublication
     $env:CYBERSAND_DIAG_PHYSICS_PUBLICATION=$PreviousPhysicsPublication
+    $env:CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS=$PreviousMaterialStagingSlots
+    $env:CYBERSAND_DIAG_MATERIAL_HISTORY_TARGETS=$PreviousMaterialHistoryTargets
+    $env:CYBERSAND_DIAG_MATERIAL_COPY_MODE=$PreviousMaterialCopyMode
+    $env:CYBERSAND_DIAG_COMMON_OBSERVER=$PreviousCommonObserver
     try {
         Save-Summary
         Compress-Archive -LiteralPath $Output -DestinationPath $Zip -CompressionLevel Optimal

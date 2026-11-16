@@ -230,18 +230,15 @@ classes, 1×1 retirement target and separate 1-byte source dummy occupy
 2048² RG8, excluding driver overhead. A final tiny blit prevents the engine's
 persistent framebuffer attachment from retaining a released large history plane.
 
-The controlled spare-target experiment keeps two logical visible histories.
-`CYBERSAND_DIAG_MATERIAL_HISTORY_TARGETS=3` adds one fixed physical target;
-two remains the default. Preparation repairs the selected destination from the
-complete authoritative CPU image, then an owner-bound single-use token commits
-the current/previous roles before Main advances certificates, binds consumers
-and acknowledges the revision. Failed preparation or commitment rebuilds both
-full textures from the new CPU image and the pretransaction current bytes,
-never the older previous or spare content. All owned targets accumulate dirty
-coverage, so three targets can require more changed tiles and staging bytes.
-The three-target/ring3 payload is 83,853,317 logical GPU bytes; fully populated
-logical tile caches are bounded by 25,165,824 CPU bytes, excluding overhead.
-This is an unaccepted reuse experiment, not independent rendering or a GPU fence.
+The final evaluation design retains two physical history targets. A controlled
+third-target experiment at source `6656f436b38a` passed pixel and physical-state
+checks but worsened p99 and maximum physical gaps in both run orders. Its spare,
+transaction machinery and history-count selector were removed. The negative
+result remains in the [remediation record](../audits/2026-11-16-physics-freeze-remediation-002.md#controlled-spare-history-experiment).
+The two-target design remains a bounded publication repair; it does not provide
+independent rendering, a GPU fence or evidence of physical NVIDIA acceptance.
+Manual retained-wrapper updates invalidate both target caches after successful
+submission so subsequent normal sparse publication restores authoritative bytes.
 
 Adjacent dirty tiles share one copy only when both their World positions and
 packed atlas positions are contiguous in the same respective rows. Skipped

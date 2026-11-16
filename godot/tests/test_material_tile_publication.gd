@@ -81,12 +81,10 @@ func _patch(host: Control, area: Rect2i, value: int, condition: int, label: Stri
 		0, area.size.x * host.render_channels])
 	var prior_current_rid: RID = host._material_publication_rid(host.texture)
 	var prior_previous_rid: RID = host._material_publication_rid(host.previous_texture)
-	var destination_rid: RID = host._material_blit_publisher.spare.get_rid() \
-		if host._material_blit_publisher.history_targets == 3 else prior_previous_rid
 	check(host.upload_texture_patches(metadata, patch.get_data(), host.last_uploaded_revision + 1,
 		host.render_channels), label + " accepted")
 	_check_gpu(host, expected.get_data(), old, label)
-	check(host._material_publication_rid(host.texture) == destination_rid and
+	check(host._material_publication_rid(host.texture) == prior_previous_rid and
 		host._material_publication_rid(host.previous_texture) == prior_current_rid,
 		label + " exact bounded drawable pair swapped")
 	var result: Dictionary = host.material_publication_status()
@@ -158,7 +156,7 @@ func _history_and_fallback(channels: int) -> void:
 	_patch(host, Rect2i(316, 258, 1, 1), 127, 255, "bottom right padded tile")
 	_patch(host, Rect2i(316, 258, 1, 1), 127, 1, "condition-only edit")
 	var unchanged: PackedByteArray = host.image.get_data()
-	for turn: int in range(host._material_blit_publisher.history_targets):
+	for turn: int in range(2):
 		check(host.upload_texture_patches(host._full_material_rectangle(), unchanged,
 			host.last_uploaded_revision + 1, channels), "byte-identical full resync accepted")
 		_check_gpu(host, unchanged, unchanged, "full resync")
@@ -256,8 +254,7 @@ func _owner_and_format_contract(channels: int) -> void:
 	check(publisher.full_staging.next_slot == mini(2,publisher.staging_slots-1),
 		"distinct initialization preserves the unused third resource after priming")
 	var resources: Array[int] = publisher.resource_identity()
-	var ids: Array[RID] = [publisher.current.get_rid(),
-		publisher.spare.get_rid() if publisher.history_targets == 3 else publisher.previous.get_rid()]
+	var ids: Array[RID] = [publisher.current.get_rid(),publisher.previous.get_rid()]
 	var changed: Image = current.duplicate()
 	changed.set_pixel(32,18,Color(2.0/255.0,3.0/255.0,0,1))
 	var areas: Array[Rect2i] = [Rect2i(32,18,1,1)]
@@ -343,7 +340,7 @@ func _direct_update_history_contract(channels: int) -> void:
 		var old_visible: Image = changed if role == "current" else initial
 		var source: Image = initial
 		var reused: int = 0
-		for turn: int in range(7 if publisher.history_targets == 3 else 5):
+		for turn: int in range(5):
 			var next: Image = source.duplicate()
 			next.set_pixel(1+turn,1,Color(float(210+turn)/255.0,float(190-turn)/255.0,0,1))
 			var rectangles: Array[Rect2i] = [Rect2i(1+turn,1,1,1)]
@@ -473,10 +470,10 @@ func _staging_pool_contract(slots: int, extent: Vector2i) -> void:
 	var sequence: Array[Dictionary] = []
 	# Dirty coverage inherited from the preceding history can enlarge the
 	# class; validate the actual selected pool rather than just the new rect.
-	for turn: int in range(16):
+	for turn: int in range(12):
 		var area := Rect2i(2,2,1,1)
-		if turn in [4,5,6,7]: area = Rect2i(63,63,2,2)
-		if turn in [12,13,14,15]: area = Rect2i(Vector2i.ZERO,extent)
+		if turn in [2,3,6,7]: area = Rect2i(63,63,2,2)
+		if turn in [8,9,10,11]: area = Rect2i(Vector2i.ZERO,extent)
 		var record: Dictionary = _patch(host,area,6+turn,200-turn,
 			"staging%d %s update%d" % [slots,str(extent),turn])
 		check(record.staging_slots == slots and record.staging_slot >= 0 and record.staging_slot < slots
@@ -515,7 +512,7 @@ func _staging_pool_contract(slots: int, extent: Vector2i) -> void:
 		check(seen_slots[capacity].size() == slots, "every allocated resource was exercised in each recurring capacity")
 	# Align both histories; no-op publications may still rotate the logical
 	# histories, but must not consume a staging resource or invent a draw.
-	for turn: int in range(publisher.history_targets):
+	for turn: int in range(2):
 		check(host.upload_texture_patches(host._full_material_rectangle(),host.image.get_data(),
 			host.last_uploaded_revision+1,2), "same-byte staging resync accepted")
 	var cursors: Dictionary = {}
@@ -555,20 +552,19 @@ func _large_sparse_transfer() -> void:
 		"2048² RG8 uses 128² tiles and 256 bounded tile records")
 	var resources: Array[int] = host._material_blit_publisher.resource_identity()
 	var slots: int = host._material_blit_publisher.staging_slots
-	var expected_bytes: int = 16777216*host._material_blit_publisher.history_targets+5+11173888*slots
+	var expected_bytes: int = 33554437+11173888*slots
 	check(host._material_blit_publisher.gpu_storage_bytes() == expected_bytes,
 		"2048² allocation includes the configured number of bounded staging resources")
 	check(host._material_blit_publisher.full_staging == host._material_blit_publisher.staging[256],
 		"2048² full image and capacity256 share the same resource pool and cursor")
-	check(resources.size() == host._material_blit_publisher.history_targets+2+5*slots, "two histories, sink, dummy and every independent array RID are counted")
+	check(resources.size() == 4+5*slots, "two histories, sink, dummy and every independent array RID are counted")
 	var result: Dictionary = _patch(host, Rect2i(1023, 1024, 1, 1), 3, 77, "2048² single cell")
 	check(result.gpu_blit_calls == 1 and result.retirement_blit_calls == 1, "sparse copy includes bounded retirement draw")
 	check(result.updated_tiles == 1 and result.submitted_bytes == 32768,
 		"single changed cell submits 32KiB instead of complete 8MiB plane")
 	var old: PackedByteArray = host.image.get_data()
 	var prior_current: RID = host._material_publication_rid(host.texture)
-	var prior_previous: RID = host._material_blit_publisher.spare.get_rid() \
-		if host._material_blit_publisher.history_targets == 3 else host._material_publication_rid(host.previous_texture)
+	var prior_previous: RID = host._material_publication_rid(host.previous_texture)
 	var dense: PackedByteArray = _pattern(host.world_extent, 2, 77)
 	var started: int = Time.get_ticks_usec()
 	check(host.upload_texture_patches(host._full_material_rectangle(), dense, 2, 2),

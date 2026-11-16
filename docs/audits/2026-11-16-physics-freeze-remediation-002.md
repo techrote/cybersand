@@ -556,6 +556,10 @@ are retained separately; final integration requires this repair and exact-source
 
 ## Controlled spare-history experiment
 
+**Disposition: rejected and removed from the final evaluation design.** The
+following describes the preserved experiment at source `6656f436b38a`, not a
+current production option. Its actual Windows result is recorded below.
+
 The e519 result leaves a specific hypothesis to test: writing the formerly
 previous target may encounter outstanding work that samples both visible
 histories. `CYBERSAND_DIAG_MATERIAL_HISTORY_TARGETS=3` adds one bounded spare
@@ -610,6 +614,61 @@ H3, all with zero failures and unchanged runtime hashes. Both checked edit
 windows span 57 completed steps; phase summaries separately record 58 and 57
 because their final observation boundaries differ. These results establish the
 tested gameplay paths and material/terrain validity, not smooth performance.
+
+Exact source `6656f436b38a974d72a951e5e09fba21a0304422`, tree
+`931675e578c08a3bf33f3e44221e4407685ce9b2`, completed
+[Windows run 43868676012](https://github.com/techrote/cybersand/actions/runs/43868676012).
+Actual ANGLE gates passed 2,017 H2, 2,063 H3 and 223 transaction assertions,
+with no failures. All fifteen recorded physical-state/native-association pairs
+are exact over steps 1–144. No arm has extra steps, observer drops, duplicate
+snapshot receipts, fallback or unbounded resource changes.
+
+| Order / mode | Native / Rapier / Main Hz | Physical median / p95 / p99 / max ms | Gaps ≥50 / ≥100 / ≥250 / ≥1000 ms | Frame p95 ms |
+| --- | --- | --- | --- | ---: |
+| 0 full | 9.487 / 9.494 / 9.171 | 111.876 / 114.468 / 129.585 / 140.431 | 139 / 122 / 0 / 0 | 119.363 |
+| 1 H2 | 10.235 / 10.279 / 9.769 | 101.589 / 119.974 / 215.006 / 278.445 | 130 / 89 / 2 / 0 | 169.522 |
+| 2 H3 | 11.105 / 11.092 / 9.679 | 99.176 / 118.816 / 226.085 / 287.788 | 119 / 65 / 2 / 0 | 172.024 |
+| 3 H3 | 10.701 / 10.696 / 9.720 | 101.218 / 110.106 / 213.142 / 310.964 | 124 / 82 / 2 / 0 | 175.420 |
+| 4 H2 | 10.373 / 10.405 / 9.686 | 100.711 / 132.731 / 195.662 / 276.355 | 129 / 79 / 1 / 0 | 190.239 |
+| 5 full | 9.697 / 9.689 / 9.156 | 111.840 / 114.343 / 160.026 / 181.460 | 134 / 115 / 0 / 0 | 135.895 |
+
+Each row contains 143 consecutive physical gaps on the same Windows software
+ANGLE host, an AMD EPYC 9V74 VM with four logical processors and native Auto
+capacity four. These are not cross-host comparisons with the earlier EPYC 7763
+run. H3's p99 and maximum physical gaps worsen in both directions relative to H2;
+frame p95 is mixed. Main-end-to-frame-post-draw medians remain 79.826–84.719 ms
+for H2 and 81.981–82.427 ms for H3, versus about 10 ms for full. H3 does not
+establish that a target-read hazard explains or removes the late-frame delay.
+
+H2 upload p95 is 5.506/5.729 ms versus full 96.353/98.941 ms, but its physical and
+frame tails still fail to establish a completed freeze repair. Shorter calls
+and modestly higher throughput are retained as component results only. No
+exclusive CPU/GPU attribution or physical GPU acceptance follows from them.
+
+Independent review recommends the smaller H2 ring3 implementation for final
+source/integration qualification, with the reviewed manual-wrapper fix, early
+physical mailbox, real live-erasing tests and explicit package control defaults.
+The spare, prepared-token transaction, incompatible transaction test and selector
+are removed from the delivery candidate. The complete negative source and raw
+capture remain available. [Artifact 14228270452](https://github.com/techrote/cybersand/actions/runs/43868676012/artifacts/14228270452)
+is 9,987,887 bytes, SHA256
+`b930014a551404d78f8a4d0d2e6d7b791f11e805cb3b8d3658721c8e25aa1247`.
+
+The assembled H2 restoration subsequently passed 1,000 ordinary graphical pacing
+checks and 1,753 material GPU checks on frozen Linux source, with no failures.
+All 671 script/shader/scene/config hashes, native/Rapier libraries and the pinned
+engine stayed unchanged. Eight within-process appearance pairs are exact. The
+live phase records 57 completions while its last input-hook observation spans
+56; those observation boundaries remain separate. This is supplemental assembled
+source evidence, not a replacement for final committed Linux/Windows gates.
+
+The final owner launchers select source defaults for staging/copy controls and
+the default publication Test It capture forces detailed observer events, then
+restores its caller's environment. Existing Windows launcher and four-case Test
+It gates deliberately inject conflicting child-only probe settings and require
+actual slots3/runs plus callback/mailbox evidence. No extra performance matrix
+is introduced. The shipping guide explicitly retains PHYSICAL HOLD and separates
+ordinary live erasing from paused positive PAINT/Undo/Redo/persistence checks.
 
 ## Final qualification and evidence interpretation
 

@@ -1,4 +1,4 @@
-name: MATERIAL-HISTORY-TARGETS-001 focused Windows comparison
+name: MATERIAL-RING-STAGING-001 focused Windows comparison
 on:
   push:
     branches: [diagnostics/material-staging-reuse-20261116]
@@ -14,10 +14,10 @@ env:
   CYBERSAND_CI_WATCHDOG_SCALE: '1'
 jobs:
   windows-staging:
-    name: Windows full / two / three history targets, forward and reverse
+    name: Windows full / one / two / three independent arrays, forward and reverse
     runs-on: windows-2022
-    # Six independent 900-second process watchdogs plus preparation, import,
-    # three targeted GPU correctness cases and artifact headroom. None is a physical performance acceptance limit.
+    # Eight independent 900-second process watchdogs plus preparation, import
+    # targeted GPU correctness and artifact headroom. None is a physical performance acceptance limit.
     timeout-minutes: 160
     defaults:
       run:
@@ -93,24 +93,17 @@ jobs:
               receipt['elapsed_seconds']=time.monotonic()-started
               path.write_text(json.dumps(receipt,indent=2)+'\n')
           PY
-      - name: Verify both actual ANGLE history counts and direct-update repair
+      - name: Verify actual ANGLE material bytes history and eight shader pairs
         run: |
           set -euo pipefail
-          # Both counts use the same transaction source. Each real GPU case has
-          # the established 600s process watchdog; failure prevents all timing arms.
-          export CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS=3
-          export CYBERSAND_DIAG_MATERIAL_COPY_MODE=runs
-          for targets in 2 3; do
-          export CYBERSAND_DIAG_MATERIAL_HISTORY_TARGETS="$targets"
-          folder="evidence/material-gpu-correctness/history$targets"
-          mkdir -p "$folder"
-          python -u tools/ci/run_camera_coherence_regressions.py --godot "$GODOT_BIN" --project godot --evidence "$folder" --graphical --cases material-tiles-graphical 2>&1 | tee "$folder/runner.log"
+          # This selects one actual graphical test with its established 600s
+          # process watchdog. A failed gate prevents all performance arms.
+          python -u tools/ci/run_camera_coherence_regressions.py --godot "$GODOT_BIN" --project godot --evidence evidence/material-gpu-correctness --graphical --cases material-tiles-graphical 2>&1 | tee evidence/material-gpu-correctness/runner.log
           python - <<'PY'
           import hashlib,json,os,pathlib,re,sys
           sys.path.insert(0,'tools/ci')
           from run_physics_freeze_comparison import need
-          targets=int(os.environ['CYBERSAND_DIAG_MATERIAL_HISTORY_TARGETS'])
-          folder=pathlib.Path('evidence/material-gpu-correctness')/('history'+str(targets))
+          folder=pathlib.Path('evidence/material-gpu-correctness')
           summary=json.loads((folder/'summary.json').read_text(encoding='utf-8'))
           casefolder=folder/'material-tiles-graphical'
           report=json.loads((casefolder/'material-tiles.json').read_text(encoding='utf-8'))
@@ -141,7 +134,7 @@ jobs:
           pools=[row for row in observations if row.get('label')=='staging pool sequence']
           need(len(pools)==6 and {(row.get('staging_slots'),tuple(row.get('extent',[]))) for row in pools}=={(slots,extent) for slots in (1,2,3) for extent in ((256,256),(317,259))},'Missing square/NPOT one/two/three-resource ring coverage')
           for row in pools:
-              need(len(row.get('sequence',[]))==16,'Incomplete staging ring sequence')
+              need(len(row.get('sequence',[]))==12,'Incomplete staging ring sequence')
               need(all(item.get('kind')=='texture2d_array' and item.get('resource_layers')==1 and item.get('layer')==0 for item in row['sequence']),'GPU ring sequence did not use independent one-layer resources')
           heights=[row for row in observations if row.get('label')=='maximum copy height']
           need(len(heights)==12 and all(row.get('height')==16383 for row in heights),'Missing maximum-height GPU cases')
@@ -176,61 +169,19 @@ jobs:
           need(len(dense)==1 and dense[0]['publication'].get('submitted_bytes')==8388608,'Missing complete 2048² full-refresh proof')
           publications=[row['publication'] for row in observations if 'publication' in row]
           need(publications and all(row.get('staging_backend')=='texture2d_array' and row.get('staging_resource_layers')==1 and row.get('staging_layer')==(0 if row.get('submitted_bytes',0)>0 else -1) for row in publications),'Wrong GPU staging resource kind or layer')
-          need(all(row.get('history_targets')==targets for row in publications),'GPU gate did not use the selected history count')
-          densepub=dense[0]['publication']
-          need(densepub.get('staging_slots')==3 and densepub.get('allocated_gpu_bytes')==targets*16777216+5+11173888*3,'Wrong bounded 2048 history/staging texture payload')
-          need(densepub.get('history_storage_bytes')==targets*16777216 and densepub.get('maximum_history_cache_bytes')==targets*8388608,'Wrong history storage/cache bound')
-          roles=[densepub.get(key) for key in ('current_texture_rid','previous_texture_rid','spare_texture_rid')]
-          need(all(isinstance(value,(int,float)) and int(value)==value for value in roles) and roles[0]>0 and roles[1]>0 and (roles[2]>0 if targets==3 else roles[2]==0),'Missing actual history roles')
-          need(len(set(roles[:targets]))==targets and densepub.get('history_target_rid')==roles[0],'History target roles are aliased or incorrectly committed')
           delayed=[row for row in observations if row.get('label')=='direct update delayed recycling']
-          rounds=7 if targets==3 else 5
-          need(len(delayed)==4*rounds and {(row.get('channels'),row.get('role'),row.get('turn')) for row in delayed}=={(channels,role,turn) for channels in (1,2) for role in ('current','previous') for turn in range(rounds)},'Missing delayed direct-update recycling coverage')
+          need(len(delayed)==20 and {(row.get('channels'),row.get('role'),row.get('turn')) for row in delayed}=={(channels,role,turn) for channels in (1,2) for role in ('current','previous') for turn in range(5)},'Missing fixed two-history delayed direct-update recycling coverage')
           need(all(re.fullmatch(r'[0-9a-f]{64}',row.get(role+'_sha256','')) and row[role+'_sha256']==row.get('expected_'+role+'_sha256') for row in delayed for role in ('current','previous')),'Direct wrapper update left stale current/previous GPU bytes after recycling')
           identities=[row for row in observations if row.get('label')=='direct update preserves Main identity']
           need(len(identities)==2 and {row.get('channels') for row in identities}=={1,2},'Missing direct-update Main identity checks')
-          verified={'history_targets':targets,'allocated_gpu_bytes':densepub['allocated_gpu_bytes'],'maximum_history_cache_bytes':densepub['maximum_history_cache_bytes'],'direct_update_recycling_rows':len(delayed),'source_sha':summary['source_sha'],'complete':True,'scope':'Actual Windows ANGLE GPU correctness; no physical NVIDIA acceptance','assertions':report['assertions'],'failures':0,'shader_pairs':len(shaders),'history_sequences':2,'resource_pool_sequences':len(pools),'maximum_height_cases':len(heights),'coalescing_mode_cases':len(copies),'coalescing_mode_pairs':len(paired),'full_refresh_bytes':dense[0]['publication']['submitted_bytes'],'report_sha256':hashlib.sha256((casefolder/'material-tiles.json').read_bytes()).hexdigest(),'log_sha256':case['log_sha256']}
+          verified={'direct_update_recycling_rows':len(delayed),'source_sha':summary['source_sha'],'complete':True,'scope':'Actual Windows ANGLE GPU correctness; no physical NVIDIA acceptance','assertions':report['assertions'],'failures':0,'shader_pairs':len(shaders),'history_sequences':2,'resource_pool_sequences':len(pools),'maximum_height_cases':len(heights),'coalescing_mode_cases':len(copies),'coalescing_mode_pairs':len(paired),'full_refresh_bytes':dense[0]['publication']['submitted_bytes'],'report_sha256':hashlib.sha256((casefolder/'material-tiles.json').read_bytes()).hexdigest(),'log_sha256':case['log_sha256']}
           (folder/'verified-gpu-gate.json').write_text(json.dumps(verified,indent=2)+'\n')
-          print('MATERIAL_HISTORY_GPU_GATE',json.dumps(verified,sort_keys=True))
+          print('MATERIAL_ARRAY_GPU_GATE',json.dumps(verified,sort_keys=True))
           PY
-          done
-      - name: Verify actual ANGLE prepare commit fallback and retained-spare transactions
+      - name: Run eight serial ordinary coupled 2048 Follow arms
         run: |
           set -euo pipefail
-          mkdir -p evidence/material-gpu-correctness/transaction
-          python -u tools/ci/run_camera_coherence_regressions.py --godot "$GODOT_BIN" --project godot --evidence evidence/material-gpu-correctness/transaction --graphical --cases material-history-graphical 2>&1 | tee evidence/material-gpu-correctness/transaction/runner.log
-          python - <<'PY'
-          import hashlib,json,os,pathlib,re,sys
-          sys.path.insert(0,'tools/ci')
-          from run_camera_coherence_regressions import validate_material_history_receipt
-          from run_physics_freeze_comparison import need
-          from package_engine_lab_windows import ENGINE_VERSION
-          folder=pathlib.Path('evidence/material-gpu-correctness/transaction')
-          summary=json.loads((folder/'summary.json').read_text(encoding='utf-8'))
-          need(summary.get('complete') is True and summary.get('source_sha')==os.environ['GITHUB_SHA'],'Wrong or incomplete transaction gate source')
-          cases=summary.get('cases',[])
-          need(len(cases)==1 and cases[0].get('name')=='material-history-graphical','Wrong transaction GPU gate selection')
-          case=cases[0];casefolder=folder/'material-history-graphical'
-          log=casefolder/'console.log';receipt=casefolder/'material-history.json'
-          text=log.read_text(encoding='utf-8',errors='replace')
-          need(case.get('status')=='passed' and case.get('exit_code')==0 and case.get('graphical') is True,'Transaction GPU process failed')
-          command=case['command']
-          need('--headless' not in command and command[command.index('--rendering-driver')+1]=='opengl3_angle' and 'ANGLE' in text,'Transaction did not execute actual Windows ANGLE')
-          need('Godot Engine v'+ENGINE_VERSION in text,'Transaction used the wrong pinned Godot engine')
-          need(hashlib.sha256(log.read_bytes()).hexdigest()==case.get('log_sha256') and hashlib.sha256(receipt.read_bytes()).hexdigest()==case.get('receipt_sha256'),'Transaction receipt/log differs from execution record')
-          need({'scripts/main.gd','scripts/blit_material_publisher.gd','tests/test_material_history_transaction.gd'}<=summary.get('executed_files_sha256',{}).keys(),'Missing transaction source identity')
-          for relative,expected in summary['executed_files_sha256'].items():
-              need(hashlib.sha256((pathlib.Path('godot')/relative).read_bytes()).hexdigest()==expected,'Transaction executed source changed: '+relative)
-          verified=validate_material_history_receipt(json.loads(receipt.read_text(encoding='utf-8')),text)
-          need(verified==case.get('material_history'),'Transaction runner and workflow receipt reduction differ')
-          verified.update(source_sha=summary['source_sha'],complete=True,scope='Actual Windows ANGLE transaction correctness; no physical NVIDIA acceptance',report_sha256=case['receipt_sha256'],log_sha256=case['log_sha256'])
-          (folder/'verified-gpu-gate.json').write_text(json.dumps(verified,indent=2)+'\n',encoding='utf-8')
-          print('MATERIAL_TRANSACTION_GPU_GATE',json.dumps(verified,sort_keys=True))
-          PY
-      - name: Run six serial ordinary coupled 2048 Follow history arms
-        run: |
-          set -euo pipefail
-          python -u tools/ci/run_material_staging_comparison.py --godot "$GODOT_BIN" --project godot --evidence evidence/staging-comparison --source-sha "$GITHUB_SHA" --rendering-driver opengl3_angle --timeout 900 --history-comparison 2>&1 | tee evidence/staging-comparison.log
+          python -u tools/ci/run_material_staging_comparison.py --godot "$GODOT_BIN" --project godot --evidence evidence/staging-comparison --source-sha "$GITHUB_SHA" --rendering-driver opengl3_angle --timeout 900 2>&1 | tee evidence/staging-comparison.log
       - if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:

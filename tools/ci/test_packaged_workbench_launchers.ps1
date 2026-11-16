@@ -7,6 +7,15 @@ $Application=[IO.Path]::GetFullPath($Application)
 $Evidence=[IO.Path]::GetFullPath($Evidence)
 [void][IO.Directory]::CreateDirectory($Evidence)
 $Rows=@()
+# Inject probe-only overrides into the invoked cmd process, never this caller.
+# The actual package launchers must select the reviewed source defaults.
+$InheritedSelectors=@{CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS='1';CYBERSAND_DIAG_MATERIAL_HISTORY_TARGETS='3'
+    CYBERSAND_DIAG_MATERIAL_COPY_MODE='tiles';CYBERSAND_DIAG_COMMON_OBSERVER='1'}
+$CallerSelectors=@{}
+foreach($Key in $InheritedSelectors.Keys){$CallerSelectors[$Key]=[Environment]::GetEnvironmentVariable($Key,'Process')}
+$SelectorProbe=@{injected_child_environment=$InheritedSelectors;caller_environment=$CallerSelectors
+    scope='Actual graphical cmd launchers; child-scoped overrides leave the caller unchanged'}
+$SelectorProbe|ConvertTo-Json -Depth 6|Set-Content -LiteralPath (Join-Path $Evidence 'inherited-selector-probe.json') -Encoding UTF8
 foreach($Name in @('Open Workbench.cmd','Open Publication Control.cmd','Open Full Texture Control.cmd')) {
     $Label=$Name.Replace(' ','-')
     $Log=Join-Path $Evidence ($Label+'.log')
@@ -27,6 +36,7 @@ foreach($Name in @('Open Workbench.cmd','Open Publication Control.cmd','Open Ful
     $Info.EnvironmentVariables['CYBERSAND_LAUNCH_QUIT_AFTER_READY']='1'
     $Info.EnvironmentVariables['APPDATA']=$Profile
     $Info.EnvironmentVariables['XDG_DATA_HOME']=$Profile
+    foreach($Key in $InheritedSelectors.Keys){$Info.EnvironmentVariables[$Key]=$InheritedSelectors[$Key]}
     $Launcher=New-Object System.Diagnostics.Process
     $Launcher.StartInfo=$Info
     $Stdout=$null;$Stderr=$null;$Started=$false
@@ -54,7 +64,11 @@ foreach($Name in @('Open Workbench.cmd','Open Publication Control.cmd','Open Ful
            ($Ready.physics_required -and -not $Ready.rapier_initialized)) {
             throw ('Launched Workbench identity or publication mode mismatch: '+$Name)
         }
-        $Rows+=@{launcher=$Name;actual_graphical_cmd_exit=$Code;ready=$Ready;
+        if($Name -eq 'Open Workbench.cmd' -and
+           ($Ready.material_publication.staging_slots -ne 3 -or $Ready.material_publication.copy_mode -ne 'runs')) {
+            throw 'Ordinary launcher retained an inherited material probe selector'
+        }
+        $Rows+=@{launcher=$Name;actual_graphical_cmd_exit=$Code;ready=$Ready;injected_child_environment=$InheritedSelectors;
             log_sha256=(Get-FileHash -LiteralPath $Log -Algorithm SHA256).Hash.ToLowerInvariant()}
         $Rows|ConvertTo-Json -Depth 12|Set-Content -LiteralPath (Join-Path $Evidence 'launchers.json') -Encoding UTF8
     } finally {
@@ -67,6 +81,11 @@ foreach($Name in @('Open Workbench.cmd','Open Publication Control.cmd','Open Ful
                 ($Stdout.Result+[Environment]::NewLine+$Stderr.Result))
         }
         $Launcher.Dispose()
+        foreach($Key in $InheritedSelectors.Keys) {
+            if(-not [object]::Equals([Environment]::GetEnvironmentVariable($Key,'Process'),$CallerSelectors[$Key])) {
+                throw ('Launcher gate changed its caller environment: '+$Key)
+            }
+        }
     }
 }
 Write-Host ('WORKBENCH_LAUNCHERS_PASS '+$Rows.Count)
