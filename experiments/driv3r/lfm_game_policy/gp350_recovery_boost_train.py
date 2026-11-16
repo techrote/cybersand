@@ -236,7 +236,7 @@ def run(args):
     from peft import PeftModel
     from huggingface_hub import HfApi,snapshot_download
     torch.set_num_threads(2)
-    torch.manual_seed(3510010)
+    torch.manual_seed(3510014)
     started=time.monotonic()
     out=args.out
     c.check(not out.exists(),"immutable experiment lease already exists")
@@ -304,7 +304,7 @@ def run(args):
         "adapter":PARENT_ADAPTER,"rank8_LoRA_trainable":172032,"torch":torch.__version__,
         "optimizer":"fresh AdamW, 1.8e-4, betas .9/.95, decay .01",
         "objective":"host-legal trapped RETRACE vs legal non-RETRACE, sparse BRANCH, parent pressure KL",
-        "comparison":"GP350013 vs 48-step trapped recovery, checkpointed at 16/32/48"})
+        "comparison":"GP350013 step48 vs 72-step recovery booster, checkpointed at 18/36/54/72"})
     initial=probe(model,tok,ids,sample)
     initial_recovery=probe(model,tok,ids,recovery_sample)
     c.save_json(out/"probe-initial.json",initial)
@@ -316,7 +316,7 @@ def run(args):
         for seed in EVAL_SEEDS:
             for family in c.FAMILIES:
                 baseline.append(episode(w0,model,tok,ids,out,"gp350013",size,seed,family,started))
-    rng=random.Random(3510011)
+    rng=random.Random(3510015)
     for bucket in pairs.values():rng.shuffle(bucket)
     for bucket in branches.values():rng.shuffle(bucket)
     # Real BRANCH-positive versus branch-legal nonbranch observations.
@@ -362,7 +362,7 @@ def run(args):
                        for r in retention]
     parent_digest=c.sha_bytes(c.canonical(
         [[float(v) for v in z] for z in parent_logits]).encode())
-    c.save_json(out/"frozen-gp006-parent-logits.json",{
+    c.save_json(out/"frozen-gp013-parent-logits.json",{
         "parent_adapter_sha256":PARENT_ADAPTER,"real_W0_anchors":len(retention),
         "parent_logits_sha256":parent_digest,"one_resident_model":True})
     optimizer=torch.optim.AdamW(trainable,lr=1.8e-4,weight_decay=.01,betas=(.9,.95))
