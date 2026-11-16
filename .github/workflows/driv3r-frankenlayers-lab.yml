@@ -9,6 +9,7 @@ on:
     paths:
       - 'experiments/driv3r/frankenlayers_lab/run-request.json'
       - 'experiments/driv3r/frankenlayers_lab/run-request-wave2.json'
+      - 'experiments/driv3r/frankenlayers_lab/run-request-wave3.json'
       - '.github/workflows/driv3r-frankenlayers-lab.yml'
 
 permissions:
@@ -37,7 +38,7 @@ jobs:
           python3 - <<'PY'
           import json
           from pathlib import Path
-          from experiments.driv3r.frankenlayers_lab.flows import WAVE1_FLOWS, WAVE2_FLOWS
+          from experiments.driv3r.frankenlayers_lab.flows import WAVE1_FLOWS, WAVE2_FLOWS, WAVE3_FLOWS
           p=Path("experiments/driv3r/frankenlayers_lab/run-request.json")
           r=json.loads(p.read_text())
           assert r["schema"]=="cybersand-d1-frankenlayers-lab-request/1"
@@ -64,6 +65,20 @@ jobs:
               dict(label=k,mode=k,flow=list(v),quant="q8",seed=570)
               for k,v in WAVE2_FLOWS.items()
           ] + [dict(label="aero6q4",mode="aero6",flow=list(WAVE1_FLOWS["aero6"]),quant="q4_k_m",seed=570)]
+          p3=Path("experiments/driv3r/frankenlayers_lab/run-request-wave3.json")
+          w3=json.loads(p3.read_text())
+          assert w3["schema"]=="cybersand-d1-frankenlayers-lab-wave3/1"
+          assert w3["lineage"]["wave2_source_sha"]=="d4c9e5605776cb67741ce89302c6aac43a2770e8"
+          assert w3["lineage"]["wave2_run"]==43797802175
+          assert w3["lineage"]["model_q8_sha256"]==r["lineage"]["model_q8_sha256"]
+          assert w3["lineage"]["llama_commit"]==r["lineage"]["llama_commit"]
+          assert w3["lineage"]["w0_commit"]==r["lineage"]["w0_commit"]
+          assert w3["max_parallel"]==2 and w3["timeout_minutes"]<=95
+          assert w3["no_game_changes"] and not any(w3[k] for k in ("paid_api","paid_gpu","merge","ready"))
+          assert w3["experiments"]==[
+              dict(label=k,mode=k,flow=list(v),quant="q8",seed=570)
+              for k,v in WAVE3_FLOWS.items()
+          ]
           PY
           python3 tools/ci/check_ci_provider_policy.py
           python3 tools/ci/check_ci_scheduling_policy.py
@@ -88,15 +103,18 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - mode: tailspin4
-            flow: tailspin4
+          - mode: tailflip4
+            flow: tailflip4
             quant: q8
-          - mode: needle4
-            flow: needle4
+          - mode: echo4
+            flow: echo4
             quant: q8
-          - mode: aero6q4
-            flow: aero6
-            quant: q4_k_m
+          - mode: aero5_no20
+            flow: aero5_no20
+            quant: q8
+          - mode: aero5_no23
+            flow: aero5_no23
+            quant: q8
     env:
       OMP_NUM_THREADS: '2'
       MKL_NUM_THREADS: '2'

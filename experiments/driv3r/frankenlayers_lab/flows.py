@@ -1,4 +1,4 @@
-"""Immutable first-wave carcasses plus two second-wave alternative 4-layer tails.
+"""Immutable wave-1/2 carcasses plus the nonmonotonic wave-3 probes.
 
 The previous four names/flows MUST NOT change: their exact-model receipts are
 attached to GitHub Actions run 43790709596. New modes use new names.
@@ -17,10 +17,19 @@ WAVE2_FLOWS: dict[str, tuple[int, ...]] = {
     "tailspin4": (0, 4, 18, 20),
     "needle4": (0, 4, 18, 22),
 }
-LAB_FLOWS: dict[str, tuple[int, ...]] = {**WAVE1_FLOWS, **WAVE2_FLOWS}
+# Wave 3 deliberately tests nonmonotonic and repeated execution rather than
+# another four ordered skeletons. The immutable wave-1/wave-2 identities remain.
+WAVE3_FLOWS: dict[str, tuple[int, ...]] = {
+    "tailflip4": (0, 4, 20, 18),  # exchange final execution order of TAILSPIN4
+    "echo4": (0, 4, 18, 4),      # four executions, three unique layers
+    "aero5_no20": (0, 2, 4, 10, 23),  # AERO6 remove layer 20
+    "aero5_no23": (0, 2, 4, 10, 20),  # AERO6 remove last layer
+}
+LAB_FLOWS: dict[str, tuple[int, ...]] = {**WAVE1_FLOWS, **WAVE2_FLOWS, **WAVE3_FLOWS}
 EXPECTED_LENGTHS = {
     "skele6": 6, "aero6": 6, "skele4": 4, "aero4": 4,
     "tailspin4": 4, "needle4": 4,
+    "tailflip4": 4, "echo4": 4, "aero5_no20": 5, "aero5_no23": 5,
 }
 
 def validate_flows(flows: dict[str, tuple[int, ...]] = LAB_FLOWS) -> None:
@@ -31,14 +40,19 @@ def validate_flows(flows: dict[str, tuple[int, ...]] = LAB_FLOWS) -> None:
     for name, layers in flows.items():
         if not all(type(i) is int and 0 <= i < 24 for i in layers):
             raise ValueError(f"{name}: invalid layer index")
-        if len(set(layers)) != len(layers) or tuple(sorted(layers)) != layers:
-            raise ValueError(f"{name}: nonunique/nonordered first-pass skeleton")
+        if name != "echo4" and len(set(layers)) != len(layers):
+            raise ValueError(f"{name}: repeated source layers not authorised")
+        if name not in ("tailflip4", "echo4") and tuple(sorted(layers)) != layers:
+            raise ValueError(f"{name}: nonordered flow not authorised")
         if layers[0] != 0:
             raise ValueError(f"{name}: initial layer changed")
         if name in WAVE1_FLOWS:
             if layers != WAVE1_FLOWS[name]:
                 raise ValueError(f"{name}: immutable wave-1 flow changed")
-        elif layers != WAVE2_FLOWS[name]:
-            raise ValueError(f"{name}: frozen wave-2 flow changed")
+        elif name in WAVE2_FLOWS:
+            if layers != WAVE2_FLOWS[name]:
+                raise ValueError(f"{name}: frozen wave-2 flow changed")
+        elif layers != WAVE3_FLOWS[name]:
+            raise ValueError(f"{name}: frozen wave-3 flow changed")
 
 validate_flows()
