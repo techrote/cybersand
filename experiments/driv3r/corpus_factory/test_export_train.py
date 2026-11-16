@@ -141,6 +141,34 @@ class TrainExportTests(unittest.TestCase):
         self._expect_rehashed_source_refusal('train.worlds.jsonl', corrupt,
                                             'world partition')
 
+    def test_rehashed_material_observation_and_fingerprint_refused(self):
+        # A forged manifest AND matching local-input fingerprint must not
+        # turn a false material observation into a model training prompt.
+        def corrupt(rows):
+            row = rows[0]
+            obs = row['observation']
+            old = obs['local_material_5x5'][0][0]
+            obs['local_material_5x5'][0][0] = 'metal' if old != 'metal' else 'sand'
+            row['input_sha256'] = observed_fingerprint(obs)
+        self._expect_rehashed_source_refusal(
+            'train.decisions.jsonl', corrupt, 'reconstructed world/trail')
+
+    def test_rehashed_symbolic_observation_and_fingerprint_refused(self):
+        def corrupt(rows):
+            row = rows[0]
+            obs = row['observation']
+            old = obs['local_5x5'][0][0]
+            obs['local_5x5'][0] = ('#' if old != '#' else '.') + obs['local_5x5'][0][1:]
+            row['input_sha256'] = observed_fingerprint(obs)
+        self._expect_rehashed_source_refusal(
+            'train.decisions.jsonl', corrupt, 'reconstructed world/trail')
+
+    def test_rehashed_world_fixture_refused(self):
+        def corrupt(rows):
+            rows[0]['material_grid_sha256'] = '0' * 64
+        self._expect_rehashed_source_refusal(
+            'train.worlds.jsonl', corrupt, 'world fixture')
+
     def test_refuse_source_tree_output(self):
         with self.assertRaisesRegex(ValueError,'overwrite source'):
             export(self.corpus, self.corpus / 'new_export')
