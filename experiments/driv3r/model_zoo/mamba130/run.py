@@ -5,6 +5,7 @@ No mocked inference: all features use the real pretrained Mamba weights.
 """
 from __future__ import annotations
 import argparse
+import copy
 from datetime import datetime,timezone
 import hashlib
 import json
@@ -70,6 +71,7 @@ def main():
         return round((logits.argmax(-1)==labels).float().mean().item(),4)
     with torch.no_grad():
         initial_acc=accuracy(head(V),T)
+    head_initial=copy.deepcopy(head).eval()
     opt=torch.optim.AdamW(head.parameters(),lr=0.002,weight_decay=0.01)
     train_loss=[]
     head.train()
@@ -94,10 +96,14 @@ def main():
             legal=w.legal()
             if method=='teacher': pick=w.teacher(r)
             elif method=='random':pick=r.choice(legal)
+            elif method=='random_nonstop':
+                candidates=[a for a in legal if a!='STOP']
+                pick=r.choice(candidates or ['STOP'])
             else:
                 start=time.perf_counter()
                 with torch.inference_mode():
-                    scores=head(features(w.prompt()).unsqueeze(0))[0]
+                    policy=head_initial if method=='untrained' else head
+                    scores=policy(features(w.prompt()).unsqueeze(0))[0]
                     raw=ACTIONS[int(torch.argmax(scores))]
                     invalid+=int(raw not in legal)
                     legal_indices=[ACTIONS.index(a) for a in legal]
@@ -109,13 +115,13 @@ def main():
                       painted=len(w.painted),stopped=w.stopped,
                       raw_invalid=invalid,actions=actions,
                       p50_decision_ms=round(statistics.median(timing),3) if timing else None)
-    gallery=Image.new('RGB',(N*19*3,N*19*3+24*3),(242,242,242))
+    gallery=Image.new('RGB',(N*19*5,N*19*3+24*3),(242,242,242))
     gd=ImageDraw.Draw(gallery)
     traces=[]
     palette={'wall':(44,46,53),'protected':(203,109,52),'paint':(61,134,205),
              'goal':(51,165,110),'cursor':(216,61,76)}
     for row,seed in enumerate(eval_seeds):
-        for col,method in enumerate(('trained','random','teacher')):
+        for col,method in enumerate(('trained','untrained','random_nonstop','random','teacher')):
             w,ev=trace(seed,method);traces.append(ev)
             ox=col*N*19;oy=row*(N*19+24)
             for y in range(N):
@@ -144,12 +150,15 @@ def main():
                   heldout_model_raw_invalid_choices=sum(e['raw_invalid'] for e in model_traces),
                   heldout_model_painted_total=sum(e['painted'] for e in model_traces),
                   heldout_random_painted_total=sum(e['painted'] for e in traces if e['mode']=='random'),
+                  heldout_random_nonstop_painted_total=sum(e['painted'] for e in traces if e['mode']=='random_nonstop'),
+                  heldout_untrained_painted_total=sum(e['painted'] for e in traces if e['mode']=='untrained'),
                   traces=traces,train_seed_range=[100,100+args.train_seeds-1],
                   dev_seeds=[900,901,902],eval_seeds=eval_seeds,
                   limitations=['synthetic micro-world, not native CyberSand',
                    'frozen pretrained Mamba backbone; trained head only',
                    'host-masked legality does not prove raw model legal choices',
-                   'teacher and random are not trained-model baselines'])
+                   'teacher and random are not trained-model baselines',
+                   'random legal may stop early; random non-STOP is fairer continuation control'])
     (out/'results.json').write_text(json.dumps(manifest,indent=2))
     md=['# Mamba 130M Game-Policy Onboarding — actual pretrained forward + trained head',
         f'Exact upstream revision: `{sha}`',f'Git source: `{source_sha}`',
@@ -157,6 +166,7 @@ def main():
         f'TRAIN/DEV samples: {len(training)}/{len(dev)}; pre-training head DEV accuracy {initial_acc:.1%}, trained head DEV accuracy {dev_acc:.1%}',
         f'Feature forward p50/p95: {manifest["feature_p50_ms"]}/{manifest["feature_p95_ms"]} ms; peak RSS {manifest["peak_rss_mb"]} MiB',
         f'Held-out raw illegal argmax: {manifest["heldout_model_raw_invalid_choices"]}; trained-painted {manifest["heldout_model_painted_total"]}; random-painted {manifest["heldout_random_painted_total"]}',
+        f'Seed-matched controls: untrained-head-painted {manifest["heldout_untrained_painted_total"]}; random non-STOP-painted {manifest["heldout_random_nonstop_painted_total"]}',
         f'Checkpoint sha256: `{ckpt_sha}`',
         'The model selects legal candidates only after host masking; raw illegal argmax is retained separately.',
         'All outputs synthetic game-like trajectories; **no native Godot/Workbench claims**.',
