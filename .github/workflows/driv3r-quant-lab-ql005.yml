@@ -10,7 +10,7 @@ permissions:
   actions: read
 concurrency:
   group: ql005-bitserial-activation-repair
-  cancel-in-progress: false
+  cancel-in-progress: true
 jobs:
   bitserial:
     runs-on: ubuntu-24.04
@@ -51,7 +51,7 @@ jobs:
           python experiments/driv3r/quant_lab/quant_worm.py --self-test
           python experiments/driv3r/quant_lab/ql002_branch_retrace.py --self-test
           python experiments/driv3r/quant_lab/ql005_bitserial.py --self-test
-      - name: Perform 80 genuine STE repair updates and 144 first-pass original PNGs
+      - name: Perform 120 genuine STE repair updates and 192 first-pass original PNGs
         run: |
           python experiments/driv3r/quant_lab/ql005_bitserial.py --source-dir ql003-source --repair-dir ql004-source --out ql005-out --steps 40
       - name: Qualify exact HEAD, sources, optimizer state, original PNG bytes and first-pass receipts
@@ -65,11 +65,11 @@ jobs:
           assert r['pinned_sources']['ql003']=='9b4103c48127e5c8538403e2a4d9e2525fbe8755'
           assert r['pinned_sources']['ql004']=='e421d69bf16d9e567f02815707c9743713e0d13b'
           assert min(r['verified_original_manifest_entries'])>=100
-          assert r['new_optimizer_updates']==80 and r['heldout_n']>=4000
-          assert len(r['variants'])==9 and len(r['controls'])==3
-          assert len(list((root/'gallery').glob('*.png')))==144
+          assert r['new_optimizer_updates']==120 and r['heldout_n']>=4000
+          assert len(r['variants'])==13 and len(r['controls'])==3
+          assert len(list((root/'gallery').glob('*.png')))==192
           receipts=json.loads((root/'raw_decisions.json').read_text())
-          assert len(receipts)==144
+          assert len(receipts)==192
           assert all(x['first_pass'] for x in receipts)
           assert all(s['chosen'] in s['legal'] for x in receipts for s in x['steps'])
           for v in r['repair'].values():
@@ -80,7 +80,7 @@ jobs:
           for item in manifest:
               data=(root/item['path']).read_bytes()
               assert len(data)==item['bytes'] and hashlib.sha256(data).hexdigest()==item['sha256'], item['path']
-          print('QL005 EXACT-HEAD VERIFIED',len(manifest),'entries; 144 original PNGs; 80 optimizer steps')
+          print('QL005 EXACT-HEAD VERIFIED',len(manifest),'entries; 192 original PNGs; 120 optimizer steps')
           PY
       - name: Preserve model-step records, packed-code source hashes and real gallery
         if: always()
