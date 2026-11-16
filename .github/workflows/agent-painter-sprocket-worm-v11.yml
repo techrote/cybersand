@@ -1,0 +1,91 @@
+name: SPROCKET WORM-001 W11 head sampling CRN original rollouts
+on:
+  push:
+    branches: [codex/agent-painter-sprocket-568]
+    paths: [experiments/agent_painter/lanes/sprocket/worm-request-v11.json]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: sprocket-worm-v11-${{ github.sha }}
+  cancel-in-progress: false
+jobs:
+  inference:
+    name: W11 9 heldout 128-step worlds, immutable W9/W10 real PyTorch heads
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      TOKENIZERS_PARALLELISM: 'false'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Source and request lease admission
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/w11
+          python3 - <<'PY'
+          import json,os,subprocess
+          from pathlib import Path
+          q=json.loads(Path("experiments/agent_painter/lanes/sprocket/worm-request-v11.json").read_text())
+          assert q["schema"]=="cybersand.worm.sprocket-head-temperature/11"
+          assert q["experiment"]=="W11-128-heldout-CRN-v1"
+          assert q["heldout"]==[1901,1913,1931] and q["true_head_forwards"]==5760
+          assert q["optimizer_steps"]==q["real_root_forwards"]==0
+          assert q["draft_hold"] is True and q["native"] is False
+          assert os.environ["GITHUB_REF"]=="refs/heads/codex/agent-painter-sprocket-568"
+          sha=subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip()
+          Path("evidence/w11/lease.json").write_text(json.dumps({"source":sha,
+            "run":os.environ["GITHUB_RUN_ID"],"attempt":os.environ["GITHUB_RUN_ATTEMPT"],
+            "one_VM":True,"one_process":True,"request":q},indent=2)+"\n")
+          PY
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 -m py_compile experiments/agent_painter/lanes/sprocket/worm_head_sample_v11.py
+      - name: Download and SHA-admit both ORIGINAL training checkpoints
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/w9" "$RUNNER_TEMP/w10"
+          gh run download 43800891190 --repo techrote/cybersand --name sprocket-worm-v9-9a6c7956377c22fda3c0599da7645fd796d03569 --dir "$RUNNER_TEMP/w9"
+          gh run download 43806919532 --repo techrote/cybersand --name sprocket-worm-v10-141c6d3f8ee2b9d029d744d02ac64776dcf0f00f --dir "$RUNNER_TEMP/w10"
+          echo '5c09762f77580064b23a49b1daefef1e181a69d1318b1cfbaa8ca071ee2e75d4  '"$RUNNER_TEMP/w9/campaign/onpolicy-replay.pt" | sha256sum -c -
+          echo 'f984965d07c6774a5522269d7db9d61637427251c7871a8e37ebf4d67dc15d9f  '"$RUNNER_TEMP/w10/campaign/closed-loop-recovery-replay.pt" | sha256sum -c -
+          cp "$RUNNER_TEMP/w10/campaign/preflight.json" evidence/w11/W10-source-provenance.json
+      - name: Retrieve source-pinned READ-ONLY W0 and support
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/worm/common" "$RUNNER_TEMP/worm/support_sprocket"
+          git fetch --no-tags --depth=1 origin 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          git show 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61:experiments/agent_painter/worm/common/worm.py > "$RUNNER_TEMP/worm/common/worm.py"
+          git fetch --no-tags --depth=1 origin 2b6534ac21542805f4bda123f67e9624d21e39d7
+          git show 2b6534ac21542805f4bda123f67e9624d21e39d7:experiments/agent_painter/worm/support_sprocket/curriculum.py > "$RUNNER_TEMP/worm/support_sprocket/curriculum.py"
+          cp "$RUNNER_TEMP/worm/common/worm.py" evidence/w11/pinned-W0.py
+          cp "$RUNNER_TEMP/worm/support_sprocket/curriculum.py" evidence/w11/pinned-support.py
+          python3 experiments/agent_painter/lanes/sprocket/worm_head_sample_v11.py --w0 "$RUNNER_TEMP/worm/common/worm.py" --support "$RUNNER_TEMP/worm/support_sprocket/curriculum.py" --smoke-only
+      - name: Pin hosted CPU PyTorch environment
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/w11-venv"
+          "$RUNNER_TEMP/w11-venv/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/w11-venv/bin/python" -m pip install -r experiments/agent_painter/training/requirements.lock
+          "$RUNNER_TEMP/w11-venv/bin/python" -m pip check
+          "$RUNNER_TEMP/w11-venv/bin/python" -m pip freeze --all > evidence/w11/environment.txt
+      - name: Real checkpoint PyTorch inference and source-faithful PNGs
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 1800s "$RUNNER_TEMP/w11-venv/bin/python" experiments/agent_painter/lanes/sprocket/worm_head_sample_v11.py --w0 "$RUNNER_TEMP/worm/common/worm.py" --support "$RUNNER_TEMP/worm/support_sprocket/curriculum.py" --w9 "$RUNNER_TEMP/w9/campaign/onpolicy-replay.pt" --w10 "$RUNNER_TEMP/w10/campaign/closed-loop-recovery-replay.pt" --output evidence/w11/campaign
+      - name: Hash successful or failed evidence
+        if: always()
+        run: |
+          set -euo pipefail
+          (cd evidence/w11 && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum) > evidence/w11/SHA256SUMS.txt
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sprocket-worm-v11-${{ github.sha }}
+          path: evidence/w11/
+          if-no-files-found: warn
+          retention-days: 90
