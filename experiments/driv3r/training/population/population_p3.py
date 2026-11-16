@@ -175,12 +175,12 @@ def run_p3(p0_output: Path, output: Path, seed=627, members=3,
                                          selection_reward=winner[2],
                                          members=[entry[0] for entry in trained],
                                          training_archive_bins=len(archive))
+    # All policy training and selection decisions are frozen before *any*
+    # held-out evaluation (including the P0 and random controls).
+    for niche in NICHES:
         comparisons[niche]["controls"] = dict(
             p0=evaluate(parents[niche], niche, splits["holdout"]),
             nonstop_random=evaluate("nonstop_random", niche, splits["holdout"]))
-
-    # Now—and only now—open the heldout worlds for all offspring, all arms.
-    for niche in NICHES:
         for arm in ARMS:
             group = comparisons[niche][arm]
             policies = [all_policies[ident] for ident in group["members"]]
