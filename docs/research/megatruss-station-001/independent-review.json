@@ -1,0 +1,50 @@
+{
+  "review_kind": "independent engineering subagent",
+  "source_commit": "0059f5e62592ed1fa8c46429fbc816cfb26f4b27",
+  "source_tree": "e7e187ca6d26b3698f9d9b5dfda179403025a4a7",
+  "parent_source": "615828b28337f85e4663e03ba479616db4ddf764",
+  "verdict": "accepted native implementation and exact-source visual campaign; no remaining blocking native or visual defects",
+  "runtime_gate_scope": "Hosted Godot ordinary-preset parity is a separate completed-result gate; inspect PR 663 and workflow 43966787362. It was pending when this native review closed.",
+  "repaired_findings": [
+    {
+      "finding": "Odd X-bracing panels duplicated their first diagonal",
+      "repair": "Complementary strip expression; emitted material regression probes both arms in odd and even panels across32 seeds",
+      "verified": true
+    },
+    {
+      "finding": "CI tee pipelines could hide a failing gate",
+      "repair": "Explicit bash shell with pipefail for every workflow run step",
+      "verified": true
+    }
+  ],
+  "independent_execution": {
+    "focused_assertions": 1499,
+    "named_gates": 18,
+    "status": "pass"
+  },
+  "verification": {
+    "qualification_source_inputs": 67,
+    "gallery_source_inputs": 84,
+    "native_pngs_pixel_verified": 21,
+    "all_pngs_byte_verified": 24,
+    "parent_cells_exactly_equal": 3538944,
+    "parent_snapshot_bytes_exactly_equal": 7093458,
+    "hero_landscape_overlap_cells": 262144,
+    "landscape_large_overlap_cells": 524288,
+    "signed_positive_overlap_cells": 131072,
+    "six_seed_material_hashes_distinct": true,
+    "glazing_replacements_only": {
+      "count": 8653,
+      "from": 121,
+      "to": 58
+    },
+    "original_classic_source_prefix_unchanged": true
+  },
+  "remaining_limits": [
+    "Material-cell geometry; no structural-engineering, actor-navigation or physical Windows acceptance",
+    "Finite masks may crop stations; no terrain adaptation or interface negotiation",
+    "Optional shafts, tunnels and deterioration can interrupt members",
+    "LeakSanitizer blocked by ptrace; ASan and UBSan passed with detect_leaks=0",
+    "Draft/HOLD; no merge, Ready promotion or parent changes"
+  ]
+}

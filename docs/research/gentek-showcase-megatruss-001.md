@@ -102,8 +102,8 @@ explicitly separates `super_x`, `bay_index`, `bay_x`, `major_band` and `panel_x`
 
 The focused native harness is
 [`test_megatruss_station.cpp`](../../native/tests/test_megatruss_station.cpp).
-It checks byte-identical repeats, forward/reverse/permuted chunk order, varied
-work slices, 32/64/128-cell storage partitions, signed coordinates including
+It checks byte-identical repeats, forward/reverse chunk order, varied
+work slices, 8/32/64/128/256-cell storage partitions, signed coordinates including
 large signed origins, bounds-only clipping, concurrent reads, cancellation,
 charged-work limits and refusal of invalid versions/schema/materials.
 
@@ -130,21 +130,56 @@ python3 tools/architecture/qualify_megatruss.py --output build/megatruss-qualifi
 python3 tools/architecture/render_megatruss_station.py --require-clean-source --output build/megatruss-station-gallery
 ```
 
-Initial local focused qualification passed **1,499 assertions / 18 named gates**.
+Qualified implementation source is
+`0059f5e62592ed1fa8c46429fbc816cfb26f4b27`, tree
+`e7e187ca6d26b3698f9d9b5dfda179403025a4a7`.
+Both the local and hosted focused qualification passed **1,499 assertions / 18 named gates**.
 The measured minimum protected clear hall was 221 × 86 cells across the sampled
 signed supercells and seeds. Representative primary/secondary cross-sections
-were 13 and 2 cells. Final hosted results and source identities belong in the
-PR evidence handoff; this source checkpoint does not assert a completed CI run.
+were 13 and 2 cells. The hosted native job also passed all nine existing generation suites,
+including 416,267 world-generation assertions. The independently compiled parent
+comparison passed all 3,538,944 cells plus receipts and fingerprints. The exact
+7,093,458-byte snapshot hash is
+`ac0aba5b446b0315fb7e2b705ef46be71337070edd9b232c80dd50c8785c4a41`.
+
+AddressSanitizer and UBSan passed the same 1,499 checks. LeakSanitizer refused
+the workspace ptrace environment; its failure is retained in the local evidence
+and is not labelled a pass. The successful rerun retained ASan/UBSan and used
+`detect_leaks=0`. See the [source-bound local qualification](megatruss-station-001/local-qualification.json),
+[legacy comparison](megatruss-station-001/local-legacy-comparison.json) and
+[sanitizer report](megatruss-station-001/local-sanitizer.json).
+
+The source-built Godot/preset parity and final-head Documentation outcomes are
+recorded separately in [PR #663](https://github.com/techrote/cybersand/pull/663)
+and [qualification run 43966787362](https://github.com/techrote/cybersand/actions/runs/43966787362).
+Evidence-only gallery/report commits do not change the tested source inputs.
 
 ## Performance and visual campaign
 
 The harness compares Steel Trestle, Space Frame, Arched Viaduct v2 and Megatruss
 at identical palette, seed, parameters and 512²/1024² extents. It reports seven
-warmed raster trials per module, median and range, and native preparation time.
+warmed raster trials per module, median and range. Preparation is excluded;
+the per-image exporter separately records preparation time.
 No timing ratio is used as a correctness gate. The sampler performs bounded
 integer arithmetic, with no cell-time allocations, loops, recursion, search or
 mutable cache. Its conservative charge is 240 logical module operations/cell.
 That charge is an engine budget estimate, not an instruction or CPU-cycle count.
+
+Hosted Ubuntu/GCC13 medians from the qualified native artifact:
+
+| Native generator | 512×512 | 1024×1024 |
+| --- | ---: | ---: |
+| Steel Trestle | 123.165 ms | 491.114 ms |
+| Space Frame | 124.033 ms | 491.785 ms |
+| Arched Viaduct v2 | 124.632 ms | 497.568 ms |
+| Megatruss Station | 126.621 ms | 503.220 ms |
+
+The measured overhead versus Trestle is about 2.8% / 2.5% on this runner.
+These are whole generation-path measurements, including allocation and content
+hashing, not a sampler-only microbenchmark or universal performance guarantee.
+The diagnostic benchmark uses shell58/deck62/glass121/accent65 for every module;
+the presentation preset uses deck65/accent65. Trial arrays and scope are retained
+in the [hosted/local comparison](megatruss-station-001/hosted-local-comparison.json).
 
 The retained campaign contains 21 native images: three heroes, six seed cases,
 four scale contrasts, two member-mass contrasts, glazing On/Off, portals Off,
@@ -160,6 +195,25 @@ Raw native bytes, per-chunk receipts, every PNG SHA-256, executable hash and
 complete source-input hash ledger accompany the gallery. The source archive
 contains the exact files that produced the campaign.
 
+The [rendered PR gallery](https://github.com/techrote/cybersand/pull/663#issuecomment-6930945285)
+embeds the hero, all seed/scale/control contrasts and identical-scale comparison.
+The [retained full-resolution gallery](../images/gentek-megatruss/GALLERY.md) and
+[manifest](../images/gentek-megatruss/manifest.json) preserve all 24 PNGs and their
+source/material hashes. The source-input digest is
+`5b78a93866e11831222455db4f9db2cee7b27c346eb493ed2330639bec5bab53`.
+The [hosted native artifact](https://github.com/techrote/cybersand/actions/runs/43966787362/artifacts/14276247051)
+retains all raw cells, receipts, source ZIP and the tested executable. Its ZIP
+SHA-256 is `f93b0e89ab3bf47a087dc55fc520851d623964578c6ad9e409269e19cbd70ded`.
+
+All 21 hosted native arrays and all 24 PNGs match the independently reviewed
+local campaign byte for byte. The complete 512² hero matches the landscape
+for 262,144 common cells; landscape/large hero match for 524,288; the signed
+and positive landscapes match for 131,072 common world cells. These capture
+comparisons independently demonstrate cross-boundary and changed-extent phase
+continuity. Hero empty ratios are 68.32%, 70.00% and 70.60%. Thin/heavy members
+retain 81.29% / 56.58% empty space. Glazing Off changes exactly 8,653 glass cells
+to shell and nothing else. All six seed hashes differ.
+
 ## Hosted pipeline and independent review
 
 The new branch-only workflow
@@ -173,9 +227,19 @@ It publishes evidence artifacts and never pushes to the parent or this branch.
 
 Independent review identified an early secondary-X defect: odd panels repeated
 the first diagonal instead of adding its complement. The source now tests the
-complementary strip, with witnesses for both odd and even panels. Final review
-must additionally inspect all retained images, source ledgers, benchmark claims,
-legacy comparisons and the exact-source Godot equality result.
+complementary strip, with witnesses for both odd and even panels. The reviewer also found and
+repaired piped CI commands that could mask gate failure; the workflow now uses
+an explicit pipe-failing Bash shell.
+
+The final [independent review](megatruss-station-001/independent-review.json)
+accepts the native implementation and visual campaign with no remaining blocking
+findings. The reviewer independently ran all 1,499 checks, compared parent
+snapshots, verified 67 qualification and 84 gallery source hashes against
+immutable Git blobs, decoded every native PNG pixel against the material palette,
+and inspected every original and composite. The primary/secondary hierarchy,
+station voids, seeded programmes, source readability and proportional cost passed
+that review. Source-built Godot equality remains a distinct hosted result, not
+a claim inferred from the standalone native test.
 
 ## Remaining limits
 

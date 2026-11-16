@@ -1,0 +1,167 @@
+{
+  "source": "0059f5e62592ed1fa8c46429fbc816cfb26f4b27",
+  "source_input_sha256": "5b78a93866e11831222455db4f9db2cee7b27c346eb493ed2330639bec5bab53",
+  "artifact_sha256": "f93b0e89ab3bf47a087dc55fc520851d623964578c6ad9e409269e19cbd70ded",
+  "artifact_files": 81,
+  "exact_material_array_matches": 21,
+  "exact_png_matches": 24,
+  "different_pngs": [],
+  "benchmark": {
+    "benchmark": "ordinary-native-generate",
+    "checksum": 92136827790701744,
+    "configuration": {
+      "accent_material": 65,
+      "bay_width": 64,
+      "chunk_size": 64,
+      "floor_height": 96,
+      "floor_material": 62,
+      "schema": 4,
+      "seed": 271828,
+      "wall": 3,
+      "wall_material": 58,
+      "window_material": 121
+    },
+    "results": [
+      {
+        "extent": 512,
+        "logical_operations_per_cell": 472,
+        "max_ms": 123.393516,
+        "median_ms": 123.16488,
+        "min_ms": 123.030458,
+        "module": "trestle",
+        "trials_ms": [
+          123.103187,
+          123.16488,
+          123.358123,
+          123.235063,
+          123.030458,
+          123.132185,
+          123.393516
+        ]
+      },
+      {
+        "extent": 512,
+        "logical_operations_per_cell": 476,
+        "max_ms": 124.230661,
+        "median_ms": 124.033431,
+        "min_ms": 123.794464,
+        "module": "space_frame",
+        "trials_ms": [
+          123.833288,
+          123.863327,
+          124.033431,
+          124.230661,
+          123.794464,
+          124.15887,
+          124.066857
+        ]
+      },
+      {
+        "extent": 512,
+        "logical_operations_per_cell": 484,
+        "max_ms": 124.752542,
+        "median_ms": 124.631965,
+        "min_ms": 124.155462,
+        "module": "arcade",
+        "trials_ms": [
+          124.155462,
+          124.436944,
+          124.385059,
+          124.752542,
+          124.670208,
+          124.69892,
+          124.631965
+        ]
+      },
+      {
+        "extent": 512,
+        "logical_operations_per_cell": 664,
+        "max_ms": 127.160646,
+        "median_ms": 126.620883,
+        "min_ms": 126.451517,
+        "module": "megatruss_station",
+        "trials_ms": [
+          126.796219,
+          126.451517,
+          126.620883,
+          126.465124,
+          127.160646,
+          126.992556,
+          126.5673
+        ]
+      },
+      {
+        "extent": 1024,
+        "logical_operations_per_cell": 472,
+        "max_ms": 543.556424,
+        "median_ms": 491.114284,
+        "min_ms": 481.342486,
+        "module": "trestle",
+        "trials_ms": [
+          486.01783,
+          483.535562,
+          481.342486,
+          527.481444,
+          543.556424,
+          491.114284,
+          496.879
+        ]
+      },
+      {
+        "extent": 1024,
+        "logical_operations_per_cell": 476,
+        "max_ms": 535.424234,
+        "median_ms": 491.784968,
+        "min_ms": 485.881166,
+        "module": "space_frame",
+        "trials_ms": [
+          485.881166,
+          487.855719,
+          491.784968,
+          490.491171,
+          535.424234,
+          527.578728,
+          494.845274
+        ]
+      },
+      {
+        "extent": 1024,
+        "logical_operations_per_cell": 484,
+        "max_ms": 539.62471,
+        "median_ms": 497.568038,
+        "min_ms": 487.318332,
+        "module": "arcade",
+        "trials_ms": [
+          491.510988,
+          487.318332,
+          491.857652,
+          497.568038,
+          539.62471,
+          535.422495,
+          499.687635
+        ]
+      },
+      {
+        "extent": 1024,
+        "logical_operations_per_cell": 664,
+        "max_ms": 510.807614,
+        "median_ms": 503.219503,
+        "min_ms": 495.854557,
+        "module": "megatruss_station",
+        "trials_ms": [
+          499.667378,
+          495.854557,
+          496.318555,
+          510.807614,
+          507.434507,
+          504.604392,
+          503.219503
+        ]
+      }
+    ],
+    "timed_scope": "complete native chunk generation, allocation and content hashing; preparation excluded",
+    "trial_order": "rotating-module-order",
+    "warm_trials": 7,
+    "warmup_trials": 1
+  }
+}
