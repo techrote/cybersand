@@ -374,6 +374,7 @@ def run(args):
     held, held_hist = collect(range(8100, 8124), 8004)
     assert not set(range(1100,1164)) & set(range(8100,8124))
     net = Policy()
+    untuned = copy.deepcopy(net)  # independently stored pre-optimizer negative control
     opt = torch.optim.AdamW(net.parameters(), lr=0.004)
     losses = []
     for i in range(args.steps):
@@ -388,6 +389,8 @@ def run(args):
     repair, repair_diag = qat_repair(net, train, 2, args.repair_steps, 9941)
     mutants = sparse_channels(net, .30)
     variants = {
+        'untuned-fp32': (untuned, (32,32,32)),
+        'untuned-q1': (untuned, (1,1,1)),
         'fp32': (net, (32,32,32)),
         'q8': (net, (8,8,8)),
         'q4': (net, (4,4,4)),
