@@ -409,24 +409,36 @@ def audit(out, replay=True):
             raise ValueError('source integrity failure: '+filename)
         if filename.endswith('.jsonl') and len(raw.splitlines())!=record['rows']:
             raise ValueError('source row-count integrity failure: '+filename)
-    groups={}; input_by_split={}
+    groups={}; input_by_split={}; episodes_by_group={}
     for split in SPLITS:
         worlds=[json.loads(s) for s in (out/f'{split}.worlds.jsonl').read_text().splitlines()]
         episodes=[json.loads(s) for s in (out/f'{split}.episodes.jsonl').read_text().splitlines()]
         receipts=[json.loads(s) for s in (out/f'{split}.receipts.jsonl').read_text().splitlines()]
         eligible_file=('train.eligible.jsonl' if split=='train' else f'{split}.evaluation-eligible.jsonl')
         eligible=[json.loads(s) for s in (out/eligible_file).read_text().splitlines()]
+        worlds_by_id={w['world_id']:w for w in worlds}
+        if len(worlds_by_id)!=len(worlds):
+            raise ValueError('duplicate world-id ledger')
         for w in worlds:
             group=w['world_group_id']
             if group in groups or split_for(group)!=split:
                 raise ValueError('world split leakage')
             groups[group]=split
+        receipt_by_id={}
         for row in receipts:
+            if row['record_id'] in receipt_by_id:
+                raise ValueError('duplicate receipt identifier')
+            receipt_by_id[row['record_id']]=row
             if row['target_action'] not in row['observation']['legal'] or not row['receipt']['raw_legal']:
                 raise ValueError('illegal action receipt')
-            if row['split']!=split or row['world_group_id'] not in groups:
+            if row['split']!=split or groups.get(row['world_group_id'])!=split:
                 raise ValueError('receipt split mislabel')
         for row in eligible:
+            original=receipt_by_id.get(row['record_id'])
+            if original is None or canonical(row)!=canonical(original):
+                raise ValueError('eligible row not present identically in source receipts')
+            if row['split']!=split or groups.get(row['world_group_id'])!=split:
+                raise ValueError('eligible split mislabel')
             key=row['input_sha256']
             if key in input_by_split and input_by_split[key]!=split:
                 raise ValueError('cross-split input leakage')
@@ -439,13 +451,38 @@ def audit(out, replay=True):
                 w,e,rows=rollout(ep['seed'],ep['scenario'],ep['family'],ep['step_budget'])
                 if canonical(e)!=canonical(ep):
                     raise ValueError('replay mismatch: episode')
+                if canonical(w)!=canonical(worlds_by_id.get(e['world_id'])):
+                    raise ValueError('replay mismatch: world')
                 source[e['episode_id']]=rows
+                episodes_by_group.setdefault(e['world_group_id'],{})[e['family']]=e
             recorded={}
             for row in receipts:
                 recorded.setdefault(row['episode_id'],[]).append(row)
             for eid,rows in source.items():
                 if canonical(rows)!=canonical(recorded.get(eid,[])):
                     raise ValueError('replay mismatch: receipt')
+    if replay:
+        pair_rows=[json.loads(s) for s in (out/'paired-footprints.jsonl').read_text().splitlines()]
+        if len(pair_rows)!=len(groups):
+            raise ValueError('paired footprint group count mismatch')
+        verified=set()
+        for pair in pair_rows:
+            group=pair['world_group_id']
+            if group in verified or groups.get(group)!=pair['split']:
+                raise ValueError('paired footprint split or repetition mismatch')
+            verified.add(group)
+            episodes=episodes_by_group.get(group,{})
+            if set(episodes)!=set(FAMILIES):
+                raise ValueError('paired footprint missing family')
+            masks=[{tuple(p) for p in episodes[f]['trail']} for f in FAMILIES]
+            distinct=len({digest(sorted(m)) for m in masks})
+            overlaps=[round(len(masks[i]&masks[j])/max(1,len(masks[i]|masks[j])),5)
+                      for i,j in ((0,1),(0,2),(1,2))]
+            if (pair['distinct_footprints']!=distinct or
+                pair['new_cells_by_family']!={f:len(m) for f,m in zip(FAMILIES,masks)} or
+                pair['mean_pairwise_jaccard']!=round(sum(overlaps)/3,5) or
+                pair['ablation_fixed_pipework_distinct_footprints']!=1):
+                raise ValueError('replay mismatch: paired footprint')
     return {'audit':'PASS','world_groups':len(groups),'distinct_eligible_inputs':len(input_by_split),
             'source_replay':replay,'files':len(m['files'])}
 
