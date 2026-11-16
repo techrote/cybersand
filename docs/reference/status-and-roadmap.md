@@ -21,6 +21,13 @@ legacy Setup-v2/generated-start-v1 compatibility. The [qualification runbook](..
 links source-matched execution and Owner acceptance; no merge is authorized.
 The 11 November revised issue supersedes the former reset/respawn/rollback proposal.
 
+## Interlaced Viaduct showcase — 2026-11-16
+
+Isolated Draft/HOLD on the fixed 72-classic parent; `interlaced_viaduct` v1
+adds an ordinary selectable style with two composed structural systems.
+[Qualification and native evidence](../operations/gentek-interlaced-viaduct.md)
+remain separate from owner aesthetic acceptance and merge authority.
+
 ## Architectural Generator Phase A/B + owner-refined v2 — 2026-11-15
 
 **PR #582 remains unmerged under explicit owner hold.** The

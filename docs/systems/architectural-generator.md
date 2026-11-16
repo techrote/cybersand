@@ -335,3 +335,11 @@ Windows owner evaluation must independently inspect actual layout, interactive
 controls, paint/erase and save/reopen. No general architectural solver,
 variable-size room packing, semantic route generator, automatic edit rebase,
 streaming World, camera optimization or agent authoring is included.
+
+## Isolated Interlaced Viaduct showcase
+
+The Draft/HOLD `interlaced_viaduct` v1 candidate adds two opposed structural
+systems, bounded shared crossings and designed lens-shaped voids through the
+ordinary CLASSIC sampler/preset path. Its [design and qualification guide](../operations/gentek-interlaced-viaduct.md)
+records the source boundary, control meaning, native campaign and limitations.
+It adds no schema, UI, material definitions or runtime composition engine.
