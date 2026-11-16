@@ -198,6 +198,14 @@ $(BUILD_DIR)/worldgen-objects/sanitized-threaded/%.o: native/src/%.cpp $(CORE_HE
 $(BUILD_DIR)/test_world_generation: $(GENERATION_OPT_OBJECTS) $(CORE_HEADERS) native/tests/test_world_generation.cpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O2 -g -Werror $(GENERATION_OPT_OBJECTS) native/tests/test_world_generation.cpp -o $@
 
+$(BUILD_DIR)/test_seeded_typology_megablock: $(GENERATION_OPT_OBJECTS) $(CORE_HEADERS) native/tests/test_seeded_typology_megablock.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O2 -g -Werror $(GENERATION_OPT_OBJECTS) native/tests/test_seeded_typology_megablock.cpp -o $@
+
+.PHONY: megablock-test megablock-sanitize
+megablock-test: $(BUILD_DIR)/test_world_generation $(BUILD_DIR)/test_seeded_typology_megablock
+	./$(BUILD_DIR)/test_world_generation
+	./$(BUILD_DIR)/test_seeded_typology_megablock
+
 $(BUILD_DIR)/test_world_generation_install: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_world_generation_install.cpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O2 -g $(CORE_SOURCES) native/tests/test_world_generation_install.cpp -o $@
 
@@ -207,8 +215,9 @@ $(BUILD_DIR)/test_generation_fields: $(BUILD_DIR)/worldgen-objects/normal/genera
 $(BUILD_DIR)/test_generation_modifiers: $(GENERATION_OPT_OBJECTS) $(CORE_HEADERS) native/tests/test_generation_modifiers.cpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O2 -g -Werror $(GENERATION_OPT_OBJECTS) native/tests/test_generation_modifiers.cpp -o $@
 
-worldgen-test: $(BUILD_DIR)/test_generation_planes $(BUILD_DIR)/test_generation_grammar $(BUILD_DIR)/test_generation_typed_integration $(BUILD_DIR)/test_generation_typed $(BUILD_DIR)/test_generation_spatial $(BUILD_DIR)/test_world_generation $(BUILD_DIR)/test_world_generation_install $(BUILD_DIR)/test_generation_fields $(BUILD_DIR)/test_generation_modifiers
+worldgen-test: $(BUILD_DIR)/test_generation_planes $(BUILD_DIR)/test_generation_grammar $(BUILD_DIR)/test_generation_typed_integration $(BUILD_DIR)/test_generation_typed $(BUILD_DIR)/test_generation_spatial $(BUILD_DIR)/test_world_generation $(BUILD_DIR)/test_seeded_typology_megablock $(BUILD_DIR)/test_world_generation_install $(BUILD_DIR)/test_generation_fields $(BUILD_DIR)/test_generation_modifiers
 	./$(BUILD_DIR)/test_world_generation
+	./$(BUILD_DIR)/test_seeded_typology_megablock
 	./$(BUILD_DIR)/test_world_generation_install
 	./$(BUILD_DIR)/test_generation_fields
 	./$(BUILD_DIR)/test_generation_modifiers
@@ -221,6 +230,13 @@ worldgen-test: $(BUILD_DIR)/test_generation_planes $(BUILD_DIR)/test_generation_
 $(BUILD_DIR)/test_world_generation_sanitized: $(GENERATION_SAN_OBJECTS) $(CORE_HEADERS) native/tests/test_world_generation.cpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined $(GENERATION_SAN_OBJECTS) native/tests/test_world_generation.cpp -o $@
 
+$(BUILD_DIR)/test_seeded_typology_megablock_sanitized: $(GENERATION_SAN_OBJECTS) $(CORE_HEADERS) native/tests/test_seeded_typology_megablock.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined $(GENERATION_SAN_OBJECTS) native/tests/test_seeded_typology_megablock.cpp -o $@
+
+megablock-sanitize: $(BUILD_DIR)/test_world_generation_sanitized $(BUILD_DIR)/test_seeded_typology_megablock_sanitized
+	ASAN_OPTIONS=$${ASAN_OPTIONS:-detect_leaks=1:strict_string_checks=1} UBSAN_OPTIONS=$${UBSAN_OPTIONS:-halt_on_error=1} ./$(BUILD_DIR)/test_world_generation_sanitized
+	ASAN_OPTIONS=$${ASAN_OPTIONS:-detect_leaks=1:strict_string_checks=1} UBSAN_OPTIONS=$${UBSAN_OPTIONS:-halt_on_error=1} ./$(BUILD_DIR)/test_seeded_typology_megablock_sanitized
+
 $(BUILD_DIR)/test_world_generation_install_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_world_generation_install.cpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined $(CORE_SOURCES) native/tests/test_world_generation_install.cpp -o $@
 
@@ -230,8 +246,9 @@ $(BUILD_DIR)/test_generation_fields_sanitized: $(BUILD_DIR)/worldgen-objects/san
 $(BUILD_DIR)/test_generation_modifiers_sanitized: $(GENERATION_SAN_OBJECTS) $(CORE_HEADERS) native/tests/test_generation_modifiers.cpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined $(GENERATION_SAN_OBJECTS) native/tests/test_generation_modifiers.cpp -o $@
 
-worldgen-sanitize: $(BUILD_DIR)/test_generation_planes_sanitized $(BUILD_DIR)/test_generation_grammar_sanitized $(BUILD_DIR)/test_generation_typed_integration_sanitized $(BUILD_DIR)/test_generation_typed_sanitized $(BUILD_DIR)/test_generation_spatial_sanitized $(BUILD_DIR)/test_world_generation_sanitized $(BUILD_DIR)/test_world_generation_install_sanitized $(BUILD_DIR)/test_generation_fields_sanitized $(BUILD_DIR)/test_generation_modifiers_sanitized
+worldgen-sanitize: $(BUILD_DIR)/test_generation_planes_sanitized $(BUILD_DIR)/test_generation_grammar_sanitized $(BUILD_DIR)/test_generation_typed_integration_sanitized $(BUILD_DIR)/test_generation_typed_sanitized $(BUILD_DIR)/test_generation_spatial_sanitized $(BUILD_DIR)/test_world_generation_sanitized $(BUILD_DIR)/test_seeded_typology_megablock_sanitized $(BUILD_DIR)/test_world_generation_install_sanitized $(BUILD_DIR)/test_generation_fields_sanitized $(BUILD_DIR)/test_generation_modifiers_sanitized
 	./$(BUILD_DIR)/test_world_generation_sanitized
+	./$(BUILD_DIR)/test_seeded_typology_megablock_sanitized
 	./$(BUILD_DIR)/test_world_generation_install_sanitized
 	./$(BUILD_DIR)/test_generation_fields_sanitized
 	./$(BUILD_DIR)/test_generation_modifiers_sanitized

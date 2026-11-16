@@ -10,6 +10,8 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+Draft showcase: [Seeded Typology Megablock](research/gentek-showcase-megablock-001.md) adds one classic v1 Gentek with a deterministic local typology programme, shared interfaces and fixed-seed native evidence. This is isolated from accepted main and the frozen 72-module parent.
+
 For deliberate historical research, use the isolated
 [engineering archaeology index](history/engineering/README.md). It is excluded
 from default current-answer retrieval and grants no implementation authority.

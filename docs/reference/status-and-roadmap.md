@@ -10,6 +10,10 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Seeded Typology Megablock showcase — 2026-11-16
+
+**Isolated Draft / HOLD:** [GENTEK-SHOWCASE-MEGABLOCK-001](../research/gentek-showcase-megablock-001.md) adds the 73rd CLASSIC sampler on a child of exact PR #624 head `615828b28337f85e4663e03ba479616db4ddf764`. Native programme/interfaces, source-matched seed/parameter evidence and independent review belong to this branch; no merge, Ready promotion or physical Windows acceptance is implied.
+
 ## GEN-008 Flatten / Bake History — 2026-11-13
 
 **Implementation candidate, Draft/HOLD:** issue #548 starts independently from

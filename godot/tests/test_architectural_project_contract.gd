@@ -187,7 +187,8 @@ func classic_genteks() -> void:
 		"warren_truss","kingpost_frame","queenpost_frame","lenticular_bridge","radial_stay_bridge","twin_mast_bridge",
 		"a_frame_hall","butterfly_hall","ziggurat_arcade","corbel_arcade","chain_vault","ring_pier",
 		"folded_plate_hall","space_frame","crossbeam_stack","yoke_bridge","lantern_tower","spine_arcade",
-		"cascade_terrace","inverted_trestle","cranked_beam","barrel_arcade","buttress_crown","triptych_arcade"]
+		"cascade_terrace","inverted_trestle","cranked_beam","barrel_arcade","buttress_crown","triptych_arcade",
+		"seeded_typology_megablock"]
 	var presets: Array = Project.builtin_presets()
 	var hashes := {}
 	for module: String in ids:
@@ -216,7 +217,7 @@ func classic_genteks() -> void:
 			var digest: String = Store.digest(chunk.cells)
 			check(not hashes.has(digest), "classic first-chunk geometry differs: " + module)
 			hashes[digest] = module
-	check(hashes.size() == 72, "seventy-two classic Genteks produce distinct first-chunk material geometry")
+	check(hashes.size() == 73, "seventy-three classic Genteks produce distinct first-chunk material geometry")
 
 func planner_invariants() -> void:
 	for seed: int in range(64):
@@ -299,16 +300,19 @@ func native_identity_edges() -> void:
 	for entry: Dictionary in catalogue.modules:
 		var identity: String = str(entry.id) + ":" + str(entry.version)
 		versions[identity] = true
-		var architectural: bool = str(entry.id) in ["terraced", "hex_hive", "arcade"]
-		var versioned_legacy: bool = str(entry.id) in ["arcology", "vault"] and int(entry.version) == 2
-		if architectural or versioned_legacy:
-			check(int(entry.get("minimum_recipe_schema", -1)) == 4,
-				"schema-4-only catalogue variant declares its minimum schema: " + identity)
-		else:
+		# These three v1 identities predate schema 4. Every other current
+		# catalogue entry, including all CLASSIC Genteks, requires schema 4.
+		var legacy: bool = identity in ["arcology:1", "vault:1", "aqueduct:1"]
+		if legacy:
 			check(not entry.has("minimum_recipe_schema"),
 				"legacy module metadata remains free of schema-4 restrictions: " + identity)
+		else:
+			check(int(entry.get("minimum_recipe_schema", -1)) == 4,
+				"schema-4-only catalogue variant declares its minimum schema: " + identity)
 	check(versions.has_all(["arcology:1","arcology:2","vault:1","vault:2","aqueduct:1",
 		"terraced:1","terraced:2","hex_hive:1","hex_hive:2","arcade:1","arcade:2"]),"native catalogue exposes exact legacy and architectural module versions")
+	check(versions.has("seeded_typology_megablock:1") and not versions.has("seeded_typology_megablock:2"),
+		"Megablock catalogue exposes exactly its implemented v1 identity")
 
 func run() -> void:
 	hostile_json()

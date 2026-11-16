@@ -62,6 +62,10 @@ and [owner evaluation guide](../operations/architectural-generator-playtest.md).
 PR #582 is a separate Draft/HOLD candidate; standalone qualification is not
 integrated-main or retained-runtime publication.
 
+## Seeded Typology Megablock
+
+For how an immutable classic Gentek varies local architectural programmes while preserving cores, atria and shared bridge landings, use the [Megablock contract](../research/gentek-showcase-megablock-001.md). It explicitly limits guarantees to complete uncarved supercells, distinguishes intra-supercell cooperation from GENTEK-SWARM, and lists existing parameter responses. The [additive questions](retrieval-questions-megablock.json) leave frozen evaluations unchanged.
+
 ## Branch reconciliation and design choices
 
 For how agents reconcile stacked or long-running branches with main, and which
