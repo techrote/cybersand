@@ -7,6 +7,8 @@ while invoking this family-specific entrypoint also in its child model processes
 from __future__ import annotations
 import os
 from pathlib import Path
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 import smol_residency as base
 
 MODEL = "LiquidAI/LFM2.5-350M"

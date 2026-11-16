@@ -27,6 +27,7 @@ jobs:
       - name: Verify single-host bounded no-optimizer request and source-only policy
         run: |
           set -euo pipefail
+          mkdir -p evidence/lfm350-residency
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           python3 -m unittest discover -s experiments/driv3r/wormbrain/fleet -p 'test_*.py' -v
           python3 tools/ci/check_ci_provider_policy.py
@@ -86,6 +87,7 @@ jobs:
         if: always()
         run: |
           set -euo pipefail
+          mkdir -p evidence/lfm350-residency
           (python3 --version; git rev-parse HEAD; date -u -Iseconds) > evidence/lfm350-residency/host.txt
           (cd evidence/lfm350-residency && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum) > evidence/lfm350-residency/SHA256SUMS.txt
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
