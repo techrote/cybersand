@@ -26,3 +26,19 @@ quantized mutations against unqualified skeletons.
 but this lane never edits the CyberSand game implementation or content. No
 native/Workbench runs, paid API/GPU, production provider changes or merge.
 Draft/HOLD. This PR stacks on `research/619-d1-frankenlayers-yolo`.
+
+## Wave 1 observed; wave 2 staged
+
+Wave 1 real outcomes and source/artifact references: [results-2026-11-16.md](results-2026-11-16.md).
+AERO6 survived 42 legal game decisions (36 BRANCH, 5 RETRACE, 1 STOP) at ~4.27x
+paired stock p50. SKELE6 made 48 STRAIGHT choices at ~4.27x. SKELE4
+immediately STOPed three times; its 7.98x p50 is not a valid nonterminal
+speed claim. AERO4 failed the intended attention-ballast initialization guard;
+its original flow identity is retained unchanged.
+
+Wave 2 introduces *new* named tail variants, rather than retrospectively
+rewriting failed AERO4. It also builds a reproducible ephemeral Q4_K_M from
+the pinned Q8 donor and records a same-runner Q8-stock/Q4-stock/Q4-AERO6
+triad. The new quantised model is a **requantisation** and is not equivalent to
+an F16-source Q4. Large generated model files are kept out of Git history.
+All model transforms and hashes appear in original Actions evidence.

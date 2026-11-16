@@ -1,4 +1,4 @@
-name: "DRIV3R Frankenlayers Lab — 6/4 Q8 carcasses"
+name: "DRIV3R Frankenlayers Lab — sparse and Q4 mutant wave"
 on:
   pull_request:
     paths:
@@ -8,6 +8,7 @@ on:
     branches: [research/619-frankenlayers-lab]
     paths:
       - 'experiments/driv3r/frankenlayers_lab/run-request.json'
+      - 'experiments/driv3r/frankenlayers_lab/run-request-wave2.json'
       - '.github/workflows/driv3r-frankenlayers-lab.yml'
 
 permissions:
@@ -36,7 +37,7 @@ jobs:
           python3 - <<'PY'
           import json
           from pathlib import Path
-          from experiments.driv3r.frankenlayers_lab.flows import LAB_FLOWS
+          from experiments.driv3r.frankenlayers_lab.flows import WAVE1_FLOWS, WAVE2_FLOWS
           p=Path("experiments/driv3r/frankenlayers_lab/run-request.json")
           r=json.loads(p.read_text())
           assert r["schema"]=="cybersand-d1-frankenlayers-lab-request/1"
@@ -47,8 +48,22 @@ jobs:
           assert r["no_game_changes"] and not any(r[k] for k in ("paid_api","paid_gpu","merge","ready"))
           assert r["experiments"] == [
               dict(label=k,mode=k,flow=list(v),seed=570)
-              for k,v in LAB_FLOWS.items()
+              for k,v in WAVE1_FLOWS.items()
           ]
+          p2=Path("experiments/driv3r/frankenlayers_lab/run-request-wave2.json")
+          w=json.loads(p2.read_text())
+          assert w["schema"]=="cybersand-d1-frankenlayers-lab-wave2/1"
+          assert w["lineage"]["first_wave_sha"]=="a418d2f718ffb7786c357a3eb2a4a7112d74760b"
+          assert w["lineage"]["first_wave_actions_run"]==43790709596
+          assert w["lineage"]["model_q8_sha256"]==r["lineage"]["model_q8_sha256"]
+          assert w["lineage"]["llama_commit"]==r["lineage"]["llama_commit"]
+          assert w["lineage"]["w0_commit"]==r["lineage"]["w0_commit"]
+          assert w["max_parallel"]==2 and w["timeout_minutes"]<=95
+          assert w["no_game_changes"] and not any(w[k] for k in ("paid_api","paid_gpu","merge","ready"))
+          assert w["experiments"] == [
+              dict(label=k,mode=k,flow=list(v),quant="q8",seed=570)
+              for k,v in WAVE2_FLOWS.items()
+          ] + [dict(label="aero6q4",mode="aero6",flow=list(WAVE1_FLOWS["aero6"]),quant="q4_k_m",seed=570)]
           PY
           python3 tools/ci/check_ci_provider_policy.py
           python3 tools/ci/check_ci_scheduling_policy.py
@@ -63,7 +78,7 @@ jobs:
           test ! -s /tmp/unexpected.txt
 
   brain:
-    name: Real Q8 W0 / ${{ matrix.mode }}
+    name: Real W0 System One / ${{ matrix.mode }}
     if: github.repository == 'techrote/cybersand' && github.event_name == 'push' && github.ref == 'refs/heads/research/619-frankenlayers-lab'
     needs: cheap
     runs-on: ubuntu-24.04
@@ -73,10 +88,15 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - mode: skele6
-          - mode: aero6
-          - mode: skele4
-          - mode: aero4
+          - mode: tailspin4
+            flow: tailspin4
+            quant: q8
+          - mode: needle4
+            flow: needle4
+            quant: q8
+          - mode: aero6q4
+            flow: aero6
+            quant: q4_k_m
     env:
       OMP_NUM_THREADS: '2'
       MKL_NUM_THREADS: '2'
@@ -108,7 +128,7 @@ jobs:
           cmake -S "$LLAMA_ROOT" -B "$LLAMA_ROOT/build" \
             -DCMAKE_BUILD_TYPE=Release -DGGML_NATIVE=OFF -DLLAMA_CURL=OFF \
             -DLLAMA_BUILD_TESTS=OFF -DLLAMA_BUILD_EXAMPLES=OFF
-          cmake --build "$LLAMA_ROOT/build" --config Release --target llama-server -j2
+          cmake --build "$LLAMA_ROOT/build" --config Release --target llama-server llama-quantize -j2
           sha256sum "$LLAMA_ROOT/build/bin/llama-server" > "evidence/${{ matrix.mode }}/binary.sha256"
           ldd "$LLAMA_ROOT/build/bin/llama-server" > "evidence/${{ matrix.mode }}/binary-ldd.txt"
       - name: Acquire read-only pinned W0 legal-action host
@@ -117,6 +137,41 @@ jobs:
           git fetch --no-tags --depth=1 origin 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
           git show 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61:experiments/agent_painter/worm/common/worm.py > "$RUNNER_TEMP/franken-w0.py"
           test "$(git hash-object "$RUNNER_TEMP/franken-w0.py")" = 8979b6f0296e81051194bacc907992d38e006605
+      - name: Requantise pinned Q8 donor to reproducible Q4_K_M
+        if: matrix.quant == 'q4_k_m'
+        run: |
+          set -euo pipefail
+          MODEL_PATH="$(python3 - <<'PY'
+          import json,os
+          from pathlib import Path
+          print(json.loads(Path(os.environ['RUNNER_TEMP']+'/d1-lab-donor/runtime-manifest.json').read_text())['model'])
+          PY
+          )"
+          mkdir -p "$RUNNER_TEMP/franken-lab-q4"
+          Q4_MODEL="$RUNNER_TEMP/franken-lab-q4/d1-2B-from-Q8-Q4_K_M.gguf"
+          timeout --signal=TERM --kill-after=20 1000 "$RUNNER_TEMP/franken-lab-llama/build/bin/llama-quantize" \
+            --allow-requantize "$MODEL_PATH" "$Q4_MODEL" Q4_K_M 2 \
+            > "evidence/${{ matrix.mode }}/quantize.log" 2>&1
+          test -s "$Q4_MODEL"
+          python3 - <<'PY'
+          import hashlib,json,os
+          from pathlib import Path
+          from experiments.driv3r.backend import PINS,sha256_file
+          old=Path(os.environ["RUNNER_TEMP"]+"/d1-lab-donor/runtime-manifest.json")
+          src=Path(json.loads(old.read_text())["model"])
+          out=Path(os.environ["RUNNER_TEMP"]+"/franken-lab-q4/d1-2B-from-Q8-Q4_K_M.gguf")
+          assert sha256_file(src)==PINS["model"]["sha256"]
+          r={"schema":"cybersand-franken-q4-requant/1","quant":"Q4_K_M",
+             "allow_requantize":True,"source_kind":"immutable Q8 donor, not FP16",
+             "q8_sha256":sha256_file(src),"q8_bytes":src.stat().st_size,
+             "q4_sha256":sha256_file(out),"q4_bytes":out.stat().st_size,
+             "llama_commit":"8642541b255bfb5dc39cd351a178be09013a55d6"}
+          p=Path("evidence/"+os.environ["MATRIX_MODE"]+"/quantize-receipt.json")
+          p.write_text(json.dumps(r,indent=2,sort_keys=True)+"\n")
+          print(json.dumps(r,sort_keys=True))
+          PY
+        env:
+          MATRIX_MODE: ${{ matrix.mode }}
       - name: Actual stock-vs-mutant System One game-choice experiment
         run: |
           set -euo pipefail
@@ -126,11 +181,22 @@ jobs:
           print(json.loads(Path(os.environ['RUNNER_TEMP']+'/d1-lab-donor/runtime-manifest.json').read_text())['model'])
           PY
           )"
-          timeout --signal=TERM --kill-after=45 4200 python3 -m experiments.driv3r.frankenlayers_lab.infer \
-            --binary "$RUNNER_TEMP/franken-lab-llama/build/bin/llama-server" \
-            --model "$MODEL_PATH" --w0 "$RUNNER_TEMP/franken-w0.py" \
-            --mode "${{ matrix.mode }}" --seed 570 --source-sha "$GITHUB_SHA" \
-            --output "evidence/${{ matrix.mode }}/inference"
+          if [[ "${{ matrix.quant }}" == "q4_k_m" ]]; then
+            timeout --signal=TERM --kill-after=45 4200 python3 -m experiments.driv3r.frankenlayers_lab.infer_quant \
+              --binary "$RUNNER_TEMP/franken-lab-llama/build/bin/llama-server" \
+              --model-q8 "$MODEL_PATH" \
+              --model-q4 "$RUNNER_TEMP/franken-lab-q4/d1-2B-from-Q8-Q4_K_M.gguf" \
+              --quant-receipt "evidence/${{ matrix.mode }}/quantize-receipt.json" \
+              --w0 "$RUNNER_TEMP/franken-w0.py" \
+              --mode "${{ matrix.flow }}" --seed 570 --source-sha "$GITHUB_SHA" \
+              --output "evidence/${{ matrix.mode }}/inference"
+          else
+            timeout --signal=TERM --kill-after=45 4200 python3 -m experiments.driv3r.frankenlayers_lab.infer \
+              --binary "$RUNNER_TEMP/franken-lab-llama/build/bin/llama-server" \
+              --model "$MODEL_PATH" --w0 "$RUNNER_TEMP/franken-w0.py" \
+              --mode "${{ matrix.flow }}" --seed 570 --source-sha "$GITHUB_SHA" \
+              --output "evidence/${{ matrix.mode }}/inference"
+          fi
       - name: Retain true failure evidence and checksums
         if: always()
         run: |

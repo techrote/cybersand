@@ -1,27 +1,39 @@
+"""Cheap source-only safety tests, no model downloads or game changes."""
 import tempfile
 from pathlib import Path
 import unittest
 
-from experiments.driv3r.frankenlayers_lab.flows import LAB_FLOWS, validate_flows
+from experiments.driv3r.frankenlayers_lab.flows import (
+    LAB_FLOWS, WAVE1_FLOWS, WAVE2_FLOWS, validate_flows,
+)
 from experiments.driv3r.frankenlayers_lab.patch_lab import ATTN_GUARD, TARGET, patch
 
 class FrankenLabTests(unittest.TestCase):
-    def test_six_and_four_distinct_skeletons(self):
+    def test_immutable_first_wave_and_new_tail_mutants(self):
         validate_flows()
-        self.assertEqual({n: len(v) for n, v in LAB_FLOWS.items()},
-                         {"skele6": 6, "aero6": 6, "skele4": 4, "aero4": 4})
-        self.assertNotEqual(LAB_FLOWS["skele6"], LAB_FLOWS["aero6"])
-        self.assertNotEqual(LAB_FLOWS["skele4"], LAB_FLOWS["aero4"])
-        self.assertTrue(all(v[0] == 0 and v[-1] == 23 for v in LAB_FLOWS.values()))
+        self.assertEqual({k:len(v) for k,v in LAB_FLOWS.items()},
+            {"skele6":6,"aero6":6,"skele4":4,"aero4":4,"tailspin4":4,"needle4":4})
+        self.assertEqual(WAVE1_FLOWS["skele4"], (0,4,18,23))
+        self.assertEqual(WAVE1_FLOWS["aero4"], (0,4,20,23))
+        self.assertEqual(WAVE2_FLOWS["tailspin4"], (0,4,18,20))
+        self.assertEqual(WAVE2_FLOWS["needle4"], (0,4,18,22))
+        self.assertTrue(all(layers[0]==0 for layers in LAB_FLOWS.values()))
+        self.assertEqual(len(set(LAB_FLOWS.values())), len(LAB_FLOWS))
 
-    def test_invalid_flows_rejected(self):
+    def test_invalid_or_historically_relabelled_flows_rejected(self):
         for name in LAB_FLOWS:
-            mutated = dict(LAB_FLOWS)
-            mutated[name] = (0, 4, 4, 23) if name.endswith("4") else (0, 4, 5, 6, 23, 24)
-            with self.subTest(name=name), self.assertRaises(ValueError):
+            mutated=dict(LAB_FLOWS)
+            mutated[name]=(0,4,4,23) if len(mutated[name])==4 else (0,4,5,6,23,24)
+            with self.subTest(name=name),self.assertRaises(ValueError):
+                validate_flows(mutated)
+            mutated=dict(LAB_FLOWS)
+            original=list(mutated[name])
+            original[1] = original[1]+1
+            mutated[name]=tuple(original)
+            with self.subTest(name=name,kind="tampered"),self.assertRaises(ValueError):
                 validate_flows(mutated)
 
-    def test_exact_source_patch_and_guard(self):
+    def test_exact_source_patch_and_attention_guard(self):
         original = """#include "models.h"
 #include "../llama-memory-hybrid-iswa.h"
 
@@ -35,24 +47,24 @@ void f() {
 }
 """
         with tempfile.TemporaryDirectory() as d:
-            root = Path(d)
-            p = root / TARGET
+            root=Path(d)
+            p=root/TARGET
             p.parent.mkdir(parents=True)
             p.write_text(original)
-            r = patch(root)
-            output = p.read_text()
-            for name, layers in LAB_FLOWS.items():
-                self.assertIn(f'mode == "{name}"', output)
-                self.assertIn("{" + ",".join(map(str, layers)) + "}", output)
-            self.assertEqual(output.count(ATTN_GUARD), 1)
-            self.assertIn("!hparams.is_recr(source_il)", output)
-            self.assertIn("!d1_has_full || !d1_has_sliding", output)
-            self.assertIn("if constexpr (decision)", output)
-            self.assertIn("d1_step + 1 == d1_flow.size()", output)
-            self.assertFalse(r["weights_modified"])
-            self.assertFalse(r["game_code_modified"])
+            receipt=patch(root)
+            output=p.read_text()
+            for name,layers in LAB_FLOWS.items():
+                self.assertIn(f'mode == "{name}"',output)
+                self.assertIn("{"+",".join(map(str,layers))+"}",output)
+            self.assertEqual(output.count(ATTN_GUARD),1)
+            self.assertIn("!hparams.is_recr(source_il)",output)
+            self.assertIn("!d1_has_full || !d1_has_sliding",output)
+            self.assertIn("if constexpr (decision)",output)
+            self.assertIn("d1_step + 1 == d1_flow.size()",output)
+            self.assertFalse(receipt["weights_modified"])
+            self.assertFalse(receipt["game_code_modified"])
             with self.assertRaises(RuntimeError):
                 patch(root)
 
-if __name__ == "__main__":
+if __name__=="__main__":
     unittest.main()
