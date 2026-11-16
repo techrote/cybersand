@@ -1201,11 +1201,14 @@ void independent_architectural_algorithms() {
 
 
 void classic_architectural_genteks() {
-    const std::array<std::string,24> ids{"trestle","stacked_arcade","flying_buttress",
-        "sawtooth_gallery","cantilever_spine","rib_vault","nested_arcade","suspended_deck",
-        "bowstring_truss","diamond_truss","portal_frame","ladder_bridge","stepped_aqueduct","split_pier",
-        "cable_gallery","clerestory_hall","mushroom_deck","zigzag_bridge","scalloped_vault","lattice_tower",
-        "offset_arcade","bridgehouse","forked_gantry","buttress_wall"};
+    const std::array<std::string,48> ids{"trestle","stacked_arcade","flying_buttress","sawtooth_gallery","cantilever_spine","rib_vault",
+        "nested_arcade","suspended_deck","bowstring_truss","diamond_truss","portal_frame","ladder_bridge",
+        "stepped_aqueduct","split_pier","cable_gallery","clerestory_hall","mushroom_deck","zigzag_bridge",
+        "scalloped_vault","lattice_tower","offset_arcade","bridgehouse","forked_gantry","buttress_wall",
+        "fan_truss","pratt_truss","vierendeel_frame","suspension_pylon","harp_bridge","double_cantilever",
+        "stepped_buttress","colonnade","basilica","crenellated_bridge","pointed_arcade","inverted_arch",
+        "hourglass_pier","tripod_frame","chevron_hall","hanging_arcade","shelf_stack","staggered_balcony",
+        "monopod_tower","wedge_gallery","crown_bridge","zigzag_pier","drum_vault","pyramidal_frame"};
     std::set<std::vector<Material>> unique;
     for (const auto& id : ids) {
         Recipe recipe; recipe.schema=kArchitecturalSchemaVersion; recipe.candidate=Candidate::Strata;
@@ -1231,7 +1234,7 @@ void classic_architectural_genteks() {
         auto invalid=recipe; invalid.schema=kHierarchySchemaVersion;
         rejects([&]{(void)Generator::compile(invalid);},id+" requires schema 4");
     }
-    require(unique.size()==ids.size(),"twenty-four classic Genteks produce distinct native geometry");
+    require(unique.size()==ids.size(),"forty-eight classic Genteks produce distinct native geometry");
 }
 
 void refined_architectural_details() {

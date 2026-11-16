@@ -1188,6 +1188,30 @@ ModuleRegistry ModuleRegistry::builtins() {
     r.add({"bridgehouse", 1, 48, [](const auto& i, auto) { return std::make_shared<Bridgehouse>(i); }});
     r.add({"forked_gantry", 1, 40, [](const auto& i, auto) { return std::make_shared<ForkedGantry>(i); }});
     r.add({"buttress_wall", 1, 40, [](const auto& i, auto) { return std::make_shared<ButtressWall>(i); }});
+    r.add({"fan_truss", 1, 48, [](const auto& i, auto) { return std::make_shared<FanTruss>(i); }});
+    r.add({"pratt_truss", 1, 48, [](const auto& i, auto) { return std::make_shared<PrattTruss>(i); }});
+    r.add({"vierendeel_frame", 1, 36, [](const auto& i, auto) { return std::make_shared<VierendeelFrame>(i); }});
+    r.add({"suspension_pylon", 1, 52, [](const auto& i, auto) { return std::make_shared<SuspensionPylon>(i); }});
+    r.add({"harp_bridge", 1, 56, [](const auto& i, auto) { return std::make_shared<HarpBridge>(i); }});
+    r.add({"double_cantilever", 1, 36, [](const auto& i, auto) { return std::make_shared<DoubleCantilever>(i); }});
+    r.add({"stepped_buttress", 1, 40, [](const auto& i, auto) { return std::make_shared<SteppedButtress>(i); }});
+    r.add({"colonnade", 1, 32, [](const auto& i, auto) { return std::make_shared<Colonnade>(i); }});
+    r.add({"basilica", 1, 44, [](const auto& i, auto) { return std::make_shared<Basilica>(i); }});
+    r.add({"crenellated_bridge", 1, 36, [](const auto& i, auto) { return std::make_shared<CrenellatedBridge>(i); }});
+    r.add({"pointed_arcade", 1, 48, [](const auto& i, auto) { return std::make_shared<PointedArcade>(i); }});
+    r.add({"inverted_arch", 1, 44, [](const auto& i, auto) { return std::make_shared<InvertedArch>(i); }});
+    r.add({"hourglass_pier", 1, 36, [](const auto& i, auto) { return std::make_shared<HourglassPier>(i); }});
+    r.add({"tripod_frame", 1, 40, [](const auto& i, auto) { return std::make_shared<TripodFrame>(i); }});
+    r.add({"chevron_hall", 1, 36, [](const auto& i, auto) { return std::make_shared<ChevronHall>(i); }});
+    r.add({"hanging_arcade", 1, 44, [](const auto& i, auto) { return std::make_shared<HangingArcade>(i); }});
+    r.add({"shelf_stack", 1, 36, [](const auto& i, auto) { return std::make_shared<ShelfStack>(i); }});
+    r.add({"staggered_balcony", 1, 36, [](const auto& i, auto) { return std::make_shared<StaggeredBalcony>(i); }});
+    r.add({"monopod_tower", 1, 44, [](const auto& i, auto) { return std::make_shared<MonopodTower>(i); }});
+    r.add({"wedge_gallery", 1, 36, [](const auto& i, auto) { return std::make_shared<WedgeGallery>(i); }});
+    r.add({"crown_bridge", 1, 40, [](const auto& i, auto) { return std::make_shared<CrownBridge>(i); }});
+    r.add({"zigzag_pier", 1, 40, [](const auto& i, auto) { return std::make_shared<ZigzagPier>(i); }});
+    r.add({"drum_vault", 1, 44, [](const auto& i, auto) { return std::make_shared<DrumVault>(i); }});
+    r.add({"pyramidal_frame", 1, 40, [](const auto& i, auto) { return std::make_shared<PyramidalFrame>(i); }});
     return r;
 }
 
@@ -1209,7 +1233,13 @@ std::vector<std::string> Generator::builtin_modules() {
         "bowstring_truss", "diamond_truss", "portal_frame", "ladder_bridge",
         "stepped_aqueduct", "split_pier", "cable_gallery", "clerestory_hall",
         "mushroom_deck", "zigzag_bridge", "scalloped_vault", "lattice_tower",
-        "offset_arcade", "bridgehouse", "forked_gantry", "buttress_wall"};
+        "offset_arcade", "bridgehouse", "forked_gantry", "buttress_wall",
+        "fan_truss", "pratt_truss", "vierendeel_frame", "suspension_pylon",
+        "harp_bridge", "double_cantilever", "stepped_buttress", "colonnade",
+        "basilica", "crenellated_bridge", "pointed_arcade", "inverted_arch",
+        "hourglass_pier", "tripod_frame", "chevron_hall", "hanging_arcade",
+        "shelf_stack", "staggered_balcony", "monopod_tower", "wedge_gallery",
+        "crown_bridge", "zigzag_pier", "drum_vault", "pyramidal_frame"};
 }
 
 std::shared_ptr<const Generator> Generator::compile(Recipe recipe, const ModuleRegistry& registry) {
@@ -1445,7 +1475,15 @@ std::shared_ptr<const Generator> Generator::compile(Recipe recipe, const ModuleR
             m.module == "cable_gallery" || m.module == "clerestory_hall" || m.module == "mushroom_deck" ||
             m.module == "zigzag_bridge" || m.module == "scalloped_vault" || m.module == "lattice_tower" ||
             m.module == "offset_arcade" || m.module == "bridgehouse" || m.module == "forked_gantry" ||
-            m.module == "buttress_wall";
+            m.module == "buttress_wall" || m.module == "fan_truss" || m.module == "pratt_truss" ||
+            m.module == "vierendeel_frame" || m.module == "suspension_pylon" || m.module == "harp_bridge" ||
+            m.module == "double_cantilever" || m.module == "stepped_buttress" || m.module == "colonnade" ||
+            m.module == "basilica" || m.module == "crenellated_bridge" || m.module == "pointed_arcade" ||
+            m.module == "inverted_arch" || m.module == "hourglass_pier" || m.module == "tripod_frame" ||
+            m.module == "chevron_hall" || m.module == "hanging_arcade" || m.module == "shelf_stack" ||
+            m.module == "staggered_balcony" || m.module == "monopod_tower" || m.module == "wedge_gallery" ||
+            m.module == "crown_bridge" || m.module == "zigzag_pier" || m.module == "drum_vault" ||
+            m.module == "pyramidal_frame";
         if (schema4_architecture && (m.version == 1 || m.version == 2))
             require(recipe.schema == kArchitecturalSchemaVersion, "new architectural modules require schema 4");
         if ((m.module == "arcology" || m.module == "vault") && m.version == 2) {

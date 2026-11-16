@@ -2,7 +2,7 @@
 title: GENTEK-CLASSIC-001 compact architectural sampler batch
 status: Draft
 document-kind: research
-scope: Twenty-four compact schema-4 native Genteks using the existing Architectural Generator pipeline
+scope: Forty-eight compact schema-4 native Genteks using the existing Architectural Generator pipeline
 last-reviewed: 2026-11-15
 related-documents: [../systems/architectural-generator.md, ../systems/procedural-world-generation.md]
 ---
@@ -39,6 +39,30 @@ kept deliberately compact in `native/src/generation_architecture_classic.inc`.
 | Bridgehouse | `bridgehouse` | Mid-level bridge carrying repeated gabled rooms |
 | Forked Gantry | `forked_gantry` | Central lower stem forks beneath the upper deck |
 | Buttress Wall | `buttress_wall` | Heavy wall piers with deep buttresses and light slot |
+| Fan Truss | `fan_truss` | Central high node with fan braces to a lower deck |
+| Pratt Truss | `pratt_truss` | Twin chords, posts and alternating inward diagonals |
+| Vierendeel Frame | `vierendeel_frame` | Heavy rectangular bays without diagonal bracing |
+| Suspension Pylon | `suspension_pylon` | Paired pylons, low deck and sloping carrier stays |
+| Harp Bridge | `harp_bridge` | Single mast with straight harp stays to the deck |
+| Double Cantilever | `double_cantilever` | Twin piers carrying three inward shelf levels |
+| Stepped Buttress | `stepped_buttress` | Edge masses step inward as they rise |
+| Colonnade | `colonnade` | Entablature over dense slender columns and plinth |
+| Basilica | `basilica` | Tall nave roof with lower side aisles and columns |
+| Crenellated Bridge | `crenellated_bridge` | High deck with merlons and deep supporting piers |
+| Pointed Arcade | `pointed_arcade` | Gothic pointed openings under a continuous deck |
+| Inverted Arch | `inverted_arch` | Hanging quadratic rib below an upper carrier deck |
+| Hourglass Pier | `hourglass_pier` | Central support flaring at top and bottom |
+| Tripod Frame | `tripod_frame` | Three splayed legs converging below a crown deck |
+| Chevron Hall | `chevron_hall` | Peaked roof over sparse load-bearing side columns |
+| Hanging Arcade | `hanging_arcade` | Shallow hanging arches descending from a top deck |
+| Shelf Stack | `shelf_stack` | Central spine with alternating shelf widths |
+| Staggered Balcony | `staggered_balcony` | Alternating side balconies between edge towers |
+| Monopod Tower | `monopod_tower` | Central mast with periodic diamond observation pods |
+| Wedge Gallery | `wedge_gallery` | Paired sloping shelves forming an asymmetric passage |
+| Crown Bridge | `crown_bridge` | Triangular crown ribs above a heavy mid-level deck |
+| Zigzag Pier | `zigzag_pier` | Single load path switching left/right by vertical quarter |
+| Drum Vault | `drum_vault` | Rounded barrel shell with straight side walls |
+| Pyramidal Frame | `pyramidal_frame` | Triangular outer frame with internal horizontal ties |
 
 All are version 1 and reuse the existing project/preset compiler, five style
 cards, native preview/install and saved-start path. They do not self-assemble,

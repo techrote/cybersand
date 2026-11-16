@@ -898,7 +898,15 @@ Dictionary CyberWorldGenerator::get_catalogue() const {
             module == "cable_gallery" || module == "clerestory_hall" || module == "mushroom_deck" ||
             module == "zigzag_bridge" || module == "scalloped_vault" || module == "lattice_tower" ||
             module == "offset_arcade" || module == "bridgehouse" || module == "forked_gantry" ||
-            module == "buttress_wall";
+            module == "buttress_wall" || module == "fan_truss" || module == "pratt_truss" ||
+            module == "vierendeel_frame" || module == "suspension_pylon" || module == "harp_bridge" ||
+            module == "double_cantilever" || module == "stepped_buttress" || module == "colonnade" ||
+            module == "basilica" || module == "crenellated_bridge" || module == "pointed_arcade" ||
+            module == "inverted_arch" || module == "hourglass_pier" || module == "tripod_frame" ||
+            module == "chevron_hall" || module == "hanging_arcade" || module == "shelf_stack" ||
+            module == "staggered_balcony" || module == "monopod_tower" || module == "wedge_gallery" ||
+            module == "crown_bridge" || module == "zigzag_pier" || module == "drum_vault" ||
+            module == "pyramidal_frame";
         const bool has_v2 = module == "arcology" || module == "vault" ||
             module == "terraced" || module == "hex_hive" || module == "arcade";
         if (schema4_only) item["minimum_recipe_schema"] = gen::kArchitecturalSchemaVersion;
