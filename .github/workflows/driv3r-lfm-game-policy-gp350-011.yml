@@ -109,7 +109,7 @@ jobs:
               assert b[:8]==b"\x89PNG\r\n\x1a\n"
               assert hashlib.sha256(b).hexdigest()==row["png_sha256"]
               assert row["host_illegal"]==0 and row["decisions"]==64
-              rec=json.loads((p/row["png"][:-4]+".json").read_text())
+              rec=json.loads((p/(row["png"][:-4]+".json")).read_text())
               assert len(rec["scores"])==64 and len(rec["record"]["events"])==64
               assert all(x["applied"] in x["obs"]["legal"] for x in rec["scores"])
           print("GP350011 frozen full-model checkpoint sweep PASS")
