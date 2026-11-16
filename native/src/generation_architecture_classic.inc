@@ -1148,9 +1148,10 @@ public:
         if (p_.in_shaft(x)) return Material::Empty;
         const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), center=p_.bay/2;
         if (std::abs(bx-center)<=p_.wall) return p_.shell;
-        for (std::int64_t n=1;n<=4;++n) {
-            const auto h=n*p_.level/5, reach=(n%2==0?p_.bay/2:p_.bay/3);
-            if (std::abs(fy-h)<=p_.wall && std::abs(bx-center)<=reach) return p_.deck;
+        for (std::int64_t n=1;n<=5;++n) {
+            const auto h=n*p_.level/6, reach=(n%2==0?p_.bay/2:p_.bay/4);
+            if (std::abs(fy-h)<=p_.wall && std::abs(bx-center)<=reach)
+                return n%2==0?p_.deck:p_.accent;
         }
         return Material::Empty;
     }
