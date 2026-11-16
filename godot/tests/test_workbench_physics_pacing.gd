@@ -205,11 +205,11 @@ func recipe() -> Dictionary:
 	setup.edits.append([128,188,64,4,58])
 	return setup
 
-func install() -> bool:
+func install(setup: Dictionary = {}) -> bool:
 	host.paused = true
 	host.update_worker_frame_state()
 	var epoch: int = host._physical_epoch
-	if not check(ui.apply(recipe()),"sparse hard World and actual Needle/barrel accepted"): return false
+	if not check(ui.apply(recipe() if setup.is_empty() else setup,false),"authored hard World and actual Needle/barrel accepted"): return false
 	if not check(await until(func() -> bool:
 		return host.pending_microscenario_apply.is_empty() and host._physical_epoch>epoch \
 			and host.physical_actor_session != null and host._physical_terrain_ready \
@@ -600,7 +600,68 @@ func live_erasing_publication() -> void:
 				host.image.get_region(Rect2i(cell-Vector2i.ONE*int(edit.radius),
 				Vector2i.ONE*(int(edit.radius)*2+1))).get_data())}
 
+func prepare_live_flight() -> bool:
+	# Prior phases deliberately combine completed-step and wall-duration minima.
+	# Recovery can therefore end at the floor or a sparse ceiling. Author a new
+	# clear-air setup through the ordinary owner path before this independent
+	# live-edit phase; never move an already running body or alter its velocity.
+	host.phase = "live-erasing-setup"
+	host.pilot_action.clear()
+	var prior: CyberSimulationSnapshot = snapshot()
+	var previous_epoch: int = host._physical_epoch
+	var previous_session: int = host.physical_actor_session.bridge._session
+	var previous_world_generation: int = prior.physics_world_generation
+	var spawn := Vector2(304,400)
+	var setup: Dictionary = recipe()
+	setup.actors[0] = Setup.instance("needle",1,spawn)
+	# Keep the authored sparse terrain and passive barrel, with an explicit
+	# vertical air corridor for ordinary forward thrust from the new spawn.
+	setup.edits.append([272,64,64,416,0])
+	# The negative packet controls stopped Main callbacks while paused. Restore
+	# ordinary owner-transaction callbacks; install keeps play paused throughout.
+	host.set_process(true)
+	host.set_physics_process(true)
+	if not await install(setup): return false
+	var adopted: CyberSimulationSnapshot = snapshot()
+	if not check(adopted!=null,"live-flight authored owner has a real native snapshot"): return false
+	var bridge = host.physical_actor_session.bridge
+	var members: Array = bridge._members.map(func(member: Dictionary) -> int: return int(member.instance_id))
+	var positions: Array = []
+	var velocities: Array = []
+	for slot: int in range(members.size()):
+		var at: Vector2 = bridge.body_transform(slot).origin
+		var velocity: Vector2 = bridge.body_linear_velocity(slot)
+		positions.append([at.x,at.y])
+		velocities.append([velocity.x,velocity.y])
+	var reset_ready: bool = check(host.paused and host.physical_actor_session.tick==0 \
+		and host._physical_epoch>previous_epoch and bridge._session>previous_session \
+		and adopted.physics_world_generation>previous_world_generation \
+		and adopted.rigid_body_epoch==host._physical_epoch \
+		and host.last_uploaded_world_generation==adopted.physics_world_generation \
+		and adopted.hard_surface_revision==int(adopted.lab_context.get("workbench_hard_surface_revision",-1)) \
+		and host.last_hard_surface_revision==adopted.hard_surface_revision \
+		and host.rapier_bridge.pending_hard_surface_chunks()==0,
+		"ordinary live-flight setup advances owner and World with complete installed terrain before play")
+	var spawn_ready: bool = check(members==[1,2] and ui.applied.actors==setup.actors \
+		and positions==[[304.0,400.0],[175.0,172.0]] and velocities==[[0.0,0.0],[0.0,0.0]] \
+		and disc_material(host.image,Vector2i(304,400),24,0),
+		"live-flight actual Needle/barrel identities and resting authored spawns match clear-air setup")
+	observations.append({"label":"live-erasing-setup","receipt":{
+		"path":"ordinary SharedWorkbench.apply(preserve=false) before play",
+		"previous_session":previous_session,"session":bridge._session,
+		"previous_epoch":previous_epoch,"epoch":host._physical_epoch,
+		"previous_world_generation":previous_world_generation,"world_generation":adopted.physics_world_generation,
+		"required_revision":adopted.lab_context.get("workbench_hard_surface_revision",-1),
+		"packet_revision":adopted.hard_surface_revision,"installed_revision":host.last_hard_surface_revision,
+		"pending_chunks":host.rapier_bridge.pending_hard_surface_chunks(),
+		"paused":host.paused,"step":host.physical_actor_session.tick,"instances":members,
+		"authored_actors":setup.actors.duplicate(true),"positions":positions,"velocities":velocities,
+		"air_corridor":[272,64,64,416],"material":0,"ready":reset_ready and spawn_ready,
+		"trace_identity":"Physical steps restart in the new session/epoch/World; compare full owner identity with step."}})
+	return reset_ready and spawn_ready
+
 func live_erasing_flight() -> void:
+	if not await prepare_live_flight(): return
 	if not await pause_callbacks(): return
 	var edits: Array[Dictionary] = [
 		{"label":"small-live-erase","at_step":6,"cell":[480,480],"radius":2},
@@ -643,12 +704,11 @@ func live_erasing_flight() -> void:
 		"camera_scope":"Free view shows the edit targets; Needle flies offscreen. Earlier Follow phases cover visible actor/camera behavior.",
 		"input_path":"ordinary non-PAINT _world_input right button -> paint(material 0) -> queue_brush_mutation",
 		"receipt_scope":"Observed queue acceptance and exact publication footprint; no PAINT history transaction."}
-	# Needle uses body-oriented thrust. With primary released, ordinary S
-	# requests reverse propulsion; auxiliary is the existing level assist. This
-	# separates the actor from the sparse ceiling without changing its state.
-	host.pilot_action = {"move":Vector2.DOWN,"primary":false,"auxiliary":true,"effort":1.0}
-	live_erasing.pilot_action = {"move":[0,1],"primary":false,"auxiliary":true,"effort":1.0}
-	live_erasing.controller_scope = "ordinary reverse body thrust with level assist; actual airborne completions start the edit tape"
+	# Use ordinary forward body thrust and the existing level assist from the
+	# authored clear-air spawn. Actual airborne completions start the edit tape.
+	host.pilot_action = {"move":Vector2.UP,"primary":true,"auxiliary":true,"effort":1.0}
+	live_erasing.pilot_action = {"move":[0,-1],"primary":true,"auxiliary":true,"effort":1.0}
+	live_erasing.controller_scope = "ordinary forward body thrust with level assist from authored clear air; actual airborne completions start the edit tape"
 	physics_frame.connect(live_erasing_input)
 	process_frame.connect(live_erasing_publication)
 	await run_phase("live-erasing-flight",60,60,48,0,{"contact_required":false,"watchdog_msec":60000,
@@ -668,6 +728,22 @@ func live_erasing_flight() -> void:
 	var accepted_samples: Array = live_erasing.initial_accepted_samples.duplicate()
 	for row: Dictionary in actual:
 		var owner: Dictionary = row.owner
+		# A fresh owner can step once before its first native completion. Its
+		# prepared sample1 history was deliberately retired, so both provisional
+		# responses must be refused without spending any sample authority. The
+		# trace's age=-1 is an unavailable-age sentinel for refused responses.
+		var bootstrap_refusal: bool = int(live_erasing.first_step)==0 and row.step==1 \
+			and row.native_tick==0 and row.native_completed_usec==-1 and owner.completed_sample==-1 \
+			and accepted_samples==[-1,-1] and owner.accepted_samples==[-1,-1] \
+			and not row.response.accepted and row.response.bodies.size()==2 \
+			and row.response.bodies.all(func(response: Dictionary) -> bool:
+				return response.sample==1 and response.refusal=="age" and response.age==-1)
+		if int(live_erasing.first_step)==0 and row.step==1 and owner.completed_sample==-1:
+			check(bootstrap_refusal,"fresh-owner provisional responses are refused before native completion without consuming sample authority")
+			live_erasing.bootstrap_refusal = {"valid":bootstrap_refusal,"step":row.step,
+				"native_tick":row.native_tick,"native_completed_usec":row.native_completed_usec,
+				"completed_sample":owner.completed_sample,"response":row.response.duplicate(true),
+				"authority_before":accepted_samples.duplicate(),"authority_after":owner.accepted_samples.duplicate()}
 		check(owner.session==live_erasing.session and owner.response_session==owner.session \
 			and owner.epoch==live_erasing.epoch and owner.response_epoch==owner.epoch and owner.snapshot_epoch==owner.epoch \
 			and owner.world_generation==live_erasing.world_generation and owner.valid \
@@ -676,7 +752,8 @@ func live_erasing_flight() -> void:
 			and row.response.bodies.map(func(body: Dictionary) -> int: return int(body.id))==[1,2] \
 			and owner.accepted_samples.size()==2 \
 			and owner.bodies.all(func(body: Dictionary) -> bool:
-				return body.generation==owner.epoch and body.sample==owner.completed_sample),
+				return body.generation==owner.epoch and (body.sample==owner.completed_sample \
+					or (bootstrap_refusal and body.sample==1))),
 			"live erasing retains native feedback session, epoch, generation and completed-sample association")
 		for response: Dictionary in row.response.bodies:
 			var slot: int = int(response.id)-1
@@ -802,8 +879,10 @@ func _run() -> void:
 		await terrain_progress()
 		await run_phase("render-30-physics-120",30,120,45,1200)
 		await fire_contact()
-		await live_erasing_flight()
+		# The retained stale packet belongs to this original owner. Exercise its
+		# adversarial age/session/terrain fences before the explicit live-fixture reset.
 		await packet_fences()
+		await live_erasing_flight()
 		check(host.completed.all(func(row: Dictionary) -> bool:
 			return row.pending_chunks==0 and row.required_revision==row.packet_revision \
 				and row.required_revision==row.installed_revision),

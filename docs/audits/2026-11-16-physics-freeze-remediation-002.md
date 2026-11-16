@@ -670,6 +670,68 @@ actual slots3/runs plus callback/mailbox evidence. No extra performance matrix
 is introduced. The shipping guide explicitly retains PHYSICAL HOLD and separates
 ordinary live erasing from paused positive PAINT/Undo/Redo/persistence checks.
 
+## Full campaign failure and explicit live-flight setup
+
+Source `f268126f9ce3892f9d4248ad66faaea219980cde`, tree
+`8d9ed9f63646c0d6d6ccb435e22db28f6c9f862c`, completed
+[application run 43873737482](https://github.com/techrote/cybersand/actions/runs/43873737482)
+with a failed headless pacing case on both platforms: Linux 1,691 checks and
+Windows 1,622 checks, each with ten live-flight/edit failures. The other 36 Linux
+and 42 installed Windows cases passed. The three actual Windows launchers,
+Windows PowerShell 5.1 Test It command and reducer, and both source ABBA
+validation steps also passed. No delivery ZIP was published by this failed run.
+These successful subsets do not waive the failed qualification gate.
+
+Independent raw review found that earlier phases legitimately complete different
+numbers of physical steps because they require both step and wall-duration
+minima. Hosted headless recovery ended at the floor, whereas earlier successful
+captures ended near a sparse ceiling. The fixed reverse-thrust input settled the
+Needle on the floor through all 90 live-phase completions, so no airborne edit
+trigger was reached. Linux completed those steps at approximately 16.67 ms
+intervals with valid owner, terrain and feedback associations. This is a failed
+flight precondition, not a missing-completion freeze. An unchanged exact-f268
+local replay passed all 37 cases; it is retained without overruling hosted CI.
+
+The correction authors a separate clear-air Needle/barrel setup through ordinary
+`SharedWorkbench.apply(preserve=false)` while paused. Actual spawn, zero-step and
+zero-velocity state, advancing session/epoch/World, and complete installed terrain
+must be observed before play. Ordinary forward thrust and level assist then
+drive the live phase. Earlier dense-contact phases remain, and the byte-unchanged
+packet-fence test runs before the deliberate owner reset so its old packet still
+has to fail the original strict age test. No live body is moved directly.
+The 48-step minimum, 90-step maximum, 60-second watchdog, four airborne samples,
+exact +6/+18 triggers, live native erasures and GPU-history checks are unchanged.
+
+The first isolated setup attempt failed one of 1,231 checks before the graphical
+case ran. Its new owner's first physical step correctly refused both provisional
+sample-1 packets before any native completion; both accepted-sample counters
+remained -1. The original f268 first phase has the same bootstrap behavior.
+The corrected oracle explicitly checks only that exact first-step refusal,
+including native tick zero, absent native completion and unchanged authority.
+Every owner/generation/terrain assertion remains, and every later row retains
+ordinary completed-sample matching and the strict accepted-age limit. A raw
+replay checks the one bootstrap plus 47 ordinary rows and rejects 16 malformed
+variants. The failed attempt is retained; no physics law or admission rule changes.
+The corrected frozen overlay then passed 1,250 headless and 982 graphical checks,
+both with six phases and unchanged executed source/native/engine identities.
+These focused passes supplement, rather than replace, committed-source CI.
+
+The f268 Linux source comparison retains all four exact recorded-state/native
+association pairs, but candidate physical p95 worsens in each pair. Both sources
+remain near 6.1 completed steps/s and all 143 intervals per arm exceed 100 ms.
+Neither source has a 50 ms upload call in that cohort, so it establishes no
+gameplay-scale material-stall removal there. Windows median upload-call duration
+in the retained arms falls from approximately 100.5–101.2 ms to 3.10–3.21 ms.
+Within the common 144-step prefixes, physical p95 improves in all four pairs,
+but Follow p99 worsens to 276.207/242.940 ms and maximum gaps to
+378.581/375.148 ms. Free-camera tails improve. This remains a component gain
+with mixed physical tails, not an accepted end-to-end freeze repair.
+The authenticated Linux and Windows
+raw artifacts are [14231092654](https://github.com/techrote/cybersand/actions/runs/43873737482/artifacts/14231092654)
+and [14233415237](https://github.com/techrote/cybersand/actions/runs/43873737482/artifacts/14233415237).
+The revised test requires a new exact-source application campaign. Engineering
+and physical acceptance remain HOLD until their respective gates are satisfied.
+
 ## Final qualification and evidence interpretation
 
 `run_physics_freeze_comparison.py` extracts immutable c1ad source, authenticates
