@@ -1,0 +1,84 @@
+name: MZ-009 material-fork memory game-policy training (research only)
+on:
+  push:
+    branches: ['research/model-zoo-material-forks-mz009']
+    paths:
+      - 'experiments/driv3r/model_zoo/material_forks_mz009/**'
+      - '.github/workflows/driv3r-model-zoo-material-forks-mz009.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: mz009-material-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name != 'workflow_dispatch' }}
+jobs:
+  game-memory-cpu:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      OMP_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install source-pinned CPU-only training dependency
+        run: |
+          python -m pip install 'torch==2.5.1' --index-url https://download.pytorch.org/whl/cpu
+          python -m pip freeze > "$RUNNER_TEMP/mz009-packages.txt"
+      - name: Verify procedural host, history isolation, legal masks, recovery and gradients
+        run: |
+          python -m unittest -v experiments.driv3r.model_zoo.material_forks_mz009.test_world
+      - name: Train and evaluate actual action-driven synthetic worlds
+        run: |
+          python -m experiments.driv3r.model_zoo.material_forks_mz009.run \
+            --out "$RUNNER_TEMP/mz009" --train-seeds 160 --eval-seeds 24 \
+            --rollout-seeds 8 --updates 800 --batch 48
+      - name: Independently reload checkpoint and reproduce held-out decisions
+        run: |
+          python - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          import torch
+          from experiments.driv3r.model_zoo.material_forks_mz009.run import (
+              ACTIONS, SCHEMA, class_scores, dataset, networks, to_tensors)
+          path = Path(os.environ['RUNNER_TEMP'])/'mz009'
+          report = json.loads((path/'results.json').read_text())
+          assert report['schema'] == SCHEMA
+          assert report['source_sha'] == os.environ['GITHUB_SHA']
+          assert report['training']['updates'] == 800
+          assert report['training']['test_episodes'] == 24*4*3
+          assert report['scores']['recurrent']['fork_accuracy'] >= .90
+          assert report['scores']['recurrent']['fork_accuracy'] - report['scores']['current_only']['fork_accuracy'] >= .25
+          assert report['first_fork_beacon_flip_action_switch_rate'] >= .85
+          assert report['rollouts']['recurrent']['clean_success_rate'] >= .80
+          assert report['rollouts']['recurrent']['clean_success_rate'] - report['rollouts']['recurrent_context_1']['clean_success_rate'] >= .25
+          checkpoint = path/'policy.pt'
+          assert hashlib.sha256(checkpoint.read_bytes()).hexdigest() == report['checkpoint_sha256']
+          saved = torch.load(checkpoint, map_location='cpu', weights_only=True)
+          assert saved['source_sha'] == report['source_sha']
+          assert tuple(saved['actions']) == ACTIONS
+          net, ctrl = networks(torch, saved['hidden'], saved['layers'])
+          net.load_state_dict(saved['recurrent'], strict=True)
+          ctrl.load_state_dict(saved['current_only'], strict=True)
+          net.eval(); ctrl.eval()
+          x, y = to_tensors(torch, dataset(range(5000,5024)))
+          with torch.inference_mode():
+              assert class_scores(net(x),y,x) == report['scores']['recurrent']
+              assert class_scores(ctrl(x),y,x) == report['scores']['current_only']
+          import xml.etree.ElementTree as ET
+          assert ET.parse(path/'trajectories.svg').getroot().tag.endswith('svg')
+          print('MZ-009 exact-head checkpoint, held-out scores, causal interventions and SVG validated')
+          PY
+      - name: Retain original source-matched checkpoint, traces, metrics and gallery
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mz009-material-forks-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/mz009/**
+            ${{ runner.temp }}/mz009-packages.txt
+          if-no-files-found: warn
+          retention-days: 14
