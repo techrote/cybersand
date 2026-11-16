@@ -4,29 +4,46 @@ status: Current
 document-kind: guide
 scope: Experimental PR 631 Wave Flow desktop controls inherited from PR 618, comparative fixtures, actual native diagnostics and explicit unsupported physical persistence and material behavior
 canonical-for: [wave-flow-evaluation]
-last-reviewed: 2026-11-15
+last-reviewed: 2026-11-16
 related-documents: [../architecture/wave-flow-v1.md, lcb-manual-comparison-ux.md, ../architecture/rigid-body-and-cellular-coupling.md]
 ---
 
 # Wave Flow evaluation
 
-Open **Wave Flow** from the desktop feature launcher, or start the supplied
-Windows evaluation package with **Test It.cmd**. A source checkout with its
-matching native runtime accepts `Godot --path godot -- --wave-flow`. The ordinary
-sandbox and production Water default remain unchanged.
+Human evaluation now belongs in **Shared Workbench**, not the rigid Wave fixture.
+Open **Workbench** from the desktop feature launcher, start the supplied Windows
+candidate with **Test It.cmd**, or run a source checkout with its matching native
+runtime as `Godot --path godot -- --workbench`. The ordinary production Water
+default remains unchanged.
 
-PR #631 owns the current source-qualified package. `Test It.cmd` opens the
-dedicated Wave Flow evaluator directly, with the existing Workbench actor and
-native coupling infrastructure. Wave is not added to the ordinary Shared
-Workbench solver menu. Use the package linked in the final
-[PR qualification ledger](https://github.com/techrote/cybersand/pull/631),
-whose source commit and digest distinguish it from predecessor packages.
+In Shared Workbench, use **Water solver lab**. **Wave Flow** stages the required
+FreeMass carrier; **PF cached**, **PF dormant** and **FreeMass** are direct
+same-canvas comparison shortcuts. **Apply solver / tuning** reconstructs the
+native World while retaining authored cells and actors. A Wave rebuild
+deliberately resets retained face momentum, so compare from equivalent
+authored/reset states when judging kinetics.
 
-The ZIP's `candidate-manifest.json` records the source commit and SHA-256 of
-every delivered file. `source-built-runtime-provenance.json` records the actual
-native build toolchain and target-OS validation; `qualification/runtime/`
-contains the corresponding execution report and original logs. The separate
-retained runtime reference describes historical bytes, not the delivered DLL.
+The panel exposes every bounded kinetic Wave parameter that can vary without
+changing the fixed-point representation or violating conservation guards:
+substeps, active depth, open/confined acceleration, sealed stiffness, damping
+and calm damping, coast, levelling, sleep/wake thresholds, rest/stick/calm
+thresholds, sealed maximum mass, empty/wet donor shares and adhesion-film
+scaling. **Qualified v2** is the previously qualified parameter point;
+**Lively**, **Pressure-ish** and **Heavy** are exploratory starting presets, not
+recommended or qualified replacements. The status line reports the exact
+applied tuning and current native diagnostics.
+
+PR #631 owns the current source-qualified package. The ZIP's
+`candidate-manifest.json` records the source commit and SHA-256 of every
+delivered file. `source-built-runtime-provenance.json` records the native build
+toolchain and target-OS validation; `qualification/runtime/` contains the
+execution report and original logs.
+
+## Standalone regression fixture
+
+The old Wave screen remains available from the feature launcher or via
+`Godot --path godot -- --wave-flow` for deterministic fixture/regression work.
+It is no longer the primary human evaluation surface.
 
 Choose a scene, solver, worker count, Wave substeps and size, then press **Reset
 scene**. Every reset constructs a new native World from the same fixture.
@@ -129,21 +146,3 @@ Implementation: [evaluation screen](../../godot/scripts/wave_flow_evaluation.gd)
 [native adapter](../../godot/native_extension/cyber_native_cell_world.cpp), and
 [source-built regression](../../godot/tests/test_wave_flow.gd).
 
-
-## Primary evaluation route: Shared Workbench
-
-The standalone Wave evaluator remains a regression/diagnostic fixture. Human
-feel evaluation now belongs in the normal Shared Workbench.
-
-Open Workbench and use **Water solver lab**. **Wave Flow** stages the required
-FreeMass carrier; **PF cached**, **PF dormant** and **FreeMass** are direct
-comparison shortcuts. **Apply solver / tuning** rebuilds the current Workbench
-World while retaining the authored cells. A Wave rebuild resets retained face
-momentum, so compare from equivalent authored/reset states when judging kinetics.
-
-All safe kinetic controls are exposed. **Qualified v2** is the old qualified
-point; **Lively**, **Pressure-ish** and **Heavy** are deliberately exploratory
-starting points, not qualified recommendations. The status line reports the
-actual applied Wave parameters, native tick time, solved chunks and task count.
-Wave remains incompatible with Ballistic Water and custom cellular transport;
-native admission refuses invalid combinations and out-of-range values.
