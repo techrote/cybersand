@@ -106,7 +106,7 @@ func build(owner: Control, parent: Control, row_factory: Callable, jet_point: Ca
 	row.add_child(_wave_preset)
 	_button(row,"PF cached",func() -> void: _stage_solver("pressure_flow_v1","cached"))
 	_button(row,"PF dormant",func() -> void: _stage_solver("pressure_flow_v1","cached_dormant"))
-	_button(row,"FreeMass",func() -> void: _stage_solver("freemass_v1","reference"))
+	_button(row,"FreeMass",_stage_plain_freemass)
 	_button(row,"Apply solver / tuning",_apply_wave)
 
 	row = row_factory.call(parent)
@@ -253,6 +253,12 @@ func _update_wave_controls() -> void:
 		var field: SpinBox = value
 		field.editable = enabled
 	_wave_preset.disabled = not enabled
+
+func _stage_plain_freemass() -> void:
+	_wave.set_pressed_no_signal(false)
+	host.workbench_water_options["workbench_wave_flow"] = false
+	_update_wave_controls()
+	_stage_solver("freemass_v1","reference")
 
 func _stage_solver(family: String, variant: String, announce: bool = true) -> bool:
 	var ui: Control = host.shared_workbench
