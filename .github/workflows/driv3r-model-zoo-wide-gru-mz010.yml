@@ -1,0 +1,103 @@
+name: MZ-010 20M wide recurrent material-fork game-policy research (HOLD)
+on:
+  push:
+    branches: ['research/model-zoo-wide-gru-mz010']
+    paths:
+      - 'experiments/driv3r/model_zoo/wide_gru_mz010/**'
+      - '.github/workflows/driv3r-model-zoo-wide-gru-mz010.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: mz010-wide-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name != 'workflow_dispatch' }}
+jobs:
+  cpu-research:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      OMP_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      OPENBLAS_NUM_THREADS: '2'
+      PYTHONUNBUFFERED: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Enforce research-only source scope
+        run: |
+          git diff --name-only 3a4eded62900aad3df91fd9b2a1ae28bbb4a0c0e HEAD > "$RUNNER_TEMP/mz010-changes.txt"
+          cat "$RUNNER_TEMP/mz010-changes.txt"
+          python - <<'PY'
+          from pathlib import Path
+          paths = Path(__import__('os').environ['RUNNER_TEMP'], 'mz010-changes.txt').read_text().splitlines()
+          assert paths, 'no new research files'
+          prefixes = ('experiments/driv3r/model_zoo/wide_gru_mz010/',
+                      '.github/workflows/driv3r-model-zoo-wide-gru-mz010.yml')
+          assert all(p.startswith(prefixes[0]) or p == prefixes[1] for p in paths), paths
+          print('MZ-010 source changes confined to research + dedicated workflow')
+          PY
+      - name: Install pinned CPU research dependency
+        run: |
+          python -m pip install 'torch==2.5.1' --index-url https://download.pytorch.org/whl/cpu
+          python -m pip freeze > "$RUNNER_TEMP/mz010-packages.txt"
+      - name: Verify material world and 20M architecture/gradients
+        run: |
+          python -m unittest -v experiments.driv3r.model_zoo.material_forks_mz009.test_world experiments.driv3r.model_zoo.wide_gru_mz010.test_wide
+      - name: Train wide 20M GRU plus matched small recurrent and reactive controls
+        run: |
+          python -m experiments.driv3r.model_zoo.wide_gru_mz010.run \
+            --out "$RUNNER_TEMP/mz010" --train-seeds 160 --eval-seeds 24 \
+            --rollout-seeds 8 --updates 500 --batch 8
+      - name: Independently reload source-matched checkpoint and verify outcomes
+        run: |
+          python - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          import torch
+          from experiments.driv3r.model_zoo.material_forks_mz009 import run as env
+          from experiments.driv3r.model_zoo.wide_gru_mz010.run import SCHEMA, PARENT_HEAD, build_models, model_counts
+          torch.set_num_threads(2)
+          output = Path(os.environ['RUNNER_TEMP']) / 'mz010'
+          r = json.loads((output/'metrics.json').read_text())
+          assert r['schema'] == SCHEMA
+          assert r['source_sha'] == os.environ['GITHUB_SHA']
+          assert r['parent_source_sha'] == PARENT_HEAD
+          assert r['training']['updates_per_model'] == 500
+          assert r['training']['seed_families_split_disjoint']
+          assert r['training']['test_episodes'] == 24*4*3
+          assert 20_000_000 <= r['parameters']['wide'] <= 24_000_000
+          assert hashlib.sha256((output/'models.pt').read_bytes()).hexdigest() == r['checkpoint_sha256']
+          saved = torch.load(output/'models.pt', map_location='cpu', weights_only=True)
+          assert saved['schema'] == SCHEMA
+          assert saved['source_sha'] == r['source_sha']
+          assert saved['parent_source_sha'] == PARENT_HEAD
+          assert tuple(saved['actions']) == env.ACTIONS
+          models = build_models(torch, saved['hidden'], saved['layers'])
+          assert model_counts(models) == r['parameters']
+          x, y = env.to_tensors(torch, env.dataset(range(5000,5024)))
+          for name, net in models.items():
+              net.load_state_dict(saved['models'][name], strict=True)
+              net.eval()
+              with torch.inference_mode():
+                  restored = env.class_scores(net(x), y, x)
+              assert restored == r['scores'][name]['test'], (name, restored)
+              assert r['rollouts'][name]['episodes'] == 32
+          assert r['rollouts']['wide_history_1']['episodes'] == 32
+          assert r['rollouts']['wide_forced_wrong_first_fork']['episodes'] == 32
+          import xml.etree.ElementTree as ET
+          assert ET.parse(output/'trajectories.svg').getroot().tag.endswith('svg')
+          print('MZ-010 trained state dicts, exact TEST scores, closed-loop traces and SVG verified')
+          PY
+      - name: Preserve original checkpoint, full metrics, trajectories and package versions
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mz010-wide-gru-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/mz010/**
+            ${{ runner.temp }}/mz010-packages.txt
+            ${{ runner.temp }}/mz010-changes.txt
+          if-no-files-found: warn
+          retention-days: 14
