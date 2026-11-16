@@ -1,0 +1,103 @@
+name: MZ-014 frozen game-policy coordinate-frame generalisation (HOLD)
+on:
+  push:
+    branches: ['research/model-zoo-frame-audit-mz014']
+    paths:
+      - 'experiments/driv3r/model_zoo/frame_audit_mz014/**'
+      - '.github/workflows/driv3r-model-zoo-frame-mz014.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: mz014-frame-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  frozen-cpu-audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      OMP_NUM_THREADS: '2'
+      OPENBLAS_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      PYTHONUNBUFFERED: '1'
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Prohibit all production, sibling model and parent research edits
+        run: |
+          git diff --name-only 66b30e6fd3799bc331f2ce066ed106720bbcb262 HEAD > "$RUNNER_TEMP/mz014-changes.txt"
+          cat "$RUNNER_TEMP/mz014-changes.txt"
+          python - <<'PY'
+          from pathlib import Path
+          import os
+          paths=Path(os.environ["RUNNER_TEMP"],"mz014-changes.txt").read_text().splitlines()
+          assert paths and all(
+              p.startswith("experiments/driv3r/model_zoo/frame_audit_mz014/")
+              or p == ".github/workflows/driv3r-model-zoo-frame-mz014.yml"
+              for p in paths), paths
+          print("Exclusive model-side research scope PASS")
+          PY
+      - name: Install pinned CPU PyTorch
+        run: |
+          python -m pip install 'torch==2.5.1' --index-url https://download.pytorch.org/whl/cpu
+          python -m pip freeze > "$RUNNER_TEMP/mz014-packages.txt"
+      - name: Unit-test coordinate-frame intervention
+        run: python -m unittest -v experiments.driv3r.model_zoo.frame_audit_mz014.test_audit
+      - name: Retrieve immutable MZ-013 source-matched trained checkpoint
+        run: |
+          mkdir -p "$RUNNER_TEMP/mz014-parent"
+          gh run download 43923845089 --repo techrote/cybersand \
+            --name mz013-spatial-paint-66b30e6fd3799bc331f2ce066ed106720bbcb262 \
+            --dir "$RUNNER_TEMP/mz014-parent"
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib,os
+          files=list(Path(os.environ["RUNNER_TEMP"],"mz014-parent").rglob("models.pt"))
+          assert len(files)==1,files
+          digest=hashlib.sha256(files[0].read_bytes()).hexdigest()
+          assert digest=="10d9c62370abebaa9d2f644cfe620dda77bbaf651491701b01a78dff7b5aed11",digest
+          with open(os.environ["GITHUB_ENV"],"a") as out:
+              out.write("MZ013_CHECKPOINT="+str(files[0])+"\n")
+          print("Source-pinned pretrained checkpoint SHA-256 PASS")
+          PY
+      - name: Run real frozen checkpoint horizontal/vertical/180-degree game trajectories
+        run: |
+          python -m experiments.driv3r.model_zoo.frame_audit_mz014.audit \
+            --checkpoint "$MZ013_CHECKPOINT" --out "$RUNNER_TEMP/mz014" --seeds 3
+      - name: Independent metrics and baseline reproduction checks
+        run: |
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          m=json.loads(Path(os.environ["RUNNER_TEMP"],"mz014","metrics.json").read_text())
+          assert m["audit_source_sha"]==os.environ["GITHUB_SHA"]
+          assert m["new_training_updates"]==0
+          assert m["checkpoint_training_updates"]==700
+          assert m["parent_source_sha"]=="66b30e6fd3799bc331f2ce066ed106720bbcb262"
+          assert m["parameters"]=={"diagonal":209012,"gru":237428,"reactive":21310}
+          s=m["scores"]
+          assert s["diagonal"]["original"]["clean"]==12
+          assert s["diagonal"]["vertical_mirror"]["clean"]==12
+          assert s["diagonal"]["horizontal_mirror"]["clean"]==0
+          assert s["diagonal"]["rotation_180"]["clean"]==0
+          assert s["gru"]["original"]["clean"]==6
+          assert all(v["episodes"]==12 for a in s.values() for v in a.values())
+          print("Independent source, checkpoint, untransformed baseline and frame response PASS")
+          PY
+      - name: Preserve original metrics, research report, source and provenance
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mz014-frozen-frame-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/mz014/**
+            ${{ runner.temp }}/mz014-packages.txt
+            ${{ runner.temp }}/mz014-changes.txt
+          if-no-files-found: warn
+          retention-days: 14
