@@ -1,4 +1,4 @@
-#include "swarm.hpp"
+#include "negotiated.hpp"
 
 #include <algorithm>
 #include <array>
@@ -587,11 +587,193 @@ void export_boundary(const Request& q, Result& r) {
     }
 }
 
+// This ray answers only whether a mechanical end can face the other fixed
+// territory. It knows nothing about MOSAIC's pitch, categories or choices.
+int peer_distance(const Request& own, const Request& peer, Result& r,
+                  Point start, Point facing, std::uint32_t instance) {
+    if (std::abs(facing.x) + std::abs(facing.y) != 1 || !transition_at(own, start)) return -1;
+    for (int step = 1; step <= 14; ++step) {
+        if (!charge(own, r)) return -1;
+        const Point p{start.x + facing.x * step, start.y + facing.y * step};
+        if (!inside(own, p) || !transition_at(own, p)) return -1;
+        const auto i = index(own, p);
+        if ((!own.protected_void.empty() && own.protected_void[i]) ||
+            (!peer.protected_void.empty() && peer.protected_void[i]) ||
+            (!own.context.empty() && own.context[i] != Material::Empty)) return -1;
+        if (r.cells[i] != Material::Empty) {
+            if (r.provenance[i] == instance && r.roles[i] != Role::Cohesion) continue;
+            return -1;
+        }
+        if (allowed(peer, p)) return step;
+        if (!allowed(own, p)) return -1;
+    }
+    return -1;
+}
+
+Part receiving_terminal(int reach) {
+    Part p;
+    p.kind = reach == 0 ? "flush_terminal_plate" : "reserved_receiving_bracket";
+    if (reach > 0) thick_line(p.cells, {0, 0}, {reach, 0}, 1);
+    else thick_line(p.cells, {0, 0}, {0, 0}, 1);
+    // An actual transverse end plate, connected by a short thick neck. This
+    // is a finite authored mechanical shape, never a mask-fitting blob.
+    const int face = reach > 0 ? reach + 1 : 0;
+    thick_line(p.cells, {face, -3}, {face, 3}, 0);
+    p.ports = {{{0, 0}, {-1, 0}, true}, {{face, 0}, {1, 0}, false}};
+    return p;
+}
+
+void terminate_reserved(const Request& own, const Request& peer, Result& r, std::size_t ci) {
+    if (r.status == Status::Exhausted || r.connectors[ci].fulfilled ||
+        r.connectors[ci].state == "terminal_plate") return;
+    const auto host = r.connectors[ci];
+    const int gap = peer_distance(own, peer, r, host.a, host.facing, host.instance);
+    // Longest legal member first; peer location bounds reach, not foreign form.
+    // Six explicitly enumerated lengths, the old narrow cap, then a flush plate.
+    for (int reach : {10, 8, 6, 4, 2, 1, -1, 0}) {
+        if (reach > 0 && (gap < 1 || reach + 1 >= gap)) continue;
+        for (int rotation = 0; rotation < 4; ++rotation) {
+            if (rotate({1, 0}, rotation) != host.facing) continue;
+            if (!candidate(own, r) || !secondary_capacity(own, r)) return;
+            Placement ending{reach == -1 ? cap() : receiving_terminal(reach), host.a, rotation, 0};
+            if (!valid_placement(own, r, ending, &host, true)) continue;
+            const auto old_count = r.connectors.size();
+            const auto old_instances = r.instances.size();
+            commit(own, r, ending, ci);
+            if (r.instances.size() == old_instances) return;
+            auto& part = r.instances.back();
+            part.reason = "preplanned peer-facing termination: authored short member and transverse plate; no foreign category knowledge";
+            r.connectors[ci].state = "terminated";
+            for (std::size_t j = old_count; j < r.connectors.size(); ++j)
+                if (!r.connectors[j].fulfilled) r.connectors[j].state = "terminal_plate";
+            // Its plate exports a real, finite bearing segment in addition to
+            // the point socket. It is optional: the cap itself terminates the
+            // old member through the recorded required input counterpart.
+            const Point normal = host.facing, tangent{-normal.y, normal.x};
+            const Point face = transformed(ending.part.ports[1].point, ending);
+            if (reach != -1 && own.limits.max_connectors_per_instance >= 3) {
+                Connector bearing;
+                bearing.id = static_cast<std::uint32_t>(r.connectors.size() + 1);
+                bearing.instance = part.id; bearing.family = Family::Brace;
+                bearing.a = {face.x - 2 * tangent.x, face.y - 2 * tangent.y};
+                bearing.b = {face.x + 2 * tangent.x, face.y + 2 * tangent.y};
+                bearing.facing = normal; bearing.state = "boundary_segment";
+                r.connectors.push_back(bearing);
+            }
+            ++r.metrics["preplanned_terminal_pieces"];
+            for (auto p : part.cells)
+                if (r.provenance[index(own, p)] == part.id) ++r.metrics["preplanned_terminal_cells"];
+            return;
+        }
+    }
+    r.connectors[ci].state = host.required ? "unresolved" : "open";
+    ++r.rejected[host.required ? "required_reserved_terminal_has_no_legal_authored_piece" :
+                                 "optional_reserved_terminal_remains_open"];
+}
+
+std::uint32_t reservation_id(const Connector& c) {
+    // Packing bounded geometry (256x128, cardinal facing and point/segment
+    // role) gives a stable identifier without dependence on evaluation order.
+    const unsigned facing = c.facing.x == 1 ? 0 : c.facing.y == 1 ? 1 : c.facing.x == -1 ? 2 : 3;
+    const auto span = static_cast<unsigned>(distance(c.a, c.b));
+    const auto reversed = static_cast<unsigned>(c.b.x < c.a.x || c.b.y < c.a.y);
+    return 1U + static_cast<unsigned>(c.a.x) + (static_cast<unsigned>(c.a.y) << 8U) +
+           (facing << 15U) + (span << 17U) + (reversed << 26U);
+}
+
+void reserve_slots(const Request& own, const Request& peer, Result& r, FramePlan& plan) {
+    struct Offer { Connector connector; int priority{}, distance{}; };
+    std::vector<Offer> offers;
+    for (const auto& c : r.connectors) {
+        if (!charge(own, r)) return;
+        if (c.fulfilled || (c.family != Family::Frame && c.state != "boundary_segment")) continue;
+        if (!inside(own, c.a) || !inside(own, c.b) || r.cells[index(own, c.a)] == Material::Empty ||
+            r.cells[index(own, c.b)] == Material::Empty) continue;
+        // Restrict to explicitly exported exposed material faces. A buried
+        // centerline receptor is not a transition reservation.
+        if (!charge(own, r, r.boundary.hard.size())) return;
+        const auto exposed = std::find_if(r.boundary.hard.begin(), r.boundary.hard.end(), [&](const auto& a) {
+            return a.instance == c.instance && a.family == c.family && a.a == c.a && a.b == c.b && a.facing == c.facing;
+        });
+        if (exposed == r.boundary.hard.end()) continue;
+        int nearest = 15;
+        for (auto p : line(c.a, c.b)) {
+            const int d = peer_distance(own, peer, r, p, c.facing, c.instance);
+            if (d > 0) nearest = std::min(nearest, d);
+        }
+        if (r.status == Status::Exhausted) return;
+        if (nearest > 14) continue;
+        const auto part = std::find_if(r.instances.begin(), r.instances.end(), [&](const auto& i) { return i.id == c.instance; });
+        const bool authored_terminal = part != r.instances.end() &&
+            (part->kind == "reserved_receiving_bracket" || part->kind == "flush_terminal_plate");
+        const int priority = c.required ? 0 : authored_terminal ? 1 : c.family == Family::Frame ? 2 : 3;
+        offers.push_back({c, priority, nearest});
+    }
+    std::sort(offers.begin(), offers.end(), [](const auto& a, const auto& b) {
+        // For an authored plate prefer its bearing segment to the same plate's
+        // point offer. Independent members are kept spatially separate below.
+        return std::tuple{a.priority, a.distance, a.connector.a == a.connector.b,
+                          a.connector.a, a.connector.b, a.connector.facing} <
+               std::tuple{b.priority, b.distance, b.connector.a == b.connector.b,
+                          b.connector.a, b.connector.b, b.connector.facing};
+    });
+    std::set<std::uint32_t> used_instances, used_ids;
+    for (const auto& offer : offers) {
+        if (plan.slots.size() >= max_transition_slots) {
+            plan.reservation_rejections.push_back("finite slot capacity: remaining mechanical opportunities not advertised");
+            break;
+        }
+        if (!charge(own, r)) return;
+        const auto& c = offer.connector;
+        if (used_instances.contains(c.instance)) continue;
+        TransitionSlot slot;
+        slot.id = reservation_id(c); slot.instance = c.instance; slot.connector = c.id;
+        if (!used_ids.insert(slot.id).second) {
+            plan.reservation_rejections.push_back("duplicate geometric reservation identifier rejected");
+            continue;
+        }
+        slot.kind = c.a == c.b ? SlotKind::PointSocket : SlotKind::BearingSegment;
+        slot.a = c.a; slot.b = c.b; slot.facing = c.facing;
+        slot.required = c.required; slot.hard = c.required;
+        slot.strength = c.required ? 1.0 : c.family == Family::Frame ? 0.85 : 0.65;
+        const Point far_a{c.a.x + 14 * c.facing.x, c.a.y + 14 * c.facing.y};
+        const Point far_b{c.b.x + 14 * c.facing.x, c.b.y + 14 * c.facing.y};
+        const int margin_x = c.facing.x == 0 ? 3 : 0, margin_y = c.facing.y == 0 ? 3 : 0;
+        const int left = std::max(0, std::min({c.a.x, c.b.x, far_a.x, far_b.x}) - margin_x);
+        const int top = std::max(0, std::min({c.a.y, c.b.y, far_a.y, far_b.y}) - margin_y);
+        const int right = std::min(own.width - 1, std::max({c.a.x, c.b.x, far_a.x, far_b.x}) + margin_x);
+        const int bottom = std::min(own.height - 1, std::max({c.a.y, c.b.y, far_a.y, far_b.y}) + margin_y);
+        slot.envelope = {left, top, right - left + 1, bottom - top + 1};
+        for (int y = top; y <= bottom; ++y) for (int x = left; x <= right; ++x) {
+            if (!charge(own, r)) return;
+            const auto i = index(own, {x, y});
+            if ((!own.protected_void.empty() && own.protected_void[i]) ||
+                (!peer.protected_void.empty() && peer.protected_void[i])) slot.clearance.push_back({x, y});
+        }
+        slot.reason = c.required ? "unresolved required mechanical socket; native masonry must admit a real receiving face or retain explicit failure" :
+            c.a == c.b ? "optional terminated mechanical end; recipient chooses its own closed receiving architecture" :
+                        "optional exposed finite member/terminal-plate bearing segment; recipient chooses masonry form";
+        plan.slots.push_back(std::move(slot)); used_instances.insert(c.instance);
+    }
+    std::sort(plan.slots.begin(), plan.slots.end(), [](const auto& a, const auto& b) { return a.id < b.id; });
+    r.metrics["reserved_transition_slots"] = plan.slots.size();
+}
+
 } // namespace
 
-Result generate_frameweaver(const Request& q) {
-    auto r = begin_result(q, "frontier-growth-v0");
+static Result generate_frameweaver_plan(const Request& q, const Request* peer, FramePlan* plan) {
+    auto r = begin_result(q, plan ? "reserved-frontier-growth-v1" : "frontier-growth-v0");
     if (r.status == Status::Invalid || r.status == Status::Exhausted || r.cells.empty()) return r;
+    if (plan) {
+        // Additional immutable core snapshot and finite slot receipts are part
+        // of admission, not a hidden unlimited second representation.
+        const auto memory = r.cells.size() * 160ULL + q.limits.max_instances * 16384ULL + 1024 * 1024ULL;
+        r.metrics["conservative_memory_bound_bytes"] = memory;
+        if (memory > q.limits.max_bytes) {
+            r.status = Status::Exhausted; r.termination = "reserved plan and immutable core exceed declared memory";
+            return r;
+        }
+    }
     if (q.limits.max_connectors_per_instance < 4) {
         r.status = Status::Invalid;
         r.termination = "junction_requires_four_connectors";
@@ -673,20 +855,37 @@ Result generate_frameweaver(const Request& q) {
                 r.metrics["peak_live_frontier"] = std::max(r.metrics["peak_live_frontier"],
                                                           static_cast<std::uint64_t>(frontier.size()));
             }
+        } else if (plan && peer_distance(q, *peer, r, host.a, host.facing, host.instance) > 0) {
+            r.connectors[current.connector].state = "reserved_pending";
         } else terminate_connector(q, r, current.connector);
     }
     // Explicit terminal pass, including nodes removed from the frontier by a
     // budget stop. A failed cap leaves a visible unresolved required joint.
     const std::size_t socket_count = r.connectors.size();
     for (std::size_t i = 0; i < socket_count && r.status != Status::Exhausted; ++i) {
-        if (r.connectors[i].family == Family::Frame && !r.connectors[i].fulfilled)
+        if (r.connectors[i].family == Family::Frame && !r.connectors[i].fulfilled) {
+            if (plan && peer_distance(q, *peer, r, r.connectors[i].a, r.connectors[i].facing,
+                                      r.connectors[i].instance) > 0) continue;
             terminate_connector(q, r, i);
+        }
     }
     reinforce(q, r);
-    expose_boundary_contacts(q, r);
-    cohesion(q, r, false);
+    if (plan) {
+        // All macrostructure and nonstructural additions precede this freeze.
+        // Only transition-local authored terminal pieces may be added below.
+        cohesion(q, r, false);
+        plan->core = r;
+        finish_result(q, plan->core);
+        for (std::size_t i = 0; i < socket_count && r.status != Status::Exhausted; ++i)
+            if (r.connectors[i].family == Family::Frame && !r.connectors[i].fulfilled)
+                terminate_reserved(q, *peer, r, i);
+    } else {
+        expose_boundary_contacts(q, r);
+        cohesion(q, r, false);
+    }
     export_boundary(q, r);
-    r.metrics["part_vocabulary_families"] = 6;
+    if (plan && r.status != Status::Exhausted) reserve_slots(q, *peer, r, *plan);
+    r.metrics["part_vocabulary_families"] = plan ? 8 : 6;
     r.metrics["frontier_processed"] = processed;
     r.notes.push_back("Frame joints certify mechanical graph compatibility, not physical load-bearing stability.");
     r.notes.push_back("Cohesion is non-structural and excludes unresolved mandatory joints within five cells.");
@@ -698,6 +897,48 @@ Result generate_frameweaver(const Request& q) {
     }
     finish_result(q, r);
     return r;
+}
+
+Result generate_frameweaver(const Request& q) {
+    return generate_frameweaver_plan(q, nullptr, nullptr);
+}
+
+FramePlan plan_frameweaver(const Request& own, const Request& peer) {
+    FramePlan plan;
+    std::string reason;
+    if (!validate_request(own, reason)) {
+        plan.result = begin_result(own, "reserved-frontier-growth-v1");
+        return plan;
+    }
+    if (own.gentek != Kind::Frameweaver || !validate_request(peer, reason) ||
+        own.width != peer.width || own.height != peer.height || own.origin != peer.origin ||
+        own.context != peer.context || own.protected_void != peer.protected_void || own.transition != peer.transition) {
+        plan.result = begin_result(own, "reserved-frontier-growth-v1");
+        plan.result.status = Status::Invalid;
+        plan.result.termination = "invalid or mismatched fixed peer territory: " + reason;
+        return plan;
+    }
+    for (int y = 0; y < own.height; ++y) for (int x = 0; x < own.width; ++x) {
+        if (allowed(own, {x, y}) && allowed(peer, {x, y})) {
+            plan.result = begin_result(own, "reserved-frontier-growth-v1");
+            plan.result.status = Status::Invalid;
+            plan.result.termination = "fixed FRAMEWEAVER and peer territories overlap";
+            return plan;
+        }
+    }
+    if (own.profile.destruction != 0) {
+        plan.result = begin_result(own, "reserved-frontier-growth-v1");
+        plan.result.status = Status::Invalid;
+        plan.result.termination = "SWARM-002 reservations require an intact plan; damage is a separate derivative";
+        return plan;
+    }
+    plan.result = generate_frameweaver_plan(own, &peer, &plan);
+    if (plan.result.status == Status::Exhausted) {
+        plan.slots.clear();
+        plan.reservation_rejections.push_back("exhaustion prevents publication of a complete reserved plan");
+    }
+    finish_result(own, plan.result);
+    return plan;
 }
 
 void adapt_frameweaver(const Request& q, Result& r) {

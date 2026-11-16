@@ -1,4 +1,4 @@
-#include "swarm.hpp"
+#include "negotiated.hpp"
 #include "cybersand/generation_spatial.hpp"
 
 #include <algorithm>
@@ -6,6 +6,7 @@
 #include <cmath>
 #include <limits>
 #include <memory>
+#include <set>
 #include <tuple>
 
 namespace cybersand::gentek_swarm {
@@ -229,12 +230,198 @@ std::vector<Point> elbow(Point from, Point to, bool horizontal_first) {
     if (!second.empty()) first.insert(first.end(), second.begin() + 1, second.end());
     return first;
 }
+// The candidate's receiving buttress is authored in MOSAIC's own contour
+// coordinates. It is never parameterised by a foreign endpoint or raster patch.
+// Legacy contour_cell remains untouched for the SWARM-001 control.
+bool negotiated_cell(const Tile& t, unsigned motif, int x, int y) {
+    if (!tile_has(t, x, y)) return false;
+    if (t.full) return interior_cell(motif, x, y);
+    if (motif != Buttress) return contour_cell(t, motif, x, y);
+    if (!tile_has(t, x, y)) return false;
+    const auto [left, right] = row_span(t, x, y);
+    const auto [top, bottom] = column_span(t, x, y);
+    if (right - left < 2 || bottom - top < 2) return false;
+    // A closed stepped receiving pier, with a bounded tapered return and base.
+    // A concavity stays split because every extent comes from its admitted span.
+    const int taper = 2 + (y - top) / 4;
+    if (t.edge == TermWest) return x - left <= taper || bottom - y < 2 || y - top < 2;
+    if (t.edge == TermEast) return right - x <= taper || bottom - y < 2 || y - top < 2;
+    if (t.edge == TermNorth) return y - top <= 2 + (x - left) / 4 || right - x < 2 || x - left < 2;
+    return bottom - y <= 2 + (x - left) / 4 || right - x < 2 || x - left < 2;
+}
+
+bool envelope_has(const TransitionSlot& slot, Point p) {
+    return p.x >= slot.envelope.x && p.y >= slot.envelope.y &&
+           p.x < slot.envelope.x + slot.envelope.w &&
+           p.y < slot.envelope.y + slot.envelope.h;
+}
+Point segment_nearest(const TransitionSlot& slot, Point p) {
+    return {std::clamp(p.x, std::min(slot.a.x, slot.b.x), std::max(slot.a.x, slot.b.x)),
+            std::clamp(p.y, std::min(slot.a.y, slot.b.y), std::max(slot.a.y, slot.b.y))};
+}
+
+bool validate_slots(const Request& req, Result& result, const std::vector<TransitionSlot>& slots) {
+    const auto invalid = [&](const std::string& why) {
+        result.status = Status::Invalid; result.termination = why; return false;
+    };
+    if (slots.size() > max_transition_slots) return invalid("negotiation exceeds eight finite transition slots");
+    std::set<std::uint32_t> ids;
+    for (const auto& slot : slots) {
+        if (!charge(req, result)) return false;
+        const auto& box = slot.envelope;
+        if (slot.kind == SlotKind::PassageOpening)
+            return invalid("PassageOpening reservation semantics are unsupported in SWARM-002; only material bearings are qualified");
+        if (!ids.insert(slot.id).second || slot.id == 0 || slot.instance == 0 || slot.connector == 0 ||
+            !inside(req, slot.a) || !inside(req, slot.b) ||
+            static_cast<unsigned>(slot.kind) > static_cast<unsigned>(SlotKind::PassageOpening) ||
+            std::abs(static_cast<std::int64_t>(slot.facing.x)) + std::abs(static_cast<std::int64_t>(slot.facing.y)) != 1 ||
+            (slot.a.x != slot.b.x && slot.a.y != slot.b.y) ||
+            (slot.b.x - slot.a.x) * slot.facing.x + (slot.b.y - slot.a.y) * slot.facing.y != 0 ||
+            (slot.kind == SlotKind::BearingSegment && slot.a == slot.b) ||
+            std::abs(slot.a.x - slot.b.x) + std::abs(slot.a.y - slot.b.y) > 32 ||
+            (slot.kind == SlotKind::PointSocket && slot.a != slot.b) ||
+            box.x < 0 || box.y < 0 || box.w < 1 || box.h < 1 || box.w > 64 || box.h > 64 ||
+            box.x > req.width - box.w || box.y > req.height - box.h ||
+            !envelope_has(slot, slot.a) || !envelope_has(slot, slot.b) ||
+            !std::isfinite(slot.strength) || slot.strength < 0 || slot.strength > 1 ||
+            slot.owner != "FRAMEWEAVER" || slot.reason.size() > 512 || slot.clearance.size() > 4096)
+            return invalid("invalid finite FRAMEWEAVER transition reservation");
+        // The caller additionally binds these nonzero owner/connector identities
+        // to FramePlan's graph. This boundary can validate the immutable material
+        // witness, but cannot invent or certify a foreign mechanical graph.
+        for (const auto p : line(slot.a, slot.b)) {
+            if (!charge(req, result)) return false;
+            const auto i = index(req, p);
+            if (req.neighbor_cells.empty() || req.neighbor_cells[i] == Material::Empty ||
+                (!req.eligible.empty() && req.eligible[i]))
+                return invalid("reservation source segment lacks foreign-owned immutable material");
+        }
+        for (const auto p : slot.clearance) {
+            if (!charge(req, result)) return false;
+            if (!inside(req, p) || !envelope_has(slot, p))
+                return invalid("reservation clearance outside declared finite envelope");
+            const auto i = index(req, p);
+            if ((req.protected_void.empty() || !req.protected_void[i]) &&
+                (req.neighbors.protected_geometry.empty() || !req.neighbors.protected_geometry[i]))
+                return invalid("reservation clearance must also be present in canonical protected mask");
+        }
+    }
+    return true;
+}
+
+// Geometry witnesses are evaluated from the same authored category predicates
+// later used to rasterise. A compatible bit is not a claim about an imagined
+// contact, nor does a bearing imply a traversable doorway.
+std::uint16_t receiving_categories(const Tile& tile, const TransitionSlot& slot, Point p) {
+    const unsigned edge = slot.facing.x > 0 ? TermWest : slot.facing.x < 0 ? TermEast :
+                          slot.facing.y > 0 ? TermNorth : TermSouth;
+    std::uint16_t candidates = static_cast<std::uint16_t>(bit(edge) | bit(Buttress));
+    const int x = p.x - tile.x, y = p.y - tile.y;
+    std::uint16_t admitted = 0;
+    for (unsigned motif = 0; motif < motif_count; ++motif) {
+        if (!(candidates & bit(motif))) continue;
+        if (!negotiated_cell(tile, motif, x, y) ||
+            !negotiated_cell(tile, motif, x + slot.facing.x, y + slot.facing.y) ||
+            negotiated_cell(tile, motif, x - slot.facing.x, y - slot.facing.y)) continue;
+        if (slot.kind == SlotKind::BearingSegment) {
+            const Point tangent{-slot.facing.y, slot.facing.x};
+            if (!negotiated_cell(tile, motif, x + tangent.x, y + tangent.y) ||
+                !negotiated_cell(tile, motif, x - tangent.x, y - tangent.y)) continue;
+        }
+        admitted |= bit(motif);
+    }
+    return admitted;
+}
+
+bool impose_reservations(const Request& req, Result& result, const std::vector<Tile>& tiles,
+                         spatial::RegionAssignment& assignment, const std::vector<TransitionSlot>& slots,
+                         MosaicPlan& plan, bool& soft_intervention) {
+    plan.categories.assign(tiles.size(), -1);
+    plan.domains.reserve(tiles.size());
+    for (std::size_t i = 0; i < tiles.size(); ++i) {
+        DomainDecision d;
+        d.tile = static_cast<std::uint32_t>(i); d.origin = {tiles[i].x, tiles[i].y};
+        d.original_domain = d.preferred_domain = d.modified_domain = d.hard_domain = assignment.domains[i];
+        plan.domains.push_back(d);
+    }
+    auto ordered = slots;
+    std::sort(ordered.begin(), ordered.end(), [](const auto& a, const auto& b) {
+        return std::tie(a.a, a.b, a.facing, a.id) < std::tie(b.a, b.b, b.facing, b.id);
+    });
+    bool impossible_hard = false;
+    for (const auto& slot : ordered) {
+        SlotResponse response; response.slot_id = slot.id;
+        response.facing = {-slot.facing.x, -slot.facing.y};
+        response.reason = "no admitted receiving face in finite slot envelope";
+        int best = std::numeric_limits<int>::max();
+        for (int y = slot.envelope.y; y < slot.envelope.y + slot.envelope.h; ++y) {
+            for (int x = slot.envelope.x; x < slot.envelope.x + slot.envelope.w; ++x) {
+                if (!charge(req, result, 40)) return false;
+                const Point p{x, y}, source = segment_nearest(slot, p);
+                const Point outward{x - slot.facing.x, y - slot.facing.y};
+                if (!allowed(req, p) || !transition_at(req, p) || allowed(req, outward) ||
+                    (x - source.x) * slot.facing.x + (y - source.y) * slot.facing.y <= 0) continue;
+                if (slot.strength == 0 && !slot.hard) continue;
+                if (req.neighbor_cells.empty() || req.neighbor_cells[index(req, source)] == Material::Empty) continue;
+                const auto tile_index = static_cast<std::size_t>(y / pitch) * assignment.width + static_cast<unsigned>(x / pitch);
+                if (assignment.domains[tile_index] == bit(Exterior)) continue;
+                const auto categories = receiving_categories(tiles[tile_index], slot, p);
+                if (!categories) continue;
+                const int score = std::abs(x - source.x) + std::abs(y - source.y);
+                if (score < best || (score == best && p < response.contact)) {
+                    best = score; response.contact = p;
+                    response.tile = static_cast<std::uint32_t>(tile_index);
+                    response.compatible_domain = categories; response.admitted = true;
+                }
+            }
+        }
+        if (response.admitted) {
+            response.reason = "MOSAIC closed termination/receiving buttress has exposed material and inward bearing thickness";
+            DomainInfluence influence;
+            influence.slot_id = slot.id; influence.compatible_domain = response.compatible_domain;
+            influence.hard = slot.hard; influence.admitted = true;
+            influence.contact = response.contact; influence.reason = response.reason;
+            plan.domains[response.tile].influences.push_back(influence);
+        } else {
+            ++result.rejected["reservation_without_admissible_motif"];
+            impossible_hard = impossible_hard || slot.hard;
+        }
+        plan.responses.push_back(response);
+    }
+    for (auto& d : plan.domains) {
+        auto hard_pool = d.original_domain, preferred_pool = d.original_domain;
+        for (const auto& influence : d.influences) {
+            preferred_pool |= influence.compatible_domain;
+            if (influence.hard) hard_pool |= influence.compatible_domain;
+        }
+        d.hard_domain = hard_pool; d.preferred_domain = preferred_pool;
+        for (const auto& influence : d.influences) {
+            d.preferred_domain &= influence.compatible_domain;
+            if (influence.hard) d.hard_domain &= influence.compatible_domain;
+        }
+        impossible_hard = impossible_hard || d.hard_domain == 0;
+        soft_intervention = soft_intervention || d.hard_domain != d.preferred_domain;
+        d.modified_domain = d.preferred_domain;
+        assignment.domains[d.tile] = d.modified_domain;
+    }
+    if (impossible_hard) {
+        result.status = Status::Unsat;
+        result.termination = "hard reservation has no receiving motif or has an empty categorical intersection";
+        plan.attempts.push_back({"hard-domain-conflict", result.termination, Status::Unsat, false, true, 0, 0});
+        result.metrics["solver_attempted"] = 0; result.metrics["solver_work_observed"] = 1;
+        result.metrics["hard_negotiation_unsat"] = 1;
+        return false;
+    }
+    return true;
+}
 } // namespace
 
-Result generate_mosaic(const Request& req) {
-    Result result = begin_result(req, "prepared-regions-motifs-v0");
+static Result generate_mosaic_impl(const Request& req, const std::vector<TransitionSlot>* slots,
+                                  MosaicPlan* plan) {
+    Result result = begin_result(req, plan ? "prepared-regions-negotiated-v1" : "prepared-regions-motifs-v0");
     if (result.cells.empty() || result.status == Status::Invalid || result.status == Status::Exhausted)
         return result;
+    if (plan && (!slots || !validate_slots(req, result, *slots))) return result;
     if (result.boundary.protected_geometry.empty())
         result.boundary.protected_geometry.assign(result.cells.size(), 0);
     const int grid_width = (req.width + pitch - 1) / pitch;
@@ -300,7 +487,63 @@ Result generate_mosaic(const Request& req) {
         result.termination = "MOSAIC declared memory cannot hold GEN-003 fixed solver scratch";
         return result;
     }
+    bool soft_intervention = false;
+    if (plan && !impose_reservations(req, result, tiles, assignment, *slots, *plan, soft_intervention))
+        return result;
     std::shared_ptr<const spatial::PreparedRegions> prepared;
+    if (plan) {
+        result.metrics["solver_attempted"] = 0;
+        result.metrics["solver_work_observed"] = 1;
+        const auto solve = [&](const std::string& policy, std::uint64_t limit) {
+            SolverAttempt attempt; attempt.policy = policy; attempt.work_limit = limit;
+            if (std::any_of(assignment.domains.begin(), assignment.domains.end(), [](auto domain) { return domain == 0; })) {
+                attempt.status = Status::Unsat; attempt.work_observed = true;
+                attempt.reason = "explicit empty preferred-domain intersection; GEN-003 not invoked";
+            } else if (limit == 0) {
+                attempt.status = Status::Exhausted; attempt.work_observed = true;
+                attempt.reason = "no remaining categorical work budget";
+            } else {
+                attempt.attempted = true; ++result.metrics["solver_attempted"];
+                result.metrics["solver_work_upper_bound"] += limit;
+                try {
+                    prepared = spatial::PreparedRegions::compile(assignment, {limit, spatial::kRegionSolverScratchBytes});
+                    attempt.status = Status::Complete; attempt.work_observed = true;
+                    attempt.work = prepared->preparation_work();
+                    attempt.reason = "unchanged GEN-003 propagation/backtracking completed";
+                } catch (const spatial::RegionAssignmentUnsatisfiable& e) {
+                    attempt.status = Status::Unsat; attempt.reason = e.what();
+                } catch (const spatial::RegionAssignmentExhausted& e) {
+                    attempt.status = Status::Exhausted; attempt.reason = e.what();
+                } catch (const std::invalid_argument& e) {
+                    attempt.status = Status::Invalid; attempt.reason = e.what();
+                }
+            }
+            result.solver_work += attempt.work;
+            result.metrics["solver_work_observed"] &= static_cast<std::uint64_t>(attempt.work_observed);
+            plan->attempts.push_back(attempt);
+            return attempt.status;
+        };
+        const auto first_budget = soft_intervention ? req.limits.max_solver_work / 2 : req.limits.max_solver_work;
+        auto status = solve(soft_intervention ? "preferred-domains" : "hard-or-unoffered-domains", first_budget);
+        if (status == Status::Unsat && soft_intervention) {
+            for (auto& d : plan->domains) {
+                d.fallback = true; d.modified_domain = d.hard_domain;
+                assignment.domains[d.tile] = d.modified_domain;
+            }
+            ++result.metrics["soft_preference_unsat_fallback"];
+            status = solve("hard-only-fallback-after-proven-unsat", req.limits.max_solver_work - first_budget);
+        }
+        if (status != Status::Complete) {
+            result.status = status; result.termination = plan->attempts.back().reason;
+            if (status == Status::Unsat) result.metrics["hard_negotiation_unsat"] =
+                static_cast<std::uint64_t>(std::any_of(slots->begin(), slots->end(), [](const auto& slot) { return slot.hard; }));
+            result.notes.push_back("No partial categorical assignment is rasterised; exhaustion is unknown, not UNSAT.");
+            return result;
+        }
+        result.metrics["solver_successful_attempt_work"] = prepared->preparation_work();
+        result.notes.push_back("Soft preference is domain restriction with at most one hard-only retry after proven UNSAT, not category weighting.");
+        result.notes.push_back("Per-attempt receipts preserve unavailable failed-solver work; configured attempt ceilings sum to the request ceiling.");
+    } else {
     result.metrics["solver_attempted"] = 1;
     result.metrics["solver_work_observed"] = 0;
     try {
@@ -322,6 +565,7 @@ Result generate_mosaic(const Request& req) {
     }
     result.solver_work = prepared->preparation_work();
     result.metrics["solver_work_observed"] = 1;
+    }
     result.metrics["solver_definition_fingerprint"] = prepared->fingerprint();
     result.metrics["logical_tiles"] = tiles.size();
     result.metrics["solver_categories"] = motif_count;
@@ -329,6 +573,19 @@ Result generate_mosaic(const Request& req) {
     result.backtracks = -1;
     result.notes.push_back("GEN-003 performs bounded propagation/backtracking; its public API exposes total work, not backtrack count.");
     result.notes.push_back("Motif doorway compatibility is local; this is not a global support or post-simulation stability certificate.");
+    if (plan) {
+        // Retain the complete solved assignment even if the separately bounded
+        // raster stage later exhausts its own generator work budget.
+        for (std::size_t i = 0; i < tiles.size(); ++i) {
+            const auto motif = static_cast<unsigned>(prepared->cells()[i] - UINT64_C(0x4d4f534149430000));
+            plan->categories[i] = static_cast<int>(motif);
+            auto& decision = plan->domains[i];
+            decision.selected = static_cast<int>(motif);
+            decision.preference_satisfied = !decision.influences.empty() &&
+                std::all_of(decision.influences.begin(), decision.influences.end(),
+                            [&](const auto& influence) { return (influence.compatible_domain & bit(motif)) != 0; });
+        }
+    }
     for (std::size_t tile_index = 0; tile_index < tiles.size(); ++tile_index) {
         const auto motif = static_cast<unsigned>(prepared->cells()[tile_index] - UINT64_C(0x4d4f534149430000));
         const auto& tile = tiles[tile_index];
@@ -340,12 +597,18 @@ Result generate_mosaic(const Request& req) {
         instance.origin = {tile.x, tile.y};
         instance.reason = tile.full ? "GEN-003 reciprocal doorway/arch-pair assignment" :
             "GEN-003 selected contour termination/portal; admitted spans define actual geometry";
+        if (plan && !plan->domains[tile_index].influences.empty()) {
+            instance.reason += "; precompile FRAMEWEAVER reservation IDs";
+            for (const auto& influence : plan->domains[tile_index].influences)
+                instance.reason += " " + std::to_string(influence.slot_id);
+        }
         const bool ornamented = tile.full && (motif == Vault || motif == Gallery) &&
             unit(req.seed ^ mix(tile_index) ^ UINT64_C(0x636f7262656c)) < req.profile.clutter;
         for (int y = 0; y < tile.height; ++y) for (int x = 0; x < tile.width; ++x) {
             if (!charge(req, result)) return result;
             const bool ornament = ornamented && (x == 4 || x == 11) && y >= 2 && y <= 4;
-            const bool occupied = ornament || (tile.full ? interior_cell(motif, x, y) : contour_cell(tile, motif, x, y));
+            const bool occupied = ornament || (plan ? negotiated_cell(tile, motif, x, y) :
+                (tile.full ? interior_cell(motif, x, y) : contour_cell(tile, motif, x, y)));
             if (occupied) instance.cells.push_back({tile.x + x, tile.y + y});
         }
         if (instance.cells.empty()) {
@@ -369,12 +632,71 @@ Result generate_mosaic(const Request& req) {
             return result;
         expose_boundary(req, result, tile, motif, id);
     }
+    if (plan) result.metrics["rasterisation_completed"] = 1;
     if (result.instances.empty()) {
         result.status = Status::Blocked; result.termination = "no admitted MOSAIC motif footprint";
     } else {
         result.termination = "finite GEN-003 motif assignment completed before raster sampling";
     }
     return result;
+}
+
+Result generate_mosaic(const Request& req) {
+    return generate_mosaic_impl(req, nullptr, nullptr);
+}
+
+const char* mosaic_category_name(unsigned motif) noexcept {
+    return motif < motif_count ? motif_names[motif] : "unselected";
+}
+
+MosaicPlan negotiate_mosaic(const Request& req, const std::vector<TransitionSlot>& slots) {
+    MosaicPlan plan;
+    if (req.gentek != Kind::Mosaic) {
+        plan.result = begin_result(req, "prepared-regions-negotiated-v1");
+        plan.result.status = Status::Invalid;
+        plan.result.termination = "negotiated MOSAIC requires a MOSAIC request";
+        return plan;
+    }
+    plan.result = generate_mosaic_impl(req, &slots, &plan);
+    auto& result = plan.result;
+    finish_result(req, result);
+    apply_damage(req, result);
+    // Material witnesses are rechecked after full rasterisation (and any explicit
+    // damage derivative), so a category choice alone cannot claim a real joint.
+    for (auto& response : plan.responses) {
+        if (!response.admitted || response.tile >= plan.categories.size() || plan.categories[response.tile] < 0) continue;
+        const auto slot = std::find_if(slots.begin(), slots.end(), [&](const auto& value) { return value.id == response.slot_id; });
+        if (slot == slots.end()) continue;
+        const auto selected = static_cast<unsigned>(plan.categories[response.tile]);
+        const Point outward{response.contact.x + response.facing.x, response.contact.y + response.facing.y};
+        const bool in_result = inside(req, response.contact) && index(req, response.contact) < result.cells.size();
+        const bool material = in_result && result.cells[index(req, response.contact)] != Material::Empty;
+        const bool exposed = !inside(req, outward) || result.cells[index(req, outward)] == Material::Empty;
+        response.satisfied = (response.compatible_domain & bit(selected)) != 0 && material && exposed;
+        if (!response.satisfied) response.reason += "; selected assignment did not satisfy this preference or damage revoked its contact";
+        if (!response.satisfied) continue;
+        const auto owner = result.provenance[index(req, response.contact)];
+        const auto count = std::count_if(result.boundary.hard.begin(), result.boundary.hard.end(),
+                                        [&](const auto& a) { return a.instance == owner; });
+        const auto duplicate = std::find_if(result.boundary.hard.begin(), result.boundary.hard.end(), [&](const auto& a) {
+            return a.a == response.contact && a.b == response.contact && a.facing == response.facing && a.family == Family::Frame;
+        });
+        if (duplicate == result.boundary.hard.end() && result.boundary.hard.size() < req.limits.max_affordances &&
+            count < req.limits.max_connectors_per_instance) {
+            result.boundary.hard.push_back({static_cast<std::uint32_t>(result.boundary.hard.size() + 1), owner,
+                response.contact, response.contact, response.facing, Family::Frame, false, 1.0,
+                "preplanned-masonry-bearing"});
+        }
+    }
+    result.metrics["negotiated_slots_offered"] = slots.size();
+    result.metrics["negotiated_slots_admitted"] = std::count_if(plan.responses.begin(), plan.responses.end(),
+        [](const auto& response) { return response.admitted; });
+    result.metrics["negotiated_slots_satisfied"] = std::count_if(plan.responses.begin(), plan.responses.end(),
+        [](const auto& response) { return response.satisfied; });
+    result.metrics["negotiated_domains_changed"] = std::count_if(plan.domains.begin(), plan.domains.end(),
+        [](const auto& d) { return d.modified_domain != d.original_domain; });
+    finish_result(req, result);
+    return plan;
 }
 
 void adapt_mosaic(const Request& req, Result& result) {

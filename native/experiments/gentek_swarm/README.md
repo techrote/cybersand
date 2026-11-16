@@ -1,5 +1,11 @@
 # GENTEK-SWARM-001 — three self-assembling architecture proofs
 
+The separately authorized stacked successor is documented in
+[GENTEK-SWARM-002 — preplanned negotiated bearings](SWARM-002.md). The SWARM-001
+description and frozen predecessor evidence below remain the control record.
+The authorized [bounded optional-offer follow-up](OPTIONAL-OFFERS.md) retains
+both frozen controls and compares caps of one, two and four optional offers.
+
 **Experimental native research. Draft / HOLD. No product acceptance.**
 
 This programme implements the owner-authorised three-Gentek brief of 15 November
