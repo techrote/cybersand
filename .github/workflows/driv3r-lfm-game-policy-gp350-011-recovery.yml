@@ -1,0 +1,81 @@
+name: LFM350 GP350-011-R verify original completed checkpoint evidence
+on:
+  push:
+    branches: [research/lfm-game-policy-350m]
+    paths: [experiments/driv3r/lfm_game_policy/gp350-011-recovery-request.json]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: lfm350-gp350011-original-recovery
+  cancel-in-progress: false
+jobs:
+  verify-recorded-model-evidence:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Source fence / immutable request
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          python3 -m py_compile experiments/driv3r/lfm_game_policy/gp350011_recovery_audit.py
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path("experiments/driv3r/lfm_game_policy/gp350-011-recovery-request.json").read_text())
+          assert r["schema"]=="driv3r.lfm350.gp350011-recovery-request/1"
+          assert r["source_run"]==43867250107 and r["source_artifact"]==14226204589
+          assert r["source_sha"]=="b99d214ce292b7b3c1d8a18e6030c38316c3b489"
+          assert r["expected_artifact_digest"]=="sha256:8f37ec50bcb56c8e426da677fd4b1396bee469604089291bc493a95e84ac984c"
+          assert r["no_new_inference"] and r["no_optimizer"] and r["draft_hold"]
+          PY
+          python3 tools/ci/check_ci_provider_policy.py
+      - name: Verify immutable original artifact identity and download
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p gp350-011-recovery/source gp350-011-recovery/report
+          gh api repos/techrote/cybersand/actions/artifacts/14226204589 \
+            --jq '{id,name,digest,expired,workflow_run:{id:.workflow_run.id,head_sha:.workflow_run.head_sha}}' \
+            > gp350-011-recovery/report/artifact-custody.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          a=json.loads(Path("gp350-011-recovery/report/artifact-custody.json").read_text())
+          assert a["id"]==14226204589 and not a["expired"]
+          assert a["digest"]=="sha256:8f37ec50bcb56c8e426da677fd4b1396bee469604089291bc493a95e84ac984c"
+          assert a["workflow_run"]["id"]==43867250107
+          assert a["workflow_run"]["head_sha"]=="b99d214ce292b7b3c1d8a18e6030c38316c3b489"
+          PY
+          gh run download 43867250107 --repo techrote/cybersand \
+            --name gp350-011-b99d214ce292b7b3c1d8a18e6030c38316c3b489-43867250107-1 \
+            --dir gp350-011-recovery/source
+      - name: Independently audit all original full-model inference and PNG evidence
+        run: |
+          set -euo pipefail
+          python3 experiments/driv3r/lfm_game_policy/gp350011_recovery_audit.py \
+            --source gp350-011-recovery/source \
+            --out gp350-011-recovery/report/recovered-summary.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          s=json.loads(Path("gp350-011-recovery/report/recovered-summary.json").read_text())
+          assert s["fresh_inference_original_scores_verified"]==1536
+          assert s["new_observation_probes_verified"]==144
+          assert s["original_png_sha256_verified"]==84
+          assert s["host_illegal_actions"]==s["new_optimizer_updates"]==0
+          print("GP350011 original inference independently qualified WITHOUT model rerun")
+          PY
+          (git rev-parse HEAD; date -u -Iseconds; python3 --version) > gp350-011-recovery/report/source-host.txt
+      - name: Preserve immutable recovery evidence (including failure receipts)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gp350-011-recovery-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: gp350-011-recovery/report/
+          retention-days: 90
+          if-no-files-found: warn
