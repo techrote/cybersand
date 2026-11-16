@@ -25,6 +25,29 @@ ORIGINAL_M3_SHA={
     "conv":"b44a97d0a6af84010280bf83e22c481afa15546d8b1575ef4c855d5bb6661d6d",
 }
 
+def validated_m3_lineage(checkpoint_dir, source_rebuilt=False):
+    """Allow a different CPU checkpoint only if its own source-run report proves lineage.
+
+    Default remains the exact archived M3 bytes. Source rebuild is explicit,
+    SHA-recorded, synthetic-only and never represented as the original weights.
+    """
+    hashes={name:hashlib.sha256((checkpoint_dir/f"{name}.pt").read_bytes()).hexdigest()
+            for name in ORIGINAL_M3_SHA}
+    if not source_rebuilt:
+        if hashes!=ORIGINAL_M3_SHA:raise ValueError("Original M3 checkpoint SHA mismatch")
+        return hashes,None
+    report_path=checkpoint_dir.parent/"report.json"
+    report=json.loads(report_path.read_text())
+    if (report.get("protocol")!="tiny-policy-m3-curriculum-cpu-v1"
+            or report.get("synthetic_only") is not True
+            or set(report.get("models",{}))!=set(ORIGINAL_M3_SHA)
+            or report.get("illegal_applied_actions")!=0):
+        raise ValueError("Missing/invalid regenerated M3 research source report")
+    for name,sha in hashes.items():
+        if report["models"][name].get("head_checkpoint_sha256")!=sha:
+            raise ValueError("Rebuilt M3 checkpoint disagrees with original producer report")
+    return hashes,hashlib.sha256(report_path.read_bytes()).hexdigest()
+
 def geometry_sha(w):
     return hashlib.sha256(w.blocked.tobytes()+w.protected.tobytes()).hexdigest()
 
@@ -262,18 +285,20 @@ def main():
     ap.add_argument("--output",type=Path,required=True)
     ap.add_argument("--m3-checkpoints",type=Path,required=True)
     ap.add_argument("--epochs",type=int,default=5)
+    ap.add_argument("--m3-rebuilt-from-source",action="store_true")
     args=ap.parse_args()
     if args.output.exists():raise FileExistsError("M5 must not overwrite evidence")
     if not 1<=args.epochs<=12:raise ValueError("Bounded epoch deadline")
     args.output.mkdir(parents=True)
     import torch
     torch.set_num_threads(2)
-    # Exact original M3 checkpoints; no retraining or quiet substitution.
+    # Default exact M3 checkpoints; explicit source rebuild has independent lineage.
+    m3_hashes,m3_report_sha=validated_m3_lineage(args.m3_checkpoints,args.m3_rebuilt_from_source)
     torch.manual_seed(730)
     old=m3_models(torch)
     for name,net in old.items():
         f=args.m3_checkpoints/f"{name}.pt"
-        if hashlib.sha256(f.read_bytes()).hexdigest()!=ORIGINAL_M3_SHA[name]:
+        if hashlib.sha256(f.read_bytes()).hexdigest()!=m3_hashes[name]:
             raise ValueError("Original M3 checkpoint SHA mismatch")
         chk=torch.load(f,map_location="cpu",weights_only=True)
         if chk["architecture"]!=name or chk["protocol"]!="tiny-policy-m3-curriculum-cpu-v1":
@@ -307,6 +332,7 @@ def main():
                        "m4_ood":group([r for r in z if r["tag"]=="m4-ood"])}
     report={"protocol":PROTOCOL,"synthetic_only":True,"native_validated":False,"optimizer_updates":sum(v["updates"] for v in models_report.values()),
             "world_size":96,"host_action_strings":list(ACTIONS),"budget":BUDGET,"window":TURNS,
+            "m3_checkpoint_sha256":m3_hashes,"m3_source_rebuild":args.m3_rebuilt_from_source,"m3_report_sha256":m3_report_sha,
             "seeds":{"train":TRAIN_SEEDS,"dev":DEV_SEEDS,"eval":EVAL_SEEDS,"m4_ood":M4_SEEDS},
             "datasets":{"train":train_meta_global,"dev":dev_meta_global,"eval":eval_meta},
             "models":models_report,"eval_oracle_agreement":diagnostic,"aggregate":aggregates,
