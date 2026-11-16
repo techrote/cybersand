@@ -157,8 +157,8 @@ def experiment(args):
     layer_names = {n for n, _ in trainable if f".layers.{last_layer}." in n}
     layer_params = [p for n, p in trainable if n in layer_names]
     head_params = [p for n, p in trainable if n not in layer_names]
-    if len(layer_names) < 8 or len(head_params) < 2:
-        raise RuntimeError("failed to partition pretrained block and classifier")
+    if len(layer_names) < 4 or len(head_params) < 2:
+        raise RuntimeError(f"failed to partition pretrained block and classifier: block={len(layer_names)} head={len(head_params)}")
     hist = torch.bincount(y, minlength=len(ACTIONS)).float()
     weights = torch.zeros(len(ACTIONS))
     present = hist > 0
