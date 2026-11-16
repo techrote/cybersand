@@ -66,6 +66,12 @@ floor selection to both native deck and accent roles; this showcase preserves
 that schema. Direct schema-4 recipes can still specify the existing separate
 `accent_material` native parameter.
 
+The supplied hero projects select Cathedral as the sole 100% style and disable
+the existing **Automatic tunnels** control, so the independent global tunnel
+carver does not cut the architectural specimen. Their ordinary project JSONs
+retain this setting; the standalone style preset keeps the established global
+tunnel ownership and does not silently override it.
+
 | Existing control | Cathedral response |
 | --- | --- |
 | Room size | Changes the four-bay span, side-arcade pitch, pier spacing, glazing and balustrade cadence |
@@ -96,7 +102,13 @@ module origin. A chunk merely asks for coordinates; it supplies no architectural
 state. Sampling order, work slices and request order cannot influence any seed
 choice. The existing compiler's global module anchor preserves the same phase
 across style-mask chunks. Irregular style masks retain the existing clipping
-behaviour; Cathedral does not negotiate joins between Genteks.
+behaviour; Cathedral does not negotiate joins between Genteks. A finite canvas
+can cut off the supporting leg of an otherwise connected repeated frame.
+Independent material-component review found boundary-truncated pieces in the
+512 hero and tall case, including an intermediate-rib crown whose legs lie below
+the canvas. Complete supercells and their joins are qualified; arbitrary clipped
+silhouettes are not repaired by this sampler. The qualification does not claim
+that every partial structure remains connected after finite-mask clipping.
 
 ## Qualification and retained evidence
 
@@ -129,6 +141,138 @@ and Godot's `--headless --path godot --script
 res://tests/test_gentek_cathedral_showcase.gd`. The workflow records its complete
 pinned toolchain commands. Local iteration does not substitute for final source
 and runtime identity or owner aesthetic acceptance.
+
+## Visual review and measured response
+
+Independent source and image review found the four-scale hierarchy legible in
+both full-size heroes: the primary pointed frame dominates, the side arcade is
+subordinate, glazing stays high, and small gallery posts supply a finer rhythm.
+The centre remains open. The Marble / Brass / Frosted Glass palette separates
+primary mass, ribs/decks and glazing. Seed changes preserve the typology while
+varying gallery handedness, tower height and clerestory grouping. This is a
+controlled repeated architectural family, not a freeform floor-plan generator.
+
+Two substantive review findings were repaired before qualification: the primary
+piers now connect vertically repeated supercells, and the analytic one-column
+overlap prevents disconnected rib caps at extreme valid aspect ratios. The
+original failing extreme-aspect test passes without reducing its connectivity
+requirement. Added adapter execution also caught missing schema-4 catalogue
+metadata for the new module and an inherited test classifier that mistakenly
+treated all 72 CLASSIC v1 modules as legacy; both were repaired.
+
+The owner preset's native 512 hero contains **57.91% empty cells**; the 1024 hero
+contains **56.43%**. The exact dimensional-limit image retains **44.17%**.
+With all other inputs fixed, the 512 native material campaign measured:
+
+| Change | Different material cells | Different occupied/empty cells |
+| --- | ---: | ---: |
+| Room size 72 → 96 | 117,044 | 97,783 |
+| Floor height 96 → 128 | 104,804 | 88,068 |
+| Wall thickness 1 → 5 | 58,622 | 42,368 |
+| Clerestory windows on → off | 12,382 | 0 |
+| Buttress portals on → off | 473 | 473 |
+
+All window changes are glazing-to-shell substitutions. Four identical-parameter
+seeds (271828, 314159, 161803, 57721) produce four different material SHA-256s;
+each repeated seed replays exactly. Matched-palette/parameter comparisons differ
+from Viaduct, Pointed Arcade and Basilica in respectively **157,248**, **178,790**
+and **148,132** material cells. Those differences accompany visibly different
+scale relationships; a hash difference alone is not the architectural finding.
+
+The separate native structural fixture uses B=96, L=80, w=3 and a diagnostic
+62/66/121/114 palette. Across all four seeds it preserves a **22,121-cell connected
+nave**, a **5,616-cell fully empty protected rectangle**, a connected main arch
+crossing five vertical and two horizontal chunk seams, and 480-cell continuous
+primary piers. These are fixture-specific measurements, not hero-image counts.
+
+## Qualification scope
+
+Local and hosted generation qualification passed all **nine native executables**, with
+**1,966,986 explicitly counted assertions** across four suites and five further
+passing suites without printed counts. The procedural subset has 969,257 checks,
+including 552,616 Cathedral assertions. The parent 72-material aggregate remains
+`4a92810d575d9201`; eight Viaduct v1/v2 chunk identities remain frozen. Independent
+ASan/UBSan execution also passed 969,257 checks.
+
+Both local and hosted adapter campaigns passed **6,320 checks / zero failures**: project
+contract 2,762, existing GEN-007/73-CLASSIC qualification 2,490, Cathedral capture
+campaign 1,005, actual graphical author 42 and fresh-process reopen 21. The
+ordinary five-card form, native install acknowledgement, painted cell and ordered
+edits survive Save and reconstruction. The reviewer independently verified all
+20 full PNGs against raw native material IDs through the unchanged preview LUT,
+and verified both crops against their original source map.
+
+Local evidence used GCC 14.2 / binutils 2.44 and Godot 4.7. The unchanged spatial
+allocation-probe test needed only its GCC-14 `mismatched-new-delete` diagnostic
+downgraded to a warning; repository source and canonical compiler flags were not
+changed. LeakSanitizer cannot operate under this host's tracing, so the successful
+ASan/UBSan run disables leak detection and does not claim a leak check. The
+separate hosted workflow uses canonical GCC 13 without that diagnostic override.
+
+The branch retains the parent's committed runtime pointers. This research
+campaign distributes its source-matched Linux runtime inside the evidence
+artifact; it does not re-attest the parent's published manifests or claim a
+Windows evaluation bundle. Actual graphical qualification uses X11/Mesa software
+rendering. Physical Windows owner acceptance, Ready promotion and merging remain
+outside this handoff.
+
+## Hosted qualification — 16 November 2026
+
+[Draft PR #664](https://github.com/techrote/cybersand/pull/664) retains the implementation,
+this teaching record and the labelled PNG evidence. The complete source-matched
+[qualification run](https://github.com/techrote/cybersand/actions/runs/43969407871)
+passed at `b63314d14df6b8ba660f7823687e3738b28d28e6` using GCC 13 on Ubuntu 24.04,
+pinned Godot 4.7 and pinned godot-cpp. Its
+[downloadable artifact](https://github.com/techrote/cybersand/actions/runs/43969407871/artifacts/14279355327)
+contains 198 sealed files: native material maps, PNGs, recipes, receipts, projects,
+logs, UI captures, source/runtime ledgers and the actual Linux extension.
+Actions retention is 90 days; the 22 selected native PNGs and their
+[manifest](../images/gentek-cathedral/manifest.json) are also committed with this research note.
+
+The hosted source ledger has 727 unchanged build/execution inputs with SHA-256
+`5aa4a6b03f92f8cf3574ba65e3c1dc280ec065dc3dacd120bc42d8c6e961eeaf`.
+The executed and retained Linux runtime SHA-256 is
+`b8159685736e0ed8caabe307532cafe6d80d337f053568a30690888f086d9201`.
+All 22 selected hosted PNGs are byte-identical to the sealed local images used
+for architectural review. Subsequent documentation/gallery commits preserve
+all 727 source input hashes; the tested source revision remains explicit rather
+than claiming a rebuild at a later evidence-only commit.
+
+| Hosted generation benchmark | Median | Range over five measured runs |
+| --- | ---: | ---: |
+| Arched Viaduct v2 | 420.499 ms | 419.009–421.001 ms |
+| Nested Arcade v1 | 420.046 ms | 419.334–421.581 ms |
+| Cathedral Megaframe v1 | 426.314 ms | 425.977–426.587 ms |
+
+Each row uses one warmup and five native 512×512 generations with matched seed,
+geometry, palette and the existing spatial-mask/receipt path. Material copying,
+PNG encoding and editor display are excluded from the native timer. Cathedral's
+median is about 1.4% above Viaduct and 1.5% above Nested Arcade in this run.
+This is a representative end-to-end native-path cost, not an isolated
+`sample()` microbenchmark or a cross-machine latency promise. No per-cell heap
+allocation, mutable cache or unbounded iteration was added.
+
+The first hosted attempt rejected an invalid workflow job-level `runner.temp`
+expression before execution. The workflow-only correction uses the workspace
+for its isolated XDG profile; the corrected run and the corresponding
+[Documentation run](https://github.com/techrote/cybersand/actions/runs/43969417127)
+passed. The existing Draft policy skips published-runtime-manifest re-attestation;
+the custom source-matched artifact provides the scoped Linux research evidence.
+
+Independent engineering review returned **GO for Draft / HOLD research handoff**
+after separately auditing the public run, ZIP identity, all 727 source hashes,
+all 198 output hashes, native/UI runtime agreement, 20 full PNG-to-material/LUT
+comparisons and both literal crops. It found the four-scale hierarchy convincing,
+the sampler comprehensible, bounded seed variation typologically coherent, and
+no regression in the frozen CLASSIC/Viaduct outputs. The disclosed finite-mask
+clipping limit remains; this verdict does not substitute for owner aesthetic
+acceptance, Windows qualification, Ready promotion or merge approval.
+
+![Native 512×512 Cathedral Megaframe, seed 271828](../images/gentek-cathedral/cathedral-megaframe-hero-512.png)
+
+*Actual native material preview: a four-bay primary frame, subordinate side
+arcades/galleries, a high clerestory and small balustrade/mullion rhythms. Empty
+space is retained as an architectural output.*
 
 ## Reusing the pattern
 
