@@ -24,7 +24,6 @@ jobs:
       OPENBLAS_NUM_THREADS: '1'
       OMP_NUM_THREADS: '1'
       MKL_NUM_THREADS: '1'
-      DRIV3R_TEACHER_CORPUS: ${{ runner.temp }}/distill-source/original_teachers.jsonl
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -34,6 +33,7 @@ jobs:
       - name: Original real d1 teacher acquisition, exact immutable ZIP check
         env:
           GH_TOKEN: ${{ github.token }}
+          DRIV3R_TEACHER_CORPUS: ${{ runner.temp }}/distill-source/original_teachers.jsonl
         run: |
           set -euo pipefail
           mkdir -p "$RUNNER_TEMP/distill-source"
@@ -42,10 +42,14 @@ jobs:
           python3 -m experiments.driv3r.training.distillation.prepare_corpus "$RUNNER_TEMP/distill-source/greyhound.zip" "$RUNNER_TEMP/distill-source/branchwitch.zip" "$DRIV3R_TEACHER_CORPUS"
           test "$(sha256sum "$DRIV3R_TEACHER_CORPUS" | cut -d' ' -f1)" = '140342c16a0b8c6c8d2c3bc6071767885b15096d5a53bbf304979f3015c86522'
       - name: Deterministic legality, protected-cell and split tests
+        env:
+          DRIV3R_TEACHER_CORPUS: ${{ runner.temp }}/distill-source/original_teachers.jsonl
         run: |
           set -euo pipefail
           python3 -m unittest discover -s experiments/driv3r/training/distillation -p 'test_*.py' -v
       - name: Genuine 450-update tiny neural student, held-out synthetic controls
+        env:
+          DRIV3R_TEACHER_CORPUS: ${{ runner.temp }}/distill-source/original_teachers.jsonl
         run: |
           set -euo pipefail
           mkdir -p "$RUNNER_TEMP/distilled-student"
