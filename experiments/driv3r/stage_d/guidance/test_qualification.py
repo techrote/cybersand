@@ -1,5 +1,6 @@
 """Cheap adversarial regressions for the lane's exact-source CPU launcher."""
 import unittest
+import tempfile
 from unittest.mock import patch
 from pathlib import Path
 from types import SimpleNamespace
@@ -9,26 +10,26 @@ from experiments.driv3r.stage_d.guidance import qualification as q
 
 class QualificationTests(unittest.TestCase):
     def test_complete_pass(self):
-        self.assertTrue(q.parse_unittest("Ran 215 tests in 3.00s\n\nOK\n", 0)["passed"])
+        self.assertTrue(q.parse_unittest("Ran 224 tests in 3.00s\n\nOK\n", 0)["passed"])
 
     def test_missing_and_duplicate_footer(self):
-        for log in ("OK\n", "Ran 215 tests in 1.0s\nRan 215 tests in 1.0s\nOK\n"):
+        for log in ("OK\n", "Ran 224 tests in 1.0s\nRan 224 tests in 1.0s\nOK\n"):
             with self.subTest(log=log):
                 self.assertFalse(q.parse_unittest(log, 0)["passed"])
 
     def test_incomplete_cohort(self):
-        for count in (158, 167, 168, 169, 170, 172, 173, 180, 181, 184, 185, 190, 191, 198, 199, 214):
+        for count in (158, 167, 168, 169, 170, 172, 173, 180, 181, 184, 185, 190, 191, 198, 199, 214, 215, 219, 220, 221, 222, 223):
             with self.subTest(count=count):
                 self.assertFalse(q.parse_unittest(f"Ran {count} tests in 1.0s\n\nOK\n", 0)["passed"])
 
     def test_skips_are_not_passes(self):
-        self.assertFalse(q.parse_unittest("Ran 215 tests in 1.0s\n\nOK (skipped=1)\n", 0)["passed"])
+        self.assertFalse(q.parse_unittest("Ran 224 tests in 1.0s\n\nOK (skipped=1)\n", 0)["passed"])
 
     def test_failed_returncode_is_not_pass(self):
-        self.assertFalse(q.parse_unittest("Ran 215 tests in 1.0s\n\nOK\n", 1)["passed"])
+        self.assertFalse(q.parse_unittest("Ran 224 tests in 1.0s\n\nOK\n", 1)["passed"])
 
     def test_failed_suite_is_not_pass(self):
-        self.assertFalse(q.parse_unittest("Ran 215 tests in 1.0s\n\nFAILED (failures=1)\n", 1)["passed"])
+        self.assertFalse(q.parse_unittest("Ran 224 tests in 1.0s\n\nFAILED (failures=1)\n", 1)["passed"])
 
     def test_invalid_timeout_fails_before_access(self):
         for t in (True, 0, -1, 601, 3.1, "180"):
@@ -174,6 +175,34 @@ class QualificationTests(unittest.TestCase):
                     with self.assertRaisesRegex(q.QualificationError,
                                                 "M1 adoption merge changed"):
                         q.source_fence(Path("/missing"))
+
+    def test_declared_inventory_rejects_missing_shadowed_and_extra_modules(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            directory = root / "unit"
+            directory.mkdir()
+            target = directory / "test_probe.py"
+            good = ("import unittest\nclass Checks(unittest.TestCase):\n"
+                    "    def test_a(self): pass\n    def test_b(self): pass\n")
+            with patch.object(q, "LANE", "unit"):
+                with patch.object(q, "REQUIRED_METHOD_COUNTS", {"test_probe.py": 2}):
+                    with patch.object(q, "MIN_TESTS", 2):
+                        target.write_text(good, encoding="utf-8")
+                        self.assertEqual(q._validate_test_inventory(root), 2)
+                        for bad in (
+                            good.replace("    def test_b(self): pass\n", ""),
+                            good.replace("def test_b", "def test_a"),
+                            good.replace("def test_b", "async def test_b"),
+                        ):
+                            with self.subTest(bad=bad):
+                                target.write_text(bad, encoding="utf-8")
+                                with self.assertRaises(q.QualificationError):
+                                    q._validate_test_inventory(root)
+                        target.write_text(good, encoding="utf-8")
+                        (directory / "test_unknown.py").write_text(good, encoding="utf-8")
+                        with self.assertRaisesRegex(q.QualificationError,
+                                                    "Required test modules"):
+                            q._validate_test_inventory(root)
 
 if __name__ == "__main__":
     unittest.main()
