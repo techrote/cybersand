@@ -2,7 +2,7 @@ name: SPROCKET WORM-001 W10 motif-replay continuation
 on:
   push:
     branches: [codex/agent-painter-sprocket-568]
-    paths: [experiments/agent_painter/lanes/sprocket/worm-request-v10-r1.json]
+    paths: [experiments/agent_painter/lanes/sprocket/worm-request-v10-r2.json]
 permissions:
   contents: read
   actions: read
@@ -33,15 +33,15 @@ jobs:
           python3 - <<'PY'
           import json,os,subprocess
           from pathlib import Path
-          req=json.loads(Path("experiments/agent_painter/lanes/sprocket/worm-request-v10-r1.json").read_text())
+          req=json.loads(Path("experiments/agent_painter/lanes/sprocket/worm-request-v10-r2.json").read_text())
           expected={"schema":"cybersand.worm.sprocket-motif-continuation/10",
-            "experiment":"W10-motif-replay-frozen-root-320-steps-r1",
+            "experiment":"W10-motif-replay-frozen-root-320-steps-r2",
             "root":"kandivault/sprocket-500m",
             "revision":"eb157d4ddddc4619e661d4a2426bb2dd000fc668",
             "subfolder":"","eos_id":5,"parent_run_id":43800891190,
             "parent_artifact_id":14197445694,
             "parent_sha":"9a6c7956377c22fda3c0599da7645fd796d03569",
-            "parent_head_checkpoint_sha256":"5c09762f77580064b23a49b1daefef1e181a69d1318bcfbaa8a071ee2e75d4",
+            "parent_head_checkpoint_sha256":"5c09762f77580064b23a49b1daefef1e181a69d1318b1cfbaa8ca071ee2e75d4",
             "W0_commit":"4bb9d6e1d0d0d78183f87d1e3c29648edafacf61",
             "support_commit":"2b6534ac21542805f4bda123f67e9624d21e39d7",
             "new_head_optimizer_updates":320,"root_optimizer_updates":0,
@@ -63,7 +63,7 @@ jobs:
           set -euo pipefail
           mkdir -p "$RUNNER_TEMP/w9-original"
           gh run download 43800891190 --repo techrote/cybersand --name sprocket-worm-v9-9a6c7956377c22fda3c0599da7645fd796d03569 --dir "$RUNNER_TEMP/w9-original"
-          echo '5c09762f77580064b23a49b1daefef1e181a69d1318bcfbaa8a071ee2e75d4  '"$RUNNER_TEMP/w9-original/campaign/onpolicy-replay.pt" | sha256sum -c -
+          echo '5c09762f77580064b23a49b1daefef1e181a69d1318b1cfbaa8ca071ee2e75d4  '"$RUNNER_TEMP/w9-original/campaign/onpolicy-replay.pt" | sha256sum -c -
           python3 - "$RUNNER_TEMP/w9-original" <<'PY'
           import json,sys
           from pathlib import Path
