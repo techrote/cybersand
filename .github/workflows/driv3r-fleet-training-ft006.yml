@@ -1,0 +1,97 @@
+name: DRIV3R FT-006 real equal-exposure STOP target optimizer ablation
+
+on:
+  push:
+    branches: [research/570-fleet-training-throughput-001]
+    paths:
+      - .github/workflows/driv3r-fleet-training-ft006.yml
+      - experiments/driv3r/fleet_training/request_ft006.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: driv3r-ft006-source-pinned-stop-ablation
+  cancel-in-progress: false
+
+jobs:
+  bounded-stop-ablation-training:
+    name: FT-006 genuine CPU Adam STOP-target ablation, separate lease seed ${{ matrix.seed }}
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        seed: [9401, 9403]
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      NUMEXPR_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Checkout immutable population source separately, read only
+        uses: actions/checkout@v4
+        with:
+          repository: techrote/cybersand
+          ref: 534cd8ffac6fbe33a714ae03a62c16045bf10259
+          path: upstream
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install fixed CPU inference and Adam dependencies
+        run: python -m pip install --disable-pip-version-check numpy==2.3.5 PyYAML==6.0.2
+      - name: Validate source-only custody tests and CI policies
+        run: |
+          python -m compileall -q experiments/driv3r/fleet_training
+          python -m unittest discover -s experiments/driv3r/fleet_training -p 'test_*.py' -v
+          python tools/ci/check_ci_provider_policy.py
+          python tools/ci/check_ci_scheduling_policy.py
+      - name: Record the immutable request and actual job lease
+        env:
+          SEED: ${{ matrix.seed }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/ft006-original-$SEED" "$RUNNER_TEMP/ft003-original"
+          git rev-parse HEAD > "$RUNNER_TEMP/ft006-original-$SEED/source-head.txt"
+          sha256sum experiments/driv3r/fleet_training/request_ft006.json experiments/driv3r/fleet_training/ft006_stop_ablation.py > "$RUNNER_TEMP/ft006-original-$SEED/source-files.sha256"
+          printf 'run=%s job=%s seed=%s source=%s\n' "${GITHUB_RUN_ID}" "${GITHUB_JOB}" "$SEED" "${GITHUB_SHA}" > "$RUNNER_TEMP/ft006-original-$SEED/job-lease.txt"
+      - name: Retrieve original FT-003 optimizer weights, verify immutable ZIP
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SEED: ${{ matrix.seed }}
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --location --retry 2 \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            -o "$RUNNER_TEMP/ft003-original.zip" \
+            "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14194214028/zip"
+          echo "fec6d5e254a0bbe590b44ba26bbb7427960af507a5c6fe78b1d7e5fe5389c910  $RUNNER_TEMP/ft003-original.zip" | sha256sum -c -
+          unzip -q "$RUNNER_TEMP/ft003-original.zip" -d "$RUNNER_TEMP/ft003-original"
+          sha256sum "$RUNNER_TEMP/ft003-original.zip" >> "$RUNNER_TEMP/ft006-original-$SEED/source-files.sha256"
+      - name: Actual matched Adam STOP-target ablation and new held-out world evaluations
+        env:
+          SEED: ${{ matrix.seed }}
+        run: |
+          set -euo pipefail
+          python experiments/driv3r/fleet_training/ft006_stop_ablation.py \
+            --request experiments/driv3r/fleet_training/request_ft006.json \
+            --upstream upstream \
+            --ft003 "$RUNNER_TEMP/ft003-original" \
+            --seed "$SEED" \
+            --output "$RUNNER_TEMP/ft006-original-$SEED/run"
+      - name: Retain changed checkpoints, original trace galleries and failures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ft006-original-seed-${{ matrix.seed }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/ft006-original-${{ matrix.seed }}/
+          if-no-files-found: warn
+          retention-days: 14
