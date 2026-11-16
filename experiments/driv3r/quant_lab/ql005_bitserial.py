@@ -250,7 +250,7 @@ def run(args):
         variants[name]=net
         opt_reports[name]=diag
         torch.save({"optimizer":optimizer,"diagnostic":diag,
-           "source_sha":os.environ.get("GITHUB_SHA","local"),
+           "source_sha":os.environ.get("QL_SOURCE_SHA",os.environ.get("GITHUB_SHA","local")),
            "parent_ql003_sha":PARENT_QL003,"parent_ql004_sha":PARENT_QL004,
            "source_packed_archive_sha256":digest(q1_path)},
            root/"models"/(name+"-optimizer.pt"))
@@ -299,7 +299,7 @@ def run(args):
             "original_pngs":[{"path":e["png"],"sha256":e["png_sha256"]} for e in episodes]}
 
     (root/"raw_decisions.json").write_text(json.dumps(all_receipts,separators=(",",":"))+"\n")
-    results={"schema":"ql005-bitserial-1","source_sha":os.environ.get("GITHUB_SHA","local"),
+    results={"schema":"ql005-bitserial-1","source_sha":os.environ.get("QL_SOURCE_SHA",os.environ.get("GITHUB_SHA","local")),
        "pinned_sources":{"ql003":PARENT_QL003,"ql004":PARENT_QL004},
        "verified_original_manifest_entries":[verified_a,verified_b],
        "source_archive_hashes":{"q1":digest(q1_path),"frank":digest(frank_path),
