@@ -27,6 +27,7 @@ SEEDS = (9803, 9821)
 STEPS = 128
 DEADLINE = 2250
 ADAPTERS = {
+    "stock": None,
     "gp350006": "436159bd6508063221d31d46f057b5fba7ee5b6f05b27edf003c54e76863898c",
     "gp350010-step24": "047b2bacb61f6f04fb359e4d9839f6c198a17ba7db6dfb451d88e48846c66430",
 }
@@ -206,8 +207,9 @@ def evaluate(args):
     torch.manual_seed(3510012)
     c.check(not args.out.exists(), "immutable stage evidence already exists")
     args.out.mkdir(parents=True)
-    c.check(c.sha(args.adapter / "adapter_model.safetensors") == ADAPTERS[args.stage],
-            "immutable adapter SHA256 mismatch")
+    if args.stage != "stock":
+        c.check(c.sha(args.adapter / "adapter_model.safetensors") == ADAPTERS[args.stage],
+                "immutable adapter SHA256 mismatch")
     w0 = c.load_w0(args.w0)
     sample, source_counts, n_train = collect_probe(w0)
     c.save_json(args.out / "preflight.json", {
@@ -245,7 +247,8 @@ def evaluate(args):
             "not full pinned LFM350")
     base.requires_grad_(False)
     base.eval()
-    model = PeftModel.from_pretrained(base, args.adapter, is_trainable=False)
+    model = (base if args.stage == "stock" else
+             PeftModel.from_pretrained(base, args.adapter, is_trainable=False))
     c.check(not any(v.requires_grad for v in model.parameters()),
             "checkpoint-only stage accidentally trainable")
     model.eval()
