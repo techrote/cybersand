@@ -231,7 +231,6 @@ def self_test():
         path, metadata, _ = save_packed(root, "q1", source, (1,1,1))
         repair = Q1FrozenCodesRepair(path)
         p = repair.as_policy()
-        assert torch.allclose(repair(torch.randn(3,27)),p(torch.randn(3,27))) is False or True
         # Exact input comparison, no noisy relative evaluation.
         x = torch.randn(4,27)
         assert torch.allclose(repair(x), p(x), atol=1e-7)
@@ -254,7 +253,6 @@ def run(args):
     q1_archive = source / "models/bal-q1.npz"
     q1_reference = load_packed(q1_archive, meta("bal-q1",old))
     reports = {}
-    reports["q1-scales-ce"], reports["q1-scales-distilled"] = None, None
     repaired = {}
     for name, penalty in (("q1-scales-ce", 0.), ("q1-scales-distilled", 1.5)):
         net, opt, diag = train_scale_repair(q1_archive, train, q1_reference,
