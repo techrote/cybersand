@@ -892,12 +892,23 @@ func apply_liquids() -> bool:
 	var next := applied.duplicate(true)
 	var validation: Dictionary = _liquids.bridge.validate_liquid_policy(_liquids.requested_policy)
 	if not validation.get("accepted",false): return refuse(str(validation.get("refusal",{})))
+	if bool(host.workbench_water_options.get("workbench_wave_flow",false)):
+		var water_family := ""
+		for assignment: Dictionary in validation.get("receipt",{}).get("assignments",[]):
+			if int(assignment.get("material",-1)) == CyberCellWorld.WATER:
+				water_family = str(assignment.get("applied_family",""))
+		if water_family != "freemass_v1":
+			return refuse("Wave Flow is an overlay on the FreeMass Water carrier. Choose FreeMass or turn Wave Flow off.")
+		if bool(host.workbench_water_options.get("workbench_ballistic",false)):
+			return refuse("Wave Flow and Ballistic Water are mutually exclusive; turn Ballistic Water off before rebuilding.")
 	next.liquid_policy = Array(_liquids.requested_policy)
 	next.normalize = _liquids.normalize_water.button_pressed
 	next.rule_radius = maxi(_liquids.geometry_picker.get_selected_id(),int(validation.receipt.get("minimum_rule_radius",2)))
 	if not apply(next,true,0,true,not host.paused): return false
 	_liquid_action = true
-	message = "Preparing liquid settings…"
+	message = ("Preparing Wave Flow tuning… retained cells stay; face momentum resets."
+		if bool(host.workbench_water_options.get("workbench_wave_flow",false))
+		else "Preparing liquid settings…")
 	return true
 
 func _save_block_reason() -> String:

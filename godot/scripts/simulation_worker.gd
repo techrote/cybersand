@@ -3012,6 +3012,8 @@ func _publish_snapshot(
 			var spray: Dictionary = _world.get_water_spray()
 			spray["receipt"] = _water_spray_receipt.duplicate(true)
 			snapshot.lab_context["water_spray"] = spray
+		if _world.has_method(&"get_wave_flow_status"):
+			snapshot.lab_context["wave_flow"] = _world.get_wave_flow_status()
 	if render_generation_advanced:
 		var render_micro: Dictionary = snapshot.lab_context.get("microscenario", {})
 		var render_presentation: Dictionary = render_micro.get("presentation", {})

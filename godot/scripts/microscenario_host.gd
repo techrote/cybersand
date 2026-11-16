@@ -128,9 +128,14 @@ func install(world: Variant, value: Variant, mode: String = "Inspect", instrumen
 				options.pressure_gas_compartment_capacity = controlled_setup.pressure_gas_compartment_capacity
 			if controlled_setup.get("workbench_convert_liquid_inventory",false):
 				options.workbench_convert_liquid_inventory = true
-			for key: String in ["workbench_ballistic","workbench_inertial_signed","workbench_face_release","workbench_fine_cores"]:
+			for key: String in ["workbench_ballistic","workbench_inertial_signed","workbench_face_release","workbench_fine_cores","workbench_wave_flow"]:
 				if controlled_setup.get(key,false): options[key] = true
-			for key: String in ["workbench_face_budget","workbench_face_speed","workbench_face_period","workbench_face_min_height"]:
+			for key: String in ["workbench_face_budget","workbench_face_speed","workbench_face_period","workbench_face_min_height",
+					"workbench_wave_substeps","workbench_wave_active_rows","workbench_wave_gain","workbench_wave_gain_confined",
+					"workbench_wave_stiffness","workbench_wave_damp_shift","workbench_wave_coast","workbench_wave_level_shift",
+					"workbench_wave_sleep_after","workbench_wave_wake_peak","workbench_wave_rest_head","workbench_wave_stick",
+					"workbench_wave_calm","workbench_wave_calm_damp_shift","workbench_wave_maximum_mass",
+					"workbench_wave_empty_pour_shift","workbench_wave_flow_share_shift","workbench_wave_adhesion_shift"]:
 				if controlled_setup.get(key) is int: options[key] = controlled_setup[key]
 		# Only the exclusive owner retains this opaque token between its two
 		# preparation turns. Revalidation above still precedes final commit.

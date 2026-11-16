@@ -11,6 +11,14 @@ const PlayableCourseLap = preload("res://scripts/playable_course_lap.gd")
 const PlayableCourseOverlay = preload("res://scripts/playable_course_overlay.gd")
 const SnapshotPublicationCounter = preload("res://scripts/snapshot_publication_counter.gd")
 const FACE_TUNING := ["workbench_face_budget","workbench_face_speed","workbench_face_period","workbench_face_min_height"]
+const WAVE_TUNING := [
+	"workbench_wave_substeps","workbench_wave_active_rows","workbench_wave_gain",
+	"workbench_wave_gain_confined","workbench_wave_stiffness","workbench_wave_damp_shift",
+	"workbench_wave_coast","workbench_wave_level_shift","workbench_wave_sleep_after",
+	"workbench_wave_wake_peak","workbench_wave_rest_head","workbench_wave_stick",
+	"workbench_wave_calm","workbench_wave_calm_damp_shift","workbench_wave_maximum_mass",
+	"workbench_wave_empty_pour_shift","workbench_wave_flow_share_shift","workbench_wave_adhesion_shift",
+]
 const PlayableSessionPanel = preload("res://scripts/playable_session_panel.gd")
 const DEFAULT_PLAYABLE_OPTIONS: Dictionary = {"controls":"keyboard_gamepad", "rules":"lap", "camera":"follow"}
 const PLAYABLE_RECOVERY_META: StringName = &"cybersand_playable_recovery"
@@ -798,11 +806,14 @@ func workbench_apply(candidate: Dictionary, actors: Array, rectangles: Array, ex
 	# Developer-only explicit C2048 opt-in. Omitted means the native C1024 default.
 	if workbench_water_options.get("pressure_gas_compartment_capacity",1024) is int:
 		settings["pressure_gas_compartment_capacity"] = int(workbench_water_options.get("pressure_gas_compartment_capacity",1024))
-	for key: String in ["workbench_ballistic","workbench_inertial_signed","workbench_face_release","workbench_fine_cores"]:
+	for key: String in ["workbench_ballistic","workbench_inertial_signed","workbench_face_release","workbench_fine_cores","workbench_wave_flow"]:
 		if workbench_water_options.get(key,false) is bool and workbench_water_options.get(key,false):
 			settings[key] = true
 	if settings.get("workbench_face_release",false) and settings.get("workbench_ballistic",false):
 		for key: String in FACE_TUNING:
+			if workbench_water_options.get(key) is int: settings[key] = workbench_water_options[key]
+	if settings.get("workbench_wave_flow",false):
+		for key: String in WAVE_TUNING:
 			if workbench_water_options.get(key) is int: settings[key] = workbench_water_options[key]
 	# Lossy conversion belongs only to an explicit developer policy switch.
 	# Ordinary replacements (including Apply of an unchanged policy) keep
