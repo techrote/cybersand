@@ -1,7 +1,7 @@
 {
   "version": 1,
   "frozen_date": "2026-11-15",
-  "purpose": "Architectural-generator current-source navigation; catalogue expectation corrected and publication coverage added on 2026-11-15; no historical queries modified.",
+  "purpose": "Architectural-generator current-source navigation; catalogue expectation corrected and publication coverage added on 2026-11-15; no historical queries modified. Megatruss research navigation added on 2026-11-16.",
   "questions": [
     {
       "id": "ARCHITECTURE-APERTURES",
@@ -60,6 +60,21 @@
         "Publication requires source-input/tree identity, source-matched target-OS native and graphical architecture/Flatten evidence, and independently extracted Windows package replay.",
         "Only the two runtime libraries and two provenance records may be published on the unchanged PR branch; the resulting head still needs strict provenance, palette and broad CI, and no merge is authorized.",
         "Routine native and Godot architecture tests plus bounded publisher guards continue on main; the expensive full graphical/package campaign remains feature-branch or explicitly dispatched work."
+      ],
+      "sources": [
+        "systems/architectural-generator.md"
+      ]
+    },
+    {
+      "id": "ARCHITECTURE-MEGATRUSS-SCALE",
+      "query": "How does the Draft CLASSIC Megatruss Station organize six ordinary bays into a globally phased supercell with secondary truss panels and existing controls?",
+      "canonical": [
+        "systems/architectural-generator.md"
+      ],
+      "facts": [
+        "Megatruss Station v1 uses a six-bay, three-band absolute-coordinate supercell; bounds and masks only clip the output.",
+        "At B64 L96, the supercell is 384 by 288 cells, primary diagonal travel192, base bay64 and secondary panel pitch16.",
+        "Existing room/floor/wall/aperture controls apply; source-built runtime evidence and owner acceptance remain separate."
       ],
       "sources": [
         "systems/architectural-generator.md"

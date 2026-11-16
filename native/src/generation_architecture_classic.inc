@@ -1313,3 +1313,130 @@ public:
         return p_.shell;
     }
 };
+
+// 73. MegatrussStation: six ordinary bays form one infrastructural supercell.
+// Bounds ONLY clip this sampler. Its phase and programme use signed world cells.
+class MegatrussStation final : public FeatureSampler {
+    ArchitectureForm p_;
+    std::uint64_t seed_;
+public:
+    MegatrussStation(const ModuleInstance& i, std::uint64_t seed) : p_(i), seed_(seed) {
+        require(p_.bay >= 4*p_.wall+24 && p_.level >= 8*p_.wall+32,
+            "megatruss_station needs bay >= 4*wall+24 and floor >= 8*wall+32");
+    }
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        // SUPER CELL COORDINATES: macro / bay / band / secondary panel.
+        const auto B=p_.bay, L=p_.level, w=p_.wall, span=6*B, height=3*L;
+        const auto super_x=positive_mod(c.x,span), super_y=positive_mod(c.y,height);
+        const auto bay_index=super_x/B, bay_x=super_x%B;
+        const auto major_band=super_y/L, panel_pitch=B/4, panel_x=bay_x%panel_pitch;
+        const auto top=L/2, bottom=3*L/2, main_deck=5*L/2;
+        const auto primary=2*w, secondary=std::max<std::int64_t>(1,w/2);
+        const auto edge=std::min(super_x,span-super_x);
+        if (p_.shaft>0 && std::abs(super_x-span/2)<(p_.shaft+1)/2) return Material::Empty;
+
+        // SEEDED MACRO PROGRAMME: no independent per-member random decisions.
+        const auto programme=hash_xy(seed_,floor_div(c.x,span),floor_div(c.y,height),1773);
+        const bool forked=(programme&1U)!=0, concourse=(programme&8U)!=0;
+        const auto hall=static_cast<std::int64_t>((programme>>1U)%3U);
+        const bool gallery_right=hall==0 || (hall==1 && (programme&16U)!=0);
+        const bool crossed=(programme&32U)!=0, crown_right=(programme&64U)!=0;
+        const auto hall_start=(1+hall)*B;
+        const auto gallery_start=gallery_right?span-7*B/4:B/4;
+        const auto gallery_end=gallery_start+3*B/2;
+        const auto gallery_y=2*L;
+
+        // Integer strip raster with square end caps. All products are local,
+        // bounded by 1536 x 768; no world-coordinate multiply or float distance.
+        const auto member=[&](std::int64_t x1,std::int64_t y1,std::int64_t x2,
+                std::int64_t y2,std::int64_t radius) {
+            if (super_x<std::min(x1,x2)-radius || super_x>std::max(x1,x2)+radius ||
+                super_y<std::min(y1,y2)-radius || super_y>std::max(y1,y2)+radius) return false;
+            const auto dx=x2-x1, dy=y2-y1;
+            return std::abs((super_x-x1)*dy-(super_y-y1)*dx)<=radius*std::max(std::abs(dx),std::abs(dy));
+        };
+
+        // PRIMARY CHORDS / MAIN TRANSIT DECK: unbroken six-bay datums.
+        if (std::abs(super_y-main_deck)<=w) return p_.deck;
+        if (std::abs(super_y-top)<=primary || std::abs(super_y-bottom)<=primary) return p_.accent;
+
+        // PRIMARY DIAGONALS: each member crosses THREE normal bays.
+        if (member(0,top,3*B,bottom,primary) || member(3*B,bottom,span,top,primary) ||
+            member(3*B,top,3*B,bottom,w)) return p_.accent;
+
+        // TRANSFER PIERS / CORES: continuous across all three vertical bands.
+        // The invariant seam core joins adjacent programmes without negotiation.
+        if (edge<=3*w) return p_.shell;
+        if (major_band>=1 && super_y>=bottom) {
+            const auto reach=forked?3*B/4:B/2;
+            if (member(0,main_deck,reach,bottom,2*w) ||
+                member(span,main_deck,span-reach,bottom,2*w)) return p_.shell;
+            if (!forked && super_y<=bottom+L/5 && edge<=B/2) return p_.shell;
+        }
+
+        // SECONDARY TRUSS: four small panels per base bay, in two pockets only.
+        // Keeping the central two bays unmeshed makes the primary span legible.
+        const auto secondary_bottom=top+L/4;
+        if ((bay_index==1 || bay_index==4) && super_y>=top && super_y<=secondary_bottom) {
+            if (std::abs(super_y-secondary_bottom)<=secondary || bay_x<=secondary ||
+                bay_x>=B-secondary || panel_x<=secondary) return p_.accent;
+            const auto py=super_y-top, depth=secondary_bottom-top;
+            const auto tolerance=secondary*std::max(panel_pitch,depth);
+            const bool reverse=((bay_x/panel_pitch)&1)!=0;
+            const auto diagonal=(reverse?panel_pitch-panel_x:panel_x)*depth;
+            if (std::abs(diagonal-py*panel_pitch)<=tolerance ||
+                (crossed && std::abs(panel_pitch*depth-diagonal-py*panel_pitch)<=tolerance)) return p_.accent;
+        }
+
+        // LARGE STATION HALL: a protected two-bay rectangle below the truss.
+        // Primary/support layers above cannot enter this corridor at valid sizes.
+        if (super_x>=hall_start && super_x<hall_start+2*B &&
+            super_y>bottom+primary && super_y<main_deck-w) return Material::Empty;
+
+        // HANGERS / SUSPENDED GALLERY: anchored to the lower mega-chord.
+        if (super_x>=gallery_start && super_x<=gallery_end) {
+            if (std::abs(super_y-gallery_y)<=w) return p_.deck;
+            if (super_y>bottom && super_y<gallery_y &&
+                (std::abs(super_x-gallery_start)<=secondary ||
+                 std::abs(super_x-gallery_end)<=secondary)) return p_.accent;
+            const auto pod_top=gallery_y-L/4;
+            if (super_y>=pod_top && super_y<gallery_y-w) {
+                if (super_y<pod_top+w || super_x<gallery_start+w || super_x>gallery_end-w)
+                    return p_.shell;
+                const auto gx=super_x-gallery_start;
+                if (p_.doors && std::abs(gx-3*B/4)<p_.door/2 &&
+                    super_y>=gallery_y-w-p_.door) return Material::Empty;
+                if (p_.windows && super_y>=pod_top+2*w &&
+                    positive_mod(gx,panel_pitch)>secondary) return p_.glazing;
+                return p_.shell;
+            }
+        }
+
+        // UPPER CONCOURSE: a bounded enclosure tied into a core and diagonal.
+        const auto concourse_x=gallery_right?span-super_x:super_x, concourse_y=5*L/4;
+        if (concourse && concourse_x<=5*B/2 && super_y>=L && super_y<=concourse_y+w) {
+            if (std::abs(super_y-concourse_y)<=w) return p_.deck;
+            if (super_y<L+w || concourse_x>=5*B/2-w) return p_.shell;
+            if (p_.doors && std::abs(concourse_x-2*B)<p_.door/2 &&
+                super_y>=concourse_y-w-p_.door) return Material::Empty;
+            if (p_.windows && super_y>=L+2*w && positive_mod(concourse_x,panel_pitch)>secondary)
+                return p_.glazing;
+            return p_.shell;
+        }
+
+        // LOWER TECHNICAL GALLERY: short shelves rooted in the transfer cores.
+        if (edge<=B && std::abs(super_y-11*L/4)<=w) return p_.deck;
+        if (super_y>main_deck && super_y<11*L/4 && std::abs(edge-B/2)<=secondary) return p_.accent;
+
+        // ROOF / EQUIPMENT CROWN: offset monitor with framed glazing and mast.
+        const auto crown_x=crown_right?span-B:B, crown_half=B/3, crown_top=L/6;
+        const auto cx=std::abs(super_x-crown_x);
+        if (super_y>=crown_top && super_y<top && cx<=crown_half) {
+            if (super_y<crown_top+w || cx>=crown_half-w) return p_.accent;
+            if (p_.windows && positive_mod(super_x,panel_pitch)>secondary) return p_.glazing;
+            return p_.shell;
+        }
+        if (cx<=secondary && super_y<crown_top) return p_.accent;
+        return Material::Empty;
+    }
+};

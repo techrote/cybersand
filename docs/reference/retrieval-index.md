@@ -62,6 +62,12 @@ and [owner evaluation guide](../operations/architectural-generator-playtest.md).
 PR #582 is a separate Draft/HOLD candidate; standalone qualification is not
 integrated-main or retained-runtime publication.
 
+For the Draft CLASSIC Megatruss Station v1 showcase, its six-bay/three-band
+coordinate hierarchy, existing controls and source-built qualification boundary,
+use the [architectural contract](../systems/architectural-generator.md#classic-megatruss-station-research-preset).
+The [research record](../research/gentek-showcase-megatruss-001.md) owns its gallery,
+legacy-output preservation and experimental performance evidence.
+
 ## Branch reconciliation and design choices
 
 For how agents reconcile stacked or long-running branches with main, and which
