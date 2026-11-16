@@ -25,14 +25,26 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
+      - name: Skip historical optimizer jobs when the latest commit does not edit the model
+        id: delta
+        shell: bash
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ] || git show --format= --name-only HEAD | grep -Fxq 'experiments/driv3r/quant_lab/ql006_activation_gates.py'; then
+            echo 'run=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'run=false' >> "$GITHUB_OUTPUT"
+          fi
       - uses: actions/setup-python@v5
+        if: steps.delta.outputs.run == 'true'
         with:
           python-version: '3.11'
       - name: Install free pinned CPU toolchain
+        if: steps.delta.outputs.run == 'true'
         run: |
           python -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.5.1'
           python -m pip install 'numpy==2.1.3' 'Pillow==11.1.0'
       - name: Load immutable QL-003 original trained and Franken model archive
+        if: steps.delta.outputs.run == 'true'
         uses: actions/download-artifact@v4
         with:
           name: ql003-franken-quant
@@ -41,6 +53,7 @@ jobs:
           github-token: ${{ github.token }}
           path: ql003-source
       - name: Load immutable QL-005 original bitserial results and optimizer archive
+        if: steps.delta.outputs.run == 'true'
         uses: actions/download-artifact@v4
         with:
           name: ql005-bitserial-repair
@@ -49,16 +62,19 @@ jobs:
           github-token: ${{ github.token }}
           path: ql005-source
       - name: Validate packed operations, synthetic host authority and new STE gradients
+        if: steps.delta.outputs.run == 'true'
         run: |
           python experiments/driv3r/quant_lab/quant_worm.py --self-test
           python experiments/driv3r/quant_lab/ql002_branch_retrace.py --self-test
           python experiments/driv3r/quant_lab/ql005_bitserial.py --self-test
           python experiments/driv3r/quant_lab/ql006_activation_gates.py --self-test
       - name: Run 96 real optimizer updates, held-out state tests and first-pass PNG trajectories
+        if: steps.delta.outputs.run == 'true'
         run: |
           python experiments/driv3r/quant_lab/ql006_activation_gates.py \
             --parent ql003-source --ql005 ql005-source --out ql006-out --steps 48
       - name: Verify exact HEAD, sealed parents, model steps, legal actions and PNG hashes
+        if: steps.delta.outputs.run == 'true'
         run: |
           python - <<'PY'
           import hashlib,json,os,subprocess
@@ -94,7 +110,7 @@ jobs:
                 'PNG',data['first_pass_png_n'],'model steps',data['new_optimizer_updates'])
           PY
       - name: Preserve original optimizer receipts, packed-model parents, source-hashed first-pass evidence
-        if: always()
+        if: always() && steps.delta.outputs.run == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: ql006-ternary-gates

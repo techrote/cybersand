@@ -25,14 +25,26 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
+      - name: Skip historical optimizer jobs when the latest commit does not edit the model
+        id: delta
+        shell: bash
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ] || git show --format= --name-only HEAD | grep -Fxq 'experiments/driv3r/quant_lab/ql005_bitserial.py'; then
+            echo 'run=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'run=false' >> "$GITHUB_OUTPUT"
+          fi
       - uses: actions/setup-python@v5
+        if: steps.delta.outputs.run == 'true'
         with:
           python-version: '3.11'
       - name: Install pinned free CPU dependencies
+        if: steps.delta.outputs.run == 'true'
         run: |
           python -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.5.1'
           python -m pip install 'numpy==2.1.3' 'Pillow==11.1.0'
       - name: Load immutable QL-003 trained and Frankenstein model roots
+        if: steps.delta.outputs.run == 'true'
         uses: actions/download-artifact@v4
         with:
           name: ql003-franken-quant
@@ -41,6 +53,7 @@ jobs:
           github-token: ${{ github.token }}
           path: ql003-source
       - name: Load immutable QL-004 Q1 scale-only repaired roots
+        if: steps.delta.outputs.run == 'true'
         uses: actions/download-artifact@v4
         with:
           name: ql004-pinned-integer-repair
@@ -49,14 +62,17 @@ jobs:
           github-token: ${{ github.token }}
           path: ql004-source
       - name: Check host safety and actual packed XNOR arithmetic
+        if: steps.delta.outputs.run == 'true'
         run: |
           python experiments/driv3r/quant_lab/quant_worm.py --self-test
           python experiments/driv3r/quant_lab/ql002_branch_retrace.py --self-test
           python experiments/driv3r/quant_lab/ql005_bitserial.py --self-test
       - name: Perform 120 genuine STE repair updates and 192 first-pass original PNGs
+        if: steps.delta.outputs.run == 'true'
         run: |
           python experiments/driv3r/quant_lab/ql005_bitserial.py --source-dir ql003-source --repair-dir ql004-source --out ql005-out --steps 40
       - name: Qualify exact HEAD, sources, optimizer state, original PNG bytes and first-pass receipts
+        if: steps.delta.outputs.run == 'true'
         run: |
           python - <<'PY'
           import hashlib, json, os
@@ -86,7 +102,7 @@ jobs:
           print('QL005 EXACT-HEAD VERIFIED',len(manifest),'entries; 192 original PNGs; 120 optimizer steps')
           PY
       - name: Preserve model-step records, packed-code source hashes and real gallery
-        if: always()
+        if: always() && steps.delta.outputs.run == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: ql005-bitserial-repair
