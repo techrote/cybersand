@@ -1,0 +1,91 @@
+name: QL-008 learned state-dependent precision gate (synthetic research)
+on:
+  pull_request:
+    paths:
+      - 'experiments/driv3r/quant_lab/ql008_state_gate.py'
+      - '.github/workflows/driv3r-quant-lab-ql008.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: ql008-state-gate
+  cancel-in-progress: ${{ github.event_name != 'workflow_dispatch' }}
+jobs:
+  state-gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 24
+    env:
+      PYTHONHASHSEED: '0'
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      QL_SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pinned free CPU dependencies
+        run: |
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.5.1'
+          python -m pip install 'numpy==2.1.3' 'Pillow==11.1.0'
+      - name: Retrieve immutable source-trained QL-003 parent archive
+        uses: actions/download-artifact@v4
+        with:
+          name: ql003-franken-quant
+          run-id: 43795394633
+          repository: techrote/cybersand
+          github-token: ${{ github.token }}
+          path: ql003-source
+      - name: Test host legality and gate arithmetic
+        run: |
+          python experiments/driv3r/quant_lab/quant_worm.py --self-test
+          python experiments/driv3r/quant_lab/ql008_state_gate.py --self-test
+      - name: Train two gates (96 real updates) and paint original stressed-world trials
+        run: |
+          python experiments/driv3r/quant_lab/ql008_state_gate.py \
+            --parent ql003-source --out ql008-out --steps 48 --horizon 96
+      - name: Verify exact-HEAD source, original trajectories, optimizer and manifest
+        run: |
+          python - <<'PY'
+          import hashlib, json, os, subprocess
+          from pathlib import Path
+          root=Path('ql008-out')
+          rec=json.loads((root/'results.json').read_text())
+          sha=os.environ['QL_SOURCE_SHA']
+          assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==sha
+          assert rec['source_sha']==sha
+          assert rec['parent_source_sha']=='9b4103c48127e5c8538403e2a4d9e2525fbe8755'
+          assert rec['parent_manifest_verified']>=330
+          assert rec['train_n']>0 and rec['heldout_n']==4352
+          assert rec['optimizer_updates']==96
+          assert len(rec['variants'])==7
+          assert rec['original_png_n']==168
+          for r in rec['repairs'].values():
+              assert r['optimizer_updates']==48
+              assert r['nonzero_adam_moment_tensors']==2
+              assert r['frozen_original_weight_codes']
+          raw=json.loads((root/'raw_decisions.json').read_text())
+          assert len(raw)==168
+          assert all(row['first_pass'] and all(s['chosen'] in s['legal']
+                    for s in row['decisions']) for row in raw)
+          manifest=json.loads((root/'MANIFEST.json').read_text())
+          assert len({m['path'] for m in manifest})==len(manifest)
+          for m in manifest:
+              b=(root/m['path']).read_bytes()
+              assert len(b)==m['bytes']
+              assert hashlib.sha256(b).hexdigest()==m['sha256']
+          print('QL008 exact HEAD PASS',sha,'inventory',len(manifest),
+                'original PNGs',rec['original_png_n'])
+          PY
+      - name: Retain genuine optimizer states, raw first-pass scores, PNG gallery
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ql008-adaptive-precision-gate
+          path: ql008-out/
+          if-no-files-found: warn
+          retention-days: 21
