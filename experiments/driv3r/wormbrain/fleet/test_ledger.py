@@ -97,8 +97,29 @@ class TestFleet(unittest.TestCase):
             a = audit(r, p, root)
             self.assertEqual(a["original_episodes_checked"], 4)
             self.assertEqual(a["decision_count"], 96)
-            self.assertGreater(a["claimed_four_forward_overlap_seconds"], 1)
+            self.assertEqual(len(a["claimed_same_runner_two_resident_overlap_seconds_by_job"]), 2)
+        self.assertTrue(all(v > 1 for v in a["claimed_same_runner_two_resident_overlap_seconds_by_job"].values()))
+        self.assertIsNone(a["claimed_four_forward_overlap_seconds"])
+        self.assertFalse(a["cross_runner_wall_clock_overlap_verified"])
             self.assertEqual(a["independently_verified_current_active_models"], 0)
+
+    def test_different_runner_monotonic_epochs_do_not_establish_four_way_overlap(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            r = req()
+            p = sample(root, r)
+            # Runner 1 has a completely unrelated monotonic epoch: this must
+            # not create a false four-way elapsed-time comparison.
+            for i in (2, 3):
+                f = root / ("worm"+str(i)) / "episode.json"
+                x = json.loads(f.read_text())
+                x["forward_start_ns"] += 100000000000000
+                x["forward_end_ns"] += 100000000000000
+                f.write_bytes(canonical(x))
+            a = audit(r, p, root)
+            self.assertEqual(len(a["claimed_same_runner_two_resident_overlap_seconds_by_job"]), 2)
+            self.assertIsNone(a["claimed_four_forward_overlap_seconds"])
+            self.assertFalse(a["cross_runner_wall_clock_overlap_verified"])
 
     def test_tampering_fail_closed(self):
         for defect in ("png", "lease", "source", "pid", "optimizer", "state", "overlap", "label"):

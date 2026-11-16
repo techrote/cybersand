@@ -176,16 +176,25 @@ def audit(r, p, result_dir):
     require({x["runner_slot"] for x in verified} == {0, 1} and all(
         len({x["runner_slot"] for x in verified if x["job_id"] == job}) == 1 for job in jobs),
         "runner slot misattribution")
-    begin = max(x["forward_start_ns"] for x in verified)
-    end = min(x["forward_end_ns"] for x in verified)
-    require(end - begin >= 1_000_000_000, "no four-way overlap of model-forward intervals")
+    # CLOCK_MONOTONIC epochs from different GitHub VMs are NOT comparable.
+    # Only compare monotonic intervals measured by processes on the SAME runner.
+    local_intervals = {}
+    for job in sorted(jobs):
+        pair = [x for x in verified if x["job_id"] == job]
+        begin = max(x["forward_start_ns"] for x in pair)
+        end = min(x["forward_end_ns"] for x in pair)
+        require(end - begin >= 1_000_000_000,
+                "no same-runner overlap of two resident inference episode intervals")
+        local_intervals[job] = round((end-begin)/1e9, 6)
     return {"schema": "driv3r.wormfleet.audit/1", "campaign": r["campaign"],
             "request_sha256": expected["request_sha256"],
             "original_episodes_checked": 4, "claimed_two_runner_jobs": 2,
             "claimed_four_distinct_pid_job_pairs": 4,
-            "claimed_four_forward_overlap_seconds": round((end-begin)/1e9, 6),
+            "claimed_same_runner_two_resident_overlap_seconds_by_job": local_intervals,
+            "claimed_four_forward_overlap_seconds": None,
+            "cross_runner_wall_clock_overlap_verified": False,
             "independently_verified_current_active_models": 0,
-            "reason": "This validates local evidence consistency, not remote PID liveness or GitHub job origin.",
+            "reason": "Only within-runner monotonic timestamps can be compared. Cross-VM four-way overlap, GitHub job origin and PID liveness need independent UTC/remote witnesses.",
             "source_classes": sorted({x["evidence_class"] for x in verified}),
             "decision_count": sum(x["decisions_applied"] for x in verified),
             "material_edit_count": sum(x["native_material_edits"] for x in verified),
