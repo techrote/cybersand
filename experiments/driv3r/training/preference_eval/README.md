@@ -42,6 +42,15 @@ python3 -m unittest discover -s experiments/driv3r/training/preference_eval -p '
 python3 experiments/driv3r/training/preference_eval/rank.py --output-dir /tmp/driv3r-pref-P0
 ```
 
+For original-byte image re-verification, supply the **unaltered original PNG files** named `<family>-<seed>-<controller>.png` (32 files; in this pilot's independently generated local evidence ZIP), install Pillow separately, and run:
+
+```bash
+python3 -m pip install Pillow
+python3 experiments/driv3r/training/preference_eval/audit_images.py --image-dir /path/to/original-32-pngs
+```
+
+This was actually run locally and **32/32 SHA-256 plus complete reconstructed 96x96 geometry records matched**. The main ranker and unit tests require no Pillow. The binary original images and trained-head JSON files are intentionally not committed to Git. 
+
 Pure Python 3 standard library, no network, no model downloads, deterministic 450-epoch Adam per head, four-heldout-world tests, SHA-fenced input, per-pair records, local JSON heads and metrics. **No checkpoints committed to Git.** The first CPU outputs were produced locally and are not independently GitHub Actions-qualified or immutable Actions artifacts; promotion is blocked until the approved code is run in an isolated Actions workflow with its output archives retained.
 
 **Confounds / follow-up:** only eight worlds; all W0 controls inherit their producers' world/host interventions; W13 STOP censored; the observed images alone cannot reveal real action-level intent, dynamic recovery, obstacle legality, original checkpoint bytes or feedback sensitivity. Next independent experiment should reuse immutable original turn-level World/action receipts to construct *matched first-divergence recovery pairs* with STOP available, then collect blinded owner/human comparisons separately from proxy scores. Do not drive reward optimisation of d1 from these crude proxy heads. No new issue, no automatic dispatch, no merge.
