@@ -71,6 +71,7 @@ var _last_status_ms := -1000
 var _runtime_label := ""
 var _processor_label := ""
 # WCX/BW-001 experimental Water spray controls (separate owner script).
+var water_lab := preload("res://scripts/workbench_water_lab.gd").new()
 var water_spray := preload("res://scripts/workbench_water_spray_panel.gd").new()
 var paint_editor: Control
 # IN-TOOLS #361 valve / drain / nozzle controls (separate owner script).
@@ -198,6 +199,7 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_button(row,"New blank",new_canvas)
 	_button(row,"New from generator…",func() -> void: _generated_dialog.open_new())
 	_button(row,"Materials Lab…",open_materials_lab)
+	_button(row,"Water Lab…",water_lab.open)
 	_picker(row,_camera,["Free camera","Follow selected","Overview"],func(i: int) -> void: set_camera(i))
 	_button(row,"−",func() -> void: zoom_by(1))
 	_button(row,"+",func() -> void: zoom_by(-1))
@@ -251,8 +253,11 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 		fire_enabled = enabled
 		if not applied.is_empty(): applied.fire = enabled)
 	row.add_child(_fire)
-	water_spray.build(host,self,_row,entered_position)
-	equipment.build(host,self,_row,entered_position)
+	# All Water configuration and equipment live in one bounded, scrollable window.
+	# Only a single entry point remains in the Workbench toolbar.
+	water_lab.build(self)
+	water_spray.build(host,self,_row,entered_position,water_lab.pages)
+	equipment.build(host,self,_row,entered_position,water_lab.pages["equipment"])
 	_details_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	_details_scroll.custom_minimum_size.y = DETAILS_MAX_HEIGHT
 	_details_scroll.hide()
@@ -301,9 +306,9 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_brush.min_value = 0
 	_brush.tooltip_text = "Radius in cells. Zero paints one cell; [ and ] adjust width."
 	_liquids = host.playable_session_panel.policy_editor
-	_liquids.reparent(_details)
+	_liquids.reparent(water_lab.pages["advanced"])
 	_liquids.use_one_shot_normalization()
-	_button(_row(_details),"Apply liquid selection",apply_liquids)
+	_button(_row(water_lab.pages["advanced"]),"Apply liquid selection",apply_liquids)
 	_detail_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_details.add_child(_detail_label)
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART

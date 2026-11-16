@@ -38,6 +38,7 @@ var _fields: Dictionary = {}
 var _wave_fields: Dictionary = {}
 var _jet_point: Callable
 var _workbench: Control
+var _water_pages: Dictionary = {}
 var _fallback_message := ""
 const ComparisonScenes = preload("res://scripts/workbench_water_comparison_scenes.gd")
 
@@ -108,13 +109,17 @@ const WAVE_PRESETS := [
 		"workbench_wave_empty_pour_shift":3,"workbench_wave_adhesion_shift":0}},
 ]
 
-func build(owner: Control, parent: Control, row_factory: Callable, jet_point: Callable) -> void:
+func build(owner: Control, parent: Control, row_factory: Callable, jet_point: Callable, water_pages: Dictionary = {}) -> void:
 	host = owner
 	_workbench = parent
+	_water_pages = water_pages
 	_jet_point = jet_point
 	_inertial_signed_preference = _option_on("workbench_inertial_signed")
+	var embedded := not water_pages.is_empty()
+	var solver_surface: Control = water_pages.get("solvers",parent)
+	var status_surface: Control = water_pages.get("status",parent)
 
-	var row: Control = row_factory.call(parent)
+	var row: Control = row_factory.call(solver_surface)
 	var title := Label.new()
 	title.text = "Water solver"
 	row.add_child(title)
@@ -128,11 +133,12 @@ func build(owner: Control, parent: Control, row_factory: Callable, jet_point: Ca
 	_button(row,"PF dormant",func() -> void: _stage_solver("pressure_flow_v1","cached_dormant"))
 	_button(row,"Inertial",func() -> void: _stage_solver("inertial_cellular_v1","reference"))
 	_button(row,"FreeMass",_stage_plain_freemass)
-	_button(row,"Apply solver / tuning",_apply_wave)
-	_button(row,"Wave tuning…",func() -> void: _show_controls(_wave_window))
-	_button(row,"Spray / other controls…",func() -> void: _show_controls(_spray_window))
+	if not embedded:
+		_button(row,"Apply solver / tuning",_apply_wave)
+		_button(row,"Wave tuning…",func() -> void: _show_controls(_wave_window))
+		_button(row,"Spray / other controls…",func() -> void: _show_controls(_spray_window))
 
-	row = row_factory.call(parent)
+	row = row_factory.call(solver_surface)
 	var scene_label := Label.new()
 	scene_label.text = "Water comparison"
 	row.add_child(scene_label)
@@ -155,9 +161,9 @@ func build(owner: Control, parent: Control, row_factory: Callable, jet_point: Ca
 	row.add_child(_worker_threads)
 	_wave_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_wave_status.max_lines_visible = 3
-	parent.add_child(_wave_status)
+	status_surface.add_child(_wave_status)
 
-	var tuning := _controls_body(parent,_wave_window,_wave_scroll,"Wave Flow tuning")
+	var tuning: Control = water_pages["wave"] if embedded else _controls_body(parent,_wave_window,_wave_scroll,"Wave Flow tuning")
 	row = row_factory.call(tuning)
 	_wave_preset.tooltip_text = "v2 defaults is the original parameter point. Other presets are exploratory starting points. Selection stages values; Apply changes the native World."
 	for preset: Dictionary in WAVE_PRESETS: _wave_preset.add_item(str(preset.label))
@@ -165,8 +171,9 @@ func build(owner: Control, parent: Control, row_factory: Callable, jet_point: Ca
 	row.add_child(_wave_preset)
 	_button(row,"Reset Wave defaults",_reset_wave_defaults)
 	_button(row,"Revert to native",_revert_wave)
-	_button(row,"Apply solver / tuning",_apply_wave)
-	_button(row,"Close",_wave_window.hide)
+	if not embedded:
+		_button(row,"Apply solver / tuning",_apply_wave)
+		_button(row,"Close",_wave_window.hide)
 	var hint := Label.new()
 	hint.text = "Inputs = requested · native values appear beside each input · Apply restarts Wave momentum"
 	row.add_child(hint)
@@ -188,7 +195,7 @@ func build(owner: Control, parent: Control, row_factory: Callable, jet_point: Ca
 			_add_wave_field(row,WAVE_SPINS[index])
 	_update_wave_controls()
 
-	var spray_controls := _controls_body(parent,_spray_window,_spray_scroll,"Water spray / other controls")
+	var spray_controls: Control = water_pages["transport"] if embedded else _controls_body(parent,_spray_window,_spray_scroll,"Water spray / other controls")
 	row = row_factory.call(spray_controls)
 	title = Label.new()
 	title.text = "Water spray / transport"
@@ -266,8 +273,9 @@ func build(owner: Control, parent: Control, row_factory: Callable, jet_point: Ca
 		_fields[key] = field
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	spray_controls.add_child(_status)
-	_button(row_factory.call(spray_controls),"Apply solver / tuning",_apply_wave)
-	_button(row_factory.call(spray_controls),"Close",_spray_window.hide)
+	if not embedded:
+		_button(row_factory.call(spray_controls),"Apply solver / tuning",_apply_wave)
+		_button(row_factory.call(spray_controls),"Close",_spray_window.hide)
 	_update_wave_controls()
 
 func _controls_body(parent: Control, window: Window, scroll: ScrollContainer, title: String) -> VBoxContainer:
@@ -297,6 +305,12 @@ func _controls_body(parent: Control, window: Window, scroll: ScrollContainer, ti
 	return body
 
 func _show_controls(window: Window) -> void:
+	# The consolidated Workbench keeps Wave and spray on tabs of one window.
+	# The legacy standalone layout remains available to older callers.
+	if not _water_pages.is_empty():
+		var tabs: TabContainer = _water_pages["tabs"]
+		tabs.current_tab = 1 if window == _wave_window else 2
+		return
 	window.popup_centered_clamped(Vector2i(1000,410),0.95)
 
 func _add_wave_field(row: Control, spec: Array) -> void:

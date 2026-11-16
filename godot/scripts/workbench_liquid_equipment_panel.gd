@@ -28,11 +28,12 @@ var _pump := CheckButton.new()
 var _buttons := {}
 
 
-func build(owner: Control, workbench: Control, row_factory: Callable, entered_position: Callable) -> void:
+func build(owner: Control, workbench: Control, row_factory: Callable, entered_position: Callable, surface: Control = null) -> void:
 	host = owner
 	ui = workbench
 	_entered = entered_position
-	var row: Control = row_factory.call(workbench)
+	var content: Control = surface if surface != null else workbench
+	var row: Control = row_factory.call(content)
 	var title := Label.new()
 	title.text = "Liquid equipment"
 	title.tooltip_text = "Valves, drain and nozzle devices (#361). Load a built-in equipment start, or place devices at X/Y."
@@ -50,7 +51,7 @@ func build(owner: Control, workbench: Control, row_factory: Callable, entered_po
 	_speed.value_changed.connect(func(_v: float) -> void: tune())
 	_rate.value_changed.connect(func(_v: float) -> void: tune())
 	_add_button(row,"Stop all",stop_all)
-	row = row_factory.call(workbench)
+	row = row_factory.call(content)
 	_add_button(row,"Load liquid-lab",func() -> void: ui.load_equipment_start(Setup.LIQUID_LAB_LABEL))
 	_add_button(row,"Load reservoir-lab",func() -> void: ui.load_equipment_start(Setup.RESERVOIR_LAB_LABEL))
 	_add_button(row,"Valve at X/Y",func() -> void: place("valve"))
@@ -64,7 +65,7 @@ func build(owner: Control, workbench: Control, row_factory: Callable, entered_po
 	_add_button(row,"Apply supply/pump",apply_supply)
 	_add_button(row,"Remove equipment",remove_all)
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	workbench.add_child(_status)
+	content.add_child(_status)
 
 
 func _add_button(row: Control, caption: String, action: Callable) -> Button:

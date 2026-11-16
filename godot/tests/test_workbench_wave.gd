@@ -42,6 +42,34 @@ func require(ok: bool, detail: String) -> bool:
 		push_error("WORKBENCH_WAVE: " + detail)
 	return ok
 
+# UI contract: no expanding Water controls in the Workbench toolbar. The
+# existing live control objects, native receipts and option editors remain
+# reachable from one non-modal, tabbed window.
+func water_lab_ui() -> void:
+	var lab: RefCounted = panel.water_lab
+	require(lab != null and lab.window != null and lab.tabs != null,
+		"Water Lab is a single owned Workbench window")
+	if lab == null or lab.window == null: return
+	require(lab.tabs.get_tab_count() == 5,"all five Water control groups are visible as tabs")
+	require(not lab.window.visible,"Water Lab starts closed to preserve canvas space")
+	require(lab.pages["solvers"].is_ancestor_of(panel.water_spray._scene_picker),
+		"solver and comparison scene picker are in Water Lab")
+	require(lab.pages["wave"].is_ancestor_of(panel.water_spray._wave_fields["workbench_wave_gain"]),
+		"Wave tuning is integrated, not a second popup")
+	require(lab.pages["transport"].is_ancestor_of(panel.water_spray._ballistic),
+		"ballistic, face, PF and spray controls share the transport tab")
+	require(lab.pages["equipment"].is_ancestor_of(panel.equipment._buttons.valve),
+		"valve, drain and nozzle controls are in Water Lab")
+	require(lab.pages["advanced"].is_ancestor_of(panel._liquids),
+		"complete per-material policy editor is in Water Lab")
+	require(lab.pages["status"].is_ancestor_of(panel.water_spray._wave_status),
+		"native applied/staged readback persists across all tabs")
+	require(not panel.water_spray._wave_window.is_inside_tree() 		and not panel.water_spray._spray_window.is_inside_tree(),
+		"Wave and spray do not create auxiliary windows")
+	lab.select_tab(1)
+	require(lab.tabs.current_tab == 1,"Wave tab is navigable")
+	lab.select_tab(0)
+
 func idle() -> bool:
 	return panel != null and not panel.applied.is_empty() and not panel.busy() \
 		and host.pending_microscenario_apply.is_empty()
@@ -737,12 +765,14 @@ func run() -> void:
 	await scene_changed
 	host = current_scene
 	panel = host.shared_workbench
-	if await until(idle,"ordinary Workbench installed") and await activation():
-		await runtime_and_lifecycle()
-		await invalid_recovery()
-		await solver_switch()
-		await comparison_scenes()
-		await failed_owner_recovery()
+	if await until(idle,"ordinary Workbench installed"):
+		water_lab_ui()
+		if await activation():
+			await runtime_and_lifecycle()
+			await invalid_recovery()
+			await solver_switch()
+			await comparison_scenes()
+			await failed_owner_recovery()
 	for section: String in sections: require(bool(sections[section]),"required section completed: "+section)
 	var result := {"schema":"workbench-wave-631-v1","assertions":checks,"failures":failures.size(),
 		"failure_details":failures,"sections":sections,"real_workbench":true,"native_ticks":native_ticks,

@@ -10,6 +10,20 @@ related-documents: [../architecture/wave-flow-v1.md, lcb-manual-comparison-ux.md
 
 # Wave Flow evaluation
 
+## Water Lab (consolidated Workbench UI)
+
+On the Water Lab UI branch, open **Water Lab…** from the main Workbench toolbar.
+All Water-specific settings share one non-modal window. **Solvers & scenes**
+selects Wave/FreeMass/PressureFlow/Inertial, comparison canvases and workers;
+**Wave tuning** exposes all 18 fields and presets; **Transport & spray**
+contains ballistic, signed inertia, face release, PressureFlow gas, fine cores,
+impact spray and jets; **Equipment** contains valves, drains, pumps and nozzles;
+**Advanced policy** retains the full per-material liquid picker and normalization.
+**Applied native** readback and **Apply solver / tuning** are always visible
+beneath the tabs. The old separate Wave/spray popups and permanent Water toolbar
+rows are not created. This is a UI composition change, not a solver/policy
+modification; staged and refused requests still use the existing native receipts.
+
 ## Start the supplied Windows candidate
 
 Extract the downloaded artifact ZIP, then extract its inner CyberSand ZIP into a
