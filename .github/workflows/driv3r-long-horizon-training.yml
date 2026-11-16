@@ -283,6 +283,25 @@ jobs:
             done
             test -s "$RUN_DIR/recovery-balance-seed${seed}/SHA256SUMS.json"
           done
+      - name: Budget-conditioned versus blind competing-return training (DEV only)
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ '${{ inputs.mode || 'full' }}' == 'smoke' ]]; then
+            updates=2
+          else
+            updates=40
+          fi
+          for seed in 594 595; do
+            python -m experiments.driv3r.training.long_horizon.return_budget_lab \
+              --out "$RUN_DIR/return-budget-seed${seed}" --seed "$seed" --updates "$updates"
+            python -m experiments.driv3r.training.long_horizon.return_budget_lab \
+              --verify "$RUN_DIR/return-budget-seed${seed}"
+            for arm in blind capacity_visible; do
+              test -s "$RUN_DIR/return-budget-seed${seed}/${arm}-seed${seed}.npz"
+            done
+            test -s "$RUN_DIR/return-budget-seed${seed}/SHA256SUMS.json"
+          done
       - name: Store checkpoint, original traces, galleries, metrics and failure evidence
         if: always()
         uses: actions/upload-artifact@v4
