@@ -58,7 +58,7 @@ def model_class(torch):
         def __init__(self):
             super().__init__()
             self.layers = torch.nn.Sequential(
-                torch.nn.Linear(136,64), torch.nn.Tanh(),
+                torch.nn.Linear(142,64), torch.nn.Tanh(),
                 torch.nn.Linear(64,64), torch.nn.Tanh(),
                 torch.nn.Linear(64,6))
         def forward(self, x):
