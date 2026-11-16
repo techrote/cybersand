@@ -39,3 +39,21 @@ For WORM model workers (#575 LFM, #576 Sprocket), a practical next step is to co
 - The teacher uses goal-distance and texture heuristics, not a globally optimal traversal planner. Legal lower-scoring alternatives are **heuristic hard negatives**, not authoritative incorrect actions.
 - World material layouts are deterministic analytical fixtures; physical sand, water and Rapier simulation are **not** run.
 - W0 references are preserved separately and designated evaluation-only to prevent self-training on model evaluation traces.
+
+
+## Safe TRAIN-only handoff to model owners
+
+`train.decisions.jsonl` is **not itself a safe prompt corpus**: each row contains teacher labels, whole-world/source identifiers, candidate scores and action receipts. Never interpolate an entire source row into the model input.
+
+Use the separate positive-allowlist exporter. It verifies the full original manifest and corpus audit, checks exact synthetic TRAIN lineage and each pre-action observation fingerprint, then emits only observable host inputs in the user message and the one synthetic teacher token in the assistant message. A distinct, analysis-only sidecar preserves record/group/SHA provenance. **No DEV, heldout or W0-imported evaluation reference is loaded into the exporter.**
+
+```sh
+python3 -m unittest discover -s experiments/driv3r/corpus_factory -p 'test_*.py' -v
+python3 experiments/driv3r/corpus_factory/export_train.py \
+  --corpus /tmp/cs-game-corpus-v1 \
+  --output /tmp/cs-game-corpus-v1-train-800   --per-action-cap 800 --per-world-cap 80 --sampler-seed 0
+```
+
+The output `train.messages.jsonl` is an action-token chat-message TRAIN slice; `train.provenance.jsonl` and `export-manifest.json` are verification/analysis, not prompts. The selected samples are deterministically hash-ranked and capped per target action and source world, reducing the original STRAIGHT-heavy label skew without falsifying the source distribution. The receipt pins the source manifest SHA-256 and output hashes. Export refuses to write inside the source tree or overwrite an existing export. Models must record their own exact root, adapter and training-job hashes; this exporter launches **zero** optimizers. This is a synthetic curriculum handoff, **not** admission to native gameplay or qualification of an intelligent policy.
+
+New exporter tests check deterministic bytes, true TRAIN-only group provenance, target metadata exclusion, tamper-resistant per-observation fingerprints and rejection of model-derived rows even if someone rehashes the corpus manifest. Hosted qualification of the new exporter has **not** yet been established.
