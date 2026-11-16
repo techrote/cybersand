@@ -6,6 +6,8 @@ on:
     paths:
       - .github/workflows/driv3r-fleet-training-ft007.yml
       - experiments/driv3r/fleet_training/request_ft007.json
+      - experiments/driv3r/fleet_training/ft007_stop_feature_probe.py
+      - experiments/driv3r/fleet_training/test_ft007_stop_feature_probe.py
   workflow_dispatch:
 
 permissions:
