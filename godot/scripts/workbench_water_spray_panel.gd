@@ -23,6 +23,7 @@ var _fields: Dictionary = {}
 var _wave_fields: Dictionary = {}
 var _jet_point: Callable
 var _workbench: Control
+var _fallback_message := ""
 
 const SPINS := [
 	["launch_scale", "Launch ×", 0.0, 8.0, 0.1, 1.6],
@@ -287,7 +288,8 @@ func _apply_wave() -> void:
 		_status.text = "Workbench liquid rebuild is unavailable."
 		return
 	if _workbench.apply_liquids():
-		_status.text = "Preparing Workbench liquid solver/tuning… retained cells stay; Wave momentum resets."
+		_fallback_message = "Preparing Workbench liquid solver/tuning… retained cells stay; Wave momentum resets."
+		_status.text = _fallback_message
 
 func _construction(key: String, on: bool) -> void:
 	host.workbench_water_options[key] = on
@@ -326,7 +328,7 @@ func refresh(context: Dictionary) -> void:
 			wave_line = "Wave OFF"
 	var spray: Dictionary = context.get("water_spray", {})
 	if spray.is_empty():
-		_status.text = wave_line + "\nWater spray · unavailable on this owner"
+		_status.text = wave_line if not wave.is_empty() else (_fallback_message if not _fallback_message.is_empty() else "Wave · awaiting native status")
 		return
 	var applied: Dictionary = spray.get("settings", {})
 	var pending := []
