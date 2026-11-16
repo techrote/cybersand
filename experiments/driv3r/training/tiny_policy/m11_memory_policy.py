@@ -144,7 +144,7 @@ class TCN(nn.Module):
         self.out=nn.Linear(48,5)
     def forward(self,x):
         x=self.embed(x).relu().transpose(1,2)
-        for d,conv in zip((1,2,4),self.conv): 
+        for d,conv in zip((1,2,4),self.conv):
             x=(x+conv(nn.functional.pad(x,(2*d,0))).relu())
         return self.out(x.transpose(1,2))
 
@@ -291,13 +291,11 @@ def evaluate(out,heads):
                 rec,w=rollout(seed,family,policy,heads)
                 rw=replay(rec);assert np.array_equal(rw.visited,w.visited)
                 stem=f'{seed}-{family}-{policy}'
-                (p/f'{stem}.json').write_text(json.dumps(rec,sort_keys=True,separators=(',',':'))+'
-')
+                (p/f'{stem}.json').write_text(json.dumps(rec,sort_keys=True,separators=(',',':'))+'\n')
                 raster(w,2).save(p/f'{stem}.png')
                 rows.append({k:rec[k] for k in ('seed','family','policy','cells','branches','retraces','steps','turns','early_stop')})
                 worlds[(seed,family,policy)]=w
-    (out/'rows.json').write_text(json.dumps(rows,indent=2,sort_keys=True)+'
-')
+    (out/'rows.json').write_text(json.dumps(rows,indent=2,sort_keys=True)+'\n')
     # Original host PNG contact sheets, no generated or redrawn trajectories.
     from PIL import Image, ImageDraw
     for seed in list(EVAL)[:2]:
@@ -337,8 +335,7 @@ def evaluate(out,heads):
 def manifest(out):
     files=sorted(p for p in out.rglob('*') if p.is_file() and p.name!='manifest.json')
     data={p.relative_to(out).as_posix():sha(p.read_bytes()) for p in files}
-    (out/'manifest.json').write_text(json.dumps(data,indent=2,sort_keys=True)+'
-')
+    (out/'manifest.json').write_text(json.dumps(data,indent=2,sort_keys=True)+'\n')
     return len(data)
 
 
@@ -361,8 +358,7 @@ def main():
     report={'protocol':PROTOCOL,'synthetic_only':True,'training':training,'heldout_eval_worlds':len(EVAL)*3,
             'rollouts':len(rows),'results':summaries,
             'qualification_limit':'Local replay-valid synthetic only; not native, not exact-repo-HEAD until hosted Actions execution.'}
-    (out/'report.json').write_text(json.dumps(report,indent=2,sort_keys=True)+'
-')
+    (out/'report.json').write_text(json.dumps(report,indent=2,sort_keys=True)+'\n')
     report['manifest_entries']=manifest(out)
     print(json.dumps({'runtime_only':{'latency':latency,'evaluation_seconds':eval_seconds,'total_seconds':round(time.perf_counter()-t,2)},'evidence':report},indent=2,sort_keys=True))
 
