@@ -79,6 +79,14 @@ def patched(original,seed,cell,material):
         for j in range(5) for i in range(5))==1
     return out
 
+def augment_world(raw,seed,overrides):
+    """Spatially persistent override map: same world cell at every observation."""
+    o=w18.augment(raw,seed)
+    for (x,y),material in overrides.items():
+        if abs(x-o['x'])<=2 and abs(y-o['y'])<=2:
+            o=patched(o,seed,(x,y),material)
+    return o
+
 def interventions(w0,torch,source_model,seeds):
     ordinary=[]; paired=[]; receipts=[]; examples=[]
     for seed in seeds:
@@ -98,7 +106,7 @@ def interventions(w0,torch,source_model,seeds):
                         dx,dy=w18.DIRECTIONS[(obs['heading']+rotation)%4]
                         cell=(obs['x']+dx,obs['y']+dy)
                         if w18.material(seed,*cell)==target or w18.protected(seed,*cell):continue
-                        other=patched(obs,seed,cell,target)
+                        other=augment_world(raw,seed,{cell:target})
                         b=w18.teacher(other)
                         if a==b:continue
                         paired.append(((obs,a),(other,b)))
@@ -128,8 +136,16 @@ def verify_prefix_replay(w0,examples):
         if key in seen:continue
         seen.add(key)
         tape=v['legal_prefix']
-        captured=[]
+        captured=[];seen_prefix=[]
+        override={tuple(v['cell']):v['material_after']}
         def select(o):
+            # The same single-cell material-world intervention is present
+            # throughout the replay, including before it enters the 5x5 window.
+            before=w18.augment(o,v['seed'])
+            after=augment_world(o,v['seed'],override)
+            assert before['legal']==after['legal']
+            assert before['local_5x5']==after['local_5x5']
+            seen_prefix.append({'tick':o['tick'],'visible_change':before['material_5x5']!=after['material_5x5']})
             if o['tick']>=len(tape):
                 captured.append(o)
                 return 'STOP'
@@ -137,17 +153,19 @@ def verify_prefix_replay(w0,examples):
             assert action in o['legal']
             return action
         w0.run(v['seed'],'callback',v['family'],len(tape)+1,selector=select)
-        assert len(captured)==1
+        assert len(captured)==1 and len(seen_prefix)==len(tape)+1
         raw=captured[0]
         assert (raw['x'],raw['y'],raw['heading'])==(v['original_x'],v['original_y'],v['original_heading'])
         before=w18.augment(raw,v['seed'])
-        after=patched(before,v['seed'],tuple(v['cell']),v['material_after'])
+        after=augment_world(raw,v['seed'],override)
         assert w18.teacher(before)==v['first_teacher']
         assert w18.teacher(after)==v['second_teacher']
         witnessed.append({'seed':v['seed'],'family':v['family'],'tick':v['tick'],
             'world_patch_cell':v['cell'],'world_patch_material':v['material_after'],
             'prefix_SHA256':hashlib.sha256(json.dumps(tape,separators=(',',':')).encode()).hexdigest(),
-            'legal_host_prefix':True,'one_world_cell_only':True})
+            'legal_host_prefix':True,'one_world_cell_only':True,
+            'persistent_world_material_observations':len(seen_prefix),
+            'prefix_observations_noticed_patch':sum(v['visible_change'] for v in seen_prefix)})
         if len(witnessed)>=36:break
     assert len(witnessed)>=12
     return witnessed
