@@ -155,6 +155,23 @@ jobs:
             test -s "$RUN_DIR/on-policy-seed${seed}/extra_offline_teacher-seed${seed}.npz"
             test -s "$RUN_DIR/on-policy-seed${seed}/on_policy_correction-seed${seed}.npz"
           done
+      - name: History-conditioned motif adapter vs matched history-blind training (DEV only)
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ '${{ inputs.mode || 'full' }}' == 'smoke' ]]; then
+            updates=2
+          else
+            updates=80
+          fi
+          python -m experiments.driv3r.training.long_horizon.history_motif_lab \
+            --output "$RUN_DIR/history-motif" --seed 575 \
+            --updates "$updates" --worlds 1
+          python -m experiments.driv3r.training.long_horizon.verify_history_motif \
+            "$RUN_DIR/history-motif"
+          test -s "$RUN_DIR/history-motif/history_aware.npz"
+          test -s "$RUN_DIR/history-motif/history_blind.npz"
+          test -s "$RUN_DIR/history-motif/SHA256SUMS.json"
       - name: Store checkpoint, original traces, galleries, metrics and failure evidence
         if: always()
         uses: actions/upload-artifact@v4
