@@ -14,13 +14,25 @@ from typing import Callable
 
 from .macro_oracle import CARDINAL, VERSION as UNBOUNDED_VERSION, _require_menu
 
-VERSION = "d1a-decision-budget-constrained-oracle/3"
+VERSION = "d1a-decision-budget-constrained-oracle/4"
 Point = tuple[int, int]
 Cost = tuple[int, int, int, int]
 
 
 class PlanningBudgetExceeded(RuntimeError):
-    """Deterministic CPU-work cap, not an unreachable-path result."""
+    """Capped search failure with exact attempted-probe accounting.
+
+    The failed (cap + 1)th probe was attempted and counted. Incomplete search
+    establishes neither geometric unreachability nor a known optimal cost.
+    """
+
+    def __init__(self, cap: int, probes: int) -> None:
+        self.predecessor_probe_cap = cap
+        self.predecessor_probes = probes
+        super().__init__(
+            f"Bounded oracle exhausted CPU probe cap {cap} "
+            f"at attempted predecessor probe {probes}; "
+            "reachability and optimum are unknown")
 
 
 def bounded_optimal_route(
@@ -92,8 +104,7 @@ def bounded_optimal_route(
                     predecessor_probes += 1
                     if predecessor_probes > max_predecessor_probes:
                         raise PlanningBudgetExceeded(
-                            f"Bounded oracle exhausted CPU probe cap "
-                            f"{max_predecessor_probes} before completing search")
+                            max_predecessor_probes, predecessor_probes)
                     predecessor = (endpoint[0] + dx*length,
                                    endpoint[1] + dy*length)
                     if not legal(predecessor):

@@ -12,7 +12,7 @@ import random
 from pathlib import Path
 from typing import Any
 
-VERSION = "d1a-four-stream-controls/2"
+VERSION = "d1a-four-stream-controls/3"
 M1_COMMIT = "8fa90de6be209ed0b7bd125039e6ec8b332fb1a6"
 M1_SCHEMA_SHA256 = "ebe2fa211148602c614cba0f0a40f285cba797784b70efa035832d833877f80d"
 POLICIES = ("astar_or_contour", "random_legal", "random_legal_persistent_v1")
@@ -227,7 +227,12 @@ def run_matched_controls(slot: dict[str, Any], *, horizon: int = 36,
             "synthetic_run_id": slot["synthetic_run_id"],
             "episode_run_id": episode_id, **source_fingerprints,
             "horizon": horizon, "state": "ORACLE_RESOURCE_EXHAUSTED",
-            "error": str(exc), "oracle_probe_cap": oracle_probe_cap,
+            "error": str(exc), "oracle_probe_cap": exc.predecessor_probe_cap,
+            "oracle_version": budget_oracle.VERSION,
+            "oracle_predecessor_probes": exc.predecessor_probes,
+            "oracle_failure_kind": "resource_exhausted_before_optimum",
+            "oracle_optimal_cost_within_budget": None,
+            "oracle_feasible_arrival_within_budget": None,
             "arms": [], "native_qualified": False, "sequential_native_receipts": 0,
             "model_outcome": None,
         }
@@ -306,7 +311,11 @@ def compact_handoff(slots: tuple[dict[str, Any], ...],
             if (type(cap) is not int or not 1 <= cap <= MAX_ORACLE_PROBES or
                 report.get("arms") != [] or report.get("sequential_native_receipts") != 0 or
                 report.get("native_qualified") is not False or
-                report.get("model_outcome") is not None):
+                report.get("model_outcome") is not None or
+                report.get("oracle_predecessor_probes") != cap + 1 or
+                report.get("oracle_failure_kind") != "resource_exhausted_before_optimum" or
+                report.get("oracle_optimal_cost_within_budget") is not None or
+                report.get("oracle_feasible_arrival_within_budget") is not None):
                 raise ControlRefused("Invalid resource-exhaustion evidence")
             if report != run_matched_controls(slot, horizon=report["horizon"],
                                               oracle_probe_cap=cap):
@@ -329,9 +338,11 @@ def compact_handoff(slots: tuple[dict[str, Any], ...],
             "synthetic_run_id": slot["synthetic_run_id"],
             "fixture_id": slot["fixture_id"], "seed": slot["seed"],
             "horizon": report["horizon"], "state": report["state"],
-            "oracle_predecessor_probes": report.get("oracle", {}).get("predecessor_probes"),
+            "oracle_predecessor_probes": report.get("oracle", {}).get(
+                "predecessor_probes", report.get("oracle_predecessor_probes")),
             "oracle_probe_cap": report.get("oracle", {}).get("probe_cap", report.get("oracle_probe_cap")),
-            "oracle_version": report.get("oracle", {}).get("version"),
+            "oracle_version": report.get("oracle", {}).get("version", report.get("oracle_version")),
+            "oracle_failure_kind": report.get("oracle_failure_kind"),
             "oracle_objective": report.get("oracle", {}).get("objective"),
             "oracle_optimal_cost_within_budget": report.get("oracle", {}).get("optimal_cost_within_budget"),
             "oracle_feasible_arrival_within_budget": report.get("oracle", {}).get("feasible_arrival_within_budget"),

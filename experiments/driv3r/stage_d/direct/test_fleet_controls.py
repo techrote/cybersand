@@ -60,6 +60,30 @@ class FourStreamControls(unittest.TestCase):
             fleet.run_matched_controls(self.slots[0], horizon=128,
                                        oracle_probe_cap=3_000_001)
 
+    def test_four_negative_cases_report_exact_attempted_cost(self):
+        reports = tuple(fleet.run_matched_controls(s, horizon=128,
+                                                    oracle_probe_cap=1)
+                        for s in self.slots)
+        for report in reports:
+            self.assertEqual(report["state"], "ORACLE_RESOURCE_EXHAUSTED")
+            self.assertEqual(report["oracle_predecessor_probes"], 2)
+            self.assertEqual(report["oracle_probe_cap"], 1)
+            self.assertEqual(report["oracle_failure_kind"],
+                             "resource_exhausted_before_optimum")
+            self.assertIsNone(report["oracle_optimal_cost_within_budget"])
+            self.assertIsNone(report["oracle_feasible_arrival_within_budget"])
+            self.assertEqual(report["arms"], [])
+        handoff = fleet.compact_handoff(self.slots, reports)
+        self.assertEqual([s["oracle_predecessor_probes"]
+                          for s in handoff["streams"]], [2]*4)
+        self.assertEqual([s["oracle_failure_kind"]
+                          for s in handoff["streams"]],
+                         ["resource_exhausted_before_optimum"]*4)
+        forged = deepcopy(reports)
+        forged[0]["oracle_predecessor_probes"] = 1
+        with self.assertRaises(fleet.ControlRefused):
+            fleet.compact_handoff(self.slots, tuple(forged))
+
     def test_128_oracle_cap_is_preserved_as_negative_not_arrival(self):
         result = fleet.run_matched_controls(self.slots[0], horizon=128,
                                              oracle_probe_cap=1)

@@ -100,6 +100,17 @@ class BudgetOracleTests(unittest.TestCase):
                                   lambda p: True, decision_budget=36,
                                   max_predecessor_probes=3)
 
+    def test_exhaustion_exposes_exact_count_without_unknown_as_unreachable(self):
+        for cap in (1, 3, 17):
+            with self.subTest(cap=cap):
+                with self.assertRaises(PlanningBudgetExceeded) as caught:
+                    bounded_optimal_route(9, 9, (0, 0), (8, 8),
+                                          lambda p: True, decision_budget=36,
+                                          max_predecessor_probes=cap)
+                self.assertEqual(caught.exception.predecessor_probe_cap, cap)
+                self.assertEqual(caught.exception.predecessor_probes, cap + 1)
+                self.assertIn("unknown", str(caught.exception))
+
     def test_cap_does_not_change_successful_optimum(self):
         args = (14, 3, (0, 1), (12, 1), lambda p: True)
         normal = bounded_optimal_route(*args, decision_budget=3)

@@ -62,6 +62,17 @@ hashes, STOP-inclusive random control, baseline trajectories, 64 native
 logical-move ceiling and M1 schema are unchanged. This is source-level
 preparation, **not proof that the 128 mode finished on a hosted CPU**.
 
+## Exact negative-case oracle accounting
+
+The v3 four-stream control report now records **attempted predecessor probes
+even when the oracle exhausts its CPU cap**. A failure at cap N occurs on
+counted probe N+1; the report preserves attempted cost, cap, oracle version
+and source, explicit resource-failure type, and null (UNKNOWN) reachability
+and optimal cost. The Commander/Ethologist handoff retains these fields
+for all four negative cases; source replay rejects a falsified count.
+These are synthetic CPU-work units, not wall-clock duration, native session
+cost or model-inference bills. No controller trajectories are fabricated.
+
 ## Separate 36- and 128-decision research boundaries
 
 The original 36-decision fixtures, structural split, SHA-256s, failed/early
@@ -99,7 +110,7 @@ python3 -m experiments.driv3r.stage_d.direct.fleet_controls --horizon 128 --orac
 The CLI invokes `qualification.source_fence` and fails on dirty or
 out-of-lane source. A **128 resource-cap failure exits nonzero**, preserving
 negative cases in the written JSON rather than declaring success. Existing
-`qualification` still must execute **all 191 authored source tests/18 modules** on the
+`qualification` still must execute **all 193 authored source tests/18 modules** on the
 committed checkout; Stage A/doc/source-scope green is not that evidence.
 Do not report these runs as completed until exact source, stdout/stderr,
 first-pass failures, Git commit and test footer have been collected.
