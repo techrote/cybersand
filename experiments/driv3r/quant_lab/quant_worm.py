@@ -432,11 +432,21 @@ def run(args):
             pred = loaded(held[0]).argmax(1)
             denom = len(held[1])
             same = int((pred==held[1]).sum())
+            action_support = {ACTIONS[i]: int((held[1] == i).sum()) for i in range(len(ACTIONS))}
+            per_action = {ACTIONS[i]: {'n': action_support[ACTIONS[i]],
+                'correct': int(((pred == i) & (held[1] == i)).sum())}
+                for i in range(len(ACTIONS))}
+            for a, row in per_action.items():
+                row['recall'] = None if row['n'] == 0 else round(row['correct'] / row['n'], 6)
+            supported = [v['recall'] for v in per_action.values() if v['recall'] is not None]
+            predicted_hist = {a: int((pred == i).sum()) for i, a in enumerate(ACTIONS)}
             score = evaluation(loaded, name, 'Host-legal masked local-action steering, free STOP, no native painting')
             results[name] = {'quant_bits':list(levels), 'packed_weight_and_bias_bytes':byte_count,
                              'actual_archive_bytes':path.stat().st_size, 'archive_sha256':digest(path),
                              'layer_shapes_and_bits':meta,'heldout_teacher_accuracy':round(same/denom,5),
-                             'heldout_count':denom,'warm_cpu':measure, **score}
+                             'heldout_count':denom,'heldout_balanced_recall_supported_classes':round(statistics.mean(supported),6),
+                             'heldout_per_action':per_action,'heldout_prediction_counts':predicted_hist,
+                             'warm_cpu':measure, **score}
     (out/'decisions.json').write_text(json.dumps(all_traces,separators=(',', ':'))+'\n')
     result = {'schema':'driv3r-quant-lab-001/1','source_sha':os.environ.get('GITHUB_SHA','local'),
               'game_type':'CyberSand-inspired SYNTHETIC toy; NOT native CyberSand/Workbench; not GGUF IQ kernel',
@@ -447,6 +457,8 @@ def run(args):
               'heldout_world_seeds':'8100..8123','visual_world_seeds':[8101,8107,8113],
               'train_samples':len(train[1]),'heldout_samples':len(held[1]),
               'train_histogram':train_hist,'heldout_histogram':held_hist,
+              'heldout_majority_teacher_accuracy':round(max(held_hist.values()) / len(held[1]),6),
+              'heldout_unsupported_actions':[a for a in ACTIONS if a not in held_hist],
               'training':{'optimizer':'AdamW','steps':args.steps,'loss_first':losses[0],
                           'loss_last':losses[-1], 'nonzero_optimizer_moment_tensors':sum(
                               int(torch.count_nonzero(s['exp_avg']).item()>0) for s in opt.state.values())},
