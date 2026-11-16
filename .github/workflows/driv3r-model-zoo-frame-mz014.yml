@@ -86,6 +86,10 @@ jobs:
           assert s["diagonal"]["vertical_mirror"]["clean"]==12
           assert s["diagonal"]["horizontal_mirror"]["clean"]==0
           assert s["diagonal"]["rotation_180"]["clean"]==0
+          assert s["diagonal"]["horizontal_mirror_keep_x"]["clean"]==0
+          assert s["diagonal"]["x_coordinate_only"]["clean"]==12
+          assert s["gru"]["horizontal_mirror_keep_x"]["clean"]==0
+          assert s["gru"]["x_coordinate_only"]["clean"]==6
           assert s["gru"]["original"]["clean"]==6
           assert all(v["episodes"]==12 for a in s.values() for v in a.values())
           print("Independent source, checkpoint, untransformed baseline and frame response PASS")
