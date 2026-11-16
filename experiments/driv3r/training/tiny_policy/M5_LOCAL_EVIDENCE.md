@@ -45,3 +45,19 @@ Held-out synthetic oracle action-agreement diagnostics: linear 88.918%, MLP 94.7
 ## Next experiment / required gate
 
 Commit the executed three M5 scripts after transferring exact source bytes, run source-matched hosted validation against repository `core.py`, store checkpoints in immutable Actions artifacts, then introduce *blind new topology families* and explicit artistic/branching metrics instead of tuning on M4 repeatedly. No M1/SMOL optimizer re-run justified solely by this evidence. Keep PR Draft/HOLD, unmerged.
+
+## M5 source-publication qualification — 16 November 2026
+
+The previous provenance limitation that M5 Python scripts were absent from Git has now been **resolved at the exact blob level**. The three files are committed under this lane on PR #634, with remote blob SHA-1 matching the already locally executed contents byte-for-byte:
+
+| M5 file | Exact original Git blob |
+|---|---|
+| `m5_topology_train.py` | `3fe56a89f9f43962b016b5737660314d16584703` |
+| `audit_m5_topology.py` | `48039d155cf0150b098633881947401c80a9b6e3` |
+| `test_m5_topology.py` | `97d7ba49f9c5f7fc817fdef3539ca534b4f8dc87` |
+
+An additional independent **local rerun from these exact source bytes** regenerated M3 checkpoints using the original M3 source and verified all three expected original M3 SHA-256 digests. It then reran the complete M5 training, matched **1,449/1,449 manifest members byte-for-byte** against the original M5 archive and replayed/recomputed **720/720 trajectories and 46,045/46,045 action selections**. Seven M5 tests passed. Measured local full regeneration: M3 19.14 s, M5 28.30 s and M5 audit 15.12 s on the current local CPU. This does **not** assert timing or reproducibility on a hosted GitHub runner.
+
+The dedicated `[M5]` job in `.github/workflows/driv3r-tiny-policy-pretrained-cpu.yml` is separately gated and fail-closed: regenerate and source-verify M3 checkpoints, run actual bounded M5 AdamW optimization and original PNG receipt production, independently replay model/control choices, then upload checkpoint/receipt artifacts (retention 21 days). This is CPU research only and cannot silently rerun the separate M1/M2 pretrained jobs.
+
+**Qualification status until that exact-HEAD hosted job succeeds:** local source-byte identity PASS; local 1,449-file reproducibility PASS; hosted source/run/artifact pending. No native gameplay, production integration, FINAL use, or model promotion.
