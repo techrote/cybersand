@@ -37,6 +37,21 @@ prematurely STOPped at step 5. The diagonal agent made 12 raw illegal
 proposals across 12 horizontal-mirror episodes. Normal diagonal completed
 all 36 required paints with zero collisions, as expected.
 
+### Causal controls that separate frame symmetry from absolute x position
+
+Two additional interventions were run on the same frozen weights and episodes:
+
+| Controller | Mirror X but retain original absolute-x scalar | Mirror absolute-x scalar alone, keep view/actions unchanged |
+| --- | ---: | ---: |
+| Diagonal | **0/12** clean | **12/12** clean |
+| GRU | **0/12** clean | **6/12** clean |
+| Reactive | 0/12 clean | 0/12 clean |
+
+Therefore, simply changing absolute x does **not** explain the catastrophic
+failure. It follows the horizontal transformation of the categorical view,
+legal-action/last-action tokens and action names. Those factors are still
+transformed together: their individual causal contributions are not isolated.
+
 **Interpretation:** the learned policy is strongly dependent on the
 training environment's fixed left-to-right travel orientation, even though
 the vertical (mineral choice) reflection transfers. Prior 100% clean
@@ -53,7 +68,7 @@ under its MZ-013 training configuration.
 
 The dedicated workflow downloads the exact artifact by immutable Actions
 run and artifact name, checks checkpoint SHA-256 and parent source, verifies
-frame-transformation invariants, runs all 144 closed-loop
+frame-transformation invariants, runs all 216 closed-loop
 (controller × mode × cue × inversion × seed) synthetic rollouts, checks
 reproduction against locally measured baseline, and retains metrics
 plus environment provenance in a new immutable Actions artifact.
