@@ -167,3 +167,38 @@ python -m unittest discover -v -p 'test_*.py'
 python cue_calibration.py --checkpoint /path/to/guidance_recovery_hard_finetuned.safetensors --out /tmp/driv3r-cue-calibration --train-instances 240 --eval-seeds 16 --epochs 10
 ```
 29/29 unit tests passed locally from the source matching committed Git blobs. The model binary and complete per-decision trajectory records remain in the local owner-deliverable ZIP, **not Git history or a GitHub Actions artifact**; workflow-side immutable upload needs a separately authorized source owner. No real CyberSand native execution, actual material rollback, visual d1 inference, paid service, or four resident worms is implied.
+
+
+## Iteration 4 — positive correction with a frozen-base, cue-gated adapter (16 Nov 2026)
+
+**Substantive new source:** \`positive_correction.py\` and \`test_positive_correction.py\` only within the owned training lane. A real **25→32→1 cue-residual head** was trained on the *frozen* previous policy head, not a new pretrained SLM or d1 fine-tune. For candidate logits, \`new_score = frozen_score + cue_flag × adapter_score\`. The old neural weights are frozen, and without a cue the output is **bit-identical** to the earlier policy. This preserves the previous unguided stochastic turn-personality distribution and avoids the catastrophic unguided BACKTRACK regression seen in preliminary unrestricted fine-tune trials.
+
+**New task:** At a pre-terminal corridor, painting one cell forward is still host-legal, but that corridor closes one cell later. Paired source-World states (same cursor, legal menu, goal, geometry, scalar guidance, personality and seed) differ *only* in non-authoritative host early-warning cues. The oracle allows exploration without a warning but requests a **cursor-history BACKTRACK** with a warning. False cues in an open productive corridor should be ignored. Training uses depth 2/3 and rotations 0/1; held-out depth 4, rotations 2/3 and separate seeds use the **same procedural corridor template**. This is *not* evidence of generalisation to unrelated geometry families, or of real game Undo.
+
+**Actual CPU optimizer and qualification:** 288 training source-worlds, 4,316 target decisions, 4,174 cue-active weighted training samples, **308 real AdamW updates over 14 epochs**. Supervised cross-entropy 2.22556 → 0.86709. **41/41 offline tests passed** locally across all eight exact-Git-blob-matched source/test modules (29 previous + 12 new). Two full independent training/evaluation executions were **byte-identical** across adapter safetensors, first-action receipts, full rollout receipts and metrics. A canonical one-key safetensors metadata value is essential for byte-stable custody.
+
+| Held-out synthetic measure | Frozen pre-adapter | Trained gated adapter |
+| --- | ---: | ---: |
+| Correct warned decision (no/weak/strong scalar) | 0/24 each | **24/24 each** |
+| Correct matched *uncued* explore decision (no/weak/strong) | 24/24, 24/24, 12/24 | **unchanged** |
+| False-cue refusal, productive open path | 24/24 each | **24/24 each** |
+| Warned, greedy full **clean junction unwind** within 17 decisions | 0/24 each | **24/24 each** |
+| Warned, subsequently entered escape branch | 0/24 each | **24/24 each** |
+| Mean successful warned unwind / escape | n/a | **3 / 4 decisions** |
+| Host-rejected actions | 0 | 0 |
+
+Each of 0, 0.35, and 1.0 scalar-guidance arms was tested. The 24 seeds per arm are shared, so do **not** infer 72 independent topology families or population generalisation. Held-out first-decision receipts cover 288 baseline and 288 adapted counterfactual decisions; the separate full greedy sequels cover 144 trajectories per policy (24 seeds × 3 scalar arms × cue off/on) and preserve per-turn material SHA-256/readback-like **synthetic** receipts. Once trajectories diverge they are no longer same-state comparisons. The unadvised baseline's *0/24* junction-unwind result is a narrow greedily evaluated looping failure, not a general failure of the old policy.
+
+**Personality:** In the original 8-seed/2-topology short-worm holdout, uncued signed-turn personality gaps remain *exactly unchanged* across all guidance strengths, by construction; at strong guidance with a cue, the measured gap changes from 0.0410 to 0.0494, but the sample is too small to establish robust style preservation. Strong guidance/uncued matching remains imperfect (12/24 first-step explore decisions), even though the adapter does not make it worse.
+
+**Exact reproducibility:**
+\`\`\`bash
+python -m unittest discover -s experiments/driv3r/training/guidance_recovery -p 'test_*.py' -v
+python experiments/driv3r/training/guidance_recovery/positive_correction.py --checkpoint /path/to/guidance_recovery_cue_calibrated.safetensors --out /tmp/driv3r-positive-correction --train-instances 288 --eval-seeds 24 --epochs 14
+\`\`\`
+- Frozen base SHA-256: \`8c8625a1bd8daed03e00188687dbba9732634c7bf7b8e7be5a4fa21cb310ac09\`.
+- New **adapter-only** safetensors (3,932 bytes): SHA-256 \`1dae5dc3fa22cae7dc681c4f9702ce9d4ef84f0f1e9cb33693cbc88a5867a4f5\`. This adapter **requires** the exact frozen base; do not mistake it for a standalone full-head model.
+- New source SHA-256: \`56f236bdd2048caf9ace3725676ee11e5cef21e227c2016ae16accfdd72c155f\` / Git blob \`2b351fea17f27fcac08d933d978f4d9a515ec080\`; test Git blob \`a3dcf804efb58138aa7bc9d218cc842da2ac21d4\`.
+- Paired training data SHA-256: \`21c11cf6c4689a69352b023f5d8b61c4fb3c0f2cf33ee3c70a6d7e6a5ccbebd8\`. Original first-action and rollout receipt SHA-256 are emitted in \`positive_correction_metrics.json\`.
+- Full local original-byte evidence bundle ZIP SHA-256 \`e61a24fb1a146a3381102301a2f6c3f18aded82f4b5d5a5bf0bfc6f543b28ccc\`; **not yet an immutable GitHub Actions artifact**. Checkpoint binaries and trajectories are not committed to Git.
+- **Limitations/next experiment:** false cues use a visibly open control corridor. Add truly ambiguous near-wall false advice, source-disjoint topology templates, long-horizon goal switches, probabilistic calibrated hint acceptance and stochastic rollouts before making claims of selective real-game correction. No CyberSand game/native/Workbench changes, no real material rollback, no d1/System One call, no paid computation, no four resident worms, and no production integration.
