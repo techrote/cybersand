@@ -1,0 +1,67 @@
+name: DRIV3R population goal-relational memory (P14)
+on:
+  push:
+    branches:
+      - research/570-population-game-policy-001
+    paths:
+      - 'experiments/driv3r/training/population/population_p14.py'
+      - 'experiments/driv3r/training/population/test_population_p14.py'
+      - 'experiments/driv3r/training/population/P14_REPORT.md'
+      - '.github/workflows/driv3r-population-goal-relational.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  p14-cpu-research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pinned CPU research dependencies
+        run: |
+          python -m pip install --disable-pip-version-check numpy==2.3.5
+          python -m pip install --disable-pip-version-check torch==2.7.1 --index-url https://download.pytorch.org/whl/cpu
+      - name: P14 counterfactual and host-legality guardrails
+        env:
+          OPENBLAS_NUM_THREADS: '1'
+          OMP_NUM_THREADS: '1'
+          MKL_NUM_THREADS: '1'
+        run: python -m unittest discover -s experiments/driv3r/training/population -p test_population_p14.py -v
+      - name: Train two independent source-matched CPU cohorts
+        env:
+          OPENBLAS_NUM_THREADS: '1'
+          OMP_NUM_THREADS: '1'
+          MKL_NUM_THREADS: '1'
+        run: |
+          mkdir -p /tmp/population-p14-evidence/source
+          git rev-parse HEAD > /tmp/population-p14-evidence/source/exact-head.txt
+          python --version > /tmp/population-p14-evidence/source/python-version.txt 2>&1
+          python -m pip freeze > /tmp/population-p14-evidence/source/pip-freeze.txt
+          for seed in 656 657; do
+            python experiments/driv3r/training/population/population_p14.py \
+              --output "/tmp/population-p14-evidence/cohort_${seed}" --seed "$seed" \
+              --train-worlds 4 --validation-worlds 2 --heldout-worlds 2 \
+              --epochs 12 --width 32 \
+              > "/tmp/population-p14-evidence/cohort_${seed}-stdout.txt"
+            (cd "/tmp/population-p14-evidence/cohort_${seed}" && sha256sum -c manifest.sha256)
+          done
+      - name: Preserve source, failures and SHA-256 manifests
+        if: always()
+        run: |
+          mkdir -p /tmp/population-p14-evidence/source
+          for f in population_lab.py population_p1.py population_p10.py population_p11.py population_p12.py population_p13.py population_p14.py test_population_p14.py P14_REPORT.md; do
+            cp "experiments/driv3r/training/population/$f" /tmp/population-p14-evidence/source/ || true
+          done
+          (cd /tmp/population-p14-evidence && find . -type f ! -name OVERALL.sha256 -print0 | sort -z | xargs -0 sha256sum > OVERALL.sha256)
+          (cd /tmp/population-p14-evidence && sha256sum -c OVERALL.sha256)
+      - name: Publish immutable P14 CPU checkpoints, traces and evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: population-p14-goal-relational-${{ github.sha }}
+          path: /tmp/population-p14-evidence/
+          if-no-files-found: warn
+          retention-days: 90
