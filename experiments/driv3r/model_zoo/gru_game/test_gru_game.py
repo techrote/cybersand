@@ -41,6 +41,8 @@ class RecurrentGameTests(unittest.TestCase):
         model = make_network(torch)
         size = sum(p.numel() for p in model.parameters())
         self.assertTrue(18_000_000 <= size <= 22_000_000, size)
+        self.assertIsNotNone(model.input_norm.weight)
+        self.assertEqual(model.head[-1].out_features, 7)
         x = torch.randn(2, CONTEXT, WIDTH)
         logits = model(x)
         self.assertEqual(tuple(logits.shape), (2, 7))

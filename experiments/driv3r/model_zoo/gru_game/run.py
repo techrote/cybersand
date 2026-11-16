@@ -1,4 +1,4 @@
-"""MZ-007: ~19M-parameter GRU game controller trained from scratch.
+"""MZ-007b: 19M-parameter GRU with input normalization and current-state skip.
 
 External source-fenced CyberSand-like research worlds only. The actual game,
 Godot, native simulation, Workbench and production assets are never modified.
@@ -23,8 +23,8 @@ from experiments.driv3r.model_zoo.mamba130.run_counterfactual import measure
 from experiments.driv3r.model_zoo.mamba130.world import ACTIONS, World
 from experiments.driv3r.model_zoo.rwkv7.run import render_gallery, safe_scores
 
-SCHEMA = "MZ007-GRU19M-GAME-v1"
-ARCHITECTURE = "scratch-gru8-h640-context4"
+SCHEMA = "MZ007-GRU19M-GAME-v2"
+ARCHITECTURE = "scratch-gru8-h640-context4-layernorm-current-state-skip"
 WIDTH = 114
 CONTEXT = 4
 
@@ -75,11 +75,24 @@ def make_network(torch):
     class RecurrentGamePolicy(nn.Module):
         def __init__(self):
             super().__init__()
+            # MZ-007a failed at learning goal swaps despite 600 optimizer updates.
+            # Keep the same 19M recurrent backbone but avoid forcing the current
+            # goal and action mask through eight recurrent layers and four ticks.
+            self.input_norm = nn.LayerNorm(WIDTH)
             self.rnn = nn.GRU(WIDTH, 640, num_layers=8, batch_first=True)
-            self.head = nn.Sequential(nn.LayerNorm(640), nn.Linear(640, len(ACTIONS)))
+            self.head = nn.Sequential(
+                nn.LayerNorm(640 + WIDTH),
+                nn.Linear(640 + WIDTH, 128),
+                nn.GELU(),
+                nn.Linear(128, len(ACTIONS)),
+            )
 
         def forward(self, x):
-            return self.head(self.rnn(x)[0][:, -1, :])
+            normalized = self.input_norm(x)
+            state = self.rnn(normalized)[0][:, -1, :]
+            # The direct current-percept path tests whether the recurrent stack
+            # was bottlenecking useful goal/legality information.
+            return self.head(torch.cat((state, normalized[:, -1, :]), dim=-1))
 
     return RecurrentGamePolicy()
 
@@ -246,6 +259,8 @@ def experiment(args):
         "schema": SCHEMA, "source_sha": source,
         "generated_utc": datetime.now(timezone.utc).isoformat(),
         "architecture": ARCHITECTURE, "model_provenance": "fully trained from random seed 42021; no external pretrained weights",
+        "experiment_reason": "MZ007a 19M GRU hit 21.47% TEST accuracy, 0/416 goal-swap pairs, versus 86.22% structured. MZ007b adds input LayerNorm and a current-state skip while retaining the same 8x640 recurrent core.",
+        "reference_a_source_sha": "8d83f4c6f62006607a4e4edacf86b77568b379f2",
         "parameters": parameters, "trainable_parameters": parameters,
         "train_examples": len(train), "dev_examples": len(dev), "test_examples": len(test),
         "train_histogram": class_histogram(train),

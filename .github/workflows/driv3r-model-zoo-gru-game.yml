@@ -1,4 +1,4 @@
-name: MZ-007 GRU-19M trained game-policy research (no game edits)
+name: MZ-007b normalized skip-GRU-19M game research (no game edits)
 on:
   push:
     branches:
@@ -49,7 +49,7 @@ jobs:
           from pathlib import Path
           p = Path(os.environ['RUNNER_TEMP']) / 'mz007-gru'
           r = json.loads((p/'results.json').read_text())
-          assert r['schema'] == 'MZ007-GRU19M-GAME-v1'
+          assert r['schema'] == 'MZ007-GRU19M-GAME-v2'
           assert r['source_sha'] == os.environ['GITHUB_SHA']
           assert 18_000_000 <= r['parameters'] <= 22_000_000
           assert r['trainable_parameters'] == r['parameters']
@@ -92,7 +92,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: mz007-gru-${{ github.sha }}
+          name: mz007b-gru-${{ github.sha }}
           path: ${{ runner.temp }}/mz007-gru/**
           if-no-files-found: warn
           retention-days: 14
