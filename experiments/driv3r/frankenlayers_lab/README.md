@@ -83,3 +83,9 @@ Wave 6 tests Q4_K_M compression and second-seed reproducibility of the newly
 viable four-layer AERO4_NO10, plus the speculative distinct AERO4_NO2 deletion.
 No model has passed held-out spatial recovery, native Workbench, or learned
 strategy gates; training remains a separate model-only next phase.
+
+## Wave 11 — calibrated IQ3_XS remediation, bounded single-specimen pilot
+
+[Wave-10 inference run 43876518503](https://github.com/techrote/cybersand/actions/runs/43876518503) finished with all three model jobs failing **before inference**. All three original failure archives were independently downloaded, and **27/27 content files matched SHA256SUMS**. The source-built pinned llama.cpp quantizer rejected tensor `blk.2.attn_k.weight` (`iq3_xxs`) because the IQ3_XS recipe used no importance matrix. This is a confirmed **quantization prerequisite**, not evidence of a model's game behaviour. Preserve Wave 10's failing request and source unchanged.
+
+Wave 11 explicitly generates deterministic, calibration-only CyberSand-like legal-action prompts (96 distinct rows; seeds 101/103/107/109, disjoint from W0 test seeds 570/571); executes pinned `llama-imatrix` on immutable Q8 stock for 8 chunks; then passes the matrix into the pinned `llama-quantize --allow-requantize IQ3_XS`. Retain calibration text, matrix, logs, individual SHA-256s and conversion receipt; a model-only triad compares Q8 stock, IQ3 stock and IQ3 sparse AERO4_NO10 on the same CPU runner. **Only one pilot is dispatched** to avoid repeating three expensive acquisitions before this quantization path is proven. No IQ3 performance, learned policy or calibrated quality claim is made before original evidence qualification.

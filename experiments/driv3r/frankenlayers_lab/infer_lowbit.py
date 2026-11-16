@@ -19,8 +19,8 @@ from experiments.driv3r.frankenlayers_lab.flows import LAB_FLOWS, validate_flows
 MODES = ("aero4_no10", "aero4_no2")
 
 
-def validate_iq3_receipt(receipt: dict, q8: Path, iq3: Path) -> None:
-    if receipt.get("schema") != "frankenlayers-iq3-requant/1":
+def validate_iq3_receipt(receipt: dict, q8: Path, iq3: Path, imatrix: Path, calibration: Path) -> None:
+    if receipt.get("schema") != "frankenlayers-iq3-requant/2":
         raise ValueError("Unrecognised low-bit conversion receipt")
     if receipt.get("quant") != "IQ3_XS" or receipt.get("allow_requantize") is not True:
         raise ValueError("Only source-pinned Q8 -> IQ3_XS requantisation authorised")
@@ -32,6 +32,18 @@ def validate_iq3_receipt(receipt: dict, q8: Path, iq3: Path) -> None:
         raise ValueError("IQ3 file missing or implausibly small")
     if receipt.get("iq3_sha256") != sha256_file(iq3):
         raise ValueError("Actual IQ3 file differs from conversion receipt")
+    if receipt.get("imatrix_source") != "Q8 donor, train-only synthetic game prompts":
+        raise ValueError("IQ3 must use the declared source-pinned calibration")
+    if receipt.get("calibration_chunks") != 8:
+        raise ValueError("Unexpected calibration chunk budget")
+    if not imatrix.is_file() or imatrix.stat().st_size < 1000:
+        raise ValueError("Missing calibration importance matrix")
+    if receipt.get("imatrix_sha256") != sha256_file(imatrix):
+        raise ValueError("Importance matrix differs from receipt")
+    if not calibration.is_file() or calibration.stat().st_size < 15000:
+        raise ValueError("Missing game calibration text")
+    if receipt.get("calibration_sha256") != sha256_file(calibration):
+        raise ValueError("Calibration text differs from receipt")
 
 
 def main() -> None:
@@ -40,6 +52,8 @@ def main() -> None:
     p.add_argument("--model-q8", type=Path, required=True)
     p.add_argument("--model-iq3", type=Path, required=True)
     p.add_argument("--quant-receipt", type=Path, required=True)
+    p.add_argument("--imatrix", type=Path, required=True)
+    p.add_argument("--calibration", type=Path, required=True)
     p.add_argument("--w0", type=Path, required=True)
     p.add_argument("--mode", choices=MODES, required=True)
     p.add_argument("--seed", type=int, choices=(570, 571), required=True)
@@ -52,7 +66,7 @@ def main() -> None:
     if any(name in FLOWS for name in LAB_FLOWS):
         raise ValueError("Inherited and lab model registries collide")
     receipt = json.loads(a.quant_receipt.read_text())
-    validate_iq3_receipt(receipt, a.model_q8, a.model_iq3)
+    validate_iq3_receipt(receipt, a.model_q8, a.model_iq3, a.imatrix, a.calibration)
     FLOWS.update(LAB_FLOWS)
     a.output.mkdir(parents=True)
     w0 = load_w0(a.w0)
@@ -85,7 +99,7 @@ def main() -> None:
         "real_training": False,
         "native_workbench": False,
         "game_code_modified": False,
-        "limitations": "W0 3x16 only. IQ3_XS is requantized from Q8 without a calibrated imatrix. "
+        "limitations": "W0 3x16 only. IQ3_XS is requantized from Q8 with a bounded synthetic game-prompt imatrix. "
                        "Legal actions, nonterminal survival and latency do not establish useful game strategy.",
     }
     write_json(a.output / "comparison.json", report)

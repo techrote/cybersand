@@ -211,6 +211,17 @@ jobs:
           ]
           assert w10["max_parallel"]==2 and w10["timeout_minutes"]<=95 and w10["no_game_changes"]
           assert not any(w10[k] for k in ("paid_api","paid_gpu","merge","ready"))
+          # Wave 11 is one calibrated pilot, preserving the three Wave-10 failures.
+          w11=json.loads(Path("experiments/driv3r/frankenlayers_lab/run-request-wave11.json").read_text())
+          assert w11["schema"]=="frankenlayers-wave11-calibrated-iq3-pilot/1"
+          assert w11["lineage"]["failed_wave10_run"]==43876518503
+          assert w11["quant"]["target"]=="IQ3_XS" and w11["quant"]["calibration_chunks"]==8
+          assert w11["quant"]["imatrix_source"]=="pinned Q8 stock, disjoint synthetic game prompts"
+          assert w11["experiments"]==[dict(label="aero4_no10_iq3_cal_s570",
+                mode="aero4_no10",flow=list(LAB_FLOWS["aero4_no10"]),
+                quant="iq3_xs",seed=570)]
+          assert w11["max_parallel"]==1 and w11["timeout_minutes"]<=95
+          assert w11["no_game_changes"] and not any(w11[k] for k in ("paid_api","paid_gpu","merge","ready"))
           PY
           python3 tools/ci/check_ci_provider_policy.py
           python3 tools/ci/check_ci_scheduling_policy.py
@@ -225,26 +236,18 @@ jobs:
           test ! -s /tmp/unexpected.txt
 
   brain:
-    name: IQ3_XS game-policy triad / ${{ matrix.mode }}
+    name: calibrated IQ3_XS pilot / ${{ matrix.mode }}
     if: github.repository == 'techrote/cybersand' && github.event_name == 'push' && github.ref == 'refs/heads/research/619-frankenlayers-lab'
     needs: cheap
     runs-on: ubuntu-24.04
     timeout-minutes: 95
     strategy:
-      max-parallel: 2
+      max-parallel: 1
       fail-fast: false
       matrix:
         include:
-          - mode: aero4_no10_iq3_s570
+          - mode: aero4_no10_iq3_cal_s570
             flow: aero4_no10
-            quant: iq3_xs
-            seed: 570
-          - mode: aero4_no10_iq3_s571
-            flow: aero4_no10
-            quant: iq3_xs
-            seed: 571
-          - mode: aero4_no2_iq3_s570
-            flow: aero4_no2
             quant: iq3_xs
             seed: 570
     env:
@@ -278,7 +281,7 @@ jobs:
           cmake -S "$LLAMA_ROOT" -B "$LLAMA_ROOT/build" \
             -DCMAKE_BUILD_TYPE=Release -DGGML_NATIVE=OFF -DLLAMA_CURL=OFF \
             -DLLAMA_BUILD_TESTS=OFF -DLLAMA_BUILD_EXAMPLES=OFF
-          cmake --build "$LLAMA_ROOT/build" --config Release --target llama-server llama-quantize -j2
+          cmake --build "$LLAMA_ROOT/build" --config Release --target llama-server llama-quantize llama-imatrix -j2
           sha256sum "$LLAMA_ROOT/build/bin/llama-server" > "evidence/${{ matrix.mode }}/binary.sha256"
           ldd "$LLAMA_ROOT/build/bin/llama-server" > "evidence/${{ matrix.mode }}/binary-ldd.txt"
       - name: Acquire read-only pinned W0 legal-action host
@@ -287,7 +290,25 @@ jobs:
           git fetch --no-tags --depth=1 origin 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
           git show 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61:experiments/agent_painter/worm/common/worm.py > "$RUNNER_TEMP/franken-w0.py"
           test "$(git hash-object "$RUNNER_TEMP/franken-w0.py")" = 8979b6f0296e81051194bacc907992d38e006605
-      - name: Requantise pinned Q8 donor to experimental IQ3_XS
+      - name: Generate disjoint CyberSand-like calibration and collect real Q8 imatrix
+        run: |
+          set -euo pipefail
+          MODEL_PATH="$(python3 - <<'PY'
+          import json,os
+          from pathlib import Path
+          print(json.loads(Path(os.environ['RUNNER_TEMP']+'/d1-lab-donor/runtime-manifest.json').read_text())['model'])
+          PY
+          )"
+          CALIBRATION="evidence/${{ matrix.mode }}/calibration.txt"
+          IMATRIX="evidence/${{ matrix.mode }}/imatrix.gguf"
+          python3 -m experiments.driv3r.frankenlayers_lab.calibration --out "$CALIBRATION"
+          timeout --signal=TERM --kill-after=30 1800 "$RUNNER_TEMP/franken-lab-llama/build/bin/llama-imatrix" \
+            -m "$MODEL_PATH" -f "$CALIBRATION" -o "$IMATRIX" \
+            --parse-special --no-ppl --chunks 8 -c 256 -b 256 -ub 256 -t 2 -ngl 0 \
+            > "evidence/${{ matrix.mode }}/imatrix.log" 2>&1
+          test -s "$IMATRIX"
+          sha256sum "$CALIBRATION" "$IMATRIX" > "evidence/${{ matrix.mode }}/calibration.sha256"
+      - name: Requantise pinned Q8 donor to calibrated IQ3_XS
         run: |
           set -euo pipefail
           MODEL_PATH="$(python3 - <<'PY'
@@ -299,7 +320,7 @@ jobs:
           mkdir -p "$RUNNER_TEMP/franken-lab-iq3"
           IQ3_MODEL="$RUNNER_TEMP/franken-lab-iq3/d1-2B-from-Q8-IQ3_XS.gguf"
           timeout --signal=TERM --kill-after=20 1000 "$RUNNER_TEMP/franken-lab-llama/build/bin/llama-quantize" \
-            --allow-requantize "$MODEL_PATH" "$IQ3_MODEL" IQ3_XS 2 \
+            --imatrix "evidence/${{ matrix.mode }}/imatrix.gguf" --allow-requantize "$MODEL_PATH" "$IQ3_MODEL" IQ3_XS 2 \
             > "evidence/${{ matrix.mode }}/quantize.log" 2>&1
           test -s "$IQ3_MODEL"
           python3 - <<'PY'
@@ -309,8 +330,14 @@ jobs:
           src=Path(json.loads(Path(os.environ['RUNNER_TEMP']+'/d1-lab-donor/runtime-manifest.json').read_text())['model'])
           out=Path(os.environ['RUNNER_TEMP']+'/franken-lab-iq3/d1-2B-from-Q8-IQ3_XS.gguf')
           assert sha256_file(src)==PINS['model']['sha256']
-          receipt={'schema':'frankenlayers-iq3-requant/1','quant':'IQ3_XS',
-                   'allow_requantize':True,'imatrix':None,'source_kind':'immutable Q8 donor, not FP16',
+          calib=Path('evidence/'+os.environ['MATRIX_MODE']+'/calibration.txt')
+          mat=Path('evidence/'+os.environ['MATRIX_MODE']+'/imatrix.gguf')
+          assert calib.stat().st_size>15000 and mat.stat().st_size>1000
+          receipt={'schema':'frankenlayers-iq3-requant/2','quant':'IQ3_XS',
+                   'allow_requantize':True,'source_kind':'immutable Q8 donor, not FP16',
+                   'imatrix_source':'Q8 donor, train-only synthetic game prompts',
+                   'calibration_chunks':8,
+                   'calibration_sha256':sha256_file(calib),'imatrix_sha256':sha256_file(mat),
                    'q8_sha256':sha256_file(src),'q8_bytes':src.stat().st_size,
                    'iq3_sha256':sha256_file(out),'iq3_bytes':out.stat().st_size,
                    'llama_commit':'8642541b255bfb5dc39cd351a178be09013a55d6'}
@@ -334,6 +361,8 @@ jobs:
             --model-q8 "$MODEL_PATH" \
             --model-iq3 "$RUNNER_TEMP/franken-lab-iq3/d1-2B-from-Q8-IQ3_XS.gguf" \
             --quant-receipt "evidence/${{ matrix.mode }}/quantize-receipt.json" \
+            --imatrix "evidence/${{ matrix.mode }}/imatrix.gguf" \
+            --calibration "evidence/${{ matrix.mode }}/calibration.txt" \
             --w0 "$RUNNER_TEMP/franken-w0.py" \
             --mode "${{ matrix.flow }}" --seed "${{ matrix.seed }}" --source-sha "$GITHUB_SHA" \
             --output "evidence/${{ matrix.mode }}/inference"
