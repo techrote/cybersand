@@ -5,7 +5,7 @@ Pinned custom remote code undergoes limited import/exec static screen before
 loading in an isolated CPU-only GitHub runner. Not a full security audit.
 """
 from __future__ import annotations
-import argparse, ast, hashlib, json, os, random, resource, statistics, time
+import argparse, ast, hashlib, json, os, random, resource, statistics, time, tempfile, shutil
 from datetime import datetime, timezone
 from pathlib import Path
 from experiments.driv3r.model_zoo.mamba130.counterfactual import samples,raw_features,paired_switch_metrics,class_histogram
@@ -39,10 +39,34 @@ def audit_source(contents):
                       'imports':sorted(imports),'chars':len(code)}
     return result
 
-def download_pinned_source(hf_hub_download):
-    source={p:Path(hf_hub_download(repo_id=MODEL,filename=p,revision=PIN)).read_text()
-            for p in CODE_FILES}
-    return audit_source(source)
+def prepare_pinned_snapshot(snapshot_download):
+    """Locally rewrite one unsafe tokenizer eval to ast.literal_eval.
+
+    Source data/weights remain at immutable revision PIN. The patch is confined
+    to the ephemeral experiment runner; never modify the user/game repository.
+    Any unexpected upstream source fails closed before custom-code execution.
+    """
+    cache=Path(snapshot_download(repo_id=MODEL,revision=PIN,
+        allow_patterns=['*.py','*.json','*.safetensors','*.txt']))
+    sources={p:(cache/p).read_text() for p in CODE_FILES}
+    tokenizer=sources['hf_rwkv_tokenizer.py']
+    needle='x = eval(l[l.index(" ") : l.rindex(" ")])'
+    if tokenizer.count(needle)!=1:
+        raise RuntimeError('unexpected unsafe tokenizer eval location')
+    tokenizer=tokenizer.replace(needle,'x = ast.literal_eval(l[l.index(" ") : l.rindex(" ")])')
+    tokenizer='import ast\n'+tokenizer if not tokenizer.startswith('from __future__') else tokenizer
+    # Python allows 'import ast' following the header comment/docstring only,
+    # but upstream has no future imports in this pinned tokenizer.
+    sources['hf_rwkv_tokenizer.py']=tokenizer
+    manifest=audit_source(sources)
+    manifest['tokenizer_patch']='eval -> ast.literal_eval for pinned vocab entries only'
+    # Copy pinned weights/source out of the Hub cache before changing custom code.
+    scratch=Path(tempfile.mkdtemp(prefix='mz003-rwkv7-'))
+    for file in cache.iterdir():
+        if file.is_file():
+            shutil.copy2(file,scratch/file.name)
+    (scratch/'hf_rwkv_tokenizer.py').write_text(tokenizer)
+    return scratch,manifest
 
 def safe_scores(scores,menu):
     indices=[ACTIONS.index(a) for a in menu]
@@ -96,17 +120,17 @@ def run(args):
     import torch
     from PIL import Image,ImageDraw
     from transformers import AutoModelForCausalLM,AutoTokenizer
-    from huggingface_hub import hf_hub_download,model_info
+    from huggingface_hub import snapshot_download,model_info
     torch.set_num_threads(2)
     torch.manual_seed(42017)
     out=Path(args.out);out.mkdir(parents=True,exist_ok=True)
     source_sha=os.environ.get('GITHUB_SHA','LOCAL-UNVERIFIED')
     model_meta=model_info(MODEL,revision=PIN)
     if model_meta.sha!=PIN:raise RuntimeError('upstream SHA mismatch')
-    code_audit=download_pinned_source(hf_hub_download)
+    model_root,code_audit=prepare_pinned_snapshot(snapshot_download)
     start=time.monotonic()
-    tokenizer=AutoTokenizer.from_pretrained(MODEL,revision=PIN,trust_remote_code=True)
-    model=AutoModelForCausalLM.from_pretrained(MODEL,revision=PIN,
+    tokenizer=AutoTokenizer.from_pretrained(str(model_root),trust_remote_code=True)
+    model=AutoModelForCausalLM.from_pretrained(str(model_root),
                                              trust_remote_code=True,torch_dtype=torch.float32)
     model.eval()
     for p in model.parameters():p.requires_grad_(False)
