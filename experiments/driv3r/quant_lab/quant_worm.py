@@ -306,7 +306,7 @@ def draw(world, path, scale=13):
 
 def rollout(model, policy, family, seed, out, horizon=64):
     world = WormWorld(seed, family)
-    r = random.Random(1000003*seed + 101*FAMILIES.index(family))
+    r = random.Random(1000003*seed)  # same host draw stream across all family counterfactuals
     steps = []
     for tick in range(horizon):
         if world.stopped:
@@ -489,6 +489,13 @@ def self_test():
             for layer in 'abc':
                 expected = quant_numpy(model.state_dict()[layer+'.weight'].numpy(), n)[0]
                 assert np.array_equal(dec.state_dict()[layer+'.weight'].numpy(),expected)
+    # Model-free random actions MUST be identical across style labels in a fixed world.
+    # This is a negative-control guard for family-conditioned morphology claims.
+    import tempfile as _tempfile
+    with _tempfile.TemporaryDirectory() as _td:
+        (Path(_td)/'gallery').mkdir()
+        controls = [rollout(None, 'random', family, 503, Path(_td))[1] for family in FAMILIES]
+        assert all([x['chosen'] for x in controls[0]] == [x['chosen'] for x in other] for other in controls[1:])
     tr,h = collect(range(10,13),42)
     assert len(tr[1]) > 10 and h
     print('QL-001 self-test PASS: host legality, quant packed roundtrip, synthetic train examples')
