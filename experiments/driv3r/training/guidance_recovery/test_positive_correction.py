@@ -73,7 +73,7 @@ class PositiveCorrectionTests(unittest.TestCase):
         self.assertEqual(y.shape[1],10)
         self.assertEqual(len(labels),len(x))
         self.assertTrue(all(d in (2,3) and r in (0,1) for _,d,r,_,_,_ in ids))
-        self.assertTrue(all(seed!=867100+i*811 for seed,_,d,r,_,_ in ids for i in range(24)))
+        self.assertTrue(all(seed!=867100+i*811 for seed,_,_,_,_,_ in ids for i in range(24)))
         e=evaluate_pairs(self.base,seeds=4)
         self.assertTrue(all(r['rotation'] in (2,3) for r in e))
         self.assertEqual(len(e),4*3*2*2)
