@@ -98,7 +98,7 @@ def render_gallery(Image, ImageDraw, records, out):
 def run(args):
     if args.train_seeds < 5 or args.dev_seeds < 2 or args.epochs < 1:
         raise ValueError('invalid dataset or optimizer budget')
-    if args.tune_steps < 1 or args.batch_size < 1:
+    if args.tune_steps < 1 or args.batch_size < 1 or not (0 < args.head_extra_lr <= .002) or not (0 < args.backbone_lr <= .001):
         raise ValueError('invalid last-block tuning budget')
     import torch
     from PIL import Image, ImageDraw
@@ -185,10 +185,10 @@ def run(args):
 
         weight=class_weights(torch,Y)
         batch_ids=minibatches(len(train),args.tune_steps,args.batch_size,8111)
-        extra_opt=torch.optim.AdamW(frozen_extra.parameters(),lr=.002,weight_decay=.01)
+        extra_opt=torch.optim.AdamW(frozen_extra.parameters(),lr=args.head_extra_lr,weight_decay=.01)
         tune_opt=torch.optim.AdamW([
-            {'params':[p for p in model.parameters() if p.requires_grad], 'lr':.00008},
-            {'params':list(tuned_head.parameters()),'lr':.002}
+            {'params':[p for p in model.parameters() if p.requires_grad], 'lr':args.backbone_lr},
+            {'params':list(tuned_head.parameters()),'lr':args.head_extra_lr}
         ],weight_decay=.01)
         extra_losses=[]
         tuned_losses=[]
@@ -322,6 +322,7 @@ def run(args):
             'train_examples':len(train),'dev_examples':len(dev),'test_examples':len(test),
             'train_histogram':class_histogram(train),'epochs':args.epochs,
             'extra_updates':args.tune_steps,'batch_size':args.batch_size,
+            'head_extra_lr':args.head_extra_lr,'backbone_lr':args.backbone_lr,
             'frozen_head_losses':frozen_losses,'structured_losses':structured_losses,
             'frozen_extra_losses':extra_losses,'tuned_losses':tuned_losses,
             'score':score,'load_seconds':load_seconds,
@@ -374,8 +375,10 @@ def main():
     ap.add_argument('--dev-seeds',type=int,default=4)
     ap.add_argument('--steps',type=int,default=9)
     ap.add_argument('--epochs',type=int,default=140)
-    ap.add_argument('--tune-steps',type=int,default=48)
-    ap.add_argument('--batch-size',type=int,default=8)
+    ap.add_argument('--tune-steps',type=int,default=96)
+    ap.add_argument('--batch-size',type=int,default=16)
+    ap.add_argument('--head-extra-lr',type=float,default=.0002)
+    ap.add_argument('--backbone-lr',type=float,default=.00004)
     ap.add_argument('--rollout-steps',type=int,default=16)
     run(ap.parse_args())
 
