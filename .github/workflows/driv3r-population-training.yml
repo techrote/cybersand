@@ -74,6 +74,14 @@ jobs:
         env:
           OPENBLAS_NUM_THREADS: '1'
         run: python experiments/driv3r/training/population/population_p8.py --p0-output /tmp/population-evidence --output /tmp/population-evidence/p8_639 --seed 639 --generations 2 --offspring 3 --train-episodes 5 --selection-episodes 4 --holdout-episodes 4 --horizon 48 --portfolio 3 --encoder-steps 160 --probe-count 6 --probe-worlds 4
+      - name: P9 environment-adversary tournament with random/frozen controls, cohort 640
+        env:
+          OPENBLAS_NUM_THREADS: '1'
+        run: python experiments/driv3r/training/population/population_p9.py --p0-output /tmp/population-evidence --output /tmp/population-evidence/p9_640 --seed 640 --generations 2 --offspring 3 --train-episodes 7 --selection-episodes 4 --holdout-episodes 6 --horizon 40 --portfolio 2 --proposals 3
+      - name: P9 independent game-scenario curriculum cohort 641
+        env:
+          OPENBLAS_NUM_THREADS: '1'
+        run: python experiments/driv3r/training/population/population_p9.py --p0-output /tmp/population-evidence --output /tmp/population-evidence/p9_641 --seed 641 --generations 2 --offspring 3 --train-episodes 7 --selection-episodes 4 --holdout-episodes 6 --horizon 40 --portfolio 2 --proposals 3
       - name: Retain exact experimental source for reproducibility
         run: |
           mkdir -p /tmp/population-evidence/source

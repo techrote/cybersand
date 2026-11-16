@@ -283,3 +283,43 @@ safe. This is not reinforcement learning, self-play, native CyberSand, or
 SLM-student training. Retain bad and quirky models equally. Everything stays
 inside the population research lane and its isolated workflow; Draft/HOLD,
 no merge or game-side modifications.
+
+## P9 — adaptive scenario-adversary curriculum tournament (research only)
+
+`population_p9.py` implements **external synthetic game-environment adversaries**.
+Six niche-specialised small neural action-selection policies compete against
+deterministically proposed obstacle, protected-material and changing-goal scenarios.
+Variants include dead ends, slalom obstacles, protected choke points, blocked goal
+approaches and goal reversals. Cards 6/7 are **heldout geometry templates** never
+offered during training. All actual game actions remain host-mask legal
+(N/E/S/W/RETRACE/STOP); no Godot/native/Workbench code or game assets are touched.
+
+Two generations with three offspring per niche per arm; every mutated offspring
+is actually trained with teacher-augmented on-policy-state Adam. Three controlled
+scenario-assignment treatments are compared: uniformly sampled candidate card;
+maximal frozen-parent hardness; and maximal *current-policy* hardness. Every arm
+probes the same offered TRAIN-world cards under both its live and frozen model,
+with the same number of training-world episodes and matched probe budgets.
+Deterministic hardness is a normalized difference from a privileged handcrafted
+utility oracle, plus early-STOP penalty. The experiment is *not* reinforcement
+learning or true multi-agent self-play, and the environment opponent itself is
+an adaptive scenario selector, not a trained neural generator.
+
+Each of the 216 policies in cohorts 640/641 (108 per cohort) saves its actual
+weights, parent/seed/optimizer lineage, per-episode candidate difficulty vector,
+selected challenge card, and selection metrics. After selection/parent evolution
+is frozen, untouched-world evaluations compare all three arms on familiar
+and never-trained scenario geometries; selected-policy SVG/JSON traces capture
+the latter. Numeric outputs and negative findings must be compared directly
+against both random and fixed-hardness controls. Same reference world generator
+underlies novel cards, and reward remains synthetic/handcrafted, so this is
+not evidence of native game generalisation or human preference.
+
+Reproduce from a P0 folder produced by the population baseline:
+
+```sh
+python experiments/driv3r/training/population/population_p9.py --p0-output /tmp/population-evidence --output /tmp/population-evidence/p9_640 --seed 640 --generations 2 --offspring 3 --train-episodes 7 --selection-episodes 4 --holdout-episodes 6 --horizon 40 --portfolio 2 --proposals 3
+python experiments/driv3r/training/population/population_p9.py --p0-output /tmp/population-evidence --output /tmp/population-evidence/p9_641 --seed 641 --generations 2 --offspring 3 --train-episodes 7 --selection-episodes 4 --holdout-episodes 6 --horizon 40 --portfolio 2 --proposals 3
+```
+
+**Draft/HOLD, no merge, no production or CyberSand game/content changes.**
