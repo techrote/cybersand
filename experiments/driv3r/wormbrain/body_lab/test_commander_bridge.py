@@ -116,6 +116,9 @@ class CommanderFourSlotBridge(unittest.TestCase):
         self.assertEqual(w.report()["mock_fixture_decisions"], 4)
         self.assertEqual(w.report()["verified_active_model_processes"], 0)
         self.assertEqual(w.report()["authenticated_native_receipts"], 0)
+        for i, name in enumerate(names):
+            self.assertEqual(w.sessions[name]["original_output_bytes"],
+                             [f"MOCK outside model output {i}".encode()])
 
     def test_stop_is_per_worm_and_cannot_be_reopened(self):
         w = make_wrangler()
@@ -209,6 +212,37 @@ class CommanderFourSlotBridge(unittest.TestCase):
         a = next(iter(w.identities))
         w.sessions[a]["decisions"] = 36
         self.assertEqual(w.offer(a)["legal_ids"], ["STOP"])
+
+
+    def test_commander_narrow_ceiling_changes_legal_menu_and_token(self):
+        req, plan = fixture()
+        req["episodes"][0]["material_budget"] = 1
+        req["episodes"][0]["decision_budget"] = 1
+        digest = _digest(req)
+        plan["request_sha256"] = digest
+        for job in plan["runner_jobs"]:
+            for row in job["leases"]:
+                ep = next(e for e in req["episodes"] if e["id"] == row["id"])
+                row.clear()
+                row.update({"lease_id": "wf-" + _digest(
+                    {"request": digest, "id": ep["id"]})[:28], **ep})
+        w = FourWormWrangler(req, plan, RUNNERS, native_source_sha=NATIVE_SOURCE)
+        attach_all(w)
+        first = next(iter(w.identities))
+        menu = w.offer(first, options=BodyOptions(4, False, False))
+        self.assertIn("INK_E_1", menu["legal_ids"])
+        self.assertNotIn("INK_E_2", menu["legal_ids"])
+        from experiments.driv3r.wormbrain.body_lab.native_inert_adapter import offered
+        unbounded = offered(w.identities[first].lease,
+                            w.sessions[first]["initial"],
+                            w.sessions[first]["snapshot"],
+                            expected_source_sha=NATIVE_SOURCE,
+                            options=BodyOptions(4, False, False), decisions=0)
+        self.assertNotEqual(unbounded["offer_token"], menu["offer_token"])
+        p = w.submit(first, "INK_E_1", menu["offer_token"], b"fake output",
+                     options=BodyOptions(4, False, False))
+        w.accept_fixture(first, transcript(w.sessions[first]["snapshot"], p))
+        self.assertEqual(w.offer(first)["legal_ids"], ["STOP"])
 
     def test_fails_closed_after_deadline(self):
         w = make_wrangler()
