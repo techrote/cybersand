@@ -55,7 +55,7 @@ jobs:
             "one_vm":True,"one_optimizer_process":True,"request":req},indent=2)+"\n")
           PY
           python3 tools/ci/check_ci_provider_policy.py
-          python3 -m py_compile experiments/agent_painter/lanes/sprocket/worm_train_v10.py
+          python3 -m py_compile experiments/agent_painter/lanes/sprocket/worm_train_v10.py experiments/agent_painter/lanes/sprocket/test_worm_train_v10.py
       - name: Admit actual immutable W9 optimizer checkpoint
         env:
           GH_TOKEN: ${{ github.token }}
@@ -87,6 +87,7 @@ jobs:
           cp "$RUNNER_TEMP/worm/common/worm.py" evidence/w10/source-pinned-W0.py
           cp "$RUNNER_TEMP/worm/support_sprocket/curriculum.py" evidence/w10/source-pinned-support.py
           python3 experiments/agent_painter/lanes/sprocket/test_worm_train_v9.py --w0 "$RUNNER_TEMP/worm/common/worm.py" --support "$RUNNER_TEMP/worm/support_sprocket/curriculum.py"
+          python3 experiments/agent_painter/lanes/sprocket/test_worm_train_v10.py --w0 "$RUNNER_TEMP/worm/common/worm.py" --support "$RUNNER_TEMP/worm/support_sprocket/curriculum.py"
       - name: Install pinned CPU dependencies and shape-test
         run: |
           set -euo pipefail
