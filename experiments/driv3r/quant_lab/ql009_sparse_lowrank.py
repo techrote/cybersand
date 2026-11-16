@@ -34,7 +34,7 @@ class SparseRankTwo(nn.Module):
     feature variance, never from held-out observations. Dense controls use all
     27 dimensions. No parent parameter is trainable.
     """
-    def __init__(self, parent, feature_mask, seed=90909):
+    def __init__(self, parent, feature_mask, seed=90909, train_bias=True):
         super().__init__()
         self.parent = parent
         mask = torch.as_tensor(feature_mask, dtype=torch.float32)
@@ -43,7 +43,7 @@ class SparseRankTwo(nn.Module):
         torch.manual_seed(seed)
         self.u = nn.Parameter(torch.randn(27, 2) * 0.05)
         self.v = nn.Parameter(torch.zeros(2, len(ACTIONS)))
-        self.bias = nn.Parameter(torch.zeros(len(ACTIONS)))
+        self.bias = nn.Parameter(torch.zeros(len(ACTIONS)), requires_grad=train_bias)
 
     def correction(self, x):
         return torch.tanh((x * self.feature_mask) @ self.u) @ self.v + self.bias
@@ -61,11 +61,11 @@ class SparseRankTwo(nn.Module):
                    for t in (self.u, self.v, self.bias, self.feature_mask))
 
 
-def fit(parent, dataset, mask, prior_scores, steps, kl_weight, seed):
+def fit(parent, dataset, mask, prior_scores, steps, kl_weight, seed, train_bias=True):
     x, y, legal = dataset
     torch.manual_seed(seed)
-    net = SparseRankTwo(parent, mask, seed)
-    optim = torch.optim.AdamW((net.u, net.v, net.bias), lr=0.025, weight_decay=0.)
+    net = SparseRankTwo(parent, mask, seed, train_bias=train_bias)
+    optim = torch.optim.AdamW([p for p in (net.u, net.v, net.bias) if p.requires_grad], lr=0.025, weight_decay=0.)
     counts = torch.bincount(y, minlength=len(ACTIONS)).float()
     assert bool((counts > 0).all()), counts
     probs = (1.0 / counts[y]).double()
@@ -86,13 +86,14 @@ def fit(parent, dataset, mask, prior_scores, steps, kl_weight, seed):
                       "ce":float(ce.detach()), "kl":float(kl.detach())})
     moments = sum(int(torch.count_nonzero(s["exp_avg"]).item() > 0)
                   for s in optim.state.values())
-    assert moments == 3, moments
+    assert moments == (3 if train_bias else 2), moments
     patch_norm = float((net.u @ net.v).norm().detach())
     assert patch_norm > 0, "Null model patch: optimizer did not update"
     diag = {"steps":steps, "seed":seed, "kl_weight":kl_weight,
             "adam_nonzero_moment_tensors":moments, "rank":2,
             "feature_dimensions_enabled":int(net.feature_mask.sum()),
-            "actual_trainable_parameters":int(net.u.numel()+net.v.numel()+net.bias.numel()),
+            "actual_trainable_parameters":sum(p.numel() for p in (net.u,net.v,net.bias) if p.requires_grad),
+            "frozen_output_bias":not train_bias,
             "patch_frobenius_norm":patch_norm,
             "first":trace[0], "last":trace[-1],
             "parent_q1_q4_codes_unchanged":True}
@@ -174,12 +175,13 @@ def run(args):
     variants = {"q1-threshold45":q1, "q1-q4middle":q4middle}
     trainers = {}
     training_specs = (
-        ("rank2-dense-ce", torch.ones(27), 0., 90911),
-        ("rank2-sparse-ce", mask, 0., 90913),
-        ("rank2-sparse-retain", mask, 1.5, 90917))
-    for name, features, penalty, seed in training_specs:
+        ("rank2-dense-ce", torch.ones(27), 0., 90911, True),
+        ("rank2-sparse-ce", mask, 0., 90913, True),
+        ("rank2-sparse-retain", mask, 1.5, 90917, True),
+        ("rank2-sparse-no-bias", mask, 0., 90919, False))
+    for name, features, penalty, seed, train_bias in training_specs:
         model, optimizer, trace, info = fit(q4middle, train, features,
-                                            fixed_train_scores, args.steps, penalty, seed)
+                                            fixed_train_scores, args.steps, penalty, seed, train_bias=train_bias)
         variants[name] = model
         trainers[name] = info
         torch.save({"model_state":model.state_dict(),"optimizer":optimizer,
@@ -254,7 +256,7 @@ def run(args):
         "train_n":len(train[1]),"heldout_n":len(test[1]),
         "train_histogram":train_hist,"heldout_histogram":test_hist,
         "training_only_selected_features":keep.tolist(),
-        "optimizer_updates":3*args.steps,"training":trainers,
+        "optimizer_updates":4*args.steps,"training":trainers,
         "seeds":list(seeds),"horizon":args.horizon,
         "variants":reports,"controls":controls,
         "first_pass_trajectory_count":len(raw),
