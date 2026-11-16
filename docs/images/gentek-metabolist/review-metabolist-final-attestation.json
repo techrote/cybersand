@@ -1,0 +1,30 @@
+{
+  "status": "pass",
+  "source_commit": "18215b08c0555922d5e5096a38c4b67af9c6b26f",
+  "source_tree": "d52975f369e97fa0e88b0ff3c0a669e6fe565a46",
+  "parent_commit": "615828b28337f85e4663e03ba479616db4ddf764",
+  "gallery": "/workspace/scratch/cc652fa2efec/cybersand-metabolist/build/metabolist-spine-gallery",
+  "source_input_count": 87,
+  "native_capture_count": 50,
+  "composite_count": 7,
+  "native_pixels_independently_mapped": 15204352,
+  "qualification": {
+    "file": "/workspace/scratch/cc652fa2efec/cybersand-metabolist/build/metabolist-qualification/qualification.json",
+    "source_commit": "18215b08c0555922d5e5096a38c4b67af9c6b26f",
+    "input_count": 68,
+    "assertions": 204424,
+    "snapshots": [
+      {
+        "kind": "legacy",
+        "bytes": 7093458,
+        "sha256": "74fcb5ecb28585c2a57f04cd9f1d980d98fff4b24c495420667c03c1d431452f"
+      },
+      {
+        "kind": "viaduct",
+        "bytes": 197058,
+        "sha256": "f4bd728ab78ba2762c12e9b22d18ea425a8ca6e9a4f8483e0e67ab0fbb773c26"
+      }
+    ]
+  },
+  "errors": []
+}

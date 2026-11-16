@@ -4,6 +4,20 @@ extends SceneTree
 # measured zone connectivity/quotas and native admission of exact edge seeds.
 const Project = preload("res://scripts/architectural_generator_project.gd")
 const Store = preload("res://scripts/workbench_generated_map.gd")
+# Explicit parent catalogue; independent of metadata returned by the adapter.
+const CLASSIC_GENTEK_IDS: Array[String] = ["trestle","stacked_arcade","flying_buttress","sawtooth_gallery",
+		"cantilever_spine","rib_vault","nested_arcade","suspended_deck",
+		"bowstring_truss","diamond_truss","portal_frame","ladder_bridge","stepped_aqueduct","split_pier",
+		"cable_gallery","clerestory_hall","mushroom_deck","zigzag_bridge","scalloped_vault","lattice_tower",
+		"offset_arcade","bridgehouse","forked_gantry","buttress_wall",
+		"fan_truss","pratt_truss","vierendeel_frame","suspension_pylon","harp_bridge","double_cantilever",
+		"stepped_buttress","colonnade","basilica","crenellated_bridge","pointed_arcade","inverted_arch",
+		"hourglass_pier","tripod_frame","chevron_hall","hanging_arcade","shelf_stack","staggered_balcony",
+		"monopod_tower","wedge_gallery","crown_bridge","zigzag_pier","drum_vault","pyramidal_frame",
+		"warren_truss","kingpost_frame","queenpost_frame","lenticular_bridge","radial_stay_bridge","twin_mast_bridge",
+		"a_frame_hall","butterfly_hall","ziggurat_arcade","corbel_arcade","chain_vault","ring_pier",
+		"folded_plate_hall","space_frame","crossbeam_stack","yoke_bridge","lantern_tower","spine_arcade",
+		"cascade_terrace","inverted_trestle","cranked_beam","barrel_arcade","buttress_crown","triptych_arcade"]
 var checks := 0
 var failures := 0
 
@@ -175,19 +189,8 @@ func new_native_algorithms() -> void:
 		"three new native algorithms produce materially distinct deterministic geometry")
 
 func classic_genteks() -> void:
-	var ids: Array[String] = ["trestle","stacked_arcade","flying_buttress","sawtooth_gallery",
-		"cantilever_spine","rib_vault","nested_arcade","suspended_deck",
-		"bowstring_truss","diamond_truss","portal_frame","ladder_bridge","stepped_aqueduct","split_pier",
-		"cable_gallery","clerestory_hall","mushroom_deck","zigzag_bridge","scalloped_vault","lattice_tower",
-		"offset_arcade","bridgehouse","forked_gantry","buttress_wall",
-		"fan_truss","pratt_truss","vierendeel_frame","suspension_pylon","harp_bridge","double_cantilever",
-		"stepped_buttress","colonnade","basilica","crenellated_bridge","pointed_arcade","inverted_arch",
-		"hourglass_pier","tripod_frame","chevron_hall","hanging_arcade","shelf_stack","staggered_balcony",
-		"monopod_tower","wedge_gallery","crown_bridge","zigzag_pier","drum_vault","pyramidal_frame",
-		"warren_truss","kingpost_frame","queenpost_frame","lenticular_bridge","radial_stay_bridge","twin_mast_bridge",
-		"a_frame_hall","butterfly_hall","ziggurat_arcade","corbel_arcade","chain_vault","ring_pier",
-		"folded_plate_hall","space_frame","crossbeam_stack","yoke_bridge","lantern_tower","spine_arcade",
-		"cascade_terrace","inverted_trestle","cranked_beam","barrel_arcade","buttress_crown","triptych_arcade"]
+	var ids: Array[String] = CLASSIC_GENTEK_IDS.duplicate()
+	ids.append("metabolist_spine")
 	var presets: Array = Project.builtin_presets()
 	var hashes := {}
 	for module: String in ids:
@@ -216,7 +219,36 @@ func classic_genteks() -> void:
 			var digest: String = Store.digest(chunk.cells)
 			check(not hashes.has(digest), "classic first-chunk geometry differs: " + module)
 			hashes[digest] = module
-	check(hashes.size() == 72, "seventy-two classic Genteks produce distinct first-chunk material geometry")
+	check(hashes.size() == 73, "seventy-three classic Genteks produce distinct first-chunk material geometry")
+
+func metabolist_clearance_edges() -> void:
+	var preset: Dictionary = {}
+	for candidate: Dictionary in Project.builtin_presets():
+		if candidate.module == "metabolist_spine": preset = candidate.duplicate(true)
+	if not check(not preset.is_empty(), "Metabolist preset exists for admission boundaries"): return
+	for wall: int in [1,3,5]:
+		var admitted: Dictionary = preset.duplicate(true)
+		admitted.geometry.wall_thickness = wall
+		admitted.geometry.room_size = 6*wall+24
+		admitted.geometry.floor_height = 6*wall+28
+		check(Project.validate_preset(admitted).is_empty(), "Metabolist exact clearance accepted at wall %d" % wall)
+		var input: Dictionary = Project.default_project()
+		input.automatic_tunnels = false
+		input.styles = [{"enabled":true,"share":100.0,"preset":admitted}]
+		var compiled: Dictionary = Project.compile(input)
+		check(compiled.get("ok",false), "Metabolist minimum clearance compiles at wall %d" % wall)
+		if compiled.get("ok",false) and ClassDB.class_exists(&"CyberWorldGenerator"):
+			var generator: Variant = ClassDB.instantiate(&"CyberWorldGenerator")
+			var native: Dictionary = generator.configure(compiled.recipe)
+			check(native.get("ok",false), "native accepts matching Metabolist minimum clearance at wall %d" % wall)
+		for dimension: String in ["room_size","floor_height"]:
+			var rejected: Dictionary = admitted.duplicate(true)
+			rejected.geometry[dimension] -= 1
+			var error: String = Project.validate_preset(rejected)
+			check(error.begins_with("Metabolist Spine needs") and error.contains("at least"),
+				"Metabolist undersized %s has actionable diagnosis at wall %d" % [dimension,wall])
+			input.styles[0].preset = rejected
+			refused(input, "Metabolist undersized %s at wall %d" % [dimension,wall])
 
 func planner_invariants() -> void:
 	for seed: int in range(64):
@@ -299,7 +331,7 @@ func native_identity_edges() -> void:
 	for entry: Dictionary in catalogue.modules:
 		var identity: String = str(entry.id) + ":" + str(entry.version)
 		versions[identity] = true
-		var architectural: bool = str(entry.id) in ["terraced", "hex_hive", "arcade"]
+		var architectural: bool = str(entry.id) in ["terraced", "hex_hive", "arcade", "metabolist_spine"] or str(entry.id) in CLASSIC_GENTEK_IDS
 		var versioned_legacy: bool = str(entry.id) in ["arcology", "vault"] and int(entry.version) == 2
 		if architectural or versioned_legacy:
 			check(int(entry.get("minimum_recipe_schema", -1)) == 4,
@@ -308,13 +340,14 @@ func native_identity_edges() -> void:
 			check(not entry.has("minimum_recipe_schema"),
 				"legacy module metadata remains free of schema-4 restrictions: " + identity)
 	check(versions.has_all(["arcology:1","arcology:2","vault:1","vault:2","aqueduct:1",
-		"terraced:1","terraced:2","hex_hive:1","hex_hive:2","arcade:1","arcade:2"]),"native catalogue exposes exact legacy and architectural module versions")
+		"terraced:1","terraced:2","hex_hive:1","hex_hive:2","arcade:1","arcade:2","metabolist_spine:1"]),"native catalogue exposes exact legacy and architectural module versions")
 
 func run() -> void:
 	hostile_json()
 	expanded_styles()
 	new_native_algorithms()
 	classic_genteks()
+	metabolist_clearance_edges()
 	planner_invariants()
 	native_identity_edges()
 	print("ARCHITECTURAL_PROJECT_CONTRACT checks=%d failures=%d" % [checks,failures])

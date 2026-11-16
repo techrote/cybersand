@@ -1,0 +1,1182 @@
+{
+  "schema": "cybersand.metabolist-spine-publication-v1",
+  "source": {
+    "commit": "18215b08c0555922d5e5096a38c4b67af9c6b26f",
+    "tree": "d52975f369e97fa0e88b0ff3c0a669e6fe565a46",
+    "parent_commit": "615828b28337f85e4663e03ba479616db4ddf764",
+    "input_sha256": "c583d190b691580acf585ba0d12158f8c14e8146bb75ac83f9d19d0d6fecc836",
+    "uncommitted_source_paths": []
+  },
+  "render_count": 50,
+  "cases": [
+    {
+      "name": "01-hero-512",
+      "label": "Hero \u2014 512 \u00d7 512",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 271828,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "b62f24b69bb003c8f12f4feba6b835a1beaeacfb3355c33d1cd78f2ade5a1192",
+      "png_sha256": "3e277a3a4a98b64a7db836872205b1fe958e75c35239d5b7e0eb40fa27731d3a",
+      "negative_space_ratio": 0.7811965942382812
+    },
+    {
+      "name": "02-hero-landscape",
+      "label": "Hero \u2014 1024 \u00d7 512",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 271828,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        1024,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "b9f3136350477e10adda94a8bde8f5914177684b0e88ac4f8201ba1b77c6f254",
+      "png_sha256": "612a82a5d2a5f1e299c28f328a4d3681595d25aadc22c76d408b13ca0d74d977",
+      "negative_space_ratio": 0.7699394226074219
+    },
+    {
+      "name": "03-hero-vertical",
+      "label": "Hero \u2014 512 \u00d7 1024",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 271828,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        1024
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "22477bad0e55e2d1e24fd7b5f18c70160142d83072ddc8c9897ed1cdae118b94",
+      "png_sha256": "e2357dfb187782e23c03c1e5d219b0458e35794a44a3f89ed06df872f045cde7",
+      "negative_space_ratio": 0.7713127136230469
+    },
+    {
+      "name": "04-hero-large",
+      "label": "Hero \u2014 1024 \u00d7 1024",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 271828,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        1024,
+        1024
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "24b04b5f035c64e6b70608a0f942a46f5f17b00ac43b567d9f1ff5266224c0b7",
+      "png_sha256": "9a9142d9410d7850bf9c356259ce7474d94049f75c2db54ad810461061a417f5",
+      "negative_space_ratio": 0.7802553176879883
+    },
+    {
+      "name": "survey-seed-00",
+      "label": "Survey seed 0",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 0,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "9f509a0207fabf66b7487e04c9064ef53a2c7370b58e5dad8aa546f474f72f89",
+      "png_sha256": "956749a3c21cbf0057b25f3b0dbe988a3caeed5bb424aa840ee0bff7d075bf28",
+      "negative_space_ratio": 0.7206039428710938
+    },
+    {
+      "name": "survey-seed-01",
+      "label": "Survey seed 1",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 1,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "52662b5875424892d7f78b5cf4ab1ad5b880fc7f271a2108555f3041438112ce",
+      "png_sha256": "253cd4a0d107927e24af1f0898ef1bcb114b873bad016fa305d176bdf28d37be",
+      "negative_space_ratio": 0.80419921875
+    },
+    {
+      "name": "survey-seed-02",
+      "label": "Survey seed 2",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 2,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "d34c8926b4b3ba60eff737cb146fd9773450b81e8fe50c0eb337e622b0248a72",
+      "png_sha256": "4853f5f1c851df7d6c5674075ca44d789a91a49c9746b46f2e9b99af333f2e3f",
+      "negative_space_ratio": 0.7731590270996094
+    },
+    {
+      "name": "survey-seed-03",
+      "label": "Survey seed 3",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 3,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "77e0fc71dd56748ec3c06bcbe365afd57c172c32253466d1fcfad46b6a0f7c66",
+      "png_sha256": "6c7f391e5fcd27d233f02d26c6a62d8fda5b2a4fbf583ab079ccf3f6199b2e9c",
+      "negative_space_ratio": 0.7745513916015625
+    },
+    {
+      "name": "survey-seed-04",
+      "label": "Survey seed 4",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 4,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "fed30baa255c375b37fef1c2515e717e8bb83bb01301f187e1bb4a531770ce90",
+      "png_sha256": "819b93661592576fa65b773b4b76edd58d67114f32067c94a8c405bf7e40dd3f",
+      "negative_space_ratio": 0.7827224731445312
+    },
+    {
+      "name": "survey-seed-05",
+      "label": "Survey seed 5",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 5,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "1e471e25c1097d2439cf1766e09fba78937f8d05b12cc9d357791b337ab65f4c",
+      "png_sha256": "fead27c500ffab658b3ccc9b3dc46add59f14c269f056e4db878a72211d1ded1",
+      "negative_space_ratio": 0.7928543090820312
+    },
+    {
+      "name": "survey-seed-06",
+      "label": "Survey seed 6",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 6,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "fed1f43774a0a4971a4568692d4f202e0924e051a9c61b1a78d930f307020bd7",
+      "png_sha256": "a40ef25038fea99b2ad8af713fc6d31dc8b9fe51f80f78bf5bf6896a2e558697",
+      "negative_space_ratio": 0.7912826538085938
+    },
+    {
+      "name": "survey-seed-07",
+      "label": "Survey seed 7",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 7,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "9066bd6d693c1b6b16c8aaf31f6231dc10a93cb094a22579c3a1ace9d4a79344",
+      "png_sha256": "6058475ace354df615126045f61ab10aff43d4ebdf6f566464c8a66f995ee155",
+      "negative_space_ratio": 0.7584495544433594
+    },
+    {
+      "name": "survey-seed-08",
+      "label": "Survey seed 8",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 8,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "d3afdd8734ffd04164dd31ca5a5039639661f464818816da3ad0be8e0ed7e057",
+      "png_sha256": "a6decad5e928e0fdb70671b0a625ca27245d6abd9f328c4eaf8d179a1fcf3ea1",
+      "negative_space_ratio": 0.7351608276367188
+    },
+    {
+      "name": "survey-seed-09",
+      "label": "Survey seed 9",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 9,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "6da5e1a3dbf38f2ab74445e46adee436b0b4bed4fc2069a39462642f1124a83c",
+      "png_sha256": "666074f1ddc2d3b054aa3803bb0bb612f629f680ccc9295dfddae72bdfa72d62",
+      "negative_space_ratio": 0.7857284545898438
+    },
+    {
+      "name": "survey-seed-10",
+      "label": "Survey seed 10",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 10,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "bc7650a517fa12a7083c92dd4fc28ac42f3cb1d38f9698265bb68085f4c07d9f",
+      "png_sha256": "7909ef03ae3379707048db0cdc531ea0703a90c76d9e67d09d0767aac9c09500",
+      "negative_space_ratio": 0.7989540100097656
+    },
+    {
+      "name": "survey-seed-11",
+      "label": "Survey seed 11",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 11,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "959191c6c1e6ae7615faee89e6eb6b1e2cd009e136874503d73d61ca90bc3628",
+      "png_sha256": "5843c322de529d0d882a842a3dcb55bfd6e9a64a307cea168c9c8b8a59e3964b",
+      "negative_space_ratio": 0.748138427734375
+    },
+    {
+      "name": "survey-seed-12",
+      "label": "Survey seed 12",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 12,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "90615e5905def7738a2812ad710841cb6a0a8f8cb6625223f05e75c48ec45242",
+      "png_sha256": "49a01ebd8a3a2853954bf38f78eb8e064f7f27bf70f479a493d9ebcd69cf3201",
+      "negative_space_ratio": 0.7829093933105469
+    },
+    {
+      "name": "survey-seed-13",
+      "label": "Survey seed 13",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 13,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "8794efecf329a45ab53d8da1976900ac542ae6c1a93fc48baaf0868fca81df20",
+      "png_sha256": "4282b5e3a24e922a90a6646156e6f2eaf6dfcf5f7e334cf07a4242b392e3d611",
+      "negative_space_ratio": 0.7410049438476562
+    },
+    {
+      "name": "survey-seed-14",
+      "label": "Survey seed 14",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 14,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "7c7477d307ed9024d9672dc001ccf1d7c7a1f5ff36b64f77d8cfe54acfe50861",
+      "png_sha256": "2d5d61f72514727bf6d1aa9bade1da5f62a51d55bec36625ec0bf53acef8ff5e",
+      "negative_space_ratio": 0.7657127380371094
+    },
+    {
+      "name": "survey-seed-15",
+      "label": "Survey seed 15",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 15,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "dece986185cb7ab7e339d59c1a233c678d49d6fff7dd9aa0ee91fc7bbe3bd42b",
+      "png_sha256": "d17ed521a78fffe07eed8d31b6c242083dc1afdfd3eec998fd75b136d7dc52d6",
+      "negative_space_ratio": 0.7731742858886719
+    },
+    {
+      "name": "survey-seed-16",
+      "label": "Survey seed 16",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 16,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "67ae19274de0a265a427020ca1b9cd7ef744176d089240c304acffe81062fd9f",
+      "png_sha256": "5a023e1474ff9f1146da754ea17c826c5ab8829cdd1bed6e63d00b16e688d6e2",
+      "negative_space_ratio": 0.7520103454589844
+    },
+    {
+      "name": "survey-seed-17",
+      "label": "Survey seed 17",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 17,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "71aa9c6a82e44945bce4a7caf94bf322d53b54afb342b2545f0df14d063d7acd",
+      "png_sha256": "5d7c05c1761769e90047e05ce45c7c37b3332fe4a4ac3657d32d4b466ef69631",
+      "negative_space_ratio": 0.7437820434570312
+    },
+    {
+      "name": "survey-seed-18",
+      "label": "Survey seed 18",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 18,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "bfe409b31ebe4d410a6a8ce05c8d0f0c0b2e3a3e304c5e38356e8854b21b02e9",
+      "png_sha256": "3af83cfafcb5e14ddd8af0a0705141b7603f352ba0637beed291fc5b4f64d08a",
+      "negative_space_ratio": 0.7918052673339844
+    },
+    {
+      "name": "survey-seed-19",
+      "label": "Survey seed 19",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 19,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "b2d85ce97dbe621d069b7e789c4381e39c4c0ee9d7ac996fbb22761c80412278",
+      "png_sha256": "8d9218365435cf519ec3792d11b2d0815cb954770ae2746f4e1f042f29e1b5dc",
+      "negative_space_ratio": 0.7808837890625
+    },
+    {
+      "name": "survey-seed-20",
+      "label": "Survey seed 20",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 20,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "b018a786adc39777dfd9c1ce0cce4cffd28009a9acb5a8b41b3e303c5ba5843a",
+      "png_sha256": "9171bc3e4061984d968688b8ea7e7175c3368ccc242c54a29e2003e0f93717f1",
+      "negative_space_ratio": 0.7341194152832031
+    },
+    {
+      "name": "survey-seed-21",
+      "label": "Survey seed 21",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 21,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "0d9c30b0351982933e0af107c77c7a4de39475767de8dae24e71377e91055ade",
+      "png_sha256": "7b0b5aa42c4b62012967d711e4151a9e28d70be8f0c220ca9a4ba9cae191770b",
+      "negative_space_ratio": 0.7741012573242188
+    },
+    {
+      "name": "survey-seed-22",
+      "label": "Survey seed 22",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 22,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "e883a8f363ab80374760eaafc02a95d5aa5ea18c0e20e3b5fbe6843e115982d8",
+      "png_sha256": "9abc5e1bfcb0c98c66ed093318d9544c5c3a6e23b2c92309299c1b5ce0ea411d",
+      "negative_space_ratio": 0.7769508361816406
+    },
+    {
+      "name": "survey-seed-23",
+      "label": "Survey seed 23",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 23,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "585d84c73e0ddb33aaf3362a50ed2b6f090b704b045bee6207bcdd282f6f1fa3",
+      "png_sha256": "c0a7ff1f651db416ec22339a4c598c5a073bb3ac6982fd4431d5a8c535af0d77",
+      "negative_space_ratio": 0.7885360717773438
+    },
+    {
+      "name": "survey-seed-24",
+      "label": "Survey seed 24",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 24,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "327c42987d4a68b44fe5b0d9ead56a3d0c7da88a221e3093ad8590c289bef003",
+      "png_sha256": "5f6d0d75a29e2a7c42af432805aa8c73696bd096cc661f3e33fc82daa420f70e",
+      "negative_space_ratio": 0.7473678588867188
+    },
+    {
+      "name": "survey-seed-25",
+      "label": "Survey seed 25",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 25,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "ac22059e1d8e6a6e2cae004f7e90b01fc14ba7149c840d5c42719c2098e23157",
+      "png_sha256": "3fc029b1f0f84c995d42648765621bd303c756d02de38ea4580ade5a985b4097",
+      "negative_space_ratio": 0.7658309936523438
+    },
+    {
+      "name": "survey-seed-26",
+      "label": "Survey seed 26",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 26,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "94c2f4db6c33ddc84f80588d1cdf90c1e705e2f3cbc683990d85e6173b676a55",
+      "png_sha256": "05541bae432f1c91bfba7118a43c7a860e72bb6f5c82c2761d1e1ab47d68fb2f",
+      "negative_space_ratio": 0.7544746398925781
+    },
+    {
+      "name": "survey-seed-27",
+      "label": "Survey seed 27",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 27,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "aed355f20d0dc12f81c863e82a84bd61135098316fed3bbfa7f2a866b3fa6694",
+      "png_sha256": "c2b517f640c0d076fe8c47ff747eeccf5ab63c16df60e03c37941e441db8a8c0",
+      "negative_space_ratio": 0.7878074645996094
+    },
+    {
+      "name": "survey-seed-28",
+      "label": "Survey seed 28",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 28,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "ce0d8b76bdddf4bc2f997531d10eea8a598b131ffbcb6d1fa222f606dc65a0c9",
+      "png_sha256": "30cd9d33a2a97836a5e9104be9e10f75508f1bf9ca9717e337b6c0e67a42b7aa",
+      "negative_space_ratio": 0.776275634765625
+    },
+    {
+      "name": "survey-seed-29",
+      "label": "Survey seed 29",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 29,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "6f4bea9f069541667b3653549cca4c7d93ba21dfc04dd35d2c5deeab49b66389",
+      "png_sha256": "5a30bfe3910561510f779a5d279b92338d80b738ac40cc136979c6f15755b82e",
+      "negative_space_ratio": 0.7782859802246094
+    },
+    {
+      "name": "survey-seed-30",
+      "label": "Survey seed 30",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 30,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "5ff3b6f4bc1592cf12ef5f0ac4541fa5a5d3b7ad0253610527b1a1c48e0dec90",
+      "png_sha256": "03a4c8d1d9a9f1ee75ede11fd381a79e6901d21eb42b7b33820058e358663baf",
+      "negative_space_ratio": 0.7951087951660156
+    },
+    {
+      "name": "survey-seed-31",
+      "label": "Survey seed 31",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 31,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "28187fb28fd639fd9327fd30143abdaaaeec25e2396f1897baefbf8b74d4b26c",
+      "png_sha256": "b885cead24506bfb88b0480441e5f599dc6803d142ce40808037ebda472eddfb",
+      "negative_space_ratio": 0.7640609741210938
+    },
+    {
+      "name": "control-compact-pods",
+      "label": "Compact pods \u2014 room 64",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 271828,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 64,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "042755c4d012a768e181db6d531c1c921839e2702ca060fccb2a5c53fd75e8a2",
+      "png_sha256": "a5cbc5d9fa87a048133091a2dc229500b9659926726c67dc1a153c30da8e848d",
+      "negative_space_ratio": 0.761566162109375
+    },
+    {
+      "name": "control-large-pods",
+      "label": "Large pods \u2014 room 128",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 271828,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 128,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "c41f6284f21d05f48916fd059fd7d7e7503c66f293d0a16e6c12329334c1a4b7",
+      "png_sha256": "908bd50d9181bc59111e57d979f69177bf3e9e17cd5814fc49d396fcac3176bf",
+      "negative_space_ratio": 0.7928466796875
+    },
+    {
+      "name": "control-short-rhythm",
+      "label": "Short vertical rhythm \u2014 64",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 271828,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 64,
+      "wall": 3,
+      "material_sha256": "c41d3f758beacc842f18cf79f44974e56d1edaed5a445df77468b585a778d9f0",
+      "png_sha256": "2b603b422241734c51bf9be0ff99698ab24d80ff9c7ea8d338cb69fdc55fcfed",
+      "negative_space_ratio": 0.7809104919433594
+    },
+    {
+      "name": "control-tall-rhythm",
+      "label": "Tall vertical rhythm \u2014 128",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 271828,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 128,
+      "wall": 3,
+      "material_sha256": "829790930c410084ff392167b06a76b8de13f5195d3ce3952036982fa20e88d4",
+      "png_sha256": "9ce5053cda0b4478f72e47e2bbb6642fbca5fd011149c6053089627559cbd9f5",
+      "negative_space_ratio": 0.8160896301269531
+    },
+    {
+      "name": "control-thin",
+      "label": "Thin structure \u2014 1 cell",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 271828,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 1,
+      "material_sha256": "177aa14dd64f8f4a7d7fab0a73aed6fc5e92e91782570c151ac2a03c409916e4",
+      "png_sha256": "9f5598f9db9102824880fd98cb756bebf4d26337feef4e7cd89a6a31dfb73de8",
+      "negative_space_ratio": 0.7952995300292969
+    },
+    {
+      "name": "control-heavy",
+      "label": "Heavy structure \u2014 5 cells",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 271828,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 5,
+      "material_sha256": "c21a364bcd62e5326c3684b372e7e17178259f825ab8a3db80fbc13cc0d96d46",
+      "png_sha256": "4a2a61d4729a608b74178c57f2a6461ba67344613a67bf313cb4cd0ccc129b95",
+      "negative_space_ratio": 0.7375907897949219
+    },
+    {
+      "name": "control-glazing-on",
+      "label": "Glazing on",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 271828,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "b62f24b69bb003c8f12f4feba6b835a1beaeacfb3355c33d1cd78f2ade5a1192",
+      "png_sha256": "3e277a3a4a98b64a7db836872205b1fe958e75c35239d5b7e0eb40fa27731d3a",
+      "negative_space_ratio": 0.7811965942382812
+    },
+    {
+      "name": "control-glazing-off",
+      "label": "Glazing off",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 271828,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "7b5af04967e4061ed826d0d5e16f265d04ea89d58e78ee17251e7d249e9830e3",
+      "png_sha256": "dd56dbb54fe15c0d030042011aa8467b2fe170a33efcc662bdd2dbea4308e094",
+      "negative_space_ratio": 0.8395843505859375
+    },
+    {
+      "name": "control-doors-on",
+      "label": "Service doors on",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 271828,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "b62f24b69bb003c8f12f4feba6b835a1beaeacfb3355c33d1cd78f2ade5a1192",
+      "png_sha256": "3e277a3a4a98b64a7db836872205b1fe958e75c35239d5b7e0eb40fa27731d3a",
+      "negative_space_ratio": 0.7811965942382812
+    },
+    {
+      "name": "control-doors-off",
+      "label": "Service doors off",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 271828,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "99982a8a0b9efbe12d26f983777aa134aa088b1d0f4abf4c51d9a73fac5f8ab7",
+      "png_sha256": "da6847e29555c3373c657f87a3354c0e57327ab30643542ef60d5e44b9dcbe16",
+      "negative_space_ratio": 0.7805557250976562
+    },
+    {
+      "name": "negative-origin",
+      "label": "Unaligned negative origin \u2014 -173, -291",
+      "module": "metabolist_spine",
+      "module_version": 1,
+      "seed": 271828,
+      "origin": [
+        -173,
+        -291
+      ],
+      "extent": [
+        512,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "b62f24b69bb003c8f12f4feba6b835a1beaeacfb3355c33d1cd78f2ade5a1192",
+      "png_sha256": "3e277a3a4a98b64a7db836872205b1fe958e75c35239d5b7e0eb40fa27731d3a",
+      "negative_space_ratio": 0.7811965942382812
+    },
+    {
+      "name": "compare-cantilever",
+      "label": "Cantilever Spine",
+      "module": "cantilever_spine",
+      "module_version": 1,
+      "seed": 271828,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        1024,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "e4eaf2c3e8936291462a86ee4d778b3cb2e78c717502c46253b7a55193f57b88",
+      "png_sha256": "51c04161a88c53e37ea741d7e080c6a97f5574eddae01aaaacbd130d3097b1db",
+      "negative_space_ratio": 0.7950668334960938
+    },
+    {
+      "name": "compare-shelf",
+      "label": "Shelf Stack",
+      "module": "shelf_stack",
+      "module_version": 1,
+      "seed": 271828,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        1024,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "13b64c6bfaf0e0491cd17cc389a3b524462b55c2206dfc4ca40237263ca1292f",
+      "png_sha256": "4d24730f53e17be6cdb21e5c919c09ef27a3d572d92f4d9f18d8437bc2ba93ce",
+      "negative_space_ratio": 0.6771965026855469
+    },
+    {
+      "name": "compare-balcony",
+      "label": "Staggered Balcony",
+      "module": "staggered_balcony",
+      "module_version": 1,
+      "seed": 271828,
+      "origin": [
+        0,
+        0
+      ],
+      "extent": [
+        1024,
+        512
+      ],
+      "bay": 96,
+      "floor": 88,
+      "wall": 3,
+      "material_sha256": "8ac4b330a26a97eaaf1911c5bc110136872a8f8230bb22bf0ad8f32a418c6b7e",
+      "png_sha256": "2b013372ee08d80d68ada7cb6a5c3c2b6926a192047b424346335c6bb27f3106",
+      "negative_space_ratio": 0.79473876953125
+    }
+  ],
+  "composites": [
+    {
+      "name": "contact-heroes",
+      "png_sha256": "2dd78d67b6af793509e8dc63f0103be9d06bd41b676ad4cb8bb97ba8070229e8",
+      "kind": "labelled contact sheet; nearest-neighbour previews only",
+      "sources": [
+        "01-hero-512",
+        "02-hero-landscape",
+        "03-hero-vertical",
+        "04-hero-large"
+      ]
+    },
+    {
+      "name": "contact-seeds-00-15",
+      "png_sha256": "32ac5fcdbc17cd706a5610b709fcb64056d0f927b6e7218a5288dd7504c856f3",
+      "kind": "labelled contact sheet; nearest-neighbour previews only",
+      "sources": [
+        "survey-seed-00",
+        "survey-seed-01",
+        "survey-seed-02",
+        "survey-seed-03",
+        "survey-seed-04",
+        "survey-seed-05",
+        "survey-seed-06",
+        "survey-seed-07",
+        "survey-seed-08",
+        "survey-seed-09",
+        "survey-seed-10",
+        "survey-seed-11",
+        "survey-seed-12",
+        "survey-seed-13",
+        "survey-seed-14",
+        "survey-seed-15"
+      ]
+    },
+    {
+      "name": "contact-seeds-16-31",
+      "png_sha256": "6f8e3d04cf5a806b2428a488cb0d187a2b50bfc3b63ae6463087711e016bd417",
+      "kind": "labelled contact sheet; nearest-neighbour previews only",
+      "sources": [
+        "survey-seed-16",
+        "survey-seed-17",
+        "survey-seed-18",
+        "survey-seed-19",
+        "survey-seed-20",
+        "survey-seed-21",
+        "survey-seed-22",
+        "survey-seed-23",
+        "survey-seed-24",
+        "survey-seed-25",
+        "survey-seed-26",
+        "survey-seed-27",
+        "survey-seed-28",
+        "survey-seed-29",
+        "survey-seed-30",
+        "survey-seed-31"
+      ]
+    },
+    {
+      "name": "contact-controls",
+      "png_sha256": "0c429b9381b33c306d25aaa1a7adfff43ade5671d26d0bcfecaf242dcae62a05",
+      "kind": "labelled contact sheet; nearest-neighbour previews only",
+      "sources": [
+        "control-compact-pods",
+        "control-large-pods",
+        "control-short-rhythm",
+        "control-tall-rhythm",
+        "control-thin",
+        "control-heavy",
+        "control-glazing-on",
+        "control-glazing-off",
+        "control-doors-on",
+        "control-doors-off"
+      ]
+    },
+    {
+      "name": "contact-comparisons",
+      "png_sha256": "faf51acd0310ac256146ea95321651da089783d1529ade891910a64c54c31c12",
+      "kind": "labelled contact sheet; nearest-neighbour previews only",
+      "sources": [
+        "compare-cantilever",
+        "compare-shelf",
+        "compare-balcony",
+        "02-hero-landscape"
+      ]
+    },
+    {
+      "name": "detail-root-upper",
+      "png_sha256": "5b7f4cf5f5700ad8f74d88a4162ead13a6bab5512bd87b04b17c735c53c426d2",
+      "kind": "unaltered native 1:1 crop",
+      "source": "04-hero-large",
+      "crop": [
+        64,
+        0,
+        240,
+        176
+      ],
+      "label": "Upper attachment root: service platform and knee brace"
+    },
+    {
+      "name": "detail-root-lower",
+      "png_sha256": "338b3508bfa3e6f513bb898d735e9f46960825a85d12155c13e24a1abbb9036c",
+      "kind": "unaltered native 1:1 crop",
+      "source": "04-hero-large",
+      "crop": [
+        64,
+        352,
+        240,
+        528
+      ],
+      "label": "Lower attachment roots: open frame, compact pod and service slot"
+    }
+  ],
+  "limitations": [
+    "Native material previews are authoritative material cells; they are not Godot framebuffer or Windows playtest captures.",
+    "1024x512 is a native extent; ordinary Architectural Generator project presets remain square."
+  ],
+  "complete_artifact_manifest": "build/metabolist-spine-gallery/manifest.json",
+  "publication_caption_note": "Root detail captions were clarified by visual inspection; original generated metadata remains in the raw campaign manifest and no pixels changed."
+}
