@@ -54,6 +54,10 @@ jobs:
         run: python experiments/driv3r/training/population/population_p5.py --p0-output /tmp/population-evidence --output /tmp/population-evidence/p5_632 --seed 632 --members 3 --train-episodes 12 --selection-episodes 6 --holdout-episodes 6 --horizon 48
       - name: P5 independent matched-feedback cohort, seed 633
         run: python experiments/driv3r/training/population/population_p5.py --p0-output /tmp/population-evidence --output /tmp/population-evidence/p5_633 --seed 633 --members 3 --train-episodes 12 --selection-episodes 6 --holdout-episodes 6 --horizon 48
+      - name: Train P6 multi-generation archive ecology (cohort 634)
+        run: python experiments/driv3r/training/population/population_p6.py --p0-output /tmp/population-evidence --output /tmp/population-evidence/p6_634 --seed 634 --generations 3 --offspring 4 --train-episodes 8 --selection-episodes 5 --holdout-episodes 6 --horizon 48 --portfolio 4
+      - name: Replicate P6 with independently held-out worlds (cohort 635)
+        run: python experiments/driv3r/training/population/population_p6.py --p0-output /tmp/population-evidence --output /tmp/population-evidence/p6_635 --seed 635 --generations 3 --offspring 4 --train-episodes 8 --selection-episodes 5 --holdout-episodes 6 --horizon 48 --portfolio 4
       - name: Retain exact experimental source for reproducibility
         run: |
           mkdir -p /tmp/population-evidence/source
