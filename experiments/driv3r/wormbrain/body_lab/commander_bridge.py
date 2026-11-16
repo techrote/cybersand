@@ -14,6 +14,7 @@ import re
 import time
 
 from .body_v2 import BodyOptions
+from .fixture_journal import InertReceiptJournal
 from .native_inert_adapter import (
     ExternalSnapshot, check_fixture_transcript, offered, prepare,
 )
@@ -199,13 +200,15 @@ class FourWormWrangler:
             "pending": None, "pending_raw_output": None,
             "raw_outputs": [], "original_output_bytes": [],
             "fixture_receipts": [], "stopped": False,
+            "fixture_journal": None, "quarantined": False,
         }
 
     def offer(self, lease_id, *, options=BodyOptions()):
         self._on_time()
         session = self._session(lease_id)
-        _require(session["pending"] is None and not session["stopped"],
-                 "Cannot offer during an unfinished or stopped episode")
+        _require(session["pending"] is None and not session["stopped"]
+                 and not session["quarantined"],
+                 "Cannot offer during an unfinished, quarantined or stopped episode")
         ident = self.identities[lease_id]
         return offered(ident.lease, session["initial"],
                        session["snapshot"], options=options,
@@ -219,8 +222,9 @@ class FourWormWrangler:
         """Prepare only. Raw bytes are externally supplied, NOT model-authenticated."""
         self._on_time()
         session = self._session(lease_id)
-        _require(session["pending"] is None and not session["stopped"],
-                 "Unfinished/stopped episode")
+        _require(session["pending"] is None and not session["stopped"]
+                 and not session["quarantined"],
+                 "Unfinished/quarantined/stopped episode")
         _require(type(raw_model_output) is bytes and
                  0 < len(raw_model_output) <= 65536,
                  "Original model response bytes required (unverified)")
@@ -250,7 +254,10 @@ class FourWormWrangler:
         """Only mock readbacks. NEVER label these as genuine Godot/native receipts."""
         self._on_time()
         session = self._session(lease_id)
-        _require(session["pending"] is not None, "No pending decision")
+        _require(session["pending"] is not None
+                 and session["fixture_journal"] is None
+                 and not session["quarantined"],
+                 "No wholesale fixture acceptance during an open/quarantined stream")
         checked = check_fixture_transcript(
             session["pending"], session["snapshot"], rows)
         end = rows[-1][2]
@@ -267,6 +274,54 @@ class FourWormWrangler:
                 "decisions_recorded": session["decisions"],
                 "terminal_fingerprint": end.fingerprint()}
 
+    def begin_fixture_stream(self, lease_id):
+        """Begin one native-INERT per-cell receipt stream, never actual PAINT."""
+        self._on_time()
+        s = self._session(lease_id)
+        _require(s["pending"] is not None and s["fixture_journal"] is None
+                 and not s["quarantined"], "No fresh unquarantined pending plan")
+        s["fixture_journal"] = InertReceiptJournal(s["pending"], s["snapshot"])
+        return s["fixture_journal"].report()
+
+    def accept_fixture_step(self, lease_id, row):
+        """Accept one external MOCK readback, preserving partial failures."""
+        self._on_time()
+        s = self._session(lease_id)
+        j = s["fixture_journal"]
+        _require(j is not None and not s["quarantined"],
+                 "No open fixture stream or episode quarantined")
+        try:
+            report = j.accept(row)
+        except Refusal:
+            s["quarantined"] = True
+            raise
+        if j.state != "complete":
+            return report
+        end = j.current
+        s["snapshot"] = end
+        s["decisions"] += 1
+        s["raw_outputs"].append(s["pending"]["raw_model_output_sha256"])
+        s["original_output_bytes"].append(s["pending_raw_output"])
+        s["fixture_receipts"].append(j.chain_sha256)
+        s["stopped"] = s["pending"]["selected_action"] == "STOP"
+        s["pending"] = None
+        s["pending_raw_output"] = None
+        s["fixture_journal"] = None
+        return {**report, "fixture_complete": True,
+                "decisions_recorded": s["decisions"],
+                "native_authenticated": False}
+
+    def quarantine_fixture(self, lease_id, reason):
+        """Lock an uncertain partial transcript; external host owns cleanup."""
+        s = self._session(lease_id)
+        _require(s["pending"] is not None and not s["quarantined"],
+                 "No pending non-quarantined decision")
+        if s["fixture_journal"] is None:
+            s["fixture_journal"] = InertReceiptJournal(s["pending"], s["snapshot"])
+        report = s["fixture_journal"].quarantine(reason)
+        s["quarantined"] = True
+        return report
+
     def _session(self, lease_id):
         _require(lease_id in self.sessions, "Worm lease not attached")
         return self.sessions[lease_id]
@@ -278,6 +333,11 @@ class FourWormWrangler:
             "leases_planned": 4, "leases_attached": len(self.sessions),
             "mock_fixture_decisions": sum(s["decisions"] for s in self.sessions.values()),
             "stopped": sum(s["stopped"] for s in self.sessions.values()),
+            "fixture_quarantines": sum(s["quarantined"] for s in self.sessions.values()),
+            "pending_fixture_operations": sum(
+                (len(s["fixture_journal"].records)
+                 if s["fixture_journal"] is not None else 0)
+                for s in self.sessions.values()),
             "verified_active_model_processes": 0,
             "authenticated_native_receipts": 0, "native_128_turns_qualified": False,
             "evidence_class": "unverified-external-with-mock-only-replay",
