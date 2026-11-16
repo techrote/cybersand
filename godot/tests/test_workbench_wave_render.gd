@@ -41,15 +41,21 @@ func button(label: String, scope: Node = null) -> Button:
 func click(control: Button) -> bool:
 	if not expect(control != null and control.is_visible_in_tree(),"visible real control"): return false
 	var point := control.get_global_rect().get_center()
+	var window := control.get_window()
+	# Embedded windows receive real pointer events through the root viewport.
+	# A direct child-Window push does not route to its visible controls.
+	if window != root: point += Vector2(window.position)
+	var pressed := [false]
+	control.pressed.connect(func() -> void: pressed[0] = true,CONNECT_ONE_SHOT)
 	for down: bool in [true,false]:
 		var event := InputEventMouseButton.new()
 		event.position = point
 		event.global_position = point
 		event.button_index = MOUSE_BUTTON_LEFT
 		event.pressed = down
-		control.get_viewport().push_input(event,true)
+		root.push_input(event,true)
 		await process_frame
-	return true
+	return expect(pressed[0],"real pointer event reaches "+control.text)
 
 func pick(picker: OptionButton, index: int) -> bool:
 	if not await click(picker): return false
