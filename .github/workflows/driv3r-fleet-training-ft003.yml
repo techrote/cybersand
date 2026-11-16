@@ -47,6 +47,10 @@ jobs:
           python -m unittest discover -s experiments/driv3r/fleet_training -p 'test_*.py' -v
           python tools/ci/check_ci_provider_policy.py
           python tools/ci/check_ci_scheduling_policy.py
+      - name: Log exact source and bounded request identity before optimizer execution
+        run: |
+          git rev-parse HEAD
+          sha256sum experiments/driv3r/fleet_training/training_dose.py experiments/driv3r/fleet_training/request_dose.json
       - name: Train four real model instances, two simultaneously, compare matched heldout worlds
         run: |
           python experiments/driv3r/fleet_training/training_dose.py \
