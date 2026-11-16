@@ -1,0 +1,104 @@
+name: QL-012 retrace-anchored contrastive worm repair (research)
+on:
+  pull_request:
+    paths:
+      - 'experiments/driv3r/quant_lab/ql012_retrace_anchors.py'
+      - '.github/workflows/driv3r-quant-lab-ql012.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: ql012-retrace-anchor
+  cancel-in-progress: ${{ github.event_name != 'workflow_dispatch' }}
+jobs:
+  targeted-retrace-personality:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 26
+    env:
+      PYTHONHASHSEED: '0'
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      QL_SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Pinned free CPU dependencies
+        run: |
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.5.1'
+          python -m pip install 'numpy==2.1.3' 'Pillow==11.1.0'
+      - name: Fetch immutable original QL-003 packed trained parent
+        uses: actions/download-artifact@v4
+        with:
+          name: ql003-franken-quant
+          run-id: 43795394633
+          repository: techrote/cybersand
+          github-token: ${{ github.token }}
+          path: ql003-source
+      - name: Source-faithful game legality and retrace-anchor self-tests
+        run: |
+          python experiments/driv3r/quant_lab/quant_worm.py --self-test
+          python experiments/driv3r/quant_lab/ql012_retrace_anchors.py --self-test
+      - name: 192 optimizer updates and both host randomness trajectory cohorts
+        run: |
+          python experiments/driv3r/quant_lab/ql012_retrace_anchors.py \
+            --parent ql003-source --out ql012-out --steps 64
+      - name: Exact HEAD, checkpoint provenance, original actions, model and PNG receipts
+        run: |
+          python - <<'PY'
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          import torch
+          p=Path('ql012-out')
+          r=json.loads((p/'results.json').read_text())
+          sha=os.environ['QL_SOURCE_SHA']
+          assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==sha
+          assert r['source_sha']==sha
+          assert r['parent_source_sha']=='9b4103c48127e5c8538403e2a4d9e2525fbe8755'
+          assert r['parent_manifest_entries']>=330
+          assert r['optimizer_updates']==192 and r['heldout_n']==4352
+          assert r['heldout_pairs']==128 and r['parent_retrace_anchor_train_states']>100
+          assert len(r['training'])==3 and len(r['variants'])==4
+          assert r['original_png_n']==180 and r['first_pass_trajectories']==180
+          for name,t in r['training'].items():
+              assert t['updates']==64 and t['optimizer_nonzero_moments']==2
+              assert t['parent_packed_codes_unchanged']
+              ck=torch.load(p/'models'/(name+'-optimizer.pt'),
+                             map_location='cpu',weights_only=False)
+              assert ck['source_sha']==sha and len(ck['trace'])==64
+              assert ck['parent_source_sha']==r['parent_source_sha']
+              assert torch.count_nonzero(ck['state_dict']['v']).item()>0
+          rows=json.loads((p/'raw_decisions.json').read_text())
+          assert len(rows)==180
+          assert all(row['first_pass'] and all(step['chosen'] in step['legal'] and
+                        'STOP' in step['legal'] for step in row['steps'])
+                     for row in rows)
+          for v in r['variants'].values():
+              assert v['heldout']['n']==4352
+              assert v['heldout']['host_masked_legal']==4352
+              assert v['matched_pairs']['n']==128
+              assert v['host_random_10pct']['n_episodes']==18
+              assert v['no_host_random_diagnostic']['n_episodes']==18
+              assert v['no_host_random_diagnostic']['total_host_overrides']==0
+          assert hashlib.sha256((p/'raw_decisions.json').read_bytes()).hexdigest()==r['raw_decisions_sha256']
+          manifest=json.loads((p/'MANIFEST.json').read_text())
+          assert len({e['path'] for e in manifest})==len(manifest)
+          for e in manifest:
+              b=(p/e['path']).read_bytes()
+              assert len(b)==e['bytes'] and hashlib.sha256(b).hexdigest()==e['sha256']
+          assert len(list((p/'gallery').glob('*.png')))==180
+          print('QL012 EXACT-HEAD COMPLETE',sha,len(rows),'trajectories',len(manifest),'hashes')
+          PY
+      - name: Preserve trained checkpoints, failure cases and original image gallery
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ql012-retrace-anchor-exact-head
+          path: ql012-out/
+          retention-days: 21
+          if-no-files-found: warn
