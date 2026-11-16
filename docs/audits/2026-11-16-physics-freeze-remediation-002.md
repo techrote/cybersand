@@ -732,6 +732,46 @@ and [14233415237](https://github.com/techrote/cybersand/actions/runs/43873737482
 The revised test requires a new exact-source application campaign. Engineering
 and physical acceptance remain HOLD until their respective gates are satisfied.
 
+## Exact 2f69 qualification and PAINT startup replay
+
+Commit `2f69a4a2f98ba67932909d824c86a9dcaf2551f9`, tree
+`424936224e001faac7c5c9500c73ff8e48285db5`, completed application run
+[43884520564](https://github.com/techrote/cybersand/actions/runs/43884520564)
+with Linux PASS and Windows FAIL. All 37 Linux production cases and 41 of
+43 Windows installed cases passed, including both corrected pacing cases and
+1,753 graphical material assertions per platform. Actual Windows launchers,
+PowerShell 5.1 Test It and source ABBA validation also passed. These successes
+do not waive the failed installed PAINT gate or establish physical smoothness.
+
+Windows PAINT authoring stopped at its first two readiness checks, before
+`author()` and before saving anything. Its recorded maximum frame gap was
+61,077,361 microseconds against the existing 60-second startup wait. The four
+fresh-reopen failures then follow from the absent authored save. The timeout
+helper checks its deadline before re-evaluating readiness after an awaited
+frame; its empty message is `bench.message`, not a worker failure diagnosis.
+No terminal readiness components or per-thread CPU timing were captured, so
+these receipts cannot establish readiness at expiry or attribute the gap to
+native work, rendering, driver waits or OS scheduling. The same PAINT source
+and production runtime passed the preceding f268 Windows campaign.
+
+The failed Windows artifact
+[14237278117](https://github.com/techrote/cybersand/actions/runs/43884520564/artifacts/14237278117)
+is retained: 104,278,704 bytes, SHA256
+`eef1a733aa04f8d2617934cc3ef41c7edf82acf3b6042a59b73091277579b8f1`.
+All 2,669 archive members passed CRC and path checks. A focused installed
+graphical PAINT author/fresh-reopen replay records startup lifecycle evidence
+without increasing deadlines or changing failure behavior. Original failed
+receipts remain separate from subsequent runs. Engineering remains HOLD until
+the installed gate is satisfied; the unexplained startup gap is not erased by
+a later successful execution.
+
+The diagnostic helper passed 300 adversarial checks, including unchanged
+short-circuit reads and refusal of an expired wait with terminal readiness true.
+One frozen Linux graphical overlay passed all 66 authoring and 12 fresh-reopen
+checks with 625 executable/configuration/runtime inputs unchanged. These passes
+validate the observer and authoring path; they do not explain the Windows gap
+or substitute for its focused replay and subsequent full exact-source campaign.
+
 ## Final qualification and evidence interpretation
 
 `run_physics_freeze_comparison.py` extracts immutable c1ad source, authenticates
