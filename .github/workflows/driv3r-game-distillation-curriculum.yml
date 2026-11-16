@@ -75,6 +75,19 @@ jobs:
             --out "$RUNNER_TEMP/distilled-student" --steps 160
           rm -f "$RUNNER_TEMP/distilled-student/SHA256SUMS.txt"
           (cd "$RUNNER_TEMP/distilled-student" && sha256sum * > SHA256SUMS.txt)
+      - name: D004 genuine 3x180 Adam trap/style rebalance; unseen 3001-3016 test worlds
+        env:
+          DRIV3R_TEACHER_CORPUS: ${{ runner.temp }}/distill-source/original_teachers.jsonl
+        run: |
+          set -euo pipefail
+          python3 -m experiments.driv3r.training.distillation.trap_rebalance \
+            --base "$RUNNER_TEMP/distilled-student/student.npz" \
+            --repair "$RUNNER_TEMP/distilled-student/repair_student.npz" \
+            --restored "$RUNNER_TEMP/distilled-student/style_restored_student.npz" \
+            --style-metrics "$RUNNER_TEMP/distilled-student/style_rehearsal_metrics.json" \
+            --out "$RUNNER_TEMP/distilled-student" --steps 180
+          rm -f "$RUNNER_TEMP/distilled-student/SHA256SUMS.txt"
+          (cd "$RUNNER_TEMP/distilled-student" && sha256sum * > SHA256SUMS.txt)
       - name: Immutable original research checkpoint and negative controls (never Git)
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
