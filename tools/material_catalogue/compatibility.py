@@ -376,6 +376,17 @@ REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
   'issue': 631,
   'pr': 631},)
 
+# PR631 Shared Workbench tuning: non-default Wave authoring parameters alter
+# future evolution, so complete physical identity now binds that tuning domain.
+# The qualified-v2/default parameter point retains its exact historical stream.
+REVIEWED_TRANSITIONS += ({'path': 'native/src/world_pressure.inc',
+  'from_lf_sha256': 'a545d153f0f68c930837c59be449ac455b3fd35f36e268f21cffbfc940cb6da9',
+  'to_lf_sha256': 'ccd3c773992560a22989a3009c5dc383e4a16cc83d6dd21be0ca4b5111a842b4',
+  'source_commit': '9bf39e70df4fbfdee87222cc8fa208a932729f72',
+  'record': 'docs/audits/2026-11-16-pr631-wave-workbench-transition.md',
+  'issue': 631,
+  'pr': 631},)
+
 class CompatibilityError(ValueError):
     """An actionable source or baseline mismatch; never repairs the source."""
 
