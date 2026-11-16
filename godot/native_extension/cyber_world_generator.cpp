@@ -914,7 +914,7 @@ Dictionary CyberWorldGenerator::get_catalogue() const {
             module == "crossbeam_stack" || module == "yoke_bridge" || module == "lantern_tower" ||
             module == "spine_arcade" || module == "cascade_terrace" || module == "inverted_trestle" ||
             module == "cranked_beam" || module == "barrel_arcade" || module == "buttress_crown" ||
-            module == "triptych_arcade";
+            module == "triptych_arcade" || module == "interlaced_viaduct";
         const bool has_v2 = module == "arcology" || module == "vault" ||
             module == "terraced" || module == "hex_hive" || module == "arcade";
         if (schema4_only) item["minimum_recipe_schema"] = gen::kArchitecturalSchemaVersion;

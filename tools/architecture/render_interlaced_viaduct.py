@@ -46,9 +46,11 @@ def source_inputs() -> dict[str, str]:
              for p in directory.rglob("*") if p.is_file() and p.suffix in {".hpp", ".h", ".cpp", ".inc"}}
     paths.update([ROOT / EXPORTER, Path(__file__).resolve(), ROOT / PALETTE])
     for name in ("godot/scripts/architectural_generator_project.gd",
+                 "godot/native_extension/cyber_world_generator.cpp",
                  "examples/worldgen/architectural/interlaced-viaduct.style.json",
                  "tools/architecture/requirements-render-linux.txt",
-                 "tools/architecture/qualify_interlaced.py", "Makefile",
+                 "tools/architecture/qualify_interlaced.py",
+                 "tools/architecture/test_qualify_interlaced.py", "Makefile",
                  "native/tests/test_interlaced_viaduct.cpp", "native/tests/test_world_generation.cpp",
                  "godot/tests/test_architectural_generator.gd",
                  "godot/tests/test_architectural_project_contract.gd",
@@ -60,6 +62,23 @@ def source_inputs() -> dict[str, str]:
 
 def digest_ledger(ledger: dict[str, str]) -> str:
     return sha(json.dumps(ledger, sort_keys=True, separators=(",", ":")).encode())
+
+
+def source_boundary() -> dict:
+    # Take HEAD/tree before reading inputs. Also retain index entries: matching
+    # working bytes alone cannot detect a staged-only source change.
+    commit, tree = git("rev-parse", "HEAD", "HEAD^{tree}").splitlines()
+    inputs = source_inputs()
+    index = git("ls-files", "--stage", "--", *inputs)
+    changed = set(git("diff", "--cached", "--name-only", commit, "--", *inputs).splitlines())
+    for path, actual in inputs.items():
+        tracked = subprocess.run(["git", "show", commit + ":" + path], cwd=ROOT, capture_output=True)
+        if tracked.returncode or sha(tracked.stdout) != actual:
+            changed.add(path)
+    if git("rev-parse", "HEAD", "HEAD^{tree}").splitlines() != [commit, tree] or source_inputs() != inputs:
+        raise RuntimeError("source changed while capturing the rendering boundary")
+    return {"commit": commit, "tree": tree, "inputs": inputs,
+            "index_sha256": sha(index.encode()), "uncommitted_source_paths": sorted(changed)}
 
 
 def palette() -> list[tuple[int, int, int, int]]:
@@ -224,16 +243,13 @@ def main() -> None:
     parser.add_argument("--require-clean-source", action="store_true")
     parser.add_argument("--only", nargs="+", help="render only named cases during visual iteration")
     args = parser.parse_args()
+    before = source_boundary()
+    inputs = before["inputs"]
+    changed = before["uncommitted_source_paths"]
+    if args.require_clean_source and changed:
+        raise RuntimeError("source and index must be committed before qualification: " + ", ".join(changed))
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=True)
-    inputs = source_inputs()
-    changed = []
-    for path, actual in inputs.items():
-        tracked = subprocess.run(["git", "show", "HEAD:" + path], cwd=ROOT, capture_output=True)
-        if tracked.returncode or sha(tracked.stdout) != actual:
-            changed.append(path)
-    if args.require_clean_source and changed:
-        raise RuntimeError("source must be committed before qualification: " + ", ".join(changed))
     executable, build = build_executable(output, inputs, args.compiler, args.no_build)
     cases = campaign(args.seed, args.bay, args.floor, args.wall)
     if args.only:
@@ -253,11 +269,10 @@ def main() -> None:
                                       ["Primary masonry", "Secondary suspended frame", "Interlaced Viaduct"], "29-layer-comparison"),
                            comparison(output, ["21-arched-viaduct", "22-hanging-arcade", "23-suspended-deck", "01-hero-512"],
                                       ["Arched Viaduct v2", "Hanging Arcade", "Suspended Deck", "Interlaced Viaduct"], "30-classic-comparison")])
-    if source_inputs() != inputs:
-        raise RuntimeError("source changed during rendering; discard this campaign and rerun")
-    source = {"commit": git("rev-parse", "HEAD"), "tree": git("rev-parse", "HEAD^{tree}"),
+    source = {"commit": before["commit"], "tree": before["tree"],
               "parent_commit": PARENT, "input_sha256": digest_ledger(inputs), "inputs": inputs,
-              "uncommitted_source_paths": changed}
+              "index_sha256": before["index_sha256"], "uncommitted_source_paths": changed,
+              "identity_captured_before_render": True, "identity_unchanged_after_render": True}
     manifest = {"schema": "cybersand.interlaced-viaduct-evidence-v1", "created_utc": datetime.now(timezone.utc).isoformat(),
                 "source": source, "build": build, "render_count": len(records), "cases": records,
                 "render_software": {"python": platform.python_version(), "pillow": pillow_version,
@@ -266,8 +281,6 @@ def main() -> None:
                     "Native material previews are authoritative material cells; they are not Godot framebuffer or Windows playtest captures.",
                     "Diagnostic layer images call the same native compose function with one layer disabled; ordinary combined captures use full chunk jobs.",
                     "1024x512 is a native extent; ordinary Architectural Generator project presets remain square."]}
-    (output / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
-    (output / "source-inputs.json").write_text(json.dumps(source, indent=2) + "\n")
     gallery = ["# Interlaced Viaduct — native material gallery", "",
                f"Source commit: `{source['commit']}`. Input ledger: `{source['input_sha256']}`.", "",
                "These PNGs map actual native material bytes through the ordinary preview palette.", "",
@@ -279,11 +292,20 @@ def main() -> None:
                        f"{record['negative_space_ratio']:.1%} | `{record['material_sha256']}` |")
     for record in records:
         gallery.extend(["", f"## {record['label']}", "", f"![{record['label']}]({record['name']}.png)"])
-    (output / "GALLERY.md").write_text("\n".join(gallery) + "\n")
     with zipfile.ZipFile(output / "exact-source-inputs.zip", "w", zipfile.ZIP_DEFLATED) as archive:
-        for path in inputs:
-            archive.write(ROOT / path, path)
-        archive.write(output / "source-inputs.json", "source-inputs.json")
+        for path, expected in inputs.items():
+            data = (ROOT / path).read_bytes()
+            if sha(data) != expected:
+                raise RuntimeError("source changed while archiving rendering inputs")
+            archive.writestr(path, data)
+        archive.writestr("source-inputs.json", json.dumps(source, indent=2) + "\n")
+    if source_boundary() != before:
+        raise RuntimeError("source HEAD, tree, inputs or index changed during rendering; discard and rerun")
+    # Publish successful source claims only after the entire PNG/source campaign
+    # has passed its final boundary check.
+    (output / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
+    (output / "source-inputs.json").write_text(json.dumps(source, indent=2) + "\n")
+    (output / "GALLERY.md").write_text("\n".join(gallery) + "\n")
     print(f"Retained {len(records)} native PNGs and {len(composites)} comparisons/contact sheets in {output}", flush=True)
 
 

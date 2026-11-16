@@ -39,6 +39,7 @@ jobs:
           timeout 3600 make -j2 worldgen-test CXX=g++-13 2>&1 | tee build/interlaced-ci/worldgen.log
       - name: Qualify Interlaced and compare immutable parent outputs
         run: |
+          python3 tools/architecture/test_qualify_interlaced.py
           timeout 3600 python3 tools/architecture/qualify_interlaced.py --compiler g++-13 --output build/interlaced-qualification
       - name: Install pinned native-preview PNG dependency
         run: |
