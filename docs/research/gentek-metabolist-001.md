@@ -21,7 +21,8 @@ runtime component assembly or neighbour negotiation.
 ## Architectural programme
 
 The complete new sampler is in `native/src/generation_architecture_metabolist.inc`.
-A three-bay repeat contains one dominant service spine: two continuous broad
+A three-bay repeat anchors the first spine one base bay into the map, retaining
+substantial structure in small native previews. Each spine has two continuous broad
 rails with a narrow vertical slot and common deck datums. Each vertical band has
 two independently selected attachment positions. One whole band in six remains
 vacant on both sides; other vacancies come from the same bounded seed programme.
@@ -108,6 +109,14 @@ renders the 73-map Godot gallery and requires its Metabolist material SHA-256 to
 match the standalone hero. CI artifacts retain the library and build receipts.
 
 ## Evidence and limitations
+
+The first candidate at `a72dc773fa720eee38369ab45863faf6457e87bb` passed the
+large-area support survey but failed the preserved CLASSIC first-128² occupied
+cell floor: its nearest core was outside that intake. The successor moves the
+immutable core phase half a base bay left, preserving three-bay spacing and
+nearest-core ownership. The threshold and all 72 existing samplers remain
+unchanged. The failed attempt's source, cells, gallery and log are retained.
+
 
 Actual commands, pass/fail counts, source commits, timing measurements and the
 rendered gallery are recorded in the PR conversation and retained campaign

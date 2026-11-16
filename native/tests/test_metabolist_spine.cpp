@@ -260,8 +260,10 @@ void geometric_hierarchy() {
     gate("continuous_core_and_every_attachment_rooted_across_32_seeds",[&]{
         for(std::uint64_t seed=0;seed<32;++seed) for(const int wall:{1,3,5}) {
             const int core=std::max(3*wall+2,96/7);
-            const auto model=Generator::compile(recipe("metabolist_spine",96,88,wall,seed,{0,0,width,height}));
-            const auto cells=raster(model,{0,0,width,height});
+            const auto model=Generator::compile(recipe("metabolist_spine",96,88,wall,seed,{0,0,1152,height}));
+            // Two complete nearest-core territories: only actual map-edge
+            // clipping is excluded, and both signed/chunk seams remain tested.
+            const auto cells=raster(model,{240,0,width,height});
             std::vector<bool> seen(cells.size(),false);std::vector<std::size_t> queue;
             for(int column=0;column<2;++column) for(int y=0;y<height;++y)
                 for(const int side:{-1,1}) {

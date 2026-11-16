@@ -225,8 +225,8 @@ def details(output: Path) -> list[dict]:
     result=[]
     source=Image.open(output/"04-hero-large.png")
     for name,box,label in [
-        ("detail-root-upper",(112,0,288,176),"Upper roots: core, compact frame and hanging boom"),
-        ("detail-root-lower",(112,352,288,528),"Lower roots: cantilever transfer and service slot")]:
+        ("detail-root-upper",(64,0,240,176),"Upper roots: core, compact frame and hanging boom"),
+        ("detail-root-lower",(64,352,240,528),"Lower roots: cantilever transfer and service slot")]:
         image=source.crop(box)
         image.save(output/f"{name}.png")
         result.append(dict(name=name,png_sha256=sha((output/f"{name}.png").read_bytes()),

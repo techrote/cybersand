@@ -99,8 +99,11 @@ public:
     std::optional<Material> sample(const ModuleContext& c, Material) const override {
         const auto x = c.x - p_.bounds.x, y = c.y - p_.bounds.y;
         if (p_.in_shaft(x)) return Material::Empty;
-        const auto column = floor_div(x, pitch_), band = floor_div(y, p_.level);
-        const auto local = positive_mod(x, pitch_) - pitch_ / 2;
+        // Anchor the first spine one base bay into the map. Nearest-core
+        // territories keep complete attachments on both sides of each spine.
+        const auto phased_x = x + pitch_ / 2 - p_.bay;
+        const auto column = floor_div(phased_x, pitch_), band = floor_div(y, p_.level);
+        const auto local = positive_mod(phased_x, pitch_) - pitch_ / 2;
         const auto fy = positive_mod(y, p_.level), distance = std::abs(local);
         // SPINE: broad continuous rails, narrow service slot and common datums.
         // Slot cuts never sever the two load-bearing rails.
@@ -117,8 +120,8 @@ public:
         if (material != Material::Empty) return material;
         // A shared boundary bridge spans only the gap between actual pod decks.
         const auto left_column = right ? column : column - 1;
-        if (d >= selected.reach && bridge(left_column, band) &&
-            std::abs(fy - datum_) <= p_.wall) return p_.deck;
+        if (d >= selected.reach && std::abs(fy - datum_) <= p_.wall &&
+            bridge(left_column, band)) return p_.deck;
         return Material::Empty;
     }
 };
