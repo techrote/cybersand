@@ -23,7 +23,7 @@ python3 experiments/driv3r/corpus_factory/corpus.py --output /tmp/cs-game-corpus
 python3 experiments/driv3r/corpus_factory/ingest_w0.py /path/to/original_sprocket_F3_actions_artifact.zip --output /tmp/cs-game-corpus-references
 ```
 
-The source `corpus.py` is deterministic with fixed scenario templates, local PRNG namespaces and JSON serialization. Do **not** feed DEV, heldout, or `w0-reference.jsonl` into a model optimizer. Trainers should consume only `train.decisions.jsonl`; test loaders should keep a separately bounded DEV pass and untouched heldout FINAL.
+The source `corpus.py` is deterministic with fixed scenario templates, local PRNG namespaces and JSON serialization. Do **not** feed DEV, heldout, or `w0-reference.jsonl` into a model optimizer. Trainers must **not** feed raw `train.decisions.jsonl` into model prompts: it contains candidate scores, receipts and teacher labels. Consume only the validated `train.messages.jsonl` from `export_train.py`; keep DEV separately bounded and heldout untouched.
 
 `manifest.json` records exact generator version, reference blob pin, parameters, hashes, counts and discard statistics. `*.worlds.jsonl` provides per-world obstacle/protection/seed/provenance and material-grid digest. `*.episodes.jsonl` carries complete host-applied trails; `*.decisions.jsonl` carries supervised observation/choice/receipt pairs with hard negatives. Source-derived references belong only in the separate ingestion manifest. The generator does not download models or start optimizers; no paid compute.
 
@@ -57,3 +57,25 @@ python3 experiments/driv3r/corpus_factory/export_train.py \
 The output `train.messages.jsonl` is an action-token chat-message TRAIN slice; `train.provenance.jsonl` and `export-manifest.json` are verification/analysis, not prompts. The selected samples are deterministically hash-ranked and capped per target action and source world, reducing the original STRAIGHT-heavy label skew without falsifying the source distribution. The receipt pins the source manifest SHA-256 and output hashes. Export refuses to write inside the source tree or overwrite an existing export. Models must record their own exact root, adapter and training-job hashes; this exporter launches **zero** optimizers. This is a synthetic curriculum handoff, **not** admission to native gameplay or qualification of an intelligent policy.
 
 New exporter tests check deterministic bytes, true TRAIN-only group provenance, target metadata exclusion, tamper-resistant per-observation fingerprints and rejection of model-derived rows even if someone rehashes the corpus manifest. Hosted qualification of the new exporter has **not** yet been established.
+
+### Original W0 long-horizon diagnostics (read-only)
+
+`w0_reference_diagnostics.py` accepts only the quarantined, evaluation-only
+`w0-evaluation-decisions.jsonl` ZIP produced by `w0_eval_decisions.py`.
+It validates the provenance inventory, split quarantine, host legality, tick
+continuity and four matched controllers before reporting unique cells, action
+histograms and novelty in 32-decision windows. It **never exports training
+labels**. Run `python3 -m unittest discover -s experiments/driv3r/corpus_factory
+-p 'test_w0_reference_diagnostics.py' -v` and then
+`python3 experiments/driv3r/corpus_factory/w0_reference_diagnostics.py
+/path/to/quarantined_eval.zip --output /tmp/w0-diagnostics.json`.
+
+The original Sprocket F3 four-world 128-decision evaluation averaged 71.0
+unique cells for model-assisted steering versus 97.0 for random legal,
+104.75 for fidget and 129.0 for wall. Model novel arrivals per 32-decision
+window averaged 22.75, 17.50, 16.75 and 13.00. Those are descriptive
+comparison results, not trained-teacher instructions, native acceptance, or
+evidence of statistical generalization. Exact Git blobs for diagnostics and its
+tests passed 2/2 local tests. Separately, strict deterministic replay of every
+TRAIN episode and candidate action is **implemented but not yet executed**
+against exact committed exporter source; do not infer exporter qualification.
