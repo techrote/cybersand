@@ -289,5 +289,4 @@ def main():
     r=experiment(args.out,args.checkpoints)
     print(json.dumps({'status':r['status'],'policies':r['policies'],'by_topology':r['by_topology']},indent=2))
 
-
 if __name__=='__main__':main()
