@@ -2355,6 +2355,34 @@ std::uint64_t World::physical_state_hash_impl(std::optional<LiquidStateProjectio
     if (wave_ != nullptr) {
         hash_integer(hash, WaveFlowParameters::kVersion);
         hash_integer(hash, config_.wave_flow.substeps);
+        // Preserve the exact qualified-v2 hash stream when the authoring
+        // profile is untouched. Non-default Workbench tuning changes future
+        // evolution, so it belongs to complete physical identity.
+        const auto& tune = config_.wave_flow;
+        const bool tuned = tune.active_rows != WaveFlowParameters::kActiveRows ||
+            tune.gain != WaveFlowParameters::kGain || tune.gain_confined != WaveFlowParameters::kGainConfined ||
+            tune.stiffness != WaveFlowParameters::kStiffness || tune.damp_shift != WaveFlowParameters::kDampShift ||
+            tune.coast != WaveFlowParameters::kCoast || tune.level_shift != WaveFlowParameters::kLevelShift ||
+            tune.sleep_after != WaveFlowParameters::kSleepAfter || tune.wake_peak != WaveFlowParameters::kWakePeak ||
+            tune.rest_head != WaveFlowParameters::kRestHead || tune.stick != WaveFlowParameters::kStick ||
+            tune.calm != WaveFlowParameters::kCalm || tune.calm_damp_shift != WaveFlowParameters::kCalmDampShift ||
+            tune.maximum_mass != WaveFlowParameters::kMaximumMass ||
+            tune.empty_pour_shift != WaveFlowParameters::kEmptyPourShift ||
+            tune.flow_share_shift != WaveFlowParameters::kFlowShareShift ||
+            tune.adhesion_shift != WaveFlowParameters::kAdhesionShift;
+        if (tuned) {
+            for (const char c : std::string_view{"wave-authoring-tuning-v1"})
+                hash_byte(hash, static_cast<std::uint8_t>(c));
+            hash_integer(hash, tune.active_rows); hash_integer(hash, tune.gain);
+            hash_integer(hash, tune.gain_confined); hash_integer(hash, tune.stiffness);
+            hash_integer(hash, tune.damp_shift); hash_integer(hash, tune.coast);
+            hash_integer(hash, tune.level_shift); hash_integer(hash, tune.sleep_after);
+            hash_integer(hash, tune.wake_peak); hash_integer(hash, tune.rest_head);
+            hash_integer(hash, tune.stick); hash_integer(hash, tune.calm);
+            hash_integer(hash, tune.calm_damp_shift); hash_integer(hash, tune.maximum_mass);
+            hash_integer(hash, tune.empty_pour_shift); hash_integer(hash, tune.flow_share_shift);
+            hash_integer(hash, tune.adhesion_shift);
+        }
         hash_integer(hash, wave_->round);
     }
     return hash;
