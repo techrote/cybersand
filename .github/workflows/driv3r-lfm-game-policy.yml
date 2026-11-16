@@ -1,0 +1,115 @@
+name: LFM350 game-policy GP350-001 real bounded CPU LoRA (research only)
+on:
+  push:
+    branches:
+      - research/lfm-game-policy-350m
+    paths:
+      - experiments/driv3r/lfm_game_policy/gp350-001-request.json
+permissions:
+  contents: read
+concurrency:
+  group: lfm350-game-policy-gp350001-one-optimizer
+  cancel-in-progress: false
+jobs:
+  gp350001:
+    name: Fresh pinned LFM350 24 real AdamW steps and W0 original PNGs
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    env:
+      OMP_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      MKL_DYNAMIC: 'FALSE'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+      HF_HUB_DISABLE_TELEMETRY: '1'
+    steps:
+      - name: Exact research source checkout (no production permissions)
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Pinned original W0 synthetic host, read-only
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: techrote/cybersand
+          ref: 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          path: pinned-w0
+          persist-credentials: false
+      - name: Cheap source, request, W0 identity and synthetic curriculum checks FIRST
+        run: |
+          set -euo pipefail
+          mkdir -p gp350-evidence
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git -C pinned-w0 rev-parse HEAD)" = 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          test "$(git hash-object pinned-w0/experiments/agent_painter/worm/common/worm.py)" = 8979b6f0296e81051194bacc907992d38e006605
+          python3 -m py_compile experiments/driv3r/lfm_game_policy/lfm350.py
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          obj=json.loads(Path("experiments/driv3r/lfm_game_policy/gp350-001-request.json").read_text())
+          assert obj == {
+              "schema":"driv3r.lfm350.game-policy-request/1",
+              "experiment":"GP350-001",
+              "model":"LiquidAI/LFM2.5-350M",
+              "model_revision":"9921cd4d82c0e3986887aa4b376f9446729ef8a3",
+              "w0_source":"4bb9d6e1d0d0d78183f87d1e3c29648edafacf61",
+              "train_world_seeds":list(range(3101,3113)),
+              "dev_world_seeds":[9103,9119,9137],
+              "rollout_seeds":[9503,9521],
+              "real_optimizer_steps":24,
+              "real_backward_passes":48,
+              "one_cpu_vm":True,
+              "native":False,
+              "draft_hold":True,
+              "lease_attempt":1}
+          PY
+          python3 experiments/driv3r/lfm_game_policy/lfm350.py --self-test \
+            --w0 pinned-w0/experiments/agent_painter/worm/common/worm.py
+          python3 tools/ci/check_ci_provider_policy.py
+          (git rev-parse HEAD; date -u -Iseconds; python3 --version) > gp350-evidence/host.txt
+      - name: Install pinned CPU-only runtime and versioned PEFT
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/gp350"
+          "$RUNNER_TEMP/gp350/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/gp350/bin/python" -m pip install \
+            'transformers==5.22.2' 'peft==0.21.2' 'accelerate==1.15.0' \
+            'huggingface-hub==2.4.0' 'safetensors==0.8.0'
+          "$RUNNER_TEMP/gp350/bin/python" -m pip check
+          "$RUNNER_TEMP/gp350/bin/python" -m pip freeze --all > gp350-evidence/pip-freeze.txt
+      - name: Actual fresh LFM350 CPU AdamW and source-faithful original W0 gallery
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=60s 2350s \
+            "$RUNNER_TEMP/gp350/bin/python" experiments/driv3r/lfm_game_policy/lfm350.py \
+              --w0 pinned-w0/experiments/agent_painter/worm/common/worm.py \
+              --model-cache "$RUNNER_TEMP/lfm350-pinned-model" \
+              --output gp350-evidence/original-experiment --steps 24 --deadline 1900
+      - name: Verify real updates, source, adapter, model decisions and PNG bytes
+        if: success()
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          p=Path("gp350-evidence/original-experiment")
+          r=json.loads((p/"summary.json").read_text())
+          assert r["source_sha"]==os.environ["GITHUB_SHA"]
+          assert r["status"]=="completed" and r["updates"]==24 and r["backward_passes"]==48
+          assert r["adapter_changed"] and r["frozen_reference_unchanged"]
+          assert r["native_material_receipts"]==0
+          assert len(r["stock"])==len(r["trained"])==2
+          for name,h in r["adapter_files_sha256"].items():
+              assert hashlib.sha256((p/name).read_bytes()).hexdigest()==h
+          for row in r["stock"]+r["trained"]:
+              data=(p/row["png"]).read_bytes()
+              assert data.startswith(b"\x89PNG\r\n\x1a\n")
+              assert hashlib.sha256(data).hexdigest()==row["png_sha256"]
+          print("GP350-001 REAL ADAMW and original PNGs VERIFIED")
+          PY
+      - name: Always retain original checkpoints, partial logs, failures and PNGs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gp350-001-${{ github.sha }-${{ github.run_id }-${{ github.run_attempt }
+          path: gp350-evidence/
+          if-no-files-found: warn
+          retention-days: 90
