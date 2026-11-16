@@ -18,6 +18,7 @@ import ft004_shift as transfer
 import ft009_situational_stop as previous
 
 ID = "FT-010-20261116-reached-goal-corpus"
+SCHEMA = "cybersand.fleet-training.goal-corpus-request/1"
 SCENARIOS = ("long60", "dense60", "shifted_guard60")
 SPLITS = ("TRAIN_CANDIDATES", "HELDOUT_CANDIDATES")
 SEEDS = (9401, 9403)
@@ -25,6 +26,25 @@ POOL = 48
 MIN_GOALS = 3
 WALL_SECONDS = 180
 RSS_KIB = 900000
+
+
+def checked_request(r):
+    expected = {
+        "schema": SCHEMA, "request_id": ID,
+        "source_commit": transfer.SOURCE_COMMIT,
+        "source_blob": transfer.SOURCE_BLOB,
+        "ft003_original_artifact_id": 14194214028,
+        "ft003_archive_sha256": transfer.FT003_SHA,
+        "seeds": list(SEEDS), "splits": list(SPLITS),
+        "scenarios": list(SCENARIOS), "pool_per_group": POOL,
+        "minimum_reachable_nontrivial_goals_per_group": MIN_GOALS,
+        "wall_seconds_per_seed": WALL_SECONDS, "rss_kib_cap": RSS_KIB,
+        "max_parallel_runners": 2, "optimizer_updates": 0,
+        "native_material_edits": 0, "pretrained_slm_optimizer_steps": 0,
+    }
+    if type(r) is not dict or r != expected:
+        raise ValueError("FT-010 immutable job request/custody/budget mismatch")
+    return r
 
 
 def seed_for(pop, split, seed, niche, scenario, i):
@@ -40,7 +60,7 @@ def legal_route(pop, world):
         raise ValueError("Route must start from untouched world")
     queue = deque([(world.cursor, ())])
     seen = {world.cursor}
-    limit = world.max_steps // 2 - 1
+    limit = world.max_steps // 2 - 2
     while queue:
         pos, route = queue.popleft()
         if pos == world.goal:
@@ -76,7 +96,8 @@ def legal_replay(pop, world, route):
     return receipts
 
 
-def run(upstream, output, seed):
+def run(upstream, output, seed, request):
+    checked_request(json.loads(request.read_text()))
     if seed not in SEEDS:
         raise ValueError("Unknown seed lease")
     pop, source = transfer.load_source(upstream)
@@ -90,6 +111,7 @@ def run(upstream, output, seed):
         "source_blob": transfer.SOURCE_BLOB,
         "original_source_sha256": base.sha_file(source),
         "executor_sha256": base.sha_file(Path(__file__)),
+        "request_sha256": base.sha_file(request),
         "optimizer_updates": 0, "native_material_edits": 0,
         "model_forward_calls": 0, "rows": [], "failures": []}
     try:
@@ -171,8 +193,9 @@ def run(upstream, output, seed):
 
 if __name__=="__main__":
     parser=argparse.ArgumentParser()
+    parser.add_argument("--request",type=Path,required=True)
     parser.add_argument("--upstream",type=Path,required=True)
     parser.add_argument("--output",type=Path,required=True)
     parser.add_argument("--seed",type=int,required=True)
     args=parser.parse_args()
-    print(json.dumps(run(args.upstream,args.output,args.seed)["summary"],sort_keys=True))
+    print(json.dumps(run(args.upstream,args.output,args.seed,args.request)["summary"],sort_keys=True))
