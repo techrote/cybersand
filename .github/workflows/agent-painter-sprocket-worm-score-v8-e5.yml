@@ -1,0 +1,168 @@
+name: SPROCKET WORM-001 W8 E5 authentic held-out root vs trained vs frozen W0 CPU paintings
+on:
+  push:
+    branches:
+      - codex/agent-painter-sprocket-568
+    paths:
+      - experiments/agent_painter/lanes/sprocket/worm-eval-request-v8-e5.json
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: sprocket-worm-v8-e5-${{ github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  eval-w8:
+    name: W8 genuine inference, tick-zero-frozen counterfactual and original PNGs
+    runs-on: ubuntu-24.04
+    timeout-minutes: 80
+    env:
+      ATEN_CPU_CAPABILITY: default
+      MKL_CBWR: COMPATIBLE
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      OMP_DYNAMIC: 'FALSE'
+      MKL_DYNAMIC: 'FALSE'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Source-locked single-run E5 inference lease and policy checks
+        id: lease
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/worm-score-v8-e5
+          python3 - <<'PY'
+          import json,os,subprocess
+          from pathlib import Path
+          request=json.loads(Path('experiments/agent_painter/lanes/sprocket/worm-eval-request-v8-e5.json').read_text())
+          expected={"schema":"cybersand.worm.sprocket-eval-request/w8-e5",
+              "experiment":"W8-heldout-live-vs-tickzero-frozen-vs-untuned-vs-flat",
+              "training_source":"de37e65b56bc55b8c6a224478c6a98d5b9828304",
+              "training_run_id":43789416142,
+              "training_artifact":"sprocket-worm-v8-de37e65b56bc55b8c6a224478c6a98d5b9828304",
+              "training_artifact_sha256":"bb6b1d5cc2d9ced5a2d051eedd5fcec5fc29aad0fef92157ff7c8256cb46a516",
+              "checkpoint":"checkpoint-000036","w0_commit":"4bb9d6e1d0d0d78183f87d1e3c29648edafacf61",
+              "model":"kandivault/sprocket-500m",
+              "revision":"eb157d4ddddc4619e661d4a2426bb2dd000fc668",
+              "world_seeds":[521,541],"steps":48,"temperature":2.25,"stop_defer_before":40,
+              "optimizer_updates":0,"native":False,"sealed_final_opened":False,"draft_hold":True}
+          if request!=expected: raise SystemExit("W8 E5 immutable request changed")
+          if os.environ['GITHUB_REF']!='refs/heads/codex/agent-painter-sprocket-568':
+              raise SystemExit("wrong owner branch")
+          sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+          Path('evidence/worm-score-v8-e5/source-sha.txt').write_text(sha+'\n')
+          Path('evidence/worm-score-v8-e5/request.json').write_text(json.dumps(request,indent=2,sort_keys=True)+'\n')
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:
+              f.write('run='+str(request['training_run_id'])+'\n')
+              f.write('artifact='+request['training_artifact']+'\n')
+          print('SPROCKET E5 source',sha, 'no optimizer, no native')
+          PY
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 -m py_compile experiments/agent_painter/lanes/sprocket/worm_score_v8_e5_eval.py
+          python3 experiments/agent_painter/lanes/sprocket/test_worm_score_v6_e3_eval.py
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: ${{ steps.lease.outputs.artifact }}
+          path: evidence/w8-original
+          run-id: ${{ steps.lease.outputs.run }}
+          github-token: ${{ github.token }}
+      - name: Independently admit original successful 36-update W8 producer and checkpoint
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib,json
+          p=Path('evidence/w8-original')
+          for line in (p/'SHA256SUMS.txt').read_text().splitlines():
+              digest,rel=line.split('  ',1)
+              f=p/rel.removeprefix('./')
+              if not f.is_file() or hashlib.sha256(f.read_bytes()).hexdigest()!=digest:
+                  raise RuntimeError('original W8 artifact member hash mismatch: '+str(f))
+          d=json.loads((p/'campaign/summary.json').read_text())
+          cfg=json.loads((p/'campaign/preflight.json').read_text())['config']
+          lease=json.loads((p/'campaign/lease.json').read_text())
+          assert d['actual_training'] is True and d['status']=='complete' and d['steps']==d['target_steps']==36
+          assert d['adapter_changed'] is True and d['frozen_base_equal'] is True
+          assert cfg['schema']=='cybersand.worm.sprocket-local-frontier-contrast-v8'
+          assert cfg['source_sha']=='de37e65b56bc55b8c6a224478c6a98d5b9828304'
+          assert lease['source_sha']==cfg['source_sha'] and lease['run_id']=='43789416142'
+          assert cfg['model']['model_id']=='kandivault/sprocket-500m'
+          assert cfg['model']['revision']=='eb157d4ddddc4619e661d4a2426bb2dd000fc668'
+          assert cfg['model']['subfolder']=='' and cfg['model']['framing']['eos_token_id']==5
+          assert cfg['worm_common_git_commit']=='4bb9d6e1d0d0d78183f87d1e3c29648edafacf61'
+          assert cfg['synthetic_not_native'] is True and cfg['final_opened'] is False
+          assert cfg['rank']==8 and cfg['threads']==1 and cfg['literal_train_eval_overlap']==0
+          assert cfg['training_pair_count']==72 and cfg['heldout_pair_count']==36
+          events=[json.loads(x) for x in (p/'campaign/progress.jsonl').read_text().splitlines()]
+          assert len(events)==36 and [e['step'] for e in events]==list(range(1,37))
+          assert all(e['grad_norm']>0 and e['loss_tokens']==2 for e in events)
+          invs=[]
+          for step in (12,24,36):
+              ck=p/f'campaign/checkpoint-{step:06d}'
+              inv=json.loads((ck/'inventory.json').read_text())
+              for name,meta in inv.items():
+                  f=ck/name
+                  assert f.is_file() and f.stat().st_size==meta['bytes']
+                  assert hashlib.sha256(f.read_bytes()).hexdigest()==meta['sha256'],f
+              receipt=json.loads((ck/'receipt.json').read_text())
+              assert receipt['global_step']==receipt['sample_cursor']==step
+              assert receipt['history']==events[:step]
+              assert receipt['config']==cfg
+              invs.append(inv)
+          assert invs[0]['adapter/adapter_model.safetensors']['sha256']!=invs[1]['adapter/adapter_model.safetensors']['sha256']
+          assert invs[1]['adapter/adapter_model.safetensors']['sha256']!=invs[2]['adapter/adapter_model.safetensors']['sha256']
+          note={"producer_run":43789416142,"producer_artifact":14193800454,
+                "original_artifact_upload_digest_sha256":"bb6b1d5cc2d9ced5a2d051eedd5fcec5fc29aad0fef92157ff7c8256cb46a516",
+                "member_hashes_verified":len((p/'SHA256SUMS.txt').read_text().splitlines()),
+                "training_steps":36,"checkpoint":"checkpoint-000036",
+                "original_raw_legal_eos5_trained":d['trained_static_first_pass'],
+                "heldout_pair_results":d['trained_heldout_pairs'],
+                "producer_success":True,"separate_inference_only":True}
+          Path('evidence/worm-score-v8-e5/admission.json').write_text(json.dumps(note,indent=2,sort_keys=True)+'\n')
+          print('W8 original complete 36-step result and three full checkpoints admitted')
+          PY
+      - name: Source-fence exact W0 host — no CyberSand native files touched
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 origin 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          test "$(git rev-parse FETCH_HEAD)" = 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          git show 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61:experiments/agent_painter/worm/common/worm.py > "$RUNNER_TEMP/pinned-worm.py"
+          test "$(git hash-object "$RUNNER_TEMP/pinned-worm.py")" = 8979b6f0296e81051194bacc907992d38e006605
+          sha256sum "$RUNNER_TEMP/pinned-worm.py" > evidence/worm-score-v8-e5/pinned-w0.sha256
+      - name: Review-pinned CPU environment and exact root model
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/painter-training"
+          "$RUNNER_TEMP/painter-training/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/painter-training/bin/python" -m pip install -r experiments/agent_painter/training/requirements.lock
+          "$RUNNER_TEMP/painter-training/bin/python" -m pip check
+          "$RUNNER_TEMP/painter-training/bin/python" -m pip freeze --all > evidence/worm-score-v8-e5/pip-freeze.txt
+          timeout --signal=TERM --kill-after=30s 900s "$RUNNER_TEMP/painter-training/bin/python" experiments/agent_painter/training/download_model.py --profile sprocket --output "$RUNNER_TEMP/painter-model"
+          cp "$RUNNER_TEMP/painter-model/download_receipt.json" evidence/worm-score-v8-e5/model-download.json
+      - name: Genuine W8/root/flat/frozen original W0 scored paint rollouts
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 3600s "$RUNNER_TEMP/painter-training/bin/python" experiments/agent_painter/lanes/sprocket/worm_score_v8_e5_eval.py \
+            --model "$RUNNER_TEMP/painter-model" --w0 "$RUNNER_TEMP/pinned-worm.py" \
+            --checkpoint evidence/w8-original/campaign/checkpoint-000036 \
+            --training-source de37e65b56bc55b8c6a224478c6a98d5b9828304 --train-run 43789416142 \
+            --output evidence/worm-score-v8-e5/results
+      - name: Preserve original PNGs/partial errors/hashes
+        if: always()
+        run: |
+          set -euo pipefail
+          df -h > evidence/worm-score-v8-e5/disk-after.txt
+          (cd evidence/worm-score-v8-e5 && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum) > evidence/worm-score-v8-e5/SHA256SUMS.txt
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sprocket-worm-score-v8-e5-${{ github.sha }}
+          path: evidence/worm-score-v8-e5/
+          if-no-files-found: warn
+          retention-days: 90
