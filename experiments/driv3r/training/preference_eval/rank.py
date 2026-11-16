@@ -32,9 +32,9 @@ def validate(path):
         z={'id':f'{f}-{seed}-{role}','model_family':f,'world_seed':seed,'controller':role,
            'decisions':128,'evidence_class':'trained-model-forward/synthetic-W0' if role=='learned' else 'model-free/synthetic-W0',
            'original_png_sha256':r['png_sha256'],**source[f],
+           'features':{k:int(r[k]) for k in FEATURES+('components',)}}
         if f=='lfm_w13' and seed in (6143,6167):
             z['original_archive_sha256']='36fa8876f249b0263d19dc40bea17731e8a4776da9cc82400189a876980380ff'
-           'features':{k:int(r[k]) for k in FEATURES+('components',)}}
         items.append(z)
     if len({x['id'] for x in items})!=32: raise ValueError('duplicated original image IDs')
     worlds={}
