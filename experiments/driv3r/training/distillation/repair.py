@@ -79,12 +79,14 @@ def corpus(base,original):
 
 def episode(seed,style,case,policy,base,student,budget):
  g=Game(seed,style);rng=np.random.default_rng(seed*1009+STYLES.index(style))
- raw_invalid=deadends=recovery=0;counts={a:0 for a in ACTIONS}
+ raw_invalid=deadends=recovery=0;counts={a:0 for a in ACTIONS};trace=[]
  for _ in range(budget):
   adverse(g,case);o=g.obs();legal=o["legal"]
+  raw=None
   if policy in ("base","repaired"):
    m=base if policy=="base" else student
-   raw_invalid+=int(m.predict(o,mask=False) not in legal)
+   raw=m.predict(o,mask=False)
+   raw_invalid+=int(raw not in legal)
    act=m.predict(o,mask=True)
   elif policy=="flat_continue":
    offered=[a for a in legal if a!="STOP"] or ["STOP"]
@@ -93,12 +95,13 @@ def episode(seed,style,case,policy,base,student,budget):
   if act not in legal:raise ValueError("Host selected illegal action")
   dead="RETRACE" in legal and not any(a in legal for a in ("STRAIGHT","LEFT","RIGHT","BRANCH"))
   deadends+=int(dead);recovery+=int(dead and act=="RETRACE")
+  trace.append({"tick":g.tick,"pos":list(g.pos),"legal":list(legal),"raw":raw,"action":act})
   counts[act]+=1;g.step(act)
   if g.stopped:break
  metrics=g.metrics()
  metrics.update(seed=seed,style=style,case=case,controller=policy,budget=budget,
        raw_preprojection_invalid=raw_invalid,deadend_exposures=deadends,
-       deadend_recoveries=recovery,action_counts=counts)
+       deadend_recoveries=recovery,action_counts=counts,action_trace=trace)
  return g,metrics
 
 def eval_student(base,student):
@@ -154,6 +157,7 @@ def main():
  args.out.mkdir(parents=True,exist_ok=True)
  original=load_original();base=load(args.input);student=load(args.input)
  x,y,kinds=corpus(base,original)
+ np.savez_compressed(args.out/"repair_train_corpus.npz",features=x.astype('float32'),soft_targets=y.astype('float32'))
  training=student.train(x,y,iterations=args.steps,seed=109,lr=.007)
  validation=curriculum(original,VALID.start,VALID.stop)
  traces,summary,grids=eval_student(base,student)
@@ -168,6 +172,7 @@ def main():
    "repair_sha256":sha((args.out/"repair_student.npz").read_bytes()),
    "gallery_sha256":sha((args.out/"repair_squeeze_gallery.png").read_bytes()),
    "rollouts_sha256":sha((args.out/"repair_rollouts.jsonl").read_bytes()),
+   "train_corpus_sha256":sha((args.out/"repair_train_corpus.npz").read_bytes()),
    "train_seed_range":[TRAIN.start,TRAIN.stop-1],"validation_seed_range":[VALID.start,VALID.stop-1],
    "test_seed_range":[TEST.start,TEST.stop-1],"onpolicy_synthetic_examples":len(x),
    "adversity_examples":kinds,"optimizer":training,"legacy_val_base":legacy_val(base,validation),
