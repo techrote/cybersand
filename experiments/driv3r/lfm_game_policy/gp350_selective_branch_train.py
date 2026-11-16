@@ -41,36 +41,37 @@ def at2(obs, turn):
     return obs["local_5x5"][2+2*dy][2+2*dx]
 
 def teacher(obs):
-    """Transparent synthetic local teacher, always host-legal."""
-    legal = set(obs["legal"])
-    open_arms = [a for a,t in (("STRAIGHT",0),("LEFT",-1),("RIGHT",1))
-                 if a in legal and c.nearby(obs,t) == "."]
-    safe_arms = [a for a,t in (("STRAIGHT",0),("LEFT",-1),("RIGHT",1))
-                 if a in open_arms and at2(obs,t) == "."]
-    tick, family = obs["tick"], obs["family"]
-    if family == "greebles" and "BRANCH" in legal and len(open_arms)>=2 and tick%7 in (0,1):
-        return "BRANCH"
-    if family == "pipework" and "BRANCH" in legal and len(open_arms)>=2 and tick%17 == 16:
-        return "BRANCH"
-    # Explicit counter-steering for a real W0-observed obstacle or old trail
-    # two cells ahead, BEFORE the host would disallow an immediate move.
-    if prev.ray2(obs) in ("#", "+") and "STRAIGHT" in open_arms:
-        preference = ("RIGHT","LEFT") if family == "pipework" else ("LEFT","RIGHT")
-        answer = next((a for a in preference if a in safe_arms),
-                      next((a for a in preference if a in open_arms),None))
-        if answer:
-            return answer
-    if family == "greebles":
-        order = ("LEFT","RIGHT","STRAIGHT") if tick%9 in (4,5) else ("STRAIGHT","RIGHT","LEFT")
-    elif family == "pipework":
-        order = ("STRAIGHT","RIGHT","LEFT")
-    else:
-        order = ("RIGHT","STRAIGHT","LEFT") if tick%13==12 else ("STRAIGHT","LEFT","RIGHT")
-    answer = next((a for a in order if a in safe_arms),
+    """Transparent synthetic W0 geometry/cadence teacher, host-legal."""
+    legal=set(obs["legal"])
+    open_arms=[a for a,t in (("STRAIGHT",0),("LEFT",-1),("RIGHT",1))
+               if a in legal and c.nearby(obs,t)=="."]
+    safe_arms=[a for a,t in (("STRAIGHT",0),("LEFT",-1),("RIGHT",1))
+               if a in open_arms and at2(obs,t)=="."]
+    tick,family=obs["tick"],obs["family"]
+    ray=prev.ray2(obs)
+    # Avoid actual W0-observed two-cell obstacles and visited trails first.
+    if ray in ("#","+") and "STRAIGHT" in open_arms:
+        order=("RIGHT","LEFT") if family=="pipework" else ("LEFT","RIGHT")
+        turn=next((a for a in order if a in safe_arms),
                   next((a for a in order if a in open_arms),None))
-    if answer:
-        return answer
-    return "RETRACE" if "RETRACE" in legal else "STOP"
+        if turn is not None:
+            return turn
+    # A legal BRANCH is insufficient: require genuinely open spatial context.
+    junction=("BRANCH" in legal and ray=="." and
+              len(open_arms)>=2 and len(safe_arms)>=2)
+    if junction and family=="greebles" and tick%7 in (0,1):
+        return "BRANCH"
+    if junction and family=="pipework" and tick%17==16:
+        return "BRANCH"
+    if family=="greebles":
+        order=("LEFT","RIGHT","STRAIGHT") if tick%9 in (4,5) else ("STRAIGHT","RIGHT","LEFT")
+    elif family=="pipework":
+        order=("STRAIGHT","RIGHT","LEFT")
+    else:
+        order=("RIGHT","STRAIGHT","LEFT") if tick%13==12 else ("STRAIGHT","LEFT","RIGHT")
+    result=next((a for a in order if a in safe_arms),
+                next((a for a in order if a in open_arms),None))
+    return result if result is not None else ("RETRACE" if "RETRACE" in legal else "STOP")
 
 def observed(w0, seeds):
     """Real W0 event observations from model-free walks, never invented maps."""
@@ -279,9 +280,9 @@ def run(args):
             for n,p in model.named_parameters() if "lora_" in n}
     c.save_json(out/"preflight.json",{"full_model":c.MODEL,"revision":c.REVISION,
         "adapter":PARENT_ADAPTER,"rank8_LoRA_trainable":172032,"torch":torch.__version__,
-        "optimizer":"fresh AdamW, 3e-4, betas .9/.95, decay .01",
-        "objective":"host-legal CE plus contrastive state-pair margins",
-        "comparison":"unchanged GP350006 weights versus new 64-step continuation"})
+        "optimizer":"fresh AdamW, 2e-4, betas .9/.95, decay .01",
+        "objective":"host-legal CE plus positive/negative BRANCH contrast and GP006 KL preservation",
+        "comparison":"unchanged GP350006 weights versus selective 72-step continuation"})
     initial=probe(model,tok,ids,sample)
     c.save_json(out/"probe-initial.json",initial)
     # Unchanged baseline policy uses exactly original GP350006 weights before updates.
