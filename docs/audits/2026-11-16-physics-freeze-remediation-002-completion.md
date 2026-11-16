@@ -164,3 +164,61 @@ the final exact source. No local result alone promotes a default or grants
 physical acceptance. **PHYSICAL HOLD** remains mandatory until the owner tests
 the delivered source on physical Windows11/NVIDIA. All four PRs stay Draft/HOLD
 and unmerged; no auto-merge or Ready promotion is authorized by this record.
+
+## Exact-source desktop probe and Windows engine prerequisite
+
+The controlled probe at `ce9fd2f64aa3b83ab84496ff56d38436d08e3b20`
+(tree `9b8038b168786cccf49b5d2d78db8d1b9f947d98`) ran in
+[Actions43967236615](https://github.com/techrote/cybersand/actions/runs/43967236615).
+Linux completed its actual graphical gates and forward/reverse six-arm comparison.
+The two matched overlap arms achieved19.263/19.302 Rapier steps/s versus
+7.375/7.499 in Safe/off. Their p95 gaps were99.129/110.582ms, maxima113.875/140.185ms,
+and7/12 of143 gaps were at least100ms, compared with143 in each Safe/off arm.
+These repeats retain recurrent long intervals; the earlier zero100ms result
+does not generalize. All common144 recorded physical states and associations
+were equivalent. These are hosted software-renderer observations.
+
+Windows failed before application startup in every Separate graphical case:
+`Error initializing GLAD` in `RasterizerGLES3`, followed by process exit
+`0xC0000005`. Safe font103 and Depth67 checks passed. No Windows Separate timing
+was produced. Its original failed artifact is14277727023, SHA256
+`864d4da159a7fe3bb7734b094d7b499ac20d7a521bdb72711dd0fdf4c57abb43`.
+The earlier92243239 checkpoint's source preflight failure is separately retained:
+two PowerShell Git blobs had CRLF instead of canonical LF; ce9f corrects only
+that normalization relative to9224.
+
+Two independent inspections of pinned Godot4.7 source
+`5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88` found an EGL ownership defect.
+`EGLManager::release_current()` unbinds the current context but retains its
+`current_window` cache. The new rendering owner then calls
+`window_make_current(MAIN_WINDOW_ID)`, whose same-window shortcut skips the
+required EGL bind. This establishes a source mechanism consistent with the
+observed startup failure; a real rebuilt Windows execution remains necessary.
+
+The source-owned engine trial adds exactly one cache invalidation after release,
+matching the existing WGL pattern. It does not add GL calls, private hooks,
+another ANGLE DLL, application physics changes or speculative collision behavior.
+Patch `third_party/patches/godot-egl-current-window.patch` has SHA256
+`29a74947a3128ed93eeea0c6ab7274d10f45c194627fb516d7db6b511413e9a1`;
+the resulting EGL source hash is
+`9faf74aa030f0b11b59f82bc0eca1373c781cef9372a2f9ba43c576f8869321e`.
+An extracted-source real-thread/mocked-EGL regression reproduces14 checks/6
+failures on the original and14/0 on the patch. The mock is not an actual driver
+qualification and deliberately retains existing EGL failure semantics.
+
+The dedicated Windows2022 build workflow authenticates upstream source, the
+ordered patch, SCons, static ANGLE chromium/7219 and AccessKit0.21.2 before use.
+It builds an explicitly named custom Godot4.7 GUI executable and console wrapper,
+checks their import closure and compares the complete public extension API with
+official4.7, allowing only the declared version-label fields to differ. All
+application/native/Rapier tests and matched performance arms use the same built
+engine. D3D12 is explicitly disabled in this build; Vulkan, native OpenGL, static
+ANGLE and application modules remain enabled. This is not a reproduction of the
+official binary. The existing retained native/Rapier source and build ledgers
+remain unchanged and require actual loading/execution with this engine.
+
+The separate-render Engine Lab test also exposed native-subwindow GLX errors
+on Linux despite its81 functional assertions completing. That run is not a pass.
+Native popup lifecycle, VSync controls, actual rendering and package launch paths
+remain integration gates; neither this source repair nor the faster Linux
+physics results authorize a Windows default before those gates complete.

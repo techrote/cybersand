@@ -1,0 +1,12 @@
+--- a/drivers/egl/egl_manager.cpp
++++ b/drivers/egl/egl_manager.cpp
+@@ -350,6 +350,9 @@
+ 	GLDisplay &current_display = displays[current_window->gldisplay_id];
+ 
+ 	eglMakeCurrent(current_display.egl_display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
++
++	// The next rendering owner must bind the released context again.
++	current_window = nullptr;
+ }
+ 
+ void EGLManager::swap_buffers() {
