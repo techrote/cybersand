@@ -177,3 +177,69 @@ jobs:
           path: ${{ runner.temp }}/pref-p10/
           if-no-files-found: warn
           retention-days: 30
+
+
+  p11-real-W16-stop-only-heldout:
+    # Only the research-owned W16 auxiliary-head and pinned synthetic W0.
+    # Never touches game/native, production provider configuration or paid GPUs.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - name: Check out exact P11 research HEAD
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Set up Python 3.12
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Install pinned CPU-only PyTorch
+        run: python3 -m pip install --disable-pip-version-check --no-cache-dir --index-url https://download.pytorch.org/whl/cpu torch==2.10.0
+      - name: Retrieve and hash-verify original immutable W16 auxiliary checkpoint/host
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/pref-p11"
+          curl --fail --location --retry 2 --silent --show-error \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            'https://api.github.com/repos/techrote/cybersand/actions/artifacts/14217467236/zip' \
+            -o "$RUNNER_TEMP/pref-p11/original-W16.zip"
+          echo "a7b756a3b0c2d639e5e48dad36d518dfd0e6b752deadca8b04ac11326717eafb  $RUNNER_TEMP/pref-p11/original-W16.zip" | sha256sum --check
+      - name: Run P11 adversarial source-model-legal-menu tests
+        shell: bash
+        env:
+          P11_W16_SOURCE: ${{ runner.temp }}/pref-p11/original-W16.zip
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s experiments/driv3r/training/preference_eval -p test_p11_stop_only_clock.py -v
+      - name: Run 648 original frozen-model trajectories across discovery and held-out worlds
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 experiments/driv3r/training/preference_eval/p11_stop_only_clock.py \
+            --original "$RUNNER_TEMP/pref-p11/original-W16.zip" \
+            --out "$RUNNER_TEMP/pref-p11/rollouts" > "$RUNNER_TEMP/pref-p11/EXECUTION_SUMMARY.json"
+          test "$(find "$RUNNER_TEMP/pref-p11/rollouts" -maxdepth 1 -name '*.png' | wc -l)" -eq 648
+          git rev-parse HEAD > "$RUNNER_TEMP/pref-p11/EXECUTED_SOURCE_HEAD.txt"
+          sha256sum experiments/driv3r/training/preference_eval/p8_stop_retention.py \
+            experiments/driv3r/training/preference_eval/p10_live_head.py \
+            experiments/driv3r/training/preference_eval/p11_stop_only_clock.py \
+            experiments/driv3r/training/preference_eval/test_p11_stop_only_clock.py \
+            "$RUNNER_TEMP/pref-p11/original-W16.zip" \
+            "$RUNNER_TEMP/pref-p11/rollouts/P11-results.json" > "$RUNNER_TEMP/pref-p11/SOURCE_MODEL_REPORT_SHA256SUMS.txt"
+          (cd "$RUNNER_TEMP/pref-p11/rollouts" && sha256sum *.json *.png > ROLLOUT_SHA256SUMS.txt)
+          echo 'Real pretrained W16 AUXILIARY MLP forwards in synthetic pinned W0; one frozen STOP-only clock-logit substitution plus unchanged movement head. No Sprocket root language model, native gameplay, human ratings, new optimizer or provider changes.' > "$RUNNER_TEMP/pref-p11/TRUTH_BOUNDARY.txt"
+      - name: Preserve exact-HEAD P11 source model 648 trajectories and PNGs
+        if: ${{ always() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: driv3r-gameplay-preference-p11-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pref-p11/
+          if-no-files-found: warn
+          retention-days: 30
