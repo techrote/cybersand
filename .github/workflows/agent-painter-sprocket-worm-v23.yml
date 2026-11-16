@@ -1,0 +1,95 @@
+name: SPROCKET WORM-001 W23 conditional material/frontier fusion
+on:
+  push:
+    branches: [codex/agent-painter-sprocket-568]
+    paths: [experiments/agent_painter/lanes/sprocket/worm-request-v23.json]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: sprocket-worm-v23-${{ github.sha }}
+  cancel-in-progress: false
+jobs:
+  experiment:
+    name: W23 480 genuine CPU updates and 99 held-out paintings
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    env:
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      ATEN_CPU_CAPABILITY: default
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Admit exact source/owner boundary and smoke test
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/w23
+          python3 - <<'PY'
+          import json,os,subprocess
+          from pathlib import Path
+          r=json.loads(Path('experiments/agent_painter/lanes/sprocket/worm-request-v23.json').read_text())
+          assert r['schema']=='cybersand.worm.sprocket-conditional-fusion/23'
+          assert r['root']=='kandivault/sprocket-500m'
+          assert r['revision']=='eb157d4ddddc4619e661d4a2426bb2dd000fc668'
+          assert r['eos']==5 and r['optimizer_steps']==480
+          assert r['root_forwards']==r['root_updates']==r['LoRA_steps']==0
+          assert r['draft_hold'] and not r['native'] and not r['sealed_FINAL']
+          assert not r['merge_allowed']
+          assert r['train_world_seeds']==[811,821,823,827]
+          assert r['heldout_world_seeds']==[6103,6113,6121]
+          assert os.environ['GITHUB_REF']=='refs/heads/codex/agent-painter-sprocket-568'
+          sha=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+          assert sha==os.environ['GITHUB_SHA']
+          Path('evidence/w23/lease.json').write_text(json.dumps(
+              {'head':sha,'run':os.environ['GITHUB_RUN_ID'],
+               'attempt':os.environ['GITHUB_RUN_ATTEMPT'],
+               'request':r},indent=2)+'\n')
+          PY
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 -m py_compile experiments/agent_painter/lanes/sprocket/worm_train_v18.py experiments/agent_painter/lanes/sprocket/worm_train_v19.py experiments/agent_painter/lanes/sprocket/worm_train_v20.py experiments/agent_painter/lanes/sprocket/worm_train_v21.py experiments/agent_painter/lanes/sprocket/worm_train_v22.py experiments/agent_painter/lanes/sprocket/worm_train_v23.py
+          python3 experiments/agent_painter/lanes/sprocket/worm_train_v23.py --smoke-only
+      - name: SHA-admit W22/W20/W19 immutable checkpoints
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/w22parent" "$RUNNER_TEMP/w20parent" "$RUNNER_TEMP/w19parent"
+          gh run download 43922709268 --repo techrote/cybersand --name sprocket-worm-v22-8593b10aa66a612d062c4e817e6dbbf8e5fbd7bd --dir "$RUNNER_TEMP/w22parent"
+          gh run download 43902780641 --repo techrote/cybersand --name sprocket-worm-v20-6961923e1e28f34e277a4de06aa384079067fd3f --dir "$RUNNER_TEMP/w20parent"
+          gh run download 43886179141 --repo techrote/cybersand --name sprocket-worm-v19-08bf72a2bcd14ef5b875036f2a1c0c4d2ab4b319 --dir "$RUNNER_TEMP/w19parent"
+          echo '74fbec5c6ff3ebb0f1ec31692327a9bcb2ad2135ae98a27db95c40bfb597b88f  '"$RUNNER_TEMP/w22parent/campaign/motif-material-history-retention.pt" | sha256sum -c -
+          echo '5562ccae559f466ac4efd7532f37820b192a7689df631a79aef3f3b886e41632  '"$RUNNER_TEMP/w20parent/campaign/onpolicy-history-branch-retention.pt" | sha256sum -c -
+          echo '0358824dd721118fe9e9bbad7b19d0bfd48be36ce038a18bf7b952c7f9eee01b  '"$RUNNER_TEMP/w19parent/campaign/onpolicy-material-replay-and-branch.pt" | sha256sum -c -
+      - name: SHA-admit original external W0
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/w23"
+          git fetch --no-tags --depth=1 origin 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
+          git show 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61:experiments/agent_painter/worm/common/worm.py > "$RUNNER_TEMP/w23/W0.py"
+          echo '81c3923cb38d7f196b99986806216388c34ebc27fd4976e168b3b370c25a323e  '"$RUNNER_TEMP/w23/W0.py" | sha256sum -c -
+          cp "$RUNNER_TEMP/w23/W0.py" evidence/w23/original-W0.py
+      - name: Pinned CPU-only optimizer environment
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/w23-venv"
+          "$RUNNER_TEMP/w23-venv/bin/python" -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch==2.15.0+cpu'
+          "$RUNNER_TEMP/w23-venv/bin/python" -m pip check
+          "$RUNNER_TEMP/w23-venv/bin/python" -m pip freeze --all > evidence/w23/environment.txt
+      - name: Three-wave conditional-fusion training and heldout trajectories
+        run: |
+          set -euo pipefail
+          timeout --signal=TERM --kill-after=30s 2300s "$RUNNER_TEMP/w23-venv/bin/python" experiments/agent_painter/lanes/sprocket/worm_train_v23.py --w22 "$RUNNER_TEMP/w22parent/campaign/motif-material-history-retention.pt" --w20 "$RUNNER_TEMP/w20parent/campaign/onpolicy-history-branch-retention.pt" --w19 "$RUNNER_TEMP/w19parent/campaign/onpolicy-material-replay-and-branch.pt" --w0 "$RUNNER_TEMP/w23/W0.py" --output evidence/w23/campaign
+      - name: Preserve full/partial original evidence checksums
+        if: always()
+        run: |
+          set -euo pipefail
+          (cd evidence/w23 && find . -type f ! -name SHA256SUMS.txt -print0 | sort -z | xargs -0 sha256sum) > evidence/w23/SHA256SUMS.txt
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sprocket-worm-v23-${{ github.sha }}
+          path: evidence/w23/
+          if-no-files-found: warn
+          retention-days: 90
