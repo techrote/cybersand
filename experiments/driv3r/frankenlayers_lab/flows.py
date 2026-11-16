@@ -37,13 +37,17 @@ WAVE5_FLOWS: dict[str, tuple[int, ...]] = {
 WAVE6_FLOWS: dict[str, tuple[int, ...]] = {
     "aero4_no2": (0, 4, 10, 20),
 }
-LAB_FLOWS: dict[str, tuple[int, ...]] = {**WAVE1_FLOWS, **WAVE2_FLOWS, **WAVE3_FLOWS, **WAVE5_FLOWS, **WAVE6_FLOWS}
+# Wave 14: four-layer bridge from the viable NO10 and geometry-sensitive NO2 spines.
+# Unqualified until a real patched-runtime decision-graph trial; never relabel old flows.
+WAVE14_FLOWS: dict[str, tuple[int, ...]] = {"aero4_bridge": (0, 2, 10, 20)}
+LAB_FLOWS: dict[str, tuple[int, ...]] = {**WAVE1_FLOWS, **WAVE2_FLOWS, **WAVE3_FLOWS, **WAVE5_FLOWS, **WAVE6_FLOWS, **WAVE14_FLOWS}
 EXPECTED_LENGTHS = {
     "skele6": 6, "aero6": 6, "skele4": 4, "aero4": 4,
     "tailspin4": 4, "needle4": 4,
     "tailflip4": 4, "echo4": 4, "aero5_no20": 5, "aero5_no23": 5,
     "aero4_no10": 4, "aero5_tailflip": 5,
     "aero4_no2": 4,
+    "aero4_bridge": 4,
 }
 
 def validate_flows(flows: dict[str, tuple[int, ...]] = LAB_FLOWS) -> None:
@@ -72,7 +76,10 @@ def validate_flows(flows: dict[str, tuple[int, ...]] = LAB_FLOWS) -> None:
         elif name in WAVE5_FLOWS:
             if layers != WAVE5_FLOWS[name]:
                 raise ValueError(f"{name}: frozen wave-5 flow changed")
-        elif layers != WAVE6_FLOWS[name]:
-            raise ValueError(f"{name}: wave-6 flow changed")
+        elif name in WAVE6_FLOWS:
+            if layers != WAVE6_FLOWS[name]:
+                raise ValueError(f"{name}: wave-6 flow changed")
+        elif layers != WAVE14_FLOWS[name]:
+            raise ValueError(f"{name}: wave-14 flow changed")
 
 validate_flows()

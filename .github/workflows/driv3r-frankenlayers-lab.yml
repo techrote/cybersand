@@ -1,4 +1,4 @@
-name: "DRIV3R Frankenlayers Lab — calibrated IQ2 counterfactual wave"
+name: "DRIV3R Frankenlayers Lab — Q4 bridge counterfactual wave"
 on:
   pull_request:
     paths:
@@ -19,6 +19,7 @@ on:
       - 'experiments/driv3r/frankenlayers_lab/run-request-wave10.json'
       - 'experiments/driv3r/frankenlayers_lab/run-request-wave12.json'
       - 'experiments/driv3r/frankenlayers_lab/run-request-wave13.json'
+      - 'experiments/driv3r/frankenlayers_lab/run-request-wave14.json'
       - '.github/workflows/driv3r-frankenlayers-lab.yml'
 
 permissions:
@@ -43,7 +44,7 @@ jobs:
           set -euo pipefail
           git merge-base --is-ancestor 67bc90e685f3311f73b6dbb3b0f6773d10e64623 HEAD
           python3 -m compileall -q experiments/driv3r/frankenlayers_lab
-          python3 -m unittest experiments.driv3r.frankenlayers.test_frankenlayers experiments.driv3r.frankenlayers_lab.test_lab experiments.driv3r.frankenlayers_lab.test_holdout experiments.driv3r.frankenlayers_lab.test_counterfactual experiments.driv3r.frankenlayers_lab.test_lowbit experiments.driv3r.frankenlayers_lab.test_lowbit_causal experiments.driv3r.frankenlayers_lab.test_iq2 experiments.driv3r.frankenlayers_lab.test_iq2_causal -v
+          python3 -m unittest experiments.driv3r.frankenlayers.test_frankenlayers experiments.driv3r.frankenlayers_lab.test_lab experiments.driv3r.frankenlayers_lab.test_holdout experiments.driv3r.frankenlayers_lab.test_counterfactual experiments.driv3r.frankenlayers_lab.test_lowbit experiments.driv3r.frankenlayers_lab.test_lowbit_causal experiments.driv3r.frankenlayers_lab.test_iq2 experiments.driv3r.frankenlayers_lab.test_iq2_causal experiments.driv3r.frankenlayers_lab.test_q4_causal -v
           python3 - <<'PY'
           import json
           from pathlib import Path
@@ -270,6 +271,24 @@ jobs:
           ]
           assert w13["max_parallel"]==2 and w13["timeout_minutes"]<=95
           assert w13["no_game_changes"] and not any(w13[k] for k in ("paid_api","paid_gpu","merge","ready"))
+
+          # Wave 14 keeps failed IQ2 evidence, tests intermediate Q4 and one new bridge.
+          w14=json.loads(Path("experiments/driv3r/frankenlayers_lab/run-request-wave14.json").read_text())
+          assert w14["schema"]=="frankenlayers-wave14-q4-bridge-matched-geometry/1"
+          assert w14["lineage"]["wave13_source_sha"]=="735a1369ebfe1c31a54fad04259eed0b09a9c15d"
+          assert w14["lineage"]["wave13_success_run"]==43905570049
+          assert w14["lineage"]["wave13_artifacts"]==[14248073156,14246818135]
+          for key in ("llama_commit","model_q8_sha256","w0_commit"):
+            assert w14["lineage"][key]==r["lineage"][key]
+          assert w14["quant"]==dict(target="Q4_K_M",input="Q8_0",allow_requantize=True,lossy_conversion=True,importance_matrix=None)
+          assert w14["test_host"]==w13["test_host"]
+          assert w14["experiments"]==[
+              dict(label=label,mode=mode,flow=list(LAB_FLOWS[mode]),quant="q4_k_m",seed=CAUSAL_SEED)
+              for label,mode in (("aero4_no2_q4_causal","aero4_no2"),
+                                 ("aero4_bridge_q4_causal","aero4_bridge"))
+          ]
+          assert w14["max_parallel"]==2 and w14["timeout_minutes"]<=95
+          assert w14["no_game_changes"] and not any(w14[k] for k in ("paid_api","paid_gpu","merge","ready"))
           PY
           python3 tools/ci/check_ci_provider_policy.py
           python3 tools/ci/check_ci_scheduling_policy.py
@@ -284,7 +303,7 @@ jobs:
           test ! -s /tmp/unexpected.txt
 
   brain:
-    name: calibrated IQ2_XS held-out geometry / ${{ matrix.mode }}
+    name: Q4_K_M bridge held-out geometry / ${{ matrix.mode }}
     if: github.repository == 'techrote/cybersand' && github.event_name == 'push' && github.ref == 'refs/heads/research/619-frankenlayers-lab'
     needs: cheap
     runs-on: ubuntu-24.04
@@ -294,13 +313,13 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - mode: aero4_no10_iq2_causal
-            flow: aero4_no10
-            quant: iq2_xs
-            seed: 2718
-          - mode: aero4_no2_iq2_causal
+          - mode: aero4_no2_q4_causal
             flow: aero4_no2
-            quant: iq2_xs
+            quant: q4_k_m
+            seed: 2718
+          - mode: aero4_bridge_q4_causal
+            flow: aero4_bridge
+            quant: q4_k_m
             seed: 2718
     env:
       OMP_NUM_THREADS: '2'
@@ -342,7 +361,7 @@ jobs:
           git fetch --no-tags --depth=1 origin 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61
           git show 4bb9d6e1d0d0d78183f87d1e3c29648edafacf61:experiments/agent_painter/worm/common/worm.py > "$RUNNER_TEMP/franken-w0.py"
           test "$(git hash-object "$RUNNER_TEMP/franken-w0.py")" = 8979b6f0296e81051194bacc907992d38e006605
-      - name: Generate disjoint CyberSand-like calibration and collect real Q8 imatrix
+      - name: Requantise immutable Q8 donor to Q4_K_M and record exact receipt
         run: |
           set -euo pipefail
           MODEL_PATH="$(python3 - <<'PY'
@@ -351,47 +370,22 @@ jobs:
           print(json.loads(Path(os.environ['RUNNER_TEMP']+'/d1-lab-donor/runtime-manifest.json').read_text())['model'])
           PY
           )"
-          CALIBRATION="evidence/${{ matrix.mode }}/calibration.txt"
-          IMATRIX="evidence/${{ matrix.mode }}/imatrix.gguf"
-          python3 -m experiments.driv3r.frankenlayers_lab.calibration --out "$CALIBRATION"
-          timeout --signal=TERM --kill-after=30 1800 "$RUNNER_TEMP/franken-lab-llama/build/bin/llama-imatrix" \
-            -m "$MODEL_PATH" -f "$CALIBRATION" -o "$IMATRIX" \
-            --parse-special --no-ppl --chunks 8 -c 256 -b 256 -ub 256 -t 2 -ngl 0 \
-            > "evidence/${{ matrix.mode }}/imatrix.log" 2>&1
-          test -s "$IMATRIX"
-          sha256sum "$CALIBRATION" "$IMATRIX" > "evidence/${{ matrix.mode }}/calibration.sha256"
-      - name: Requantise pinned Q8 donor to calibrated IQ2_XS
-        run: |
-          set -euo pipefail
-          MODEL_PATH="$(python3 - <<'PY'
-          import json,os
-          from pathlib import Path
-          print(json.loads(Path(os.environ['RUNNER_TEMP']+'/d1-lab-donor/runtime-manifest.json').read_text())['model'])
-          PY
-          )"
-          mkdir -p "$RUNNER_TEMP/franken-lab-iq2"
-          IQ2_MODEL="$RUNNER_TEMP/franken-lab-iq2/d1-2B-from-Q8-IQ2_XS.gguf"
-          timeout --signal=TERM --kill-after=20 1000 "$RUNNER_TEMP/franken-lab-llama/build/bin/llama-quantize" \
-            --imatrix "evidence/${{ matrix.mode }}/imatrix.gguf" --allow-requantize "$MODEL_PATH" "$IQ2_MODEL" IQ2_XS 2 \
-            > "evidence/${{ matrix.mode }}/quantize.log" 2>&1
-          test -s "$IQ2_MODEL"
+          mkdir -p "$RUNNER_TEMP/franken-lab-q4"
+          Q4_MODEL="$RUNNER_TEMP/franken-lab-q4/d1-2B-from-Q8-Q4_K_M.gguf"
+          timeout --signal=TERM --kill-after=20 1000 "$RUNNER_TEMP/franken-lab-llama/build/bin/llama-quantize"             --allow-requantize "$MODEL_PATH" "$Q4_MODEL" Q4_K_M 2             > "evidence/${{ matrix.mode }}/quantize.log" 2>&1
+          test -s "$Q4_MODEL"
           python3 - <<'PY'
           import json,os
           from pathlib import Path
           from experiments.driv3r.backend import PINS,sha256_file
-          src=Path(json.loads(Path(os.environ['RUNNER_TEMP']+'/d1-lab-donor/runtime-manifest.json').read_text())['model'])
-          out=Path(os.environ['RUNNER_TEMP']+'/franken-lab-iq2/d1-2B-from-Q8-IQ2_XS.gguf')
-          assert sha256_file(src)==PINS['model']['sha256']
-          calib=Path('evidence/'+os.environ['MATRIX_MODE']+'/calibration.txt')
-          mat=Path('evidence/'+os.environ['MATRIX_MODE']+'/imatrix.gguf')
-          assert calib.stat().st_size>15000 and mat.stat().st_size>1000
-          receipt={'schema':'frankenlayers-iq2-requant/2','quant':'IQ2_XS',
+          root=Path(os.environ['RUNNER_TEMP'])
+          src=Path(json.loads((root/'d1-lab-donor/runtime-manifest.json').read_text())['model'])
+          out=root/'franken-lab-q4/d1-2B-from-Q8-Q4_K_M.gguf'
+          assert sha256_file(src)==PINS['model']['sha256'] and out.stat().st_size>1000000
+          receipt={'schema':'cybersand-franken-q4-requant/1','quant':'Q4_K_M',
                    'allow_requantize':True,'source_kind':'immutable Q8 donor, not FP16',
-                   'imatrix_source':'Q8 donor, train-only synthetic game prompts',
-                   'calibration_chunks':8,
-                   'calibration_sha256':sha256_file(calib),'imatrix_sha256':sha256_file(mat),
                    'q8_sha256':sha256_file(src),'q8_bytes':src.stat().st_size,
-                   'iq2_sha256':sha256_file(out),'iq2_bytes':out.stat().st_size,
+                   'q4_sha256':sha256_file(out),'q4_bytes':out.stat().st_size,
                    'llama_commit':'8642541b255bfb5dc39cd351a178be09013a55d6'}
           dest=Path('evidence/'+os.environ['MATRIX_MODE']+'/quantize-receipt.json')
           dest.write_text(json.dumps(receipt,indent=2,sort_keys=True)+'\n')
@@ -399,7 +393,7 @@ jobs:
           PY
         env:
           MATRIX_MODE: ${{ matrix.mode }}
-      - name: Source-pinned Q8-stock IQ2-stock IQ2-mutant held-out causal triad
+      - name: Same-runner Q8-stock Q4-stock Q4-mutant geometry triad
         run: |
           set -euo pipefail
           MODEL_PATH="$(python3 - <<'PY'
@@ -408,16 +402,7 @@ jobs:
           print(json.loads(Path(os.environ['RUNNER_TEMP']+'/d1-lab-donor/runtime-manifest.json').read_text())['model'])
           PY
           )"
-          timeout --signal=TERM --kill-after=45 4200 python3 -m experiments.driv3r.frankenlayers_lab.infer_iq2_causal \
-            --binary "$RUNNER_TEMP/franken-lab-llama/build/bin/llama-server" \
-            --model-q8 "$MODEL_PATH" \
-            --model-iq2 "$RUNNER_TEMP/franken-lab-iq2/d1-2B-from-Q8-IQ2_XS.gguf" \
-            --quant-receipt "evidence/${{ matrix.mode }}/quantize-receipt.json" \
-            --imatrix "evidence/${{ matrix.mode }}/imatrix.gguf" \
-            --calibration "evidence/${{ matrix.mode }}/calibration.txt" \
-            --w0 "$RUNNER_TEMP/franken-w0.py" \
-            --mode "${{ matrix.flow }}" --seed "${{ matrix.seed }}" --source-sha "$GITHUB_SHA" \
-            --output "evidence/${{ matrix.mode }}/inference"
+          timeout --signal=TERM --kill-after=45 4200 python3 -m experiments.driv3r.frankenlayers_lab.infer_q4_causal             --binary "$RUNNER_TEMP/franken-lab-llama/build/bin/llama-server"             --model-q8 "$MODEL_PATH"             --model-q4 "$RUNNER_TEMP/franken-lab-q4/d1-2B-from-Q8-Q4_K_M.gguf"             --quant-receipt "evidence/${{ matrix.mode }}/quantize-receipt.json"             --w0 "$RUNNER_TEMP/franken-w0.py"             --mode "${{ matrix.flow }}" --seed "${{ matrix.seed }}" --source-sha "$GITHUB_SHA"             --output "evidence/${{ matrix.mode }}/inference"
       - name: Retain true failure evidence and checksums
         if: always()
         run: |
