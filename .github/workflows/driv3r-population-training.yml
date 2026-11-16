@@ -15,7 +15,7 @@ permissions:
 jobs:
   population:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -27,6 +27,8 @@ jobs:
         run: python -m unittest discover -s experiments/driv3r/training/population -p 'test_*.py' -v
       - name: Train actual population policies on synthetic worlds
         run: python experiments/driv3r/training/population/population_lab.py --output /tmp/population-evidence --seed 619 --population 3 --train-episodes 36 --selection-episodes 8 --test-episodes 12
+      - name: Train P1 novelty/reward candidate population and frozen-observation controls
+        run: python experiments/driv3r/training/population/population_p1.py --p0-output /tmp/population-evidence --output /tmp/population-evidence/p1 --seed 620 --offspring 4 --train-episodes 18 --selection-episodes 8 --holdout-episodes 12
       - name: Capture exact commit and environment
         run: |
           git rev-parse HEAD > /tmp/population-evidence/source-commit.txt
