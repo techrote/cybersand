@@ -214,20 +214,29 @@ At 2048²,128² tiles bound the dirty index to 256 entries. The recycled slot re
 all accumulated changes from its retained contents; exact unchanged tile bytes
 skip submission. One changed tile submits32 KiB of RG8 staging data instead of an
 8 MiB World image. GPU copies also read staging pixels and write RGBA8 targets:
-CPU upload bytes are not total GPU traffic. Each staging size class owns one
-fixed Texture2DArray with two layers and rotates only after upload, copies and
-retirement are submitted. A diagnostic one-layer control remains available through
-`CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS=1`; the experimental default is two.
+CPU upload bytes are not total GPU traffic. Each staging size class owns a fixed
+ring of independent Texture2DArray resources, each with exactly one layer and
+its own fixed sampler material. The ring rotates only after upload, copies and
+retirement are submitted. `CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS=1|2|3` selects
+the diagnostic resource count; the provisional default is three. This successor
+is under performance evaluation; the earlier shared-array layers failed the
+matched Windows physical and frame-tail comparison.
 The exact-size full source aliases the same pool/cursor; non-square or NPOT
 sources retain a separate bounded full pool. Rejected and byte-identical
 publications do not advance a cursor. This increases reuse distance without
 asserting that GPU work has completed. The two histories, staging size
 classes, 1×1 retirement target and separate 1-byte source dummy occupy
-55,902,213 logical GPU texture bytes at
+67,076,101 logical GPU texture bytes at
 2048² RG8, excluding driver overhead. A final tiny blit prevents the engine's
 persistent framebuffer attachment from retaining a released large history plane.
 
-Only the copy shader samples an array. Its sampler is fixed once per pool;
+Adjacent dirty tiles share one copy only when both their World positions and
+packed atlas positions are contiguous in the same respective rows. Skipped
+tiles and either row boundary end a run. Coalescing adds no uploaded bytes or
+destination pixels. `CYBERSAND_DIAG_MATERIAL_COPY_MODE=tiles` retains individual
+tile copies for correctness comparison; ordinary publication uses exact runs.
+
+Only the copy shader samples an array, always at layer zero. Its sampler is fixed once per resource;
 ordinary World appearance still samples the original 2D history interface.
 The Godot 4.7 GLES3 implementation updates an array layer with
 `glTexSubImage3D`, while its ordinary `ImageTexture.update` path calls

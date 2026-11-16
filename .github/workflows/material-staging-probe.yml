@@ -1,4 +1,4 @@
-name: MATERIAL-ARRAY-STAGING-001 focused Windows comparison
+name: MATERIAL-RING-STAGING-001 focused Windows comparison
 on:
   push:
     branches: [diagnostics/material-staging-reuse-20261116]
@@ -14,11 +14,11 @@ env:
   CYBERSAND_CI_WATCHDOG_SCALE: '1'
 jobs:
   windows-staging:
-    name: Windows full / one-layer / two-layer array staging, forward and reverse
+    name: Windows full / one / two / three independent arrays, forward and reverse
     runs-on: windows-2022
-    # Six independent 900-second process watchdogs plus preparation, import
+    # Eight independent 900-second process watchdogs plus preparation, import
     # targeted GPU correctness and artifact headroom. None is a physical performance acceptance limit.
-    timeout-minutes: 130
+    timeout-minutes: 160
     defaults:
       run:
         shell: bash
@@ -132,18 +132,48 @@ jobs:
           need(all(re.fullmatch(r'[0-9a-f]{64}',row.get('full_sha256','')) and row['full_sha256']==row.get('blit_sha256') for row in shaders),'GPU appearance bytes differ')
           need(sum(row.get('label')=='edit after World replacement' for row in observations)==2,'Both exact R8/RG8 history sequences did not complete')
           pools=[row for row in observations if row.get('label')=='staging pool sequence']
-          need(len(pools)==4 and {(row.get('staging_slots'),tuple(row.get('extent',[]))) for row in pools}=={(slots,extent) for slots in (1,2) for extent in ((256,256),(317,259))},'Missing square/NPOT one/two-layer resource coverage')
-          heights=[row for row in observations if row.get('label')=='packed copy height']
-          need(len(heights)==4 and {row.get('packed_height') for row in heights}=={16383,32767},'Missing packed layer-height GPU boundaries')
+          need(len(pools)==6 and {(row.get('staging_slots'),tuple(row.get('extent',[]))) for row in pools}=={(slots,extent) for slots in (1,2,3) for extent in ((256,256),(317,259))},'Missing square/NPOT one/two/three-resource ring coverage')
+          for row in pools:
+              need(len(row.get('sequence',[]))==12,'Incomplete staging ring sequence')
+              need(all(item.get('kind')=='texture2d_array' and item.get('resource_layers')==1 and item.get('layer')==0 for item in row['sequence']),'GPU ring sequence did not use independent one-layer resources')
+          heights=[row for row in observations if row.get('label')=='maximum copy height']
+          need(len(heights)==12 and all(row.get('height')==16383 for row in heights),'Missing maximum-height GPU cases')
+          for slots in (1,2,3):
+              rows=[row['publication'] for row in heights if row.get('staging_slots')==slots]
+              need(len(rows)==slots*2,'Missing maximum-height ring repetitions')
+              ids={}
+              for slot in range(slots):
+                  samples=[row for row in rows if row.get('staging_slot')==slot]
+                  need(len(samples)==2 and len({row.get('staging_resource_rid') for row in samples})==1,'Maximum-height ring slot did not recur with a stable resource')
+                  ids[slot]=samples[0]['staging_resource_rid']
+              need(len(set(ids.values()))==slots and all(rid>0 for rid in ids.values()),'Maximum-height slots share one resource')
+          copies=[row for row in observations if row.get('label')=='horizontal copy coalescing']
+          case_names={'joined','skipped','atlas_row','world_row','npot'}
+          need(len(copies)==20 and {(row.get('case'),row.get('mode'),row.get('channels')) for row in copies}=={(case,mode,channels) for case in case_names for mode in ('tiles','runs') for channels in (1,2)},'Missing or duplicate exact copy-mode boundary cases')
+          paired={}
+          for row in copies:
+              pub=row['publication'];mode=row['mode'];changed=len(row['changed_indices'])
+              actual=row['expected_runs'] if mode=='runs' else changed
+              need(pub.get('copy_mode')==mode and pub.get('copy_destinations')==1 and pub.get('whole_gpu_copy') is False,'Copy-mode GPU case did not use the intended sparse route')
+              need(pub.get('updated_tiles')==changed and pub.get('copy_run_count')==pub.get('gpu_blit_calls')==actual,'GPU boundary case reported wrong actual copy runs')
+              need(pub.get('uncoalesced_gpu_blit_calls')==changed and pub.get('coalesced_gpu_blit_calls_saved')==changed-actual and pub.get('retirement_blit_calls')==1,'GPU boundary case miscounted baseline or retirement')
+              need(pub.get('blit_pixels')==pub.get('uncoalesced_blit_pixels') and pub.get('estimated_target_write_bytes')==4*pub['blit_pixels'],'GPU boundary coalescing changed destination pixel area')
+              need(pub.get('atlas_capacity')==4 and pub.get('submitted_bytes')==4*64*64*row['channels'],'GPU boundary coalescing changed staging capacity or bytes')
+              hashes=(row.get('current_sha256'),row.get('previous_sha256'))
+              need(all(isinstance(value,str) and re.fullmatch(r'[0-9a-f]{64}',value) for value in hashes),'Missing actual GPU history hashes for copy-mode comparison')
+              paired.setdefault((row['case'],row['channels']),{})[mode]=(hashes,pub['submitted_bytes'],pub['blit_pixels'])
+              if mode=='runs':
+                  need((pub['coalesced_gpu_blit_calls_saved']>0)==(row['case'] in {'joined','atlas_row','npot'}),'GPU row-boundary case has unexpected saved copies')
+          need(len(paired)==10 and all(values.get('tiles')==values.get('runs') for values in paired.values()),'Per-tile and coalesced copies differ in actual GPU histories or work volume')
           dense=[row for row in observations if row.get('label')=='dense 2048² full refresh']
           need(len(dense)==1 and dense[0]['publication'].get('submitted_bytes')==8388608,'Missing complete 2048² full-refresh proof')
           publications=[row['publication'] for row in observations if 'publication' in row]
-          need(publications and all(row.get('staging_backend')=='texture2d_array' for row in publications),'Wrong GPU staging resource kind')
-          verified={'source_sha':summary['source_sha'],'complete':True,'scope':'Actual Windows ANGLE GPU correctness; no physical NVIDIA acceptance','assertions':report['assertions'],'failures':0,'shader_pairs':len(shaders),'history_sequences':2,'resource_pool_sequences':len(pools),'packed_height_cases':len(heights),'full_refresh_bytes':dense[0]['publication']['submitted_bytes'],'report_sha256':hashlib.sha256((casefolder/'material-tiles.json').read_bytes()).hexdigest(),'log_sha256':case['log_sha256']}
+          need(publications and all(row.get('staging_backend')=='texture2d_array' and row.get('staging_resource_layers')==1 and row.get('staging_layer')==(0 if row.get('submitted_bytes',0)>0 else -1) for row in publications),'Wrong GPU staging resource kind or layer')
+          verified={'source_sha':summary['source_sha'],'complete':True,'scope':'Actual Windows ANGLE GPU correctness; no physical NVIDIA acceptance','assertions':report['assertions'],'failures':0,'shader_pairs':len(shaders),'history_sequences':2,'resource_pool_sequences':len(pools),'maximum_height_cases':len(heights),'coalescing_mode_cases':len(copies),'coalescing_mode_pairs':len(paired),'full_refresh_bytes':dense[0]['publication']['submitted_bytes'],'report_sha256':hashlib.sha256((casefolder/'material-tiles.json').read_bytes()).hexdigest(),'log_sha256':case['log_sha256']}
           (folder/'verified-gpu-gate.json').write_text(json.dumps(verified,indent=2)+'\n')
           print('MATERIAL_ARRAY_GPU_GATE',json.dumps(verified,sort_keys=True))
           PY
-      - name: Run six serial ordinary coupled 2048 Follow arms
+      - name: Run eight serial ordinary coupled 2048 Follow arms
         run: |
           set -euo pipefail
           python -u tools/ci/run_material_staging_comparison.py --godot "$GODOT_BIN" --project godot --evidence evidence/staging-comparison --source-sha "$GITHUB_SHA" --rendering-driver opengl3_angle --timeout 900 2>&1 | tee evidence/staging-comparison.log

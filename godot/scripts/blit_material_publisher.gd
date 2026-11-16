@@ -39,13 +39,17 @@ class MaterialPlane extends Texture2D:
 		var owner: RefCounted = _publisher.get_ref() if _publisher != null else null
 		return owner != null and owner.replace_plane(source, self)
 
-class StagingPool extends RefCounted:
+class StagingResource extends RefCounted:
 	var texture: Texture2DArray
 	var owned_object_id: int = 0
 	var owned_rid: RID
 	var material: ShaderMaterial
 	var owned_material_id: int = 0
 	var owned_material_rid: RID
+
+class StagingPool extends RefCounted:
+	var resources: Array[StagingResource] = []
+	var owned_resource_ids := PackedInt64Array()
 	var extent := Vector2i.ZERO
 	var next_slot: int = 0
 
@@ -57,9 +61,11 @@ var channels: int = 2
 var tile_side: int = MIN_TILE_SIDE
 var columns: int = 0
 var rows: int = 0
-# One fixed array per size class with one or two layers. Alternation provides
-# reuse distance; it is not a GPU fence or a promise of nonblocking updates.
-var staging_slots: int = 2
+# Each slot owns an independent one-layer array and a fixed sampler material.
+# The bounded ring supplies reuse distance, not a fence or nonblocking promise.
+# Three is provisional for the diagnostic experiment, not an acceptance claim.
+var staging_slots: int = 3
+var copy_mode: String = "runs"
 var staging: Dictionary = {}
 var _staging_pool_ids: Dictionary = {}
 var full_staging: StagingPool
@@ -68,7 +74,7 @@ var retirement_sink: DrawableTexture2D
 var retirement_owned_id: int = 0
 var retirement_owned_rid: RID
 # Required ordinary source0 stays disjoint from every sampled array and output.
-# The custom array sampler is bound once per pool at texture unit 1.
+# Each resource owns one fixed custom array sampler at texture unit 1.
 var dummy_source: ImageTexture
 var dummy_owned_id: int = 0
 var dummy_owned_rid: RID
@@ -102,7 +108,9 @@ func _setup(source: Image, preceding: Image) -> bool:
 			or preceding.get_format() != source.get_format() or preceding.has_mipmaps(): return false
 	extent = source.get_size()
 	logical_format = source.get_format()
-	staging_slots = 1 if OS.get_environment("CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS") == "1" else 2
+	var requested_slots: String = OS.get_environment("CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS")
+	staging_slots = int(requested_slots) if requested_slots in ["1","2","3"] else 3
+	copy_mode = "tiles" if OS.get_environment("CYBERSAND_DIAG_MATERIAL_COPY_MODE") == "tiles" else "runs"
 	channels = 1 if logical_format == Image.FORMAT_R8 else 2
 	while true:
 		columns = ceili(float(extent.x) / tile_side)
@@ -144,15 +152,17 @@ func _setup(source: Image, preceding: Image) -> bool:
 		if not _submit(preceding, [previous]): return false
 		for key: String in ["submitted_bytes", "atlas_assembly_usec", "staging_upload_usec",
 				"gpu_blit_submit_usec", "gpu_blit_calls", "blit_pixels", "estimated_target_write_bytes",
-				"retirement_blit_calls", "estimated_retirement_write_bytes"]:
+				"retirement_blit_calls", "estimated_retirement_write_bytes", "copy_run_count",
+				"uncoalesced_gpu_blit_calls", "coalesced_gpu_blit_calls_saved", "uncoalesced_blit_pixels"]:
 			initialized[key] = int(initialized.get(key,0)) + int(last_update.get(key,0))
 	# The preceding slot may differ anywhere after a live mode switch. Its
 	# first reuse must compare all tiles against the next complete CPU image.
 	if not identical: previous.pending.fill(1)
-	# Prime one resource per class during setup, then start the two-resource
-	# path on its alternate. The priming draw must not immediately precede a
-	# CPU overwrite of the same resource. The one-resource control retains
-	# the previous behavior; all preparation cost remains in initialization.
+	# Prime resource0 in each class, then choose the least recently used next
+	# resource. Distinct histories may already have used0 and1: preserve the
+	# still-unused2 in a three-resource ring. This gives reuse distance only;
+	# all initialization uploads and preparation remain in the setup receipt.
+	initialized["copy_destinations"] = 2
 	var priming_started: int = Time.get_ticks_usec()
 	var pools: Array = staging.values()
 	if not pools.has(full_staging): pools.append(full_staging)
@@ -160,8 +170,8 @@ func _setup(source: Image, preceding: Image) -> bool:
 	for pool: StagingPool in pools:
 		var source_rids: Array[RID] = [dummy_source.get_rid()]
 		RenderingServer.texture_drawable_blit_rect(sink_rids,Rect2i(0,0,1,1),
-			pool.material.get_rid(),Color(0,0,1,1),source_rids,0)
-		pool.next_slot = staging_slots - 1
+			pool.resources[0].material.get_rid(),Color(0,0,1,1),source_rids,0)
+		pool.next_slot = maxi(1,pool.next_slot)%staging_slots
 	initialized["priming_usec"] = Time.get_ticks_usec()-priming_started
 	initialized["priming_blit_calls"] = pools.size()
 	initialized["initialization_staging_zero_bytes"] = gpu_storage_bytes()-extent.x*extent.y*8-5
@@ -180,33 +190,47 @@ func _new_staging_pool(size: Vector2i) -> StagingPool:
 	var pool := StagingPool.new()
 	pool.extent = size
 	var zero := Image.create(size.x,size.y,false,logical_format)
-	var layers: Array[Image] = []
-	for slot: int in range(staging_slots): layers.append(zero)
-	pool.texture = Texture2DArray.new()
-	if pool.texture.create_from_images(layers) != OK or not pool.texture.get_rid().is_valid(): return null
-	pool.owned_object_id = pool.texture.get_instance_id()
-	pool.owned_rid = pool.texture.get_rid()
-	pool.material = ShaderMaterial.new()
-	pool.material.shader = COPY_SHADER
-	pool.material.set_shader_parameter("staging_array",pool.texture)
-	pool.owned_material_id = pool.material.get_instance_id()
-	pool.owned_material_rid = pool.material.get_rid()
+	# The immutable zero image may be retained by the render queue. Each
+	# array is a separate allocation with exactly one layer, not another
+	# layer of a shared storage object.
+	var layers: Array[Image] = [zero]
+	for slot: int in range(staging_slots):
+		var resource := StagingResource.new()
+		resource.texture = Texture2DArray.new()
+		if resource.texture.create_from_images(layers) != OK or not resource.texture.get_rid().is_valid(): return null
+		resource.owned_object_id = resource.texture.get_instance_id()
+		resource.owned_rid = resource.texture.get_rid()
+		resource.material = ShaderMaterial.new()
+		resource.material.shader = COPY_SHADER
+		resource.material.set_shader_parameter("staging_array",resource.texture)
+		resource.owned_material_id = resource.material.get_instance_id()
+		resource.owned_material_rid = resource.material.get_rid()
+		pool.resources.append(resource)
+		pool.owned_resource_ids.append(resource.get_instance_id())
 	return pool
 
 
 func _valid_staging_pool(pool: StagingPool, size: Vector2i) -> bool:
-	if pool == null or pool.extent != size or pool.next_slot < 0 or pool.next_slot >= staging_slots: return false
-	var stage: Texture2DArray = pool.texture
-	if stage == null or stage.get_instance_id() != pool.owned_object_id \
-			or stage.get_rid() != pool.owned_rid or not stage.get_rid().is_valid() \
-			or Vector2i(stage.get_width(),stage.get_height()) != size \
-			or stage.get_format() != logical_format or stage.get_layers() != staging_slots or stage.has_mipmaps(): return false
-	if pool.material == null or not pool.material.get_rid().is_valid() \
-			or pool.material.get_instance_id() != pool.owned_material_id \
-			or pool.material.get_rid() != pool.owned_material_rid \
-			or pool.material.shader != COPY_SHADER or COPY_SHADER.get_mode() != Shader.MODE_TEXTURE_BLIT \
-			or pool.material.get_shader_parameter("staging_array") != stage: return false
-	return stage.get_rid() != dummy_source.get_rid() and stage.get_rid() != retirement_sink.get_rid()
+	if pool == null or pool.extent != size or pool.next_slot < 0 or pool.next_slot >= staging_slots \
+			or pool.resources.size() != staging_slots or pool.owned_resource_ids.size() != staging_slots: return false
+	# Preflight every inactive resource as well as the selected resource.
+	# These Resource properties and cached sampler associations are local;
+	# no GPU readback or synchronous renderer query occurs here.
+	for slot: int in range(staging_slots):
+		var resource: StagingResource = pool.resources[slot]
+		if resource == null or resource.get_instance_id() != pool.owned_resource_ids[slot]: return false
+		var stage: Texture2DArray = resource.texture
+		if stage == null or stage.get_instance_id() != resource.owned_object_id \
+				or stage.get_rid() != resource.owned_rid or not stage.get_rid().is_valid() \
+				or Vector2i(stage.get_width(),stage.get_height()) != size \
+				or stage.get_format() != logical_format or stage.get_layers() != 1 or stage.has_mipmaps(): return false
+		if resource.material == null or not resource.material.get_rid().is_valid() \
+				or resource.material.get_instance_id() != resource.owned_material_id \
+				or resource.material.get_rid() != resource.owned_material_rid \
+				or resource.material.shader != COPY_SHADER or COPY_SHADER.get_mode() != Shader.MODE_TEXTURE_BLIT \
+				or resource.material.get_shader_parameter("staging_array") != stage: return false
+		if stage.get_rid() == dummy_source.get_rid() or stage.get_rid() == retirement_sink.get_rid(): return false
+	return true
 
 
 func _new_plane() -> MaterialPlane:
@@ -237,7 +261,7 @@ func _tile(source: Image, index: int) -> Image:
 
 
 func _valid_state() -> bool:
-	if staging_slots not in [1,2]: return false
+	if staging_slots not in [1,2,3] or copy_mode not in ["tiles","runs"]: return false
 	if extent.x <= 0 or extent.y <= 0 or extent.x >= 16384 or extent.y >= 16384 \
 			or logical_format not in [Image.FORMAT_R8,Image.FORMAT_RG8] \
 			or channels != (1 if logical_format == Image.FORMAT_R8 else 2): return false
@@ -268,6 +292,20 @@ func _valid_state() -> bool:
 		if not _valid_staging_pool(pool,Vector2i(side,side)): return false
 	if full_staging == null or full_staging.get_instance_id() != _full_staging_pool_id \
 			or not _valid_staging_pool(full_staging,extent): return false
+	# Distinct capacity pools and slots must not alias a texture or sampler
+	# material. Only an equal-size full atlas shares its existing pool/cursor.
+	var pools: Array = staging.values()
+	if not pools.has(full_staging): pools.append(full_staging)
+	var texture_ids: Dictionary = {current.get_rid():true, previous.get_rid():true,
+		retirement_sink.get_rid():true, dummy_source.get_rid():true}
+	var material_ids: Dictionary = {}
+	for pool: StagingPool in pools:
+		for resource: StagingResource in pool.resources:
+			var texture_rid: RID = resource.texture.get_rid()
+			var material_rid: RID = resource.material.get_rid()
+			if texture_ids.has(texture_rid) or material_ids.has(material_rid): return false
+			texture_ids[texture_rid] = true
+			material_ids[material_rid] = true
 	return current.get_rid() != previous.get_rid()
 
 
@@ -311,7 +349,9 @@ func _finish_metrics() -> void:
 	last_update["tile_count"] = columns*rows
 	last_update["staging_slots"] = staging_slots
 	last_update["staging_backend"] = "texture2d_array"
-	last_update["staging_layer"] = last_update.get("staging_slot",-1)
+	last_update["staging_layer"] = 0 if int(last_update.get("staging_slot",-1)) >= 0 else -1
+	last_update["staging_resource_layers"] = 1
+	last_update["copy_mode"] = copy_mode
 
 
 func _submit(source: Image, destinations: Array[MaterialPlane]) -> bool:
@@ -321,10 +361,13 @@ func _submit(source: Image, destinations: Array[MaterialPlane]) -> bool:
 		"staging_upload_usec":0, "gpu_blit_submit_usec":0, "gpu_blit_calls":0,
 		"blit_pixels":0, "estimated_target_write_bytes":0, "allocated_gpu_bytes":gpu_storage_bytes(),
 		"retirement_blit_calls":0, "estimated_retirement_write_bytes":0,
-		"staging_slot":-1, "staging_resource_rid":0}
+		"staging_slot":-1, "staging_resource_rid":0,
+		"copy_destinations":0, "copy_run_count":0, "uncoalesced_gpu_blit_calls":0,
+		"coalesced_gpu_blit_calls_saved":0, "uncoalesced_blit_pixels":0}
 	if not _valid_source(source) or not _valid_state() or destinations.is_empty(): return false
 	for plane: MaterialPlane in destinations:
 		if plane not in [current,previous]: return false
+	last_update.copy_destinations = destinations.size()
 	var changed := PackedInt32Array()
 	var images: Array[Image] = []
 	var bytes: Array[PackedByteArray] = []
@@ -353,7 +396,8 @@ func _submit(source: Image, destinations: Array[MaterialPlane]) -> bool:
 	var pool: StagingPool = full_staging if whole else staging.get(capacity) as StagingPool
 	if pool == null: return false
 	var slot: int = pool.next_slot
-	var stage: Texture2DArray = pool.texture
+	var resource: StagingResource = pool.resources[slot]
+	var stage: Texture2DArray = resource.texture
 	var stage_size: Vector2i = extent if whole else Vector2i(atlas_side,atlas_side)
 	if not _valid_staging_pool(pool,stage_size): return false
 	for plane: MaterialPlane in destinations:
@@ -370,9 +414,33 @@ func _submit(source: Image, destinations: Array[MaterialPlane]) -> bool:
 		for item: int in range(changed.size()):
 			atlas.blit_rect(images[item],Rect2i(0,0,tile_side,tile_side),
 				Vector2i((item%atlas_columns)*tile_side,(item/atlas_columns)*tile_side))
+	# Each run is (first packed-atlas item, number of adjacent tiles). Merge
+	# only exact horizontal adjacency in BOTH coordinate spaces. Equal tiles
+	# omitted from changed, World-row wraps and atlas-row wraps break a run.
+	var copy_runs: Array[Vector2i] = []
+	if whole:
+		copy_runs.append(Vector2i(0,changed.size()))
+		last_update.uncoalesced_gpu_blit_calls = destinations.size()
+		last_update.uncoalesced_blit_pixels = extent.x*extent.y*destinations.size()
+	else:
+		for item: int in range(changed.size()):
+			var index: int = changed[item]
+			var position := Vector2i((index%columns)*tile_side,(index/columns)*tile_side)
+			last_update.uncoalesced_blit_pixels += mini(tile_side,extent.x-position.x) \
+				*mini(tile_side,extent.y-position.y)*destinations.size()
+			var adjacent: bool = copy_mode == "runs" and item > 0 \
+				and index == changed[item-1]+1 and index/columns == changed[item-1]/columns \
+				and item/atlas_columns == (item-1)/atlas_columns
+			if adjacent:
+				var run: Vector2i = copy_runs[-1]
+				copy_runs[-1] = Vector2i(run.x,run.y+1)
+			else:
+				copy_runs.append(Vector2i(item,1))
+		last_update.uncoalesced_gpu_blit_calls = changed.size()*destinations.size()
+	last_update.copy_run_count = copy_runs.size()
 	last_update.atlas_assembly_usec = Time.get_ticks_usec()-started
 	started = Time.get_ticks_usec()
-	stage.update_layer(atlas,slot)
+	stage.update_layer(atlas,0)
 	last_update.staging_upload_usec = Time.get_ticks_usec()-started
 	var source_rids: Array[RID] = [dummy_source.get_rid()]
 	started = Time.get_ticks_usec()
@@ -380,27 +448,29 @@ func _submit(source: Image, destinations: Array[MaterialPlane]) -> bool:
 		for plane: MaterialPlane in destinations:
 			var output_rids: Array[RID] = [plane.drawable.get_rid()]
 			RenderingServer.texture_drawable_blit_rect(output_rids,Rect2i(Vector2i.ZERO,extent),
-				pool.material.get_rid(),Color(0,0,extent.x,extent.y+16384*slot),source_rids,0)
+				resource.material.get_rid(),Color(0,0,extent.x,extent.y),source_rids,0)
 		last_update.gpu_blit_calls = destinations.size()
 		last_update.blit_pixels = extent.x*extent.y*destinations.size()
 	else:
-		for item: int in range(changed.size()):
+		for run: Vector2i in copy_runs:
+			var item: int = run.x
 			var index: int = changed[item]
 			var position := Vector2i((index%columns)*tile_side,(index/columns)*tile_side)
-			var size := Vector2i(mini(tile_side,extent.x-position.x),mini(tile_side,extent.y-position.y))
+			var size := Vector2i(mini(tile_side*run.y,extent.x-position.x),mini(tile_side,extent.y-position.y))
 			var source_origin := Vector2i((item%atlas_columns)*tile_side,(item/atlas_columns)*tile_side)
 			for plane: MaterialPlane in destinations:
 				var output_rids: Array[RID] = [plane.drawable.get_rid()]
 				RenderingServer.texture_drawable_blit_rect(output_rids,Rect2i(position,size),
-					pool.material.get_rid(),Color(source_origin.x,source_origin.y,size.x,size.y+16384*slot),source_rids,0)
+					resource.material.get_rid(),Color(source_origin.x,source_origin.y,size.x,size.y),source_rids,0)
+				last_update.gpu_blit_calls += 1
 			last_update.blit_pixels += size.x*size.y*destinations.size()
-		last_update.gpu_blit_calls = changed.size()*destinations.size()
+	last_update.coalesced_gpu_blit_calls_saved = last_update.uncoalesced_gpu_blit_calls-last_update.gpu_blit_calls
 	# Godot's persistent FBO retains attachments while unbound. Always detach
 	# large targets by replacing its sole attachment with one owned 1x1 sink.
 	# Single-target calls throughout ensure no hidden second MRT attachment.
 	var sink_rids: Array[RID] = [retirement_sink.get_rid()]
 	RenderingServer.texture_drawable_blit_rect(sink_rids,Rect2i(0,0,1,1),
-		pool.material.get_rid(),Color(0,0,1,1+16384*slot),source_rids,0)
+		resource.material.get_rid(),Color(0,0,1,1),source_rids,0)
 	last_update.retirement_blit_calls = 1
 	last_update.estimated_retirement_write_bytes = 4
 	last_update.gpu_blit_submit_usec = Time.get_ticks_usec()-started
@@ -428,7 +498,8 @@ func resource_identity() -> Array[int]:
 	var pools: Array = staging.values()
 	if not pools.has(full_staging): pools.append(full_staging)
 	for pool: StagingPool in pools:
-		ids.append(pool.texture.get_rid().get_id())
+		for resource: StagingResource in pool.resources:
+			ids.append(resource.texture.get_rid().get_id())
 	ids.sort()
 	return ids
 

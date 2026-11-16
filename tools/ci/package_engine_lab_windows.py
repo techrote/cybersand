@@ -261,18 +261,20 @@ Python, Git or repository installation is required.
    distributions and hold reasons, upload stages, and frame cadence.
    A complete capture does not mean gameplay passed physical evaluation.
 
-Automatic material publication uploads bounded R8/RG8 array layers and copies
+Automatic material publication uploads bounded independent R8/RG8 arrays and copies
 dirty rectangles on the GPU into linear RGBA8 history textures. The
 desktop OpenGL/ANGLE path retains exact material/condition bytes and the original
 appearance shaders; unsupported or detectably invalid resources use full texture
 fallback. Current/previous history, crossfade, collision masks and revision ACKs
 are preserved. At 2048-square RG8, one changed tile submits 32KiB instead of 8MiB;
-the two histories and bounded staging/retirement resources occupy about53.3MiB
+the two histories and bounded staging/retirement resources occupy about64.0MiB
 of logical GPU texture storage. GPU copy writes are additional traffic.
-Two layers in one fixed staging array per size class alternate after submission.
+Three independent one-layer staging arrays per size class rotate after submission.
+Each has its own fixed sampler. Adjacent copies merge only inside both source
+and destination rows, without extra upload bytes or destination pixels.
 Only the copy operation samples these arrays; ordinary World appearance keeps
 its existing 2D textures. Layer updates retain allocated staging storage.
-Alternation increases reuse distance; it is not a GPU fence or a nonblocking guarantee.
+Rotation increases reuse distance; it is not a GPU fence or a nonblocking guarantee.
 Large changes/full initialization can still be expensive. The early physical
 mailbox removes graphical packet work from the completion handoff but does not
 remove native computation, required terrain installation, strict feedback age,

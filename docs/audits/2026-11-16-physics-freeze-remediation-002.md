@@ -40,7 +40,7 @@ spans; its rejected results are recorded below.
 The current candidate uses Godot 4.7's experimental drawable-texture API on the
 Linux/Windows OpenGL/ANGLE compatibility paths under qualification. Two persistent linear
 RGBA8 targets retain exact logical R8/RG8 current/previous material values. A
-bounded set of R8/RG8 staging arrays receives one immutable atlas-layer upload per
+bounded ring of independent one-layer R8/RG8 staging arrays receives one immutable upload per
 publication, followed by GPU rectangle copies into the recycled history target.
 A dense update uses one full staging upload and one whole-World copy. The
 production path never reads GPU pixels back to construct an update.
@@ -50,8 +50,9 @@ all accumulated dirties and skip byte-identical cached tiles. A single changed
 tile uploads 32 KiB instead of 8 MiB. The two history targets, staging resources and
 retirement sink occupied 44,728,324 logical GPU texture bytes in the one-stage
 e61 checkpoint. The bounded two-ImageTexture experiment occupies 55,902,212 bytes.
-Its array-only staging successor occupies 55,902,213 bytes, including a separate
-1-byte R8 source dummy and excluding driver
+Its two-layer array-only successor occupied 55,902,213 bytes. The new independent
+one-layer ring occupies 44,728,325 / 55,902,213 / 67,076,101 bytes for one / two /
+three resources per size class, including a separate 1-byte R8 source dummy and excluding driver
 allocation overhead. CPU submission bytes exclude GPU source reads and RGBA8
 target writes; the latter are reported as a logical estimate, not bandwidth.
 Upload Images remain immutable while RenderingServer may retain queued refs.
@@ -64,9 +65,12 @@ The material catalogue compatibility guard is retained without a waiver.
 A small separate `texture_blit` Shader uses nearest integer source texels,
 blend-disabled output and direct per-call coordinates. It writes exact R/G,
 zero B and opaque A into a linear target; SRGB targets are rejected.
-Only this copy shader samples a Texture2DArray. Each size class owns one fixed
-array and one fixed sampler material; default two-layer rotation does not
-redefine texture storage or change the ordinary World sampling shaders.
+Only this copy shader samples a Texture2DArray, always at layer zero. Each size
+class owns a fixed ring of independent arrays and fixed sampler materials;
+the provisional three-resource default does not redefine texture storage or
+change the ordinary World sampling shaders. Exact horizontal runs combine
+copies only within both World and atlas rows, preserving upload bytes and
+destination pixel area.
 
 The pinned [DrawableTexture2D resource implementation](https://github.com/godotengine/godot/blob/4.7-stable/scene/resources/drawable_texture_2d.cpp),
 [GLES3 texture storage](https://github.com/godotengine/godot/blob/4.7-stable/drivers/gles3/storage/texture_storage.cpp),
@@ -81,7 +85,7 @@ The pinned GLES3 source uses `glTexImage2D` for ordinary ImageTexture updates
 and `glTexSubImage3D` for array-layer updates. This is an API/storage distinction,
 not proof of a specific driver wait or guaranteed nonblocking behavior. A
 separate ordinary source0 dummy avoids the blit API's fixed 2D source binding;
-the array sampler is bound once per pool through the custom material interface.
+each array sampler is bound once per resource through the custom material interface.
 
 `auto|full|blit` selects publication. Unsupported platforms/backends/capacities
 and detectable resource failures reconstruct both exact full ImageTextures from
@@ -403,6 +407,81 @@ included in that repair. The failed-run artifact is `14217549415`, SHA256
 `68baa789175676d030e9cb882c6a6b017a7ae8756e3a618616ae271760aea5fd`.
 This checkpoint supplies actual GPU correctness evidence, no physical timing
 result, and no performance or physical-hardware approval.
+
+The corrected source `e8880159b611e6d7b4e1cfd245ebbba4837bf690`
+(tree `6603477e1d3322338c1fa9c03672ef21d60b517b`) completed
+[Windows run 43853461245](https://github.com/techrote/cybersand/actions/runs/43853461245).
+Actual GPU correctness and all 15 exact 1–144 physical-prefix comparisons passed;
+there were no extra physical steps, observer drops or material fallbacks.
+Independent raw review nevertheless records **PERFORMANCE FAIL**:
+
+| Order / mode | Rapier steps/s | Physical gap p95 / max ms | Gaps ≥100 ms | Frame interval p95 ms |
+| --- | ---: | --- | ---: | ---: |
+| 0 full | 12.086 | 94.884 / 141.336 | 2 | 95.650 |
+| 1 array, one layer | 11.537 | 147.002 / 242.482 | 37 | 165.849 |
+| 2 array, two layers | 10.992 | 156.313 / 212.398 | 37 | 163.864 |
+| 3 array, two layers | 11.846 | 137.401 / 200.449 | 41 | 156.680 |
+| 4 array, one layer | 11.663 | 154.061 / 190.854 | 39 | 148.759 |
+| 5 full | 12.541 | 94.820 / 124.477 | 1 | 95.589 |
+
+The remaining Windows long-call scope is staging: p95 119.658/120.050 ms for
+one layer and 139.106/122.140 ms for two layers. Corresponding GPU-copy submission
+p95 is only 0.351–0.388 ms. Atlas assembly p95 is about 2.5–2.65 ms, CPU image
+patch spans 1.43–1.61 ms and content-cache spans about 0.35 ms. These are elapsed
+calls. Previously submitted GPU work or CPU scheduling can still contribute to
+a later staging wait. Rapier-call wall p95 also rises despite identical recorded
+states, so no exclusive GPU-transfer or intrinsic-solver attribution is made.
+The two layers share one RID; they do not establish independent resource reuse.
+The raw artifact is `14220536881`, SHA256
+`78484a5133b8239ce2a6454460abcc6d49f8160c19efe3f2384a99d82b2abe09`.
+
+A frozen-source local Linux campaign is retained as an **incomplete adverse
+experiment**, not a six-arm qualification. Full and one-layer modes completed
+144 steps with exact recorded states and associations. Rapier rate fell from
+3.005 to 1.721 steps/s; physical-gap p95 rose from 496.858 to 956.035 ms, maximum
+from 716.850 to 1,091.826 ms, and ≥1000 ms gaps from zero to five. Forward two-layer
+mode failed the unchanged 90-second completion requirement at 132 steps; its
+incomplete capture had p95 1,400.303 ms, maximum 3,139.137 ms and 14 gaps ≥1000 ms.
+Its common 132-step state comparison is diagnostic only. The next reverse arm
+was interrupted during startup after the failure; no trace or receipt existed,
+and the remaining arms never started. Original captures, summary, operator-stop
+receipt and unchanged post-stop source/runtime/harness fingerprints are retained.
+Local staging p95 was only 8.028/13.816 ms for the array captures, and native wall
+times also varied. The whole local slowdown is not attributed to staging calls.
+
+## Independent one-layer ring and exact copy-run experiment
+
+The shared-array result above motivates testing resource reuse separately from
+layer reuse. Each capacity now owns one, two or three independent one-layer
+Texture2DArray resources. Each resource has a fixed sampler material; copies
+always read layer zero. Rejected or byte-identical updates never consume a slot,
+and the equal-size full atlas shares its capacity pool and cursor. Distinct
+current/previous initialization preserves the unused third slot where available.
+This increases reuse distance; it supplies no GPU fence or nonblocking promise.
+
+The same proposal coalesces exact horizontal copy runs. Both adjacent World
+tiles and their packed-atlas tiles must remain in the same respective rows.
+Skipped tiles and either row boundary break the run. The prior per-tile mode
+remains a diagnostic correctness control. Dense full copies already use one
+call and are never counted as coalescing savings. Sink retirement stays separate.
+
+The frozen external proposal passed 1,649 actual Linux OpenGL graphical
+assertions and 19 headless assertions with zero failures. All eight original
+appearance-shader pairs matched exactly. Six square/NPOT ring sequences,
+twelve maximum-height readbacks and twenty channel/boundary copy cases passed;
+the ten tiles/runs pairs had identical actual current/previous GPU hashes,
+uploaded bytes and written pixel area. Source hashes were unchanged after
+execution. These are correctness results, not physical-performance results.
+
+The focused Windows experiment first requires the actual ANGLE GPU gate, then
+runs full/ring1/ring2/ring3/ring3/ring2/ring1/full with the original coupled
+2048² Needle workload. All ring arms hold copy mode at runs. This isolates ring
+resource count within the new code; it does not isolate runs-versus-tiles timing.
+All 28 exact 1–144 physical-state/association pairs, observed resource rotation,
+fixed payload size and at least four ordinary sparse coalesced publications in
+both the matched prefix and whole capture are required. All stalls and failed
+attempts remain in the raw evidence. Physical and frame tails determine whether
+any configuration advances; shorter staging calls alone cannot qualify it.
 
 ## Final qualification and evidence interpretation
 
