@@ -138,7 +138,9 @@ def make_pairs(rows):
     pairs=collections.defaultdict(list)
     for family in c.FAMILIES:
         frees=grouped[family]["."]
-        c.check(frees and branches[family],"no free/branch training examples")
+        c.check(bool(frees),"no free training examples")
+        if family in ("greebles","pipework"):
+            c.check(bool(branches[family]),"no family-specific branch training examples")
         for marker in ("#","+"):
             pressures=grouped[family][marker]
             c.check(len(pressures)>=8,"insufficient real pressure states "+family+marker)
@@ -305,7 +307,7 @@ def run(args):
         if CANCELLED or time.monotonic()-started>args.deadline-540:
             break
         fam=c.FAMILIES[step%3]
-        is_branch=step%4==3
+        is_branch=step%4==3 and fam in ("greebles","pipework")
         marker=("#","+")[(step//3)%2]
         if is_branch:
             data=branches[fam]
