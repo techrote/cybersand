@@ -772,6 +772,30 @@ checks with 625 executable/configuration/runtime inputs unchanged. These passes
 validate the observer and authoring path; they do not explain the Windows gap
 or substitute for its focused replay and subsequent full exact-source campaign.
 
+The focused Windows replay at `5455b4f68cf686d9ba65ffe4dc06a944a1301952`
+([run 43898774067](https://github.com/techrote/cybersand/actions/runs/43898774067))
+passed its actual import, 66-check graphical authoring and 12-check fresh-reopen
+cases. It still finished FAIL: the new post-execution payload guard stopped at
+`Radial2D.svg.import`. The original archive contains CRLF-converted bytes for
+all four tracked import sidecars, whose committed content is canonical LF.
+Actual changed bytes were not retained by that first-mismatch guard; neither
+an EOL-only cause nor a single changed file can be established retrospectively.
+The successor pins import-sidecar exports to LF and retains strict complete
+post-execution hashes, plus every mismatch's before/after bytes and text diff.
+
+The same replay records a 53.087240-second first pre-draw to post-draw signal
+interval, while its longest bracketed Main callback is 57.156 milliseconds.
+Readiness passes after approximately 54.531 seconds; fresh reopen waits about
+2.039 seconds. This reproduces a large startup wall interval, not its CPU, GPU
+or driver cause. Initial native material publication and publisher setup occur
+before that first draw, but this first observer omitted actual backend/fallback
+state. One same-source full/auto/auto/full comparison therefore records actual
+material state at the first draw and uses a fresh profile for each ordinary
+author/reopen pair. Machine and driver caches are not reset. Every original
+readiness and process watchdog remains in force; a failed arm remains failed.
+The original failed receipts and both after-startup frame-gap maxima are kept.
+This diagnostic comparison does not grant engineering or physical acceptance.
+
 ## Final qualification and evidence interpretation
 
 `run_physics_freeze_comparison.py` extracts immutable c1ad source, authenticates

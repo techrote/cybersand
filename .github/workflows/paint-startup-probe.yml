@@ -12,11 +12,12 @@ env:
   CYBERSAND_SOURCE_REVISION: ${{ github.sha }}
 jobs:
   windows-paint:
-    name: Fresh installed graphical PAINT author and reopen
+    name: Installed PAINT profile-cold full versus auto ABBA
     runs-on: windows-2022
-    # Original process watchdogs: import180s + author600s + reopen240s.
-    # Preparation and artifact headroom do not extend those process/test limits.
-    timeout-minutes: 60
+    # Original process watchdogs: import180s + 4*(author600s + reopen240s) = 59min.
+    # Preparation/artifact headroom does not extend any process/readiness cap.
+    # Profiles are cold; machine and driver caches are not reset between arms.
+    timeout-minutes: 90
     defaults:
       run:
         shell: bash
@@ -71,10 +72,10 @@ jobs:
           python -u tools/ci/package_engine_lab_windows.py build --godot-zip "$RUNNER_TEMP/godot-4.7-paint.zip" --notices "$RUNNER_TEMP/paint-startup-notices" --vc "$RUNNER_TEMP/paint-startup-vc" --output "$RUNNER_TEMP/paint-startup-packed" --archive "$RUNNER_TEMP/paint-startup-probe.zip" 2>&1 | tee evidence/package-build.log
           cp "$RUNNER_TEMP/paint-startup-probe.zip.json" evidence/probe-zip.json
           cp "$RUNNER_TEMP/paint-startup-probe.zip.sha256" evidence/probe-zip.sha256
-      - name: Verify fresh ZIP extraction and run only the original PAINT pair
+      - name: Verify fresh ZIP and run four original PAINT pairs with isolated profiles
         run: |
           set -euo pipefail
-          python -u tools/ci/run_paint_startup_probe.py --source-sha "$GITHUB_SHA" --archive "$RUNNER_TEMP/paint-startup-probe.zip" --application C:/cspaintstartup --evidence evidence/paint-startup 2>&1 | tee evidence/paint-startup-runner.log
+          python -u tools/ci/run_paint_startup_probe.py --source-sha "$GITHUB_SHA" --archive "$RUNNER_TEMP/paint-startup-probe.zip" --application C:/cspaintstartup --evidence evidence/paint-startup --profile-comparison 2>&1 | tee evidence/paint-startup-runner.log
       - name: Preserve final probe workflow status even after preparation failure
         if: always()
         shell: pwsh

@@ -58,6 +58,35 @@ func _startup_main_state() -> Dictionary:
 			"request_applied":bool(snapshot.lab_context.get("scenario_request_applied",false))})
 	return state
 
+func _startup_material_state() -> Dictionary:
+	var started := Time.get_ticks_usec()
+	if not is_instance_valid(host) or not host.has_method("material_publication_status"):
+		return {"available":false,"observation_started_usec":started,"observation_finished_usec":Time.get_ticks_usec()}
+	# This getter returns local counters, formats and existing Resource RIDs.
+	# It performs no texture readback, fence, update or worker query.
+	var result: Dictionary = host.material_publication_status()
+	result["available"] = true
+	result["current_texture_rid"] = host.texture.get_rid().get_id() if host.texture != null else 0
+	result["previous_texture_rid"] = host.previous_texture.get_rid().get_id() if host.previous_texture != null else 0
+	result["world_extent"] = [host.world_extent.x,host.world_extent.y]
+	result["render_channels"] = host.render_channels
+	result["paused"] = host.paused
+	result["uploaded_world_generation"] = host.last_uploaded_world_generation
+	result["uploaded_revision"] = host.last_uploaded_revision
+	result["uploaded_render_serial"] = host.last_uploaded_render_snapshot_serial
+	var snapshot: RefCounted = host.latest_snapshot
+	result["startup_snapshot"] = {"available":snapshot != null}
+	if snapshot != null:
+		result.startup_snapshot.merge({"serial":snapshot.serial,"world_generation":snapshot.render_world_generation,
+			"native_tick":snapshot.tick_index,"render_serial":snapshot.render_snapshot_serial,
+			"render_tick":snapshot.render_tick_index,"simulation_revision":snapshot.simulation_world_revision,
+			"backend_name":snapshot.backend_name,"native_worker_request":snapshot.native_worker_request,
+			"scheduler_thread_capacity_hint":snapshot.scheduler_thread_capacity_hint})
+	result["observation_scope"] = "local material publication metadata; no GPU completion or readback"
+	result["observation_started_usec"] = started
+	result["observation_finished_usec"] = Time.get_ticks_usec()
+	return result
+
 func _startup_mark(stage: String, values: Dictionary = {}) -> void:
 	if not startup_active: return
 	var row := {"event":stage,"sequence":startup_event_count,"time_usec":Time.get_ticks_usec(),
@@ -71,6 +100,13 @@ func _startup_mark(stage: String, values: Dictionary = {}) -> void:
 		startup_events[slot] = row
 	var first: Dictionary = startup.first
 	if not first.has(stage):
+		if stage in ["host_add_end","main_enter","main_exit","frame_pre_draw"]:
+			row["material_publication"] = _startup_material_state()
+			if not startup.has("first_material_publications"): startup["first_material_publications"] = {}
+			# Four fixed entries survive any later first/tail event-ring rollover.
+			startup.first_material_publications[stage] = {"event":stage,"sequence":row.sequence,
+				"time_usec":row.time_usec,"process_frame":row.process_frame,"physics_frame":row.physics_frame,
+				"material_publication":row.material_publication}
 		first[stage] = row.time_usec
 		# A hung first callback/read still leaves its preceding boundary in the
 		# subprocess log. Later boundaries remain in the bounded in-memory tail.
