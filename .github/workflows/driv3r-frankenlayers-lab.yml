@@ -15,6 +15,7 @@ on:
       - 'experiments/driv3r/frankenlayers_lab/run-request-wave6.json'
       - 'experiments/driv3r/frankenlayers_lab/run-request-wave7.json'
       - 'experiments/driv3r/frankenlayers_lab/run-request-wave8.json'
+      - 'experiments/driv3r/frankenlayers_lab/run-request-wave9.json'
       - '.github/workflows/driv3r-frankenlayers-lab.yml'
 
 permissions:
@@ -39,7 +40,7 @@ jobs:
           set -euo pipefail
           git merge-base --is-ancestor 67bc90e685f3311f73b6dbb3b0f6773d10e64623 HEAD
           python3 -m compileall -q experiments/driv3r/frankenlayers_lab
-          python3 -m unittest experiments.driv3r.frankenlayers.test_frankenlayers experiments.driv3r.frankenlayers_lab.test_lab experiments.driv3r.frankenlayers_lab.test_holdout -v
+          python3 -m unittest experiments.driv3r.frankenlayers.test_frankenlayers experiments.driv3r.frankenlayers_lab.test_lab experiments.driv3r.frankenlayers_lab.test_holdout experiments.driv3r.frankenlayers_lab.test_counterfactual -v
           python3 - <<'PY'
           import json
           from pathlib import Path
@@ -170,6 +171,26 @@ jobs:
           assert w8["test_host"]==w7["test_host"]
           assert w8["max_parallel"]==2 and w8["timeout_minutes"]<=95 and w8["no_game_changes"]
           assert not any(w8[k] for k in ("paid_api","paid_gpu","merge","ready"))
+          from experiments.driv3r.frankenlayers_lab.counterfactual import PAIRS, SEED as CAUSAL_SEED, STEPS as CAUSAL_STEPS, FAMILY as CAUSAL_FAMILY
+          w9=json.loads(Path("experiments/driv3r/frankenlayers_lab/run-request-wave9.json").read_text())
+          assert w9["schema"]=="frankenlayers-wave9-matched-geometry/1"
+          assert w9["lineage"]["wave8_source_sha"]=="e945aed597969fead1e2d765910078343fcfda5a"
+          assert w9["lineage"]["wave8_actions_run"]==43857283673
+          for key in ("llama_commit","model_q8_sha256","w0_commit"):
+            assert w9["lineage"][key]==r["lineage"][key]
+          assert w9["test_host"]["seed"]==CAUSAL_SEED and w9["test_host"]["steps_per_variant"]==CAUSAL_STEPS
+          assert w9["test_host"]["fixed_family"]==CAUSAL_FAMILY
+          assert w9["test_host"]["scenarios"]==list(PAIRS)
+          assert w9["experiments"]==[
+            dict(label=label,mode=mode,flow=list(LAB_FLOWS[mode]),quant=quant,seed=CAUSAL_SEED)
+            for label,mode,quant in (
+              ("aero4_no10_q4_causal","aero4_no10","q4_k_m"),
+              ("aero5_no23_q4_causal","aero5_no23","q4_k_m"),
+              ("aero4_no2_q8_causal","aero4_no2","q8"),
+            )
+          ]
+          assert w9["max_parallel"]==2 and w9["timeout_minutes"]<=95 and w9["no_game_changes"]
+          assert not any(w9[k] for k in ("paid_api","paid_gpu","merge","ready"))
           PY
           python3 tools/ci/check_ci_provider_policy.py
           python3 tools/ci/check_ci_scheduling_policy.py
@@ -184,7 +205,7 @@ jobs:
           test ! -s /tmp/unexpected.txt
 
   brain:
-    name: Held-out 72-step System One / ${{ matrix.mode }}
+    name: Paired causal geometry System One / ${{ matrix.mode }}
     if: github.repository == 'techrote/cybersand' && github.event_name == 'push' && github.ref == 'refs/heads/research/619-frankenlayers-lab'
     needs: cheap
     runs-on: ubuntu-24.04
@@ -194,22 +215,18 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - mode: aero4_no10_q4_holdout
+          - mode: aero4_no10_q4_causal
             flow: aero4_no10
             quant: q4_k_m
-            seed: 1741
-          - mode: aero5_no23_q4_holdout
+            seed: 2718
+          - mode: aero5_no23_q4_causal
             flow: aero5_no23
             quant: q4_k_m
-            seed: 1741
-          - mode: aero4_no2_q8_holdout
+            seed: 2718
+          - mode: aero4_no2_q8_causal
             flow: aero4_no2
             quant: q8
-            seed: 1741
-          - mode: aerohound8_q8_holdout
-            flow: aerohound
-            quant: q8
-            seed: 1741
+            seed: 2718
     env:
       OMP_NUM_THREADS: '2'
       MKL_NUM_THREADS: '2'
@@ -285,7 +302,7 @@ jobs:
           PY
         env:
           MATRIX_MODE: ${{ matrix.mode }}
-      - name: Source-pinned 72-step held-out obstacle/recovery game-policy trial
+      - name: Source-pinned matched-geometry 3-pair causal game-policy probe
         run: |
           set -euo pipefail
           MODEL_PATH="$(python3 - <<'PY'
@@ -295,7 +312,7 @@ jobs:
           PY
           )"
           if [[ "${{ matrix.quant }}" == "q4_k_m" ]]; then
-            timeout --signal=TERM --kill-after=45 4200 python3 -m experiments.driv3r.frankenlayers_lab.holdout \
+            timeout --signal=TERM --kill-after=45 4200 python3 -m experiments.driv3r.frankenlayers_lab.counterfactual \
               --binary "$RUNNER_TEMP/franken-lab-llama/build/bin/llama-server" \
               --model-q8 "$MODEL_PATH" \
               --model-q4 "$RUNNER_TEMP/franken-lab-q4/d1-2B-from-Q8-Q4_K_M.gguf" \
@@ -304,7 +321,7 @@ jobs:
               --mode "${{ matrix.flow }}" --seed "${{ matrix.seed }}" --source-sha "$GITHUB_SHA" \
               --output "evidence/${{ matrix.mode }}/inference"
           else
-            timeout --signal=TERM --kill-after=45 4200 python3 -m experiments.driv3r.frankenlayers_lab.holdout \
+            timeout --signal=TERM --kill-after=45 4200 python3 -m experiments.driv3r.frankenlayers_lab.counterfactual \
               --binary "$RUNNER_TEMP/franken-lab-llama/build/bin/llama-server" \
               --model "$MODEL_PATH" --w0 "$RUNNER_TEMP/franken-w0.py" \
               --mode "${{ matrix.flow }}" --seed "${{ matrix.seed }}" --source-sha "$GITHUB_SHA" \
