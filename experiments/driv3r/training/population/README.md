@@ -106,3 +106,37 @@ real CyberSand, native Workbench execution or any pretrained SLM adaptation.
 Do not claim that trajectory-level novelty works unless it beats its sham
 control on independent held-out game trajectories. The workflow retains all
 weights and negative cases, without changing game code/content.
+
+## P5 — matched-feedback offline causal ablation, selection archives, and recovery stress
+
+`population_p5.py` tests whether observed novelty *corresponding to a training
+episode* contributes more than the same feedback amplitudes assigned to different
+episodes. Each mutated P0-source policy generates a **frozen TRAIN-only rollout
+dataset** with finite host-legal game actions; four matched MLP copies receive
+identical features, teacher targets, optimizer state and episode order. Arms:
+reward only, measured trajectory novelty, **permuted exactly-matched sham
+feedback**, and an explicit hand-designed morphology target. Signals use
+centered novelty ranks, preserving the complete signed feedback multiset in
+measured and sham arms. This controls signal magnitude and sign frequency
+within each member; it does not imply live on-policy feedback or causal effects
+in the native game.
+
+Champion selection is performed only on SELECTION worlds; a small MAP-Elites
+archive retains best-reward candidates within predeclared coarse topology bins.
+We also evaluate reward-ranked equally sized subsets, retaining single-cell
+archive failures explicitly. Final frozen models run on untouched 30/48-step
+holdouts and a deterministic *synthetic* adversarial world with a one-cell
+east cul-de-sac requiring RETRACE, added protected material and a mid-run goal
+switch. Original weights, split hashes, exact feedback signals, selection
+bins, held-out comparisons, SVGs and trajectory JSON are retained.
+
+Reproduction after P0, for two independent cohorts:
+
+    python experiments/driv3r/training/population/population_p5.py --p0-output /tmp/population-evidence --output /tmp/population-evidence/p5_632 --seed 632 --members 3 --train-episodes 12 --selection-episodes 6 --holdout-episodes 6 --horizon 48
+    python experiments/driv3r/training/population/population_p5.py --p0-output /tmp/population-evidence --output /tmp/population-evidence/p5_633 --seed 633 --members 3 --train-episodes 12 --selection-episodes 6 --holdout-episodes 6 --horizon 48
+
+This is **real Adam training on frozen trajectories**, not reinforcement
+learning, not a pretrained SLM/adapter, not native CyberSand painting, and
+not human-rated aesthetic improvement. A synthetic novelty scalar should
+only be credited if it beats the amplitude-matched sham on untouched worlds.
+No CyberSand game code or production content changes; Draft/HOLD only.
