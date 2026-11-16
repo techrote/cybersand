@@ -8,8 +8,6 @@ strange shapes are legitimate continuations. Independent held-out worlds
 retain the model's full legal STOP menu. External synthetic host, NOT native
 Godot PAINT, NOT source-faithful W0 and NOT pretrained SLM optimization.
 """
-Research only: no Godot, native PAINT, source-faithful W0 or pretrained SLM.
-"""
 from __future__ import annotations
 
 import argparse
