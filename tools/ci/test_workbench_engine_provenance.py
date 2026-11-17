@@ -75,7 +75,11 @@ class EngineIdentity(unittest.TestCase):
                         archive.write(p, p.relative_to(self.payload).as_posix())
             else:
                 for name, data in members:
-                    archive.writestr(name, data)
+                    # A string passed to writestr is normalized by ZipInfo on
+                    # Windows. Emit the actual adversarial archive spelling.
+                    member = zipfile.ZipInfo()
+                    member.filename = member.orig_filename = name
+                    archive.writestr(member, data)
         self.delivery["artifact_sha256"] = engine.digest(self.archive)
         self.write(self.source / "third_party/workbench-godot-evaluation.lock.json", self.delivery)
 
@@ -141,13 +145,28 @@ class EngineIdentity(unittest.TestCase):
             engine.verify_payload(self.payload)
 
     def test_unsafe_archive_paths(self):
-        for name in ("../escape", "/absolute", "C:/absolute", "bin/../escape", "NUL", "bad\\path", "trailing."):
+        for name in ("../escape", "/absolute", "C:/absolute", "bin/../escape", "NUL", "bad\\path", "bad\x00path", "trailing.", "double//"):
             with self.subTest(name=name):
                 self.rebind_fixture([(name, b"invalid")])
+                with zipfile.ZipFile(self.archive) as archive:
+                    self.assertEqual(archive.infolist()[0].orig_filename, name)
                 destination = self.root / ("unsafe-" + str(len(list(self.root.iterdir()))))
                 with self.assertRaises(RuntimeError):
                     engine.restore(self.archive, destination)
+                self.assertEqual(list(destination.rglob("*")), [])
         self.assertFalse((self.root / "escape").exists())
+
+    def test_windows_normalized_archive_alias_is_rejected(self):
+        self.rebind_fixture([("bad\\path", b"invalid")])
+        # Exercise Windows ZipInfo parsing even on the Linux developer host.
+        with patch.object(zipfile.os, "sep", "\\"):
+            with zipfile.ZipFile(self.archive) as archive:
+                member = archive.infolist()[0]
+                self.assertEqual(member.orig_filename, "bad\\path")
+                self.assertEqual(member.filename, "bad/path")
+            with self.assertRaisesRegex(RuntimeError, "Non-canonical"):
+                engine.restore(self.archive, self.output)
+        self.assertEqual(list(self.output.rglob("*")), [])
 
     def test_case_colliding_archive_members(self):
         self.rebind_fixture([("same.txt", b"one"), ("SAME.txt", b"two")])

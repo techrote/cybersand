@@ -15,6 +15,7 @@ jobs:
   linux-qualification:
     strategy:
       fail-fast: false
+      max-parallel: 1
       matrix:
         include:
           - platform: linux
@@ -129,6 +130,7 @@ jobs:
   windows-qualification:
     strategy:
       fail-fast: false
+      max-parallel: 1
       matrix:
         include:
           - platform: windows

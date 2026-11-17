@@ -115,7 +115,11 @@ def restore(archive, output):
     seen = set()
     with zipfile.ZipFile(archive) as bundle:
         for member in bundle.infolist():
-            name = member.filename.rstrip("/") if member.is_dir() else member.filename
+            # ZipInfo can normalize platform separators and truncate NULs while
+            # parsing. Validate the original archive spelling before accepting
+            # an OS-dependent alias for a different destination.
+            need(member.orig_filename == member.filename, "Non-canonical engine archive member")
+            name = member.orig_filename[:-1] if member.is_dir() else member.orig_filename
             path = relative(name)
             need(name.casefold() not in seen and not stat.S_ISLNK(member.external_attr >> 16),
                  "Duplicate or linked engine archive member")

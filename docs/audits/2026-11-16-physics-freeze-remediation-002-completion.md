@@ -395,3 +395,25 @@ The independently reproduced raw comparison review has SHA256
 `04f0850bf8a0a1878683127efb13a5b9a4bc286ec4f23acaf38c6b0205c600c0`.
 They clear this composition for final qualification, without substituting for
 the exact final source's Linux/Windows campaign or the owner's physical gate.
+
+The first integrated attempt at `37306928c9ee2ae21cfd9505e9ffc8f2e34bd5c9`
+retains two preparation failures. In
+[Actions43986532696](https://github.com/techrote/cybersand/actions/runs/43986532696),
+the Windows provenance test reached a missing proof file instead of rejecting
+its adversarial backslash filename: Python's `ZipInfo` normalizes Windows
+separators both while creating and reading members. The fixture now emits and
+checks the exact original filename, and restoration rejects any normalized
+alias before extraction. NUL and repeated directory-separator cases are also
+rejected. All13 local tests pass, including simulated Windows normalization;
+actual Windows execution remains a rerun gate. This failed job never restored
+the engine, built a package or executed the application. Its artifact14284874407
+has SHA256 `d6234d5fbaa7b742d16a86a3cb55a3bc74d7cd79c9d4eadc4bdfd1667ebf881e`.
+
+The documentation job in
+[Actions43986540460](https://github.com/techrote/cybersand/actions/runs/43986540460)
+also rejected missing explicit `max-parallel` fields in the two singleton
+native-rendezvous probe matrices. Each now declares1; parsed workflow comparison
+confirms no other scheduling or case change. The10 policy tests and inventory
+check over all70 workflows pass. These repairs change no engine binary,
+application runtime, physical contract or measured workload. The original
+failed jobs remain retained; a new source-bound campaign must qualify the repair.
