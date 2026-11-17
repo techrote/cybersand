@@ -34,6 +34,7 @@ constexpr double kSprayQ = static_cast<double>(cybersand::BallisticWaterConfig::
         case O::Pressurized: return "pressurized";
         case O::NonResident: return "non_resident";
         case O::InsufficientQuantity: return "insufficient_quantity";
+        case O::Paused: return "paused";
     }
     return "unknown";
 }

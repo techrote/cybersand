@@ -188,6 +188,10 @@ BallisticLaunchResult World::admit_ballistic_spawn(std::int64_t spawn_x, std::in
     const auto* chunk = find_chunk(address(cx, cy).chunk);
     if (chunk == nullptr) { result.outcome = BallisticLaunchOutcome::NonResident; return result; }
     if (transient_obstacle_at(cx, cy) != 0U) { result.outcome = BallisticLaunchOutcome::Masked; return result; }
+    if (wave_ != nullptr && !ballistic_region_selects(selected_core_region_, scheduler_geometry_, cx, cy)) {
+        result.outcome = BallisticLaunchOutcome::Paused;
+        return result;
+    }
     const auto material = chunk->cells[address(cx, cy).index].material_value();
     if (material != Material::Empty && MaterialRules::descriptor(material).state != MaterialState::Gas) {
         result.outcome = BallisticLaunchOutcome::InvalidRequest;
@@ -217,6 +221,10 @@ BallisticLaunchResult World::launch_ballistic_water_internal(std::int64_t source
     if (chunk == nullptr) { result.outcome = BallisticLaunchOutcome::NonResident; return result; }
     const auto& cell = chunk->cells[source.index];
     if (cell.material_value() != Material::Water) { result.outcome = BallisticLaunchOutcome::NotWater; return result; }
+    if (wave_ != nullptr && !ballistic_region_selects(selected_core_region_, scheduler_geometry_, source_x, source_y)) {
+        result.outcome = BallisticLaunchOutcome::Paused;
+        return result;
+    }
     if (chunk->pressure != nullptr && chunk->pressure->cells[source.index].overfill != 0U) {
         result.outcome = BallisticLaunchOutcome::Pressurized;
         return result;
@@ -355,7 +363,8 @@ bool World::deposit_ballistic_parcel(BallisticParcel& parcel, std::int64_t cx, s
             const bool far_x = std::abs(offset[0]) > 1, far_y = std::abs(offset[1]) > 1;
             bool reachable = false;
             if (!far_x && !far_y) reachable = passable(cx + sx, cy) || passable(cx, cy + sy);
-            else if (far_x && far_y) reachable = passable(cx + sx, cy + sy) && (passable(cx + sx, cy) || passable(cx, cy + sy));
+            else if (far_x && far_y) reachable = passable(cx + sx, cy + sy) && (passable(cx + sx, cy) || passable(cx, cy + sy)) &&
+                                                 (passable(cx + 2 * sx, cy + sy) || passable(cx + sx, cy + 2 * sy));
             else if (far_x) reachable = passable(cx + sx, cy) && (sy == 0 || passable(cx + sx, cy + sy) || passable(cx + 2 * sx, cy));
             else reachable = passable(cx, cy + sy) && (sx == 0 || passable(cx + sx, cy + sy) || passable(cx, cy + 2 * sy));
             if (!reachable) continue;
@@ -593,7 +602,30 @@ bool World::step_ballistic_parcel(BallisticParcel& p) {
         const auto ncx = ballistic_cell(tx), ncy = ballistic_cell(ty);
         if (ncx == cx && ncy == cy) { p.x = tx; p.y = ty; continue; }
         std::uint16_t body = 0;
-        const auto kind = classify_ballistic_cell(ncx, ncy, p, body);
+        auto kind = classify_ballistic_cell(ncx, ncy, p, body);
+        if (wave_ != nullptr && kind == BallisticCell::Free && ncx != cx && ncy != cy) {
+            // wave_flow_v1: a diagonal step between two closed axis cells would
+            // cross a one-cell diagonal wall. It meets the nearer of them instead.
+            std::uint16_t side_body = 0, down_body = 0;
+            const auto side = classify_ballistic_cell(ncx, cy, p, side_body);
+            const auto down = classify_ballistic_cell(cx, ncy, p, down_body);
+            if (side != BallisticCell::Free && down != BallisticCell::Free) {
+                if (down == BallisticCell::Water) {
+                    surface = true;
+                    surface_cell = {cx, ncy};
+                    ++l.surface_entries;
+                    break;
+                }
+                if (side == BallisticCell::Water) {
+                    surface = true;
+                    surface_cell = {ncx, cy};
+                    ++l.surface_entries;
+                    break;
+                }
+                kind = down;
+                body = down_body;
+            }
+        }
         if (kind == BallisticCell::Free) {
             p.x = tx;
             p.y = ty;

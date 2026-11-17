@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <cstdio>
 #include <exception>
+#include <limits>
 #include <memory>
 #include <optional>
 #include <stdexcept>
@@ -115,6 +116,51 @@ void spill_is_off_by_default_and_admission_is_typed() {
     bool refused = false;
     try { (void)hybrid.save_physical_state(); } catch (const std::logic_error&) { refused = true; }
     require(refused && hybrid.physical_state_format_version() == 0U, "hybrid Wave World claimed exact persistence");
+}
+
+// Pinned from the unmodified base law (origin/experiment/waterlab-631-consolidated-ui,
+// c7386cfb) with the same scenes. A spill-disabled World must reproduce them.
+struct Golden { int scene; unsigned substeps, workers; std::uint64_t physical, state, content; };
+constexpr Golden kBaseLaw[] = {
+    {0, 1, 1, 0x844fd61f59021a8aULL, 0x25901bdfd968b993ULL, 0xfa45619fc83ac4cdULL},
+    {0, 1, 4, 0x844fd61f59021a8aULL, 0x25901bdfd968b993ULL, 0xfa45619fc83ac4cdULL},
+    {0, 3, 1, 0xa9660fab732c5bbcULL, 0xbd2b22d4a5f6e80aULL, 0x118ec4257a1028e8ULL},
+    {0, 3, 4, 0xa9660fab732c5bbcULL, 0xbd2b22d4a5f6e80aULL, 0x118ec4257a1028e8ULL},
+    {1, 1, 1, 0xe411c9c748147d80ULL, 0xb1348ae054c63cbdULL, 0x43999505777f49f3ULL},
+    {1, 1, 4, 0xe411c9c748147d80ULL, 0xb1348ae054c63cbdULL, 0x43999505777f49f3ULL},
+    {1, 3, 1, 0xad40bf19f78ae119ULL, 0x37e3ba858b0b0eeeULL, 0xb64234684900bc53ULL},
+    {1, 3, 4, 0xad40bf19f78ae119ULL, 0x37e3ba858b0b0eeeULL, 0xb64234684900bc53ULL},
+    {2, 1, 1, 0x9d9ec4def35afb59ULL, 0xb0dbf26da7078a1fULL, 0x47e48c201bf2b286ULL},
+    {2, 1, 4, 0x9d9ec4def35afb59ULL, 0xb0dbf26da7078a1fULL, 0x47e48c201bf2b286ULL},
+    {2, 3, 1, 0x1b1d302b9af3c235ULL, 0x8b462a09edafdf3cULL, 0x10d5344ac7d6afd8ULL},
+    {2, 3, 4, 0x1b1d302b9af3c235ULL, 0x8b462a09edafdf3cULL, 0x10d5344ac7d6afd8ULL},
+};
+
+void disabled_spill_reproduces_the_base_law() {
+    for (const auto& golden : kBaseLaw) {
+        auto cfg = config(Mode::Original, golden.workers, static_cast<std::uint8_t>(golden.substeps));
+        if (golden.workers == 4U) { cfg.wave_flow.spill.fall = 7; cfg.wave_flow.spill.launch_budget = 9; } // unused tuning
+        World w(cfg);
+        const int n = 300;
+        box(w, n, n);
+        if (golden.scene == 0) {
+            rect(w, 1, 120, 90, 179, Material::Water);
+            for (int x = 150; x < 260; x += 7)
+                (void)w.set_cell_state(x, 40 + x % 23, Material::Water, static_cast<std::uint16_t>(30 + x % 200), 0);
+        } else if (golden.scene == 1) {
+            rect(w, 1, 140, 150, 3, Material::Wall);
+            rect(w, 1, 90, 150, 50, Material::Water);
+            rect(w, 1, 260, 298, 39, Material::Water);
+        } else {
+            rect(w, 1, 200, 298, 99, Material::Water);
+            rect(w, 20, 180, 40, 20, Material::Water);
+            w.set_simulation_region(RectI64{0, 0, 192, n});
+        }
+        for (int t = 0; t < 400; ++t) (void)w.tick();
+        require(w.physical_state_hash() == golden.physical && w.state_hash() == golden.state && w.content_hash() == golden.content,
+                "spill-disabled Wave diverged from the pinned base law (scene " + std::to_string(golden.scene) + ", substeps " +
+                    std::to_string(golden.substeps) + ", workers " + std::to_string(golden.workers) + ")");
+    }
 }
 
 void disabled_spill_preserves_wave_identity() {
@@ -283,16 +329,21 @@ void capacity_and_budget_are_explicit_outcomes() {
         rect(*world, 1, height - 1 - 150, 120, 150, Material::Water);
         return world;
     };
-    // Parcel capacity too small for the per-tick budget: the hint stays off
-    // and every face spills natively. Nothing is launched, nothing is lost.
+    // Parcel capacity smaller than the per-tick budget: launches are clamped
+    // to the free slots, a full pool is counted, and the faces that cannot
+    // launch spill through the grid. Nothing is lost.
     auto cfg = config(Mode::Hybrid, 4);
     cfg.ballistic_water.capacity = 8;
     cfg.wave_flow.spill.launch_budget = 16;
     auto starved = build(cfg);
     const auto before = owned(*starved, all);
-    for (int t = 0; t < 200; ++t) (void)starved->tick();
-    require(starved->wave_flow_diagnostics().launched_parcels == 0 && starved->wave_flow_diagnostics().spill_units > 0,
-            "capacity below the launch budget did not fall back to native spill");
+    for (int t = 0; t < 200; ++t) {
+        (void)starved->tick();
+        require(starved->ballistic_parcel_count() <= 8U, "tiny parcel pool exceeded");
+    }
+    const auto clamped = starved->wave_flow_diagnostics();
+    require(clamped.launched_parcels > 0 && clamped.spill_units > 0 && clamped.launch_capacity_skips > 0,
+            "capacity below the launch budget was not clamped, counted and backed by native spill");
     require_ledger_closes(*starved, all, before, "starved capacity");
 
     // Capacity that fills: launches stop at the limit, are counted, and the
@@ -350,14 +401,27 @@ void overfilled_cells_never_wrap_or_overfill_parcels() {
                 world.liquid_mass(12, 11) == 60000U - 255U,
             "launch from an overfilled Wave cell did not hand over exactly one cell");
     require(owned(world, all) == before, "launch from an overfilled cell changed quantity");
-    // A parcel dropped onto the sealed, overfilled pocket cannot enter it.
-    rect(world, 11, 9, 3, 1, Material::Empty);
-    const auto injected = world.inject_ballistic_water(12 * 256 + 128, 5 * 256 + 128, 0, 64, 200);
-    require(injected.outcome == BallisticLaunchOutcome::Launched, "test parcel refused");
-    for (int t = 0; t < 400; ++t) (void)world.tick();
-    require(!world.has_failed(), "overfilled deposit failed the World");
-    require(world.liquid_mass(12, 11) <= 60000U, "landing wrapped or grew a sealed overfilled cell");
-    require(owned(world, all) == before + 200U, "overfilled deposit lost or duplicated Water");
+    // A parcel that enters an almost-full uint16 cell must land elsewhere:
+    // 65500 + 200 would wrap. Parcels advance before the Wave passes, so the
+    // first tick's deposit meets the cell exactly as seeded.
+    World cup(config(Mode::Hybrid, 1));
+    box(cup, 64, 64);
+    rect(cup, 19, 20, 1, 12, Material::Wall);
+    rect(cup, 21, 20, 1, 12, Material::Wall);
+    rect(cup, 19, 32, 3, 1, Material::Wall);
+    rect(cup, 20, 22, 1, 10, Material::Water);
+    require(cup.set_cell_state(20, 21, Material::Water, 65500, 0), "Wave refused a near-ceiling overfilled cell");
+    const RectI64 room{0, 0, 64, 64};
+    const auto seeded = owned(cup, room);
+    const auto drop = cup.inject_ballistic_water(20 * 256 + 128, 20 * 256 + 128, 0, 600, 200);
+    require(drop.outcome == BallisticLaunchOutcome::Launched, "test parcel refused");
+    const auto deposited = cup.ballistic_water_snapshot().ledger.deposited_quantity;
+    (void)cup.tick();
+    require(!cup.has_failed(), "deposit onto a near-ceiling cell failed the World");
+    require(cup.ballistic_water_snapshot().ledger.deposited_quantity == deposited + 200U, "the parcel did not land on the first tick");
+    require(owned(cup, room) == seeded + 200U, "deposit onto an overfilled cell wrapped, lost or duplicated Water");
+    for (int t = 0; t < 200; ++t) (void)cup.tick();
+    require(owned(cup, room) == seeded + 200U, "overfilled cup lost Water afterwards");
 }
 
 void thin_walls_and_masks_stop_spill() {
@@ -443,6 +507,129 @@ void thin_film_is_not_thrown() {
     }
 }
 
+void cleared_world_matches_a_fresh_world() {
+    // clear() must drop carried spill state: a deferral right before clear()
+    // may not change the cleared World's identity or its next launch.
+    auto cfg = config(Mode::Hybrid, 1);
+    cfg.wave_flow.spill.launch_budget = 1;
+    cfg.wave_flow.spill.launch_min = 1;
+    const auto seed = [](World& world) {
+        box(world, 256, 200);
+        rect(world, 1, 60, 40, 139, Material::Water);
+    };
+    World used(cfg);
+    seed(used);
+    for (int t = 0; t < 20 && used.wave_flow_diagnostics().launch_deferrals == 0; ++t) (void)used.tick();
+    require(used.wave_flow_diagnostics().launch_deferrals > 0, "setup did not defer a launch");
+    used.clear();
+    World fresh(cfg);
+    require(used.state_hash() == fresh.state_hash() && used.physical_state_hash() == fresh.physical_state_hash(),
+            "a cleared hybrid World differs from a fresh one");
+    seed(used);
+    seed(fresh);
+    for (int t = 0; t < 30; ++t) { (void)used.tick(); (void)fresh.tick(); }
+    require(used.physical_state_hash() == fresh.physical_state_hash(), "a cleared hybrid World evolves differently");
+}
+
+void paused_floor_is_solid_to_spill() {
+    // Water resting on a paused row must behave exactly as on a wall: the
+    // column pass and the spill receiver test agree that paused cells are solid.
+    for (const auto mode : {Mode::Spill, Mode::Hybrid}) {
+        World walled(config(mode, 4)), paused(config(mode, 4));
+        for (auto* world : {&walled, &paused}) {
+            rect(*world, 0, 0, 128, 1, Material::Wall);
+            rect(*world, 0, 0, 1, 64, Material::Wall);
+            rect(*world, 127, 0, 1, 64, Material::Wall);
+            rect(*world, 1, 10, 20, 54, Material::Water);
+        }
+        rect(walled, 0, 64, 128, 1, Material::Wall);
+        paused.set_simulation_region(RectI64{0, 0, 128, 64});
+        for (int t = 0; t < 40; ++t) { (void)walled.tick(); (void)paused.tick(); }
+        for (int y = 0; y < 64; ++y)
+            for (int x = 0; x < 128; ++x)
+                require(walled.stored_material(x, y) == paused.stored_material(x, y) &&
+                            walled.stored_state_a(x, y) == paused.stored_state_a(x, y),
+                        "Water on a paused floor evolved differently from Water on a wall");
+        require(walled.wave_flow_diagnostics().spill_units == paused.wave_flow_diagnostics().spill_units,
+                "a paused floor was treated as open air");
+        // Original Wave (spill disabled) keeps its qualified law, including its
+        // known stale-support read of a paused floor; spill does not inherit it.
+    }
+}
+
+void parcels_are_not_born_in_paused_cores() {
+    World world(config(Mode::Hybrid, 1));
+    box(world, 256, 256);
+    rect(world, 150, 150, 1, 1, Material::Water);
+    world.set_simulation_region(RectI64{0, 0, 64, 64});
+    const auto injected = world.inject_ballistic_water(150 * 256 + 128, 140 * 256 + 128, 0, 0, 100);
+    require(injected.outcome == BallisticLaunchOutcome::Paused && world.ballistic_parcel_count() == 0,
+            "a parcel was injected inside a paused Wave core");
+    const auto launched = world.launch_ballistic_water(150, 150, 30 * 256 + 128, 30 * 256 + 128, 0, 0, 0, 255);
+    require(launched.outcome == BallisticLaunchOutcome::Paused && world.liquid_mass(150, 150) == 255U,
+            "Water was launched from a paused Wave core");
+    const auto inside = world.inject_ballistic_water(30 * 256 + 128, 30 * 256 + 128, 0, 0, 100);
+    require(inside.outcome == BallisticLaunchOutcome::Launched, "selected-core injection regressed");
+}
+
+void full_parcel_pool_is_counted_and_clamped() {
+    // A per-tick budget larger than the free slots still launches into the
+    // free slots; a full pool is an explicit, counted outcome.
+    auto cfg = config(Mode::Hybrid, 4);
+    cfg.ballistic_water.capacity = 300;
+    cfg.wave_flow.spill.launch_budget = 256;
+    World world(cfg);
+    box(world, 384, 256);
+    rect(world, 1, 105, 120, 150, Material::Water);
+    for (int k = 0; k < 120; ++k)
+        require(world.inject_ballistic_water((200 + k) * 256 + 128, 20 * 256 + 128, 0, 0, 10).outcome ==
+                    BallisticLaunchOutcome::Launched, "filler parcel refused");
+    const RectI64 all{0, 0, 384, 256};
+    const auto before = owned(world, all);
+    std::uint64_t peak = 0;
+    for (int t = 0; t < 60; ++t) {
+        (void)world.tick();
+        peak = std::max<std::uint64_t>(peak, world.ballistic_parcel_count());
+        require(world.ballistic_parcel_count() <= 300U, "parcel capacity exceeded");
+    }
+    const auto diagnostics = world.wave_flow_diagnostics();
+    require(diagnostics.launched_parcels > 0, "a budget above the free slots disabled the release");
+    require(peak == 300U && diagnostics.launch_capacity_skips > 0, "a full parcel pool was not reached or not counted");
+    require_ledger_closes(world, all, before, "clamped budget");
+}
+
+void diagonal_one_cell_wall_holds() {
+    // A 45-degree wall one cell thick: Water may neither land beyond it from
+    // the deposit ring nor step through it diagonally in flight.
+    const int n = 128;
+    World world(config(Mode::Hybrid, 1));
+    box(world, n, n);
+    for (int x = 1; x < n - 1; ++x) {
+        const int y = 103 - x;
+        if (y > 0 && y < n - 1) world.set(x, y, Material::Wall);
+    }
+    for (int y = 1; y < n - 1; ++y)
+        for (int x = 1; x < n - 1; ++x)
+            if (x + y < 103) world.set(x, y, Material::Water);
+    const auto far_side = [&] {
+        std::uint64_t total = 0;
+        for (int y = 1; y < n - 1; ++y)
+            for (int x = 1; x < n - 1; ++x)
+                if (x + y > 103 && world.stored_material(x, y) == Material::Water) total += world.liquid_mass(x, y);
+        return total;
+    };
+    for (int k = 0; k < 40; ++k)
+        (void)world.inject_ballistic_water((20 + k) * 256 + 128, (82 - k) * 256 + 128, 300, 300, 100);
+    for (int t = 0; t < 200; ++t) {
+        (void)world.tick();
+        require(far_side() == 0U, "Water crossed a one-cell diagonal wall");
+    }
+    std::vector<BallisticParcel> parcels(world.ballistic_parcel_count());
+    (void)world.copy_ballistic_parcels(parcels);
+    for (const auto& p : parcels)
+        require((p.x >> 8) + (p.y >> 8) < 103, "a parcel flew through a one-cell diagonal wall");
+}
+
 }  // namespace
 
 int main(int argc, char** argv) {
@@ -458,7 +645,13 @@ int main(int argc, char** argv) {
     };
     const Test tests[] = {
         {"spill is off by default and admission is typed", spill_is_off_by_default_and_admission_is_typed},
+        {"disabled spill reproduces the base law", disabled_spill_reproduces_the_base_law},
         {"disabled spill preserves Wave identity", disabled_spill_preserves_wave_identity},
+        {"cleared World matches a fresh World", cleared_world_matches_a_fresh_world},
+        {"paused floor is solid to spill", paused_floor_is_solid_to_spill},
+        {"parcels are not born in paused cores", parcels_are_not_born_in_paused_cores},
+        {"full parcel pool is counted and clamped", full_parcel_pool_is_counted_and_clamped},
+        {"diagonal one-cell wall holds", diagonal_one_cell_wall_holds},
         {"exposed reservoir collapses and conserves", exposed_reservoir_collapses_and_conserves},
         {"worker counts and repeats are identical", worker_counts_and_repeats_are_identical},
         {"waterfall lands fills and rejoins", waterfall_lands_fills_and_rejoins},

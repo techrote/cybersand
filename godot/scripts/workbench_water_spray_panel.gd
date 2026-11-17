@@ -903,13 +903,13 @@ func _refresh_spill(wave: Dictionary, wave_requested: bool, changes: Array[Strin
 	if not bool(spill.enabled):
 		_spill_status.text = "Waterwall spill OFF · original Wave Flow is running."
 		return
-	_spill_status.text = "Waterwall spill ON · %s · exposed-face transfer %d units · falling %d cells\nParcels: launched %d (%d units) · in flight %d / %d (peak %d, %d units) · landed %d units · refused %d · deferred %d · launch %.3f ms/tick · flight %.3f ms" % [
+	_spill_status.text = "Waterwall spill ON · %s · exposed-face transfer %d units · falling %d cells\nParcels: launched %d (%d units) · in flight %d / %d (peak %d, %d units) · landed %d units · refused %d · deferred %d · pool full %d ticks · launch %.3f ms/tick · flight %.3f ms" % [
 		"ballistic release" if bool(spill.get("parcels",false)) else "grid only",
 		int(spill.get("spill_units",0)),int(spill.get("falling_cells",0)),
 		int(spill.get("launched_parcels",0)),int(spill.get("launched_units",0)),
 		int(spill.get("parcels_live",0)),int(spill.get("parcels_capacity",0)),int(spill.get("parcels_peak",0)),
 		int(spill.get("in_flight_units",0)),int(spill.get("deposited_units",0)),
-		int(spill.get("launch_refusals",0)),int(spill.get("launch_deferrals",0)),
+		int(spill.get("launch_refusals",0)),int(spill.get("launch_deferrals",0)),int(spill.get("launch_capacity_skips",0)),
 		float(spill.get("launch_ms_per_tick",0.0)),float(spill.get("parcel_advance_ms",0.0))]
 	_spill_status.tooltip_text = "Units are Water mass units (255 = one full cell). Refused = the parcel pool or spawn cell could not take a launch; deferred = beyond the per-tick budget. In both cases the Water stays in its cell and spills through the grid on the next tick."
 

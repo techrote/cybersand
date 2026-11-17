@@ -2337,6 +2337,7 @@ Dictionary CyberNativeCellWorld::get_wave_flow_status() const {
         spill["launched_units"] = static_cast<std::int64_t>(wave.launched_units);
         spill["launch_refusals"] = static_cast<std::int64_t>(wave.launch_refusals);
         spill["launch_deferrals"] = static_cast<std::int64_t>(wave.launch_deferrals);
+        spill["launch_capacity_skips"] = static_cast<std::int64_t>(wave.launch_capacity_skips);
         spill["launch_ms_per_tick"] = wave.ticks == 0U ? 0.0
             : static_cast<double>(wave.launch_nanoseconds) / 1.0e6 / static_cast<double>(wave.ticks);
         spill["parcels_live"] = static_cast<std::int64_t>(flight.live);

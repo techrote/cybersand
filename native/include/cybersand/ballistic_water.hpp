@@ -75,6 +75,7 @@ enum class BallisticLaunchOutcome : std::uint8_t {
     Pressurized,
     NonResident,
     InsufficientQuantity,
+    Paused,   // wave_flow_v1 only: the spawn or source cell is outside the selected simulation region
 };
 
 struct BallisticLaunchResult {

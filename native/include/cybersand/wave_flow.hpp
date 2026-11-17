@@ -153,6 +153,7 @@ struct WaveFlowDiagnostics {
     std::uint64_t launch_refusals = 0;   // launches the parcel owner refused (capacity, spawn cell); Water stayed
     std::uint64_t launch_deferrals = 0;  // nominated faces beyond the per-tick budget or the per-strip list
     std::uint64_t launch_nanoseconds = 0;
+    std::uint64_t launch_capacity_skips = 0; // ticks with no free parcel slot; exposed faces spilled through the grid
 };
 
 }  // namespace cybersand

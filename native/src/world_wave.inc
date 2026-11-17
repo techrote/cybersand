@@ -246,7 +246,7 @@ WaveFlowDiagnostics World::wave_flow_diagnostics() const noexcept {
     }
     for (const auto& scratch : wave_->scratch)
         result.storage_bytes += (scratch.mass.capacity() + scratch.weight.capacity()) * sizeof(std::int32_t) +
-                                scratch.flags.capacity();
+                                scratch.flags.capacity() + scratch.launch.capacity() * sizeof(WaveState::Launch);
     result.storage_bytes += wave_->sorted.capacity() * sizeof(WaveState::Entry) +
                             wave_->grow.capacity() * sizeof(ChunkCoord) +
                             wave_->tasks.capacity() * sizeof(WaveState::Task) +
@@ -774,7 +774,10 @@ void World::wave_flux_task(std::size_t task_index) noexcept {
                 // Whether the cell rests on something solid (or on the edge of
                 // what is solved, which is treated as a floor).
                 const auto supported = [&](const Chunk* owner, std::size_t at) noexcept {
-                    if (ly + 1 < size) return (owner->wave->meta[at + stride] & WaveChunk::kSolid) != 0U;
+                    if (ly + 1 < size)
+                        // Spill: a paused cell keeps stale meta but is solid to the column pass.
+                        return (owner->wave->meta[at + stride] & WaveChunk::kSolid) != 0U ||
+                               (spill.enabled && !owner->wave->included(static_cast<std::int32_t>(at - row), ly + 1));
                     const auto* under = owner->wave->below;
                     const auto column = static_cast<std::int32_t>(at - row);
                     return under == nullptr || !under->wave->included(column, 0) ||
@@ -830,7 +833,11 @@ void World::wave_flux_task(std::size_t task_index) noexcept {
                         const auto* owner = rightward ? other : &chunk;
                         const auto at = rightward ? j : i;
                         std::uint8_t under = WaveChunk::kSolid;
-                        if (ly + 1 < size) under = owner->wave->meta[at + stride];
+                        if (ly + 1 < size) {
+                            // Paused cells keep stale meta; the column pass treats them as solid.
+                            if (owner->wave->included(static_cast<std::int32_t>(at - row), ly + 1))
+                                under = owner->wave->meta[at + stride];
+                        }
                         else if (const auto* below = owner->wave->below;
                                  below != nullptr && below->wave->solve && below->wave->included(static_cast<std::int32_t>(at - row), 0))
                             under = below->wave->meta[at - row];
@@ -1113,8 +1120,11 @@ void World::advance_wave_flow(TickStats& stats) {
     // Hybrid release: decided once per tick by the owner, never by a worker.
     const auto& spill = config_.wave_flow.spill;
     const bool hybrid = spill.enabled && config_.ballistic_water.enabled && spill.launch_budget > 0;
-    state.launch = hybrid && !state.launch_backoff &&
-        ballistic_parcels_.size() + static_cast<std::size_t>(spill.launch_budget) <= config_.ballistic_water.capacity;
+    // At least one free parcel slot opens the release; the per-tick budget is
+    // clamped to the free slots when the launches run. A full pool is counted.
+    const bool room = ballistic_parcels_.size() < config_.ballistic_water.capacity;
+    if (hybrid && !state.launch_backoff && !room) ++diagnostics.launch_capacity_skips;
+    state.launch = hybrid && !state.launch_backoff && room;
     state.launch_backoff = false;
     if (hybrid)
         for (std::size_t index = 0; index < state.tasks.size(); ++index) {
@@ -1126,6 +1136,7 @@ void World::advance_wave_flow(TickStats& stats) {
         }
     state.mask_present = !transient_obstacles_->occupied_indices.empty();
     diagnostics.prepare_nanoseconds += elapsed(started);
+    diagnostics.last_falling_units = diagnostics.last_falling_cells = 0;
     diagnostics.last_tasks = static_cast<std::uint32_t>(state.tasks.size());
     diagnostics.last_solved_chunks = static_cast<std::uint32_t>(state.sorted.size());
     diagnostics.solved_chunks += state.sorted.size();
@@ -1248,7 +1259,8 @@ void World::advance_wave_flow(TickStats& stats) {
         // Each one is an exact transfer from its cell to one parcel.
         started = Clock::now();
         const auto& law = config_.ballistic_water;
-        auto budget = spill.launch_budget;
+        auto budget = static_cast<std::int32_t>(std::min<std::size_t>(static_cast<std::size_t>(spill.launch_budget),
+            config_.ballistic_water.capacity - ballistic_parcels_.size()));
         bool held = false;
         for (std::size_t index = 0; index < state.tasks.size(); ++index) {
             auto& scratch = state.scratch[index];

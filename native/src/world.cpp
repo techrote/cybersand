@@ -3112,7 +3112,7 @@ void World::clear() {
     ++hard_surface_revision_;
     hard_surface_full_refresh_required_ = true;
     if (pressure_ != nullptr) pressure_->reset();
-    if (wave_ != nullptr) { wave_->round = 0; wave_->diagnostics = {}; }
+    if (wave_ != nullptr) { wave_->round = 0; wave_->diagnostics = {}; wave_->launch_backoff = false; }
     inertial_ledger_ = {};
     initialize_settled_discovery();
 }
