@@ -289,6 +289,14 @@ cells are solid to both the column pass and the spill receiver and support
 tests. A spill World therefore evolves identically against a paused floor and
 a wall. Original Wave keeps its known stale-support read there.
 
+**Body push.** Two new fields control the force Wave Water offers to bodies:
+`WaveFlowConfig::body_push` (n/256, 0–1024, default 256) and
+`body_push_by_mass` (0/1, default 0). With the defaults, the original
+per-wet-cell contact is unchanged. With `body_push_by_mass`, each resting or
+leaning contact is scaled by its cell's mass up to one cell. The contact count
+is unchanged. These fields are observation-only: they never change Water state
+and are not bound into identity.
+
 **Diagnostics** (`WaveFlowDiagnostics`, appended): `spill_units`, `relief_units`,
 `spill_faces`, `last_falling_units/cells`, `launched_parcels/units`,
 `launch_refusals`, `launch_deferrals`, `launch_capacity_skips` and

@@ -122,6 +122,14 @@ struct WaveFlowConfig {
     std::int32_t flow_share_shift = WaveFlowParameters::kFlowShareShift;
     std::int32_t adhesion_shift = WaveFlowParameters::kAdhesionShift;
     WaveSpillConfig spill{};
+    // How hard Wave Water pushes transient bodies (Rapier actors). Observation
+    // only: it changes the contact impulse offered to the body owner, never the
+    // Water law, so it is not part of physical identity.
+    //   body_push          n/256 of the original per-cell push, 0..1024
+    //   body_push_by_mass  1: each contact is scaled by its cell's Water mass
+    //                      (a faint trickle presses ~1% of a full cell); 0: per cell
+    std::int32_t body_push = 256;
+    std::int32_t body_push_by_mass = 0;
     [[nodiscard]] bool operator==(const WaveFlowConfig&) const = default;
 };
 

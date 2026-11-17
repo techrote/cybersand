@@ -536,6 +536,8 @@ private:
     struct JobEffects;
     struct ParallelState;
     struct TransientObstacleState;
+    void wave_press_body(std::uint16_t body, int dx, int dy, std::int64_t x, std::int64_t y,
+                         std::int32_t cell_mass) noexcept;
     struct ExplosionCommand {
         std::int64_t x = 0;
         std::int64_t y = 0;

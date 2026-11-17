@@ -2312,6 +2312,8 @@ Dictionary CyberNativeCellWorld::get_wave_flow_status() const {
     parameters["empty_pour_shift"] = config.wave_flow.empty_pour_shift;
     parameters["flow_share_shift"] = config.wave_flow.flow_share_shift;
     parameters["adhesion_shift"] = config.wave_flow.adhesion_shift;
+    parameters["body_push"] = config.wave_flow.body_push;
+    parameters["body_push_by_mass"] = config.wave_flow.body_push_by_mass;
     out["parameters"] = parameters;
     // WAVE-WATERWALL-001: applied spill configuration and copied counters.
     {

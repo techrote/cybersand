@@ -18,6 +18,7 @@ const WAVE_TUNING := [
 	"workbench_wave_wake_peak","workbench_wave_rest_head","workbench_wave_stick",
 	"workbench_wave_calm","workbench_wave_calm_damp_shift","workbench_wave_maximum_mass",
 	"workbench_wave_empty_pour_shift","workbench_wave_flow_share_shift","workbench_wave_adhesion_shift",
+	"workbench_wave_body_push","workbench_wave_body_push_by_mass",
 ]
 # WAVE-WATERWALL-001 exposed-face spill: Wave-only construction requests.
 const WAVE_SPILL_SWITCHES := ["workbench_wave_spill","workbench_wave_spill_parcels"]

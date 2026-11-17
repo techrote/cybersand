@@ -90,6 +90,8 @@ const WAVE_SPINS := [
 	["workbench_wave_empty_pour_shift", "Empty pour", 1, 8, 1, 2, "Donor share into Empty is 1 / 2^N. One is the fastest conservative setting."],
 	["workbench_wave_flow_share_shift", "Wet share", 1, 8, 1, 1, "Donor share between wet neighbours is 1 / 2^N. One is the conservative maximum."],
 	["workbench_wave_adhesion_shift", "Adhesion shift", 0, 8, 1, 1, "Surface adhesion film is Water film / 2^N. Larger = less sticky."],
+	["workbench_wave_body_push", "Body push", 0, 1024, 16, 256, "How hard Wave Water pushes actors and bodies, n/256 of the original push. 0 = no push. Affects only the force offered to Rapier, never the Water itself."],
+	["workbench_wave_body_push_by_mass", "Push by amount", 0, 1, 1, 1, "1: each wet cell pushes in proportion to the Water it holds, so a faint trickle barely touches a flyer. 0: every wet cell pushes like a full one (original Wave)."],
 ]
 # WAVE-WATERWALL-001: Wave-only exposed-face spill. Off = original Wave Flow.
 const SPILL_SWITCHES := [
@@ -225,7 +227,7 @@ func build(owner: Control, parent: Control, row_factory: Callable, jet_point: Ca
 	_wave_notice.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_wave_notice.text = "Reset stages v2 defaults. Apply solver / tuning or Load / reset scene installs requested values."
 	tuning.add_child(_wave_notice)
-	for group: Array in [["Motion / response",0,8],["Sleep / rest",8,14],["Transfer / capacity",14,18]]:
+	for group: Array in [["Motion / response",0,8],["Sleep / rest",8,14],["Transfer / capacity",14,18],["Bodies (Rapier actors)",18,20]]:
 		var heading := Label.new()
 		heading.text = group[0]
 		tuning.add_child(heading)

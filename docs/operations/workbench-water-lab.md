@@ -23,7 +23,7 @@ Open it to access a resizable, scrollable, non-modal five-tab Water Lab:
 | Tab | Controls |
 |---|---|
 | Solvers & scenes | One Water-law selector for FreeMass, Wave Flow, PressureFlow reference/cached/dormant and Inertial; four authored comparison scenes and pool workers |
-| Wave tuning | All 18 bounded Wave controls, presets, Reset, Revert and native values |
+| Wave tuning | All 18 bounded Wave controls, Body push (Water force on Rapier actors), presets, Reset, Revert and native values |
 | Transport & spray | Ballistic, IN signed, face release and tuning, PF gas/capacity, fine cores, impact spray, jet tuning |
 | Equipment | Valves, drains, nozzles, aiming, pumps, supply, placement and built-in equipment starts |
 | Advanced policy | Full native-backed liquid policy assignment editor, original presets, geometry and one-shot normalization |
@@ -39,6 +39,21 @@ requests its FreeMass carrier; native activation requires **Apply solver /
 tuning** or **Load / reset scene**, then a positive native readback. Returning
 to PF/Inertial/FreeMass restores law-specific requests. It never silently changes
 the production Water default.
+
+## Body push (Water force on actors)
+
+**Bodies (Rapier actors)** on the Wave tab sets how hard Wave Water pushes
+actors and bodies. It changes only the force offered to Rapier, never the Water.
+
+- **Body push** is n/256 of the original push. 256 means unchanged, and 0 means
+  Water never pushes a body.
+- **Push by amount** = 1 scales each wet cell's push by the Water it holds. A
+  faint trickle (a few units) then presses about 1% as hard as a full cell. In
+  original Wave, a trickle across a flyer's top pressed as hard as a solid sheet
+  and could pin even large flyers. 0 keeps original Wave.
+
+The Water Lab stages Push by amount = 1. A World constructed without the option
+keeps the original per-cell push.
 
 ## Waterwall spill (WAVE-WATERWALL-001, Draft/HOLD)
 

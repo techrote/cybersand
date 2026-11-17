@@ -12,7 +12,7 @@ var _workbench: Control
 
 const GROUPS := [
 	["solvers","Solvers & scenes","Choose a Water law, a repeatable authored scene and the native pool size. A request is not active until native acknowledges Apply."],
-	["wave","Wave tuning","Experimental FreeMass-carried Wave Flow. Tune the 18 native parameters; presets stage values. Waterwall spill (bottom of this tab) is a separate switch for exposed faces and waterfalls. The active World is reported below."],
+	["wave","Wave tuning","Experimental FreeMass-carried Wave Flow. Tune the 18 native parameters plus Body push (how hard Water presses actors); presets stage values. Waterwall spill (bottom of this tab) is a separate switch for exposed faces and waterfalls. The active World is reported below."],
 	["transport","Transport & spray","Ballistic Water, inertial motion, face release, gas and fine scheduling are law-specific. Spray and jets are separate live effects."],
 	["equipment","Equipment","Operate valves, drains and nozzles, or create a reusable equipment start. These devices are saved with the authored canvas."],
 	["advanced","Advanced policy","Per-material liquid assignments, normalization and comparison policy. These are construction requests, not a second simulation."],

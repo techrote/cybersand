@@ -192,6 +192,8 @@ void World::validate_wave_flow_config() const {
         tune.flow_share_shift < 1 || tune.flow_share_shift > P::kMaximumPourShift ||
         tune.adhesion_shift < 0 || tune.adhesion_shift > P::kMaximumAdhesionShift)
         throw std::invalid_argument("wave_flow pour/share/adhesion shifts outside native bounds");
+    if (tune.body_push < 0 || tune.body_push > 1024 || tune.body_push_by_mass < 0 || tune.body_push_by_mass > 1)
+        throw std::invalid_argument("wave_flow body push outside 0..1024 or by-mass outside 0..1");
     if (tune.spill.enabled) {
         using S = WaveSpillConfig;
         if (tune.spill.fall < 1 || tune.spill.fall > S::kMaximumFall ||
@@ -363,6 +365,9 @@ void World::wave_column_task(std::size_t task_index) noexcept {
     auto* weight = scratch.weight.data();
     auto* flags = scratch.flags.data();
     auto* const above = entries[0].chunk->wave->above;
+    const auto press_body = [&](std::uint16_t body, int dx, int dy, std::int64_t x, std::int64_t y, std::int32_t cell) {
+        wave_press_body(body, dx, dy, x, y, cell);
+    };
     const bool spill = config_.wave_flow.spill.enabled;
     const auto fall = spill ? config_.wave_flow.spill.fall : 1;
     std::uint64_t falling_units = 0, falling_cells = 0;
@@ -445,7 +450,7 @@ void World::wave_column_task(std::size_t task_index) noexcept {
                 if (body == 0U) continue;
                 // Water resting on a body presses it down (the existing contract).
                 if (r > 0 && mass[r - 1] > 0)
-                    record_transient_contact(body, Material::Water, 0, 1, origin_x + lx, origin_y + r - 1);
+                    press_body(body, 0, 1, origin_x + lx, origin_y + r - 1, mass[r - 1]);
                 mass[r] = -1;
             }
         }
@@ -666,6 +671,28 @@ void World::wave_column_task(std::size_t task_index) noexcept {
     }
 }
 
+// Offer Wave Water's push on a transient body. With the defaults this is
+// exactly record_transient_contact. Otherwise the same accumulators receive a
+// scaled impulse; the contact count is unchanged. Pool workers call this; the
+// accumulators are relaxed atomics, so the order of additions does not matter.
+void World::wave_press_body(std::uint16_t body, int dx, int dy, std::int64_t x, std::int64_t y,
+                            std::int32_t cell_mass) noexcept {
+    const auto& tune = config_.wave_flow;
+    if ((tune.body_push == 256 && tune.body_push_by_mass == 0) || MaterialRules::supports_granular_load(Material::Water)) {
+        record_transient_contact(body, Material::Water, dx, dy, x, y);
+        return;
+    }
+    if (body == 0U || body > kMaximumTransientBodies) return;
+    const auto density = std::clamp<std::int64_t>(
+        static_cast<std::int64_t>(MaterialRules::descriptor(Material::Water).density), 50, 1'600);
+    const auto maximum = static_cast<std::int64_t>(config_.water_experiment_policy.maximum());
+    const auto share = tune.body_push_by_mass != 0 ? std::clamp<std::int64_t>(cell_mass, 0, maximum) : maximum;
+    const auto push = density * tune.body_push * share / (256 * maximum);
+    transient_obstacles_->contacts[body].fetch_add(1U, std::memory_order_relaxed);
+    transient_obstacles_->impulse_x[body].fetch_add(dx * push, std::memory_order_relaxed);
+    transient_obstacles_->impulse_y[body].fetch_add(dy * push, std::memory_order_relaxed);
+}
+
 void World::wave_write_mass(Chunk& chunk, std::size_t at, std::int32_t before, std::int32_t after,
                             WaveHalf& half) noexcept {
     auto& cell = chunk.cells[at];
@@ -757,8 +784,9 @@ void World::wave_flux_task(std::size_t task_index) noexcept {
                         const bool wet_left = (meta_a & WaveChunk::kWet) != 0U;
                         const auto body = transient_obstacle_at(origin_x + lx + (wet_left ? 1 : 0), origin_y + ly);
                         if (body != 0U)
-                            record_transient_contact(body, Material::Water, wet_left ? 1 : -1, 0,
-                                                     origin_x + lx + (wet_left ? 0 : 1), origin_y + ly);
+                            wave_press_body(body, wet_left ? 1 : -1, 0, origin_x + lx + (wet_left ? 0 : 1), origin_y + ly,
+                                wet_left ? static_cast<std::int32_t>(chunk.cells[i].state_a_value())
+                                         : static_cast<std::int32_t>(other->cells[j].state_a_value()));
                     }
                     continue;
                 }

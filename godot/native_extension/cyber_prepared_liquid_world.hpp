@@ -417,7 +417,9 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
                 WaveKnob{"workbench_wave_maximum_mass", &cybersand::WaveFlowConfig::maximum_mass},
                 WaveKnob{"workbench_wave_empty_pour_shift", &cybersand::WaveFlowConfig::empty_pour_shift},
                 WaveKnob{"workbench_wave_flow_share_shift", &cybersand::WaveFlowConfig::flow_share_shift},
-                WaveKnob{"workbench_wave_adhesion_shift", &cybersand::WaveFlowConfig::adhesion_shift}}) {
+                WaveKnob{"workbench_wave_adhesion_shift", &cybersand::WaveFlowConfig::adhesion_shift},
+                WaveKnob{"workbench_wave_body_push", &cybersand::WaveFlowConfig::body_push},
+                WaveKnob{"workbench_wave_body_push_by_mass", &cybersand::WaveFlowConfig::body_push_by_mass}}) {
             if (!options.has(knob.key)) continue;
             if (!workbench || !config->wave_flow.enabled || options[knob.key].get_type() != Variant::INT)
                 throw std::invalid_argument("Wave Flow tuning requires an enabled workbench Wave Flow and integer values");

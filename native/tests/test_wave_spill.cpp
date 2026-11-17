@@ -663,6 +663,39 @@ void blobs_and_stream_share_conserve_and_are_deterministic() {
     require(refused, "invalid blobs value admitted");
 }
 
+void body_push_scales_with_water_amount() {
+    // A body under a faint trickle and under a full sheet. By-mass push follows
+    // the Water present; the default keeps the original per-cell push exactly.
+    const auto push = [](std::int32_t body_push, std::int32_t by_mass, std::uint16_t cell_mass) {
+        auto cfg = config(Mode::Original, 1);
+        cfg.wave_flow.body_push = body_push;
+        cfg.wave_flow.body_push_by_mass = by_mass;
+        World w(cfg);
+        box(w, 128, 64);
+        w.configure_transient_obstacles({0, 0, 128, 64});
+        for (int x = 20; x < 60; ++x) require(w.set_cell_state(x, 39, Material::Water, cell_mass, 0), "setup refused");
+        const auto quantity = w.water_quantity({0, 0, 128, 64});
+        w.clear_transient_contact_observations();
+        for (int y = 40; y < 46; ++y) for (int x = 10; x < 70; ++x) (void)w.set_transient_obstacle(x, y, 1);
+        (void)w.tick();
+        require(w.water_quantity({0, 0, 128, 64}) == quantity, "body push changed Water");
+        return std::pair<std::int64_t, std::uint64_t>{w.transient_contact_impulse_y(1), w.transient_contact_count(1)};
+    };
+    const auto original_full = push(256, 0, 255), original_trickle = push(256, 0, 4);
+    require(original_full.first > 0 && original_full.first == original_trickle.first,
+            "original Wave push should be per wet cell");
+    const auto mass_full = push(256, 1, 255), mass_trickle = push(256, 1, 4);
+    require(mass_full.first == original_full.first, "a full cell must push as before with by-mass push");
+    require(mass_trickle.first * 20 < mass_full.first && mass_trickle.second == mass_full.second,
+            "a trickle still pushed like a sheet with by-mass push");
+    require(push(0, 1, 255).first == 0 && push(512, 0, 255).first == 2 * original_full.first, "body push scale not applied");
+    auto bad = config(Mode::Original);
+    bad.wave_flow.body_push = 1025;
+    bool refused = false;
+    try { World w(bad); } catch (const std::invalid_argument&) { refused = true; }
+    require(refused, "invalid body push admitted");
+}
+
 }  // namespace
 
 int main(int argc, char** argv) {
@@ -686,6 +719,7 @@ int main(int argc, char** argv) {
         {"full parcel pool is counted and clamped", full_parcel_pool_is_counted_and_clamped},
         {"diagonal one-cell wall holds", diagonal_one_cell_wall_holds},
         {"blobs and stream share conserve and are deterministic", blobs_and_stream_share_conserve_and_are_deterministic},
+        {"body push scales with water amount", body_push_scales_with_water_amount},
         {"exposed reservoir collapses and conserves", exposed_reservoir_collapses_and_conserves},
         {"worker counts and repeats are identical", worker_counts_and_repeats_are_identical},
         {"waterfall lands fills and rejoins", waterfall_lands_fills_and_rejoins},
