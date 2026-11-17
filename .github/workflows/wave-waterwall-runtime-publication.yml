@@ -38,7 +38,6 @@ env:
   LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
   GODOT_SILENCE_ROOT_WARNING: '1'
   PYTHONUTF8: '1'
-  CYBERSAND_PUBLICATION_PROFILE: wave_waterwall
 
 defaults:
   run:
@@ -216,7 +215,7 @@ jobs:
           set -euo pipefail
           bash tools/ci/prepare_linux_display.sh
           xvfb-run -a -s '-screen 0 1600x1000x24' \
-            python3 tools/wave_mt/run_workbench_render.py \
+            CYBERSAND_PUBLICATION_PROFILE=wave_waterwall python3 tools/wave_mt/run_workbench_render.py \
               --godot "$RUNNER_TEMP/godot-linux/Godot_v4.7-stable_linux.x86_64" \
               --source-sha "$GITHUB_SHA" --bundle build/wave-mt-linux
 
@@ -389,6 +388,7 @@ jobs:
           & tools/ci/stage_windows_vc_runtime.ps1 -Output $vc -License $runtimeLicense -DeveloperLicense $developerLicense
           if ($LASTEXITCODE -ne 0) { throw 'VC runtime staging failed' }
           $gui = Join-Path $env:RUNNER_TEMP 'godot-windows/Godot_v4.7-stable_win64.exe'
+          $env:CYBERSAND_PUBLICATION_PROFILE = 'wave_waterwall'
           python tools/package_wave_flow_candidate.py build --engine $gui --engine-notices $notices --native-candidate build/wave-mt-windows --vc-runtime $vc --output build/wave-flow-evaluation
           if ($LASTEXITCODE -ne 0) { throw 'Wave Flow evaluation packaging failed' }
           $archive = "build/CyberSand-Waterwall-Windows-$($env:GITHUB_SHA.Substring(0,12)).zip"
@@ -461,7 +461,7 @@ jobs:
       - name: Verify complete matching provenance and stage only the four runtime paths
         run: |
           set -euo pipefail
-          python3 tools/wave_mt/run_workbench_render.py --verify-only --source-sha "$GITHUB_SHA" --bundle build/wave-mt-linux
+          CYBERSAND_PUBLICATION_PROFILE=wave_waterwall python3 tools/wave_mt/run_workbench_render.py --verify-only --source-sha "$GITHUB_SHA" --bundle build/wave-mt-linux
           python3 tools/ci/wave_waterwall_runtime_publication.py stage --source-sha "$GITHUB_SHA" --linux-bundle build/wave-mt-linux --windows-bundle build/wave-mt-windows
           git add -- godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll godot/addons/cybersand_native/runtime-provenance.linux.json godot/addons/cybersand_native/runtime-provenance.json
           python3 tools/ci/wave_waterwall_runtime_publication.py check-index --source-sha "$GITHUB_SHA"

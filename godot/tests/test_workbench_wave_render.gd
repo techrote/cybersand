@@ -71,9 +71,25 @@ func pick(picker: OptionButton, index: int) -> bool:
 	await process_frame
 	return expect(accepted and picker.selected == index,"actual comparison menu selection")
 
+func lab() -> Window:
+	return bench.water_lab.window
+
+func open_lab(tab: int) -> bool:
+	if not lab().visible:
+		if not await click(button("Water Lab…")): return false
+		for frame: int in 3: await process_frame
+	bench.water_lab.select_tab(tab)
+	await process_frame
+	return expect(lab().visible,"Water Lab window opens from the toolbar")
+
+func close_lab() -> bool:
+	if not lab().visible: return true
+	if not await click(button("Close Water Lab",lab())): return false
+	return expect(not lab().visible,"Water Lab closes")
+
 func layout(label: String) -> void:
 	var bounds := Rect2(Vector2.ZERO,Vector2(root.size))
-	for caption: String in ["Play / Pause [P]","Apply solver / tuning","Wave tuning…","Load / reset scene"]:
+	for caption: String in ["Play / Pause [P]","Water Lab…"]:
 		var control := button(caption)
 		expect(control != null and bounds.encloses(control.get_global_rect()),label+" main control fits: "+caption)
 	expect(bounds.encloses(host.world_view.get_global_rect()) and host.world_view.size.y >= 180,
@@ -102,11 +118,13 @@ func save_capture(name_text: String, check_water: bool = true) -> void:
 		"active_label":bench.water_spray._wave_status.text})
 
 func load_scene(index: int, wave: bool) -> bool:
+	if not await open_lab(0): return false
 	if not await pick(bench.water_spray._scene_picker,index): return false
 	var before := int(native().get("session_generation",-1))
-	if not await click(button("Load / reset scene")): return false
+	if not await click(button("Load / reset scene",lab())): return false
 	if not await until(func() -> bool: return installed() and int(native().get("session_generation",-1)) > before,
 		"new native comparison World "+str(Scenes.SCENES[index].id)): return false
+	if not await close_lab(): return false
 	return expect(bool(native().get("enabled",false)) == wave and host.paused,
 		"fresh scene keeps requested solver and starts paused")
 
@@ -137,9 +155,12 @@ func run() -> void:
 	bench = host.shared_workbench
 	if not await until(installed,"ordinary Workbench starts"): await finish(); return
 	layout("1280×800 first open")
-	if not await click(bench.water_spray._wave): await finish(); return
-	var tuning: Window = bench.water_spray._wave_window
+	if not await open_lab(0): await finish(); return
+	if not await pick(bench.water_spray._studio_solver,1): await finish(); return
+	var tuning: Window = lab()
 	expect(tuning.visible and not bool(native().get("enabled",false)),"Wave selection stages while native stays unchanged")
+	bench.water_lab.select_tab(1)
+	await process_frame
 	var rounds: SpinBox = bench.water_spray._wave_fields.workbench_wave_substeps
 	rounds.get_line_edit().text = "2"
 	rounds.apply()
@@ -151,7 +172,7 @@ func run() -> void:
 		await finish(); return
 	expect(int(native().get("substeps",0)) == 2 and int(native().get("parameters",{}).get("gain",0)) == 48,
 		"entered control values match authoritative native readback")
-	if not await click(button("Close",tuning)): await finish(); return
+	if not await close_lab(): await finish(); return
 	for index: int in Scenes.SCENES.size():
 		if not await load_scene(index,true): break
 		if not await run_ticks(180 if index == 1 else 30): break
@@ -163,20 +184,20 @@ func run() -> void:
 				"repeated impact scene owns four real Rapier bodies")
 		await save_capture(str(Scenes.SCENES[index].id))
 		if index == 0:
-			if not await click(button("Wave tuning…")): break
+			if not await open_lab(1): break
 			for frame: int in 3: await process_frame
 			var popup_bounds := Rect2(Vector2.ZERO,Vector2(tuning.size))
-			for caption: String in ["Reset Wave defaults","Revert to native","Apply solver / tuning","Close"]:
+			for caption: String in ["Reset Wave defaults","Revert to native","Apply solver / tuning","Close Water Lab"]:
 				var control := button(caption,tuning)
 				expect(control != null and popup_bounds.encloses(control.get_global_rect()),"tuning action fits: "+caption)
 			expect(Rect2(Vector2.ZERO,Vector2(root.size)).encloses(Rect2(Vector2(tuning.position),Vector2(tuning.size))),
 				"Workbench tuning dialog fits desktop")
 			expect(str(bench.water_spray._wave_applied_fields.workbench_wave_gain.text).contains("48"),"visible native gain readback")
 			await save_capture("tuning",false)
-			if not await click(button("Close",tuning)): break
+			if not await close_lab(): break
 		if failures > 0: break
 	if failures == 0:
-		await click(button("PF cached"))
+		if await open_lab(0): await pick(bench.water_spray._studio_solver,3)
 		if await load_scene(0,false) and await run_ticks(30):
 			expect(str(bench._water_identity(host.tower_context)) == "pressure_flow/cached","actual PressureFlow comparison active")
 			for size: Vector2i in [Vector2i(1024,768),Vector2i(1280,720)]:
