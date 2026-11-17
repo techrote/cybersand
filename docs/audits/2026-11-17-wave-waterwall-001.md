@@ -189,6 +189,11 @@ Blobs keep the sloped lip and the outward arcs, and add a beaded centre line.
 Any stream share brings back a solid, nearly vertical column that hides most of
 the arcs. Stream share therefore stays opt-in, at default 0.
 
+![Ballistic release before and with blobs](wave-waterwall-001-2026-11-17/workbench-blobs-compare.jpg)
+
+Real Workbench on the supplied map with DLL `aad09be8…`. Water quantity read
+3 052 350 at all 17 captures.
+
 ## Protected-source transitions
 
 The material-catalogue compatibility table admits these reviewed steps (LF SHA-256):
