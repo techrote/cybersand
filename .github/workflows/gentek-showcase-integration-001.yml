@@ -1,0 +1,146 @@
+name: GENTEK-SHOWCASE-INTEGRATION-001 exact-source qualification
+
+on:
+  push:
+    branches: [integration/gentek-showcases-001]
+    paths:
+      - 'native/**'
+      - 'godot/**'
+      - 'Makefile'
+      - 'examples/worldgen/architectural/**'
+      - '.github/workflows/gentek-showcase-integration-001.yml'
+      - 'docs/research/gentek-showcase-integration-001.md'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+  pull-requests: read
+
+concurrency:
+  group: gentek-showcase-integration-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  integrated:
+    if: github.ref_name == 'integration/gentek-showcases-001'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    env:
+      GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+      GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
+      GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+    steps:
+      - name: Exact HEAD checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - name: Prove source and toolchain identity
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          mkdir -p build/gentek-showcase-integration
+          printf '%s\n' "$GITHUB_SHA" > build/gentek-showcase-integration/source-sha.txt
+          g++-13 --version | head -n 1
+          python3 --version
+          git status --short
+
+      - name: All 80 core + seven standalone showcase native suites
+        run: |
+          set -euo pipefail
+          timeout 5400 make -j2 worldgen-test CXX=g++-13
+
+      - name: Fetch pinned runtime dependencies
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
+          echo '566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' | sha256sum -c --strict
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          git init "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 900 git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+
+      - name: Build source-matched Linux GDExtension
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: '2'
+          CYBERSAND_REAL_CXX: /usr/bin/g++-13
+          LINUX_CXX: /usr/bin/g++-13
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
+        run: |
+          set -euo pipefail
+          timeout 5400 bash tools/build_pinned_godot_cpp.sh linux
+          timeout 5400 bash tools/build_native_extension.sh
+          cp "$CYBERSAND_NATIVE_OUTPUT" godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
+          sha256sum "$CYBERSAND_NATIVE_OUTPUT" > build/gentek-showcase-integration/native-so.sha256
+
+      - name: Fetch verified Godot 4.7 runtime
+        run: |
+          set -euo pipefail
+          curl -fL --retry 3 -o "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum -c --strict
+          mkdir -p "$RUNNER_TEMP/godot"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          chmod +x "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64"
+
+      - name: Godot architecture project, catalogue and schema contracts
+        run: |
+          set -euo pipefail
+          GODOT_BIN="$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64"
+          timeout 2700 "$GODOT_BIN" --headless --path godot --script res://tests/test_architectural_project_contract.gd
+
+      - name: Render all 80 actual native-material maps and two mixed five-slot maps
+        run: |
+          set -euo pipefail
+          GODOT_BIN="$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64"
+          CYBERSAND_ARCHITECTURE_PHASE=native           CYBERSAND_ARCHITECTURE_OUTPUT="$GITHUB_WORKSPACE/build/gentek-showcase-integration"             timeout 5400 "$GODOT_BIN" --headless --path godot --script res://tests/test_architectural_generator.gd
+          test "$(find build/gentek-showcase-integration -maxdepth 1 -name 'classic-gentek-*.png' | wc -l)" -eq 80
+          test -s build/gentek-showcase-integration/showcase-mixed-five-a.png
+          test -s build/gentek-showcase-integration/showcase-mixed-five-b-negative-origin.png
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib
+          p = pathlib.Path("build/gentek-showcase-integration")
+          report = json.loads((p / "architecture-native.json").read_text())
+          assert report["failures"] == 0, report["failures"]
+          cases = report["cases"]
+          klass = [x for x in cases if x.get("case") == "gentek-classic-001"]
+          mixed = [x for x in cases if x.get("case") == "showcase-integration-five-style"]
+          assert len(klass) == len({x["material_sha256"] for x in klass}) == 80
+          assert len(mixed) == 2
+          assert all(len(x["modules"]) == 5 for x in mixed)
+          pngs = sorted(p.glob("classic-gentek-*.png")) + sorted(p.glob("showcase-mixed-five-*.png"))
+          identity = {"source_sha": os.environ["GITHUB_SHA"],
+                      "checks": report["checks"], "failures": report["failures"],
+                      "showcase_count": 80, "mixed_count": 2,
+                      "png_sha256": {f.name: hashlib.sha256(f.read_bytes()).hexdigest() for f in pngs}}
+          (p / "integration-identity.json").write_text(json.dumps(identity, indent=2) + "\n")
+          print(json.dumps({k: v for k, v in identity.items() if k != "png_sha256"}, indent=2))
+          PY
+
+      - name: Retain full source-matched qualification and PNG evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gentek-showcase-integration-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/gentek-showcase-integration/
+          if-no-files-found: warn
+          retention-days: 90
+
+      - name: Publish two mixed five-style PNGs on the Draft integration branch
+        run: |
+          set -euo pipefail
+          mkdir -p docs/images/gentek-integration
+          cp build/gentek-showcase-integration/showcase-mixed-five-*.png docs/images/gentek-integration/
+          git add docs/images/gentek-integration/
+          if git diff --cached --quiet; then echo "Mixed gallery is identical"; exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'docs(gentek): publish source-matched mixed five-style renders'
+          git push origin HEAD:"$GITHUB_REF_NAME"
