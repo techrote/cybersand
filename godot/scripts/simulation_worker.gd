@@ -2617,6 +2617,9 @@ func _worker_loop() -> void:
 					elif not _world.prepare_workbench_coupling(sample.states,sample.geometry,sample.bodies,
 						sample.session,sample.epoch,not local_paused):
 						_workbench_refusal = "The workbench body sample was refused. Rebuild or reset the selected setup."
+						# A coupling exception quarantines the World: publish it as a
+						# native failure (with its error), never as a healthy snapshot.
+						if _world.has_failed(): _simulation_failed = true
 					else:
 						_workbench_prepared_sample = workbench_serial
 						_workbench_consumed_sample = sample

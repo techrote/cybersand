@@ -2283,10 +2283,17 @@ Dictionary CyberNativeCellWorld::get_wave_flow_status() const {
     if (!world_) return out;
     const auto& config = world_->config();
     const auto wave = world_->wave_flow_diagnostics();
-    const auto quantity = world_->quantity_ledger();
+    // A bound method must never let an exception reach Godot (that aborts the
+    // process). A failed World has no admitted ledger; report it unhealthy.
+    cybersand::QuantityLedgerSnapshot quantity{};
+    bool ledger_ok = !world_->has_failed();
+    if (ledger_ok) {
+        try { quantity = world_->quantity_ledger(); }
+        catch (const std::exception& error) { ledger_ok = false; out["ledger_error"] = String(error.what()); }
+    }
     out["enabled"] = world_->wave_flow_enabled();
     out["session_generation"] = static_cast<std::int64_t>(liquid_policy_session_generation_);
-    out["healthy"] = !world_->has_failed();
+    out["healthy"] = !world_->has_failed() && ledger_ok;
     out["transport_configured"] = config.transport_policy.configured;
     out["pressure_gas_compartment_capacity"] = static_cast<std::int64_t>(config.pressure_gas_compartment_capacity);
     // The shared Apply action also owns non-Wave construction controls. Read

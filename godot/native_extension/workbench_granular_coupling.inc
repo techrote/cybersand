@@ -131,6 +131,10 @@ bool CyberNativeCellWorld::prepare_workbench_coupling(const PackedFloat64Array& 
         workbench_->prepared_tick = world_->completed_tick_index();
         workbench_->sampled = workbench_->valid = true;
         return true;
+    } catch (const std::exception& error) {
+        world_->quarantine_external_coupling(); ++tick_failure_count_;
+        last_tick_error_ = String("Workbench occupancy preparation failed: ") + String(error.what());
+        return false;
     } catch (...) {
         world_->quarantine_external_coupling(); ++tick_failure_count_;
         last_tick_error_ = "Workbench occupancy preparation failed";
