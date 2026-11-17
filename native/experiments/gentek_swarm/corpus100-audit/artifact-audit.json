@@ -1,0 +1,29 @@
+{
+  "result": "PASS",
+  "source_commit": "c02b8bdb3541999fb49f86c98a66706a09e59e96",
+  "registration_commit": "759a2ae0b354ad2ead83929a6e854607e058defa",
+  "counts": {
+    "assertions": 4036,
+    "binaries": 4,
+    "binary_arrays": 650,
+    "cases": 100,
+    "command_receipts": 306,
+    "labelled_refusal_placeholders": 1,
+    "native_png_pixel_matches": 99,
+    "native_png_pixels": 2128896,
+    "png_files_verified": 500,
+    "replay_raw_matches": 100,
+    "sanitized_raw_matches": 100,
+    "semantic_png_pixel_matches": 99,
+    "semantic_png_pixels": 2128896,
+    "shared_bridge_png_pixel_matches": 50,
+    "shared_bridge_png_pixels": 1075200,
+    "source_inputs": 61
+  },
+  "audit_sha256": "cb76879210c2647c32afb2be536a9ccc4213c281f74f66c48500928a4457642f",
+  "limitations": [
+    "99 material PNGs reproduce exact cells and palette; C098 is explicitly a labelled refusal placeholder.",
+    "99 semantic PNGs independently match owner/provenance and separated late geometry; C098 repeats the labelled refusal placeholder.",
+    "Boundary/control/detail images passed PNG decode and selected human visual spot-review; no physics/traversal claim."
+  ]
+}

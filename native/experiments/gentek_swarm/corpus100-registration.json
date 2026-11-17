@@ -1,0 +1,2272 @@
+{
+  "schema": 1,
+  "programme": "GENTEK-SWARM-CORPUS-100",
+  "phase": "A \u2014 characterization only",
+  "source_parent": "267f522222a1eb59b44e92f60a5a06f018af0ad3",
+  "registered_utc": "2026-11-17T23:00:12.011534+00:00",
+  "selection_state": "Registered before generating or visually reviewing this 100-example corpus; existing published SWARM research informs strata, never new output selection.",
+  "source_custody": {
+    "673": "267f522222a1eb59b44e92f60a5a06f018af0ad3",
+    "671": "eb786d97a769f4fed9f5d52bb0b50dd60f0ee16f",
+    "625": "345ecc3ef939523f247b3eb192aa7502bd4d83ca",
+    "662": "5bf7b4b90616130577744e39c9fbc9c0376c52b2"
+  },
+  "frozen_parent_inputs": {
+    "native/experiments/gentek_swarm/common.cpp": "df5a180b86ad978a2dd91e415c3a38a25828b20f7a9739d6f7f2ea31edcc3941",
+    "native/experiments/gentek_swarm/fixtures.cpp": "2d5025763ad0f741f5fd77d25d38f9f448cef601cbcd9a6c9b58a70e0c2d8142",
+    "native/experiments/gentek_swarm/frameweaver.cpp": "2f29c9cb3dc5ab270839b447487635fb305177268eb7d8fed8ca1f1d5588cbeb",
+    "native/experiments/gentek_swarm/mosaic.cpp": "70d6f846f46e8a76fff5297e5fa9b35828acb9e2be7003635e8898dac1199e8b",
+    "native/experiments/gentek_swarm/receptor.cpp": "c6bef593754c055cea373bdbc139f82035b513582b4c20fcb9771c87c80e72d5",
+    "native/experiments/gentek_swarm/meshing.cpp": "a104607c39de1ac641d5932781b0adeaf07e665212ffa95d286ebb50447a14f8",
+    "native/experiments/gentek_swarm/io.cpp": "191baa020ab78c0c14b1f5a1a3b2e540c3439135ab6c8d12611a607d57d4109d",
+    "native/experiments/gentek_swarm/swarm.hpp": "99a3c6a8a882783a824124c5eeabbd6488817bc9624d6d37fe5c9d64dc38cd82",
+    "native/experiments/gentek_swarm/main.cpp": "261ef2b276d8fdb5413b2c3e009af16f2444c305694c37f7bb4b7adc03fcef58",
+    "native/experiments/gentek_swarm/tests.cpp": "4e59296557ff70dd4279a2a22c9cae44871f3d0ce100716f29cc4d551e84926a",
+    "native/experiments/gentek_swarm/Makefile": "dc6651569783419e984af41f19bb5f1ea3d28e5a4928ecea95ac704341786c45",
+    "native/experiments/gentek_swarm/gallery.py": "5c134035452fab486a53c615a3a91538b1b4202dc936c96d2b2187a72bc45bb7",
+    "native/experiments/gentek_swarm/run.py": "46b92d1af87661aac44b3ebbcd2cbe1e626a9e1716cc1cca79ca9788ac39ce69",
+    "native/src/generation_spatial.cpp": "8f99e577b7bec07142daf7c0e273146991528cdc3a13e6bf2301f14a7f049961",
+    "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+    "native/include/cybersand/generation_spatial.hpp": "8e02a001775915dc8d8fe9b79c0a1ffb65b51989ffd424a7b847d741a49065e2",
+    "native/include/cybersand/generation_numeric.hpp": "231fd8547985397103388d863297009aee8df944d3be453e6a88ca24ee18bb3a"
+  },
+  "counts": {
+    "frameweaver_solo": 20,
+    "mosaic_solo": 15,
+    "receptor_solo": 10,
+    "frameweaver_mosaic": 25,
+    "frameweaver_receptor": 15,
+    "mosaic_receptor": 10,
+    "pathological": 5
+  },
+  "case_count": 100,
+  "fixture_policy": "Unchanged native fixture() geometry:192x112 and origin(-96,-56). Solo free uses whole eligible territory; hostile solo uses left side0. Pair native side0/side1 and identical seed/profile, without overrides.",
+  "failure_policy": "Retain the exact identity, error log and native result of every registered case. No seed substitutions; diagnostics are supplementary and cannot count toward100. Genuine correctness defects suspend affected comparisons and require explicit correction and full affected replay.",
+  "analysis_policy": "Review labels and benchmark selection occur after all100 are retained. No aggregate quality score. Components are descriptive, not physical support. Strong/ugly/brittle labels are judgments, not native truth.",
+  "phase_gates": {
+    "B": "Existing Windows evaluator must report; accepted exact combined source requires actual acceptance evidence, including physical Windows use, not a hosted or Linux-only inference.",
+    "C": "Only after Phase A completion and accepted Windows freeze. No SWARM002 port/selection or Workbench bridge until then."
+  },
+  "cases": [
+    {
+      "case_id": "C100-001",
+      "group": "frameweaver_solo",
+      "kind": "FRAMEWEAVER",
+      "right_kind": null,
+      "fixture": "free",
+      "profile": "sparse_regular",
+      "seed": 605,
+      "side": -1,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Matched free-space profile comparison; second deterministic seed."
+      ]
+    },
+    {
+      "case_id": "C100-002",
+      "group": "frameweaver_solo",
+      "kind": "FRAMEWEAVER",
+      "right_kind": null,
+      "fixture": "free",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "side": -1,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Matched free-space profile comparison; second deterministic seed."
+      ]
+    },
+    {
+      "case_id": "C100-003",
+      "group": "frameweaver_solo",
+      "kind": "FRAMEWEAVER",
+      "right_kind": null,
+      "fixture": "free",
+      "profile": "dense_cohesive",
+      "seed": 605,
+      "side": -1,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Matched free-space profile comparison; second deterministic seed."
+      ]
+    },
+    {
+      "case_id": "C100-004",
+      "group": "frameweaver_solo",
+      "kind": "FRAMEWEAVER",
+      "right_kind": null,
+      "fixture": "free",
+      "profile": "sparse_regular",
+      "seed": 1701,
+      "side": -1,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Matched free-space profile comparison; second deterministic seed."
+      ]
+    },
+    {
+      "case_id": "C100-005",
+      "group": "frameweaver_solo",
+      "kind": "FRAMEWEAVER",
+      "right_kind": null,
+      "fixture": "free",
+      "profile": "branching_irregular",
+      "seed": 1701,
+      "side": -1,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Matched free-space profile comparison; second deterministic seed."
+      ]
+    },
+    {
+      "case_id": "C100-006",
+      "group": "frameweaver_solo",
+      "kind": "FRAMEWEAVER",
+      "right_kind": null,
+      "fixture": "free",
+      "profile": "dense_cohesive",
+      "seed": 1701,
+      "side": -1,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Matched free-space profile comparison; second deterministic seed."
+      ]
+    },
+    {
+      "case_id": "C100-007",
+      "group": "frameweaver_solo",
+      "kind": "FRAMEWEAVER",
+      "right_kind": null,
+      "fixture": "stepped_diagonal",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-008",
+      "group": "frameweaver_solo",
+      "kind": "FRAMEWEAVER",
+      "right_kind": null,
+      "fixture": "concave_intrusion",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-009",
+      "group": "frameweaver_solo",
+      "kind": "FRAMEWEAVER",
+      "right_kind": null,
+      "fixture": "protected_corridor",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-010",
+      "group": "frameweaver_solo",
+      "kind": "FRAMEWEAVER",
+      "right_kind": null,
+      "fixture": "foreign_solid",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-011",
+      "group": "frameweaver_solo",
+      "kind": "FRAMEWEAVER",
+      "right_kind": null,
+      "fixture": "island",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-012",
+      "group": "frameweaver_solo",
+      "kind": "FRAMEWEAVER",
+      "right_kind": null,
+      "fixture": "narrow_neck",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-013",
+      "group": "frameweaver_solo",
+      "kind": "FRAMEWEAVER",
+      "right_kind": null,
+      "fixture": "foreign_solid",
+      "profile": "dense_cohesive",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {
+        "environment_affinity": 0.0
+      },
+      "selection_rationale": [
+        "Matched zero/high environment-affinity comparison; all other inputs fixed."
+      ]
+    },
+    {
+      "case_id": "C100-014",
+      "group": "frameweaver_solo",
+      "kind": "FRAMEWEAVER",
+      "right_kind": null,
+      "fixture": "foreign_solid",
+      "profile": "dense_cohesive",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {
+        "environment_affinity": 1.0
+      },
+      "selection_rationale": [
+        "Matched zero/high environment-affinity comparison; all other inputs fixed."
+      ]
+    },
+    {
+      "case_id": "C100-015",
+      "group": "frameweaver_solo",
+      "kind": "FRAMEWEAVER",
+      "right_kind": null,
+      "fixture": "foreign_solid",
+      "profile": "dense_cohesive",
+      "seed": 1701,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {
+        "environment_affinity": 0.0
+      },
+      "selection_rationale": [
+        "Matched zero/high environment-affinity comparison; all other inputs fixed."
+      ]
+    },
+    {
+      "case_id": "C100-016",
+      "group": "frameweaver_solo",
+      "kind": "FRAMEWEAVER",
+      "right_kind": null,
+      "fixture": "foreign_solid",
+      "profile": "dense_cohesive",
+      "seed": 1701,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {
+        "environment_affinity": 1.0
+      },
+      "selection_rationale": [
+        "Matched zero/high environment-affinity comparison; all other inputs fixed."
+      ]
+    },
+    {
+      "case_id": "C100-017",
+      "group": "frameweaver_solo",
+      "kind": "FRAMEWEAVER",
+      "right_kind": null,
+      "fixture": "free",
+      "profile": "damaged_derivative",
+      "seed": 605,
+      "side": -1,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Independent post-assembly damage; preserve lost or unresolved mandatory receipts."
+      ]
+    },
+    {
+      "case_id": "C100-018",
+      "group": "frameweaver_solo",
+      "kind": "FRAMEWEAVER",
+      "right_kind": null,
+      "fixture": "foreign_solid",
+      "profile": "damaged_derivative",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Independent post-assembly damage; preserve lost or unresolved mandatory receipts."
+      ]
+    },
+    {
+      "case_id": "C100-019",
+      "group": "frameweaver_solo",
+      "kind": "FRAMEWEAVER",
+      "right_kind": null,
+      "fixture": "island",
+      "profile": "sparse_regular",
+      "seed": 1701,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-020",
+      "group": "frameweaver_solo",
+      "kind": "FRAMEWEAVER",
+      "right_kind": null,
+      "fixture": "narrow_neck",
+      "profile": "dense_cohesive",
+      "seed": 1701,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-021",
+      "group": "mosaic_solo",
+      "kind": "MOSAIC",
+      "right_kind": null,
+      "fixture": "free",
+      "profile": "sparse_regular",
+      "seed": 605,
+      "side": -1,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Matched free-space profile comparison; second deterministic seed."
+      ]
+    },
+    {
+      "case_id": "C100-022",
+      "group": "mosaic_solo",
+      "kind": "MOSAIC",
+      "right_kind": null,
+      "fixture": "free",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "side": -1,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Matched free-space profile comparison; second deterministic seed."
+      ]
+    },
+    {
+      "case_id": "C100-023",
+      "group": "mosaic_solo",
+      "kind": "MOSAIC",
+      "right_kind": null,
+      "fixture": "free",
+      "profile": "dense_cohesive",
+      "seed": 605,
+      "side": -1,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Matched free-space profile comparison; second deterministic seed."
+      ]
+    },
+    {
+      "case_id": "C100-024",
+      "group": "mosaic_solo",
+      "kind": "MOSAIC",
+      "right_kind": null,
+      "fixture": "free",
+      "profile": "sparse_regular",
+      "seed": 1701,
+      "side": -1,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Matched free-space profile comparison; second deterministic seed."
+      ]
+    },
+    {
+      "case_id": "C100-025",
+      "group": "mosaic_solo",
+      "kind": "MOSAIC",
+      "right_kind": null,
+      "fixture": "free",
+      "profile": "branching_irregular",
+      "seed": 1701,
+      "side": -1,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Matched free-space profile comparison; second deterministic seed."
+      ]
+    },
+    {
+      "case_id": "C100-026",
+      "group": "mosaic_solo",
+      "kind": "MOSAIC",
+      "right_kind": null,
+      "fixture": "free",
+      "profile": "dense_cohesive",
+      "seed": 1701,
+      "side": -1,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Matched free-space profile comparison; second deterministic seed."
+      ]
+    },
+    {
+      "case_id": "C100-027",
+      "group": "mosaic_solo",
+      "kind": "MOSAIC",
+      "right_kind": null,
+      "fixture": "stepped_diagonal",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-028",
+      "group": "mosaic_solo",
+      "kind": "MOSAIC",
+      "right_kind": null,
+      "fixture": "concave_intrusion",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-029",
+      "group": "mosaic_solo",
+      "kind": "MOSAIC",
+      "right_kind": null,
+      "fixture": "protected_corridor",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-030",
+      "group": "mosaic_solo",
+      "kind": "MOSAIC",
+      "right_kind": null,
+      "fixture": "foreign_solid",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-031",
+      "group": "mosaic_solo",
+      "kind": "MOSAIC",
+      "right_kind": null,
+      "fixture": "island",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-032",
+      "group": "mosaic_solo",
+      "kind": "MOSAIC",
+      "right_kind": null,
+      "fixture": "narrow_neck",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-033",
+      "group": "mosaic_solo",
+      "kind": "MOSAIC",
+      "right_kind": null,
+      "fixture": "concave_intrusion",
+      "profile": "sparse_regular",
+      "seed": 1701,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Difficult sparse categorical boundary; retain UNSAT/exhaustion if encountered."
+      ]
+    },
+    {
+      "case_id": "C100-034",
+      "group": "mosaic_solo",
+      "kind": "MOSAIC",
+      "right_kind": null,
+      "fixture": "protected_corridor",
+      "profile": "sparse_regular",
+      "seed": 1701,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Difficult sparse categorical boundary; retain UNSAT/exhaustion if encountered."
+      ]
+    },
+    {
+      "case_id": "C100-035",
+      "group": "mosaic_solo",
+      "kind": "MOSAIC",
+      "right_kind": null,
+      "fixture": "free",
+      "profile": "damaged_derivative",
+      "seed": 605,
+      "side": -1,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Matched seed605 branching parent retained; damage never substituted for solved grammar."
+      ]
+    },
+    {
+      "case_id": "C100-036",
+      "group": "receptor_solo",
+      "kind": "RECEPTOR",
+      "right_kind": null,
+      "fixture": "free",
+      "profile": "sparse_regular",
+      "seed": 605,
+      "side": -1,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Matched free-space profile comparison; second deterministic seed."
+      ]
+    },
+    {
+      "case_id": "C100-037",
+      "group": "receptor_solo",
+      "kind": "RECEPTOR",
+      "right_kind": null,
+      "fixture": "free",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "side": -1,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Matched free-space profile comparison; second deterministic seed."
+      ]
+    },
+    {
+      "case_id": "C100-038",
+      "group": "receptor_solo",
+      "kind": "RECEPTOR",
+      "right_kind": null,
+      "fixture": "free",
+      "profile": "dense_cohesive",
+      "seed": 605,
+      "side": -1,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Matched free-space profile comparison; second deterministic seed."
+      ]
+    },
+    {
+      "case_id": "C100-039",
+      "group": "receptor_solo",
+      "kind": "RECEPTOR",
+      "right_kind": null,
+      "fixture": "free",
+      "profile": "sparse_regular",
+      "seed": 1701,
+      "side": -1,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Matched free-space profile comparison; second deterministic seed."
+      ]
+    },
+    {
+      "case_id": "C100-040",
+      "group": "receptor_solo",
+      "kind": "RECEPTOR",
+      "right_kind": null,
+      "fixture": "free",
+      "profile": "branching_irregular",
+      "seed": 1701,
+      "side": -1,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Matched free-space profile comparison; second deterministic seed."
+      ]
+    },
+    {
+      "case_id": "C100-041",
+      "group": "receptor_solo",
+      "kind": "RECEPTOR",
+      "right_kind": null,
+      "fixture": "free",
+      "profile": "dense_cohesive",
+      "seed": 1701,
+      "side": -1,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Matched free-space profile comparison; second deterministic seed."
+      ]
+    },
+    {
+      "case_id": "C100-042",
+      "group": "receptor_solo",
+      "kind": "RECEPTOR",
+      "right_kind": null,
+      "fixture": "foreign_solid",
+      "profile": "dense_cohesive",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {
+        "environment_affinity": 0.0
+      },
+      "selection_rationale": [
+        "Matched zero/high environment-affinity comparison; all other inputs fixed."
+      ]
+    },
+    {
+      "case_id": "C100-043",
+      "group": "receptor_solo",
+      "kind": "RECEPTOR",
+      "right_kind": null,
+      "fixture": "foreign_solid",
+      "profile": "dense_cohesive",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {
+        "environment_affinity": 1.0
+      },
+      "selection_rationale": [
+        "Matched zero/high environment-affinity comparison; all other inputs fixed."
+      ]
+    },
+    {
+      "case_id": "C100-044",
+      "group": "receptor_solo",
+      "kind": "RECEPTOR",
+      "right_kind": null,
+      "fixture": "protected_corridor",
+      "profile": "dense_cohesive",
+      "seed": 1701,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-045",
+      "group": "receptor_solo",
+      "kind": "RECEPTOR",
+      "right_kind": null,
+      "fixture": "free",
+      "profile": "damaged_derivative",
+      "seed": 605,
+      "side": -1,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Disconnected/damaged morphology retained; zero mandatory joints is not support proof."
+      ]
+    },
+    {
+      "case_id": "C100-046",
+      "group": "frameweaver_mosaic",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "MOSAIC",
+      "fixture": "stepped_diagonal",
+      "profile": "sparse_regular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-047",
+      "group": "frameweaver_mosaic",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "MOSAIC",
+      "fixture": "stepped_diagonal",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-048",
+      "group": "frameweaver_mosaic",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "MOSAIC",
+      "fixture": "stepped_diagonal",
+      "profile": "dense_cohesive",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-049",
+      "group": "frameweaver_mosaic",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "MOSAIC",
+      "fixture": "concave_intrusion",
+      "profile": "sparse_regular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-050",
+      "group": "frameweaver_mosaic",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "MOSAIC",
+      "fixture": "concave_intrusion",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-051",
+      "group": "frameweaver_mosaic",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "MOSAIC",
+      "fixture": "concave_intrusion",
+      "profile": "dense_cohesive",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-052",
+      "group": "frameweaver_mosaic",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "MOSAIC",
+      "fixture": "protected_corridor",
+      "profile": "sparse_regular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-053",
+      "group": "frameweaver_mosaic",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "MOSAIC",
+      "fixture": "protected_corridor",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-054",
+      "group": "frameweaver_mosaic",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "MOSAIC",
+      "fixture": "protected_corridor",
+      "profile": "dense_cohesive",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-055",
+      "group": "frameweaver_mosaic",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "MOSAIC",
+      "fixture": "foreign_solid",
+      "profile": "sparse_regular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-056",
+      "group": "frameweaver_mosaic",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "MOSAIC",
+      "fixture": "foreign_solid",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-057",
+      "group": "frameweaver_mosaic",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "MOSAIC",
+      "fixture": "foreign_solid",
+      "profile": "dense_cohesive",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-058",
+      "group": "frameweaver_mosaic",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "MOSAIC",
+      "fixture": "island",
+      "profile": "sparse_regular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-059",
+      "group": "frameweaver_mosaic",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "MOSAIC",
+      "fixture": "island",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-060",
+      "group": "frameweaver_mosaic",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "MOSAIC",
+      "fixture": "island",
+      "profile": "dense_cohesive",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-061",
+      "group": "frameweaver_mosaic",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "MOSAIC",
+      "fixture": "narrow_neck",
+      "profile": "sparse_regular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-062",
+      "group": "frameweaver_mosaic",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "MOSAIC",
+      "fixture": "narrow_neck",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-063",
+      "group": "frameweaver_mosaic",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "MOSAIC",
+      "fixture": "narrow_neck",
+      "profile": "dense_cohesive",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-064",
+      "group": "frameweaver_mosaic",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "MOSAIC",
+      "fixture": "stepped_diagonal",
+      "profile": "branching_irregular",
+      "seed": 1701,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-065",
+      "group": "frameweaver_mosaic",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "MOSAIC",
+      "fixture": "concave_intrusion",
+      "profile": "branching_irregular",
+      "seed": 1701,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-066",
+      "group": "frameweaver_mosaic",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "MOSAIC",
+      "fixture": "protected_corridor",
+      "profile": "branching_irregular",
+      "seed": 1701,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-067",
+      "group": "frameweaver_mosaic",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "MOSAIC",
+      "fixture": "foreign_solid",
+      "profile": "branching_irregular",
+      "seed": 1701,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-068",
+      "group": "frameweaver_mosaic",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "MOSAIC",
+      "fixture": "island",
+      "profile": "branching_irregular",
+      "seed": 1701,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-069",
+      "group": "frameweaver_mosaic",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "MOSAIC",
+      "fixture": "narrow_neck",
+      "profile": "branching_irregular",
+      "seed": 1701,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-070",
+      "group": "frameweaver_mosaic",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "MOSAIC",
+      "fixture": "island",
+      "profile": "dense_cohesive",
+      "seed": 1701,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-071",
+      "group": "frameweaver_receptor",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "RECEPTOR",
+      "fixture": "stepped_diagonal",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-072",
+      "group": "frameweaver_receptor",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "RECEPTOR",
+      "fixture": "concave_intrusion",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-073",
+      "group": "frameweaver_receptor",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "RECEPTOR",
+      "fixture": "protected_corridor",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-074",
+      "group": "frameweaver_receptor",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "RECEPTOR",
+      "fixture": "foreign_solid",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-075",
+      "group": "frameweaver_receptor",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "RECEPTOR",
+      "fixture": "island",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-076",
+      "group": "frameweaver_receptor",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "RECEPTOR",
+      "fixture": "narrow_neck",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-077",
+      "group": "frameweaver_receptor",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "RECEPTOR",
+      "fixture": "stepped_diagonal",
+      "profile": "dense_cohesive",
+      "seed": 1701,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-078",
+      "group": "frameweaver_receptor",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "RECEPTOR",
+      "fixture": "concave_intrusion",
+      "profile": "dense_cohesive",
+      "seed": 1701,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-079",
+      "group": "frameweaver_receptor",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "RECEPTOR",
+      "fixture": "protected_corridor",
+      "profile": "dense_cohesive",
+      "seed": 1701,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-080",
+      "group": "frameweaver_receptor",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "RECEPTOR",
+      "fixture": "foreign_solid",
+      "profile": "dense_cohesive",
+      "seed": 1701,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-081",
+      "group": "frameweaver_receptor",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "RECEPTOR",
+      "fixture": "island",
+      "profile": "dense_cohesive",
+      "seed": 1701,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-082",
+      "group": "frameweaver_receptor",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "RECEPTOR",
+      "fixture": "narrow_neck",
+      "profile": "dense_cohesive",
+      "seed": 1701,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-083",
+      "group": "frameweaver_receptor",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "RECEPTOR",
+      "fixture": "protected_corridor",
+      "profile": "sparse_regular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-084",
+      "group": "frameweaver_receptor",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "RECEPTOR",
+      "fixture": "concave_intrusion",
+      "profile": "sparse_regular",
+      "seed": 1701,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-085",
+      "group": "frameweaver_receptor",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "RECEPTOR",
+      "fixture": "island",
+      "profile": "sparse_regular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-086",
+      "group": "mosaic_receptor",
+      "kind": "MOSAIC",
+      "right_kind": "RECEPTOR",
+      "fixture": "stepped_diagonal",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-087",
+      "group": "mosaic_receptor",
+      "kind": "MOSAIC",
+      "right_kind": "RECEPTOR",
+      "fixture": "concave_intrusion",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-088",
+      "group": "mosaic_receptor",
+      "kind": "MOSAIC",
+      "right_kind": "RECEPTOR",
+      "fixture": "protected_corridor",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-089",
+      "group": "mosaic_receptor",
+      "kind": "MOSAIC",
+      "right_kind": "RECEPTOR",
+      "fixture": "foreign_solid",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-090",
+      "group": "mosaic_receptor",
+      "kind": "MOSAIC",
+      "right_kind": "RECEPTOR",
+      "fixture": "island",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-091",
+      "group": "mosaic_receptor",
+      "kind": "MOSAIC",
+      "right_kind": "RECEPTOR",
+      "fixture": "narrow_neck",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-092",
+      "group": "mosaic_receptor",
+      "kind": "MOSAIC",
+      "right_kind": "RECEPTOR",
+      "fixture": "concave_intrusion",
+      "profile": "dense_cohesive",
+      "seed": 1701,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-093",
+      "group": "mosaic_receptor",
+      "kind": "MOSAIC",
+      "right_kind": "RECEPTOR",
+      "fixture": "foreign_solid",
+      "profile": "dense_cohesive",
+      "seed": 1701,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-094",
+      "group": "mosaic_receptor",
+      "kind": "MOSAIC",
+      "right_kind": "RECEPTOR",
+      "fixture": "protected_corridor",
+      "profile": "sparse_regular",
+      "seed": 1701,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-095",
+      "group": "mosaic_receptor",
+      "kind": "MOSAIC",
+      "right_kind": "RECEPTOR",
+      "fixture": "island",
+      "profile": "sparse_regular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Predetermined fixture/profile/seed stratum; retain every outcome."
+      ]
+    },
+    {
+      "case_id": "C100-096",
+      "group": "pathological",
+      "kind": "FRAMEWEAVER",
+      "right_kind": null,
+      "fixture": "free",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "side": -1,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {
+        "max_work": 1
+      },
+      "selection_rationale": [
+        "Explicit bounded work exhaustion."
+      ]
+    },
+    {
+      "case_id": "C100-097",
+      "group": "pathological",
+      "kind": "MOSAIC",
+      "right_kind": null,
+      "fixture": "free",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "side": -1,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {
+        "max_work": 1
+      },
+      "selection_rationale": [
+        "Explicit bounded work exhaustion; distinguish work budget from categorical UNSAT."
+      ]
+    },
+    {
+      "case_id": "C100-098",
+      "group": "pathological",
+      "kind": "RECEPTOR",
+      "right_kind": null,
+      "fixture": "free",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "side": -1,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {
+        "max_bytes": 1024
+      },
+      "selection_rationale": [
+        "Explicit memory admission exhaustion; empty result arrays are refusal, not an accepted empty canvas."
+      ]
+    },
+    {
+      "case_id": "C100-099",
+      "group": "pathological",
+      "kind": "FRAMEWEAVER",
+      "right_kind": null,
+      "fixture": "free",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "side": -1,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {
+        "empty_eligible": true
+      },
+      "selection_rationale": [
+        "No eligible space; mandatory-joint/empty-result status remains native."
+      ]
+    },
+    {
+      "case_id": "C100-100",
+      "group": "pathological",
+      "kind": "MOSAIC",
+      "right_kind": null,
+      "fixture": "protected_corridor",
+      "profile": "sparse_regular",
+      "seed": 605,
+      "side": 0,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_rationale": [
+        "Sparse protected-corridor negative; retain actual native status without tuning or replacement."
+      ]
+    }
+  ]
+}

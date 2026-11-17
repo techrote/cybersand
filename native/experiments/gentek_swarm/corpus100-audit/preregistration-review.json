@@ -1,0 +1,83 @@
+{
+  "scope": "Independent pre-execution registration and static harness review; no generated outputs or images used",
+  "registration_commit": "759a2ae0b354ad2ead83929a6e854607e058defa",
+  "harness_commit": "c02b8bdb3541999fb49f86c98a66706a09e59e96",
+  "exact_parent": "267f522222a1eb59b44e92f60a5a06f018af0ad3",
+  "registration_sha256": "b87b53955663b25125f6e5782185ae438c4659f28bddada97f29034ecf2f4839",
+  "case_count": 100,
+  "unique_ids": 100,
+  "unique_requests": 100,
+  "group_counts": {
+    "frameweaver_solo": 20,
+    "mosaic_solo": 15,
+    "receptor_solo": 10,
+    "frameweaver_mosaic": 25,
+    "frameweaver_receptor": 15,
+    "mosaic_receptor": 10,
+    "pathological": 5
+  },
+  "seed_counts": {
+    "605": 67,
+    "1701": 33
+  },
+  "profile_counts": {
+    "sparse_regular": 21,
+    "branching_irregular": 46,
+    "dense_cohesive": 29,
+    "damaged_derivative": 4
+  },
+  "fixture_counts": {
+    "free": 25,
+    "stepped_diagonal": 9,
+    "concave_intrusion": 12,
+    "protected_corridor": 14,
+    "foreign_solid": 17,
+    "island": 13,
+    "narrow_neck": 10
+  },
+  "frozen_parent_inputs_verified": {
+    "native/experiments/gentek_swarm/common.cpp": "df5a180b86ad978a2dd91e415c3a38a25828b20f7a9739d6f7f2ea31edcc3941",
+    "native/experiments/gentek_swarm/fixtures.cpp": "2d5025763ad0f741f5fd77d25d38f9f448cef601cbcd9a6c9b58a70e0c2d8142",
+    "native/experiments/gentek_swarm/frameweaver.cpp": "2f29c9cb3dc5ab270839b447487635fb305177268eb7d8fed8ca1f1d5588cbeb",
+    "native/experiments/gentek_swarm/mosaic.cpp": "70d6f846f46e8a76fff5297e5fa9b35828acb9e2be7003635e8898dac1199e8b",
+    "native/experiments/gentek_swarm/receptor.cpp": "c6bef593754c055cea373bdbc139f82035b513582b4c20fcb9771c87c80e72d5",
+    "native/experiments/gentek_swarm/meshing.cpp": "a104607c39de1ac641d5932781b0adeaf07e665212ffa95d286ebb50447a14f8",
+    "native/experiments/gentek_swarm/io.cpp": "191baa020ab78c0c14b1f5a1a3b2e540c3439135ab6c8d12611a607d57d4109d",
+    "native/experiments/gentek_swarm/swarm.hpp": "99a3c6a8a882783a824124c5eeabbd6488817bc9624d6d37fe5c9d64dc38cd82",
+    "native/experiments/gentek_swarm/main.cpp": "261ef2b276d8fdb5413b2c3e009af16f2444c305694c37f7bb4b7adc03fcef58",
+    "native/experiments/gentek_swarm/tests.cpp": "4e59296557ff70dd4279a2a22c9cae44871f3d0ce100716f29cc4d551e84926a",
+    "native/experiments/gentek_swarm/Makefile": "dc6651569783419e984af41f19bb5f1ea3d28e5a4928ecea95ac704341786c45",
+    "native/experiments/gentek_swarm/gallery.py": "5c134035452fab486a53c615a3a91538b1b4202dc936c96d2b2187a72bc45bb7",
+    "native/experiments/gentek_swarm/run.py": "46b92d1af87661aac44b3ebbcd2cbe1e626a9e1716cc1cca79ca9788ac39ce69",
+    "native/src/generation_spatial.cpp": "8f99e577b7bec07142daf7c0e273146991528cdc3a13e6bf2301f14a7f049961",
+    "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+    "native/include/cybersand/generation_spatial.hpp": "8e02a001775915dc8d8fe9b79c0a1ffb65b51989ffd424a7b847d741a49065e2",
+    "native/include/cybersand/generation_numeric.hpp": "231fd8547985397103388d863297009aee8df944d3be453e6a88ca24ee18bb3a"
+  },
+  "findings": [
+    {
+      "severity": "P2",
+      "area": "producer hard gate",
+      "finding": "INVALID zero-counter/empty outputs could falsely pass",
+      "disposition": "Repaired before first qualification in c02b8bdb: invalid is retained correctness failure; actual kind/profile/limit/origin/dimensions checked."
+    },
+    {
+      "severity": "interpretation",
+      "area": "selection",
+      "finding": "Strata use published earlier research; no claim that registered outcomes were unknown",
+      "disposition": "Explicitly disclosed; new100 identity manifest immutable before generation and visual selection."
+    },
+    {
+      "severity": "interpretation",
+      "area": "exhaustion",
+      "finding": "C096/097 exercise generator-work exhaustion before GEN003 solve; C098 memory admission refusal",
+      "disposition": "Retain native distinctions; inherited focused GEN003 test supplies search exhaustion vs UNSAT semantics."
+    },
+    {
+      "severity": "interpretation",
+      "area": "parameters",
+      "finding": "Shared profiles co-vary multiple parameters",
+      "disposition": "Only affinity and damage comparisons isolate individual controls; do not claim causal sensitivity of every control."
+    }
+  ]
+}

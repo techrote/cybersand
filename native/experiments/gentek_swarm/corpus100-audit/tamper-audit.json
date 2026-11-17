@@ -1,0 +1,59 @@
+{
+  "result": "PASS",
+  "mutations": [
+    {
+      "mutation": "native_material_digest_corruption",
+      "detected": true,
+      "reason": "tamper:native_material_digest_corruption: single material digest"
+    },
+    {
+      "mutation": "unowned_material_even_with_recomputed_digests",
+      "detected": true,
+      "reason": "tamper:unowned_material_even_with_recomputed_digests: single material lacks valid role/owner"
+    },
+    {
+      "mutation": "protected_material_even_with_recomputed_digests",
+      "detected": true,
+      "reason": "tamper:protected_material_even_with_recomputed_digests: single protected geometry"
+    },
+    {
+      "mutation": "unavailable_solver_work_fabricated_as_zero",
+      "detected": true,
+      "reason": "tamper:unavailable_solver_work_fabricated_as_zero: single missing solver work fabricated"
+    },
+    {
+      "mutation": "missing_exact_required_receipt_with_recomputed_digests",
+      "detected": true,
+      "reason": "tamper:missing_exact_required_receipt_with_recomputed_digests: required receipt missing/ambiguous"
+    },
+    {
+      "mutation": "duplicate_required_receipt_with_recomputed_digests",
+      "detected": true,
+      "reason": "tamper:duplicate_required_receipt_with_recomputed_digests: required receipt missing/ambiguous"
+    },
+    {
+      "mutation": "claimed_join_path_gap",
+      "detected": true,
+      "reason": "tamper:claimed_join_path_gap: bounded simple seam"
+    },
+    {
+      "mutation": "wrong_socket_facing_with_recomputed_digests",
+      "detected": true,
+      "reason": "tamper:wrong_socket_facing_with_recomputed_digests: wrong socket exit/entry"
+    },
+    {
+      "mutation": "shared_bridge_disguised_as_native_architecture",
+      "detected": true,
+      "reason": "tamper:shared_bridge_disguised_as_native_architecture: bridge not separated from native architecture"
+    },
+    {
+      "mutation": "false_bridge_cell_count_with_recomputed_digests",
+      "detected": true,
+      "reason": "tamper:false_bridge_cell_count_with_recomputed_digests: seam aggregate count"
+    }
+  ],
+  "count": 10,
+  "retained_native_files_modified": false,
+  "test_sha256": "f9e4afb0a5c6c044d5469071b64a8ed72b196a1e63503b0f65ae01d8ac1b5f32",
+  "auditor_sha256": "11794e2e47f62e8f431e36fa0c59c7589eb12b18686c91e23ed6aa196baa8f80"
+}
