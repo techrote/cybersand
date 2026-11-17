@@ -211,11 +211,12 @@ jobs:
       - name: Execute actual rendered Shared Workbench and Wave controls
         env:
           LIBGL_ALWAYS_SOFTWARE: '1'
+          CYBERSAND_PUBLICATION_PROFILE: wave_waterwall
         run: |
           set -euo pipefail
           bash tools/ci/prepare_linux_display.sh
           xvfb-run -a -s '-screen 0 1600x1000x24' \
-            CYBERSAND_PUBLICATION_PROFILE=wave_waterwall python3 tools/wave_mt/run_workbench_render.py \
+            python3 tools/wave_mt/run_workbench_render.py \
               --godot "$RUNNER_TEMP/godot-linux/Godot_v4.7-stable_linux.x86_64" \
               --source-sha "$GITHUB_SHA" --bundle build/wave-mt-linux
 
