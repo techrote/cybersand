@@ -40,6 +40,32 @@ tuning** or **Load / reset scene**, then a positive native readback. Returning
 to PF/Inertial/FreeMass restores law-specific requests. It never silently changes
 the production Water default.
 
+## Waterwall spill (WAVE-WATERWALL-001, Draft/HOLD)
+
+The **Wave tuning** tab ends with a **Waterwall spill** subsection. It adds no
+toolbar control.
+
+| Control | Meaning |
+|---|---|
+| Waterwall spill | On: exposed Wave faces beside open air discharge quickly, and unsupported Water falls faster. Off: original Wave Flow, for direct comparison |
+| Ballistic release | Exposed faces throw Water outward as parcels that arc, land and rejoin the grid. Turning it on also turns on Waterwall spill |
+| Fall speed / Pool feed | Cells per round for unsupported Water, and mass units per round a pool may move toward its draining edge |
+| Throw speed / Parcels per tick | Outward speed as n/256 of √(2gh), and the per-tick launch budget (ballistic release only) |
+
+As with every Water Lab control, these settings are staged until **Apply solver /
+tuning** or **Load / reset scene**. The native readback beside each control and
+the spill status line show what is actually running: exposed-face transfer,
+falling cells, parcels launched, in flight, landed, refused or deferred, ticks
+with a full parcel pool, and launch and flight time. A spill request is only
+sent with Wave Flow. Presets and **Reset Wave defaults** do not change it. The
+generic **Ballistic Water** switch stays refused under Wave, because the parcel
+pool belongs to the release.
+
+To compare, load a start, select **Wave Flow** and press **Apply** with spill
+off. Then turn **Waterwall spill** (and optionally **Ballistic release**) on and
+press **Apply** again. Apply retains the current cells, so to compare from the
+same authored state, reload the start between runs.
+
 ## Acceptance and retained boundary
 
 All existing controls and their signal handlers are the original objects, now

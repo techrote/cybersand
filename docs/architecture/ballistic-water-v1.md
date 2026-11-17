@@ -101,6 +101,25 @@ ballistic owner (booked like inherited overfill) or report
 `discarded_in_flight_water`; the host conversion balance includes in-flight Water
 on both sides.
 
+### Wave Flow hybrid release (WAVE-WATERWALL-001)
+
+`wave_flow_v1` accepts this parcel owner only with Waterwall spill enabled. The
+Wave tick owner then launches parcels from exposed faces nominated by its own
+strip passes, and the per-cell WCX-FR scan stays refused. In Wave Worlds only:
+
+- parcels pass through falling Wave Water;
+- a launch from an overfilled Wave cell takes one cell, and deposits never add to
+  an overfilled cell;
+- the deposit ring and diagonal flight steps respect one-cell walls;
+- spawns, launches, deposits and movement are refused or frozen in unselected
+  simulation cores (outcome `Paused`).
+
+The launch clamp and the deposit guard are compiled for every World, but they
+cannot change a non-Wave World, because such a World never stores more than one
+cell of Water in a cell. The wall, flight and region rules are gated on
+`wave_ != nullptr`. See
+[wave-flow-v1](wave-flow-v1.md#waterwall-spill-experimental-wave-waterwall-001).
+
 ### WCX-FR face release (off by default)
 
 `face_release` sheds Water cells from tall vertical faces (open beside the cell

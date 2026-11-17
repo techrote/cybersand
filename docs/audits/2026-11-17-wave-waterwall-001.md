@@ -1,0 +1,153 @@
+---
+title: WAVE-WATERWALL-001 exposed-face spill evidence
+status: Current
+document-kind: audit
+scope: Dated diagnosis, candidate comparison, implementation, independent review and qualification of the opt-in Wave Flow Waterwall spill and hybrid ballistic release on Draft/HOLD branch claude/wave-waterwall-001 stacked on PR 661
+last-reviewed: 2026-11-17
+related-documents: [../architecture/wave-flow-v1.md, ../architecture/ballistic-water-v1.md, ../operations/workbench-water-lab.md]
+---
+
+# WAVE-WATERWALL-001 evidence (2026-11-16/17)
+
+This is a historical record. Results from runs made after this file was
+published belong in the PR description, because this file is an input to the
+branch runtime publisher.
+
+## Source identity
+
+| Item | Value |
+|---|---|
+| PR #631 head (Wave Flow) | `edf42998ab5cb55a3ce916ead270c9b696033ab0`, Draft, unchanged |
+| PR #661 head (Water Lab, base of this branch) | `c7386cfb33721e9294d0ec82bbeed9b97bd12414`, Draft, unchanged, contains #631 |
+| Branch | `claude/wave-waterwall-001` (Draft/HOLD) |
+| Owner reproduction | `setup-water-wall.json`, SHA-256 `925096d1e9984b855b5465309ef12869a47e29052e0cabd5a25788a051b77107`. Format `cybersand-generated-start-v1`, 1024×1024, 166 Water rectangle stamps, no actors |
+| Owner screenshot | `2026-11-16 20_55_15-CyberSand · Development workbench.png`, SHA-256 `4e708989a1129a2516dd9a16cebab050d715af4ed7ff77a047de67ba13f2d7cf` |
+
+The map's terrain was regenerated with the native GEN-007 generator from its saved
+recipe. The regenerated material bytes match the manifest's
+`sha256 = 9b8b4ef6339c4d922c499dd3240198209a8a3cfcca9f9fd49cf1b6fa918f91f5`,
+so the terrain is an **exact** reconstruction. Wave's evolved face flux, and any
+tuning in the owner's live session, are not stored in the manifest. Every run
+below therefore starts from the authored cells, with fresh Wave state and the
+documented settings.
+
+## Apparatus
+
+- `native/bench/wave_waterwall.cpp` (`make wave-waterwall`) replays the exact
+  terrain bytes plus the stamp list on the real native World, or one of the
+  synthetic scenes: `reservoir`, `falls`, `basin`, `sealed`, `film`, `narrow`,
+  `sparse`. It reports total drift (grid plus in-flight parcels), probe-box
+  quantities, solved chunks, tick median/p95 and spill/parcel counters, and can
+  write PPM frames and cell/flux dumps.
+- `godot/tests/workbench_waterwall_capture.gd` is a graphical evidence driver,
+  not a CI test. It runs the ordinary Shared Workbench: GEN-007 verify-and-install
+  of the supplied manifest, Water Lab Wave and spill selection, Apply, then
+  exact single-step native ticks. It saves framebuffer crops and copied native
+  status.
+
+## Diagnosis on the actual map (original Wave, defaults, 1 worker)
+
+Probe: the raised reservoir at x 440–632, y 540–642 (the lower stamp group).
+Units are full cells (mass / 255). Total drift was 0 in every run.
+
+| Tick | Reservoir | Outside the reservoir |
+|---|---|---|
+| 0 | 5928 | 424 |
+| 300 | 5180 | 782 |
+| 600 | 4483 | 1114 |
+| 1200 | 3258 | 1665 |
+
+A cell dump at tick 300 showed what the face looks like. The face cells are full
+from the platform up to the surface. The air column beside them holds a fan of
+partial cells (≤ 130 units) one or two cells wide, and the lip discharges about
+2.5 cells per tick. The Water is not physically blocked, and the column pass
+does not replenish it. It drains slowly through three limits in the law:
+
+1. Pouring into Empty is capped at ¼ of the donor cell, and the receiving Water
+   then falls only one cell per round.
+2. Bulk flow toward the face is capped by `coast` (16 units per round) or a
+   depth-scaled share of the head, so the pool cannot supply the face. The
+   retained flux behind the lip read 15–26 units per round in every row.
+3. Unsupported cells are given stack heads and depth classes.
+
+The 32-row active band adds to the second limit, but `active_rows = 8` made the
+drain slower, not faster. The behaviour is the same at chunk seams and on open
+platforms with no enclosing wall.
+
+### Existing tuning ranges (reservoir cells remaining, 1200 ticks)
+
+| Setting | t300 | t600 | t1200 | Median tick |
+|---|---|---|---|---|
+| defaults | 5180 | 4483 | 3258 | 23.8 ms |
+| coast 64 | 3890 | 2353 | 1026 | 21.8 ms |
+| coast 255 | 3531 | 1909 | 759 | 24.0 ms |
+| empty pour ½ | 5175 | 4479 | 3248 | 23.9 ms |
+| level shift 0 | 4930 | 4175 | 2895 | 22.4 ms |
+| adhesion off | 5180 | 4484 | 3258 | 20.2 ms |
+| gain 128 | 5178 | 4503 | 3287 | 25.2 ms |
+| 3 substeps | 3824 | 2365 | 882 | 43.9 ms |
+| 8 substeps | 1712 | 426 | 149 | 101.1 ms |
+
+These ran 12 at a time, so absolute timings are contended; compare rows with each
+other. Raising coast is the only cheap lever, and it leaves a straight curtain
+two cells wide falling from a near-vertical face. Substeps scale cost linearly.
+Neither was accepted as the fix.
+
+## Candidates
+
+| Candidate | Result | Outcome |
+|---|---|---|
+| D. Tuning only (coast/substeps) | See above. Coast 64 drained 4902 cells by t1200 against 2670, at equal cost; 8 substeps drained 5779 at about 4× the cost. The wall stays vertical and the fall stays a thin straight curtain | Rejected as the main fix. Pool feed (`draw`) keeps the useful part |
+| A. Wave-native spill (falling marker, multi-cell fall, exposed-face share, pool feed) | Reservoir drained by t900: 2748 cells with the first rule set, then 3804 once pool feed applied to all non-adverse faces. Original Wave drained 2104. The fall stays a straight stream one cell wide | Kept as the base layer and as the spill-only mode |
+| B. Hybrid release into the existing `ballistic_water_v1` owner | Reservoir drained by t900: 4343 cells, against 2104 for original Wave (2.1× the discharge; 1585 cells left against 3824). Water arcs outward, lands, spreads across lower ledges and rejoins pools. Conserved exactly (grid plus in flight) | **Selected** (spill + ballistic release) |
+| B′. Parcels landing on falling Water | Parcels merged mid-air into the curtain and re-formed a straight column | Fixed: parcels pass through falling Wave Water |
+| B″. Deposit ring crossing one-cell walls | Synthetic waterfall leaked 24 081 units through a one-cell wall (quantity conserved, wrong place) | Fixed for straight and diagonal walls, with regressions |
+| C. A purpose-built falling-segment transport | Not built. B reuses an owner that already has exact accounting, deposition, body contacts, rendering and identity, at a measured few ms per tick | Not pursued |
+
+## Implementation summary
+
+See [wave-flow-v1 § Waterwall spill](../architecture/wave-flow-v1.md#waterwall-spill-experimental-wave-waterwall-001).
+Native: `wave_flow.hpp`, `world_wave.inc`, `world_ballistic.inc`,
+`world_pressure.inc` (physical hash), `world.cpp` (`clear()` only),
+`ballistic_water.hpp` (`Paused` outcome). Godot: Workbench admission
+(`cyber_prepared_liquid_world.hpp`), status (`cyber_native_cell_world.cpp`),
+Water Lab controls (`workbench_water_spray_panel.gd`), host plumbing.
+
+## Independent review
+
+A five-dimension review (conservation, determinism, boundaries, performance,
+compatibility) with two adversarial verifiers per finding ran on the change at
+`f5b9f84f`. Reviewers built and ran their own repros: a 40-seed conservation and
+worker-parity fuzz, ThreadSanitizer matrices for workers 1–8, and region and
+capacity repros. They found no conservation, race or worker-parity defect. They
+confirmed 13 findings (duplicates included), all repaired in `751c1a95` with
+regressions:
+
+| Finding | Severity | Repair |
+|---|---|---|
+| `clear()` kept the launch back-off flag | medium | Reset in `clear()`; cleared-vs-fresh regression |
+| Spill read stale meta under paused rows | medium | Paused cells are solid to receiver and support tests (spill only); paused-floor-vs-wall regression |
+| Launch gate needed room for the whole budget and silently disabled release | medium | Gate on one free slot, clamp to free slots, count `launch_capacity_skips` |
+| Parcels crossed one-cell diagonal walls | medium | Second-hop check in the deposit ring; diagonal flight steps blocked (Wave only); regression |
+| External spawns inside paused Wave cores | low | `Paused` launch outcome; regression |
+| Falling counters stale on idle ticks; launch lists missing from `storage_bytes` | low | Fixed |
+| Overfill-deposit test could not detect a missing guard; default-off test compared HEAD with itself | low | The test now deposits directly onto a 65 500-unit cell. Default-off is pinned to golden hashes computed from the unmodified #661 source (identical on all 12 configurations) |
+
+Original Wave (spill disabled) keeps a pre-existing stale-support read of paused
+floors (85 cells differed in the probe). It was deliberately not changed, to
+preserve the qualified law, and is recorded here as a known gap.
+
+## Qualification run before publication (local)
+
+| Gate | Platform | Result |
+|---|---|---|
+| `make wave-spill-test` (18 tests) | WSL2 Ubuntu 24.04, g++ 13.3 | PASS |
+| `make wave-flow-test` (31 tests) | same | PASS |
+| `wave-spill-sanitize`, `wave-flow-sanitize` (ASan+UBSan) | same | PASS |
+| `wave-spill-thread-sanitize`, `wave-flow-thread-sanitize` | same, run under `setarch -R` (this kernel's ASLR aborts TSan otherwise) | PASS |
+| `make test` (full native suite, 192 tests) | same | PASS |
+| Default-off golden pair (base `c7386cfb` vs HEAD) | same | IDENTICAL |
+| `test_workbench_wave.gd`, `test_wave_flow.gd` | Windows 11, Godot 4.7 headless, locally built DLL (LLVM-MinGW 20260826 / Clang 23.1.0, godot-cpp `101ae380`) | PASS |
+
+GitHub-hosted exact-source results, the runtime publication and the Windows
+evaluation package are recorded in the PR description.

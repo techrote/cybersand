@@ -229,6 +229,80 @@ and a configured mask's mathematical endpoint may exceed the signed range;
 only representable occupied cells are accessed. A distant, disjoint mask covers
 no strip cells. This avoids overflow before a clamp could take effect.
 
+## Waterwall spill (experimental, WAVE-WATERWALL-001)
+
+**Status:** Draft/HOLD branch `claude/wave-waterwall-001`, stacked on PR #661. It is
+opt-in through `WaveFlowConfig::spill.enabled` and off by default. With spill off,
+the law is the qualified Wave law: `test_wave_spill` pins cells, `state_hash`,
+`physical_state_hash` and `content_hash` for 12 scenes (1/4 workers, 1/3
+substeps, a selected region) to values computed from the unmodified #661 source.
+The dated [evidence record](../audits/2026-11-17-wave-waterwall-001.md) holds the
+diagnosis, the candidates that were tried, timings and Workbench captures.
+
+**The defect.** A large Water body standing on a ledge beside open air kept an
+almost vertical face for thousands of ticks while a narrow stream trickled away.
+Three limits in the original law combined to cause this. The Water was never
+physically blocked, and it was not being replenished from above:
+
+1. An exposed face donates at most ¼ of its cell per round into an Empty
+   neighbour (`empty_pour_shift`). Falling Water then moves only one cell per
+   round and carries no momentum. The face therefore feeds a curtain one or two
+   cells wide.
+2. Bulk flow toward that face is limited by `coast` (16 units per round) or by a
+   share of the head that shrinks with stack depth (1/256 at 32 rows). The pool
+   behind the face cannot supply it any faster.
+3. Unsupported falling cells are treated as stacks, so heads and depth classes
+   are derived for Water that rests on nothing.
+
+The existing tuning ranges do not fix this cheaply. `coast` 64–255 drains the
+reservoir about 3× faster but keeps a straight, thin curtain. Eight substeps
+drain it about 8× faster at about 8× the tick cost.
+
+**The mechanism.** Spill changes nothing in storage. Its only carried state is
+one launch back-off flag, and every transfer goes through the existing conserved
+faces or the ballistic parcel owner.
+
+| Part | Rule |
+|---|---|
+| Falling Water | Water with no solid, full resting Water or solved edge beneath it is marked *falling* (depth code 6). It carries no head and falls `fall` cells per round (default 3) |
+| Exposed face | A face whose receiver is falling Water, or Empty air with nothing able to support Water beneath it, discharges `1/2^share_shift` of the donor cell per round (default ½). Receiver room is shared between the two faces. A falling donor sheds only its mass above `stream`, so a stream stays together until it is dense |
+| Pool feed | A wet-wet face may carry `draw` units per round (default 64, Coast stays 16) unless the flow runs against more than `draw_head` units of head. This lets the pool keep feeding its draining edge while reversing surges still relax |
+| Ballistic release | Only when the World also enables `ballistic_water_v1`. In the last round of a tick, exposed faces beside Empty air are nominated into a fixed 512-entry list per strip, and the face itself carries nothing. After the passes, the tick owner serially launches up to `launch_budget` parcels (clamped to free pool slots) at `launch_speed/256 · √(2gh)` outward. Each launch is an exact transfer of at most one cell. A refused or deferred launch leaves the Water in its cell, and the next tick spills it through the grid |
+
+Under Wave the parcel owner is admitted **only** through this release.
+`ballistic_water_v1` without spill, and the per-cell WCX-FR face scan, stay
+refused. In Wave Worlds, parcels pass through falling Wave Water. They may not
+land beyond a wall one cell thick, including a diagonal one, and they may not
+step diagonally through such a wall. A parcel is never born in, enters, lands in
+or moves inside an unselected simulation core (outcome `Paused`). A parcel
+leaving an overfilled cell (more than 255 units) takes exactly one cell, and a
+deposit never adds to an overfilled cell.
+
+**Determinism and ownership.** Workers write only their own task's candidate
+list and half-chunk counters, and capacity is reserved by the owner before
+dispatch. Launches run in sorted strip order on the owner thread. Results are
+identical for 1–8 workers and repeat runs, under ThreadSanitizer too. Paused
+cells are solid to both the column pass and the spill receiver and support
+tests. A spill World therefore evolves identically against a paused floor and
+a wall. Original Wave keeps its known stale-support read there.
+
+**Diagnostics** (`WaveFlowDiagnostics`, appended): `spill_units`, `relief_units`,
+`spill_faces`, `last_falling_units/cells`, `launched_parcels/units`,
+`launch_refusals`, `launch_deferrals`, `launch_capacity_skips` and
+`launch_nanoseconds`. The candidate lists are counted in `storage_bytes`.
+
+**Identity.** The spill configuration and the back-off flag are bound into
+`state_hash` and `physical_state_hash` only while spill is enabled. Parcels are
+bound by the existing ballistic block. `clear()` resets the flag. Exact physical
+save remains refused for every Wave World.
+
+**Limits.** Spill is an approximation: grid-only spill drops straight down, and
+only ballistic release throws Water outward. Parcels are one cell each, at most
+`launch_budget` per tick and at most the pool capacity (4096) live. A face
+beyond those limits keeps spilling through the grid. Sealed reservoirs, narrow
+slots, sub-threshold films and contained pools are unchanged in kind, although
+pool feed makes bulk levelling faster.
+
 ## State, memory and identity
 
 | Storage | Per cell | Kind |
@@ -281,7 +355,9 @@ when wave flow is requested with any of:
 - a backend other than phased in-place;
 - any Water mass profile other than 8 bits;
 - Water assigned to anything but `freemass_v1` (the fractional carrier);
-- settled discovery, or `ballistic_water_v1`;
+- settled discovery, or `ballistic_water_v1` unless Waterwall spill is enabled
+  (and never the per-cell WCX-FR face release);
+- spill tuning outside its bounds while spill is enabled;
 - an odd storage chunk size;
 - a configured custom cellular transport policy, whose cadence/direction
   semantics Wave does not implement.
@@ -323,8 +399,12 @@ the World is quarantined as failed, rather than wrapping the value.
   takes tens of thousands of ticks to finish running off, and is solved (not
   asleep) until it has. The rested pool fixtures are level to one unit;
   supported adhesion residue can remain more uneven.
-- **Falling Water loses sideways momentum**; waterfalls drop straight.
+- **Falling Water loses sideways momentum**; waterfalls drop straight. Opt-in
+  [Waterwall spill](#waterwall-spill-experimental-wave-waterwall-001) with
+  ballistic release throws exposed-face Water outward as parcels.
 - **Deep reservoirs drain through their top 32 rows and their exposed face.**
+  Without spill, a tall exposed face can stand almost vertical for thousands of
+  ticks (the "waterwall").
 - **Water-owned material interactions are limited.** Sand can sink and active
   non-Water kernels can initiate their established reactions. Parked Water does
   not initiate erosion, corrosion or dissolution of passive hard materials;
