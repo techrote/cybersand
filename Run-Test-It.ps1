@@ -48,7 +48,7 @@ try {
     [Console]::Error.WriteLine($BootstrapFailure)
     exit 1
 }
-$Engine=Join-Path $Root 'Godot_v4.7-stable_win64_console.exe'
+$Engine=Join-Path $Root 'CyberSand-Godot-4.7-x64.console.exe'
 $Project=Join-Path $Root 'godot'
 $ManifestFile=Join-Path $Root 'CAMERA-STACK-MANIFEST.json'
 $Zip=$Output+'.zip'
@@ -87,6 +87,25 @@ function Field($Object,[string]$Name,$Fallback=$null) {
     $Property=$Object.PSObject.Properties[$Name]
     if($null -eq $Property){return $Fallback}
     return $Property.Value
+}
+function Require-RenderScheduling($Status,[string]$RenderThread,[string]$Policy) {
+    Require ($RenderThread -in @('safe','separate') -and $Policy -in @('off','render-overlap')) 'Unknown requested render scheduling treatment'
+    Require ($null -ne $Status) 'Trace does not report actual render scheduling'
+    $Separate=$RenderThread -eq 'separate';$Enabled=$Policy -eq 'render-overlap'
+    $ExpectedFlags=@{enabled=$Enabled;separate_render_thread=$Separate
+        render_overlap_available=($Enabled -and $Separate);waits_for_native_sample=$true}
+    foreach($Key in $ExpectedFlags.Keys) {
+        $Actual=Field $Status $Key
+        Require ($Actual -is [bool] -and $Actual -eq $ExpectedFlags[$Key]) ('Actual render scheduling differs: '+$Key)
+    }
+    Require ((Field $Status 'mode') -eq $Policy) 'Actual native rendezvous policy differs'
+    $ExpectedCap=$(if($Enabled){66667}else{16667})
+    Require ((Field $Status 'max_frame_wait_usec') -eq $ExpectedCap -and
+        (Field $Status 'poll_usec') -eq 250) 'Actual native rendezvous limits differ'
+    $Delta=Field $Status 'fixed_physics_delta'
+    Require ($null -ne $Delta -and -not [double]::IsNaN([double]$Delta) -and
+        -not [double]::IsInfinity([double]$Delta) -and
+        [Math]::Abs([double]$Delta-(1.0/60.0)) -le 0.000000000001) 'Actual fixed physics timestep differs'
 }
 function Gap($A,$B) {
     if($null -eq $A -or $null -eq $B -or @($A).Count -ne 2 -or @($B).Count -ne 2){return $null}
@@ -302,6 +321,14 @@ function Read-PoseStatistics([string]$Path) {
                     Require ($null -ne (Field $Body $Required)) ('Incomplete physical actor state: '+$Required)
                 }
                 Require (@($Body.xy).Count -eq 2 -and @($Body.velocity).Count -eq 2) 'Incomplete physical vectors'
+                # Reject malformed values before numeric casts can turn null or
+                # booleans into fabricated zero/one physical states.
+                foreach($Number in (@($Body.xy)+@($Body.velocity)+@($Body.angle,$Event.fixed_delta,$Event.simulation_time_sec))) {
+                    Require ($Number -is [int] -or $Number -is [long] -or $Number -is [single] -or
+                        $Number -is [double] -or $Number -is [decimal]) 'Physical state contains a nonnumeric value'
+                    Require (-not [double]::IsNaN([double]$Number) -and
+                        -not [double]::IsInfinity([double]$Number)) 'Physical state contains a nonfinite value'
+                }
                 $Key=([string]$Event.step)+':'+([string]$Body.slot)
                 Require (-not $Trajectory.ContainsKey($Key)) ('Duplicate completed Rapier event '+$Key)
                 $Trajectory[$Key]=@{xy=@($Body.xy);velocity=@($Body.velocity);angle=[double]$Body.angle
@@ -316,6 +343,7 @@ function Read-PoseStatistics([string]$Path) {
         if($Times.Count -gt 1 -and $Times[-1] -gt $Times[0]){$EventRates[$Kind]=($Times.Count-1)*1000000.0/($Times[-1]-$Times[0])}
     }
     $Result=@{measurement='Main overlay submission, not GPU scanout';frames=$Frames.Count;span_seconds=$Span
+        statistics_scope='Whole retained capture. Arms may contain different extra completed steps; these rates and gaps are not trimmed to equal work. Exact common-prefix timings are a separate source-matched CI reduction.'
         achieved_overlay_fps=($Frames.Count-1)/$Span
         achieved_native_hz=([double]$Frames[-1].native_tick-[double]$Frames[0].native_tick)/$Span
         achieved_rapier_hz=([double]$Frames[-1].rapier_step-[double]$Frames[0].rapier_step)/$Span
@@ -339,6 +367,17 @@ function Read-PoseStatistics([string]$Path) {
     foreach($Scope in @('image_patch_usec','content_cache_usec','tile_assembly_usec','atlas_assembly_usec','backend_submit_usec','staging_upload_usec','gpu_blit_submit_usec')) {
         $Values=@($PublicationRows|Where-Object{$null -ne (Field $_ $Scope)}|ForEach-Object{[double](Field $_ $Scope)/1000.0})
         $PublicationScopes[$Scope]=Distribution $Values
+    }
+    # This status is read by Main, including RenderingServer.is_on_render_thread().
+    # Missing old-trace metadata remains unavailable outside the explicit comparison.
+    $Result.native_rendezvous=Field (Field $Records[0] 'settings') 'native_rendezvous'
+    $Separate=Field $Result.native_rendezvous 'separate_render_thread'
+    $Result.render_thread=$(if($Separate -is [bool]){if($Separate){'separate'}else{'safe'}}else{$null})
+    $Result.post_draw_main_notifications_per_sec=$null
+    if($Separate -is [bool] -and $Separate) {
+        $Result.post_draw_main_notifications_per_sec=Field $Result.event_rates_hz 'framebuffer_draw'
+        $Result.event_rates_hz.framebuffer_draw=$null
+        $Result.draw_rate_unavailable_reason='Separate post-draw signals are Main-delivered notifications without an exact draw identity.'
     }
     $Result.material_publication_elapsed_ms=$PublicationScopes
     $Result.material_backend_modes=@{}
@@ -397,6 +436,8 @@ function Compare-PhysicalSteps($Before,$After,[int]$RequiredSteps=24) {
     }
     return @{comparison_clock='same completed Rapier step and body slot, fixed 1/60 simulated seconds per step'
         common_step_bodies=$Positions.Count;legacy_step_bodies=$Before.Count;repaired_step_bodies=$After.Count
+        common_completed_steps=$Last;legacy_completed_steps=$BeforeSteps.Count;repaired_completed_steps=$AfterSteps.Count
+        legacy_extra_completed_steps=($BeforeSteps.Count-$Last);repaired_extra_completed_steps=($AfterSteps.Count-$Last)
         position_delta_cells=(Distribution $Positions);velocity_delta=(Distribution $Velocities)
         angle_delta_radians=(Distribution $Angles);different_native_tick_inputs=$DifferentNative
         different_feedback=$DifferentFeedback
@@ -441,6 +482,9 @@ function Save-Summary {
     $Lines.Add(('Cases with measured active physics gaps of at least 100ms: {0}. These are performance concerns even when capture completes.' -f $Summary.physics_timing_concerns))
     $Lines.Add('Rates below are achieved. Coupled defaults preserve startup VSync; the six pacing experiments disable it.')
     $Lines.Add('Main means overlay submission, not monitor scanout. See summary.json and raw traces for full evidence.')
+    $Lines.Add('Case statistics below use each whole retained capture. The faster arm may complete additional steps and evolve further; these rate/tail summaries are not equal-work prefix timings. Common physical-state coverage and extra counts are listed separately. Source-matched CI reports equal-prefix timings as well as whole captures.')
+    if($Publication -and $Summary.ContainsKey('comparison')){$Lines.Add($Summary.comparison)}
+    $Lines.Add('A render-overlap marker reports returned RenderingServer calls, not GPU completion. Separate post-draw signals are Main-delivered notifications with no exact draw identity. The finite requested wait can overshoot through OS scheduling.')
     $Lines.Add('Rapier targets count callbacks per second; each completed step still advances 1/60 simulated second.')
     foreach($CpuIdentity in @(Field $Summary 'cpu' @())) {
         $Lines.Add(('CPU: {0}; logical processors: {1}; physical cores: {2}' -f $CpuIdentity.model,$CpuIdentity.logical_processors,$CpuIdentity.physical_cores))
@@ -461,6 +505,13 @@ function Save-Summary {
             'UNAVAILABLE: no exact consecutive active completed-step intervals.'
         }else{'No 100ms gap observed; this alone is not a gameplay acceptance result.'})
         $Lines.Add('  Physics: '+$TimingDescription)
+        $Scheduling=Field $Row 'actual_native_rendezvous'
+        $Lines.Add(('  Render thread requested/actual: {0} / {1}; native rendezvous requested/actual: {2} / {3}' -f
+            (Field $Row 'requested_render_thread' 'project default'),(Field $Row 'actual_render_thread' 'unrecorded'),
+            (Field $Row 'requested_native_rendezvous_policy' 'not selected by this mode'),(Field $Scheduling 'mode' 'unrecorded')))
+        $Lines.Add(('  Render overlap available: {0}; requested aggregate frame-wait cap us: {1}; rendezvous observations: {2}. No observed wait is required when an eligible callback does not need one.' -f
+            (Field $Scheduling 'render_overlap_available' 'unrecorded'),(Field $Scheduling 'max_frame_wait_usec' 'unrecorded'),
+            (Field (Field $Stats 'event_counts') 'native_rendezvous' 0)))
         $Material=Field $Row 'material_publication'
         $Lines.Add(('  Material publication: requested={0}, backend={1}, last CPU upload bytes={2}; physics handoff={3}' -f
             (Field $Material 'requested_mode' 'unrecorded'),(Field $Material 'backend' 'unrecorded'),
@@ -505,6 +556,15 @@ function Save-Summary {
         $Lines.Add(('  Known selected steps: {0}; visible unknown source times: {1}; callbacks without a submission: {2}' -f $Stats.selected_step_observations,$Stats.selected_step_unknown_visible_frames,$Stats.callbacks_without_overlay_submission))
         $Lines.Add('')
     }
+    foreach($Pair in $Summary.pairs) {
+        $Equality=Field $Pair 'physical_trajectory'
+        if($null -ne $Equality) {
+            $Lines.Add(('Pair {0}: exact common recorded physical states={1}; common completed steps={2}; first/control whole steps={3}, extra={4}; second/candidate whole steps={5}, extra={6}.' -f
+                (Field $Pair 'condition'),(Field $Equality 'exact'),(Field $Equality 'common_completed_steps'),
+                (Field $Equality 'legacy_completed_steps'),(Field $Equality 'legacy_extra_completed_steps'),
+                (Field $Equality 'repaired_completed_steps'),(Field $Equality 'repaired_extra_completed_steps')))
+        }
+    }
     $Lines.Add('Physics hold reasons identify observed gates, not complete causes. Material and solver scopes are elapsed wall calls, including possible waits and OS descheduling; they do not isolate CPU execution or GPU transfer time.')
     $Lines.Add('Zero visual holds or zero 100ms gaps alone does not establish continuous or acceptable gameplay.')
     $Lines.Add('Compare your ordinary interactive renderer, VSync, worker setting and gameplay separately; hosted software rendering is not physical NVIDIA evidence.')
@@ -538,9 +598,12 @@ function Run-Godot([string]$Name,[string[]]$Argv,[int]$Timeout,[string]$Director
         $ErrorTask=$Proc.StandardError.ReadToEndAsync()
         $Completed=$Proc.WaitForExit($Timeout*1000)
         if(-not $Completed) {
-            try{$Proc.Kill()}catch{}
+            # The console wrapper owns a GUI child. Kill the whole timed-out
+            # tree so that inherited output handles cannot hold this runner.
+            & taskkill.exe /PID $Proc.Id /T /F | Out-Null
             [void]$Proc.WaitForExit(10000)
         }
+        Require ($OutputTask.Wait(10000) -and $ErrorTask.Wait(10000)) "$Name output handles did not close; capture incomplete"
         [IO.File]::WriteAllText((Join-Path $Directory ($Name+'-stdout.log')),
            [string]$OutputTask.Result,[Text.UTF8Encoding]::new($false))
         [IO.File]::WriteAllText((Join-Path $Directory ($Name+'-stderr.log')),
@@ -549,6 +612,8 @@ function Run-Godot([string]$Name,[string[]]$Argv,[int]$Timeout,[string]$Director
         $Code=[int]$Proc.ExitCode
         Write-Host "TEST_IT_PROCESS $Name PID=$ProcessId EXIT=$Code"
         Require ($Code -eq 0) "$Name exited $Code; logs and any receipts retained"
+        $ConsoleText=[string]$OutputTask.Result+[Environment]::NewLine+[string]$ErrorTask.Result
+        Require (-not [regex]::IsMatch($ConsoleText,'SCRIPT ERROR:|SHADER ERROR:|Error initializing GLAD|glXMakeCurrent failed|wglMakeCurrent failed|Unhandled XServer error|Failed to create (?:native |ANGLE )?OpenGL window|Could not set V-Sync mode\.')) "$Name reported a script, shader or graphics-context failure; logs retained"
     }finally{
         $Summary.processes+=@{name=$Name;pid=$ProcessId;exit_code=$Code}
         $Proc.Dispose()
@@ -559,7 +624,8 @@ function Run-Case([string]$Family,[int]$Workers,[int]$Repeat,
                   [int]$Fps=60,[int]$RapierHz=60,[int]$AckDelay=0,[bool]$AckGated=$false,
                   [bool]$WaitSample=$true,[bool]$SampleWake=$true,[bool]$Smoothing=$true,
                   [string]$Presentation='repaired',[string]$Condition='legacy-suite',[bool]$CadenceTape=$false,
-                  [string]$PoseSelection='coherent',[string]$FireMode='unchanged',[string]$DisplayProfile='scripted') {
+                  [string]$PoseSelection='coherent',[string]$FireMode='unchanged',[string]$DisplayProfile='scripted',
+                  [string]$RenderThread='',[string]$RendezvousPolicy='') {
     # Keep paths short for Windows PowerShell 5.1 and Godot shader-cache names.
     # Every requested axis is still written in the receipt and summary.
     $Name=$(if($Condition -eq 'legacy-suite'){"$Family-w$Workers-r$Repeat-$Camera-$Pose-p$PixelHz-u$RenderHz"}elseif($Coherence){"$Condition-$PoseSelection"}else{"$Condition-$Presentation"})
@@ -574,6 +640,10 @@ function Run-Case([string]$Family,[int]$Workers,[int]$Repeat,
     New-Item -ItemType Directory -Force -Path $env:APPDATA|Out-Null
     Write-Host "TEST IT | $Name | real 2048-square World / Needle physics tape" -ForegroundColor Cyan
     $Arguments=@()
+    if($RenderThread) {
+        Require ($RenderThread -in @('safe','separate')) 'Unknown render-thread override'
+        $Arguments+=@('--render-thread',$RenderThread)
+    }
     if($DisplayProfile -eq 'scripted') {
         $Arguments+=@('--rendering-driver',$RenderingDriver,'--rendering-method',
             'gl_compatibility','--audio-driver','Dummy','--max-fps',[string]$Fps)
@@ -587,6 +657,8 @@ function Run-Case([string]$Family,[int]$Workers,[int]$Repeat,
        "--cadence-tape=$([int]$CadenceTape)","--presentation=$PoseSelection","--fire-mode=$FireMode",
        "--display-profile=$DisplayProfile","--receipt=$Receipt")
     $CaseIdentity=@{name=$Name;source=$Summary.source;arguments=$Arguments;isolated_user_profile=$env:APPDATA
+        requested_render_thread=$(if($RenderThread){$RenderThread}else{$null});requested_native_rendezvous_policy=$(if($RendezvousPolicy){$RendezvousPolicy}else{$null})
+        actual_render_thread=$null;actual_native_rendezvous=$null
         requested_native_workers=$Workers;display_profile=$DisplayProfile;material_publication=$env:CYBERSAND_MATERIAL_PUBLICATION;physics_publication=$env:CYBERSAND_DIAG_PHYSICS_PUBLICATION
         material_staging_slots=$env:CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS;material_history_targets=$env:CYBERSAND_DIAG_MATERIAL_HISTORY_TARGETS
         native_rendezvous=$env:CYBERSAND_DIAG_NATIVE_RENDEZVOUS;material_copy_mode=$env:CYBERSAND_DIAG_MATERIAL_COPY_MODE;common_observer=$env:CYBERSAND_DIAG_COMMON_OBSERVER;rendering_driver_override=$(if($DisplayProfile -eq 'scripted' -or $ExplicitRenderingDriver){$RenderingDriver}else{$null})}
@@ -631,6 +703,12 @@ function Run-Case([string]$Family,[int]$Workers,[int]$Repeat,
     Require ($Analysis.statistics.physics_progress.consecutive_step_intervals -gt 0) "$Name missing exact completed Rapier intervals"
     [IO.File]::WriteAllText((Join-Path $Dir 'analysis.json'),
         (($Analysis.statistics|ConvertTo-Json -Depth 28)+[Environment]::NewLine),[Text.UTF8Encoding]::new($false))
+    $CaseIdentity.actual_render_thread=$Analysis.statistics.render_thread
+    $CaseIdentity.actual_native_rendezvous=$Analysis.statistics.native_rendezvous
+    [IO.File]::WriteAllText((Join-Path $Dir 'case.json'),(($CaseIdentity|ConvertTo-Json -Depth 12)+[Environment]::NewLine),[Text.UTF8Encoding]::new($false))
+    if($RenderThread -or $RendezvousPolicy) {
+        Require-RenderScheduling $Analysis.statistics.native_rendezvous $RenderThread $RendezvousPolicy
+    }
     if(($Coherence -or $Publication) -and $PoseSelection -eq 'coherent') {
         Require ($Analysis.statistics.selected_step_observations -gt 0 -and
             $Analysis.statistics.selected_source_time_rewinds -eq 0) "$Name missing or rewinding selected presentation timeline"
@@ -643,6 +721,8 @@ function Run-Case([string]$Family,[int]$Workers,[int]$Repeat,
         condition=$Condition;cadence_mode=$Presentation;presentation_mode=$PoseSelection
         fire_schedule=$Data.fire_schedule;display=$Data.display;cpu=$Data.cpu;native_workers=$Data.native_workers
         effective_pacing=$Data.effective_pacing;render_driver=$Data.render_driver
+        requested_render_thread=$CaseIdentity.requested_render_thread;requested_native_rendezvous_policy=$CaseIdentity.requested_native_rendezvous_policy
+        actual_render_thread=$Analysis.statistics.render_thread;actual_native_rendezvous=$Analysis.statistics.native_rendezvous
         material_publication=(Field $Data 'material_publication');physics_publication=(Field $Data 'physics_publication')
         pixel_target_hz=$PixelHz;publication_target_hz=$RenderHz;graphical_fps_target=$Fps
         rapier_callback_target_hz=$RapierHz;fixed_simulation_step_seconds=(1.0/60.0)
@@ -727,8 +807,10 @@ function Run-PublicationMatrix {
     $env:CYBERSAND_DIAG_MATERIAL_HISTORY_TARGETS=''
     $env:CYBERSAND_DIAG_MATERIAL_COPY_MODE=''
     $env:CYBERSAND_DIAG_COMMON_OBSERVER='0'
-    $env:CYBERSAND_DIAG_NATIVE_RENDEZVOUS=''
-    $Summary.publication_controls=@{staging_slots='source default';history_targets='source default';copy_mode='source default';detailed_observer=$true}
+    $Treatments=@{
+        control=@{render_thread='safe';native_rendezvous='0';rendezvous_policy='off';material='full';physics='combined'}
+        candidate=@{render_thread='separate';native_rendezvous='render-overlap';rendezvous_policy='render-overlap';material='auto';physics='early'}}
+    $Summary.publication_controls=@{staging_slots='source default';history_targets='source default';copy_mode='source default';detailed_observer=$true;treatments=$Treatments}
     $MatrixPath=Join-Path $Project 'tests\fixtures\engine_lab\coherence-conditions.json'
     $Matrix=Get-Content -LiteralPath $MatrixPath -Raw -Encoding UTF8|ConvertFrom-Json
     Require ($Matrix.schema -eq 'camera-stack-coherence-conditions-v1') 'Unknown publication condition schema'
@@ -736,20 +818,24 @@ function Run-PublicationMatrix {
     if($Quick){$Conditions=@($Conditions|Where-Object{$_.name -eq 'interactive-follow'})}
     Require ($Conditions.Count -eq $(if($Quick){1}else{2})) 'Missing ordinary publication comparison conditions'
     $Summary.planned_conditions=$Conditions;$Summary.planned_cases=$Conditions.Count*2
-    $Summary.comparison='Same reviewed source: full texture/combined publication control versus automatic staged GPU rectangle copies/early physics publication; both coherent, fixed-step and strictly coupled. This control does not restore the historical binary.'
+    $Summary.comparison='Same reviewed source: Safe rendering/full texture/combined publication/rendezvous off control versus Separate rendering/automatic staged GPU rectangle copies/early publication/render-overlap candidate. Both use the same coherent, fixed-step, strictly coupled workload. This compares the integrated treatments, does not isolate one mechanism, and does not restore the historical binary.'
     Save-Summary
     foreach($Condition in $Conditions) {
         $Rows=@{};$Trajectories=@{}
         foreach($Arm in @('control','candidate')) {
             try {
-                $env:CYBERSAND_MATERIAL_PUBLICATION=$(if($Arm -eq 'control'){'full'}else{'auto'})
-                $env:CYBERSAND_DIAG_PHYSICS_PUBLICATION=$(if($Arm -eq 'control'){'combined'}else{''})
+                $Treatment=$Treatments[$Arm]
+                $env:CYBERSAND_MATERIAL_PUBLICATION=$Treatment.material
+                $env:CYBERSAND_DIAG_PHYSICS_PUBLICATION=$Treatment.physics
+                $env:CYBERSAND_DIAG_NATIVE_RENDEZVOUS=$Treatment.native_rendezvous
                 Run-Case 'freemass' ([int]$Condition.workers) 1 $Condition.camera $Condition.pose $Condition.pixel $Condition.publication `
                     $Condition.fps $Condition.rapier $Condition.ack $Condition.gated $Condition.wait $Condition.wake `
-                    $Condition.smoothing 'repaired' ($Condition.name+'-'+$Arm) $true 'coherent' $Condition.fire $Condition.display_profile
+                    $Condition.smoothing 'repaired' ($Condition.name+'-'+$Arm) $true 'coherent' $Condition.fire $Condition.display_profile $Treatment.render_thread $Treatment.rendezvous_policy
                 $Rows[$Arm]=$script:LastCaseRow;$Trajectories[$Arm]=$script:LastTrajectory
                 Require ($Rows[$Arm].material_publication.requested_mode -eq $env:CYBERSAND_MATERIAL_PUBLICATION) 'Material publication control did not reach the runtime'
-                Require ($Rows[$Arm].physics_publication -eq $(if($Arm -eq 'control'){'combined'}else{'early'})) 'Physics publication control did not reach the runtime'
+                Require ($Rows[$Arm].physics_publication -eq $Treatment.physics) 'Physics publication control did not reach the runtime'
+                Require ((Field $Rows[$Arm].statistics.event_counts 'main_callback' 0) -gt 0 -and
+                    (Field $Rows[$Arm].statistics.event_counts 'physics_publication' 0) -gt 0) 'Detailed callback/mailbox observer is missing'
                 $ExpectedBackend=$(if($Arm -eq 'control'){'full'}else{'blit'})
                 $BackendModes=$Rows[$Arm].statistics.material_backend_modes
                 Require ($Rows[$Arm].material_publication.backend -eq $ExpectedBackend -and
@@ -827,6 +913,9 @@ try {
         $Manifest.accepted_main -eq '018bd09503d7f079ddac52e225c2f7daf8d678bf') 'Wrong integrated evaluation manifest'
     Require ([string]$Manifest.source_commit -match '^[0-9a-f]{40}$') 'Source SHA not pinned'
     $Summary.source=[string]$Manifest.source_commit
+    $Summary.source_tree=[string]$Manifest.source_tree
+    $Summary.engine_provenance=$Manifest.engine
+    $Summary.package_manifest_sha256=Sha $ManifestFile
     $env:CYBERSAND_SOURCE_REVISION=$Summary.source
     # Editor import may rewrite generated Godot *.import metadata. Preserve
     # strict source/DLL/shader/test checks instead of refusing a package that

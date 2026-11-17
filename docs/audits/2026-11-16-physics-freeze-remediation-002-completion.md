@@ -239,3 +239,80 @@ has SHA256`c549d9bf36ce4291772704ff9a5af43cd31781440e0665e0855485fa09153868`.
 Its `complete:false` receipt remains a failure. Subsequent incomplete build
 outputs are separately quarantined for inspection and cannot satisfy the
 complete-provenance restoration gate.
+
+## Desktop integration and final decision boundary
+
+The local reverse timing capture exposed one native rendezvous `ready` decision
+9microseconds beyond its deadline. The helper now samples the monotonic clock
+at the return decision and converts an expired ready result to a timeout,
+removing its snapshot. The regression passes57 checks, including minus1, zero
+and plus9microsecond boundaries in both fixed16 and render-overlap modes.
+Preemption after that final clock sample remains possible; this is not a hard
+real-time scheduler. Native associations, terrain requirements and the fixed
+physical timestep are unchanged.
+
+Separate rendering also requires explicit ownership at the two Lab windows.
+The shared policy embeds Engine Lab and Materials Lab in the existing root
+surface in Separate mode and retains native windows in Safe mode. Its owned
+binding compensates only the Lab's parent stretch, enforces the existing
+minimum content size, and refuses an undersized parent with a resize message.
+It does not modify root stretch, native pixel mapping or the presentation
+coordinator. Embedded Lab controls and their reused dropdowns disable local
+font oversampling; the copied default-font mipmap path remains enabled.
+VSync requests dispatch the bound native setter through the rendering owner,
+without a synchronous Main/render lock inversion or a GDScript rendering-thread
+callback. The rejected synchronous native-window proposal remains unapplied.
+
+The integrated working-source Linux run completed54 cases with51 passes. It
+passed actual Engine Lab112/164 checks in Safe/Separate modes and Materials
+Lab88/131, including composed markers, measured pixel input, font scale,
+resize/refusal/reopen and the configured dropdowns. Both graphical PAINT phases
+passed66/12 checks. Material tile/history, immutable queued images, default
+font, Depth, native rendezvous, overlap lifetime and physical pacing gates
+passed. The local X11 driver's unsupported VSync warning remains a limitation;
+Windows qualification requires requested/reported Disabled/Enabled values and
+rejects an EGL setter failure warning.
+
+That run is retained as failed, with unchanged source/runtime fingerprints.
+The headless PAINT runner incorrectly requested framebuffer capture and awaited
+a draw signal unavailable in headless mode; its author timed out and its
+dependent fresh reopen then lacked a save. Restricting that environment setting
+to graphical cases produced64/12 passing headless assertions in12.44seconds.
+The third failure was the old pixel fixture's unassociated post-draw capture
+under Separate rendering; its pixel assertions are retained while the capture
+ordering is qualified separately. These are working-source results, not an
+exact-commit or Windows acceptance receipt.
+
+The pixel fixture's original Separate run failed100 of339 assertions. Ordering
+only its primary uniform capture reduced that to four failures in the other
+PAINT/root capture paths; that intermediate attempt also remains failed.
+The final test-only helper crosses a scene iteration boundary, retains normal
+waits, then queues an explicit draw immediately before synchronous readback.
+This covers all five correctness capture sites without changing any pixel
+oracle, camera input, shader, negative control or comparative timing loop.
+Actual Safe and Separate runs then passed339/0 each, with zero and128 explicit
+correctness draws respectively. Their source/runtime fingerprints were stable.
+The comparative timing metadata explicitly describes Main-delivered signal
+intervals without exact Separate draw identity; those intervals do not establish
+render throughput. A separately interrupted invocation produced no application
+case and is not counted as a pass.
+
+The remaining local integration campaign passed architectural generation/UI,
+ordinary and multistyle author/reopen, retained generator/material regressions,
+Flatten with fresh reopen and owner-failure recovery, and combined authoring
+at one and four native workers. Its source/runtime fingerprints stayed equal
+before and after all three campaigns. These results supplement the focused
+runtime changes; the required final exact-HEAD hosted campaign is still distinct.
+
+Delivery uses a distinct custom-engine artifact lock and preserves the engine
+build source/run separately from the final application Git archive. The
+ordinary launcher selects Separate/automatic material publication/early native
+publication/render overlap. Explicit controls isolate full texture submission,
+renderer ownership and overlap; the integrated publication control selects
+Safe/full/combined/off. Both retain native wait/wake and fixed physical laws.
+The real PowerShell5.1 runner records achieved physical progression and labels
+its statistics as whole captures, including additional completed steps. Exact
+common-prefix timing belongs to the source-matched CI reducer. Separate
+Main-delivered post-draw notifications are not reported as a measured draw rate.
+Fresh extraction, the actual command launchers, Test It, final exact-source
+Linux/Windows CI and independent raw-evidence review remain required gates.

@@ -288,11 +288,11 @@ func _measure_effects() -> void:
 	host.set_glow_enabled(true)
 	host.set_vapour_trail_enabled(true)
 	var old_vsync: DisplayServer.VSyncMode = DisplayServer.window_get_vsync_mode()
-	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
+	preload("res://scripts/workbench_lab_window_policy.gd").request_vsync(DisplayServer.VSYNC_DISABLED)
 	var guarded_before: Dictionary = await _measure_effect_cohort("guarded-before", false)
 	var old_grid: Dictionary = await _measure_effect_cohort("former-glow-grid-control", true)
 	var guarded_after: Dictionary = await _measure_effect_cohort("guarded-after", false)
-	DisplayServer.window_set_vsync_mode(old_vsync)
+	preload("res://scripts/workbench_lab_window_policy.gd").request_vsync(old_vsync)
 	host.freeze_glow_layout_for_timing = false
 	var mean_guarded_median := (float(guarded_before.frame_median_usec) + float(guarded_after.frame_median_usec)) / 2.0
 	pacing = {"schema":"native-camera-effects-pacing-v1", "advisory":true,

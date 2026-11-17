@@ -205,6 +205,11 @@ def run_case(args, condition, presentation):
     with (directory / "console.log").open("w", encoding="utf-8") as log:
         completed = subprocess.run(command, env=env, stdout=log, stderr=subprocess.STDOUT, timeout=args.timeout)
     need(completed.returncode == 0, f"{name}: exit {completed.returncode}; see console.log")
+    console_text = (directory / "console.log").read_text(encoding="utf-8", errors="replace")
+    need(not any(message in console_text for message in (
+        "SCRIPT ERROR:", "SHADER ERROR:", "Error initializing GLAD", "glXMakeCurrent failed",
+        "wglMakeCurrent failed", "Unhandled XServer error", "Failed to create ANGLE OpenGL window",
+        "Failed to create native OpenGL window", "Could not set V-Sync mode.")), f"{name}: graphics or script failure; see console.log")
     data = json.loads(receipt.read_text(encoding="utf-8"))
     need(data["complete"] and data["status"] == "passed", f"{name}: incomplete receipt")
     need(data["source_sha"] == args.source_sha, "Source changed")

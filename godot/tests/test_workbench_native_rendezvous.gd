@@ -28,6 +28,21 @@ class Mailbox extends RefCounted:
 	func join() -> void:
 		if thread.is_started(): thread.wait_to_finish()
 
+class CompletionClock extends Rendezvous:
+	var boundary_offset: int = 0
+	var retained_marker: Callable
+
+	func _completion_time_usec() -> int:
+		return deadline_usec + boundary_offset
+
+	func _separate_render_thread() -> bool:
+		return true
+
+	func _queue_render_marker(callback: Callable) -> void:
+		# Retain a pending native callback without executing rendering work.
+		# This isolates the decision boundary in both scheduling policies.
+		retained_marker = callback
+
 class MailboxWorker extends Worker:
 	func install(value: CyberSimulationSnapshot) -> void:
 		_running = true
@@ -177,6 +192,26 @@ func _run() -> void:
 	check(result.status == "timeout" and not result.has("snapshot") and result.sleeps == 0,
 		"an unexpectedly slow observation cannot accept a completion after the deadline")
 	retain("late-reader", result)
+
+	# The recorded ce9f ready decision crossed its deadline by 9 microseconds
+	# during row validation. Inject only the final clock read, exercising the
+	# actual owner/sample validation and final ready-result fence deterministically.
+	for overlap: bool in [false,true]:
+		for offset: int in [-1,0,9]:
+			var boundary := CompletionClock.new()
+			boundary.boundary_offset = offset
+			boundary.begin_callback(42,overlap)
+			boundary.begin_callback(42,overlap)
+			result = boundary.wait_for_sample(func() -> Dictionary: return active(snapshot(5)),expected)
+			var before_deadline: bool = offset < 0
+			check(result.status == ("ready" if before_deadline else "timeout"),
+				"final decision at offset %d respects expiry in overlap=%s" % [offset,overlap])
+			check(result.has("snapshot") == before_deadline and result.polls==1 and result.sleeps==0,
+				"final expired decision supplies no snapshot after real row validation")
+			check(int(result.completed_usec)==boundary.deadline_usec+offset and
+				int(result.deadline_usec)==boundary.deadline_usec,
+				"final timestamp and original shared deadline remain explicit")
+			retain("final-boundary-%s-%d" % [overlap,offset],result)
 
 	var worker := MailboxWorker.new()
 	worker.install(snapshot())

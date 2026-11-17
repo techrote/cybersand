@@ -582,7 +582,15 @@ def analyze(frames: list[dict], threshold_px: float = 8.0, events=None):
     rapier = event_records(events, "rapier_step", "step")
     uploads = event_records(events, "texture_upload", "render_serial")
     publications = event_records(events, "render_publication", "render_serial")
-    draws = event_records(events, "framebuffer_draw", "process_frame")
+    draw_notifications = event_records(events, "framebuffer_draw")
+    unassociated_draws = any(row.get("draw_identity_associated") is False or
+                            number(row.get("process_frame")) is None or row["process_frame"] < 0
+                            for row in draw_notifications)
+    draws = [] if unassociated_draws else event_records(events, "framebuffer_draw", "process_frame")
+    draw_rate = measured_rate([event_time(x) for x in draws])
+    draw_rate["available"] = not unassociated_draws
+    if unassociated_draws:
+        draw_rate["unavailable_reason"] = "Separate post-draw delivery has no exact draw identity; Main notification cadence is reported separately."
     simulation_speed = None
     if len(rapier) > 1:
         dt = event_time(rapier[-1]) - event_time(rapier[0])
@@ -607,7 +615,8 @@ def analyze(frames: list[dict], threshold_px: float = 8.0, events=None):
             "rapier_completed": completed_rate(rapier, "step"),
             "material_publications": measured_rate([event_time(x) for x in publications]),
             "texture_upload_returns": measured_rate([event_time(x) for x in uploads]),
-            "frame_post_draw": measured_rate([event_time(x) for x in draws]),
+            "frame_post_draw": draw_rate,
+            "post_draw_main_notifications": measured_rate([event_time(x) for x in draw_notifications]),
             "native_observed_at_main": observed_counter_rate(frames, "native_tick"),
             "rapier_observed_at_main": observed_counter_rate(frames, "rapier_step"),
             "rapier_simulated_seconds_per_wall_second": simulation_speed,

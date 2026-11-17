@@ -81,11 +81,11 @@ func open_materials_lab() -> void:
 		_materials_lab_window = Window.new()
 		_materials_lab_window.hide()
 		_materials_lab_window.title = "CyberSand / Materials Lab"
-		_materials_lab_window.min_size = Vector2i(1000,650)
 		_materials_lab_window.transient = true
-		# A desktop Lab owns physical pixels instead of inheriting the game's
-		# stretched canvas. Keep embedded fallback for headless/Web displays.
-		_materials_lab_window.force_native = not OS.has_feature("web") and DisplayServer.has_feature(DisplayServer.FEATURE_SUBWINDOWS)
+		# Separate rendering keeps secondary UI in the existing rendering
+		# context. The shared policy compensates the game's canvas scaling.
+		preload("res://scripts/workbench_lab_window_policy.gd").configure(
+			_materials_lab_window,get_window(),Vector2i(1520,900),Vector2i(1000,650))
 		_materials_lab_window.content_scale_mode = Window.CONTENT_SCALE_MODE_DISABLED
 		_materials_lab_window.handle_input_locally = true
 		add_child(_materials_lab_window)
@@ -98,11 +98,29 @@ func open_materials_lab() -> void:
 		_materials_lab_panel = panel
 		panel.name = "MaterialsLabPanel"
 		margin.add_child(panel)
+		if preload("res://scripts/workbench_lab_window_policy.gd").uses_separate_rendering():
+			# These pickers are constructed with the panel; catalogue/candidate
+			# refreshes repopulate them without replacing their popup resources.
+			for picker: OptionButton in panel.find_children("*","OptionButton",true,false):
+				preload("res://scripts/workbench_lab_window_policy.gd").configure_popup_font(picker.get_popup())
+			# FileDialog also embeds in the game root, rather than in the Lab's
+			# compensated viewport. Give that existing picker the same pixel scale.
+			var parent_scale: Vector2 = get_window().get_stretch_transform().get_scale()
+			var available: Vector2 = get_window().get_visible_rect().size * minf(parent_scale.x,parent_scale.y)
+			preload("res://scripts/workbench_lab_window_policy.gd").configure(panel._file,get_window(),
+				Vector2i(available * 0.7),panel._file.min_size.max(panel._file.get_contents_minimum_size()))
+			panel._file.about_to_popup.connect(func() -> void:
+				preload("res://scripts/workbench_lab_window_policy.gd").fit_embedded(panel._file))
 		panel.close_requested.connect(_materials_lab_window.hide)
 		_materials_lab_window.close_requested.connect(_materials_lab_window.hide)
 	_materials_lab_panel.set_policy_readback(host.tower_context.get("liquid_solver_policy",{}),"Workbench owner snapshot at opening; reopen to refresh")
 	if _materials_lab_window.force_native: _materials_lab_window.current_screen = get_window().current_screen
-	_materials_lab_window.popup_centered_clamped(Vector2i(1520,900),0.95)
+	if _materials_lab_window.force_native:
+		_materials_lab_window.popup_centered_clamped(Vector2i(1520,900),0.95)
+	else:
+		if not preload("res://scripts/workbench_lab_window_policy.gd").open(_materials_lab_window):
+			refuse("Materials Lab needs a 1000×650 client plus its title bar inside the game window.")
+			return
 	if _materials_lab_window.force_native:
 		var usable: Rect2i = DisplayServer.screen_get_usable_rect(get_window().current_screen)
 		if not _fit_materials_lab_native(usable,Vector2i(1520,900)):

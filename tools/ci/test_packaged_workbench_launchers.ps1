@@ -16,7 +16,8 @@ foreach($Key in $InheritedSelectors.Keys){$CallerSelectors[$Key]=[Environment]::
 $SelectorProbe=@{injected_child_environment=$InheritedSelectors;caller_environment=$CallerSelectors
     scope='Actual graphical cmd launchers; child-scoped overrides leave the caller unchanged'}
 $SelectorProbe|ConvertTo-Json -Depth 6|Set-Content -LiteralPath (Join-Path $Evidence 'inherited-selector-probe.json') -Encoding UTF8
-foreach($Name in @('Open Workbench.cmd','Open Publication Control.cmd','Open Full Texture Control.cmd')) {
+foreach($Name in @('Open Workbench.cmd','Open Publication Control.cmd','Open Full Texture Control.cmd',
+                  'Open Safe Renderer Control.cmd','Open Separate Renderer Control.cmd')) {
     $Label=$Name.Replace(' ','-')
     $Log=Join-Path $Evidence ($Label+'.log')
     $Receipt=Join-Path $Evidence ($Label+'-ready.json')
@@ -51,21 +52,40 @@ foreach($Name in @('Open Workbench.cmd','Open Publication Control.cmd','Open Ful
             throw ('Actual graphical launcher failed or did not install Workbench: '+$Name)
         }
         $Text=Get-Content -LiteralPath $Log -Raw
-        if($Text -match 'SCRIPT ERROR:|SHADER ERROR:|Parse Error:|Shader compilation failed' -or $Text -notmatch 'WORKBENCH_LAUNCH_READY') {
+        if($Text -match 'SCRIPT ERROR:|SHADER ERROR:|Parse Error:|Shader compilation failed|Error initializing GLAD|glXMakeCurrent failed|wglMakeCurrent failed|Unhandled XServer error|Failed to create (native |ANGLE )?OpenGL window|Could not set V-Sync mode\.' -or $Text -notmatch 'WORKBENCH_LAUNCH_READY') {
             throw ('Graphical launcher did not run the production application cleanly: '+$Name)
         }
         $Ready=Get-Content -LiteralPath $Receipt -Raw|ConvertFrom-Json
-        $ExpectedBackend=if($Name -eq 'Open Workbench.cmd'){'blit'}else{'full'}
+        $ExpectedBackend=if($Name -in @('Open Publication Control.cmd','Open Full Texture Control.cmd')){'full'}else{'blit'}
         $ExpectedPhysics=if($Name -eq 'Open Publication Control.cmd'){'combined'}else{'early'}
-        if(-not $Ready.workbench_installed -or $Ready.source -ne $env:CYBERSAND_EVAL_SOURCE_SHA -or
+        $ExpectedSeparate=$Name -notin @('Open Publication Control.cmd','Open Safe Renderer Control.cmd')
+        $ExpectedRendezvous=if($Name -in @('Open Workbench.cmd','Open Full Texture Control.cmd')){'render-overlap'}else{'off'}
+        $ExpectedEnabled=$ExpectedRendezvous -eq 'render-overlap'
+        $ExpectedCap=if($ExpectedEnabled){66667}else{16667}
+        $Delta=$Ready.native_rendezvous.fixed_physics_delta
+        if(($Delta -isnot [int] -and $Delta -isnot [long] -and $Delta -isnot [single] -and
+            $Delta -isnot [double] -and $Delta -isnot [decimal]) -or
+           [double]::IsNaN([double]$Delta) -or [double]::IsInfinity([double]$Delta)) {
+            throw ('Launched Workbench fixed timestep is not finite numeric data: '+$Name)
+        }
+        if($Ready.workbench_installed -isnot [bool] -or -not $Ready.workbench_installed -or
+           $Ready.native_rendezvous.enabled -isnot [bool] -or $Ready.native_rendezvous.separate_render_thread -isnot [bool] -or
+           $Ready.native_rendezvous.waits_for_native_sample -isnot [bool] -or -not $Ready.native_rendezvous.waits_for_native_sample -or
+           $Ready.source -ne $env:CYBERSAND_EVAL_SOURCE_SHA -or
            $Ready.world_generation -lt 0 -or $Ready.uploaded_revision -lt 0 -or $Ready.pending_hard_chunks -ne 0 -or
            $Ready.material_publication.backend -ne $ExpectedBackend -or $Ready.physics_publication -ne $ExpectedPhysics -or
-           $Ready.native_rendezvous.mode -ne 'off' -or $Ready.native_rendezvous.enabled -or $Ready.native_rendezvous.separate_render_thread -or
+           $Ready.native_rendezvous.mode -ne $ExpectedRendezvous -or $Ready.native_rendezvous.enabled -ne $ExpectedEnabled -or
+           $Ready.native_rendezvous.separate_render_thread -ne $ExpectedSeparate -or
+           $Ready.native_rendezvous.render_overlap_available -isnot [bool] -or
+           $Ready.native_rendezvous.render_overlap_available -ne ($ExpectedEnabled -and $ExpectedSeparate) -or
+           $Ready.native_rendezvous.max_frame_wait_usec -ne $ExpectedCap -or
+           $Ready.native_rendezvous.poll_usec -ne 250 -or
+           [math]::Abs([double]$Ready.native_rendezvous.fixed_physics_delta-(1.0/60.0)) -gt 0.000000001 -or
            $Ready.physics_required -ne ($Ready.authored_actor_count -gt 0) -or
            ($Ready.physics_required -and -not $Ready.rapier_initialized)) {
             throw ('Launched Workbench identity or publication mode mismatch: '+$Name)
         }
-        if($Name -eq 'Open Workbench.cmd' -and
+        if($ExpectedBackend -eq 'blit' -and
            ($Ready.material_publication.staging_slots -ne 3 -or $Ready.material_publication.copy_mode -ne 'runs')) {
             throw 'Ordinary launcher retained an inherited material probe selector'
         }

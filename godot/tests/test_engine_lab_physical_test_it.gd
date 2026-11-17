@@ -418,7 +418,7 @@ func _run() -> void:
 	startup_display["vsync_mode"]=DisplayServer.window_get_vsync_mode() if DisplayServer.get_name()!="headless" else -1
 	startup_display["capture_stage"]="first process frame, before case display overrides and Main construction"
 	if display_profile=="scripted" and DisplayServer.get_name()!="headless":
-		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
+		RenderingServer.call_on_render_thread(Callable(DisplayServer,"window_set_vsync_mode").bind(DisplayServer.VSYNC_DISABLED))
 	host=load("res://main.tscn").instantiate()
 	root.add_child(host)
 	if display_profile=="scripted":

@@ -2,6 +2,7 @@ extends Window
 
 # ENGINE-LAB-001: second-layer Workbench controls; no modal warnings.
 # Only the explicitly saved native worker request persists between launches.
+const WindowPolicy = preload("res://scripts/workbench_lab_window_policy.gd")
 const WORKER_PATH: String = "user://cybersand-engine-lab-workers.json"
 const BENCH_SECONDS: float = 10.0
 
@@ -102,14 +103,8 @@ func mount(controller: Control,wb: Control) -> void:
 	host = controller
 	workbench = wb
 	title = "CyberSand / Engine Lab / performance experiments"
-	size = Vector2i(900,730)
-	min_size = Vector2i(740,520)
 	transient = true
-	# The game viewport uses canvas_items scaling. A separate native Window
-	# needs physical-pixel layout, not a compressed copy of the game canvas.
-	force_native = not OS.has_feature("web") and DisplayServer.get_name() != "headless" \
-		and DisplayServer.has_feature(DisplayServer.FEATURE_SUBWINDOWS)
-	content_scale_mode = Window.CONTENT_SCALE_MODE_DISABLED
+	WindowPolicy.configure(self,controller.get_window(),Vector2i(900,730),Vector2i(740,520))
 	handle_input_locally = true
 	hide()
 	close_requested.connect(hide)
@@ -129,7 +124,7 @@ func mount(controller: Control,wb: Control) -> void:
 	var scroll := ScrollContainer.new()
 	scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
 	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
 	full.add_child(scroll)
 	var controls := VBoxContainer.new()
@@ -154,8 +149,9 @@ func mount(controller: Control,wb: Control) -> void:
 	vsync.tooltip_text = "Adaptive VSync may fall back to enabled depending on graphics driver."
 	vsync.select(_default_vsync if _default_vsync >= 0 and _default_vsync <= 2 else 1)
 	vsync.item_selected.connect(func(index: int) -> void:
-		if not _syncing: DisplayServer.window_set_vsync_mode(vsync.get_item_id(index)))
+		if not _syncing: WindowPolicy.request_vsync(vsync.get_item_id(index)))
 	sync_row.add_child(vsync)
+	WindowPolicy.configure_popup_font(vsync.get_popup())
 	_widgets["vsync"] = vsync
 	var publication_row: HBoxContainer = _row(controls)
 	var publication_label := _label(publication_row,"Material texture updates")
@@ -174,6 +170,7 @@ func mount(controller: Control,wb: Control) -> void:
 			_status.text = "Texture mode could not be changed; the current material history is retained."
 		_refresh_publication())
 	publication_row.add_child(publication)
+	WindowPolicy.configure_popup_font(publication.get_popup())
 	_widgets["publication"] = publication
 	_publication_status = _note(controls,"")
 	_spin(controls,"render","Material snapshot publication target (Hz)",
@@ -229,7 +226,7 @@ func mount(controller: Control,wb: Control) -> void:
 		_set_spin("fps",0)
 		(_widgets["vsync"] as OptionButton).select(0)
 		Engine.max_fps = 0
-		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED))
+		WindowPolicy.request_vsync(DisplayServer.VSYNC_DISABLED))
 
 	_section(controls,"10-SECOND REAL CLOCK / FLIGHT BENCHMARK")
 	_note(controls,"Capture actual completed native ticks, Rapier steps, render uploads, process frames, guard vetoes, and elapsed wall time.")
@@ -286,7 +283,7 @@ func reset_baseline() -> void:
 	_set_toggle("wait_sample",true)
 	_set_toggle("sample_wake",true)
 	Engine.max_fps = _default_fps
-	DisplayServer.window_set_vsync_mode(_default_vsync)
+	WindowPolicy.request_vsync(_default_vsync)
 	(_widgets["vsync"] as OptionButton).select(
 		_default_vsync if _default_vsync >= 0 and _default_vsync <= 2 else 1)
 	host.engine_lab_set_render_hz(60)
@@ -299,7 +296,9 @@ func reset_baseline() -> void:
 	_status.text = "Baseline rates, coupling and ACK restored. Saved worker setting unchanged."
 
 func open() -> void:
-	popup_centered_clamped(Vector2i(900,730),0.95)
+	if not WindowPolicy.open(self):
+		workbench.refuse("Engine Lab needs a 740×520 client plus borders inside the game window. Enlarge the window to open it.")
+		return
 	_refresh()
 
 func _sample() -> Dictionary:

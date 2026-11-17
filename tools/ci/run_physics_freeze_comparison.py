@@ -215,6 +215,7 @@ def reduction(path, maximum_step=None):
             "material_component_elapsed_ms": components,
             "native_completion_to_physics_admission_ms": distribution(admission_ms),
             "main_callback_elapsed_ms": distribution(callback_ms),
+            "main_callback_scope": "Instrumented Main._process body only; excludes physics callbacks and Godot's later RenderingServer synchronization.",
             "render_publications": len(publication_ids),
             "duplicate_render_publications": len(publication_ids)-len(set(publication_ids)),
             "backend_modes": dict(Counter(p.get("backend", p.get("mode", "unknown")) for p in publication)),
@@ -238,6 +239,8 @@ def main():
     parser.add_argument("--conditions", nargs="+", default=["interactive-follow", "interactive-free"])
     parser.add_argument("--rendering-driver", choices=["opengl3", "opengl3_angle"], required=True)
     parser.add_argument("--timeout", type=int, default=900)
+    parser.add_argument("--candidate-profile", choices=("safe", "repaired-desktop"), default="safe",
+                        help="Select the actual packaged desktop treatment explicitly; historical Safe comparisons remain reproducible")
     parser.add_argument("--single-pair", action="store_true", help="Focused development AB only; final qualification uses ABBA")
     args = parser.parse_args()
     args.evidence = args.evidence.resolve()
@@ -261,8 +264,12 @@ def main():
               "order": "AB" if args.single_pair else "ABBA", "cases": [], "comparisons": [], "failures": [],
               "complete": False, "physical_acceptance": "pending_owner_Windows11_NVIDIA",
               "qualified_performance_claim": False, "runner_sha256": sha(Path(__file__))}
-    report["observer"] = {"common_event_families": True,
+    report["candidate_profile"] = args.candidate_profile
+    report["engine"] = {"sha256":sha(args.godot),
+                        "version":subprocess.check_output([str(args.godot),"--version"],text=True,timeout=45).strip()}
+    report["observer"] = {"common_event_configuration": True,
                           "new_main_callback_and_physics_publication_events": "suppressed",
+                          "candidate_rendezvous_events": "recorded and charged to candidate cost when enabled; absent from the historical control",
                           "candidate_runtime_component_timers": "included in measured candidate cost; not CPU-exclusive"}
     output = args.evidence / "summary.json"
     write(output, report)
@@ -291,11 +298,26 @@ def main():
                 run_args.project = control_project if arm == "control" else args.project
                 run_args.source_sha = CONTROL if arm == "control" else args.source_sha
                 run_args.coherence = True
+                desktop = arm == "candidate" and args.candidate_profile == "repaired-desktop"
+                run_args.render_thread = "separate" if desktop else "safe"
+                os.environ["CYBERSAND_DIAG_NATIVE_RENDEZVOUS"] = "render-overlap" if desktop else "0"
                 case, _ = run_case(run_args, condition, "coherent")
                 trace = directory / "cases" / (condition["name"] + "-coherent") / "receipt-poses.jsonl"
+                actual_header, _, _ = read_trace(trace)
+                scheduling = actual_header.get("settings", {}).get("native_rendezvous")
+                if arm == "candidate":
+                    need(isinstance(scheduling, dict) and
+                         scheduling.get("mode") == ("render-overlap" if desktop else "off") and
+                         scheduling.get("enabled") is desktop and
+                         scheduling.get("separate_render_thread") is desktop and
+                         scheduling.get("waits_for_native_sample") is True,
+                         "Candidate actual renderer/rendezvous/coupling differs from requested desktop treatment")
                 reduced, states = reduction(trace)
                 row = {"arm": arm, "order": number, "condition": condition["name"], "case": case,
-                       "reduction": reduced, "trace": str(trace)}
+                       "reduction": reduced, "trace": str(trace),
+                       "render_thread_requested":run_args.render_thread,
+                       "native_rendezvous_requested":os.environ["CYBERSAND_DIAG_NATIVE_RENDEZVOUS"],
+                       "actual_native_rendezvous":scheduling}
                 report["cases"].append(row)
                 arms.append((row, states))
                 write(output, report)
@@ -315,6 +337,7 @@ def main():
                                              "control_matched_prefix": before, "candidate_matched_prefix": after})
                 need(equality["exact"], "Physical-state or native-association mismatch in " + condition["name"])
                 write(output, report)
+        need(sha(args.godot)==report["engine"]["sha256"],"Engine bytes changed during comparison")
         report["complete"] = True
     except (RuntimeError, OSError, ValueError, subprocess.SubprocessError) as error:
         report["failures"].append(str(error))

@@ -55,6 +55,7 @@ var water_measurements: Array[Dictionary] = []
 var root_window_measurements: Array[Dictionary] = []
 var root_window_gui_inputs: Array[Dictionary] = []
 var unit_scale_fractional_requests: Array[Dictionary] = []
+var capture_forced_draws: int = 0
 
 const CURRENT_COORDINATES: String = "\tvec2 continuous_world_pixel = camera_origin_px + fitted_uv * view_size_px;\n\tif (native_pixel_mapping_enabled) {\n\t\tvec2 sample_position = floor(content_screen_origin + raw_fitted_uv * content_screen_size) + vec2(0.5);\n\t\t// Clip in the same physical space as picking. UV roundoff at a fitted\n\t\t// half-pixel edge must not drop the first column or leak the last row.\n\t\tinside_view = all(greaterThanEqual(sample_position, content_screen_origin))\n\t\t\t&& all(lessThan(sample_position, content_screen_origin + content_screen_size));\n\t\tcontinuous_world_pixel = (sample_position - world_zero_screen) * world_units_per_screen_pixel;\n\t}\n\tvec2 world_pixel = floor(continuous_world_pixel);\n\tvec2 cell_fraction = fract(continuous_world_pixel);"
 const LEGACY_COORDINATES: String = "\tvec2 continuous_view_pixel = fitted_uv * view_size_px;\n\tvec2 view_pixel = floor(continuous_view_pixel);\n\tvec2 world_pixel = camera_origin_px + view_pixel;\n\tvec2 cell_fraction = fract(camera_origin_px + continuous_view_pixel);"
@@ -129,6 +130,20 @@ func configure_sample_mapping(target: ShaderMaterial, origin: Vector2, view: Vec
 	target.set_shader_parameter("world_units_per_screen_pixel",Camera.world_units_per_screen_pixel(mapping))
 
 
+func capture_current_viewport(target: Viewport) -> Image:
+	# Separate post-draw signals are deferred to Main and have no association
+	# with the fixture state just configured. First cross a scene iteration
+	# boundary so pending CanvasItem redraw/layout work is submitted. Then
+	# order the explicit draw and synchronous readback on the same render FIFO.
+	# force_draw itself does not flush SceneTree layout. This correctness-only
+	# helper is never called by the comparative pacing loop.
+	if not RenderingServer.is_on_render_thread():
+		await process_frame
+		RenderingServer.force_draw(false)
+		capture_forced_draws += 1
+	return target.get_texture().get_image()
+
+
 func render_frame(origin: Vector2, view: Vector2i, output: Vector2i,
 		fitted: Rect2 = Rect2(0,0,1,1), native_sampling: bool = true,
 		physical_content: Rect2 = Rect2()) -> Image:
@@ -146,16 +161,19 @@ func render_frame(origin: Vector2, view: Vector2i, output: Vector2i,
 	configure_sample_mapping(material,origin,view,content,native_sampling)
 	var uniform_elapsed: int = Time.get_ticks_usec()-uniform_start
 	var frame_start: int = Time.get_ticks_usec()
+	var separate_render_thread: bool = not RenderingServer.is_on_render_thread()
+	# Retain the original normal scene/resource waits. The shared correctness
+	# capture helper separately orders scene submission, draw and readback.
 	await RenderingServer.frame_post_draw
-	# Resize/resource creation may take a render update; ordinary pan captures
-	# deliberately await exactly one frame after the uniform change.
 	if resized: await RenderingServer.frame_post_draw
 	var frame_elapsed: int = Time.get_ticks_usec()-frame_start
-	var image: Image = viewport.get_texture().get_image()
+	var image: Image = await capture_current_viewport(viewport)
 	image.convert(Image.FORMAT_RGBA8)
 	measurements.append({"output":[output.x,output.y],"view":[view.x,view.y],
 		"origin":[origin.x,origin.y],"uniform_update_usec":uniform_elapsed,
-		"render_wait_usec":frame_elapsed,"resized":resized,"native_pixel_mapping":native_sampling})
+		"render_wait_usec":frame_elapsed,"resized":resized,"native_pixel_mapping":native_sampling,
+		"capture_ordering":"scene_boundary_then_explicit_draw_then_sync_readback"
+			if separate_render_thread else "normal_signal_then_readback"})
 	return image
 
 
@@ -470,7 +488,7 @@ func paint_fill_fractional_boundary_case() -> void:
 		overlay.queue_redraw()
 		await RenderingServer.frame_post_draw
 		await RenderingServer.frame_post_draw
-		var image: Image = target.get_texture().get_image()
+		var image: Image = await capture_current_viewport(target)
 		image.convert(Image.FORMAT_RGBA8)
 		frames.append(image)
 		var exact_phase := -(requested*2.5).round()
@@ -545,7 +563,7 @@ func contact_sheet(old_frames: Array[Image], new_frames: Array[Image]) -> void:
 			sheet.add_child(picture)
 	await RenderingServer.frame_post_draw
 	await RenderingServer.frame_post_draw
-	var image: Image = sheet.get_texture().get_image()
+	var image: Image = await capture_current_viewport(sheet)
 	image.convert(Image.FORMAT_RGBA8)
 	save_capture(image,"native-pixel-scrolling-before-after")
 	sheet.queue_free()
@@ -741,7 +759,7 @@ func root_window_framebuffer_cases() -> void:
 			configure_root_window_host(host,requested)
 			await RenderingServer.frame_post_draw
 			await RenderingServer.frame_post_draw
-			var first: Image = root.get_texture().get_image()
+			var first: Image = await capture_current_viewport(root)
 			first.convert(Image.FORMAT_RGBA8)
 			var record := root_window_observations(first,host,requested)
 			record.former_screen_helper = former
@@ -763,7 +781,7 @@ func root_window_framebuffer_cases() -> void:
 				var moved := requested+Vector2(1.0/float(settings.zoom),0)
 				configure_root_window_host(host,moved)
 				await RenderingServer.frame_post_draw
-				var next: Image = root.get_texture().get_image()
+				var next: Image = await capture_current_viewport(root)
 				next.convert(Image.FORMAT_RGBA8)
 				var moved_record := root_window_observations(next,host,moved)
 				moved_record.former_screen_helper = false
@@ -853,7 +871,7 @@ func comparative_pacing() -> void:
 	viewport.size = Vector2i(1280,960)
 	surface.size = Vector2(viewport.size)
 	var old_vsync: DisplayServer.VSyncMode = DisplayServer.window_get_vsync_mode()
-	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
+	preload("res://scripts/workbench_lab_window_policy.gd").request_vsync(DisplayServer.VSYNC_DISABLED)
 	var legacy: Dictionary = await measure_pacing(legacy_material,true)
 	var current: Dictionary = await measure_pacing(material,false)
 	var abba: Array[Dictionary] = []
@@ -863,10 +881,10 @@ func comparative_pacing() -> void:
 		abba.append_array([legacy,current])
 		abba.append(await measure_pacing(material,false))
 		abba.append(await measure_pacing(legacy_material,true))
-	DisplayServer.window_set_vsync_mode(old_vsync)
+	preload("res://scripts/workbench_lab_window_policy.gd").request_vsync(old_vsync)
 	surface.material = material
 	pacing = {"schema":"native-pixel-scrolling-pacing-v1","advisory":true,
-		"scope":"same-process actual rendered palette; no image readback during timing; compile/warmup excluded; CPU and GPU are not separated",
+		"scope":"same-process palette; Main-delivered frame_post_draw signal intervals; no image readback or forced draw during timing; compile/warmup excluded; no exact draw identity in Separate; CPU and GPU are not separated",
 		"output_pixels":[1280,960],"view_cells":[128,96],"world_cells":[WORLD.x,WORLD.y],
 		"vsync":"requested disabled; driver/compositor may constrain cadence",
 		"legacy":legacy,"native":current,
@@ -923,7 +941,11 @@ func run() -> void:
 		"root_window_gui_inputs":root_window_gui_inputs,
 		"unit_scale_fractional_requests":unit_scale_fractional_requests,
 		"captures":captures,"frame_measurements":measurements,"comparative_pacing":pacing,
-		"timing_scope":"uniform submission and frame wait including test synchronization; not a throughput benchmark"}
+		"capture_ordering":{"separate_render_thread":not RenderingServer.is_on_render_thread(),
+			"forced_draws":capture_forced_draws,"normal_scene_waits_preserved":true,
+			"correctness_readback_sites":5,
+			"scope":"All five correctness readback sites retain normal waits, then Separate crosses process_frame and queues force_draw(false) before synchronous get_image; no forced draws in comparative pacing"},
+		"timing_scope":"uniform submission and Main-delivered frame signal wait; excludes scene submission barrier and ordered draw/readback; no exact draw identity in Separate; not a throughput benchmark"}
 	if not capture_folder.is_empty():
 		var receipt := FileAccess.open(capture_folder.path_join("native-pixel-scrolling-render.json"),FileAccess.WRITE)
 		if receipt != null: receipt.store_string(JSON.stringify(result,"\t")+"\n")

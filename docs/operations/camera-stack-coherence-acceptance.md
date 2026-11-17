@@ -19,13 +19,20 @@ and the exact-source PR609 artifact ledger distinguish functional qualification,
 measured improvement, and the owner's physical Windows11 NVIDIA decision.
 The [completion follow-up](../audits/2026-11-16-physics-freeze-remediation-002-completion.md)
 adds rectangular staging, immutable queued-image ownership and a controlled
-renderer-aware scheduling trial. Its local software-renderer improvement is
-separate from exact-source Windows qualification and owner acceptance.
+renderer-aware scheduling policy. The ordinary packaged launcher selects
+Separate rendering and bounded native/render overlap. Its software-renderer
+improvement is separate from exact-source Windows qualification and owner acceptance.
 
 Extract the full inner application ZIP into a fresh writable directory.
 Godot4.7, native/Rapier and VC runtime dependencies are included. No separate
 Godot, Python, Git or repository installation is needed. Keep the payload intact;
 `CAMERA-STACK-MANIFEST.json` records its source tree and every packaged file hash.
+The explicitly named CyberSand Godot executables are a source-pinned4.7 build
+with a narrow Windows EGL context-handoff repair. The package includes its
+source/patch/build identities and public GDExtension API equivalence receipt;
+it does not label this as the official Godot binary. D3D12 is disabled. Ordinary
+startup retains the project/platform driver choice; hosted Windows evidence
+uses ANGLE and does not qualify a physical NVIDIA driver.
 
 ## Ordinary gameplay acceptance
 
@@ -40,13 +47,26 @@ Godot, Python, Git or repository installation is needed. Keep the payload intact
    and exercise Undo/Redo; positive PAINT retains its pause requirement. Also
    check pause/resume, single-step and reset, then Save, fully exit and reopen.
 4. Close the application and run **Open Publication Control.cmd** with identical
-   settings. This uses full texture uploads and combined graphical/physical
-   publication within the same reviewed source. Both paths retain coherent
+   settings. This uses Safe rendering, full texture uploads, combined
+   graphical/physical publication and no overlap wait within the same source. Both paths retain coherent
    presentation, fixed-step physics and the normal native-sample safety fence.
-5. **Open Full Texture Control.cmd** retains early physical publication while
-   forcing whole-texture uploads. Engine Lab also switches texture modes live
-   and reports the effective backend and any fallback. This isolates publication
-   choices; these launchers do not reconstruct a historical binary.
+5. **Open Full Texture Control.cmd** retains Separate rendering, early physical
+   publication and bounded overlap while forcing whole-texture uploads.
+   **Open Safe Renderer Control.cmd** and **Open Separate Renderer Control.cmd**
+   both use automatic material publication and early handoff with overlap off;
+   their difference is renderer ownership. The Separate control versus the
+   ordinary launcher isolates overlap. Engine Lab switches texture modes live
+   and reports the effective backend and fallback. These are controls within
+   one source, not historical binaries.
+
+In Separate mode, Engine Lab and Materials Lab open inside the main window
+to preserve its rendering context. Safe mode retains native Lab windows. Check
+readable controls, resizing, close/reopen, focus and input isolation in both
+modes. The first physics callback never waits for a native sample; later actual
+catch-up callbacks share an absolute66.667ms overlap deadline per process frame
+and stop when earlier rendering commands return. OS descheduling can exceed a
+requested deadline. The policy preserves fixed steps and every coupling fence;
+it can trade graphical cadence for more genuine physical completions.
 
 A stable-looking actor with no actual movement is still a freeze. Look for long
 pauses, catch-up, disappearance, material corruption or unsafe contact. A visible
@@ -61,6 +81,9 @@ Needle input tape, Fire ON→OFF at completed steps0/60, automatic native worker
 native60/Rapier60 targets, normal window/zoom and initial VSync. Native sample
 wait/wake stays enabled throughout. The physical step remains fixed1/60 second;
 configured targets are not achieved throughput claims.
+Control selects Safe/full/combined/no-overlap and candidate selects
+Separate/automatic/early/overlap. Raw headers verify these actual modes. This
+integrated pair does not attribute its timing difference to one mechanism.
 
 **Test It.cmd -Quick** runs only the coupled Follow pair. The script is compatible
 with Windows PowerShell5.1 and writes only local results. Fresh test profiles do

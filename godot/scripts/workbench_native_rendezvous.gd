@@ -86,6 +86,12 @@ func begin_callback(frame: int, overlap: bool = false) -> void:
 	callback_count += 1
 
 
+func _completion_time_usec() -> int:
+	# Separate seam permits deterministic tests at the final decision boundary.
+	# Production continues to use the same monotonic wall clock.
+	return Time.get_ticks_usec()
+
+
 func wait_for_sample(poll_mailbox: Callable, expected: Dictionary) -> Dictionary:
 	var started: int = Time.get_ticks_usec()
 	var result := {"status":"not_catchup", "start_usec":started,
@@ -189,7 +195,15 @@ func wait_for_sample(poll_mailbox: Callable, expected: Dictionary) -> Dictionary
 		OS.delay_usec(delay)
 		result.sleeps += 1
 		result.requested_sleep_usec += delay
-	result.completed_usec = Time.get_ticks_usec()
+	result.completed_usec = _completion_time_usec()
+	# Row validation itself can cross the shared deadline after the earlier
+	# mailbox-read check. Refuse that completion at the final captured decision
+	# time; a later genuine callback may consume the same immutable snapshot.
+	# OS preemption after this capture remains possible and is not a hard
+	# real-time guarantee about the instant control returns to Main.
+	if result.status == "ready" and int(result.completed_usec) >= deadline_usec:
+		result.status = "timeout"
+		result.erase("snapshot")
 	if render_overlap:
 		result.render_marker_observed_complete_usec = _render_marker_observed_complete_usec
 	total_wait_usec += int(result.completed_usec) - started

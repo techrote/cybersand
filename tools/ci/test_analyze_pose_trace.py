@@ -58,6 +58,24 @@ def write_trace(path, frames, events=(), **footer):
 
 
 class FrameTraceAnalysisTests(unittest.TestCase):
+    def test_separate_post_draw_notifications_do_not_fabricate_one_draw(self):
+        events = [{"type": "event", "event": "framebuffer_draw", "time_usec": 10000*n,
+                   "process_frame": -1, "draw_identity_associated": False} for n in range(1, 4)]
+        result = analyze([frame(1, "live", 100), frame(2, "live", 100)], 8, events)
+        self.assertFalse(result["rates"]["frame_post_draw"]["available"])
+        self.assertIsNone(result["rates"]["frame_post_draw"]["hz"])
+        self.assertEqual(result["rates"]["frame_post_draw"]["observations"], 0)
+        self.assertEqual(result["rates"]["post_draw_main_notifications"]["observations"], 3)
+        self.assertEqual(result["rates"]["post_draw_main_notifications"]["hz"], 100)
+
+    def test_safe_post_draw_identity_still_deduplicates_actual_callbacks(self):
+        events = [{"type": "event", "event": "framebuffer_draw", "time_usec": t,
+                   "process_frame": n} for n, t in ((1, 10000), (1, 10001), (2, 20000))]
+        result = analyze([frame(1, "live", 100), frame(2, "live", 100)], 8, events)
+        self.assertTrue(result["rates"]["frame_post_draw"]["available"])
+        self.assertEqual(result["rates"]["frame_post_draw"]["observations"], 2)
+        self.assertEqual(result["rates"]["frame_post_draw"]["hz"], 100)
+
     def test_pose_switch_and_projection_error_have_distinct_attribution(self):
         frames = [frame(1, "mask_bound", 100), frame(2, "live", 113),
                   frame(3, "live", 130, residual=3)]

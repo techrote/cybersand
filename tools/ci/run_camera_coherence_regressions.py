@@ -16,7 +16,7 @@ import re
 import subprocess
 import sys
 import time
-from package_engine_lab_windows import validate_publication_regression_receipt
+from package_engine_lab_windows import GRAPHICS_ERRORS, validate_publication_regression_receipt, validate_lab_window_receipt
 
 ROOT = Path(__file__).resolve().parents[2]
 ERRORS = re.compile(r"SCRIPT ERROR:|SHADER ERROR:|Parse Error:|Failed to load script|Failed loading resource:")
@@ -78,6 +78,7 @@ def main():
             ('physics-publication-graphical', 'test_workbench_physics_publication', 'PHYSICS_PUBLICATION_RESULT', {}, True),
             ('material-tiles-graphical', 'test_material_tile_publication', 'MATERIAL_TILE_PUBLICATION:', {}, True),
             ('material-threaded-graphical', 'test_material_threaded_publication', 'MATERIAL_THREADED_PUBLICATION:', {}, True),
+            ('material-threaded-safe-graphical', 'test_material_threaded_publication', 'MATERIAL_THREADED_PUBLICATION:', {}, True),
             ('font-mipmap-safe-graphical', 'test_default_font_mipmap_publication', 'DEFAULT_FONT_MIPMAP_PUBLICATION:', {}, True),
             ('font-mipmap-separate-graphical', 'test_default_font_mipmap_publication', 'DEFAULT_FONT_MIPMAP_PUBLICATION:', {}, True),
             ('depth-threaded-safe-graphical', 'test_depth_threaded_publication', 'DEPTH_THREADED_PUBLICATION:', {}, True),
@@ -87,6 +88,10 @@ def main():
             ('native-rendezvous-graphical', 'test_workbench_native_rendezvous_integration', 'PHYSICS_PUBLICATION_RESULT', {}, True),
             ('native-render-overlap-graphical', 'test_workbench_native_render_overlap', 'NATIVE_RENDER_OVERLAP:', {}, True),
             ('physics-pacing-graphical', 'test_workbench_physics_pacing', 'PHYSICS_PACING_RESULT', {}, True),
+            ('engine-lab-safe-graphical', 'test_workbench_engine_lab', 'ENGINE_LAB_RESULT', {}, True),
+            ('engine-lab-separate-graphical', 'test_workbench_engine_lab', 'ENGINE_LAB_RESULT', {}, True),
+            ('materials-lab-safe-graphical', 'test_material_lab_ui', 'MATERIAL_LAB_WORKBENCH_MOUNT:', {}, True),
+            ('materials-lab-separate-graphical', 'test_material_lab_ui', 'MATERIAL_LAB_WORKBENCH_MOUNT:', {}, True),
         ]
     names = {row[0] for row in cases}
     if args.cases and not set(args.cases) <= names:
@@ -109,13 +114,14 @@ def main():
                    CYBERSAND_DIAG_PRESENTATION='', CYBERSAND_DIAG_RENDER_CADENCE='', CYBERSAND_DIAG_FLYER_POSE='',
                    CYBERSAND_TEST_ARTIFACT_DIR=str(folder / 'frames'))
         env.update(overrides)
-        render_thread = args.render_thread
+        render_thread = args.render_thread if graphical else 'safe'
         if script in ('test_workbench_physics_publication', 'test_workbench_native_rendezvous_integration'):
             env['CYBERSAND_PHYSICS_PUBLICATION_OUTPUT'] = str(folder / 'physics-publication.json')
         elif script == 'test_material_tile_publication':
             env['CYBERSAND_MATERIAL_TILE_OUTPUT'] = str(folder / 'material-tiles.json')
         elif script == 'test_material_threaded_publication':
-            env['CYBERSAND_MATERIAL_QUEUE_THREAD'] = args.render_thread or 'safe'
+            render_thread = 'safe' if 'safe' in name else (args.render_thread or 'safe')
+            env['CYBERSAND_MATERIAL_QUEUE_THREAD'] = render_thread
             env['CYBERSAND_MATERIAL_QUEUE_OUTPUT'] = str(folder / 'material-threaded.json')
         elif script == 'test_default_font_mipmap_publication':
             render_thread = 'separate' if 'separate' in name else 'safe'
@@ -129,8 +135,21 @@ def main():
             render_thread = 'separate' if 'separate' in name else 'safe'
             env['CYBERSAND_DEPTH_QUEUE_THREAD'] = render_thread
             env['CYBERSAND_DEPTH_QUEUE_OUTPUT'] = str(folder / 'depth-threaded.json')
+        elif script == 'test_workbench_engine_lab' and graphical:
+            render_thread = 'separate' if 'separate' in name else 'safe'
+            env['CYBERSAND_ENGINE_LAB_SCREENSHOT'] = str(folder / 'engine-lab.png')
+            env['CYBERSAND_ENGINE_LAB_OUTPUT'] = str(folder / 'engine-lab.json')
+        elif script == 'test_material_lab_ui':
+            render_thread = 'separate' if 'separate' in name else 'safe'
+            env['CYBERSAND_MATERIAL_LAB_WINDOW_OUTPUT'] = str(folder)
+        env['CYBERSAND_DIAG_NATIVE_RENDEZVOUS'] = 'render-overlap' if render_thread == 'separate' else '0'
+        env['CYBERSAND_MATERIAL_PUBLICATION'] = 'auto'
+        env['CYBERSAND_DIAG_PHYSICS_PUBLICATION'] = 'early'
+        for selector in ('CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS', 'CYBERSAND_DIAG_MATERIAL_HISTORY_TARGETS',
+                         'CYBERSAND_DIAG_MATERIAL_COPY_MODE', 'CYBERSAND_DIAG_COMMON_OBSERVER'):
+            env[selector] = ''
         if name.startswith('paint-'):
-            env['PAINT_CAPTURE_DIR'] = str(folder / 'frames')
+            env['PAINT_CAPTURE_DIR'] = str(folder / 'frames') if graphical else ''
         command = [str(args.godot.resolve()), '--audio-driver', 'Dummy', '--path', str(args.project.resolve())]
         if render_thread is not None:
             command += ['--render-thread', render_thread]
@@ -147,6 +166,8 @@ def main():
             command += ['--', '--physics-pacing-evidence=' + str(folder)]
         elif script == 'test_render_full_upload':
             command += ['--', '--render-full-upload-evidence=' + str(folder / 'full-upload.json')]
+        elif script == 'test_material_lab_ui':
+            command += ['--', '--workbench-mount-only']
         row = {'name': name, 'command': command, 'graphical': graphical, 'status': 'failed'}
         started = time.monotonic()
         try:
@@ -155,7 +176,7 @@ def main():
             row['exit_code'] = result.returncode
             text = (folder / 'console.log').read_text(encoding='utf-8', errors='replace')
             completions = [line for line in text.splitlines() if line.startswith(marker + ' ')]
-            if result.returncode != 0 or ERRORS.search(text) or not completions:
+            if result.returncode != 0 or ERRORS.search(text) or GRAPHICS_ERRORS.search(text) or not completions:
                 raise RuntimeError('Test did not complete successfully; inspect retained console.log')
             row['completion'] = completions[-1]
             if script == 'test_material_threaded_publication':
@@ -168,6 +189,10 @@ def main():
                 row['receipt'] = validate_publication_regression_receipt(name, folder / 'render-overlap.json', args.project, source)
             elif script == 'test_depth_threaded_publication':
                 row['receipt'] = validate_publication_regression_receipt(name, folder / 'depth-threaded.json', args.project, source)
+            elif script == 'test_workbench_engine_lab' and graphical:
+                row['receipt'] = validate_lab_window_receipt(name, folder / 'engine-lab.json', args.project, source, folder / 'engine-lab.png')
+            elif script == 'test_material_lab_ui':
+                row['receipt'] = validate_lab_window_receipt(name, folder / 'result.json', args.project, source)
             row['status'] = 'passed'
         except (RuntimeError, OSError, ValueError, KeyError, TypeError, subprocess.TimeoutExpired) as error:
             row['error'] = str(error)
