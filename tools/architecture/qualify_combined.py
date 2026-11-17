@@ -122,7 +122,8 @@ def execute(name: str, command: list[str], env: dict[str, str], output: Path,
     completion = re.findall(marker, text) if marker else []
     passed = code == 0 and not timed_out and not survivors and not ERRORS.search(text) and (bool(completion) if marker else True)
     result = {"case": name, "passed": bool(passed), "command": command,
-              "launcher_pid": child.pid, "started_unix": started, "finished_unix": time.time(),
+              "launcher_pid": child.pid, "process_instance": env.get("CYBERSAND_COMBINED_PROCESS"),
+              "started_unix": started, "finished_unix": time.time(),
               "wall_seconds": time.monotonic() - monotonic, "returncode": code, "timed_out": timed_out,
               "previous_package_processes": before, "surviving_package_processes": survivors,
               "fresh_process_boundary_verified": not before and not survivors,
@@ -192,6 +193,7 @@ def main() -> int:
         if not results[-1]["passed"]:
             break
         env["CYBERSAND_COMBINED_PHASE"] = phase
+        env["CYBERSAND_COMBINED_PROCESS"] = str(uuid.uuid4())
         marker = rf"GENTEK_COMBINED_RESULTS phase={phase} checks=([1-9][0-9]*) failures=0 complete=true"
         result = execute(phase, [*base, *display, "--script", "res://tests/test_gentek_combined_workbench.gd"],
                          env, output, engine, args.timeout, marker)
@@ -210,6 +212,10 @@ def main() -> int:
                     and len(authors) == len(reopened) == 2
                     and all(report["complete"] and report["failures"] == 0 and report["campaign_id"] == campaign
                             and report["source_commit"] == identity["source_commit"] for report in reports.values()))
+        complete = complete and len({report["process_instance"] for report in reports.values()}) == 3
+        for phase, report in reports.items():
+            process = next(case for case in results if case["case"] == phase)
+            complete = complete and report["process_instance"] == process["process_instance"]
         for author, reopen in zip(authors, reopened):
             complete = complete and all(author[key] == reopen[key] for key in
                                        ("selection", "modules", "project_sha256", "recipe_sha256", "native_sha256"))

@@ -227,7 +227,8 @@ func author_mixed() -> void:
 			"recipe_sha256": packet.recipe_sha256, "native_sha256": packet.sha256,
 			"receipt_hashes": packet.receipt_hashes, "saved_edits": saved.setup.edits,
 			"coverage": dialog._architecture_result.coverage,
-			"author_pid": OS.get_process_id(), "campaign_id": OS.get_environment("CYBERSAND_COMBINED_CAMPAIGN")}
+			"author_pid": OS.get_process_id(), "author_process": OS.get_environment("CYBERSAND_COMBINED_PROCESS"),
+			"campaign_id": OS.get_environment("CYBERSAND_COMBINED_CAMPAIGN")}
 		write_json(label + "-authored.json", receipt)
 		report.cases.append(receipt)
 		if failures: return
@@ -239,7 +240,12 @@ func reopen_mixed() -> void:
 		var authored: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(output_dir().path_join(label + "-authored.json")))
 		if not check(not authored.is_empty() and authored.campaign_id == OS.get_environment("CYBERSAND_COMBINED_CAMPAIGN"),
 			label + " consumes this campaign's completed author receipt"): return
-		check(int(authored.author_pid) != OS.get_process_id(), label + " fresh application PID differs from author")
+		# PIDs may be reused after exit (and repeat in isolated PID namespaces).
+		# The runner verifies complete process termination and supplies a new
+		# nonce to each actual subprocess; PID inequality alone is not proof.
+		check(not str(authored.author_process).is_empty() and
+			authored.author_process != OS.get_environment("CYBERSAND_COMBINED_PROCESS"),
+			label + " fresh application invocation differs from author")
 		dialog._architecture_button.pressed.emit()
 		if not check(panel.load_project(output_dir().path_join(label + ".project.json")), label + " Load project restores editable controls"): return
 		var restored: Dictionary = panel.project()
@@ -262,7 +268,10 @@ func reopen_mixed() -> void:
 		check(packet.sha256 == authored.native_sha256 and packet.recipe_sha256 == authored.recipe_sha256 and
 			packet.receipt_hashes == authored.receipt_hashes, label + " map native material and receipt reconstruction is exact")
 		if not await install_packet(packet, label + " fresh map"): return
-		check(wb.applied.edits == authored.saved_edits, label + " saved ordered paint operations survive exit")
+		# The evidence JSON reader yields numeric floats, while the validated
+		# Workbench setup restores integer edits. Compare their canonical values.
+		check(Store.recipe_hash({"edits": wb.applied.edits}) == Store.recipe_hash({"edits": authored.saved_edits}),
+			label + " saved ordered paint operations survive exit")
 		if not await until(func() -> bool: return host.image.get_width() == 512 and host.image.get_pixel(13, 17).r8 == 28,
 			label + " fresh native World contains saved painted material"): return
 		await framebuffer(label + "-reopened-installed")
@@ -270,6 +279,7 @@ func reopen_mixed() -> void:
 		report.cases.append({"case": "mixed-reopen", "selection": label, "modules": COMPOSITIONS[scenario],
 			"project_sha256": Store.recipe_hash(restored), "recipe_sha256": packet.recipe_sha256,
 			"native_sha256": packet.sha256, "author_pid": authored.author_pid, "reopen_pid": OS.get_process_id(),
+			"author_process": authored.author_process, "reopen_process": OS.get_environment("CYBERSAND_COMBINED_PROCESS"),
 			"saved_paint_material": int(host.image.get_pixel(13, 17).r8), "complete_project_fields_retained": true})
 		if failures: return
 	complete = true
@@ -279,6 +289,7 @@ func run() -> void:
 	var phase: String = OS.get_environment("CYBERSAND_COMBINED_PHASE")
 	report.merge({"phase": phase, "source_commit": OS.get_environment("CYBERSAND_SOURCE_REVISION"),
 		"campaign_id": OS.get_environment("CYBERSAND_COMBINED_CAMPAIGN"), "pid": OS.get_process_id(),
+		"process_instance": OS.get_environment("CYBERSAND_COMBINED_PROCESS"),
 		"godot": Engine.get_version_info().string, "os": OS.get_name(), "os_version": OS.get_version(),
 		"display": DisplayServer.get_name(), "rendering_method": RenderingServer.get_current_rendering_method(),
 		"rendering_driver": RenderingServer.get_current_rendering_driver_name(),
