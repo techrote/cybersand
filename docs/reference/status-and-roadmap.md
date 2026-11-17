@@ -21,6 +21,14 @@ for an **80-module candidate** and two mixed five-style maps; the
 owns exact source/PNG provenance, remaining review and owner approval.
 Both PRs remain **Draft/HOLD; not accepted main, not Ready, not merge-authorized**.
 
+The stacked [combined #673](https://github.com/techrote/cybersand/pull/673) preserves
+that catalogue and the corrected isolated SWARM research. Its
+[Windows Workbench evaluation campaign](../operations/gentek-combined-wb-evaluation.md)
+builds an exact-source standalone package and exercises advanced selection,
+preview, installation, painting and both project/map save formats in separate
+application processes. The PR conversation and run artifacts own actual outcomes;
+hosted graphical Windows execution does not close physical Windows 11 acceptance.
+
 ## GEN-008 Flatten / Bake History — 2026-11-13
 
 **Implementation candidate, Draft/HOLD:** issue #548 starts independently from
