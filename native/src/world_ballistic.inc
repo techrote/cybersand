@@ -34,6 +34,17 @@ constexpr std::array<std::array<std::int8_t, 2>, 25> kBallisticDepositOrder{{
     {-2, 1}, {2, 1}, {0, 2}, {-1, 2}, {1, 2}, {-2, 2}, {2, 2},
 }};
 
+// Whether the selected simulation region includes a cell. wave_flow_v1 freezes
+// excluded Water, so its parcels neither enter, land in nor move inside an
+// excluded core. Other Water laws keep their established parcel semantics.
+template <typename Region, typename Geometry>
+[[nodiscard]] bool ballistic_region_selects(const Region& region, const Geometry& geometry,
+                                            std::int64_t x, std::int64_t y) noexcept {
+    if (!region) return true;
+    const auto core = geometry.core_for_cell(x, y);
+    return core.x >= region->min_x && core.x <= region->max_x && core.y >= region->min_y && core.y <= region->max_y;
+}
+
 } // namespace
 
 void World::validate_ballistic_config() const {
@@ -136,6 +147,8 @@ World::BallisticCell World::classify_ballistic_cell(std::int64_t x, std::int64_t
     const auto target = address(x, y);
     const auto* chunk = find_chunk(target.chunk);
     if (chunk == nullptr) return BallisticCell::Outside;
+    if (wave_ != nullptr && !ballistic_region_selects(selected_core_region_, scheduler_geometry_, x, y))
+        return BallisticCell::Outside;
     if (const auto id = transient_obstacle_at(x, y); id != 0U) {
         if (id == parcel.source_body && parcel.age <= BallisticWaterConfig::kSelfContactGraceTicks)
             return BallisticCell::Free;
@@ -280,6 +293,7 @@ bool World::deposit_ballistic_parcel(BallisticParcel& parcel, std::int64_t cx, s
     std::uint32_t remaining = parcel.quantity;
     const auto try_cell = [&](std::int64_t tx, std::int64_t ty) {
         if (remaining == 0U || transient_obstacle_at(tx, ty) != 0U) return;
+        if (wave_ != nullptr && !ballistic_region_selects(selected_core_region_, scheduler_geometry_, tx, ty)) return;
         const auto target = address(tx, ty);
         const auto* chunk = find_chunk(target.chunk);
         if (chunk == nullptr) return;
@@ -516,6 +530,12 @@ void World::advance_ballistic_water() {
     std::size_t index = 0;
     while (index < ballistic_parcels_.size()) {
         auto& parcel = ballistic_parcels_[index];
+        // A parcel inside a paused wave_flow_v1 core is frozen with its Water.
+        if (wave_ != nullptr && !ballistic_region_selects(selected_core_region_, scheduler_geometry_,
+                                                          ballistic_cell(parcel.x), ballistic_cell(parcel.y))) {
+            ++index;
+            continue;
+        }
         // Presentation: redraw the cell the parcel leaves and the one it reaches.
         mark_ballistic_render_dirty(ballistic_cell(parcel.x), ballistic_cell(parcel.y));
         if (step_ballistic_parcel(parcel)) {

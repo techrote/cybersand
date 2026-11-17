@@ -70,6 +70,33 @@ wave-flow-sanitize: $(BUILD_DIR)/test_wave_flow_sanitized
 wave-flow-thread-sanitize: $(BUILD_DIR)/test_wave_flow_tsan
 	TSAN_OPTIONS=halt_on_error=1 ./$(BUILD_DIR)/test_wave_flow_tsan
 
+# WAVE-WATERWALL-001 exposed-face spill and hybrid ballistic release: standalone
+# regressions (own main) and the authored-map apparatus.
+.PHONY: wave-spill-test wave-spill-sanitize wave-spill-thread-sanitize wave-waterwall
+
+$(BUILD_DIR)/test_wave_spill: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_wave_spill.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O2 -g -pthread $(CORE_SOURCES) native/tests/test_wave_spill.cpp -o $@
+
+$(BUILD_DIR)/test_wave_spill_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_wave_spill.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=address,undefined $(CORE_SOURCES) native/tests/test_wave_spill.cpp -o $@
+
+$(BUILD_DIR)/test_wave_spill_tsan: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_wave_spill.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=thread $(CORE_SOURCES) native/tests/test_wave_spill.cpp -o $@
+
+$(BUILD_DIR)/wave_waterwall: $(SIMULATION_SOURCES) $(CORE_HEADERS) native/bench/wave_waterwall.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O3 -DNDEBUG -pthread $(SIMULATION_SOURCES) native/bench/wave_waterwall.cpp -o $@
+
+wave-waterwall: $(BUILD_DIR)/wave_waterwall
+
+wave-spill-test: $(BUILD_DIR)/test_wave_spill
+	./$(BUILD_DIR)/test_wave_spill
+
+wave-spill-sanitize: $(BUILD_DIR)/test_wave_spill_sanitized
+	UBSAN_OPTIONS=halt_on_error=1 ./$(BUILD_DIR)/test_wave_spill_sanitized
+
+wave-spill-thread-sanitize: $(BUILD_DIR)/test_wave_spill_tsan
+	TSAN_OPTIONS=halt_on_error=1 ./$(BUILD_DIR)/test_wave_spill_tsan
+
 .PHONY: material-baseline-test material-baseline-sanitize
 
 $(BUILD_DIR)/test_material_baseline: $(SIMULATION_SOURCES) $(CORE_HEADERS) native/tests/test_material_baseline.cpp | $(BUILD_DIR)
