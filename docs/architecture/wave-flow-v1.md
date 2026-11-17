@@ -269,6 +269,9 @@ faces or the ballistic parcel owner.
 | Pool feed | A wet-wet face may carry `draw` units per round (default 64, Coast stays 16) unless the flow runs against more than `draw_head` units of head. This lets the pool keep feeding its draining edge while reversing surges still relax |
 | Ballistic release | Only when the World also enables `ballistic_water_v1`. In the last round of a tick, exposed faces beside Empty air are nominated into a fixed 512-entry list per strip, and the face itself carries nothing. After the passes, the tick owner serially launches up to `launch_budget` parcels (clamped to free pool slots) at `launch_speed/256 · √(2gh)` outward. Each launch is an exact transfer of at most one cell. A refused or deferred launch leaves the Water in its cell, and the next tick spills it through the grid |
 
+| Blobs (`catch_falling`, default on) | A parcel older than the 4-tick self-contact grace merges into falling Wave Water instead of passing through it. Thrown water then clumps the falling stream into beads ("blobs") while the outer spray keeps arcing. Off: parcels fly through falling Water |
+| Stream share (`stream_share`, default 0) | n/256 of each thrown share keeps pouring through the grid as a vertical stream, and the release may spawn into that falling Water. Measured on the supplied map: values above 0 thin the throw, draw the lip back toward vertical and slow draining, so the default is off |
+
 Under Wave the parcel owner is admitted **only** through this release.
 `ballistic_water_v1` without spill, and the per-cell WCX-FR face scan, stay
 refused. In Wave Worlds, parcels pass through falling Wave Water. They may not

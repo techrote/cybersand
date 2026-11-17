@@ -429,6 +429,17 @@ REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
   'pr': 661})
 
 
+# WAVE-WATERWALL-001 follow-up: bind the blobs/stream-share look controls into
+# Wave physical identity, only while spill is enabled.
+REVIEWED_TRANSITIONS += ({'path': 'native/src/world_pressure.inc',
+  'from_lf_sha256': '64c3afbe1e368d24d3ac4d484a78fa8cd3fc380c80fe54bfeb8661738048254f',
+  'to_lf_sha256': 'df6558560b4bfe946a86826c83559138d279f94d77d0a7309a3551e671386fe8',
+  'source_commit': '1d71202a35a7945e496b0cb83a2d639b2ad2b5bc',
+  'record': 'docs/audits/2026-11-17-wave-waterwall-001.md',
+  'issue': 661,
+  'pr': 661},)
+
+
 def lf(data: bytes) -> bytes:
     return data.replace(b"\r\n", b"\n")
 

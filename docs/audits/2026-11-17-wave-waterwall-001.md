@@ -164,6 +164,31 @@ spreads across the lower ledges and rejoins their pools. The contained basin
 still carries its wave and reaches exact rest (0 solved chunks) in every mode.
 The sealed reservoir is unchanged and stays asleep.
 
+## Owner follow-up: blobs and the vertical stream (2026-11-17)
+
+The owner liked spill plus ballistic release. They asked whether the spill-only
+vertical stream could remain, possibly as the "blobs" they had seen during
+development. Those blobs came from an earlier hybrid build in which parcels
+landed in falling Water. That behaviour returns as **Blobs**, on by default:
+parcels merge into falling Water once they are past the 4-tick grace, so a
+fresh throw is not swallowed by its own stream. **Stream share** is an optional
+slider for a continuous vertical stream.
+
+Reservoir cells remaining at tick 900 (supplied map, 6 workers, 7 runs in
+parallel; drain only, no timing):
+
+| Look | Remaining |
+|---|---|
+| Release without blobs (previous default) | 1557 |
+| Blobs | 1466–1497 |
+| Stream share 32 with blobs | 1638 |
+| Stream share 64 / 128 with blobs | 1674 / 1683 |
+| Stream share 96 / 160 before the spawn rule | 2594 / 2778 (throws refused) |
+
+Blobs keep the sloped lip and the outward arcs, and add a beaded centre line.
+Any stream share brings back a solid, nearly vertical column that hides most of
+the arcs. Stream share therefore stays opt-in, at default 0.
+
 ## Protected-source transitions
 
 The material-catalogue compatibility table admits these reviewed steps (LF SHA-256):
@@ -172,6 +197,7 @@ The material-catalogue compatibility table admits these reviewed steps (LF SHA-2
 |---|---|---|---|
 | `native/src/world.cpp` | `911ac9df96c34f7bbc24e9de8b53099ba779ff6cc999c6ff349b61e4379ee143` | `80e05f673b3d6ba35daa7c741805aa272f149e7742d162c94c8c0bd9bdbc1e83` | `751c1a951a8f76c397dd3f903f378208119d29f1` |
 | `native/src/world_pressure.inc` | `9ee31ffc4ea89b50f78e39eecc8f5c9be5944bcbc2f6ead48698c714564b7067` | `64c3afbe1e368d24d3ac4d484a78fa8cd3fc380c80fe54bfeb8661738048254f` | `26d032f14820d6d46272d487d56cacaee4544368` |
+| `native/src/world_pressure.inc` (blobs/stream share) | `64c3afbe1e368d24d3ac4d484a78fa8cd3fc380c80fe54bfeb8661738048254f` | `df6558560b4bfe946a86826c83559138d279f94d77d0a7309a3551e671386fe8` | `1d71202a35a7945e496b0cb83a2d639b2ad2b5bc` |
 
 `world.cpp` changes one line: `clear()` resets the spill back-off flag.
 `world_pressure.inc` binds spill configuration into the Wave physical hash, and
