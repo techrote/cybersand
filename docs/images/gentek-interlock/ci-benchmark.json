@@ -1,0 +1,158 @@
+{
+  "benchmark": "ordinary-native-generate",
+  "checksum": 9299522626050133376,
+  "configuration": {
+    "accent_material": 65,
+    "bay_width": 64,
+    "chunk_size": 64,
+    "floor_height": 64,
+    "floor_material": 62,
+    "schema": 4,
+    "seed": 271828,
+    "wall": 3,
+    "wall_material": 58,
+    "window_material": 121
+  },
+  "results": [
+    {
+      "extent": 512,
+      "logical_operations_per_cell": 476,
+      "max_ms": 225.040325,
+      "median_ms": 224.764237,
+      "min_ms": 217.415145,
+      "module": "cantilever_spine",
+      "trials_ms": [
+        217.415145,
+        225.040325,
+        225.024482,
+        224.764237,
+        224.562749,
+        224.863123,
+        224.678162
+      ]
+    },
+    {
+      "extent": 512,
+      "logical_operations_per_cell": 460,
+      "max_ms": 224.26562,
+      "median_ms": 223.783307,
+      "min_ms": 216.831723,
+      "module": "double_cantilever",
+      "trials_ms": [
+        216.831723,
+        223.814474,
+        223.879329,
+        223.783307,
+        223.683921,
+        224.26562,
+        223.526335
+      ]
+    },
+    {
+      "extent": 512,
+      "logical_operations_per_cell": 460,
+      "max_ms": 224.641324,
+      "median_ms": 223.915342,
+      "min_ms": 216.464029,
+      "module": "shelf_stack",
+      "trials_ms": [
+        216.464029,
+        216.590176,
+        223.915342,
+        224.370566,
+        223.70338,
+        223.951677,
+        224.641324
+      ]
+    },
+    {
+      "extent": 512,
+      "logical_operations_per_cell": 604,
+      "max_ms": 227.500451,
+      "median_ms": 227.089504,
+      "min_ms": 219.318247,
+      "module": "interlock_brutalism",
+      "trials_ms": [
+        219.318247,
+        224.233353,
+        227.223532,
+        227.089504,
+        227.129844,
+        226.959131,
+        227.500451
+      ]
+    },
+    {
+      "extent": 1024,
+      "logical_operations_per_cell": 476,
+      "max_ms": 899.329484,
+      "median_ms": 705.220958,
+      "min_ms": 625.93524,
+      "module": "cantilever_spine",
+      "trials_ms": [
+        899.329484,
+        706.601788,
+        705.220958,
+        706.15705,
+        628.92018,
+        627.284854,
+        625.93524
+      ]
+    },
+    {
+      "extent": 1024,
+      "logical_operations_per_cell": 460,
+      "max_ms": 908.10879,
+      "median_ms": 702.486456,
+      "min_ms": 622.139823,
+      "module": "double_cantilever",
+      "trials_ms": [
+        908.10879,
+        702.978633,
+        702.486456,
+        703.35522,
+        623.551048,
+        622.377284,
+        622.139823
+      ]
+    },
+    {
+      "extent": 1024,
+      "logical_operations_per_cell": 460,
+      "max_ms": 901.05834,
+      "median_ms": 677.805678,
+      "min_ms": 622.695814,
+      "module": "shelf_stack",
+      "trials_ms": [
+        897.034543,
+        901.05834,
+        702.894609,
+        677.805678,
+        622.945233,
+        623.030229,
+        622.695814
+      ]
+    },
+    {
+      "extent": 1024,
+      "logical_operations_per_cell": 604,
+      "max_ms": 910.100023,
+      "median_ms": 635.819591,
+      "min_ms": 634.974774,
+      "module": "interlock_brutalism",
+      "trials_ms": [
+        910.100023,
+        788.632397,
+        714.75637,
+        635.819591,
+        635.164284,
+        635.381936,
+        634.974774
+      ]
+    }
+  ],
+  "timed_scope": "complete native chunk generation, allocation and content hashing; preparation excluded",
+  "trial_order": "rotating-module-order",
+  "warm_trials": 7,
+  "warmup_trials": 1
+}

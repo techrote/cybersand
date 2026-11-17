@@ -1,0 +1,15 @@
+{
+  "source": "c846223ee0411662268f0a40942fd5e31002da6f",
+  "tree": "8077dc18e35f82a2f30bbc300b9cc32afe1a41f8",
+  "recorded_source_state": "clean_commit",
+  "input_ledger_sha256": "b403d9e2a963f9e53522879523a56dc96f4e94557b648c3b2fd9ad5e5e274f26",
+  "input_hashes_verified": 84,
+  "manifest_entries_verified": 181,
+  "all60_pngs_identical_to_independently_reviewed_prior": true,
+  "all55_raw_maps_identical_to_independently_reviewed_prior": true,
+  "survey_seeds": 32,
+  "unique_map_hashes": 32,
+  "current_head": "c846223ee0411662268f0a40942fd5e31002da6f",
+  "current_status": "",
+  "verdict": "PASS"
+}

@@ -1,0 +1,37 @@
+{
+  "method": "median of seven matched-trial ratios; first warmup excluded; module order rotates",
+  "configuration": {
+    "accent_material": 119,
+    "bay_width": 128,
+    "chunk_size": 64,
+    "floor_height": 80,
+    "floor_material": 119,
+    "schema": 4,
+    "seed": 271828,
+    "wall": 3,
+    "wall_material": 100,
+    "window_material": 55
+  },
+  "comparative_module": "pointed_arcade",
+  "sampler": "rosework_gatehouse",
+  "measurements": [
+    {
+      "extent": 512,
+      "sampler_median_ms": 184.430129,
+      "comparator_median_ms": 180.044587,
+      "median_paired_ratio": 1.0242818824169853,
+      "sampler_min_ms": 183.237189,
+      "sampler_max_ms": 185.407524,
+      "logical_operations_per_cell": 1192
+    },
+    {
+      "extent": 1024,
+      "sampler_median_ms": 744.023727,
+      "comparator_median_ms": 720.05189,
+      "median_paired_ratio": 1.0321157133442644,
+      "sampler_min_ms": 742.673709,
+      "sampler_max_ms": 747.853658,
+      "logical_operations_per_cell": 1192
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "status": "pass",
+  "source_commit": "8f39f68ae1bcf81045b007e233b2e6838cca4d24",
+  "source_tree": "a4453f91437de3bef6e20bc4b3ea5b9c38467060",
+  "parent_commit": "615828b28337f85e4663e03ba479616db4ddf764",
+  "gallery": "/workspace/scratch/cc652fa2efec/cybersand-interlaced/build/interlaced-viaduct-gallery",
+  "source_input_count": 87,
+  "native_capture_count": 26,
+  "composite_count": 4,
+  "native_pixels_independently_mapped": 7864320,
+  "qualification": {
+    "file": "/workspace/scratch/cc652fa2efec/cybersand-interlaced/build/interlaced-qualification-final/qualification.json",
+    "source_commit": "8f39f68ae1bcf81045b007e233b2e6838cca4d24",
+    "input_count": 70,
+    "assertions": 1305,
+    "snapshots": [
+      {
+        "kind": "legacy",
+        "bytes": 7290498,
+        "sha256": "db94e32b160e72a5d6ce90fa1372c319d4d83239e48f51c93abfca53e34e3875"
+      }
+    ]
+  },
+  "errors": []
+}

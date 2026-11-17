@@ -1,0 +1,58 @@
+{
+  "scope": "authoritative hosted GCC13, source-built Linux headless native and ordinary preset qualification",
+  "source_commit": "279bc4634b1d2b3a47f747c628163e419a728be7",
+  "run_id": 43969089140,
+  "run_url": "https://github.com/techrote/cybersand/actions/runs/43969089140",
+  "jobs": {
+    "native": "success",
+    "godot": "success",
+    "verify": "success"
+  },
+  "compiler": "/usr/bin/g++-13",
+  "godot": "4.7-stable (official)",
+  "godot_archive_sha256": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+  "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
+  "library_sha256": "aac4db20e3f994b2e46a992bfc7bcdebf08e054329d70eef833e59c1bca7160f",
+  "native_source_inputs_verified_against_git": 94,
+  "runtime_identity_sha256": "59c7a32331df821ad0f94b526b7fbf8d04231fbf1bd8a85b3a38d5296a8aca41",
+  "project_contract_checks": 2829,
+  "project_contract_failures": 0,
+  "native_gallery_checks": 2490,
+  "native_gallery_failures": 0,
+  "classic_maps": 73,
+  "classic_unique_material_hashes": 73,
+  "classic_maps_equal_local_runtime_pixels": 73,
+  "preserved_parent_gallery_maps": 72,
+  "megatruss_material_sha256": "96f92d7b7325a9b8d13ca2c2d539ac6960d274bad056228e06b1f70b4f4a7171",
+  "megatruss_hero_png_pixels_equal": true,
+  "source_verification": {
+    "source_commit": "279bc4634b1d2b3a47f747c628163e419a728be7",
+    "passed": true,
+    "native_pngs": 21,
+    "godot_checks": 2490,
+    "ordinary_preset_material_sha256": "96f92d7b7325a9b8d13ca2c2d539ac6960d274bad056228e06b1f70b4f4a7171"
+  },
+  "native_report_sha256": "fd599ab98d587457a46554c90375218f00489cc0af67fce3e27885641d19b490",
+  "project_contract_log_sha256": "463f9c431583cf46acb2bc065d236fc8af8193c1c1d8a194c2aa5bbe90e5712d",
+  "native_gallery_log_sha256": "7367a73e6fb12f1cbf2f41fbda8bdf47b63a37ee0ca42f626d8a12e37117ea07",
+  "artifacts": [
+    {
+      "id": 14278331044,
+      "url": "https://github.com/techrote/cybersand/actions/runs/43969089140/artifacts/14278331044",
+      "zip_sha256": "3817ee901f5fc77cc52726f5b1b2c6081735792ed7684c49a60a9267fbb8985a",
+      "zip_bytes": 1738108
+    },
+    {
+      "id": 14276434716,
+      "url": "https://github.com/techrote/cybersand/actions/runs/43969089140/artifacts/14276434716",
+      "zip_sha256": "647894625e907a4e3ca818c1770aa420b9fb2417fbfbe5bdfa2ad8cdfcc4f0c0",
+      "zip_bytes": 2254915
+    },
+    {
+      "id": 14278292248,
+      "url": "https://github.com/techrote/cybersand/actions/runs/43969089140/artifacts/14278292248",
+      "zip_sha256": "afa0e07793cab77dce9df1a16f56c6373c65f9977d7e1a03d9f10c0ea5587cd6",
+      "zip_bytes": 359
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "candidate_fixture": {
+    "material_cells": 98304,
+    "status": "pass",
+    "versions": [
+      1,
+      2
+    ]
+  },
+  "material_cells": 98304,
+  "parent_fixture": {
+    "material_cells": 98304,
+    "status": "pass",
+    "versions": [
+      1,
+      2
+    ]
+  },
+  "snapshot_sha256": "f4bd728ab78ba2762c12e9b22d18ea425a8ca6e9a4f8483e0e67ab0fbb773c26",
+  "status": "pass",
+  "versions": [
+    1,
+    2
+  ]
+}

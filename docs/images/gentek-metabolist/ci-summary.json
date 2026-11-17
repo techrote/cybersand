@@ -1,0 +1,107 @@
+{
+  "source_commit": "18215b08c0555922d5e5096a38c4b67af9c6b26f",
+  "source_tree": "d52975f369e97fa0e88b0ff3c0a669e6fe565a46",
+  "parent_commit": "615828b28337f85e4663e03ba479616db4ddf764",
+  "run_id": 43972681556,
+  "url": "https://github.com/techrote/cybersand/actions/runs/43972681556",
+  "status": "completed",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "id": 133668636520,
+      "name": "godot",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 133668636797,
+      "name": "native",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 133672864115,
+      "name": "verify",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 14280066613,
+      "name": "metabolist-native-43972681556",
+      "size_bytes": 2120099,
+      "sha256": "7530cb1b845b1651ce514df1fa8f991f7ac490217a8224d2e3357c96f7dff314",
+      "expired": false,
+      "expires_at": "2027-02-14T22:42:54Z",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43972681556/artifacts/14280066613"
+    },
+    {
+      "id": 14279557383,
+      "name": "metabolist-godot-43972681556",
+      "size_bytes": 2253337,
+      "sha256": "93b6c33a1314629c082027629ceecae4d1498bd3885efd31522b51a2942f248e",
+      "expired": false,
+      "expires_at": "2027-02-14T22:42:54Z",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43972681556/artifacts/14279557383"
+    },
+    {
+      "id": 14279352442,
+      "name": "metabolist-source-verification-43972681556",
+      "size_bytes": 361,
+      "sha256": "1b5c3037b92a68760ef7d7c2f54af1aa35cc51bbe61171a032e90cb736830850",
+      "expired": false,
+      "expires_at": "2027-02-14T22:42:54Z",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43972681556/artifacts/14279352442"
+    }
+  ],
+  "cross_renderer_verification": {
+    "source_commit": "18215b08c0555922d5e5096a38c4b67af9c6b26f",
+    "passed": true,
+    "native_pngs": 50,
+    "godot_checks": 2490,
+    "ordinary_preset_material_sha256": "b62f24b69bb003c8f12f4feba6b835a1beaeacfb3355c33d1cd78f2ade5a1192"
+  },
+  "gcc13_gcc14_complete_campaign_material_parity": {
+    "passed": true,
+    "captures": 50,
+    "cells_compared": 15204352
+  },
+  "performance": {
+    "method": "median of seven matched-trial ratios; first warmup excluded; module order rotates",
+    "configuration": {
+      "accent_material": 65,
+      "bay_width": 96,
+      "chunk_size": 64,
+      "floor_height": 88,
+      "floor_material": 62,
+      "schema": 4,
+      "seed": 271828,
+      "wall": 3,
+      "wall_material": 58,
+      "window_material": 121
+    },
+    "comparative_module": "cantilever_spine",
+    "sampler": "metabolist_spine",
+    "measurements": [
+      {
+        "extent": 512,
+        "sampler_median_ms": 128.534893,
+        "comparator_median_ms": 127.026632,
+        "median_paired_ratio": 1.0126484428769296,
+        "sampler_min_ms": 128.268875,
+        "sampler_max_ms": 129.775467,
+        "logical_operations_per_cell": 568
+      },
+      {
+        "extent": 1024,
+        "sampler_median_ms": 515.899642,
+        "comparator_median_ms": 508.701109,
+        "median_paired_ratio": 1.0129565140494021,
+        "sampler_min_ms": 514.634301,
+        "sampler_max_ms": 517.242023,
+        "logical_operations_per_cell": 568
+      }
+    ]
+  }
+}

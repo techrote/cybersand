@@ -1,0 +1,1674 @@
+{
+	"cases": [
+		{
+			"algorithm": "terraced",
+			"case": "new-native-architectural-algorithm",
+			"material_sha256": "abad2275a150c2afd48081219787e79b56f460cbff15dc138b63f10798ba0713",
+			"module_version": 2,
+			"preview_colour_and_png_us": 26942,
+			"recipe_sha256": "66887bbae12b9e0b4d52965a015363a7fa95d02a29ad128d2e45c2dbf994605d",
+			"seed": 161803
+		},
+		{
+			"algorithm": "hex_hive",
+			"case": "new-native-architectural-algorithm",
+			"material_sha256": "98539a9089f628def0903245bc8a3c17195c478c110332434d5a5607bd1746db",
+			"module_version": 2,
+			"preview_colour_and_png_us": 27561,
+			"recipe_sha256": "859f3127ea2e6abc9740b11417cdca234dc044d351f62dcf7274fe668084baa3",
+			"seed": 161803
+		},
+		{
+			"algorithm": "arcade",
+			"case": "new-native-architectural-algorithm",
+			"material_sha256": "f927a0dafda876ad80bb78103cff192024f493a031e083dd5890309a3ad4c84f",
+			"module_version": 2,
+			"preview_colour_and_png_us": 27006,
+			"recipe_sha256": "775c5ba56f882e2ef916a038fa3d3ad870b84b0a69bea100cd0c1548d0b9fa40",
+			"seed": 161803
+		},
+		{
+			"case": "native-algorithm-difference",
+			"different_material_cells": 104703,
+			"first": "terraced",
+			"second": "hex_hive"
+		},
+		{
+			"case": "native-algorithm-difference",
+			"different_material_cells": 109745,
+			"first": "terraced",
+			"second": "arcade"
+		},
+		{
+			"case": "native-algorithm-difference",
+			"different_material_cells": 150593,
+			"first": "hex_hive",
+			"second": "arcade"
+		},
+		{
+			"algorithm": "trestle",
+			"case": "gentek-classic-001",
+			"material_sha256": "2eecc1e3f56fa56aef0a2223ff8689ab94ba440d420b0bd584b1ff68d23a7853",
+			"module_version": 1,
+			"preset_id": "steel-trestle",
+			"preview_colour_and_png_us": 27568,
+			"recipe_sha256": "3b7a1f320eac98ee0610167af214e0050de540bd2e150163abc9dc1fd829fd34",
+			"seed": 271828
+		},
+		{
+			"algorithm": "stacked_arcade",
+			"case": "gentek-classic-001",
+			"material_sha256": "8055a3ea6527fbbdb53710d557d9fb83e4a4f967ef950e7f90c308b618ac914d",
+			"module_version": 1,
+			"preset_id": "stacked-arcade",
+			"preview_colour_and_png_us": 26849,
+			"recipe_sha256": "9d60c64ca22a9bcd35825a78b94e628de926e69193b429ddccce6eb39bde3964",
+			"seed": 271828
+		},
+		{
+			"algorithm": "flying_buttress",
+			"case": "gentek-classic-001",
+			"material_sha256": "f13c6d43fb4dac7055e7faeb4b1ca7557dd85016eba7a4369407936f08acd865",
+			"module_version": 1,
+			"preset_id": "flying-buttress",
+			"preview_colour_and_png_us": 27036,
+			"recipe_sha256": "7433fe808c792233a8f474db0dfdaeebfd60c4606d68c9777ac362d5909f4d04",
+			"seed": 271828
+		},
+		{
+			"algorithm": "sawtooth_gallery",
+			"case": "gentek-classic-001",
+			"material_sha256": "4f4de9484b0fcc305f2a9289c2605a991945eff36bc271e14d0165ebde538128",
+			"module_version": 1,
+			"preset_id": "sawtooth-gallery",
+			"preview_colour_and_png_us": 27231,
+			"recipe_sha256": "5381d8820bb3bf475794c26a14de3a90e7e7e56edb928d485f2770e95f3ec940",
+			"seed": 271828
+		},
+		{
+			"algorithm": "cantilever_spine",
+			"case": "gentek-classic-001",
+			"material_sha256": "3ffef46b058bc6466663115c601644ed36f10059f38c2a0a02e22a16f0af8f4f",
+			"module_version": 1,
+			"preset_id": "cantilever-spine",
+			"preview_colour_and_png_us": 26889,
+			"recipe_sha256": "d06aa189dda8edf6c435d7e9cbb7b496377852a08480bc6c85c538771136d2fd",
+			"seed": 271828
+		},
+		{
+			"algorithm": "rib_vault",
+			"case": "gentek-classic-001",
+			"material_sha256": "2f465de5e9d0f3bdb4a1d8dbd4f2712313fc5cbe9697f5e0c4621d52bcf93979",
+			"module_version": 1,
+			"preset_id": "rib-vault",
+			"preview_colour_and_png_us": 27291,
+			"recipe_sha256": "062ecb968ca6d343b4c97f2f32cb94a18e49d0f52daddecabd022a232b1dee74",
+			"seed": 271828
+		},
+		{
+			"algorithm": "nested_arcade",
+			"case": "gentek-classic-001",
+			"material_sha256": "17c6eea03f59446e4d3cdc44ff76540b98b23af95b3fa1ccc1fe65c17a5fbb2d",
+			"module_version": 1,
+			"preset_id": "nested-arcade",
+			"preview_colour_and_png_us": 26774,
+			"recipe_sha256": "ff045fefa86c0720299d7494a5d7f822100cc2643c1aaf9a40176144a505bdcf",
+			"seed": 271828
+		},
+		{
+			"algorithm": "suspended_deck",
+			"case": "gentek-classic-001",
+			"material_sha256": "32d3c89f65937a9c3a83f50b86269ce7b97442b1acc0720b91f9fcf38aa224c0",
+			"module_version": 1,
+			"preset_id": "suspended-deck",
+			"preview_colour_and_png_us": 26797,
+			"recipe_sha256": "10338804d21f84ada9c093d891312d34c4635824a382cc223b9f4406d998226a",
+			"seed": 271828
+		},
+		{
+			"algorithm": "bowstring_truss",
+			"case": "gentek-classic-001",
+			"material_sha256": "ab6083604eaffddd077ec6e969dfdfe188f9c28fc8dbe08f165d01df6d0f0a06",
+			"module_version": 1,
+			"preset_id": "bowstring-truss",
+			"preview_colour_and_png_us": 26966,
+			"recipe_sha256": "a694ec83b6a6206e8a28339974f14458280343471ae9ca717149418be36a2bc1",
+			"seed": 271828
+		},
+		{
+			"algorithm": "diamond_truss",
+			"case": "gentek-classic-001",
+			"material_sha256": "c41beb8d04ceb5d8ece506c775e176ca858d80de2ddb69181fb35dc6d5563974",
+			"module_version": 1,
+			"preset_id": "diamond-truss",
+			"preview_colour_and_png_us": 28551,
+			"recipe_sha256": "ef38f0867aa4c3a419d82629f9c09185a0b3aa2881f1e53669cfd4c90c47bd8a",
+			"seed": 271828
+		},
+		{
+			"algorithm": "portal_frame",
+			"case": "gentek-classic-001",
+			"material_sha256": "31aa4c671cf8545aa470865544b804596131d143db45a8a9a3eb8e50ad4bed94",
+			"module_version": 1,
+			"preset_id": "portal-frame",
+			"preview_colour_and_png_us": 27367,
+			"recipe_sha256": "c9e00c3376f3c6a26cc1253c3addebdf101755e70d6d0b5f885572cf5abf358b",
+			"seed": 271828
+		},
+		{
+			"algorithm": "ladder_bridge",
+			"case": "gentek-classic-001",
+			"material_sha256": "5d8fb0d9f86ee2fc68d14473ebcaa8f2f6858d69248095648571cea67d8173cc",
+			"module_version": 1,
+			"preset_id": "ladder-bridge",
+			"preview_colour_and_png_us": 27104,
+			"recipe_sha256": "51157fd12928465ce7adafe6766749b467ea07a0a5573208d9b998a361465602",
+			"seed": 271828
+		},
+		{
+			"algorithm": "stepped_aqueduct",
+			"case": "gentek-classic-001",
+			"material_sha256": "35e87177289c4b6e9ce9bcc3f857b016cbadfe05e44c23238a8e923954ba50d7",
+			"module_version": 1,
+			"preset_id": "stepped-aqueduct",
+			"preview_colour_and_png_us": 27039,
+			"recipe_sha256": "d9647f975c76f4a0267e415eec7b4af328e4e658d7beed9fd6ead36b5fdd5627",
+			"seed": 271828
+		},
+		{
+			"algorithm": "split_pier",
+			"case": "gentek-classic-001",
+			"material_sha256": "e6a41d168f56e03f5eefae19c66d76ab0fd4cb2d095453605038d3b5fbadbc7f",
+			"module_version": 1,
+			"preset_id": "split-pier",
+			"preview_colour_and_png_us": 27536,
+			"recipe_sha256": "3bd3c820b501c319ec5d6f73ee0fc609801a1f6864269325a05227f79c01e8dd",
+			"seed": 271828
+		},
+		{
+			"algorithm": "cable_gallery",
+			"case": "gentek-classic-001",
+			"material_sha256": "bcffc4dc611cad6e8b1d44b6ed318ef5fef76b3388fb71cd961960f5321c5b15",
+			"module_version": 1,
+			"preset_id": "cable-gallery",
+			"preview_colour_and_png_us": 27710,
+			"recipe_sha256": "ed03ece8f9687648f089fde13349a6d861c4361dbb443700e2013635353b7df4",
+			"seed": 271828
+		},
+		{
+			"algorithm": "clerestory_hall",
+			"case": "gentek-classic-001",
+			"material_sha256": "4a8ca610e7e54c1c11caa1935c2606c3b31415b0d8034a86a51912b1b77e1966",
+			"module_version": 1,
+			"preset_id": "clerestory-hall",
+			"preview_colour_and_png_us": 27383,
+			"recipe_sha256": "323d1b2eb6ce9d27bfaa145af6bf1b3da9f6490d56e011f51c747e11844623e0",
+			"seed": 271828
+		},
+		{
+			"algorithm": "mushroom_deck",
+			"case": "gentek-classic-001",
+			"material_sha256": "6cd14550da6a163fe80d031ca75385f96385454b013e77ef5a40c6b384b91c95",
+			"module_version": 1,
+			"preset_id": "mushroom-deck",
+			"preview_colour_and_png_us": 27259,
+			"recipe_sha256": "7e31e6ebc7f9d01fa05d833dfe47bbc2289e924cfeeb43928db803bbc2ef5c42",
+			"seed": 271828
+		},
+		{
+			"algorithm": "zigzag_bridge",
+			"case": "gentek-classic-001",
+			"material_sha256": "52898487d111e3e7eb6de963a37639ca729979f99e754a2283b40dec8376f1f4",
+			"module_version": 1,
+			"preset_id": "zigzag-bridge",
+			"preview_colour_and_png_us": 27864,
+			"recipe_sha256": "a968c1d8a2a8f1a1c47c85ba2e339e9f8f449b228d51044f1fc5ce00c3920d91",
+			"seed": 271828
+		},
+		{
+			"algorithm": "scalloped_vault",
+			"case": "gentek-classic-001",
+			"material_sha256": "b6b3256fa0f49c2240ea73c8e02dff508cb19e798926a453fab31d0a40dd30bb",
+			"module_version": 1,
+			"preset_id": "scalloped-vault",
+			"preview_colour_and_png_us": 27207,
+			"recipe_sha256": "fa8e13cd9d527f7a510e1846741ec87e2a42202bd1ca26efd8de3762cc6dce16",
+			"seed": 271828
+		},
+		{
+			"algorithm": "lattice_tower",
+			"case": "gentek-classic-001",
+			"material_sha256": "65805b0dc31d73ab54102bfa4cd69e1a54b7b198aa440f301053da1b90f56aad",
+			"module_version": 1,
+			"preset_id": "lattice-tower",
+			"preview_colour_and_png_us": 27099,
+			"recipe_sha256": "e53c4817ee7290e44158e72c3d3a664637788812cb2174eee7de35255b314cd2",
+			"seed": 271828
+		},
+		{
+			"algorithm": "offset_arcade",
+			"case": "gentek-classic-001",
+			"material_sha256": "598747235ffb8772ea5d9e1341f230d12e097ddc077d53eb9cd542356d746df2",
+			"module_version": 1,
+			"preset_id": "offset-arcade",
+			"preview_colour_and_png_us": 27900,
+			"recipe_sha256": "3e2300b1aa02b8e2cd03be571a0383441cad56bb4128e175cb20998eba2b7eb6",
+			"seed": 271828
+		},
+		{
+			"algorithm": "bridgehouse",
+			"case": "gentek-classic-001",
+			"material_sha256": "914b73dff53731a475039a1b40d574d0e78fee7262ed7e1bb52d5cd3d0e0d4eb",
+			"module_version": 1,
+			"preset_id": "bridgehouse",
+			"preview_colour_and_png_us": 27066,
+			"recipe_sha256": "46b03761d3be7d41070f1508a8395456b099ef6e802fbf34cdb48730b5f491e4",
+			"seed": 271828
+		},
+		{
+			"algorithm": "forked_gantry",
+			"case": "gentek-classic-001",
+			"material_sha256": "0649772b76b401d7f2b9ce72a7e4892a0f258938a50ddfc4f9bb934ea0757807",
+			"module_version": 1,
+			"preset_id": "forked-gantry",
+			"preview_colour_and_png_us": 27736,
+			"recipe_sha256": "1d964727bce39cf10b7ef7c1ee7e316595ef306573670b561a38eb6465582a45",
+			"seed": 271828
+		},
+		{
+			"algorithm": "buttress_wall",
+			"case": "gentek-classic-001",
+			"material_sha256": "54767adf49ca65592f9e4734ea87d4dfdab86d58094f0c1883aae109fcdab3ed",
+			"module_version": 1,
+			"preset_id": "buttress-wall",
+			"preview_colour_and_png_us": 26971,
+			"recipe_sha256": "a4a67e121f1047af161306d6b70df72962af3fe200aecffd26ea5a4bb7f48ee5",
+			"seed": 271828
+		},
+		{
+			"algorithm": "fan_truss",
+			"case": "gentek-classic-001",
+			"material_sha256": "56ce725a68b97e6fbb32ce2f2aa086b1ed141c5993a904f833b44fa247c8e300",
+			"module_version": 1,
+			"preset_id": "fan-truss",
+			"preview_colour_and_png_us": 27406,
+			"recipe_sha256": "7bd4d2943ab4c90af37ecef0c1b4349c0ba0be11003026c11638f58f3f671019",
+			"seed": 271828
+		},
+		{
+			"algorithm": "pratt_truss",
+			"case": "gentek-classic-001",
+			"material_sha256": "51bc64f1ab22081960246c10741284239dc90a37fad7c126602df073d6179462",
+			"module_version": 1,
+			"preset_id": "pratt-truss",
+			"preview_colour_and_png_us": 26903,
+			"recipe_sha256": "316f6748597f9bd1e4affbeecd24acb86f775dfdcf0d179f5beabc4b2e609523",
+			"seed": 271828
+		},
+		{
+			"algorithm": "vierendeel_frame",
+			"case": "gentek-classic-001",
+			"material_sha256": "b9b45c14708123842e337b9c8adc78142b465936d9fa5e9fd6121970d34d9065",
+			"module_version": 1,
+			"preset_id": "vierendeel-frame",
+			"preview_colour_and_png_us": 26537,
+			"recipe_sha256": "fb2564d6b67bd07590c06cb7131808a5b7c0483229489d81a43ae687650131a2",
+			"seed": 271828
+		},
+		{
+			"algorithm": "suspension_pylon",
+			"case": "gentek-classic-001",
+			"material_sha256": "59cb1f1f981e32b9cc9d17d49db0d75f05b27f34288342374b50befdb7fbacda",
+			"module_version": 1,
+			"preset_id": "suspension-pylon",
+			"preview_colour_and_png_us": 27456,
+			"recipe_sha256": "c5e64c337940eef5573a3ea0c32a117c825a39acfd4c0f4fa26d8fea2223785e",
+			"seed": 271828
+		},
+		{
+			"algorithm": "harp_bridge",
+			"case": "gentek-classic-001",
+			"material_sha256": "3c98d41ee0f20ef8755362efcf6eab24513506b75a91a8736a01c4781a001828",
+			"module_version": 1,
+			"preset_id": "harp-bridge",
+			"preview_colour_and_png_us": 28174,
+			"recipe_sha256": "756ca59abbf6b928fc829f9c51348c9f1135a5c56afdec82a5c129550dd62642",
+			"seed": 271828
+		},
+		{
+			"algorithm": "double_cantilever",
+			"case": "gentek-classic-001",
+			"material_sha256": "30e1db2409bdb7961bb144da43fc994987994c290c842abfe0a505d9ccb3204e",
+			"module_version": 1,
+			"preset_id": "double-cantilever",
+			"preview_colour_and_png_us": 27024,
+			"recipe_sha256": "b93611705b09ec6524dd5372f6ee3bc5db78c01be11a4a8150da028f6bd891b9",
+			"seed": 271828
+		},
+		{
+			"algorithm": "stepped_buttress",
+			"case": "gentek-classic-001",
+			"material_sha256": "9ac4bd7feb702110a19031757520c06463b283f07b7bb51cc3eeac555a890dd8",
+			"module_version": 1,
+			"preset_id": "stepped-buttress",
+			"preview_colour_and_png_us": 26838,
+			"recipe_sha256": "7c00879672497a111824578441e268500b70757dbba75fad68ae04d62d9057b2",
+			"seed": 271828
+		},
+		{
+			"algorithm": "colonnade",
+			"case": "gentek-classic-001",
+			"material_sha256": "495a62dd11a05afe3988b585109d3bb2c32d1c46a04ef8d961201d3cc6731f97",
+			"module_version": 1,
+			"preset_id": "colonnade",
+			"preview_colour_and_png_us": 27149,
+			"recipe_sha256": "065d5367071b002d5b61f163390d51eb1c73a253f8b199ca4cbb98d3c54c7450",
+			"seed": 271828
+		},
+		{
+			"algorithm": "basilica",
+			"case": "gentek-classic-001",
+			"material_sha256": "f4b67f5c93f0985db721bec912586dc27cbb0d6b361c7928174af27ebb46f7b2",
+			"module_version": 1,
+			"preset_id": "basilica",
+			"preview_colour_and_png_us": 27457,
+			"recipe_sha256": "4567a2be1f19040d15228f99caa6974e43bce615839c5e554f3e47ca6e7186bf",
+			"seed": 271828
+		},
+		{
+			"algorithm": "crenellated_bridge",
+			"case": "gentek-classic-001",
+			"material_sha256": "c80380b22d7b9a5c46099a53cb30a642e8c55e8ab671f60787a3209ed5e52eb3",
+			"module_version": 1,
+			"preset_id": "crenellated-bridge",
+			"preview_colour_and_png_us": 26700,
+			"recipe_sha256": "b6f40fe550844c23bbbf281175acc4b5855fafb111fb4d6f3db0dc09ec8e7212",
+			"seed": 271828
+		},
+		{
+			"algorithm": "pointed_arcade",
+			"case": "gentek-classic-001",
+			"material_sha256": "f1282d9dd10451bbd9f8c83bcab51c6a8fb1419995b1868a28edc2937af4f4ee",
+			"module_version": 1,
+			"preset_id": "pointed-arcade",
+			"preview_colour_and_png_us": 27479,
+			"recipe_sha256": "9260bb62943224eb0e46afeca79451a723e71a064c0519f6ccd5a49dcc4f7099",
+			"seed": 271828
+		},
+		{
+			"algorithm": "inverted_arch",
+			"case": "gentek-classic-001",
+			"material_sha256": "07c1d19203963d213df8abacad6623cd61e62ae3283708bed94dd48909b1f182",
+			"module_version": 1,
+			"preset_id": "inverted-arch",
+			"preview_colour_and_png_us": 27416,
+			"recipe_sha256": "32accc54ef7f8354a853ae2c0019da250f6ad4920551ac532e1ac09271be14cd",
+			"seed": 271828
+		},
+		{
+			"algorithm": "hourglass_pier",
+			"case": "gentek-classic-001",
+			"material_sha256": "f3259c0526e2f626bf39497503d79069933cd5617ed0d56b7490d7b7ab2748d9",
+			"module_version": 1,
+			"preset_id": "hourglass-pier",
+			"preview_colour_and_png_us": 26975,
+			"recipe_sha256": "417f38d0e0b182c4331d784f6805670579b69256ca65c1f7746088014254f475",
+			"seed": 271828
+		},
+		{
+			"algorithm": "tripod_frame",
+			"case": "gentek-classic-001",
+			"material_sha256": "646e317c2d474a8b170b56724e122578500d48f13502f153bf8161019f03482e",
+			"module_version": 1,
+			"preset_id": "tripod-frame",
+			"preview_colour_and_png_us": 27238,
+			"recipe_sha256": "90856167889953e7bc8d8fadc53cb7a4cac2faa5d53dc72a1612e4b2abd968cf",
+			"seed": 271828
+		},
+		{
+			"algorithm": "chevron_hall",
+			"case": "gentek-classic-001",
+			"material_sha256": "d7d9fc1ee234b0c3927fced09b7dba94d4bc36a6a8d8927d46f1f78a6af07844",
+			"module_version": 1,
+			"preset_id": "chevron-hall",
+			"preview_colour_and_png_us": 27079,
+			"recipe_sha256": "bed87f1e0dbbdfcbbd290adaee1e656fc43d1b9d1772e4e2e4ff52b93e41dcb3",
+			"seed": 271828
+		},
+		{
+			"algorithm": "hanging_arcade",
+			"case": "gentek-classic-001",
+			"material_sha256": "e3369f104ff9b822187a37d582bfd57a4f86e00a5a2de4fd63806cb5af14571c",
+			"module_version": 1,
+			"preset_id": "hanging-arcade",
+			"preview_colour_and_png_us": 27259,
+			"recipe_sha256": "4e3b20d2d4ea52494788ecd12c824383ba5c0443d2ffcfae57e32e11be154371",
+			"seed": 271828
+		},
+		{
+			"algorithm": "shelf_stack",
+			"case": "gentek-classic-001",
+			"material_sha256": "1a60305053fcfa007675037df8d2e3d2be522f2246588bb26ee1488e126e9d35",
+			"module_version": 1,
+			"preset_id": "shelf-stack",
+			"preview_colour_and_png_us": 26942,
+			"recipe_sha256": "50d470e8a5034fbfee1ed0c4529722e78a5ad2bc2db34c26eaf6c3fd89d6d48e",
+			"seed": 271828
+		},
+		{
+			"algorithm": "staggered_balcony",
+			"case": "gentek-classic-001",
+			"material_sha256": "d51142abb4d9eedd184bd5de39da7d153addfeff68f912989faede2f1e34a1b8",
+			"module_version": 1,
+			"preset_id": "staggered-balcony",
+			"preview_colour_and_png_us": 26915,
+			"recipe_sha256": "2f7b4bfab2f22778dd0bc45fe5bf1ee14fe1aa243287f9aa578dcbbd9e5b3765",
+			"seed": 271828
+		},
+		{
+			"algorithm": "monopod_tower",
+			"case": "gentek-classic-001",
+			"material_sha256": "14b2072343b5f29299387f678c21a41ab771b9ed38823896e249b1fc2974f650",
+			"module_version": 1,
+			"preset_id": "monopod-tower",
+			"preview_colour_and_png_us": 27906,
+			"recipe_sha256": "d6f05f80b08cb3cc2d4b8775cbdffea224b5025cf90a8aeefdc8a188e50ab3db",
+			"seed": 271828
+		},
+		{
+			"algorithm": "wedge_gallery",
+			"case": "gentek-classic-001",
+			"material_sha256": "233ae3be818753fb6eb7618261af584bed3905b03980eef48cf05342f4028ef3",
+			"module_version": 1,
+			"preset_id": "wedge-gallery",
+			"preview_colour_and_png_us": 27634,
+			"recipe_sha256": "f223d1a73f9c199ab7651cc2c7cd642ce40d6e0df3c0f75fd6ddbe4e895d1008",
+			"seed": 271828
+		},
+		{
+			"algorithm": "crown_bridge",
+			"case": "gentek-classic-001",
+			"material_sha256": "b150830d02d070ab41462322ea098c9f39fc8a09e94133dd400cb2b0960aab3f",
+			"module_version": 1,
+			"preset_id": "crown-bridge",
+			"preview_colour_and_png_us": 27348,
+			"recipe_sha256": "71cccb43f7b194c381677229af418f6ed516fdc4ac2ae2d9830d28100647ec1a",
+			"seed": 271828
+		},
+		{
+			"algorithm": "zigzag_pier",
+			"case": "gentek-classic-001",
+			"material_sha256": "fb92e14635a559412b726cc7a6de4ed9914430616dabbf2795a149a29840d67a",
+			"module_version": 1,
+			"preset_id": "zigzag-pier",
+			"preview_colour_and_png_us": 26860,
+			"recipe_sha256": "0664086e89d92cc20957b0362b32a5852fe5ff395153e48bb225ff6c5bb612d2",
+			"seed": 271828
+		},
+		{
+			"algorithm": "drum_vault",
+			"case": "gentek-classic-001",
+			"material_sha256": "254d3dd958895130188a773a2d328a961e199c99095c3273a165d814f02f15f1",
+			"module_version": 1,
+			"preset_id": "drum-vault",
+			"preview_colour_and_png_us": 27355,
+			"recipe_sha256": "bd0cdf1add41700fa086cb364cd51d263c663a40c42882de7b05e1d81cb28f4f",
+			"seed": 271828
+		},
+		{
+			"algorithm": "pyramidal_frame",
+			"case": "gentek-classic-001",
+			"material_sha256": "284c1238f3c4eb770141031d74ce116d082a0777e63509e41996671df0eee1a3",
+			"module_version": 1,
+			"preset_id": "pyramidal-frame",
+			"preview_colour_and_png_us": 27188,
+			"recipe_sha256": "d44a1fe700606c9ac18cfa70bfecc23e6fdf0cd79677ae43d112135c3ca5b687",
+			"seed": 271828
+		},
+		{
+			"algorithm": "warren_truss",
+			"case": "gentek-classic-001",
+			"material_sha256": "846cfc65ca072c0b783d802b438e47cae0b81606d390c272e2af452366c4e3fc",
+			"module_version": 1,
+			"preset_id": "warren-truss",
+			"preview_colour_and_png_us": 27258,
+			"recipe_sha256": "3e7bb335241caa0ad5fa655e3cef7aa10d296c8c377713151f645fa3fbe5e1cb",
+			"seed": 271828
+		},
+		{
+			"algorithm": "kingpost_frame",
+			"case": "gentek-classic-001",
+			"material_sha256": "536634a5170df7f4e07a155c882b26f037d97831355b1055aec07d62632d4169",
+			"module_version": 1,
+			"preset_id": "kingpost-frame",
+			"preview_colour_and_png_us": 27295,
+			"recipe_sha256": "588a562adc41ea7f9c6378a970a06f456a2db8ea76bcab6cea752e959e3d24a6",
+			"seed": 271828
+		},
+		{
+			"algorithm": "queenpost_frame",
+			"case": "gentek-classic-001",
+			"material_sha256": "57843e9ef2395586ba4c6d061c7098682ee8fcb73cdf56567a4bf46220d62fea",
+			"module_version": 1,
+			"preset_id": "queenpost-frame",
+			"preview_colour_and_png_us": 27039,
+			"recipe_sha256": "6a74401a7c70dcf95f2ef845f225a30898712bf9ca67190dadc7c928e806d1a8",
+			"seed": 271828
+		},
+		{
+			"algorithm": "lenticular_bridge",
+			"case": "gentek-classic-001",
+			"material_sha256": "df19089826a542d094c0ee6ae9668faa7eabd0e354ab415bb4c42abe43e1752e",
+			"module_version": 1,
+			"preset_id": "lenticular-bridge",
+			"preview_colour_and_png_us": 27597,
+			"recipe_sha256": "cde9b86e0d2df5cb9f5ded4fa5505bec1e0d9728c49bd7a127ddb0f65231f0d0",
+			"seed": 271828
+		},
+		{
+			"algorithm": "radial_stay_bridge",
+			"case": "gentek-classic-001",
+			"material_sha256": "3376c4e601ef0588405c57823a7f3f96baf72790d2c548525381a02009677f2b",
+			"module_version": 1,
+			"preset_id": "radial-stay-bridge",
+			"preview_colour_and_png_us": 27491,
+			"recipe_sha256": "c1edf54e49e1780d8ec98b14dcb4d00af729654b282b2fd79db472bde5108169",
+			"seed": 271828
+		},
+		{
+			"algorithm": "twin_mast_bridge",
+			"case": "gentek-classic-001",
+			"material_sha256": "a5937a46437a19dd3e2b8decfba983d4bd31d9359b15b23f051fdbbaf0a6df7f",
+			"module_version": 1,
+			"preset_id": "twin-mast-bridge",
+			"preview_colour_and_png_us": 27275,
+			"recipe_sha256": "941a98c1631e95aeda8490fc7284f6862c84a846230535bfdfc7b5140a2d0dd0",
+			"seed": 271828
+		},
+		{
+			"algorithm": "a_frame_hall",
+			"case": "gentek-classic-001",
+			"material_sha256": "66d604b893c16b70bb408a8b190f4c52fdcb4ede32e1e06446d719656c41b6b4",
+			"module_version": 1,
+			"preset_id": "a-frame-hall",
+			"preview_colour_and_png_us": 27571,
+			"recipe_sha256": "89061a1f25e4e0db962530afbaadfd9e1b6d4d187116d7d9775be2ba1cfe542f",
+			"seed": 271828
+		},
+		{
+			"algorithm": "butterfly_hall",
+			"case": "gentek-classic-001",
+			"material_sha256": "0c77e89c6833237fa1f0ef92ac125822f80e922106dba4b07f92384f8009768b",
+			"module_version": 1,
+			"preset_id": "butterfly-hall",
+			"preview_colour_and_png_us": 27036,
+			"recipe_sha256": "3b7ce0e2801e7b9dec3789717f2b527be1f6aa2663085550df4c30377b03a884",
+			"seed": 271828
+		},
+		{
+			"algorithm": "ziggurat_arcade",
+			"case": "gentek-classic-001",
+			"material_sha256": "3b0fc0e21c2f7ce483b724b304450b5e5e513952982c56c4ac38ca5e3681dad6",
+			"module_version": 1,
+			"preset_id": "ziggurat-arcade",
+			"preview_colour_and_png_us": 26797,
+			"recipe_sha256": "bf465294a0f3b036e5e4f7c1d92f04b1391aa4383fd8d7a1660a2368bc2a6dd2",
+			"seed": 271828
+		},
+		{
+			"algorithm": "corbel_arcade",
+			"case": "gentek-classic-001",
+			"material_sha256": "71ecdaed86348eeb9117f6ca806e4f704ed9d2c310cd39e859d00eeba10264b9",
+			"module_version": 1,
+			"preset_id": "corbel-arcade",
+			"preview_colour_and_png_us": 26740,
+			"recipe_sha256": "48574d150a73eb8a2416eba4d09c155020d3cfdbbedccc21951dc9567245b979",
+			"seed": 271828
+		},
+		{
+			"algorithm": "chain_vault",
+			"case": "gentek-classic-001",
+			"material_sha256": "17c86282a0202d24eeb0a3f83e4b88edd50d93cacc76188a826b87473db49ab3",
+			"module_version": 1,
+			"preset_id": "chain-vault",
+			"preview_colour_and_png_us": 27124,
+			"recipe_sha256": "c14ed400bf393de70000a42b89c05da7c259e4eeb82342b67de9a7f6d941e5b6",
+			"seed": 271828
+		},
+		{
+			"algorithm": "ring_pier",
+			"case": "gentek-classic-001",
+			"material_sha256": "69b270307e55c0028b41e0c75563c3f3d2a7c721902a023ff16ba258d151f487",
+			"module_version": 1,
+			"preset_id": "ring-pier",
+			"preview_colour_and_png_us": 27281,
+			"recipe_sha256": "0a42fcaa3f28027447a4a02f18c4beec81c54bf8e3267de2be57c7e844fb3aaf",
+			"seed": 271828
+		},
+		{
+			"algorithm": "folded_plate_hall",
+			"case": "gentek-classic-001",
+			"material_sha256": "cfed3fdbc582fe8d123edffc2cc48d6472d277777ba46a0651f228fcc1ab7b21",
+			"module_version": 1,
+			"preset_id": "folded-plate-hall",
+			"preview_colour_and_png_us": 27084,
+			"recipe_sha256": "84bfd6069d4932c19d79ddd67c0b65abfae54a4db0dfb19a3e10bf36490094ca",
+			"seed": 271828
+		},
+		{
+			"algorithm": "space_frame",
+			"case": "gentek-classic-001",
+			"material_sha256": "5990d1905274046f289be78ec85a5c74800b54dbf4421eb11455f42b9b0b4cf3",
+			"module_version": 1,
+			"preset_id": "space-frame",
+			"preview_colour_and_png_us": 26750,
+			"recipe_sha256": "d7c5dc8852c0ad6151a7addbf596a2df8154b261ad56c6da4a2de7e160abc119",
+			"seed": 271828
+		},
+		{
+			"algorithm": "crossbeam_stack",
+			"case": "gentek-classic-001",
+			"material_sha256": "e8a11cb4b65b3119e41daca796c817151cfe25dd003f229aa04f72882e420fe2",
+			"module_version": 1,
+			"preset_id": "crossbeam-stack",
+			"preview_colour_and_png_us": 27075,
+			"recipe_sha256": "876d89f8f20c3f63de23f28d80e95ab36a4d47ed54eeee1a676bfdeddba125f5",
+			"seed": 271828
+		},
+		{
+			"algorithm": "yoke_bridge",
+			"case": "gentek-classic-001",
+			"material_sha256": "a91dde0bfdfd5ccc6c483dc29d02ccd0141c3ef9ca67fc6f36fb0eeaa24a5f21",
+			"module_version": 1,
+			"preset_id": "yoke-bridge",
+			"preview_colour_and_png_us": 26306,
+			"recipe_sha256": "3580b61cca3bcd45200c1da07775aac47ad86298c8633bd3d59be062539f0546",
+			"seed": 271828
+		},
+		{
+			"algorithm": "lantern_tower",
+			"case": "gentek-classic-001",
+			"material_sha256": "250414c74eddbd5fbd1324e89181781a90e72452d4ac075e4e2e5b8d504c7b8d",
+			"module_version": 1,
+			"preset_id": "lantern-tower",
+			"preview_colour_and_png_us": 26984,
+			"recipe_sha256": "5654753cf3eb691569601111d68131505034ae7a25fd69e42d4061eb9d1dfaf7",
+			"seed": 271828
+		},
+		{
+			"algorithm": "spine_arcade",
+			"case": "gentek-classic-001",
+			"material_sha256": "86190690957ee9bf5a62ab54bb2bfe614b2c6ed725f840f483785ac7eb27ce56",
+			"module_version": 1,
+			"preset_id": "spine-arcade",
+			"preview_colour_and_png_us": 26933,
+			"recipe_sha256": "57b82f74a5704ccc93286252df148efee129e59574955bc52565e0e6f4eb36e2",
+			"seed": 271828
+		},
+		{
+			"algorithm": "cascade_terrace",
+			"case": "gentek-classic-001",
+			"material_sha256": "827316a33bc33f126262d2c4b6669c60a3e965efc33b5df4b67ed56198502fbb",
+			"module_version": 1,
+			"preset_id": "cascade-terrace",
+			"preview_colour_and_png_us": 26938,
+			"recipe_sha256": "d79470f3b0d67a705afadcf330c7b7a5ed19566ee7d1716f151f6e88e540b3ff",
+			"seed": 271828
+		},
+		{
+			"algorithm": "inverted_trestle",
+			"case": "gentek-classic-001",
+			"material_sha256": "b8436e497b3ebfaafe5c65b01ee04557cb3e2b52b831327046425e505cd14fcd",
+			"module_version": 1,
+			"preset_id": "inverted-trestle",
+			"preview_colour_and_png_us": 27046,
+			"recipe_sha256": "f6c6a9e5e3fe56125dd5d253bf2efc36d6fa060a3e96f7584a5cfc86f442cfea",
+			"seed": 271828
+		},
+		{
+			"algorithm": "cranked_beam",
+			"case": "gentek-classic-001",
+			"material_sha256": "0992588bd19352aecedc81b83881ba644ad3a83d848e027c0f6b61da6b62f6e1",
+			"module_version": 1,
+			"preset_id": "cranked-beam",
+			"preview_colour_and_png_us": 27756,
+			"recipe_sha256": "b76ab1d73ffb56c6be89a72cb8f0c9ffe3c70e9ebfb6d286450c8ae2887f6f6d",
+			"seed": 271828
+		},
+		{
+			"algorithm": "barrel_arcade",
+			"case": "gentek-classic-001",
+			"material_sha256": "880fc95119262b9b9998952fb61278ea52bff350c74538e4f981c2b58eff51a7",
+			"module_version": 1,
+			"preset_id": "barrel-arcade",
+			"preview_colour_and_png_us": 27512,
+			"recipe_sha256": "882c623d25e243a68f5ee0b50d1af62ced1db783ea17a03b4f012e70e2b5005f",
+			"seed": 271828
+		},
+		{
+			"algorithm": "buttress_crown",
+			"case": "gentek-classic-001",
+			"material_sha256": "59294d806b1cf848ad6697adc42fb2786e0844c846015f922e203697a3268d7c",
+			"module_version": 1,
+			"preset_id": "buttress-crown",
+			"preview_colour_and_png_us": 27170,
+			"recipe_sha256": "e720bcae74ccf64aec01327cc5c6695d5eb0bc597e1eb7b985b5c27958dee301",
+			"seed": 271828
+		},
+		{
+			"algorithm": "triptych_arcade",
+			"case": "gentek-classic-001",
+			"material_sha256": "070d72be60e01d931f8655b90364fde3a4dc5d38c94305b96658094053a4a805",
+			"module_version": 1,
+			"preset_id": "triptych-arcade",
+			"preview_colour_and_png_us": 26989,
+			"recipe_sha256": "6c663607591464b1b125a22392f0f4d8368d9c6758e9d3bf5eae7062a4e6f1b4",
+			"seed": 271828
+		},
+		{
+			"algorithm": "suspended_arcology",
+			"case": "gentek-classic-001",
+			"material_sha256": "de8fde572232500206fc756569afd183785c030c3f4e087c6c607da66f744ad6",
+			"module_version": 1,
+			"preset_id": "suspended-arcology",
+			"preview_colour_and_png_us": 27468,
+			"recipe_sha256": "8c465feda21472ced2980efead875a0407e56ebbd14e7616cdfa9a5ce0db7c43",
+			"seed": 271828
+		},
+		{
+			"against": "trestle",
+			"algorithm": "stacked_arcade",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 123254
+		},
+		{
+			"against": "trestle",
+			"algorithm": "flying_buttress",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 103899
+		},
+		{
+			"against": "trestle",
+			"algorithm": "sawtooth_gallery",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 143294
+		},
+		{
+			"against": "trestle",
+			"algorithm": "cantilever_spine",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 97869
+		},
+		{
+			"against": "trestle",
+			"algorithm": "rib_vault",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 121449
+		},
+		{
+			"against": "trestle",
+			"algorithm": "nested_arcade",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 133732
+		},
+		{
+			"against": "trestle",
+			"algorithm": "suspended_deck",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 109049
+		},
+		{
+			"against": "trestle",
+			"algorithm": "bowstring_truss",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 110668
+		},
+		{
+			"against": "trestle",
+			"algorithm": "diamond_truss",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 109575
+		},
+		{
+			"against": "trestle",
+			"algorithm": "portal_frame",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 104677
+		},
+		{
+			"against": "trestle",
+			"algorithm": "ladder_bridge",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 110112
+		},
+		{
+			"against": "trestle",
+			"algorithm": "stepped_aqueduct",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 106545
+		},
+		{
+			"against": "trestle",
+			"algorithm": "split_pier",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 98140
+		},
+		{
+			"against": "trestle",
+			"algorithm": "cable_gallery",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 102546
+		},
+		{
+			"against": "trestle",
+			"algorithm": "clerestory_hall",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 104260
+		},
+		{
+			"against": "trestle",
+			"algorithm": "mushroom_deck",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 102484
+		},
+		{
+			"against": "trestle",
+			"algorithm": "zigzag_bridge",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 96288
+		},
+		{
+			"against": "trestle",
+			"algorithm": "scalloped_vault",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 104758
+		},
+		{
+			"against": "trestle",
+			"algorithm": "lattice_tower",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 107629
+		},
+		{
+			"against": "trestle",
+			"algorithm": "offset_arcade",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 127340
+		},
+		{
+			"against": "trestle",
+			"algorithm": "bridgehouse",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 115128
+		},
+		{
+			"against": "trestle",
+			"algorithm": "forked_gantry",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 96531
+		},
+		{
+			"against": "trestle",
+			"algorithm": "buttress_wall",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 131670
+		},
+		{
+			"against": "trestle",
+			"algorithm": "fan_truss",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 124405
+		},
+		{
+			"against": "trestle",
+			"algorithm": "pratt_truss",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 112150
+		},
+		{
+			"against": "trestle",
+			"algorithm": "vierendeel_frame",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 118908
+		},
+		{
+			"against": "trestle",
+			"algorithm": "suspension_pylon",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 116812
+		},
+		{
+			"against": "trestle",
+			"algorithm": "harp_bridge",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 128870
+		},
+		{
+			"against": "trestle",
+			"algorithm": "double_cantilever",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 99036
+		},
+		{
+			"against": "trestle",
+			"algorithm": "stepped_buttress",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 150152
+		},
+		{
+			"against": "trestle",
+			"algorithm": "colonnade",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 126048
+		},
+		{
+			"against": "trestle",
+			"algorithm": "basilica",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 106907
+		},
+		{
+			"against": "trestle",
+			"algorithm": "crenellated_bridge",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 108962
+		},
+		{
+			"against": "trestle",
+			"algorithm": "pointed_arcade",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 137540
+		},
+		{
+			"against": "trestle",
+			"algorithm": "inverted_arch",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 96163
+		},
+		{
+			"against": "trestle",
+			"algorithm": "hourglass_pier",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 114211
+		},
+		{
+			"against": "trestle",
+			"algorithm": "tripod_frame",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 100432
+		},
+		{
+			"against": "trestle",
+			"algorithm": "chevron_hall",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 105507
+		},
+		{
+			"against": "trestle",
+			"algorithm": "hanging_arcade",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 97105
+		},
+		{
+			"against": "trestle",
+			"algorithm": "shelf_stack",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 109842
+		},
+		{
+			"against": "trestle",
+			"algorithm": "staggered_balcony",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 102912
+		},
+		{
+			"against": "trestle",
+			"algorithm": "monopod_tower",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 120240
+		},
+		{
+			"against": "trestle",
+			"algorithm": "wedge_gallery",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 102123
+		},
+		{
+			"against": "trestle",
+			"algorithm": "crown_bridge",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 104593
+		},
+		{
+			"against": "trestle",
+			"algorithm": "zigzag_pier",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 95413
+		},
+		{
+			"against": "trestle",
+			"algorithm": "drum_vault",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 108230
+		},
+		{
+			"against": "trestle",
+			"algorithm": "pyramidal_frame",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 100424
+		},
+		{
+			"against": "trestle",
+			"algorithm": "warren_truss",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 110437
+		},
+		{
+			"against": "trestle",
+			"algorithm": "kingpost_frame",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 101356
+		},
+		{
+			"against": "trestle",
+			"algorithm": "queenpost_frame",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 117837
+		},
+		{
+			"against": "trestle",
+			"algorithm": "lenticular_bridge",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 101943
+		},
+		{
+			"against": "trestle",
+			"algorithm": "radial_stay_bridge",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 116881
+		},
+		{
+			"against": "trestle",
+			"algorithm": "twin_mast_bridge",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 120283
+		},
+		{
+			"against": "trestle",
+			"algorithm": "a_frame_hall",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 107880
+		},
+		{
+			"against": "trestle",
+			"algorithm": "butterfly_hall",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 105594
+		},
+		{
+			"against": "trestle",
+			"algorithm": "ziggurat_arcade",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 135078
+		},
+		{
+			"against": "trestle",
+			"algorithm": "corbel_arcade",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 129868
+		},
+		{
+			"against": "trestle",
+			"algorithm": "chain_vault",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 98650
+		},
+		{
+			"against": "trestle",
+			"algorithm": "ring_pier",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 106666
+		},
+		{
+			"against": "trestle",
+			"algorithm": "folded_plate_hall",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 96605
+		},
+		{
+			"against": "trestle",
+			"algorithm": "space_frame",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 117114
+		},
+		{
+			"against": "trestle",
+			"algorithm": "crossbeam_stack",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 93659
+		},
+		{
+			"against": "trestle",
+			"algorithm": "yoke_bridge",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 99130
+		},
+		{
+			"against": "trestle",
+			"algorithm": "lantern_tower",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 122736
+		},
+		{
+			"against": "trestle",
+			"algorithm": "spine_arcade",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 104855
+		},
+		{
+			"against": "trestle",
+			"algorithm": "cascade_terrace",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 119262
+		},
+		{
+			"against": "trestle",
+			"algorithm": "inverted_trestle",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 105966
+		},
+		{
+			"against": "trestle",
+			"algorithm": "cranked_beam",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 95489
+		},
+		{
+			"against": "trestle",
+			"algorithm": "barrel_arcade",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 102664
+		},
+		{
+			"against": "trestle",
+			"algorithm": "buttress_crown",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 128335
+		},
+		{
+			"against": "trestle",
+			"algorithm": "triptych_arcade",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 133132
+		},
+		{
+			"against": "trestle",
+			"algorithm": "suspended_arcology",
+			"case": "gentek-classic-structural-difference",
+			"occupied_empty_difference_cells": 101853
+		},
+		{
+			"blocked_raster_cells": 0,
+			"boundary_cell_pairs": 2432,
+			"case": "automatic-routes-cross-style-boundaries",
+			"disabled_route_receipts": 0,
+			"extent": [
+				1024,
+				1024
+			],
+			"invalid_traces": 0,
+			"route_crossings": 121,
+			"seed": 161803,
+			"style_pairs": [
+				"0/1",
+				"0/2",
+				"1/2"
+			]
+		},
+		{
+			"case": "three-style",
+			"coverage": [
+				{
+					"achieved_percent": 44.921875,
+					"blocks": 115,
+					"components": 1,
+					"id": "industrial-service",
+					"name": "Industrial Service",
+					"requested_percent": 45.0,
+					"slot": 0
+				},
+				{
+					"achieved_percent": 30.078125,
+					"blocks": 77,
+					"components": 1,
+					"id": "habitation-arcology",
+					"name": "Habitation / Arcology",
+					"requested_percent": 30.0,
+					"slot": 1
+				},
+				{
+					"achieved_percent": 25.0,
+					"blocks": 64,
+					"components": 1,
+					"id": "overgrown-ruins",
+					"name": "Overgrown / Ruined Construction",
+					"requested_percent": 25.0,
+					"slot": 2
+				}
+			],
+			"extent": [
+				1024,
+				1024
+			],
+			"fingerprint": "affd8292d4e4535e",
+			"logical_operations": 3586129920,
+			"material_bytes": 1048576,
+			"material_copy_us": 156285,
+			"material_sha256": "0ff307959928380fc6c2e00b55d75021d9e51a957ebf3a1022ba37300bcbbe85",
+			"native_chunks": 64,
+			"native_raster_us": 1407609,
+			"planner_us": 580,
+			"preparation_us": 375,
+			"preview_colour_and_png_us": 108648,
+			"preview_rgba_bytes": 4194304,
+			"project_sha256": "3cd9eb74e1ec1c553ad74f80b56976103b321e18f62fc871a01d10f0a7a5b1ce",
+			"raster_and_copy_us": 1563894,
+			"recipe_sha256": "9a043f2f39786da3bcc8a9ebd43ca216867c8f512045a2cdf56f256a1fe3d163",
+			"seed": 161803,
+			"zone_material_occupancy": [
+				{
+					"occupied_cells": 86766,
+					"slot": 0,
+					"zone_cells": 471040
+				},
+				{
+					"occupied_cells": 30678,
+					"slot": 1,
+					"zone_cells": 315392
+				},
+				{
+					"occupied_cells": 19241,
+					"slot": 2,
+					"zone_cells": 262144
+				}
+			]
+		},
+		{
+			"after": [
+				{
+					"occupied_cells": 86766,
+					"slot": 0,
+					"zone_cells": 471040
+				},
+				{
+					"occupied_cells": 30678,
+					"slot": 1,
+					"zone_cells": 315392
+				},
+				{
+					"occupied_cells": 19241,
+					"slot": 2,
+					"zone_cells": 262144
+				}
+			],
+			"before": [
+				{
+					"occupied_cells": 86766,
+					"slot": 0,
+					"zone_cells": 471040
+				},
+				{
+					"occupied_cells": 30678,
+					"slot": 1,
+					"zone_cells": 315392
+				},
+				{
+					"occupied_cells": 22145,
+					"slot": 2,
+					"zone_cells": 262144
+				}
+			],
+			"case": "ruin-deterioration",
+			"deterioration": 0.2,
+			"seed": 161803
+		},
+		{
+			"case": "three-style",
+			"coverage": [
+				{
+					"achieved_percent": 44.921875,
+					"blocks": 115,
+					"components": 1,
+					"id": "industrial-service",
+					"name": "Industrial Service",
+					"requested_percent": 45.0,
+					"slot": 0
+				},
+				{
+					"achieved_percent": 30.078125,
+					"blocks": 77,
+					"components": 1,
+					"id": "habitation-arcology",
+					"name": "Habitation / Arcology",
+					"requested_percent": 30.0,
+					"slot": 1
+				},
+				{
+					"achieved_percent": 25.0,
+					"blocks": 64,
+					"components": 1,
+					"id": "overgrown-ruins",
+					"name": "Overgrown / Ruined Construction",
+					"requested_percent": 25.0,
+					"slot": 2
+				}
+			],
+			"extent": [
+				1024,
+				1024
+			],
+			"fingerprint": "6a495167216192ef",
+			"logical_operations": 3586129920,
+			"material_bytes": 1048576,
+			"material_copy_us": 152784,
+			"material_sha256": "c47f713f6f4ebdc965aaddbd0796edfc9a1a864020efa097b7b0327f55e45b94",
+			"native_chunks": 64,
+			"native_raster_us": 1349599,
+			"planner_us": 666,
+			"preparation_us": 475,
+			"preview_colour_and_png_us": 107136,
+			"preview_rgba_bytes": 4194304,
+			"project_sha256": "8300e1be6b3a925081791813f9513d45bdad0e2211464eb81366f07124d16e93",
+			"raster_and_copy_us": 1502383,
+			"recipe_sha256": "07f11fe60d0acb9f3ff20bf7592b893250c019a8fe570ec169d26e9764b443a1",
+			"seed": 271828,
+			"zone_material_occupancy": [
+				{
+					"occupied_cells": 32675,
+					"slot": 1,
+					"zone_cells": 315392
+				},
+				{
+					"occupied_cells": 87048,
+					"slot": 0,
+					"zone_cells": 471040
+				},
+				{
+					"occupied_cells": 17872,
+					"slot": 2,
+					"zone_cells": 262144
+				}
+			]
+		},
+		{
+			"after": [
+				{
+					"occupied_cells": 32675,
+					"slot": 1,
+					"zone_cells": 315392
+				},
+				{
+					"occupied_cells": 87048,
+					"slot": 0,
+					"zone_cells": 471040
+				},
+				{
+					"occupied_cells": 17872,
+					"slot": 2,
+					"zone_cells": 262144
+				}
+			],
+			"before": [
+				{
+					"occupied_cells": 32675,
+					"slot": 1,
+					"zone_cells": 315392
+				},
+				{
+					"occupied_cells": 87048,
+					"slot": 0,
+					"zone_cells": 471040
+				},
+				{
+					"occupied_cells": 22480,
+					"slot": 2,
+					"zone_cells": 262144
+				}
+			],
+			"case": "ruin-deterioration",
+			"deterioration": 0.2,
+			"seed": 271828
+		},
+		{
+			"case": "three-style",
+			"coverage": [
+				{
+					"achieved_percent": 44.921875,
+					"blocks": 115,
+					"components": 1,
+					"id": "industrial-service",
+					"name": "Industrial Service",
+					"requested_percent": 45.0,
+					"slot": 0
+				},
+				{
+					"achieved_percent": 30.078125,
+					"blocks": 77,
+					"components": 1,
+					"id": "habitation-arcology",
+					"name": "Habitation / Arcology",
+					"requested_percent": 30.0,
+					"slot": 1
+				},
+				{
+					"achieved_percent": 25.0,
+					"blocks": 64,
+					"components": 1,
+					"id": "overgrown-ruins",
+					"name": "Overgrown / Ruined Construction",
+					"requested_percent": 25.0,
+					"slot": 2
+				}
+			],
+			"extent": [
+				1024,
+				1024
+			],
+			"fingerprint": "91c726400b7a26b7",
+			"logical_operations": 3586129920,
+			"material_bytes": 1048576,
+			"material_copy_us": 154307,
+			"material_sha256": "1ffd24afddb996596e359a282696312c132a7c88618f458978d35ddfff3ab567",
+			"native_chunks": 64,
+			"native_raster_us": 1382746,
+			"planner_us": 672,
+			"preparation_us": 505,
+			"preview_colour_and_png_us": 107086,
+			"preview_rgba_bytes": 4194304,
+			"project_sha256": "f47569087e7a5731345d8bebac4da3ea6126e1d276914a2e34888be769451571",
+			"raster_and_copy_us": 1537053,
+			"recipe_sha256": "d6293680e8ed12b4c66467e4cb5263458f5abc5a0ed0334fc0e3b1542d282ff5",
+			"seed": 314159,
+			"zone_material_occupancy": [
+				{
+					"occupied_cells": 32011,
+					"slot": 1,
+					"zone_cells": 315392
+				},
+				{
+					"occupied_cells": 86363,
+					"slot": 0,
+					"zone_cells": 471040
+				},
+				{
+					"occupied_cells": 18133,
+					"slot": 2,
+					"zone_cells": 262144
+				}
+			]
+		},
+		{
+			"after": [
+				{
+					"occupied_cells": 32011,
+					"slot": 1,
+					"zone_cells": 315392
+				},
+				{
+					"occupied_cells": 86363,
+					"slot": 0,
+					"zone_cells": 471040
+				},
+				{
+					"occupied_cells": 18133,
+					"slot": 2,
+					"zone_cells": 262144
+				}
+			],
+			"before": [
+				{
+					"occupied_cells": 32011,
+					"slot": 1,
+					"zone_cells": 315392
+				},
+				{
+					"occupied_cells": 86363,
+					"slot": 0,
+					"zone_cells": 471040
+				},
+				{
+					"occupied_cells": 22024,
+					"slot": 2,
+					"zone_cells": 262144
+				}
+			],
+			"case": "ruin-deterioration",
+			"deterioration": 0.2,
+			"seed": 314159
+		},
+		{
+			"case": "automatic_tunnels",
+			"changed_cells": 3417,
+			"off_recipe_sha256": "622ee12d48add9bac5b9ad787841c5469d17d98707e6655a08e41c92f72b3afd",
+			"off_sha256": "53b1e194a98f8d3add7483873f14e65c0c9dc7220c8b562b7061593d08aa9d25",
+			"on_sha256": "f05f1fcd33978bf78c55aabb0212a9aab056581f89a0c7c2d5d134fc56649ef5"
+		},
+		{
+			"case": "automatic_doors",
+			"changed_cells": 3956,
+			"off_recipe_sha256": "112e30244311cb144c66d28fe3c9f029f8833c195d03902f6f01b9ea7df0d2fa",
+			"off_sha256": "0d3505ffaf44d95acca993eccb346b5aa9ddc3bd2a480f0e5373919e0f0412a1",
+			"on_sha256": "f05f1fcd33978bf78c55aabb0212a9aab056581f89a0c7c2d5d134fc56649ef5"
+		},
+		{
+			"case": "automatic_windows",
+			"changed_cells": 2883,
+			"off_recipe_sha256": "55e92825556efe7bbf3793c746e0051c3635fcab65bcdf0ff560aac8a75a037b",
+			"off_sha256": "9d20cd3c8f993d0c5aabc655fbbeb944fc424ecf61a0cce5c0587bfde92f6d53",
+			"on_sha256": "f05f1fcd33978bf78c55aabb0212a9aab056581f89a0c7c2d5d134fc56649ef5"
+		},
+		{
+			"case": "structural-style-difference",
+			"occupied_empty_difference_cells": 61004
+		},
+		{
+			"case": "three-style",
+			"coverage": [
+				{
+					"achieved_percent": 45.3125,
+					"blocks": 29,
+					"components": 1,
+					"id": "industrial-service",
+					"name": "Industrial Service",
+					"requested_percent": 45.0,
+					"slot": 0
+				},
+				{
+					"achieved_percent": 29.6875,
+					"blocks": 19,
+					"components": 1,
+					"id": "habitation-arcology",
+					"name": "Habitation / Arcology",
+					"requested_percent": 30.0,
+					"slot": 1
+				},
+				{
+					"achieved_percent": 25.0,
+					"blocks": 16,
+					"components": 1,
+					"id": "overgrown-ruins",
+					"name": "Overgrown / Ruined Construction",
+					"requested_percent": 25.0,
+					"slot": 2
+				}
+			],
+			"extent": [
+				512,
+				512
+			],
+			"fingerprint": "391594f7d622f1b7",
+			"logical_operations": 896532480,
+			"material_bytes": 262144,
+			"material_copy_us": 38538,
+			"material_sha256": "f05f1fcd33978bf78c55aabb0212a9aab056581f89a0c7c2d5d134fc56649ef5",
+			"native_chunks": 16,
+			"native_raster_us": 348343,
+			"planner_us": 562,
+			"preparation_us": 449,
+			"preview_colour_and_png_us": 26731,
+			"preview_rgba_bytes": 1048576,
+			"project_sha256": "cac3d725578e51a5cb4efbdb548b054ecc12b8d1a8526b6975357e0e76fc560e",
+			"raster_and_copy_us": 386881,
+			"recipe_sha256": "bea5347644890fa4c8d15faa2f8d66116b3f98d28c1d1129e5567ff4ebeb8c6e",
+			"seed": 161803
+		},
+		{
+			"case": "legacy-district-arcology-comparison",
+			"extent": [
+				512,
+				512
+			],
+			"fingerprint": "c98389a22be141da",
+			"logical_operations": 272629760,
+			"material_bytes": 262144,
+			"material_copy_us": 36815,
+			"material_sha256": "e3676bf4b2e795ffe2a89377a5874d29442ef50fff573ee4af7e9022066233d2",
+			"native_chunks": 16,
+			"native_raster_us": 94286,
+			"preparation_us": 242,
+			"preview_rgba_bytes": 1048576,
+			"raster_and_copy_us": 131101,
+			"recipe_sha256": "1d30e2b13c33a8e375aa9a191be249a0b19fbacbc3d6a44607a4635cb176a2d3",
+			"scope": "same requested region size; different recipe and architectural complexity",
+			"seed": 161803.0
+		},
+		{
+			"case": "legacy-district-arcology-comparison",
+			"extent": [
+				1024,
+				1024
+			],
+			"fingerprint": "c98389a22be141da",
+			"logical_operations": 1090519040,
+			"material_bytes": 1048576,
+			"material_copy_us": 146193,
+			"material_sha256": "0d39363be7b95180a9dd8004f7ab04898d551964f2c86aee36003b4d076d0dda",
+			"native_chunks": 64,
+			"native_raster_us": 351667,
+			"preparation_us": 238,
+			"preview_rgba_bytes": 4194304,
+			"raster_and_copy_us": 497860,
+			"recipe_sha256": "1d30e2b13c33a8e375aa9a191be249a0b19fbacbc3d6a44607a4635cb176a2d3",
+			"scope": "same requested region size; different recipe and architectural complexity",
+			"seed": 161803.0
+		}
+	],
+	"checks": 2490,
+	"display": "headless",
+	"elapsed_us": 40990730,
+	"failures": 0,
+	"godot": "4.7-stable (official)",
+	"os": "Linux",
+	"phase": "native",
+	"schema": 1
+}

@@ -1,0 +1,37 @@
+{
+  "method": "median of seven matched-trial ratios; first warmup excluded; module order rotates",
+  "configuration": {
+    "accent_material": 65,
+    "bay_width": 80,
+    "chunk_size": 64,
+    "floor_height": 64,
+    "floor_material": 62,
+    "schema": 4,
+    "seed": 271828,
+    "wall": 3,
+    "wall_material": 58,
+    "window_material": 121
+  },
+  "comparative_module": "arcade",
+  "sampler": "interlaced_viaduct",
+  "measurements": [
+    {
+      "extent": 512,
+      "sampler_median_ms": 137.739954,
+      "comparator_median_ms": 133.309417,
+      "median_paired_ratio": 1.0345025156466732,
+      "sampler_min_ms": 137.40381,
+      "sampler_max_ms": 138.179222,
+      "logical_operations_per_cell": 584
+    },
+    {
+      "extent": 1024,
+      "sampler_median_ms": 553.23633,
+      "comparator_median_ms": 534.152465,
+      "median_paired_ratio": 1.0356727590309325,
+      "sampler_min_ms": 552.58239,
+      "sampler_max_ms": 554.830718,
+      "logical_operations_per_cell": 584
+    }
+  ]
+}

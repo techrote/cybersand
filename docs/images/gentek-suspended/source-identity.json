@@ -1,0 +1,11 @@
+{
+  "qualified_source_commit": "eb376b267a619226a572af5aa01d99c9b011391c",
+  "qualified_source_tree": "043fe628ffd86e0ee8d261c19ee6570773a4363a",
+  "parent_commit": "615828b28337f85e4663e03ba479616db4ddf764",
+  "branch": "experiment/gentek-showcase-suspended-001",
+  "evidence_scope": "This directory contains evidence only; the source-input ledger identifies every qualified input independently of a later documentation commit.",
+  "native_captures": 62,
+  "derived_pngs": 4,
+  "source_input_digest": "a30e8d2020cac1f76157277a2c786a285866ac70ac947f395b7934efd8b41547",
+  "qualification_directory": "suspended-qualification-final"
+}

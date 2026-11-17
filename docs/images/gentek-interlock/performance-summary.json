@@ -1,0 +1,37 @@
+{
+  "method": "median of seven matched-trial ratios; first warmup excluded; module order rotates",
+  "configuration": {
+    "accent_material": 65,
+    "bay_width": 64,
+    "chunk_size": 64,
+    "floor_height": 64,
+    "floor_material": 62,
+    "schema": 4,
+    "seed": 271828,
+    "wall": 3,
+    "wall_material": 58,
+    "window_material": 121
+  },
+  "comparative_module": "cantilever_spine",
+  "sampler": "interlock_brutalism",
+  "measurements": [
+    {
+      "extent": 512,
+      "sampler_median_ms": 227.089504,
+      "comparator_median_ms": 224.764237,
+      "median_paired_ratio": 1.0097724922215352,
+      "sampler_min_ms": 219.318247,
+      "sampler_max_ms": 227.500451,
+      "logical_operations_per_cell": 604
+    },
+    {
+      "extent": 1024,
+      "sampler_median_ms": 635.819591,
+      "comparator_median_ms": 705.220958,
+      "median_paired_ratio": 1.0129081420480144,
+      "sampler_min_ms": 634.974774,
+      "sampler_max_ms": 910.100023,
+      "logical_operations_per_cell": 604
+    }
+  ]
+}

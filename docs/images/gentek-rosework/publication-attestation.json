@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "purpose": "Retain the completed independent publication attestation and supersede a stalled documentation checkout through the existing per-PR concurrency group.",
+  "compiled_by": "Coordinating agent from retained independent publication review",
+  "independent_reviewer": "independent_showcase_review",
+  "reviewed_at_utc": "2026-11-16 23:14:00 UTC",
+  "qualified_source_commit": "5132a454f1db80c5b54dc6fef56b488ef9b3edc9",
+  "qualified_source_tree": "5f61ff783dd17174df056e796aa1ec719bd27063",
+  "parent_commit": "615828b28337f85e4663e03ba479616db4ddf764",
+  "previous_evidence_commit": "9207dfd7197bc96271be233692613b4d81a5e168",
+  "previous_evidence_tree": "494e4b1c5138b3997ef66305e9ca0f203a11b15a",
+  "source_inputs_unchanged_since_qualification": 87,
+  "source_runtime_identity_is_qualified_commit": true,
+  "independent_publication_checks": {
+    "pr_draft_hold": true,
+    "parent_unchanged": true,
+    "body_matches_reviewed_payload": true,
+    "evidence_changes_only_own_directory": true,
+    "no_material_overclaim_found": true
+  },
+  "native_captures": 23,
+  "derived_pngs": 5,
+  "source_qualification_workflow": {
+    "url": "https://github.com/techrote/cybersand/actions/runs/43972395517",
+    "status": "completed",
+    "conclusion": "success"
+  },
+  "whole_campaign_compiler_parity": {
+    "passed": true,
+    "captures": 23,
+    "cells_compared": 7077888
+  },
+  "pending_previous_documentation_run": {
+    "id": 43976057247,
+    "url": "https://github.com/techrote/cybersand/actions/runs/43976057247",
+    "observed_utc": "2026-11-16 23:18:41 UTC",
+    "status": "in_progress",
+    "step": "Checkout audited repository history",
+    "validation_started": false,
+    "classification": "isolated checkout/LFS stall; no source assertion failure observed",
+    "workflow_timeout_minutes": 240,
+    "supersession_policy": "existing docs-pull_request-668 group cancels in-progress runs when another synchronize event arrives"
+  },
+  "limits": [
+    "This attestation does not relabel any new evidence commit as newly compiled runtime source.",
+    "No physical Windows/GPU/framebuffer acceptance is claimed.",
+    "All native PNGs and qualification receipts continue to identify source 5132a454f1db80c5b54dc6fef56b488ef9b3edc9."
+  ]
+}
