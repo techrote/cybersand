@@ -137,6 +137,19 @@ Original Wave (spill disabled) keeps a pre-existing stale-support read of paused
 floors (85 cells differed in the probe). It was deliberately not changed, to
 preserve the qualified law, and is recorded here as a known gap.
 
+## Protected-source transitions
+
+The material-catalogue compatibility table admits these reviewed steps (LF SHA-256):
+
+| Path | From | To | Source commit |
+|---|---|---|---|
+| `native/src/world.cpp` | `911ac9df96c34f7bbc24e9de8b53099ba779ff6cc999c6ff349b61e4379ee143` | `80e05f673b3d6ba35daa7c741805aa272f149e7742d162c94c8c0bd9bdbc1e83` | `751c1a951a8f76c397dd3f903f378208119d29f1` |
+| `native/src/world_pressure.inc` | `9ee31ffc4ea89b50f78e39eecc8f5c9be5944bcbc2f6ead48698c714564b7067` | `64c3afbe1e368d24d3ac4d484a78fa8cd3fc380c80fe54bfeb8661738048254f` | `26d032f14820d6d46272d487d56cacaee4544368` |
+
+`world.cpp` changes one line: `clear()` resets the spill back-off flag.
+`world_pressure.inc` binds spill configuration into the Wave physical hash, and
+only while spill is enabled. The golden pair shows the unchanged streams.
+
 ## Qualification run before publication (local)
 
 | Gate | Platform | Result |

@@ -409,6 +409,26 @@ class CompatibilityError(ValueError):
     """An actionable source or baseline mismatch; never repairs the source."""
 
 
+# WAVE-WATERWALL-001 (Draft/HOLD, stacked on PR661): opt-in Wave spill. world.cpp
+# only resets the new carried launch back-off flag in clear(); world_pressure.inc
+# binds spill configuration into physical identity only while spill is enabled.
+# Spill-disabled Wave and every other World keep their exact hash streams.
+REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
+  'from_lf_sha256': '911ac9df96c34f7bbc24e9de8b53099ba779ff6cc999c6ff349b61e4379ee143',
+  'to_lf_sha256': '80e05f673b3d6ba35daa7c741805aa272f149e7742d162c94c8c0bd9bdbc1e83',
+  'source_commit': '751c1a951a8f76c397dd3f903f378208119d29f1',
+  'record': 'docs/audits/2026-11-17-wave-waterwall-001.md',
+  'issue': 661,
+  'pr': 661},
+ {'path': 'native/src/world_pressure.inc',
+  'from_lf_sha256': '9ee31ffc4ea89b50f78e39eecc8f5c9be5944bcbc2f6ead48698c714564b7067',
+  'to_lf_sha256': '64c3afbe1e368d24d3ac4d484a78fa8cd3fc380c80fe54bfeb8661738048254f',
+  'source_commit': '26d032f14820d6d46272d487d56cacaee4544368',
+  'record': 'docs/audits/2026-11-17-wave-waterwall-001.md',
+  'issue': 661,
+  'pr': 661})
+
+
 def lf(data: bytes) -> bytes:
     return data.replace(b"\r\n", b"\n")
 
