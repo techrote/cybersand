@@ -13,6 +13,10 @@ import sys
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "tools/ci"))
 import wave_mt_runtime_publication as publication
+# A stacked branch publisher reuses this helper with its own profile; the
+# profile mutates the shared engine, so its branch/request/cases apply here.
+if os.environ.get("CYBERSAND_PUBLICATION_PROFILE") == "wave_waterwall":
+    import wave_waterwall_runtime_publication as _profile  # noqa: F401
 
 CASES = {
     "test_wave_flow_render": ("WAVE_FLOW_RENDER:", "wave-flow-render.json", 4),
