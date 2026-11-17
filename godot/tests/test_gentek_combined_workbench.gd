@@ -134,10 +134,23 @@ func individual_showcases() -> void:
 		var start_failures: int = failures
 		if not choose_modules([id], 271828): return
 		if id == SHOWCASES[0]:
-			await process_frame
+			for frame: int in 4: await process_frame
 			check(panel.visible and not panel.get_ok_button().disabled, "advanced selection and Generate preview are usable")
-			var bounds := Rect2i(Vector2i.ZERO, root.size) if panel.is_embedded() else DisplayServer.screen_get_usable_rect(root.current_screen)
-			check(bounds.encloses(Rect2i(panel.position, panel.size)), "existing form fits the actual work area")
+			# Embedded windows use logical viewport coordinates. Keep normal
+			# project scaling and compare in the same space as production fitting.
+			var viewport_rect := Rect2i(root.get_visible_rect())
+			var bounds := viewport_rect if panel.is_embedded() else DisplayServer.screen_get_usable_rect(root.current_screen)
+			var panel_rect := Rect2i(panel.position, panel.size)
+			var fits := bounds.encloses(panel_rect)
+			report.cases.append({"case": "architectural-form-fit", "embedded": panel.is_embedded(),
+				"root_pixel_size": [root.size.x, root.size.y],
+				"content_scale_size": [root.content_scale_size.x, root.content_scale_size.y],
+				"content_scale_mode": root.content_scale_mode, "content_scale_factor": root.content_scale_factor,
+				"logical_viewport": [viewport_rect.position.x, viewport_rect.position.y, viewport_rect.size.x, viewport_rect.size.y],
+				"compared_bounds": [bounds.position.x, bounds.position.y, bounds.size.x, bounds.size.y],
+				"dialog_rect": [panel_rect.position.x, panel_rect.position.y, panel_rect.size.x, panel_rect.size.y],
+				"fits": fits, "capture": "advanced-selector.png"})
+			check(fits, "existing form fits the actual work area in matching coordinates")
 			await framebuffer("advanced-selector", panel)
 			var chooser: OptionButton = panel._style_controls[0].chooser
 			chooser.show_popup()

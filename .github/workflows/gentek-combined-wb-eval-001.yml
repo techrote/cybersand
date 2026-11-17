@@ -346,7 +346,12 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: gentek-combined-windows-evidence-${{ github.run_id }}-${{ github.run_attempt }}
-          path: evidence/
+          path: |
+            evidence/
+            !evidence/**/profile/**/shader_cache/**
+            !evidence/**/profile/**/logs/**
+            !evidence/**/profile/**/keystores/**
+            !evidence/**/profile/**/editor*
           if-no-files-found: warn
           retention-days: 90
 
