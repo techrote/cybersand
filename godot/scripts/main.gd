@@ -19,6 +19,12 @@ const WAVE_TUNING := [
 	"workbench_wave_calm","workbench_wave_calm_damp_shift","workbench_wave_maximum_mass",
 	"workbench_wave_empty_pour_shift","workbench_wave_flow_share_shift","workbench_wave_adhesion_shift",
 ]
+# WAVE-WATERWALL-001 exposed-face spill: Wave-only construction requests.
+const WAVE_SPILL_SWITCHES := ["workbench_wave_spill","workbench_wave_spill_parcels"]
+const WAVE_SPILL_TUNING := [
+	"workbench_wave_spill_fall","workbench_wave_spill_draw",
+	"workbench_wave_spill_launch_speed","workbench_wave_spill_launch_budget",
+]
 const PlayableSessionPanel = preload("res://scripts/playable_session_panel.gd")
 const DEFAULT_PLAYABLE_OPTIONS: Dictionary = {"controls":"keyboard_gamepad", "rules":"lap", "camera":"follow"}
 const PLAYABLE_RECOVERY_META: StringName = &"cybersand_playable_recovery"
@@ -696,7 +702,7 @@ func workbench_restart(candidate: Dictionary) -> bool:
 	# accepted construction options, not unsubmitted/invalid edits in the panel.
 	# Otherwise an active Wave World silently returns to its FreeMass carrier.
 	var accepted_water := {}
-	var construction_keys: Array = FACE_TUNING + WAVE_TUNING + [
+	var construction_keys: Array = FACE_TUNING + WAVE_TUNING + WAVE_SPILL_SWITCHES + WAVE_SPILL_TUNING + [
 		"workbench_wave_flow","workbench_ballistic","workbench_face_release",
 		"workbench_inertial_signed","workbench_fine_cores","workbench_worker_threads",
 		"pressure_gas_compartment_capacity"]
@@ -845,6 +851,17 @@ func workbench_apply(candidate: Dictionary, actors: Array, rectangles: Array, ex
 	if settings.get("workbench_wave_flow",false):
 		for key: String in WAVE_TUNING:
 			if water_options.has(key): settings[key] = water_options[key]
+		# Spill belongs to Wave only. A staged spill request is never sent to
+		# another law, and its tuning only accompanies an enabled spill.
+		for key: String in WAVE_SPILL_SWITCHES:
+			if water_options.has(key):
+				if not water_options[key] is bool:
+					microscenario_error = key+" must be boolean; the running World is unchanged."
+					return false
+				settings[key] = water_options[key]
+		if settings.get("workbench_wave_spill",false):
+			for key: String in WAVE_SPILL_TUNING:
+				if water_options.has(key): settings[key] = water_options[key]
 	# Lossy conversion belongs only to an explicit developer policy switch.
 	# Ordinary replacements (including Apply of an unchanged policy) keep
 	# all compatible native inventory and use the normal refusal contract.

@@ -37,6 +37,10 @@ var _wave_request_serial := 0
 var _status := Label.new()
 var _fields: Dictionary = {}
 var _wave_fields: Dictionary = {}
+var _spill_toggles: Dictionary = {}
+var _spill_fields: Dictionary = {}
+var _spill_applied: Dictionary = {}
+var _spill_status := Label.new()
 var _jet_point: Callable
 var _workbench: Control
 var _water_pages: Dictionary = {}
@@ -86,6 +90,19 @@ const WAVE_SPINS := [
 	["workbench_wave_empty_pour_shift", "Empty pour", 1, 8, 1, 2, "Donor share into Empty is 1 / 2^N. One is the fastest conservative setting."],
 	["workbench_wave_flow_share_shift", "Wet share", 1, 8, 1, 1, "Donor share between wet neighbours is 1 / 2^N. One is the conservative maximum."],
 	["workbench_wave_adhesion_shift", "Adhesion shift", 0, 8, 1, 1, "Surface adhesion film is Water film / 2^N. Larger = less sticky."],
+]
+# WAVE-WATERWALL-001: Wave-only exposed-face spill. Off = original Wave Flow.
+const SPILL_SWITCHES := [
+	["workbench_wave_spill", "Waterwall spill", "enabled",
+		"Exposed Water faces beside open air discharge quickly, unsupported Water falls faster and a pool can feed its draining edge. Off = original Wave Flow, for comparison."],
+	["workbench_wave_spill_parcels", "Ballistic release", "parcels",
+		"Exposed faces throw their Water outward as ballistic parcels that arc, land and rejoin the grid. Needs Waterwall spill. Off = Water leaves through the grid only and drops straight."],
+]
+const SPILL_SPINS := [
+	["workbench_wave_spill_fall", "Fall speed", 1, 8, 1, 3, "fall", "Cells that unsupported Water falls per solver round."],
+	["workbench_wave_spill_draw", "Pool feed", 0, 127, 1, 64, "draw", "Mass units per round a pool may move toward a draining edge. Zero keeps the Wave Coast limit."],
+	["workbench_wave_spill_launch_speed", "Throw speed", 0, 512, 8, 256, "launch_speed", "Outward parcel speed as n/256 of the head speed sqrt(2 g h). Ballistic release only."],
+	["workbench_wave_spill_launch_budget", "Parcels / tick", 0, 4096, 16, 256, "launch_budget", "Most parcels launched per native tick. Faces beyond it spill through the grid on the next tick. Zero never launches."],
 ]
 const WAVE_PRESETS := [
 	{"label":"v2 defaults","values":{}},
@@ -206,6 +223,7 @@ func build(owner: Control, parent: Control, row_factory: Callable, jet_point: Ca
 		row = row_factory.call(tuning)
 		for index: int in range(int(group[1]),int(group[2])):
 			_add_wave_field(row,WAVE_SPINS[index])
+	_build_spill(tuning,row_factory)
 	_update_wave_controls()
 
 	var spray_controls: Control = water_pages["transport"] if embedded else _controls_body(parent,_spray_window,_spray_scroll,"Water spray / other controls")
@@ -326,6 +344,74 @@ func _show_controls(window: Window) -> void:
 		return
 	window.popup_centered_clamped(Vector2i(1000,410),0.95)
 
+func _build_spill(tuning: Control, row_factory: Callable) -> void:
+	# One Wave-specific subsection: a switch to compare against original Wave,
+	# the release mode and four meaningful numbers. Everything is a staged
+	# construction request until native acknowledges Apply.
+	var heading := Label.new()
+	heading.text = "Waterwall spill · exposed faces (experimental)"
+	tuning.add_child(heading)
+	var explanation := Label.new()
+	explanation.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	explanation.text = "Stops tall Water faces hanging beside open air. An approximation, not physics: quantity is conserved exactly. Presets and Reset Wave defaults do not change these."
+	tuning.add_child(explanation)
+	var row: Control = row_factory.call(tuning)
+	for spec: Array in SPILL_SWITCHES:
+		var toggle := CheckButton.new()
+		var key: String = spec[0]
+		toggle.text = spec[1]
+		toggle.tooltip_text = "%s\nStaged until Apply solver / tuning or an explicit Load." % spec[3]
+		toggle.focus_mode = Control.FOCUS_NONE
+		toggle.button_pressed = _option_on(key)
+		toggle.toggled.connect(func(on: bool) -> void: _set_spill(key,on))
+		row.add_child(toggle)
+		_spill_toggles[key] = toggle
+		var actual := Label.new()
+		actual.text = "native —"
+		row.add_child(actual)
+		_spill_applied[key] = actual
+	row = row_factory.call(tuning)
+	for spec: Array in SPILL_SPINS:
+		var pair := HBoxContainer.new()
+		row.add_child(pair)
+		var label := Label.new()
+		label.text = spec[1]
+		label.tooltip_text = spec[7]
+		pair.add_child(label)
+		var field := SpinBox.new()
+		field.min_value = spec[2]
+		field.max_value = spec[3]
+		field.step = spec[4]
+		var key: String = spec[0]
+		if not host.workbench_water_options.has(key): host.workbench_water_options[key] = int(spec[5])
+		field.value = int(host.workbench_water_options[key])
+		field.custom_minimum_size.x = 76
+		field.tooltip_text = "%s\nAllowed %d–%d; default %d. Staged until Apply solver / tuning or an explicit Load." % [spec[7],spec[2],spec[3],spec[5]]
+		field.value_changed.connect(func(value: float) -> void:
+			host.workbench_water_options[key] = int(value))
+		pair.add_child(field)
+		_spill_fields[key] = field
+		var actual := Label.new()
+		actual.text = "native —"
+		pair.add_child(actual)
+		_spill_applied[key] = actual
+	_spill_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_spill_status.text = "Waterwall spill · awaiting native readback"
+	tuning.add_child(_spill_status)
+
+func _set_spill(key: String, on: bool) -> void:
+	host.workbench_water_options[key] = on
+	# Ballistic release is a mode of spill: it cannot be requested without it.
+	if key == "workbench_wave_spill" and not on:
+		host.workbench_water_options["workbench_wave_spill_parcels"] = false
+		_spill_toggles["workbench_wave_spill_parcels"].set_pressed_no_signal(false)
+	if key == "workbench_wave_spill_parcels" and on:
+		host.workbench_water_options["workbench_wave_spill"] = true
+		_spill_toggles["workbench_wave_spill"].set_pressed_no_signal(true)
+	_fallback_message = "Waterwall spill request staged; Apply solver / tuning to rebuild. Native World unchanged."
+	_wave_notice.text = _fallback_message
+	_update_wave_controls()
+
 func _add_wave_field(row: Control, spec: Array) -> void:
 	# Keep each label/input/readback together when the Workbench is narrow.
 	var pair := HBoxContainer.new()
@@ -430,6 +516,15 @@ func _revert_wave() -> void:
 		var value := int(values[key])
 		host.workbench_water_options[key] = value
 		_wave_fields[key].set_value_no_signal(value)
+	var spill: Dictionary = wave.get("spill",{})
+	for spec: Array in SPILL_SWITCHES:
+		if spill.get(spec[2]) is bool:
+			host.workbench_water_options[spec[0]] = bool(spill[spec[2]])
+			_spill_toggles[spec[0]].set_pressed_no_signal(bool(spill[spec[2]]))
+	for spec: Array in SPILL_SPINS:
+		if spill.get(spec[6]) is int:
+			host.workbench_water_options[spec[0]] = int(spill[spec[6]])
+			_spill_fields[spec[0]].set_value_no_signal(int(spill[spec[6]]))
 	if context.get("liquid_solver_policy",{}).has("envelope"):
 		_workbench._liquids.requested_policy = PackedInt32Array(context.liquid_solver_policy.envelope)
 		_workbench._liquids._dirty = false
@@ -567,6 +662,11 @@ func _update_wave_controls() -> void:
 		var field: SpinBox = value
 		field.editable = enabled
 	_wave_preset.disabled = not enabled
+	var spill_on := enabled and _option_on("workbench_wave_spill")
+	for toggle: CheckButton in _spill_toggles.values(): toggle.disabled = not enabled
+	for key: String in _spill_fields:
+		var spill_field: SpinBox = _spill_fields[key]
+		spill_field.editable = spill_on and (_option_on("workbench_wave_spill_parcels") or not key.contains("launch"))
 	# These settings belong to the non-Wave laws and stay staged for returning
 	# to them. Wave tuning never rewrites their stored numeric values.
 	for toggle: CheckButton in [_ballistic,_signed,_face,_pf_gas,_pf_c2048]:
@@ -705,6 +805,7 @@ func _refresh_wave(context: Dictionary) -> void:
 		label.modulate = Color(1.0,0.76,0.38) if different else Color(0.72,0.90,0.80)
 		if different: changes.append(str(spec[1]))
 		actual_values.append("%s: requested %s; %s" % [spec[1],str(requested_value),label.text])
+	_refresh_spill(wave,requested,changes,actual_values)
 	var native_workers := int(wave.get("workers_requested",1))
 	if not host.workbench_water_options.has("workbench_worker_threads"):
 		_worker_threads.set_value_no_signal(clampi(native_workers,1,32))
@@ -769,6 +870,48 @@ func _refresh_wave(context: Dictionary) -> void:
 			int(wave.get("storage_bytes",0)),int(wave.get("capacity_refusals",0)),str(wave.get("water_quantity","?")),int(wave.get("session_generation",0))]
 	_wave_dialog_status.text = _wave_status.text
 	_wave_dialog_status.tooltip_text = _wave_status.tooltip_text
+
+func _refresh_spill(wave: Dictionary, wave_requested: bool, changes: Array[String], actual_values: Array[String]) -> void:
+	var spill: Dictionary = wave.get("spill",{})
+	if not spill.get("enabled") is bool:
+		for label: Label in _spill_applied.values(): label.text = "native unavailable"
+		_spill_status.text = "Waterwall spill · this runtime does not report spill; rebuild the source-matched runtime."
+		if wave_requested and _option_on("workbench_wave_spill"): changes.append("Waterwall spill")
+		return
+	# A spill request only travels with Wave: staged values under another law
+	# are dormant, exactly like dormant Wave tuning.
+	var spill_requested := wave_requested and _option_on("workbench_wave_spill")
+	for spec: Array in SPILL_SWITCHES:
+		var key: String = spec[0]
+		var native_value := bool(spill.get(spec[2],false))
+		var staged := wave_requested and _option_on(key)
+		var label: Label = _spill_applied[key]
+		label.text = "native %s" % ("on" if native_value else "off")
+		label.modulate = Color(1.0,0.76,0.38) if native_value != staged else Color(0.72,0.90,0.80)
+		if native_value != staged: changes.append(str(spec[1]))
+		actual_values.append("%s: requested %s; native %s" % [spec[1],"on" if staged else "off","on" if native_value else "off"])
+	for spec: Array in SPILL_SPINS:
+		var key: String = spec[0]
+		var native_value: Variant = spill.get(spec[6])
+		var requested_value: Variant = host.workbench_water_options.get(key,spec[5])
+		var label: Label = _spill_applied[key]
+		label.text = "native %d" % int(native_value) if native_value is int else "native unavailable"
+		var different := spill_requested and (not native_value is int or not requested_value is int or int(native_value) != int(requested_value))
+		label.modulate = Color(1.0,0.76,0.38) if different else Color(0.72,0.90,0.80)
+		if different: changes.append(str(spec[1]))
+		actual_values.append("%s: requested %s; %s" % [spec[1],str(requested_value),label.text])
+	if not bool(spill.enabled):
+		_spill_status.text = "Waterwall spill OFF · original Wave Flow is running."
+		return
+	_spill_status.text = "Waterwall spill ON · %s · exposed-face transfer %d units · falling %d cells\nParcels: launched %d (%d units) · in flight %d / %d (peak %d, %d units) · landed %d units · refused %d · deferred %d · launch %.3f ms/tick · flight %.3f ms" % [
+		"ballistic release" if bool(spill.get("parcels",false)) else "grid only",
+		int(spill.get("spill_units",0)),int(spill.get("falling_cells",0)),
+		int(spill.get("launched_parcels",0)),int(spill.get("launched_units",0)),
+		int(spill.get("parcels_live",0)),int(spill.get("parcels_capacity",0)),int(spill.get("parcels_peak",0)),
+		int(spill.get("in_flight_units",0)),int(spill.get("deposited_units",0)),
+		int(spill.get("launch_refusals",0)),int(spill.get("launch_deferrals",0)),
+		float(spill.get("launch_ms_per_tick",0.0)),float(spill.get("parcel_advance_ms",0.0))]
+	_spill_status.tooltip_text = "Units are Water mass units (255 = one full cell). Refused = the parcel pool or spawn cell could not take a launch; deferred = beyond the per-tick budget. In both cases the Water stays in its cell and spills through the grid on the next tick."
 
 func _construction_status(wave: Dictionary, changes: Array[String], actual_values: Array[String]) -> void:
 	var actual: Dictionary = wave.get("construction_options",{})

@@ -2278,7 +2278,10 @@ Dictionary CyberNativeCellWorld::get_wave_flow_status() const {
     // The shared Apply action also owns non-Wave construction controls. Read
     // them from this World, never from the last submitted Workbench request.
     Dictionary construction;
-    construction["workbench_ballistic"] = world_->ballistic_water_enabled();
+    // Under Wave the parcel pool belongs to the spill release, reported below;
+    // it is not the generic Ballistic Water request, which Wave refuses.
+    const bool wave_spill = world_->wave_flow_enabled() && config.wave_flow.spill.enabled;
+    construction["workbench_ballistic"] = world_->ballistic_water_enabled() && !wave_spill;
     construction["workbench_inertial_signed"] = world_->inertial_parameters().signed_vertical;
     construction["workbench_face_release"] = config.ballistic_water.face_release;
     construction["workbench_fine_cores"] = config.scheduling_core_size == 32;
@@ -2310,6 +2313,41 @@ Dictionary CyberNativeCellWorld::get_wave_flow_status() const {
     parameters["flow_share_shift"] = config.wave_flow.flow_share_shift;
     parameters["adhesion_shift"] = config.wave_flow.adhesion_shift;
     out["parameters"] = parameters;
+    // WAVE-WATERWALL-001: applied spill configuration and copied counters.
+    {
+        const auto& s = config.wave_flow.spill;
+        const auto flight = world_->ballistic_water_snapshot();
+        Dictionary spill;
+        spill["enabled"] = wave_spill;
+        spill["parcels"] = wave_spill && world_->ballistic_water_enabled();
+        spill["fall"] = s.fall;
+        spill["share_shift"] = s.share_shift;
+        spill["draw"] = s.draw;
+        spill["draw_head"] = s.draw_head;
+        spill["stream"] = s.stream;
+        spill["launch_min"] = s.launch_min;
+        spill["launch_budget"] = s.launch_budget;
+        spill["launch_speed"] = s.launch_speed;
+        spill["spill_units"] = static_cast<std::int64_t>(wave.spill_units);
+        spill["relief_units"] = static_cast<std::int64_t>(wave.relief_units);
+        spill["spill_faces"] = static_cast<std::int64_t>(wave.spill_faces);
+        spill["falling_units"] = static_cast<std::int64_t>(wave.last_falling_units);
+        spill["falling_cells"] = static_cast<std::int64_t>(wave.last_falling_cells);
+        spill["launched_parcels"] = static_cast<std::int64_t>(wave.launched_parcels);
+        spill["launched_units"] = static_cast<std::int64_t>(wave.launched_units);
+        spill["launch_refusals"] = static_cast<std::int64_t>(wave.launch_refusals);
+        spill["launch_deferrals"] = static_cast<std::int64_t>(wave.launch_deferrals);
+        spill["launch_ms_per_tick"] = wave.ticks == 0U ? 0.0
+            : static_cast<double>(wave.launch_nanoseconds) / 1.0e6 / static_cast<double>(wave.ticks);
+        spill["parcels_live"] = static_cast<std::int64_t>(flight.live);
+        spill["parcels_capacity"] = static_cast<std::int64_t>(flight.capacity);
+        spill["parcels_peak"] = static_cast<std::int64_t>(flight.ledger.maximum_live);
+        spill["in_flight_units"] = static_cast<std::int64_t>(flight.in_flight_quantity);
+        spill["deposited_units"] = static_cast<std::int64_t>(flight.ledger.deposited_quantity);
+        spill["deferred_deposits"] = static_cast<std::int64_t>(flight.ledger.deferred_deposits);
+        spill["parcel_advance_ms"] = static_cast<double>(flight.last_advance_nanoseconds) / 1.0e6;
+        out["spill"] = spill;
+    }
     out["workers_requested"] = static_cast<std::int64_t>(config.worker_threads);
     out["workers_observed"] = static_cast<std::int64_t>(last_stats_.worker_threads_observed);
     out["maximum_participants"] = static_cast<std::int64_t>(wave.maximum_participants);

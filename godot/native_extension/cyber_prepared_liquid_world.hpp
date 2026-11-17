@@ -427,6 +427,47 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
                 throw std::invalid_argument("Wave Flow tuning does not fit the native integer range");
             config->wave_flow.*(knob.member) = static_cast<std::int32_t>(value);
         }
+        // WAVE-WATERWALL-001 exposed-face spill: Wave-only, explicit, never
+        // inherited. "parcels" asks for the hybrid release, which owns the
+        // ballistic parcel pool of this World; the generic Ballistic Water
+        // switch stays refused under Wave so the two requests cannot be confused.
+        for (const char* key : {"workbench_wave_spill", "workbench_wave_spill_parcels"}) {
+            if (!options.has(key)) continue;
+            if (!workbench || !config->wave_flow.enabled || options[key].get_type() != Variant::BOOL)
+                throw std::invalid_argument("Wave spill options require an enabled workbench Wave Flow and a boolean value");
+        }
+        if (config->wave_flow.enabled && config->ballistic_water.enabled)
+            throw std::invalid_argument("Wave Flow does not accept Ballistic Water; use Waterwall spill with ballistic release");
+        config->wave_flow.spill.enabled = options.get("workbench_wave_spill", false);
+        const bool spill_parcels = options.get("workbench_wave_spill_parcels", false);
+        if (spill_parcels && !config->wave_flow.spill.enabled)
+            throw std::invalid_argument("Wave spill ballistic release requires Waterwall spill");
+        if (spill_parcels) {
+            config->ballistic_water.enabled = true;
+            config->ballistic_water.face_release = false;
+        }
+        struct SpillKnob {
+            const char* key;
+            std::int32_t cybersand::WaveSpillConfig::*member;
+        };
+        for (const SpillKnob knob : {
+                SpillKnob{"workbench_wave_spill_fall", &cybersand::WaveSpillConfig::fall},
+                SpillKnob{"workbench_wave_spill_share_shift", &cybersand::WaveSpillConfig::share_shift},
+                SpillKnob{"workbench_wave_spill_draw", &cybersand::WaveSpillConfig::draw},
+                SpillKnob{"workbench_wave_spill_draw_head", &cybersand::WaveSpillConfig::draw_head},
+                SpillKnob{"workbench_wave_spill_stream", &cybersand::WaveSpillConfig::stream},
+                SpillKnob{"workbench_wave_spill_launch_min", &cybersand::WaveSpillConfig::launch_min},
+                SpillKnob{"workbench_wave_spill_launch_budget", &cybersand::WaveSpillConfig::launch_budget},
+                SpillKnob{"workbench_wave_spill_launch_speed", &cybersand::WaveSpillConfig::launch_speed}}) {
+            if (!options.has(knob.key)) continue;
+            if (!workbench || !config->wave_flow.spill.enabled || options[knob.key].get_type() != Variant::INT)
+                throw std::invalid_argument("Wave spill tuning requires an enabled Waterwall spill and integer values");
+            const auto value = static_cast<std::int64_t>(options[knob.key]);
+            if (value < std::numeric_limits<std::int32_t>::min() ||
+                value > std::numeric_limits<std::int32_t>::max())
+                throw std::invalid_argument("Wave spill tuning does not fit the native integer range");
+            config->wave_flow.spill.*(knob.member) = static_cast<std::int32_t>(value);
+        }
         // WCX-FR workbench tuning: explicit integers inside the native admission
         // bounds; absent keys keep the ballistic_water_v1 defaults.
         struct FaceKnob { const char* key; std::int64_t low, high; };
