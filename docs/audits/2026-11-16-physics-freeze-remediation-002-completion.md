@@ -4,7 +4,7 @@ status: Historical evidence
 document-kind: audit
 scope: Source-bound continuation from3da6; controlled desktop renderer overlap and publication ownership, without physical acceptance or merge authority
 canonical-for: []
-last-reviewed: 2026-11-16
+last-reviewed: 2026-11-17
 related-documents: [2026-11-16-physics-freeze-remediation-002.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, ../operations/camera-stack-coherence-acceptance.md]
 ---
 
@@ -18,8 +18,10 @@ tree `ecfc80a81bb4b842d9663c5a0fee322ebfd51190`. Accepted main remained
 Draft/HOLD, unmerged and without auto-merge. The prior exact-source application
 run43909363577 was successful but did not meet the freeze target. The original
 c1ad control and previous negative measurements remain in the preceding audit.
-Native/Rapier compiler inputs, runtime hashes and official Godot4.7 remain
-unchanged; no physics law, fixed timestep or feedback-age protection is relaxed.
+Native/Rapier compiler inputs and runtime hashes remain unchanged. Official
+Godot4.7 was the starting engine; the subsequent source-pinned Windows EGL
+repair is documented below. No physics law, fixed timestep or feedback-age
+protection is relaxed.
 
 The local results below identify immutable working-source bookends over3da6,
 not a claim that the3da6 commit already contains this follow-up. Final committed
@@ -316,3 +318,80 @@ common-prefix timing belongs to the source-matched CI reducer. Separate
 Main-delivered post-draw notifications are not reported as a measured draw rate.
 Fresh extraction, the actual command launchers, Test It, final exact-source
 Linux/Windows CI and independent raw-evidence review remain required gates.
+
+## Authenticated engine pin and exact-source comparison checkpoint
+
+On2026-11-17, the rebuilt engine in
+[Actions43980022228](https://github.com/techrote/cybersand/actions/runs/43980022228)
+passed compilation, explicit PE dependency classification, version execution
+and comparison of the public extension API against official Godot4.7. Only the
+build/full-name header fields differ in the API JSON; both extension interface
+files match exactly. This qualifies the build/API boundary, not gameplay or
+hardware smoothness. The application gates in that run execute its build source
+`4e84820baa021f96c3c1957fb125786fb7ab5e6a`, separately from the later application.
+
+The authenticated
+[engine payload14284768334](https://github.com/techrote/cybersand/actions/runs/43980022228/artifacts/14284768334)
+has archive SHA256
+`34dfdf5769828dc4ae876550864b4c80c3acd5bc960944ce8631d9bf900421be`
+and build-provenance SHA256
+`a4be0fa432c77240c49e28ab53cc30b4cb97f898a0064e747e03f445ac04751c`.
+Its version is `4.7.stable.cybersand_egl_handoff.5b4e0cb0f`. The GUI executable
+has SHA256 `d6a1e5795205eb7968131df55f39916af112f716ec419fce5f97ccb48990fd45`;
+the console wrapper has SHA256
+`6f642c28780409295c0001f3919d14a9f71485a602c533a1c0335df5819d1030`.
+The evaluation lock pins the archive and provenance. A fresh local restore
+verified the exact files, hashes, patch, upstream source, current builder and
+lock, API receipt, imports and shipped notices. The12 adversarial provenance
+tests pass. The final Windows package must retain this engine-build identity
+alongside its distinct application source/tree identity.
+
+The committed application checkpoint
+`9083b953f1aad34a44d35a9ade867d75c6500537`, tree
+`865da3d6b9c2e9e4c14b6c5a31a29c7bbb4ed9c8`, contains the23 independently
+reviewed application, regression and delivery changes over the engine-build
+checkpoint. Its focused Follow comparison uses the original
+`c1ad4910a07422b37d63df270bac337863ae7b2f` control, the same official Linux
+engine,2048-square Needle geometry, normal coupling and the same11-entry input
+tape. Control selects Safe/full/combined/off; candidate selects
+Separate/automatic/early/render-overlap. The common observer settings suppress
+new callback/publication events in both arms; additive rendezvous events remain
+charged to the candidate. This single ordered AB run does not establish
+reverse-order repeatability or Windows/NVIDIA performance.
+
+| Shared physical steps1–144 | Control | Candidate |
+| --- | ---: | ---: |
+| Rapier completions/s | 7.902 | 31.698 |
+| Native completions/s | 7.902 | 31.636 |
+| Main submissions/s | 7.905 | 8.391 |
+| Physical gap median / p95 / p99, ms | 125.557 / 143.700 / 152.904 | 22.797 / 71.456 / 93.340 |
+| Maximum physical gap, ms | 180.424 | 99.719 |
+| Gaps at least50 /100 /250 /1000ms, of143 | 143 /143 /0 /0 | 21 /0 /0 /0 |
+| Native completion to admission median / p95, ms | 105.705 /125.198 | 2.817 /46.955 |
+| Main submission gap p95, ms | 140.148 | 152.462 |
+| Material-publication elapsed median / p95, ms | 1.695 /2.039 | 2.247 /19.812 |
+
+All144 shared authoritative body states, velocities, native associations,
+owners, fixed-step clocks, input indices and hard-terrain shape counts match
+exactly. The candidate completes195 additional physical steps outside that
+equal-work comparison. No physical/native completion is missing or duplicated;
+neither observer drops records. All142 control and86 whole-candidate uploads
+join publication metadata, Main acknowledgement and exact worker acknowledgement.
+The candidate also has248 superseded graphical publications and four publications
+beyond the last upload at trace close. Two internal render-packet serial gaps do
+not represent missing native completions or graphical publication records.
+
+All516 overlap events across88 marker identities pass the recorded identity,
+latch, shared-deadline and callback-index checks. All248 ready decisions occur
+before the recorded deadline and join one admission each;105 fall within the
+shared prefix. The75 sleeping timeouts retain a maximum5.482ms deadline
+overshoot. Reduced physical gaps therefore coexist with worse Main submission
+and upload tails; this is not a general frame-smoothness pass. The earlier
+hosted Linux repetitions with7/12 gaps at least100ms remain adverse evidence.
+
+The independent committed-source guard has SHA256
+`cbcb8dbe47d18b2602282e5c0b08e3a1879978fb15387bb30d504e98d5740c1f`.
+The independently reproduced raw comparison review has SHA256
+`04f0850bf8a0a1878683127efb13a5b9a4bc286ec4f23acaf38c6b0205c600c0`.
+They clear this composition for final qualification, without substituting for
+the exact final source's Linux/Windows campaign or the owner's physical gate.
