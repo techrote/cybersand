@@ -10,6 +10,14 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+For the **Draft/HOLD Gentek research stack only**, including the 72 classic
+samplers, eight advanced showcase modules, exact parent/source identities,
+preserved independent PNG evidence, combined 80-way qualification and five-style
+native preview co-existence, read the
+[integration research record](../operations/gentek-showcase-integration-001.md).
+This is an explicit research route, **not** a current-main architectural
+generator behaviour claim.
+
 For the combined #562 Materials Lab / #564 Workbench candidate, original source ancestry, shared history preservation, standalone evaluation and #563 merge-order boundaries, read the [combined qualification record](../audits/2026-11-12-mat-auth-workbench-integration.md).
 
 ## Materials Lab v1 review candidate — 2026-11-11

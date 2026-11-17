@@ -19,7 +19,7 @@ permissions:
 
 concurrency:
   group: gentek-showcase-integration-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'push' }}
 
 jobs:
   integrated:

@@ -11,6 +11,15 @@ related-documents: [procedural-world-generation.md, procedural-typed-spatial-fie
 
 # Architectural Generator — Phase A and bounded Phase B
 
+**Experimental catalogue overlay (not accepted main):** the separate Draft/HOLD
+[#624](https://github.com/techrote/cybersand/pull/624) and stacked
+[#671](https://github.com/techrote/cybersand/pull/671) add 72 compact classic
+and eight advanced showcase samplers to the existing schema-4 module contract.
+The [integration research record](../operations/gentek-showcase-integration-001.md)
+carries their source-matched 80-way qualification, exact PNG references,
+source identities and outstanding owner/Windows review. These overlays are
+not an accepted-main change to the GEN-007 contract described below.
+
 The implementation is an opt-in initial-map authoring capability in **Shared
 Workbench → New from generator → Architectural Generator**. A small declarative
 project compiler plans finite style zones; native GEN-007 produces every terrain

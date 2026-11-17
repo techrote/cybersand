@@ -16,6 +16,12 @@ from default current-answer retrieval and grants no implementation authority.
 Current clarified intent is separate in the
 [14 November owner decision record](decisions/2026-11-14-owner-authoring-intent.md).
 
+**Draft-only Gentek authoring research:** parent [#624](https://github.com/techrote/cybersand/pull/624)
+contains 72 classic samplers; stacked [integration #671](https://github.com/techrote/cybersand/pull/671)
+collects eight advanced showcases into an 80-module evaluation candidate.
+See the [integration evidence and owner gate](operations/gentek-showcase-integration-001.md).
+Neither candidate is part of accepted `main` or authorized to merge.
+
 Current combined evaluation: [Materials Lab + Workbench integration](audits/2026-11-12-mat-auth-workbench-integration.md) preserves both current feature heads, shared manual/agent Undo/Redo and existing material/save contracts. Its own Windows/Linux/package qualification remains separate from each feature's preceding evidence.
 
 Materials Lab v1 review candidate: [desktop launch, inspection, authoring and native tests](operations/materials-lab-authoring.md),
