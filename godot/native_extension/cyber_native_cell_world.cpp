@@ -651,11 +651,13 @@ void CyberNativeCellWorld::reconcile_overlap(std::int32_t cell_index,
 
     if (workbench_) authored_entry_normal(body_id, x, y, outward, penetration);
     const auto target = find_ejection_target(x, y, body_id, outward, penetration);
+    // Measured before the cell can leave as a parcel.
+    const auto push = water_push_scale(material, x, y);
     if (material == cybersand::Material::Water && try_water_spray(body, body_id, x, y, outward, target)) {
         // WCX/BW-001: the displaced Water left as a parcel. The body receives the
         // same displacement reaction as an ordinary relocation.
         ++observation.displaced;
-        const auto impulse = -outward * displacement_gain_ * density_scale(material);
+        const auto impulse = -outward * displacement_gain_ * density_scale(material) * push;
         if (body_diagnostics_) (*body_diagnostics_)[body_id].displacement += impulse;
         record_impulse(body_id, impulse);
         ++revision_;
@@ -663,14 +665,14 @@ void CyberNativeCellWorld::reconcile_overlap(std::int32_t cell_index,
     }
     if (target.x < 0 || !world_->relocate_stored_cell(x, y, target.x, target.y)) {
         ++observation.unresolved;
-        const auto impulse = -outward * displacement_gain_;
+        const auto impulse = -outward * displacement_gain_ * push;
         if (body_diagnostics_) (*body_diagnostics_)[body_id].displacement += impulse;
         if (!workbench_ || !cybersand::MaterialRules::supports_granular_load(material))
             record_impulse(body_id, impulse);
         return;
     }
     ++observation.displaced;
-    const auto impulse = -outward * displacement_gain_ * density_scale(material);
+    const auto impulse = -outward * displacement_gain_ * density_scale(material) * push;
     if (body_diagnostics_) (*body_diagnostics_)[body_id].displacement += impulse;
     if (!workbench_ || !cybersand::MaterialRules::supports_granular_load(material))
         record_impulse(body_id, impulse);
@@ -789,7 +791,8 @@ void CyberNativeCellWorld::accumulate_boundary_pressure() {
             if (workbench_ && cybersand::MaterialRules::supports_granular_load(material)) continue;
             const Vector2 normal{-static_cast<double>(direction.x),
                                  -static_cast<double>(direction.y)};
-            const auto impulse = normal * boundary_gain_ * density_scale(material, 0.01);
+            const auto impulse = normal * boundary_gain_ * density_scale(material, 0.01) *
+                water_push_scale(material, target_x, target_y);
             if (body_diagnostics_) {
                 auto& diagnostic = (*body_diagnostics_)[body_id];
                 diagnostic.boundary += impulse;
@@ -1669,6 +1672,17 @@ std::int64_t CyberNativeCellWorld::get_rigid_body_unresolved_last_tick() const {
     for (std::size_t id = 1; id < observations_.size(); ++id) total += observations_[id].unresolved;
     return static_cast<std::int64_t>(total);
 }
+double CyberNativeCellWorld::water_push_scale(cybersand::Material material, std::int32_t x, std::int32_t y) const {
+    if (material != cybersand::Material::Water || world_ == nullptr || !world_->wave_flow_enabled()) return 1.0;
+    const auto& tune = world_->config().wave_flow;
+    double scale = static_cast<double>(tune.body_push) / 256.0;
+    if (tune.body_push_by_mass != 0) {
+        const auto maximum = static_cast<double>(world_->config().water_experiment_policy.maximum());
+        scale *= std::min(1.0, static_cast<double>(world_->liquid_mass(x, y)) / maximum);
+    }
+    return scale;
+}
+
 double CyberNativeCellWorld::density_scale(cybersand::Material material, double minimum) const {
     return std::clamp(static_cast<double>(cybersand::MaterialRules::descriptor(material).density) /
                       1000.0, minimum, density_limit_);

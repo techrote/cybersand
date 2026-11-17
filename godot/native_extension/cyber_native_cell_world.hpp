@@ -214,6 +214,9 @@ private:
     double impulse_cap_ = 3.0;
     double density_limit_ = 1.6;
     [[nodiscard]] double density_scale(cybersand::Material material, double minimum = 0.05) const;
+    // Wave Body push / Push by amount applied to a Water cell's push on a body;
+    // 1 for every other material and for non-Wave Worlds.
+    [[nodiscard]] double water_push_scale(cybersand::Material material, std::int32_t x, std::int32_t y) const;
 
     std::unique_ptr<cybersand::World> world_;
     std::unique_ptr<cybersand::RenderSnapshotExchange> render_exchange_;

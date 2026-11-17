@@ -369,6 +369,9 @@ bool CyberNativeCellWorld::try_water_spray(const BodyState& body, std::uint16_t 
 
 Vector2 CyberNativeCellWorld::spray_droplet_impulse(std::uint16_t body_id) const {
     if (world_ == nullptr || spray_.droplet_gain <= 0.0) return {};
-    return {static_cast<real_t>(static_cast<double>(world_->transient_ballistic_impulse_x(body_id)) * spray_.droplet_gain),
-            static_cast<real_t>(static_cast<double>(world_->transient_ballistic_impulse_y(body_id)) * spray_.droplet_gain)};
+    // Under Wave, Body push also scales parcel splash (parcels carry their own quantity).
+    const double gain = spray_.droplet_gain * (world_->wave_flow_enabled()
+        ? static_cast<double>(world_->config().wave_flow.body_push) / 256.0 : 1.0);
+    return {static_cast<real_t>(static_cast<double>(world_->transient_ballistic_impulse_x(body_id)) * gain),
+            static_cast<real_t>(static_cast<double>(world_->transient_ballistic_impulse_y(body_id)) * gain)};
 }

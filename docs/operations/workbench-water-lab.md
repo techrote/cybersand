@@ -55,6 +55,17 @@ actors and bodies. It changes only the force offered to Rapier, never the Water.
 The Water Lab stages Push by amount = 1. A World constructed without the option
 keeps the original per-cell push.
 
+Body push and Push by amount cover every path by which Water pushes a body:
+- Wave contact with resting or leaning Water;
+- the Workbench boundary pressure of Water touching a body face (the strongest
+  term, 0.19 per cell per tick);
+- displacement when a body moves into Water;
+- ballistic parcel splash (Body push only, since a parcel carries its own
+  quantity).
+
+In the impact comparison scene, after 150 ticks the first body sank 131.5 cells
+at Body push 256 and 143.0 at 0, where Water offers no resistance.
+
 ## Waterwall spill (WAVE-WATERWALL-001, Draft/HOLD)
 
 The **Wave tuning** tab ends with a **Waterwall spill** subsection. It adds no
