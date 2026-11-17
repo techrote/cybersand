@@ -137,6 +137,33 @@ Original Wave (spill disabled) keeps a pre-existing stale-support read of paused
 floors (85 cells differed in the probe). It was deliberately not changed, to
 preserve the qualified law, and is recorded here as a known gap.
 
+## Workbench before/after (supplied map, exact terrain)
+
+Each mode used the ordinary Shared Workbench on Windows 11 (Godot 4.7, ANGLE on
+an NVIDIA TITAN RTX). The map went through GEN-007 verify-and-install, then the
+Water Lab selected Wave Flow, 4 workers and the stated spill mode, then Apply,
+then exact single native steps. The native DLL was built locally from `751c1a95`
+(SHA-256 `a8371f08d6854b4722713b1c7f2509537be5f59e310215cb0a13fb1fd4dd7cc5`).
+Native Water quantity read 3 052 350 units at every capture in all three modes,
+counting grid and in-flight Water. This is automated graphical evidence, not
+physical owner acceptance.
+
+![Lip close-up](wave-waterwall-001-2026-11-17/workbench-lip-closeup.jpg)
+
+- [Animated lip close-up](wave-waterwall-001-2026-11-17/workbench-lip-closeup.gif)
+- [Lower map](wave-waterwall-001-2026-11-17/workbench-lower-map.jpg)
+- [Upper map](wave-waterwall-001-2026-11-17/workbench-upper-map.jpg)
+- Native apparatus scenes: [open reservoir](wave-waterwall-001-2026-11-17/synthetic-open-reservoir.jpg),
+  [platform waterfall](wave-waterwall-001-2026-11-17/synthetic-platform-waterfall.jpg),
+  [contained basin](wave-waterwall-001-2026-11-17/synthetic-contained-basin.jpg)
+
+Original Wave keeps an almost vertical face beside the open lip through tick
+2000. Grid-only spill slumps the face and fills the ledge below. Ballistic
+release turns the face into a sloped lip with an arcing fall: Water lands,
+spreads across the lower ledges and rejoins their pools. The contained basin
+still carries its wave and reaches exact rest (0 solved chunks) in every mode.
+The sealed reservoir is unchanged and stays asleep.
+
 ## Protected-source transitions
 
 The material-catalogue compatibility table admits these reviewed steps (LF SHA-256):
