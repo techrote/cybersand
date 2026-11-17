@@ -2328,6 +2328,8 @@ Dictionary CyberNativeCellWorld::get_wave_flow_status() const {
         spill["launch_min"] = s.launch_min;
         spill["launch_budget"] = s.launch_budget;
         spill["launch_speed"] = s.launch_speed;
+        spill["stream_share"] = s.stream_share;
+        spill["blobs"] = s.catch_falling;
         spill["spill_units"] = static_cast<std::int64_t>(wave.spill_units);
         spill["relief_units"] = static_cast<std::int64_t>(wave.relief_units);
         spill["spill_faces"] = static_cast<std::int64_t>(wave.spill_faces);

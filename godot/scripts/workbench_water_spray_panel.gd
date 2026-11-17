@@ -103,7 +103,12 @@ const SPILL_SPINS := [
 	["workbench_wave_spill_draw", "Pool feed", 0, 127, 1, 64, "draw", "Mass units per round a pool may move toward a draining edge. Zero keeps the Wave Coast limit."],
 	["workbench_wave_spill_launch_speed", "Throw speed", 0, 512, 8, 256, "launch_speed", "Outward parcel speed as n/256 of the head speed sqrt(2 g h). Ballistic release only."],
 	["workbench_wave_spill_launch_budget", "Parcels / tick", 0, 4096, 16, 256, "launch_budget", "Most parcels launched per native tick. Faces beyond it spill through the grid on the next tick. Zero never launches."],
+	["workbench_wave_spill_blobs", "Blobs", 0, 1, 1, 1, "blobs", "1: thrown water that meets falling water merges into it and clumps into blobs. 0: it flies through. Ballistic release only."],
+	["workbench_wave_spill_stream_share", "Stream share", 0, 255, 8, 0, "stream_share", "n/256 of each thrown share keeps pouring straight down as a vertical stream. Higher values thin the throw and slow draining. Ballistic release only."],
 ]
+# Settings that only matter while Ballistic release is on.
+const SPILL_PARCEL_KEYS := ["workbench_wave_spill_launch_speed","workbench_wave_spill_launch_budget",
+	"workbench_wave_spill_blobs","workbench_wave_spill_stream_share"]
 const WAVE_PRESETS := [
 	{"label":"v2 defaults","values":{}},
 	{"label":"Lively","values":{
@@ -674,7 +679,7 @@ func _update_wave_controls() -> void:
 	for toggle: CheckButton in _spill_toggles.values(): toggle.disabled = not enabled
 	for key: String in _spill_fields:
 		var spill_field: SpinBox = _spill_fields[key]
-		spill_field.editable = spill_on and (_option_on("workbench_wave_spill_parcels") or not key.contains("launch"))
+		spill_field.editable = spill_on and (_option_on("workbench_wave_spill_parcels") or key not in SPILL_PARCEL_KEYS)
 	# These settings belong to the non-Wave laws and stay staged for returning
 	# to them. Wave tuning never rewrites their stored numeric values.
 	for toggle: CheckButton in [_ballistic,_signed,_face,_pf_gas,_pf_c2048]:

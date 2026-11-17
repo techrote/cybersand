@@ -2397,6 +2397,7 @@ std::uint64_t World::physical_state_hash_impl(std::optional<LiquidStateProjectio
             for (const auto value : {tune.spill.fall, tune.spill.share_shift, tune.spill.draw, tune.spill.draw_head,
                                      tune.spill.stream, tune.spill.launch_min, tune.spill.launch_budget,
                                      tune.spill.launch_speed}) hash_integer(hash, value);
+            hash_integer(hash, tune.spill.stream_share); hash_integer(hash, tune.spill.catch_falling);
             hash_integer(hash, static_cast<std::uint8_t>(wave_->launch_backoff));
         }
         hash_integer(hash, wave_->round);

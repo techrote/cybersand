@@ -630,6 +630,39 @@ void diagonal_one_cell_wall_holds() {
         require((p.x >> 8) + (p.y >> 8) < 103, "a parcel flew through a one-cell diagonal wall");
 }
 
+void blobs_and_stream_share_conserve_and_are_deterministic() {
+    // Every look combination keeps exact ownership and worker independence.
+    for (const int share : {0, 64}) {
+        for (const int blobs : {0, 1}) {
+            std::uint64_t reference = 0;
+            for (const auto workers : {1U, 4U}) {
+                auto cfg = config(Mode::Hybrid, workers);
+                cfg.wave_flow.spill.stream_share = share;
+                cfg.wave_flow.spill.catch_falling = blobs;
+                World world(cfg);
+                const int width = 384, height = 320;
+                box(world, width, height);
+                rect(world, 1, 120, 139, 4, Material::Wall);
+                rect(world, 1, 60, 139, 60, Material::Water);
+                const RectI64 all{0, 0, width, height};
+                const auto before = owned(world, all);
+                for (int t = 0; t < 300; ++t) {
+                    (void)world.tick();
+                    if (t % 100 == 99) require_ledger_closes(world, all, before, "blobs/stream share");
+                }
+                require(world.wave_flow_diagnostics().launched_parcels > 0, "release threw nothing");
+                if (workers == 1U) reference = world.physical_state_hash();
+                else require(world.physical_state_hash() == reference, "blobs/stream share depend on worker count");
+            }
+        }
+    }
+    auto bad = config(Mode::Hybrid);
+    bad.wave_flow.spill.catch_falling = 2;
+    bool refused = false;
+    try { World w(bad); } catch (const std::invalid_argument&) { refused = true; }
+    require(refused, "invalid blobs value admitted");
+}
+
 }  // namespace
 
 int main(int argc, char** argv) {
@@ -652,6 +685,7 @@ int main(int argc, char** argv) {
         {"parcels are not born in paused cores", parcels_are_not_born_in_paused_cores},
         {"full parcel pool is counted and clamped", full_parcel_pool_is_counted_and_clamped},
         {"diagonal one-cell wall holds", diagonal_one_cell_wall_holds},
+        {"blobs and stream share conserve and are deterministic", blobs_and_stream_share_conserve_and_are_deterministic},
         {"exposed reservoir collapses and conserves", exposed_reservoir_collapses_and_conserves},
         {"worker counts and repeats are identical", worker_counts_and_repeats_are_identical},
         {"waterfall lands fills and rejoins", waterfall_lands_fills_and_rejoins},

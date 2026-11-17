@@ -94,6 +94,9 @@ struct WaveSpillConfig {
     std::int32_t launch_min = 16;      // smallest share (mass units) worth a parcel, 1..255
     std::int32_t launch_budget = 256;  // parcels launched per tick, 0..4096 (0: never launch)
     std::int32_t launch_speed = 256;   // / 256 of sqrt(2 g h), 0..512
+    // Look controls for the release:
+    std::int32_t stream_share = 0;     // n/256 of each thrown face share keeps pouring as a vertical grid stream, 0..255
+    std::int32_t catch_falling = 1;    // 1: parcels older than the self-contact grace merge into falling Water (blobs); 0: they pass through
     [[nodiscard]] bool operator==(const WaveSpillConfig&) const = default;
 };
 

@@ -57,7 +57,8 @@ func native_admission() -> void:
 		PackedInt32Array(),bridge.default_liquid_policy(),base]
 	var hybrid := base.duplicate(true)
 	hybrid.merge({"workbench_wave_spill":true,"workbench_wave_spill_parcels":true,"workbench_wave_spill_fall":4,
-		"workbench_wave_spill_draw":96,"workbench_wave_spill_launch_speed":320,"workbench_wave_spill_launch_budget":128},true)
+		"workbench_wave_spill_draw":96,"workbench_wave_spill_launch_speed":320,"workbench_wave_spill_launch_budget":128,
+		"workbench_wave_spill_blobs":1,"workbench_wave_spill_stream_share":32},true)
 	args[6] = hybrid
 	var token: int = bridge.callv("prepare_liquid_world",args)
 	if not require(token > 0 and bridge.commit_liquid_world(world,token),"native admits Wave with Waterwall spill / "+str(bridge.get_last_error())):
@@ -65,7 +66,7 @@ func native_admission() -> void:
 	var status: Dictionary = world.get_wave_flow_status()
 	var spill: Dictionary = status.get("spill",{})
 	require(status.enabled and spill.get("enabled") == true and spill.get("parcels") == true,"native spill and parcel readback")
-	for key: String in ["fall","draw","launch_speed","launch_budget"]:
+	for key: String in ["fall","draw","launch_speed","launch_budget","blobs","stream_share"]:
 		require(int(spill.get(key,-1)) == int(hybrid["workbench_wave_spill_"+key]),"native spill readback "+key)
 	require(status.construction_options.get("workbench_ballistic") == false,
 		"the parcel pool owned by spill is not reported as the generic Ballistic Water request")
@@ -78,7 +79,8 @@ func native_admission() -> void:
 			{"workbench_wave_spill":"yes"},{"workbench_wave_spill_parcels":1},
 			{"workbench_wave_spill_fall":0},{"workbench_wave_spill_fall":9},{"workbench_wave_spill_draw":128},
 			{"workbench_wave_spill_launch_speed":513},{"workbench_wave_spill_launch_budget":4097},
-			{"workbench_wave_spill_fall":2.5},{"workbench_ballistic":true},{"workbench_face_release":true,"workbench_ballistic":true}]:
+			{"workbench_wave_spill_fall":2.5},{"workbench_wave_spill_blobs":2},{"workbench_wave_spill_stream_share":256},
+			{"workbench_ballistic":true},{"workbench_face_release":true,"workbench_ballistic":true}]:
 		var candidate := hybrid.duplicate(true)
 		candidate.merge(bad,true)
 		args[6] = candidate
@@ -129,7 +131,7 @@ func lab_controls() -> void:
 	require(lab != null and lab.pages["wave"].is_ancestor_of(spray._spill_toggles["workbench_wave_spill"]),
 		"Waterwall spill switch lives in the Water Lab Wave tab, not the toolbar")
 	require(lab.pages["wave"].is_ancestor_of(spray._spill_status),"spill native status is on the Wave tab")
-	require(spray._spill_fields.size() == 4,"four meaningful spill parameters")
+	require(spray._spill_fields.size() == 6,"six spill parameters: fall, feed, throw, budget, blobs, stream")
 	spray._set_spill("workbench_wave_spill_parcels",true)
 	require(host.workbench_water_options.get("workbench_wave_spill") == true,"ballistic release stages Waterwall spill")
 	spray._set_spill("workbench_wave_spill",false)

@@ -65,6 +65,8 @@ std::unique_ptr<World> make_world(int size) {
     t.spill.launch_min = number("launch_min", t.spill.launch_min);
     t.spill.launch_budget = number("launch_budget", t.spill.launch_budget);
     t.spill.launch_speed = number("launch_speed", t.spill.launch_speed);
+    t.spill.stream_share = number("stream_share", t.spill.stream_share);
+    t.spill.catch_falling = number("catch", t.spill.catch_falling);
     cfg.ballistic_water.enabled = number("ballistic", 0) != 0;
     cfg.ballistic_water.capacity = static_cast<std::uint32_t>(number("capacity", static_cast<int>(cfg.ballistic_water.capacity)));
     auto request = LiquidSolverPolicy::default_request();

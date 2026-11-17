@@ -160,7 +160,11 @@ World::BallisticCell World::classify_ballistic_cell(std::int64_t x, std::int64_t
     if (material == Material::Water) {
         // Wave spill: Water that is itself falling is not a surface to land on.
         // A parcel passes it and merges with resting Water or meets a solid.
+        // With catch_falling a parcel merges into falling Water, which clumps a
+        // stream into blobs, but only after the self-contact grace so a fresh
+        // throw is not swallowed by the stream it leaves beside.
         if (chunk->wave != nullptr && config_.wave_flow.spill.enabled &&
+            (config_.wave_flow.spill.catch_falling == 0 || parcel.age <= BallisticWaterConfig::kSelfContactGraceTicks) &&
             (chunk->wave->meta[target.index] >> WaveChunk::kDepthShift) == WaveChunk::kFalling)
             return BallisticCell::Free;
         return BallisticCell::Water;
@@ -193,7 +197,17 @@ BallisticLaunchResult World::admit_ballistic_spawn(std::int64_t spawn_x, std::in
         return result;
     }
     const auto material = chunk->cells[address(cx, cy).index].material_value();
-    if (material != Material::Empty && MaterialRules::descriptor(material).state != MaterialState::Gas) {
+    // Wave spill only: the World's own release may throw from a face whose
+    // stream share has just poured into the spawn cell as falling Water.
+    const bool falling_spawn = internal && wave_ != nullptr && material == Material::Water &&
+        config_.wave_flow.spill.stream_share != 0 && chunk->wave != nullptr &&
+        [&] {
+            // Round-start meta: the cell was dry (it just received the poured
+            // share this round) or already falling. Never resting Water.
+            const auto meta = chunk->wave->meta[address(cx, cy).index];
+            return (meta & WaveChunk::kWet) == 0U || (meta >> WaveChunk::kDepthShift) == WaveChunk::kFalling;
+        }();
+    if (!falling_spawn && material != Material::Empty && MaterialRules::descriptor(material).state != MaterialState::Gas) {
         result.outcome = BallisticLaunchOutcome::InvalidRequest;
         return result;
     }

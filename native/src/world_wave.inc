@@ -201,7 +201,9 @@ void World::validate_wave_flow_config() const {
             tune.spill.stream < 0 || tune.spill.stream > S::kMaximumStream ||
             tune.spill.launch_min < 1 || tune.spill.launch_min > 255 ||
             tune.spill.launch_budget < 0 || tune.spill.launch_budget > S::kMaximumLaunchBudget ||
-            tune.spill.launch_speed < 0 || tune.spill.launch_speed > S::kMaximumLaunchSpeed)
+            tune.spill.launch_speed < 0 || tune.spill.launch_speed > S::kMaximumLaunchSpeed ||
+            tune.spill.stream_share < 0 || tune.spill.stream_share > 255 ||
+            tune.spill.catch_falling < 0 || tune.spill.catch_falling > 1)
             throw std::invalid_argument("wave_flow spill tuning outside native bounds");
     }
     if (config_.backend != SimulationBackend::PhasedInPlace)
@@ -290,6 +292,7 @@ void World::hash_wave_state(std::uint64_t& hash) const {
         hash_integer(hash, tune.spill.stream);
         hash_integer(hash, tune.spill.launch_min); hash_integer(hash, tune.spill.launch_budget);
         hash_integer(hash, tune.spill.launch_speed);
+        hash_integer(hash, tune.spill.stream_share); hash_integer(hash, tune.spill.catch_falling);
         hash_integer(hash, static_cast<std::uint8_t>(wave_->launch_backoff));
     }
     hash_integer(hash, wave_->round);
@@ -864,11 +867,16 @@ void World::wave_flux_task(std::size_t task_index) noexcept {
                         // the passes. The face itself carries nothing, so the
                         // Water cannot be moved twice.
                         auto& list = state.scratch[task_index];
-                        if (list.launch.size() < list.launch.capacity()) {
+                        // stream_share keeps part of the face pouring as the
+                        // vertical stream; the rest is thrown.
+                        const auto keep = (available * spill.stream_share) >> 8;
+                        if (available - keep < spill.launch_min) {
+                            // Too little left to throw: the whole share pours.
+                        } else if (list.launch.size() < list.launch.capacity()) {
                             if (state.final_round)
                                 list.launch.push_back({origin_x + lx + (rightward ? 0 : 1), origin_y + ly,
-                                                       std::abs(head), available, rightward ? 1 : -1});
-                            available = 0;
+                                                       std::abs(head), available - keep, rightward ? 1 : -1});
+                            available = keep;
                         } else if (state.final_round) {
                             ++list.launch_overflow;
                         }
