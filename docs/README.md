@@ -4,11 +4,46 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-11-15
+last-reviewed: 2026-11-16
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, operations/atlas-agent-runner.md, architecture/pressure-optimization.md]
 ---
 
 # CyberSand documentation
+
+PR609 publication-remediation candidate: [bounded GPU material publication and early
+physical completion](audits/2026-11-16-physics-freeze-remediation-002.md), the
+[production contract](architecture/rendering-and-gameplay-bridges.md) and
+[Windows evaluation](operations/camera-stack-coherence-acceptance.md).
+Actual completed physics and source-matched tail latency are distinct from
+visual continuity. Physical Windows11 NVIDIA acceptance remains with the owner;
+all four camera-stack PRs stay Draft/HOLD.
+
+Current Draft/HOLD evaluation: [coherent actor, terrain and camera Windows
+acceptance](operations/camera-stack-coherence-acceptance.md),
+[presentation contract](architecture/rendering-and-gameplay-bridges.md#coherent-workbench-presentation-frame)
+and [source-scoped evidence](audits/2026-11-15-camera-stack-coherence.md).
+The integrated candidate preserves accepted generator and Flatten features;
+physical NVIDIA acceptance and all merge decisions remain with the owner.
+The delivered `43f46c6e5ec9` failed the owner's physical evaluation with repeated
+actor/Rapier freezes. The [active correction](audits/2026-11-15-workbench-physics-freezes.md)
+distinguishes actual completed-step stalls from presentation-source continuity.
+The `30660f7da126` functional campaign retains its performance concerns; the
+subsequent Windows PowerShell 5.1 witness-ranking correction has a narrowly
+fenced reporting/packaging qualification, with unchanged application source.
+
+Draft/HOLD actor/terrain cadence continuation of #609: [one-command Windows
+measurements and clock meanings](operations/engine-lab-pose-tracing.md) and
+[confirmed mechanisms, bounded repair and unresolved architecture](audits/2026-11-15-render-cadence-001.md).
+Previous-texture history and ACK deadlines are presentation repairs; independently
+paced material contact and physical NVIDIA acceptance remain separate gates.
+
+Native-resolution camera candidate: [controls and Windows acceptance](operations/native-pixel-scrolling.md),
+[presentation and sampling contract](systems/material-appearance-and-rendering.md#native-resolution-pixel-scrolling),
+[private coordinate interfaces](reference/interfaces-and-message-contracts.md#camera-presentation-and-picking)
+and [source/platform evidence](audits/2026-11-13-native-pixel-scrolling.md).
+The candidate now incorporates accepted #565 through a normal merge and remains
+Draft; the [final integration record](audits/2026-11-13-native-pixel-final-integration.md)
+separates its resulting-source qualification from earlier camera/Workbench artifacts.
 
 For deliberate historical research, use the isolated
 [engineering archaeology index](history/engineering/README.md). It is excluded

@@ -30,6 +30,12 @@ window/size/window_width_override=1920
 window/size/window_height_override=1080
 window/stretch/mode="canvas_items"
 
+[gui]
+
+; The default font's mipmap path queues a distinct immutable atlas Image.
+; This also protects glyph publication when testing the separate render thread.
+theme/default_font_generate_mipmaps=true
+
 [physics]
 
 2d/physics_engine="Rapier2D"

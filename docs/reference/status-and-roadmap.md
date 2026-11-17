@@ -4,11 +4,71 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-15
+last-reviewed: 2026-11-16
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Status and foundational roadmap
+
+## Publication remediation candidate — 2026-11-16
+
+PR609's PHYSICS-FREEZE-REMEDIATION-002 adds bounded current/previous material
+staging uploads/GPU rectangle copies and early immutable physical completion after required terrain,
+before graphical packet work. The full texture and combined-publication controls
+retain equivalent physical laws, fixed timestep and strict native feedback.
+See the [engineering record](../audits/2026-11-16-physics-freeze-remediation-002.md)
+for source boundaries, adversarial checks and matched qualification. The exact
+final CI/artifact ledger is on PR609; software-renderer tests cannot grant
+physical Windows11 NVIDIA acceptance. Preserve the Draft/HOLD owner gate.
+Independent staging ring3 shortens upload calls, but source e519's frame markers
+show much of the delay later in the frame and physical tails remain unqualified.
+The controlled third-target source `6656f436b38a` worsens p99/max physics gaps in
+both run orders. It is rejected and removed from the delivery candidate. The
+smaller two-history/ring3 design retains the manual-update repair, early physical
+mailbox and ordinary live-erasing qualification. Exact-source engineering gates
+and the owner's physical performance gate remain distinct; see PR609's ledger.
+
+## Coherent Workbench evaluation — 2026-11-15
+
+**Implemented candidate; Draft/HOLD, physical acceptance FAILED.** The owner
+rejected delivered `43f46c6e5ec9` for repeated 100–1000 ms actor/Rapier freezes.
+The [follow-up](../audits/2026-11-15-workbench-physics-freezes.md) separates actual
+native/terrain waits from previously qualified pose selection, removes avoidable
+collider recreation and render-bound installation waits, and adds coupled-default
+qualification. Native work, publication and Main/render callback latency still
+constrain coupled physical speed. Source `30660f7da126` passed 31 Linux and 37
+installed Windows cases, plus ten/sixteen flight arms; timing concerns remain.
+Its Windows PowerShell 5.1 largest-gap witness defect is corrected separately
+with raw-trace replay and a rebuilt package, retaining the original evidence.
+The
+camera stack #566 → #593 → #606 → #609 now resolves actor safety and temporal
+selection before Follow and shares one final pixel mapping with native terrain.
+The [contract](../architecture/rendering-and-gameplay-bridges.md#coherent-workbench-presentation-frame)
+preserves native/physical authority; the [evaluation guide](../operations/camera-stack-coherence-acceptance.md)
+provides original/corrected comparisons. The candidate integrates accepted main
+`018bd09503d7` with current generator, Flatten, PAINT and persistence features.
+Exact-source automated qualification and physical NVIDIA acceptance are separate;
+this does not authorize merging or changing any of the four Draft states.
+The [16 November completion follow-up](../audits/2026-11-16-physics-freeze-remediation-002-completion.md)
+adds a bounded128-tile staging class, queued-image ownership repairs and a
+default-off renderer-aware native rendezvous. A controlled local trial improved
+genuine physical completion tails, with software frame-cadence tradeoffs; the
+exact-source desktop campaign and physical owner gate remain separate.
+
+## Native-resolution camera candidate — 2026-11-13
+
+**Implemented unmerged candidate; owner acceptance pending.** The
+[camera presentation contract](../systems/material-appearance-and-rendering.md#native-resolution-pixel-scrolling)
+keeps continuous camera state, samples the nearest world cell after final-pixel
+translation and aligns picking, overlays, cursor zoom and small effect buffers.
+The branch incorporates accepted #565 main `ac0d9fb9` through normal merge
+`b1e2e9b1`; its [final integration record](../audits/2026-11-13-native-pixel-final-integration.md)
+distinguishes the combined-source campaign from earlier stacked results.
+It changes no native physics, material or save contract. The
+[runbook](../operations/native-pixel-scrolling.md) and
+[audit](../audits/2026-11-13-native-pixel-scrolling.md) distinguish implementation,
+source-built qualification, Windows delivery and human acceptance. Keep Draft;
+no merge or Ready promotion is authorized by this camera task.
 
 ## GEN-008 Flatten / Bake History — 2026-11-13
 
@@ -147,6 +207,18 @@ Converge admitted desktop/painting/agent/remote work incrementally into main,
 preserving active owners and qualifying each join. #548 material-only Flatten
 was an Approved semantic successor at that dated checkpoint; the 13 November
 GEN-008 candidate above now implements the revised contract independently of #542.
+
+## Render cadence continuation of #609 — 2026-11-15
+
+The separate `fix/render-cadence-001-20261115` branch is Draft/HOLD.
+[RENDER-CADENCE-001](../audits/2026-11-15-render-cadence-001.md) repairs large-payload
+previous-texture uncertainty and delayed-ACK starvation, and extends the
+[original source-fenced Windows test](../operations/engine-lab-pose-tracing.md).
+It preserves native/physical law and existing collision fences. Default Workbench
+native/Rapier completion coupling, absent actor interpolation and genuine contact
+holds remain; the candidate is not a validated independent real-time 120-Hz
+physics mode. Physical NVIDIA acceptance and exact-source platform evidence must
+be reported separately. #582 is outside this diagnostic/repair branch.
 
 ## Ballistic Water, IN-B1 and workbench spray (#362) — 2026-11-05
 

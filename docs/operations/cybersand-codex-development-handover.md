@@ -4,11 +4,73 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-15
+last-reviewed: 2026-11-16
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
+
+## Publication remediation — 2026-11-16
+
+Continue PR609's bounded staging/GPU material copies and separate immutable physics
+completion mailbox from the [remediation record](../audits/2026-11-16-physics-freeze-remediation-002.md).
+Use the updated [publication controls and owner runbook](camera-stack-coherence-acceptance.md).
+Both repairs preserve the fixed physical timestep, native sample wait/age and
+required terrain. Source-matched ABBA compares actual completion events; no
+mailbox publication count is physical progression. Preserve all raw failed
+attempts, the final exact-source PR/artifact ledger, and Draft/HOLD on all four
+stack PRs. No physical NVIDIA acceptance or merge authority is implied.
+The e519 ring3 experiment shortens publication calls but does not qualify frame
+or physical tails; later frame-marker time must not be omitted. The third-history
+experiment at `6656f436b38a` is rejected and removed after adverse p99/max results.
+The smaller two-history/ring3 candidate includes the manual-update repair and
+live-erasing coverage, with source-default package controls. Final exact-source
+Windows/Linux qualification and physical owner acceptance remain separate gates.
+
+## Camera stack temporal coherence — 2026-11-15
+
+**Owner physical FAIL:** delivered `43f46c6e5ec9` repeatedly freezes actors/Rapier
+for approximately 100–1000 ms. Continue from the
+[physics-freeze investigation](../audits/2026-11-15-workbench-physics-freezes.md).
+The earlier all-live pose result did not qualify actual physical progress or the
+launcher's native-sample handshake. Do not disable the one-step feedback fence
+to obtain higher rates; the corrective collider path and coupled-default tests
+must retain it. No physical acceptance or merge authority has been granted.
+
+The corrective application `30660f7da126` passed hosted 31-case Linux and
+37-case installed Windows qualification, but real physics gaps and one Linux
+withholding remain. Its PowerShell 5.1 largest-gap witness ranking was incorrect
+in all sixteen captured arms while other statistics matched raw reduction.
+The immediate runner-only follow-up preserves the qualified Godot/native trees,
+replays old and corrected reducers on Windows 5.1, and rebuilds/tests the actual
+Quick package. Do not relabel reused application results as new executions.
+
+Continue the integrated #609 candidate through its
+[presentation contract](../architecture/rendering-and-gameplay-bridges.md#coherent-workbench-presentation-frame),
+[physical acceptance procedure](camera-stack-coherence-acceptance.md) and
+[dated evidence](../audits/2026-11-15-camera-stack-coherence.md). The isolated
+repair is `a0315dc87`; normal integration merge `6b92ad2d4` preserves accepted
+main `018bd09503d7`. Native source is unchanged against that main, so retained
+build `6d6e2cd` is reused only after all 93 compiler inputs and payload hashes
+match. Package manifests/workflow artifacts identify the later exact application
+source. Keep #566/#593/#606/#609 Draft/HOLD; the owner's real NVIDIA evaluation
+is a separate gate from hosted rendering and scripted correctness.
+
+Source-identical published checkpoints are `755c99beb9df` (isolated repair)
+and `766d52956013` (two-parent integration). The audit records their tree hashes;
+later qualification fixes remain descendants and package manifests identify
+the exact evaluated application commit.
+
+## Native-resolution camera continuation — 2026-11-13
+
+The camera branch retains its original history and now incorporates accepted
+#565 main `ac0d9fb9` through normal merge `b1e2e9b1`. Start with the
+[camera runbook](native-pixel-scrolling.md) and
+[original source audit](../audits/2026-11-13-native-pixel-scrolling.md) and
+[final integration record](../audits/2026-11-13-native-pixel-final-integration.md). Preserve
+shared Undo/Redo and Art panel features, complete scoped Windows/Linux graphics
+and editing qualification, and keep the PR Draft until owner acceptance. Native
+sources and retained-runtime identity are not changed by camera presentation.
 
 ## Architectural Generator runtime repair — 2026-11-15
 

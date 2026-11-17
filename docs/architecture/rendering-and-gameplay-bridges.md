@@ -6,10 +6,139 @@ status: Current
 scope: Native publication outcomes, Godot render consumption and current gameplay commands; resource lifetime and wire layouts are linked
 keywords: [RenderBridge, GameplayBridge, RG8, immutable snapshot, full texture upload, backpressure, emission queue]
 related-documents: [data-ownership-and-lifetimes.md, rigid-body-and-cellular-coupling.md, ../reference/interfaces-and-message-contracts.md, ../systems/material-appearance-and-rendering.md]
-last-reviewed: 2026-10-19
+last-reviewed: 2026-11-16
 ---
 
 # Rendering and gameplay bridges
+
+## Coherent Workbench presentation frame
+
+**Current unmerged candidate; physical acceptance FAIL/HOLD.** The owner rejected
+the delivered `43f46c6e5ec9` application because of repeated physical/actor
+freezes. Its pose-selection checks did not qualify physics cadence. Main resolves one
+`workbench_presentation_frame` before camera Follow. It binds the uploaded
+material generation/revision/serial and current/previous texture identities to
+selected actor poses, actual sampled Rapier steps, explicit holds/withholds,
+the selected Follow target, frozen blend and final pixel camera mapping.
+The terrain shader and physical overlay consume that same submission mapping;
+snapping never writes back into the continuous requested camera origin.
+
+Each actor advances from its last selected pose only after conservative swept
+clearance against both genuinely visible material textures. Rejection retains
+a previously certified stationary pose only while its certificate remains valid
+or after revalidation; otherwise the actor is withheld. The strict render receipt
+excludes withheld actors, preventing implicit fallback to an older material-bound
+pose. A newer native receipt may rejoin only with a later actual sampled Rapier
+step. Session/epoch/World replacement resets the timeline; temporary stale
+receipts do not erase an advanced selection. Picking uses the displayed actor.
+
+Held-pose certificates identify actual texture contents, rather than upload
+serials or ping-pong GPU resource IDs. Each upload compares exact immutable bytes
+and image dimensions/format against at most the two retained texture contents.
+New content receives a monotonic identity; creating textures never recycles an
+old identity. A selected pose can retain its certificate only when every content
+currently visible in the shader was already checked for that exact pose. This
+allows a hold across a byte-identical refresh or the end of a crossfade, without
+another scan. Changed content, an uncertified old texture or unknown active
+previous-texture history still requires a successful check. The existing actor,
+session, epoch and World fences remain separate and mandatory. Byte-comparison
+cost is charged to the same presentation allowance; the allowance was not raised.
+
+A validated, single, tightly packed full-World material patch replaces the CPU
+image data directly after preserving the actual previous image. It avoids an
+extra full payload slice, temporary patch image and whole-image blit. Validation,
+GPU upload/swap and revision/ACK behavior are unchanged. Partial, padded,
+offset and multi-patch payloads retain the ordinary patch path. Both R8 material
+IDs and RG8 material/effect bytes remain exact and independently owned.
+
+Near contact, a coarse sampled sweep can reject clear motion because its
+continuous-coverage dilation reaches nearby terrain. The coherent policy may
+refine that material veto once to 32 intervals, retaining the same rigorous
+coverage bound and both visible textures. Both passes charge the same frame
+cell allowance and original deadline; time, capacity, identity and unknown
+previous-texture refusals never become permission to draw. Successful refinement
+is recorded as `refined_swept_mask`. The original comparison retains coarse
+sampling, so its conservative false refusals remain observable.
+
+This is a monotonic presentation timeline, not physics interpolation or a visual
+offset. It preserves native material and Rapier authority. Unknown sample time
+stays unknown; a bounded sample-serial journal supplies provenance without
+equating native ticks to physical steps. `CYBERSAND_DIAG_PRESENTATION=legacy`
+retains the original independently followed guarded display for comparison.
+The [Windows acceptance guide](../operations/camera-stack-coherence-acceptance.md)
+and [trace runbook](../operations/engine-lab-pose-tracing.md) distinguish automated
+contract checks from physical NVIDIA acceptance.
+
+## Workbench physics progress and terrain installation
+
+**PHYSICS-FREEZE-REMEDIATION-002 candidate:** the exclusive worker publishes a
+bounded immutable physical completion after post-tick edits and required hard
+geometry are ready, before render extraction and patch packing. Main's physics
+callback consumes this separate slot. Both physical and graphical snapshots from
+one owner turn share a single reserved serial; independent physical generation
+and handoff fields never impersonate uploaded material identity. Failure
+quarantines both slots and owner retirement clears the physical slot without
+falling back to older graphical state. An older graphical terrain packet cannot
+replace newer installed geometry. `CYBERSAND_DIAG_PHYSICS_PUBLICATION=combined`
+retains the previous completion dependency for controlled comparison.
+
+This overlaps graphical publication with the next eligible physical callback.
+The native owner still completes graphical packing before its next tick; its
+ordinary sample wake remains the existing bounded polling behavior. No thread
+pool, native law, callback timestep, or feedback-age policy changes. All live
+Rapier objects stay main-thread owned. Publication cost and main-thread renderer
+waits can still limit callbacks. The
+[remediation evidence](../audits/2026-11-16-physics-freeze-remediation-002.md)
+separates proven overlap from end-to-end performance and physical acceptance.
+
+**Current corrective candidate:** `Main._workbench_terrain_installed` services
+pending terrain on each actual physics callback. The old once-per-render-frame
+restriction made available physics callbacks idle during a slow render interval.
+The existing 128 changed-chunk and 4,000 microsecond cooperative allowance still
+applies to each call. A chunk operation can exceed that deadline; this is not a
+hard maximum. Rapier does not step until the complete required native hard-surface
+revision has been installed.
+
+`CyberRapierPhysicsBridge._replace_hard_surface_chunk_shapes` preserves attached
+shape RIDs for exact unchanged rectangles, including duplicate rectangles. It
+removes only obsolete shapes and adds only new geometry. Packet order and actual
+PhysicsServer body-shape index order are tracked separately, so removal cannot
+mistake a retained rectangle for a changed one. Repeated identical owned packets
+neither restart pending installation nor rebuild completed geometry. Caller
+mutation cannot change the copied accepted packet or its equality certificate.
+
+The normal native-sample handshake, fixed 1/60 physical step, one-step wrench-age
+limit and geometry/owner/epoch checks remain unchanged. This removes unnecessary
+collider work and a rendering-dependent wait; it does not make a native World
+whose ticks exceed 16.7 ms sustain 60 coupled physical steps per second. The
+uncoupled Engine Lab diagnostic remains an experiment, not a contact-qualified
+default replacement. No new interpolation or pose extrapolation hides these waits.
+
+The opt-in trace separates selected-pose holds from actual `rapier_hold` events
+and consecutive physical completion gaps. Hold events identify the exact required,
+packet and queued terrain revisions, pending chunks and native sample. Completed
+steps also expose existing Rapier solver/flush timers. These are wall-clock CPU
+call observations, potentially including OS descheduling, not GPU scanout.
+See the [freeze investigation](../audits/2026-11-15-workbench-physics-freezes.md)
+for the failed candidate, controlled regressions and remaining performance limits.
+
+## Experimental cadence continuation of #609
+
+The [RENDER-CADENCE-001 branch](../audits/2026-11-15-render-cadence-001.md)
+retains an exact CPU copy of the preceding Workbench GPU material image for
+bounded local swept clearance. It replaces a global unknown-history response
+to large patches; it does not interpolate native motion. Delayed upload ACKs
+use fixed frame deadlines. The optional diagnostic publication gate is off by
+default, holds only material extraction, and permits resync/World replacement
+without acknowledging an invalid upload. Native simulation authority and
+ordinary publication policy remain unchanged.
+
+Actual completion events distinguish native steps, immutable snapshot handoff,
+Main receipt, upload return, ACK and Godot post-draw. None measures hardware
+scanout. Workbench's normal Rapier/native sample handshake and one-step stale
+response fence remain; independent callback controls do not by themselves
+establish independent physical clocks. Use the [runbook](../operations/engine-lab-pose-tracing.md)
+for clock semantics and exact-source acceptance boundaries.
 
 ## Can rendering read native cells directly?
 
@@ -70,11 +199,117 @@ change leaves retention, overflow, publication and ACK policy unchanged.
 
 ## Does a small dirty patch mean a small GPU upload?
 
-No. **Current:** [main `apply_render_patches_to_image`](../../godot/scripts/main.gd)
+**Current unmerged remediation candidate:** [main `apply_render_patches_to_image`](../../godot/scripts/main.gd)
 validates dimensions, channel count, offsets and exact byte sizes for the full
 packet before constructing/blitting patches. It updates a persistent CPU Image.
-`upload_texture_patches` then calls `ImageTexture.update` on the **full** backing
-image. A 1024×1024 RG8 upload is 2,097,152 bytes regardless of a tiny edit.
+On qualified desktop OpenGL/ANGLE backends, two linear RGBA8 drawable textures
+retain the exact logical R8/RG8 current and previous material values. All six
+appearance shaders retain ordinary 2D sampling. Changed tiles are packed into
+one layer of a bounded R8/RG8 staging array; that layer is uploaded once before
+GPU rectangle copies update the recycled history plane. When the selected
+staging area reaches the World area, publication uses one full staging upload
+and one whole-plane GPU copy. A native full-packet flag still goes through the
+same exact per-tile comparison; it does not force a full GPU upload. This
+avoids CPU texture updates to the material planes sampled by the preceding draw.
+
+At 2048², 128² tiles bound the dirty index to 256 entries. The recycled slot repairs
+all accumulated changes from its retained contents; exact unchanged tile bytes
+skip submission. One changed tile submits 32 KiB of RG8 staging data instead of an
+8 MiB World image. GPU copies also read staging pixels and write RGBA8 targets:
+CPU upload bytes are not total GPU traffic. Each staging size class owns a fixed
+ring of independent Texture2DArray resources, each with exactly one layer and
+its own fixed sampler material. Capacities are 1, 4, 16, 64, 128 and 256 tiles;
+the 128-tile class is a 16×8 rectangle, while the other classes are square.
+Selection uses the exact changed-tile count in the recycled slot, including its
+accumulated history differences. At 2048² RG8, 65–128 changed tiles therefore
+submit a 2048×1024, 4 MiB atlas and copy only the changed destination tiles,
+instead of rounding up to an 8 MiB upload and a whole-World copy. The extra
+class is allocated and primed during pair creation; its zero uploads, storage
+and preparation time remain included in initialization receipts. There is no
+first-use allocation deferred into gameplay.
+
+The ring rotates only after upload, copies and
+retirement are submitted. `CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS=1|2|3` selects
+the diagnostic resource count; the provisional default is three. This successor
+is under performance evaluation; the earlier shared-array layers failed the
+matched Windows physical and frame-tail comparison.
+An exact-size full source aliases its matching pool/cursor, including a
+2048×1024 World matching the rectangular class; other extents retain a separate
+bounded full pool. Rejected and byte-identical
+publications do not advance a cursor. This increases reuse distance without
+asserting that GPU work has completed. The two histories, staging size
+classes, 1×1 retirement target and separate 1-byte source dummy occupy
+79,659,013 logical GPU texture bytes at 2048² RG8 with three staging resources
+per class, excluding driver overhead. The rectangular class adds 12,582,912
+bytes to that configuration. A final tiny blit prevents the engine's
+persistent framebuffer attachment from retaining a released large history plane.
+
+The final evaluation design retains two physical history targets. A controlled
+third-target experiment at source `6656f436b38a` passed pixel and physical-state
+checks but worsened p99 and maximum physical gaps in both run orders. Its spare,
+transaction machinery and history-count selector were removed. The negative
+result remains in the [remediation record](../audits/2026-11-16-physics-freeze-remediation-002.md#controlled-spare-history-experiment).
+The two-target design remains a bounded publication repair; it does not provide
+independent rendering, a GPU fence or evidence of physical NVIDIA acceptance.
+Manual retained-wrapper updates invalidate both target caches after successful
+submission so subsequent normal sparse publication restores authoritative bytes.
+
+Adjacent dirty tiles share one copy only when both their World positions and
+packed atlas positions are contiguous in the same respective rows. Skipped
+tiles and either row boundary end a run. Coalescing adds no uploaded bytes or
+destination pixels. `CYBERSAND_DIAG_MATERIAL_COPY_MODE=tiles` retains individual
+tile copies for correctness comparison; ordinary publication uses exact runs.
+
+Only the copy shader samples an array, always at layer zero. Its sampler is fixed once per resource;
+ordinary World appearance still samples the original 2D history interface.
+The Godot 4.7 GLES3 implementation updates an array layer with
+`glTexSubImage3D`, while its ordinary `ImageTexture.update` path calls
+`glTexImage2D`. The change avoids redefining staging storage on every upload;
+it does not establish a nonblocking driver call. The separate ordinary source
+dummy satisfies the blit API's source0 binding without binding an array as a
+2D texture. Resource/layer identity and exact byte readback are qualification
+requirements. The source implementation and rejected alternatives are linked
+in the remediation audit below.
+
+`CYBERSAND_MATERIAL_PUBLICATION=auto|full|blit` and Engine Lab select the path.
+Unsupported platforms/backends/capacities and detectable resource validation
+failures retain the whole-ImageTexture fallback; switching modes reconstructs
+both exact retained histories. Godot's drawable-blit API returns no error result,
+so latent device loss is not claimed to be synchronously detectable. The
+fallback's `ImageTexture.update` still updates the full plane regardless of
+patch area (8 MiB at 2048² RG8). Full creation, updates and recovery submit an
+immutable Image snapshot rather than Main's subsequently mutated CPU Image.
+Godot can retain an Image reference in a separate RenderingServer queue; a
+later same-frame edit must not change the bytes of a preceding upload. The
+blit path likewise retains a fresh sparse atlas or duplicated full source.
+This ownership rule adds no production fence or GPU readback and does not
+select or qualify an experimental rendering-thread mode.
+
+The [material GPU regression](../../godot/tests/test_material_tile_publication.gd)
+checks the 64/65/123/128/129 boundaries, clipped NPOT tiles, rectangular
+full-source aliasing, resource identity, exact histories and unchanged shader
+pixels. The [queued-publication regression](../../godot/tests/test_material_threaded_publication.gd)
+holds the rendering queue with a bounded watchdog and verifies full, fallback,
+mode-switch, reset and manual-wrapper histories after release. These are
+correctness and transfer-work gates; they do not establish gameplay cadence.
+
+The same queued-Image ownership rule applies to the shared
+[depth surface](../../godot/scripts/depth/depth_layer_surface.gd), reachable
+through F2 navigation to Depth, Semantic Depth and Deepworks. It retains its
+mutable 1024² RG8 CPU atlas but submits an immutable snapshot at texture creation
+and each accepted update. Packet validation, generation/serial accounting,
+one-shot background baking and appearance are unchanged. The
+[depth queue regression](../../godot/tests/test_depth_threaded_publication.gd)
+reads GPU bytes between two queued publications, then verifies the final atlas
+and visible surface. Construction stays outside its queue gate because the
+existing LUT setup performs a synchronous GPU readback. This closes a shared
+renderer lifetime defect; it adds snapshot/copy work and claims no Depth
+performance improvement or general separate-thread qualification.
+
+Neither CPU patch size nor elapsed call timing
+alone establishes measured GPU bandwidth or a driver-wait cause. The superseded
+full-World array-sampling design and its negative performance evidence remain in the
+[remediation audit](../audits/2026-11-16-physics-freeze-remediation-002.md).
 
 Desktop acknowledges a render serial only after successful consumption.
 Malformed/empty/stale or unacceptable full-refresh data is rejected and requests
@@ -109,9 +344,48 @@ without changing cell state. `K` controls presentation smoothing; `H` controls
 publication cadence. Neither is a strict simulation-accuracy switch.
 [Appearance](../systems/material-appearance-and-rendering.md) owns shader details.
 
-**Planned:** true GPU subregion submission, palette-change records, measured
-compression/coalescing and tuned production snapshot defaults. Lower native
-copy volume does not establish any of those features.
+**Planned:** finer subregion submission within a tile, palette-change records,
+measured compression/coalescing and tuned production snapshot defaults. The
+bounded layer implementation does not establish these separate features.
+
+## Default-font atlas publication
+
+**Current unmerged candidate:** the supported startup setting
+`gui/theme/default_font_generate_mipmaps=true` protects the embedded default
+font's queued atlas Images. In pinned Godot 4.7, TextServerAdvanced's ordinary
+non-mipmap upload passes its mutable glyph-atlas Image directly to RenderingServer.
+Later glyph rasterization can mutate that same Image. The mipmap path duplicates
+the atlas, generates mip levels on the copy and submits that independent Image.
+The mutable source atlas stays without mipmaps, so later dirty uploads repeat
+the snapshot. The setting is consumed during default-theme initialization;
+changing ProjectSettings after startup alone does not configure an existing font.
+
+The default theme and ThemeDB fallback share this configured FontFile. System
+fallback fonts requested through TextServerAdvanced inherit its mipmap flag.
+Independently authored FontFiles still need their own configuration; this setting
+does not protect unrelated mutable Image producers. It adds atlas-copy and mipmap
+generation work and approximately one-third additional atlas texture storage for
+a complete mip chain. World material formats, shaders and sampling are unchanged.
+
+The [font regression](../../godot/tests/test_default_font_mipmap_publication.gd)
+uses distinct copies of the actual default FontFile and real Labels/Buttons at
+13, 16, 24 and 32 pixels. On the pinned Linux Compatibility/llvmpipe run, initial
+and later nearest-filtered UI pixels and actual GPU mip0 atlas bytes were exact
+with mipmaps off/on. A bounded separate-thread queue test retained the submitted
+atlas bytes while later rasterization mutated the source. Separate-mode UI also
+matched the retained Safe-mode pixels. This qualifies those appearance and
+ownership checks, not lower-mip readback, all font configurations or general
+render-thread safety. The project's ordinary Canvas filter remains NEAREST.
+
+The original full-application separate-thread crash was localized to an engine
+texture update, but its texture identity remains unproven. A successful font
+workaround trial does not establish that the crashing texture was a font atlas.
+Godot still labels separate rendering experimental; end-to-end application,
+Windows and physical-device qualification remain separate gates.
+
+Primary implementation: [ThemeDB initialization](https://github.com/godotengine/godot/blob/4.7-stable/scene/theme/theme_db.cpp),
+[TextServerAdvanced atlas submission](https://github.com/godotengine/godot/blob/4.7-stable/modules/text_server_adv/text_server_adv.cpp)
+and [system-fallback key](https://github.com/godotengine/godot/blob/4.7-stable/modules/text_server_adv/text_server_adv.h).
 
 ## Which gameplay command path exists today?
 

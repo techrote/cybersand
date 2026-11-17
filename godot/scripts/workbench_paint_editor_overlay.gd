@@ -62,7 +62,7 @@ func _draw() -> void:
 	var view_size: Vector2i = host.current_view_size
 	if not _content.has_area() or view_size.x <= 0 or view_size.y <= 0:
 		return
-	_camera = Vector2(host.camera_origin).floor()
+	_camera = host.presentation_camera_origin()
 	_scale = _content.size / Vector2(view_size)
 	_extent = editor.extent()
 	var selection: Rect2i = editor.selection

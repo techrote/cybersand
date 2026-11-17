@@ -1,0 +1,320 @@
+name: PHYSICS-FREEZE-REMEDIATION-002 integrated Workbench and Windows evaluation
+on:
+  push:
+    branches: [diagnostics/engine-lab-pose-trace-20261115, fix/camera-stack-coherence-20261115]
+    paths:
+      - '.github/workflows/pose-trace-qualification.yml'
+      - 'godot/**'
+      - 'tools/ci/**'
+      - 'Run-Test-It.ps1'
+      - 'Test It.cmd'
+      - 'docs/**'
+      - 'third_party/workbench-godot*.json'
+      - 'third_party/patches/godot-egl-current-window.patch'
+  workflow_dispatch:
+    inputs:
+      force_full:
+        description: Re-run the full application campaign instead of eligible reporting-only reuse
+        type: boolean
+        default: false
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  # Preserve failed/superseded exact-source measurements while a repaired
+  # candidate qualifies; distinct commits must not erase one another's evidence.
+  group: camera-coherence-${{ github.event_name == 'workflow_dispatch' && github.run_id || github.sha }}
+  cancel-in-progress: false
+env:
+  CYBERSAND_EVAL_SOURCE_SHA: ${{ github.sha }}
+  CYBERSAND_SOURCE_REVISION: ${{ github.sha }}
+jobs:
+  qualification-scope:
+    name: Verify exact application source and required qualification scope
+    runs-on: ubuntu-24.04
+    outputs:
+      report_only: ${{ steps.scope.outputs.report_only }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          lfs: false
+          fetch-depth: 0
+      - id: scope
+        run: python3 tools/ci/qualify_test_it_reporting.py scope --force-full '${{ github.event.inputs.force_full || false }}' --github-output "$GITHUB_OUTPUT"
+  linux-workbench:
+    name: Linux actual presentation, authoring and matched 2048 comparison
+    needs: qualification-scope
+    if: needs.qualification-scope.outputs.report_only != 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 95
+    env:
+      LIBGL_ALWAYS_SOFTWARE: '1'
+      LP_NUM_THREADS: '2'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          lfs: false
+          fetch-depth: 0
+      - name: Materialize retained current-main runtimes and verify compiler inputs
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          git lfs install --local
+          git lfs pull --include='godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
+          python3 tools/ci/package_engine_lab_windows.py preflight --platform linux > evidence/source-runtime.json
+          git rev-parse HEAD HEAD^{tree} > evidence/source.txt
+      - name: Documentation, provenance, historical integrity and retrieval
+        run: |
+          set -euo pipefail
+          git cat-file -e 6a58311982941b75f46e22109a0829e5acb83c7e^{commit} || git fetch --no-tags origin 6a58311982941b75f46e22109a0829e5acb83c7e
+          python3 - <<'PY'
+          import pathlib,subprocess
+          root=pathlib.Path.cwd()
+          for relative in ('SOURCE-PROVENANCE.json','docs/LOCAL_DEVELOPMENT.md','docs/WEB_THREADING.md','tools/dev.py','validation/browser-results.json'):
+              destination=root.parent/relative
+              destination.parent.mkdir(parents=True,exist_ok=True)
+              destination.write_bytes(subprocess.check_output(['git','show','6a58311982941b75f46e22109a0829e5acb83c7e:'+relative]))
+          PY
+          python3 tools/ci/check_ci_provider_policy.py > evidence/ci-provider.json
+          python3 tools/ci/check_docs.py --json evidence/documentation.json
+          python3 tools/ci/check_repository.py --json evidence/repository-provenance.json
+          python3 tools/ci/check_m11_consistency.py --json evidence/historical-integrity.json
+          python3 tools/docs/retrieval_eval.py --output evidence/retrieval.json
+          python3 tools/docs/retrieval_eval.py --queries docs/reference/retrieval-questions-physics-pacing.json --output evidence/retrieval-physics-pacing.json
+          python3 tools/ci/test_analyze_pose_trace.py > evidence/analyzer-tests.log 2>&1
+          python3 tools/ci/test_physics_freeze_comparison.py > evidence/comparison-tests.log 2>&1
+          python3 tools/ci/test_workbench_engine_provenance.py > evidence/engine-provenance-tests.log 2>&1
+      - name: Pinned Godot and graphical display
+        run: |
+          set -euo pipefail
+          curl -fL --retry 3 --max-time 600 -o "$RUNNER_TEMP/godot.zip" 'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
+          echo "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  $RUNNER_TEMP/godot.zip" | sha256sum -c --strict
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/coherence-godot"
+          chmod +x "$RUNNER_TEMP/coherence-godot/Godot_v4.7-stable_linux.x86_64"
+          echo "GODOT_BIN=$RUNNER_TEMP/coherence-godot/Godot_v4.7-stable_linux.x86_64" >> "$GITHUB_ENV"
+          bash tools/ci/prepare_linux_display.sh > evidence/display-setup.log 2>&1
+      - name: Import and actual production temporal, native-edit, camera and safety regressions
+        run: |
+          set -euo pipefail
+          timeout 240 "$GODOT_BIN" --headless --path godot --editor --quit > evidence/import.log 2>&1
+          xvfb-run -a -s '-screen 0 1920x1080x24 -nolisten tcp' python3 tools/ci/run_camera_coherence_regressions.py --godot "$GODOT_BIN" --project godot --evidence evidence/production --graphical --render-thread separate
+      - name: Current-main generation, material reconstruction and authoring persistence
+        if: success() || failure()
+        run: |
+          set -euo pipefail
+          xvfb-run -a -s '-screen 0 1600x1000x24 -nolisten tcp' python3 tools/architecture/qualify.py --godot "$GODOT_BIN" --project godot --output evidence/architecture --graphical --legacy-regressions
+          xvfb-run -a -s '-screen 0 1600x1000x24 -nolisten tcp' python3 tools/ci/run_flatten_qualification.py --godot "$GODOT_BIN" --project godot --evidence evidence/flatten --cases 512x1
+          xvfb-run -a -s '-screen 0 1600x1000x24 -nolisten tcp' python3 - <<'PY'
+          import argparse,os,pathlib,sys
+          sys.path.insert(0,'tools/ci')
+          from run_workbench_qualification import Runner,combined_authoring
+          root=pathlib.Path.cwd()
+          runner=Runner(argparse.Namespace(godot=pathlib.Path(os.environ['GODOT_BIN']),evidence=root/'evidence/combined'))
+          combined_authoring(runner,root/'godot','coherent-workbench',side=512)
+          PY
+      - name: Same-source original versus coherent presentation under unequal clocks
+        if: success() || failure()
+        run: |
+          set -euo pipefail
+          xvfb-run -a -s '-screen 0 1920x1080x24 -nolisten tcp' python3 tools/ci/run_render_cadence_matrix.py --coherence --godot "$GODOT_BIN" --project godot --evidence evidence/comparison --source-sha "$GITHUB_SHA" --conditions follow60 free60 slow-native interactive-follow interactive-free --timeout 900
+          python3 tools/ci/package_engine_lab_windows.py preflight --platform linux > evidence/source-runtime-after.json
+      - name: Matched control and candidate physical progression with ordinary coupling
+        if: success() || failure()
+        run: |
+          set -euo pipefail
+          xvfb-run -a -s '-screen 0 1920x1080x24 -nolisten tcp' python3 tools/ci/run_physics_freeze_comparison.py --godot "$GODOT_BIN" --project godot --evidence evidence/physics-freeze-abba --source-sha "$GITHUB_SHA" --rendering-driver opengl3 --candidate-profile repaired-desktop
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: Camera-Coherence-Linux-${{ github.run_id }}-attempt-${{ github.run_attempt }}
+          path: evidence/
+          if-no-files-found: warn
+          retention-days: 90
+  windows-evaluation:
+    name: Windows standalone application, installed tests and actual Test It.cmd
+    needs: qualification-scope
+    runs-on: windows-2022
+    timeout-minutes: 105
+    env:
+      CYBERSAND_REPORT_ONLY: ${{ needs.qualification-scope.outputs.report_only }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          lfs: false
+          fetch-depth: 0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify current-main DLL and source, acquire pinned engine
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p evidence delivery
+          git lfs install --local
+          git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          python tools/ci/package_engine_lab_windows.py preflight --platform windows > evidence/source-runtime.json
+          python tools/ci/test_analyze_pose_trace.py > evidence/analyzer-tests.log 2>&1
+          python tools/ci/test_physics_freeze_comparison.py > evidence/comparison-tests.log 2>&1
+          python tools/ci/test_workbench_engine_provenance.py > evidence/engine-provenance-tests.log 2>&1
+          python tools/ci/restore_workbench_godot.py --download --archive "$RUNNER_TEMP/workbench-engine.zip" --output "$RUNNER_TEMP/workbench-engine" --evidence evidence/engine-restore
+          mkdir -p "$RUNNER_TEMP/coherence-notices"
+      - name: Stage signed licensed VC runtime
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $notices = Join-Path $env:RUNNER_TEMP 'coherence-notices'
+          $runtime = Join-Path $notices 'Microsoft-Visual-C-Runtime-LICENSE.docx'
+          $developer = Join-Path $notices 'Microsoft-Visual-Studio-2022-LICENSE.docx'
+          curl.exe -fL --retry 3 -o $runtime 'https://visualstudio.microsoft.com/wp-content/uploads/2021/09/Visual-C-Runtime-2015-2022-License-1.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Runtime licence download failed' }
+          curl.exe -fL --retry 3 -o $developer 'https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Visual-Studio-2022-Enterprise-Professional-License-EN.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Developer licence download failed' }
+          ./tools/ci/stage_windows_vc_runtime.ps1 -Output (Join-Path $env:RUNNER_TEMP 'coherence-vc') -License $runtime -DeveloperLicense $developer
+      - name: Build source-pinned Windows evaluation
+        run: |
+          set -euo pipefail
+          python tools/ci/package_engine_lab_windows.py build --engine-dir "$RUNNER_TEMP/workbench-engine" --vc "$RUNNER_TEMP/coherence-vc" --output "$RUNNER_TEMP/coherence-packed" --archive "delivery/CyberSand-Workbench-Windows-${GITHUB_SHA:0:12}.zip"
+      - name: Extract actual ZIP and verify installed payload
+        shell: pwsh
+        run: |
+          $archive = @(Get-ChildItem 'delivery/CyberSand-Workbench-Windows-*.zip')
+          if ($archive.Count -ne 1 -or (Test-Path 'C:\cs eval')) { throw 'Invalid package or non-fresh destination' }
+          Expand-Archive -LiteralPath $archive[0].FullName -DestinationPath 'C:\cs eval'
+          python tools/ci/package_engine_lab_windows.py verify --output "C:/cs eval"
+          if ($LASTEXITCODE -ne 0) { throw 'Installed payload mismatch' }
+      - name: Installed coherent presentation, safety and integrated authoring regressions
+        if: env.CYBERSAND_REPORT_ONLY != 'true'
+        run: |
+          set -euo pipefail
+          python tools/ci/package_engine_lab_windows.py smoke --output "C:/cs eval" --evidence evidence/installed
+      - name: Execute the actual ordinary and comparison Workbench launchers
+        if: success() || failure()
+        shell: powershell
+        run: ./tools/ci/test_packaged_workbench_launchers.ps1 -Application "C:/cs eval" -Evidence evidence/launchers
+      - name: Authenticate retained application qualification with identical Godot and native source
+        id: reuse
+        if: env.CYBERSAND_REPORT_ONLY == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python tools/ci/qualify_test_it_reporting.py fetch --output evidence/report-reuse --github-output "$GITHUB_OUTPUT"
+      - name: Reproduce original witness defect and verify corrected Windows PowerShell 5.1 reduction
+        if: env.CYBERSAND_REPORT_ONLY == 'true'
+        run: |
+          set -euo pipefail
+          baseline_exit=0
+          python tools/ci/test_test_it_physics_reducer.py --powershell powershell.exe --test-it evidence/report-reuse/baseline-Run-Test-It.ps1 --evidence-root '${{ steps.reuse.outputs.replay_root }}' --output evidence/report-reducer/baseline --require-windows-powershell51 || baseline_exit=$?
+          python tools/ci/qualify_test_it_reporting.py check-negative --report evidence/report-reducer/baseline/summary.json --exit-code "$baseline_exit" > evidence/report-reducer/expected-negative.json
+          python tools/ci/test_test_it_physics_reducer.py --powershell powershell.exe --test-it "C:/cs eval/Run-Test-It.ps1" --evidence-root '${{ steps.reuse.outputs.replay_root }}' --output evidence/report-reducer/corrected --require-windows-powershell51
+      - name: Execute the owner's real double-click command
+        if: success() || failure()
+        shell: pwsh
+        timeout-minutes: 45
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $command = [System.Diagnostics.ProcessStartInfo]::new()
+          $command.FileName = $env:ComSpec
+          $quick = if ($env:CYBERSAND_REPORT_ONLY -eq 'true') { ' -Quick' } else { '' }
+          $command.Arguments = '/d /s /c ""C:\cs eval\Test It.cmd"'+$quick+' -RenderingDriver opengl3_angle -TimeoutSeconds 900"'
+          $command.UseShellExecute = $false
+          $command.WorkingDirectory = 'C:\cs eval'
+          $command.EnvironmentVariables['CYBERSAND_TEST_IT_NO_PAUSE'] = '1'
+          $inheritedSelectors = @{CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS='1';CYBERSAND_DIAG_MATERIAL_HISTORY_TARGETS='3';CYBERSAND_DIAG_MATERIAL_COPY_MODE='tiles';CYBERSAND_DIAG_COMMON_OBSERVER='1';CYBERSAND_DIAG_NATIVE_RENDEZVOUS='render-overlap'}
+          $callerSelectors = @{}
+          foreach ($key in $inheritedSelectors.Keys) {
+            $callerSelectors[$key] = [Environment]::GetEnvironmentVariable($key,'Process')
+            $command.EnvironmentVariables[$key] = $inheritedSelectors[$key]
+          }
+          New-Item -ItemType Directory -Path 'evidence/test-it-selector-probe' -Force | Out-Null
+          @{injected_child_environment=$inheritedSelectors;caller_environment=$callerSelectors;scope='Actual Test It.cmd and Windows PowerShell5.1; overrides are child-scoped'} | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath 'evidence/test-it-selector-probe/request.json' -Encoding UTF8
+          $process = [System.Diagnostics.Process]::Start($command)
+          $process.WaitForExit()
+          $code = $process.ExitCode
+          $process.Dispose()
+          foreach ($key in $inheritedSelectors.Keys) {
+            if (-not [object]::Equals([Environment]::GetEnvironmentVariable($key,'Process'),$callerSelectors[$key])) { throw ('Test It gate changed its caller environment: '+$key) }
+          }
+          if ($code -ne 0) { throw ('Actual Test It.cmd failed: '+$code) }
+          $files = @(Get-ChildItem 'C:\cs eval\Test-It-Results' -Recurse -Filter summary.json)
+          if ($files.Count -ne 1) { throw 'Expected one complete Test It summary' }
+          $result = Get-Content -LiteralPath $files[0].FullName -Raw | ConvertFrom-Json
+          $expectedCases = if ($env:CYBERSAND_REPORT_ONLY -eq 'true') { 2 } else { 4 }
+          $expectedPairs = if ($env:CYBERSAND_REPORT_ONLY -eq 'true') { 1 } else { 2 }
+          if (-not $result.complete -or $result.status -ne 'passed' -or $result.source -ne $env:GITHUB_SHA -or @($result.cases).Count -ne $expectedCases -or @($result.pairs).Count -ne $expectedPairs) { throw 'Incomplete source-matched comparison' }
+          function Assert-PublicationSelectorReceipt($row,[string]$caseDirectory) {
+            $case = Get-Content -LiteralPath (Join-Path $caseDirectory 'case.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+            if (-not $row.condition.EndsWith('-candidate') -and -not $row.condition.EndsWith('-control')) { throw ('Unknown actual publication arm: '+$row.condition) }
+            $candidate = $row.condition.EndsWith('-candidate')
+            $expectedThread = if ($candidate) { 'separate' } else { 'safe' }
+            $expectedPolicy = if ($candidate) { 'render-overlap' } else { 'off' }
+            $expectedSelector = if ($candidate) { 'render-overlap' } else { '0' }
+            if (-not [string]::IsNullOrEmpty([string]$case.material_staging_slots) -or -not [string]::IsNullOrEmpty([string]$case.material_history_targets) -or -not [string]::IsNullOrEmpty([string]$case.material_copy_mode) -or $case.native_rendezvous -ne $expectedSelector -or $case.common_observer -ne '0') { throw ('Test It retained inherited probe settings: '+$row.name) }
+            if ($case.requested_render_thread -ne $expectedThread -or $case.requested_native_rendezvous_policy -ne $expectedPolicy -or $case.actual_render_thread -ne $expectedThread) { throw ('Requested/actual rendering treatment mismatch: '+$row.name) }
+            $records = @(Get-Content -LiteralPath (Join-Path $caseDirectory 'receipt-poses.jsonl') -Encoding UTF8 | Where-Object { $_ -ne '' } | ForEach-Object { ConvertFrom-Json -InputObject $_ })
+            $headers = @($records | Where-Object { $_.type -eq 'header' })
+            $waits = @($records | Where-Object { $_.type -eq 'event' -and $_.event -eq 'native_rendezvous' })
+            if ($headers.Count -ne 1) { throw ('Missing unique actual trace header: '+$row.name) }
+            $scheduling = $headers[0].settings.native_rendezvous
+            if ($null -eq $scheduling -or $scheduling.mode -ne $expectedPolicy -or $scheduling.enabled -isnot [bool] -or $scheduling.separate_render_thread -isnot [bool] -or $scheduling.enabled -ne $candidate -or $scheduling.separate_render_thread -ne $candidate -or $scheduling.waits_for_native_sample -isnot [bool] -or -not $scheduling.waits_for_native_sample -or (-not $candidate -and $waits.Count -ne 0)) { throw ('Publication comparison lacks the expected actual scheduling/coupling evidence: '+$row.name) }
+            $callbacks = @($records | Where-Object { $_.type -eq 'event' -and $_.event -eq 'main_callback' }).Count
+            $mailboxes = @($records | Where-Object { $_.type -eq 'event' -and $_.event -eq 'physics_publication' }).Count
+            if ($callbacks -lt 1 -or $mailboxes -lt 1 -or $row.statistics.event_counts.main_callback -ne $callbacks -or $row.statistics.event_counts.physics_publication -ne $mailboxes) { throw ('Detailed actual callback/mailbox evidence is absent or inconsistent: '+$row.name) }
+            $uploads = @($records | Where-Object { $_.type -eq 'event' -and $_.event -eq 'texture_upload' } | ForEach-Object { $_.material_publication })
+            if ($uploads.Count -lt 1) { throw ('No actual material publication evidence: '+$row.name) }
+            $expectedBackend = if ($candidate) { 'blit' } else { 'full' }
+            foreach ($publication in $uploads) {
+              if ($null -eq $publication -or $publication.backend -ne $expectedBackend) { throw ('Material backend changed in actual capture: '+$row.name) }
+              if ($expectedBackend -eq 'blit' -and ($publication.staging_slots -ne 3 -or $publication.copy_mode -ne 'runs')) { throw ('Actual material upload retained inherited probe settings: '+$row.name) }
+            }
+            $observedSlots = @(); $observedCopyModes = @()
+            if ($expectedBackend -eq 'blit') { $observedSlots = @($uploads | ForEach-Object { $_.staging_slots } | Sort-Object -Unique); $observedCopyModes = @($uploads | ForEach-Object { $_.copy_mode } | Sort-Object -Unique) }
+            return @{name=$row.name;main_callbacks=$callbacks;physics_mailboxes=$mailboxes;actual_uploads=$uploads.Count;backend=$expectedBackend;render_thread=$expectedThread;scheduling=$scheduling;native_rendezvous_events=$waits.Count;staging_slots=$observedSlots;copy_modes=$observedCopyModes;trace_sha256=$row.trace_sha256;case_sha256=$row.case_sha256}
+          }
+          $selectorRows = @()
+          foreach ($row in $result.cases) {
+            $selectorRows += Assert-PublicationSelectorReceipt $row (Join-Path $files[0].Directory.FullName ('cases/'+$row.name))
+            @{source=$result.source;injected_child_environment=$inheritedSelectors;caller_environment_unchanged=$true;cases=$selectorRows} | ConvertTo-Json -Depth 10 | Set-Content -LiteralPath 'evidence/test-it-selector-probe/actual-receipts.json' -Encoding UTF8
+          }
+          python tools/ci/test_test_it_physics_reducer.py --powershell powershell.exe --test-it "C:/cs eval/Run-Test-It.ps1" --evidence-root $files[0].Directory.FullName --output evidence/report-reducer/new-captures --require-windows-powershell51
+          if ($LASTEXITCODE -ne 0) { throw 'New installed capture reduction mismatch' }
+          Write-Host ('COHERENCE_TEST_IT_PASS '+(@{source=$result.source;cases=@($result.cases).Count;pairs=@($result.pairs).Count;physical_acceptance=$result.physical_acceptance}|ConvertTo-Json -Compress))
+      - name: Same-host Windows source-matched physical progression ABBA
+        if: env.CYBERSAND_REPORT_ONLY != 'true' && (success() || failure())
+        run: |
+          set -euo pipefail
+          python tools/ci/run_physics_freeze_comparison.py --godot "C:/cs eval/CyberSand-Godot-4.7-x64.console.exe" --project "C:/cs eval/godot" --evidence evidence/physics-freeze-abba --source-sha "$GITHUB_SHA" --rendering-driver opengl3_angle --candidate-profile repaired-desktop
+      - name: Collect installed results under one artifact root
+        if: always()
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $results = 'C:\cs eval\Test-It-Results'
+          if (Test-Path -LiteralPath $results) {
+            New-Item -ItemType Directory -Path 'evidence' -Force | Out-Null
+            Copy-Item -LiteralPath $results -Destination 'evidence/Test-It-Results' -Recurse -Force
+          }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CyberSand-Workbench-Windows-${{ github.run_id }}-attempt-${{ github.run_attempt }}
+          path: delivery/
+          compression-level: 0
+          if-no-files-found: error
+          retention-days: 90
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: Camera-Coherence-Windows-Evidence-${{ github.run_id }}-attempt-${{ github.run_attempt }}
+          path: evidence/
+          if-no-files-found: warn
+          retention-days: 90

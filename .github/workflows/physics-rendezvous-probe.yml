@@ -1,0 +1,144 @@
+name: PHYSICS-FREEZE-002 bounded rendezvous and render overlap
+on:
+  push:
+    branches: [diagnostics/physics-rendezvous-20261116]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: physics-rendezvous-${{ github.sha }}
+  cancel-in-progress: false
+env:
+  CYBERSAND_EVAL_SOURCE_SHA: ${{ github.sha }}
+  CYBERSAND_SOURCE_REVISION: ${{ github.sha }}
+jobs:
+  linux-qualification:
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        include:
+          - platform: linux
+            driver: opengl3
+    name: ${{ matrix.platform }} exact-source rendering and fixed-input physics
+    runs-on: ubuntu-24.04
+    timeout-minutes: 80
+    defaults:
+      run:
+        shell: bash
+    env:
+      LIBGL_ALWAYS_SOFTWARE: '1'
+      LP_NUM_THREADS: '2'
+    steps: &qualification-steps
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          lfs: false
+          fetch-depth: 0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Materialize and verify unchanged native and Rapier source
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          git lfs install --local
+          if [[ '${{ matrix.platform }}' == linux ]]; then
+            git lfs pull --include='godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
+          else
+            git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          fi
+          python tools/ci/package_engine_lab_windows.py preflight --platform '${{ matrix.platform }}' > evidence/source-runtime.json
+          git rev-parse HEAD HEAD^{tree} > evidence/source.txt
+          python tools/ci/check_ci_provider_policy.py > evidence/ci-provider.json
+          python tools/ci/test_physics_freeze_comparison.py > evidence/comparison-guards.log 2>&1
+          python tools/ci/run_material_staging_comparison.py --self-test > evidence/staging-guards.log 2>&1
+      - name: Restore and authenticate official Godot 4.7
+        run: |
+          set -euo pipefail
+          if [[ '${{ matrix.platform }}' == linux ]]; then
+            url='https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
+          else
+            url='https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          fi
+          curl -fL --retry 3 --max-time 600 -o "$RUNNER_TEMP/rendezvous-godot.zip" "$url"
+          python - <<'PY'
+          import hashlib,json,os,pathlib,subprocess,sys,zipfile
+          sys.path.insert(0,'tools/ci')
+          from package_engine_lab_windows import CONSOLE,ENGINE_VERSION,ENGINE_ZIP_HASH,digest
+          archive=pathlib.Path(os.environ['RUNNER_TEMP'])/'rendezvous-godot.zip'
+          linux=os.name!='nt'
+          if linux:
+              lock=json.loads(pathlib.Path('third_party/godot-runtime.lock.json').read_text())['editor']
+              assert archive.stat().st_size==lock['size'] and digest(archive)==lock['sha256']
+          else:
+              assert digest(archive,'sha512')==ENGINE_ZIP_HASH
+          output=pathlib.Path(os.environ['RUNNER_TEMP'])/'rendezvous-godot'
+          output.mkdir(exist_ok=False)
+          with zipfile.ZipFile(archive) as bundle:
+              assert bundle.testzip() is None
+              assert all((output/m.filename).resolve().is_relative_to(output.resolve()) for m in bundle.infolist())
+              bundle.extractall(output)
+          godot=output/('Godot_v4.7-stable_linux.x86_64' if linux else CONSOLE)
+          if linux:godot.chmod(0o755)
+          version=subprocess.check_output([str(godot),'--version'],text=True,timeout=30).strip()
+          assert version==ENGINE_VERSION
+          pathlib.Path('evidence/godot.json').write_text(json.dumps({'version':version,'executable':str(godot),'sha256':digest(godot),'archive_sha256':digest(archive)},indent=2)+'\n')
+          with open(os.environ['GITHUB_ENV'],'a',encoding='utf-8') as f:f.write('GODOT_BIN='+str(godot)+'\n')
+          PY
+      - name: Prepare actual Linux graphics
+        if: matrix.platform == 'linux'
+        run: bash tools/ci/prepare_linux_display.sh > evidence/display-setup.log 2>&1
+      - name: Import exact project
+        run: |
+          python - <<'PY'
+          import os,pathlib,subprocess
+          with pathlib.Path('evidence/import.log').open('w',encoding='utf-8') as log:
+              subprocess.run([os.environ['GODOT_BIN'],'--headless','--path','godot','--editor','--quit'],stdout=log,stderr=subprocess.STDOUT,timeout=240,check=True)
+          PY
+      - name: Verify threaded material history and physics safety before timing
+        env:
+          CYBERSAND_DIAG_NATIVE_RENDEZVOUS: render-overlap
+        run: |
+          set -euo pipefail
+          command=(python -u tools/ci/run_camera_coherence_regressions.py --godot "$GODOT_BIN" --project godot --evidence evidence/threaded-gates --graphical --render-thread separate --cases native-rendezvous native-rendezvous-integration native-render-overlap native-render-overlap-graphical material-threaded-graphical material-tiles-graphical font-mipmap-safe-graphical font-mipmap-separate-graphical depth-threaded-safe-graphical depth-threaded-separate-graphical physics-publication-graphical native-rendezvous-graphical physics-pacing-graphical temporal-contact-graphical paint-author-graphical paint-reopen-graphical)
+          if [[ '${{ matrix.platform }}' == linux ]]; then
+            xvfb-run -a -s '-screen 0 1920x1080x24 -nolisten tcp' "${command[@]}"
+          else
+            "${command[@]}"
+          fi
+      - name: Execute forward and reverse rendering-overlap physical comparison
+        run: |
+          set -euo pipefail
+          command=(python -u tools/ci/run_native_rendezvous_comparison.py --godot "$GODOT_BIN" --project godot --evidence evidence/factorial --source-sha "$GITHUB_SHA" --rendering-driver '${{ matrix.driver }}')
+          if [[ '${{ matrix.platform }}' == linux ]]; then
+            xvfb-run -a -s '-screen 0 1920x1080x24 -nolisten tcp' "${command[@]}"
+          else
+            "${command[@]}"
+          fi
+      - name: Verify exact source and runtime after all executions
+        if: success() || failure()
+        run: python tools/ci/package_engine_lab_windows.py preflight --platform '${{ matrix.platform }}' > evidence/source-runtime-after.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: Physics-Rendezvous-${{ matrix.platform }}-${{ github.run_id }}-attempt-${{ github.run_attempt }}
+          path: evidence/
+          if-no-files-found: error
+          retention-days: 90
+  windows-qualification:
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        include:
+          - platform: windows
+            driver: opengl3_angle
+    name: Windows exact-source rendering and fixed-input physics
+    runs-on: windows-2022
+    timeout-minutes: 80
+    defaults:
+      run:
+        shell: bash
+    steps: *qualification-steps

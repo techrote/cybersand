@@ -1,0 +1,880 @@
+#!/usr/bin/env python3
+"""Build the coherent Workbench Windows evaluation from one exact Git source."""
+import argparse
+import hashlib
+import io
+import json
+import os
+import re
+from pathlib import Path, PurePosixPath
+import shutil
+import subprocess
+import tarfile
+import zipfile
+
+ROOT=Path(__file__).resolve().parents[2]
+SOURCE=os.environ.get("CYBERSAND_EVAL_SOURCE_SHA", "")
+ACCEPTED_MAIN="018bd09503d7f079ddac52e225c2f7daf8d678bf"
+MANIFEST="CAMERA-STACK-MANIFEST.json"
+PARENT="214de85adef2aaabc8e26de8612a3bf27cc1a081"
+NATIVE="godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll"
+RAPIER="godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+RAPIER_HASH="b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+ENGINE="Godot_v4.7-stable_win64.exe"
+CONSOLE="Godot_v4.7-stable_win64_console.exe"
+ENGINE_VERSION="4.7.stable.official.5b4e0cb0f"
+# Retain the original constants above for the historical native/Rapier build
+# ledger and official-engine probes. The delivered application uses the
+# separately authenticated, explicitly named source-patched engine below.
+PACKAGE_ENGINE="CyberSand-Godot-4.7-x64.exe"
+PACKAGE_CONSOLE="CyberSand-Godot-4.7-x64.console.exe"
+GRAPHICS_ERRORS=re.compile(r"Error initializing GLAD|glXMakeCurrent failed|wglMakeCurrent failed|"
+                          r"Unhandled XServer error|Failed to create (?:native |ANGLE )?OpenGL window|"
+                          r"Could not set V-Sync mode\.")
+ENGINE_ZIP_HASH=("41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e"
+                 "6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9")
+PRESERVED=("native","godot/native_extension","godot/addons/cybersand_native",
+           "godot/addons/godot-rapier2d","third_party/native-toolchain.lock.json",
+           "third_party/godot-runtime.lock.json","godot/third_party/rapier2d.lock.json")
+APPLICATION=("godot/scripts","godot/tests","godot/shaders","godot/project.godot","godot/main.tscn",
+             "tools/ci/package_engine_lab_windows.py","tools/ci/run_render_cadence_matrix.py",
+             "tools/ci/run_physics_freeze_comparison.py","tools/ci/run_camera_coherence_regressions.py",
+             "tools/ci/analyze_pose_trace.py","Run-Test-It.ps1","Test It.cmd",
+             "tools/ci/build_workbench_godot.py","tools/ci/restore_workbench_godot.py",
+             "third_party/workbench-godot.lock.json","third_party/workbench-godot-evaluation.lock.json",
+             "third_party/patches/godot-egl-current-window.patch",
+             "docs/operations/camera-stack-coherence-acceptance.md")
+
+def need(ok,message):
+    if not ok: raise RuntimeError(message)
+
+def digest(file,algorithm="sha256"):
+    h=hashlib.new(algorithm)
+    with Path(file).open("rb") as f:
+        for chunk in iter(lambda:f.read(1024*1024),b""): h.update(chunk)
+    return h.hexdigest()
+
+def git(*args):
+    return subprocess.check_output(["git",*args],cwd=ROOT,text=True).strip()
+
+def safe_name(name):
+    path=PurePosixPath(name)
+    need(name and path.parts and str(path)==name and not path.is_absolute() and
+         ".." not in path.parts and "\\" not in name,"Unsafe package path: "+name)
+    need(all(part and not re.search(r'[<>:"|?*\x00-\x1f]',part) and not part.endswith(("."," ")) and
+             not re.fullmatch(r"(?i)(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(?:\..*)?",part)
+             for part in path.parts),"Windows-incompatible package path: "+name)
+    return path
+
+def verify_runtime(root, provenance, kind="native"):
+    inputs=provenance.get("source_inputs",{})
+    need(isinstance(inputs,dict) and len(inputs)>0,"Missing runtime source-input ledger")
+    if kind=="native":
+        need(re.fullmatch(r"[0-9a-f]{40}",provenance.get("source_commit","")),"Native build identity missing")
+    elif kind=="rapier":
+        build=provenance.get("build_record",{})
+        need(provenance.get("schema_version")==1 and
+             provenance.get("status")=="source-matched-cooperative-bvh-backport" and
+             re.fullmatch(r"[0-9a-f]{40}",provenance.get("build_commit","")) and
+             build.get("source_sha")==provenance["build_commit"] and build.get("variant")=="patched" and
+             build.get("godot_version")==ENGINE_VERSION and build.get("join_regression_exit")==0 and
+             build.get("artifacts",{}).get(Path(provenance.get("artifact","")).name)==provenance.get("sha256"),
+             "Missing or inconsistent Rapier build-record identity")
+    else: raise RuntimeError("Unknown retained runtime kind: "+kind)
+    for name,expected in inputs.items():
+        relative=safe_name(name)
+        file=root/relative
+        need(file.is_file(),"Runtime source not present: "+name)
+        need(hashlib.sha256(file.read_bytes().replace(b"\r\n",b"\n")).hexdigest()==expected,
+             "Runtime source drift: "+name)
+    name=provenance.get("artifact","")
+    safe_name(name)
+    file=root/name
+    need(file.is_file() and digest(file)==provenance.get("sha256")
+         and file.stat().st_size==provenance.get("size"),"Runtime bytes differ from recorded build: "+name)
+
+
+def preflight(platform="windows"):
+    need(re.fullmatch(r"[0-9a-f]{40}",SOURCE or ""),"Full exact application source SHA required")
+    need(git("rev-parse","HEAD")==SOURCE,"Checkout is not the requested application source")
+    for parent in (PARENT,ACCEPTED_MAIN):
+        subprocess.run(["git","merge-base","--is-ancestor",parent,SOURCE],cwd=ROOT,check=True)
+    subprocess.run(["git","diff","--exit-code",ACCEPTED_MAIN,SOURCE,"--",*PRESERVED],cwd=ROOT,check=True)
+    # The helper and the application under test must be the archived source.
+    # Generated Godot caches are excluded from these source paths.
+    subprocess.run(["git","diff","--exit-code",SOURCE,"--",*PRESERVED,*APPLICATION],cwd=ROOT,check=True)
+    untracked=git("ls-files","--others","--exclude-standard","--",*APPLICATION).splitlines()
+    need(not any(Path(name).suffix in {".gd",".gdshader",".gdshaderinc",".py",".ps1",".json",".md"} for name in untracked),
+         "Untracked application or qualification source prevents exact-source execution")
+    subprocess.run(["git","diff","--exit-code",PARENT,SOURCE,"--",
+                    "godot/scripts/workbench_physics_bridge.gd","godot/scripts/pixel_camera_transform.gd"],
+                   cwd=ROOT,check=True)
+    manifest=ROOT/"godot/addons/cybersand_native"/("runtime-provenance.json" if platform=="windows" else "runtime-provenance.linux.json")
+    provenance=json.loads(manifest.read_text())
+    need(re.fullmatch(r"[0-9a-f]{40}",provenance.get("source_commit","")),"Native build identity missing")
+    for name,expected in provenance.get("source_inputs",{}).items():
+        canonical=subprocess.check_output(["git","show",SOURCE+":"+name],cwd=ROOT)
+        need(hashlib.sha256(canonical.replace(b"\r\n",b"\n")).hexdigest()==expected,
+             "Exact source differs from retained native build: "+name)
+    verify_runtime(ROOT,provenance)
+    rapier=json.loads((ROOT/("godot/addons/godot-rapier2d/runtime-provenance."+platform+".json")).read_text())
+    verify_runtime(ROOT,rapier,"rapier")
+    return {"source_commit":SOURCE,"source_tree":git("rev-parse",SOURCE+"^{tree}"),
+            "accepted_main":ACCEPTED_MAIN,"native_build_commit":provenance["source_commit"],
+            "native_sha256":provenance["sha256"],"native_source_inputs":len(provenance["source_inputs"]),
+            "rapier_sha256":rapier["sha256"],"platform":platform,"physical_gpu_acceptance":"pending"}
+
+
+def source_and_binaries(native_dir=None):
+    identity=preflight("windows")
+    folder=ROOT/"godot/addons/cybersand_native"
+    provenance=json.loads((folder/"runtime-provenance.json").read_text())
+    dll=ROOT/NATIVE
+    if native_dir is not None:
+        staged=json.loads((native_dir/"runtime-provenance.json").read_text())
+        need(staged==provenance,"Staged runtime provenance differs from exact source")
+        dll=native_dir/Path(NATIVE).name
+        if not dll.is_file(): dll=native_dir/"bin"/Path(NATIVE).name
+    need(digest(dll)==identity["native_sha256"],"Unqualified staged native DLL")
+    return dll,ROOT/RAPIER,provenance
+
+
+def project_from_git(output,dll,rapier,provenance):
+    # Git archive reads the exact integrated source, never an uncommitted working copy.
+    files=["godot","examples/worldgen","THIRD_PARTY_NOTICES.md","LICENSE_STATUS.md",
+           "third_party/godot-runtime.lock.json","third_party/native-toolchain.lock.json",
+           "third_party/rapier-bvh-build.lock.json",
+           "third_party/workbench-godot.lock.json","third_party/workbench-godot-evaluation.lock.json",
+           "third_party/patches/godot-egl-current-window.patch",
+           "docs/audits/2026-11-14-pr566-mask-coherent-presentation-qualification.md",
+           "docs/audits/2026-11-15-render-cadence-001.md",
+           "docs/audits/2026-11-15-camera-stack-coherence.md",
+           "docs/audits/2026-11-15-workbench-physics-freezes.md",
+           "docs/audits/2026-11-16-physics-freeze-remediation-002.md",
+           "docs/audits/2026-11-16-physics-freeze-remediation-002-completion.md",
+           "docs/operations/engine-lab-pose-tracing.md",
+           "docs/operations/camera-stack-coherence-acceptance.md",
+           "docs/operations/native-pixel-scrolling.md",
+           "docs/architecture/rendering-and-gameplay-bridges.md",
+           "tools/ci/analyze_pose_trace.py",
+           "tools/ci/run_render_cadence_matrix.py",
+           "Run-Test-It.ps1","Test It.cmd"]
+    rapier_provenance=json.loads((ROOT/"godot/addons/godot-rapier2d/runtime-provenance.windows.json").read_text())
+    files=sorted(set(files+list(provenance["source_inputs"])+list(rapier_provenance["source_inputs"])))
+    tar=subprocess.check_output(["git","archive","--format=tar",SOURCE,"--",*files],cwd=ROOT,timeout=90)
+    count=0
+    with tarfile.open(fileobj=io.BytesIO(tar)) as archive:
+        for member in archive:
+            if not member.isfile(): continue
+            name=member.name
+            safe_name(name)
+            if name.startswith("godot/.godot/"): continue
+            if (Path(name).suffix.lower() in {".dll",".so",".dylib",".wasm"} or ".framework/" in name) and name not in {NATIVE,RAPIER}:
+                continue
+            f=archive.extractfile(member)
+            need(f is not None,"Unreadable source file "+name)
+            body=f.read()
+            if name==NATIVE: body=dll.read_bytes()
+            if name==RAPIER: body=rapier.read_bytes()
+            if name=="Test It.cmd": body=body.replace(b"\r\n",b"\n").replace(b"\n",b"\r\n")
+            need(not body.startswith(b"version https://git-lfs.github.com/spec/v1\n"),"Unresolved LFS "+name)
+            destination=output/name
+            destination.parent.mkdir(parents=True,exist_ok=True)
+            destination.write_bytes(body)
+            count+=1
+    need(digest(output/NATIVE)==provenance["sha256"] and digest(output/RAPIER)==RAPIER_HASH,"Packaged DLL mismatch")
+    recipes=list((output/"examples/worldgen").glob("*.json"))
+    need({"gen007-deepworks.json","gen007-qualification.json"}<={p.name for p in recipes},
+         "Missing generator profiles")
+    target=output/"godot/authoring/worldgen"
+    target.mkdir(parents=True,exist_ok=True)
+    for r in recipes:
+        need(isinstance(json.loads(r.read_text()),dict),"Malformed source recipe "+r.name)
+        shutil.copyfile(r,target/r.name)
+    verify_runtime(output,provenance)
+    verify_runtime(output,rapier_provenance,"rapier")
+    return count
+
+def dependencies(output,engine_dir,vc):
+    from restore_workbench_godot import verify_payload
+    need(engine_dir is not None,"Authenticated custom engine directory is required")
+    engine=verify_payload(engine_dir)
+    for role,name in (("gui_executable",PACKAGE_ENGINE),("console_executable",PACKAGE_CONSOLE)):
+        shutil.copyfile(engine_dir/engine[role],output/name)
+    # The console wrapper resolves the matching GUI name by its .console.exe
+    # suffix. Both files retain the exact qualified binary bytes after renaming.
+    version=subprocess.check_output([str(output/PACKAGE_CONSOLE),"--version"],text=True,timeout=45).strip()
+    need(version==engine["version"],"Godot version drift: "+version)
+    notices=engine_dir/"notices"
+    for name in ("LICENSE.txt","COPYRIGHT.txt"):
+        need((notices/name).is_file(),"Godot notice missing")
+    shutil.copytree(notices,output/"Godot-Notices")
+    shutil.copyfile(engine_dir/"build-provenance.json",output/"engine-build-provenance.json")
+    shutil.copyfile(engine_dir/"api-equivalence.json",output/"engine-api-equivalence.json")
+    shutil.copyfile(engine_dir/"engine-source.patch",output/"engine-source.patch")
+    vcproof=json.loads((vc/"vc-runtime-provenance.json").read_text(encoding="utf-8-sig"))
+    need(vcproof.get("schema")==1 and set(vcproof.get("files_sha256",{}))==
+         {"vcruntime140.dll","Microsoft-Visual-C-Runtime-LICENSE.docx",
+          "Microsoft-Visual-Studio-2022-LICENSE.docx"},"Signed VC runtime evidence missing")
+    for name,expected in vcproof["files_sha256"].items():
+        need(digest(vc/name)==expected,"VC runtime hash mismatch: "+name)
+    for file in vc.iterdir():
+        if file.is_file(): shutil.copyfile(file,output/file.name)
+    return {"version":version,"gui":PACKAGE_ENGINE,"console":PACKAGE_CONSOLE,
+            "custom_engine":True,"upstream_commit":engine["upstream_commit"],
+            "upstream_tree":engine["upstream_tree"],"patches":engine["patches"],
+            "build_application_source":engine["application_source"],
+            "build_workflow_run":engine["workflow_run"],
+            "provenance_sha256":digest(output/"engine-build-provenance.json"),
+            "scope":engine["scope"],"public_api_equivalent":engine["public_api_equivalent"]}
+
+def launchers(output):
+    for name,mode,selection,cadence,material,physics,thread,rendezvous in (
+            ("Open Workbench.cmd","guarded","", "","auto","early","separate","render-overlap"),
+            ("Open Publication Control.cmd","guarded","", "","full","combined","safe","0"),
+            ("Open Full Texture Control.cmd","guarded","", "","full","early","separate","render-overlap"),
+            ("Open Safe Renderer Control.cmd","guarded","", "","auto","early","safe","0"),
+            ("Open Separate Renderer Control.cmd","guarded","", "","auto","early","separate","0"),
+            ("Open Coherent Workbench.cmd","guarded","", "","auto","early","separate","render-overlap"),
+            ("Open Guarded Workbench.cmd","guarded","", "","auto","early","separate","render-overlap"),
+            ("Open Original Presentation.cmd","guarded","legacy", "","auto","early","safe","0"),
+            ("Open Mask Baseline.cmd","mask","legacy", "","auto","early","safe","0"),
+            ("Open Original Cadence.cmd","guarded","legacy","legacy","full","combined","safe","0")):
+        script=('@echo off\nsetlocal\ncd /d "%~dp0"\n'
+                'set "CYBERSAND_SOURCE_REVISION='+SOURCE+'"\n'
+                'set "CYBERSAND_EVAL_SOURCE_SHA='+SOURCE+'"\n'
+                'set "CYBERSAND_DIAG_FLYER_POSE='+mode+'"\n'
+                'set "CYBERSAND_DIAG_PRESENTATION='+selection+'"\n'
+                'set "CYBERSAND_DIAG_RENDER_CADENCE='+cadence+'"\n'
+                'set "CYBERSAND_MATERIAL_PUBLICATION='+material+'"\n'
+                'set "CYBERSAND_DIAG_PHYSICS_PUBLICATION='+physics+'"\n'
+                'set "CYBERSAND_DIAG_NATIVE_RENDEZVOUS='+rendezvous+'"\n'
+                'set "CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS="\n'
+                'set "CYBERSAND_DIAG_MATERIAL_HISTORY_TARGETS="\n'
+                'set "CYBERSAND_DIAG_MATERIAL_COPY_MODE="\n'
+                'set "CYBERSAND_DIAG_COMMON_OBSERVER="\n'
+                'echo CyberSand Workbench - '+('original presentation' if selection else 'coherent candidate')+'\n'
+                'echo Source '+SOURCE+'\n'
+                '"%~dp0'+PACKAGE_CONSOLE+'" --headless --path "%~dp0godot" --editor --quit\n'
+                'if errorlevel 1 (echo Import failed. & pause & exit /b 1)\n'
+                'if defined CYBERSAND_LAUNCH_TEST_WAIT (\n'
+                '  start "" /wait "%~dp0'+PACKAGE_ENGINE+'" --path "%~dp0godot" %* --render-thread '+thread+' -- --workbench\n'
+                '  exit /b\n'
+                ')\n'
+                'start "" "%~dp0'+PACKAGE_ENGINE+'" --path "%~dp0godot" %* --render-thread '+thread+' -- --workbench\n')
+        (output/name).write_bytes(script.replace("\n","\r\n").encode())
+
+GUIDE=r"""# CyberSand repaired Workbench - Windows evaluation
+
+Application source: SOURCE_SHA
+Accepted-main base: ACCEPTED_MAIN_SHA
+Native build: NATIVE_BUILD_SHA
+Native Windows DLL SHA256: NATIVE_SHA256
+Godot: ENGINE_VERSION (explicitly patched source build; see engine-build-provenance.json)
+Rapier Windows x64 module SHA256: RAPIER_SHA256
+
+Extract this entire ZIP into a fresh writable directory. No separate Godot,
+Python, Git or repository installation is required.
+
+PHYSICAL HOLD: hosted software-renderer trials improved actual physical
+progression but retained long gaps and slow graphical cadence. PR #609 records
+exact-source results; physical Windows 11/NVIDIA acceptance remains the owner's gate.
+
+1. Double-click Open Workbench.cmd for the evaluation Shared Workbench.
+2. Fly a Needle in Free and Follow modes. Turn Thruster fire ON, then OFF.
+   Try fast movement, contact/dense materials, and normal camera pan/zoom.
+   Choose the Select body tool, then use right-button erasing on small and
+   large areas while playing.
+   Pause to add materials with PAINT and exercise Undo/Redo. Also check
+   pause/resume, single-step and reset, then Save and reopen in a fresh process.
+3. Close CyberSand. Open Publication Control.cmd uses Safe rendering, full
+   texture uploads and the combined native/graphical handoff in the same source.
+   Repeat the same setup. Both modes retain coherent presentation, fixed-step
+   authoritative Rapier physics and the normal native-sample safety wait.
+4. Open Full Texture Control.cmd changes only the material mechanism from the
+   ordinary launcher: full uploads with Separate rendering, early physics
+   handoff and bounded native/render overlap. Open Safe Renderer Control.cmd
+   uses automatic material publication and early handoff with Safe rendering
+   and no overlap wait. Open Separate Renderer Control.cmd uses those same
+   publication settings with Separate rendering and no overlap wait. These
+   two controls isolate renderer scheduling; the Separate control versus the
+   ordinary launcher isolates the overlap policy. Engine Lab also switches
+   texture modes live and reports the active backend and fallback reason.
+5. Double-click Test It.cmd for two matched Free/Follow publication pairs
+   (four fresh application windows). Test It.cmd -Quick runs the Follow pair.
+   Results and the complete local ZIP appear under Test-It-Results.
+   READ-RESULTS.txt gives actual completed native/Rapier rates, physical gap
+   distributions and hold reasons, upload stages, and frame cadence.
+   A complete capture does not mean gameplay passed physical evaluation.
+
+Automatic material publication uploads bounded independent R8/RG8 arrays and copies
+dirty rectangles on the GPU into linear RGBA8 history textures. The
+desktop OpenGL/ANGLE path retains exact material/condition bytes and the original
+appearance shaders; unsupported or detectably invalid resources use full texture
+fallback. Current/previous history, crossfade, collision masks and revision ACKs
+are preserved. At 2048-square RG8, one changed tile submits 32KiB instead of 8MiB;
+the two histories and bounded staging/retirement resources occupy about 76.0 MiB
+of logical GPU texture storage. GPU copy writes are additional traffic.
+Changes affecting 65–128 of the 128-square tiles use a preallocated 16-by-8-tile
+atlas, submitting 4 MiB instead of 8 MiB. Larger changes retain full-size staging.
+Three independent one-layer staging arrays per size class rotate after submission.
+Each has its own fixed sampler. Adjacent copies merge only inside both source
+and destination rows, without extra upload bytes or destination pixels.
+Only the copy operation samples these arrays; ordinary World appearance keeps
+its existing 2D textures. Layer updates retain allocated staging storage.
+Rotation increases reuse distance; it is not a GPU fence or a nonblocking guarantee.
+Large changes/full initialization can still be expensive. The early physical
+mailbox removes graphical packet work from the completion handoff but does not
+remove native computation, required terrain installation, strict feedback age,
+or the need for actual main-thread physics callbacks.
+
+The ordinary launcher uses a separate RenderingServer thread. A nonblocking
+native mailbox lets eligible catch-up physics callbacks wait for the next
+required native sample while earlier rendering commands are still being
+consumed. The first physics callback never waits. Later callbacks share one
+absolute 66.667 ms deadline per process frame and poll at 250 microseconds;
+they stop when that deadline, a native-sample refusal or the queued render
+marker is observed. OS descheduling can make elapsed wall time exceed the
+deadline. The marker says earlier RenderingServer calls returned, not that
+the GPU finished, the frame drew or scanout occurred. Native feedback age,
+complete terrain, session and generation checks still gate every Rapier step.
+This policy increases opportunities for genuine fixed-step physics; it does
+not extrapolate poses or add fabricated simulation time. More physics per
+display frame can reduce graphical cadence, so evaluate both motion and input.
+
+The bundled engine is a source-pinned Godot 4.7 build with a narrow Windows
+EGL current-window bookkeeping repair required for the Separate/ANGLE handoff.
+It is explicitly not the official binary. Source, patch, dependency and public
+GDExtension API equivalence receipts are included. D3D12 is disabled in this
+build; hosted Windows qualification uses OpenGL compatibility through ANGLE.
+Ordinary startup preserves the project/platform driver choice. Test It records
+the actual backend; a physical NVIDIA driver is still an owner evaluation.
+The ordinary Separate mode embeds Engine Lab and Materials Lab in the main
+window to keep their rendering on its existing surface. Safe controls retain
+native Lab windows. All Lab controls remain available. Preserve the complete
+extracted folder, including the console wrapper, notices and runtime DLLs.
+
+The comparison uses the exact original 2048-square Needle reference, native 60/
+Rapier 60 requests, native wait/wake ON, Auto workers, normal window/zoom and
+startup VSync. Fire toggles at completed steps 0/60. Both arms use the same input
+tape and require exact equality of all recorded common physical states and
+feedback associations. It compares modes within one source; the CI evidence
+separately compares the old c1ad source against this application on one host.
+Configured rates are not achieved rates; Rapier retains fixed 1/60 simulated
+seconds per completed step. Upload-stage timers are elapsed calls and include
+possible waiting/descheduling, not isolated CPU execution or GPU transfer time.
+
+Every case records CPU, native worker request/capacity, GPU/driver, DPI, VSync,
+renderer and source. Your saved worker preference stays unchanged. Hosted
+ANGLE/software rendering does not establish physical Windows 11 NVIDIA acceptance.
+Engine Lab retains FPS/VSync, Pixel/Rapier/publication pacing and local pose traces.
+The earlier temporal-policy comparison remains explicitly available:
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Run-Test-It.ps1 -Coherence
+The earlier cadence investigation uses -Cadence. Open Original Presentation.cmd
+retains the old visual source policy; it is separate from publication controls.
+
+The full practical acceptance guide is:
+docs/operations/camera-stack-coherence-acceptance.md
+Record your observations in ACCEPTANCE.md. Automated execution and hosted
+Windows rendering do not establish physical NVIDIA acceptance. This candidate
+and the camera PR stack remain Draft/HOLD; no merge is implied.
+"""
+FEEDBACK="""# CyberSand physical owner acceptance
+
+App source: SOURCE_SHA
+Prior physical result: FAIL - source 43f46c6e5ec9 had frequent physics freezes.
+Corrective candidate owner decision: HOLD - this source not yet physically evaluated.
+
+| Field | Observation |
+| --- | --- |
+| Windows build, NVIDIA GPU / driver | |
+| CPU model, logical processors, requested/resolved native workers | |
+| Resolution, refresh rate, Windows display scale | |
+| VSync / FPS target | |
+| Free camera: coherence, jumps/reversals, Fire ON to OFF | |
+| Follow camera: coherence, camera motion, Fire ON to OFF | |
+| Fast Needle, contact and dense materials | |
+| Physical freezing or long gaps (separate from visual source holds) | |
+| Pan, zoom, fractional scale and painting | |
+| Publication Control / Full Texture Control comparison | |
+| Safe Renderer Control / Separate Renderer Control comparison | |
+| Engine Lab / Materials Lab sizing, controls and reopening | |
+| Materially preferable candidate? | |
+| Test-It-Results ZIP name | |
+| PASS / FAIL / HOLD | |
+
+Reproduction steps and observed issues:
+"""
+
+def files_map(root):
+    return {p.relative_to(root).as_posix():digest(p) for p in sorted(root.rglob("*"))
+            if p.is_file() and p.name!=MANIFEST}
+
+def verify(output):
+    m=json.loads((output/MANIFEST).read_text())
+    need(m.get("schema")=="camera-stack-coherence-windows-v1" and m.get("accepted_main")==ACCEPTED_MAIN,
+         "Wrong integrated evaluation manifest")
+    need(m.get("source_commit")==SOURCE and files_map(output)==m.get("files_sha256"),
+         "Installed files are missing or changed")
+    need(digest(output/NATIVE)==m["native_sha256"] and digest(output/RAPIER)==m["rapier_sha256"],"Installed native mismatch")
+    engine=m.get("engine",{})
+    proof=json.loads((output/"engine-build-provenance.json").read_text())
+    lock=json.loads((output/"third_party/workbench-godot-evaluation.lock.json").read_text())
+    need(digest(output/"engine-build-provenance.json")==lock["build_provenance_sha256"]==engine.get("provenance_sha256") and
+         proof.get("complete") is True and proof.get("custom_engine") is True and
+         proof.get("public_api_equivalent") is True and engine.get("custom_engine") is True and
+         proof.get("version")==m.get("godot_version")==engine.get("version"),
+         "Installed custom engine provenance is incomplete or changed")
+    need(proof.get("application_source")==lock["application_source"]==engine.get("build_application_source") and
+         str(proof.get("workflow_run"))==str(lock["workflow_run"])==str(engine.get("build_workflow_run")),
+         "Installed engine build identity differs from pinned payload")
+    for role,name in (("gui_executable",PACKAGE_ENGINE),("console_executable",PACKAGE_CONSOLE)):
+        built=proof["executables"][Path(proof[role]).name]
+        need(digest(output/name)==built["sha256"] and (output/name).stat().st_size==built["bytes"] and
+             built["pe"]["unresolved_non_system_imports"]==[], "Installed engine executable or dependencies differ")
+    for original,installed in (("api-equivalence.json","engine-api-equivalence.json"),
+                               ("engine-source.patch","engine-source.patch")):
+        need(digest(output/installed)==proof["payload_files"][original]["sha256"],
+             "Installed engine qualification receipt differs: "+installed)
+    verify_runtime(output,json.loads((output/"godot/addons/cybersand_native/runtime-provenance.json").read_text()))
+    verify_runtime(output,json.loads((output/"godot/addons/godot-rapier2d/runtime-provenance.windows.json").read_text()),"rapier")
+    print("COHERENCE_INSTALLED_INTEGRITY",len(m["files_sha256"]),SOURCE)
+    return m
+
+def build(args):
+    need(os.name=="nt","Build must run on Windows")
+    need(not args.output.exists() and not args.archive.exists(),"Refusing to overwrite package")
+    dll,rapier,provenance=source_and_binaries(args.native_stage)
+    args.output.mkdir(parents=True)
+    count=project_from_git(args.output,dll,rapier,provenance)
+    engine=dependencies(args.output,args.engine_dir,args.vc)
+    launchers(args.output)
+    replacements={"SOURCE_SHA":SOURCE,"ACCEPTED_MAIN_SHA":ACCEPTED_MAIN,
+                  "NATIVE_BUILD_SHA":provenance["source_commit"],
+                  "NATIVE_SHA256":provenance["sha256"],"RAPIER_SHA256":RAPIER_HASH,
+                  "ENGINE_VERSION":engine["version"]}
+    for name,data in (("READ-ME.md",GUIDE),("ACCEPTANCE.md",FEEDBACK)):
+        for a,b in replacements.items():data=data.replace(a,b)
+        (args.output/name).write_text(data,encoding="utf-8")
+    (args.output/"retained-native-build-provenance.json").write_text(
+        json.dumps(provenance,indent=2,sort_keys=True)+"\n")
+    identity={"schema":"camera-stack-coherence-windows-v1","source_commit":SOURCE,
+              "source_tree":git("rev-parse",SOURCE+"^{tree}"),"parent_commit":PARENT,"accepted_main":ACCEPTED_MAIN,
+              "native_build_commit":provenance["source_commit"],"native_source_inputs":len(provenance["source_inputs"]),
+              "baseline_593_windows_run":43648093562,"baseline_593_linux_run":43648093611,
+              "native_sha256":provenance["sha256"],"rapier_sha256":RAPIER_HASH,
+              "godot_version":engine["version"],"engine":engine,
+              "owner_gpu_acceptance":"pending","source_archive_files":count,
+              "files_sha256":files_map(args.output)}
+    (args.output/MANIFEST).write_text(json.dumps(identity,indent=2,sort_keys=True)+"\n")
+    verify(args.output)
+    args.archive.parent.mkdir(parents=True,exist_ok=True)
+    paths=sorted(p for p in args.output.rglob("*") if p.is_file())
+    names=[p.relative_to(args.output).as_posix() for p in paths]
+    need(len(set(n.lower() for n in names))==len(names) and max(map(len,names))<220,
+         "Windows-incompatible archive names")
+    with zipfile.ZipFile(args.archive,"w",zipfile.ZIP_DEFLATED,compresslevel=6,allowZip64=False) as z:
+        for p,name in zip(paths,names):z.write(p,name)
+    with zipfile.ZipFile(args.archive) as z:
+        need(z.testzip() is None and sorted(z.namelist())==sorted(names),"Archive CRC/manifest failed")
+    archive_sha=digest(args.archive)
+    args.archive.with_suffix(".zip.sha256").write_text(archive_sha+"  "+args.archive.name+"\n")
+    args.archive.with_suffix(".zip.json").write_text(json.dumps({
+        "source_commit":SOURCE,"zip":args.archive.name,"sha256":archive_sha,
+        "bytes":args.archive.stat().st_size,"members":len(names),
+        "owner_physical_gpu_acceptance":"pending"},indent=2)+"\n")
+    print("COHERENCE_PHYSICAL_PACKAGE",json.dumps({"source":SOURCE,"sha256":archive_sha,
+           "bytes":args.archive.stat().st_size,"files":len(names)}),flush=True)
+
+def validate_publication_regression_receipt(name,receipt,project,source):
+    """Require completed adversarial phases, not only a successful log marker."""
+    data=json.loads(receipt.read_text(encoding="utf-8"))
+    if name.startswith("material-threaded-"):
+        need(data.get("assertions",0)>0 and data.get("failures")==0 and
+             data.get("cases_completed")==14 and isinstance(data.get("separate"),bool),
+             "Queued material ownership cases are incomplete")
+        need(data.get("gates_completed")== (14 if data["separate"] else 0) and
+             data.get("display")!="headless" and len(data.get("observations",[]))==14,
+             "Queued material ownership lacks actual graphical phases")
+        if "safe" in name or "separate" in name:
+            need(data["separate"] is ("separate" in name), "Queued material gate ran in the wrong render mode")
+    elif name.startswith("font-mipmap-"):
+        separate="separate" in name
+        need(data.get("schema")=="default-font-mipmap-publication-v1" and
+             data.get("assertions",0)>0 and data.get("failures")==0 and
+             data.get("pairs_completed")==2 and data.get("separate") is separate,
+             "Default-font appearance phases are incomplete")
+        need(data.get("source")==source and data.get("test_sha256")==digest(project/"tests/test_default_font_mipmap_publication.gd") and
+             data.get("display")!="headless" and data.get("original_default_mipmaps") is True,
+             "Default-font receipt does not bind the actual application setting/source")
+        need(not separate or data.get("ownership_completed") is True,
+             "Separate-font immutable queue ownership was not exercised")
+    elif name.startswith("native-rendezvous-"):
+        need(data.get("schema")=="workbench-physics-publication-v1" and
+             data.get("source_commit")==source and data.get("checks",0)>0 and data.get("failures")==[],
+             "Actual Main rendezvous integration did not complete")
+        rows={row["mode"]:row for row in data.get("observations",[])}
+        need({"combined-rendezvous","early-rendezvous","rendezvous-budget-summary"}<=rows.keys(),
+             "Missing actual Main held-publication or budget phases")
+        need(rows["combined-rendezvous"]["physical_admissions_during_hold"]==0 and
+             rows["early-rendezvous"]["physical_admissions_during_hold"]==1 and
+             rows["rendezvous-budget-summary"]["waits"]>0,
+             "Actual Main rendezvous integration was vacuous or admitted extra physics")
+    elif name.startswith("native-render-overlap"):
+        separate=name.endswith("-graphical")
+        need(data.get("source")==source and data.get("checks",0)>0 and data.get("failures")==[] and
+             data.get("separate_render_thread") is separate, "Render-overlap marker gate did not complete in the required mode")
+        queues=[row for row in data.get("observations",[]) if row.get("case")=="actual-native-render-queue"]
+        need(len(queues)==1 and queues[0].get("executed") is separate,
+             "Actual queued native marker lifetime was not exercised")
+    elif name.startswith("depth-threaded-"):
+        separate="separate" in name
+        need(data.get("schema")=="depth-threaded-publication-v1" and data.get("source")==source and
+             data.get("assertions",0)>0 and data.get("failures")==0 and data.get("separate") is separate and
+             data.get("cases_completed")==2 and data.get("captures_completed")==4 and
+             data.get("gates_completed")== (4 if separate else 0), "Depth queued-image phases are incomplete")
+        need(data.get("test_sha256")==digest(project/"tests/test_depth_threaded_publication.gd") and
+             data.get("surface_sha256")==digest(project/"scripts/depth/depth_layer_surface.gd") and
+             data.get("display")!="headless", "Depth queued-image receipt has wrong source or backend")
+    else:
+        raise RuntimeError("Unknown publication receipt: "+name)
+    return {"receipt_sha256":digest(receipt),"receipt":data}
+
+
+def validate_lab_window_receipt(name,receipt,project,source,screenshot=None):
+    """Require real graphical geometry, input, ownership and source receipts."""
+    data=json.loads(receipt.read_text(encoding="utf-8"))
+    separate="separate" in name
+    captures=[]
+
+    def capture(path,expected=None):
+        body=path.read_bytes()
+        need(body.startswith(b"\x89PNG\r\n\x1a\n") and len(body)>24,"Missing Lab PNG: "+str(path))
+        size=[int.from_bytes(body[16:20],"big"),int.from_bytes(body[20:24],"big")]
+        need(min(size)>0 and (expected is None or size==expected),"Lab PNG has wrong physical extent: "+str(path))
+        captures.append({"path":str(path),"size":size,"sha256":digest(path)})
+        return captures[-1]
+
+    if name.startswith("materials-lab-"):
+        need(data.get("schema")=="material-lab-window-mode-v1" and data.get("assertions",0)>0 and
+             data.get("failures")==0 and data.get("display")!="headless" and
+             data.get("separate_render_owner") is separate,"Materials Lab did not complete in the requested graphical mode")
+        hashes=data.get("source_hashes",{})
+        need({"scripts/shared_workbench.gd","scripts/workbench_lab_window_policy.gd",
+              "tests/test_material_lab_ui.gd"}<=hashes.keys(),"Materials Lab source identities are incomplete")
+        for relative,expected in hashes.items():
+            need(digest(project/safe_name(relative))==expected,"Materials Lab source drift: "+relative)
+        rows={row["context"]:row for row in data.get("observations",[])}
+        expected={"lab-1000x650","lab-1280x720","experiment-picker","dropdown-filter","dropdown-materials"}
+        if separate: expected|={"parent-1600x900","parent-1280x720"}
+        need(set(rows)==expected and len(rows)==len(data["observations"]),"Materials Lab phases are missing or duplicated")
+        for label,row in rows.items():
+            if separate:
+                need(row.get("embedded") is True and row.get("font_oversampling_enabled") is False and
+                     row.get("font_oversampling")==1.0 and len(row.get("native_window_ids",[]))==1,
+                     "Embedded Materials Lab changed surface or glyph scale")
+            elif label.startswith("lab-"):
+                need(row.get("embedded") is False and row.get("force_native") is True,"Safe Materials Lab lost its native window")
+            if label.startswith("dropdown-"):
+                need(row.get("configured_popup_count",0)>=18 and
+                     row.get("items")==({"dropdown-filter":10,"dropdown-materials":131}[label]),
+                     "Materials dropdown controls or catalogue were not exercised")
+                image=capture(receipt.parent/(label+"-composited.png"),row["framebuffer_size"])
+                need(image["sha256"]==row["framebuffer_png_sha256"],"Materials dropdown PNG drift")
+                continue
+            composite=row.get("native_composite",{})
+            need(composite.get("is_root_capture") is separate and composite.get("marker_pixels")==533 and
+                 composite.get("marker_pixel_bounds",[])[2:]==[41,13] and
+                 composite.get("received_input",{}).get("pressed")==1,
+                 "Materials composed pixels or actual input path did not complete")
+            image=capture(receipt.parent/(label+"-composited.png"),composite["framebuffer_size"])
+            need(image["sha256"]==composite["framebuffer_png_sha256"],"Materials composed PNG drift")
+            capture(receipt.parent/(label+".png"))
+        script="test_material_lab_ui.gd"
+    else:
+        need(data.get("source")==source and data.get("checks",0)>0 and data.get("failures")==[] and
+             data.get("render_thread")==("separate" if separate else "safe"),"Engine Lab receipt has wrong source, mode or result")
+        observations=data.get("observations",[])
+        layout_rows=[row for row in observations if "client_physical" in row]
+        layouts={row["case"]:row for row in layout_rows}
+        expected={"client-900","client-760"}|({"parent-resize","reopen","recovered"} if separate else set())
+        need(set(layouts)==expected and len(layout_rows)==len(layouts),"Engine Lab physical layout phases did not complete uniquely")
+        for row in layouts.values():
+            need(row.get("embedded") is separate and min(row["framebuffer_size"])>=519 and
+                 row.get("font_oversampling")==1.0,
+                 "Engine Lab did not retain its graphical client")
+            if separate: need(row.get("native_windows")==1,"Embedded Engine Lab created an extra native window")
+        markers=[row for row in observations if row.get("case")=="composited physical marker"]
+        need(len(markers)==1 and markers[0].get("pixel_extent")==[23,11] and
+             markers[0].get("pixel_count")==253 and markers[0].get("mapped_input_count")==1,
+             "Engine Lab did not verify actual composed pixels and input")
+        dropdowns=[row for row in observations if row.get("case")=="VSync dropdown"]
+        need(len(dropdowns)==1 and dropdowns[0].get("font_oversampling")==1.0 and
+             dropdowns[0].get("physical_scale")==[1.0,1.0] and
+             re.fullmatch(r"[0-9a-f]{64}",dropdowns[0].get("framebuffer_sha256","")),
+             "Engine Lab dropdown did not retain actual readable pixels")
+        vsync=[row for row in observations if row.get("case")=="native VSync dispatch"]
+        need(len(vsync)==2 and {row["requested"] for row in vsync}=={0,1},"Engine Lab VSync requests were not exercised")
+        if os.name=="nt": need(all(row["requested"]==row["reported"] for row in vsync),"Windows VSync readback differs after native dispatch")
+        need(screenshot is not None,"Engine Lab graphical capture is required")
+        capture(screenshot)
+        if separate: capture(screenshot.with_name(screenshot.stem+"-root.png"),[1280,720])
+        script="test_workbench_engine_lab.gd"
+    return {"receipt_sha256":digest(receipt),"receipt":data,"captures":captures,
+            "test_sha256":digest(project/"tests"/script),
+            "window_policy_sha256":digest(project/"scripts/workbench_lab_window_policy.gd")}
+
+
+def smoke(output,evidence):
+    verify(output)
+    evidence.mkdir(parents=True,exist_ok=True)
+    console=output/PACKAGE_CONSOLE
+    project=output/"godot"
+    cases=[
+        ("import",["--headless","--editor","--quit"],180,None),
+        ("sweep",["--headless","--script","res://tests/test_workbench_presentation_coherence.gd"],120,"WORKBENCH_PRESENTATION_COHERENCE_RESULT"),
+        ("production",["--headless","--script","res://tests/test_pr593_mask_coherent_production.gd"],210,"PR593_PRODUCTION_POSE_RESULT"),
+        ("crossfade",["--headless","--script","res://tests/test_pr593_mask_coherent_edit_crossfade.gd"],210,"PR593_NATIVE_EDIT_CROSSFADE_RESULT"),
+        ("dense-budget",["--headless","--script","res://tests/test_pr593_mask_coherent_dense_budget.gd"],120,"PR593_GUARD_DENSE_BUDGET_RESULT"),
+        ("temporal",["--headless","--script","res://tests/test_workbench_temporal_presentation.gd"],240,"TEMPORAL_PRESENTATION_RESULT"),
+        ("temporal-dense",["--headless","--script","res://tests/test_workbench_temporal_dense.gd"],240,"TEMPORAL_DENSE_RESULT"),
+        ("temporal-contact",["--headless","--script","res://tests/test_workbench_temporal_contact.gd"],240,"TEMPORAL_CONTACT_RESULT"),
+        ("temporal-contact-graphical",["--rendering-driver","opengl3_angle","--rendering-method","gl_compatibility",
+         "--audio-driver","Dummy","--max-fps","60","--script","res://tests/test_workbench_temporal_contact.gd"],300,"TEMPORAL_CONTACT_RESULT"),
+        ("materials",["--headless","--script","res://tests/test_material_lab_catalogue.gd"],180,"MATERIAL_LAB_CATALOGUE"),
+        ("architecture-contract",["--headless","--script","res://tests/test_architectural_project_contract.gd"],180,"ARCHITECTURAL_PROJECT_CONTRACT"),
+        ("architecture-native",["--headless","--script","res://tests/test_architectural_generator.gd"],300,"ARCHITECTURE_RESULTS"),
+        ("architecture-author",["--rendering-method","gl_compatibility","--script","res://tests/test_architectural_generator.gd"],600,"ARCHITECTURE_RESULTS"),
+        ("architecture-reopen",["--rendering-method","gl_compatibility","--script","res://tests/test_architectural_generator.gd"],300,"ARCHITECTURE_RESULTS"),
+        ("flatten-author",["--headless","--script","res://tests/test_workbench_flatten.gd"],600,"FLATTEN_RESULT"),
+        ("flatten-reopen",["--headless","--script","res://tests/test_workbench_flatten.gd"],300,"FLATTEN_RESULT"),
+        ("engine-lab",["--headless","--script","res://tests/test_workbench_engine_lab.gd"],180,"ENGINE_LAB_RESULT"),
+        ("pose-trace",["--headless","--script","res://tests/test_workbench_pose_trace.gd"],180,"POSE_TRACE_RESULT"),
+        ("cadence-contract",["--headless","--script","res://tests/test_render_cadence_contract.gd"],180,"RENDER_CADENCE_CONTRACT_RESULT"),
+        ("cadence-worker",["--headless","--script","res://tests/test_render_cadence_worker.gd"],180,"RENDER_CADENCE_WORKER:"),
+        ("ack-deadlines",["--headless","--script","res://tests/test_render_ack_deadlines.gd"],180,"RENDER_ACK_DEADLINES_RESULT"),
+        ("paint-author",["--rendering-method","gl_compatibility","--audio-driver","Dummy","--script","res://tests/test_paint_editor_workbench.gd"],600,"PAINT_EDITOR_WORKBENCH"),
+        ("paint-reopen",["--rendering-method","gl_compatibility","--audio-driver","Dummy","--script","res://tests/test_paint_editor_workbench.gd"],240,"PAINT_EDITOR_WORKBENCH"),
+        ("native-camera",["--headless","--script","res://tests/test_native_pixel_camera.gd"],300,"NATIVE_PIXEL_CAMERA_RESULT"),
+        ("failure-recovery",["--headless","--script","res://tests/test_workbench_failure_recovery.gd"],300,"WORKBENCH_FAILURE_RECOVERY"),
+        ("workbench-input",["--headless","--script","res://tests/test_workbench_input.gd"],240,"WORKBENCH_INPUT"),
+        ("workbench-fleet",["--headless","--script","res://tests/test_workbench_fleet_session.gd"],240,"WORKBENCH_FLEET"),
+        ("workbench-physics",["--headless","--script","res://tests/test_workbench_physics_play.gd"],600,"WORKBENCH_PHYSICS"),
+        ("physics-pacing",["--headless","--audio-driver","Dummy","--script","res://tests/test_workbench_physics_pacing.gd"],300,"PHYSICS_PACING_RESULT"),
+        ("physics-publication",["--headless","--audio-driver","Dummy","--script","res://tests/test_workbench_physics_publication.gd"],300,"PHYSICS_PUBLICATION_RESULT"),
+        ("native-rendezvous",["--headless","--audio-driver","Dummy","--script","res://tests/test_workbench_native_rendezvous.gd"],180,"NATIVE_RENDEZVOUS:"),
+        ("native-rendezvous-integration",["--headless","--audio-driver","Dummy","--script","res://tests/test_workbench_native_rendezvous_integration.gd"],300,"PHYSICS_PUBLICATION_RESULT"),
+        ("native-render-overlap",["--headless","--render-thread","safe","--audio-driver","Dummy","--script","res://tests/test_workbench_native_render_overlap.gd"],180,"NATIVE_RENDER_OVERLAP:"),
+        ("native-render-overlap-graphical",["--rendering-method","gl_compatibility","--render-thread","separate","--audio-driver","Dummy","--script","res://tests/test_workbench_native_render_overlap.gd"],300,"NATIVE_RENDER_OVERLAP:"),
+        ("physics-publication-graphical",["--rendering-method","gl_compatibility","--audio-driver","Dummy","--script","res://tests/test_workbench_physics_publication.gd"],300,"PHYSICS_PUBLICATION_RESULT"),
+        ("physics-pacing-graphical",["--rendering-method","gl_compatibility","--audio-driver","Dummy","--script","res://tests/test_workbench_physics_pacing.gd"],600,"PHYSICS_PACING_RESULT"),
+        ("material-tiles",["--headless","--audio-driver","Dummy","--script","res://tests/test_material_tile_publication.gd"],300,"MATERIAL_TILE_PUBLICATION:"),
+        ("palette-compile-bounds",["--headless","--audio-driver","Dummy","--script","res://tests/test_palette_shader_compile_bounds.gd"],180,"PALETTE_COMPILE_BOUNDS_RESULT"),
+        ("material-tiles-graphical",["--rendering-method","gl_compatibility","--audio-driver","Dummy","--script","res://tests/test_material_tile_publication.gd"],600,"MATERIAL_TILE_PUBLICATION:"),
+        ("material-threaded-safe-graphical",["--rendering-method","gl_compatibility","--render-thread","safe","--audio-driver","Dummy","--script","res://tests/test_material_threaded_publication.gd"],600,"MATERIAL_THREADED_PUBLICATION:"),
+        ("material-threaded-separate-graphical",["--rendering-method","gl_compatibility","--render-thread","separate","--audio-driver","Dummy","--script","res://tests/test_material_threaded_publication.gd"],600,"MATERIAL_THREADED_PUBLICATION:"),
+        ("font-mipmap-safe-graphical",["--rendering-method","gl_compatibility","--render-thread","safe","--audio-driver","Dummy","--script","res://tests/test_default_font_mipmap_publication.gd"],300,"DEFAULT_FONT_MIPMAP_PUBLICATION:"),
+        ("font-mipmap-separate-graphical",["--rendering-method","gl_compatibility","--render-thread","separate","--audio-driver","Dummy","--script","res://tests/test_default_font_mipmap_publication.gd"],300,"DEFAULT_FONT_MIPMAP_PUBLICATION:"),
+        ("depth-threaded-safe-graphical",["--rendering-method","gl_compatibility","--render-thread","safe","--audio-driver","Dummy","--script","res://tests/test_depth_threaded_publication.gd"],300,"DEPTH_THREADED_PUBLICATION:"),
+        ("depth-threaded-separate-graphical",["--rendering-method","gl_compatibility","--render-thread","separate","--audio-driver","Dummy","--script","res://tests/test_depth_threaded_publication.gd"],300,"DEPTH_THREADED_PUBLICATION:"),
+        ("rapier-manual",["--headless","--script","res://tests/test_rapier_manual_step.gd"],180,"Rapier2D manual-step coupling fixture passed"),
+        ("terrain-packet",["--headless","--script","res://tests/test_hard_surface_incremental_packet.gd"],180,"HARD_SURFACE_INCREMENTAL"),
+        ("full-material-upload",["--headless","--audio-driver","Dummy","--script","res://tests/test_render_full_upload.gd"],180,"RENDER_FULL_UPLOAD:"),
+        ("actor-integration",["--headless","--script","res://tests/test_physical_actor_integration.gd"],300,"Physical actor integration:"),
+        ("native-world-clearance",["--headless","--script","res://tests/test_pr566_mask_coherent_native_world.gd"],240,"PR566_WORLD_CLEARANCE_RESULT"),
+        ("cadence-contract-graphical",["--rendering-driver","opengl3_angle","--rendering-method","gl_compatibility",
+         "--audio-driver","Dummy","--max-fps","60","--script","res://tests/test_render_cadence_contract.gd",
+         "--","--render-cadence-evidence="+str((evidence/"cadence-contract").resolve())],300,"RENDER_CADENCE_CONTRACT_RESULT"),
+        ("engine-lab-safe-gui",["--rendering-method","gl_compatibility","--render-thread","safe","--audio-driver","Dummy","--script","res://tests/test_workbench_engine_lab.gd"],300,"ENGINE_LAB_RESULT"),
+        ("engine-lab-separate-gui",["--rendering-method","gl_compatibility","--render-thread","separate","--audio-driver","Dummy","--script","res://tests/test_workbench_engine_lab.gd"],300,"ENGINE_LAB_RESULT"),
+        ("materials-lab-safe-gui",["--rendering-method","gl_compatibility","--render-thread","safe","--audio-driver","Dummy","--script","res://tests/test_material_lab_ui.gd","--","--workbench-mount-only"],300,"MATERIAL_LAB_WORKBENCH_MOUNT:"),
+        ("materials-lab-separate-gui",["--rendering-method","gl_compatibility","--render-thread","separate","--audio-driver","Dummy","--script","res://tests/test_material_lab_ui.gd","--","--workbench-mount-only"],300,"MATERIAL_LAB_WORKBENCH_MOUNT:"),
+        ("graphical",["--rendering-method","gl_compatibility","--quit-after","180","--","--workbench"],120,"Rapier2D")
+    ]
+    report=[]
+    failures=[]
+    for name,suffix,timeout,marker in cases:
+        if "--headless" not in suffix and "--rendering-driver" not in suffix:
+            suffix=["--rendering-driver","opengl3_angle",*suffix]
+        if "--headless" not in suffix and "--render-thread" not in suffix:
+            suffix=["--render-thread","separate",*suffix]
+        cmd=[str(console),"--path",str(project),*suffix]
+        print("COHERENCE_SMOKE_START",name,flush=True)
+        env=os.environ.copy()
+        env["CYBERSAND_SOURCE_REVISION"]=SOURCE
+        env["CYBERSAND_DIAG_PRESENTATION"]="legacy" if name in {"production","crossfade","dense-budget","cadence-contract","cadence-contract-graphical"} else ""
+        env["CYBERSAND_DIAG_RENDER_CADENCE"]=""
+        env["CYBERSAND_DIAG_FLYER_POSE"]=""
+        separate="--render-thread" in suffix and suffix[suffix.index("--render-thread")+1]=="separate"
+        env["CYBERSAND_DIAG_NATIVE_RENDEZVOUS"]="render-overlap" if separate else "0"
+        env["CYBERSAND_MATERIAL_PUBLICATION"]="auto"
+        env["CYBERSAND_DIAG_PHYSICS_PUBLICATION"]="early"
+        for selector in ("CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS","CYBERSAND_DIAG_MATERIAL_HISTORY_TARGETS",
+                         "CYBERSAND_DIAG_MATERIAL_COPY_MODE","CYBERSAND_DIAG_COMMON_OBSERVER"):
+            env[selector]=""
+        if name=="temporal-dense":
+            env["CYBERSAND_TEMPORAL_DENSE_OUTPUT"]=str((evidence/"temporal-dense").resolve())
+        if name in {"temporal-contact","temporal-contact-graphical"}:
+            env["CYBERSAND_TEMPORAL_CONTACT_OUTPUT"]=str((evidence/name).resolve())
+        if name.startswith("physics-pacing"):
+            env["CYBERSAND_PHYSICS_PACING_OUTPUT"]=str((evidence/name).resolve())
+        if name.startswith("physics-publication") or name=="native-rendezvous-integration":
+            env["CYBERSAND_PHYSICS_PUBLICATION_OUTPUT"]=str((evidence/(name+".json")).resolve())
+        if name.startswith("material-tiles"):
+            env["CYBERSAND_MATERIAL_TILE_OUTPUT"]=str((evidence/(name+".json")).resolve())
+        if name.startswith("material-threaded-"):
+            env["CYBERSAND_MATERIAL_QUEUE_THREAD"]="separate" if separate else "safe"
+            env["CYBERSAND_MATERIAL_QUEUE_OUTPUT"]=str((evidence/(name+".json")).resolve())
+        if name.startswith("native-render-overlap"):
+            env["CYBERSAND_NATIVE_RENDER_OVERLAP_OUTPUT"]=str((evidence/(name+".json")).resolve())
+        if name.startswith("font-mipmap-"):
+            env["CYBERSAND_FONT_MIPMAP_THREAD"]="separate" if "separate" in name else "safe"
+            env["CYBERSAND_FONT_MIPMAP_OUTPUT"]=str((evidence/name).resolve())
+            env["CYBERSAND_FONT_MIPMAP_REFERENCE"]=str((evidence/"font-mipmap-safe-graphical").resolve()) if "separate" in name else ""
+        if name.startswith("depth-threaded-"):
+            env["CYBERSAND_DEPTH_QUEUE_THREAD"]="separate" if "separate" in name else "safe"
+            env["CYBERSAND_DEPTH_QUEUE_OUTPUT"]=str((evidence/(name+".json")).resolve())
+        if name=="full-material-upload":
+            env["CYBERSAND_FULL_UPLOAD_OUTPUT"]=str((evidence/name/"full-upload.json").resolve())
+        group="paint-persistence" if name in {"paint-author","paint-reopen"} else name
+        if name in {"architecture-author","architecture-reopen"}: group="architecture-persistence"
+        if name in {"flatten-author","flatten-reopen"}: group="flatten-persistence"
+        env["APPDATA"]=str((evidence/"userdata"/group).resolve())
+        env["XDG_DATA_HOME"]=env["APPDATA"]
+        if name in {"paint-author","paint-reopen"}:
+            env["PAINT_REOPEN"]="1" if name=="paint-reopen" else ""
+            env["PAINT_CAPTURE_DIR"]=str((evidence/name/"frames").resolve())
+        if name.startswith("architecture-") and name!="architecture-contract":
+            env["CYBERSAND_ARCHITECTURE_PHASE"]=name.removeprefix("architecture-")
+            env["CYBERSAND_ARCHITECTURE_OUTPUT"]=str((evidence/"architecture").resolve())
+            env["CYBERSAND_ARCHITECTURE_REQUIRE_GRAPHICS"]="0" if name=="architecture-native" else "1"
+        if name.startswith("flatten-"):
+            env["FLATTEN_SIDE"]="512";env["FLATTEN_WORKERS"]="1"
+            env["FLATTEN_REOPEN"]="1" if name=="flatten-reopen" else "0"
+        if name=="native-camera":
+            env["CYBERSAND_TEST_ARTIFACT_DIR"]=str((evidence/"native-camera").resolve())
+        if name.startswith("engine-lab-"):
+            env["CYBERSAND_ENGINE_LAB_SCREENSHOT"]=str((evidence/(name+".png")).resolve())
+            env["CYBERSAND_ENGINE_LAB_OUTPUT"]=str((evidence/(name+".json")).resolve())
+        if name.startswith("materials-lab-"):
+            env["CYBERSAND_MATERIAL_LAB_WINDOW_OUTPUT"]=str((evidence/name).resolve())
+        file=evidence/(name+".log")
+        try:
+            r=subprocess.run(cmd,cwd=output,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,
+                             timeout=timeout,text=True,errors="replace",env=env)
+            file.write_text(r.stdout,encoding="utf-8")
+            need(r.returncode==0 and "SCRIPT ERROR:" not in r.stdout and "SHADER ERROR:" not in r.stdout and
+                 not GRAPHICS_ERRORS.search(r.stdout) and
+                 (marker is None or marker in r.stdout),"Installed "+name+" failed: "+r.stdout[-3500:])
+            detail={}
+            if name=="native-rendezvous-integration" or name.startswith(("material-threaded-","native-render-overlap","depth-threaded-")):
+                detail=validate_publication_regression_receipt(name,evidence/(name+".json"),project,SOURCE)
+            elif name.startswith("font-mipmap-"):
+                detail=validate_publication_regression_receipt(name,evidence/name/"result.json",project,SOURCE)
+            elif name.startswith("engine-lab-"):
+                detail=validate_lab_window_receipt(name,evidence/(name+".json"),project,SOURCE,evidence/(name+".png"))
+            elif name.startswith("materials-lab-"):
+                detail=validate_lab_window_receipt(name,evidence/name/"result.json",project,SOURCE)
+            if name in {"paint-author","paint-reopen"}:
+                completions=[line for line in r.stdout.splitlines() if line.startswith("PAINT_EDITOR_WORKBENCH ")]
+                need(bool(completions),"Installed graphical PAINT completion missing")
+                paint=json.loads(completions[-1].split(" ",1)[1])
+                need(not paint["failures"] and paint["checks"]>0 and
+                     paint["reopen"]==("1" if name=="paint-reopen" else ""),
+                     "Installed graphical PAINT author/reopen phase did not complete")
+                need("--headless" not in cmd and "opengl3_angle" in cmd and "ANGLE" in r.stdout,
+                     "Installed PAINT pair did not execute the requested graphical Windows backend")
+                frames=[]
+                if name=="paint-author":
+                    for label in ("paint001-mixed-stamp-preview","paint001-mounted-editor"):
+                        frame=evidence/name/"frames"/(label+".png")
+                        need(frame.is_file() and frame.read_bytes().startswith(b"\x89PNG\r\n\x1a\n"),
+                             "Installed PAINT framebuffer missing: "+label)
+                        frames.append({"path":str(frame),"sha256":digest(frame)})
+                detail={"command":cmd,"graphical":True,"paint_completion":paint,"framebuffers":frames,
+                        "test_sha256":digest(project/"tests/test_paint_editor_workbench.gd")}
+            if name=="full-material-upload":
+                upload=json.loads((evidence/name/"full-upload.json").read_text())
+                need(upload["source_sha"]==SOURCE and upload["failures"]==0 and upload["assertions"]>0,
+                     "Installed full material upload source/assertions not verified")
+                need(upload["main_sha256"]==digest(project/"scripts/main.gd") and
+                     {row["channels"] for row in upload["measurements"]}=={1,2} and
+                     all(row["side"]==2048 and len(row["samples"])==12 for row in upload["measurements"]),
+                     "Installed full material upload did not cover exact R8/RG8 source and workload")
+            if name.startswith("physics-pacing"):
+                folder=evidence/name
+                pacing=json.loads((folder/"physics-pacing.json").read_text())
+                need(pacing.get("schema")=="workbench-physics-pacing-v1" and
+                     not pacing["failures"] and pacing["checks"]>0 and len(pacing["phases"])==6,
+                     "Installed production physics pacing did not complete all six phases")
+                need(all(row["wait_native_sample"] and row["sample_wake"] for row in pacing["phases"]),
+                     "Production pacing phases did not retain default native coupling")
+                need(pacing["source_identity"]["source_sha"]==SOURCE and pacing["completed_steps"],
+                     "Production pacing source/completed physics evidence missing")
+                phase_map={row["label"]:row for row in pacing["phases"]}
+                need(set(phase_map)=={"interactive-default-60","render-30-physics-120","fire-on-contact",
+                                     "fire-off-flight","fire-off-recovery-contact","live-erasing-flight"},
+                     "Installed production pacing phase identities missing or duplicated")
+                recovery=phase_map["fire-off-recovery-contact"]
+                need(recovery["required_contact_slot"]==0 and recovery["required_contact_observations"]>0 and
+                     recovery["contact_recovery"]["reason"]=="contact" and recovery["completed_steps"]<=360,
+                     "Selected Needle did not complete bounded physical contact recovery")
+                live=[row["receipt"] for row in pacing["observations"] if row["label"]=="live-erasing-flight"]
+                need(len(live)==1 and not live[0]["limit_reached"] and
+                     48<=phase_map["live-erasing-flight"]["completed_steps"]<=90 and
+                     [edit["footprint_cells"] for edit in live[0]["edits"]]==[13,1793] and
+                     all(edit.get("publication") and len(edit.get("queue_receipts",[]))==1
+                         for edit in live[0]["edits"]),
+                     "Ordinary small/large live-erasing input, native progress and publication evidence missing")
+                if name=="physics-pacing-graphical":
+                    need(live[0].get("gpu_history_readback_after_phase"),
+                         "Installed live erasing did not verify actual current/previous GPU history")
+                need((folder/"physics-pacing-poses.jsonl").stat().st_size>0,
+                     "Original production physics pacing trace missing")
+            if name=="cadence-contract-graphical":
+                folder=evidence/"cadence-contract"
+                contract=json.loads((folder/"contract.json").read_text())
+                need(not contract["failures"] and len(contract["observations"])==8,
+                     "Graphical cadence contract did not complete all eight observations")
+                need(len(list(folder.glob("*.png")))==8,"Missing eight original contract framebuffers")
+                for row in contract["observations"]:
+                    need(row["graphical"] and digest(row["capture_path"])==row["capture_sha256"],
+                         "Graphical contract capture hash drift")
+                for arm in ("legacy","repair"):
+                    need((folder/(arm+"-poses.jsonl")).stat().st_size>0,"Missing original contract trace: "+arm)
+            report.append({"name":name,"log_sha256":digest(file),"exit":r.returncode,"passed":True,**detail})
+            print("COHERENCE_SMOKE_PASS",name,flush=True)
+        except (RuntimeError,OSError,ValueError,subprocess.TimeoutExpired) as error:
+            if isinstance(error,subprocess.TimeoutExpired):
+                raw=error.stdout or b""
+                file.write_text(raw.decode("utf-8","replace") if isinstance(raw,bytes) else raw,encoding="utf-8")
+            failures.append({"name":name,"error":str(error)})
+            report.append({"name":name,"passed":False,"error":str(error),
+                           "log_sha256":digest(file) if file.exists() else None})
+            print("COHERENCE_SMOKE_FAIL",name,str(error),flush=True)
+        (evidence/"summary.json").write_text(json.dumps({
+            "source_commit":SOURCE,"acceptance":"physical GPU pending","cases":report,
+            "failures":failures,"complete":len(report)==len(cases) and not failures},indent=2)+"\n")
+    need(not failures,"Installed application failed one or more required cases; see smoke summary")
+
+
+def main():
+    global SOURCE
+    p=argparse.ArgumentParser()
+    p.add_argument("command",choices=["preflight","build","verify","smoke"])
+    p.add_argument("--source")
+    p.add_argument("--platform",choices=["linux","windows"],default="windows")
+    for name in ["native-stage","godot-zip","notices","engine-dir","vc","output","archive","evidence"]:
+        p.add_argument("--"+name,type=Path)
+    a=p.parse_args()
+    if a.source: SOURCE=a.source
+    if a.command=="preflight":
+        print(json.dumps(preflight(a.platform),indent=2));return
+    need(a.output is not None,"Output directory required")
+    if a.command=="build":build(a)
+    elif a.command=="verify":verify(a.output)
+    else:
+        need(a.evidence is not None,"Missing smoke evidence path")
+        smoke(a.output,a.evidence)
+
+if __name__=="__main__":main()

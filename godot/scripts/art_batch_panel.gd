@@ -808,7 +808,7 @@ func send_next(expected_epoch: int) -> void:
 		var scale := Vector2(frame.get_width(),frame.get_height())/logical
 		var rect: Rect2 = wb.host.view_content_rect()
 		rect.position += wb.host.world_view.get_global_rect().position
-		var visible_cells := Rect2(Vector2(wb.host.camera_origin.floor()),Vector2(wb.host.current_view_size))
+		var visible_cells := Rect2(wb.host.presentation_camera_origin(),Vector2(wb.host.current_view_size))
 		var image_cells := visible_cells
 		if not full_image.button_pressed:
 			var intersection := visible_cells.intersection(Rect2(request_area))
@@ -817,12 +817,16 @@ func send_next(expected_epoch: int) -> void:
 		var image_rect := Rect2(rect.position+(image_cells.position-visible_cells.position)*pixels_per_cell,image_cells.size*pixels_per_cell)
 		var crop := Rect2i(image_rect.position*scale,image_rect.size*scale).intersection(Rect2i(Vector2i.ZERO,frame.get_size()))
 		if not crop.has_area(): capturing = false; input_error = "Canvas capture is empty."; return
+		# Pixel cropping rounds the requested rectangle. Describe the actual
+		# captured pixel edges, including fractional cells, to the agent.
+		image_cells = Rect2(visible_cells.position+(Vector2(crop.position)/scale-rect.position)/pixels_per_cell,
+			Vector2(crop.size)/scale/pixels_per_cell)
 		var view := frame.get_region(crop)
 		if maxi(view.get_width(),view.get_height())>768:
 			var ratio := 768.0/maxi(view.get_width(),view.get_height())
 			view.resize(maxi(1,int(view.get_width()*ratio)),maxi(1,int(view.get_height()*ratio)),Image.INTERPOLATE_NEAREST)
 		png = Marshalls.raw_to_base64(view.save_png_to_buffer())
-		observation = "Image world rectangle x=%d y=%d w=%d h=%d, image %d by %d pixels, world epoch %d." % [image_cells.position.x,image_cells.position.y,image_cells.size.x,image_cells.size.y,view.get_width(),view.get_height(),request_epoch]
+		observation = "Image world rectangle x=%.6f y=%.6f w=%.6f h=%.6f, image %d by %d pixels, world epoch %d." % [image_cells.position.x,image_cells.position.y,image_cells.size.x,image_cells.size.y,view.get_width(),view.get_height(),request_epoch]
 		provider.log_event("observation",{"mapping":observation,"sha256":png.sha256_text()})
 		capturing = false
 	if epoch != ui_epoch or request_epoch != wb.host.simulation_worker.art_state().epoch: return

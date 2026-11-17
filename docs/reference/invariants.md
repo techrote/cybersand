@@ -150,6 +150,7 @@ Fixtures: [native bridge](../../godot/tests/test_native_render_bridge_regression
 | BRIDGE-004 | Approved; Current presentation path: render-only state must not affect authoritative hashes/wake |
 | BRIDGE-005 | Current: live body Nodes/RIDs remain on main-thread adapter; workers receive complete value samples |
 | BRIDGE-006 | Current: LUT variation, temporal blending and glow do not write derived colour/frame noise into cells |
+| BRIDGE-007 | Current unmerged Workbench candidate: selected actor simulation time never rewinds within unchanged identity; a safety veto holds a certified pose or explicitly withholds it. Follow, terrain shader and overlay share one resolved presentation frame and final pixel mapping |
 
 ## Rigid-body coupling invariants
 

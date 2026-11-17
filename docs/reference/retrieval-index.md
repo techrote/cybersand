@@ -10,6 +10,29 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+## Actor versus terrain stutter and independent clocks
+
+| Question | Canonical route |
+| --- | --- |
+| Why can 60 graphical FPS coexist with 10–20 native and Rapier ticks? | [Cadence clock meanings](../operations/engine-lab-pose-tracing.md#what-the-rates-mean) |
+| What is repaired in the #609 continuation, and does it establish NVIDIA acceptance or independent 120-Hz physics? | [Bounded causal repair](../audits/2026-11-15-render-cadence-001.md) |
+| How do I collect source-matched Free/Follow, Pixel/Rapier/FPS and ACK comparisons without development tools? | [One-command campaign](../operations/engine-lab-pose-tracing.md#retained-source-matched-cadence-campaign) |
+
+## Native display-pixel scrolling and fractional camera coordinates
+
+| Question | Canonical route |
+| --- | --- |
+| Why can an actor jump backward while terrain stays still, and how does Follow track the displayed pose? | [Coherent Workbench frame](../architecture/rendering-and-gameplay-bridges.md#coherent-workbench-presentation-frame) and [Windows comparison](../operations/camera-stack-coherence-acceptance.md) |
+| Does a continuously live pose prove that Rapier is advancing, and why can terrain edits stop physical progress? | [Physics progress and terrain installation](../architecture/rendering-and-gameplay-bridges.md#workbench-physics-progress-and-terrain-installation) and [failed physical candidate](../audits/2026-11-15-workbench-physics-freezes.md) |
+| Why did magnified camera movement jump whole cells, and how does one-display-pixel scrolling stay sharp? | [Sampling and presentation](../systems/material-appearance-and-rendering.md#native-resolution-pixel-scrolling) |
+| How do PAINT, selection, clipboard, Art focus and cursor-centred zoom remain aligned at fractional origins? | [Picking and zoom](../systems/material-appearance-and-rendering.md#picking-and-zoom-at-fractional-camera-positions) and [private interface](interfaces-and-message-contracts.md#camera-presentation-and-picking) |
+| How are glow and vapour kept aligned without a full-resolution offscreen world? | [Effect alignment](../systems/material-appearance-and-rendering.md#glow-and-vapour-during-fractional-scrolling) and [buffer capacities](configuration-reference.md#camera-effect-buffer-capacities) |
+| How do I run and accept the Windows camera candidate, and which results remain pending? | [Camera runbook](../operations/native-pixel-scrolling.md) and its separately scoped [audit](../audits/2026-11-13-native-pixel-scrolling.md) |
+| Which cells does gameplay recording retain at fractional camera positions, and does its ROI move when I pan? | [Camera recording bounds](../operations/gameplay-recording.md#camera-recording-bounds) |
+
+The [camera retrieval questions](retrieval-questions-native-pixel-scrolling.json)
+are additive; frozen historical question sets are unchanged.
+
 For the combined #562 Materials Lab / #564 Workbench candidate, original source ancestry, shared history preservation, standalone evaluation and #563 merge-order boundaries, read the [combined qualification record](../audits/2026-11-12-mat-auth-workbench-integration.md).
 
 ## Materials Lab v1 review candidate — 2026-11-11

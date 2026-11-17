@@ -1,0 +1,92 @@
+name: PAINT startup readiness installed Windows probe
+on:
+  push:
+    branches: [diagnostics/paint-startup-readiness-20261116]
+permissions:
+  contents: read
+concurrency:
+  group: paint-startup-${{ github.run_id }}-${{ github.run_attempt }}
+  cancel-in-progress: false
+env:
+  CYBERSAND_EVAL_SOURCE_SHA: ${{ github.sha }}
+  CYBERSAND_SOURCE_REVISION: ${{ github.sha }}
+jobs:
+  windows-paint:
+    name: Installed PAINT profile-cold full versus auto ABBA
+    runs-on: windows-2022
+    # Original process watchdogs: import180s + 4*(author600s + reopen240s) = 59min.
+    # Preparation/artifact headroom does not extend any process/readiness cap.
+    # Profiles are cold; machine and driver caches are not reset between arms.
+    timeout-minutes: 90
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          lfs: false
+          fetch-depth: 0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify exact retained runtime and unchanged production package path
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          python - <<'PY'
+          import json,os,pathlib
+          pathlib.Path('evidence/run.json').write_text(json.dumps({'source':os.environ['GITHUB_SHA'],'run_id':os.environ['GITHUB_RUN_ID'],'run_attempt':os.environ['GITHUB_RUN_ATTEMPT'],'scope':'Diagnostic PAINT startup probe; no owner delivery or performance qualification'},indent=2)+'\n',encoding='utf-8')
+          PY
+          git lfs install --local
+          git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          python tools/ci/package_engine_lab_windows.py preflight --platform windows > evidence/source-runtime.json 2> evidence/preflight.stderr.log
+          git rev-parse HEAD HEAD^{tree} > evidence/source.txt
+          python tools/ci/check_ci_provider_policy.py > evidence/ci-provider.log 2>&1
+          python tools/ci/run_paint_startup_probe.py --self-test > evidence/probe-contract-tests.json 2>&1
+      - name: Acquire the same pinned Godot engine and notices
+        run: |
+          set -euo pipefail
+          curl -fL --retry 3 --max-time 600 -o "$RUNNER_TEMP/godot-4.7-paint.zip" 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          mkdir -p "$RUNNER_TEMP/paint-startup-notices"
+          for name in LICENSE.txt COPYRIGHT.txt; do
+            curl -fL --retry 3 --max-time 300 -o "$RUNNER_TEMP/paint-startup-notices/$name" "https://raw.githubusercontent.com/godotengine/godot/5b4e0cb0f/$name"
+          done
+      - name: Stage the same signed licensed Microsoft runtime
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $notices = Join-Path $env:RUNNER_TEMP 'paint-startup-notices'
+          $runtime = Join-Path $notices 'Microsoft-Visual-C-Runtime-LICENSE.docx'
+          $developer = Join-Path $notices 'Microsoft-Visual-Studio-2022-LICENSE.docx'
+          curl.exe -fL --retry 3 --max-time 300 -o $runtime 'https://visualstudio.microsoft.com/wp-content/uploads/2021/09/Visual-C-Runtime-2015-2022-License-1.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Runtime licence download failed' }
+          curl.exe -fL --retry 3 --max-time 300 -o $developer 'https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Visual-Studio-2022-Enterprise-Professional-License-EN.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Developer licence download failed' }
+          ./tools/ci/stage_windows_vc_runtime.ps1 -Output (Join-Path $env:RUNNER_TEMP 'paint-startup-vc') -License $runtime -DeveloperLicense $developer
+          Copy-Item (Join-Path $env:RUNNER_TEMP 'paint-startup-vc/vc-runtime-provenance.json') 'evidence/vc-runtime-provenance.json'
+      - name: Build a temporary source-pinned probe ZIP with the existing packager
+        run: |
+          set -euo pipefail
+          python -u tools/ci/package_engine_lab_windows.py build --godot-zip "$RUNNER_TEMP/godot-4.7-paint.zip" --notices "$RUNNER_TEMP/paint-startup-notices" --vc "$RUNNER_TEMP/paint-startup-vc" --output "$RUNNER_TEMP/paint-startup-packed" --archive "$RUNNER_TEMP/paint-startup-probe.zip" 2>&1 | tee evidence/package-build.log
+          cp "$RUNNER_TEMP/paint-startup-probe.zip.json" evidence/probe-zip.json
+          cp "$RUNNER_TEMP/paint-startup-probe.zip.sha256" evidence/probe-zip.sha256
+      - name: Verify fresh ZIP and run four original PAINT pairs with isolated profiles
+        run: |
+          set -euo pipefail
+          python -u tools/ci/run_paint_startup_probe.py --source-sha "$GITHUB_SHA" --archive "$RUNNER_TEMP/paint-startup-probe.zip" --application C:/cspaintstartup --evidence evidence/paint-startup --profile-comparison 2>&1 | tee evidence/paint-startup-runner.log
+      - name: Preserve final probe workflow status even after preparation failure
+        if: always()
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path evidence -Force | Out-Null
+          [ordered]@{source=$env:GITHUB_SHA; run_id=$env:GITHUB_RUN_ID; run_attempt=$env:GITHUB_RUN_ATTEMPT; job_status='${{ job.status }}'; scope='Diagnostic evidence only; no owner delivery or acceptance'} | ConvertTo-Json | Set-Content -Encoding utf8 'evidence/workflow-outcome.json'
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: PAINT-Startup-Windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/
+          if-no-files-found: error
+          overwrite: false
+          retention-days: 90
