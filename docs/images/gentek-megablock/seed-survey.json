@@ -1,0 +1,8290 @@
+[
+  {
+    "bay_width": 96,
+    "benchmark_checksum": 0,
+    "command": [
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek_megablock_capture",
+      "--output",
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek-megablock-gallery-final/raw/seed-00.u16",
+      "--seed",
+      "0"
+    ],
+    "direct_sampler_ms": [],
+    "doors": 1,
+    "floor_height": 64,
+    "generator_fingerprint": "2a2a1314c3008b6",
+    "generator_raster_ms": [],
+    "height": 512,
+    "isolated_single_cells": 0,
+    "largest_empty_rectangle": {
+      "area": 14016,
+      "height": 146,
+      "width": 96,
+      "x": 96,
+      "y": 256
+    },
+    "largest_solid_component": 112182,
+    "largest_void_component": 25648,
+    "material_counts": {
+      "0": 149962,
+      "121": 10888,
+      "58": 28994,
+      "62": 72300
+    },
+    "material_encoding": "row-major uint16 little-endian existing material IDs",
+    "material_sha256": "2b8db53ec8a21523e3da8d53007be95aad2f651e8c0bc2e4fa3b7993c3d4b82a",
+    "module": "seeded_typology_megablock",
+    "name": "seed-00",
+    "native_raster_ms": 150.479673,
+    "non_atrium_lots_in_capture": 44,
+    "occupied_cells": 112182,
+    "occupied_ratio": 0.4279403687,
+    "operations_per_cell": 616,
+    "origin": [
+      0,
+      0
+    ],
+    "png": "png/seed-00.png",
+    "png_sha256": "86e48c4423b87394c079b6156bb0b20824bbb19093341b2ada0ef3da018247ff",
+    "preparation_ms": 0.222308,
+    "programme_diagnostic_source": "private production helper generation_megablock_programme.hpp",
+    "programmes": [
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "core",
+            "atrium",
+            "crown",
+            "crown"
+          ],
+          [
+            "core",
+            "bridge",
+            "open_frame",
+            "cantilever"
+          ],
+          [
+            "core",
+            "atrium",
+            "habitation",
+            "habitation"
+          ],
+          [
+            "core",
+            "arcade",
+            "buttress",
+            "arcade"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": true,
+        "core_column": 0,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 96,
+          "y": 128
+        },
+        "spare_column": 3,
+        "supercell": [
+          0,
+          0
+        ],
+        "support_column": 2,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "crown",
+            "atrium",
+            "core"
+          ],
+          [
+            "cantilever",
+            "open_frame",
+            "bridge",
+            "core"
+          ],
+          [
+            "habitation",
+            "habitation",
+            "atrium",
+            "core"
+          ],
+          [
+            "arcade",
+            "buttress",
+            "arcade",
+            "core"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": false,
+        "core_column": 3,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 128
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          0
+        ],
+        "support_column": 1,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "core",
+            "atrium",
+            "crown",
+            "crown"
+          ],
+          [
+            "core",
+            "atrium",
+            "habitation",
+            "habitation"
+          ],
+          [
+            "core",
+            "bridge",
+            "habitation",
+            "cantilever"
+          ],
+          [
+            "core",
+            "arcade",
+            "buttress",
+            "arcade"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": true,
+        "core_column": 0,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 96,
+          "y": 320
+        },
+        "spare_column": 3,
+        "supercell": [
+          0,
+          1
+        ],
+        "support_column": 2,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "core",
+            "atrium",
+            "crown"
+          ],
+          [
+            "cantilever",
+            "core",
+            "bridge",
+            "habitation"
+          ],
+          [
+            "habitation",
+            "core",
+            "atrium",
+            "habitation"
+          ],
+          [
+            "arcade",
+            "core",
+            "arcade",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": false,
+        "core_column": 1,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 384
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          1
+        ],
+        "support_column": 3,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      }
+    ],
+    "raw": "raw/seed-00.u16",
+    "schema": 1,
+    "seed": 0,
+    "smallest_solid_component": 112182,
+    "solid_components4": 1,
+    "typology_families": 9,
+    "typology_lots_in_capture": {
+      "arcade": 6,
+      "atrium": 4,
+      "bridge": 2,
+      "buttress": 3,
+      "cantilever": 4,
+      "core": 12,
+      "crown": 7,
+      "habitation": 8,
+      "open_frame": 2
+    },
+    "version": 1,
+    "void_components4": 118,
+    "wall": 4,
+    "warnings": [],
+    "width": 512,
+    "windows": 1
+  },
+  {
+    "bay_width": 96,
+    "benchmark_checksum": 0,
+    "command": [
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek_megablock_capture",
+      "--output",
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek-megablock-gallery-final/raw/seed-01.u16",
+      "--seed",
+      "1"
+    ],
+    "direct_sampler_ms": [],
+    "doors": 1,
+    "floor_height": 64,
+    "generator_fingerprint": "ddab12265e7d169d",
+    "generator_raster_ms": [],
+    "height": 512,
+    "isolated_single_cells": 0,
+    "largest_empty_rectangle": {
+      "area": 14016,
+      "height": 146,
+      "width": 96,
+      "x": 192,
+      "y": 0
+    },
+    "largest_solid_component": 108381,
+    "largest_void_component": 25648,
+    "material_counts": {
+      "0": 153763,
+      "121": 7636,
+      "58": 30796,
+      "62": 69949
+    },
+    "material_encoding": "row-major uint16 little-endian existing material IDs",
+    "material_sha256": "5c5bbdfe22f8b345dcdbef1567b32b7ff1080d84355d1115d3daf14e732f51b6",
+    "module": "seeded_typology_megablock",
+    "name": "seed-01",
+    "native_raster_ms": 198.862839,
+    "non_atrium_lots_in_capture": 42,
+    "occupied_cells": 108381,
+    "occupied_ratio": 0.4134407043,
+    "operations_per_cell": 616,
+    "origin": [
+      0,
+      0
+    ],
+    "png": "png/seed-01.png",
+    "png_sha256": "f64e6f897ecaf68a761a4b3a36708c574f3eafe20c253cd73dfa15c2b623b056",
+    "preparation_ms": 0.312841,
+    "programme_diagnostic_source": "private production helper generation_megablock_programme.hpp",
+    "programmes": [
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "core",
+            "atrium",
+            "crown"
+          ],
+          [
+            "habitation",
+            "core",
+            "atrium",
+            "habitation"
+          ],
+          [
+            "open_frame",
+            "core",
+            "bridge",
+            "open_frame"
+          ],
+          [
+            "arcade",
+            "core",
+            "arcade",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": true,
+        "core_column": 1,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 192,
+          "y": 64
+        },
+        "spare_column": 0,
+        "supercell": [
+          0,
+          0
+        ],
+        "support_column": 3,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "atrium",
+            "core",
+            "crown"
+          ],
+          [
+            "open_frame",
+            "bridge",
+            "core",
+            "cantilever"
+          ],
+          [
+            "habitation",
+            "atrium",
+            "core",
+            "habitation"
+          ],
+          [
+            "buttress",
+            "arcade",
+            "core",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": false,
+        "core_column": 2,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 480,
+          "y": 128
+        },
+        "spare_column": 3,
+        "supercell": [
+          1,
+          0
+        ],
+        "support_column": 0,
+        "visible_protected_void_cells": 2048,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "core",
+            "atrium",
+            "crown",
+            "crown"
+          ],
+          [
+            "core",
+            "atrium",
+            "habitation",
+            "habitation"
+          ],
+          [
+            "core",
+            "bridge",
+            "open_frame",
+            "open_frame"
+          ],
+          [
+            "core",
+            "arcade",
+            "buttress",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": true,
+        "core_column": 0,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 96,
+          "y": 320
+        },
+        "spare_column": 3,
+        "supercell": [
+          0,
+          1
+        ],
+        "support_column": 2,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "core",
+            "atrium",
+            "crown"
+          ],
+          [
+            "open_frame",
+            "core",
+            "bridge",
+            "open_frame"
+          ],
+          [
+            "open_frame",
+            "core",
+            "atrium",
+            "habitation"
+          ],
+          [
+            "arcade",
+            "core",
+            "arcade",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": false,
+        "core_column": 1,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 384
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          1
+        ],
+        "support_column": 3,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      }
+    ],
+    "raw": "raw/seed-01.u16",
+    "schema": 1,
+    "seed": 1,
+    "smallest_solid_component": 108381,
+    "solid_components4": 1,
+    "typology_families": 8,
+    "typology_lots_in_capture": {
+      "arcade": 5,
+      "atrium": 6,
+      "bridge": 3,
+      "buttress": 4,
+      "cantilever": 0,
+      "core": 12,
+      "crown": 6,
+      "habitation": 5,
+      "open_frame": 7
+    },
+    "version": 1,
+    "void_components4": 124,
+    "wall": 4,
+    "warnings": [],
+    "width": 512,
+    "windows": 1
+  },
+  {
+    "bay_width": 96,
+    "benchmark_checksum": 0,
+    "command": [
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek_megablock_capture",
+      "--output",
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek-megablock-gallery-final/raw/seed-02.u16",
+      "--seed",
+      "2"
+    ],
+    "direct_sampler_ms": [],
+    "doors": 1,
+    "floor_height": 64,
+    "generator_fingerprint": "92067edfa4a8031a",
+    "generator_raster_ms": [],
+    "height": 512,
+    "isolated_single_cells": 0,
+    "largest_empty_rectangle": {
+      "area": 7872,
+      "height": 82,
+      "width": 96,
+      "x": 192,
+      "y": 0
+    },
+    "largest_solid_component": 108898,
+    "largest_void_component": 19262,
+    "material_counts": {
+      "0": 153246,
+      "121": 6200,
+      "58": 33872,
+      "62": 68826
+    },
+    "material_encoding": "row-major uint16 little-endian existing material IDs",
+    "material_sha256": "bd99b7727c19c0957f5cd43b40d36921841a003c06cc1e1ff14e07b572d68e56",
+    "module": "seeded_typology_megablock",
+    "name": "seed-02",
+    "native_raster_ms": 149.272103,
+    "non_atrium_lots_in_capture": 42,
+    "occupied_cells": 108898,
+    "occupied_ratio": 0.4154129028,
+    "operations_per_cell": 616,
+    "origin": [
+      0,
+      0
+    ],
+    "png": "png/seed-02.png",
+    "png_sha256": "2fd75bc325dc794249939b351709e4e65fac8deea72a13bd888352d06f190fcc",
+    "preparation_ms": 0.223219,
+    "programme_diagnostic_source": "private production helper generation_megablock_programme.hpp",
+    "programmes": [
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "core",
+            "atrium",
+            "crown"
+          ],
+          [
+            "open_frame",
+            "core",
+            "bridge",
+            "open_frame"
+          ],
+          [
+            "open_frame",
+            "core",
+            "atrium",
+            "habitation"
+          ],
+          [
+            "buttress",
+            "core",
+            "arcade",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": true,
+        "core_column": 1,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 192,
+          "y": 128
+        },
+        "spare_column": 0,
+        "supercell": [
+          0,
+          0
+        ],
+        "support_column": 3,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "atrium",
+            "core",
+            "crown"
+          ],
+          [
+            "habitation",
+            "atrium",
+            "core",
+            "open_frame"
+          ],
+          [
+            "open_frame",
+            "bridge",
+            "core",
+            "cantilever"
+          ],
+          [
+            "buttress",
+            "arcade",
+            "core",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": false,
+        "core_column": 2,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 480,
+          "y": 64
+        },
+        "spare_column": 3,
+        "supercell": [
+          1,
+          0
+        ],
+        "support_column": 0,
+        "visible_protected_void_cells": 2048,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "atrium",
+            "core",
+            "crown"
+          ],
+          [
+            "habitation",
+            "bridge",
+            "core",
+            "cantilever"
+          ],
+          [
+            "habitation",
+            "atrium",
+            "core",
+            "open_frame"
+          ],
+          [
+            "buttress",
+            "arcade",
+            "core",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": true,
+        "core_column": 2,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 96,
+          "y": 384
+        },
+        "spare_column": 3,
+        "supercell": [
+          0,
+          1
+        ],
+        "support_column": 0,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "crown",
+            "atrium",
+            "core"
+          ],
+          [
+            "cantilever",
+            "habitation",
+            "bridge",
+            "core"
+          ],
+          [
+            "open_frame",
+            "habitation",
+            "atrium",
+            "core"
+          ],
+          [
+            "buttress",
+            "buttress",
+            "arcade",
+            "core"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": false,
+        "core_column": 3,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 384
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          1
+        ],
+        "support_column": 1,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      }
+    ],
+    "raw": "raw/seed-02.u16",
+    "schema": 1,
+    "seed": 2,
+    "smallest_solid_component": 108898,
+    "solid_components4": 1,
+    "typology_families": 9,
+    "typology_lots_in_capture": {
+      "arcade": 3,
+      "atrium": 6,
+      "bridge": 3,
+      "buttress": 7,
+      "cantilever": 2,
+      "core": 8,
+      "crown": 7,
+      "habitation": 6,
+      "open_frame": 6
+    },
+    "version": 1,
+    "void_components4": 119,
+    "wall": 4,
+    "warnings": [],
+    "width": 512,
+    "windows": 1
+  },
+  {
+    "bay_width": 96,
+    "benchmark_checksum": 0,
+    "command": [
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek_megablock_capture",
+      "--output",
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek-megablock-gallery-final/raw/seed-03.u16",
+      "--seed",
+      "3"
+    ],
+    "direct_sampler_ms": [],
+    "doors": 1,
+    "floor_height": 64,
+    "generator_fingerprint": "abc15c0c00c96791",
+    "generator_raster_ms": [],
+    "height": 512,
+    "isolated_single_cells": 0,
+    "largest_empty_rectangle": {
+      "area": 14016,
+      "height": 146,
+      "width": 96,
+      "x": 96,
+      "y": 256
+    },
+    "largest_solid_component": 110228,
+    "largest_void_component": 25419,
+    "material_counts": {
+      "0": 151916,
+      "121": 6532,
+      "58": 26926,
+      "62": 76770
+    },
+    "material_encoding": "row-major uint16 little-endian existing material IDs",
+    "material_sha256": "b9d221cc1089fbac33ce32c85044a3ff3f8cc1e7e28a08c2d0fe909e1240b40a",
+    "module": "seeded_typology_megablock",
+    "name": "seed-03",
+    "native_raster_ms": 162.716481,
+    "non_atrium_lots_in_capture": 42,
+    "occupied_cells": 110228,
+    "occupied_ratio": 0.4204864502,
+    "operations_per_cell": 616,
+    "origin": [
+      0,
+      0
+    ],
+    "png": "png/seed-03.png",
+    "png_sha256": "40647468fb6a01cea067eb8eee161563c3c81ddf26aa229421a7a1c5088178d9",
+    "preparation_ms": 0.239183,
+    "programme_diagnostic_source": "private production helper generation_megablock_programme.hpp",
+    "programmes": [
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "crown",
+            "atrium",
+            "core"
+          ],
+          [
+            "open_frame",
+            "habitation",
+            "bridge",
+            "core"
+          ],
+          [
+            "open_frame",
+            "habitation",
+            "atrium",
+            "core"
+          ],
+          [
+            "arcade",
+            "buttress",
+            "arcade",
+            "core"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": true,
+        "core_column": 3,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 192,
+          "y": 128
+        },
+        "spare_column": 0,
+        "supercell": [
+          0,
+          0
+        ],
+        "support_column": 1,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "core",
+            "atrium",
+            "crown",
+            "crown"
+          ],
+          [
+            "core",
+            "bridge",
+            "habitation",
+            "open_frame"
+          ],
+          [
+            "core",
+            "atrium",
+            "habitation",
+            "habitation"
+          ],
+          [
+            "core",
+            "arcade",
+            "buttress",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": false,
+        "core_column": 0,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 480,
+          "y": 128
+        },
+        "spare_column": 3,
+        "supercell": [
+          1,
+          0
+        ],
+        "support_column": 2,
+        "visible_protected_void_cells": 2048,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "core",
+            "atrium",
+            "crown",
+            "crown"
+          ],
+          [
+            "core",
+            "atrium",
+            "habitation",
+            "open_frame"
+          ],
+          [
+            "core",
+            "bridge",
+            "open_frame",
+            "cantilever"
+          ],
+          [
+            "core",
+            "arcade",
+            "buttress",
+            "arcade"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": true,
+        "core_column": 0,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 96,
+          "y": 320
+        },
+        "spare_column": 3,
+        "supercell": [
+          0,
+          1
+        ],
+        "support_column": 2,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "crown",
+            "atrium",
+            "core"
+          ],
+          [
+            "cantilever",
+            "habitation",
+            "bridge",
+            "core"
+          ],
+          [
+            "habitation",
+            "habitation",
+            "atrium",
+            "core"
+          ],
+          [
+            "buttress",
+            "buttress",
+            "arcade",
+            "core"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": false,
+        "core_column": 3,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 384
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          1
+        ],
+        "support_column": 1,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      }
+    ],
+    "raw": "raw/seed-03.u16",
+    "schema": 1,
+    "seed": 3,
+    "smallest_solid_component": 110228,
+    "solid_components4": 1,
+    "typology_families": 9,
+    "typology_lots_in_capture": {
+      "arcade": 5,
+      "atrium": 6,
+      "bridge": 3,
+      "buttress": 4,
+      "cantilever": 2,
+      "core": 12,
+      "crown": 6,
+      "habitation": 6,
+      "open_frame": 4
+    },
+    "version": 1,
+    "void_components4": 132,
+    "wall": 4,
+    "warnings": [],
+    "width": 512,
+    "windows": 1
+  },
+  {
+    "bay_width": 96,
+    "benchmark_checksum": 0,
+    "command": [
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek_megablock_capture",
+      "--output",
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek-megablock-gallery-final/raw/seed-04.u16",
+      "--seed",
+      "4"
+    ],
+    "direct_sampler_ms": [],
+    "doors": 1,
+    "floor_height": 64,
+    "generator_fingerprint": "46fdcf587f7b49a9",
+    "generator_raster_ms": [],
+    "height": 512,
+    "isolated_single_cells": 0,
+    "largest_empty_rectangle": {
+      "area": 14016,
+      "height": 146,
+      "width": 96,
+      "x": 192,
+      "y": 256
+    },
+    "largest_solid_component": 115051,
+    "largest_void_component": 22976,
+    "material_counts": {
+      "0": 147093,
+      "121": 8752,
+      "58": 27992,
+      "62": 78307
+    },
+    "material_encoding": "row-major uint16 little-endian existing material IDs",
+    "material_sha256": "45a321262953dd92e60dde2faeaf994fe6bbea9f1d8b9a9d41cf3c3997b027f9",
+    "module": "seeded_typology_megablock",
+    "name": "seed-04",
+    "native_raster_ms": 153.711769,
+    "non_atrium_lots_in_capture": 42,
+    "occupied_cells": 115051,
+    "occupied_ratio": 0.4388847351,
+    "operations_per_cell": 616,
+    "origin": [
+      0,
+      0
+    ],
+    "png": "png/seed-04.png",
+    "png_sha256": "590c6f3a77cb2565fbf6509fafa38284468270730d60604f1edc3fedf767c165",
+    "preparation_ms": 0.208708,
+    "programme_diagnostic_source": "private production helper generation_megablock_programme.hpp",
+    "programmes": [
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "core",
+            "atrium",
+            "crown"
+          ],
+          [
+            "open_frame",
+            "core",
+            "bridge",
+            "habitation"
+          ],
+          [
+            "habitation",
+            "core",
+            "atrium",
+            "habitation"
+          ],
+          [
+            "arcade",
+            "core",
+            "arcade",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": true,
+        "core_column": 1,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 192,
+          "y": 128
+        },
+        "spare_column": 0,
+        "supercell": [
+          0,
+          0
+        ],
+        "support_column": 3,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "core",
+            "atrium",
+            "crown",
+            "crown"
+          ],
+          [
+            "core",
+            "atrium",
+            "habitation",
+            "habitation"
+          ],
+          [
+            "core",
+            "bridge",
+            "open_frame",
+            "cantilever"
+          ],
+          [
+            "core",
+            "arcade",
+            "buttress",
+            "arcade"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": false,
+        "core_column": 0,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 480,
+          "y": 64
+        },
+        "spare_column": 3,
+        "supercell": [
+          1,
+          0
+        ],
+        "support_column": 2,
+        "visible_protected_void_cells": 2048,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "core",
+            "atrium",
+            "crown"
+          ],
+          [
+            "habitation",
+            "core",
+            "atrium",
+            "habitation"
+          ],
+          [
+            "open_frame",
+            "core",
+            "bridge",
+            "habitation"
+          ],
+          [
+            "arcade",
+            "core",
+            "arcade",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": true,
+        "core_column": 1,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 192,
+          "y": 320
+        },
+        "spare_column": 0,
+        "supercell": [
+          0,
+          1
+        ],
+        "support_column": 3,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "crown",
+            "atrium",
+            "core"
+          ],
+          [
+            "open_frame",
+            "habitation",
+            "atrium",
+            "core"
+          ],
+          [
+            "open_frame",
+            "habitation",
+            "bridge",
+            "core"
+          ],
+          [
+            "arcade",
+            "buttress",
+            "arcade",
+            "core"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": false,
+        "core_column": 3,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 320
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          1
+        ],
+        "support_column": 1,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      }
+    ],
+    "raw": "raw/seed-04.u16",
+    "schema": 1,
+    "seed": 4,
+    "smallest_solid_component": 115051,
+    "solid_components4": 1,
+    "typology_families": 8,
+    "typology_lots_in_capture": {
+      "arcade": 6,
+      "atrium": 6,
+      "bridge": 3,
+      "buttress": 3,
+      "cantilever": 0,
+      "core": 12,
+      "crown": 6,
+      "habitation": 8,
+      "open_frame": 4
+    },
+    "version": 1,
+    "void_components4": 136,
+    "wall": 4,
+    "warnings": [],
+    "width": 512,
+    "windows": 1
+  },
+  {
+    "bay_width": 96,
+    "benchmark_checksum": 0,
+    "command": [
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek_megablock_capture",
+      "--output",
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek-megablock-gallery-final/raw/seed-05.u16",
+      "--seed",
+      "5"
+    ],
+    "direct_sampler_ms": [],
+    "doors": 1,
+    "floor_height": 64,
+    "generator_fingerprint": "3fa2b4d1f10e9ca5",
+    "generator_raster_ms": [],
+    "height": 512,
+    "isolated_single_cells": 0,
+    "largest_empty_rectangle": {
+      "area": 14016,
+      "height": 146,
+      "width": 96,
+      "x": 96,
+      "y": 0
+    },
+    "largest_solid_component": 110507,
+    "largest_void_component": 19641,
+    "material_counts": {
+      "0": 151637,
+      "121": 6448,
+      "58": 25682,
+      "62": 78377
+    },
+    "material_encoding": "row-major uint16 little-endian existing material IDs",
+    "material_sha256": "20e3f37578a7ebb7e24f1a3493c7ce9016feae0273195853775c620964b5aa55",
+    "module": "seeded_typology_megablock",
+    "name": "seed-05",
+    "native_raster_ms": 153.502491,
+    "non_atrium_lots_in_capture": 42,
+    "occupied_cells": 110507,
+    "occupied_ratio": 0.4215507507,
+    "operations_per_cell": 616,
+    "origin": [
+      0,
+      0
+    ],
+    "png": "png/seed-05.png",
+    "png_sha256": "b22876cb54ded35d2f75509474d2c35cbe6032fd51df23c14e4c569a3e471d57",
+    "preparation_ms": 12.724029,
+    "programme_diagnostic_source": "private production helper generation_megablock_programme.hpp",
+    "programmes": [
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "atrium",
+            "core",
+            "crown"
+          ],
+          [
+            "habitation",
+            "atrium",
+            "core",
+            "open_frame"
+          ],
+          [
+            "habitation",
+            "bridge",
+            "core",
+            "cantilever"
+          ],
+          [
+            "buttress",
+            "arcade",
+            "core",
+            "arcade"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": true,
+        "core_column": 2,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 96,
+          "y": 64
+        },
+        "spare_column": 3,
+        "supercell": [
+          0,
+          0
+        ],
+        "support_column": 0,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "core",
+            "atrium",
+            "crown",
+            "crown"
+          ],
+          [
+            "core",
+            "bridge",
+            "open_frame",
+            "open_frame"
+          ],
+          [
+            "core",
+            "atrium",
+            "habitation",
+            "open_frame"
+          ],
+          [
+            "core",
+            "arcade",
+            "buttress",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": false,
+        "core_column": 0,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 480,
+          "y": 128
+        },
+        "spare_column": 3,
+        "supercell": [
+          1,
+          0
+        ],
+        "support_column": 2,
+        "visible_protected_void_cells": 2048,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "core",
+            "atrium",
+            "crown",
+            "crown"
+          ],
+          [
+            "core",
+            "bridge",
+            "habitation",
+            "open_frame"
+          ],
+          [
+            "core",
+            "atrium",
+            "habitation",
+            "open_frame"
+          ],
+          [
+            "core",
+            "arcade",
+            "buttress",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": true,
+        "core_column": 0,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 96,
+          "y": 384
+        },
+        "spare_column": 3,
+        "supercell": [
+          0,
+          1
+        ],
+        "support_column": 2,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "core",
+            "atrium",
+            "crown"
+          ],
+          [
+            "habitation",
+            "core",
+            "atrium",
+            "habitation"
+          ],
+          [
+            "cantilever",
+            "core",
+            "bridge",
+            "open_frame"
+          ],
+          [
+            "arcade",
+            "core",
+            "arcade",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": false,
+        "core_column": 1,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 320
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          1
+        ],
+        "support_column": 3,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      }
+    ],
+    "raw": "raw/seed-05.u16",
+    "schema": 1,
+    "seed": 5,
+    "smallest_solid_component": 110507,
+    "solid_components4": 1,
+    "typology_families": 9,
+    "typology_lots_in_capture": {
+      "arcade": 5,
+      "atrium": 6,
+      "bridge": 3,
+      "buttress": 3,
+      "cantilever": 2,
+      "core": 16,
+      "crown": 5,
+      "habitation": 5,
+      "open_frame": 3
+    },
+    "version": 1,
+    "void_components4": 133,
+    "wall": 4,
+    "warnings": [],
+    "width": 512,
+    "windows": 1
+  },
+  {
+    "bay_width": 96,
+    "benchmark_checksum": 0,
+    "command": [
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek_megablock_capture",
+      "--output",
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek-megablock-gallery-final/raw/seed-06.u16",
+      "--seed",
+      "6"
+    ],
+    "direct_sampler_ms": [],
+    "doors": 1,
+    "floor_height": 64,
+    "generator_fingerprint": "186cd3a8e0b20f88",
+    "generator_raster_ms": [],
+    "height": 512,
+    "isolated_single_cells": 0,
+    "largest_empty_rectangle": {
+      "area": 14016,
+      "height": 146,
+      "width": 96,
+      "x": 192,
+      "y": 0
+    },
+    "largest_solid_component": 111964,
+    "largest_void_component": 25648,
+    "material_counts": {
+      "0": 150180,
+      "121": 9232,
+      "58": 30914,
+      "62": 71818
+    },
+    "material_encoding": "row-major uint16 little-endian existing material IDs",
+    "material_sha256": "86aac82236af2ae09bd0ab3e29a2c2986b3ac22fe2b27665ff0012f115345232",
+    "module": "seeded_typology_megablock",
+    "name": "seed-06",
+    "native_raster_ms": 172.66322,
+    "non_atrium_lots_in_capture": 44,
+    "occupied_cells": 111964,
+    "occupied_ratio": 0.4271087646,
+    "operations_per_cell": 616,
+    "origin": [
+      0,
+      0
+    ],
+    "png": "png/seed-06.png",
+    "png_sha256": "b9eee0358b58bbac1a6fc626664793004a5212873f9091b40d1f1a7de4a76bd2",
+    "preparation_ms": 0.315025,
+    "programme_diagnostic_source": "private production helper generation_megablock_programme.hpp",
+    "programmes": [
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "core",
+            "atrium",
+            "crown"
+          ],
+          [
+            "habitation",
+            "core",
+            "atrium",
+            "habitation"
+          ],
+          [
+            "cantilever",
+            "core",
+            "bridge",
+            "open_frame"
+          ],
+          [
+            "buttress",
+            "core",
+            "arcade",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": true,
+        "core_column": 1,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 192,
+          "y": 64
+        },
+        "spare_column": 0,
+        "supercell": [
+          0,
+          0
+        ],
+        "support_column": 3,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "crown",
+            "atrium",
+            "core"
+          ],
+          [
+            "cantilever",
+            "open_frame",
+            "bridge",
+            "core"
+          ],
+          [
+            "habitation",
+            "habitation",
+            "atrium",
+            "core"
+          ],
+          [
+            "arcade",
+            "buttress",
+            "arcade",
+            "core"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": false,
+        "core_column": 3,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 128
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          0
+        ],
+        "support_column": 1,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "core",
+            "atrium",
+            "crown",
+            "crown"
+          ],
+          [
+            "core",
+            "atrium",
+            "habitation",
+            "open_frame"
+          ],
+          [
+            "core",
+            "bridge",
+            "habitation",
+            "open_frame"
+          ],
+          [
+            "core",
+            "arcade",
+            "buttress",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": true,
+        "core_column": 0,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 96,
+          "y": 320
+        },
+        "spare_column": 3,
+        "supercell": [
+          0,
+          1
+        ],
+        "support_column": 2,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "core",
+            "atrium",
+            "crown"
+          ],
+          [
+            "cantilever",
+            "core",
+            "bridge",
+            "habitation"
+          ],
+          [
+            "habitation",
+            "core",
+            "atrium",
+            "habitation"
+          ],
+          [
+            "arcade",
+            "core",
+            "arcade",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": false,
+        "core_column": 1,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 384
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          1
+        ],
+        "support_column": 3,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      }
+    ],
+    "raw": "raw/seed-06.u16",
+    "schema": 1,
+    "seed": 6,
+    "smallest_solid_component": 111964,
+    "solid_components4": 1,
+    "typology_families": 9,
+    "typology_lots_in_capture": {
+      "arcade": 4,
+      "atrium": 4,
+      "bridge": 2,
+      "buttress": 5,
+      "cantilever": 3,
+      "core": 12,
+      "crown": 7,
+      "habitation": 7,
+      "open_frame": 4
+    },
+    "version": 1,
+    "void_components4": 120,
+    "wall": 4,
+    "warnings": [],
+    "width": 512,
+    "windows": 1
+  },
+  {
+    "bay_width": 96,
+    "benchmark_checksum": 0,
+    "command": [
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek_megablock_capture",
+      "--output",
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek-megablock-gallery-final/raw/seed-07.u16",
+      "--seed",
+      "7"
+    ],
+    "direct_sampler_ms": [],
+    "doors": 1,
+    "floor_height": 64,
+    "generator_fingerprint": "fb41f494f89e4e29",
+    "generator_raster_ms": [],
+    "height": 512,
+    "isolated_single_cells": 0,
+    "largest_empty_rectangle": {
+      "area": 7872,
+      "height": 82,
+      "width": 96,
+      "x": 192,
+      "y": 0
+    },
+    "largest_solid_component": 112241,
+    "largest_void_component": 14681,
+    "material_counts": {
+      "0": 149903,
+      "121": 5552,
+      "58": 22588,
+      "62": 84101
+    },
+    "material_encoding": "row-major uint16 little-endian existing material IDs",
+    "material_sha256": "65bf0a809f969182c2ca4f5b1e3ff90271457014255ac887ecae32d7065ebb9d",
+    "module": "seeded_typology_megablock",
+    "name": "seed-07",
+    "native_raster_ms": 181.097697,
+    "non_atrium_lots_in_capture": 40,
+    "occupied_cells": 112241,
+    "occupied_ratio": 0.4281654358,
+    "operations_per_cell": 616,
+    "origin": [
+      0,
+      0
+    ],
+    "png": "png/seed-07.png",
+    "png_sha256": "9d5a20e87c6ce4d65928ddf032452672a626d2f6e887adbfb43d5835783b79fb",
+    "preparation_ms": 0.310558,
+    "programme_diagnostic_source": "private production helper generation_megablock_programme.hpp",
+    "programmes": [
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "crown",
+            "atrium",
+            "core"
+          ],
+          [
+            "cantilever",
+            "habitation",
+            "bridge",
+            "core"
+          ],
+          [
+            "open_frame",
+            "habitation",
+            "atrium",
+            "core"
+          ],
+          [
+            "arcade",
+            "buttress",
+            "arcade",
+            "core"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": true,
+        "core_column": 3,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 192,
+          "y": 128
+        },
+        "spare_column": 0,
+        "supercell": [
+          0,
+          0
+        ],
+        "support_column": 1,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "core",
+            "atrium",
+            "crown",
+            "crown"
+          ],
+          [
+            "core",
+            "bridge",
+            "habitation",
+            "open_frame"
+          ],
+          [
+            "core",
+            "atrium",
+            "habitation",
+            "habitation"
+          ],
+          [
+            "core",
+            "arcade",
+            "buttress",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": false,
+        "core_column": 0,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 480,
+          "y": 128
+        },
+        "spare_column": 3,
+        "supercell": [
+          1,
+          0
+        ],
+        "support_column": 2,
+        "visible_protected_void_cells": 2048,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "atrium",
+            "core",
+            "crown"
+          ],
+          [
+            "open_frame",
+            "bridge",
+            "core",
+            "open_frame"
+          ],
+          [
+            "habitation",
+            "atrium",
+            "core",
+            "habitation"
+          ],
+          [
+            "buttress",
+            "arcade",
+            "core",
+            "arcade"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": true,
+        "core_column": 2,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 96,
+          "y": 384
+        },
+        "spare_column": 3,
+        "supercell": [
+          0,
+          1
+        ],
+        "support_column": 0,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "core",
+            "atrium",
+            "crown",
+            "crown"
+          ],
+          [
+            "core",
+            "atrium",
+            "habitation",
+            "habitation"
+          ],
+          [
+            "core",
+            "bridge",
+            "open_frame",
+            "open_frame"
+          ],
+          [
+            "core",
+            "arcade",
+            "buttress",
+            "arcade"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": false,
+        "core_column": 0,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 480,
+          "y": 320
+        },
+        "spare_column": 3,
+        "supercell": [
+          1,
+          1
+        ],
+        "support_column": 2,
+        "visible_protected_void_cells": 2048,
+        "visible_protected_void_empty": true
+      }
+    ],
+    "raw": "raw/seed-07.u16",
+    "schema": 1,
+    "seed": 7,
+    "smallest_solid_component": 112241,
+    "solid_components4": 1,
+    "typology_families": 9,
+    "typology_lots_in_capture": {
+      "arcade": 6,
+      "atrium": 8,
+      "bridge": 4,
+      "buttress": 2,
+      "cantilever": 1,
+      "core": 16,
+      "crown": 4,
+      "habitation": 4,
+      "open_frame": 3
+    },
+    "version": 1,
+    "void_components4": 147,
+    "wall": 4,
+    "warnings": [],
+    "width": 512,
+    "windows": 1
+  },
+  {
+    "bay_width": 96,
+    "benchmark_checksum": 0,
+    "command": [
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek_megablock_capture",
+      "--output",
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek-megablock-gallery-final/raw/seed-08.u16",
+      "--seed",
+      "8"
+    ],
+    "direct_sampler_ms": [],
+    "doors": 1,
+    "floor_height": 64,
+    "generator_fingerprint": "64c8d1402b2fb68b",
+    "generator_raster_ms": [],
+    "height": 512,
+    "isolated_single_cells": 0,
+    "largest_empty_rectangle": {
+      "area": 14016,
+      "height": 146,
+      "width": 96,
+      "x": 96,
+      "y": 256
+    },
+    "largest_solid_component": 114216,
+    "largest_void_component": 19641,
+    "material_counts": {
+      "0": 147928,
+      "121": 9116,
+      "58": 33866,
+      "62": 71234
+    },
+    "material_encoding": "row-major uint16 little-endian existing material IDs",
+    "material_sha256": "5b8245b2a1e9f7c5a9401f2abddcd0c99e32b40779e70a11551ab58f8273a01f",
+    "module": "seeded_typology_megablock",
+    "name": "seed-08",
+    "native_raster_ms": 161.707588,
+    "non_atrium_lots_in_capture": 44,
+    "occupied_cells": 114216,
+    "occupied_ratio": 0.4356994629,
+    "operations_per_cell": 616,
+    "origin": [
+      0,
+      0
+    ],
+    "png": "png/seed-08.png",
+    "png_sha256": "33be3adfee176dd2560db69beba7c6313dc5f545a23a98e26965fe13a8d40509",
+    "preparation_ms": 0.201607,
+    "programme_diagnostic_source": "private production helper generation_megablock_programme.hpp",
+    "programmes": [
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "crown",
+            "atrium",
+            "core"
+          ],
+          [
+            "open_frame",
+            "habitation",
+            "bridge",
+            "core"
+          ],
+          [
+            "habitation",
+            "habitation",
+            "atrium",
+            "core"
+          ],
+          [
+            "buttress",
+            "buttress",
+            "arcade",
+            "core"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": true,
+        "core_column": 3,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 192,
+          "y": 128
+        },
+        "spare_column": 0,
+        "supercell": [
+          0,
+          0
+        ],
+        "support_column": 1,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "crown",
+            "atrium",
+            "core"
+          ],
+          [
+            "habitation",
+            "habitation",
+            "atrium",
+            "core"
+          ],
+          [
+            "cantilever",
+            "open_frame",
+            "bridge",
+            "core"
+          ],
+          [
+            "arcade",
+            "buttress",
+            "arcade",
+            "core"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": false,
+        "core_column": 3,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 64
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          0
+        ],
+        "support_column": 1,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "atrium",
+            "core",
+            "crown"
+          ],
+          [
+            "habitation",
+            "atrium",
+            "core",
+            "open_frame"
+          ],
+          [
+            "habitation",
+            "bridge",
+            "core",
+            "open_frame"
+          ],
+          [
+            "buttress",
+            "arcade",
+            "core",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": true,
+        "core_column": 2,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 96,
+          "y": 320
+        },
+        "spare_column": 3,
+        "supercell": [
+          0,
+          1
+        ],
+        "support_column": 0,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "crown",
+            "atrium",
+            "core"
+          ],
+          [
+            "open_frame",
+            "habitation",
+            "atrium",
+            "core"
+          ],
+          [
+            "open_frame",
+            "open_frame",
+            "bridge",
+            "core"
+          ],
+          [
+            "buttress",
+            "buttress",
+            "arcade",
+            "core"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": false,
+        "core_column": 3,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 320
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          1
+        ],
+        "support_column": 1,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      }
+    ],
+    "raw": "raw/seed-08.u16",
+    "schema": 1,
+    "seed": 8,
+    "smallest_solid_component": 114216,
+    "solid_components4": 1,
+    "typology_families": 9,
+    "typology_lots_in_capture": {
+      "arcade": 3,
+      "atrium": 4,
+      "bridge": 2,
+      "buttress": 7,
+      "cantilever": 1,
+      "core": 8,
+      "crown": 8,
+      "habitation": 8,
+      "open_frame": 7
+    },
+    "version": 1,
+    "void_components4": 117,
+    "wall": 4,
+    "warnings": [],
+    "width": 512,
+    "windows": 1
+  },
+  {
+    "bay_width": 96,
+    "benchmark_checksum": 0,
+    "command": [
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek_megablock_capture",
+      "--output",
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek-megablock-gallery-final/raw/seed-09.u16",
+      "--seed",
+      "9"
+    ],
+    "direct_sampler_ms": [],
+    "doors": 1,
+    "floor_height": 64,
+    "generator_fingerprint": "66aa6ea9c8f2dbdb",
+    "generator_raster_ms": [],
+    "height": 512,
+    "isolated_single_cells": 0,
+    "largest_empty_rectangle": {
+      "area": 7872,
+      "height": 82,
+      "width": 96,
+      "x": 192,
+      "y": 0
+    },
+    "largest_solid_component": 113800,
+    "largest_void_component": 14681,
+    "material_counts": {
+      "0": 148344,
+      "121": 7484,
+      "58": 27968,
+      "62": 78348
+    },
+    "material_encoding": "row-major uint16 little-endian existing material IDs",
+    "material_sha256": "ef25b0958a949a86061e3507468a6af5f2b61a97a453b79591c04600e7b6685a",
+    "module": "seeded_typology_megablock",
+    "name": "seed-09",
+    "native_raster_ms": 154.22368,
+    "non_atrium_lots_in_capture": 42,
+    "occupied_cells": 113800,
+    "occupied_ratio": 0.4341125488,
+    "operations_per_cell": 616,
+    "origin": [
+      0,
+      0
+    ],
+    "png": "png/seed-09.png",
+    "png_sha256": "9bff0ce9929a765b3e5b94f61ac115e9cf94dac3c08d75adf77239e877f22153",
+    "preparation_ms": 0.217681,
+    "programme_diagnostic_source": "private production helper generation_megablock_programme.hpp",
+    "programmes": [
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "crown",
+            "atrium",
+            "core"
+          ],
+          [
+            "open_frame",
+            "habitation",
+            "bridge",
+            "core"
+          ],
+          [
+            "habitation",
+            "habitation",
+            "atrium",
+            "core"
+          ],
+          [
+            "buttress",
+            "buttress",
+            "arcade",
+            "core"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": true,
+        "core_column": 3,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 192,
+          "y": 128
+        },
+        "spare_column": 0,
+        "supercell": [
+          0,
+          0
+        ],
+        "support_column": 1,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "core",
+            "atrium",
+            "crown",
+            "crown"
+          ],
+          [
+            "core",
+            "atrium",
+            "habitation",
+            "habitation"
+          ],
+          [
+            "core",
+            "bridge",
+            "habitation",
+            "cantilever"
+          ],
+          [
+            "core",
+            "arcade",
+            "buttress",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": false,
+        "core_column": 0,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 480,
+          "y": 64
+        },
+        "spare_column": 3,
+        "supercell": [
+          1,
+          0
+        ],
+        "support_column": 2,
+        "visible_protected_void_cells": 2048,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "crown",
+            "atrium",
+            "core"
+          ],
+          [
+            "cantilever",
+            "habitation",
+            "bridge",
+            "core"
+          ],
+          [
+            "open_frame",
+            "habitation",
+            "atrium",
+            "core"
+          ],
+          [
+            "arcade",
+            "buttress",
+            "arcade",
+            "core"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": true,
+        "core_column": 3,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 192,
+          "y": 384
+        },
+        "spare_column": 0,
+        "supercell": [
+          0,
+          1
+        ],
+        "support_column": 1,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "crown",
+            "atrium",
+            "core"
+          ],
+          [
+            "open_frame",
+            "habitation",
+            "atrium",
+            "core"
+          ],
+          [
+            "cantilever",
+            "habitation",
+            "bridge",
+            "core"
+          ],
+          [
+            "buttress",
+            "buttress",
+            "arcade",
+            "core"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": false,
+        "core_column": 3,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 320
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          1
+        ],
+        "support_column": 1,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      }
+    ],
+    "raw": "raw/seed-09.u16",
+    "schema": 1,
+    "seed": 9,
+    "smallest_solid_component": 113800,
+    "solid_components4": 1,
+    "typology_families": 9,
+    "typology_lots_in_capture": {
+      "arcade": 4,
+      "atrium": 6,
+      "bridge": 3,
+      "buttress": 5,
+      "cantilever": 2,
+      "core": 12,
+      "crown": 6,
+      "habitation": 7,
+      "open_frame": 3
+    },
+    "version": 1,
+    "void_components4": 126,
+    "wall": 4,
+    "warnings": [],
+    "width": 512,
+    "windows": 1
+  },
+  {
+    "bay_width": 96,
+    "benchmark_checksum": 0,
+    "command": [
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek_megablock_capture",
+      "--output",
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek-megablock-gallery-final/raw/seed-10.u16",
+      "--seed",
+      "10"
+    ],
+    "direct_sampler_ms": [],
+    "doors": 1,
+    "floor_height": 64,
+    "generator_fingerprint": "bae0b9a87357766a",
+    "generator_raster_ms": [],
+    "height": 512,
+    "isolated_single_cells": 0,
+    "largest_empty_rectangle": {
+      "area": 14016,
+      "height": 146,
+      "width": 96,
+      "x": 96,
+      "y": 256
+    },
+    "largest_solid_component": 108298,
+    "largest_void_component": 19657,
+    "material_counts": {
+      "0": 153846,
+      "121": 7856,
+      "58": 31544,
+      "62": 68898
+    },
+    "material_encoding": "row-major uint16 little-endian existing material IDs",
+    "material_sha256": "f77e2f8bdcf01443b9f9604039045fcda5a8561363b60fa06bb4e0c96b6b57a4",
+    "module": "seeded_typology_megablock",
+    "name": "seed-10",
+    "native_raster_ms": 147.144135,
+    "non_atrium_lots_in_capture": 42,
+    "occupied_cells": 108298,
+    "occupied_ratio": 0.4131240845,
+    "operations_per_cell": 616,
+    "origin": [
+      0,
+      0
+    ],
+    "png": "png/seed-10.png",
+    "png_sha256": "0373d50d49ebe77f9eafba74aa5a202c235e63f148182c4591e45647d156e032",
+    "preparation_ms": 0.199775,
+    "programme_diagnostic_source": "private production helper generation_megablock_programme.hpp",
+    "programmes": [
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "core",
+            "atrium",
+            "crown",
+            "crown"
+          ],
+          [
+            "core",
+            "bridge",
+            "open_frame",
+            "cantilever"
+          ],
+          [
+            "core",
+            "atrium",
+            "habitation",
+            "open_frame"
+          ],
+          [
+            "core",
+            "arcade",
+            "buttress",
+            "arcade"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": true,
+        "core_column": 0,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 96,
+          "y": 128
+        },
+        "spare_column": 3,
+        "supercell": [
+          0,
+          0
+        ],
+        "support_column": 2,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "atrium",
+            "core",
+            "crown"
+          ],
+          [
+            "habitation",
+            "bridge",
+            "core",
+            "open_frame"
+          ],
+          [
+            "habitation",
+            "atrium",
+            "core",
+            "open_frame"
+          ],
+          [
+            "buttress",
+            "arcade",
+            "core",
+            "arcade"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": false,
+        "core_column": 2,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 480,
+          "y": 128
+        },
+        "spare_column": 3,
+        "supercell": [
+          1,
+          0
+        ],
+        "support_column": 0,
+        "visible_protected_void_cells": 2048,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "atrium",
+            "core",
+            "crown"
+          ],
+          [
+            "habitation",
+            "atrium",
+            "core",
+            "habitation"
+          ],
+          [
+            "open_frame",
+            "bridge",
+            "core",
+            "open_frame"
+          ],
+          [
+            "buttress",
+            "arcade",
+            "core",
+            "arcade"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": true,
+        "core_column": 2,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 96,
+          "y": 320
+        },
+        "spare_column": 3,
+        "supercell": [
+          0,
+          1
+        ],
+        "support_column": 0,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "crown",
+            "atrium",
+            "core"
+          ],
+          [
+            "open_frame",
+            "habitation",
+            "atrium",
+            "core"
+          ],
+          [
+            "open_frame",
+            "habitation",
+            "bridge",
+            "core"
+          ],
+          [
+            "arcade",
+            "buttress",
+            "arcade",
+            "core"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": false,
+        "core_column": 3,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 320
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          1
+        ],
+        "support_column": 1,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      }
+    ],
+    "raw": "raw/seed-10.u16",
+    "schema": 1,
+    "seed": 10,
+    "smallest_solid_component": 108298,
+    "solid_components4": 1,
+    "typology_families": 9,
+    "typology_lots_in_capture": {
+      "arcade": 6,
+      "atrium": 6,
+      "bridge": 3,
+      "buttress": 4,
+      "cantilever": 1,
+      "core": 8,
+      "crown": 7,
+      "habitation": 7,
+      "open_frame": 6
+    },
+    "version": 1,
+    "void_components4": 121,
+    "wall": 4,
+    "warnings": [],
+    "width": 512,
+    "windows": 1
+  },
+  {
+    "bay_width": 96,
+    "benchmark_checksum": 0,
+    "command": [
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek_megablock_capture",
+      "--output",
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek-megablock-gallery-final/raw/seed-11.u16",
+      "--seed",
+      "11"
+    ],
+    "direct_sampler_ms": [],
+    "doors": 1,
+    "floor_height": 64,
+    "generator_fingerprint": "f05d453c24a19ba1",
+    "generator_raster_ms": [],
+    "height": 512,
+    "isolated_single_cells": 0,
+    "largest_empty_rectangle": {
+      "area": 14016,
+      "height": 146,
+      "width": 96,
+      "x": 192,
+      "y": 0
+    },
+    "largest_solid_component": 113927,
+    "largest_void_component": 23205,
+    "material_counts": {
+      "0": 148217,
+      "121": 10648,
+      "58": 30902,
+      "62": 72377
+    },
+    "material_encoding": "row-major uint16 little-endian existing material IDs",
+    "material_sha256": "bd88e0288561660f1a9f377829ab3a456f7422f65ee24e9578004b6b8e9b26ea",
+    "module": "seeded_typology_megablock",
+    "name": "seed-11",
+    "native_raster_ms": 173.248785,
+    "non_atrium_lots_in_capture": 44,
+    "occupied_cells": 113927,
+    "occupied_ratio": 0.4345970154,
+    "operations_per_cell": 616,
+    "origin": [
+      0,
+      0
+    ],
+    "png": "png/seed-11.png",
+    "png_sha256": "c6e68ddb92efdf05c4752e3d4627264d11fe5bd2d3d2d881f2d02b69c19de21b",
+    "preparation_ms": 0.193395,
+    "programme_diagnostic_source": "private production helper generation_megablock_programme.hpp",
+    "programmes": [
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "core",
+            "atrium",
+            "crown"
+          ],
+          [
+            "habitation",
+            "core",
+            "atrium",
+            "habitation"
+          ],
+          [
+            "open_frame",
+            "core",
+            "bridge",
+            "habitation"
+          ],
+          [
+            "buttress",
+            "core",
+            "arcade",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": true,
+        "core_column": 1,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 192,
+          "y": 64
+        },
+        "spare_column": 0,
+        "supercell": [
+          0,
+          0
+        ],
+        "support_column": 3,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "crown",
+            "atrium",
+            "core"
+          ],
+          [
+            "habitation",
+            "habitation",
+            "atrium",
+            "core"
+          ],
+          [
+            "cantilever",
+            "open_frame",
+            "bridge",
+            "core"
+          ],
+          [
+            "arcade",
+            "buttress",
+            "arcade",
+            "core"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": false,
+        "core_column": 3,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 64
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          0
+        ],
+        "support_column": 1,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "core",
+            "atrium",
+            "crown"
+          ],
+          [
+            "habitation",
+            "core",
+            "atrium",
+            "habitation"
+          ],
+          [
+            "cantilever",
+            "core",
+            "bridge",
+            "open_frame"
+          ],
+          [
+            "arcade",
+            "core",
+            "arcade",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": true,
+        "core_column": 1,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 192,
+          "y": 320
+        },
+        "spare_column": 0,
+        "supercell": [
+          0,
+          1
+        ],
+        "support_column": 3,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "core",
+            "atrium",
+            "crown"
+          ],
+          [
+            "habitation",
+            "core",
+            "atrium",
+            "habitation"
+          ],
+          [
+            "cantilever",
+            "core",
+            "bridge",
+            "habitation"
+          ],
+          [
+            "arcade",
+            "core",
+            "arcade",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": false,
+        "core_column": 1,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 320
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          1
+        ],
+        "support_column": 3,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      }
+    ],
+    "raw": "raw/seed-11.u16",
+    "schema": 1,
+    "seed": 11,
+    "smallest_solid_component": 113927,
+    "solid_components4": 1,
+    "typology_families": 9,
+    "typology_lots_in_capture": {
+      "arcade": 5,
+      "atrium": 4,
+      "bridge": 2,
+      "buttress": 4,
+      "cantilever": 3,
+      "core": 12,
+      "crown": 7,
+      "habitation": 8,
+      "open_frame": 3
+    },
+    "version": 1,
+    "void_components4": 118,
+    "wall": 4,
+    "warnings": [],
+    "width": 512,
+    "windows": 1
+  },
+  {
+    "bay_width": 96,
+    "benchmark_checksum": 0,
+    "command": [
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek_megablock_capture",
+      "--output",
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek-megablock-gallery-final/raw/seed-12.u16",
+      "--seed",
+      "12"
+    ],
+    "direct_sampler_ms": [],
+    "doors": 1,
+    "floor_height": 64,
+    "generator_fingerprint": "b001715bdbc354d4",
+    "generator_raster_ms": [],
+    "height": 512,
+    "isolated_single_cells": 0,
+    "largest_empty_rectangle": {
+      "area": 14016,
+      "height": 146,
+      "width": 96,
+      "x": 192,
+      "y": 256
+    },
+    "largest_solid_component": 105779,
+    "largest_void_component": 22084,
+    "material_counts": {
+      "0": 156365,
+      "121": 5488,
+      "58": 31250,
+      "62": 69041
+    },
+    "material_encoding": "row-major uint16 little-endian existing material IDs",
+    "material_sha256": "a593fae8d4bebff03339ccc4d38d80c1aea728371dc49725fa3b481cbe537941",
+    "module": "seeded_typology_megablock",
+    "name": "seed-12",
+    "native_raster_ms": 171.610471,
+    "non_atrium_lots_in_capture": 44,
+    "occupied_cells": 105779,
+    "occupied_ratio": 0.4035148621,
+    "operations_per_cell": 616,
+    "origin": [
+      0,
+      0
+    ],
+    "png": "png/seed-12.png",
+    "png_sha256": "d57683d081c694942afd1d554a68b5abd2a9fa16487839ca04fdb8fe8c81d7f7",
+    "preparation_ms": 0.282877,
+    "programme_diagnostic_source": "private production helper generation_megablock_programme.hpp",
+    "programmes": [
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "core",
+            "atrium",
+            "crown"
+          ],
+          [
+            "open_frame",
+            "core",
+            "bridge",
+            "open_frame"
+          ],
+          [
+            "habitation",
+            "core",
+            "atrium",
+            "habitation"
+          ],
+          [
+            "buttress",
+            "core",
+            "arcade",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": true,
+        "core_column": 1,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 192,
+          "y": 128
+        },
+        "spare_column": 0,
+        "supercell": [
+          0,
+          0
+        ],
+        "support_column": 3,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "core",
+            "atrium",
+            "crown"
+          ],
+          [
+            "open_frame",
+            "core",
+            "bridge",
+            "open_frame"
+          ],
+          [
+            "open_frame",
+            "core",
+            "atrium",
+            "habitation"
+          ],
+          [
+            "buttress",
+            "core",
+            "arcade",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": false,
+        "core_column": 1,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 128
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          0
+        ],
+        "support_column": 3,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "crown",
+            "atrium",
+            "core"
+          ],
+          [
+            "open_frame",
+            "habitation",
+            "atrium",
+            "core"
+          ],
+          [
+            "cantilever",
+            "open_frame",
+            "bridge",
+            "core"
+          ],
+          [
+            "arcade",
+            "buttress",
+            "arcade",
+            "core"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": true,
+        "core_column": 3,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 192,
+          "y": 320
+        },
+        "spare_column": 0,
+        "supercell": [
+          0,
+          1
+        ],
+        "support_column": 1,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "crown",
+            "atrium",
+            "core"
+          ],
+          [
+            "open_frame",
+            "habitation",
+            "atrium",
+            "core"
+          ],
+          [
+            "open_frame",
+            "habitation",
+            "bridge",
+            "core"
+          ],
+          [
+            "buttress",
+            "buttress",
+            "arcade",
+            "core"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": false,
+        "core_column": 3,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 320
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          1
+        ],
+        "support_column": 1,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      }
+    ],
+    "raw": "raw/seed-12.u16",
+    "schema": 1,
+    "seed": 12,
+    "smallest_solid_component": 105779,
+    "solid_components4": 1,
+    "typology_families": 9,
+    "typology_lots_in_capture": {
+      "arcade": 3,
+      "atrium": 4,
+      "bridge": 2,
+      "buttress": 6,
+      "cantilever": 1,
+      "core": 12,
+      "crown": 7,
+      "habitation": 5,
+      "open_frame": 8
+    },
+    "version": 1,
+    "void_components4": 123,
+    "wall": 4,
+    "warnings": [],
+    "width": 512,
+    "windows": 1
+  },
+  {
+    "bay_width": 96,
+    "benchmark_checksum": 0,
+    "command": [
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek_megablock_capture",
+      "--output",
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek-megablock-gallery-final/raw/seed-13.u16",
+      "--seed",
+      "13"
+    ],
+    "direct_sampler_ms": [],
+    "doors": 1,
+    "floor_height": 64,
+    "generator_fingerprint": "a9310bebf7e1a1d7",
+    "generator_raster_ms": [],
+    "height": 512,
+    "isolated_single_cells": 0,
+    "largest_empty_rectangle": {
+      "area": 14016,
+      "height": 146,
+      "width": 96,
+      "x": 96,
+      "y": 0
+    },
+    "largest_solid_component": 110380,
+    "largest_void_component": 19641,
+    "material_counts": {
+      "0": 151764,
+      "121": 8624,
+      "58": 29064,
+      "62": 72692
+    },
+    "material_encoding": "row-major uint16 little-endian existing material IDs",
+    "material_sha256": "23c520a1b09c7c13b49b0d1917baad11ee66ed74eafbb3277ca538272616549d",
+    "module": "seeded_typology_megablock",
+    "name": "seed-13",
+    "native_raster_ms": 144.550147,
+    "non_atrium_lots_in_capture": 44,
+    "occupied_cells": 110380,
+    "occupied_ratio": 0.4210662842,
+    "operations_per_cell": 616,
+    "origin": [
+      0,
+      0
+    ],
+    "png": "png/seed-13.png",
+    "png_sha256": "6575cead218dfeb9ff1d34e729716e728e4471b3ca4e63c75749e2bf6605f678",
+    "preparation_ms": 0.202449,
+    "programme_diagnostic_source": "private production helper generation_megablock_programme.hpp",
+    "programmes": [
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "atrium",
+            "core",
+            "crown"
+          ],
+          [
+            "habitation",
+            "atrium",
+            "core",
+            "habitation"
+          ],
+          [
+            "habitation",
+            "bridge",
+            "core",
+            "cantilever"
+          ],
+          [
+            "buttress",
+            "arcade",
+            "core",
+            "arcade"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": true,
+        "core_column": 2,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 96,
+          "y": 64
+        },
+        "spare_column": 3,
+        "supercell": [
+          0,
+          0
+        ],
+        "support_column": 0,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "core",
+            "atrium",
+            "crown"
+          ],
+          [
+            "open_frame",
+            "core",
+            "bridge",
+            "habitation"
+          ],
+          [
+            "habitation",
+            "core",
+            "atrium",
+            "habitation"
+          ],
+          [
+            "buttress",
+            "core",
+            "arcade",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": false,
+        "core_column": 1,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 128
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          0
+        ],
+        "support_column": 3,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "crown",
+            "atrium",
+            "core"
+          ],
+          [
+            "cantilever",
+            "open_frame",
+            "bridge",
+            "core"
+          ],
+          [
+            "habitation",
+            "habitation",
+            "atrium",
+            "core"
+          ],
+          [
+            "arcade",
+            "buttress",
+            "arcade",
+            "core"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": true,
+        "core_column": 3,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 192,
+          "y": 384
+        },
+        "spare_column": 0,
+        "supercell": [
+          0,
+          1
+        ],
+        "support_column": 1,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "core",
+            "atrium",
+            "crown"
+          ],
+          [
+            "open_frame",
+            "core",
+            "atrium",
+            "habitation"
+          ],
+          [
+            "cantilever",
+            "core",
+            "bridge",
+            "habitation"
+          ],
+          [
+            "buttress",
+            "core",
+            "arcade",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": false,
+        "core_column": 1,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 320
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          1
+        ],
+        "support_column": 3,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      }
+    ],
+    "raw": "raw/seed-13.u16",
+    "schema": 1,
+    "seed": 13,
+    "smallest_solid_component": 110380,
+    "solid_components4": 1,
+    "typology_families": 9,
+    "typology_lots_in_capture": {
+      "arcade": 4,
+      "atrium": 4,
+      "bridge": 2,
+      "buttress": 4,
+      "cantilever": 3,
+      "core": 16,
+      "crown": 6,
+      "habitation": 6,
+      "open_frame": 3
+    },
+    "version": 1,
+    "void_components4": 114,
+    "wall": 4,
+    "warnings": [],
+    "width": 512,
+    "windows": 1
+  },
+  {
+    "bay_width": 96,
+    "benchmark_checksum": 0,
+    "command": [
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek_megablock_capture",
+      "--output",
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek-megablock-gallery-final/raw/seed-14.u16",
+      "--seed",
+      "14"
+    ],
+    "direct_sampler_ms": [],
+    "doors": 1,
+    "floor_height": 64,
+    "generator_fingerprint": "f0521877744c982a",
+    "generator_raster_ms": [],
+    "height": 512,
+    "isolated_single_cells": 0,
+    "largest_empty_rectangle": {
+      "area": 14016,
+      "height": 146,
+      "width": 96,
+      "x": 192,
+      "y": 256
+    },
+    "largest_solid_component": 115202,
+    "largest_void_component": 22084,
+    "material_counts": {
+      "0": 146942,
+      "121": 8624,
+      "58": 28114,
+      "62": 78464
+    },
+    "material_encoding": "row-major uint16 little-endian existing material IDs",
+    "material_sha256": "200f7c1a10912a3e8b01d6d30c799ab15f44b2a83c7d84bae936c356004d4122",
+    "module": "seeded_typology_megablock",
+    "name": "seed-14",
+    "native_raster_ms": 141.348307,
+    "non_atrium_lots_in_capture": 40,
+    "occupied_cells": 115202,
+    "occupied_ratio": 0.4394607544,
+    "operations_per_cell": 616,
+    "origin": [
+      0,
+      0
+    ],
+    "png": "png/seed-14.png",
+    "png_sha256": "7d9ef709a538e747f92b7004252a61344f964dbcfc96a31325253996c9fd2899",
+    "preparation_ms": 0.197751,
+    "programme_diagnostic_source": "private production helper generation_megablock_programme.hpp",
+    "programmes": [
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "core",
+            "atrium",
+            "crown",
+            "crown"
+          ],
+          [
+            "core",
+            "bridge",
+            "open_frame",
+            "cantilever"
+          ],
+          [
+            "core",
+            "atrium",
+            "habitation",
+            "habitation"
+          ],
+          [
+            "core",
+            "arcade",
+            "buttress",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": true,
+        "core_column": 0,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 96,
+          "y": 128
+        },
+        "spare_column": 3,
+        "supercell": [
+          0,
+          0
+        ],
+        "support_column": 2,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "core",
+            "atrium",
+            "crown",
+            "crown"
+          ],
+          [
+            "core",
+            "atrium",
+            "habitation",
+            "open_frame"
+          ],
+          [
+            "core",
+            "bridge",
+            "habitation",
+            "open_frame"
+          ],
+          [
+            "core",
+            "arcade",
+            "buttress",
+            "arcade"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": false,
+        "core_column": 0,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 480,
+          "y": 64
+        },
+        "spare_column": 3,
+        "supercell": [
+          1,
+          0
+        ],
+        "support_column": 2,
+        "visible_protected_void_cells": 2048,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "crown",
+            "atrium",
+            "core"
+          ],
+          [
+            "habitation",
+            "habitation",
+            "atrium",
+            "core"
+          ],
+          [
+            "open_frame",
+            "open_frame",
+            "bridge",
+            "core"
+          ],
+          [
+            "arcade",
+            "buttress",
+            "arcade",
+            "core"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": true,
+        "core_column": 3,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 192,
+          "y": 320
+        },
+        "spare_column": 0,
+        "supercell": [
+          0,
+          1
+        ],
+        "support_column": 1,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "atrium",
+            "core",
+            "crown"
+          ],
+          [
+            "habitation",
+            "bridge",
+            "core",
+            "cantilever"
+          ],
+          [
+            "habitation",
+            "atrium",
+            "core",
+            "open_frame"
+          ],
+          [
+            "buttress",
+            "arcade",
+            "core",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": false,
+        "core_column": 2,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 480,
+          "y": 384
+        },
+        "spare_column": 3,
+        "supercell": [
+          1,
+          1
+        ],
+        "support_column": 0,
+        "visible_protected_void_cells": 2048,
+        "visible_protected_void_empty": true
+      }
+    ],
+    "raw": "raw/seed-14.u16",
+    "schema": 1,
+    "seed": 14,
+    "smallest_solid_component": 115202,
+    "solid_components4": 1,
+    "typology_families": 9,
+    "typology_lots_in_capture": {
+      "arcade": 5,
+      "atrium": 8,
+      "bridge": 4,
+      "buttress": 4,
+      "cantilever": 1,
+      "core": 12,
+      "crown": 5,
+      "habitation": 6,
+      "open_frame": 3
+    },
+    "version": 1,
+    "void_components4": 134,
+    "wall": 4,
+    "warnings": [],
+    "width": 512,
+    "windows": 1
+  },
+  {
+    "bay_width": 96,
+    "benchmark_checksum": 0,
+    "command": [
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek_megablock_capture",
+      "--output",
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek-megablock-gallery-final/raw/seed-15.u16",
+      "--seed",
+      "15"
+    ],
+    "direct_sampler_ms": [],
+    "doors": 1,
+    "floor_height": 64,
+    "generator_fingerprint": "54d0f94e6079b63e",
+    "generator_raster_ms": [],
+    "height": 512,
+    "isolated_single_cells": 0,
+    "largest_empty_rectangle": {
+      "area": 14016,
+      "height": 146,
+      "width": 96,
+      "x": 96,
+      "y": 256
+    },
+    "largest_solid_component": 117716,
+    "largest_void_component": 25207,
+    "material_counts": {
+      "0": 144428,
+      "121": 10932,
+      "58": 33946,
+      "62": 72838
+    },
+    "material_encoding": "row-major uint16 little-endian existing material IDs",
+    "material_sha256": "0867a4ce54d47b36d01d2d37f726ce28c4c7a80c77a6e1268eb2a73b53dbfa92",
+    "module": "seeded_typology_megablock",
+    "name": "seed-15",
+    "native_raster_ms": 138.223831,
+    "non_atrium_lots_in_capture": 42,
+    "occupied_cells": 117716,
+    "occupied_ratio": 0.4490509033,
+    "operations_per_cell": 616,
+    "origin": [
+      0,
+      0
+    ],
+    "png": "png/seed-15.png",
+    "png_sha256": "c26373efa3d400a6b8576c8b1898f6922c4a0cdc71bca88e2d0554633b16e756",
+    "preparation_ms": 0.224141,
+    "programme_diagnostic_source": "private production helper generation_megablock_programme.hpp",
+    "programmes": [
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "atrium",
+            "core",
+            "crown"
+          ],
+          [
+            "habitation",
+            "bridge",
+            "core",
+            "open_frame"
+          ],
+          [
+            "habitation",
+            "atrium",
+            "core",
+            "habitation"
+          ],
+          [
+            "buttress",
+            "arcade",
+            "core",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": true,
+        "core_column": 2,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 96,
+          "y": 128
+        },
+        "spare_column": 3,
+        "supercell": [
+          0,
+          0
+        ],
+        "support_column": 0,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "atrium",
+            "core",
+            "crown"
+          ],
+          [
+            "habitation",
+            "bridge",
+            "core",
+            "open_frame"
+          ],
+          [
+            "habitation",
+            "atrium",
+            "core",
+            "open_frame"
+          ],
+          [
+            "buttress",
+            "arcade",
+            "core",
+            "arcade"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": false,
+        "core_column": 2,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 480,
+          "y": 128
+        },
+        "spare_column": 3,
+        "supercell": [
+          1,
+          0
+        ],
+        "support_column": 0,
+        "visible_protected_void_cells": 2048,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "core",
+            "atrium",
+            "crown",
+            "crown"
+          ],
+          [
+            "core",
+            "atrium",
+            "habitation",
+            "open_frame"
+          ],
+          [
+            "core",
+            "bridge",
+            "habitation",
+            "open_frame"
+          ],
+          [
+            "core",
+            "arcade",
+            "buttress",
+            "arcade"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": true,
+        "core_column": 0,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 96,
+          "y": 320
+        },
+        "spare_column": 3,
+        "supercell": [
+          0,
+          1
+        ],
+        "support_column": 2,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "crown",
+            "atrium",
+            "core"
+          ],
+          [
+            "cantilever",
+            "open_frame",
+            "bridge",
+            "core"
+          ],
+          [
+            "habitation",
+            "habitation",
+            "atrium",
+            "core"
+          ],
+          [
+            "buttress",
+            "buttress",
+            "arcade",
+            "core"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": false,
+        "core_column": 3,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 384
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          1
+        ],
+        "support_column": 1,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      }
+    ],
+    "raw": "raw/seed-15.u16",
+    "schema": 1,
+    "seed": 15,
+    "smallest_solid_component": 117716,
+    "solid_components4": 1,
+    "typology_families": 9,
+    "typology_lots_in_capture": {
+      "arcade": 4,
+      "atrium": 6,
+      "bridge": 3,
+      "buttress": 6,
+      "cantilever": 1,
+      "core": 8,
+      "crown": 7,
+      "habitation": 9,
+      "open_frame": 4
+    },
+    "version": 1,
+    "void_components4": 117,
+    "wall": 4,
+    "warnings": [],
+    "width": 512,
+    "windows": 1
+  },
+  {
+    "bay_width": 96,
+    "benchmark_checksum": 0,
+    "command": [
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek_megablock_capture",
+      "--output",
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek-megablock-gallery-final/raw/seed-16.u16",
+      "--seed",
+      "16"
+    ],
+    "direct_sampler_ms": [],
+    "doors": 1,
+    "floor_height": 64,
+    "generator_fingerprint": "5f9beb1cb683ac32",
+    "generator_raster_ms": [],
+    "height": 512,
+    "isolated_single_cells": 0,
+    "largest_empty_rectangle": {
+      "area": 7872,
+      "height": 82,
+      "width": 96,
+      "x": 96,
+      "y": 0
+    },
+    "largest_solid_component": 114793,
+    "largest_void_component": 21705,
+    "material_counts": {
+      "0": 147351,
+      "121": 10380,
+      "58": 31058,
+      "62": 73355
+    },
+    "material_encoding": "row-major uint16 little-endian existing material IDs",
+    "material_sha256": "de4034f716718c0631fcd6eab5c38d92eb897b7f3efab3710e102cb365ca695f",
+    "module": "seeded_typology_megablock",
+    "name": "seed-16",
+    "native_raster_ms": 170.389555,
+    "non_atrium_lots_in_capture": 42,
+    "occupied_cells": 114793,
+    "occupied_ratio": 0.4379005432,
+    "operations_per_cell": 616,
+    "origin": [
+      0,
+      0
+    ],
+    "png": "png/seed-16.png",
+    "png_sha256": "cabbfbd27ac4b9d4efdb7e33933dbe0d58204667bb9a4e7890b59837bd5d5f31",
+    "preparation_ms": 0.255987,
+    "programme_diagnostic_source": "private production helper generation_megablock_programme.hpp",
+    "programmes": [
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "core",
+            "atrium",
+            "crown",
+            "crown"
+          ],
+          [
+            "core",
+            "bridge",
+            "habitation",
+            "cantilever"
+          ],
+          [
+            "core",
+            "atrium",
+            "habitation",
+            "open_frame"
+          ],
+          [
+            "core",
+            "arcade",
+            "buttress",
+            "arcade"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": true,
+        "core_column": 0,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 96,
+          "y": 128
+        },
+        "spare_column": 3,
+        "supercell": [
+          0,
+          0
+        ],
+        "support_column": 2,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "atrium",
+            "core",
+            "crown"
+          ],
+          [
+            "habitation",
+            "atrium",
+            "core",
+            "habitation"
+          ],
+          [
+            "habitation",
+            "bridge",
+            "core",
+            "cantilever"
+          ],
+          [
+            "buttress",
+            "arcade",
+            "core",
+            "arcade"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": false,
+        "core_column": 2,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 480,
+          "y": 64
+        },
+        "spare_column": 3,
+        "supercell": [
+          1,
+          0
+        ],
+        "support_column": 0,
+        "visible_protected_void_cells": 2048,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "core",
+            "atrium",
+            "crown"
+          ],
+          [
+            "open_frame",
+            "core",
+            "bridge",
+            "habitation"
+          ],
+          [
+            "habitation",
+            "core",
+            "atrium",
+            "habitation"
+          ],
+          [
+            "arcade",
+            "core",
+            "arcade",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": true,
+        "core_column": 1,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 192,
+          "y": 384
+        },
+        "spare_column": 0,
+        "supercell": [
+          0,
+          1
+        ],
+        "support_column": 3,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "core",
+            "atrium",
+            "crown"
+          ],
+          [
+            "habitation",
+            "core",
+            "atrium",
+            "habitation"
+          ],
+          [
+            "cantilever",
+            "core",
+            "bridge",
+            "habitation"
+          ],
+          [
+            "buttress",
+            "core",
+            "arcade",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": false,
+        "core_column": 1,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 320
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          1
+        ],
+        "support_column": 3,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      }
+    ],
+    "raw": "raw/seed-16.u16",
+    "schema": 1,
+    "seed": 16,
+    "smallest_solid_component": 114793,
+    "solid_components4": 1,
+    "typology_families": 9,
+    "typology_lots_in_capture": {
+      "arcade": 5,
+      "atrium": 6,
+      "bridge": 3,
+      "buttress": 4,
+      "cantilever": 2,
+      "core": 12,
+      "crown": 6,
+      "habitation": 8,
+      "open_frame": 2
+    },
+    "version": 1,
+    "void_components4": 116,
+    "wall": 4,
+    "warnings": [],
+    "width": 512,
+    "windows": 1
+  },
+  {
+    "bay_width": 96,
+    "benchmark_checksum": 0,
+    "command": [
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek_megablock_capture",
+      "--output",
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek-megablock-gallery-final/raw/seed-17.u16",
+      "--seed",
+      "17"
+    ],
+    "direct_sampler_ms": [],
+    "doors": 1,
+    "floor_height": 64,
+    "generator_fingerprint": "4689a618e656ee0",
+    "generator_raster_ms": [],
+    "height": 512,
+    "isolated_single_cells": 0,
+    "largest_empty_rectangle": {
+      "area": 14016,
+      "height": 146,
+      "width": 96,
+      "x": 192,
+      "y": 256
+    },
+    "largest_solid_component": 109302,
+    "largest_void_component": 22764,
+    "material_counts": {
+      "0": 152842,
+      "121": 8616,
+      "58": 30136,
+      "62": 70550
+    },
+    "material_encoding": "row-major uint16 little-endian existing material IDs",
+    "material_sha256": "17c7ab78efef5e8fedb0de893a5e33345413207e95649d5df9b29ca7470ce684",
+    "module": "seeded_typology_megablock",
+    "name": "seed-17",
+    "native_raster_ms": 147.591381,
+    "non_atrium_lots_in_capture": 44,
+    "occupied_cells": 109302,
+    "occupied_ratio": 0.4169540405,
+    "operations_per_cell": 616,
+    "origin": [
+      0,
+      0
+    ],
+    "png": "png/seed-17.png",
+    "png_sha256": "71c299cacb24f0f442ce6b23d1e80931ef0df3fc968cd496de330c2e79bd63c9",
+    "preparation_ms": 0.73283,
+    "programme_diagnostic_source": "private production helper generation_megablock_programme.hpp",
+    "programmes": [
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "core",
+            "atrium",
+            "crown",
+            "crown"
+          ],
+          [
+            "core",
+            "bridge",
+            "open_frame",
+            "open_frame"
+          ],
+          [
+            "core",
+            "atrium",
+            "habitation",
+            "habitation"
+          ],
+          [
+            "core",
+            "arcade",
+            "buttress",
+            "arcade"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": true,
+        "core_column": 0,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 96,
+          "y": 128
+        },
+        "spare_column": 3,
+        "supercell": [
+          0,
+          0
+        ],
+        "support_column": 2,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "core",
+            "atrium",
+            "crown"
+          ],
+          [
+            "open_frame",
+            "core",
+            "bridge",
+            "habitation"
+          ],
+          [
+            "open_frame",
+            "core",
+            "atrium",
+            "habitation"
+          ],
+          [
+            "arcade",
+            "core",
+            "arcade",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": false,
+        "core_column": 1,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 128
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          0
+        ],
+        "support_column": 3,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "core",
+            "atrium",
+            "crown"
+          ],
+          [
+            "habitation",
+            "core",
+            "atrium",
+            "habitation"
+          ],
+          [
+            "cantilever",
+            "core",
+            "bridge",
+            "open_frame"
+          ],
+          [
+            "buttress",
+            "core",
+            "arcade",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": true,
+        "core_column": 1,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 192,
+          "y": 320
+        },
+        "spare_column": 0,
+        "supercell": [
+          0,
+          1
+        ],
+        "support_column": 3,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "crown",
+            "atrium",
+            "core"
+          ],
+          [
+            "habitation",
+            "habitation",
+            "atrium",
+            "core"
+          ],
+          [
+            "cantilever",
+            "habitation",
+            "bridge",
+            "core"
+          ],
+          [
+            "arcade",
+            "buttress",
+            "arcade",
+            "core"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": false,
+        "core_column": 3,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 320
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          1
+        ],
+        "support_column": 1,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      }
+    ],
+    "raw": "raw/seed-17.u16",
+    "schema": 1,
+    "seed": 17,
+    "smallest_solid_component": 109302,
+    "solid_components4": 1,
+    "typology_families": 9,
+    "typology_lots_in_capture": {
+      "arcade": 5,
+      "atrium": 4,
+      "bridge": 2,
+      "buttress": 4,
+      "cantilever": 2,
+      "core": 12,
+      "crown": 7,
+      "habitation": 7,
+      "open_frame": 5
+    },
+    "version": 1,
+    "void_components4": 122,
+    "wall": 4,
+    "warnings": [],
+    "width": 512,
+    "windows": 1
+  },
+  {
+    "bay_width": 96,
+    "benchmark_checksum": 0,
+    "command": [
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek_megablock_capture",
+      "--output",
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek-megablock-gallery-final/raw/seed-18.u16",
+      "--seed",
+      "18"
+    ],
+    "direct_sampler_ms": [],
+    "doors": 1,
+    "floor_height": 64,
+    "generator_fingerprint": "48c509bc3feddadf",
+    "generator_raster_ms": [],
+    "height": 512,
+    "isolated_single_cells": 0,
+    "largest_empty_rectangle": {
+      "area": 14016,
+      "height": 146,
+      "width": 96,
+      "x": 96,
+      "y": 0
+    },
+    "largest_solid_component": 106261,
+    "largest_void_component": 25648,
+    "material_counts": {
+      "0": 155883,
+      "121": 7336,
+      "58": 28816,
+      "62": 70109
+    },
+    "material_encoding": "row-major uint16 little-endian existing material IDs",
+    "material_sha256": "c07bb19ad8352aac9946f0d68fddadb0cb0fb749d7752888ea8d6ddcb47c9b6b",
+    "module": "seeded_typology_megablock",
+    "name": "seed-18",
+    "native_raster_ms": 147.623098,
+    "non_atrium_lots_in_capture": 44,
+    "occupied_cells": 106261,
+    "occupied_ratio": 0.4053535461,
+    "operations_per_cell": 616,
+    "origin": [
+      0,
+      0
+    ],
+    "png": "png/seed-18.png",
+    "png_sha256": "74284e45157b9ba8189748a844c1cc2a66e49f4b69a034fbc0b21ce1c4eb2ead",
+    "preparation_ms": 0.19666,
+    "programme_diagnostic_source": "private production helper generation_megablock_programme.hpp",
+    "programmes": [
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "core",
+            "atrium",
+            "crown",
+            "crown"
+          ],
+          [
+            "core",
+            "atrium",
+            "habitation",
+            "open_frame"
+          ],
+          [
+            "core",
+            "bridge",
+            "habitation",
+            "open_frame"
+          ],
+          [
+            "core",
+            "arcade",
+            "buttress",
+            "arcade"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": true,
+        "core_column": 0,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 96,
+          "y": 64
+        },
+        "spare_column": 3,
+        "supercell": [
+          0,
+          0
+        ],
+        "support_column": 2,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "core",
+            "atrium",
+            "crown"
+          ],
+          [
+            "cantilever",
+            "core",
+            "bridge",
+            "habitation"
+          ],
+          [
+            "open_frame",
+            "core",
+            "atrium",
+            "habitation"
+          ],
+          [
+            "arcade",
+            "core",
+            "arcade",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": false,
+        "core_column": 1,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 128
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          0
+        ],
+        "support_column": 3,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "core",
+            "atrium",
+            "crown"
+          ],
+          [
+            "cantilever",
+            "core",
+            "bridge",
+            "habitation"
+          ],
+          [
+            "habitation",
+            "core",
+            "atrium",
+            "habitation"
+          ],
+          [
+            "arcade",
+            "core",
+            "arcade",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": true,
+        "core_column": 1,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 192,
+          "y": 384
+        },
+        "spare_column": 0,
+        "supercell": [
+          0,
+          1
+        ],
+        "support_column": 3,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "crown",
+            "atrium",
+            "core"
+          ],
+          [
+            "open_frame",
+            "habitation",
+            "atrium",
+            "core"
+          ],
+          [
+            "cantilever",
+            "habitation",
+            "bridge",
+            "core"
+          ],
+          [
+            "arcade",
+            "buttress",
+            "arcade",
+            "core"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": false,
+        "core_column": 3,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 320
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          1
+        ],
+        "support_column": 1,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      }
+    ],
+    "raw": "raw/seed-18.u16",
+    "schema": 1,
+    "seed": 18,
+    "smallest_solid_component": 106261,
+    "solid_components4": 1,
+    "typology_families": 9,
+    "typology_lots_in_capture": {
+      "arcade": 6,
+      "atrium": 4,
+      "bridge": 2,
+      "buttress": 3,
+      "cantilever": 3,
+      "core": 12,
+      "crown": 7,
+      "habitation": 7,
+      "open_frame": 4
+    },
+    "version": 1,
+    "void_components4": 119,
+    "wall": 4,
+    "warnings": [],
+    "width": 512,
+    "windows": 1
+  },
+  {
+    "bay_width": 96,
+    "benchmark_checksum": 0,
+    "command": [
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek_megablock_capture",
+      "--output",
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek-megablock-gallery-final/raw/seed-19.u16",
+      "--seed",
+      "19"
+    ],
+    "direct_sampler_ms": [],
+    "doors": 1,
+    "floor_height": 64,
+    "generator_fingerprint": "3eb01aa018f952c3",
+    "generator_raster_ms": [],
+    "height": 512,
+    "isolated_single_cells": 0,
+    "largest_empty_rectangle": {
+      "area": 14016,
+      "height": 146,
+      "width": 96,
+      "x": 96,
+      "y": 0
+    },
+    "largest_solid_component": 102365,
+    "largest_void_component": 25648,
+    "material_counts": {
+      "0": 159779,
+      "121": 4600,
+      "58": 28520,
+      "62": 69245
+    },
+    "material_encoding": "row-major uint16 little-endian existing material IDs",
+    "material_sha256": "3c572d50186392ff438a5d00bf60f38ddd35d1e2e73cd9505a2becb5d14610c3",
+    "module": "seeded_typology_megablock",
+    "name": "seed-19",
+    "native_raster_ms": 150.662049,
+    "non_atrium_lots_in_capture": 44,
+    "occupied_cells": 102365,
+    "occupied_ratio": 0.3904914856,
+    "operations_per_cell": 616,
+    "origin": [
+      0,
+      0
+    ],
+    "png": "png/seed-19.png",
+    "png_sha256": "ce32faab2464a55c66c2c1e5ed54498fc9f30d94f743588c1edeeb3f32e073cf",
+    "preparation_ms": 0.202789,
+    "programme_diagnostic_source": "private production helper generation_megablock_programme.hpp",
+    "programmes": [
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "core",
+            "atrium",
+            "crown",
+            "crown"
+          ],
+          [
+            "core",
+            "atrium",
+            "habitation",
+            "habitation"
+          ],
+          [
+            "core",
+            "bridge",
+            "open_frame",
+            "open_frame"
+          ],
+          [
+            "core",
+            "arcade",
+            "buttress",
+            "arcade"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": true,
+        "core_column": 0,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 96,
+          "y": 64
+        },
+        "spare_column": 3,
+        "supercell": [
+          0,
+          0
+        ],
+        "support_column": 2,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "core",
+            "atrium",
+            "crown"
+          ],
+          [
+            "open_frame",
+            "core",
+            "bridge",
+            "habitation"
+          ],
+          [
+            "open_frame",
+            "core",
+            "atrium",
+            "habitation"
+          ],
+          [
+            "arcade",
+            "core",
+            "arcade",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": false,
+        "core_column": 1,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 128
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          0
+        ],
+        "support_column": 3,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "atrium",
+            "core",
+            "crown"
+          ],
+          [
+            "open_frame",
+            "bridge",
+            "core",
+            "open_frame"
+          ],
+          [
+            "habitation",
+            "atrium",
+            "core",
+            "open_frame"
+          ],
+          [
+            "buttress",
+            "arcade",
+            "core",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": true,
+        "core_column": 2,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 96,
+          "y": 384
+        },
+        "spare_column": 3,
+        "supercell": [
+          0,
+          1
+        ],
+        "support_column": 0,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "core",
+            "atrium",
+            "crown"
+          ],
+          [
+            "open_frame",
+            "core",
+            "atrium",
+            "habitation"
+          ],
+          [
+            "cantilever",
+            "core",
+            "bridge",
+            "open_frame"
+          ],
+          [
+            "buttress",
+            "core",
+            "arcade",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": false,
+        "core_column": 1,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 320
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          1
+        ],
+        "support_column": 3,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      }
+    ],
+    "raw": "raw/seed-19.u16",
+    "schema": 1,
+    "seed": 19,
+    "smallest_solid_component": 102365,
+    "solid_components4": 1,
+    "typology_families": 9,
+    "typology_lots_in_capture": {
+      "arcade": 4,
+      "atrium": 4,
+      "bridge": 2,
+      "buttress": 4,
+      "cantilever": 1,
+      "core": 16,
+      "crown": 6,
+      "habitation": 3,
+      "open_frame": 8
+    },
+    "version": 1,
+    "void_components4": 124,
+    "wall": 4,
+    "warnings": [],
+    "width": 512,
+    "windows": 1
+  },
+  {
+    "bay_width": 96,
+    "benchmark_checksum": 0,
+    "command": [
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek_megablock_capture",
+      "--output",
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek-megablock-gallery-final/raw/seed-20.u16",
+      "--seed",
+      "20"
+    ],
+    "direct_sampler_ms": [],
+    "doors": 1,
+    "floor_height": 64,
+    "generator_fingerprint": "46409fe6b55e8dac",
+    "generator_raster_ms": [],
+    "height": 512,
+    "isolated_single_cells": 0,
+    "largest_empty_rectangle": {
+      "area": 14016,
+      "height": 146,
+      "width": 96,
+      "x": 96,
+      "y": 0
+    },
+    "largest_solid_component": 108532,
+    "largest_void_component": 25207,
+    "material_counts": {
+      "0": 153612,
+      "121": 5488,
+      "58": 27568,
+      "62": 75476
+    },
+    "material_encoding": "row-major uint16 little-endian existing material IDs",
+    "material_sha256": "694631de32f61bf2bc770880bb646e0b0cbc1297a3662150a8d4a8a95a791483",
+    "module": "seeded_typology_megablock",
+    "name": "seed-20",
+    "native_raster_ms": 200.201112,
+    "non_atrium_lots_in_capture": 42,
+    "occupied_cells": 108532,
+    "occupied_ratio": 0.4140167236,
+    "operations_per_cell": 616,
+    "origin": [
+      0,
+      0
+    ],
+    "png": "png/seed-20.png",
+    "png_sha256": "49c405736ab892849b8dbeb87b159696a2150f0a3d9a059ecaa0704fc9cbd3cf",
+    "preparation_ms": 0.20323,
+    "programme_diagnostic_source": "private production helper generation_megablock_programme.hpp",
+    "programmes": [
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "core",
+            "atrium",
+            "crown",
+            "crown"
+          ],
+          [
+            "core",
+            "atrium",
+            "habitation",
+            "habitation"
+          ],
+          [
+            "core",
+            "bridge",
+            "open_frame",
+            "open_frame"
+          ],
+          [
+            "core",
+            "arcade",
+            "buttress",
+            "arcade"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": true,
+        "core_column": 0,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 96,
+          "y": 64
+        },
+        "spare_column": 3,
+        "supercell": [
+          0,
+          0
+        ],
+        "support_column": 2,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "crown",
+            "atrium",
+            "core"
+          ],
+          [
+            "open_frame",
+            "habitation",
+            "bridge",
+            "core"
+          ],
+          [
+            "open_frame",
+            "habitation",
+            "atrium",
+            "core"
+          ],
+          [
+            "buttress",
+            "buttress",
+            "arcade",
+            "core"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": false,
+        "core_column": 3,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 128
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          0
+        ],
+        "support_column": 1,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "atrium",
+            "core",
+            "crown"
+          ],
+          [
+            "habitation",
+            "atrium",
+            "core",
+            "open_frame"
+          ],
+          [
+            "open_frame",
+            "bridge",
+            "core",
+            "open_frame"
+          ],
+          [
+            "buttress",
+            "arcade",
+            "core",
+            "arcade"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": true,
+        "core_column": 2,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 96,
+          "y": 320
+        },
+        "spare_column": 3,
+        "supercell": [
+          0,
+          1
+        ],
+        "support_column": 0,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "core",
+            "atrium",
+            "crown",
+            "crown"
+          ],
+          [
+            "core",
+            "bridge",
+            "habitation",
+            "open_frame"
+          ],
+          [
+            "core",
+            "atrium",
+            "habitation",
+            "habitation"
+          ],
+          [
+            "core",
+            "arcade",
+            "buttress",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": false,
+        "core_column": 0,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 480,
+          "y": 384
+        },
+        "spare_column": 3,
+        "supercell": [
+          1,
+          1
+        ],
+        "support_column": 2,
+        "visible_protected_void_cells": 2048,
+        "visible_protected_void_empty": true
+      }
+    ],
+    "raw": "raw/seed-20.u16",
+    "schema": 1,
+    "seed": 20,
+    "smallest_solid_component": 108532,
+    "solid_components4": 1,
+    "typology_families": 8,
+    "typology_lots_in_capture": {
+      "arcade": 5,
+      "atrium": 6,
+      "bridge": 3,
+      "buttress": 4,
+      "cantilever": 0,
+      "core": 12,
+      "crown": 6,
+      "habitation": 5,
+      "open_frame": 7
+    },
+    "version": 1,
+    "void_components4": 141,
+    "wall": 4,
+    "warnings": [],
+    "width": 512,
+    "windows": 1
+  },
+  {
+    "bay_width": 96,
+    "benchmark_checksum": 0,
+    "command": [
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek_megablock_capture",
+      "--output",
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek-megablock-gallery-final/raw/seed-21.u16",
+      "--seed",
+      "21"
+    ],
+    "direct_sampler_ms": [],
+    "doors": 1,
+    "floor_height": 64,
+    "generator_fingerprint": "750605f24637a62e",
+    "generator_raster_ms": [],
+    "height": 512,
+    "isolated_single_cells": 0,
+    "largest_empty_rectangle": {
+      "area": 14016,
+      "height": 146,
+      "width": 96,
+      "x": 96,
+      "y": 0
+    },
+    "largest_solid_component": 106145,
+    "largest_void_component": 25648,
+    "material_counts": {
+      "0": 155999,
+      "121": 7208,
+      "58": 27642,
+      "62": 71295
+    },
+    "material_encoding": "row-major uint16 little-endian existing material IDs",
+    "material_sha256": "26a824bcc5bee0250031cb5b05df471b3a4744dcc54a685d90cc3e51c6b5231a",
+    "module": "seeded_typology_megablock",
+    "name": "seed-21",
+    "native_raster_ms": 145.176111,
+    "non_atrium_lots_in_capture": 44,
+    "occupied_cells": 106145,
+    "occupied_ratio": 0.4049110413,
+    "operations_per_cell": 616,
+    "origin": [
+      0,
+      0
+    ],
+    "png": "png/seed-21.png",
+    "png_sha256": "df1b528897aa59b0e11b7a4b6ed09791f1bd49d902949ab4f0771f1e9046ccac",
+    "preparation_ms": 0.200225,
+    "programme_diagnostic_source": "private production helper generation_megablock_programme.hpp",
+    "programmes": [
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "core",
+            "atrium",
+            "crown",
+            "crown"
+          ],
+          [
+            "core",
+            "atrium",
+            "habitation",
+            "open_frame"
+          ],
+          [
+            "core",
+            "bridge",
+            "habitation",
+            "cantilever"
+          ],
+          [
+            "core",
+            "arcade",
+            "buttress",
+            "arcade"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": true,
+        "core_column": 0,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 96,
+          "y": 64
+        },
+        "spare_column": 3,
+        "supercell": [
+          0,
+          0
+        ],
+        "support_column": 2,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "core",
+            "atrium",
+            "crown"
+          ],
+          [
+            "open_frame",
+            "core",
+            "bridge",
+            "habitation"
+          ],
+          [
+            "habitation",
+            "core",
+            "atrium",
+            "habitation"
+          ],
+          [
+            "buttress",
+            "core",
+            "arcade",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": false,
+        "core_column": 1,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 128
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          0
+        ],
+        "support_column": 3,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "core",
+            "atrium",
+            "crown",
+            "crown"
+          ],
+          [
+            "core",
+            "atrium",
+            "habitation",
+            "open_frame"
+          ],
+          [
+            "core",
+            "bridge",
+            "open_frame",
+            "open_frame"
+          ],
+          [
+            "core",
+            "arcade",
+            "buttress",
+            "arcade"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": true,
+        "core_column": 0,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 96,
+          "y": 320
+        },
+        "spare_column": 3,
+        "supercell": [
+          0,
+          1
+        ],
+        "support_column": 2,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "core",
+            "atrium",
+            "crown"
+          ],
+          [
+            "habitation",
+            "core",
+            "atrium",
+            "habitation"
+          ],
+          [
+            "cantilever",
+            "core",
+            "bridge",
+            "habitation"
+          ],
+          [
+            "arcade",
+            "core",
+            "arcade",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": false,
+        "core_column": 1,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 320
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          1
+        ],
+        "support_column": 3,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      }
+    ],
+    "raw": "raw/seed-21.u16",
+    "schema": 1,
+    "seed": 21,
+    "smallest_solid_component": 106145,
+    "solid_components4": 1,
+    "typology_families": 9,
+    "typology_lots_in_capture": {
+      "arcade": 5,
+      "atrium": 4,
+      "bridge": 2,
+      "buttress": 3,
+      "cantilever": 2,
+      "core": 16,
+      "crown": 6,
+      "habitation": 5,
+      "open_frame": 5
+    },
+    "version": 1,
+    "void_components4": 122,
+    "wall": 4,
+    "warnings": [],
+    "width": 512,
+    "windows": 1
+  },
+  {
+    "bay_width": 96,
+    "benchmark_checksum": 0,
+    "command": [
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek_megablock_capture",
+      "--output",
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek-megablock-gallery-final/raw/seed-22.u16",
+      "--seed",
+      "22"
+    ],
+    "direct_sampler_ms": [],
+    "doors": 1,
+    "floor_height": 64,
+    "generator_fingerprint": "94aeb372ccfd96f4",
+    "generator_raster_ms": [],
+    "height": 512,
+    "isolated_single_cells": 0,
+    "largest_empty_rectangle": {
+      "area": 14016,
+      "height": 146,
+      "width": 96,
+      "x": 96,
+      "y": 0
+    },
+    "largest_solid_component": 112166,
+    "largest_void_component": 19641,
+    "material_counts": {
+      "0": 149978,
+      "121": 4600,
+      "58": 23798,
+      "62": 83768
+    },
+    "material_encoding": "row-major uint16 little-endian existing material IDs",
+    "material_sha256": "1c2debbbf789f67b86a802cc174c86c5601674fcb1c62db40b27db8225f4b186",
+    "module": "seeded_typology_megablock",
+    "name": "seed-22",
+    "native_raster_ms": 151.03555,
+    "non_atrium_lots_in_capture": 40,
+    "occupied_cells": 112166,
+    "occupied_ratio": 0.4278793335,
+    "operations_per_cell": 616,
+    "origin": [
+      0,
+      0
+    ],
+    "png": "png/seed-22.png",
+    "png_sha256": "cf6d2c969c54e857c657a660b7c43c1b9eb847c2525a319e902548275ecb5ecb",
+    "preparation_ms": 0.277499,
+    "programme_diagnostic_source": "private production helper generation_megablock_programme.hpp",
+    "programmes": [
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "atrium",
+            "core",
+            "crown"
+          ],
+          [
+            "habitation",
+            "atrium",
+            "core",
+            "habitation"
+          ],
+          [
+            "open_frame",
+            "bridge",
+            "core",
+            "cantilever"
+          ],
+          [
+            "buttress",
+            "arcade",
+            "core",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": true,
+        "core_column": 2,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 96,
+          "y": 64
+        },
+        "spare_column": 3,
+        "supercell": [
+          0,
+          0
+        ],
+        "support_column": 0,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "core",
+            "atrium",
+            "crown",
+            "crown"
+          ],
+          [
+            "core",
+            "atrium",
+            "habitation",
+            "open_frame"
+          ],
+          [
+            "core",
+            "bridge",
+            "open_frame",
+            "open_frame"
+          ],
+          [
+            "core",
+            "arcade",
+            "buttress",
+            "arcade"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": false,
+        "core_column": 0,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 480,
+          "y": 64
+        },
+        "spare_column": 3,
+        "supercell": [
+          1,
+          0
+        ],
+        "support_column": 2,
+        "visible_protected_void_cells": 2048,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "crown",
+            "atrium",
+            "core"
+          ],
+          [
+            "cantilever",
+            "open_frame",
+            "bridge",
+            "core"
+          ],
+          [
+            "open_frame",
+            "habitation",
+            "atrium",
+            "core"
+          ],
+          [
+            "buttress",
+            "buttress",
+            "arcade",
+            "core"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": true,
+        "core_column": 3,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 192,
+          "y": 384
+        },
+        "spare_column": 0,
+        "supercell": [
+          0,
+          1
+        ],
+        "support_column": 1,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "core",
+            "atrium",
+            "crown",
+            "crown"
+          ],
+          [
+            "core",
+            "atrium",
+            "habitation",
+            "habitation"
+          ],
+          [
+            "core",
+            "bridge",
+            "open_frame",
+            "cantilever"
+          ],
+          [
+            "core",
+            "arcade",
+            "buttress",
+            "arcade"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": false,
+        "core_column": 0,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 480,
+          "y": 320
+        },
+        "spare_column": 3,
+        "supercell": [
+          1,
+          1
+        ],
+        "support_column": 2,
+        "visible_protected_void_cells": 2048,
+        "visible_protected_void_empty": true
+      }
+    ],
+    "raw": "raw/seed-22.u16",
+    "schema": 1,
+    "seed": 22,
+    "smallest_solid_component": 112166,
+    "solid_components4": 1,
+    "typology_families": 9,
+    "typology_lots_in_capture": {
+      "arcade": 4,
+      "atrium": 8,
+      "bridge": 4,
+      "buttress": 4,
+      "cantilever": 2,
+      "core": 16,
+      "crown": 4,
+      "habitation": 3,
+      "open_frame": 3
+    },
+    "version": 1,
+    "void_components4": 146,
+    "wall": 4,
+    "warnings": [],
+    "width": 512,
+    "windows": 1
+  },
+  {
+    "bay_width": 96,
+    "benchmark_checksum": 0,
+    "command": [
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek_megablock_capture",
+      "--output",
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek-megablock-gallery-final/raw/seed-23.u16",
+      "--seed",
+      "23"
+    ],
+    "direct_sampler_ms": [],
+    "doors": 1,
+    "floor_height": 64,
+    "generator_fingerprint": "5971b02478807359",
+    "generator_raster_ms": [],
+    "height": 512,
+    "isolated_single_cells": 0,
+    "largest_empty_rectangle": {
+      "area": 14016,
+      "height": 146,
+      "width": 96,
+      "x": 96,
+      "y": 256
+    },
+    "largest_solid_component": 115698,
+    "largest_void_component": 19641,
+    "material_counts": {
+      "0": 146446,
+      "121": 7920,
+      "58": 29030,
+      "62": 78748
+    },
+    "material_encoding": "row-major uint16 little-endian existing material IDs",
+    "material_sha256": "58784c2eddeb29e412256e02e58b1538e20cf18293410f7185a24b827ccfaeab",
+    "module": "seeded_typology_megablock",
+    "name": "seed-23",
+    "native_raster_ms": 152.994518,
+    "non_atrium_lots_in_capture": 40,
+    "occupied_cells": 115698,
+    "occupied_ratio": 0.4413528442,
+    "operations_per_cell": 616,
+    "origin": [
+      0,
+      0
+    ],
+    "png": "png/seed-23.png",
+    "png_sha256": "5120cdd18fde32679558659d54c2343b14ce267428d2e3789d7a439558785c61",
+    "preparation_ms": 0.43408,
+    "programme_diagnostic_source": "private production helper generation_megablock_programme.hpp",
+    "programmes": [
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "crown",
+            "atrium",
+            "core"
+          ],
+          [
+            "cantilever",
+            "habitation",
+            "bridge",
+            "core"
+          ],
+          [
+            "habitation",
+            "habitation",
+            "atrium",
+            "core"
+          ],
+          [
+            "buttress",
+            "buttress",
+            "arcade",
+            "core"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": true,
+        "core_column": 3,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 192,
+          "y": 128
+        },
+        "spare_column": 0,
+        "supercell": [
+          0,
+          0
+        ],
+        "support_column": 1,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "core",
+            "atrium",
+            "crown",
+            "crown"
+          ],
+          [
+            "core",
+            "atrium",
+            "habitation",
+            "habitation"
+          ],
+          [
+            "core",
+            "bridge",
+            "open_frame",
+            "cantilever"
+          ],
+          [
+            "core",
+            "arcade",
+            "buttress",
+            "arcade"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": false,
+        "core_column": 0,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 480,
+          "y": 64
+        },
+        "spare_column": 3,
+        "supercell": [
+          1,
+          0
+        ],
+        "support_column": 2,
+        "visible_protected_void_cells": 2048,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "atrium",
+            "core",
+            "crown"
+          ],
+          [
+            "habitation",
+            "atrium",
+            "core",
+            "open_frame"
+          ],
+          [
+            "open_frame",
+            "bridge",
+            "core",
+            "cantilever"
+          ],
+          [
+            "buttress",
+            "arcade",
+            "core",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": true,
+        "core_column": 2,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 96,
+          "y": 320
+        },
+        "spare_column": 3,
+        "supercell": [
+          0,
+          1
+        ],
+        "support_column": 0,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "atrium",
+            "core",
+            "crown"
+          ],
+          [
+            "habitation",
+            "atrium",
+            "core",
+            "habitation"
+          ],
+          [
+            "habitation",
+            "bridge",
+            "core",
+            "open_frame"
+          ],
+          [
+            "buttress",
+            "arcade",
+            "core",
+            "arcade"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": false,
+        "core_column": 2,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 480,
+          "y": 320
+        },
+        "spare_column": 3,
+        "supercell": [
+          1,
+          1
+        ],
+        "support_column": 0,
+        "visible_protected_void_cells": 2048,
+        "visible_protected_void_empty": true
+      }
+    ],
+    "raw": "raw/seed-23.u16",
+    "schema": 1,
+    "seed": 23,
+    "smallest_solid_component": 115698,
+    "solid_components4": 1,
+    "typology_families": 9,
+    "typology_lots_in_capture": {
+      "arcade": 4,
+      "atrium": 8,
+      "bridge": 4,
+      "buttress": 5,
+      "cantilever": 2,
+      "core": 12,
+      "crown": 5,
+      "habitation": 6,
+      "open_frame": 2
+    },
+    "version": 1,
+    "void_components4": 127,
+    "wall": 4,
+    "warnings": [],
+    "width": 512,
+    "windows": 1
+  },
+  {
+    "bay_width": 96,
+    "benchmark_checksum": 0,
+    "command": [
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek_megablock_capture",
+      "--output",
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek-megablock-gallery-final/raw/seed-24.u16",
+      "--seed",
+      "24"
+    ],
+    "direct_sampler_ms": [],
+    "doors": 1,
+    "floor_height": 64,
+    "generator_fingerprint": "58e2de008cdbe7fc",
+    "generator_raster_ms": [],
+    "height": 512,
+    "isolated_single_cells": 0,
+    "largest_empty_rectangle": {
+      "area": 7872,
+      "height": 82,
+      "width": 96,
+      "x": 192,
+      "y": 0
+    },
+    "largest_solid_component": 111294,
+    "largest_void_component": 17214,
+    "material_counts": {
+      "0": 150850,
+      "121": 8440,
+      "58": 32974,
+      "62": 69880
+    },
+    "material_encoding": "row-major uint16 little-endian existing material IDs",
+    "material_sha256": "faf0fdff76dd9c65b1a0024443f84086e1fd4744cf5702db591c24744c78f035",
+    "module": "seeded_typology_megablock",
+    "name": "seed-24",
+    "native_raster_ms": 147.548509,
+    "non_atrium_lots_in_capture": 40,
+    "occupied_cells": 111294,
+    "occupied_ratio": 0.4245529175,
+    "operations_per_cell": 616,
+    "origin": [
+      0,
+      0
+    ],
+    "png": "png/seed-24.png",
+    "png_sha256": "75cb25fa80ba02fbe3f04fe5a02f189fb5954e3f2896e998cf91a77783d8f65b",
+    "preparation_ms": 0.195728,
+    "programme_diagnostic_source": "private production helper generation_megablock_programme.hpp",
+    "programmes": [
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "crown",
+            "atrium",
+            "core"
+          ],
+          [
+            "cantilever",
+            "open_frame",
+            "bridge",
+            "core"
+          ],
+          [
+            "open_frame",
+            "habitation",
+            "atrium",
+            "core"
+          ],
+          [
+            "buttress",
+            "buttress",
+            "arcade",
+            "core"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": true,
+        "core_column": 3,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 192,
+          "y": 128
+        },
+        "spare_column": 0,
+        "supercell": [
+          0,
+          0
+        ],
+        "support_column": 1,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "atrium",
+            "core",
+            "crown"
+          ],
+          [
+            "open_frame",
+            "bridge",
+            "core",
+            "cantilever"
+          ],
+          [
+            "habitation",
+            "atrium",
+            "core",
+            "open_frame"
+          ],
+          [
+            "buttress",
+            "arcade",
+            "core",
+            "arcade"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": false,
+        "core_column": 2,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 480,
+          "y": 128
+        },
+        "spare_column": 3,
+        "supercell": [
+          1,
+          0
+        ],
+        "support_column": 0,
+        "visible_protected_void_cells": 2048,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "core",
+            "atrium",
+            "crown"
+          ],
+          [
+            "open_frame",
+            "core",
+            "bridge",
+            "habitation"
+          ],
+          [
+            "habitation",
+            "core",
+            "atrium",
+            "habitation"
+          ],
+          [
+            "arcade",
+            "core",
+            "arcade",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": true,
+        "core_column": 1,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 192,
+          "y": 384
+        },
+        "spare_column": 0,
+        "supercell": [
+          0,
+          1
+        ],
+        "support_column": 3,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "atrium",
+            "core",
+            "crown"
+          ],
+          [
+            "open_frame",
+            "bridge",
+            "core",
+            "open_frame"
+          ],
+          [
+            "habitation",
+            "atrium",
+            "core",
+            "habitation"
+          ],
+          [
+            "buttress",
+            "arcade",
+            "core",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": false,
+        "core_column": 2,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 480,
+          "y": 384
+        },
+        "spare_column": 3,
+        "supercell": [
+          1,
+          1
+        ],
+        "support_column": 0,
+        "visible_protected_void_cells": 2048,
+        "visible_protected_void_empty": true
+      }
+    ],
+    "raw": "raw/seed-24.u16",
+    "schema": 1,
+    "seed": 24,
+    "smallest_solid_component": 111294,
+    "solid_components4": 1,
+    "typology_families": 9,
+    "typology_lots_in_capture": {
+      "arcade": 5,
+      "atrium": 8,
+      "bridge": 4,
+      "buttress": 5,
+      "cantilever": 1,
+      "core": 8,
+      "crown": 6,
+      "habitation": 6,
+      "open_frame": 5
+    },
+    "version": 1,
+    "void_components4": 119,
+    "wall": 4,
+    "warnings": [],
+    "width": 512,
+    "windows": 1
+  },
+  {
+    "bay_width": 96,
+    "benchmark_checksum": 0,
+    "command": [
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek_megablock_capture",
+      "--output",
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek-megablock-gallery-final/raw/seed-25.u16",
+      "--seed",
+      "25"
+    ],
+    "direct_sampler_ms": [],
+    "doors": 1,
+    "floor_height": 64,
+    "generator_fingerprint": "3250335b3ee4c83b",
+    "generator_raster_ms": [],
+    "height": 512,
+    "isolated_single_cells": 0,
+    "largest_empty_rectangle": {
+      "area": 7872,
+      "height": 82,
+      "width": 96,
+      "x": 96,
+      "y": 0
+    },
+    "largest_solid_component": 113781,
+    "largest_void_component": 17214,
+    "material_counts": {
+      "0": 148363,
+      "121": 6876,
+      "58": 29458,
+      "62": 77447
+    },
+    "material_encoding": "row-major uint16 little-endian existing material IDs",
+    "material_sha256": "a2dd7895c86694f158f90c4be1a7210860b8c192bb6b2740106b829495b667f9",
+    "module": "seeded_typology_megablock",
+    "name": "seed-25",
+    "native_raster_ms": 148.059312,
+    "non_atrium_lots_in_capture": 40,
+    "occupied_cells": 113781,
+    "occupied_ratio": 0.4340400696,
+    "operations_per_cell": 616,
+    "origin": [
+      0,
+      0
+    ],
+    "png": "png/seed-25.png",
+    "png_sha256": "cadeba3d090f892f3c7a71d8f05d0f66f3f4fccc0ba00706d98f2dd2cf15565b",
+    "preparation_ms": 0.198643,
+    "programme_diagnostic_source": "private production helper generation_megablock_programme.hpp",
+    "programmes": [
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "atrium",
+            "core",
+            "crown"
+          ],
+          [
+            "open_frame",
+            "bridge",
+            "core",
+            "cantilever"
+          ],
+          [
+            "habitation",
+            "atrium",
+            "core",
+            "habitation"
+          ],
+          [
+            "buttress",
+            "arcade",
+            "core",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": true,
+        "core_column": 2,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 96,
+          "y": 128
+        },
+        "spare_column": 3,
+        "supercell": [
+          0,
+          0
+        ],
+        "support_column": 0,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "core",
+            "atrium",
+            "crown",
+            "crown"
+          ],
+          [
+            "core",
+            "bridge",
+            "habitation",
+            "open_frame"
+          ],
+          [
+            "core",
+            "atrium",
+            "habitation",
+            "open_frame"
+          ],
+          [
+            "core",
+            "arcade",
+            "buttress",
+            "arcade"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": false,
+        "core_column": 0,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 480,
+          "y": 128
+        },
+        "spare_column": 3,
+        "supercell": [
+          1,
+          0
+        ],
+        "support_column": 2,
+        "visible_protected_void_cells": 2048,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "core",
+            "atrium",
+            "crown"
+          ],
+          [
+            "open_frame",
+            "core",
+            "bridge",
+            "open_frame"
+          ],
+          [
+            "open_frame",
+            "core",
+            "atrium",
+            "habitation"
+          ],
+          [
+            "buttress",
+            "core",
+            "arcade",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": true,
+        "core_column": 1,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 192,
+          "y": 384
+        },
+        "spare_column": 0,
+        "supercell": [
+          0,
+          1
+        ],
+        "support_column": 3,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "atrium",
+            "core",
+            "crown"
+          ],
+          [
+            "habitation",
+            "bridge",
+            "core",
+            "cantilever"
+          ],
+          [
+            "habitation",
+            "atrium",
+            "core",
+            "open_frame"
+          ],
+          [
+            "buttress",
+            "arcade",
+            "core",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": false,
+        "core_column": 2,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 480,
+          "y": 384
+        },
+        "spare_column": 3,
+        "supercell": [
+          1,
+          1
+        ],
+        "support_column": 0,
+        "visible_protected_void_cells": 2048,
+        "visible_protected_void_empty": true
+      }
+    ],
+    "raw": "raw/seed-25.u16",
+    "schema": 1,
+    "seed": 25,
+    "smallest_solid_component": 113781,
+    "solid_components4": 1,
+    "typology_families": 9,
+    "typology_lots_in_capture": {
+      "arcade": 4,
+      "atrium": 8,
+      "bridge": 4,
+      "buttress": 5,
+      "cantilever": 1,
+      "core": 12,
+      "crown": 5,
+      "habitation": 5,
+      "open_frame": 4
+    },
+    "version": 1,
+    "void_components4": 134,
+    "wall": 4,
+    "warnings": [],
+    "width": 512,
+    "windows": 1
+  },
+  {
+    "bay_width": 96,
+    "benchmark_checksum": 0,
+    "command": [
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek_megablock_capture",
+      "--output",
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek-megablock-gallery-final/raw/seed-26.u16",
+      "--seed",
+      "26"
+    ],
+    "direct_sampler_ms": [],
+    "doors": 1,
+    "floor_height": 64,
+    "generator_fingerprint": "e3e4657c5d16c922",
+    "generator_raster_ms": [],
+    "height": 512,
+    "isolated_single_cells": 0,
+    "largest_empty_rectangle": {
+      "area": 7872,
+      "height": 82,
+      "width": 96,
+      "x": 96,
+      "y": 0
+    },
+    "largest_solid_component": 107346,
+    "largest_void_component": 17851,
+    "material_counts": {
+      "0": 154798,
+      "121": 6992,
+      "58": 31896,
+      "62": 68458
+    },
+    "material_encoding": "row-major uint16 little-endian existing material IDs",
+    "material_sha256": "3623a5fdb90546bc09aee09f23d11cc7a4f473a9cdcf2a1cc41bcddbd444b78b",
+    "module": "seeded_typology_megablock",
+    "name": "seed-26",
+    "native_raster_ms": 143.641619,
+    "non_atrium_lots_in_capture": 44,
+    "occupied_cells": 107346,
+    "occupied_ratio": 0.4094924927,
+    "operations_per_cell": 616,
+    "origin": [
+      0,
+      0
+    ],
+    "png": "png/seed-26.png",
+    "png_sha256": "cd32fe45c80d5ad6ed78884dfdbb586aec86b3626fb0b57e92d87b977853d3b2",
+    "preparation_ms": 0.195157,
+    "programme_diagnostic_source": "private production helper generation_megablock_programme.hpp",
+    "programmes": [
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "core",
+            "atrium",
+            "crown",
+            "crown"
+          ],
+          [
+            "core",
+            "bridge",
+            "habitation",
+            "open_frame"
+          ],
+          [
+            "core",
+            "atrium",
+            "habitation",
+            "open_frame"
+          ],
+          [
+            "core",
+            "arcade",
+            "buttress",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": true,
+        "core_column": 0,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 96,
+          "y": 128
+        },
+        "spare_column": 3,
+        "supercell": [
+          0,
+          0
+        ],
+        "support_column": 2,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "crown",
+            "atrium",
+            "core"
+          ],
+          [
+            "open_frame",
+            "habitation",
+            "bridge",
+            "core"
+          ],
+          [
+            "open_frame",
+            "habitation",
+            "atrium",
+            "core"
+          ],
+          [
+            "arcade",
+            "buttress",
+            "arcade",
+            "core"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": false,
+        "core_column": 3,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 128
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          0
+        ],
+        "support_column": 1,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "atrium",
+            "core",
+            "crown"
+          ],
+          [
+            "open_frame",
+            "bridge",
+            "core",
+            "open_frame"
+          ],
+          [
+            "habitation",
+            "atrium",
+            "core",
+            "habitation"
+          ],
+          [
+            "buttress",
+            "arcade",
+            "core",
+            "arcade"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": true,
+        "core_column": 2,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 96,
+          "y": 384
+        },
+        "spare_column": 3,
+        "supercell": [
+          0,
+          1
+        ],
+        "support_column": 0,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "crown",
+            "atrium",
+            "core"
+          ],
+          [
+            "open_frame",
+            "habitation",
+            "atrium",
+            "core"
+          ],
+          [
+            "open_frame",
+            "open_frame",
+            "bridge",
+            "core"
+          ],
+          [
+            "arcade",
+            "buttress",
+            "arcade",
+            "core"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": false,
+        "core_column": 3,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 320
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          1
+        ],
+        "support_column": 1,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      }
+    ],
+    "raw": "raw/seed-26.u16",
+    "schema": 1,
+    "seed": 26,
+    "smallest_solid_component": 107346,
+    "solid_components4": 1,
+    "typology_families": 8,
+    "typology_lots_in_capture": {
+      "arcade": 5,
+      "atrium": 4,
+      "bridge": 2,
+      "buttress": 5,
+      "cantilever": 0,
+      "core": 8,
+      "crown": 8,
+      "habitation": 7,
+      "open_frame": 9
+    },
+    "version": 1,
+    "void_components4": 124,
+    "wall": 4,
+    "warnings": [],
+    "width": 512,
+    "windows": 1
+  },
+  {
+    "bay_width": 96,
+    "benchmark_checksum": 0,
+    "command": [
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek_megablock_capture",
+      "--output",
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek-megablock-gallery-final/raw/seed-27.u16",
+      "--seed",
+      "27"
+    ],
+    "direct_sampler_ms": [],
+    "doors": 1,
+    "floor_height": 64,
+    "generator_fingerprint": "a37568fe7a75a296",
+    "generator_raster_ms": [],
+    "height": 512,
+    "isolated_single_cells": 0,
+    "largest_empty_rectangle": {
+      "area": 7872,
+      "height": 82,
+      "width": 96,
+      "x": 192,
+      "y": 0
+    },
+    "largest_solid_component": 114612,
+    "largest_void_component": 15849,
+    "material_counts": {
+      "0": 147532,
+      "121": 9420,
+      "58": 32862,
+      "62": 72330
+    },
+    "material_encoding": "row-major uint16 little-endian existing material IDs",
+    "material_sha256": "a76771379b7ccbb4f6157f7de4af17c0a1af250b0fe7642e9bc8a95003765f60",
+    "module": "seeded_typology_megablock",
+    "name": "seed-27",
+    "native_raster_ms": 143.508903,
+    "non_atrium_lots_in_capture": 44,
+    "occupied_cells": 114612,
+    "occupied_ratio": 0.437210083,
+    "operations_per_cell": 616,
+    "origin": [
+      0,
+      0
+    ],
+    "png": "png/seed-27.png",
+    "png_sha256": "9920847d89d49b35a79b64880910749ce6dd798f2e584373d13d76a7a8f797e1",
+    "preparation_ms": 0.196429,
+    "programme_diagnostic_source": "private production helper generation_megablock_programme.hpp",
+    "programmes": [
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "core",
+            "atrium",
+            "crown"
+          ],
+          [
+            "open_frame",
+            "core",
+            "bridge",
+            "open_frame"
+          ],
+          [
+            "habitation",
+            "core",
+            "atrium",
+            "habitation"
+          ],
+          [
+            "buttress",
+            "core",
+            "arcade",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": true,
+        "core_column": 1,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 192,
+          "y": 128
+        },
+        "spare_column": 0,
+        "supercell": [
+          0,
+          0
+        ],
+        "support_column": 3,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "core",
+            "atrium",
+            "crown"
+          ],
+          [
+            "open_frame",
+            "core",
+            "bridge",
+            "habitation"
+          ],
+          [
+            "habitation",
+            "core",
+            "atrium",
+            "habitation"
+          ],
+          [
+            "arcade",
+            "core",
+            "arcade",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": false,
+        "core_column": 1,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 128
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          0
+        ],
+        "support_column": 3,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "atrium",
+            "core",
+            "crown"
+          ],
+          [
+            "habitation",
+            "bridge",
+            "core",
+            "open_frame"
+          ],
+          [
+            "habitation",
+            "atrium",
+            "core",
+            "habitation"
+          ],
+          [
+            "buttress",
+            "arcade",
+            "core",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": true,
+        "core_column": 2,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 96,
+          "y": 384
+        },
+        "spare_column": 3,
+        "supercell": [
+          0,
+          1
+        ],
+        "support_column": 0,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "crown",
+            "atrium",
+            "core"
+          ],
+          [
+            "open_frame",
+            "habitation",
+            "bridge",
+            "core"
+          ],
+          [
+            "open_frame",
+            "habitation",
+            "atrium",
+            "core"
+          ],
+          [
+            "buttress",
+            "buttress",
+            "arcade",
+            "core"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": false,
+        "core_column": 3,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 384
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          1
+        ],
+        "support_column": 1,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      }
+    ],
+    "raw": "raw/seed-27.u16",
+    "schema": 1,
+    "seed": 27,
+    "smallest_solid_component": 114612,
+    "solid_components4": 1,
+    "typology_families": 8,
+    "typology_lots_in_capture": {
+      "arcade": 3,
+      "atrium": 4,
+      "bridge": 2,
+      "buttress": 6,
+      "cantilever": 0,
+      "core": 12,
+      "crown": 7,
+      "habitation": 8,
+      "open_frame": 6
+    },
+    "version": 1,
+    "void_components4": 120,
+    "wall": 4,
+    "warnings": [],
+    "width": 512,
+    "windows": 1
+  },
+  {
+    "bay_width": 96,
+    "benchmark_checksum": 0,
+    "command": [
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek_megablock_capture",
+      "--output",
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek-megablock-gallery-final/raw/seed-28.u16",
+      "--seed",
+      "28"
+    ],
+    "direct_sampler_ms": [],
+    "doors": 1,
+    "floor_height": 64,
+    "generator_fingerprint": "6ce504fe6683c07f",
+    "generator_raster_ms": [],
+    "height": 512,
+    "isolated_single_cells": 0,
+    "largest_empty_rectangle": {
+      "area": 14016,
+      "height": 146,
+      "width": 96,
+      "x": 192,
+      "y": 0
+    },
+    "largest_solid_component": 108415,
+    "largest_void_component": 25207,
+    "material_counts": {
+      "0": 153729,
+      "121": 7000,
+      "58": 30818,
+      "62": 70597
+    },
+    "material_encoding": "row-major uint16 little-endian existing material IDs",
+    "material_sha256": "d01288900795f29906d450ca6495ad35ff261310f20fea40b0326acdd8b63b55",
+    "module": "seeded_typology_megablock",
+    "name": "seed-28",
+    "native_raster_ms": 143.696689,
+    "non_atrium_lots_in_capture": 44,
+    "occupied_cells": 108415,
+    "occupied_ratio": 0.4135704041,
+    "operations_per_cell": 616,
+    "origin": [
+      0,
+      0
+    ],
+    "png": "png/seed-28.png",
+    "png_sha256": "4cd89f54e627ea4bde522f403e9a75bb2b3f4e8c237181dd33c644452727b4e4",
+    "preparation_ms": 0.216329,
+    "programme_diagnostic_source": "private production helper generation_megablock_programme.hpp",
+    "programmes": [
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "core",
+            "atrium",
+            "crown"
+          ],
+          [
+            "open_frame",
+            "core",
+            "atrium",
+            "habitation"
+          ],
+          [
+            "open_frame",
+            "core",
+            "bridge",
+            "habitation"
+          ],
+          [
+            "arcade",
+            "core",
+            "arcade",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": true,
+        "core_column": 1,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 192,
+          "y": 64
+        },
+        "spare_column": 0,
+        "supercell": [
+          0,
+          0
+        ],
+        "support_column": 3,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "core",
+            "atrium",
+            "crown"
+          ],
+          [
+            "open_frame",
+            "core",
+            "atrium",
+            "habitation"
+          ],
+          [
+            "open_frame",
+            "core",
+            "bridge",
+            "habitation"
+          ],
+          [
+            "arcade",
+            "core",
+            "arcade",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": false,
+        "core_column": 1,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 64
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          0
+        ],
+        "support_column": 3,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "core",
+            "atrium",
+            "crown",
+            "crown"
+          ],
+          [
+            "core",
+            "atrium",
+            "habitation",
+            "habitation"
+          ],
+          [
+            "core",
+            "bridge",
+            "habitation",
+            "cantilever"
+          ],
+          [
+            "core",
+            "arcade",
+            "buttress",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": true,
+        "core_column": 0,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 96,
+          "y": 320
+        },
+        "spare_column": 3,
+        "supercell": [
+          0,
+          1
+        ],
+        "support_column": 2,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "crown",
+            "atrium",
+            "core"
+          ],
+          [
+            "open_frame",
+            "habitation",
+            "atrium",
+            "core"
+          ],
+          [
+            "open_frame",
+            "open_frame",
+            "bridge",
+            "core"
+          ],
+          [
+            "buttress",
+            "buttress",
+            "arcade",
+            "core"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": false,
+        "core_column": 3,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 320
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          1
+        ],
+        "support_column": 1,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      }
+    ],
+    "raw": "raw/seed-28.u16",
+    "schema": 1,
+    "seed": 28,
+    "smallest_solid_component": 108415,
+    "solid_components4": 1,
+    "typology_families": 9,
+    "typology_lots_in_capture": {
+      "arcade": 4,
+      "atrium": 4,
+      "bridge": 2,
+      "buttress": 5,
+      "cantilever": 1,
+      "core": 12,
+      "crown": 7,
+      "habitation": 6,
+      "open_frame": 7
+    },
+    "version": 1,
+    "void_components4": 122,
+    "wall": 4,
+    "warnings": [],
+    "width": 512,
+    "windows": 1
+  },
+  {
+    "bay_width": 96,
+    "benchmark_checksum": 0,
+    "command": [
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek_megablock_capture",
+      "--output",
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek-megablock-gallery-final/raw/seed-29.u16",
+      "--seed",
+      "29"
+    ],
+    "direct_sampler_ms": [],
+    "doors": 1,
+    "floor_height": 64,
+    "generator_fingerprint": "9d9b53c57bacb253",
+    "generator_raster_ms": [],
+    "height": 512,
+    "isolated_single_cells": 0,
+    "largest_empty_rectangle": {
+      "area": 7872,
+      "height": 82,
+      "width": 96,
+      "x": 96,
+      "y": 0
+    },
+    "largest_solid_component": 103124,
+    "largest_void_component": 18292,
+    "material_counts": {
+      "0": 159020,
+      "121": 5488,
+      "58": 29400,
+      "62": 68236
+    },
+    "material_encoding": "row-major uint16 little-endian existing material IDs",
+    "material_sha256": "c26bfd262661d84cd1023c1b400ff1d6e7b11d56ebd494491fa90f65b90134e2",
+    "module": "seeded_typology_megablock",
+    "name": "seed-29",
+    "native_raster_ms": 152.818449,
+    "non_atrium_lots_in_capture": 44,
+    "occupied_cells": 103124,
+    "occupied_ratio": 0.3933868408,
+    "operations_per_cell": 616,
+    "origin": [
+      0,
+      0
+    ],
+    "png": "png/seed-29.png",
+    "png_sha256": "37ef0863e99f7803a0df59e581ddc45dc8ab094a54355f37b9d78ad53ef3b95c",
+    "preparation_ms": 0.207365,
+    "programme_diagnostic_source": "private production helper generation_megablock_programme.hpp",
+    "programmes": [
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "atrium",
+            "core",
+            "crown"
+          ],
+          [
+            "open_frame",
+            "bridge",
+            "core",
+            "cantilever"
+          ],
+          [
+            "habitation",
+            "atrium",
+            "core",
+            "open_frame"
+          ],
+          [
+            "buttress",
+            "arcade",
+            "core",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": true,
+        "core_column": 2,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 96,
+          "y": 128
+        },
+        "spare_column": 3,
+        "supercell": [
+          0,
+          0
+        ],
+        "support_column": 0,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "crown",
+            "atrium",
+            "core"
+          ],
+          [
+            "cantilever",
+            "habitation",
+            "bridge",
+            "core"
+          ],
+          [
+            "open_frame",
+            "habitation",
+            "atrium",
+            "core"
+          ],
+          [
+            "arcade",
+            "buttress",
+            "arcade",
+            "core"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": false,
+        "core_column": 3,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 128
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          0
+        ],
+        "support_column": 1,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "core",
+            "atrium",
+            "crown",
+            "crown"
+          ],
+          [
+            "core",
+            "bridge",
+            "open_frame",
+            "open_frame"
+          ],
+          [
+            "core",
+            "atrium",
+            "habitation",
+            "open_frame"
+          ],
+          [
+            "core",
+            "arcade",
+            "buttress",
+            "arcade"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": true,
+        "core_column": 0,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 96,
+          "y": 384
+        },
+        "spare_column": 3,
+        "supercell": [
+          0,
+          1
+        ],
+        "support_column": 2,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "core",
+            "atrium",
+            "crown"
+          ],
+          [
+            "habitation",
+            "core",
+            "atrium",
+            "habitation"
+          ],
+          [
+            "open_frame",
+            "core",
+            "bridge",
+            "habitation"
+          ],
+          [
+            "arcade",
+            "core",
+            "arcade",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": false,
+        "core_column": 1,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 320
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          1
+        ],
+        "support_column": 3,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      }
+    ],
+    "raw": "raw/seed-29.u16",
+    "schema": 1,
+    "seed": 29,
+    "smallest_solid_component": 103124,
+    "solid_components4": 1,
+    "typology_families": 9,
+    "typology_lots_in_capture": {
+      "arcade": 5,
+      "atrium": 4,
+      "bridge": 2,
+      "buttress": 4,
+      "cantilever": 2,
+      "core": 12,
+      "crown": 7,
+      "habitation": 5,
+      "open_frame": 7
+    },
+    "version": 1,
+    "void_components4": 122,
+    "wall": 4,
+    "warnings": [],
+    "width": 512,
+    "windows": 1
+  },
+  {
+    "bay_width": 96,
+    "benchmark_checksum": 0,
+    "command": [
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek_megablock_capture",
+      "--output",
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek-megablock-gallery-final/raw/seed-30.u16",
+      "--seed",
+      "30"
+    ],
+    "direct_sampler_ms": [],
+    "doors": 1,
+    "floor_height": 64,
+    "generator_fingerprint": "de158abe40176f59",
+    "generator_raster_ms": [],
+    "height": 512,
+    "isolated_single_cells": 0,
+    "largest_empty_rectangle": {
+      "area": 14016,
+      "height": 146,
+      "width": 96,
+      "x": 96,
+      "y": 0
+    },
+    "largest_solid_component": 106681,
+    "largest_void_component": 19641,
+    "material_counts": {
+      "0": 155463,
+      "121": 5288,
+      "58": 31718,
+      "62": 69675
+    },
+    "material_encoding": "row-major uint16 little-endian existing material IDs",
+    "material_sha256": "cfb2a605fcd3fbe5cc5bef82505f9b485eeccae1565a2f85c84e85fc966f394e",
+    "module": "seeded_typology_megablock",
+    "name": "seed-30",
+    "native_raster_ms": 141.046663,
+    "non_atrium_lots_in_capture": 44,
+    "occupied_cells": 106681,
+    "occupied_ratio": 0.406955719,
+    "operations_per_cell": 616,
+    "origin": [
+      0,
+      0
+    ],
+    "png": "png/seed-30.png",
+    "png_sha256": "3066e0babf74fd258ccae6d993509f649acad702c3dff67c705e68638f65df33",
+    "preparation_ms": 0.207906,
+    "programme_diagnostic_source": "private production helper generation_megablock_programme.hpp",
+    "programmes": [
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "atrium",
+            "core",
+            "crown"
+          ],
+          [
+            "habitation",
+            "atrium",
+            "core",
+            "open_frame"
+          ],
+          [
+            "habitation",
+            "bridge",
+            "core",
+            "open_frame"
+          ],
+          [
+            "buttress",
+            "arcade",
+            "core",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": true,
+        "core_column": 2,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 96,
+          "y": 64
+        },
+        "spare_column": 3,
+        "supercell": [
+          0,
+          0
+        ],
+        "support_column": 0,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "crown",
+            "atrium",
+            "core"
+          ],
+          [
+            "open_frame",
+            "habitation",
+            "atrium",
+            "core"
+          ],
+          [
+            "cantilever",
+            "open_frame",
+            "bridge",
+            "core"
+          ],
+          [
+            "arcade",
+            "buttress",
+            "arcade",
+            "core"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": false,
+        "core_column": 3,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 64
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          0
+        ],
+        "support_column": 1,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "atrium",
+            "core",
+            "crown"
+          ],
+          [
+            "habitation",
+            "atrium",
+            "core",
+            "open_frame"
+          ],
+          [
+            "habitation",
+            "bridge",
+            "core",
+            "open_frame"
+          ],
+          [
+            "buttress",
+            "arcade",
+            "core",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": true,
+        "core_column": 2,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 96,
+          "y": 320
+        },
+        "spare_column": 3,
+        "supercell": [
+          0,
+          1
+        ],
+        "support_column": 0,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "core",
+            "atrium",
+            "crown"
+          ],
+          [
+            "open_frame",
+            "core",
+            "bridge",
+            "habitation"
+          ],
+          [
+            "open_frame",
+            "core",
+            "atrium",
+            "habitation"
+          ],
+          [
+            "buttress",
+            "core",
+            "arcade",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": false,
+        "core_column": 1,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 576,
+          "y": 384
+        },
+        "spare_column": 0,
+        "supercell": [
+          1,
+          1
+        ],
+        "support_column": 3,
+        "visible_protected_void_cells": 0,
+        "visible_protected_void_empty": true
+      }
+    ],
+    "raw": "raw/seed-30.u16",
+    "schema": 1,
+    "seed": 30,
+    "smallest_solid_component": 106681,
+    "solid_components4": 1,
+    "typology_families": 9,
+    "typology_lots_in_capture": {
+      "arcade": 3,
+      "atrium": 4,
+      "bridge": 2,
+      "buttress": 6,
+      "cantilever": 1,
+      "core": 12,
+      "crown": 7,
+      "habitation": 5,
+      "open_frame": 8
+    },
+    "version": 1,
+    "void_components4": 120,
+    "wall": 4,
+    "warnings": [],
+    "width": 512,
+    "windows": 1
+  },
+  {
+    "bay_width": 96,
+    "benchmark_checksum": 0,
+    "command": [
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek_megablock_capture",
+      "--output",
+      "/workspace/scratch/d425b9146667/cybersand-megablock/build/gentek-megablock-gallery-final/raw/seed-31.u16",
+      "--seed",
+      "31"
+    ],
+    "direct_sampler_ms": [],
+    "doors": 1,
+    "floor_height": 64,
+    "generator_fingerprint": "cf7a178fa68b0efe",
+    "generator_raster_ms": [],
+    "height": 512,
+    "isolated_single_cells": 0,
+    "largest_empty_rectangle": {
+      "area": 14016,
+      "height": 146,
+      "width": 96,
+      "x": 96,
+      "y": 0
+    },
+    "largest_solid_component": 113755,
+    "largest_void_component": 24570,
+    "material_counts": {
+      "0": 148389,
+      "121": 9244,
+      "58": 33648,
+      "62": 70863
+    },
+    "material_encoding": "row-major uint16 little-endian existing material IDs",
+    "material_sha256": "eed1c31f6dc12098679ec7763bdcc4450cfbc751f186e5b6922c356b8dd7257f",
+    "module": "seeded_typology_megablock",
+    "name": "seed-31",
+    "native_raster_ms": 147.520627,
+    "non_atrium_lots_in_capture": 40,
+    "occupied_cells": 113755,
+    "occupied_ratio": 0.4339408875,
+    "operations_per_cell": 616,
+    "origin": [
+      0,
+      0
+    ],
+    "png": "png/seed-31.png",
+    "png_sha256": "3772145160ef44ba37eb400bc685e4b4d62c4157b94e38ac94f5925151f79a91",
+    "preparation_ms": 0.194447,
+    "programme_diagnostic_source": "private production helper generation_megablock_programme.hpp",
+    "programmes": [
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "atrium",
+            "core",
+            "crown"
+          ],
+          [
+            "habitation",
+            "atrium",
+            "core",
+            "open_frame"
+          ],
+          [
+            "open_frame",
+            "bridge",
+            "core",
+            "open_frame"
+          ],
+          [
+            "buttress",
+            "arcade",
+            "core",
+            "arcade"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": true,
+        "core_column": 2,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 96,
+          "y": 64
+        },
+        "spare_column": 3,
+        "supercell": [
+          0,
+          0
+        ],
+        "support_column": 0,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "atrium",
+            "core",
+            "crown"
+          ],
+          [
+            "habitation",
+            "bridge",
+            "core",
+            "cantilever"
+          ],
+          [
+            "habitation",
+            "atrium",
+            "core",
+            "open_frame"
+          ],
+          [
+            "buttress",
+            "arcade",
+            "core",
+            "arcade"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": false,
+        "core_column": 2,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 480,
+          "y": 128
+        },
+        "spare_column": 3,
+        "supercell": [
+          1,
+          0
+        ],
+        "support_column": 0,
+        "visible_protected_void_cells": 2048,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 2,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "core",
+            "atrium",
+            "crown"
+          ],
+          [
+            "habitation",
+            "core",
+            "atrium",
+            "habitation"
+          ],
+          [
+            "cantilever",
+            "core",
+            "bridge",
+            "open_frame"
+          ],
+          [
+            "buttress",
+            "core",
+            "arcade",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 2,
+        "complete_in_capture": true,
+        "core_column": 1,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 192,
+          "y": 320
+        },
+        "spare_column": 0,
+        "supercell": [
+          0,
+          1
+        ],
+        "support_column": 3,
+        "visible_protected_void_cells": 6144,
+        "visible_protected_void_empty": true
+      },
+      {
+        "atrium_column": 1,
+        "bands_top_to_bottom": [
+          [
+            "crown",
+            "atrium",
+            "core",
+            "crown"
+          ],
+          [
+            "habitation",
+            "bridge",
+            "core",
+            "cantilever"
+          ],
+          [
+            "habitation",
+            "atrium",
+            "core",
+            "habitation"
+          ],
+          [
+            "buttress",
+            "arcade",
+            "core",
+            "buttress"
+          ]
+        ],
+        "bridge_band": 1,
+        "complete_in_capture": false,
+        "core_column": 2,
+        "protected_void": {
+          "height": 64,
+          "width": 96,
+          "x": 480,
+          "y": 384
+        },
+        "spare_column": 3,
+        "supercell": [
+          1,
+          1
+        ],
+        "support_column": 0,
+        "visible_protected_void_cells": 2048,
+        "visible_protected_void_empty": true
+      }
+    ],
+    "raw": "raw/seed-31.u16",
+    "schema": 1,
+    "seed": 31,
+    "smallest_solid_component": 113755,
+    "solid_components4": 1,
+    "typology_families": 9,
+    "typology_lots_in_capture": {
+      "arcade": 5,
+      "atrium": 8,
+      "bridge": 4,
+      "buttress": 5,
+      "cantilever": 1,
+      "core": 8,
+      "crown": 6,
+      "habitation": 7,
+      "open_frame": 4
+    },
+    "version": 1,
+    "void_components4": 117,
+    "wall": 4,
+    "warnings": [],
+    "width": 512,
+    "windows": 1
+  }
+]

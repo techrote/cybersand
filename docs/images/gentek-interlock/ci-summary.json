@@ -1,0 +1,107 @@
+{
+  "source_commit": "9b8609d8011a95bb9516f02f3a67d2feaff6dee9",
+  "source_tree": "05298c6f01fb25317b261f83987556b40f108550",
+  "parent_commit": "615828b28337f85e4663e03ba479616db4ddf764",
+  "run_id": 43972891232,
+  "url": "https://github.com/techrote/cybersand/actions/runs/43972891232",
+  "status": "completed",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "id": 133669359577,
+      "name": "native",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 133669359726,
+      "name": "godot",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 133673881399,
+      "name": "verify",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 14280885306,
+      "name": "interlock-godot-43972891232",
+      "size_bytes": 2251733,
+      "sha256": "13debbe93b81d74e8f81d6bb4c26fa6420b1353a31219a884f0efb3950f6e590",
+      "expired": false,
+      "expires_at": "2027-02-14T22:44:17Z",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43972891232/artifacts/14280885306"
+    },
+    {
+      "id": 14279177869,
+      "name": "interlock-source-verification-43972891232",
+      "size_bytes": 360,
+      "sha256": "139b49b9da71814b11c6732082875d08551016fc89b852ecfccb0078ee4651b1",
+      "expired": false,
+      "expires_at": "2027-02-14T22:44:17Z",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43972891232/artifacts/14279177869"
+    },
+    {
+      "id": 14279177307,
+      "name": "interlock-native-43972891232",
+      "size_bytes": 8178372,
+      "sha256": "7187fe1fc4e4587ae0f16d63c70b7d086220f3fcc100dca60966a8a3ed8d057d",
+      "expired": false,
+      "expires_at": "2027-02-14T22:44:17Z",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43972891232/artifacts/14279177307"
+    }
+  ],
+  "cross_renderer_verification": {
+    "source_commit": "9b8609d8011a95bb9516f02f3a67d2feaff6dee9",
+    "passed": true,
+    "native_pngs": 63,
+    "godot_checks": 2490,
+    "ordinary_preset_material_sha256": "501dc58e96dd86d36677a56e6d4c51b41c5724b1b0ffe9385114732eb30d1019"
+  },
+  "gcc13_gcc14_complete_campaign_material_parity": {
+    "passed": true,
+    "captures": 63,
+    "cells_compared": 18075648
+  },
+  "performance": {
+    "method": "median of seven matched-trial ratios; first warmup excluded; module order rotates",
+    "configuration": {
+      "accent_material": 65,
+      "bay_width": 64,
+      "chunk_size": 64,
+      "floor_height": 64,
+      "floor_material": 62,
+      "schema": 4,
+      "seed": 271828,
+      "wall": 3,
+      "wall_material": 58,
+      "window_material": 121
+    },
+    "comparative_module": "cantilever_spine",
+    "sampler": "interlock_brutalism",
+    "measurements": [
+      {
+        "extent": 512,
+        "sampler_median_ms": 227.089504,
+        "comparator_median_ms": 224.764237,
+        "median_paired_ratio": 1.0097724922215352,
+        "sampler_min_ms": 219.318247,
+        "sampler_max_ms": 227.500451,
+        "logical_operations_per_cell": 604
+      },
+      {
+        "extent": 1024,
+        "sampler_median_ms": 635.819591,
+        "comparator_median_ms": 705.220958,
+        "median_paired_ratio": 1.0129081420480144,
+        "sampler_min_ms": 634.974774,
+        "sampler_max_ms": 910.100023,
+        "logical_operations_per_cell": 604
+      }
+    ]
+  }
+}

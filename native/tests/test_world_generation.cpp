@@ -1200,8 +1200,25 @@ void independent_architectural_algorithms() {
 }
 
 
+// A byte-order-defined digest of native material IDs, independent of C++ ABI.
+void append_material_digest(std::uint64_t& hash, const std::vector<Material>& cells) {
+    for (const auto material : cells) {
+        const auto value = static_cast<std::uint16_t>(material);
+        for (unsigned byte = 0; byte < 2; ++byte) {
+            hash ^= (value >> (8 * byte)) & 255U;
+            hash *= UINT64_C(1099511628211);
+        }
+    }
+}
+
+std::uint64_t material_digest(const std::vector<Material>& cells) {
+    std::uint64_t hash = UINT64_C(14695981039346656037);
+    append_material_digest(hash, cells);
+    return hash;
+}
+
 void classic_architectural_genteks() {
-    const std::array<std::string,72> ids{"trestle","stacked_arcade","flying_buttress","sawtooth_gallery","cantilever_spine","rib_vault",
+    const std::array<std::string,80> ids{"trestle","stacked_arcade","flying_buttress","sawtooth_gallery","cantilever_spine","rib_vault",
         "nested_arcade","suspended_deck","bowstring_truss","diamond_truss","portal_frame","ladder_bridge",
         "stepped_aqueduct","split_pier","cable_gallery","clerestory_hall","mushroom_deck","zigzag_bridge",
         "scalloped_vault","lattice_tower","offset_arcade","bridgehouse","forked_gantry","buttress_wall",
@@ -1212,8 +1229,12 @@ void classic_architectural_genteks() {
         "warren_truss","kingpost_frame","queenpost_frame","lenticular_bridge","radial_stay_bridge","twin_mast_bridge",
         "a_frame_hall","butterfly_hall","ziggurat_arcade","corbel_arcade","chain_vault","ring_pier",
         "folded_plate_hall","space_frame","crossbeam_stack","yoke_bridge","lantern_tower","spine_arcade",
-        "cascade_terrace","inverted_trestle","cranked_beam","barrel_arcade","buttress_crown","triptych_arcade"};
+        "cascade_terrace","inverted_trestle","cranked_beam","barrel_arcade","buttress_crown","triptych_arcade",
+        "megatruss_station", "seeded_typology_megablock", "metabolist_spine", "interlaced_viaduct", "rosework_gatehouse", "interlock_brutalism", "suspended_arcology",
+        "cathedral_megaframe"};
     std::set<std::vector<Material>> unique;
+    std::uint64_t parent_materials = UINT64_C(14695981039346656037);
+    std::size_t catalog_index = 0;
     for (const auto& id : ids) {
         Recipe recipe; recipe.schema=kArchitecturalSchemaVersion; recipe.candidate=Candidate::Strata;
         recipe.parameters.surface_y=-100; recipe.chunk_size=64; recipe.seed=271828;
@@ -1232,13 +1253,403 @@ void classic_architectural_genteks() {
             signature.insert(signature.end(),ready.cells.begin(),ready.cells.end());
             auto job=generator->begin(coord); while(job->state()==ResultState::Pending)(void)job->advance(31);
             same_cells(job->result(),ready,id+" classic slicing deterministic");
+            require(job->result().receipt_hash == ready.receipt_hash,
+                id+" classic slicing preserves receipts");
+            if (catalog_index < 72) append_material_digest(parent_materials, ready.cells);
         }
         require(occupied>512 && occupied<4*64*64-512,id+" has structure and negative space");
         unique.insert(std::move(signature));
         auto invalid=recipe; invalid.schema=kHierarchySchemaVersion;
         rejects([&]{(void)Generator::compile(invalid);},id+" requires schema 4");
+        invalid=recipe; invalid.modules[0].version=2;
+        rejects([&]{(void)Generator::compile(invalid);},id+" is v1 only");
+        ++catalog_index;
     }
-    require(unique.size()==ids.size(),"seventy-two classic Genteks produce distinct native geometry");
+    require(unique.size()==ids.size(),"eighty classic and showcase Genteks produce distinct native geometry");
+    // Captured independently from parent 615828b28337f85e4663e03ba479616db4ddf764.
+    // FNV-1a over the original 72 material streams in catalogue/chunk order.
+    require(parent_materials == UINT64_C(0x4a92810d575d9201),
+        "all seventy-two parent CLASSIC material fixtures remain byte-identical");
+}
+
+// Focused showcase contracts use the real Generator, never a second rasterizer.
+Recipe cathedral_recipe() {
+    Recipe recipe;
+    recipe.schema = kArchitecturalSchemaVersion;
+    recipe.candidate = Candidate::Strata;
+    recipe.parameters.surface_y = -100;
+    recipe.chunk_size = 64;
+    recipe.seed = 271828;
+    recipe.architecture.automatic_tunnels = false;
+    auto module = instance("cathedral-showcase", "cathedral_megaframe", {0, 0, 512, 512});
+    module.version = 1;
+    module.parameters = {{"bay_width", 96}, {"floor_height", 80}, {"wall", 3},
+        {"door_width", 10}, {"shaft_width", 0}, {"automatic_doors", 1},
+        {"automatic_windows", 1}, {"wall_material", 62}, {"floor_material", 66},
+        {"window_material", 121}, {"accent_material", 114}};
+    recipe.modules.push_back(module);
+    return recipe;
+}
+
+std::vector<Material> architectural_raster(const Recipe& recipe) {
+    const auto generator = Generator::compile(recipe);
+    const auto& bounds = recipe.modules[0].bounds;
+    const auto width = static_cast<std::int32_t>(bounds.width);
+    const auto height = static_cast<std::int32_t>(bounds.height);
+    const auto size = recipe.chunk_size;
+    require(bounds.x % size == 0 && bounds.y % size == 0 && width % size == 0 && height % size == 0,
+        "test raster bounds are exact native chunk unions");
+    std::vector<Material> raster(static_cast<std::size_t>(width) * static_cast<std::size_t>(height));
+    for (std::int32_t cy = 0; cy < height / size; ++cy) {
+        for (std::int32_t cx = 0; cx < width / size; ++cx) {
+            const auto chunk = generator->generate({bounds.x / size + cx, bounds.y / size + cy});
+            require(chunk.state == ResultState::Ready, "Cathedral native raster chunk completes");
+            for (std::int32_t y = 0; y < size; ++y) {
+                const auto source = chunk.cells.begin() + static_cast<std::ptrdiff_t>(y * size);
+                const auto destination = raster.begin() + static_cast<std::ptrdiff_t>((cy * size + y) * width + cx * size);
+                std::copy_n(source, size, destination);
+            }
+        }
+    }
+    return raster;
+}
+
+std::size_t material_difference(const std::vector<Material>& a, const std::vector<Material>& b) {
+    require(a.size() == b.size(), "material comparison has equal extents");
+    std::size_t changed = 0;
+    for (std::size_t i = 0; i < a.size(); ++i) changed += a[i] != b[i] ? 1U : 0U;
+    return changed;
+}
+
+// Four-neighbour flood fill of material readback, with a bounded inspection box.
+// It deliberately knows no arch equation, seed bits or sampler predicates.
+std::vector<std::uint8_t> architectural_component(const std::vector<Material>& raster,
+        std::int32_t width, std::int32_t sx, std::int32_t sy,
+        std::int32_t min_x, std::int32_t min_y, std::int32_t max_x, std::int32_t max_y,
+        bool occupied) {
+    std::vector<std::uint8_t> visited(raster.size());
+    const auto admissible = [&](std::int32_t x, std::int32_t y) {
+        return x >= min_x && x <= max_x && y >= min_y && y <= max_y &&
+            (raster.at(static_cast<std::size_t>(y * width + x)) != Material::Empty) == occupied;
+    };
+    require(admissible(sx, sy), "architectural component starts on the requested material class");
+    std::vector<std::pair<std::int32_t, std::int32_t>> pending{{sx, sy}};
+    visited[static_cast<std::size_t>(sy * width + sx)] = 1;
+    while (!pending.empty()) {
+        const auto [x, y] = pending.back();
+        pending.pop_back();
+        for (const auto& [dx, dy] : std::array<std::pair<std::int32_t, std::int32_t>, 4>{{
+                {-1, 0}, {1, 0}, {0, -1}, {0, 1}}}) {
+            const auto nx = x + dx, ny = y + dy;
+            if (!admissible(nx, ny)) continue;
+            const auto at = static_cast<std::size_t>(ny * width + nx);
+            if (visited[at]) continue;
+            visited[at] = 1;
+            pending.emplace_back(nx, ny);
+        }
+    }
+    return visited;
+}
+
+std::vector<std::pair<std::int32_t, std::int32_t>> architectural_runs(
+        const std::vector<Material>& raster, std::int32_t width,
+        std::int32_t y, std::int32_t begin, std::int32_t end, bool occupied) {
+    std::vector<std::pair<std::int32_t, std::int32_t>> runs;
+    for (auto x = begin; x < end;) {
+        if ((raster.at(static_cast<std::size_t>(y * width + x)) != Material::Empty) != occupied) {
+            ++x;
+            continue;
+        }
+        const auto start = x++;
+        while (x < end && (raster.at(static_cast<std::size_t>(y * width + x)) != Material::Empty) == occupied) ++x;
+        runs.emplace_back(start, x);
+    }
+    return runs;
+}
+
+void cathedral_megaframe_structure(const std::vector<Material>& raster) {
+    constexpr std::int32_t width = 512, bay = 96, level = 80, wall = 3;
+    constexpr std::int32_t span = 4 * bay, height = 3 * level;
+    constexpr std::int32_t mass = 2 * wall + bay / 32;
+    constexpr std::int32_t left_pier = bay / 2 + mass / 2, right_pier = span - left_pier;
+    const auto at = [&](std::int32_t x, std::int32_t y) {
+        return raster.at(static_cast<std::size_t>(y * width + x));
+    };
+
+    // Exclude the clerestory sill and bottom floor: neither can act as a
+    // shortcut joining two otherwise disconnected halves of the primary arch.
+    const auto frame = architectural_component(raster, width, left_pier, 7 * level / 4,
+        bay / 2 - wall, level / 2 + 2, 7 * bay / 2 + wall, 7 * level / 4 + wall, true);
+    require(frame[static_cast<std::size_t>(7 * level / 4 * width + right_pier)] != 0,
+        "Cathedral principal arch itself joins both primary piers without the floor or clerestory sill");
+    std::size_t vertical_seams = 0, horizontal_seams = 0;
+    for (std::int32_t x = 64; x < span; x += 64) {
+        bool crosses = false;
+        for (std::int32_t y = level / 2 + 2; y <= 7 * level / 4 + wall; ++y)
+            crosses |= frame[static_cast<std::size_t>(y * width + x - 1)] && frame[static_cast<std::size_t>(y * width + x)];
+        vertical_seams += crosses ? 1U : 0U;
+    }
+    for (std::int32_t y = 64; y < 7 * level / 4 + wall; y += 64) {
+        bool crosses = false;
+        for (std::int32_t x = bay / 2; x <= 7 * bay / 2; ++x)
+            crosses |= frame[static_cast<std::size_t>((y - 1) * width + x)] && frame[static_cast<std::size_t>(y * width + x)];
+        horizontal_seams += crosses ? 1U : 0U;
+    }
+    require(vertical_seams >= 4 && horizontal_seams >= 2,
+        "Cathedral primary frame is materially continuous across native chunks in both axes");
+    for (const auto x : {left_pier, right_pier}) {
+        for (std::int32_t y = 0; y < 2 * height; ++y)
+            require(at(x, y) != Material::Empty,
+                "Cathedral primary pier retains a continuous load path across stacked supercells");
+    }
+
+    // The central protected nave contains a full empty rectangle as well as
+    // a much larger connected empty chamber. This catches accidental slabs.
+    std::size_t nave_rectangle = 0;
+    for (std::int32_t y = 3 * level / 2; y < height - wall; ++y) {
+        for (std::int32_t x = 7 * bay / 4; x < 9 * bay / 4; ++x) {
+            require(at(x, y) == Material::Empty, "Cathedral central monumental nave remains empty");
+            ++nave_rectangle;
+        }
+    }
+    const auto nave = architectural_component(raster, width, 2 * bay, 5 * level / 2,
+        0, 0, span - 1, height - 1, false);
+    const auto nave_area = static_cast<std::size_t>(std::count(nave.begin(), nave.end(), std::uint8_t{1}));
+    require(nave_area > static_cast<std::size_t>(2 * bay * level),
+        "Cathedral central connected void occupies at least two base-bay/storey areas");
+
+    // Inspect independent output rhythms: the large nave run, lower half-bay
+    // openings, and short balustrade posts. These are measured pixel runs,
+    // rather than assertions that merely recalculate the drawing equation.
+    const auto primary_runs = architectural_runs(raster, width, 7 * level / 4, bay / 2, 7 * bay / 2, false);
+    std::int32_t primary_opening = 0;
+    for (const auto& [begin, end] : primary_runs)
+        if (begin <= 2 * bay && end > 2 * bay) primary_opening = end - begin;
+    auto secondary_runs = architectural_runs(raster, width, 11 * level / 4, bay / 2, 3 * bay / 2, false);
+    // A narrow separation beside the intermediate rib is a slit, not an
+    // arcade opening. The clearance threshold is fixed before measurement.
+    std::erase_if(secondary_runs, [](const auto& run) { return run.second - run.first < bay / 6; });
+    const auto tertiary_runs = architectural_runs(raster, width, 2 * level - level / 16, bay + wall, 3 * bay / 2 - wall, true);
+    require(secondary_runs.size() == 2, "Cathedral side aisle contains two distinct subordinate arcade openings");
+    require(tertiary_runs.size() >= 3, "Cathedral gallery has several independent tertiary posts within one side bay");
+    std::int32_t secondary_opening = 0, tertiary_member = 0;
+    for (const auto& [begin, end] : secondary_runs) secondary_opening = std::max(secondary_opening, end - begin);
+    for (const auto& [begin, end] : tertiary_runs) tertiary_member = std::max(tertiary_member, end - begin);
+    require(primary_opening >= 3 * secondary_opening && secondary_opening >= 4 * tertiary_member,
+        "Cathedral output contains clearly separated monumental, arcade and tertiary structural scales");
+    const auto secondary_pitch = (secondary_runs[1].first + secondary_runs[1].second -
+        secondary_runs[0].first - secondary_runs[0].second) / 2;
+    const auto tertiary_pitch = (tertiary_runs[1].first + tertiary_runs[1].second -
+        tertiary_runs[0].first - tertiary_runs[0].second) / 2;
+    require(secondary_pitch >= bay / 3 && secondary_pitch <= 2 * bay / 3 &&
+            tertiary_pitch >= bay / 12 && tertiary_pitch <= bay / 6 && secondary_pitch >= 3 * tertiary_pitch,
+        "Cathedral independently measured secondary and tertiary cadences differ from the four-bay superframe");
+    std::cout << "Cathedral measured structure: nave=" << nave_area << " empty cells, protected rectangle="
+              << nave_rectangle << "; spans=" << primary_opening << '/' << secondary_opening << '/' << tertiary_member
+              << "; rhythms=" << span << '/' << secondary_pitch << '/' << tertiary_pitch
+              << "; native seams=" << vertical_seams << '+' << horizontal_seams << '\n';
+}
+
+void cathedral_megaframe_extreme_aspects() {
+    for (const auto& [bay, level] : std::array<std::pair<std::int32_t, std::int32_t>, 3>{{{22, 256}, {256, 22}, {256, 256}}}) {
+        auto recipe = cathedral_recipe();
+        recipe.modules[0].bounds = {0, 0, 1024, 1024};
+        recipe.modules[0].parameters["bay_width"] = bay;
+        recipe.modules[0].parameters["floor_height"] = level;
+        recipe.modules[0].parameters["wall"] = 1;
+        recipe.modules[0].parameters["door_width"] = 2;
+        const auto generator = Generator::compile(recipe);
+        const auto width = 4 * bay, spring = 7 * level / 4, mass = 2 + bay / 32;
+        const auto left = bay / 2 + mass / 2, right = width - left;
+        std::vector<Material> frame(static_cast<std::size_t>(width * (spring + 2)), Material::Empty);
+        for (std::int32_t y = level / 2; y <= spring + 1; ++y) {
+            for (std::int32_t x = bay / 2 - 1; x <= 7 * bay / 2 + 1; ++x) {
+                const auto material = generator->sample(x, y);
+                // The independent datum is deck material 66; removing it
+                // prevents a clerestory sill from hiding a broken arch.
+                if (material != static_cast<Material>(66)) frame[static_cast<std::size_t>(y * width + x)] = material;
+            }
+        }
+        const auto connected = architectural_component(frame, width, left, spring,
+            bay / 2 - 1, level / 2, 7 * bay / 2 + 1, spring + 1, true);
+        require(connected[static_cast<std::size_t>(spring * width + right)] != 0,
+            "Cathedral primary arch stays connected at extreme valid bay/floor aspect ratio " +
+                std::to_string(bay) + "/" + std::to_string(level));
+        require(connected[static_cast<std::size_t>((level / 2) * width + 2 * bay)] != 0,
+            "Cathedral apex remains attached at extreme valid bay/floor aspect ratio");
+    }
+}
+
+void cathedral_megaframe_contracts() {
+    const auto initial_assertions = assertions;
+    const auto recipe = cathedral_recipe();
+    const auto reference = architectural_raster(recipe);
+    cathedral_megaframe_structure(reference);
+    cathedral_megaframe_extreme_aspects();
+    const auto repeated = architectural_raster(recipe);
+    require(reference == repeated, "Cathedral same seed replays every native material byte");
+    require(material_digest(reference) == material_digest(repeated), "Cathedral repeated material hashes agree");
+
+    std::set<std::uint64_t> seed_hashes;
+    std::cout << "Cathedral seed material hashes:\n";
+    for (const std::uint64_t seed : {UINT64_C(271828), UINT64_C(314159), UINT64_C(161803), UINT64_C(57721)}) {
+        auto varied = recipe;
+        varied.seed = seed;
+        const auto raster = seed == recipe.seed ? reference : architectural_raster(varied);
+        if (seed != recipe.seed) cathedral_megaframe_structure(raster);
+        const auto hash = material_digest(raster);
+        seed_hashes.insert(hash);
+        std::cout << "  " << seed << "=0x" << std::hex << hash << std::dec << '\n';
+    }
+    std::cout << '\n';
+    require(seed_hashes.size() >= 3, "Cathedral at least three selected seeds change native architectural geometry");
+
+    auto no_windows = recipe;
+    no_windows.modules[0].parameters["automatic_windows"] = 0;
+    const auto opaque = architectural_raster(no_windows);
+    const auto glazing = static_cast<Material>(121);
+    std::size_t glazed_cells = 0;
+    for (std::size_t i = 0; i < reference.size(); ++i) {
+        if (reference[i] == glazing) {
+            ++glazed_cells;
+            require(opaque[i] != Material::Empty && opaque[i] != glazing,
+                "Cathedral disabled clerestory glazing becomes solid architectural infill");
+        } else {
+            require(reference[i] == opaque[i], "Cathedral window toggle preserves every non-glazing cell");
+        }
+        require((reference[i] == Material::Empty) == (opaque[i] == Material::Empty),
+            "Cathedral windows preserve structural occupancy and apertures");
+    }
+    require(glazed_cells > 64 && glazed_cells < reference.size() / 8,
+        "Cathedral meaningful clerestory glazing stays a minority of the map");
+    require(std::count(opaque.begin(), opaque.end(), glazing) == 0,
+        "Cathedral windows-off removes all glazing cleanly");
+
+    auto no_doors = recipe;
+    no_doors.modules[0].parameters["automatic_doors"] = 0;
+    const auto closed = architectural_raster(no_doors);
+    std::size_t portal_cells = 0;
+    for (std::size_t i = 0; i < reference.size(); ++i) {
+        if (reference[i] != closed[i]) {
+            ++portal_cells;
+            require(reference[i] == Material::Empty && closed[i] != Material::Empty,
+                "Cathedral portal control opens real empty passages in structural material");
+        }
+    }
+    require(portal_cells > 32, "Cathedral portal control changes visible native openings");
+
+    std::cout << "Cathedral control deltas: windows=" << glazed_cells << " doors=" << portal_cells;
+    for (const auto& [control, value] : std::array<std::pair<const char*, double>, 2>{{
+            {"bay_width", 64}, {"floor_height", 112}}}) {
+        auto varied = recipe;
+        varied.modules[0].parameters[control] = value;
+        const auto raster = architectural_raster(varied);
+        const auto changed = material_difference(reference, raster);
+        require(changed > 1024, std::string("Cathedral ") + control + " changes substantial structural geometry");
+        std::cout << ' ' << control << '=' << changed;
+    }
+    auto thin = recipe, heavy = recipe;
+    thin.modules[0].parameters["wall"] = 1;
+    heavy.modules[0].parameters["wall"] = 5;
+    const auto thin_raster = architectural_raster(thin), heavy_raster = architectural_raster(heavy);
+    const auto thin_empty = std::count(thin_raster.begin(), thin_raster.end(), Material::Empty);
+    const auto heavy_empty = std::count(heavy_raster.begin(), heavy_raster.end(), Material::Empty);
+    require(thin_empty > heavy_empty + 512, "Cathedral wall thickness visibly increases structural mass");
+    require(heavy_empty > static_cast<std::ptrdiff_t>(heavy_raster.size() / 3),
+        "Cathedral heavy structure retains substantial negative space");
+    std::cout << " wall=" << material_difference(thin_raster, heavy_raster) << '\n';
+
+    // A whole signed map crosses native chunk seams in both axes. A fresh
+    // compiler receives the reverse request order and must preserve receipts.
+    auto signed_recipe = recipe;
+    signed_recipe.modules[0].bounds = {-512, -512, 512, 512};
+    const auto signed_generator = Generator::compile(signed_recipe);
+    const auto reverse_generator = Generator::compile(signed_recipe);
+    std::vector<ChunkResult> signed_chunks;
+    for (std::int64_t y = -8; y < 0; ++y) for (std::int64_t x = -8; x < 0; ++x)
+        signed_chunks.push_back(signed_generator->generate({x, y}));
+    for (std::size_t i = signed_chunks.size(); i-- > 0;) {
+        const auto& expected = signed_chunks[i];
+        const auto reversed = reverse_generator->generate(expected.chunk);
+        same_cells(reversed, expected, "Cathedral negative-coordinate reverse chunk order");
+        require(reversed.receipt_hash == expected.receipt_hash &&
+                reversed.fingerprint == expected.fingerprint && reversed.operations == expected.operations,
+            "Cathedral reversed chunk requests preserve content, work and receipt identity");
+    }
+    const auto translated = architectural_raster(signed_recipe);
+    require(translated == reference, "Cathedral signed world origin preserves module-local architectural identity");
+    for (const auto coord : {ChunkCoord{-8, -8}, ChunkCoord{-7, -6}, ChunkCoord{-3, -2}}) {
+        const auto expected = signed_generator->generate(coord);
+        for (const std::uint64_t slice : {UINT64_C(1), UINT64_C(17), UINT64_C(113)}) {
+            auto job = signed_generator->begin(coord);
+            while (job->state() == ResultState::Pending) (void)job->advance(slice);
+            same_cells(job->result(), expected, "Cathedral tiny/uneven work slicing");
+            require(job->result().receipt_hash == expected.receipt_hash,
+                "Cathedral tiny/uneven work slices preserve native receipts");
+        }
+    }
+    auto partitioned = signed_recipe;
+    partitioned.chunk_size = 32;
+    require(architectural_raster(partitioned) == translated,
+        "Cathedral native chunk partition changes preserve every signed-origin cell");
+
+    auto minimum = recipe;
+    minimum.modules[0].parameters["bay_width"] = 46;
+    minimum.modules[0].parameters["floor_height"] = 46;
+    minimum.modules[0].parameters["wall"] = 5;
+    const auto minimum_raster = architectural_raster(minimum);
+    const auto minimum_empty = std::count(minimum_raster.begin(), minimum_raster.end(), Material::Empty);
+    require(minimum_empty > static_cast<std::ptrdiff_t>(minimum_raster.size() / 4) &&
+            minimum_empty < static_cast<std::ptrdiff_t>(3 * minimum_raster.size() / 4),
+        "Cathedral exact minimum dimensions retain substantial structure and negative space");
+    for (const auto key : {"bay_width", "floor_height"}) {
+        auto too_small = minimum;
+        too_small.modules[0].parameters[key] = 45;
+        rejects([&] { (void)Generator::compile(too_small); },
+            "Cathedral explicitly refuses dimensions below the architectural clearance limit");
+    }
+
+    for (const std::uint32_t schema : {1U, 2U, 3U}) {
+        auto invalid = recipe;
+        invalid.schema = schema;
+        rejects([&] { (void)Generator::compile(invalid); }, "Cathedral requires schema 4 for every older schema");
+    }
+    for (const std::uint32_t version : {0U, 2U, 3U}) {
+        auto invalid = recipe;
+        invalid.modules[0].version = version;
+        rejects([&] { (void)Generator::compile(invalid); }, "Cathedral rejects every unregistered version");
+    }
+    std::cout << "PASS Cathedral contracts: " << assertions - initial_assertions << " assertions\n";
+}
+
+void viaduct_parent_material_identity() {
+    // Independent baseline captured from parent 615828b28337f85e4663e03ba479616db4ddf764.
+    constexpr std::array<std::array<std::uint64_t, 4>, 2> expected{{
+        {{UINT64_C(0x99d38c071ab1c5bd), UINT64_C(0x609c254385957a6f), UINT64_C(0x1f2696e040c72885), UINT64_C(0x8c7f930d8b33bfdf)}},
+        {{UINT64_C(0xb2fece129d3a4da9), UINT64_C(0xde0437c86b5648bb), UINT64_C(0x06411fedeff25491), UINT64_C(0xf02bb9369d9fad5f)}}
+    }};
+    constexpr std::array coords{ChunkCoord{-2, -2}, ChunkCoord{-1, -2}, ChunkCoord{0, -1}, ChunkCoord{1, 0}};
+    for (std::uint32_t version = 1; version <= 2; ++version) {
+        Recipe recipe;
+        recipe.schema = kArchitecturalSchemaVersion;
+        recipe.candidate = Candidate::Strata;
+        recipe.seed = 19177;
+        recipe.chunk_size = 64;
+        recipe.parameters.surface_y = -100;
+        auto module = instance("algorithm", "arcade", {-128, -128, 256, 256});
+        module.version = version;
+        module.parameters = {{"bay_width", 64}, {"floor_height", 48}, {"wall", 3},
+            {"door_width", 10}, {"shaft_width", 0}, {"automatic_doors", 1},
+            {"automatic_windows", 1}, {"wall_material", 58}, {"floor_material", 70},
+            {"window_material", 121}, {"accent_material", 66}};
+        recipe.modules.push_back(module);
+        const auto generator = Generator::compile(recipe);
+        for (std::size_t c = 0; c < coords.size(); ++c) {
+            const auto result = generator->generate(coords[c]);
+            require(result.state == ResultState::Ready && result.content_hash == expected[version - 1][c],
+                "Viaduct v1/v2 preserve parent signed-chunk material hashes");
+        }
+    }
 }
 
 void refined_architectural_details() {
@@ -1309,6 +1720,8 @@ int main() {
         architectural_arcology_apertures_and_jobs();
         independent_architectural_algorithms();
         classic_architectural_genteks();
+        cathedral_megaframe_contracts();
+        viaduct_parent_material_identity();
         refined_architectural_details();
         std::cout << "PASS procedural generation: candidate/order/partition determinism, signed seams, "
                      "theme hierarchy/exclusions, broad/fine/hard controls, bounded modules, "

@@ -187,7 +187,9 @@ func classic_genteks() -> void:
 		"warren_truss","kingpost_frame","queenpost_frame","lenticular_bridge","radial_stay_bridge","twin_mast_bridge",
 		"a_frame_hall","butterfly_hall","ziggurat_arcade","corbel_arcade","chain_vault","ring_pier",
 		"folded_plate_hall","space_frame","crossbeam_stack","yoke_bridge","lantern_tower","spine_arcade",
-		"cascade_terrace","inverted_trestle","cranked_beam","barrel_arcade","buttress_crown","triptych_arcade"]
+		"cascade_terrace","inverted_trestle","cranked_beam","barrel_arcade","buttress_crown","triptych_arcade",
+		"megatruss_station","cathedral_megaframe","seeded_typology_megablock","metabolist_spine",
+		"interlaced_viaduct","rosework_gatehouse","interlock_brutalism","suspended_arcology"]
 	var presets: Array = Project.builtin_presets()
 	var hashes := {}
 	for module: String in ids:
@@ -197,6 +199,13 @@ func classic_genteks() -> void:
 		if not check(not found.is_empty(), "classic Gentek builtin: " + module): continue
 		check(int(found.module_version) == 1 and Project.validate_preset(found).is_empty(),
 			"classic Gentek has valid v1 identity: " + module)
+		if module == "cathedral_megaframe":
+			for dimension: String in ["room_size","floor_height"]:
+				var too_small: Dictionary = found.duplicate(true)
+				too_small.geometry[dimension] = 6 * int(found.geometry.wall_thickness) + 15
+				check(not Project.validate_preset(too_small).is_empty(), "Cathedral refuses collapsed nested openings: " + dimension)
+				too_small.geometry[dimension] += 1
+				check(Project.validate_preset(too_small).is_empty(), "Cathedral admits exact dimensional boundary: " + dimension)
 		var bad_version: Dictionary = found.duplicate(true)
 		bad_version.module_version = 2
 		check(not Project.validate_preset(bad_version).is_empty(), "classic Gentek refuses v2: " + module)
@@ -216,7 +225,7 @@ func classic_genteks() -> void:
 			var digest: String = Store.digest(chunk.cells)
 			check(not hashes.has(digest), "classic first-chunk geometry differs: " + module)
 			hashes[digest] = module
-	check(hashes.size() == 72, "seventy-two classic Genteks produce distinct first-chunk material geometry")
+	check(hashes.size() == 80, "eighty CLASSIC and showcase Genteks produce distinct first-chunk material geometry")
 
 func planner_invariants() -> void:
 	for seed: int in range(64):
@@ -296,19 +305,27 @@ func native_identity_edges() -> void:
 	var catalogue_generator: Variant = ClassDB.instantiate(&"CyberWorldGenerator")
 	var catalogue: Dictionary = catalogue_generator.get_catalogue()
 	var versions := {}
+	# CLASSIC modules intentionally expose v1 identities under schema 4. The
+	# original thirteen-preset classifier predated them and wrongly treated all
+	# seventy-two parent modules as legacy; retain the explicit legacy checks.
+	var classic_modules := {}
+	for preset: Dictionary in Project.builtin_presets():
+		if int(preset.module_version) == 1: classic_modules[str(preset.module)] = true
+	check(classic_modules.size() == 80, "catalogue metadata checks every CLASSIC v1 module")
 	for entry: Dictionary in catalogue.modules:
 		var identity: String = str(entry.id) + ":" + str(entry.version)
 		versions[identity] = true
-		var architectural: bool = str(entry.id) in ["terraced", "hex_hive", "arcade"]
-		var versioned_legacy: bool = str(entry.id) in ["arcology", "vault"] and int(entry.version) == 2
-		if architectural or versioned_legacy:
-			check(int(entry.get("minimum_recipe_schema", -1)) == 4,
-				"schema-4-only catalogue variant declares its minimum schema: " + identity)
-		else:
+		var legacy: bool = str(entry.id) in ["arcology","vault","aqueduct"] and int(entry.version) == 1
+		if legacy:
 			check(not entry.has("minimum_recipe_schema"),
 				"legacy module metadata remains free of schema-4 restrictions: " + identity)
+		else:
+			check(int(entry.get("minimum_recipe_schema", -1)) == 4,
+				"schema-4-only catalogue variant declares its minimum schema: " + identity)
 	check(versions.has_all(["arcology:1","arcology:2","vault:1","vault:2","aqueduct:1",
 		"terraced:1","terraced:2","hex_hive:1","hex_hive:2","arcade:1","arcade:2"]),"native catalogue exposes exact legacy and architectural module versions")
+	check(versions.has("cathedral_megaframe:1") and not versions.has("cathedral_megaframe:2"),
+		"native catalogue exposes Cathedral v1 only")
 
 func run() -> void:
 	hostile_json()

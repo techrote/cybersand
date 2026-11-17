@@ -1,0 +1,193 @@
+{
+  "review_kind": "independent engineering subagent",
+  "source_commit": "279bc4634b1d2b3a47f747c628163e419a728be7",
+  "source_tree": "a0839f7bcad328770e522b5ddda3e45b91b5b222",
+  "parent_source": "615828b28337f85e4663e03ba479616db4ddf764",
+  "verdict": "accepted native implementation, exact-source visual campaign, metadata repair and source-built ordinary-preset runtime; no remaining blocking findings",
+  "runtime_gate_scope": "Completed local GCC14 development confirmation and authoritative hosted GCC13 source-built Linux headless ordinary-preset qualification at the reviewed repaired source. These results do not claim graphical author/reopen or physical Windows acceptance.",
+  "repaired_findings": [
+    {
+      "finding": "Odd X-bracing panels duplicated their first diagonal",
+      "repair": "Complementary strip expression; emitted material regression probes both arms in odd and even panels across32 seeds",
+      "verified": true
+    },
+    {
+      "finding": "CI tee pipelines could hide a failing gate",
+      "repair": "Explicit bash shell with pipefail for every workflow run step",
+      "verified": true
+    },
+    {
+      "finding": "Megatruss missing schema-4 catalogue metadata",
+      "repair": "Add megatruss_station to the adapter schema4_only list; independent static extraction confirms all 76 adapter IDs equal native schema-4 admission IDs",
+      "source_path": "godot/native_extension/cyber_world_generator.cpp",
+      "source_sha256": "1668c9072a5ed37bb5f2ed9e6e309ccb7ea192b2bd07c3555f84d744e739a5e1",
+      "verified": true,
+      "runtime_verification": "pass: local GCC14 and hosted GCC13 source-built runtime"
+    },
+    {
+      "finding": "Inherited CLASSIC metadata contract misclassified 72 modules",
+      "repair": "Share unchanged ordered 73 CLASSIC_MODULES IDs across geometry and metadata assertions; require schema 4 and each exact id:1 entry, with id:2 absent; preserve legacy v1/v2 rules",
+      "source_path": "godot/tests/test_architectural_project_contract.gd",
+      "verified": true,
+      "runtime_verification": "pass: local GCC14 and hosted GCC13 source-built runtime"
+    }
+  ],
+  "independent_execution": {
+    "focused_assertions": 1499,
+    "named_gates": 18,
+    "status": "pass",
+    "source_commit": "0059f5e62592ed1fa8c46429fbc816cfb26f4b27",
+    "repaired_qualified_binary_is_identical": true,
+    "binary_sha256": "28d47196ba83a8b0d12fdd361313f80f3087258accf5ca5782fe58532cbbdd9f"
+  },
+  "verification": {
+    "qualification_source_inputs": 67,
+    "gallery_source_inputs": 84,
+    "native_pngs_pixel_verified": 21,
+    "all_pngs_byte_verified": 24,
+    "parent_cells_exactly_equal": 3538944,
+    "parent_snapshot_bytes_exactly_equal": 7093458,
+    "hero_landscape_overlap_cells": 262144,
+    "landscape_large_overlap_cells": 524288,
+    "signed_positive_overlap_cells": 131072,
+    "six_seed_material_hashes_distinct": true,
+    "glazing_replacements_only": {
+      "count": 8653,
+      "from": 121,
+      "to": 58
+    },
+    "original_classic_source_prefix_unchanged": true,
+    "qualification_source_commit": "279bc4634b1d2b3a47f747c628163e419a728be7",
+    "gallery_source_commit": "279bc4634b1d2b3a47f747c628163e419a728be7",
+    "gallery_source_input_sha256": "8689d760e11dfbe5ec7114b343ff09396c69a5e441dd5eaa4732cc83f90ee6ec",
+    "gallery_inputs_match_repaired_git_blobs": true,
+    "gallery_inputs_match_source_archive": true,
+    "gallery_source_inputs_dirty": false,
+    "native_arrays_byte_identical_to_initial_review": 21,
+    "all_pngs_byte_identical_to_initial_review": 24,
+    "native_generation_and_preset_sources_unchanged_since_initial_review": true,
+    "metadata_schema4_ids_match_native_admission": true,
+    "metadata_schema4_id_count": 76,
+    "classic_module_id_count": 73,
+    "exporter_sha256": "525ada86e8c8edd8b11aa52c7da9470ffe776e817714d467e85b2c5bc231e480",
+    "repaired_exact_source_archive_sha256": "25f3c43cc559715b5408621da8377a75784047b2072199d41f0d5248b0bafc7d",
+    "qualification_source_inputs_dirty": false,
+    "qualification_source_inputs_match_repaired_git_blobs": true,
+    "qualification_report_sha256": "5da91935ede2f90fbd4ef52553f517bc710c520093c6fd12f61f2cb4a11098c1",
+    "qualified_binary_sha256": "28d47196ba83a8b0d12fdd361313f80f3087258accf5ca5782fe58532cbbdd9f",
+    "hosted_source_commit": "279bc4634b1d2b3a47f747c628163e419a728be7",
+    "hosted_run_id": 43969089140,
+    "hosted_runtime_source_inputs": 94,
+    "hosted_native_gallery_checks": 2490,
+    "hosted_project_contract_checks": 2829,
+    "hosted_runtime_maps_unique": 73,
+    "hosted_runtime_maps_equal_local_pixels_and_material_hashes": 73,
+    "hosted_native_material_arrays_exact": 21,
+    "hosted_png_files_exact": 24,
+    "hosted_parent_cells_exactly_equal": 3538944,
+    "hosted_parent_png_pixel_buffers_unchanged": 72,
+    "ordinary_preset_and_standalone_material_sha256": "96f92d7b7325a9b8d13ca2c2d539ac6960d274bad056228e06b1f70b4f4a7171",
+    "hosted_source_verification_passed": true
+  },
+  "remaining_limits": [
+    "Material-cell geometry; no structural-engineering, actor-navigation or physical Windows acceptance",
+    "Finite masks may crop stations; no terrain adaptation or interface negotiation",
+    "Optional shafts, tunnels and deterioration can interrupt members",
+    "LeakSanitizer blocked by ptrace; ASan and UBSan passed with detect_leaks=0",
+    "Draft/HOLD; no merge, Ready promotion or parent changes"
+  ],
+  "reviewed_utc": "2026-11-16T22:36:10.873994+00:00",
+  "initial_native_visual_review_source": "0059f5e62592ed1fa8c46429fbc816cfb26f4b27",
+  "runtime_qualification": {
+    "local": {
+      "status": "pass",
+      "scope": "local GCC14 development confirmation; authoritative hosted GCC13 qualification is separate",
+      "source_commit": "279bc4634b1d2b3a47f747c628163e419a728be7",
+      "compiler": "g++ (Debian 14.2.0-19) 14.2.0",
+      "godot": "4.7-stable (official)",
+      "extension_sha256": "7889a11f943dc7e489081e60dbb11bc81c81b3b21f7ff46f2a4380cbbaed5985",
+      "source_inputs_verified_against_git_and_snapshot": 98,
+      "test_inputs_verified_against_git_and_snapshot": 725,
+      "project_contract_checks": 2829,
+      "project_contract_failures": 0,
+      "native_gallery_checks": 2490,
+      "native_gallery_failures": 0,
+      "classic_maps": 73,
+      "classic_unique_material_hashes": 73,
+      "parent_gallery_pixel_buffers_preserved": 72,
+      "megatruss_material_sha256": "96f92d7b7325a9b8d13ca2c2d539ac6960d274bad056228e06b1f70b4f4a7171",
+      "standalone_native_material_and_pixel_parity": true,
+      "qualification_report_sha256": "fdcc98428c59bac066c452f17413ef28452ee2faa6bae5b114062795ce471f0c",
+      "build_input_ledger_sha256": "8a314a17a9fbf48e15408ce06e8d6656277f8b95c91118ccba644a5dd12b9209",
+      "independently_verified": true
+    },
+    "hosted": {
+      "status": "pass",
+      "scope": "authoritative hosted GCC13, source-built Linux headless native and ordinary preset qualification",
+      "source_commit": "279bc4634b1d2b3a47f747c628163e419a728be7",
+      "run_id": 43969089140,
+      "run_url": "https://github.com/techrote/cybersand/actions/runs/43969089140",
+      "jobs": {
+        "native": "success",
+        "godot": "success",
+        "verify": "success"
+      },
+      "compiler": "/usr/bin/g++-13",
+      "godot": "4.7-stable (official)",
+      "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
+      "godot_archive_sha256": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+      "library_sha256": "aac4db20e3f994b2e46a992bfc7bcdebf08e054329d70eef833e59c1bca7160f",
+      "runtime_source_inputs_verified_against_git": 94,
+      "native_qualification_source_inputs_verified_against_git": 67,
+      "project_contract_checks": 2829,
+      "project_contract_failures": 0,
+      "native_gallery_checks": 2490,
+      "native_gallery_failures": 0,
+      "classic_maps": 73,
+      "classic_unique_material_hashes": 73,
+      "classic_maps_equal_local_runtime_pixels_and_material_hashes": 73,
+      "parent_gallery_pixel_buffers_preserved": 72,
+      "native_pngs_byte_identical_to_reviewed": 24,
+      "native_material_arrays_byte_identical_to_reviewed": 21,
+      "megatruss_material_sha256": "96f92d7b7325a9b8d13ca2c2d539ac6960d274bad056228e06b1f70b4f4a7171",
+      "standalone_native_material_and_pixel_parity": true,
+      "source_verification_passed": true,
+      "all_inherited_worldgen_gates_passed": true,
+      "runtime_identity_sha256": "59c7a32331df821ad0f94b526b7fbf8d04231fbf1bd8a85b3a38d5296a8aca41",
+      "native_report_sha256": "fd599ab98d587457a46554c90375218f00489cc0af67fce3e27885641d19b490",
+      "project_contract_log_sha256": "463f9c431583cf46acb2bc065d236fc8af8193c1c1d8a194c2aa5bbe90e5712d",
+      "native_gallery_log_sha256": "7367a73e6fb12f1cbf2f41fbda8bdf47b63a37ee0ca42f626d8a12e37117ea07",
+      "qualification_report_sha256": "5021269408f9ef920bc8e735eaa6d48898ae143d2172ab2de92db2b7931276b2",
+      "artifacts": [
+        {
+          "id": 14278331044,
+          "url": "https://github.com/techrote/cybersand/actions/runs/43969089140/artifacts/14278331044",
+          "zip_sha256": "3817ee901f5fc77cc52726f5b1b2c6081735792ed7684c49a60a9267fbb8985a",
+          "zip_bytes": 1738108
+        },
+        {
+          "id": 14276434716,
+          "url": "https://github.com/techrote/cybersand/actions/runs/43969089140/artifacts/14276434716",
+          "zip_sha256": "647894625e907a4e3ca818c1770aa420b9fb2417fbfbe5bdfa2ad8cdfcc4f0c0",
+          "zip_bytes": 2254915
+        },
+        {
+          "id": 14278292248,
+          "url": "https://github.com/techrote/cybersand/actions/runs/43969089140/artifacts/14278292248",
+          "zip_sha256": "afa0e07793cab77dce9df1a16f56c6373c65f9977d7e1a03d9f10c0ea5587cd6",
+          "zip_bytes": 359
+        }
+      ],
+      "independently_verified": true
+    },
+    "prior_hosted_attempt": {
+      "source_commit": "0059f5e62592ed1fa8c46429fbc816cfb26f4b27",
+      "run_id": 43966787362,
+      "status": "failed",
+      "contract_checks": 2756,
+      "contract_failures": 72,
+      "cause": "inherited contract classifier treated the original 72 CLASSIC modules as legacy; new Megatruss schema-4 metadata omission was found during failure review"
+    }
+  },
+  "qualification_complete": true
+}

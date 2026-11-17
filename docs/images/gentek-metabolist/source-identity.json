@@ -1,0 +1,11 @@
+{
+  "qualified_source_commit": "18215b08c0555922d5e5096a38c4b67af9c6b26f",
+  "qualified_source_tree": "d52975f369e97fa0e88b0ff3c0a669e6fe565a46",
+  "parent_commit": "615828b28337f85e4663e03ba479616db4ddf764",
+  "branch": "experiment/gentek-showcase-metabolist-001",
+  "evidence_scope": "This directory contains evidence only; the source-input ledger identifies every qualified input independently of a later documentation commit.",
+  "native_captures": 50,
+  "derived_pngs": 7,
+  "source_input_digest": "c583d190b691580acf585ba0d12158f8c14e8146bb75ac83f9d19d0d6fecc836",
+  "qualification_directory": "metabolist-qualification"
+}
