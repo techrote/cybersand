@@ -374,6 +374,57 @@ func classic_gentek_gallery() -> void:
 			report.cases.append({"case":"gentek-classic-structural-difference","algorithm":algorithm,
 				"against":"trestle","occupied_empty_difference_cells":delta})
 
+func showcase_mixed_gallery() -> void:
+	# Two deliberately different five-slot projects collectively cover all
+	# eight advanced modules. These are native material maps, not concept art.
+	var combinations: Array = [
+		["cathedral_megaframe","seeded_typology_megablock","megatruss_station",
+			"interlaced_viaduct","suspended_arcology"],
+		["metabolist_spine","rosework_gatehouse","interlock_brutalism",
+			"cathedral_megaframe","megatruss_station"]
+	]
+	var catalogue: Array = Project.builtin_presets()
+	var signatures := {}
+	for scenario: int in combinations.size():
+		var project: Dictionary = Project.default_project()
+		project.seed = 161803 + scenario * 110025
+		project.extent = [512,512]
+		project.origin = [0,0] if scenario == 0 else [-512,-512]
+		project.zone_scale = 64
+		project.automatic_tunnels = false
+		project.styles = []
+		var selected: Array = combinations[scenario]
+		for id: String in selected:
+			var match_preset: Dictionary = {}
+			for preset: Dictionary in catalogue:
+				if preset.module == id:
+					match_preset = preset.duplicate(true)
+					break
+			if not check(not match_preset.is_empty(), "mixed showcase style available: " + id):
+				return
+			project.styles.append({"enabled":true,"share":20.0,"preset":match_preset})
+		var compiled: Dictionary = Project.compile(project)
+		if not check(compiled.get("ok",false), "five-showcase project compiles: " + str(compiled.get("error",""))):
+			continue
+		check(compiled.recipe.modules.size() == 5 and compiled.coverage.size() == 5,
+			"five independent showcase masks survive compilation")
+		for coverage: Dictionary in compiled.coverage:
+			check(components(compiled.zones,int(coverage.slot)) == 1,
+				"each selected showcase occupies one four-connected allocated zone")
+		var bounds := Rect2i(Vector2i(int(project.origin[0]),int(project.origin[1])),Vector2i(512,512))
+		var rendered: Dictionary = generation(compiled.recipe,bounds)
+		if not check(rendered.has("cells"), "mixed showcase native raster ready"):
+			continue
+		check(not signatures.has(rendered.material_sha256), "different five-style projects produce different material geometry")
+		signatures[rendered.material_sha256] = true
+		var basename := "showcase-mixed-five-a" if scenario == 0 else "showcase-mixed-five-b-negative-origin"
+		var png_us := preview(basename,rendered.cells,Vector2i(512,512))
+		report.cases.append({"case":"showcase-integration-five-style","modules":selected,
+			"seed":project.seed,"origin":project.origin,"coverage":compiled.coverage,
+			"material_sha256":rendered.material_sha256,"recipe_sha256":rendered.recipe_sha256,
+			"preview_colour_and_png_us":png_us})
+	check(signatures.size() == 2, "two five-style showcase combinations render and differ")
+
 func native_contracts() -> void:
 	compiler_contracts()
 	var hashes: Dictionary = {}
@@ -808,6 +859,7 @@ func run() -> void:
 		if phase == "native":
 			native_algorithm_gallery()
 			classic_gentek_gallery()
+			showcase_mixed_gallery()
 			native_contracts()
 		elif phase in ["author", "reopen"]: await authoring(phase == "reopen")
 		elif phase in ["multistyle-author", "multistyle-reopen"]:
