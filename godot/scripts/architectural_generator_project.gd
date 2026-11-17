@@ -106,7 +106,15 @@ static func builtin_presets() -> Array:
 		_preset("cranked-beam","Cranked Beam","cranked_beam","industrial",96,80,3,10,0,113,114,121,0.0,1),
 		_preset("barrel-arcade","Barrel Arcade","barrel_arcade","ruins",96,88,3,10,0,98,111,120,0.0,1),
 		_preset("buttress-crown","Buttress Crown","buttress_crown","ruins",96,96,4,12,0,104,98,120,0.0,1),
-		_preset("triptych-arcade","Triptych Arcade","triptych_arcade","ruins",108,88,3,10,0,98,119,120,0.0,1)
+		_preset("triptych-arcade","Triptych Arcade","triptych_arcade","ruins",108,88,3,10,0,98,119,120,0.0,1),
+		_preset("megatruss-station","Megatruss Station","megatruss_station","industrial",64,96,3,10,0,58,65,121,0.0,1),
+		_preset("cathedral-megaframe","Cathedral Megaframe","cathedral_megaframe","ruins",72,96,5,12,0,98,119,121,0.0,1),
+		_preset("seeded-typology-megablock","Seeded Typology Megablock","seeded_typology_megablock","industrial",96,64,4,12,0,58,62,121,0.0,1),
+		_preset("metabolist-spine","Metabolist Spine","metabolist_spine","industrial",96,88,3,10,0,58,65,121,0.0,1),
+		_preset("interlaced-viaduct","Interlaced Viaduct","interlaced_viaduct","ruins",80,64,3,10,0,98,65,121,0.0,1),
+		_preset("rosework-gatehouse","Rosework Gatehouse","rosework_gatehouse","ruins",128,80,3,10,0,100,119,55,0.0,1),
+		_preset("interlock-brutalism","Interlock Brutalism","interlock_brutalism","industrial",80,72,3,10,0,62,114,121,0.0,1),
+		_preset("suspended-arcology","Suspended Arcology","suspended_arcology","industrial",80,72,3,10,0,58,65,121,0.0,1)
 	]
 
 static func default_project() -> Dictionary:
@@ -169,7 +177,8 @@ static func validate_preset(preset: Variant) -> String:
 			"ziggurat_arcade","corbel_arcade","chain_vault","ring_pier",
 			"folded_plate_hall","space_frame","crossbeam_stack","yoke_bridge",
 			"lantern_tower","spine_arcade","cascade_terrace","inverted_trestle",
-			"cranked_beam","barrel_arcade","buttress_crown","triptych_arcade"]:
+			"cranked_beam","barrel_arcade","buttress_crown","triptych_arcade",
+			"megatruss_station","cathedral_megaframe","seeded_typology_megablock","metabolist_spine","interlaced_viaduct","rosework_gatehouse","interlock_brutalism","suspended_arcology"]:
 		return "Unknown native architectural module."
 	var allowed_versions: Array = [2] if preset.module in ["arcology","vault"] else \
 		([1,2] if preset.module in ["terraced","hex_hive","arcade"] else [1])
@@ -199,6 +208,22 @@ static func validate_preset(preset: Variant) -> String:
 		return "This Gentek needs floor height at least 4 × wall thickness + 12 cells."
 	if preset.module == "sawtooth_gallery" and int(g.room_size)/2 < 2*int(g.wall_thickness)+4:
 		return "Sawtooth Gallery needs half-bay width at least 2 × wall thickness + 4 cells."
+	# Showcase-specific dimensional admission must agree with each sampler's
+	# immutable prepared-geometry contract (never silently clamp input).
+	if preset.module == "megatruss_station" and (int(g.room_size) < 4*int(g.wall_thickness)+24 or int(g.floor_height) < 8*int(g.wall_thickness)+32):
+		return "Megatruss Station needs bay ≥ 4 × wall + 24 and floor ≥ 8 × wall + 32."
+	if preset.module == "cathedral_megaframe" and (int(g.room_size) < 6*int(g.wall_thickness)+16 or int(g.floor_height) < 6*int(g.wall_thickness)+16):
+		return "Cathedral Megaframe needs bay/floor ≥ 6 × wall + 16."
+	if preset.module == "seeded_typology_megablock" and (int(g.room_size) < 6*int(g.wall_thickness)+12 or int(g.floor_height) < 6*int(g.wall_thickness)+12):
+		return "Seeded Typology Megablock needs bay/floor ≥ 6 × wall + 12."
+	if preset.module == "metabolist_spine" and int(g.room_size) < 6*int(g.wall_thickness)+24:
+		return "Metabolist Spine needs bay ≥ 6 × wall + 24."
+	if preset.module == "metabolist_spine" and int(g.floor_height) < 6*int(g.wall_thickness)+28:
+		return "Metabolist Spine needs floor ≥ 6 × wall + 28."
+	if preset.module == "rosework_gatehouse" and (int(g.room_size) < 40 or int(g.floor_height) < 32):
+		return "Rosework Gatehouse needs bay ≥ 40 and floor ≥ 32."
+	if preset.module in ["interlock_brutalism","suspended_arcology"] and (int(g.room_size) < 32 or int(g.floor_height) < 32):
+		return "This showcase needs bay and floor ≥ 32."
 	error = _keys(preset.materials,["wall","floor","window"],["wall","floor","window"],"Style materials")
 	if not error.is_empty(): return error
 	for key: String in preset.materials:
@@ -407,7 +432,8 @@ static func compile(input: Variant) -> Dictionary:
 				"a_frame_hall","butterfly_hall","ziggurat_arcade","corbel_arcade","chain_vault",
 				"ring_pier","folded_plate_hall","space_frame","crossbeam_stack","yoke_bridge",
 				"lantern_tower","spine_arcade","cascade_terrace","inverted_trestle",
-				"cranked_beam","barrel_arcade","buttress_crown","triptych_arcade"]:
+				"cranked_beam","barrel_arcade","buttress_crown","triptych_arcade",
+				"megatruss_station","cathedral_megaframe","seeded_typology_megablock","metabolist_spine","interlaced_viaduct","rosework_gatehouse","interlock_brutalism","suspended_arcology"]:
 			# One global geometric anchor, independently clipped by a zone mask.
 			# Avoid restarting rooms/arches at every zone's bounding rectangle.
 			bounds = [project.origin[0],project.origin[1],extent.x,extent.y]
