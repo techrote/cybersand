@@ -1,0 +1,370 @@
+name: GENTEK-COMBINED-WB-EVAL-001 Windows owner candidate
+
+on:
+  push:
+    branches: [experiment/gentek-swarm-001-corpus-100]
+    paths:
+      - '.github/workflows/gentek-combined-wb-eval-001.yml'
+      - 'godot/**'
+      - 'native/**'
+      - 'Makefile'
+      - 'tools/architecture/**'
+      - 'tools/package_explore001_candidate.py'
+      - 'tools/build_native_extension_windows.sh'
+      - 'tools/build_pinned_godot_cpp.sh'
+      - 'tools/ci/native_candidate_identity.py'
+      - 'tools/ci/stage_windows_vc_runtime.ps1'
+      - 'tools/requirements-build.txt'
+      - 'examples/worldgen/**'
+      - 'docs/operations/gentek-combined-wb-evaluation.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+  pull-requests: read
+
+concurrency:
+  group: gentek-combined-wb-eval-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'push' }}
+
+env:
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+  LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+  LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
+  RAPIER_WINDOWS_SHA256: b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7
+
+jobs:
+  cross-build:
+    name: Focused Gentek tests and exact-source Windows DLL
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/experiment/gentek-swarm-001-corpus-100'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - name: Checkout immutable candidate source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          fetch-depth: 0
+          lfs: false
+
+      - name: Fence combined source, unchanged parents and Draft hold
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git rev-parse HEAD > evidence/source-commit.txt
+          git rev-parse HEAD^{tree} > evidence/source-tree.txt
+          python3 - <<'PY'
+          import json, os, pathlib, subprocess, urllib.request
+          sha = os.environ['GITHUB_SHA']
+          parents = {671: 'eb786d97a769f4fed9f5d52bb0b50dd60f0ee16f',
+                     625: '345ecc3ef939523f247b3eb192aa7502bd4d83ca',
+                     624: '615828b28337f85e4663e03ba479616db4ddf764'}
+          observed = {}
+          for number in [673, 671, 625, 624]:
+              request = urllib.request.Request(
+                  f'https://api.github.com/repos/techrote/cybersand/pulls/{number}',
+                  headers={'Authorization': 'Bearer ' + os.environ['GH_TOKEN'],
+                           'Accept': 'application/vnd.github+json'})
+              with urllib.request.urlopen(request, timeout=60) as response:
+                  pr = json.load(response)
+              observed[str(number)] = {'head': pr['head']['sha'], 'branch': pr['head']['ref'],
+                                       'base': pr['base']['ref'], 'base_sha': pr['base']['sha'],
+                                       'draft': pr['draft'], 'merged': pr['merged'],
+                                       'auto_merge': pr['auto_merge'], 'state': pr['state']}
+              if number == 673:
+                  assert pr['head']['sha'] == sha, 'PR #673 moved before qualification'
+                  assert pr['base']['ref'] == 'integration/gentek-showcases-001'
+                  assert pr['base']['sha'] == parents[671]
+                  assert pr['draft'] and not pr['merged'] and pr['auto_merge'] is None
+                  assert pr['state'] == 'open'
+              else:
+                  assert pr['head']['sha'] == parents[number], f'Frozen parent #{number} changed'
+          for ancestor in [parents[624], parents[625], parents[671], '267f522222a1eb59b44e92f60a5a06f018af0ad3']:
+              subprocess.run(['git', 'merge-base', '--is-ancestor', ancestor, sha], check=True)
+          pathlib.Path('evidence/source-custody.json').write_text(
+              json.dumps({'source_commit': sha, 'pull_requests': observed}, indent=2) + '\n')
+          PY
+          python3 tools/ci/check_ci_provider_policy.py > evidence/provider-policy.json
+
+      - name: Build and run main architectural and seven showcase native suites
+        run: |
+          set -euo pipefail
+          g++-13 --version > evidence/native-test-compiler.txt
+          python3 --version > evidence/python-version.txt
+          if ! timeout 5400 make -j2 build/test_world_generation gentek-showcases-test CXX=g++-13 > evidence/native-showcases.log 2>&1; then
+            tail -160 evidence/native-showcases.log
+            exit 1
+          fi
+          if ! timeout 1800 build/test_world_generation > evidence/native-architecture.log 2>&1; then
+            tail -160 evidence/native-architecture.log
+            exit 1
+          fi
+
+      - name: Fetch pinned Windows build dependencies
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt > evidence/scons-install.log 2>&1
+          "$RUNNER_TEMP/scons/bin/python" -c 'import SCons; assert SCons.__version__ == "4.10.1"'
+          git init "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 900 git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT" > evidence/godot-cpp-fetch.log 2>&1
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+          timeout 1200 curl -fL --retry 3 -o "$RUNNER_TEMP/llvm-mingw.tar.xz" "$LLVM_MINGW_URL" > evidence/llvm-mingw-download.log 2>&1
+          echo "$LLVM_MINGW_SHA256  $RUNNER_TEMP/llvm-mingw.tar.xz" | sha256sum --check --strict
+          mkdir -p "$RUNNER_TEMP/llvm-mingw"
+          tar -xJf "$RUNNER_TEMP/llvm-mingw.tar.xz" -C "$RUNNER_TEMP/llvm-mingw" --strip-components=1
+          if test ! -e "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"; then
+            ln -s llvm-ar "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"
+          fi
+
+      - name: Build and attest source-matched Windows x86_64 GDExtension
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: '2'
+          LLVM_MINGW_ROOT: ${{ runner.temp }}/llvm-mingw
+          WINDOWS_CXX: ${{ runner.temp }}/llvm-mingw/bin/x86_64-w64-mingw32-g++
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/cybersand_native.windows.x86_64.dll
+        run: |
+          set -euo pipefail
+          "$WINDOWS_CXX" --version > evidence/windows-compiler.txt
+          if ! timeout 5400 bash tools/build_pinned_godot_cpp.sh windows > evidence/build-godot-cpp.log 2>&1; then
+            tail -120 evidence/build-godot-cpp.log
+            exit 1
+          fi
+          if ! timeout 5400 bash tools/build_native_extension_windows.sh > evidence/build-windows-dll.log 2>&1; then
+            tail -160 evidence/build-windows-dll.log
+            exit 1
+          fi
+          mkdir -p build/gentek-combined-windows
+          cp "$CYBERSAND_NATIVE_OUTPUT" build/gentek-combined-windows/
+          cp evidence/source-commit.txt evidence/source-tree.txt build/gentek-combined-windows/
+          file "$CYBERSAND_NATIVE_OUTPUT" > evidence/windows-pe-file.txt
+          sha256sum "$CYBERSAND_NATIVE_OUTPUT" > evidence/native-dll.sha256
+          sha256sum "$GODOT_CPP_ROOT/bin/libgodot-cpp.windows.template_debug.x86_64.a" > evidence/godot-cpp-library.sha256
+          python3 tools/ci/native_candidate_identity.py build/gentek-combined-windows --create
+          cp build/gentek-combined-windows/candidate-provenance.json evidence/
+
+      - name: Retain attested Windows runtime for this run only
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gentek-combined-runtime-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/gentek-combined-windows/
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Retain source, focused native and build evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gentek-combined-build-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/
+          if-no-files-found: warn
+          retention-days: 90
+
+  windows-package:
+    name: Hosted Windows graphical Workbench and extracted ZIP qualification
+    needs: cross-build
+    runs-on: windows-2022
+    timeout-minutes: 150
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - name: Checkout the same immutable source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          lfs: false
+
+      - name: Retrieve same-run source-built DLL
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: gentek-combined-runtime-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/gentek-combined-windows
+
+      - name: Record hosted platform and install attested native runtimes
+        run: |
+          $ErrorActionPreference = 'Stop'
+          New-Item -ItemType Directory -Force evidence | Out-Null
+          if ((git rev-parse HEAD).Trim() -ne $env:GITHUB_SHA) { throw 'Checkout differs from exact candidate source' }
+          python tools/ci/native_candidate_identity.py build/gentek-combined-windows
+          if ($LASTEXITCODE -ne 0) { throw 'Source-built Windows DLL custody failed' }
+          Copy-Item build/gentek-combined-windows/cybersand_native.windows.x86_64.dll godot/addons/cybersand_native/bin/ -Force
+          git lfs install --local
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          if ($LASTEXITCODE -ne 0) { throw 'Rapier materialization failed' }
+          $rapier = 'godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll'
+          if ((Get-FileHash $rapier -Algorithm SHA256).Hash.ToLowerInvariant() -ne $env:RAPIER_WINDOWS_SHA256) { throw 'Pinned Windows Rapier mismatch' }
+          $os = Get-CimInstance Win32_OperatingSystem
+          $platform = [ordered]@{
+            schema = 1
+            source_commit = $env:GITHUB_SHA
+            workflow_run = $env:GITHUB_RUN_ID
+            workflow_attempt = $env:GITHUB_RUN_ATTEMPT
+            execution = 'GitHub-hosted Windows Server VM; automated graphical execution'
+            windows_caption = $os.Caption
+            windows_version = $os.Version
+            windows_build = $os.BuildNumber
+            os_architecture = $os.OSArchitecture
+            image_os = $env:ImageOS
+            image_version = $env:ImageVersion
+            physical_windows_11 = 'NOT RUN; no physical Windows 11 machine in this workflow'
+          }
+          $platform | ConvertTo-Json -Depth 5 | Set-Content -Encoding utf8 evidence/windows-platform.json
+
+      - name: Fetch and authenticate official Godot 4.7 Windows runtime
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $zip = Join-Path $env:RUNNER_TEMP 'godot-win47.zip'
+          curl.exe -fL --retry 3 -o $zip 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          if ($LASTEXITCODE -ne 0) { throw 'Godot archive download failed' }
+          $expected = '41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9'
+          if ((Get-FileHash $zip -Algorithm SHA512).Hash.ToLowerInvariant() -ne $expected) { throw 'Godot archive pin mismatch' }
+          $engine = Join-Path $env:RUNNER_TEMP 'godot-win47'
+          Expand-Archive -LiteralPath $zip -DestinationPath $engine
+          $console = Join-Path $engine 'Godot_v4.7-stable_win64_console.exe'
+          $version = (& $console --version).Trim()
+          if ($version -ne '4.7.stable.official.5b4e0cb0f') { throw 'Godot executable version mismatch' }
+          $version | Set-Content evidence/godot-version.txt
+          'GODOT_EXE=' + $console | Out-File -Append -FilePath $env:GITHUB_ENV
+
+      - name: Validate exact-source project contracts and all 80 native catalogue renders
+        run: |
+          python tools/architecture/qualify.py --godot $env:GODOT_EXE --project godot --output evidence/native --suite native
+          if ($LASTEXITCODE -ne 0) { throw 'Architectural native and schema qualification failed' }
+          python -c "import json,pathlib; p=pathlib.Path('evidence/native'); r=json.loads((p/'architecture-native.json').read_text()); c=[x for x in r['cases'] if x.get('case')=='gentek-classic-001']; m=[x for x in r['cases'] if x.get('case')=='showcase-integration-five-style']; assert r['failures']==0; assert len(c)==len({x['material_sha256'] for x in c})==80; assert len(m)==2 and all(len(x['modules'])==5 for x in m); assert len(list(p.glob('classic-gentek-*.png')))==80; print('80 distinct catalogue maps and two five-style maps verified')"
+          if ($LASTEXITCODE -ne 0) { throw 'Complete native catalogue evidence missing' }
+
+      - name: Stage verified redistribution notices and app-local VC runtime
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $notices = Join-Path $env:RUNNER_TEMP 'godot-notices'
+          New-Item -ItemType Directory -Force $notices | Out-Null
+          foreach ($name in @('LICENSE.txt','COPYRIGHT.txt')) {
+            curl.exe -fL --retry 3 -o (Join-Path $notices $name) "https://raw.githubusercontent.com/godotengine/godot/5b4e0cb0f/$name"
+            if ($LASTEXITCODE -ne 0) { throw 'Godot notices download failed' }
+          }
+          if ((Get-FileHash (Join-Path $notices 'LICENSE.txt') -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'b0435e3b3e4e55238f05f4b306f30524a1b2e20147810d436eaa554fa6855c80' -or (Get-FileHash (Join-Path $notices 'COPYRIGHT.txt') -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'cb1980c88089573bcacd7221d777c689bb8bbd778799f24c27fca0fe5f774d6d') { throw 'Pinned Godot notices mismatch' }
+          $runtimeLicense = Join-Path $notices 'Microsoft-Visual-C-Runtime-LICENSE.docx'
+          $developerLicense = Join-Path $notices 'Microsoft-Visual-Studio-2022-LICENSE.docx'
+          curl.exe -fL --retry 3 -o $runtimeLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/09/Visual-C-Runtime-2015-2022-License-1.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Microsoft runtime licence download failed' }
+          curl.exe -fL --retry 3 -o $developerLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Visual-Studio-2022-Enterprise-Professional-License-EN.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Microsoft developer licence download failed' }
+          $vc = Join-Path $env:RUNNER_TEMP 'gentek-vc-runtime'
+          & tools/ci/stage_windows_vc_runtime.ps1 -Output $vc -License $runtimeLicense -DeveloperLicense $developerLicense
+          if ($LASTEXITCODE -ne 0) { throw 'VC runtime staging failed' }
+
+      - name: Package exact committed application and add generated build identity
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $notices = Join-Path $env:RUNNER_TEMP 'godot-notices'
+          $vc = Join-Path $env:RUNNER_TEMP 'gentek-vc-runtime'
+          $gui = $env:GODOT_EXE.Replace('_console.exe','.exe')
+          $package = 'build/gentek-combined-desktop-candidate'
+          python tools/package_explore001_candidate.py --engine $gui --engine-notices $notices --native-candidate build/gentek-combined-windows --vc-runtime $vc --readme docs/operations/gentek-combined-wb-evaluation.md --output $package
+          if ($LASTEXITCODE -ne 0) { throw 'Source-matched desktop packaging refused' }
+          $manifestPath = Join-Path $package 'candidate-manifest.json'
+          $manifest = Get-Content $manifestPath -Raw | ConvertFrom-Json
+          $platform = Get-Content evidence/windows-platform.json -Raw | ConvertFrom-Json
+          $identity = [ordered]@{
+            source_commit = $env:GITHUB_SHA
+            source_tree = $manifest.source_tree
+            branch = 'experiment/gentek-swarm-001-corpus-100'
+            workflow_run = $env:GITHUB_RUN_ID
+            workflow_attempt = $env:GITHUB_RUN_ATTEMPT
+            workflow_url = "https://github.com/techrote/cybersand/actions/runs/$env:GITHUB_RUN_ID"
+            godot_cpp_commit = $env:GODOT_CPP_COMMIT
+            llvm_mingw_sha256 = $env:LLVM_MINGW_SHA256
+            native_build_commands = @('bash tools/build_pinned_godot_cpp.sh windows','bash tools/build_native_extension_windows.sh')
+            platform = $platform
+          }
+          $guide = Join-Path $package 'READ-ME.md'
+          $guideText = [IO.File]::ReadAllText($guide)
+          $guideText = [regex]::Replace($guideText, '(?s)\A---\r?\n.*?\r?\n---\r?\n', '')
+          $header = "# Exact candidate identity`n`nSource: ``$($manifest.source_commit)``  `nTree: ``$($manifest.source_tree)``  `nBuild: [GitHub Actions $env:GITHUB_RUN_ID, attempt $env:GITHUB_RUN_ATTEMPT]($($identity.workflow_url))  `nGodot: ``$($manifest.godot_version)``  `nNative DLL SHA-256: ``$($manifest.native_sha256)``  `nPosture: **Draft / HOLD; not approved for merge.**  `nExecution platform: $($platform.windows_caption), $($platform.windows_version) ($($platform.windows_build)); GitHub-hosted VM.  `nPhysical Windows 11 acceptance: **NOT RUN in CI; owner evaluation remains required.**`n`n---`n`n"
+          [IO.File]::WriteAllText($guide, $header + $guideText, [Text.UTF8Encoding]::new($false))
+          $manifest.files_sha256.'READ-ME.md' = (Get-FileHash $guide -Algorithm SHA256).Hash.ToLowerInvariant()
+          $manifest | Add-Member -NotePropertyName build_identity -NotePropertyValue $identity
+          $manifest | ConvertTo-Json -Depth 30 | Set-Content -Encoding utf8 $manifestPath
+          $archive = "build/CyberSand-Gentek-Combined-Windows-x64-$($env:GITHUB_SHA.Substring(0,12)).zip"
+          Compress-Archive -Path "$package/*" -DestinationPath $archive -CompressionLevel Optimal
+          $archiveSha = (Get-FileHash $archive -Algorithm SHA256).Hash.ToLowerInvariant()
+          "$archiveSha  $(Split-Path $archive -Leaf)" | Set-Content -Encoding ascii "$archive.sha256"
+          $summary = [ordered]@{
+            source_commit = $manifest.source_commit
+            source_tree = $manifest.source_tree
+            zip = Split-Path $archive -Leaf
+            zip_sha256 = $archiveSha
+            zip_bytes = (Get-Item $archive).Length
+            file_count = @($manifest.files_sha256.PSObject.Properties).Count + 1
+            native_sha256 = $manifest.native_sha256
+            godot_version = $manifest.godot_version
+            build_identity = $identity
+          }
+          $summary | ConvertTo-Json -Depth 15 | Set-Content -Encoding utf8 evidence/package-identity.json
+          'CANDIDATE_ZIP=' + (Resolve-Path $archive).Path | Out-File -Append -FilePath $env:GITHUB_ENV
+
+      - name: Verify pristine extracted ZIP and exercise advanced catalogue graphically
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $validation = Join-Path $env:RUNNER_TEMP 'gentek-combined-package-validation'
+          Expand-Archive -LiteralPath $env:CANDIDATE_ZIP -DestinationPath $validation
+          $manifest = Get-Content (Join-Path $validation 'candidate-manifest.json') -Raw | ConvertFrom-Json
+          if ($manifest.source_commit -ne $env:GITHUB_SHA) { throw 'Extracted ZIP source mismatch' }
+          foreach ($entry in $manifest.files_sha256.PSObject.Properties) {
+            $path = Join-Path $validation $entry.Name
+            if ((Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash.ToLowerInvariant() -ne $entry.Value) { throw "Extracted package hash mismatch: $($entry.Name)" }
+          }
+          $engine = Join-Path $validation 'Godot_v4.7-stable_win64_console.exe'
+          $project = Join-Path $validation 'godot'
+          python tools/architecture/qualify_combined.py --godot $engine --project $project --output evidence/combined --graphical --package $validation
+          if ($LASTEXITCODE -ne 0) { throw 'Extracted package advanced graphical author/fresh-reopen campaign failed' }
+
+      - name: Retain runnable owner candidate ZIP and archive hash
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gentek-combined-owner-windows-${{ github.sha }}
+          path: |
+            build/CyberSand-Gentek-Combined-Windows-x64-*.zip
+            build/CyberSand-Gentek-Combined-Windows-x64-*.zip.sha256
+          if-no-files-found: warn
+          retention-days: 90
+
+      - name: Retain labelled graphical, native PNG, process and package evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gentek-combined-windows-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            evidence/
+            !evidence/**/profile/**/shader_cache/**
+            !evidence/**/profile/**/logs/**
+            !evidence/**/profile/**/keystores/**
+            !evidence/**/profile/**/editor*
+          if-no-files-found: warn
+          retention-days: 90
+
+      - name: Summarize observed hosted result without claiming physical Windows acceptance
+        if: always()
+        run: |
+          '## GENTEK-COMBINED-WB-EVAL-001' | Out-File -Append $env:GITHUB_STEP_SUMMARY
+          "Source: ``$env:GITHUB_SHA``" | Out-File -Append $env:GITHUB_STEP_SUMMARY
+          'PR #673 remains Draft/HOLD. This workflow never writes branches, merges or promotes Ready.' | Out-File -Append $env:GITHUB_STEP_SUMMARY
+          'Execution is on a GitHub-hosted Windows Server VM. Physical Windows 11 and owner aesthetic/UX acceptance remain untested.' | Out-File -Append $env:GITHUB_STEP_SUMMARY
+          'Retained ZIPs are candidates. Inspect all job outcomes and campaign receipts before describing one as qualified.' | Out-File -Append $env:GITHUB_STEP_SUMMARY
+          if (Test-Path evidence/package-identity.json) {
+            '```json' | Out-File -Append $env:GITHUB_STEP_SUMMARY
+            Get-Content evidence/package-identity.json | Out-File -Append $env:GITHUB_STEP_SUMMARY
+            '```' | Out-File -Append $env:GITHUB_STEP_SUMMARY
+          }

@@ -20,6 +20,9 @@ Current clarified intent is separate in the
 contains 72 classic samplers; stacked [integration #671](https://github.com/techrote/cybersand/pull/671)
 collects eight advanced showcases into an 80-module evaluation candidate.
 See the [integration evidence and owner gate](operations/gentek-showcase-integration-001.md).
+The [combined #673 Windows evaluation guide](operations/gentek-combined-wb-evaluation.md)
+describes the source-matched package campaign, the two existing save formats and
+the remaining physical Windows 11 gate. It grants no merge or Ready approval.
 Neither candidate is part of accepted `main` or authorized to merge.
 
 Current combined evaluation: [Materials Lab + Workbench integration](audits/2026-11-12-mat-auth-workbench-integration.md) preserves both current feature heads, shared manual/agent Undo/Redo and existing material/save contracts. Its own Windows/Linux/package qualification remains separate from each feature's preceding evidence.
