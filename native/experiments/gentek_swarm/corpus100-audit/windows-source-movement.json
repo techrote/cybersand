@@ -1,0 +1,74 @@
+{
+  "url": "https://github.com/techrote/cybersand/compare/267f522222a1eb59b44e92f60a5a06f018af0ad3...c93346fa66de7bb52e4f24fda582c3f6dee595db",
+  "status": "ahead",
+  "ahead_by": 2,
+  "behind_by": 0,
+  "merge_base": "267f522222a1eb59b44e92f60a5a06f018af0ad3",
+  "commits": [
+    {
+      "sha": "1836859820118322ad55924c5469ce39b69618dc",
+      "message": "test(gentek): qualify and package combined Windows Workbench candidate",
+      "parents": [
+        "267f522222a1eb59b44e92f60a5a06f018af0ad3"
+      ]
+    },
+    {
+      "sha": "c93346fa66de7bb52e4f24fda582c3f6dee595db",
+      "message": "test(gentek): attest fresh invocations and canonical persisted edits",
+      "parents": [
+        "1836859820118322ad55924c5469ce39b69618dc"
+      ]
+    }
+  ],
+  "files": [
+    {
+      "path": ".github/workflows/gentek-combined-wb-eval-001.yml",
+      "status": "added",
+      "sha": "ebb2bff0081270252bb2206495d3a58724f33082",
+      "additions": 365,
+      "deletions": 0
+    },
+    {
+      "path": "docs/README.md",
+      "status": "modified",
+      "sha": "1ac8cce06a126b2115cf7b867ad9f91ac6f524b4",
+      "additions": 3,
+      "deletions": 0
+    },
+    {
+      "path": "docs/operations/gentek-combined-wb-evaluation.md",
+      "status": "added",
+      "sha": "293e63bc75366b1c0a8c28799c565b00f91598fe",
+      "additions": 147,
+      "deletions": 0
+    },
+    {
+      "path": "docs/reference/retrieval-corpus.json",
+      "status": "modified",
+      "sha": "eab4e0b9e28b8d0a02a32cb463de413343ec9494",
+      "additions": 4,
+      "deletions": 0
+    },
+    {
+      "path": "docs/reference/status-and-roadmap.md",
+      "status": "modified",
+      "sha": "32d00dadc69361e7b5d36071c310329952218ecc",
+      "additions": 8,
+      "deletions": 0
+    },
+    {
+      "path": "godot/tests/test_gentek_combined_workbench.gd",
+      "status": "added",
+      "sha": "28000f7daf5f3107d6cf61db93eb48abeed6c101",
+      "additions": 320,
+      "deletions": 0
+    },
+    {
+      "path": "tools/architecture/qualify_combined.py",
+      "status": "added",
+      "sha": "d7717bea6e40f377c1f2e9f22dd68c3da0620af7",
+      "additions": 244,
+      "deletions": 0
+    }
+  ]
+}

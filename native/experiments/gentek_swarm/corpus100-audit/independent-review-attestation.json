@@ -1,0 +1,29 @@
+{
+  "verdict": "PASS for Phase A Draft/HOLD evidence; no merge/Ready, Windows freeze, Phase C or bridge acceptance",
+  "qualified_source_head": "c02b8bdb3541999fb49f86c98a66706a09e59e96",
+  "qualified_source_tree": "70eb6d8a56e0af62621837451437ffc82748c807",
+  "registration_commit": "759a2ae0b354ad2ead83929a6e854607e058defa",
+  "registration_sha256": "b87b53955663b25125f6e5782185ae438c4659f28bddada97f29034ecf2f4839",
+  "post_review_manifest_sha256": "33678b970f3e8d2224261e7feeccaabc64f378ac2deea5ef6e7edffeb7adbecb",
+  "review_files_sha256": {
+    "artifact-audit-assumption-failure.log": "37ce334878289a0c9f9a3b2aed1500d7b291edde73523ee0b25970964638a462",
+    "artifact-audit.json": "6b2a1dbd9aec61da17cc23dd9d94517d16eb1218dc366f5dff0cfedb11cfab3f",
+    "artifact-audit.log": "ecdd9e9ebf1a0c63b16d5105617a8d52fadc4e6fea16ebba058c756637147521",
+    "audit_artifacts.py": "cb76879210c2647c32afb2be536a9ccc4213c281f74f66c48500928a4457642f",
+    "audit_corpus100.py": "11794e2e47f62e8f431e36fa0c59c7589eb12b18686c91e23ed6aa196baa8f80",
+    "independent-review.md": "991f47f2ce2b345891544d099166f1d9c26853bb6a1d5de8ac10354fd2d2f4a4",
+    "preregistration-review.json": "f8f1ec2e738d7aac94040e7db772eb1c4d916dba4f58b326221120027828a1c4",
+    "raw-audit-selection-failure.log": "7eb1c4fa22b99f24b81263dd4ae94be9d8edfac7c88f908f0629177615134d00",
+    "raw-audit.json": "0652312c3e57475333cea3e9fb526e78a2889bbf8b879fdfad578ab44de32a4a",
+    "raw-audit.log": "8ddd5374cb7fb3b59bb584e432f90af720fa39c5ce3739b76cfda6bc87b5955e",
+    "tamper-audit.json": "ed06ec361e693bc3ffc48da12a9525fbff84855fd14bb9c8b75cdc6b3be9c814",
+    "tamper-audit.log": "d382896d5c45bf9939cdf0ecc5b55614153350fab4d933afc260719f1c5a0bf4",
+    "test_auditor_tamper.py": "f9e4afb0a5c6c044d5469071b64a8ed72b196a1e63503b0f65ae01d8ac1b5f32"
+  },
+  "blockers": [],
+  "remaining_external_gates": [
+    "Physical Windows acceptance and exact accepted combined source freeze",
+    "SWARM002 corrected forward-port and reproduction, after Phase A plus B",
+    "Experimental bridge implementation/qualification, only after prior gates"
+  ]
+}

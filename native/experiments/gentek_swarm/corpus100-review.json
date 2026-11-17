@@ -1,0 +1,1172 @@
+{
+  "programme": "GENTEK-SWARM-CORPUS-100",
+  "status": "Draft / HOLD \u2014 Phase A post-generation descriptive review",
+  "registration_commit": "759a2ae0b354ad2ead83929a6e854607e058defa",
+  "qualified_native_source": "c02b8bdb3541999fb49f86c98a66706a09e59e96",
+  "reviewed_utc": "2026-11-17T23:13:01.742988+00:00",
+  "selection_discipline": "All100 native outcomes reviewed after immutable preregistration; no replacements. Benchmark selection is intentionally post-review and does not alter the registered100. Earlier public SWARM evidence informed the preregistered strata; this is not a blinded sample.",
+  "interpretation": "Labels are architectural/editorial judgments, not numerical truth. Component counts do not certify support or traversal. SWARM-001 control comparisons do not measure SWARM-002 presolve negotiation.",
+  "benchmark_count": 20,
+  "cases": [
+    {
+      "case_id": "C100-001",
+      "review_labels": [
+        "strong architecture",
+        "promising for interactive authoring"
+      ],
+      "review_note": "Sparse rectilinear frame is readable and all 50 mandatory connectors are fulfilled; strongest simple authoring baseline.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": true,
+      "benchmark_reason": "Simple complete FRAME baseline; first member of matched seed605 profile triplet."
+    },
+    {
+      "case_id": "C100-002",
+      "review_labels": [
+        "interesting but imperfect",
+        "promising for interactive authoring",
+        "mandatory-resolution failure"
+      ],
+      "review_note": "Branching changes the free-space skeleton visibly; one mandatory connector remains unresolved despite a single material component.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": true,
+      "benchmark_reason": "Branching FRAME profile and unresolved mandatory connector; match C001/C003."
+    },
+    {
+      "case_id": "C100-003",
+      "review_labels": [
+        "interesting but imperfect",
+        "promising for interactive authoring",
+        "mandatory-resolution failure"
+      ],
+      "review_note": "Denser braces and cohesion enrich the frame; one unresolved mandatory connector remains and density is not a support certificate.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": true,
+      "benchmark_reason": "Dense FRAME profile; distinguish extra cohesion and braces from mandatory completion."
+    },
+    {
+      "case_id": "C100-004",
+      "review_labels": [
+        "strong architecture",
+        "promising for interactive authoring"
+      ],
+      "review_note": "Second sparse seed retains 925 occupied cells but changes 32 material cells versus C001; the silhouette is similar and seed sensitivity is small here.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-005",
+      "review_labels": [
+        "interesting but imperfect",
+        "promising for interactive authoring",
+        "mandatory-resolution failure"
+      ],
+      "review_note": "Second branching seed changes the skeleton while retaining one unresolved mandatory connector.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-006",
+      "review_labels": [
+        "interesting but imperfect",
+        "promising for interactive authoring",
+        "mandatory-resolution failure"
+      ],
+      "review_note": "Second dense seed changes the braced structure; two mandatory connectors remain unresolved.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-007",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure"
+      ],
+      "review_note": "Stepped boundary retains a readable frame but four mandatory connectors remain unresolved.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-008",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure"
+      ],
+      "review_note": "Concave intrusion produces an interesting frame with six mandatory connectors unresolved; retain as a difficult contour.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-009",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure",
+        "protected-space correctness"
+      ],
+      "review_note": "Protected corridor leaves only a small frame; protected space is respected while three mandatory connectors remain unresolved.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-010",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure"
+      ],
+      "review_note": "Foreign solid constrains the frame and leaves five required connectors unresolved; immutable context is retained separately.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-011",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure"
+      ],
+      "review_note": "Island confines growth to a small frame with two unresolved connectors; a single component does not imply completeness.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-012",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure"
+      ],
+      "review_note": "Narrow neck retains an extended frame but leaves one mandatory connector unresolved.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-013",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure"
+      ],
+      "review_note": "Affinity-zero dense foreign-solid control; compare C014, whose native material is identical.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-014",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure"
+      ],
+      "review_note": "Affinity-one dense foreign-solid result; zero material-cell changes versus C013, so this pair supplies no visible affinity control benefit.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-015",
+      "review_labels": [
+        "strong architecture",
+        "promising for interactive authoring"
+      ],
+      "review_note": "Second-seed affinity-zero control is complete; compare C016 with identical material.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-016",
+      "review_labels": [
+        "strong architecture",
+        "promising for interactive authoring"
+      ],
+      "review_note": "Second-seed affinity-one result is complete and materially identical to C015; do not advertise a visible FRAME affinity effect here.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-017",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure",
+        "useful negative case"
+      ],
+      "review_note": "Damaged derivative breaks the intact C002 frame into 17 components and revokes connector receipts; 70 mandatory connectors are unresolved.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": true,
+      "benchmark_reason": "Damage derivative of C002; verify receipt revocation and retained failure."
+    },
+    {
+      "case_id": "C100-018",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure",
+        "useful negative case"
+      ],
+      "review_note": "Damaged foreign-solid derivative breaks the C010 structure into 26 components and leaves 65 mandatory connectors unresolved.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-019",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure"
+      ],
+      "review_note": "Sparse island frame remains legible but has four unresolved connectors; constrained growth matters more than nominal sparsity.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-020",
+      "review_labels": [
+        "strong architecture",
+        "promising for interactive authoring"
+      ],
+      "review_note": "Dense narrow-neck frame is complete with no unresolved mandatory connectors; useful positive counterpart to difficult narrow-neck pairs.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-021",
+      "review_labels": [
+        "strong architecture"
+      ],
+      "review_note": "Sparse MOSAIC makes a regular repeated floor-and-pier grid; complete in free space with one material component.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-022",
+      "review_labels": [
+        "strong architecture",
+        "promising for interactive authoring"
+      ],
+      "review_note": "Branching-profile MOSAIC changes categorical motifs into a varied repeated facade; complete, with two components as a descriptive fact.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": true,
+      "benchmark_reason": "Successful categorical MOSAIC motifs; match C023 with same seed and fixture."
+    },
+    {
+      "case_id": "C100-023",
+      "review_labels": [
+        "strong architecture",
+        "promising for interactive authoring"
+      ],
+      "review_note": "Dense MOSAIC increases occupied material and changes motifs; visually richer but still a strongly repeated grid.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": true,
+      "benchmark_reason": "Dense MOSAIC structure and profile-bundle comparison."
+    },
+    {
+      "case_id": "C100-024",
+      "review_labels": [
+        "strong architecture"
+      ],
+      "review_note": "Second sparse MOSAIC seed changes native motif placement; free-space solve completes.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-025",
+      "review_labels": [
+        "strong architecture"
+      ],
+      "review_note": "Second branching MOSAIC seed changes the repeated facade; two components do not determine authoring quality.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-026",
+      "review_labels": [
+        "strong architecture"
+      ],
+      "review_note": "Second dense MOSAIC seed is the fullest free-space grid in this trio; complete without a global support claim.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-027",
+      "review_labels": [
+        "interesting but imperfect"
+      ],
+      "review_note": "Stepped own-territory MOSAIC follows the contour but retains ten material components.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-028",
+      "review_labels": [
+        "interesting but imperfect"
+      ],
+      "review_note": "Concave own-territory MOSAIC adapts its outline while retaining eight components; contrast the sparse UNSAT C033.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-029",
+      "review_labels": [
+        "interesting but imperfect",
+        "protected-space correctness"
+      ],
+      "review_note": "Protected corridor is clear in the MOSAIC output; seven material components remain and traversal has not been tested.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-030",
+      "review_labels": [
+        "interesting but imperfect"
+      ],
+      "review_note": "Foreign solid is preserved while MOSAIC conforms around it; nine components are descriptive, not a quality score.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-031",
+      "review_labels": [
+        "strong architecture"
+      ],
+      "review_note": "Island territory produces a compact elliptical-edged MOSAIC assembly; complete with one component.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-032",
+      "review_labels": [
+        "interesting but imperfect"
+      ],
+      "review_note": "Narrow-neck territory yields a visibly bounded MOSAIC shape with three components.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-033",
+      "review_labels": [
+        "MOSAIC brittle/UNSAT",
+        "useful negative case"
+      ],
+      "review_note": "Sparse concave MOSAIC is proven UNSAT; the retained blank material array is a valid negative outcome, not a missing screenshot.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": true,
+      "benchmark_reason": "Concave sparse MOSAIC UNSAT retained as a first-class negative."
+    },
+    {
+      "case_id": "C100-034",
+      "review_labels": [
+        "MOSAIC brittle/UNSAT",
+        "useful negative case",
+        "protected-space correctness"
+      ],
+      "review_note": "Sparse protected-corridor MOSAIC is proven UNSAT; do not treat this as a generic UI crash.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-035",
+      "review_labels": [
+        "interesting but imperfect",
+        "useful negative case"
+      ],
+      "review_note": "Damaged MOSAIC retains a fractured grid with 68 components; destruction is recorded rather than repaired for display.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-036",
+      "review_labels": [
+        "interesting but imperfect",
+        "disconnected RECEPTOR output"
+      ],
+      "review_note": "Sparse free RECEPTOR produces seven disconnected shells; successful execution is not a coherent primary building.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-037",
+      "review_labels": [
+        "interesting but imperfect",
+        "disconnected RECEPTOR output"
+      ],
+      "review_note": "Branching free RECEPTOR produces seventeen disconnected shells; shell diversity is visible but architectural continuity is weak.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-038",
+      "review_labels": [
+        "interesting but imperfect",
+        "disconnected RECEPTOR output"
+      ],
+      "review_note": "Dense free RECEPTOR produces twenty-one disconnected shells; density adds separate motifs rather than a unified structure.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-039",
+      "review_labels": [
+        "interesting but imperfect",
+        "disconnected RECEPTOR output"
+      ],
+      "review_note": "Second sparse RECEPTOR seed changes shell details while retaining seven components.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-040",
+      "review_labels": [
+        "interesting but imperfect",
+        "disconnected RECEPTOR output"
+      ],
+      "review_note": "Second branching RECEPTOR seed retains seventeen disconnected shells; variation does not solve continuity.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-041",
+      "review_labels": [
+        "interesting but imperfect",
+        "disconnected RECEPTOR output"
+      ],
+      "review_note": "Second dense RECEPTOR seed retains twenty-one disconnected shells; keep as a primary-generator negative.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-042",
+      "review_labels": [
+        "interesting but imperfect",
+        "disconnected RECEPTOR output"
+      ],
+      "review_note": "Affinity-zero foreign-solid RECEPTOR control: 566 generated cells and ten components.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": true,
+      "benchmark_reason": "Affinity-zero RECEPTOR control; pair with C043, not a winner-only selection."
+    },
+    {
+      "case_id": "C100-043",
+      "review_labels": [
+        "interesting but imperfect",
+        "disconnected RECEPTOR output"
+      ],
+      "review_note": "Affinity-one changes 168 material cells versus C042 and adds environmental wrapping; eleven components remain, so changed is not automatically better.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": true,
+      "benchmark_reason": "Isolated visible environmental affinity effect with continued disconnected output."
+    },
+    {
+      "case_id": "C100-044",
+      "review_labels": [
+        "interesting but imperfect",
+        "disconnected RECEPTOR output",
+        "protected-space correctness"
+      ],
+      "review_note": "Protected corridor stays clear while RECEPTOR emits nine disconnected components.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-045",
+      "review_labels": [
+        "interesting but imperfect",
+        "disconnected RECEPTOR output",
+        "useful negative case"
+      ],
+      "review_note": "Damaged RECEPTOR breaks shells into forty-seven components; useful fragmented-output negative.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-046",
+      "review_labels": [
+        "mandatory-resolution failure",
+        "MOSAIC brittle/UNSAT",
+        "useful negative case"
+      ],
+      "review_note": "Sparse stepped pairing retains FRAME output and MOSAIC UNSAT; no joined seam and one unresolved required connector.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-047",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure"
+      ],
+      "review_note": "Branching stepped pairing gives three optional-only joins while four mandatory connectors remain unresolved; visible contact count is not completion.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-048",
+      "review_labels": [
+        "interesting but imperfect",
+        "promising for interactive authoring",
+        "mandatory-resolution failure",
+        "optional-contact-heavy"
+      ],
+      "review_note": "Dense stepped meeting is visually promising; six new bridges plus one adjacent contact coexist with four unresolved required connectors. Compared all three controls.",
+      "visual_review_scope": "All three controls plus native outcome",
+      "benchmark": true,
+      "benchmark_reason": "Promising stepped FRAME-MOSAIC meeting; optional versus mandatory contention."
+    },
+    {
+      "case_id": "C100-049",
+      "review_labels": [
+        "mandatory-resolution failure",
+        "MOSAIC brittle/UNSAT",
+        "useful negative case"
+      ],
+      "review_note": "Sparse concave pairing retains MOSAIC UNSAT and three unresolved FRAME connectors; no seam success.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-050",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure"
+      ],
+      "review_note": "Concave pairing adapts the contour and yields two joins, yet five required connectors remain unresolved. Compared all three controls.",
+      "visual_review_scope": "All three controls plus native outcome",
+      "benchmark": true,
+      "benchmark_reason": "Concave FRAME-MOSAIC limitation with exact paths and unresolved requirements."
+    },
+    {
+      "case_id": "C100-051",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure"
+      ],
+      "review_note": "Dense concave pairing retains three joins and four unresolved mandatory connectors; increased material does not resolve the difficult boundary.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-052",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure",
+        "protected-space correctness"
+      ],
+      "review_note": "Sparse protected pairing solves MOSAIC and makes two joins without filling protected space; two mandatory connectors remain unresolved.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-053",
+      "review_labels": [
+        "interesting but imperfect",
+        "promising for interactive authoring",
+        "mandatory-resolution failure",
+        "protected-space correctness"
+      ],
+      "review_note": "Protected corridor pairing adds three bounded joins while keeping the corridor clear; two required connectors remain unresolved. Compared all three controls.",
+      "visual_review_scope": "All three controls plus native outcome",
+      "benchmark": true,
+      "benchmark_reason": "Protected-space correctness with partial seam resolution."
+    },
+    {
+      "case_id": "C100-054",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure",
+        "protected-space correctness"
+      ],
+      "review_note": "Dense protected pairing adds three joins with two unresolved connectors; denser profile does not remove the remaining obligations.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-055",
+      "review_labels": [
+        "mandatory-resolution failure",
+        "MOSAIC brittle/UNSAT",
+        "useful negative case"
+      ],
+      "review_note": "Sparse foreign-solid pairing retains MOSAIC UNSAT and no join; three mandatory connectors remain unresolved.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-056",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure"
+      ],
+      "review_note": "Foreign-solid pairing produces two optional-only joins and leaves five required connectors unresolved; context preservation is correct but required success is incomplete.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": true,
+      "benchmark_reason": "Foreign-solid preservation; optional success coexists with required failure."
+    },
+    {
+      "case_id": "C100-057",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure"
+      ],
+      "review_note": "Dense foreign-solid pairing produces two optional-only joins and leaves three mandatory connectors unresolved.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-058",
+      "review_labels": [
+        "mandatory-resolution failure",
+        "MOSAIC brittle/UNSAT",
+        "useful negative case"
+      ],
+      "review_note": "Sparse island pairing retains MOSAIC UNSAT; no join and four unresolved required connectors remain.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-059",
+      "review_labels": [
+        "interesting but imperfect",
+        "promising for interactive authoring",
+        "mandatory-resolution failure",
+        "SWARM meshing better"
+      ],
+      "review_note": "Island own-territory awareness improves the outline over independent clipping; the final two validated bridges improve local continuity while one required connector remains. Compared all three controls.",
+      "visual_review_scope": "All three controls plus native outcome",
+      "benchmark": true,
+      "benchmark_reason": "Island FRAME-MOSAIC meeting: own-territory outline adaptation and final local bridge benefit are separately visible."
+    },
+    {
+      "case_id": "C100-060",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure"
+      ],
+      "review_note": "Dense island pairing retains the two-join meeting and one unresolved required connector; visual density does not change that fact.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-061",
+      "review_labels": [
+        "mandatory-resolution failure",
+        "MOSAIC brittle/UNSAT",
+        "useful negative case"
+      ],
+      "review_note": "Sparse narrow-neck pairing retains MOSAIC UNSAT with one unresolved FRAME connector.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-062",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure",
+        "useful negative case"
+      ],
+      "review_note": "Narrow-neck pairing adds fourteen adapter cells and four cohesion cells but achieves zero joins; retain the visibly unresolved gap. Compared all three controls.",
+      "visual_review_scope": "All three controls plus native outcome",
+      "benchmark": true,
+      "benchmark_reason": "Narrow-neck zero-join failure despite late additions; potential future presolve research discriminator."
+    },
+    {
+      "case_id": "C100-063",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure",
+        "useful negative case"
+      ],
+      "review_note": "Dense narrow-neck pairing also achieves zero joins; increased native density does not cure the gap.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-064",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure",
+        "optional-contact-heavy"
+      ],
+      "review_note": "Second-seed stepped pairing makes five optional-only joins while one required connector remains unresolved.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-065",
+      "review_labels": [
+        "interesting but imperfect"
+      ],
+      "review_note": "Second-seed concave pairing has two optional-only joins and no unresolved mandatory connectors; useful seed-specific counterexample to C050, without a universal concavity claim.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-066",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure",
+        "protected-space correctness"
+      ],
+      "review_note": "Second-seed protected pairing makes four joins while three required connectors remain unresolved; protected geometry is still respected.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-067",
+      "review_labels": [
+        "interesting but imperfect"
+      ],
+      "review_note": "Second-seed foreign-solid pairing has one optional-only join and no unresolved mandatory connectors; preserve its seed-specific success.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-068",
+      "review_labels": [
+        "interesting but imperfect",
+        "promising for interactive authoring",
+        "mandatory-resolution failure"
+      ],
+      "review_note": "Second-seed island pairing makes four joins but leaves two required connectors unresolved; compare C059 rather than selecting only the preferred seed.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": true,
+      "benchmark_reason": "Second seed on island; retain seed sensitivity and incomplete requirements."
+    },
+    {
+      "case_id": "C100-069",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure"
+      ],
+      "review_note": "Second-seed narrow-neck pairing makes one optional-only join while a mandatory connector remains unresolved.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-070",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure"
+      ],
+      "review_note": "Dense second-seed island pairing makes four joins and leaves two required connectors unresolved; higher join count is not full resolution.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-071",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure",
+        "disconnected RECEPTOR output"
+      ],
+      "review_note": "Stepped FRAME-RECEPTOR meeting makes two optional-only joins but retains four required failures and twelve components.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-072",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure",
+        "disconnected RECEPTOR output",
+        "optional-contact-heavy"
+      ],
+      "review_note": "Concave FRAME-RECEPTOR meeting makes five joins but retains five unresolved required connectors and thirteen components.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-073",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure",
+        "disconnected RECEPTOR output",
+        "useful negative case",
+        "protected-space correctness"
+      ],
+      "review_note": "Protected FRAME-RECEPTOR case adds no seam geometry and achieves no joins; three required connectors remain unresolved. Compared all three controls.",
+      "visual_review_scope": "All three controls plus native outcome",
+      "benchmark": true,
+      "benchmark_reason": "Protected FRAME-RECEPTOR zero-contact negative."
+    },
+    {
+      "case_id": "C100-074",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure",
+        "disconnected RECEPTOR output",
+        "optional-contact-heavy",
+        "ugly valid seam"
+      ],
+      "review_note": "Foreign-solid FRAME-RECEPTOR makes five optional-only joins with five unresolved required connectors; thin extensions remain visually awkward.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-075",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure",
+        "disconnected RECEPTOR output",
+        "optional-contact-heavy",
+        "ugly valid seam"
+      ],
+      "review_note": "Island FRAME-RECEPTOR has six joins but still thirteen components and one unresolved mandatory connector.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-076",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure",
+        "disconnected RECEPTOR output",
+        "optional-contact-heavy"
+      ],
+      "review_note": "Narrow-neck FRAME-RECEPTOR has four optional-only joins while a required connector remains unresolved.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-077",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure",
+        "disconnected RECEPTOR output",
+        "optional-contact-heavy",
+        "ugly valid seam"
+      ],
+      "review_note": "Dense stepped FRAME-RECEPTOR has seven optional-only joins while two required connectors remain unresolved; optional-contact-heavy negative.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-078",
+      "review_labels": [
+        "interesting but imperfect",
+        "disconnected RECEPTOR output"
+      ],
+      "review_note": "Dense concave FRAME-RECEPTOR has three optional-only joins and no unresolved required connectors, yet thirteen components remain.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-079",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure",
+        "disconnected RECEPTOR output",
+        "protected-space correctness"
+      ],
+      "review_note": "Dense protected FRAME-RECEPTOR has three joins and three required connectors unresolved; protected geometry is correct without full seam success.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-080",
+      "review_labels": [
+        "interesting but imperfect",
+        "disconnected RECEPTOR output"
+      ],
+      "review_note": "Dense foreign-solid FRAME-RECEPTOR has two optional-only joins and no unresolved required connectors; bulky local wrapping remains a visual tradeoff.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-081",
+      "review_labels": [
+        "interesting but imperfect",
+        "disconnected RECEPTOR output",
+        "optional-contact-heavy",
+        "ugly valid seam",
+        "useful negative case"
+      ],
+      "review_note": "Dense island FRAME-RECEPTOR has all 45 required connectors fulfilled and ten bridges, yet retains thirteen components and awkward thin links. Native blocked status predates final fulfillment. Compared all three controls.",
+      "visual_review_scope": "All three controls plus native outcome",
+      "benchmark": true,
+      "benchmark_reason": "Ten validated bridges and all mandatory connectors fulfilled, but visually awkward and fragmented."
+    },
+    {
+      "case_id": "C100-082",
+      "review_labels": [
+        "interesting but imperfect",
+        "disconnected RECEPTOR output"
+      ],
+      "review_note": "Dense narrow-neck FRAME-RECEPTOR has three optional-only joins and no unresolved mandatory connectors; eleven components still make it a fragmented authoring result.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-083",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure",
+        "disconnected RECEPTOR output",
+        "useful negative case",
+        "protected-space correctness"
+      ],
+      "review_note": "Sparse protected FRAME-RECEPTOR again achieves zero joins and leaves three required connectors unresolved; low-contact negative retained.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-084",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure",
+        "disconnected RECEPTOR output"
+      ],
+      "review_note": "Sparse concave FRAME-RECEPTOR has two joins and one unresolved required connector; useful low-density contention case.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-085",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure",
+        "disconnected RECEPTOR output"
+      ],
+      "review_note": "Sparse island FRAME-RECEPTOR makes four joins but leaves two required connectors unresolved and six components.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-086",
+      "review_labels": [
+        "interesting but imperfect",
+        "disconnected RECEPTOR output"
+      ],
+      "review_note": "Stepped MOSAIC-RECEPTOR adds two optional-only joins; fourteen components and wrapping limit coherence.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-087",
+      "review_labels": [
+        "interesting but imperfect",
+        "disconnected RECEPTOR output",
+        "optional-contact-heavy"
+      ],
+      "review_note": "Concave MOSAIC-RECEPTOR adds four optional-only joins but retains sixteen components; a categorical solve is not a cohesive building certificate.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-088",
+      "review_labels": [
+        "interesting but imperfect",
+        "disconnected RECEPTOR output",
+        "protected-space correctness"
+      ],
+      "review_note": "Protected MOSAIC-RECEPTOR has one optional-only join and twelve components; protected corridor remains clear.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-089",
+      "review_labels": [
+        "interesting but imperfect",
+        "disconnected RECEPTOR output",
+        "optional-contact-heavy",
+        "ugly valid seam"
+      ],
+      "review_note": "Foreign-solid MOSAIC-RECEPTOR makes six optional-only joins and adds 211 adapter cells; connectivity claims remain separate from the fragmented visual outcome.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-090",
+      "review_labels": [
+        "interesting but imperfect",
+        "disconnected RECEPTOR output",
+        "optional-contact-heavy"
+      ],
+      "review_note": "Island MOSAIC-RECEPTOR has five optional-only joins yet twelve components; useful boundary-meeting research rather than a primary-mode recommendation.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-091",
+      "review_labels": [
+        "interesting but imperfect",
+        "disconnected RECEPTOR output",
+        "optional-contact-heavy"
+      ],
+      "review_note": "Narrow-neck MOSAIC-RECEPTOR has four optional-only joins and eight components; native topology remains irregular.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-092",
+      "review_labels": [
+        "interesting but imperfect",
+        "disconnected RECEPTOR output",
+        "optional-contact-heavy",
+        "ugly valid seam"
+      ],
+      "review_note": "Dense concave MOSAIC-RECEPTOR adds 375 adapter cells for four optional-only joins; substantial local additions are visually hard to explain as artistic control.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-093",
+      "review_labels": [
+        "interesting but imperfect",
+        "disconnected RECEPTOR output",
+        "optional-contact-heavy",
+        "ugly valid seam",
+        "clipping better",
+        "useful negative case"
+      ],
+      "review_note": "Dense foreign-solid MOSAIC-RECEPTOR adds 382 adapter cells and registers four adjacent contacts with zero new bridge cells. The leaner clipped control is visually preferable for this authoring judgment. Compared all three controls.",
+      "visual_review_scope": "All three controls plus native outcome",
+      "benchmark": true,
+      "benchmark_reason": "Ugly valid adjacent contacts with no new bridge cells and 382 adapter cells; clipped preference."
+    },
+    {
+      "case_id": "C100-094",
+      "review_labels": [
+        "MOSAIC brittle/UNSAT",
+        "useful negative case",
+        "disconnected RECEPTOR output",
+        "protected-space correctness"
+      ],
+      "review_note": "Sparse protected MOSAIC-RECEPTOR retains MOSAIC UNSAT and seven RECEPTOR components; no joined seam.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-095",
+      "review_labels": [
+        "interesting but imperfect",
+        "disconnected RECEPTOR output",
+        "optional-contact-heavy",
+        "ugly valid seam"
+      ],
+      "review_note": "Sparse island MOSAIC-RECEPTOR has seven optional-only joins and 268 adapter cells; high contact count alone does not establish usefulness.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-096",
+      "review_labels": [
+        "useful negative case",
+        "bounded exhaustion"
+      ],
+      "review_note": "FRAME generator-work limit of one exhausts before useful output; satisfiability is not disproven.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": true,
+      "benchmark_reason": "Bounded generator-work exhaustion; keep distinct from proven UNSAT."
+    },
+    {
+      "case_id": "C100-097",
+      "review_labels": [
+        "useful negative case",
+        "bounded exhaustion"
+      ],
+      "review_note": "MOSAIC generator-work limit of one exhausts before GEN-003 solving; this is not a registered solver-search exhaustion experiment.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-098",
+      "review_labels": [
+        "useful negative case",
+        "bounded exhaustion"
+      ],
+      "review_note": "RECEPTOR 1024-byte admission refusal returns no material array and zero native digests; the labelled image is a placeholder, not an accepted blank canvas.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-099",
+      "review_labels": [
+        "useful negative case"
+      ],
+      "review_note": "Empty eligible mask blocks FRAME generation with a retained blank array; no candidate was silently substituted.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    },
+    {
+      "case_id": "C100-100",
+      "review_labels": [
+        "MOSAIC brittle/UNSAT",
+        "useful negative case",
+        "protected-space correctness"
+      ],
+      "review_note": "Sparse protected MOSAIC is proven UNSAT at seed605; retain the solver distinction from exhausted C096-C098.",
+      "visual_review_scope": "Native outcome contact sheet; raw fact review",
+      "benchmark": false,
+      "benchmark_reason": null
+    }
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "schema": 1,
+  "observed_at_utc": "2026-11-17T23:16:01Z",
+  "scope": "Read-only observation by CORPUS-100 agent; evaluator retains ownership",
+  "corpus_parent": "267f522222a1eb59b44e92f60a5a06f018af0ad3",
+  "evaluator_source_chain": [
+    "267f522222a1eb59b44e92f60a5a06f018af0ad3",
+    "1836859820118322ad55924c5469ce39b69618dc",
+    "c93346fa66de7bb52e4f24fda582c3f6dee595db"
+  ],
+  "evaluator_tree": "e76cc0e2e08257bf1b3c526e6c4bb886ca6fbcb0",
+  "movement_scope": "Seven qualification, test, packaging and documentation paths; no production native, UI, renderer, material or SWARM generator implementation changes",
+  "run": {
+    "id": 44195967897,
+    "url": "https://github.com/techrote/cybersand/actions/runs/44195967897",
+    "status": "completed",
+    "conclusion": "failure",
+    "windows_job_id": 134441403228
+  },
+  "final_evaluator_report_received": false,
+  "evaluator_comment": {
+    "url": "https://github.com/techrote/cybersand/pull/673#issuecomment-6963586725",
+    "last_updated_utc": "2026-11-17T23:04:37Z",
+    "reported_status": "evaluation candidate in progress"
+  },
+  "phase_b": {
+    "accepted_source": null,
+    "freeze_gate": "CLOSED",
+    "reconciliation": "Not started by corpus lane; evaluator's final disposition and any repair remain pending",
+    "physical_windows_11_acceptance": "NOT RUN",
+    "reason": "Failed graphical campaign and no evaluator completion report. Hosted Windows Server VM is not physical Windows 11 acceptance."
+  },
+  "observed_failure": {
+    "step": "Verify pristine extracted ZIP and exercise advanced catalogue graphically",
+    "phase": "singles",
+    "checks": 131,
+    "failures": 2,
+    "complete": false,
+    "primary_assertion": "existing form fits the actual work area",
+    "secondary_assertion": "mandatory complete singles campaign",
+    "mixed_authoring": "NOT RUN",
+    "fresh_process_reopen": "NOT RUN",
+    "passed_before_failure": [
+      "Exact-source Windows DLL build and provenance",
+      "Main architectural and seven standalone showcase native suites",
+      "Exact-source project contracts and all 80 native catalogue renders",
+      "Package creation and inventory check",
+      "Pristine extracted package import",
+      "Graphical Workbench launch"
+    ]
+  },
+  "hypothesis_not_established": {
+    "kind": "Test apparatus logical-coordinate versus pixel-coordinate mismatch",
+    "evidence": [
+      "Retained advanced-selector.png visibly places the full generator form within the 1280x720 rendered viewport",
+      "New test sets root.size to 1280x720 but does not zero root.content_scale_size; its fit assertion uses root.size",
+      "Production Architectural Generator fitting uses root.get_visible_rect().size for an embedded window",
+      "Older test_architectural_generator.gd sets root.content_scale_size=Vector2i.ZERO before its equivalent form-fitting check"
+    ],
+    "verdict": "Strong apparatus-mismatch hypothesis; not an established production UI defect and not repaired by this lane"
+  },
+  "package": {
+    "qualification": "FAILED — historical candidate only",
+    "name": "CyberSand-Gentek-Combined-Windows-x64-c93346fa66de.zip",
+    "sha256": "f0350bbe467bbad654198db999c4dfb1775e99bf408927d7a9aa6fe50290f484",
+    "bytes": 93627839,
+    "manifest_inventory_files": 1020,
+    "reported_payload_files": 1021,
+    "zip_entries_including_directories": 1025,
+    "inventory_hash_mismatches": [],
+    "independent_download_verified": true,
+    "launch": "Open Workbench.cmd",
+    "godot": "4.7.stable.official.5b4e0cb0f",
+    "artifact_id": 14380645604,
+    "artifact_url": "https://github.com/techrote/cybersand/actions/runs/44195967897/artifacts/14380645604",
+    "outer_artifact_sha256": "9f7f4e5e5de88ebbf22eef11f0fc21653a50d34884237327663de5937803be52"
+  },
+  "native_runtime": {
+    "name": "cybersand_native.windows.x86_64.dll",
+    "bytes": 5686784,
+    "sha256": "3d43ef0e1efe47434668f3f13c4eb5a1045aafba921568b3d93d184b8579811e",
+    "independent_bytes_match_provenance": true,
+    "source_input_count": 101,
+    "compiler": "LLVM-MinGW clang 23.1.0; x86_64-w64-windows-gnu",
+    "artifact_id": 14379871029,
+    "outer_artifact_sha256": "f7f248b5e3b60f9fded51540d35288eb86cfa7e3dda3c207407e9852ae1c4b25"
+  },
+  "evidence": [
+    {
+      "kind": "Build evidence",
+      "artifact_id": 14379731263,
+      "sha256": "eb231a57a9f0b7947a453c40738b5bfed9e35ef9c7d8886ec9f39a735c3ac22b",
+      "independently_downloaded_and_hashed": true
+    },
+    {
+      "kind": "Hosted Windows campaign evidence",
+      "artifact_id": 14380011663,
+      "sha256": "bd3a671e4b2c5fcd690c1dfedad19baca494ddc8efcbcea8b4b7e6ec97b09281",
+      "independently_downloaded_and_hashed": true
+    }
+  ],
+  "platform": {
+    "os": "Microsoft Windows Server 2022 Datacenter",
+    "build": "10.0.20348",
+    "image": "20261112.366.7",
+    "graphics": "ANGLE Microsoft Basic Render Driver Direct3D11",
+    "physical_windows_11": false
+  },
+  "mutations_by_this_lane": []
+}

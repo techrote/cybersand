@@ -1,0 +1,2419 @@
+{
+  "programme": "GENTEK-SWARM-CORPUS-100",
+  "status": "Draft / HOLD \u2014 descriptive benchmark subset",
+  "source_head": "c02b8bdb3541999fb49f86c98a66706a09e59e96",
+  "registration_commit": "759a2ae0b354ad2ead83929a6e854607e058defa",
+  "registration_sha256": "b87b53955663b25125f6e5782185ae438c4659f28bddada97f29034ecf2f4839",
+  "review_sha256": "33678b970f3e8d2224261e7feeccaabc64f378ac2deea5ef6e7edffeb7adbecb",
+  "selection_discipline": "All100 native outcomes reviewed after immutable preregistration; no replacements. Benchmark selection is intentionally post-review and does not alter the registered100. Earlier public SWARM evidence informed the preregistered strata; this is not a blinded sample.",
+  "count": 20,
+  "cases": [
+    {
+      "case_id": "C100-001",
+      "group": "frameweaver_solo",
+      "kind": "FRAMEWEAVER",
+      "right_kind": null,
+      "fixture": "free",
+      "profile": "sparse_regular",
+      "seed": 605,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_reason": "Simple complete FRAME baseline; first member of matched seed605 profile triplet.",
+      "review_labels": [
+        "strong architecture",
+        "promising for interactive authoring"
+      ],
+      "review_note": "Sparse rectilinear frame is readable and all 50 mandatory connectors are fulfilled; strongest simple authoring baseline.",
+      "full_raw_native": {
+        "file": "native/C100-001.json",
+        "sha256": "d744707ec16ed48d896ed4a4ec946e9842f176dab198f5b243fedac0bf5dcf18"
+      },
+      "full_case_facts": {
+        "file": "case_records/C100-001.json",
+        "sha256": "85f5a9b792340fca388967314d6f8c316e70bea920be037ecb7c35da91f3cfce"
+      },
+      "native_material_array": {
+        "file": "material_arrays/C100-001-native.u16le",
+        "sha256": "b3a48c0848d401b06063887c7a382a6482d19177620c04e1292de1ca897a2177",
+        "format": "uint16 little-endian row-major material IDs",
+        "retained_cell_count": 21504,
+        "complete_192x112_canvas": true,
+        "empty_emission_preserved": false,
+        "emission_status": "native full-size array"
+      },
+      "attribution_arrays": {
+        "generated_union": {
+          "file": "material_arrays/C100-001-generated-union.u16le",
+          "sha256": "b3a48c0848d401b06063887c7a382a6482d19177620c04e1292de1ca897a2177",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "cohesion_cells": {
+          "file": "material_arrays/C100-001-cohesion.u16le",
+          "sha256": "ccc1a10b7aac17225febe0b37d40d5b4575aebdad5bb1c291429f04d1a5892b4",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        }
+      },
+      "control_arrays": {},
+      "images": {
+        "native_material_png": "images/C100-001-native.png",
+        "semantic_provenance_overlay": "images/C100-001-semantic.png",
+        "transition_boundary_overlay": "images/C100-001-boundary.png",
+        "detail": "images/C100-001-detail.png",
+        "independent_own_negotiated_comparison": null
+      },
+      "gallery_anchor": "index.html#C100-001",
+      "compiled_definition_fingerprint": "985812e756aea6e1b9e241820b4c4fdc26352164ce4d18769b34a6df65acbdaf",
+      "material_array_sha256": "b3a48c0848d401b06063887c7a382a6482d19177620c04e1292de1ca897a2177",
+      "per_owner_digests": [
+        {
+          "gentek": "FRAMEWEAVER",
+          "material": "77fc44eaa47b352b",
+          "semantic": "dee78db4d005a45f"
+        }
+      ],
+      "pair_semantic_digest": null,
+      "generation_statuses": [
+        "complete"
+      ],
+      "solver_statuses": [
+        "not_applicable"
+      ],
+      "mandatory_unresolved": 0,
+      "validated_joints": 0,
+      "total_late_additions": 0
+    },
+    {
+      "case_id": "C100-002",
+      "group": "frameweaver_solo",
+      "kind": "FRAMEWEAVER",
+      "right_kind": null,
+      "fixture": "free",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_reason": "Branching FRAME profile and unresolved mandatory connector; match C001/C003.",
+      "review_labels": [
+        "interesting but imperfect",
+        "promising for interactive authoring",
+        "mandatory-resolution failure"
+      ],
+      "review_note": "Branching changes the free-space skeleton visibly; one mandatory connector remains unresolved despite a single material component.",
+      "full_raw_native": {
+        "file": "native/C100-002.json",
+        "sha256": "a7350c7868810d595e02cd80870e5b547b1fd8e5566220a071b77835f5e95587"
+      },
+      "full_case_facts": {
+        "file": "case_records/C100-002.json",
+        "sha256": "b6fdba15e04065b59e787a91041d278c31c8493073e39349beb0a55ec373535b"
+      },
+      "native_material_array": {
+        "file": "material_arrays/C100-002-native.u16le",
+        "sha256": "94a1e9b91d499acc8ffa28e9d0e1c814f57a3a4826e9c35dc7d7844032c45f75",
+        "format": "uint16 little-endian row-major material IDs",
+        "retained_cell_count": 21504,
+        "complete_192x112_canvas": true,
+        "empty_emission_preserved": false,
+        "emission_status": "native full-size array"
+      },
+      "attribution_arrays": {
+        "generated_union": {
+          "file": "material_arrays/C100-002-generated-union.u16le",
+          "sha256": "94a1e9b91d499acc8ffa28e9d0e1c814f57a3a4826e9c35dc7d7844032c45f75",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "cohesion_cells": {
+          "file": "material_arrays/C100-002-cohesion.u16le",
+          "sha256": "e64af4f503359910ad2be492cf5db7bfb0e29c54b18db82ada4c8fe7077966fa",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        }
+      },
+      "control_arrays": {},
+      "images": {
+        "native_material_png": "images/C100-002-native.png",
+        "semantic_provenance_overlay": "images/C100-002-semantic.png",
+        "transition_boundary_overlay": "images/C100-002-boundary.png",
+        "detail": "images/C100-002-detail.png",
+        "independent_own_negotiated_comparison": null
+      },
+      "gallery_anchor": "index.html#C100-002",
+      "compiled_definition_fingerprint": "985812e756aea6e1b9e241820b4c4fdc26352164ce4d18769b34a6df65acbdaf",
+      "material_array_sha256": "94a1e9b91d499acc8ffa28e9d0e1c814f57a3a4826e9c35dc7d7844032c45f75",
+      "per_owner_digests": [
+        {
+          "gentek": "FRAMEWEAVER",
+          "material": "2fbfd15c34512e2b",
+          "semantic": "28aabec331fc738c"
+        }
+      ],
+      "pair_semantic_digest": null,
+      "generation_statuses": [
+        "blocked"
+      ],
+      "solver_statuses": [
+        "not_applicable"
+      ],
+      "mandatory_unresolved": 1,
+      "validated_joints": 0,
+      "total_late_additions": 0
+    },
+    {
+      "case_id": "C100-003",
+      "group": "frameweaver_solo",
+      "kind": "FRAMEWEAVER",
+      "right_kind": null,
+      "fixture": "free",
+      "profile": "dense_cohesive",
+      "seed": 605,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_reason": "Dense FRAME profile; distinguish extra cohesion and braces from mandatory completion.",
+      "review_labels": [
+        "interesting but imperfect",
+        "promising for interactive authoring",
+        "mandatory-resolution failure"
+      ],
+      "review_note": "Denser braces and cohesion enrich the frame; one unresolved mandatory connector remains and density is not a support certificate.",
+      "full_raw_native": {
+        "file": "native/C100-003.json",
+        "sha256": "ce7386c7d1ca066afad29d9098004f0536c1124d6130773b18f81582a8a745ea"
+      },
+      "full_case_facts": {
+        "file": "case_records/C100-003.json",
+        "sha256": "3445e3f58ae3cd6fd3f8a59ee99abbe84ef781c7f91c528775401179fddec6da"
+      },
+      "native_material_array": {
+        "file": "material_arrays/C100-003-native.u16le",
+        "sha256": "3cdc844f46f093195a5398ea7d274989d5f0b71805e118bdb30ea5cf86e42f89",
+        "format": "uint16 little-endian row-major material IDs",
+        "retained_cell_count": 21504,
+        "complete_192x112_canvas": true,
+        "empty_emission_preserved": false,
+        "emission_status": "native full-size array"
+      },
+      "attribution_arrays": {
+        "generated_union": {
+          "file": "material_arrays/C100-003-generated-union.u16le",
+          "sha256": "3cdc844f46f093195a5398ea7d274989d5f0b71805e118bdb30ea5cf86e42f89",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "cohesion_cells": {
+          "file": "material_arrays/C100-003-cohesion.u16le",
+          "sha256": "2a19e2577a8cc89bfa6a636e398558f5de1305670b633a63ca135d3e1a531c1b",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        }
+      },
+      "control_arrays": {},
+      "images": {
+        "native_material_png": "images/C100-003-native.png",
+        "semantic_provenance_overlay": "images/C100-003-semantic.png",
+        "transition_boundary_overlay": "images/C100-003-boundary.png",
+        "detail": "images/C100-003-detail.png",
+        "independent_own_negotiated_comparison": null
+      },
+      "gallery_anchor": "index.html#C100-003",
+      "compiled_definition_fingerprint": "985812e756aea6e1b9e241820b4c4fdc26352164ce4d18769b34a6df65acbdaf",
+      "material_array_sha256": "3cdc844f46f093195a5398ea7d274989d5f0b71805e118bdb30ea5cf86e42f89",
+      "per_owner_digests": [
+        {
+          "gentek": "FRAMEWEAVER",
+          "material": "773fe0a612d96be5",
+          "semantic": "8593386ea80cba1e"
+        }
+      ],
+      "pair_semantic_digest": null,
+      "generation_statuses": [
+        "blocked"
+      ],
+      "solver_statuses": [
+        "not_applicable"
+      ],
+      "mandatory_unresolved": 1,
+      "validated_joints": 0,
+      "total_late_additions": 0
+    },
+    {
+      "case_id": "C100-017",
+      "group": "frameweaver_solo",
+      "kind": "FRAMEWEAVER",
+      "right_kind": null,
+      "fixture": "free",
+      "profile": "damaged_derivative",
+      "seed": 605,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_reason": "Damage derivative of C002; verify receipt revocation and retained failure.",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure",
+        "useful negative case"
+      ],
+      "review_note": "Damaged derivative breaks the intact C002 frame into 17 components and revokes connector receipts; 70 mandatory connectors are unresolved.",
+      "full_raw_native": {
+        "file": "native/C100-017.json",
+        "sha256": "4a48e6e72e52dc68018d480f6f62c7fdfcb4b2b772524b626f8c8b06bd7e56df"
+      },
+      "full_case_facts": {
+        "file": "case_records/C100-017.json",
+        "sha256": "99dafaf506d51ad530da9f4fede955d983ee3492a95f88fcde477335be120c77"
+      },
+      "native_material_array": {
+        "file": "material_arrays/C100-017-native.u16le",
+        "sha256": "e7abaf0d56ac09b8bebdc18fa7231fda3236bdc3935281903a3fa7fd4fa6454d",
+        "format": "uint16 little-endian row-major material IDs",
+        "retained_cell_count": 21504,
+        "complete_192x112_canvas": true,
+        "empty_emission_preserved": false,
+        "emission_status": "native full-size array"
+      },
+      "attribution_arrays": {
+        "generated_union": {
+          "file": "material_arrays/C100-017-generated-union.u16le",
+          "sha256": "e7abaf0d56ac09b8bebdc18fa7231fda3236bdc3935281903a3fa7fd4fa6454d",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "cohesion_cells": {
+          "file": "material_arrays/C100-017-cohesion.u16le",
+          "sha256": "aea35ac2b8f61a24134e9ae252618a86e12bea808e174447dcdd011783429989",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        }
+      },
+      "control_arrays": {},
+      "images": {
+        "native_material_png": "images/C100-017-native.png",
+        "semantic_provenance_overlay": "images/C100-017-semantic.png",
+        "transition_boundary_overlay": "images/C100-017-boundary.png",
+        "detail": "images/C100-017-detail.png",
+        "independent_own_negotiated_comparison": null
+      },
+      "gallery_anchor": "index.html#C100-017",
+      "compiled_definition_fingerprint": "985812e756aea6e1b9e241820b4c4fdc26352164ce4d18769b34a6df65acbdaf",
+      "material_array_sha256": "e7abaf0d56ac09b8bebdc18fa7231fda3236bdc3935281903a3fa7fd4fa6454d",
+      "per_owner_digests": [
+        {
+          "gentek": "FRAMEWEAVER",
+          "material": "a63c612ab4fc0da7",
+          "semantic": "69632652c47c933a"
+        }
+      ],
+      "pair_semantic_digest": null,
+      "generation_statuses": [
+        "damaged"
+      ],
+      "solver_statuses": [
+        "not_applicable"
+      ],
+      "mandatory_unresolved": 70,
+      "validated_joints": 0,
+      "total_late_additions": 0
+    },
+    {
+      "case_id": "C100-022",
+      "group": "mosaic_solo",
+      "kind": "MOSAIC",
+      "right_kind": null,
+      "fixture": "free",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_reason": "Successful categorical MOSAIC motifs; match C023 with same seed and fixture.",
+      "review_labels": [
+        "strong architecture",
+        "promising for interactive authoring"
+      ],
+      "review_note": "Branching-profile MOSAIC changes categorical motifs into a varied repeated facade; complete, with two components as a descriptive fact.",
+      "full_raw_native": {
+        "file": "native/C100-022.json",
+        "sha256": "340a30e16e294550bd64a1c71ae6398a4df4ff005560768b39a9e90ac5559dcd"
+      },
+      "full_case_facts": {
+        "file": "case_records/C100-022.json",
+        "sha256": "759796714e60b55dc9d9db47cd695536797144cacb720d8ead0886d3c1ebf338"
+      },
+      "native_material_array": {
+        "file": "material_arrays/C100-022-native.u16le",
+        "sha256": "3206c245941478e199dc8cf5b8c7c426b4de644be367f7c1dabbb04cfc6385b3",
+        "format": "uint16 little-endian row-major material IDs",
+        "retained_cell_count": 21504,
+        "complete_192x112_canvas": true,
+        "empty_emission_preserved": false,
+        "emission_status": "native full-size array"
+      },
+      "attribution_arrays": {
+        "generated_union": {
+          "file": "material_arrays/C100-022-generated-union.u16le",
+          "sha256": "3206c245941478e199dc8cf5b8c7c426b4de644be367f7c1dabbb04cfc6385b3",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "cohesion_cells": {
+          "file": "material_arrays/C100-022-cohesion.u16le",
+          "sha256": "ccc1a10b7aac17225febe0b37d40d5b4575aebdad5bb1c291429f04d1a5892b4",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        }
+      },
+      "control_arrays": {},
+      "images": {
+        "native_material_png": "images/C100-022-native.png",
+        "semantic_provenance_overlay": "images/C100-022-semantic.png",
+        "transition_boundary_overlay": "images/C100-022-boundary.png",
+        "detail": "images/C100-022-detail.png",
+        "independent_own_negotiated_comparison": null
+      },
+      "gallery_anchor": "index.html#C100-022",
+      "compiled_definition_fingerprint": "985812e756aea6e1b9e241820b4c4fdc26352164ce4d18769b34a6df65acbdaf",
+      "material_array_sha256": "3206c245941478e199dc8cf5b8c7c426b4de644be367f7c1dabbb04cfc6385b3",
+      "per_owner_digests": [
+        {
+          "gentek": "MOSAIC",
+          "material": "55a802ca396ba1f5",
+          "semantic": "df7c8fef6235ab8b"
+        }
+      ],
+      "pair_semantic_digest": null,
+      "generation_statuses": [
+        "complete"
+      ],
+      "solver_statuses": [
+        "complete"
+      ],
+      "mandatory_unresolved": 0,
+      "validated_joints": 0,
+      "total_late_additions": 0
+    },
+    {
+      "case_id": "C100-023",
+      "group": "mosaic_solo",
+      "kind": "MOSAIC",
+      "right_kind": null,
+      "fixture": "free",
+      "profile": "dense_cohesive",
+      "seed": 605,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_reason": "Dense MOSAIC structure and profile-bundle comparison.",
+      "review_labels": [
+        "strong architecture",
+        "promising for interactive authoring"
+      ],
+      "review_note": "Dense MOSAIC increases occupied material and changes motifs; visually richer but still a strongly repeated grid.",
+      "full_raw_native": {
+        "file": "native/C100-023.json",
+        "sha256": "c202f3e9725ca0dcfd4c7cd679ace83ea65ec98c70f53063eb6d17a82d20de0e"
+      },
+      "full_case_facts": {
+        "file": "case_records/C100-023.json",
+        "sha256": "e7cd9621ac2e8af529e7713a0dbef9bdb17d14640927a11ed0d3169e07b34012"
+      },
+      "native_material_array": {
+        "file": "material_arrays/C100-023-native.u16le",
+        "sha256": "a1f893dc3fbbb65354fee30076b73995375a9dc7d4d8b5f2607c74885a1987f8",
+        "format": "uint16 little-endian row-major material IDs",
+        "retained_cell_count": 21504,
+        "complete_192x112_canvas": true,
+        "empty_emission_preserved": false,
+        "emission_status": "native full-size array"
+      },
+      "attribution_arrays": {
+        "generated_union": {
+          "file": "material_arrays/C100-023-generated-union.u16le",
+          "sha256": "a1f893dc3fbbb65354fee30076b73995375a9dc7d4d8b5f2607c74885a1987f8",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "cohesion_cells": {
+          "file": "material_arrays/C100-023-cohesion.u16le",
+          "sha256": "ccc1a10b7aac17225febe0b37d40d5b4575aebdad5bb1c291429f04d1a5892b4",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        }
+      },
+      "control_arrays": {},
+      "images": {
+        "native_material_png": "images/C100-023-native.png",
+        "semantic_provenance_overlay": "images/C100-023-semantic.png",
+        "transition_boundary_overlay": "images/C100-023-boundary.png",
+        "detail": "images/C100-023-detail.png",
+        "independent_own_negotiated_comparison": null
+      },
+      "gallery_anchor": "index.html#C100-023",
+      "compiled_definition_fingerprint": "985812e756aea6e1b9e241820b4c4fdc26352164ce4d18769b34a6df65acbdaf",
+      "material_array_sha256": "a1f893dc3fbbb65354fee30076b73995375a9dc7d4d8b5f2607c74885a1987f8",
+      "per_owner_digests": [
+        {
+          "gentek": "MOSAIC",
+          "material": "a5ed668d8c044775",
+          "semantic": "4d98589f56bd01f5"
+        }
+      ],
+      "pair_semantic_digest": null,
+      "generation_statuses": [
+        "complete"
+      ],
+      "solver_statuses": [
+        "complete"
+      ],
+      "mandatory_unresolved": 0,
+      "validated_joints": 0,
+      "total_late_additions": 0
+    },
+    {
+      "case_id": "C100-033",
+      "group": "mosaic_solo",
+      "kind": "MOSAIC",
+      "right_kind": null,
+      "fixture": "concave_intrusion",
+      "profile": "sparse_regular",
+      "seed": 1701,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_reason": "Concave sparse MOSAIC UNSAT retained as a first-class negative.",
+      "review_labels": [
+        "MOSAIC brittle/UNSAT",
+        "useful negative case"
+      ],
+      "review_note": "Sparse concave MOSAIC is proven UNSAT; the retained blank material array is a valid negative outcome, not a missing screenshot.",
+      "full_raw_native": {
+        "file": "native/C100-033.json",
+        "sha256": "1015eebdee9a4321650e3f047a5c6984e494f11f17938897cfccbcacef2d92e7"
+      },
+      "full_case_facts": {
+        "file": "case_records/C100-033.json",
+        "sha256": "1c18ae3cd5de443cac020e84423a86f7b51af78a0cc423614d0220bde5d24c24"
+      },
+      "native_material_array": {
+        "file": "material_arrays/C100-033-native.u16le",
+        "sha256": "ccc1a10b7aac17225febe0b37d40d5b4575aebdad5bb1c291429f04d1a5892b4",
+        "format": "uint16 little-endian row-major material IDs",
+        "retained_cell_count": 21504,
+        "complete_192x112_canvas": true,
+        "empty_emission_preserved": false,
+        "emission_status": "native full-size array"
+      },
+      "attribution_arrays": {
+        "generated_union": {
+          "file": "material_arrays/C100-033-generated-union.u16le",
+          "sha256": "ccc1a10b7aac17225febe0b37d40d5b4575aebdad5bb1c291429f04d1a5892b4",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "cohesion_cells": {
+          "file": "material_arrays/C100-033-cohesion.u16le",
+          "sha256": "ccc1a10b7aac17225febe0b37d40d5b4575aebdad5bb1c291429f04d1a5892b4",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        }
+      },
+      "control_arrays": {},
+      "images": {
+        "native_material_png": "images/C100-033-native.png",
+        "semantic_provenance_overlay": "images/C100-033-semantic.png",
+        "transition_boundary_overlay": "images/C100-033-boundary.png",
+        "detail": "images/C100-033-detail.png",
+        "independent_own_negotiated_comparison": null
+      },
+      "gallery_anchor": "index.html#C100-033",
+      "compiled_definition_fingerprint": "985812e756aea6e1b9e241820b4c4fdc26352164ce4d18769b34a6df65acbdaf",
+      "material_array_sha256": "ccc1a10b7aac17225febe0b37d40d5b4575aebdad5bb1c291429f04d1a5892b4",
+      "per_owner_digests": [
+        {
+          "gentek": "MOSAIC",
+          "material": "fb7a77b7ac3e8395",
+          "semantic": "235871945248826c"
+        }
+      ],
+      "pair_semantic_digest": null,
+      "generation_statuses": [
+        "unsat"
+      ],
+      "solver_statuses": [
+        "unsat"
+      ],
+      "mandatory_unresolved": 0,
+      "validated_joints": 0,
+      "total_late_additions": 0
+    },
+    {
+      "case_id": "C100-042",
+      "group": "receptor_solo",
+      "kind": "RECEPTOR",
+      "right_kind": null,
+      "fixture": "foreign_solid",
+      "profile": "dense_cohesive",
+      "seed": 605,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {
+        "environment_affinity": 0.0
+      },
+      "selection_reason": "Affinity-zero RECEPTOR control; pair with C043, not a winner-only selection.",
+      "review_labels": [
+        "interesting but imperfect",
+        "disconnected RECEPTOR output"
+      ],
+      "review_note": "Affinity-zero foreign-solid RECEPTOR control: 566 generated cells and ten components.",
+      "full_raw_native": {
+        "file": "native/C100-042.json",
+        "sha256": "ae05e1fc41b39e9693cde83ee05e4bac980c2abce9089e172dce6b97603ec17e"
+      },
+      "full_case_facts": {
+        "file": "case_records/C100-042.json",
+        "sha256": "e4c154943dc64323567740288deb162519732ecc7d9363121479ab28e111527d"
+      },
+      "native_material_array": {
+        "file": "material_arrays/C100-042-native.u16le",
+        "sha256": "1a6f7eb9b994161a0f0c3ed9c232a5c87cfc080589ed43bd94f03a6975d60e05",
+        "format": "uint16 little-endian row-major material IDs",
+        "retained_cell_count": 21504,
+        "complete_192x112_canvas": true,
+        "empty_emission_preserved": false,
+        "emission_status": "native full-size array"
+      },
+      "attribution_arrays": {
+        "generated_union": {
+          "file": "material_arrays/C100-042-generated-union.u16le",
+          "sha256": "1a6f7eb9b994161a0f0c3ed9c232a5c87cfc080589ed43bd94f03a6975d60e05",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "cohesion_cells": {
+          "file": "material_arrays/C100-042-cohesion.u16le",
+          "sha256": "727e3c022c5993cb04110fa861619e96240a6fce3fae7c0763c6f1cd5e72593e",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        }
+      },
+      "control_arrays": {},
+      "images": {
+        "native_material_png": "images/C100-042-native.png",
+        "semantic_provenance_overlay": "images/C100-042-semantic.png",
+        "transition_boundary_overlay": "images/C100-042-boundary.png",
+        "detail": "images/C100-042-detail.png",
+        "independent_own_negotiated_comparison": null
+      },
+      "gallery_anchor": "index.html#C100-042",
+      "compiled_definition_fingerprint": "985812e756aea6e1b9e241820b4c4fdc26352164ce4d18769b34a6df65acbdaf",
+      "material_array_sha256": "1a6f7eb9b994161a0f0c3ed9c232a5c87cfc080589ed43bd94f03a6975d60e05",
+      "per_owner_digests": [
+        {
+          "gentek": "RECEPTOR",
+          "material": "ee24fc02337f4cd5",
+          "semantic": "b7adaae119b089b7"
+        }
+      ],
+      "pair_semantic_digest": null,
+      "generation_statuses": [
+        "complete"
+      ],
+      "solver_statuses": [
+        "not_applicable"
+      ],
+      "mandatory_unresolved": 0,
+      "validated_joints": 0,
+      "total_late_additions": 0
+    },
+    {
+      "case_id": "C100-043",
+      "group": "receptor_solo",
+      "kind": "RECEPTOR",
+      "right_kind": null,
+      "fixture": "foreign_solid",
+      "profile": "dense_cohesive",
+      "seed": 605,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {
+        "environment_affinity": 1.0
+      },
+      "selection_reason": "Isolated visible environmental affinity effect with continued disconnected output.",
+      "review_labels": [
+        "interesting but imperfect",
+        "disconnected RECEPTOR output"
+      ],
+      "review_note": "Affinity-one changes 168 material cells versus C042 and adds environmental wrapping; eleven components remain, so changed is not automatically better.",
+      "full_raw_native": {
+        "file": "native/C100-043.json",
+        "sha256": "30aa37372e9231c1eede8a75758489ec476c44c4035d938dd80079d3027ba178"
+      },
+      "full_case_facts": {
+        "file": "case_records/C100-043.json",
+        "sha256": "a5d27e597f3f590193cab5fcfc329f684fc97fcba4ed80351eb7a15dc3649223"
+      },
+      "native_material_array": {
+        "file": "material_arrays/C100-043-native.u16le",
+        "sha256": "32c94b2c77ae888b66ed19e8a8c20f0f7661df70e21673cafc52c1b8a59927b1",
+        "format": "uint16 little-endian row-major material IDs",
+        "retained_cell_count": 21504,
+        "complete_192x112_canvas": true,
+        "empty_emission_preserved": false,
+        "emission_status": "native full-size array"
+      },
+      "attribution_arrays": {
+        "generated_union": {
+          "file": "material_arrays/C100-043-generated-union.u16le",
+          "sha256": "32c94b2c77ae888b66ed19e8a8c20f0f7661df70e21673cafc52c1b8a59927b1",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "cohesion_cells": {
+          "file": "material_arrays/C100-043-cohesion.u16le",
+          "sha256": "2906ede6f39375796e5df053cffb4ff9110013758763f1eb38f16b7dbcf71256",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        }
+      },
+      "control_arrays": {},
+      "images": {
+        "native_material_png": "images/C100-043-native.png",
+        "semantic_provenance_overlay": "images/C100-043-semantic.png",
+        "transition_boundary_overlay": "images/C100-043-boundary.png",
+        "detail": "images/C100-043-detail.png",
+        "independent_own_negotiated_comparison": null
+      },
+      "gallery_anchor": "index.html#C100-043",
+      "compiled_definition_fingerprint": "985812e756aea6e1b9e241820b4c4fdc26352164ce4d18769b34a6df65acbdaf",
+      "material_array_sha256": "32c94b2c77ae888b66ed19e8a8c20f0f7661df70e21673cafc52c1b8a59927b1",
+      "per_owner_digests": [
+        {
+          "gentek": "RECEPTOR",
+          "material": "110e409e99f8792b",
+          "semantic": "eaa5670e37b4be50"
+        }
+      ],
+      "pair_semantic_digest": null,
+      "generation_statuses": [
+        "complete"
+      ],
+      "solver_statuses": [
+        "not_applicable"
+      ],
+      "mandatory_unresolved": 0,
+      "validated_joints": 0,
+      "total_late_additions": 0
+    },
+    {
+      "case_id": "C100-048",
+      "group": "frameweaver_mosaic",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "MOSAIC",
+      "fixture": "stepped_diagonal",
+      "profile": "dense_cohesive",
+      "seed": 605,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_reason": "Promising stepped FRAME-MOSAIC meeting; optional versus mandatory contention.",
+      "review_labels": [
+        "interesting but imperfect",
+        "promising for interactive authoring",
+        "mandatory-resolution failure",
+        "optional-contact-heavy"
+      ],
+      "review_note": "Dense stepped meeting is visually promising; six new bridges plus one adjacent contact coexist with four unresolved required connectors. Compared all three controls.",
+      "full_raw_native": {
+        "file": "native/C100-048.json",
+        "sha256": "b012864a890ff71230572deba4ab01eac49296751fd1fbad4879e6cd187ea93b"
+      },
+      "full_case_facts": {
+        "file": "case_records/C100-048.json",
+        "sha256": "75526b29157964bcb7f81a3652f47d62b57605fafc721af556df213afc367702"
+      },
+      "native_material_array": {
+        "file": "material_arrays/C100-048-native.u16le",
+        "sha256": "0356ab5cbdfa0c87d604a2581146fddc5dee43f1ff89f5bca7dd44bfac56e114",
+        "format": "uint16 little-endian row-major material IDs",
+        "retained_cell_count": 21504,
+        "complete_192x112_canvas": true,
+        "empty_emission_preserved": false,
+        "emission_status": "native full-size array"
+      },
+      "attribution_arrays": {
+        "generated_union": {
+          "file": "material_arrays/C100-048-generated-union.u16le",
+          "sha256": "0356ab5cbdfa0c87d604a2581146fddc5dee43f1ff89f5bca7dd44bfac56e114",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "cohesion_cells": {
+          "file": "material_arrays/C100-048-cohesion.u16le",
+          "sha256": "a8b07f3469305c9a26420c3f9cb2e8ef5638c32d186ce029de6c074120dfef75",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        }
+      },
+      "control_arrays": {
+        "clipped_cells": {
+          "file": "material_arrays/C100-048-clipped_cells.u16le",
+          "sha256": "6545d970bf4bf2f87d09acf146efc47d4c753d52dec647838d45c4c0bcccf245",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "initial_cells": {
+          "file": "material_arrays/C100-048-initial_cells.u16le",
+          "sha256": "1581708382e9091cef890709a7a9726aa7db5ddf68948da567389ffaac56756e",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "shared_bridge_cells": {
+          "file": "material_arrays/C100-048-shared-bridges.u16le",
+          "sha256": "862ae665f8c7d11042c4c317a9d99b3c6edec7eb6a8541df8c273937d29606fc",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "late_adapter_cells_excluding_cohesion": {
+          "file": "material_arrays/C100-048-late-adapters-excluding-cohesion.u16le",
+          "sha256": "ccc1a10b7aac17225febe0b37d40d5b4575aebdad5bb1c291429f04d1a5892b4",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "late_cohesion_cells": {
+          "file": "material_arrays/C100-048-late-cohesion.u16le",
+          "sha256": "ccc1a10b7aac17225febe0b37d40d5b4575aebdad5bb1c291429f04d1a5892b4",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "total_late_additions": {
+          "file": "material_arrays/C100-048-all-late-additions.u16le",
+          "sha256": "862ae665f8c7d11042c4c317a9d99b3c6edec7eb6a8541df8c273937d29606fc",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "native_architecture_without_shared_bridges": {
+          "file": "material_arrays/C100-048-native-without-shared-bridges.u16le",
+          "sha256": "1581708382e9091cef890709a7a9726aa7db5ddf68948da567389ffaac56756e",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        }
+      },
+      "images": {
+        "native_material_png": "images/C100-048-native.png",
+        "semantic_provenance_overlay": "images/C100-048-semantic.png",
+        "transition_boundary_overlay": "images/C100-048-boundary.png",
+        "detail": "images/C100-048-detail.png",
+        "independent_own_negotiated_comparison": "images/C100-048-controls.png"
+      },
+      "gallery_anchor": "index.html#C100-048",
+      "compiled_definition_fingerprint": "985812e756aea6e1b9e241820b4c4fdc26352164ce4d18769b34a6df65acbdaf",
+      "material_array_sha256": "0356ab5cbdfa0c87d604a2581146fddc5dee43f1ff89f5bca7dd44bfac56e114",
+      "per_owner_digests": [
+        {
+          "gentek": "FRAMEWEAVER",
+          "material": "937a499aa0f7fc1b",
+          "semantic": "db393cecf3764137"
+        },
+        {
+          "gentek": "MOSAIC",
+          "material": "9082baaa16100586",
+          "semantic": "b1ed41d95a611399"
+        }
+      ],
+      "pair_semantic_digest": "667ab7607ff8237b",
+      "generation_statuses": [
+        "blocked",
+        "complete"
+      ],
+      "solver_statuses": [
+        "not_applicable",
+        "complete"
+      ],
+      "mandatory_unresolved": 4,
+      "validated_joints": 7,
+      "total_late_additions": 61
+    },
+    {
+      "case_id": "C100-050",
+      "group": "frameweaver_mosaic",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "MOSAIC",
+      "fixture": "concave_intrusion",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_reason": "Concave FRAME-MOSAIC limitation with exact paths and unresolved requirements.",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure"
+      ],
+      "review_note": "Concave pairing adapts the contour and yields two joins, yet five required connectors remain unresolved. Compared all three controls.",
+      "full_raw_native": {
+        "file": "native/C100-050.json",
+        "sha256": "2195bc2948398aafb0d89bbbba1f9600d62846b051678bd0dd7146dd13a3f385"
+      },
+      "full_case_facts": {
+        "file": "case_records/C100-050.json",
+        "sha256": "245a19304969ce8980effb77decc7f0e3b3659ebfe8c84f4114af974822c0d4e"
+      },
+      "native_material_array": {
+        "file": "material_arrays/C100-050-native.u16le",
+        "sha256": "139fbd7724bce6b122bc3f7e536beabe17bd0a4a2f2ebcac52b27288e5c1f396",
+        "format": "uint16 little-endian row-major material IDs",
+        "retained_cell_count": 21504,
+        "complete_192x112_canvas": true,
+        "empty_emission_preserved": false,
+        "emission_status": "native full-size array"
+      },
+      "attribution_arrays": {
+        "generated_union": {
+          "file": "material_arrays/C100-050-generated-union.u16le",
+          "sha256": "139fbd7724bce6b122bc3f7e536beabe17bd0a4a2f2ebcac52b27288e5c1f396",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "cohesion_cells": {
+          "file": "material_arrays/C100-050-cohesion.u16le",
+          "sha256": "3a9e154b9d294caa47c5882b9f12fd91985bf6ab94397a9677338c9a28a0588d",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        }
+      },
+      "control_arrays": {
+        "clipped_cells": {
+          "file": "material_arrays/C100-050-clipped_cells.u16le",
+          "sha256": "89ea8e21cc2300bc750a6ac0ff99d28b964f5deefcdf053eb9eeb9e4873e13df",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "initial_cells": {
+          "file": "material_arrays/C100-050-initial_cells.u16le",
+          "sha256": "22303c5aa30c45dca64a4b7b84024ae1089be87c304fed2ab101e5ff01bf6a8c",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "shared_bridge_cells": {
+          "file": "material_arrays/C100-050-shared-bridges.u16le",
+          "sha256": "7435a9bfe1d1e3e635dce5307ca85bb72fca342badc462c6e195f2c3b503a08c",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "late_adapter_cells_excluding_cohesion": {
+          "file": "material_arrays/C100-050-late-adapters-excluding-cohesion.u16le",
+          "sha256": "b4e44b67b5f5cf18c3c3b0e88220b97664cadcef36e9807f1de21b08636bae15",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "late_cohesion_cells": {
+          "file": "material_arrays/C100-050-late-cohesion.u16le",
+          "sha256": "e5176ab39c47572efde2d1ae91079bd694f20a49311ca96975c20be2e159a4d0",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "total_late_additions": {
+          "file": "material_arrays/C100-050-all-late-additions.u16le",
+          "sha256": "0c057e1884b178f988bcdbac46fd58ffaa0d61dfd08f35f65619176b7896bc18",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "native_architecture_without_shared_bridges": {
+          "file": "material_arrays/C100-050-native-without-shared-bridges.u16le",
+          "sha256": "e63f8999223a6b6001807722f4c942af5b7355f28a3ded18f38aafe13ff2588f",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        }
+      },
+      "images": {
+        "native_material_png": "images/C100-050-native.png",
+        "semantic_provenance_overlay": "images/C100-050-semantic.png",
+        "transition_boundary_overlay": "images/C100-050-boundary.png",
+        "detail": "images/C100-050-detail.png",
+        "independent_own_negotiated_comparison": "images/C100-050-controls.png"
+      },
+      "gallery_anchor": "index.html#C100-050",
+      "compiled_definition_fingerprint": "985812e756aea6e1b9e241820b4c4fdc26352164ce4d18769b34a6df65acbdaf",
+      "material_array_sha256": "139fbd7724bce6b122bc3f7e536beabe17bd0a4a2f2ebcac52b27288e5c1f396",
+      "per_owner_digests": [
+        {
+          "gentek": "FRAMEWEAVER",
+          "material": "0c1a20049601b265",
+          "semantic": "35e51f603966f2e8"
+        },
+        {
+          "gentek": "MOSAIC",
+          "material": "cc3ee605500c53e0",
+          "semantic": "329b4b2ea21be18a"
+        }
+      ],
+      "pair_semantic_digest": "cc316ae578be4c2c",
+      "generation_statuses": [
+        "blocked",
+        "complete"
+      ],
+      "solver_statuses": [
+        "not_applicable",
+        "complete"
+      ],
+      "mandatory_unresolved": 5,
+      "validated_joints": 2,
+      "total_late_additions": 29
+    },
+    {
+      "case_id": "C100-053",
+      "group": "frameweaver_mosaic",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "MOSAIC",
+      "fixture": "protected_corridor",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_reason": "Protected-space correctness with partial seam resolution.",
+      "review_labels": [
+        "interesting but imperfect",
+        "promising for interactive authoring",
+        "mandatory-resolution failure",
+        "protected-space correctness"
+      ],
+      "review_note": "Protected corridor pairing adds three bounded joins while keeping the corridor clear; two required connectors remain unresolved. Compared all three controls.",
+      "full_raw_native": {
+        "file": "native/C100-053.json",
+        "sha256": "bdab7b8a647ed970146ecf167afa5ce8609de60f8784ad1bb09c477053731428"
+      },
+      "full_case_facts": {
+        "file": "case_records/C100-053.json",
+        "sha256": "7942b6d05dde8f14fb67df1f50c53f0d311780e6cd335ca820a5eaffa4a70b85"
+      },
+      "native_material_array": {
+        "file": "material_arrays/C100-053-native.u16le",
+        "sha256": "d5c7d1d42d5ab394d69adfe5dcf09ec6c9153b4c7f6899a2b7aaccc655033a69",
+        "format": "uint16 little-endian row-major material IDs",
+        "retained_cell_count": 21504,
+        "complete_192x112_canvas": true,
+        "empty_emission_preserved": false,
+        "emission_status": "native full-size array"
+      },
+      "attribution_arrays": {
+        "generated_union": {
+          "file": "material_arrays/C100-053-generated-union.u16le",
+          "sha256": "d5c7d1d42d5ab394d69adfe5dcf09ec6c9153b4c7f6899a2b7aaccc655033a69",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "cohesion_cells": {
+          "file": "material_arrays/C100-053-cohesion.u16le",
+          "sha256": "7992a875a38eacdd5470fc56710400ba89e84356886c949d6ce898c8626173c8",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        }
+      },
+      "control_arrays": {
+        "clipped_cells": {
+          "file": "material_arrays/C100-053-clipped_cells.u16le",
+          "sha256": "5464f82251b45fffc1955ee4807560ef15dcff3553067ef93ad17f3903983c72",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "initial_cells": {
+          "file": "material_arrays/C100-053-initial_cells.u16le",
+          "sha256": "13ff4fad9d4d98a3bd7b5b6c28d2c5233b5bb26d4cbae1a77cfeb2c621643602",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "shared_bridge_cells": {
+          "file": "material_arrays/C100-053-shared-bridges.u16le",
+          "sha256": "0f6c89dc50c2c2c2a6fb0d2dccac98a2ec1cb2163f6ecdc816da8d9320b5446e",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "late_adapter_cells_excluding_cohesion": {
+          "file": "material_arrays/C100-053-late-adapters-excluding-cohesion.u16le",
+          "sha256": "ccc1a10b7aac17225febe0b37d40d5b4575aebdad5bb1c291429f04d1a5892b4",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "late_cohesion_cells": {
+          "file": "material_arrays/C100-053-late-cohesion.u16le",
+          "sha256": "ccc1a10b7aac17225febe0b37d40d5b4575aebdad5bb1c291429f04d1a5892b4",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "total_late_additions": {
+          "file": "material_arrays/C100-053-all-late-additions.u16le",
+          "sha256": "0f6c89dc50c2c2c2a6fb0d2dccac98a2ec1cb2163f6ecdc816da8d9320b5446e",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "native_architecture_without_shared_bridges": {
+          "file": "material_arrays/C100-053-native-without-shared-bridges.u16le",
+          "sha256": "13ff4fad9d4d98a3bd7b5b6c28d2c5233b5bb26d4cbae1a77cfeb2c621643602",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        }
+      },
+      "images": {
+        "native_material_png": "images/C100-053-native.png",
+        "semantic_provenance_overlay": "images/C100-053-semantic.png",
+        "transition_boundary_overlay": "images/C100-053-boundary.png",
+        "detail": "images/C100-053-detail.png",
+        "independent_own_negotiated_comparison": "images/C100-053-controls.png"
+      },
+      "gallery_anchor": "index.html#C100-053",
+      "compiled_definition_fingerprint": "985812e756aea6e1b9e241820b4c4fdc26352164ce4d18769b34a6df65acbdaf",
+      "material_array_sha256": "d5c7d1d42d5ab394d69adfe5dcf09ec6c9153b4c7f6899a2b7aaccc655033a69",
+      "per_owner_digests": [
+        {
+          "gentek": "FRAMEWEAVER",
+          "material": "c428439aaf615aab",
+          "semantic": "fc7c38bbdfcf4daa"
+        },
+        {
+          "gentek": "MOSAIC",
+          "material": "59b39b87c4f870be",
+          "semantic": "f65c625b2c664807"
+        }
+      ],
+      "pair_semantic_digest": "101f7838cae9f2e5",
+      "generation_statuses": [
+        "blocked",
+        "complete"
+      ],
+      "solver_statuses": [
+        "not_applicable",
+        "complete"
+      ],
+      "mandatory_unresolved": 2,
+      "validated_joints": 3,
+      "total_late_additions": 30
+    },
+    {
+      "case_id": "C100-056",
+      "group": "frameweaver_mosaic",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "MOSAIC",
+      "fixture": "foreign_solid",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_reason": "Foreign-solid preservation; optional success coexists with required failure.",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure"
+      ],
+      "review_note": "Foreign-solid pairing produces two optional-only joins and leaves five required connectors unresolved; context preservation is correct but required success is incomplete.",
+      "full_raw_native": {
+        "file": "native/C100-056.json",
+        "sha256": "1e0125fe52b017927ea145ab66a568e4811a904a24f7681ff4ad3330a86ae797"
+      },
+      "full_case_facts": {
+        "file": "case_records/C100-056.json",
+        "sha256": "de54fd50e2ee77429556f9be1c9015608dc0d81e74560759abdf7ecdb8d34398"
+      },
+      "native_material_array": {
+        "file": "material_arrays/C100-056-native.u16le",
+        "sha256": "edc8d46365434421e4f9b7d57ba8d3d46d933f90ee39f8c1b07928a9e0cd1e44",
+        "format": "uint16 little-endian row-major material IDs",
+        "retained_cell_count": 21504,
+        "complete_192x112_canvas": true,
+        "empty_emission_preserved": false,
+        "emission_status": "native full-size array"
+      },
+      "attribution_arrays": {
+        "generated_union": {
+          "file": "material_arrays/C100-056-generated-union.u16le",
+          "sha256": "7091df590c4ae0b924645e10d4fa6e10ec94f688b21eaf8c421f8c22ed641a49",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "cohesion_cells": {
+          "file": "material_arrays/C100-056-cohesion.u16le",
+          "sha256": "3a9e154b9d294caa47c5882b9f12fd91985bf6ab94397a9677338c9a28a0588d",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        }
+      },
+      "control_arrays": {
+        "clipped_cells": {
+          "file": "material_arrays/C100-056-clipped_cells.u16le",
+          "sha256": "0e6c34885dbb4b0cea7660c58e969b2f6c6fef9ad2538949ab8b813ba1e75310",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "initial_cells": {
+          "file": "material_arrays/C100-056-initial_cells.u16le",
+          "sha256": "3ab92227944d72459a82d9c178d84e79a64ed62dfb952041ee3f73e966de2c97",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "shared_bridge_cells": {
+          "file": "material_arrays/C100-056-shared-bridges.u16le",
+          "sha256": "5e5ca8f2453eb36ab8123bbf2e7c8fb9f495523a43553d18272407e95a5590e2",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "late_adapter_cells_excluding_cohesion": {
+          "file": "material_arrays/C100-056-late-adapters-excluding-cohesion.u16le",
+          "sha256": "bb6fc2497dd7f4a977b7adb4a58b3cbe59fa5cd351a2a91ddecb608d97a2882b",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "late_cohesion_cells": {
+          "file": "material_arrays/C100-056-late-cohesion.u16le",
+          "sha256": "e5176ab39c47572efde2d1ae91079bd694f20a49311ca96975c20be2e159a4d0",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "total_late_additions": {
+          "file": "material_arrays/C100-056-all-late-additions.u16le",
+          "sha256": "72ce47680216c9ce66ab5286062c962577a3889609b2a50cbe4c1387cbdedd9d",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "native_architecture_without_shared_bridges": {
+          "file": "material_arrays/C100-056-native-without-shared-bridges.u16le",
+          "sha256": "212da650e234d607963869df1f7a3559c6b2053465a9fecd2bab41f0ba11afa1",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        }
+      },
+      "images": {
+        "native_material_png": "images/C100-056-native.png",
+        "semantic_provenance_overlay": "images/C100-056-semantic.png",
+        "transition_boundary_overlay": "images/C100-056-boundary.png",
+        "detail": "images/C100-056-detail.png",
+        "independent_own_negotiated_comparison": "images/C100-056-controls.png"
+      },
+      "gallery_anchor": "index.html#C100-056",
+      "compiled_definition_fingerprint": "985812e756aea6e1b9e241820b4c4fdc26352164ce4d18769b34a6df65acbdaf",
+      "material_array_sha256": "edc8d46365434421e4f9b7d57ba8d3d46d933f90ee39f8c1b07928a9e0cd1e44",
+      "per_owner_digests": [
+        {
+          "gentek": "FRAMEWEAVER",
+          "material": "b9dba76ab39726d7",
+          "semantic": "bae6178fa5e0eabb"
+        },
+        {
+          "gentek": "MOSAIC",
+          "material": "5197b7ceb1d2dfd8",
+          "semantic": "c19b85484b2b1e1e"
+        }
+      ],
+      "pair_semantic_digest": "8ad48714fa096a6d",
+      "generation_statuses": [
+        "blocked",
+        "complete"
+      ],
+      "solver_statuses": [
+        "not_applicable",
+        "complete"
+      ],
+      "mandatory_unresolved": 5,
+      "validated_joints": 2,
+      "total_late_additions": 27
+    },
+    {
+      "case_id": "C100-059",
+      "group": "frameweaver_mosaic",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "MOSAIC",
+      "fixture": "island",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_reason": "Island FRAME-MOSAIC meeting: own-territory outline adaptation and final local bridge benefit are separately visible.",
+      "review_labels": [
+        "interesting but imperfect",
+        "promising for interactive authoring",
+        "mandatory-resolution failure",
+        "SWARM meshing better"
+      ],
+      "review_note": "Island own-territory awareness improves the outline over independent clipping; the final two validated bridges improve local continuity while one required connector remains. Compared all three controls.",
+      "full_raw_native": {
+        "file": "native/C100-059.json",
+        "sha256": "a32ce39d838f9cc6f0ec702a44f8838875bb3bf530c608c70d6d24a48ccfa946"
+      },
+      "full_case_facts": {
+        "file": "case_records/C100-059.json",
+        "sha256": "04721554f466abab86dafe8fdb509e4ae0c41064a6b1aef5b059bb5491530185"
+      },
+      "native_material_array": {
+        "file": "material_arrays/C100-059-native.u16le",
+        "sha256": "8014ab5d16b019479d8f4f2ec18b9f0a6749ee532636e4fe955280b27a75b6eb",
+        "format": "uint16 little-endian row-major material IDs",
+        "retained_cell_count": 21504,
+        "complete_192x112_canvas": true,
+        "empty_emission_preserved": false,
+        "emission_status": "native full-size array"
+      },
+      "attribution_arrays": {
+        "generated_union": {
+          "file": "material_arrays/C100-059-generated-union.u16le",
+          "sha256": "8014ab5d16b019479d8f4f2ec18b9f0a6749ee532636e4fe955280b27a75b6eb",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "cohesion_cells": {
+          "file": "material_arrays/C100-059-cohesion.u16le",
+          "sha256": "9a9519bb403917b386269444002657e7c0bce58c0e141e9c323207b5338a2d0d",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        }
+      },
+      "control_arrays": {
+        "clipped_cells": {
+          "file": "material_arrays/C100-059-clipped_cells.u16le",
+          "sha256": "9e5488574b17149d401d5e8ebc556a78235b114157a2005ea67b90c93260cac9",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "initial_cells": {
+          "file": "material_arrays/C100-059-initial_cells.u16le",
+          "sha256": "0650e776888b03b7e6d8e780b3a0c99f909b2f2666c1908265ecaf8e567d6b84",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "shared_bridge_cells": {
+          "file": "material_arrays/C100-059-shared-bridges.u16le",
+          "sha256": "20529ff958e510f5433e6ff9fdc51df2d9f438fbeccfc38859493447d6676b61",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "late_adapter_cells_excluding_cohesion": {
+          "file": "material_arrays/C100-059-late-adapters-excluding-cohesion.u16le",
+          "sha256": "ccc1a10b7aac17225febe0b37d40d5b4575aebdad5bb1c291429f04d1a5892b4",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "late_cohesion_cells": {
+          "file": "material_arrays/C100-059-late-cohesion.u16le",
+          "sha256": "8de00965d74e9c694efc9942bd8f883ca2c9c6023200630e9a3d7871c951d51d",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "total_late_additions": {
+          "file": "material_arrays/C100-059-all-late-additions.u16le",
+          "sha256": "8e138dc8ca1ec61e02f18d441879e90ec4e32cb2b95f46f2b349536cf9af3104",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "native_architecture_without_shared_bridges": {
+          "file": "material_arrays/C100-059-native-without-shared-bridges.u16le",
+          "sha256": "5b1ada4f5468e8eecd1dfc700d499ffb8f9d065030fa29d9001ddc026537d335",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        }
+      },
+      "images": {
+        "native_material_png": "images/C100-059-native.png",
+        "semantic_provenance_overlay": "images/C100-059-semantic.png",
+        "transition_boundary_overlay": "images/C100-059-boundary.png",
+        "detail": "images/C100-059-detail.png",
+        "independent_own_negotiated_comparison": "images/C100-059-controls.png"
+      },
+      "gallery_anchor": "index.html#C100-059",
+      "compiled_definition_fingerprint": "985812e756aea6e1b9e241820b4c4fdc26352164ce4d18769b34a6df65acbdaf",
+      "material_array_sha256": "8014ab5d16b019479d8f4f2ec18b9f0a6749ee532636e4fe955280b27a75b6eb",
+      "per_owner_digests": [
+        {
+          "gentek": "FRAMEWEAVER",
+          "material": "a6ac9a54c53a7895",
+          "semantic": "b37fdb55a8181f2d"
+        },
+        {
+          "gentek": "MOSAIC",
+          "material": "3275842f26a81cf3",
+          "semantic": "a8ee86d36fb60a90"
+        }
+      ],
+      "pair_semantic_digest": "6e0b211dae2f8789",
+      "generation_statuses": [
+        "blocked",
+        "complete"
+      ],
+      "solver_statuses": [
+        "not_applicable",
+        "complete"
+      ],
+      "mandatory_unresolved": 1,
+      "validated_joints": 2,
+      "total_late_additions": 25
+    },
+    {
+      "case_id": "C100-062",
+      "group": "frameweaver_mosaic",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "MOSAIC",
+      "fixture": "narrow_neck",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_reason": "Narrow-neck zero-join failure despite late additions; potential future presolve research discriminator.",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure",
+        "useful negative case"
+      ],
+      "review_note": "Narrow-neck pairing adds fourteen adapter cells and four cohesion cells but achieves zero joins; retain the visibly unresolved gap. Compared all three controls.",
+      "full_raw_native": {
+        "file": "native/C100-062.json",
+        "sha256": "ab7ca3513bc3f0babb427a397ddb77b0d9019aeb280ca2d3faf8ea5f72bc07cd"
+      },
+      "full_case_facts": {
+        "file": "case_records/C100-062.json",
+        "sha256": "607ecf70b7d3e98ad5fce7e75bf335cd847af6527e15a2b5de26221bae63fc19"
+      },
+      "native_material_array": {
+        "file": "material_arrays/C100-062-native.u16le",
+        "sha256": "ea619d1b657e03e54f9db0a32db5f91ddb42e73d49c74a18c69e73c055bc67af",
+        "format": "uint16 little-endian row-major material IDs",
+        "retained_cell_count": 21504,
+        "complete_192x112_canvas": true,
+        "empty_emission_preserved": false,
+        "emission_status": "native full-size array"
+      },
+      "attribution_arrays": {
+        "generated_union": {
+          "file": "material_arrays/C100-062-generated-union.u16le",
+          "sha256": "ea619d1b657e03e54f9db0a32db5f91ddb42e73d49c74a18c69e73c055bc67af",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "cohesion_cells": {
+          "file": "material_arrays/C100-062-cohesion.u16le",
+          "sha256": "333db51a4d27a78022681e934ba0826283ae37775aba16fda528dc4d98587eda",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        }
+      },
+      "control_arrays": {
+        "clipped_cells": {
+          "file": "material_arrays/C100-062-clipped_cells.u16le",
+          "sha256": "32390b62bd4a5af0981a7d29dba0aead2852eb2163fc0fe3f2f6c63843d1939c",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "initial_cells": {
+          "file": "material_arrays/C100-062-initial_cells.u16le",
+          "sha256": "2c2688973a5fb344d147893760722975b135bdc5a8f8a582989ea5c37307a60d",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "shared_bridge_cells": {
+          "file": "material_arrays/C100-062-shared-bridges.u16le",
+          "sha256": "ccc1a10b7aac17225febe0b37d40d5b4575aebdad5bb1c291429f04d1a5892b4",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "late_adapter_cells_excluding_cohesion": {
+          "file": "material_arrays/C100-062-late-adapters-excluding-cohesion.u16le",
+          "sha256": "995fe9d89c1b987a8c9cd9694ca39fdb88ad8b93cb4c6a957bc4ba6a61febddc",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "late_cohesion_cells": {
+          "file": "material_arrays/C100-062-late-cohesion.u16le",
+          "sha256": "06a14060b29208cfbed3247bdf18e1a158dfc3a83e1916ce5ba551f47b82686c",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "total_late_additions": {
+          "file": "material_arrays/C100-062-all-late-additions.u16le",
+          "sha256": "cdd9ee12f757eea9c6ba535c5c6dd92dedb24f81ac70e42681333055967ff145",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "native_architecture_without_shared_bridges": {
+          "file": "material_arrays/C100-062-native-without-shared-bridges.u16le",
+          "sha256": "ea619d1b657e03e54f9db0a32db5f91ddb42e73d49c74a18c69e73c055bc67af",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        }
+      },
+      "images": {
+        "native_material_png": "images/C100-062-native.png",
+        "semantic_provenance_overlay": "images/C100-062-semantic.png",
+        "transition_boundary_overlay": "images/C100-062-boundary.png",
+        "detail": "images/C100-062-detail.png",
+        "independent_own_negotiated_comparison": "images/C100-062-controls.png"
+      },
+      "gallery_anchor": "index.html#C100-062",
+      "compiled_definition_fingerprint": "985812e756aea6e1b9e241820b4c4fdc26352164ce4d18769b34a6df65acbdaf",
+      "material_array_sha256": "ea619d1b657e03e54f9db0a32db5f91ddb42e73d49c74a18c69e73c055bc67af",
+      "per_owner_digests": [
+        {
+          "gentek": "FRAMEWEAVER",
+          "material": "b6be854734b36b2b",
+          "semantic": "d7b9ab0536ff8467"
+        },
+        {
+          "gentek": "MOSAIC",
+          "material": "8324e79ed9fc183e",
+          "semantic": "9db937814a3b1c35"
+        }
+      ],
+      "pair_semantic_digest": "5af31febf438c148",
+      "generation_statuses": [
+        "blocked",
+        "complete"
+      ],
+      "solver_statuses": [
+        "not_applicable",
+        "complete"
+      ],
+      "mandatory_unresolved": 1,
+      "validated_joints": 0,
+      "total_late_additions": 18
+    },
+    {
+      "case_id": "C100-068",
+      "group": "frameweaver_mosaic",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "MOSAIC",
+      "fixture": "island",
+      "profile": "branching_irregular",
+      "seed": 1701,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_reason": "Second seed on island; retain seed sensitivity and incomplete requirements.",
+      "review_labels": [
+        "interesting but imperfect",
+        "promising for interactive authoring",
+        "mandatory-resolution failure"
+      ],
+      "review_note": "Second-seed island pairing makes four joins but leaves two required connectors unresolved; compare C059 rather than selecting only the preferred seed.",
+      "full_raw_native": {
+        "file": "native/C100-068.json",
+        "sha256": "cb15ec237c55ed6ec4af33d8bdec1ce519df7c20f2f59cfd37e5aa7050db8edb"
+      },
+      "full_case_facts": {
+        "file": "case_records/C100-068.json",
+        "sha256": "97243c6c8d9fe53ee86db45e0ca911e8ffb49160f3d0b321fe98114082f39761"
+      },
+      "native_material_array": {
+        "file": "material_arrays/C100-068-native.u16le",
+        "sha256": "6ae8d7c7d8434186bbb03d3f1a6f1ca4b5e977030b90ed95fe927bc253c79843",
+        "format": "uint16 little-endian row-major material IDs",
+        "retained_cell_count": 21504,
+        "complete_192x112_canvas": true,
+        "empty_emission_preserved": false,
+        "emission_status": "native full-size array"
+      },
+      "attribution_arrays": {
+        "generated_union": {
+          "file": "material_arrays/C100-068-generated-union.u16le",
+          "sha256": "6ae8d7c7d8434186bbb03d3f1a6f1ca4b5e977030b90ed95fe927bc253c79843",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "cohesion_cells": {
+          "file": "material_arrays/C100-068-cohesion.u16le",
+          "sha256": "b22d91520e87de1f7351baf96e2c5b75ee2435cd7be04d1fb37cee14f6b4a18b",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        }
+      },
+      "control_arrays": {
+        "clipped_cells": {
+          "file": "material_arrays/C100-068-clipped_cells.u16le",
+          "sha256": "30557d8393aa09ebc8026c1675a3a1c6d25af8d9541705ec83aebb76c6bbcc75",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "initial_cells": {
+          "file": "material_arrays/C100-068-initial_cells.u16le",
+          "sha256": "b44b718fa80d6ccc4de4bccac51f069a0f3b6756428a39473af9fa285bbb74fa",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "shared_bridge_cells": {
+          "file": "material_arrays/C100-068-shared-bridges.u16le",
+          "sha256": "6f90c4e1e1366413233b29f39b10b0a02024e70ec9f57abe6516535dd7aeb49f",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "late_adapter_cells_excluding_cohesion": {
+          "file": "material_arrays/C100-068-late-adapters-excluding-cohesion.u16le",
+          "sha256": "0b0186658d7730f574f80d0ca53063e2d820c00ab409bb5cd4c130e01d515ead",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "late_cohesion_cells": {
+          "file": "material_arrays/C100-068-late-cohesion.u16le",
+          "sha256": "53917346c3ffee05dbdb1e2133243980b08a3b3b6cc99e5c4240b306829ed27f",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "total_late_additions": {
+          "file": "material_arrays/C100-068-all-late-additions.u16le",
+          "sha256": "d15a25cdc7b030dc6c723f438f663ff6c6f7c3700a2b58dbdee5cb314f88fe5d",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "native_architecture_without_shared_bridges": {
+          "file": "material_arrays/C100-068-native-without-shared-bridges.u16le",
+          "sha256": "7e0167371eb10519b6503e8da1b766337f26520dd12e6b6786c1fd9a05e6d95d",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        }
+      },
+      "images": {
+        "native_material_png": "images/C100-068-native.png",
+        "semantic_provenance_overlay": "images/C100-068-semantic.png",
+        "transition_boundary_overlay": "images/C100-068-boundary.png",
+        "detail": "images/C100-068-detail.png",
+        "independent_own_negotiated_comparison": "images/C100-068-controls.png"
+      },
+      "gallery_anchor": "index.html#C100-068",
+      "compiled_definition_fingerprint": "985812e756aea6e1b9e241820b4c4fdc26352164ce4d18769b34a6df65acbdaf",
+      "material_array_sha256": "6ae8d7c7d8434186bbb03d3f1a6f1ca4b5e977030b90ed95fe927bc253c79843",
+      "per_owner_digests": [
+        {
+          "gentek": "FRAMEWEAVER",
+          "material": "77f5ec4005d4c829",
+          "semantic": "06199ef43f963eef"
+        },
+        {
+          "gentek": "MOSAIC",
+          "material": "902af9c3c8d64353",
+          "semantic": "e92f226c53a4e044"
+        }
+      ],
+      "pair_semantic_digest": "c23cb13c1329723f",
+      "generation_statuses": [
+        "blocked",
+        "complete"
+      ],
+      "solver_statuses": [
+        "not_applicable",
+        "complete"
+      ],
+      "mandatory_unresolved": 2,
+      "validated_joints": 4,
+      "total_late_additions": 47
+    },
+    {
+      "case_id": "C100-073",
+      "group": "frameweaver_receptor",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "RECEPTOR",
+      "fixture": "protected_corridor",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_reason": "Protected FRAME-RECEPTOR zero-contact negative.",
+      "review_labels": [
+        "interesting but imperfect",
+        "mandatory-resolution failure",
+        "disconnected RECEPTOR output",
+        "useful negative case",
+        "protected-space correctness"
+      ],
+      "review_note": "Protected FRAME-RECEPTOR case adds no seam geometry and achieves no joins; three required connectors remain unresolved. Compared all three controls.",
+      "full_raw_native": {
+        "file": "native/C100-073.json",
+        "sha256": "3b5bbdb2d3003e7017779f01028b473fbd82e625a1421d863fd64fc4350bc46d"
+      },
+      "full_case_facts": {
+        "file": "case_records/C100-073.json",
+        "sha256": "86fe34308ac09bf8a570d7e67fd7c8580fc551b8ed74e0aba57dd3543e65b01c"
+      },
+      "native_material_array": {
+        "file": "material_arrays/C100-073-native.u16le",
+        "sha256": "ad7ebaea11c3e95ff46ad9c2e8572ee5ddd41865ccdad3b44f3aed08c5b657fa",
+        "format": "uint16 little-endian row-major material IDs",
+        "retained_cell_count": 21504,
+        "complete_192x112_canvas": true,
+        "empty_emission_preserved": false,
+        "emission_status": "native full-size array"
+      },
+      "attribution_arrays": {
+        "generated_union": {
+          "file": "material_arrays/C100-073-generated-union.u16le",
+          "sha256": "ad7ebaea11c3e95ff46ad9c2e8572ee5ddd41865ccdad3b44f3aed08c5b657fa",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "cohesion_cells": {
+          "file": "material_arrays/C100-073-cohesion.u16le",
+          "sha256": "8dd62b4ea5d3668c7cd25dcb2cf245fa4d232a5eed765e6869921ff7282dfeb1",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        }
+      },
+      "control_arrays": {
+        "clipped_cells": {
+          "file": "material_arrays/C100-073-clipped_cells.u16le",
+          "sha256": "815d7af435b5911333d9dfd5ad4a00fc148c3b2da418e94a9f5e5f80256f67de",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "initial_cells": {
+          "file": "material_arrays/C100-073-initial_cells.u16le",
+          "sha256": "ad7ebaea11c3e95ff46ad9c2e8572ee5ddd41865ccdad3b44f3aed08c5b657fa",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "shared_bridge_cells": {
+          "file": "material_arrays/C100-073-shared-bridges.u16le",
+          "sha256": "ccc1a10b7aac17225febe0b37d40d5b4575aebdad5bb1c291429f04d1a5892b4",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "late_adapter_cells_excluding_cohesion": {
+          "file": "material_arrays/C100-073-late-adapters-excluding-cohesion.u16le",
+          "sha256": "ccc1a10b7aac17225febe0b37d40d5b4575aebdad5bb1c291429f04d1a5892b4",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "late_cohesion_cells": {
+          "file": "material_arrays/C100-073-late-cohesion.u16le",
+          "sha256": "ccc1a10b7aac17225febe0b37d40d5b4575aebdad5bb1c291429f04d1a5892b4",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "total_late_additions": {
+          "file": "material_arrays/C100-073-all-late-additions.u16le",
+          "sha256": "ccc1a10b7aac17225febe0b37d40d5b4575aebdad5bb1c291429f04d1a5892b4",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "native_architecture_without_shared_bridges": {
+          "file": "material_arrays/C100-073-native-without-shared-bridges.u16le",
+          "sha256": "ad7ebaea11c3e95ff46ad9c2e8572ee5ddd41865ccdad3b44f3aed08c5b657fa",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        }
+      },
+      "images": {
+        "native_material_png": "images/C100-073-native.png",
+        "semantic_provenance_overlay": "images/C100-073-semantic.png",
+        "transition_boundary_overlay": "images/C100-073-boundary.png",
+        "detail": "images/C100-073-detail.png",
+        "independent_own_negotiated_comparison": "images/C100-073-controls.png"
+      },
+      "gallery_anchor": "index.html#C100-073",
+      "compiled_definition_fingerprint": "985812e756aea6e1b9e241820b4c4fdc26352164ce4d18769b34a6df65acbdaf",
+      "material_array_sha256": "ad7ebaea11c3e95ff46ad9c2e8572ee5ddd41865ccdad3b44f3aed08c5b657fa",
+      "per_owner_digests": [
+        {
+          "gentek": "FRAMEWEAVER",
+          "material": "bbecbb1af357032b",
+          "semantic": "429061b374fe795d"
+        },
+        {
+          "gentek": "RECEPTOR",
+          "material": "1e250653928975d5",
+          "semantic": "0c59c16a6b85a624"
+        }
+      ],
+      "pair_semantic_digest": "3260332ad8d5dda9",
+      "generation_statuses": [
+        "blocked",
+        "complete"
+      ],
+      "solver_statuses": [
+        "not_applicable",
+        "not_applicable"
+      ],
+      "mandatory_unresolved": 3,
+      "validated_joints": 0,
+      "total_late_additions": 0
+    },
+    {
+      "case_id": "C100-081",
+      "group": "frameweaver_receptor",
+      "kind": "FRAMEWEAVER",
+      "right_kind": "RECEPTOR",
+      "fixture": "island",
+      "profile": "dense_cohesive",
+      "seed": 1701,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_reason": "Ten validated bridges and all mandatory connectors fulfilled, but visually awkward and fragmented.",
+      "review_labels": [
+        "interesting but imperfect",
+        "disconnected RECEPTOR output",
+        "optional-contact-heavy",
+        "ugly valid seam",
+        "useful negative case"
+      ],
+      "review_note": "Dense island FRAME-RECEPTOR has all 45 required connectors fulfilled and ten bridges, yet retains thirteen components and awkward thin links. Native blocked status predates final fulfillment. Compared all three controls.",
+      "full_raw_native": {
+        "file": "native/C100-081.json",
+        "sha256": "040d359904581aa8485fc3c356645400e7b54a0aa854b8360a5db0c675e9b5ef"
+      },
+      "full_case_facts": {
+        "file": "case_records/C100-081.json",
+        "sha256": "d35cc4b77b3ef4a8c1c4f23292723552eb42764e14239529d8a16401feeb8c08"
+      },
+      "native_material_array": {
+        "file": "material_arrays/C100-081-native.u16le",
+        "sha256": "a8a57f6d6addbd3946bc160f3e8ae4833df92200b343c844798c0fd1fd845739",
+        "format": "uint16 little-endian row-major material IDs",
+        "retained_cell_count": 21504,
+        "complete_192x112_canvas": true,
+        "empty_emission_preserved": false,
+        "emission_status": "native full-size array"
+      },
+      "attribution_arrays": {
+        "generated_union": {
+          "file": "material_arrays/C100-081-generated-union.u16le",
+          "sha256": "a8a57f6d6addbd3946bc160f3e8ae4833df92200b343c844798c0fd1fd845739",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "cohesion_cells": {
+          "file": "material_arrays/C100-081-cohesion.u16le",
+          "sha256": "7454dfe37c82365d3e59362297535f871372f2f131057bbf318abf2a8acdb604",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        }
+      },
+      "control_arrays": {
+        "clipped_cells": {
+          "file": "material_arrays/C100-081-clipped_cells.u16le",
+          "sha256": "647a9bc95baf89285fba87804a2fe2e6919616bb2b386e6078371dc0c54eeb4a",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "initial_cells": {
+          "file": "material_arrays/C100-081-initial_cells.u16le",
+          "sha256": "90079f6a2f16a80b9f6c9b3b391d3ceb403bf1db3d83470d97d3c9340f54d0d5",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "shared_bridge_cells": {
+          "file": "material_arrays/C100-081-shared-bridges.u16le",
+          "sha256": "2e940aa17d13dd1b90f9e7bc15879e4193c7ce11910fb1743ceec22efe95abf5",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "late_adapter_cells_excluding_cohesion": {
+          "file": "material_arrays/C100-081-late-adapters-excluding-cohesion.u16le",
+          "sha256": "006759f8b267349033d37359fd7fcc8d53fb0db2cb5190e7e56f6ddfbb4f97ed",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "late_cohesion_cells": {
+          "file": "material_arrays/C100-081-late-cohesion.u16le",
+          "sha256": "b3ba0f185fe1f37150f0666feafadb5b14cf37542ba177dd7036b9f422b5ab16",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "total_late_additions": {
+          "file": "material_arrays/C100-081-all-late-additions.u16le",
+          "sha256": "8e18bed833b23720479a4c3d8e497691cf40864eebd0ed899ea1d79cda7cad74",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "native_architecture_without_shared_bridges": {
+          "file": "material_arrays/C100-081-native-without-shared-bridges.u16le",
+          "sha256": "203d765970e059caea2f14111e8c12a18132e62071fd9864e1c2b9bb90e7faeb",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        }
+      },
+      "images": {
+        "native_material_png": "images/C100-081-native.png",
+        "semantic_provenance_overlay": "images/C100-081-semantic.png",
+        "transition_boundary_overlay": "images/C100-081-boundary.png",
+        "detail": "images/C100-081-detail.png",
+        "independent_own_negotiated_comparison": "images/C100-081-controls.png"
+      },
+      "gallery_anchor": "index.html#C100-081",
+      "compiled_definition_fingerprint": "985812e756aea6e1b9e241820b4c4fdc26352164ce4d18769b34a6df65acbdaf",
+      "material_array_sha256": "a8a57f6d6addbd3946bc160f3e8ae4833df92200b343c844798c0fd1fd845739",
+      "per_owner_digests": [
+        {
+          "gentek": "FRAMEWEAVER",
+          "material": "b94c10ffa1097295",
+          "semantic": "1f71bd752975c0a1"
+        },
+        {
+          "gentek": "RECEPTOR",
+          "material": "f93188d06dfbe639",
+          "semantic": "2f2c295296dc7137"
+        }
+      ],
+      "pair_semantic_digest": "8fd116b60853d3e1",
+      "generation_statuses": [
+        "blocked",
+        "complete"
+      ],
+      "solver_statuses": [
+        "not_applicable",
+        "not_applicable"
+      ],
+      "mandatory_unresolved": 0,
+      "validated_joints": 10,
+      "total_late_additions": 176
+    },
+    {
+      "case_id": "C100-093",
+      "group": "mosaic_receptor",
+      "kind": "MOSAIC",
+      "right_kind": "RECEPTOR",
+      "fixture": "foreign_solid",
+      "profile": "dense_cohesive",
+      "seed": 1701,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {},
+      "selection_reason": "Ugly valid adjacent contacts with no new bridge cells and 382 adapter cells; clipped preference.",
+      "review_labels": [
+        "interesting but imperfect",
+        "disconnected RECEPTOR output",
+        "optional-contact-heavy",
+        "ugly valid seam",
+        "clipping better",
+        "useful negative case"
+      ],
+      "review_note": "Dense foreign-solid MOSAIC-RECEPTOR adds 382 adapter cells and registers four adjacent contacts with zero new bridge cells. The leaner clipped control is visually preferable for this authoring judgment. Compared all three controls.",
+      "full_raw_native": {
+        "file": "native/C100-093.json",
+        "sha256": "818fcca88f62fc0d068eb5118bf8aaf6cc2d35752e08531a9e8c3dafe0499fc7"
+      },
+      "full_case_facts": {
+        "file": "case_records/C100-093.json",
+        "sha256": "a911b50b56ac8ce1edc9672e526ea684eed97f2dffb5cc572f2b0c2caef437e2"
+      },
+      "native_material_array": {
+        "file": "material_arrays/C100-093-native.u16le",
+        "sha256": "d2f553624e6c59b276e1448f23f4210f9449d7c56f893cda00e004c18ac7691c",
+        "format": "uint16 little-endian row-major material IDs",
+        "retained_cell_count": 21504,
+        "complete_192x112_canvas": true,
+        "empty_emission_preserved": false,
+        "emission_status": "native full-size array"
+      },
+      "attribution_arrays": {
+        "generated_union": {
+          "file": "material_arrays/C100-093-generated-union.u16le",
+          "sha256": "3a2b18a955f5250c9a97aecb643e881089223a24a3b13cbaf87caa2824010b92",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "cohesion_cells": {
+          "file": "material_arrays/C100-093-cohesion.u16le",
+          "sha256": "357cbe64c11f0f6bf12286921e045cade09b6eab37114c20e81f26cb6d8ff1df",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        }
+      },
+      "control_arrays": {
+        "clipped_cells": {
+          "file": "material_arrays/C100-093-clipped_cells.u16le",
+          "sha256": "145ab1914dbc8999bc635b644fd5df2092b20168a3e8c7bdd891eb4349e96930",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "initial_cells": {
+          "file": "material_arrays/C100-093-initial_cells.u16le",
+          "sha256": "7a7d4bc0c75ff33debb0dea525abe457821d3f9cc4d05c82442f4c1c1c1a16f9",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "shared_bridge_cells": {
+          "file": "material_arrays/C100-093-shared-bridges.u16le",
+          "sha256": "ccc1a10b7aac17225febe0b37d40d5b4575aebdad5bb1c291429f04d1a5892b4",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "late_adapter_cells_excluding_cohesion": {
+          "file": "material_arrays/C100-093-late-adapters-excluding-cohesion.u16le",
+          "sha256": "e49e84cc812efd219d8050fed0577d3f4d95fdcec9fd651ca8c7f947c8495f62",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "late_cohesion_cells": {
+          "file": "material_arrays/C100-093-late-cohesion.u16le",
+          "sha256": "ccc1a10b7aac17225febe0b37d40d5b4575aebdad5bb1c291429f04d1a5892b4",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "total_late_additions": {
+          "file": "material_arrays/C100-093-all-late-additions.u16le",
+          "sha256": "e49e84cc812efd219d8050fed0577d3f4d95fdcec9fd651ca8c7f947c8495f62",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "native_architecture_without_shared_bridges": {
+          "file": "material_arrays/C100-093-native-without-shared-bridges.u16le",
+          "sha256": "3a2b18a955f5250c9a97aecb643e881089223a24a3b13cbaf87caa2824010b92",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        }
+      },
+      "images": {
+        "native_material_png": "images/C100-093-native.png",
+        "semantic_provenance_overlay": "images/C100-093-semantic.png",
+        "transition_boundary_overlay": "images/C100-093-boundary.png",
+        "detail": "images/C100-093-detail.png",
+        "independent_own_negotiated_comparison": "images/C100-093-controls.png"
+      },
+      "gallery_anchor": "index.html#C100-093",
+      "compiled_definition_fingerprint": "985812e756aea6e1b9e241820b4c4fdc26352164ce4d18769b34a6df65acbdaf",
+      "material_array_sha256": "d2f553624e6c59b276e1448f23f4210f9449d7c56f893cda00e004c18ac7691c",
+      "per_owner_digests": [
+        {
+          "gentek": "MOSAIC",
+          "material": "77f5f9c83bb98b8f",
+          "semantic": "0a4172f28b5205e5"
+        },
+        {
+          "gentek": "RECEPTOR",
+          "material": "e1d8d0fc28c37e6b",
+          "semantic": "13a0b120c7d4a534"
+        }
+      ],
+      "pair_semantic_digest": "3b139708273e903c",
+      "generation_statuses": [
+        "complete",
+        "complete"
+      ],
+      "solver_statuses": [
+        "complete",
+        "not_applicable"
+      ],
+      "mandatory_unresolved": 0,
+      "validated_joints": 4,
+      "total_late_additions": 382
+    },
+    {
+      "case_id": "C100-096",
+      "group": "pathological",
+      "kind": "FRAMEWEAVER",
+      "right_kind": null,
+      "fixture": "free",
+      "profile": "branching_irregular",
+      "seed": 605,
+      "dimensions": [
+        192,
+        112
+      ],
+      "origin": [
+        -96,
+        -56
+      ],
+      "overrides": {
+        "max_work": 1
+      },
+      "selection_reason": "Bounded generator-work exhaustion; keep distinct from proven UNSAT.",
+      "review_labels": [
+        "useful negative case",
+        "bounded exhaustion"
+      ],
+      "review_note": "FRAME generator-work limit of one exhausts before useful output; satisfiability is not disproven.",
+      "full_raw_native": {
+        "file": "native/C100-096.json",
+        "sha256": "1a353c335f351522048e68baf4dcda5f99a2a9a854679c66a4f89c65f14252a3"
+      },
+      "full_case_facts": {
+        "file": "case_records/C100-096.json",
+        "sha256": "b376d7855fd1b154d59e85b6ffe8e4b29e74dfe83cfd7da71f1555060c8ec26f"
+      },
+      "native_material_array": {
+        "file": "material_arrays/C100-096-native.u16le",
+        "sha256": "ccc1a10b7aac17225febe0b37d40d5b4575aebdad5bb1c291429f04d1a5892b4",
+        "format": "uint16 little-endian row-major material IDs",
+        "retained_cell_count": 21504,
+        "complete_192x112_canvas": true,
+        "empty_emission_preserved": false,
+        "emission_status": "native full-size array"
+      },
+      "attribution_arrays": {
+        "generated_union": {
+          "file": "material_arrays/C100-096-generated-union.u16le",
+          "sha256": "ccc1a10b7aac17225febe0b37d40d5b4575aebdad5bb1c291429f04d1a5892b4",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        },
+        "cohesion_cells": {
+          "file": "material_arrays/C100-096-cohesion.u16le",
+          "sha256": "ccc1a10b7aac17225febe0b37d40d5b4575aebdad5bb1c291429f04d1a5892b4",
+          "format": "uint16 little-endian row-major material IDs",
+          "retained_cell_count": 21504,
+          "complete_192x112_canvas": true,
+          "empty_emission_preserved": false
+        }
+      },
+      "control_arrays": {},
+      "images": {
+        "native_material_png": "images/C100-096-native.png",
+        "semantic_provenance_overlay": "images/C100-096-semantic.png",
+        "transition_boundary_overlay": "images/C100-096-boundary.png",
+        "detail": "images/C100-096-detail.png",
+        "independent_own_negotiated_comparison": null
+      },
+      "gallery_anchor": "index.html#C100-096",
+      "compiled_definition_fingerprint": "985812e756aea6e1b9e241820b4c4fdc26352164ce4d18769b34a6df65acbdaf",
+      "material_array_sha256": "ccc1a10b7aac17225febe0b37d40d5b4575aebdad5bb1c291429f04d1a5892b4",
+      "per_owner_digests": [
+        {
+          "gentek": "FRAMEWEAVER",
+          "material": "fb7a77b7ac3e8395",
+          "semantic": "7b30825b5e0f7932"
+        }
+      ],
+      "pair_semantic_digest": null,
+      "generation_statuses": [
+        "exhausted"
+      ],
+      "solver_statuses": [
+        "not_applicable"
+      ],
+      "mandatory_unresolved": 0,
+      "validated_joints": 0,
+      "total_late_additions": 0
+    }
+  ]
+}
