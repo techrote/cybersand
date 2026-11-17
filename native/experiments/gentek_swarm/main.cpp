@@ -22,7 +22,7 @@ int main(int argc,char** argv)try{
     }
     for(auto kind:kinds)for(int affinity:{0,1}){
         auto r=request_for(fixture("foreign_solid"),kind,0,profile("dense_cohesive"),605,source);r.profile.environment_affinity=affinity;r.profile.name=affinity?"affinity_high":"affinity_zero";
-        const auto result=generate(r);write_result_json((out/("single_"+std::string(name(kind))+"_foreign_solid_"+r.profile.name+".json")).string(),r,result);++single_count;
+        const auto result=generate(r);write_result_json((out/("single_"+std::string(name(kind))+"_foreign_solid_"+r.profile.name+".json")).string(),r,result);++single_count;violations+=result.protected_violations+result.illegal_overlaps;
     }
     for(std::size_t a=0;a<kinds.size();++a)for(std::size_t b=a+1;b<kinds.size();++b)for(const auto& fn:fixture_names())
         for(auto pn:{"sparse_regular","branching_irregular","dense_cohesive"})for(auto seed:{605ULL,1701ULL}){
@@ -37,8 +37,9 @@ int main(int argc,char** argv)try{
         if(failure=="no_eligible_space")r.eligible.assign(r.eligible.size(),0);
         if(failure=="work_exhausted")r.limits.max_work=1;
         if(failure=="memory_exhausted")r.limits.max_bytes=1024;
-        const auto result=generate(r);write_result_json((out/("failure_"+std::string(name(kind))+"_"+failure+".json")).string(),r,result);++single_count;
+        const auto result=generate(r);write_result_json((out/("failure_"+std::string(name(kind))+"_"+failure+".json")).string(),r,result);++single_count;violations+=result.protected_violations+result.illegal_overlaps;
     }
+    if(!quick&&(single_count!=63||pair_count!=108))throw std::runtime_error("full evidence case count drift");
     std::cout<<"EVIDENCE singles="<<single_count<<" pairs="<<pair_count<<" bridges="<<bridges<<" hard_violations="<<violations<<'\n';
     return violations?1:0;
 }catch(const std::exception& e){std::cerr<<"GENTEK research error: "<<e.what()<<'\n';return 2;}

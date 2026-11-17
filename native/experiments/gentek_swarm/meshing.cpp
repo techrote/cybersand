@@ -48,11 +48,13 @@ bool structural_endpoint(const Request& r,const Result& o,Point p) {
     return i<o.cells.size()&&o.cells[i]!=Material::Empty&&o.roles[i]!=Role::Cohesion&&o.roles[i]!=Role::Detail;
 }
 void fulfill(Result& o,const Affordance& a,Point own,Point target) {
-    // Offer and internal connector IDs are independent namespaces. Resolve only
-    // a unique exact source geometry; never discharge an arbitrary same-ID joint.
-    Connector* match=nullptr;unsigned count=0;
-    for(auto& c:o.connectors)if(c.instance==a.instance&&c.family==a.family&&c.a==a.a&&c.b==a.b&&c.facing==a.facing){match=&c;++count;}
-    if(count==1){match->fulfilled=true;match->state="joined-foreign";}
+    // Admission is checked before any bridge cells are committed. Re-check here
+    // defensively so a future caller cannot turn a missing/ambiguous required
+    // receipt into a claimed joint merely by reaching this mutation helper.
+    if(!offer_resolution_admissible(o,a))return;
+    Connector* match=nullptr;
+    for(auto& c:o.connectors)if(c.instance==a.instance&&c.family==a.family&&c.a==a.a&&c.b==a.b&&c.facing==a.facing){match=&c;break;}
+    if(match){match->fulfilled=true;match->state="joined-foreign";}
     o.attachments.push_back({a.instance,own,target,"foreign-typed-joint","validated material path between explicit compatible hard affordances"});
 }
 std::vector<std::vector<Point>> routes(Point a,Point b,Point af,Point bf) {
@@ -78,6 +80,12 @@ std::vector<std::vector<Point>> routes(Point a,Point b,Point af,Point bf) {
     }return paths;
 }
 std::uint32_t next_id(const Result& r){std::uint32_t n=1;for(const auto& p:r.instances)n=std::max(n,p.id+1);return n;}
+}
+bool offer_resolution_admissible(const Result& o,const Affordance& a) {
+    unsigned count=0;
+    for(const auto& c:o.connectors)
+        if(c.instance==a.instance&&c.family==a.family&&c.a==a.a&&c.b==a.b&&c.facing==a.facing)++count;
+    return count<=1&&(!a.required||count==1);
 }
 PairResult mesh(const Fixture& f,Kind ka,Kind kb,const Profile& p,std::uint64_t seed,const std::string& source,bool reverse) {
     PairResult out;out.fixture=f;out.left_request=request_for(f,ka,0,p,seed,source);out.right_request=request_for(f,kb,1,p,seed,source);
@@ -138,6 +146,14 @@ PairResult mesh(const Fixture& f,Kind ka,Kind kb,const Profile& p,std::uint64_t 
         }
         if(seam.reason.empty()&&!valid)seam.reason="no simple route respects exact socket facing";
         if(!valid){out.seams.push_back(std::move(seam));continue;}
+        const bool left_receipt=offer_resolution_admissible(out.left,ah[c.a]);
+        const bool right_receipt=offer_resolution_admissible(out.right,bh[c.b]);
+        if(!left_receipt||!right_receipt){
+            seam.reason="missing or ambiguous required connector receipt rejects joint";
+            if(!left_receipt)++out.left.rejected["foreign_joint_receipt_rejected"];
+            if(!right_receipt)++out.right.rejected["foreign_joint_receipt_rejected"];
+            out.seams.push_back(std::move(seam));continue;
+        }
         const auto aid=next_id(out.left),bid=next_id(out.right);
         Instance ai{aid,"typed-seam-joint",c.p,0,true,false,{},"canonical short bridge between two explicit hard affordances"};
         Instance bi{bid,"typed-seam-joint",c.q,0,true,false,{},"canonical short bridge between two explicit hard affordances"};

@@ -109,6 +109,45 @@ int main(){
         changed=original;changed.boundary.transition[0]=1;finish_result(q,changed);
         require(changed.digest!=original.digest&&changed.material_digest==original.material_digest,"transition contract omitted from semantic digest");
     });
+    test("required foreign offer needs one exact local connector receipt",[]{
+        Result r;
+        Affordance required{7,4,{10,11},{10,11},{1,0},Family::Frame,true,1.0,"required-test"};
+        require(!offer_resolution_admissible(r,required),"missing required connector accepted");
+        Connector exact;exact.id=1;exact.instance=4;exact.family=Family::Frame;exact.a=exact.b={10,11};exact.facing={1,0};
+        r.connectors.push_back(exact);
+        require(offer_resolution_admissible(r,required),"unique exact required connector rejected");
+        r.connectors.push_back(exact);
+        require(!offer_resolution_admissible(r,required),"ambiguous duplicate required connectors accepted");
+        r.connectors.clear();auto optional=required;optional.required=false;
+        require(offer_resolution_admissible(r,optional),"optional bearing without local connector rejected");
+    });
+    test("FRAMEWEAVER transition extension refuses unrelated occupied path",[]{
+        auto q=request_for(fixture("stepped_diagonal"),Kind::Frameweaver,0,profile("branching_irregular"),605,"test-source");
+        constexpr std::array<Point,4> dirs{{{1,0},{0,1},{-1,0},{0,-1}}};
+        Point start{},direction{};bool found=false;
+        for(int y=1;y<q.height-1&&!found;++y)for(int x=1;x<q.width-1&&!found;++x)for(auto d:dirs){
+            bool ok=true;
+            for(int step=0;step<=6;++step){Point p{x+d.x*step,y+d.y*step};ok=ok&&allowed(q,p)&&transition_at(q,p);}
+            if(ok){start={x,y};direction=d;found=true;break;}
+        }
+        require(found,"no finite transition regression path found");
+        const Point blocker{start.x+direction.x,start.y+direction.y};
+        const Point target{start.x+direction.x*6,start.y+direction.y*6};
+        q.neighbors.hard={{77,99,target,target,{-direction.x,-direction.y},Family::Frame,false,1.0,"foreign-test"}};
+        auto r=begin_result(q,"frameweaver-extension-regression");
+        r.instances.push_back({1,"source-member",start,0,true,false,{start},"explicit source socket"});
+        r.instances.push_back({2,"unrelated-member",blocker,0,true,false,{blocker},"unrelated occupied path"});
+        r.cells[index(q,start)]=Material::SteelPlate;r.roles[index(q,start)]=Role::Structure;r.provenance[index(q,start)]=1;
+        r.cells[index(q,blocker)]=Material::WroughtIron;r.roles[index(q,blocker)]=Role::Structure;r.provenance[index(q,blocker)]=2;
+        Connector socket;socket.id=1;socket.instance=1;socket.family=Family::Frame;socket.a=socket.b=start;socket.facing=direction;
+        r.connectors.push_back(socket);
+        r.boundary.hard.push_back({1,1,start,start,direction,Family::Frame,false,1.0,"frame-terminal"});
+        adapt_frameweaver(q,r);
+        require(std::none_of(r.instances.begin(),r.instances.end(),[](const auto& part){return part.kind=="transition_socket_extension";}),
+                "extension traversed unrelated occupied material");
+        require(r.cells[index(q,blocker)]==Material::WroughtIron&&r.provenance[index(q,blocker)]==2,
+                "unrelated occupied material changed");
+    });
     for(auto kind:{Kind::Frameweaver,Kind::Receptor})test(std::string(name(kind))+" cohesion cannot certify or replace structure",[=]{
         auto q=request_for(fixture("free"),kind,-1,profile("dense_cohesive"),605,"test-source");q.profile.cohesion=0;const auto bare=generate(q);
         q.profile.cohesion=0.85;const auto filled=generate(q);valid(q,filled);

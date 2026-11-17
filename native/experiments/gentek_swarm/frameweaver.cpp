@@ -728,8 +728,10 @@ void adapt_frameweaver(const Request& q, Result& r) {
             if (!charge(q, r)) return;
             const Point p{own.a.x + own.facing.x * length, own.a.y + own.facing.y * length};
             if (!allowed(q, p) || !transition_at(q, p)) break;
-            const auto mat = r.cells[index(q, p)];
-            if (mat != Material::Empty && distance(p, own.a) > 3) break;
+            if (r.cells[index(q, p)] != Material::Empty) {
+                ++r.rejected["transition_extension_occupied_path"];
+                break;
+            }
             if (distance(p, target->a) >= nearest) break;
             cells.push_back(p); end = p;
         }

@@ -1,0 +1,106 @@
+name: GENTEK-SWARM-001 corpus-100 source comparison
+on:
+  push:
+    branches:
+      - experiment/gentek-swarm-001-corpus-100
+permissions:
+  contents: read
+
+jobs:
+  compare-reviewed-baseline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout candidate
+        uses: actions/checkout@v4
+        with:
+          path: candidate
+      - name: Checkout frozen SWARM-001 baseline
+        uses: actions/checkout@v4
+        with:
+          ref: 345ecc3ef939523f247b3eb192aa7502bd4d83ca
+          path: baseline
+      - name: Build reviewed baseline
+        run: make -C baseline/native/experiments/gentek_swarm BUILD=/tmp/gentek-base all
+      - name: Build corrected candidate
+        run: make -C candidate/native/experiments/gentek_swarm BUILD=/tmp/gentek-candidate all
+      - name: Run baseline focused suite
+        run: /tmp/gentek-base/test_gentek_swarm
+      - name: Run candidate focused suite
+        run: /tmp/gentek-candidate/test_gentek_swarm
+      - name: Run candidate ASan and UBSan suite
+        run: |
+          make -C candidate/native/experiments/gentek_swarm BUILD=/tmp/gentek-candidate /tmp/gentek-candidate/test_gentek_swarm_sanitized
+          ASAN_OPTIONS=detect_leaks=0:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1 /tmp/gentek-candidate/test_gentek_swarm_sanitized
+      - name: Regenerate complete baseline and candidate corpora
+        run: |
+          rm -rf /tmp/gentek-base-evidence /tmp/gentek-candidate-evidence
+          /tmp/gentek-base/gentek_swarm /tmp/gentek-base-evidence 345ecc3ef939523f247b3eb192aa7502bd4d83ca
+          /tmp/gentek-candidate/gentek_swarm /tmp/gentek-candidate-evidence ${GITHUB_SHA}
+      - name: Compare all 171 retained cases and hard invariants
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+
+          base=Path("/tmp/gentek-base-evidence")
+          cand=Path("/tmp/gentek-candidate-evidence")
+          b={p.name:json.loads(p.read_text()) for p in base.glob("*.json")}
+          c={p.name:json.loads(p.read_text()) for p in cand.glob("*.json")}
+          assert len(b)==171, f"baseline case count {len(b)} != 171"
+          assert len(c)==171, f"candidate case count {len(c)} != 171"
+          assert set(b)==set(c), "case filename sets differ"
+
+          def hard(case):
+              if case["type"]=="single":
+                  r=case["result"]
+                  return r["protected_violations"]+r["illegal_overlaps"]
+              return (case["conflicts"]+case["protected_violations"]+
+                      case["left"]["illegal_overlaps"]+case["right"]["illegal_overlaps"])
+
+          baseline_hard=sum(hard(x) for x in b.values())
+          candidate_hard=sum(hard(x) for x in c.values())
+          assert baseline_hard==0, f"frozen baseline unexpectedly has {baseline_hard} hard violations"
+          assert candidate_hard==0, f"candidate has {candidate_hard} hard violations"
+
+          changed=[]
+          for name in sorted(b):
+              x,y=b[name],c[name]
+              if x["type"]=="single":
+                  bx,cy=x["result"],y["result"]
+                  material_same=bx["cells"]==cy["cells"]
+                  facts_same=(bx["status"],bx["unresolved_joints"])==(cy["status"],cy["unresolved_joints"])
+              else:
+                  material_same=x["cells"]==y["cells"]
+                  facts_same=(x["bridges"],x["typed_contacts"],x["conflicts"],x["protected_violations"],
+                              x["left"]["status"],x["right"]["status"],x["unresolved_seams"]) == (
+                              y["bridges"],y["typed_contacts"],y["conflicts"],y["protected_violations"],
+                              y["left"]["status"],y["right"]["status"],y["unresolved_seams"])
+              if not (material_same and facts_same):
+                  changed.append(name)
+
+          report={
+              "baseline_cases":len(b),
+              "candidate_cases":len(c),
+              "baseline_hard_violations":baseline_hard,
+              "candidate_hard_violations":candidate_hard,
+              "material_or_core_fact_changes":changed,
+          }
+          Path("/tmp/gentek-comparison.json").write_text(json.dumps(report,indent=2)+"\n")
+          print(json.dumps(report,indent=2))
+          with open(os.environ["GITHUB_STEP_SUMMARY"],"a") as f:
+              f.write("## SWARM-001 reviewed-baseline comparison\n\n")
+              f.write(f"- Cases: {len(c)}/171\n")
+              f.write(f"- Hard violations: {candidate_hard}\n")
+              f.write(f"- Material/core-fact changes vs `345ecc3e`: {len(changed)}\n")
+              if changed:
+                  f.write("- Changed cases: " + ", ".join(changed) + "\n")
+          assert not changed, "normal retained corpus materially changed; inspect listed cases"
+          PY
+      - name: Upload compact comparison receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: gentek-swarm-001-corpus-100-foundation-comparison
+          path: /tmp/gentek-comparison.json
+          if-no-files-found: error

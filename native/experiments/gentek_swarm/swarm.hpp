@@ -113,6 +113,12 @@ struct Result {
     std::uint32_t protected_violations{}, illegal_overlaps{}, unresolved_joints{};
 };
 
+// A required foreign hard offer may be certified only when exactly one local
+// connector owns the same instance/family/geometry/facing receipt. Optional
+// bearing/surface offers may intentionally have no local connector record, but
+// ambiguous duplicate receipts are never admissible.
+bool offer_resolution_admissible(const Result&, const Affordance&);
+
 const char* name(Kind) noexcept;
 const char* name(Status) noexcept;
 const char* name(Family) noexcept;
