@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Experimental-branch WAVE-MT-001 wave_flow_v1 opt-in bulk strip-parallel Water law; mechanism, ownership, parallel execution, state and memory, admission and refusal, limits and the candidate comparison that selected it; not on main, no default changed, not a policy family yet
 canonical-for: [wave-flow-v1]
-last-reviewed: 2026-11-16
+last-reviewed: 2026-11-18
 related-documents: [liquid-solver-family-policy.md, pressure-flow-v1.md, inertial-cellular-v1.md, simulation-tick-and-threading.md, rigid-body-and-cellular-coupling.md, ../audits/2026-11-15-wave-mt-001-wave-flow.md, ../audits/2026-11-15-wave-mt-001-completion.md]
 ---
 
@@ -238,6 +238,9 @@ the law is the qualified Wave law: `test_wave_spill` pins cells, `state_hash`,
 substeps, a selected region) to values computed from the unmodified #661 source.
 The dated [evidence record](../audits/2026-11-17-wave-waterwall-001.md) holds the
 diagnosis, the candidates that were tried, timings and Workbench captures.
+The [18 November review remediation](../audits/2026-11-18-waterwall-review-remediation.md)
+records the later corner, coordinate, force and Water Lab repairs and their
+separate qualification status.
 
 **The defect.** A large Water body standing on a ledge beside open air kept an
 almost vertical face for thousands of ticks while a narrow stream trickled away.
@@ -282,7 +285,13 @@ Ballistic release, so spill then drains faces through the grid only. The
 per-cell WCX-FR face scan is admitted under Wave only while spill is off, because
 spill owns exposed faces. With spill on, parcels pass through falling Wave Water. They may not
 land beyond a wall one cell thick, including a diagonal one, and they may not
-step diagonally through such a wall. A parcel is never born in, enters, lands in
+step diagonally through such a wall even when the diagonal destination already
+contains Water. Connected Water neighbours retain the existing merge priority.
+Automatic spill and Face release check both spawn-cell coordinates against the
+ballistic domain before q256 multiplication or the cell-centre offset. A
+refusal leaves the donor with the grid owner; spill retains its usual grid
+fallback, while Face release retains ordinary grid simulation.
+A parcel is never born in, enters, lands in
 or moves inside an unselected simulation core (outcome `Paused`). A parcel
 leaving an overfilled cell (more than 255 units) takes exactly one cell, and a
 deposit never adds to an overfilled cell.
@@ -300,7 +309,12 @@ a wall. Original Wave keeps its known stale-support read there.
 `body_push_by_mass` (0/1, default 0). With the defaults, the original
 per-wet-cell contact is unchanged. With `body_push_by_mass`, each resting or
 leaning contact is scaled by its cell's mass up to one cell. The contact count
-is unchanged. These fields are observation-only: they never change Water state
+is unchanged. The Workbench applies Body push to Water contact, boundary pressure,
+displacement, incoming parcel impulse and optional impact-spray launch reaction.
+The launch reaction already scales by the exact launched quantity; it does not
+receive another per-cell mass multiplier. Body push 0 suppresses these Water
+forces without disabling parcel launches or ownership transfers.
+These fields are observation-only: they never change Water state
 and are not bound into identity.
 
 **Diagnostics** (`WaveFlowDiagnostics`, appended): `spill_units`, `relief_units`,

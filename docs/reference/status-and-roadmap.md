@@ -150,6 +150,16 @@ GEN-008 candidate above now implements the revised contract independently of #54
 
 ## Wave flow Water solver (WAVE-MT-001) — 2026-11-15
 
+**Waterwall stack review remediation, 2026-11-18:** the posted #672 review
+identified wet-destination diagonal leakage, overflow before automatic spill's
+coordinate admission, unapplied focused Water Lab text, rollback of other-liquid
+policy when changing Water law, and launch reaction bypassing Body push.
+The [remediation record](../audits/2026-11-18-waterwall-review-remediation.md)
+tracks the focused repairs and resulting-source qualification separately from
+the earlier green runs. Repairs belong to #672 only; #661/#631 stay unchanged.
+Keep merge HOLD and default-off behavior. The original surface-crest crash and
+physical Windows/NVIDIA owner acceptance remain separate unresolved evidence.
+
 **Waterwall provisional crash containment, 2026-11-18:** Draft #672 retains the
 opt-in spill/ballistic/blobs candidate above unchanged #661/#631. Its owner now
 authorizes extensive testing and a provisional fix. Native Godot boundaries

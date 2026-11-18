@@ -2,7 +2,7 @@
 title: Workbench Water Lab — consolidated controls
 status: Draft / research
 document-kind: guide
-scope: Stacked UI-only candidate above PR 631
+scope: Water Lab controls and Waterwall-stack review repairs above PR 631; experimental, merge held
 last-reviewed: 2026-11-18
 related-documents: [wave-flow-evaluation.md, ../architecture/wave-flow-v1.md]
 ---
@@ -34,11 +34,20 @@ created by Shared Workbench. The older per-material policy dropdown is retained
 only in **Advanced policy** and remains semantically distinct from Wave Flow's
 FreeMass-carrier overlay.
 
+The action commits the numeric text focused inside the Water Lab Window before
+collecting its request. Typing a value and clicking **Apply solver / tuning**
+does not require Enter or a click outside the field first. The moved scene,
+equipment and tuning actions use the same Window-aware field commitment.
+
 **Wave Flow is disabled by default.** Enabling it stages Wave and automatically
 requests its FreeMass carrier; native activation requires **Apply solver /
 tuning** or **Load / reset scene**, then a positive native readback. Returning
-to PF/Inertial/FreeMass restores law-specific requests. It never silently changes
-the production Water default.
+to PF/Inertial/FreeMass restores Water's law-specific requests over the current
+policy. Edits to Brine or other liquids made while Wave is active remain current.
+Remembered Water parameters return only where they belong to Water or to a
+currently dormant family; an already active shared family keeps its current
+parameters, including its defaults. Native validation still decides admission.
+The production Water default is unchanged.
 
 ## Body push (Water force on actors)
 
@@ -56,12 +65,13 @@ The Water Lab stages Push by amount = 1. A World constructed without the option
 keeps the original per-cell push.
 
 Body push and Push by amount cover every path by which Water pushes a body:
+
 - Wave contact with resting or leaning Water;
 - the Workbench boundary pressure of Water touching a body face (the strongest
   term, 0.19 per cell per tick);
 - displacement when a body moves into Water;
-- ballistic parcel splash (Body push only, since a parcel carries its own
-  quantity).
+- ballistic parcel splash and optional impact-spray launch reaction (Body push
+  only, since both already account for the exact parcel quantity).
 
 In the impact comparison scene, after 150 ticks the first body sank 131.5 cells
 at Body push 256 and 143.0 at 0, where Water offers no resistance.
@@ -121,18 +131,27 @@ and the current evaluation package belong in the Draft PR ledger.
 
 ## Acceptance and retained boundary
 
-All existing controls and their signal handlers are the original objects, now
-mounted inside Water Lab. No native files, material IDs, producer/generation
-services, scenario schemas, physics tick functions or numerical constants change.
+The original #661 consolidation mounts the existing control objects inside
+Water Lab and changes no native solver. The later #672 review repairs add native
+Water-only policy restoration and correct the ballistic corner, coordinate and
+Body push contracts described in the
+[dated remediation record](../audits/2026-11-18-waterwall-review-remediation.md).
+Material IDs, producer/generation services and scenario schemas are unchanged.
 Editor Save/Load remains a starting-canvas recipe, not a physical Wave snapshot.
 Changing Wave settings preserves compatible cells/actors but resets Wave's
 retained flux; illegal conversion or configuration still refuses atomically.
 
 Regression added to the real Shared Workbench Wave test verifies all five tabs,
 the exact original control objects and always-visible native readback, no extra
-Wave/spray popup, and tab switching. Existing native Wave and Workbench tests
+Wave/spray popup, and tab switching. The remediation adds keyboard-entered
+numeric text followed by an action click, native readback, and preservation of
+accepted non-Water assignments/shared-family settings across Water-law changes.
+Existing native Wave and Workbench tests
 remain required. Physical Windows 11/NVIDIA GUI acceptance, including low-height
 displays and pointer interaction, remains owner-gated.
 
-Branch: `experiment/waterlab-631-consolidated-ui`, stacked on the frozen
-source of Draft PR #631. **Draft / HOLD, do not merge.**
+The original UI branch is `experiment/waterlab-631-consolidated-ui` (#661),
+stacked on #631. Review repairs are carried only by the combined
+`claude/wave-waterwall-001` candidate (#672); the parent branches stay unchanged.
+**HOLD, do not merge.** Source/runtime/CI qualification and human acceptance are
+separate evidence requirements.

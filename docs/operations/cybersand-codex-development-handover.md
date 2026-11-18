@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-16
+last-reviewed: 2026-11-18
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -94,6 +94,15 @@ steps (input capture, terrain-installation fence, workbench measurement,
 semaphore wake) are separate and need their own registration.
 
 ## Wave flow Water solver experiment (WAVE-MT-001) — 2026-11-15
+
+The 18 November [stack-review remediation](../audits/2026-11-18-waterwall-review-remediation.md)
+records five reproduced defects and focused repairs on #672 only: diagonal wet
+corners, checked ballistic spawn conversion, focused Water Lab field commitment,
+preservation of current non-Water policy, and Body push scaling of launch reaction.
+Parents #661/#631 remain unchanged. The repaired source requires its own native,
+desktop and publication evidence; predecessor passes do not qualify it. Keep
+merge HOLD and do not infer physical Windows/NVIDIA acceptance or resolution of
+the original surface-crest crash from these regressions.
 
 The 16 November [Workbench finisher](../audits/2026-11-16-wave-workbench-631-finisher.md)
 supersedes the earlier dedicated-evaluator handoff for human testing. Ordinary
