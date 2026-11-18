@@ -461,7 +461,8 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
                 SpillKnob{"workbench_wave_spill_launch_budget", &cybersand::WaveSpillConfig::launch_budget},
                 SpillKnob{"workbench_wave_spill_launch_speed", &cybersand::WaveSpillConfig::launch_speed},
                 SpillKnob{"workbench_wave_spill_stream_share", &cybersand::WaveSpillConfig::stream_share},
-                SpillKnob{"workbench_wave_spill_blobs", &cybersand::WaveSpillConfig::catch_falling}}) {
+                SpillKnob{"workbench_wave_spill_blobs", &cybersand::WaveSpillConfig::catch_falling},
+                SpillKnob{"workbench_wave_spill_stream_draw", &cybersand::WaveSpillConfig::stream_draw}}) {
             if (!options.has(knob.key)) continue;
             if (!workbench || !config->wave_flow.spill.enabled || options[knob.key].get_type() != Variant::INT)
                 throw std::invalid_argument("Wave spill tuning requires an enabled Waterwall spill and integer values");

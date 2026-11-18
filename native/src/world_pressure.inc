@@ -2399,6 +2399,10 @@ std::uint64_t World::physical_state_hash_impl(std::optional<LiquidStateProjectio
                                      tune.spill.launch_speed}) hash_integer(hash, value);
             hash_integer(hash, tune.spill.stream_share); hash_integer(hash, tune.spill.catch_falling);
             hash_integer(hash, static_cast<std::uint8_t>(wave_->launch_backoff));
+            if (tune.spill.stream_draw != 0) {
+                for (const char c : std::string_view{"stream-draw"}) hash_byte(hash, static_cast<std::uint8_t>(c));
+                hash_integer(hash, tune.spill.stream_draw);
+            }
         }
         hash_integer(hash, wave_->round);
     }

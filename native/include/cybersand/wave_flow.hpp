@@ -97,6 +97,10 @@ struct WaveSpillConfig {
     // Look controls for the release:
     std::int32_t stream_share = 0;     // n/256 of each thrown face share keeps pouring as a vertical grid stream, 0..255
     std::int32_t catch_falling = 1;    // 1: parcels older than the self-contact grace merge into falling Water (blobs); 0: they pass through
+    // n/256 of each thrown face share additionally pours from the face cell as a
+    // vertical grid stream, without reducing the throw, 0..255. The pool feed
+    // refills the face, so the stream is drawn from the volume behind it.
+    std::int32_t stream_draw = 0;
     [[nodiscard]] bool operator==(const WaveSpillConfig&) const = default;
 };
 

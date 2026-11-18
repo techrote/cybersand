@@ -271,6 +271,7 @@ faces or the ballistic parcel owner.
 
 | Blobs (`catch_falling`, default on) | A parcel older than the 4-tick self-contact grace merges into falling Wave Water instead of passing through it. Thrown water then clumps the falling stream into beads ("blobs") while the outer spray keeps arcing. Off: parcels fly through falling Water |
 | Stream share (`stream_share`, default 0) | n/256 of each thrown share keeps pouring through the grid as a vertical stream, and the release may spawn into that falling Water. Measured on the supplied map: values above 0 thin the throw, draw the lip back toward vertical and slow draining, so the default is off |
+| Stream draw (`stream_draw`, default 0) | n/256 of each thrown share additionally pours from the face cell through the grid as a vertical stream, without reducing the throw (2026-11-18). The face keeps being refilled by the pool feed, so the stream is drawn from the volume behind it. The poured amount is capped at half an Empty receiver; the launch then takes what the cell still holds, so ownership stays exact. Bound into identity only when non-zero |
 
 Generic `ballistic_water_v1` (impact splashes, sprays, jets, nozzles and
 body-launched or injected parcels) is admitted under Wave with or without spill

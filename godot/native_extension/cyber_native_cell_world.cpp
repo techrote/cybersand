@@ -2587,6 +2587,7 @@ Dictionary CyberNativeCellWorld::get_wave_flow_status() const try {
         spill["launch_speed"] = s.launch_speed;
         spill["stream_share"] = s.stream_share;
         spill["blobs"] = s.catch_falling;
+        spill["stream_draw"] = s.stream_draw;
         spill["spill_units"] = static_cast<std::int64_t>(wave.spill_units);
         spill["relief_units"] = static_cast<std::int64_t>(wave.relief_units);
         spill["spill_faces"] = static_cast<std::int64_t>(wave.spill_faces);

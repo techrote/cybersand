@@ -781,6 +781,103 @@ void face_release_without_spill_conserves() {
     }
 }
 
+// Stream draw pours an extra share from the face without thinning the throw;
+// stream share splits the throw. Both conserve and are worker independent.
+void stream_draw_keeps_the_throw_and_conserves() {
+    struct Run { std::uint64_t launched = 0, grid = 0, hash = 0; };
+    const auto run = [](int share, int draw, std::uint32_t workers, int ticks) {
+        auto cfg = config(Mode::Hybrid, workers);
+        cfg.wave_flow.spill.stream_share = share;
+        cfg.wave_flow.spill.stream_draw = draw;
+        World world(cfg);
+        const int width = 384, height = 320;
+        box(world, width, height);
+        rect(world, 1, 120, 139, 4, Material::Wall);
+        rect(world, 1, 60, 139, 60, Material::Water);
+        const RectI64 all{0, 0, width, height};
+        const auto before = owned(world, all);
+        for (int t = 0; t < ticks; ++t) {
+            (void)world.tick();
+            require(!world.has_failed(), "stream draw failed the World");
+            if (t % 50 == 49) require_ledger_closes(world, all, before, "stream draw");
+        }
+        const auto d = world.wave_flow_diagnostics();
+        return Run{d.launched_units, d.spill_units, world.physical_state_hash()};
+    };
+    const auto plain = run(0, 0, 4, 40), drawn = run(0, 128, 4, 40), split = run(128, 0, 4, 40);
+    require(drawn.grid > plain.grid, "stream draw poured no extra grid stream");
+    require(drawn.launched > split.launched, "stream draw thinned the throw like stream share");
+    require(drawn.hash != plain.hash, "stream draw is not part of physical identity");
+    for (const int draw : {64, 255})
+        require(run(0, draw, 1, 150).hash == run(0, draw, 4, 150).hash, "stream draw depends on worker count");
+    require(run(64, 64, 1, 150).hash == run(64, 64, 4, 150).hash, "stream draw with stream share depends on worker count");
+    auto bad = config(Mode::Hybrid);
+    bad.wave_flow.spill.stream_draw = 256;
+    bool refused = false;
+    try { World w(bad); } catch (const std::invalid_argument&) { refused = true; }
+    require(refused, "stream draw above 255 admitted");
+    // Every face pours at most its own share, whatever stream share plus stream
+    // draw ask for: a one-cell ridge with drops on both sides must not overdraw.
+    for (const auto& [share, draw] : {std::pair{128, 255}, std::pair{255, 255}, std::pair{200, 200}}) {
+        for (const auto workers : {1U, 4U}) {
+            auto cfg = config(Mode::Hybrid, workers);
+            cfg.wave_flow.spill.stream_share = share;
+            cfg.wave_flow.spill.stream_draw = draw;
+            World world(cfg);
+            box(world, 256, 200);
+            for (int x = 20; x < 236; x += 12) {
+                rect(world, x, 120, 1, 79, Material::Wall);   // one-cell pillars
+                // A one-cell column whose cells are part-full: a full cell is
+                // already protected by the half-cell receiver cap, a part-full
+                // one under a tall head is not.
+                for (int y = 60; y < 120; ++y)
+                    require(world.set_cell_state(x, y, Material::Water, static_cast<std::uint16_t>(120 + (x * 7 + y * 3) % 90), 0),
+                            "column Water refused");
+            }
+            const RectI64 all{0, 0, 256, 200};
+            const auto before = owned(world, all);
+            for (int t = 0; t < 120; ++t) {
+                (void)world.tick();
+                require(!world.has_failed(), "stream share plus stream draw overdrew a two-sided face");
+            }
+            require_ledger_closes(world, all, before, "two-sided stream draw");
+        }
+    }
+}
+
+// Spill-on identity is pinned from the source before stream draw existed
+// (8fc24b82 lineage, HEAD 68e0db19): stream_draw = 0 must reproduce it exactly,
+// and a non-zero stream_draw must enter both hashes from tick 0.
+void stream_draw_zero_is_the_earlier_spill_world() {
+    struct Pin { int ballistic, share; std::uint64_t physical, state; };
+    constexpr Pin kPins[] = {
+        {0, 0, 0x52e829f3cb1be141ULL, 0xf005b77dbc1b9234ULL},
+        {0, 64, 0x53e78f8bcb64f901ULL, 0x3607e6cf5512cff4ULL},
+        {1, 0, 0x52796ca29d7a2ec9ULL, 0xd23bc389f5766534ULL},
+        {1, 64, 0x8739a49c8ea34e20ULL, 0xc897f8bd4d68bdf8ULL},
+    };
+    const auto build = [](int ballistic, int share, int draw) {
+        auto cfg = config(ballistic != 0 ? Mode::Hybrid : Mode::Spill, 4);
+        cfg.wave_flow.spill.stream_share = share;
+        cfg.wave_flow.spill.stream_draw = draw;
+        auto world = std::make_unique<World>(cfg);
+        box(*world, 384, 320);
+        rect(*world, 1, 120, 139, 4, Material::Wall);
+        rect(*world, 1, 60, 139, 60, Material::Water);
+        return world;
+    };
+    for (const auto& pin : kPins) {
+        auto world = build(pin.ballistic, pin.share, 0);
+        for (int t = 0; t < 120; ++t) (void)world->tick();
+        require(world->physical_state_hash() == pin.physical && world->state_hash() == pin.state,
+                "stream_draw = 0 diverged from the pinned spill World (ballistic " + std::to_string(pin.ballistic) +
+                    ", share " + std::to_string(pin.share) + ")");
+        auto zero = build(pin.ballistic, pin.share, 0), one = build(pin.ballistic, pin.share, 1);
+        require(zero->physical_state_hash() != one->physical_state_hash() && zero->state_hash() != one->state_hash(),
+                "stream_draw is missing from a hash before any tick");
+    }
+}
+
 }  // namespace
 
 int main(int argc, char** argv) {
@@ -807,6 +904,8 @@ int main(int argc, char** argv) {
         {"body push scales with water amount", body_push_scales_with_water_amount},
         {"generic Ballistic Water runs under Wave", generic_ballistic_water_runs_under_wave},
         {"face release without spill conserves", face_release_without_spill_conserves},
+        {"stream draw keeps the throw and conserves", stream_draw_keeps_the_throw_and_conserves},
+        {"stream draw zero is the earlier spill World", stream_draw_zero_is_the_earlier_spill_world},
         {"exposed reservoir collapses and conserves", exposed_reservoir_collapses_and_conserves},
         {"worker counts and repeats are identical", worker_counts_and_repeats_are_identical},
         {"waterfall lands fills and rejoins", waterfall_lands_fills_and_rejoins},

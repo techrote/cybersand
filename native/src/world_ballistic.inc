@@ -200,7 +200,7 @@ BallisticLaunchResult World::admit_ballistic_spawn(std::int64_t spawn_x, std::in
     // Wave spill only: the World's own release may throw from a face whose
     // stream share has just poured into the spawn cell as falling Water.
     const bool falling_spawn = internal && wave_ != nullptr && material == Material::Water &&
-        config_.wave_flow.spill.stream_share != 0 && chunk->wave != nullptr &&
+        (config_.wave_flow.spill.stream_share != 0 || config_.wave_flow.spill.stream_draw != 0) && chunk->wave != nullptr &&
         [&] {
             // Round-start meta: the cell was dry (it just received the poured
             // share this round) or already falling. Never resting Water.

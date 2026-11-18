@@ -78,6 +78,7 @@ toolbar control.
 | Fall speed / Pool feed | Cells per round for unsupported Water, and mass units per round a pool may move toward its draining edge |
 | Throw speed / Parcels per tick | Outward speed as n/256 of √(2gh), and the per-tick launch budget (ballistic release only) |
 | Blobs / Stream share | Blobs (1, the default) clumps thrown water into blobs where it meets falling water. Stream share keeps part of each throw pouring straight down (0, the default, is off). Both apply to ballistic release only |
+| Stream draw | Adds a vertical stream poured straight down from each throwing face, on top of the full throw. The pool behind the face refills it, unlike Stream share, which takes the stream out of the throw. 0 (the default) is off. Ballistic release only |
 
 As with every Water Lab control, these settings are staged until **Apply solver /
 tuning** or **Load / reset scene**. The native readback beside each control and

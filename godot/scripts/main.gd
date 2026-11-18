@@ -25,7 +25,7 @@ const WAVE_SPILL_SWITCHES := ["workbench_wave_spill","workbench_wave_spill_parce
 const WAVE_SPILL_TUNING := [
 	"workbench_wave_spill_fall","workbench_wave_spill_draw",
 	"workbench_wave_spill_launch_speed","workbench_wave_spill_launch_budget",
-	"workbench_wave_spill_stream_share","workbench_wave_spill_blobs",
+	"workbench_wave_spill_stream_share","workbench_wave_spill_blobs","workbench_wave_spill_stream_draw",
 ]
 const PlayableSessionPanel = preload("res://scripts/playable_session_panel.gd")
 const DEFAULT_PLAYABLE_OPTIONS: Dictionary = {"controls":"keyboard_gamepad", "rules":"lap", "camera":"follow"}

@@ -106,10 +106,11 @@ const SPILL_SPINS := [
 	["workbench_wave_spill_launch_budget", "Parcels / tick", 0, 4096, 16, 256, "launch_budget", "Most parcels launched per native tick. Faces beyond it spill through the grid on the next tick. Zero never launches."],
 	["workbench_wave_spill_blobs", "Blobs", 0, 1, 1, 1, "blobs", "1: thrown water that meets falling water merges into it and clumps into blobs. 0: it flies through. Ballistic release only."],
 	["workbench_wave_spill_stream_share", "Stream share", 0, 255, 8, 0, "stream_share", "n/256 of each thrown share keeps pouring straight down as a vertical stream. Higher values thin the throw and slow draining. Ballistic release only."],
+	["workbench_wave_spill_stream_draw", "Stream draw", 0, 255, 8, 0, "stream_draw", "n/256 of each thrown share additionally pours straight down from the face as a vertical stream, without thinning the throw. The pool behind the face refills it. Ballistic release only."],
 ]
 # Settings that only matter while Ballistic release is on.
 const SPILL_PARCEL_KEYS := ["workbench_wave_spill_launch_speed","workbench_wave_spill_launch_budget",
-	"workbench_wave_spill_blobs","workbench_wave_spill_stream_share"]
+	"workbench_wave_spill_blobs","workbench_wave_spill_stream_share","workbench_wave_spill_stream_draw"]
 const WAVE_PRESETS := [
 	{"label":"v2 defaults","values":{}},
 	{"label":"Lively","values":{

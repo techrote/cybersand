@@ -140,7 +140,7 @@ func install(world: Variant, value: Variant, mode: String = "Inspect", instrumen
 					"workbench_wave_empty_pour_shift","workbench_wave_flow_share_shift","workbench_wave_adhesion_shift",
 					"workbench_wave_body_push","workbench_wave_body_push_by_mass","workbench_wave_spill","workbench_wave_spill_parcels","workbench_wave_spill_fall","workbench_wave_spill_draw",
 					"workbench_wave_spill_launch_speed","workbench_wave_spill_launch_budget",
-					"workbench_wave_spill_stream_share","workbench_wave_spill_blobs"]:
+					"workbench_wave_spill_stream_share","workbench_wave_spill_blobs","workbench_wave_spill_stream_draw"]:
 				if controlled_setup.has(key): options[key] = controlled_setup[key]
 		# Only the exclusive owner retains this opaque token between its two
 		# preparation turns. Revalidation above still precedes final commit.

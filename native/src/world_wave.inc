@@ -205,7 +205,8 @@ void World::validate_wave_flow_config() const {
             tune.spill.launch_budget < 0 || tune.spill.launch_budget > S::kMaximumLaunchBudget ||
             tune.spill.launch_speed < 0 || tune.spill.launch_speed > S::kMaximumLaunchSpeed ||
             tune.spill.stream_share < 0 || tune.spill.stream_share > 255 ||
-            tune.spill.catch_falling < 0 || tune.spill.catch_falling > 1)
+            tune.spill.catch_falling < 0 || tune.spill.catch_falling > 1 ||
+            tune.spill.stream_draw < 0 || tune.spill.stream_draw > 255)
             throw std::invalid_argument("wave_flow spill tuning outside native bounds");
     }
     if (config_.backend != SimulationBackend::PhasedInPlace)
@@ -296,6 +297,11 @@ void World::hash_wave_state(std::uint64_t& hash) const {
         hash_integer(hash, tune.spill.launch_speed);
         hash_integer(hash, tune.spill.stream_share); hash_integer(hash, tune.spill.catch_falling);
         hash_integer(hash, static_cast<std::uint8_t>(wave_->launch_backoff));
+        // Bound only when used, so every earlier spill World keeps its hash.
+        if (tune.spill.stream_draw != 0) {
+            for (const char c : std::string_view{"stream-draw"}) hash_byte(hash, static_cast<std::uint8_t>(c));
+            hash_integer(hash, tune.spill.stream_draw);
+        }
     }
     hash_integer(hash, wave_->round);
     std::vector<ChunkCoord> coordinates;
@@ -896,15 +902,23 @@ void World::wave_flux_task(std::size_t task_index) noexcept {
                         // Water cannot be moved twice.
                         auto& list = state.scratch[task_index];
                         // stream_share keeps part of the face pouring as the
-                        // vertical stream; the rest is thrown.
+                        // vertical stream; the rest is thrown. stream_draw pours
+                        // an extra share from the face cell itself, so the throw
+                        // keeps its size and the pool feed refills the face.
                         const auto keep = (available * spill.stream_share) >> 8;
+                        const auto drawn = (available * spill.stream_draw) >> 8;
                         if (available - keep < spill.launch_min) {
                             // Too little left to throw: the whole share pours.
                         } else if (list.launch.size() < list.launch.capacity()) {
                             if (state.final_round)
                                 list.launch.push_back({origin_x + lx + (rightward ? 0 : 1), origin_y + ly,
                                                        std::abs(head), available - keep, rightward ? 1 : -1});
-                            available = keep;
+                            // The receiver is Empty: two faces share its room.
+                            // The launch takes what the cell still holds after
+                            // the apply pass, so ownership stays exact.
+                            // Never more than this face's own share: the two-face
+                            // donor budget (share_shift >= 1) must still hold.
+                            available = std::min({keep + drawn, available, maximum >> 1});
                         } else if (state.final_round) {
                             ++list.launch_overflow;
                         }
