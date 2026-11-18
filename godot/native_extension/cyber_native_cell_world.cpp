@@ -1004,14 +1004,18 @@ PackedFloat32Array CyberNativeCellWorld::rigid_body_results() const try {
 }
 
 std::int64_t CyberNativeCellWorld::material_at(std::int64_t x, std::int64_t y) const {
-    if (has_failed() || !in_bounds(x, y)) {
+    // ADR-010: a quarantined World stays diagnosable through raw reads. The
+    // native read is noexcept on a failed World; collision queries fail closed.
+    if (world_ == nullptr || !in_bounds(x, y)) {
         return static_cast<std::int64_t>(cybersand::Material::Wall);
     }
     return static_cast<std::int64_t>(world_->get(x, y));
 }
 
 std::int64_t CyberNativeCellWorld::stored_material_at(std::int64_t x, std::int64_t y) const {
-    if (has_failed() || !in_bounds(x, y)) {
+    // ADR-010: a quarantined World stays diagnosable through raw reads. The
+    // native read is noexcept on a failed World; collision queries fail closed.
+    if (world_ == nullptr || !in_bounds(x, y)) {
         return static_cast<std::int64_t>(cybersand::Material::Wall);
     }
     return static_cast<std::int64_t>(world_->stored_material(x, y));

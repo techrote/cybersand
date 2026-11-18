@@ -63,8 +63,10 @@ func probe_failed(world: Variant, label: String) -> void:
 		var observed: Variant = world.callv(invocation[0],invocation[1])
 		require(typeof(observed) == int(invocation[2]),label+" safe typed read "+str(invocation[0]))
 	require(world.take_render_snapshot(true).get("failed",false),label+" refuses a new render packet")
-	require(world.material_at(64,64) == 1 and world.stored_material_at(64,64) == 1,
-		label+" failed material queries return the native Wall sentinel")
+	# ADR-010: raw material reads keep the retained evidence of a failed World.
+	var retained: int = world.stored_material_at(64,64)
+	require(retained >= 0 and world.material_at(64,64) == retained and world.stored_material_at(-1,-1) == 1,
+		label+" failed material queries read retained cells; out of bounds stays the Wall sentinel")
 	require(world.box_collides(Vector2(64,64),Vector2.ONE),label+" collision query fails closed")
 	for mode: int in 3:
 		require(world.character_box_collides(Vector2(64,64),Vector2.ONE,mode),label+" character query fails closed")
