@@ -144,7 +144,7 @@ func native_generic_ballistic(bridge: Variant, args: Array, base: Dictionary) ->
 		"Wave reads back Ballistic Water on, spill and its release off")
 	require(world.get_water_spray().get("ballistic_enabled") == true,"spray coupling sees the Ballistic Water pool under Wave")
 	var initial := int(str(status.water_quantity))
-	world.set_water_spray({"jet_enabled":true,"jet_origin":Vector2i(60,100),"jet_angle":-50.0,"jet_speed":3.0,"jet_rate":3,"jet_quantity":96})
+	world.set_water_spray({"jet_enabled":true,"jet_origin":Vector2i(200,150),"jet_angle":-130.0,"jet_speed":3.0,"jet_rate":3,"jet_quantity":96})
 	for tick: int in 200:
 		world.water_spray_before_tick()
 		require(world.simulation_tick(),"Wave World with a ballistic jet ticks")
@@ -261,8 +261,14 @@ func workbench_generic_ballistic() -> void:
 	spray.refresh(host.tower_context)
 	require(spray._wave_status.text.contains("APPLIED"),"Ballistic Water under Wave matches native readback / "+spray._wave_status.text)
 	require(spray.request({"jet_enabled":true,"jet_origin":Vector2i(60,40)}),"jet requested")
-	await until(func() -> bool: return int(host.tower_context.get("water_spray",{}).get("totals",{}).get("jet",0)) > 0,
-		"jet fires ballistic parcels into the Wave World")
+	# The Workbench is paused: step real native ticks until the jet has fired.
+	var fired := func() -> int: return int(host.tower_context.get("water_spray",{}).get("totals",{}).get("jet",0))
+	for step: int in 40:
+		if fired.call() > 0: break
+		var tick := int(host.latest_snapshot.tick_index)
+		panel.step_once()
+		await until(func() -> bool: return idle() and int(host.latest_snapshot.tick_index) > tick,"Wave World with a jet ticks")
+	require(fired.call() > 0,"jet fires ballistic parcels into the Wave World / "+str(host.tower_context.get("water_spray",{}).get("totals",{})))
 	spray.request({"jet_enabled":false})
 	require(not host.simulation_worker.has_failed(),"Wave World with a jet stays healthy")
 	spray._ballistic.button_pressed = false

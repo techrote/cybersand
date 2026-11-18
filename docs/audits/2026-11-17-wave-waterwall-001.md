@@ -194,6 +194,28 @@ the arcs. Stream share therefore stays opt-in, at default 0.
 Real Workbench on the supplied map with DLL `aad09be8…`. Water quantity read
 3 052 350 at all 17 captures.
 
+## Owner correction: generic Ballistic Water under Wave (2026-11-18)
+
+The owner said generic Ballistic Water is vital to the game. #631 refused it
+on every Wave World ("wave_flow does not support ballistic_water_v1"), #661's
+Water Lab switched it off when Wave was chosen, and this branch had kept that
+refusal outside its own release. That was not raised as an owner decision. The
+refusal is now lifted. Spray, jets, nozzles, body launches and injected parcels
+run under Wave with or without spill. Every parcel path already respects Wave
+overfill, paused cores and one-cell walls. Spill's Ballistic release uses the
+same pool. Without it, the Workbench sends a release budget of 0, so faces drain
+through the grid only. WCX-FR face release is admitted under Wave only while
+spill is off. No native World source outside `world_wave.inc` admission changed,
+and the default-off golden hashes are unchanged.
+
+| Check | Platform | Result |
+|---|---|---|
+| `make wave-spill-test` (22, incl. generic ballistic and face release under Wave, workers 1/4) and `wave-flow-test` (31) | WSL2 Ubuntu 24.04, g++ 13.3 | PASS |
+| ASan/UBSan and TSan for both, and the full `make test` suite | same | PASS |
+| `test_workbench_wave_spill.gd` (508 checks: native jet conservation, grid-only spill budget 0, Water Lab switches, real Workbench Apply with a jet) | Windows 11, Godot 4.7, local pinned DLL | PASS |
+| `test_workbench_wave.gd`, `test_wave_flow.gd`, `test_workbench_canvas.gd`, `test_workbench_spray_rearm.gd`, `test_failed_world_status_survives.gd`, `test_workbench_failure_containment.gd` | same | PASS |
+| `test_workbench_wave_render.gd` (graphical, ANGLE) | same | 180 assertions, 6 captures, PASS on rerun; the first run failed one pointer-focus check before any capture |
+
 ## Protected-source transitions
 
 The material-catalogue compatibility table admits these reviewed steps (LF SHA-256):
