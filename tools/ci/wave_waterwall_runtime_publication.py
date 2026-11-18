@@ -53,7 +53,8 @@ engine.BUILD_EXACT = (_previous_exact - {
     "tools/ci/test_wave_waterwall_runtime_publication.py",
     "native/bench/wave_waterwall.cpp",
 }
-SPILL_SECTIONS = {"native_admission", "native_conservation", "lab_controls", "workbench_apply"}
+SPILL_SECTIONS = {"native_admission", "native_conservation", "native_generic_ballistic", "lab_controls",
+                  "workbench_apply", "workbench_generic_ballistic"}
 FAILED_WORLD_SECTIONS = {
     "native_exception", "capacity_failure", "failed_observation", "failed_mutation",
     "first_error", "reset_recovery", "healthy_refusals", "numeric_boundaries",
