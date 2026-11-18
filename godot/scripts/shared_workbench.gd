@@ -145,7 +145,7 @@ func _button(row: Control, caption: String, action: Callable) -> Button:
 	button.focus_mode = Control.FOCUS_NONE
 	button.text = caption
 	button.pressed.connect(func() -> void:
-		_commit_field()
+		_commit_field(button.get_viewport())
 		action.call())
 	row.add_child(button)
 	return button
@@ -345,8 +345,10 @@ func _roster_changed(index: int) -> void:
 	else: pilot_model(Fleet.stable_id(index-1))
 
 
-func _commit_field() -> void:
-	var focus := get_viewport().gui_get_focus_owner()
+func _commit_field(input_viewport: Viewport = null) -> void:
+	# A child Window owns its own focused field. Action helpers pass the
+	# clicked button's viewport; canvas/main-window callers retain the default.
+	var focus := (input_viewport if input_viewport != null else get_viewport()).gui_get_focus_owner()
 	if focus is LineEdit and focus.get_parent() is SpinBox: focus.get_parent().apply()
 	if focus != null: focus.release_focus()
 

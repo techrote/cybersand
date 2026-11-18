@@ -465,10 +465,7 @@ func _button(row: Control, label: String, action: Callable) -> Button:
 	button.text = label
 	button.focus_mode = Control.FOCUS_NONE
 	button.pressed.connect(func() -> void:
-		var focus := button.get_viewport().gui_get_focus_owner()
-		if focus is LineEdit and focus.get_parent() is SpinBox: focus.get_parent().apply()
-		if focus != null: focus.release_focus()
-		if _workbench != null: _workbench._commit_field()
+		if _workbench != null: _workbench._commit_field(button.get_viewport())
 		action.call())
 	row.add_child(button)
 	return button
@@ -581,6 +578,14 @@ func _set_wave(on: bool) -> void:
 		_wave.set_pressed_no_signal(_option_on("workbench_wave_flow"))
 		_wave_notice.text = "Wait for the current solver application before changing the requested solver."
 		return
+	var restored := PackedInt32Array()
+	if not on and not _non_wave_policy.is_empty():
+		var selection := _restore_water_selection()
+		if not selection.get("accepted",false):
+			_wave.set_pressed_no_signal(_option_on("workbench_wave_flow"))
+			_wave_notice.text = str(selection.get("refusal",{}).get("detail","Previous Water selection could not be restored."))
+			return
+		restored = PackedInt32Array(selection.request)
 	if on and not _option_on("workbench_wave_flow"):
 		_remember_inertial_signed()
 		# Ballistic Water and Face release are shared by every law and stay as
@@ -603,13 +608,22 @@ func _set_wave(on: bool) -> void:
 		_show_controls(_wave_window)
 	else:
 		_restore_non_wave_options()
-		if not _non_wave_policy.is_empty() and _workbench._liquids != null:
-			_workbench._liquids.requested_policy = _non_wave_policy.duplicate()
+		if not restored.is_empty() and _workbench._liquids != null:
+			_workbench._liquids.requested_policy = restored
 			_workbench._liquids._dirty = true
 		_stage_inertial_signed(_requested_water_family())
-		_fallback_message = "Wave Flow staged off; previous non-Wave selection restored. Apply solver / tuning to rebuild."
+		_fallback_message = "Wave Flow staged off; previous Water selection restored. Other liquid settings retained. Apply solver / tuning to rebuild."
 	_wave_notice.text = _fallback_message
 	_update_wave_controls()
+
+func _restore_water_selection() -> Dictionary:
+	# The saved policy remembers Water's dormant law/parameters only. Other
+	# liquids and shared families may have been edited and applied during Wave.
+	var liquids: Control = _workbench._liquids
+	if liquids.bridge == null or not liquids.bridge.has_method(&"liquid_policy_restore_assignment"):
+		return {"accepted":false,"refusal":{"detail":"Restoring the Water selection requires the source-matched native runtime."}}
+	return liquids.bridge.liquid_policy_restore_assignment(
+		liquids.requested_policy,_non_wave_policy,CyberCellWorld.WATER)
 
 func _restore_non_wave_options() -> void:
 	if _non_wave_options.is_empty(): return
@@ -713,7 +727,11 @@ func _stage_solver(family: String, variant: String, announce: bool = true) -> bo
 	if bridge == null: return false
 	var staged: PackedInt32Array = ui._liquids.requested_policy
 	if announce and _option_on("workbench_wave_flow") and not _non_wave_policy.is_empty():
-		staged = _non_wave_policy.duplicate()
+		var selection := _restore_water_selection()
+		if not selection.get("accepted",false):
+			_wave_notice.text = str(selection.get("refusal",{}).get("detail","Previous Water selection could not be restored."))
+			return false
+		staged = PackedInt32Array(selection.request)
 	if staged.is_empty(): staged = PackedInt32Array(ui.applied.liquid_policy)
 	for option: Dictionary in bridge.liquid_policy_assignment_choices(staged,CyberCellWorld.WATER):
 		if option.get("family","") == family and option.get("variant","") == variant and option.get("accepted",false):

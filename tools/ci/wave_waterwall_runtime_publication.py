@@ -36,7 +36,8 @@ engine.EXECUTION_SCOPE = (
     base.engine.EXECUTION_SCOPE
     + " WAVE-WATERWALL-001: native admission, refusal atomicity, exact conservation and"
     " worker parity of Waterwall spill with ballistic release, and its ordinary"
-    " Workbench Water Lab apply/compare lifecycle; native exception containment,"
+    " Workbench Water Lab apply/compare lifecycle; Body push scaling of impact-spray"
+    " launch reaction; native exception containment,"
     " first-error retention, numeric boundary refusals, failed observation/mutation"
     " contracts, pre/late-publication quarantine and actual Workbench owner recovery."
     " Native Wave body-boundary controls additionally cover prescribed body crossings,"
@@ -53,7 +54,8 @@ engine.BUILD_EXACT = (_previous_exact - {
     "tools/ci/test_wave_waterwall_runtime_publication.py",
     "native/bench/wave_waterwall.cpp",
 }
-SPILL_SECTIONS = {"native_admission", "native_conservation", "native_generic_ballistic", "lab_controls",
+SPILL_SECTIONS = {"native_admission", "native_conservation", "native_generic_ballistic",
+                  "native_body_push_reaction", "lab_controls",
                   "workbench_apply", "workbench_generic_ballistic"}
 FAILED_WORLD_SECTIONS = {
     "native_exception", "capacity_failure", "failed_observation", "failed_mutation",

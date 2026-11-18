@@ -106,7 +106,7 @@ func _button(parent: Control, label: String, action: Callable) -> Button:
 	control.text = label
 	control.focus_mode = Control.FOCUS_NONE
 	control.pressed.connect(func() -> void:
-		if _workbench != null: _workbench._commit_field()
+		if _workbench != null: _workbench._commit_field(control.get_viewport())
 		action.call())
 	parent.add_child(control)
 	return control

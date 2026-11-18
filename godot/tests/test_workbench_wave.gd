@@ -73,6 +73,106 @@ func water_lab_ui() -> void:
 	require(lab.tabs.current_tab == 1,"Wave tab is navigable")
 	lab.select_tab(0)
 
+func lab_button(label: String) -> Button:
+	for node: Node in panel.water_lab.window.find_children("*","Button",true,false):
+		if node.is_visible_in_tree() and node.text == label: return node
+	return null
+
+func click_lab_button(label: String) -> bool:
+	var button := lab_button(label)
+	if not require(button != null,"visible Water Lab action: "+label): return false
+	var scroll := button.get_parent()
+	while scroll != null and not scroll is ScrollContainer: scroll = scroll.get_parent()
+	if scroll != null:
+		scroll.ensure_control_visible(button)
+		await process_frame
+	var point := button.get_global_rect().get_center()+Vector2(panel.water_lab.window.position)
+	var pressed := [false]
+	button.pressed.connect(func() -> void: pressed[0] = true,CONNECT_ONE_SHOT)
+	for down: bool in [true,false]:
+		var event := InputEventMouseButton.new()
+		event.position = point
+		event.global_position = point
+		event.button_index = MOUSE_BUTTON_LEFT
+		event.pressed = down
+		root.push_input(event,true)
+		await process_frame
+	return require(pressed[0],"real pointer event reaches Water Lab "+label)
+
+func type_spin_text(field: SpinBox, text: String) -> bool:
+	var scroll := field.get_parent()
+	while scroll != null and not scroll is ScrollContainer: scroll = scroll.get_parent()
+	if scroll != null: scroll.ensure_control_visible(field)
+	await process_frame
+	var editor := field.get_line_edit()
+	editor.grab_focus()
+	await process_frame
+	editor.select_all()
+	var old := field.value
+	# Character events reach the focused editor without Enter, Tab or .apply().
+	# The action under test must commit this still-pending numeric text.
+	for index: int in text.length():
+		for down: bool in [true,false]:
+			var key := InputEventKey.new()
+			key.keycode = text.unicode_at(index)
+			key.unicode = text.unicode_at(index)
+			key.pressed = down
+			editor.get_viewport().push_input(key,true)
+			await process_frame
+	return require(editor.text == text and field.value == old and editor.has_focus(),
+		"numeric text remains pending in the child Window: "+text)
+
+func policy_assignment(bridge: Variant, policy: PackedInt32Array, material: int,
+		family: String, variant: String = "reference") -> PackedInt32Array:
+	for choice: Dictionary in bridge.liquid_policy_assignment_choices(policy,material):
+		if choice.get("accepted",false) and choice.get("family","") == family and choice.get("variant","") == variant:
+			return PackedInt32Array(choice.request)
+	require(false,"native policy admits %d %s/%s" % [material,family,variant])
+	return PackedInt32Array()
+
+func policy_family(receipt: Dictionary, material: int) -> String:
+	for row: Dictionary in receipt.get("assignments",[]):
+		if int(row.material) == material: return str(row.get("applied_family",""))
+	return ""
+
+func native_policy_restore(bridge: Variant) -> void:
+	if not require(bridge.has_method(&"liquid_policy_restore_assignment"),"native assignment restoration API is present"): return
+	var defaults: PackedInt32Array = bridge.default_liquid_policy()
+	var remembered := policy_assignment(bridge,defaults,Setup.WATER,"pressure_flow_v1","cached")
+	var result: Dictionary = bridge.liquid_policy_with_pressure_gas(remembered,false)
+	if not require(result.get("accepted",false),"remember gas-off PressureFlow settings"): return
+	remembered = PackedInt32Array(result.request)
+	var current := policy_assignment(bridge,defaults,24,"inertial_cellular_v1")
+	result = bridge.liquid_policy_with_inertial_damping(current,9)
+	if not require(result.get("accepted",false),"change current shared Inertial damping"): return
+	current = PackedInt32Array(result.request)
+	var unchanged := current.duplicate()
+	result = bridge.liquid_policy_restore_assignment(current,remembered,Setup.WATER)
+	if not require(result.get("accepted",false),"restore only Water's remembered PressureFlow assignment"): return
+	var receipt: Dictionary = result.receipt
+	require(policy_family(receipt,Setup.WATER) == "pressure_flow_v1" and policy_family(receipt,24) == "inertial_cellular_v1",
+		"native restore keeps current Brine while restoring Water")
+	require(receipt.family_parameters.pressure_flow_v1.gas_enabled == false \
+		and receipt.family_parameters.inertial_cellular_v1.damping_numerator == 9,
+		"native restore retains dormant PF gas and current shared Inertial values together")
+	require(current == unchanged,"native policy restore does not mutate its current request")
+	remembered = policy_assignment(bridge,defaults,Setup.WATER,"inertial_cellular_v1")
+	result = bridge.liquid_policy_with_inertial_damping(remembered,3)
+	if not require(result.get("accepted",false),"remember Water's former Inertial damping"): return
+	remembered = PackedInt32Array(result.request)
+	for expected: int in [9,1]:
+		if expected == 1: current = policy_assignment(bridge,defaults,24,"inertial_cellular_v1")
+		result = bridge.liquid_policy_restore_assignment(current,remembered,Setup.WATER)
+		if not require(result.get("accepted",false),"restore Water into a currently shared Inertial family"): return
+		require(result.receipt.family_parameters.inertial_cellular_v1.damping_numerator == expected,
+			"current shared family owns explicit values and implicit defaults, not cached Water's value")
+	result = bridge.liquid_policy_restore_assignment(defaults,remembered,Setup.WATER)
+	require(result.get("accepted",false) and result.get("receipt",{}).get("family_parameters",{}).get("inertial_cellular_v1",{}).get("damping_numerator",-1) == 3,
+		"remembered Inertial parameters return when no current material uses the family")
+	for bad: Array in [[PackedInt32Array(),remembered,Setup.WATER],[current,PackedInt32Array(),Setup.WATER],[current,remembered,58]]:
+		result = bridge.callv("liquid_policy_restore_assignment",bad)
+		require(not result.get("accepted",true),"invalid policy/remembered material refuses without a request")
+
 func idle() -> bool:
 	return panel != null and not panel.applied.is_empty() and not panel.busy() \
 		and host.pending_microscenario_apply.is_empty()
@@ -150,6 +250,7 @@ func native_validation() -> void:
 	var start := failures.size()
 	var world: Variant = ClassDB.instantiate(&"CyberNativeCellWorld")
 	var bridge: Variant = ClassDB.instantiate(&"CyberDemoBridge")
+	native_policy_restore(bridge)
 	var checked: Dictionary = Contract.validate(Contract.parse(FileAccess.get_file_as_string(DAM)).definition)
 	var options := {"workbench_extent":Vector2i(256,256),"workbench_response":"LA-SELECTIVE",
 		"workbench_sample":{"session":1,"epoch":1,"states":PackedFloat64Array(),"geometry":PackedFloat64Array(),"bodies":[]},
@@ -447,11 +548,39 @@ func activation() -> bool:
 	for key: String in TUNING:
 		var field: SpinBox = panel.water_spray._wave_fields.get("workbench_wave_"+key)
 		if not require(field != null,"tuning field exists "+key): return false
-		field.value = int(TUNING[key])
+		if key != "gain": field.value = int(TUNING[key])
 	main_worker_request(4)
+	panel.water_lab.open()
+	panel.water_lab.select_tab(1)
+	for frame: int in 3: await process_frame
+	if not await type_spin_text(panel.water_spray._wave_fields.workbench_wave_gain,str(TUNING.gain)): return false
+	require(int(host.workbench_water_options.workbench_wave_gain) != int(TUNING.gain),
+		"typing alone has not staged the new gain before the Apply click")
 	before = generation()
-	panel.water_spray._apply_wave()
+	if not await click_lab_button("Apply solver / tuning"): return false
 	if not await installed_after(before,"Wave Apply"): return false
+	require(int(wave().get("parameters",{}).get("gain",-1)) == int(TUNING.gain),
+		"Water Lab Apply commits focused numeric text before native construction")
+	# Equipment moved into the same child Window and uses its own action helper.
+	# A real click must commit pending supply before constructing the device.
+	panel.water_lab.select_tab(3)
+	panel._position[0].value = 300
+	panel._position[1].value = 40
+	for frame: int in 2: await process_frame
+	if not await type_spin_text(panel.equipment._supply,"250"): return false
+	if not await click_lab_button("Nozzle at X/Y"): return false
+	require(int(panel.applied.get("equipment",{}).get("supply",-1)) == 250,
+		"Equipment action consumes focused supply text in Water Lab")
+	if not await until(func() -> bool:
+		return int(host.tower_context.get("workbench_equipment",{}).get("serial",-1)) == panel.equipment.serial,
+		"native owner acknowledges equipment built from typed supply"): return false
+	require(int(host.tower_context.workbench_equipment.get("pipe",{}).get("supplied",-1)) == 250*255,
+		"native equipment supply matches the committed typed value")
+	require(panel.equipment.remove_all(),"remove numeric-input test nozzle")
+	await until(func() -> bool:
+		return int(host.tower_context.get("workbench_equipment",{}).get("serial",-1)) == panel.equipment.serial,
+		"numeric-input fixture equipment removed")
+	panel.water_lab.window.hide()
 	sections.activation = require(wave().get("enabled",false),"Workbench activates native Wave") and failures.size() == start
 	start = failures.size()
 	matches(TUNING,"first Apply")
@@ -649,6 +778,7 @@ func solver_switch() -> void:
 			require(host.workbench_water_options.get("workbench_wave_"+key) == saved.get("workbench_wave_"+key),
 				family+" does not overwrite staged Wave "+key)
 	await solver_preference_cycle()
+	await mixed_policy_selection_cycle()
 	panel.water_spray._wave.button_pressed = true
 	before = generation()
 	panel.water_spray._apply_wave()
@@ -693,6 +823,72 @@ func solver_preference_cycle() -> void:
 	if not await preference_apply("pressure_flow_v1",false,"unsigned_preference_pressure"): return
 	if not require(panel.water_spray._stage_solver("inertial_cellular_v1","reference"),"return to explicitly unsigned Inertial"): return
 	await preference_apply("inertial_cellular_v1",false,"inertial_explicit_off_retained")
+
+func select_brine(family: String) -> bool:
+	var liquids: Control = panel._liquids
+	liquids.material_picker.select(liquids.material_picker.get_item_index(24))
+	liquids._refresh_choices()
+	for index: int in liquids._choices.size():
+		var choice: Dictionary = liquids._choices[index]
+		if choice.get("accepted",false) and choice.get("family","") == family:
+			liquids.family_picker.select(index)
+			liquids.family_picker.item_selected.emit(index)
+			return true
+	return require(false,"Advanced policy exposes Brine "+family)
+
+func mixed_policy_selection_cycle() -> void:
+	# A Water-law comparison must retain other accepted liquid assignments.
+	# Start with a cached Water-only PF option, then edit shared IN while Wave
+	# is active. Every outcome below is read from a positively replaced World.
+	var spray: RefCounted = panel.water_spray
+	if not require(spray._stage_solver("pressure_flow_v1","cached"),"stage remembered gas-off PressureFlow"): return
+	spray._pf_gas.button_pressed = false
+	if not await preference_apply("pressure_flow_v1",false,"mixed_policy_start_pf"): return
+	require(not host.tower_context.liquid_solver_policy.family_parameters.pressure_flow_v1.gas_enabled,
+		"initial remembered PressureFlow has gas disabled")
+	panel.water_lab.open()
+	for target: Array in [["pressure_flow_v1","cached",9],["freemass_v1","reference",11],["inertial_cellular_v1","reference",7]]:
+		spray._wave.button_pressed = true
+		if not await preference_apply("wave_flow_v1",false,"mixed_policy_enter_wave_"+target[0]): return
+		panel.water_lab.select_tab(4)
+		if not select_brine("inertial_cellular_v1"): return
+		for frame: int in 2: await process_frame
+		if not await type_spin_text(panel._liquids.damping_numerator,str(target[2])): return
+		var before := generation()
+		if not await click_lab_button("Apply liquid selection"): return
+		if not await installed_after(before,"apply edited Brine while Wave is active"): return
+		var actual: Dictionary = host.tower_context.liquid_solver_policy
+		require(wave().enabled and policy_family(actual,24) == "inertial_cellular_v1" \
+			and actual.family_parameters.inertial_cellular_v1.damping_numerator == int(target[2]),
+			"Advanced Apply consumes typed damping and installs Brine IN under Wave")
+		if not require(spray._stage_solver(str(target[0]),str(target[1])),"select Water alone: "+target[0]): return
+		if not await preference_apply(str(target[0]),false,"mixed_policy_leave_wave_"+target[0]): return
+		actual = host.tower_context.liquid_solver_policy
+		require(policy_family(actual,24) == "inertial_cellular_v1" \
+			and actual.family_parameters.inertial_cellular_v1.damping_numerator == int(target[2]),
+			"Water selection retains accepted Brine and latest shared damping: "+target[0])
+		if target[0] == "pressure_flow_v1":
+			require(not actual.family_parameters.pressure_flow_v1.gas_enabled,
+				"return to PressureFlow restores its dormant gas-off setting")
+	# Exercise the legacy Wave-off toggle as well as explicit law selection.
+	spray._wave.button_pressed = true
+	if not await preference_apply("wave_flow_v1",false,"mixed_policy_toggle_enter"): return
+	panel.water_lab.select_tab(4)
+	if not await type_spin_text(panel._liquids.damping_numerator,"10"): return
+	var before := generation()
+	if not await click_lab_button("Apply liquid selection"): return
+	if not await installed_after(before,"accept latest shared parameters before Wave off"): return
+	spray._wave.button_pressed = false
+	if not await preference_apply("inertial_cellular_v1",false,"mixed_policy_toggle_restore"): return
+	var actual: Dictionary = host.tower_context.liquid_solver_policy
+	require(policy_family(actual,24) == "inertial_cellular_v1" \
+		and actual.family_parameters.inertial_cellular_v1.damping_numerator == 10,
+		"Wave toggle restores Water while retaining latest accepted shared-family parameters")
+	if not select_brine("cellular_yield_v1"): return
+	before = generation()
+	if not require(spray._apply_wave(),"restore default Brine after mixed-policy test"): return
+	await installed_after(before,"mixed-policy fixture cleanup")
+	panel.water_lab.window.hide()
 
 func comparison_scenes() -> void:
 	var start := failures.size()
@@ -767,6 +963,8 @@ func failed_owner_recovery() -> void:
 
 func run() -> void:
 	native_validation()
+	root.content_scale_size = Vector2i.ZERO
+	root.gui_embed_subwindows = true
 	root.size = Vector2i(1600,900)
 	change_scene_to_file("res://feature_launcher.tscn")
 	await scene_changed

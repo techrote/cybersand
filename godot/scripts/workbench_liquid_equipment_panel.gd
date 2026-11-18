@@ -73,7 +73,7 @@ func _add_button(row: Control, caption: String, action: Callable) -> Button:
 	button.focus_mode = Control.FOCUS_NONE
 	button.text = caption
 	button.pressed.connect(func() -> void:
-		ui._commit_field()
+		ui._commit_field(button.get_viewport())
 		action.call())
 	row.add_child(button)
 	return button

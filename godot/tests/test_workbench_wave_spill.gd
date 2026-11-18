@@ -12,7 +12,7 @@ var panel: Control
 var checks := 0
 var failures: Array[String] = []
 var sections := {"native_admission":false,"native_conservation":false,"native_generic_ballistic":false,
-	"lab_controls":false,"workbench_apply":false,"workbench_generic_ballistic":false}
+	"native_body_push_reaction":false,"lab_controls":false,"workbench_apply":false,"workbench_generic_ballistic":false}
 
 func _initialize() -> void:
 	run.call_deferred()
@@ -179,6 +179,98 @@ func native_generic_ballistic(bridge: Variant, args: Array, base: Dictionary) ->
 		for tick: int in 60: require(world.simulation_tick(),"Wave World with Face release ticks")
 	sections.native_generic_ballistic = failures.size() == start
 
+func reaction_body_sample(y: float, serial: int, speed: float) -> PackedFloat64Array:
+	return PackedFloat64Array([1,50,y,0,8,8,0,speed,0,1,serial,20,50,y,0.4,1.0/60.0,1])
+
+# A single partial Water cell keeps the real body impulse below its cap. Read
+# the native packet before a tick, isolating overlap displacement and launch
+# reaction from later Wave contacts or parcel impacts. Reaction-off pairs let
+# us compare the reaction alone without assuming the displacement formula.
+func native_reaction_case(bridge: Variant, checked: Dictionary, wave_enabled: bool,
+		push: int, reaction: float) -> Dictionary:
+	var label := "spray reaction Wave=%s push=%d reaction=%.1f" % [str(wave_enabled),push,reaction]
+	var world: Variant = ClassDB.instantiate(&"CyberNativeCellWorld")
+	var owner := {"id":1,"instance_id":42,"generation":1,"first_proxy":1,"count":1,
+		"budget":20,"gravity":92,"external_drive":false}
+	var geometry := PackedFloat64Array([0,0,8,8])
+	var sample := {"session":1,"epoch":1,"states":reaction_body_sample(45.0,1,0.0),
+		"geometry":geometry,"bodies":[owner]}
+	var options := {"workbench_extent":Vector2i(256,256),"workbench_response":"LA-SELECTIVE",
+		"workbench_sample":sample,"region":PackedInt32Array([0,0,256,256]),
+		"intent":"exploratory","definition_hash":checked.hash,
+		"initial_bodies":PackedFloat32Array([1,50,45,0,8,8,0,0,0,1,1]),
+		"workbench_wave_flow":wave_enabled,"workbench_ballistic":true,"workbench_worker_threads":1}
+	if wave_enabled:
+		options.workbench_wave_body_push = push
+		options.workbench_wave_body_push_by_mass = 1
+	var token: int = bridge.prepare_liquid_world(world,PackedInt32Array([50,62,1,1,3]),
+		checked.transport.packed,PackedInt32Array(checked.definition.water_semantics),
+		PackedInt32Array([50,62,1,1,64,0]),bridge.default_liquid_policy(),options)
+	if not require(token > 0 and bridge.commit_liquid_world(world,token),label+" construction / "+str(bridge.get_last_error())):
+		return {}
+	var status: Dictionary = world.get_wave_flow_status()
+	require(status.get("enabled") == wave_enabled and status.construction_options.get("workbench_ballistic") == true,
+		label+" acknowledged solver and Ballistic Water")
+	if wave_enabled:
+		require(status.parameters.get("body_push") == push and status.parameters.get("body_push_by_mass") == 1,
+			label+" acknowledged Body push and Push by amount")
+	require(int(str(status.get("water_quantity",-1))) == 64,label+" starts with one partial 64-unit cell")
+	var configured: Dictionary = world.set_water_spray({"enabled":true,"threshold":0.0,
+		"reaction_gain":reaction,"jitter":0.0,"droplet_gain":0.0})
+	if not require(configured.get("accepted") == true and configured.get("applied",{}).get("enabled") == true \
+			and is_equal_approx(float(configured.get("applied",{}).get("reaction_gain",-1)),reaction),
+			label+" native spray configuration accepted"):
+		return {}
+	if not require(world.prepare_workbench_coupling(reaction_body_sample(59.0,2,240.0),geometry,[owner],1,1,true),
+			label+" moving body sample accepted"):
+		return {}
+	var result: Dictionary = world.workbench_coupling_results()
+	var rows: Array = result.get("rows",[])
+	if not require(result.get("valid") == true and rows.size() == 1,label+" valid native body impulse packet"):
+		return {}
+	var row: Dictionary = rows[0]
+	require(row.get("id") == 1 and row.get("instance_id") == 42 and row.get("sample") == 2,
+		label+" packet matches the offered physical body/sample")
+	var impulse: Vector2 = row.get("impulse",Vector2(INF,INF))
+	require(impulse.is_finite() and impulse.length() < 1.0,label+" impulse is below the native cap")
+	var spray: Dictionary = world.get_water_spray()
+	var ledger: Dictionary = spray.get("ledger",{})
+	var water: Dictionary = spray.get("water",{})
+	require(int(ledger.get("launched_parcels",-1)) == 1 and int(ledger.get("launched_quantity",-1)) == 64 \
+		and int(ledger.get("injected_quantity",-1)) == 0 and int(spray.get("in_flight_quantity",-1)) == 64,
+		label+" launches exactly the original partial cell")
+	require(int(water.get("total",-1)) == 64 and int(water.get("expected",-1)) == 64 \
+		and int(water.get("visible",-1)) == 0 and int(water.get("ballistic",-1)) == 64,
+		label+" exact grid plus parcel conservation")
+	require(not world.has_failed() and world.get_tick_index() == 0,label+" healthy overlap-only observation")
+	return {"impulse":impulse,"hash":world.get_physical_state_hash(),"parcels":world.inspect_ballistic_parcels(4)}
+
+func native_body_push_reaction() -> void:
+	var start := failures.size()
+	var bridge: Variant = ClassDB.instantiate(&"CyberDemoBridge")
+	var checked: Dictionary = Contract.validate(Contract.parse(FileAccess.get_file_as_string(DAM)).definition)
+	var pairs: Array[Dictionary] = []
+	for spec: Array in [[true,0],[true,128],[true,256],[false,256]]:
+		var quiet := native_reaction_case(bridge,checked,bool(spec[0]),int(spec[1]),0.0)
+		var reacting := native_reaction_case(bridge,checked,bool(spec[0]),int(spec[1]),0.2)
+		if quiet.is_empty() or reacting.is_empty(): return
+		require(quiet.hash == reacting.hash and quiet.parcels == reacting.parcels,
+			"Reaction changes only the body impulse, never Water or its launched parcel")
+		pairs.append({"quiet":quiet,"reacting":reacting,"delta":reacting.impulse-quiet.impulse})
+	require(pairs[0].quiet.impulse == Vector2.ZERO and pairs[0].reacting.impulse == Vector2.ZERO,
+		"Body push 0 suppresses impact spray reaction as well as ordinary Water force")
+	var full: Vector2 = pairs[2].delta
+	require(full.length() > 0.01,"Body push 256 keeps a measured nonzero spray reaction")
+	require(Vector2(pairs[1].delta).distance_to(full*0.5) < 0.000001,
+		"Body push 128 halves the reaction on the same launched Water")
+	require(Vector2(pairs[3].delta).distance_to(full) < 0.000001,
+		"Body push 256 retains the non-Wave reaction, without scaling partial quantity twice")
+	for index: int in [0,1]:
+		require(pairs[index].reacting.hash == pairs[2].reacting.hash \
+			and pairs[index].reacting.parcels == pairs[2].reacting.parcels,
+			"Body push changes neither Wave physical state nor actual parcel trajectory")
+	sections.native_body_push_reaction = failures.size() == start
+
 func lab_controls() -> void:
 	var start := failures.size()
 	var spray: RefCounted = panel.water_spray
@@ -277,6 +369,7 @@ func workbench_generic_ballistic() -> void:
 
 func run() -> void:
 	native_admission()
+	native_body_push_reaction()
 	root.size = Vector2i(1600,900)
 	change_scene_to_file("res://feature_launcher.tscn")
 	await scene_changed

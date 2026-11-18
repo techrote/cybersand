@@ -181,7 +181,7 @@ BallisticLaunchResult World::admit_ballistic_spawn(std::int64_t spawn_x, std::in
     if (tick_failed_) { result.outcome = BallisticLaunchOutcome::WorldFailed; return result; }
     // Only the World's own serialized tick-entry passes launch during a tick.
     if (tick_in_progress_ && !internal) { result.outcome = BallisticLaunchOutcome::TickInProgress; return result; }
-    constexpr std::int64_t limit = std::int64_t{1} << 52;
+    constexpr auto limit = BallisticWaterConfig::kMaximumSpawnCoordinateQ;
     if (std::abs(vx) > c.max_speed_q || std::abs(vy) > c.max_speed_q || spawn_x < -limit || spawn_x > limit ||
         spawn_y < -limit || spawn_y > limit) {
         result.outcome = BallisticLaunchOutcome::InvalidRequest;
@@ -524,6 +524,9 @@ void World::release_water_faces() {
                     std::int64_t height = 0;
                     while (height < 64 && water_at(x, y - 1 - height)) ++height;
                     if (height < c.face_min_height) continue;
+                    std::int64_t spawn_x = 0, spawn_y = 0;
+                    if (!BallisticWaterConfig::spawn_cell_center_q(x, side, spawn_x) ||
+                        !BallisticWaterConfig::spawn_cell_center_q(y, 0, spawn_y)) continue;
                     // Integer sqrt(2 g h) in q256 per tick, scaled by face_speed / 256.
                     const auto energy = static_cast<std::uint64_t>(2 * c.gravity_q) *
                                         static_cast<std::uint64_t>(height * kBallisticQ);
@@ -532,8 +535,8 @@ void World::release_water_faces() {
                     while ((root + 1) * (root + 1) <= energy) ++root;
                     const auto speed = std::min<std::int64_t>(c.max_speed_q,
                         static_cast<std::int64_t>(root) * c.face_speed / 256);
-                    const auto r = launch_ballistic_water_internal(x, y, (x + side) * kBallisticQ + kBallisticQ / 2,
-                        y * kBallisticQ + kBallisticQ / 2, static_cast<std::int32_t>(side * speed), 0, 0,
+                    const auto r = launch_ballistic_water_internal(x, y, spawn_x, spawn_y,
+                        static_cast<std::int32_t>(side * speed), 0, 0,
                         std::numeric_limits<std::uint32_t>::max(), true);
                     if (r.outcome != BallisticLaunchOutcome::Launched) continue;
                     ++ballistic_ledger_.face_releases;
@@ -617,13 +620,20 @@ bool World::step_ballistic_parcel(BallisticParcel& p) {
         if (ncx == cx && ncy == cy) { p.x = tx; p.y = ty; continue; }
         std::uint16_t body = 0;
         auto kind = classify_ballistic_cell(ncx, ncy, p, body);
-        if (wave_ != nullptr && kind == BallisticCell::Free && ncx != cx && ncy != cy) {
+        if (wave_ != nullptr && (kind == BallisticCell::Free || kind == BallisticCell::Water) &&
+            ncx != cx && ncy != cy) {
             // wave_flow_v1: a diagonal step between two closed axis cells would
             // cross a one-cell diagonal wall. It meets the nearer of them instead.
+            // Existing Water beyond the corner is not a reachable merge target.
             std::uint16_t side_body = 0, down_body = 0;
             const auto side = classify_ballistic_cell(ncx, cy, p, side_body);
             const auto down = classify_ballistic_cell(cx, ncy, p, down_body);
-            if (side != BallisticCell::Free && down != BallisticCell::Free) {
+            // A Water neighbour still connects a wet destination to this
+            // parcel. Keep its existing merge destination; only two blocking
+            // neighbours can make that wet diagonal cell unreachable.
+            if (side != BallisticCell::Free && down != BallisticCell::Free &&
+                (kind == BallisticCell::Free ||
+                 (side != BallisticCell::Water && down != BallisticCell::Water))) {
                 if (down == BallisticCell::Water) {
                     surface = true;
                     surface_cell = {cx, ncy};

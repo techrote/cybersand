@@ -1317,6 +1317,13 @@ void World::advance_wave_flow(TickStats& stats) {
             if (scratch.launch_overflow != 0U) { diagnostics.launch_deferrals += scratch.launch_overflow; held = true; }
             for (const auto& face : scratch.launch) {
                 if (budget == 0) { ++diagnostics.launch_deferrals; held = true; continue; }
+                std::int64_t spawn_x = 0, spawn_y = 0;
+                if (!BallisticWaterConfig::spawn_cell_center_q(face.x, face.side, spawn_x) ||
+                    !BallisticWaterConfig::spawn_cell_center_q(face.y, 0, spawn_y)) {
+                    ++diagnostics.launch_refusals;
+                    held = true;
+                    continue;
+                }
                 // Integer sqrt(2 g h) in q per tick; h is the head in cells.
                 const auto energy = static_cast<std::uint64_t>(2 * law.gravity_q) * static_cast<std::uint64_t>(face.head) *
                                     static_cast<std::uint64_t>(BallisticWaterConfig::kQ) / static_cast<std::uint64_t>(state.maximum);
@@ -1330,9 +1337,7 @@ void World::advance_wave_flow(TickStats& stats) {
                 speed += speed * static_cast<std::int64_t>(key & 63U) / 256;
                 speed = std::min<std::int64_t>(speed, law.max_speed_q);
                 const auto drop = static_cast<std::int32_t>((key >> 8) & 15U);
-                const auto result = launch_ballistic_water_internal(face.x, face.y,
-                    (face.x + face.side) * BallisticWaterConfig::kQ + BallisticWaterConfig::kQ / 2,
-                    face.y * BallisticWaterConfig::kQ + BallisticWaterConfig::kQ / 2,
+                const auto result = launch_ballistic_water_internal(face.x, face.y, spawn_x, spawn_y,
                     static_cast<std::int32_t>(face.side * speed), drop, 0, static_cast<std::uint32_t>(face.quantity), true);
                 if (result.outcome != BallisticLaunchOutcome::Launched) { ++diagnostics.launch_refusals; held = true; continue; }
                 ++diagnostics.launched_parcels;

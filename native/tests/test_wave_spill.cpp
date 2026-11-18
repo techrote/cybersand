@@ -624,16 +624,126 @@ void diagonal_one_cell_wall_holds() {
                 if (x + y > 103 && world.stored_material(x, y) == Material::Water) total += world.liquid_mass(x, y);
         return total;
     };
-    for (int k = 0; k < 40; ++k)
-        (void)world.inject_ballistic_water((20 + k) * 256 + 128, (82 - k) * 256 + 128, 300, 300, 100);
+    // Carve actual launch cells: these positions were Water in the old test,
+    // so all 40 injections refused and no parcel ever exercised the wall.
+    for (int k = 0; k < 40; ++k) world.set(20 + k, 82 - k, Material::Empty);
+    const RectI64 all{0, 0, n, n};
+    const auto initial = owned(world, all);
+    for (int k = 0; k < 40; ++k) {
+        const auto injected = world.inject_ballistic_water((20 + k) * 256 + 128, (82 - k) * 256 + 128, 300, 300, 100);
+        require(injected.outcome == BallisticLaunchOutcome::Launched, "diagonal wall test parcel was refused");
+    }
+    require(world.ballistic_parcel_count() == 40U, "diagonal wall test did not create its in-flight parcels");
     for (int t = 0; t < 200; ++t) {
         (void)world.tick();
         require(far_side() == 0U, "Water crossed a one-cell diagonal wall");
+        if (t == 0) require(world.ballistic_water_snapshot().ledger.terrain_contacts > 0U,
+                            "diagonal wall test did not exercise a parcel/terrain collision");
+        std::vector<BallisticParcel> parcels(world.ballistic_parcel_count());
+        (void)world.copy_ballistic_parcels(parcels);
+        for (const auto& p : parcels)
+            require((p.x >> 8) + (p.y >> 8) < 103, "a parcel flew through a one-cell diagonal wall");
     }
-    std::vector<BallisticParcel> parcels(world.ballistic_parcel_count());
-    (void)world.copy_ballistic_parcels(parcels);
-    for (const auto& p : parcels)
-        require((p.x >> 8) + (p.y >> 8) < 103, "a parcel flew through a one-cell diagonal wall");
+    require_ledger_closes(world, all, initial + 4000U, "diagonal wall parcels");
+}
+
+void wet_and_dry_corners_stop_ballistic_water() {
+    // The destination is sealed by four axis neighbours. Its existing Water
+    // must not turn the diagonal crossing into an unchecked preferred merge.
+    for (const auto mode : {Mode::Ballistic, Mode::Hybrid})
+        for (const bool wet : {false, true})
+            for (const int dx : {-1, 1})
+                for (const int dy : {-1, 1}) {
+                    std::uint64_t reference = 0;
+                    for (const auto workers : {1U, 4U}) {
+                        auto cfg = config(mode, workers);
+                        cfg.wave_flow.spill.launch_budget = 0;
+                        World world(cfg);
+                        box(world, 64, 64);
+                        const int x = 20 + dx, y = 20 + dy;
+                        world.set(x - 1, y, Material::Wall);
+                        world.set(x + 1, y, Material::Wall);
+                        world.set(x, y - 1, Material::Wall);
+                        world.set(x, y + 1, Material::Wall);
+                        if (wet) require(world.set_cell_state(x, y, Material::Water, 100, 0), "wet corner setup refused");
+                        const auto parcel = world.inject_ballistic_water(20 * 256 + 128, 20 * 256 + 128,
+                                                                        dx * 256, dy * 256, 100);
+                        require(parcel.outcome == BallisticLaunchOutcome::Launched, "corner test parcel refused");
+                        for (int tick = 0; tick < 32; ++tick) {
+                            (void)world.tick();
+                            require(world.liquid_mass(x, y) == (wet ? 100U : 0U),
+                                    "ballistic Water entered a sealed diagonal destination");
+                            if (tick == 0) require(world.ballistic_water_snapshot().ledger.terrain_contacts > 0U,
+                                                  "corner did not stop the incoming parcel");
+                        }
+                        require_ledger_closes(world, {0, 0, 64, 64}, wet ? 200U : 100U, "sealed ballistic corner");
+                        const auto hash = world.physical_state_hash();
+                        if (workers == 1U) reference = hash;
+                        else require(hash == reference, "corner collision depends on worker count");
+                    }
+                }
+}
+
+void automatic_spill_bounds_parcel_coordinates() {
+    // The native cell domain is wider than the +/-2^52 q256 spawn domain.
+    // A ten-cell column has one exposed, supported face at its bottom row,
+    // making each result an actual automatic launch rather than a helper test.
+    constexpr std::int64_t edge = std::int64_t{1} << 44;
+    constexpr std::int64_t far = std::int64_t{1} << 56;
+    struct Case { std::int64_t x, y; int side; bool admitted; const char* name; };
+    const Case cases[] = {
+        {edge - 2, 20, 1, true, "positive X last centre"},
+        {edge - 1, 20, 1, false, "positive X first excluded centre"},
+        {-edge + 1, 20, -1, true, "negative X first centre"},
+        {-edge, 20, -1, false, "negative X first excluded centre"},
+        {20, edge - 10, 1, true, "positive Y last centre"},
+        {20, edge - 9, 1, false, "positive Y first excluded centre"},
+        {20, -edge - 9, -1, true, "negative Y first centre"},
+        {20, -edge - 10, -1, false, "negative Y first excluded centre"},
+        {far, 20, 1, false, "positive X multiplication limit"},
+        {-far, 20, -1, false, "negative X multiplication limit"},
+        {20, far, 1, false, "positive Y multiplication limit"},
+        {20, -far, -1, false, "negative Y multiplication limit"},
+    };
+    for (const bool face_release : {false, true}) for (const auto& test : cases) {
+        std::uint64_t reference = 0;
+        for (const auto workers : {1U, 4U}) {
+            auto cfg = config(face_release ? Mode::Ballistic : Mode::Hybrid, workers);
+            cfg.ballistic_water.face_release = face_release;
+            cfg.ballistic_water.face_period = 1;
+            World world(cfg);
+            for (int row = 0; row < 10; ++row) {
+                world.set(test.x, test.y + row, Material::Water);
+                world.set(test.x - test.side, test.y + row, Material::Wall);
+                // Legacy face release needs two adjacent open cells; spill
+                // needs only the bottom face. Both nominate exactly one donor.
+                if (row < (face_release ? 8 : 9)) world.set(test.x + test.side, test.y + row, Material::Wall);
+            }
+            world.set(test.x, test.y + 10, Material::Wall);
+            const RectI64 all{test.x - 32, test.y - 16, 65, 64};
+            (void)world.tick();
+            const auto first = world.wave_flow_diagnostics();
+            const auto flight = world.ballistic_water_snapshot();
+            require(flight.ledger.launched_parcels == (test.admitted ? 1U : 0U), std::string(test.name) + ": wrong launch admission");
+            if (face_release) require(flight.ledger.face_releases == (test.admitted ? 1U : 0U),
+                                      std::string(test.name) + ": wrong face-release admission");
+            else require(first.launch_refusals == (test.admitted ? 0U : 1U), std::string(test.name) + ": missing explicit refusal");
+            if (!test.admitted) {
+                if (!face_release) require(world.liquid_mass(test.x, test.y + 9) == 255U,
+                                           std::string(test.name) + ": refused launch removed source Water");
+                require(world.ballistic_parcel_count() == 0U, std::string(test.name) + ": refusal created a parcel");
+            }
+            require_ledger_closes(world, all, 2550U, test.name);
+            (void)world.tick();
+            if (!test.admitted && !face_release) require(world.wave_flow_diagnostics().spill_units > 0U,
+                                                        std::string(test.name) + ": refused launch prevented grid spill fallback");
+            require(!world.has_failed(), std::string(test.name) + ": coordinate refusal failed the World");
+            require_ledger_closes(world, all, 2550U, test.name);
+            const auto hash = world.physical_state_hash();
+            if (workers == 1U) reference = hash;
+            else require(hash == reference, std::string(test.name) + ": coordinate admission depends on workers");
+        }
+    }
 }
 
 void blobs_and_stream_share_conserve_and_are_deterministic() {
@@ -900,6 +1010,8 @@ int main(int argc, char** argv) {
         {"parcels are not born in paused cores", parcels_are_not_born_in_paused_cores},
         {"full parcel pool is counted and clamped", full_parcel_pool_is_counted_and_clamped},
         {"diagonal one-cell wall holds", diagonal_one_cell_wall_holds},
+        {"wet and dry corners stop ballistic Water", wet_and_dry_corners_stop_ballistic_water},
+        {"automatic spill bounds parcel coordinates", automatic_spill_bounds_parcel_coordinates},
         {"blobs and stream share conserve and are deterministic", blobs_and_stream_share_conserve_and_are_deterministic},
         {"body push scales with water amount", body_push_scales_with_water_amount},
         {"generic Ballistic Water runs under Wave", generic_ballistic_water_runs_under_wave},

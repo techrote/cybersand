@@ -406,10 +406,14 @@ bool CyberNativeCellWorld::try_water_spray(const BodyState& body, std::uint16_t 
     else { ++spray_tick_.lifted; ++spray_total_.lifted; }
     if (spray_.reaction_gain > 0.0) {
         // Optional stylized reaction: the body pays for the launched momentum.
+        // Body push covers this Water force too. Quantity is already accounted
+        // for by share, so do not apply the per-cell mass scale a second time.
+        const double gain = spray_.reaction_gain * (world_->wave_flow_enabled()
+            ? static_cast<double>(world_->config().wave_flow.body_push) / 256.0 : 1.0);
         const double share = static_cast<double>(result.quantity) /
                              static_cast<double>(world_->config().water_experiment_policy.maximum());
-        record_impulse(body_id, Vector2(static_cast<real_t>(-vx / dt * share * spray_.reaction_gain * 0.01),
-                                        static_cast<real_t>(-vy / dt * share * spray_.reaction_gain * 0.01)));
+        record_impulse(body_id, Vector2(static_cast<real_t>(-vx / dt * share * gain * 0.01),
+                                        static_cast<real_t>(-vy / dt * share * gain * 0.01)));
     }
     return true;
 }

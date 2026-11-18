@@ -54,6 +54,20 @@ class WaterwallPublicationTests(unittest.TestCase):
                 with self.assertRaises(RuntimeError):
                     profile.verify_spill_summary(bad)
 
+    def test_body_push_reaction_evidence_is_required(self):
+        self.assertIn("native_body_push_reaction", profile.SPILL_SECTIONS)
+        sections = {name: True for name in profile.SPILL_SECTIONS}
+        for missing in (True, False):
+            incomplete = dict(sections)
+            if missing:
+                incomplete.pop("native_body_push_reaction")
+            else:
+                incomplete["native_body_push_reaction"] = False
+            summary = {"checks": 40, "failures": [], "sections": incomplete}
+            with self.subTest(missing=missing):
+                with self.assertRaises(RuntimeError):
+                    profile.verify_spill_summary("WORKBENCH_WAVE_SPILL " + json.dumps(summary))
+
     @staticmethod
     def failure_summary():
         return {"checks": 180, "failures": [],

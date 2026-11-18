@@ -22,8 +22,22 @@ namespace cybersand {
 struct BallisticWaterConfig {
     static constexpr std::uint16_t kVersion = 1;
     static constexpr std::int32_t kQ = 256;  // position and velocity units per cell
+    static constexpr std::int64_t kMaximumSpawnCoordinateQ = std::int64_t{1} << 52;
     static constexpr std::uint32_t kMaximumCapacity = 65'536;
     static constexpr std::uint32_t kSelfContactGraceTicks = 4;
+
+    // Automatic release starts at a cell centre. Bound the cell before either
+    // adding its face offset or converting to q256; the native cell domain is
+    // wider than the admitted parcel spawn domain.
+    [[nodiscard]] static bool spawn_cell_center_q(std::int64_t cell, std::int32_t offset,
+                                                 std::int64_t& coordinate) noexcept {
+        constexpr auto q = static_cast<std::int64_t>(kQ);
+        constexpr auto minimum = -kMaximumSpawnCoordinateQ / q;
+        constexpr auto maximum = kMaximumSpawnCoordinateQ / q - 1;
+        if (cell < minimum - offset || cell > maximum - offset) return false;
+        coordinate = (cell + offset) * q + q / 2;
+        return true;
+    }
 
     bool enabled = false;
     std::uint32_t capacity = 4'096;          // parcel slots reserved at construction
