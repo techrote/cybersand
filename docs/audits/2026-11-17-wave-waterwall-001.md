@@ -216,6 +216,28 @@ and the default-off golden hashes are unchanged.
 | `test_workbench_wave.gd`, `test_wave_flow.gd`, `test_workbench_canvas.gd`, `test_workbench_spray_rearm.gd`, `test_failed_world_status_survives.gd`, `test_workbench_failure_containment.gd` | same | PASS |
 | `test_workbench_wave_render.gd` (graphical, ANGLE) | same | 180 assertions, 6 captures, PASS on rerun; the first run failed one pointer-focus check before any capture |
 
+## Owner request: stream draw (2026-11-18)
+
+The owner asked for a vertical stream drawn "from within the volume" rather than
+taken from the throw, as Stream share does. `stream_draw` pours an extra n/256 of
+each thrown face share from the face cell. The pool feed refills that cell, so
+the throw keeps its size. Independent two-lens review found that stream share plus
+stream draw above 256 could let one cell pour more than its own share through
+two open faces in the same round. Each face's pour is now clamped to its own
+share, and an extreme-settings conservation case was added. The overdraw itself
+was not reproduced in a test; the clamp makes it impossible by construction.
+`stream_draw = 0` reproduces four spill hashes pinned from HEAD `68e0db19`.
+
+Supplied map, 6 workers, 1500 ticks: reservoir cells remaining at t300/t900/t1500
+and total thrown units. Timing was taken while sanitizer runs shared the CPU, so
+it is not reported.
+
+| Mode | t300 | t900 | t1500 | Thrown units |
+|---|---|---|---|---|
+| Spill + ballistic | 3685 | 1497 | 718 | 8,749,479 |
+| Stream share 64 / 128 | 4117 / 4122 | 1674 / 1683 | 787 / 758 | 6,655,233 / 5,069,617 |
+| Stream draw 64 / 128 / 255 | 4035 / 4017 / 4010 | 1598 / 1577 / 1578 | 755 / 744 / 742 | 7,583,068 / 7,527,042 / 7,163,882 |
+
 ## Protected-source transitions
 
 The material-catalogue compatibility table admits these reviewed steps (LF SHA-256):
@@ -225,6 +247,7 @@ The material-catalogue compatibility table admits these reviewed steps (LF SHA-2
 | `native/src/world.cpp` | `911ac9df96c34f7bbc24e9de8b53099ba779ff6cc999c6ff349b61e4379ee143` | `80e05f673b3d6ba35daa7c741805aa272f149e7742d162c94c8c0bd9bdbc1e83` | `751c1a951a8f76c397dd3f903f378208119d29f1` |
 | `native/src/world_pressure.inc` | `9ee31ffc4ea89b50f78e39eecc8f5c9be5944bcbc2f6ead48698c714564b7067` | `64c3afbe1e368d24d3ac4d484a78fa8cd3fc380c80fe54bfeb8661738048254f` | `26d032f14820d6d46272d487d56cacaee4544368` |
 | `native/src/world_pressure.inc` (blobs/stream share) | `64c3afbe1e368d24d3ac4d484a78fa8cd3fc380c80fe54bfeb8661738048254f` | `df6558560b4bfe946a86826c83559138d279f94d77d0a7309a3551e671386fe8` | `1d71202a35a7945e496b0cb83a2d639b2ad2b5bc` |
+| `native/src/world_pressure.inc` (stream draw) | `df6558560b4bfe946a86826c83559138d279f94d77d0a7309a3551e671386fe8` | `c5d639212290c9a4faee47f86a3cfe5bf664a5a51d241d4b5c9c1cdb985b6105` | `d07f24c89b88a95803602d4187bd71e7f8933ec6` |
 
 `world.cpp` changes one line: `clear()` resets the spill back-off flag.
 `world_pressure.inc` binds spill configuration into the Wave physical hash, and

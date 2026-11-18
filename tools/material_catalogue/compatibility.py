@@ -440,6 +440,17 @@ REVIEWED_TRANSITIONS += ({'path': 'native/src/world_pressure.inc',
   'pr': 661},)
 
 
+# WAVE-WATERWALL-001 stream draw (2026-11-18): bind stream_draw into Wave
+# physical identity only while spill is enabled and stream_draw is non-zero, so
+# every earlier spill World keeps its exact hash (pinned in test_wave_spill.cpp).
+REVIEWED_TRANSITIONS += ({'path': 'native/src/world_pressure.inc',
+  'from_lf_sha256': 'df6558560b4bfe946a86826c83559138d279f94d77d0a7309a3551e671386fe8',
+  'to_lf_sha256': 'c5d639212290c9a4faee47f86a3cfe5bf664a5a51d241d4b5c9c1cdb985b6105',
+  'source_commit': 'd07f24c89b88a95803602d4187bd71e7f8933ec6',
+  'record': 'docs/audits/2026-11-17-wave-waterwall-001.md',
+  'issue': 661,
+  'pr': 661},)
+
 def lf(data: bytes) -> bytes:
     return data.replace(b"\r\n", b"\n")
 
