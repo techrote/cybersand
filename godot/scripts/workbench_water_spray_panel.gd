@@ -117,6 +117,10 @@ func build(owner: Control, parent: Control, row_factory: Callable, jet_point: Ca
 	_jet_point = jet_point
 	_inertial_signed_preference = _option_on("workbench_inertial_signed")
 	var embedded := not water_pages.is_empty()
+	# Embedded in the Water Lab, the legacy Wave/spray windows, their scroll
+	# bodies and the standalone Wave toggle are never added to the tree. Free
+	# them with the Workbench so no Window viewport or node outlives it.
+	if embedded: parent.tree_exiting.connect(_free_unparented_controls,CONNECT_ONE_SHOT)
 	var solver_surface: Control = water_pages.get("solvers",parent)
 	var status_surface: Control = water_pages.get("status",parent)
 
@@ -325,6 +329,10 @@ func _show_controls(window: Window) -> void:
 		tabs.current_tab = 1 if window == _wave_window else 2
 		return
 	window.popup_centered_clamped(Vector2i(1000,410),0.95)
+
+func _free_unparented_controls() -> void:
+	for node: Node in [_wave,_wave_window,_spray_window,_wave_scroll,_spray_scroll]:
+		if is_instance_valid(node) and node.get_parent() == null: node.free()
 
 func _add_wave_field(row: Control, spec: Array) -> void:
 	# Keep each label/input/readback together when the Workbench is narrow.
