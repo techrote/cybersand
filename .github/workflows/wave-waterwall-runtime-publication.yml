@@ -119,11 +119,11 @@ jobs:
           python3 tools/ci/wave_waterwall_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
           python3 tools/wave_mt/test_matrix.py
           case "$WAVE_MODE" in
-            normal) targets="wave-flow-test wave-spill-test" ;;
-            asan-ubsan) targets="wave-flow-sanitize wave-spill-sanitize" ;;
-            tsan) targets="wave-flow-thread-sanitize wave-spill-thread-sanitize" ;;
+            normal) targets="wave-flow-test wave-spill-test wave-body-boundary-test" ;;
+            asan-ubsan) targets="wave-flow-sanitize wave-spill-sanitize wave-body-boundary-sanitize" ;;
+            tsan) targets="wave-flow-thread-sanitize wave-spill-thread-sanitize wave-body-boundary-thread-sanitize" ;;
           esac
-          # WAVE-WATERWALL-001: the original Wave suite and the spill suite both run.
+          # Original Wave, spill and the body-boundary stress controls all run.
           for target in $targets; do
             timeout "$(python3 tools/ci/execution_policy.py seconds native_suite_seconds)" \
               make CXX=g++-13 "$target" 2>&1 | tee -a build/wave-mt-native/native.log

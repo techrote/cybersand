@@ -3,7 +3,7 @@ title: Workbench Water Lab — consolidated controls
 status: Draft / research
 document-kind: guide
 scope: Stacked UI-only candidate above PR 631
-last-reviewed: 2026-11-16
+last-reviewed: 2026-11-18
 related-documents: [wave-flow-evaluation.md, ../architecture/wave-flow-v1.md]
 ---
 
@@ -92,6 +92,26 @@ To compare, load a start, select **Wave Flow** and press **Apply** with spill
 off. Then turn **Waterwall spill** (and optionally **Ballistic release**) on and
 press **Apply** again. Apply retains the current cells, so to compare from the
 same authored state, reload the start between runs.
+
+## Native failure and recovery (Waterwall branch)
+
+If a native operation fails, Workbench pauses and keeps its last valid view.
+The message begins `Native tick … stopped:` and retains the first native error.
+For body-occupancy preparation it also identifies the failing stage, body/proxy,
+source cell and intended destination. Copy the full message before resetting.
+The error is retained through later reads and refused edits. Reset or Restore
+start rebuilds the authored setup; it does not resume a partially failed World.
+
+Body push = 0 disables the force offered to Rapier, but overlap reconciliation
+still moves Water out of the body. Thus zero push does not disable relocation
+or ballistic launch and does not rule out an occupancy-preparation fault.
+
+The provisional protection covers native exceptions during editing, coupling
+and copied observations, including a fault discovered during publication.
+The original underwater surface-crest trigger remains unconfirmed. The native
+boundary stress suite and the focused Godot failure/recovery tests are separate
+from physical Windows/NVIDIA owner acceptance. Source-matched execution results
+and the current evaluation package belong in the Draft PR ledger.
 
 ## Acceptance and retained boundary
 

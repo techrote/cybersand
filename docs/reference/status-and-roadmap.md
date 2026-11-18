@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-16
+last-reviewed: 2026-11-18
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -149,6 +149,19 @@ was an Approved semantic successor at that dated checkpoint; the 13 November
 GEN-008 candidate above now implements the revised contract independently of #542.
 
 ## Wave flow Water solver (WAVE-MT-001) — 2026-11-15
+
+**Waterwall provisional crash containment, 2026-11-18:** Draft #672 retains the
+opt-in spill/ballistic/blobs candidate above unchanged #661/#631. Its owner now
+authorizes extensive testing and a provisional fix. Native Godot boundaries
+quarantine unexpected exceptions, preserve the first diagnosis and prevent
+failed edits or observations from becoming healthy Workbench publications.
+Body-occupancy diagnostics record stage/body/source/target without changing the
+Water law. The Waterwall publisher requires native boundary stress and actual
+Godot failed-world/publication/recovery regressions on Linux and Windows. The
+original surface-crest trigger remains unconfirmed; platform execution results
+and package identity are maintained in the PR ledger. Keep Draft/HOLD, original
+spill-off golden hashes and default parcels/tick 256. Human acceptance, Ready
+and merging remain separate owner decisions.
 
 **Shared Workbench continuation, 2026-11-16:** the owner now evaluates Wave in
 the ordinary Workbench using `Open Workbench.cmd`, editable Water comparison

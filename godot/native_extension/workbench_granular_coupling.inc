@@ -119,10 +119,10 @@ bool CyberNativeCellWorld::prepare_workbench_coupling(const PackedFloat64Array& 
         const PackedFloat64Array& geometry, const Array& owners, std::int64_t session,
         std::int64_t epoch, bool resolve_overlaps) {
     if (!world_ || world_->has_failed() || !workbench_) return false;
-    workbench_->valid = false;
-    WorkbenchSample next;
-    if (!parse_workbench_sample(next,*workbench_,states,geometry,owners,session,epoch)) return false;
     try {
+        workbench_->valid = false;
+        WorkbenchSample next;
+        if (!parse_workbench_sample(next,*workbench_,states,geometry,owners,session,epoch)) return false;
         workbench_->sample = next;
         current_bodies_ = next.proxies;
         workbench_->bins = {};
@@ -132,12 +132,10 @@ bool CyberNativeCellWorld::prepare_workbench_coupling(const PackedFloat64Array& 
         workbench_->sampled = workbench_->valid = true;
         return true;
     } catch (const std::exception& error) {
-        world_->quarantine_external_coupling(); ++tick_failure_count_;
-        last_tick_error_ = String("Workbench occupancy preparation failed: ") + String(error.what());
+        record_native_failure("Workbench occupancy preparation", error.what());
         return false;
     } catch (...) {
-        world_->quarantine_external_coupling(); ++tick_failure_count_;
-        last_tick_error_ = "Workbench occupancy preparation failed";
+        record_native_failure("Workbench occupancy preparation", "unknown native exception");
         return false;
     }
 }
@@ -368,7 +366,7 @@ Dictionary CyberNativeCellWorld::workbench_body_result(std::size_t id) const {
     return row;
 }
 
-Dictionary CyberNativeCellWorld::workbench_coupling_results() const {
+Dictionary CyberNativeCellWorld::workbench_coupling_results() const try {
     if (!workbench_ || !world_ || world_->has_failed()) return {};
     Dictionary result; Array rows;
     result["session"]=workbench_->sample.session; result["epoch"]=workbench_->sample.epoch;
@@ -389,4 +387,10 @@ Dictionary CyberNativeCellWorld::workbench_coupling_results() const {
     }
     result["rows"]=rows;
     return result;
+} catch (const std::exception& error) {
+    record_native_failure("workbench_coupling_results", error.what());
+    return native_failure_status();
+} catch (...) {
+    record_native_failure("workbench_coupling_results", "unknown native exception");
+    return native_failure_status();
 }

@@ -97,6 +97,28 @@ wave-spill-sanitize: $(BUILD_DIR)/test_wave_spill_sanitized
 wave-spill-thread-sanitize: $(BUILD_DIR)/test_wave_spill_tsan
 	TSAN_OPTIONS=halt_on_error=1 ./$(BUILD_DIR)/test_wave_spill_tsan
 
+# Body-occupancy boundary stress combines moving masks, external displacement,
+# Wave overfill, ballistic saturation, paused cores and exact worker parity.
+.PHONY: wave-body-boundary-test wave-body-boundary-sanitize wave-body-boundary-thread-sanitize
+
+$(BUILD_DIR)/test_wave_body_boundary: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_wave_body_boundary.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O2 -g -pthread $(CORE_SOURCES) native/tests/test_wave_body_boundary.cpp -o $@
+
+$(BUILD_DIR)/test_wave_body_boundary_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_wave_body_boundary.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=address,undefined $(CORE_SOURCES) native/tests/test_wave_body_boundary.cpp -o $@
+
+$(BUILD_DIR)/test_wave_body_boundary_tsan: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_wave_body_boundary.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=thread $(CORE_SOURCES) native/tests/test_wave_body_boundary.cpp -o $@
+
+wave-body-boundary-test: $(BUILD_DIR)/test_wave_body_boundary
+	./$(BUILD_DIR)/test_wave_body_boundary
+
+wave-body-boundary-sanitize: $(BUILD_DIR)/test_wave_body_boundary_sanitized
+	UBSAN_OPTIONS=halt_on_error=1 ./$(BUILD_DIR)/test_wave_body_boundary_sanitized
+
+wave-body-boundary-thread-sanitize: $(BUILD_DIR)/test_wave_body_boundary_tsan
+	TSAN_OPTIONS=halt_on_error=1 ./$(BUILD_DIR)/test_wave_body_boundary_tsan
+
 .PHONY: material-baseline-test material-baseline-sanitize
 
 $(BUILD_DIR)/test_material_baseline: $(SIMULATION_SOURCES) $(CORE_HEADERS) native/tests/test_material_baseline.cpp | $(BUILD_DIR)
