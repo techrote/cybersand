@@ -11,7 +11,8 @@ var host: Control
 var panel: Control
 var checks := 0
 var failures: Array[String] = []
-var sections := {"native_admission":false,"native_conservation":false,"lab_controls":false,"workbench_apply":false}
+var sections := {"native_admission":false,"native_conservation":false,"native_generic_ballistic":false,
+	"lab_controls":false,"workbench_apply":false,"workbench_generic_ballistic":false}
 
 func _initialize() -> void:
 	run.call_deferred()
@@ -68,8 +69,8 @@ func native_admission() -> void:
 	require(status.enabled and spill.get("enabled") == true and spill.get("parcels") == true,"native spill and parcel readback")
 	for key: String in ["fall","draw","launch_speed","launch_budget","blobs","stream_share"]:
 		require(int(spill.get(key,-1)) == int(hybrid["workbench_wave_spill_"+key]),"native spill readback "+key)
-	require(status.construction_options.get("workbench_ballistic") == false,
-		"the parcel pool owned by spill is not reported as the generic Ballistic Water request")
+	require(status.construction_options.get("workbench_ballistic") == true,
+		"Ballistic release throws through the Ballistic Water parcel pool and reports it")
 	var before: String = world.get_physical_state_hash()
 	var revision: int = world.get_revision()
 	var old_generation: int = world.get_liquid_policy_session_generation()
@@ -80,7 +81,7 @@ func native_admission() -> void:
 			{"workbench_wave_spill_fall":0},{"workbench_wave_spill_fall":9},{"workbench_wave_spill_draw":128},
 			{"workbench_wave_spill_launch_speed":513},{"workbench_wave_spill_launch_budget":4097},
 			{"workbench_wave_spill_fall":2.5},{"workbench_wave_spill_blobs":2},{"workbench_wave_spill_stream_share":256},
-			{"workbench_ballistic":true},{"workbench_face_release":true,"workbench_ballistic":true}]:
+			{"workbench_ballistic":"yes"},{"workbench_face_release":true,"workbench_ballistic":true}]:
 		var candidate := hybrid.duplicate(true)
 		candidate.merge(bad,true)
 		args[6] = candidate
@@ -123,6 +124,59 @@ func native_admission() -> void:
 		require(int(a.spill.launched_parcels) > 0 and int(a.spill.deposited_units) > 0,"exposed face launched and landed parcels")
 		require(world.get_physical_state_hash() == single.get_physical_state_hash(),"hybrid spill is identical at workers 1/4")
 	sections.native_conservation = failures.size() == start
+	native_generic_ballistic(bridge,args,base)
+
+# Generic Ballistic Water under Wave: splashes, sprays and jets keep working,
+# with or without Waterwall spill. Face release runs only without spill.
+func native_generic_ballistic(bridge: Variant, args: Array, base: Dictionary) -> void:
+	var start := failures.size()
+	var world: Variant = ClassDB.instantiate(&"CyberNativeCellWorld")
+	args[0] = world
+	var generic := base.duplicate(true)
+	generic.workbench_ballistic = true
+	args[6] = generic
+	var token: int = bridge.callv("prepare_liquid_world",args)
+	if not require(token > 0 and bridge.commit_liquid_world(world,token),"native admits Ballistic Water under Wave / "+str(bridge.get_last_error())):
+		return
+	var status: Dictionary = world.get_wave_flow_status()
+	require(status.enabled and status.construction_options.get("workbench_ballistic") == true \
+		and status.spill.get("enabled") == false and status.spill.get("parcels") == false,
+		"Wave reads back Ballistic Water on, spill and its release off")
+	require(world.get_water_spray().get("ballistic_enabled") == true,"spray coupling sees the Ballistic Water pool under Wave")
+	var initial := int(str(status.water_quantity))
+	world.set_water_spray({"jet_enabled":true,"jet_origin":Vector2i(60,100),"jet_angle":-50.0,"jet_speed":3.0,"jet_rate":3,"jet_quantity":96})
+	for tick: int in 200:
+		world.water_spray_before_tick()
+		require(world.simulation_tick(),"Wave World with a ballistic jet ticks")
+	world.set_water_spray({"jet_enabled":false})
+	for tick: int in 300: world.simulation_tick()
+	var spray: Dictionary = world.get_water_spray()
+	var ledger: Dictionary = spray.get("ledger",{})
+	status = world.get_wave_flow_status()
+	require(not world.has_failed() and status.get("healthy") == true,"ballistic jet leaves the Wave World healthy")
+	require(int(spray.get("totals",{}).get("jet",0)) > 0 and int(ledger.get("deposited_parcels",0)) > 0,
+		"jet parcels flew and landed in the Wave World")
+	require(int(str(status.water_quantity)) == initial+int(ledger.get("injected_quantity",-1)),
+		"Wave grid plus in-flight Water equals the start plus exactly what the jet injected")
+	# Spill on, release off: parcels fly, faces drain through the grid.
+	var grid_only := base.duplicate(true)
+	grid_only.merge({"workbench_ballistic":true,"workbench_wave_spill":true,"workbench_wave_spill_launch_budget":128},true)
+	args[6] = grid_only
+	token = bridge.callv("prepare_liquid_world",args)
+	if require(token > 0 and bridge.commit_liquid_world(world,token),"native admits Ballistic Water beside grid-only spill / "+str(bridge.get_last_error())):
+		var spill: Dictionary = world.get_wave_flow_status().spill
+		require(spill.enabled == true and spill.parcels == false and int(spill.launch_budget) == 0 \
+			and world.get_wave_flow_status().construction_options.workbench_ballistic == true,
+			"without Ballistic release spill throws nothing (budget 0) while Ballistic Water stays on")
+	# Face release under Wave without spill.
+	var faces := base.duplicate(true)
+	faces.merge({"workbench_ballistic":true,"workbench_face_release":true},true)
+	args[6] = faces
+	token = bridge.callv("prepare_liquid_world",args)
+	if require(token > 0 and bridge.commit_liquid_world(world,token),"native admits Face release under Wave without spill / "+str(bridge.get_last_error())):
+		require(world.get_wave_flow_status().construction_options.workbench_face_release == true,"Face release reads back under Wave")
+		for tick: int in 60: require(world.simulation_tick(),"Wave World with Face release ticks")
+	sections.native_generic_ballistic = failures.size() == start
 
 func lab_controls() -> void:
 	var start := failures.size()
@@ -134,8 +188,25 @@ func lab_controls() -> void:
 	require(spray._spill_fields.size() == 6,"six spill parameters: fall, feed, throw, budget, blobs, stream")
 	spray._set_spill("workbench_wave_spill_parcels",true)
 	require(host.workbench_water_options.get("workbench_wave_spill") == true,"ballistic release stages Waterwall spill")
+	require(host.workbench_water_options.get("workbench_ballistic") == true and spray._ballistic.button_pressed,
+		"ballistic release stages the Ballistic Water parcels it throws through")
 	spray._set_spill("workbench_wave_spill",false)
 	require(host.workbench_water_options.get("workbench_wave_spill_parcels") == false,"turning spill off also drops ballistic release")
+	# Under Wave the Ballistic Water switch stays live and keeps its choice.
+	spray._set_wave(true)
+	require(host.workbench_water_options.get("workbench_ballistic") == true and spray._ballistic.button_pressed \
+		and not spray._ballistic.disabled,"choosing Wave keeps Ballistic Water on and editable")
+	spray._set_spill("workbench_wave_spill_parcels",true)
+	spray._ballistic.button_pressed = false
+	require(host.workbench_water_options.get("workbench_ballistic") == false \
+		and host.workbench_water_options.get("workbench_wave_spill_parcels") == false,
+		"turning Ballistic Water off also drops Ballistic release")
+	spray._face.button_pressed = true
+	require(host.workbench_water_options.get("workbench_face_release") == false and spray._face.disabled,
+		"Face release is unavailable beside Waterwall spill")
+	spray._set_spill("workbench_wave_spill",false)
+	require(not spray._face.disabled,"Face release is available under Wave without spill")
+	spray._set_wave(false)
 	sections.lab_controls = failures.size() == start
 
 func workbench_apply() -> void:
@@ -165,6 +236,7 @@ func workbench_apply() -> void:
 		"spill off restores original Wave Flow")
 	spray.refresh(host.tower_context)
 	require(spray._spill_status.text.contains("OFF"),"spill status shows original Wave")
+	await workbench_generic_ballistic()
 	# Leaving Wave never carries the spill request into another law.
 	spray._set_spill("workbench_wave_spill",true)
 	spray._set_wave(false)
@@ -174,6 +246,27 @@ func workbench_apply() -> void:
 	require(str(host.microscenario_error).is_empty() and wave().get("enabled") == false \
 		and not bool(wave().get("spill",{}).get("enabled",true)),"a staged spill request is not sent to a non-Wave law")
 	sections.workbench_apply = failures.size() == start
+
+# The real Workbench: Wave Flow (spill off) with Ballistic Water and a live jet.
+func workbench_generic_ballistic() -> void:
+	var start := failures.size()
+	var spray: RefCounted = panel.water_spray
+	spray._ballistic.button_pressed = true
+	var before := generation()
+	if not require(spray._apply_wave(),"Apply Wave with Ballistic Water requested"): return
+	if not await until(func() -> bool: return idle() and generation() > before,"Wave with Ballistic Water installed"): return
+	require(str(host.microscenario_error).is_empty(),"no refusal / "+str(host.microscenario_error))
+	require(wave().get("enabled") == true and wave().get("construction_options",{}).get("workbench_ballistic") == true,
+		"Workbench Apply installs Wave Flow with Ballistic Water")
+	spray.refresh(host.tower_context)
+	require(spray._wave_status.text.contains("APPLIED"),"Ballistic Water under Wave matches native readback / "+spray._wave_status.text)
+	require(spray.request({"jet_enabled":true,"jet_origin":Vector2i(60,40)}),"jet requested")
+	await until(func() -> bool: return int(host.tower_context.get("water_spray",{}).get("totals",{}).get("jet",0)) > 0,
+		"jet fires ballistic parcels into the Wave World")
+	spray.request({"jet_enabled":false})
+	require(not host.simulation_worker.has_failed(),"Wave World with a jet stays healthy")
+	spray._ballistic.button_pressed = false
+	sections.workbench_generic_ballistic = failures.size() == start
 
 func run() -> void:
 	native_admission()

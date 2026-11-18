@@ -183,7 +183,7 @@ void disabled_is_default_and_unsupported_is_refused() {
     expect_refusal([](WorldConfig& c) { c.backend = SimulationBackend::Buffered; }, "buffered backend");
     expect_refusal([](WorldConfig& c) { c.water_experiment_policy = WaterExperimentPolicy(6, 0); }, "6-bit mass");
     expect_refusal([](WorldConfig& c) { c.settled_discovery_enabled = true; }, "settled discovery");
-    expect_refusal([](WorldConfig& c) { c.ballistic_water.enabled = true; }, "ballistic Water");
+    // Generic ballistic_water_v1 is admitted under Wave (WAVE-WATERWALL-001, test_wave_spill.cpp).
     expect_refusal([](WorldConfig& c) { c.transport_policy.configured = true; }, "custom cellular transport");
     expect_refusal([](WorldConfig& c) {
         auto words = LiquidSolverPolicy::default_request();

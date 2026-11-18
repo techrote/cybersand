@@ -430,24 +430,23 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
             config->wave_flow.*(knob.member) = static_cast<std::int32_t>(value);
         }
         // WAVE-WATERWALL-001 exposed-face spill: Wave-only, explicit, never
-        // inherited. "parcels" asks for the hybrid release, which owns the
-        // ballistic parcel pool of this World; the generic Ballistic Water
-        // switch stays refused under Wave so the two requests cannot be confused.
+        // inherited. Generic Ballistic Water (splashes, sprays, nozzles, body
+        // launches) runs under Wave with or without spill. "parcels" asks for
+        // spill's hybrid release, which throws exposed faces through the same
+        // parcel pool, so it turns Ballistic Water on. Without it a spill World's
+        // release budget is zero: parcels fly, but faces spill through the grid.
         for (const char* key : {"workbench_wave_spill", "workbench_wave_spill_parcels"}) {
             if (!options.has(key)) continue;
             if (!workbench || !config->wave_flow.enabled || options[key].get_type() != Variant::BOOL)
                 throw std::invalid_argument("Wave spill options require an enabled workbench Wave Flow and a boolean value");
         }
-        if (config->wave_flow.enabled && config->ballistic_water.enabled)
-            throw std::invalid_argument("Wave Flow does not accept Ballistic Water; use Waterwall spill with ballistic release");
         config->wave_flow.spill.enabled = options.get("workbench_wave_spill", false);
         const bool spill_parcels = options.get("workbench_wave_spill_parcels", false);
         if (spill_parcels && !config->wave_flow.spill.enabled)
             throw std::invalid_argument("Wave spill ballistic release requires Waterwall spill");
-        if (spill_parcels) {
-            config->ballistic_water.enabled = true;
-            config->ballistic_water.face_release = false;
-        }
+        if (config->wave_flow.spill.enabled && config->ballistic_water.face_release)
+            throw std::invalid_argument("Face release cannot run beside Waterwall spill; spill owns exposed Water faces");
+        if (spill_parcels) config->ballistic_water.enabled = true;
         struct SpillKnob {
             const char* key;
             std::int32_t cybersand::WaveSpillConfig::*member;
@@ -472,6 +471,7 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
                 throw std::invalid_argument("Wave spill tuning does not fit the native integer range");
             config->wave_flow.spill.*(knob.member) = static_cast<std::int32_t>(value);
         }
+        if (config->wave_flow.spill.enabled && !spill_parcels) config->wave_flow.spill.launch_budget = 0;
         // WCX-FR workbench tuning: explicit integers inside the native admission
         // bounds; absent keys keep the ballistic_water_v1 defaults.
         struct FaceKnob { const char* key; std::int64_t low, high; };

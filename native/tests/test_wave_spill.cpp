@@ -22,7 +22,8 @@ void require(bool condition, const std::string& message) {
     if (!condition) throw std::runtime_error(message);
 }
 
-enum class Mode { Original, Spill, Hybrid };
+// Ballistic: generic ballistic_water_v1 under Wave with spill off.
+enum class Mode { Original, Spill, Hybrid, Ballistic };
 
 WorldConfig config(Mode mode, std::uint32_t workers = 4, std::uint8_t substeps = 1) {
     WorldConfig result;
@@ -32,8 +33,8 @@ WorldConfig config(Mode mode, std::uint32_t workers = 4, std::uint8_t substeps =
     result.active_chunk_capacity = 128;
     result.wave_flow.enabled = true;
     result.wave_flow.substeps = substeps;
-    result.wave_flow.spill.enabled = mode != Mode::Original;
-    result.ballistic_water.enabled = mode == Mode::Hybrid;
+    result.wave_flow.spill.enabled = mode == Mode::Spill || mode == Mode::Hybrid;
+    result.ballistic_water.enabled = mode == Mode::Hybrid || mode == Mode::Ballistic;
     return result;
 }
 
@@ -101,16 +102,21 @@ void spill_is_off_by_default_and_admission_is_typed() {
     expect_refusal([](WorldConfig& c) { c.wave_flow.spill.launch_min = 0; }, "empty parcels");
     expect_refusal([](WorldConfig& c) { c.wave_flow.spill.launch_budget = 4097; }, "launch budget above bound");
     expect_refusal([](WorldConfig& c) { c.wave_flow.spill.launch_speed = 513; }, "launch speed above bound");
-    // Ballistic parcels are admitted only through the spill release contract.
-    expect_refusal([](WorldConfig& c) { c.wave_flow.spill.enabled = false; c.ballistic_water.enabled = true; },
-                   "ballistic Water without spill");
+    // Spill's hybrid release owns exposed faces: the per-cell face scan is
+    // refused beside it, and admitted (generic Ballistic Water) without spill.
     expect_refusal([](WorldConfig& c) { c.ballistic_water.enabled = true; c.ballistic_water.face_release = true; },
-                   "per-cell face release under Wave");
+                   "per-cell face release beside spill");
     // Out-of-range values are ignored while spill is disabled: nothing reads them.
     auto ignored = config(Mode::Original);
     ignored.wave_flow.spill.fall = 99;
     World accepted(ignored);
     require(accepted.wave_flow_enabled(), "disabled spill tuning refused a valid Wave World");
+    World generic(config(Mode::Ballistic));
+    require(generic.wave_flow_enabled() && generic.ballistic_water_enabled(), "generic Ballistic Water refused under Wave");
+    auto faces = config(Mode::Ballistic);
+    faces.ballistic_water.face_release = true;
+    World face_release(faces);
+    require(face_release.wave_flow_enabled(), "face release without spill refused under Wave");
     World hybrid(config(Mode::Hybrid));
     require(hybrid.wave_flow_enabled() && hybrid.ballistic_water_enabled(), "hybrid release was not admitted");
     bool refused = false;
@@ -696,6 +702,85 @@ void body_push_scales_with_water_amount() {
     require(refused, "invalid body push admitted");
 }
 
+// Generic Ballistic Water (splashes, sprays, body launches) under Wave with
+// spill off: injected and launched parcels fly, land and rejoin the grid with
+// exact ownership, for any worker count.
+void generic_ballistic_water_runs_under_wave() {
+    std::uint64_t reference = 0;
+    for (const auto workers : {1U, 4U}) {
+        World world(config(Mode::Ballistic, workers));
+        const int width = 256, height = 192;
+        box(world, width, height);
+        rect(world, 1, 140, width - 2, height - 141, Material::Water);
+        rect(world, 120, 60, 3, 80, Material::Wall);
+        const RectI64 all{0, 0, width, height};
+        auto expected = owned(world, all);
+        for (int k = 0; k < 120; ++k) {
+            const auto r = world.inject_ballistic_water((10 + 2 * k) * 256 + 128, (20 + k % 30) * 256 + 128,
+                                                        (k % 7 - 3) * 160, -(k % 5) * 90, static_cast<std::uint32_t>(40 + k % 200));
+            require(r.outcome == BallisticLaunchOutcome::Launched, "injection refused under Wave");
+            expected += r.quantity;
+        }
+        for (int x = 20; x < 100; x += 4) {
+            const auto r = world.launch_ballistic_water(x, 140, x * 256 + 128, 130 * 256 + 128, 200, -700, 0, 255);
+            require(r.outcome == BallisticLaunchOutcome::Launched && r.quantity == 255U, "launch from Wave Water refused");
+        }
+        require_ledger_closes(world, all, expected, "generic ballistic setup");
+        for (int t = 0; t < 600; ++t) {
+            (void)world.tick();
+            require(!world.has_failed(), "generic Ballistic Water failed a Wave World");
+            if (t % 100 == 99) require_ledger_closes(world, all, expected, "generic ballistic under Wave");
+        }
+        const auto flight = world.ballistic_water_snapshot();
+        require(flight.ledger.deposited_parcels > 100U && flight.ledger.surface_entries > 0U,
+                "generic parcels did not land and rejoin Wave Water");
+        require(world.wave_flow_diagnostics().launched_parcels == 0U && world.wave_flow_diagnostics().spill_units == 0U,
+                "spill acted while disabled");
+        if (workers == 1U) reference = world.physical_state_hash();
+        else require(world.physical_state_hash() == reference, "generic Ballistic Water under Wave depends on worker count");
+    }
+    // Paused cores and overfilled cells keep the same contracts without spill.
+    World paused(config(Mode::Ballistic, 1));
+    box(paused, 256, 256);
+    paused.set_simulation_region(RectI64{0, 0, 64, 64});
+    require(paused.inject_ballistic_water(150 * 256 + 128, 140 * 256 + 128, 0, 0, 100).outcome == BallisticLaunchOutcome::Paused,
+            "a parcel was injected inside a paused Wave core");
+    World full(config(Mode::Ballistic, 1));
+    box(full, 64, 64);
+    rect(full, 10, 10, 5, 1, Material::Wall);
+    rect(full, 10, 12, 5, 1, Material::Wall);
+    rect(full, 10, 11, 1, 1, Material::Wall);
+    rect(full, 14, 11, 1, 1, Material::Wall);
+    rect(full, 11, 11, 3, 1, Material::Water);
+    require(full.set_cell_state(12, 11, Material::Water, 60000, 0), "Wave refused a legal overfilled cell");
+    const auto launched = full.launch_ballistic_water(12, 11, 30 * 256 + 128, 30 * 256 + 128, 0, 0, 0, 1000);
+    require(launched.outcome == BallisticLaunchOutcome::Launched && launched.quantity == 255U &&
+                full.liquid_mass(12, 11) == 60000U - 255U, "generic launch from an overfilled Wave cell was not one cell");
+}
+
+// WCX-FR face release is admitted under Wave without spill and conserves.
+void face_release_without_spill_conserves() {
+    std::uint64_t reference = 0;
+    for (const auto workers : {1U, 4U}) {
+        auto cfg = config(Mode::Ballistic, workers);
+        cfg.ballistic_water.face_release = true;
+        World world(cfg);
+        const int width = 384, height = 256;
+        box(world, width, height);
+        rect(world, 1, height - 1 - 150, 120, 150, Material::Water);
+        const RectI64 all{0, 0, width, height};
+        const auto before = owned(world, all);
+        for (int t = 0; t < 300; ++t) {
+            (void)world.tick();
+            require(!world.has_failed(), "face release failed a Wave World");
+            if (t % 100 == 99) require_ledger_closes(world, all, before, "face release under Wave");
+        }
+        require(world.ballistic_water_snapshot().ledger.face_releases > 0U, "face release threw nothing under Wave");
+        if (workers == 1U) reference = world.physical_state_hash();
+        else require(world.physical_state_hash() == reference, "face release under Wave depends on worker count");
+    }
+}
+
 }  // namespace
 
 int main(int argc, char** argv) {
@@ -720,6 +805,8 @@ int main(int argc, char** argv) {
         {"diagonal one-cell wall holds", diagonal_one_cell_wall_holds},
         {"blobs and stream share conserve and are deterministic", blobs_and_stream_share_conserve_and_are_deterministic},
         {"body push scales with water amount", body_push_scales_with_water_amount},
+        {"generic Ballistic Water runs under Wave", generic_ballistic_water_runs_under_wave},
+        {"face release without spill conserves", face_release_without_spill_conserves},
         {"exposed reservoir collapses and conserves", exposed_reservoir_collapses_and_conserves},
         {"worker counts and repeats are identical", worker_counts_and_repeats_are_identical},
         {"waterfall lands fills and rejoins", waterfall_lands_fills_and_rejoins},

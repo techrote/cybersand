@@ -2533,10 +2533,10 @@ Dictionary CyberNativeCellWorld::get_wave_flow_status() const try {
     // The shared Apply action also owns non-Wave construction controls. Read
     // them from this World, never from the last submitted Workbench request.
     Dictionary construction;
-    // Under Wave the parcel pool belongs to the spill release, reported below;
-    // it is not the generic Ballistic Water request, which Wave refuses.
+    // Ballistic Water is one parcel pool under every law. Under Wave spill's
+    // hybrid release (reported below) throws faces through the same pool.
     const bool wave_spill = world_->wave_flow_enabled() && config.wave_flow.spill.enabled;
-    construction["workbench_ballistic"] = world_->ballistic_water_enabled() && !wave_spill;
+    construction["workbench_ballistic"] = world_->ballistic_water_enabled();
     construction["workbench_inertial_signed"] = world_->inertial_parameters().signed_vertical;
     construction["workbench_face_release"] = config.ballistic_water.face_release;
     construction["workbench_fine_cores"] = config.scheduling_core_size == 32;
@@ -2576,7 +2576,7 @@ Dictionary CyberNativeCellWorld::get_wave_flow_status() const try {
         const auto flight = world_->ballistic_water_snapshot();
         Dictionary spill;
         spill["enabled"] = wave_spill;
-        spill["parcels"] = wave_spill && world_->ballistic_water_enabled();
+        spill["parcels"] = wave_spill && world_->ballistic_water_enabled() && s.launch_budget > 0;
         spill["fall"] = s.fall;
         spill["share_shift"] = s.share_shift;
         spill["draw"] = s.draw;

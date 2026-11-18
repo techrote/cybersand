@@ -272,9 +272,14 @@ faces or the ballistic parcel owner.
 | Blobs (`catch_falling`, default on) | A parcel older than the 4-tick self-contact grace merges into falling Wave Water instead of passing through it. Thrown water then clumps the falling stream into beads ("blobs") while the outer spray keeps arcing. Off: parcels fly through falling Water |
 | Stream share (`stream_share`, default 0) | n/256 of each thrown share keeps pouring through the grid as a vertical stream, and the release may spawn into that falling Water. Measured on the supplied map: values above 0 thin the throw, draw the lip back toward vertical and slow draining, so the default is off |
 
-Under Wave the parcel owner is admitted **only** through this release.
-`ballistic_water_v1` without spill, and the per-cell WCX-FR face scan, stay
-refused. In Wave Worlds, parcels pass through falling Wave Water. They may not
+Generic `ballistic_water_v1` (impact splashes, sprays, jets, nozzles and
+body-launched or injected parcels) is admitted under Wave with or without spill
+(2026-11-18; before that, #631 and this branch refused it). The release above
+throws through the same parcel pool, so it needs `ballistic_water_v1` enabled;
+the Workbench sets `launch_budget` to 0 when Ballistic Water is on without
+Ballistic release, so spill then drains faces through the grid only. The
+per-cell WCX-FR face scan is admitted under Wave only while spill is off, because
+spill owns exposed faces. With spill on, parcels pass through falling Wave Water. They may not
 land beyond a wall one cell thick, including a diagonal one, and they may not
 step diagonally through such a wall. A parcel is never born in, enters, lands in
 or moves inside an unselected simulation core (outcome `Paused`). A parcel
@@ -366,8 +371,8 @@ when wave flow is requested with any of:
 - a backend other than phased in-place;
 - any Water mass profile other than 8 bits;
 - Water assigned to anything but `freemass_v1` (the fractional carrier);
-- settled discovery, or `ballistic_water_v1` unless Waterwall spill is enabled
-  (and never the per-cell WCX-FR face release);
+- settled discovery, or the per-cell WCX-FR face release while Waterwall spill
+  is enabled;
 - spill tuning outside its bounds while spill is enabled;
 - an odd storage chunk size;
 - a configured custom cellular transport policy, whose cadence/direction

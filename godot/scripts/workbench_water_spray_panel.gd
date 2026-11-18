@@ -31,7 +31,6 @@ var _spray_window := Window.new()
 var _scene_picker := OptionButton.new()
 var _non_wave_options: Dictionary = {}
 var _non_wave_policy := PackedInt32Array()
-var _non_wave_normalize := false
 var _inertial_signed_preference := false
 var _wave_request_serial := 0
 var _status := Label.new()
@@ -98,7 +97,7 @@ const SPILL_SWITCHES := [
 	["workbench_wave_spill", "Waterwall spill", "enabled",
 		"Exposed Water faces beside open air discharge quickly, unsupported Water falls faster and a pool can feed its draining edge. Off = original Wave Flow, for comparison."],
 	["workbench_wave_spill_parcels", "Ballistic release", "parcels",
-		"Exposed faces throw their Water outward as ballistic parcels that arc, land and rejoin the grid. Needs Waterwall spill. Off = Water leaves through the grid only and drops straight."],
+		"Exposed faces throw their Water outward as ballistic parcels that arc, land and rejoin the grid. Needs Waterwall spill and uses the Ballistic Water parcels, so it turns Ballistic Water on. Off = faces drain through the grid only and drop straight."],
 ]
 const SPILL_SPINS := [
 	["workbench_wave_spill_fall", "Fall speed", 1, 8, 1, 3, "fall", "Cells that unsupported Water falls per solver round."],
@@ -153,7 +152,7 @@ func build(owner: Control, parent: Control, row_factory: Callable, jet_point: Ca
 	title.text = "Water solver"
 	row.add_child(title)
 	_wave.text = "Wave Flow"
-	_wave.tooltip_text = "Stage experimental Wave Flow on the FreeMass carrier. Apply retains cells and actors but resets Wave momentum. Ballistic/face-release requests are held aside until another solver is chosen."
+	_wave.tooltip_text = "Stage experimental Wave Flow on the FreeMass carrier. Apply retains cells and actors but resets Wave momentum. Ballistic Water keeps working under Wave; Face release is unavailable while Waterwall spill is on."
 	_wave.button_pressed = _option_on("workbench_wave_flow")
 	_wave.toggled.connect(_set_wave)
 	_wave.focus_mode = Control.FOCUS_NONE
@@ -243,14 +242,15 @@ func build(owner: Control, parent: Control, row_factory: Callable, jet_point: Ca
 	title.text = "Water spray / transport"
 	row.add_child(title)
 	_ballistic.text = "Ballistic Water"
-	_ballistic.tooltip_text = "Native ballistic_water_v1 parcels. Incompatible with Wave Flow. Staged until Apply solver / tuning or an explicit Load; Restore start keeps the accepted configuration."
+	_ballistic.tooltip_text = "Native ballistic_water_v1 parcels: splashes, sprays, nozzles and Water thrown by bodies. Works with every Water solver, including Wave Flow. Staged until Apply solver / tuning or an explicit Load; Restore start keeps the accepted configuration."
 	_ballistic.button_pressed = _option_on("workbench_ballistic")
 	_ballistic.toggled.connect(func(on: bool) -> void:
-		if on and _wave.button_pressed:
-			_wave.set_pressed_no_signal(false)
-			host.workbench_water_options["workbench_wave_flow"] = false
-			_update_wave_controls()
-		_construction("workbench_ballistic", on))
+		_construction("workbench_ballistic", on)
+		# Spill's Ballistic release throws through these parcels.
+		if not on and _option_on("workbench_wave_spill_parcels"):
+			host.workbench_water_options["workbench_wave_spill_parcels"] = false
+			_spill_toggles["workbench_wave_spill_parcels"].set_pressed_no_signal(false)
+		_update_wave_controls())
 	_signed.text = "IN signed"
 	_signed.button_pressed = _option_on("workbench_inertial_signed")
 	_signed.tooltip_text = "IN-B1 signed-vertical law (requires Inertial Water). Its preference is retained when choosing another Water solver. Staged until Apply solver / tuning or an explicit Load."
@@ -262,8 +262,10 @@ func build(owner: Control, parent: Control, row_factory: Callable, jet_point: Ca
 		var point: Vector2 = _jet_point.call()
 		request({"jet_enabled": on, "jet_origin": Vector2i(point)}))
 	_face.text = "Face release"
-	_face.tooltip_text = "Requires Ballistic Water: tall vertical Water faces shed cells as parcels. Staged until Apply solver / tuning or an explicit Load."
-	_face.toggled.connect(func(on: bool) -> void: _construction("workbench_face_release", on))
+	_face.tooltip_text = "Requires Ballistic Water: tall vertical Water faces shed cells as parcels. Not available beside Waterwall spill, which owns exposed faces under Wave. Staged until Apply solver / tuning or an explicit Load."
+	_face.toggled.connect(func(on: bool) -> void:
+		_construction("workbench_face_release", on)
+		_update_wave_controls())
 	_pf_gas.text = "PF gas"
 	_pf_gas.button_pressed = true
 	_pf_gas.tooltip_text = "PressureFlow gas topology. Off = gas-free PressureFlow: same surging in open/vented scenes at lower cost. Staged in the liquid selection."
@@ -423,6 +425,9 @@ func _set_spill(key: String, on: bool) -> void:
 	if key == "workbench_wave_spill_parcels" and on:
 		host.workbench_water_options["workbench_wave_spill"] = true
 		_spill_toggles["workbench_wave_spill"].set_pressed_no_signal(true)
+		# The release throws through the Ballistic Water parcel pool.
+		host.workbench_water_options["workbench_ballistic"] = true
+		_ballistic.set_pressed_no_signal(true)
 	_fallback_message = "Waterwall spill request staged; Apply solver / tuning to rebuild. Native World unchanged."
 	_wave_notice.text = _fallback_message
 	_update_wave_controls()
@@ -517,11 +522,14 @@ func _revert_wave() -> void:
 	var on := bool(wave.get("enabled",false))
 	if not on: _restore_non_wave_options()
 	else:
-		host.workbench_water_options["workbench_ballistic"] = false
-		host.workbench_water_options["workbench_face_release"] = false
+		# Ballistic Water and Face release are read back from the running World.
+		var construction: Dictionary = wave.get("construction_options",{})
+		for item: Array in [["workbench_ballistic",_ballistic],["workbench_face_release",_face]]:
+			var applied := bool(construction.get(item[0],false))
+			host.workbench_water_options[item[0]] = applied
+			var toggle: CheckButton = item[1]
+			toggle.set_pressed_no_signal(applied)
 		host.workbench_water_options["workbench_inertial_signed"] = false
-		_ballistic.set_pressed_no_signal(false)
-		_face.set_pressed_no_signal(false)
 		_signed.set_pressed_no_signal(false)
 		_workbench._liquids.normalize_water.set_pressed_no_signal(false)
 	host.workbench_water_options["workbench_wave_flow"] = on
@@ -574,12 +582,12 @@ func _set_wave(on: bool) -> void:
 		return
 	if on and not _option_on("workbench_wave_flow"):
 		_remember_inertial_signed()
-		_non_wave_options = {
-			"workbench_ballistic":_option_on("workbench_ballistic"),
-			"workbench_face_release":_option_on("workbench_face_release")}
+		# Ballistic Water and Face release are shared by every law and stay as
+		# chosen; only the non-Wave liquid policy and normalization are kept aside.
+		_non_wave_options = {"normalize_water":false}
 		if _workbench._liquids != null:
 			_non_wave_policy = _workbench._liquids.requested_policy.duplicate()
-			_non_wave_normalize = _workbench._liquids.normalize_water.button_pressed
+			_non_wave_options.normalize_water = _workbench._liquids.normalize_water.button_pressed
 	host.workbench_water_options["workbench_wave_flow"] = on
 	if on:
 		if not _stage_solver("freemass_v1","reference",false):
@@ -587,11 +595,7 @@ func _set_wave(on: bool) -> void:
 			host.workbench_water_options["workbench_wave_flow"] = false
 			_update_wave_controls()
 			return
-		_ballistic.set_pressed_no_signal(false)
-		_face.set_pressed_no_signal(false)
 		_signed.set_pressed_no_signal(false)
-		host.workbench_water_options["workbench_ballistic"] = false
-		host.workbench_water_options["workbench_face_release"] = false
 		host.workbench_water_options["workbench_inertial_signed"] = false
 		_workbench._liquids.normalize_water.set_pressed_no_signal(false)
 		_fallback_message = "Wave Flow staged on the FreeMass carrier; Apply solver / tuning to rebuild."
@@ -608,11 +612,8 @@ func _set_wave(on: bool) -> void:
 
 func _restore_non_wave_options() -> void:
 	if _non_wave_options.is_empty(): return
-	host.workbench_water_options.merge(_non_wave_options,true)
-	_ballistic.set_pressed_no_signal(bool(_non_wave_options.workbench_ballistic))
-	_face.set_pressed_no_signal(bool(_non_wave_options.workbench_face_release))
 	if _workbench._liquids != null:
-		_workbench._liquids.normalize_water.set_pressed_no_signal(_non_wave_normalize)
+		_workbench._liquids.normalize_water.set_pressed_no_signal(bool(_non_wave_options.normalize_water))
 	_non_wave_options.clear()
 
 func _requested_water_family() -> String:
@@ -681,10 +682,17 @@ func _update_wave_controls() -> void:
 	for toggle: CheckButton in _spill_toggles.values(): toggle.disabled = not enabled
 	for key: String in _spill_fields:
 		var spill_field: SpinBox = _spill_fields[key]
-		spill_field.editable = spill_on and (_option_on("workbench_wave_spill_parcels") or key not in SPILL_PARCEL_KEYS)
+		# Blobs also shapes generic Ballistic Water meeting falling spill Water.
+		var parcels := _option_on("workbench_wave_spill_parcels") or (key == "workbench_wave_spill_blobs" and _option_on("workbench_ballistic"))
+		spill_field.editable = spill_on and (parcels or key not in SPILL_PARCEL_KEYS)
+	# Spill owns exposed faces under Wave: Face release cannot run beside it.
+	if spill_on and _option_on("workbench_face_release"):
+		host.workbench_water_options["workbench_face_release"] = false
+		_face.set_pressed_no_signal(false)
+	_face.disabled = spill_on
 	# These settings belong to the non-Wave laws and stay staged for returning
 	# to them. Wave tuning never rewrites their stored numeric values.
-	for toggle: CheckButton in [_ballistic,_signed,_face,_pf_gas,_pf_c2048]:
+	for toggle: CheckButton in [_signed,_pf_gas,_pf_c2048]:
 		toggle.disabled = enabled
 	if _workbench != null and _workbench._liquids != null:
 		_workbench._liquids.normalize_water.disabled = enabled
@@ -911,7 +919,9 @@ func _refresh_spill(wave: Dictionary, wave_requested: bool, changes: Array[Strin
 		var requested_value: Variant = host.workbench_water_options.get(key,spec[5])
 		var label: Label = _spill_applied[key]
 		label.text = "native %d" % int(native_value) if native_value is int else "native unavailable"
-		var different := spill_requested and (not native_value is int or not requested_value is int or int(native_value) != int(requested_value))
+		# Without Ballistic release the native release budget is zero by design.
+		var dormant := key == "workbench_wave_spill_launch_budget" and not _option_on("workbench_wave_spill_parcels")
+		var different := spill_requested and not dormant and (not native_value is int or not requested_value is int or int(native_value) != int(requested_value))
 		label.modulate = Color(1.0,0.76,0.38) if different else Color(0.72,0.90,0.80)
 		if different: changes.append(str(spec[1]))
 		actual_values.append("%s: requested %s; %s" % [spec[1],str(requested_value),label.text])

@@ -74,7 +74,7 @@ toolbar control.
 | Control | Meaning |
 |---|---|
 | Waterwall spill | On: exposed Wave faces beside open air discharge quickly, and unsupported Water falls faster. Off: original Wave Flow, for direct comparison |
-| Ballistic release | Exposed faces throw Water outward as parcels that arc, land and rejoin the grid. Turning it on also turns on Waterwall spill |
+| Ballistic release | Exposed faces throw Water outward as parcels that arc, land and rejoin the grid. It throws through the Ballistic Water parcels, so turning it on also turns on Waterwall spill and Ballistic Water; turning Ballistic Water off turns it off |
 | Fall speed / Pool feed | Cells per round for unsupported Water, and mass units per round a pool may move toward its draining edge |
 | Throw speed / Parcels per tick | Outward speed as n/256 of √(2gh), and the per-tick launch budget (ballistic release only) |
 | Blobs / Stream share | Blobs (1, the default) clumps thrown water into blobs where it meets falling water. Stream share keeps part of each throw pouring straight down (0, the default, is off). Both apply to ballistic release only |
@@ -84,9 +84,14 @@ tuning** or **Load / reset scene**. The native readback beside each control and
 the spill status line show what is actually running: exposed-face transfer,
 falling cells, parcels launched, in flight, landed, refused or deferred, ticks
 with a full parcel pool, and launch and flight time. A spill request is only
-sent with Wave Flow. Presets and **Reset Wave defaults** do not change it. The
-generic **Ballistic Water** switch stays refused under Wave, because the parcel
-pool belongs to the release.
+sent with Wave Flow. Presets and **Reset Wave defaults** do not change it.
+
+**Ballistic Water** (Transport & spray tab) works with Wave Flow, with or
+without spill: impact spray, jets, nozzles and Water thrown by bodies fly as
+ballistic parcels and rejoin the Wave grid. Choosing Wave keeps its setting.
+With spill on but Ballistic release off, the native release budget reads 0 by
+design. **Face release** is available under Wave only while Waterwall spill is
+off, because spill owns exposed faces.
 
 To compare, load a start, select **Wave Flow** and press **Apply** with spill
 off. Then turn **Waterwall spill** (and optionally **Ballistic release**) on and

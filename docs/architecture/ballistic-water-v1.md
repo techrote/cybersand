@@ -103,11 +103,14 @@ on both sides.
 
 ### Wave Flow hybrid release (WAVE-WATERWALL-001)
 
-`wave_flow_v1` accepts this parcel owner only with Waterwall spill enabled. The
-Wave tick owner then launches parcels from exposed faces nominated by its own
-strip passes, and the per-cell WCX-FR scan stays refused. In Wave Worlds only:
+`wave_flow_v1` accepts this parcel owner with or without Waterwall spill
+(2026-11-18), so impact spray, jets, nozzles and body launches work under Wave.
+With spill's Ballistic release, the Wave tick owner also launches parcels from
+exposed faces nominated by its own strip passes. The per-cell WCX-FR scan is
+admitted only while spill is off. In Wave Worlds only:
 
-- parcels pass through falling Wave Water;
+- with spill on, parcels pass through falling Wave Water (merging into it after
+  the self-contact grace when Blobs is on);
 - a launch from an overfilled Wave cell takes one cell, and deposits never add to
   an overfilled cell;
 - the deposit ring and diagonal flight steps respect one-cell walls;

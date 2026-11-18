@@ -953,8 +953,6 @@ func apply_liquids() -> bool:
 			return refuse("Wave Flow is an overlay on the FreeMass Water carrier. Choose FreeMass or turn Wave Flow off.")
 		var ballistic_requested: Variant = host.workbench_water_options.get("workbench_ballistic",false)
 		if not ballistic_requested is bool: return refuse("Ballistic Water selection requires a boolean value.")
-		if ballistic_requested:
-			return refuse("Wave Flow and Ballistic Water are mutually exclusive; turn Ballistic Water off before rebuilding.")
 	next.liquid_policy = Array(_liquids.requested_policy)
 	next.normalize = _liquids.normalize_water.button_pressed
 	next.rule_radius = maxi(_liquids.geometry_picker.get_selected_id(),int(validation.receipt.get("minimum_rule_radius",2)))

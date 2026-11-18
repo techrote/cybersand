@@ -176,7 +176,7 @@ func native_validation() -> void:
 	invalid.append_array([{"workbench_wave_substeps":0},{"workbench_wave_gain":1.5},
 		{"workbench_wave_gain":"48"},{"workbench_wave_flow":"yes"},{"workbench_wave_stiffness":1},
 		{"workbench_worker_threads":0},{"workbench_worker_threads":33},{"workbench_worker_threads":1.5},
-		{"workbench_ballistic":true}])
+		{"workbench_ballistic":"yes"}])
 	for bad: Dictionary in invalid:
 		var candidate := options.duplicate(true)
 		candidate.merge(bad,true)

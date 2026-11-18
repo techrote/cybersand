@@ -219,12 +219,12 @@ void World::validate_wave_flow_config() const {
         throw std::invalid_argument("wave_flow requires an even chunk size");
     if (config_.settled_discovery_enabled)
         throw std::invalid_argument("wave_flow does not support settled discovery");
-    // Ballistic parcels are admitted only through the spill release contract:
-    // launches come from Wave's own exposed faces, never the per-cell face scan.
-    if (config_.ballistic_water.enabled && !tune.spill.enabled)
-        throw std::invalid_argument("wave_flow supports ballistic_water_v1 only with spill enabled");
-    if (config_.ballistic_water.enabled && config_.ballistic_water.face_release)
-        throw std::invalid_argument("wave_flow does not support ballistic face_release; spill owns the release");
+    // Generic ballistic_water_v1 (splashes, sprays, injected and body-launched
+    // parcels) is admitted with or without spill: every parcel path respects
+    // Wave overfill, paused cores and one-cell walls. Spill's hybrid release owns
+    // exposed faces, so the WCX-FR per-cell face scan is refused only beside it.
+    if (config_.ballistic_water.enabled && config_.ballistic_water.face_release && tune.spill.enabled)
+        throw std::invalid_argument("wave_flow does not support ballistic face_release with spill; spill owns the release");
     if (config_.transport_policy.configured)
         throw std::invalid_argument("wave_flow does not support custom cellular transport policies");
 }
