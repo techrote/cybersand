@@ -40,7 +40,7 @@ Two fresh runs passed 217 assertions / six captures each with no ERROR lines, us
 
 The two protected file transitions plus the Apply follow-up are recorded in the main audit.
 Source-first commits precede the compatibility entries. Dated historical M11 validation passed
-18 records / 28 hashes. The default retrieval evaluation found a top-five canonical answer for 30/32 questions.
+18 records / 28 hashes. The default retrieval evaluation found a top-five canonical answer for 30/32 questions, matching the #672 parent (19 first-ranked, MRR 0.7292 on both).
 The focused Wave evaluation found 6/6, with the new Water Lab question ranked first.
 
 ## Workbench captures
@@ -121,3 +121,58 @@ Request 17's Windows guard stopped before Godot execution when Bash parsed a Pow
 The Linux and Windows builds and the ordinary native lane had progressed. The successor uses one command
 per line under Bash's existing fail-fast setting. The local evaluation uses the same native source and
 the two successful graphical real-pointer runs. [Request 17](https://github.com/techrote/cybersand/actions/runs/44443701277).
+
+## Grid-crest follow-up
+
+A subsequent scratch experiment implemented and timed the alternative grid overhang from the design review.
+It conserved Water and gave identical 1- and 6-worker traces. It sent the first Water four cells past the wall
+three ticks earlier than the parcel crest but fragmented into separate cells. The parcel version carried
+3.35 times as much Water through the high probe over time. On the map, grid versus parcel t900 remainders
+were 936 versus 902 cells, with 3.25 versus 6.27 million units thrown by t1500. Median tick costs were
+3.84 versus 3.86 ms in one paired run. The executable used for the owner ZIP keeps the parcel version.
+The [scratch comparison, patch, frames and commands](grid-comparison.md) make the alternative reproducible.
+
+## Local final sanitizers
+
+Ubuntu WSL2 ran the normal suites, ASan with UBSan and TSan. Makefile sanitizer flags were
+`-O1 -g -pthread -fno-omit-frame-pointer` and `-fsanitize=address,undefined` or `-fsanitize=thread`.
+The runtime commands used `UBSAN_OPTIONS=halt_on_error=1 ASAN_OPTIONS=halt_on_error=1` or
+`TSAN_OPTIONS=halt_on_error=1 setarch x86_64 -R`, with 900 seconds allowed per sanitizer process.
+The WSL TSan spill process was suspended during the isolated timing runs. The checks include the
+12 unchanged base-law hashes, four pinned spill hashes, two-sided partial donors, overfill, size bounds,
+walls, paused cores, capacity, expiry, conversion and worker parity.
+
+| Final binary | Result | SHA-256 |
+|---|---|---|
+| `test_wave_spill` | 31 tests; 0 failures (31 registered) | `703a1635d9b194bf32d5768cee105c1f8336877fefdf01d5eb1d7bd269e9a1c9` |
+| `test_wave_spill_sanitized` | 31 tests; 0 failures (31 registered) | `d5c8bac5bda0ecb3662e8da4201871c9b10c0d5d657655d63282db6b461e9cf7` |
+| `test_wave_spill_tsan` | 31 tests; 0 failures (31 registered) | `d1001836516f95eca74bb237450f1dac415e8c5af1519e66bca0b8690348b1f6` |
+| `test_wave_flow_sanitized` | 33 tests; 0 failures (33 registered) | `05e025f9e62fa5c0eec23c9a0d6f92fc4c26e2163e4f44b3f8fc40ad92bae8f0` |
+| `test_wave_flow_tsan` | 33 tests; 0 failures (33 registered) | `0daa7f8d1655e8e8c18311e26a2a5c6fc80f870f3a455df2ffab4ee37f68fe89` |
+
+## Published-platform evidence for request 18
+
+[GitHub-hosted request 18](https://github.com/techrote/cybersand/actions/runs/44444683852) built native source
+`579a842a803eca2c387e80c616cabe01fbac1d3d`. The downloaded Linux and Windows evidence bundles agree
+on all 95 native inputs and 857 build inputs. All 952 tracked file digests matched the request's Git tree.
+Both platforms passed the real Workbench Wave (1,265 assertions, 12 sections), spill (669 checks, seven
+sections), failure containment (77 checks) and failed-World status (215 checks). All downloaded execution
+logs contained zero ERROR lines. Linux graphical Workbench passed 217 assertions and six captures.
+The separate CI Windows package passed all five extracted-package cases; the owner-local ZIP above
+also contains the supplied map.
+
+| Runtime | SHA-256 |
+|---|---|
+| GitHub-hosted Windows DLL | `ed26088ac9931d86ada7c6acd7d2f122c6328b241513d3ea3f585d98e889ed41` |
+| GitHub-hosted Linux shared library | `a2a4cec68a935f197c09e95e689ca5799bacc6f625d20714c201fc364f18f7db` |
+
+The local full `timeout 1600 make -j2 test` passed all 192 aggregate cases and the prerequisite
+soliding, world-generation and material-baseline suites. An earlier scratch run omitted the capability
+matrix JSON used by the liquid-policy identity test; copying the committed fixture and rerunning the
+complete target resolved that apparatus failure.
+
+All nine publisher jobs passed, including the normal, ASan/UBSan and TSan Wave, spill and body-boundary
+campaign. The bot published exactly the two LFS runtimes and their two provenance files in
+`7851f24eb1838704e4e7791c406ea7ba6dc2ef49`. After fast-forwarding to that commit, the strict
+materialized repository check passed. The [Draft/HOLD PR](https://github.com/techrote/cybersand/pull/676)
+records the final empty commit and its checks.
