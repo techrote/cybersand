@@ -2,6 +2,7 @@
 // exposed-face spill and its hybrid ballistic release. Build targets:
 // make wave-spill-test / wave-spill-sanitize / wave-spill-thread-sanitize.
 #include "cybersand/world.hpp"
+#include "cybersand/prepared_world.hpp"
 
 #include <algorithm>
 #include <array>
@@ -102,6 +103,10 @@ void spill_is_off_by_default_and_admission_is_typed() {
     expect_refusal([](WorldConfig& c) { c.wave_flow.spill.launch_min = 0; }, "empty parcels");
     expect_refusal([](WorldConfig& c) { c.wave_flow.spill.launch_budget = 4097; }, "launch budget above bound");
     expect_refusal([](WorldConfig& c) { c.wave_flow.spill.launch_speed = 513; }, "launch speed above bound");
+    expect_refusal([](WorldConfig& c) { c.wave_flow.spill.sheet_rate = -1; }, "negative sheet rate");
+    expect_refusal([](WorldConfig& c) { c.wave_flow.spill.sheet_rate = 128; }, "sheet rate above bound");
+    expect_refusal([](WorldConfig& c) { c.wave_flow.spill.coyote_ticks = -1; }, "negative crest flight duration");
+    expect_refusal([](WorldConfig& c) { c.wave_flow.spill.coyote_ticks = 9; }, "crest flight duration above bound");
     // Spill's hybrid release owns exposed faces: the per-cell face scan is
     // refused beside it, and admitted (generic Ballistic Water) without spill.
     expect_refusal([](WorldConfig& c) { c.ballistic_water.enabled = true; c.ballistic_water.face_release = true; },
@@ -145,7 +150,12 @@ constexpr Golden kBaseLaw[] = {
 void disabled_spill_reproduces_the_base_law() {
     for (const auto& golden : kBaseLaw) {
         auto cfg = config(Mode::Original, golden.workers, static_cast<std::uint8_t>(golden.substeps));
-        if (golden.workers == 4U) { cfg.wave_flow.spill.fall = 7; cfg.wave_flow.spill.launch_budget = 9; } // unused tuning
+        if (golden.workers == 4U) {
+            cfg.wave_flow.spill.fall = 7;
+            cfg.wave_flow.spill.launch_budget = 9;
+            cfg.wave_flow.spill.sheet_rate = 127;
+            cfg.wave_flow.spill.coyote_ticks = 8;
+        }
         World w(cfg);
         const int n = 300;
         box(w, n, n);
@@ -604,11 +614,11 @@ void full_parcel_pool_is_counted_and_clamped() {
     require_ledger_closes(world, all, before, "clamped budget");
 }
 
-void diagonal_one_cell_wall_holds() {
+void check_diagonal_wall(WorldConfig cfg) {
     // A 45-degree wall one cell thick: Water may neither land beyond it from
     // the deposit ring nor step through it diagonally in flight.
     const int n = 128;
-    World world(config(Mode::Hybrid, 1));
+    World world(cfg);
     box(world, n, n);
     for (int x = 1; x < n - 1; ++x) {
         const int y = 103 - x;
@@ -645,6 +655,14 @@ void diagonal_one_cell_wall_holds() {
             require((p.x >> 8) + (p.y >> 8) < 103, "a parcel flew through a one-cell diagonal wall");
     }
     require_ledger_closes(world, all, initial + 4000U, "diagonal wall parcels");
+}
+
+void diagonal_one_cell_wall_holds() {
+    auto cfg = config(Mode::Hybrid, 1);
+    check_diagonal_wall(cfg);
+    cfg.wave_flow.spill.sheet_rate = 127;
+    cfg.wave_flow.spill.coyote_ticks = 8;
+    check_diagonal_wall(cfg);
 }
 
 void wet_and_dry_corners_stop_ballistic_water() {
@@ -988,6 +1006,171 @@ void stream_draw_zero_is_the_earlier_spill_world() {
     }
 }
 
+void sheet_releases_deep_rows_and_keeps_crest_spray() {
+    auto cfg = config(Mode::Hybrid, 4);
+    std::uint64_t original_grid = 0, original_spray = 0;
+    for (int sheet : {0, 64}) {
+        cfg.wave_flow.spill.sheet_rate = sheet;
+        World world(cfg);
+        box(world, 256, 128);
+        rect(world, 1, 64, 127, 1, Material::Wall);
+        rect(world, 1, 40, 127, 24, Material::Water);
+        const RectI64 all{0, 0, 256, 128};
+        const auto before = owned(world, all);
+        (void)world.tick();
+        const auto grid = world.water_quantity({128, 40, 1, 24});
+        const auto spray = world.wave_flow_diagnostics().launched_parcels;
+        require_ledger_closes(world, all, before, "tall sheet");
+        if (sheet == 0) {
+            original_grid = grid;
+            original_spray = spray;
+        } else {
+            require(grid > original_grid + 16 * 100, "sheet failed to discharge the deep rows");
+            require(spray == 2 && spray < original_spray, "sheet failed to reserve spray for the top two rows");
+        }
+    }
+}
+
+void sheet_and_coyote_budget_each_side_of_a_ridge() {
+    const RectI64 all{0, 0, 256, 128};
+    for (const auto& [sheet, coyote] : {std::pair{127, 0}, std::pair{0, 8}, std::pair{127, 8}}) {
+        for (const int share : {0, 128, 255}) {
+            std::uint64_t reference = 0;
+            for (const unsigned workers : {1U, 2U, 4U, 6U}) {
+                auto cfg = config(Mode::Hybrid, workers);
+                auto& spill = cfg.wave_flow.spill;
+                spill.sheet_rate = sheet;
+                spill.coyote_ticks = coyote;
+                spill.stream_share = share;
+                spill.stream_draw = 255;
+                spill.launch_min = 1;
+                spill.launch_budget = 4096;
+                cfg.ballistic_water.capacity = 2;
+                World world(cfg);
+                auto identity = cfg;
+                identity.wave_flow.spill.sheet_rate = identity.wave_flow.spill.coyote_ticks = 0;
+                World before(identity);
+                require(world.physical_state_hash() != before.physical_state_hash() && world.state_hash() != before.state_hash(),
+                        "an opt-in discharge control is missing from identity");
+                box(world, 256, 128);
+                rect(world, 128, 52, 1, 75, Material::Wall);
+                rect(world, 134, 1, 1, 126, Material::Wall);
+                constexpr std::uint16_t mass = 237;
+                require(world.set_cell_state(128, 51, Material::Water, mass, 0), "odd ridge setup refused");
+                (void)world.tick();
+                std::array<BallisticParcel, 2> parcels{};
+                require(world.copy_ballistic_parcels(parcels) == 2, "one face of the ridge failed to launch");
+                std::array<unsigned, 2> spent{world.liquid_mass(127, 51), world.liquid_mass(129, 51)};
+                for (const auto& p : parcels) spent[p.vx > 0 ? 1 : 0] += p.quantity;
+                for (auto side : spent) require(side > 0 && side <= mass / 2, "one ridge face exceeded its donor half");
+                require(spent[0] + spent[1] + world.liquid_mass(128, 51) == mass, "first round ridge ledger disagrees");
+                for (int t = 0; t < 160; ++t) (void)world.tick();
+                require(world.wave_flow_diagnostics().launch_capacity_skips > 0, "tiny pool never fell back to grid flow");
+                require(world.water_quantity({135, 0, 121, 128}) == 0, "sheet leaked through the straight wall");
+                require_ledger_closes(world, all, mass, "ridge and straight wall");
+                if (workers == 1) reference = world.physical_state_hash();
+                else require(world.physical_state_hash() == reference, "sheet/crest flight differs by worker count");
+            }
+        }
+    }
+}
+
+void retained_crest_adopts_replacement_flight_law() {
+    auto source_cfg = config(Mode::Hybrid);
+    source_cfg.ballistic_water.air_drag = 0;
+    source_cfg.wave_flow.spill.coyote_ticks = 4;
+    World source(source_cfg);
+    source.set(32, 32, Material::Wall);
+    source.set(32, 31, Material::Water);
+    (void)source.tick();
+    std::array<BallisticParcel, 2> born{}, copied{};
+    require(source.copy_ballistic_parcels(born) == 2 && born.front().coyote_left == 4, "need two live crests");
+    normalization::FinalSetupInput input;
+    input.setup.domain = {0, 0, 64, 64};
+    for (int grace : {-1, 0, 2}) {
+        auto cfg = source_cfg;
+        cfg.wave_flow.enabled = grace >= 0;
+        cfg.wave_flow.spill.enabled = grace > 0;
+        cfg.wave_flow.spill.coyote_ticks = std::max(0, grace);
+        auto prepared = PreparedWorldBuilder::prepare(cfg, input, normalization::NormalizationOptIn::None);
+        require(std::holds_alternative<PreparedWorld>(prepared), "replacement refused");
+        auto target = std::get<PreparedWorld>(prepared).take_world();
+        const auto receipt = target->inherit_workbench_liquid_state(source, {0, 0, 64, 64}, false, false);
+        require(receipt.discarded_in_flight_water == 0 && receipt.preserved_in_flight_water ==
+            born[0].quantity + born[1].quantity, "replacement lost crest mass");
+        require(target->copy_ballistic_parcels(copied) == born.size(), "missing inherited crests");
+        for (std::size_t i = 0; i < copied.size(); ++i) {
+            require(copied[i].coyote_left == std::max(grace, 0) && copied[i].vx == born[i].vx &&
+                copied[i].vy == born[i].vy, "inherited flight did not adopt new grace or preserve velocity");
+        }
+        // Generic Ballistic saves do not serialize Wave state. Its restored
+        // owner must follow exactly the same flight after conversion.
+        std::unique_ptr<World> restored;
+        if (grace < 0) restored = World::restore_physical_state(cfg, target->save_physical_state());
+        (void)target->tick();
+        require(target->copy_ballistic_parcels(copied) == born.size() &&
+            copied[0].vy == (grace > 0 ? 0 : cfg.ballistic_water.gravity_q), "wrong gravity after Apply");
+        if (restored) {
+            (void)restored->tick();
+            require(restored->physical_state_hash() == target->physical_state_hash(), "converted ballistic save diverged");
+        }
+    }
+}
+
+void sheet_starts_from_rest_without_wave_gain() {
+    auto cfg = config(Mode::Spill);
+    cfg.wave_flow.gain = 0;
+    cfg.wave_flow.spill.sheet_rate = 127;
+    World world(cfg);
+    rect(world, 30, 40, 8, 1, Material::Wall);
+    rect(world, 30, 20, 8, 20, Material::Water);
+    rect(world, 29, 19, 1, 22, Material::Wall);
+    (void)world.tick();
+    require(world.water_quantity({38, 20, 1, 20}) > 0, "positive sheet head failed to discharge from rest");
+    require(world.water_quantity({28, 19, 1, 22}) == 0, "sheet started through a wall");
+    require_ledger_closes(world, {0, 0, 64, 64}, 8 * 20 * 255, "zero-gain sheet");
+}
+
+void coyote_flight_pauses_expires_and_leaves_jets_alone() {
+    auto cfg = config(Mode::Hybrid, 4);
+    cfg.wave_flow.spill.coyote_ticks = 4;
+    cfg.wave_flow.spill.sheet_rate = 64;
+    cfg.wave_flow.spill.launch_speed = 512;
+    cfg.ballistic_water.capacity = 3;
+    cfg.ballistic_water.air_drag = 0;
+    World world(cfg);
+    const RectI64 all{0, 0, 256, 128};
+    box(world, 256, 128);
+    world.set(95, 40, Material::Wall);
+    world.set(95, 39, Material::Water);
+    require(world.inject_ballistic_water(40*256 + 128, 12*256 + 128, 0, 0, 17).outcome ==
+            BallisticLaunchOutcome::Launched, "generic jet refused");
+    const auto before = owned(world, all);
+    (void)world.tick();
+    std::array<BallisticParcel, 3> born{}, now{};
+    require(world.copy_ballistic_parcels(born) == 3, "expected a generic jet and two crest parcels");
+    require(born[0].coyote_left == 0 && born[0].vy == cfg.ballistic_water.gravity_q, "generic jet received crest grace");
+    require(born[1].vx * born[2].vx < 0 && born[1].vy == 0 && born[2].vy == 0, "lip did not launch horizontally");
+    require(born[1].coyote_left == 4 && born[2].coyote_left == 4, "crest received an incorrect initial duration");
+    world.set_simulation_region(RectI64{192, 0, 64, 128});
+    for (int t = 0; t < 6; ++t) (void)world.tick();
+    require(world.copy_ballistic_parcels(now) == 3 && now == born, "paused crest aged or moved");
+    world.set_simulation_region(std::nullopt);
+    for (int t = 1; t <= 5; ++t) {
+        (void)world.tick();
+        require(world.copy_ballistic_parcels(now) == 3, "flight fixture hit an unintended obstacle");
+        for (int i : {1, 2}) {
+            require(now[i].x == born[i].x + t * born[i].vx, "crest failed to carry horizontal momentum");
+            require(now[i].coyote_left == std::max(0, 4 - t), "crest grace expired early or late");
+            const auto expected_drop = t > 4 ? cfg.ballistic_water.gravity_q : 0;
+            require(now[i].vy == expected_drop && now[i].y == born[i].y + expected_drop, "wrong crest trajectory on expiry");
+        }
+    }
+    const auto flight = world.ballistic_water_snapshot();
+    require(flight.momentum_y == flight.ledger.launch_py + flight.ledger.gravity_py, "crest momentum ledger disagrees");
+    require_ledger_closes(world, all, before, "coyote flight");
+}
+
 }  // namespace
 
 int main(int argc, char** argv) {
@@ -1002,6 +1185,11 @@ int main(int argc, char** argv) {
         void (*function)();
     };
     const Test tests[] = {
+        {"crest Apply adopts the replacement flight law", retained_crest_adopts_replacement_flight_law},
+        {"sheet starts with zero ordinary gain", sheet_starts_from_rest_without_wave_gain},
+        {"sheet releases deep rows and keeps crest spray", sheet_releases_deep_rows_and_keeps_crest_spray},
+        {"sheet and coyote budget each side of a ridge", sheet_and_coyote_budget_each_side_of_a_ridge},
+        {"coyote flight pauses expires and leaves jets alone", coyote_flight_pauses_expires_and_leaves_jets_alone},
         {"spill is off by default and admission is typed", spill_is_off_by_default_and_admission_is_typed},
         {"disabled spill reproduces the base law", disabled_spill_reproduces_the_base_law},
         {"disabled spill preserves Wave identity", disabled_spill_preserves_wave_identity},

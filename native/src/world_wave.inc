@@ -919,21 +919,47 @@ void World::wave_flux_task(std::size_t task_index) noexcept {
                 auto gain = code == WaveChunk::kGainConfined ? tuning.gain_confined : tuning.gain;
                 // Depth class two starts at three responding rows in each
                 // stack. A dry or thin advancing front always uses ordinary gain.
-                if (tuning.deep_gain != 0 && pool_face && (meta_a >> WaveChunk::kDepthShift) >= 2 &&
-                    (meta_b >> WaveChunk::kDepthShift) >= 2) gain = tuning.deep_gain;
+                if (tuning.deep_gain != 0 && code == WaveChunk::kGainNormal) {
+                    // A partial top cell is its own one-row stack in Wave.
+                    // It belongs to the pool wave if a deep stack lies directly
+                    // beneath it. This also covers an Empty cell just above
+                    // the pool, without slowing a wave spreading onto dry land.
+                    const auto deep_stack = [](std::uint8_t meta) noexcept {
+                        const auto depth = meta >> WaveChunk::kDepthShift;
+                        return (meta & WaveChunk::kGainMask) == WaveChunk::kGainNormal &&
+                               depth >= 2 && depth < WaveChunk::kFalling;
+                    };
+                    const auto deep_column = [&](const Chunk* owner, std::size_t at, std::uint8_t meta) noexcept {
+                        if (deep_stack(meta)) return true;
+                        if ((meta >> WaveChunk::kDepthShift) >= WaveChunk::kFalling) return false;
+                        const auto column = static_cast<std::int32_t>(at - row);
+                        if (ly + 1 < size)
+                            return owner->wave->included(column, ly + 1) && deep_stack(owner->wave->meta[at + stride]);
+                        const auto* below = owner->wave->below;
+                        return below != nullptr && below->wave->solve && below->wave->included(column, 0) &&
+                               deep_stack(below->wave->meta[static_cast<std::size_t>(column)]);
+                    };
+                    if (deep_column(&chunk, i, meta_a) && deep_column(other, j, meta_b)) gain = tuning.deep_gain;
+                }
                 auto flux = static_cast<std::int64_t>(previous) - damping + static_cast<std::int64_t>(head) * gain;
                 // Rest rule: one unit cannot level a one-unit step (it only
                 // flips it), so a small flux across such a step is discarded.
                 // Larger flux retains its wave inertia until damping calms it.
                 if (a != 0 && b != 0 && std::abs(head) <= config_.wave_flow.rest_head && std::abs(flux) < config_.wave_flow.stick) flux = 0;
-                const bool rightward = flux > 0;
+                // A resting exposed stack can discharge under its own head even
+                // when the ordinary restoring gain is zero. Dry and blocked
+                // receivers still go through the open-face test below.
+                const bool sheet_start = flux == 0 && spill.enabled && spill.sheet_rate != 0 &&
+                    static_cast<std::int64_t>(std::abs(head)) * spill.sheet_rate >= maximum &&
+                    ((head > 0 ? meta_a : meta_b) >> WaveChunk::kDepthShift) != WaveChunk::kFalling;
+                const bool rightward = flux > 0 || (sheet_start && head > 0);
                 auto available = rightward ? a : b;
                 const auto destination_mass = rightward ? b : a;
                 // Spill: the receiver is open when it is falling Water, or an
                 // Empty cell with nothing under it that could hold Water up.
                 bool open = false;
                 int spill_kind = 0;
-                if (spill.enabled && flux != 0) {
+                if (spill.enabled && (flux != 0 || sheet_start)) {
                     if (destination_mass != 0) {
                         open = ((rightward ? meta_b : meta_a) >> WaveChunk::kDepthShift) == WaveChunk::kFalling;
                     } else {

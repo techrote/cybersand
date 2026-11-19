@@ -227,6 +227,10 @@ World::WorkbenchLiquidTransfer World::inherit_workbench_liquid_state(const World
             (!whole_cell_water_enabled() || origin.quantity == maximum) && origin.quantity <= maximum;
         if (!fits) { transfer.discarded_in_flight_water += origin.quantity; continue; }
         auto parcel = origin;
+        // A retained crest adopts the new owner's flight law on Workbench Apply.
+        const auto grace = config_.wave_flow.enabled && config_.wave_flow.spill.enabled
+            ? config_.wave_flow.spill.coyote_ticks : 0;
+        parcel.coyote_left = static_cast<std::uint8_t>(std::min<int>(parcel.coyote_left, grace));
         parcel.age = 0;
         parcel.source_body = 0;
         parcel.vx = std::clamp(parcel.vx, -config_.ballistic_water.max_speed_q, config_.ballistic_water.max_speed_q);
