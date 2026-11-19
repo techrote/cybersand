@@ -120,7 +120,25 @@ func type_spin_text(field: SpinBox, text: String) -> bool:
 			editor.get_viewport().push_input(key,true)
 			await process_frame
 	return require(editor.text == text and field.value == old and editor.has_focus(),
-		"numeric text remains pending in the child Window: "+text)
+		"numeric text remains pending in its viewport: "+text)
+
+func click_spin_editor(field: SpinBox) -> bool:
+	var editor := field.get_line_edit()
+	var scroll := field.get_parent()
+	while scroll != null and not scroll is ScrollContainer: scroll = scroll.get_parent()
+	if scroll != null: scroll.ensure_control_visible(field)
+	await process_frame
+	var point := editor.get_global_rect().get_center()
+	if editor.get_window() != root: point += Vector2(editor.get_window().position)
+	for down: bool in [true,false]:
+		var event := InputEventMouseButton.new()
+		event.position = point
+		event.global_position = point
+		event.button_index = MOUSE_BUTTON_LEFT
+		event.pressed = down
+		root.push_input(event,true)
+		await process_frame
+	return require(editor.has_focus(),"real pointer focuses numeric editor in its own viewport")
 
 func policy_assignment(bridge: Variant, policy: PackedInt32Array, material: int,
 		family: String, variant: String = "reference") -> PackedInt32Array:
@@ -561,13 +579,21 @@ func activation() -> bool:
 	if not await installed_after(before,"Wave Apply"): return false
 	require(int(wave().get("parameters",{}).get("gain",-1)) == int(TUNING.gain),
 		"Water Lab Apply commits focused numeric text before native construction")
-	# Equipment moved into the same child Window and uses its own action helper.
-	# A real click must commit pending supply before constructing the device.
+	# Each Window retains its own focused field. With the Lab already open,
+	# leave BOTH main X and child supply text pending, then place a real nozzle.
+	# The action must commit child first and main second before construction.
 	panel.water_lab.select_tab(3)
+	panel.water_lab.window.position = Vector2i(480,300)
 	panel._position[0].value = 300
 	panel._position[1].value = 40
 	for frame: int in 2: await process_frame
+	if not await click_spin_editor(panel._position[0]): return false
+	if not await type_spin_text(panel._position[0],"350"): return false
+	if not await click_spin_editor(panel.equipment._supply): return false
 	if not await type_spin_text(panel.equipment._supply,"250"): return false
+	require(panel._position[0].get_line_edit().text == "350" and panel._position[0].value == 300 \
+		and panel.equipment._supply.get_line_edit().text == "250" and panel.equipment._supply.value != 250,
+		"main X and child supply are both pending before the child action")
 	if not await click_lab_button("Nozzle at X/Y"): return false
 	require(int(panel.applied.get("equipment",{}).get("supply",-1)) == 250,
 		"Equipment action consumes focused supply text in Water Lab")
@@ -576,11 +602,32 @@ func activation() -> bool:
 		"native owner acknowledges equipment built from typed supply"): return false
 	require(int(host.tower_context.workbench_equipment.get("pipe",{}).get("supplied",-1)) == 250*255,
 		"native equipment supply matches the committed typed value")
+	var installed_nozzle: Array = host.tower_context.workbench_equipment.get("config",{}).get("nozzle",[])
+	require(installed_nozzle.size() == 5 and int(installed_nozzle[0]) == 350 and int(installed_nozzle[1]) == 40,
+		"worker-owned equipment position uses committed main-window X and Y")
+	require(panel.equipment.toggle("nozzle"),"activate the typed-position nozzle")
+	if not await until(func() -> bool: return host.tower_context.workbench_equipment.get("nozzle",{}).get("on",false),
+		"nozzle activation acknowledged"): return false
+	var tick: int = host.latest_snapshot.tick_index
+	require(panel.step_once(),"typed-position nozzle executes a real native tick")
+	if not await until(func() -> bool: return idle() and int(host.latest_snapshot.tick_index) == tick+1,
+		"typed-position nozzle native tick completed"): return false
+	native_ticks += 1
+	require(host.workbench_equipment({"command":"observe","observation":1,
+		"regions":{"intended":[340,20,30,40],"stale":[290,20,30,40]}}),"request independent native nozzle-position census")
+	if not await until(func() -> bool: return int(host.tower_context.workbench_equipment.get("observation_serial",-1)) == 1,
+		"native position census returned"): return false
+	var census: Dictionary = host.tower_context.workbench_equipment.get("observations",{})
+	require(int(census.get("intended",{}).get("water",0)) > 0 and int(census.get("stale",{}).get("water",-1)) == 0,
+		"actual native Water is emitted at typed X, with none at the stale X")
 	require(panel.equipment.remove_all(),"remove numeric-input test nozzle")
 	await until(func() -> bool:
 		return int(host.tower_context.get("workbench_equipment",{}).get("serial",-1)) == panel.equipment.serial,
 		"numeric-input fixture equipment removed")
 	panel.water_lab.window.hide()
+	before = generation()
+	if not require(panel.restore_start(),"restore authored Water after nozzle position witness") or \
+		not await installed_after(before,"numeric-input fixture restored"): return false
 	sections.activation = require(wave().get("enabled",false),"Workbench activates native Wave") and failures.size() == start
 	start = failures.size()
 	matches(TUNING,"first Apply")

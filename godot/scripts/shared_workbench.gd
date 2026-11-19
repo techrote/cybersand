@@ -346,11 +346,15 @@ func _roster_changed(index: int) -> void:
 
 
 func _commit_field(input_viewport: Viewport = null) -> void:
-	# A child Window owns its own focused field. Action helpers pass the
-	# clicked button's viewport; canvas/main-window callers retain the default.
-	var focus := (input_viewport if input_viewport != null else get_viewport()).gui_get_focus_owner()
-	if focus is LineEdit and focus.get_parent() is SpinBox: focus.get_parent().apply()
-	if focus != null: focus.release_focus()
+	# Windows retain independent focused fields. Commit the clicked child
+	# first, then main X/Y or other pending parent input consumed by its action.
+	# Main-window and default callers still visit their viewport exactly once.
+	var viewports: Array[Viewport] = [get_viewport()]
+	if input_viewport != null and input_viewport != viewports[0]: viewports.push_front(input_viewport)
+	for viewport: Viewport in viewports:
+		var focus := viewport.gui_get_focus_owner()
+		if focus is LineEdit and focus.get_parent() is SpinBox: focus.get_parent().apply()
+		if focus != null: focus.release_focus()
 
 func selected_id() -> int:
 	return int(applied.get("selected",0))
