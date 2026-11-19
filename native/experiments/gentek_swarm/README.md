@@ -5,6 +5,11 @@ The separately authorized stacked successor is documented in
 description and frozen predecessor evidence below remain the control record.
 The authorized [bounded optional-offer follow-up](OPTIONAL-OFFERS.md) retains
 both frozen controls and compares caps of one, two and four optional offers.
+The [SWARM-003 continuation](SWARM-003-CONTINUATION.md) reconstructs the
+unpublished resilience source under a new identity and compares fixed native
+capacities of four, six and eight. Its known regression seeds and fresh
+validation follow a separate [registration](CONTINUATION-PLAN.md); the original
+saved evidence is historical.
 
 **Experimental native research. Draft / HOLD. No product acceptance.**
 

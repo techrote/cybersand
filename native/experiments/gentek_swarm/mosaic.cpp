@@ -1,11 +1,14 @@
 #include "negotiated.hpp"
+#include "resilience.hpp"
 #include "cybersand/generation_spatial.hpp"
 
 #include <algorithm>
 #include <array>
+#include <bit>
 #include <cmath>
 #include <limits>
 #include <memory>
+#include <iterator>
 #include <set>
 #include <tuple>
 
@@ -335,7 +338,7 @@ std::uint16_t receiving_categories(const Tile& tile, const TransitionSlot& slot,
 
 bool impose_reservations(const Request& req, Result& result, const std::vector<Tile>& tiles,
                          spatial::RegionAssignment& assignment, const std::vector<TransitionSlot>& slots,
-                         MosaicPlan& plan, bool& soft_intervention) {
+                         MosaicPlan& plan, bool& soft_intervention, bool discover_only = false) {
     plan.categories.assign(tiles.size(), -1);
     plan.domains.reserve(tiles.size());
     for (std::size_t i = 0; i < tiles.size(); ++i) {
@@ -404,7 +407,7 @@ bool impose_reservations(const Request& req, Result& result, const std::vector<T
         d.modified_domain = d.preferred_domain;
         assignment.domains[d.tile] = d.modified_domain;
     }
-    if (impossible_hard) {
+    if (impossible_hard && !discover_only) {
         result.status = Status::Unsat;
         result.termination = "hard reservation has no receiving motif or has an empty categorical intersection";
         plan.attempts.push_back({"hard-domain-conflict", result.termination, Status::Unsat, false, true, 0, 0});
@@ -414,14 +417,370 @@ bool impose_reservations(const Request& req, Result& result, const std::vector<T
     }
     return true;
 }
+
+std::vector<std::uint32_t> required_ids(const std::vector<TransitionSlot>& slots) {
+    std::vector<std::uint32_t> ids;
+    for (const auto& slot : slots) if (slot.required || slot.hard) ids.push_back(slot.id);
+    std::sort(ids.begin(), ids.end());
+    return ids;
+}
+
+// Only failure-receipt bookkeeping: the bounded pre-helper domain reserve
+// covers these at-most-eight lookups, inserts and sorts even after exhaustion.
+void retain_required_receipts(const std::vector<TransitionSlot>& slots, const MosaicPlan& plan,
+                              ResilienceTrace& trace) {
+    const auto hard = required_ids(slots);
+    const auto merge = [&](auto& ids) {
+        ids.insert(ids.end(), hard.begin(), hard.end());
+        std::sort(ids.begin(), ids.end());
+        ids.erase(std::unique(ids.begin(), ids.end()), ids.end());
+    };
+    merge(trace.primary_selected_ids); merge(trace.fallback_selected_ids);
+    merge(trace.admission.selected_ids); merge(trace.admission.fallback_ids);
+    trace.final_authorized_ids = trace.primary_selected_ids;
+    for (auto id : hard) {
+        auto found = std::find_if(trace.admission.decisions.begin(), trace.admission.decisions.end(),
+                                  [&](const auto& d) { return d.slot_id == id; });
+        if (found != trace.admission.decisions.end()) {
+            found->hard = found->selected = found->fallback_selected = true;
+            continue;
+        }
+        NativeAdmissionDecision decision;
+        decision.slot_id = id; decision.hard = decision.selected = decision.fallback_selected = true;
+        decision.disposition = "required-pending";
+        decision.reason = "preparation interrupted; verified mechanical obligation retained unresolved, with no solve authorized";
+        const auto response = std::find_if(plan.responses.begin(), plan.responses.end(),
+                                           [&](const auto& r) { return r.slot_id == id; });
+        if (response != plan.responses.end()) {
+            decision.geometry_admitted = response->admitted;
+            decision.contact = response->contact; decision.compatible_domain = response->compatible_domain;
+            if (response->admitted) decision.tile = static_cast<std::int32_t>(response->tile);
+        }
+        trace.admission.decisions.push_back(std::move(decision));
+    }
+    std::sort(trace.admission.decisions.begin(), trace.admission.decisions.end(),
+              [](const auto& a, const auto& b) { return a.slot_id < b.slot_id; });
+}
+
+void compose_selected_domains(MosaicPlan& plan, spatial::RegionAssignment& assignment,
+                              const std::vector<std::uint32_t>& selected) {
+    for (auto& response : plan.responses) {
+        if (!std::binary_search(selected.begin(), selected.end(), response.slot_id)) {
+            response.admitted = false;
+            response.reason += "; optional offer withheld by pre-solve native admission";
+        }
+    }
+    for (auto& d : plan.domains) {
+        std::erase_if(d.influences, [&](const auto& influence) {
+            return !std::binary_search(selected.begin(), selected.end(), influence.slot_id);
+        });
+        d.hard_domain = d.preferred_domain = d.original_domain;
+        for (const auto& influence : d.influences) {
+            d.preferred_domain |= influence.compatible_domain;
+            if (influence.hard) d.hard_domain |= influence.compatible_domain;
+        }
+        for (const auto& influence : d.influences) {
+            d.preferred_domain &= influence.compatible_domain;
+            if (influence.hard) d.hard_domain &= influence.compatible_domain;
+        }
+        d.modified_domain = d.preferred_domain;
+        assignment.domains[d.tile] = d.modified_domain;
+    }
+}
+
+// R1 reconstruction: original native vocabulary, original physical predicates,
+// stable required-ID order and one reciprocal local star. No donor trial.
+bool choose_required_native_receivers(const Request& req, Result& result,
+    const std::vector<Tile>& tiles, const spatial::RegionAssignment& assignment,
+    const std::vector<TransitionSlot>& slots, MosaicPlan& plan, ResilienceTrace& trace) {
+    const auto initial_work = result.work;
+    result.metrics["resilience_required_receiver_work"] = 0;
+    if (!charge(req, result, 64)) return false;
+    std::vector<const TransitionSlot*> ordered;
+    for (const auto& slot : slots) if (slot.required || slot.hard) ordered.push_back(&slot);
+    std::sort(ordered.begin(), ordered.end(), [](const auto* a, const auto* b) { return a->id < b->id; });
+    for (const auto* slot_ptr : ordered) {
+        const auto& slot = *slot_ptr;
+        const auto start = result.work;
+        auto response = std::find_if(plan.responses.begin(), plan.responses.end(),
+                                     [&](const auto& r) { return r.slot_id == slot.id; });
+        RequiredReceiverDecision receipt;
+        receipt.slot_id = slot.id; receipt.original_tile = receipt.selected_tile = response->tile;
+        receipt.original_contact = receipt.selected_contact = response->contact;
+        receipt.original_compatible_domain = receipt.selected_compatible_domain = response->compatible_domain;
+        receipt.original_admitted = response->admitted;
+        const auto finish = [&]() {
+            receipt.work = result.work - start;
+            trace.receivers.push_back(std::move(receipt));
+            result.metrics["resilience_required_receiver_work"] = result.work - initial_work;
+        };
+        if (!charge(req, result, tiles.size() * 2U + slots.size() * 16U)) {
+            receipt.reason = "required receiving-face preparation exhausted before local screening";
+            finish(); return false;
+        }
+        std::vector<std::uint16_t> pools;
+        for (const auto& d : plan.domains) pools.push_back(d.original_domain);
+        std::vector<bool> constrained(tiles.size(), false);
+        for (const auto* peer_slot : ordered) {
+            if (peer_slot->id == slot.id) continue;
+            const auto peer = std::find_if(plan.responses.begin(), plan.responses.end(),
+                                           [&](const auto& r) { return r.slot_id == peer_slot->id; });
+            if (!peer->admitted) continue;
+            if (constrained[peer->tile]) pools[peer->tile] &= peer->compatible_domain;
+            else pools[peer->tile] = peer->compatible_domain;
+            constrained[peer->tile] = true;
+        }
+        const auto support = [&](std::uint32_t tile, std::uint16_t domain, std::uint16_t& supported) {
+            supported = 0;
+            if (constrained[tile]) domain &= pools[tile];
+            const int tx = static_cast<int>(tile % assignment.width), ty = static_cast<int>(tile / assignment.width);
+            for (unsigned a = 0; a < motif_count; ++a) {
+                if (!charge(req, result)) return false;
+                if (!(domain & bit(a))) continue;
+                bool valid = true;
+                for (unsigned direction = 0; direction < directions.size(); ++direction) {
+                    const int nx = tx + directions[direction].x, ny = ty + directions[direction].y;
+                    if (nx < 0 || ny < 0 || nx >= static_cast<int>(assignment.width) || ny >= static_cast<int>(assignment.height)) continue;
+                    if (!charge(req, result, motif_count)) return false;
+                    const auto pool = pools[static_cast<std::size_t>(ny) * assignment.width + static_cast<unsigned>(nx)];
+                    bool pair = false;
+                    for (unsigned b = 0; b < motif_count; ++b)
+                        pair = pair || ((pool & bit(b)) && (assignment.adjacency[direction][a] & bit(b)) &&
+                            (assignment.adjacency[(direction + 2U) % 4U][b] & bit(a)));
+                    valid = valid && pair;
+                }
+                if (valid) supported |= bit(a);
+            }
+            return true;
+        };
+        if (response->admitted && !support(response->tile, response->compatible_domain, receipt.original_supported_domain)) {
+            receipt.reason = "required receiving-face local support exhausted"; finish(); return false;
+        }
+        receipt.selected_supported_domain = receipt.original_supported_domain;
+        const auto make_face = [&](Point p, std::uint32_t tile, std::uint16_t mask, std::uint16_t supported) {
+            ReceiverFaceDecision face;
+            face.contact = p; face.tile = tile; face.original_domain = plan.domains[tile].original_domain;
+            face.compatible_domain = mask; face.supported_domain = supported;
+            const auto source = segment_nearest(slot, p);
+            face.distance = std::abs(p.x - source.x) + std::abs(p.y - source.y);
+            return face;
+        };
+        if (receipt.original_supported_domain) {
+            auto face = make_face(response->contact, response->tile, response->compatible_domain, receipt.original_supported_domain);
+            face.selected = true; receipt.faces.push_back(face);
+            receipt.reason = "original closed receiving face has reciprocal local support; preserved without searching alternatives";
+            finish(); continue;
+        }
+        for (int y = slot.envelope.y; y < slot.envelope.y + slot.envelope.h; ++y) {
+            for (int x = slot.envelope.x; x < slot.envelope.x + slot.envelope.w; ++x) {
+                if (!charge(req, result, 40)) {
+                    receipt.reason = "required receiving-face envelope scan exhausted"; finish(); return false;
+                }
+                ++receipt.points_examined;
+                const Point p{x, y}, source = segment_nearest(slot, p), outward{x-slot.facing.x, y-slot.facing.y};
+                if (!allowed(req, p) || !transition_at(req, p) || allowed(req, outward) ||
+                    (x-source.x)*slot.facing.x + (y-source.y)*slot.facing.y <= 0 ||
+                    req.neighbor_cells.empty() || req.neighbor_cells[index(req, source)] == Material::Empty) continue;
+                const auto tile_index = static_cast<std::uint32_t>(y/pitch) * assignment.width + static_cast<unsigned>(x/pitch);
+                const auto original = plan.domains[tile_index].original_domain;
+                if (original == bit(Exterior)) continue;
+                const unsigned edge = slot.facing.x > 0 ? TermWest : slot.facing.x < 0 ? TermEast :
+                                      slot.facing.y > 0 ? TermNorth : TermSouth;
+                const auto vocabulary = static_cast<std::uint16_t>(original | bit(edge) | bit(Buttress));
+                const auto& tile = tiles[tile_index]; const int lx=x-tile.x, ly=y-tile.y;
+                std::uint16_t mask = 0;
+                for (unsigned motif = 0; motif < motif_count; ++motif) {
+                    if (!(vocabulary & bit(motif))) continue;
+                    // Span predicates perform bounded 16-cell scans; reserve
+                    // enough work for the five material/thickness evaluations.
+                    if (!charge(req, result, 320)) {
+                        receipt.reason = "required native material-predicate allowance exhausted"; finish(); return false;
+                    }
+                    if (!negotiated_cell(tile,motif,lx,ly) ||
+                        !negotiated_cell(tile,motif,lx+slot.facing.x,ly+slot.facing.y) ||
+                        negotiated_cell(tile,motif,lx-slot.facing.x,ly-slot.facing.y)) continue;
+                    const Point tangent{-slot.facing.y,slot.facing.x};
+                    if (slot.kind == SlotKind::BearingSegment &&
+                        (!negotiated_cell(tile,motif,lx+tangent.x,ly+tangent.y) ||
+                         !negotiated_cell(tile,motif,lx-tangent.x,ly-tangent.y))) continue;
+                    mask |= bit(motif);
+                }
+                if (!mask) continue;
+                if (receipt.faces.size() == 64) {
+                    result.status = Status::Exhausted; result.termination = "required native receiving-face receipt exceeds fixed 64-face bound";
+                    receipt.reason = result.termination; finish(); return false;
+                }
+                std::uint16_t supported = 0;
+                if (!support(tile_index, mask, supported)) {
+                    receipt.reason = "required candidate local-support allowance exhausted"; finish(); return false;
+                }
+                receipt.faces.push_back(make_face(p,tile_index,mask,supported));
+            }
+        }
+        auto winner = receipt.faces.end();
+        const auto key = [](const auto& face) {
+            return std::tuple{-std::popcount(face.supported_domain), face.distance, face.contact.x, face.contact.y, face.tile};
+        };
+        for (auto it = receipt.faces.begin(); it != receipt.faces.end(); ++it)
+            if (it->supported_domain && (winner == receipt.faces.end() || key(*it) < key(*winner))) winner = it;
+        if (winner == receipt.faces.end()) {
+            receipt.reason = "no original-native receiving face has reciprocal local support; original hard condition retained";
+            finish(); continue;
+        }
+        winner->selected = true;
+        receipt.selected_tile = winner->tile; receipt.selected_contact = winner->contact;
+        receipt.selected_compatible_domain = winner->compatible_domain;
+        receipt.selected_supported_domain = winner->supported_domain;
+        receipt.changed = !response->admitted || response->tile != winner->tile ||
+            response->contact != winner->contact || response->compatible_domain != winner->compatible_domain;
+        receipt.reason = "physically qualified original-native receiver selected by support count, distance, coordinates and tile before solving";
+        if (!response->admitted && result.rejected["reservation_without_admissible_motif"] != 0) {
+            --result.rejected["reservation_without_admissible_motif"];
+            ++result.metrics["resilience_required_missing_face_repaired"];
+        }
+        response->admitted = true; response->tile = winner->tile; response->contact = winner->contact;
+        response->compatible_domain = winner->compatible_domain; response->reason = receipt.reason;
+        for (auto& d : plan.domains)
+            std::erase_if(d.influences, [&](const auto& influence) { return influence.slot_id == slot.id; });
+        plan.domains[winner->tile].influences.push_back({slot.id, winner->compatible_domain, true, true, winner->contact, receipt.reason});
+        if (receipt.changed) ++result.metrics["resilience_required_receiver_changed"];
+        finish();
+    }
+    result.metrics["resilience_required_receiver_work"] = result.work - initial_work;
+    return true;
+}
+
+bool prepare_resilient_domains(const Request& req, Result& result, const std::vector<Tile>& tiles,
+    spatial::RegionAssignment& assignment, const std::vector<TransitionSlot>& slots,
+    MosaicPlan& plan, const ResilienceOptions& options, ResilienceTrace& trace,
+    ResilienceSolvePolicy& policy) {
+    if (options.receivers == ReceiverPolicy::RequiredOriginalNative &&
+        !choose_required_native_receivers(req,result,tiles,assignment,slots,plan,trace)) return false;
+    const auto reserve = UINT64_C(256) + tiles.size()*8U + slots.size()*32U;
+    const auto before = result.work;
+    if (!charge(req,result,reserve)) return false;
+    result.metrics["resilience_domain_preparation_work"] = result.work-before;
+    const auto hard = required_ids(slots);
+    if (options.admission == ResilienceAdmission::Full) {
+        trace.admission.optional_capacity = max_transition_slots;
+        trace.admission.fallback_optional_capacity = 0;
+        for (const auto& slot : slots) trace.primary_selected_ids.push_back(slot.id);
+        std::sort(trace.primary_selected_ids.begin(),trace.primary_selected_ids.end());
+        trace.primary_selected_ids.erase(std::unique(trace.primary_selected_ids.begin(),trace.primary_selected_ids.end()),trace.primary_selected_ids.end());
+        trace.fallback_selected_ids = hard;
+        trace.admission.selected_ids = trace.primary_selected_ids; trace.admission.fallback_ids = hard;
+        trace.admission.reason = "full original offer universe retained; no native optional admission screen";
+    } else {
+        const bool hard_only = options.admission == ResilienceAdmission::CompatibilityHardOnly;
+        trace.admission = screen_mosaic_offers(req,result,assignment.width,assignment.height,assignment.adjacency,
+            slots,plan,hard_only ? 0U : options.optional_capacity,hard_only ? 0U : 2U);
+        trace.primary_selected_ids = trace.admission.selected_ids;
+        trace.fallback_selected_ids = options.fallback == ResilienceFallback::HardOnly ? hard : trace.admission.fallback_ids;
+        if (trace.admission.status != Status::Complete) {
+            retain_required_receipts(slots,plan,trace);
+            result.status = trace.admission.status; result.termination = trace.admission.reason;
+            if (trace.admission.status == Status::Unsat && trace.admission.hard_domains.size() == plan.domains.size()) {
+                compose_selected_domains(plan,assignment,trace.primary_selected_ids);
+                for (std::size_t i=0;i<plan.domains.size();++i) {
+                    auto& d=plan.domains[i];
+                    d.hard_domain=trace.admission.hard_domains[i];
+                    d.modified_domain=d.preferred_domain=trace.admission.preferred_domains[i];
+                    assignment.domains[i]=d.modified_domain;
+                }
+                result.metrics["hard_negotiation_unsat"]=1;
+            } else result.notes.push_back("Native admission stopped before final domains; partial helper arrays are not a completed assignment or UNSAT proof.");
+            return false;
+        }
+    }
+    trace.final_authorized_ids = trace.primary_selected_ids;
+    compose_selected_domains(plan,assignment,trace.primary_selected_ids);
+    policy.schedule=options.schedule;
+    for (const auto& slot:slots) if (!slot.required && !slot.hard) {
+        if (std::binary_search(trace.primary_selected_ids.begin(),trace.primary_selected_ids.end(),slot.id))
+            policy.primary_optional_ids.push_back(slot.id);
+        if (std::binary_search(trace.fallback_selected_ids.begin(),trace.fallback_selected_ids.end(),slot.id))
+            policy.fallback_optional_ids.push_back(slot.id);
+    }
+    bool impossible_hard=false;
+    for (const auto& slot:slots) if (slot.required || slot.hard) {
+        const auto response=std::find_if(plan.responses.begin(),plan.responses.end(),[&](const auto& r){return r.slot_id==slot.id;});
+        impossible_hard=impossible_hard || !response->admitted;
+    }
+    for (const auto& d:plan.domains) {
+        impossible_hard=impossible_hard || d.hard_domain==0;
+        auto fallback=d.original_domain;
+        for (const auto& influence:d.influences) {
+            if (influence.hard || std::binary_search(trace.fallback_selected_ids.begin(),trace.fallback_selected_ids.end(),influence.slot_id))
+                fallback |= influence.compatible_domain;
+        }
+        for (const auto& influence:d.influences) {
+            if (influence.hard || std::binary_search(trace.fallback_selected_ids.begin(),trace.fallback_selected_ids.end(),influence.slot_id)) {
+                fallback &= influence.compatible_domain;
+            }
+        }
+        policy.fallback_domains.push_back(fallback);
+        if (options.admission != ResilienceAdmission::Full &&
+            (d.hard_domain != trace.admission.hard_domains[d.tile] || d.preferred_domain != trace.admission.preferred_domains[d.tile])) {
+            result.status=Status::Invalid;result.termination="native admission masks disagree with original domain composition";return false;
+        }
+        if (options.admission == ResilienceAdmission::Full) {
+            trace.admission.original_domains.push_back(d.original_domain);trace.admission.hard_domains.push_back(d.hard_domain);
+            trace.admission.preferred_domains.push_back(d.preferred_domain);trace.admission.fallback_domains.push_back(fallback);
+        }
+    }
+    std::sort(policy.primary_optional_ids.begin(),policy.primary_optional_ids.end());
+    std::sort(policy.fallback_optional_ids.begin(),policy.fallback_optional_ids.end());
+    if (options.admission == ResilienceAdmission::Full) {
+        // Full forwarding also needs one receipt for every original offer,
+        // including offers without a receiving face. It does not run the
+        // native screen, so local-support/rank fields remain explicitly absent.
+        for (const auto& response : plan.responses) {
+            const auto slot = std::find_if(slots.begin(),slots.end(),
+                [&](const auto& value) { return value.id == response.slot_id; });
+            NativeAdmissionDecision decision;
+            decision.slot_id=response.slot_id;decision.hard=slot->required || slot->hard;
+            decision.geometry_admitted=response.admitted;decision.selected=true;
+            decision.fallback_selected=decision.hard;decision.contact=response.contact;
+            decision.compatible_domain=response.compatible_domain;decision.reason=response.reason;
+            if (response.admitted) {
+                decision.tile=static_cast<std::int32_t>(response.tile);
+                const auto& d=plan.domains[response.tile];
+                decision.original_domain=d.original_domain;decision.hard_domain=d.hard_domain;
+                decision.projected_domain=d.preferred_domain;decision.fallback_domain=d.hard_domain;
+                decision.domain_changed=d.preferred_domain!=d.original_domain;
+            }
+            decision.disposition=decision.hard ?
+                (response.admitted ? "required and admitted" : "required without a native receiving face") :
+                (response.admitted ? "optional and admitted by original full policy" : "optional forwarded without a native receiving face");
+            trace.admission.decisions.push_back(std::move(decision));
+        }
+    }
+    if (impossible_hard) {
+        result.status=Status::Unsat;result.termination="hard reservation has no receiving motif or has an empty categorical intersection";
+        trace.admission.status=Status::Unsat;trace.admission.reason=result.termination;
+        result.metrics["hard_negotiation_unsat"]=1;return false;
+    }
+    trace.reason="Original seed/category IDs and donor grammar retained; local admission precedes every categorical attempt";
+    return true;
+}
 } // namespace
 
 static Result generate_mosaic_impl(const Request& req, const std::vector<TransitionSlot>* slots,
-                                  MosaicPlan* plan) {
-    Result result = begin_result(req, plan ? "prepared-regions-negotiated-v1" : "prepared-regions-motifs-v0");
+                                  MosaicPlan* plan, const ResilienceOptions* options = nullptr,
+                                  ResilienceTrace* trace = nullptr) {
+    Result result = begin_result(req, options ? "prepared-regions-resilience-v1" : (plan ? "prepared-regions-negotiated-v1" : "prepared-regions-motifs-v0"));
     if (result.cells.empty() || result.status == Status::Invalid || result.status == Status::Exhausted)
         return result;
     if (plan && (!slots || !validate_slots(req, result, *slots))) return result;
+    if (options) {
+        if (!trace || !plan || !valid_resilience_options(*options) || req.limits.max_solver_work > 4'000'000 ||
+            req.limits.max_work > 2'000'000 || req.limits.max_bytes > 16*1024*1024 ||
+            std::any_of(slots->begin(),slots->end(),[](const auto& slot){return slot.required && !slot.hard;})) {
+            result.status=Status::Invalid;result.termination="invalid resilience policy, required-hard condition or unchanged research ceiling";return result;
+        }
+        trace->primary_selected_ids=trace->fallback_selected_ids=trace->final_authorized_ids=required_ids(*slots);
+        result.metrics["resilience_domain_preparation_work"]=0;
+    }
     if (result.boundary.protected_geometry.empty())
         result.boundary.protected_geometry.assign(result.cells.size(), 0);
     const int grid_width = (req.width + pitch - 1) / pitch;
@@ -488,10 +847,23 @@ static Result generate_mosaic_impl(const Request& req, const std::vector<Transit
         return result;
     }
     bool soft_intervention = false;
-    if (plan && !impose_reservations(req, result, tiles, assignment, *slots, *plan, soft_intervention))
+    if (options && req.limits.max_bytes < spatial::kRegionSolverScratchBytes + result.cells.size()*16U + 64U*1024U) {
+        result.status=Status::Exhausted;result.termination="MOSAIC fixed resilience receipt memory bound";return result;
+    }
+    if (plan && !impose_reservations(req, result, tiles, assignment, *slots, *plan, soft_intervention, options != nullptr))
         return result;
     std::shared_ptr<const spatial::PreparedRegions> prepared;
-    if (plan) {
+    if (options) {
+        ResilienceSolvePolicy policy;
+        if (!prepare_resilient_domains(req,result,tiles,assignment,*slots,*plan,*options,*trace,policy)) return result;
+        prepared=solve_mosaic_resilient(req,result,*plan,assignment,policy,trace->solver);
+        result.metrics["resilience_solver_receipt_work"]=trace->solver.preparation_work;
+        if (trace->solver.fallback_used)
+            std::set_difference(policy.primary_optional_ids.begin(),policy.primary_optional_ids.end(),
+                policy.fallback_optional_ids.begin(),policy.fallback_optional_ids.end(),
+                std::back_inserter(trace->dropped_preference_ids));
+        if (!prepared) return result;
+    } else if (plan) {
         result.metrics["solver_attempted"] = 0;
         result.metrics["solver_work_observed"] = 1;
         const auto solve = [&](const std::string& policy, std::uint64_t limit) {
@@ -649,7 +1021,8 @@ const char* mosaic_category_name(unsigned motif) noexcept {
     return motif < motif_count ? motif_names[motif] : "unselected";
 }
 
-MosaicPlan negotiate_mosaic(const Request& req, const std::vector<TransitionSlot>& slots) {
+static MosaicPlan finish_mosaic_negotiation(const Request& req, const std::vector<TransitionSlot>& slots,
+                                          const ResilienceOptions* options, ResilienceTrace* trace) {
     MosaicPlan plan;
     if (req.gentek != Kind::Mosaic) {
         plan.result = begin_result(req, "prepared-regions-negotiated-v1");
@@ -657,8 +1030,13 @@ MosaicPlan negotiate_mosaic(const Request& req, const std::vector<TransitionSlot
         plan.result.termination = "negotiated MOSAIC requires a MOSAIC request";
         return plan;
     }
-    plan.result = generate_mosaic_impl(req, &slots, &plan);
+    plan.result = generate_mosaic_impl(req, &slots, &plan, options, trace);
     auto& result = plan.result;
+    if (trace && trace->admission.work == 0 && trace->solver.attempts.empty() &&
+        (result.status == Status::Exhausted || result.status == Status::Invalid)) {
+        trace->admission.status = result.status;
+        trace->admission.reason = "native preparation stopped before admission completed: " + result.termination;
+    }
     finish_result(req, result);
     apply_damage(req, result);
     // Material witnesses are rechecked after full rasterisation (and any explicit
@@ -697,6 +1075,63 @@ MosaicPlan negotiate_mosaic(const Request& req, const std::vector<TransitionSlot
         [](const auto& d) { return d.modified_domain != d.original_domain; });
     finish_result(req, result);
     return plan;
+}
+
+MosaicPlan negotiate_mosaic(const Request& req, const std::vector<TransitionSlot>& slots) {
+    return finish_mosaic_negotiation(req, slots, nullptr, nullptr);
+}
+
+const char* name(ResilienceAdmission value) noexcept {
+    switch (value) {
+    case ResilienceAdmission::Full: return "full";
+    case ResilienceAdmission::CompatibilityFour: return "compatibility-four";
+    case ResilienceAdmission::CompatibilityHardOnly: return "compatibility-hard-only";
+    }
+    return "invalid";
+}
+const char* name(ResilienceFallback value) noexcept {
+    switch (value) {
+    case ResilienceFallback::HardOnly: return "hard-only";
+    case ResilienceFallback::NativeCore: return "native-core-two";
+    }
+    return "invalid";
+}
+const char* name(ReceiverPolicy value) noexcept {
+    switch (value) {
+    case ReceiverPolicy::ClosedOnly: return "closed-only";
+    case ReceiverPolicy::RequiredOriginalNative: return "required-original-native";
+    }
+    return "invalid";
+}
+bool valid_resilience_options(const ResilienceOptions& options) noexcept {
+    if (static_cast<unsigned>(options.admission) > static_cast<unsigned>(ResilienceAdmission::CompatibilityHardOnly) ||
+        static_cast<unsigned>(options.schedule) > static_cast<unsigned>(SolveSchedule::SinglePreferred) ||
+        static_cast<unsigned>(options.fallback) > static_cast<unsigned>(ResilienceFallback::NativeCore) ||
+        static_cast<unsigned>(options.receivers) > static_cast<unsigned>(ReceiverPolicy::RequiredOriginalNative)) return false;
+    if (options.admission == ResilienceAdmission::CompatibilityHardOnly)
+        return options.optional_capacity == 4 && options.receivers == ReceiverPolicy::RequiredOriginalNative &&
+            options.schedule == SolveSchedule::SinglePreferred && options.fallback == ResilienceFallback::HardOnly;
+    if (options.receivers == ReceiverPolicy::RequiredOriginalNative)
+        return options.admission == ResilienceAdmission::CompatibilityFour && options.schedule == SolveSchedule::SinglePreferred &&
+            options.fallback == ResilienceFallback::NativeCore &&
+            (options.optional_capacity == 4 || options.optional_capacity == 6 || options.optional_capacity == 8);
+    if (options.optional_capacity != 4) return false;
+    if (options.admission == ResilienceAdmission::Full) return options.fallback == ResilienceFallback::HardOnly;
+    return options.schedule == SolveSchedule::Original ? options.fallback == ResilienceFallback::HardOnly :
+                                                        options.fallback == ResilienceFallback::NativeCore;
+}
+
+MosaicPlan negotiate_mosaic_resilient(const Request& req, const std::vector<TransitionSlot>& slots,
+                                    const ResilienceOptions& options, ResilienceTrace& trace) {
+    trace = {};
+    if (!valid_resilience_options(options)) {
+        MosaicPlan plan;
+        plan.result.gentek = Kind::Mosaic; plan.result.status = Status::Invalid;
+        plan.result.termination = "unknown or unregistered resilience policy combination";
+        trace.admission.status = Status::Invalid; trace.admission.reason = plan.result.termination;
+        return plan;
+    }
+    return finish_mosaic_negotiation(req, slots, &options, &trace);
 }
 
 void adapt_mosaic(const Request& req, Result& result) {

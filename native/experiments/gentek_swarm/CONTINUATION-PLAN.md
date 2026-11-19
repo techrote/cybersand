@@ -107,3 +107,13 @@ parent commits or other active PRs. Publish actual native PNGs and accessible
 evidence without committing generated corpus files or binaries. A future
 experimental Workbench bridge remains a separate implementation scope with
 source-matched Windows and adapter qualification.
+
+### Publication checkpoint outcome
+
+The attempted checkpoint push of `729ed2a282853a3647b001ddd29713a42e726575`
+was rejected by automatic approval review. The approval covered the original
+qualified `ffb9e85` payload; this is newly reconstructed source. No remote write
+succeeded. Continue the authorized reconstruction, qualification and private
+evidence preservation locally, then present the exact completed new commit and
+payload for publication approval. Do not retry the rejected push through a
+different route.
