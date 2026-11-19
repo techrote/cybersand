@@ -476,6 +476,15 @@ REVIEWED_TRANSITIONS += ({'path': 'native/src/world_pressure.inc',
   'issue': 672,
   'pr': 676},)
 
+# Bind the optional level-floor Wave gain to physical identity on the ramp branch.
+REVIEWED_TRANSITIONS += ({'path': 'native/src/world_pressure.inc',
+  'from_lf_sha256': '0e012c7f2944cf8d5f9d8aa383e8635bbbd313d26fc5079160a02d5f4e1e3a0f',
+  'to_lf_sha256': 'fca639dfbf6274c590fb38283207aa838d6aa659e3ed0e95b397f6a7d8ab5be1',
+  'source_commit': '1604b66b19705d79d2704e5119a25823caee0973',
+  'record': 'docs/audits/2026-11-19-wave-water-ramp-003.md',
+  'issue': 676,
+  'pr': 677},)
+
 def lf(data: bytes) -> bytes:
     return data.replace(b"\r\n", b"\n")
 
