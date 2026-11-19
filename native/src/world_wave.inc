@@ -24,6 +24,8 @@ struct World::WaveHalf {
     std::uint64_t spill_units = 0, relief_units = 0, spill_faces = 0;
     std::uint64_t falling_units = 0, falling_cells = 0;
     bool pending_flux = false;
+    // Row bounds of three-or-more Oil cells resting on Water in this half.
+    std::int32_t oil_first = std::numeric_limits<std::int32_t>::max(), oil_last = -1;
     // Separate neighbouring writers without over-aligning WaveChunk. C++17
     // aligned allocation imports CXXABI_1.3.11, above the Linux runtime floor.
     // A full cache line between counter sets works with ordinary allocation.
@@ -635,6 +637,12 @@ void World::wave_column_task(std::size_t task_index) noexcept {
             if (value < 0) {
                 // Propagate a rigid cap through Oil trapped immediately under
                 // it. A body mask or paused cell is always a rigid cap.
+                if (value == oil_lid && state.final_round && r >= 2 && r + 1 < rows &&
+                    mass[r - 1] == oil_lid && mass[r - 2] == oil_lid && mass[r + 1] > 0) {
+                    auto& half = entries[r / size].chunk->wave->half[task.half];
+                    half.oil_first = std::min(half.oil_first, r % size);
+                    half.oil_last = std::max(half.oil_last, r % size);
+                }
                 ceiling = value != oil_lid || ceiling;
                 weight[r] = 0;
                 flags[r] = ceiling ? WaveChunk::kSolid : WaveChunk::kOilLid;
@@ -1462,6 +1470,7 @@ void World::advance_wave_flow(TickStats& stats) {
 
     // Owner-side reduction: activity, render dirtiness and occupancy.
     started = Clock::now();
+    bool loaded_oil = false;
     std::uint64_t invalid = 0;
     std::int64_t population = 0;
     diagnostics.last_falling_units = diagnostics.last_falling_cells = 0;
@@ -1481,6 +1490,7 @@ void World::advance_wave_flow(TickStats& stats) {
             diagnostics.spill_faces += half.spill_faces;
             diagnostics.last_falling_units += half.falling_units;
             diagnostics.last_falling_cells += half.falling_cells;
+            loaded_oil = loaded_oil || half.oil_last >= 0;
             invalid += half.invalid;
             transitions += half.transitions;
             pending_flux = pending_flux || half.pending_flux;
@@ -1597,5 +1607,87 @@ void World::advance_wave_flow(TickStats& stats) {
         }
         state.launch_backoff = held;
         diagnostics.launch_nanoseconds += elapsed(started);
+    }
+    if (loaded_oil) spread_floating_oil();
+}
+
+// Only the owner calls this, after the three Wave passes and ballistic launches.
+void World::spread_floating_oil() {
+    const auto& state = *wave_;
+    const auto size = config_.chunk_size;
+    const auto stride = static_cast<std::size_t>(size);
+    // Walk only a connected air/Oil-or-Water boundary. Keep at least two Oil
+    // cells on the donor, so a thin resting film has no lateral drive. One
+    // complete tuple moves only if the receiving pile is at least two thinner.
+    constexpr int reach = 16, max_depth = 64;
+    const auto surface_cell = [&](std::int64_t x, std::int64_t y) {
+        const auto a = address(x, y);
+        const auto* chunk = find_chunk(a.chunk);
+        if (!chunk || !chunk->wave->solve || !chunk->wave->included(a.local_x, a.local_y) ||
+            (state.mask_present && transient_obstacle_at(x, y) != 0)) return Material::Wall;
+        return chunk->cells[a.index].material_value();
+    };
+    for (const auto& entry : state.sorted) {
+        const auto& wave = *entry.chunk->wave;
+        for (std::int32_t h = 0; h < 2; ++h) {
+            const auto& half = wave.half[static_cast<std::size_t>(h)];
+            for (auto ly = half.oil_first; ly <= half.oil_last; ++ly) {
+                const auto bottom = entry.coord.y * size + ly;
+                // Keep every bounded search and its one-cell air clearance representable.
+                constexpr int margin = max_depth + reach + 3;
+                if (bottom < std::numeric_limits<std::int64_t>::min() + margin ||
+                    bottom > std::numeric_limits<std::int64_t>::max() - margin) continue;
+                for (auto lx = h == 0 ? 0 : size / 2; lx < (h == 0 ? size / 2 : size); ++lx) {
+                    const auto x = entry.coord.x * size + lx;
+                    if (x < std::numeric_limits<std::int64_t>::min() + reach ||
+                        x > std::numeric_limits<std::int64_t>::max() - reach) continue;
+                    const auto idx = static_cast<std::size_t>(ly) * stride + static_cast<std::size_t>(lx);
+                    if (entry.chunk->cells[idx].material_value() != Material::Oil ||
+                        surface_cell(x, bottom + 1) != Material::Water) continue;
+                    int depth = 0;
+                    while (depth < max_depth && surface_cell(x, bottom - depth) == Material::Oil) ++depth;
+                    const auto top = bottom - depth + 1;
+                    if (depth < 3 || surface_cell(x, top - 1) != Material::Empty) continue;
+                    const auto donor = address(x, top);
+                    if (find_chunk(donor.chunk)->cells[donor.index].epoch_value() == update_epoch_) continue;
+                    auto target_x = x, target_y = top;
+                    auto best = depth - 1;
+                    const auto direction = deterministic_direction(x, bottom);
+                    for (const auto dx : {direction, -direction}) {
+                        auto surface = top;
+                        for (int d = 1; d <= reach; ++d) {
+                            const auto nx = x + d * dx;
+                            // Follow a connected surface by at most one row per column.
+                            // On a rise both columns need open air at the higher level.
+                            auto next = surface;
+                            const auto air = surface_cell(nx, next - 1);
+                            if (air == Material::Water || air == Material::Oil) {
+                                if (surface_cell(nx - dx, next - 2) != Material::Empty ||
+                                    surface_cell(nx, next - 2) != Material::Empty) break;
+                                --next;
+                            } else if (air != Material::Empty) {
+                                break;
+                            } else if (surface_cell(nx, next) == Material::Empty) {
+                                ++next;
+                            }
+                            auto value = surface_cell(nx, next);
+                            int thickness = 0;
+                            while (thickness < max_depth && value == Material::Oil)
+                                value = surface_cell(nx, next + ++thickness);
+                            if (value != Material::Water) break;
+                            if (thickness < best) {
+                                best = thickness;
+                                target_x = nx;
+                                target_y = next - 1;
+                            }
+                            surface = next;
+                            if (best == 0) break;
+                        }
+                        if (best == 0) break;
+                    }
+                    if (target_x != x) move_cell(x, top, target_x, target_y, false, nullptr);
+                }
+            }
+        }
     }
 }

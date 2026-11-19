@@ -573,6 +573,7 @@ private:
     std::unique_ptr<WaveState> wave_;
     void validate_wave_flow_config() const;
     void advance_wave_flow(TickStats& stats);
+    void spread_floating_oil();
     void wave_column_task(std::size_t task_index) noexcept;
     void wave_flux_task(std::size_t task_index) noexcept;
     void wave_apply_task(std::size_t task_index) noexcept;
