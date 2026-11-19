@@ -40,7 +40,12 @@ func run() -> void:
 	panel = main.shared_workbench
 	if not await until(installed, "workbench installed"): return finish()
 	if not await until(func(): return not spray().is_empty(), "spray status published"): return finish()
-	check(not spray().get("ballistic_enabled", true), "default World has no ballistic Water")
+	check(spray().get("ballistic_enabled", false), "fresh Workbench enables ballistic Water")
+	panel.water_spray._set_spill("workbench_wave_spill", false)
+	panel.water_spray._ballistic.button_pressed = false
+	if not check(panel.water_spray._apply_wave(), "explicit no-ballistic control requested"): return finish()
+	if not await until(func(): return installed() and not spray().get("ballistic_enabled", true),
+		"explicit no-ballistic control installed"): return finish()
 	check(panel.water_spray.request({"enabled": true}), "spray request queued")
 	panel.toggle_pause()
 	await until(func(): return str(spray().get("receipt", {}).get("refusal", "")).contains("ballistic"),

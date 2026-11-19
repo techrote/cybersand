@@ -1,6 +1,8 @@
 class_name CyberLiquidComparisonPanel
 extends VBoxContainer
 
+signal water_family_selected
+
 # Presentation and copied request selection only. The existing application
 # owner and native prepared builder perform every actual reconstruction.
 const Contract = preload("res://scripts/microscenario_contract.gd")
@@ -176,6 +178,10 @@ func select_preset(index: int) -> void:
 	_dirty = true
 	_refusal = ""
 	_refresh_choices()
+	for assignment: Array in PRESETS[index].assignments:
+		if assignment[0] == CyberCellWorld.WATER:
+			water_family_selected.emit()
+			break
 
 func _refresh_choices() -> void:
 	if bridge == null or not bridge.has_method(&"liquid_policy_assignment_choices") or requested_policy.is_empty(): return
@@ -228,6 +234,7 @@ func select_family(index: int) -> void:
 	_dirty = true
 	_refusal = ""
 	_refresh_choices()
+	if material_picker.get_selected_id() == CyberCellWorld.WATER: water_family_selected.emit()
 
 func _definition_supported(definition: Dictionary) -> bool:
 	if definition.is_empty() or int(definition.get("schema_version",0)) != 2: return false

@@ -134,7 +134,7 @@ func install(world: Variant, value: Variant, mode: String = "Inspect", instrumen
 				if controlled_setup.has(key): options[key] = controlled_setup[key]
 			for key: String in ["workbench_face_budget","workbench_face_speed","workbench_face_period","workbench_face_min_height",
 					"workbench_wave_substeps","workbench_wave_active_rows","workbench_wave_gain","workbench_wave_gain_confined",
-					"workbench_wave_deep_gain","workbench_wave_flux_smoothing","workbench_wave_stiffness","workbench_wave_damp_shift","workbench_wave_coast","workbench_wave_level_shift",
+					"workbench_wave_deep_gain","workbench_wave_floor_gain","workbench_wave_flux_smoothing","workbench_wave_stiffness","workbench_wave_damp_shift","workbench_wave_coast","workbench_wave_level_shift",
 					"workbench_wave_sleep_after","workbench_wave_wake_peak","workbench_wave_rest_head","workbench_wave_stick",
 					"workbench_wave_calm","workbench_wave_calm_damp_shift","workbench_wave_maximum_mass",
 					"workbench_wave_empty_pour_shift","workbench_wave_flow_share_shift","workbench_wave_adhesion_shift",

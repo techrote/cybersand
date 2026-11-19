@@ -404,6 +404,12 @@ func run() -> void:
 			if check(panel.load_setup(),"load from separate process / "+panel.message+" / "+main.microscenario_error) and await until(installed,"reload acknowledged"):
 				await inspect()
 		else:
+			# The face-release and fine-core controls below compare their explicit
+			# pre-Wave laws. Each case then loads its own native construction.
+			panel.water_spray._choose_studio_solver(0)
+			panel.water_spray._set_spill("workbench_wave_spill",false)
+			panel.water_spray._ballistic.button_pressed = false
+			panel.water_spray._reset_wave_defaults()
 			rectangle_merge()
 			if await builtin_water() and await builtin_bench() and await builtin_stress() and paint_compaction(): await author()
 	else: check(false,"workbench launch")
