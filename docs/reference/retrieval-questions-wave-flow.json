@@ -109,7 +109,7 @@
         "architecture/wave-flow-v1.md"
       ],
       "facts": [
-        "Fresh player sessions select Wave Flow, waterfall spill and ballistic release.",
+        "Fresh player sessions select Wave Flow, waterfall spill and ballistic release. Floor gain drives the shallow leading edge only over a continuous level floor.",
         "A named canvas can be loaded from Workbench. Water Lab stages adjustments and shows the accepted native values."
       ],
       "sources": [

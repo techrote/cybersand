@@ -1163,6 +1163,25 @@ void floor_gain_requires_a_level_solved_floor() {
     const auto paused = run(4096, 4, false, true, 177);
     require(paused[0] + paused[1] == 0, "paused terrain supplied floor acceleration");
     (void)run(4096, 6, false, false, 65535);
+    // Read the face shared by a three-cell column and its shallower neighbour.
+    // The whole supporting path must lead to the same floor elevation.
+    const auto top_flux = [](int donor_depth, int receiver_step) {
+        constexpr int left = 127, top = 127;
+        auto cfg = config(Mode::Hybrid, 4);
+        cfg.wave_flow.gain = 0;
+        cfg.wave_flow.floor_gain = 4096;
+        cfg.wave_flow.spill.launch_budget = 0;
+        World world(cfg);
+        rect(world, left-2, top+donor_depth, 3, 1, Material::Wall);
+        rect(world, left+1, top+donor_depth-receiver_step, 3, 1, Material::Wall);
+        for (int k = 0; k < donor_depth; ++k) world.set(left, top+k, Material::Water);
+        for (int k = 1; k < donor_depth-receiver_step; ++k) world.set(left+1, top+k, Material::Water);
+        (void)world.tick();
+        return world.wave_flow_flux(left, top);
+    };
+    require(top_flux(3, 0) > 0, "third supported row did not carry the surge");
+    require(top_flux(4, 0) == 0, "floor acceleration escaped the shallow band");
+    require(top_flux(3, 1) == 0, "floor acceleration climbed a riser");
     for (int bad : {-1, 4097}) {
         auto cfg = config(Mode::Hybrid);
         cfg.wave_flow.floor_gain = bad;
