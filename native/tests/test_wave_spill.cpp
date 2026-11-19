@@ -1613,6 +1613,31 @@ void thick_oil_brush_spreads_on_water() {
     }
 }
 
+void warm_oil_surface_move_carries_tuple_across_chunk() {
+    World world(oil_tank_config(6));
+    box(world, 256, 80);
+    rect(world, 1, 42, 254, 37, Material::Water);
+    rect(world, 100, 38, 28, 4, Material::Oil);
+    rect(world, 128, 38, 17, 4, Material::Water);
+    // Warm and identify only the last four columns of Oil in the left chunk.
+    for (int x = 124; x < 128; ++x) {
+        for (int y = 38; y < 42; ++y) {
+            require(world.set_cell_state(x, y, Material::Oil, 173, 0), "tagging warm Oil failed");
+            world.set_temperature(x, y, 315);
+        }
+    }
+    (void)world.tick();
+    int tagged = 0, across = 0;
+    for (int x = 1; x < 255; ++x) {
+        for (int y = 1; y < 79; ++y) {
+            if (world.stored_material(x, y) != Material::Oil || world.stored_state_a(x, y) != 173) continue;
+            require(world.stored_temperature(x, y) == 315, "Oil tuple lost its temperature");
+            ++tagged;
+            if (x >= 138) ++across;
+        }
+    }
+    require(tagged == 16 && across > 0, "warm Oil did not carry its state beyond the cell-job halo");
+}
 void oil_exchange_preserves_partial_overfull_and_paused_cells() {
     // A pair straddling a scheduling core boundary, enclosed by a solid
     // one-cell jacket. Saturated Water has nowhere to redistribute after
@@ -1742,6 +1767,50 @@ void dry_oil_keeps_its_cellular_spread() {
     require(dry == path(true), "Wave changed a pure Oil cell's path on dry ground");
 }
 
+void floating_oil_preserves_paused_face_momentum() {
+    for (const auto workers : {1U, 6U}) {
+        for (const bool active_left : {true, false}) {
+            auto cfg = config(Mode::Hybrid, workers);
+            cfg.chunk_size = 64;
+            cfg.scheduling_core_size = 32;
+            cfg.activity_block_size = 16;
+            cfg.wave_flow.spill.fall = 3;
+            World world(cfg);
+            const auto x = [active_left](int column) { return active_left ? column : 127 - column; };
+            const auto put = [&](int column, int y, Material mat) { world.set(x(column), y, mat); };
+            rect(world, x(60), 42, 1, 15, Material::Wall);
+            rect(world, x(66), 42, 1, 15, Material::Wall);
+            for (int column = 61; column <= 65; ++column) {
+                put(column, 56, Material::Wall);
+                rect(world, x(column), 49, 1, 7, Material::Water);
+            }
+            require(world.set_cell_state(x(63), 48, Material::Water, 200, 0) &&
+                    world.set_cell_state(x(64), 48, Material::Water, 50, 0), "Oil seam setup");
+            (void)world.tick();
+            const auto held = world.wave_flow_flux(63, 48);
+            require(held != 0, "uneven Water failed to establish boundary momentum");
+            world.set_simulation_region(RectI64{active_left ? 0 : 64, 0, 64, 128});
+
+            // Drain the active endpoint vertically. Its now-empty cell still
+            // shares a retained face with the paused Water across the seam.
+            for (int column = 61; column <= 63; ++column)
+                rect(world, x(column), 49, 1, 7, Material::Empty);
+            for (int i = 0; i < 16; ++i) (void)world.tick();
+            require(world.stored_material(x(63), 48) == Material::Empty &&
+                    world.wave_flow_flux(63, 48) == held, "draining lost the held seam");
+            rect(world, x(61), 47, 1, 9, Material::Wall);
+            rect(world, x(63), 49, 1, 7, Material::Water);
+            rect(world, x(62), 52, 1, 4, Material::Water);
+            rect(world, x(62), 49, 1, 3, Material::Oil);
+            for (int i = 0; i < 8; ++i) {
+                (void)world.tick();
+                require(world.wave_flow_flux(63, 48) == held,
+                        "floating Oil retired the shared face across a paused boundary");
+            }
+        }
+    }
+}
+
 }  // namespace
 
 int main(int argc, char** argv) {
@@ -1756,7 +1825,9 @@ int main(int argc, char** argv) {
         void (*function)();
     };
     const Test tests[] = {
+        {"warm Oil surface move carries its tuple across chunks", warm_oil_surface_move_carries_tuple_across_chunk},
         {"thick Oil brush spreads on Water", thick_oil_brush_spreads_on_water},
+        {"floating Oil preserves paused face momentum", floating_oil_preserves_paused_face_momentum},
         {"buried Oil surfaces and disturbed tank settles", buried_oil_surfaces_and_disturbed_tank_settles},
         {"Oil exchange preserves partial overfull and paused cells", oil_exchange_preserves_partial_overfull_and_paused_cells},
         {"Oil exchange moves Water only once per tick", oil_exchange_moves_water_only_once_per_tick},
