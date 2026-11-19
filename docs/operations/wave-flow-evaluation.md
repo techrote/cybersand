@@ -220,9 +220,11 @@ represent Wave overfill. Material-only authoring snapshots are a different
 contract and never promise physical continuation. Existing legacy save formats
 and the default-off behavior remain unchanged.
 
-Wave Flow has no buoyancy or retained sideways momentum for falling Water.
-Water-initiated pair chemistry, coherence and sinking through lighter liquids
-are unavailable. Other materials retain their own initiating interactions.
+Oil directly beneath Wave Water can rise through it by exchanging places with
+the heavier Water. Grid Water in free fall retains no sideways momentum.
+Water-initiated pair chemistry, coherence, rigid-body flotation and sinking
+through other lighter liquids are unavailable. Other materials retain their
+own initiating interactions. [Water–Oil contact](../architecture/wave-flow-v1.md#oil-floating-on-wave-water)
 Nonzero coherent Water writes and custom transport profiles are explicitly
 refused. This evaluator uses Water and hard terrain, with real body coupling in
 the two actor fixtures. It does not establish arbitrary mixed-material parity,

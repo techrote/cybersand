@@ -44,11 +44,11 @@ void rect(World& world, int x, int y, int width, int height, Material material) 
         for (int xx = x; xx < x + width; ++xx) world.set(xx, yy, material);
 }
 
-void box(World& world, int width, int height) {
-    rect(world, 0, 0, width, 1, Material::Wall);
-    rect(world, 0, height - 1, width, 1, Material::Wall);
-    rect(world, 0, 0, 1, height, Material::Wall);
-    rect(world, width - 1, 0, 1, height, Material::Wall);
+void box(World& world, int width, int height, int x = 0, int y = 0) {
+    rect(world, x, y, width, 1, Material::Wall);
+    rect(world, x, y + height - 1, width, 1, Material::Wall);
+    rect(world, x, y, 1, height, Material::Wall);
+    rect(world, x + width - 1, y, 1, height, Material::Wall);
 }
 
 // Every unit has exactly one owner: stored cells or a live parcel. The stored
@@ -1428,6 +1428,263 @@ void coyote_flight_pauses_expires_and_leaves_jets_alone() {
     require_ledger_closes(world, all, before, "coyote flight");
 }
 
+// Match the Wave settings in the #678 Windows playtest where the owner
+// reported trapped Oil, including full-face spill and ballistic blobs.
+WorldConfig oil_tank_config(std::uint32_t workers) {
+    auto cfg = config(Mode::Hybrid, workers, 2);
+    auto& wave = cfg.wave_flow;
+    wave.gain = wave.deep_gain = 32;
+    wave.floor_gain = 1024;
+    wave.flux_smoothing = 16;
+    wave.coast = 32;
+    wave.empty_pour_shift = 2;
+    wave.damp_shift = 16;
+    wave.calm_damp_shift = 8;
+    wave.calm = wave.stick = 128;
+    wave.sleep_after = 90;
+    wave.body_push_by_mass = 1;
+    wave.spill.sheet_rate = 64;
+    wave.spill.coyote_ticks = 4;
+    wave.spill.full_face = 1;
+    wave.spill.fall = 3;
+    wave.spill.draw = 127;
+    wave.spill.draw_head = 255;
+    wave.spill.deep_draw = 64;
+    wave.spill.launch_budget = 128;
+    return cfg;
+}
+
+void buried_oil_surfaces_and_disturbed_tank_settles() {
+    constexpr std::uint64_t water = 48U * 31U * 255U;
+    // The final row uses the physical coordinates of the packaged tank. A
+    // different location samples different deterministic Oil/Sand motions.
+    struct Tank { bool sand; int x, y, gate_tick; };
+    const Tank tanks[] = {{false, 0, 0, 600}, {true, 0, 0, 600}, {true, 128, 192, 3600}};
+    for (const auto [sand, offset_x, offset_y, gate_tick] : tanks) {
+        const int left = offset_x + 104, right = left + 48;
+        const RectI64 all{offset_x, offset_y, 256, 128};
+        std::array<std::uint64_t, 3> reference{};
+        for (const auto workers : {1U, 6U}) {
+            if (gate_tick == 3600 && workers != 1) continue;
+            World world(oil_tank_config(workers));
+            world.configure_transient_obstacles(all, true);
+            world.enable_transient_granular_wrenches(true);
+            world.enable_granular_arrival_witness(true);
+            box(world, 256, 128, offset_x, offset_y);
+            rect(world, left - 1, offset_y + 1, 1, 95, Material::Wall);
+            rect(world, right, offset_y + 1, 1, 96, Material::Wall);
+            rect(world, left - 1, offset_y + 96, 49, 1, Material::Wall);
+            rect(world, left, offset_y + 64, 48, 32, Material::Water);
+            rect(world, left, offset_y + 74, 48, 1, Material::Oil);
+            if (sand) rect(world, left + 17, offset_y + 46, 14, 8, Material::Sand);
+            const auto deposited_sand = [&] {
+                std::vector<int> cells;
+                for (int y = offset_y + 65; y < offset_y + 96; ++y)
+                    for (int x = left; x < right; ++x)
+                        if (world.stored_material(x, y) == Material::Sand)
+                            cells.push_back(y * 48 + (x - left));
+                return cells;
+            };
+
+            std::array<std::uint64_t, 3> hashes{};
+            std::uint64_t before_quiet = 0;
+            std::vector<int> previous_deposit;
+            for (int tick = 1; tick <= gate_tick; ++tick) {
+                (void)world.tick();
+                if (tick == 30) hashes[0] = world.physical_state_hash();
+                if (tick == 540) {
+                    before_quiet = world.wave_flow_diagnostics().launched_units;
+                    if (sand) previous_deposit = deposited_sand();
+                }
+            }
+            int surfaced = 0, supported = 0, slick_columns = 0, run = 0, longest_run = 0;
+            for (int x = left; x < right; ++x) {
+                bool water_above = false, floating_oil = false;
+                for (int y = offset_y + 1; y < offset_y + 96; ++y) {
+                    const auto material = world.stored_material(x, y);
+                    if (material == Material::Water) water_above = true;
+                    if (material == Material::Oil && !water_above) {
+                        ++surfaced;
+                        floating_oil = true;
+                        const auto below = world.stored_material(x, y + 1);
+                        if (below == Material::Water || below == Material::Oil) ++supported;
+                    }
+                }
+                if (floating_oil) ++slick_columns;
+                run = floating_oil ? run + 1 : 0;
+                longest_run = std::max(longest_run, run);
+            }
+            const auto quiet = world.wave_flow_diagnostics().launched_units;
+            const auto ledger = world.quantity_ledger();
+            std::printf("Oil tank t=%d workers=%u sand=%d surfaced=%d supported=%d columns=%d longest_run=%d "
+                        "late_throw=%llu live=%u\n", gate_tick, workers, sand ? 112 : 0, surfaced, supported, slick_columns,
+                        longest_run, static_cast<unsigned long long>(quiet - before_quiet),
+                        world.ballistic_water_snapshot().live);
+            if (sand) require(previous_deposit.size() == 112 && previous_deposit == deposited_sand(),
+                              "Sand had not formed a stationary submerged deposit");
+            // The undisturbed strip should remain a single, tank-wide slick.
+            // Sand may stack Oil, but all of it should remain afloat and
+            // collectively cover at least three quarters of the tank surface.
+            require(surfaced == 48 && supported == 48 && slick_columns >= (sand ? 36 : 48),
+                    "Oil failed to form a broad floating slick");
+            require(ledger.material_cells[static_cast<std::size_t>(Material::Oil)] == 48 &&
+                    ledger.material_cells[static_cast<std::size_t>(Material::Sand)] == (sand ? 112U : 0U),
+                    "Oil or Sand inventory changed");
+            require(quiet == before_quiet && world.ballistic_water_snapshot().live == 0,
+                    "settled tank still sprayed after tick 540: " + std::to_string(quiet - before_quiet));
+            require_ledger_closes(world, all, water, "resting Oil tank");
+            hashes[1] = world.physical_state_hash();
+
+            // Opening the side gate starts a fresh dam-break wave into the
+            // catch basin. The only possible spray source is the tank Water.
+            rect(world, right, offset_y + 55, 1, 41, Material::Empty);
+            for (int tick = 0; tick < 24; ++tick) (void)world.tick();
+            const auto fresh = world.wave_flow_diagnostics().launched_units - quiet;
+            require(fresh > 0 && world.water_quantity({right + 1, offset_y, 103, 128}) > 0,
+                    "released wave did not travel into the basin and throw spray");
+            require_ledger_closes(world, all, water, "released Oil tank");
+            const auto released = world.quantity_ledger();
+            require(released.material_cells[static_cast<std::size_t>(Material::Oil)] == 48 &&
+                    released.material_cells[static_cast<std::size_t>(Material::Sand)] == (sand ? 112U : 0U),
+                    "gate release changed the Oil or Sand inventory");
+            hashes[2] = world.physical_state_hash();
+            if (workers == 1) reference = hashes;
+            else require(reference == hashes, "Oil tank physical states differed across worker counts");
+            std::printf("Oil tank gate t=%d workers=%u sand=%d fresh_throw=%llu\n",
+                        gate_tick, workers, sand ? 112 : 0, static_cast<unsigned long long>(fresh));
+        }
+    }
+}
+
+void oil_exchange_preserves_partial_overfull_and_paused_cells() {
+    // A pair straddling a scheduling core boundary, enclosed by a solid
+    // one-cell jacket. Saturated Water has nowhere to redistribute after
+    // the exchange; checking the exact tuple catches uint8 truncation.
+    for (const std::uint16_t mass : std::array<std::uint16_t, 2>{1, 65535}) {
+        for (const int active_y : {0, 64}) {
+            World world(config(Mode::Original));
+            rect(world, 68, 62, 3, 4, Material::Wall);
+            require(world.set_cell_state(69, 63, Material::Water, mass, 0) &&
+                    world.set_cell_state(69, 64, Material::Oil, 173, 0), "seam setup refused");
+            world.set_simulation_region(RectI64{64, active_y, 64, 64});
+            for (int n = 0; n < 100; ++n) (void)world.tick();
+            require(world.stored_material(69, 64) == Material::Oil && world.stored_state_a(69, 64) == 173 &&
+                    world.liquid_mass(69, 63) == mass, "Oil exchanged through a paused boundary");
+            world.set_simulation_region(std::nullopt);
+            for (int n = 0; n < 8; ++n) (void)world.tick();
+            require(world.stored_material(69, 63) == Material::Oil && world.stored_state_a(69, 63) == 173 &&
+                    world.liquid_mass(69, 64) == mass, "resumed Oil exchange lost a cell or its payload");
+        }
+    }
+    for (const int masked_y : {127, 128}) {
+        World world(config(Mode::Original, 6));
+        rect(world, 68, 126, 3, 4, Material::Wall);
+        world.set(69, 127, Material::Water);
+        world.set(69, 128, Material::Oil);
+        world.set_temperature(69, 128, 315);
+        world.configure_transient_obstacles({64, 120, 16, 16});
+        require(world.set_transient_obstacle(69, masked_y, 1), "Oil test mask refused");
+        for (int n = 0; n < 10; ++n) (void)world.tick();
+        require(world.stored_material(69, 127) == Material::Water &&
+                world.stored_material(69, 128) == Material::Oil, "Oil exchanged through a body");
+        world.clear_transient_obstacles();
+        for (int n = 0; n < 8; ++n) (void)world.tick();
+        require(world.stored_material(69, 127) == Material::Oil && world.stored_temperature(69, 127) == 315 &&
+                world.liquid_mass(69, 128) == 255 && world.stored_temperature(69, 128) == 200,
+                "unmasked Oil exchange across chunks lost Water or moved heat to the wrong cell");
+    }
+}
+
+void oil_exchange_moves_water_only_once_per_tick() {
+    // Upper and lower Oil belong to different scheduling cores. On a tick
+    // where the upper core runs first, the lower Oil sees newly displaced
+    // Water and must leave it alone until the next tick.
+    for (int phase_offset = 0; phase_offset < 4; ++phase_offset) {
+        World world(config(Mode::Original));
+        for (int tick = 0; tick < phase_offset; ++tick) (void)world.tick();
+        rect(world, 68, 61, 3, 5, Material::Wall);
+        world.set(69, 62, Material::Water);
+        rect(world, 69, 63, 1, 2, Material::Oil);
+        for (int tick = 1; tick <= 2; ++tick) {
+            (void)world.tick();
+            require(world.liquid_mass(69, 62 + tick) == 255 &&
+                    world.stored_material(69, 62) == Material::Oil,
+                    "same Water must displace one Oil each tick, phase offset " + std::to_string(phase_offset));
+        }
+    }
+    // The hot Water's chunk owns the only thermal field at setup. An Oil
+    // update in the next, cold chunk has to carry both temperatures safely.
+    World hot(config(Mode::Original));
+    rect(hot, 68, 126, 3, 4, Material::Wall);
+    hot.set(69, 127, Material::Water);
+    hot.set_temperature(69, 127, 300);
+    hot.set(69, 128, Material::Oil);
+    (void)hot.tick();
+    require(hot.liquid_mass(69, 128) == 255 && hot.stored_temperature(69, 128) == 300 &&
+            hot.stored_material(69, 127) == Material::Oil && hot.stored_temperature(69, 127) == 200,
+            "Oil exchange lost heat when only the adjacent Water chunk had thermal storage");
+}
+
+void oil_lid_pressure_respects_walls_and_masks() {
+    enum class Cover { Free, Mask, Wall, Paused };
+    const auto flux_under = [](Material roof, Cover cover) {
+        World world(config(Mode::Original, 6));
+        // Two communicating Water cells. Their roofs sit in the upper
+        // chunk; only the left cell has excess mass. Surrounding walls
+        // prevent sideways Oil movement and seal the sample from below.
+        rect(world, 67, 127, 4, 3, Material::Wall);
+        world.set(68, 127, roof);
+        if (cover == Cover::Wall) world.set(68, 126, Material::Wall);
+        world.set(68, 128, Material::Water);
+        world.set(69, 128, Material::Water);
+        // Prepare lid metadata while the upper core is visible before
+        // masking or pausing it; the stale mobile tag must not leak through.
+        (void)world.tick();
+        if (cover == Cover::Mask) {
+            world.configure_transient_obstacles({64, 120, 16, 16});
+            require(world.set_transient_obstacle(68, 127, 1), "Oil roof mask refused");
+        }
+        if (cover == Cover::Paused) world.set_simulation_region(RectI64{64, 128, 64, 64});
+        require(world.set_cell_state(68, 128, Material::Water, 287, 0), "excess Water refused");
+        (void)world.tick();
+        require_ledger_closes(world, {64, 120, 16, 16}, 542, "Oil roof");
+        require(world.stored_material(68, 127) == roof, "pressure replaced the roof");
+        return world.wave_flow_flux(68, 128);
+    };
+    const auto rigid = flux_under(Material::Wall, Cover::Free);
+    const auto mobile = flux_under(Material::Oil, Cover::Free);
+    require(rigid > mobile && mobile >= 0, "free Oil roof acted like a rigid ceiling on overfilled Water");
+    require(flux_under(Material::Oil, Cover::Mask) == rigid, "body-masked Oil weakened rigid pressure");
+    require(flux_under(Material::Oil, Cover::Wall) == rigid, "Oil trapped under Wall weakened rigid pressure");
+    require(flux_under(Material::Oil, Cover::Paused) == rigid, "paused Oil weakened rigid pressure");
+}
+
+void dry_oil_keeps_its_cellular_spread() {
+    const auto path = [](bool wave) {
+        auto cfg = config(Mode::Original);
+        cfg.wave_flow.enabled = wave;
+        World world(cfg);
+        // One Oil cell can shuffle along a flat bed of pure Oil. The
+        // underlying row fills its trough and has nowhere to drain.
+        rect(world, 47, 79, 18, 2, Material::Wall);
+        rect(world, 47, 78, 1, 1, Material::Wall);
+        rect(world, 64, 78, 1, 1, Material::Wall);
+        rect(world, 48, 79, 16, 1, Material::Oil);
+        world.set(56, 78, Material::Oil);
+        std::array<int, 32> trace{};
+        for (auto& position : trace) {
+            (void)world.tick();
+            for (int x = 48; x < 64; ++x)
+                if (world.stored_material(x, 78) == Material::Oil) position = x;
+            require(position != 0, "Oil left a closed dry trough");
+        }
+        return trace;
+    };
+    const auto dry = path(false);
+    require(std::any_of(dry.begin(), dry.end(), [](int x) { return x != 56; }), "dry control was motionless");
+    require(dry == path(true), "Wave changed a pure Oil cell's path on dry ground");
+}
+
 }  // namespace
 
 int main(int argc, char** argv) {
@@ -1442,6 +1699,11 @@ int main(int argc, char** argv) {
         void (*function)();
     };
     const Test tests[] = {
+        {"buried Oil surfaces and disturbed tank settles", buried_oil_surfaces_and_disturbed_tank_settles},
+        {"Oil exchange preserves partial overfull and paused cells", oil_exchange_preserves_partial_overfull_and_paused_cells},
+        {"Oil exchange moves Water only once per tick", oil_exchange_moves_water_only_once_per_tick},
+        {"Oil lid pressure respects walls and masks", oil_lid_pressure_respects_walls_and_masks},
+        {"dry Oil keeps its cellular spread", dry_oil_keeps_its_cellular_spread},
         {"deep draw limits opposing pool faces", deep_draw_limits_opposing_pool_faces},
         {"floor gain requires real level terrain and conserves both shares", floor_gain_requires_a_level_solved_floor},
         {"crest Apply adopts the replacement flight law", retained_crest_adopts_replacement_flight_law},

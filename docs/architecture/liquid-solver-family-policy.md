@@ -12,6 +12,8 @@ related-documents: [pressure-flow-v1.md, liquid-prepared-setup-and-receipts.md, 
 
 ## Status
 
+**Planned authoring target, 19 November 2026.** The owner wants to choose Wave Flow or an alternative solver per material, with tuning stored separately for each material. Shared contacts will still need rules for exchanging materials of different densities and preserving their quantities and specialized behavior. The current Wave evaluation implements the Water–Oil contact while Oil runs its existing kernel. [Wave Water and Oil](wave-flow-v1.md#oil-floating-on-wave-water)
+
 **Current-main checkpoint — 2026-11-03.** At inspected main
 `89020b9eb6d540383a5bb64b58dcd29a87592c32`, all four physically distinct families
 are implemented and have ordinary application constructors. The

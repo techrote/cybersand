@@ -411,11 +411,19 @@ the World is quarantined as failed, rather than wrapping the value.
 | Area | Under wave flow |
 |---|---|
 | Water material identity, density, render coverage from `state_a` | Unchanged |
-| Other materials' kernels (Sand sinking, reactions seen from the other material) | Unchanged; they are woken where Water arrives or leaves |
+| Other materials | Sand keeps its sinking law. Water wakes other materials where it arrives or leaves. Oil can exchange with Water directly above it. |
 | Body masks | Solid to Water; Water under a mask is frozen, as today |
 | Body contacts | Recorded when Water rests on a body or leans on its side, through the existing `record_transient_contact` |
-| Water's own per-cell kernel | **Does not run**: Water-initiated pair chemistry and Water-initiated exchange through lighter fluids are unsupported. Nonzero coherence is explicitly refused |
-| Buoyancy | **None**, as in FreeMass: nothing pushes a body up |
+| Water's own per-cell kernel | Bulk Wave owns Water motion. Oil schedules the vertical Water–Oil density exchange. Water-initiated pair chemistry and other Water-initiated density exchanges remain unsupported. Nonzero coherence is explicitly refused. |
+| Floating rigid bodies | Wave supplies no upward body force. |
+
+### Oil floating on Wave Water
+
+When Oil touches Wave Water immediately above it, the heavier Water can sink one cell and lift the Oil into its place. This uses the existing density ordering and transports the full stored cells, including Water overfill, Oil state and temperature. Oil handles ignition and extinguishing first. Both endpoints must be visible to the simulation and eligible to move this tick. A solid obstruction or a body mask can shelter a pocket. The exchange requires neither spill nor ballistic release. An exposed Water edge still uses the configured release law.
+
+Only a scheduled Oil cell checks for this contact. The Water worker count, Wave rounds and parcel budget do not control the rise rate. The owner prepares temperature storage for a warm exchange across a chunk edge before workers run.
+
+Oil can flow into a lower opening. Once it rests on Water, or on one other Oil cell directly on Water, it stops taking random steps along the level surface. The second-row check uses the admitted two-cell rule radius. The column pass keeps floating Oil impermeable and omits the extra rigid-ceiling pressure response below it. A contiguous Oil layer pinned directly under a solid, body mask or paused region retains the rigid response. These rules allow surface spray to die out after a disturbance. [Tank and boundary tests](../audits/2026-11-19-wave-oil-buoyancy.md)
 
 ## Limits
 

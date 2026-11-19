@@ -1,0 +1,8 @@
+{
+  "schema": "wave-oil-buoyancy-runtime-publish-request-v1",
+  "family": "experimental-wave-flow-v1-spill",
+  "variant": "water-oil-density-exchange",
+  "scope": "linux-windows-native-wave-spill-workbench",
+  "intent": "publish-source-matched-runtimes",
+  "request_sequence": 23
+}

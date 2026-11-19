@@ -485,6 +485,37 @@ REVIEWED_TRANSITIONS += ({'path': 'native/src/world_pressure.inc',
   'issue': 676,
   'pr': 677},)
 
+# Wave Water uses the catalogue's existing Water/Oil density ordering.
+REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
+  'from_lf_sha256': 'fef05d7f0318f0a54948144ee22f30721555a567ac3963309c927b60fbfb0cf0',
+  'to_lf_sha256': 'fd8052ee6630ee5c9a664ff30611eddcbf9d74ac88203ac5143bbc9a2bcb52fc',
+  'source_commit': 'b8db73ce7d0f37c1a38690ea34749d1ccba3474b',
+  'record': 'docs/audits/2026-11-19-wave-oil-buoyancy.md',
+  'issue': 678,
+  'pr': 679},
+ {'path': 'native/src/world.cpp',
+  'from_lf_sha256': 'fd8052ee6630ee5c9a664ff30611eddcbf9d74ac88203ac5143bbc9a2bcb52fc',
+  'to_lf_sha256': 'c5b768aa5b2f80782f2c70327f8e267936bd0bc862f7fdcc72117d364e84bd0b',
+  'source_commit': '0b2a46cee3598ae8e6ce481167ff3f482f83580f',
+  'record': 'docs/audits/2026-11-19-wave-oil-buoyancy.md',
+  'issue': 678,
+  'pr': 679},
+ {'path': 'native/src/world.cpp',
+  'from_lf_sha256': 'c5b768aa5b2f80782f2c70327f8e267936bd0bc862f7fdcc72117d364e84bd0b',
+  'to_lf_sha256': '9969471e50b6f462dcd62dd66c9986d453b037f71d84d21f14a50859c86bebaf',
+  'source_commit': '932a811c474de7f2720719f258a9fd38d8aecdfd',
+  'record': 'docs/audits/2026-11-19-wave-oil-buoyancy.md',
+  'issue': 678,
+  'pr': 679},
+ {'path': 'native/src/world.cpp',
+  'from_lf_sha256': '9969471e50b6f462dcd62dd66c9986d453b037f71d84d21f14a50859c86bebaf',
+  'to_lf_sha256': 'ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a',
+  'source_commit': '461b1c1485418bcd8f83f29efe1cccf7ef4a9928',
+  'record': 'docs/audits/2026-11-19-wave-oil-buoyancy.md',
+  'issue': 678,
+  'pr': 679},)
+
+
 def lf(data: bytes) -> bytes:
     return data.replace(b"\r\n", b"\n")
 

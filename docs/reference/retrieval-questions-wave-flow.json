@@ -149,6 +149,23 @@
         "../native/src/world_wave.inc",
         "../native/bench/wave_waterwall.cpp"
       ]
+    },
+    {
+      "id": "WAVE10",
+      "query": "How does buried Oil float through Wave Water and what makes an Oil slick settle after Sand lands?",
+      "canonical": [
+        "architecture/wave-flow-v1.md",
+        "operations/workbench-water-lab.md"
+      ],
+      "facts": [
+        "Water can exchange with Oil immediately below, carrying both stored material states.",
+        "Oil handles burning and extinguishing before buoyant motion.",
+        "A solid obstruction, a body mask or a paused endpoint can block the exchange."
+      ],
+      "sources": [
+        "../native/src/world.cpp",
+        "../native/tests/test_wave_spill.cpp"
+      ]
     }
   ]
 }

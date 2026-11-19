@@ -175,6 +175,8 @@ A face can spend its share only once. If the crest throw already uses the whole 
 
 ## Try full-face release at fall speed 3
 
+In the Oil evaluation ZIP, load **oil-tank** and press **P**. A strip of Oil starts ten cells below the surface while Sand drops onto the pool. After it settles, erase a stretch of the thin right wall at the Water line to release a wave into the lower basin. The Wave gameplay profile already has spill, ballistic release and fall speed 3 enabled. [Oil tank evaluation](../audits/2026-11-19-wave-oil-buoyancy.md)
+
 Load **water-wall** in the Shared Workbench and press **Run**. On the full-face evaluation branch, **Gameplay default** enables **Full face**, **Ballistic release** and **Blobs**, and sets **Fall speed** to **3**. Fall speed counts grid cells per solver round. The gameplay profile runs two rounds per tick. Parcels use their own gravity and velocity.
 
 For a comparison, open **Water Lab → Wave**, keep Fall speed at 3, clear **Full face**, and press **Apply**. Reload the same start for each run. The previous sheet setting sends spray from the crest and pours deeper rows down the edge. Selecting **Full face** lets exposed rows below the crest feed both the outward spray and the falling sheet. The native readback beside the controls shows which settings are active. [Experiment and measurements](../audits/2026-11-19-wave-water-face-004.md)

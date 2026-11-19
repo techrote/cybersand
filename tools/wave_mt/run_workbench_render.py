@@ -23,6 +23,8 @@ elif os.environ.get("CYBERSAND_PUBLICATION_PROFILE") == "wave_water_ramp_003":
     import wave_water_ramp_003_runtime_publication as _profile  # noqa: F401
 elif os.environ.get("CYBERSAND_PUBLICATION_PROFILE") == "wave_water_face_004":
     import wave_water_face_004_runtime_publication as _profile  # noqa: F401
+elif os.environ.get("CYBERSAND_PUBLICATION_PROFILE") == "wave_oil_buoyancy":
+    import wave_oil_buoyancy_runtime_publication as _profile  # noqa: F401
 
 CASES = {
     "test_wave_flow_render": ("WAVE_FLOW_RENDER:", "wave-flow-render.json", 4),

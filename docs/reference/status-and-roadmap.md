@@ -12,6 +12,8 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 ## Full-face Water release
 
+The [Oil tank evaluation](../audits/2026-11-19-wave-oil-buoyancy.md) adds a vertical density exchange between Wave Water and Oil. The longer-term [per-material solver and tuning target](../architecture/liquid-solver-family-policy.md#status) is Planned.
+
 The [full-face evaluation](../audits/2026-11-19-wave-water-face-004.md) tests outward spray throughout an exposed wall at fall speed 3 and tracks abrupt ramp crests against the motion of the Water.
 
 ## Water ramp and player defaults
