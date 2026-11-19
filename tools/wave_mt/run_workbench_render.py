@@ -19,6 +19,8 @@ if os.environ.get("CYBERSAND_PUBLICATION_PROFILE") == "wave_waterwall":
     import wave_waterwall_runtime_publication as _profile  # noqa: F401
 elif os.environ.get("CYBERSAND_PUBLICATION_PROFILE") == "wave_waterwall_002":
     import wave_waterwall_002_runtime_publication as _profile  # noqa: F401
+elif os.environ.get("CYBERSAND_PUBLICATION_PROFILE") == "wave_water_ramp_003":
+    import wave_water_ramp_003_runtime_publication as _profile  # noqa: F401
 
 CASES = {
     "test_wave_flow_render": ("WAVE_FLOW_RENDER:", "wave-flow-render.json", 4),

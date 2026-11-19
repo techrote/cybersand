@@ -32,13 +32,11 @@ native CyberSand, Rapier and the required VC runtime; no repository checkout,
 Python installation or separate Godot installation is needed. First launch
 imports the bundled project before opening the ordinary Shared Workbench.
 
-Wave is experimental, opt-in and disabled by default. The ordinary Water default
-is unchanged. The objective is to compare behavior interactively; Wave is not
-claimed to match or improve PressureFlow's appearance or kinetics.
+Fresh Workbench sessions on the [water ramp branch](../audits/2026-11-19-wave-water-ramp-003.md) start with Wave, spill and ballistic release. Water Lab can still stage an explicit comparison with any admitted Water law.
 
 ## Select, apply and verify Wave
 
-1. In **Water solver**, tick **Wave Flow**. This stages the required FreeMass
+1. In **Water solver**, select **Wave Flow** if another law is active. This stages the required FreeMass
    carrier and the Wave profile. A staged selection has not yet changed native.
 2. Choose **Two crests ·512²** in **Water comparison**, then press
    **Load / reset scene**. This installs an editable authored scene using the

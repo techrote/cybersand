@@ -11,7 +11,7 @@
       ],
       "facts": [
         "Opt-in Water override with conserved fractional mass and retained horizontal flux.",
-        "Disjoint strips and explicit pool barriers; production default unchanged."
+        "Disjoint strips and explicit pool barriers. Raw native law selection is distinct from the fresh player-session default."
       ],
       "sources": [
         "../native/src/world_wave.inc",
@@ -98,6 +98,21 @@
       ],
       "sources": [
         "../native/src/world_wave.inc",
+        "../godot/scripts/workbench_water_spray_panel.gd"
+      ]
+    },
+    {
+      "id": "WAVE07",
+      "query": "Which Water solver starts on a new water ramp canvas, and how can I try faster horizontal spread and steeper waves?",
+      "canonical": [
+        "operations/workbench-water-lab.md",
+        "architecture/wave-flow-v1.md"
+      ],
+      "facts": [
+        "Fresh player sessions select Wave Flow, waterfall spill and ballistic release.",
+        "A named canvas can be loaded from Workbench. Water Lab stages adjustments and shows the accepted native values."
+      ],
+      "sources": [
         "../godot/scripts/workbench_water_spray_panel.gd"
       ]
     }

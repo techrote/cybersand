@@ -10,6 +10,10 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Water ramp and player defaults
+
+The owner selected Wave Flow with spill and ballistic release for new player sessions. The [water ramp experiment](../audits/2026-11-19-wave-water-ramp-003.md) measures floor-attached spread and returning waves against #676.
+
 ## Wave Waterwall 002 owner evaluation
 
 The [Waterwall 002 candidate](../audits/2026-11-19-wave-waterwall-002.md) adds optional Wave settings for ledge sheets, crest flight and deep-water slosh. The [Water Lab](../operations/workbench-water-lab.md#try-the-waterwall-002-candidate) stages both bundles. Draft/HOLD pending owner evaluation.
@@ -161,7 +165,7 @@ policy when changing Water law, and launch reaction bypassing Body push.
 The [remediation record](../audits/2026-11-18-waterwall-review-remediation.md)
 tracks the focused repairs and resulting-source qualification separately from
 the earlier green runs. Repairs belong to #672 only; #661/#631 stay unchanged.
-Keep merge HOLD and default-off behavior. The original surface-crest crash and
+That checkpoint held merge and used default-off behavior. The original surface-crest crash and
 physical Windows/NVIDIA owner acceptance remain separate unresolved evidence.
 
 **Waterwall provisional crash containment, 2026-11-18:** Draft #672 retains the

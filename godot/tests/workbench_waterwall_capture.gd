@@ -7,8 +7,8 @@ extends SceneTree
 # framebuffer captures plus copied native Water quantities.
 #
 #   godot --path godot --script res://tests/workbench_waterwall_capture.gd -- \
-#     MAP_JSON|tank|lip OUT_DIR MODE TICKS(comma list) [WORKERS] [VIEW x,y,w,h ...]
-# MODE = orig, spill, hybrid, sloshy, max, max-nograce, combined or combined-nograce.
+#     MAP_JSON|named=SETUP|tank|lip OUT_DIR MODE TICKS(comma list) [WORKERS] [VIEW x,y,w,h ...]
+# MODE = orig, spill, hybrid, sloshy, max, max-nograce, combined, combined-nograce or fresh (installed defaults).
 # max-nograce uses the Max over-ledge bundle with only Coyote ticks set to zero.
 const Setup = preload("res://scripts/workbench_setup.gd")
 const GeneratedMaps = preload("res://scripts/workbench_generated_map.gd")
@@ -105,6 +105,13 @@ func record(tag: String, started_usec: int) -> void:
 		"status":bench.water_spray._wave_status.text,"spill_status":bench.water_spray._spill_status.text})
 
 func install_fixture(path: String) -> bool:
+	if path.begins_with("named="):
+		var before := int(native().get("session_generation",-1))
+		bench._name.text = path.trim_prefix("named=")
+		if not bench.load_setup():
+			fail("named setup refused: "+str(bench.message))
+			return false
+		return await until(func() -> bool: return installed() and int(native().get("session_generation",-1)) > before,"load named setup")
 	if path in ["tank","lip"]:
 		# Same step and wall heights as the native slosh apparatus. Workbench
 		# admits a 512-cell minimum canvas, so enclose this 128-cell fixture.
@@ -149,7 +156,7 @@ func run() -> void:
 	out = args[1]
 	mode = args[2]
 	fixture = args[0].get_file()
-	if mode not in ["orig","spill","hybrid","sloshy","max","max-nograce","combined","combined-nograce"]:
+	if mode not in ["orig","spill","hybrid","sloshy","max","max-nograce","combined","combined-nograce","fresh"]:
 		fail("unknown mode "+mode)
 		await finish()
 		return
@@ -186,12 +193,20 @@ func run() -> void:
 	# Water Lab: Wave Flow, optional Waterwall spill, workers, Apply.
 	var spray = bench.water_spray
 	host.workbench_water_options["workbench_worker_threads"] = workers
-	spray._set_wave(true)
+	if mode == "fresh":
+		var initial := native()
+		if not initial.get("enabled",false) or not initial.get("spill",{}).get("enabled",false) or not initial.get("spill",{}).get("parcels",false):
+			fail("freshly loaded start did not use Wave with spill and ballistic release")
+			await finish()
+			return
+	else:
+		spray._set_wave(true)
 	var is_sheet := mode in ["max","max-nograce","combined","combined-nograce"]
-	var has_parcels := mode == "hybrid" or is_sheet
+	var has_parcels := mode in ["hybrid","fresh"] or is_sheet
 	var has_spill := mode == "spill" or has_parcels
-	spray._set_spill("workbench_wave_spill",has_spill)
-	spray._set_spill("workbench_wave_spill_parcels",has_parcels)
+	if mode != "fresh":
+		spray._set_spill("workbench_wave_spill",has_spill)
+		spray._set_spill("workbench_wave_spill_parcels",has_parcels)
 	if mode in ["sloshy","combined","combined-nograce"]:
 		for index: int in spray._wave_preset.item_count:
 			if spray._wave_preset.get_item_text(index) == "Sloshy":
@@ -239,7 +254,7 @@ func run() -> void:
 func finish() -> void:
 	var binary := "cybersand_native.windows.x86_64.dll" if OS.get_name() == "Windows" else "libcybersand_native.linux.x86_64.so"
 	var receipt := {"schema":"wave-waterwall-workbench-capture-v1","mode":mode,"fixture":fixture,"terrain_sha256":terrain_sha,
-		"kind":"ordinary Shared Workbench, authored tank or GEN-007 verified terrain, Water Lab Apply, exact single-step native ticks, submitted framebuffer crops",
+		"kind":"ordinary Shared Workbench, authored tank, named setup or GEN-007 verified terrain, Water Lab Apply, exact single-step native ticks, submitted framebuffer crops",
 		"godot":Engine.get_version_info().string,"display":DisplayServer.get_name(),"rendering":RenderingServer.get_video_adapter_name(),
 		"native_sha256":FileAccess.get_sha256("res://addons/cybersand_native/bin/"+binary),
 		"failures":failures,"rows":rows,"captures":captures}
