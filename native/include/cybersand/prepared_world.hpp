@@ -90,9 +90,11 @@ public:
             const auto water = config.liquid_solver_policy.assignment(static_cast<std::uint16_t>(Material::Water));
             const bool whole = water && (water->family == LiquidSolverFamily::CellularYieldV1 ||
                                          water->family == LiquidSolverFamily::InertialCellularV1);
+            const auto quantity_regime = config.wave_flow.enabled
+                ? normalization::WaterQuantityRegime::WaveStored16
+                : whole ? normalization::WaterQuantityRegime::WholeCell : normalization::WaterQuantityRegime::Fractional;
             auto value = normalization::PreparedSetup::prepare(input,
-                whole ? normalization::WaterQuantityRegime::WholeCell : normalization::WaterQuantityRegime::Fractional,
-                opt_in, limits);
+                quantity_regime, opt_in, limits);
             if (const auto* rejected = std::get_if<normalization::Refusal>(&value)) {
                 auto code = LiquidPolicyRefusalCode::MalformedPolicy;
                 switch (rejected->code) {

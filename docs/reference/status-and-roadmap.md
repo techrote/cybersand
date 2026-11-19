@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-15
+last-reviewed: 2026-11-18
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -147,6 +147,60 @@ Converge admitted desktop/painting/agent/remote work incrementally into main,
 preserving active owners and qualifying each join. #548 material-only Flatten
 was an Approved semantic successor at that dated checkpoint; the 13 November
 GEN-008 candidate above now implements the revised contract independently of #542.
+
+## Wave flow Water solver (WAVE-MT-001) — 2026-11-15
+
+**Waterwall stack review remediation, 2026-11-18:** the posted #672 review
+identified wet-destination diagonal leakage, overflow before automatic spill's
+coordinate admission, unapplied focused Water Lab text, rollback of other-liquid
+policy when changing Water law, and launch reaction bypassing Body push.
+The [remediation record](../audits/2026-11-18-waterwall-review-remediation.md)
+tracks the focused repairs and resulting-source qualification separately from
+the earlier green runs. Repairs belong to #672 only; #661/#631 stay unchanged.
+Keep merge HOLD and default-off behavior. The original surface-crest crash and
+physical Windows/NVIDIA owner acceptance remain separate unresolved evidence.
+
+**Waterwall provisional crash containment, 2026-11-18:** Draft #672 retains the
+opt-in spill/ballistic/blobs candidate above unchanged #661/#631. Its owner now
+authorizes extensive testing and a provisional fix. Native Godot boundaries
+quarantine unexpected exceptions, preserve the first diagnosis and prevent
+failed edits or observations from becoming healthy Workbench publications.
+Body-occupancy diagnostics record stage/body/source/target without changing the
+Water law. The Waterwall publisher requires native boundary stress and actual
+Godot failed-world/publication/recovery regressions on Linux and Windows. The
+original surface-crest trigger remains unconfirmed; platform execution results
+and package identity are maintained in the PR ledger. Keep Draft/HOLD, original
+spill-off golden hashes and default parcels/tick 256. Human acceptance, Ready
+and merging remain separate owner decisions.
+
+**Shared Workbench continuation, 2026-11-16:** the owner now evaluates Wave in
+the ordinary Workbench using `Open Workbench.cmd`, editable Water comparison
+scenes and bounded tuning. The [finisher record](../audits/2026-11-16-wave-workbench-631-finisher.md)
+retains the two activation/readback failures at `3889cdd5`, the exact Baseline
+transport admission repair and the requirement for actual native ticks and
+positive replacement receipts. Earlier dedicated-evaluator qualification does
+not qualify this integration. Final source, runtime publication, full CI and
+independent review are recorded on PR #631; owner evaluation and merge remain
+separate gates.
+
+**Experimental PR #631 candidate inherited from #618, not on main; no default changed.** The
+[wave flow reference](../architecture/wave-flow-v1.md) adds an opt-in bulk
+strip-parallel Water law (`WorldConfig::wave_flow`, `wave_flow_v1`) with a
+retained per-face flux. It has no pressure head field, flood fill or gas state.
+PR #618 adds [Godot selection and a Windows evaluation route](../operations/wave-flow-evaluation.md),
+real Rapier/Needle fixture coverage, region pause/reentry, full retained-state
+identity, explicit save/restore refusal, uint16 mass readback and regressions
+for thin films, edits, capacity and worker seams. It is **not** a
+`LiquidSolverPolicy` family. Water-owned chemistry/coherence, lighter-fluid
+exchange, full buoyancy and physical persistence remain unsupported.
+
+The [completion ledger](../audits/2026-11-15-wave-mt-001-completion.md)
+owns the exact-source/runtime/CI/performance/review evidence and remaining
+acceptance for #618. [PR #631's takeover record](../audits/2026-11-15-wave-mt-001-astra-takeover.md)
+and its PR ledger now own resulting-source qualification and independent review;
+the predecessor branches remain unchanged. The [original #617 evidence](../audits/2026-11-15-wave-mt-001-wave-flow.md)
+does not qualify later source. Policy-family/default promotion and human
+Windows/GPU acceptance remain separate owner decisions. Merge is not authorised.
 
 ## Ballistic Water, IN-B1 and workbench spray (#362) — 2026-11-05
 

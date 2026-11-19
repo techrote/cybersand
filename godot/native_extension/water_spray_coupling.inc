@@ -34,6 +34,7 @@ constexpr double kSprayQ = static_cast<double>(cybersand::BallisticWaterConfig::
         case O::Pressurized: return "pressurized";
         case O::NonResident: return "non_resident";
         case O::InsufficientQuantity: return "insufficient_quantity";
+        case O::Paused: return "paused";
     }
     return "unknown";
 }
@@ -64,7 +65,8 @@ Dictionary CyberNativeCellWorld::water_spray_settings_dictionary(const WaterSpra
     return d;
 }
 
-Dictionary CyberNativeCellWorld::set_water_spray(const Dictionary& request) {
+Dictionary CyberNativeCellWorld::set_water_spray(const Dictionary& request) try {
+    if (has_failed()) return native_failure_status();
     Dictionary result;
     auto next = spray_;
     String refusal;
@@ -125,9 +127,15 @@ Dictionary CyberNativeCellWorld::set_water_spray(const Dictionary& request) {
     if (refusal.is_empty()) spray_ = next;
     result["applied"] = water_spray_settings_dictionary(spray_);
     return result;
+} catch (const std::exception& error) {
+    record_native_failure("set_water_spray", error.what());
+    return native_failure_status();
+} catch (...) {
+    record_native_failure("set_water_spray", "unknown native exception");
+    return native_failure_status();
 }
 
-Dictionary CyberNativeCellWorld::get_water_spray() const {
+Dictionary CyberNativeCellWorld::get_water_spray() const try {
     Dictionary d;
     d["settings"] = water_spray_settings_dictionary(spray_);
     if (world_ == nullptr) return d;
@@ -138,8 +146,16 @@ Dictionary CyberNativeCellWorld::get_water_spray() const {
     d["capacity"] = static_cast<std::int64_t>(snapshot.capacity);
     d["in_flight_quantity"] = static_cast<std::int64_t>(snapshot.in_flight_quantity);
     // Exact closed-system readback: grid + in-flight Water against the source/sink ledger.
-    if (!world_->has_failed()) {
-        const auto q = world_->quantity_ledger();
+    cybersand::QuantityLedgerSnapshot q{};
+    bool ledger_ok = !world_->has_failed();
+    if (ledger_ok) {
+        try { q = world_->quantity_ledger(); }
+        catch (const std::exception& error) {
+            record_native_failure("get_water_spray", error.what());
+            ledger_ok = false;
+        }
+    }
+    if (ledger_ok) {
         std::uint64_t produced = q.baseline_water, consumed = 0;
         for (const auto& flow : q.kinds) { produced += flow.produced; consumed += flow.consumed; }
         Dictionary water;
@@ -150,10 +166,11 @@ Dictionary CyberNativeCellWorld::get_water_spray() const {
         water["expected"] = static_cast<std::int64_t>(produced - consumed);
         d["water"] = water;
     }
+    d["healthy"] = !has_failed() && ledger_ok;
     d["native_tick_ms"] = simulation_time_ms_;
     d["parcel_pass_ms"] = static_cast<double>(snapshot.last_advance_nanoseconds) / 1e6;
     // Bounded presentation/telemetry summary of the live parcels (cells, cells/tick).
-    if (snapshot.live != 0U) {
+    if (!has_failed() && snapshot.live != 0U) {
         std::vector<cybersand::BallisticParcel> parcels(std::min<std::size_t>(snapshot.live, 8'192));
         const auto live = std::min(world_->copy_ballistic_parcels(parcels), parcels.size());
         double top = 1e18, bottom = -1e18, left = 1e18, right = -1e18, speed = 0, peak = 0;
@@ -206,11 +223,17 @@ Dictionary CyberNativeCellWorld::get_water_spray() const {
     total["jet_refused"] = spray_total_.jet_refused;
     d["totals"] = total;
     return d;
+} catch (const std::exception& error) {
+    record_native_failure("get_water_spray", error.what());
+    return native_failure_status();
+} catch (...) {
+    record_native_failure("get_water_spray", "unknown native exception");
+    return native_failure_status();
 }
 
-PackedFloat64Array CyberNativeCellWorld::inspect_ballistic_parcels(std::int64_t maximum) const {
+PackedFloat64Array CyberNativeCellWorld::inspect_ballistic_parcels(std::int64_t maximum) const try {
     PackedFloat64Array out;
-    if (world_ == nullptr || maximum <= 0) return out;
+    if (has_failed() || maximum <= 0) return out;
     std::vector<cybersand::BallisticParcel> parcels(static_cast<std::size_t>(std::min<std::int64_t>(maximum, 65'536)));
     const auto live = std::min(world_->copy_ballistic_parcels(parcels), parcels.size());
     out.resize(static_cast<std::int64_t>(live * 5U));
@@ -223,25 +246,43 @@ PackedFloat64Array CyberNativeCellWorld::inspect_ballistic_parcels(std::int64_t 
         out.set(static_cast<std::int64_t>(i * 5U + 4U), static_cast<double>(p.quantity));
     }
     return out;
+} catch (const std::exception& error) {
+    record_native_failure("inspect_ballistic_parcels", error.what());
+    return {};
+} catch (...) {
+    record_native_failure("inspect_ballistic_parcels", "unknown native exception");
+    return {};
 }
 
-String CyberNativeCellWorld::inject_water_parcel(Vector2 position, Vector2 velocity, std::int64_t quantity) {
-    if (world_ == nullptr) return "world_failed";
+String CyberNativeCellWorld::inject_water_parcel(Vector2 position, Vector2 velocity, std::int64_t quantity) try {
+    if (has_failed()) return "world_failed";
     if (!position.is_finite() || !velocity.is_finite() || quantity < 1 || quantity > 255) return "invalid_request";
+    const double position_x = static_cast<double>(position.x) * kSprayQ;
+    const double position_y = static_cast<double>(position.y) * kSprayQ;
+    constexpr double minimum_q = static_cast<double>(INT64_MIN);
+    constexpr double maximum_q_exclusive = -minimum_q;
+    if (position_x < minimum_q || position_x >= maximum_q_exclusive ||
+        position_y < minimum_q || position_y >= maximum_q_exclusive) return "invalid_request";
     const auto maximum = static_cast<std::int64_t>(world_->config().water_experiment_policy.maximum());
     const auto q = world_->whole_cell_water_enabled() ? maximum : std::min(quantity, maximum);
     const auto cap = static_cast<double>(world_->config().ballistic_water.max_speed_q);
     const auto vx = std::clamp(static_cast<double>(velocity.x) * kSprayQ, -cap, cap);
     const auto vy = std::clamp(static_cast<double>(velocity.y) * kSprayQ, -cap, cap);
     const auto result = world_->inject_ballistic_water(
-        static_cast<std::int64_t>(std::floor(static_cast<double>(position.x) * kSprayQ)),
-        static_cast<std::int64_t>(std::floor(static_cast<double>(position.y) * kSprayQ)),
+        static_cast<std::int64_t>(std::floor(position_x)),
+        static_cast<std::int64_t>(std::floor(position_y)),
         static_cast<std::int32_t>(vx), static_cast<std::int32_t>(vy), static_cast<std::uint32_t>(q));
     if (result.outcome == cybersand::BallisticLaunchOutcome::Launched) ++revision_;
     return spray_outcome_id(result.outcome);
+} catch (const std::exception& error) {
+    record_native_failure("inject_water_parcel", error.what());
+    return "world_failed";
+} catch (...) {
+    record_native_failure("inject_water_parcel", "unknown native exception");
+    return "world_failed";
 }
 
-void CyberNativeCellWorld::water_spray_before_tick() {
+void CyberNativeCellWorld::water_spray_before_tick() try {
     if (world_ == nullptr || world_->has_failed() || !world_->ballistic_water_enabled() || !spray_.jet_enabled)
         return;
     const auto maximum = static_cast<std::int64_t>(world_->config().water_experiment_policy.maximum());
@@ -263,6 +304,12 @@ void CyberNativeCellWorld::water_spray_before_tick() {
         if (r.outcome == cybersand::BallisticLaunchOutcome::Launched) { ++spray_tick_.jet; ++spray_total_.jet; ++revision_; }
         else { ++spray_tick_.jet_refused; ++spray_total_.jet_refused; }
     }
+} catch (const std::exception& error) {
+    record_native_failure("water_spray_before_tick", error.what());
+    return;
+} catch (...) {
+    record_native_failure("water_spray_before_tick", "unknown native exception");
+    return;
 }
 
 // Spawn for a launched overlap cell: an Empty, unmasked cell reached by
@@ -344,6 +391,7 @@ bool CyberNativeCellWorld::try_water_spray(const BodyState& body, std::uint16_t 
     const auto cap = static_cast<double>(world_->config().ballistic_water.max_speed_q);
     const auto qx = static_cast<std::int32_t>(std::clamp(vx * kSprayQ, -cap, cap));
     const auto qy = static_cast<std::int32_t>(std::clamp(vy * kSprayQ, -cap, cap));
+    coupling_failure_context_ = {"ballistic launch", body_id, x, y, spawn.x, spawn.y};
     const auto result = world_->launch_ballistic_water(x, y,
         static_cast<std::int64_t>(spawn.x) * cybersand::BallisticWaterConfig::kQ + 128,
         static_cast<std::int64_t>(spawn.y) * cybersand::BallisticWaterConfig::kQ + 128,
@@ -358,16 +406,23 @@ bool CyberNativeCellWorld::try_water_spray(const BodyState& body, std::uint16_t 
     else { ++spray_tick_.lifted; ++spray_total_.lifted; }
     if (spray_.reaction_gain > 0.0) {
         // Optional stylized reaction: the body pays for the launched momentum.
+        // Body push covers this Water force too. Quantity is already accounted
+        // for by share, so do not apply the per-cell mass scale a second time.
+        const double gain = spray_.reaction_gain * (world_->wave_flow_enabled()
+            ? static_cast<double>(world_->config().wave_flow.body_push) / 256.0 : 1.0);
         const double share = static_cast<double>(result.quantity) /
                              static_cast<double>(world_->config().water_experiment_policy.maximum());
-        record_impulse(body_id, Vector2(static_cast<real_t>(-vx / dt * share * spray_.reaction_gain * 0.01),
-                                        static_cast<real_t>(-vy / dt * share * spray_.reaction_gain * 0.01)));
+        record_impulse(body_id, Vector2(static_cast<real_t>(-vx / dt * share * gain * 0.01),
+                                        static_cast<real_t>(-vy / dt * share * gain * 0.01)));
     }
     return true;
 }
 
 Vector2 CyberNativeCellWorld::spray_droplet_impulse(std::uint16_t body_id) const {
     if (world_ == nullptr || spray_.droplet_gain <= 0.0) return {};
-    return {static_cast<real_t>(static_cast<double>(world_->transient_ballistic_impulse_x(body_id)) * spray_.droplet_gain),
-            static_cast<real_t>(static_cast<double>(world_->transient_ballistic_impulse_y(body_id)) * spray_.droplet_gain)};
+    // Under Wave, Body push also scales parcel splash (parcels carry their own quantity).
+    const double gain = spray_.droplet_gain * (world_->wave_flow_enabled()
+        ? static_cast<double>(world_->config().wave_flow.body_push) / 256.0 : 1.0);
+    return {static_cast<real_t>(static_cast<double>(world_->transient_ballistic_impulse_x(body_id)) * gain),
+            static_cast<real_t>(static_cast<double>(world_->transient_ballistic_impulse_y(body_id)) * gain)};
 }

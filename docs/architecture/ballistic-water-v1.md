@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Experimental-branch BW-001 ballistic_water_v1 parcel owner, IN-B1 signed-vertical inertial law and the WCX workbench impact-spray/jet adapter law; ownership, transfer lifecycle, conservation and momentum accounting, persistence/identity versions, capacity, cost and controls; not on main, no default changed
 canonical-for: [ballistic-water-v1, inertial-b1-signed-vertical, water-impact-spray]
-last-reviewed: 2026-11-05
+last-reviewed: 2026-11-18
 related-documents: [inertial-cellular-v1.md, pressure-flow-v1.md, liquid-solver-family-policy.md, rigid-body-and-cellular-coupling.md, ../audits/2026-11-05-wcx-ballistic-water.md]
 ---
 
@@ -54,7 +54,7 @@ hooks in `world.cpp` (`begin_tick`, `clear`, render copies, snapshot publication
   rebound with restitution and tangential Coulomb friction (a fraction of the
   normal impulse), so a grazing sheet skims and runs out while a hard impact
   stops it; only real impacts count toward forced deposition. The axis-separated
-  neighbours pick the contact normal, so diagonal corners cannot tunnel. The launching body is
+  neighbours pick the contact normal. The launching body is
   ignored for four ticks. Body contacts deliver the parcel's momentum change to a
   per-body counter (`transient_ballistic_impulse_x/y`).
 - **Deposition:** on entering Water, after a slow contact, after too many rebounds
@@ -100,6 +100,33 @@ before. Workbench retained rebuilds (reset/replace body) carry parcels into a
 ballistic owner (booked like inherited overfill) or report
 `discarded_in_flight_water`; the host conversion balance includes in-flight Water
 on both sides.
+
+### Wave Flow hybrid release (WAVE-WATERWALL-001)
+
+`wave_flow_v1` accepts this parcel owner with or without Waterwall spill
+(2026-11-18), so impact spray, jets, nozzles and body launches work under Wave.
+With spill's Ballistic release, the Wave tick owner also launches parcels from
+exposed faces nominated by its own strip passes. The per-cell WCX-FR scan is
+admitted only while spill is off. In Wave Worlds only:
+
+- with spill on, parcels pass through falling Wave Water (merging into it after
+  the self-contact grace when Blobs is on);
+- a launch from an overfilled Wave cell takes one cell, and deposits never add to
+  an overfilled cell;
+- the deposit ring and diagonal flight steps respect one-cell walls, whether
+  the diagonal destination is Empty or already contains Water. A connected
+  Water neighbour retains the existing surface-merge priority;
+- automatic spill and Face release check that both spawn-cell coordinates fit
+  the ballistic domain before multiplying by 256 and adding the cell-centre
+  offset. A refused launch leaves its Water with the grid owner;
+- spawns, launches, deposits and movement are refused or frozen in unselected
+  simulation cores (outcome `Paused`).
+
+The launch clamp and the deposit guard are compiled for every World, but they
+cannot change a non-Wave World, because such a World never stores more than one
+cell of Water in a cell. The wall, flight and region rules are gated on
+`wave_ != nullptr`. See
+[wave-flow-v1](wave-flow-v1.md#waterwall-spill-experimental-wave-waterwall-001).
 
 ### WCX-FR face release (off by default)
 
@@ -177,6 +204,11 @@ the ballistic rebuild stayed off, and the status line showed `pending enabled`.
 - The body receives the same displacement reaction as a relocation; an extra
   stylized **reaction** gain defaults to 0 so the accepted LA/RFT feel is unchanged.
   Droplets that strike bodies deliver momentum (`droplet_gain`).
+- In Wave Worlds, **Body push** scales both the optional launch reaction and
+  incoming droplet impulse. At 0 neither offers force to a body, while parcel
+  launch and conservation still run. Launch reaction already includes the
+  launched quantity's share of a full cell; **Push by amount** does not apply
+  that share a second time.
 - A fixed **jet** (origin, angle, speed, rate, quantity, spread) and flyer Water
   nozzles inject booked parcels.
 - Construction toggles "Ballistic Water" and "IN signed" apply on the next
@@ -209,7 +241,8 @@ numbers and their advisory limits.
 - Experimental only: no default, production carrier or #45 decision changes.
 - PressureFlow overfill cells are refused as launch sources; parcels do not carry
   pressure, gas or temperature (deposits use ambient defaults).
-- Parcels treat non-resident chunks as hard boundaries and are not simulated per
-  region; an excluded region still receives deposits.
+- Parcels treat non-resident chunks as hard boundaries. Outside Wave, an
+  excluded simulation region still receives deposits; the Wave-specific region
+  refusals are described above.
 - Human gameplay acceptance, Windows/Linux CI, source-matched runtime publication
   and independent review remain open.

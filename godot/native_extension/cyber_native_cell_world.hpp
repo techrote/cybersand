@@ -108,6 +108,10 @@ public:
     [[nodiscard]] Dictionary workbench_coupling_results() const;
     [[nodiscard]] String get_last_tick_error() const;
     [[nodiscard]] Dictionary get_water_experiment_policy() const;
+    // Copied experimental construction, quantity and worker diagnostics. The
+    // caller is the exclusive World owner, between ticks.
+    [[nodiscard]] Dictionary get_wave_flow_status() const;
+    [[nodiscard]] Dictionary inspect_wave_flow_cell(Vector2i point) const;
     // Applied LCB-001 liquid solver policy receipt of the live World. The
     // generation counts committed World replacements; refusals never advance it.
     [[nodiscard]] Dictionary get_liquid_solver_policy() const;
@@ -210,6 +214,9 @@ private:
     double impulse_cap_ = 3.0;
     double density_limit_ = 1.6;
     [[nodiscard]] double density_scale(cybersand::Material material, double minimum = 0.05) const;
+    // Wave Body push / Push by amount applied to a Water cell's push on a body;
+    // 1 for every other material and for non-Wave Worlds.
+    [[nodiscard]] double water_push_scale(cybersand::Material material, std::int32_t x, std::int32_t y) const;
 
     std::unique_ptr<cybersand::World> world_;
     std::unique_ptr<cybersand::RenderSnapshotExchange> render_exchange_;
@@ -249,7 +256,9 @@ private:
     std::uint32_t worker_threads_ = 1;
     std::uint64_t revision_ = 0;
     std::uint64_t hard_surface_revision_ = 0;
-    std::uint64_t tick_failure_count_ = 0;
+    // Failure reporting is owner-only diagnostic state, including when an
+    // observational binding discovers an invalid World. Keep the first cause.
+    mutable std::uint64_t tick_failure_count_ = 0;
     std::uint64_t liquid_policy_session_generation_ = 0;
     Vector2i extent_{kWorldWidth, kWorldHeight};
     static constexpr std::size_t kWorkbenchBodies = 8;
@@ -342,7 +351,19 @@ private:
     }();
     Dictionary applied_liquid_construction_receipt_;
     Dictionary liquid_construction_attempt_;
-    String last_tick_error_{};
+    mutable String last_tick_error_{};
+    struct CouplingFailureContext {
+        const char* stage = nullptr;
+        std::uint16_t body = 0;
+        std::int32_t source_x = -1, source_y = -1;
+        std::int32_t target_x = -1, target_y = -1;
+    };
+    mutable CouplingFailureContext coupling_failure_context_{};
+    // These boundaries do not recover partially mutated native state. They
+    // quarantine it, retain one cause, and let the worker publish its last
+    // valid snapshot. Native pool workers never call these Godot methods.
+    void record_native_failure(const char* operation, const char* detail) const noexcept;
+    [[nodiscard]] Dictionary native_failure_status() const;
     double simulation_time_ms_ = 0.0;
     bool simulation_window_enabled_ = true;
     bool cadence_lod_enabled_ = true;
