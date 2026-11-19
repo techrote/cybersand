@@ -106,6 +106,7 @@ struct WaveSpillConfig {
     // of outward head per round. Deeper rows pour while the upper two can throw.
     std::int32_t sheet_rate = 0;   // 0..127, 0 keeps the original discharge
     std::int32_t coyote_ticks = 0; // 0..8 gravity-free flight ticks for a thrown crest
+    std::int32_t full_face = 0;    // 0: historical selection, 1: throw from all exposed resting rows
     [[nodiscard]] bool operator==(const WaveSpillConfig&) const = default;
 };
 
