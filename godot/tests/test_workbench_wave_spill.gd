@@ -142,8 +142,45 @@ func native_admission() -> void:
 			"grid plus in-flight Water quantity is exactly conserved")
 		require(int(a.spill.launched_parcels) > 0 and int(a.spill.deposited_units) > 0,"exposed face launched and landed parcels")
 		require(world.get_physical_state_hash() == single.get_physical_state_hash(),"hybrid spill is identical at workers 1/4")
+	native_lava_quench(bridge, args.duplicate(), base)
 	sections.native_conservation = failures.size() == start
 	native_generic_ballistic(bridge,args,base)
+
+# Compress Water under a shelf using the ordinary Wave solver. Seal one cell and
+# add Lava beside it through the same brush and spray readback as the Workbench.
+func native_lava_quench(bridge: Variant, args: Array, base: Dictionary) -> void:
+	var world: Variant = ClassDB.instantiate(&"CyberNativeCellWorld")
+	var options := base.duplicate(true)
+	options.merge({"workbench_wave_spill":true,"workbench_wave_spill_parcels":true,
+		"workbench_wave_spill_full_face":true,"workbench_wave_spill_fall":3},true)
+	args[0] = world
+	args[1] = PackedInt32Array([31,10,1,119,58, 31,128,35,1,58, 65,99,1,29,58,
+		64,99,1,1,58, 32,20,32,108,3, 64,100,1,28,3])
+	args[6] = options
+	var token: int = bridge.callv("prepare_liquid_world",args)
+	if not require(token > 0 and bridge.commit_liquid_world(world,token),"prepare Wave quench fixture"): return
+	var water_cell := Vector2i(64,100)
+	var lava_cell := water_cell + Vector2i.RIGHT
+	for tick in 2:
+		if not require(world.simulation_tick(),"build Water head below shelf"): return
+	var compressed: int = world.inspect_wave_flow_cell(water_cell).stored_mass
+	if not require(compressed > 510,"one Wave cell stores more than two full Water cells"): return
+	for y in range(99,102):
+		for x in range(63,67):
+			if Vector2i(x,y) != water_cell and Vector2i(x,y) != lava_cell:
+				world.paint_disc(x,y,0,58)
+	world.paint_disc(lava_cell.x,lava_cell.y,0,8)
+	var before: int = world.get_water_spray().water.total
+	for tick in 32:
+		if not require(world.simulation_tick(),"tick Wave Water beside Lava"): return
+		var spray: Dictionary = world.get_water_spray()
+		if not require(spray.get("healthy",false),"spray readback survived the quench / "+world.get_last_tick_error()): return
+		if world.inspect_wave_flow_cell(lava_cell).material == 13: # Stone
+			require(world.inspect_wave_flow_cell(water_cell).material == 22,"quenched Water becomes Steam")
+			require(spray.water.total == before - compressed and spray.water.total == spray.water.expected,
+				"quench accounts for the entire compressed cell")
+			return
+	require(false,"the sealed Lava contact reacted")
 
 # Generic Ballistic Water under Wave: splashes, sprays and jets keep working,
 # with or without Waterwall spill. Face release runs only without spill.

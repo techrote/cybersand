@@ -10,6 +10,7 @@
 #include <span>
 #include <stdexcept>
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace {
@@ -124,6 +125,42 @@ void pair_products(std::uint32_t workers) {
             oracle(world, {0, 0, 64, 64});
         }
         require(observed, "registered pair reaction selected");
+    }
+}
+void wave_lava_quench() {
+    const auto rule = std::find_if(kPairInteractionRules.begin(), kPairInteractionRules.end(),
+        [](const auto& entry) { return entry.id == "int.pair.lava-water.quench.v1"; });
+    require(rule != kPairInteractionRules.end(), "Lava/Water quench rule registered");
+    const auto slot = static_cast<std::size_t>(rule - kPairInteractionRules.begin());
+    for (const std::uint16_t amount : std::array<std::uint16_t, 4>{1, 510, 511, 65535}) {
+        const auto run = [amount, slot](std::uint32_t workers) {
+            auto cfg = config(workers);
+            cfg.wave_flow.enabled = true;
+            cfg.wave_flow.spill.enabled = true;
+            cfg.wave_flow.spill.fall = 3;
+            cfg.ballistic_water.enabled = true;
+            World world(cfg);
+            // Two independently scheduled contacts, each straddling a core boundary.
+            for (const int x : {31, 95}) {
+                box(world, x - 1, 2, 4, 3, Material::Wall);
+                require(world.set_cell_state(x, 3, Material::Water, amount, 0), "Wave quench setup");
+                world.set(x + 1, 3, Material::Lava);
+            }
+            for (int tick = 0; tick < 32 && world.quantity_ledger().pair_events[slot] < 2U; ++tick)
+                (void)world.tick();
+            const auto ledger = world.quantity_ledger();
+            const WaterQuantityFlow consumed{0, 2ULL * amount};
+            require(ledger.pair_events[slot] == 2 && ledger.pair_rules[slot] == consumed &&
+                    kind(ledger, QuantityKind::PairReaction) == consumed,
+                    "both quench events book complete stored Wave quantities once");
+            require(ledger.water_visible == 0 && ledger.water_overfill == 0 && ledger.water_ballistic == 0 &&
+                    ledger.material_cells[static_cast<std::uint8_t>(Material::Steam)] == 2 &&
+                    ledger.material_cells[static_cast<std::uint8_t>(Material::Stone)] == 2,
+                    "quenched Water and Lava produce Steam and Stone");
+            oracle(world, {0, 0, 128, 16});
+            return std::make_pair(ledger, world.state_hash());
+        };
+        require(run(1) == run(6), "Wave quench ledger and authority match with one or six workers");
     }
 }
 void kernel_and_conservative(std::uint32_t workers, bool pressure) {
@@ -525,6 +562,7 @@ void prepared_population_binding() {
 
 void test_quantity_ledger() {
     external_generated_events();
+    wave_lava_quench();
     for (const auto workers : {1U, 4U}) {
         pair_products(workers);
         kernel_and_conservative(workers, false);

@@ -395,7 +395,12 @@ void World::validate_quantity_ledger(bool scan_authority) const {
             if (events > std::numeric_limits<std::uint64_t>::max() / inputs ||
                 quantity_.pair_rules[i].consumed < events * inputs)
                 throw std::invalid_argument("quantity reaction input total inconsistent");
-            const auto input_bound = inputs * maximum * 2U;
+            // A pressure reaction can consume visible Water and its overfill
+            // sidecar. Wave keeps the whole quantity in one uint16 carrier.
+            const auto per_cell = wave_ != nullptr
+                ? static_cast<std::uint64_t>(std::numeric_limits<std::uint16_t>::max())
+                : maximum * 2U;
+            const auto input_bound = inputs * per_cell;
             if (events <= std::numeric_limits<std::uint64_t>::max() / input_bound &&
                 quantity_.pair_rules[i].consumed > events * input_bound)
                 throw std::invalid_argument("quantity reaction input exceeds cell bound");
