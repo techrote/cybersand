@@ -275,7 +275,7 @@ func run() -> void:
 	if int(accepted.workers_requested) != workers: fail("native workers do not match request")
 	for key: String in ["deep_gain","flux_smoothing","floor_gain"]:
 		if accepted.parameters.get(key) != host.workbench_water_options["workbench_wave_"+key]: fail("unconfirmed "+key)
-	for key: String in ["sheet_rate","coyote_ticks","draw_head","fall","full_face"]:
+	for key: String in ["sheet_rate","coyote_ticks","draw_head","fall","full_face","deep_draw"]:
 		if accepted.spill.get(key) != host.workbench_water_options["workbench_wave_spill_"+key]: fail("unconfirmed "+key)
 	if mode == "fresh" and (int(accepted.substeps) != int(fresh_settings.substeps) or accepted.parameters != fresh_settings.parameters):
 		fail("applying only workers changed the fresh Wave profile")

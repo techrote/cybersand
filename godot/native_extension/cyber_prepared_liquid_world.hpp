@@ -462,6 +462,7 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
                 SpillKnob{"workbench_wave_spill_fall", &cybersand::WaveSpillConfig::fall},
                 SpillKnob{"workbench_wave_spill_share_shift", &cybersand::WaveSpillConfig::share_shift},
                 SpillKnob{"workbench_wave_spill_draw", &cybersand::WaveSpillConfig::draw},
+                SpillKnob{"workbench_wave_spill_deep_draw", &cybersand::WaveSpillConfig::deep_draw},
                 SpillKnob{"workbench_wave_spill_draw_head", &cybersand::WaveSpillConfig::draw_head},
                 SpillKnob{"workbench_wave_spill_stream", &cybersand::WaveSpillConfig::stream},
                 SpillKnob{"workbench_wave_spill_launch_min", &cybersand::WaveSpillConfig::launch_min},

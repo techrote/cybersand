@@ -24,7 +24,7 @@ const WAVE_TUNING := [
 # WAVE-WATERWALL-001 exposed-face spill: Wave-only construction requests.
 const WAVE_SPILL_SWITCHES := ["workbench_wave_spill","workbench_wave_spill_parcels","workbench_wave_spill_full_face"]
 const WAVE_SPILL_TUNING := [
-	"workbench_wave_spill_fall","workbench_wave_spill_draw","workbench_wave_spill_draw_head","workbench_wave_spill_sheet_rate","workbench_wave_spill_coyote_ticks",
+	"workbench_wave_spill_fall","workbench_wave_spill_draw","workbench_wave_spill_deep_draw","workbench_wave_spill_draw_head","workbench_wave_spill_sheet_rate","workbench_wave_spill_coyote_ticks",
 	"workbench_wave_spill_launch_speed","workbench_wave_spill_launch_budget",
 	"workbench_wave_spill_stream_share","workbench_wave_spill_blobs","workbench_wave_spill_stream_draw",
 ]

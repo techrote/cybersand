@@ -108,6 +108,7 @@ const SPILL_SWITCHES := [
 const SPILL_SPINS := [
 	["workbench_wave_spill_fall", "Fall speed", 1, 8, 1, 3, "fall", "Cells that unsupported Water falls per solver round."],
 	["workbench_wave_spill_draw", "Pool feed", 0, 127, 1, 64, "draw", "Mass units per round a pool may move toward a draining edge. Zero keeps the Wave Coast limit."],
+	["workbench_wave_spill_deep_draw", "Deep pool feed", 0, 127, 1, 0, "deep_draw", "Limits Pool feed between wet neighbours when either stack has at least five responding rows. Coast still applies. Zero uses ordinary Pool feed at every depth."],
 	["workbench_wave_spill_draw_head", "Feed head limit", 0, 65535, 1, 255, "draw_head", "Maximum opposing head (Water units) against which Pool feed stays active. Larger values sustain flow toward the edge as the surface changes."],
 	["workbench_wave_spill_launch_speed", "Throw speed", 0, 512, 8, 256, "launch_speed", "Outward parcel speed as n/256 of the head speed sqrt(2 g h). Ballistic release only."],
 	["workbench_wave_spill_launch_budget", "Parcels / tick", 0, 4096, 16, 256, "launch_budget", "Most parcels launched per native tick. Faces beyond it spill through the grid on the next tick. Zero never launches."],

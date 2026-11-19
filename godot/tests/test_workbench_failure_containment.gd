@@ -124,6 +124,7 @@ func running_owner() -> void:
 	panel.water_spray._set_spill("workbench_wave_spill_parcels",true)
 	panel.water_spray._set_spill("workbench_wave_spill_full_face",true)
 	host.workbench_water_options.workbench_wave_spill_fall = 5
+	host.workbench_water_options.workbench_wave_spill_deep_draw = 27
 	host.workbench_water_options.workbench_wave_body_push = 0
 	host.workbench_water_options.workbench_wave_body_push_by_mass = 0
 	var recipe: Dictionary = Setup.fresh(panel._liquids.bridge.default_liquid_policy(),Vector2i(512,512))
@@ -162,6 +163,7 @@ func running_owner() -> void:
 	# Unsubmitted edits must not replace the accepted configuration during recovery.
 	host.workbench_water_options.workbench_wave_spill_full_face = false
 	host.workbench_water_options.workbench_wave_spill_fall = 3
+	host.workbench_water_options.workbench_wave_spill_deep_draw = 64
 	host.workbench_water_options.workbench_wave_body_push = 1024
 	host.workbench_water_options.workbench_wave_flow = false
 	if not require(panel.restore_start(),"Restore start requests fresh owner"): return
@@ -174,7 +176,7 @@ func running_owner() -> void:
 	require(host.simulation_worker != old_worker and not host.simulation_worker.has_failed() and host.paused,
 		"replacement is a distinct healthy paused owner")
 	require(wave().get("enabled",false) and wave().get("spill",{}).get("parcels",false)
-		and wave().spill.get("full_face") == true and wave().spill.get("fall") == 5
+		and wave().spill.get("full_face") == true and wave().spill.get("fall") == 5 and wave().spill.get("deep_draw") == 27
 		and int(wave().get("parameters",{}).get("body_push",-1)) == 0,
 		"recovery retains accepted full-face release, fall speed and zero Body push")
 	require(host.latest_snapshot.tick_failure_count == 0 and str(host.latest_snapshot.last_tick_error).is_empty(),
