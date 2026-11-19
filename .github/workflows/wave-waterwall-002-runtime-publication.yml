@@ -345,8 +345,8 @@ jobs:
       - name: Validate publisher guards and unchanged source
         run: |
           set -euo pipefail
-          python tools/ci/test_wave_mt_runtime_publication.py; if ($LASTEXITCODE) { exit $LASTEXITCODE }
-          python tools/ci/test_wave_waterwall_runtime_publication.py; if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          python tools/ci/test_wave_mt_runtime_publication.py
+          python tools/ci/test_wave_waterwall_runtime_publication.py
           python tools/ci/test_wave_waterwall_002_runtime_publication.py
           python tools/ci/wave_waterwall_002_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
 
