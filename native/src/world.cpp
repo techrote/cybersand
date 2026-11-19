@@ -4182,6 +4182,19 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
                     }
                 }
             }
+            // Wave moves Water in bulk, so the Oil cell schedules this local
+            // density exchange. Use the ordinary downward Water swap to carry
+            // both complete tuples and stamp the lifted Oil for this tick.
+            if (wave_ != nullptr && cursor.visible(x, y - 1) == Material::Water) {
+                // The scheduled Oil is selected. Its immediate upper neighbour
+                // can only be outside the region across the top edge.
+                if (selected_core_region_ &&
+                    scheduler_geometry_.core_for_cell(x, y - 1).y < selected_core_region_->min_y) {
+                    keep_cell_active(x, y, effects);
+                } else if (try_move(Material::Water, x, y - 1, x, y, true, effects)) {
+                    return true;
+                }
+            }
             if (try_move(material, x, y, x, y + 1, false, effects)) return true;
             if (try_move(material, x, y, x + direction, y + 1, false, effects)) return true;
             if (try_move(material, x, y, x - direction, y + 1, false, effects)) return true;
