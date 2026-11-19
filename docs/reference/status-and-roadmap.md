@@ -10,6 +10,10 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Full-face Water release
+
+The [full-face evaluation](../audits/2026-11-19-wave-water-face-004.md) tests outward spray throughout an exposed wall at fall speed 3 and tracks abrupt ramp crests against the motion of the Water.
+
 ## Water ramp and player defaults
 
 The owner selected Wave Flow with spill and ballistic release for new player sessions. The [water ramp experiment](../audits/2026-11-19-wave-water-ramp-003.md) measures floor-attached spread and returning waves against #676.

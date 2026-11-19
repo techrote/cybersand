@@ -34,6 +34,8 @@ imports the bundled project before opening the ordinary Shared Workbench.
 
 Fresh Workbench sessions on the [water ramp branch](../audits/2026-11-19-wave-water-ramp-003.md) start with Wave, spill and ballistic release. Water Lab can still stage an explicit comparison with any admitted Water law.
 
+The full-face evaluation ZIP includes **water-wall** and **water-ramp**. Load **water-wall** to inspect the full-height spray, or **water-ramp** to inspect the crests. The launcher offers a missing setup and preserves any existing file of the same name. [Full-face Water Lab controls](workbench-water-lab.md#try-full-face-release-at-fall-speed-3)
+
 ## Select, apply and verify Wave
 
 1. In **Water solver**, select **Wave Flow** if another law is active. This stages the required FreeMass
