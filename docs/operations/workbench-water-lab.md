@@ -1,7 +1,8 @@
 ---
 title: Workbench Water Lab — consolidated controls
-status: Draft / research
+status: Current
 document-kind: guide
+canonical-for: [workbench-water-lab-controls]
 scope: Water Lab controls and Waterwall-stack review repairs above PR 631; experimental, merge held
 last-reviewed: 2026-11-19
 related-documents: [wave-flow-evaluation.md, ../architecture/wave-flow-v1.md]
@@ -157,3 +158,11 @@ stacked on #631. Review repairs are carried only by the combined
 `claude/wave-waterwall-001` candidate (#672); the parent branches stay unchanged.
 **HOLD, do not merge.** Source/runtime/CI qualification and human acceptance are
 separate evidence requirements.
+
+## Try the Waterwall 002 candidate
+
+Open **Water Lab → Wave**. Select **Sloshy** to stage the deep-water response and short-wave smoothing. Select **Max over-ledge** to stage the sheet, crest flight, blobs and ballistic release together. You can combine both. Press **Apply** and check the native values beside the controls. Apply resets retained Wave momentum. Reload the same starting setup for a fair comparison.
+
+**Deep gain** sets how hard a deep pool pushes back. Ordinary **Gain** controls a shallow advancing front. **Flux smoothing** reduces sharp changes in the movement of adjacent wet faces. **Sheet rate** sends deeper exposed rows through the grid while the crest can still throw. **Coyote ticks** sets how long a crest parcel travels level. Set the four new values to zero to turn off their effects. Reset Wave tuning and restore the previous spill settings to reverse a whole bundle. The [dated evaluation](../audits/2026-11-19-wave-waterwall-002.md) records the tested settings and results.
+
+A face can spend its share only once. If the crest throw already uses the whole allowance, Stream draw has no spare Water to pour on that face. Deeper sheet rows can still pour.

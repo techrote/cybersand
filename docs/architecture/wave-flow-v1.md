@@ -556,3 +556,18 @@ comparison scenes and the ordinary Windows launcher. The
 [dated finisher record](../audits/2026-11-16-wave-workbench-631-finisher.md)
 retains the original failures; final-source execution and independent review
 remain separate source-bound evidence.
+
+## Waterwall 002 sheet, crest and scale-selective damping
+
+The Draft/HOLD successor to #672 exposes four optional integers. Zero selects the preceding behavior for each control.
+
+| Control | Native setting and bounds | Effect |
+|---|---|---|
+| Deep gain | `deep_gain`, 0–512 | Separate restoring gain for connected deep Water. Dry and shallow fronts use ordinary Gain. Zero inherits Gain. |
+| Flux smoothing | `flux_smoothing`, 0–64 | Each connected neighboring wet face contributes its retained-flux difference multiplied by this value divided by 256. Missing neighbors contribute zero difference. |
+| Sheet rate | `spill.sheet_rate`, 0–127 | An exposed resting row can shed this many units per full cell of outward head each round. Deep rows pour through the grid. The top two cell-equivalents can throw parcels. |
+| Coyote ticks | `spill.coyote_ticks`, 0–8 | A launched top crest adds its outward face velocity to the throw and travels level for this many active flight ticks before gravity acts. |
+
+The column pass snapshots retained flux into four additional bytes per resident Wave cell only when smoothing is selected. The existing barrier separates writes from neighbor reads. Adjacent faces in a broad wave carry similar flux, so the correction is small. At strength 64 an alternating pattern of equal and opposite retained fluxes cancels in one round. Dry gaps, walls and selection boundaries end the stencil.
+
+Sheet discharge reuses falling Water, the active band and bounded parcel nominations. Two faces of a donor may each spend at most half of its starting mass. With either new spill control active, a face reserves its throw before spending the rest of its half-budget on a grid pour. Each receiving face also caps inflow to half the free space. Serial launch checks remaining Water, spawn path and pool capacity. A refused launch leaves its quantity in the grid. An active crest countdown is hashed as future physical state. See the [dated evidence](../audits/2026-11-19-wave-waterwall-002.md).

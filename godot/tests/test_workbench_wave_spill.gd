@@ -58,8 +58,10 @@ func native_admission() -> void:
 		PackedInt32Array(),bridge.default_liquid_policy(),base]
 	var hybrid := base.duplicate(true)
 	hybrid.merge({"workbench_wave_spill":true,"workbench_wave_spill_parcels":true,"workbench_wave_spill_fall":4,
-		"workbench_wave_spill_draw":96,"workbench_wave_spill_launch_speed":320,"workbench_wave_spill_launch_budget":128,
-		"workbench_wave_spill_blobs":1,"workbench_wave_spill_stream_share":32,"workbench_wave_spill_stream_draw":48},true)
+		"workbench_wave_spill_draw":96,"workbench_wave_spill_draw_head":8192,"workbench_wave_spill_launch_speed":320,"workbench_wave_spill_launch_budget":128,
+		"workbench_wave_spill_blobs":1,"workbench_wave_spill_stream_share":32,"workbench_wave_spill_stream_draw":48,
+		"workbench_wave_spill_coyote_ticks":4,"workbench_wave_spill_sheet_rate":60,
+		"workbench_wave_flux_smoothing":48,"workbench_wave_deep_gain":15},true)
 	args[6] = hybrid
 	var token: int = bridge.callv("prepare_liquid_world",args)
 	if not require(token > 0 and bridge.commit_liquid_world(world,token),"native admits Wave with Waterwall spill / "+str(bridge.get_last_error())):
@@ -67,8 +69,10 @@ func native_admission() -> void:
 	var status: Dictionary = world.get_wave_flow_status()
 	var spill: Dictionary = status.get("spill",{})
 	require(status.enabled and spill.get("enabled") == true and spill.get("parcels") == true,"native spill and parcel readback")
-	for key: String in ["fall","draw","launch_speed","launch_budget","blobs","stream_share","stream_draw"]:
+	for key: String in ["fall","draw","draw_head","launch_speed","launch_budget","blobs","stream_share","stream_draw","sheet_rate","coyote_ticks"]:
 		require(int(spill.get(key,-1)) == int(hybrid["workbench_wave_spill_"+key]),"native spill readback "+key)
+	for key: String in ["deep_gain","flux_smoothing"]:
+		require(status.parameters.get(key) == hybrid["workbench_wave_"+key],"native Wave shape readback "+key)
 	require(status.construction_options.get("workbench_ballistic") == true,
 		"Ballistic release throws through the Ballistic Water parcel pool and reports it")
 	var before: String = world.get_physical_state_hash()
@@ -82,6 +86,10 @@ func native_admission() -> void:
 			{"workbench_wave_spill_launch_speed":513},{"workbench_wave_spill_launch_budget":4097},
 			{"workbench_wave_spill_fall":2.5},{"workbench_wave_spill_blobs":2},{"workbench_wave_spill_stream_share":256},
 			{"workbench_wave_spill_stream_draw":256},{"workbench_wave_spill_stream_draw":-1},
+			{"workbench_wave_spill_sheet_rate":-1},{"workbench_wave_spill_sheet_rate":128},{"workbench_wave_spill_sheet_rate":true},
+			{"workbench_wave_spill_coyote_ticks":-1},{"workbench_wave_spill_coyote_ticks":9},{"workbench_wave_spill_coyote_ticks":2.5},
+			{"workbench_wave_flux_smoothing":-1},{"workbench_wave_flux_smoothing":65},{"workbench_wave_flux_smoothing":4.5},
+			{"workbench_wave_deep_gain":-1},{"workbench_wave_deep_gain":513},{"workbench_wave_deep_gain":"32"},
 			{"workbench_ballistic":"yes"},{"workbench_face_release":true,"workbench_ballistic":true}]:
 		var candidate := hybrid.duplicate(true)
 		candidate.merge(bad,true)
@@ -91,7 +99,8 @@ func native_admission() -> void:
 		if token > 0: bridge.discard_liquid_world(world,token)
 		require(world.get_physical_state_hash() == before and world.get_revision() == revision \
 			and world.get_liquid_policy_session_generation() == old_generation,"spill refusal is atomic "+str(bad))
-	for bad: Dictionary in [{"workbench_wave_spill_parcels":true},{"workbench_wave_spill_fall":3}]:
+	for bad: Dictionary in [{"workbench_wave_spill_parcels":true},{"workbench_wave_spill_fall":3},
+			{"workbench_wave_spill_coyote_ticks":2},{"workbench_wave_spill_sheet_rate":1}]:
 		var candidate := base.duplicate(true)
 		candidate.merge(bad,true)
 		args[6] = candidate
@@ -278,7 +287,13 @@ func lab_controls() -> void:
 	require(lab != null and lab.pages["wave"].is_ancestor_of(spray._spill_toggles["workbench_wave_spill"]),
 		"Waterwall spill switch lives in the Water Lab Wave tab, not the toolbar")
 	require(lab.pages["wave"].is_ancestor_of(spray._spill_status),"spill native status is on the Wave tab")
-	require(spray._spill_fields.size() == 7,"seven spill parameters: fall, feed, throw, budget, blobs, stream share, stream draw")
+	for key: String in ["sheet_rate","coyote_ticks"]:
+		var field: SpinBox = spray._spill_fields["workbench_wave_spill_"+key]
+		require(lab.pages.wave.is_ancestor_of(field) and field.value == 0,"new spill input defaults off in Water Lab: "+key)
+	for key: String in ["deep_gain","flux_smoothing"]:
+		var field: SpinBox = spray._wave_fields["workbench_wave_"+key]
+		require(lab.pages.wave.is_ancestor_of(field) and field.value == 0,"new Wave input defaults off in Water Lab: "+key)
+	require(spray._max_over_ledge.disabled,"spill bundle dormant outside Wave")
 	spray._set_spill("workbench_wave_spill_parcels",true)
 	require(host.workbench_water_options.get("workbench_wave_spill") == true,"ballistic release stages Waterwall spill")
 	require(host.workbench_water_options.get("workbench_ballistic") == true and spray._ballistic.button_pressed,
@@ -306,8 +321,16 @@ func workbench_apply() -> void:
 	var start := failures.size()
 	var spray: RefCounted = panel.water_spray
 	spray._set_wave(true)
-	spray._set_spill("workbench_wave_spill_parcels",true)
 	var before := generation()
+	var preset := -1
+	for index: int in spray._wave_preset.item_count:
+		if spray._wave_preset.get_item_text(index) == "Sloshy": preset = index
+	if not require(preset >= 0,"Sloshy preset is offered in Water Lab"): return
+	spray._wave_preset.item_selected.emit(preset)
+	spray._max_over_ledge.pressed.emit()
+	spray.refresh(host.tower_context)
+	require(generation() == before and not bool(wave().get("enabled",false)) and spray._wave_status.text.contains("STAGED"),
+		"Sloshy and Max over-ledge stage without changing the running World")
 	if not require(spray._apply_wave(),"Apply with Waterwall spill requested"): return
 	if not await until(func() -> bool: return idle() and generation() > before,"Waterwall spill installed"): return
 	require(str(host.microscenario_error).is_empty(),"no refusal / "+str(host.microscenario_error))
@@ -317,6 +340,28 @@ func workbench_apply() -> void:
 	spray.refresh(host.tower_context)
 	require(spray._wave_status.text.contains("APPLIED"),"requested spill matches native readback / "+spray._wave_status.text)
 	require(spray._spill_status.text.contains("Waterwall spill ON"),"spill status reports native activation")
+	var expected := {}
+	for key: String in ["deep_gain","flux_smoothing","sheet_rate","coyote_ticks","draw_head"]:
+		var is_spill := key in ["sheet_rate","coyote_ticks","draw_head"]
+		var option := ("workbench_wave_spill_" if is_spill else "workbench_wave_")+key
+		expected[key] = host.workbench_water_options[option]
+		var actual: Dictionary = spill if is_spill else wave().parameters
+		var label: Label = spray._spill_applied[option] if is_spill else spray._wave_applied_fields[option]
+		require(actual.get(key) == expected[key] and label.text == "native %d" % expected[key],
+			"applied new control and adjacent native readback agree: "+key)
+	spray._reset_wave_defaults()
+	require(spray._spill_fields.workbench_wave_spill_sheet_rate.value == expected.sheet_rate,
+		"resetting Wave tuning preserves the requested spill bundle")
+	require(spray._wave_fields.workbench_wave_deep_gain.value == 0 and spray._wave_fields.workbench_wave_flux_smoothing.value == 0,
+		"resetting Wave tuning disables both shape changes")
+	spray._spill_fields.workbench_wave_spill_sheet_rate.value = 0
+	before = generation()
+	if not require(panel.restore_start(),"restore accepted configuration with unapplied edits"): return
+	if not await until(func() -> bool: return idle() and generation() > before,"restored authored start"): return
+	for key: String in expected:
+		var actual: Dictionary = wave().spill if key in ["sheet_rate","coyote_ticks","draw_head"] else wave().parameters
+		require(actual.get(key) == expected[key],"restore carries accepted knob across reconstruction: "+key)
+	spray._revert_wave()
 	# The straightforward comparison: spill off is original Wave Flow.
 	spray._set_spill("workbench_wave_spill",false)
 	spray.refresh(host.tower_context)

@@ -83,6 +83,23 @@
         "../godot/scripts/workbench_water_spray_panel.gd",
         "../godot/scripts/shared_workbench.gd"
       ]
+    },
+    {
+      "id": "WAVE06",
+      "query": "How do I try Sloshy and Max over-ledge, smooth small waves, keep spray and give a crest coyote ticks in the Workbench Water Lab?",
+      "canonical": [
+        "operations/workbench-water-lab.md",
+        "architecture/wave-flow-v1.md"
+      ],
+      "facts": [
+        "Stage the bundle and use Apply, then check native readback.",
+        "Deep gain and flux smoothing separate the pool response from the dry front.",
+        "Sheet rate keeps crest throws and coyote ticks delay gravity only for a released crest."
+      ],
+      "sources": [
+        "../native/src/world_wave.inc",
+        "../godot/scripts/workbench_water_spray_panel.gd"
+      ]
     }
   ]
 }

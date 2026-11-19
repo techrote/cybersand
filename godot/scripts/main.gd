@@ -13,6 +13,7 @@ const SnapshotPublicationCounter = preload("res://scripts/snapshot_publication_c
 const FACE_TUNING := ["workbench_face_budget","workbench_face_speed","workbench_face_period","workbench_face_min_height"]
 const WAVE_TUNING := [
 	"workbench_wave_substeps","workbench_wave_active_rows","workbench_wave_gain",
+	"workbench_wave_deep_gain","workbench_wave_flux_smoothing",
 	"workbench_wave_gain_confined","workbench_wave_stiffness","workbench_wave_damp_shift",
 	"workbench_wave_coast","workbench_wave_level_shift","workbench_wave_sleep_after",
 	"workbench_wave_wake_peak","workbench_wave_rest_head","workbench_wave_stick",
@@ -23,7 +24,7 @@ const WAVE_TUNING := [
 # WAVE-WATERWALL-001 exposed-face spill: Wave-only construction requests.
 const WAVE_SPILL_SWITCHES := ["workbench_wave_spill","workbench_wave_spill_parcels"]
 const WAVE_SPILL_TUNING := [
-	"workbench_wave_spill_fall","workbench_wave_spill_draw",
+	"workbench_wave_spill_fall","workbench_wave_spill_draw","workbench_wave_spill_draw_head","workbench_wave_spill_sheet_rate","workbench_wave_spill_coyote_ticks",
 	"workbench_wave_spill_launch_speed","workbench_wave_spill_launch_budget",
 	"workbench_wave_spill_stream_share","workbench_wave_spill_blobs","workbench_wave_spill_stream_draw",
 ]
