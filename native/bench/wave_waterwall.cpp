@@ -9,6 +9,7 @@
 #include "cybersand/world.hpp"
 
 #include <algorithm>
+#include <array>
 #include <chrono>
 #include <cmath>
 #include <numbers>
@@ -246,14 +247,17 @@ int build(World& w, const std::string& scene, int size) {
             rect(w, 0, 56, size, 1, Material::Wall);
             rect(w, 58, 46, 12, 6, Material::Water);
         } else {
+            const int depth = number("tank_depth", 11), step = number("tank_step", 6);
+            if (depth < 1 || depth > 38 || step < 1 || step > 39 - depth)
+                throw std::invalid_argument("tank_depth and tank_step must be positive and fit below the 40-row wall");
             rect(w, 16, 16, 1, 41, Material::Wall);
-            const int lip = scene == "tank_open" ? 44 : 16;
+            const int lip = scene == "tank_open" ? 55 - depth : 16;
             rect(w, 81, lip, 1, 57 - lip, Material::Wall);
             rect(w, 16, 56, 66, 1, Material::Wall);
             rect(w, 16, 80, 98, 1, Material::Wall);
             rect(w, 113, 56, 1, 25, Material::Wall);
-            rect(w, 17, 45, 64, 11, Material::Water);
-            rect(w, 17, 39, 32, 6, Material::Water);
+            rect(w, 17, 56 - depth, 64, depth, Material::Water);
+            rect(w, 17, 56 - depth - step, 32, step, Material::Water);
         }
     } else if (scene == "sealed") {
         // Sealed reservoir: nothing can leave.
@@ -287,7 +291,8 @@ int build(World& w, const std::string& scene, int size) {
 
 // The signed first cosine mode measures the long wave independently of
 // shorter ripples. Equivalent cell depth includes fractional surface cells.
-void sample_profile(const World& w, bool blob, int width) {
+void sample_profile(const World& w, bool blob, int width, bool tank_shape) {
+    std::array<double, 65> cumulative_depth{};
     const int first = blob ? 0 : 17;
     const int count = blob ? width : 64;
     double previous2 = 0, previous1 = 0, curvature2 = 0, first_mode = 0;
@@ -296,6 +301,10 @@ void sample_profile(const World& w, bool blob, int width) {
         const int x = first + k;
         const auto units = w.water_quantity({x, 0, 1, 56});
         const double h = static_cast<double>(units) / 255.0;
+        if (tank_shape) {
+            const auto n = static_cast<std::size_t>(k);
+            cumulative_depth[n + 1] = cumulative_depth[n] + h;
+        }
         if (units >= 32) { if (left < 0) left = x; right = x; }
         first_mode += h * std::cos(std::numbers::pi * (k + 0.5) / count);
         if (k >= 2) {
@@ -306,6 +315,20 @@ void sample_profile(const World& w, bool blob, int width) {
         previous1 = h;
     }
     std::printf(",%.7f,%.7f,%d,%d", first_mode * 2 / count, std::sqrt(curvature2 / (count - 2)), left, right);
+    if (tank_shape) {
+        // An eight-column mean measures a broad crest without crediting a
+        // single-cell spike. The slope compares adjacent eight-column means.
+        constexpr std::size_t window = 8;
+        const auto mean = [&](std::size_t x) { return (cumulative_depth[x + window] - cumulative_depth[x]) / window; };
+        double low = mean(0), high = low, slope = 0;
+        for (std::size_t x = 0; x + window <= 64; ++x) {
+            const double h = mean(x);
+            low = std::min(low, h);
+            high = std::max(high, h);
+            if (x >= window) slope = std::max(slope, std::abs(h - mean(x - window)) / window);
+        }
+        std::printf(",%.7f,%.7f", high - low, slope);
+    }
 }
 
 }  // namespace
@@ -338,7 +361,9 @@ int main(int argc, char** argv) {
         std::printf("tick,total_drift,moved_units");
         for (const auto& probe : g_probes) std::printf(",%s", probe.first.c_str());
         const bool profile = scene == "tank" || scene == "tank_open" || scene == "blob";
+        const bool tank_shape = (scene == "tank" || scene == "tank_open") && number("tank_shape", 0) != 0;
         if (profile) std::printf(",long_mode_cells,curvature_rms_cells,front_left_32,front_right_32");
+        if (tank_shape) std::printf(",broad_range_cells,broad_slope_cells_per_cell");
         std::printf(",solved_chunks,window_median_us,window_p95_us\n");
         DischargeTrace discharge;
         discharge.open(w);
@@ -352,7 +377,7 @@ int main(int argc, char** argv) {
                             static_cast<unsigned long long>(diag.moved_units));
                 for (const auto& probe : g_probes)
                     std::printf(",%.1f", static_cast<double>(w.water_quantity({probe.second.x, probe.second.y, probe.second.w, probe.second.h})) / 255.0);
-                if (profile) sample_profile(w, scene == "blob", size);
+                if (profile) sample_profile(w, scene == "blob", size, tank_shape);
                 std::sort(window.begin(), window.end());
                 std::printf(",%u,%.0f,%.0f\n", diag.last_solved_chunks, window.empty() ? 0.0 : window[window.size() / 2],
                             window.empty() ? 0.0 : window[std::min(window.size() - 1, window.size() * 95 / 100)]);
