@@ -3,7 +3,7 @@ title: Waterwall stack review and remediation — 2026-11-18
 status: Current
 document-kind: audit
 scope: Dated review findings, focused repairs and qualification status for PR 672 above unchanged PRs 661 and 631; no merge or default promotion
-last-reviewed: 2026-11-18
+last-reviewed: 2026-11-19
 related-documents: [../architecture/wave-flow-v1.md, ../architecture/ballistic-water-v1.md, ../operations/workbench-water-lab.md, ../reference/status-and-roadmap.md]
 ---
 
@@ -165,6 +165,49 @@ The immutable compatibility lock is unchanged.
 No retrieval topic or canonical ownership changes. Existing routes still lead to
 the same current reference and guide pages; this audit remains historical-only
 retrieval evidence.
+
+## Cross-window follow-up — 2026-11-19
+
+[Publication request 15](https://github.com/techrote/cybersand/actions/runs/44425280197)
+completed **9/9 jobs**, and bot commit
+`88558bddb54fc5ade66d55abeab2efb75acd123f` appended only the two runtimes and
+their two manifests to source `71a00ea727bbe282454afb55070daaf82ecea55f`.
+Normal, ASan/UBSan and TSan each passed Wave 31/31, spill 26/26 and 50 boundary
+runs / 6,000 ticks with matching metrics. Linux and Windows passed all ten
+import/headless records; Linux rendered Wave/Workbench checks and the extracted
+Windows package also passed. Independent readback verified both runtimes,
+95 native inputs, 852 build inputs, reports and log hashes.
+
+A final cross-window probe then found a regression in the first focus repair.
+With Water Lab already open, typing main X = 350 without Enter and clicking its
+child **Nozzle at X/Y** action could still use the previously committed X. Godot
+retains each viewport's focused field. Committing only the child discarded the
+original helper's main-field commitment. The old parent-commit control used the
+typed coordinate, establishing the cause.
+
+The two-file correction is
+[`6179f1f93e29aa730398093c650f22f256ede3b9`](https://github.com/techrote/cybersand/commit/6179f1f93e29aa730398093c650f22f256ede3b9),
+tree `540038e161eae1a2597d1b659c23c30d9f8ed986`. It commits the clicked child
+first and the main viewport second when they differ; default/main callers visit
+their viewport once. The regression leaves **both main X and child supply**
+pending, uses actual mouse/character input, reads the worker-owned nozzle
+position, and checks actual emitted native Water at the intended coordinate
+and not the stale coordinate. It restores the authored fixture afterward.
+
+The new regression failed exactly two of 237 assertions before correction:
+accepted nozzle position and actual Water placement. After correction, the
+full Workbench Wave suite passed **1,259 assertions**, all twelve sections,
+**35 native ticks**, exit 0 and no ERROR lines. Workbench spill also passed
+**618 checks**, all seven sections and no errors. The native local runtime
+remained `02f1257a3f99023da707d790bf871a99ecc7861a0c76e3895b8eb4ffe451ea7f`.
+The after-run log SHA-256 is
+`c7350b6bc52923e828470e114b6785dbe367f115b6af26e7b3c22bb716af7ccf`.
+Independent review found no remaining blocker in this correction.
+
+No native source changed in this follow-up. Request 15 remains valid evidence
+for its recorded source, but its UI/package results are **predecessor evidence**.
+Publication request **16** binds the corrected scripts and extended regression;
+its resulting runtime/package and final-head CI results belong in the PR ledger.
 
 ## Remaining acceptance
 

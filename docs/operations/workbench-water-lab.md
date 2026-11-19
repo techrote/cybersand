@@ -3,7 +3,7 @@ title: Workbench Water Lab — consolidated controls
 status: Draft / research
 document-kind: guide
 scope: Water Lab controls and Waterwall-stack review repairs above PR 631; experimental, merge held
-last-reviewed: 2026-11-18
+last-reviewed: 2026-11-19
 related-documents: [wave-flow-evaluation.md, ../architecture/wave-flow-v1.md]
 ---
 
@@ -34,10 +34,12 @@ created by Shared Workbench. The older per-material policy dropdown is retained
 only in **Advanced policy** and remains semantically distinct from Wave Flow's
 FreeMass-carrier overlay.
 
-The action commits the numeric text focused inside the Water Lab Window before
-collecting its request. Typing a value and clicking **Apply solver / tuning**
-does not require Enter or a click outside the field first. The moved scene,
-equipment and tuning actions use the same Window-aware field commitment.
+The action commits pending numeric text in the clicked Water Lab Window, then
+in the main Workbench Window, before collecting its request. Both Windows can
+retain focused fields: a pending main X/Y and a pending child supply value must
+both reach an equipment action. Typing a value and clicking **Apply solver /
+tuning** does not require Enter or a click outside the field first. The moved
+scene, equipment and tuning actions use the same Window-aware field commitment.
 
 **Wave Flow is disabled by default.** Enabling it stages Wave and automatically
 requests its FreeMass carrier; native activation requires **Apply solver /
