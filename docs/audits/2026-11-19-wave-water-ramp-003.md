@@ -50,9 +50,9 @@ The independent review caught a legacy Web/Rapier test trying to save an active 
 | Level floor, contiguous front beyond the starting block at ticks 8 / 16 / 32 / 64 | 4 / 6 / 16 / 24 cells | 8 / 16 / 31 / 61 cells |
 | Flat-floor travel weighted by all initial Water at t64 | 4.80 cells | 15.52 cells |
 | Drop from 32 cells, bulk front at t8 / 16 / 32 / 64 | 3 / 5 / 15 / 25 cells | 7 / 14 / 29 / 59 cells |
-| 1:2 grade, highest bulk run-up in 400 ticks | 24 cells | 19 cells |
+| 1:2 grade, highest bulk run-up in 600 ticks | 25 cells | 19 cells |
 | Average of initial Water at least 16 cells up that grade | 1.88% | 0.35% |
-| Authored ramp, 128 full-cell equivalents on the floor beyond x960 | 728 ticks | 416 ticks |
+| Authored ramp, 128 full-cell equivalents on the floor beyond x960 | 728 ticks | 412 ticks |
 | Authored far bank, peak height above contemporaneous basin surface | 10.4 cells | 8.0 cells |
 | 22+10-row tank, first full crest return | 388 ticks | 138 ticks |
 | 22+10-row tank, broad slope at first return | 0.516 | 0.583 |
@@ -61,3 +61,13 @@ The independent review caught a legacy Web/Rapier test trying to save an active 
 At two rounds, the previous Sloshy tuning reaches 37 cells on the flat at tick 64 and the bank rises 22.8 cells above the basin waterline. The new law improves those two measures at the same number of rounds. The basin fills earlier, so the absolute water level against the wall can be higher than with one-round Sloshy. The reduced climb is measured relative to the waterline and in the matched incline fixture.
 
 Two sequential six-worker 900-tick native runs on the owner's Ryzen 5 5600X gave median / p95 times of **4.114 / 9.304 ms and 3.576 / 6.221 ms**. The one-round parent measured 1.837 / 3.134 and 2.652 / 5.237 ms. Two-round Sloshy measured 4.342 / 11.143 and 3.555 / 6.041 ms. Run order was reversed between replicates. The only background Workbench was the owner's preexisting session, lightly active. The new profile's slowest individual ticks exceeded the 16.67 ms interval of a 60 Hz simulation. Timings cover native ticks, excluding rendering and Rapier. One-round gameplay tuning measured 1.893 / 3.253 and 2.005 / 3.724 ms.
+
+Disabling Floor gain while keeping the other new settings reduces the tick-64 flat front from 61 to 37 cells. Mass-weighted travel falls from 15.52 to 12.17 cells. The dropped block reaches 41 cells, versus 59 with Floor gain. The authored far-basin deposit arrives at tick 500 versus 412. Enabling the floor response increases the incline run-up from 17 to 19 cells. The choice of a 255 feed-head limit keeps that climb below the two-round Sloshy control's 27 cells. In the original waterwall fixture the new profile half-emptied the reservoir at tick 188 versus 388 and still threw 8.57 million Water units through tick 1,500 versus 8.16 million.
+
+![Workbench captures of the supplied ramp at matched ticks](wave-water-ramp-003-2026-11-19/ramp-workbench.jpg)
+
+![Flat-ground impact at matching ticks](wave-water-ramp-003-2026-11-19/flat-front.gif)
+
+The [rejected high-gain capture](wave-water-ramp-003-2026-11-19/rejected-columns.jpg), [complete measurement and reproduction commands](wave-water-ramp-003-2026-11-19/ramp-results.json), [four-tick samples](wave-water-ramp-003-2026-11-19/ramp-traces.csv) and [Workbench capture receipts](wave-water-ramp-003-2026-11-19/ramp-workbench.json) preserve the underlying observations. The 1- and 6-worker runs matched on all 226 ramp observations through tick 900 and both ended at hash `cac459b40b17725a`. All 3,384 authored-ramp samples closed the Water ledger. Final package and publisher evidence is linked from the [Draft/HOLD PR](https://github.com/techrote/cybersand/pull/677).
+
+A final containment regression showed that deferring the desktop worker until Main became ready lost the original capacity-sampling boundary. Commit `5f1233e8` restores sampling at desktop scene construction. The corrected Windows run passed the 77 containment and 215 failed-World checks. The library is the same locally built DLL. The later package and runtime publication include the corrected desktop script.

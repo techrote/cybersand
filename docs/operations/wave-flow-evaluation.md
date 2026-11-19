@@ -15,7 +15,7 @@ related-documents: [../architecture/wave-flow-v1.md, lcb-manual-comparison-ux.md
 On the Water Lab UI branch, open **Water Lab…** from the main Workbench toolbar.
 All Water-specific settings share one non-modal window. **Solvers & scenes**
 selects Wave/FreeMass/PressureFlow/Inertial, comparison canvases and workers;
-**Wave tuning** exposes all 18 fields and presets; **Transport & spray**
+**Wave tuning** exposes the Wave fields and presets; **Transport & spray**
 contains ballistic, signed inertia, face release, PressureFlow gas, fine cores,
 impact spray and jets; **Equipment** contains valves, drains, pumps and nozzles;
 **Advanced policy** retains the full per-material liquid picker and normalization.

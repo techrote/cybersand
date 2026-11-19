@@ -24,7 +24,7 @@ Open it to access a resizable, scrollable, non-modal five-tab Water Lab:
 | Tab | Controls |
 |---|---|
 | Solvers & scenes | One Water-law selector for FreeMass, Wave Flow, PressureFlow reference/cached/dormant and Inertial; four authored comparison scenes and pool workers |
-| Wave tuning | All 18 bounded Wave controls, Body push (Water force on Rapier actors), presets, Reset, Revert and native values |
+| Wave tuning | Bounded Wave controls, Body push (Water force on Rapier actors), presets, Reset, Revert and native values |
 | Transport & spray | Ballistic, IN signed, face release and tuning, PF gas/capacity, fine cores, impact spray, jet tuning |
 | Equipment | Valves, drains, nozzles, aiming, pumps, supply, placement and built-in equipment starts |
 | Advanced policy | Full native-backed liquid policy assignment editor, original presets, geometry and one-shot normalization |
