@@ -6,16 +6,23 @@ String pressure_optimization_unsigned(std::uint64_t value) {
 }
 }
 
-String CyberNativeCellWorld::get_liquid_comparison_hash(std::int64_t projection_id) const {
-    if (world_ == nullptr || (projection_id != 1 && projection_id != 2)) return {};
+String CyberNativeCellWorld::get_liquid_comparison_hash(std::int64_t projection_id) const try {
+    if (has_failed() || (projection_id != 1 && projection_id != 2)) return {};
     const auto projection = static_cast<cybersand::LiquidStateProjection>(projection_id);
     char text[17];
     std::snprintf(text, sizeof(text), "%016llx",
                   static_cast<unsigned long long>(world_->liquid_comparison_hash(projection)));
     return String(text);
+} catch (const std::exception& error) {
+    record_native_failure("get_liquid_comparison_hash", error.what());
+    return {};
+} catch (...) {
+    record_native_failure("get_liquid_comparison_hash", "unknown native exception");
+    return {};
 }
 
-Dictionary CyberNativeCellWorld::inspect_pressure_optimization() const {
+Dictionary CyberNativeCellWorld::inspect_pressure_optimization() const try {
+    if (has_failed()) return native_failure_status();
     Dictionary out;
     out["schema_version"] = 1;
     out["available"] = world_ != nullptr && world_->pressure_flow_enabled();
@@ -142,4 +149,10 @@ Dictionary CyberNativeCellWorld::inspect_pressure_optimization() const {
 #undef CYBERSAND_PRESSURE_COUNT
     out["counters"] = counters;
     return out;
+} catch (const std::exception& error) {
+    record_native_failure("inspect_pressure_optimization", error.what());
+    return native_failure_status();
+} catch (...) {
+    record_native_failure("inspect_pressure_optimization", "unknown native exception");
+    return native_failure_status();
 }

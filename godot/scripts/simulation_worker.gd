@@ -378,6 +378,10 @@ func _commit_controlled_liquid_candidate(bridge: Variant, token: int, request_re
 			and token == int(_pending_physical_liquid.get("token",0)) and bool(_prepared_physical_ready.get("ready",false))
 	var committed: bool = bridge.commit_liquid_world(_world, token) if current else false
 	if committed:
+		_scheduler_thread_capacity_hint = int(_world.get_worker_threads())
+		var accepted_setup: Dictionary = command.get("controlled_liquid_setup",{})
+		if accepted_setup.has("workbench_worker_threads"):
+			_native_worker_request = int(accepted_setup.workbench_worker_threads)
 		_pending_emissions.clear()
 		_pending_cell_emissions.clear()
 		_paint_epoch += 1
@@ -2613,6 +2617,9 @@ func _worker_loop() -> void:
 					elif not _world.prepare_workbench_coupling(sample.states,sample.geometry,sample.bodies,
 						sample.session,sample.epoch,not local_paused):
 						_workbench_refusal = "The workbench body sample was refused. Rebuild or reset the selected setup."
+						# A coupling exception quarantines the World: publish it as a
+						# native failure (with its error), never as a healthy snapshot.
+						if _world.has_failed(): _simulation_failed = true
 					else:
 						_workbench_prepared_sample = workbench_serial
 						_workbench_consumed_sample = sample
@@ -2638,8 +2645,10 @@ func _worker_loop() -> void:
 					_world, local_physical_effects, local_rigid_body_epoch)
 			_consume_physical_usables(local_physical_usables, local_rigid_body_epoch, physical_effects_allowed, local_physical_usable_frame)
 			_apply_emissions(local_emissions,local_cell_emissions)
+			if _world.has_method(&"has_failed") and _world.has_failed():
+				_simulation_failed = true
 
-			if not local_paused:
+			if not local_paused and not _simulation_failed:
 				if (
 					_sampled_character_enabled
 					and (not _micro_active or _scenario_host.player_enabled())
@@ -2658,10 +2667,12 @@ func _worker_loop() -> void:
 					_simulation_failed = not bool(_world.simulation_tick())
 				else:
 					_world.simulation_tick()
-				lockstep_ticked = _lockstep_record_tick(local_body_publication, not _simulation_failed)
 				if not _simulation_failed and _workbench_extent != Vector2i.ZERO:
 					_capture_workbench_result()
-					_workbench_completed_sample = workbench_serial
+					if _world.has_failed():
+						_simulation_failed = true
+					else:
+						_workbench_completed_sample = workbench_serial
 				if not _simulation_failed and local_lab.has("workbench_step_serial"):
 					_workbench_step_serial = int(local_lab.workbench_step_serial)
 				if _lab_active and _scenario_host.active() and not _scenario_host.after_tick():
@@ -2670,10 +2681,15 @@ func _worker_loop() -> void:
 					_mutex.lock()
 					_paused = true
 					_mutex.unlock()
+				if _world.has_method(&"has_failed") and _world.has_failed():
+					_simulation_failed = true
+				lockstep_ticked = _lockstep_record_tick(local_body_publication, not _simulation_failed)
 
 		# Failure must still retire a queued author operation with a receipt.
 		if _simulation_failed: _consume_art()
 		_consume_paint(local_paused)
+		if _world.has_method(&"has_failed") and _world.has_failed():
+			_simulation_failed = true
 		_mutex.lock()
 		_legacy_edit_inflight = false
 		_world_change_inflight = false
@@ -2721,6 +2737,10 @@ func _publish_snapshot(
 	rigid_body_states: PackedFloat32Array = PackedFloat32Array(),
 	rigid_body_epoch: int = 0
 ) -> void:
+	# A binding may quarantine between ticks (an edit, coupling or observation).
+	# Native health, not only simulation_tick's return, owns publication admission.
+	if _world.has_method(&"has_failed") and _world.has_failed():
+		_simulation_failed = true
 	if _simulation_failed:
 		_publish_failure_snapshot()
 		return
@@ -3012,6 +3032,8 @@ func _publish_snapshot(
 			var spray: Dictionary = _world.get_water_spray()
 			spray["receipt"] = _water_spray_receipt.duplicate(true)
 			snapshot.lab_context["water_spray"] = spray
+		if _world.has_method(&"get_wave_flow_status"):
+			snapshot.lab_context["wave_flow"] = _world.get_wave_flow_status()
 	if render_generation_advanced:
 		var render_micro: Dictionary = snapshot.lab_context.get("microscenario", {})
 		var render_presentation: Dictionary = render_micro.get("presentation", {})
@@ -3047,6 +3069,12 @@ func _publish_snapshot(
 		Time.get_ticks_usec() - publication_start_usec
 	) / 1000.0
 
+	# A render/collider/status getter can itself discover a native fault. Discard
+	# the entire candidate publication and keep the last valid immutable payload.
+	if _world.has_method(&"has_failed") and _world.has_failed():
+		_simulation_failed = true
+		_publish_failure_snapshot()
+		return
 	_mutex.lock()
 	_published_snapshot = snapshot
 	_mutex.unlock()

@@ -1,0 +1,188 @@
+name: Wave Flow native qualification
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'native/**'
+      - 'Makefile'
+      - 'tools/wave_mt/**'
+      - '.github/workflows/wave-flow.yml'
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - 'native/**'
+      - 'Makefile'
+      - 'tools/wave_mt/**'
+      - '.github/workflows/wave-flow.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: wave-flow-${{ github.event_name }}-${{ github.event_name == 'pull_request' && github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  linux:
+    name: Wave Flow ${{ matrix.mode }}
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        mode: [normal, asan-ubsan, tsan]
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Run concurrent, conservation and C ABI regressions
+        env:
+          WAVE_MODE: ${{ matrix.mode }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/wave-evidence
+          git rev-parse HEAD HEAD^{tree} > build/wave-evidence/source.txt
+          g++-13 --version > build/wave-evidence/compiler.txt
+          lscpu > build/wave-evidence/cpu.txt
+          python3 tools/wave_mt/test_matrix.py 2>&1 | tee build/wave-evidence/apparatus.log
+          case "$WAVE_MODE" in
+            normal) target=wave-flow-test ;;
+            asan-ubsan) target=wave-flow-sanitize ;;
+            tsan) target=wave-flow-thread-sanitize ;;
+          esac
+          timeout "$(python3 tools/ci/execution_policy.py seconds native_suite_seconds)" \
+            make CXX=g++-13 "$target" 2>&1 | tee build/wave-evidence/native.log
+      - name: Retain original source and sanitizer results
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: wave-native-${{ matrix.mode }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/wave-evidence/
+          if-no-files-found: error
+          retention-days: 90
+
+  default-off:
+    name: Paired default-off Water against accepted main
+    # This dated accepted-main control belongs to PR618, its PR631 handoff and explicit campaigns.
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'pull_request' && (github.event.pull_request.number == 618 || github.event.pull_request.number == 631) &&
+       github.event.pull_request.draft == false)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    env:
+      SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      BASELINE_SHA: 018bd09503d7f079ddac52e225c2f7daf8d678bf
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.SOURCE_SHA }}
+          fetch-depth: 0
+          persist-credentials: false
+          lfs: false
+      - name: Validate paired apparatus and prepare immutable accepted-main source
+        run: |
+          set -euo pipefail
+          mkdir -p build/wave-default-off
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/wave_mt/test_default_off_pair.py 2>&1 | tee build/wave-default-off/apparatus.log
+          lscpu > build/wave-default-off/cpu.txt
+          GIT_LFS_SKIP_SMUDGE=1 git worktree add --detach "$RUNNER_TEMP/wave-default-off-main" "$BASELINE_SHA"
+      - name: Build identical harnesses and retain all 48 alternating paired processes
+        run: |
+          set -euo pipefail
+          timeout "$(python3 tools/ci/execution_policy.py seconds native_suite_seconds)" \
+            python3 tools/wave_mt/run_default_off_pair.py \
+              --baseline-source "$RUNNER_TEMP/wave-default-off-main" \
+              --candidate-sha "$SOURCE_SHA" --cxx g++-13 \
+              --output build/wave-default-off/campaign \
+            2>&1 | tee build/wave-default-off/campaign.log
+      - name: Retain original paired source, executable, timing and failure evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: wave-default-off-pair-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/wave-default-off/
+          if-no-files-found: error
+          retention-days: 90
+
+  windows:
+    name: Windows Wave Flow ${{ matrix.scene }}
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
+    runs-on: windows-2022
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        # Each performance scene retains all 120 matched rows on one host.
+        # Other ordinary changes run the native suite once, without a campaign.
+        scene: ${{ fromJSON((github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && (github.event.pull_request.number == 618 || github.event.pull_request.number == 631) && github.event.pull_request.draft == false)) && '["dam","wave","sparse","idle"]' || '["correctness"]') }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Build and execute source-matched MSVC native suite
+        shell: cmd
+        run: |
+          @echo on
+          for /f "tokens=*" %%I in ('"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath') do set "VS_ROOT=%%I"
+          if not defined VS_ROOT exit /b 1
+          call "%VS_ROOT%\VC\Auxiliary\Build\vcvars64.bat"
+          if errorlevel 1 exit /b 1
+          if not exist build\wave-evidence mkdir build\wave-evidence
+          git rev-parse HEAD "HEAD^{tree}" > build\wave-evidence\source.txt
+          if errorlevel 1 exit /b 1
+          cl /Bv > build\wave-evidence\compiler.txt 2>&1
+          cl /nologo /std:c++20 /EHsc /W4 /I native\include /O2 /DNDEBUG native\src\world.cpp native\src\material_rules.cpp native\src\scheduler_geometry.cpp native\src\settled_world_discovery.cpp native\src\render_snapshot.cpp native\src\c_api.cpp native\tests\test_wave_flow.cpp /Fe:build\test_wave_flow.exe > build\wave-evidence\build-tests.log 2>&1
+          if errorlevel 1 (type build\wave-evidence\build-tests.log & exit /b 1)
+          build\test_wave_flow.exe > build\wave-evidence\native.log 2>&1
+          if errorlevel 1 (type build\wave-evidence\native.log & exit /b 1)
+          type build\wave-evidence\native.log
+      - name: Build complete tick comparison executable
+        # Keep routine Windows correctness; the full performance campaign is
+        # scoped to PR618/PR631 or an explicit dispatch, not every later native edit.
+        if: >-
+          github.event_name == 'workflow_dispatch' ||
+          (github.event_name == 'pull_request' && (github.event.pull_request.number == 618 || github.event.pull_request.number == 631) &&
+           github.event.pull_request.draft == false)
+        shell: cmd
+        run: |
+          @echo on
+          for /f "tokens=*" %%I in ('"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath') do set "VS_ROOT=%%I"
+          if not defined VS_ROOT exit /b 1
+          call "%VS_ROOT%\VC\Auxiliary\Build\vcvars64.bat"
+          if errorlevel 1 exit /b 1
+          cl /nologo /std:c++20 /EHsc /W4 /I native\include /O2 /DNDEBUG native\src\world.cpp native\src\material_rules.cpp native\src\scheduler_geometry.cpp native\src\settled_world_discovery.cpp native\bench\wave_mt_matrix.cpp /Fe:build\wave_mt_matrix.exe > build\wave-evidence\build-benchmark.log 2>&1
+          if errorlevel 1 (type build\wave-evidence\build-benchmark.log & exit /b 1)
+      - name: Measure matched complete native ticks including negative results
+        if: >-
+          github.event_name == 'workflow_dispatch' ||
+          (github.event_name == 'pull_request' && (github.event.pull_request.number == 618 || github.event.pull_request.number == 631) &&
+           github.event.pull_request.draft == false)
+        shell: pwsh
+        run: |
+          Get-CimInstance Win32_Processor | Format-List Name,NumberOfCores,NumberOfLogicalProcessors | Out-File build/wave-evidence/cpu.txt
+          python tools/wave_mt/test_matrix.py
+          if ($LASTEXITCODE -ne 0) { throw 'Benchmark apparatus failure' }
+          python tools/wave_mt/run_matrix.py --exe build/wave_mt_matrix.exe --out build/wave-evidence/matrix.csv --sizes 256 1024 2048 --scenes "${{ matrix.scene }}" --solvers 1:0 4:0 3:2 5:0 5:0:3 --workers 1 2 4 6 --repeats 2 --warm 30 --ticks 180 --idle-warm 240 --timeout 900 --build-label "MSVC /std:c++20 /O2 /DNDEBUG"
+          if ($LASTEXITCODE -ne 0) { throw 'Native benchmark execution/conservation failed' }
+          python tools/wave_mt/summarise.py build/wave-evidence/matrix.csv | Out-File -Encoding utf8 build/wave-evidence/summary.md
+          if ($LASTEXITCODE -ne 0) { throw 'Native benchmark reduction failed' }
+      - name: Retain Windows native evidence and available measurements
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: wave-native-windows-${{ matrix.scene }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/wave-evidence/
+          if-no-files-found: error
+          retention-days: 90

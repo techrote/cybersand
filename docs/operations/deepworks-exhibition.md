@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: The 1024 by 1024 Deepworks map, sixteen districts, native foreground and rear exhibits, four-plane coverage, controls and authored source programme
 canonical-for: [deepworks-exhibition, deepworks-map-controls, deepworks-exhibition-programme]
-last-reviewed: 2026-10-20
+last-reviewed: 2026-11-16
 related-documents: [../systems/depth-layers-and-parallax.md, ../systems/building-material-catalogue.md, ../reference/configuration-reference.md, ../architecture/data-ownership-and-lifetimes.md, local-build-and-validation.md, ../reference/status-and-roadmap.md]
 ---
 
@@ -239,7 +239,28 @@ the inspected checkout identity when collecting review evidence.
 
 The [focused validation commands](local-build-and-validation.md#deepworks-and-depth-dimensions)
 separate source/authoring checks, native reaction checks, controller behavior
-and actual rendered pixel tests. Dated acceptance records must identify the
+and actual rendered pixel tests. The rendered test pins material presentation
+time for repeatable captures and checks every district's first native atmosphere
+pulse. D1 additionally checks all sixty-one effects phases from 0 through 60
+seconds against one unchanged native packet in the production Hybrid view;
+the foreground, rear and distant material phases stay fixed at zero. A Stack
+control uses that same packet and phase to require that projected foreground
+relief leaves every native D1 cell's on/off RGB contribution unchanged. The
+minimum remains four visible native atmosphere pixels with an RGB channel
+difference of at least 4/255. D1's six-cell Smoke source is placed three cells
+right of its former position so projected foreground relief does not cover it.
+
+The rendered test accepts `--deepworks-render-output=/absolute/path` or the
+standard `CYBERSAND_TEST_ARTIFACT_DIR` environment variable. Its evidence
+includes full-frame on/off PNGs for all sixteen normal district captures,
+plus unscaled witness-rectangle PNG pairs for every D1 phase and control.
+The rectangle's world coordinates are recorded alongside every native sample.
+The first phase and first failing phase also retain full-frame context.
+Native RG8 packet bytes, all phase results, per-cell RGBA samples, packet hashes
+and native clock/state identities remain available for independent readback.
+It retains failing phases and fails on artifact I/O errors.
+
+Dated acceptance records must identify the
 tested source and runtime; these source descriptions do not establish Windows,
 browser, physical-actor or lower-end GPU acceptance. The native ABI, material
 kernels, dependency pins and ordinary sandbox owner remain unchanged.

@@ -340,6 +340,11 @@ static func _atmosphere(data: PackedInt32Array, e: Array[Dictionary], o: Vector2
 	var material: int = WEATHER[d]
 	var rising: bool = material == M.SMOKE or material == M.STEAM or material == M.SPARK
 	var emission := Rect2i(235 + (d % 3) * 3, 162 if rising else 88, 2, 3)
+	# D1 sits below the world centre: Hybrid's projected foreground relief
+	# reaches into the native-clear corridor at x234. Keep the same six-cell
+	# Smoke source and schedule, three cells right of that projected wall.
+	if d == 12:
+		emission.position.x = 238
 	_r(data, o, emission.position.x, emission.position.y, emission.size.x, emission.size.y, material)
 	_feed(e, d, "effects", "local-atmosphere", o, emission, material, 9 + d * 3, 39 + (d % 4) * 7, 0)
 	# The right corridor gives this effects-only service riser an unobstructed

@@ -33,6 +33,10 @@ inline void validate(std::span<const std::uint8_t> bytes) {
 
 inline void copy_level(World& world, std::span<std::uint8_t> bytes) {
     if (bytes.size() != kPayloadBytes) throw std::invalid_argument("Wrong snapshot buffer length");
+    // CYSD1 has neither the uint16 overfill carrier nor retained face flux.
+    // Refuse before clearing masks or touching the caller's output buffer.
+    if (world.wave_flow_enabled())
+        throw std::invalid_argument("wave_flow_v1 CYSD1 state export is not admitted");
     // temperature() normally samples the occupancy mask. Remove only this
     // transient projection so saved temperatures describe stored cells. The
     // adapter must rebuild the obstacle mask before its next cellular tick.
@@ -59,6 +63,8 @@ inline void copy_level(World& world, std::span<std::uint8_t> bytes) {
 
 [[nodiscard]] inline std::unique_ptr<World> reconstruct(
     const WorldConfig& config, std::span<const std::uint8_t> bytes) {
+    if (config.wave_flow.enabled)
+        throw std::invalid_argument("wave_flow_v1 CYSD1 state restore is not admitted");
     validate(bytes);  // Validate everything before allocating or changing a world.
     if (auto refusal = config.liquid_solver_policy.admission_refusal())
         throw LiquidPolicyRefused(std::move(*refusal));
