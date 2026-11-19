@@ -382,11 +382,25 @@ func _expired_native_receipt_first_refusal() -> void:
 	var decision: Dictionary = _capture("native-expiry-first-refusal",false,received)
 	check(int(decision.guard.get("blocked_material",0)) > 0,
 		"newest actual pose is conservatively refused against Wall")
-	check(_pose() == null and decision.source == "hidden" \
-		and int(decision.selected_step) != native_step,
-		"first refusal cannot admit the expired but geometrically clear native receipt")
+	# The old, actually displayed current pose may be certified as a short
+	# hold; this is not permission to substitute the expired native receipt.
+	var short_hold: bool = decision.source == "held" and int(decision.selected_step) == int(first.selected_step) \
+		and _pose() is Transform2D and _pose().is_equal_approx(clear)
+	var suppressed: bool = decision.source == "hidden" and _pose() == null
+	check((short_hold or suppressed) and int(decision.selected_step) != native_step,
+		"first refusal cannot substitute expired native receipt for the last visible pose")
 	check(not decision.explicit_reentry and int(decision.guard.get("budget_vetoes",0)) == 0,
-		"first refusal is time eligibility, not a post-withhold reentry or budget veto")
+		"first refusal is not an unverified reentry or budget veto")
+	if short_hold:
+		# Neither a stale native sample nor the old current-origin hold can
+		# reappear after the separate 100ms refusal timer expires.
+		var hold_until: int = Time.get_ticks_usec()+History.MAX_HOLD_USEC+20000
+		while Time.get_ticks_usec() < hold_until:
+			await process_frame
+		for index: int in range(3):
+			var expired: Dictionary = _capture("native-expiry-held-cap-"+str(index),false,received)
+			check(_pose() == null and expired.source == "hidden",
+				"expired first-refusal hold cannot restart across withheld frames "+str(index))
 	check(host.physical_actor_session.bridge.body_transform(0).is_equal_approx(blocked) \
 		and host.physical_actor_session.tick == native_step+1,
 		"native receipt rejection does not change Rapier physical authority")

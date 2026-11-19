@@ -3549,7 +3549,13 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 					# clears recovering but must never renew an expired historical
 					# pose by starting a fresh hold timer. A genuinely current
 					# physical step is exempt (e.g. a paused simulation).
+					# A pose that was selected while physically current may be
+					# retained for ONE short certified hold, timed from its first
+					# material refusal. That is not historical playback. Poses
+					# first selected from history still require their completion
+					# age, even if a later withheld frame resets recovery.
 					var held_time_valid: bool = int(previous.step) == physical_actor_session.tick \
+						or bool(previous.get("origin_current",false)) \
 						or (int(held_observation.get("step",-1)) == int(previous.step) \
 							and _workbench_recovery_time_valid(
 								held_observation,started_usec,physical_actor_session.tick))
@@ -3579,6 +3585,8 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 					"desired_step":physical_actor_session.tick,
 					"instance_id":member.instance_id,"generation":member.generation,"material_key":material_key,
 					"observation":selected_observation,"withheld_frames":0,
+					"origin_current":bool(previous.get("origin_current",false)) \
+						if resolved.sources[slot] == "held" else selected_step == physical_actor_session.tick,
 					"hold_started_usec":hold_started_usec if resolved.sources[slot] == "held" else 0}
 			else:
 				summary.withheld += 1
