@@ -180,6 +180,16 @@ jobs:
           $result = Get-Content -LiteralPath $files[0].FullName -Raw | ConvertFrom-Json
           if (-not $result.complete -or $result.status -ne 'passed' -or $result.source -ne $env:GITHUB_SHA -or @($result.cases).Count -ne 14 -or @($result.pairs).Count -ne 7) { throw 'Incomplete source-matched comparison' }
           Write-Host ('COHERENCE_TEST_IT_PASS '+(@{source=$result.source;cases=@($result.cases).Count;pairs=@($result.pairs).Count;physical_acceptance=$result.physical_acceptance}|ConvertTo-Json -Compress))
+      - name: Independently verify PowerShell upload ages against raw frame traces
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          python tools/ci/check_test_it_upload_age.py --self-test
+          if ($LASTEXITCODE -ne 0) { throw 'Upload-age negative control failed' }
+          $files = @(Get-ChildItem 'C:\cscoherence\Test-It-Results' -Recurse -Filter summary.json)
+          if ($files.Count -ne 1) { throw 'Expected exactly one complete Test It summary' }
+          python tools/ci/check_test_it_upload_age.py $files[0].FullName
+          if ($LASTEXITCODE -ne 0) { throw 'PowerShell upload-age report differs from raw frame records' }
       - name: Collect installed results under one artifact root
         if: always()
         shell: pwsh

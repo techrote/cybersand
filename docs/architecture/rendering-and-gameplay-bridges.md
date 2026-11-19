@@ -48,6 +48,12 @@ physical steps since the previous graphical frame, plus at most one additional
 retained step to catch up. This bounds recovery speed using the observed clocks,
 without imposing latency on ordinary live motion. Recovery observations older
 than 100 ms are withheld instead of stretching visual delay indefinitely.
+A noncurrent native receipt requires a known, nonexpired completed-step
+observation even on the first refusal, not only while recovering or re-entering.
+A held historical pose is checked against the same observation age on every
+presentation submission, including after withholding; resetting the hold timer
+cannot make expired playback visible again. A genuinely current physical step
+remains exempt from historical playback age while physics is stopped.
 
 A continuously refused pose may remain visible only while its material
 certificate is valid and for at most 100 ms. Thereafter the actor is explicitly

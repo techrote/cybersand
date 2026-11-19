@@ -3499,13 +3499,17 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 				# route from a retained actor. Consecutively visible frames must
 				# prove that route too. Endpoint-only re-entry is an explicit
 				# discontinuity following at least one withheld submission.
-				var bound_can_advance: bool = initial or (bound_step >= 0 and bound_step > int(previous.step))
+				var bound_can_advance: bool = bound_step >= 0 and (initial or bound_step > int(previous.step))
 				var bound_observation: Dictionary = _workbench_presentation_history.observation(slot,bound_step)
-				if recovering and (bound_step > ceiling or not _workbench_recovery_time_valid(
-						bound_observation,started_usec,physical_actor_session.tick)):
+				# A native receipt identifies an endpoint, not fresh presentation time.
+				# Its clock applies on FIRST refusal as well as recovery/re-entry:
+				# neither the initial path nor a previous visible frame can bypass
+				# expiration for a noncurrent physical step.
+				if bound_can_advance and bound_step < physical_actor_session.tick \
+						and not _workbench_recovery_time_valid(
+							bound_observation,started_usec,physical_actor_session.tick):
 					bound_can_advance = false
-				if not initial and int(previous.get("withheld_frames",0)) > 0 and bound_step < physical_actor_session.tick \
-						and not _workbench_recovery_time_valid(bound_observation,started_usec,physical_actor_session.tick):
+				if recovering and bound_step > ceiling:
 					bound_can_advance = false
 				if selected == null and bound_can_advance and reason != "rapier_step_regressed":
 					var reentry: bool = not initial and int(previous.get("withheld_frames",0)) > 0
@@ -3540,13 +3544,27 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 					if not held_clear:
 						var held_check: Dictionary = _assess_workbench_presented_sweep(anchor,anchor,bridge._rects[slot],resolved,summary)
 						held_clear = bool(held_check.safe)
-					if held_clear and reason != "recovery_age_expired" and int(resolved.hold_age_usec[slot]) < WorkbenchPresentationHistory.MAX_HOLD_USEC:
+					var held_observation: Dictionary = previous.get("observation",{})
+					# Recheck the timestamp on EVERY submitted frame. Withholding
+					# clears recovering but must never renew an expired historical
+					# pose by starting a fresh hold timer. A genuinely current
+					# physical step is exempt (e.g. a paused simulation).
+					var held_time_valid: bool = int(previous.step) == physical_actor_session.tick \
+						or (int(held_observation.get("step",-1)) == int(previous.step) \
+							and _workbench_recovery_time_valid(
+								held_observation,started_usec,physical_actor_session.tick))
+					if held_clear and held_time_valid and reason != "recovery_age_expired" \
+							and int(resolved.hold_age_usec[slot]) < WorkbenchPresentationHistory.MAX_HOLD_USEC:
 						selected = anchor
 						selected_step = int(previous.step)
-						selected_observation = previous.get("observation",{})
+						selected_observation = held_observation
 						resolved.sources[slot] = "held"
 						resolved.intentional_holds[slot] = true
 						summary.intentional_holds += 1
+					elif held_clear and not held_time_valid:
+						reason = "held_observation_time_unknown" \
+							if int(held_observation.get("completed_usec",0)) <= 0 \
+							else "held_observation_age_expired"
 					elif int(resolved.hold_age_usec[slot]) >= WorkbenchPresentationHistory.MAX_HOLD_USEC:
 						reason = "hold_expired:"+reason
 					previous.hold_started_usec = hold_started_usec

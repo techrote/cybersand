@@ -110,7 +110,7 @@ function Read-PoseStatistics([string]$Path) {
     $Sources=@{};$Reasons=@{};$Last=@{};$Holds=0;$Switches=0;$UploadChanges=0
     $ResolveCpu=New-Object 'System.Collections.Generic.List[double]'
     $MaterialAges=New-Object 'System.Collections.Generic.List[double]'
-    $UploadAges=New-Object 'System.Collections.Generic.List[double]'
+    $PresentationUploadAges=New-Object 'System.Collections.Generic.List[double]'
     $SelectedAges=New-Object 'System.Collections.Generic.List[double]'
     $VisibleHoldAges=New-Object 'System.Collections.Generic.List[double]'
     $TimingUploads=@{};$TimingSources=@{};$Reentries=0;$MaxRecovery=0
@@ -129,7 +129,7 @@ function Read-PoseStatistics([string]$Path) {
             $MaterialAge=[double](Field $MaterialTiming 'material_age_usec' -1)
             $UploadAge=[double](Field $MaterialTiming 'upload_age_usec' -1)
             if($MaterialAge -ge 0){$MaterialAges.Add($MaterialAge/1000.0)}
-            if($UploadAge -ge 0){$UploadAges.Add($UploadAge/1000.0)}
+            if($UploadAge -ge 0){$PresentationUploadAges.Add($UploadAge/1000.0)}
         }
         $ResolveTime=Field $Contract 'resolve_usec'
         if($null -ne $ResolveTime){$ResolveCpu.Add([double]$ResolveTime/1000.0)}
@@ -242,7 +242,7 @@ function Read-PoseStatistics([string]$Path) {
             upload_interval_ms=(Distribution @($TimingUploads.Values|ForEach-Object{[double]$_.upload_interval_usec/1000.0}))
             publication_interval_ms=(Distribution @($TimingUploads.Values|ForEach-Object{[double]$_.publication_interval_usec/1000.0}))
             blend_duration_ms=(Distribution @($TimingUploads.Values|ForEach-Object{[double]$_.blend_duration_usec/1000.0}))
-            material_age_ms=(Distribution $MaterialAges);upload_age_ms=(Distribution $UploadAges)
+            material_age_ms=(Distribution $MaterialAges);upload_age_ms=(Distribution $PresentationUploadAges)
             selected_pose_age_ms=(Distribution $SelectedAges);visible_hold_age_ms=(Distribution $VisibleHoldAges)
             explicit_reentries=$Reentries;max_recovery_attempts=$MaxRecovery
             notice='Intervals count uploads once; ages count submitted frames. Unknown ages are omitted, not zero latency.'}

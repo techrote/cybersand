@@ -8,6 +8,7 @@ extends SceneTree
 const Setup = preload("res://scripts/workbench_setup.gd")
 const Trace = preload("res://scripts/workbench_pose_trace.gd")
 const Clearance = preload("res://scripts/workbench_presentation_coherence.gd")
+const History = preload("res://scripts/workbench_presentation_history.gd")
 const WAIT_MS: int = 90000
 const SPAWN := Vector2(240,300)
 const VIEW := Vector2i(240,135)
@@ -312,6 +313,84 @@ func _bounded_native_rejoin() -> void:
 		and stopped_reentry.explicit_reentry and stopped_reentry.reason=="explicit_live_reentry",
 		"known current physics may explicitly re-enter after complete footprint proof without a new native receipt")
 
+func _wait_for_observation_expiry(observation: Dictionary, label: String) -> bool:
+	# Use real completed-step monotonic time, not SceneTree frame delta or
+	# fabricated observation clocks. This also covers slow hosted renderers.
+	var completed_usec: int = int(observation.get("completed_usec",0))
+	if not check(completed_usec > 0,label+" has a real Rapier completion clock"): return false
+	var until_usec: int = completed_usec+History.MAX_HOLD_USEC+20000
+	while Time.get_ticks_usec() < until_usec:
+		await process_frame
+	return true
+
+
+func _expired_history_stays_withheld() -> void:
+	if expect_legacy or not await _install("follow"): return
+	var clear: Transform2D = _move_actual(SPAWN+Vector2(5,0))
+	_capture("history-expiry-first-live")
+	if not check(_pose() is Transform2D and _pose().is_equal_approx(clear),
+			"history expiry begins at a visible certified current pose"): return
+	var historical: Transform2D = _move_actual(SPAWN+Vector2(9,0))
+	var observed: Dictionary = host._observe_workbench_presentation(0)
+	var historical_step: int = host.physical_actor_session.tick
+	var blocked: Transform2D = _move_actual(Vector2(260,300))
+	var first: Dictionary = _capture("history-expiry-clear-prefix")
+	if not check(first.source == "history" and int(first.selected_step) == historical_step \
+			and _pose() is Transform2D and _pose().is_equal_approx(historical),
+			"actual Wall refusal selects the recent real historical step"): return
+	if not await _wait_for_observation_expiry(observed,"historical recovery"): return
+	var genuine_frame: Dictionary = host.workbench_display_frame()
+	for index: int in range(4):
+		var row: Dictionary = _capture("history-expiry-withheld-"+str(index),false,genuine_frame)
+		check(_pose() == null and row.source == "hidden",
+			"expired observed pose stays absent across repeated submissions "+str(index))
+		check(not bool(row.explicit_reentry) and int(row.selected_step) < 0,
+			"expired observed pose cannot re-enter under a renewed hold timer "+str(index))
+		check(int(row.guard.get("budget_vetoes",0)) == 0,
+			"expiry fixture is an age refusal, not guard budget pressure "+str(index))
+	check(host.physical_actor_session.bridge.body_transform(0).is_equal_approx(blocked) \
+		and host.physical_actor_session.tick == historical_step+1,
+		"expired historical withholding leaves authoritative Rapier untouched")
+
+
+func _expired_native_receipt_first_refusal() -> void:
+	if expect_legacy or not await _install("follow"): return
+	var clear: Transform2D = _move_actual(SPAWN+Vector2(5,0))
+	var first: Dictionary = _capture("native-expiry-first-live")
+	if not check(first.source == "live" and _pose() is Transform2D \
+			and _pose().is_equal_approx(clear),"native expiry starts with visible current physical step"): return
+	var native_clear: Transform2D = _move_actual(SPAWN+Vector2(8,0))
+	var observed: Dictionary = host._observe_workbench_presentation(0)
+	var native_step: int = host.physical_actor_session.tick
+	host._publish_physical_body_state()
+	var serial: int = host._workbench_wait_sample
+	host.update_worker_frame_state()
+	if not check(await until(func() -> bool:
+		host.consume_worker_snapshot()
+		var frame: Dictionary = host.workbench_display_frame()
+		return host._valid_workbench_mask_frame(frame) and frame.instances.has(1) \
+			and int(frame.instances[1].get("sample",-1)) == serial),
+		"genuine native sample returns the step-two endpoint without a new overlay submission"): return
+	var received: Dictionary = host.workbench_display_frame().duplicate(true)
+	check(host._workbench_bound_step(received.instances[1]) == native_step \
+		and Transform2D(received.instances[1].pose).is_equal_approx(native_clear),
+		"received native mask is bound to the actual observed Rapier step")
+	_expire_blend()
+	var blocked: Transform2D = _move_actual(Vector2(260,300))
+	host._observe_workbench_presentation(0)
+	if not await _wait_for_observation_expiry(observed,"delayed native receipt"): return
+	var decision: Dictionary = _capture("native-expiry-first-refusal",false,received)
+	check(int(decision.guard.get("blocked_material",0)) > 0,
+		"newest actual pose is conservatively refused against Wall")
+	check(_pose() == null and decision.source == "hidden" \
+		and int(decision.selected_step) != native_step,
+		"first refusal cannot admit the expired but geometrically clear native receipt")
+	check(not decision.explicit_reentry and int(decision.guard.get("budget_vetoes",0)) == 0,
+		"first refusal is time eligibility, not a post-withhold reentry or budget veto")
+	check(host.physical_actor_session.bridge.body_transform(0).is_equal_approx(blocked) \
+		and host.physical_actor_session.tick == native_step+1,
+		"native receipt rejection does not change Rapier physical authority")
+
 func _bounded_history_prefix() -> void:
 	if expect_legacy or not await _install("follow"): return
 	_move_actual(SPAWN+Vector2(5,0))
@@ -566,6 +645,8 @@ func _run() -> void:
 		await _source_oscillation("follow")
 		await _long_clear_path()
 		await _bounded_history_prefix()
+		await _expired_history_stays_withheld()
+		await _expired_native_receipt_first_refusal()
 		await _paced_recovery_after_contact()
 		await _bounded_native_rejoin()
 		await _real_unknown_previous()
