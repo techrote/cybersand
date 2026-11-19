@@ -221,6 +221,9 @@ func run() -> void:
 		if accepted.spill.get(key) != host.workbench_water_options["workbench_wave_spill_"+key]: fail("unconfirmed "+key)
 	var initial_quantity := str(accepted.water_quantity)
 	if bench.water_lab != null and bench.water_lab.window != null: bench.water_lab.window.hide()
+	# Keep the paint cursor out of the submitted evidence. At high zoom its
+	# cyan hover disc can cover the entire crest while the World is paused.
+	bench.paint_editor._overlay.hide()
 	var started := Time.get_ticks_usec()
 	var base := int(native().get("completed_tick",0))
 	for target: int in ticks:

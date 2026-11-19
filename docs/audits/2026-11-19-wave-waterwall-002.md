@@ -117,3 +117,62 @@ python3 tools/wave_mt/reduce_slosh.py tank.log
 and [fixture results and output hashes](wave-waterwall-002-2026-11-19/slosh-results.json)
 retain the numerical evidence. These runs measure simulated motion. The isolated
 map timing campaign supplies the tick-cost comparison.
+
+## Independent native review
+
+The reviewer inspected both halves of the face budget, signed arithmetic, optional scratch lifetimes, paused neighbors, generic launches, capacity and physical persistence. Two blocking cases were fixed in `d4df71fc` and independently rerun against the resulting binary.
+
+| Reproduced issue | Repair and verification |
+|---|---|
+| Workbench Apply carried live crest grace into a replacement that could no longer hash or save it. | Inherited parcels retain their quantity and velocity. Remaining grace is clamped to the receiving law. The native test converts into generic Ballistic, Wave without spill and a shorter two-tick grace. One more tick after generic save/restore produces the same physical hash. |
+| A static positive head could fail to start an exposed sheet with ordinary Gain zero. | The open-face test can start from the head direction. In the `falls` fixture at tick 60, sheet 127 put 191.9 cell-equivalents into the air. With sheet off, all 13,200 stayed on the platform. Both conserved Water. The focused suite also checks a blocked side. |
+
+The reviewer ran `test_wave_spill --filter 'crest Apply'` (1/1) and `--filter sheet` (3/3). The release binary had SHA-256 `703a1635d9b194bf32d5768cee105c1f8336877fefdf01d5eb1d7bd269e9a1c9`. Their independent saturated nine-slot tank at 1, 2, 3, 6 and 8 workers produced hash `8d1a52e335f20113`, zero drift, 71 launches, 2,269 deferrals and 104 capacity skips at 160 ticks on the pre-fix prototype. The two follow-up fixes and their new witnesses passed the independent source recheck.
+
+For the odd-mass ridge, the test totals each side's landed sheet plus that side's launched parcel before the next round. Each side can use at most half the donor. Two sides cannot overdraw it even if Stream share and Stream draw are both 255. At a full half-face reservation a new crest throw leaves no allowance for an extra grid pour. The eight-worker saturated run and the 31-case spill suite cover different failure modes.
+
+## Design choices
+
+- **Keep grid sheets with crest spray.** A deep row can use the existing falling column, while the top retains visible throws. The pool stays at 4,096 slots. Raising its cap would spend more CPU on parcel flight. The earlier grid-only, hybrid, Stream draw, sheet-only and tuned bundles are compared below. Set Sheet rate to zero to restore the older face policy.
+- **Give only the crest a few level ticks.** The existing bounded parcel owner already accounts for movement, wall contact, pauses, landing and capacity. A separate grid overhang would need horizontal per-cell age and direction plus multi-face conflict resolution. That alternative and a separate run-length sheet owner were considered at design level. Neither has a measured implementation here. Set Coyote ticks to zero to use ordinary thrown arcs.
+- **Limit the refill work.** In the one-round exploratory screen a local wet-to-wet feed extension changed the reservoir from 684 to 669 cell-equivalents at t900. Extending it four cells gave 717. Applying a head floor everywhere gave 234 but increased moved mass from 55 million to 470 million units; under ordinary tuning it worsened drainage from 1,176 to 1,815. These discarded variants were scratch builds. Their runs were for movement only.
+- **Keep spreading independent of the deep-water setting.** Sloshy retains normal Gain 32 and reduces the restoring gain for deep columns. The smoothing strength was selected against actual curvature and retained oscillation. An existing Wave preset restores the previous tuning. Max over-ledge stages only spill controls, so the two bundles can be evaluated independently.
+
+
+## Reservoir and tall-face discharge
+
+In the first quiet run Max over-ledge used one round, six workers, Sheet rate 64,
+Coyote ticks 4, Fall 8, Pool feed 127, Feed head limit 65,535 and a launch budget of 128.
+Blobs were on. Stream share and Stream draw were zero. Each figure below compares fresh Worlds,
+on the same machine, for 1,500 ticks. A separate instrumented pass computed net flux including
+parcels inside the probe. The continuity window was 24 rows high, sampled each tick from 60 to 300.
+A dry grid row may still contain airborne spray.
+
+| Map mode | Mean net units/tick, first 300 | Peak | Half-empty tick | Grid cells t900 | Mean dry rows | Thrown units | Peak live | Median / p95 ms |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Original Wave | 636 | 1,070 | 1,378 | 3,824 | 0 | 0 | 0 | 2.75 / 5.05 |
+| #672 hybrid | 1,878 | 3,942 | 453 | 1,497 | 13.66 | 8,749,479 | 3,510 | 3.87 / 5.91 |
+| Stream draw 128 | 1,609 | 2,179 | 495 | 1,577 | 0 | 7,527,042 | 2,327 | 3.68 / 4.73 |
+| Sheet rate 64 alone with release | 1,461 | 1,821 | 549 | 1,760 | 0 | 6,295,985 | 2,213 | 3.49 / 5.27 |
+| Four coyote ticks alone with release | 1,945 | 4,369 | 441 | 1,474 | 13.83 | 8,545,138 | 3,780 | 3.51 / 4.41 |
+| Max over-ledge | 2,115 | 3,374 | 369 | 902 | 0 | 6,265,581 | 2,324 | 3.66 / 4.59 |
+
+On the 60-row platform fixture, the #672 hybrid and Max reached half-empty at 986 and
+905 ticks. Their first-300 means were 2,244 and 2,197 units/tick, and both peaked at
+7,608 units/tick. The new bundle chiefly improves sustained drainage here. Average dry
+rows fell from 23.07 to zero. A vertical column at a particular outlet is a local visual
+measure; it does not measure flux across the entire scene.
+
+These sequential timings came from the deep-column prototype before the final static-head and
+Apply fixes. The [final-source measurements, captures and qualification](wave-waterwall-002-2026-11-19/qualification.md)
+extend this registered record. See that appendix for the combined preset, stream gaps, refusals and deferrals,
+timing variation, final machine identities and the owner-local ZIP. The six-worker comparison command was:
+
+```sh
+python3 tools/wave_mt/waterwall_discharge.py build/wave_waterwall terrain-1024.bin stamps.txt /tmp/ww002-results \
+  --bundle sheet_rate=64 coyote_ticks=4 draw=127 draw_head=65535 fall=8 launch_budget=128
+```
+
+The runner times each native tick without profiling, then restarts the same process with a per-tick
+source-box and stream-row trace. Each process has a 600-second timeout. Grid plus in-flight drift was zero.
+This branch requests source-matched publication on GitHub-hosted Linux and Windows. The PR stays Draft/HOLD for owner evaluation.
