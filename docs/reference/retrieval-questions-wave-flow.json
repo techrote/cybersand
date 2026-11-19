@@ -166,6 +166,22 @@
         "../native/src/world.cpp",
         "../native/tests/test_wave_spill.cpp"
       ]
+    },
+    {
+      "id": "WAVE11",
+      "query": "Why did dropping Lava on thick Oil and Wave Water pause the Workbench with a quantity reaction input error?",
+      "canonical": [
+        "architecture/liquid-prepared-setup-and-receipts.md",
+        "architecture/wave-flow-v1.md"
+      ],
+      "facts": [
+        "Lava can quench a Wave Water cell containing up to 65,535 units.",
+        "Lava becomes Stone and Water becomes Steam. The reaction consumes the full stored Water quantity."
+      ],
+      "sources": [
+        "../native/src/world_quantity.inc",
+        "../godot/tests/test_workbench_wave_spill.gd"
+      ]
     }
   ]
 }

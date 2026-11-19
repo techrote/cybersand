@@ -10,6 +10,8 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+For the radius-24 Oil drop and Lava on the Water ramp, see the [Workbench replay](audits/2026-11-19-wave-oil-lava.md).
+
 For full-face Water release, fall speed 3 and the ramp crest investigation, see the [full-face experiment](audits/2026-11-19-wave-water-face-004.md).
 
 For the Water Ramp 003 settings, see the [water ramp evaluation](audits/2026-11-19-wave-water-ramp-003.md) and [Water Lab](operations/workbench-water-lab.md).

@@ -425,6 +425,13 @@ Only a scheduled Oil cell checks for this contact. The Water worker count, Wave 
 
 Oil can flow into a lower opening. Once it rests on Water, or on one other Oil cell directly on Water, it stops taking random steps along the level surface. The second-row check uses the admitted two-cell rule radius. The column pass keeps floating Oil impermeable and omits the extra rigid-ceiling pressure response below it. A contiguous Oil layer pinned directly under a solid, body mask or paused region retains the rigid response. These rules allow surface spray to die out after a disturbance. [Tank measurements and Windows playtest](../audits/wave-oil-buoyancy-2026-11-19/evaluation.md) · [Source review](../audits/2026-11-19-wave-oil-buoyancy.md)
 
+A thick floating Oil patch can spread over the pool. On the last Wave round, the column workers mark rows with at least three Oil cells directly on Water. After all workers and parcel launches finish, the owner can move the top Oil cell to a thinner part of the connected surface. Each move preserves the complete Oil cell and its temperature. The search reaches 16 columns in either direction, follows a rise or fall of at most one row per column, and checks up to 64 cells of Oil thickness. It needs open air above a Water-backed surface along the route. Walls, body masks, steep breaks and dry ground stop the search. The receiving layer must be at least two cells thinner than the donor. A uniform layer can settle and ordinary Wave Water continues to throw spray. Very deep deposits spread from eligible edges. [Radius-24 Oil and Lava replay](../audits/2026-11-19-wave-oil-lava.md)
+
+Lava can initiate a quench when it touches Wave Water. Its Steam and Stone
+products account for the full Water cell, including stored overfill. The
+Workbench can keep reading spray and stepping the World after this reaction.
+[Water quantity accounting](liquid-prepared-setup-and-receipts.md)
+
 ## Limits
 
 - **Bulk surges are sedate.** At one round per tick a dam-break front moves

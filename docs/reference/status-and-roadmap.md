@@ -12,6 +12,8 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 ## Floating Oil in Wave Water
 
+The [thick Oil and Lava evaluation](../audits/2026-11-19-wave-oil-lava.md) covers a radius-24 Oil brush on the owner’s ramp and Lava quenching compressed Wave Water.
+
 The [Oil tank evaluation](../audits/wave-oil-buoyancy-2026-11-19/evaluation.md) measures a buried slick, falling Sand and a fresh wave in the Windows Workbench. The longer-term [per-material solver and tuning target](../architecture/liquid-solver-family-policy.md#status) is Planned.
 
 ## Full-face Water release
