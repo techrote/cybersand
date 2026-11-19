@@ -423,7 +423,7 @@ When Oil touches Wave Water immediately above it, the heavier Water can sink one
 
 Only a scheduled Oil cell checks for this contact. The Water worker count, Wave rounds and parcel budget do not control the rise rate. The owner prepares temperature storage for a warm exchange across a chunk edge before workers run.
 
-Oil can flow into a lower opening. Once it rests on Water, or on one other Oil cell directly on Water, it stops taking random steps along the level surface. The second-row check uses the admitted two-cell rule radius. The column pass keeps floating Oil impermeable and omits the extra rigid-ceiling pressure response below it. A contiguous Oil layer pinned directly under a solid, body mask or paused region retains the rigid response. These rules allow surface spray to die out after a disturbance. [Tank and boundary tests](../audits/2026-11-19-wave-oil-buoyancy.md)
+Oil can flow into a lower opening. Once it rests on Water, or on one other Oil cell directly on Water, it stops taking random steps along the level surface. The second-row check uses the admitted two-cell rule radius. The column pass keeps floating Oil impermeable and omits the extra rigid-ceiling pressure response below it. A contiguous Oil layer pinned directly under a solid, body mask or paused region retains the rigid response. These rules allow surface spray to die out after a disturbance. [Tank measurements and Windows playtest](../audits/wave-oil-buoyancy-2026-11-19/evaluation.md) · [Source review](../audits/2026-11-19-wave-oil-buoyancy.md)
 
 ## Limits
 

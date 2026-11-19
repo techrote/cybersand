@@ -77,7 +77,7 @@
       "facts": [
         "Bounded controls expose supported Wave parameters; Apply and reset are explicit, and each law retains its own settings.",
         "Built-in Water comparison scenes remain editable ordinary Workbench canvases.",
-        "Rebuilding a Wave World resets retained flux; physical save continuation, pressure gas behavior, full buoyancy and falling-Water lateral momentum remain unsupported."
+        "Rebuilding a Wave World resets retained flux. Physical save continuation, pressure gas behavior, rigid-body flotation and lateral momentum in grid Water during free fall remain unsupported."
       ],
       "sources": [
         "../godot/scripts/workbench_water_spray_panel.gd",
