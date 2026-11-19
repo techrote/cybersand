@@ -364,7 +364,8 @@ void CyberNativeCellWorld::select_gameplay_water(cybersand::WorldConfig& config,
     wave.spill.enabled = true;
     wave.spill.sheet_rate = 64;
     wave.spill.coyote_ticks = 4;
-    wave.spill.fall = 8;
+    wave.spill.full_face = 1;
+    wave.spill.fall = 3;
     wave.spill.draw = 127;
     wave.spill.draw_head = 255;
     wave.spill.launch_budget = 128;
@@ -395,6 +396,7 @@ Dictionary CyberNativeCellWorld::gameplay_water_options() {
     options["workbench_wave_spill_parcels"] = wave.spill.launch_budget > 0;
     options["workbench_wave_spill_sheet_rate"] = wave.spill.sheet_rate;
     options["workbench_wave_spill_coyote_ticks"] = wave.spill.coyote_ticks;
+    options["workbench_wave_spill_full_face"] = wave.spill.full_face != 0;
     options["workbench_wave_spill_fall"] = wave.spill.fall;
     options["workbench_wave_spill_draw"] = wave.spill.draw;
     options["workbench_wave_spill_draw_head"] = wave.spill.draw_head;
@@ -2660,6 +2662,7 @@ Dictionary CyberNativeCellWorld::get_wave_flow_status() const try {
         Dictionary spill;
         spill["enabled"] = wave_spill;
         spill["parcels"] = wave_spill && world_->ballistic_water_enabled() && s.launch_budget > 0;
+        spill["full_face"] = s.full_face != 0;
         spill["fall"] = s.fall;
         spill["share_shift"] = s.share_shift;
         spill["draw"] = s.draw;

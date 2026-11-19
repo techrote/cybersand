@@ -102,6 +102,8 @@ const SPILL_SWITCHES := [
 		"Exposed Water faces beside open air discharge quickly, unsupported Water falls faster and a pool can feed its draining edge. Off disables exposed-face discharge and keeps the selected Wave tuning."],
 	["workbench_wave_spill_parcels", "Ballistic release", "parcels",
 		"Exposed faces throw their Water outward as ballistic parcels that arc, land and rejoin the grid. Needs Waterwall spill and uses the Ballistic Water parcels, so it turns Ballistic Water on. Off = faces drain through the grid only and drop straight."],
+	["workbench_wave_spill_full_face", "Full face", "full_face",
+		"With Ballistic release, exposed rows below the crest can also throw Water outward through the falling sheet."],
 ]
 const SPILL_SPINS := [
 	["workbench_wave_spill_fall", "Fall speed", 1, 8, 1, 3, "fall", "Cells that unsupported Water falls per solver round."],
@@ -112,7 +114,7 @@ const SPILL_SPINS := [
 	["workbench_wave_spill_blobs", "Blobs", 0, 1, 1, 1, "blobs", "1: thrown water that meets falling water merges into it and clumps into blobs. 0: it flies through. Ballistic release only."],
 	["workbench_wave_spill_stream_share", "Stream share", 0, 255, 8, 0, "stream_share", "n/256 of each thrown share keeps pouring straight down as a vertical stream. Higher values thin the throw and slow draining. Ballistic release only."],
 	["workbench_wave_spill_stream_draw", "Stream draw", 0, 255, 8, 0, "stream_draw", "n/256 of each thrown share additionally pours straight down from the face as a vertical stream, without thinning the throw. The pool behind the face refills it. Ballistic release only."],
-	["workbench_wave_spill_sheet_rate", "Sheet rate", 0, 127, 1, 0, "sheet_rate", "Grid discharge per full cell of head per round. With a sheet, deep rows pour and the top edge can still throw. Zero keeps ordinary spill."],
+	["workbench_wave_spill_sheet_rate", "Sheet rate", 0, 127, 1, 0, "sheet_rate", "Grid discharge per full cell of head per round. Deeper rows pour a sheet. With Full face off, only the crest of that sheet throws spray. Zero keeps ordinary spill."],
 	["workbench_wave_spill_coyote_ticks", "Coyote ticks", 0, 8, 1, 0, "coyote_ticks", "Ticks a released crest travels outward before gravity pulls it down. Zero starts gravity immediately. Ballistic release only."],
 ]
 # Settings that only matter while Ballistic release is on.
@@ -444,6 +446,7 @@ func _stage_max_over_ledge() -> void:
 
 func _stage_spill_bundle(settings: Dictionary) -> void:
 	_set_spill("workbench_wave_spill_parcels",true)
+	_set_spill("workbench_wave_spill_full_face",bool(settings.get("workbench_wave_spill_full_face",false)))
 	for spec: Array in SPILL_SPINS:
 		var key: String = spec[0]
 		var value := int(settings.get(key,spec[5]))
@@ -455,8 +458,9 @@ func _set_spill(key: String, on: bool) -> void:
 	_spill_toggles[key].set_pressed_no_signal(on)
 	# Ballistic release is a mode of spill: it cannot be requested without it.
 	if key == "workbench_wave_spill" and not on:
-		host.workbench_water_options["workbench_wave_spill_parcels"] = false
-		_spill_toggles["workbench_wave_spill_parcels"].set_pressed_no_signal(false)
+		for dependent: String in ["workbench_wave_spill_parcels","workbench_wave_spill_full_face"]:
+			host.workbench_water_options[dependent] = false
+			_spill_toggles[dependent].set_pressed_no_signal(false)
 	if key == "workbench_wave_spill_parcels" and on:
 		host.workbench_water_options["workbench_wave_spill"] = true
 		_spill_toggles["workbench_wave_spill"].set_pressed_no_signal(true)
@@ -745,6 +749,7 @@ func _update_wave_controls() -> void:
 	if _max_over_ledge != null: _max_over_ledge.disabled = not enabled
 	var spill_on := enabled and _option_on("workbench_wave_spill")
 	for toggle: CheckButton in _spill_toggles.values(): toggle.disabled = not enabled
+	_spill_toggles.workbench_wave_spill_full_face.disabled = not (spill_on and _option_on("workbench_wave_spill_parcels"))
 	for key: String in _spill_fields:
 		var spill_field: SpinBox = _spill_fields[key]
 		# Blobs also shapes generic Ballistic Water meeting falling spill Water.
@@ -975,9 +980,14 @@ func _refresh_spill(wave: Dictionary, wave_requested: bool, changes: Array[Strin
 	var spill_requested := wave_requested and _option_on("workbench_wave_spill")
 	for spec: Array in SPILL_SWITCHES:
 		var key: String = spec[0]
-		var native_value := bool(spill.get(spec[2],false))
 		var staged := wave_requested and _option_on(key)
 		var label: Label = _spill_applied[key]
+		if not spill.get(spec[2]) is bool:
+			label.text = "native unavailable"
+			if staged: changes.append(str(spec[1]))
+			actual_values.append("%s: %s" % [spec[1],label.text])
+			continue
+		var native_value := bool(spill[spec[2]])
 		label.text = "native %s" % ("on" if native_value else "off")
 		label.modulate = Color(1.0,0.76,0.38) if native_value != staged else Color(0.72,0.90,0.80)
 		if native_value != staged: changes.append(str(spec[1]))
