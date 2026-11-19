@@ -10,6 +10,38 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Coherent Workbench evaluation — 2026-11-15
+
+**Implemented candidate; Draft/HOLD, physical acceptance pending.** The
+camera stack #566 → #593 → #606 → #609 now resolves actor safety and temporal
+selection before Follow and shares one final pixel mapping with native terrain.
+The [contract](../architecture/rendering-and-gameplay-bridges.md#coherent-workbench-presentation-frame)
+preserves native/physical authority; the [evaluation guide](../operations/camera-stack-coherence-acceptance.md)
+provides original/corrected comparisons. The candidate integrates accepted main
+`018bd09503d7` with current generator, Flatten, PAINT and persistence features.
+The isolated PRESENTATION-TIME-001 continuation adds bounded observed-pose
+recovery, a 100 ms hold limit with explicit withholding/re-entry, actual delivery-
+timed material fades, and qualification with independently configured native/
+Rapier clocks. Physical pacing defaults and native wrench/collider authority
+remain unchanged; existing asynchronous material-custody limitations are separate.
+Exact-source automated qualification and physical NVIDIA acceptance are separate;
+this does not authorize merging or changing any of the four Draft states.
+
+## Native-resolution camera candidate — 2026-11-13
+
+**Implemented unmerged candidate; owner acceptance pending.** The
+[camera presentation contract](../systems/material-appearance-and-rendering.md#native-resolution-pixel-scrolling)
+keeps continuous camera state, samples the nearest world cell after final-pixel
+translation and aligns picking, overlays, cursor zoom and small effect buffers.
+The branch incorporates accepted #565 main `ac0d9fb9` through normal merge
+`b1e2e9b1`; its [final integration record](../audits/2026-11-13-native-pixel-final-integration.md)
+distinguishes the combined-source campaign from earlier stacked results.
+It changes no native physics, material or save contract. The
+[runbook](../operations/native-pixel-scrolling.md) and
+[audit](../audits/2026-11-13-native-pixel-scrolling.md) distinguish implementation,
+source-built qualification, Windows delivery and human acceptance. Keep Draft;
+no merge or Ready promotion is authorized by this camera task.
+
 ## GEN-008 Flatten / Bake History — 2026-11-13
 
 **Implementation candidate, Draft/HOLD:** issue #548 starts independently from
@@ -147,6 +179,18 @@ Converge admitted desktop/painting/agent/remote work incrementally into main,
 preserving active owners and qualifying each join. #548 material-only Flatten
 was an Approved semantic successor at that dated checkpoint; the 13 November
 GEN-008 candidate above now implements the revised contract independently of #542.
+
+## Render cadence continuation of #609 — 2026-11-15
+
+The separate `fix/render-cadence-001-20261115` branch is Draft/HOLD.
+[RENDER-CADENCE-001](../audits/2026-11-15-render-cadence-001.md) repairs large-payload
+previous-texture uncertainty and delayed-ACK starvation, and extends the
+[original source-fenced Windows test](../operations/engine-lab-pose-tracing.md).
+It preserves native/physical law and existing collision fences. Default Workbench
+native/Rapier completion coupling, absent actor interpolation and genuine contact
+holds remain; the candidate is not a validated independent real-time 120-Hz
+physics mode. Physical NVIDIA acceptance and exact-source platform evidence must
+be reported separately. #582 is outside this diagnostic/repair branch.
 
 ## Ballistic Water, IN-B1 and workbench spray (#362) — 2026-11-05
 

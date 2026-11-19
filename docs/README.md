@@ -10,6 +10,31 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+Current Draft/HOLD evaluation: [coherent actor, terrain and camera Windows
+acceptance](operations/camera-stack-coherence-acceptance.md),
+[presentation contract](architecture/rendering-and-gameplay-bridges.md#coherent-workbench-presentation-frame)
+and [source-scoped evidence](audits/2026-11-15-camera-stack-coherence.md).
+The isolated PRESENTATION-TIME-001 continuation adds bounded actor history,
+explicit hold/suppression recovery, measured material delivery fades and
+independent-rate qualification while preserving physical pacing defaults; its
+package retains the exact source identity.
+The integrated candidate preserves accepted generator and Flatten features;
+physical NVIDIA acceptance and all merge decisions remain with the owner.
+
+Draft/HOLD actor/terrain cadence continuation of #609: [one-command Windows
+measurements and clock meanings](operations/engine-lab-pose-tracing.md) and
+[confirmed mechanisms, bounded repair and unresolved architecture](audits/2026-11-15-render-cadence-001.md).
+Previous-texture history and ACK deadlines are presentation repairs; independently
+paced material contact and physical NVIDIA acceptance remain separate gates.
+
+Native-resolution camera candidate: [controls and Windows acceptance](operations/native-pixel-scrolling.md),
+[presentation and sampling contract](systems/material-appearance-and-rendering.md#native-resolution-pixel-scrolling),
+[private coordinate interfaces](reference/interfaces-and-message-contracts.md#camera-presentation-and-picking)
+and [source/platform evidence](audits/2026-11-13-native-pixel-scrolling.md).
+The candidate now incorporates accepted #565 through a normal merge and remains
+Draft; the [final integration record](audits/2026-11-13-native-pixel-final-integration.md)
+separates its resulting-source qualification from earlier camera/Workbench artifacts.
+
 For deliberate historical research, use the isolated
 [engineering archaeology index](history/engineering/README.md). It is excluded
 from default current-answer retrieval and grants no implementation authority.

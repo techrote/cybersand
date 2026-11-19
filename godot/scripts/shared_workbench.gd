@@ -23,6 +23,7 @@ var _flatten_status: Dictionary = {"status":"idle"}
 var _flatten_button: Button
 var _flatten_confirmation := ConfirmationDialog.new()
 var art_batches: Window
+var engine_lab: Window
 var host: Control
 var applied: Dictionary = {}
 var pilot_slot := -1
@@ -41,6 +42,7 @@ var _instances := OptionButton.new()
 var _material := OptionButton.new()
 var _response := OptionButton.new()
 var _camera := OptionButton.new()
+var _focus_pending: bool = false
 var _brush := SpinBox.new()
 var _fire := CheckButton.new()
 var _stream := CheckButton.new()
@@ -195,6 +197,14 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_button(row,"New blank",new_canvas)
 	_button(row,"New from generator…",func() -> void: _generated_dialog.open_new())
 	_button(row,"Materials Lab…",open_materials_lab)
+	engine_lab = preload("res://scripts/workbench_engine_lab.gd").new()
+	engine_lab.name = "EngineLab"
+	# Window nodes default visible. Keep it hidden *before* entering
+	# the scene tree so mount() may select force_native without Godot refusal.
+	engine_lab.hide()
+	add_child(engine_lab)
+	engine_lab.mount(host,self)
+	_button(row,"Engine Lab…",func() -> void: engine_lab.open())
 	_picker(row,_camera,["Free camera","Follow selected","Overview"],func(i: int) -> void: set_camera(i))
 	_button(row,"−",func() -> void: zoom_by(1))
 	_button(row,"+",func() -> void: zoom_by(-1))
@@ -1115,28 +1125,56 @@ func _set_view(origin: Vector2, size: Vector2i) -> void:
 	var extent := Setup.extent_of(applied)
 	host.current_view_size = size.min(extent)
 	host.camera_origin = origin.clamp(Vector2.ZERO,Vector2(extent-host.current_view_size))
-	host.update_worker_frame_state()
+	# Panning/zooming only changes presentation. The Workbench's native active
+	# region is the fixed authored canvas, published once by Main each frame.
 
-func focus_selected() -> void:
+func focus_selected(presentation: Dictionary = {}) -> void:
+	if presentation.is_empty() and host != null:
+		presentation = host.workbench_presentation_frame
+	if presentation.is_empty() and host != null and host._workbench_presentation_mode() == "coherent":
+		_focus_pending = selected_id() > 0
+		return
+	if not presentation.is_empty() and str(presentation.get("policy","")) == "coherent":
+		if int(presentation.get("follow_instance_id",-1)) != selected_id():
+			_focus_pending = selected_id() > 0
+			return
+		var selected: Vector2 = presentation.get("follow_target",Vector2.INF)
+		_focus_pending = not selected.is_finite() and selected_id() > 0
+		if selected.is_finite(): _set_view(selected-Vector2(host.current_view_size)*0.5,host.current_view_size)
+		return
+	_focus_pending = false
 	var state := body_state(selected_id())
 	if not state.is_empty(): _set_view(Vector2(state.position)-Vector2(host.current_view_size)*0.5,host.current_view_size)
 
 func set_camera(index: int) -> void:
 	if applied.is_empty(): return
+	_focus_pending = false
 	if index == 2:
 		_set_view(Vector2.ZERO,Setup.extent_of(applied))
 	elif index == 1:
 		_set_view(host.camera_origin,ZOOMS[_zoom])
-		focus_selected()
+		focus_selected(host.workbench_presentation_frame)
 	else:
 		_set_view(host.camera_origin,ZOOMS[_zoom])
 
-func zoom_by(direction: int) -> void:
+func zoom_by(direction: int, local_anchor: Vector2 = Vector2.INF) -> void:
 	if applied.is_empty(): return
-	var centre := Vector2(host.camera_origin) + Vector2(host.current_view_size)*0.5
+	_focus_pending = false
+	var old_content: Rect2 = host.view_content_rect()
+	if not old_content.has_area(): return
+	if not local_anchor.is_finite() or not old_content.has_point(local_anchor):
+		local_anchor = old_content.get_center()
+	# Anchor the continuous camera, retaining its subpixel remainder. Feeding
+	# the snapped presentation back into camera state accumulates zoom drift.
+	var anchor: Vector2 = host.PixelCamera.local_to_world(local_anchor,host.camera_origin,
+		host.current_view_size,old_content)
 	_zoom = clampi(_zoom+direction,0,ZOOMS.size()-1)
 	_camera.select(0)
-	_set_view(centre-Vector2(ZOOMS[_zoom])*0.5,ZOOMS[_zoom])
+	_set_view(host.camera_origin,ZOOMS[_zoom])
+	# Extent clamping can change the aspect ratio, hence the content rectangle.
+	var origin: Vector2 = host.PixelCamera.origin_for_anchor(anchor,local_anchor,
+		host.current_view_size,host.view_content_rect())
+	_set_view(origin,host.current_view_size)
 
 func _input(event: InputEvent) -> void:
 	if paint_editor != null and paint_editor.key_input(event):
@@ -1169,10 +1207,25 @@ func _input(event: InputEvent) -> void:
 	get_viewport().set_input_as_handled()
 
 func _pick(pos: Vector2i) -> void:
+	var presentation: Dictionary = host.workbench_presentation_frame
+	var coherent: bool = host._workbench_presentation_mode() == "coherent"
 	for a: Dictionary in applied.actors:
-		var state := body_state(int(a.id))
-		if state.is_empty(): continue
-		var local := (Vector2(pos)-Vector2(state.position)).rotated(-float(state.rotation))
+		var pose: Transform2D
+		if coherent:
+			# A safety hold can leave the live body ahead of its displayed pose.
+			# Hit-test the submitted actor, including its actual generation fence;
+			# withheld actors have no clickable visual footprint.
+			if not host._valid_workbench_mask_frame(presentation.get("mask_frame",{})): continue
+			var slot: int = host.physical_actor_session.slot_for_instance(int(a.id))
+			if not presentation.get("poses",{}).has(slot): continue
+			var member: Dictionary = host.physical_actor_session.bridge._members[slot]
+			if presentation.mask_frame.instances.get(int(a.id),{}).get("generation",-1) != member.generation: continue
+			pose = presentation.poses[slot]
+		else:
+			var state := body_state(int(a.id))
+			if state.is_empty(): continue
+			pose = Transform2D(float(state.rotation),Vector2(state.position))
+		var local := (Vector2(pos)-pose.origin).rotated(-pose.get_rotation())
 		if Setup.bounds(str(a.model)).grow(2).has_point(local):
 			select_instance(int(a.id))
 			return
@@ -1184,10 +1237,13 @@ func _world_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_MIDDLE:
 			_pan = event.pressed
-			if _pan: _camera.select(0)
+			if _pan:
+				_camera.select(0)
+				_focus_pending = false
 			return
 		if event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
-			zoom_by(-1 if event.button_index == MOUSE_BUTTON_WHEEL_UP else 1)
+			zoom_by(-1 if event.button_index == MOUSE_BUTTON_WHEEL_UP else 1,event.position)
+			if paint_editor != null: paint_editor.cursor = host.world_cell_from_local_point(event.position)
 			return
 		if event.button_index not in [MOUSE_BUTTON_LEFT,MOUSE_BUTTON_RIGHT]: return
 		_commit_field()
@@ -1197,11 +1253,11 @@ func _world_input(event: InputEvent) -> void:
 		if _pan:
 			var area: Rect2 = host.view_content_rect()
 			if area.has_area(): _set_view(Vector2(host.camera_origin)-event.relative*Vector2(host.current_view_size)/area.size,host.current_view_size)
+			if paint_editor != null: paint_editor.cursor = host.world_cell_from_local_point(event.position)
 			return
 	else: return
-	var pixel: Vector2i = host.view_pixel_from_local_point(event.position)
-	if pixel.x < 0: return
-	var pos := Vector2i(host.camera_origin.floor()) + pixel
+	var pos: Vector2i = host.world_cell_from_local_point(event.position)
+	if pos.x < 0: return
 	if _drag_button == 0 or pos == _last_cell: return
 	_last_cell = pos
 	if _drag_button == MOUSE_BUTTON_RIGHT or _tool.selected == 0:
@@ -1216,6 +1272,9 @@ func _world_input(event: InputEvent) -> void:
 			_position[1].value = pos.y
 			move_selected()
 		4: place_source(pos)
+
+func update_camera(presentation: Dictionary = {}) -> void:
+	if not applied.is_empty() and (_camera.selected == 1 or _focus_pending): focus_selected(presentation)
 
 func _process(_delta: float) -> void:
 	if host == null: return
@@ -1241,11 +1300,9 @@ func _process(_delta: float) -> void:
 	if not _reload_rollback.is_empty() and host.pending_microscenario_apply.is_empty():
 		Fleet.restore_registry(_reload_rollback)
 		_reload_rollback.clear()
-	if not applied.is_empty() and _camera.selected == 1: focus_selected()
 	if Time.get_ticks_msec()-_last_status_ms < 150: return
 	_last_status_ms = Time.get_ticks_msec()
-	var cursor: Vector2i = host.view_pixel_from_local_point(host.world_view.get_local_mouse_position())
-	if cursor.x >= 0: cursor += Vector2i(host.camera_origin.floor())
+	var cursor: Vector2i = host.world_cell_from_local_point(host.world_view.get_local_mouse_position())
 	var context: Dictionary = host.tower_context
 	var source: Dictionary = context.get("workbench_source",{})
 	if _stream_was_active and not source.get("stream_enabled",false):

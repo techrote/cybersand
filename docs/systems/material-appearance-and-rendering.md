@@ -1,10 +1,10 @@
 ---
 title: Material appearance and rendering
 document-kind: contract
-canonical-for: [material-visual-projection, palette-program-appearance, render-upload-cost]
+canonical-for: [material-visual-projection, palette-program-appearance, render-upload-cost, native-resolution-camera-presentation]
 status: Current
 scope: Native RG8 presentation, palette/program LUTs, shader flair, temporal smoothing, glow, and current GPU upload limitation
-last-reviewed: 2026-10-19
+last-reviewed: 2026-11-13
 related-documents: [material-visual-pattern-library.md, ../reference/material-effects-register.md, themed-construction-materials.md, materials-and-rule-kernels.md, ../architecture/rendering-and-gameplay-bridges.md, ../architecture/item-authored-material-programs.md]
 ---
 
@@ -21,6 +21,101 @@ This page owns appearance and cost semantics at the
 The [render bridge](../architecture/rendering-and-gameplay-bridges.md) owns payload
 lifetimes; the [evidence ledger](../reference/validation-evidence.md) distinguishes
 headless checks, browser observations, and absent representative GPU profiling.
+
+## Native-resolution pixel scrolling
+
+**Current camera-branch candidate; not merged.** The main material image is a
+nearest-sampled CanvasItem drawn at final viewport resolution. The old host
+floored `camera_origin` before sending it to the shader; the fragment separately
+floored view coordinates before adding that origin. Together those two floors
+restricted a slow pan to whole enlarged cells. Native upload coordinates and
+simulation resolution were not the cause.
+
+[CyberPixelCameraTransform](../../godot/scripts/pixel_camera_transform.gd)
+keeps the requested camera in floating-point world units. Its
+`presentation_screen_transform` retains the world's exact rounded screen
+translation and the physical pixels per world cell. It includes the actual
+CanvasItem screen transform, content/letterbox offsets and window/canvas
+scale. Rounding changes only presentation, not stored camera state. Map bounds
+take precedence on each clamped axis; the other axis retains its integer phase.
+
+[Main](../../godot/scripts/main.gd) supplies the resulting
+`presentation_camera_origin()` to terrain, previews, actors, usables, course
+markers and scene backdrops. Workbench follow is resolved in Main before
+picking and publishing the frame's shader/overlay state. Camera-only Workbench
+view changes do not enqueue a second native frame-state update; its active
+simulation region remains the authored canvas.
+
+The [material fragment](../../godot/shaders/material_palette.gdshader)
+reconstructs the physical pixel centre from the fitted content rectangle, then
+computes `(sample_position - world_zero_screen) * world_units_per_screen_pixel`.
+It floors that complete world point and samples the source cell's centre.
+Picking uses the same exact screen translation, reciprocal scale and operation
+order. Recovering the translation from an inverse camera float, or adding that
+float to scaled UVs, can produce inconsistent floors at fractional-zoom cell
+boundaries. The physical map avoids that cancellation without a rounding epsilon.
+
+The same integer world coordinate anchors material grain; the continuous
+coordinate's fraction supports existing subcell effects. This permits a
+one-screen-pixel step at 2x, 4x or other magnifications without bilinear material
+sampling, physics interpolation or an enlarged simulation. A static fractional
+zoom can distribute a cell across differing integer pixel widths; the shared
+integer screen translation preserves that raster phase during panning. The
+native map is enabled by Main for its axis-aligned canvas. Standalone shader
+fixtures retain their existing camera-plus-UV convention unless they enable it.
+
+### Picking and zoom at fractional camera positions
+
+The [private interface](../reference/interfaces-and-message-contracts.md#camera-presentation-and-picking)
+separates continuous world points from selected integer cells. Cell picking
+uses the physical pixel centre under the pointer and floors the complete
+inverse-mapped world point. It does not floor the camera and local terms
+separately. PAINT, selection, Fill, clipboard placement and Art focus therefore
+share the displayed sample. Idle PAINT hover retains the pointer's physical
+position and refreshes against camera/layout changes, including toolbar zoom
+without another mouse event. Active drag anchors remain world coordinates.
+Agent image observations describe the actual rounded pixel crop with
+fractional world bounds.
+
+Gameplay recording freezes an integer rectangle enclosing the presented view:
+floor the start, ceil the far edge and clamp to the actual world. Partially
+visible right/bottom cells are retained. The
+[recorder contract](../operations/gameplay-recording.md#camera-recording-bounds)
+owns the explicit ROI override, copied extent and fixed-session behavior.
+
+Wheel zoom preserves a continuous world anchor under the cursor; toolbar zoom
+uses the content centre. The snapped display origin is never fed back into
+that calculation, so opposite zoom changes do not accumulate rounding drift.
+Away from clamped bounds, a single displayed origin differs by at most half a
+physical pixel per axis from the continuous translation. The preserved
+continuous anchor's displayed positions can differ by at most one pixel.
+The world point previously displayed under the pointer has a bound of
+`0.5 * (1 + new_scale / old_scale)` pixels at the new scale, or 1.5 pixels
+per axis for a 2x zoom-in, matching the coordinate regression. No added
+camera easing or extra frame of input buffering is introduced by this path.
+
+### Glow and vapour during fractional scrolling
+
+The main world texture remains full-world data. Only the existing small effect
+passes use SubViewports. Glow emission stays on a fixed two-world-cell source
+grid; the final [glow composite](../../godot/shaders/glow_composite.gdshader)
+uses `source_uv_offset` and `source_uv_scale` to align it with the displayed
+camera. Five guard texels per side cover the four-texel halo and its filter
+footprint, and a far-edge texel covers fractional movement. Odd view dimensions
+do not stretch the coarse source grid.
+
+Vapour history remains aligned to integer world cells and its copied history
+origin; one extra cell on the right/bottom covers the fractional view. Palette
+lookup uses the actual history dimensions. These intentional buffer-grid floors
+do not quantize the final camera. Exact buffer dimensions belong in the
+[configuration reference](../reference/configuration-reference.md#camera-effect-buffer-capacities).
+No additional native synchronization or per-cell physics state is required.
+
+The [acceptance runbook](../operations/native-pixel-scrolling.md) owns controls
+and reproducible commands. The
+[dated audit](../audits/2026-11-13-native-pixel-scrolling.md) separates inspected
+source, actual framebuffer/throughput evidence, physical Windows scaling and
+owner acceptance; source inspection alone does not establish those outcomes.
 
 ## Current visual projection
 
@@ -268,7 +363,8 @@ desktop HUD reports both the configured publication target and a measured effect
 publication rate when samples are available. Overload and Web terrain backlog can
 reduce actual progress.
 
-HDR 2D output supports one half-logical-resolution glow SubViewport. Its
+HDR 2D output supports one glow SubViewport on a fixed two-world-cell grid,
+including the camera guard border described above. Its
 sixteen-cell source (a 2×2 maximum plus twelve surrounding samples) and
 thirteen-tap near/far additive composite derive
 emission from the existing presentation inputs. This is a visual halo, not an
@@ -283,8 +379,9 @@ other controls are in [Material Lab](../MATERIAL_LAB.md).
 The retained m9 description records a source change from nine to thirteen
 glow-source samples and from one to thirteen composite samples, plus four
 neighbor reads in the ordinary palette. A transition can evaluate relief for
-both old and new materials. At the desktop default 320×180 logical view the
-glow source is 160×90. These are algorithmic sample counts, not measured GPU
+both old and new materials. At the historical desktop default 320×180 logical
+view the old glow source was 160×90; the camera candidate uses 171×101 to cover
+fractional movement and the halo. These are algorithmic sample counts, not measured GPU
 milliseconds. The m9 record supplied no representative target-GPU timing.
 
 **Planned:** actual texture subregion writes; target-GPU comparisons with glow

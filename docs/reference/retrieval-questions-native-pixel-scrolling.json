@@ -1,0 +1,108 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-13",
+  "purpose": "Additive native-resolution camera development retrieval; separate from frozen historical and held-out sets. Runtime claims require the dated source-specific ledger.",
+  "questions": [
+    {
+      "id": "PIXEL-CAMERA-001",
+      "query": "Why did a magnified camera pan jump whole simulation cells, and how does native display-pixel scrolling keep the pixel world sharp?",
+      "canonical": [
+        "systems/material-appearance-and-rendering.md"
+      ],
+      "facts": [
+        "Main floored the camera before the shader, and the palette fragment separately floored view coordinates before adding that origin.",
+        "The candidate keeps continuous camera state, snaps the complete final screen translation, then floors the combined world sample and nearest-samples the cell centre.",
+        "The native cell physics and simulation resolution are unchanged."
+      ],
+      "sources": [
+        "../godot/scripts/main.gd",
+        "../godot/scripts/pixel_camera_transform.gd",
+        "../godot/shaders/material_palette.gdshader"
+      ]
+    },
+    {
+      "id": "PIXEL-CAMERA-002",
+      "query": "How do painting, selection, clipboard and agent focus pick the correct cell at a fractional camera position and fractional zoom?",
+      "canonical": [
+        "reference/interfaces-and-message-contracts.md",
+        "systems/material-appearance-and-rendering.md"
+      ],
+      "facts": [
+        "Picking maps the pointer physical pixel centre through the displayed transform and floors the complete world coordinate.",
+        "The displayed origin is shared by PAINT previews, selection, overlays and Art focus; agent image metadata describes the actual rounded crop with fractional world bounds.",
+        "Native mutations remain integer cell coordinates."
+      ],
+      "sources": [
+        "../godot/scripts/main.gd",
+        "../godot/scripts/workbench_paint_editor_controller.gd",
+        "../godot/scripts/art_batch_panel.gd"
+      ]
+    },
+    {
+      "id": "PIXEL-CAMERA-003",
+      "query": "Does cursor-centred wheel zoom accumulate rounding drift after repeatedly zooming in and out?",
+      "canonical": [
+        "systems/material-appearance-and-rendering.md"
+      ],
+      "facts": [
+        "Zoom solves a continuous world anchor and never writes the snapped presentation origin into camera state.",
+        "Away from clamped bounds the two rounding phases can produce at most one physical pixel per axis of visible anchor difference; there is no accumulating camera-state error.",
+        "World-edge clamping can intentionally prevent exact anchor preservation."
+      ],
+      "sources": [
+        "../godot/scripts/shared_workbench.gd",
+        "../godot/scripts/pixel_camera_transform.gd"
+      ]
+    },
+    {
+      "id": "PIXEL-CAMERA-004",
+      "query": "How much glow and vapour guard space covers fractional camera scrolling without a full-resolution effect buffer?",
+      "canonical": [
+        "reference/configuration-reference.md",
+        "systems/material-appearance-and-rendering.md"
+      ],
+      "facts": [
+        "Glow is fixed at two world cells per source texel and uses five guard texels on each side plus one far-edge texel.",
+        "Vapour ping-pong history buffers use W+1 by H+1 integer-world texels and resize together.",
+        "The final composite reprojects those small buffers to the displayed camera; native capacity is unchanged."
+      ],
+      "sources": [
+        "../godot/scripts/main.gd",
+        "../godot/shaders/glow_composite.gdshader"
+      ]
+    },
+    {
+      "id": "PIXEL-CAMERA-005",
+      "query": "How do I launch and accept the native-resolution pixel scrolling Windows evaluation, and can headless tests authorize its merge?",
+      "canonical": [
+        "operations/native-pixel-scrolling.md"
+      ],
+      "facts": [
+        "Use the camera-labelled qualified artifact, extract it completely and run Open Workbench.cmd.",
+        "At 2x or greater magnification slowly middle-drag, test stationary edges, cursor zoom, editing, Undo/Redo, Art focus, following, resizing and physical Windows display scale.",
+        "Headless parsing does not qualify graphical motion, physical Windows scaling or human feel; the candidate remains Draft until owner acceptance."
+      ],
+      "sources": [
+        "../tools/ci/run_workbench_qualification.py",
+        "../.github/workflows/wb-art-paint-qualification.yml"
+      ]
+    },
+    {
+      "id": "PIXEL-CAMERA-006",
+      "query": "Which cells does gameplay recording retain at a fractional camera position, and does its recorded ROI move when I pan or zoom?",
+      "canonical": [
+        "operations/gameplay-recording.md"
+      ],
+      "facts": [
+        "The default ROI encloses the actual presented origin and view size using floor at the start and ceil at the end, retaining partially visible right and bottom cells.",
+        "Main copies the actual world extent into recording configuration; the recorder clamps against it, keeps the legacy 1024-square fallback for callers that omit it and rejects nonpositive supplied dimensions.",
+        "An explicit --record-roi overrides camera-derived bounds, and the admitted integer ROI stays fixed for the entire recording session."
+      ],
+      "sources": [
+        "../godot/scripts/main.gd",
+        "../godot/scripts/gameplay_recorder.gd",
+        "../godot/tests/test_gameplay_recorder.gd"
+      ]
+    }
+  ]
+}

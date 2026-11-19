@@ -6,7 +6,7 @@ status: Current
 scope: REC-001 desktop material-state recording, ownership, bounded pressure, evidence format, controls and validation limits
 keywords: [recording, gameplay review, material state, immutable snapshot, bounded queue, dropped frames, REC-001]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/rendering-and-gameplay-bridges.md, microscenarios.md, testing-validation-and-replay.md]
-last-reviewed: 2026-10-18
+last-reviewed: 2026-11-13
 ---
 
 # Desktop gameplay state recording
@@ -37,7 +37,7 @@ allowed to block or skip authoritative simulation work.
 
 Desktop builds expose a **Start Recording / F10** control. Starting a session:
 
-1. freezes the current camera ROI for that session;
+1. freezes the [presented camera ROI](#camera-recording-bounds) for that session;
 2. records runtime/source/configuration identity;
 3. requests one full immutable render publication to prime the private ROI;
 4. begins capture only after that full publication covers the ROI.
@@ -58,6 +58,40 @@ The following user arguments override the defaults for a run:
 
 The output root is `user://recordings/`. The control tooltip and stdout identify
 the session directory.
+
+## Camera recording bounds
+
+[Main](../../godot/scripts/main.gd) derives the default ROI in
+`recording_configuration()` from `presentation_camera_origin()`, the displayed
+origin after final-screen-pixel rounding. It floors the starting world
+coordinate and ceils the origin plus view size on each axis, then clamps those
+integer bounds to the actual world extent. The end calculation uses scalar
+components so an intermediate `Vector2` sum cannot erase a small fractional
+remainder. The ROI includes every cell intersected by the presented view,
+including partially visible cells along its right and bottom edges.
+
+For a displayed origin of `(63.25, 31.75)` and a `240 × 135`-cell view, the ROI
+is `Rect2i(63, 31, 241, 136)`: columns 63–303 and rows 31–166 inclusive. An
+integral displayed origin needs no extra edge cell. The requested camera may
+still be fractional when screen-pixel rounding presents an integral origin;
+recording follows the displayed bounds, not that unrounded request. The
+[camera contract](../systems/material-appearance-and-rendering.md#native-resolution-pixel-scrolling)
+owns this presentation transform.
+
+Main passes a copied `world_extent: Vector2i` with the configuration.
+`start_recording()` in [GameplayRecorder](../../godot/scripts/gameplay_recorder.gd)
+uses that extent for its final ROI clamp and retains `[width, height]` in the
+session configuration. A caller that omits `roi` records the full supplied
+extent. Existing callers that omit `world_extent` keep the legacy
+`1024 × 1024` extent. Nonpositive supplied dimensions return
+`ERR_INVALID_PARAMETER`; the recorder does not open such a session. This
+copied configuration does not give the recorder access to mutable world state.
+
+`--record-roi` still overrides the camera-derived rectangle and receives the
+same actual-world clamp. The admitted ROI remains fixed for the entire session:
+later panning, zooming or following does not move it. Recording continues to
+retain integer material cells, without display-pixel resampling or a change to
+its immutable snapshot input.
 
 ## Retained frame format
 
@@ -152,8 +186,8 @@ drains. It records:
 - source/script/native-runtime/platform/Godot identity supplied by the desktop;
 - active desktop worker/backend count plus render cadence, simulation-window,
   cadence-LOD, liquid-adhesion, view/margin and requested-worker configuration;
-- ROI, capture cadence, queue capacity, starting material-tool selection and
-  retained-state scope;
+- ROI, its clamping world extent, capture cadence, queue capacity, starting
+  material-tool selection and retained-state scope;
 - the canonical material palette and review-overlay indices;
 - capture attempts, enqueued frames, written frames and dropped frames;
 - queue high-water and capacity;

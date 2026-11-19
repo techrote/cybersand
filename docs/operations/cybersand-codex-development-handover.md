@@ -10,6 +10,48 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Camera stack temporal coherence — 2026-11-15
+
+Continue the integrated #609 candidate through its
+[presentation contract](../architecture/rendering-and-gameplay-bridges.md#coherent-workbench-presentation-frame),
+[physical acceptance procedure](camera-stack-coherence-acceptance.md) and
+[dated evidence](../audits/2026-11-15-camera-stack-coherence.md). The isolated
+repair is `a0315dc87`; normal integration merge `6b92ad2d4` preserves accepted
+main `018bd09503d7`. Native source is unchanged against that main, so retained
+build `6d6e2cd` is reused only after all 93 compiler inputs and payload hashes
+match. Package manifests/workflow artifacts identify the later exact application
+source. Keep #566/#593/#606/#609 Draft/HOLD; the owner's real NVIDIA evaluation
+is a separate gate from hosted rendering and scripted correctness.
+
+Source-identical published checkpoints are `755c99beb9df` (isolated repair)
+and `766d52956013` (two-parent integration). The audit records their tree hashes;
+later qualification fixes remain descendants and package manifests identify
+the exact evaluated application commit.
+
+### PRESENTATION-TIME-001 isolated continuation
+
+Branch `fix/presentation-time-001-20261115` starts from the integrated
+`a514f369f3fcf03979182d5038114c6193310464` implementation, which preserves the
+owner's qualified `7c85b348` fixes. It completes bounded observation history,
+continuous-sweep native rejoin, explicit hold expiry, actual material delivery
+timing and qualification through the existing independent clock controls.
+Original physical pacing defaults remain because globally disabling the native
+sample handshake exposed material-custody loss with both presentation modes. It does not write the separately
+active #609 branch or #582. The same canonical contract and owner guide cover
+these extensions; its own exact-source workflow/artifact is required before
+claiming candidate qualification. Keep Draft/HOLD and do not merge.
+
+## Native-resolution camera continuation — 2026-11-13
+
+The camera branch retains its original history and now incorporates accepted
+#565 main `ac0d9fb9` through normal merge `b1e2e9b1`. Start with the
+[camera runbook](native-pixel-scrolling.md) and
+[original source audit](../audits/2026-11-13-native-pixel-scrolling.md) and
+[final integration record](../audits/2026-11-13-native-pixel-final-integration.md). Preserve
+shared Undo/Redo and Art panel features, complete scoped Windows/Linux graphics
+and editing qualification, and keep the PR Draft until owner acceptance. Native
+sources and retained-runtime identity are not changed by camera presentation.
+
 ## Architectural Generator runtime repair — 2026-11-15
 
 The owner-authorized Phase A plus bounded Phase B implementation began at
