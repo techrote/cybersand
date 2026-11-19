@@ -4207,8 +4207,8 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
             if (wave_) {
                 const auto support = cursor.visible(x, y + 1);
                 if (support == Material::Water ||
-                    (support == Material::Oil && (cursor.visible(x - 1, y + 1) == Material::Water ||
-                                                  cursor.visible(x + 1, y + 1) == Material::Water))) {
+                    (support == Material::Oil && config_.maximum_rule_radius >= 2 &&
+                     cursor.visible(x, y + 2) == Material::Water)) {
                     return changed;
                 }
             }
