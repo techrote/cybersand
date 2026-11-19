@@ -279,12 +279,9 @@ const MATERIAL_GROUP_FIRST_IDS: Array[int] = [
 @onready var test_rigid_body_2: RigidBody2D = $RigidBodies/TestBody2
 @onready var test_rigid_body_3: RigidBody2D = $RigidBodies/TestBody3
 
-# The Web controller inherits the UI and owns its own synchronous native World.
-# Allocate the desktop owner only when a desktop consumer first requests it.
-var simulation_worker: CyberSimulationWorker:
-	get:
-		if simulation_worker == null: simulation_worker = CyberSimulationWorker.new(true)
-		return simulation_worker
+# Desktop construction samples the current native capacity before entering the
+# tree. The browser constructs its gameplay World in its synchronous controller.
+var simulation_worker: CyberSimulationWorker = CyberSimulationWorker.new(not OS.has_feature("web"))
 var gameplay_recorder = GameplayRecorder.new()
 var recording_button: Button
 var player_environment_panel
