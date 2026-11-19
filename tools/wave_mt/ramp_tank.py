@@ -16,7 +16,8 @@ MAX_SPILL = dict(spill=1, ballistic=1, sheet_rate=64, draw=127, draw_head=65535,
                  fall=8, launch_budget=128, coyote_ticks=4, catch=1)
 SLOSHY = dict(gain=32, deep_gain=16, flux_smoothing=16, coast=64, damp_shift=16,
               level_shift=3, calm_damp_shift=8, calm=128, stick=128, sleep_after=90)
-RAMP = dict(gain=256, deep_gain=48, flux_smoothing=12, coast=127, empty_pour_shift=1)
+HIGH_GAIN = dict(gain=256, deep_gain=48, flux_smoothing=12, coast=127, empty_pour_shift=1)
+FLOOR = dict(floor_gain=1024, deep_gain=32, coast=32, empty_pour_shift=2, substeps=2)
 TRACE = ("long_mode_cells", "broad_range_cells", "broad_slope_cells_per_cell", "curvature_rms_cells")
 DEPTHS = {"standard": (11, 6), "deep": (22, 10), "full_band": (30, 6)}
 EVERY = 2
@@ -83,19 +84,18 @@ def main():
     parser.add_argument("binary", type=Path)
     parser.add_argument("output", type=Path)
     parser.add_argument("--workers", type=int, default=6)
-    parser.add_argument("--candidate", nargs="*", help="override the proposed ramp settings with bench key=value tokens")
     args = parser.parse_args()
     binary = args.binary.resolve(strict=True)
     args.output.mkdir(exist_ok=True, parents=True)
-    candidate = {**MAX_SPILL, **SLOSHY, **RAMP}
-    for token in args.candidate or []:
-        key, value = token.split("=", 1)
-        candidate[key] = int(value)
-    profiles = {"wave_spill": MAX_SPILL, "sloshy": {**MAX_SPILL, **SLOSHY}, "ramp": candidate,
-                "sloshy_two_rounds": {**MAX_SPILL, **SLOSHY, "substeps": 2},
-                "ramp_two_rounds": {**candidate, "substeps": 2},
-                "less_smoothing": {**candidate, "flux_smoothing": 4},
-                "high_deep_gain": {**candidate, "deep_gain": 96, "flux_smoothing": 16}}
+    sloshy = {**MAX_SPILL, **SLOSHY}
+    high_gain = {**sloshy, **HIGH_GAIN}
+    floor = {**sloshy, **FLOOR}
+    profiles = {"floor_255": {**floor, "draw_head": 255}, "floor_512": {**floor, "draw_head": 512},
+                "sloshy": sloshy, "sloshy_two_rounds": {**sloshy, "substeps": 2},
+                "wave_spill": MAX_SPILL, "high_gain": high_gain,
+                "high_gain_two_rounds": {**high_gain, "substeps": 2},
+                "less_smoothing": {**high_gain, "flux_smoothing": 4},
+                "high_deep_gain": {**high_gain, "deep_gain": 96, "flux_smoothing": 16}}
     report = {"binary_sha256": hashlib.sha256(binary.read_bytes()).hexdigest(), "workers": args.workers,
               "sample_every_ticks": EVERY, "profiles": {}}
     with (
@@ -115,6 +115,8 @@ def main():
                 "first_x100_tick": next((int(r["tick"]) for r in rows if int(r["front_right_32"]) >= 100), None),
             }
             report["profiles"][name] = {"settings": settings, **stats}
+            print(name, {fixture: stats[fixture].get("first_return_tick") for fixture in DEPTHS},
+                  "blob x100", stats["blob"]["first_x100_tick"], flush=True)
     (args.output / "tank-results.json").write_text(json.dumps(report, indent=2) + "\n")
 
 

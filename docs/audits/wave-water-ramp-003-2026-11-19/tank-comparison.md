@@ -1,102 +1,98 @@
 ---
-title: Returning wave shape and spreading speed on the ramp candidate
+title: Returning wave shape and spreading speed on the Water ramp settings
 status: Current
 document-kind: audit
-scope: Native tank and blob evidence for the Water ramp 003 settings
+scope: Native tank and flat-floor blob evidence for the Water ramp 003 settings
 last-reviewed: 2026-11-19
 related-documents: [../2026-11-19-wave-water-ramp-003.md, ../../architecture/wave-flow-v1.md]
 ---
 
 # Returning wave shape and spreading speed
 
-In the deep tank, the selected two-round settings shortened the first complete
-wave cycle from 388 to 112 ticks. At that return, the broad crest-to-trough
-difference grew from 8.47 to 8.90 cells and the steepest broad slope rose by
-17%. The lower half of the returning wave dipped deeper. The faster wave also
-decayed sooner in elapsed ticks. On a flat floor, the dropped blob reached x100
-in 44 ticks, compared with 198 for the previous settings.
+The selected floor gain took the dropped blob past x100 in **32 ticks**. The
+previous Sloshy + Max bundle took 198 ticks, or 100 when given the same two
+rounds. On a deep pool, a complete wave returned in **138 ticks**, down from
+388 or 194. At that return the broad slope was **13% steeper** than the original
+Sloshy, while the crest-to-trough depth increased only **1%**, from 8.47 to
+8.55 cells. The speed and steepness changes are much larger than the depth change.
 
-![Broad wave, first-return physical Water depths and flat-floor blob front](tank-and-front.png)
+![Returning deep-tank wave, physical Water depths and flat-floor front position](tank-and-front.png)
 
-All seven settings used Wave, Waterwall spill, Ballistic Water, blobs and the
-Max over-ledge bundle. Each tank started with a fixed step on the left side of
-a 64-column pool. All settings for a given geometry received the identical
-starting cells. The right-edge front of the falling 12×6-cell blob began at
-x69. The wall limits that measurement to x127.
+| Settings | First return, standard / deep / full band (ticks) | Broad range, standard / deep (cells) | Broad slope, standard / deep (cells per cell) | Flat blob x at t40 / 80 / 160 | First x100 (tick) |
+|---|---:|---:|---:|---:|---:|
+| Sloshy + Max, one round (#676) | 534 / 388 / 356 | 4.826 / 8.468 | .277 / .516 | 85 / 87 / 95 | 198 |
+| Sloshy + Max, two rounds | 268 / 194 / 178 | 4.850 / 8.553 | .283 / .533 | 88 / 96 / 115 | 100 |
+| **Level-floor gain, draw head 255, two rounds** | **190 / 138 / 126** | **4.848 / 8.550** | **.310 / .583** | **109 / 127 / 106** | **32** |
+| Level-floor gain, draw head 512, two rounds | 190 / 138 / 126 | 4.873 / 8.520 | .309 / .581 | 109 / 127 / 106 | 32 |
+| Rejected high general gain, two rounds | 154 / 112 / 102 | 5.267 / 8.896 | .332 / .606 | 98 / 123 / 127 | 44 |
 
-| Setting | First return, standard / deep / full active band (ticks) | Returning range, standard / deep (cells) | Returning slope, standard / deep (cells per cell) | Blob at t40 / 80 / 160 (x) |
-|---|---:|---:|---:|---:|
-| Sloshy + Max, one round | 534 / 388 / 356 | 4.83 / 8.47 | 0.277 / 0.516 | 85 / 87 / 95 |
-| Sloshy + Max, two rounds | 268 / 194 / 178 | 4.85 / 8.55 | 0.283 / 0.533 | 88 / 96 / 115 |
-| Fast, one round | 308 / 222 / 204 | 5.13 / 8.74 | 0.331 / 0.578 | 85 / 99 / 123 |
-| **Fast, two rounds** | **154 / 112 / 102** | **5.27 / 8.90** | **0.332 / 0.606** | **98 / 123 / 127** |
+The two-round Sloshy control isolates the benefit of changing the settings
+after doubling the rounds. With floor gain, the deep tank cycled 29% sooner.
+The returning slope increased 9.4% and its broad depth range differed by
+0.003 cells. For the 30-cell full-band pool, floor gain returned a 5.330-cell
+range and .355 slope, against 5.320 and .309 for original Sloshy, or 5.359 and
+.320 for two-round Sloshy. The moving front hit the fixture boundary at x127
+on tick 58, retreated to x89 at tick 144, and reached x127 again at tick 182.
+Its x160 value records the second advance.
 
-The three initial right-hand depths were 11, 22 and 30 cells, with steps of
-6, 10 and 6 cells respectively. The broad range uses the highest and lowest
-sliding eight-column mean depth. The steepness is the largest absolute
-difference between adjacent eight-column means, divided by eight. These
-measures give the width of the crest a role in the score. A single isolated
-peak contributes little. The first return is the first positive peak of the
-signed fundamental mode after a reversal. The front needs at least 32 units
-of landed grid Water in its column. The samples are two ticks apart.
+## Settings and trade-offs
 
-Fast kept the original 32 active rows and used gain 256, deep gain 48, flux
-smoothing 12, coast 127 and empty pour shift 1. It retained Sloshy's damp shift
-16, calm damp shift 8, calm and stick flux 128, level shift 3 and sleep after
-90. Two rounds run the full Wave cycle twice per native tick. The supplied
-canvas and the tick-cost comparisons are in the [ramp evaluation](../2026-11-19-wave-water-ramp-003.md).
+Use Wave, spill, ballistic release, catch falling, and the previous Sloshy +
+Max settings. Set **floor gain 1024, deep gain 32, coast 32, draw head 255,
+empty pour shift 2 and two rounds**. Ordinary gain stays 32 and flux smoothing
+stays 16. Draw head 512 produced the same blob first arrival and wave return
+times. The authored ramp and uphill trials determined the choice of 255.
+See the [ramp evaluation](../2026-11-19-wave-water-ramp-003.md).
 
-## Trade-offs and rejected settings
+The selected deep tank retained a signed long-wave amplitude of 3.88 cells at
+its second full return, versus 3.79 with original Sloshy and 3.84 with
+two-round Sloshy. Small ripples were slightly stronger. Second-difference RMS
+averaged .083 cells between the first and second returns, versus .058 for
+original Sloshy, .060 for two-round Sloshy and .174 for ordinary Wave with Max.
+The depth profile in the figure shows the bulk of the wave spans tens of columns.
 
-- At the first and second full returns in the deep tank, the signed fundamental
-  had amplitudes of 5.20 and 3.56 cells with Fast two-round, compared with 5.06
-  and 3.79 for Sloshy one-round. Fast produced a larger first wave and lost more
-  amplitude by the second. Curvature RMS averaged 0.141 cells between returns
-  against 0.058 for Sloshy and 0.174 for ordinary Wave tuning with Max spill.
-- Reducing smoothing to 4 made the one-round Fast deep-tank slope rise from
-  0.578 to 0.599. Short-ripple curvature climbed from 0.134 to 0.224 cells,
-  exceeding ordinary Wave with Max spill. The selected setting keeps a steeper
-  broad wave than Sloshy with fewer short ripples than the sharper alternative.
-- Raising deep gain to 96 with smoothing 16 gave a quick 218-tick return on the
-  standard tank. On the deeper step, column curvature peaked at 90 cells and
-  less than 1,151 of the initial 1,728 cell equivalents remained in the
-  tank's grid at one sample. The full world still conserved all Water. Increasing the initial depth exposed an erratic response and ruled out this
-  candidate. The different frequency and jagged columns are visible in the
-  [recorded trajectories](tank-traces.csv).
-- Additional screening covered deep gains 32–384, ordinary gains 32–512,
-  16–32 responding rows and smoothing 4–64. Deep gain 56 with smoothing 12
-  passed the 22+10 tank but its first return on the 30+6 tank slipped from
-  the selected one-round setting's 204 ticks to 682, with a much weaker
-  amplitude. A smaller active band also lost a coherent return for some high-gain
-  settings on the deeper fixture. On the 22+10 tank,
-  changing level shift between 0, 1, 3 and 5 gave the same measured crest at
-  gain 256, deep gain 56 and smoothing 12. Changing adhesion between 0, 1 and 6
-  affected the floor front by at most one cell at t80. Keeping the ordinary
-  level and adhesion settings avoids unnecessary side effects.
+**High general gain was rejected on the actual ramp.** Gain 256, deep gain 48,
+smoothing 12, coast 127 and empty pour shift 1 made a deeper tank wave, but
+also formed a 469-row column of grid Water on the supplied map. The tank and
+flat blob alone missed that failure. Additional high-gain trials kept the
+reasons for rejection measurable. With deep gain 96 and smoothing 16,
+curvature peaked at 90 cells on the 22+10 tank and fewer than 1,151 of 1,728
+starting cell equivalents remained in the tank's grid at one sample. The world
+still conserved all Water. At gain 256 and deep gain 48, lowering smoothing
+from 12 to 4 raised average curvature from .134 to .224 cells in the one-round
+deep tank. The rejected settings, hashes and traces remain in the results.
 
-## Reproduction
+## Measurement and reproduction
 
-The six-worker panel comprises 21 closed-tank runs of 1,600 ticks and seven
-blob runs of 200 ticks. Every sampled total closed exactly across grid and
-flight. The plotting profiles report real native column depths rounded to
-one tenth of a cell by the apparatus' per-column probes. Range, slope and
-curvature use the full-precision quantity sums. The compact trace file
-retains every eighth tick. The test checks conservation every second tick.
-These runs measure motion. Concurrent activity during screening excludes their
-wall-clock timings from the cost comparison.
+Each 64-column tank began with a fixed block on the left. The standard, deep
+and full-band fixtures started with right-hand depths of 11, 22 and 30 cells
+and steps of 6, 10 and 6 cells. The first return is the first positive
+fundamental-mode peak following a reversal. Broad range is the difference
+between the highest and lowest sliding eight-column mean. Broad slope is the
+largest difference between adjacent eight-column means divided by eight. The
+flat-floor fixture drops a 12×6-cell blob with its initial right edge at x69.
+A front column must contain at least 32 units of landed grid Water.
 
-The apparatus was built at `971846266cb88fe8ff9547c85807249f29c248ef` on WSL2
-Ubuntu 24.04, kernel `6.18.58.1-microsoft-standard-WSL2`, using g++ 13.3.0,
-`-O3 -DNDEBUG -pthread`. The 74 native source/header, apparatus and Makefile
-blobs matched that commit. The executable's SHA-256 was
-`d12116c80e0630068265c96acd6bbdaf0419dbff07b206575af6e40627456089`.
-Each run used a 180-second timeout.
+The shipping apparatus used the three-layer floor law from native commit
+`1604b66b19705d79d2704e5119a25823caee0973` plus its ramp bench on WSL2 Ubuntu
+24.04, kernel `6.18.58.1-microsoft-standard-WSL2`, g++ 13.3.0,
+`-O3 -DNDEBUG -pthread`. Its executable SHA-256 was
+`2aeb6fe886553625aa13d1733d1ee30ded38fb1f7c0af38f33b231ab6d85383c`.
+The experiment ran nine settings, each with three 1,600-tick tanks and a
+200-tick blob, six workers, and a 180-second timeout per invocation. Every
+two-tick sample closed the grid-plus-flight ledger exactly. The exploratory
+three-layer executable (`e58b95ac54f39b1d936254aadf4098bc3fbc722594d4e7b96897adc9ba60df40`)
+matched all 36 final state hashes and both CSV files byte for byte.
+Wall-clock performance was measured separately on the supplied map.
 
 ```sh
 make wave-waterwall
 python3 tools/wave_mt/ramp_tank.py build/wave_waterwall /tmp/ramp-tank-results
+python3 tools/wave_mt/plot_ramp_tank.py /tmp/ramp-tank-results  # Matplotlib
 ```
 
-The [complete settings and final-state hashes](tank-results.json),
-[sampled wave trajectories](tank-traces.csv) and
-[column depths at matching wave phases](tank-profiles.csv) retain the evidence.
+The [settings, summaries and hashes](tank-results.json) retain each setting's
+two-tick blob front. The [wave trajectories](tank-traces.csv) retain every
+eighth tick. The [column profiles](tank-profiles.csv) show 64 actual probe
+depths at the initial step, first reversal and first two returns. Probes round
+each column to 0.1 cell. Range, slope and curvature use full-precision quantities.
