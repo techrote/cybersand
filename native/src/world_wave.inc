@@ -38,6 +38,9 @@ struct World::WaveHalf {
 struct World::WaveChunk {
     static constexpr std::uint8_t kGainMask = 3, kGainNormal = 1, kGainConfined = 2;
     static constexpr std::uint8_t kFull = 4, kSolid = 8, kWet = 16;
+    // Gain bits are unused on solid faces. Keep a floating Oil lid distinct
+    // from a rigid ceiling when a column continues from a sleeping chunk.
+    static constexpr std::uint8_t kOilLid = kSolid | kGainNormal;
     // Bits 5-7: ceil(log2) of the responding rows of the cell's stack (0..5).
     static constexpr std::uint8_t kDepthShift = 5;
     static constexpr std::uint8_t kSaturated = 7; // depth code of a stack at the carrier ceiling
@@ -490,7 +493,9 @@ void World::wave_column_task(std::size_t task_index) noexcept {
                 continue;
             }
         }
-        // Gather the column: -1 solid, 0 empty, otherwise Water mass.
+        // Both negative codes block Water transport. Oil can float, so it
+        // does not supply the rigid-ceiling pressure response below it.
+        constexpr std::int32_t oil_lid = -2;
         for (std::uint32_t c = 0; c < task.count; ++c) {
             const auto& chunk = *entries[c].chunk;
             if (c < kMaximumGroup && skip[c]) {
@@ -512,7 +517,7 @@ void World::wave_column_task(std::size_t task_index) noexcept {
                     continue;
                 }
                 mass[base + ly] = material == Material::Water ? static_cast<std::int32_t>(cell.state_a_value())
-                                  : material == Material::Empty ? 0 : -1;
+                                  : material == Material::Empty ? 0 : material == Material::Oil ? oil_lid : -1;
                 flags[base + ly] = meta[static_cast<std::size_t>(ly) * static_cast<std::size_t>(size)] & WaveChunk::kFull;
             }
         }
@@ -608,6 +613,7 @@ void World::wave_column_task(std::size_t task_index) noexcept {
         std::int64_t carried = 0;
         std::int32_t index = 0;
         bool confined = false;
+        bool oil_above_group = false;
         if (above != nullptr && above->wave->included(lx, size - 1)) {
             const auto bottom = static_cast<std::size_t>(size - 1) * static_cast<std::size_t>(size) +
                                 static_cast<std::size_t>(lx);
@@ -616,7 +622,8 @@ void World::wave_column_task(std::size_t task_index) noexcept {
                 carried = above->wave->weight[bottom];
                 index = config_.wave_flow.active_rows;
             } else if ((meta & WaveChunk::kSolid) != 0U) {
-                index = -1; // a solid ceiling
+                oil_above_group = meta == WaveChunk::kOilLid;
+                if (!oil_above_group) index = -1;
             }
         } else {
             index = -1; // nothing resident above: treated as a ceiling
@@ -625,7 +632,16 @@ void World::wave_column_task(std::size_t task_index) noexcept {
         if (ceiling) index = 0;
         for (std::int32_t r = 0; r < rows; ++r) {
             const auto value = mass[r];
-            if (value < 0) { weight[r] = 0; flags[r] = WaveChunk::kSolid; carried = 0; index = 0; ceiling = true; continue; }
+            if (value < 0) {
+                // Propagate a rigid cap through Oil trapped immediately under
+                // it. A body mask or paused cell is always a rigid cap.
+                ceiling = value != oil_lid || ceiling;
+                weight[r] = 0;
+                flags[r] = ceiling ? WaveChunk::kSolid : WaveChunk::kOilLid;
+                carried = 0;
+                index = 0;
+                continue;
+            }
             if (value == 0) { weight[r] = 0; flags[r] = 0; carried = 0; index = 0; ceiling = false; continue; }
             if (spill && weight[r] != 0) {
                 // Falling Water presses on nothing and starts no stack.
@@ -636,8 +652,9 @@ void World::wave_column_task(std::size_t task_index) noexcept {
                 continue;
             }
             if (index == 0) {
-                confined = value > maximum || (value == maximum && ceiling);
-                if (value > maximum) {
+                const bool under_oil = r == 0 ? oil_above_group : flags[r - 1] == WaveChunk::kOilLid;
+                confined = !under_oil && (value > maximum || (value == maximum && ceiling));
+                if (value > maximum && !under_oil) {
                     // Sealed overfill is stiff: scale by the rows that can respond.
                     std::int32_t responding = 1;
                     while (responding < config_.wave_flow.active_rows && r + responding < rows && mass[r + responding] > 0) ++responding;

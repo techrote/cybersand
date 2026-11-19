@@ -4202,6 +4202,16 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
             if (try_move(material, x, y, x, y + 1, false, effects)) return true;
             if (try_move(material, x, y, x + direction, y + 1, false, effects)) return true;
             if (try_move(material, x, y, x - direction, y + 1, false, effects)) return true;
+            // Once afloat, an Oil cell needs a lower opening to spread.
+            // Random level moves on Water keep stirring a resting slick.
+            if (wave_) {
+                const auto support = cursor.visible(x, y + 1);
+                if (support == Material::Water ||
+                    (support == Material::Oil && (cursor.visible(x - 1, y + 1) == Material::Water ||
+                                                  cursor.visible(x + 1, y + 1) == Material::Water))) {
+                    return changed;
+                }
+            }
             if (lateral_due(material,x,y,effects) && try_lateral(material,x,y,direction,false,effects)) return true;
             return changed;
         }
