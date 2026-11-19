@@ -583,8 +583,12 @@ bool World::step_ballistic_parcel(BallisticParcel& p) {
     ++l.parcel_ticks;
     const auto q = static_cast<std::int64_t>(p.quantity);
     // Gravity, drag and saturation; each term is booked separately and exactly.
-    p.vy += c.gravity_q;
-    l.gravity_py += ballistic_checked_product(q, c.gravity_q);
+    if (p.coyote_left > 0U) {
+        --p.coyote_left;
+    } else {
+        p.vy += c.gravity_q;
+        l.gravity_py += ballistic_checked_product(q, c.gravity_q);
+    }
     {
         const auto dx = -ballistic_scale(p.vx, c.air_drag), dy = -ballistic_scale(p.vy, c.air_drag);
         p.vx += dx;

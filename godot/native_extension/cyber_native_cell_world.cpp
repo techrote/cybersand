@@ -1902,6 +1902,8 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         };
         config.wave_flow.active_rows = wave_integer("wave_active_rows", config.wave_flow.active_rows);
         config.wave_flow.gain = wave_integer("wave_gain", config.wave_flow.gain);
+        config.wave_flow.deep_gain = wave_integer("wave_deep_gain", config.wave_flow.deep_gain);
+        config.wave_flow.flux_smoothing = wave_integer("wave_flux_smoothing", config.wave_flow.flux_smoothing);
         config.wave_flow.gain_confined = wave_integer("wave_gain_confined", config.wave_flow.gain_confined);
         config.wave_flow.stiffness = wave_integer("wave_stiffness", config.wave_flow.stiffness);
         config.wave_flow.damp_shift = wave_integer("wave_damp_shift", config.wave_flow.damp_shift);
@@ -2556,6 +2558,8 @@ Dictionary CyberNativeCellWorld::get_wave_flow_status() const try {
     Dictionary parameters;
     parameters["active_rows"] = config.wave_flow.active_rows;
     parameters["gain"] = config.wave_flow.gain;
+    parameters["deep_gain"] = config.wave_flow.deep_gain;
+    parameters["flux_smoothing"] = config.wave_flow.flux_smoothing;
     parameters["gain_confined"] = config.wave_flow.gain_confined;
     parameters["stiffness"] = config.wave_flow.stiffness;
     parameters["damp_shift"] = config.wave_flow.damp_shift;
@@ -2592,6 +2596,8 @@ Dictionary CyberNativeCellWorld::get_wave_flow_status() const try {
         spill["stream_share"] = s.stream_share;
         spill["blobs"] = s.catch_falling;
         spill["stream_draw"] = s.stream_draw;
+        spill["sheet_rate"] = s.sheet_rate;
+        spill["coyote_ticks"] = s.coyote_ticks;
         spill["spill_units"] = static_cast<std::int64_t>(wave.spill_units);
         spill["relief_units"] = static_cast<std::int64_t>(wave.relief_units);
         spill["spill_faces"] = static_cast<std::int64_t>(wave.spill_faces);

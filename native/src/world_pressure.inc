@@ -2390,6 +2390,14 @@ std::uint64_t World::physical_state_hash_impl(std::optional<LiquidStateProjectio
             hash_integer(hash, tune.empty_pour_shift); hash_integer(hash, tune.flow_share_shift);
             hash_integer(hash, tune.adhesion_shift);
         }
+        if (tune.flux_smoothing != 0) {
+            for (const char c : std::string_view{"wave-flux-smoothing"}) hash_byte(hash, static_cast<std::uint8_t>(c));
+            hash_integer(hash, tune.flux_smoothing);
+        }
+        if (tune.deep_gain != 0) {
+            for (const char c : std::string_view{"wave-deep-gain"}) hash_byte(hash, static_cast<std::uint8_t>(c));
+            hash_integer(hash, tune.deep_gain);
+        }
         if (tune.spill.enabled) {
             // WAVE-WATERWALL-001: absent while disabled, so the qualified
             // Wave stream is unchanged. Parcels are bound by the ballistic block.
@@ -2403,6 +2411,7 @@ std::uint64_t World::physical_state_hash_impl(std::optional<LiquidStateProjectio
                 for (const char c : std::string_view{"stream-draw"}) hash_byte(hash, static_cast<std::uint8_t>(c));
                 hash_integer(hash, tune.spill.stream_draw);
             }
+            hash_wave_discharge(hash, tune.spill, ballistic_parcels_);
         }
         hash_integer(hash, wave_->round);
     }

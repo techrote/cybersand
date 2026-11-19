@@ -403,6 +403,8 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         for (const WaveKnob knob : {
                 WaveKnob{"workbench_wave_active_rows", &cybersand::WaveFlowConfig::active_rows},
                 WaveKnob{"workbench_wave_gain", &cybersand::WaveFlowConfig::gain},
+                WaveKnob{"workbench_wave_deep_gain", &cybersand::WaveFlowConfig::deep_gain},
+                WaveKnob{"workbench_wave_flux_smoothing", &cybersand::WaveFlowConfig::flux_smoothing},
                 WaveKnob{"workbench_wave_gain_confined", &cybersand::WaveFlowConfig::gain_confined},
                 WaveKnob{"workbench_wave_stiffness", &cybersand::WaveFlowConfig::stiffness},
                 WaveKnob{"workbench_wave_damp_shift", &cybersand::WaveFlowConfig::damp_shift},
@@ -462,6 +464,8 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
                 SpillKnob{"workbench_wave_spill_launch_speed", &cybersand::WaveSpillConfig::launch_speed},
                 SpillKnob{"workbench_wave_spill_stream_share", &cybersand::WaveSpillConfig::stream_share},
                 SpillKnob{"workbench_wave_spill_blobs", &cybersand::WaveSpillConfig::catch_falling},
+                SpillKnob{"workbench_wave_spill_sheet_rate", &cybersand::WaveSpillConfig::sheet_rate},
+                SpillKnob{"workbench_wave_spill_coyote_ticks", &cybersand::WaveSpillConfig::coyote_ticks},
                 SpillKnob{"workbench_wave_spill_stream_draw", &cybersand::WaveSpillConfig::stream_draw}}) {
             if (!options.has(knob.key)) continue;
             if (!workbench || !config->wave_flow.spill.enabled || options[knob.key].get_type() != Variant::INT)
@@ -977,6 +981,8 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         wave_flow["substeps"] = wave.substeps;
         wave_flow["active_rows"] = wave.active_rows;
         wave_flow["gain"] = wave.gain;
+        wave_flow["deep_gain"] = wave.deep_gain;
+        wave_flow["flux_smoothing"] = wave.flux_smoothing;
         wave_flow["gain_confined"] = wave.gain_confined;
         wave_flow["stiffness"] = wave.stiffness;
         wave_flow["damp_shift"] = wave.damp_shift;

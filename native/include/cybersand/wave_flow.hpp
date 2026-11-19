@@ -101,6 +101,10 @@ struct WaveSpillConfig {
     // vertical grid stream, without reducing the throw, 0..255. The pool feed
     // refills the face, so the stream is drawn from the volume behind it.
     std::int32_t stream_draw = 0;
+    // Sheet flow through each exposed resting row, in mass units per full cell
+    // of outward head per round. Deeper rows pour while the upper two can throw.
+    std::int32_t sheet_rate = 0;   // 0..127, 0 keeps the original discharge
+    std::int32_t coyote_ticks = 0; // 0..8 gravity-free flight ticks for a thrown crest
     [[nodiscard]] bool operator==(const WaveSpillConfig&) const = default;
 };
 
@@ -125,6 +129,12 @@ struct WaveFlowConfig {
     std::int32_t empty_pour_shift = WaveFlowParameters::kEmptyPourShift;
     std::int32_t flow_share_shift = WaveFlowParameters::kFlowShareShift;
     std::int32_t adhesion_shift = WaveFlowParameters::kAdhesionShift;
+    // Pool-to-pool restoring gain. Zero inherits gain. Dry fronts and shallow
+    // Water keep ordinary gain, and sealed stacks keep gain_confined.
+    std::int32_t deep_gain = 0;
+    // Fraction /256 of each adjacent retained wet-face velocity used per
+    // round. At 64 an alternating one-face ripple loses all its old momentum.
+    std::int32_t flux_smoothing = 0;
     WaveSpillConfig spill{};
     // How hard Wave Water pushes transient bodies (Rapier actors). Observation
     // only: it changes the contact impulse offered to the body owner, never the
