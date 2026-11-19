@@ -4188,8 +4188,12 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
             if (wave_ != nullptr && cursor.visible(x, y - 1) == Material::Water) {
                 // The scheduled Oil is selected. Its immediate upper neighbour
                 // can only be outside the region across the top edge.
-                if (selected_core_region_ &&
-                    scheduler_geometry_.core_for_cell(x, y - 1).y < selected_core_region_->min_y) {
+                const auto upper = address(x, y - 1);
+                const bool water_already_moved =
+                    find_chunk(upper.chunk)->cells[upper.index].epoch_value() == update_epoch_;
+                const bool water_paused = selected_core_region_ &&
+                    scheduler_geometry_.core_for_cell(x, y - 1).y < selected_core_region_->min_y;
+                if (water_already_moved || water_paused) {
                     keep_cell_active(x, y, effects);
                 } else if (try_move(Material::Water, x, y - 1, x, y, true, effects)) {
                     return true;
@@ -4850,6 +4854,25 @@ void World::prepare_write_domain(CellRect core_rect) {
             const auto* chunk = find_chunk({chunk_x, chunk_y});
             temperature_field_required =
                 temperature_field_required || (chunk != nullptr && chunk->temperatures != nullptr);
+        }
+    }
+    // Oil can pull warm Water in from the row above this core. If that
+    // row belongs to another chunk, prepare the cold destination on the
+    // owner before its worker can exchange the pair.
+    if (wave_ && !temperature_field_required && core_minimum.local_y == 0) {
+        const auto water_y = core_rect.y - 1;
+        for (auto cx = core_minimum.chunk.x; cx <= core_maximum.chunk.x; ++cx) {
+            const auto* upper = find_chunk({cx, core_minimum.chunk.y - 1});
+            if (!upper || !upper->temperatures) continue;
+            const auto first_x = std::max(core_rect.x, cx * config_.chunk_size);
+            const auto end_x = std::min(core_rect.x + core_rect.width, (cx + 1) * config_.chunk_size);
+            for (auto x = first_x; x < end_x; ++x) {
+                if (get(x, core_rect.y) == Material::Oil && get(x, water_y) == Material::Water &&
+                    stored_temperature(x, water_y) != config_.ambient_temperature) {
+                    ensure_temperature_field(*find_chunk({cx, core_minimum.chunk.y}));
+                    break;
+                }
+            }
         }
     }
     if (temperature_field_required) {
