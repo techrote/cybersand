@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewed": "2026-11-14",
+  "reviewed": "2026-11-19",
   "scope": "Explicit current-answer corpus; status and scope must accompany every chunk. Historical records are separately routed, never silently mixed into current answers.",
   "documents": [
     "operations/wb-art-paint-integrated-candidate.md",
@@ -150,6 +150,10 @@
     "../.github/pull_request_template.md"
   ],
   "excluded": [
+    {
+      "path": "research/gentek-classic-001.md",
+      "reason": "Branch-scoped Draft/HOLD PR #624 sampler catalogue and qualification scope. Read directly for explicit CLASSIC research reviews; the Architectural Generator contract remains the canonical home for accepted controls and runtime publication requirements."
+    },
     {
       "path": "audits/2026-11-08-explore001-integration-qa.md",
       "reason": "Dated Draft source review and qualification checkpoint; canonical generated-map contract and playtest guide preserve candidate/publication/human acceptance boundaries."

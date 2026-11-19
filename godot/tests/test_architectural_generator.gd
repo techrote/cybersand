@@ -372,6 +372,50 @@ func classic_gentek_gallery() -> void:
 			report.cases.append({"case":"gentek-classic-structural-difference","algorithm":algorithm,
 				"against":"trestle","occupied_empty_difference_cells":delta})
 
+func classic_repair_previews() -> void:
+	# Complete native bays expose the two review regressions without shared
+	# tunnels or glazing obscuring structural contact. These are additional
+	# witnesses; the seventy-two unmodified preset requests remain above.
+	for algorithm: String in ["rib_vault", "suspended_deck"]:
+		var style: Dictionary = {}
+		for preset: Dictionary in Project.builtin_presets():
+			if preset.module == algorithm: style = preset.duplicate(true)
+		if not check(not style.is_empty(), "repair preview preset " + algorithm): continue
+		if algorithm == "rib_vault":
+			style.geometry.room_size = 32
+			style.geometry.floor_height = 128
+			style.geometry.wall_thickness = 1
+			style.geometry.door_width = 2
+		style.geometry.shaft_width = 0
+		style.apertures["automatic_windows"] = false
+		var project: Dictionary = small_project()
+		project.seed = 271828
+		project.automatic_tunnels = false
+		project.styles = [{"enabled":true,"share":100.0,"preset":style}]
+		var compiled: Dictionary = Project.compile(project)
+		if not check(compiled.get("ok", false), "repair preview compiles " + algorithm + ": " + str(compiled.get("error", ""))): continue
+		var extent := Vector2i(int(style.geometry.room_size), int(style.geometry.floor_height))
+		var data: Dictionary = generation(compiled.recipe, Rect2i(Vector2i.ZERO, extent))
+		if not data.has("cells"): continue
+		var occupied := PackedByteArray()
+		occupied.resize(data.cells.size())
+		for i: int in occupied.size(): occupied[i] = 0 if data.cells[i] == 0 else 1
+		var component_count: int = components({"width":extent.x,"height":extent.y,"cells":occupied}, 1)
+		check(component_count == 1, "repair bay has one cardinally connected structure: " + algorithm)
+		if algorithm == "suspended_deck":
+			var wall: int = int(style.geometry.wall_thickness)
+			for hanger: int in [extent.x / 4, 3 * extent.x / 4]:
+				var contact := true
+				for x: int in range(hanger - wall, hanger + wall + 1):
+					contact = contact and data.cells[(wall - 1) * extent.x + x] != 0 and data.cells[wall * extent.x + x] != 0
+				check(contact, "suspended hanger meets the upper deck at " + str(hanger))
+		var name := "classic-repair-rib-vault-steep" if algorithm == "rib_vault" else "classic-repair-suspended-deck-contact"
+		preview(name, data.cells, extent)
+		report.cases.append({"case":"gentek-classic-repair","algorithm":algorithm,
+			"geometry":style.geometry,"automatic_windows":false,"cardinal_components":component_count,
+			"material_sha256":data.material_sha256,"recipe_sha256":data.recipe_sha256,
+			"preview":name + ".png"})
+
 func native_contracts() -> void:
 	compiler_contracts()
 	var hashes: Dictionary = {}
@@ -806,6 +850,7 @@ func run() -> void:
 		if phase == "native":
 			native_algorithm_gallery()
 			classic_gentek_gallery()
+			classic_repair_previews()
 			native_contracts()
 		elif phase in ["author", "reopen"]: await authoring(phase == "reopen")
 		elif phase in ["multistyle-author", "multistyle-reopen"]:

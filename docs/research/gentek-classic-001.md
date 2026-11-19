@@ -3,7 +3,8 @@ title: GENTEK-CLASSIC-001 compact architectural sampler batch
 status: Draft
 document-kind: research
 scope: Seventy-two compact schema-4 native Genteks using the existing Architectural Generator pipeline
-last-reviewed: 2026-11-15
+canonical-for: []
+last-reviewed: 2026-11-19
 related-documents: [../systems/architectural-generator.md, ../systems/procedural-world-generation.md]
 ---
 
@@ -92,3 +93,53 @@ All are version 1 and reuse the existing project/preset compiler, five style
 cards, native preview/install and saved-start path. They do not self-assemble,
 negotiate zone boundaries or inspect live World cells. Viaduct v1/v2 and the
 other accepted algorithms remain unchanged.
+
+## Bounded review repairs — 19 November 2026
+
+[PR #624](https://github.com/techrote/cybersand/pull/624) remains **Draft / HOLD**.
+The repair starts from `615828b28337f85e4663e03ba479616db4ddf764` and retains the
+seventy-two version-1 modules above. Its four targets are:
+
+| Review finding | Required repair and qualification |
+| --- | --- |
+| Suspended Deck leaves an empty row between its upper deck and hangers | Start hangers at the first row below the deck; assert the deck-to-hanger join in native cells. |
+| Rib Vault breaks into disconnected pieces at an admitted tall, narrow proportion | Use a bounded stroke that accounts for the rib slope; check continuity at 32-cell bays, 128-cell floors and one-cell walls, while preserving the default 80-by-80 output. |
+| The project-contract test treats CLASSIC modules as legacy modules | Assert the exact catalogue and supported versions, including all seventy-two CLASSIC v1 modules, and execute this contract before publishing the native gallery. |
+| This Draft research note has no retrieval-manifest route | Explicitly exclude it from normal current-answer retrieval, with the reason recorded in the manifest. |
+
+The native repair and regression homes are
+[`generation_architecture_classic.inc`](../../native/src/generation_architecture_classic.inc)
+and [`test_world_generation.cpp`](../../native/tests/test_world_generation.cpp).
+Catalogue admission is checked by
+[`test_architectural_project_contract.gd`](../../godot/tests/test_architectural_project_contract.gd).
+This research note has no canonical topics; the existing
+[Architectural Generator contract](../systems/architectural-generator.md)
+continues to own controls, saved-project semantics and runtime publication.
+
+### Qualification scope and evidence
+
+The [Draft gallery workflow](../../.github/workflows/gentek-classic-draft-gallery.yml)
+records the native generation suite, architectural project-contract test and
+native gallery qualification before publishing PNGs. Its retained artifact
+includes the test logs, source-built Linux candidate, seventy-two preset previews,
+two complete-bay repair previews and `qualification-provenance.json`. That
+manifest binds the checked-out commit and tree, native source inputs, toolchain,
+candidate binary and evidence hashes. PR #624 records the qualifying run and
+results. Earlier gallery results retain their original source identities and do
+not qualify changed native code.
+
+The [steep Rib Vault bay](../images/gentek-classic/classic-repair-rib-vault-steep.png)
+and [Suspended Deck hanger contacts](../images/gentek-classic/classic-repair-suspended-deck-contact.png)
+are additional native-material witnesses with windows and service shafts disabled.
+The original seventy-two preset requests remain in the full gallery.
+
+The [Documentation workflow](../../.github/workflows/documentation.yml) runs the
+documentation checks on Draft pull requests but skips its retained-runtime
+provenance step until the pull request is non-Draft. A successful Draft run
+therefore does not establish that the committed Windows DLL or Linux SO matches
+the repaired source. A qualified source-built Linux candidate and native gallery
+establish only the execution recorded for that candidate. Retained-runtime
+publication and Windows execution remain separate outstanding requirements. The
+[current provenance checker](../../tools/ci/check_repository.py) and existing
+publication restrictions remain in force. No merge or Ready promotion is part
+of this repair.

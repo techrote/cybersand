@@ -4,6 +4,20 @@ extends SceneTree
 # measured zone connectivity/quotas and native admission of exact edge seeds.
 const Project = preload("res://scripts/architectural_generator_project.gd")
 const Store = preload("res://scripts/workbench_generated_map.gd")
+# Keep this expected inventory independent of the production preset/catalogue lists.
+const CLASSIC_MODULE_IDS: Array[String] = ["trestle","stacked_arcade","flying_buttress","sawtooth_gallery",
+	"cantilever_spine","rib_vault","nested_arcade","suspended_deck",
+	"bowstring_truss","diamond_truss","portal_frame","ladder_bridge","stepped_aqueduct","split_pier",
+	"cable_gallery","clerestory_hall","mushroom_deck","zigzag_bridge","scalloped_vault","lattice_tower",
+	"offset_arcade","bridgehouse","forked_gantry","buttress_wall",
+	"fan_truss","pratt_truss","vierendeel_frame","suspension_pylon","harp_bridge","double_cantilever",
+	"stepped_buttress","colonnade","basilica","crenellated_bridge","pointed_arcade","inverted_arch",
+	"hourglass_pier","tripod_frame","chevron_hall","hanging_arcade","shelf_stack","staggered_balcony",
+	"monopod_tower","wedge_gallery","crown_bridge","zigzag_pier","drum_vault","pyramidal_frame",
+	"warren_truss","kingpost_frame","queenpost_frame","lenticular_bridge","radial_stay_bridge","twin_mast_bridge",
+	"a_frame_hall","butterfly_hall","ziggurat_arcade","corbel_arcade","chain_vault","ring_pier",
+	"folded_plate_hall","space_frame","crossbeam_stack","yoke_bridge","lantern_tower","spine_arcade",
+	"cascade_terrace","inverted_trestle","cranked_beam","barrel_arcade","buttress_crown","triptych_arcade"]
 var checks := 0
 var failures := 0
 
@@ -175,22 +189,9 @@ func new_native_algorithms() -> void:
 		"three new native algorithms produce materially distinct deterministic geometry")
 
 func classic_genteks() -> void:
-	var ids: Array[String] = ["trestle","stacked_arcade","flying_buttress","sawtooth_gallery",
-		"cantilever_spine","rib_vault","nested_arcade","suspended_deck",
-		"bowstring_truss","diamond_truss","portal_frame","ladder_bridge","stepped_aqueduct","split_pier",
-		"cable_gallery","clerestory_hall","mushroom_deck","zigzag_bridge","scalloped_vault","lattice_tower",
-		"offset_arcade","bridgehouse","forked_gantry","buttress_wall",
-		"fan_truss","pratt_truss","vierendeel_frame","suspension_pylon","harp_bridge","double_cantilever",
-		"stepped_buttress","colonnade","basilica","crenellated_bridge","pointed_arcade","inverted_arch",
-		"hourglass_pier","tripod_frame","chevron_hall","hanging_arcade","shelf_stack","staggered_balcony",
-		"monopod_tower","wedge_gallery","crown_bridge","zigzag_pier","drum_vault","pyramidal_frame",
-		"warren_truss","kingpost_frame","queenpost_frame","lenticular_bridge","radial_stay_bridge","twin_mast_bridge",
-		"a_frame_hall","butterfly_hall","ziggurat_arcade","corbel_arcade","chain_vault","ring_pier",
-		"folded_plate_hall","space_frame","crossbeam_stack","yoke_bridge","lantern_tower","spine_arcade",
-		"cascade_terrace","inverted_trestle","cranked_beam","barrel_arcade","buttress_crown","triptych_arcade"]
 	var presets: Array = Project.builtin_presets()
 	var hashes := {}
-	for module: String in ids:
+	for module: String in CLASSIC_MODULE_IDS:
 		var found: Dictionary = {}
 		for preset: Dictionary in presets:
 			if preset.module == module: found = preset.duplicate(true)
@@ -295,20 +296,30 @@ func native_identity_edges() -> void:
 		check(reopened.get_configuration() == second.recipe,"native failed custom material preserves accepted configuration")
 	var catalogue_generator: Variant = ClassDB.instantiate(&"CyberWorldGenerator")
 	var catalogue: Dictionary = catalogue_generator.get_catalogue()
+	# Zero denotes legacy entries that must omit minimum_recipe_schema entirely.
+	# Explicit version keys also reject unintended CLASSIC v2 catalogue entries.
+	var expected_schemas := {"arcology:1":0,"arcology:2":4,"vault:1":0,"vault:2":4,"aqueduct:1":0,
+		"terraced:1":4,"terraced:2":4,"hex_hive:1":4,"hex_hive:2":4,"arcade:1":4,"arcade:2":4}
+	for module: String in CLASSIC_MODULE_IDS:
+		expected_schemas[module + ":1"] = 4
+	check(CLASSIC_MODULE_IDS.size() == 72 and expected_schemas.size() == 83,
+		"expected catalogue names all seventy-two CLASSIC v1 and eleven retained variants")
 	var versions := {}
 	for entry: Dictionary in catalogue.modules:
 		var identity: String = str(entry.id) + ":" + str(entry.version)
+		check(not versions.has(identity), "native catalogue module/version is unique: " + identity)
 		versions[identity] = true
-		var architectural: bool = str(entry.id) in ["terraced", "hex_hive", "arcade"]
-		var versioned_legacy: bool = str(entry.id) in ["arcology", "vault"] and int(entry.version) == 2
-		if architectural or versioned_legacy:
+		if not check(expected_schemas.has(identity), "native catalogue has a reviewed module/version: " + identity): continue
+		if int(expected_schemas[identity]) == 4:
 			check(int(entry.get("minimum_recipe_schema", -1)) == 4,
 				"schema-4-only catalogue variant declares its minimum schema: " + identity)
 		else:
 			check(not entry.has("minimum_recipe_schema"),
 				"legacy module metadata remains free of schema-4 restrictions: " + identity)
-	check(versions.has_all(["arcology:1","arcology:2","vault:1","vault:2","aqueduct:1",
-		"terraced:1","terraced:2","hex_hive:1","hex_hive:2","arcade:1","arcade:2"]),"native catalogue exposes exact legacy and architectural module versions")
+	for identity: String in expected_schemas:
+		check(versions.has(identity), "native catalogue exposes expected module/version: " + identity)
+	check(catalogue.modules.size() == expected_schemas.size(),
+		"native catalogue contains exactly the reviewed legacy and architectural variants")
 
 func run() -> void:
 	hostile_json()

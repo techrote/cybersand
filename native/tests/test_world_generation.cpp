@@ -1241,6 +1241,163 @@ void classic_architectural_genteks() {
     require(unique.size()==ids.size(),"seventy-two classic Genteks produce distinct native geometry");
 }
 
+Recipe classic_contact_recipe(const std::string& module, std::int64_t bay,
+        std::int64_t floor, std::int64_t wall, std::int64_t x, std::int64_t y,
+        bool windows = false) {
+    Recipe recipe;
+    recipe.schema = kArchitecturalSchemaVersion;
+    recipe.seed = 271828;
+    recipe.chunk_size = 64;
+    recipe.parameters.surface_y = -100;
+    recipe.architecture.automatic_tunnels = false;
+    auto m = instance("contact", module, {x, y, 3 * bay, 3 * floor});
+    m.parameters = {{"bay_width", static_cast<double>(bay)},
+        {"floor_height", static_cast<double>(floor)}, {"wall", static_cast<double>(wall)},
+        {"door_width", 2}, {"shaft_width", 0}, {"automatic_windows", windows ? 1 : 0},
+        {"wall_material", static_cast<double>(Material::ReinforcedConcrete)},
+        {"floor_material", static_cast<double>(Material::SteelGrating)},
+        {"accent_material", static_cast<double>(Material::CeramicTile)},
+        {"window_material", static_cast<double>(Material::FrostedGlass)}};
+    recipe.modules.push_back(m);
+    return recipe;
+}
+
+void classic_rib_vault_contacts() {
+    struct Dimensions { std::int64_t bay, floor, wall; bool has_window_space; };
+    constexpr std::array<Dimensions, 8> dimensions{{
+        {32, 128, 1, true}, {33, 127, 1, true}, {16, 256, 1, true}, {35, 129, 2, true},
+        {37, 131, 3, true}, {80, 80, 3, true}, {48, 160, 5, true},
+        {16, 16, 5, false}}}; // Admitted low floor has base < apex and no glazing clearance.
+    constexpr std::array<std::array<std::int64_t, 2>, 3> origins{{
+        {0, 0}, {-137, 211}, {157, -193}}};
+    for (const auto& [bay, floor, wall, has_window_space] : dimensions) {
+        std::vector<Material> canonical;
+        for (const auto& [ox, oy] : origins) {
+            const auto recipe = classic_contact_recipe("rib_vault", bay, floor, wall, ox, oy);
+            const auto generator = Generator::compile(recipe);
+            auto glazed_recipe = recipe;
+            glazed_recipe.modules[0].parameters["automatic_windows"] = 1;
+            const auto glazed = Generator::compile(glazed_recipe);
+            std::vector<Material> cells;
+            bool repeats = true, window_control = true, valid_roles = true;
+            std::size_t occupied = 0, ribs = 0, windows = 0;
+            for (std::int64_t y = 0; y < floor; ++y) {
+                for (std::int64_t x = 0; x < bay; ++x) {
+                    const auto material = generator->sample(ox + x, oy + y);
+                    cells.push_back(material);
+                    occupied += material != Material::Empty;
+                    ribs += material == Material::CeramicTile;
+                    valid_roles = valid_roles && (material == Material::Empty ||
+                        material == Material::ReinforcedConcrete ||
+                        material == Material::SteelGrating || material == Material::CeramicTile);
+                    for (const auto& [dx, dy] : {std::pair{bay, INT64_C(0)},
+                            std::pair{INT64_C(0), floor}, std::pair{bay, floor}})
+                        repeats = repeats && generator->sample(ox + x + dx, oy + y + dy) == material;
+                    const auto with_window = glazed->sample(ox + x, oy + y);
+                    windows += with_window == Material::FrostedGlass;
+                    window_control = window_control && (with_window == material ||
+                        (material == Material::Empty && with_window == Material::FrostedGlass));
+                }
+            }
+            const auto context = "rib_vault " + std::to_string(bay) + "x" +
+                std::to_string(floor) + " wall " + std::to_string(wall);
+            require(occupied > 0 && occupied < cells.size() && ribs > 0 && valid_roles,
+                context + " retains structural ribs and negative space without glazing");
+            require(repeats, context + " repeats exactly across horizontal and vertical bay seams");
+            require(window_control && (has_window_space ? windows > 0 : windows == 0),
+                context + " windows preserve structural ribs and only glaze empty cells");
+            if (canonical.empty()) canonical = cells;
+            else require(cells == canonical, context + " is invariant under signed bounds translation");
+
+            // Flood from the bottom deck using face contacts only. An isolated
+            // three-cell rib fragment must fail even if its diagonal neighbours exist.
+            const auto deck = static_cast<std::size_t>((floor - 1) * bay);
+            require(cells[deck] == Material::SteelGrating, context + " has its complete lower deck");
+            std::vector<bool> visited(cells.size(), false);
+            std::vector<std::size_t> pending{deck};
+            visited[deck] = true;
+            std::size_t reached = 0;
+            while (!pending.empty()) {
+                const auto index = pending.back(); pending.pop_back(); ++reached;
+                const auto x = static_cast<std::int64_t>(index) % bay;
+                const auto y = static_cast<std::int64_t>(index) / bay;
+                for (const auto& [dx, dy] : {std::pair{-1, 0}, std::pair{1, 0},
+                        std::pair{0, -1}, std::pair{0, 1}}) {
+                    const auto nx = x + dx, ny = y + dy;
+                    if (nx < 0 || nx >= bay || ny < 0 || ny >= floor) continue;
+                    const auto next = static_cast<std::size_t>(ny * bay + nx);
+                    if (!visited[next] && cells[next] != Material::Empty) {
+                        visited[next] = true; pending.push_back(next);
+                    }
+                }
+            }
+            require(reached == occupied,
+                context + " joins every rib and both side supports to the deck by face contacts");
+        }
+    }
+
+    // These byte-order-independent material hashes were captured from the
+    // unchanged 615828b source before repairing steep-rib rasterization.
+    constexpr std::array<std::uint64_t, 2> original_hashes{
+        UINT64_C(5546347903326514805), UINT64_C(154095329138458469)};
+    for (std::size_t windows = 0; windows < original_hashes.size(); ++windows) {
+        const auto baseline = Generator::compile(classic_contact_recipe(
+            "rib_vault", 80, 80, 3, 0, 0, windows != 0));
+        std::uint64_t hash = UINT64_C(14695981039346656037);
+        for (std::int64_t y = 0; y < 80; ++y) for (std::int64_t x = 0; x < 80; ++x) {
+            const auto material = static_cast<std::uint16_t>(baseline->sample(x, y));
+            hash = (hash ^ (material & 255U)) * UINT64_C(1099511628211);
+            hash = (hash ^ (material >> 8U)) * UINT64_C(1099511628211);
+        }
+        require(hash == original_hashes[windows],
+            "rib_vault shipped 80x80 wall-3 output is unchanged with windows off/on");
+    }
+    for (const bool windows : {false, true}) {
+        auto recipe = classic_contact_recipe("rib_vault", 32, 128, 1, -137, 211, windows);
+        const auto uncut = Generator::compile(recipe);
+        recipe.modules[0].parameters["shaft_width"] = 8;
+        const auto cut = Generator::compile(recipe);
+        const auto bounds = recipe.modules[0].bounds;
+        const auto left = bounds.width / 2 - 4;
+        bool shaft_clear = true, outside_unchanged = true;
+        for (std::int64_t y = 0; y < bounds.height; ++y)
+            for (std::int64_t x = 0; x < bounds.width; ++x) {
+                const auto actual = cut->sample(bounds.x + x, bounds.y + y);
+                if (x >= left && x < left + 8) shaft_clear = shaft_clear && actual == Material::Empty;
+                else outside_unchanged = outside_unchanged &&
+                    actual == uncut->sample(bounds.x + x, bounds.y + y);
+            }
+        require(shaft_clear && outside_unchanged,
+            "rib_vault service shaft cuts ribs/windows without changing its exterior");
+    }
+}
+
+void classic_suspended_deck_contacts() {
+    constexpr std::array<std::array<std::int64_t, 3>, 3> dimensions{{
+        {96, 72, 3}, {33, 127, 1}, {48, 128, 5}}};
+    for (const auto& [bay, floor, wall] : dimensions) {
+        for (const auto& [ox, oy] : {std::pair{0, 0}, std::pair{-137, 211}, std::pair{157, -193}}) {
+            const auto generator = Generator::compile(classic_contact_recipe(
+                "suspended_deck", bay, floor, wall, ox, oy));
+            bool joined = true, open_bay = true;
+            for (const auto& [dx, dy] : {std::pair{INT64_C(0), INT64_C(0)},
+                    std::pair{bay, floor}}) {
+                for (const auto quarter : {bay / 4, 3 * bay / 4}) {
+                    for (auto x = quarter - wall; x <= quarter + wall; ++x) {
+                        joined = joined && generator->sample(ox + dx + x, oy + dy + wall - 1) == Material::SteelGrating;
+                        joined = joined && generator->sample(ox + dx + x, oy + dy + wall) == Material::CeramicTile;
+                        for (auto y = wall; y <= floor / 2; ++y)
+                            joined = joined && generator->sample(ox + dx + x, oy + dy + y) != Material::Empty;
+                    }
+                }
+                open_bay = open_bay && generator->sample(ox + dx + bay / 2, oy + dy + wall) == Material::Empty;
+            }
+            require(joined && open_bay,
+                "suspended_deck joins both full-width hangers to their carrier and lower deck, preserving the open bay");
+        }
+    }
+}
+
 void refined_architectural_details() {
     const auto module_at = [](const std::string& id, std::uint32_t version) {
         Recipe recipe;
@@ -1309,6 +1466,8 @@ int main() {
         architectural_arcology_apertures_and_jobs();
         independent_architectural_algorithms();
         classic_architectural_genteks();
+        classic_rib_vault_contacts();
+        classic_suspended_deck_contacts();
         refined_architectural_details();
         std::cout << "PASS procedural generation: candidate/order/partition determinism, signed seams, "
                      "theme hierarchy/exclusions, broad/fine/hard controls, bounded modules, "

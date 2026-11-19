@@ -23,10 +23,15 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: ${{ github.ref_name }}
+          ref: ${{ github.sha }}
           fetch-depth: 0
+      - name: Verify immutable source checkout
+        run: test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
       - name: Focused native tests
-        run: timeout 3600 make -j2 worldgen-test CXX=g++-13
+        run: |
+          set -euo pipefail
+          mkdir -p build/gentek-classic-gallery
+          timeout 3600 make -j2 worldgen-test CXX=g++-13 2>&1 | tee build/gentek-classic-gallery/worldgen-test.log
       - name: Fetch pinned dependencies
         run: |
           set -euo pipefail
@@ -48,10 +53,13 @@ jobs:
           LINUX_CXX: /usr/bin/g++-13
           CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
         run: |
-          timeout 3600 bash tools/build_pinned_godot_cpp.sh linux
-          timeout 3600 bash tools/build_native_extension.sh
+          set -euo pipefail
+          timeout 3600 bash tools/build_pinned_godot_cpp.sh linux 2>&1 | tee build/gentek-classic-gallery/godot-cpp-build.log
+          timeout 3600 bash tools/build_native_extension.sh 2>&1 | tee build/gentek-classic-gallery/native-build.log
           cp "$CYBERSAND_NATIVE_OUTPUT" godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
-      - name: Render actual native material previews
+          mkdir -p build/gentek-classic-gallery/candidate
+          cp "$CYBERSAND_NATIVE_OUTPUT" build/gentek-classic-gallery/candidate/
+      - name: Prepare pinned Godot
         run: |
           set -euo pipefail
           curl -fL --retry 3 -o "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
@@ -60,10 +68,53 @@ jobs:
           unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
           GODOT_BIN="$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64"
           chmod +x "$GODOT_BIN"
-          mkdir -p build/gentek-classic-gallery
-          CYBERSAND_ARCHITECTURE_PHASE=native CYBERSAND_ARCHITECTURE_OUTPUT="$GITHUB_WORKSPACE/build/gentek-classic-gallery"             timeout 3600 "$GODOT_BIN" --headless --path godot --script res://tests/test_architectural_generator.gd
+          echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
+      - name: Validate architectural project and catalogue contract
+        run: |
+          set -euo pipefail
+          timeout 3600 "$GODOT_BIN" --headless --path godot --script res://tests/test_architectural_project_contract.gd 2>&1 | tee build/gentek-classic-gallery/project-contract.log
+          grep -Eq '^ARCHITECTURAL_PROJECT_CONTRACT checks=[1-9][0-9]* failures=0$' build/gentek-classic-gallery/project-contract.log
+      - name: Render actual native material previews
+        run: |
+          set -euo pipefail
+          CYBERSAND_ARCHITECTURE_PHASE=native CYBERSAND_ARCHITECTURE_OUTPUT="$GITHUB_WORKSPACE/build/gentek-classic-gallery" \
+            timeout 3600 "$GODOT_BIN" --headless --path godot --script res://tests/test_architectural_generator.gd 2>&1 | tee build/gentek-classic-gallery/architecture-native.log
+          grep -Eq '^ARCHITECTURE_RESULTS phase=native checks=[1-9][0-9]* failures=0 complete=true$' build/gentek-classic-gallery/architecture-native.log
           test "$(find build/gentek-classic-gallery -maxdepth 1 -name 'classic-gentek-*.png' | wc -l)" -eq 72
+          test "$(find build/gentek-classic-gallery -maxdepth 1 -name 'classic-repair-*.png' | wc -l)" -eq 2
+      - name: Bind qualification evidence to source and runtime
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, subprocess, sys
+          sys.path.insert(0, 'tools/ci')
+          from native_candidate_identity import source
+          root = pathlib.Path.cwd()
+          commit, tree, inputs = source(root)
+          assert commit == os.environ['GITHUB_SHA']
+          directory = root / 'build/gentek-classic-gallery'
+          report = json.loads((directory / 'architecture-native.json').read_text())
+          assert report['phase'] == 'native' and report['checks'] > 0 and report['failures'] == 0
+          digest = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
+          candidate = directory / 'candidate/libcybersand_native.linux.x86_64.so'
+          assert candidate.read_bytes().startswith(b'\x7fELF')
+          assert digest(candidate) == digest(root / 'godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so')
+          files = {p.relative_to(directory).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
+                   for p in sorted(directory.rglob('*')) if p.is_file()}
+          version = lambda command: subprocess.check_output(command, text=True).splitlines()[0]
+          identity = {'schema_version': 1, 'kind': 'gentek-classic-draft-linux-qualification',
+                      'source_commit': commit, 'source_tree': tree, 'source_inputs': inputs,
+                      'godot_cpp_commit': os.environ['GODOT_CPP_COMMIT'],
+                      'godot_cpp_library_sha256': digest(pathlib.Path(os.environ['RUNNER_TEMP']) / 'godot-cpp/bin/libgodot-cpp.linux.template_debug.x86_64.a'),
+                      'godot': version([os.environ['GODOT_BIN'], '--version']),
+                      'godot_sha256': digest(pathlib.Path(os.environ['GODOT_BIN'])),
+                      'rapier_sha256': digest(root / 'godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so'),
+                      'compiler': version(['g++-13', '--version']), 'linker': version(['ld', '--version']),
+                      'run_id': os.environ['GITHUB_RUN_ID'], 'run_attempt': os.environ['GITHUB_RUN_ATTEMPT'],
+                      'artifacts_sha256': files, 'status': 'Draft/HOLD'}
+          (directory / 'qualification-provenance.json').write_text(json.dumps(identity, indent=2, sort_keys=True) + '\n')
+          PY
       - name: Retain complete evidence
+        if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: gentek-classic-gallery-${{ github.run_id }}
@@ -75,6 +126,7 @@ jobs:
           set -euo pipefail
           mkdir -p docs/images/gentek-classic
           cp build/gentek-classic-gallery/classic-gentek-*.png docs/images/gentek-classic/
+          cp build/gentek-classic-gallery/classic-repair-*.png docs/images/gentek-classic/
           git add docs/images/gentek-classic
           if git diff --cached --quiet; then exit 0; fi
           git config user.name 'github-actions[bot]'

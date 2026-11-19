@@ -107,10 +107,12 @@ public:
         const auto apex=2*p_.wall+1, base=p_.level-p_.wall-1;
         const auto span=std::max<std::int64_t>(1,center-p_.wall);
         const auto expected=apex+std::min(std::abs(bx-center),span)*(base-apex)/span;
+        // Adjacent column bands must overlap even when a rib is steep.
+        const auto stroke=std::max(p_.wall,(std::abs(base-apex)+2*span-1)/(2*span));
         if (fy>=base) return p_.deck;
         if (bx<p_.wall || bx>=p_.bay-p_.wall) return p_.shell;
-        if (std::abs(fy-expected)<=p_.wall) return p_.accent;
-        if (p_.windows && std::abs(bx-center)<center/2 && fy>expected+p_.wall && fy<base-p_.wall)
+        if (std::abs(fy-expected)<=stroke) return p_.accent;
+        if (p_.windows && std::abs(bx-center)<center/2 && fy>expected+stroke && fy<base-p_.wall)
             return p_.glazing;
         return Material::Empty;
     }
@@ -154,7 +156,7 @@ public:
         if (fy<p_.wall || std::abs(fy-lower)<=p_.wall) return p_.deck;
         if (bx<p_.wall || bx>=p_.bay-p_.wall) return p_.shell;
         if ((std::abs(bx-q1)<=p_.wall || std::abs(bx-q3)<=p_.wall) &&
-            fy>p_.wall && fy<lower) return p_.accent;
+            fy>=p_.wall && fy<lower) return p_.accent;
         if (p_.windows && fy>lower+2*p_.wall && fy<p_.level-2*p_.wall &&
             std::abs(bx-p_.bay/2)<=p_.bay/6) return p_.glazing;
         return Material::Empty;
