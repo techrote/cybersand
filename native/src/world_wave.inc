@@ -1627,6 +1627,13 @@ void World::spread_floating_oil() {
             (state.mask_present && transient_obstacle_at(x, y) != 0)) return Material::Wall;
         return chunk->cells[a.index].material_value();
     };
+    // Retiring an endpoint clears both incident horizontal faces. Hold an
+    // endpoint at a selected-region edge until its neighbouring core resumes.
+    const auto faces_selected = [&](std::int64_t x, std::int64_t y) {
+        return !selected_core_region_ ||
+            (scheduler_geometry_.core_for_cell(x - 1, y).x >= selected_core_region_->min_x &&
+             scheduler_geometry_.core_for_cell(x + 1, y).x <= selected_core_region_->max_x);
+    };
     for (const auto& entry : state.sorted) {
         const auto& wave = *entry.chunk->wave;
         for (std::int32_t h = 0; h < 2; ++h) {
@@ -1639,15 +1646,15 @@ void World::spread_floating_oil() {
                     bottom > std::numeric_limits<std::int64_t>::max() - margin) continue;
                 for (auto lx = h == 0 ? 0 : size / 2; lx < (h == 0 ? size / 2 : size); ++lx) {
                     const auto x = entry.coord.x * size + lx;
-                    if (x < std::numeric_limits<std::int64_t>::min() + reach ||
-                        x > std::numeric_limits<std::int64_t>::max() - reach) continue;
+                    if (x < std::numeric_limits<std::int64_t>::min() + reach + 1 ||
+                        x > std::numeric_limits<std::int64_t>::max() - reach - 1) continue;
                     const auto idx = static_cast<std::size_t>(ly) * stride + static_cast<std::size_t>(lx);
                     if (entry.chunk->cells[idx].material_value() != Material::Oil ||
                         surface_cell(x, bottom + 1) != Material::Water) continue;
                     int depth = 0;
                     while (depth < max_depth && surface_cell(x, bottom - depth) == Material::Oil) ++depth;
                     const auto top = bottom - depth + 1;
-                    if (depth < 3 || surface_cell(x, top - 1) != Material::Empty) continue;
+                    if (depth < 3 || surface_cell(x, top - 1) != Material::Empty || !faces_selected(x, top)) continue;
                     const auto donor = address(x, top);
                     if (find_chunk(donor.chunk)->cells[donor.index].epoch_value() == update_epoch_) continue;
                     auto target_x = x, target_y = top;
@@ -1675,7 +1682,7 @@ void World::spread_floating_oil() {
                             while (thickness < max_depth && value == Material::Oil)
                                 value = surface_cell(nx, next + ++thickness);
                             if (value != Material::Water) break;
-                            if (thickness < best) {
+                            if (thickness < best && faces_selected(nx, next - 1)) {
                                 best = thickness;
                                 target_x = nx;
                                 target_y = next - 1;
@@ -1685,7 +1692,12 @@ void World::spread_floating_oil() {
                         }
                         if (best == 0) break;
                     }
-                    if (target_x != x) move_cell(x, top, target_x, target_y, false, nullptr);
+                    if (target_x == x) continue;
+                    // A warm tuple can travel farther than a cell job's prepared
+                    // halo. Admit destination thermal storage before either endpoint changes.
+                    if (stored_temperature(x, top) != config_.ambient_temperature)
+                        ensure_temperature_field(*find_chunk(address(target_x, target_y).chunk));
+                    move_cell(x, top, target_x, target_y, false, nullptr);
                 }
             }
         }

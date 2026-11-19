@@ -1556,6 +1556,63 @@ void buried_oil_surfaces_and_disturbed_tank_settles() {
     }
 }
 
+// The Workbench round Oil brush at radius 24 contains 1,793 cells. Paint
+// through the surface, so roughly half the disk initially sits under water.
+void thick_oil_brush_spreads_on_water() {
+    constexpr int width = 384, height = 160, surface = 64, radius = 24;
+    constexpr RectI64 bounds{0, 0, width + 2, height};
+    std::array<std::uint64_t, 3> reference{};
+    for (auto workers : {1U, 6U}) {
+        World world(oil_tank_config(workers));
+        box(world, width + 2, height);
+        rect(world, 1, surface, width, height - surface - 1, Material::Water);
+        for (int dy = -radius; dy <= radius; ++dy)
+            for (int dx = -radius; dx <= radius; ++dx)
+                if (dx * dx + dy * dy <= radius * radius)
+                    world.set(width / 2 + dx, surface + dy, Material::Oil);
+        const auto initial = owned(world, bounds);
+        std::array<std::uint64_t, 3> hashes{};
+        std::uint64_t initial_spray = 0;
+        for (int tick = 1; tick <= 900; ++tick) {
+            (void)world.tick();
+            if (tick != 300 && tick != 540 && tick != 900) continue;
+            int total = 0, columns = 0, deepest = 0, surfaced = 0;
+            for (int x = 1; x <= width; ++x) {
+                int depth = 0;
+                bool seen_water = false;
+                for (int y = 1; y < height - 1; ++y) {
+                    const auto material = world.stored_material(x, y);
+                    if (material == Material::Water) seen_water = true;
+                    if (material == Material::Oil) {
+                        ++depth;
+                        if (!seen_water) ++surfaced;
+                    }
+                }
+                total += depth;
+                if (depth > 0) ++columns;
+                deepest = std::max(deepest, depth);
+            }
+            require(total == 1793 && world.quantity_ledger().material_cells[
+                        static_cast<std::size_t>(Material::Oil)] == 1793, "brush Oil inventory drifted");
+            require_ledger_closes(world, bounds, initial, "thick Oil brush");
+            const auto launched = world.wave_flow_diagnostics().launched_units;
+            std::printf("thick Oil t=%d workers=%u columns=%d deepest=%d surfaced=%d spray=%llu live=%u\n",
+                        tick, workers, columns, deepest, surfaced,
+                        static_cast<unsigned long long>(launched), world.ballistic_water_snapshot().live);
+            if (tick == 300) require(columns >= 160 && deepest <= 23, "painted Oil still sits in a thick blob");
+            if (tick == 540) initial_spray = launched;
+            if (tick == 900) {
+                require(columns >= 270 && deepest <= 16 && surfaced == 1793, "thick brush failed to form a broad floating slick");
+                require(initial_spray == launched && world.ballistic_water_snapshot().live == 0,
+                        "thick slick kept spraying after settling");
+            }
+            hashes[tick == 300 ? 0U : tick == 540 ? 1U : 2U] = world.physical_state_hash();
+        }
+        if (workers == 1) reference = hashes;
+        else require(hashes == reference, "thick Oil brush changed with worker count");
+    }
+}
+
 void oil_exchange_preserves_partial_overfull_and_paused_cells() {
     // A pair straddling a scheduling core boundary, enclosed by a solid
     // one-cell jacket. Saturated Water has nowhere to redistribute after
@@ -1699,6 +1756,7 @@ int main(int argc, char** argv) {
         void (*function)();
     };
     const Test tests[] = {
+        {"thick Oil brush spreads on Water", thick_oil_brush_spreads_on_water},
         {"buried Oil surfaces and disturbed tank settles", buried_oil_surfaces_and_disturbed_tank_settles},
         {"Oil exchange preserves partial overfull and paused cells", oil_exchange_preserves_partial_overfull_and_paused_cells},
         {"Oil exchange moves Water only once per tick", oil_exchange_moves_water_only_once_per_tick},
