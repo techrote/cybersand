@@ -73,6 +73,7 @@ std::unique_ptr<World> make_world(int size) {
     t.spill.fall = number("fall", t.spill.fall);
     t.spill.share_shift = number("share_shift", t.spill.share_shift);
     t.spill.draw = number("draw", t.spill.draw);
+    t.spill.deep_draw = number("deep_draw", t.spill.deep_draw);
     t.spill.draw_head = number("draw_head", t.spill.draw_head);
     t.spill.stream = number("stream", t.spill.stream);
     t.spill.launch_min = number("launch_min", t.spill.launch_min);
@@ -82,6 +83,7 @@ std::unique_ptr<World> make_world(int size) {
     t.spill.catch_falling = number("catch", t.spill.catch_falling);
     t.spill.stream_draw = number("stream_draw", t.spill.stream_draw);
     t.spill.sheet_rate = number("sheet_rate", t.spill.sheet_rate);
+    t.spill.full_face = number("full_face", t.spill.full_face);
     t.spill.coyote_ticks = number("coyote_ticks", t.spill.coyote_ticks);
     cfg.ballistic_water.enabled = number("ballistic", 0) != 0;
     cfg.ballistic_water.capacity = static_cast<std::uint32_t>(number("capacity", static_cast<int>(cfg.ballistic_water.capacity)));
@@ -216,8 +218,14 @@ struct RampTrace {
     static constexpr int bank_x = 960, bank_y = 288, bank_width = 96, bank_height = 218;
     std::vector<std::uint8_t> visited;
     std::vector<int> queue;
+    std::ofstream fin_trace;
 
     void prepare(const World& w) {
+        if (g_args.contains("fin_trace")) {
+            fin_trace.open(g_args.at("fin_trace"));
+            if (!fin_trace) throw std::runtime_error("cannot open ramp fin trace");
+            fin_trace << "tick,x,bed_y,top_bulk_y,top_stored_y,column_units,right_units,slot_rows\n";
+        }
         shape = number("ramp_shape", 0) != 0;
         bank = number("ramp_bank", 0) != 0;
         if (bank) {
@@ -231,6 +239,65 @@ struct RampTrace {
             floor.push_back(y);
         }
         parcels.resize(w.ballistic_water_snapshot().capacity);
+    }
+    // Each right-side inventory includes both grid and airborne Water. Its
+    // change between samples is the net transport through this column's right
+    // edge. Verify that the scan captured the complete grid at every sample.
+    void sample_fins(const World& w, int tick, std::uint64_t initial) {
+        if (!fin_trace.is_open()) return;
+        constexpr int width = 1120, height = 560;
+        std::array<std::uint64_t, width> landed{}, airborne{};
+        std::array<int, end - first> bulk{}, top{}, slot{};
+        std::array<std::array<std::uint16_t, height>, 7> nearby{};
+        const auto count = w.copy_ballistic_parcels(parcels);
+        std::uint64_t left = 0, total = 0;
+        for (std::size_t i = 0; i < count; ++i) {
+            const auto x = parcels[i].x >> 8;
+            if (x < 0) left += parcels[i].quantity;
+            else if (x < width) airborne[static_cast<std::size_t>(x)] += parcels[i].quantity;
+            total += parcels[i].quantity;
+        }
+        for (int x = 0; x < width; ++x) {
+            const bool probe = x >= first && x < end;
+            int bed = probe ? floor[static_cast<std::size_t>(x - first)] : 0;
+            int attached_top = bed, stored_top = bed;
+            for (int y = height - 1; y >= 0; --y) {
+                const auto q = w.liquid_mass(x, y);
+                nearby[x % 7][y] = q;
+                landed[static_cast<std::size_t>(x)] += q;
+                if (y >= bed || q < 64) continue;
+                stored_top = y;
+                if (attached_top == y + 1) attached_top = y;
+            }
+            total += landed[static_cast<std::size_t>(x)];
+            if (probe) {
+                bulk[static_cast<std::size_t>(x - first)] = attached_top;
+                top[static_cast<std::size_t>(x - first)] = stored_top;
+            }
+            // A thin, nearly empty submerged column can make the sharp edge
+            // of a crest look black. Count its longest continuous run only
+            // when both sides have dense, stored Water within three cells.
+            const int middle = x - 3;
+            if (middle >= first && middle < end) {
+                const auto m = static_cast<std::size_t>(middle - first);
+                int run = 0;
+                for (int y = 0; y < floor[m]; ++y) {
+                    const bool left_dense = std::max({nearby[(x-6)%7][y], nearby[(x-5)%7][y], nearby[(x-4)%7][y]}) >= 192;
+                    const bool right_dense = std::max({nearby[(x-2)%7][y], nearby[(x-1)%7][y], nearby[x%7][y]}) >= 192;
+                    run = nearby[middle%7][y] <= 32 && left_dense && right_dense ? run + 1 : 0;
+                    slot[m] = std::max(slot[m], run);
+                }
+            }
+        }
+        if (total != initial) throw std::runtime_error("ramp fin window missed Water");
+        for (int x = 0; x < end; ++x) {
+            const auto i = static_cast<std::size_t>(x);
+            left += landed[i] + airborne[i];
+            if (x < first) continue;
+            const auto column = static_cast<std::size_t>(x - first);
+            fin_trace << tick << ',' << x << ',' << floor[column] << ',' << bulk[column] << ','
+                      << top[column] << ',' << landed[i] << ',' << initial - left << ',' << slot[column] << '\n';
+        }
     }
     void header() const {
         std::printf(",floor_front_2x8,floor_film_front,floor_units_400_599,floor_units_850_1008,"
@@ -602,9 +669,12 @@ int main(int argc, char** argv) {
         std::printf(",solved_chunks,window_median_us,window_p95_us\n");
         DischargeTrace discharge;
         discharge.open(w);
+        const int fin_every = number("fin_every", 4);
+        if (fin_every < 1) throw std::invalid_argument("fin_every must be positive");
         std::vector<double> window, overall;
         for (int t = 0; t <= ticks; ++t) {
             discharge.sample(w, t);
+            if (t % fin_every == 0) ramp.sample_fins(w, t, before);
             if (t % every == 0) {
                 const auto now = w.water_quantity({all.x, all.y, all.w, all.h}) + w.ballistic_water_snapshot().in_flight_quantity;
                 const auto diag = w.wave_flow_diagnostics();

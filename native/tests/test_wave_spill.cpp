@@ -109,6 +109,8 @@ void spill_is_off_by_default_and_admission_is_typed() {
     expect_refusal([](WorldConfig& c) { c.wave_flow.spill.coyote_ticks = 9; }, "crest flight duration above bound");
     expect_refusal([](WorldConfig& c) { c.wave_flow.spill.full_face = -1; }, "negative full face");
     expect_refusal([](WorldConfig& c) { c.wave_flow.spill.full_face = 2; }, "full face above one");
+    expect_refusal([](WorldConfig& c) { c.wave_flow.spill.deep_draw = -1; }, "negative deep draw");
+    expect_refusal([](WorldConfig& c) { c.wave_flow.spill.deep_draw = 128; }, "deep draw above 127");
     // Spill's hybrid release owns exposed faces: the per-cell face scan is
     // refused beside it, and admitted (generic Ballistic Water) without spill.
     expect_refusal([](WorldConfig& c) { c.ballistic_water.enabled = true; c.ballistic_water.face_release = true; },
@@ -157,6 +159,7 @@ void disabled_spill_reproduces_the_base_law() {
             cfg.wave_flow.spill.launch_budget = 9;
             cfg.wave_flow.spill.sheet_rate = 127;
             cfg.wave_flow.spill.full_face = 1;
+            cfg.wave_flow.spill.deep_draw = 64;
             cfg.wave_flow.spill.coyote_ticks = 8;
         }
         World w(cfg);
@@ -1291,6 +1294,40 @@ void sheet_starts_from_rest_without_wave_gain() {
     require_ledger_closes(world, {0, 0, 64, 64}, 8 * 20 * 255, "zero-gain sheet");
 }
 
+void deep_draw_limits_opposing_pool_faces() {
+    const auto run = [](int height, int limit, int coast, unsigned workers, int draw = 127) {
+        auto cfg = config(Mode::Spill, workers);
+        cfg.wave_flow.gain = 512;
+        cfg.wave_flow.coast = coast;
+        cfg.wave_flow.spill.draw = draw;
+        cfg.wave_flow.spill.deep_draw = limit;
+        World w(cfg);
+        box(w, 256, 160);
+        rect(w, 126, 130, 5, 1, Material::Wall);
+        rect(w, 127, 129, 3, 1, Material::Water);
+        rect(w, 128, 130 - height, 1, height, Material::Water);
+        const RectI64 region{0, 0, 256, 160};
+        const auto before = owned(w, region);
+        (void)w.tick();
+        require(owned(w, region) == before, "two-sided deep draw lost Water");
+        const int left = -w.wave_flow_flux(127, 129), right = w.wave_flow_flux(128, 129);
+        require(left == right && right > 0, "opposing faces did not draw symmetrically");
+        return std::pair{right, w.state_hash()};
+    };
+    const auto unlimited = run(5, 0, 32, 1);
+    const auto limited = run(5, 64, 32, 1);
+    require(limited == run(5, 64, 32, 6), "deep draw worker parity");
+    require(unlimited.first > limited.first && limited.first == 64 * 4096, "five-row stack ignored deep draw");
+    require(run(4, 64, 32, 1).first == run(4, 0, 32, 1).first, "deep draw slowed a four-row front");
+    require(run(5, 64, 96, 1).first == 96 * 4096, "deep draw suppressed ordinary coast");
+    require(run(5, 64, 32, 1, 40).first == run(5, 0, 32, 1, 40).first, "deep draw raised ordinary draw");
+    auto a = config(Mode::Spill), b = a;
+    b.wave_flow.spill.deep_draw = 64;
+    World off(a), on(b);
+    require(off.state_hash() != on.state_hash() && off.physical_state_hash() != on.physical_state_hash(),
+            "active deep draw missing from identity");
+}
+
 void floor_gain_requires_a_level_solved_floor() {
     constexpr int x = 127, y = 127;
     const RectI64 all{0, -256, 256, 512};
@@ -1405,6 +1442,7 @@ int main(int argc, char** argv) {
         void (*function)();
     };
     const Test tests[] = {
+        {"deep draw limits opposing pool faces", deep_draw_limits_opposing_pool_faces},
         {"floor gain requires real level terrain and conserves both shares", floor_gain_requires_a_level_solved_floor},
         {"crest Apply adopts the replacement flight law", retained_crest_adopts_replacement_flight_law},
         {"sheet starts with zero ordinary gain", sheet_starts_from_rest_without_wave_gain},

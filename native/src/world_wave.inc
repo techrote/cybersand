@@ -185,6 +185,10 @@ namespace {
 // live flight countdowns in both Wave hashes, without changing historical streams.
 void hash_wave_discharge(std::uint64_t& hash, const WaveSpillConfig& spill,
                          std::span<const BallisticParcel> parcels) {
+    if (spill.deep_draw != 0) {
+        for (const char c : std::string_view{"wave-deep-draw"}) hash_byte(hash, static_cast<std::uint8_t>(c));
+        hash_integer(hash, spill.deep_draw);
+    }
     if (spill.full_face != 0) {
         for (const char c : std::string_view{"wave-full-face-v1"}) hash_byte(hash, static_cast<std::uint8_t>(c));
         hash_integer(hash, spill.full_face);
@@ -244,6 +248,7 @@ void World::validate_wave_flow_config() const {
         if (tune.spill.fall < 1 || tune.spill.fall > S::kMaximumFall ||
             tune.spill.share_shift < 1 || tune.spill.share_shift > S::kMaximumShareShift ||
             tune.spill.draw < 0 || tune.spill.draw > S::kMaximumDraw ||
+            tune.spill.deep_draw < 0 || tune.spill.deep_draw > S::kMaximumDraw ||
             tune.spill.draw_head < 0 || tune.spill.draw_head > S::kMaximumDrawHead ||
             tune.spill.stream < 0 || tune.spill.stream > S::kMaximumStream ||
             tune.spill.launch_min < 1 || tune.spill.launch_min > 255 ||
@@ -1149,8 +1154,20 @@ void World::wave_flux_task(std::size_t task_index) noexcept {
                     // Spill: bulk flow may exceed the wave coast limit unless it
                     // runs against more than `draw_head` of head, so a pool can
                     // feed its draining edge while a reversing surge still relaxes.
-                    const auto coast = spill.enabled && ((head > 0) == rightward || std::abs(head) <= spill.draw_head)
-                        ? std::max(config_.wave_flow.coast, spill.draw) : config_.wave_flow.coast;
+                    auto coast = config_.wave_flow.coast;
+                    if (spill.enabled && ((head > 0) == rightward || std::abs(head) <= spill.draw_head)) {
+                        auto draw = spill.draw;
+                        if (spill.deep_draw != 0) {
+                            // Opposing draw faces can drain most of a tall column together.
+                            // Depth codes 3..5 denote 5..32 responding rows in one wet stack.
+                            const auto deep = [](std::uint8_t meta) noexcept {
+                                const auto d = meta >> WaveChunk::kDepthShift;
+                                return d >= 3 && d < WaveChunk::kFalling;
+                            };
+                            if (deep(meta_a) || deep(meta_b)) draw = std::min(draw, spill.deep_draw);
+                        }
+                        coast = std::max(coast, draw);
+                    }
                     available = std::min(available >> config_.wave_flow.flow_share_shift, std::max(coast, downhill));
                     if (((rightward ? meta_b : meta_a) >> WaveChunk::kDepthShift) == WaveChunk::kSaturated) available = 0;
                 }
