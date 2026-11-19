@@ -42,3 +42,22 @@ The returning tank wave keeps the same initial height, so a deeper trough or ste
 The default selection lives in the GDExtension's `CyberNativeCellWorld::select_gameplay_water`. Fresh desktop sandbox, Workbench and ordinary curated Web demos share it. An authored alternate liquid law or explicitly selected comparison fixture keeps its own solver. The ordinary v2 canvas stores no Wave toggle. A new session loading a plain carrier canvas uses the fresh setting. Wave still refuses a full physical-state save. The Web demo's FreeMass setting supports the CYSD1 Save operation. Loading an existing CYSD1 slot reconstructs that slot's original law. Web controller tests on Windows do not qualify a WebAssembly browser build.
 
 The independent review caught a legacy Web/Rapier test trying to save an active Wave World. The corrected case tests the Wave refusal and exercises a moving-body FreeMass save/restore. It also identified historical capture modes inheriting new settings. The comparison driver now explicitly stages the original Wave and spill controls before applying any named historical bundle. The previous Windows package supplies an independent baseline. The four-chunk-corner native test includes shallow sheets, a real ascending step, paused floor, a partial two-sided donor and a legal 65,535-unit donor. Its original narrow observation box excluded Water rising inside an overfilled column. The regression now uses a box that contains the entire column.
+
+## Measured results
+
+| Fixture and six-worker metric | Previous Sloshy + Max, one round | Selected gameplay profile, two rounds |
+|---|---:|---:|
+| Level floor, contiguous front beyond the starting block at ticks 8 / 16 / 32 / 64 | 4 / 6 / 16 / 24 cells | 8 / 16 / 31 / 61 cells |
+| Flat-floor travel weighted by all initial Water at t64 | 4.80 cells | 15.52 cells |
+| Drop from 32 cells, bulk front at t8 / 16 / 32 / 64 | 3 / 5 / 15 / 25 cells | 7 / 14 / 29 / 59 cells |
+| 1:2 grade, highest bulk run-up in 400 ticks | 24 cells | 19 cells |
+| Average of initial Water at least 16 cells up that grade | 1.88% | 0.35% |
+| Authored ramp, 128 full-cell equivalents on the floor beyond x960 | 728 ticks | 416 ticks |
+| Authored far bank, peak height above contemporaneous basin surface | 10.4 cells | 8.0 cells |
+| 22+10-row tank, first full crest return | 388 ticks | 138 ticks |
+| 22+10-row tank, broad slope at first return | 0.516 | 0.583 |
+| 22+10-row tank, crest-to-trough range at first return | 8.47 cells | 8.55 cells |
+
+At two rounds, the previous Sloshy tuning reaches 37 cells on the flat at tick 64 and the bank rises 22.8 cells above the basin waterline. The new law improves those two measures at the same number of rounds. The basin fills earlier, so the absolute water level against the wall can be higher than with one-round Sloshy. The reduced climb is measured relative to the waterline and in the matched incline fixture.
+
+Two sequential six-worker 900-tick native runs on the owner's Ryzen 5 5600X gave median / p95 times of **4.114 / 9.304 ms and 3.576 / 6.221 ms**. The one-round parent measured 1.837 / 3.134 and 2.652 / 5.237 ms. Two-round Sloshy measured 4.342 / 11.143 and 3.555 / 6.041 ms. Run order was reversed between replicates. The only background Workbench was the owner's preexisting session, lightly active. The new profile's slowest individual ticks exceeded the 16.67 ms interval of a 60 Hz simulation. Timings cover native ticks, excluding rendering and Rapier. One-round gameplay tuning measured 1.893 / 3.253 and 2.005 / 3.724 ms.
