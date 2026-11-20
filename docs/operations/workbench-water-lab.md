@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 canonical-for: [workbench-water-lab-controls]
 scope: Water Lab controls and Waterwall-stack review repairs above PR 631; experimental, merge held
-last-reviewed: 2026-11-19
+last-reviewed: 2026-11-20
 related-documents: [wave-flow-evaluation.md, ../architecture/wave-flow-v1.md]
 ---
 
@@ -41,6 +41,8 @@ retain focused fields: a pending main X/Y and a pending child supply value must
 both reach an equipment action. Typing a value and clicking **Apply solver /
 tuning** does not require Enter or a click outside the field first. The moved
 scene, equipment and tuning actions use the same Window-aware field commitment.
+
+When a saved setup requests an invalid liquid policy, the native preparation reports the refusal. The running World retains its applied policy and any paint already committed. [Refusal regression](../audits/2026-11-19-wave-oil-lava.md#ready-for-review-validation-20-november)
 
 **Fresh Workbench sessions use Wave Flow with Waterfall spill and Ballistic release.** Loading an ordinary authored canvas uses the current Water selection. To switch back to Wave after trying another solver, select it and press **Apply solver / tuning** or **Load / reset scene**. The active native column confirms the accepted law. Returning
 to PF/Inertial/FreeMass restores Water's law-specific requests over the current
