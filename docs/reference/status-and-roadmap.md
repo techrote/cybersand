@@ -4,11 +4,25 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-15
+last-reviewed: 2026-11-20
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Status and foundational roadmap
+
+## SWARM-004 reciprocal Gentek construction — 2026-11-20
+
+**Draft/HOLD implementation candidate:** [programme #687](https://github.com/techrote/cybersand/issues/687)
+adds a bounded authored parts grammar, reciprocal native geometry proposals and
+an explicitly dependent experimental Shared Workbench path. The [focused contract](../systems/gentek-reciprocal-assembly.md)
+separates native development witnesses, unresolved hard obligations, corpus
+qualification and actual Windows Apply/Undo/Save/reopen acceptance. No production
+default, material/physics change, Viaduct identity change or automatic merge is authorized.
+The [recovered V1 audit and policy freeze](../audits/2026-11-20-swarm004-native-recovery.md)
+selects two-round fixed territory from the completed known corpus: 28 cases with
+both matched causal effects and qualified joints, including six fully applicable
+cases. Shared two-round mode has six and two. Final published-source qualification,
+registered holdouts and Workbench platform acceptance have separate receipts.
 
 ## GEN-008 Flatten / Bake History — 2026-11-13
 

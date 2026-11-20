@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "scope": "Additive SWARM-004 development questions; no changes to the frozen32 query set.",
+  "questions": [
+    {
+      "id": "SWARM004-1",
+      "query": "Can FRAMEWEAVER and MOSAIC revise their own native architecture through a bounded recursive grammar?",
+      "canonical": [
+        "systems/gentek-reciprocal-assembly.md"
+      ],
+      "facts": [
+        "Independent immutable proposals; own authored steel/masonry rules; finite shared zone and aggregate budgets; exact material ownership."
+      ],
+      "sources": [
+        "../native/experiments/gentek_swarm/reciprocal.hpp"
+      ]
+    },
+    {
+      "id": "SWARM004-2",
+      "query": "Does a local cap satisfy an original required foreign socket, and is native Stone a solid bearing?",
+      "canonical": [
+        "systems/gentek-reciprocal-assembly.md"
+      ],
+      "facts": [
+        "Local termination never satisfies a foreign requirement; qualified joints require exact native material paths; Stone13 is powder and the explicit optional receiving variant uses LimestoneBlock38; no stability certificate."
+      ],
+      "sources": [
+        "../native/experiments/gentek_swarm/reciprocal.cpp"
+      ]
+    },
+    {
+      "id": "SWARM004-3",
+      "query": "What proves SWARM-004 reciprocal Workbench Apply Undo Save and Windows reopen are complete?",
+      "canonical": [
+        "systems/gentek-reciprocal-assembly.md"
+      ],
+      "facts": [
+        "Native qualification and actual source-matched graphical Workbench Windows acceptance are separate; unresolved required obligations block Apply; two Draft/HOLD PRs with no automatic merge."
+      ],
+      "sources": [
+        "../native/experiments/gentek_swarm/RECIPROCAL_REGISTRATION.json"
+      ]
+    },
+    {
+      "id": "SWARM004-4",
+      "query": "Which SWARM-004 policy was frozen after recovery, and do two changed footprints prove reciprocal offer causality?",
+      "canonical": [
+        "systems/gentek-reciprocal-assembly.md"
+      ],
+      "facts": [
+        "Select fixed_territory two rounds before holdouts; matched round-one masks/no-offers and an initial-MOSAIC-frozen coordinator distinguish causal exchange from nominal revision. Fixed has 28 causal joint cases and six causal Apply cases; shared reciprocal_2 has six and two."
+      ],
+      "sources": [
+        "../native/experiments/gentek_swarm/SELECTION-RECIPROCAL.json",
+        "../native/experiments/gentek_swarm/reciprocal_causal.cpp"
+      ]
+    },
+    {
+      "id": "SWARM004-5",
+      "query": "Does an early UNSAT or exhausted SWARM-004 record without a closure ledger have zero required foreign obligations?",
+      "canonical": [
+        "systems/gentek-reciprocal-assembly.md"
+      ],
+      "facts": [
+        "No final closure ledger means closure_evaluated=false and unknown obligations, exported as null. Retain refused cases in denominators; they cannot Apply."
+      ],
+      "sources": [
+        "../native/experiments/gentek_swarm/reciprocal_main.cpp",
+        "../native/experiments/gentek_swarm/reciprocal_gallery.py"
+      ]
+    }
+  ]
+}

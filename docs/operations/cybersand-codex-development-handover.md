@@ -4,11 +4,30 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-15
+last-reviewed: 2026-11-20
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
+
+## SWARM-004 reciprocal assembly — 2026-11-20
+
+**Experimental implementation / Draft / HOLD:** owner-authorized [programme #687](https://github.com/techrote/cybersand/issues/687)
+continues the verified SWARM-003 parent `cd0de74b83a66b5408668f81c82d854db45479ce`.
+Read the [reciprocal assembly contract](../systems/gentek-reciprocal-assembly.md)
+and its machine-readable native preregistration. The [native recovery record](../audits/2026-11-20-swarm004-native-recovery.md)
+verifies the surviving V1 implementation and known corpus instead of treating
+historical progress prose as engineering completion. The frozen native selection
+is `fixed_territory`, two rounds; matched controls distinguish causal exchange
+from mask-driven nominal changes. Native source qualification and unopened
+registered holdouts precede the dependent Workbench acceptance record. The
+Workbench lane explicitly reconciles accepted main `de58bf1997ca75825cf3b29e046dc1c1022c45bf`;
+#684/#685 remain separate.
+The owner authorized both implementation stages, not merge or Ready promotion.
+Development two-sided geometry witnesses do not establish full hard closure,
+Windows graphical acceptance or physical stability. No final closure ledger
+means unknown requirements, never a zero-required success. Keep frozen B/C/E8
+evidence, registered holdouts, failed cases and exact-source receipts intact.
 
 ## Architectural Generator runtime repair — 2026-11-15
 

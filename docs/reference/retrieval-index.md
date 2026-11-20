@@ -4,11 +4,23 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-11-13
+last-reviewed: 2026-11-20
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/atlas-agent-runner.md, ../architecture/pressure-optimization.md]
 ---
 
 # Retrieval question index
+
+## Reciprocal FRAMEWEAVER × MOSAIC construction
+
+For SWARM-004 component grammar, independent shared-zone revisions, retained hard
+obligations, Stone13 versus solid-bearing semantics, exact-source controls and
+separate Windows Workbench acceptance, read the [reciprocal assembly contract](../systems/gentek-reciprocal-assembly.md).
+It distinguishes nominal footprint revisions from matched offer causality,
+unknown closure from zero obligations, and the frozen fixed-territory selection
+from the original shared-territory hypothesis. The [dated recovery record](../audits/2026-11-20-swarm004-native-recovery.md)
+retains the source identities, causal comparison and negative results.
+[Focused questions](retrieval-questions-swarm004.json) are an additive development
+set; the frozen retrieval questions are unchanged.
 
 For the combined #562 Materials Lab / #564 Workbench candidate, original source ancestry, shared history preservation, standalone evaluation and #563 merge-order boundaries, read the [combined qualification record](../audits/2026-11-12-mat-auth-workbench-integration.md).
 
