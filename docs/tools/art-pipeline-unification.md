@@ -33,7 +33,7 @@ CUDA, LFS download or second CyberSand checkout is required.
 From the integrated repository root:
 
 ```powershell
-python tools/world_art_preview_launcher.py --godot="C:\Tools\Godot\Godot_v4.7-stable_win64_console.exe" --rendering-driver=opengl3_angle
+python tools/world_art_preview_launcher.py --godot="C:\Godot_v4.7-stable_win64_console.exe" --rendering-driver=opengl3_angle
 ```
 
 ```bash
