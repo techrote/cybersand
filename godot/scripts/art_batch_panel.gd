@@ -790,17 +790,31 @@ func _history_action(action: String) -> void:
 	var admitted: bool = wb.paint_editor.undo() if action == "undo" else wb.paint_editor.redo()
 	input_error = "" if admitted else str(wb.message)
 
+# A confirmed native history receipt must not implicitly open/replay a
+# potentially multi-gigabyte conversation while Art is hidden. That replay's
+# provider.resume_active guard would otherwise reject the very next Redo.
+# Keep the receipt and its original epoch until the user explicitly opens Art;
+# _accept_restored_history drains the bounded queue in order exactly once.
+func _queue_history_receipt(receipt: Dictionary, epoch: int) -> void:
+	if pending_history_receipts.size() < 64:
+		pending_history_receipts.append({"receipt":receipt.duplicate(true),"epoch":epoch})
+	else:
+		input_error = "History result was not saved: the pending conversation receipt queue is full."
+
 # Append a new human result; never rewrite the model's historical receipts or
 # use model_feedback(), which can schedule another request in an active run.
 func history_edited(receipt: Dictionary, captured_epoch: int = -1) -> void:
 	var epoch := captured_epoch if captured_epoch >= 0 else (int(wb.host.simulation_worker.art_state().epoch) if wb != null else request_epoch)
+	if not conversation_loaded and not visible and not provider.resume_active \
+			and (not provider.parent_log_path.is_empty() or not _pending_traffic_path.is_empty() or not provider.log_path.is_empty()):
+		# A previously recorded conversation exists, but the Art window has not
+		# been opened in this process. Do not start a hidden archive scan.
+		_queue_history_receipt(receipt,epoch)
+		return
 	if not _ensure_history_loaded():
-		# A native Undo already in flight can finish while the user opens Art.
-		# Keep its confirmed result until replay finishes; never apply it twice.
-		if pending_history_receipts.size() < 64:
-			pending_history_receipts.append({"receipt":receipt.duplicate(true),"epoch":epoch})
-		else:
-			input_error = "History result was not saved: the pending conversation receipt queue is full."
+		# An explicit visible restore may overlap a native receipt. Preserve
+		# its exact timestamped epoch without interrupting the active reader.
+		_queue_history_receipt(receipt,epoch)
 		return
 	var recorded := receipt.duplicate(true)
 	provider.log_event("history_result",recorded)

@@ -137,13 +137,32 @@ func run() -> void:
 	var reopened: Node = load("res://main.tscn").instantiate()
 	root.add_child(reopened)
 	var reopened_panel: Window = reopened.shared_workbench.art_batches
+	check(not reopened_panel.visible and not reopened_panel.conversation_loaded,
+		"fresh-process Art history is deferred while hidden")
+	var old_archive_path: String = reopened_panel.provider.parent_log_path
+	var old_archive_hash: String = FileAccess.get_sha256(old_archive_path)
+	reopened.shared_workbench.paint_editor.history_action_finished.emit({"action":"undo","status":"completed","label":"confirmed while hidden","applied":1})
+	check(not reopened_panel.provider.resume_active and not reopened_panel.conversation_loaded
+		and reopened_panel.provider.log_path.is_empty() and reopened_panel.pending_history_receipts.size() == 1,
+		"hidden native Undo receipt queues without triggering conversation restore or new archive writes")
+	check(reopened_panel.history_block_reason().is_empty(),
+		"hidden deferred Art receipt does not block the immediately following Redo")
 	reopened_panel.show()
-	reopened.shared_workbench.paint_editor.history_action_finished.emit({"action":"undo","status":"completed","label":"confirmed during restore","applied":1})
-	check(reopened_panel.provider.resume_active and reopened_panel.pending_history_receipts.size() == 1,"confirmed editor receipt arriving during restore is retained")
+	reopened.shared_workbench.paint_editor.history_action_finished.emit({"action":"redo","status":"completed","label":"confirmed during restore","applied":1})
+	check(reopened_panel.provider.resume_active and reopened_panel.pending_history_receipts.size() == 2,
+		"explicit visible history restore buffers concurrent Redo alongside earlier hidden Undo")
 	deadline = Time.get_ticks_msec()+60000
 	while reopened_panel.provider.resume_active and Time.get_ticks_msec()<deadline: await process_frame
-	check(reopened_panel.conversation_loaded and reopened_panel.pending_history_receipts.is_empty() and reopened_panel.conversation.size() == 1,"successful restore drains confirmed receipt exactly once")
-	check(reopened_panel.conversation[0].content.contains("confirmed during restore"),"restored model context includes confirmed editor result")
+	check(reopened_panel.conversation_loaded and reopened_panel.pending_history_receipts.is_empty()
+		and reopened_panel.conversation.size() == 2,
+		"explicit restore drains both independently confirmed history receipts exactly once")
+	if reopened_panel.conversation.size() == 2:
+		check(reopened_panel.conversation[0].content.contains("confirmed while hidden")
+			and reopened_panel.conversation[1].content.contains("confirmed during restore"),
+			"deferred native Undo and Redo retain their original chronological order")
+	check(FileAccess.get_sha256(old_archive_path) == old_archive_hash
+		and reopened_panel.provider.log_path != old_archive_path,
+		"deferred history continuation never overwrites or copies the original traffic archive")
 	reopened.queue_free()
 	await process_frame
 	await process_frame
