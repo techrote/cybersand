@@ -56,7 +56,7 @@ selection remains available while filtering; clearing the field restores the
 complete catalogue. Hover over a clipped name to read it in full.
 
 For an individual Gentek, enable one card and give it **100%**. Leave the others
-disabled. Use 512² for a quick study and 1024² for larger compositions. Start with
+disabled. Use 512² for a quick study, 1024² for regular compositions and 2048² for larger authored worlds. A 2048² project requires a style-zone size of at least 128 cells, retaining the native 16×16 / 256-block planning limit. Increasing the map size does not increase solver block count or change the 512/1024 recipe defaults. Start with
 seed **605**, turn automatic tunnels off to inspect the uncut structure, and leave
 doors/windows on. Click **Generate preview**, inspect the completed native map,
 then **Install into workbench**. Installation replaces the current World only
