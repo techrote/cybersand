@@ -204,7 +204,7 @@ func _build_ui() -> void:
 	minimap.offset_bottom = 148.0
 	minimap.tooltip_text = "Aspect-correct world overview. Click or drag to centre the camera."
 	minimap.mouse_filter = Control.MOUSE_FILTER_STOP
-	minimap.navigate_requested.connect(_navigate_from_minimap)
+	minimap.connect("navigate_requested", _navigate_from_minimap)
 	minimap.visible = false
 	canvas_frame.resized.connect(_on_canvas_resized)
 	var status_bar := HBoxContainer.new()
@@ -559,9 +559,9 @@ func _update_camera() -> void:
 	grid_overlay.queue_redraw()
 	if minimap != null:
 		minimap.visible = _loaded
-		minimap.native_size = _native_size
-		minimap.view_origin = _origin
-		minimap.view_size = view_size
+		minimap.set("native_size", _native_size)
+		minimap.set("view_origin", _origin)
+		minimap.set("view_size", view_size)
 		minimap.queue_redraw()
 	size_label.text = "%d × %d cells · %.2f px/cell" % [_native_size.x, _native_size.y, _zoom]
 
