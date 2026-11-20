@@ -40,11 +40,27 @@ func button(label: String, scope: Node = null) -> Button:
 
 func click(control: Button) -> bool:
 	if not expect(control != null and control.is_visible_in_tree(),"visible real control"): return false
-	var point := control.get_global_rect().get_center()
 	var window := control.get_window()
-	# Embedded windows receive real pointer events through the root viewport.
-	# A direct child-Window push does not route to its visible controls.
-	if window != root: point += Vector2(window.position)
+	# The toolbar can reflow when native status arrives. Move to its current
+	# centre and wait for the same routed hover and layout across one frame.
+	var point := Vector2.ZERO
+	var ready := false
+	var hovered: Control
+	var deadline := Time.get_ticks_msec()+5000
+	while Time.get_ticks_msec() < deadline:
+		var bounds := control.get_global_rect()
+		point = bounds.get_center()
+		if window != root: point += Vector2(window.position)
+		var motion := InputEventMouseMotion.new()
+		motion.position = point
+		motion.global_position = point
+		root.push_input(motion,true)
+		await process_frame
+		hovered = window.gui_get_hovered_control()
+		if not control.disabled and bounds == control.get_global_rect() and (hovered == control or (hovered != null and control.is_ancestor_of(hovered))):
+			ready = true
+			break
+	if not expect(ready,"pointer over "+control.text+" (hit "+str(hovered)+")"): return false
 	var pressed := [false]
 	control.pressed.connect(func() -> void: pressed[0] = true,CONNECT_ONE_SHOT)
 	for down: bool in [true,false]:
@@ -54,7 +70,7 @@ func click(control: Button) -> bool:
 		event.button_index = MOUSE_BUTTON_LEFT
 		event.pressed = down
 		root.push_input(event,true)
-		await process_frame
+	await process_frame
 	return expect(pressed[0],"real pointer event reaches "+control.text)
 
 func pick(picker: OptionButton, index: int) -> bool:
@@ -158,7 +174,7 @@ func run() -> void:
 	if not await open_lab(0): await finish(); return
 	if not await pick(bench.water_spray._studio_solver,1): await finish(); return
 	var tuning: Window = lab()
-	expect(tuning.visible and not bool(native().get("enabled",false)),"Wave selection stages while native stays unchanged")
+	expect(tuning.visible and bool(native().get("enabled",false)) and native().spill.parcels,"fresh Workbench displays its active gameplay Wave selection")
 	bench.water_lab.select_tab(1)
 	await process_frame
 	var rounds: SpinBox = bench.water_spray._wave_fields.workbench_wave_substeps
@@ -167,11 +183,15 @@ func run() -> void:
 	var gain: SpinBox = bench.water_spray._wave_fields.workbench_wave_gain
 	gain.get_line_edit().text = "48"
 	gain.apply()
+	var floor_gain: SpinBox = bench.water_spray._wave_fields.workbench_wave_floor_gain
+	floor_gain.get_line_edit().text = "960"
+	floor_gain.apply()
+	var initial_generation := int(native().session_generation)
 	if not await click(button("Apply solver / tuning",tuning)): await finish(); return
-	if not await until(func() -> bool: return installed() and bool(native().get("enabled",false)),"actual UI enables native Wave"):
+	if not await until(func() -> bool: return installed() and int(native().session_generation) > initial_generation and bool(native().get("enabled",false)),"actual UI retunes native Wave"):
 		await finish(); return
-	expect(int(native().get("substeps",0)) == 2 and int(native().get("parameters",{}).get("gain",0)) == 48,
-		"entered control values match authoritative native readback")
+	expect(int(native().get("substeps",0)) == 2 and int(native().get("parameters",{}).get("gain",0)) == 48
+		and native().parameters.floor_gain == 960, "entered gain, rounds and floor gain match authoritative native readback")
 	if not await close_lab(): await finish(); return
 	for index: int in Scenes.SCENES.size():
 		if not await load_scene(index,true): break

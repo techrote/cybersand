@@ -11,7 +11,7 @@
       ],
       "facts": [
         "Opt-in Water override with conserved fractional mass and retained horizontal flux.",
-        "Disjoint strips and explicit pool barriers; production default unchanged."
+        "Disjoint strips and explicit pool barriers. Raw native law selection is distinct from the fresh player-session default."
       ],
       "sources": [
         "../native/src/world_wave.inc",
@@ -77,11 +77,126 @@
       "facts": [
         "Bounded controls expose supported Wave parameters; Apply and reset are explicit, and each law retains its own settings.",
         "Built-in Water comparison scenes remain editable ordinary Workbench canvases.",
-        "Rebuilding a Wave World resets retained flux; physical save continuation, pressure gas behavior, full buoyancy and falling-Water lateral momentum remain unsupported."
+        "Rebuilding a Wave World resets retained flux. Physical save continuation, pressure gas behavior, rigid-body flotation and lateral momentum in grid Water during free fall remain unsupported."
       ],
       "sources": [
         "../godot/scripts/workbench_water_spray_panel.gd",
         "../godot/scripts/shared_workbench.gd"
+      ]
+    },
+    {
+      "id": "WAVE06",
+      "query": "How do I try Sloshy and Max over-ledge, smooth small waves, keep spray and give a crest coyote ticks in the Workbench Water Lab?",
+      "canonical": [
+        "operations/workbench-water-lab.md",
+        "architecture/wave-flow-v1.md"
+      ],
+      "facts": [
+        "Stage the bundle and use Apply, then check native readback.",
+        "Deep gain and flux smoothing separate the pool response from the dry front.",
+        "Sheet rate keeps crest throws and coyote ticks delay gravity only for a released crest."
+      ],
+      "sources": [
+        "../native/src/world_wave.inc",
+        "../godot/scripts/workbench_water_spray_panel.gd"
+      ]
+    },
+    {
+      "id": "WAVE07",
+      "query": "Which Water solver starts on a new water ramp canvas, and how can I try faster horizontal spread and steeper waves?",
+      "canonical": [
+        "operations/workbench-water-lab.md",
+        "architecture/wave-flow-v1.md"
+      ],
+      "facts": [
+        "Fresh player sessions select Wave Flow, waterfall spill and ballistic release. Floor gain drives the shallow leading edge only over a continuous level floor.",
+        "A named canvas can be loaded from Workbench. Water Lab stages adjustments and shows the accepted native values."
+      ],
+      "sources": [
+        "../godot/scripts/workbench_water_spray_panel.gd"
+      ]
+    },
+    {
+      "id": "WAVE08",
+      "query": "How do I get Water to spray from the entire exposed vertical wall and set fall speed 3 in Water Lab?",
+      "canonical": [
+        "operations/workbench-water-lab.md",
+        "architecture/wave-flow-v1.md"
+      ],
+      "facts": [
+        "Enable Full face with Waterwall spill and Ballistic release. The gameplay evaluation selects fall speed 3.",
+        "Fall speed is grid cells per solver round. Ballistic parcels have their own gravity.",
+        "Stage the switch then Apply and check the native readback."
+      ],
+      "sources": [
+        "../native/src/world_wave.inc",
+        "../godot/scripts/workbench_water_spray_panel.gd"
+      ]
+    },
+    {
+      "id": "WAVE09",
+      "query": "What causes the sharkfin waves and dark vertical cuts on the downhill ramp? Which deep pool feed preserves shallow horizontal spreading?",
+      "canonical": [
+        "architecture/wave-flow-v1.md",
+        "operations/workbench-water-lab.md"
+      ],
+      "facts": [
+        "Neighboring faces can drain a deep donor simultaneously.",
+        "Deep pool feed 64 limits wet-to-wet pool feed in deep stacks. Zero inherits ordinary Pool feed.",
+        "The motion of a surface crest can differ from the direction of Water transport."
+      ],
+      "sources": [
+        "../native/src/world_wave.inc",
+        "../native/bench/wave_waterwall.cpp"
+      ]
+    },
+    {
+      "id": "WAVE10",
+      "query": "How does buried Oil float through Wave Water and what makes an Oil slick settle after Sand lands?",
+      "canonical": [
+        "architecture/wave-flow-v1.md",
+        "operations/workbench-water-lab.md"
+      ],
+      "facts": [
+        "Water can exchange with Oil immediately below, carrying both stored material states.",
+        "Oil handles burning and extinguishing before buoyant motion.",
+        "A solid obstruction, a body mask or a paused endpoint can block the exchange."
+      ],
+      "sources": [
+        "../native/src/world.cpp",
+        "../native/tests/test_wave_spill.cpp"
+      ]
+    },
+    {
+      "id": "WAVE11",
+      "query": "Why did dropping Lava on thick Oil and Wave Water pause the Workbench with a quantity reaction input error?",
+      "canonical": [
+        "architecture/liquid-prepared-setup-and-receipts.md",
+        "architecture/wave-flow-v1.md"
+      ],
+      "facts": [
+        "Lava can quench a Wave Water cell containing up to 65,535 units.",
+        "Lava becomes Stone and Water becomes Steam. The reaction consumes the full stored Water quantity."
+      ],
+      "sources": [
+        "../native/src/world_quantity.inc",
+        "../godot/tests/test_workbench_wave_spill.gd"
+      ]
+    },
+    {
+      "id": "WAVE12",
+      "query": "Why can a floating Oil slick pin Water waves and how can the interface move and settle?",
+      "canonical": [
+        "architecture/wave-flow-v1.md",
+        "operations/workbench-water-lab.md"
+      ],
+      "facts": [
+        "An exposed slick can rise or fall with the actual Water volume underneath.",
+        "Separate rising and falling thresholds support a quiet resting surface while a fresh wave can travel under Oil."
+      ],
+      "sources": [
+        "../native/src/world_wave.inc",
+        "../native/tests/test_wave_spill.cpp"
       ]
     }
   ]

@@ -6,6 +6,7 @@ extends SceneTree
 # generation and matching authoritative readback.
 const Contract = preload("res://tests/support/../../scripts/microscenario_contract.gd")
 const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
+const Setup = preload("res://scripts/workbench_setup.gd")
 const DAM = "res://tests/fixtures/lcb/lcb.dam.water.freemass.reference.v1.json"
 var host: Control
 var panel: Control
@@ -57,18 +58,22 @@ func native_admission() -> void:
 	var args := [world,cells,checked.transport.packed,PackedInt32Array(checked.definition.water_semantics),
 		PackedInt32Array(),bridge.default_liquid_policy(),base]
 	var hybrid := base.duplicate(true)
-	hybrid.merge({"workbench_wave_spill":true,"workbench_wave_spill_parcels":true,"workbench_wave_spill_fall":4,
-		"workbench_wave_spill_draw":96,"workbench_wave_spill_launch_speed":320,"workbench_wave_spill_launch_budget":128,
-		"workbench_wave_spill_blobs":1,"workbench_wave_spill_stream_share":32,"workbench_wave_spill_stream_draw":48},true)
+	hybrid.merge({"workbench_wave_spill":true,"workbench_wave_spill_parcels":true,"workbench_wave_spill_full_face":true,"workbench_wave_spill_fall":3,
+		"workbench_wave_spill_draw":96,"workbench_wave_spill_deep_draw":72,"workbench_wave_spill_draw_head":8192,"workbench_wave_spill_launch_speed":320,"workbench_wave_spill_launch_budget":128,
+		"workbench_wave_spill_blobs":1,"workbench_wave_spill_stream_share":32,"workbench_wave_spill_stream_draw":48,
+		"workbench_wave_spill_coyote_ticks":4,"workbench_wave_spill_sheet_rate":60,
+		"workbench_wave_flux_smoothing":48,"workbench_wave_deep_gain":15,"workbench_wave_floor_gain":4096},true)
 	args[6] = hybrid
 	var token: int = bridge.callv("prepare_liquid_world",args)
 	if not require(token > 0 and bridge.commit_liquid_world(world,token),"native admits Wave with Waterwall spill / "+str(bridge.get_last_error())):
 		return
 	var status: Dictionary = world.get_wave_flow_status()
 	var spill: Dictionary = status.get("spill",{})
-	require(status.enabled and spill.get("enabled") == true and spill.get("parcels") == true,"native spill and parcel readback")
-	for key: String in ["fall","draw","launch_speed","launch_budget","blobs","stream_share","stream_draw"]:
+	require(status.enabled and spill.get("enabled") == true and spill.get("parcels") == true and spill.get("full_face") == true,"native spill, parcel and full-face readback")
+	for key: String in ["fall","draw","deep_draw","draw_head","launch_speed","launch_budget","blobs","stream_share","stream_draw","sheet_rate","coyote_ticks"]:
 		require(int(spill.get(key,-1)) == int(hybrid["workbench_wave_spill_"+key]),"native spill readback "+key)
+	for key: String in ["deep_gain","floor_gain","flux_smoothing"]:
+		require(status.parameters.get(key) == hybrid["workbench_wave_"+key],"native Wave shape readback "+key)
 	require(status.construction_options.get("workbench_ballistic") == true,
 		"Ballistic release throws through the Ballistic Water parcel pool and reports it")
 	var before: String = world.get_physical_state_hash()
@@ -77,11 +82,17 @@ func native_admission() -> void:
 	var plain := base.duplicate(true)
 	plain.erase("workbench_wave_flow")
 	for bad: Dictionary in [
-			{"workbench_wave_spill":"yes"},{"workbench_wave_spill_parcels":1},
+			{"workbench_wave_spill":"yes"},{"workbench_wave_spill_parcels":1},{"workbench_wave_spill_full_face":1},{"workbench_wave_spill_full_face":"yes"},
 			{"workbench_wave_spill_fall":0},{"workbench_wave_spill_fall":9},{"workbench_wave_spill_draw":128},
+			{"workbench_wave_spill_deep_draw":-1},{"workbench_wave_spill_deep_draw":128},{"workbench_wave_spill_deep_draw":true},
 			{"workbench_wave_spill_launch_speed":513},{"workbench_wave_spill_launch_budget":4097},
 			{"workbench_wave_spill_fall":2.5},{"workbench_wave_spill_blobs":2},{"workbench_wave_spill_stream_share":256},
 			{"workbench_wave_spill_stream_draw":256},{"workbench_wave_spill_stream_draw":-1},
+			{"workbench_wave_spill_sheet_rate":-1},{"workbench_wave_spill_sheet_rate":128},{"workbench_wave_spill_sheet_rate":true},
+			{"workbench_wave_spill_coyote_ticks":-1},{"workbench_wave_spill_coyote_ticks":9},{"workbench_wave_spill_coyote_ticks":2.5},
+			{"workbench_wave_flux_smoothing":-1},{"workbench_wave_flux_smoothing":65},{"workbench_wave_flux_smoothing":4.5},
+			{"workbench_wave_floor_gain":-1},{"workbench_wave_floor_gain":4097},{"workbench_wave_floor_gain":3.5},
+			{"workbench_wave_deep_gain":-1},{"workbench_wave_deep_gain":513},{"workbench_wave_deep_gain":"32"},
 			{"workbench_ballistic":"yes"},{"workbench_face_release":true,"workbench_ballistic":true}]:
 		var candidate := hybrid.duplicate(true)
 		candidate.merge(bad,true)
@@ -91,7 +102,8 @@ func native_admission() -> void:
 		if token > 0: bridge.discard_liquid_world(world,token)
 		require(world.get_physical_state_hash() == before and world.get_revision() == revision \
 			and world.get_liquid_policy_session_generation() == old_generation,"spill refusal is atomic "+str(bad))
-	for bad: Dictionary in [{"workbench_wave_spill_parcels":true},{"workbench_wave_spill_fall":3}]:
+	for bad: Dictionary in [{"workbench_wave_spill_parcels":true},{"workbench_wave_spill_full_face":true},{"workbench_wave_spill_deep_draw":64},{"workbench_wave_spill_fall":3},
+			{"workbench_wave_spill_coyote_ticks":2},{"workbench_wave_spill_sheet_rate":1}]:
 		var candidate := base.duplicate(true)
 		candidate.merge(bad,true)
 		args[6] = candidate
@@ -103,6 +115,12 @@ func native_admission() -> void:
 	args[6] = without_wave
 	token = bridge.callv("prepare_liquid_world",args)
 	require(token == 0,"Waterwall spill without Wave Flow refused")
+	if token > 0: bridge.discard_liquid_world(world,token)
+	without_wave = plain.duplicate(true)
+	without_wave.workbench_wave_floor_gain = 1
+	args[6] = without_wave
+	token = bridge.callv("prepare_liquid_world",args)
+	require(token == 0,"floor gain requires Wave Flow")
 	if token > 0: bridge.discard_liquid_world(world,token)
 	sections.native_admission = failures.size() == start
 
@@ -124,8 +142,45 @@ func native_admission() -> void:
 			"grid plus in-flight Water quantity is exactly conserved")
 		require(int(a.spill.launched_parcels) > 0 and int(a.spill.deposited_units) > 0,"exposed face launched and landed parcels")
 		require(world.get_physical_state_hash() == single.get_physical_state_hash(),"hybrid spill is identical at workers 1/4")
+	native_lava_quench(bridge, args.duplicate(), base)
 	sections.native_conservation = failures.size() == start
 	native_generic_ballistic(bridge,args,base)
+
+# Compress Water under a shelf using the ordinary Wave solver. Seal one cell and
+# add Lava beside it through the same brush and spray readback as the Workbench.
+func native_lava_quench(bridge: Variant, args: Array, base: Dictionary) -> void:
+	var world: Variant = ClassDB.instantiate(&"CyberNativeCellWorld")
+	var options := base.duplicate(true)
+	options.merge({"workbench_wave_spill":true,"workbench_wave_spill_parcels":true,
+		"workbench_wave_spill_full_face":true,"workbench_wave_spill_fall":3},true)
+	args[0] = world
+	args[1] = PackedInt32Array([31,10,1,119,58, 31,128,35,1,58, 65,99,1,29,58,
+		64,99,1,1,58, 32,20,32,108,3, 64,100,1,28,3])
+	args[6] = options
+	var token: int = bridge.callv("prepare_liquid_world",args)
+	if not require(token > 0 and bridge.commit_liquid_world(world,token),"prepare Wave quench fixture"): return
+	var water_cell := Vector2i(64,100)
+	var lava_cell := water_cell + Vector2i.RIGHT
+	for tick in 2:
+		if not require(world.simulation_tick(),"build Water head below shelf"): return
+	var compressed: int = world.inspect_wave_flow_cell(water_cell).stored_mass
+	if not require(compressed > 510,"one Wave cell stores more than two full Water cells"): return
+	for y in range(99,102):
+		for x in range(63,67):
+			if Vector2i(x,y) != water_cell and Vector2i(x,y) != lava_cell:
+				world.paint_disc(x,y,0,58)
+	world.paint_disc(lava_cell.x,lava_cell.y,0,8)
+	var before: int = world.get_water_spray().water.total
+	for tick in 32:
+		if not require(world.simulation_tick(),"tick Wave Water beside Lava"): return
+		var spray: Dictionary = world.get_water_spray()
+		if not require(spray.get("healthy",false),"spray readback survived the quench / "+world.get_last_tick_error()): return
+		if world.inspect_wave_flow_cell(lava_cell).material == 13: # Stone
+			require(world.inspect_wave_flow_cell(water_cell).material == 22,"quenched Water becomes Steam")
+			require(spray.water.total == before - compressed and spray.water.total == spray.water.expected,
+				"quench accounts for the entire compressed cell")
+			return
+	require(false,"the sealed Lava contact reacted")
 
 # Generic Ballistic Water under Wave: splashes, sprays and jets keep working,
 # with or without Waterwall spill. Face release runs only without spill.
@@ -271,6 +326,82 @@ func native_body_push_reaction() -> void:
 			"Body push changes neither Wave physical state nor actual parcel trajectory")
 	sections.native_body_push_reaction = failures.size() == start
 
+func default_and_legacy() -> bool:
+	var spray: RefCounted = panel.water_spray
+	var defaults: Dictionary = ClassDB.class_call_static(&"CyberNativeCellWorld",&"gameplay_water_options")
+	var desktop: Variant = ClassDB.class_call_static(&"CyberNativeCellWorld",&"create_gameplay_world")
+	var plain: Variant = ClassDB.instantiate(&"CyberNativeCellWorld")
+	var web_bridge: Variant = ClassDB.instantiate(&"CyberDemoBridge")
+	var web: Variant = ClassDB.instantiate(&"CyberNativeCellWorld")
+	if not require(web_bridge.build_world(web,PackedInt32Array([3,3,2,2,3]),true),"normal Web demo request constructs"): return false
+	require(not plain.get_wave_flow_status().enabled and plain.get_wave_flow_status().spill.get("full_face") == false,"raw fixture API retains its explicit qualified baseline")
+	for status: Dictionary in [wave(),desktop.get_wave_flow_status(),web.get_wave_flow_status()]:
+		require(status.substeps == 2 and status.enabled and status.spill.enabled and status.spill.parcels and status.spill.blobs == 1
+			and status.spill.get("fall") == 3 and status.spill.get("full_face") == true and status.spill.get("deep_draw") == 64,
+			"fresh entry installs Wave, full-face release, blobs and fall speed three")
+		for key: String in defaults:
+			var value: Variant
+			if key == "workbench_wave_flow": value = status.enabled
+			elif key == "workbench_wave_substeps": value = status.substeps
+			elif key == "workbench_ballistic": value = status.construction_options[key]
+			elif key == "workbench_wave_spill": value = status.spill.enabled
+			elif key.begins_with("workbench_wave_spill_"): value = status.spill.get(key.trim_prefix("workbench_wave_spill_"))
+			else: value = status.parameters.get(key.trim_prefix("workbench_wave_"))
+			require(value == defaults[key],"native gameplay bundle agrees across ordinary entry points: "+key)
+	require(desktop.reset_demo_world(true) and desktop.get_wave_flow_status().enabled,"gameplay reset restores Wave")
+	var bytes: PackedByteArray = web_bridge.export_level(plain)
+	require(not bytes.is_empty() and web_bridge.import_level(web,bytes) and not web.get_wave_flow_status().enabled,
+		"CYSD1 authored before Wave loads on its legacy law from a Wave game")
+	# The v2 schema stores a Water family but no Wave overlay flag. A normal
+	# old baseline start inherits the current law, an explicit family wins.
+	var authored := Setup.fresh(panel._liquids.bridge.default_liquid_policy(),Vector2i(512,512))
+	authored.edits = [[20,40,6,6,Setup.WATER]]
+	var previous := generation()
+	if not require(panel.apply(authored),"legacy v2 with ordinary carrier accepted"): return false
+	if not await until(func() -> bool: return idle() and generation() > previous,"legacy v2 installed"): return false
+	require(wave().enabled and wave().spill.parcels,"legacy v2 with no Wave settings inherits the fresh bundle")
+	spray._spill_fields.workbench_wave_spill_blobs.value = 0
+	spray._spill_fields.workbench_wave_spill_stream_draw.value = 128
+	spray._spill_fields.workbench_wave_spill_fall.value = 8
+	spray._spill_fields.workbench_wave_spill_deep_draw.value = 127
+	spray._spill_toggles.workbench_wave_spill.button_pressed = false
+	spray._ballistic.button_pressed = false
+	spray._wave_fields.workbench_wave_gain.value = 1
+	var saved_generation := generation()
+	for index: int in spray._wave_preset.item_count:
+		if spray._wave_preset.get_item_text(index) == "Gameplay default": spray._wave_preset.item_selected.emit(index)
+	require(generation() == saved_generation and spray._spill_toggles.workbench_wave_spill.button_pressed
+		and spray._spill_toggles.workbench_wave_spill_parcels.button_pressed and spray._ballistic.button_pressed
+		and spray._spill_fields.workbench_wave_spill_blobs.value == 1 and spray._spill_fields.workbench_wave_spill_stream_draw.value == 0
+		and spray._spill_toggles.workbench_wave_spill_full_face.button_pressed and spray._spill_fields.workbench_wave_spill_fall.value == 3
+		and spray._spill_fields.workbench_wave_spill_deep_draw.value == 64
+		and spray._wave_fields.workbench_wave_gain.value == defaults.workbench_wave_gain
+		and spray._wave_fields.workbench_wave_substeps.value == defaults.workbench_wave_substeps,
+		"Gameplay default stages both switches, blobs, stream settings, Wave gain and rounds")
+	panel._liquids.select_preset(2) # Advanced: Water / pressure reference
+	require(not host.workbench_water_options.workbench_wave_flow and spray._studio_solver.selected == 2
+		and wave().enabled, "Advanced Water selection stages the law without switching the live World")
+	spray._choose_studio_solver(1)
+	var choices: Array = panel._liquids.bridge.liquid_policy_assignment_choices(PackedInt32Array(authored.liquid_policy),CyberCellWorld.WATER)
+	for choice: Dictionary in choices:
+		if choice.get("accepted",false) and choice.get("family") == "pressure_flow_v1" and choice.get("variant") == "reference":
+			authored.liquid_policy = Array(choice.request)
+			break
+	previous = generation()
+	if not require(panel.apply(authored),"authored alternate Water family accepted"): return false
+	if not await until(func() -> bool: return idle() and generation() > previous,"authored alternate installed"): return false
+	require(not wave().enabled and not host.workbench_water_options.workbench_wave_flow and spray._studio_solver.selected == 2,
+		"authored PressureFlow wins on load and the Water selector tracks the accepted family")
+	# Run the original activation tests from their explicit pre-Wave control.
+	spray._set_spill("workbench_wave_spill",false)
+	for spec: Array in spray.SPILL_SPINS: spray._spill_fields[spec[0]].value = int(spec[5])
+	spray._reset_wave_defaults()
+	spray._ballistic.button_pressed = false
+	spray._choose_studio_solver(0)
+	var before := generation()
+	if not require(spray._apply_wave(),"explicit legacy baseline requested"): return false
+	return await until(func() -> bool: return idle() and generation() > before and not wave().enabled,"explicit legacy baseline installed")
+
 func lab_controls() -> void:
 	var start := failures.size()
 	var spray: RefCounted = panel.water_spray
@@ -278,7 +409,16 @@ func lab_controls() -> void:
 	require(lab != null and lab.pages["wave"].is_ancestor_of(spray._spill_toggles["workbench_wave_spill"]),
 		"Waterwall spill switch lives in the Water Lab Wave tab, not the toolbar")
 	require(lab.pages["wave"].is_ancestor_of(spray._spill_status),"spill native status is on the Wave tab")
-	require(spray._spill_fields.size() == 7,"seven spill parameters: fall, feed, throw, budget, blobs, stream share, stream draw")
+	for key: String in ["sheet_rate","coyote_ticks","deep_draw"]:
+		var field: SpinBox = spray._spill_fields["workbench_wave_spill_"+key]
+		require(lab.pages.wave.is_ancestor_of(field) and field.value == 0,"new spill input defaults off in Water Lab: "+key)
+	for key: String in ["deep_gain","floor_gain","flux_smoothing"]:
+		var field: SpinBox = spray._wave_fields["workbench_wave_"+key]
+		require(lab.pages.wave.is_ancestor_of(field) and field.value == 0,"new Wave input defaults off in Water Lab: "+key)
+	var full_face: CheckButton = spray._spill_toggles.workbench_wave_spill_full_face
+	require(lab.pages.wave.is_ancestor_of(full_face) and full_face.disabled and not full_face.button_pressed,
+		"full-face control is dormant in the Water Lab on a legacy World")
+	require(spray._max_over_ledge.disabled,"spill bundle dormant outside Wave")
 	spray._set_spill("workbench_wave_spill_parcels",true)
 	require(host.workbench_water_options.get("workbench_wave_spill") == true,"ballistic release stages Waterwall spill")
 	require(host.workbench_water_options.get("workbench_ballistic") == true and spray._ballistic.button_pressed,
@@ -290,7 +430,9 @@ func lab_controls() -> void:
 	require(host.workbench_water_options.get("workbench_ballistic") == true and spray._ballistic.button_pressed \
 		and not spray._ballistic.disabled,"choosing Wave keeps Ballistic Water on and editable")
 	spray._set_spill("workbench_wave_spill_parcels",true)
+	require(not full_face.disabled,"Wave ballistic release enables the full-face option")
 	spray._ballistic.button_pressed = false
+	require(full_face.disabled,"turning off the parcel pool disables the depth release option")
 	require(host.workbench_water_options.get("workbench_ballistic") == false \
 		and host.workbench_water_options.get("workbench_wave_spill_parcels") == false,
 		"turning Ballistic Water off also drops Ballistic release")
@@ -306,8 +448,23 @@ func workbench_apply() -> void:
 	var start := failures.size()
 	var spray: RefCounted = panel.water_spray
 	spray._set_wave(true)
-	spray._set_spill("workbench_wave_spill_parcels",true)
 	var before := generation()
+	var preset := -1
+	for index: int in spray._wave_preset.item_count:
+		if spray._wave_preset.get_item_text(index) == "Sloshy": preset = index
+	if not require(preset >= 0,"Sloshy preset is offered in Water Lab"): return
+	spray._wave_preset.item_selected.emit(preset)
+	spray._max_over_ledge.pressed.emit()
+	require(not spray._spill_toggles.workbench_wave_spill_full_face.button_pressed and spray._spill_fields.workbench_wave_spill_fall.value == 8
+		and spray._spill_fields.workbench_wave_spill_deep_draw.value == 0,
+		"Max over-ledge still stages the original crest release at fall speed eight")
+	spray._spill_toggles.workbench_wave_spill_full_face.button_pressed = true
+	spray._spill_fields.workbench_wave_spill_fall.value = 3
+	spray._spill_fields.workbench_wave_spill_deep_draw.value = 72
+	spray._wave_fields.workbench_wave_floor_gain.value = 1024
+	spray.refresh(host.tower_context)
+	require(generation() == before and not bool(wave().get("enabled",false)) and spray._wave_status.text.contains("STAGED"),
+		"Sloshy and Max over-ledge stage without changing the running World")
 	if not require(spray._apply_wave(),"Apply with Waterwall spill requested"): return
 	if not await until(func() -> bool: return idle() and generation() > before,"Waterwall spill installed"): return
 	require(str(host.microscenario_error).is_empty(),"no refusal / "+str(host.microscenario_error))
@@ -317,6 +474,36 @@ func workbench_apply() -> void:
 	spray.refresh(host.tower_context)
 	require(spray._wave_status.text.contains("APPLIED"),"requested spill matches native readback / "+spray._wave_status.text)
 	require(spray._spill_status.text.contains("Waterwall spill ON"),"spill status reports native activation")
+	require(spill.get("full_face") == true and spray._spill_applied.workbench_wave_spill_full_face.text == "native on",
+		"full-face Apply and adjacent native readback agree")
+	var expected := {}
+	for key: String in ["deep_gain","floor_gain","flux_smoothing","sheet_rate","coyote_ticks","draw_head","deep_draw","fall"]:
+		var is_spill := key in ["sheet_rate","coyote_ticks","draw_head","deep_draw","fall"]
+		var option := ("workbench_wave_spill_" if is_spill else "workbench_wave_")+key
+		expected[key] = host.workbench_water_options[option]
+		var actual: Dictionary = spill if is_spill else wave().parameters
+		var label: Label = spray._spill_applied[option] if is_spill else spray._wave_applied_fields[option]
+		require(actual.get(key) == expected[key] and label.text == "native %d" % expected[key],
+			"applied new control and adjacent native readback agree: "+key)
+	spray._reset_wave_defaults()
+	require(spray._spill_fields.workbench_wave_spill_sheet_rate.value == expected.sheet_rate,
+		"resetting Wave tuning preserves the requested spill bundle")
+	require(spray._wave_fields.workbench_wave_deep_gain.value == 0 and spray._wave_fields.workbench_wave_flux_smoothing.value == 0
+		and spray._wave_fields.workbench_wave_floor_gain.value == 0,"resetting Wave tuning disables optional shape changes")
+	spray._spill_fields.workbench_wave_spill_sheet_rate.value = 0
+	spray._spill_toggles.workbench_wave_spill_full_face.button_pressed = false
+	spray._spill_fields.workbench_wave_spill_fall.value = 7
+	spray._spill_fields.workbench_wave_spill_deep_draw.value = 0
+	before = generation()
+	if not require(panel.restore_start(),"restore accepted configuration with unapplied edits"): return
+	if not await until(func() -> bool: return idle() and generation() > before,"restored authored start"): return
+	for key: String in expected:
+		var actual: Dictionary = wave().spill if key in ["sheet_rate","coyote_ticks","draw_head","deep_draw","fall"] else wave().parameters
+		require(actual.get(key) == expected[key],"restore carries accepted knob across reconstruction: "+key)
+	require(wave().spill.get("full_face") == true,"restore uses accepted full-face release")
+	spray._revert_wave()
+	require(spray._spill_toggles.workbench_wave_spill_full_face.button_pressed and spray._spill_fields.workbench_wave_spill_fall.value == 3,
+		"Revert reads both full-face release and fall speed from the running World")
 	# The straightforward comparison: spill off is original Wave Flow.
 	spray._set_spill("workbench_wave_spill",false)
 	spray.refresh(host.tower_context)
@@ -325,7 +512,7 @@ func workbench_apply() -> void:
 	spray._apply_wave()
 	if not await until(func() -> bool: return idle() and generation() > before,"original Wave reinstalled"): return
 	spill = wave().get("spill",{})
-	require(wave().get("enabled") == true and spill.get("enabled") == false and spill.get("parcels") == false,
+	require(wave().get("enabled") == true and spill.get("enabled") == false and spill.get("parcels") == false and spill.get("full_face") == false,
 		"spill off restores original Wave Flow")
 	spray.refresh(host.tower_context)
 	require(spray._spill_status.text.contains("OFF"),"spill status shows original Wave")
@@ -377,7 +564,7 @@ func run() -> void:
 	await scene_changed
 	host = current_scene
 	panel = host.shared_workbench
-	if await until(idle,"ordinary Workbench installed"):
+	if await until(idle,"ordinary Workbench installed") and await default_and_legacy():
 		lab_controls()
 		await workbench_apply()
 	for section: String in sections: require(bool(sections[section]),"required section completed: "+section)

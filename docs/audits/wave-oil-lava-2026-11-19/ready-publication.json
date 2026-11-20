@@ -1,0 +1,161 @@
+{
+  "run": "https://github.com/techrote/cybersand/actions/runs/44654167337",
+  "run_attempt": 1,
+  "request_sequence": 25,
+  "source_commit": "6d46fe744ada8223e4976b444ca912f977011610",
+  "source_tree": "2fa6435887e57663f99bf7d352f22b6bb52841ed",
+  "publication_commit": "b1e8c4e8b3ba8375ec39c9ce4870f25bbcb7846c",
+  "publication_parent": "6d46fe744ada8223e4976b444ca912f977011610",
+  "publication_author": "github-actions[bot]",
+  "publication_files": [
+    "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+    "godot/addons/cybersand_native/runtime-provenance.json",
+    "godot/addons/cybersand_native/runtime-provenance.linux.json"
+  ],
+  "jobs": [
+    {
+      "id": 136016197265,
+      "name": "validate staged publisher without building runtimes",
+      "conclusion": "success",
+      "log_sha256": "97b1fa57ed78e42b3f0dcda8d950c9e9247d68fe5b0b688c1fba22720baaf058"
+    },
+    {
+      "id": 136016363781,
+      "name": "require an explicit Wave Flow publication request",
+      "conclusion": "success",
+      "log_sha256": "4e877cfff5eb6d9570471eae743ccd9c132c94b11277ede16a7420510ec4ba0e"
+    },
+    {
+      "id": 136016771178,
+      "name": "Wave Flow native asan-ubsan before publication",
+      "conclusion": "success",
+      "log_sha256": "67d31de166080d193350cabcd3fea23c2f966c889cef8730574f44916bc02658"
+    },
+    {
+      "id": 136016771191,
+      "name": "Wave Flow native normal before publication",
+      "conclusion": "success",
+      "log_sha256": "ce19ce4c7d10b9dee1669c6cfeb1ddacdbf77b92fac428790d032647c1724736"
+    },
+    {
+      "id": 136016771245,
+      "name": "cross-build the Windows Wave Flow runtime",
+      "conclusion": "success",
+      "log_sha256": "45540826f60280fbcac484ad3071110502373532b95a6cfad221e1b553c9590f"
+    },
+    {
+      "id": 136016771335,
+      "name": "Wave Flow native tsan before publication",
+      "conclusion": "success",
+      "log_sha256": "ff73bd3b2620364a615a02e5cd467ef0dd6b8bfa3ca1f0710590039964d5cedf"
+    },
+    {
+      "id": 136016771491,
+      "name": "build and execute the Linux Wave Flow runtime",
+      "conclusion": "success",
+      "log_sha256": "820569709e2dc3cd2bc790fd91add556209c5126a9b3939632ea8782f5246138"
+    },
+    {
+      "id": 136018802882,
+      "name": "execute Windows Wave Flow cases",
+      "conclusion": "success",
+      "log_sha256": "72aad39c37531544d94e692a642ce54e97406c38535c2bbf79365f70c30c9890"
+    },
+    {
+      "id": 136026611514,
+      "name": "fast-forward the source branch with both validated runtimes",
+      "conclusion": "success",
+      "log_sha256": "ae533d3d2ae33a25e116d06bea2e8f185ee5ef45a6b1d5fee84017ca08e0d550"
+    }
+  ],
+  "actions_logs": {
+    "endpoint": "https://api.github.com/repos/techrote/cybersand/actions/runs/44654167337/attempts/1/logs",
+    "archive_sha256": "fbbaaebe4c2893b67084a0321dd0edd0d931f0929cc2c8cf9e6bf3146b196f3f",
+    "full_job_logs": 9,
+    "error_lines": 0
+  },
+  "native": {
+    "normal": {
+      "name": "wave-mt-native-normal-44654167337-1",
+      "id": 14592722391,
+      "archive_digest": "sha256:881d8f78658b9c871af1b5d609b7390fc7f582a7663690b7007877c3ed12dbd2",
+      "log_sha256": "7e3c63364900876142c10aa116cf4e29aac2ae0f6ecf5991e88f741fbf0a4fe4",
+      "suite_summaries": [
+        "WAVE_FLOW: 33 tests; 0 failures (33 registered)",
+        "WAVE_SPILL: 45 tests; 0 failures (45 registered)",
+        "WAVE_BODY_BOUNDARY: seeds=2 runs=50 ticks=6000 scripted_waterline_crossings=350 relocations=438578 launches=26950 masked_refusals=6000 capacity_refusals=78442 paused_refusals=9204 region_changes=186 overfill_edits=150 drains=100 maximum_live=4096 parity=checkpoints failures=0"
+      ]
+    },
+    "asan-ubsan": {
+      "name": "wave-mt-native-asan-ubsan-44654167337-1",
+      "id": 14593202444,
+      "archive_digest": "sha256:e0a7fe4d106d73108fd93e6477fc1c940bdb92f65806cebff4054cdbff8ccb95",
+      "log_sha256": "891c63a6c40417402688855cf376099197520fc7c39752d1c5cb6be09d403dc2",
+      "suite_summaries": [
+        "WAVE_FLOW: 33 tests; 0 failures (33 registered)",
+        "WAVE_SPILL: 45 tests; 0 failures (45 registered)",
+        "WAVE_BODY_BOUNDARY: seeds=2 runs=50 ticks=6000 scripted_waterline_crossings=350 relocations=438578 launches=26950 masked_refusals=6000 capacity_refusals=78442 paused_refusals=9204 region_changes=186 overfill_edits=150 drains=100 maximum_live=4096 parity=checkpoints failures=0"
+      ]
+    },
+    "tsan": {
+      "name": "wave-mt-native-tsan-44654167337-1",
+      "id": 14593756940,
+      "archive_digest": "sha256:3b08a8a016fd4a8fcbcfc6dd508c176d0b713725a0aaa9e0eb5a0a33bb2dd5fa",
+      "log_sha256": "a4fd055cf8857c696debf5160f8618492c16daebc121488a79fa3a9d1a1e2421",
+      "suite_summaries": [
+        "WAVE_FLOW: 33 tests; 0 failures (33 registered)",
+        "WAVE_SPILL: 45 tests; 0 failures (45 registered)",
+        "WAVE_BODY_BOUNDARY: seeds=2 runs=50 ticks=6000 scripted_waterline_crossings=350 relocations=438578 launches=26950 masked_refusals=6000 capacity_refusals=78442 paused_refusals=9204 region_changes=186 overfill_edits=150 drains=100 maximum_live=4096 parity=checkpoints failures=0"
+      ]
+    }
+  },
+  "platforms": {
+    "linux": {
+      "name": "wave-mt-runtime-attempt-1-linux-44654167337",
+      "id": 14593366171,
+      "archive_digest": "sha256:b1f2ac35fc36b86129ad4b6a7fafea42d756d8ccbe6fe03010027f392fab5220",
+      "manifest_path": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+      "manifest_sha256": "2b1def748b9b8c3cfe029aa4ca948d7de5eed9b1490a292f89032b31caf13179",
+      "runtime_sha256": "43c42c5521cdb688f9ec01d03ac9b554d1786deae7672efdf1448cbd1f32db46",
+      "size_bytes": 4774720,
+      "validation_sha256": "9322b05398c3ce29b51148c39789f489b125f424a7ec247e1ece4c0ab79bbfcd",
+      "headless_cases": 10,
+      "qualification": "graphical",
+      "qualified_cases": 2,
+      "qualification_sha256": "1769a8148fdf5b40d0c6a84e5a8a38513051b2e43739de2bf33185d3040a7d80",
+      "validated_logs": 12,
+      "godot_error_lines": 0
+    },
+    "windows": {
+      "name": "wave-mt-runtime-attempt-1-windows-44654167337",
+      "id": 14593640320,
+      "archive_digest": "sha256:f055f744e7f4b46c64b21067aacab1005c747cd3b43bb9cca3c298f18481549c",
+      "manifest_path": "godot/addons/cybersand_native/runtime-provenance.json",
+      "manifest_sha256": "d63719f197c05f479fea05d9c6807ff2b32ba3652698fe694883558de67dbc94",
+      "runtime_sha256": "f766bb901d954f9267f76523ed04fcfabcac12cf7f579be2e758e75409f3a01b",
+      "size_bytes": 5308416,
+      "validation_sha256": "b37a61d5b5901bdf168367b2c1163416a0343ff2361995ad0064568ef4c1fe0d",
+      "headless_cases": 10,
+      "qualification": "package-execution",
+      "qualified_cases": 5,
+      "qualification_sha256": "4adbc3b6dca6470036345c054ac83b1f1557008b2376d190ceab17e45bd82a94",
+      "validated_logs": 15,
+      "godot_error_lines": 0
+    }
+  },
+  "canonical_git_blobs_verified": {
+    "native_inputs": 95,
+    "build_inputs": 872,
+    "distinct_paths": 967,
+    "source_hash_method": "SHA-256 of git cat-file --batch output for each source_commit:path blob, excluding batch framing."
+  },
+  "hosted_windows_evaluation_artifact": {
+    "name": "wave-oil-buoyancy-owner-windows-6d46fe744ada8223e4976b444ca912f977011610-1",
+    "id": 14592443939,
+    "archive_digest": "sha256:0419bd43f7c61bac26e29af944143a7ebe496950d0a8d05ea60e8b689edfe405",
+    "zip_name": "CyberSand-Wave-Oil-Windows-6d46fe744ada.zip",
+    "zip_sha256": "10490a64f08aa948a02d58b593b19c750935546af8a75590cdc7c67f1667eb8c",
+    "payload_manifest_sha256": "b8d3fd9cade7cc016c953b4e984ffb59baddb73796545df0767fafd005f196d4",
+    "payload_files_verified": 960
+  }
+}

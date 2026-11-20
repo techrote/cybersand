@@ -1,9 +1,10 @@
 ---
 title: Workbench Water Lab — consolidated controls
-status: Draft / research
+status: Current
 document-kind: guide
+canonical-for: [workbench-water-lab-controls]
 scope: Water Lab controls and Waterwall-stack review repairs above PR 631; experimental, merge held
-last-reviewed: 2026-11-19
+last-reviewed: 2026-11-20
 related-documents: [wave-flow-evaluation.md, ../architecture/wave-flow-v1.md]
 ---
 
@@ -23,7 +24,7 @@ Open it to access a resizable, scrollable, non-modal five-tab Water Lab:
 | Tab | Controls |
 |---|---|
 | Solvers & scenes | One Water-law selector for FreeMass, Wave Flow, PressureFlow reference/cached/dormant and Inertial; four authored comparison scenes and pool workers |
-| Wave tuning | All 18 bounded Wave controls, Body push (Water force on Rapier actors), presets, Reset, Revert and native values |
+| Wave tuning | Bounded Wave controls, Body push (Water force on Rapier actors), presets, Reset, Revert and native values |
 | Transport & spray | Ballistic, IN signed, face release and tuning, PF gas/capacity, fine cores, impact spray, jet tuning |
 | Equipment | Valves, drains, nozzles, aiming, pumps, supply, placement and built-in equipment starts |
 | Advanced policy | Full native-backed liquid policy assignment editor, original presets, geometry and one-shot normalization |
@@ -41,15 +42,15 @@ both reach an equipment action. Typing a value and clicking **Apply solver /
 tuning** does not require Enter or a click outside the field first. The moved
 scene, equipment and tuning actions use the same Window-aware field commitment.
 
-**Wave Flow is disabled by default.** Enabling it stages Wave and automatically
-requests its FreeMass carrier; native activation requires **Apply solver /
-tuning** or **Load / reset scene**, then a positive native readback. Returning
+When a saved setup requests an invalid liquid policy, the native preparation reports the refusal. The running World retains its applied policy and any paint already committed. [Refusal regression](../audits/2026-11-19-wave-oil-lava.md#ready-for-review-validation-20-november)
+
+**Fresh Workbench sessions use Wave Flow with Waterfall spill and Ballistic release.** Loading an ordinary authored canvas uses the current Water selection. To switch back to Wave after trying another solver, select it and press **Apply solver / tuning** or **Load / reset scene**. The active native column confirms the accepted law. Returning
 to PF/Inertial/FreeMass restores Water's law-specific requests over the current
 policy. Edits to Brine or other liquids made while Wave is active remain current.
 Remembered Water parameters return only where they belong to Water or to a
 currently dormant family; an already active shared family keeps its current
 parameters, including its defaults. Native validation still decides admission.
-The production Water default is unchanged.
+The [water ramp evaluation](../audits/2026-11-19-wave-water-ramp-003.md) compares the fresh settings against Sloshy + Max over-ledge on the same authored canvas.
 
 ## Body push (Water force on actors)
 
@@ -97,7 +98,7 @@ tuning** or **Load / reset scene**. The native readback beside each control and
 the spill status line show what is actually running: exposed-face transfer,
 falling cells, parcels launched, in flight, landed, refused or deferred, ticks
 with a full parcel pool, and launch and flight time. A spill request is only
-sent with Wave Flow. Presets and **Reset Wave defaults** do not change it.
+sent with Wave Flow. **Gameplay default** stages the complete Wave and spill bundle. The older Wave presets and **Reset Wave defaults** stage Wave tuning alone.
 
 **Ballistic Water** (Transport & spray tab) works with Wave Flow, with or
 without spill: impact spray, jets, nozzles and Water thrown by bodies fly as
@@ -157,3 +158,33 @@ stacked on #631. Review repairs are carried only by the combined
 `claude/wave-waterwall-001` candidate (#672); the parent branches stay unchanged.
 **HOLD, do not merge.** Source/runtime/CI qualification and human acceptance are
 separate evidence requirements.
+
+## Faster horizontal spread on the water ramp
+
+Open Shared Workbench, enter **water-ramp** in the setup name field, press **Load**, then **Run**. The Windows evaluation package installs this named canvas on first launch if the name is free. Fresh sessions already use Wave, spill, blobs and ballistic release. To return to that setup after trying another law, select **Wave Flow**, stage **Gameplay default**, then press **Apply solver / tuning**. Reload the canvas to start the Water from the top again.
+
+The gameplay profile runs **two rounds per tick**, with Gain 32, Deep gain 32, Floor gain 1024, flux smoothing 16, Coast 32, Empty pour shift 2 and Feed head limit 255. **Floor gain** adds horizontal momentum to the first few rows of a shallow front over continuous, level solid ground. **Gain** drives the general Water response and **Deep gain** controls the restoring force in a pool. **Feed head limit** bounds how strongly pool feed can persist against a rising Water level. Water can still run up a slope on impact. See the [measured ramp and flat-floor comparisons](../audits/2026-11-19-wave-water-ramp-003.md). To reduce frame cost, stage **Rounds** at 1 and Apply.
+
+The ordinary v2 setup records the material policy. It has no field for the Wave selection. A baseline-carrier file such as the ramp uses the session's current selection. A saved alternate Water law takes effect on load. The Water Lab shows the accepted solver after the replacement completes.
+
+## Try the Waterwall 002 candidate
+
+Open **Water Lab → Wave**. Select **Sloshy** to stage the deep-water response and short-wave smoothing. Select **Max over-ledge** to stage the sheet, crest flight, blobs and ballistic release together. You can combine both. Press **Apply** and check the native values beside the controls. Apply resets retained Wave momentum. Reload the same starting setup for a fair comparison.
+
+**Deep gain** sets how hard a deep pool pushes back. Ordinary **Gain** controls a shallow advancing front. **Flux smoothing** reduces sharp changes in the movement of adjacent wet faces. **Sheet rate** sends deeper exposed rows through the grid while the crest can still throw. **Coyote ticks** sets how long a crest parcel travels level. Set the four new values to zero to turn off their effects. Reset Wave tuning and restore the previous spill settings to reverse a whole bundle. The [dated evaluation](../audits/2026-11-19-wave-waterwall-002.md) records the tested settings and results.
+
+A face can spend its share only once. If the crest throw already uses the whole allowance, Stream draw has no spare Water to pour on that face. Deeper sheet rows can still pour.
+
+## Try full-face release at fall speed 3
+
+For a large drop, load **water-ramp**, let the pool form, then use a radius-24 brush to paint Oil and drop Lava where Oil meets Water. The [recorded replay](../audits/2026-11-19-wave-oil-lava.md) gives exact positions, ticks and results.
+
+To see a wave travel under a slick, load **oil-impinge** in the Windows evaluation and press **P**. Let the falling Water hit the shelf and the two layers settle. Drop a fresh brushful of Water on the left and watch the Water–Oil boundary on the right. This uses the existing Wave gameplay settings. [Tank replay](../audits/2026-11-20-wave-oil-impinge.md)
+
+In the Oil evaluation ZIP, load **oil-tank** and press **P**. A strip of Oil starts ten cells below the surface while Sand drops onto the pool. After it settles, erase a stretch of the thin right wall at the Water line to release a wave into the lower basin. The Wave gameplay profile already has spill, ballistic release and fall speed 3 enabled. [Oil tank evaluation](../audits/2026-11-19-wave-oil-buoyancy.md)
+
+Load **water-wall** in the Shared Workbench and press **Run**. On the full-face evaluation branch, **Gameplay default** enables **Full face**, **Ballistic release** and **Blobs**, and sets **Fall speed** to **3**. Fall speed counts grid cells per solver round. The gameplay profile runs two rounds per tick. Parcels use their own gravity and velocity.
+
+For a comparison, open **Water Lab → Wave**, keep Fall speed at 3, clear **Full face**, and press **Apply**. Reload the same start for each run. The previous sheet setting sends spray from the crest and pours deeper rows down the edge. Selecting **Full face** lets exposed rows below the crest feed both the outward spray and the falling sheet. The native readback beside the controls shows which settings are active. [Experiment and measurements](../audits/2026-11-19-wave-water-face-004.md)
+
+The same evaluation sets **Deep pool feed** to **64** and keeps **Pool feed** at **127**. This keeps the shallow front fast while reducing the vertical cuts in deep moving Water. For an A/B on **water-ramp**, compare Deep pool feed **0** and **64**, use **Apply**, and reload the same start. Zero uses ordinary Pool feed at every depth. Leave **Full face** and **Fall speed** at the same values for both runs.

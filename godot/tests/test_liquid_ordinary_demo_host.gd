@@ -38,6 +38,8 @@ func intact(before: Dictionary) -> bool:
 
 func run() -> void:
 	owner = load("res://web_main.tscn").instantiate();root.add_child(owner);await process_frame
+	# This comparison anchors the original CYSD1 cell tuples.
+	owner.ui.next_water.item_selected.emit(1)
 	owner.set_process(false);owner.set_physics_process(false)
 	bridge = owner.demo_bridge;panel = owner.microscenario_panel.liquid_panel
 	if not expect(owner.ready_to_play,"actual normal synchronous owner is ready"): finish();return

@@ -136,8 +136,7 @@ PR #631 ledger own final qualification. PR #617 and #618 remain read-only. The
 [canonical contract](../architecture/wave-flow-v1.md) and
 [evaluation guide](wave-flow-evaluation.md) describe the native solver,
 versioned mass/configuration APIs, Godot selection, comparison fixtures and
-real Rapier/Needle paths. Wave Flow stays opt-in and default off, outside the
-production policy catalogue. Complete state identity includes retained flux;
+real Rapier/Needle paths. The [water ramp branch](../audits/2026-11-19-wave-water-ramp-003.md) selects Wave, spill and ballistic release for new player sessions. Raw solver selection remains outside the production policy catalogue. Complete state identity includes retained flux;
 physical save and restore explicitly refuse Wave Worlds.
 
 The [completion record](../audits/2026-11-15-wave-mt-001-completion.md)
