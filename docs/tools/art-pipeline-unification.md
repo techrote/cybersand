@@ -85,33 +85,43 @@ contract, **not** a change in playable native World size. There is no
 native simulation allocation, native save-file compatibility claim,
 water/pressure solver, entity simulation or collision correctness claim.
 
-The full PNG path uses a bounded output image with **at most 50,000,000
-output pixels**, from a source image of at most 16,777,216 native cells.
-Export scale is explicit. Oversized full exports **fail** with a diagnostic
-and retain incomplete evidence; there is no silent clipping, source
-downsampling or arbitrary temporary memory growth. The interactive UI
-shows its current export pixel cost and the required reduction in scale.
-The viewport/detail paths remain available even when a whole-map PNG is
-over budget.
+The normal full PNG path uses a bounded Godot output image with **at most
+50,000,000 output pixels**, from a source image of at most 16,777,216 native
+cells. At a larger output scale, `--capture --stream-large` explicitly enables
+a second **bounded 100,000,000-output-pixel, 65,536-pixel-per-axis** path.
+Godot draws the **same RG8 production material shaders** in halo-overdrawn
+tiles and writes source-hashed RGB8 framebuffer bytes. Python only
+assembles those exact bytes into a standards-compliant RGB PNG using
+scanline compression; it does not recolour, rasterise or alter geometry.
+The final PNG is revalidated before any manifest is marked complete.
 
-| Native input | Native cells | Full at 1× | Full at 2× |
-| --- | ---: | --- | --- |
-| 512×512 | 262,144 | Yes | Yes |
-| 1024×1024 | 1,048,576 | Yes | Yes |
-| 2048×1024 | 2,097,152 | Yes | Yes |
-| 1024×2048 | 2,097,152 | Yes | Yes |
-| 4096×1024 | 4,194,304 | Yes | Yes |
-| 1024×4096 | 4,194,304 | Yes | Yes |
-| 512×8192 | 4,194,304 | Yes | Yes |
-| 8192×512 | 4,194,304 | Yes | Yes |
-| 2048×8192 | 16,777,216 | Yes | **No: 67,108,864 pixels** |
-| 16384×1024 | 16,777,216 | Yes | **No: 67,108,864 pixels** |
+Export scale is explicit. Exports above the selected budget **fail** with a
+diagnostic, retaining incomplete evidence but never a false completed
+capture. There is no silent clipping, source downsampling or unbounded
+full-image allocation. The interactive viewer retains its 50M
+`Save full` image bound and displays the pixel cost; to produce an
+over-50M whole-map PNG use the unattended CLI with `--stream-large`.
+Viewport/detail captures work independently of the full-image budget.
+
+| Native input | Native cells | Full 1× | Full 2× ordinary | Full 2× `--stream-large` |
+| --- | ---: | --- | --- | --- |
+| 512×512 | 262,144 | Yes | Yes | Yes |
+| 1024×1024 | 1,048,576 | Yes | Yes | Yes |
+| 2048×1024 | 2,097,152 | Yes | Yes | Yes |
+| 1024×2048 | 2,097,152 | Yes | Yes | Yes |
+| 4096×1024 | 4,194,304 | Yes | Yes | Yes |
+| 1024×4096 | 4,194,304 | Yes | Yes | Yes |
+| 512×8192 | 4,194,304 | Yes | Yes | Yes |
+| 8192×512 | 4,194,304 | Yes | Yes | Yes |
+| 2048×8192 | 16,777,216 | Yes | **Refused: 67,108,864 pixels** | **Yes: streamed** |
+| 16384×1024 | 16,777,216 | Yes | **Refused: 67,108,864 pixels** | **Yes: streamed** |
 
 The JSON evidence states `previewable`, `full_exportable`,
+`full_export_mode: framebuffer|streamed|refused`,
 `requested_output_pixels`, reason when rejected, and
-`native_playable: "not-qualified-by-art-pipeline"`. Exceeding the cap
-requires a future separate streamed-PNG implementation or a bounded crop;
-**art preview support does not grant native gameplay admission**.
+`native_playable: "not-qualified-by-art-pipeline"`. Requests above
+100M output pixels or 65,536 pixels per streamed axis remain refused.
+**Art preview support does not grant native gameplay admission**.
 
 ## Capture publication and provenance
 
@@ -141,7 +151,8 @@ requires a future separate streamed-PNG implementation or a bounded crop;
    120-feature pin/compare/shader/source-reload smoke.
 3. Run unattended capture matrix, including genuinely tall/wide 512×8192
    and 8192×512 worlds with authored far-edge material strips and
-   manifest camera/clipping assertions.
+   manifest camera/clipping assertions; qualify source-hashed 67M-pixel
+   1024×4096 at 4× through the real-Godot streamed-PNG test.
 4. Inspect output PNGs and source identities. Repeat the graphical suite on
    Linux X11/Xvfb/llvmpipe and Windows Godot ANGLE using the **integrated
    repository source**, not a stale #454 checkout.
