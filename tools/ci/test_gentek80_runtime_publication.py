@@ -9,6 +9,8 @@ from __future__ import annotations
 import argparse
 import copy
 import hashlib
+import json
+import os
 from pathlib import Path
 import unittest
 from unittest import mock
@@ -20,6 +22,10 @@ import test_gen007_architectural_runtime_publication as original_tests
 
 def digest(value: str) -> str:
     return hashlib.sha256(value.encode()).hexdigest()
+
+
+def receipt_bytes(value: dict) -> bytes:
+    return (json.dumps(value, indent=2, sort_keys=True) + "\n").encode()
 
 
 def workbench(source: str = "a" * 40, runtime: str = "b" * 64, platform: str = "linux") -> dict:
@@ -88,19 +94,27 @@ def gallery(source: str = "a" * 40, runtime: str = "b" * 64,
             cases.append({"name": name, "module": preset["module"], "preset_id": preset["id"],
                           "module_version": 1,
                           "profile": profile, "family": family, "status": "pass",
+                          "extent": [512, 512], "seed": 271828,
                           "material_sha256": digest(name), "occupancy_sha256": digest("occupancy" + name),
-                          "recipe_sha256": digest("recipe" + name), "fingerprint": digest(name)[:16],
+                          "recipe_sha256": digest("recipe" + name), "project_sha256": digest("project" + name),
+                          "fingerprint": digest(name)[:16],
                           "receipts": {"0,0": digest("receipt" + name)[:16]}})
         rejections += [{"module": preset["module"], "profile": profile, "status": "pass",
                         "expected_refusal": True, "error": "native bounds refusal"}
                        for profile in sorted(subject.REJECTION_PROFILES)]
     defaults = [case for case in cases if case["profile"] == "default"]
+    reference = {"schema": "gentek80-public-gallery-v1", "source_commit": "f" * 40,
+                 "source_tree": "e" * 40, "rendering_inputs_sha256": copy.deepcopy(ledger),
+                 "defaults": [dict(case, png=case["name"] + ".png",
+                                   png_sha256=digest("png" + case["name"]),
+                                   rgba_sha256=digest("rgba" + case["name"])) for case in defaults]}
     return {
         "gallery_identity": {"schema": 1, "status": "pass", "scope": "complete 80-Gentek catalogue",
             "source_and_runtime_unchanged": True, "original_native_pngs": 520,
             "distinct_default_genteks": 80, "replayed_default_genteks": 80,
             "source": {"commit": source, "tree": tree, "uncommitted_source_paths": [], "inputs": ledger},
             "runtime": {"sha256": runtime},
+            "reference_gallery_comparison": "reference-gallery-comparison.json",
             "processes": [{"phase": phase, "returncode": 0, "timed_out": False,
                            "unexpected_diagnostics": [], "log_sha256": digest(phase)} for phase in ("capture", "replay")]},
         "gallery_campaign": {"schema": 1, "phase": "capture", "complete": True, "failures": [],
@@ -110,10 +124,21 @@ def gallery(source: str = "a" * 40, runtime: str = "b" * 64,
         "gallery_catalogue": {"genteks": presets, "native": {"modules":
             [{"id": preset["module"], "version": 1} for preset in presets]
             + [{"id": "legacy_" + str(index), "version": 1} for index in range(11)]}},
-        "gallery_pixels": {"schema": 1, "cases": [{"name": case["name"], "material_sha256": case["material_sha256"],
+        "gallery_pixels": {"schema": 1, "cases": [{"name": case["name"], "module": case["module"],
+            "profile": case["profile"], "extent": case["extent"], "material_sha256": case["material_sha256"],
+            "rgba_sha256": digest("rgba" + case["name"]),
             "png_sha256": digest("png" + case["name"]), "native_pixels_verified": True} for case in cases]},
         "gallery_build": {"schema": "gentek80-native-build-v1", "source_commit": source, "source_tree": tree,
                            "runtime_sha256": runtime, "source_inputs_sha256": ledger, "returncode": 0},
+        "gallery_reference": reference,
+        "gallery_comparison": {"schema": "gentek80-reference-comparison-v1", "status": "pass", "failures": [],
+            "reference_source_commit": reference["source_commit"], "reference_source_tree": reference["source_tree"],
+            "candidate_source_commit": source, "candidate_source_tree": tree, "candidate_runtime_sha256": runtime,
+            "reference_manifest_sha256": hashlib.sha256(receipt_bytes(reference)).hexdigest(),
+            "rendering_inputs_equal": True, "reference_defaults": 80, "fresh_defaults": 80, "matched_defaults": 80,
+            "cases": [{"module": case["module"], "preset_id": case["preset_id"], "matches": True,
+                       "material_sha256": case["material_sha256"], "rgba_sha256": digest("rgba" + case["name"])}
+                      for case in defaults]},
     }
 
 
@@ -124,7 +149,10 @@ class Gentek80ReceiptGuards(unittest.TestCase):
         self.assertEqual(subject.engine.BUNDLE_PREFIX, "gentek80-validated")
         self.assertEqual(historical.engine.BRANCH, "feat/gen007-architectural-generator-ab")
         for path in ("tools/architecture/gentek80_workbench.py", "tools/architecture/gentek80_campaign.py",
-                     "tools/ci/gentek80_runtime_publication.py", "tools/ci/test_gentek80_runtime_publication.py"):
+                     "tools/ci/gentek80_runtime_publication.py", "tools/ci/test_gentek80_runtime_publication.py",
+                     "tools/architecture/compare_interlaced_compilers.py",
+                     "tools/architecture/test_compare_interlaced_compilers.py",
+                     subject.PUBLIC_GALLERY_MANIFEST):
             self.assertIn(path, subject.engine.BUILD_EXACT)
 
     def test_evolved_assertion_counts_keep_all_legacy_phases(self):
@@ -198,6 +226,37 @@ class Gentek80ReceiptGuards(unittest.TestCase):
                 subject.validate_gallery(candidate, "a" * 40, "b" * 64, "c" * 40, ledger)
 
 
+    def test_public_gallery_recomputes_all_defaults_and_binds_both_sources(self):
+        baseline = gallery()
+        reference_hash = hashlib.sha256(receipt_bytes(baseline["gallery_reference"])).hexdigest()
+        subject.validate_reference_gallery(baseline, "a" * 40, "b" * 64, "c" * 40, reference_hash)
+        mutations = [lambda v: v["gallery_identity"].update(reference_gallery_comparison=None),
+                     lambda v: v["gallery_reference"].update(source_commit="unknown"),
+                     lambda v: v["gallery_reference"].update(rendering_inputs_sha256={}),
+                     lambda v: v["gallery_comparison"].update(candidate_source_commit="e" * 40),
+                     lambda v: v["gallery_comparison"].update(candidate_source_tree="e" * 40),
+                     lambda v: v["gallery_comparison"].update(reference_source_commit="e" * 40),
+                     lambda v: v["gallery_comparison"].update(candidate_runtime_sha256="e" * 64),
+                     lambda v: v["gallery_comparison"].update(reference_manifest_sha256="e" * 64),
+                     lambda v: v["gallery_comparison"].update(matched_defaults=79),
+                     lambda v: v["gallery_comparison"].update(failures=["divergence"]),
+                     lambda v: v["gallery_comparison"]["cases"].pop(),
+                     lambda v: v["gallery_comparison"]["cases"][0].update(matches=False),
+                     lambda v: v["gallery_comparison"]["cases"][0].update(material_sha256="e" * 64),
+                     lambda v: v["gallery_reference"]["defaults"].pop(),
+                     lambda v: v["gallery_reference"]["defaults"][0].update(preset_id="fixture-1"),
+                     lambda v: v["gallery_reference"]["defaults"][0].update(material_sha256="e" * 64),
+                     lambda v: v["gallery_reference"]["defaults"][0].update(project_sha256="e" * 64),
+                     lambda v: v["gallery_reference"]["defaults"][0].update(rgba_sha256="e" * 64),
+                     lambda v: v["gallery_pixels"]["cases"][1].update(rgba_sha256="e" * 64)]
+        for index, mutate in enumerate(mutations):
+            with self.subTest(mutation=index):
+                candidate = copy.deepcopy(baseline)
+                mutate(candidate)
+                with self.assertRaises(RuntimeError):
+                    subject.validate_reference_gallery(candidate, "a" * 40, "b" * 64, "c" * 40, reference_hash)
+
+
 class Gentek80PublicationRoundtrip(unittest.TestCase):
     def setUp(self):
         # Reuse the established real local-Git/lease/runtime-header fixture.
@@ -208,6 +267,18 @@ class Gentek80PublicationRoundtrip(unittest.TestCase):
         self.fixture = original_tests.PublicationRoundtrip(methodName="runTest")
         self.fixture.setUp()
         self.addCleanup(self.fixture.doCleanups)
+        # Commit an actual public-gallery manifest before recording any build.
+        # This makes receipt substitution cross a real Git/blob trust boundary.
+        ledger = subject.engine.input_ledgers(self.fixture.source)["source_inputs"]
+        subject.engine.write_json(self.fixture.root / subject.PUBLIC_GALLERY_MANIFEST,
+                                  gallery(ledger=ledger)["gallery_reference"])
+        self.fixture.git("add", subject.PUBLIC_GALLERY_MANIFEST)
+        self.fixture.git("commit", "--quiet", "-m", "Pin public 80-style gallery fixture")
+        self.fixture.source = self.fixture.git("rev-parse", "HEAD").decode().strip()
+        self.fixture.git("push", "--quiet", "origin", "HEAD:refs/heads/" + subject.engine.BRANCH)
+        patch = mock.patch.dict(os.environ, {"GITHUB_SHA": self.fixture.source})
+        patch.start()
+        self.addCleanup(patch.stop)
 
     def candidate(self, platform: str):
         args = self.fixture.candidate(platform)
@@ -258,6 +329,43 @@ class Gentek80PublicationRoundtrip(unittest.TestCase):
         path = args.bundle / subject.RECEIPTS["gallery_pixels"]
         path.write_bytes(path.read_bytes() + b"\n")
         with self.assertRaisesRegex(RuntimeError, "missing or modified"):
+            subject.engine.verify_bundle(args.bundle, "linux", self.fixture.source, validated=True)
+
+    def test_missing_or_malformed_public_reference_cannot_mark_bundle_validated(self):
+        args = self.candidate("linux")
+        for name in ("gallery_reference", "gallery_comparison"):
+            path = args.gallery / subject.GALLERY_FILES[name]
+            original = path.read_bytes()
+            for malformed in (None, b"not a JSON receipt\n"):
+                with self.subTest(receipt=name, malformed=malformed):
+                    if malformed is None:
+                        path.unlink()
+                    else:
+                        path.write_bytes(malformed)
+                    with self.assertRaises(RuntimeError):
+                        self.fixture.accept(args)
+                    self.assertEqual(subject.read_json(subject.engine.manifest_path(args.bundle, "linux"))["status"],
+                                     "built-not-executed")
+                    self.assertFalse((args.bundle / "validation.json").exists())
+                    path.write_bytes(original)
+
+    def test_rehashed_public_reference_cannot_substitute_the_committed_gallery(self):
+        args = self.candidate("linux")
+        self.fixture.accept(args)
+        reference_path = args.bundle / subject.RECEIPTS["gallery_reference"]
+        reference = subject.read_json(reference_path)
+        reference["source_commit"] = "d" * 40
+        subject.engine.write_json(reference_path, reference)
+        comparison_path = args.bundle / subject.RECEIPTS["gallery_comparison"]
+        comparison = subject.read_json(comparison_path)
+        comparison["reference_source_commit"] = reference["source_commit"]
+        comparison["reference_manifest_sha256"] = subject.engine.runner.sha256(reference_path)
+        subject.engine.write_json(comparison_path, comparison)
+        report = subject.read_json(args.bundle / "validation.json")
+        for name in ("gallery_reference", "gallery_comparison"):
+            report["receipts"][name]["sha256"] = subject.engine.runner.sha256(args.bundle / subject.RECEIPTS[name])
+        self.fixture.reseal_report(args, report)
+        with self.assertRaisesRegex(RuntimeError, "committed build input"):
             subject.engine.verify_bundle(args.bundle, "linux", self.fixture.source, validated=True)
 
     def test_rehashed_flatten_receipt_cannot_substitute_an_older_runtime(self):

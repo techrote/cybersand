@@ -28,6 +28,7 @@ engine.WORKFLOW = ".github/workflows/gentek80-qualification.yml"
 engine.REQUEST = "tools/ci/gentek80_publish_request.json"
 engine.EVIDENCE = "docs/research/gentek-80-integration-001.md"
 engine.BUNDLE_PREFIX = "gentek80-validated"
+PUBLIC_GALLERY_MANIFEST = "docs/images/gentek80-integration/gallery-manifest.json"
 engine.REQUEST_VALUE = {
     "schema": "gentek80-runtime-publish-request-v1",
     "family": "gen007-architectural-generator",
@@ -52,6 +53,16 @@ engine.BUILD_EXACT = set(engine.BUILD_EXACT) | {
     "docs/operations/gentek80-evaluation.md",
     "tools/architecture/compiler_cache.py",
     "tools/architecture/test_compiler_cache.py",
+    "tools/architecture/compare_interlaced_compilers.py",
+    "tools/architecture/test_compare_interlaced_compilers.py",
+    "tools/architecture/render_interlaced_viaduct.py",
+    "tools/architecture/interlaced_viaduct_export.cpp",
+    "tools/architecture/qualify_interlaced.py",
+    "tools/architecture/test_qualify_interlaced.py",
+    "tools/architecture/classic_repair_comparison.py",
+    "tools/architecture/test_classic_repair_comparison.py",
+    "docs/images/gentek-80/classic-review-repair-oracle.json",
+    PUBLIC_GALLERY_MANIFEST,
 }
 engine.CASE_MARKERS = dict(engine.CASE_MARKERS,
     test_architectural_generator=r"ARCHITECTURE_RESULTS phase=native checks=[1-9][0-9]* failures=0 complete=true",
@@ -62,7 +73,8 @@ engine.EXECUTION_SCOPE = (
     "PNG captures, 240 input refusals and 80 independent-process replays; ordinary "
     "graphical Workbench selection/generation/edit/save/reopen for all 80; graphical "
     "512x512 GEN-008 Flatten recovery; independently extracted Windows owner-package "
-    "architecture, Flatten and all-80 Workbench replay."
+    "architecture, Flatten and all-80 Workbench replay; all 80 fresh defaults "
+    "match the committed public gallery's exact rendering inputs and native/pixel hashes."
 )
 FULL_PHASES = base.FULL_PHASES
 OWNER_PHASES = base.OWNER_PHASES
@@ -92,6 +104,8 @@ GALLERY_FILES = {
     "gallery_catalogue": "catalogue.json",
     "gallery_pixels": "pixel-and-connectivity-verification.json",
     "gallery_build": "runtime-build-ledger.json",
+    "gallery_reference": "reference-gallery.json",
+    "gallery_comparison": "reference-gallery-comparison.json",
 }
 RECEIPTS = {**base.RECEIPTS, "workbench": "gentek80-workbench-qualification.json",
             "package_workbench": "gentek80-package-workbench-qualification.json",
@@ -366,6 +380,77 @@ def validate_gallery(verified: dict[str, dict], source: str, native_hash: str,
     return ids
 
 
+def validate_reference_gallery(verified: dict[str, dict], source: str, native_hash: str,
+                               tree: str, reference_hash: str) -> None:
+    """Recompute the public S0/fresh candidate join instead of trusting a pass flag."""
+    identity = verified["gallery_identity"]
+    reference, comparison = verified["gallery_reference"], verified["gallery_comparison"]
+    boundary = identity["source"]
+    engine.require(identity.get("reference_gallery_comparison") == GALLERY_FILES["gallery_comparison"],
+                   "Gallery did not execute the required public-reference comparison")
+    engine.require(reference.get("schema") == "gentek80-public-gallery-v1"
+                   and re.fullmatch(r"[0-9a-f]{40}", str(reference.get("source_commit", ""))) is not None
+                   and re.fullmatch(r"[0-9a-f]{40}", str(reference.get("source_tree", ""))) is not None
+                   and isinstance(boundary.get("inputs"), dict) and bool(boundary["inputs"])
+                   and all(isinstance(path, str) and hash_value(value)
+                           for path, value in boundary["inputs"].items())
+                   and reference.get("rendering_inputs_sha256") == boundary["inputs"],
+                   "Public gallery is missing its exact source identity or rendering inputs differ")
+    engine.require(comparison.get("schema") == "gentek80-reference-comparison-v1"
+                   and comparison.get("status") == "pass" and comparison.get("failures") == []
+                   and comparison.get("reference_source_commit") == reference["source_commit"]
+                   and comparison.get("reference_source_tree") == reference["source_tree"]
+                   and comparison.get("candidate_source_commit") == source
+                   and comparison.get("candidate_source_tree") == tree
+                   and comparison.get("candidate_runtime_sha256") == native_hash
+                   and hash_value(reference_hash)
+                   and comparison.get("reference_manifest_sha256") == reference_hash
+                   and comparison.get("rendering_inputs_equal") is True
+                   and all(exact_int(comparison.get(key), 80)
+                           for key in ("reference_defaults", "fresh_defaults", "matched_defaults")),
+                   "Public gallery comparison is partial, failed or source/runtime/manifest mismatched")
+    public = rows(reference.get("defaults"), "Malformed public gallery defaults")
+    compared = rows(comparison.get("cases"), "Malformed public gallery comparison cases")
+    captured = [case for case in verified["gallery_campaign"]["cases"] if case.get("profile") == "default"]
+    for label, records in (("public", public), ("compared", compared), ("captured", captured)):
+        engine.require(len(records) == 80
+                       and all(isinstance(row.get("module"), str) and row["module"] for row in records)
+                       and len({row["module"] for row in records}) == 80
+                       and all(isinstance(row.get("preset_id"), str) and row["preset_id"] for row in records)
+                       and len({row["preset_id"] for row in records}) == 80,
+                       "Public reference must cover exactly 80 unique module/preset identities: " + label)
+    old_by_module = {case["module"]: case for case in public}
+    fresh_by_module = {case["module"]: case for case in captured}
+    compared_by_module = {case["module"]: case for case in compared}
+    pixels_by_name = {case["name"]: case for case in verified["gallery_pixels"]["cases"]}
+    engine.require(old_by_module.keys() == fresh_by_module.keys() == compared_by_module.keys(),
+                   "Public gallery and fresh native/comparison module identities differ")
+    hashes = ("material_sha256", "occupancy_sha256", "recipe_sha256", "project_sha256")
+    fields = ("preset_id", "extent", "seed", *hashes)
+    for module, previous in old_by_module.items():
+        fresh, result = fresh_by_module[module], compared_by_module[module]
+        pixels = pixels_by_name.get(fresh.get("name"))
+        extent = previous.get("extent")
+        png = previous.get("png")
+        engine.require(isinstance(extent, list) and len(extent) == 2
+                       and all(positive_int(value) for value in extent)
+                       and type(previous.get("seed")) is int
+                       and isinstance(png, str) and bool(png) and "\\" not in png
+                       and not Path(png).is_absolute() and ".." not in Path(png).parts
+                       and all(hash_value(previous.get(key)) for key in (*hashes, "rgba_sha256", "png_sha256"))
+                       and all(key in fresh and previous[key] == fresh[key] for key in fields)
+                       and isinstance(pixels, dict) and pixels.get("native_pixels_verified") is True
+                       and pixels.get("module") == module and pixels.get("profile") == "default"
+                       and pixels.get("extent") == extent
+                       and pixels.get("material_sha256") == fresh["material_sha256"]
+                       and pixels.get("rgba_sha256") == previous["rgba_sha256"],
+                       "Public gallery native/material/recipe/project/pixel comparison diverged: " + module)
+        engine.require(result.get("matches") is True and result.get("preset_id") == fresh["preset_id"]
+                       and result.get("material_sha256") == fresh["material_sha256"]
+                       and result.get("rgba_sha256") == previous["rgba_sha256"],
+                       "Public gallery comparison receipt differs from its recomputed case: " + module)
+
+
 def verify_case_results(directory: Path, report: dict) -> None:
     source, platform = report["source_commit"], report["platform"]
     native_hash = report["runtime"]["sha256"]
@@ -394,6 +479,12 @@ def verify_case_results(directory: Path, report: dict) -> None:
     validate_flatten_results(verified["flatten_results"], native_hash, platform, manifest["build_inputs"])
     workbench_ids = validate_workbench(verified["workbench"], source, native_hash, platform)
     gallery_ids = validate_gallery(verified, source, native_hash, report["source_tree"], report["source_inputs"])
+    reference = directory / RECEIPTS["gallery_reference"]
+    engine.require(hashlib.sha256(reference.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+                   == manifest["build_inputs"].get(PUBLIC_GALLERY_MANIFEST),
+                   "Retained public gallery manifest differs from its committed build input")
+    validate_reference_gallery(verified, source, native_hash, report["source_tree"],
+                               receipts["gallery_reference"]["sha256"])
     engine.require(set(workbench_ids) == set(gallery_ids), "Workbench and rendered catalogue identities differ")
     if platform == "windows":
         validate_architecture(verified["package"], source, native_hash, owner=True)
