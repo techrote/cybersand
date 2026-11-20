@@ -32,6 +32,8 @@ ROOT = HERE.parent
 sys.path.insert(0, str(HERE))
 import world_art_capture_support as support  # noqa: E402
 import world_art_preview_launcher as launcher  # noqa: E402
+import world_art_stream_png as stream_png  # noqa: E402
+import hashlib
 
 LAUNCHER = HERE / "world_art_preview_launcher.py"
 GODOT = os.environ.get("WORLD_ART_GODOT", "")
@@ -120,6 +122,36 @@ class UnitTests(unittest.TestCase):
         with self.assertRaises(support.CaptureError):
             support.check_zoom(0.001, "--zoom")
 
+    def test_bounded_streamer_assembles_tile_hashes_and_no_overwrite(self):
+        with tempfile.TemporaryDirectory() as scratch:
+            job = Path(scratch) / "job"
+            staging = job / "_stream-full"
+            staging.mkdir(parents=True)
+            inventory = []
+            for y in (0, 4):
+                for x in (0, 4):
+                    name = f"tile-{y // 4:04d}-{x // 4:04d}.rgb"
+                    pixels = bytes(value for yy in range(4) for xx in range(4)
+                                   for value in ((x + xx) * 29, (y + yy) * 23, (x + y) * 17))
+                    (staging / name).write_bytes(pixels)
+                    inventory.append({
+                        "file": name, "x": x, "y": y, "width": 4, "height": 4,
+                        "bytes": len(pixels), "sha256": hashlib.sha256(pixels).hexdigest(),
+                    })
+            shot = {"id": "full", "file": "full.png", "camera": {"scale": 1},
+                    "assembly": {"directory": str(staging), "width": 8, "height": 8,
+                                 "tiles": inventory}}
+            result = stream_png.assemble_rgb_tiles(job, shot)
+            info = support.inspect_png(job / "full.png")
+            self.assertEqual((info["width"], info["height"]), (8, 8))
+            self.assertEqual(info["sha256"], result["png_sha256"])
+            self.assertGreater(info["raw_byte_diversity"], 4)
+            self.assertGreater(result["edge_stats"]["right"]["distinct_colours"], 1)
+            self.assertFalse(staging.exists(), "temporary tile transport is cleaned after success")
+            with self.assertRaises(ValueError):
+                stream_png.assemble_rgb_tiles(job, shot)
+            self.assertTrue((job / "full.png").is_file(), "earlier PNG is never replaced")
+
     def test_asymmetric_canvas_policy_has_no_native_playability_claim(self):
         # Art-loader limits are not native World simulation dimensions.
         fixtures = [
@@ -135,6 +167,12 @@ class UnitTests(unittest.TestCase):
                 self.assertEqual(policy["native_playable"], "not-qualified-by-art-pipeline")
                 self.assertEqual(policy["requested_output_pixels"], width * height)
         self.assertTrue(support.classify_art_dimensions(512, 8192, 2)["full_exportable"])
+        streamable = support.classify_art_dimensions(2048, 8192, 2, stream_large=True)
+        self.assertTrue(streamable["previewable"] and streamable["full_exportable"])
+        self.assertEqual(streamable["full_export_mode"], "streamed")
+        self.assertEqual(streamable["native_playable"], "not-qualified-by-art-pipeline")
+        self.assertFalse(support.classify_art_dimensions(16384, 1024, 4,
+                                                         stream_large=True)["full_exportable"])
         too_large_output = support.classify_art_dimensions(2048, 8192, 2)
         self.assertTrue(too_large_output["previewable"])
         self.assertFalse(too_large_output["full_exportable"])
@@ -698,6 +736,38 @@ class GraphicalCaptureTests(unittest.TestCase):
         self.assertEqual(done.returncode, 0, done.stdout[-1500:] + done.stderr[-1500:])
         self.assertNotRegex(done.stdout + done.stderr, r"SCRIPT ERROR|Parse Error")
 
+
+    def test_13_streamed_67m_pixel_true_godot_png_is_complete_and_bounded(self):
+        width, height = 1024, 4096
+        source = self.scratch / "streamed-art" / "pack.json"
+        source.parent.mkdir(parents=True, exist_ok=True)
+        source.write_text(json.dumps({
+            "scene": {"size": [width, height], "placements": [],
+                      "rectangles": [
+                          [0, 0, width, height, 58],
+                          [0, 0, width, 16, 62],
+                          [0, height - 16, width, 16, 54],
+                          [width - 8, 0, 8, height, 65],
+                      ]},
+            "features": [{"id": "fixture", "size": [4, 4],
+                          "rectangles": [[0, 0, 4, 4, 62]], "variants": []}],
+        }), encoding="utf-8")
+        out, _, _ = self.capture("large-streamed-rgb8-67m", "--pack", str(source),
+                                  "--shots", "full", "--scale", "4", "--stream-large",
+                                  art_root=False)
+        batch, problems = support.verify_bundle(out)
+        self.assertEqual(problems, [])
+        self.assertEqual(batch["status"], "completed")
+        self.assertTrue(batch["stream_large"])
+        self.assertEqual(batch["jobs"][0]["art_size_policy"]["full_export_mode"], "streamed")
+        manifest = support.read_json(out / batch["jobs"][0]["manifest"])
+        shot = manifest["shots"][0]
+        self.assertEqual((shot["width"], shot["height"]), (width * 4, height * 4))
+        self.assertEqual(shot["camera"]["mode"], "tiled-stream-full")
+        self.assertEqual(shot["streamed_output"]["max_pixels"], 100_000_000)
+        self.assertGreater(shot["edge_stats"]["right"]["distinct_colours"], 1)
+        self.assertTrue(shot["stats"]["nonblank"])
+        self.assertFalse(list(out.rglob("*.rgb")), "temporary source RGB tile files are not left published")
 
     def test_12_asymmetric_godot_framebuffer_and_explicit_camera_clipping(self):
         # Real shader-backed Godot, not a Python mock or an SVG rasteriser.
