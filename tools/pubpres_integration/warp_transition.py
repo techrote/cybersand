@@ -178,7 +178,7 @@ def fresh_oracle_overlay(original):
     changed = original.replace(selector, selector + b'\tvar fresh := OS.get_environment("CYBERSAND_PUBPRES_PROBE_FRESH_DRAWABLE") == "1"\n')
     changed = changed.replace(mode, b'\tvar mode := "fresh_drawable" if fresh else ("direct_drawable" if direct else ("compact" if compact else "clone"))')
     checks = b'''\t\tif fresh:
-\t\t\tvar whole := row.phase in ["enter_dense", "dense", "enter_sparse"]
+\t\t\tvar whole: bool = row.phase in ["enter_dense", "dense", "enter_sparse"]
 \t\t\t_check(bool(material.get("fresh_drawable_storage", false)) == whole,
 \t\t\t\t"generation %d did not follow the fresh-storage selector" % index)
 \t\t\t_check(int(material.get("whole_storage_creations", 0)) == int(whole)
