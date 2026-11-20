@@ -17,8 +17,9 @@ permissions:
   contents: read
 
 concurrency:
-  group: script-hotpath-godot-${{ github.ref }}
-  cancel-in-progress: true
+  # Keep explicit qualification requests isolated from push supersession.
+  group: script-hotpath-godot-${{ github.event_name == 'workflow_dispatch' && github.run_id || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'push' }}
 
 env:
   GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
