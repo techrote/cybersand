@@ -1,0 +1,201 @@
+name: GENTEK 80 accepted-main integration qualification
+on:
+  push:
+    branches: [ci/gentek80-main-integration]
+    paths:
+      - '.github/workflows/gentek80-main-integration.yml'
+      - 'tools/ci/gentek80_main_integration/**'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: gentek80-main-${{ github.run_id }}
+  cancel-in-progress: false
+env:
+  TARGET_SHA: 100f3b14215a8778c5f4752a67ee258a8a6462cc
+  TARGET_TREE: 31a6d29e576dc29905c8ddc5c9afcebc9da0e986
+  TARGET_BRANCH: integration/gentek-80-001
+  ACCEPTED_MAIN: 7b03aa437561ec63e31fd09531171360ab60eeb4
+  HARNESS: orchestration/tools/ci/gentek80_main_integration
+  GIT_CONFIG_COUNT: '1'
+  GIT_CONFIG_KEY_0: core.autocrlf
+  GIT_CONFIG_VALUE_0: 'false'
+jobs:
+  documentation:
+    name: Dispatch unchanged Documentation at the leased candidate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      actions: write
+    steps:
+      - name: Verify exact candidate branch before and after dispatch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$TARGET_BRANCH" --jq '.object.sha' > evidence/before.txt
+          test "$(cat evidence/before.txt)" = "$TARGET_SHA"
+          gh workflow run documentation.yml --repo "$GITHUB_REPOSITORY" --ref "$TARGET_BRANCH"
+          gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$TARGET_BRANCH" --jq '.object.sha' > evidence/after.txt
+          test "$(cat evidence/after.txt)" = "$TARGET_SHA"
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          Path('evidence/dispatch.json').write_text(json.dumps({'candidate':os.environ['TARGET_SHA'],
+              'tree':os.environ['TARGET_TREE'], 'branch':os.environ['TARGET_BRANCH'],
+              'workflow':'documentation.yml', 'orchestration':os.environ['GITHUB_SHA'],
+              'run':os.environ['GITHUB_RUN_ID'], 'status':'requested'}, indent=2))
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: gentek80-main-documentation-dispatch-${{ github.run_id }}
+          path: evidence/
+          retention-days: 90
+  integration:
+    name: Combined ordinary Workbench (${{ matrix.platform }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: linux
+            os: ubuntu-24.04
+            native: godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
+            rapier: godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so
+          - platform: windows
+            os: windows-2022
+            native: godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll
+            rapier: godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          path: orchestration
+          persist-credentials: false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.TARGET_SHA }}
+          path: candidate
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Authenticate exact candidate and retained native bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git -C candidate rev-parse HEAD)" = "$TARGET_SHA"
+          test "$(git -C candidate rev-parse HEAD^{tree})" = "$TARGET_TREE"
+          git -C candidate merge-base --is-ancestor "$ACCEPTED_MAIN" HEAD
+          git -C candidate lfs install --local
+          git -C candidate lfs pull --include='${{ matrix.native }},${{ matrix.rapier }}' --exclude=''
+          mkdir -p evidence
+          python candidate/tools/ci/check_ci_provider_policy.py > evidence/provider.json
+      - name: Retrieve previously admitted Windows dependency package
+        if: matrix.platform == 'windows'
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: 44690026779
+          name: gentek80-final-owner-windows-bf1bd8c8e6f189b36a3cb0f582185e5d529297d0
+          path: original-assets
+      - name: Authenticate pinned Windows assets and real landscape
+        if: matrix.platform == 'windows'
+        shell: pwsh
+        run: |
+          python "$env:HARNESS/prepare_inputs.py" --candidate candidate --output evidence/inputs --assets original-assets
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned qualification inputs failed' }
+      - name: Install pinned Linux Godot and graphical display
+        if: matrix.platform == 'linux'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python "$HARNESS/prepare_inputs.py" --candidate candidate --output evidence/inputs
+          mkdir -p "$RUNNER_TEMP/godot"
+          curl -fL --retry 3 --max-time 600 -o "$RUNNER_TEMP/godot.zip" 'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
+          echo "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  $RUNNER_TEMP/godot.zip" | sha256sum -c --strict
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          chmod +x "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64"
+          echo "GODOT_EXE=$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" >> "$GITHUB_ENV"
+          bash candidate/tools/ci/prepare_linux_display.sh > evidence/display-setup.log 2>&1
+      - name: Existing native, catalogue, UI, save, paint, Art and Water regressions on Linux
+        if: matrix.platform == 'linux'
+        shell: bash
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+          LP_NUM_THREADS: '2'
+          GALLIVM_PERF: nopt
+        run: |
+          set -euo pipefail
+          xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' python "$HARNESS/run_focused.py" --candidate candidate --godot "$GODOT_EXE" --output evidence/focused
+      - name: Existing native, catalogue, UI, save, paint, Art and Water regressions on Windows
+        if: matrix.platform == 'windows'
+        shell: pwsh
+        run: |
+          python "$env:HARNESS/run_focused.py" --candidate candidate --godot $env:GODOT_EXE --output evidence/focused
+          if ($LASTEXITCODE -ne 0) { throw 'Existing Workbench regressions failed' }
+      - name: Linux graphical Genteks, flyer, material motion, lazy Art and landscape join
+        if: matrix.platform == 'linux'
+        shell: bash
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+          LP_NUM_THREADS: '2'
+          GALLIVM_PERF: nopt
+        run: |
+          set -euo pipefail
+          xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' python candidate/tools/architecture/gentek80_main_integration.py --godot "$GODOT_EXE" --output evidence/integration --fixture-dir evidence/inputs/fixtures --graphical
+      - name: Windows graphical Genteks, flyer, material motion, lazy Art and landscape join
+        if: matrix.platform == 'windows'
+        shell: pwsh
+        run: |
+          python candidate/tools/architecture/gentek80_main_integration.py --godot $env:GODOT_EXE --output evidence/integration --fixture-dir evidence/inputs/fixtures --graphical
+          if ($LASTEXITCODE -ne 0) { throw 'Combined graphical Workbench failed' }
+      - name: Real large-map capacity and fresh-process saved-start regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          python candidate/tools/qualify_workbench_landscapes.py --godot "$GODOT_EXE" --manifest evidence/inputs/graftloom-manifest.json --output evidence/landscape --fixture-dir evidence/inputs/fixtures --map graftloom-slipway
+      - name: Assemble one source-matched ordinary Windows evaluation ZIP
+        if: matrix.platform == 'windows'
+        shell: pwsh
+        run: |
+          python "$env:HARNESS/package_main.py" --candidate candidate --assets-zip $env:ASSETS_ZIP --landscape-evidence evidence/landscape --integration-evidence evidence/integration --output assembled --archive "delivery/CyberSand-Gentek80-Main-Windows-$($env:TARGET_SHA.Substring(0,12)).zip"
+          if ($LASTEXITCODE -ne 0) { throw 'Windows package custody failed' }
+      - name: Extract the pristine Windows ZIP and replay its actual project
+        if: matrix.platform == 'windows'
+        shell: pwsh
+        run: |
+          $archive = Get-ChildItem delivery/*.zip
+          if ($archive.Count -ne 1) { throw 'Expected one Windows evaluation ZIP' }
+          Expand-Archive $archive.FullName pristine
+          $engine = (Resolve-Path pristine/Godot_v4.7-stable_win64_console.exe).Path
+          python candidate/tools/architecture/gentek80_main_integration.py --godot $engine --project pristine/godot --output evidence/package-integration --fixture-dir pristine/maps --graphical
+          if ($LASTEXITCODE -ne 0) { throw 'Pristine package Workbench replay failed' }
+          python candidate/tools/package_workbench_landscape_review.py verify pristine
+          if ($LASTEXITCODE -ne 0) { throw 'Original package inputs changed during replay' }
+      - name: Retain source-bound original evidence including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gentek80-main-evidence-${{ matrix.platform }}-${{ github.run_id }}
+          path: |
+            evidence/**/*.json
+            evidence/**/*.log
+            evidence/**/*.png
+            evidence/**/*.txt
+          if-no-files-found: error
+          retention-days: 90
+      - name: Publish successfully replayed Windows owner ZIP
+        if: success() && matrix.platform == 'windows'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gentek80-main-owner-windows-${{ env.TARGET_SHA }}
+          path: delivery/
+          if-no-files-found: error
+          retention-days: 90
