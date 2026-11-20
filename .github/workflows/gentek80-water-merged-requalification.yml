@@ -13,6 +13,7 @@ on:
       - 'tools/ci/build_gentek80_runtime.py'
       - 'tools/ci/run_gentek80_native.py'
       - '.github/workflows/gentek80-qualification.yml'
+      - '.github/workflows/gentek80-water-merged-requalification.yml'
       - 'docs/research/gentek-80-integration-001.md'
       - 'docs/images/gentek-80/**'
       - 'docs/images/gentek80-integration/**'
