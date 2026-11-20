@@ -10,6 +10,11 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+SWARM-004 [experimental reciprocal Gentek assembly](systems/gentek-reciprocal-assembly.md)
+covers the bounded native grammar, independent architectural revisions, honest
+closure and separately qualified experimental Workbench bridge. The full
+programme remains Draft/HOLD under #687.
+
 For deliberate historical research, use the isolated
 [engineering archaeology index](history/engineering/README.md). It is excluded
 from default current-answer retrieval and grants no implementation authority.

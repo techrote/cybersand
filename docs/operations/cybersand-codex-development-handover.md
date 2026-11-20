@@ -10,6 +10,19 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## SWARM-004 reciprocal assembly — 2026-11-20
+
+**Experimental implementation / Draft / HOLD:** owner-authorized [programme #687](https://github.com/techrote/cybersand/issues/687)
+continues the verified SWARM-003 parent `cd0de74b83a66b5408668f81c82d854db45479ce`.
+Read the [reciprocal assembly contract](../systems/gentek-reciprocal-assembly.md)
+and its machine-readable native preregistration. Native grammar/reciprocal
+qualification precedes a dependent experimental Workbench PR based on accepted
+main `7b03aa437561ec63e31fd09531171360ab60eeb4`; #684/#685 remain separate.
+The owner authorized both implementation stages, not merge or Ready promotion.
+Development two-sided geometry witnesses do not establish full hard closure,
+Windows graphical acceptance or physical stability. Keep frozen B/C/E8 evidence,
+registered holdouts, failed cases and exact-source receipts intact.
+
 ## Architectural Generator runtime repair — 2026-11-15
 
 The owner-authorized Phase A plus bounded Phase B implementation began at

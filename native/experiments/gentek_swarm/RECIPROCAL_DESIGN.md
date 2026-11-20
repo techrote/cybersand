@@ -13,7 +13,10 @@ No existing SWARM-004 PR was present in the live open-PR inventory. Workbench
 donors #684 (`87148d66`, open, API draft=false) and #685 (`386a7902`, Draft)
 are inspected, not merged. Main contains the #680 admission and #681 lazy Art
 repairs. The Workbench branch will start from that accepted main and explicitly
-merge the frozen native branch. It will not silently import either donor.
+merge the frozen native branch. It will not silently import either donor. During
+implementation main advanced to `de58bf1997ca75825cf3b29e046dc1c1022c45bf`
+(accepted Water #679). The Workbench branch explicitly merged that main, retaining
+its new native settings, before the reciprocal integration.
 
 AGENTS.md, development handover, README/index/roadmap, ADR-013, GEN-003/004
 contracts and the frozen SWARM interchange were inspected before implementation.
@@ -34,6 +37,12 @@ point/segment sockets, quarter-turn transforms, hard foreign versus terminable
 obligations, finite recursion and explicit rejection receipts. Every accepted
 material cell has one canonical owner, instance, authored rule and revision.
 Welded same-owner cells remain one claim with separately accounted overlap.
+Final authorization reconstructs every historical assembly from its compiled
+authored factory under the existing shared allowance. Exact claim revisions,
+internal joints, sockets and the local-to-native part/rule mapping must match.
+A component entirely reusing the original host is identified as host reuse,
+never counted as a newly owning material part. Host welds require the original
+source cell within two Manhattan cells of the assembly root.
 
 `reciprocal_mosaic.hpp` owns MOSAIC's response. It admits its own territory plus
 the declared shared mask, subtracts immutable peer material/protected space and
@@ -73,6 +82,18 @@ Repeated failed work consumes those budgets. Original FRAME instance limit64
 and MOSAIC192 remain. New grammar expansion may use only remaining capacity.
 Changing a frame requires same-frame no-offer controls; frozen E8 remains an
 additional independent control. Raw failures remain in every campaign.
+
+Memory admission uses `N * (256 + 64 * round_cap + destruction_bytes) +
+(64 + 192) * 16384 + 512 KiB`, where `destruction_bytes` is 64 when enabled and
+zero otherwise. The total must fit the unchanged 16 MiB ceiling; a larger
+request is refused, not silently admitted with a raised limit.
+
+Destruction is a separate native seeded removal after intact negotiation.
+It never rewrites accepted round snapshots. Final authorization reproduces
+the removal and verifies survivor materials, ownership and part metadata;
+new cells and repainting are invalid. Lost required internal joints are
+reported independently. Early refusals retain source identity and consumed
+work, including failed original FRAME generation.
 
 ## Evidence and acceptance
 

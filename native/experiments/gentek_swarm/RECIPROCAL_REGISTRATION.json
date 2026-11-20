@@ -61,6 +61,7 @@
   },
   "policies": [
     "no_negotiation",
+    "legacy_vocabulary",
     "vocabulary_only",
     "flat_assembly",
     "fixed_territory",
@@ -70,12 +71,32 @@
     "reciprocal_2",
     "reciprocal_3",
     "reciprocal_4",
+    "native_bearing_off",
     "validation_off_diagnostic"
   ],
   "default_hypothesis": "reciprocal_2",
+  "receiver_material_hypothesis": "Opt-in authored MOSAIC material variant changes only existing Stone13 cells at an admitted, satisfied, authorized exact contact and its inward backing to native solid LimestoneBlock38, within one existing motif. Categories, occupied-cell bitset, masks and part ownership stay unchanged. Per-cell slot/part/rule receipts are retained. No-offer proposals pay zero extra work. Response scans cost 512 + slots*(1024 + hard_ports*8 + instances*4); changed material pays a full native validation/fingerprint reserve 24*cells + 64*instances + 32*hard_ports + 32*replacements, debited from the unchanged aggregate 2M generator ceiling. Unfunded variants are rejected atomically. native_bearing_off isolates the effect.",
   "selection": "Reject any hard invariant failure. Prefer more actual two-sided geometry-revision cases with valid native joints, then fewer still-required obligations, then lower work/round count. Report complete proposals and all failed cases separately. No per-case policy picking.",
-  "same_frame_controls": "Initial FRAME proposal and identical eligible/shared masks with no peer offers; one-sided adaptation controls; changed frames are not attributed to solver improvements.",
+  "same_frame_controls": "Initial FRAME proposal with no peer offers; one-sided adaptation controls; for every policy/case whose final accepted FRAME material differs from its initial proposal, rerun MOSAIC with the exact final FRAME cells and ports, accepted MOSAIC eligibility/protection, same shared mask, seed and profile, and empty slots. The extra no-offer solve receives a separate 2M generator / 4M solver / 16MiB budget recorded as control-only; retain failed native arrays and category/material differences. Changed frames are not attributed to solver improvements.",
   "claim_rules": "Local caps never satisfy foreign-required connectors. Coordinator creates zero architecture cells. No physics support certificate.",
-  "memory": "Conservative preflight bound includes initial and four round snapshot pairs, native donor scratch, component claims and ledgers. Enforced before output allocations.",
-  "windows": "Native Windows executable and source-matched Godot bridge; actual input Apply Undo Save exit/reopen required; Linux tests do not substitute Windows acceptance."
+  "memory": "Before donor generation, enforce N*(256 + 64*round_cap + (64 when destruction is enabled, else 0)) + (64+192)*16384 + 512 KiB against the unchanged 16 MiB ceiling. N is native canvas area. This includes retained immutable proposals, exact comparison/validation copies, bounded donor scratch, parts and ledgers. Requests whose conservative envelope does not fit return Exhausted with exact source/seed/canvas and charged input work. Native World dimensions remain unchanged.",
+  "windows": "Native Windows executable and source-matched Godot bridge; actual input Apply Undo Save exit/reopen required; Linux tests do not substitute Windows acceptance.",
+  "policy_switch_contract": {
+    "no_negotiation": "rounds=0; default vocabulary/hierarchy/shared territory identical to reciprocal initial proposal; no adaptations",
+    "legacy_vocabulary": "rounds=0; vocabulary=false, shared_ownership=false; no adaptations",
+    "vocabulary_only": "rounds=0; vocabulary=true, shared_ownership=false; no adaptations; matched to legacy_vocabulary",
+    "flat_assembly": "rounds=2; hierarchy=false; other default reciprocal switches unchanged",
+    "fixed_territory": "rounds=2; shared_ownership=false; other default reciprocal switches unchanged",
+    "mosaic_only": "rounds=2; frame_adaptation=false",
+    "frame_only": "rounds=2; mosaic_adaptation=false",
+    "reciprocal_1": "default reciprocal switches; rounds=1",
+    "reciprocal_2": "default reciprocal switches; rounds=2",
+    "reciprocal_3": "default reciprocal switches; rounds=3",
+    "reciprocal_4": "default reciprocal switches; rounds=4",
+    "native_bearing_off": "rounds=2; native_mosaic_bearing=false; other default switches unchanged. Isolates the opt-in MOSAIC Stone13-to-LimestoneBlock38 contact/backing material variant with exact unchanged occupancy and categorical assignment; no material-only change establishes reciprocal architecture",
+    "validation_off_diagnostic": "rounds=2; final_validation=false; never Apply-authorized"
+  },
+  "assembly_authorization": "Every accepted historical Construction is reconstructed from its declared compiled FRAMEWEAVER factory, symbol, span, rise, handedness, input family and transform under the existing shared work allowance. Exact nodes, claims, sockets, internal joints and claim revisions must match. Each installed native part must match its component rule, transform and complete footprint. Components owning no newly installed cell are explicit original-host reuse, never additional constructed parts. Original-host welds must exist in the original source and remain within two Manhattan cells of the root. Missing/orphan/forged certificates refuse authorization.",
+  "destruction": "Generate and retain all intact negotiation rounds first. Destruction is a separately declared deterministic native removal derivative with its own charged generator work. Final authorization reproduces the declared native seeded removal, forbids added/repainted architecture and checks survivor metadata and intact assembly receipts. Surviving final cells keep their intact 0..4 round history; removed cells have no owner. Lost originally fulfilled required internal joints remain unresolved.",
+  "source_reconciliation": "Native research stays on frozen #686. During implementation accepted main advanced to de58bf1997ca75825cf3b29e046dc1c1022c45bf (Water #679); the experimental Workbench branch explicitly merges that accepted main before integration. No #684/#685 branch import."
 }
