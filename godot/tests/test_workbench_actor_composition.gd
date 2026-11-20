@@ -65,7 +65,7 @@ var phases: Array = []
 var actors: Dictionary = {}
 var equipment_receipts: Dictionary = {}
 var screenshots: Array = []
-var skipped: Array[String] = []
+var preservation_notes: Array[String] = []
 var save_name := "actor-compose-589-evaluation"
 var started_msec := 0
 var sample_enabled := false
@@ -765,7 +765,9 @@ func run() -> void:
 					ui._name.text = Setup.MIXED_ACTOR_LABEL
 					requested = check(ui.load_setup(),"ordinary named Load resolves Mixed Actor Workshop")
 				else:
-					skipped.append("Named built-in fallback: a user-authored mixed-actor-workshop file exists; preserved without mutation.")
+					var note := "Named built-in fallback: a user-authored mixed-actor-workshop file exists; preserved without mutation."
+					preservation_notes.append(note)
+					print("SKIP WB_ACTOR_COMPOSE: ",note)
 					requested = check(ui.load_mixed_actor_workshop(),"explicit UI requests supplied Mixed Actor Workshop")
 				if not requested or not await until(installed,"mixed native/Rapier preparation acknowledged"):
 					finish.call_deferred()
@@ -807,7 +809,7 @@ func finish() -> void:
 	var record := {"case":"WB-ACTOR-COMPOSE-001 actual Shared Workbench", "checks":checks,"failures":failures,
 		"headless":DisplayServer.get_name()=="headless","elapsed_msec":Time.get_ticks_msec()-started_msec,
 		"maximum_observed_frame_gap_usec":maximum_frame_gap_usec,"actors":actors,"phases":phases,
-		"equipment_receipts":equipment_receipts.values(),"screenshots":screenshots,"skipped":skipped,
+		"equipment_receipts":equipment_receipts.values(),"screenshots":screenshots,"preservation_notes":preservation_notes,
 		"canvas_pointer_events":canvas_pointer_events,
 		"canvas_motion_events":canvas_motion_events,
 		"sample_refusals":host.sample_refusals if host != null else [],

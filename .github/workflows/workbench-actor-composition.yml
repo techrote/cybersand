@@ -4,10 +4,20 @@ on:
     branches: [feat/workbench-actor-composition-589]
     paths:
       - '.github/workflows/workbench-actor-composition.yml'
-      - 'tools/ci/run_workbench_actor_qualification.py'
+      - 'tools/ci/**'
       - 'tools/package_explore001_candidate.py'
-      - 'tools/ci/native_candidate_identity.py'
-      - 'tools/ci/stage_windows_vc_runtime.ps1'
+      - 'tools/build_pinned_godot_cpp.sh'
+      - 'tools/build_native_extension*.sh'
+      - 'tools/check_linux_runtime_floor.sh'
+      - 'tools/requirements-build.txt'
+      - 'tools/toolchains/**'
+      - 'tools/material_catalogue/**'
+      - 'tools/lcb/**'
+      - 'materials/catalogue/**'
+      - 'docs/reference/liquid-solver-capability-matrix.json'
+      - 'docs/reference/liquid-policy-wire-vectors.json'
+      - 'docs/reference/water-normalization-vectors.json'
+      - 'docs/reference/liquid-run-receipt-vectors.json'
       - 'docs/operations/workbench-actor-composition.md'
       - 'godot/**'
       # Publishing the exact already-tested candidate bytes/manifests does not
@@ -40,6 +50,8 @@ jobs:
     if: github.ref == 'refs/heads/feat/workbench-actor-composition-589'
     runs-on: ubuntu-24.04
     timeout-minutes: 100
+    env:
+      CYBERSAND_LAB_CXX: /usr/bin/g++-13
     outputs:
       windows_candidate_ready: ${{ steps.windows_upload.outcome }}
       artifact_attempt: ${{ steps.identity.outputs.attempt }}
@@ -47,6 +59,8 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
+          ref: ${{ github.sha }}
+          fetch-depth: 0
       - name: Record exact source and obtain pinned dependencies
         id: identity
         shell: bash
@@ -148,12 +162,16 @@ jobs:
     if: ${{ !cancelled() && needs.linux.outputs.windows_candidate_ready == 'success' }}
     runs-on: windows-2022
     timeout-minutes: 70
+    env:
+      CYBERSAND_LAB_CXX: 'C:\mingw64\bin\g++.exe'
     outputs:
       artifact_attempt: ${{ steps.identity.outputs.attempt }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
+          ref: ${{ github.sha }}
+          fetch-depth: 0
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           name: actor-windows-runtime-${{ github.sha }}-${{ github.run_id }}-${{ needs.linux.outputs.artifact_attempt }}
@@ -164,6 +182,8 @@ jobs:
         run: |
           New-Item -ItemType Directory -Force evidence | Out-Null
           "attempt=$env:GITHUB_RUN_ATTEMPT" | Out-File -Append -FilePath $env:GITHUB_OUTPUT
+          & $env:CYBERSAND_LAB_CXX --version | Set-Content evidence/lab-toolchain.txt
+          if ($LASTEXITCODE -ne 0) { throw 'The existing Materials Lab compiler is unavailable' }
           git rev-parse HEAD | Set-Content evidence/source-commit.txt
           python tools/ci/check_ci_provider_policy.py *> evidence/provider.log
           if ($LASTEXITCODE -ne 0) { throw 'CI provider policy failed' }
@@ -209,19 +229,25 @@ jobs:
           $engine = Join-Path (Split-Path $env:GODOT_EXE) 'Godot_v4.7-stable_win64.exe'
           python tools/package_explore001_candidate.py --engine $engine --engine-notices $notices --vc-runtime $vcRuntime --native-candidate build/actor-windows --output build/actor-workshop-windows --readme docs/operations/workbench-actor-composition.md
           if ($LASTEXITCODE -ne 0) { throw 'Portable Workbench packaging refused' }
-      - name: Qualify fresh installed graphical Workbench and authored save/reopen
+      - name: Extract the delivered ZIP and qualify graphical Workbench and authored save/reopen
         shell: pwsh
         run: |
-          $original = (Resolve-Path build/actor-workshop-windows).Path
+          $archive = 'build/CyberSand-Mixed-Actor-Workshop-Windows-' + $env:GITHUB_SHA.Substring(0,12) + '.zip'
+          Compress-Archive -Path build/actor-workshop-windows/* -DestinationPath $archive
+          $archiveHash = (Get-FileHash $archive -Algorithm SHA256).Hash.ToLowerInvariant()
+          Get-FileHash $archive -Algorithm SHA256 | Format-List | Out-File evidence/windows-package-sha256.txt
           $package = Join-Path $env:RUNNER_TEMP 'actor-workshop-installed'
-          Copy-Item -LiteralPath $original -Destination $package -Recurse
+          if (Test-Path -LiteralPath $package) { throw 'Installed ZIP qualification requires a fresh directory' }
+          Expand-Archive -LiteralPath $archive -DestinationPath $package
           $engine = Join-Path $package 'Godot_v4.7-stable_win64_console.exe'
           python tools/ci/run_workbench_actor_qualification.py test --godot $engine --candidate build/actor-windows --package $package --output evidence/installed-windows --graphical
           if ($LASTEXITCODE -ne 0) { throw 'Installed Windows Workbench failed' }
           ./tools/ci/check_windows_package_modules.ps1 -Package $package -Evidence evidence/installed-windows/runtime-modules.json
-          $archive = 'build/CyberSand-Mixed-Actor-Workshop-Windows-' + $env:GITHUB_SHA.Substring(0,12) + '.zip'
-          Compress-Archive -Path build/actor-workshop-windows/* -DestinationPath $archive
-          Get-FileHash $archive -Algorithm SHA256 | Format-List | Out-File evidence/windows-package-sha256.txt
+          if ((Get-FileHash $archive -Algorithm SHA256).Hash.ToLowerInvariant() -ne $archiveHash) { throw 'Delivered ZIP changed after extraction qualification' }
+          @{ status='passed'; source_commit=$env:GITHUB_SHA; archive=(Split-Path $archive -Leaf); sha256=$archiveHash;
+            procedure='Exact delivered ZIP extracted into fresh non-checkout directory; manifest, graphical gameplay, Save/Load and actual DLL paths verified';
+            installed_report='installed-windows/qualification.json'; modules_report='installed-windows/runtime-modules.json' } |
+            ConvertTo-Json | Set-Content evidence/windows-package-extraction.json
       - name: Retain qualified portable Windows evaluation ZIP
         if: success()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
