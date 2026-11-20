@@ -95,6 +95,7 @@ jobs:
           SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
           SCONS_JOBS: '2'
           LLVM_MINGW_ROOT: ${{ runner.temp }}/llvm-mingw
+          WINDOWS_CXX: ${{ runner.temp }}/llvm-mingw/bin/x86_64-w64-mingw32-g++
           CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/cybersand_native.windows.x86_64.dll
         run: |
           set -euo pipefail
