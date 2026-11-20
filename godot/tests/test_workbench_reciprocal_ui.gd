@@ -15,6 +15,7 @@ var evidence:=OS.get_environment("SWARM004_UI_EVIDENCE")
 var mode:=OS.get_environment("SWARM004_UI_MODE")
 var example:=OS.get_environment("SWARM004_UI_EXAMPLE")
 var native_planes:Dictionary={}
+var transport_refusals:Dictionary={}
 
 func _initialize() -> void:
 	ProjectSettings.set_setting("cybersand/native_worker_threads",1)
@@ -147,6 +148,34 @@ func native_recipe()->Dictionary:
 		"rounds":options.rounds,"shared_extent":options.shared_extent,"orientation":options.orientation_preference,
 		"optional":options.optional_negotiation,"shared_ownership":options.shared_ownership,"gentek_parameters":profiles}
 
+func stale_job_refusal(baseline:Dictionary)->void:
+	# A crashed process may leave this PID/serial folder. It must be refused
+	# before launch, without overwriting or adopting any older output.
+	var path:=ProjectSettings.globalize_path("user://swarm004/job-%d-%d" % [OS.get_process_id(),panel._serial+1])
+	DirAccess.make_dir_recursive_absolute(path)
+	var file:=FileAccess.open(path+"/result.json",FileAccess.WRITE)
+	file.store_string("stale-output-marker");file.close()
+	await click(panel._generate)
+	if not await until(func()->bool:return panel.phase=="idle","stale output folder is refused before native launch"):return
+	var refused:=check(panel._pid<0 and panel.document.is_empty() and panel._apply.disabled and "previous job folder" in panel.status,
+		"PID reuse cannot admit stale evidence or launch an overlapping child")
+	check(FileAccess.get_file_as_string(path+"/result.json")=="stale-output-marker","refused older output is not overwritten or adopted")
+	check((await capture()).cells==baseline.cells,"stale-output refusal leaves every native World cell unchanged")
+	transport_refusals["preexisting_job_directory"]=refused
+	DirAccess.remove_absolute(path+"/result.json");DirAccess.remove_absolute(path)
+
+func failed_exit_refusal(baseline:Dictionary)->void:
+	# Transport seam only: retain the actual freshly generated native record
+	# unchanged, while challenging its completion with a failed child status.
+	var result:Dictionary=panel.proposal
+	panel._thread=Thread.new();panel._thread_kind="decode";panel._thread_cancelled=false
+	panel._child_exit_code=42;panel.phase="decoding"
+	if not check(panel._thread.start(func()->Dictionary:return result)==OK,"failed-exit transport challenge starts bounded decoding completion"):return
+	if not await until(func()->bool:return panel.phase=="idle","failed child execution retires an otherwise valid native record"):return
+	transport_refusals["failed_child_positive"]=check(panel._apply.disabled and panel._pid<0 and "Failed native execution" in panel.status,
+		"a native-positive result cannot authorize Apply after a failed child exit")
+	check((await capture()).cells==baseline.cells,"failed-exit refusal leaves native material and authoring unchanged")
+
 func lifecycle(baseline:Dictionary)->void:
 	for action:String in ["cancel","hide","timeout"]:
 		if not panel.visible:panel.open_panel()
@@ -194,6 +223,7 @@ func create_map()->void:
 		await click(find_button(panel,"Close"))
 		check(not panel.visible and panel._pid<0,"Close retires preview work")
 		completed=true;return
+	if mode=="create":await stale_job_refusal(baseline)
 	var request_seed:=OS.get_environment("SWARM004_UI_SEED")
 	# Registered create/reopen recipes are immutable. A legacy global605 must
 	# never silently substitute for the independently selected reciprocal4099.
@@ -217,6 +247,12 @@ func create_map()->void:
 		await click(find_button(panel,"Close"))
 		check(panel._pid<0 and panel._thread==null and not panel.visible,"closing blocked preview leaves no computation")
 		completed=true;return
+	if mode=="create":
+		if not check(panel.document.can_apply,"failed-exit challenge starts from an actual native-positive result"):return
+		await failed_exit_refusal(baseline)
+		await click(panel._generate)
+		if not await until(func()->bool:return panel.phase in ["ready","idle"],"fresh generation follows failed-exit refusal"):return
+		if not check(panel.phase=="ready" and panel.document.get("can_apply",false),"fresh successful native execution restores Apply authority"):return
 	if not check(panel.document.can_apply,"native composition independently authorizes Apply: "+panel.status):return
 	check(panel.prepared.recipe.origin==Vector2i.ZERO and panel.prepared.recipe.activation==[Vector2i(64,48)] \
 		and panel.prepared.recipe.layout=="centered_frame_rectangle" and panel.prepared.recipe.border==4,
@@ -306,7 +342,7 @@ func run()->void:
 	check(completed,"complete interactive test sequence reached its final assertion")
 	var report:Dictionary={"schema":2,"mode":mode,"example":example,"checks":checks,"failures":failures,"completed":completed,
 		"engine":Engine.get_version_info().string,"platform":OS.get_name(),"process_id":OS.get_process_id(),
-		"display":DisplayServer.get_name(),"native_planes_sha256":native_planes,
+		"display":DisplayServer.get_name(),"native_planes_sha256":native_planes,"transport_refusals":transport_refusals,
 		"owner_visual_acceptance":"pending","reciprocal_programme_acceptance":false,
 		"test_sha256":FileAccess.get_sha256("res://tests/test_workbench_reciprocal_ui.gd")}
 	if panel!=null:

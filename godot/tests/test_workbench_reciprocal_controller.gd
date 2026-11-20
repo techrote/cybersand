@@ -50,11 +50,13 @@ func exercise()->void:
 	var baseline:=await capture()
 	bench.open_reciprocal();panel=bench.reciprocal_panel
 	check(not panel.gentek_controls.frame.enabled.button_pressed and not panel.gentek_controls.mosaic.enabled.button_pressed \
-		and panel.controls.shared_ownership.button_pressed,"new owner controls preserve legacy shared defaults")
+		and not panel.controls.shared_ownership.button_pressed,"new owner controls use the selected fixed-territory default")
+	# Exercise retained V1 compatibility explicitly; it is no longer the dock default.
+	panel.controls.shared_ownership.button_pressed=true
 	panel.activation.assign([Vector2i(64,48)])
 	var linked_recipe:Dictionary=panel._recipe()
 	var linked:Dictionary=Protocol.prepare(linked_recipe,baseline)
-	check(linked.ok and linked.text.begins_with("SWARM004 1\n"),"default controls retain the original native request protocol")
+	check(linked.ok and linked.text.begins_with("SWARM004 1\n"),"explicit legacy shared controls retain the original native request protocol")
 	panel.gentek_controls.frame.enabled.button_pressed=true
 	check(panel.gentek_controls.frame.values.destruction.value==panel.controls.destruction.value \
 		and panel.gentek_controls.frame.values.clutter.value==panel.controls.clutter.value,

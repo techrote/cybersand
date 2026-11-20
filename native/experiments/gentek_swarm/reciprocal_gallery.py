@@ -299,13 +299,29 @@ def audit_composition(document, source):
             required = {connector["id"] for connector in original if connector["required"] and not connector["fulfilled"]}
             originals = [receipt for receipt in obligations if receipt.get("origin") == "original_frame"]
             require(required == {receipt["connector"] for receipt in originals}, "original required obligations deleted or invented")
+            fulfilled_originals = {connector["id"]: connector for connector in original if connector["required"] and connector["fulfilled"]}
+            fulfilled_final = {connector["id"] for connector in frame["connectors"] if connector["fulfilled"]}
+            expected_damage_lost = set(fulfilled_originals) - fulfilled_final if damage else set()
+            damage_lost = [receipt for receipt in obligations if receipt.get("origin") == "damage_lost_internal"]
+            require(expected_damage_lost == {receipt["connector"] for receipt in damage_lost}, "damage-revoked required obligations deleted or invented")
+            require(document.get("metrics", {}).get("damage_lost_required", 0) == len(expected_damage_lost), "damage-revoked required obligation metric mismatch")
             require(len({receipt["connector"] for receipt in obligations}) == len(obligations), "duplicate obligation identity")
             for receipt in obligations:
-                require(receipt.get("origin") in ("original_frame", "new_assembly"), "unidentified hard obligation origin")
-                witnessed = receipt["connector"] in joint_connectors if receipt.get("origin") == "original_frame" else any(
-                    joint["slot"] == receipt["slot"] and joint["frame_face"] == receipt["original"] and
-                    joint["normal"] == receipt["facing"] and joint["frame_instance"] == receipt["instance"]
-                    for joint in document.get("joints", []))
+                origin = receipt.get("origin")
+                require(origin in ("original_frame", "new_assembly", "damage_lost_internal"), "unidentified hard obligation origin")
+                if origin == "damage_lost_internal":
+                    original_connector = fulfilled_originals.get(receipt["connector"])
+                    require(bool(damage) and original_connector is not None, "damage-revoked obligation lacks an original fulfilled required socket")
+                    if original_connector:
+                        require(receipt["instance"] == original_connector["instance"] and receipt["original"] == original_connector["a"] and
+                                receipt["facing"] == original_connector["facing"], "damage-revoked obligation changed original source identity")
+                    require(receipt["slot"] == 0 and not receipt["local_terminated"], "damage-revoked internal obligation invented a foreign slot or local ending")
+                    witnessed = False
+                else:
+                    witnessed = receipt["connector"] in joint_connectors if origin == "original_frame" else any(
+                        joint["slot"] == receipt["slot"] and joint["frame_face"] == receipt["original"] and
+                        joint["normal"] == receipt["facing"] and joint["frame_instance"] == receipt["instance"]
+                        for joint in document.get("joints", []))
                 require(receipt["foreign_joined"] == witnessed, "required closure lacks native joint witness")
                 require(receipt["state"] == ("FOREIGN_JOINED" if receipt["foreign_joined"] else "STILL_REQUIRED"), "local termination falsely fulfilled foreign obligation")
             used_targets = set()

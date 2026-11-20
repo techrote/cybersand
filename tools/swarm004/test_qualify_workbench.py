@@ -25,6 +25,7 @@ def report(example: str = "reciprocal", mode: str = "create") -> dict:
             "failures": [], "platform": "Windows", "display": "windows", "process_id": 41 if mode == "create" else 42,
             "engine": "4.7-stable (official)", "test_sha256": TEST,
             "owner_visual_acceptance": "pending", "reciprocal_programme_acceptance": False,
+            "transport_refusals": {"preexisting_job_directory": True, "failed_child_positive": True},
             "native_source": {"source": SOURCE, "sha256": CLI}, "native_status": "complete", "native_can_apply": True,
             "native_recipe": qualification.expected_recipe(example), "proposal_sha256": PROPOSAL,
             "native_receipt": {"operation": "build", "changed_cells": 100, "proposal_sha256": PROPOSAL},
@@ -61,6 +62,13 @@ class EvidenceGates(unittest.TestCase):
         for value in (True, 0.5, float("inf"), float("nan")):
             candidate["native_receipt"]["changed_cells"] = value
             self.assertTrue(errors(candidate, mode="reopen"))
+
+    def test_create_requires_both_failed_transport_refusals(self) -> None:
+        for value in ({}, {"preexisting_job_directory": True, "failed_child_positive": False},
+                      {"preexisting_job_directory": False, "failed_child_positive": True}):
+            candidate = report()
+            candidate["transport_refusals"] = value
+            self.assertTrue(errors(candidate))
 
     def test_global_seed_and_profile_cannot_leak_between_examples(self) -> None:
         inherited = {"SWARM004_UI_SEED": "605", "SWARM004_UI_MODE": "reopen", "APPDATA": "old-user"}

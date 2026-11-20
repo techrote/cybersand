@@ -34,6 +34,7 @@ var _thread: Thread
 var _thread_kind := ""
 var _thread_cancelled := false
 var _pid := -1
+var _child_exit_code := -1
 var _started := 0
 var _serial := 0
 var _job_dir := ""
@@ -360,6 +361,8 @@ func _launch(preparation: Dictionary) -> void:
 	prepared=preparation
 	_serial+=1
 	_job_dir=ProjectSettings.globalize_path("user://swarm004/job-%d-%d" % [OS.get_process_id(),_serial])
+	if DirAccess.dir_exists_absolute(_job_dir):
+		_job_dir="";phase="idle";_say("A previous job folder exists; Generate again to use a fresh request identity.");return
 	if DirAccess.make_dir_recursive_absolute(_job_dir)!=OK: phase="idle";_say("Could not create bounded native request files.");return
 	var input:=FileAccess.open(_job_dir+"/request.txt",FileAccess.WRITE)
 	if input==null: phase="idle";_say("Could not write native request.");return
@@ -370,7 +373,7 @@ func _launch(preparation: Dictionary) -> void:
 
 func _poll_process() -> void:
 	if OS.is_process_running(_pid): return
-	var exit_code:=OS.get_process_exit_code(_pid);_pid=-1
+	var exit_code:=OS.get_process_exit_code(_pid);_pid=-1;_child_exit_code=exit_code
 	if not FileAccess.file_exists(_job_dir+"/result.json"):
 		phase="idle";_say("Native request ended without completed evidence (exit %d)." % exit_code);_cleanup_job();return
 	_thread=Thread.new();_thread_kind="decode";_thread_cancelled=false
@@ -392,6 +395,8 @@ func _poll_thread() -> void:
 		_populate_rounds();_render();status="Saved construction evidence · historical receipt · Apply requires a fresh native generation.";_refresh();return
 	if _fence()!=_source_fence or _history()!=_source_history:
 		phase="idle";_say("Native source changed while generating; the preview is retired.");_cleanup_job();return
+	if _child_exit_code!=0 and result.result.get("can_apply",false):
+		phase="idle";_say("Failed native execution cannot authorize an Apply.");_cleanup_job();return
 	proposal=result;document=result.result;phase="ready";completed_generations+=1
 	_populate_rounds()
 	_render()

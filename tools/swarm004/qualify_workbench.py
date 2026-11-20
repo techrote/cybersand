@@ -117,6 +117,8 @@ def ui_report_errors(report: dict, mode: str, example: str, source: str, cli_sha
         errors.append("automated UI checks must leave owner visual and programme acceptance pending")
     if mode == "lifecycle":
         return errors
+    if mode == "create" and report.get("transport_refusals") != {"preexisting_job_directory": True, "failed_child_positive": True}:
+        errors.append("stale-folder and failed-child Apply refusal gates did not both pass")
     native = object_dict(report.get("native_source"))
     if native.get("source") != source or native.get("sha256") != cli_sha:
         errors.append("native report is not bound to the attested source and generator")
