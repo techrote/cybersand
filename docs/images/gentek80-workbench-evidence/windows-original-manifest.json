@@ -1,0 +1,92 @@
+{
+  "schema": "gentek80-original-windows-workbench-public-frames-v1",
+  "captured_application_source": "82da41a945b1d98e0267a2a20b56ec66d83f71f6",
+  "captured_source_tree": "62c3210595f34b500cf6844e61085a5afcb3e85e",
+  "native_runtime_sha256": "2b7a1fbb8410270498e5c0ce8f9384a598c4467397e4ca1bda0111d6c5985447",
+  "source_workflow_run": 44674555113,
+  "source_windows_job": 136085272967,
+  "original_artifact_id": 14607203494,
+  "original_artifact_sha256": "4e66a26c5879271e2e404cf4c9a17dbda33f0c7b085b348412fde44c300df81c",
+  "renderer": "Windows Server 2022, Godot 4.7 OpenGL compatibility through ANGLE / Microsoft Basic Render Driver",
+  "scope": "Unaltered original S3 source-build qualification screenshots, not captures of the later four-file publication child. No cropping, recolouring, recompression or mockup. Expanded menus, other display sizes and physical owner-GPU performance are not shown.",
+  "phases": {
+    "author": {
+      "checks": 1786,
+      "complete": true,
+      "completed": true,
+      "failures": 0,
+      "process_id": 2132,
+      "schema": "gentek80-workbench-phase-v1",
+      "source_commit": "82da41a945b1d98e0267a2a20b56ec66d83f71f6",
+      "styles": 80
+    },
+    "reopen": {
+      "checks": 1068,
+      "complete": true,
+      "completed": true,
+      "failures": 0,
+      "process_id": 5828,
+      "schema": "gentek80-workbench-phase-v1",
+      "source_commit": "82da41a945b1d98e0267a2a20b56ec66d83f71f6",
+      "styles": 80
+    }
+  },
+  "frames": [
+    {
+      "file": "gentek80-search-and-selection.png",
+      "title": "Find style in the ordinary Architectural Generator",
+      "caption": "The existing five style cards show their Find style fields, geometry controls and lower actions without clipping at the actual 1600\u00d7900 Windows viewport. Interlaced Viaduct is selected at 100% in card 1. The dropdown is closed in this image; the accompanying all-80 UI records verify the 93 choices and filtering behavior.",
+      "original_path": "/workspace/scratch/3992e7f5304e/qualification/windows-monitor-44674555113/evidence/gentek80-workbench/gentek80-search-and-selection.png",
+      "sha256": "967fc9b26a08738c4907e8238a5dc50fd3774e5a4a7d49f7c9402be8323003e9",
+      "bytes": 137170,
+      "dimensions": [
+        1600,
+        900
+      ],
+      "published_path": "docs/images/gentek80-workbench-evidence/windows-selector.png",
+      "git_blob": "f1248e20fdb677eadf790bee159d7f1974f740bb"
+    },
+    {
+      "file": "gentek80-interlaced-viaduct-preview.png",
+      "title": "Native Interlaced proposal before confirmation",
+      "caption": "The native preview shows Interlaced Viaduct with its install and keep-current-map actions visible. The previously installed Metabolist Spine World intentionally remains behind the dialog until confirmation. This is the proposal view, before installation of the Interlaced World.",
+      "original_path": "/workspace/scratch/3992e7f5304e/qualification/windows-monitor-44674555113/evidence/gentek80-workbench/gentek80-interlaced-viaduct-preview.png",
+      "sha256": "747b9c37bbe17362c124b5eeaccbeb7859686cd679aa49cfdca199c6c70167ab",
+      "bytes": 215666,
+      "dimensions": [
+        1600,
+        900
+      ],
+      "published_path": "docs/images/gentek80-workbench-evidence/windows-interlaced-preview.png",
+      "git_blob": "c3de6e9d8adad5641b8d83098e1fbf51d9daac9a"
+    },
+    {
+      "file": "gentek80-interlaced-viaduct-edited-world.png",
+      "title": "Installed, edited and saved native World",
+      "caption": "Interlaced Viaduct is installed in the ordinary Shared Workbench, with native marble, rusted steel and glass textures visible. This author-phase capture follows ordinary paint and erase, Save start, and one completed native simulation tick; the retained report checks the material edits and saved recipe.",
+      "original_path": "/workspace/scratch/3992e7f5304e/qualification/windows-monitor-44674555113/evidence/gentek80-workbench/gentek80-interlaced-viaduct-edited-world.png",
+      "sha256": "cdc841159d13ff2437ce4e984ac876c857873845f17f49eddfc124330f3ad36a",
+      "bytes": 253659,
+      "dimensions": [
+        1600,
+        900
+      ],
+      "published_path": "docs/images/gentek80-workbench-evidence/windows-interlaced-edited-world.png",
+      "git_blob": "5e4eb4346b7bfbe320250da4893cf26e8166677b"
+    },
+    {
+      "file": "gentek80-interlaced-viaduct-restored-world.png",
+      "title": "Saved start restored in an independent process",
+      "caption": "The separate reopen process loads the saved Interlaced start and its ordered material edits into a fresh native World. The retained checks verify the same recipe and paint/erase cells. The displayed World body matches the edited frame; the toolbar reflects the reopened state.",
+      "original_path": "/workspace/scratch/3992e7f5304e/qualification/windows-monitor-44674555113/evidence/gentek80-workbench/gentek80-interlaced-viaduct-restored-world.png",
+      "sha256": "5bc9f6c489e7242472d9acba59a0412c2d66a3a15fdfaab9eed6948b1995f46a",
+      "bytes": 254531,
+      "dimensions": [
+        1600,
+        900
+      ],
+      "published_path": "docs/images/gentek80-workbench-evidence/windows-interlaced-restored-world.png",
+      "git_blob": "516c7a18ad53e8aee7a589bb83645709e7892b3d"
+    }
+  ]
+}

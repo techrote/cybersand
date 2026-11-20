@@ -1,0 +1,281 @@
+name: GENTEK 80 final publication Workbench and package admission
+on:
+  push:
+    branches: [ci/gentek80-final-admission]
+    paths:
+      - '.github/workflows/gentek80-final-admission.yml'
+      - 'tools/ci/gentek80_final_admission/**'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: gentek80-final-${{ github.run_id }}
+  cancel-in-progress: false
+env:
+  PUBLISHED_SOURCE: bf1bd8c8e6f189b36a3cb0f582185e5d529297d0
+  PUBLISHED_TREE: 546750300019d2e5534e96d4e1dd751bc28d9f2e
+  BUILT_SOURCE: 82da41a945b1d98e0267a2a20b56ec66d83f71f6
+  ORIGINAL_RUN: '44674555113'
+  ORIGINAL_ATTEMPT: '1'
+  HARNESS: orchestration/tools/ci/gentek80_final_admission
+  GIT_CONFIG_COUNT: '1'
+  GIT_CONFIG_KEY_0: core.autocrlf
+  GIT_CONFIG_VALUE_0: 'false'
+jobs:
+  guards:
+    name: Independent admission boundary regressions
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          path: orchestration
+          persist-credentials: false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.PUBLISHED_SOURCE }}
+          path: candidate
+          persist-credentials: false
+          fetch-depth: 0
+          lfs: false
+      - name: Reject stale identities, altered packages and wrong execution paths
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          export GENTEK80_TEST_REPOSITORY="$GITHUB_WORKSPACE/candidate"
+          python3 -m py_compile "$HARNESS"/*.py
+          python3 -m unittest discover -s "$HARNESS" -p 'test_*.py' -v > evidence/admission-boundary-tests.log 2>&1 || { cat evidence/admission-boundary-tests.log; exit 1; }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: gentek80-final-guards-${{ github.run_id }}
+          path: evidence/
+          if-no-files-found: error
+          retention-days: 90
+  checkout:
+    name: Final retained runtime all80 Workbench (${{ matrix.platform }})
+    needs: guards
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: linux
+            os: ubuntu-24.04
+            native: godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
+            rapier: godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so
+          - platform: windows
+            os: windows-2022
+            native: godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll
+            rapier: godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          path: orchestration
+          persist-credentials: false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.PUBLISHED_SOURCE }}
+          path: candidate
+          persist-credentials: false
+          fetch-depth: 0
+          lfs: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Fetch exact retained library and original validated artifact
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git -C candidate lfs install --local
+          git -C candidate lfs pull --include='${{ matrix.native }},${{ matrix.rapier }}' --exclude=''
+          python "$HARNESS/fetch_qualified_artifact.py" --config "$HARNESS/admission-inputs.json" --role '${{ matrix.platform }}' --destination original-bundle
+      - name: Install pinned Linux Godot and display
+        if: matrix.platform == 'linux'
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence "$RUNNER_TEMP/godot"
+          curl -fL --retry 3 --max-time 600 -o "$RUNNER_TEMP/godot.zip" 'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
+          echo "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  $RUNNER_TEMP/godot.zip" | sha256sum -c --strict
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          chmod +x "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64"
+          bash candidate/tools/ci/prepare_linux_display.sh > evidence/display-setup.log 2>&1
+      - name: Actual final-head Linux all80 author and independent reopen
+        if: matrix.platform == 'linux'
+        shell: bash
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+          LP_NUM_THREADS: '2'
+          GALLIVM_PERF: nopt
+        run: |
+          set -euo pipefail
+          xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
+            python "$HARNESS/run_final_admission.py" --config "$HARNESS/admission-inputs.json" \
+              --candidate candidate --bundle original-bundle --platform linux --mode checkout-workbench \
+              --godot "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" --output evidence/checkout
+      - name: Install pinned Windows Godot
+        if: matrix.platform == 'windows'
+        shell: pwsh
+        run: |
+          $zip = Join-Path $env:RUNNER_TEMP 'godot.zip'
+          curl.exe -fL --retry 3 --max-time 600 -o $zip https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
+          if ($LASTEXITCODE -ne 0) { throw 'Godot download failed' }
+          $expected = '41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9'
+          if ((Get-FileHash $zip -Algorithm SHA512).Hash.ToLowerInvariant() -ne $expected) { throw 'Godot archive pin mismatch' }
+          Expand-Archive $zip (Join-Path $env:RUNNER_TEMP 'godot')
+      - name: Actual final-head Windows all80 author and independent reopen
+        if: matrix.platform == 'windows'
+        shell: pwsh
+        run: |
+          python "$env:HARNESS/run_final_admission.py" --config "$env:HARNESS/admission-inputs.json" --candidate candidate --bundle original-bundle --platform windows --mode checkout-workbench --godot (Join-Path $env:RUNNER_TEMP 'godot/Godot_v4.7-stable_win64_console.exe') --output evidence/checkout
+          if ($LASTEXITCODE -ne 0) { throw 'Final-head Windows Workbench admission failed' }
+      - name: Retain original final-head execution and custody evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gentek80-final-checkout-${{ matrix.platform }}-${{ github.run_id }}
+          path: |
+            evidence/
+            original-bundle.download-receipt.json
+          if-no-files-found: error
+          retention-days: 90
+  package:
+    name: Assemble final-source Windows evaluation ZIP from retained bytes
+    needs: guards
+    runs-on: windows-2022
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          path: orchestration
+          persist-credentials: false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.PUBLISHED_SOURCE }}
+          path: candidate
+          persist-credentials: false
+          fetch-depth: 0
+          lfs: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Retrieve exact original build and qualified dependency assets
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git -C candidate lfs install --local
+          git -C candidate lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          python "$HARNESS/fetch_qualified_artifact.py" --config "$HARNESS/admission-inputs.json" --role windows --destination original-bundle
+          python "$HARNESS/fetch_qualified_artifact.py" --config "$HARNESS/admission-inputs.json" --role assets --destination original-assets
+      - name: Package exact final Git payload and honest native build provenance
+        shell: pwsh
+        run: |
+          $config = Get-Content "$env:HARNESS/admission-inputs.json" -Raw | ConvertFrom-Json
+          python "$env:HARNESS/package_retained_gentek80.py" --candidate candidate --bundle original-bundle --assets-archive (Join-Path original-assets $config.windows_asset_zip_name) --output assembled --archive "delivery/CyberSand-Gentek80-Windows-$($env:PUBLISHED_SOURCE.Substring(0,12)).zip" --receipt delivery/assembly.json --built-source $env:BUILT_SOURCE --published-source $env:PUBLISHED_SOURCE --published-tree $env:PUBLISHED_TREE --run-id $env:ORIGINAL_RUN --run-attempt $env:ORIGINAL_ATTEMPT --assets-sha256 $config.windows_asset_zip_sha256
+          if ($LASTEXITCODE -ne 0) { throw 'Final-source package custody failed' }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gentek80-final-package-assembly-${{ github.run_id }}
+          path: delivery/
+          if-no-files-found: error
+          retention-days: 90
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: gentek80-final-package-inputs-${{ github.run_id }}
+          path: '*.download-receipt.json'
+          if-no-files-found: warn
+          retention-days: 90
+  package-replay:
+    name: Pristine final Windows ZIP (${{ matrix.mode }})
+    needs: package
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        mode: [owner, flatten, package-workbench]
+    runs-on: windows-2022
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          path: orchestration
+          persist-credentials: false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.PUBLISHED_SOURCE }}
+          path: candidate
+          persist-credentials: false
+          fetch-depth: 0
+          lfs: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: gentek80-final-package-assembly-${{ github.run_id }}
+          path: delivery
+      - name: Retrieve independently pinned original qualification and assets
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git -C candidate lfs install --local
+          git -C candidate lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          python "$HARNESS/fetch_qualified_artifact.py" --config "$HARNESS/admission-inputs.json" --role windows --destination original-bundle
+          python "$HARNESS/fetch_qualified_artifact.py" --config "$HARNESS/admission-inputs.json" --role assets --destination original-assets
+      - name: Execute unchanged runner in a new verified extraction
+        shell: pwsh
+        run: |
+          $config = Get-Content "$env:HARNESS/admission-inputs.json" -Raw | ConvertFrom-Json
+          $archive = "delivery/CyberSand-Gentek80-Windows-$($env:PUBLISHED_SOURCE.Substring(0,12)).zip"
+          python "$env:HARNESS/run_final_admission.py" --config "$env:HARNESS/admission-inputs.json" --candidate candidate --bundle original-bundle --platform windows --mode '${{ matrix.mode }}' --archive $archive --assembly delivery/assembly.json --assets-archive (Join-Path original-assets $config.windows_asset_zip_name) --extraction (Join-Path $env:RUNNER_TEMP 'pristine-final-package') --output 'evidence/${{ matrix.mode }}'
+          if ($LASTEXITCODE -ne 0) { throw 'Pristine final-source package execution failed' }
+      - name: Retain original packaged runtime execution evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gentek80-final-replay-${{ matrix.mode }}-${{ github.run_id }}
+          path: |
+            evidence/
+            original-bundle.download-receipt.json
+            original-assets.download-receipt.json
+          if-no-files-found: error
+          retention-days: 90
+  admission:
+    name: Join actual final-head executions and admit unchanged owner ZIP
+    needs: [checkout, package-replay]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          path: orchestration
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: gentek80-final-*
+          path: downloads
+          merge-multiple: false
+      - name: Verify all five source-matched executions and the exact delivered ZIP
+        run: |
+          set -euo pipefail
+          python3 "$HARNESS/collect_final_admission.py" --config "$HARNESS/admission-inputs.json" --downloads downloads --output admitted
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gentek80-final-owner-windows-${{ env.PUBLISHED_SOURCE }}
+          path: admitted/
+          if-no-files-found: error
+          retention-days: 90

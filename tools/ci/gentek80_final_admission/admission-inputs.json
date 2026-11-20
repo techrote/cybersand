@@ -1,0 +1,49 @@
+{
+  "schema": "gentek80-final-admission-inputs-v1",
+  "mission": "GENTEK-80-INTEGRATION-001",
+  "accepted_main": "de109d0131641d6adc8d25bb9ced7ca3d4991105",
+  "built_source": "82da41a945b1d98e0267a2a20b56ec66d83f71f6",
+  "built_tree": "62c3210595f34b500cf6844e61085a5afcb3e85e",
+  "published_source": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0",
+  "published_tree": "546750300019d2e5534e96d4e1dd751bc28d9f2e",
+  "original_run_id": "44674555113",
+  "original_run_attempt": "1",
+  "windows_asset_zip_name": "CyberSand-Gentek80-Windows-82da41a945b1.zip",
+  "windows_asset_zip_sha256": "3b02088e2263a516bd50b56af49253e7067555e26f8bafc56c57b8512a0a25a2",
+  "runtimes": {
+    "linux": {
+      "sha256": "5195149bb4ee0b826d258f46627397d4a3e79d0d22cd3072ca0518aa75ebd878",
+      "size": 5183960
+    },
+    "windows": {
+      "sha256": "2b7a1fbb8410270498e5c0ce8f9384a598c4467397e4ca1bda0111d6c5985447",
+      "size": 5747200
+    }
+  },
+  "artifacts": {
+    "linux": {
+      "id": 14605142451,
+      "name": "gentek80-validated-linux-44674555113",
+      "sha256": "411e42f1cadc6b0deba370eb9a69871c269a64e3e014a74c0ff5b5addfa99b3a",
+      "size_in_bytes": 2598160
+    },
+    "windows": {
+      "id": 14607422604,
+      "name": "gentek80-validated-windows-44674555113",
+      "sha256": "ccb9e353b2e12ecdad9b56bef0069c3f0860c494ddc3237f12720da04e7eb4ee",
+      "size_in_bytes": 2781710
+    },
+    "assets": {
+      "id": 14607163558,
+      "name": "gentek80-owner-windows-82da41a945b1d98e0267a2a20b56ec66d83f71f6",
+      "sha256": "d0124d711736be9fc4622512611e33692bbbd91094a9c62aa224f8b4ef9629d7",
+      "size_in_bytes": 93451816
+    }
+  },
+  "status": "immutable-qualified-inputs-awaiting-final-execution",
+  "original_windows_build_artifact": {
+    "id": 14602271289,
+    "sha256": "e325f03f9b8cc4bfc0ccfe70e7a1113a2d6d6bb52d8c88ac9a410c4d3b65debd",
+    "scope": "initial source-built DLL artifact; validated bundle remains separately required"
+  }
+}

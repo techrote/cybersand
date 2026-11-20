@@ -1,0 +1,41 @@
+{
+  "schema": "gentek80-original-workbench-pngs-v1",
+  "platform": "linux",
+  "source": "82da41a945b1d98e0267a2a20b56ec66d83f71f6",
+  "runtime_sha256": "5195149bb4ee0b826d258f46627397d4a3e79d0d22cd3072ca0518aa75ebd878",
+  "artifact_id": 14604798235,
+  "items": [
+    {
+      "local_path": "/workspace/scratch/3992e7f5304e/qualification/linux-monitor-44674555113-attempt1/evidence/gentek80-workbench/gentek80-search-and-selection.png",
+      "original_name": "gentek80-search-and-selection.png",
+      "path": "docs/images/gentek80-workbench-evidence/linux-selector.png",
+      "bytes": 124904,
+      "sha256": "8b1609e52ca62fb5ea33e8a0be9f392e7a4426d628380954b1642930436c3235",
+      "git_blob_sha1": "d2ce6f32db198b8aab863057efd6cdc1c5fee9be"
+    },
+    {
+      "local_path": "/workspace/scratch/3992e7f5304e/qualification/linux-monitor-44674555113-attempt1/evidence/gentek80-workbench/gentek80-interlaced-viaduct-preview.png",
+      "original_name": "gentek80-interlaced-viaduct-preview.png",
+      "path": "docs/images/gentek80-workbench-evidence/linux-interlaced-preview.png",
+      "bytes": 216120,
+      "sha256": "ae089992b363b232fcb98c367e8bd9ac723021f2ef45694af96669b13f727ad7",
+      "git_blob_sha1": "c2387c9ad8566333c1d9cab39e586d9dfdb44557"
+    },
+    {
+      "local_path": "/workspace/scratch/3992e7f5304e/qualification/linux-monitor-44674555113-attempt1/evidence/gentek80-workbench/gentek80-interlaced-viaduct-edited-world.png",
+      "original_name": "gentek80-interlaced-viaduct-edited-world.png",
+      "path": "docs/images/gentek80-workbench-evidence/linux-interlaced-edited-world.png",
+      "bytes": 254062,
+      "sha256": "8aaf4fea606eae49269730ae0a218f3a36a59b2c00f783f91d7b02c97a9afd5a",
+      "git_blob_sha1": "97d80eb2b47a710d33d312e01a37a8d51f5fb766"
+    },
+    {
+      "local_path": "/workspace/scratch/3992e7f5304e/qualification/linux-monitor-44674555113-attempt1/evidence/gentek80-workbench/gentek80-interlaced-viaduct-restored-world.png",
+      "original_name": "gentek80-interlaced-viaduct-restored-world.png",
+      "path": "docs/images/gentek80-workbench-evidence/linux-interlaced-restored-world.png",
+      "bytes": 254720,
+      "sha256": "08d5c99617b9a39ef57483851eea7aa8fce45013bf0f1b526859aceff3e842c7",
+      "git_blob_sha1": "54cc50f3ef37a994392bd51e1ab10ed02e3fcc30"
+    }
+  ]
+}
