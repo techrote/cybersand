@@ -15,8 +15,9 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 PR #682 remains **Draft/HOLD; no merge or Ready promotion**. Continue from the
 [PUBPRES integration evaluation](pubpres-integration-evaluation.md), which owns
 the source/runtime controls, preserved negative renderer results and actual
-three-source Windows comparison. The repair keeps the full-upload policy
-limited to Windows software ANGLE and bounds idle timer debt after completed
+three-source Windows comparison. Matched gameplay rejected the temporary
+automatic Windows software-ANGLE full-upload override; the repair removes it
+and preserves explicit full selection. It bounds idle timer debt after completed
 physical samples. Accepted main and the previous integration are preserved as
 complete executable references. Owner physical Windows/NVIDIA acceptance is
 separate from hosted WARP and Linux software-renderer qualification.

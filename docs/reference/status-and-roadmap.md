@@ -12,7 +12,7 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 ## Workbench publication and progression candidate
 
-The [PUBPRES-INTEGRATION-001 evaluation](../operations/pubpres-integration-evaluation.md) joins sparse publication, strict physical feedback and a bounded presentation timeline. The repair candidate selects the stable full-upload path on Windows software ANGLE and removes overdue non-progressing owner turns after a completed body sample. Hardware GPU selection, native health fences and real physical admission remain intact. It remains Draft/HOLD pending matched long-tail, freshness and owner gameplay evidence; rejected renderer treatments are retained separately.
+The [PUBPRES-INTEGRATION-001 evaluation](../operations/pubpres-integration-evaluation.md) joins sparse publication, strict physical feedback and a bounded presentation timeline. Matched actual gameplay rejected the temporary automatic Windows software-ANGLE full-upload override; the repair removes it while retaining explicit full selection. The candidate also removes overdue non-progressing owner turns after a completed body sample. Native health fences and real physical admission remain intact. It remains Draft/HOLD pending fresh source-matched long-tail, freshness and owner gameplay evidence; rejected renderer treatments and policies are retained separately.
 
 ## GEN-008 Flatten / Bake History — 2026-11-13
 

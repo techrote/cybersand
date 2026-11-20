@@ -62,13 +62,14 @@ existing default. Saved requests still apply only to newly constructed workers.
 
 The blit publisher rotates two persistent linear RGBA8 texture targets. It takes a large, entirely dirty image directly through bounded staging and avoids extracting every tile before the whole copy. When a dense publication invalidates all slots in the recycled plane and the incoming edit touches at most four tiles, it copies the complete accepted GPU plane to the recycled target and stages only those tiles. It never reads from the target it is writing. The two drawable identities and preceding frame remain intact. Small or partial areas normally take the tile path. Neither path swaps texture representations when density changes. Queued `Image` inputs have a distinct immutable lifetime. The stage ring offers reuse distance. A submission receipt establishes queued work and ACK authority. It supplies no completion or scanout timestamp.
 
-On Windows ANGLE with the Microsoft Basic Render Driver over D3D11, a blit or
-auto request uses Main's full R8/RG8 image texture pair. The
-`windows_angle_warp_full` receipt policy records the effective route separately
-from a structural fallback. Main keeps two complete histories and selects the
-route before allocating the pair. Hosted coverage checks this policy on every
-timed material acceptance and compares both histories after every admission in
-a separate untimed replay. Hardware driver paths retain the existing selection.
+On every supported graphical backend, including Windows software ANGLE, a
+`blit` or `auto` request uses the existing sparse publisher when its checked
+pair can be constructed. The explicit `full` control retains Main's complete
+R8/RG8 ImageTexture pair. Capacity or structural refusal still takes the
+verified full fallback with its reason recorded. The temporary
+`windows_angle_warp_full` automatic override is **Rejected** after the matched
+gameplay results below; current receipts retain an empty `policy` field for
+schema continuity. No adapter, density or actor heuristic replaces it.
 
 At 128 or more logical tiles, the copy-and-patch transition has its own preallocated one-tile and four-tile staging rings. Each ring uses the same slot limit as ordinary staging and independent textures, samplers and cursors. At 2048² RG8 with three slots the additional GPU texture payload is 491,520 bytes. Setup warms and accounts for those resources. This keeps the transition's staging reuse independent of later ordinary sparse updates.
 
@@ -134,8 +135,9 @@ The [fresh-storage probe](https://github.com/techrote/cybersand/actions/runs/447
 preserved both byte-exact planes and improved cadence over the original blit
 arms. Frame p95 remained 32.656–34.227 ms against 9.275–9.392 ms for the
 same-run full-only references. Its 15 long intervals per arm moved to later
-sparse frames. Together with the direct-update and compact-re-entry results,
-this established full publication as the Windows software ANGLE path.
+sparse frames. These transition-only results motivated the temporary full
+publication policy for Windows software ANGLE. The later matched gameplay
+campaign rejected that automatic selection; its original captures remain intact.
 
 The [fresh-whole result](https://github.com/techrote/cybersand/actions/runs/44745728887/artifacts/14633770983)
 is also **Rejected as the performance solution**. On its separately identified
@@ -177,10 +179,47 @@ integration `8503ec19`, and the package's exact candidate in M–I–C–C–I�
 those three actual source renderers. Separate untimed processes first verify
 both history planes after every one of 180 admissions. Timing processes use
 the same pinned engine, window, uncapped display, source-verified observer and
-input sequence, and retain original framebuffers. The prior integration still
-executes its real blit renderer on WARP; only the repaired candidate selects its
-registered full-upload policy. Gameplay remains a separate real-owner lane,
+input sequence, and retain original framebuffers. The current registration
+executes the real blit renderer for both the prior integration and the repaired
+candidate, including WARP. Earlier `9018d09d` and `e25b76c6` captures retain their
+explicitly registered full-policy treatment and are not relabeled. Gameplay remains a separate real-owner lane,
 with 144 completed physical steps and wall-time windows reported independently.
+
+## Rejected automatic Windows software-renderer policy
+
+The [original `9018d09d` installed campaign](https://github.com/techrote/cybersand/actions/runs/44762581512/artifacts/14652413186)
+completed all six M–I–C–C–I–M gameplay cases and the separate transition lane.
+Its archive SHA-256 is
+`8d21bba5bf22bbc274cad45df962cbba2f9a449fbb3e9eea29ff91fc7c8e45e1`.
+The actual Windows ANGLE host used the Microsoft Basic Render Driver/D3D11,
+EPYC 9V74 and the same pinned Godot 4.7 within each comparison. The transition
+benefit was repeatable: I frame p95 was 34.674/34.580 ms, while C was 11.497/11.684 ms,
+and all 3×180×2 history checks and six actual framebuffer comparisons passed.
+That detached renderer lane has no native or Rapier owner.
+
+The real gameplay results did not support automatic full selection. The table
+uses each arm's first 144 genuinely completed physical steps; each pair lists
+the two I or C processes from the same matched campaign.
+
+| Workload | I physical p95 / maximum, ms | C full-policy physical p95 / maximum, ms | I / C actual steps per second |
+| --- | --- | --- | --- |
+| Wave Follow 2048², 4 workers | 329.501 / 794.926; 311.527 / 797.770 | 761.834 / 816.319; 754.843 / 812.941 | 4.065, 4.248 / 3.659, 3.474 |
+| FreeMass Free 2048², 4 workers | 277.447 / 294.427; 278.138 / 294.675 | 709.246 / 775.608; 742.706 / 789.808 | 4.545, 4.382 / 3.784, 3.897 |
+
+Wave Free 2048² also worsened its physical maxima from 340.677/330.015 ms in I to
+796.121/765.983 ms in C. The one-worker FreeMass Follow case improved modestly:
+I delivered 3.760/3.777 steps/s with 802.697/809.756 ms maxima; C delivered 3.840/3.827
+with 750.805/733.463 ms maxima. Whole-source comparisons include the worker repair,
+so they do not isolate the override as the only causal change. They do show that
+the transition benefit is insufficient to select full uploads automatically
+for ordinary gameplay. The strongest adverse results and the improving case
+remain in the original evidence.
+
+The repair therefore removes only that automatic override. Explicit full
+selection, the existing sparse renderer, exact histories, guarded fallback,
+native health and physical admission remain. The next candidate requires fresh
+source-matched qualification. This change makes no claim that the performance
+objective or physical Windows/NVIDIA acceptance is complete.
 
 ## Actual full-upload gameplay and the remaining main-thread wait
 

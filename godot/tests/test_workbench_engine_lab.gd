@@ -2,6 +2,7 @@ extends SceneTree
 
 # ENGINE-LAB-001: real Workbench host, real simulation-worker and UI callbacks.
 const WindowPolicy = preload("res://scripts/workbench_lab_window_policy.gd")
+const Publisher = preload("res://scripts/blit_material_publisher.gd")
 const TIMEOUT_MS: int = 90000
 var assertions: int = 0
 var failures: Array[String] = []
@@ -346,6 +347,8 @@ func _run() -> void:
 		var before_publication_revision: int = host.last_uploaded_revision
 		menu._widgets["publication"].item_selected.emit(1)
 		check(host.material_publication_status().requested_mode=="full" and
+			host.material_publication_status().backend=="full" and
+			host.material_publication_status().policy=="" and
 			host.last_uploaded_revision==before_publication_revision,
 			"live full texture control retains the accepted material revision")
 		menu._widgets["publication"].item_selected.emit(0)
@@ -357,12 +360,17 @@ func _run() -> void:
 		check(publication_state.requested_mode == "blit" and host.last_uploaded_revision == before_publication_revision
 			and "Requested: Incremental GPU" in menu._publication_status.text,
 			"incremental request is displayed separately from its effective backend")
-		if publication_state.get("policy","") == "windows_angle_warp_full":
-			check(publication_state.backend == "full" and publication_state.fallback_reason == ""
-				and "Active: Full texture" in menu._publication_status.text
-				and "Windows software renderer" in menu._publication_status.text
+		check(publication_state.policy == "" and not "Windows software renderer" in menu._publication_status.text,
+			"current publication has no automatic software-renderer override or obsolete explanation")
+		if Publisher.supported_driver():
+			check(publication_state.backend == "blit" and publication_state.fallback_reason == ""
+				and "Active: Incremental GPU" in menu._publication_status.text
 				and not "could not be changed" in menu._status.text,
-				"intentional WARP full policy is explained without a mode-change failure")
+				"supported graphical backend executes the requested sparse publisher and displays it")
+		else:
+			check(publication_state.backend == "full" and not publication_state.fallback_reason.is_empty()
+				and "Active: Full texture" in menu._publication_status.text,
+				"unsupported renderer reports its actual full fallback and reason")
 		menu._widgets["publication"].item_selected.emit(0)
 		menu._widgets["fps"].value = 144
 		check(Engine.max_fps==144,"UI changes live render FPS cap")

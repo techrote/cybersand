@@ -92,73 +92,6 @@ func _patch(host: Control, area: Rect2i, value: int, condition: int, label: Stri
 	return result
 
 
-func _warp_policy_active() -> bool:
-	return Publisher.requires_warp_full_upload(OS.get_name(),RenderingServer.get_current_rendering_driver_name(),
-		RenderingServer.get_video_adapter_name())
-
-
-func _warp_classifier_contract() -> void:
-	var software := "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0)"
-	var cases: Array[Dictionary] = [
-		{"os":"Windows","driver":"opengl3_angle","adapter":software,"expected":true},
-		{"os":"Windows","driver":"opengl3_angle","adapter":software.to_lower(),"expected":true},
-		{"os":"Windows","driver":"opengl3_angle","adapter":"ANGLE (NVIDIA, GeForce RTX Direct3D11)","expected":false},
-		{"os":"Windows","driver":"opengl3_angle","adapter":"ANGLE (Intel, UHD Graphics Direct3D11)","expected":false},
-		{"os":"Windows","driver":"opengl3_angle","adapter":"ANGLE (AMD, Radeon Direct3D11)","expected":false},
-		{"os":"Windows","driver":"opengl3","adapter":software,"expected":false},
-		{"os":"Linux","driver":"opengl3_angle","adapter":software,"expected":false},
-		{"os":"Windows","driver":"opengl3_angle","adapter":"Microsoft Basic Render Driver OpenGL","expected":false},
-	]
-	for item: Dictionary in cases:
-		check(Publisher.requires_warp_full_upload(item.os,item.driver,item.adapter) == item.expected,
-			"WARP full-upload selection is limited to the observed Windows software D3D11 adapter: "+str(item))
-
-
-func _main_warp_policy_contract(channels: int, extent: Vector2i = Vector2i(317,259)) -> void:
-	var host: Control = _host(extent,channels,"blit",5)
-	check(host.texture is ImageTexture and host.previous_texture is ImageTexture and host._material_blit_publisher == null,
-		"real Main applies WARP policy before allocating a sparse publisher")
-	var initial: PackedByteArray = host.image.get_data()
-	_check_gpu(host,initial,initial,"WARP initial full histories")
-	var record: Dictionary = _patch(host,Rect2i(extent.x-1,extent.y-1,1,1),17,93,"WARP sparse source edit")
-	check(record.requested_mode == "blit" and record.backend == "full" and record.policy == Publisher.WARP_FULL_UPLOAD_POLICY
-		and record.fallback_reason == "" and record.submitted_bytes == extent.x*extent.y*channels,
-		"accepted sparse source edit reports actual full upload and intentional policy")
-	var current: PackedByteArray = host.image.get_data()
-	var preceding: PackedByteArray = host._presentation_previous_bytes
-	var current_id: int = host._presentation_current_content_id
-	var previous_id: int = host._presentation_previous_content_id
-	for mode: String in ["auto","blit","full","blit"]:
-		check(host.set_material_publication_mode(mode),"WARP accepts requested "+mode+" through its effective route")
-		record = host.material_publication_status()
-		check(record.requested_mode == mode and record.backend == "full" and record.fallback_reason == ""
-			and record.policy == ("" if mode == "full" else Publisher.WARP_FULL_UPLOAD_POLICY),
-			"WARP mode receipt distinguishes request, effective route and policy")
-		_check_gpu(host,current,preceding,"WARP distinct-history mode change")
-		check(host._presentation_current_content_id == current_id and host._presentation_previous_content_id == previous_id,
-			"WARP mode change preserves exact history content identities")
-	var before_ids: Array[RID] = [host.texture.get_rid(),host.previous_texture.get_rid()]
-	check(not host.set_material_publication_mode("unknown") and before_ids == [host.texture.get_rid(),host.previous_texture.get_rid()],
-		"invalid mode still refuses without replacing history targets")
-	var dense := _pattern(extent,channels,31)
-	check(host.upload_texture_patches(host._full_material_rectangle(),dense,host.last_uploaded_revision+1,channels),
-		"WARP dense material publication accepted")
-	_check_gpu(host,dense,current,"WARP dense full histories")
-	if extent == Vector2i(2048,2048):
-		large_completed = true
-	else:
-		host.world_extent = Vector2i(129,71)
-		host.image = Image.create_from_data(129,71,false,host.render_image_format,_pattern(host.world_extent,channels,47))
-		host.create_render_textures()
-		_check_gpu(host,host.image.get_data(),host.image.get_data(),"WARP World replacement")
-		check(host._material_blit_publisher == null and host.material_publication_status().policy == Publisher.WARP_FULL_UPLOAD_POLICY,
-			"World replacement reapplies the real full-upload policy")
-		histories_completed += 1
-	observations.append({"label":"Main WARP policy","channels":channels,"extent":[extent.x,extent.y],
-		"publication":host.material_publication_status()})
-	_release(host)
-
-
 func _direct_staging_contract(slots: int) -> void:
 	# This is explicitly the sparse component, separate from Main's selected
 	# backend. It does not install or force a publisher into production Main.
@@ -256,6 +189,11 @@ func _occupancy_history_contract() -> void:
 func _history_and_fallback(channels: int) -> void:
 	var host: Control = _host(Vector2i(317, 259), channels, "blit", 5)
 	check(host.texture is Publisher.MaterialPlane, "graphical production selected blit publication")
+	check(host.material_publication_status().requested_mode == "blit"
+		and host.material_publication_status().backend == "blit"
+		and host.material_publication_status().policy == ""
+		and host.material_publication_status().fallback_reason == "",
+		"explicit incremental request selects the actual sparse backend without an adapter override")
 	check(host._material_blit_publisher.columns * host._material_blit_publisher.rows <= 256, "dirty tile count within bounded capacity")
 	check(host.texture.get_rid() == host.texture.drawable.get_rid(),
 		"public texture RID is the actual drawable history")
@@ -275,8 +213,13 @@ func _history_and_fallback(channels: int) -> void:
 		"resync of two identical slots submits no unchanged tiles")
 	var current_id: int = host._presentation_current_content_id
 	var previous_id: int = host._presentation_previous_content_id
-	for mode: String in ["full", "blit", "full", "blit"]:
+	for mode: String in ["auto", "full", "blit", "full", "auto", "blit"]:
 		check(host.set_material_publication_mode(mode), "live publication mode switch " + mode)
+		var selected: Dictionary = host.material_publication_status()
+		check(selected.requested_mode == mode and selected.policy == ""
+			and selected.backend == ("full" if mode == "full" else "blit")
+			and selected.fallback_reason == "",
+			"requested mode selects its actual backend without a software-adapter override")
 		_check_gpu(host, unchanged, unchanged, "mode switch " + mode)
 		check(host._presentation_current_content_id == current_id
 			and host._presentation_previous_content_id == previous_id,
@@ -284,9 +227,13 @@ func _history_and_fallback(channels: int) -> void:
 	_patch(host, Rect2i(0, 0, 1, 1), 19, 99, "post-switch edit")
 	var distinct_current: PackedByteArray = host.image.get_data()
 	var distinct_previous: PackedByteArray = host._presentation_previous_bytes
-	for mode: String in ["full", "blit"]:
+	for mode: String in ["full", "auto", "blit"]:
 		check(host.set_material_publication_mode(mode), "different-history live mode switch "+mode)
 		_check_gpu(host, distinct_current, distinct_previous, "different-history mode switch "+mode)
+	var before_ids: Array[RID] = [host.texture.get_rid(),host.previous_texture.get_rid()]
+	check(not host.set_material_publication_mode("unknown")
+		and before_ids == [host.texture.get_rid(),host.previous_texture.get_rid()],
+		"invalid mode refuses without replacing either complete history")
 	_patch(host, Rect2i(200, 240, 1, 1), 7, 155, "first recycled slot after different-history switch")
 	# A foreign valid drawable must be refused before any copy/ACK. Ownership
 	# and shape checks avoid accepting a void backend call that did no work.
@@ -1053,7 +1000,6 @@ func _sha(bytes: PackedByteArray) -> String:
 func _run() -> void:
 	OS.set_environment("CYBERSAND_DIAG_RENDER_CADENCE", "repaired")
 	_occupancy_history_contract()
-	_warp_classifier_contract()
 	if DisplayServer.get_name() == "headless":
 		var host: Control = _host(Vector2i(73, 65), 2, "blit")
 		check(host.texture is ImageTexture and host.previous_texture is ImageTexture,
@@ -1061,36 +1007,29 @@ func _run() -> void:
 		check(not str(host.material_publication_status().fallback_reason).is_empty(), "fallback explained")
 		_release(host)
 	else:
-		var warp_policy: bool = _warp_policy_active()
 		for channels: int in [1, 2]:
 			_owner_and_format_contract(channels)
 			_direct_update_history_contract(channels)
-			if warp_policy:
-				_main_warp_policy_contract(channels)
-			else:
-				_history_and_fallback(channels)
-				_direct_update_main_identity_contract(channels)
+			_history_and_fallback(channels)
+			_direct_update_main_identity_contract(channels)
 		for slots: int in [1,2,3]: _direct_staging_contract(slots)
-		if warp_policy:
-			_main_warp_policy_contract(2,Vector2i(2048,2048))
-		else:
-			for slots: int in [1,2,3]:
-				_staging_pool_contract(slots,Vector2i(256,256))
-				_staging_pool_contract(slots,Vector2i(317,259))
-			_large_sparse_transfer()
-			check(_rectangular_staging_contract() == true,"all rectangular staging cases completed")
-			_horizontal_copy_contract()
+		for slots: int in [1,2,3]:
+			_staging_pool_contract(slots,Vector2i(256,256))
+			_staging_pool_contract(slots,Vector2i(317,259))
+		_large_sparse_transfer()
+		check(_rectangular_staging_contract() == true,"all rectangular staging cases completed")
+		_horizontal_copy_contract()
 		_maximum_height_contract()
 		check(histories_completed == 2 and large_completed, "all history and transfer tests reached completion")
 		check(await _shader_equivalence() == true and shader_pairs_completed == 8, "all shader comparisons reached completion")
 	var report := {"godot":Engine.get_version_info(), "display":DisplayServer.get_name(),
 		"driver":RenderingServer.get_current_rendering_driver_name(), "adapter":RenderingServer.get_video_adapter_name(),
-		"platform":OS.get_name(), "main_policy":Publisher.WARP_FULL_UPLOAD_POLICY if _warp_policy_active() else "",
+		"platform":OS.get_name(), "main_policy":"",
 		"assertions":assertions, "failures":failures, "observations":observations,
 		"histories_completed":histories_completed, "large_completed":large_completed,
 		"shader_pairs_completed":shader_pairs_completed,
 		"scope":("Unsupported/headless driver full fallback only; graphical cases not run." if DisplayServer.get_name() == "headless"
-			else "Main platform policy and independent sparse-component GPU readback with production shader equality; no physical GPU acceptance.")}
+			else "Actual Main mode selection and independent sparse-component GPU readback with production shader equality; no physical GPU acceptance.")}
 	var output: String = OS.get_environment("CYBERSAND_MATERIAL_TILE_OUTPUT")
 	if not output.is_empty():
 		DirAccess.make_dir_recursive_absolute(output.get_base_dir())

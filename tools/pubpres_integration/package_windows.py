@@ -28,7 +28,7 @@ CONSOLE = "Godot_v4.7-stable_win64_console.exe"
 BOOTSTRAP = {"godot/.godot/.gdignore", "godot/.godot/extension_list.cfg", "godot/.godot/global_script_class_cache.cfg"}
 PORTABLE = {"Run-Test-It.ps1", "Read-Results.ps1", "Pack-Results.ps1", "campaign.json",
             "Run-Source-Comparison.ps1", "Read-Source-Results.ps1", "Read-Source-Transition.ps1",
-            "source_campaign.json", "Verify-Package.ps1"}
+            "source_campaign.json", "Verify-Package.ps1", "Test-Source-Results-Replay.ps1"}
 REFERENCE_INTEGRATION = "8503ec19e4d620e125dc6df2c5c6571b1256cb92"
 NOTICE_HASHES = {
     "LICENSE.txt": "b0435e3b3e4e55238f05f4b306f30524a1b2e20147810d436eaa554fa6855c80",

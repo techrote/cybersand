@@ -72,15 +72,17 @@ change leaves retention, overflow, publication and ACK policy unchanged.
 
 The [desktop evaluation candidate](../operations/pubpres-integration-evaluation.md) adds opt-in tile staging and persistent drawable history. Large transitions that first copy the accepted history use dedicated bounded staging rings. The ordinary full-only path continues to submit the complete backing image.
 
-**PUBPRES candidate, Windows software renderer:** Main selects its complete
-R8/RG8 ImageTexture pair for `auto` or `blit` requests when the actual driver is
-Windows ANGLE over Microsoft Basic Render Driver/D3D11. The receipt records
-`windows_angle_warp_full` as an intentional policy, separately from a structural
-fallback, and Engine Lab shows both requested and active modes. Hardware GPU
-selection is unchanged. Retained WARP comparisons rejected compact re-entry,
-fresh whole storage and fresh sparse staging as complete frame-pacing repairs;
-lower upload-call duration alone did not remove the later stalls. See
-[`requires_warp_full_upload`](../../godot/scripts/blit_material_publisher.gd),
+**PUBPRES candidate:** `auto` and `blit` use the existing checked sparse
+publisher on supported graphical backends, including Windows software ANGLE.
+Explicit `full` retains the complete R8/RG8 ImageTexture pair, and structural
+or capacity refusal still selects the verified full fallback. Engine Lab shows
+requested and active modes. The temporary automatic WARP full-upload override
+is Rejected: its detached transition benefit did not hold across matched actual
+Wave and FreeMass gameplay. No replacement adapter or workload heuristic is
+introduced. Retained compact re-entry, fresh whole storage and fresh sparse
+staging comparisons are also negative; lower upload-call duration alone did not
+remove the later stalls. See
+[`supported_driver`](../../godot/scripts/blit_material_publisher.gd),
 [`_create_material_texture_pair`](../../godot/scripts/main.gd), and the linked
 evaluation for exact source/platform evidence and remaining acceptance gates.
 

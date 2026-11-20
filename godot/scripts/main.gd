@@ -1712,7 +1712,6 @@ var previous_texture: Texture2D
 var _material_blit_publisher: MaterialPublisher
 var _material_publication_mode: String = ""
 var _material_publication_fallback: String = ""
-var _material_publication_policy: String = ""
 var _material_publication_last: Dictionary = {}
 var _material_pending_rectangles := PackedInt32Array()
 var _material_image_patch_usec: int = 0
@@ -6232,13 +6231,9 @@ func _create_material_texture_pair(current: Image, previous: Image) -> void:
 		_material_publication_mode = OS.get_environment("CYBERSAND_MATERIAL_PUBLICATION").to_lower()
 		if _material_publication_mode not in ["auto", "full", "blit"]: _material_publication_mode = "full"
 	_material_publication_fallback = ""
-	_material_publication_policy = ""
 	var publisher: MaterialPublisher
 	if _material_publication_mode != "full":
-		if MaterialPublisher.requires_warp_full_upload(OS.get_name(),
-				RenderingServer.get_current_rendering_driver_name(), RenderingServer.get_video_adapter_name()):
-			_material_publication_policy = MaterialPublisher.WARP_FULL_UPLOAD_POLICY
-		elif MaterialPublisher.supported_driver():
+		if MaterialPublisher.supported_driver():
 			publisher = MaterialPublisher.create_pair(current, previous)
 			if publisher == null:
 				_material_publication_fallback = "drawable pair creation or capacity refused"
@@ -6286,7 +6281,7 @@ func material_publication_status() -> Dictionary:
 	result["requested_mode"] = _material_publication_mode
 	result["backend"] = "blit" if texture is MaterialPublisher.MaterialPlane else "full"
 	result["fallback_reason"] = _material_publication_fallback
-	result["policy"] = _material_publication_policy
+	result["policy"] = ""
 	result["driver"] = RenderingServer.get_current_rendering_driver_name()
 	result["logical_source_format"] = "R8" if render_channels == 1 else "RG8"
 	result["gpu_storage_format"] = "RGBA8_LINEAR" if texture is MaterialPublisher.MaterialPlane else result.logical_source_format
@@ -6310,8 +6305,7 @@ func set_material_publication_mode(mode: String) -> bool:
 	_material_publication_mode = mode
 	_create_material_texture_pair(image, _material_previous_cpu_image())
 	_bind_material_texture_consumers()
-	return mode != "blit" or texture is MaterialPublisher.MaterialPlane \
-		or _material_publication_policy == MaterialPublisher.WARP_FULL_UPLOAD_POLICY
+	return mode != "blit" or texture is MaterialPublisher.MaterialPlane
 
 
 func update_shader_parameters() -> void:

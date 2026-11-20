@@ -436,8 +436,6 @@ func _refresh_publication() -> void:
 	_syncing = false
 	var labels := {"auto":"Automatic", "full":"Full texture", "blit":"Incremental GPU"}
 	var explanation := str(state.get("fallback_reason",""))
-	if state.get("policy","") == "windows_angle_warp_full":
-		explanation = "Full updates are used for this Windows software renderer."
 	_publication_status.text = "Requested: %s | Active: %s | last update: %s bytes%s" % [
 		str(labels.get(state.get("requested_mode","auto"),"Automatic")),
 		str(labels.get(state.get("backend","pending"),"Pending")),str(state.get("submitted_bytes",0)),

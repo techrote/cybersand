@@ -43,10 +43,8 @@ function Get-Distribution($Values) {
 }
 
 function Get-MaterialTreatment($Arm, [string]$Driver, [string]$Adapter) {
-    if ($Arm.material -ne 'full' -and $Driver -eq 'opengl3_angle' -and
-        $Adapter -match 'Microsoft Basic Render Driver.*Direct3D11') {
-        return [ordered]@{ requested=$Arm.material; backend='full'; policy='windows_angle_warp_full' }
-    }
+    # Current package selectors reach the requested renderer directly. Historical
+    # source replay uses the retained campaign's explicit source-specific policy.
     return [ordered]@{ requested=$Arm.material; backend=$Arm.material; policy='' }
 }
 

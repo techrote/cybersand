@@ -138,59 +138,9 @@ func _queued_blit_and_fallback(channels: int) -> void:
 	_release(host)
 
 
-func _queued_warp_policy(channels: int) -> void:
-	var host: Control = _host(Vector2i(317,259),channels,"blit",3)
-	check(host.texture is ImageTexture and host._material_blit_publisher == null,
-		"queued real Main follows WARP full-upload policy")
-	_check_gpu(host,host.image.get_data(),host.image.get_data(),"initial WARP policy")
-	var gate: QueueGate = _begin_gate()
-	_queued_patch(host,Rect2i(63,63,3,2),6,255)
-	_queued_patch(host,Rect2i(316,258,1,1),17,93)
-	var preceding: PackedByteArray = host.image.get_data()
-	_queued_patch(host,Rect2i(210,149,2,3),29,1)
-	var expected: PackedByteArray = host.image.get_data()
-	_end_gate(gate,"WARP full uploads from sparse source burst")
-	_history_receipt(host,expected,preceding,"warp-source-sparse-burst-R%d"%channels)
-	check(host.material_publication_status().policy == Publisher.WARP_FULL_UPLOAD_POLICY
-		and host.material_publication_status().fallback_reason == "", "WARP receipt records intentional policy")
-	var a := _pattern(host.world_extent,channels,31)
-	var b := _pattern(host.world_extent,channels,71)
-	gate = _begin_gate()
-	host.upload_texture(a,host.last_uploaded_revision+1)
-	host.upload_texture(b,host.last_uploaded_revision+1)
-	_end_gate(gate,"WARP dense full update burst")
-	_history_receipt(host,b,a,"warp-full-update-burst-R%d"%channels)
-	# Adapter discovery is a synchronous RenderingServer getter. As with
-	# sparse resource creation above, finish policy selection before holding
-	# the queue; ordinary publications and a switch to full remain queued.
-	check(host.set_material_publication_mode("auto"),"WARP automatic policy selected before queue gate")
-	check(host.set_material_publication_mode("blit"),"WARP incremental request accepts full policy before queue gate")
-	gate = _begin_gate()
-	_queued_patch(host,Rect2i(0,0,2,1),8,55)
-	preceding = host.image.get_data()
-	check(host.set_material_publication_mode("full"),"queued WARP-to-explicit-full mode switch accepted")
-	_queued_patch(host,Rect2i(129,70,1,1),4,111)
-	expected = host.image.get_data()
-	_end_gate(gate,"queued WARP-to-explicit-full switch preserves both histories")
-	_history_receipt(host,expected,preceding,"warp-to-full-mode-switch-burst-R%d"%channels)
-	gate = _begin_gate()
-	host.world_extent = Vector2i(73,65)
-	host.image = Image.create_from_data(73,65,false,host.render_image_format,_pattern(host.world_extent,channels,91))
-	host.create_render_textures()
-	preceding = host.image.get_data()
-	_queued_patch(host,Rect2i(72,64,1,1),6,249)
-	expected = host.image.get_data()
-	_end_gate(gate,"queued World replacement in explicit full mode")
-	_history_receipt(host,expected,preceding,"warp-explicit-full-world-replacement-burst-R%d"%channels)
-	check(host.set_material_publication_mode("blit") and host.material_publication_status().policy == Publisher.WARP_FULL_UPLOAD_POLICY,
-		"World replacement reapplies WARP policy after construction boundary")
-	_check_gpu(host,expected,preceding,"WARP policy after queued World replacement")
-	_release(host)
-
-
 func _queued_direct_sparse(channels: int) -> void:
-	# Exercise the sparse component's actual queued resources without changing
-	# Main's platform policy or presenting this as its effective backend.
+	# Exercise the sparse component's actual queued resources independently of
+	# Main's chosen backend; this case does not change that selection.
 	var size := Vector2i(317,259)
 	var format: Image.Format = Image.FORMAT_R8 if channels == 1 else Image.FORMAT_RG8
 	var initial := Image.create_from_data(size.x,size.y,false,format,_pattern(size,channels,5))
@@ -258,17 +208,14 @@ func _run() -> void:
 	if DisplayServer.get_name() != "headless":
 		for channels: int in [1,2]:
 			_queued_full(channels)
-			if _warp_policy_active():
-				_queued_warp_policy(channels)
-			else:
-				_queued_blit_and_fallback(channels)
+			_queued_blit_and_fallback(channels)
 			_queued_owner_retirement(channels)
 			_queued_direct_sparse(channels)
 	check(cases_completed == 16,"all bounded queue cases completed")
 	check(gates_completed == (16 if separate else 0),"all requested render gates completed")
 	var report := {"godot":Engine.get_version_info(),"display":DisplayServer.get_name(),
 		"driver":RenderingServer.get_current_rendering_driver_name(),"adapter":RenderingServer.get_video_adapter_name(),
-		"platform":OS.get_name(),"main_policy":Publisher.WARP_FULL_UPLOAD_POLICY if _warp_policy_active() else "",
+		"platform":OS.get_name(),"main_policy":"",
 		"separate":separate,
 		"assertions":assertions,"failures":failures,"gates_completed":gates_completed,
 		"cases_completed":cases_completed,"observations":observations,

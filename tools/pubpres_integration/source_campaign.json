@@ -44,19 +44,7 @@
       "presentation": "coherent",
       "timing": "measured",
       "cadence": "repaired",
-      "rendezvous": "0",
-      "material_policy_overrides": [
-        {
-          "platform": "Windows",
-          "driver": "opengl3_angle",
-          "adapter_contains": [
-            "microsoft basic render driver",
-            "direct3d11"
-          ],
-          "backend": "full",
-          "policy": "windows_angle_warp_full"
-        }
-      ]
+      "rendezvous": "0"
     }
   },
   "measurement": {

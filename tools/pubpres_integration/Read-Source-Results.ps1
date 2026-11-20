@@ -128,7 +128,11 @@ function Read-SourceWindow($Events, $Data, [long]$EndUsec) {
         first_step=$Steps[0].step; last_step=$Steps[-1].step
         native_ticks_per_second=$Native.Count/$Seconds; rapier_steps_per_second=$Steps.Count/$Seconds
         frame_ms=(Get-Distribution $FrameGaps); consecutive_two_frame_ms=(Get-Distribution $PairedFrameGaps)
-        worst_frame_intervals=@($TailGaps | Sort-Object gap_ms -Descending | Select-Object -First 12)
+        # Tail rows are ordered dictionaries. PowerShell 5.1's named-property
+        # sort does not reliably read their keys; select numeric keys explicitly.
+        worst_frame_intervals=@($TailGaps | Sort-Object -Property `
+            @{Expression={[double]($_['gap_ms'])}; Descending=$true}, `
+            @{Expression={[long]($_['start_usec'])}; Descending=$false} | Select-Object -First 12)
         post_draw_callback_gap_ms=(Get-Distribution @(Get-SourceGaps $Draws))
         native_observed_gap_ms=(Get-Distribution @(Get-SourceGaps $Native))
         native_exact_gap_ms=(Get-Distribution @(Get-SourceGaps $ExactNative 'native_completed_usec'))
