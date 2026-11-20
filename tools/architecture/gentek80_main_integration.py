@@ -91,7 +91,7 @@ def main() -> int:
             display = ["--headless"]
             if args.graphical:
                 display = ["--rendering-method", "gl_compatibility"] + (["--rendering-driver", "opengl3_angle"] if os.name == "nt" else ["--display-driver", "x11"])
-            result = qualify.run(phase, [*base, *display, "--script", "res://tests/test_gentek80_main_integration.gd"], env, output, args.timeout,
+            result = qualify.run(phase, [*base, *display, "--script", "res://tools/qualify_gentek80_main_integration.gd"], env, output, args.timeout,
                                  rf"GENTEK_MAIN_INTEGRATION phase={phase} styles=7 checks=[1-9][0-9]* failures=0 complete=true")
             report["results"].append(result)
             landscapes.require(result["passed"], "Combined Workbench phase failed: " + phase)
