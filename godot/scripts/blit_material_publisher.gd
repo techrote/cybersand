@@ -8,6 +8,7 @@ extends RefCounted
 # Main owns the publisher; each public Texture2D owns its drawable and keeps
 # only a weak publisher link for legacy ImageTexture.update-style callers.
 const MAX_TILES: int = 256
+const HISTORY_COPY_MIN_TILES: int = 128
 const HISTORY_STAGING_CAPACITIES: Array[int] = [1, 4]
 const MIN_TILE_SIDE: int = 64
 const MAX_TILE_SIDE: int = 1024
@@ -150,7 +151,7 @@ func _setup(source: Image, preceding: Image) -> bool:
 		full_staging = _new_staging_pool(extent)
 		if full_staging == null: return false
 	_full_staging_pool_id = full_staging.get_instance_id()
-	if columns * rows >= 128:
+	if columns * rows >= HISTORY_COPY_MIN_TILES:
 		for capacity: int in HISTORY_STAGING_CAPACITIES:
 			var pool: StagingPool = _new_staging_pool(_capacity_extent(capacity))
 			if pool == null: return false
@@ -307,7 +308,9 @@ func _valid_state() -> bool:
 				or plane.drawable.get_rid() == retirement_sink.get_rid() \
 				or plane.drawable.get_rid() == dummy_source.get_rid(): return false
 	if staging.size() != _staging_pool_ids.size(): return false
-	var history_capacities: Array[int] = HISTORY_STAGING_CAPACITIES if columns*rows >= 128 else []
+	var history_capacities: Array[int] = []
+	if columns * rows >= HISTORY_COPY_MIN_TILES:
+		history_capacities = HISTORY_STAGING_CAPACITIES
 	if _history_staging.size() != history_capacities.size() \
 			or _history_staging_pool_ids.size() != history_capacities.size(): return false
 	for capacity: int in history_capacities:
@@ -356,7 +359,7 @@ func publish(source: Image, rectangles: Array[Rect2i]) -> bool:
 	# the exact current GPU history, then submit only the new sparse coverage.
 	# Direct compatibility writes leave current.pending dirty and disable this.
 	if not identical_full and not rectangles.is_empty() and rectangles.size() <= 4 \
-			and columns*rows >= 128 and not previous.pending.has(0) and not current.pending.has(1):
+			and columns * rows >= HISTORY_COPY_MIN_TILES and not previous.pending.has(0) and not current.pending.has(1):
 		incoming.resize(columns*rows)
 		_mark_pending(incoming,rectangles)
 		reuse_current = incoming.count(1) <= 4
@@ -587,7 +590,7 @@ func _submit(source: Image, destinations: Array[MaterialPlane],
 	last_update.staging_height = stage_size.y
 	last_update.staging_slot = slot
 	last_update.staging_resource_rid = stage.get_rid().get_id()
-	last_update["history_staging"] = base != null
+	last_update["history_staging"] = base != null and not whole
 	# Rotate only after upload, all copies and retirement have been submitted.
 	# Byte-identical and rejected publications never consume a staging slot.
 	pool.next_slot = (slot+1)%staging_slots
