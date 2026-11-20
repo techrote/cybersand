@@ -241,9 +241,22 @@ def run_capture(args: argparse.Namespace, godot_executable: str) -> int:
     jobs = []
     for index, pack in enumerate(packs, 1):
         blob = support.pack_git_blob(pack, art_source["toplevel"])
+        art_policy = None
+        try:
+            document = json.loads(pack.read_text(encoding="utf-8"))
+            scene = document.get("scene", document.get("combined_scene", {}))
+            dimensions = scene.get("size", []) if isinstance(scene, dict) else []
+            if isinstance(dimensions, list) and len(dimensions) == 2:
+                full_scale = next((int(shot.get("scale", 1)) for shot in shots
+                                   if shot.get("kind") == "full"), 1)
+                art_policy = support.classify_art_dimensions(*dimensions, scale=full_scale)
+        except (OSError, ValueError, TypeError, AttributeError):
+            # Malformed packs remain the real Godot adapter's responsibility,
+            # preserving its source-specific rendering failure diagnostics.
+            pass
         jobs.append({"id": f"{index:02d}-{pack.parent.name}", "collection": pack.parent.name,
                      "pack_path": str(pack), "pack_sha256": support.sha256_file(pack),
-                     "pack_git": blob, "shots": shots})
+                     "pack_git": blob, "art_size_policy": art_policy, "shots": shots})
     presentation = {"time": args.time, "glow": not args.no_glow, "structured_detail": not args.no_detail,
                     "background": not args.no_background}
     before = {str(g): support.snapshot_tree(g) for g in guards}
@@ -346,7 +359,8 @@ def run_capture(args: argparse.Namespace, godot_executable: str) -> int:
     job_entries = []
     for job in jobs:
         entry = {"id": job["id"], "collection": job["collection"], "pack_path": job["pack_path"],
-                 "pack_sha256": job["pack_sha256"], "pack_git": job["pack_git"], "status": "failed",
+                 "pack_sha256": job["pack_sha256"], "pack_git": job["pack_git"],
+                 "art_size_policy": job.get("art_size_policy"), "status": "failed",
                  "manifest": f"{job['id']}/manifest.json", "shots": []}
         manifest_path = output / job["id"] / "manifest.json"
         if manifest_path.is_file():
