@@ -120,6 +120,51 @@ class UnitTests(unittest.TestCase):
         with self.assertRaises(support.CaptureError):
             support.check_zoom(0.001, "--zoom")
 
+    def test_asymmetric_canvas_policy_has_no_native_playability_claim(self):
+        # Art-loader limits are not native World simulation dimensions.
+        fixtures = [
+            (512, 512), (1024, 1024), (2048, 1024), (1024, 2048),
+            (4096, 1024), (1024, 4096), (512, 8192), (8192, 512),
+            (2048, 8192), (16384, 1024),
+        ]
+        for width, height in fixtures:
+            with self.subTest(size=(width, height)):
+                policy = support.classify_art_dimensions(width, height, 1)
+                self.assertTrue(policy["previewable"])
+                self.assertTrue(policy["full_exportable"])
+                self.assertEqual(policy["native_playable"], "not-qualified-by-art-pipeline")
+                self.assertEqual(policy["requested_output_pixels"], width * height)
+        self.assertTrue(support.classify_art_dimensions(512, 8192, 2)["full_exportable"])
+        too_large_output = support.classify_art_dimensions(2048, 8192, 2)
+        self.assertTrue(too_large_output["previewable"])
+        self.assertFalse(too_large_output["full_exportable"])
+        self.assertIn("full PNG exceeds", too_large_output["reason"])
+        for width, height in [(16384, 2048), (32768, 512), (0, 1024)]:
+            self.assertFalse(support.classify_art_dimensions(width, height)["previewable"])
+        self.assertFalse(support.classify_art_dimensions(512, 8192, 9)["full_exportable"])
+        # Deliberate 16M-cell art contract, no hidden square-World assumption.
+        source = (ROOT / "godot/tools/world_design_pack_adapter.gd").read_text(encoding="utf-8")
+        self.assertIn("const MAX_SIDE: int = 16384", source)
+        self.assertIn("const MAX_CELLS: int = 16777216", source)
+
+    def test_exclusive_capture_publication_claim_never_clobbers_existing_output(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp) / "new-capture"
+            claim = support.claim_output_directory(output)
+            self.assertTrue(claim.is_dir())
+            with self.assertRaises(support.CaptureError):
+                support.claim_output_directory(output)
+            self.assertTrue(claim.is_dir())
+            claim.rmdir()
+            second_claim = support.claim_output_directory(output)
+            self.assertEqual(second_claim, claim)
+            second_claim.rmdir()
+            earlier = output / "previous-capture.png"
+            earlier.write_bytes(b"preserved")
+            with self.assertRaises(support.CaptureError):
+                support.claim_output_directory(output)
+            self.assertEqual(earlier.read_bytes(), b"preserved")
+
     def _args(self, *extra):
         return launcher.build_parser().parse_args(["--capture", *extra])
 
@@ -136,6 +181,9 @@ class UnitTests(unittest.TestCase):
             support.build_shots(self._args("--shots", "none"))
         with self.assertRaises(support.CaptureError):
             support.build_shots(self._args("--shots", "full,full"))
+        for mode in ("fit", "width", "height", "native"):
+            shots = support.build_shots(self._args("--shots", "viewport", "--framing", mode))
+            self.assertEqual(shots[0]["framing"]["mode"], mode)
 
     def test_source_guard_reports_added_modified_and_removed_files(self):
         before = {"d": {"pack.json": "1", "gone.txt": "2"}}
