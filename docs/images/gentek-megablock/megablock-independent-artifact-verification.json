@@ -1,0 +1,27 @@
+{
+  "reviewed_source": "aedf1ba98b0a07669c1781ec4c5519072d5ca949",
+  "source_tree": "bb692ebf048a3d7b46af3a27706a899ad57c0bf6",
+  "source_clean": true,
+  "input_ledger_sha256": "1c71c4d8e856a69d2cd473c5d01f229178e15330a6d9838d6e6bf7d5bfa165d2",
+  "source_inputs_verified": 82,
+  "manifest_entries_verified": 185,
+  "manifest_untracked_or_missing_files": [],
+  "raw_maps_verified": 55,
+  "native_pngs_verified_with_exact_LUT_pixels": 55,
+  "png_files_total": 60,
+  "protected_void_rectangles_checked": 200,
+  "complete_programmes_core_bridge_slab_checked": 104,
+  "survey_seeds": 32,
+  "distinct_survey_hashes": 32,
+  "survey_occupancy_min": 0.3904914856,
+  "survey_occupancy_max": 0.4490509033,
+  "survey_typology_family_counts": [
+    8,
+    9
+  ],
+  "survey_components": [
+    1
+  ],
+  "survey_matches_visually_reviewed_materials": true,
+  "verdict": "PASS"
+}

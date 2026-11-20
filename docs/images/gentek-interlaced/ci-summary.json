@@ -1,0 +1,107 @@
+{
+  "source_commit": "8f39f68ae1bcf81045b007e233b2e6838cca4d24",
+  "source_tree": "a4453f91437de3bef6e20bc4b3ea5b9c38467060",
+  "parent_commit": "615828b28337f85e4663e03ba479616db4ddf764",
+  "run_id": 43972726620,
+  "url": "https://github.com/techrote/cybersand/actions/runs/43972726620",
+  "status": "completed",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "id": 133668789026,
+      "name": "godot",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 133668789570,
+      "name": "native",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 133672813616,
+      "name": "verify",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 14280395865,
+      "name": "interlaced-native-43972726620",
+      "size_bytes": 5034237,
+      "sha256": "2ab76be96eae690babafdec25054a6bd737d48c20f7723e6c32e362c8178f4cc",
+      "expired": false,
+      "expires_at": "2027-02-14T22:43:12Z",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43972726620/artifacts/14280395865"
+    },
+    {
+      "id": 14280212131,
+      "name": "interlaced-godot-43972726620",
+      "size_bytes": 2258360,
+      "sha256": "43dbd7d6247d81bc05f8a18c90ac38cfc11e5bf7376977d801bf331864cfb203",
+      "expired": false,
+      "expires_at": "2027-02-14T22:43:12Z",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43972726620/artifacts/14280212131"
+    },
+    {
+      "id": 14278589877,
+      "name": "interlaced-source-verification-43972726620",
+      "size_bytes": 360,
+      "sha256": "74a3110b8f8128f67b9525fce77a6affa1671089211bab801d4e0bacf61aa066",
+      "expired": false,
+      "expires_at": "2027-02-14T22:43:12Z",
+      "url": "https://github.com/techrote/cybersand/actions/runs/43972726620/artifacts/14278589877"
+    }
+  ],
+  "gcc13_gcc14_complete_campaign_material_parity": {
+    "passed": true,
+    "captures": 26,
+    "cells_compared": 7864320
+  },
+  "performance": {
+    "method": "median of seven matched-trial ratios; first warmup excluded; module order rotates",
+    "configuration": {
+      "accent_material": 65,
+      "bay_width": 80,
+      "chunk_size": 64,
+      "floor_height": 64,
+      "floor_material": 62,
+      "schema": 4,
+      "seed": 271828,
+      "wall": 3,
+      "wall_material": 58,
+      "window_material": 121
+    },
+    "comparative_module": "arcade",
+    "sampler": "interlaced_viaduct",
+    "measurements": [
+      {
+        "extent": 512,
+        "sampler_median_ms": 137.739954,
+        "comparator_median_ms": 133.309417,
+        "median_paired_ratio": 1.0345025156466732,
+        "sampler_min_ms": 137.40381,
+        "sampler_max_ms": 138.179222,
+        "logical_operations_per_cell": 584
+      },
+      {
+        "extent": 1024,
+        "sampler_median_ms": 553.23633,
+        "comparator_median_ms": 534.152465,
+        "median_paired_ratio": 1.0356727590309325,
+        "sampler_min_ms": 552.58239,
+        "sampler_max_ms": 554.830718,
+        "logical_operations_per_cell": 584
+      }
+    ]
+  },
+  "cross_renderer_verification": {
+    "source_commit": "8f39f68ae1bcf81045b007e233b2e6838cca4d24",
+    "passed": true,
+    "native_pngs": 26,
+    "godot_checks": 2490,
+    "ordinary_preset_material_sha256": "1a3ed6b187e66b695f78134b876c6a8aa2ff5b04763e18fa5c1373ac23f8069c"
+  }
+}

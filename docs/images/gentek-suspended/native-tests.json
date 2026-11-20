@@ -1,0 +1,22 @@
+{
+  "assertions": 26265,
+  "gates": [
+    "same_seed_and_reverse_chunk_order",
+    "work_slicing_and_zero_budget",
+    "chunk_partition_and_signed_coordinates",
+    "bounds_do_not_rephase_showcase",
+    "parallel_requests_and_cancellation",
+    "large_signed_coordinate_stability",
+    "32_seed_programmes_and_negative_space",
+    "dimensions_and_structural_mass",
+    "glazing_toggle_preserves_structure",
+    "door_controls_are_local_openings",
+    "schema_version_and_minimum_clearance",
+    "admitted_parameter_corner_support",
+    "carrier_support_roots_and_lower_void"
+  ],
+  "measurements": {
+    "bridge_programmes_verified": 64
+  },
+  "status": "pass"
+}

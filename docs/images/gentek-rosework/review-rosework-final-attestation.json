@@ -1,0 +1,30 @@
+{
+  "status": "pass",
+  "source_commit": "5132a454f1db80c5b54dc6fef56b488ef9b3edc9",
+  "source_tree": "5f61ff783dd17174df056e796aa1ec719bd27063",
+  "parent_commit": "615828b28337f85e4663e03ba479616db4ddf764",
+  "gallery": "/workspace/scratch/cc652fa2efec/cybersand-rosework/build/rosework-gatehouse-gallery-final",
+  "source_input_count": 87,
+  "native_capture_count": 23,
+  "composite_count": 5,
+  "native_pixels_independently_mapped": 7077888,
+  "qualification": {
+    "file": "/workspace/scratch/cc652fa2efec/cybersand-rosework/build/rosework-qualification-final/qualification.json",
+    "source_commit": "5132a454f1db80c5b54dc6fef56b488ef9b3edc9",
+    "input_count": 70,
+    "assertions": 166489,
+    "snapshots": [
+      {
+        "kind": "legacy",
+        "bytes": 7093458,
+        "sha256": "9a89081a968ff7dbd55049d45fc6cbe1622a06cbcac07502d96cf001cbe29739"
+      },
+      {
+        "kind": "viaduct",
+        "bytes": 197062,
+        "sha256": "9ac6747cdbb984715038f91492fcf6104bd8c48bec8d729fe6d0d5a74cd53a96"
+      }
+    ]
+  },
+  "errors": []
+}

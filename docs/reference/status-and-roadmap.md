@@ -4,11 +4,33 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-18
+last-reviewed: 2026-11-20
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Status and foundational roadmap
+
+## Experimental Gentek catalogue integration — Draft/HOLD, 2026-11-17
+
+The stacked [GENTEK-SHOWCASE-INTEGRATION-001 #671](https://github.com/techrote/cybersand/pull/671)
+collects all eight independent advanced showcase PRs (#663–#670) onto the frozen
+72-module [CLASSIC #624](https://github.com/techrote/cybersand/pull/624).
+The combined source-matched native and Linux/Godot material qualification passes
+for an **80-module candidate** and two mixed five-style maps; the
+[research integration record](../operations/gentek-showcase-integration-001.md)
+owns exact source/PNG provenance, remaining review and owner approval.
+Both PRs remain **Draft/HOLD; not accepted main, not Ready, not merge-authorized**.
+
+## GENTEK-80 integration candidate — 20 November 2026
+
+A fresh Draft/HOLD branch from accepted `de109d01` reconciles all 72 repaired
+CLASSIC samplers and eight advanced showcases through the existing Architectural
+Generator. See the [source reconciliation](../research/gentek-80-integration-001.md)
+and [evaluation procedure](../operations/gentek80-evaluation.md). The 80 additions
+coexist with 13 accepted presets; catalogue counts do not remove legacy choices.
+Compiler cache identity, complete native visual evidence, target-OS Workbench
+persistence and source-qualified Windows packaging are mandatory admission gates.
+Exact results remain in dated evidence. Owner merge approval remains required.
 
 ## GEN-008 Flatten / Bake History — 2026-11-13
 

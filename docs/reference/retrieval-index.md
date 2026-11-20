@@ -10,6 +10,14 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+For the **Draft/HOLD Gentek research stack only**, including the 72 classic
+samplers, eight advanced showcase modules, exact parent/source identities,
+preserved independent PNG evidence, combined 80-way qualification and five-style
+native preview co-existence, read the
+[integration research record](../operations/gentek-showcase-integration-001.md).
+This is an explicit research route, **not** a current-main architectural
+generator behaviour claim.
+
 For the combined #562 Materials Lab / #564 Workbench candidate, original source ancestry, shared history preservation, standalone evaluation and #563 merge-order boundaries, read the [combined qualification record](../audits/2026-11-12-mat-auth-workbench-integration.md).
 
 ## Materials Lab v1 review candidate — 2026-11-11
@@ -33,6 +41,15 @@ the frozen evaluation and existing historical fixtures retain their original sco
 
 For the current combined Draft, standalone generator repairs, native stored-material authority, PAINT/agent ordering, preserved feature sets and acceptance, retrieve the [integration runbook](../operations/wb-art-paint-integrated-candidate.md). For #559 geometry, protection, acknowledgements, Stop and Save limits, retrieve the [direct art contract](../systems/workbench-direct-art-batches.md). For OpenAI/NVIDIA/LM Studio, conversation/context, scanlines, image observations, traffic, caps and cancellation, retrieve the [provider contract](../systems/workbench-art-providers.md).
 
+
+## Architectural Generator catalogue
+
+For the eighty-Gentek candidate, stable style selection, name filtering,
+geometry/material controls and single-World authoring, retrieve the
+[generator contract](../systems/architectural-generator.md#80-gentek-integration-candidate--20-november-2026)
+and [Windows evaluation guide](../operations/gentek80-evaluation.md).
+Donor manifests and source-specific historical galleries remain explicit research
+references; only a current candidate's source-matched receipts qualify its runtime.
 
 ## Generated terrain in the playable workbench
 
