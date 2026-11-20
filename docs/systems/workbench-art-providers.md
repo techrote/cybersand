@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Unmerged OpenAI Responses, NVIDIA and LM Studio art UI, collaboration preview, cancellation, traffic and qualification
 canonical-for: [workbench-art-providers]
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-20
 related-documents: [workbench-direct-art-batches.md, ../architecture/shared-workbench-authoring-data.md, ../reference/status-and-roadmap.md]
 ---
 
@@ -44,6 +44,33 @@ native queued/executing/partial and errors are visibly distinct.
 Use **Key…** for each cloud provider. Keys stay in process memory, separately per
 provider; reopening Key always permits replacement. The button indicates a key
 is present. Profiles/history persist in `user://art-provider.cfg` without keys.
+
+### Lazy reopening and traffic storage
+
+Shared Workbench constructs the Art window hidden, but **does not scan, clone or
+resume saved traffic at Workbench startup**. Its provider reads only the small
+profile configuration and remembers the previous session path. Conversation
+replay is deferred until Art is revealed or an explicit model/history action
+requires the transcript.
+
+Existing JSONL archives are **immutable during continuation**. On the first
+new traffic event, the provider creates a fresh, small segment with a
+`session_parent` reference to the saved log. Subsequent events append to that
+segment; the profile tracks the latest segment. No previous raw request,
+response, screenshot or image-bearing log line is copied. Replay follows the
+segment chain and preserves historical images' source paths and byte offsets.
+Editing the conversation adds a snapshot to the new segment, never rewriting
+the original audit.
+
+**Save full JSONL…** is the only operation that materializes the whole session
+again: it streams the linked segments in order when explicitly requested.
+Missing, invalid or circular parent chains refuse a full export rather than
+silently generating an incomplete archive. The live Traffic view remains
+bounded. A Workbench launch with existing saved traffic must create **zero**
+new traffic files and copy **zero** historical bytes.
+The deterministic `test_art_lazy_traffic.gd` covers startup, deferred replay,
+linked append, historical images, explicit export and restart without network.
+
 LM Studio sends no fabricated key; a configured local server token is accepted
 through the same Key control. Local/LAN/manual endpoints are allowed. The numeric
 loopback default avoids the long `localhost` connection delays observed on this
