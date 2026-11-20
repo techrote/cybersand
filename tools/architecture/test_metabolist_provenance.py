@@ -12,7 +12,8 @@ class SourceIdentityTests(unittest.TestCase):
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory(prefix="metabolist-provenance-")
         self.root = Path(self.temporary.name)
-        self.paths = [*qualifier.SOURCES, qualifier.TEST, "Makefile",
+        self.paths = [*qualifier.SOURCES, *qualifier.COMPARISON_INPUTS,
+                      qualifier.TEST, "Makefile",
                       "tools/architecture/qualify_metabolist.py"]
         for name in self.paths:
             path = self.root / name
@@ -32,6 +33,7 @@ class SourceIdentityTests(unittest.TestCase):
 
     def test_clean_stable_source_passes(self):
         before = qualifier.source_identity(self.root)
+        self.assertTrue(set(qualifier.COMPARISON_INPUTS).issubset(before["inputs"]))
         qualifier.require_unchanged_source(self.root, before)
 
     def test_dirty_source_refused_before_build(self):
@@ -56,6 +58,33 @@ class SourceIdentityTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "does not match HEAD"):
             qualifier.source_identity(self.root)
 
+    def test_modified_comparison_inputs_refused_before_build(self):
+        for name in qualifier.COMPARISON_INPUTS:
+            with self.subTest(path=name):
+                path = self.root / name
+                original = path.read_bytes()
+                try:
+                    path.write_text("uncommitted repair comparison input\n")
+                    with self.assertRaisesRegex(RuntimeError, "committed clean"):
+                        qualifier.source_identity(self.root)
+                finally:
+                    path.write_bytes(original)
+
+    def test_hidden_comparison_input_mutations_refused_during_run(self):
+        before = qualifier.source_identity(self.root)
+        for name in qualifier.COMPARISON_INPUTS:
+            with self.subTest(path=name):
+                path = self.root / name
+                original = path.read_bytes()
+                self.git("update-index", "--assume-unchanged", name)
+                try:
+                    path.write_text("hidden repair comparison mutation\n")
+                    with self.assertRaisesRegex(RuntimeError, "does not match HEAD"):
+                        qualifier.require_unchanged_source(self.root, before)
+                finally:
+                    path.write_bytes(original)
+                    self.git("update-index", "--no-assume-unchanged", name)
+
     def test_head_advance_refused_even_with_identical_tree(self):
         before = qualifier.source_identity(self.root)
         self.git("commit", "--allow-empty", "-qm", "metadata-only advance")
@@ -65,7 +94,7 @@ class SourceIdentityTests(unittest.TestCase):
     def test_untracked_evidence_does_not_modify_source(self):
         before = qualifier.source_identity(self.root)
         path = self.root / "docs/images/native-preview.png"
-        path.parent.mkdir(parents=True)
+        path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(b"evidence outside build source inputs")
         qualifier.require_unchanged_source(self.root, before)
 
