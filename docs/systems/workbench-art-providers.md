@@ -45,32 +45,6 @@ Use **Key…** for each cloud provider. Keys stay in process memory, separately 
 provider; reopening Key always permits replacement. The button indicates a key
 is present. Profiles/history persist in `user://art-provider.cfg` without keys.
 
-### Lazy reopening and traffic storage
-
-Shared Workbench constructs the Art window hidden, but **does not scan, clone or
-resume saved traffic at Workbench startup**. Its provider reads only the small
-profile configuration and remembers the previous session path. Conversation
-replay is deferred until Art is revealed or an explicit model/history action
-requires the transcript.
-
-Existing JSONL archives are **immutable during continuation**. On the first
-new traffic event, the provider creates a fresh, small segment with a
-`session_parent` reference to the saved log. Subsequent events append to that
-segment; the profile tracks the latest segment. No previous raw request,
-response, screenshot or image-bearing log line is copied. Replay follows the
-segment chain and preserves historical images' source paths and byte offsets.
-Editing the conversation adds a snapshot to the new segment, never rewriting
-the original audit.
-
-**Save full JSONL…** is the only operation that materializes the whole session
-again: it streams the linked segments in order when explicitly requested.
-Missing, invalid or circular parent chains refuse a full export rather than
-silently generating an incomplete archive. The live Traffic view remains
-bounded. A Workbench launch with existing saved traffic must create **zero**
-new traffic files and copy **zero** historical bytes.
-The deterministic `test_art_lazy_traffic.gd` covers startup, deferred replay,
-linked append, historical images, explicit export and restart without network.
-
 LM Studio sends no fabricated key; a configured local server token is accepted
 through the same Key control. Local/LAN/manual endpoints are allowed. The numeric
 loopback default avoids the long `localhost` connection delays observed on this
@@ -129,7 +103,7 @@ Full redacted JSONL appends under `user://art-traffic/`; its absolute path is sh
 in Traffic. On this Windows installation that normally resolves below
 `%APPDATA%/Godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/`.
 The live text buffer is bounded separately (about 2 million characters), with an
-explicit earlier-on-disk marker. Full export copies the disk session, not the
+explicit earlier-on-disk marker. Full export streams the linked disk segments, not the
 live tail; there is no 256-event export ceiling. Disk failure is surfaced without
 stopping inference/drawing. When disk logging fails, missing historical content
 is not magically recoverable from the bounded viewer.
@@ -138,6 +112,32 @@ Entered keys, bearer strings, common key formats, credential URL parameters and
 URL userinfo are redacted before display/disk/export. Authorization request
 headers are never added to the logged request object. No log can identify every
 arbitrary secret the user invents; do not put unrelated credentials in prompts.
+
+### Lazy reopening and traffic storage
+
+Shared Workbench constructs the Art window hidden, but **does not scan, clone or
+resume saved traffic at Workbench startup**. Its provider reads only the small
+profile configuration and remembers the previous session path. Conversation
+replay is deferred until Art is revealed or an explicit model/history action
+requires the transcript.
+
+Existing JSONL archives are **immutable during continuation**. On the first
+new traffic event, the provider creates a fresh, small segment with a
+`session_parent` reference to the saved log. Subsequent events append to that
+segment; the profile tracks the latest segment. No previous raw request,
+response, screenshot or image-bearing log line is copied. Replay follows the
+segment chain and preserves historical images' source paths and byte offsets.
+Editing the conversation adds a snapshot to the new segment, never rewriting
+the original audit.
+
+**Save full JSONL…** is the only operation that materializes the whole session
+again: it streams the linked segments in order when explicitly requested.
+Missing, invalid or circular parent chains refuse a full export rather than
+silently generating an incomplete archive. The live Traffic view remains
+bounded. A Workbench launch with existing saved traffic must create **zero**
+new traffic files and copy **zero** historical bytes.
+The deterministic `test_art_lazy_traffic.gd` covers startup, deferred replay,
+linked append, historical images, explicit export and restart without network.
 
 ## Reproducible qualification and local setup
 
