@@ -114,6 +114,13 @@ For 512×8192, 1024×4096, 8192×512 and other asymmetric compositions use **F**
 
 The art renderer's maximum is 16,384 cells per axis and 16,777,216 cells total. **This is not a supported native World simulation-size claim.** Source identity and full/viewport output are recorded separately.
 
+For a full PNG exceeding the interactive viewer's 50-million-pixel
+bound, use the same real shader renderer through the explicit
+`--capture --stream-large` CLI, which streams source-hashed RGB8 tiles
+into a bounded PNG of up to 100 million pixels. This does not change
+the viewer's in-memory budget or grant native World playability.
+See [the unattended capture guide](world-art-capture.md#optional-bounded-streamed-full-png-above-50-million-pixels).
+
 ## Limits and tests
 
 Material conditions are **synthetic native-material creation-state bytes** following the established adapter fixture. A preview is not evidence of physical stability, pressure, Water behaviour, material reactions, Rapier collisions, traversal, worldgen runtime or gameplay performance. The provisional pack format is not a production import/save contract.
