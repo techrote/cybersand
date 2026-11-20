@@ -261,18 +261,8 @@ def run_capture(args: argparse.Namespace, godot_executable: str) -> int:
                     "background": not args.no_background}
     before = {str(g): support.snapshot_tree(g) for g in guards}
     git_before = art_source["dirty_entries"]
-    # Reserve publication before writing evidence. A simple exists()+mkdir(exist_ok=True)
-    # permits two publishers to race on the same initially empty directory.
-    output.mkdir(parents=True, exist_ok=True)
-    publication_claim = output / ".world-art-exclusive-claim"
-    try:
-        publication_claim.mkdir(mode=0o700)
-    except FileExistsError as error:
-        raise support.CaptureError(support.EXIT_USAGE,
-                                   f"--output-dir {output} has an active or retained publication claim") from error
-    except OSError as error:
-        raise support.CaptureError(support.EXIT_USAGE,
-                                   f"cannot reserve exclusive output claim in {output}: {error}") from error
+    # Atomic across competing publishers, including a pre-existing empty output dir.
+    publication_claim = support.claim_output_directory(output)
     failures: list[str] = []
     state: dict = {}
     log_text = ""
