@@ -688,7 +688,8 @@ class GraphicalCaptureTests(unittest.TestCase):
         """A corrupted production shader must produce a nonzero exit and a shader diagnostic."""
         mini = self.scratch / "mini-repo"
         (mini / "tools").mkdir(parents=True)
-        for name in ("world_art_preview_launcher.py", "world_art_capture_support.py"):
+        for name in ("world_art_preview_launcher.py", "world_art_capture_support.py",
+                     "world_art_stream_png.py"):
             shutil.copyfile(HERE / name, mini / "tools" / name)
         for name in launcher.FILES:
             target = mini / "godot" / name
