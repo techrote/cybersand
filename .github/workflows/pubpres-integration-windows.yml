@@ -10,6 +10,12 @@ on:
       - 'godot/tests/pubpres_transition.gd'
       - 'godot/tests/pubpres_warp_transition_oracle.gd'
       - 'tools/pubpres_integration/warp_transition.py'
+      - '.github/workflows/pubpres-full-storage.yml'
+      - 'tools/pubpres_integration/full_storage_gameplay.py'
+      - 'godot/tests/pubpres_source_gameplay.gd'
+      - 'godot/tests/pubpres_source_transition_oracle.gd'
+      - 'tools/pubpres_integration/source_results.py'
+      - 'tools/pubpres_integration/source_campaign.json'
   workflow_dispatch:
 
 permissions:

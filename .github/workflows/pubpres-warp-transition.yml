@@ -1,13 +1,9 @@
 name: PUBPRES Windows WARP transition comparison
 
 on:
-  push:
-    branches: [codex/pubpres-integration-001]
-    paths:
-      - '.github/workflows/pubpres-warp-transition.yml'
-      - 'godot/tests/pubpres_transition.gd'
-      - 'godot/tests/pubpres_warp_transition_oracle.gd'
-      - 'tools/pubpres_integration/warp_transition.py'
+  # Completed mechanism experiments are retained for explicit reproduction.
+  # Production changes use the installed three-source comparison workflow;
+  # unrelated fixture edits must not repeat a rejected treatment automatically.
   workflow_dispatch:
     inputs:
       experiment:

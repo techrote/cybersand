@@ -103,6 +103,19 @@ func _hash(bytes: PackedByteArray) -> String:
 	return hashing.finish().hex_encode()
 
 
+func _publication_status() -> Dictionary:
+	if host.has_method("material_publication_status"):
+		return host.call("material_publication_status")
+	# Accepted main predates publication telemetry. Observe its real texture
+	# classes; do not substitute a newer renderer into the reference source.
+	_check(strategy == "full" and host.texture is ImageTexture and host.previous_texture is ImageTexture,
+		"legacy source did not use its complete ImageTexture history pair")
+	return {"requested_mode": strategy, "backend": "full", "policy": "", "fallback_reason": "",
+		"driver": RenderingServer.get_current_rendering_driver_name(),
+		"submitted_bytes": Extent.x * Extent.y * Channels,
+		"observation_scope": "Legacy finish_texture_upload rotates two ImageTextures and calls one complete update; stage timing unavailable."}
+
+
 func _submit(index: int) -> Dictionary:
 	var input := _input(index)
 	var region: Rect2i = input.region
@@ -115,7 +128,7 @@ func _submit(index: int) -> Dictionary:
 	var completed := Time.get_ticks_usec()
 	_check(accepted and host.last_uploaded_revision == index + 1, "publication %d was not accepted" % index)
 	host.world_shader.set_shader_parameter("snapshot_blend", 0.5 if index % 3 == 0 else 1.0)
-	var status: Dictionary = host.material_publication_status()
+	var status: Dictionary = _publication_status()
 	_check(status.get("requested_mode") == strategy, "publication strategy did not reach Main")
 	var phase := "sparse"
 	if not steady_sparse:
@@ -172,6 +185,7 @@ func _run() -> void:
 		var now := Time.get_ticks_usec()
 		if index >= Warmup:
 			row["frame_ms"] = float(now - previous_frame_usec) / 1000.0
+			row["post_draw_usec"] = now
 			row["godot_static_memory_peak_bytes"] = OS.get_static_memory_peak_usage()
 			var video_bytes := int(Performance.get_monitor(Performance.RENDER_VIDEO_MEM_USED))
 			row["reported_video_memory_bytes"] = video_bytes if video_bytes > 0 else null
@@ -187,6 +201,7 @@ func _run() -> void:
 	var result := {"schema": "pubpres-transition-v1", "case": Case, "complete": failures.is_empty(),
 		"tape": "steady_sparse" if steady_sparse else ("fixed_material" if fixed_material else "transition"),
 		"failures": failures, "material_strategy": strategy, "context": Context.identity(get_script().resource_path, host.world_shader.shader),
+		"application_main_sha256": FileAccess.get_sha256("res://scripts/main.gd"),
 		"initial_plane_sha256": initial_sha, "setup_usec": preparation_usec, "warmup_frames": Warmup,
 		"display": {"window": [root.size.x, root.size.y], "max_fps": Engine.max_fps, "vsync_mode": vsync},
 		"size": [Extent.x, Extent.y], "channels": Channels, "samples": frames, "history": history,
