@@ -179,6 +179,8 @@ A face can spend its share only once. If the crest throw already uses the whole 
 
 For a large drop, load **water-ramp**, let the pool form, then use a radius-24 brush to paint Oil and drop Lava where Oil meets Water. The [recorded replay](../audits/2026-11-19-wave-oil-lava.md) gives exact positions, ticks and results.
 
+To see a wave travel under a slick, load **oil-impinge** in the Windows evaluation and press **P**. Let the falling Water hit the shelf and the two layers settle. Drop a fresh brushful of Water on the left and watch the Water–Oil boundary on the right. This uses the existing Wave gameplay settings. [Tank replay](../audits/2026-11-20-wave-oil-impinge.md)
+
 In the Oil evaluation ZIP, load **oil-tank** and press **P**. A strip of Oil starts ten cells below the surface while Sand drops onto the pool. After it settles, erase a stretch of the thin right wall at the Water line to release a wave into the lower basin. The Wave gameplay profile already has spill, ballistic release and fall speed 3 enabled. [Oil tank evaluation](../audits/2026-11-19-wave-oil-buoyancy.md)
 
 Load **water-wall** in the Shared Workbench and press **Run**. On the full-face evaluation branch, **Gameplay default** enables **Full face**, **Ballistic release** and **Blobs**, and sets **Fall speed** to **3**. Fall speed counts grid cells per solver round. The gameplay profile runs two rounds per tick. Parcels use their own gravity and velocity.

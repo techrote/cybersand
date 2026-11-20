@@ -12,6 +12,8 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 ## Floating Oil in Wave Water
 
+The [impingement tank replay](../audits/2026-11-20-wave-oil-impinge.md) tests whether Water waves can lift and lower a floating Oil slick. In the previous build the Water–Oil boundary remained fixed through 900 ticks of observation.
+
 The [thick Oil and Lava evaluation](../audits/2026-11-19-wave-oil-lava.md) covers a radius-24 Oil brush on the owner’s ramp and Lava quenching compressed Wave Water. On one dedicated runner, the updated six-worker native tick cost 0.992 ms more on the Waterwall map and 0.775 ms more in the thick Oil tank at the median. The audit records p95, host differences and the source-matched Windows and Linux publication.
 
 The [Oil tank evaluation](../audits/wave-oil-buoyancy-2026-11-19/evaluation.md) measures a buried slick, falling Sand and a fresh wave in the Windows Workbench. The longer-term [per-material solver and tuning target](../architecture/liquid-solver-family-policy.md#status) is Planned.

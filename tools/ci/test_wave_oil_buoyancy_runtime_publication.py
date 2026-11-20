@@ -21,7 +21,7 @@ class WaveOilBuoyancyPublicationTests(unittest.TestCase):
         self.assertIn("github.base_ref == 'codex/wave-water-face-004'", workflow)
         self.assertEqual(re.findall(r"HEAD:refs/heads/(\S+)", workflow), [engine.BRANCH])
         self.assertIn(f'--force-with-lease="refs/heads/{engine.BRANCH}:$GITHUB_SHA"', workflow)
-        for name in (engine.WORKFLOW, engine.REQUEST, engine.EVIDENCE):
+        for name in (engine.WORKFLOW, engine.REQUEST, engine.EVIDENCE, profile.IMPINGE_START):
             self.assertIn(name, engine.BUILD_EXACT)
 
     def test_spill_sections_match_workbench(self):
