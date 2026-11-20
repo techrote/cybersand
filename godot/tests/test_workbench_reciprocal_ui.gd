@@ -176,6 +176,24 @@ func failed_exit_refusal(baseline:Dictionary)->void:
 		"a native-positive result cannot authorize Apply after a failed child exit")
 	check((await capture()).cells==baseline.cells,"failed-exit refusal leaves native material and authoring unchanged")
 
+func native_identity_refusals()->void:
+	# Challenge a freshly generated native result, without modifying the actual
+	# proposal, World, seed, controls or compiled generator. These are admission
+	# regressions; altered receipts are never architectural success evidence.
+	var original:Dictionary=panel.document
+	var source:String=original.source
+	check(Protocol.decode_document(original,JSON.stringify(original).to_utf8_buffer(),panel.prepared,source).ok,
+		"genuine native output retains the exact qualified definition and limits")
+	for owner:String in ["frame","mosaic"]:
+		for key:String in Protocol.NATIVE_IDENTITIES[owner]:
+			var altered:Dictionary=original.duplicate(true);altered.input[owner][key]=123
+			check(not Protocol.decode_document(altered,JSON.stringify(altered).to_utf8_buffer(),panel.prepared,source).ok,
+				"actual native output refuses changed "+owner+" "+key)
+		for key:String in Protocol.NATIVE_LIMITS:
+			var altered:Dictionary=original.duplicate(true);altered.input[owner].limits[key]+=1
+			check(not Protocol.decode_document(altered,JSON.stringify(altered).to_utf8_buffer(),panel.prepared,source).ok,
+				"actual native output refuses increased "+owner+" "+key+" ceiling")
+
 func lifecycle(baseline:Dictionary)->void:
 	for action:String in ["cancel","hide","timeout"]:
 		if not panel.visible:panel.open_panel()
@@ -254,6 +272,7 @@ func create_map()->void:
 		if not await until(func()->bool:return panel.phase in ["ready","idle"],"fresh generation follows failed-exit refusal"):return
 		if not check(panel.phase=="ready" and panel.document.get("can_apply",false),"fresh successful native execution restores Apply authority"):return
 	if not check(panel.document.can_apply,"native composition independently authorizes Apply: "+panel.status):return
+	native_identity_refusals()
 	check(panel.prepared.recipe.origin==Vector2i.ZERO and panel.prepared.recipe.activation==[Vector2i(64,48)] \
 		and panel.prepared.recipe.layout=="centered_frame_rectangle" and panel.prepared.recipe.border==4,
 		"visible controls and actual brush reproduce the declared transaction territory")

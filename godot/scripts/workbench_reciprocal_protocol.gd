@@ -16,6 +16,19 @@ const EXPRESSION_DEFAULTS := [
 	{"variation":0.65,"irregularity":0.05,"branching":0.55,"environment_affinity":0.25,"cohesion":0.35},
 	{"variation":0.65,"irregularity":0.95,"branching":1.0,"environment_affinity":0.7,"cohesion":0.2}]
 const PARAMETERS := ["variation","irregularity","clutter","destruction","branching","environment_affinity","cohesion"]
+# This experimental bridge qualifies one compiled native definition interface.
+# The suffix is Makefile.reciprocal's hash of its complete C++/header inputs.
+# A changed definition requires a separately qualified bridge; source labels or
+# a successful child exit do not authorize a different Gentek or larger budget.
+const NATIVE_DEFINITION := "57ff699bf5c9833a2a5e2198ff2ef0b07cfd051069013776e6427f1e9d6694ec"
+const NATIVE_IDENTITIES := {
+	"frame":{"gentek":"FRAMEWEAVER","version":0,"fixture":"workbench_territory",
+		"definition":"frameweaver.frontier-growth-v0."+NATIVE_DEFINITION},
+	"mosaic":{"gentek":"MOSAIC","version":0,"fixture":"workbench_territory",
+		"definition":"mosaic.prepared-regions-v0."+NATIVE_DEFINITION}}
+const NATIVE_LIMITS := {"instances":64,"frontier":256,"candidates":8192,"connectors_per_instance":8,
+	"affordances":256,"cohesion_patches":8,"cohesion_cells_per_patch":512,"work":2000000,"solver_work":4000000,"bytes":16777216}
+const NATIVE_SWITCHES := ["vocabulary","hierarchy","frame_adaptation","mosaic_adaptation","native_mosaic_bearing"]
 const LEDGER_COLUMNS := ["owner","instance","rule","first_round","last_round","revision_mask"]
 const MAX_INSPECTION_RECORDS := 4096
 const SOCKET_COLORS := {"required":0xff6868ff,"foreign_required":0xff6868ff,"optional":0xffd166ff,"local_terminable":0x69e6eeff}
@@ -246,6 +259,9 @@ static func decode_document(result: Dictionary, bytes: PackedByteArray, prepared
 		or not scalar_same(options.get("shared_ownership"),recipe.get("shared_ownership",true)) \
 		or not inputs.get("shared_zone") is Array or inputs.shared_zone.size()!=count:
 		return fail("Native evidence changed the negotiated controls or final-validation requirement.")
+	for key: String in NATIVE_SWITCHES:
+		if not scalar_same(options.get(key),true):
+			return fail("Native evidence changed a qualified architectural rule switch.")
 	for gentek: String in ["frame","mosaic"]:
 		var input: Variant = inputs.get(gentek)
 		if not input is Dictionary or not scalar_same(input.get("width"),size.x) or not scalar_same(input.get("height"),size.y) \
@@ -254,6 +270,21 @@ static func decode_document(result: Dictionary, bytes: PackedByteArray, prepared
 			or not integer(input.origin[0],-1000000,1000000) or not integer(input.origin[1],-1000000,1000000) \
 			or int(input.origin[0])!=recipe.origin.x or int(input.origin[1])!=recipe.origin.y:
 			return fail("Native "+gentek+" evidence does not describe the requested source, seed, extent or origin.")
+		for key: String in NATIVE_IDENTITIES[gentek]:
+			if not scalar_same(input.get(key),NATIVE_IDENTITIES[gentek][key]):
+				return fail("Native evidence changed the qualified Gentek identity, definition or authoring fixture.")
+		if not input.get("limits") is Dictionary or input.limits.size()!=NATIVE_LIMITS.size():
+			return fail("Native evidence omitted its qualified resource limits.")
+		for key: String in NATIVE_LIMITS:
+			var expected: int=192 if gentek=="mosaic" and key=="instances" else int(NATIVE_LIMITS[key])
+			if not scalar_same(input.limits.get(key),expected):
+				return fail("Native evidence changed a qualified resource limit.")
+		if not input.get("neighbor_cells") is Array or not input.neighbor_cells.is_empty() \
+			or not input.get("neighbors") is Dictionary or input.neighbors.size()!=4:
+			return fail("Native evidence changed the initial independent proposal inputs.")
+		for key: String in ["hard","soft","protected","transition"]:
+			if not input.neighbors.get(key) is Array or not input.neighbors[key].is_empty():
+				return fail("Native evidence introduced an unauthored initial neighbor obligation.")
 		if not input.get("context") is Array or input.context.size()!=count:
 			return fail("Native "+gentek+" evidence has an incomplete immutable source context.")
 		if not input.get("profile") is Dictionary or not scalar_same(input.profile.get("name"),recipe.profile) \

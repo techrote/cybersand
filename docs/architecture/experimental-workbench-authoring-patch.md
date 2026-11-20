@@ -168,6 +168,12 @@ ownership, exact source materials, masks, seed, all seven controls, activation
 locations and negotiation options must match the output evidence. Native
 `can_apply` remains necessary; the controller additionally refuses incomplete
 ownership and unresolved mandatory obligations. It never changes that flag.
+The decoder also binds the exact compiled Gentek definition fingerprints, names,
+version, authoring fixture, original resource ceilings, fixed architectural
+switches and initially empty neighbor records. A different native definition
+requires explicit interface requalification; a source label or successful child
+exit does not admit a different grammar or increased budget. Transport fixtures
+and mutations of freshly generated native records exercise these refusals.
 
 The shared controls retain their original defaults and V1 request bytes.
 Optional independent FRAMEWEAVER and MOSAIC overrides each carry the same seven

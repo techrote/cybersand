@@ -56,15 +56,34 @@ func _initialize()->void:
 	check(not Protocol.ownership_masks(Vector2i(8,8),"left_right",4,1).ok,"clear border cannot erase the activation territory")
 	var input:Dictionary={"width":8,"height":4,"seed":59,"origin":[2,3],"source":"transport-fixture-no-assembly",
 		"profile":request.parameters.duplicate(),"activation":[[2,1],[6,2]],"context":Array(prepared.context),
-		"eligible":frame,"protected":Array(prepared.protected),"transition":Array(prepared.shared)}
+		"eligible":frame,"protected":Array(prepared.protected),"transition":Array(prepared.shared),
+		"limits":Protocol.NATIVE_LIMITS.duplicate(),"neighbor_cells":[],"neighbors":{"hard":[],"soft":[],"protected":[],"transition":[]}}
+	input.merge(Protocol.NATIVE_IDENTITIES.frame)
 	input.profile["name"]="industrial"
 	var other:Dictionary=input.duplicate(true);other.eligible=mosaic
+	other.merge(Protocol.NATIVE_IDENTITIES.mosaic,true);other.limits.instances=192
 	valid={"schema":5,"type":"reciprocal_assembly","source":"transport-fixture-no-assembly","can_apply":false,
 		"status":"blocked","reason":"transport test, no architecture","stop_reason":"fixture","input":{"frame":input,"mosaic":other,
 		"shared_zone":Array(prepared.shared),"options":{"rounds":2,"shared_extent":2,"orientation_preference":1,
 		"optional_negotiation":false,"shared_ownership":true,"final_validation":true}},"cells":[],"ledger":[],"ledger_columns":Protocol.LEDGER_COLUMNS,
 		"rules":[],"rounds":[],"joints":[],"obligations":[],"owner_names":["empty","FRAMEWEAVER","MOSAIC","immutable_environment"]}
+	for field:String in Protocol.NATIVE_SWITCHES:valid.input.options[field]=true
 	check(decode(valid).ok,"well-formed blocked evidence remains inspectable")
+	for owner:String in ["frame","mosaic"]:
+		for field:String in Protocol.NATIVE_IDENTITIES[owner]:
+			var changed:Dictionary=valid.duplicate(true);changed.input[owner][field]=123
+			check(not decode(changed).ok,"changed native "+owner+" "+field+" is refused")
+		for field:String in Protocol.NATIVE_LIMITS:
+			var changed:Dictionary=valid.duplicate(true);changed.input[owner].limits[field]+=1
+			check(not decode(changed).ok,"increased native "+owner+" "+field+" ceiling is refused")
+		var changed:Dictionary=valid.duplicate(true);changed.input[owner].neighbor_cells=[58]
+		check(not decode(changed).ok,"unauthored initial "+owner+" neighbor materials are refused")
+		for field:String in ["hard","soft","protected","transition"]:
+			changed=valid.duplicate(true);changed.input[owner].neighbors[field]=[0]
+			check(not decode(changed).ok,"unauthored initial "+owner+" neighbor "+field+" is refused")
+	for field:String in Protocol.NATIVE_SWITCHES:
+		var changed:Dictionary=valid.duplicate(true);changed.input.options[field]=false
+		check(not decode(changed).ok,"changed native architectural switch "+field+" is refused")
 	for field:String in ["seed","width","source"]:
 		var bad:Dictionary=valid.duplicate(true);bad.input.frame[field]=123
 		check(not decode(bad).ok,"mismatched request "+field+" is refused")
