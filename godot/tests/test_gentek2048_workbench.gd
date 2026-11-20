@@ -78,9 +78,9 @@ func _case(kind: String, reopening: bool) -> bool:
 	if not check(dialog.attests(packet), label + " generated map is eligible for explicit installation"): return false
 	dialog.confirmed.emit()
 	dialog.hide()
-	if not await until(func() -> bool: return installed() and host.image.get_width() == SIZE and
-			host.image.get_height() == SIZE and str(wb._generated_active.get("sha256", "")) == str(packet.sha256),
-			label + " actual 2048 World installed by native owner"): return false
+	var target_installed := func() -> bool:
+		return installed() and host.image.get_width() == SIZE and host.image.get_height() == SIZE and str(wb._generated_active.get("sha256", "")) == str(packet.sha256)
+	if not await until(target_installed, label + " actual 2048 World installed by native owner"): return false
 	check(host.tower_context.get("liquid_construction_receipt", {}).get("generated_source_sha256", "") == packet.sha256,
 		label + " native construction receipt acknowledges exact material image")
 	if reopening:
