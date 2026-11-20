@@ -52,33 +52,42 @@ LOG_ERROR_PATTERN = re.compile(
     re.IGNORECASE)
 
 
-def classify_art_dimensions(width: int, height: int, scale: int = 1) -> dict:
-    """Separate preview eligibility, full-PNG budget and *unverified* playability.
+def classify_art_dimensions(width: int, height: int, scale: int = 1,
+                            stream_large: bool = False) -> dict:
+    """Independently classify art adapter, bounded full-PNG and native World.
 
-    The presentation adapter's 16M-cell policy is not a native World size policy.
-    Full export intentionally refuses >50M output pixels rather than silently
-    clipping, allocating an unbounded framebuffer, or downscaling source cells.
+    The ordinary Godot Image export is capped at 50M pixels. Explicit
+    --stream-large permits original Godot RGB tiles assembled by a scanline
+    compressor to a second *bounded* 100M-pixel cap. Neither art path qualifies
+    native World storage or simulation dimensions.
     """
     valid_integer = all(type(v) is int for v in (width, height, scale))
     area = width * height if valid_integer else 0
     pixels = area * scale * scale if valid_integer else 0
+    output_width = width * scale if valid_integer else 0
+    output_height = height * scale if valid_integer else 0
     supported = (valid_integer and 0 < width <= MAX_SIDE and 0 < height <= MAX_SIDE
                  and 0 < area <= MAX_CELLS)
-    full = supported and 1 <= scale <= 8 and pixels <= MAX_PIXELS
+    ordinary = supported and 1 <= scale <= 8 and pixels <= MAX_PIXELS
+    streamed = (supported and stream_large and 1 <= scale <= 8
+                and MAX_PIXELS < pixels <= 100_000_000
+                and output_width <= 65_536 and output_height <= 65_536)
+    full = bool(ordinary or streamed)
     return {
         "native_dimensions": [width, height],
-        "native_cells": area,
-        "previewable": bool(supported),
-        "full_exportable": bool(full),
-        "requested_scale": scale,
-        "requested_output_pixels": pixels,
-        "max_art_cells": MAX_CELLS,
-        "max_output_pixels": MAX_PIXELS,
+        "native_cells": area, "previewable": bool(supported),
+        "full_exportable": full,
+        "full_export_mode": "streamed" if streamed else "framebuffer" if ordinary else "refused",
+        "stream_requested": bool(stream_large),
+        "requested_scale": scale, "requested_output_pixels": pixels,
+        "max_art_cells": MAX_CELLS, "max_output_pixels": MAX_PIXELS,
+        "max_streamed_output_pixels": 100_000_000, "max_streamed_side": 65_536,
         "native_playable": "not-qualified-by-art-pipeline",
         "reason": ("" if full else
                    "art adapter limit exceeded" if not supported else
                    "invalid export scale" if not 1 <= scale <= 8 else
-                   f"full PNG exceeds {MAX_PIXELS:,} output pixels; use 1x or a viewport"),
+                   f"full PNG exceeds {MAX_PIXELS:,} output pixels; use --stream-large for up to "
+                   "100,000,000 pixels (65,536/axis) or capture a viewport"),
     }
 
 
