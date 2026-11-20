@@ -11,6 +11,7 @@ var readable := ""
 var log_path := ""
 var parent_log_path := "" # Previous immutable JSONL segment; never copied on reopen.
 var log_warning := ""
+var last_event_stored := false
 var last_request_offset := -1
 var resumed_last_result := ""
 var usage: Dictionary = {}
@@ -261,6 +262,7 @@ func log_event(kind: String, data: Variant) -> bool:
 			if file.get_error()!=OK: log_warning = "Traffic disk write failed; drawing continues."
 		else: log_warning = "Cannot write traffic log; live traffic remains available."
 	else: log_warning = "Cannot create traffic directory; drawing continues."
+	last_event_stored = stored
 	traffic_changed.emit()
 	return stored
 
