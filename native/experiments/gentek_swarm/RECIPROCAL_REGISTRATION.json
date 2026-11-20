@@ -1,0 +1,81 @@
+{
+  "programme": "GENTEK-SWARM-004",
+  "schema": 1,
+  "registered_date": "2026-11-20",
+  "canonical_issue": 687,
+  "parent": "cd0de74b83a66b5408668f81c82d854db45479ce",
+  "parent_tree": "8692c87be00ecbfd5f422a1595529a526cb2891f",
+  "accepted_main": "7b03aa437561ec63e31fd09531171360ab60eeb4",
+  "frozen_controls": {
+    "B": "345ecc3ef939523f247b3eb192aa7502bd4d83ca",
+    "C": "21617b14253cc6dcf35a83ded558565c8db517f5",
+    "C_cap": "5bf7b4b90616130577744e39c9fbc9c0376c52b2",
+    "E8": "cd0de74b83a66b5408668f81c82d854db45479ce"
+  },
+  "development_seeds": [
+    605,
+    1701,
+    2718,
+    4099,
+    8191,
+    12289
+  ],
+  "holdout_seeds": [
+    19457,
+    32771
+  ],
+  "holdout_policy": "Do not execute until source and selected policy are committed. Run chosen policy plus same-seed controls, no parameter tuning after opening.",
+  "fixtures": [
+    "stepped_diagonal",
+    "concave_intrusion",
+    "protected_corridor",
+    "foreign_solid",
+    "island",
+    "narrow_neck"
+  ],
+  "profiles": [
+    "sparse_regular",
+    "branching_irregular",
+    "dense_cohesive"
+  ],
+  "expression_profiles": [
+    "industrial",
+    "viaduct_like",
+    "irregular_megastructure"
+  ],
+  "budgets": {
+    "frame_instances": 64,
+    "mosaic_instances": 192,
+    "frame_generator_work": 2000000,
+    "mosaic_generator_work": 2000000,
+    "categorical_work": 4000000,
+    "shared_work": 2000000,
+    "aggregate_work": 10000000,
+    "total_bytes": 16777216,
+    "transition_slots": 8,
+    "max_rounds": 4,
+    "max_proposals": 10,
+    "max_depth": 6,
+    "max_frontier": 256,
+    "max_candidates": 8192
+  },
+  "policies": [
+    "no_negotiation",
+    "vocabulary_only",
+    "flat_assembly",
+    "fixed_territory",
+    "mosaic_only",
+    "frame_only",
+    "reciprocal_1",
+    "reciprocal_2",
+    "reciprocal_3",
+    "reciprocal_4",
+    "validation_off_diagnostic"
+  ],
+  "default_hypothesis": "reciprocal_2",
+  "selection": "Reject any hard invariant failure. Prefer more actual two-sided geometry-revision cases with valid native joints, then fewer still-required obligations, then lower work/round count. Report complete proposals and all failed cases separately. No per-case policy picking.",
+  "same_frame_controls": "Initial FRAME proposal and identical eligible/shared masks with no peer offers; one-sided adaptation controls; changed frames are not attributed to solver improvements.",
+  "claim_rules": "Local caps never satisfy foreign-required connectors. Coordinator creates zero architecture cells. No physics support certificate.",
+  "memory": "Conservative preflight bound includes initial and four round snapshot pairs, native donor scratch, component claims and ledgers. Enforced before output allocations.",
+  "windows": "Native Windows executable and source-matched Godot bridge; actual input Apply Undo Save exit/reopen required; Linux tests do not substitute Windows acceptance."
+}
