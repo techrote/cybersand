@@ -186,6 +186,7 @@ func _manifest_skeleton(job: Dictionary) -> Dictionary:
 		"job": {"id": job.get("id", ""), "collection": job.get("collection", ""),
 			"pack_path": job.get("pack_path", ""), "pack_sha256_expected": job.get("pack_sha256", "")},
 		"art_source": _request.get("art_source", {}),
+		"art_size_policy": job.get("art_size_policy", null),
 		"viewer": _request.get("viewer", {}),
 		"presentation": _request.get("presentation", {}),
 		"synthetic_condition_notice": SYNTHETIC_NOTICE,
