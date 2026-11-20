@@ -29,9 +29,8 @@ func stats(times: Array[int]) -> Dictionary:
 
 func bench(label: String, seed: Vector2i, origin: Vector2i, size: Vector2i,
 		materials: PackedInt32Array, extent: Vector2i, limit: int) -> bool:
-	var argument := [seed, origin, size, materials, extent, limit]
-	var reference: Dictionary = Shapes.fill_connected_reference.callv(argument)
-	var compiled: Dictionary = backend.callv(&"fill_connected", argument)
+	var reference: Dictionary = Shapes.fill_connected_reference(seed, origin, size, materials, extent, limit)
+	var compiled: Dictionary = backend.fill_connected(seed, origin, size, materials, extent, limit)
 	if reference != compiled:
 		push_error(label + ": native differs from script reference")
 		return false
@@ -42,9 +41,9 @@ func bench(label: String, seed: Vector2i, origin: Vector2i, size: Vector2i,
 			var started: int = Time.get_ticks_usec()
 			var response: Dictionary
 			match mode:
-				"script": response = Shapes.fill_connected_reference.callv(argument)
-				"native": response = backend.callv(&"fill_connected", argument)
-				_: response = Shapes.fill_connected.callv(argument)
+				"script": response = Shapes.fill_connected_reference(seed, origin, size, materials, extent, limit)
+				"native": response = backend.fill_connected(seed, origin, size, materials, extent, limit)
+				_: response = Shapes.fill_connected(seed, origin, size, materials, extent, limit)
 			var elapsed: int = Time.get_ticks_usec() - started
 			if response != reference:
 				push_error(label + ": " + mode + " changed output")
