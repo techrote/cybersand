@@ -223,6 +223,20 @@ class UnitTests(unittest.TestCase):
             self.assertTrue((tmp / "busy" / "earlier.txt").is_file(), "earlier evidence must never be touched")
             self.assertFalse(out.exists(), "usage errors must not create the output directory")
 
+    def test_gallery_refuses_unverified_source_without_touching_it(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            target = Path(tmp) / "bundle"
+            target.mkdir()
+            marker = target / "earlier.png"
+            marker.write_bytes(b"retained")
+            done = subprocess.run(
+                [sys.executable, str(ROOT / "examples/world-art-capture/build_gallery.py"),
+                 "--bundle", str(target)], capture_output=True, text=True)
+            self.assertNotEqual(done.returncode, 0)
+            self.assertIn("WORLD_ART_GALLERY_ERROR", done.stderr)
+            self.assertFalse((target / "gallery" / "index.html").exists())
+            self.assertEqual(marker.read_bytes(), b"retained")
+
     def test_missing_engine_is_reported(self):
         done = subprocess.run([sys.executable, str(LAUNCHER), "--capture", "--godot", "definitely-not-godot-4.7",
                                "--pack", str(LAUNCHER), "--output-dir", str(EVIDENCE / "never")],
@@ -401,6 +415,14 @@ class GraphicalCaptureTests(unittest.TestCase):
         self.assertEqual({p.parent.name: support.sha256_file(p) for p in self.art.glob("*/pack.json")}, self.pack_hashes)
         self.assertFalse(support.is_inside(EVIDENCE, self.art), "evidence must live outside the art checkout")
         self.assertEqual(len(result["jobs"]), 15)
+        gallery = subprocess.run(
+            [sys.executable, str(ROOT / "examples/world-art-capture/build_gallery.py"),
+             "--bundle", str(out)], capture_output=True, text=True)
+        self.assertEqual(gallery.returncode, 0, gallery.stdout + gallery.stderr)
+        index = (out / "gallery" / "index.html").read_text(encoding="utf-8")
+        self.assertIn("Art revision:", index)
+        self.assertEqual(index.count("<figure>"), 45, "15 collections × 3 real-Godot PNGs")
+        self.assertIn("coral-telegraph", index)
 
     def test_03_feature_and_variant_selection_from_the_inventory(self):
         packs = sorted(self.art.glob("*/pack.json"))
@@ -416,6 +438,12 @@ class GraphicalCaptureTests(unittest.TestCase):
             total += len(manifest["shots"])
         self.assertEqual(total, expected_features)
         self.assertEqual(total, 120, "the 15-collection atlas inventory is 120 reusable features")
+        gallery = subprocess.run(
+            [sys.executable, str(ROOT / "examples/world-art-capture/build_gallery.py"),
+             "--bundle", str(out)], capture_output=True, text=True)
+        self.assertEqual(gallery.returncode, 0, gallery.stdout + gallery.stderr)
+        index = (out / "gallery" / "index.html").read_text(encoding="utf-8")
+        self.assertEqual(index.count("<figure>"), 120, "all 120 author modules have a real PNG in the gallery")
         # Every authored variant of one collection, plus an explicit FEATURE:VARIANT selection.
         collection = "dust-meridian"
         document = json.loads((self.art / collection / "pack.json").read_text(encoding="utf-8"))
