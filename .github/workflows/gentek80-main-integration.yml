@@ -12,8 +12,8 @@ concurrency:
   group: gentek80-main-${{ github.run_id }}
   cancel-in-progress: false
 env:
-  TARGET_SHA: 100f3b14215a8778c5f4752a67ee258a8a6462cc
-  TARGET_TREE: 31a6d29e576dc29905c8ddc5c9afcebc9da0e986
+  TARGET_SHA: 87148d66e816f3fd4033e8227a7d310652e2812a
+  TARGET_TREE: a24d0ed7a1f18d02716dec3a8cee378d18b38c63
   TARGET_BRANCH: integration/gentek-80-001
   ACCEPTED_MAIN: 7b03aa437561ec63e31fd09531171360ab60eeb4
   HARNESS: orchestration/tools/ci/gentek80_main_integration
@@ -29,6 +29,34 @@ jobs:
       contents: read
       actions: write
     steps:
+      - name: Stop only this finisher's superseded candidate requests
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          python3 - <<'PY'
+          import json, os, subprocess
+          from pathlib import Path
+          previous = {'44770252791':'68b09de4dcc85e6541c568d85319b29948fe23ed',
+                      '44770277351':'100f3b14215a8778c5f4752a67ee258a8a6462cc'}
+          records = []
+          for run_id, head in previous.items():
+              endpoint = 'repos/' + os.environ['GITHUB_REPOSITORY'] + '/actions/runs/' + run_id
+              run = json.loads(subprocess.check_output(['gh', 'api', endpoint], text=True))
+              if run['head_sha'] != head or str(run['id']) == os.environ['GITHUB_RUN_ID']:
+                  raise RuntimeError('Superseded-run identity mismatch')
+              row = {'id':run_id, 'head':head, 'before':run['status'], 'conclusion':run['conclusion']}
+              if run['status'] in ('queued', 'in_progress', 'waiting', 'requested'):
+                  result = subprocess.run(['gh', 'api', '--method', 'POST', endpoint + '/cancel'], capture_output=True, text=True)
+                  row['cancel_returncode'] = result.returncode
+                  after = json.loads(subprocess.check_output(['gh', 'api', endpoint], text=True))
+                  row['after'] = after['status']
+                  if result.returncode and after['status'] != 'completed':
+                      raise RuntimeError('Could not stop own superseded run: ' + run_id)
+              records.append(row)
+          Path('evidence/superseded-requests.json').write_text(json.dumps(records, indent=2))
+          PY
       - name: Verify exact candidate branch before and after dispatch
         env:
           GH_TOKEN: ${{ github.token }}
