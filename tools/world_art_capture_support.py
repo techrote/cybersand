@@ -38,6 +38,7 @@ COLLECTION_ORDER = (
     "ironroot-necropolis", "tectonic-archive", "coral-telegraph", "fallow-carnival",
 )
 MAX_SIDE = 16384
+MAX_CELLS = 16_777_216  # Art adapter limit; NOT native playable-World admission.
 MAX_PIXELS = 50_000_000
 ZOOM_MIN = 0.03
 ZOOM_MAX = 32.0
@@ -49,6 +50,36 @@ LOG_ERROR_PATTERN = re.compile(
     r"Unable to create DisplayServer|Could not initialize display|"
     r"Can't connect to X11|Failed to create (?:the )?window|OpenGL .* (?:not supported|failed)",
     re.IGNORECASE)
+
+
+def classify_art_dimensions(width: int, height: int, scale: int = 1) -> dict:
+    """Separate preview eligibility, full-PNG budget and *unverified* playability.
+
+    The presentation adapter's 16M-cell policy is not a native World size policy.
+    Full export intentionally refuses >50M output pixels rather than silently
+    clipping, allocating an unbounded framebuffer, or downscaling source cells.
+    """
+    valid_integer = all(type(v) is int for v in (width, height, scale))
+    area = width * height if valid_integer else 0
+    pixels = area * scale * scale if valid_integer else 0
+    supported = (valid_integer and 0 < width <= MAX_SIDE and 0 < height <= MAX_SIDE
+                 and 0 < area <= MAX_CELLS)
+    full = supported and 1 <= scale <= 8 and pixels <= MAX_PIXELS
+    return {
+        "native_dimensions": [width, height],
+        "native_cells": area,
+        "previewable": bool(supported),
+        "full_exportable": bool(full),
+        "requested_scale": scale,
+        "requested_output_pixels": pixels,
+        "max_art_cells": MAX_CELLS,
+        "max_output_pixels": MAX_PIXELS,
+        "native_playable": "not-qualified-by-art-pipeline",
+        "reason": ("" if full else
+                   "art adapter limit exceeded" if not supported else
+                   "invalid export scale" if not 1 <= scale <= 8 else
+                   f"full PNG exceeds {MAX_PIXELS:,} output pixels; use 1x or a viewport"),
+    }
 
 
 class CaptureError(Exception):
