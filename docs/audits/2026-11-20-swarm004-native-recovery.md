@@ -90,7 +90,7 @@ Use the precise label **both native footprints respond under matched counterfact
 
 **Select `fixed_territory`, two rounds, for the frozen V1 research comparison and experimental authoring default.** This follows the preregistered first criterion. It wins 46 versus 12 on the originally recorded fixed/shared measure, and 28 versus six after both-direction causal controls. Its next strongest causal competitor, `native_bearing_off`, has eight qualifying cases. Selection therefore does not depend on speculative extrapolation of untested causal counts, on treating absent closure as zero, or on post-hoc per-case policy picking.
 
-The initial `reciprocal_2` shared-territory hypothesis is **not supported as the strongest policy**. Its two applicable offer-causal examples remain useful experimental evidence; retain shared mode as a separately labeled experiment. The three/four-round results also provide a clear negative result: extra rounds exhaust more cases without improving this gate. This selection does not authorize a production-default promotion or merge.
+The initial `reciprocal_2` shared-territory hypothesis is **not supported as the strongest policy**. Its two applicable offer-causal examples remain useful experimental evidence; retain shared mode as a separately labeled experiment. The registered shared-ownership three/four-round results also provide a clear negative result: extra rounds exhaust more cases without improving this gate. Fixed-territory one/three/four-round variants were outside this frozen 13-policy comparison; two rounds is the selected tested configuration, not a demonstrated optimum over those untested variants. This selection does not authorize a production-default promotion or merge.
 
 The retained matched-final-FRAME no-offer controls answer a different question and must remain. They hold the revised final frame fixed and isolate MOSAIC's conditional response. For the reproduced shared island/4099 example, the conditional no-offer result differs by 16 material cells and three categories. For fixed territory on the same example, that final-frame comparison has zero differences. Neither stronger closure nor a changed frame is evidence that the underlying categorical solver improved.
 
@@ -138,6 +138,29 @@ for the source/Windows boundary, fixed selection, matched-control distinction
 and unknown-closure rule; a route hit alone is not treated as answer correctness.
 
 ## Preserved controls and remaining gates
+
+A late commit appeared in the original native worktree during recovery:
+`a8250376635ebf95c3c2777b212769b638c13ca0`. Its separate fixed-territory
+round-policy expansion is preserved without entering the frozen comparison.
+Independent review did reproduce one useful reporting repair: the gallery
+rejected the native `damage_lost_internal` obligation origin. An actual
+fixed4099 authoring request with destruction 0.25 produced a blocked native
+result with 26 revoked required sockets and no Apply authority; the old gallery
+incorrectly reported 26 unidentified-origin errors.
+
+Only that damage-ledger audit repair and its 11 adversarial tests are recovered.
+The audit now verifies the exact original fulfilled required sockets that damage
+revoked, their unchanged source identity, zero foreign slot, absence of a local
+termination, and continued `STILL_REQUIRED` status. Deleted, invented or falsely
+joined obligations remain failures. The candidate generator and all 13 policy
+definitions remain unchanged. Registered known and holdout profiles have
+destruction zero; the reporting repair does not change policy selection.
+
+The pre-holdout selection fingerprint is refreshed for this reporting-only
+source update. Qualification of the earlier public checkpoint is retained under
+its own identity and cannot be reused as evidence for a different commit. The
+final public source must repeat full known qualification and then the unchanged
+selected holdouts through the existing strict source-identity gate.
 
 The historical B/C admission qualification has a retained PASS manifest and raw evidence. The independent E8/E8-hard-only reproduction completed 216 exact behavioral matches, 108 for each policy, against the frozen research parent. Its enumerated normalization removes source identities and source-dependent digest/definition strings; it does not substitute prose equivalences or erase failed outputs. The V1 unit suites also passed ASan/UBSan in the retained prior run. Leak checking was explicitly disabled under the host instrumentation and no leak pass is claimed.
 

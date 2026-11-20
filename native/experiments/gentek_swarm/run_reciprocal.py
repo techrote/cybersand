@@ -262,6 +262,8 @@ def main():
         runner.execute("reciprocal-build", ["make", "-C", HERE, "-f", "Makefile.reciprocal", f"BUILD={build}", "all"], 1200)
         runner.execute("reciprocal-evidence-parser-tests", [sys.executable, HERE / "test_reciprocal_io.py",
             "--binary", build / "gentek_reciprocal"], 180)
+        runner.execute("reciprocal-gallery-damage-tests", [sys.executable, HERE / "test_reciprocal_gallery.py",
+            "--binary", build / "gentek_reciprocal"], 180)
         for suite in SUITES:
             runner.execute(suite.replace("_", "-"), [build / suite], 1200)
         if args.sanitize:

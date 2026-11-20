@@ -2,8 +2,8 @@
   "schema": 1,
   "programme": "GENTEK-SWARM-004",
   "status": "Frozen pre-holdout selection; Draft/HOLD",
-  "frozen_utc": "2026-11-20T22:20:04.825089+00:00",
-  "source_input_fingerprint": "2c35d261c00e314e80e7e39a4451a72caa1dfb4a2eeb590c650d542fb586589b",
+  "frozen_utc": "2026-11-20T22:40:14.037417+00:00",
+  "source_input_fingerprint": "e0a470a149c72f4de9dd4a577a88b7735df0150156ecac3f80eac4caee998fcb",
   "source_fingerprint_method": "SHA-256 of run_reciprocal.code_inputs() encoded with run_negotiated.canonical; selection JSON excluded to avoid self-reference",
   "source_commit_evaluated": "7fa0911e7ec3d0f2d52ecde7b538c55514d5d54d",
   "research_parent": "cd0de74b83a66b5408668f81c82d854db45479ce",
@@ -77,5 +77,13 @@
     "independent-v1-causal-full-summary.json": "64acd9f1d6e057cf17d23855622fdcab5f6d45aa49384ee1a6d58e50327d1487"
   },
   "sealed_known_manifest_sha256": "d687ed89900f03cdd46b926f5ee1c2f21cd9fde1cb5bb82c612e2b4b80999c78",
-  "scientific_report": "docs/audits/2026-11-20-swarm004-native-recovery.md"
+  "scientific_report": "docs/audits/2026-11-20-swarm004-native-recovery.md",
+  "reporting_only_refreeze": {
+    "previous_public_source": "a5a5391525bf76648753a39970e5c85aa4ffa3fc",
+    "previous_source_input_fingerprint": "2c35d261c00e314e80e7e39a4451a72caa1dfb4a2eeb590c650d542fb586589b",
+    "recovered_from": "a8250376635ebf95c3c2777b212769b638c13ca0",
+    "changes": "Damage-lost internal obligation audit and 11 adversarial reporting tests; runner invokes those tests. No candidate generator, solver, grammar, coordinator, policy, resource or parameter changes.",
+    "holdouts_opened": false,
+    "qualification": "Repeat full known qualification on final public identity before the unchanged selected holdouts; earlier-source receipts cannot be relabeled."
+  }
 }
