@@ -375,47 +375,94 @@ def scan_log(text: str) -> list[str]:
 # ---------------------------------------------------------------- PNG evidence
 
 def inspect_png(path: Path) -> dict:
-    """Validate a PNG file independently of Godot; raises ValueError when invalid."""
-    data = path.read_bytes()
-    if not data.startswith(PNG_SIGNATURE):
-        raise ValueError("not a PNG (bad signature)")
-    position = len(PNG_SIGNATURE)
+    """Independently validate a PNG with bounded RAM, including streamed >50M PNGs.
+
+    Verifies every chunk CRC, the deflate stream, expected decompressed length,
+    and image layout; sample diversity without materialising all decoded pixels.
+    """
+    file_size = path.stat().st_size
     header = None
-    compressed = bytearray()
+    decoder = zlib.decompressobj()
     ended = False
-    while position < len(data):
-        if position + 12 > len(data):
-            raise ValueError("truncated PNG chunk header")
-        length, kind = struct.unpack(">I4s", data[position:position + 8])
-        end = position + 8 + length
-        if end + 4 > len(data):
-            raise ValueError("truncated PNG chunk")
-        chunk = data[position + 8:end]
-        (crc,) = struct.unpack(">I", data[end:end + 4])
-        if zlib.crc32(kind + chunk) & 0xFFFFFFFF != crc:
-            raise ValueError(f"PNG chunk {kind!r} CRC mismatch")
-        if kind == b"IHDR":
-            header = struct.unpack(">IIBBBBB", chunk)
-        elif kind == b"IDAT":
-            compressed += chunk
-        elif kind == b"IEND":
-            ended = True
-            break
-        position = end + 4
-    if header is None or not ended or not compressed:
-        raise ValueError("PNG lacks IHDR/IDAT/IEND")
-    width, height, depth, colour, _, _, interlace = header
-    channels = {0: 1, 2: 3, 3: 1, 4: 2, 6: 4}.get(colour)
-    if channels is None or interlace != 0 or depth != 8:
-        raise ValueError(f"unsupported PNG layout (colour type {colour}, depth {depth}, interlace {interlace})")
-    raw = zlib.decompress(bytes(compressed))
-    expected = height * (1 + width * channels)
-    if len(raw) != expected:
-        raise ValueError(f"PNG pixel stream is {len(raw)} bytes, expected {expected}")
-    stride = max(1, len(raw) // 1_000_000)
-    diversity = len(set(raw[::stride]))
+    saw_idat = False
+    count = 0
+    expected = 0
+    stride = 1
+    diversity: set[int] = set()
+
+    def accept(raw: bytes) -> None:
+        nonlocal count
+        if not raw:
+            return
+        if count + len(raw) > expected:
+            raise ValueError("PNG decompressed pixel stream exceeds IHDR dimensions")
+        start = (-count) % stride
+        diversity.update(raw[start::stride])
+        count += len(raw)
+
+    with path.open("rb") as handle:
+        if handle.read(len(PNG_SIGNATURE)) != PNG_SIGNATURE:
+            raise ValueError("not a PNG (bad signature)")
+        while True:
+            raw_head = handle.read(8)
+            if len(raw_head) != 8:
+                raise ValueError("truncated PNG chunk header or missing IEND")
+            length, kind = struct.unpack(">I4s", raw_head)
+            crc = zlib.crc32(kind)
+            if kind == b"IHDR":
+                if header is not None or length != 13 or saw_idat:
+                    raise ValueError("duplicate or invalid PNG IHDR")
+            if kind == b"IDAT" and header is None:
+                raise ValueError("IDAT appears before IHDR")
+            if kind == b"IEND" and (length != 0 or not saw_idat):
+                raise ValueError("invalid PNG IEND")
+            remaining = length
+            meta = bytearray()
+            while remaining:
+                chunk = handle.read(min(1024 * 1024, remaining))
+                if not chunk:
+                    raise ValueError("truncated PNG chunk")
+                remaining -= len(chunk)
+                crc = zlib.crc32(chunk, crc)
+                if kind == b"IHDR":
+                    meta.extend(chunk)
+                elif kind == b"IDAT":
+                    saw_idat = True
+                    encoded = chunk
+                    while encoded:
+                        current = encoded
+                        pixels = decoder.decompress(encoded, 1024 * 1024)
+                        accept(pixels)
+                        encoded = decoder.unconsumed_tail
+                        if encoded and not pixels and len(encoded) >= len(current):
+                            raise ValueError("PNG decoder made no progress")
+                    if decoder.unused_data:
+                        raise ValueError("unexpected data after PNG deflate stream")
+            raw_crc = handle.read(4)
+            if len(raw_crc) != 4 or struct.unpack(">I", raw_crc)[0] != crc & 0xFFFFFFFF:
+                raise ValueError(f"PNG chunk {kind!r} CRC mismatch")
+            if kind == b"IHDR":
+                header = struct.unpack(">IIBBBBB", meta)
+                width, height, depth, colour, _, _, interlace = header
+                channels = {0: 1, 2: 3, 3: 1, 4: 2, 6: 4}.get(colour)
+                if channels is None or interlace != 0 or depth != 8 or width < 1 or height < 1:
+                    raise ValueError(f"unsupported PNG layout (colour type {colour}, depth {depth}, interlace {interlace})")
+                if width > 65_536 or height > 65_536 or width * height > 100_000_000:
+                    raise ValueError("PNG size exceeds bounded art-evidence policy")
+                expected = height * (1 + width * channels)
+                stride = max(1, expected // 1_000_000)
+            if kind == b"IEND":
+                ended = True
+                break
+        if handle.read(1):
+            raise ValueError("trailing bytes after PNG IEND")
+    if header is None or not ended or not saw_idat or not decoder.eof:
+        raise ValueError("PNG lacks complete IHDR/IDAT/IEND or deflate termination")
+    accept(decoder.flush())
+    if count != expected:
+        raise ValueError(f"PNG pixel stream is {count} bytes, expected {expected}")
     return {"width": width, "height": height, "colour_type": colour, "bit_depth": depth,
-            "bytes": len(data), "sha256": sha256_bytes(data), "raw_byte_diversity": diversity}
+            "bytes": file_size, "sha256": sha256_file(path), "raw_byte_diversity": len(diversity)}
 
 
 # --------------------------------------------------------- bundle verify/compare
