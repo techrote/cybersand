@@ -1,0 +1,126 @@
+name: GENTEK 80 accepted-main Windows delivery
+on:
+  push:
+    branches: [ci/gentek80-main-integration]
+    paths:
+      - '.github/workflows/gentek80-main-windows-delivery.yml'
+      - 'tools/ci/gentek80_main_package.py'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: gentek80-main-windows-delivery-${{ github.run_id }}
+  cancel-in-progress: false
+env:
+  TARGET_SHA: 87148d66e816f3fd4033e8227a7d310652e2812a
+  TARGET_TREE: a24d0ed7a1f18d02716dec3a8cee378d18b38c63
+  ACCEPTED_MAIN: 7b03aa437561ec63e31fd09531171360ab60eeb4
+  GIT_CONFIG_COUNT: '1'
+  GIT_CONFIG_KEY_0: core.autocrlf
+  GIT_CONFIG_VALUE_0: 'false'
+  PYTHONUTF8: '1'
+jobs:
+  windows:
+    name: Package and replay the qualified Windows Workbench
+    runs-on: windows-2022
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          path: orchestration
+          persist-credentials: false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.TARGET_SHA }}
+          path: candidate
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Authenticate source, retained runtimes and original Windows evidence
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test "$(git -C candidate rev-parse HEAD)" = "$TARGET_SHA"
+          test "$(git -C candidate rev-parse HEAD^{tree})" = "$TARGET_TREE"
+          git -C candidate merge-base --is-ancestor "$ACCEPTED_MAIN" HEAD
+          git -C candidate lfs install --local
+          git -C candidate lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          mkdir -p evidence
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/14648039440" > evidence/original-artifact.json
+          python - <<'PY'
+          import json, sys
+          from pathlib import Path
+          assert sys.flags.utf8_mode == 1
+          d = json.loads(Path('evidence/original-artifact.json').read_text(encoding='utf-8'))
+          assert d['id'] == 14648039440 and d['name'] == 'gentek80-main-evidence-windows-44770730491'
+          assert d['digest'] == 'sha256:7188e27bd3981e397d56029e7f0f756a3a013b3030faff9d488fcd015d7bb218'
+          assert d['size_in_bytes'] == 18610083 and not d['expired']
+          assert d['workflow_run']['id'] == 44770730491
+          assert d['workflow_run']['head_sha'] == '561a0ac544027b8fa85b3e24ed7b903ab9732719'
+          PY
+      - name: Retrieve untouched successful Windows execution evidence
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: 44770730491
+          name: gentek80-main-evidence-windows-44770730491
+          path: previous
+      - name: Retrieve previously admitted Godot and VC dependency assets
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: 44690026779
+          name: gentek80-final-owner-windows-bf1bd8c8e6f189b36a3cb0f582185e5d529297d0
+          path: original-assets
+      - name: Authenticate pinned Windows assets
+        shell: pwsh
+        run: |
+          python orchestration/tools/ci/gentek80_main_integration/prepare_inputs.py --candidate candidate --output evidence/inputs --assets original-assets
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned qualification inputs failed' }
+      - name: Assemble one source-matched Windows evaluation ZIP from original successful receipts
+        shell: pwsh
+        run: |
+          python orchestration/tools/ci/gentek80_main_package.py --candidate candidate --assets-zip $env:ASSETS_ZIP --landscape-evidence previous/landscape --integration-evidence previous/integration --output assembled --archive "delivery/CyberSand-Gentek80-Main-Windows-$($env:TARGET_SHA.Substring(0,12)).zip" | Tee-Object -FilePath evidence/package-build.log
+          if ($LASTEXITCODE -ne 0) { throw 'Windows package custody failed' }
+          Copy-Item assembled/main-integration-manifest.json evidence/
+          Copy-Item assembled/evaluation-manifest.json evidence/
+          Copy-Item delivery/*.sha256 evidence/
+      - name: Replay the pristine extracted project in actual Windows graphical Godot
+        shell: pwsh
+        run: |
+          $archive = Get-ChildItem delivery/*.zip
+          if ($archive.Count -ne 1) { throw 'Expected one Windows evaluation ZIP' }
+          Expand-Archive $archive.FullName pristine
+          $engine = (Resolve-Path pristine/Godot_v4.7-stable_win64_console.exe).Path
+          python candidate/tools/architecture/gentek80_main_integration.py --godot $engine --project pristine/godot --output evidence/package-integration --fixture-dir pristine/maps --graphical
+          if ($LASTEXITCODE -ne 0) { throw 'Pristine package Workbench replay failed' }
+          python candidate/tools/package_workbench_landscape_review.py verify pristine
+          if ($LASTEXITCODE -ne 0) { throw 'Original package inputs changed during replay' }
+      - name: Retain original delivery and replay evidence including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gentek80-main-windows-delivery-evidence-${{ github.run_id }}
+          path: |
+            evidence/**/*.json
+            evidence/**/*.log
+            evidence/**/*.png
+            evidence/**/*.txt
+            evidence/**/*.sha256
+          if-no-files-found: error
+          retention-days: 90
+      - name: Publish successfully replayed Windows owner ZIP
+        if: success()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gentek80-main-owner-windows-${{ env.TARGET_SHA }}
+          path: delivery/
+          if-no-files-found: error
+          retention-days: 90
