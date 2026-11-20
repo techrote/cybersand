@@ -844,22 +844,24 @@ func workbench_apply(candidate: Dictionary, actors: Array, rectangles: Array, ex
 		settings["workbench_worker_threads"] = water_options.workbench_worker_threads
 	# A fresh authored setup may explicitly assign Water to another family.
 	# Its selected law wins on load. Validate retained/live Apply as requested.
-	var adopt_authored_law := false
-	if not preserve_cells and apply_staged_water and settings.get("workbench_wave_flow",false):
+	var wave_requested := bool(settings.get("workbench_wave_flow",false))
+	var check_authored_law := not preserve_cells and apply_staged_water and wave_requested
+	var has_pressure_capacity := water_options.has("pressure_gas_compartment_capacity")
+	var water_family := ""
+	if check_authored_law or (not wave_requested and has_pressure_capacity):
 		var checked: Dictionary = shared_workbench._liquids.bridge.validate_liquid_policy(policy)
-		for assignment: Dictionary in checked.get("receipt",{}).get("assignments",[]):
-			if int(assignment.get("material",-1)) == CyberCellWorld.WATER:
-				adopt_authored_law = assignment.get("applied_family") != "freemass_v1"
-				break
-		if adopt_authored_law: settings.workbench_wave_flow = false
+		# A refused policy has no receipt. Native preparation publishes its refusal.
+		if checked.accepted:
+			for assignment: Dictionary in checked.receipt.assignments:
+				if int(assignment.material) == CyberCellWorld.WATER:
+					water_family = str(assignment.applied_family)
+					break
+	var adopt_authored_law := check_authored_law and not water_family.is_empty() and water_family != "freemass_v1"
+	if adopt_authored_law: settings.workbench_wave_flow = false
 	# C2048 belongs to PressureFlow. Keep its staged value for comparison, but
 	# every other law uses the ordinary non-pressure construction capacity.
-	if not settings.get("workbench_wave_flow",false) and water_options.has("pressure_gas_compartment_capacity"):
-		var policy_validation: Dictionary = shared_workbench._liquids.bridge.validate_liquid_policy(policy)
-		for assignment: Dictionary in policy_validation.get("receipt",{}).get("assignments",[]):
-			if int(assignment.get("material",-1)) == CyberCellWorld.WATER and assignment.get("applied_family","") == "pressure_flow_v1":
-				settings["pressure_gas_compartment_capacity"] = water_options.pressure_gas_compartment_capacity
-				break
+	if has_pressure_capacity and water_family == "pressure_flow_v1":
+		settings["pressure_gas_compartment_capacity"] = water_options.pressure_gas_compartment_capacity
 	if settings.get("workbench_face_release",false) and settings.get("workbench_ballistic",false):
 		for key: String in FACE_TUNING:
 			if water_options.has(key): settings[key] = water_options[key]
