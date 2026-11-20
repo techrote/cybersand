@@ -41,6 +41,12 @@ SWITCH = "CYBERSAND_PUBPRES_PROBE_FULL_STORAGE"
 STRATEGIES = {"A": "update", "B": "set_image"}
 POLICY = {"backend": "full", "policy": "windows_angle_warp_full"}
 ERRORS = re.compile(r"^(?:SCRIPT ERROR:|ERROR:|Parse Error:|Failed to load script|Failed loading resource:|.*Error initializing GLAD|.*MakeCurrent failed)")
+IMPORT_CRLF_PATHS = {
+    "addons/godot-rapier2d/Radial2D.svg.import",
+    "addons/godot-rapier2d/icons/Fluid2D.svg.import",
+    "addons/godot-rapier2d/icons/StateManager2D.svg.import",
+    "addons/godot-rapier2d/logo_square_2d.png.import",
+}
 
 
 def replace_once(original, before, after):
@@ -125,6 +131,48 @@ def project_drift(project, expected):
     generated = {".godot/global_script_class_cache.cfg", ".godot/extension_list.cfg"}
     return [name for name, value in expected.items()
             if name not in generated and (not (project / name).is_file() or digest(project / name) != value)]
+
+
+def require_project_identity(project, expected, label):
+    changed = project_drift(project, expected)
+    need(not changed, label + ": " + ", ".join(changed))
+
+
+def restore_import_newlines(project, installed, expected, folder):
+    """Record four observed editor metadata rewrites, then restore exact bytes.
+
+    This is not an identity exception: the same complete source/runtime hash
+    check runs after restoration. Missing files and every other drift fail.
+    """
+    folder.mkdir(parents=True)
+    rows, replacements = [], []
+    for index, name in enumerate(project_drift(project, expected)):
+        original_path, imported_path = installed / "godot" / name, project / name
+        original = original_path.read_bytes() if original_path.is_file() else None
+        imported = imported_path.read_bytes() if imported_path.is_file() else None
+        allowed = name in IMPORT_CRLF_PATHS and original is not None and imported is not None \
+            and hashlib.sha256(original).hexdigest() == expected[name] \
+            and b"\r\n" in original and imported != original and imported == original.replace(b"\r\n", b"\n")
+        row = {"path": name, "expected_sha256": expected[name], "allowed_exact_crlf_to_lf": allowed,
+               "original_sha256": hashlib.sha256(original).hexdigest() if original is not None else None,
+               "imported_sha256": hashlib.sha256(imported).hexdigest() if imported is not None else None}
+        for label, value in (("original", original), ("imported", imported)):
+            if value is not None:
+                filename = f"{index}-{label}.bin"
+                (folder / filename).write_bytes(value)
+                row[label + "_bytes_file"] = filename
+        rows.append(row)
+        if allowed:
+            replacements.append((imported_path, original))
+    write_json(folder / "observed.json", rows)
+    refused = [row["path"] for row in rows if not row["allowed_exact_crlf_to_lf"]]
+    need(not refused, "Unsupported import source/runtime drift: " + ", ".join(refused))
+    for path, original in replacements:
+        path.write_bytes(original)
+    require_project_identity(project, expected, "Import source identity after exact byte restoration")
+    write_json(folder / "restored.json", {"restored": [row["path"] for row in rows],
+                                         "complete_expected_hashes_passed": True,
+                                         "scope": "Only exact CRLF-to-LF rewrites of the four named non-executable icon import descriptors; original bytes restored before any oracle or gameplay process."})
 
 
 class MemoryCounters(ctypes.Structure):
@@ -324,6 +372,7 @@ def run(args):
             "descriptor_scope": "Both arms stamp construction provenance from actual pair initialization Images (including structural recovery), then validate detached R8/RG8/no-mips and cached destination dimensions. No timed GPU readback.",
             "memory_scope": "Actual direct Godot PID working-set and private-byte samples every250ms, plus OS peak working-set counter; Godot static peak and logical final video memory. Driver-retired memory is not established by logical texture counts.",
             "cache_policy": "Fresh copied project, process, profile and shader nonce per arm; process-independent driver caches uncontrolled and order-balanced.",
+            "import_metadata_policy": "After editor import, preserve observed bytes and restore only exact CRLF-to-LF rewrites of the four named Rapier icon import descriptors from the pinned originals. Then enforce the unchanged complete expected hash map. Missing files or any other drift fail.",
             "meaning": "Capture completion is not a performance win. Compare both repeats, all fixed windows, frame/native/physical tails and freshness. This software WARP experiment cannot qualify physical Windows/NVIDIA acceptance.",
             "host": {"platform": platform.platform(), "processor": platform.processor(), "logical_processors": os.cpu_count()}}
     write_json(output / "plan.json", plan)
@@ -335,11 +384,11 @@ def run(args):
         for name, value in overlays.items():
             (template / name).parent.mkdir(parents=True, exist_ok=True)
             (template / name).write_bytes(value)
-        need(not project_drift(template, expected), "Prepared project differs outside declared overlays")
+        require_project_identity(template, expected, "Prepared project differs outside declared overlays")
         print("Importing retained673 with identical bounded full-storage overlay", flush=True)
         execute(installed / GUI, ["--headless", "--path", str(template), "--audio-driver", "Dummy", "--log-file", str(output / "import/godot.log"),
                                  "--editor", "--import"], output / "import", {}, 300)
-        need(not project_drift(template, expected), "Import changed production source/runtime")
+        restore_import_newlines(template, installed, expected, output / "import-newline-restoration")
         settings_base = {"CYBERSAND_MATERIAL_PUBLICATION": arm["material"], "CYBERSAND_DIAG_PHYSICS_PUBLICATION": arm["physics"],
                          "CYBERSAND_DIAG_PRESENTATION": arm["presentation"], "CYBERSAND_DIAG_MATERIAL_TIMING": arm["timing"],
                          "CYBERSAND_DIAG_RENDER_CADENCE": arm["cadence"], "CYBERSAND_DIAG_NATIVE_RENDEZVOUS": arm["rendezvous"],
@@ -351,7 +400,7 @@ def run(args):
             folder = output / label
             project = projects / label.replace("/", "-")
             copy_project(template, project, imported=True)
-            need(not project_drift(project, expected), "Fresh process source differs")
+            require_project_identity(project, expected, "Fresh process source differs")
             nonce = uuid.uuid4().hex
             settings = dict(settings_base, **{SWITCH: STRATEGIES[letter], "CYBERSAND_SHADER_NONCE": nonce})
             receipt = folder / "receipt.json"
@@ -361,7 +410,7 @@ def run(args):
             command += ["--material=blit"] if case is None else [f"--fixture={case['fixture']}", "--camera=follow", "--workers=4", "--water-law=wave_flow_v1"]
             print(label + " | " + STRATEGIES[letter], flush=True)
             record = execute(installed / GUI, command, folder, settings, 600 if case is None else 900)
-            need(not project_drift(project, expected), "Executed source/runtime changed")
+            require_project_identity(project, expected, "Executed source/runtime changed")
             if case is None:
                 oracles.append(read_oracle(receipt, campaign, expected, STRATEGIES[letter], record, nonce))
             else:
