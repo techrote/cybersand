@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Unmerged OpenAI Responses, NVIDIA and LM Studio art UI, collaboration preview, cancellation, traffic and qualification
 canonical-for: [workbench-art-providers]
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-20
 related-documents: [workbench-direct-art-batches.md, ../architecture/shared-workbench-authoring-data.md, ../reference/status-and-roadmap.md]
 ---
 
@@ -44,6 +44,7 @@ native queued/executing/partial and errors are visibly distinct.
 Use **Key…** for each cloud provider. Keys stay in process memory, separately per
 provider; reopening Key always permits replacement. The button indicates a key
 is present. Profiles/history persist in `user://art-provider.cfg` without keys.
+
 LM Studio sends no fabricated key; a configured local server token is accepted
 through the same Key control. Local/LAN/manual endpoints are allowed. The numeric
 loopback default avoids the long `localhost` connection delays observed on this
@@ -102,7 +103,7 @@ Full redacted JSONL appends under `user://art-traffic/`; its absolute path is sh
 in Traffic. On this Windows installation that normally resolves below
 `%APPDATA%/Godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/`.
 The live text buffer is bounded separately (about 2 million characters), with an
-explicit earlier-on-disk marker. Full export copies the disk session, not the
+explicit earlier-on-disk marker. Full export streams the linked disk segments, not the
 live tail; there is no 256-event export ceiling. Disk failure is surfaced without
 stopping inference/drawing. When disk logging fails, missing historical content
 is not magically recoverable from the bounded viewer.
@@ -111,6 +112,110 @@ Entered keys, bearer strings, common key formats, credential URL parameters and
 URL userinfo are redacted before display/disk/export. Authorization request
 headers are never added to the logged request object. No log can identify every
 arbitrary secret the user invents; do not put unrelated credentials in prompts.
+
+### Lazy reopening and traffic storage
+
+Shared Workbench constructs the Art window hidden, but **does not scan, clone or
+resume saved traffic at Workbench startup**. Its provider reads only the small
+profile configuration and remembers the previous session path. Revealing Art
+starts incremental, read-only replay with progress in the status line. **Stop**
+cancels restoration and retains the saved pointer; revealing Art again or
+selecting Conversation retries. Send and conversation edits wait for successful
+restoration. Explicit programmatic history operations also have a synchronous
+replay API for deterministic tests.
+
+Existing JSONL archives are **immutable during continuation**. On the first
+new traffic event, the provider creates a fresh, small segment linked to the
+saved log. Subsequent events append to that segment; the profile tracks the
+latest committed segment. No previous raw request, response, screenshot or
+image-bearing log line is copied. Replay follows the segment chain and
+preserves historical images' source paths and byte offsets. Editing or clearing
+the conversation appends a snapshot to the new segment, never rewriting the
+original audit. New schema-2 segments carry random stable identities,
+monotonic event indices, and the predecessor's committed byte length and SHA-256.
+The first modern child of an older path-only chain also seals its inherited
+ancestors. Identity, length, ordering or content mismatches refuse continuation.
+Legacy single-file archives and the original path-only linked format remain
+readable without conversion.
+
+Unavailable or invalid history is a visible refusal, not an empty conversation.
+The panel retains its saved pointer, refuses Send/Edit/Clear for that failed
+restore, and permits another attempt after the missing file is restored.
+Provider/model selection reads the small profile only. Shared PAINT Undo/Redo
+is an explicit history action: its confirmed result may restore and append Art
+context even while the Art window is hidden. A confirmed result arriving during
+incremental restore is retained in a bounded queue and applied once after
+success. Idle construction, selection binding, deferred UI refresh and shutdown
+do not perform that action.
+
+The panel publishes `art-provider.cfg` through a complete temporary sibling and
+the existing native `CyberDemoBridge.replace_material_baseline_file` primitive.
+Export and first-segment publication use that same primitive: Godot's ordinary
+Windows rename removes an existing target before moving the source, so it is
+unsuitable here. The provider accepts a first event only after the panel's
+checkpoint callback also succeeds. If checkpoint publication fails, the old
+pointer and live conversation remain active; the unreferenced new segment is
+retained and named in the error, never silently installed by a later edit.
+Credentials remain process-local; no archive is rewritten, compressed or
+deleted by restore.
+
+New writes redact structured values before JSON serialization, preserving
+numeric native receipt tokens and valid JSON. The read-only legacy parser
+recognizes the earlier writer's exact unquoted credential-field `[redacted]`
+artifact, reports its use, and preserves every source byte. Unrelated malformed
+JSON, invalid UTF-8, duplicate modern segment/event identities, repeated
+explicit legacy event IDs and corrupt/unrelated image references refuse
+restoration. Modern event identity is the segment ID plus event index; optional
+opaque legacy IDs are validated within their legacy domain. Image validation checks the record boundary,
+segment membership, base64 and actual bounded PNG decoding.
+
+A terminated process can leave an unterminated record at the end of its newest
+modern segment. Replay visibly recovers only complete preceding events, and a
+new child pins that committed prefix. The interrupted tail remains in the
+original file. Truncated legacy archives and malformed newline-terminated
+records are refused rather than interpreted as crash recovery.
+
+**Save full JSONL…** is the only operation that materializes the whole session
+again: it streams the linked segments in order when explicitly requested.
+The Traffic window polls bounded export work while remaining responsive;
+**Cancel export** and ordinary **Stop** interrupt the operation. A private
+`.partial` sibling is published through the native replacement operation only
+after validation and completion.
+Cancellation or refusal preserves an existing destination. Missing, invalid or
+circular parent chains cannot produce a successful partial export. The live
+Traffic view remains bounded. A Workbench launch with existing saved traffic
+must create **zero** new traffic files and copy **zero** historical bytes.
+The exported file is the complete raw audit in segment order, including the
+original headers and segment-relative image references. Reopening a conversation
+uses its retained linked archives; this byte-exact audit export is not a
+single-file conversation import format.
+
+### Explicit capacity outcomes
+
+`art_traffic_archive.gd` reads 64 KiB chunks; interactive restore/export polls
+admit at most 1 MiB of archive or image-record input. A record is limited to
+32 MiB, a chain to 4096 segments, and legacy explicit event-ID tracking to 65536
+identifiers per chain. Legacy ID validation retains fixed-size SHA-256
+fingerprints rather than arbitrary-length ID strings, so that metadata cannot
+grow in proportion to historical ID text. Link metadata is bounded to 2 MiB per header and
+64 MiB across a chain. Image-reference validation caches at most 4096 small
+identities, with actual image bytes released after validation. PNG decoding
+checks a 16,777,216-pixel capacity before allocating the decoded image.
+
+The editable transcript is bounded to 16384 turns and 16 MiB of UTF-8 text.
+The same admission rules apply before new turns or edited snapshots are stored,
+so a successful write cannot create a transcript the replay path rejects for
+capacity. Existing content exceeding a bound is preserved with a visible
+refusal; full audit export does not accumulate the transcript in memory.
+These are safety capacities, not changes to native World dimensions.
+
+`test_art_lazy_traffic.gd` covers deferred replay and linked append.
+`test_art_traffic_panel_safety.gd` exercises the actual mounted controls for
+unavailable-history refusal/retry, model selection, failed-append pointer
+retention, cancellable export and explicit conversation clearing. Runtime
+measurements and platform qualifications belong to the
+[dated finisher evidence](../audits/2026-11-20-wb-art-traffic-lifetime.md);
+passing source checks alone does not establish Windows acceptance.
 
 ## Reproducible qualification and local setup
 

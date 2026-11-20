@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-11-13
+last-reviewed: 2026-11-20
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/atlas-agent-runner.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -40,6 +40,11 @@ the frozen evaluation and existing historical fixtures retain their original sco
 ## Direct native art batches without inference
 
 For the current combined Draft, standalone generator repairs, native stored-material authority, PAINT/agent ordering, preserved feature sets and acceptance, retrieve the [integration runbook](../operations/wb-art-paint-integrated-candidate.md). For #559 geometry, protection, acknowledgements, Stop and Save limits, retrieve the [direct art contract](../systems/workbench-direct-art-batches.md). For OpenAI/NVIDIA/LM Studio, conversation/context, scanlines, image observations, traffic, caps and cancellation, retrieve the [provider contract](../systems/workbench-art-providers.md).
+
+For duplicate Art archives, hidden Workbench startup, linked session identity,
+missing-history refusal, crash recovery and cancellable full JSONL export,
+retrieve [conversation lifetime](../systems/workbench-art-providers.md#lazy-reopening-and-traffic-storage)
+and its [explicit capacities](../systems/workbench-art-providers.md#explicit-capacity-outcomes).
 
 
 ## Architectural Generator catalogue

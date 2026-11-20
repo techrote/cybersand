@@ -16,6 +16,32 @@ presets remain available, giving 93 choices. It remains Draft/HOLD until the own
 accepts the delivered package. The source/runtime manifest and dated qualification
 receipts identify what was actually built and executed.
 
+## Integration with accepted Workbench main
+
+The final integration reconciles accepted main
+`7b03aa437561ec63e31fd09531171360ab60eeb4`, including lazy Art traffic restoration
+and large-landscape host-claim admission. The catalogue, six reviewed CLASSIC
+repairs, native sources and retained runtime manifests remain unchanged from
+the independently accepted `bf1bd8c8` candidate. Its complete gallery retains
+its original source identity; combined-Workbench execution is recorded separately.
+
+The bounded supplemental runner is
+`python tools/architecture/gentek80_main_integration.py --godot <pinned-Godot-4.7> --output <new-evidence-directory> --fixture-dir <pinned-landscape-fixtures> --graphical`.
+It exercises the six repaired CLASSIC styles and Cathedral Megaframe through
+the ordinary form, generated-start installation and independent-process reopening.
+The same Workbench admits the original 2048 × 1024 Graftloom landscape with
+13,839 construction rectangles before and after generator use. Keyboard-controlled
+Midge flight, native material motion, authored painting, lazy unopened Art and an
+unchanged synthetic traffic archive are separate assertions. It uses the existing
+host-claim manifest and refuses changed fixture, source or runtime identities.
+
+This focused integration run supplements the existing native/project/UI,
+installed-preview, paint, Art lifetime and host-admission suites. It does not
+replace their receipts or require re-rendering the unchanged complete catalogue.
+Actual platform results and the exact combined application SHA belong to the
+dated PR qualification handoff. The native manifests keep their original build
+SHA; an updated Windows package records its application SHA separately.
+
 ## Launch and select
 
 Extract the complete Windows ZIP into a new directory and double-click

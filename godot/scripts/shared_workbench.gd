@@ -205,8 +205,9 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_button(row,"+",func() -> void: zoom_by(-1))
 	art_batches = preload("res://scripts/art_batch_panel.gd").new()
 	art_batches.wb = self
-	add_child(art_batches)
+	# Hide before entering the tree: visible signals must not restore Art history on startup.
 	art_batches.hide()
+	add_child(art_batches)
 	_button(row,"Art batches",func() -> void: art_batches.popup_centered())
 	_button(row,"Details",func() -> void: _details.visible = not _details.visible)
 	_button(row,"Menu [F2]",func() -> void: get_tree().change_scene_to_file("res://feature_launcher.tscn"))
