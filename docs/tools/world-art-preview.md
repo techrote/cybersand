@@ -1,3 +1,5 @@
+> **Integrated ART-PIPELINE-UNIFICATION-001:** See [the canonical unification, provenance, large-canvas and native-compatibility contract](art-pipeline-unification.md). The unified branch includes the original 15 art collections in `docs/world-design`; an external art checkout is optional. No renderer or art source is modified during inspection/capture. Existing links to donor PRs below describe their historical qualification, not an independent admission of this integration.
+
 # CyberSand World Art Preview — interactive Godot 4.7 workbench
 
 > **Unattended use:** agents and CI can render the same maps without this window via [`--capture`](world-art-capture.md) (PNG + JSON manifest, batch, feature/variant, fixed time, Linux and Windows qualified).
@@ -103,6 +105,14 @@ The isolated Godot project is named **CyberSand World Art Preview**; its user-da
 Override with --export-root=/absolute/output/folder. Every click creates a **new** directory and never overwrites earlier captures. Status initially says incomplete; only a successful PNG and metadata write marks it complete. Partial output stays visible on error. Output inside the source pack's directory is refused. The app never rewrites, renames or deletes source art. No locks, leases, PID checks or capture recovery are used.
 
 Metadata includes actual input SHA-256, caller-supplied art revision, feature/variant, native/output dimensions, PNG SHA-256, RG8 provenance, renderer/OS/driver identity, ANGLE shader selection, camera and presentation settings, and any pinned baseline identity. The status bar and console show saved paths.
+
+## Integrated one-checkout usage and asymmetrical navigation
+
+With Godot 4.7 installed, run `python tools/world_art_preview_launcher.py --godot="C:\\Tools\\Godot\\Godot_v4.7-stable_win64_console.exe" --rendering-driver=opengl3_angle` from the integrated repository root on Windows. On Linux, `python3 tools/world_art_preview_launcher.py --godot=godot --rendering-driver=opengl3`. The tool loads the included `docs/world-design` automatically if no art source is provided; `--pack` and `--art-root` still override it for a writable work copy or external reference.
+
+For 512×8192, 1024×4096, 8192×512 and other asymmetric compositions use **F** to fit all authored cells, **W** to fit the width, **H** to fit the height, **1** for one framebuffer pixel per cell, or click/drag the aspect-correct minimap. Wheel zoom remains anchored under the cursor. Arrow keys pan in world coordinates; fit modes persist on resize until a manual navigation command. The UI displays a computed full-export cost. At 2×, a 2048×8192 full PNG exceeds the bounded 50-million-pixel budget; select 1× or a viewport instead. No silent crop or upscaling/downscaling is performed.
+
+The art renderer's maximum is 16,384 cells per axis and 16,777,216 cells total. **This is not a supported native World simulation-size claim.** Source identity and full/viewport output are recorded separately.
 
 ## Limits and tests
 
