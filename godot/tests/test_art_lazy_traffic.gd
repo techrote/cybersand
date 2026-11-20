@@ -25,6 +25,11 @@ func traffic_files() -> PackedStringArray:
 	files.sort()
 	return files
 
+func wait_history(panel: Window) -> void:
+	var deadline := Time.get_ticks_msec()+120000
+	while not panel.conversation_loaded and panel.provider.resume_error.is_empty() and Time.get_ticks_msec()<deadline:
+		await process_frame
+
 func run() -> void:
 	root.size = Vector2i(1280,900)
 	set_meta("cybersand_feature","shared_workbench")
@@ -42,7 +47,7 @@ func run() -> void:
 	if original == null:
 		quit(1)
 		return
-	var image_url := "data:image/png;base64,YWJj"
+	var image_url := "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGMwnnn3PwAFVQKpTzibEAAAAABJRU5ErkJggg=="
 	original.store_line(JSON.stringify({"kind":"request","data":{"body":{"input":[{"role":"user","content":[{"type":"input_image","image_url":image_url}]}]}}}))
 	original.store_line(JSON.stringify({"kind":"conversation","data":{"role":"user","content":"previous canvas request","image_offset":0}}))
 	original.store_line(JSON.stringify({"kind":"response","data":{"body":"X".repeat(2*1024*1024)}}))
@@ -55,7 +60,7 @@ func run() -> void:
 	check(config.save(cfg_path) == OK,"existing session configured")
 	var initial_files := traffic_files()
 
-	var host := load("res://main.tscn").instantiate()
+	var host: Node = load("res://main.tscn").instantiate()
 	root.add_child(host)
 	var panel: Window = host.shared_workbench.art_batches
 	for _i in range(3): await process_frame
@@ -64,7 +69,7 @@ func run() -> void:
 	check(traffic_files() == initial_files and size_of(old_path) == source_size,"startup does not copy even a large saved traffic archive")
 
 	panel.show()
-	await process_frame
+	await wait_history(panel)
 	check(panel.conversation_loaded and panel.conversation.size() == 1,"intentional Art open restores previous conversation")
 	check(panel.conversation[0].get("image_log_path","") == old_path,"legacy image offsets gain original segment identity")
 	check(panel.provider.historical_image(0,old_path) == image_url,"historical image remains readable without copying")
@@ -74,7 +79,7 @@ func run() -> void:
 	child_path = panel.provider.log_path
 	check(not child_path.is_empty() and child_path != old_path and FileAccess.file_exists(child_path),"first event creates a distinct new session segment")
 	check(size_of(old_path) == source_size and size_of(child_path) < 16384,"child is small and original archive remains unchanged")
-	var chain := panel.provider.traffic_chain(child_path)
+	var chain: Array[String] = panel.provider.traffic_chain(child_path)
 	check(chain.size() == 2 and chain[0] == old_path and chain[1] == child_path,"segment links resolve from oldest to newest")
 
 	var replay := Provider.new()
@@ -92,13 +97,13 @@ func run() -> void:
 	await process_frame
 	await process_frame
 	var before_relaunch := traffic_files()
-	var host2 := load("res://main.tscn").instantiate()
+	var host2: Node = load("res://main.tscn").instantiate()
 	root.add_child(host2)
 	var panel2: Window = host2.shared_workbench.art_batches
 	for _i in range(3): await process_frame
 	check(not panel2.conversation_loaded and traffic_files() == before_relaunch,"relaunch does not copy the new linked conversation")
 	panel2.show()
-	await process_frame
+	await wait_history(panel2)
 	check(panel2.conversation == restored and panel2.provider.log_path.is_empty(),"multi-segment transcript survives a Workbench restart")
 	check(traffic_files() == before_relaunch,"reopen is read-only until a user action")
 	host2.queue_free()

@@ -35,6 +35,10 @@ var traffic_dirty := false
 var traffic_refresh_after := 0
 var raw_traffic := CheckBox.new()
 var traffic_path := Label.new()
+var export_button := Button.new()
+var export_cancel := Button.new()
+var export_message := ""
+var export_destination := ""
 var settings := ConfigFile.new()
 var keys: Dictionary = {}
 var rows: Array[Control] = []
@@ -66,6 +70,8 @@ var log_draw := false
 var conversation: Array = []
 var _pending_traffic_path := ""
 var conversation_loaded := false
+var history_load_error := ""
+var pending_history_receipts: Array[Dictionary] = []
 var context_mode := OptionButton.new()
 var turn_limit := SpinBox.new()
 var guidance := TextEdit.new()
@@ -206,18 +212,56 @@ func _bind_selection() -> void:
 	selection_editor.selection_changed.connect(focus_selection)
 
 func _selection_visibility_changed() -> void:
-	if visible: _ensure_history_loaded()
+	if visible: _begin_history_restore()
 	_bind_selection()
 	# Revealing the panel must not overwrite manually entered bounds with
 	# an old selection (image capture also hides and restores this Window).
 
-func _ensure_history_loaded() -> void:
-	if conversation_loaded: return
-	conversation_loaded = true
-	var source_path := provider.log_path if not provider.log_path.is_empty() else _pending_traffic_path
-	if source_path.is_empty(): return
-	conversation = provider.resume_traffic(source_path)
+func _ensure_history_loaded() -> bool:
+	if conversation_loaded: return true
+	# Every mounted control, including Send after a cancelled restore and hidden
+	# PAINT history callbacks, must use the same cancellable reader. The provider's
+	# synchronous wrapper is reserved for explicit programmatic tests.
+	_begin_history_restore()
+	return conversation_loaded
+
+func _accept_restored_history(restored: Array) -> void:
+	conversation = restored
 	last_result = provider.resumed_last_result
+	conversation_loaded = true
+	if not history_load_error.is_empty() or input_error.begins_with("Saved conversation is still restoring."): input_error = ""
+	history_load_error = ""
+	if not provider.resume_warning.is_empty(): input_error = provider.resume_warning
+	var pending := pending_history_receipts
+	pending_history_receipts = []
+	for item: Dictionary in pending: history_edited(item.receipt,int(item.epoch))
+
+func _begin_history_restore() -> void:
+	if conversation_loaded or provider.resume_active: return
+	var source_path := provider.log_path if not provider.log_path.is_empty() else _pending_traffic_path
+	if source_path.is_empty():
+		conversation_loaded = true
+		return
+	var err := provider.begin_resume(source_path)
+	if err != OK:
+		history_load_error = "Saved conversation could not be opened. "+provider.resume_error
+		input_error = history_load_error
+		return
+	history_load_error = "Restoring saved conversation · Stop cancels"
+	input_error = history_load_error
+
+func _poll_history_restore() -> void:
+	if not provider.resume_active: return
+	var progress: Dictionary = provider.poll_resume()
+	if bool(progress.get("done",false)):
+		if bool(progress.get("ok",false)):
+			_accept_restored_history(progress.get("turns",[]))
+		else:
+			history_load_error = "Saved conversation could not be opened. "+provider.resume_error
+			input_error = history_load_error
+	else:
+		history_load_error = "Restoring saved conversation · %.1f / %.1f MiB · Stop cancels" % [float(progress.get("bytes",0))/1048576.0,float(progress.get("total",0))/1048576.0]
+		input_error = history_load_error
 
 func focus_selection(region: Rect2i) -> void:
 	if not visible or fields.size() != 4 or wb == null or wb.applied.is_empty(): return
@@ -229,12 +273,15 @@ func focus_selection(region: Rect2i) -> void:
 	# Do not change request_area, request_guards or the executor's captured scope.
 
 func _open_conversation() -> void:
-	_ensure_history_loaded()
+	if not conversation_loaded:
+		_begin_history_restore()
+		if not conversation_loaded: return
 	conversation_error = ""
 	conversation_editor.open_history(conversation)
 	_update_conversation_guard()
 
 func _conversation_block_reason() -> String:
+	if not conversation_loaded: return "Open the saved conversation successfully before editing it."
 	var blocked := history_block_reason()
 	if not blocked.is_empty(): return "Stop the agent and wait for its confirmed result before applying history edits."
 	if wb != null and (wb.busy() or (wb.paint_editor != null and wb.paint_editor.busy())):
@@ -270,9 +317,12 @@ func _apply_conversation_edits() -> void:
 		conversation_error = "Could not save conversation edits; live history is unchanged. "+provider.log_warning
 		_update_conversation_guard()
 		return
+	if not persist_traffic_path():
+		conversation_error = "Could not save the conversation checkpoint; live history is unchanged."
+		_update_conversation_guard()
+		return
 	conversation = clean
 	last_image = "" # The next request must not rely on an image removed from context.
-	persist_traffic_path()
 	conversation_editor.hide()
 	input_error = "Conversation updated for future requests; no canvas edits were executed."
 
@@ -355,6 +405,8 @@ func submit_text() -> void:
 	if answer.status == "refused": input_error = answer.reason
 
 func _process(_delta: float) -> void:
+	_poll_history_restore()
+	_poll_traffic_export()
 	if wb == null: return
 	_bind_selection()
 	executor.wb = wb
@@ -367,10 +419,13 @@ func _process(_delta: float) -> void:
 	draw.disabled = executor.active
 	var history_replaying: bool = wb.paint_editor != null and wb.paint_editor.history_replaying()
 	stop.disabled = not executor.active and not provider.active and not capturing \
-		and remaining_turns == 0 and not history_replaying
+		and remaining_turns == 0 and not history_replaying and not provider.export_active and not provider.resume_active
 	if provider.active and wb.host.simulation_worker.art_state().epoch != request_epoch: stop_all("Canvas changed")
 	draw.disabled = executor.active or provider.active or capturing or remaining_turns != 0 \
-		or (wb.paint_editor != null and wb.paint_editor.busy())
+		or provider.export_active or provider.resume_active or (wb.paint_editor != null and wb.paint_editor.busy())
+	export_button.disabled = not history_block_reason().is_empty()
+	export_cancel.disabled = not provider.export_active
+	conversation_button.disabled = provider.resume_active
 	var history_blocked := not history_block_reason().is_empty() or wb.paint_editor == null
 	undo_button.disabled = history_blocked or not wb.paint_editor.history_available("undo")
 	redo_button.disabled = history_blocked or not wb.paint_editor.history_available("redo")
@@ -424,6 +479,7 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 	settings.load("user://art-provider.cfg")
 	_pending_traffic_path = str(settings.get_value("session","traffic_path",""))
 	provider.prepare_resume(_pending_traffic_path)
+	provider.commit_segment = _commit_traffic_path
 	add_child(provider)
 	provider.finished.connect(provider_finished)
 	executor.native_receipt.connect(func(receipt: Dictionary) -> void:
@@ -588,16 +644,18 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 	traffic_filter.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	traffic_filter.text_changed.connect(func(_value: String) -> void: refresh_traffic())
 	actions.add_child(traffic_filter)
-	var export_button := Button.new(); export_button.text = "Save full JSONL…"
+	export_button.text = "Save full JSONL…"
 	var save := FileDialog.new()
 	save.file_mode = FileDialog.FILE_MODE_SAVE_FILE; save.access = FileDialog.ACCESS_FILESYSTEM
 	save.current_file = "cybersand-art-traffic.jsonl"
 	traffic_window.add_child(save)
-	save.file_selected.connect(func(path: String) -> void:
-		var err := provider.export_traffic(path)
-		traffic_path.text = "Saved full session to "+path if err==OK else "Export failed (%d); source: %s" % [err,ProjectSettings.globalize_path(provider.log_path if not provider.log_path.is_empty() else provider.parent_log_path)]
+	save.file_selected.connect(_begin_traffic_export)
 	export_button.pressed.connect(func() -> void: save.popup_centered_ratio(0.7))
 	actions.add_child(export_button)
+	export_cancel.text = "Cancel export"
+	export_cancel.disabled = true
+	export_cancel.pressed.connect(_cancel_traffic_export)
+	actions.add_child(export_cancel)
 	box.add_child(actions)
 	traffic_path.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	box.add_child(traffic_path)
@@ -606,6 +664,46 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 	traffic_text.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	box.add_child(traffic_text)
 	load_profile()
+
+func _begin_traffic_export(path: String) -> void:
+	var blocked := history_block_reason()
+	if not blocked.is_empty():
+		input_error = blocked
+		return
+	var err := provider.begin_export(path)
+	if err == OK: export_destination = path
+	export_message = "Exporting full session · Cancel export or Stop to interrupt" if err == OK else "Export refused (%d): %s" % [err,provider.export_message]
+	traffic_path.text = export_message
+
+func _poll_traffic_export() -> void:
+	if not provider.export_active: return
+	var progress: Dictionary = provider.poll_export()
+	if bool(progress.get("done",false)):
+		var err := int(progress.get("error",FAILED))
+		export_message = "Full session export completed: "+export_destination if err == OK else "Export failed (%d); existing destination preserved. %s" % [err,provider.export_message]
+		if err == OK and not provider.export_message.is_empty(): export_message += " · "+provider.export_message
+	else:
+		export_message = "Exporting · %.1f / %.1f MiB · Cancel export or Stop to interrupt" % [float(progress.get("bytes",0))/1048576.0,float(progress.get("total",0))/1048576.0]
+	traffic_path.text = export_message
+
+func _cancel_traffic_export() -> void:
+	if not provider.export_active: return
+	provider.cancel_export()
+	export_message = "Export cancelled; existing destination preserved."
+	traffic_path.text = export_message
+
+func _save_settings() -> Error:
+	# Never truncate the only committed profile/session pointer. Reuse the native
+	# same-directory replacement; Godot's Windows rename first deletes its target.
+	var temporary := "user://art-provider.cfg."+Crypto.new().generate_random_bytes(16).hex_encode()+".partial"
+	var err := settings.save(temporary)
+	if err == OK:
+		var result: Dictionary = Provider.Archive.atomic_replace(temporary,"user://art-provider.cfg")
+		if not bool(result.get("ok",false)): err = ERR_FILE_CANT_WRITE
+	if err != OK:
+		DirAccess.remove_absolute(temporary)
+		input_error = "Could not save Art settings; the previous saved conversation is retained (%d)." % err
+	return err
 
 var previous_mode := 1
 
@@ -632,7 +730,7 @@ func save_profile() -> void:
 	settings.set_value("session","context",context_mode.selected)
 	settings.set_value("session","guidance",guidance.text)
 	settings.set_value("session","scanline_guidance",stencil_guidance.text)
-	settings.save("user://art-provider.cfg")
+	_save_settings()
 
 func change_provider(index: int) -> void:
 	save_profile()
@@ -653,6 +751,10 @@ func load_profile() -> void:
 	for name_text: String in settings.get_value(current_provider,"history",[]): history.add_item(name_text)
 
 func stop_all(reason: String = "Human Stop") -> void:
+	if provider.resume_active:
+		provider.cancel_resume()
+		history_load_error = "Conversation restoration cancelled; saved history preserved. Reopen Art or Conversation to retry."
+	_cancel_traffic_export()
 	remaining_turns = 0
 	run_deadline_ms = 0
 	waiting_until_ms = 0
@@ -662,11 +764,13 @@ func stop_all(reason: String = "Human Stop") -> void:
 	if wb != null and wb.paint_editor != null and wb.paint_editor.history_replaying():
 		wb.paint_editor.cancel()
 	provider_message = reason
-	input_error = reason
+	input_error = history_load_error if not history_load_error.is_empty() else reason
 
 # Shared PAINT shortcuts call the same guard as these buttons. A native-idle
 # gap is not permission to undo while a provider or another turn can still write.
 func history_block_reason() -> String:
+	if provider.resume_active: return "Finish or stop conversation restoration before changing history."
+	if provider.export_active: return "Finish or cancel the traffic export before changing history."
 	if executor.active or executor.waiting or not executor.manual.is_empty() \
 			or not executor.manual_inflight.is_empty() or provider.active or capturing \
 			or remaining_turns != 0 or waiting_until_ms > Time.get_ticks_msec():
@@ -688,14 +792,21 @@ func _history_action(action: String) -> void:
 
 # Append a new human result; never rewrite the model's historical receipts or
 # use model_feedback(), which can schedule another request in an active run.
-func history_edited(receipt: Dictionary) -> void:
-	_ensure_history_loaded()
+func history_edited(receipt: Dictionary, captured_epoch: int = -1) -> void:
+	var epoch := captured_epoch if captured_epoch >= 0 else (int(wb.host.simulation_worker.art_state().epoch) if wb != null else request_epoch)
+	if not _ensure_history_loaded():
+		# A native Undo already in flight can finish while the user opens Art.
+		# Keep its confirmed result until replay finishes; never apply it twice.
+		if pending_history_receipts.size() < 64:
+			pending_history_receipts.append({"receipt":receipt.duplicate(true),"epoch":epoch})
+		else:
+			input_error = "History result was not saved: the pending conversation receipt queue is full."
+		return
 	var recorded := receipt.duplicate(true)
 	provider.log_event("history_result",recorded)
 	var action := str(recorded.get("action","undo"))
 	var status := str(recorded.get("status","unknown"))
 	var label := str(recorded.get("label","Workbench edit"))
-	var epoch := int(wb.host.simulation_worker.art_state().epoch) if wb != null else request_epoch
 	last_result = "Human %s: %s" % [action,JSON.stringify(recorded)]
 	remember_turn("user","Canvas result (world epoch %d): %s" % [epoch,last_result])
 	provider_message = "%s %s · %s · %d native cells confirmed" % [action.capitalize(),label,
@@ -707,7 +818,7 @@ func history_edited(receipt: Dictionary) -> void:
 	input_error = provider_message
 
 func model_context() -> Array:
-	_ensure_history_loaded()
+	if not _ensure_history_loaded(): return []
 	if context_mode.selected == 3: return []
 	var full := context_mode.selected == 0
 	var first := 0 if full else maxi(0,conversation.size()-12)
@@ -738,24 +849,35 @@ func model_feedback(feedback: String) -> void:
 	if remaining_turns != 0:
 		send_next.call_deferred(ui_epoch)
 
-func remember_turn(role: String, content: String, image_offset: int = -1) -> void:
-	_ensure_history_loaded()
+func remember_turn(role: String, content: String, image_offset: int = -1) -> bool:
+	if not _ensure_history_loaded(): return false
 	var entry := {"role":role,"content":provider.redact(content)}
 	if image_offset >= 0:
 		entry.image_offset = image_offset
 		entry.image_log_path = provider.log_path
+	if not provider.log_event("conversation",entry) or not persist_traffic_path():
+		input_error = "Conversation turn was not saved. "+provider.log_warning
+		remaining_turns = 0
+		return false
 	conversation.append(entry)
-	provider.log_event("conversation",entry)
-	persist_traffic_path()
+	return true
 
-func persist_traffic_path() -> void:
-	if not provider.log_path.is_empty() and settings.get_value("session","traffic_path","") != provider.log_path:
-		settings.set_value("session","traffic_path",provider.log_path)
-		settings.save("user://art-provider.cfg")
+func _commit_traffic_path(path: String) -> bool:
+	var previous: Variant = settings.get_value("session","traffic_path","")
+	if previous == path: return true
+	settings.set_value("session","traffic_path",path)
+	if _save_settings() != OK:
+		settings.set_value("session","traffic_path",previous)
+		return false
+	return true
+
+func persist_traffic_path() -> bool:
+	if not provider.last_event_stored or provider.log_path.is_empty(): return false
+	return _commit_traffic_path(provider.log_path)
 
 func send_prompt() -> void:
-	if executor.active or provider.active or capturing or remaining_turns != 0: return
-	_ensure_history_loaded()
+	if executor.active or provider.active or capturing or remaining_turns != 0 or provider.export_active: return
+	if not _ensure_history_loaded(): return
 	if wb.paint_editor != null and wb.paint_editor.busy():
 		input_error = "Wait for the shared edit to finish before sending another model request."
 		return
@@ -1018,4 +1140,4 @@ func refresh_traffic() -> void:
 	if content.length() > 120000: content = "[Showing latest matching traffic; Save JSONL exports the complete session]\n"+content.right(120000)
 	traffic_text.text = content
 	var active_path: String = provider.log_path if not provider.log_path.is_empty() else provider.parent_log_path
-	traffic_path.text = (ProjectSettings.globalize_path(active_path) if not active_path.is_empty() else "No traffic file yet")+(" · "+provider.log_warning if not provider.log_warning.is_empty() else "")
+	traffic_path.text = export_message if not export_message.is_empty() else (ProjectSettings.globalize_path(active_path) if not active_path.is_empty() else "No traffic file yet")+(" · "+provider.log_warning if not provider.log_warning.is_empty() else "")

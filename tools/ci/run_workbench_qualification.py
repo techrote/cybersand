@@ -333,6 +333,8 @@ def regressions(args):
     runner.godot(project, "regression-import")
     runner.godot(project, "art-keyless", "test_art_provider", "ART_PROVIDER_KEYLESS")
     runner.godot(project, "art-lazy-traffic", "test_art_lazy_traffic", "ART_LAZY_TRAFFIC")
+    runner.godot(project, "art-traffic-panel-safety", "test_art_traffic_panel_safety", "ART_TRAFFIC_PANEL")
+    runner.godot(project, "art-traffic-integrity", "test_art_traffic_integrity", "ART_TRAFFIC_INTEGRITY")
     runner.godot(project, "art-panel-ui", "test_art_panel_ui", "ART_PANEL_UI")
     runner.godot(project, "art-stored-material", "test_art_stored_material", "ART_STORED_RESULT")
     runner.godot(project, "art-deferred-manual", "test_art_deferred_manual", "ART_DEFERRED_MANUAL")

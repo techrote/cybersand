@@ -12,6 +12,38 @@ var log_path := ""
 var parent_log_path := "" # Previous immutable JSONL segment; never copied on reopen.
 var log_warning := ""
 var last_event_stored := false
+var commit_segment: Callable
+var resume_ok := true
+var resume_active := false
+var _resume_archive: RefCounted
+var _resume_restored := {}
+var _resumed_turns: Array = []
+var _image_queue: Array[Dictionary] = []
+var _image_pending := {}
+var _image_cache := {}
+var _image_file: FileAccess
+var _image_parts: Array[PackedByteArray] = []
+var _image_size := 0
+var resume_error := ""
+var resume_warning := ""
+var export_active := false
+var export_error: Error = OK
+var export_message := ""
+var _segment_id := ""
+var _event_index := 0
+var _written_size := -1
+var _write_broken := false
+var _conversation_turns := 0
+var _conversation_bytes := 0
+var _validated_segments: Array[Dictionary] = []
+var _export_archive: RefCounted
+var _export_output: FileAccess
+var _export_temporary := ""
+var _export_destination := ""
+var _export_bytes := 0
+const Archive = preload("res://scripts/art_traffic_archive.gd")
+const MAX_CONVERSATION_TURNS := 16384
+const MAX_CONVERSATION_BYTES := 16 * 1024 * 1024
 var last_request_offset := -1
 var resumed_last_result := ""
 var usage: Dictionary = {}
@@ -85,9 +117,18 @@ static func operations(text: String, default_material: int = 58) -> Variant:
 	return value
 
 func redact(value: String) -> String:
+	# Provider and panel both redact. Preserve existing markers on subsequent calls.
+	var pieces := value.split("[redacted]")
+	for index: int in range(pieces.size()):
+		if not pieces[index].is_empty(): pieces[index] = _redact_unmarked(pieces[index])
+	return "[redacted]".join(pieces)
+
+func _redact_unmarked(value: String) -> String:
 	var clean := value
 	for secret: String in secrets:
-		if not secret.is_empty(): clean = clean.replace(secret,"[redacted]").replace(secret.uri_encode(),"[redacted]")
+		if not secret.is_empty():
+			clean = clean.replace(secret, "[redacted]")
+			if secret.uri_encode() != secret: clean = clean.replace(secret.uri_encode(), "[redacted]")
 	for pattern: String in ['(?i)Bearer[ \t]+[A-Za-z0-9._~+/-]+=*','sk-[A-Za-z0-9_-]{12,}','nvapi-[A-Za-z0-9_-]+']:
 		var regex := RegEx.new()
 		regex.compile(pattern)
@@ -99,59 +140,186 @@ func redact(value: String) -> String:
 	userinfo.compile('(https?://)[^/@\\s]+:[^/@\\s]+@')
 	return userinfo.sub(clean,'$1[redacted]@',true)
 
+func _redacted_value(value: Variant) -> Variant:
+	if value is String: return redact(value)
+	if value is Dictionary:
+		var clean := {}
+		for key: Variant in value:
+			var item: Variant = value[key]
+			var credential: bool = str(key).to_lower() in ["api_key", "apikey", "api-key", "access_token", "token", "authorization", "password"]
+			clean[key] = "[redacted]" if credential and item is String else _redacted_value(item)
+		return clean
+	if value is Array:
+		var clean: Array = []
+		for item: Variant in value: clean.append(_redacted_value(item))
+		return clean
+	return value
+
+func _sanitized_event_data(kind: String, data: Variant) -> Variant:
+	# Envelope IDs, roles, offsets and segment paths are structural, not free text.
+	if kind == "conversation" and data is Dictionary:
+		var clean: Dictionary = data.duplicate(true)
+		if clean.get("content") is String: clean.content = redact(clean.content)
+		return clean
+	if kind == "conversation_edited" and data is Dictionary:
+		var clean: Dictionary = data.duplicate(true)
+		if clean.get("turns") is Array:
+			for index: int in range(clean.turns.size()): clean.turns[index] = _sanitized_event_data("conversation", clean.turns[index])
+		if clean.get("last_result") is String: clean.last_result = redact(clean.last_result)
+		return clean
+	return _redacted_value(data)
+
 func new_log_path() -> String:
 	var folder := "user://art-traffic"
 	if DirAccess.make_dir_recursive_absolute(folder) != OK: return ""
-	return folder+"/"+str(Time.get_unix_time_from_system()).replace(".","-")+"-"+str(get_instance_id())+".jsonl"
+	for _attempt in range(16):
+		var candidate := folder + "/" + Crypto.new().generate_random_bytes(16).hex_encode() + ".jsonl"
+		if not FileAccess.file_exists(candidate): return candidate
+	return ""
 
 static func valid_traffic_path(path: String) -> bool:
-	return path.begins_with("user://art-traffic/") and path.get_base_dir() == "user://art-traffic"
+	return Archive.valid_path(path)
 
 func prepare_resume(previous: String) -> void:
-	# Cheap startup path: remember the saved archive, without reading or writing it.
-	parent_log_path = previous if valid_traffic_path(previous) and FileAccess.file_exists(previous) else ""
+	# No existence check, open, scan or write at startup. Keep unavailable pointers.
+	if not log_path.is_empty():
+		resume_error = "Cannot rebind a conversation while its writable segment is active."
+		resume_ok = false
+		return
+	parent_log_path = previous
+	resume_ok = previous.is_empty()
+	resume_error = ""; resume_warning = ""
+	_validated_segments.clear()
+	_conversation_turns = 0; _conversation_bytes = 0
 
 func traffic_chain(latest: String) -> Array[String]:
-	# Session continuation is an append-only chain of small JSONL segments.
-	# A malformed, missing or cyclic parent is not a valid full-session export.
+	var archive := Archive.new()
 	var chain: Array[String] = []
-	var visited := {}
-	var current := latest
-	for _depth in range(4096):
-		if not valid_traffic_path(current) or visited.has(current) or not FileAccess.file_exists(current):
-			return []
-		visited[current] = true
-		chain.push_front(current)
-		var file := FileAccess.open(current,FileAccess.READ)
-		if file == null: return []
-		var header: Variant = JSON.parse_string(file.get_line())
-		if not header is Dictionary or header.get("kind") != "session_parent":
-			return chain
-		var data: Variant = header.get("data")
-		if not data is Dictionary or not data.get("path") is String: return []
-		current = data.path
-	return []
+	if not archive.resolve(latest):
+		log_warning = archive.error
+		return chain
+	for segment: Dictionary in archive.segments: chain.append(segment.path)
+	return chain
+
+func _segment(path: String, segments: Array[Dictionary]) -> Dictionary:
+	for segment: Dictionary in segments:
+		if str(segment.path) == path: return segment
+	return {}
+
+func _known_sources_unchanged() -> bool:
+	for segment: Dictionary in _validated_segments:
+		if segment.path == log_path: continue
+		var file := FileAccess.open(segment.path, FileAccess.READ)
+		if file == null or file.get_length() != int(segment.file_bytes) or FileAccess.get_modified_time(segment.path) != int(segment.mtime):
+			resume_ok = false
+			resume_error = "Conversation predecessor changed or is unavailable: " + str(segment.path)
+			log_warning = resume_error
+			return false
+	return true
+
+func begin_export(destination: String) -> Error:
+	if export_active or resume_active: return ERR_BUSY
+	export_message = ""; export_error = OK; _export_bytes = 0
+	var latest := log_path if not log_path.is_empty() else parent_log_path
+	var archive := Archive.new()
+	if not archive.resolve(latest):
+		export_message = archive.error
+		export_error = ERR_FILE_CORRUPT
+		return export_error
+	var absolute := Archive.canonical_path(destination)
+	if absolute.is_empty():
+		export_message = "Invalid export destination."
+		export_error = ERR_INVALID_PARAMETER
+		return export_error
+	for segment: Dictionary in archive.segments:
+		if Archive.canonical_path(segment.path) == absolute:
+			export_message = "Export cannot replace a conversation source or its alias."
+			export_error = ERR_INVALID_PARAMETER
+			return export_error
+		var validated := _segment(segment.path, _validated_segments)
+		if not validated.is_empty() and segment.path != log_path:
+			if int(validated.file_bytes) != int(segment.file_bytes) or int(validated.mtime) != int(segment.mtime):
+				export_message = "Conversation changed since it was opened: " + str(segment.path)
+				export_error = ERR_FILE_CORRUPT
+				return export_error
+			# A legacy root also gains a content identity after successful replay.
+			segment.expected_sha256 = validated.sha256
+			segment.limit = validated.limit
+	_export_destination = ProjectSettings.globalize_path(destination).simplify_path()
+	_export_temporary = _export_destination + ".partial-" + Crypto.new().generate_random_bytes(16).hex_encode()
+	if FileAccess.file_exists(_export_temporary):
+		export_error = ERR_ALREADY_EXISTS
+		return export_error
+	_export_output = FileAccess.open(_export_temporary, FileAccess.WRITE)
+	if _export_output == null:
+		export_error = FileAccess.get_open_error()
+		export_message = "Cannot create export staging file."
+		return export_error
+	_export_archive = archive
+	_reset_image_validation()
+	export_active = true
+	return OK
+
+func _end_export(result: Error, message: String = "") -> void:
+	_export_output = null
+	export_active = false
+	export_error = result
+	export_message = message
+	if result != OK and not _export_temporary.is_empty():
+		DirAccess.remove_absolute(_export_temporary)
+	_export_temporary = ""
+	_export_archive = null
+	_reset_image_validation()
+
+func poll_export(max_bytes: int = 1048576) -> Dictionary:
+	if not export_active: return {"done":true,"error":export_error,"bytes":_export_bytes,"total":_export_bytes}
+	var archive: RefCounted = _export_archive
+	var callback := func(event: Dictionary, source: String, offset: int, raw: PackedByteArray) -> String:
+		var problem := _validate_conversation_event(event, source, offset, archive.segments, _queue_image)
+		if not problem.is_empty(): return problem
+		archive.paused = not _image_queue.is_empty()
+		_export_output.store_buffer(raw)
+		if _export_output.get_error() != OK: return "Traffic export disk write failed."
+		_export_bytes += raw.size()
+		return ""
+	if not _image_queue.is_empty():
+		var problem := _poll_images(clampi(max_bytes, 1, 1048576))
+		if not problem.is_empty(): archive.fail(problem)
+	else:
+		archive.paused = false
+		archive.step(clampi(max_bytes, 1, 1048576), callback)
+	var total: int = archive.total_bytes
+	if archive.done:
+		if not archive.error.is_empty():
+			_end_export(ERR_FILE_CORRUPT, archive.error)
+		else:
+			_export_output.flush()
+			var write_error := _export_output.get_error()
+			_export_output = null
+			if write_error != OK:
+				_end_export(write_error, "Traffic export flush failed.")
+			else:
+				# Rename is the sole commit point. The final filename never contains a
+				# partially validated export; replacing a symlink does not follow it.
+				var canonical_destination := Archive.canonical_path(_export_destination)
+				var safe := not canonical_destination.is_empty()
+				for segment: Dictionary in archive.segments:
+					if Archive.canonical_path(segment.path) == canonical_destination: safe = false
+				if not safe:
+					_end_export(ERR_INVALID_PARAMETER, "Export destination became an alias of a conversation source.")
+				else:
+					var replacement := Archive.atomic_replace(_export_temporary, _export_destination)
+					_end_export(OK if replacement.get("ok", false) else ERR_FILE_CANT_WRITE, archive.warning if replacement.get("ok", false) else "Could not commit export; previous destination preserved: " + str(replacement.get("error", "")))
+	return {"done":not export_active,"error":export_error,"bytes":_export_bytes,"total":total}
+
+func cancel_export() -> void:
+	if export_active: _end_export(ERR_SKIP, "Export cancelled; previous destination preserved.")
 
 func export_traffic(destination: String) -> Error:
-	# Only an explicit export materializes the full historical byte stream.
-	var latest := log_path if not log_path.is_empty() else parent_log_path
-	var chain := traffic_chain(latest)
-	if chain.is_empty(): return ERR_FILE_NOT_FOUND
-	for source_path: String in chain:
-		if ProjectSettings.globalize_path(source_path) == ProjectSettings.globalize_path(destination):
-			return ERR_INVALID_PARAMETER
-	var output := FileAccess.open(destination,FileAccess.WRITE)
-	if output == null: return FileAccess.get_open_error()
-	for source_path: String in chain:
-		var input_file := FileAccess.open(source_path,FileAccess.READ)
-		if input_file == null: return FileAccess.get_open_error()
-		while input_file.get_position() < input_file.get_length():
-			var chunk := input_file.get_buffer(mini(1048576,input_file.get_length()-input_file.get_position()))
-			if chunk.is_empty(): return ERR_FILE_CANT_READ
-			output.store_buffer(chunk)
-			if output.get_error() != OK: return output.get_error()
-	output.flush()
-	return output.get_error()
+	var result := begin_export(destination)
+	if result != OK: return result
+	while export_active: poll_export()
+	return export_error
 
 static func checked_conversation(value: Variant) -> Variant:
 	if not value is Array: return null
@@ -171,100 +339,383 @@ static func checked_conversation(value: Variant) -> Variant:
 		turns.append(turn)
 	return turns
 
-func resume_traffic(previous: String) -> Array:
-	var turns: Array = []
+func _validate_turns(turns: Array, source: String, offset: int, segments: Array[Dictionary], deferred_image: Callable = Callable()) -> String:
+	var current_index := -1
+	var checked_images := {}
+	for index: int in range(segments.size()):
+		if segments[index].path == source: current_index = index
+	for turn: Dictionary in turns:
+		if not turn.has("image_offset"): continue
+		var image_path: String = turn.get("image_log_path", source)
+		var image_index := -1
+		for index: int in range(segments.size()):
+			if segments[index].path == image_path: image_index = index
+		if image_index < 0 or image_index > current_index or (image_path == source and int(turn.image_offset) >= offset):
+			return "Conversation image references an unrelated or future segment."
+		if deferred_image.is_valid():
+			deferred_image.call(image_path, int(turn.image_offset), int(segments[image_index].limit))
+		else:
+			var key := image_path + "@" + str(turn.image_offset)
+			if not checked_images.has(key):
+				if _read_historical_image(int(turn.image_offset), image_path, int(segments[image_index].limit)).is_empty():
+					return "Conversation image reference is corrupt at %s:%d." % [image_path, int(turn.image_offset)]
+				checked_images[key] = true
+		turn.image_log_path = image_path
+	return ""
+
+func _validate_conversation_event(event: Dictionary, source: String, offset: int, segments: Array[Dictionary], deferred_image: Callable = Callable()) -> String:
+	if event.kind == "conversation":
+		var turns: Variant = checked_conversation([event.data])
+		if turns == null: return "Malformed conversation turn: " + source
+		return _validate_turns(turns, source, offset, segments, deferred_image)
+	if event.kind == "conversation_edited":
+		if not event.data is Dictionary or not event.data.get("last_result") is String: return "Malformed conversation edit: " + source
+		var turns: Variant = checked_conversation(event.data.get("turns"))
+		if turns == null: return "Malformed conversation edit turns: " + source
+		return _validate_turns(turns, source, offset, segments, deferred_image)
+	return ""
+
+func begin_resume(previous: String) -> Error:
+	if resume_active or export_active: return ERR_BUSY
+	# Reading the active writer is allowed; rebinding it to another history is not.
+	var own_writer := not log_path.is_empty() and previous == log_path
+	if not log_path.is_empty() and not own_writer:
+		resume_ok = false
+		resume_error = "Cannot restore another history while a writable traffic segment is active."
+		log_warning = resume_error
+		return ERR_BUSY
+	if own_writer:
+		resume_ok = false; resume_error = ""; resume_warning = ""
+	else: prepare_resume(previous)
 	resumed_last_result = ""
-	prepare_resume(previous)
-	# Defer this potentially long read until conversation/model use, never on startup.
-	for source_path: String in traffic_chain(previous):
-		var file := FileAccess.open(source_path,FileAccess.READ)
-		if file == null: continue
-		while file.get_position() < file.get_length():
-			var line := file.get_line()
-			if not line.contains('"kind":"conversation'): continue
-			var parsed: Variant = JSON.parse_string(line)
-			if not parsed is Dictionary: continue
-			if parsed.get("kind") == "conversation_cleared":
-				turns.clear()
-				resumed_last_result = ""
-			elif parsed.get("kind") == "conversation_edited" and parsed.get("data") is Dictionary:
-				var edited: Variant = checked_conversation(parsed.data.get("turns"))
-				if edited != null and parsed.data.get("last_result") is String:
-					for turn: Dictionary in edited:
-						if turn.has("image_offset") and not turn.has("image_log_path"):
-							turn.image_log_path = source_path
-					turns = edited
-					resumed_last_result = parsed.data.last_result
-			elif parsed.get("kind") == "conversation" and parsed.get("data") is Dictionary:
-				var restored: Variant = checked_conversation([parsed.data])
-				if restored != null:
-					var turn: Dictionary = restored[0]
-					if turn.has("image_offset") and not turn.has("image_log_path"):
-						turn.image_log_path = source_path
-					turns.append(turn)
-					if str(turn.content).begins_with("Canvas result ("):
-						resumed_last_result = turn.content
-	traffic = "[Earlier conversation traffic retained in the export]\n"
-	readable = traffic
-	return turns
+	_resumed_turns = []
+	_resume_restored = {"turns":[],"last_result":"","bytes":0}
+	if previous.is_empty(): return OK
+	var archive := Archive.new()
+	if not archive.resolve(previous):
+		resume_error = archive.error; log_warning = resume_error
+		return ERR_FILE_CORRUPT
+	if own_writer and (archive.segments.back().id != _segment_id or int(archive.segments.back().file_bytes) != _written_size):
+		resume_error = "Writable traffic segment changed before replay; prior binding preserved."
+		log_warning = resume_error
+		return ERR_FILE_CORRUPT
+	_resume_archive = archive
+	_reset_image_validation()
+	resume_active = true
+	return OK
+
+func poll_resume(max_bytes: int = 1048576) -> Dictionary:
+	if not resume_active: return {"done":true,"ok":resume_ok,"bytes":0,"total":0,"turns":_resumed_turns}
+	var archive: RefCounted = _resume_archive
+	var restored: Dictionary = _resume_restored
+	var callback := func(event: Dictionary, source: String, offset: int, _raw: PackedByteArray) -> String:
+		var problem := _validate_conversation_event(event, source, offset, archive.segments, _queue_image)
+		if not problem.is_empty(): return problem
+		archive.paused = not _image_queue.is_empty()
+		if event.kind == "conversation_cleared":
+			restored.turns = []; restored.last_result = ""; restored.bytes = 0
+		elif event.kind == "conversation_edited":
+			var turns: Array = checked_conversation(event.data.turns)
+			for turn: Dictionary in turns:
+				if turn.has("image_offset") and not turn.has("image_log_path"): turn.image_log_path = source
+			restored.turns = turns; restored.last_result = event.data.last_result; restored.bytes = 0
+			for turn: Dictionary in turns: restored.bytes += str(turn.content).to_utf8_buffer().size()
+		elif event.kind == "conversation":
+			var turn: Dictionary = checked_conversation([event.data])[0]
+			if turn.has("image_offset") and not turn.has("image_log_path"): turn.image_log_path = source
+			restored.turns.append(turn)
+			restored.bytes += str(turn.content).to_utf8_buffer().size()
+			if str(turn.content).begins_with("Canvas result ("): restored.last_result = turn.content
+		if restored.turns.size() > MAX_CONVERSATION_TURNS or int(restored.bytes) > MAX_CONVERSATION_BYTES:
+			return "Saved transcript exceeds the 16384-turn / 16 MiB replay limit; original archives preserved."
+		return ""
+	if not _image_queue.is_empty():
+		var problem := _poll_images(clampi(max_bytes, 1, 1048576))
+		if not problem.is_empty(): archive.fail(problem)
+	else:
+		archive.paused = false
+		archive.step(clampi(max_bytes, 1, 1048576), callback)
+	var progress := {"done":false,"ok":false,"bytes":archive.bytes_read,"total":archive.total_bytes,"turns":[]}
+	if archive.done:
+		resume_active = false
+		progress.done = true
+		if not archive.error.is_empty():
+			resume_error = archive.error; log_warning = resume_error
+		else:
+			_validated_segments = archive.segments
+			resume_ok = true; resume_warning = archive.warning; log_warning = resume_warning
+			resumed_last_result = restored.last_result
+			_conversation_turns = restored.turns.size(); _conversation_bytes = int(restored.bytes)
+			_resumed_turns = restored.turns
+			traffic = "[Earlier conversation traffic retained in the export]\n"
+			readable = traffic
+			progress.ok = true; progress.turns = _resumed_turns
+		_resume_archive = null; _resume_restored = {}
+		_reset_image_validation()
+	return progress
+
+func cancel_resume() -> void:
+	if not resume_active: return
+	resume_active = false; resume_ok = false
+	resume_error = "Conversation restoration cancelled; original files remain unchanged."
+	log_warning = resume_error
+	_resume_archive = null; _resume_restored = {}; _resumed_turns = []
+	_reset_image_validation()
+
+func resume_traffic(previous: String) -> Array:
+	if begin_resume(previous) != OK: return []
+	while resume_active: poll_resume()
+	return _resumed_turns if resume_ok else []
+
+func _reset_image_validation() -> void:
+	_image_file = null; _image_parts.clear(); _image_size = 0
+	_image_queue.clear(); _image_pending.clear(); _image_cache.clear()
+
+func _queue_image(path: String, offset: int, limit: int) -> void:
+	var key := path + "@" + str(offset)
+	if _image_cache.has(key) or _image_pending.has(key): return
+	_image_pending[key] = true
+	_image_queue.append({"path":path,"offset":offset,"limit":limit,"key":key})
+
+func _poll_images(budget: int) -> String:
+	# A shared incremental verifier serves restore and export. Repeated snapshot
+	# references are deduplicated; only metadata is cached, never image payloads.
+	var remaining := budget
+	var completed := 0
+	while not _image_queue.is_empty() and remaining > 0 and completed < 64:
+		var item := _image_queue[0]
+		var problem := "Conversation image reference is corrupt at %s:%d." % [item.path, int(item.offset)]
+		if _image_file == null:
+			_image_file = FileAccess.open(item.path, FileAccess.READ)
+			if _image_file == null or int(item.offset) >= mini(int(item.limit), _image_file.get_length()): return problem
+			if int(item.offset) > 0:
+				_image_file.seek(int(item.offset) - 1)
+				if _image_file.get_8() != 10: return problem
+			_image_file.seek(int(item.offset))
+			_image_parts.clear(); _image_size = 0
+		var left := int(item.limit) - _image_file.get_position()
+		if left <= 0: return problem
+		var block := _image_file.get_buffer(mini(Archive.CHUNK_BYTES, mini(left, remaining)))
+		if block.is_empty(): return problem
+		remaining -= block.size()
+		var newline := block.find(10)
+		var part := block if newline < 0 else block.slice(0, newline + 1)
+		_image_parts.append(part); _image_size += part.size()
+		if _image_size > Archive.MAX_RECORD_BYTES: return problem
+		if newline >= 0:
+			var raw := PackedByteArray()
+			for piece: PackedByteArray in _image_parts: raw.append_array(piece)
+			var decoded := Archive.decode_record(raw, true)
+			if _image_from_event(decoded.get("event")).is_empty(): return problem
+			if _image_cache.size() >= 4096: _image_cache.clear()
+			_image_cache[item.key] = true; _image_pending.erase(item.key)
+			_image_queue.pop_front(); _image_file = null; _image_parts.clear(); _image_size = 0
+			completed += 1
+	return ""
+
+func _read_historical_image(offset: int, path: String, limit: int) -> String:
+	if offset < 0 or not valid_traffic_path(path): return ""
+	var file := FileAccess.open(path, FileAccess.READ)
+	if file == null or offset >= mini(limit, file.get_length()): return ""
+	if offset > 0:
+		file.seek(offset - 1)
+		if file.get_8() != 10: return ""
+	file.seek(offset)
+	var record := Archive.read_record(file, limit)
+	return _image_from_event(record.get("event"))
+
+func _image_from_event(event: Variant) -> String:
+	if not event is Dictionary or event.get("kind") != "request" or not event.get("data") is Dictionary or not event.data.get("body") is Dictionary: return ""
+	var body: Dictionary = event.data.body
+	var messages: Variant = body.get("input", body.get("messages", []))
+	if not messages is Array or messages.is_empty() or not messages.back() is Dictionary or not messages.back().get("content") is Array: return ""
+	for block: Variant in messages.back().content:
+		if not block is Dictionary: continue
+		var url: Variant = null
+		if block.get("type") == "input_image": url = block.get("image_url")
+		elif block.get("type") == "image_url" and block.get("image_url") is Dictionary: url = block.image_url.get("url")
+		if not url is String or not url.begins_with("data:image/png;base64,"): continue
+		var encoded: String = url.trim_prefix("data:image/png;base64,")
+		if encoded.is_empty() or encoded.length() % 4 != 0: continue
+		var bytes := Marshalls.base64_to_raw(encoded)
+		if bytes.size() < 33 or Marshalls.raw_to_base64(bytes) != encoded: continue
+		if bytes.slice(0, 8) != PackedByteArray([137, 80, 78, 71, 13, 10, 26, 10]) or bytes.slice(12, 16).get_string_from_ascii() != "IHDR": continue
+		var width: int = (int(bytes[16]) << 24) | (int(bytes[17]) << 16) | (int(bytes[18]) << 8) | int(bytes[19])
+		var height: int = (int(bytes[20]) << 24) | (int(bytes[21]) << 16) | (int(bytes[22]) << 8) | int(bytes[23])
+		if width < 1 or height < 1 or width > 16777216 or height > 16777216 or width * height > 16777216: continue
+		# A pixel budget, not an aspect-ratio restriction, bounds decoded storage to64MiB.
+		var image := Image.new()
+		if image.load_png_from_buffer(bytes) != OK: continue
+		return url
+	return ""
 
 func historical_image(offset: int, source_path: String = "") -> String:
 	var path := source_path if not source_path.is_empty() else log_path
-	if offset < 0 or not valid_traffic_path(path): return ""
-	var file := FileAccess.open(path,FileAccess.READ)
-	if file == null or offset >= file.get_length(): return ""
-	file.seek(offset)
-	var event: Variant = JSON.parse_string(file.get_line())
-	if not event is Dictionary or event.get("kind") != "request": return ""
-	var body: Dictionary = event.data.body
-	var messages: Array = body.get("input",body.get("messages",[]))
-	if messages.is_empty() or not messages.back().get("content") is Array: return ""
-	for image_block: Dictionary in messages.back().content:
-		if image_block.get("type") == "input_image": return str(image_block.image_url)
-		if image_block.get("type") == "image_url": return str(image_block.image_url.url)
-	return ""
+	if path.is_empty(): return ""
+	if path == log_path and _written_size >= 0: return _read_historical_image(offset, path, _written_size)
+	var segment := _segment(path, _validated_segments)
+	if segment.is_empty(): return ""
+	return _read_historical_image(offset, path, int(segment.limit))
 
 func log_event(kind: String, data: Variant) -> bool:
-	var stored := false
-	var line := redact(JSON.stringify({"utc":Time.get_datetime_string_from_system(true),"ms":Time.get_ticks_msec(),"request":serial,"kind":kind,"data":data}))
-	traffic += line+"\n"
-	readable += "\n"+Time.get_datetime_string_from_system(true)+" #"+str(serial)+" "+kind+"\n"
-	if kind=="request" and data is Dictionary:
-		var body: Dictionary = data.body
-		readable += "Model: "+str(body.get("model",""))+"\n"
-		if body.has("instructions"): readable += "Instructions:\n"+redact(str(body.instructions))+"\n"
-		for message: Dictionary in body.get("messages",body.get("input",[])):
-			readable += str(message.get("role","message"))+":\n"
-			var content: Variant = message.get("content","")
-			if content is String: readable += redact(content)+"\n"
-			elif content is Array:
-				for block: Dictionary in content:
-					readable += redact(str(block.text))+"\n" if block.has("text") else "[Image attached; exact bytes in Raw JSONL]\n"
-	elif data is String: readable += redact(data)+"\n"
-	else: readable += redact(JSON.stringify(data,"  "))+"\n"
-	if readable.length()>2000000: readable = "[Earlier traffic retained on disk]\n"+readable.right(1500000)
-	# The live surface is bounded independently of the durable, full-session log.
-	if traffic.length()>2000000: traffic = "[Earlier traffic retained on disk]\n"+traffic.right(1500000)
+	last_event_stored = false
 	if kind == "request": last_request_offset = -1
-	var new_segment := log_path.is_empty()
-	if new_segment: log_path = new_log_path()
-	if not log_path.is_empty():
-		var file := FileAccess.open(log_path,FileAccess.READ_WRITE if FileAccess.file_exists(log_path) else FileAccess.WRITE)
-		if file != null:
-			file.seek_end()
-			if new_segment and not parent_log_path.is_empty():
-				file.store_line(JSON.stringify({"kind":"session_parent","data":{"path":parent_log_path}}))
-			var offset := file.get_position()
-			file.store_line(line)
-			if kind == "conversation_edited": file.flush()
-			stored = file.get_error() == OK
-			if kind == "request" and file.get_error() == OK: last_request_offset = offset
-			if file.get_error()!=OK: log_warning = "Traffic disk write failed; drawing continues."
-		else: log_warning = "Cannot write traffic log; live traffic remains available."
-	else: log_warning = "Cannot create traffic directory; drawing continues."
+	if export_active or resume_active:
+		log_warning = "Wait for or cancel the archive operation before adding traffic."
+		traffic_changed.emit()
+		return false
+	if not parent_log_path.is_empty() and not resume_ok:
+		if resume_error.is_empty(): resume_traffic(parent_log_path)
+		if not resume_ok:
+			log_warning = resume_error; traffic_changed.emit()
+			return false
+	if not _known_sources_unchanged():
+		traffic_changed.emit()
+		return false
+	var sanitized: Variant = _sanitized_event_data(kind, data)
+	var admission := _admit_conversation_event(kind, sanitized)
+	if not admission.ok:
+		log_warning = admission.error; traffic_changed.emit()
+		return false
+	var line := JSON.stringify({"utc":Time.get_datetime_string_from_system(true),"ms":Time.get_ticks_msec(),"request":serial,"kind":kind,"data":sanitized})
+	traffic += line + "\n"
+	readable += "\n" + Time.get_datetime_string_from_system(true) + " #" + str(serial) + " " + kind + "\n"
+	if kind == "request" and sanitized is Dictionary and sanitized.get("body") is Dictionary:
+		var body: Dictionary = sanitized.body
+		readable += "Model: " + str(body.get("model", "")) + "\n"
+		if body.has("instructions"): readable += "Instructions:\n" + str(body.instructions) + "\n"
+		for message: Variant in body.get("messages", body.get("input", [])):
+			if not message is Dictionary: continue
+			readable += str(message.get("role", "message")) + ":\n"
+			var content: Variant = message.get("content", "")
+			if content is String: readable += content + "\n"
+			elif content is Array:
+				for block: Variant in content:
+					readable += str(block.text) + "\n" if block is Dictionary and block.has("text") else "[Image attached; exact bytes in Raw JSONL]\n"
+	elif sanitized is String: readable += sanitized + "\n"
+	else: readable += JSON.stringify(sanitized, "  ") + "\n"
+	if readable.length() > 2000000: readable = "[Earlier traffic retained on disk]\n" + readable.right(1500000)
+	if traffic.length() > 2000000: traffic = "[Earlier traffic retained on disk]\n" + traffic.right(1500000)
+	var stored := _store_event(kind, sanitized, admission)
 	last_event_stored = stored
 	traffic_changed.emit()
 	return stored
+
+func _admit_conversation_event(kind: String, data: Variant) -> Dictionary:
+	var result := {"ok":true,"turns":_conversation_turns,"bytes":_conversation_bytes,"error":""}
+	var turns: Variant = []
+	if kind == "conversation":
+		turns = checked_conversation([data])
+	elif kind == "conversation_edited":
+		if not data is Dictionary or not data.get("last_result") is String:
+			return {"ok":false,"error":"Malformed conversation edit; nothing written."}
+		turns = checked_conversation(data.get("turns"))
+		result.turns = 0; result.bytes = 0
+	elif kind == "conversation_cleared":
+		result.turns = 0; result.bytes = 0
+		return result
+	else: return result
+	if turns == null: return {"ok":false,"error":"Malformed conversation turn; nothing written."}
+	result.turns += turns.size()
+	for turn: Dictionary in turns: result.bytes += str(turn.content).to_utf8_buffer().size()
+	if int(result.turns) > MAX_CONVERSATION_TURNS or int(result.bytes) > MAX_CONVERSATION_BYTES:
+		return {"ok":false,"error":"Conversation exceeds the 16384-turn / 16 MiB replay limit; nothing written."}
+	var segments := _validated_segments.duplicate(true)
+	var current := _segment(log_path, segments)
+	if current.is_empty(): segments.append({"path":log_path,"limit":maxi(0, _written_size)})
+	else: current.limit = maxi(0, _written_size)
+	var problem := _validate_turns(turns, log_path, maxi(0, _written_size), segments)
+	if not problem.is_empty(): return {"ok":false,"error":problem + " Nothing written."}
+	return result
+
+func _store_event(kind: String, data: Variant, admission: Dictionary) -> bool:
+	if kind in ["session_start", "session_parent"]:
+		log_warning = "Segment metadata cannot be appended as a conversation event."
+		return false
+	if _write_broken:
+		log_warning = "Traffic append was interrupted; restart Workbench to recover its complete events."
+		return false
+	var new_segment := log_path.is_empty()
+	if new_segment and _validated_segments.size() >= Archive.MAX_SEGMENTS:
+		log_warning = "Conversation reached the 4096-segment limit; prior history preserved and nothing written."
+		return false
+	var destination := new_log_path() if new_segment else log_path
+	if destination.is_empty() or not valid_traffic_path(destination):
+		log_warning = "Cannot create traffic archive; live traffic remains available."
+		return false
+	var id := Crypto.new().generate_random_bytes(16).hex_encode() if new_segment else _segment_id
+	if id.is_empty():
+		log_warning = "Refusing to append to an archive not created by this provider."
+		return false
+	var index := 1 if new_segment else _event_index + 1
+	var event := {"utc":Time.get_datetime_string_from_system(true),"ms":Time.get_ticks_msec(),"request":serial,"kind":kind,"data":data,"segment_id":id,"event_index":index,"event_id":id + ":" + str(index)}
+	var encoded := (JSON.stringify(event) + "\n").to_utf8_buffer()
+	if encoded.size() > Archive.MAX_RECORD_BYTES:
+		log_warning = "Traffic event exceeds the 32 MiB record limit; nothing written."
+		return false
+	var temporary := destination + ".partial-" + id if new_segment else destination
+	var file := FileAccess.open(temporary, FileAccess.WRITE if new_segment else FileAccess.READ_WRITE)
+	if file == null:
+		log_warning = "Cannot write traffic log; live traffic remains available."
+		return false
+	if new_segment:
+		var header := {"kind":"session_start","schema":2,"segment_id":id,"data":{}}
+		if not parent_log_path.is_empty():
+			var parent := _segment(parent_log_path, _validated_segments)
+			if parent.is_empty():
+				file = null; DirAccess.remove_absolute(temporary)
+				log_warning = "Saved conversation has no validated parent identity."
+				return false
+			header.kind = "session_parent"
+			header.data = {"path":parent_log_path,"parent_id":parent.id,"parent_bytes":parent.limit,"parent_sha256":parent.sha256}
+			if not bool(parent.modern):
+				# Seal inherited path-only links once, at their first modern child.
+				# Later modern children pin this header's bytes through its digest.
+				var seals: Array = []
+				for ancestor: Dictionary in _validated_segments:
+					if ancestor.path != parent_log_path:
+						seals.append({"path":ancestor.path,"id":ancestor.id,"bytes":ancestor.limit,"sha256":ancestor.sha256})
+				header.data.legacy_ancestors = seals
+		var header_line := (JSON.stringify(header) + "\n").to_utf8_buffer()
+		var header_total := header_line.size()
+		for ancestor: Dictionary in _validated_segments: header_total += int(ancestor.header_end)
+		if header_line.size() > Archive.MAX_HEADER_BYTES or header_total > Archive.MAX_CHAIN_HEADER_BYTES:
+			file = null; DirAccess.remove_absolute(temporary)
+			log_warning = "Conversation metadata reached its bounded replay capacity; nothing written."
+			return false
+		file.store_buffer(header_line)
+	else:
+		if file.get_length() != _written_size:
+			file = null
+			log_warning = "Traffic archive changed externally; refusing to append."
+			return false
+		file.seek_end()
+	var offset := file.get_position()
+	file.store_buffer(encoded)
+	file.flush()
+	var error := file.get_error()
+	var length := file.get_position()
+	file = null # Close before signalling a durable pointer to the panel.
+	if error == OK and new_segment:
+		var replacement := Archive.atomic_replace(temporary, destination)
+		if not replacement.get("ok", false): error = ERR_FILE_CANT_WRITE
+	if error != OK:
+		if new_segment: DirAccess.remove_absolute(temporary)
+		else: _write_broken = true
+		log_warning = "Traffic write failed; prior conversation remains preserved."
+		return false
+	if new_segment and commit_segment.is_valid() and not bool(commit_segment.call(destination)):
+		log_warning = "Conversation pointer could not be committed. Prior history is unchanged; unreferenced complete segment preserved at " + destination
+		return false
+	log_path = destination; _segment_id = id; _event_index = index; _written_size = length
+	_conversation_turns = int(admission.turns); _conversation_bytes = int(admission.bytes)
+	if kind == "request": last_request_offset = offset
+	log_warning = resume_warning
+	return true
+
+func _exit_tree() -> void:
+	cancel_export()
+	cancel_resume()
 
 func cancel(reason: String = "Human Stop") -> void:
 	serial += 1
