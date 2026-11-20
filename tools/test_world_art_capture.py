@@ -671,6 +671,51 @@ class GraphicalCaptureTests(unittest.TestCase):
         self.assertNotRegex(done.stdout + done.stderr, r"SCRIPT ERROR|Parse Error")
 
 
+    def test_12_asymmetric_godot_framebuffer_and_explicit_camera_clipping(self):
+        # Real shader-backed Godot, not a Python mock or an SVG rasteriser.
+        for label, width, height, mode, clipped_axis in [
+            ("tall", 512, 8192, "width", ("top", "bottom")),
+            ("wide", 8192, 512, "height", ("left", "right")),
+        ]:
+            with self.subTest(canvas=label):
+                pack_dir = self.scratch / ("art-" + label)
+                pack_dir.mkdir(parents=True, exist_ok=True)
+                pack = pack_dir / "pack.json"
+                # Both ends deliberately authored; full export must include
+                # the source-world rightmost strip and the long-axis endpoint.
+                document = {
+                    "scene": {"size": [width, height], "rectangles": [
+                        [0, 0, width, 4, 62],
+                        [width - 8, 0, 8, height, 65],
+                        [width - 8, height - 16, 8, 16, 54],
+                    ], "placements": []},
+                    "features": [{"id": "sample", "size": [4, 4],
+                                  "rectangles": [[0, 0, 4, 4, 65]], "variants": []}],
+                }
+                pack.write_text(json.dumps(document), encoding="utf-8")
+                out, _, _ = self.capture("asymmetric-" + label, "--pack", str(pack),
+                                          "--shots", "full,viewport", "--scale", "1",
+                                          "--resolution", "800x500", "--framing", mode,
+                                          art_root=False)
+                batch, problems = support.verify_bundle(out)
+                self.assertEqual(problems, [], label + ": " + str(problems))
+                self.assertEqual(batch["status"], "completed")
+                manifest = json.loads((out / batch["jobs"][0]["manifest"]).read_text(encoding="utf-8"))
+                shots = {shot["kind"]: shot for shot in manifest["shots"]}
+                self.assertEqual((shots["full"]["width"], shots["full"]["height"]), (width, height))
+                self.assertTrue(shots["full"]["stats"]["nonblank"])
+                self.assertGreater(shots["full"]["edge_stats"]["right"]["distinct_colours"], 1)
+                self.assertEqual(shots["viewport"]["camera"]["mode"], mode)
+                camera = shots["viewport"]["camera"]
+                self.assertFalse(camera["map_fully_visible"],
+                                 "axis-specific fit must report real clipping rather than lying")
+                for side in clipped_axis:
+                    self.assertTrue(camera["clips"][side], label + " should clip " + side)
+                policy = batch["jobs"][0]["art_size_policy"]
+                self.assertTrue(policy["previewable"] and policy["full_exportable"])
+                self.assertEqual(policy["native_playable"], "not-qualified-by-art-pipeline")
+
+
 class _Recorder(unittest.TextTestResult):
     def addSuccess(self, test):
         super().addSuccess(test)
