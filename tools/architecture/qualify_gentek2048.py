@@ -104,12 +104,12 @@ def main() -> int:
     for phase in ("author","reopen"):
         path=out/("gentek2048-"+phase+".json")
         if path.is_file(): reports[phase]=json.loads(path.read_text(encoding="utf-8"))
+    def native_cases(report):
+        return [row for row in report["cases"] if row.get("case", "").startswith("gentek2048-")]
     complete=(set(reports)=={"author","reopen"} and
-        all(r["failures"]==0 and r["complete"] and len(r["cases"])==2 for r in reports.values()))
+        all(r["failures"]==0 and r["complete"] and len(native_cases(r))==2 for r in reports.values()))
     if complete:
-        for i in range(2):
-            author=reports["author"]["cases"][i]
-            reopen=reports["reopen"]["cases"][i]
+        for author, reopen in zip(native_cases(reports["author"]),native_cases(reports["reopen"])):
             for key in ("case","origin","seed","modules","zones","native_chunks","native_material_sha256","recipe_sha256","material_bytes","edits"):
                 if author[key]!=reopen[key]: complete=False
             if author["material_bytes"]!=2048*2048 or author["native_chunks"]!=256: complete=False

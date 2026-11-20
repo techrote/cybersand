@@ -152,7 +152,11 @@ func run() -> void:
 				if not await _case(kind, phase == "reopen"):
 					complete = false
 					break
-	check(complete and report.cases.size() == CASES.size(), "both 2048-square registered scenarios completed")
+	var retained_cases := 0
+	for entry: Dictionary in report.cases:
+		if str(entry.get("case", "")).begins_with("gentek2048-"):
+			retained_cases += 1
+	check(complete and retained_cases == CASES.size(), "both 2048-square registered scenarios completed; timing records are separate")
 	report.checks = checks
 	report.failures = failures
 	report.complete = complete
