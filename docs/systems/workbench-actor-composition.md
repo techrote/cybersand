@@ -265,7 +265,7 @@ mount. Native refusal retains the old applied arrangement.
 
 ## Authored data, options and compatibility
 
-The root remains **Setup-v2**. An actor retains `id`, `model`, `definition_hash`,
+The root remains **Setup-v2**. An actor retains `id`, `model`, `hash`,
 `spawn` and `options`, and may add this strictly validated extension:
 
 ```json

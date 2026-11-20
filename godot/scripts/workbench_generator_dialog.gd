@@ -250,6 +250,7 @@ func _fit_available_bounds() -> void:
 		position = position.clamp(bounds.position,bounds.end-size)
 
 func _popup_bounded() -> void:
+	if _workbench != null: _workbench._cancel()
 	_fit_available_bounds()
 	popup_centered_clamped(Vector2i(720,610),0.9)
 

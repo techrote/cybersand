@@ -18,6 +18,7 @@ import re
 import shutil
 import subprocess
 import sys
+import tempfile
 
 import execution_policy
 import native_candidate_identity
@@ -301,6 +302,16 @@ def verify_package(directory: Path, manifest: dict) -> dict:
     return package
 
 
+def campaign_userdata(project_root: Path) -> tempfile.TemporaryDirectory:
+    """Keep authoring subprocess output outside both source and installation."""
+    directory = tempfile.TemporaryDirectory(prefix="cybersand-actor-qualification-")
+    path = Path(directory.name).resolve()
+    if path.is_relative_to(ROOT.resolve()) or path.is_relative_to(project_root.resolve()):
+        directory.cleanup()
+        raise ValueError("Qualification temporary userdata must be outside source and installed package")
+    return directory
+
+
 def test(args) -> int:
     platform = "windows" if sys.platform == "win32" else "linux"
     manifest = candidate(args.candidate, platform)
@@ -324,17 +335,6 @@ def test(args) -> int:
               "candidate": manifest, "godot_version": version,
               "rapier_sha256": digest(project_root / RAPIER[platform]), "results": [],
               "installed_package": package}
-    env = dict(os.environ)
-    env["XDG_DATA_HOME"] = str((args.output / "userdata").resolve())
-    env["APPDATA"] = env["XDG_DATA_HOME"]
-    env["CYBERSAND_SOURCE_REVISION"] = manifest["source_commit"]
-    env["WB_ACTOR_CAPTURE_DIR"] = str((args.output / "frames").resolve())
-    env["WB_ACTOR_PERFORMANCE_OUTPUT"] = str((args.output / "performance.json").resolve())
-    env["WB_ACTOR_MEASURE_MS"] = "3000"
-    env.pop("WB_ACTOR_BASELINE", None)
-    env["CYBERSAND_ACTOR_COMPOSITION_NAME"] = "actor-composition-" + manifest["source_commit"][:12]
-    env.pop("CYBERSAND_ACTOR_COMPOSITION_REOPEN", None)
-    env.pop("CYBERSAND_ACTOR_COMPOSITION_CAPTURE", None)
     available = {case.name: case for case in runner.discover_cases()}
     requested = args.cases.split(",") if args.cases else (
         ["test_workbench_actor_composition"] if args.package else list(CASES))
@@ -358,7 +358,23 @@ def test(args) -> int:
         cases.append(runner.Case("actor_composition_performance",
                      ("--script", "res://tests/measure_workbench_actor_composition.gd"),
                      execution_policy.complex_process_seconds(), 120, args.graphical))
+    userdata_owner = campaign_userdata(project_root)
+    userdata = Path(userdata_owner.name).resolve()
+    report["userdata"] = {"execution_directory": str(userdata),
+                          "retained_directory": "userdata", "retained": False,
+                          "scope": "One external directory shared across the campaign and fresh-process reopen."}
     try:
+        env = dict(os.environ)
+        env["XDG_DATA_HOME"] = str(userdata)
+        env["APPDATA"] = env["XDG_DATA_HOME"]
+        env["CYBERSAND_SOURCE_REVISION"] = manifest["source_commit"]
+        env["WB_ACTOR_CAPTURE_DIR"] = str((args.output / "frames").resolve())
+        env["WB_ACTOR_PERFORMANCE_OUTPUT"] = str((args.output / "performance.json").resolve())
+        env["WB_ACTOR_MEASURE_MS"] = "3000"
+        env.pop("WB_ACTOR_BASELINE", None)
+        env["CYBERSAND_ACTOR_COMPOSITION_NAME"] = "actor-composition-" + manifest["source_commit"][:12]
+        env.pop("CYBERSAND_ACTOR_COMPOSITION_REOPEN", None)
+        env.pop("CYBERSAND_ACTOR_COMPOSITION_CAPTURE", None)
         # Reuse the established watchdog and diagnostics, changing only the
         # application root when exercising the committed portable installation.
         runner.ROOT = project_root
@@ -395,7 +411,25 @@ def test(args) -> int:
         raise
     finally:
         runner.ROOT = ROOT
-        write(args.output / "qualification.json", report)
+        # The process owner has retired the last child before evidence is copied
+        # into the checkout. The Materials Lab source-write guard stays intact.
+        try:
+            shutil.copytree(userdata, args.output / "userdata")
+            report["userdata"]["retained"] = True
+        except Exception as error:
+            report.update(status="failed", completed=False)
+            report["userdata"]["retention_error"] = str(error)
+            raise
+        finally:
+            try:
+                userdata_owner.cleanup()
+                report["userdata"]["temporary_directory_removed"] = True
+            except Exception as error:
+                report.update(status="failed", completed=False)
+                report["userdata"]["cleanup_error"] = str(error)
+                raise
+            finally:
+                write(args.output / "qualification.json", report)
 
 
 def main() -> int:

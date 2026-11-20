@@ -539,6 +539,66 @@ func handoff_and_inspection() -> void:
 	check(ui.actor_observation(1).lease_remaining==0,"held human input cannot rearm on focus return")
 	key(KEY_W,false)
 	await process_frame
+	# Inline Details uses a non-focusable toolbar button. Opening it must
+	# retire the held human lease even when no OS or text focus event fires.
+	if not await until(func() -> bool: return not host._actor_input_rearm,
+		"released controls rearm before inline Details check"): return
+	var details_button: Button
+	for candidate: Node in ui.find_children("*","Button",true,false):
+		if candidate.text == "Details": details_button = candidate
+	if not check(details_button != null and not ui._details.visible,"ordinary inline Details starts closed"): return
+	key(KEY_W,true)
+	await phase("human pilot holds drive before opening Details",6)
+	check(ui.actor_observation(1).lease_remaining>0 and not host._actor_input_rearm,
+		"human lease is active before Details opens")
+	var details_generation: int = session.workbench_control(1).generation
+	details_button.pressed.emit()
+	check(ui._details.visible and ui.actor_observation(1).lease_remaining==0 and host._actor_input_rearm
+		and session.workbench_control(1).generation>details_generation,
+		"opening inline Details revokes only the held human lease")
+	scripted_before = session.workbench_control(2).accepted
+	await phase("NPCs continue with inline Details open and human key held",12)
+	check(session.workbench_control(2).accepted>scripted_before and ui.actor_observation(1).lease_remaining==0,
+		"Details preserves autonomous decisions and cannot rearm a held human key")
+	details_button.pressed.emit()
+	await process_frame
+	check(not ui._details.visible and ui.actor_observation(1).lease_remaining==0 and host._actor_input_rearm,
+		"closing Details cannot authorize the still-held human key")
+	key(KEY_W,false)
+	if not await until(func() -> bool: return not host._actor_input_rearm,
+		"Details cancellation rearms only after controls are released"): return
+	var rearmed_accepted: int = session.workbench_control(1).accepted
+	key(KEY_W,true)
+	await phase("fresh human input after Details release",6)
+	check(session.workbench_control(1).accepted>rearmed_accepted and ui.actor_observation(1).lease_remaining>0,
+		"fresh human drive works after Details cancellation and neutral rearm")
+	key(KEY_W,false)
+	await process_frame
+	for panel: Dictionary in [
+		{"name":"Water Lab", "open":ui.water_lab.open, "window":ui.water_lab.window},
+		{"name":"Generator", "open":ui._generated_dialog.open_new, "window":ui._generated_dialog},
+		{"name":"Flatten confirmation", "open":ui._flatten_pressed, "window":ui._flatten_confirmation},
+	]:
+		if not await until(func() -> bool: return not host._actor_input_rearm,
+			"released controls rearm before " + panel.name): return
+		key(KEY_W,true)
+		await phase("human drive before " + panel.name,6)
+		check(ui.actor_observation(1).lease_remaining>0,"human lease is active before " + panel.name)
+		var panel_generation: int = session.workbench_control(1).generation
+		panel.open.call()
+		check(panel.window.visible and ui.actor_observation(1).lease_remaining==0 and host._actor_input_rearm
+			and session.workbench_control(1).generation>panel_generation,
+			"opening " + panel.name + " explicitly retires held human authority")
+		scripted_before = session.workbench_control(2).accepted
+		await phase("NPCs continue with " + panel.name,12)
+		check(session.workbench_control(2).accepted>scripted_before and ui.actor_observation(1).lease_remaining==0,
+			panel.name + " leaves NPCs active and held human controls cancelled")
+		panel.window.hide()
+		await process_frame
+		check(ui.actor_observation(1).lease_remaining==0 and host._actor_input_rearm,
+			"closing " + panel.name + " cannot authorize held input")
+		key(KEY_W,false)
+		await process_frame
 
 
 func external_policy() -> void:

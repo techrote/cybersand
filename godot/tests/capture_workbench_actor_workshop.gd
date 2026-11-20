@@ -26,6 +26,9 @@ func until(predicate: Callable, label: String) -> bool:
 
 
 func capture(name: String, caption: String) -> bool:
+	# Source changes are immediate; the ordinary status/label publication runs
+	# on its own cadence. Observe that publication before recording the frame.
+	if not await until(labels_current, "current actor role labels: " + name): return false
 	await RenderingServer.frame_post_draw
 	await RenderingServer.frame_post_draw
 	var image := root.get_texture().get_image()
@@ -36,6 +39,17 @@ func capture(name: String, caption: String) -> bool:
 		"native_tick":host.latest_snapshot.tick_index,
 		"rapier_tick":host.physical_actor_session.tick,
 		"pilot":ui.pilot_id(), "inspected":ui.selected_id()})
+	return true
+
+
+func labels_current() -> bool:
+	if host.physical_actor_overlay == null: return false
+	for actor: Dictionary in ui.applied.actors:
+		var slot: int = host.physical_actor_session.slot_for_instance(int(actor.id))
+		var label: Dictionary = host.physical_actor_overlay.actor_labels.get(slot, {})
+		var source: String = "PILOT" if int(actor.id) == ui.pilot_id() else str(actor.control.source)
+		if label.get("text", "") != "#%d %s · %s" % [actor.id, actor.model, source]: return false
+		if label.get("selected", false) != (int(actor.id) == ui.selected_id()): return false
 	return true
 
 

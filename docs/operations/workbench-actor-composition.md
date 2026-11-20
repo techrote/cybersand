@@ -81,8 +81,9 @@ X/Y**, or the ordinary placement tool. **Replace inspected**, **Reset** and
 **Remove** are explicit authoring operations. Replacement gets a new authored
 identity. Unsupported sources, mounts, body capacity or positions produce a
 refusal rather than dropping another actor. Use the existing **Details** controls
-for relevant per-instance response/mass/inertia/flyer options; irrelevant knobs
-are disabled.
+for relevant per-instance response budget, mass, inertia and flyer options;
+irrelevant knobs are disabled. The response algorithm itself is a shared
+Workbench setting and applies to the entire cast.
 
 Opening a panel or losing focus cancels human input. Release held controls after
 returning to gameplay before pressing them again. NPC schedules do not depend on
@@ -152,9 +153,11 @@ does not replace this owner test.
    authored spawns; live momentum, evolved material, leases and private policy
    memory are not restored. Use the established Flatten operation when a new
    material baseline is desired.
-7. Try an incompatible item on a flyer and an over-capacity placement. Confirm a
-   useful refusal and that the applied map/cast survives. Remove or replace an
-   actor normally and check that it no longer responds to old policy data.
+7. Select a flyer and confirm that its unsupported mounted-item selector is
+   disabled. Try an over-capacity placement and confirm a useful refusal with
+   the applied map/cast intact. Remove or replace an actor normally and check
+   that it no longer responds to old policy data. Automated API/schema cases
+   separately verify that forged incompatible item requests refuse.
 
 ## External policy integration
 

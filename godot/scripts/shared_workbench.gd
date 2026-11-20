@@ -558,6 +558,7 @@ func _flatten_pressed() -> void:
 	if is_flatten_pending():
 		cancel_flatten()
 		return
+	_cancel()
 	_flatten_confirmation.popup_centered(Vector2i(550,190))
 
 func is_flatten_pending() -> bool:
@@ -970,6 +971,7 @@ func _water_identity(context: Dictionary) -> String:
 func _details_visibility_changed() -> void:
 	_details_scroll.visible = _details.visible
 	if is_instance_valid(host):
+		if _details.is_visible_in_tree(): _cancel()
 		host.simulation_worker.set_worker_participation_sampling(_details.is_visible_in_tree())
 
 
