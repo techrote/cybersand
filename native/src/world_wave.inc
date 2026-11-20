@@ -100,7 +100,24 @@ struct World::WaveState {
         std::vector<std::int32_t> mass, weight;
         std::vector<std::uint8_t> flags;
         std::vector<Launch> launch;      // fixed capacity; filled only in the last round
-        std::uint32_t launch_overflow = 0;
+        std::uint64_t launch_overflow = 0;
+
+        // The strip visits faces in vertical order. A full list must not
+        // permanently exclude the bottom of a tall wall. For full-face mode
+        // keep a deterministic reservoir sample; no worker allocates here.
+        void nominate(const Launch& face, bool full_face, std::uint32_t round) noexcept {
+            constexpr auto limit = WaveSpillConfig::kLaunchCandidatesPerTask;
+            if (launch.size() < limit) {
+                launch.push_back(face);
+                return;
+            }
+            ++launch_overflow;
+            if (full_face) {
+                const auto seen = limit + launch_overflow;
+                const auto slot = mix64((static_cast<std::uint64_t>(round) << 32U) ^ seen) % seen;
+                if (slot < limit) launch[static_cast<std::size_t>(slot)] = face;
+            }
+        }
     };
     std::vector<Entry> sorted;
     std::vector<ChunkCoord> grow;
@@ -168,6 +185,14 @@ namespace {
 // live flight countdowns in both Wave hashes, without changing historical streams.
 void hash_wave_discharge(std::uint64_t& hash, const WaveSpillConfig& spill,
                          std::span<const BallisticParcel> parcels) {
+    if (spill.deep_draw != 0) {
+        for (const char c : std::string_view{"wave-deep-draw"}) hash_byte(hash, static_cast<std::uint8_t>(c));
+        hash_integer(hash, spill.deep_draw);
+    }
+    if (spill.full_face != 0) {
+        for (const char c : std::string_view{"wave-full-face-v1"}) hash_byte(hash, static_cast<std::uint8_t>(c));
+        hash_integer(hash, spill.full_face);
+    }
     if (spill.sheet_rate != 0) {
         for (const char c : std::string_view{"wave-sheet-rate"}) hash_byte(hash, static_cast<std::uint8_t>(c));
         hash_integer(hash, spill.sheet_rate);
@@ -223,6 +248,7 @@ void World::validate_wave_flow_config() const {
         if (tune.spill.fall < 1 || tune.spill.fall > S::kMaximumFall ||
             tune.spill.share_shift < 1 || tune.spill.share_shift > S::kMaximumShareShift ||
             tune.spill.draw < 0 || tune.spill.draw > S::kMaximumDraw ||
+            tune.spill.deep_draw < 0 || tune.spill.deep_draw > S::kMaximumDraw ||
             tune.spill.draw_head < 0 || tune.spill.draw_head > S::kMaximumDrawHead ||
             tune.spill.stream < 0 || tune.spill.stream > S::kMaximumStream ||
             tune.spill.launch_min < 1 || tune.spill.launch_min > 255 ||
@@ -232,7 +258,8 @@ void World::validate_wave_flow_config() const {
             tune.spill.catch_falling < 0 || tune.spill.catch_falling > 1 ||
             tune.spill.stream_draw < 0 || tune.spill.stream_draw > 255 ||
             tune.spill.sheet_rate < 0 || tune.spill.sheet_rate > 127 ||
-            tune.spill.coyote_ticks < 0 || tune.spill.coyote_ticks > 8)
+            tune.spill.coyote_ticks < 0 || tune.spill.coyote_ticks > 8 ||
+            tune.spill.full_face < 0 || tune.spill.full_face > 1)
             throw std::invalid_argument("wave_flow spill tuning outside native bounds");
     }
     if (config_.backend != SimulationBackend::PhasedInPlace)
@@ -791,6 +818,8 @@ void World::wave_flux_task(std::size_t task_index) noexcept {
     const auto last_x = task.half == 0U ? size / 2 : size;
     const auto film = state.film;
     const auto& spill = config_.wave_flow.spill;
+    const bool full_face_hybrid = spill.enabled && spill.full_face != 0 &&
+        config_.ballistic_water.enabled && spill.launch_budget > 0;
     const auto maximum = state.maximum;
     for (std::uint32_t c = 0; c < task.count; ++c) {
         auto& chunk = *state.sorted[task.first + c].chunk;
@@ -857,7 +886,14 @@ void World::wave_flux_task(std::size_t task_index) noexcept {
                 // A face outside every active band keeps no momentum: coasting
                 // flux with no restoring force would pump energy into the surface.
                 if (code == 0U) { wave.flux[i] = 0; continue; }
-                const auto head = wave.weight[i] - other->wave->weight[j];
+                auto head = wave.weight[i] - other->wave->weight[j];
+                if (full_face_hybrid && a != 0 && b != 0) {
+                    // A passing curtain exerts no hydrostatic counter-head.
+                    // Otherwise one full falling cell can hide the entire crest.
+                    const bool left_falling = (meta_a >> WaveChunk::kDepthShift) == WaveChunk::kFalling;
+                    const bool right_falling = (meta_b >> WaveChunk::kDepthShift) == WaveChunk::kFalling;
+                    if (left_falling != right_falling) head = left_falling ? -other->wave->weight[j] : wave.weight[i];
+                }
                 // Whether the cell rests on something solid (or on the edge of
                 // what is solved, which is treated as a floor).
                 const auto supported = [&](const Chunk* owner, std::size_t at) noexcept {
@@ -1030,6 +1066,9 @@ void World::wave_flux_task(std::size_t task_index) noexcept {
                         if (rightward ? supported(&chunk, i) : supported(other, j)) available -= film;
                         available = std::max(0, available) >> spill.share_shift;
                     }
+                    // A parcel flies out of the cell without occupying grid room.
+                    // A full falling curtain may still pass spray from the wall behind it.
+                    const auto face_share = std::min(available, maximum >> 1);
                     // Falling Water is never overfilled: two faces share the room.
                     available = std::min(available, std::max(0, maximum - destination_mass) >> 1);
                     const auto donor_head = rightward ? wave.weight[i] : other->wave->weight[j];
@@ -1043,41 +1082,48 @@ void World::wave_flux_task(std::size_t task_index) noexcept {
                         const auto rate = sheet * (std::int64_t{1} << P::kFluxShift);
                         flux = rightward ? std::max(flux, rate) : std::min(flux, -rate);
                     }
-                    const bool throwing_row = spill.sheet_rate == 0 || donor_head <= 2 * maximum;
-                    if (state.launch && throwing_row && !donor_falling && destination_mass == 0 && available >= spill.launch_min) {
-                        // Hybrid: this share leaves as a ballistic parcel after
-                        // the passes. The face itself carries nothing, so the
-                        // Water cannot be moved twice.
+                    const bool full_face = spill.full_face != 0;
+                    const bool throwing_row = full_face || spill.sheet_rate == 0 || donor_head <= 2 * maximum;
+                    const auto release = full_face ? face_share : available;
+                    if (state.launch && throwing_row && !donor_falling && (destination_mass == 0 || full_face) &&
+                        release >= spill.launch_min) {
+                        // Reserve the thrown share before the grid transfer.
+                        // A successful launch debits its own donor after apply.
                         auto& list = state.scratch[task_index];
                         // stream_share keeps part of the face pouring as the
                         // vertical stream; the rest is thrown. stream_draw pours
                         // an extra share from the face cell itself, so the throw
                         // keeps its size and the pool feed refills the face.
-                        const auto keep = (available * spill.stream_share) >> 8;
-                        const auto drawn = (available * spill.stream_draw) >> 8;
-                        if (available - keep < spill.launch_min) {
+                        // In full-face mode the sheet fraction keeps a coherent grid
+                        // stream alongside spray. Either stream control can add to it.
+                        const auto fraction = full_face ? std::max(spill.sheet_rate, spill.stream_share) : spill.stream_share;
+                        const auto keep = (release * fraction) >> 8;
+                        const auto thrown = release - keep;
+                        const auto drawn = (release * spill.stream_draw) >> 8;
+                        if (thrown < spill.launch_min) {
                             // Too little left to throw: the whole share pours.
-                        } else if (list.launch.size() < list.launch.capacity()) {
+                        } else if (full_face || list.launch.size() < WaveSpillConfig::kLaunchCandidatesPerTask) {
                             if (state.final_round) {
                                 // Carry the outward Wave velocity (mass flux / donor
                                 // mass, converted from rounds to ticks) into crest flight.
                                 std::int32_t crest_speed_q = -1;
                                 if (spill.coyote_ticks != 0 && donor_head <= maximum) {
                                     const auto outward = std::min<std::int64_t>(std::abs(flux),
-                                        static_cast<std::int64_t>(available) << P::kFluxShift);
+                                        static_cast<std::int64_t>(release) << P::kFluxShift);
                                     crest_speed_q = static_cast<std::int32_t>(outward * config_.wave_flow.substeps *
                                         BallisticWaterConfig::kQ / (static_cast<std::int64_t>(donor_mass) << P::kFluxShift));
                                 }
-                                list.launch.push_back({origin_x + lx + (rightward ? 0 : 1), origin_y + ly,
-                                                       std::abs(head), available - keep, rightward ? 1 : -1, crest_speed_q});
+                                list.nominate({origin_x + lx + (rightward ? 0 : 1), origin_y + ly,
+                                               full_face ? donor_head : std::abs(head), thrown, rightward ? 1 : -1,
+                                               crest_speed_q}, full_face, state.round);
                             }
                             // The receiver is Empty: two faces share its room.
                             // The launch takes what the cell still holds after
                             // the apply pass, so ownership stays exact.
                             // Never more than this face's own share: the two-face
                             // donor budget (share_shift >= 1) must still hold.
-                            const auto grid_budget = (spill.sheet_rate != 0 || spill.coyote_ticks != 0)
-                                ? (donor_mass >> 1) - (available - keep) : available;
+                            const auto grid_budget = (full_face || spill.sheet_rate != 0 || spill.coyote_ticks != 0)
+                                ? (donor_mass >> 1) - thrown : available;
                             available = std::min({keep + drawn, grid_budget, available, maximum >> 1});
                         } else if (state.final_round) {
                             ++list.launch_overflow;
@@ -1108,8 +1154,20 @@ void World::wave_flux_task(std::size_t task_index) noexcept {
                     // Spill: bulk flow may exceed the wave coast limit unless it
                     // runs against more than `draw_head` of head, so a pool can
                     // feed its draining edge while a reversing surge still relaxes.
-                    const auto coast = spill.enabled && ((head > 0) == rightward || std::abs(head) <= spill.draw_head)
-                        ? std::max(config_.wave_flow.coast, spill.draw) : config_.wave_flow.coast;
+                    auto coast = config_.wave_flow.coast;
+                    if (spill.enabled && ((head > 0) == rightward || std::abs(head) <= spill.draw_head)) {
+                        auto draw = spill.draw;
+                        if (spill.deep_draw != 0) {
+                            // Opposing draw faces can drain most of a tall column together.
+                            // Depth codes 3..5 denote 5..32 responding rows in one wet stack.
+                            const auto deep = [](std::uint8_t meta) noexcept {
+                                const auto d = meta >> WaveChunk::kDepthShift;
+                                return d >= 3 && d < WaveChunk::kFalling;
+                            };
+                            if (deep(meta_a) || deep(meta_b)) draw = std::min(draw, spill.deep_draw);
+                        }
+                        coast = std::max(coast, draw);
+                    }
                     available = std::min(available >> config_.wave_flow.flow_share_shift, std::max(coast, downhill));
                     if (((rightward ? meta_b : meta_a) >> WaveChunk::kDepthShift) == WaveChunk::kSaturated) available = 0;
                 }
@@ -1471,11 +1529,24 @@ void World::advance_wave_flow(TickStats& stats) {
         const auto& law = config_.ballistic_water;
         auto budget = static_cast<std::int32_t>(std::min<std::size_t>(static_cast<std::size_t>(spill.launch_budget),
             config_.ballistic_water.capacity - ballistic_parcels_.size()));
+        // Thin an over-budget full face evenly through the entire nomination
+        // sequence, instead of always spending the pool slots on the top rows.
+        std::uint64_t nominees = 0;
+        if (spill.full_face != 0)
+            for (std::size_t index = 0; index < state.tasks.size(); ++index) nominees += state.scratch[index].launch.size();
+        const auto quota = static_cast<std::uint64_t>(budget);
+        const bool thinning = nominees > quota;
+        auto phase = thinning ? mix64(state.round) % nominees : 0;
         bool held = false;
         for (std::size_t index = 0; index < state.tasks.size(); ++index) {
             auto& scratch = state.scratch[index];
             if (scratch.launch_overflow != 0U) { diagnostics.launch_deferrals += scratch.launch_overflow; held = true; }
             for (const auto& face : scratch.launch) {
+                if (thinning) {
+                    phase += quota;
+                    if (phase < nominees) { ++diagnostics.launch_deferrals; held = true; continue; }
+                    phase -= nominees;
+                }
                 if (budget == 0) { ++diagnostics.launch_deferrals; held = true; continue; }
                 std::int64_t spawn_x = 0, spawn_y = 0;
                 if (!BallisticWaterConfig::spawn_cell_center_q(face.x, face.side, spawn_x) ||

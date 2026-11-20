@@ -172,3 +172,11 @@ Open **Water Lab → Wave**. Select **Sloshy** to stage the deep-water response 
 **Deep gain** sets how hard a deep pool pushes back. Ordinary **Gain** controls a shallow advancing front. **Flux smoothing** reduces sharp changes in the movement of adjacent wet faces. **Sheet rate** sends deeper exposed rows through the grid while the crest can still throw. **Coyote ticks** sets how long a crest parcel travels level. Set the four new values to zero to turn off their effects. Reset Wave tuning and restore the previous spill settings to reverse a whole bundle. The [dated evaluation](../audits/2026-11-19-wave-waterwall-002.md) records the tested settings and results.
 
 A face can spend its share only once. If the crest throw already uses the whole allowance, Stream draw has no spare Water to pour on that face. Deeper sheet rows can still pour.
+
+## Try full-face release at fall speed 3
+
+Load **water-wall** in the Shared Workbench and press **Run**. On the full-face evaluation branch, **Gameplay default** enables **Full face**, **Ballistic release** and **Blobs**, and sets **Fall speed** to **3**. Fall speed counts grid cells per solver round. The gameplay profile runs two rounds per tick. Parcels use their own gravity and velocity.
+
+For a comparison, open **Water Lab → Wave**, keep Fall speed at 3, clear **Full face**, and press **Apply**. Reload the same start for each run. The previous sheet setting sends spray from the crest and pours deeper rows down the edge. Selecting **Full face** lets exposed rows below the crest feed both the outward spray and the falling sheet. The native readback beside the controls shows which settings are active. [Experiment and measurements](../audits/2026-11-19-wave-water-face-004.md)
+
+The same evaluation sets **Deep pool feed** to **64** and keeps **Pool feed** at **127**. This keeps the shallow front fast while reducing the vertical cuts in deep moving Water. For an A/B on **water-ramp**, compare Deep pool feed **0** and **64**, use **Apply**, and reload the same start. Zero uses ordinary Pool feed at every depth. Leave **Full face** and **Fall speed** at the same values for both runs.

@@ -85,6 +85,7 @@ struct WaveSpillConfig {
     std::int32_t fall = 3;         // cells unsupported Water falls per round, 1..8
     std::int32_t share_shift = 1;  // an exposed face sheds 1/2^n of its cell per round, 1..8
     std::int32_t draw = 64;        // units per round a bulk face may carry, 0..127 (0: coast only)
+    std::int32_t deep_draw = 0;    // feed limit beside a stack of >=5 responding rows; 0 uses draw
     std::int32_t draw_head = 255;  // adverse head (mass units) above which the coast limit applies again
     std::int32_t stream = 128;     // falling Water denser than this (mass units) spreads sideways, 0..255
     // Hybrid release, used only when ballistic_water_v1 is enabled on the same
@@ -106,6 +107,7 @@ struct WaveSpillConfig {
     // of outward head per round. Deeper rows pour while the upper two can throw.
     std::int32_t sheet_rate = 0;   // 0..127, 0 keeps the original discharge
     std::int32_t coyote_ticks = 0; // 0..8 gravity-free flight ticks for a thrown crest
+    std::int32_t full_face = 0;    // 0: historical selection, 1: throw from all exposed resting rows
     [[nodiscard]] bool operator==(const WaveSpillConfig&) const = default;
 };
 

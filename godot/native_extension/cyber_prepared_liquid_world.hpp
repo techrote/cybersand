@@ -438,12 +438,16 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         // spill's hybrid release, which throws exposed faces through the same
         // parcel pool, so it turns Ballistic Water on. Without it a spill World's
         // release budget is zero: parcels fly, but faces spill through the grid.
-        for (const char* key : {"workbench_wave_spill", "workbench_wave_spill_parcels"}) {
+        for (const char* key : {"workbench_wave_spill", "workbench_wave_spill_parcels", "workbench_wave_spill_full_face"}) {
             if (!options.has(key)) continue;
             if (!workbench || !config->wave_flow.enabled || options[key].get_type() != Variant::BOOL)
                 throw std::invalid_argument("Wave spill options require an enabled workbench Wave Flow and a boolean value");
         }
         config->wave_flow.spill.enabled = options.get("workbench_wave_spill", false);
+        const bool full_face = options.get("workbench_wave_spill_full_face", false);
+        if (full_face && !config->wave_flow.spill.enabled)
+            throw std::invalid_argument("Full-face release requires Waterwall spill");
+        config->wave_flow.spill.full_face = full_face ? 1 : 0;
         const bool spill_parcels = options.get("workbench_wave_spill_parcels", false);
         if (spill_parcels && !config->wave_flow.spill.enabled)
             throw std::invalid_argument("Wave spill ballistic release requires Waterwall spill");
@@ -458,6 +462,7 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
                 SpillKnob{"workbench_wave_spill_fall", &cybersand::WaveSpillConfig::fall},
                 SpillKnob{"workbench_wave_spill_share_shift", &cybersand::WaveSpillConfig::share_shift},
                 SpillKnob{"workbench_wave_spill_draw", &cybersand::WaveSpillConfig::draw},
+                SpillKnob{"workbench_wave_spill_deep_draw", &cybersand::WaveSpillConfig::deep_draw},
                 SpillKnob{"workbench_wave_spill_draw_head", &cybersand::WaveSpillConfig::draw_head},
                 SpillKnob{"workbench_wave_spill_stream", &cybersand::WaveSpillConfig::stream},
                 SpillKnob{"workbench_wave_spill_launch_min", &cybersand::WaveSpillConfig::launch_min},

@@ -8,7 +8,7 @@ extends SceneTree
 #
 #   godot --path godot --script res://tests/workbench_waterwall_capture.gd -- \
 #     MAP_JSON|named=SETUP|tank|lip OUT_DIR MODE TICKS(comma list) [WORKERS] [VIEW x,y,w,h ...] [wave:gain=32 spill:draw_head=768 ...]
-# MODE = orig, spill, hybrid, sloshy, max, max-nograce, combined, combined-nograce or fresh (installed defaults).
+# MODE = orig, spill, hybrid, sloshy, max, max-nograce, combined, combined-nograce, gameplay (staged preset with overrides) or fresh (installed defaults).
 # max-nograce uses the Max over-ledge bundle with only Coyote ticks set to zero.
 const Setup = preload("res://scripts/workbench_setup.gd")
 const GeneratedMaps = preload("res://scripts/workbench_generated_map.gd")
@@ -157,7 +157,7 @@ func run() -> void:
 	out = args[1]
 	mode = args[2]
 	fixture = args[0].get_file()
-	if mode not in ["orig","spill","hybrid","sloshy","max","max-nograce","combined","combined-nograce","fresh"]:
+	if mode not in ["orig","spill","hybrid","sloshy","max","max-nograce","combined","combined-nograce","gameplay","fresh"]:
 		fail("unknown mode "+mode)
 		await finish()
 		return
@@ -179,7 +179,16 @@ func run() -> void:
 				fail("invalid Wave override "+args[index])
 				await finish()
 				return
-			overrides[("workbench_wave_spill_" if is_spill else "workbench_wave_")+pair[0]] = int(pair[1])
+			var key := ("workbench_wave_spill_" if is_spill else "workbench_wave_")+pair[0]
+			var value := int(pair[1])
+			if key == "workbench_wave_spill_full_face":
+				if value not in [0,1]:
+					fail("Full face override must be 0 or 1")
+					await finish()
+					return
+				overrides[key] = value == 1
+			else:
+				overrides[key] = value
 			continue
 		var p := args[index].split(",")
 		views.append(Rect2i(int(p[0]),int(p[1]),int(p[2]),int(p[3])))
@@ -217,25 +226,31 @@ func run() -> void:
 		# from its original raw tuning before selecting bundles and overrides.
 		spray._set_wave(true)
 		spray._reset_wave_defaults()
+		spray._set_spill("workbench_wave_spill_full_face",false)
 		spray._ballistic.button_pressed = false
 		for field: Array in spray.SPILL_SPINS:
 			var key: String = field[0]
 			spray._spill_fields[key].value = field[5]
 			host.workbench_water_options[key] = int(field[5])
 	var is_sheet := mode in ["max","max-nograce","combined","combined-nograce"]
-	var has_parcels := mode in ["hybrid","fresh"] or is_sheet
+	var has_parcels := mode in ["hybrid","gameplay","fresh"] or is_sheet
 	var has_spill := mode == "spill" or has_parcels
 	if mode != "fresh":
 		spray._set_spill("workbench_wave_spill",has_spill)
 		spray._set_spill("workbench_wave_spill_parcels",has_parcels)
-	if mode in ["sloshy","combined","combined-nograce"]:
+	if mode in ["sloshy","combined","combined-nograce","gameplay"]:
+		var preset := "Gameplay default" if mode == "gameplay" else "Sloshy"
 		for index: int in spray._wave_preset.item_count:
-			if spray._wave_preset.get_item_text(index) == "Sloshy":
+			if spray._wave_preset.get_item_text(index) == preset:
 				spray._select_wave_preset(index)
+				break
 	if is_sheet:
 		spray._stage_max_over_ledge()
 		if mode.ends_with("-nograce"): spray._spill_fields.workbench_wave_spill_coyote_ticks.value = 0
 	for key: String in overrides:
+		if key == "workbench_wave_spill_full_face" and mode != "fresh":
+			spray._set_spill(key,overrides[key])
+			continue
 		var fields: Dictionary = spray._spill_fields if key.begins_with("workbench_wave_spill_") else spray._wave_fields
 		if mode == "fresh" or not fields.has(key):
 			fail("unknown Wave field or override supplied to fresh comparison: "+key)
@@ -260,7 +275,7 @@ func run() -> void:
 	if int(accepted.workers_requested) != workers: fail("native workers do not match request")
 	for key: String in ["deep_gain","flux_smoothing","floor_gain"]:
 		if accepted.parameters.get(key) != host.workbench_water_options["workbench_wave_"+key]: fail("unconfirmed "+key)
-	for key: String in ["sheet_rate","coyote_ticks","draw_head"]:
+	for key: String in ["sheet_rate","coyote_ticks","draw_head","fall","full_face","deep_draw"]:
 		if accepted.spill.get(key) != host.workbench_water_options["workbench_wave_spill_"+key]: fail("unconfirmed "+key)
 	if mode == "fresh" and (int(accepted.substeps) != int(fresh_settings.substeps) or accepted.parameters != fresh_settings.parameters):
 		fail("applying only workers changed the fresh Wave profile")

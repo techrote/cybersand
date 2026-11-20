@@ -1,0 +1,494 @@
+name: 'WAVE-WATER-FACE-004 source-matched runtime publication'
+
+# WAVE-WATER-FACE-004 (stacked on PR #677): a copy of the Wave Flow publisher
+# bound to this branch. Owner-authorized, branch-scoped runtime qualification. An explicit request
+# arms builds; changing ordinary source never silently starts publication.
+# Both target OSes execute Wave Flow plus legacy controls before a four-file
+# runtime append. Full ready-PR CI and owner merge approval remain separate.
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '.github/workflows/wave-water-face-004-runtime-publication.yml'
+      - 'tools/ci/wave_water_face_004_runtime_publication.py'
+      - 'tools/ci/lcb001_shared_contract_runtime_publication.py'
+      - 'tools/ci/test_wave_water_face_004_runtime_publication.py'
+  push:
+    branches: [codex/wave-water-face-004]
+    # Explicit source-bound publication request; normal native edits do not dispatch a publisher.
+    # Workflow/helper changes run lightweight guards; absent request means no build.
+    paths:
+      - 'tools/ci/wave_water_face_004_publish_request.json'
+      - '.github/workflows/wave-water-face-004-runtime-publication.yml'
+      - 'tools/ci/wave_water_face_004_runtime_publication.py'
+      - 'tools/ci/lcb001_shared_contract_runtime_publication.py'
+      - 'tools/ci/test_wave_water_face_004_runtime_publication.py'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: wave-water-face-004-runtime-publication-${{ github.run_id }}
+  cancel-in-progress: false
+
+env:
+  GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+  LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+  LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
+  GODOT_SILENCE_ROOT_WARNING: '1'
+  PYTHONUTF8: '1'
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  publisher-guards:
+    name: validate staged publisher without building runtimes
+    if: github.repository == 'techrote/cybersand' && ((github.event_name == 'push' && github.ref == 'refs/heads/codex/wave-water-face-004') || (github.event_name == 'pull_request' && github.head_ref == 'codex/wave-water-face-004' && github.base_ref == 'codex/wave-water-ramp-003'))
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out exact preparation head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+          fetch-depth: 0
+      - name: Run adversarial publisher guards and CI-provider policy
+        run: |
+          set -euo pipefail
+          python3 tools/ci/test_wave_mt_runtime_publication.py && python3 tools/ci/test_wave_waterwall_runtime_publication.py && python3 tools/ci/test_wave_water_face_004_runtime_publication.py
+          python3 tools/ci/test_lcb001_shared_contract_runtime_publication.py
+          python3 tools/ci/check_ci_provider_policy.py
+
+  admission:
+    needs: publisher-guards
+    name: require an explicit Wave Flow publication request
+    if: github.repository == 'techrote/cybersand' && github.event_name == 'push' && github.ref == 'refs/heads/codex/wave-water-face-004'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    outputs:
+      armed: ${{ steps.gate.outputs.armed }}
+    steps:
+      - name: Check out exact candidate source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+          fetch-depth: 0
+      - name: Validate request and exact branch lease before any runtime build
+        id: gate
+        run: |
+          set -euo pipefail
+          python3 tools/ci/test_wave_mt_runtime_publication.py && python3 tools/ci/test_wave_waterwall_runtime_publication.py && python3 tools/ci/test_wave_water_face_004_runtime_publication.py
+          python3 tools/ci/test_lcb001_shared_contract_runtime_publication.py
+          if test -f 'tools/ci/wave_water_face_004_publish_request.json'; then
+            python3 tools/ci/wave_water_face_004_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+            echo 'armed=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'armed=false' >> "$GITHUB_OUTPUT"
+            echo 'No explicit Wave Flow publish request. Build and publication disabled.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+  native-wave:
+    name: Wave Flow native ${{ matrix.mode }} before publication
+    needs: admission
+    if: needs.admission.outputs.armed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        mode: [normal, asan-ubsan, tsan]
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Execute the complete native Wave Flow suite
+        env:
+          WAVE_MODE: ${{ matrix.mode }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/wave-mt-native
+          git rev-parse HEAD HEAD^{tree} > build/wave-mt-native/source.txt
+          g++-13 --version > build/wave-mt-native/compiler.txt
+          python3 tools/ci/wave_water_face_004_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+          python3 tools/wave_mt/test_matrix.py
+          case "$WAVE_MODE" in
+            normal) targets="wave-flow-test wave-spill-test wave-body-boundary-test" ;;
+            asan-ubsan) targets="wave-flow-sanitize wave-spill-sanitize wave-body-boundary-sanitize" ;;
+            tsan) targets="wave-flow-thread-sanitize wave-spill-thread-sanitize wave-body-boundary-thread-sanitize" ;;
+          esac
+          # Original Wave, spill and the body-boundary stress controls all run.
+          for target in $targets; do
+            timeout "$(python3 tools/ci/execution_policy.py seconds native_suite_seconds)" \
+              make CXX=g++-13 "$target" 2>&1 | tee -a build/wave-mt-native/native.log
+          done
+      - name: Retain native results including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: wave-mt-native-${{ matrix.mode }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/wave-mt-native/
+          if-no-files-found: error
+          retention-days: 90
+
+  linux:
+    needs: admission
+    name: build and execute the Linux Wave Flow runtime
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/wave-water-face-004' && needs.admission.outputs.armed == 'true'
+    runs-on: ubuntu-24.04
+    # Complete native build, import, Workbench and unchanged policy/actor controls.
+    timeout-minutes: 360
+    outputs:
+      artifact_attempt: ${{ steps.artifact.outputs.attempt }}
+    steps:
+      - name: Check out exact source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+          fetch-depth: 0
+
+      - name: Validate publisher guards and unchanged source
+        run: |
+          set -euo pipefail
+          python3 tools/ci/test_wave_mt_runtime_publication.py && python3 tools/ci/test_wave_waterwall_runtime_publication.py && python3 tools/ci/test_wave_water_face_004_runtime_publication.py
+          python3 tools/ci/test_lcb001_shared_contract_runtime_publication.py
+          python3 tools/ci/wave_water_face_004_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+
+      - name: Fetch pinned Linux Rapier only
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" --exclude=""
+          echo "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" | sha256sum --check --strict
+
+      - name: Prepare pinned SCons and godot-cpp
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          "$RUNNER_TEMP/scons/bin/python" -c 'import SCons; assert SCons.__version__ == "4.10.1"'
+          mkdir "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 10m git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+
+      - name: Build exact Linux runtime and record canonical inputs
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: '2'
+          CYBERSAND_REAL_CXX: /usr/bin/g++-13
+          LINUX_CXX: /usr/bin/g++-13
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
+        run: |
+          set -euo pipefail
+          timeout 35m tools/build_pinned_godot_cpp.sh linux
+          timeout 20m tools/build_native_extension.sh
+          {
+            echo 'Build host: GitHub-hosted Ubuntu 24.04; Linux x86_64 target'
+            echo "godot-cpp=$GODOT_CPP_COMMIT; SCons=4.10.1"
+            g++-13 --version | head -n 1
+            ld --version | head -n 1
+            sha256sum "$GODOT_CPP_ROOT/bin/libgodot-cpp.linux.template_debug.x86_64.a"
+          } > "$RUNNER_TEMP/toolchain.txt"
+          python3 tools/ci/wave_water_face_004_runtime_publication.py record --platform linux --source-sha "$GITHUB_SHA" --runtime "$CYBERSAND_NATIVE_OUTPUT" --toolchain "$RUNNER_TEMP/toolchain.txt" --bundle build/wave-mt-linux
+
+      - name: Execute all required Wave Flow cases on Linux
+        run: |
+          set -euo pipefail
+          timeout 10m curl --fail --location --retry 3 --connect-timeout 60 --max-time 600 --output "$RUNNER_TEMP/godot-linux.zip" "$GODOT_URL"
+          python3 tools/ci/wave_water_face_004_runtime_publication.py test --platform linux --source-sha "$GITHUB_SHA" --godot-archive "$RUNNER_TEMP/godot-linux.zip" --bundle build/wave-mt-linux
+
+      - name: Execute actual rendered Shared Workbench and Wave controls
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+          CYBERSAND_PUBLICATION_PROFILE: wave_water_face_004
+        run: |
+          set -euo pipefail
+          bash tools/ci/prepare_linux_display.sh
+          xvfb-run -a -s '-screen 0 1600x1000x24' \
+            python3 tools/wave_mt/run_workbench_render.py \
+              --godot "$RUNNER_TEMP/godot-linux/Godot_v4.7-stable_linux.x86_64" \
+              --source-sha "$GITHUB_SHA" --bundle build/wave-mt-linux
+
+      - name: Record artifact attempt
+        if: always()
+        id: artifact
+        run: echo "attempt=$GITHUB_RUN_ATTEMPT" >> "$GITHUB_OUTPUT"
+
+      - name: Retain Linux runtime and execution evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: wave-mt-runtime-attempt-${{ github.run_attempt }}-linux-${{ github.run_id }}
+          path: build/wave-mt-linux/
+          if-no-files-found: error
+          retention-days: 90
+
+  windows-build:
+    needs: admission
+    name: cross-build the Windows Wave Flow runtime
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/wave-water-face-004' && needs.admission.outputs.armed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    outputs:
+      artifact_attempt: ${{ steps.artifact.outputs.attempt }}
+    steps:
+      - name: Check out exact source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+          fetch-depth: 0
+
+      - name: Validate publisher guards and unchanged source
+        run: |
+          set -euo pipefail
+          python3 tools/ci/test_wave_mt_runtime_publication.py && python3 tools/ci/test_wave_waterwall_runtime_publication.py && python3 tools/ci/test_wave_water_face_004_runtime_publication.py
+          python3 tools/ci/test_lcb001_shared_contract_runtime_publication.py
+          python3 tools/ci/wave_water_face_004_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+
+      - name: Prepare pinned SCons and godot-cpp
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          "$RUNNER_TEMP/scons/bin/python" -c 'import SCons; assert SCons.__version__ == "4.10.1"'
+          mkdir "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 10m git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+
+      - name: Prepare exact LLVM-MinGW
+        run: |
+          set -euo pipefail
+          timeout 10m curl --fail --location --retry 3 --connect-timeout 60 --max-time 600 --output "$RUNNER_TEMP/llvm-mingw.tar.xz" "$LLVM_MINGW_URL"
+          echo "$LLVM_MINGW_SHA256  $RUNNER_TEMP/llvm-mingw.tar.xz" | sha256sum --check --strict
+          mkdir "$RUNNER_TEMP/llvm-mingw"
+          tar -xJf "$RUNNER_TEMP/llvm-mingw.tar.xz" -C "$RUNNER_TEMP/llvm-mingw" --strip-components=1
+          test -x "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-g++"
+          if test ! -e "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"; then
+            ln -s llvm-ar "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"
+          fi
+
+      - name: Build exact Windows runtime and record canonical inputs
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: '2'
+          LLVM_MINGW_ROOT: ${{ runner.temp }}/llvm-mingw
+          WINDOWS_CXX: ${{ runner.temp }}/llvm-mingw/bin/x86_64-w64-mingw32-g++
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/cybersand_native.windows.x86_64.dll
+        run: |
+          set -euo pipefail
+          timeout 35m tools/build_pinned_godot_cpp.sh windows
+          timeout 20m tools/build_native_extension_windows.sh
+          mkdir -p build/wave-mt-windows
+          "$LLVM_MINGW_ROOT/bin/llvm-objdump" -p "$CYBERSAND_NATIVE_OUTPUT" > build/wave-mt-windows/windows-imports.txt
+          {
+            echo 'Build host: GitHub-hosted Ubuntu 24.04; Windows x86_64 target'
+            echo "godot-cpp=$GODOT_CPP_COMMIT; SCons=4.10.1"
+            echo "LLVM-MinGW=20260826 UCRT; archive SHA-256=$LLVM_MINGW_SHA256"
+            "$WINDOWS_CXX" --version | head -n 1
+            "$LLVM_MINGW_ROOT/bin/ld.lld" --version
+            sha256sum "$GODOT_CPP_ROOT/bin/libgodot-cpp.windows.template_debug.x86_64.a"
+          } > "$RUNNER_TEMP/toolchain.txt"
+          python3 tools/ci/wave_water_face_004_runtime_publication.py record --platform windows --source-sha "$GITHUB_SHA" --runtime "$CYBERSAND_NATIVE_OUTPUT" --toolchain "$RUNNER_TEMP/toolchain.txt" --bundle build/wave-mt-windows
+
+      - name: Record artifact attempt
+        if: always()
+        id: artifact
+        run: echo "attempt=$GITHUB_RUN_ATTEMPT" >> "$GITHUB_OUTPUT"
+
+      - name: Retain Windows build for actual Windows execution
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: wave-mt-build-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/wave-mt-windows/
+          if-no-files-found: error
+          retention-days: 90
+
+  windows-execution:
+    name: execute Windows Wave Flow cases
+    needs: windows-build
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/wave-water-face-004'
+    runs-on: windows-2022
+    timeout-minutes: 300
+    env:
+      GODOT_WINDOWS_URL: https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
+    outputs:
+      artifact_attempt: ${{ steps.artifact.outputs.attempt }}
+    steps:
+      - name: Check out exact source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+          fetch-depth: 0
+
+      - name: Select Python 3.12
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+
+      - name: Validate publisher guards and unchanged source
+        run: |
+          set -euo pipefail
+          python tools/ci/test_wave_mt_runtime_publication.py
+          python tools/ci/test_wave_waterwall_runtime_publication.py
+          python tools/ci/test_wave_water_face_004_runtime_publication.py
+          python tools/ci/wave_water_face_004_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+
+      - name: Restore exact Windows build
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: wave-mt-build-windows-${{ github.run_id }}-${{ needs.windows-build.outputs.artifact_attempt }}
+          path: build/wave-mt-windows
+
+      - name: Fetch pinned Windows Rapier only
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+          echo "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7  godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" | sha256sum --check --strict
+
+      - name: Execute all required Wave Flow cases on Windows
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --connect-timeout 20 --max-time 600 --output "$RUNNER_TEMP/godot-windows.zip" "$GODOT_WINDOWS_URL"
+          python tools/ci/wave_water_face_004_runtime_publication.py test --platform windows --source-sha "$GITHUB_SHA" --godot-archive "$RUNNER_TEMP/godot-windows.zip" --bundle build/wave-mt-windows
+
+      - name: Package and independently execute the Windows evaluation
+        shell: pwsh
+        run: |
+          python tools/ci/native_candidate_identity.py build/wave-mt-windows --create
+          if ($LASTEXITCODE -ne 0) { throw 'Native package source custody failed' }
+          $notices = Join-Path $env:RUNNER_TEMP 'godot-notices'
+          New-Item -ItemType Directory -Force $notices | Out-Null
+          foreach ($name in @('LICENSE.txt','COPYRIGHT.txt')) {
+            curl.exe -fL --retry 3 -o (Join-Path $notices $name) "https://raw.githubusercontent.com/godotengine/godot/5b4e0cb0f/$name"
+            if ($LASTEXITCODE -ne 0) { throw 'Pinned Godot notices download failed' }
+          }
+          if ((Get-FileHash (Join-Path $notices 'LICENSE.txt') -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'b0435e3b3e4e55238f05f4b306f30524a1b2e20147810d436eaa554fa6855c80' -or (Get-FileHash (Join-Path $notices 'COPYRIGHT.txt') -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'cb1980c88089573bcacd7221d777c689bb8bbd778799f24c27fca0fe5f774d6d') { throw 'Godot notices hash mismatch' }
+          $runtimeLicense = Join-Path $notices 'Microsoft-Visual-C-Runtime-LICENSE.docx'
+          $developerLicense = Join-Path $notices 'Microsoft-Visual-Studio-2022-LICENSE.docx'
+          curl.exe -fL --retry 3 -o $runtimeLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/09/Visual-C-Runtime-2015-2022-License-1.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Microsoft runtime licence download failed' }
+          curl.exe -fL --retry 3 -o $developerLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Visual-Studio-2022-Enterprise-Professional-License-EN.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Microsoft redistribution licence download failed' }
+          $vc = Join-Path $env:RUNNER_TEMP 'vc-runtime'
+          & tools/ci/stage_windows_vc_runtime.ps1 -Output $vc -License $runtimeLicense -DeveloperLicense $developerLicense
+          if ($LASTEXITCODE -ne 0) { throw 'VC runtime staging failed' }
+          $gui = Join-Path $env:RUNNER_TEMP 'godot-windows/Godot_v4.7-stable_win64.exe'
+          $env:CYBERSAND_PUBLICATION_PROFILE = 'wave_water_face_004'
+          python tools/package_wave_flow_candidate.py build --engine $gui --engine-notices $notices --native-candidate build/wave-mt-windows --vc-runtime $vc --output build/wave-flow-evaluation
+          if ($LASTEXITCODE -ne 0) { throw 'Wave Flow evaluation packaging failed' }
+          $archive = "build/CyberSand-Water-Face-Windows-$($env:GITHUB_SHA.Substring(0,12)).zip"
+          Compress-Archive -Path build/wave-flow-evaluation/* -DestinationPath $archive -CompressionLevel Optimal
+          (Get-FileHash $archive -Algorithm SHA256).Hash.ToLowerInvariant() + '  ' + (Split-Path $archive -Leaf) | Set-Content "$archive.sha256"
+          $validation = Join-Path $env:RUNNER_TEMP 'wave-flow-package-validation'
+          Expand-Archive $archive $validation
+          python tools/package_wave_flow_candidate.py qualify --package $validation --output build/wave-mt-windows/package-execution
+          if ($LASTEXITCODE -ne 0) { throw 'Extracted Wave Flow evaluation startup/scenarios failed' }
+      - name: Retain source-matched Windows evaluation ZIP
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: wave-water-face-004-owner-windows-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            build/CyberSand-Water-Face-Windows-*.zip
+            build/CyberSand-Water-Face-Windows-*.zip.sha256
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Record artifact attempt
+        if: always()
+        id: artifact
+        run: echo "attempt=$GITHUB_RUN_ATTEMPT" >> "$GITHUB_OUTPUT"
+
+      - name: Retain Windows runtime and execution evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: wave-mt-runtime-attempt-${{ github.run_attempt }}-windows-${{ github.run_id }}
+          path: build/wave-mt-windows/
+          if-no-files-found: error
+          retention-days: 90
+
+  publish:
+    name: fast-forward the source branch with both validated runtimes
+    needs: [native-wave, linux, windows-execution]
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/wave-water-face-004'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    steps:
+      - name: Check out the exact built source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+
+      - name: Require the feature branch to remain at the built source
+        run: |
+          set -euo pipefail
+          python3 tools/ci/test_wave_mt_runtime_publication.py && python3 tools/ci/test_wave_waterwall_runtime_publication.py && python3 tools/ci/test_wave_water_face_004_runtime_publication.py
+          python3 tools/ci/test_lcb001_shared_contract_runtime_publication.py
+          python3 tools/ci/wave_water_face_004_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+          git lfs install --local
+
+      - name: Restore passed Linux runtime and evidence
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: wave-mt-runtime-attempt-${{ needs.linux.outputs.artifact_attempt }}-linux-${{ github.run_id }}
+          path: build/wave-mt-linux
+
+      - name: Restore passed Windows runtime and evidence
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: wave-mt-runtime-attempt-${{ needs.windows-execution.outputs.artifact_attempt }}-windows-${{ github.run_id }}
+          path: build/wave-mt-windows
+
+      - name: Verify complete matching provenance and stage only the four runtime paths
+        run: |
+          set -euo pipefail
+          CYBERSAND_PUBLICATION_PROFILE=wave_water_face_004 python3 tools/wave_mt/run_workbench_render.py --verify-only --source-sha "$GITHUB_SHA" --bundle build/wave-mt-linux
+          python3 tools/ci/wave_water_face_004_runtime_publication.py stage --source-sha "$GITHUB_SHA" --linux-bundle build/wave-mt-linux --windows-bundle build/wave-mt-windows
+          git add -- godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll godot/addons/cybersand_native/runtime-provenance.linux.json godot/addons/cybersand_native/runtime-provenance.json
+          python3 tools/ci/wave_water_face_004_runtime_publication.py check-index --source-sha "$GITHUB_SHA"
+          git diff --check --cached
+          git diff --exit-code
+
+      - name: Commit and fast-forward only the unchanged feature branch
+        run: |
+          set -euo pipefail
+          python3 tools/ci/wave_water_face_004_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+          python3 tools/ci/wave_water_face_004_runtime_publication.py check-index --source-sha "$GITHUB_SHA"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'build(native): publish source-matched Linux and Windows runtimes'
+          test "$(git rev-list --parents -n 1 HEAD)" = "$(git rev-parse HEAD) $GITHUB_SHA"
+          # The exact single-parent check proves this update only appends to
+          # the built SHA. The lease atomically refuses any changed remote tip,
+          # including a concurrent reset; it cannot overwrite concurrent work.
+          # The LFS pre-push hook uploads only the new runtime objects.
+          git push --force-with-lease="refs/heads/codex/wave-water-face-004:$GITHUB_SHA" origin HEAD:refs/heads/codex/wave-water-face-004
+          {
+            echo '### Wave Flow runtime publication'
+            echo "Built source: $GITHUB_SHA"
+            echo "Runtime publication commit: $(git rev-parse HEAD)"
+            echo 'Both exact runtimes passed Wave Flow, real Rapier/Needle and legacy controls on their target OS; native/sanitizer gates and the extracted Windows evaluation package passed.'
+            echo 'The existing full ready-for-review validation gates remain required on the resulting PR head.'
+          } >> "$GITHUB_STEP_SUMMARY"

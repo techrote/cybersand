@@ -107,6 +107,10 @@ void spill_is_off_by_default_and_admission_is_typed() {
     expect_refusal([](WorldConfig& c) { c.wave_flow.spill.sheet_rate = 128; }, "sheet rate above bound");
     expect_refusal([](WorldConfig& c) { c.wave_flow.spill.coyote_ticks = -1; }, "negative crest flight duration");
     expect_refusal([](WorldConfig& c) { c.wave_flow.spill.coyote_ticks = 9; }, "crest flight duration above bound");
+    expect_refusal([](WorldConfig& c) { c.wave_flow.spill.full_face = -1; }, "negative full face");
+    expect_refusal([](WorldConfig& c) { c.wave_flow.spill.full_face = 2; }, "full face above one");
+    expect_refusal([](WorldConfig& c) { c.wave_flow.spill.deep_draw = -1; }, "negative deep draw");
+    expect_refusal([](WorldConfig& c) { c.wave_flow.spill.deep_draw = 128; }, "deep draw above 127");
     // Spill's hybrid release owns exposed faces: the per-cell face scan is
     // refused beside it, and admitted (generic Ballistic Water) without spill.
     expect_refusal([](WorldConfig& c) { c.ballistic_water.enabled = true; c.ballistic_water.face_release = true; },
@@ -154,6 +158,8 @@ void disabled_spill_reproduces_the_base_law() {
             cfg.wave_flow.spill.fall = 7;
             cfg.wave_flow.spill.launch_budget = 9;
             cfg.wave_flow.spill.sheet_rate = 127;
+            cfg.wave_flow.spill.full_face = 1;
+            cfg.wave_flow.spill.deep_draw = 64;
             cfg.wave_flow.spill.coyote_ticks = 8;
         }
         World w(cfg);
@@ -663,6 +669,8 @@ void diagonal_one_cell_wall_holds() {
     cfg.wave_flow.spill.sheet_rate = 127;
     cfg.wave_flow.spill.coyote_ticks = 8;
     check_diagonal_wall(cfg);
+    cfg.wave_flow.spill.full_face = 1;
+    check_diagonal_wall(cfg);
 }
 
 void wet_and_dry_corners_stop_ballistic_water() {
@@ -1031,16 +1039,171 @@ void sheet_releases_deep_rows_and_keeps_crest_spray() {
     }
 }
 
+void full_face_covers_dry_and_falling_receivers() {
+    // A full-height face crossing two 32-row active bands and a chunk edge.
+    // The second fixture has a full falling sheet in the spawn column.
+    constexpr int top = 32, height = 96, lip = 64;
+    for (const bool curtain : {false, true}) {
+        std::uint64_t reference = 0;
+        for (const unsigned workers : {1U, 6U}) {
+            auto cfg = config(Mode::Hybrid, workers);
+            cfg.wave_flow.spill.sheet_rate = 64;
+            cfg.wave_flow.spill.coyote_ticks = 4;
+            cfg.wave_flow.spill.stream = 255;
+            World original(cfg);
+            cfg.wave_flow.spill.full_face = 1;
+            World world(cfg);
+            require(original.physical_state_hash() != world.physical_state_hash() && original.state_hash() != world.state_hash(),
+                    "enabled full-face release is absent from identity");
+            for (auto* w : {&world, &original}) {
+                box(*w, 128, 192);
+                rect(*w, 1, top + height, lip - 1, 1, Material::Wall);
+                rect(*w, 1, top, lip - 1, height, Material::Water);
+                if (curtain) rect(*w, lip, top - 3, 1, height, Material::Water);
+                const auto initial = owned(*w, {0, 0, 128, 192});
+                (void)w->tick();
+                require_ledger_closes(*w, {0, 0, 128, 192}, initial, "96-row wall");
+            }
+            require(original.wave_flow_diagnostics().launched_parcels <= 2, "historical sheet exceeded its two-row spray");
+            std::vector<BallisticParcel> parcels(world.ballistic_parcel_count());
+            (void)world.copy_ballistic_parcels(parcels);
+            std::array<bool, height> seen{};
+            for (const auto& p : parcels) {
+                const auto y = static_cast<int>(p.y / BallisticWaterConfig::kQ);
+                require(p.x / BallisticWaterConfig::kQ == lip && p.vx > 0 && y >= top && y < top + height,
+                        "wall threw outside the exposed face");
+                require(p.quantity <= 127 && p.quantity != 0, "one row exceeded its parcel share");
+                require(p.coyote_left == (y == top ? 4 : 0), "submerged spray received crest grace");
+                seen[static_cast<std::size_t>(y - top)] = true;
+            }
+            require(std::all_of(seen.begin(), seen.end(), [](bool wet) { return wet; }),
+                    "a deep row of the full-height face failed to throw");
+            for (int y = top; y < top + height; ++y)
+                require(world.liquid_mass(lip, y) != 0, "full-face spray left a hole in the falling grid sheet");
+            const auto identity = world.physical_state_hash();
+            if (workers == 1) reference = identity;
+            else require(reference == identity, "full-face coverage changed with worker count");
+            std::printf("FULL_FACE curtain=%d workers=%u rows=%zu previous=%llu units=%llu grid=%llu\n",
+                        curtain, workers, parcels.size(), static_cast<unsigned long long>(original.wave_flow_diagnostics().launched_parcels),
+                        static_cast<unsigned long long>(world.wave_flow_diagnostics().launched_units),
+                        static_cast<unsigned long long>(world.water_quantity({lip, top, 1, height})));
+        }
+    }
+}
+
+void full_face_curtain_head_is_independent_of_parcel_slots() {
+    // No parcel can reach the launch threshold. Filling the pool with a
+    // distant jet must not reverse flow between a 64-unit lip and a passing
+    // 128-unit curtain. Both have exactly the same Water near the face.
+    auto cfg = config(Mode::Hybrid, 1);
+    cfg.ballistic_water.capacity = 1;
+    cfg.wave_flow.spill.full_face = 1;
+    cfg.wave_flow.spill.sheet_rate = 127;
+    cfg.wave_flow.spill.launch_min = 255;
+    std::uint64_t outward = 0;
+    for (const bool full : {false, true}) {
+        World w(cfg);
+        box(w, 128, 192);
+        w.set(62, 99, Material::Wall);
+        w.set(63, 100, Material::Wall);
+        require(w.set_cell_state(63, 99, Material::Water, 64, 0) &&
+                w.set_cell_state(64, 96, Material::Water, 128, 0), "small lip setup");
+        if (full) {
+            const auto jet = w.inject_ballistic_water(108 * 256, 20 * 256, 0, 0, 20);
+            require(jet.outcome == BallisticLaunchOutcome::Launched, "distant jet setup");
+        }
+        const auto initial = owned(w, {0, 0, 128, 192});
+        (void)w.tick();
+        const auto remaining = w.liquid_mass(63, 99);
+        require(remaining < 64, "falling curtain pushed into the resting lip");
+        if (full) require(remaining == outward && w.wave_flow_diagnostics().launch_capacity_skips == 1,
+                          "parcel capacity changed the curtain pressure");
+        else outward = remaining;
+        require_ledger_closes(w, {0, 0, 128, 192}, initial, "full-face curtain pressure");
+    }
+}
+
+void full_face_freezes_paused_receivers_and_bounds_max_overfill() {
+    auto cfg = config(Mode::Hybrid, 6);
+    auto& spill = cfg.wave_flow.spill;
+    spill.full_face = 1;
+    spill.sheet_rate = 64;
+    spill.stream_draw = 255;
+    World edge(cfg);
+    const RectI64 all{0, 0, 256, 192};
+    box(edge, 256, 192);
+    rect(edge, 1, 96, 127, 1, Material::Wall);
+    rect(edge, 1, 72, 127, 24, Material::Water);
+    const auto initial = owned(edge, all);
+    edge.set_simulation_region(RectI64{0, 0, 128, 192});
+    for (int tick = 0; tick < 8; ++tick) (void)edge.tick();
+    require(edge.ballistic_parcel_count() == 0 && edge.water_quantity({128, 0, 128, 192}) == 0,
+            "full-face discharge crossed an unselected core");
+    edge.set_simulation_region(std::nullopt);
+    (void)edge.tick();
+    require(edge.ballistic_parcel_count() == 24, "whole wall did not wake after re-entry");
+    require_ledger_closes(edge, all, initial, "full-face region re-entry");
+
+    World over(cfg);
+    box(over, 256, 192);
+    over.set(128, 63, Material::Wall);
+    rect(over, 128, 65, 1, 124, Material::Wall);
+    constexpr std::uint16_t mass = 65535;
+    require(over.set_cell_state(128, 64, Material::Water, mass, 0), "maximal ridge setup");
+    (void)over.tick();
+    std::array<BallisticParcel, 2> parcels{};
+    require(over.copy_ballistic_parcels(parcels) == 2, "maximal ridge did not throw on both sides");
+    for (const auto& p : parcels)
+        require(p.quantity <= 255 && over.liquid_mass(p.x / 256, p.y / 256) <= 127, "maximal ridge overflowed a receiver");
+    require_ledger_closes(over, all, mass, "maximal full-face ridge");
+}
+
+void full_face_shares_slots_across_tall_walls() {
+    constexpr int top = 24, height = 640, lip = 32;
+    std::uint64_t reference = 0;
+    for (const unsigned workers : {1U, 6U}) {
+        auto cfg = config(Mode::Hybrid, workers);
+        auto& spill = cfg.wave_flow.spill;
+        spill.full_face = 1;
+        spill.sheet_rate = 64;
+        spill.launch_budget = 128;
+        cfg.ballistic_water.capacity = 24;
+        World w(cfg);
+        const RectI64 all{0, 0, 64, 704};
+        box(w, 64, 704);
+        rect(w, 1, top + height, lip - 1, 1, Material::Wall);
+        rect(w, 1, top, lip - 1, height, Material::Water);
+        const auto initial = owned(w, all);
+        (void)w.tick();
+        const auto stats = w.wave_flow_diagnostics();
+        require(stats.launched_parcels == 24 && stats.launch_deferrals == height - 24,
+                "full face did not account for bounded candidates, pool slots and deferrals");
+        std::array<BallisticParcel, 24> parcels{};
+        (void)w.copy_ballistic_parcels(parcels);
+        std::array<bool, 4> quarter{};
+        for (const auto& p : parcels) quarter.at(static_cast<std::size_t>((p.y / 256 - top) * 4 / height)) = true;
+        require(std::all_of(quarter.begin(), quarter.end(), [](bool hit) { return hit; }),
+                "an entire quarter of the wall was starved by limited pool slots");
+        (void)w.tick(); (void)w.tick();
+        require(w.wave_flow_diagnostics().launch_capacity_skips > 0, "full pool did not remain explicit");
+        require_ledger_closes(w, all, initial, "oversubscribed wall");
+        if (workers == 1) reference = w.physical_state_hash();
+        else require(w.physical_state_hash() == reference, "oversubscribed wall differs by worker count");
+    }
+}
+
 void sheet_and_coyote_budget_each_side_of_a_ridge() {
     const RectI64 all{0, 0, 256, 128};
-    for (const auto& [sheet, coyote] : {std::pair{127, 0}, std::pair{0, 8}, std::pair{127, 8}}) {
+    for (const auto& mode : {std::array{127, 0, 0}, std::array{0, 8, 0}, std::array{127, 8, 0},
+                             std::array{0, 0, 1}, std::array{127, 8, 1}}) {
         for (const int share : {0, 128, 255}) {
             std::uint64_t reference = 0;
             for (const unsigned workers : {1U, 2U, 4U, 6U}) {
                 auto cfg = config(Mode::Hybrid, workers);
                 auto& spill = cfg.wave_flow.spill;
-                spill.sheet_rate = sheet;
-                spill.coyote_ticks = coyote;
+                spill.sheet_rate = mode[0];
+                spill.coyote_ticks = mode[1];
+                spill.full_face = mode[2];
                 spill.stream_share = share;
                 spill.stream_draw = 255;
                 spill.launch_min = 1;
@@ -1048,7 +1211,7 @@ void sheet_and_coyote_budget_each_side_of_a_ridge() {
                 cfg.ballistic_water.capacity = 2;
                 World world(cfg);
                 auto identity = cfg;
-                identity.wave_flow.spill.sheet_rate = identity.wave_flow.spill.coyote_ticks = 0;
+                identity.wave_flow.spill.sheet_rate = identity.wave_flow.spill.coyote_ticks = identity.wave_flow.spill.full_face = 0;
                 World before(identity);
                 require(world.physical_state_hash() != before.physical_state_hash() && world.state_hash() != before.state_hash(),
                         "an opt-in discharge control is missing from identity");
@@ -1129,6 +1292,40 @@ void sheet_starts_from_rest_without_wave_gain() {
     require(world.water_quantity({38, 20, 1, 20}) > 0, "positive sheet head failed to discharge from rest");
     require(world.water_quantity({28, 19, 1, 22}) == 0, "sheet started through a wall");
     require_ledger_closes(world, {0, 0, 64, 64}, 8 * 20 * 255, "zero-gain sheet");
+}
+
+void deep_draw_limits_opposing_pool_faces() {
+    const auto run = [](int height, int limit, int coast, unsigned workers, int draw = 127) {
+        auto cfg = config(Mode::Spill, workers);
+        cfg.wave_flow.gain = 512;
+        cfg.wave_flow.coast = coast;
+        cfg.wave_flow.spill.draw = draw;
+        cfg.wave_flow.spill.deep_draw = limit;
+        World w(cfg);
+        box(w, 256, 160);
+        rect(w, 126, 130, 5, 1, Material::Wall);
+        rect(w, 127, 129, 3, 1, Material::Water);
+        rect(w, 128, 130 - height, 1, height, Material::Water);
+        const RectI64 region{0, 0, 256, 160};
+        const auto before = owned(w, region);
+        (void)w.tick();
+        require(owned(w, region) == before, "two-sided deep draw lost Water");
+        const int left = -w.wave_flow_flux(127, 129), right = w.wave_flow_flux(128, 129);
+        require(left == right && right > 0, "opposing faces did not draw symmetrically");
+        return std::pair{right, w.state_hash()};
+    };
+    const auto unlimited = run(5, 0, 32, 1);
+    const auto limited = run(5, 64, 32, 1);
+    require(limited == run(5, 64, 32, 6), "deep draw worker parity");
+    require(unlimited.first > limited.first && limited.first == 64 * 4096, "five-row stack ignored deep draw");
+    require(run(4, 64, 32, 1).first == run(4, 0, 32, 1).first, "deep draw slowed a four-row front");
+    require(run(5, 64, 96, 1).first == 96 * 4096, "deep draw suppressed ordinary coast");
+    require(run(5, 64, 32, 1, 40).first == run(5, 0, 32, 1, 40).first, "deep draw raised ordinary draw");
+    auto a = config(Mode::Spill), b = a;
+    b.wave_flow.spill.deep_draw = 64;
+    World off(a), on(b);
+    require(off.state_hash() != on.state_hash() && off.physical_state_hash() != on.physical_state_hash(),
+            "active deep draw missing from identity");
 }
 
 void floor_gain_requires_a_level_solved_floor() {
@@ -1245,10 +1442,15 @@ int main(int argc, char** argv) {
         void (*function)();
     };
     const Test tests[] = {
+        {"deep draw limits opposing pool faces", deep_draw_limits_opposing_pool_faces},
         {"floor gain requires real level terrain and conserves both shares", floor_gain_requires_a_level_solved_floor},
         {"crest Apply adopts the replacement flight law", retained_crest_adopts_replacement_flight_law},
         {"sheet starts with zero ordinary gain", sheet_starts_from_rest_without_wave_gain},
         {"sheet releases deep rows and keeps crest spray", sheet_releases_deep_rows_and_keeps_crest_spray},
+        {"full face covers dry and falling receivers", full_face_covers_dry_and_falling_receivers},
+        {"full face curtain head is independent of slots", full_face_curtain_head_is_independent_of_parcel_slots},
+        {"full face respects paused receivers and maximal overfill", full_face_freezes_paused_receivers_and_bounds_max_overfill},
+        {"full face shares slots across tall walls", full_face_shares_slots_across_tall_walls},
         {"sheet and coyote budget each side of a ridge", sheet_and_coyote_budget_each_side_of_a_ridge},
         {"coyote flight pauses expires and leaves jets alone", coyote_flight_pauses_expires_and_leaves_jets_alone},
         {"spill is off by default and admission is typed", spill_is_off_by_default_and_admission_is_typed},

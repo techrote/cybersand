@@ -1,0 +1,294 @@
+{
+  "native_source": "8717ffc04cdfe13832f52d9f0c0d3b09db9171bb",
+  "benchmark_sha256": "1dc49fcb3348f513b5fa9504288e5a4f922cfe1dd9fb00f907d798a10f898ee6",
+  "platform": "WSL Ubuntu 24.04, g++ 13.3.0, x86_64",
+  "ramp_sha256": "7aba8a47c926cc1911bc4ee519179c595b686692d5c78db8f103b8b62d311acb",
+  "settings": "workers=6 substeps=2 gain=32 deep_gain=32 floor_gain=1024 flux_smoothing=16 coast=32 empty_pour_shift=2 draw_head=255 spill=1 ballistic=1 sheet_rate=64 draw=127 launch_budget=128 coyote_ticks=4 level_shift=3 damp_shift=16 calm_damp_shift=8 calm=128 stick=128 sleep_after=90 fall=3 tank_depth=22 tank_step=10",
+  "native_trace": "fin_trace=trace.csv fin_every=4 ticks=820 every=4",
+  "window": {
+    "first_x": 380,
+    "last_x": 900,
+    "first_tick": 480,
+    "last_tick": 720,
+    "interval_ticks": 4,
+    "column_samples": 31781
+  },
+  "profiles": {
+    "#677 fall 3": {
+      "settings": {
+        "full_face": 0,
+        "draw": 127,
+        "deep_draw": 0
+      },
+      "bulk_detachment_at_least_12": 252,
+      "slot_at_least_8": 67,
+      "slot_at_least_12": 46,
+      "longest_slot": 25,
+      "stored_surface_curvature_rms": 1.64829,
+      "x900_positive_right_units_per_tick": 3432.0708,
+      "far_basin_arrival_tick": 472,
+      "maximum_inventory_error": 0,
+      "full_trace_sha256": "48bb847e574f86a403ae64b10953680ce0c803ed7e24fe4676c50db9468a1846",
+      "flat_surge_right_front_t64": 61,
+      "drop_surge_right_front_t64": 57,
+      "peak_incline_rise": 19,
+      "tank_first_return": 138,
+      "tank_return_range": 8.5171569
+    },
+    "Full face only": {
+      "settings": {
+        "full_face": 1,
+        "draw": 127,
+        "deep_draw": 0
+      },
+      "bulk_detachment_at_least_12": 64,
+      "slot_at_least_8": 20,
+      "slot_at_least_12": 5,
+      "longest_slot": 20,
+      "stored_surface_curvature_rms": 1.86755,
+      "x900_positive_right_units_per_tick": 3118.2292,
+      "far_basin_arrival_tick": 412,
+      "maximum_inventory_error": 0,
+      "full_trace_sha256": "62531aa1d57b80714807d735b78223ed97377ba2e72cd94488dc8ba233a7f909",
+      "flat_surge_right_front_t64": 64,
+      "drop_surge_right_front_t64": 58,
+      "peak_incline_rise": 19,
+      "tank_first_return": 138,
+      "tank_return_range": 8.6745098
+    },
+    "Full face + Deep draw 64": {
+      "settings": {
+        "full_face": 1,
+        "draw": 127,
+        "deep_draw": 64
+      },
+      "bulk_detachment_at_least_12": 0,
+      "slot_at_least_8": 0,
+      "slot_at_least_12": 0,
+      "longest_slot": 4,
+      "stored_surface_curvature_rms": 1.10084,
+      "x900_positive_right_units_per_tick": 3295.0792,
+      "far_basin_arrival_tick": 416,
+      "maximum_inventory_error": 0,
+      "full_trace_sha256": "24c09069aba5c5383da1a1e53e1729f384c297adbcb810762a8207bbac32c192",
+      "flat_surge_right_front_t64": 64,
+      "drop_surge_right_front_t64": 60,
+      "peak_incline_rise": 18,
+      "tank_first_return": 138,
+      "tank_return_range": 8.6745098
+    },
+    "Full face + ordinary Draw 64": {
+      "settings": {
+        "full_face": 1,
+        "draw": 64,
+        "deep_draw": 0
+      },
+      "bulk_detachment_at_least_12": 0,
+      "slot_at_least_8": 0,
+      "slot_at_least_12": 0,
+      "longest_slot": 4,
+      "stored_surface_curvature_rms": 1.10302,
+      "x900_positive_right_units_per_tick": 3975.0417,
+      "far_basin_arrival_tick": 512,
+      "maximum_inventory_error": 0,
+      "full_trace_sha256": "2338c8cf563b13f120e00281ba4b2e20da7ed736600e60d2a3bd24bcfa05d169",
+      "flat_surge_right_front_t64": 39,
+      "drop_surge_right_front_t64": 37,
+      "peak_incline_rise": 19,
+      "tank_first_return": 138,
+      "tank_return_range": 8.6745098
+    }
+  },
+  "tracks": {
+    "downstream": {
+      "profile": "match",
+      "fixed_section": 483,
+      "frames": [
+        {
+          "tick": 564,
+          "x": 456,
+          "stored_surface_y": 323,
+          "relief": 3.078,
+          "increased_right_ownership": 0
+        },
+        {
+          "tick": 568,
+          "x": 463,
+          "stored_surface_y": 329,
+          "relief": 3.8244,
+          "increased_right_ownership": 20084
+        },
+        {
+          "tick": 572,
+          "x": 473,
+          "stored_surface_y": 335,
+          "relief": 4.161,
+          "increased_right_ownership": 42023
+        },
+        {
+          "tick": 576,
+          "x": 479,
+          "stored_surface_y": 339,
+          "relief": 3.7171,
+          "increased_right_ownership": 66583
+        },
+        {
+          "tick": 580,
+          "x": 487,
+          "stored_surface_y": 344,
+          "relief": 3.7951,
+          "increased_right_ownership": 77407
+        },
+        {
+          "tick": 584,
+          "x": 495,
+          "stored_surface_y": 349,
+          "relief": 3.2878,
+          "increased_right_ownership": 86640
+        }
+      ]
+    },
+    "upstream": {
+      "profile": "fine",
+      "fixed_section": 585,
+      "frames": [
+        {
+          "tick": 536,
+          "x": 585,
+          "stored_surface_y": 384,
+          "relief": 2.7463,
+          "increased_right_ownership": 0
+        },
+        {
+          "tick": 540,
+          "x": 578,
+          "stored_surface_y": 384,
+          "relief": 2.3366,
+          "increased_right_ownership": 7991
+        },
+        {
+          "tick": 544,
+          "x": 569,
+          "stored_surface_y": 382,
+          "relief": 2.0585,
+          "increased_right_ownership": 17244
+        },
+        {
+          "tick": 548,
+          "x": 561,
+          "stored_surface_y": 380,
+          "relief": 2.1317,
+          "increased_right_ownership": 27838
+        },
+        {
+          "tick": 552,
+          "x": 554,
+          "stored_surface_y": 378,
+          "relief": 2.1756,
+          "increased_right_ownership": 36165
+        },
+        {
+          "tick": 556,
+          "x": 546,
+          "stored_surface_y": 377,
+          "relief": 2.1707,
+          "increased_right_ownership": 45102
+        }
+      ]
+    },
+    "previous_upstream": {
+      "profile": "match",
+      "fixed_section": 476,
+      "frames": [
+        {
+          "tick": 696,
+          "x": 476,
+          "stored_surface_y": 333,
+          "relief": 7.122,
+          "increased_right_ownership": 0
+        },
+        {
+          "tick": 700,
+          "x": 468,
+          "stored_surface_y": 332,
+          "relief": 5.8146,
+          "increased_right_ownership": 8506
+        },
+        {
+          "tick": 704,
+          "x": 460,
+          "stored_surface_y": 325,
+          "relief": 7.1415,
+          "increased_right_ownership": 21125
+        },
+        {
+          "tick": 708,
+          "x": 452,
+          "stored_surface_y": 316,
+          "relief": 6.678,
+          "increased_right_ownership": 35951
+        },
+        {
+          "tick": 712,
+          "x": 444,
+          "stored_surface_y": 310,
+          "relief": 7.4439,
+          "increased_right_ownership": 51952
+        },
+        {
+          "tick": 716,
+          "x": 436,
+          "stored_surface_y": 313,
+          "relief": 6.2293,
+          "increased_right_ownership": 69973
+        },
+        {
+          "tick": 720,
+          "x": 428,
+          "stored_surface_y": 310,
+          "relief": 5.8195,
+          "increased_right_ownership": 84373
+        }
+      ]
+    }
+  },
+  "image_registration": {
+    "map_extent": [
+      2048,
+      2048
+    ],
+    "world_to_screen_px": {
+      "scale": 1.669,
+      "origin_x": 160,
+      "origin_y": 193.806
+    },
+    "x_window": [
+      140,
+      951
+    ],
+    "circled_x": [
+      440,
+      483,
+      554,
+      706,
+      822
+    ],
+    "error_metric": "mean absolute stored top vs extracted visible blue top in cells, clipped to 20 per column",
+    "nearest_fall3_4tick_sample": [
+      580,
+      1.58674
+    ],
+    "nearest_fall8_4tick_sample": [
+      548,
+      3.63743
+    ],
+    "section_right_net_over_t564_to_t596": {
+      "440": 117024,
+      "483": 126512,
+      "554": 68271,
+      "706": 102257,
+      "822": 92898
+    },
+    "fall3_matches_prior_law_at_all_samples": true
+  }
+}

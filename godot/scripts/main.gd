@@ -22,9 +22,9 @@ const WAVE_TUNING := [
 	"workbench_wave_body_push","workbench_wave_body_push_by_mass",
 ]
 # WAVE-WATERWALL-001 exposed-face spill: Wave-only construction requests.
-const WAVE_SPILL_SWITCHES := ["workbench_wave_spill","workbench_wave_spill_parcels"]
+const WAVE_SPILL_SWITCHES := ["workbench_wave_spill","workbench_wave_spill_parcels","workbench_wave_spill_full_face"]
 const WAVE_SPILL_TUNING := [
-	"workbench_wave_spill_fall","workbench_wave_spill_draw","workbench_wave_spill_draw_head","workbench_wave_spill_sheet_rate","workbench_wave_spill_coyote_ticks",
+	"workbench_wave_spill_fall","workbench_wave_spill_draw","workbench_wave_spill_deep_draw","workbench_wave_spill_draw_head","workbench_wave_spill_sheet_rate","workbench_wave_spill_coyote_ticks",
 	"workbench_wave_spill_launch_speed","workbench_wave_spill_launch_budget",
 	"workbench_wave_spill_stream_share","workbench_wave_spill_blobs","workbench_wave_spill_stream_draw",
 ]
@@ -1853,6 +1853,8 @@ func _ready() -> void:
 			defaults.merge(workbench_water_options,true)
 			if defaults.get("workbench_ballistic") == false or defaults.get("workbench_wave_spill") == false:
 				defaults.workbench_wave_spill_parcels = false
+			if defaults.get("workbench_wave_spill") == false:
+				defaults.workbench_wave_spill_full_face = false
 			if defaults.get("workbench_face_release") == true or defaults.get("workbench_inertial_signed") == true:
 				defaults.workbench_wave_flow = false
 			workbench_water_options = defaults

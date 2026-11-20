@@ -10,7 +10,9 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
-For the current Wave player defaults, see the [water ramp evaluation](audits/2026-11-19-wave-water-ramp-003.md) and [Water Lab](operations/workbench-water-lab.md).
+For full-face Water release, fall speed 3 and the ramp crest investigation, see the [full-face experiment](audits/2026-11-19-wave-water-face-004.md).
+
+For the Water Ramp 003 settings, see the [water ramp evaluation](audits/2026-11-19-wave-water-ramp-003.md) and [Water Lab](operations/workbench-water-lab.md).
 
 For Waterwall 002, see the [Water Lab controls](operations/workbench-water-lab.md#try-the-waterwall-002-candidate), [Wave law](architecture/wave-flow-v1.md#waterwall-002-sheet-crest-and-scale-selective-damping) and [dated comparison](audits/2026-11-19-wave-waterwall-002.md).
 

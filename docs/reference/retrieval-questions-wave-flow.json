@@ -115,6 +115,40 @@
       "sources": [
         "../godot/scripts/workbench_water_spray_panel.gd"
       ]
+    },
+    {
+      "id": "WAVE08",
+      "query": "How do I get Water to spray from the entire exposed vertical wall and set fall speed 3 in Water Lab?",
+      "canonical": [
+        "operations/workbench-water-lab.md",
+        "architecture/wave-flow-v1.md"
+      ],
+      "facts": [
+        "Enable Full face with Waterwall spill and Ballistic release. The gameplay evaluation selects fall speed 3.",
+        "Fall speed is grid cells per solver round. Ballistic parcels have their own gravity.",
+        "Stage the switch then Apply and check the native readback."
+      ],
+      "sources": [
+        "../native/src/world_wave.inc",
+        "../godot/scripts/workbench_water_spray_panel.gd"
+      ]
+    },
+    {
+      "id": "WAVE09",
+      "query": "What causes the sharkfin waves and dark vertical cuts on the downhill ramp? Which deep pool feed preserves shallow horizontal spreading?",
+      "canonical": [
+        "architecture/wave-flow-v1.md",
+        "operations/workbench-water-lab.md"
+      ],
+      "facts": [
+        "Neighboring faces can drain a deep donor simultaneously.",
+        "Deep pool feed 64 limits wet-to-wet pool feed in deep stacks. Zero inherits ordinary Pool feed.",
+        "The motion of a surface crest can differ from the direction of Water transport."
+      ],
+      "sources": [
+        "../native/src/world_wave.inc",
+        "../native/bench/wave_waterwall.cpp"
+      ]
     }
   ]
 }
