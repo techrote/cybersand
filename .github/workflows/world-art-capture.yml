@@ -1,0 +1,173 @@
+name: World-art unattended capture real GUI qualification
+
+# MAP-AUTO-01 / #498. Runs the real Godot 4.7 renderer through the documented
+# `world_art_preview_launcher.py --capture` CLI on Linux X11/Xvfb (OpenGL/llvmpipe)
+# and Windows (OpenGL ANGLE), then retains PNGs, manifests and logs as artifacts.
+# The art source is checked out read-only at its CURRENT branch head (not a hard-coded
+# historical hash); the resolved SHA is recorded in every manifest and in the summary.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'godot/tools/world_art_*'
+      - 'godot/tools/world_design_pack_adapter.gd'
+      - 'tools/world_art_preview_launcher.py'
+      - 'tools/world_art_capture_support.py'
+      - 'tools/test_world_art_capture.py'
+      - 'examples/world-art-capture/**'
+      - 'docs/tools/world-art-capture.md'
+      - '.github/workflows/world-art-capture.yml'
+  workflow_dispatch:
+    inputs:
+      art_ref:
+        description: 'Git ref of the art source to capture (default: current #454 atlas branch head)'
+        required: false
+        default: 'design/world-atlas-015-refinement-20261105'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: world-art-capture-${{ github.event.pull_request.head.sha || github.sha }}
+  cancel-in-progress: false
+
+env:
+  ART_REF: ${{ inputs.art_ref || 'design/world-atlas-015-refinement-20261105' }}
+  GODOT_SILENCE_ROOT_WARNING: '1'
+  WORLD_ART_REQUIRE_GRAPHICAL: '1'
+
+jobs:
+  linux-opengl-llvmpipe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      LIBGL_ALWAYS_SOFTWARE: '1'
+      GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          lfs: false
+          persist-credentials: false
+      - name: Read-only checkout of the current art source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.ART_REF }}
+          path: art-source
+          lfs: false
+          persist-credentials: false
+      - name: Prepare Godot 4.7 stable on Linux
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --connect-timeout 60 --max-time 600 \
+            -o "$RUNNER_TEMP/godot.zip" \
+            'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          mkdir -p "$RUNNER_TEMP/engine"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/engine"
+          chmod +x "$RUNNER_TEMP/engine/Godot_v4.7-stable_linux.x86_64"
+          "$RUNNER_TEMP/engine/Godot_v4.7-stable_linux.x86_64" --headless --version
+          echo "ART_SHA=$(git -C art-source rev-parse HEAD)" >> "$GITHUB_ENV"
+      - name: Unattended capture qualification (Xvfb + OpenGL/llvmpipe)
+        shell: bash
+        env:
+          WORLD_ART_GODOT: ${{ runner.temp }}/engine/Godot_v4.7-stable_linux.x86_64
+          WORLD_ART_ART_ROOT: ${{ github.workspace }}/art-source/docs/world-design
+          WORLD_ART_RENDER_DRIVER: opengl3
+          WORLD_ART_EXPECT_ADAPTER: llvmpipe
+          WORLD_ART_EVIDENCE_DIR: ${{ github.workspace }}/build/world-art-capture-linux
+        run: |
+          set -euo pipefail
+          mkdir -p "$WORLD_ART_EVIDENCE_DIR"
+          xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
+            timeout 3000 python3 tools/test_world_art_capture.py -v \
+            2>&1 | tee "$WORLD_ART_EVIDENCE_DIR/qualification.log"
+      - name: Summarise evidence
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "### Linux X11/Xvfb OpenGL llvmpipe — unattended capture"
+            echo "Art source: \`$ART_REF\` @ \`${ART_SHA:-unresolved}\`"
+            echo '```'
+            tail -n 3 build/world-art-capture-linux/qualification.log || true
+            echo '```'
+            python3 - <<'PY' || true
+          import json, pathlib
+          p = pathlib.Path("build/world-art-capture-linux/batch-all-15/batch-manifest.json")
+          if p.exists():
+              b = json.loads(p.read_text())
+              print("Batch manifest sha256:", b["manifest_sha256"], "| jobs:", len(b["jobs"]),
+                    "| adapter:", b["engine"]["display"].get("graphics_adapter"))
+          PY
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Preserve Godot framebuffer evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: world-art-capture-linux-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/world-art-capture-linux/
+          if-no-files-found: warn
+          retention-days: 30
+
+  windows-angle:
+    runs-on: windows-2022
+    timeout-minutes: 60
+    defaults:
+      run:
+        shell: bash
+    env:
+      GODOT_WINDOWS_SHA512: 41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          lfs: false
+          persist-credentials: false
+      - name: Read-only checkout of the current art source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.ART_REF }}
+          path: art-source
+          lfs: false
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Download source-pinned Windows Godot and verify archive
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --connect-timeout 60 --max-time 900 \
+            -o "$RUNNER_TEMP/world-art-godot.zip" \
+            'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          python -c 'import hashlib,os; p=os.path.join(os.environ["RUNNER_TEMP"],"world-art-godot.zip"); assert hashlib.sha512(open(p,"rb").read()).hexdigest()==os.environ["GODOT_WINDOWS_SHA512"]'
+          python -c 'import zipfile,os; d=os.environ["RUNNER_TEMP"]; zipfile.ZipFile(os.path.join(d,"world-art-godot.zip")).extractall(os.path.join(d,"world-art-engine"))'
+          echo "ART_SHA=$(git -C art-source rev-parse HEAD)" >> "$GITHUB_ENV"
+      - name: Unattended capture qualification (Windows OpenGL ANGLE)
+        env:
+          WORLD_ART_RENDER_DRIVER: opengl3_angle
+        run: |
+          set -euo pipefail
+          export WORLD_ART_GODOT="$RUNNER_TEMP/world-art-engine/Godot_v4.7-stable_win64_console.exe"
+          export WORLD_ART_ART_ROOT="$GITHUB_WORKSPACE/art-source/docs/world-design"
+          export WORLD_ART_EVIDENCE_DIR="$GITHUB_WORKSPACE/build/world-art-capture-windows"
+          mkdir -p "$WORLD_ART_EVIDENCE_DIR"
+          python tools/test_world_art_capture.py -v 2>&1 | tee "$WORLD_ART_EVIDENCE_DIR/qualification.log"
+      - name: Summarise evidence
+        if: always()
+        run: |
+          {
+            echo "### Windows OpenGL ANGLE — unattended capture"
+            echo "Art source: \`$ART_REF\` @ \`${ART_SHA:-unresolved}\`"
+            echo '```'
+            tail -n 3 build/world-art-capture-windows/qualification.log || true
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Preserve ANGLE framebuffer evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: world-art-capture-windows-angle-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/world-art-capture-windows/
+          if-no-files-found: warn
+          retention-days: 30
