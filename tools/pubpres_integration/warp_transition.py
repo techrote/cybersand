@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Isolate ANGLE/WARP history-copy costs on the retained 8503 Windows package."""
+"""Isolate ANGLE/WARP whole-plane work on the retained 8503 Windows package."""
 import argparse
 import collections
 import datetime
@@ -26,13 +26,15 @@ PACKAGE_ARTIFACT = "https://github.com/techrote/cybersand/actions/runs/447062042
 ORIGINAL_ARTIFACT = "https://github.com/techrote/cybersand/actions/runs/44706204266/artifacts/14617316032"
 SWITCH = "CYBERSAND_PUBPRES_PROBE_SKIP_HISTORY"
 STEADY_SWITCH = "CYBERSAND_PUBPRES_PROBE_STEADY_SPARSE"
+DIRECT_SWITCH = "CYBERSAND_PUBPRES_PROBE_DIRECT_DRAWABLE"
 PUBLISHER = "scripts/blit_material_publisher.gd"
 FIXTURE = "tests/pubpres_transition.gd"
 ORACLE = "tests/pubpres_warp_transition_oracle.gd"
-ORDERS = {"reentry": "RABBAR", "steady-sparse": "RSABBASR"}
+ORDERS = {"reentry": "RABBAR", "steady-sparse": "RSABBASR", "direct-drawable": "RABBAR"}
 PAIRINGS = {
     "reentry": ((2, 1), (3, 4), (2, 0), (3, 5), (1, 0), (4, 5)),
     "steady-sparse": ((3, 2), (4, 5), (3, 1), (4, 6), (2, 0), (5, 7), (1, 0), (6, 7)),
+    "direct-drawable": ((2, 1), (3, 4), (2, 0), (3, 5), (1, 0), (4, 5)),
 }
 PHASES = ("enter_dense", "dense", "enter_sparse", "sparse")
 EXPECTED_IMAGE_HASHES = {
@@ -95,6 +97,41 @@ def apply_overlay(project, output, expected, relative, changed, diff_name):
     expected[relative] = digest(target)
 
 
+def direct_drawable_overlay(original):
+    # This diagnostic changes whole-plane transfer only. Sparse stages, both
+    # drawable identities, validation and immutable logical histories remain
+    # the retained application implementation. The public Godot 4.7 update
+    # requires matching RGBA8 dimensions/format for these drawable RIDs.
+    selector = b"\tif reuse_current:\n"
+    need(original.count(selector) == 1, "Pinned publisher history-copy branch differs")
+    changed = original.replace(selector, f'\tif reuse_current and OS.get_environment("{DIRECT_SWITCH}") != "1":\n'.encode())
+    anchor = b"\tvar pool: StagingPool = full_staging if whole else (\n"
+    need(changed.count(anchor) == 1, "Pinned publisher whole-plane selection differs")
+    replacement = '''\tif whole and OS.get_environment("CYBERSAND_PUBPRES_PROBE_DIRECT_DRAWABLE") == "1":
+		# Scratch causal probe: same persistent RGBA8 drawable identities,
+		# immutable source and histories, direct whole-plane public RS upload.
+		var direct: Image = source.duplicate()
+		direct.convert(Image.FORMAT_RGBA8)
+		last_update.atlas_assembly_usec = Time.get_ticks_usec()-started
+		started = Time.get_ticks_usec()
+		for plane: MaterialPlane in destinations:
+			RenderingServer.texture_2d_update(plane.drawable.get_rid(),direct,0)
+		last_update.staging_upload_usec = Time.get_ticks_usec()-started
+		for plane: MaterialPlane in destinations:
+			plane.exact_whole_bytes = source.get_data()
+			plane.bytes.fill(PackedByteArray())
+			plane.pending.fill(0)
+		last_update.updated_tiles = pending_count if direct_whole else changed.size()
+		last_update.submitted_bytes = extent.x*extent.y*4*destinations.size()
+		last_update["direct_drawable_update"] = true
+		last_update["direct_whole"] = true
+		last_update["whole_gpu_copy"] = false
+		_finish_metrics()
+		return true
+'''.encode()
+    return changed.replace(anchor, replacement + anchor)
+
+
 def prepare_project(installed, project, output, manifest, oracle, experiment="reentry", fixture=None):
     expected = {}
     for name, sha in manifest["files_sha256"].items():
@@ -113,6 +150,9 @@ def prepare_project(installed, project, output, manifest, oracle, experiment="re
         new_line = selector.rstrip(b"\n") + f' and OS.get_environment("{SWITCH}") != "1"\n'.encode()
         need(original.count(selector) == 1, "Pinned publisher eligibility gate differs")
         apply_overlay(project, output, expected, PUBLISHER, original.replace(selector, new_line), "publisher-overlay.patch")
+    elif experiment == "direct-drawable":
+        original = (project / PUBLISHER).read_bytes()
+        apply_overlay(project, output, expected, PUBLISHER, direct_drawable_overlay(original), "publisher-overlay.patch")
 
     if fixture is not None:
         apply_overlay(project, output, expected, FIXTURE, fixture.read_bytes(), "fixture-overlay.patch")
@@ -131,7 +171,7 @@ def project_drift(project, expected):
     return [name for name, sha in expected.items() if not (project / name).is_file() or digest(project / name) != sha]
 
 
-def capture(installed, project, folder, profiles, script=None, material="blit", skip=None, steady=False):
+def capture(installed, project, folder, profiles, script=None, material="blit", skip=None, steady=False, direct=None):
     folder.mkdir()
     created = datetime.datetime.now(datetime.timezone.utc)
     nonce = uuid.uuid4().hex
@@ -146,6 +186,8 @@ def capture(installed, project, folder, profiles, script=None, material="blit", 
         settings[SWITCH] = str(int(skip))
     if steady:
         settings[STEADY_SWITCH] = "1"
+    if direct is not None:
+        settings[DIRECT_SWITCH] = str(int(direct))
     profile = profiles / folder.name
     for key in ("APPDATA", "LOCALAPPDATA", "XDG_DATA_HOME", "XDG_CONFIG_HOME", "XDG_CACHE_HOME"):
         target = profile / key
@@ -240,6 +282,9 @@ def timing_statistics(rows):
     result["history_copy_count"] = sum(bool(row["material"].get("history_copy")) for row in rows)
     result["history_staging_count"] = sum(bool(row["material"].get("history_staging")) for row in rows)
     result["direct_whole_count"] = sum(bool(row["material"].get("direct_whole")) for row in rows)
+    result["direct_drawable_update_count"] = sum(bool(row["material"].get("direct_drawable_update")) for row in rows)
+    result["whole_gpu_copy_count"] = sum(bool(row["material"].get("whole_gpu_copy")) for row in rows)
+    result["submitted_bytes_total"] = sum(row["material"]["submitted_bytes"] for row in rows)
     result["frames_at_least_30ms"] = sum(row["frame_ms"] >= 30 for row in rows)
     result["outside_publication_ms"] = distribution(row["frame_ms"] - row["publication_ms"] for row in rows)
     return result
@@ -280,14 +325,20 @@ def read_timed(receipt, arm, folder, experiment="reentry"):
         update = row["material"]
         cloned = arm == "A" and offset == 2
         compact = experiment == "reentry" and arm == "B" and offset == 2
-        whole = material == "blit" and (dense or compact)
+        direct = experiment == "direct-drawable" and arm == "B" and offset <= 2
+        whole = material == "blit" and (dense or compact or direct)
         need(update["requested_mode"] == material and update["backend"] == material and update["driver"] == "opengl3_angle"
              and not update["fallback_reason"] and bool(update.get("history_copy")) == cloned
              and bool(update.get("history_staging")) == cloned
-             and bool(update.get("direct_whole")) == whole and bool(update.get("whole_gpu_copy")) == whole,
+             and bool(update.get("direct_whole")) == whole and bool(update.get("whole_gpu_copy")) == (whole and not direct)
+             and bool(update.get("direct_drawable_update")) == direct,
              f"Revision {index + 1} used a different publisher or copy mechanism")
-        need(update["submitted_bytes"] == (8388608 if whole or material == "full" else 32768),
+        need(update["submitted_bytes"] == (16777216 if direct else (8388608 if whole or material == "full" else 32768)),
              f"Revision {index + 1} staged unexpected bytes")
+        if direct:
+            need(update["gpu_blit_calls"] == 0 and update["blit_pixels"] == 0
+                 and update["retirement_blit_calls"] == 0 and update["staging_slot"] == -1,
+                 f"Revision {index + 1} retained a whole-plane draw or used a staging slot")
         if material == "blit":
             pair = (update["current_texture_rid"], update["previous_texture_rid"])
             need(pair[0] > 0 and pair[1] > 0 and pair[0] != pair[1]
@@ -318,7 +369,8 @@ def read_timed(receipt, arm, folder, experiment="reentry"):
 
 def read_oracle(receipt, arm, experiment="reentry"):
     tape = tape_for(arm, experiment)
-    mode = "clone" if arm == "A" else ("steady_sparse" if tape == "steady_sparse" else "compact")
+    mode = "clone" if arm == "A" else ("direct_drawable" if experiment == "direct-drawable"
+                                       else ("steady_sparse" if tape == "steady_sparse" else "compact"))
     sparse_entries = 0 if tape == "steady_sparse" else 15
     need(receipt["schema"] == "pubpres-warp-history-oracle-v1" and receipt["case"] == "transition_2048_w1"
          and receipt["complete"] and not receipt["failures"] and receipt["mode"] == mode
@@ -346,7 +398,8 @@ def run_arm(installed, project, folder, profiles, manifest, project_hashes, arm,
     fixture = ORACLE if oracle else FIXTURE
     tape = tape_for(arm, experiment)
     record = capture(installed, project, folder, profiles, fixture, material_for(arm),
-                     skip=arm == "B" if experiment == "reentry" else None, steady=tape == "steady_sparse")
+                     skip=arm == "B" if experiment == "reentry" else None, steady=tape == "steady_sparse",
+                     direct=arm == "B" if experiment == "direct-drawable" else None)
     result = {"arm": arm, "tape": tape, "status": "FAIL", "process": record}
     try:
         renderer = check_process(folder, record)
@@ -377,7 +430,7 @@ def check_campaign(timed, oracles, experiment="reentry"):
     ), "Renderer or fixture context changed between fresh-process captures")
     first, second = (oracle["analysis"] for oracle in oracles)
     need(first["warmup_history"] == second["warmup_history"], "Untimed histories differ at the warmup boundary")
-    if experiment == "reentry":
+    if experiment in ("reentry", "direct-drawable"):
         need(first["entry_history"] == second["entry_history"], "Untimed clone and bypass first-sparse GPU history hashes differ")
 
 
@@ -448,13 +501,14 @@ def run(installed, output, oracle, experiment="reentry", fixture=None):
             order = ORDERS[experiment]
             plan = {"experiment": experiment, "order": list(order), "arms": {
                     arm: {"tape": tape_for(arm, experiment), "material": material_for(arm),
-                          "bypass_history": experiment == "reentry" and arm == "B"} for arm in sorted(set(order))},
+                          "bypass_history": experiment in ("reentry", "direct-drawable") and arm == "B",
+                          "direct_drawable": experiment == "direct-drawable" and arm == "B"} for arm in sorted(set(order))},
                     "oracle_order": ["A", "B"],
                     "manifest_sha256": MANIFEST_SHA256, "source_publisher_sha256": manifest["files_sha256"]["godot/" + PUBLISHER],
                     "probe_publisher_sha256": expected[PUBLISHER], "oracle_sha256": expected[ORACLE],
                     "source_fixture_sha256": manifest["files_sha256"]["godot/" + FIXTURE],
                     "probe_fixture_sha256": expected[FIXTURE],
-                    "publisher_overlay_sha256": digest(output / "publisher-overlay.patch") if experiment == "reentry" else None,
+                    "publisher_overlay_sha256": digest(output / "publisher-overlay.patch") if experiment in ("reentry", "direct-drawable") else None,
                     "fixture_overlay_sha256": digest(output / "fixture-overlay.patch") if fixture is not None else None,
                     "project_inputs_sha256": expected}
             if experiment == "steady-sparse":

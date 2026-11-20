@@ -72,3 +72,12 @@ On one Windows host the workflow requires ANGLE on the actual Microsoft Basic Re
 The `steady-sparse` experiment compares both blit and full-only publication on the original transition tape and a steady-sparse tape on the same host. The control keeps the 8×8 updates and substitutes 8×8 updates at the original dense positions. It seeds the unchanged area to the material and condition from the last dense generation before measurement on the original tape. Both tapes warm up for 30 revisions and measure each of the next 180. The scratch publisher uses the exact package source and only the fixture has a tape selector.
 
 Separate untimed replays compare both complete RG8 texture histories against independently advanced expected images after every measured admission. These replays also verify that the histories at the end of warm-up match across the two tapes. The workflow keeps individual run receipts and reports frame intervals, accepted cadence and publication wall time, including the ordinary frames following sparse re-entry. These fixtures contain no active native World or Rapier progression.
+
+The `direct-drawable` comparison retains the original transition tape and both
+drawable history identities. Its isolated treatment replaces whole-plane shader
+blits with the public `RenderingServer.texture_2d_update` operation on those same
+RGBA8 textures. Immutable converted images upload 16 MiB per 2048-square plane;
+ordinary sparse staging is unchanged. Full-only bookends surround the original
+blit / direct update / direct update / original blit comparison. Per-revision
+untimed readback verifies both complete histories. This registered repair probe
+does not change the installed application or establish gameplay acceptance.

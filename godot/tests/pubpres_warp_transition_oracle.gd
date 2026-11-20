@@ -4,8 +4,9 @@ extends "res://tests/pubpres_transition.gd"
 # never change the timed fixture's render queue or frame intervals.
 func _run() -> void:
 	var compact := OS.get_environment("CYBERSAND_PUBPRES_PROBE_SKIP_HISTORY") == "1"
+	var direct := OS.get_environment("CYBERSAND_PUBPRES_PROBE_DIRECT_DRAWABLE") == "1"
 	var is_steady := OS.get_environment("CYBERSAND_PUBPRES_PROBE_STEADY_SPARSE") == "1"
-	var mode := "compact" if compact else "clone"
+	var mode := "direct_drawable" if direct else ("compact" if compact else "clone")
 	if is_steady:
 		mode = "steady_sparse"
 	root.size = Vector2i(960, 720)
@@ -58,9 +59,12 @@ func _run() -> void:
 		if row.phase == "enter_sparse":
 			var history_copy: bool = material.get("history_copy", false)
 			var submitted: int = material.get("submitted_bytes", -1)
-			_check(history_copy == (not compact) and submitted == (8388608 if compact else 32768),
+			_check(history_copy == (not compact and not direct) and submitted == (16777216 if direct else (8388608 if compact else 32768)),
 				"generation %d missed the selected re-entry path" % index)
-			if compact:
+			if direct:
+				_check(material.get("direct_drawable_update", false) and not material.get("whole_gpu_copy", false),
+					"direct drawable re-entry did not update the complete same target")
+			elif compact:
 				_check(material.get("direct_whole", false) and material.get("whole_gpu_copy", false),
 					"compact re-entry did not stage a whole frame")
 			else:
