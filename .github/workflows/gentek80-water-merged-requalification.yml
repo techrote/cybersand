@@ -50,6 +50,9 @@ jobs:
           set -euo pipefail
           python3 -m py_compile tools/ci/gentek80_runtime_publication.py
           python3 tools/ci/test_gentek80_runtime_publication.py
+          python3 tools/ci/test_gentek80_water_runtime_publication.py
+          # Fail closed on foreign branch/workflow, wrong source or stale remote lease.
+          python3 tools/ci/gentek80_water_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
           python3 tools/ci/test_gen007_architectural_runtime_publication.py
           python3 tools/ci/test_lcb001_shared_contract_runtime_publication.py
           python3 tools/ci/check_ci_provider_policy.py
@@ -190,11 +193,11 @@ jobs:
             find "$RUNNER_TEMP/godot-cpp/bin" -maxdepth 1 -name 'libgodot-cpp*.a' -exec sha256sum '{}' ';'
             sha256sum godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
           } > evidence/native-publisher-toolchain.txt
-          python3 tools/ci/gentek80_runtime_publication.py record --source-sha "$GITHUB_SHA" --platform linux \
+          python3 tools/ci/gentek80_water_runtime_publication.py record --source-sha "$GITHUB_SHA" --platform linux \
             --bundle build/gentek80-publish-linux \
             --runtime godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so \
             --toolchain evidence/native-publisher-toolchain.txt
-          python3 tools/ci/gentek80_runtime_publication.py accept --source-sha "$GITHUB_SHA" --platform linux \
+          python3 tools/ci/gentek80_water_runtime_publication.py accept --source-sha "$GITHUB_SHA" --platform linux \
             --bundle build/gentek80-publish-linux --qualification evidence/architecture \
             --flatten evidence/flatten-integration --workbench evidence/gentek80-workbench --gallery evidence/gentek80-gallery --godot-archive "$RUNNER_TEMP/godot.zip"
       - name: Preserve validated Linux native and graphical receipts
@@ -278,7 +281,7 @@ jobs:
             find "$RUNNER_TEMP/godot-cpp/bin" -maxdepth 1 -name 'libgodot-cpp*.a' -exec sha256sum '{}' ';'
             sha256sum build/architecture-windows/cybersand_native.windows.x86_64.dll
           } > evidence/native-publisher-toolchain.txt
-          python3 tools/ci/gentek80_runtime_publication.py record --source-sha "$GITHUB_SHA" --platform windows \
+          python3 tools/ci/gentek80_water_runtime_publication.py record --source-sha "$GITHUB_SHA" --platform windows \
             --bundle build/gentek80-publish-windows \
             --runtime build/architecture-windows/cybersand_native.windows.x86_64.dll \
             --toolchain evidence/native-publisher-toolchain.txt
@@ -449,7 +452,7 @@ jobs:
         shell: pwsh
         run: |
           $archive = Join-Path $env:RUNNER_TEMP 'godot.zip'
-          python tools/ci/gentek80_runtime_publication.py accept --source-sha $env:GITHUB_SHA --platform windows --bundle build/gentek80-publish-windows --qualification evidence/architecture --flatten evidence/flatten-integration --package evidence/package --package-flatten evidence/package-flatten --workbench evidence/gentek80-workbench --gallery evidence/gentek80-gallery --package-workbench evidence/package-gentek80-workbench --godot-archive $archive
+          python tools/ci/gentek80_water_runtime_publication.py accept --source-sha $env:GITHUB_SHA --platform windows --bundle build/gentek80-publish-windows --qualification evidence/architecture --flatten evidence/flatten-integration --package evidence/package --package-flatten evidence/package-flatten --workbench evidence/gentek80-workbench --gallery evidence/gentek80-gallery --package-workbench evidence/package-gentek80-workbench --godot-archive $archive
           if ($LASTEXITCODE -ne 0) { throw 'GENTEK-80 Windows publication acceptance failed' }
       - name: Retain validated Windows DLL and graphical/package receipts
         if: github.event_name == 'push'
