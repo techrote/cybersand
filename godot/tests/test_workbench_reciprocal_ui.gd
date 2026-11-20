@@ -3,6 +3,7 @@ extends SceneTree
 # Uses the actual Main scene, native worker, UI input dispatch and persistence.
 # Two OS processes are required: create, then reopen the exact saved start.
 const Setup=preload("res://scripts/workbench_setup.gd")
+const Protocol=preload("res://scripts/workbench_reciprocal_protocol.gd")
 var host:Control
 var bench:Control
 var panel:Control
@@ -12,6 +13,8 @@ var completed:=false
 var capture_index:=0
 var evidence:=OS.get_environment("SWARM004_UI_EVIDENCE")
 var mode:=OS.get_environment("SWARM004_UI_MODE")
+var example:=OS.get_environment("SWARM004_UI_EXAMPLE")
+var native_planes:Dictionary={}
 
 func _initialize() -> void:
 	ProjectSettings.set_setting("cybersand/native_worker_threads",1)
@@ -84,7 +87,7 @@ func paint_activation(single_location:bool=false)->void:
 	Input.parse_input_event(event);await process_frame
 	check(not panel.activation.is_empty(),"actual canvas brush sets approximate native activation territory")
 
-func known_transaction_recipe()->void:
+func known_recipe()->void:
 	# Fixed before evaluation from the registered605 layout matrix. This is a
 	# zero-joint authoring example, not a reciprocal-construction certificate.
 	panel.controls.width.value=128;panel.controls.height.value=96
@@ -94,6 +97,55 @@ func known_transaction_recipe()->void:
 	panel.controls.seed.value=605;panel.controls.rounds.value=2
 	panel.controls.clutter.value=0.15;panel.controls.destruction.value=0
 	panel.controls.orientation.select(0);panel.controls.optional.button_pressed=true
+	panel.controls.shared_ownership.button_pressed=true
+	if example=="reciprocal":
+		# Known-seed authoring compatibility study, independently checked with
+		# exact-mask/no-offer and frozen-peer controls. The original seed605
+		# zero-joint transaction remains a separate regression.
+		panel.controls.seed.value=4099
+		panel.controls.shared_ownership.button_pressed=false
+		panel.controls.clutter.value=0
+
+func reciprocal_witness()->Dictionary:
+	var document:Dictionary=panel.document
+	var rounds:Array=document.get("rounds",[])
+	var changes:Dictionary={"frame":0,"mosaic":0}
+	for index:int in range(1,rounds.size()):
+		for owner:String in ["frame","mosaic"]:
+			var before:Array=rounds[index-1][owner].result.cells
+			var after:Array=rounds[index][owner].result.cells
+			if before.size()!=after.size():continue
+			for at:int in after.size():
+				if (int(before[at])==0)!=(int(after[at])==0):changes[owner]+=1
+	var unresolved:=0
+	var foreign_joined:=0
+	for obligation:Dictionary in document.get("obligations",[]):
+		if obligation.get("state")=="STILL_REQUIRED":unresolved+=1
+		if obligation.get("state")=="FOREIGN_JOINED" and obligation.get("foreign_joined")==true:foreign_joined+=1
+	var obligation_count:int=document.get("obligations",[]).size()
+	return {"frame_occupied_changes":changes.frame,"mosaic_occupied_changes":changes.mosaic,
+		"joint_count":document.get("joints",[]).size(),"unresolved":unresolved,
+		"obligation_count":obligation_count,"foreign_joined":foreign_joined,
+		"all_foreign_closed":unresolved==0 and foreign_joined==obligation_count,
+		"both_footprints_changed":changes.frame>0 and changes.mosaic>0,
+		"scope":"array-derived native reciprocal revision and joint/closure witness; offer causality is independently controlled"}
+
+func native_recipe()->Dictionary:
+	# Read actual decoded immutable native requests, not controls that may have
+	# changed after generation. Layout and border are hash-bound saved metadata.
+	if panel.document.is_empty() or panel.prepared.is_empty():return {}
+	var input:Dictionary=panel.document.input
+	var options:Dictionary=input.options
+	var profiles:Dictionary={}
+	for owner:String in ["frame","mosaic"]:
+		var values:Dictionary={}
+		for key:String in Protocol.PARAMETERS:values[key]=input[owner].profile[key]
+		profiles[owner]=values
+	return {"size":[input.frame.width,input.frame.height],"origin":input.frame.origin,
+		"seed":input.frame.seed,"profile":input.frame.profile.name,"activation":input.frame.activation,
+		"layout":panel.prepared.recipe.layout,"border":panel.prepared.recipe.border,
+		"rounds":options.rounds,"shared_extent":options.shared_extent,"orientation":options.orientation_preference,
+		"optional":options.optional_negotiation,"shared_ownership":options.shared_ownership,"gentek_parameters":profiles}
 
 func lifecycle(baseline:Dictionary)->void:
 	for action:String in ["cancel","hide","timeout"]:
@@ -126,6 +178,7 @@ func create_map()->void:
 	if not await until(settled,"finite blank source installed"): return
 	var baseline:=await capture()
 	if baseline.is_empty(): return
+	native_planes["baseline"]=Protocol.digest(baseline.cells)
 	check(bench.reciprocal_panel==null,"experimental dock has no hidden startup instance or computation")
 	var open:=find_button(bench,"Reciprocal assembly…")
 	if not check(open!=null,"experimental composition entry is available"): return
@@ -133,7 +186,7 @@ func create_map()->void:
 	panel=bench.reciprocal_panel
 	if not check(panel!=null and panel.visible,"real button opens one lazy inline dock"): return
 	check(panel._pid<0 and panel._thread==null,"opening the dock launches no generation")
-	if mode=="create":known_transaction_recipe()
+	if mode=="create":known_recipe()
 	await paint_activation(mode=="create")
 	if mode=="lifecycle":await lifecycle(baseline);return
 	if mode=="smoke":
@@ -142,12 +195,15 @@ func create_map()->void:
 		check(not panel.visible and panel._pid<0,"Close retires preview work")
 		completed=true;return
 	var request_seed:=OS.get_environment("SWARM004_UI_SEED")
-	if not request_seed.is_empty(): panel.controls.seed.value=int(request_seed)
+	# Registered create/reopen recipes are immutable. A legacy global605 must
+	# never silently substitute for the independently selected reciprocal4099.
+	if mode!="create" and not request_seed.is_empty(): panel.controls.seed.value=int(request_seed)
 	await click(panel._generate)
 	if not await until(func()->bool:return panel.phase in ["ready","idle"],"native child generation reaches terminal result"):return
 	if not check(panel.phase=="ready" and not panel.document.is_empty(),"source-matched native evidence produced: "+panel.status):return
 	check(panel._pid<0 and panel._thread==null,"completed native child and parsing worker are reaped")
 	var preview:=await capture()
+	native_planes["preview"]=Protocol.digest(preview.cells)
 	check(preview.cells==baseline.cells,"real native preview leaves all World cells unchanged")
 	await screenshot("native-preview")
 	if mode=="blocked":
@@ -165,6 +221,12 @@ func create_map()->void:
 	check(panel.prepared.recipe.origin==Vector2i.ZERO and panel.prepared.recipe.activation==[Vector2i(64,48)] \
 		and panel.prepared.recipe.layout=="centered_frame_rectangle" and panel.prepared.recipe.border==4,
 		"visible controls and actual brush reproduce the declared transaction territory")
+	if example=="reciprocal":
+		var witness:=reciprocal_witness()
+		if not check(witness.both_footprints_changed and witness.joint_count>0 and witness.obligation_count>0 and witness.all_foreign_closed,
+			"both native occupied footprints revise with real joints and full foreign closure"):return
+		check(not panel.prepared.recipe.shared_ownership and panel.prepared.recipe.shared_extent==13 \
+			and panel.prepared.recipe.seed==4099,"selected fixed-territory recipe retains its independent negotiation band")
 	var expected:PackedByteArray=baseline.cells.duplicate()
 	for at:int in range(0,panel.proposal.cells.size(),3):
 		var cells:PackedInt32Array=panel.proposal.cells
@@ -172,18 +234,22 @@ func create_map()->void:
 	await click(panel._apply)
 	if not await until(func()->bool:return panel.completed_applies==1,"actual Apply receives native acknowledgement"):return
 	var applied:=await capture()
+	native_planes["applied"]=Protocol.digest(applied.cells)
 	check(applied.cells==expected,"Apply equals the exact complete native proposal and all retained source cells")
 	await screenshot("native-applied")
 	await click(panel._undo_button)
 	if not await until(func()->bool:return panel.completed_undos==1,"actual Undo receives native acknowledgement"):return
 	var undone:=await capture()
+	native_planes["undone"]=Protocol.digest(undone.cells)
 	check(undone.cells==baseline.cells and bench.applied.edits.is_empty(),"Undo restores all native cells and original authored history")
 	await screenshot("native-undone")
 	await click(panel._generate)
 	if not await until(func()->bool:return panel.phase=="ready","same-seed regeneration completes"):return
 	await click(panel._apply)
 	if not await until(func()->bool:return panel.completed_applies==2,"second actual Apply receives acknowledgement"):return
-	check((await capture()).cells==expected,"same-seed regenerated native construction is exact")
+	var regenerated:=await capture()
+	native_planes["regenerated"]=Protocol.digest(regenerated.cells)
+	check(regenerated.cells==expected,"same-seed regenerated native construction is exact")
 	bench._name.text="swarm004-interactive-evaluation"
 	var save:=find_button(bench,"Save start [Ctrl+S]")
 	if not check(save!=null,"ordinary Save start button exists"):return
@@ -191,9 +257,13 @@ func create_map()->void:
 	var saved:=Setup.read_named(bench._name.text)
 	check(not saved.has("error") and saved.setup.edits==bench.applied.edits,"ordinary Save persists acknowledged composition history")
 	check(FileAccess.file_exists(Setup._path(bench._name.text)+".swarm004.json"),"saved map has optional source/revision evidence receipt")
+	var saved_plane:=await capture()
+	native_planes["saved"]=Protocol.digest(saved_plane.cells)
+	check(saved_plane.cells==expected,"ordinary Save preserves the complete acknowledged native plane")
 	var file:=FileAccess.open(evidence+"/expected-native.le16",FileAccess.WRITE)
 	if not check(file!=null,"fresh-process expected plane can be recorded"):return
 	file.store_buffer(expected);file.close()
+	native_planes["expected"]=Protocol.digest(expected)
 	await screenshot("native-saved")
 	completed=true
 
@@ -203,6 +273,8 @@ func reopen_map()->void:
 	if not await until(settled,"saved map installs in a fresh OS process"):return
 	var actual:=await capture()
 	var expected:=FileAccess.get_file_as_bytes(evidence+"/expected-native.le16")
+	native_planes["reopened"]=Protocol.digest(actual.cells)
+	native_planes["expected"]=Protocol.digest(expected)
 	check(actual.get("cells")==expected and expected.size()==512*512*2,"fresh-process native World exactly matches saved composition plane")
 	check(not bench.applied.edits.is_empty(),"fresh-process authored history includes construction stamps")
 	await click(find_button(bench,"Reciprocal assembly…"));panel=bench.reciprocal_panel
@@ -210,10 +282,17 @@ func reopen_map()->void:
 	if not await until(func()->bool:return panel.phase=="historical","saved native evidence opens in the fresh process"):return
 	check(panel._apply.disabled and panel._pid<0 and panel.prepared.recipe.layout=="centered_frame_rectangle" \
 		and panel.prepared.recipe.border==4,"saved ownership and revision evidence is inspection-only without child generation")
+	if example=="reciprocal":
+		var witness:=reciprocal_witness()
+		check(witness.both_footprints_changed and witness.joint_count>0 and witness.obligation_count>0 and witness.all_foreign_closed \
+			and not panel.prepared.recipe.shared_ownership,"fresh process retains exact reciprocal witness and fixed ownership")
 	await screenshot("native-reopened")
 	completed=true
 
 func run()->void:
+	if example.is_empty():example="transaction"
+	if not check(example in ["transaction","reciprocal"],"explicit registered authoring example"):
+		quit(1);return
 	root.size=Vector2i(1920,1080)
 	if not evidence.is_empty():DirAccess.make_dir_recursive_absolute(evidence)
 	if OS.get_environment("SWARM004_REQUIRE_GRAPHICS")=="1" and not check(DisplayServer.get_name()!="headless","graphical qualification has a real display"):
@@ -225,16 +304,23 @@ func run()->void:
 		if mode=="reopen":await reopen_map()
 		else:await create_map()
 	check(completed,"complete interactive test sequence reached its final assertion")
-	var report:Dictionary={"schema":1,"mode":mode,"checks":checks,"failures":failures,"completed":completed,
+	var report:Dictionary={"schema":2,"mode":mode,"example":example,"checks":checks,"failures":failures,"completed":completed,
 		"engine":Engine.get_version_info().string,"platform":OS.get_name(),"process_id":OS.get_process_id(),
-		"display":DisplayServer.get_name(),
+		"display":DisplayServer.get_name(),"native_planes_sha256":native_planes,
+		"owner_visual_acceptance":"pending","reciprocal_programme_acceptance":false,
 		"test_sha256":FileAccess.get_sha256("res://tests/test_workbench_reciprocal_ui.gd")}
 	if panel!=null:
 		report["native_receipt"]=panel.last_receipt;report["native_source"]=panel._runtime
+		if panel.phase=="historical":report["native_receipt"]=panel.proposal.get("receipt",{}).get("native_receipt",{})
 		report["native_status"]=panel.document.get("status","");report["native_reason"]=panel.document.get("reason","")
+		report["native_can_apply"]=panel.document.get("can_apply",false)
+		report["native_recipe"]=native_recipe();report["proposal_sha256"]=panel.proposal.get("proposal_sha256","")
 		report["joint_count"]=panel.document.get("joints",[]).size();report["obligation_count"]=panel.document.get("obligations",[]).size()
 		report["scope"]="actual native authoring transaction and persistence; reciprocal research acceptance remains separate"
-		report["reciprocal_acceptance"]=false
+		report["reciprocal_witness"]=reciprocal_witness()
+		report["reciprocal_witness_passed"]=example=="reciprocal" and completed and failures.is_empty() \
+			and report.reciprocal_witness.both_footprints_changed and report.reciprocal_witness.joint_count>0 \
+			and report.reciprocal_witness.obligation_count>0 and report.reciprocal_witness.all_foreign_closed
 	if host!=null:host.queue_free();await process_frame;await process_frame
 	if not evidence.is_empty():
 		var file:=FileAccess.open(evidence+"/"+mode+".json",FileAccess.WRITE)

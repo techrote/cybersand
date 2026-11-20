@@ -131,6 +131,10 @@ func negative_cases() -> void:
 	refusal("unchanged liquid adhesion",valid,settings)
 	settings = options();settings.simulation_window_enabled = false
 	refusal("unchanged simulation window policy",valid,settings)
+	settings = options();settings.region = PackedInt32Array([0,0,256,256])
+	refusal("unchanged retained simulation region size",valid,settings)
+	settings = options();settings.region = PackedInt32Array([64,64,256,256])
+	refusal("unchanged retained simulation region origin",valid,settings)
 	var original_transport: PackedInt32Array = checked.transport.packed.duplicate()
 	checked.transport.packed[1] = 1
 	refusal("unchanged native transport descriptor",valid)
@@ -170,6 +174,16 @@ func transaction_cases() -> void:
 	bridge.discard_liquid_world(world,token)
 	check(state() == before and not bridge.commit_liquid_world(world,token),
 		"cancel frees candidate and a discarded token can never apply")
+
+	token = prepare(patch)
+	if not check(token > 0,"same-core execution-region fence fixture prepares"):return
+	world.set_simulation_window(Vector2i.ONE,EXTENT-Vector2i(2,2),0,0)
+	check(state() == before,"same-core region change is invisible to material and physical-state fences")
+	check(not bridge.commit_liquid_world(world,token) and state() == before \
+		and "simulation region" in bridge.get_last_error(),
+		"native commit independently refuses a changed exact simulation region")
+	check(not bridge.commit_liquid_world(world,token),"region-refused preparation token is retired")
+	world.set_simulation_window(Vector2i.ZERO,EXTENT,0,0)
 
 	# A changed material source invalidates the existing native commit token even
 	# if its replacement geometry is far from the proposed architecture.

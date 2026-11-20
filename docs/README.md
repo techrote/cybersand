@@ -13,7 +13,9 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 SWARM-004 [experimental reciprocal Gentek assembly](systems/gentek-reciprocal-assembly.md)
 covers the bounded native grammar, independent architectural revisions, honest
 closure and separately qualified experimental Workbench bridge. The full
-programme remains Draft/HOLD under #687.
+programme remains Draft/HOLD under #687. The [native recovery and policy freeze](audits/2026-11-20-swarm004-native-recovery.md)
+records the recovered known corpus, matched causal controls, fixed-territory
+selection and the distinction between unevaluated closure and zero obligations.
 
 For waves travelling under a floating Oil slick, see the [impingement tank comparison](audits/2026-11-20-wave-oil-impinge.md).
 

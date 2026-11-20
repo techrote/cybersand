@@ -6,9 +6,13 @@ const Protocol = preload("res://scripts/workbench_reciprocal_protocol.gd")
 const History = preload("res://scripts/workbench_paint_editor_history.gd")
 const Setup = preload("res://scripts/workbench_setup.gd")
 const TIMEOUT_MSEC := 30000
-const LAYERS := ["Materials","Owners","Parts","Revisions","Changed cells","Joints","Clearance","Shared zone","Unresolved"]
+const LAYERS := ["Materials","Owners","Parts","Revisions","Changed cells","Joints","Clearance","Shared zone","Unresolved","Sockets / receptors","Interface band"]
+const CONTROL_SPECS := [["Complexity / variation","variation",0.5],["Branching","branching",0.5],
+	["Irregularity","irregularity",0.2],["Environment affinity","environment_affinity",0.5],
+	["Cohesion","cohesion",0.75],["Decoration","clutter",0.0],["Destruction","destruction",0.0]]
 var bench: Control
 var controls: Dictionary = {}
+var gentek_controls: Dictionary = {}
 var phase := "idle"
 var status := "Paint approximate activation territory on the canvas, then Generate."
 var activation: Array[Vector2i] = []
@@ -84,7 +88,7 @@ func mount(workbench: Control) -> void:
 	row = _row(fields)
 	_spin(row,"Width","width",64,256,8,192)
 	_spin(row,"Height","height",64,128,8,112)
-	_spin(row,"Shared reach","shared_extent",0,13,1,13)
+	_spin(row,"Interface reach","shared_extent",0,13,1,13)
 	row = _row(fields)
 	_label(row,"Ownership")
 	var layout:=OptionButton.new()
@@ -101,11 +105,15 @@ func mount(workbench: Control) -> void:
 	var optional := CheckButton.new();optional.text="Optional negotiation";optional.button_pressed=true
 	row.add_child(optional);controls.optional=optional
 	optional.toggled.connect(func(_value: bool) -> void: invalidate("Optional negotiation changed."))
-	for spec: Array in [["Complexity / variation","variation",0.5],["Branching","branching",0.5],
-		["Irregularity","irregularity",0.2],["Environment affinity","environment_affinity",0.5],
-		["Cohesion","cohesion",0.75],["Decoration","clutter",0.0],["Destruction","destruction",0.0]]:
+	row=_row(fields)
+	var sharing:=CheckButton.new();sharing.text="Allow negotiated territory sharing";sharing.button_pressed=false
+	row.add_child(sharing);controls.shared_ownership=sharing
+	sharing.toggled.connect(func(_value: bool) -> void: invalidate("Territory sharing changed; interface hints retain their exact width."))
+	for spec: Array in CONTROL_SPECS:
 		row=_row(fields);_spin(row,spec[0],spec[1],0,1,0.05,spec[2])
 	for key: String in Protocol.EXPRESSION_DEFAULTS[0]: controls[key].set_value_no_signal(Protocol.EXPRESSION_DEFAULTS[0][key])
+	_mount_gentek_controls(fields,"frame","FRAMEWEAVER")
+	_mount_gentek_controls(fields,"mosaic","MOSAIC")
 	row=_row(fields)
 	_paint.text="Paint territory";_paint.button_pressed=true;row.add_child(_paint)
 	for text: String in ["Activation stroke","Protect passage"]: _tool.add_item(text)
@@ -151,6 +159,23 @@ func _spin(parent: Control, text: String, key: String, low: float, high: float, 
 	var spin:=SpinBox.new();spin.min_value=low;spin.max_value=high;spin.step=step;spin.value=value
 	spin.custom_minimum_size.x=80;parent.add_child(spin);controls[key]=spin
 	spin.value_changed.connect(func(_number: float) -> void: invalidate("Recipe changed."))
+
+func _mount_gentek_controls(parent: Control, gentek: String, title: String) -> void:
+	var enabled:=CheckButton.new();enabled.text="Independent "+title+" controls";parent.add_child(enabled)
+	var fields:=VBoxContainer.new();fields.hide();parent.add_child(fields)
+	var values: Dictionary={}
+	for spec: Array in CONTROL_SPECS:
+		var row:=_row(fields);_label(row,spec[0])
+		var spin:=SpinBox.new();spin.min_value=0;spin.max_value=1;spin.step=0.05;spin.value=controls[spec[1]].value
+		spin.custom_minimum_size.x=80;row.add_child(spin);values[spec[1]]=spin
+		spin.value_changed.connect(func(_value: float) -> void: invalidate(title+" controls changed."))
+	gentek_controls[gentek]={"enabled":enabled,"fields":fields,"values":values,"initialized":false}
+	enabled.toggled.connect(func(active: bool) -> void:
+		if active and not gentek_controls[gentek].initialized:
+			for key: String in Protocol.PARAMETERS: values[key].set_value_no_signal(controls[key].value)
+			gentek_controls[gentek].initialized=true
+		fields.visible=active
+		invalidate(title+(" uses independent controls." if active else " follows the shared controls.")))
 
 func busy() -> bool:
 	return phase in ["capture","preparing","running","decoding","installing","acknowledging","cancelling"]
@@ -245,15 +270,24 @@ func _recipe() -> Dictionary:
 	for point: Vector2i in activation: points.append((point-territory.position).clamp(Vector2i.ZERO,territory.size-Vector2i.ONE))
 	var parameters: Dictionary={}
 	for key: String in Protocol.PARAMETERS: parameters[key]=float(controls[key].value)
-	return {"origin":territory.position,"size":territory.size,"seed":int(controls.seed.value),
+	var recipe: Dictionary={"origin":territory.position,"size":territory.size,"seed":int(controls.seed.value),
 		"rounds":int(controls.rounds.value),"shared_extent":int(controls.shared_extent.value),
 		"orientation":controls.orientation.selected-1,"profile":Protocol.PROFILES[controls.profile.selected],
 		"layout":Protocol.LAYOUTS[controls.layout.selected],"border":int(controls.border.value),
-		"optional":controls.optional.button_pressed,"parameters":parameters,"activation":points,
+		"optional":controls.optional.button_pressed,"shared_ownership":controls.shared_ownership.button_pressed,
+		"parameters":parameters,"activation":points,
 		"protected":protected_points.duplicate()}
+	var profiles: Dictionary={}
+	for gentek: String in ["frame","mosaic"]:
+		if not gentek_controls[gentek].enabled.button_pressed: continue
+		var values: Dictionary={}
+		for key: String in Protocol.PARAMETERS: values[key]=float(gentek_controls[gentek].values[key].value)
+		profiles[gentek]=values
+	if not profiles.is_empty(): recipe["gentek_parameters"]=profiles
+	return recipe
 
 func ownership_preview() -> Dictionary:
-	var key: Array=[territory.size,controls.layout.selected,int(controls.border.value),int(controls.shared_extent.value)]
+	var key: Array=[territory.size,controls.layout.selected,int(controls.border.value),int(controls.shared_extent.value),controls.shared_ownership.button_pressed]
 	if key==_mask_key: return _mask_preview
 	_mask_key=key
 	_mask_preview=Protocol.ownership_masks(territory.size,Protocol.LAYOUTS[key[1]],key[2],key[3])
@@ -266,7 +300,8 @@ func ownership_preview() -> Dictionary:
 				var begin:=x
 				while x<territory.size.x and _mask_preview.shared[y*territory.size.x+x]: x+=1
 				runs.append(Rect2i(begin,y,x-begin,1))
-	_mask_preview["shared_runs"]=runs
+	_mask_preview["interface_runs"]=runs
+	_mask_preview["shared_runs"]=runs if key[4] else []
 	return _mask_preview
 
 func _runtime_info() -> Dictionary:
@@ -378,6 +413,10 @@ func _render() -> void:
 	_preview.texture=ImageTexture.create_from_image(Image.create_from_data(size.x,size.y,false,Image.FORMAT_RGBA8,bytes))
 	var rows:=PackedStringArray(["Native status: %s · %s" % [document.status,document.reason],
 		"Source %s · proposal SHA-256 %s" % [_runtime.get("source",""),proposal.get("proposal_sha256","")]])
+	if _layer.selected==LAYERS.find("Sockets / receptors"):
+		rows.append("Red: required · gold: optional · cyan: locally terminable. Short white marks show facing. These are native offers/contracts, not additional joint certificates.")
+	if not prepared.recipe.get("shared_ownership",true):
+		rows.append("Fixed ownership: interface hints remain active; neither Gentek may claim the other's territory. Shared zone is empty.")
 	if round_index>=0:
 		var shown: Dictionary=document.rounds[round_index]
 		rows.append("Raw native proposal · accepted FRAME %s / MOSAIC %s · magenta ownership means competing claims." % [shown.frame_accepted,shown.mosaic_accepted])
@@ -412,6 +451,7 @@ func _inspect_cell(event: InputEvent) -> void:
 			point+prepared.recipe.origin,record.number,int(frame.cells[at]) if at<frame.cells.size() else 0,
 			int(frame.provenance[at]) if at<frame.provenance.size() else 0,record.frame_accepted,
 			int(mosaic.cells[at]) if at<mosaic.cells.size() else 0,int(mosaic.provenance[at]) if at<mosaic.provenance.size() else 0,record.mosaic_accepted]
+		_inspector.text+="\n"+"\n".join(Protocol.inspect_sockets(document,round_index,point))
 		return
 	if document.cells.is_empty(): _inspector.text="No accepted final material architecture. "+str(document.reason);return
 	var record:Array=document.ledger[at]
@@ -419,6 +459,7 @@ func _inspect_cell(event: InputEvent) -> void:
 	_inspector.text="Cell %s · native material ID %d\nOwner %s · structural part %d · rule %s\nFirst round %d · last round %d · accepted revision mask %d\n%s" % [
 		point+prepared.recipe.origin,document.cells[at],document.owner_names[int(record[0])],record[1],rule,
 		record[3],record[4],record[5],document.reason]
+	_inspector.text+="\n"+"\n".join(Protocol.inspect_sockets(document,round_index,point))
 
 func apply_construction() -> bool:
 	if phase!="ready" or not document.get("can_apply",false): return _say("Apply requires an accepted native composition with all mandatory obligations resolved.")

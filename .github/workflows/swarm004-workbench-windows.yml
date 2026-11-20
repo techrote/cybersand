@@ -52,6 +52,7 @@ jobs:
           python3 tools/swarm004/run_request.py --output build/swarm004-windows/run-request-validation.json > evidence/swarm004-build/run-request-validation.log
           cp build/swarm004-windows/run-request-validation.json evidence/swarm004-build/run-request-validation.json
           python3 tools/swarm004/test_run_request.py > evidence/swarm004-build/run-request-tests.log 2>&1
+          python3 tools/swarm004/test_qualify_workbench.py > evidence/swarm004-build/qualification-gate-tests.log 2>&1
           python3 tools/ci/check_ci_provider_policy.py > evidence/swarm004-build/provider.json
           python3 -m venv "$RUNNER_TEMP/scons"
           "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt > evidence/swarm004-build/scons.log 2>&1
@@ -142,11 +143,11 @@ jobs:
           if ((Get-FileHash $zip -Algorithm SHA512).Hash.ToLowerInvariant() -ne $sha) { throw 'Godot archive pin mismatch' }
           Expand-Archive $zip (Join-Path $env:RUNNER_TEMP 'godot')
           'GODOT_EXE=' + (Join-Path $env:RUNNER_TEMP 'godot/Godot_v4.7-stable_win64_console.exe') | Out-File -Append $env:GITHUB_ENV
-      - name: Exercise Generate Apply Undo Save and separate-process reopen
+      - name: Qualify reciprocal4099 and transaction605 with independent reopen
         shell: pwsh
         run: |
           python tools/swarm004/qualify_workbench.py --godot $env:GODOT_EXE --project godot --native-candidate build/swarm004-windows --output evidence/swarm004-source
-          if ($LASTEXITCODE -ne 0) { throw 'Source graphical reciprocal authoring failed' }
+          if ($LASTEXITCODE -ne 0) { throw 'Source graphical reciprocal and transaction qualification failed' }
       - name: Build owner ZIP with pinned runtime licences
         shell: pwsh
         run: |
@@ -174,7 +175,7 @@ jobs:
           $validation = Join-Path $env:RUNNER_TEMP 'swarm004-pristine-package'
           Expand-Archive $archive $validation
           python tools/swarm004/qualify_workbench.py --godot (Join-Path $validation 'Godot_v4.7-stable_win64_console.exe') --project (Join-Path $validation 'godot') --native-candidate build/swarm004-windows --package $validation --output evidence/swarm004-package
-          if ($LASTEXITCODE -ne 0) { throw 'Pristine ZIP graphical authoring/reopen failed' }
+          if ($LASTEXITCODE -ne 0) { throw 'Pristine ZIP graphical reciprocal and transaction qualification failed' }
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:

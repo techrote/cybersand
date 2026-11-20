@@ -511,6 +511,12 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
             else c.face_min_height = static_cast<std::int32_t>(value);
         }
 
+        if (authoring_patch) {
+            const auto retained_region = adapter->world_->simulation_region();
+            if (!retained_region || retained_region->x != region[0] || retained_region->y != region[1] ||
+                retained_region->width != region[2] || retained_region->height != region[3])
+                throw std::invalid_argument("Authoring patch may not change the retained simulation region");
+        }
         if (authoring_patch &&
             (!prepared_liquid_detail::workbench_same_authoring_physics(adapter->world_->config(), *config) ||
              response != adapter->workbench_->response || window != adapter->simulation_window_enabled_ ||
@@ -1102,6 +1108,17 @@ inline bool CyberDemoBridge::commit_liquid_world(const Ref<CyberNativeCellWorld>
         return false;
     }
     auto pending = std::move(adapter->pending_liquid_world_); // One use, also on refusal.
+    if (pending->receipt.has("workbench_authoring_patch")) {
+        // The physical hash binds scheduling-core coverage, which can remain
+        // unchanged when the exact simulation rectangle moves within a core.
+        // An authoring patch was admitted against this exact retained region.
+        const auto region = adapter->world_->simulation_region();
+        if (!region || region->x != pending->origin.x || region->y != pending->origin.y ||
+            region->width != pending->size.x || region->height != pending->size.y) {
+            error_ = "Retained authoring simulation region changed after preparation";
+            return false;
+        }
+    }
     if (adapter->world_->has_failed() || pending->retained_generation != adapter->liquid_policy_session_generation_ ||
         pending->retained_revision != adapter->revision_ || pending->retained_hash != adapter->world_->physical_state_hash() ||
         pending->retained_cadence != adapter->cadence_lod_enabled_ || pending->retained_window != adapter->simulation_window_enabled_) {

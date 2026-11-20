@@ -20,6 +20,10 @@ func _draw() -> void:
 		draw_rect(rect,Color(0.15,0.6,0.9,0.08),true)
 		draw_rect(rect,Color(0.4,0.8,1,0.9),false,2)
 		var masks:Dictionary=panel.ownership_preview()
+		if not panel.controls.shared_ownership.button_pressed:
+			for run:Rect2i in masks.interface_runs:
+				var band:=Rect2(content.position+(Vector2(region.position+run.position)-camera)*scale,Vector2(run.size)*scale)
+				draw_rect(band,Color(0.85,0.62,0.3,0.15),true)
 		for run:Rect2i in masks.shared_runs:
 			var shared:=Rect2(content.position+(Vector2(region.position+run.position)-camera)*scale,Vector2(run.size)*scale)
 			draw_rect(shared,Color(0.4,1,0.5,0.12),true)

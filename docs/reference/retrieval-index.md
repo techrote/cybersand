@@ -15,6 +15,10 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 For SWARM-004 component grammar, independent shared-zone revisions, retained hard
 obligations, Stone13 versus solid-bearing semantics, exact-source controls and
 separate Windows Workbench acceptance, read the [reciprocal assembly contract](../systems/gentek-reciprocal-assembly.md).
+It distinguishes nominal footprint revisions from matched offer causality,
+unknown closure from zero obligations, and the frozen fixed-territory selection
+from the original shared-territory hypothesis. The [dated recovery record](../audits/2026-11-20-swarm004-native-recovery.md)
+retains the source identities, causal comparison and negative results.
 [Focused questions](retrieval-questions-swarm004.json) are an additive development
 set; the frozen retrieval questions are unchanged.
 

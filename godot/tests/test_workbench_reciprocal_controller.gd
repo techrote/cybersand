@@ -5,6 +5,7 @@ extends SceneTree
 # This is NOT a native reciprocal generation or interactive Apply acceptance.
 const Setup=preload("res://scripts/workbench_setup.gd")
 const History=preload("res://scripts/workbench_paint_editor_history.gd")
+const Protocol=preload("res://scripts/workbench_reciprocal_protocol.gd")
 var host:Control
 var bench:Control
 var panel:Control
@@ -48,6 +49,27 @@ func exercise()->void:
 	if not await until(settled,"fixture source installed"):return
 	var baseline:=await capture()
 	bench.open_reciprocal();panel=bench.reciprocal_panel
+	check(not panel.gentek_controls.frame.enabled.button_pressed and not panel.gentek_controls.mosaic.enabled.button_pressed \
+		and panel.controls.shared_ownership.button_pressed,"new owner controls preserve legacy shared defaults")
+	panel.activation.assign([Vector2i(64,48)])
+	var linked_recipe:Dictionary=panel._recipe()
+	var linked:Dictionary=Protocol.prepare(linked_recipe,baseline)
+	check(linked.ok and linked.text.begins_with("SWARM004 1\n"),"default controls retain the original native request protocol")
+	panel.gentek_controls.frame.enabled.button_pressed=true
+	check(panel.gentek_controls.frame.values.destruction.value==panel.controls.destruction.value \
+		and panel.gentek_controls.frame.values.clutter.value==panel.controls.clutter.value,
+		"enabling independent controls copies separate decoration and destruction without coupling them")
+	panel.gentek_controls.frame.values.branching.value=0.05
+	var independent:Dictionary=panel._recipe()
+	check(independent.gentek_parameters.frame.branching==0.05 and independent.parameters.branching==linked_recipe.parameters.branching \
+		and not independent.gentek_parameters.has("mosaic"),"FRAME override leaves shared and MOSAIC controls unchanged")
+	panel.controls.shared_ownership.button_pressed=false
+	var fixed:Dictionary=Protocol.prepare(panel._recipe(),baseline)
+	check(fixed.ok and fixed.text.begins_with("SWARM004 2\n") and fixed.interface==linked.shared and not 1 in fixed.shared \
+		and fixed.frame_eligible==linked.frame_eligible and fixed.mosaic_eligible==linked.mosaic_eligible,
+		"fixed territory disables shared ownership without erasing transition hints or changing masks")
+	panel.gentek_controls.frame.enabled.button_pressed=false;panel.controls.shared_ownership.button_pressed=true
+	check(Protocol.prepare(panel._recipe(),baseline).text==linked.text,"returning to linked controls restores exact original request bytes")
 	panel.document={"can_apply":false}
 	check(not panel.apply_construction(),"ordinary Apply refuses the unqualified mechanical fixture")
 	check((await capture()).cells==baseline.cells,"refused ordinary Apply makes no native write")

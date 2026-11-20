@@ -169,6 +169,31 @@ locations and negotiation options must match the output evidence. Native
 `can_apply` remains necessary; the controller additionally refuses incomplete
 ownership and unresolved mandatory obligations. It never changes that flag.
 
+The shared controls retain their original defaults and V1 request bytes.
+Optional independent FRAMEWEAVER and MOSAIC overrides each carry the same seven
+normalized controls, with decoration and destruction still independent. The
+bounded text transport accepts V1 unchanged; V2 carries FRAME controls plus the
+existing optional-negotiation flag, then MOSAIC controls plus an explicit shared
+ownership flag, before the existing activation/mask records. It changes no
+generator implementation, material law or native resource ceiling.
+
+Disabling negotiated territory sharing retains both Genteks' original interface
+transition masks while zeroing the permitted `shared_zone`, matching the native
+`fixed_territory` control. Setting interface reach to zero is a different recipe.
+The decoder verifies the two profiles independently, checks zero shared ownership
+against the retained transition band, and records both controls in saved evidence.
+The canvas and `Interface band` layer show retained hints in amber; `Shared zone`
+shows only territory that native arbitration may share.
+
+`Sockets / receptors` displays the native connector and boundary records for
+each provisional proposal, or final accepted native records plus authored
+assembly socket contracts. Required, optional and locally terminable contracts
+have distinct colors; cell inspection reports owner, family, facing, native
+status and counterpart. Accepted assembly certificates never appear on an earlier
+rejected proposal. These diagnostics do not establish an additional qualified
+joint, traversal path or physical support certificate. Bounded record counts,
+coordinates, flags and obligation kinds are validated before rendering.
+
 The controller stages exact history with the existing history helper. Shared
 Workbench accepts the retained patch only while that controller attests the
 same pending candidate and patch. Undo retains its own cells, protected set,

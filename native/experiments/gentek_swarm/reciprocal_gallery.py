@@ -482,6 +482,20 @@ def main():
     args = parser.parse_args()
     root = args.root.resolve()
     campaign = json.loads((root / "campaign.json").read_text())
+    causal_path = root / "causal/causal_summary.json"
+    causal_summary = json.loads(causal_path.read_text()) if causal_path.is_file() else None
+    if causal_summary:
+        if (causal_summary.get("result") != "PASS" or causal_summary.get("source") != campaign["source"] or
+                causal_summary.get("lane") != campaign["lane"]):
+            raise ValueError("causal controls do not match the passing native campaign source/lane")
+        causal_totals = causal_summary["policy_totals"]
+        if (set(causal_totals) != set(campaign["registered_policies"]) or
+                any(counts.get("cases") != campaign["expected_cases_per_policy"] for counts in causal_totals.values())):
+            raise ValueError("causal controls lack complete registered policy/case coverage")
+        identities = {(r["policy"], r["fixture"], r["profile"], r["seed"]) for r in causal_summary["records"]}
+        if (len(identities) != len(causal_summary["records"]) or
+                len(identities) != sum(c.get("nominal_both", 0) for c in causal_totals.values())):
+            raise ValueError("causal controls have duplicate or missing nominal both-revision records")
     storage = json.loads((root / "storage.json").read_text()).get("records", {}) if (root / "storage.json").is_file() else {}
     images, pages = root / "images", root / "cases"
     images.mkdir(exist_ok=True)
@@ -549,6 +563,12 @@ def main():
                 policy_rows.append({**record, "native_both_revised": False, "audit": "legacy-control; native suites separately qualify", "raw_sha256": hashes[file]})
                 continue
             audit = audit_composition(document, campaign["source"])
+            if bool(record["closure_evaluated"]) != (audit["still_required"] is not None):
+                audit["result"] = "FAIL"
+                audit["errors"].append("campaign closure availability differs from the final native ledger")
+            # An early refused proposal has no final closure evaluation. Keep
+            # null in exported comparisons instead of converting absence to 0.
+            record = {**record, "still_required": audit["still_required"]}
             if document["rounds"] and document["rounds"][0]["frame"]["result"]["cells"] != document["rounds"][-1]["frame"]["result"]["cells"]:
                 matched_policy = "matched_final_frame__" + policy
                 expected_matched[matched_policy] += 1
@@ -564,6 +584,8 @@ def main():
             if audit["still_required"] is not None:
                 totals[policy]["still_required_on_final_proposals"] += audit["still_required"]
                 totals[policy]["final_proposals"] += 1
+            else:
+                totals[policy]["closure_not_evaluated"] += 1
             totals[policy]["audit_failures"] += audit["result"] != "PASS"
             policy_rows.append({**record, "native_both_revised": audit["both_revised"], "audit": audit["result"], "raw_sha256": hashes[file]})
             filename = case_id + "__" + policy
@@ -615,7 +637,8 @@ def main():
                     "candidate_status": record["status"], "reference_status": reference["status"],
                     "candidate_qualified_joints": record["joints"], "reference_qualified_joints": reference["joints"],
                     "qualified_joint_delta": record["joints"] - reference["joints"],
-                    "candidate_still_required": audit["still_required"], "reference_still_required": reference["still_required"],
+                    "candidate_still_required": audit["still_required"],
+                    "reference_still_required": reference["still_required"] if reference["closure_evaluated"] else None,
                     "both_revised": audit["both_revised"], "same_final_joint_contract": policy != "validation_off_diagnostic",
                     "initial_frame_matched": same_initial_frame, "initial_masks_matched": initial_masks_matched,
                     "note": "Same registered fixture/profile/seed; actual initial geometry/mask equality and validator compatibility are reported. Failed cases retained."})
@@ -651,10 +674,11 @@ def main():
     summary = {"schema": 1, "programme": "GENTEK-SWARM-004", "source": campaign["source"], "lane": campaign["lane"],
         "matched_cases": len(grouped), "expected_cases_per_policy": expected, "policy_totals": {p: dict(c) for p, c in totals.items()},
         "expected_final_frame_controls": dict(expected_matched),
+        "causal_policy_totals": causal_summary["policy_totals"] if causal_summary else None,
         "audit": {"result": "FAIL" if failed or missing or campaign["result"] != "PASS" else "PASS", "checks": checks,
                   "failed_cases": len(failed), "missing_or_incomplete_policies": missing, "native_campaign_result": campaign["result"]},
         "scope": "Exact native material and provenance evidence; no physics, Godot or Windows acceptance",
-        "comparison_limit": "E8 comparisons change FRAME/shared geometry; no attribution to solver improvement. Failed cases remain counted."}
+        "comparison_limit": "E8 comparisons change FRAME/shared geometry; no attribution to solver improvement. Failed cases remain counted. Both revised is nominal occupied-footprint change; offer causality requires separately matched no-offer and frozen-peer controls. Unevaluated closure is unknown, never zero."}
     (root / "reciprocal_summary.json").write_text(json.dumps(summary, indent=2) + "\n")
     (root / "reciprocal_audit.json").write_text(json.dumps({"summary": summary["audit"], "cases": audit_rows}, indent=2) + "\n")
     (root / "reciprocal_comparisons.json").write_text(json.dumps(comparisons, indent=2) + "\n")
@@ -663,10 +687,15 @@ def main():
             writer = csv.DictWriter(stream, fieldnames=list(policy_rows[0]))
             writer.writeheader()
             writer.writerows(policy_rows)
-    table = "<table><thead><tr><th>Policy</th><th>Cases</th><th>Complete</th><th>Blocked</th><th>UNSAT</th><th>Exhausted</th><th>Both revised</th><th>Both + joint</th><th>Legacy reported joints</th><th>SWARM-004 qualified joints</th><th>Apply</th><th>Audit errors</th></tr></thead><tbody>"
+    table = "<table><thead><tr><th>Policy</th><th>Cases</th><th>Complete</th><th>Blocked</th><th>UNSAT</th><th>Exhausted</th><th>Nominal both revised</th><th>Nominal both + joint</th><th>Causal both + joint</th><th>Causal Apply</th><th>Closure evaluated</th><th>Closure unknown</th><th>Legacy reported joints</th><th>SWARM-004 qualified joints</th><th>Apply</th><th>Audit errors</th></tr></thead><tbody>"
     for policy, counts in totals.items():
+        causal_counts = causal_summary["policy_totals"].get(policy) if causal_summary else None
         values = [policy, counts["cases"], counts["complete"], counts["blocked"], counts["unsat"], counts["exhausted"],
                   counts["both_revised"], counts["both_revised_with_joint"],
+                  causal_counts.get("causal_both_with_joint", 0) if causal_counts is not None else "—",
+                  causal_counts.get("causal_complete", 0) if causal_counts is not None else "—",
+                  counts["final_proposals"] if counts["native_candidate"] else "—",
+                  counts["closure_not_evaluated"] if counts["native_candidate"] else "—",
                   counts["reported_legacy_joints"] if counts["legacy_control"] else "—",
                   counts["qualified_joints"] if counts["native_candidate"] else "—", counts["apply_authorized"], counts["audit_failures"]]
         table += "<tr>" + "".join(f"<td>{html.escape(str(value))}</td>" for value in values) + "</tr>"
@@ -676,7 +705,9 @@ def main():
     page += "<p>Original material-cell arrays rendered with the unchanged native material catalogue. Diagnostic ownership and joint views are labelled separately. No physical stability or Workbench acceptance is inferred.</p>"
     page += "<p>Complete MOSAIC and complete foreign-obligation closure are different. Legacy control complete counts describe their native solver status; SWARM-004 complete includes its composition gates. Every failure stays in the comparison.</p>"
     page += "<p>Frozen legacy joint counts and current SWARM-004 qualified joints use different contracts. The latter require native Solid materials at the receiver and along the witnessed path; the original Stone13 bands are Powder. Historical values remain exact, and are shown separately.</p>"
-    page += "<p>Both revised means both Genteks changed their occupied-cell footprints in accepted rounds. Material-ID changes, including bearing material variants, are counted separately and cannot alone establish architectural revision.</p>"
+    page += "<p>Nominal both revised means both Genteks changed their occupied-cell footprints in accepted rounds. It does not establish that offers caused those changes: preserved masks can also change the result. Causal claims require matched-mask no-offer and frozen-peer controls. Material-only substitutions never establish occupied-footprint revision. Early refusals without a final closure ledger have unknown closure, not zero requirements.</p>"
+    if causal_summary:
+        page += "<p><a href='causal/causal_summary.json'>Both-direction counterfactual controls and raw native array paths</a>. Their work is independently budgeted and excluded from candidate totals. Unavailable controls remain explicit.</p>"
     page += "<div class='tablewrap'>" + table + "</div><p><a href='reciprocal_metrics.csv'>Metrics CSV</a> · <a href='reciprocal_summary.json'>Summary</a> · <a href='reciprocal_audit.json'>Direct native array audit</a> · <a href='reciprocal_comparisons.json'>All control comparisons</a> · <a href='campaign.json'>Native campaign</a></p>"
     page += "<h2>Every matched case</h2><input id='filter' placeholder='Filter fixture, profile or seed'><ul id='cases'>" + "".join(case_cards) + "</ul>"
     page += "<script>document.getElementById('filter').addEventListener('input',e=>{const q=e.target.value.toLowerCase();document.querySelectorAll('#cases li').forEach(x=>x.hidden=!x.dataset.case.toLowerCase().includes(q));});</script>"

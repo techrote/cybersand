@@ -11,7 +11,7 @@ LEGACY := common fixtures meshing io frameweaver mosaic receptor negotiated mosa
 CORE := $(addprefix $(BUILD)/,$(addsuffix .o,$(LEGACY) assembly reciprocal_mosaic reciprocal)) $(BUILD)/generation_spatial.o
 HEADERS := $(wildcard *.hpp) $(wildcard $(ROOT)/native/include/cybersand/*.hpp)
 .PHONY: all tests test
-all: tests $(BUILD)/gentek_reciprocal
+all: tests $(BUILD)/gentek_reciprocal $(BUILD)/audit_reciprocal_causality
 tests: $(BUILD)/test_assembly $(BUILD)/test_reciprocal_mosaic $(BUILD)/test_reciprocal
 $(BUILD):
 	mkdir -p $@
@@ -28,6 +28,8 @@ $(BUILD)/test_reciprocal_mosaic: $(CORE) $(BUILD)/reciprocal_mosaic_tests.o
 $(BUILD)/test_reciprocal: $(CORE) $(BUILD)/reciprocal_tests.o
 	$(CXX) $(MODE) $^ $(LDFLAGS) -o $@
 $(BUILD)/gentek_reciprocal: $(CORE) $(BUILD)/reciprocal_io.o $(BUILD)/reciprocal_main.o
+	$(CXX) $(MODE) $^ $(LDFLAGS) -o $@
+$(BUILD)/audit_reciprocal_causality: $(CORE) $(BUILD)/reciprocal_io.o $(BUILD)/reciprocal_causal.o
 	$(CXX) $(MODE) $^ $(LDFLAGS) -o $@
 test: tests
 	$(BUILD)/test_assembly

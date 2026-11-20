@@ -248,8 +248,9 @@ private:
 Input read_request(const std::filesystem::path& path, const std::string& source) {
     if (source.empty() || source.size() > 128) throw std::invalid_argument("invalid request source identity");
     RequestTokens tokens(path);
-    if (tokens.token() != "SWARM004" || tokens.integer(1, 1) != 1)
+    if (tokens.token() != "SWARM004")
         throw std::invalid_argument("unknown reciprocal request protocol or version");
+    const auto protocol_version = tokens.integer(1, 2);
     Input input;
     input.frame.gentek = Kind::Frameweaver;
     input.mosaic.gentek = Kind::Mosaic;
@@ -264,16 +265,25 @@ Input read_request(const std::filesystem::path& path, const std::string& source)
     const auto expression = tokens.token();
     if (expression != "industrial" && expression != "viaduct_like" && expression != "irregular_megastructure")
         throw std::invalid_argument("unknown Workbench structural expression profile");
-    auto parameters = expression_profile(expression);
-    parameters.variation = tokens.parameter();
-    parameters.irregularity = tokens.parameter();
-    parameters.clutter = tokens.parameter();
-    parameters.destruction = tokens.parameter();
-    parameters.branching = tokens.parameter();
-    parameters.environment_affinity = tokens.parameter();
-    parameters.cohesion = tokens.parameter();
-    input.frame.profile = input.mosaic.profile = parameters;
+    const auto parameters = [&]() {
+        auto profile = expression_profile(expression);
+        profile.variation = tokens.parameter();
+        profile.irregularity = tokens.parameter();
+        profile.clutter = tokens.parameter();
+        profile.destruction = tokens.parameter();
+        profile.branching = tokens.parameter();
+        profile.environment_affinity = tokens.parameter();
+        profile.cohesion = tokens.parameter();
+        return profile;
+    };
+    input.frame.profile = input.mosaic.profile = parameters();
     input.options.optional_negotiation = tokens.integer(0, 1) != 0;
+    // V1 remains byte-for-byte compatible. V2 carries an independently authored
+    // MOSAIC profile; it does not change generator laws, default knobs or budgets.
+    if (protocol_version == 2) {
+        input.mosaic.profile = parameters();
+        input.options.shared_ownership = tokens.integer(0, 1) != 0;
+    }
     const auto activation_count = tokens.integer(0, 16);
     for (int i = 0; i < activation_count; ++i) {
         const Point point{tokens.integer(0, input.frame.width - 1), tokens.integer(0, input.frame.height - 1)};
@@ -306,6 +316,8 @@ Input read_request(const std::filesystem::path& path, const std::string& source)
     input.mosaic.protected_void = input.frame.protected_void;
     input.mosaic.context = input.frame.context;
     input.frame.transition = input.mosaic.transition = input.shared_zone;
+    if (!input.options.shared_ownership)
+        std::fill(input.shared_zone.begin(), input.shared_zone.end(), 0);
     // assemble() independently validates the actual L1 interface extent and
     // cell claims; UI-supplied masks do not grant additional native authority.
     return input;
@@ -412,6 +424,7 @@ int main(int argc, char** argv) try {
                         result.joints.size(), metric(result.metrics, "still_required"), metric(result.metrics, "total_charged_work"),
                         metric(result.metrics, "both_genteks_revised") != 0, result.can_apply});
                     records.back().work_semantics = "aggregate charged candidate FRAME/MOSAIC/solver/shared work; excludes controls";
+                    records.back().closure_evaluated = result.metrics.contains("still_required");
                     if (!result.rounds.empty()) {
                         const auto& first_frame = result.rounds.front().frame.result.cells;
                         const auto& final_frame = result.rounds.back().frame.result.cells;

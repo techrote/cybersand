@@ -62,7 +62,7 @@ func _initialize()->void:
 	valid={"schema":5,"type":"reciprocal_assembly","source":"transport-fixture-no-assembly","can_apply":false,
 		"status":"blocked","reason":"transport test, no architecture","stop_reason":"fixture","input":{"frame":input,"mosaic":other,
 		"shared_zone":Array(prepared.shared),"options":{"rounds":2,"shared_extent":2,"orientation_preference":1,
-		"optional_negotiation":false,"final_validation":true}},"cells":[],"ledger":[],"ledger_columns":Protocol.LEDGER_COLUMNS,
+		"optional_negotiation":false,"shared_ownership":true,"final_validation":true}},"cells":[],"ledger":[],"ledger_columns":Protocol.LEDGER_COLUMNS,
 		"rules":[],"rounds":[],"joints":[],"obligations":[],"owner_names":["empty","FRAMEWEAVER","MOSAIC","immutable_environment"]}
 	check(decode(valid).ok,"well-formed blocked evidence remains inspectable")
 	for field:String in ["seed","width","source"]:
@@ -74,7 +74,7 @@ func _initialize()->void:
 	for parameter:String in Protocol.PARAMETERS:
 		var bad:Dictionary=valid.duplicate(true);bad.input.frame.profile[parameter]=0.99
 		check(not decode(bad).ok,"changed native parameter "+parameter+" is refused")
-	for option:String in ["rounds","shared_extent","orientation_preference","optional_negotiation","final_validation"]:
+	for option:String in ["rounds","shared_extent","orientation_preference","optional_negotiation","shared_ownership","final_validation"]:
 		var bad:Dictionary=valid.duplicate(true);bad.input.options[option]=99
 		check(not decode(bad).ok,"changed negotiated option "+option+" is refused")
 	var mismatched:Dictionary=valid.duplicate(true);mismatched.input.frame.activation[0]=[3,1]
@@ -115,6 +115,54 @@ func _initialize()->void:
 	malformed=false_apply.duplicate(true);malformed.cells[2]=0;malformed.ledger[2]=[0,0,0,0,0,0]
 	malformed.cells[7]=58;malformed.ledger[7]=[1,1,0,0,0,1]
 	check(not decode(malformed).ok,"foreign ordinary territory cannot be claimed through a false ledger")
+	var inspection:Dictionary=false_apply.duplicate(true);inspection.can_apply=false;inspection.status="blocked"
+	var required_socket:Dictionary={"id":7,"instance":1,"a":[2,0],"b":[2,1],"facing":[1,0],"family":"frame","required":true,
+		"fulfilled":false,"counterpart":0,"state":"still_required"}
+	var optional_socket:Dictionary=required_socket.duplicate(true);optional_socket.required=false;optional_socket.id=8;optional_socket.a=[6,2];optional_socket.b=[6,2]
+	inspection.rounds[0].frame.result["connectors"]=[required_socket]
+	inspection.rounds[0].proposed_frame=frame_result.duplicate(true);inspection.rounds[0].proposed_frame["connectors"]=[optional_socket]
+	var local_socket:Dictionary={"id":9,"instance":1,"a":[4,2],"b":[4,2],"facing":[0,-1],"family":"frame","obligation":"local_terminable"}
+	inspection.rounds[0].frame["constructions"]=[{"assembly":{"sockets":[local_socket]}}]
+	var receptor:Dictionary={"id":10,"instance":2,"a":[5,3],"b":[5,3],"facing":[-1,0],"family":"frame","required":false}
+	inspection.rounds[0].mosaic.result["boundary"]={"hard":[receptor]}
+	check(decode(inspection).ok,"bounded native connector and assembly contracts are inspectable without granting Apply")
+	var final_sockets:Array=Protocol.socket_records(inspection,-1)
+	var proposal_sockets:Array=Protocol.socket_records(inspection,0)
+	check(final_sockets.size()==3 and proposal_sockets.size()==1 and proposal_sockets[0].id==8,
+		"provisional socket inspection never borrows accepted assembly certificates or receivers")
+	var socket_pixels:PackedByteArray=Protocol.raster(inspection,prepared,-1,"Sockets / receptors")
+	check(socket_pixels[2*4]==255 and socket_pixels[2*4+1]==104 \
+		and socket_pixels[(2*8+4)*4]==105 and socket_pixels[(3*8+5)*4+1]==209,
+		"required optional and local-terminable native contracts retain distinct diagnostic colors")
+	check("still_required" in "\n".join(Protocol.inspect_sockets(inspection,-1,Vector2i(2,0))),
+		"cell inspector reports actual native connector status and counterpart")
+	for broken_field:String in ["facing","required","a","family"]:
+		var broken:Dictionary=inspection.duplicate(true);broken.rounds[0].frame.result.connectors[0][broken_field]=17
+		check(not decode(broken).ok,"malformed native socket "+broken_field+" is refused before rendering")
+	var broken:Dictionary=inspection.duplicate(true);broken.rounds[0].frame.constructions[0].assembly.sockets[0].obligation="assumed_support"
+	check(not decode(broken).ok,"unknown assembly obligation cannot enter diagnostic inspection")
+	var independent_request:Dictionary=request.duplicate(true)
+	independent_request["gentek_parameters"]={"frame":request.parameters.duplicate(),"mosaic":request.parameters.duplicate()}
+	check(Protocol.prepare(independent_request,{"extent":extent,"cells":bytes}).text==prepared.text,
+		"equal owner overrides preserve exact v1 transport bytes")
+	independent_request.gentek_parameters.frame.branching=0.9
+	independent_request.gentek_parameters.mosaic.cohesion=0.15
+	independent_request["shared_ownership"]=false
+	var independent_prepared:=Protocol.prepare(independent_request,{"extent":extent,"cells":bytes})
+	check(independent_prepared.ok and independent_prepared.text.begins_with("SWARM004 2\n") \
+		and independent_prepared.interface==prepared.shared and not 1 in independent_prepared.shared and independent_prepared.context==prepared.context,
+		"independent controls and fixed ownership use v2 without changing source or interface geometry")
+	var independent_evidence:Dictionary=valid.duplicate(true)
+	independent_evidence.input.frame.profile.branching=0.9;independent_evidence.input.mosaic.profile.cohesion=0.15
+	independent_evidence.input.options.shared_ownership=false
+	independent_evidence.input.shared_zone.fill(0)
+	var shared_prepared:=prepared;prepared=independent_prepared
+	check(decode(independent_evidence).ok,"decoder checks the two actual native profiles independently")
+	independent_evidence.input.mosaic.profile.branching=0.9
+	check(not decode(independent_evidence).ok,"one Gentek cannot borrow the other's requested independent control")
+	prepared=shared_prepared
+	independent_request.gentek_parameters.frame.destruction=NAN
+	check(not Protocol.prepare(independent_request,{"extent":extent,"cells":bytes}).ok,"independent destruction remains finite and independently validated")
 	var map_path:="user://swarm004-protocol-map.json"
 	var map_file:=FileAccess.open(map_path,FileAccess.WRITE);map_file.store_string("transport fixture only");map_file.close()
 	write(valid)

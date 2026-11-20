@@ -17,6 +17,8 @@ const EXPRESSION_DEFAULTS := [
 	{"variation":0.65,"irregularity":0.95,"branching":1.0,"environment_affinity":0.7,"cohesion":0.2}]
 const PARAMETERS := ["variation","irregularity","clutter","destruction","branching","environment_affinity","cohesion"]
 const LEDGER_COLUMNS := ["owner","instance","rule","first_round","last_round","revision_mask"]
+const MAX_INSPECTION_RECORDS := 4096
+const SOCKET_COLORS := {"required":0xff6868ff,"foreign_required":0xff6868ff,"optional":0xffd166ff,"local_terminable":0x69e6eeff}
 
 static func digest(bytes: PackedByteArray) -> String:
 	var hash := HashingContext.new()
@@ -41,26 +43,72 @@ static func scalar_same(value: Variant, expected: Variant) -> bool:
 static func fail(reason: String) -> Dictionary:
 	return {"ok":false,"error":reason}
 
+static func parameters_for(recipe: Dictionary, gentek: String) -> Dictionary:
+	var overrides: Variant=recipe.get("gentek_parameters",{})
+	if not overrides is Dictionary: return {}
+	var values: Variant=overrides.get(gentek,recipe.get("parameters",{}))
+	return values if values is Dictionary else {}
+
+static func normalized_parameters(values: Dictionary) -> bool:
+	for key: String in PARAMETERS:
+		var value: Variant=values.get(key)
+		if not (value is float or value is int) or not is_finite(float(value)) or float(value)<0 or float(value)>1: return false
+	return true
+
+static func parameter_line(values: Dictionary) -> String:
+	var knobs:=PackedStringArray()
+	for key: String in PARAMETERS: knobs.append("%.8f" % float(values[key]))
+	return " ".join(knobs)
+
 static func point_list(value: Variant, size: Vector2i) -> bool:
 	if not value is Array or value.size()>size.x*size.y: return false
 	for point: Variant in value:
 		if not point is Array or point.size()!=2 or not integer(point[0],0,size.x-1) or not integer(point[1],0,size.y-1): return false
 	return true
 
-static func native_preview(value: Variant, count: int, allow_empty: bool) -> bool:
+static func native_preview(value: Variant, size: Vector2i, allow_empty: bool) -> bool:
+	var count:=size.x*size.y
 	if not value is Dictionary or not value.get("cells") is Array or not value.get("provenance") is Array \
 		or value.cells.size()!=value.provenance.size() or (value.cells.size()!=count and not (allow_empty and value.cells.is_empty())): return false
 	for id: Variant in value.cells:
 		if not material(id): return false
 	for id: Variant in value.provenance:
 		if not integer(id,0,4294967295): return false
+	var boundary: Variant=value.get("boundary",{})
+	if not boundary is Dictionary or not socket_array(value.get("connectors",[]),size,false) \
+		or not socket_array(boundary.get("hard",[]),size,false): return false
 	return true
 
 static func frame_preview(value: Variant, size: Vector2i, allow_empty: bool) -> bool:
-	if not value is Dictionary or not native_preview(value.get("result"),size.x*size.y,allow_empty) \
+	if not value is Dictionary or not native_preview(value.get("result"),size,allow_empty) \
 		or not value.get("slots") is Array or value.slots.size()>256: return false
 	for slot: Variant in value.slots:
 		if not slot is Dictionary or not point_list(slot.get("clearance"),size): return false
+	var constructions: Variant=value.get("constructions",[])
+	if not constructions is Array or constructions.size()>256: return false
+	var socket_count:=0
+	for construction: Variant in constructions:
+		if not construction is Dictionary or not construction.get("assembly") is Dictionary: return false
+		var sockets: Variant=construction.assembly.get("sockets",[])
+		if not socket_array(sockets,size,true): return false
+		socket_count+=sockets.size()
+		if socket_count>MAX_INSPECTION_RECORDS: return false
+	return true
+
+static func socket_array(values: Variant, size: Vector2i, assembly: bool) -> bool:
+	if not values is Array or values.size()>MAX_INSPECTION_RECORDS: return false
+	for value: Variant in values:
+		if not value is Dictionary or not integer(value.get("id"),0,4294967295) \
+			or not integer(value.get("instance"),0,4294967295) or not point_list([value.get("a"),value.get("b")],size) \
+			or not value.get("facing") is Array or value.facing.size()!=2 \
+			or not integer(value.facing[0],-1,1) or not integer(value.facing[1],-1,1) \
+			or not value.get("family") is String or value.family.length()>96: return false
+		if assembly:
+			if value.get("obligation") not in ["foreign_required","optional","local_terminable"]: return false
+		elif not value.get("required") is bool: return false
+		if value.has("fulfilled") and not value.fulfilled is bool: return false
+		if value.has("counterpart") and not integer(value.counterpart,0,4294967295): return false
+		if value.has("state") and (not value.state is String or value.state.length()>8192): return false
 	return true
 
 static func ownership_masks(size: Vector2i, layout: String, border: int, reach: int) -> Dictionary:
@@ -112,10 +160,11 @@ static func prepare(request: Dictionary, capture: Dictionary) -> Dictionary:
 	if request.profile not in PROFILES or not integer(request.seed,0,2147483647) \
 		or not integer(request.rounds,0,4) or not integer(request.shared_extent,0,13) \
 		or not integer(request.orientation,-1,1): return fail("Invalid bounded native recipe.")
-	for key: String in PARAMETERS:
-		if not request.parameters.has(key) or not is_finite(float(request.parameters[key])) \
-			or float(request.parameters[key]) < 0 or float(request.parameters[key]) > 1:
-			return fail("Invalid normalized native control: "+key)
+	if not request.get("parameters") is Dictionary or not normalized_parameters(request.parameters):
+		return fail("Invalid normalized shared native controls.")
+	var frame_parameters:=parameters_for(request,"frame");var mosaic_parameters:=parameters_for(request,"mosaic")
+	if not normalized_parameters(frame_parameters) or not normalized_parameters(mosaic_parameters):
+		return fail("Independent Gentek controls must all be finite and normalized to 0..1.")
 	if request.activation.is_empty() or request.activation.size() > 16:
 		return fail("Paint an activation stroke with 1–16 sampled locations.")
 	var layout: Variant=request.get("layout","left_right")
@@ -123,19 +172,21 @@ static func prepare(request: Dictionary, capture: Dictionary) -> Dictionary:
 	if not layout is String or not integer(border,0,16): return fail("Invalid ownership layout or clear border.")
 	var masks:=ownership_masks(size,layout,int(border),int(request.shared_extent))
 	if not masks.ok: return masks
-	var lines := PackedStringArray(["SWARM004 1","%d %d %d %d %d %d %d %d" % [size.x,size.y,
+	var sharing: Variant=request.get("shared_ownership",true)
+	if not sharing is bool: return fail("Negotiated territory sharing must be an explicit boolean.")
+	var independent: bool=parameter_line(frame_parameters)!=parameter_line(mosaic_parameters) or not sharing
+	var lines := PackedStringArray(["SWARM004 2" if independent else "SWARM004 1","%d %d %d %d %d %d %d %d" % [size.x,size.y,
 		request.seed,origin.x,origin.y,request.rounds,request.shared_extent,request.orientation],request.profile])
-	var knobs := PackedStringArray()
-	for key: String in PARAMETERS: knobs.append("%.8f" % float(request.parameters[key]))
-	knobs.append("1" if request.optional else "0")
-	lines.append(" ".join(knobs))
+	lines.append(parameter_line(frame_parameters)+(" 1" if request.optional else " 0"))
+	if independent: lines.append(parameter_line(mosaic_parameters)+(" 1" if sharing else " 0"))
 	lines.append(str(request.activation.size()))
 	for point: Vector2i in request.activation:
 		if not Rect2i(Vector2i.ZERO,size).has_point(point): return fail("Activation point is outside its territory.")
 		lines.append("%d %d" % [point.x,point.y])
 	var context := PackedInt32Array()
 	var protected := PackedByteArray()
-	var shared: PackedByteArray=masks.shared
+	var shared: PackedByteArray=masks.shared.duplicate()
+	if not sharing: shared.fill(0)
 	var guards := PackedInt32Array()
 	context.resize(size.x*size.y);protected.resize(context.size())
 	for y: int in size.y:
@@ -147,11 +198,11 @@ static func prepare(request: Dictionary, capture: Dictionary) -> Dictionary:
 			context[at] = id
 			protected[at] = 1 if request.protected.has(world) else 0
 			if protected[at]: guards.append_array(PackedInt32Array([world.x,world.y]))
-			lines.append("%d %d %d %d %d" % [masks.frame[at],masks.mosaic[at],protected[at],shared[at],id])
+			lines.append("%d %d %d %d %d" % [masks.frame[at],masks.mosaic[at],protected[at],masks.shared[at],id])
 	var text := "\n".join(lines)+"\n"
 	if text.to_utf8_buffer().size() > MAX_INPUT_BYTES: return fail("Native request exceeds the 2 MiB transport budget.")
 	return {"ok":true,"text":text,"context":context,"protected":protected,"shared":shared,"guards":guards,
-		"frame_eligible":masks.frame,"mosaic_eligible":masks.mosaic,
+		"frame_eligible":masks.frame,"mosaic_eligible":masks.mosaic,"interface":masks.shared,
 		"request_sha256":digest(text.to_utf8_buffer()),"recipe":request.duplicate(true)}
 
 static func decode(path: String, prepared: Dictionary, expected_source: String) -> Dictionary:
@@ -183,12 +234,16 @@ static func decode_document(result: Dictionary, bytes: PackedByteArray, prepared
 		or not integer(recipe.orientation,-1,1) or not recipe.optional is bool or not recipe.profile is String or recipe.profile not in PROFILES \
 		or recipe.activation.is_empty() or recipe.activation.size()>16:
 		return fail("Native evidence has an invalid bounded authoring recipe.")
+	if not recipe.get("shared_ownership",true) is bool: return fail("Native evidence has invalid negotiated territory sharing.")
+	for gentek: String in ["frame","mosaic"]:
+		if not normalized_parameters(parameters_for(recipe,gentek)): return fail("Native evidence has invalid independent Gentek controls.")
 	var inputs: Variant = result.get("input")
 	if not inputs is Dictionary: return fail("Native evidence is missing its immutable requests.")
 	var options: Variant = inputs.get("options")
 	if not options is Dictionary or not scalar_same(options.get("rounds"),recipe.rounds) \
 		or not scalar_same(options.get("shared_extent"),recipe.shared_extent) or not scalar_same(options.get("orientation_preference"),recipe.orientation) \
 		or not scalar_same(options.get("optional_negotiation"),recipe.optional) or not scalar_same(options.get("final_validation"),true) \
+		or not scalar_same(options.get("shared_ownership"),recipe.get("shared_ownership",true)) \
 		or not inputs.get("shared_zone") is Array or inputs.shared_zone.size()!=count:
 		return fail("Native evidence changed the negotiated controls or final-validation requirement.")
 	for gentek: String in ["frame","mosaic"]:
@@ -207,7 +262,7 @@ static func decode_document(result: Dictionary, bytes: PackedByteArray, prepared
 		for key: String in PARAMETERS:
 			var value: Variant=input.profile.get(key)
 			if not (value is int or value is float) or not is_finite(value) \
-				or absf(float(value)-float(recipe.parameters[key]))>0.00000001:
+				or absf(float(value)-float(parameters_for(recipe,gentek)[key]))>0.00000001:
 				return fail("Native evidence changed the requested control "+key+".")
 		for index: int in recipe.activation.size():
 			var point: Variant=input.activation[index]
@@ -219,9 +274,10 @@ static func decode_document(result: Dictionary, bytes: PackedByteArray, prepared
 			if not material(input.context[at]) or int(input.context[at])!=int(prepared.context[at]):
 				return fail("Native "+gentek+" evidence changed the captured source material context.")
 			var eligible: int=masks.frame[at] if gentek=="frame" else masks.mosaic[at]
+			var shared: int=masks.shared[at] if recipe.get("shared_ownership",true) else 0
 			if not scalar_same(input.eligible[at],eligible) or not scalar_same(input.protected[at],int(prepared.protected[at])) \
-				or not scalar_same(input.transition[at],int(masks.shared[at])) or not scalar_same(inputs.shared_zone[at],int(masks.shared[at])) \
-				or int(prepared.shared[at])!=int(masks.shared[at]):
+				or not scalar_same(input.transition[at],int(masks.shared[at])) or not scalar_same(inputs.shared_zone[at],shared) \
+				or int(prepared.shared[at])!=shared:
 				return fail("Native evidence changed exclusive ownership, protected space or the bounded shared zone.")
 	if not result.get("cells") is Array or not result.get("ledger") is Array: return fail("Native composition has no material and ownership arrays.")
 	var empty_failure: bool = not result.can_apply and result.cells.is_empty() and result.ledger.is_empty()
@@ -273,16 +329,16 @@ static func decode_document(result: Dictionary, bytes: PackedByteArray, prepared
 		if not round_value is Dictionary or not scalar_same(round_value.get("number"),ordinal) \
 			or not round_value.get("frame_accepted") is bool or not round_value.get("mosaic_accepted") is bool \
 			or not round_value.get("reason") is String or not frame_preview(round_value.get("frame"),size,not result.can_apply) \
-			or not round_value.get("mosaic") is Dictionary or not native_preview(round_value.mosaic.get("result"),count,not result.can_apply):
+			or not round_value.get("mosaic") is Dictionary or not native_preview(round_value.mosaic.get("result"),size,not result.can_apply):
 			return fail("Invalid native round record.")
 		for counter: String in ["frame_changed","mosaic_changed","frame_work","mosaic_work"]:
 			if not integer(round_value.get(counter),0,9007199254740991): return fail("Invalid native round counter.")
 		for proposal: Variant in [round_value.get("proposed_frame"),round_value.get("proposed_mosaic")]:
-			if not native_preview(proposal,count,not result.can_apply): return fail("Native round has incomplete provisional cells or part provenance.")
+			if not native_preview(proposal,size,not result.can_apply): return fail("Native round has incomplete provisional cells, sockets or part provenance.")
 	var damage: Variant=result.get("damage_derivative")
 	if damage!=null:
 		if not damage is Dictionary or not frame_preview(damage.get("frame"),size,not result.can_apply) \
-			or not damage.get("mosaic") is Dictionary or not native_preview(damage.mosaic.get("result"),count,not result.can_apply) \
+			or not damage.get("mosaic") is Dictionary or not native_preview(damage.mosaic.get("result"),size,not result.can_apply) \
 			or not damage.get("reason") is String: return fail("Separate destruction evidence is malformed.")
 		for counter: String in ["frame_changed","mosaic_changed","frame_footprint_changed","mosaic_footprint_changed","work"]:
 			if not integer(damage.get(counter),0,9007199254740991): return fail("Separate destruction work or geometry count is malformed.")
@@ -353,13 +409,20 @@ static func load_saved(map_path: String) -> Dictionary:
 		if int(input.protected[at]): guards.append_array(PackedInt32Array([origin.x+at%size.x,origin.y+at/size.x]))
 	var recipe: Dictionary={"size":size,"origin":origin,"seed":input.get("seed"),"profile":input.profile.get("name"),
 		"parameters":input.profile.duplicate(),"activation":activation,"protected":{},"rounds":options.get("rounds"),
-		"shared_extent":options.get("shared_extent"),"orientation":options.get("orientation_preference"),"optional":options.get("optional_negotiation")}
+		"shared_extent":options.get("shared_extent"),"orientation":options.get("orientation_preference"),"optional":options.get("optional_negotiation"),
+		"shared_ownership":options.get("shared_ownership",true)}
+	var mosaic: Variant=document.input.get("mosaic")
+	if not mosaic is Dictionary or not mosaic.get("profile") is Dictionary: return fail("Saved construction has no independent MOSAIC controls.")
+	recipe["gentek_parameters"]={"frame":input.profile.duplicate(),"mosaic":mosaic.profile.duplicate()}
 	var territory: Variant=receipt.get("authoring_territory",{"layout":"left_right","border":0})
 	if not territory is Dictionary or not territory.get("layout") is String or not integer(territory.get("border"),0,16):
 		return fail("Saved construction has invalid authoring territory settings.")
 	recipe["layout"]=territory.layout;recipe["border"]=int(territory.border)
+	if not document.input.get("shared_zone") is Array or document.input.shared_zone.size()!=count:
+		return fail("Saved construction has an incomplete negotiated ownership mask.")
 	var prepared: Dictionary={"recipe":recipe,"context":PackedInt32Array(input.context),"protected":PackedByteArray(input.protected),
-		"shared":PackedByteArray(input.transition),"guards":guards,"request_sha256":receipt.get("request_sha256","")}
+		"interface":PackedByteArray(input.transition),"shared":PackedByteArray(document.input.shared_zone),
+		"guards":guards,"request_sha256":receipt.get("request_sha256","")}
 	var result:=decode_document(document,bytes,prepared,str(receipt.get("native_source","")))
 	if not result.ok: return result
 	result["prepared"]=prepared;result["receipt"]=receipt
@@ -388,6 +451,60 @@ static func proposal_record(result: Dictionary, round_index: int, at: int) -> Ar
 	if has_mosaic: return [2,int(mosaic.provenance[at]),0,0,0,0]
 	return [3 if int(result.input.frame.context[at])!=0 else 0,0,0,0,0,0]
 
+static func socket_records(result: Dictionary, round_index: int) -> Array[Dictionary]:
+	# Provisional views consume only the actual provisional native sockets. Final
+	# assembly certificates never get projected onto an earlier rejected proposal.
+	var records: Array[Dictionary]=[]
+	if result.rounds.is_empty(): return records
+	var final: Dictionary=result.damage_derivative if result.get("damage_derivative") is Dictionary else result.rounds.back()
+	var snapshots: Dictionary={"FRAMEWEAVER":final.frame.result,"MOSAIC":final.mosaic.result}
+	if round_index>=0:
+		var shown: Dictionary=result.rounds[round_index]
+		snapshots={"FRAMEWEAVER":shown.proposed_frame,"MOSAIC":shown.proposed_mosaic}
+	for owner: String in ["FRAMEWEAVER","MOSAIC"]:
+		var snapshot: Dictionary=snapshots[owner]
+		for kind: String in ["socket","receptor"]:
+			var source: Array=snapshot.get("connectors",[]) if kind=="socket" else snapshot.get("boundary",{}).get("hard",[])
+			for value: Dictionary in source:
+				var record:=value.duplicate();record["owner"]=owner;record["kind"]=kind
+				record["obligation"]="required" if value.required else "optional"
+				record["scope"]="provisional offer" if round_index>=0 else "accepted native offer"
+				records.append(record)
+	if round_index<0:
+		for construction: Dictionary in final.frame.get("constructions",[]):
+			for value: Dictionary in construction.assembly.get("sockets",[]):
+				var record:=value.duplicate();record["owner"]="FRAMEWEAVER";record["kind"]="assembly socket"
+				record["scope"]="authored assembly contract";records.append(record)
+	return records
+
+static func socket_points(record: Dictionary) -> Array[Vector2i]:
+	var point:=Vector2i(int(record.a[0]),int(record.a[1]));var last:=Vector2i(int(record.b[0]),int(record.b[1]))
+	var points: Array[Vector2i]=[]
+	var dx:=absi(last.x-point.x);var dy:=-absi(last.y-point.y)
+	var sx:=1 if point.x<last.x else -1;var sy:=1 if point.y<last.y else -1
+	var error:=dx+dy
+	# Validated endpoints fit the finite crop. The line has at most256 pixels.
+	for _step: int in MAX_WIDTH+MAX_HEIGHT:
+		points.append(point)
+		if point==last: break
+		var twice:=2*error
+		if twice>=dy: error+=dy;point.x+=sx
+		if twice<=dx: error+=dx;point.y+=sy
+	return points
+
+static func inspect_sockets(result: Dictionary, round_index: int, point: Vector2i) -> PackedStringArray:
+	var lines:=PackedStringArray()
+	for record: Dictionary in socket_records(result,round_index):
+		var near:=false
+		for socket_point: Vector2i in socket_points(record):
+			if (socket_point-point).length_squared()<=4: near=true;break
+		if not near: continue
+		lines.append("%s %s %d · %s · %s · facing %s · %s%s" % [record.owner,record.kind,int(record.id),
+			record.obligation,record.family,record.facing,record.scope,
+			(" · "+str(record.state)+" / counterpart "+str(record.get("counterpart",0))) if record.has("state") else ""])
+		if lines.size()==12: lines.append("Inspection limited to twelve nearby native offers.");break
+	return lines
+
 static func raster(result: Dictionary, prepared: Dictionary, round_index: int, layer: String) -> PackedByteArray:
 	var values := round_cells(result,round_index)
 	var bytes := PackedByteArray()
@@ -408,6 +525,7 @@ static func raster(result: Dictionary, prepared: Dictionary, round_index: int, l
 			rgba = 0xffcd57ff if int(values[at])!=int(previous[at]) else 0x19222fff
 		elif layer=="Clearance" and prepared.protected[at]: rgba = 0x69e6eeff
 		elif layer=="Shared zone" and prepared.shared[at]: rgba = 0x47864dff if id==0 else 0xa4e39aff
+		elif layer=="Interface band" and prepared.get("interface",prepared.shared)[at]: rgba = 0x75552aff if id==0 else 0xd7ad70ff
 		bytes[at*4]=(rgba>>24)&255;bytes[at*4+1]=(rgba>>16)&255;bytes[at*4+2]=(rgba>>8)&255;bytes[at*4+3]=255
 	if layer=="Joints" and round_index<0:
 		for joint: Dictionary in result.joints:
@@ -420,6 +538,13 @@ static func raster(result: Dictionary, prepared: Dictionary, round_index: int, l
 		for obligation: Dictionary in result.obligations:
 			if obligation.get("state")=="STILL_REQUIRED":
 				_mark(bytes,prepared.recipe.size,obligation.get("original",[]),Color(1,0.2,0.3))
+	if layer=="Sockets / receptors":
+		for record: Dictionary in socket_records(result,round_index):
+			var color:=Color.hex(SOCKET_COLORS[record.obligation])
+			for point: Vector2i in socket_points(record): _mark(bytes,prepared.recipe.size,[point.x,point.y],color)
+			var facing:=Vector2i(int(record.facing[0]),int(record.facing[1]))
+			var direction:=Vector2i(int(record.a[0]),int(record.a[1]))+facing
+			if facing!=Vector2i.ZERO: _mark(bytes,prepared.recipe.size,[direction.x,direction.y],Color.WHITE)
 	return bytes
 
 static func _mark(bytes: PackedByteArray, size: Vector2i, point: Array, color: Color) -> void:

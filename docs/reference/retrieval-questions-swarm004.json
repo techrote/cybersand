@@ -40,6 +40,34 @@
       "sources": [
         "../native/experiments/gentek_swarm/RECIPROCAL_REGISTRATION.json"
       ]
+    },
+    {
+      "id": "SWARM004-4",
+      "query": "Which SWARM-004 policy was frozen after recovery, and do two changed footprints prove reciprocal offer causality?",
+      "canonical": [
+        "systems/gentek-reciprocal-assembly.md"
+      ],
+      "facts": [
+        "Select fixed_territory two rounds before holdouts; matched round-one masks/no-offers and an initial-MOSAIC-frozen coordinator distinguish causal exchange from nominal revision. Fixed has 28 causal joint cases and six causal Apply cases; shared reciprocal_2 has six and two."
+      ],
+      "sources": [
+        "../native/experiments/gentek_swarm/SELECTION-RECIPROCAL.json",
+        "../native/experiments/gentek_swarm/reciprocal_causal.cpp"
+      ]
+    },
+    {
+      "id": "SWARM004-5",
+      "query": "Does an early UNSAT or exhausted SWARM-004 record without a closure ledger have zero required foreign obligations?",
+      "canonical": [
+        "systems/gentek-reciprocal-assembly.md"
+      ],
+      "facts": [
+        "No final closure ledger means closure_evaluated=false and unknown obligations, exported as null. Retain refused cases in denominators; they cannot Apply."
+      ],
+      "sources": [
+        "../native/experiments/gentek_swarm/reciprocal_main.cpp",
+        "../native/experiments/gentek_swarm/reciprocal_gallery.py"
+      ]
     }
   ]
 }

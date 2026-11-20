@@ -18,6 +18,11 @@ an explicitly dependent experimental Shared Workbench path. The [focused contrac
 separates native development witnesses, unresolved hard obligations, corpus
 qualification and actual Windows Apply/Undo/Save/reopen acceptance. No production
 default, material/physics change, Viaduct identity change or automatic merge is authorized.
+The [recovered V1 audit and policy freeze](../audits/2026-11-20-swarm004-native-recovery.md)
+selects two-round fixed territory from the completed known corpus: 28 cases with
+both matched causal effects and qualified joints, including six fully applicable
+cases. Shared two-round mode has six and two. Final published-source qualification,
+registered holdouts and Workbench platform acceptance have separate receipts.
 
 ## SWARM-004 experimental reciprocal authoring
 
