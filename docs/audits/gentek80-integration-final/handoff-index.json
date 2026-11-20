@@ -1,0 +1,316 @@
+{
+  "catalogue": {
+    "advanced": 8,
+    "classic": 72,
+    "mission_genteks": 80,
+    "native_module_version_identities": 91,
+    "preserved_accepted_presets": 13,
+    "total_ui_choices": 93
+  },
+  "identities": {
+    "accepted_main": "de109d0131641d6adc8d25bb9ced7ca3d4991105",
+    "candidate": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0",
+    "candidate_tree": "546750300019d2e5534e96d4e1dd751bc28d9f2e",
+    "final_runtime_orchestration": "f69b68a88401b28b3fe688c3d070162ebcd090c5",
+    "mixed_orchestration": "12f0fb14b2d75dfbbec609b888ed1fed7314091c",
+    "native_build": "82da41a945b1d98e0267a2a20b56ec66d83f71f6",
+    "native_build_tree": "62c3210595f34b500cf6844e61085a5afcb3e85e"
+  },
+  "independent_verdict": "ACCEPT",
+  "mission": "GENTEK-80-INTEGRATION-001",
+  "original_artifacts": [
+    {
+      "artifact_id": 14604798235,
+      "bytes": 158773671,
+      "role": "source-linux",
+      "run_id": 44674555113,
+      "sha256": "554d66931ff60e2967a3458255cd5e916574ccce113aa8d1be9e436fa7132c6b",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44674555113/artifacts/14604798235"
+    },
+    {
+      "artifact_id": 14607203494,
+      "bytes": 68934761,
+      "role": "source-windows",
+      "run_id": 44674555113,
+      "sha256": "4e66a26c5879271e2e404cf4c9a17dbda33f0c7b085b348412fde44c300df81c",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44674555113/artifacts/14607203494"
+    },
+    {
+      "artifact_id": 14605142451,
+      "bytes": 2598160,
+      "role": "validated-linux",
+      "run_id": 44674555113,
+      "sha256": "411e42f1cadc6b0deba370eb9a69871c269a64e3e014a74c0ff5b5addfa99b3a",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44674555113/artifacts/14605142451"
+    },
+    {
+      "artifact_id": 14607422604,
+      "bytes": 2781710,
+      "role": "validated-windows",
+      "run_id": 44674555113,
+      "sha256": "ccb9e353b2e12ecdad9b56bef0069c3f0860c494ddc3237f12720da04e7eb4ee",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44674555113/artifacts/14607422604"
+    },
+    {
+      "artifact_id": 14611301942,
+      "bytes": 93459591,
+      "role": "final-owner",
+      "run_id": 44690026779,
+      "sha256": "86d317de4b58ab1ef2350ede5822b8f3cac102dcd470aad459e145bb9dde3fe5",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44690026779/artifacts/14611301942"
+    },
+    {
+      "artifact_id": 14608534716,
+      "bytes": 20839862,
+      "role": "final-linux-checkout",
+      "run_id": 44690026779,
+      "sha256": "21605adc08aa3b9b251f4b37d3c2c713c95f417caedabfcbe1d6a4e0d8838fe0",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44690026779/artifacts/14608534716"
+    },
+    {
+      "artifact_id": 14610826537,
+      "bytes": 19661263,
+      "role": "final-windows-checkout",
+      "run_id": 44690026779,
+      "sha256": "f5edc6e5af5a1aca0399f11bf8b7cd3cee71ad28474beb120aae8b3ca2c0fd17",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44690026779/artifacts/14610826537"
+    },
+    {
+      "artifact_id": 14611486673,
+      "bytes": 19694023,
+      "role": "final-windows-package-all80",
+      "run_id": 44690026779,
+      "sha256": "78a643904a9cca72b0bee01db9325bea590e95c79b42bdc5a62dcfcf45a854ef",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44690026779/artifacts/14611486673"
+    },
+    {
+      "artifact_id": 14608662071,
+      "bytes": 6297116,
+      "role": "final-owner-replay",
+      "run_id": 44690026779,
+      "sha256": "f96a6d430abd5efc5647c141261011453b8c73e7ec9e0b68a04e799ebc06c2df",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44690026779/artifacts/14608662071"
+    },
+    {
+      "artifact_id": 14609085080,
+      "bytes": 1819882,
+      "role": "final-flatten-replay",
+      "run_id": 44690026779,
+      "sha256": "cf69317d46dd5921cd92ab353bdb176c44dade7ce2ce0bcfe7f36406d0e937dc",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44690026779/artifacts/14609085080"
+    },
+    {
+      "artifact_id": 14615842229,
+      "bytes": 10279085,
+      "role": "mixed-linux",
+      "run_id": 44707515958,
+      "sha256": "5aa1b7a3d694deff90c57ef365cecf4ca4c366be2276b93bb553ee3669cf714b",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44707515958/artifacts/14615842229"
+    },
+    {
+      "artifact_id": 14615309639,
+      "bytes": 9183729,
+      "role": "mixed-windows",
+      "run_id": 44707515958,
+      "sha256": "89e0c19b4823698aaaff1f211ca2998225c55bcc1d3a98fc7f2c92edba056537",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44707515958/artifacts/14615309639"
+    }
+  ],
+  "public_native_gallery": "https://github.com/techrote/cybersand/blob/fea465b014757fce9000be6b30e368d5ab187c43/docs/images/gentek80-integration/README.md",
+  "pull_request": "https://github.com/techrote/cybersand/pull/684",
+  "review": {
+    "json_sha256": "1cffb647579943125a385b2c88cef511463af5bd047cb0d67d7dd874bad1e501",
+    "markdown_sha256": "92955db3861563a1e1d749603bec9c8cc97d0c7ec7afa826025888a4159d1c19",
+    "merge_recommendation": "Technically qualified for owner evaluation and explicit owner merge decision. Maintain Draft/HOLD. No merge, Ready promotion, auto-merge, or workflow approval authorized.",
+    "open_p1": [],
+    "open_p2": [],
+    "recorded_at": "2026-11-20T09:19:13.497323+00:00",
+    "reviewer": "/root/final_review",
+    "verdict": "ACCEPT"
+  },
+  "runs": {
+    "documentation": {
+      "conclusion": "success",
+      "id": 44688679722,
+      "status": "completed",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44688679722"
+    },
+    "gdextension": {
+      "conclusion": "success",
+      "id": 44688685601,
+      "status": "completed",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44688685601"
+    },
+    "mixed_workbench": {
+      "conclusion": "success",
+      "id": 44707515958,
+      "status": "completed",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44707515958"
+    },
+    "native": {
+      "conclusion": "success",
+      "id": 44688682698,
+      "status": "completed",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44688682698"
+    },
+    "palette": {
+      "conclusion": "success",
+      "id": 44688688652,
+      "status": "completed",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44688688652"
+    },
+    "retained_final_runtime_and_package": {
+      "conclusion": "success",
+      "id": 44690026779,
+      "status": "completed",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44690026779"
+    },
+    "source_qualification": {
+      "conclusion": "success",
+      "id": 44674555113,
+      "status": "completed",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44674555113"
+    },
+    "source_scope": {
+      "conclusion": "success",
+      "id": 44688695668,
+      "status": "completed",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44688695668"
+    },
+    "wave": {
+      "conclusion": "success",
+      "id": 44688692461,
+      "status": "completed",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44688692461"
+    }
+  },
+  "schema": "gentek80-final-handoff-index-v1",
+  "scope_limits": [
+    "Source/render campaign520cases perplatform executes S3 retained runtimes; original S3 identity preserved, all native/build/render inputs match F. F separately passed fresh fullCI and actual all80 Workbench executions.",
+    "Native fingerprints/chunk receipts are ABI-local under accepted main; material/recipe/pixel outputs are portable and verified.",
+    "Composition zones and automatic tunnels can cut supports/glazing; no guarantee of globally supported or walkable style interfaces.",
+    "Saved authored starts and ordered edits were replayed; arbitrary evolved simulation-state restoration is outside this claim.",
+    "Windows hosted software renderer qualified; physical owner Windows11/NVIDIA hardware remains owner evaluation.",
+    "Windows all80 engineRSS unmeasured; launcher memory excluded.",
+    "71CLASSIC localpatterns do not intrinsically vary byseed; parameter/material controls and deterministic replay remain effective.",
+    "Seven automatic PR runs action_required without execution; independent exactF manual runs and original failure history retained."
+  ],
+  "source_revalidation": {
+    "checked_at": "2026-11-20 09:09:42 UTC",
+    "donors": [
+      {
+        "base": "de109d0131641d6adc8d25bb9ced7ca3d4991105",
+        "draft": true,
+        "head": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+        "merged": false,
+        "number": 624,
+        "state": "open",
+        "url": "https://github.com/techrote/cybersand/pull/624"
+      },
+      {
+        "base": "615828b28337f85e4663e03ba479616db4ddf764",
+        "draft": true,
+        "head": "eb786d97a769f4fed9f5d52bb0b50dd60f0ee16f",
+        "merged": false,
+        "number": 671,
+        "state": "open",
+        "url": "https://github.com/techrote/cybersand/pull/671"
+      },
+      {
+        "base": "615828b28337f85e4663e03ba479616db4ddf764",
+        "draft": true,
+        "head": "2d3da36566de5dfa60a82aa642525961c90a6672",
+        "merged": false,
+        "number": 663,
+        "state": "open",
+        "url": "https://github.com/techrote/cybersand/pull/663"
+      },
+      {
+        "base": "615828b28337f85e4663e03ba479616db4ddf764",
+        "draft": true,
+        "head": "f99583cde1db2abd8384cc89eb7bda3151bbe726",
+        "merged": false,
+        "number": 664,
+        "state": "open",
+        "url": "https://github.com/techrote/cybersand/pull/664"
+      },
+      {
+        "base": "615828b28337f85e4663e03ba479616db4ddf764",
+        "draft": true,
+        "head": "d366894c005208887a6e5ae238d7cdb1983e0a02",
+        "merged": false,
+        "number": 665,
+        "state": "open",
+        "url": "https://github.com/techrote/cybersand/pull/665"
+      },
+      {
+        "base": "615828b28337f85e4663e03ba479616db4ddf764",
+        "draft": true,
+        "head": "ef42af3d2f4210b1b53cfdc0e7d7bf77ff863304",
+        "merged": false,
+        "number": 666,
+        "state": "open",
+        "url": "https://github.com/techrote/cybersand/pull/666"
+      },
+      {
+        "base": "615828b28337f85e4663e03ba479616db4ddf764",
+        "draft": true,
+        "head": "965729b5b2773587d0c40e836b8f2848b1026e8b",
+        "merged": false,
+        "number": 667,
+        "state": "open",
+        "url": "https://github.com/techrote/cybersand/pull/667"
+      },
+      {
+        "base": "615828b28337f85e4663e03ba479616db4ddf764",
+        "draft": true,
+        "head": "b01c300ac64993693e8b66f1b523e3f9dfa3baf1",
+        "merged": false,
+        "number": 668,
+        "state": "open",
+        "url": "https://github.com/techrote/cybersand/pull/668"
+      },
+      {
+        "base": "615828b28337f85e4663e03ba479616db4ddf764",
+        "draft": true,
+        "head": "ca8aba9c638d1c63d79bd3335a55f9ca55d81d49",
+        "merged": false,
+        "number": 669,
+        "state": "open",
+        "url": "https://github.com/techrote/cybersand/pull/669"
+      },
+      {
+        "base": "615828b28337f85e4663e03ba479616db4ddf764",
+        "draft": true,
+        "head": "01425a9a1aab6e01b88266a58b8b738ded38a28e",
+        "merged": false,
+        "number": 670,
+        "state": "open",
+        "url": "https://github.com/techrote/cybersand/pull/670"
+      }
+    ],
+    "main": "de109d0131641d6adc8d25bb9ced7ca3d4991105",
+    "pr": {
+      "auto_merge": null,
+      "base": "de109d0131641d6adc8d25bb9ced7ca3d4991105",
+      "draft": true,
+      "head": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0",
+      "mergeable": true,
+      "merged": false,
+      "number": 684,
+      "state": "open"
+    },
+    "schema": "gentek80-final-source-heads-revalidation-v1"
+  },
+  "state": "DRAFT/HOLD; no merge, Ready promotion or auto-merge without explicit owner approval",
+  "windows_evaluation": {
+    "bytes": 92410079,
+    "command": "Open Workbench.cmd",
+    "engine": "4.7.stable.official.5b4e0cb0f",
+    "filename": "CyberSand-Gentek80-Windows-bf1bd8c8e6f1.zip",
+    "native_build_commit": "82da41a945b1d98e0267a2a20b56ec66d83f71f6",
+    "native_sha256": "2b7a1fbb8410270498e5c0ce8f9384a598c4467397e4ca1bda0111d6c5985447",
+    "sha256": "1ecfef2bca82e73200cc686ce225f8e60a5bccd49a9853cc12f66863d11e06f1",
+    "source_commit": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0"
+  }
+}

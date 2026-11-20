@@ -1,0 +1,342 @@
+{
+  "ABI_local_native_fingerprint_or_receipt_equality_claimed": false,
+  "P1": [],
+  "P2": [],
+  "application_source": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0",
+  "application_tree": "546750300019d2e5534e96d4e1dd751bc28d9f2e",
+  "cross_platform_all_three_material_recipe_edit_and_native_diagnostic_images_equal": true,
+  "errors": [],
+  "independent_run_api_sha256": "6609f8e377d211c26e8f8e5a2daa8e8ac74ef65e854d3265d9e5f8d2885b6ebd",
+  "initial_reader_refusal": {
+    "cause": "Offline reader initially looked for Store.read normalized setup key in raw disk JSON; corrected to unchanged on-disk starting_setup. No execution or product failure.",
+    "path": "mixed-workbench-admission/independent-original-execution-review-initial-refusal.json",
+    "sha256": "e4b84c36367803ad89011b4c9aa5d375093c901f2b56cfa48f481e007b7de89f"
+  },
+  "native_build_source": "82da41a945b1d98e0267a2a20b56ec66d83f71f6",
+  "no_candidate_source_runtime_or_original_receipts_modified": true,
+  "no_native_or_Godot_rerun": true,
+  "original_orchestration": "f69b68a88401b28b3fe688c3d070162ebcd090c5",
+  "platforms": {
+    "linux": {
+      "actual_process_ids": {
+        "author": 2632,
+        "reopen": 2689
+      },
+      "all_original_zip_members_byte_equal": 143,
+      "archive_bytes": 10279085,
+      "archive_sha256": "5aa1b7a3d694deff90c57ef365cecf4ca4c366be2276b93bb553ee3669cf714b",
+      "artifact_id": 14615842229,
+      "authoritative_F_presets_in_actual_projects": 15,
+      "entire_original_R_custody_equal_except_truthful_M_workflow": true,
+      "native_material_diagnostics": 3,
+      "native_png_bytes_sha256": {
+        "author-mixed-a-native-materials.png": "de727219a4d461cb2b38ef3083cbd9a3c1ccde7982d329fa4de1fd4a948a42d7",
+        "author-mixed-b-native-materials.png": "e97eb0425f1af947d0779d6a761096cccd7ebe30e6dd29977972ef04ded2542c",
+        "author-mixed-c-native-materials.png": "28e7553aff51d67dbccb3147c19bd38a8a6640c6ed9190b34d5b90e8a0db81db"
+      },
+      "native_png_rgba_sha256": {
+        "author-mixed-a-native-materials.png": "c2abf55cec43e2d64d563c1b98419f26f1a96f14f2ca965d7c5512f230df04c6",
+        "author-mixed-b-native-materials.png": "129f4253f0ab135b2474bb9a22cc803fe16908dfccf436f1733591d123bef41a",
+        "author-mixed-c-native-materials.png": "593150b068a0019870ce6274d3d61227d503bce3865b202b1416f62729997081"
+      },
+      "original_R_admission_sha256": "fc3c11bd46c4e4019b136d42cf6ac3d2820ae6de1bcd09f959fa7cb32a643851",
+      "phase_checks": {
+        "author": 273,
+        "reopen": 75
+      },
+      "phase_failures": {
+        "author": 0,
+        "reopen": 0
+      },
+      "portable_mixtures": {
+        "a": {
+          "edits": [
+            [
+              101,
+              99,
+              2,
+              58
+            ],
+            [
+              111,
+              99,
+              2,
+              0
+            ]
+          ],
+          "edits_sha256": "0bdbab11106a784968fbe1511971c09e51c5d6c431f501fe23d9fe180d1cebd2",
+          "expected_edited_material_sha256": "8310c7d386739c3c22846194c44fce1447636944a9c317453156cf8d4f0f6f1c",
+          "modules": [
+            "suspended_deck",
+            "rib_vault",
+            "cathedral_megaframe",
+            "interlaced_viaduct",
+            "megatruss_station"
+          ],
+          "recipe_sha256": "bf3cbee7a553977efad3694ff8e077b1b816f00098fb2ce4509b9cf1faf9ee3b",
+          "seed": 161803,
+          "source_sha256": "0c1ae9bfd302787abaeb0db9836215edcc4eeb2737e66e8136ff6d04eafd9339"
+        },
+        "b": {
+          "edits": [
+            [
+              101,
+              99,
+              2,
+              58
+            ],
+            [
+              111,
+              99,
+              2,
+              0
+            ]
+          ],
+          "edits_sha256": "0bdbab11106a784968fbe1511971c09e51c5d6c431f501fe23d9fe180d1cebd2",
+          "expected_edited_material_sha256": "576de742a4a6b97f33d7d1fbebbf8077fc197b66f508604e0164bd83cef34136",
+          "modules": [
+            "ring_pier",
+            "tripod_frame",
+            "seeded_typology_megablock",
+            "metabolist_spine",
+            "rosework_gatehouse"
+          ],
+          "recipe_sha256": "a718926af5a0fb9412f0898414ac47e9cf8ac8d44379f02e4457691c75cd6dd8",
+          "seed": 271828,
+          "source_sha256": "bf81dc147723c4ee087341dd6967870508eb8681ab17a3de43a7ba78c6744239"
+        },
+        "c": {
+          "edits": [
+            [
+              101,
+              99,
+              2,
+              58
+            ],
+            [
+              111,
+              99,
+              2,
+              0
+            ]
+          ],
+          "edits_sha256": "0bdbab11106a784968fbe1511971c09e51c5d6c431f501fe23d9fe180d1cebd2",
+          "expected_edited_material_sha256": "f6ed2bc18da5c69f02c49119c753d49fa5b01c21caadb485e65aa192ab1cc230",
+          "modules": [
+            "cascade_terrace",
+            "scalloped_vault",
+            "buttress_wall",
+            "interlock_brutalism",
+            "suspended_arcology"
+          ],
+          "recipe_sha256": "d984973f72bc07afc066f861c2370e37f4463af690a6e361b56a01c918dcf1ec",
+          "seed": 314159,
+          "source_sha256": "246bb480b825db092201584ab38517c925a8097b73aeb5593f3ad7045f1a2417"
+        }
+      },
+      "process_measurements": [
+        {
+          "case": "import",
+          "peak_memory_scope": "Godot process high-water RSS sampled while alive; excludes runner and display server",
+          "peak_resident_bytes": 752590848,
+          "wall_seconds": 8.954919208000007
+        },
+        {
+          "case": "author",
+          "peak_memory_scope": "Godot process high-water RSS sampled while alive; excludes runner and display server",
+          "peak_resident_bytes": 1099935744,
+          "wall_seconds": 72.638220279
+        },
+        {
+          "case": "reopen",
+          "peak_memory_scope": "Godot process high-water RSS sampled while alive; excludes runner and display server",
+          "peak_resident_bytes": 855805952,
+          "wall_seconds": 30.293266184999993
+        }
+      ],
+      "qualification_sha256": "09f503c3bfa911eb324fb8a36df07b27a84327ec7d3feec33f86f2d9ac855dce",
+      "source_and_build_inputs": [
+        103,
+        951
+      ],
+      "status": "passed",
+      "ui_framebuffers": 24,
+      "windows_package_protected_files": null,
+      "working_render_identity_inputs": [
+        1190,
+        371,
+        104
+      ]
+    },
+    "windows": {
+      "actual_process_ids": {
+        "author": 2420,
+        "reopen": 5372
+      },
+      "all_original_zip_members_byte_equal": 101,
+      "archive_bytes": 9183729,
+      "archive_sha256": "89e0c19b4823698aaaff1f211ca2998225c55bcc1d3a98fc7f2c92edba056537",
+      "artifact_id": 14615309639,
+      "authoritative_F_presets_in_actual_projects": 15,
+      "entire_original_R_custody_equal_except_truthful_M_workflow": true,
+      "native_material_diagnostics": 3,
+      "native_png_bytes_sha256": {
+        "author-mixed-a-native-materials.png": "de727219a4d461cb2b38ef3083cbd9a3c1ccde7982d329fa4de1fd4a948a42d7",
+        "author-mixed-b-native-materials.png": "e97eb0425f1af947d0779d6a761096cccd7ebe30e6dd29977972ef04ded2542c",
+        "author-mixed-c-native-materials.png": "28e7553aff51d67dbccb3147c19bd38a8a6640c6ed9190b34d5b90e8a0db81db"
+      },
+      "native_png_rgba_sha256": {
+        "author-mixed-a-native-materials.png": "c2abf55cec43e2d64d563c1b98419f26f1a96f14f2ca965d7c5512f230df04c6",
+        "author-mixed-b-native-materials.png": "129f4253f0ab135b2474bb9a22cc803fe16908dfccf436f1733591d123bef41a",
+        "author-mixed-c-native-materials.png": "593150b068a0019870ce6274d3d61227d503bce3865b202b1416f62729997081"
+      },
+      "original_R_admission_sha256": "fd728ee8e1ba78b65fc122a528d255b9f8c40d262941c2f6629cb6d74c690695",
+      "phase_checks": {
+        "author": 273,
+        "reopen": 75
+      },
+      "phase_failures": {
+        "author": 0,
+        "reopen": 0
+      },
+      "portable_mixtures": {
+        "a": {
+          "edits": [
+            [
+              101,
+              99,
+              2,
+              58
+            ],
+            [
+              111,
+              99,
+              2,
+              0
+            ]
+          ],
+          "edits_sha256": "0bdbab11106a784968fbe1511971c09e51c5d6c431f501fe23d9fe180d1cebd2",
+          "expected_edited_material_sha256": "8310c7d386739c3c22846194c44fce1447636944a9c317453156cf8d4f0f6f1c",
+          "modules": [
+            "suspended_deck",
+            "rib_vault",
+            "cathedral_megaframe",
+            "interlaced_viaduct",
+            "megatruss_station"
+          ],
+          "recipe_sha256": "bf3cbee7a553977efad3694ff8e077b1b816f00098fb2ce4509b9cf1faf9ee3b",
+          "seed": 161803,
+          "source_sha256": "0c1ae9bfd302787abaeb0db9836215edcc4eeb2737e66e8136ff6d04eafd9339"
+        },
+        "b": {
+          "edits": [
+            [
+              101,
+              99,
+              2,
+              58
+            ],
+            [
+              111,
+              99,
+              2,
+              0
+            ]
+          ],
+          "edits_sha256": "0bdbab11106a784968fbe1511971c09e51c5d6c431f501fe23d9fe180d1cebd2",
+          "expected_edited_material_sha256": "576de742a4a6b97f33d7d1fbebbf8077fc197b66f508604e0164bd83cef34136",
+          "modules": [
+            "ring_pier",
+            "tripod_frame",
+            "seeded_typology_megablock",
+            "metabolist_spine",
+            "rosework_gatehouse"
+          ],
+          "recipe_sha256": "a718926af5a0fb9412f0898414ac47e9cf8ac8d44379f02e4457691c75cd6dd8",
+          "seed": 271828,
+          "source_sha256": "bf81dc147723c4ee087341dd6967870508eb8681ab17a3de43a7ba78c6744239"
+        },
+        "c": {
+          "edits": [
+            [
+              101,
+              99,
+              2,
+              58
+            ],
+            [
+              111,
+              99,
+              2,
+              0
+            ]
+          ],
+          "edits_sha256": "0bdbab11106a784968fbe1511971c09e51c5d6c431f501fe23d9fe180d1cebd2",
+          "expected_edited_material_sha256": "f6ed2bc18da5c69f02c49119c753d49fa5b01c21caadb485e65aa192ab1cc230",
+          "modules": [
+            "cascade_terrace",
+            "scalloped_vault",
+            "buttress_wall",
+            "interlock_brutalism",
+            "suspended_arcology"
+          ],
+          "recipe_sha256": "d984973f72bc07afc066f861c2370e37f4463af690a6e361b56a01c918dcf1ec",
+          "seed": 314159,
+          "source_sha256": "246bb480b825db092201584ab38517c925a8097b73aeb5593f3ad7045f1a2417"
+        }
+      },
+      "process_measurements": [
+        {
+          "case": "import",
+          "peak_memory_scope": "Unavailable: Windows console launcher starts a separate engine; its child working set was not measured",
+          "peak_resident_bytes": null,
+          "wall_seconds": 10.57899999999995
+        },
+        {
+          "case": "author",
+          "peak_memory_scope": "Unavailable: Windows console launcher starts a separate engine; its child working set was not measured",
+          "peak_resident_bytes": null,
+          "wall_seconds": 169.3119999999999
+        },
+        {
+          "case": "reopen",
+          "peak_memory_scope": "Unavailable: Windows console launcher starts a separate engine; its child working set was not measured",
+          "peak_resident_bytes": null,
+          "wall_seconds": 61.71900000000005
+        }
+      ],
+      "qualification_sha256": "a8a911ce6f7be33d0cb449d6bbe493e30af579f9ee3e22e629ebb86544cd7ddb",
+      "source_and_build_inputs": [
+        103,
+        951
+      ],
+      "status": "passed",
+      "ui_framebuffers": 24,
+      "windows_package_protected_files": 1040,
+      "working_render_identity_inputs": [
+        1190,
+        371,
+        104
+      ]
+    }
+  },
+  "recorded_at": "2026-11-20T09:15:53.897765+00:00",
+  "reviewer": "/root/final_review",
+  "run_id": 44707515958,
+  "schema": "gentek80-fresh-independent-mixed-original-review-v1",
+  "scope": "Three actual graphical five-card mixed Workbench projects, full native installation, ordinary edit/save/tick, complete material restoration in a separate process. No structural support or walkable interface certification.",
+  "source_catalogue_sha256": "b2faa6d4de1f02dbd7d8326db2a62c36219b7fe8f6163ddc638563e269ede332",
+  "status": "passed",
+  "supplemental_orchestration": "12f0fb14b2d75dfbbec609b888ed1fed7314091c",
+  "verdict": "ACCEPT",
+  "visual_readback": {
+    "observation": "Accepted automatic tunnels cut diagonal passages through supports and glazing; accepted zone masks clip structural members. Preserve this inherited Composition limit; disabling Tunnels removes tunnel cuts but does not prove continuity across zone boundaries.",
+    "personally_viewed": [
+      "linux: all three native diagnostics",
+      "linux: mixture A installed world",
+      "linux: mixture C restored world",
+      "windows: mixture B five-card form",
+      "windows: mixture C restored world"
+    ]
+  }
+}

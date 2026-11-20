@@ -1,0 +1,78 @@
+{
+  "schema": "gentek80-mixed-original-ui-selection-v1",
+  "images": [
+    {
+      "platform": "linux",
+      "filename": "linux-author-mixed-a-form.png",
+      "original_path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/linux/evidence/mixed/author-mixed-a-form.png",
+      "sha256": "c1850688eae92c5da1d1c6c2848462a1bcac2dfb9d8b9ff00f8d2ffe4075b60c",
+      "dimensions": [
+        1600,
+        900
+      ],
+      "kind": "original-ui-framebuffer",
+      "caption": "Linux/X11: ordinary Architectural Generator with Suspended Deck, Rib Vault, Cathedral Megaframe, Interlaced Viaduct and Megatruss Station selected in five equal 20% cards. Seed 161803, 512-square map, 64-cell zones and default tunnels, doors and windows. Complete original UI framebuffer.",
+      "artifact_id": 14615842229,
+      "artifact_zip_sha256": "5aa1b7a3d694deff90c57ef365cecf4ca4c366be2276b93bb553ee3669cf714b",
+      "run_id": 44707515958,
+      "application_source_commit": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0",
+      "orchestration_commit": "12f0fb14b2d75dfbbec609b888ed1fed7314091c",
+      "transforms": []
+    },
+    {
+      "platform": "linux",
+      "filename": "linux-reopen-mixed-c-restored-world.png",
+      "original_path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/linux/evidence/mixed/reopen-mixed-c-restored-world.png",
+      "sha256": "cd6b5d353d72cc794aa7d6100df441faa09a56b4e3d692514de5203c978139f8",
+      "dimensions": [
+        1600,
+        900
+      ],
+      "kind": "original-ui-framebuffer",
+      "caption": "Linux/X11: Project C restored through ordinary Load start in an independent process. Cascade Terrace, Scalloped Vault, Buttress Wall, Interlock Brutalism and Suspended Arcology share one native World. Full material readback verifies all 262,144 source-plus-edit cells and both saved strokes; this screenshot does not certify support or traversal across style interfaces.",
+      "artifact_id": 14615842229,
+      "artifact_zip_sha256": "5aa1b7a3d694deff90c57ef365cecf4ca4c366be2276b93bb553ee3669cf714b",
+      "run_id": 44707515958,
+      "application_source_commit": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0",
+      "orchestration_commit": "12f0fb14b2d75dfbbec609b888ed1fed7314091c",
+      "transforms": []
+    },
+    {
+      "platform": "windows",
+      "filename": "windows-author-mixed-a-form.png",
+      "original_path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/windows/evidence/mixed/author-mixed-a-form.png",
+      "sha256": "8ab65f3bc49f788e2acbd9a2f8447bea98d81b730821b512d5cb81ecd5ecfe32",
+      "dimensions": [
+        1600,
+        900
+      ],
+      "kind": "original-ui-framebuffer",
+      "caption": "Windows, pristine evaluation ZIP: ordinary Architectural Generator with Suspended Deck, Rib Vault, Cathedral Megaframe, Interlaced Viaduct and Megatruss Station selected in five equal 20% cards. Seed 161803, 512-square map, 64-cell zones and default tunnels, doors and windows. Complete original UI framebuffer.",
+      "artifact_id": 14615309639,
+      "artifact_zip_sha256": "89e0c19b4823698aaaff1f211ca2998225c55bcc1d3a98fc7f2c92edba056537",
+      "run_id": 44707515958,
+      "application_source_commit": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0",
+      "orchestration_commit": "12f0fb14b2d75dfbbec609b888ed1fed7314091c",
+      "transforms": []
+    },
+    {
+      "platform": "windows",
+      "filename": "windows-reopen-mixed-c-restored-world.png",
+      "original_path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/windows/evidence/mixed/reopen-mixed-c-restored-world.png",
+      "sha256": "3f196642cd4115570b74272707260e44046fff328d9ed312d54f811c7e27e6ae",
+      "dimensions": [
+        1600,
+        900
+      ],
+      "kind": "original-ui-framebuffer",
+      "caption": "Windows, pristine evaluation ZIP: Project C restored through ordinary Load start in an independent process. Cascade Terrace, Scalloped Vault, Buttress Wall, Interlock Brutalism and Suspended Arcology share one native World. Full material readback verifies all 262,144 source-plus-edit cells and both saved strokes; this screenshot does not certify support or traversal across style interfaces.",
+      "artifact_id": 14615309639,
+      "artifact_zip_sha256": "89e0c19b4823698aaaff1f211ca2998225c55bcc1d3a98fc7f2c92edba056537",
+      "run_id": 44707515958,
+      "application_source_commit": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0",
+      "orchestration_commit": "12f0fb14b2d75dfbbec609b888ed1fed7314091c",
+      "transforms": []
+    }
+  ],
+  "scope": "Four unmodified original framebuffers selected from 48 complete UI framebuffers; six native diagnostic previews remain separately typed in source artifacts."
+}

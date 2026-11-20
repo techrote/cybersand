@@ -1,0 +1,24 @@
+{
+  "exact_six_added_regular_files": true,
+  "independently_reconstructed_tree_objects": 234,
+  "new_orchestration_commit": "12f0fb14b2d75dfbbec609b888ed1fed7314091c",
+  "new_orchestration_tree": "7888704770c3a669e0c0c10003bf127b3955eedc",
+  "open_findings_p1_p2": [],
+  "original_orchestration_ref_unchanged": "f69b68a88401b28b3fe688c3d070162ebcd090c5",
+  "prepublication_review_sha256": "fb70c637da86cc8683b7080a3a4c252b4540065b0651cfb35ac25fdd68c10863",
+  "recorded_at": "2026-11-20T09:05:27.702929+00:00",
+  "remote_tree_entries": 4000,
+  "reviewed_source_sha256": {
+    "fetch_final_assembly.py": "1d0525946b5acb4000a374e6f3e63cd9ac090aee813ff375a22f423b04e7bca0",
+    "gentek80-mixed-admission.yml": "27f268d7d43b16c48912bd381ab345a5a294fffaf42dc12ceda4ac8bf3c8d5f1",
+    "mixed_gentek_workbench.gd": "4994aff063d36a57ab25902f20a4bef911ffc3a9dcfb93a379686659429fe829",
+    "run_mixed_workbench.py": "9d2c1032a79e1cb635454f667b2c2a53eba2c101dc67e5d70248c22b9c827ddf",
+    "test_fetch_final_assembly.py": "a013809054252b3d117d87a5847be0d01ceeced909c335efa224c65e4e9f62a6",
+    "test_mixed_readback.py": "fea49d33bac1d67f3d8632a237fa39454284dd71664cb109d8e59b05e5785da1"
+  },
+  "schema": "gentek80-independent-mixed-publication-boundary-v1",
+  "scope": "Independently fetched commit,compare,refs and complete recursive tree; reconstructed every Git tree and all six changed blob hashes from reviewed local bytes. Actual execution/final verdict remains pending.",
+  "sole_parent": "f69b68a88401b28b3fe688c3d070162ebcd090c5",
+  "source_ref_unchanged": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0",
+  "status": "passed"
+}

@@ -1,0 +1,697 @@
+{
+  "archives": [
+    {
+      "id": 14606699964,
+      "members": 1,
+      "name": "godot-execution-plan-44688685601-1",
+      "sha256": "88a5bc099507bba2a86db572577637344ea61d673158cd20915e71dc6f41ccb5"
+    },
+    {
+      "id": 14606929498,
+      "members": 5,
+      "name": "native-candidate-windows-44688685601-1",
+      "sha256": "b125896ea0cd0b148eefa35819f9784bdfdfa2ce82db9673cc1f8e6311e56d0a"
+    },
+    {
+      "id": 14607119883,
+      "members": 26,
+      "name": "windows-godot-headless-7-44688685601-1",
+      "sha256": "f7e49a1c91e3b0231aa4a08754e49ca9eea3f8d2fb070bea47826aa2ce90cf24"
+    },
+    {
+      "id": 14607219761,
+      "members": 15,
+      "name": "windows-godot-headless-4-44688685601-1",
+      "sha256": "c0bee055eb9619f96886b2db9ef3ef96e602ea46a0e2a6cbcb5550411c1e50ba"
+    },
+    {
+      "id": 14607354983,
+      "members": 22,
+      "name": "linux-godot-shard-6-44688685601-1",
+      "sha256": "8f248f66db796bb359d0beffa893e6249e950e90f294cc62ef4711ec9072150a"
+    },
+    {
+      "id": 14607429141,
+      "members": 19,
+      "name": "windows-godot-headless-2-44688685601-1",
+      "sha256": "bfe26634cedf28c05a503ac901177afd3ceee518d999be874c0fe1a531e5d943"
+    },
+    {
+      "id": 14607434093,
+      "members": 31,
+      "name": "windows-godot-headless-6-44688685601-1",
+      "sha256": "d7e5117ae270570e699bcd0eee72edc90edbc6f6cb6e75be5cc545f89e23f311"
+    },
+    {
+      "id": 14607474556,
+      "members": 24,
+      "name": "windows-godot-headless-16-44688685601-1",
+      "sha256": "c39f03479d1652aac33759e4603d69148003aee8712bcc292ff0352204023235"
+    },
+    {
+      "id": 14607493930,
+      "members": 59,
+      "name": "linux-godot-shard-8-44688685601-1",
+      "sha256": "7734afb0a5e765844a9b3b0b32e7fb27e358f5040a0b0f44e47505fc327e0055"
+    },
+    {
+      "id": 14607503173,
+      "members": 5,
+      "name": "linux-runtime-44688685601-1",
+      "sha256": "a5d92f7b1c7c8a02a93a4ee338b9b0dd43842bc31d15456fb0f70a2d0f9edbd8"
+    },
+    {
+      "id": 14607523175,
+      "members": 5,
+      "name": "native-candidate-linux-44688685601-1",
+      "sha256": "b3e31429380fe8ab6d797ab734bd9a8b62611d0b820b4ee898eb5233d5619529"
+    },
+    {
+      "id": 14607549164,
+      "members": 38,
+      "name": "linux-godot-shard-12-44688685601-1",
+      "sha256": "7628c8349c80b660e66514b6cd68ae15d8028c8ffedd969a44362dda1250d8f2"
+    },
+    {
+      "id": 14607623789,
+      "members": 24,
+      "name": "windows-godot-headless-10-44688685601-1",
+      "sha256": "18bb56d0ac2b9ab027a65be41f8666650ff7fdbdc50c1d58c7156317947d910f"
+    },
+    {
+      "id": 14607638539,
+      "members": 29,
+      "name": "linux-godot-shard-3-44688685601-1",
+      "sha256": "3d87828de96d1d93d7d6aa4e5874d9b178935f4f329d60c6cce4515306c9cd0c"
+    },
+    {
+      "id": 14607694814,
+      "members": 46,
+      "name": "linux-coverage-44688685601-1",
+      "sha256": "695c0c27e9ac1e203bf4aebd00048ca82361b6831c66b477a0cd0cd2da6dc5b7"
+    },
+    {
+      "id": 14607713082,
+      "members": 37,
+      "name": "art-final-graphical-44688685601-1",
+      "sha256": "fc35a02c8a61de7e06fd984b6545a5a8432fb1f57c14400859a22ce1e901ed9c"
+    },
+    {
+      "id": 14607727744,
+      "members": 19,
+      "name": "windows-godot-headless-3-44688685601-1",
+      "sha256": "a7fe2788f31f9c30798d89bd23df2490c4507c2f3c67c671997d67553eb25ce3"
+    },
+    {
+      "id": 14607752702,
+      "members": 29,
+      "name": "windows-godot-headless-5-44688685601-1",
+      "sha256": "90228e3f63904bdfb69431110dbbd1844a0bbdf2a4f3d0b65dde6fd9d27b085d"
+    },
+    {
+      "id": 14607763873,
+      "members": 26,
+      "name": "windows-godot-headless-8-44688685601-1",
+      "sha256": "da912848893c9e5d0856c29102f3a3e509e5a21d4c775949ee3ca719bc7063e4"
+    },
+    {
+      "id": 14607773774,
+      "members": 26,
+      "name": "linux-godot-shard-20-44688685601-1",
+      "sha256": "9c738013abecf550f6486b2e3200bda7166ed63b701de32cc27c8982b9206369"
+    },
+    {
+      "id": 14607837912,
+      "members": 29,
+      "name": "linux-godot-shard-4-44688685601-1",
+      "sha256": "edc6f73405b8ed2da8ca2c7736bc3444f826f8bfe80c74de4eff3ccb8db2d741"
+    },
+    {
+      "id": 14607884052,
+      "members": 29,
+      "name": "linux-godot-shard-21-44688685601-1",
+      "sha256": "cf7ab7cc4b175c7f329a5533c48316ddb21cbe506d5a1d41e7d498d6a90bb9ae"
+    },
+    {
+      "id": 14607917701,
+      "members": 34,
+      "name": "windows-godot-headless-9-44688685601-1",
+      "sha256": "0e6e7cdad75e0bc0e0c768cd81499a41c6038d67b78282f6f966a1b73cb8ecbb"
+    },
+    {
+      "id": 14608018538,
+      "members": 31,
+      "name": "linux-godot-shard-18-44688685601-1",
+      "sha256": "ffdec5ce1072bb9c9f8a7cf062d80c4183f057371be27916a82597fd7f6c458a"
+    },
+    {
+      "id": 14608037335,
+      "members": 24,
+      "name": "linux-godot-shard-10-44688685601-1",
+      "sha256": "0b0fa16d7badaff36cd610f9bb7ca193e258724273b18cabd174dea25890ba55"
+    },
+    {
+      "id": 14608052241,
+      "members": 27,
+      "name": "linux-godot-shard-9-44688685601-1",
+      "sha256": "44686eec86cd0bf5d132fd99ca35117750a4cfa4d9d4c2a15be5cd5eb786c909"
+    },
+    {
+      "id": 14608066009,
+      "members": 6,
+      "name": "godot-build-timing-windows-44688685601-1",
+      "sha256": "d6c844f70ab59e05eac3b39fd86050aae322786853add0e4fcc2451351279c23"
+    },
+    {
+      "id": 14608136452,
+      "members": 9,
+      "name": "windows-godot-headless-0-44688685601-1",
+      "sha256": "bfe79d8e75ea5ad49adaeccad4650d8eef456b8be3580633fd5c4a4be964a2b3"
+    },
+    {
+      "id": 14608147759,
+      "members": 3,
+      "name": "execution-performance-godot-44688685601-1",
+      "sha256": "8efbab17d843a9141059c421db71aec0f2f0df9e128d1d1c4ef03e6290350b76"
+    },
+    {
+      "id": 14608152496,
+      "members": 47,
+      "name": "windows-coverage-44688685601-1",
+      "sha256": "0cf19d250728194a829ecba225982550b9952cd97dfeee2fa11e5532e8f98cda"
+    },
+    {
+      "id": 14608186381,
+      "members": 24,
+      "name": "windows-godot-headless-12-44688685601-1",
+      "sha256": "a19edd9e467e5860bd41f98995ae42455ea7c9ef4db8aadd745a3dd4cd21748c"
+    },
+    {
+      "id": 14608231704,
+      "members": 34,
+      "name": "linux-godot-shard-16-44688685601-1",
+      "sha256": "079c7124f851b341d31631deb96bd5c0857d3d17f73c18e248f97c4fee35d58f"
+    },
+    {
+      "id": 14608251424,
+      "members": 23,
+      "name": "windows-godot-headless-13-44688685601-1",
+      "sha256": "f43e8534b6b71f11fee1e6e49465fefee304d9abbe046a100f0a126d5bc531e6"
+    },
+    {
+      "id": 14608275607,
+      "members": 13,
+      "name": "windows-godot-headless-1-44688685601-1",
+      "sha256": "5abaa1d1636778c92ce0f10dbe63fd7b558b9964b419e3ec977a591a719523f9"
+    },
+    {
+      "id": 14608310879,
+      "members": 22,
+      "name": "linux-godot-shard-7-44688685601-1",
+      "sha256": "e3b6d3d7c5724a5a910438b15d4d1e9d51c3ec83dfc8e116ed2e2c8d3a9c7717"
+    },
+    {
+      "id": 14608410297,
+      "members": 6,
+      "name": "godot-build-timing-linux-44688685601-1",
+      "sha256": "8c4f1dcd4bcaa1fc31369d78f94dd52db8cd226556106b7164f02eaebf1c1f46"
+    },
+    {
+      "id": 14608426479,
+      "members": 20,
+      "name": "windows-godot-headless-18-44688685601-1",
+      "sha256": "0496a84c10142fff0b5ffcb2bcb3f78db1e11ce9f8984ed2fd37e6091e0d3e0a"
+    },
+    {
+      "id": 14608450769,
+      "members": 20,
+      "name": "linux-godot-shard-2-44688685601-1",
+      "sha256": "85d02e7d5bbcd174bbf0ef72bb4a85d3043551bfb8817be5ace2bee5eafaa0ed"
+    },
+    {
+      "id": 14608461065,
+      "members": 19,
+      "name": "windows-godot-headless-15-44688685601-1",
+      "sha256": "a6568d4b130fb94f91c8d80e15b474ca2e7ea419a1c9b335b997a8c5e101a86c"
+    },
+    {
+      "id": 14608475315,
+      "members": 40,
+      "name": "linux-godot-shard-5-44688685601-1",
+      "sha256": "9a81ef14fb0319372106b0f1762e94e1d58aeeab4527d848f9edfe4d58d62bc7"
+    },
+    {
+      "id": 14608506405,
+      "members": 31,
+      "name": "linux-godot-shard-19-44688685601-1",
+      "sha256": "1a8634d4140cb809fbe2e82f1fc9fa1f03995cfe543c3881ef62cf8ce5eb1385"
+    },
+    {
+      "id": 14608511151,
+      "members": 20,
+      "name": "windows-godot-headless-19-44688685601-1",
+      "sha256": "5e4db02aae84a988cefd1d4fbf4648d51d217494d5aa3b204037c3471d8f5438"
+    },
+    {
+      "id": 14608610321,
+      "members": 14,
+      "name": "linux-godot-shard-0-44688685601-1",
+      "sha256": "2d795916422842fbf3663e4cacd67a67b5cb87bcf638cb957020c1312ddc29e9"
+    },
+    {
+      "id": 14608621763,
+      "members": 335,
+      "name": "linux-godot-shard-22-44688685601-1",
+      "sha256": "e14257de550a3d284c4a7625e8417c18edd998472367f4b2d2d5a1903376739e"
+    },
+    {
+      "id": 14608660671,
+      "members": 40,
+      "name": "linux-godot-shard-13-44688685601-1",
+      "sha256": "1678a4fb4130ce454cc2df0e80d8496a13d7eac8a66656df99e3a50eb945e90d"
+    },
+    {
+      "id": 14608666003,
+      "members": 20,
+      "name": "windows-godot-headless-17-44688685601-1",
+      "sha256": "9026f2321c150e6ef39ba17bc4df6f2b45647ffb8495437877f75189512fc0f6"
+    },
+    {
+      "id": 14608685042,
+      "members": 22,
+      "name": "linux-godot-shard-1-44688685601-1",
+      "sha256": "f5fa7fb3c1101b256189e521cad6e21371e95e6bc5c8b556618e413f6293e04d"
+    },
+    {
+      "id": 14608686426,
+      "members": 3,
+      "name": "physical-timing-44688685601-1",
+      "sha256": "7c9f5f36320c7e3ea1f14fcdf9e013adf5603b82a035521528924dedc28137f6"
+    },
+    {
+      "id": 14608700790,
+      "members": 41,
+      "name": "linux-godot-shard-15-44688685601-1",
+      "sha256": "2061d50ff34a9d9f12002c69c08ae0db9f5a7172f946bfadf221b1197dee1fca"
+    },
+    {
+      "id": 14608706262,
+      "members": 32,
+      "name": "windows-godot-headless-20-44688685601-1",
+      "sha256": "ba9e8fac5241f32b2ee03dc24684750d6066dc2c51485d0880d83795d1132202"
+    },
+    {
+      "id": 14608720145,
+      "members": 19,
+      "name": "windows-godot-headless-14-44688685601-1",
+      "sha256": "042efc757241cd5e6ff7d6d75bb9d8776ab68805951ee30cb43bce3f2c058fc2"
+    },
+    {
+      "id": 14608725945,
+      "members": 32,
+      "name": "windows-godot-headless-21-44688685601-1",
+      "sha256": "974108cdc324303410d048cb09230c45ba4c94b6a9989b68956c7f150e980fbc"
+    },
+    {
+      "id": 14608830771,
+      "members": 34,
+      "name": "linux-godot-shard-17-44688685601-1",
+      "sha256": "a9858757e76a2350fe87470f24f1e1223edef8024eda2737ee1c8b9d5a5d3fc8"
+    },
+    {
+      "id": 14608845447,
+      "members": 41,
+      "name": "linux-godot-shard-14-44688685601-1",
+      "sha256": "d36c5f7e5435ebb0d3b0b683a1d6e3a9ae4f4a27d772f8fc074e73298ebd2a24"
+    },
+    {
+      "id": 14608850378,
+      "members": 20,
+      "name": "windows-godot-headless-11-44688685601-1",
+      "sha256": "7aaaf8b36052301f68464240128227586fbb97a02191236f6207961b8927ba41"
+    },
+    {
+      "id": 14608855146,
+      "members": 48,
+      "name": "linux-godot-shard-11-44688685601-1",
+      "sha256": "ca58ff55d3274b70f37806d3c58e4a6429bc2c3722ad37e0b15459fe0fe65cd6"
+    },
+    {
+      "id": 14608920592,
+      "members": 25,
+      "name": "linux-godot-shard-23-44688685601-1",
+      "sha256": "56f0b3e798747b3f35baa906707afedbf95e2b6ffbe9c12c9ba06399036e54b8"
+    }
+  ],
+  "attempt": 1,
+  "findings_p1_p2": [],
+  "fresh_workflow_metadata_sha256": "2a4d74275d9c2c8d649ef85416d5249788195f682371369f6618ce0c358a3ae4",
+  "independent_coverage_reductions_match_hosted": true,
+  "jobs": {
+    "failures": 0,
+    "skipped": [
+      "ready validation scope",
+      "physical-actor-stress"
+    ],
+    "success": 53
+  },
+  "linux": {
+    "cases": 323,
+    "original_process_logs": 347,
+    "runtime_sha256": "5195149bb4ee0b826d258f46627397d4a3e79d0d22cd3072ca0518aa75ebd878",
+    "shards": 24,
+    "source_input_hashes": 41
+  },
+  "original_member_files": 1723,
+  "overall_candidate_acceptance": "Pending remaining final-head and auxiliary evidence.",
+  "recorded_at": "2026-11-20T07:08:52.390982+00:00",
+  "review_script_sha256": "7e250ed0b64c48837af51631abc3c24f8577167efcdadb0c9f327f7208bef870",
+  "run": 44688685601,
+  "schema": "gentek80-final-gdextension-independent-reviewer-readback-v1",
+  "scope": [
+    "No new Godot/native execution. Original artifact hashes, process status/log joins, complete planned coverage and source hashes were independently read.",
+    "Fresh Windows regression payload is distinct from the published S3 runtime. Final auxiliary runs separately qualify the retained published runtime on final F.",
+    "Existing graphical smoke and physical timing supplementary audit was reviewed; this reviewer makes no physical-GPU claim.",
+    "The history advisory retains HTTP502 unavailable and has no historical baseline. Optional physical-actor-stress remained intentionally inactive."
+  ],
+  "shard_receipts": [
+    {
+      "cases": 5,
+      "index": 0,
+      "original_sha256": "65750c8d3ece1624985114160c4f420f04ba4a8325f434450017ac7c073a8d10",
+      "platform": "linux"
+    },
+    {
+      "cases": 9,
+      "index": 1,
+      "original_sha256": "d1fc7abed98b3f259cb23da57c93e11ee18236f89c2ee4fd585373b363953e85",
+      "platform": "linux"
+    },
+    {
+      "cases": 10,
+      "index": 2,
+      "original_sha256": "6f75c79d070bc4ef2d2c2280bd8ca2b07071539a74fb79736d2e8364985a7c64",
+      "platform": "linux"
+    },
+    {
+      "cases": 10,
+      "index": 3,
+      "original_sha256": "7011ff967add0c8f396603f17c1a87251b3ee66073fb681dd05ccf89866d2bcc",
+      "platform": "linux"
+    },
+    {
+      "cases": 11,
+      "index": 4,
+      "original_sha256": "2ee3c102bc1c9afd82c8b42e9cd1a284e1486c036978b093eb7584b0915f249d",
+      "platform": "linux"
+    },
+    {
+      "cases": 10,
+      "index": 5,
+      "original_sha256": "e7abd71d06f0fa5f0655a32dc91b1b6ec8cfebabe9a2a5bc98b2d566e718f49e",
+      "platform": "linux"
+    },
+    {
+      "cases": 12,
+      "index": 6,
+      "original_sha256": "e7494ae60547978cc63912bfdfb3d0794bae1d842c13d171aa583d6d314b4139",
+      "platform": "linux"
+    },
+    {
+      "cases": 13,
+      "index": 7,
+      "original_sha256": "5605ab0d73a492e0e62381b89e9fe4b552f4c5326b87044b843efe40d28b75b3",
+      "platform": "linux"
+    },
+    {
+      "cases": 13,
+      "index": 8,
+      "original_sha256": "777acfc66f9c665386206c9e8c1557449ba962a5fa9440e8e8ce18692067a056",
+      "platform": "linux"
+    },
+    {
+      "cases": 14,
+      "index": 9,
+      "original_sha256": "3b6b67cd64ba1760262ac52fa22559e190e6dad510fae20356341733b5aedb09",
+      "platform": "linux"
+    },
+    {
+      "cases": 15,
+      "index": 10,
+      "original_sha256": "d00f60488a7d0def38976c80aae43895bb41651058784b04639dcd9b189e4f4c",
+      "platform": "linux"
+    },
+    {
+      "cases": 15,
+      "index": 11,
+      "original_sha256": "01e575511b8f29c3b0ec922f553530045f32b774d887854335f049c004d9f5c1",
+      "platform": "linux"
+    },
+    {
+      "cases": 15,
+      "index": 12,
+      "original_sha256": "89cb436dfd171916e3d4d6a8fd33d5b82d5b030c8f959a358ad45c3a475328ed",
+      "platform": "linux"
+    },
+    {
+      "cases": 15,
+      "index": 13,
+      "original_sha256": "be47c71f02f02c696257e7db33a028acf747464326d54a6d8c373a36d19272bf",
+      "platform": "linux"
+    },
+    {
+      "cases": 16,
+      "index": 14,
+      "original_sha256": "acaaa723ed688788d325223ae82c8dd4b56d4e4687f19a040dc7fc72d0054e1d",
+      "platform": "linux"
+    },
+    {
+      "cases": 16,
+      "index": 15,
+      "original_sha256": "5416a2b760226e339feac3f1b3b34f687bdd6230b0cd508b713b266854752a7b",
+      "platform": "linux"
+    },
+    {
+      "cases": 15,
+      "index": 16,
+      "original_sha256": "51f192ed5c09e1d0eefb2a418dfc5d05b70d9cc22a7f2eacd7ff22f44170a922",
+      "platform": "linux"
+    },
+    {
+      "cases": 16,
+      "index": 17,
+      "original_sha256": "bc4bae6c7b75e5256b37dbc8b6f8560b0972ee0630d360a81a79e0ef78860f3f",
+      "platform": "linux"
+    },
+    {
+      "cases": 16,
+      "index": 18,
+      "original_sha256": "d77744cec340a147e5e52ac1a59e16d75acb3e97c64728f2a0121e4d4c084ed4",
+      "platform": "linux"
+    },
+    {
+      "cases": 16,
+      "index": 19,
+      "original_sha256": "ca8456da289cab613a97e516d461b7ad56e400651f4e69e5c49fd0fabbb41fe6",
+      "platform": "linux"
+    },
+    {
+      "cases": 13,
+      "index": 20,
+      "original_sha256": "e5c17d4425c3cf3746c94368f5a85472c774fe3d87ec8df9da0b04f1a6b05a82",
+      "platform": "linux"
+    },
+    {
+      "cases": 16,
+      "index": 21,
+      "original_sha256": "1a92fa43155ad69e6e6ae207a4b7ff7b8549a8a4f4923ddecc1c1b91b5384b3a",
+      "platform": "linux"
+    },
+    {
+      "cases": 16,
+      "index": 22,
+      "original_sha256": "c2f7965a9eb5e3626299bdb418749c1ed8df5781c393625e2abea8a4f2c844c7",
+      "platform": "linux"
+    },
+    {
+      "cases": 16,
+      "index": 23,
+      "original_sha256": "90b38fa93de9c5406449d044d18563464c1629a82906d0cd5a9e37dc93bdf9f0",
+      "platform": "linux"
+    },
+    {
+      "cases": 5,
+      "index": 0,
+      "original_sha256": "1ea6c6b62a26f74e2a905781721eb74e91f8e1082a8e7a40eb38cf4c34aadf36",
+      "platform": "windows"
+    },
+    {
+      "cases": 9,
+      "index": 1,
+      "original_sha256": "24438fb63c85b6274da21e81ccf20e3c62f4a8ecbd6a357d6232e6867c83cd54",
+      "platform": "windows"
+    },
+    {
+      "cases": 11,
+      "index": 2,
+      "original_sha256": "07373355af4ceaf9aa23af54337b72d431cb2a20edbfbd737ea74f1f53fe059d",
+      "platform": "windows"
+    },
+    {
+      "cases": 11,
+      "index": 3,
+      "original_sha256": "ec7b8223a6294a751dcb262187741344ffd92644de7bf43149184169b82df134",
+      "platform": "windows"
+    },
+    {
+      "cases": 11,
+      "index": 4,
+      "original_sha256": "5f86dc96199141bdc7e3124a4dbfaa856313cd439b49985761e046104b0ac068",
+      "platform": "windows"
+    },
+    {
+      "cases": 11,
+      "index": 5,
+      "original_sha256": "3ece77051be3913adb9125525b52968cbff83ac125457a853ed29d63e740fdb8",
+      "platform": "windows"
+    },
+    {
+      "cases": 13,
+      "index": 6,
+      "original_sha256": "df38465877f8eb1e65d798edda3f1d7eb5d089c730cf980d64e9b8d88826d729",
+      "platform": "windows"
+    },
+    {
+      "cases": 14,
+      "index": 7,
+      "original_sha256": "cf8371b6019cf327cb0a198165b4f5c54ab19ff9659ee784fb90297d0308dd76",
+      "platform": "windows"
+    },
+    {
+      "cases": 14,
+      "index": 8,
+      "original_sha256": "202b6338eacaf20aece36c0a3c80601293c440ac3ec71501221af0d9313a76a3",
+      "platform": "windows"
+    },
+    {
+      "cases": 16,
+      "index": 9,
+      "original_sha256": "02493f998ee6bee3ad2042d34658c7cff381ce0cd4afa43e95fa309a18717321",
+      "platform": "windows"
+    },
+    {
+      "cases": 16,
+      "index": 10,
+      "original_sha256": "63c91605cc77f06330a78b8c8dc0ca257f527b21a60abe2f1b9a7a846befce3a",
+      "platform": "windows"
+    },
+    {
+      "cases": 16,
+      "index": 11,
+      "original_sha256": "fa7598e881fe912793e377001641ef714e1426606a2283928d5976f2c93b5327",
+      "platform": "windows"
+    },
+    {
+      "cases": 16,
+      "index": 12,
+      "original_sha256": "b34049943371d634fce516a32f9afb60b53e9abdcf79b58447abc56f44524019",
+      "platform": "windows"
+    },
+    {
+      "cases": 15,
+      "index": 13,
+      "original_sha256": "4762e39f7d4bc7380b4ac18f26d03cebd622139f2c7d77fdd2d91657176550d2",
+      "platform": "windows"
+    },
+    {
+      "cases": 15,
+      "index": 14,
+      "original_sha256": "8b9c1e032272e6d0df83ce92e8b12ee6b17677c5d8b242956037a4a4d6343ae5",
+      "platform": "windows"
+    },
+    {
+      "cases": 15,
+      "index": 15,
+      "original_sha256": "334e928b2225a9eabfb990dc6e0823ef8b4b3e2c8c0ea8545c45471c68390718",
+      "platform": "windows"
+    },
+    {
+      "cases": 16,
+      "index": 16,
+      "original_sha256": "7caa06d60515d76d83ff6d30029685bde4016e457d6a14463d47debfb270ce6c",
+      "platform": "windows"
+    },
+    {
+      "cases": 16,
+      "index": 17,
+      "original_sha256": "753006e318c295b3530eb2800777efa76ae190018dfc0175884c448ab05a97ab",
+      "platform": "windows"
+    },
+    {
+      "cases": 16,
+      "index": 18,
+      "original_sha256": "7b82086da7d9a283ee3c5af84a6aafee8b9d18695c85a1f407351c01a9665e9e",
+      "platform": "windows"
+    },
+    {
+      "cases": 16,
+      "index": 19,
+      "original_sha256": "4bb2c25797ba6fd81f389bd68a3bb987de584f436aecfdf56cc4e1cd18ce4ca6",
+      "platform": "windows"
+    },
+    {
+      "cases": 14,
+      "index": 20,
+      "original_sha256": "5f2b7a792fa66475c2885449352d847d0c89cfff9c8475461490d770d813e4e2",
+      "platform": "windows"
+    },
+    {
+      "cases": 14,
+      "index": 21,
+      "original_sha256": "2b4bc121868caec245a21f99db8daea963941c4cf5085ecd151f8e17b8c4e83d",
+      "platform": "windows"
+    }
+  ],
+  "source_commit": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0",
+  "source_tree": "546750300019d2e5534e96d4e1dd751bc28d9f2e",
+  "status": "passed_original_artifact_source_and_shard_readback",
+  "supplementary_visual_physical_history_readback_sha256": "112a91ae96a331024c2104efd471ffae1741fcab4809ab1c2fd9adab51a0dfbd",
+  "windows": {
+    "actual_execution_platform": "Windows Server 2022",
+    "cases": 300,
+    "delivered_runtime_sha256": "2b7a1fbb8410270498e5c0ce8f9384a598c4467397e4ca1bda0111d6c5985447",
+    "different_payloads_preserved": true,
+    "fresh_and_delivered_differing_bytes": 14,
+    "fresh_runtime_sha256": "4e026ce62ec36310477a46b211f8216d5bf3c8e51b4351a96953d8876def94a9",
+    "graphical_exclusions": [
+      "test_art_batch_native_render",
+      "test_blacksite_nine_render",
+      "test_deepworks_render",
+      "test_depth_dimensions_render",
+      "test_depth_surface_render",
+      "test_explore001_dialog_native_render",
+      "test_explore001_dialog_native_saved_render",
+      "test_explore001_dialog_native_small_render",
+      "test_explore001_dialog_render",
+      "test_explore001_dialog_saved_render",
+      "test_explore001_dialog_small_render",
+      "test_gen007_qualification_render",
+      "test_gen007_workbench_render",
+      "test_material_presentation_render",
+      "test_material_vapour_pipeline_render",
+      "test_palette_crossfade_render",
+      "test_physical_flight_gameplay_render",
+      "test_play_ui007_overlay_render",
+      "test_semantic_depth_render",
+      "test_showcase_backdrop_render",
+      "test_water_presentation_render",
+      "test_wave_flow_render",
+      "test_workbench_wave_render"
+    ],
+    "native_build_host": "Ubuntu with pinned LLVM-MinGW",
+    "native_input_hashes": 103,
+    "original_process_logs": 322,
+    "shards": 22,
+    "source_input_hashes": 1052
+  }
+}

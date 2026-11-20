@@ -1,0 +1,1519 @@
+{
+  "built_source": "82da41a945b1d98e0267a2a20b56ec66d83f71f6",
+  "docs": {
+    "archives": [
+      {
+        "artifact_id": 14607646833,
+        "bytes": 16435,
+        "files": 1,
+        "path": "final-native-docs-bf1bd8c8/documentation/ci-workflow-inventory-44688679722-1.zip",
+        "sha256": "dffa1a0be066fe6a50efd2fc06530e1d1da4f7dfcc3b368c99fe63435698cc1d",
+        "source": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0"
+      },
+      {
+        "artifact_id": 14607503200,
+        "bytes": 7743,
+        "files": 1,
+        "path": "final-native-docs-bf1bd8c8/documentation/material-catalogue-parity-44688679722-1.zip",
+        "sha256": "165adaca6fa381dbc07077ab80da4ccc5d84d29518971236b4d1be8282c16e5f",
+        "source": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0"
+      },
+      {
+        "artifact_id": 14607149836,
+        "bytes": 1478864,
+        "files": 4,
+        "path": "final-native-docs-bf1bd8c8/documentation/retrieval-44688679722.zip",
+        "sha256": "07063c23af99dc483baea5f6786239992c1b70e97ceacf4ea141e17fb33096bd",
+        "source": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0"
+      }
+    ],
+    "materialized_files": 18,
+    "skipped_steps": 0,
+    "successful_steps": 26
+  },
+  "findings_p1_p2": [],
+  "native": {
+    "archives": [
+      {
+        "artifact_id": 14609336467,
+        "bytes": 74370,
+        "files": 3,
+        "path": "final-native-docs-bf1bd8c8/native/execution-performance-native-44688682698-1.zip",
+        "sha256": "8da203f36a66d2250ff8cf54a2bf998905ea39ac947f4c18ccbfe98005498e19",
+        "source": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0"
+      },
+      {
+        "artifact_id": 14608756710,
+        "bytes": 21210,
+        "files": 16,
+        "path": "final-native-docs-bf1bd8c8/native/native-shard-soliding-asan-44688682698-1.zip",
+        "sha256": "527f43161a17fb71bd46710dc003e2a48957c81eb294967cc0b95c883d5e183b",
+        "source": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0"
+      },
+      {
+        "artifact_id": 14608515157,
+        "bytes": 45039,
+        "files": 25,
+        "path": "final-native-docs-bf1bd8c8/native/native-shard-native-normal-44688682698-1.zip",
+        "sha256": "4e386dd9b3e704ebe2681aa89055c1aee44f4d500a6ec8ad05ffce911bce0223",
+        "source": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0"
+      },
+      {
+        "artifact_id": 14608358969,
+        "bytes": 11501,
+        "files": 1,
+        "path": "final-native-docs-bf1bd8c8/native/native-qualification-44688682698-1.zip",
+        "sha256": "e1d2b7f9c3b77505394354809e3eaaa1e8e4b215ad33990fc9cce12cb72fceb2",
+        "source": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0"
+      },
+      {
+        "artifact_id": 14608214279,
+        "bytes": 161114,
+        "files": 327,
+        "path": "final-native-docs-bf1bd8c8/native/native-shard-worldgen-44688682698-1.zip",
+        "sha256": "d389ffd8e9c924c4302596b4fb26428af352ded2e5c701843d56699490977878",
+        "source": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0"
+      },
+      {
+        "artifact_id": 14608125691,
+        "bytes": 83423,
+        "files": 21,
+        "path": "final-native-docs-bf1bd8c8/native/native-shard-soliding-normal-44688682698-1.zip",
+        "sha256": "59ec4a71af19ca2b82d5b8cfaecd065bfb078074767857d0afe2b7203282bf74",
+        "source": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0"
+      },
+      {
+        "artifact_id": 14608112270,
+        "bytes": 29790,
+        "files": 13,
+        "path": "final-native-docs-bf1bd8c8/native/native-shard-tsan-44688682698-1.zip",
+        "sha256": "5880ee195722862846702631cf68531e43bce74529430f786320712411bdfe2c",
+        "source": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0"
+      },
+      {
+        "artifact_id": 14607871255,
+        "bytes": 18503,
+        "files": 20,
+        "path": "final-native-docs-bf1bd8c8/native/native-policy-44688682698-1.zip",
+        "sha256": "ff81466c281e5966740e7e83fd7cff4d0c97864e01e7337f2eaff3915c95f807",
+        "source": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0"
+      },
+      {
+        "artifact_id": 14607394962,
+        "bytes": 31346,
+        "files": 13,
+        "path": "final-native-docs-bf1bd8c8/native/native-shard-asan-ubsan-44688682698-1.zip",
+        "sha256": "f1af87521e30fb409109239be5fe6da056368c4b2daa74427f0a3dcda5d43a7c",
+        "source": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0"
+      }
+    ],
+    "original_and_fresh_reducer": {
+      "bytes": 80919,
+      "path": "final-native-docs-bf1bd8c8/native/fresh-reviewer-aggregate.json",
+      "sha256": "b4f8d793205d989dcbd91d7161c7c6d2b6e186bca8f23ae54ff4aff7fdb78594"
+    },
+    "scope": "six Linux GCC13 families; no Windows sanitizer claim"
+  },
+  "original_orchestration": "f69b68a88401b28b3fe688c3d070162ebcd090c5",
+  "recorded_at": "2026-11-20T08:56:51.396274+00:00",
+  "schema": "gentek80-fresh-independent-native-docs-all80-readback-v1",
+  "scope": [
+    "Only original evidence, immutable source and receipts were read; no Godot/native execution or source/runtime mutation.",
+    "All240 saved starts join selected native modules, material and recipe digests, and ordered ordinary paint/erase edits.",
+    "65 real original PNGs per final all80 execution decode; separate visual review is still required for architectural judgment.",
+    "Full-source custody ledgers and retained S3 receipts are additionally reviewed in companion evidence audit.",
+    "Overall candidate verdict remains pending collector and external supplemental mixed Composition execution."
+  ],
+  "script_sha256": "ebd8890340c51336da11e3f6d46d34e647c2f5dfed0e2d654e5d418cfbbc4196",
+  "source_commit": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0",
+  "source_tree": "546750300019d2e5534e96d4e1dd751bc28d9f2e",
+  "status": "passed_original_receipts_final_verdict_pending_mixed_and_collector",
+  "workbench": [
+    {
+      "admission": {
+        "bytes": 689102,
+        "path": "final-aux-linux-44690026779/evidence/evidence/checkout/admission.json",
+        "sha256": "fc3c11bd46c4e4019b136d42cf6ac3d2820ae6de1bcd09f959fa7cb32a643851"
+      },
+      "all80_native_material_and_recipe": {
+        "a-frame-hall": [
+          "66d604b893c16b70bb408a8b190f4c52fdcb4ede32e1e06446d719656c41b6b4",
+          "96a0db4328cf5ecb6807f671a1aa319ca2750f38cefa9990df455826050e2c67"
+        ],
+        "barrel-arcade": [
+          "880fc95119262b9b9998952fb61278ea52bff350c74538e4f981c2b58eff51a7",
+          "20ddea2241ff8b72f248783daac092f1e70d7a676eb6fbb8c6f68899444146bc"
+        ],
+        "basilica": [
+          "f4b67f5c93f0985db721bec912586dc27cbb0d6b361c7928174af27ebb46f7b2",
+          "5f18e99fd5a2e0368dad35624f4f033582badff181133326fff4d453b4e96193"
+        ],
+        "bowstring-truss": [
+          "ab6083604eaffddd077ec6e969dfdfe188f9c28fc8dbe08f165d01df6d0f0a06",
+          "e66cd5d761a66e04a0aa749d808c8ef46b5d871b5f66bed8d1ed04c7e3720e70"
+        ],
+        "bridgehouse": [
+          "914b73dff53731a475039a1b40d574d0e78fee7262ed7e1bb52d5cd3d0e0d4eb",
+          "2625b6b23ad6adff5ed74405fc9ae40fe717e2d32962876cb94fa73bcf1c79d8"
+        ],
+        "butterfly-hall": [
+          "0c77e89c6833237fa1f0ef92ac125822f80e922106dba4b07f92384f8009768b",
+          "73157bda806924184f64fd0e47cb08e256f05ddfb12ae8c5b259ef4cc0036d7d"
+        ],
+        "buttress-crown": [
+          "59294d806b1cf848ad6697adc42fb2786e0844c846015f922e203697a3268d7c",
+          "1140dabee275736d86a4b1eb1a57772c7d0b05a16aca0b4b22baf3f3b1004141"
+        ],
+        "buttress-wall": [
+          "3ad49c65f6723eb5650410eda2614fa2aaa405dd4913b7bc5561d59aba1cc2a5",
+          "65ffb6f7dd9bfafe916770d8499515a896588e21a1c5d05ad62ae823ef075037"
+        ],
+        "cable-gallery": [
+          "bcffc4dc611cad6e8b1d44b6ed318ef5fef76b3388fb71cd961960f5321c5b15",
+          "0269ec2f60b50e03e8d8b6c6af00c3e75b6875601d1041834ea1219ef141e0a6"
+        ],
+        "cantilever-spine": [
+          "8ff9895398e022ffb66ee215baab97eaea6bb67c9e41aba9603e73e96d87d3fe",
+          "34c4a618bd45ff6883f7d39b30ebdfa634c946d2e6dd454ce07dcb609409e595"
+        ],
+        "cascade-terrace": [
+          "70d78142427bc6bdb09cbab276d4cdff38dda1b3a39030603d9012ce6dd159bf",
+          "7c4c519657cc703b40bc3a925afe85ef26882543199fa0144b6776dad1e68a29"
+        ],
+        "cathedral-megaframe": [
+          "1b0886f8f6b1dbc518c6147d526c1eb0eb1d2a8cb8399b6521570a8810745a21",
+          "ff455b1401042149c576f013846daa001a741b26683b81c1bd49b1310a734a87"
+        ],
+        "chain-vault": [
+          "17c86282a0202d24eeb0a3f83e4b88edd50d93cacc76188a826b87473db49ab3",
+          "3860d8562a88afd717f4270df0681ed2362985d55ac8fef6dcad50321033cd79"
+        ],
+        "chevron-hall": [
+          "d7d9fc1ee234b0c3927fced09b7dba94d4bc36a6a8d8927d46f1f78a6af07844",
+          "0e0640aea116ab2bb2440403944706f9dd58cba3e6721f4dd69b38268cdaf3e5"
+        ],
+        "clerestory-hall": [
+          "4a8ca610e7e54c1c11caa1935c2606c3b31415b0d8034a86a51912b1b77e1966",
+          "2debf1917f25b59c2265cc9f9082210cf08c45e3029c22a04f2ed761446b1e24"
+        ],
+        "colonnade": [
+          "495a62dd11a05afe3988b585109d3bb2c32d1c46a04ef8d961201d3cc6731f97",
+          "9e3f46662dbd468730f8ee015802636c125a370b2e1dcd801c185e0f54d66086"
+        ],
+        "corbel-arcade": [
+          "71ecdaed86348eeb9117f6ca806e4f704ed9d2c310cd39e859d00eeba10264b9",
+          "920b4646770d6ffb3d90c8fb4a7a1db851bea352de7018300343b2bd2a5fcb2f"
+        ],
+        "cranked-beam": [
+          "0992588bd19352aecedc81b83881ba644ad3a83d848e027c0f6b61da6b62f6e1",
+          "20842a3cd4dee71fa008ed611c8f8753c4d4884890aa0ad0ec305d81a2f70567"
+        ],
+        "crenellated-bridge": [
+          "c80380b22d7b9a5c46099a53cb30a642e8c55e8ab671f60787a3209ed5e52eb3",
+          "b51ce553e3f82d37b75d44f9799a9ca762f061d4909b9d716d8d9d8789525741"
+        ],
+        "crossbeam-stack": [
+          "e8a11cb4b65b3119e41daca796c817151cfe25dd003f229aa04f72882e420fe2",
+          "d900e0948f4f59cb8d7d911e486585440578161d4f8f3f1715029bcf486b3cf5"
+        ],
+        "crown-bridge": [
+          "b150830d02d070ab41462322ea098c9f39fc8a09e94133dd400cb2b0960aab3f",
+          "62ae25602cdb4efb66baa132ce455aa22b69af2998705fe329843eb9614386c1"
+        ],
+        "diamond-truss": [
+          "c41beb8d04ceb5d8ece506c775e176ca858d80de2ddb69181fb35dc6d5563974",
+          "41df1eaca5fcdf4a7a419b56b4f4c73ba70f5d0bf5734e44c44b1d7ed4219b1f"
+        ],
+        "double-cantilever": [
+          "30e1db2409bdb7961bb144da43fc994987994c290c842abfe0a505d9ccb3204e",
+          "d57731cdf950b6ac55adcf070313537a946ec642a76aa902e243a20c4012a489"
+        ],
+        "drum-vault": [
+          "254d3dd958895130188a773a2d328a961e199c99095c3273a165d814f02f15f1",
+          "a9d32279bbb07904c38f1418cb8d8aed12b1f6a580b831efac7c068a8d004f3b"
+        ],
+        "fan-truss": [
+          "56ce725a68b97e6fbb32ce2f2aa086b1ed141c5993a904f833b44fa247c8e300",
+          "7e70544e5b3133772fbeaf8d107a57d76705ef7bf27a4b6d9870b47d7dfa9411"
+        ],
+        "flying-buttress": [
+          "f13c6d43fb4dac7055e7faeb4b1ca7557dd85016eba7a4369407936f08acd865",
+          "ee7d920e16fc08c44353bef3dd9c8ed258854464ee4caf8c2345e95d81711832"
+        ],
+        "folded-plate-hall": [
+          "cfed3fdbc582fe8d123edffc2cc48d6472d277777ba46a0651f228fcc1ab7b21",
+          "761477ca1b30ab829e2285f13f30b1e0aaf398a70c5e31859eab2db91af0c173"
+        ],
+        "forked-gantry": [
+          "0649772b76b401d7f2b9ce72a7e4892a0f258938a50ddfc4f9bb934ea0757807",
+          "de86d64a69f371a293a552de29ff72e161ae29eee0cdd04d4a33295e59093a19"
+        ],
+        "hanging-arcade": [
+          "e3369f104ff9b822187a37d582bfd57a4f86e00a5a2de4fd63806cb5af14571c",
+          "ec829aee626e9c74f112e9cf85297a0980fa01f9769eb1abe38884caac05a013"
+        ],
+        "harp-bridge": [
+          "3c98d41ee0f20ef8755362efcf6eab24513506b75a91a8736a01c4781a001828",
+          "d90f46ba24d9b4848a3d2592b334dc623a25daec89afe1ccb8364041cef9caad"
+        ],
+        "hourglass-pier": [
+          "f3259c0526e2f626bf39497503d79069933cd5617ed0d56b7490d7b7ab2748d9",
+          "09f576df7ad6c3b1be7532e91a87ac272aff2f60d3bf1086fd99a772deca6a62"
+        ],
+        "interlaced-viaduct": [
+          "f3edc44d7f94a6afef76219b034851fffa48b99399fc2c68992d9e5651709f88",
+          "c4e8aa81daca2762681d1432038e9deee66e6e0687f2c334a8119718bde97edc"
+        ],
+        "interlock-brutalism": [
+          "03c3bc82a1255fdd9e25589493743976e2735d2260b62ee68184488a75119c0b",
+          "604c1286c2db49f6168e7685020b34aa391b28e0db18ed36803ee4a7ce3fd143"
+        ],
+        "inverted-arch": [
+          "07c1d19203963d213df8abacad6623cd61e62ae3283708bed94dd48909b1f182",
+          "1daed63e1e86621bd5bac83f16f1106eb245a0f9e2b6cc935f723601502fe89c"
+        ],
+        "inverted-trestle": [
+          "b8436e497b3ebfaafe5c65b01ee04557cb3e2b52b831327046425e505cd14fcd",
+          "9d00a944920a896f0133639fc6cbdd982c81222bb571296cc4242cf27f01c4c9"
+        ],
+        "kingpost-frame": [
+          "536634a5170df7f4e07a155c882b26f037d97831355b1055aec07d62632d4169",
+          "ae5943ed2ae1eb9df53f2be265208ad19dbff97605adac3a26c252ec5f6e06e6"
+        ],
+        "ladder-bridge": [
+          "5d8fb0d9f86ee2fc68d14473ebcaa8f2f6858d69248095648571cea67d8173cc",
+          "137f89e598604b1c23cc757ba17d9196b7fa7f87a745b9c3e7619819f800cae0"
+        ],
+        "lantern-tower": [
+          "250414c74eddbd5fbd1324e89181781a90e72452d4ac075e4e2e5b8d504c7b8d",
+          "2249711de808865c8a749f826486a09ebed7a65a7e9295dc79d6083239e944c8"
+        ],
+        "lattice-tower": [
+          "65805b0dc31d73ab54102bfa4cd69e1a54b7b198aa440f301053da1b90f56aad",
+          "cc9a145b988c530360816dbb12b508487f7c383579996e7b483e2cfaef7496e1"
+        ],
+        "lenticular-bridge": [
+          "df19089826a542d094c0ee6ae9668faa7eabd0e354ab415bb4c42abe43e1752e",
+          "ea1b6264cb34ca662bffe1df0c81962160fc3cfe5a9f7e3d54b561427bdf24fc"
+        ],
+        "megatruss-station": [
+          "f59a5c66c1128050bd0a618b99cdf54ff13112f50945de35f2945b8df594a672",
+          "f1f8ecbe389782cc78f2670e3439d71d96c871f486e582497954fbb5a569a2ce"
+        ],
+        "metabolist-spine": [
+          "c53bbbc5e40ba4143dc3da673a54194efd1378ae24f5dfec81afe687d822be83",
+          "71f5c861b99880c0d4841df62838257608444e90a854ec285af52783b98d3f40"
+        ],
+        "monopod-tower": [
+          "14b2072343b5f29299387f678c21a41ab771b9ed38823896e249b1fc2974f650",
+          "04891d3bee2c9ca39d1e0830c5e68a93ab6f890d9dcc6cffd83505bdd98d6659"
+        ],
+        "mushroom-deck": [
+          "6cd14550da6a163fe80d031ca75385f96385454b013e77ef5a40c6b384b91c95",
+          "edaf85cc5cb6de1aa3b52245ff61674bee726975c64bd051818de7b099146c4c"
+        ],
+        "nested-arcade": [
+          "17c6eea03f59446e4d3cdc44ff76540b98b23af95b3fa1ccc1fe65c17a5fbb2d",
+          "7561001ed4bf5eefdf694c91e5daf1b2dfacc39c1ed3418c75f776123d31c937"
+        ],
+        "offset-arcade": [
+          "598747235ffb8772ea5d9e1341f230d12e097ddc077d53eb9cd542356d746df2",
+          "2332efe726c43350fd43af806c05ddc2b15792f33b6c81ac2d706c29a3315bff"
+        ],
+        "pointed-arcade": [
+          "f1282d9dd10451bbd9f8c83bcab51c6a8fb1419995b1868a28edc2937af4f4ee",
+          "be87495c246534ed210044ade92d32d95e55abe1955634783d4b3b0007b42fea"
+        ],
+        "portal-frame": [
+          "31aa4c671cf8545aa470865544b804596131d143db45a8a9a3eb8e50ad4bed94",
+          "b251bafac39828076d930b1fffa22646c46759c8b68f995e5d6d10c6d5f54d6a"
+        ],
+        "pratt-truss": [
+          "51bc64f1ab22081960246c10741284239dc90a37fad7c126602df073d6179462",
+          "aee838970efad9a5ec82112bac50b4d92796350aabfa0e3f6a837a400d4a7be1"
+        ],
+        "pyramidal-frame": [
+          "284c1238f3c4eb770141031d74ce116d082a0777e63509e41996671df0eee1a3",
+          "70918ce15f0c8440aaf26fbcac8b7cfe932f3355de5ce8ce4c39c3020335b52a"
+        ],
+        "queenpost-frame": [
+          "57843e9ef2395586ba4c6d061c7098682ee8fcb73cdf56567a4bf46220d62fea",
+          "d00c38d86c5c8ee25ab5b258fb6fad3b6266a8ac59b3a29c7658eebecfb7f449"
+        ],
+        "radial-stay-bridge": [
+          "3376c4e601ef0588405c57823a7f3f96baf72790d2c548525381a02009677f2b",
+          "92c0fc99265b675645709736a516d0afdae2721809221c2a99a2c7f414b2edd8"
+        ],
+        "rib-vault": [
+          "2f465de5e9d0f3bdb4a1d8dbd4f2712313fc5cbe9697f5e0c4621d52bcf93979",
+          "7c781c9877136142ead877d7e9669df2bf86bd7443058d6cbe20a220bb9ec2a4"
+        ],
+        "ring-pier": [
+          "5171563381abc4a174fca83a89976d233e202cc5a2373f5f30a3d49c48c24944",
+          "e3b38633d4282fbd517647f7fb9b9d1a43d9e2235cd4cc4166771d1aba5950b2"
+        ],
+        "rosework-gatehouse": [
+          "2a8b6e656b32afc75a9a3b0fc54979d345a6f3867df217937ef59644fdd2a7b9",
+          "3609b9bb7d476b5dea35731cbf2c2449519ed53cee9bcef7ae470d5acb6787aa"
+        ],
+        "sawtooth-gallery": [
+          "4f4de9484b0fcc305f2a9289c2605a991945eff36bc271e14d0165ebde538128",
+          "0a053635d0b006b5c4f67bacd1edbf5a10802339738add1f1c0841907c590fc2"
+        ],
+        "scalloped-vault": [
+          "adcde7f316db101f821bbaa056326be4bbe544a8e3ea1bb9e261284a11939b17",
+          "cf193b76a16ce7a0fec1cabc99b20d7b25e8878d3fafce1e5986fa3843baf069"
+        ],
+        "seeded-typology-megablock": [
+          "7ada138ff263b1af9a157f29fa1eee585807bdd616569209ed73fadf93374a93",
+          "55279cf6607e5284fe1fb473dfd6a69585fecf2793305b11f09fa98d2398e4ac"
+        ],
+        "shelf-stack": [
+          "1a60305053fcfa007675037df8d2e3d2be522f2246588bb26ee1488e126e9d35",
+          "ac0dc67d8f7015ab7913e70c36506d0a88a85ebe232dc5079bd2fc12067560e4"
+        ],
+        "space-frame": [
+          "5990d1905274046f289be78ec85a5c74800b54dbf4421eb11455f42b9b0b4cf3",
+          "3696443cefaed3dd093b03601b507c6aa053c311a23632b63048a80f3a7cebd2"
+        ],
+        "spine-arcade": [
+          "86190690957ee9bf5a62ab54bb2bfe614b2c6ed725f840f483785ac7eb27ce56",
+          "e85611f0880987b1c6f6c7956f9c14b773ad4325273b0b94a60f7e2420155b23"
+        ],
+        "split-pier": [
+          "e6a41d168f56e03f5eefae19c66d76ab0fd4cb2d095453605038d3b5fbadbc7f",
+          "09989c0490a73c090d29fbfbe20456ece776fd51de38cbb94f3b8f08262d44ba"
+        ],
+        "stacked-arcade": [
+          "8055a3ea6527fbbdb53710d557d9fb83e4a4f967ef950e7f90c308b618ac914d",
+          "74727d2a57e3fff6d25df83d7861003a5db644654ff9558defdebdc135efd3a5"
+        ],
+        "staggered-balcony": [
+          "d51142abb4d9eedd184bd5de39da7d153addfeff68f912989faede2f1e34a1b8",
+          "d1d63b4ed4d14c70ae5a7a01331f74a36ebfda067f2e0200b4c09a60ecb6351b"
+        ],
+        "steel-trestle": [
+          "2eecc1e3f56fa56aef0a2223ff8689ab94ba440d420b0bd584b1ff68d23a7853",
+          "c866bf8d3ae904886c1f126d46ee36944f88a51e8e1284ccbf6145fb76ea49a3"
+        ],
+        "stepped-aqueduct": [
+          "35e87177289c4b6e9ce9bcc3f857b016cbadfe05e44c23238a8e923954ba50d7",
+          "7b898e75809f022b67c27da013b534366d538e916a9daf9c3ab9f12f223bcc67"
+        ],
+        "stepped-buttress": [
+          "9ac4bd7feb702110a19031757520c06463b283f07b7bb51cc3eeac555a890dd8",
+          "004e4f7c86c7b3fb1145c86098acc077740648a6ce90d0e4cdf55ade3244b43a"
+        ],
+        "suspended-arcology": [
+          "49cda6de2f9cb1b72190ba597b5847ab6b619190679252c73a3d375a2037166d",
+          "1834559503e318a36135833a47613c3460a9d99ed431d547767cf2665c7a8c2d"
+        ],
+        "suspended-deck": [
+          "dff634cf4c3f130b91c25bc0548213397b9f49005426c979107a5c97216af65c",
+          "4c46c226e17484aaf8a69be3c201d27b4f5bdbd2e81f9eb4519cb2b1eade30f5"
+        ],
+        "suspension-pylon": [
+          "59cb1f1f981e32b9cc9d17d49db0d75f05b27f34288342374b50befdb7fbacda",
+          "c041e544e2aeb80af85f6017d7210585a88a694db4f6e9d6f1bc0f554a39619e"
+        ],
+        "tripod-frame": [
+          "6a72997d9d3a42f7d7a5e5cbe4f8065a3c642999cbaab241d969f1bcf3e87d99",
+          "bb7318325e32c8fd39b550c59237df4b554ec3a68f4fd0a86ed1d8c01b55c88f"
+        ],
+        "triptych-arcade": [
+          "070d72be60e01d931f8655b90364fde3a4dc5d38c94305b96658094053a4a805",
+          "71d9afb30f9316b6ddd62e3ebf44ed21083acb9f36746bccb80929ed7d7932ea"
+        ],
+        "twin-mast-bridge": [
+          "a5937a46437a19dd3e2b8decfba983d4bd31d9359b15b23f051fdbbaf0a6df7f",
+          "2191864afd09c12d68aff1b340af4b384b963b7242051a26d94b65e8ab15e2e4"
+        ],
+        "vierendeel-frame": [
+          "b9b45c14708123842e337b9c8adc78142b465936d9fa5e9fd6121970d34d9065",
+          "528272062a2ded1ac5b00bdec8553e63c8d4b03a11f9be3cf99520889a7a6a4a"
+        ],
+        "warren-truss": [
+          "846cfc65ca072c0b783d802b438e47cae0b81606d390c272e2af452366c4e3fc",
+          "16d9d14e69e5f20355d5b2a88dee9dc9fb097aa7ea145485922aec30183b1dd6"
+        ],
+        "wedge-gallery": [
+          "233ae3be818753fb6eb7618261af584bed3905b03980eef48cf05342f4028ef3",
+          "47a03c403512c3f6e894bea33b3304ffe97dc6a60bafdf7d3405332a15947a8b"
+        ],
+        "yoke-bridge": [
+          "a91dde0bfdfd5ccc6c483dc29d02ccd0141c3ef9ca67fc6f36fb0eeaa24a5f21",
+          "8531639342247b4f66bb21bcd9dd50f10d2f331414c3b75df6600e89f53783d5"
+        ],
+        "ziggurat-arcade": [
+          "3b0fc0e21c2f7ce483b724b304450b5e5e513952982c56c4ac38ca5e3681dad6",
+          "4de18d99a7fb76d759b840c0f432ed8a6169a34fba29a9d9b0beef252e2809ec"
+        ],
+        "zigzag-bridge": [
+          "52898487d111e3e7eb6de963a37639ca729979f99e754a2283b40dec8376f1f4",
+          "7df8b2fbb0fb2c4028d7dea9145d3cc3b4bdb1168194c2da197aaaa0ea82ecd0"
+        ],
+        "zigzag-pier": [
+          "fb92e14635a559412b726cc7a6de4ed9914430616dabbf2795a149a29840d67a",
+          "f0ff55011412e74cbad374bcd3d7eb6e8723c8522b34fee582065813a252ba47"
+        ]
+      },
+      "archive": {
+        "artifact_id": 14608534716,
+        "bytes": 20839862,
+        "files": 243,
+        "path": "final-aux-linux-44690026779/original-evidence.zip",
+        "sha256": "21605adc08aa3b9b251f4b37d3c2c713c95f417caedabfcbe1d6a4e0d8838fe0",
+        "source": "f69b68a88401b28b3fe688c3d070162ebcd090c5"
+      },
+      "framebuffers": 65,
+      "package_sha256": null,
+      "phases": [
+        {
+          "checks": 1786,
+          "display": "X11",
+          "phase": "author",
+          "pid": 2631,
+          "styles": 80
+        },
+        {
+          "checks": 1068,
+          "display": "X11",
+          "phase": "reopen",
+          "pid": 2817,
+          "styles": 80
+        }
+      ],
+      "processes": [
+        {
+          "case": "import",
+          "peak_memory_scope": "Godot process high-water RSS sampled while alive; excludes runner and display server",
+          "peak_resident_bytes": 752541696,
+          "wall_seconds": 7.249112510000003
+        },
+        {
+          "case": "author",
+          "peak_memory_scope": "Godot process high-water RSS sampled while alive; excludes runner and display server",
+          "peak_resident_bytes": 1099075584,
+          "wall_seconds": 872.969369529
+        },
+        {
+          "case": "reopen",
+          "peak_memory_scope": "Godot process high-water RSS sampled while alive; excludes runner and display server",
+          "peak_resident_bytes": 846356480,
+          "wall_seconds": 652.1543549310002
+        }
+      ],
+      "qualification": {
+        "bytes": 253946,
+        "path": "final-aux-linux-44690026779/evidence/evidence/checkout/execution/qualification.json",
+        "sha256": "ccbe458527efbdad79599001de2a98e9584cde2c7b686866c8af324833791590"
+      },
+      "saved_starts": {
+        "a-frame-hall": "19433072499f9fca55689260a50c0cec339bdea8296a1e334b757f616d029557",
+        "barrel-arcade": "f9d19ed507f9e814cdf40abebd00834213e3d948c3873b6a348444c71e3033cc",
+        "basilica": "7d0d260686c2cf0292101a3725ec5f22439a6d5246d66aeb0afe9d060309c220",
+        "bowstring-truss": "4e95e52d2cb8a908f3e127c5b69658923f41e1be3121f830f5b554e99d4a5c29",
+        "bridgehouse": "35f39ec06fe663263516cb3e6f8a46bc42865d2408d4253030b8f627f86e978c",
+        "butterfly-hall": "452554a9baba388d6b9b8c34e6c35008cc6d9a2216e2d698b9881a844be1fc2d",
+        "buttress-crown": "cdbc45f9f520acddeec28933692a0b7c28c89519734e24a78160d3933c8a4a14",
+        "buttress-wall": "a232f431f864e45501db5b35a631a906a0f04317f5a40846c8bbe342a46e91e2",
+        "cable-gallery": "35a6d5c1832616df386ecbf2ec5257c6bbb0646d290c04cc142b923f7f54ee62",
+        "cantilever-spine": "7be305085cadb9ffc3dc1356499ba4ca3a201f05e594b88c531bac8e701aaa4f",
+        "cascade-terrace": "2a294e88114cbed9ad7164f9b8a2aad3626dcd92391ccb6ae05434d1cea3f527",
+        "cathedral-megaframe": "8fb2b9d05d331e47d2de523c893eb8fb6f526f671bca52094a5a138a9d5eb577",
+        "chain-vault": "ccca3592a9047eddb8a9bfd44972504f092a188eddfeafb43f5d98d55cad7d09",
+        "chevron-hall": "555cf1ceb6be5b793db7cdf79bc82fd0d399323c41a9b3cd5b2ac39c47a22647",
+        "clerestory-hall": "bd3d5ef8372667dbec74e72eb926a4be3e792b882ea6653155e8fc5708585319",
+        "colonnade": "aac722766db651efc532563ba4a78121f68d1635ebf285b9d0f0a1eb32b52de8",
+        "corbel-arcade": "81d612df7d28443c9e7195374a215bf5c6b81dad6b45da49e5c10396c35703f3",
+        "cranked-beam": "0c0cc4c9c124a5cea98724c343d0598ba374ef8b6908d03cf2f3bc0c0af91cb0",
+        "crenellated-bridge": "6ad3e8321a147da61443477d1868e5c95e16a5c5dbf8f621669acb3ac3135dfc",
+        "crossbeam-stack": "bb2edf7d4bdd32fc57176fe062daec1ff5ef9d322a255d5efbd8a91431bc770d",
+        "crown-bridge": "d06705af1ebeb519991a5b84a4d30207da8a52e1f21529225dc91aaaa33cb494",
+        "diamond-truss": "65509f439edebe5172d5510f61805c4a85e6b958cb2858d64c5db021b0726114",
+        "double-cantilever": "d93c2d0b4c95f68982f463cddcb4a0c6449dccb52c113cffbc773e879be995f0",
+        "drum-vault": "0b6a7b40ec31b479a3b05233a713e55f78c079ac83cf23f6404d1619d679cbe1",
+        "fan-truss": "312f9546ae7bbdc29f4d53fe9ad8a997aeac27b7629799d1a64c6ff0aacce4c0",
+        "flying-buttress": "e8b7fd4a0302442843a186e9d432ae2d4269de8fe26fbfbe4abfbe6e634de3ad",
+        "folded-plate-hall": "d02cb07ecbf1f086603530fe1224c98304ebe8b365dc11a4c33978bcdfca9cdb",
+        "forked-gantry": "02abd1ea11ee4050c08d142cf04cf6e2ac0b22d4c97524c1371eff926639649d",
+        "hanging-arcade": "843594736e2cd2cb3087c894398f3ea98a9e609bd886c23ce446a3c30d7bf78a",
+        "harp-bridge": "7658d094375f722acee4db593bf5aefad175dde4e01fefdbaaff21549a154974",
+        "hourglass-pier": "11945a18ed6408b2f265810b17e2ddab6c8fe43168c5661de1dedf64eb264f48",
+        "interlaced-viaduct": "86a99361ac17a41cc3b9a3bbc4c3c41e5d13d3f73eee2645534218d2c531977a",
+        "interlock-brutalism": "0bcbcac74389bb24c99536a85ab9dd36bb1e292fc5ed8c70356d1d69ef2e2cbf",
+        "inverted-arch": "90ef495a1c858578e02cdfe08d80ac1516fd846dc5fe685aed997e351d8355ea",
+        "inverted-trestle": "8d93e33a9b43c126ccd383f3d5135cdf92491830f7f0878774861201a7ae9370",
+        "kingpost-frame": "744d9911a35ed5e3626656a41af0cce364a0db3300ce568220b1ec851720410b",
+        "ladder-bridge": "69acab1521333e9158ba146b3ccf79e87d74a7625ffed5b2e789a875373cecec",
+        "lantern-tower": "0adba50c8a4630f1f7022be2b8a0d95d1f28a7e07516009eae0bab38e8bac3ca",
+        "lattice-tower": "b628e20af4d9bc47b7bc92267a3ac5fb4df642ecab0e2edebc592dee9de0de9e",
+        "lenticular-bridge": "bc76eb341334ae2ed61e74ab0b1cae87ef26f55f210c1056f9793917eed01803",
+        "megatruss-station": "c4861d4664ad74478b24a4f37e9f10bac8b993280ab09f5e3b5153a26bd0894a",
+        "metabolist-spine": "399e4671e27038b4fe905dd7b8cedf5ebb418c6301b12ae617ae3972e50f28d6",
+        "monopod-tower": "cb7ff9c896e3707db97b5aeafbc35d375588e527008955949c20c021858bb6ed",
+        "mushroom-deck": "f07762c1e941c9ee36c05f5eafb584fa6c308d1ccfd68348d9c07f6ab38291dc",
+        "nested-arcade": "ea91c631567336e07bbc9a58de357bfee655d4437bf436a080f34053fabbdd25",
+        "offset-arcade": "ff2c8172044763d2eb40fc75a39fac2aecb47beb603c4ddba5eaa0487204206f",
+        "pointed-arcade": "b73c43757c7f2d3fed07bd2309e4ba2a7457775a5e8fd4dc28e407aea2a98f78",
+        "portal-frame": "2f3061e2c9669d541a3de38c49f30f6895789e9c97d99916a5b7f9622fba59e2",
+        "pratt-truss": "08f6d44252c2765815fde128f39393f6dbb8ed8e537c024012b4438ed548eed9",
+        "pyramidal-frame": "cccfa22db6d9dd9ff57f63c6a98bbe19b62523099c319618cac208152e4e35cf",
+        "queenpost-frame": "f71b2a7b533a407902ce40abd22589088c1208fac99731ac96ccca8365d0028e",
+        "radial-stay-bridge": "a2af057abc96bf84504393447eae32f0993f60ec8a634857a051efa56eaaa85c",
+        "rib-vault": "50d21f95c937f4a405bb1e4a1701c919b0b093551d468a989ce073965ce85113",
+        "ring-pier": "874ebcb5322e678800221fb1d9a971019076cf5b8ec238780d72fede5dfab88f",
+        "rosework-gatehouse": "2d3fd22adfdca4cad9c543ebd8f017972379e5ec9d0375e3d9274364d48a93ce",
+        "sawtooth-gallery": "ebc04e4a4989efcc241ad9c74c8beb27ac6ae15c36667851803035e587172d68",
+        "scalloped-vault": "48730502b1fdcb037b673792f9e2005ac3def20c1a4075449a1215fb73096880",
+        "seeded-typology-megablock": "5f5f43941680849030b03b464c48e9512b5dc12d05a611939f593d2a0926ea39",
+        "shelf-stack": "a5e8ce6e021ee77407e1dfdef73eb6c73108107cfeacc211da67c7fbfc86fdd9",
+        "space-frame": "a1a380ed42cee0fa7c61280e7320da21a1b2e4b0337b6b4a1209f3c43571f505",
+        "spine-arcade": "985cc77c5fc383e81b130329e5a12a182041f79b5631f9c316be14e455f31a5a",
+        "split-pier": "09c363dde594c57d0bd394bddec1a226bbc1e63291e7e73b2bd1a226de3a7eea",
+        "stacked-arcade": "d9cf1c37a71dd663082323a2e3633c659aa51deddbd11021c4e8858fe4f6ef48",
+        "staggered-balcony": "6ae20e5b396d2a85be0087f493a8c5874b37af7e24433b68b5307c4cd8f6a48f",
+        "steel-trestle": "2810b4ccd863756abbcaa7898b2ab1a20fb95e11699b17be00bc2e2d1fac9a3c",
+        "stepped-aqueduct": "686a7f9c2de6c3f86f94d35463ad3f8771a65c0d1dbed996d0eca65c9b5aac1f",
+        "stepped-buttress": "59b7afd88cac64bf68e2e3ba9b8264fb91db978e3ee4542bd1e1685b1c12a617",
+        "suspended-arcology": "5130fbd1000c5d2060d18f3e46b05ed8e528694e7d31039c8c9ba731412716a1",
+        "suspended-deck": "e56209e64b8cf0370049893befec019815d0649ee4715b01bdb753b0fee43a9e",
+        "suspension-pylon": "320dc4089414dd297b1f8319fa8db928b5f098b828037f2f9a002b3dd9f7973e",
+        "tripod-frame": "43bc33e2d70a9b60c0762a5aab834f53d55ac71a7287e847860dd0cc62952a91",
+        "triptych-arcade": "5faeae5ca32adf539c16ad3ed1b945125049ba6485728f0a2386528113b2b0df",
+        "twin-mast-bridge": "72bb5583a7b083d54f4d94fddbe2cdcec1ccd5d9adfcbcdc98b9b52587f1f995",
+        "vierendeel-frame": "e6ffb2ec520a20fa2799f4646596e6b1e899cbf333e1f5fa85180858297f048d",
+        "warren-truss": "b336b734cf76f53e75a629b1e23d31d5db5269dcac4397505e98c06736c5f1fc",
+        "wedge-gallery": "37f000bf278feef58e74a34c7ab9311e0a42eca156c8686a57932ffed077da96",
+        "yoke-bridge": "00c7273b36178d56d9431642b07ec1e610ce0e79fdedbf7635abf31b08ae30da",
+        "ziggurat-arcade": "38cb9b2ad65c912f333c45563421a303bfc3abdcd4de45aa8b66a0046508e3aa",
+        "zigzag-bridge": "b02434720697a7c1f9c1770a34d16c3806df63cc99b1319c181c257d4dea1efd",
+        "zigzag-pier": "c537000e8fae44c812bb94e6f643aae8cf9d83fab50a461ab641dffa64e36119"
+      }
+    },
+    {
+      "admission": {
+        "bytes": 695674,
+        "path": "final-aux-windows-44690026779/checkout/evidence/evidence/checkout/admission.json",
+        "sha256": "4818dc54a6ea528fc3d6fa1ca2f4a2b620b56535f2b08b049449121b00bbc81e"
+      },
+      "all80_native_material_and_recipe": {
+        "a-frame-hall": [
+          "66d604b893c16b70bb408a8b190f4c52fdcb4ede32e1e06446d719656c41b6b4",
+          "96a0db4328cf5ecb6807f671a1aa319ca2750f38cefa9990df455826050e2c67"
+        ],
+        "barrel-arcade": [
+          "880fc95119262b9b9998952fb61278ea52bff350c74538e4f981c2b58eff51a7",
+          "20ddea2241ff8b72f248783daac092f1e70d7a676eb6fbb8c6f68899444146bc"
+        ],
+        "basilica": [
+          "f4b67f5c93f0985db721bec912586dc27cbb0d6b361c7928174af27ebb46f7b2",
+          "5f18e99fd5a2e0368dad35624f4f033582badff181133326fff4d453b4e96193"
+        ],
+        "bowstring-truss": [
+          "ab6083604eaffddd077ec6e969dfdfe188f9c28fc8dbe08f165d01df6d0f0a06",
+          "e66cd5d761a66e04a0aa749d808c8ef46b5d871b5f66bed8d1ed04c7e3720e70"
+        ],
+        "bridgehouse": [
+          "914b73dff53731a475039a1b40d574d0e78fee7262ed7e1bb52d5cd3d0e0d4eb",
+          "2625b6b23ad6adff5ed74405fc9ae40fe717e2d32962876cb94fa73bcf1c79d8"
+        ],
+        "butterfly-hall": [
+          "0c77e89c6833237fa1f0ef92ac125822f80e922106dba4b07f92384f8009768b",
+          "73157bda806924184f64fd0e47cb08e256f05ddfb12ae8c5b259ef4cc0036d7d"
+        ],
+        "buttress-crown": [
+          "59294d806b1cf848ad6697adc42fb2786e0844c846015f922e203697a3268d7c",
+          "1140dabee275736d86a4b1eb1a57772c7d0b05a16aca0b4b22baf3f3b1004141"
+        ],
+        "buttress-wall": [
+          "3ad49c65f6723eb5650410eda2614fa2aaa405dd4913b7bc5561d59aba1cc2a5",
+          "65ffb6f7dd9bfafe916770d8499515a896588e21a1c5d05ad62ae823ef075037"
+        ],
+        "cable-gallery": [
+          "bcffc4dc611cad6e8b1d44b6ed318ef5fef76b3388fb71cd961960f5321c5b15",
+          "0269ec2f60b50e03e8d8b6c6af00c3e75b6875601d1041834ea1219ef141e0a6"
+        ],
+        "cantilever-spine": [
+          "8ff9895398e022ffb66ee215baab97eaea6bb67c9e41aba9603e73e96d87d3fe",
+          "34c4a618bd45ff6883f7d39b30ebdfa634c946d2e6dd454ce07dcb609409e595"
+        ],
+        "cascade-terrace": [
+          "70d78142427bc6bdb09cbab276d4cdff38dda1b3a39030603d9012ce6dd159bf",
+          "7c4c519657cc703b40bc3a925afe85ef26882543199fa0144b6776dad1e68a29"
+        ],
+        "cathedral-megaframe": [
+          "1b0886f8f6b1dbc518c6147d526c1eb0eb1d2a8cb8399b6521570a8810745a21",
+          "ff455b1401042149c576f013846daa001a741b26683b81c1bd49b1310a734a87"
+        ],
+        "chain-vault": [
+          "17c86282a0202d24eeb0a3f83e4b88edd50d93cacc76188a826b87473db49ab3",
+          "3860d8562a88afd717f4270df0681ed2362985d55ac8fef6dcad50321033cd79"
+        ],
+        "chevron-hall": [
+          "d7d9fc1ee234b0c3927fced09b7dba94d4bc36a6a8d8927d46f1f78a6af07844",
+          "0e0640aea116ab2bb2440403944706f9dd58cba3e6721f4dd69b38268cdaf3e5"
+        ],
+        "clerestory-hall": [
+          "4a8ca610e7e54c1c11caa1935c2606c3b31415b0d8034a86a51912b1b77e1966",
+          "2debf1917f25b59c2265cc9f9082210cf08c45e3029c22a04f2ed761446b1e24"
+        ],
+        "colonnade": [
+          "495a62dd11a05afe3988b585109d3bb2c32d1c46a04ef8d961201d3cc6731f97",
+          "9e3f46662dbd468730f8ee015802636c125a370b2e1dcd801c185e0f54d66086"
+        ],
+        "corbel-arcade": [
+          "71ecdaed86348eeb9117f6ca806e4f704ed9d2c310cd39e859d00eeba10264b9",
+          "920b4646770d6ffb3d90c8fb4a7a1db851bea352de7018300343b2bd2a5fcb2f"
+        ],
+        "cranked-beam": [
+          "0992588bd19352aecedc81b83881ba644ad3a83d848e027c0f6b61da6b62f6e1",
+          "20842a3cd4dee71fa008ed611c8f8753c4d4884890aa0ad0ec305d81a2f70567"
+        ],
+        "crenellated-bridge": [
+          "c80380b22d7b9a5c46099a53cb30a642e8c55e8ab671f60787a3209ed5e52eb3",
+          "b51ce553e3f82d37b75d44f9799a9ca762f061d4909b9d716d8d9d8789525741"
+        ],
+        "crossbeam-stack": [
+          "e8a11cb4b65b3119e41daca796c817151cfe25dd003f229aa04f72882e420fe2",
+          "d900e0948f4f59cb8d7d911e486585440578161d4f8f3f1715029bcf486b3cf5"
+        ],
+        "crown-bridge": [
+          "b150830d02d070ab41462322ea098c9f39fc8a09e94133dd400cb2b0960aab3f",
+          "62ae25602cdb4efb66baa132ce455aa22b69af2998705fe329843eb9614386c1"
+        ],
+        "diamond-truss": [
+          "c41beb8d04ceb5d8ece506c775e176ca858d80de2ddb69181fb35dc6d5563974",
+          "41df1eaca5fcdf4a7a419b56b4f4c73ba70f5d0bf5734e44c44b1d7ed4219b1f"
+        ],
+        "double-cantilever": [
+          "30e1db2409bdb7961bb144da43fc994987994c290c842abfe0a505d9ccb3204e",
+          "d57731cdf950b6ac55adcf070313537a946ec642a76aa902e243a20c4012a489"
+        ],
+        "drum-vault": [
+          "254d3dd958895130188a773a2d328a961e199c99095c3273a165d814f02f15f1",
+          "a9d32279bbb07904c38f1418cb8d8aed12b1f6a580b831efac7c068a8d004f3b"
+        ],
+        "fan-truss": [
+          "56ce725a68b97e6fbb32ce2f2aa086b1ed141c5993a904f833b44fa247c8e300",
+          "7e70544e5b3133772fbeaf8d107a57d76705ef7bf27a4b6d9870b47d7dfa9411"
+        ],
+        "flying-buttress": [
+          "f13c6d43fb4dac7055e7faeb4b1ca7557dd85016eba7a4369407936f08acd865",
+          "ee7d920e16fc08c44353bef3dd9c8ed258854464ee4caf8c2345e95d81711832"
+        ],
+        "folded-plate-hall": [
+          "cfed3fdbc582fe8d123edffc2cc48d6472d277777ba46a0651f228fcc1ab7b21",
+          "761477ca1b30ab829e2285f13f30b1e0aaf398a70c5e31859eab2db91af0c173"
+        ],
+        "forked-gantry": [
+          "0649772b76b401d7f2b9ce72a7e4892a0f258938a50ddfc4f9bb934ea0757807",
+          "de86d64a69f371a293a552de29ff72e161ae29eee0cdd04d4a33295e59093a19"
+        ],
+        "hanging-arcade": [
+          "e3369f104ff9b822187a37d582bfd57a4f86e00a5a2de4fd63806cb5af14571c",
+          "ec829aee626e9c74f112e9cf85297a0980fa01f9769eb1abe38884caac05a013"
+        ],
+        "harp-bridge": [
+          "3c98d41ee0f20ef8755362efcf6eab24513506b75a91a8736a01c4781a001828",
+          "d90f46ba24d9b4848a3d2592b334dc623a25daec89afe1ccb8364041cef9caad"
+        ],
+        "hourglass-pier": [
+          "f3259c0526e2f626bf39497503d79069933cd5617ed0d56b7490d7b7ab2748d9",
+          "09f576df7ad6c3b1be7532e91a87ac272aff2f60d3bf1086fd99a772deca6a62"
+        ],
+        "interlaced-viaduct": [
+          "f3edc44d7f94a6afef76219b034851fffa48b99399fc2c68992d9e5651709f88",
+          "c4e8aa81daca2762681d1432038e9deee66e6e0687f2c334a8119718bde97edc"
+        ],
+        "interlock-brutalism": [
+          "03c3bc82a1255fdd9e25589493743976e2735d2260b62ee68184488a75119c0b",
+          "604c1286c2db49f6168e7685020b34aa391b28e0db18ed36803ee4a7ce3fd143"
+        ],
+        "inverted-arch": [
+          "07c1d19203963d213df8abacad6623cd61e62ae3283708bed94dd48909b1f182",
+          "1daed63e1e86621bd5bac83f16f1106eb245a0f9e2b6cc935f723601502fe89c"
+        ],
+        "inverted-trestle": [
+          "b8436e497b3ebfaafe5c65b01ee04557cb3e2b52b831327046425e505cd14fcd",
+          "9d00a944920a896f0133639fc6cbdd982c81222bb571296cc4242cf27f01c4c9"
+        ],
+        "kingpost-frame": [
+          "536634a5170df7f4e07a155c882b26f037d97831355b1055aec07d62632d4169",
+          "ae5943ed2ae1eb9df53f2be265208ad19dbff97605adac3a26c252ec5f6e06e6"
+        ],
+        "ladder-bridge": [
+          "5d8fb0d9f86ee2fc68d14473ebcaa8f2f6858d69248095648571cea67d8173cc",
+          "137f89e598604b1c23cc757ba17d9196b7fa7f87a745b9c3e7619819f800cae0"
+        ],
+        "lantern-tower": [
+          "250414c74eddbd5fbd1324e89181781a90e72452d4ac075e4e2e5b8d504c7b8d",
+          "2249711de808865c8a749f826486a09ebed7a65a7e9295dc79d6083239e944c8"
+        ],
+        "lattice-tower": [
+          "65805b0dc31d73ab54102bfa4cd69e1a54b7b198aa440f301053da1b90f56aad",
+          "cc9a145b988c530360816dbb12b508487f7c383579996e7b483e2cfaef7496e1"
+        ],
+        "lenticular-bridge": [
+          "df19089826a542d094c0ee6ae9668faa7eabd0e354ab415bb4c42abe43e1752e",
+          "ea1b6264cb34ca662bffe1df0c81962160fc3cfe5a9f7e3d54b561427bdf24fc"
+        ],
+        "megatruss-station": [
+          "f59a5c66c1128050bd0a618b99cdf54ff13112f50945de35f2945b8df594a672",
+          "f1f8ecbe389782cc78f2670e3439d71d96c871f486e582497954fbb5a569a2ce"
+        ],
+        "metabolist-spine": [
+          "c53bbbc5e40ba4143dc3da673a54194efd1378ae24f5dfec81afe687d822be83",
+          "71f5c861b99880c0d4841df62838257608444e90a854ec285af52783b98d3f40"
+        ],
+        "monopod-tower": [
+          "14b2072343b5f29299387f678c21a41ab771b9ed38823896e249b1fc2974f650",
+          "04891d3bee2c9ca39d1e0830c5e68a93ab6f890d9dcc6cffd83505bdd98d6659"
+        ],
+        "mushroom-deck": [
+          "6cd14550da6a163fe80d031ca75385f96385454b013e77ef5a40c6b384b91c95",
+          "edaf85cc5cb6de1aa3b52245ff61674bee726975c64bd051818de7b099146c4c"
+        ],
+        "nested-arcade": [
+          "17c6eea03f59446e4d3cdc44ff76540b98b23af95b3fa1ccc1fe65c17a5fbb2d",
+          "7561001ed4bf5eefdf694c91e5daf1b2dfacc39c1ed3418c75f776123d31c937"
+        ],
+        "offset-arcade": [
+          "598747235ffb8772ea5d9e1341f230d12e097ddc077d53eb9cd542356d746df2",
+          "2332efe726c43350fd43af806c05ddc2b15792f33b6c81ac2d706c29a3315bff"
+        ],
+        "pointed-arcade": [
+          "f1282d9dd10451bbd9f8c83bcab51c6a8fb1419995b1868a28edc2937af4f4ee",
+          "be87495c246534ed210044ade92d32d95e55abe1955634783d4b3b0007b42fea"
+        ],
+        "portal-frame": [
+          "31aa4c671cf8545aa470865544b804596131d143db45a8a9a3eb8e50ad4bed94",
+          "b251bafac39828076d930b1fffa22646c46759c8b68f995e5d6d10c6d5f54d6a"
+        ],
+        "pratt-truss": [
+          "51bc64f1ab22081960246c10741284239dc90a37fad7c126602df073d6179462",
+          "aee838970efad9a5ec82112bac50b4d92796350aabfa0e3f6a837a400d4a7be1"
+        ],
+        "pyramidal-frame": [
+          "284c1238f3c4eb770141031d74ce116d082a0777e63509e41996671df0eee1a3",
+          "70918ce15f0c8440aaf26fbcac8b7cfe932f3355de5ce8ce4c39c3020335b52a"
+        ],
+        "queenpost-frame": [
+          "57843e9ef2395586ba4c6d061c7098682ee8fcb73cdf56567a4bf46220d62fea",
+          "d00c38d86c5c8ee25ab5b258fb6fad3b6266a8ac59b3a29c7658eebecfb7f449"
+        ],
+        "radial-stay-bridge": [
+          "3376c4e601ef0588405c57823a7f3f96baf72790d2c548525381a02009677f2b",
+          "92c0fc99265b675645709736a516d0afdae2721809221c2a99a2c7f414b2edd8"
+        ],
+        "rib-vault": [
+          "2f465de5e9d0f3bdb4a1d8dbd4f2712313fc5cbe9697f5e0c4621d52bcf93979",
+          "7c781c9877136142ead877d7e9669df2bf86bd7443058d6cbe20a220bb9ec2a4"
+        ],
+        "ring-pier": [
+          "5171563381abc4a174fca83a89976d233e202cc5a2373f5f30a3d49c48c24944",
+          "e3b38633d4282fbd517647f7fb9b9d1a43d9e2235cd4cc4166771d1aba5950b2"
+        ],
+        "rosework-gatehouse": [
+          "2a8b6e656b32afc75a9a3b0fc54979d345a6f3867df217937ef59644fdd2a7b9",
+          "3609b9bb7d476b5dea35731cbf2c2449519ed53cee9bcef7ae470d5acb6787aa"
+        ],
+        "sawtooth-gallery": [
+          "4f4de9484b0fcc305f2a9289c2605a991945eff36bc271e14d0165ebde538128",
+          "0a053635d0b006b5c4f67bacd1edbf5a10802339738add1f1c0841907c590fc2"
+        ],
+        "scalloped-vault": [
+          "adcde7f316db101f821bbaa056326be4bbe544a8e3ea1bb9e261284a11939b17",
+          "cf193b76a16ce7a0fec1cabc99b20d7b25e8878d3fafce1e5986fa3843baf069"
+        ],
+        "seeded-typology-megablock": [
+          "7ada138ff263b1af9a157f29fa1eee585807bdd616569209ed73fadf93374a93",
+          "55279cf6607e5284fe1fb473dfd6a69585fecf2793305b11f09fa98d2398e4ac"
+        ],
+        "shelf-stack": [
+          "1a60305053fcfa007675037df8d2e3d2be522f2246588bb26ee1488e126e9d35",
+          "ac0dc67d8f7015ab7913e70c36506d0a88a85ebe232dc5079bd2fc12067560e4"
+        ],
+        "space-frame": [
+          "5990d1905274046f289be78ec85a5c74800b54dbf4421eb11455f42b9b0b4cf3",
+          "3696443cefaed3dd093b03601b507c6aa053c311a23632b63048a80f3a7cebd2"
+        ],
+        "spine-arcade": [
+          "86190690957ee9bf5a62ab54bb2bfe614b2c6ed725f840f483785ac7eb27ce56",
+          "e85611f0880987b1c6f6c7956f9c14b773ad4325273b0b94a60f7e2420155b23"
+        ],
+        "split-pier": [
+          "e6a41d168f56e03f5eefae19c66d76ab0fd4cb2d095453605038d3b5fbadbc7f",
+          "09989c0490a73c090d29fbfbe20456ece776fd51de38cbb94f3b8f08262d44ba"
+        ],
+        "stacked-arcade": [
+          "8055a3ea6527fbbdb53710d557d9fb83e4a4f967ef950e7f90c308b618ac914d",
+          "74727d2a57e3fff6d25df83d7861003a5db644654ff9558defdebdc135efd3a5"
+        ],
+        "staggered-balcony": [
+          "d51142abb4d9eedd184bd5de39da7d153addfeff68f912989faede2f1e34a1b8",
+          "d1d63b4ed4d14c70ae5a7a01331f74a36ebfda067f2e0200b4c09a60ecb6351b"
+        ],
+        "steel-trestle": [
+          "2eecc1e3f56fa56aef0a2223ff8689ab94ba440d420b0bd584b1ff68d23a7853",
+          "c866bf8d3ae904886c1f126d46ee36944f88a51e8e1284ccbf6145fb76ea49a3"
+        ],
+        "stepped-aqueduct": [
+          "35e87177289c4b6e9ce9bcc3f857b016cbadfe05e44c23238a8e923954ba50d7",
+          "7b898e75809f022b67c27da013b534366d538e916a9daf9c3ab9f12f223bcc67"
+        ],
+        "stepped-buttress": [
+          "9ac4bd7feb702110a19031757520c06463b283f07b7bb51cc3eeac555a890dd8",
+          "004e4f7c86c7b3fb1145c86098acc077740648a6ce90d0e4cdf55ade3244b43a"
+        ],
+        "suspended-arcology": [
+          "49cda6de2f9cb1b72190ba597b5847ab6b619190679252c73a3d375a2037166d",
+          "1834559503e318a36135833a47613c3460a9d99ed431d547767cf2665c7a8c2d"
+        ],
+        "suspended-deck": [
+          "dff634cf4c3f130b91c25bc0548213397b9f49005426c979107a5c97216af65c",
+          "4c46c226e17484aaf8a69be3c201d27b4f5bdbd2e81f9eb4519cb2b1eade30f5"
+        ],
+        "suspension-pylon": [
+          "59cb1f1f981e32b9cc9d17d49db0d75f05b27f34288342374b50befdb7fbacda",
+          "c041e544e2aeb80af85f6017d7210585a88a694db4f6e9d6f1bc0f554a39619e"
+        ],
+        "tripod-frame": [
+          "6a72997d9d3a42f7d7a5e5cbe4f8065a3c642999cbaab241d969f1bcf3e87d99",
+          "bb7318325e32c8fd39b550c59237df4b554ec3a68f4fd0a86ed1d8c01b55c88f"
+        ],
+        "triptych-arcade": [
+          "070d72be60e01d931f8655b90364fde3a4dc5d38c94305b96658094053a4a805",
+          "71d9afb30f9316b6ddd62e3ebf44ed21083acb9f36746bccb80929ed7d7932ea"
+        ],
+        "twin-mast-bridge": [
+          "a5937a46437a19dd3e2b8decfba983d4bd31d9359b15b23f051fdbbaf0a6df7f",
+          "2191864afd09c12d68aff1b340af4b384b963b7242051a26d94b65e8ab15e2e4"
+        ],
+        "vierendeel-frame": [
+          "b9b45c14708123842e337b9c8adc78142b465936d9fa5e9fd6121970d34d9065",
+          "528272062a2ded1ac5b00bdec8553e63c8d4b03a11f9be3cf99520889a7a6a4a"
+        ],
+        "warren-truss": [
+          "846cfc65ca072c0b783d802b438e47cae0b81606d390c272e2af452366c4e3fc",
+          "16d9d14e69e5f20355d5b2a88dee9dc9fb097aa7ea145485922aec30183b1dd6"
+        ],
+        "wedge-gallery": [
+          "233ae3be818753fb6eb7618261af584bed3905b03980eef48cf05342f4028ef3",
+          "47a03c403512c3f6e894bea33b3304ffe97dc6a60bafdf7d3405332a15947a8b"
+        ],
+        "yoke-bridge": [
+          "a91dde0bfdfd5ccc6c483dc29d02ccd0141c3ef9ca67fc6f36fb0eeaa24a5f21",
+          "8531639342247b4f66bb21bcd9dd50f10d2f331414c3b75df6600e89f53783d5"
+        ],
+        "ziggurat-arcade": [
+          "3b0fc0e21c2f7ce483b724b304450b5e5e513952982c56c4ac38ca5e3681dad6",
+          "4de18d99a7fb76d759b840c0f432ed8a6169a34fba29a9d9b0beef252e2809ec"
+        ],
+        "zigzag-bridge": [
+          "52898487d111e3e7eb6de963a37639ca729979f99e754a2283b40dec8376f1f4",
+          "7df8b2fbb0fb2c4028d7dea9145d3cc3b4bdb1168194c2da197aaaa0ea82ecd0"
+        ],
+        "zigzag-pier": [
+          "fb92e14635a559412b726cc7a6de4ed9914430616dabbf2795a149a29840d67a",
+          "f0ff55011412e74cbad374bcd3d7eb6e8723c8522b34fee582065813a252ba47"
+        ]
+      },
+      "archive": {
+        "artifact_id": 14610826537,
+        "bytes": 19661263,
+        "files": 199,
+        "path": "final-aux-windows-44690026779/checkout/original-evidence.zip",
+        "sha256": "f5edc6e5af5a1aca0399f11bf8b7cd3cee71ad28474beb120aae8b3ca2c0fd17",
+        "source": "f69b68a88401b28b3fe688c3d070162ebcd090c5"
+      },
+      "framebuffers": 65,
+      "package_sha256": null,
+      "phases": [
+        {
+          "checks": 1786,
+          "display": "Windows",
+          "phase": "author",
+          "pid": 4732,
+          "styles": 80
+        },
+        {
+          "checks": 1068,
+          "display": "Windows",
+          "phase": "reopen",
+          "pid": 2372,
+          "styles": 80
+        }
+      ],
+      "processes": [
+        {
+          "case": "import",
+          "peak_memory_scope": "Unavailable: Windows console launcher starts a separate engine; its child working set was not measured",
+          "peak_resident_bytes": null,
+          "wall_seconds": 9.359000000000037
+        },
+        {
+          "case": "author",
+          "peak_memory_scope": "Unavailable: Windows console launcher starts a separate engine; its child working set was not measured",
+          "peak_resident_bytes": null,
+          "wall_seconds": 1623.8129999999999
+        },
+        {
+          "case": "reopen",
+          "peak_memory_scope": "Unavailable: Windows console launcher starts a separate engine; its child working set was not measured",
+          "peak_resident_bytes": null,
+          "wall_seconds": 1168.687
+        }
+      ],
+      "qualification": {
+        "bytes": 261733,
+        "path": "final-aux-windows-44690026779/checkout/evidence/evidence/checkout/execution/qualification.json",
+        "sha256": "2ae4a1c11f4dbbcae03ed66ec77607aa047b2c4b4befba0bc0166caee7b8e375"
+      },
+      "saved_starts": {
+        "a-frame-hall": "d48961256b4d386664fe973626d2b0049ded172e14f236f72979ed3e25974ace",
+        "barrel-arcade": "b3af8c0048dd3805f53eef4da36db51a786ff88f46162efddf8fba5594d674e6",
+        "basilica": "b939fecd1b908c53110d3afb9fdd397f6c646073ad28b722484aed275a6380ee",
+        "bowstring-truss": "1ed29e269d0fbcdb237dbf460992652a1ed46a0ab5af5970e3563f9069805b23",
+        "bridgehouse": "5700bbefbafe9815e6890e651eb2725e8be5c284bfb03a572b980b3d5f3a042b",
+        "butterfly-hall": "9c1762d55591c3add524931e04b5a8ecbcc92110c111c09e1ee137130f3b19c6",
+        "buttress-crown": "f1ed796261a8d27c969db6e9052fad5eeef691e1a858fb17b79098240e620150",
+        "buttress-wall": "23170dc21f1b77691f2af132af01df8dd149451406f418e9346aaec67a917de2",
+        "cable-gallery": "e768148eb17a33a8d1b76b8eae4feb73f90816c985b5d9fa1aac2c8f02389d8e",
+        "cantilever-spine": "8e35d162da17101e34a7030c48ac451d69b4299ce907eb851ef524cfd214fbb3",
+        "cascade-terrace": "fdebe95b42bf9739b849bb5fa69d1168edc01fbdb4ae0702b5aab6a4bc58c3c7",
+        "cathedral-megaframe": "1d3891dbd0f40ba2a2867d647fa0e876bc1def9637321e4a0f797ee67773c542",
+        "chain-vault": "1a2670d6a2f0bbda4a7b716225cbf0beade1ad8552ce06ddf0cbd3356ae9b835",
+        "chevron-hall": "347517cbbf4efbafe251c99738ff7d5a171e9131346e9cbc274b28ab65481cff",
+        "clerestory-hall": "4cc02d78f9a594dfc464ba8826f3e10a51e9f66fc547978c7a05b5ceb1d3c853",
+        "colonnade": "cdc5ff24b91b861f71fe993a7ea59d5e8de18beab6f1174baef9c0a6819b8cf1",
+        "corbel-arcade": "19c0228687a3fffa9907ed5f0f5a6126cf2582ad87c2ed38d4490ecb45770737",
+        "cranked-beam": "5e56a015aa48c9267d1c77b24b907307fe7982bb0903da0127a1a4943c573f9a",
+        "crenellated-bridge": "5fe4c66f16d3b52c166f20380a4f049d6e2a10767b81d6aef670933f3b770f11",
+        "crossbeam-stack": "9afabf60165cf60ac7f262b9732c5a1fcb498fb58f3d2fdcebcf48cbbe74f130",
+        "crown-bridge": "5da02eb5a2d4e69c058a18109f377eabddae31f3ead259fa25bafbbf19dbd923",
+        "diamond-truss": "aed032866a06d49ce54442b65d97fa907d78cf615f977d19beb1b6857ffa3cdc",
+        "double-cantilever": "6eb0e52488b70c0919e9048ce6a5dde6d3d6da5f515040227613fbccd4389000",
+        "drum-vault": "ad3c62fda1bd57689328c8a1bb7b87526cec06b1faa619c7058d6c134099c0cd",
+        "fan-truss": "5165323ec0f9cd899158bb71d7d89c8dd8b28df8a47003421fcb5d5f7165fbe2",
+        "flying-buttress": "9769f4daeb0499a8f189a459b633db9bf32a9d3edeaa2eb4527675e3eda01d20",
+        "folded-plate-hall": "5404fa69ac9a3d4ac4595650d4923add24773379432f018fec78af4883925af7",
+        "forked-gantry": "02458ac55ab737b70ce4b5d53cf1bf3b80cd40e4fb5ec3b2804bd4261ba1ebe7",
+        "hanging-arcade": "9577bd8386ed9a561591d29ca57d06c5dc0d1c07ae9c9b7a284163de10a53157",
+        "harp-bridge": "de05f88c1479bddef0f8d1f873865beec43fe26687ee2f1035cff059c731b4c0",
+        "hourglass-pier": "27ac70fc4894b6c15821788ac1a775456ff3581caa28d71f4e8ee60856b39b7d",
+        "interlaced-viaduct": "69ad09cdd0b873480741dc4298d4ebdca708dbe4356dd083246aa4fb5b0b4a23",
+        "interlock-brutalism": "9eb2916ee4f4d297d1dca8020935bb5a11dbd319615c8343c2c7bb92c5ca5c0c",
+        "inverted-arch": "b16aa017e488f4ba292b8bb815b34dd6b6895249cd867d1ae473ff84b6449de2",
+        "inverted-trestle": "9c48ea7c33959226d021c1de1366619e39d33e14a400077ef4035a49d07b57ea",
+        "kingpost-frame": "b797cc6e1d3e8b10261c747df9df9f7ce305455112f8a50413d3c3ea53f8720b",
+        "ladder-bridge": "22a201d122acb555e5ba21dd746ea3bf882d503c7ee39e462902b8ad649d6fa4",
+        "lantern-tower": "8fbd85d81af2d3c43b98389af85940d5ce07a90d220ac0dba79052a899a8b668",
+        "lattice-tower": "996d2019dc89a08816a04efb3f4f804608e8daf42da57af0cc6e6a95f2e0a277",
+        "lenticular-bridge": "f1eeee6c0d136ad1c75c35c10fed223f71a0df644382a233a97b8eed5c5e8b0a",
+        "megatruss-station": "f5ab89bd7ce0cf5d268ff37f1bc6af14f75b06cd139a6adc36921592e977282b",
+        "metabolist-spine": "67164a6eac4ddae3ea8e6559fe6202d1a08929aa7b81087dcb63f51f6577fb8f",
+        "monopod-tower": "920ed0ff405b0ad48d6eba67febeec9a303826a9068b0bdbeb4d512ba1b9fab5",
+        "mushroom-deck": "287c55f4f613a978c62f0e5020c1355626c4ee44b2c00ea1eb5317e3d6bbec16",
+        "nested-arcade": "a9697874022148609190300b6e052d3facb38ffd557d840626e0129942902201",
+        "offset-arcade": "8942270357ed1b4b19c412350fe9a623a809d74e0d5e95e0b51ef9fef908014f",
+        "pointed-arcade": "2e7ec0fd17c89238ce6788b616a9f06077ec40b59ea5ac50a608caad3fbfef3f",
+        "portal-frame": "7469c9a438e8ee9605e1d354e7c206f74fc7ff260cd29bc5216b1bebeebc4090",
+        "pratt-truss": "310c4e0b2d29aba2a9b0bf1feb5167947dab4a26b29460af314026a327dcaff5",
+        "pyramidal-frame": "35c6f63d8b3ed28f6636975a69fba9fc0880239d68da49c7a7395bfe08061494",
+        "queenpost-frame": "5973567f3b47872a97d7239093bddb43ab49477fc62c3e5f5b9b67c6e27a7143",
+        "radial-stay-bridge": "2520225fa14564814523e2c3f8b566aa3effff7720e5726b781856bae7b291b7",
+        "rib-vault": "d970b89234f70a6cd954fe23da3acadc17baf8af1d3d75c60b06abb1792ae2f3",
+        "ring-pier": "a68d3732255f2cb9576700d546d8f882203c59d0b4450e7212fd2870eaa87879",
+        "rosework-gatehouse": "a6414b6a1351802bc8bc3fe5d4e8a8bbd7114bc7c6a415aa8efee18806d5312b",
+        "sawtooth-gallery": "87bcc32af783c31574356db8ed9424e86360fbe4a3355d5aedff7a565ca3b3f1",
+        "scalloped-vault": "df5a2dd464e8193f0ced31d986ffc6e88cfa7d137b5c697952769b3a94afbf73",
+        "seeded-typology-megablock": "e440827954e4c49504d17027f76bf1927379c2db9916167d91798416fddc1915",
+        "shelf-stack": "eae0835984c2317cf79cdc4a64cc3985708aa124cef290106e4b72dfaa6cf369",
+        "space-frame": "8d348b649f5793adc3de2bf955cf37ecddd648f47de133ab19ac08cf62eefd6c",
+        "spine-arcade": "f20e9fdaa631322e2ba66e5f1457029cd9b55332005143128117e22debcf0f2d",
+        "split-pier": "676d95a8fc6ec54bdab7d4dd293adbd4f33ce2cdb48410f26822936220e7f025",
+        "stacked-arcade": "8f8c1e0904ff0153c4da0dd4f54b4ec9d665995845948785a44be87b78b4f46f",
+        "staggered-balcony": "2238d170e37bc8b986d5715e8e957dee48fc06fd22c9804371e263c035ab9ce1",
+        "steel-trestle": "aaeec211b36dd78771069279255b98967811a270fb6e823145e1344b7a004402",
+        "stepped-aqueduct": "43eacacb63877c13476424f4d1991038cd7a6ebc2bb80cce4220425964f47078",
+        "stepped-buttress": "86d0721da67a814d25d7fc8afff5be9c5c17fbd2df5293ae65e1429aaba5bdee",
+        "suspended-arcology": "49e8d8e59f7c07b696f92fbf14f17ace332a675cde7e8617a67564a777ee01b2",
+        "suspended-deck": "2dd89d83c3768c734bf41dbd8948bcecff57d2c1a5d7ae7a06f066e5b1daec26",
+        "suspension-pylon": "9e69b3cdacde1aecf3869fe80d9d4e7fd387d05755c25dcad701a3c0623aff80",
+        "tripod-frame": "5b80160d8096d90cc388af12c260043f4639f47ae8dbf396072319cc3128f98d",
+        "triptych-arcade": "7211e8b87e191fa7386df62b906fedbb677a637a43a989c624a2bdb0ea09f590",
+        "twin-mast-bridge": "81c2cb28b2a828909c11033e5bf11d4474479190f6cd34ab006e18aaa650ddf6",
+        "vierendeel-frame": "31b0415d05244b8c7a550cd7d320d11fd451c7a90e07e3c852d05634ce385ce8",
+        "warren-truss": "46fa2bfedb5654b04d766d020222e5471bee2b005b0895e44dfbf2f8a8084c4f",
+        "wedge-gallery": "259d15615a005d22405f093bbdc333978c237efd838ebc2baadb172f6596f1e3",
+        "yoke-bridge": "6aea98c21c4a3fcf28861167a6f89df5a3673ac5ed60f6a2391b0553802329e9",
+        "ziggurat-arcade": "ebbaea522ba97ab40af6c40ce5a96e93567f2663eb78ce68ee9f8cb119d0a593",
+        "zigzag-bridge": "d98949f287bd4f4d60537f045795b724e17adac8db76b7dca831d3b0424924aa",
+        "zigzag-pier": "47a4ccdc24c61574bc6d587a6dd13f183e24e08c14d0a94f6ed77282d624a8bb"
+      }
+    },
+    {
+      "admission": {
+        "bytes": 767127,
+        "path": "final-aux-windows-44690026779/package/evidence/evidence/package-workbench/admission.json",
+        "sha256": "fd728ee8e1ba78b65fc122a528d255b9f8c40d262941c2f6629cb6d74c690695"
+      },
+      "all80_native_material_and_recipe": {
+        "a-frame-hall": [
+          "66d604b893c16b70bb408a8b190f4c52fdcb4ede32e1e06446d719656c41b6b4",
+          "96a0db4328cf5ecb6807f671a1aa319ca2750f38cefa9990df455826050e2c67"
+        ],
+        "barrel-arcade": [
+          "880fc95119262b9b9998952fb61278ea52bff350c74538e4f981c2b58eff51a7",
+          "20ddea2241ff8b72f248783daac092f1e70d7a676eb6fbb8c6f68899444146bc"
+        ],
+        "basilica": [
+          "f4b67f5c93f0985db721bec912586dc27cbb0d6b361c7928174af27ebb46f7b2",
+          "5f18e99fd5a2e0368dad35624f4f033582badff181133326fff4d453b4e96193"
+        ],
+        "bowstring-truss": [
+          "ab6083604eaffddd077ec6e969dfdfe188f9c28fc8dbe08f165d01df6d0f0a06",
+          "e66cd5d761a66e04a0aa749d808c8ef46b5d871b5f66bed8d1ed04c7e3720e70"
+        ],
+        "bridgehouse": [
+          "914b73dff53731a475039a1b40d574d0e78fee7262ed7e1bb52d5cd3d0e0d4eb",
+          "2625b6b23ad6adff5ed74405fc9ae40fe717e2d32962876cb94fa73bcf1c79d8"
+        ],
+        "butterfly-hall": [
+          "0c77e89c6833237fa1f0ef92ac125822f80e922106dba4b07f92384f8009768b",
+          "73157bda806924184f64fd0e47cb08e256f05ddfb12ae8c5b259ef4cc0036d7d"
+        ],
+        "buttress-crown": [
+          "59294d806b1cf848ad6697adc42fb2786e0844c846015f922e203697a3268d7c",
+          "1140dabee275736d86a4b1eb1a57772c7d0b05a16aca0b4b22baf3f3b1004141"
+        ],
+        "buttress-wall": [
+          "3ad49c65f6723eb5650410eda2614fa2aaa405dd4913b7bc5561d59aba1cc2a5",
+          "65ffb6f7dd9bfafe916770d8499515a896588e21a1c5d05ad62ae823ef075037"
+        ],
+        "cable-gallery": [
+          "bcffc4dc611cad6e8b1d44b6ed318ef5fef76b3388fb71cd961960f5321c5b15",
+          "0269ec2f60b50e03e8d8b6c6af00c3e75b6875601d1041834ea1219ef141e0a6"
+        ],
+        "cantilever-spine": [
+          "8ff9895398e022ffb66ee215baab97eaea6bb67c9e41aba9603e73e96d87d3fe",
+          "34c4a618bd45ff6883f7d39b30ebdfa634c946d2e6dd454ce07dcb609409e595"
+        ],
+        "cascade-terrace": [
+          "70d78142427bc6bdb09cbab276d4cdff38dda1b3a39030603d9012ce6dd159bf",
+          "7c4c519657cc703b40bc3a925afe85ef26882543199fa0144b6776dad1e68a29"
+        ],
+        "cathedral-megaframe": [
+          "1b0886f8f6b1dbc518c6147d526c1eb0eb1d2a8cb8399b6521570a8810745a21",
+          "ff455b1401042149c576f013846daa001a741b26683b81c1bd49b1310a734a87"
+        ],
+        "chain-vault": [
+          "17c86282a0202d24eeb0a3f83e4b88edd50d93cacc76188a826b87473db49ab3",
+          "3860d8562a88afd717f4270df0681ed2362985d55ac8fef6dcad50321033cd79"
+        ],
+        "chevron-hall": [
+          "d7d9fc1ee234b0c3927fced09b7dba94d4bc36a6a8d8927d46f1f78a6af07844",
+          "0e0640aea116ab2bb2440403944706f9dd58cba3e6721f4dd69b38268cdaf3e5"
+        ],
+        "clerestory-hall": [
+          "4a8ca610e7e54c1c11caa1935c2606c3b31415b0d8034a86a51912b1b77e1966",
+          "2debf1917f25b59c2265cc9f9082210cf08c45e3029c22a04f2ed761446b1e24"
+        ],
+        "colonnade": [
+          "495a62dd11a05afe3988b585109d3bb2c32d1c46a04ef8d961201d3cc6731f97",
+          "9e3f46662dbd468730f8ee015802636c125a370b2e1dcd801c185e0f54d66086"
+        ],
+        "corbel-arcade": [
+          "71ecdaed86348eeb9117f6ca806e4f704ed9d2c310cd39e859d00eeba10264b9",
+          "920b4646770d6ffb3d90c8fb4a7a1db851bea352de7018300343b2bd2a5fcb2f"
+        ],
+        "cranked-beam": [
+          "0992588bd19352aecedc81b83881ba644ad3a83d848e027c0f6b61da6b62f6e1",
+          "20842a3cd4dee71fa008ed611c8f8753c4d4884890aa0ad0ec305d81a2f70567"
+        ],
+        "crenellated-bridge": [
+          "c80380b22d7b9a5c46099a53cb30a642e8c55e8ab671f60787a3209ed5e52eb3",
+          "b51ce553e3f82d37b75d44f9799a9ca762f061d4909b9d716d8d9d8789525741"
+        ],
+        "crossbeam-stack": [
+          "e8a11cb4b65b3119e41daca796c817151cfe25dd003f229aa04f72882e420fe2",
+          "d900e0948f4f59cb8d7d911e486585440578161d4f8f3f1715029bcf486b3cf5"
+        ],
+        "crown-bridge": [
+          "b150830d02d070ab41462322ea098c9f39fc8a09e94133dd400cb2b0960aab3f",
+          "62ae25602cdb4efb66baa132ce455aa22b69af2998705fe329843eb9614386c1"
+        ],
+        "diamond-truss": [
+          "c41beb8d04ceb5d8ece506c775e176ca858d80de2ddb69181fb35dc6d5563974",
+          "41df1eaca5fcdf4a7a419b56b4f4c73ba70f5d0bf5734e44c44b1d7ed4219b1f"
+        ],
+        "double-cantilever": [
+          "30e1db2409bdb7961bb144da43fc994987994c290c842abfe0a505d9ccb3204e",
+          "d57731cdf950b6ac55adcf070313537a946ec642a76aa902e243a20c4012a489"
+        ],
+        "drum-vault": [
+          "254d3dd958895130188a773a2d328a961e199c99095c3273a165d814f02f15f1",
+          "a9d32279bbb07904c38f1418cb8d8aed12b1f6a580b831efac7c068a8d004f3b"
+        ],
+        "fan-truss": [
+          "56ce725a68b97e6fbb32ce2f2aa086b1ed141c5993a904f833b44fa247c8e300",
+          "7e70544e5b3133772fbeaf8d107a57d76705ef7bf27a4b6d9870b47d7dfa9411"
+        ],
+        "flying-buttress": [
+          "f13c6d43fb4dac7055e7faeb4b1ca7557dd85016eba7a4369407936f08acd865",
+          "ee7d920e16fc08c44353bef3dd9c8ed258854464ee4caf8c2345e95d81711832"
+        ],
+        "folded-plate-hall": [
+          "cfed3fdbc582fe8d123edffc2cc48d6472d277777ba46a0651f228fcc1ab7b21",
+          "761477ca1b30ab829e2285f13f30b1e0aaf398a70c5e31859eab2db91af0c173"
+        ],
+        "forked-gantry": [
+          "0649772b76b401d7f2b9ce72a7e4892a0f258938a50ddfc4f9bb934ea0757807",
+          "de86d64a69f371a293a552de29ff72e161ae29eee0cdd04d4a33295e59093a19"
+        ],
+        "hanging-arcade": [
+          "e3369f104ff9b822187a37d582bfd57a4f86e00a5a2de4fd63806cb5af14571c",
+          "ec829aee626e9c74f112e9cf85297a0980fa01f9769eb1abe38884caac05a013"
+        ],
+        "harp-bridge": [
+          "3c98d41ee0f20ef8755362efcf6eab24513506b75a91a8736a01c4781a001828",
+          "d90f46ba24d9b4848a3d2592b334dc623a25daec89afe1ccb8364041cef9caad"
+        ],
+        "hourglass-pier": [
+          "f3259c0526e2f626bf39497503d79069933cd5617ed0d56b7490d7b7ab2748d9",
+          "09f576df7ad6c3b1be7532e91a87ac272aff2f60d3bf1086fd99a772deca6a62"
+        ],
+        "interlaced-viaduct": [
+          "f3edc44d7f94a6afef76219b034851fffa48b99399fc2c68992d9e5651709f88",
+          "c4e8aa81daca2762681d1432038e9deee66e6e0687f2c334a8119718bde97edc"
+        ],
+        "interlock-brutalism": [
+          "03c3bc82a1255fdd9e25589493743976e2735d2260b62ee68184488a75119c0b",
+          "604c1286c2db49f6168e7685020b34aa391b28e0db18ed36803ee4a7ce3fd143"
+        ],
+        "inverted-arch": [
+          "07c1d19203963d213df8abacad6623cd61e62ae3283708bed94dd48909b1f182",
+          "1daed63e1e86621bd5bac83f16f1106eb245a0f9e2b6cc935f723601502fe89c"
+        ],
+        "inverted-trestle": [
+          "b8436e497b3ebfaafe5c65b01ee04557cb3e2b52b831327046425e505cd14fcd",
+          "9d00a944920a896f0133639fc6cbdd982c81222bb571296cc4242cf27f01c4c9"
+        ],
+        "kingpost-frame": [
+          "536634a5170df7f4e07a155c882b26f037d97831355b1055aec07d62632d4169",
+          "ae5943ed2ae1eb9df53f2be265208ad19dbff97605adac3a26c252ec5f6e06e6"
+        ],
+        "ladder-bridge": [
+          "5d8fb0d9f86ee2fc68d14473ebcaa8f2f6858d69248095648571cea67d8173cc",
+          "137f89e598604b1c23cc757ba17d9196b7fa7f87a745b9c3e7619819f800cae0"
+        ],
+        "lantern-tower": [
+          "250414c74eddbd5fbd1324e89181781a90e72452d4ac075e4e2e5b8d504c7b8d",
+          "2249711de808865c8a749f826486a09ebed7a65a7e9295dc79d6083239e944c8"
+        ],
+        "lattice-tower": [
+          "65805b0dc31d73ab54102bfa4cd69e1a54b7b198aa440f301053da1b90f56aad",
+          "cc9a145b988c530360816dbb12b508487f7c383579996e7b483e2cfaef7496e1"
+        ],
+        "lenticular-bridge": [
+          "df19089826a542d094c0ee6ae9668faa7eabd0e354ab415bb4c42abe43e1752e",
+          "ea1b6264cb34ca662bffe1df0c81962160fc3cfe5a9f7e3d54b561427bdf24fc"
+        ],
+        "megatruss-station": [
+          "f59a5c66c1128050bd0a618b99cdf54ff13112f50945de35f2945b8df594a672",
+          "f1f8ecbe389782cc78f2670e3439d71d96c871f486e582497954fbb5a569a2ce"
+        ],
+        "metabolist-spine": [
+          "c53bbbc5e40ba4143dc3da673a54194efd1378ae24f5dfec81afe687d822be83",
+          "71f5c861b99880c0d4841df62838257608444e90a854ec285af52783b98d3f40"
+        ],
+        "monopod-tower": [
+          "14b2072343b5f29299387f678c21a41ab771b9ed38823896e249b1fc2974f650",
+          "04891d3bee2c9ca39d1e0830c5e68a93ab6f890d9dcc6cffd83505bdd98d6659"
+        ],
+        "mushroom-deck": [
+          "6cd14550da6a163fe80d031ca75385f96385454b013e77ef5a40c6b384b91c95",
+          "edaf85cc5cb6de1aa3b52245ff61674bee726975c64bd051818de7b099146c4c"
+        ],
+        "nested-arcade": [
+          "17c6eea03f59446e4d3cdc44ff76540b98b23af95b3fa1ccc1fe65c17a5fbb2d",
+          "7561001ed4bf5eefdf694c91e5daf1b2dfacc39c1ed3418c75f776123d31c937"
+        ],
+        "offset-arcade": [
+          "598747235ffb8772ea5d9e1341f230d12e097ddc077d53eb9cd542356d746df2",
+          "2332efe726c43350fd43af806c05ddc2b15792f33b6c81ac2d706c29a3315bff"
+        ],
+        "pointed-arcade": [
+          "f1282d9dd10451bbd9f8c83bcab51c6a8fb1419995b1868a28edc2937af4f4ee",
+          "be87495c246534ed210044ade92d32d95e55abe1955634783d4b3b0007b42fea"
+        ],
+        "portal-frame": [
+          "31aa4c671cf8545aa470865544b804596131d143db45a8a9a3eb8e50ad4bed94",
+          "b251bafac39828076d930b1fffa22646c46759c8b68f995e5d6d10c6d5f54d6a"
+        ],
+        "pratt-truss": [
+          "51bc64f1ab22081960246c10741284239dc90a37fad7c126602df073d6179462",
+          "aee838970efad9a5ec82112bac50b4d92796350aabfa0e3f6a837a400d4a7be1"
+        ],
+        "pyramidal-frame": [
+          "284c1238f3c4eb770141031d74ce116d082a0777e63509e41996671df0eee1a3",
+          "70918ce15f0c8440aaf26fbcac8b7cfe932f3355de5ce8ce4c39c3020335b52a"
+        ],
+        "queenpost-frame": [
+          "57843e9ef2395586ba4c6d061c7098682ee8fcb73cdf56567a4bf46220d62fea",
+          "d00c38d86c5c8ee25ab5b258fb6fad3b6266a8ac59b3a29c7658eebecfb7f449"
+        ],
+        "radial-stay-bridge": [
+          "3376c4e601ef0588405c57823a7f3f96baf72790d2c548525381a02009677f2b",
+          "92c0fc99265b675645709736a516d0afdae2721809221c2a99a2c7f414b2edd8"
+        ],
+        "rib-vault": [
+          "2f465de5e9d0f3bdb4a1d8dbd4f2712313fc5cbe9697f5e0c4621d52bcf93979",
+          "7c781c9877136142ead877d7e9669df2bf86bd7443058d6cbe20a220bb9ec2a4"
+        ],
+        "ring-pier": [
+          "5171563381abc4a174fca83a89976d233e202cc5a2373f5f30a3d49c48c24944",
+          "e3b38633d4282fbd517647f7fb9b9d1a43d9e2235cd4cc4166771d1aba5950b2"
+        ],
+        "rosework-gatehouse": [
+          "2a8b6e656b32afc75a9a3b0fc54979d345a6f3867df217937ef59644fdd2a7b9",
+          "3609b9bb7d476b5dea35731cbf2c2449519ed53cee9bcef7ae470d5acb6787aa"
+        ],
+        "sawtooth-gallery": [
+          "4f4de9484b0fcc305f2a9289c2605a991945eff36bc271e14d0165ebde538128",
+          "0a053635d0b006b5c4f67bacd1edbf5a10802339738add1f1c0841907c590fc2"
+        ],
+        "scalloped-vault": [
+          "adcde7f316db101f821bbaa056326be4bbe544a8e3ea1bb9e261284a11939b17",
+          "cf193b76a16ce7a0fec1cabc99b20d7b25e8878d3fafce1e5986fa3843baf069"
+        ],
+        "seeded-typology-megablock": [
+          "7ada138ff263b1af9a157f29fa1eee585807bdd616569209ed73fadf93374a93",
+          "55279cf6607e5284fe1fb473dfd6a69585fecf2793305b11f09fa98d2398e4ac"
+        ],
+        "shelf-stack": [
+          "1a60305053fcfa007675037df8d2e3d2be522f2246588bb26ee1488e126e9d35",
+          "ac0dc67d8f7015ab7913e70c36506d0a88a85ebe232dc5079bd2fc12067560e4"
+        ],
+        "space-frame": [
+          "5990d1905274046f289be78ec85a5c74800b54dbf4421eb11455f42b9b0b4cf3",
+          "3696443cefaed3dd093b03601b507c6aa053c311a23632b63048a80f3a7cebd2"
+        ],
+        "spine-arcade": [
+          "86190690957ee9bf5a62ab54bb2bfe614b2c6ed725f840f483785ac7eb27ce56",
+          "e85611f0880987b1c6f6c7956f9c14b773ad4325273b0b94a60f7e2420155b23"
+        ],
+        "split-pier": [
+          "e6a41d168f56e03f5eefae19c66d76ab0fd4cb2d095453605038d3b5fbadbc7f",
+          "09989c0490a73c090d29fbfbe20456ece776fd51de38cbb94f3b8f08262d44ba"
+        ],
+        "stacked-arcade": [
+          "8055a3ea6527fbbdb53710d557d9fb83e4a4f967ef950e7f90c308b618ac914d",
+          "74727d2a57e3fff6d25df83d7861003a5db644654ff9558defdebdc135efd3a5"
+        ],
+        "staggered-balcony": [
+          "d51142abb4d9eedd184bd5de39da7d153addfeff68f912989faede2f1e34a1b8",
+          "d1d63b4ed4d14c70ae5a7a01331f74a36ebfda067f2e0200b4c09a60ecb6351b"
+        ],
+        "steel-trestle": [
+          "2eecc1e3f56fa56aef0a2223ff8689ab94ba440d420b0bd584b1ff68d23a7853",
+          "c866bf8d3ae904886c1f126d46ee36944f88a51e8e1284ccbf6145fb76ea49a3"
+        ],
+        "stepped-aqueduct": [
+          "35e87177289c4b6e9ce9bcc3f857b016cbadfe05e44c23238a8e923954ba50d7",
+          "7b898e75809f022b67c27da013b534366d538e916a9daf9c3ab9f12f223bcc67"
+        ],
+        "stepped-buttress": [
+          "9ac4bd7feb702110a19031757520c06463b283f07b7bb51cc3eeac555a890dd8",
+          "004e4f7c86c7b3fb1145c86098acc077740648a6ce90d0e4cdf55ade3244b43a"
+        ],
+        "suspended-arcology": [
+          "49cda6de2f9cb1b72190ba597b5847ab6b619190679252c73a3d375a2037166d",
+          "1834559503e318a36135833a47613c3460a9d99ed431d547767cf2665c7a8c2d"
+        ],
+        "suspended-deck": [
+          "dff634cf4c3f130b91c25bc0548213397b9f49005426c979107a5c97216af65c",
+          "4c46c226e17484aaf8a69be3c201d27b4f5bdbd2e81f9eb4519cb2b1eade30f5"
+        ],
+        "suspension-pylon": [
+          "59cb1f1f981e32b9cc9d17d49db0d75f05b27f34288342374b50befdb7fbacda",
+          "c041e544e2aeb80af85f6017d7210585a88a694db4f6e9d6f1bc0f554a39619e"
+        ],
+        "tripod-frame": [
+          "6a72997d9d3a42f7d7a5e5cbe4f8065a3c642999cbaab241d969f1bcf3e87d99",
+          "bb7318325e32c8fd39b550c59237df4b554ec3a68f4fd0a86ed1d8c01b55c88f"
+        ],
+        "triptych-arcade": [
+          "070d72be60e01d931f8655b90364fde3a4dc5d38c94305b96658094053a4a805",
+          "71d9afb30f9316b6ddd62e3ebf44ed21083acb9f36746bccb80929ed7d7932ea"
+        ],
+        "twin-mast-bridge": [
+          "a5937a46437a19dd3e2b8decfba983d4bd31d9359b15b23f051fdbbaf0a6df7f",
+          "2191864afd09c12d68aff1b340af4b384b963b7242051a26d94b65e8ab15e2e4"
+        ],
+        "vierendeel-frame": [
+          "b9b45c14708123842e337b9c8adc78142b465936d9fa5e9fd6121970d34d9065",
+          "528272062a2ded1ac5b00bdec8553e63c8d4b03a11f9be3cf99520889a7a6a4a"
+        ],
+        "warren-truss": [
+          "846cfc65ca072c0b783d802b438e47cae0b81606d390c272e2af452366c4e3fc",
+          "16d9d14e69e5f20355d5b2a88dee9dc9fb097aa7ea145485922aec30183b1dd6"
+        ],
+        "wedge-gallery": [
+          "233ae3be818753fb6eb7618261af584bed3905b03980eef48cf05342f4028ef3",
+          "47a03c403512c3f6e894bea33b3304ffe97dc6a60bafdf7d3405332a15947a8b"
+        ],
+        "yoke-bridge": [
+          "a91dde0bfdfd5ccc6c483dc29d02ccd0141c3ef9ca67fc6f36fb0eeaa24a5f21",
+          "8531639342247b4f66bb21bcd9dd50f10d2f331414c3b75df6600e89f53783d5"
+        ],
+        "ziggurat-arcade": [
+          "3b0fc0e21c2f7ce483b724b304450b5e5e513952982c56c4ac38ca5e3681dad6",
+          "4de18d99a7fb76d759b840c0f432ed8a6169a34fba29a9d9b0beef252e2809ec"
+        ],
+        "zigzag-bridge": [
+          "52898487d111e3e7eb6de963a37639ca729979f99e754a2283b40dec8376f1f4",
+          "7df8b2fbb0fb2c4028d7dea9145d3cc3b4bdb1168194c2da197aaaa0ea82ecd0"
+        ],
+        "zigzag-pier": [
+          "fb92e14635a559412b726cc7a6de4ed9914430616dabbf2795a149a29840d67a",
+          "f0ff55011412e74cbad374bcd3d7eb6e8723c8522b34fee582065813a252ba47"
+        ]
+      },
+      "archive": {
+        "artifact_id": 14611486673,
+        "bytes": 19694023,
+        "files": 200,
+        "path": "final-aux-windows-44690026779/package/original-evidence.zip",
+        "sha256": "78a643904a9cca72b0bee01db9325bea590e95c79b42bdc5a62dcfcf45a854ef",
+        "source": "f69b68a88401b28b3fe688c3d070162ebcd090c5"
+      },
+      "framebuffers": 65,
+      "package_sha256": "1ecfef2bca82e73200cc686ce225f8e60a5bccd49a9853cc12f66863d11e06f1",
+      "phases": [
+        {
+          "checks": 1786,
+          "display": "Windows",
+          "phase": "author",
+          "pid": 3188,
+          "styles": 80
+        },
+        {
+          "checks": 1068,
+          "display": "Windows",
+          "phase": "reopen",
+          "pid": 6460,
+          "styles": 80
+        }
+      ],
+      "processes": [
+        {
+          "case": "import",
+          "peak_memory_scope": "Unavailable: Windows console launcher starts a separate engine; its child working set was not measured",
+          "peak_resident_bytes": null,
+          "wall_seconds": 10.140999999999963
+        },
+        {
+          "case": "author",
+          "peak_memory_scope": "Unavailable: Windows console launcher starts a separate engine; its child working set was not measured",
+          "peak_resident_bytes": null,
+          "wall_seconds": 1973.625
+        },
+        {
+          "case": "reopen",
+          "peak_memory_scope": "Unavailable: Windows console launcher starts a separate engine; its child working set was not measured",
+          "peak_resident_bytes": null,
+          "wall_seconds": 1421.422
+        }
+      ],
+      "qualification": {
+        "bytes": 261844,
+        "path": "final-aux-windows-44690026779/package/evidence/evidence/package-workbench/execution/qualification.json",
+        "sha256": "e4741d27098c175e9440f3e99258eb7103afc82e8a809b4a01e2c88e23f87e1a"
+      },
+      "saved_starts": {
+        "a-frame-hall": "d48961256b4d386664fe973626d2b0049ded172e14f236f72979ed3e25974ace",
+        "barrel-arcade": "b3af8c0048dd3805f53eef4da36db51a786ff88f46162efddf8fba5594d674e6",
+        "basilica": "b939fecd1b908c53110d3afb9fdd397f6c646073ad28b722484aed275a6380ee",
+        "bowstring-truss": "1ed29e269d0fbcdb237dbf460992652a1ed46a0ab5af5970e3563f9069805b23",
+        "bridgehouse": "5700bbefbafe9815e6890e651eb2725e8be5c284bfb03a572b980b3d5f3a042b",
+        "butterfly-hall": "9c1762d55591c3add524931e04b5a8ecbcc92110c111c09e1ee137130f3b19c6",
+        "buttress-crown": "f1ed796261a8d27c969db6e9052fad5eeef691e1a858fb17b79098240e620150",
+        "buttress-wall": "23170dc21f1b77691f2af132af01df8dd149451406f418e9346aaec67a917de2",
+        "cable-gallery": "e768148eb17a33a8d1b76b8eae4feb73f90816c985b5d9fa1aac2c8f02389d8e",
+        "cantilever-spine": "8e35d162da17101e34a7030c48ac451d69b4299ce907eb851ef524cfd214fbb3",
+        "cascade-terrace": "fdebe95b42bf9739b849bb5fa69d1168edc01fbdb4ae0702b5aab6a4bc58c3c7",
+        "cathedral-megaframe": "1d3891dbd0f40ba2a2867d647fa0e876bc1def9637321e4a0f797ee67773c542",
+        "chain-vault": "1a2670d6a2f0bbda4a7b716225cbf0beade1ad8552ce06ddf0cbd3356ae9b835",
+        "chevron-hall": "347517cbbf4efbafe251c99738ff7d5a171e9131346e9cbc274b28ab65481cff",
+        "clerestory-hall": "4cc02d78f9a594dfc464ba8826f3e10a51e9f66fc547978c7a05b5ceb1d3c853",
+        "colonnade": "cdc5ff24b91b861f71fe993a7ea59d5e8de18beab6f1174baef9c0a6819b8cf1",
+        "corbel-arcade": "19c0228687a3fffa9907ed5f0f5a6126cf2582ad87c2ed38d4490ecb45770737",
+        "cranked-beam": "5e56a015aa48c9267d1c77b24b907307fe7982bb0903da0127a1a4943c573f9a",
+        "crenellated-bridge": "5fe4c66f16d3b52c166f20380a4f049d6e2a10767b81d6aef670933f3b770f11",
+        "crossbeam-stack": "9afabf60165cf60ac7f262b9732c5a1fcb498fb58f3d2fdcebcf48cbbe74f130",
+        "crown-bridge": "5da02eb5a2d4e69c058a18109f377eabddae31f3ead259fa25bafbbf19dbd923",
+        "diamond-truss": "aed032866a06d49ce54442b65d97fa907d78cf615f977d19beb1b6857ffa3cdc",
+        "double-cantilever": "6eb0e52488b70c0919e9048ce6a5dde6d3d6da5f515040227613fbccd4389000",
+        "drum-vault": "ad3c62fda1bd57689328c8a1bb7b87526cec06b1faa619c7058d6c134099c0cd",
+        "fan-truss": "5165323ec0f9cd899158bb71d7d89c8dd8b28df8a47003421fcb5d5f7165fbe2",
+        "flying-buttress": "9769f4daeb0499a8f189a459b633db9bf32a9d3edeaa2eb4527675e3eda01d20",
+        "folded-plate-hall": "5404fa69ac9a3d4ac4595650d4923add24773379432f018fec78af4883925af7",
+        "forked-gantry": "02458ac55ab737b70ce4b5d53cf1bf3b80cd40e4fb5ec3b2804bd4261ba1ebe7",
+        "hanging-arcade": "9577bd8386ed9a561591d29ca57d06c5dc0d1c07ae9c9b7a284163de10a53157",
+        "harp-bridge": "de05f88c1479bddef0f8d1f873865beec43fe26687ee2f1035cff059c731b4c0",
+        "hourglass-pier": "27ac70fc4894b6c15821788ac1a775456ff3581caa28d71f4e8ee60856b39b7d",
+        "interlaced-viaduct": "69ad09cdd0b873480741dc4298d4ebdca708dbe4356dd083246aa4fb5b0b4a23",
+        "interlock-brutalism": "9eb2916ee4f4d297d1dca8020935bb5a11dbd319615c8343c2c7bb92c5ca5c0c",
+        "inverted-arch": "b16aa017e488f4ba292b8bb815b34dd6b6895249cd867d1ae473ff84b6449de2",
+        "inverted-trestle": "9c48ea7c33959226d021c1de1366619e39d33e14a400077ef4035a49d07b57ea",
+        "kingpost-frame": "b797cc6e1d3e8b10261c747df9df9f7ce305455112f8a50413d3c3ea53f8720b",
+        "ladder-bridge": "22a201d122acb555e5ba21dd746ea3bf882d503c7ee39e462902b8ad649d6fa4",
+        "lantern-tower": "8fbd85d81af2d3c43b98389af85940d5ce07a90d220ac0dba79052a899a8b668",
+        "lattice-tower": "996d2019dc89a08816a04efb3f4f804608e8daf42da57af0cc6e6a95f2e0a277",
+        "lenticular-bridge": "f1eeee6c0d136ad1c75c35c10fed223f71a0df644382a233a97b8eed5c5e8b0a",
+        "megatruss-station": "f5ab89bd7ce0cf5d268ff37f1bc6af14f75b06cd139a6adc36921592e977282b",
+        "metabolist-spine": "67164a6eac4ddae3ea8e6559fe6202d1a08929aa7b81087dcb63f51f6577fb8f",
+        "monopod-tower": "920ed0ff405b0ad48d6eba67febeec9a303826a9068b0bdbeb4d512ba1b9fab5",
+        "mushroom-deck": "287c55f4f613a978c62f0e5020c1355626c4ee44b2c00ea1eb5317e3d6bbec16",
+        "nested-arcade": "a9697874022148609190300b6e052d3facb38ffd557d840626e0129942902201",
+        "offset-arcade": "8942270357ed1b4b19c412350fe9a623a809d74e0d5e95e0b51ef9fef908014f",
+        "pointed-arcade": "2e7ec0fd17c89238ce6788b616a9f06077ec40b59ea5ac50a608caad3fbfef3f",
+        "portal-frame": "7469c9a438e8ee9605e1d354e7c206f74fc7ff260cd29bc5216b1bebeebc4090",
+        "pratt-truss": "310c4e0b2d29aba2a9b0bf1feb5167947dab4a26b29460af314026a327dcaff5",
+        "pyramidal-frame": "35c6f63d8b3ed28f6636975a69fba9fc0880239d68da49c7a7395bfe08061494",
+        "queenpost-frame": "5973567f3b47872a97d7239093bddb43ab49477fc62c3e5f5b9b67c6e27a7143",
+        "radial-stay-bridge": "2520225fa14564814523e2c3f8b566aa3effff7720e5726b781856bae7b291b7",
+        "rib-vault": "d970b89234f70a6cd954fe23da3acadc17baf8af1d3d75c60b06abb1792ae2f3",
+        "ring-pier": "a68d3732255f2cb9576700d546d8f882203c59d0b4450e7212fd2870eaa87879",
+        "rosework-gatehouse": "a6414b6a1351802bc8bc3fe5d4e8a8bbd7114bc7c6a415aa8efee18806d5312b",
+        "sawtooth-gallery": "87bcc32af783c31574356db8ed9424e86360fbe4a3355d5aedff7a565ca3b3f1",
+        "scalloped-vault": "df5a2dd464e8193f0ced31d986ffc6e88cfa7d137b5c697952769b3a94afbf73",
+        "seeded-typology-megablock": "e440827954e4c49504d17027f76bf1927379c2db9916167d91798416fddc1915",
+        "shelf-stack": "eae0835984c2317cf79cdc4a64cc3985708aa124cef290106e4b72dfaa6cf369",
+        "space-frame": "8d348b649f5793adc3de2bf955cf37ecddd648f47de133ab19ac08cf62eefd6c",
+        "spine-arcade": "f20e9fdaa631322e2ba66e5f1457029cd9b55332005143128117e22debcf0f2d",
+        "split-pier": "676d95a8fc6ec54bdab7d4dd293adbd4f33ce2cdb48410f26822936220e7f025",
+        "stacked-arcade": "8f8c1e0904ff0153c4da0dd4f54b4ec9d665995845948785a44be87b78b4f46f",
+        "staggered-balcony": "2238d170e37bc8b986d5715e8e957dee48fc06fd22c9804371e263c035ab9ce1",
+        "steel-trestle": "aaeec211b36dd78771069279255b98967811a270fb6e823145e1344b7a004402",
+        "stepped-aqueduct": "43eacacb63877c13476424f4d1991038cd7a6ebc2bb80cce4220425964f47078",
+        "stepped-buttress": "86d0721da67a814d25d7fc8afff5be9c5c17fbd2df5293ae65e1429aaba5bdee",
+        "suspended-arcology": "49e8d8e59f7c07b696f92fbf14f17ace332a675cde7e8617a67564a777ee01b2",
+        "suspended-deck": "2dd89d83c3768c734bf41dbd8948bcecff57d2c1a5d7ae7a06f066e5b1daec26",
+        "suspension-pylon": "9e69b3cdacde1aecf3869fe80d9d4e7fd387d05755c25dcad701a3c0623aff80",
+        "tripod-frame": "5b80160d8096d90cc388af12c260043f4639f47ae8dbf396072319cc3128f98d",
+        "triptych-arcade": "7211e8b87e191fa7386df62b906fedbb677a637a43a989c624a2bdb0ea09f590",
+        "twin-mast-bridge": "81c2cb28b2a828909c11033e5bf11d4474479190f6cd34ab006e18aaa650ddf6",
+        "vierendeel-frame": "31b0415d05244b8c7a550cd7d320d11fd451c7a90e07e3c852d05634ce385ce8",
+        "warren-truss": "46fa2bfedb5654b04d766d020222e5471bee2b005b0895e44dfbf2f8a8084c4f",
+        "wedge-gallery": "259d15615a005d22405f093bbdc333978c237efd838ebc2baadb172f6596f1e3",
+        "yoke-bridge": "6aea98c21c4a3fcf28861167a6f89df5a3673ac5ed60f6a2391b0553802329e9",
+        "ziggurat-arcade": "ebbaea522ba97ab40af6c40ce5a96e93567f2663eb78ce68ee9f8cb119d0a593",
+        "zigzag-bridge": "d98949f287bd4f4d60537f045795b724e17adac8db76b7dca831d3b0424924aa",
+        "zigzag-pier": "47a4ccdc24c61574bc6d587a6dd13f183e24e08c14d0a94f6ed77282d624a8bb"
+      }
+    }
+  ]
+}

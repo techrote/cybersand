@@ -1,0 +1,126 @@
+{
+  "schema": "gentek80-final-workflow-status-readback-v1",
+  "checked_at": "2026-11-20 09:14:25 UTC",
+  "application_source_commit": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0",
+  "native_build_commit": "82da41a945b1d98e0267a2a20b56ec66d83f71f6",
+  "note": "Six candidate workflows execute exact F. R/M are separate read-only qualification harness commits that execute exact F and its retained runtime/package; their own HEADs are not relabelled as F.",
+  "runs": [
+    {
+      "id": 44688679722,
+      "name": "Documentation and provenance",
+      "head_sha": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0",
+      "head_branch": "integration/gentek-80-001",
+      "event": "workflow_dispatch",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-20T06:33:49Z",
+      "updated_at": "2026-11-20T06:41:00Z",
+      "html_url": "https://github.com/techrote/cybersand/actions/runs/44688679722"
+    },
+    {
+      "id": 44688682698,
+      "name": "Native C++ validation",
+      "head_sha": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0",
+      "head_branch": "integration/gentek-80-001",
+      "event": "workflow_dispatch",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-20T06:33:50Z",
+      "updated_at": "2026-11-20T07:04:38Z",
+      "html_url": "https://github.com/techrote/cybersand/actions/runs/44688682698"
+    },
+    {
+      "id": 44688685601,
+      "name": "GDExtension build and current Godot regression",
+      "head_sha": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0",
+      "head_branch": "integration/gentek-80-001",
+      "event": "workflow_dispatch",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-20T06:33:52Z",
+      "updated_at": "2026-11-20T06:52:35Z",
+      "html_url": "https://github.com/techrote/cybersand/actions/runs/44688685601"
+    },
+    {
+      "id": 44688688652,
+      "name": "Palette shader actual backend qualification",
+      "head_sha": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0",
+      "head_branch": "integration/gentek-80-001",
+      "event": "workflow_dispatch",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-20T06:33:53Z",
+      "updated_at": "2026-11-20T06:41:34Z",
+      "html_url": "https://github.com/techrote/cybersand/actions/runs/44688688652"
+    },
+    {
+      "id": 44688692461,
+      "name": "Wave Flow native qualification",
+      "head_sha": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0",
+      "head_branch": "integration/gentek-80-001",
+      "event": "workflow_dispatch",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-20T06:33:55Z",
+      "updated_at": "2026-11-20T07:01:03Z",
+      "html_url": "https://github.com/techrote/cybersand/actions/runs/44688692461"
+    },
+    {
+      "id": 44688695668,
+      "name": "Native source-scope advisory (report only)",
+      "head_sha": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0",
+      "head_branch": "integration/gentek-80-001",
+      "event": "workflow_dispatch",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-20T06:33:56Z",
+      "updated_at": "2026-11-20T06:34:27Z",
+      "html_url": "https://github.com/techrote/cybersand/actions/runs/44688695668"
+    },
+    {
+      "id": 44690026779,
+      "name": "GENTEK 80 final publication Workbench and package admission",
+      "head_sha": "f69b68a88401b28b3fe688c3d070162ebcd090c5",
+      "head_branch": "ci/gentek80-final-admission",
+      "event": "push",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-20T06:45:15Z",
+      "updated_at": "2026-11-20T07:46:33Z",
+      "html_url": "https://github.com/techrote/cybersand/actions/runs/44690026779"
+    },
+    {
+      "id": 44707515958,
+      "name": "GENTEK 80 supplemental mixed Workbench admission",
+      "head_sha": "12f0fb14b2d75dfbbec609b888ed1fed7314091c",
+      "head_branch": "ci/gentek80-mixed-admission",
+      "event": "push",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-11-20T09:03:47Z",
+      "updated_at": "2026-11-20T09:09:40Z",
+      "html_url": "https://github.com/techrote/cybersand/actions/runs/44707515958"
+    }
+  ],
+  "unexecuted_automatic_pr_runs": {
+    "conclusion": "action_required",
+    "ids": [
+      44688680122,
+      44688680166,
+      44688680481,
+      44688680228,
+      44688680012,
+      44688680106,
+      44688680057
+    ],
+    "scope": "Preserved original PR-event outcomes, separate from these successful executions."
+  }
+}

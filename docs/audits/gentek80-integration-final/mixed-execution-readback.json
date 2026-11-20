@@ -1,0 +1,1148 @@
+{
+  "abi_native_receipt_equality_required": false,
+  "api_files_sha256": {
+    "artifacts-final-api.json": "18c77d463c30a8e42932c1c8dd9a88595ce58da64e2f8adc24640d14753c2090",
+    "jobs-final-api.json": "d10c5a89f2ee05a297b9785caa1d8406718e52b7f451e29c86eebcca7ca96a01",
+    "run-final-api.json": "b9d4b812cab32e84c42f9163bd70321b17a56be241c9b517bffbc691f1f17f05"
+  },
+  "application_source_commit": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0",
+  "cross_platform_portable_material_recipe_edit_equivalence": true,
+  "errors": [],
+  "native_build_commit": "82da41a945b1d98e0267a2a20b56ec66d83f71f6",
+  "orchestration_commit": "12f0fb14b2d75dfbbec609b888ed1fed7314091c",
+  "platforms": {
+    "linux": {
+      "archive": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/linux.zip",
+      "archive_bytes": 10279085,
+      "archive_sha256": "5aa1b7a3d694deff90c57ef365cecf4ca4c366be2276b93bb553ee3669cf714b",
+      "artifact_id": 14615842229,
+      "artifact_name": "gentek80-mixed-linux-44707515958",
+      "evidence_directory": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/linux/evidence/mixed",
+      "framebuffers": 24,
+      "independent_processes": true,
+      "native_build_commit": "82da41a945b1d98e0267a2a20b56ec66d83f71f6",
+      "native_material_previews": 3,
+      "orchestration_commit": "12f0fb14b2d75dfbbec609b888ed1fed7314091c",
+      "phase_checks": {
+        "author": 273,
+        "reopen": 75
+      },
+      "phase_failures": {
+        "author": 0,
+        "reopen": 0
+      },
+      "platform": "linux",
+      "pngs": {
+        "author-mixed-a-edited-world.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/linux/evidence/mixed/author-mixed-a-edited-world.png",
+          "sha256": "14e03278036b19b62cfdac49f768a44e51f33b4d26ec920045fcd5e7e567863f"
+        },
+        "author-mixed-a-form.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/linux/evidence/mixed/author-mixed-a-form.png",
+          "sha256": "c1850688eae92c5da1d1c6c2848462a1bcac2dfb9d8b9ff00f8d2ffe4075b60c"
+        },
+        "author-mixed-a-installed-world.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/linux/evidence/mixed/author-mixed-a-installed-world.png",
+          "sha256": "d2e982bab6af932f9672359577a89f268047f2e3948bceb3f64f858fb34c7957"
+        },
+        "author-mixed-a-native-materials.png": {
+          "dimensions": [
+            512,
+            512
+          ],
+          "kind": "native-material-preview",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/linux/evidence/mixed/author-mixed-a-native-materials.png",
+          "sha256": "de727219a4d461cb2b38ef3083cbd9a3c1ccde7982d329fa4de1fd4a948a42d7"
+        },
+        "author-mixed-a-preview.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/linux/evidence/mixed/author-mixed-a-preview.png",
+          "sha256": "444f328d26df2b55c669a46d33ce1ffd6d5dc53cc0cc24cebf88155b6aea9902"
+        },
+        "author-mixed-a-replay.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/linux/evidence/mixed/author-mixed-a-replay.png",
+          "sha256": "3cc53d4be66f6a2a9abcd988a0f5296a68a07e43ab7c7d8599f6f0931c651a75"
+        },
+        "author-mixed-a-zone-overlay.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/linux/evidence/mixed/author-mixed-a-zone-overlay.png",
+          "sha256": "0035b22e23b559d2a7439f3cffdcef7551b1dc92d3d8a86956d42f9c89a2b04a"
+        },
+        "author-mixed-b-edited-world.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/linux/evidence/mixed/author-mixed-b-edited-world.png",
+          "sha256": "6ba09221a942f0e952b3faf46a58243778518d3890780a0611ac398f46ce6b08"
+        },
+        "author-mixed-b-form.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/linux/evidence/mixed/author-mixed-b-form.png",
+          "sha256": "eeb5276a207dd7c096163b4d4c5198387a5d1498319e804c7ffb5fd2b1456f14"
+        },
+        "author-mixed-b-installed-world.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/linux/evidence/mixed/author-mixed-b-installed-world.png",
+          "sha256": "9c168a60e172f97dbf2889f961675266ffb78d369587a842754ccefdccc073b7"
+        },
+        "author-mixed-b-native-materials.png": {
+          "dimensions": [
+            512,
+            512
+          ],
+          "kind": "native-material-preview",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/linux/evidence/mixed/author-mixed-b-native-materials.png",
+          "sha256": "e97eb0425f1af947d0779d6a761096cccd7ebe30e6dd29977972ef04ded2542c"
+        },
+        "author-mixed-b-preview.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/linux/evidence/mixed/author-mixed-b-preview.png",
+          "sha256": "8b866b82185e1a77905e48c82df5b3790ecfe062afd30121eeb1d4d12e54e1c8"
+        },
+        "author-mixed-b-replay.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/linux/evidence/mixed/author-mixed-b-replay.png",
+          "sha256": "8d2aeede43e8d170c8cc01f2c70f35fed5fe82dcd8d1aea5dc029b6c68e1e3a7"
+        },
+        "author-mixed-b-zone-overlay.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/linux/evidence/mixed/author-mixed-b-zone-overlay.png",
+          "sha256": "e1c4ac768acf028995a90321873ded71b29ee003881dfbbb6594961aaf6a3a4c"
+        },
+        "author-mixed-c-edited-world.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/linux/evidence/mixed/author-mixed-c-edited-world.png",
+          "sha256": "9f9f5685b0b3a03acdd8d83be109cf10b037e04dea233161462e76f0a9026597"
+        },
+        "author-mixed-c-form.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/linux/evidence/mixed/author-mixed-c-form.png",
+          "sha256": "be52f817b99ae171999d491576cf894660f2c77a94890a84dfcd517b266c7292"
+        },
+        "author-mixed-c-installed-world.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/linux/evidence/mixed/author-mixed-c-installed-world.png",
+          "sha256": "01560ec60dd44d7c653dfa0f6a1853b89f524cefc4be9deadf324132a23a364e"
+        },
+        "author-mixed-c-native-materials.png": {
+          "dimensions": [
+            512,
+            512
+          ],
+          "kind": "native-material-preview",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/linux/evidence/mixed/author-mixed-c-native-materials.png",
+          "sha256": "28e7553aff51d67dbccb3147c19bd38a8a6640c6ed9190b34d5b90e8a0db81db"
+        },
+        "author-mixed-c-preview.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/linux/evidence/mixed/author-mixed-c-preview.png",
+          "sha256": "fdeb1c0d90242a91b01106bd46f2f1f2ac23d305c617ef9b95785368b48fae4d"
+        },
+        "author-mixed-c-replay.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/linux/evidence/mixed/author-mixed-c-replay.png",
+          "sha256": "b9c79507debb30a68f21fc0a8b53afa74f9e6a629a6d0dd6fe4ccee51d22ef5b"
+        },
+        "author-mixed-c-zone-overlay.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/linux/evidence/mixed/author-mixed-c-zone-overlay.png",
+          "sha256": "35f8bf9d2548c2bd9b04174ee2ab2de3870154be8b3106c616b6259ba00bde76"
+        },
+        "reopen-mixed-a-preview.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/linux/evidence/mixed/reopen-mixed-a-preview.png",
+          "sha256": "98de86470aa77dd970474be10b8cf790eca42485873b46ab9bd8d477777e069a"
+        },
+        "reopen-mixed-a-restored-world.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/linux/evidence/mixed/reopen-mixed-a-restored-world.png",
+          "sha256": "bd08e7048b477da82fa5271872491073d1be3bb378c44db5aa342377ffa62ade"
+        },
+        "reopen-mixed-b-preview.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/linux/evidence/mixed/reopen-mixed-b-preview.png",
+          "sha256": "b08824849d609bd353ab3f0013e29db2c0a830f7d6a0a1be39611445fc461d17"
+        },
+        "reopen-mixed-b-restored-world.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/linux/evidence/mixed/reopen-mixed-b-restored-world.png",
+          "sha256": "dd9b615ed3a573227a56d5d8cf5cdff216731b68bd78d7239d225014eb424b9e"
+        },
+        "reopen-mixed-c-preview.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/linux/evidence/mixed/reopen-mixed-c-preview.png",
+          "sha256": "a3f0927312af167149d2719ec275ce78edfa303fd3dd25c8aa19e64d15d83e24"
+        },
+        "reopen-mixed-c-restored-world.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/linux/evidence/mixed/reopen-mixed-c-restored-world.png",
+          "sha256": "cd6b5d353d72cc794aa7d6100df441faa09a56b4e3d692514de5203c978139f8"
+        }
+      },
+      "portable_mixtures": {
+        "a": {
+          "edits": [
+            [
+              101,
+              99,
+              2,
+              58
+            ],
+            [
+              111,
+              99,
+              2,
+              0
+            ]
+          ],
+          "edits_sha256": "0bdbab11106a784968fbe1511971c09e51c5d6c431f501fe23d9fe180d1cebd2",
+          "expected_edited_material_sha256": "8310c7d386739c3c22846194c44fce1447636944a9c317453156cf8d4f0f6f1c",
+          "modules": [
+            "suspended_deck",
+            "rib_vault",
+            "cathedral_megaframe",
+            "interlaced_viaduct",
+            "megatruss_station"
+          ],
+          "recipe_sha256": "bf3cbee7a553977efad3694ff8e077b1b816f00098fb2ce4509b9cf1faf9ee3b",
+          "seed": 161803,
+          "source_sha256": "0c1ae9bfd302787abaeb0db9836215edcc4eeb2737e66e8136ff6d04eafd9339"
+        },
+        "b": {
+          "edits": [
+            [
+              101,
+              99,
+              2,
+              58
+            ],
+            [
+              111,
+              99,
+              2,
+              0
+            ]
+          ],
+          "edits_sha256": "0bdbab11106a784968fbe1511971c09e51c5d6c431f501fe23d9fe180d1cebd2",
+          "expected_edited_material_sha256": "576de742a4a6b97f33d7d1fbebbf8077fc197b66f508604e0164bd83cef34136",
+          "modules": [
+            "ring_pier",
+            "tripod_frame",
+            "seeded_typology_megablock",
+            "metabolist_spine",
+            "rosework_gatehouse"
+          ],
+          "recipe_sha256": "a718926af5a0fb9412f0898414ac47e9cf8ac8d44379f02e4457691c75cd6dd8",
+          "seed": 271828,
+          "source_sha256": "bf81dc147723c4ee087341dd6967870508eb8681ab17a3de43a7ba78c6744239"
+        },
+        "c": {
+          "edits": [
+            [
+              101,
+              99,
+              2,
+              58
+            ],
+            [
+              111,
+              99,
+              2,
+              0
+            ]
+          ],
+          "edits_sha256": "0bdbab11106a784968fbe1511971c09e51c5d6c431f501fe23d9fe180d1cebd2",
+          "expected_edited_material_sha256": "f6ed2bc18da5c69f02c49119c753d49fa5b01c21caadb485e65aa192ab1cc230",
+          "modules": [
+            "cascade_terrace",
+            "scalloped_vault",
+            "buttress_wall",
+            "interlock_brutalism",
+            "suspended_arcology"
+          ],
+          "recipe_sha256": "d984973f72bc07afc066f861c2370e37f4463af690a6e361b56a01c918dcf1ec",
+          "seed": 314159,
+          "source_sha256": "246bb480b825db092201584ab38517c925a8097b73aeb5593f3ad7045f1a2417"
+        }
+      },
+      "preview_measurements": {
+        "author": [
+          {
+            "case": "ui-preview-latency",
+            "display": "X11",
+            "extent": [
+              512,
+              512
+            ],
+            "first_frame_drawn_us": 25970709,
+            "label": "author-mixed-a-preview",
+            "material_sha256": "0c1ae9bfd302787abaeb0db9836215edcc4eeb2737e66e8136ff6d04eafd9339",
+            "native_configure_to_ready_us": 7505506,
+            "ready_us": 25786155,
+            "recipe_sha256": "bf3cbee7a553977efad3694ff8e077b1b816f00098fb2ce4509b9cf1faf9ee3b",
+            "request_started_us": 18277600,
+            "request_to_first_drawn_frame_us": 7693109,
+            "request_to_ready_us": 7508555,
+            "scope": "Real Shared Workbench with normal process-frame scheduling; request includes project compilation; first drawn frame is RenderingServer completion, excluding PNG encoding and OS presentation.",
+            "seed": 161803,
+            "status": "Verified native proposal \u00b7 512x512 \u00b7 98005 nonempty cells \u00b7 16 source receipts \u00b7 7.50s to preview. Install replaces unsaved work."
+          },
+          {
+            "case": "ui-preview-latency",
+            "display": "X11",
+            "extent": [
+              512,
+              512
+            ],
+            "first_frame_drawn_us": 33375128,
+            "label": "author-mixed-a-replay",
+            "material_sha256": "0c1ae9bfd302787abaeb0db9836215edcc4eeb2737e66e8136ff6d04eafd9339",
+            "native_configure_to_ready_us": 6883479,
+            "ready_us": 33243020,
+            "recipe_sha256": "bf3cbee7a553977efad3694ff8e077b1b816f00098fb2ce4509b9cf1faf9ee3b",
+            "request_started_us": 26356998,
+            "request_to_first_drawn_frame_us": 7018130,
+            "request_to_ready_us": 6886022,
+            "scope": "Real Shared Workbench with normal process-frame scheduling; request includes project compilation; first drawn frame is RenderingServer completion, excluding PNG encoding and OS presentation.",
+            "seed": 161803,
+            "status": "Verified native proposal \u00b7 512x512 \u00b7 98005 nonempty cells \u00b7 16 source receipts \u00b7 6.88s to preview. Install replaces unsaved work."
+          },
+          {
+            "case": "ui-preview-latency",
+            "display": "X11",
+            "extent": [
+              512,
+              512
+            ],
+            "first_frame_drawn_us": 44204587,
+            "label": "author-mixed-b-preview",
+            "material_sha256": "bf81dc147723c4ee087341dd6967870508eb8681ab17a3de43a7ba78c6744239",
+            "native_configure_to_ready_us": 7473149,
+            "ready_us": 44057838,
+            "recipe_sha256": "a718926af5a0fb9412f0898414ac47e9cf8ac8d44379f02e4457691c75cd6dd8",
+            "request_started_us": 36581553,
+            "request_to_first_drawn_frame_us": 7623034,
+            "request_to_ready_us": 7476285,
+            "scope": "Real Shared Workbench with normal process-frame scheduling; request includes project compilation; first drawn frame is RenderingServer completion, excluding PNG encoding and OS presentation.",
+            "seed": 271828,
+            "status": "Verified native proposal \u00b7 512x512 \u00b7 66986 nonempty cells \u00b7 16 source receipts \u00b7 7.47s to preview. Install replaces unsaved work."
+          },
+          {
+            "case": "ui-preview-latency",
+            "display": "X11",
+            "extent": [
+              512,
+              512
+            ],
+            "first_frame_drawn_us": 52407313,
+            "label": "author-mixed-b-replay",
+            "material_sha256": "bf81dc147723c4ee087341dd6967870508eb8681ab17a3de43a7ba78c6744239",
+            "native_configure_to_ready_us": 7633318,
+            "ready_us": 52266364,
+            "recipe_sha256": "a718926af5a0fb9412f0898414ac47e9cf8ac8d44379f02e4457691c75cd6dd8",
+            "request_started_us": 44630399,
+            "request_to_first_drawn_frame_us": 7776914,
+            "request_to_ready_us": 7635965,
+            "scope": "Real Shared Workbench with normal process-frame scheduling; request includes project compilation; first drawn frame is RenderingServer completion, excluding PNG encoding and OS presentation.",
+            "seed": 271828,
+            "status": "Verified native proposal \u00b7 512x512 \u00b7 66986 nonempty cells \u00b7 16 source receipts \u00b7 7.63s to preview. Install replaces unsaved work."
+          },
+          {
+            "case": "ui-preview-latency",
+            "display": "X11",
+            "extent": [
+              512,
+              512
+            ],
+            "first_frame_drawn_us": 62510439,
+            "label": "author-mixed-c-preview",
+            "material_sha256": "246bb480b825db092201584ab38517c925a8097b73aeb5593f3ad7045f1a2417",
+            "native_configure_to_ready_us": 7095206,
+            "ready_us": 62374125,
+            "recipe_sha256": "d984973f72bc07afc066f861c2370e37f4463af690a6e361b56a01c918dcf1ec",
+            "request_started_us": 55275799,
+            "request_to_first_drawn_frame_us": 7234640,
+            "request_to_ready_us": 7098326,
+            "scope": "Real Shared Workbench with normal process-frame scheduling; request includes project compilation; first drawn frame is RenderingServer completion, excluding PNG encoding and OS presentation.",
+            "seed": 314159,
+            "status": "Verified native proposal \u00b7 512x512 \u00b7 72221 nonempty cells \u00b7 16 source receipts \u00b7 7.09s to preview. Install replaces unsaved work."
+          },
+          {
+            "case": "ui-preview-latency",
+            "display": "X11",
+            "extent": [
+              512,
+              512
+            ],
+            "first_frame_drawn_us": 69954781,
+            "label": "author-mixed-c-replay",
+            "material_sha256": "246bb480b825db092201584ab38517c925a8097b73aeb5593f3ad7045f1a2417",
+            "native_configure_to_ready_us": 6921330,
+            "ready_us": 69821904,
+            "recipe_sha256": "d984973f72bc07afc066f861c2370e37f4463af690a6e361b56a01c918dcf1ec",
+            "request_started_us": 62897935,
+            "request_to_first_drawn_frame_us": 7056846,
+            "request_to_ready_us": 6923969,
+            "scope": "Real Shared Workbench with normal process-frame scheduling; request includes project compilation; first drawn frame is RenderingServer completion, excluding PNG encoding and OS presentation.",
+            "seed": 314159,
+            "status": "Verified native proposal \u00b7 512x512 \u00b7 72221 nonempty cells \u00b7 16 source receipts \u00b7 6.92s to preview. Install replaces unsaved work."
+          }
+        ],
+        "reopen": [
+          {
+            "case": "ui-preview-latency",
+            "display": "X11",
+            "extent": [
+              512,
+              512
+            ],
+            "first_frame_drawn_us": 10893498,
+            "label": "reopen-mixed-a-preview",
+            "material_sha256": "0c1ae9bfd302787abaeb0db9836215edcc4eeb2737e66e8136ff6d04eafd9339",
+            "native_configure_to_ready_us": 6745868,
+            "ready_us": 10735738,
+            "recipe_sha256": "bf3cbee7a553977efad3694ff8e077b1b816f00098fb2ce4509b9cf1faf9ee3b",
+            "request_started_us": 3985257,
+            "request_to_first_drawn_frame_us": 6908241,
+            "request_to_ready_us": 6750481,
+            "scope": "Real Shared Workbench with normal process-frame scheduling; request includes project compilation; first drawn frame is RenderingServer completion, excluding PNG encoding and OS presentation.",
+            "seed": 161803.0,
+            "status": "Verified native proposal \u00b7 512x512 \u00b7 98005 nonempty cells \u00b7 16 source receipts \u00b7 6.75s to preview. Install replaces unsaved work."
+          },
+          {
+            "case": "ui-preview-latency",
+            "display": "X11",
+            "extent": [
+              512,
+              512
+            ],
+            "first_frame_drawn_us": 19724171,
+            "label": "reopen-mixed-b-preview",
+            "material_sha256": "bf81dc147723c4ee087341dd6967870508eb8681ab17a3de43a7ba78c6744239",
+            "native_configure_to_ready_us": 7188961,
+            "ready_us": 19587457,
+            "recipe_sha256": "a718926af5a0fb9412f0898414ac47e9cf8ac8d44379f02e4457691c75cd6dd8",
+            "request_started_us": 12394151,
+            "request_to_first_drawn_frame_us": 7330020,
+            "request_to_ready_us": 7193306,
+            "scope": "Real Shared Workbench with normal process-frame scheduling; request includes project compilation; first drawn frame is RenderingServer completion, excluding PNG encoding and OS presentation.",
+            "seed": 271828.0,
+            "status": "Verified native proposal \u00b7 512x512 \u00b7 66986 nonempty cells \u00b7 16 source receipts \u00b7 7.19s to preview. Install replaces unsaved work."
+          },
+          {
+            "case": "ui-preview-latency",
+            "display": "X11",
+            "extent": [
+              512,
+              512
+            ],
+            "first_frame_drawn_us": 28730788,
+            "label": "reopen-mixed-c-preview",
+            "material_sha256": "246bb480b825db092201584ab38517c925a8097b73aeb5593f3ad7045f1a2417",
+            "native_configure_to_ready_us": 7466468,
+            "ready_us": 28594708,
+            "recipe_sha256": "d984973f72bc07afc066f861c2370e37f4463af690a6e361b56a01c918dcf1ec",
+            "request_started_us": 21123913,
+            "request_to_first_drawn_frame_us": 7606875,
+            "request_to_ready_us": 7470795,
+            "scope": "Real Shared Workbench with normal process-frame scheduling; request includes project compilation; first drawn frame is RenderingServer completion, excluding PNG encoding and OS presentation.",
+            "seed": 314159.0,
+            "status": "Verified native proposal \u00b7 512x512 \u00b7 72221 nonempty cells \u00b7 16 source receipts \u00b7 7.47s to preview. Install replaces unsaved work."
+          }
+        ]
+      },
+      "process_ids": {
+        "author": 2632,
+        "reopen": 2689
+      },
+      "process_measurements": {
+        "author": {
+          "peak_memory_scope": "Godot process high-water RSS sampled while alive; excludes runner and display server",
+          "peak_resident_bytes": 1099935744,
+          "wall_seconds": 72.638220279
+        },
+        "import": {
+          "peak_memory_scope": "Godot process high-water RSS sampled while alive; excludes runner and display server",
+          "peak_resident_bytes": 752590848,
+          "wall_seconds": 8.954919208000007
+        },
+        "reopen": {
+          "peak_memory_scope": "Godot process high-water RSS sampled while alive; excludes runner and display server",
+          "peak_resident_bytes": 855805952,
+          "wall_seconds": 30.293266184999993
+        }
+      },
+      "qualification_sha256": "09f503c3bfa911eb324fb8a36df07b27a84327ec7d3feec33f86f2d9ac855dce",
+      "scope": "Graphical ordinary Workbench mixtures and full material/recipe/edit restoration; no structural/traversal interface certification.",
+      "source_commit": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0",
+      "source_stable": true,
+      "status": "passed"
+    },
+    "windows": {
+      "archive": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/windows.zip",
+      "archive_bytes": 9183729,
+      "archive_sha256": "89e0c19b4823698aaaff1f211ca2998225c55bcc1d3a98fc7f2c92edba056537",
+      "artifact_id": 14615309639,
+      "artifact_name": "gentek80-mixed-windows-44707515958",
+      "evidence_directory": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/windows/evidence/mixed",
+      "framebuffers": 24,
+      "independent_processes": true,
+      "native_build_commit": "82da41a945b1d98e0267a2a20b56ec66d83f71f6",
+      "native_material_previews": 3,
+      "orchestration_commit": "12f0fb14b2d75dfbbec609b888ed1fed7314091c",
+      "phase_checks": {
+        "author": 273,
+        "reopen": 75
+      },
+      "phase_failures": {
+        "author": 0,
+        "reopen": 0
+      },
+      "platform": "windows",
+      "pngs": {
+        "author-mixed-a-edited-world.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/windows/evidence/mixed/author-mixed-a-edited-world.png",
+          "sha256": "42087eb1226386f644242078cf221893e3c23f83de16e4e7d35ff75a4a7e7f15"
+        },
+        "author-mixed-a-form.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/windows/evidence/mixed/author-mixed-a-form.png",
+          "sha256": "8ab65f3bc49f788e2acbd9a2f8447bea98d81b730821b512d5cb81ecd5ecfe32"
+        },
+        "author-mixed-a-installed-world.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/windows/evidence/mixed/author-mixed-a-installed-world.png",
+          "sha256": "97af3e6e902602076f6775be50f7bf9a3eb63d92b42d9a074f39351ab4f81dca"
+        },
+        "author-mixed-a-native-materials.png": {
+          "dimensions": [
+            512,
+            512
+          ],
+          "kind": "native-material-preview",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/windows/evidence/mixed/author-mixed-a-native-materials.png",
+          "sha256": "de727219a4d461cb2b38ef3083cbd9a3c1ccde7982d329fa4de1fd4a948a42d7"
+        },
+        "author-mixed-a-preview.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/windows/evidence/mixed/author-mixed-a-preview.png",
+          "sha256": "55d544b8048586992c82f141fbdc0595482b6c2b131a11867f8c9549a9567cc2"
+        },
+        "author-mixed-a-replay.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/windows/evidence/mixed/author-mixed-a-replay.png",
+          "sha256": "55d544b8048586992c82f141fbdc0595482b6c2b131a11867f8c9549a9567cc2"
+        },
+        "author-mixed-a-zone-overlay.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/windows/evidence/mixed/author-mixed-a-zone-overlay.png",
+          "sha256": "b41fe8f080b4f82eba70136b790ad914fa5aa09d6c1b348cb26d0f695d80aa1a"
+        },
+        "author-mixed-b-edited-world.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/windows/evidence/mixed/author-mixed-b-edited-world.png",
+          "sha256": "1d4c88cd7687bf1adc0bd5a3de96454f7136671633afe4989ff830e5801f663f"
+        },
+        "author-mixed-b-form.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/windows/evidence/mixed/author-mixed-b-form.png",
+          "sha256": "782bfff7df2fdee5bd572c6567b8446c6325bd6581e9bd67d3a34bf9c78fc63c"
+        },
+        "author-mixed-b-installed-world.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/windows/evidence/mixed/author-mixed-b-installed-world.png",
+          "sha256": "b9254cad2ad5fe3370404b230bc38fcdf9b5617d639b953e627ebeb680d66fac"
+        },
+        "author-mixed-b-native-materials.png": {
+          "dimensions": [
+            512,
+            512
+          ],
+          "kind": "native-material-preview",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/windows/evidence/mixed/author-mixed-b-native-materials.png",
+          "sha256": "e97eb0425f1af947d0779d6a761096cccd7ebe30e6dd29977972ef04ded2542c"
+        },
+        "author-mixed-b-preview.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/windows/evidence/mixed/author-mixed-b-preview.png",
+          "sha256": "f05bfbb594178d0e7dc33c8e0c3b5a3de781b888d447391f7d6b7d60e70a9bf0"
+        },
+        "author-mixed-b-replay.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/windows/evidence/mixed/author-mixed-b-replay.png",
+          "sha256": "34b461531ab8ea49c3940d87d3628d6668bcdfac21ed52b24f10f325e1c653e9"
+        },
+        "author-mixed-b-zone-overlay.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/windows/evidence/mixed/author-mixed-b-zone-overlay.png",
+          "sha256": "c467c0de0b03dbb70f00be3d6fbd04c3fc6a86d76263b6d32ddb9a3661bffb9a"
+        },
+        "author-mixed-c-edited-world.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/windows/evidence/mixed/author-mixed-c-edited-world.png",
+          "sha256": "fa2b372819eb05e39603a954645d3102c566d49d801c15c9f79df76c3c38edd5"
+        },
+        "author-mixed-c-form.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/windows/evidence/mixed/author-mixed-c-form.png",
+          "sha256": "ec0ce64fa90e195cf6cb38f847335d920adac8ec49ae35d041e1b9eaec7caee0"
+        },
+        "author-mixed-c-installed-world.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/windows/evidence/mixed/author-mixed-c-installed-world.png",
+          "sha256": "4b6eb1110972dc6905c02eaed1d222610cf90bc773684bddb441cc32f1633fe0"
+        },
+        "author-mixed-c-native-materials.png": {
+          "dimensions": [
+            512,
+            512
+          ],
+          "kind": "native-material-preview",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/windows/evidence/mixed/author-mixed-c-native-materials.png",
+          "sha256": "28e7553aff51d67dbccb3147c19bd38a8a6640c6ed9190b34d5b90e8a0db81db"
+        },
+        "author-mixed-c-preview.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/windows/evidence/mixed/author-mixed-c-preview.png",
+          "sha256": "3f92f0ebb7230cd1ad0dafbb0a9606ba9006358f820adae9fc2d7298f04db088"
+        },
+        "author-mixed-c-replay.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/windows/evidence/mixed/author-mixed-c-replay.png",
+          "sha256": "e3fc2e21b25bfa7ef5ef4f93669ac355be1a2afb85d5920a2919357278d6c556"
+        },
+        "author-mixed-c-zone-overlay.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/windows/evidence/mixed/author-mixed-c-zone-overlay.png",
+          "sha256": "6e0e577d264a9e971dda89131066409c7cd91f9a31a3092b756f8fc5dcca7fd8"
+        },
+        "reopen-mixed-a-preview.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/windows/evidence/mixed/reopen-mixed-a-preview.png",
+          "sha256": "40f19a886c4d3554de990e166318872ded790a8fe96abab5e9ba3c4599bf144b"
+        },
+        "reopen-mixed-a-restored-world.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/windows/evidence/mixed/reopen-mixed-a-restored-world.png",
+          "sha256": "e93e4b9f319c52fb53c79cbb30fb0ddbac9cca1ede722e3211333457291e2b82"
+        },
+        "reopen-mixed-b-preview.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/windows/evidence/mixed/reopen-mixed-b-preview.png",
+          "sha256": "b82ec543930bc54b1c0a7d7f25f2149538a8fc827ad9a0c4d08abd1a4947e73e"
+        },
+        "reopen-mixed-b-restored-world.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/windows/evidence/mixed/reopen-mixed-b-restored-world.png",
+          "sha256": "a28bcaa8b45380bb3c4a636e815706a4fa553c4a5308160771e0716270a28d0b"
+        },
+        "reopen-mixed-c-preview.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/windows/evidence/mixed/reopen-mixed-c-preview.png",
+          "sha256": "f50f41bc184007267f41f323efe4a7dd7c00e0229fa588e7ecf9ae3d8fb69718"
+        },
+        "reopen-mixed-c-restored-world.png": {
+          "dimensions": [
+            1600,
+            900
+          ],
+          "kind": "original-ui-framebuffer",
+          "path": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/windows/evidence/mixed/reopen-mixed-c-restored-world.png",
+          "sha256": "3f196642cd4115570b74272707260e44046fff328d9ed312d54f811c7e27e6ae"
+        }
+      },
+      "portable_mixtures": {
+        "a": {
+          "edits": [
+            [
+              101,
+              99,
+              2,
+              58
+            ],
+            [
+              111,
+              99,
+              2,
+              0
+            ]
+          ],
+          "edits_sha256": "0bdbab11106a784968fbe1511971c09e51c5d6c431f501fe23d9fe180d1cebd2",
+          "expected_edited_material_sha256": "8310c7d386739c3c22846194c44fce1447636944a9c317453156cf8d4f0f6f1c",
+          "modules": [
+            "suspended_deck",
+            "rib_vault",
+            "cathedral_megaframe",
+            "interlaced_viaduct",
+            "megatruss_station"
+          ],
+          "recipe_sha256": "bf3cbee7a553977efad3694ff8e077b1b816f00098fb2ce4509b9cf1faf9ee3b",
+          "seed": 161803,
+          "source_sha256": "0c1ae9bfd302787abaeb0db9836215edcc4eeb2737e66e8136ff6d04eafd9339"
+        },
+        "b": {
+          "edits": [
+            [
+              101,
+              99,
+              2,
+              58
+            ],
+            [
+              111,
+              99,
+              2,
+              0
+            ]
+          ],
+          "edits_sha256": "0bdbab11106a784968fbe1511971c09e51c5d6c431f501fe23d9fe180d1cebd2",
+          "expected_edited_material_sha256": "576de742a4a6b97f33d7d1fbebbf8077fc197b66f508604e0164bd83cef34136",
+          "modules": [
+            "ring_pier",
+            "tripod_frame",
+            "seeded_typology_megablock",
+            "metabolist_spine",
+            "rosework_gatehouse"
+          ],
+          "recipe_sha256": "a718926af5a0fb9412f0898414ac47e9cf8ac8d44379f02e4457691c75cd6dd8",
+          "seed": 271828,
+          "source_sha256": "bf81dc147723c4ee087341dd6967870508eb8681ab17a3de43a7ba78c6744239"
+        },
+        "c": {
+          "edits": [
+            [
+              101,
+              99,
+              2,
+              58
+            ],
+            [
+              111,
+              99,
+              2,
+              0
+            ]
+          ],
+          "edits_sha256": "0bdbab11106a784968fbe1511971c09e51c5d6c431f501fe23d9fe180d1cebd2",
+          "expected_edited_material_sha256": "f6ed2bc18da5c69f02c49119c753d49fa5b01c21caadb485e65aa192ab1cc230",
+          "modules": [
+            "cascade_terrace",
+            "scalloped_vault",
+            "buttress_wall",
+            "interlock_brutalism",
+            "suspended_arcology"
+          ],
+          "recipe_sha256": "d984973f72bc07afc066f861c2370e37f4463af690a6e361b56a01c918dcf1ec",
+          "seed": 314159,
+          "source_sha256": "246bb480b825db092201584ab38517c925a8097b73aeb5593f3ad7045f1a2417"
+        }
+      },
+      "preview_measurements": {
+        "author": [
+          {
+            "case": "ui-preview-latency",
+            "display": "Windows",
+            "extent": [
+              512,
+              512
+            ],
+            "first_frame_drawn_us": 71075873,
+            "label": "author-mixed-a-preview",
+            "material_sha256": "0c1ae9bfd302787abaeb0db9836215edcc4eeb2737e66e8136ff6d04eafd9339",
+            "native_configure_to_ready_us": 12815043,
+            "ready_us": 70232689,
+            "recipe_sha256": "bf3cbee7a553977efad3694ff8e077b1b816f00098fb2ce4509b9cf1faf9ee3b",
+            "request_started_us": 57413222,
+            "request_to_first_drawn_frame_us": 13662651,
+            "request_to_ready_us": 12819467,
+            "scope": "Real Shared Workbench with normal process-frame scheduling; request includes project compilation; first drawn frame is RenderingServer completion, excluding PNG encoding and OS presentation.",
+            "seed": 161803,
+            "status": "Verified native proposal \u00b7 512x512 \u00b7 98005 nonempty cells \u00b7 16 source receipts \u00b7 12.81s to preview. Install replaces unsaved work."
+          },
+          {
+            "case": "ui-preview-latency",
+            "display": "Windows",
+            "extent": [
+              512,
+              512
+            ],
+            "first_frame_drawn_us": 85170095,
+            "label": "author-mixed-a-replay",
+            "material_sha256": "0c1ae9bfd302787abaeb0db9836215edcc4eeb2737e66e8136ff6d04eafd9339",
+            "native_configure_to_ready_us": 12810656,
+            "ready_us": 84892264,
+            "recipe_sha256": "bf3cbee7a553977efad3694ff8e077b1b816f00098fb2ce4509b9cf1faf9ee3b",
+            "request_started_us": 72077501,
+            "request_to_first_drawn_frame_us": 13092594,
+            "request_to_ready_us": 12814763,
+            "scope": "Real Shared Workbench with normal process-frame scheduling; request includes project compilation; first drawn frame is RenderingServer completion, excluding PNG encoding and OS presentation.",
+            "seed": 161803,
+            "status": "Verified native proposal \u00b7 512x512 \u00b7 98005 nonempty cells \u00b7 16 source receipts \u00b7 12.81s to preview. Install replaces unsaved work."
+          },
+          {
+            "case": "ui-preview-latency",
+            "display": "Windows",
+            "extent": [
+              512,
+              512
+            ],
+            "first_frame_drawn_us": 108665826,
+            "label": "author-mixed-b-preview",
+            "material_sha256": "bf81dc147723c4ee087341dd6967870508eb8681ab17a3de43a7ba78c6744239",
+            "native_configure_to_ready_us": 14144679,
+            "ready_us": 107753869,
+            "recipe_sha256": "a718926af5a0fb9412f0898414ac47e9cf8ac8d44379f02e4457691c75cd6dd8",
+            "request_started_us": 93604966,
+            "request_to_first_drawn_frame_us": 15060860,
+            "request_to_ready_us": 14148903,
+            "scope": "Real Shared Workbench with normal process-frame scheduling; request includes project compilation; first drawn frame is RenderingServer completion, excluding PNG encoding and OS presentation.",
+            "seed": 271828,
+            "status": "Verified native proposal \u00b7 512x512 \u00b7 66986 nonempty cells \u00b7 16 source receipts \u00b7 14.14s to preview. Install replaces unsaved work."
+          },
+          {
+            "case": "ui-preview-latency",
+            "display": "Windows",
+            "extent": [
+              512,
+              512
+            ],
+            "first_frame_drawn_us": 124209913,
+            "label": "author-mixed-b-replay",
+            "material_sha256": "bf81dc147723c4ee087341dd6967870508eb8681ab17a3de43a7ba78c6744239",
+            "native_configure_to_ready_us": 14119831,
+            "ready_us": 123912487,
+            "recipe_sha256": "a718926af5a0fb9412f0898414ac47e9cf8ac8d44379f02e4457691c75cd6dd8",
+            "request_started_us": 109788653,
+            "request_to_first_drawn_frame_us": 14421260,
+            "request_to_ready_us": 14123834,
+            "scope": "Real Shared Workbench with normal process-frame scheduling; request includes project compilation; first drawn frame is RenderingServer completion, excluding PNG encoding and OS presentation.",
+            "seed": 271828,
+            "status": "Verified native proposal \u00b7 512x512 \u00b7 66986 nonempty cells \u00b7 16 source receipts \u00b7 14.12s to preview. Install replaces unsaved work."
+          },
+          {
+            "case": "ui-preview-latency",
+            "display": "Windows",
+            "extent": [
+              512,
+              512
+            ],
+            "first_frame_drawn_us": 146679775,
+            "label": "author-mixed-c-preview",
+            "material_sha256": "246bb480b825db092201584ab38517c925a8097b73aeb5593f3ad7045f1a2417",
+            "native_configure_to_ready_us": 13623731,
+            "ready_us": 146400374,
+            "recipe_sha256": "d984973f72bc07afc066f861c2370e37f4463af690a6e361b56a01c918dcf1ec",
+            "request_started_us": 132772397,
+            "request_to_first_drawn_frame_us": 13907378,
+            "request_to_ready_us": 13627977,
+            "scope": "Real Shared Workbench with normal process-frame scheduling; request includes project compilation; first drawn frame is RenderingServer completion, excluding PNG encoding and OS presentation.",
+            "seed": 314159,
+            "status": "Verified native proposal \u00b7 512x512 \u00b7 72221 nonempty cells \u00b7 16 source receipts \u00b7 13.62s to preview. Install replaces unsaved work."
+          },
+          {
+            "case": "ui-preview-latency",
+            "display": "Windows",
+            "extent": [
+              512,
+              512
+            ],
+            "first_frame_drawn_us": 162166176,
+            "label": "author-mixed-c-replay",
+            "material_sha256": "246bb480b825db092201584ab38517c925a8097b73aeb5593f3ad7045f1a2417",
+            "native_configure_to_ready_us": 13507703,
+            "ready_us": 161865540,
+            "recipe_sha256": "d984973f72bc07afc066f861c2370e37f4463af690a6e361b56a01c918dcf1ec",
+            "request_started_us": 148353781,
+            "request_to_first_drawn_frame_us": 13812395,
+            "request_to_ready_us": 13511759,
+            "scope": "Real Shared Workbench with normal process-frame scheduling; request includes project compilation; first drawn frame is RenderingServer completion, excluding PNG encoding and OS presentation.",
+            "seed": 314159,
+            "status": "Verified native proposal \u00b7 512x512 \u00b7 72221 nonempty cells \u00b7 16 source receipts \u00b7 13.51s to preview. Install replaces unsaved work."
+          }
+        ],
+        "reopen": [
+          {
+            "case": "ui-preview-latency",
+            "display": "Windows",
+            "extent": [
+              512,
+              512
+            ],
+            "first_frame_drawn_us": 19119303,
+            "label": "reopen-mixed-a-preview",
+            "material_sha256": "0c1ae9bfd302787abaeb0db9836215edcc4eeb2737e66e8136ff6d04eafd9339",
+            "native_configure_to_ready_us": 12735790,
+            "ready_us": 18283364,
+            "recipe_sha256": "bf3cbee7a553977efad3694ff8e077b1b816f00098fb2ce4509b9cf1faf9ee3b",
+            "request_started_us": 5270890,
+            "request_to_first_drawn_frame_us": 13848413,
+            "request_to_ready_us": 13012474,
+            "scope": "Real Shared Workbench with normal process-frame scheduling; request includes project compilation; first drawn frame is RenderingServer completion, excluding PNG encoding and OS presentation.",
+            "seed": 161803.0,
+            "status": "Verified native proposal \u00b7 512x512 \u00b7 98005 nonempty cells \u00b7 16 source receipts \u00b7 12.74s to preview. Install replaces unsaved work."
+          },
+          {
+            "case": "ui-preview-latency",
+            "display": "Windows",
+            "extent": [
+              512,
+              512
+            ],
+            "first_frame_drawn_us": 37916562,
+            "label": "reopen-mixed-b-preview",
+            "material_sha256": "bf81dc147723c4ee087341dd6967870508eb8681ab17a3de43a7ba78c6744239",
+            "native_configure_to_ready_us": 14163081,
+            "ready_us": 37605522,
+            "recipe_sha256": "a718926af5a0fb9412f0898414ac47e9cf8ac8d44379f02e4457691c75cd6dd8",
+            "request_started_us": 23436871,
+            "request_to_first_drawn_frame_us": 14479691,
+            "request_to_ready_us": 14168651,
+            "scope": "Real Shared Workbench with normal process-frame scheduling; request includes project compilation; first drawn frame is RenderingServer completion, excluding PNG encoding and OS presentation.",
+            "seed": 271828.0,
+            "status": "Verified native proposal \u00b7 512x512 \u00b7 66986 nonempty cells \u00b7 16 source receipts \u00b7 14.16s to preview. Install replaces unsaved work."
+          },
+          {
+            "case": "ui-preview-latency",
+            "display": "Windows",
+            "extent": [
+              512,
+              512
+            ],
+            "first_frame_drawn_us": 56634165,
+            "label": "reopen-mixed-c-preview",
+            "material_sha256": "246bb480b825db092201584ab38517c925a8097b73aeb5593f3ad7045f1a2417",
+            "native_configure_to_ready_us": 13474042,
+            "ready_us": 56342259,
+            "recipe_sha256": "d984973f72bc07afc066f861c2370e37f4463af690a6e361b56a01c918dcf1ec",
+            "request_started_us": 42862573,
+            "request_to_first_drawn_frame_us": 13771592,
+            "request_to_ready_us": 13479686,
+            "scope": "Real Shared Workbench with normal process-frame scheduling; request includes project compilation; first drawn frame is RenderingServer completion, excluding PNG encoding and OS presentation.",
+            "seed": 314159.0,
+            "status": "Verified native proposal \u00b7 512x512 \u00b7 72221 nonempty cells \u00b7 16 source receipts \u00b7 13.47s to preview. Install replaces unsaved work."
+          }
+        ]
+      },
+      "process_ids": {
+        "author": 2420,
+        "reopen": 5372
+      },
+      "process_measurements": {
+        "author": {
+          "peak_memory_scope": "Unavailable: Windows console launcher starts a separate engine; its child working set was not measured",
+          "peak_resident_bytes": null,
+          "wall_seconds": 169.3119999999999
+        },
+        "import": {
+          "peak_memory_scope": "Unavailable: Windows console launcher starts a separate engine; its child working set was not measured",
+          "peak_resident_bytes": null,
+          "wall_seconds": 10.57899999999995
+        },
+        "reopen": {
+          "peak_memory_scope": "Unavailable: Windows console launcher starts a separate engine; its child working set was not measured",
+          "peak_resident_bytes": null,
+          "wall_seconds": 61.71900000000005
+        }
+      },
+      "qualification_sha256": "a8a911ce6f7be33d0cb449d6bbe493e30af579f9ee3e22e629ebb86544cd7ddb",
+      "scope": "Graphical ordinary Workbench mixtures and full material/recipe/edit restoration; no structural/traversal interface certification.",
+      "source_commit": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0",
+      "source_stable": true,
+      "status": "passed"
+    }
+  },
+  "run_id": 44707515958,
+  "schema": "gentek80-mixed-original-artifact-readback-v1",
+  "status": "passed"
+}

@@ -1,0 +1,88 @@
+{
+  "built_source": "82da41a945b1d98e0267a2a20b56ec66d83f71f6",
+  "built_tree": "62c3210595f34b500cf6844e61085a5afcb3e85e",
+  "exact_four_regular_file_changes": [
+    {
+      "new_blob": "b0e617c6b5b2adb216afa8201f6264af712b8689",
+      "new_mode": "100644",
+      "old_blob": "ae01f163edfc6315f36590d6952ba58733478344",
+      "old_mode": "100644",
+      "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "status": "M"
+    },
+    {
+      "new_blob": "f26075d4b0a37e6dfb66740b79cba04738baec32",
+      "new_mode": "100644",
+      "old_blob": "8d4148e69ddcabb96cdfe7d4e0cb4f757f7abff2",
+      "old_mode": "100644",
+      "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "status": "M"
+    },
+    {
+      "new_blob": "13f422971c2ae2ed148d97d070deda94438e4b5e",
+      "new_mode": "100644",
+      "old_blob": "3304f8b577992b6d373735b763abc7dda7015ae8",
+      "old_mode": "100644",
+      "path": "godot/addons/cybersand_native/runtime-provenance.json",
+      "status": "M"
+    },
+    {
+      "new_blob": "4cd4529d29e20b94bf3b7adb0f85aad6005a2050",
+      "new_mode": "100644",
+      "old_blob": "1fc00509ce84e7ab5d0d40663b01096bc4c252c8",
+      "old_mode": "100644",
+      "path": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+      "status": "M"
+    }
+  ],
+  "pending": [
+    "immutable auxiliary config and orchestration publication",
+    "exact-F retained-runtime Linux/Windows all80 execution",
+    "fresh final-head Windows ZIP and three pristine extracted package phases",
+    "all applicable exact-F final CI and retained guards"
+  ],
+  "platforms": [
+    {
+      "build_commit": "82da41a945b1d98e0267a2a20b56ec66d83f71f6",
+      "build_inputs": 951,
+      "native_sha256": "5195149bb4ee0b826d258f46627397d4a3e79d0d22cd3072ca0518aa75ebd878",
+      "native_size": 5183960,
+      "platform": "linux",
+      "pointer_sha256": "39791058d9c18070556f4d60cd71d39eaf8ca225eae2e81d0af34b0ddcfd1db6",
+      "published_manifest_sha256": "ada79aca0daae6c7760fd1f63690f29eecbbee5c0b5e001a40ba63382cf46129",
+      "source_commit": "82da41a945b1d98e0267a2a20b56ec66d83f71f6",
+      "source_inputs": 103,
+      "validated_receipts": 13,
+      "validation_sha256": "c362210f8eb2ac58d3baa3022bf9d1c86ec9cb17d9fbc81ffd620cf303abeec4"
+    },
+    {
+      "build_commit": "82da41a945b1d98e0267a2a20b56ec66d83f71f6",
+      "build_inputs": 951,
+      "native_sha256": "2b7a1fbb8410270498e5c0ce8f9384a598c4467397e4ca1bda0111d6c5985447",
+      "native_size": 5747200,
+      "platform": "windows",
+      "pointer_sha256": "84cfd42a9f8069894cb22a3066f7a800f52b4b2b03b43ea46f80b6356a16a379",
+      "published_manifest_sha256": "0becae410dd68d38f68ed3a66cc9171d0bdb0e2a14b99564ddf8ad9c1b286f94",
+      "source_commit": "82da41a945b1d98e0267a2a20b56ec66d83f71f6",
+      "source_inputs": 103,
+      "validated_receipts": 17,
+      "validation_sha256": "d3bc7e30189ca003d29783413a15ff37ba9bd1d191fd53c594727b839203db74"
+    }
+  ],
+  "pr_observation": {
+    "auto_merge": null,
+    "draft": true,
+    "head": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0",
+    "merged": false,
+    "number": 684
+  },
+  "published_source": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0",
+  "published_tree": "546750300019d2e5534e96d4e1dd751bc28d9f2e",
+  "recorded_at": "2026-11-20T06:37:23.442058+00:00",
+  "remote_commit_and_tree_verified": true,
+  "remote_tree_bytes_equal_local_git": true,
+  "schema": "gentek80-independent-four-file-publication-review-v1",
+  "scope": "Read-only publication/source/artifact custody review. Both manifests honestly retain S3 build identity; F changes only the two LFS pointers and two exact attested manifests. This does not itself admit F runtime execution.",
+  "sole_parent_is_built_source": true,
+  "status": "passed_boundary_final_execution_pending"
+}

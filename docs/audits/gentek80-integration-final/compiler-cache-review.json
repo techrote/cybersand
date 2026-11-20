@@ -1,0 +1,975 @@
+{
+  "schema": "gentek80-independent-compiler-cache-review-v1",
+  "created_utc": "2026-11-20T09:05:42.222504+00:00",
+  "reviewer": "/root/final_evidence, independent of implementation authorship",
+  "verdict": "ACCEPT",
+  "p1_findings": [],
+  "p2_findings": [],
+  "scope": "Compiler-cache source and Interlaced callers at frozen F, plus offline original S3 evidence readback. This is not the overall PR merge verdict.",
+  "reviewed_application_source": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0",
+  "retained_execution_source": "82da41a945b1d98e0267a2a20b56ec66d83f71f6",
+  "retained_execution_tree": "62c3210595f34b500cf6844e61085a5afcb3e85e",
+  "retained_run_id": 44674555113,
+  "retained_run_attempt": 1,
+  "original_artifact_id": 14604798235,
+  "original_artifact_zip_sha256": "554d66931ff60e2967a3458255cd5e916574ccce113aa8d1be9e436fa7132c6b",
+  "source_files_sha256": {
+    "tools/architecture/compiler_cache.py": "9debf49d810042b82e0b55ea226273ec8a7d2753396e9939ce76dd29e9b9b34a",
+    "tools/architecture/test_compiler_cache.py": "1dfb1b6999eef71f4adfa886213d1e8c263796353780f79397bc43664dcf96e9",
+    "tools/architecture/render_interlaced_viaduct.py": "339d7f542ad9e6bfacf5f5d3fa54e726e79263a8143c073c0ca5b6a56c699ebf",
+    "tools/architecture/interlaced_viaduct_export.cpp": "1fe792db390c078179dafec36acb58ed3f73c1e3fd634fc647cd000147243230",
+    "tools/architecture/qualify_interlaced.py": "fbba8ee7a18ee063e8ff21bb3456466bf841067826f0a408ebeff26786239447",
+    "tools/architecture/test_qualify_interlaced.py": "2f3a1e509a5959c2a7f176c152a0e8f894754086b9089fb6584ff9ed803f6a1f",
+    "tools/architecture/compare_interlaced_compilers.py": "53fd8abc7fb03709e63d285f2380ef20d4516574294590257a4173b9d0562868",
+    "tools/architecture/test_compare_interlaced_compilers.py": "4789614b2437fa79d40a3b4ba32e5250da1201a0dfbdbf1f82cd5bd820c1a1a0",
+    "Makefile": "a6b5855f6d5e4b61ef78184076356de599650ccf0c0554b0c6187abed21d23e7",
+    ".github/workflows/gentek80-qualification.yml": "4d63c2bff45066d668c6ae566974f5a0cd8f9296fb015ad464355f0ca35d2349"
+  },
+  "source_equivalence": {
+    "render_inputs_verified": 97,
+    "additional_comparator_workflow_inputs_verified": 3,
+    "all_100_inputs_identical_between_S3_and_F": true,
+    "all_archived_97_inputs_match_F_Git_objects": true
+  },
+  "regressions": {
+    "compiler_cache": 7,
+    "real_gcc13_gcc14_switch": "executed and passed, not skipped",
+    "parity_guard_tests": 5,
+    "qualifier_source_guard_tests": 9,
+    "skips": 0,
+    "intentional_negative_cli_receipt": "The fail JSON in interlaced-parity-guards.log is the expected missing-campaign fixture; all five guard tests pass."
+  },
+  "reasoning": [
+    "compiler_identity binds the requested command, resolved argv, invocation path/realpath, driver SHA256, full version, target, cc1plus/as/ld paths and hashes, and relevant toolchain environment.",
+    "build_key includes compiler identity, flags, ordered source units, builder SHA256 and source digest. GCC 13 and GCC 14 have distinct build keys, drivers, cc1plus and executable hashes.",
+    "build_exporter validates sources and probes compiler identity before the skip branch. --no-build checks every request field, full ledger, native digest and actual executable hash, then rechecks source and compiler before returning. The render caller always invokes it.",
+    "Fresh exporters compile all five generation translation units plus the exporter directly in a private temporary path. They do not consume shared Make objects. Success replaces the executable and marker only after compile and identity checks.",
+    "The Interlaced renderer runs the returned private executable for layer checks and every native material capture, and seals HEAD, tree, inputs, index and source archive before/after rendering.",
+    "qualify_interlaced invokes make -B with the requested CXX, forcing all six generation object dependencies and the test to rebuild. The original build log confirms all six GCC 13 compilations. The repaired CLASSIC parent is independently extracted and compiled in a temporary directory.",
+    "The original comparator requires exact source boundaries, actual distinct GCC majors and driver/cache/executable identities, verifies all 26 parameters, and compares raw cells, PNG bytes, fingerprints and chunk receipts. Failure evidence is retained and the CLI returns nonzero."
+  ],
+  "compilers": [
+    {
+      "major": 13,
+      "manifest_sha256": "a7d18237116304dd6aff8c60077c413da2515f274f4ad4de0c9e9c67b617508d",
+      "build_key": "329c0a478dac37dc3d680c73fe047d739b15356176b8277eeeb8001ad18d2e5e",
+      "executable_sha256": "1a063135df0eb4553c4659f12915ca7e6b17b0f5ea58c886344276ab7909c7bb",
+      "compiler": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+      "driver_sha256": "1353e9bdd29a7295c7226bf6c63abccce056d8cac31f112e5cdbecc3f28c2769",
+      "cc1plus_sha256": "840b332fb62ec6f694ac77d91fe69ef7f80b0d69512ed89374af0ee7a506255d",
+      "source_archive_sha256": "b8d95ffd347a8bda5346233cb7c47b2ba9ae97f6e52b50cdfde5423972b83ee8"
+    },
+    {
+      "major": 14,
+      "manifest_sha256": "4966cac7c202d6805eebe3f925312dc5046306530910c8b0dcc2bd98878b50ed",
+      "build_key": "489658b1ec46ca1bb05407786ac7ab06fca5716c7aa1a0119c78d3a326e08347",
+      "executable_sha256": "b24775e66e175f662ed3649fde24f28d0c055798f6399910f52c617559773306",
+      "compiler": "g++-14 (Ubuntu 14.2.0-4ubuntu2~24.04.1) 14.2.0",
+      "driver_sha256": "916ef3c03c2d024857af2e084d3648204033b9c79e0e62575974f567f99adc84",
+      "cc1plus_sha256": "52fda0dfd1df95d8d9370c39de67e08b6e37dcfe25a2ef977f8451521159e834",
+      "source_archive_sha256": "fa82e344e1eaaa71c79638f1b70d9d1ad543423d530b7785844f08f3fd357e39"
+    }
+  ],
+  "layer_checks": {
+    "status": "pass",
+    "seeds": 32,
+    "assertions": 207491,
+    "unique_compositions": 32,
+    "unique_crossing_programmes": 30,
+    "min_primary_only_cells": 60637,
+    "min_secondary_only_cells": 12029,
+    "max_added_crossing_cells": 75
+  },
+  "cases": [
+    {
+      "name": "01-hero-512",
+      "module": "interlaced_viaduct",
+      "seed": 271828,
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "1a3ed6b187e66b695f78134b876c6a8aa2ff5b04763e18fa5c1373ac23f8069c",
+      "png_sha256": "3adef13ce59b67aeaf46f4eac4f2f33a4821d6c87e2777ece5ed1a0a28f41cca",
+      "original_case_json_sha256": [
+        "619fc22b674a6df1f54929944c21093e10473d63f262c3270fe939edaaae3fd9",
+        "4fbdc9b1fc0c8d4674cb2a26a54f6f2b71fe5168f9379239c71513428a8b522f"
+      ],
+      "chunk_receipts": 64,
+      "all_non_timing_fields_equal": true,
+      "timings_gcc13": {
+        "preparation_us": 185,
+        "native_raster_us": 142768,
+        "raster_and_copy_us": 143032
+      },
+      "timings_gcc14": {
+        "preparation_us": 163,
+        "native_raster_us": 142688,
+        "raster_and_copy_us": 142952
+      }
+    },
+    {
+      "name": "02-hero-landscape",
+      "module": "interlaced_viaduct",
+      "seed": 271828,
+      "extent": [
+        1024,
+        512
+      ],
+      "material_sha256": "64b25b1b520dc3b3b7ca897dec557aa72efc90580cdf6816af997c8d0c64b5dd",
+      "png_sha256": "20db43639d93aecf00fdd69d371bb61c7fe448a73da7084b69683ccd62351c2d",
+      "original_case_json_sha256": [
+        "ae72f213e4bb30bb25917d5c15e5bc18b8a3e89501901d871381bf480a4ed7f3",
+        "a067622cf46dd0b9c7287a8f159a7935970002b4f39692469ee1acb05914f092"
+      ],
+      "chunk_receipts": 128,
+      "all_non_timing_fields_equal": true,
+      "timings_gcc13": {
+        "preparation_us": 180,
+        "native_raster_us": 287965,
+        "raster_and_copy_us": 288453
+      },
+      "timings_gcc14": {
+        "preparation_us": 162,
+        "native_raster_us": 284703,
+        "raster_and_copy_us": 285212
+      }
+    },
+    {
+      "name": "03-hero-large",
+      "module": "interlaced_viaduct",
+      "seed": 271828,
+      "extent": [
+        1024,
+        1024
+      ],
+      "material_sha256": "a2eaf92f18e78cdc73b1428233c552cc011bd8a0d9eb12bd447bf3652942d1b1",
+      "png_sha256": "f6680595f2c66963b1ed17108100d6db161b7ec44b19ea54e890de2d05853c47",
+      "original_case_json_sha256": [
+        "6d61632e154786d0ba33c02ca9476ef1e7102bc784bed6ead5ff14c3b8aab7df",
+        "16be08748c6b4005886d00b68734432a234f16034ead9d37663817d65d02af5c"
+      ],
+      "chunk_receipts": 256,
+      "all_non_timing_fields_equal": true,
+      "timings_gcc13": {
+        "preparation_us": 187,
+        "native_raster_us": 577052,
+        "raster_and_copy_us": 578036
+      },
+      "timings_gcc14": {
+        "preparation_us": 162,
+        "native_raster_us": 574731,
+        "raster_and_copy_us": 575678
+      }
+    },
+    {
+      "name": "04-seed-1",
+      "module": "interlaced_viaduct",
+      "seed": 1,
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "1d9d79346677913ff95e787b2ae37a85dff79d69dc512ce05c9af18ddd77d3c2",
+      "png_sha256": "55d5e800fc8d0ebabcf282a6b68dc5811877130b37a3007f473b0f29463ec966",
+      "original_case_json_sha256": [
+        "2ff2a071dd6c7c0af0cb51cba407e355692c0efaa05ea4434a9e884ce277df13",
+        "20be8546665345fb0abc0a0f323b5409b21a6392cc46b5e134cb4fc08ab0593d"
+      ],
+      "chunk_receipts": 64,
+      "all_non_timing_fields_equal": true,
+      "timings_gcc13": {
+        "preparation_us": 189,
+        "native_raster_us": 142690,
+        "raster_and_copy_us": 142931
+      },
+      "timings_gcc14": {
+        "preparation_us": 170,
+        "native_raster_us": 143889,
+        "raster_and_copy_us": 144146
+      }
+    },
+    {
+      "name": "05-seed-7",
+      "module": "interlaced_viaduct",
+      "seed": 7,
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "a128f2953eecd43db70e3dba37843d12a56935e25f631b949fbc17da600ceb40",
+      "png_sha256": "e33cd16789969705a89a098bad7c082ff439215bd5bad79edf3474f5527c5939",
+      "original_case_json_sha256": [
+        "68afc46275805408b6bb5bd7c8b53f1ed1c9d47a6e9a2cfcd3712854ee5f3cf9",
+        "702a497abb6253a099930725eb394a6834e35aeaa6c6823a4dcaea477e0745f2"
+      ],
+      "chunk_receipts": 64,
+      "all_non_timing_fields_equal": true,
+      "timings_gcc13": {
+        "preparation_us": 193,
+        "native_raster_us": 143228,
+        "raster_and_copy_us": 143474
+      },
+      "timings_gcc14": {
+        "preparation_us": 156,
+        "native_raster_us": 142897,
+        "raster_and_copy_us": 143146
+      }
+    },
+    {
+      "name": "06-seed-19",
+      "module": "interlaced_viaduct",
+      "seed": 19,
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "5e9e38ff923b5e74f4908e29a8b0e84f8f6a3dd16297c6b4cf86fed783b513d3",
+      "png_sha256": "8821e82e72150242a60d0ab8ec42eecfa2e59e139c01f97b756a96a4b050ef08",
+      "original_case_json_sha256": [
+        "f0176f7c588541fd37569db0c653dcb4f2a4215a932b205192586f2652f75ea9",
+        "45d85d690325408e453a9c2aab12dee12a4b637246394cda4a9be79977a98573"
+      ],
+      "chunk_receipts": 64,
+      "all_non_timing_fields_equal": true,
+      "timings_gcc13": {
+        "preparation_us": 186,
+        "native_raster_us": 142108,
+        "raster_and_copy_us": 142349
+      },
+      "timings_gcc14": {
+        "preparation_us": 147,
+        "native_raster_us": 143541,
+        "raster_and_copy_us": 143799
+      }
+    },
+    {
+      "name": "07-seed-42",
+      "module": "interlaced_viaduct",
+      "seed": 42,
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "919a7954e8cb16d59aa88b41c0a7dfd879cf98e40a84a7f359b9453d66ca740f",
+      "png_sha256": "475f760d0ced6b76779a4e80b9e71be93f7314ffc4fec61256a0bf176de19c27",
+      "original_case_json_sha256": [
+        "913d0cc77b373015a40783dd20b86a2cc35db2e6d1cdd2313a4461dd5c987c40",
+        "9aa12e5d2d52efaee18deb608225157c047ce32dbbb18251505947c922313785"
+      ],
+      "chunk_receipts": 64,
+      "all_non_timing_fields_equal": true,
+      "timings_gcc13": {
+        "preparation_us": 178,
+        "native_raster_us": 144111,
+        "raster_and_copy_us": 144366
+      },
+      "timings_gcc14": {
+        "preparation_us": 156,
+        "native_raster_us": 142058,
+        "raster_and_copy_us": 142312
+      }
+    },
+    {
+      "name": "08-seed-271828",
+      "module": "interlaced_viaduct",
+      "seed": 271828,
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "1a3ed6b187e66b695f78134b876c6a8aa2ff5b04763e18fa5c1373ac23f8069c",
+      "png_sha256": "3adef13ce59b67aeaf46f4eac4f2f33a4821d6c87e2777ece5ed1a0a28f41cca",
+      "original_case_json_sha256": [
+        "a3bd8a46bb8e52f5713c858c7bbdd6c188f2a81405d1a5cfcb99ed98b12f62f2",
+        "8f62f39de5d072f0c23ad3743637d0537cf7d9bcb7b5c44c2f09b4966cb1cbf6"
+      ],
+      "chunk_receipts": 64,
+      "all_non_timing_fields_equal": true,
+      "timings_gcc13": {
+        "preparation_us": 186,
+        "native_raster_us": 143097,
+        "raster_and_copy_us": 143351
+      },
+      "timings_gcc14": {
+        "preparation_us": 156,
+        "native_raster_us": 143733,
+        "raster_and_copy_us": 143976
+      }
+    },
+    {
+      "name": "09-seed-8675309",
+      "module": "interlaced_viaduct",
+      "seed": 8675309,
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "dfc47ca3fdd7f6661cb08b7a0ffa9c8b992f21bead1f7f2d2401cbbb9b42575e",
+      "png_sha256": "011b7914786594776b7228f734ef30efe6bff4d9c1aa3f1aeb258a60bc02c6a3",
+      "original_case_json_sha256": [
+        "0c3066de7f01ef6474f5460c31fe607a93e5b2f3b226682fb4de6244a38f2dfb",
+        "531d87da857c31a15a9d4ee32b9f86f87a9328fdaeb8e20802323ea5602fb58e"
+      ],
+      "chunk_receipts": 64,
+      "all_non_timing_fields_equal": true,
+      "timings_gcc13": {
+        "preparation_us": 178,
+        "native_raster_us": 143615,
+        "raster_and_copy_us": 143862
+      },
+      "timings_gcc14": {
+        "preparation_us": 156,
+        "native_raster_us": 143592,
+        "raster_and_copy_us": 143845
+      }
+    },
+    {
+      "name": "10-narrow-bay",
+      "module": "interlaced_viaduct",
+      "seed": 271828,
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "f987d598b13389e6698c6345a2c7014b8d6c8e48bc05ec3bb5bd8ecbc9aa11c0",
+      "png_sha256": "184fd149db92b68cb65de14edc96d72c9d52f60bddf98711885e20b02b0874f5",
+      "original_case_json_sha256": [
+        "d460d1475184be175b18f29f7d8cbc0503fd68fdc5beb0226363e80886ca9162",
+        "b0065d1100203c2fef3f72c0a0dc97805404cae76c75ccb1c21398a21f811da5"
+      ],
+      "chunk_receipts": 64,
+      "all_non_timing_fields_equal": true,
+      "timings_gcc13": {
+        "preparation_us": 182,
+        "native_raster_us": 145338,
+        "raster_and_copy_us": 145589
+      },
+      "timings_gcc14": {
+        "preparation_us": 149,
+        "native_raster_us": 143828,
+        "raster_and_copy_us": 144075
+      }
+    },
+    {
+      "name": "11-broad-bay",
+      "module": "interlaced_viaduct",
+      "seed": 271828,
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "bbbea501a0bb7df8dabb3e5254bc645452cec6cd45cb5f41d98d4a7c77915212",
+      "png_sha256": "e353bb46fe0160a733503614eaa5eeb00ef4cd5a9db4d46d5dda8147aef1c1c5",
+      "original_case_json_sha256": [
+        "755b86010de90c797da854f92bfd4acdef29132db69c1f9f45504adbb8ff367d",
+        "25afe4d226ecfe7f031d28619383897e739c45e38bb72fc376a03ef1f65ff7bf"
+      ],
+      "chunk_receipts": 64,
+      "all_non_timing_fields_equal": true,
+      "timings_gcc13": {
+        "preparation_us": 181,
+        "native_raster_us": 144054,
+        "raster_and_copy_us": 144307
+      },
+      "timings_gcc14": {
+        "preparation_us": 155,
+        "native_raster_us": 143346,
+        "raster_and_copy_us": 143593
+      }
+    },
+    {
+      "name": "12-short-vertical",
+      "module": "interlaced_viaduct",
+      "seed": 271828,
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "12cfe70a511540b3ce11bd342f2343b7059fcbfa720a64a472d82eaa24a36497",
+      "png_sha256": "64f8931f7ffb15040e089d488033753a8011ab4aeef812d37ec9f5da212534ce",
+      "original_case_json_sha256": [
+        "52ba497ce9bcdd7f621232c3d430016efbdf604fe7a9e7a3d878f30747f39839",
+        "7b5b300d4c60164daba5c86bf1be7edcf379c29ac311183e26edd99577214040"
+      ],
+      "chunk_receipts": 64,
+      "all_non_timing_fields_equal": true,
+      "timings_gcc13": {
+        "preparation_us": 204,
+        "native_raster_us": 143923,
+        "raster_and_copy_us": 144170
+      },
+      "timings_gcc14": {
+        "preparation_us": 170,
+        "native_raster_us": 142737,
+        "raster_and_copy_us": 142980
+      }
+    },
+    {
+      "name": "13-tall-vertical",
+      "module": "interlaced_viaduct",
+      "seed": 271828,
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "5825423a078e8e626dfcb8652feb64d46374b57221c22e6a4a1dc095095e9468",
+      "png_sha256": "8ba9bdd8977e18d58f71e90aea7861343c5fda4214aeb280c33532cc5a1834d7",
+      "original_case_json_sha256": [
+        "65221b43180f5243fa249c1bed8d427e9fa559b06d714e57e378aebe371ce564",
+        "4d2891e2307372f22f4f368f6c918efd5591531f7dc77968831085bca0e20f34"
+      ],
+      "chunk_receipts": 64,
+      "all_non_timing_fields_equal": true,
+      "timings_gcc13": {
+        "preparation_us": 180,
+        "native_raster_us": 144040,
+        "raster_and_copy_us": 144301
+      },
+      "timings_gcc14": {
+        "preparation_us": 156,
+        "native_raster_us": 141923,
+        "raster_and_copy_us": 142169
+      }
+    },
+    {
+      "name": "14-thin-structure",
+      "module": "interlaced_viaduct",
+      "seed": 271828,
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "f0968f2674bf5ee46ffd95b64e61af0613a24ac88d8ac3ec0c431781f60e12de",
+      "png_sha256": "15b52acfebfd908c6f71bd215a2f7793a28e2c36acdfbde52d094b4bfc25e8c1",
+      "original_case_json_sha256": [
+        "5a0b3d747aff43a28db054289e2cc89757264c79141fc98b41817710e3b1ce64",
+        "028c40ace536dee91c8f8f20e8f0a930f589f2171568ccdcdcd78db0243a2903"
+      ],
+      "chunk_receipts": 64,
+      "all_non_timing_fields_equal": true,
+      "timings_gcc13": {
+        "preparation_us": 178,
+        "native_raster_us": 144164,
+        "raster_and_copy_us": 144417
+      },
+      "timings_gcc14": {
+        "preparation_us": 161,
+        "native_raster_us": 143507,
+        "raster_and_copy_us": 143755
+      }
+    },
+    {
+      "name": "15-heavy-structure",
+      "module": "interlaced_viaduct",
+      "seed": 271828,
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "f37f3f545bc31733d828d45b6b0d6a64df53bc1a9a66bade41456fffde4affcd",
+      "png_sha256": "69d84109dc0575cd5c08f8b863e716455585522375201608524633e505cbc102",
+      "original_case_json_sha256": [
+        "6c6da002e4f96950f30aa810e8e3293857aa19e5908cb9e39bb2739f9f9cb87e",
+        "0a44d1d14650c7afe4c04ca1a1c349a4aabbdb724c434bf7616b112aecde1378"
+      ],
+      "chunk_receipts": 64,
+      "all_non_timing_fields_equal": true,
+      "timings_gcc13": {
+        "preparation_us": 213,
+        "native_raster_us": 144878,
+        "raster_and_copy_us": 145137
+      },
+      "timings_gcc14": {
+        "preparation_us": 161,
+        "native_raster_us": 143763,
+        "raster_and_copy_us": 144015
+      }
+    },
+    {
+      "name": "16-windows-on",
+      "module": "interlaced_viaduct",
+      "seed": 271828,
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "1a3ed6b187e66b695f78134b876c6a8aa2ff5b04763e18fa5c1373ac23f8069c",
+      "png_sha256": "3adef13ce59b67aeaf46f4eac4f2f33a4821d6c87e2777ece5ed1a0a28f41cca",
+      "original_case_json_sha256": [
+        "3d728c33acd4610685022d863c8efc9c2da34f8698000c4e3e9c1f3ebaca981f",
+        "bf2df4d598678b1e4675a4b6e7079e3fe53bce7caf5b8c92e811264765f66059"
+      ],
+      "chunk_receipts": 64,
+      "all_non_timing_fields_equal": true,
+      "timings_gcc13": {
+        "preparation_us": 195,
+        "native_raster_us": 143913,
+        "raster_and_copy_us": 144167
+      },
+      "timings_gcc14": {
+        "preparation_us": 159,
+        "native_raster_us": 142113,
+        "raster_and_copy_us": 142366
+      }
+    },
+    {
+      "name": "17-windows-off",
+      "module": "interlaced_viaduct",
+      "seed": 271828,
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "46142b6274ae9eaca39f2fe428a302976133bccad4c2f5ba7d8fd1dabc7cbfd7",
+      "png_sha256": "82b4199973e02d658062a46682f7b867f4a3b7aa5e49026b37cea8a4c6664d00",
+      "original_case_json_sha256": [
+        "bb6af74106f82db94b1da92180f0651d5c92b202ebbf2de0b9643bfc058183f5",
+        "38339993d7aa3f49333971807a7df4839a65b75a69fa9a9dcefefd86f91efb9d"
+      ],
+      "chunk_receipts": 64,
+      "all_non_timing_fields_equal": true,
+      "timings_gcc13": {
+        "preparation_us": 180,
+        "native_raster_us": 143516,
+        "raster_and_copy_us": 143762
+      },
+      "timings_gcc14": {
+        "preparation_us": 171,
+        "native_raster_us": 142602,
+        "raster_and_copy_us": 142858
+      }
+    },
+    {
+      "name": "18-doors-on",
+      "module": "interlaced_viaduct",
+      "seed": 271828,
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "1a3ed6b187e66b695f78134b876c6a8aa2ff5b04763e18fa5c1373ac23f8069c",
+      "png_sha256": "3adef13ce59b67aeaf46f4eac4f2f33a4821d6c87e2777ece5ed1a0a28f41cca",
+      "original_case_json_sha256": [
+        "a2e76e7b01432e300fd150d58eb697197bdf7013dc5d041cb018d91df84fe53a",
+        "c00066ceb8664d6a20df9da413b20578e092911428182535a6720cb3c2ea186b"
+      ],
+      "chunk_receipts": 64,
+      "all_non_timing_fields_equal": true,
+      "timings_gcc13": {
+        "preparation_us": 182,
+        "native_raster_us": 144386,
+        "raster_and_copy_us": 144641
+      },
+      "timings_gcc14": {
+        "preparation_us": 162,
+        "native_raster_us": 143996,
+        "raster_and_copy_us": 144245
+      }
+    },
+    {
+      "name": "19-doors-off",
+      "module": "interlaced_viaduct",
+      "seed": 271828,
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "a8d24c266663c42a2443a284b671f8599314cd2c4590c37b338be2e9400c39c2",
+      "png_sha256": "a049c33335cfc6f27973f144797cc324a80061e6e023b29e0005f8eee5039572",
+      "original_case_json_sha256": [
+        "337c18b051e51e39e653bccfdc3631d3e2495841fe9341d77da2d171b0b8cd8d",
+        "e4c26c500bb885f2e6f704d553c6618eae2a51e69d411a6dc63ad233b7f58306"
+      ],
+      "chunk_receipts": 64,
+      "all_non_timing_fields_equal": true,
+      "timings_gcc13": {
+        "preparation_us": 183,
+        "native_raster_us": 143874,
+        "raster_and_copy_us": 144123
+      },
+      "timings_gcc14": {
+        "preparation_us": 156,
+        "native_raster_us": 144881,
+        "raster_and_copy_us": 145131
+      }
+    },
+    {
+      "name": "20-negative-origin",
+      "module": "interlaced_viaduct",
+      "seed": 271828,
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "1a3ed6b187e66b695f78134b876c6a8aa2ff5b04763e18fa5c1373ac23f8069c",
+      "png_sha256": "3adef13ce59b67aeaf46f4eac4f2f33a4821d6c87e2777ece5ed1a0a28f41cca",
+      "original_case_json_sha256": [
+        "17738a9c1d304d99002073ab7faea43bae00b9c684dc9601a46bd83612c25e69",
+        "6c07833a7c6d77659894615ad7fc325c2d6d14bd5e6988516cf8d24542c3d78e"
+      ],
+      "chunk_receipts": 81,
+      "all_non_timing_fields_equal": true,
+      "timings_gcc13": {
+        "preparation_us": 185,
+        "native_raster_us": 166558,
+        "raster_and_copy_us": 166853
+      },
+      "timings_gcc14": {
+        "preparation_us": 178,
+        "native_raster_us": 165889,
+        "raster_and_copy_us": 166190
+      }
+    },
+    {
+      "name": "21-arched-viaduct",
+      "module": "arcade",
+      "seed": 271828,
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "4f7a1e5fa21bcba2504e7335634564748fe0eeca33ff04b66afde97b4f84de2e",
+      "png_sha256": "73130b02f4dd5a4660ca3edf60cbb2fc183fdd5fd90d964b6a4975fc6baa9066",
+      "original_case_json_sha256": [
+        "5230e6a0aa550db952b864925ad8e21a4eebf08b192817546356cfce8ab9cf0e",
+        "89f693e67be695ba716c38ee6cc231bfa3a9657a5d7f3394e2fde233716615b4"
+      ],
+      "chunk_receipts": 64,
+      "all_non_timing_fields_equal": true,
+      "timings_gcc13": {
+        "preparation_us": 180,
+        "native_raster_us": 140146,
+        "raster_and_copy_us": 140402
+      },
+      "timings_gcc14": {
+        "preparation_us": 157,
+        "native_raster_us": 136128,
+        "raster_and_copy_us": 136375
+      }
+    },
+    {
+      "name": "22-hanging-arcade",
+      "module": "hanging_arcade",
+      "seed": 271828,
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "2dc410d092aee3c8f3f06eea2a62114429781a8ad8e18e00c422d616b79f568e",
+      "png_sha256": "0e76317df577ad913d24286caa747363b71555b16196f435a91055da76797204",
+      "original_case_json_sha256": [
+        "7b93402902d52bff06cd523bb6bdb622f02978a5b9f1863209b2a6990633b3cf",
+        "689fde720b204b12df48385726fd76875409e82c35f32ac603538caa2887df3b"
+      ],
+      "chunk_receipts": 64,
+      "all_non_timing_fields_equal": true,
+      "timings_gcc13": {
+        "preparation_us": 192,
+        "native_raster_us": 138709,
+        "raster_and_copy_us": 138957
+      },
+      "timings_gcc14": {
+        "preparation_us": 159,
+        "native_raster_us": 134941,
+        "raster_and_copy_us": 135192
+      }
+    },
+    {
+      "name": "23-suspended-deck",
+      "module": "suspended_deck",
+      "seed": 271828,
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "b7e46a4139dad628e21cb28a3e9b513be63690b1a48812a32c0c8f44ff66b757",
+      "png_sha256": "5e24c5903469776e55d292257d419b108da17d5d275eaaef9a208e145f3d3a88",
+      "original_case_json_sha256": [
+        "9896277771fee2c41585116a0bed3e165aedd7402a93b3221a98f116fe094b44",
+        "fcbd6300ce68373f4d670fae34d4fd27873c7b777ba094d46be17f44d2f15add"
+      ],
+      "chunk_receipts": 64,
+      "all_non_timing_fields_equal": true,
+      "timings_gcc13": {
+        "preparation_us": 193,
+        "native_raster_us": 138838,
+        "raster_and_copy_us": 139084
+      },
+      "timings_gcc14": {
+        "preparation_us": 163,
+        "native_raster_us": 137960,
+        "raster_and_copy_us": 138207
+      }
+    },
+    {
+      "name": "24-primary-only",
+      "module": "interlaced_viaduct",
+      "seed": 271828,
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "9ce8458abdb01c82947dac949e7fd2c12088465bf0705500a56a5a2916afc820",
+      "png_sha256": "3bf8ae16e050bd24d0afc25a7e11eb35db005a590e842f0f6ae90bd383c98754",
+      "original_case_json_sha256": [
+        "3974e238e86fe1fe5dc8e54325d240efafb4f5e3b07aae256b0ff221194a7fd2",
+        "f70f411791a8df0d66bc16535e2cfd19437309bb791b6c18de06a6fdf6139749"
+      ],
+      "chunk_receipts": 0,
+      "all_non_timing_fields_equal": true,
+      "timings_gcc13": {
+        "preparation_us": 180,
+        "native_raster_us": 144921,
+        "raster_and_copy_us": 151910
+      },
+      "timings_gcc14": {
+        "preparation_us": 160,
+        "native_raster_us": 143600,
+        "raster_and_copy_us": 150600
+      }
+    },
+    {
+      "name": "25-secondary-only",
+      "module": "interlaced_viaduct",
+      "seed": 271828,
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "18f0790c7f2af4cfb424c788274aed91037629e148dc3048638c79e5f0c61116",
+      "png_sha256": "2bc7148f227ff9bac65c69b4b5e1a2d12d7a15488c744c3ec01ef639c1b14660",
+      "original_case_json_sha256": [
+        "0d84905cd6288ed86095d9b4ca2745b61c4f235944436872ab66aed41fe939b0",
+        "066c287577bd36973e46ca945b208c681d61cc6254b550805d049613fd00d4b4"
+      ],
+      "chunk_receipts": 0,
+      "all_non_timing_fields_equal": true,
+      "timings_gcc13": {
+        "preparation_us": 191,
+        "native_raster_us": 145167,
+        "raster_and_copy_us": 152111
+      },
+      "timings_gcc14": {
+        "preparation_us": 158,
+        "native_raster_us": 143762,
+        "raster_and_copy_us": 150716
+      }
+    },
+    {
+      "name": "26-combined",
+      "module": "interlaced_viaduct",
+      "seed": 271828,
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "1a3ed6b187e66b695f78134b876c6a8aa2ff5b04763e18fa5c1373ac23f8069c",
+      "png_sha256": "3adef13ce59b67aeaf46f4eac4f2f33a4821d6c87e2777ece5ed1a0a28f41cca",
+      "original_case_json_sha256": [
+        "3e4d6f47a61016d27586e0774e693ea1de258af2789feb94346f248a9c98df08",
+        "f076170c770238c029c74609663a4632934de26c8b575315a638ad896fee0e5b"
+      ],
+      "chunk_receipts": 64,
+      "all_non_timing_fields_equal": true,
+      "timings_gcc13": {
+        "preparation_us": 195,
+        "native_raster_us": 143978,
+        "raster_and_copy_us": 144235
+      },
+      "timings_gcc14": {
+        "preparation_us": 163,
+        "native_raster_us": 143402,
+        "raster_and_copy_us": 143663
+      }
+    }
+  ],
+  "original_artifact_members_rechecked": 174,
+  "proof_files_sha256": {
+    "compiler-cache.log": "1e0824e89a5040f0f2f12e0f933b20bfe840c74fff3a8eee706965b3596f02fb",
+    "interlaced-compiler-parity.json": "ca5aaf79cd22ee1f00e2b5411ccff1f93e8db2e34cc29efde7942ccb54bd7fe8",
+    "interlaced-gcc13.log": "0554e445417cb9ef35953e11e1b60157ceb11357bc4049f2efbf54a92c2a952e",
+    "interlaced-gcc13/01-hero-512.cells": "1a3ed6b187e66b695f78134b876c6a8aa2ff5b04763e18fa5c1373ac23f8069c",
+    "interlaced-gcc13/01-hero-512.json": "619fc22b674a6df1f54929944c21093e10473d63f262c3270fe939edaaae3fd9",
+    "interlaced-gcc13/01-hero-512.png": "3adef13ce59b67aeaf46f4eac4f2f33a4821d6c87e2777ece5ed1a0a28f41cca",
+    "interlaced-gcc13/02-hero-landscape.cells": "64b25b1b520dc3b3b7ca897dec557aa72efc90580cdf6816af997c8d0c64b5dd",
+    "interlaced-gcc13/02-hero-landscape.json": "ae72f213e4bb30bb25917d5c15e5bc18b8a3e89501901d871381bf480a4ed7f3",
+    "interlaced-gcc13/02-hero-landscape.png": "20db43639d93aecf00fdd69d371bb61c7fe448a73da7084b69683ccd62351c2d",
+    "interlaced-gcc13/03-hero-large.cells": "a2eaf92f18e78cdc73b1428233c552cc011bd8a0d9eb12bd447bf3652942d1b1",
+    "interlaced-gcc13/03-hero-large.json": "6d61632e154786d0ba33c02ca9476ef1e7102bc784bed6ead5ff14c3b8aab7df",
+    "interlaced-gcc13/03-hero-large.png": "f6680595f2c66963b1ed17108100d6db161b7ec44b19ea54e890de2d05853c47",
+    "interlaced-gcc13/04-seed-1.cells": "1d9d79346677913ff95e787b2ae37a85dff79d69dc512ce05c9af18ddd77d3c2",
+    "interlaced-gcc13/04-seed-1.json": "2ff2a071dd6c7c0af0cb51cba407e355692c0efaa05ea4434a9e884ce277df13",
+    "interlaced-gcc13/04-seed-1.png": "55d5e800fc8d0ebabcf282a6b68dc5811877130b37a3007f473b0f29463ec966",
+    "interlaced-gcc13/05-seed-7.cells": "a128f2953eecd43db70e3dba37843d12a56935e25f631b949fbc17da600ceb40",
+    "interlaced-gcc13/05-seed-7.json": "68afc46275805408b6bb5bd7c8b53f1ed1c9d47a6e9a2cfcd3712854ee5f3cf9",
+    "interlaced-gcc13/05-seed-7.png": "e33cd16789969705a89a098bad7c082ff439215bd5bad79edf3474f5527c5939",
+    "interlaced-gcc13/06-seed-19.cells": "5e9e38ff923b5e74f4908e29a8b0e84f8f6a3dd16297c6b4cf86fed783b513d3",
+    "interlaced-gcc13/06-seed-19.json": "f0176f7c588541fd37569db0c653dcb4f2a4215a932b205192586f2652f75ea9",
+    "interlaced-gcc13/06-seed-19.png": "8821e82e72150242a60d0ab8ec42eecfa2e59e139c01f97b756a96a4b050ef08",
+    "interlaced-gcc13/07-seed-42.cells": "919a7954e8cb16d59aa88b41c0a7dfd879cf98e40a84a7f359b9453d66ca740f",
+    "interlaced-gcc13/07-seed-42.json": "913d0cc77b373015a40783dd20b86a2cc35db2e6d1cdd2313a4461dd5c987c40",
+    "interlaced-gcc13/07-seed-42.png": "475f760d0ced6b76779a4e80b9e71be93f7314ffc4fec61256a0bf176de19c27",
+    "interlaced-gcc13/08-seed-271828.cells": "1a3ed6b187e66b695f78134b876c6a8aa2ff5b04763e18fa5c1373ac23f8069c",
+    "interlaced-gcc13/08-seed-271828.json": "a3bd8a46bb8e52f5713c858c7bbdd6c188f2a81405d1a5cfcb99ed98b12f62f2",
+    "interlaced-gcc13/08-seed-271828.png": "3adef13ce59b67aeaf46f4eac4f2f33a4821d6c87e2777ece5ed1a0a28f41cca",
+    "interlaced-gcc13/09-seed-8675309.cells": "dfc47ca3fdd7f6661cb08b7a0ffa9c8b992f21bead1f7f2d2401cbbb9b42575e",
+    "interlaced-gcc13/09-seed-8675309.json": "0c3066de7f01ef6474f5460c31fe607a93e5b2f3b226682fb4de6244a38f2dfb",
+    "interlaced-gcc13/09-seed-8675309.png": "011b7914786594776b7228f734ef30efe6bff4d9c1aa3f1aeb258a60bc02c6a3",
+    "interlaced-gcc13/10-narrow-bay.cells": "f987d598b13389e6698c6345a2c7014b8d6c8e48bc05ec3bb5bd8ecbc9aa11c0",
+    "interlaced-gcc13/10-narrow-bay.json": "d460d1475184be175b18f29f7d8cbc0503fd68fdc5beb0226363e80886ca9162",
+    "interlaced-gcc13/10-narrow-bay.png": "184fd149db92b68cb65de14edc96d72c9d52f60bddf98711885e20b02b0874f5",
+    "interlaced-gcc13/11-broad-bay.cells": "bbbea501a0bb7df8dabb3e5254bc645452cec6cd45cb5f41d98d4a7c77915212",
+    "interlaced-gcc13/11-broad-bay.json": "755b86010de90c797da854f92bfd4acdef29132db69c1f9f45504adbb8ff367d",
+    "interlaced-gcc13/11-broad-bay.png": "e353bb46fe0160a733503614eaa5eeb00ef4cd5a9db4d46d5dda8147aef1c1c5",
+    "interlaced-gcc13/12-short-vertical.cells": "12cfe70a511540b3ce11bd342f2343b7059fcbfa720a64a472d82eaa24a36497",
+    "interlaced-gcc13/12-short-vertical.json": "52ba497ce9bcdd7f621232c3d430016efbdf604fe7a9e7a3d878f30747f39839",
+    "interlaced-gcc13/12-short-vertical.png": "64f8931f7ffb15040e089d488033753a8011ab4aeef812d37ec9f5da212534ce",
+    "interlaced-gcc13/13-tall-vertical.cells": "5825423a078e8e626dfcb8652feb64d46374b57221c22e6a4a1dc095095e9468",
+    "interlaced-gcc13/13-tall-vertical.json": "65221b43180f5243fa249c1bed8d427e9fa559b06d714e57e378aebe371ce564",
+    "interlaced-gcc13/13-tall-vertical.png": "8ba9bdd8977e18d58f71e90aea7861343c5fda4214aeb280c33532cc5a1834d7",
+    "interlaced-gcc13/14-thin-structure.cells": "f0968f2674bf5ee46ffd95b64e61af0613a24ac88d8ac3ec0c431781f60e12de",
+    "interlaced-gcc13/14-thin-structure.json": "5a0b3d747aff43a28db054289e2cc89757264c79141fc98b41817710e3b1ce64",
+    "interlaced-gcc13/14-thin-structure.png": "15b52acfebfd908c6f71bd215a2f7793a28e2c36acdfbde52d094b4bfc25e8c1",
+    "interlaced-gcc13/15-heavy-structure.cells": "f37f3f545bc31733d828d45b6b0d6a64df53bc1a9a66bade41456fffde4affcd",
+    "interlaced-gcc13/15-heavy-structure.json": "6c6da002e4f96950f30aa810e8e3293857aa19e5908cb9e39bb2739f9f9cb87e",
+    "interlaced-gcc13/15-heavy-structure.png": "69d84109dc0575cd5c08f8b863e716455585522375201608524633e505cbc102",
+    "interlaced-gcc13/16-windows-on.cells": "1a3ed6b187e66b695f78134b876c6a8aa2ff5b04763e18fa5c1373ac23f8069c",
+    "interlaced-gcc13/16-windows-on.json": "3d728c33acd4610685022d863c8efc9c2da34f8698000c4e3e9c1f3ebaca981f",
+    "interlaced-gcc13/16-windows-on.png": "3adef13ce59b67aeaf46f4eac4f2f33a4821d6c87e2777ece5ed1a0a28f41cca",
+    "interlaced-gcc13/17-windows-off.cells": "46142b6274ae9eaca39f2fe428a302976133bccad4c2f5ba7d8fd1dabc7cbfd7",
+    "interlaced-gcc13/17-windows-off.json": "bb6af74106f82db94b1da92180f0651d5c92b202ebbf2de0b9643bfc058183f5",
+    "interlaced-gcc13/17-windows-off.png": "82b4199973e02d658062a46682f7b867f4a3b7aa5e49026b37cea8a4c6664d00",
+    "interlaced-gcc13/18-doors-on.cells": "1a3ed6b187e66b695f78134b876c6a8aa2ff5b04763e18fa5c1373ac23f8069c",
+    "interlaced-gcc13/18-doors-on.json": "a2e76e7b01432e300fd150d58eb697197bdf7013dc5d041cb018d91df84fe53a",
+    "interlaced-gcc13/18-doors-on.png": "3adef13ce59b67aeaf46f4eac4f2f33a4821d6c87e2777ece5ed1a0a28f41cca",
+    "interlaced-gcc13/19-doors-off.cells": "a8d24c266663c42a2443a284b671f8599314cd2c4590c37b338be2e9400c39c2",
+    "interlaced-gcc13/19-doors-off.json": "337c18b051e51e39e653bccfdc3631d3e2495841fe9341d77da2d171b0b8cd8d",
+    "interlaced-gcc13/19-doors-off.png": "a049c33335cfc6f27973f144797cc324a80061e6e023b29e0005f8eee5039572",
+    "interlaced-gcc13/20-negative-origin.cells": "1a3ed6b187e66b695f78134b876c6a8aa2ff5b04763e18fa5c1373ac23f8069c",
+    "interlaced-gcc13/20-negative-origin.json": "17738a9c1d304d99002073ab7faea43bae00b9c684dc9601a46bd83612c25e69",
+    "interlaced-gcc13/20-negative-origin.png": "3adef13ce59b67aeaf46f4eac4f2f33a4821d6c87e2777ece5ed1a0a28f41cca",
+    "interlaced-gcc13/21-arched-viaduct.cells": "4f7a1e5fa21bcba2504e7335634564748fe0eeca33ff04b66afde97b4f84de2e",
+    "interlaced-gcc13/21-arched-viaduct.json": "5230e6a0aa550db952b864925ad8e21a4eebf08b192817546356cfce8ab9cf0e",
+    "interlaced-gcc13/21-arched-viaduct.png": "73130b02f4dd5a4660ca3edf60cbb2fc183fdd5fd90d964b6a4975fc6baa9066",
+    "interlaced-gcc13/22-hanging-arcade.cells": "2dc410d092aee3c8f3f06eea2a62114429781a8ad8e18e00c422d616b79f568e",
+    "interlaced-gcc13/22-hanging-arcade.json": "7b93402902d52bff06cd523bb6bdb622f02978a5b9f1863209b2a6990633b3cf",
+    "interlaced-gcc13/22-hanging-arcade.png": "0e76317df577ad913d24286caa747363b71555b16196f435a91055da76797204",
+    "interlaced-gcc13/23-suspended-deck.cells": "b7e46a4139dad628e21cb28a3e9b513be63690b1a48812a32c0c8f44ff66b757",
+    "interlaced-gcc13/23-suspended-deck.json": "9896277771fee2c41585116a0bed3e165aedd7402a93b3221a98f116fe094b44",
+    "interlaced-gcc13/23-suspended-deck.png": "5e24c5903469776e55d292257d419b108da17d5d275eaaef9a208e145f3d3a88",
+    "interlaced-gcc13/24-primary-only.cells": "9ce8458abdb01c82947dac949e7fd2c12088465bf0705500a56a5a2916afc820",
+    "interlaced-gcc13/24-primary-only.json": "3974e238e86fe1fe5dc8e54325d240efafb4f5e3b07aae256b0ff221194a7fd2",
+    "interlaced-gcc13/24-primary-only.png": "3bf8ae16e050bd24d0afc25a7e11eb35db005a590e842f0f6ae90bd383c98754",
+    "interlaced-gcc13/25-secondary-only.cells": "18f0790c7f2af4cfb424c788274aed91037629e148dc3048638c79e5f0c61116",
+    "interlaced-gcc13/25-secondary-only.json": "0d84905cd6288ed86095d9b4ca2745b61c4f235944436872ab66aed41fe939b0",
+    "interlaced-gcc13/25-secondary-only.png": "2bc7148f227ff9bac65c69b4b5e1a2d12d7a15488c744c3ec01ef639c1b14660",
+    "interlaced-gcc13/26-combined.cells": "1a3ed6b187e66b695f78134b876c6a8aa2ff5b04763e18fa5c1373ac23f8069c",
+    "interlaced-gcc13/26-combined.json": "3e4d6f47a61016d27586e0774e693ea1de258af2789feb94346f248a9c98df08",
+    "interlaced-gcc13/26-combined.png": "3adef13ce59b67aeaf46f4eac4f2f33a4821d6c87e2777ece5ed1a0a28f41cca",
+    "interlaced-gcc13/exact-source-inputs.zip": "b8d95ffd347a8bda5346233cb7c47b2ba9ae97f6e52b50cdfde5423972b83ee8",
+    "interlaced-gcc13/exporter-build.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "interlaced-gcc13/layer-checks.json": "6876f4d6ce6e54c74f918144fa48bfb11ce15deabd68fb5126d0dcd301d8336a",
+    "interlaced-gcc13/manifest.json": "a7d18237116304dd6aff8c60077c413da2515f274f4ad4de0c9e9c67b617508d",
+    "interlaced-gcc13/source-inputs.json": "36ae2fed4ea4d8b50dc6e0e527d896d983448ead7774364bbcda7398592ad8a1",
+    "interlaced-gcc14.log": "4b074e845a9afc031f8a8b7e4aeeab4e9739f38aba701ed80f3363df0a8d1b7a",
+    "interlaced-gcc14/01-hero-512.cells": "1a3ed6b187e66b695f78134b876c6a8aa2ff5b04763e18fa5c1373ac23f8069c",
+    "interlaced-gcc14/01-hero-512.json": "4fbdc9b1fc0c8d4674cb2a26a54f6f2b71fe5168f9379239c71513428a8b522f",
+    "interlaced-gcc14/01-hero-512.png": "3adef13ce59b67aeaf46f4eac4f2f33a4821d6c87e2777ece5ed1a0a28f41cca",
+    "interlaced-gcc14/02-hero-landscape.cells": "64b25b1b520dc3b3b7ca897dec557aa72efc90580cdf6816af997c8d0c64b5dd",
+    "interlaced-gcc14/02-hero-landscape.json": "a067622cf46dd0b9c7287a8f159a7935970002b4f39692469ee1acb05914f092",
+    "interlaced-gcc14/02-hero-landscape.png": "20db43639d93aecf00fdd69d371bb61c7fe448a73da7084b69683ccd62351c2d",
+    "interlaced-gcc14/03-hero-large.cells": "a2eaf92f18e78cdc73b1428233c552cc011bd8a0d9eb12bd447bf3652942d1b1",
+    "interlaced-gcc14/03-hero-large.json": "16be08748c6b4005886d00b68734432a234f16034ead9d37663817d65d02af5c",
+    "interlaced-gcc14/03-hero-large.png": "f6680595f2c66963b1ed17108100d6db161b7ec44b19ea54e890de2d05853c47",
+    "interlaced-gcc14/04-seed-1.cells": "1d9d79346677913ff95e787b2ae37a85dff79d69dc512ce05c9af18ddd77d3c2",
+    "interlaced-gcc14/04-seed-1.json": "20be8546665345fb0abc0a0f323b5409b21a6392cc46b5e134cb4fc08ab0593d",
+    "interlaced-gcc14/04-seed-1.png": "55d5e800fc8d0ebabcf282a6b68dc5811877130b37a3007f473b0f29463ec966",
+    "interlaced-gcc14/05-seed-7.cells": "a128f2953eecd43db70e3dba37843d12a56935e25f631b949fbc17da600ceb40",
+    "interlaced-gcc14/05-seed-7.json": "702a497abb6253a099930725eb394a6834e35aeaa6c6823a4dcaea477e0745f2",
+    "interlaced-gcc14/05-seed-7.png": "e33cd16789969705a89a098bad7c082ff439215bd5bad79edf3474f5527c5939",
+    "interlaced-gcc14/06-seed-19.cells": "5e9e38ff923b5e74f4908e29a8b0e84f8f6a3dd16297c6b4cf86fed783b513d3",
+    "interlaced-gcc14/06-seed-19.json": "45d85d690325408e453a9c2aab12dee12a4b637246394cda4a9be79977a98573",
+    "interlaced-gcc14/06-seed-19.png": "8821e82e72150242a60d0ab8ec42eecfa2e59e139c01f97b756a96a4b050ef08",
+    "interlaced-gcc14/07-seed-42.cells": "919a7954e8cb16d59aa88b41c0a7dfd879cf98e40a84a7f359b9453d66ca740f",
+    "interlaced-gcc14/07-seed-42.json": "9aa12e5d2d52efaee18deb608225157c047ce32dbbb18251505947c922313785",
+    "interlaced-gcc14/07-seed-42.png": "475f760d0ced6b76779a4e80b9e71be93f7314ffc4fec61256a0bf176de19c27",
+    "interlaced-gcc14/08-seed-271828.cells": "1a3ed6b187e66b695f78134b876c6a8aa2ff5b04763e18fa5c1373ac23f8069c",
+    "interlaced-gcc14/08-seed-271828.json": "8f62f39de5d072f0c23ad3743637d0537cf7d9bcb7b5c44c2f09b4966cb1cbf6",
+    "interlaced-gcc14/08-seed-271828.png": "3adef13ce59b67aeaf46f4eac4f2f33a4821d6c87e2777ece5ed1a0a28f41cca",
+    "interlaced-gcc14/09-seed-8675309.cells": "dfc47ca3fdd7f6661cb08b7a0ffa9c8b992f21bead1f7f2d2401cbbb9b42575e",
+    "interlaced-gcc14/09-seed-8675309.json": "531d87da857c31a15a9d4ee32b9f86f87a9328fdaeb8e20802323ea5602fb58e",
+    "interlaced-gcc14/09-seed-8675309.png": "011b7914786594776b7228f734ef30efe6bff4d9c1aa3f1aeb258a60bc02c6a3",
+    "interlaced-gcc14/10-narrow-bay.cells": "f987d598b13389e6698c6345a2c7014b8d6c8e48bc05ec3bb5bd8ecbc9aa11c0",
+    "interlaced-gcc14/10-narrow-bay.json": "b0065d1100203c2fef3f72c0a0dc97805404cae76c75ccb1c21398a21f811da5",
+    "interlaced-gcc14/10-narrow-bay.png": "184fd149db92b68cb65de14edc96d72c9d52f60bddf98711885e20b02b0874f5",
+    "interlaced-gcc14/11-broad-bay.cells": "bbbea501a0bb7df8dabb3e5254bc645452cec6cd45cb5f41d98d4a7c77915212",
+    "interlaced-gcc14/11-broad-bay.json": "25afe4d226ecfe7f031d28619383897e739c45e38bb72fc376a03ef1f65ff7bf",
+    "interlaced-gcc14/11-broad-bay.png": "e353bb46fe0160a733503614eaa5eeb00ef4cd5a9db4d46d5dda8147aef1c1c5",
+    "interlaced-gcc14/12-short-vertical.cells": "12cfe70a511540b3ce11bd342f2343b7059fcbfa720a64a472d82eaa24a36497",
+    "interlaced-gcc14/12-short-vertical.json": "7b5b300d4c60164daba5c86bf1be7edcf379c29ac311183e26edd99577214040",
+    "interlaced-gcc14/12-short-vertical.png": "64f8931f7ffb15040e089d488033753a8011ab4aeef812d37ec9f5da212534ce",
+    "interlaced-gcc14/13-tall-vertical.cells": "5825423a078e8e626dfcb8652feb64d46374b57221c22e6a4a1dc095095e9468",
+    "interlaced-gcc14/13-tall-vertical.json": "4d2891e2307372f22f4f368f6c918efd5591531f7dc77968831085bca0e20f34",
+    "interlaced-gcc14/13-tall-vertical.png": "8ba9bdd8977e18d58f71e90aea7861343c5fda4214aeb280c33532cc5a1834d7",
+    "interlaced-gcc14/14-thin-structure.cells": "f0968f2674bf5ee46ffd95b64e61af0613a24ac88d8ac3ec0c431781f60e12de",
+    "interlaced-gcc14/14-thin-structure.json": "028c40ace536dee91c8f8f20e8f0a930f589f2171568ccdcdcd78db0243a2903",
+    "interlaced-gcc14/14-thin-structure.png": "15b52acfebfd908c6f71bd215a2f7793a28e2c36acdfbde52d094b4bfc25e8c1",
+    "interlaced-gcc14/15-heavy-structure.cells": "f37f3f545bc31733d828d45b6b0d6a64df53bc1a9a66bade41456fffde4affcd",
+    "interlaced-gcc14/15-heavy-structure.json": "0a44d1d14650c7afe4c04ca1a1c349a4aabbdb724c434bf7616b112aecde1378",
+    "interlaced-gcc14/15-heavy-structure.png": "69d84109dc0575cd5c08f8b863e716455585522375201608524633e505cbc102",
+    "interlaced-gcc14/16-windows-on.cells": "1a3ed6b187e66b695f78134b876c6a8aa2ff5b04763e18fa5c1373ac23f8069c",
+    "interlaced-gcc14/16-windows-on.json": "bf2df4d598678b1e4675a4b6e7079e3fe53bce7caf5b8c92e811264765f66059",
+    "interlaced-gcc14/16-windows-on.png": "3adef13ce59b67aeaf46f4eac4f2f33a4821d6c87e2777ece5ed1a0a28f41cca",
+    "interlaced-gcc14/17-windows-off.cells": "46142b6274ae9eaca39f2fe428a302976133bccad4c2f5ba7d8fd1dabc7cbfd7",
+    "interlaced-gcc14/17-windows-off.json": "38339993d7aa3f49333971807a7df4839a65b75a69fa9a9dcefefd86f91efb9d",
+    "interlaced-gcc14/17-windows-off.png": "82b4199973e02d658062a46682f7b867f4a3b7aa5e49026b37cea8a4c6664d00",
+    "interlaced-gcc14/18-doors-on.cells": "1a3ed6b187e66b695f78134b876c6a8aa2ff5b04763e18fa5c1373ac23f8069c",
+    "interlaced-gcc14/18-doors-on.json": "c00066ceb8664d6a20df9da413b20578e092911428182535a6720cb3c2ea186b",
+    "interlaced-gcc14/18-doors-on.png": "3adef13ce59b67aeaf46f4eac4f2f33a4821d6c87e2777ece5ed1a0a28f41cca",
+    "interlaced-gcc14/19-doors-off.cells": "a8d24c266663c42a2443a284b671f8599314cd2c4590c37b338be2e9400c39c2",
+    "interlaced-gcc14/19-doors-off.json": "e4c26c500bb885f2e6f704d553c6618eae2a51e69d411a6dc63ad233b7f58306",
+    "interlaced-gcc14/19-doors-off.png": "a049c33335cfc6f27973f144797cc324a80061e6e023b29e0005f8eee5039572",
+    "interlaced-gcc14/20-negative-origin.cells": "1a3ed6b187e66b695f78134b876c6a8aa2ff5b04763e18fa5c1373ac23f8069c",
+    "interlaced-gcc14/20-negative-origin.json": "6c07833a7c6d77659894615ad7fc325c2d6d14bd5e6988516cf8d24542c3d78e",
+    "interlaced-gcc14/20-negative-origin.png": "3adef13ce59b67aeaf46f4eac4f2f33a4821d6c87e2777ece5ed1a0a28f41cca",
+    "interlaced-gcc14/21-arched-viaduct.cells": "4f7a1e5fa21bcba2504e7335634564748fe0eeca33ff04b66afde97b4f84de2e",
+    "interlaced-gcc14/21-arched-viaduct.json": "89f693e67be695ba716c38ee6cc231bfa3a9657a5d7f3394e2fde233716615b4",
+    "interlaced-gcc14/21-arched-viaduct.png": "73130b02f4dd5a4660ca3edf60cbb2fc183fdd5fd90d964b6a4975fc6baa9066",
+    "interlaced-gcc14/22-hanging-arcade.cells": "2dc410d092aee3c8f3f06eea2a62114429781a8ad8e18e00c422d616b79f568e",
+    "interlaced-gcc14/22-hanging-arcade.json": "689fde720b204b12df48385726fd76875409e82c35f32ac603538caa2887df3b",
+    "interlaced-gcc14/22-hanging-arcade.png": "0e76317df577ad913d24286caa747363b71555b16196f435a91055da76797204",
+    "interlaced-gcc14/23-suspended-deck.cells": "b7e46a4139dad628e21cb28a3e9b513be63690b1a48812a32c0c8f44ff66b757",
+    "interlaced-gcc14/23-suspended-deck.json": "fcbd6300ce68373f4d670fae34d4fd27873c7b777ba094d46be17f44d2f15add",
+    "interlaced-gcc14/23-suspended-deck.png": "5e24c5903469776e55d292257d419b108da17d5d275eaaef9a208e145f3d3a88",
+    "interlaced-gcc14/24-primary-only.cells": "9ce8458abdb01c82947dac949e7fd2c12088465bf0705500a56a5a2916afc820",
+    "interlaced-gcc14/24-primary-only.json": "f70f411791a8df0d66bc16535e2cfd19437309bb791b6c18de06a6fdf6139749",
+    "interlaced-gcc14/24-primary-only.png": "3bf8ae16e050bd24d0afc25a7e11eb35db005a590e842f0f6ae90bd383c98754",
+    "interlaced-gcc14/25-secondary-only.cells": "18f0790c7f2af4cfb424c788274aed91037629e148dc3048638c79e5f0c61116",
+    "interlaced-gcc14/25-secondary-only.json": "066c287577bd36973e46ca945b208c681d61cc6254b550805d049613fd00d4b4",
+    "interlaced-gcc14/25-secondary-only.png": "2bc7148f227ff9bac65c69b4b5e1a2d12d7a15488c744c3ec01ef639c1b14660",
+    "interlaced-gcc14/26-combined.cells": "1a3ed6b187e66b695f78134b876c6a8aa2ff5b04763e18fa5c1373ac23f8069c",
+    "interlaced-gcc14/26-combined.json": "f076170c770238c029c74609663a4632934de26c8b575315a638ad896fee0e5b",
+    "interlaced-gcc14/26-combined.png": "3adef13ce59b67aeaf46f4eac4f2f33a4821d6c87e2777ece5ed1a0a28f41cca",
+    "interlaced-gcc14/exact-source-inputs.zip": "fa82e344e1eaaa71c79638f1b70d9d1ad543423d530b7785844f08f3fd357e39",
+    "interlaced-gcc14/exporter-build.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "interlaced-gcc14/layer-checks.json": "6876f4d6ce6e54c74f918144fa48bfb11ce15deabd68fb5126d0dcd301d8336a",
+    "interlaced-gcc14/manifest.json": "4966cac7c202d6805eebe3f925312dc5046306530910c8b0dcc2bd98878b50ed",
+    "interlaced-gcc14/source-inputs.json": "36ae2fed4ea4d8b50dc6e0e527d896d983448ead7774364bbcda7398592ad8a1",
+    "interlaced-parent/candidate-build.log": "94634b2535587765bf45399ce0d9449dfaadb435087c854c523b3859c5bcc58d",
+    "interlaced-parent/qualification.json": "29aa9557735abc1ebf3e70d5df132aa8cacba3863cc0d21454c5a9818ee3fbb3",
+    "interlaced-parity-guards.log": "10b17600d9714f63223fcf0dceeb3c6474b520643291ceab689f1b90936427d3",
+    "test_qualify_interlaced.log": "a9060aa2a44e91840e99281664e84560e01aead3abaf87a0afa0909981d13b69"
+  },
+  "offline_review_adjustment": {
+    "initial_readback": "A preliminary offline assertion incorrectly required complete case JSON byte equality across compilers and stopped on 01-hero-512.json.",
+    "observed_difference": "Only preparation_us, native_raster_us and raster_and_copy_us differed in that case. They are measured duration fields, not deterministic output identities.",
+    "final_rule": "Every original JSON is independently bound to its own manifest and original ZIP bytes. All non-timing fields must match across compilers; raw cells, PNGs, fingerprints and chunk receipts match exactly. Both sets of timing values remain in this report."
+  },
+  "limitations": [
+    "No compiler, exporter, Godot process or regression test was executed during this read-only review.",
+    "The seven regressions and 26 parity cases executed at S3. They retain S3 identity; exact relevant input equality to F is demonstrated separately, not relabelled as fresh F execution.",
+    "Hosted compiler installation files and cache executables are not retained in this artifact. Their distinct hashes and the original on-runner validation are recorded; no new live toolchain check is claimed.",
+    "This focused ACCEPT covers the cache-reuse finding only. Overall integration acceptance and owner merge approval remain separate."
+  ]
+}

@@ -1,0 +1,5530 @@
+{
+  "all_ledger_rows_balanced": true,
+  "all_raw_stdout_csv_joins_exact": true,
+  "artifact_archives": [
+    {
+      "bytes": 24682,
+      "files": 10,
+      "id": 14608691357,
+      "name": "wave-native-windows-dam-44688692461-1",
+      "sha256": "7154dc890443392bd885df2d6fcd2e2576f83ec77325e59ca14ec4890a3f72df"
+    },
+    {
+      "bytes": 24834,
+      "files": 10,
+      "id": 14608986772,
+      "name": "wave-native-windows-wave-44688692461-1",
+      "sha256": "5f732d351a34350f639e48ca7b660664d2ceaeb670c2bb57d300bd55f1e20807"
+    },
+    {
+      "bytes": 24556,
+      "files": 10,
+      "id": 14609056117,
+      "name": "wave-native-windows-sparse-44688692461-1",
+      "sha256": "3abe23ea3b97d6ea871f6d5d0c6fba9ff43dec46f779a7c4a515539eb6716488"
+    },
+    {
+      "bytes": 19708,
+      "files": 10,
+      "id": 14608252306,
+      "name": "wave-native-windows-idle-44688692461-1",
+      "sha256": "4ba349ca437ead4a39f217447ae4b2e737515f947a6f5fd36b70c746763037c1"
+    }
+  ],
+  "findings_p1_p2": [],
+  "four_vs_one_worker_observations": [
+    {
+      "family": 1,
+      "four_over_one_worker_p50_ratio": 0.7795511536581134,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "dam",
+      "size": 256,
+      "substeps": 1,
+      "variant": 0
+    },
+    {
+      "family": 3,
+      "four_over_one_worker_p50_ratio": 0.9230256284869633,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "dam",
+      "size": 256,
+      "substeps": 1,
+      "variant": 2
+    },
+    {
+      "family": 4,
+      "four_over_one_worker_p50_ratio": 0.7392370696538978,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "dam",
+      "size": 256,
+      "substeps": 1,
+      "variant": 0
+    },
+    {
+      "family": 5,
+      "four_over_one_worker_p50_ratio": 0.9489277652370205,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "dam",
+      "size": 256,
+      "substeps": 1,
+      "variant": 0
+    },
+    {
+      "family": 5,
+      "four_over_one_worker_p50_ratio": 0.8084956818638281,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "dam",
+      "size": 256,
+      "substeps": 3,
+      "variant": 0
+    },
+    {
+      "family": 1,
+      "four_over_one_worker_p50_ratio": 0.3588086114351561,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "dam",
+      "size": 1024,
+      "substeps": 1,
+      "variant": 0
+    },
+    {
+      "family": 3,
+      "four_over_one_worker_p50_ratio": 0.432383830272806,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "dam",
+      "size": 1024,
+      "substeps": 1,
+      "variant": 2
+    },
+    {
+      "family": 4,
+      "four_over_one_worker_p50_ratio": 0.41556844381592783,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "dam",
+      "size": 1024,
+      "substeps": 1,
+      "variant": 0
+    },
+    {
+      "family": 5,
+      "four_over_one_worker_p50_ratio": 0.5959120902702025,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "dam",
+      "size": 1024,
+      "substeps": 1,
+      "variant": 0
+    },
+    {
+      "family": 5,
+      "four_over_one_worker_p50_ratio": 0.580735904608457,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "dam",
+      "size": 1024,
+      "substeps": 3,
+      "variant": 0
+    },
+    {
+      "family": 1,
+      "four_over_one_worker_p50_ratio": 0.3438835618542736,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "dam",
+      "size": 2048,
+      "substeps": 1,
+      "variant": 0
+    },
+    {
+      "family": 3,
+      "four_over_one_worker_p50_ratio": 0.38461906301226273,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "dam",
+      "size": 2048,
+      "substeps": 1,
+      "variant": 2
+    },
+    {
+      "family": 4,
+      "four_over_one_worker_p50_ratio": 0.32475251305260033,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "dam",
+      "size": 2048,
+      "substeps": 1,
+      "variant": 0
+    },
+    {
+      "family": 5,
+      "four_over_one_worker_p50_ratio": 0.7075150732127476,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "dam",
+      "size": 2048,
+      "substeps": 1,
+      "variant": 0
+    },
+    {
+      "family": 5,
+      "four_over_one_worker_p50_ratio": 0.5675812083687901,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "dam",
+      "size": 2048,
+      "substeps": 3,
+      "variant": 0
+    },
+    {
+      "family": 1,
+      "four_over_one_worker_p50_ratio": 0.533821381810857,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "wave",
+      "size": 256,
+      "substeps": 1,
+      "variant": 0
+    },
+    {
+      "family": 3,
+      "four_over_one_worker_p50_ratio": 0.6249368329303077,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "wave",
+      "size": 256,
+      "substeps": 1,
+      "variant": 2
+    },
+    {
+      "family": 4,
+      "four_over_one_worker_p50_ratio": 0.5631131774553679,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "wave",
+      "size": 256,
+      "substeps": 1,
+      "variant": 0
+    },
+    {
+      "family": 5,
+      "four_over_one_worker_p50_ratio": 0.7779594288002136,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "wave",
+      "size": 256,
+      "substeps": 1,
+      "variant": 0
+    },
+    {
+      "family": 5,
+      "four_over_one_worker_p50_ratio": 0.6707275138772902,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "wave",
+      "size": 256,
+      "substeps": 3,
+      "variant": 0
+    },
+    {
+      "family": 1,
+      "four_over_one_worker_p50_ratio": 0.33582151820997547,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "wave",
+      "size": 1024,
+      "substeps": 1,
+      "variant": 0
+    },
+    {
+      "family": 3,
+      "four_over_one_worker_p50_ratio": 0.43634626449675096,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "wave",
+      "size": 1024,
+      "substeps": 1,
+      "variant": 2
+    },
+    {
+      "family": 4,
+      "four_over_one_worker_p50_ratio": 0.4347433874644825,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "wave",
+      "size": 1024,
+      "substeps": 1,
+      "variant": 0
+    },
+    {
+      "family": 5,
+      "four_over_one_worker_p50_ratio": 0.5405858894647927,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "wave",
+      "size": 1024,
+      "substeps": 1,
+      "variant": 0
+    },
+    {
+      "family": 5,
+      "four_over_one_worker_p50_ratio": 0.5302748163457407,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "wave",
+      "size": 1024,
+      "substeps": 3,
+      "variant": 0
+    },
+    {
+      "family": 1,
+      "four_over_one_worker_p50_ratio": 0.349331629967541,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "wave",
+      "size": 2048,
+      "substeps": 1,
+      "variant": 0
+    },
+    {
+      "family": 3,
+      "four_over_one_worker_p50_ratio": 0.4151493463116709,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "wave",
+      "size": 2048,
+      "substeps": 1,
+      "variant": 2
+    },
+    {
+      "family": 4,
+      "four_over_one_worker_p50_ratio": 0.45075398733612254,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "wave",
+      "size": 2048,
+      "substeps": 1,
+      "variant": 0
+    },
+    {
+      "family": 5,
+      "four_over_one_worker_p50_ratio": 0.5465160170109967,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "wave",
+      "size": 2048,
+      "substeps": 1,
+      "variant": 0
+    },
+    {
+      "family": 5,
+      "four_over_one_worker_p50_ratio": 0.5143232109518483,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "wave",
+      "size": 2048,
+      "substeps": 3,
+      "variant": 0
+    },
+    {
+      "family": 1,
+      "four_over_one_worker_p50_ratio": 0.7370612386514775,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "sparse",
+      "size": 256,
+      "substeps": 1,
+      "variant": 0
+    },
+    {
+      "family": 3,
+      "four_over_one_worker_p50_ratio": 0.9342468827580404,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "sparse",
+      "size": 256,
+      "substeps": 1,
+      "variant": 2
+    },
+    {
+      "family": 4,
+      "four_over_one_worker_p50_ratio": 0.9809238023791662,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "sparse",
+      "size": 256,
+      "substeps": 1,
+      "variant": 0
+    },
+    {
+      "family": 5,
+      "four_over_one_worker_p50_ratio": 1.0028724114896461,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "sparse",
+      "size": 256,
+      "substeps": 1,
+      "variant": 0
+    },
+    {
+      "family": 5,
+      "four_over_one_worker_p50_ratio": 0.8281308237048081,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "sparse",
+      "size": 256,
+      "substeps": 3,
+      "variant": 0
+    },
+    {
+      "family": 1,
+      "four_over_one_worker_p50_ratio": 0.3594625051954117,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "sparse",
+      "size": 1024,
+      "substeps": 1,
+      "variant": 0
+    },
+    {
+      "family": 3,
+      "four_over_one_worker_p50_ratio": 0.771717343124097,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "sparse",
+      "size": 1024,
+      "substeps": 1,
+      "variant": 2
+    },
+    {
+      "family": 4,
+      "four_over_one_worker_p50_ratio": 0.40298545490447113,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "sparse",
+      "size": 1024,
+      "substeps": 1,
+      "variant": 0
+    },
+    {
+      "family": 5,
+      "four_over_one_worker_p50_ratio": 0.5451416628743827,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "sparse",
+      "size": 1024,
+      "substeps": 1,
+      "variant": 0
+    },
+    {
+      "family": 5,
+      "four_over_one_worker_p50_ratio": 0.535729680960377,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "sparse",
+      "size": 1024,
+      "substeps": 3,
+      "variant": 0
+    },
+    {
+      "family": 1,
+      "four_over_one_worker_p50_ratio": 0.3380682433482275,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "sparse",
+      "size": 2048,
+      "substeps": 1,
+      "variant": 0
+    },
+    {
+      "family": 3,
+      "four_over_one_worker_p50_ratio": 0.7816673191174551,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "sparse",
+      "size": 2048,
+      "substeps": 1,
+      "variant": 2
+    },
+    {
+      "family": 4,
+      "four_over_one_worker_p50_ratio": 0.37253386994658005,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "sparse",
+      "size": 2048,
+      "substeps": 1,
+      "variant": 0
+    },
+    {
+      "family": 5,
+      "four_over_one_worker_p50_ratio": 0.4865623138624217,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "sparse",
+      "size": 2048,
+      "substeps": 1,
+      "variant": 0
+    },
+    {
+      "family": 5,
+      "four_over_one_worker_p50_ratio": 0.5028469443175954,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "sparse",
+      "size": 2048,
+      "substeps": 3,
+      "variant": 0
+    },
+    {
+      "family": 1,
+      "four_over_one_worker_p50_ratio": 0.9333333333333333,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "idle",
+      "size": 256,
+      "substeps": 1,
+      "variant": 0
+    },
+    {
+      "family": 3,
+      "four_over_one_worker_p50_ratio": 0.998857142857143,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "idle",
+      "size": 256,
+      "substeps": 1,
+      "variant": 2
+    },
+    {
+      "family": 4,
+      "four_over_one_worker_p50_ratio": 1.2000000000000002,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "idle",
+      "size": 256,
+      "substeps": 1,
+      "variant": 0
+    },
+    {
+      "family": 5,
+      "four_over_one_worker_p50_ratio": 1.0999999999999999,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "idle",
+      "size": 256,
+      "substeps": 1,
+      "variant": 0
+    },
+    {
+      "family": 5,
+      "four_over_one_worker_p50_ratio": 0.6666666666666666,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "idle",
+      "size": 256,
+      "substeps": 3,
+      "variant": 0
+    },
+    {
+      "family": 1,
+      "four_over_one_worker_p50_ratio": 1.0158730158730158,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "idle",
+      "size": 1024,
+      "substeps": 1,
+      "variant": 0
+    },
+    {
+      "family": 3,
+      "four_over_one_worker_p50_ratio": 0.9856637168141593,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "idle",
+      "size": 1024,
+      "substeps": 1,
+      "variant": 2
+    },
+    {
+      "family": 4,
+      "four_over_one_worker_p50_ratio": 1.0,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "idle",
+      "size": 1024,
+      "substeps": 1,
+      "variant": 0
+    },
+    {
+      "family": 5,
+      "four_over_one_worker_p50_ratio": 0.989795918367347,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "idle",
+      "size": 1024,
+      "substeps": 1,
+      "variant": 0
+    },
+    {
+      "family": 5,
+      "four_over_one_worker_p50_ratio": 1.0103092783505154,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "idle",
+      "size": 1024,
+      "substeps": 3,
+      "variant": 0
+    },
+    {
+      "family": 1,
+      "four_over_one_worker_p50_ratio": 1.0,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "idle",
+      "size": 2048,
+      "substeps": 1,
+      "variant": 0
+    },
+    {
+      "family": 3,
+      "four_over_one_worker_p50_ratio": 1.007175362797087,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "idle",
+      "size": 2048,
+      "substeps": 1,
+      "variant": 2
+    },
+    {
+      "family": 4,
+      "four_over_one_worker_p50_ratio": 1.0054945054945055,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "idle",
+      "size": 2048,
+      "substeps": 1,
+      "variant": 0
+    },
+    {
+      "family": 5,
+      "four_over_one_worker_p50_ratio": 1.0030674846625767,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "idle",
+      "size": 2048,
+      "substeps": 1,
+      "variant": 0
+    },
+    {
+      "family": 5,
+      "four_over_one_worker_p50_ratio": 1.0092592592592593,
+      "interpretation": "Above one is a slower four-worker observation; no timing acceptance threshold.",
+      "scene": "idle",
+      "size": 2048,
+      "substeps": 3,
+      "variant": 0
+    }
+  ],
+  "full_measurement_groups": [
+    {
+      "family": 1,
+      "native_ticks_per_s": 157.538,
+      "peak_rss_bytes": 48015360.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 131575.0,
+      "tick_allocations_total": 4.0,
+      "tick_max_ms": 8.636050000000001,
+      "tick_p50_ms": 6.3407,
+      "tick_p95_ms": 6.62435,
+      "tick_p99_ms": 6.71225,
+      "variant": 0,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 195.635,
+      "peak_rss_bytes": 48412672.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 131575.0,
+      "tick_allocations_total": 4.0,
+      "tick_max_ms": 8.85675,
+      "tick_p50_ms": 5.02485,
+      "tick_p95_ms": 5.822699999999999,
+      "tick_p99_ms": 6.90005,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 203.9005,
+      "peak_rss_bytes": 48451584.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 131575.0,
+      "tick_allocations_total": 4.0,
+      "tick_max_ms": 5.9482,
+      "tick_p50_ms": 4.9429,
+      "tick_p95_ms": 5.27625,
+      "tick_p99_ms": 5.4582999999999995,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 203.533,
+      "peak_rss_bytes": 48490496.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 131575.0,
+      "tick_allocations_total": 4.0,
+      "tick_max_ms": 5.3721499999999995,
+      "tick_p50_ms": 4.9863,
+      "tick_p95_ms": 5.244,
+      "tick_p99_ms": 5.32395,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 88.64115,
+      "peak_rss_bytes": 53882880.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 1427982.0,
+      "tick_allocations_total": 30.0,
+      "tick_max_ms": 13.48715,
+      "tick_p50_ms": 11.247250000000001,
+      "tick_p95_ms": 12.03125,
+      "tick_p99_ms": 13.066949999999999,
+      "variant": 2,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 98.32825,
+      "peak_rss_bytes": 54312960.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 1427982.0,
+      "tick_allocations_total": 30.0,
+      "tick_max_ms": 12.431149999999999,
+      "tick_p50_ms": 10.25045,
+      "tick_p95_ms": 11.055900000000001,
+      "tick_p99_ms": 12.320450000000001,
+      "variant": 2,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 96.9396,
+      "peak_rss_bytes": 54358016.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 1427982.0,
+      "tick_allocations_total": 30.0,
+      "tick_max_ms": 16.3734,
+      "tick_p50_ms": 10.381499999999999,
+      "tick_p95_ms": 11.5771,
+      "tick_p99_ms": 15.2057,
+      "variant": 2,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 97.74175,
+      "peak_rss_bytes": 54358016.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 1427982.0,
+      "tick_allocations_total": 30.0,
+      "tick_max_ms": 11.658750000000001,
+      "tick_p50_ms": 10.37925,
+      "tick_p95_ms": 11.2325,
+      "tick_p99_ms": 11.526,
+      "variant": 2,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 227.41,
+      "peak_rss_bytes": 49379328.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 689826.0,
+      "tick_allocations_total": 18.0,
+      "tick_max_ms": 5.93235,
+      "tick_p50_ms": 4.383100000000001,
+      "tick_p95_ms": 4.5211500000000004,
+      "tick_p99_ms": 5.244999999999999,
+      "variant": 0,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 307.4665,
+      "peak_rss_bytes": 49754112.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 689826.0,
+      "tick_allocations_total": 18.0,
+      "tick_max_ms": 3.95345,
+      "tick_p50_ms": 3.2319,
+      "tick_p95_ms": 3.46705,
+      "tick_p99_ms": 3.87495,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 307.741,
+      "peak_rss_bytes": 49797120.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 689826.0,
+      "tick_allocations_total": 18.0,
+      "tick_max_ms": 3.79895,
+      "tick_p50_ms": 3.24015,
+      "tick_p95_ms": 3.44265,
+      "tick_p99_ms": 3.69825,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 313.877,
+      "peak_rss_bytes": 49823744.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 689826.0,
+      "tick_allocations_total": 18.0,
+      "tick_max_ms": 3.60345,
+      "tick_p50_ms": 3.1845,
+      "tick_p95_ms": 3.34055,
+      "tick_p99_ms": 3.5304,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 1876.01,
+      "peak_rss_bytes": 47974400.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.67285,
+      "tick_p50_ms": 0.5316,
+      "tick_p95_ms": 0.5572,
+      "tick_p99_ms": 0.6696,
+      "variant": 0,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 2100.915,
+      "peak_rss_bytes": 48365568.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.54625,
+      "tick_p50_ms": 0.48535,
+      "tick_p95_ms": 0.5106499999999999,
+      "tick_p99_ms": 0.5375,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 2024.12,
+      "peak_rss_bytes": 48408576.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.5703,
+      "tick_p50_ms": 0.5044500000000001,
+      "tick_p95_ms": 0.52725,
+      "tick_p99_ms": 0.55935,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 2020.085,
+      "peak_rss_bytes": 48429056.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.6198,
+      "tick_p50_ms": 0.5044500000000001,
+      "tick_p95_ms": 0.5523,
+      "tick_p99_ms": 0.59375,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 675.209,
+      "peak_rss_bytes": 47974400.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 256,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 1.705,
+      "tick_p50_ms": 1.4937,
+      "tick_p95_ms": 1.5702,
+      "tick_p99_ms": 1.60975,
+      "variant": 0,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 826.9765,
+      "peak_rss_bytes": 48367616.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 256,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 2.5403,
+      "tick_p50_ms": 1.1724999999999999,
+      "tick_p95_ms": 1.7181000000000002,
+      "tick_p99_ms": 2.37475,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 825.887,
+      "peak_rss_bytes": 48420864.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 256,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 1.5436,
+      "tick_p50_ms": 1.2076500000000001,
+      "tick_p95_ms": 1.3672499999999999,
+      "tick_p99_ms": 1.4877,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 840.7860000000001,
+      "peak_rss_bytes": 48447488.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 256,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 1.50745,
+      "tick_p50_ms": 1.19395,
+      "tick_p95_ms": 1.2654,
+      "tick_p99_ms": 1.4007999999999998,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 23.522199999999998,
+      "peak_rss_bytes": 54368256.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 789450.0,
+      "tick_allocations_total": 24.0,
+      "tick_max_ms": 49.9683,
+      "tick_p50_ms": 42.13235,
+      "tick_p95_ms": 46.661550000000005,
+      "tick_p99_ms": 48.6194,
+      "variant": 0,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 43.37475,
+      "peak_rss_bytes": 54757376.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 789450.0,
+      "tick_allocations_total": 24.0,
+      "tick_max_ms": 34.81285,
+      "tick_p50_ms": 22.76595,
+      "tick_p95_ms": 25.151049999999998,
+      "tick_p99_ms": 29.83605,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 65.17125,
+      "peak_rss_bytes": 54786048.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 789450.0,
+      "tick_allocations_total": 24.0,
+      "tick_max_ms": 19.26595,
+      "tick_p50_ms": 15.11745,
+      "tick_p95_ms": 17.1064,
+      "tick_p99_ms": 18.49795,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 65.68145000000001,
+      "peak_rss_bytes": 54822912.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 789450.0,
+      "tick_allocations_total": 24.0,
+      "tick_max_ms": 17.155450000000002,
+      "tick_p50_ms": 15.178149999999999,
+      "tick_p95_ms": 16.12305,
+      "tick_p99_ms": 17.02225,
+      "variant": 0,
+      "workers_observed": [
+        5,
+        6
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 7.1958400000000005,
+      "peak_rss_bytes": 75980800.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 2855964.0,
+      "tick_allocations_total": 60.0,
+      "tick_max_ms": 167.256,
+      "tick_p50_ms": 141.969,
+      "tick_p95_ms": 152.68099999999998,
+      "tick_p99_ms": 159.886,
+      "variant": 2,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 11.8523,
+      "peak_rss_bytes": 76363776.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 2855964.0,
+      "tick_allocations_total": 60.0,
+      "tick_max_ms": 107.48849999999999,
+      "tick_p50_ms": 85.752,
+      "tick_p95_ms": 93.9609,
+      "tick_p99_ms": 102.5945,
+      "variant": 2,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 16.5713,
+      "peak_rss_bytes": 76478464.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 2855964.0,
+      "tick_allocations_total": 60.0,
+      "tick_max_ms": 70.115,
+      "tick_p50_ms": 61.385099999999994,
+      "tick_p95_ms": 66.12935,
+      "tick_p99_ms": 68.0051,
+      "variant": 2,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 16.7573,
+      "peak_rss_bytes": 76437504.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 2855964.0,
+      "tick_allocations_total": 60.0,
+      "tick_max_ms": 68.75925,
+      "tick_p50_ms": 60.786500000000004,
+      "tick_p95_ms": 64.90899999999999,
+      "tick_p99_ms": 68.28444999999999,
+      "variant": 2,
+      "workers_observed": [
+        5,
+        6
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 48.4557,
+      "peak_rss_bytes": 61138944.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 2529362.0,
+      "tick_allocations_total": 66.0,
+      "tick_max_ms": 34.838499999999996,
+      "tick_p50_ms": 18.173299999999998,
+      "tick_p95_ms": 31.263199999999998,
+      "tick_p99_ms": 32.9166,
+      "variant": 0,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 92.88685000000001,
+      "peak_rss_bytes": 61517824.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 2529362.0,
+      "tick_allocations_total": 66.0,
+      "tick_max_ms": 16.6842,
+      "tick_p50_ms": 9.48735,
+      "tick_p95_ms": 15.8385,
+      "tick_p99_ms": 16.580550000000002,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 121.38,
+      "peak_rss_bytes": 61554688.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 2529362.0,
+      "tick_allocations_total": 66.0,
+      "tick_max_ms": 12.48775,
+      "tick_p50_ms": 7.55225,
+      "tick_p95_ms": 11.4097,
+      "tick_p99_ms": 12.25995,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 122.8755,
+      "peak_rss_bytes": 61581312.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 2529362.0,
+      "tick_allocations_total": 66.0,
+      "tick_max_ms": 12.06295,
+      "tick_p50_ms": 7.443099999999999,
+      "tick_p95_ms": 11.285350000000001,
+      "tick_p99_ms": 11.812550000000002,
+      "variant": 0,
+      "workers_observed": [
+        5,
+        6
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 352.3595,
+      "peak_rss_bytes": 58357760.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 3.53175,
+      "tick_p50_ms": 2.79605,
+      "tick_p95_ms": 3.2069,
+      "tick_p99_ms": 3.2958499999999997,
+      "variant": 0,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 561.1030000000001,
+      "peak_rss_bytes": 58744832.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 2.528,
+      "tick_p50_ms": 1.7377500000000001,
+      "tick_p95_ms": 1.9784,
+      "tick_p99_ms": 2.4616,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 585.751,
+      "peak_rss_bytes": 58787840.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 2.23385,
+      "tick_p50_ms": 1.6662,
+      "tick_p95_ms": 1.92005,
+      "tick_p99_ms": 2.1108000000000002,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 575.7850000000001,
+      "peak_rss_bytes": 58822656.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 2.648,
+      "tick_p50_ms": 1.66825,
+      "tick_p95_ms": 2.1047000000000002,
+      "tick_p99_ms": 2.4361499999999996,
+      "variant": 0,
+      "workers_observed": [
+        5
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 107.7225,
+      "peak_rss_bytes": 58357760.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 1024,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 10.27315,
+      "tick_p50_ms": 9.52705,
+      "tick_p95_ms": 9.886,
+      "tick_p99_ms": 10.215,
+      "variant": 0,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 175.1745,
+      "peak_rss_bytes": 58748928.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 1024,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 8.00835,
+      "tick_p50_ms": 5.74245,
+      "tick_p95_ms": 6.4414,
+      "tick_p99_ms": 7.00625,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 183.7855,
+      "peak_rss_bytes": 58789888.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 1024,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 6.4824,
+      "tick_p50_ms": 5.5327,
+      "tick_p95_ms": 5.87935,
+      "tick_p99_ms": 6.0404,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 186.868,
+      "peak_rss_bytes": 58824704.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 1024,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 6.439299999999999,
+      "tick_p50_ms": 5.48585,
+      "tick_p95_ms": 6.08295,
+      "tick_p99_ms": 6.2791,
+      "variant": 0,
+      "workers_observed": [
+        5,
+        6
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 11.1756,
+      "peak_rss_bytes": 65435648.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 131575.0,
+      "tick_allocations_total": 4.0,
+      "tick_max_ms": 99.5594,
+      "tick_p50_ms": 89.50675,
+      "tick_p95_ms": 94.137,
+      "tick_p99_ms": 98.0974,
+      "variant": 0,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 20.9033,
+      "peak_rss_bytes": 65820672.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 131575.0,
+      "tick_allocations_total": 4.0,
+      "tick_max_ms": 59.93455,
+      "tick_p50_ms": 47.59085,
+      "tick_p95_ms": 51.8345,
+      "tick_p99_ms": 54.995999999999995,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 32.446600000000004,
+      "peak_rss_bytes": 65855488.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 131575.0,
+      "tick_allocations_total": 4.0,
+      "tick_max_ms": 35.78405,
+      "tick_p50_ms": 30.7799,
+      "tick_p95_ms": 33.4574,
+      "tick_p99_ms": 35.34915,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 31.32675,
+      "peak_rss_bytes": 65894400.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 131575.0,
+      "tick_allocations_total": 4.0,
+      "tick_max_ms": 48.01505,
+      "tick_p50_ms": 31.4043,
+      "tick_p95_ms": 38.53035,
+      "tick_p99_ms": 46.2064,
+      "variant": 0,
+      "workers_observed": [
+        6
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 2.081735,
+      "peak_rss_bytes": 116369408.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 475994.0,
+      "tick_allocations_total": 10.0,
+      "tick_max_ms": 573.733,
+      "tick_p50_ms": 522.803,
+      "tick_p95_ms": 555.277,
+      "tick_p99_ms": 568.4825000000001,
+      "variant": 2,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 3.5872,
+      "peak_rss_bytes": 116729856.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 475994.0,
+      "tick_allocations_total": 10.0,
+      "tick_max_ms": 337.94,
+      "tick_p50_ms": 297.961,
+      "tick_p95_ms": 324.2175,
+      "tick_p99_ms": 330.4275,
+      "variant": 2,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 5.266385,
+      "peak_rss_bytes": 116869120.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 475994.0,
+      "tick_allocations_total": 10.0,
+      "tick_max_ms": 243.332,
+      "tick_p50_ms": 201.07999999999998,
+      "tick_p95_ms": 213.78050000000002,
+      "tick_p99_ms": 228.2275,
+      "variant": 2,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 5.309585,
+      "peak_rss_bytes": 116856832.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 475994.0,
+      "tick_allocations_total": 10.0,
+      "tick_max_ms": 215.632,
+      "tick_p50_ms": 200.715,
+      "tick_p95_ms": 210.9715,
+      "tick_p99_ms": 214.6935,
+      "variant": 2,
+      "workers_observed": [
+        4,
+        6
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 20.40195,
+      "peak_rss_bytes": 84148224.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 5058724.0,
+      "tick_allocations_total": 132.0,
+      "tick_max_ms": 56.8824,
+      "tick_p50_ms": 49.7602,
+      "tick_p95_ms": 52.9625,
+      "tick_p99_ms": 55.21635,
+      "variant": 0,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 40.66175,
+      "peak_rss_bytes": 84527104.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 5058724.0,
+      "tick_allocations_total": 132.0,
+      "tick_max_ms": 29.0088,
+      "tick_p50_ms": 24.924300000000002,
+      "tick_p95_ms": 27.073700000000002,
+      "tick_p99_ms": 28.32325,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 62.76965,
+      "peak_rss_bytes": 84566016.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 5058724.0,
+      "tick_allocations_total": 132.0,
+      "tick_max_ms": 17.790399999999998,
+      "tick_p50_ms": 16.159750000000003,
+      "tick_p95_ms": 16.999699999999997,
+      "tick_p99_ms": 17.616349999999997,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 62.212199999999996,
+      "peak_rss_bytes": 84600832.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 5058724.0,
+      "tick_allocations_total": 132.0,
+      "tick_max_ms": 19.08465,
+      "tick_p50_ms": 16.28285,
+      "tick_p95_ms": 17.3675,
+      "tick_p99_ms": 18.0944,
+      "variant": 0,
+      "workers_observed": [
+        5,
+        6
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 217.94850000000002,
+      "peak_rss_bytes": 81653760.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 6.735849999999999,
+      "tick_p50_ms": 4.644,
+      "tick_p95_ms": 5.29835,
+      "tick_p99_ms": 6.162050000000001,
+      "variant": 0,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 303.994,
+      "peak_rss_bytes": 82034688.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 3.87765,
+      "tick_p50_ms": 3.3546,
+      "tick_p95_ms": 3.7156000000000002,
+      "tick_p99_ms": 3.7842000000000002,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 312.7145,
+      "peak_rss_bytes": 82075648.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 3.74145,
+      "tick_p50_ms": 3.2857000000000003,
+      "tick_p95_ms": 3.5725,
+      "tick_p99_ms": 3.6500500000000002,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 319.025,
+      "peak_rss_bytes": 82110464.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 4.4052,
+      "tick_p50_ms": 3.19925,
+      "tick_p95_ms": 3.5591,
+      "tick_p99_ms": 3.96,
+      "variant": 0,
+      "workers_observed": [
+        5
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 60.90285,
+      "peak_rss_bytes": 81653760.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 2048,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 23.02675,
+      "tick_p50_ms": 17.0395,
+      "tick_p95_ms": 18.743250000000003,
+      "tick_p99_ms": 20.77345,
+      "variant": 0,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 95.23995,
+      "peak_rss_bytes": 82040832.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 2048,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 12.130700000000001,
+      "tick_p50_ms": 10.4861,
+      "tick_p95_ms": 11.344,
+      "tick_p99_ms": 11.94115,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 103.5945,
+      "peak_rss_bytes": 82081792.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 2048,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 11.124500000000001,
+      "tick_p50_ms": 9.671299999999999,
+      "tick_p95_ms": 10.48025,
+      "tick_p99_ms": 10.92995,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 101.9585,
+      "peak_rss_bytes": 82116608.0,
+      "repeats": 2,
+      "scene": "dam",
+      "size": 2048,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 11.7697,
+      "tick_p50_ms": 9.7943,
+      "tick_p95_ms": 10.90755,
+      "tick_p99_ms": 11.3503,
+      "variant": 0,
+      "workers_observed": [
+        5
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 127.319,
+      "peak_rss_bytes": 48150528.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 9.269449999999999,
+      "tick_p50_ms": 7.9432,
+      "tick_p95_ms": 8.9302,
+      "tick_p99_ms": 9.101849999999999,
+      "variant": 0,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 238.3975,
+      "peak_rss_bytes": 48543744.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 4.9231,
+      "tick_p50_ms": 4.235099999999999,
+      "tick_p95_ms": 4.77065,
+      "tick_p99_ms": 4.8317,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 237.17399999999998,
+      "peak_rss_bytes": 48586752.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 5.23375,
+      "tick_p50_ms": 4.24025,
+      "tick_p95_ms": 4.8019,
+      "tick_p99_ms": 4.934950000000001,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 235.785,
+      "peak_rss_bytes": 48611328.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 5.1331,
+      "tick_p50_ms": 4.2854,
+      "tick_p95_ms": 4.8329,
+      "tick_p99_ms": 4.94065,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 34.279799999999994,
+      "peak_rss_bytes": 53413888.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 33.0697,
+      "tick_p50_ms": 29.4853,
+      "tick_p95_ms": 31.4928,
+      "tick_p99_ms": 32.55085,
+      "variant": 2,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 55.43895,
+      "peak_rss_bytes": 53823488.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 21.20905,
+      "tick_p50_ms": 18.07775,
+      "tick_p95_ms": 19.851950000000002,
+      "tick_p99_ms": 21.04815,
+      "variant": 2,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 54.189949999999996,
+      "peak_rss_bytes": 53837824.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 22.94965,
+      "tick_p50_ms": 18.42645,
+      "tick_p95_ms": 20.46135,
+      "tick_p99_ms": 22.11345,
+      "variant": 2,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 54.90045,
+      "peak_rss_bytes": 53858304.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 21.0641,
+      "tick_p50_ms": 18.27495,
+      "tick_p95_ms": 20.06805,
+      "tick_p99_ms": 20.7571,
+      "variant": 2,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 195.342,
+      "peak_rss_bytes": 49149952.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 6.1564,
+      "tick_p50_ms": 5.17285,
+      "tick_p95_ms": 5.796,
+      "tick_p99_ms": 6.1294,
+      "variant": 0,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 349.3085,
+      "peak_rss_bytes": 49528832.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 3.73635,
+      "tick_p50_ms": 2.87235,
+      "tick_p95_ms": 3.2041500000000003,
+      "tick_p99_ms": 3.53015,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 341.51649999999995,
+      "peak_rss_bytes": 49563648.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 3.7428,
+      "tick_p50_ms": 2.9129,
+      "tick_p95_ms": 3.3590999999999998,
+      "tick_p99_ms": 3.6494,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 349.3135,
+      "peak_rss_bytes": 49606656.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 3.6826,
+      "tick_p50_ms": 2.88295,
+      "tick_p95_ms": 3.22605,
+      "tick_p99_ms": 3.5250000000000004,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 682.7685,
+      "peak_rss_bytes": 47974400.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 2.0259,
+      "tick_p50_ms": 1.4986,
+      "tick_p95_ms": 1.5787,
+      "tick_p99_ms": 1.7017,
+      "variant": 0,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 779.6855,
+      "peak_rss_bytes": 48355328.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 1.54155,
+      "tick_p50_ms": 1.323,
+      "tick_p95_ms": 1.4496,
+      "tick_p99_ms": 1.5145,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 889.6905,
+      "peak_rss_bytes": 48394240.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 1.42675,
+      "tick_p50_ms": 1.16585,
+      "tick_p95_ms": 1.23365,
+      "tick_p99_ms": 1.3011499999999998,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 907.569,
+      "peak_rss_bytes": 48439296.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 1.3498999999999999,
+      "tick_p50_ms": 1.1447,
+      "tick_p95_ms": 1.22925,
+      "tick_p99_ms": 1.27925,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 243.9395,
+      "peak_rss_bytes": 47974400.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 256,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 5.2734,
+      "tick_p50_ms": 4.071400000000001,
+      "tick_p95_ms": 4.3576999999999995,
+      "tick_p99_ms": 4.5229,
+      "variant": 0,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 312.22349999999994,
+      "peak_rss_bytes": 48369664.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 256,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 4.14295,
+      "tick_p50_ms": 3.1549500000000004,
+      "tick_p95_ms": 3.55125,
+      "tick_p99_ms": 3.85045,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 360.8245,
+      "peak_rss_bytes": 48400384.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 256,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 4.2103,
+      "tick_p50_ms": 2.7308,
+      "tick_p95_ms": 3.0650000000000004,
+      "tick_p99_ms": 3.4895,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 371.32,
+      "peak_rss_bytes": 48447488.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 256,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 3.3413000000000004,
+      "tick_p50_ms": 2.66215,
+      "tick_p95_ms": 2.95365,
+      "tick_p99_ms": 3.14745,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 34.3957,
+      "peak_rss_bytes": 55285760.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 31.3586,
+      "tick_p50_ms": 29.961599999999997,
+      "tick_p95_ms": 31.0218,
+      "tick_p99_ms": 31.264049999999997,
+      "variant": 0,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 65.0101,
+      "peak_rss_bytes": 55670784.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 17.8304,
+      "tick_p50_ms": 15.8356,
+      "tick_p95_ms": 16.69995,
+      "tick_p99_ms": 17.04315,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 100.3425,
+      "peak_rss_bytes": 55707648.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 11.66445,
+      "tick_p50_ms": 10.06175,
+      "tick_p95_ms": 10.754950000000001,
+      "tick_p99_ms": 11.1285,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 99.41239999999999,
+      "peak_rss_bytes": 55742464.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 11.3475,
+      "tick_p50_ms": 10.158999999999999,
+      "tick_p95_ms": 10.8979,
+      "tick_p99_ms": 11.0997,
+      "variant": 0,
+      "workers_observed": [
+        5,
+        6
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 3.54681,
+      "peak_rss_bytes": 79331328.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 359.78999999999996,
+      "tick_p50_ms": 284.1585,
+      "tick_p95_ms": 346.07050000000004,
+      "tick_p99_ms": 357.216,
+      "variant": 2,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 5.782215,
+      "peak_rss_bytes": 79706112.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 222.598,
+      "tick_p50_ms": 176.018,
+      "tick_p95_ms": 210.1485,
+      "tick_p99_ms": 221.0605,
+      "variant": 2,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 8.085145,
+      "peak_rss_bytes": 79738880.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 154.274,
+      "tick_p50_ms": 123.9915,
+      "tick_p95_ms": 144.86849999999998,
+      "tick_p99_ms": 152.2545,
+      "variant": 2,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 8.049785,
+      "peak_rss_bytes": 79828992.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 148.35750000000002,
+      "tick_p50_ms": 125.60300000000001,
+      "tick_p95_ms": 144.994,
+      "tick_p99_ms": 148.00650000000002,
+      "variant": 2,
+      "workers_observed": [
+        4,
+        5
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 35.700900000000004,
+      "peak_rss_bytes": 61597696.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 41.90475,
+      "tick_p50_ms": 28.489449999999998,
+      "tick_p95_ms": 38.096199999999996,
+      "tick_p99_ms": 40.175349999999995,
+      "variant": 0,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 67.99709999999999,
+      "peak_rss_bytes": 61976576.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 21.6158,
+      "tick_p50_ms": 14.73065,
+      "tick_p95_ms": 20.02665,
+      "tick_p99_ms": 21.1685,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 90.71315,
+      "peak_rss_bytes": 62015488.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 14.88875,
+      "tick_p50_ms": 12.3856,
+      "tick_p95_ms": 13.94035,
+      "tick_p99_ms": 14.566099999999999,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 91.14785,
+      "peak_rss_bytes": 62050304.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 15.489099999999999,
+      "tick_p50_ms": 12.10765,
+      "tick_p95_ms": 13.874600000000001,
+      "tick_p99_ms": 15.10895,
+      "variant": 0,
+      "workers_observed": [
+        5
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 115.023,
+      "peak_rss_bytes": 60039168.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 9.3661,
+      "tick_p50_ms": 8.7013,
+      "tick_p95_ms": 9.0978,
+      "tick_p99_ms": 9.2376,
+      "variant": 0,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 182.332,
+      "peak_rss_bytes": 60422144.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 6.6975999999999996,
+      "tick_p50_ms": 5.47175,
+      "tick_p95_ms": 5.90215,
+      "tick_p99_ms": 6.6145,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 211.71800000000002,
+      "peak_rss_bytes": 60463104.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 5.80115,
+      "tick_p50_ms": 4.7038,
+      "tick_p95_ms": 4.9703,
+      "tick_p99_ms": 5.444,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 210.735,
+      "peak_rss_bytes": 60504064.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 5.529,
+      "tick_p50_ms": 4.7215,
+      "tick_p95_ms": 5.0306,
+      "tick_p99_ms": 5.41675,
+      "variant": 0,
+      "workers_observed": [
+        5
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 37.35225,
+      "peak_rss_bytes": 60037120.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 1024,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 28.59935,
+      "tick_p50_ms": 26.87795,
+      "tick_p95_ms": 27.91975,
+      "tick_p99_ms": 28.378500000000003,
+      "variant": 0,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 59.993449999999996,
+      "peak_rss_bytes": 60418048.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 1024,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 18.93655,
+      "tick_p50_ms": 16.668599999999998,
+      "tick_p95_ms": 17.59015,
+      "tick_p99_ms": 18.696649999999998,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 70.1881,
+      "peak_rss_bytes": 60459008.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 1024,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 16.6054,
+      "tick_p50_ms": 14.2527,
+      "tick_p95_ms": 15.035499999999999,
+      "tick_p99_ms": 15.630500000000001,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 70.44165000000001,
+      "peak_rss_bytes": 60495872.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 1024,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 15.937899999999999,
+      "tick_p50_ms": 14.21545,
+      "tick_p95_ms": 14.9347,
+      "tick_p99_ms": 15.5364,
+      "variant": 0,
+      "workers_observed": [
+        5,
+        6
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 56.62605,
+      "peak_rss_bytes": 70037504.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 19.5152,
+      "tick_p50_ms": 18.2384,
+      "tick_p95_ms": 19.307949999999998,
+      "tick_p99_ms": 19.5107,
+      "variant": 0,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 105.511,
+      "peak_rss_bytes": 70422528.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 11.22415,
+      "tick_p50_ms": 9.7773,
+      "tick_p95_ms": 10.4465,
+      "tick_p99_ms": 11.016300000000001,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 158.731,
+      "peak_rss_bytes": 70453248.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 7.9578500000000005,
+      "tick_p50_ms": 6.37125,
+      "tick_p95_ms": 7.0338,
+      "tick_p99_ms": 7.581199999999999,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 156.616,
+      "peak_rss_bytes": 70483968.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 8.24675,
+      "tick_p50_ms": 6.4604,
+      "tick_p95_ms": 7.16015,
+      "tick_p99_ms": 7.85205,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 1.00267,
+      "peak_rss_bytes": 132960256.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 1431.59,
+      "tick_p50_ms": 1047.9,
+      "tick_p95_ms": 1422.54,
+      "tick_p99_ms": 1431.075,
+      "variant": 2,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 1.64786,
+      "peak_rss_bytes": 133347328.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 854.5699999999999,
+      "tick_p50_ms": 627.7275,
+      "tick_p95_ms": 830.9300000000001,
+      "tick_p99_ms": 850.974,
+      "variant": 2,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 2.37483,
+      "peak_rss_bytes": 133414912.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 554.8595,
+      "tick_p50_ms": 435.03499999999997,
+      "tick_p95_ms": 550.2294999999999,
+      "tick_p99_ms": 554.752,
+      "variant": 2,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 2.37774,
+      "peak_rss_bytes": 133423104.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 579.8845,
+      "tick_p50_ms": 435.413,
+      "tick_p95_ms": 550.4485,
+      "tick_p99_ms": 556.8795,
+      "variant": 2,
+      "workers_observed": [
+        6
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 57.58355,
+      "peak_rss_bytes": 87371776.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 23.6044,
+      "tick_p50_ms": 17.36435,
+      "tick_p95_ms": 23.3007,
+      "tick_p99_ms": 23.579900000000002,
+      "variant": 0,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 106.71350000000001,
+      "peak_rss_bytes": 87746560.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 13.4833,
+      "tick_p50_ms": 9.1791,
+      "tick_p95_ms": 12.39525,
+      "tick_p99_ms": 13.39825,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 142.03449999999998,
+      "peak_rss_bytes": 87781376.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 9.14585,
+      "tick_p50_ms": 7.82705,
+      "tick_p95_ms": 8.89015,
+      "tick_p99_ms": 9.05725,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 141.817,
+      "peak_rss_bytes": 87826432.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 10.08315,
+      "tick_p50_ms": 7.75155,
+      "tick_p95_ms": 8.89665,
+      "tick_p99_ms": 8.96905,
+      "variant": 0,
+      "workers_observed": [
+        5
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 168.965,
+      "peak_rss_bytes": 88371200.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 6.3248999999999995,
+      "tick_p50_ms": 5.96085,
+      "tick_p95_ms": 6.143549999999999,
+      "tick_p99_ms": 6.2824,
+      "variant": 0,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 257.85450000000003,
+      "peak_rss_bytes": 88754176.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 4.6896,
+      "tick_p50_ms": 3.8943000000000003,
+      "tick_p95_ms": 4.1851,
+      "tick_p99_ms": 4.60785,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 307.551,
+      "peak_rss_bytes": 88799232.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 3.62305,
+      "tick_p50_ms": 3.2577,
+      "tick_p95_ms": 3.43695,
+      "tick_p99_ms": 3.5839499999999997,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 309.37149999999997,
+      "peak_rss_bytes": 88840192.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 3.51595,
+      "tick_p50_ms": 3.2714999999999996,
+      "tick_p95_ms": 3.4075499999999996,
+      "tick_p99_ms": 3.4802999999999997,
+      "variant": 0,
+      "workers_observed": [
+        5
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 37.7776,
+      "peak_rss_bytes": 88371200.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 2048,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 37.5269,
+      "tick_p50_ms": 26.32615,
+      "tick_p95_ms": 36.83685,
+      "tick_p99_ms": 37.34335,
+      "variant": 0,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 60.6592,
+      "peak_rss_bytes": 88752128.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 2048,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 24.4277,
+      "tick_p50_ms": 16.2897,
+      "tick_p95_ms": 22.9572,
+      "tick_p99_ms": 23.91515,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 73.0084,
+      "peak_rss_bytes": 88799232.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 2048,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 19.70695,
+      "tick_p50_ms": 13.54015,
+      "tick_p95_ms": 19.09915,
+      "tick_p99_ms": 19.41,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 72.5829,
+      "peak_rss_bytes": 88823808.0,
+      "repeats": 2,
+      "scene": "wave",
+      "size": 2048,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 20.1,
+      "tick_p50_ms": 13.7274,
+      "tick_p95_ms": 19.131349999999998,
+      "tick_p99_ms": 19.5387,
+      "variant": 0,
+      "workers_observed": [
+        5,
+        6
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 1155.065,
+      "peak_rss_bytes": 47339520.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 1.1425999999999998,
+      "tick_p50_ms": 0.8646499999999999,
+      "tick_p95_ms": 0.88015,
+      "tick_p99_ms": 0.9154,
+      "variant": 0,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 1567.995,
+      "peak_rss_bytes": 47742976.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.7926,
+      "tick_p50_ms": 0.628,
+      "tick_p95_ms": 0.7248,
+      "tick_p99_ms": 0.7721,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 1565.165,
+      "peak_rss_bytes": 47777792.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.76865,
+      "tick_p50_ms": 0.6373,
+      "tick_p95_ms": 0.6547000000000001,
+      "tick_p99_ms": 0.67795,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 1538.6999999999998,
+      "peak_rss_bytes": 47810560.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.79985,
+      "tick_p50_ms": 0.64125,
+      "tick_p95_ms": 0.7148000000000001,
+      "tick_p99_ms": 0.7473,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 277.86749999999995,
+      "peak_rss_bytes": 50522112.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 6.180149999999999,
+      "tick_p50_ms": 3.56485,
+      "tick_p95_ms": 3.7755,
+      "tick_p99_ms": 4.16195,
+      "variant": 2,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 305.1775,
+      "peak_rss_bytes": 50894848.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 5.7377,
+      "tick_p50_ms": 3.2360499999999996,
+      "tick_p95_ms": 3.4695,
+      "tick_p99_ms": 3.8265000000000002,
+      "variant": 2,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 294.76099999999997,
+      "peak_rss_bytes": 50946048.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 6.72645,
+      "tick_p50_ms": 3.33045,
+      "tick_p95_ms": 3.75935,
+      "tick_p99_ms": 4.63305,
+      "variant": 2,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 300.0965,
+      "peak_rss_bytes": 51019776.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 3.69695,
+      "tick_p50_ms": 3.3208,
+      "tick_p95_ms": 3.5421500000000004,
+      "tick_p99_ms": 3.6463,
+      "variant": 2,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 2058.46,
+      "peak_rss_bytes": 49371136.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 1609594.0,
+      "tick_allocations_total": 42.0,
+      "tick_max_ms": 1.01495,
+      "tick_p50_ms": 0.46655,
+      "tick_p95_ms": 0.9379,
+      "tick_p99_ms": 0.96645,
+      "variant": 0,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 2500.485,
+      "peak_rss_bytes": 49750016.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 1609594.0,
+      "tick_allocations_total": 42.0,
+      "tick_max_ms": 0.8,
+      "tick_p50_ms": 0.4234,
+      "tick_p95_ms": 0.7179500000000001,
+      "tick_p99_ms": 0.77325,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 2463.035,
+      "peak_rss_bytes": 49786880.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 1609594.0,
+      "tick_allocations_total": 42.0,
+      "tick_max_ms": 0.7626,
+      "tick_p50_ms": 0.45765,
+      "tick_p95_ms": 0.71175,
+      "tick_p99_ms": 0.7562,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 2419.325,
+      "peak_rss_bytes": 49836032.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 1609594.0,
+      "tick_allocations_total": 42.0,
+      "tick_max_ms": 0.81385,
+      "tick_p50_ms": 0.44484999999999997,
+      "tick_p95_ms": 0.72535,
+      "tick_p99_ms": 0.8085500000000001,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 1366.045,
+      "peak_rss_bytes": 47966208.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.84775,
+      "tick_p50_ms": 0.7484999999999999,
+      "tick_p95_ms": 0.7846,
+      "tick_p99_ms": 0.8289,
+      "variant": 0,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 1426.43,
+      "peak_rss_bytes": 48351232.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.9480500000000001,
+      "tick_p50_ms": 0.7218500000000001,
+      "tick_p95_ms": 0.74795,
+      "tick_p99_ms": 0.83395,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 1371.045,
+      "peak_rss_bytes": 48418816.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.8835999999999999,
+      "tick_p50_ms": 0.75065,
+      "tick_p95_ms": 0.7757000000000001,
+      "tick_p99_ms": 0.8164,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 1325.525,
+      "peak_rss_bytes": 48435200.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.8587,
+      "tick_p50_ms": 0.7730999999999999,
+      "tick_p95_ms": 0.82205,
+      "tick_p99_ms": 0.85565,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 476.26599999999996,
+      "peak_rss_bytes": 47966208.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 256,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 2.771,
+      "tick_p50_ms": 2.1464,
+      "tick_p95_ms": 2.2344999999999997,
+      "tick_p99_ms": 2.5244999999999997,
+      "variant": 0,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 562.3275,
+      "peak_rss_bytes": 48357376.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 256,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 2.3865,
+      "tick_p50_ms": 1.8146,
+      "tick_p95_ms": 1.8856,
+      "tick_p99_ms": 2.28015,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 568.7625,
+      "peak_rss_bytes": 48404480.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 256,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 2.0505,
+      "tick_p50_ms": 1.7774999999999999,
+      "tick_p95_ms": 1.8782,
+      "tick_p99_ms": 1.9637,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 562.7075,
+      "peak_rss_bytes": 48431104.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 256,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 1.92635,
+      "tick_p50_ms": 1.7886,
+      "tick_p95_ms": 1.8401,
+      "tick_p99_ms": 1.9077000000000002,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 42.52845,
+      "peak_rss_bytes": 55277568.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 27.078899999999997,
+      "tick_p50_ms": 23.3379,
+      "tick_p95_ms": 24.18185,
+      "tick_p99_ms": 25.4655,
+      "variant": 0,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 79.9246,
+      "peak_rss_bytes": 55662592.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 18.8726,
+      "tick_p50_ms": 12.4603,
+      "tick_p95_ms": 12.747250000000001,
+      "tick_p99_ms": 15.8113,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 118.9185,
+      "peak_rss_bytes": 55697408.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 9.2238,
+      "tick_p50_ms": 8.3891,
+      "tick_p95_ms": 8.59285,
+      "tick_p99_ms": 9.02645,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 119.1505,
+      "peak_rss_bytes": 55734272.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 9.4773,
+      "tick_p50_ms": 8.37575,
+      "tick_p95_ms": 8.56105,
+      "tick_p99_ms": 9.1065,
+      "variant": 0,
+      "workers_observed": [
+        6
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 10.407900000000001,
+      "peak_rss_bytes": 79329280.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 103.94300000000001,
+      "tick_p50_ms": 97.2345,
+      "tick_p95_ms": 101.03999999999999,
+      "tick_p99_ms": 101.792,
+      "variant": 2,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 12.5242,
+      "peak_rss_bytes": 79747072.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 87.4671,
+      "tick_p50_ms": 80.94945,
+      "tick_p95_ms": 85.24685,
+      "tick_p99_ms": 87.17845,
+      "variant": 2,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 13.539,
+      "peak_rss_bytes": 79798272.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 78.7908,
+      "tick_p50_ms": 75.03755000000001,
+      "tick_p95_ms": 77.97855,
+      "tick_p99_ms": 78.54015000000001,
+      "variant": 2,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 13.52665,
+      "peak_rss_bytes": 79820800.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 79.57685000000001,
+      "tick_p50_ms": 74.92885000000001,
+      "tick_p95_ms": 78.32175000000001,
+      "tick_p99_ms": 79.0009,
+      "variant": 2,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 64.7397,
+      "peak_rss_bytes": 65976320.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 4368898.0,
+      "tick_allocations_total": 114.0,
+      "tick_max_ms": 21.9396,
+      "tick_p50_ms": 15.69945,
+      "tick_p95_ms": 20.63925,
+      "tick_p99_ms": 21.5073,
+      "variant": 0,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 117.1375,
+      "peak_rss_bytes": 66357248.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 4368898.0,
+      "tick_allocations_total": 114.0,
+      "tick_max_ms": 13.60475,
+      "tick_p50_ms": 8.488199999999999,
+      "tick_p95_ms": 11.297,
+      "tick_p99_ms": 13.1914,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 159.832,
+      "peak_rss_bytes": 66385920.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 4368898.0,
+      "tick_allocations_total": 114.0,
+      "tick_max_ms": 8.297550000000001,
+      "tick_p50_ms": 6.32665,
+      "tick_p95_ms": 8.03195,
+      "tick_p99_ms": 8.2707,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 159.875,
+      "peak_rss_bytes": 66420736.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 4368898.0,
+      "tick_allocations_total": 114.0,
+      "tick_max_ms": 9.35275,
+      "tick_p50_ms": 6.319,
+      "tick_p95_ms": 8.036200000000001,
+      "tick_p99_ms": 8.31965,
+      "variant": 0,
+      "workers_observed": [
+        5
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 69.0051,
+      "peak_rss_bytes": 65067008.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 18.400100000000002,
+      "tick_p50_ms": 14.83275,
+      "tick_p95_ms": 15.64105,
+      "tick_p99_ms": 16.682299999999998,
+      "variant": 0,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 120.256,
+      "peak_rss_bytes": 65452032.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 11.59655,
+      "tick_p50_ms": 8.43835,
+      "tick_p95_ms": 9.30565,
+      "tick_p99_ms": 11.27665,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 127.2645,
+      "peak_rss_bytes": 65499136.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 8.7858,
+      "tick_p50_ms": 8.08595,
+      "tick_p95_ms": 8.44015,
+      "tick_p99_ms": 8.64025,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 127.762,
+      "peak_rss_bytes": 65521664.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 9.23565,
+      "tick_p50_ms": 8.0549,
+      "tick_p95_ms": 8.43575,
+      "tick_p99_ms": 8.78095,
+      "variant": 0,
+      "workers_observed": [
+        5
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 25.67675,
+      "peak_rss_bytes": 65067008.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 1024,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 54.13895,
+      "tick_p50_ms": 39.900999999999996,
+      "tick_p95_ms": 41.7158,
+      "tick_p99_ms": 45.13335,
+      "variant": 0,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 44.99975,
+      "peak_rss_bytes": 65447936.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 1024,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 26.85615,
+      "tick_p50_ms": 22.88275,
+      "tick_p95_ms": 24.22725,
+      "tick_p99_ms": 26.64385,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 47.77925,
+      "peak_rss_bytes": 65490944.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 1024,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 22.417099999999998,
+      "tick_p50_ms": 21.37615,
+      "tick_p95_ms": 22.16355,
+      "tick_p99_ms": 22.360500000000002,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 47.7983,
+      "peak_rss_bytes": 65552384.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 1024,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 23.6635,
+      "tick_p50_ms": 21.300649999999997,
+      "tick_p95_ms": 22.188699999999997,
+      "tick_p99_ms": 22.95415,
+      "variant": 0,
+      "workers_observed": [
+        5
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 9.40807,
+      "peak_rss_bytes": 80584704.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 110.39099999999999,
+      "tick_p50_ms": 106.1935,
+      "tick_p95_ms": 109.1055,
+      "tick_p99_ms": 110.024,
+      "variant": 0,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 17.86775,
+      "peak_rss_bytes": 80961536.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 66.07849999999999,
+      "tick_p50_ms": 55.09165,
+      "tick_p95_ms": 62.9079,
+      "tick_p99_ms": 65.7966,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 27.82375,
+      "peak_rss_bytes": 81002496.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 39.437250000000006,
+      "tick_p50_ms": 35.90065,
+      "tick_p95_ms": 36.61195,
+      "tick_p99_ms": 37.526399999999995,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 27.7992,
+      "peak_rss_bytes": 81025024.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 41.0158,
+      "tick_p50_ms": 35.91275,
+      "tick_p95_ms": 36.65315,
+      "tick_p99_ms": 38.450450000000004,
+      "variant": 0,
+      "workers_observed": [
+        6
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 2.176475,
+      "peak_rss_bytes": 171481088.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 494.83349999999996,
+      "tick_p50_ms": 463.6365,
+      "tick_p95_ms": 479.637,
+      "tick_p99_ms": 486.69399999999996,
+      "variant": 2,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 2.5761,
+      "peak_rss_bytes": 171878400.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 428.987,
+      "tick_p50_ms": 391.52700000000004,
+      "tick_p95_ms": 409.6305,
+      "tick_p99_ms": 418.023,
+      "variant": 2,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 2.794065,
+      "peak_rss_bytes": 171958272.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 381.621,
+      "tick_p50_ms": 362.4095,
+      "tick_p95_ms": 374.788,
+      "tick_p99_ms": 378.995,
+      "variant": 2,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 2.79192,
+      "peak_rss_bytes": 171956224.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 391.8705,
+      "tick_p50_ms": 362.64300000000003,
+      "tick_p95_ms": 375.29449999999997,
+      "tick_p99_ms": 379.844,
+      "variant": 2,
+      "workers_observed": [
+        5
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 12.97245,
+      "peak_rss_bytes": 113836032.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 8047970.0,
+      "tick_allocations_total": 210.0,
+      "tick_max_ms": 100.124,
+      "tick_p50_ms": 75.26215,
+      "tick_p95_ms": 94.3804,
+      "tick_p99_ms": 99.72185,
+      "variant": 0,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 24.3461,
+      "peak_rss_bytes": 114208768.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 8047970.0,
+      "tick_allocations_total": 210.0,
+      "tick_max_ms": 59.6506,
+      "tick_p50_ms": 40.86295,
+      "tick_p95_ms": 50.089,
+      "tick_p99_ms": 56.9278,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 35.492149999999995,
+      "peak_rss_bytes": 114245632.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 8047970.0,
+      "tick_allocations_total": 210.0,
+      "tick_max_ms": 35.2573,
+      "tick_p50_ms": 28.0377,
+      "tick_p95_ms": 33.8038,
+      "tick_p99_ms": 34.79305,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 35.482200000000006,
+      "peak_rss_bytes": 114284544.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 8047970.0,
+      "tick_allocations_total": 210.0,
+      "tick_max_ms": 35.007099999999994,
+      "tick_p50_ms": 27.98055,
+      "tick_p95_ms": 33.695750000000004,
+      "tick_p99_ms": 34.780699999999996,
+      "variant": 0,
+      "workers_observed": [
+        6
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 14.444199999999999,
+      "peak_rss_bytes": 119298048.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 78.7048,
+      "tick_p50_ms": 71.26785000000001,
+      "tick_p95_ms": 74.4217,
+      "tick_p99_ms": 75.28225,
+      "variant": 0,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 25.2187,
+      "peak_rss_bytes": 119681024.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 54.439949999999996,
+      "tick_p50_ms": 39.436949999999996,
+      "tick_p95_ms": 48.31285,
+      "tick_p99_ms": 53.1768,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 29.64785,
+      "peak_rss_bytes": 119703552.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 36.76055,
+      "tick_p50_ms": 34.676249999999996,
+      "tick_p95_ms": 36.38165,
+      "tick_p99_ms": 36.715450000000004,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 29.68975,
+      "peak_rss_bytes": 119752704.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 39.7127,
+      "tick_p50_ms": 34.554950000000005,
+      "tick_p95_ms": 36.3705,
+      "tick_p99_ms": 37.278999999999996,
+      "variant": 0,
+      "workers_observed": [
+        5,
+        6
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 5.5694099999999995,
+      "peak_rss_bytes": 119291904.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 2048,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 199.3605,
+      "tick_p50_ms": 185.0405,
+      "tick_p95_ms": 190.909,
+      "tick_p99_ms": 191.876,
+      "variant": 0,
+      "workers_observed": [
+        1
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 9.835049999999999,
+      "peak_rss_bytes": 119678976.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 2048,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 138.70499999999998,
+      "tick_p50_ms": 102.4035,
+      "tick_p95_ms": 118.55850000000001,
+      "tick_p99_ms": 131.4695,
+      "variant": 0,
+      "workers_observed": [
+        2
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 11.0638,
+      "peak_rss_bytes": 119719936.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 2048,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 101.79855,
+      "tick_p50_ms": 93.04705,
+      "tick_p95_ms": 95.9067,
+      "tick_p99_ms": 99.5592,
+      "variant": 0,
+      "workers_observed": [
+        4
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 11.14085,
+      "peak_rss_bytes": 119752704.0,
+      "repeats": 2,
+      "scene": "sparse",
+      "size": 2048,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 98.41775,
+      "tick_p50_ms": 92.37365,
+      "tick_p95_ms": 95.28945,
+      "tick_p99_ms": 96.2627,
+      "variant": 0,
+      "workers_observed": [
+        6
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 979400.5,
+      "peak_rss_bytes": 48146432.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.0592,
+      "tick_p50_ms": 0.00075,
+      "tick_p95_ms": 0.0008500000000000001,
+      "tick_p99_ms": 0.0009499999999999999,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 1176810.0,
+      "peak_rss_bytes": 48539648.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.0556,
+      "tick_p50_ms": 0.0005499999999999999,
+      "tick_p95_ms": 0.0006,
+      "tick_p99_ms": 0.0006,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 982007.5,
+      "peak_rss_bytes": 48582656.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.06205,
+      "tick_p50_ms": 0.0007,
+      "tick_p95_ms": 0.0007,
+      "tick_p99_ms": 0.0008,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 1198130.0,
+      "peak_rss_bytes": 48615424.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.05385,
+      "tick_p50_ms": 0.0005,
+      "tick_p95_ms": 0.0006,
+      "tick_p99_ms": 0.00075,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 22722.0,
+      "peak_rss_bytes": 53401600.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.08729999999999999,
+      "tick_p50_ms": 0.04375,
+      "tick_p95_ms": 0.0439,
+      "tick_p99_ms": 0.04665,
+      "variant": 2,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 22421.75,
+      "peak_rss_bytes": 53788672.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.0948,
+      "tick_p50_ms": 0.044,
+      "tick_p95_ms": 0.044399999999999995,
+      "tick_p99_ms": 0.0723,
+      "variant": 2,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 22639.949999999997,
+      "peak_rss_bytes": 53852160.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.09345,
+      "tick_p50_ms": 0.0437,
+      "tick_p95_ms": 0.04395,
+      "tick_p99_ms": 0.07475000000000001,
+      "variant": 2,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 22709.1,
+      "peak_rss_bytes": 53856256.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.0937,
+      "tick_p50_ms": 0.0437,
+      "tick_p95_ms": 0.0438,
+      "tick_p99_ms": 0.045649999999999996,
+      "variant": 2,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 1227590.0,
+      "peak_rss_bytes": 49145856.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.0502,
+      "tick_p50_ms": 0.0005,
+      "tick_p95_ms": 0.0006,
+      "tick_p99_ms": 0.00065,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 1160970.0,
+      "peak_rss_bytes": 49522688.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.0577,
+      "tick_p50_ms": 0.0005499999999999999,
+      "tick_p95_ms": 0.0006,
+      "tick_p99_ms": 0.00065,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 1068224.0,
+      "peak_rss_bytes": 49561600.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.0595,
+      "tick_p50_ms": 0.0006000000000000001,
+      "tick_p95_ms": 0.00065,
+      "tick_p99_ms": 0.0007,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 987121.5,
+      "peak_rss_bytes": 49602560.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.0625,
+      "tick_p50_ms": 0.0007,
+      "tick_p95_ms": 0.0007,
+      "tick_p99_ms": 0.0008,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 1728525.0,
+      "peak_rss_bytes": 47974400.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.0133,
+      "tick_p50_ms": 0.0005,
+      "tick_p95_ms": 0.0006,
+      "tick_p99_ms": 0.0006,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 1531935.0,
+      "peak_rss_bytes": 48373760.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.0263,
+      "tick_p50_ms": 0.0005,
+      "tick_p95_ms": 0.0006,
+      "tick_p99_ms": 0.0006,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 1484885.0,
+      "peak_rss_bytes": 48416768.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.0257,
+      "tick_p50_ms": 0.0005499999999999999,
+      "tick_p95_ms": 0.0006,
+      "tick_p99_ms": 0.0006,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 1530745.0,
+      "peak_rss_bytes": 48422912.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 256,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.0263,
+      "tick_p50_ms": 0.0005,
+      "tick_p95_ms": 0.0006,
+      "tick_p99_ms": 0.0006,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 1335323.5,
+      "peak_rss_bytes": 47974400.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 256,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.0158,
+      "tick_p50_ms": 0.00075,
+      "tick_p95_ms": 0.0008500000000000001,
+      "tick_p99_ms": 0.0008500000000000001,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 1511420.0,
+      "peak_rss_bytes": 48369664.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 256,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.0274,
+      "tick_p50_ms": 0.0005,
+      "tick_p95_ms": 0.0006,
+      "tick_p99_ms": 0.0007999999999999999,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 1496975.0,
+      "peak_rss_bytes": 48390144.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 256,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.026,
+      "tick_p50_ms": 0.0005,
+      "tick_p95_ms": 0.0006,
+      "tick_p99_ms": 0.0006,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 1511515.0,
+      "peak_rss_bytes": 48433152.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 256,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.027299999999999998,
+      "tick_p50_ms": 0.0005,
+      "tick_p95_ms": 0.0006,
+      "tick_p99_ms": 0.0006,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 215076.5,
+      "peak_rss_bytes": 55279616.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.2724,
+      "tick_p50_ms": 0.00315,
+      "tick_p95_ms": 0.0032,
+      "tick_p99_ms": 0.0037,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 205071.5,
+      "peak_rss_bytes": 55670784.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.28445,
+      "tick_p50_ms": 0.0031999999999999997,
+      "tick_p95_ms": 0.0036499999999999996,
+      "tick_p99_ms": 0.0053,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 201003.0,
+      "peak_rss_bytes": 55703552.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.3236,
+      "tick_p50_ms": 0.0032,
+      "tick_p95_ms": 0.0036,
+      "tick_p99_ms": 0.00385,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 206003.5,
+      "peak_rss_bytes": 55736320.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.3053,
+      "tick_p50_ms": 0.0032,
+      "tick_p95_ms": 0.0032,
+      "tick_p99_ms": 0.00505,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 3486.2650000000003,
+      "peak_rss_bytes": 79323136.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.5972999999999999,
+      "tick_p50_ms": 0.2825,
+      "tick_p95_ms": 0.29495,
+      "tick_p99_ms": 0.41435,
+      "variant": 2,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 3496.4049999999997,
+      "peak_rss_bytes": 79724544.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.5928,
+      "tick_p50_ms": 0.2824,
+      "tick_p95_ms": 0.2853,
+      "tick_p99_ms": 0.42045,
+      "variant": 2,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 3559.7799999999997,
+      "peak_rss_bytes": 79792128.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.6014999999999999,
+      "tick_p50_ms": 0.27845,
+      "tick_p95_ms": 0.28049999999999997,
+      "tick_p99_ms": 0.315,
+      "variant": 2,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 3532.1549999999997,
+      "peak_rss_bytes": 79761408.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.7053,
+      "tick_p50_ms": 0.27855,
+      "tick_p95_ms": 0.2824,
+      "tick_p99_ms": 0.4522,
+      "variant": 2,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 208997.5,
+      "peak_rss_bytes": 61593600.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.29845,
+      "tick_p50_ms": 0.0031,
+      "tick_p95_ms": 0.0032,
+      "tick_p99_ms": 0.0047,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 202434.5,
+      "peak_rss_bytes": 61972480.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.3121,
+      "tick_p50_ms": 0.00315,
+      "tick_p95_ms": 0.00405,
+      "tick_p99_ms": 0.0043,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 209416.5,
+      "peak_rss_bytes": 62009344.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.2965,
+      "tick_p50_ms": 0.0031,
+      "tick_p95_ms": 0.0032,
+      "tick_p99_ms": 0.0039,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 211565.5,
+      "peak_rss_bytes": 62050304.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.28575,
+      "tick_p50_ms": 0.00315,
+      "tick_p95_ms": 0.0032,
+      "tick_p99_ms": 0.0033,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 172444.0,
+      "peak_rss_bytes": 60045312.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.1608,
+      "tick_p50_ms": 0.0049,
+      "tick_p95_ms": 0.0049499999999999995,
+      "tick_p99_ms": 0.01335,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 152991.5,
+      "peak_rss_bytes": 60430336.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.30725,
+      "tick_p50_ms": 0.00485,
+      "tick_p95_ms": 0.0049,
+      "tick_p99_ms": 0.0053,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 155373.5,
+      "peak_rss_bytes": 60510208.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.2868,
+      "tick_p50_ms": 0.00485,
+      "tick_p95_ms": 0.0049499999999999995,
+      "tick_p99_ms": 0.0049499999999999995,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 144489.5,
+      "peak_rss_bytes": 60506112.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 1024,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.29575,
+      "tick_p50_ms": 0.0049499999999999995,
+      "tick_p95_ms": 0.0078000000000000005,
+      "tick_p99_ms": 0.014,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 170722.0,
+      "peak_rss_bytes": 60043264.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 1024,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.18259999999999998,
+      "tick_p50_ms": 0.00485,
+      "tick_p95_ms": 0.0049499999999999995,
+      "tick_p99_ms": 0.00545,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 152705.0,
+      "peak_rss_bytes": 60428288.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 1024,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.30595,
+      "tick_p50_ms": 0.0049,
+      "tick_p95_ms": 0.0049,
+      "tick_p99_ms": 0.005,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 153157.0,
+      "peak_rss_bytes": 60454912.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 1024,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.29645,
+      "tick_p50_ms": 0.0049,
+      "tick_p95_ms": 0.0049499999999999995,
+      "tick_p99_ms": 0.005050000000000001,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 153118.0,
+      "peak_rss_bytes": 60508160.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 1024,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.30155,
+      "tick_p50_ms": 0.0049,
+      "tick_p95_ms": 0.0049,
+      "tick_p99_ms": 0.006750000000000001,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 64447.0,
+      "peak_rss_bytes": 70039552.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 1.06075,
+      "tick_p50_ms": 0.009049999999999999,
+      "tick_p95_ms": 0.01195,
+      "tick_p99_ms": 0.0139,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 68304.85,
+      "peak_rss_bytes": 70418432.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.9914499999999999,
+      "tick_p50_ms": 0.00915,
+      "tick_p95_ms": 0.00925,
+      "tick_p99_ms": 0.01125,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 68621.95,
+      "peak_rss_bytes": 70451200.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 1.0047000000000001,
+      "tick_p50_ms": 0.009049999999999999,
+      "tick_p95_ms": 0.0091,
+      "tick_p99_ms": 0.0095,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 1,
+      "native_ticks_per_s": 69682.9,
+      "peak_rss_bytes": 70490112.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.9467,
+      "tick_p50_ms": 0.0091,
+      "tick_p95_ms": 0.0092,
+      "tick_p99_ms": 0.01105,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 5.11334,
+      "peak_rss_bytes": 132962304.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 202.30849999999998,
+      "tick_p50_ms": 195.4605,
+      "tick_p95_ms": 196.5445,
+      "tick_p99_ms": 198.958,
+      "variant": 2,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 5.03777,
+      "peak_rss_bytes": 133296128.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 218.49349999999998,
+      "tick_p50_ms": 198.18,
+      "tick_p95_ms": 199.2065,
+      "tick_p99_ms": 208.5675,
+      "variant": 2,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 5.07664,
+      "peak_rss_bytes": 133408768.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 201.894,
+      "tick_p50_ms": 196.863,
+      "tick_p95_ms": 197.97050000000002,
+      "tick_p99_ms": 199.32600000000002,
+      "variant": 2,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 3,
+      "native_ticks_per_s": 5.125655,
+      "peak_rss_bytes": 133427200.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 201.39049999999997,
+      "tick_p50_ms": 195.0115,
+      "tick_p95_ms": 195.865,
+      "tick_p99_ms": 197.3505,
+      "variant": 2,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 65585.25,
+      "peak_rss_bytes": 87373824.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 1.0906500000000001,
+      "tick_p50_ms": 0.0091,
+      "tick_p95_ms": 0.01075,
+      "tick_p99_ms": 0.0112,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 65440.55,
+      "peak_rss_bytes": 87752704.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 1.1077,
+      "tick_p50_ms": 0.009049999999999999,
+      "tick_p95_ms": 0.0091,
+      "tick_p99_ms": 0.02785,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 64347.2,
+      "peak_rss_bytes": 87783424.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 1.14815,
+      "tick_p50_ms": 0.00915,
+      "tick_p95_ms": 0.00925,
+      "tick_p99_ms": 0.0189,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 4,
+      "native_ticks_per_s": 66110.65,
+      "peak_rss_bytes": 87826432.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 1.0928499999999999,
+      "tick_p50_ms": 0.0091,
+      "tick_p95_ms": 0.0092,
+      "tick_p99_ms": 0.01085,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 47631.65,
+      "peak_rss_bytes": 88375296.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.8438,
+      "tick_p50_ms": 0.016300000000000002,
+      "tick_p95_ms": 0.016399999999999998,
+      "tick_p99_ms": 0.03085,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 44206.15,
+      "peak_rss_bytes": 88758272.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 1.03315,
+      "tick_p50_ms": 0.0162,
+      "tick_p95_ms": 0.0208,
+      "tick_p99_ms": 0.060450000000000004,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 45366.9,
+      "peak_rss_bytes": 88795136.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 1.03885,
+      "tick_p50_ms": 0.01635,
+      "tick_p95_ms": 0.01645,
+      "tick_p99_ms": 0.0185,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 46066.8,
+      "peak_rss_bytes": 88836096.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 2048,
+      "substeps": 1,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.99255,
+      "tick_p50_ms": 0.01625,
+      "tick_p95_ms": 0.01645,
+      "tick_p99_ms": 0.0184,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 6
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 48539.100000000006,
+      "peak_rss_bytes": 88375296.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 2048,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.80715,
+      "tick_p50_ms": 0.0162,
+      "tick_p95_ms": 0.0163,
+      "tick_p99_ms": 0.01695,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 1
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 45262.2,
+      "peak_rss_bytes": 88754176.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 2048,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 1.0391,
+      "tick_p50_ms": 0.01635,
+      "tick_p95_ms": 0.01645,
+      "tick_p99_ms": 0.025849999999999998,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 2
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 44893.9,
+      "peak_rss_bytes": 88807424.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 2048,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 0.9882500000000001,
+      "tick_p50_ms": 0.01635,
+      "tick_p95_ms": 0.0222,
+      "tick_p99_ms": 0.03215,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 4
+    },
+    {
+      "family": 5,
+      "native_ticks_per_s": 45339.600000000006,
+      "peak_rss_bytes": 88842240.0,
+      "repeats": 2,
+      "scene": "idle",
+      "size": 2048,
+      "substeps": 3,
+      "tick_allocated_bytes_total": 0.0,
+      "tick_allocations_total": 0.0,
+      "tick_max_ms": 1.0436,
+      "tick_p50_ms": 0.0163,
+      "tick_p95_ms": 0.0164,
+      "tick_p99_ms": 0.0171,
+      "variant": 0,
+      "workers_observed": [
+        0
+      ],
+      "workers_requested": 6
+    }
+  ],
+  "measurement_failures": 0,
+  "measurement_processes": 480,
+  "overall_candidate_acceptance": "Pending remaining final-head CI/auxiliary Workbench-package evidence.",
+  "recorded_at": "2026-11-20T07:07:16.636101+00:00",
+  "review_script_sha256": "ac89152f56db61a52756ade1d56aed0eb3322ea295608d03fc1f61a6e50f1082",
+  "scenes": [
+    {
+      "binary_retained": false,
+      "compiler_metadata_diagnostic": "D8003 follows the intentional cl /Bv call without a source filename; this is retained metadata, while both compilation steps and executed native tests passed.",
+      "compiler_version": "MSVC 19.44.35230 x64",
+      "executable_sha256_reported_before_and_after": "917192760f71ae4e643ed116d687eb0e653fbcf45de947506ed1578383aab3f1",
+      "failed_processes": 0,
+      "initial_final_quantity_differences": 0,
+      "machine": {
+        "logical_cpus": 4,
+        "machine": "AMD64",
+        "platform": "Windows-2022Server-10.0.20348-SP0",
+        "processor": "AMD64 Family 26 Model 2 Stepping 1, AuthenticAMD"
+      },
+      "matrix_csv_sha256": "f7cf4af3cacbfdda322c4ecf8aa91cb96119ca5f86e23763b0638e5902275769",
+      "measured_ticks_per_process": 180,
+      "native_correctness_tests": 31,
+      "native_failures": 0,
+      "native_log_sha256": "8cceb85c6da4feb5853976686a5f54c172e9876b1ac3358b8c304e23211f668a",
+      "p50_ms_range": [
+        0.4647,
+        535.632
+      ],
+      "processes": 120,
+      "raw_process_receipts_sha256": "b1cde9b4bd7b7219fc56522d4beaa3e294f2767e6d77b7bb2ce237e89eb9d9aa",
+      "scene": "dam",
+      "source_files": 83,
+      "source_sha256": "205be3aed6fd1c22e711439c8a4056d2df4f2b14c4db569050f9c40a71219d5a",
+      "water_ledger_balanced_rows": 120
+    },
+    {
+      "binary_retained": false,
+      "compiler_metadata_diagnostic": "D8003 follows the intentional cl /Bv call without a source filename; this is retained metadata, while both compilation steps and executed native tests passed.",
+      "compiler_version": "MSVC 19.44.35230 x64",
+      "executable_sha256_reported_before_and_after": "55af2a8b57e077cf41a00f945b0c9fc14257707b4030e108c8274e14baebe61e",
+      "failed_processes": 0,
+      "initial_final_quantity_differences": 120,
+      "machine": {
+        "logical_cpus": 4,
+        "machine": "AMD64",
+        "platform": "Windows-2022Server-10.0.20348-SP0",
+        "processor": "Intel64 Family 6 Model 207 Stepping 2, GenuineIntel"
+      },
+      "matrix_csv_sha256": "3d46809acb357427182c6582e4d3bae4117ef42be200064cd1949a715f23d1a4",
+      "measured_ticks_per_process": 180,
+      "native_correctness_tests": 31,
+      "native_failures": 0,
+      "native_log_sha256": "8cceb85c6da4feb5853976686a5f54c172e9876b1ac3358b8c304e23211f668a",
+      "p50_ms_range": [
+        1.1426,
+        1051.73
+      ],
+      "processes": 120,
+      "raw_process_receipts_sha256": "859a064f04656d6744d0683fb293b31f5d74f3c7ce2b6283ff8186fb5044d4ba",
+      "scene": "wave",
+      "source_files": 83,
+      "source_sha256": "205be3aed6fd1c22e711439c8a4056d2df4f2b14c4db569050f9c40a71219d5a",
+      "water_ledger_balanced_rows": 120
+    },
+    {
+      "binary_retained": false,
+      "compiler_metadata_diagnostic": "D8003 follows the intentional cl /Bv call without a source filename; this is retained metadata, while both compilation steps and executed native tests passed.",
+      "compiler_version": "MSVC 19.44.35230 x64",
+      "executable_sha256_reported_before_and_after": "8e9308ccc94a64271d9324621855247d1cf33d92d2185decc54cd9cc7dc6a165",
+      "failed_processes": 0,
+      "initial_final_quantity_differences": 0,
+      "machine": {
+        "logical_cpus": 4,
+        "machine": "AMD64",
+        "platform": "Windows-2022Server-10.0.20348-SP0",
+        "processor": "AMD64 Family 25 Model 1 Stepping 1, AuthenticAMD"
+      },
+      "matrix_csv_sha256": "0aea4ce1044b477752237378b474c8b376387306539fe19e6d7e12e5816557fb",
+      "measured_ticks_per_process": 180,
+      "native_correctness_tests": 31,
+      "native_failures": 0,
+      "native_log_sha256": "8cceb85c6da4feb5853976686a5f54c172e9876b1ac3358b8c304e23211f668a",
+      "p50_ms_range": [
+        0.4191,
+        476.276
+      ],
+      "processes": 120,
+      "raw_process_receipts_sha256": "d6b90e4196bbc582e3844b5c90b0ef2e09f30e9933d9eaf7df86c8ce19280e92",
+      "scene": "sparse",
+      "source_files": 83,
+      "source_sha256": "205be3aed6fd1c22e711439c8a4056d2df4f2b14c4db569050f9c40a71219d5a",
+      "water_ledger_balanced_rows": 120
+    },
+    {
+      "binary_retained": false,
+      "compiler_metadata_diagnostic": "D8003 follows the intentional cl /Bv call without a source filename; this is retained metadata, while both compilation steps and executed native tests passed.",
+      "compiler_version": "MSVC 19.44.35230 x64",
+      "executable_sha256_reported_before_and_after": "55af2a8b57e077cf41a00f945b0c9fc14257707b4030e108c8274e14baebe61e",
+      "failed_processes": 0,
+      "initial_final_quantity_differences": 0,
+      "machine": {
+        "logical_cpus": 4,
+        "machine": "AMD64",
+        "platform": "Windows-2022Server-10.0.20348-SP0",
+        "processor": "AMD64 Family 25 Model 1 Stepping 1, AuthenticAMD"
+      },
+      "matrix_csv_sha256": "532e8fec2df0f702a91a59828bcafdebaa7424d69466bdba66ce97a1cf6267a8",
+      "measured_ticks_per_process": 180,
+      "native_correctness_tests": 31,
+      "native_failures": 0,
+      "native_log_sha256": "8cceb85c6da4feb5853976686a5f54c172e9876b1ac3358b8c304e23211f668a",
+      "p50_ms_range": [
+        0.0005,
+        198.8
+      ],
+      "processes": 120,
+      "raw_process_receipts_sha256": "d3139937ea35fa8e782db58f0f0c340b8f478647efc351d424c413d72cd66fa2",
+      "scene": "idle",
+      "source_files": 83,
+      "source_sha256": "205be3aed6fd1c22e711439c8a4056d2df4f2b14c4db569050f9c40a71219d5a",
+      "water_ledger_balanced_rows": 120
+    }
+  ],
+  "schema": "gentek80-independent-final-windows-wave-readback-v1",
+  "scope": [
+    "Actual Windows Server 2022 MSVC Wave correctness and complete-World tick measurements; not MSVC Gentek generation or Windows sanitizer qualification.",
+    "All five configured solver/substep alternatives and all requested worker counts are retained. Worker observations are not physical-core counts.",
+    "The wave scene has explicit external sources/sinks, so its 120 initial/final water changes are expected and fully ledger-accounted.",
+    "Executable hashes were measured before/after by the original runner. The unchanged workflow did not upload its benchmark executable, so this reviewer cannot rehash those executable bytes independently.",
+    "No performance threshold is introduced. Slower configurations and all 240 two-repeat groups are retained.",
+    "The separate historical Linux comparison uses baseline 018bd09503d7f079ddac52e225c2f7daf8d678bf, not mission accepted main."
+  ],
+  "slower_four_worker_observations": 9,
+  "source_commit": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0",
+  "source_tree": "546750300019d2e5534e96d4e1dd751bc28d9f2e",
+  "status": "passed_complete_windows_wave_originals",
+  "workflow_attempt": 1,
+  "workflow_conclusion": "success",
+  "workflow_metadata_sha256": "0ff2e091fa1c9d6b1e1deaa8110244c02e0b6b4a560d017e404013c28425f177",
+  "workflow_run": 44688692461
+}

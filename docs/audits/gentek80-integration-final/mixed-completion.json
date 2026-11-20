@@ -1,0 +1,115 @@
+{
+  "abi_receipt_equality_required": false,
+  "application_source_commit": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0",
+  "jobs": [
+    {
+      "completed_at": "2026-11-20T09:09:39Z",
+      "conclusion": "success",
+      "id": 136190687119,
+      "name": "Actual mixed Gentek Workbench (windows)"
+    },
+    {
+      "completed_at": "2026-11-20T09:06:46Z",
+      "conclusion": "success",
+      "id": 136190687397,
+      "name": "Actual mixed Gentek Workbench (linux)"
+    }
+  ],
+  "native_build_commit": "82da41a945b1d98e0267a2a20b56ec66d83f71f6",
+  "orchestration_commit": "12f0fb14b2d75dfbbec609b888ed1fed7314091c",
+  "original_artifact_readback_sha256": "b07cc5393fe09a18dc79a2f8b402e5d2436f609d5be42f7788ceebb58f321565",
+  "platforms": {
+    "linux": {
+      "archive": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/linux.zip",
+      "archive_bytes": 10279085,
+      "archive_sha256": "5aa1b7a3d694deff90c57ef365cecf4ca4c366be2276b93bb553ee3669cf714b",
+      "artifact_id": 14615842229,
+      "evidence_directory": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/linux/evidence/mixed",
+      "framebuffers": 24,
+      "independent_processes": true,
+      "native_material_previews": 3,
+      "phase_checks": {
+        "author": 273,
+        "reopen": 75
+      },
+      "phase_failures": {
+        "author": 0,
+        "reopen": 0
+      },
+      "process_ids": {
+        "author": 2632,
+        "reopen": 2689
+      },
+      "process_measurements": {
+        "author": {
+          "peak_memory_scope": "Godot process high-water RSS sampled while alive; excludes runner and display server",
+          "peak_resident_bytes": 1099935744,
+          "wall_seconds": 72.638220279
+        },
+        "import": {
+          "peak_memory_scope": "Godot process high-water RSS sampled while alive; excludes runner and display server",
+          "peak_resident_bytes": 752590848,
+          "wall_seconds": 8.954919208000007
+        },
+        "reopen": {
+          "peak_memory_scope": "Godot process high-water RSS sampled while alive; excludes runner and display server",
+          "peak_resident_bytes": 855805952,
+          "wall_seconds": 30.293266184999993
+        }
+      },
+      "qualification_sha256": "09f503c3bfa911eb324fb8a36df07b27a84327ec7d3feec33f86f2d9ac855dce",
+      "source_stable": true
+    },
+    "windows": {
+      "archive": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/windows.zip",
+      "archive_bytes": 9183729,
+      "archive_sha256": "89e0c19b4823698aaaff1f211ca2998225c55bcc1d3a98fc7f2c92edba056537",
+      "artifact_id": 14615309639,
+      "evidence_directory": "/workspace/scratch/3992e7f5304e/qualification/mixed-workbench-admission/run-44707515958/windows/evidence/mixed",
+      "framebuffers": 24,
+      "independent_processes": true,
+      "native_material_previews": 3,
+      "phase_checks": {
+        "author": 273,
+        "reopen": 75
+      },
+      "phase_failures": {
+        "author": 0,
+        "reopen": 0
+      },
+      "process_ids": {
+        "author": 2420,
+        "reopen": 5372
+      },
+      "process_measurements": {
+        "author": {
+          "peak_memory_scope": "Unavailable: Windows console launcher starts a separate engine; its child working set was not measured",
+          "peak_resident_bytes": null,
+          "wall_seconds": 169.3119999999999
+        },
+        "import": {
+          "peak_memory_scope": "Unavailable: Windows console launcher starts a separate engine; its child working set was not measured",
+          "peak_resident_bytes": null,
+          "wall_seconds": 10.57899999999995
+        },
+        "reopen": {
+          "peak_memory_scope": "Unavailable: Windows console launcher starts a separate engine; its child working set was not measured",
+          "peak_resident_bytes": null,
+          "wall_seconds": 61.71900000000005
+        }
+      },
+      "qualification_sha256": "a8a911ce6f7be33d0cb449d6bbe493e30af579f9ee3e22e629ebb86544cd7ddb",
+      "source_stable": true
+    }
+  },
+  "portable_material_recipe_edit_equivalence": true,
+  "recorded_at": "2026-11-20T09:12:01.017653+00:00",
+  "representative_originals_manifest_sha256": "761fd0ef0ac7ece09ca084cd529a041625d00196bc345bf299b8ed22643e9435",
+  "run_conclusion": "success",
+  "run_id": 44707515958,
+  "run_url": "https://github.com/techrote/cybersand/actions/runs/44707515958",
+  "schema": "gentek80-mixed-composition-completion-v1",
+  "scope_limit": "The supplemental campaign validates real mixed Workbench selection/generation/edit/save/reload and reproducible material bytes. It does not certify structural support or walkable interfaces between style zones.",
+  "source_or_publication_edits": false,
+  "status": "passed-awaiting-independent-final-readback"
+}

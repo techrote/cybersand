@@ -1,0 +1,136 @@
+{
+  "auxiliary": {
+    "archive_sha256": "1ecfef2bca82e73200cc686ce225f8e60a5bccd49a9853cc12f66863d11e06f1",
+    "orchestration_commit": "f69b68a88401b28b3fe688c3d070162ebcd090c5",
+    "originals_unchanged": true,
+    "phases": [
+      {
+        "admission_receipt_sha256": "cfbefaf6987bb067708672c0f4c9a13619b937df38d4402bcf0ed7d6d10f9980",
+        "archive": {
+          "id": 14608662071,
+          "members": 82,
+          "sha256": "f96a6d430abd5efc5647c141261011453b8c73e7ec9e0b68a04e799ebc06c2df"
+        },
+        "detail": {
+          "failures": 0,
+          "native_identity_inputs": 104,
+          "original_json_checks": 205,
+          "phases": [
+            "author",
+            "reopen",
+            "multistyle-author",
+            "multistyle-reopen"
+          ],
+          "pngs": 16,
+          "project_script_inputs": 626
+        },
+        "mode": "owner",
+        "only_reported_package_metadata_changes": "Four original Rapier import descriptors converted CRLF to LF, with exact before/after hashes.",
+        "original_execution_receipts": 12,
+        "protected_files": 1040
+      },
+      {
+        "admission_receipt_sha256": "85c500287cc9f05e948652047b7f4fa7bb6a244904ad605d2579316086b78da4",
+        "archive": {
+          "id": 14609085080,
+          "members": 125,
+          "sha256": "cf69317d46dd5921cd92ab353bdb176c44dade7ce2ce0bcfe7f36406d0e937dc"
+        },
+        "detail": {
+          "actual_engine_pids": [
+            7792,
+            6236,
+            5140,
+            3732,
+            7800,
+            1448
+          ],
+          "checks_in_four_completion_records": 335,
+          "pngs": 3,
+          "process_labels": [
+            "flatten-import",
+            "standalone-format-adversarial",
+            "side-512-workers-1-author",
+            "side-512-workers-1-reopen",
+            "owner-failure-author",
+            "owner-failure-reopen"
+          ],
+          "storage_fault_status": "passed"
+        },
+        "mode": "flatten",
+        "only_reported_package_metadata_changes": "Four original Rapier import descriptors converted CRLF to LF, with exact before/after hashes.",
+        "original_execution_receipts": 9,
+        "protected_files": 1040
+      }
+    ],
+    "pure_validation_only": "Unchanged owner/source and Flatten validators called directly on original retained receipts. No bundle admission, fake environment, new runtime process or receipt rewrite.",
+    "run": 44690026779
+  },
+  "docs": {
+    "all_26_steps_successful": true,
+    "archives": [
+      {
+        "id": 14607646833,
+        "members": 1,
+        "sha256": "dffa1a0be066fe6a50efd2fc06530e1d1da4f7dfcc3b368c99fe63435698cc1d"
+      },
+      {
+        "id": 14607503200,
+        "members": 1,
+        "sha256": "165adaca6fa381dbc07077ab80da4ccc5d84d29518971236b4d1be8282c16e5f"
+      },
+      {
+        "id": 14607149836,
+        "members": 4,
+        "sha256": "07063c23af99dc483baea5f6786239992c1b70e97ceacf4ea141e17fb33096bd"
+      }
+    ],
+    "identity_limits": [
+      "Identity is not execution evidence; read the dated runtime acceptance report",
+      "Retained vendor binaries and platform execution have separate dated provenance",
+      "Historical M11 integrity is checked separately by check_m11_consistency.py"
+    ],
+    "literal_materialized_command": "python3 tools/ci/check_repository.py --require-materialized",
+    "materialized_runtime_files": [
+      "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm"
+    ],
+    "original_job_log_sha256": "e38f074fff49e9215d910720ebcd74b66c84b06f099c1104a8359e0e49718281",
+    "original_stdout_json_equal": true,
+    "run": 44688679722,
+    "skips": 0
+  },
+  "findings_p1_p2": [],
+  "native_build_commit": "82da41a945b1d98e0267a2a20b56ec66d83f71f6",
+  "native_sha256": "2b7a1fbb8410270498e5c0ce8f9384a598c4467397e4ca1bda0111d6c5985447",
+  "pending": "Three all80 executions, final collection and remaining full Native readback; not final candidate acceptance.",
+  "recorded_at": "2026-11-20T07:13:25.328775+00:00",
+  "review_script_sha256": "19b9119dd3faeb4abc5ccde58854691c3db2ed558a8c5bfcf0a4ccd95237caac",
+  "schema": "gentek80-independent-final-docs-owner-flatten-readback-v1",
+  "source_commit": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0",
+  "source_tree": "546750300019d2e5534e96d4e1dd751bc28d9f2e",
+  "status": "passed_available_original_evidence",
+  "visual_review": {
+    "files": [
+      "gentek80-final-replay-owner-44690026779/evidence/owner/execution/architecture-workbench-reopened.png",
+      "gentek80-final-replay-flatten-44690026779/evidence/flatten/execution/side-512-workers-1-reopen-frames/flatten-reopened-and-continued.png"
+    ],
+    "observed": "Both original package frames show populated native Worlds and ordinary Workbench controls. This is checkpoint visibility, not an expanded-dropdown, physical-GPU or continuous-animation claim."
+  }
+}

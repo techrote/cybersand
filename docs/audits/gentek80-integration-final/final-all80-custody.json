@@ -1,0 +1,47 @@
+{
+  "schema": "gentek80-final-all80-custody-join-v1",
+  "status": "passed",
+  "application_source_commit": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0",
+  "native_build_commit": "82da41a945b1d98e0267a2a20b56ec66d83f71f6",
+  "orchestration_commit": "f69b68a88401b28b3fe688c3d070162ebcd090c5",
+  "run_id": "44690026779",
+  "reviewed_original_helpers_sha256": {
+    "retained_runtime_admission.py": "baa42413bbebdeae031dfcf41f73b127b5bc1ff982b0c997d35dd3d34fc6971b",
+    "package_retained_gentek80.py": "735a620b3b02aa0c3578a9e7d7125489519fad36819eb4a0fccc9921c840a63f",
+    "run_final_admission.py": "e7d052ef4637fd54332e835aa6e8e0eace1192407a6691f1e74c743add8ae7cf",
+    "fetch_qualified_artifact.py": "423120b4c4ed75b799da6ba46ebeb2c3628b780d87193b12d69156feae211a48",
+    "collect_final_admission.py": "a1426dfb1a762c5b52b3bdb01a0b9bff1923524f8388955e82c83b8f26274e41"
+  },
+  "outputs": [
+    {
+      "label": "linux-checkout",
+      "path": "/workspace/scratch/3992e7f5304e/qualification/final-aux-linux-44690026779/custody-readback.json",
+      "sha256": "40d85a861f664468df02193aa5c3358c3aa7d732d8c52641acc110446f378f39",
+      "working_inputs": 1190,
+      "windows_crlf_files": 0,
+      "original_extracted_files_verified": 243
+    },
+    {
+      "label": "windows-checkout",
+      "path": "/workspace/scratch/3992e7f5304e/qualification/final-aux-windows-44690026779/checkout/custody-readback.json",
+      "sha256": "bee8adf4ba6edde1eb8dc7f068e5198e64365b04715c03029c6569e5a3259810",
+      "working_inputs": 1190,
+      "windows_crlf_files": 5,
+      "original_extracted_files_verified": 199
+    },
+    {
+      "label": "windows-package",
+      "path": "/workspace/scratch/3992e7f5304e/qualification/final-aux-windows-44690026779/package/custody-readback.json",
+      "sha256": "a3cc7be9206af35852153e8414a2be671547ad14441591ad27dbdf64b207de99",
+      "working_inputs": 1190,
+      "windows_crlf_files": 5,
+      "original_extracted_files_verified": 200
+    }
+  ],
+  "limits": [
+    "This is an offline original-evidence readback, not a new runtime execution.",
+    "Before/after candidate custody ledgers are distinguished from the actual executed project, especially for packaged execution.",
+    "Windows checkout byte differences listed here are pure LF-to-CRLF transformations of explicit Git blobs.",
+    "Windows all80 engine working set remains null; launcher memory is not substituted."
+  ]
+}

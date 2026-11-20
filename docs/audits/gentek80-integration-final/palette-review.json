@@ -1,0 +1,284 @@
+{
+  "findings_p1_p2": [],
+  "legacy_guards": {
+    "commands": [
+      {
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "name": "py-compile",
+        "returncode": 0,
+        "tests": null
+      },
+      {
+        "log_sha256": "d7976087561ce8ef8ecbb98a94d583c8fbf656d01d7fc90444f48c2072c76dde",
+        "name": "gen007-publisher",
+        "returncode": 0,
+        "tests": 12
+      },
+      {
+        "log_sha256": "e05437d9baa167f08adc10fc8c5a9a8ba2958bdf8f71c96c910ccf26e4ada56e",
+        "name": "lcb001-publisher",
+        "returncode": 0,
+        "tests": 30
+      },
+      {
+        "log_sha256": "4e64d073155dc5a1655bf13eb2060b8f9930ba169e749c6ec486ba2248b1618f",
+        "name": "provider-policy",
+        "returncode": 0,
+        "tests": null
+      }
+    ],
+    "explicit_crlf_source_paths": [
+      "tools/ci/check_windows_package_modules.ps1",
+      "tools/ci/stage_windows_vc_runtime.ps1"
+    ],
+    "orchestration_commit": "82da41a945b1d98e0267a2a20b56ec66d83f71f6",
+    "orchestration_run": "44674555113",
+    "receipt_sha256": "36fb9e248d344e87b9f21f62d15b14bdd55905dc2aae0f1c398d32154e81273c",
+    "scope": "Fresh execution of the four unchanged GEN-007 guard commands. This is not the old workflow full native/platform/package campaign.",
+    "source_inputs": 165,
+    "tested_commit": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0"
+  },
+  "palette": {
+    "archives": [
+      {
+        "files": 178,
+        "id": 14608275165,
+        "sha256": "6ab952d3f2ac79a7827a329d21870dd080140db3cc25fa31f5cdf2176666ec7f"
+      },
+      {
+        "files": 104,
+        "id": 14608235666,
+        "sha256": "e20fea8459493191e8f71699668ab152d62099246b774f9da6cc6893f7152f49"
+      },
+      {
+        "files": 187,
+        "id": 14607886426,
+        "sha256": "3ebd6b7f2b560c19c9292be7c7c9b065f1e582af40b381d732fdfa9e32962bd5"
+      },
+      {
+        "files": 2,
+        "id": 14607467286,
+        "sha256": "983f39f89cf66fbbc9db59f74c8fbf96239c815aab497529177d0030de27bffd"
+      },
+      {
+        "files": 232,
+        "id": 14607462885,
+        "sha256": "b41963f392a4242f2aa6ceb8ab1276053d16eb2a4791744a54b3be5345391edc"
+      },
+      {
+        "files": 123,
+        "id": 14607263813,
+        "sha256": "45f4475bcc5ceb2ad9d258c31640db3d8b6ad0866aa94dabd61d229b5ee21110"
+      },
+      {
+        "files": 226,
+        "id": 14607149045,
+        "sha256": "30273cd0740c08aa53e422ac99f57673a219a90d3afc70cc702c9759642a8989"
+      },
+      {
+        "files": 3,
+        "id": 14608046656,
+        "sha256": "23b20ea7891a9c75868755f173e836a81c94eaaee87215aaadc654a433aae01c"
+      }
+    ],
+    "cohorts": [
+      {
+        "cases": 2,
+        "name": "palette-shader-cohort-linux-main-cache-0-44688688652-1",
+        "permitted_source_checkout_forms": [],
+        "platform": "linux",
+        "qualification_sha256": "6bc86ab60d45a7be1018d6dc9d50af7d2e5da5241ade417256994541bf73030d",
+        "runtimes": {
+          "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": {
+            "bytes": 5183960,
+            "sha256": "5195149bb4ee0b826d258f46627397d4a3e79d0d22cd3072ca0518aa75ebd878"
+          },
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": {
+            "bytes": 117275416,
+            "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+          }
+        },
+        "source_inputs": 1356
+      },
+      {
+        "cases": 4,
+        "name": "palette-shader-cohort-linux-visual-0-44688688652-1",
+        "permitted_source_checkout_forms": [],
+        "platform": "linux",
+        "qualification_sha256": "9546acde3f42ebbb214c66edfb7b41860146e12b4916645dbfaf02e1e403b881",
+        "runtimes": {
+          "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": {
+            "bytes": 5183960,
+            "sha256": "5195149bb4ee0b826d258f46627397d4a3e79d0d22cd3072ca0518aa75ebd878"
+          },
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": {
+            "bytes": 117275416,
+            "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+          }
+        },
+        "source_inputs": 1356
+      },
+      {
+        "cases": 4,
+        "name": "palette-shader-cohort-linux-visual-1-44688688652-1",
+        "permitted_source_checkout_forms": [],
+        "platform": "linux",
+        "qualification_sha256": "65bca19bccf97bcec38768ac8b4bcae53f429bc953a3710ac02e3957ed75fce6",
+        "runtimes": {
+          "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": {
+            "bytes": 5183960,
+            "sha256": "5195149bb4ee0b826d258f46627397d4a3e79d0d22cd3072ca0518aa75ebd878"
+          },
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": {
+            "bytes": 117275416,
+            "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+          }
+        },
+        "source_inputs": 1356
+      },
+      {
+        "cases": 2,
+        "name": "palette-shader-cohort-win32-main-cache-0-44688688652-1",
+        "permitted_source_checkout_forms": [],
+        "platform": "win32",
+        "qualification_sha256": "b366699973e8c7007560e69b93eaeac1b5e9ab9af9bdf119e18cdad34039f866",
+        "runtimes": {
+          "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": {
+            "bytes": 5747200,
+            "sha256": "2b7a1fbb8410270498e5c0ce8f9384a598c4467397e4ca1bda0111d6c5985447"
+          },
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll": {
+            "bytes": 9987072,
+            "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+          }
+        },
+        "source_inputs": 1356
+      },
+      {
+        "cases": 4,
+        "name": "palette-shader-cohort-win32-visual-0-44688688652-1",
+        "permitted_source_checkout_forms": [],
+        "platform": "win32",
+        "qualification_sha256": "919c9db95aa84f18306cb329fe1b752d562174d9857f785788d9770839f93ff2",
+        "runtimes": {
+          "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": {
+            "bytes": 5747200,
+            "sha256": "2b7a1fbb8410270498e5c0ce8f9384a598c4467397e4ca1bda0111d6c5985447"
+          },
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll": {
+            "bytes": 9987072,
+            "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+          }
+        },
+        "source_inputs": 1356
+      },
+      {
+        "cases": 3,
+        "name": "palette-shader-cohort-win32-visual-1-44688688652-1",
+        "permitted_source_checkout_forms": [],
+        "platform": "win32",
+        "qualification_sha256": "22d183f942c1aa5f28bebf52a1fafc91d2be384a58cda1abf292711f3422688e",
+        "runtimes": {
+          "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": {
+            "bytes": 5747200,
+            "sha256": "2b7a1fbb8410270498e5c0ce8f9384a598c4467397e4ca1bda0111d6c5985447"
+          },
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll": {
+            "bytes": 9987072,
+            "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+          }
+        },
+        "source_inputs": 1356
+      }
+    ],
+    "current_bounded_contract": "palette-bounded-semantics-v3",
+    "hosted_and_independent_reducer_json_identical": true,
+    "original_pngs": 120,
+    "process_counts": {
+      "linux": 10,
+      "win32": 9
+    },
+    "retained_legacy_diagnostic": {
+      "frames": [
+        {
+          "blend": 0.0,
+          "condition": 0,
+          "max_rgba_difference": 0.0009804069995880127,
+          "pixels_exceeding_original_threshold": 0,
+          "total_pixels": 2304
+        },
+        {
+          "blend": 0.5,
+          "condition": 0,
+          "max_rgba_difference": 0.15097513794898987,
+          "pixels_exceeding_original_threshold": 11,
+          "total_pixels": 2304
+        },
+        {
+          "blend": 1.0,
+          "condition": 0,
+          "max_rgba_difference": 0.3009393513202667,
+          "pixels_exceeding_original_threshold": 11,
+          "total_pixels": 2304
+        },
+        {
+          "blend": 0.0,
+          "condition": 128,
+          "max_rgba_difference": 0.0019492805004119873,
+          "pixels_exceeding_original_threshold": 0,
+          "total_pixels": 2304
+        },
+        {
+          "blend": 0.5,
+          "condition": 128,
+          "max_rgba_difference": 0.15079322457313538,
+          "pixels_exceeding_original_threshold": 11,
+          "total_pixels": 2304
+        },
+        {
+          "blend": 1.0,
+          "condition": 128,
+          "max_rgba_difference": 0.3009393513202667,
+          "pixels_exceeding_original_threshold": 11,
+          "total_pixels": 2304
+        },
+        {
+          "blend": 0.0,
+          "condition": 255,
+          "max_rgba_difference": 0.0019608139991760254,
+          "pixels_exceeding_original_threshold": 0,
+          "total_pixels": 2304
+        },
+        {
+          "blend": 0.5,
+          "condition": 255,
+          "max_rgba_difference": 0.15134277939796448,
+          "pixels_exceeding_original_threshold": 11,
+          "total_pixels": 2304
+        },
+        {
+          "blend": 1.0,
+          "condition": 255,
+          "max_rgba_difference": 0.3009393513202667,
+          "pixels_exceeding_original_threshold": 11,
+          "total_pixels": 2304
+        }
+      ],
+      "original_threshold": 0.00784313725490196,
+      "scope": "Retained v2 finished-image identity diagnostic, not the v3 acceptance predicate. Procedural hash finish is stable on one GPU; no tolerated-pixel allowance is introduced.",
+      "status": "failed"
+    },
+    "run": 44688688652,
+    "scope": "Source/archive/manifest/phase/log custody independently checked. Existing complete scientific reducer readbacks agree. No new GPU or native execution; no physical-GPU or universal finished-image identity claim.",
+    "sealed_files": 1020,
+    "source_archive_sha256": "7da46a453c016e27fb8216e9479ec2203c05c47fd235d6ec47b9e53c57f82365",
+    "unchanged_palette_contract_from_accepted_main": true
+  },
+  "pending": "Remaining exact-F CI and actual auxiliary five executions/final ZIP; this is not final candidate acceptance.",
+  "recorded_at": "2026-11-20T06:56:33.060122+00:00",
+  "review_script_sha256": "5691ee962c6afad145994d1bd368fc8c7be5619c59210e17d8fba6417e54b6df",
+  "schema": "gentek80-independent-final-palette-legacy-readback-v1",
+  "source_commit": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0",
+  "source_tree": "546750300019d2e5534e96d4e1dd751bc28d9f2e",
+  "status": "passed_available_final_palette_and_legacy_guards"
+}

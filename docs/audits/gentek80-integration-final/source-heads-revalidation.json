@@ -1,0 +1,107 @@
+{
+  "schema": "gentek80-final-source-heads-revalidation-v1",
+  "checked_at": "2026-11-20 09:09:42 UTC",
+  "main": "de109d0131641d6adc8d25bb9ced7ca3d4991105",
+  "pr": {
+    "number": 684,
+    "head": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0",
+    "base": "de109d0131641d6adc8d25bb9ced7ca3d4991105",
+    "draft": true,
+    "state": "open",
+    "merged": false,
+    "mergeable": true,
+    "auto_merge": null
+  },
+  "donors": [
+    {
+      "number": 624,
+      "head": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "base": "de109d0131641d6adc8d25bb9ced7ca3d4991105",
+      "draft": true,
+      "state": "open",
+      "merged": false,
+      "url": "https://github.com/techrote/cybersand/pull/624"
+    },
+    {
+      "number": 671,
+      "head": "eb786d97a769f4fed9f5d52bb0b50dd60f0ee16f",
+      "base": "615828b28337f85e4663e03ba479616db4ddf764",
+      "draft": true,
+      "state": "open",
+      "merged": false,
+      "url": "https://github.com/techrote/cybersand/pull/671"
+    },
+    {
+      "number": 663,
+      "head": "2d3da36566de5dfa60a82aa642525961c90a6672",
+      "base": "615828b28337f85e4663e03ba479616db4ddf764",
+      "draft": true,
+      "state": "open",
+      "merged": false,
+      "url": "https://github.com/techrote/cybersand/pull/663"
+    },
+    {
+      "number": 664,
+      "head": "f99583cde1db2abd8384cc89eb7bda3151bbe726",
+      "base": "615828b28337f85e4663e03ba479616db4ddf764",
+      "draft": true,
+      "state": "open",
+      "merged": false,
+      "url": "https://github.com/techrote/cybersand/pull/664"
+    },
+    {
+      "number": 665,
+      "head": "d366894c005208887a6e5ae238d7cdb1983e0a02",
+      "base": "615828b28337f85e4663e03ba479616db4ddf764",
+      "draft": true,
+      "state": "open",
+      "merged": false,
+      "url": "https://github.com/techrote/cybersand/pull/665"
+    },
+    {
+      "number": 666,
+      "head": "ef42af3d2f4210b1b53cfdc0e7d7bf77ff863304",
+      "base": "615828b28337f85e4663e03ba479616db4ddf764",
+      "draft": true,
+      "state": "open",
+      "merged": false,
+      "url": "https://github.com/techrote/cybersand/pull/666"
+    },
+    {
+      "number": 667,
+      "head": "965729b5b2773587d0c40e836b8f2848b1026e8b",
+      "base": "615828b28337f85e4663e03ba479616db4ddf764",
+      "draft": true,
+      "state": "open",
+      "merged": false,
+      "url": "https://github.com/techrote/cybersand/pull/667"
+    },
+    {
+      "number": 668,
+      "head": "b01c300ac64993693e8b66f1b523e3f9dfa3baf1",
+      "base": "615828b28337f85e4663e03ba479616db4ddf764",
+      "draft": true,
+      "state": "open",
+      "merged": false,
+      "url": "https://github.com/techrote/cybersand/pull/668"
+    },
+    {
+      "number": 669,
+      "head": "ca8aba9c638d1c63d79bd3335a55f9ca55d81d49",
+      "base": "615828b28337f85e4663e03ba479616db4ddf764",
+      "draft": true,
+      "state": "open",
+      "merged": false,
+      "url": "https://github.com/techrote/cybersand/pull/669"
+    },
+    {
+      "number": 670,
+      "head": "01425a9a1aab6e01b88266a58b8b738ded38a28e",
+      "base": "615828b28337f85e4663e03ba479616db4ddf764",
+      "draft": true,
+      "state": "open",
+      "merged": false,
+      "url": "https://github.com/techrote/cybersand/pull/670"
+    }
+  ]
+}

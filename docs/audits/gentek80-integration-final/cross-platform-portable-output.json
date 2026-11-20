@@ -1,0 +1,4219 @@
+{
+  "schema": "gentek80-portable-output-readback-v1",
+  "source_commit": "82da41a945b1d98e0267a2a20b56ec66d83f71f6",
+  "source_tree": "62c3210595f34b500cf6844e61085a5afcb3e85e",
+  "portable_output_status": "pass",
+  "cases_compared": 520,
+  "portable_equal_counts": {
+    "native_material_bytes_equal": 520,
+    "decoded_png_rgba_equal": 520,
+    "png_encoded_bytes_equal": 520,
+    "recipe_sha256_equal": 520,
+    "project_sha256_equal": 520
+  },
+  "portable_failures": [],
+  "all_compared_fields_equal": false,
+  "native_identity_status": "Different across platforms; established ABI-local contract retained",
+  "native_different_case_count": 520,
+  "chunk_receipts_compared": 12232,
+  "chunk_receipts_different": 12232,
+  "platform_local_cases": [
+    {
+      "name": "a_frame_hall--compact",
+      "linux_fingerprint": "5e65c8493041de73",
+      "windows_fingerprint": "3aadbfbf986e1089",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "a_frame_hall--default",
+      "linux_fingerprint": "55fc97ce2a5c4913",
+      "windows_fingerprint": "9787f51c615cce29",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "a_frame_hall--large-1024",
+      "linux_fingerprint": "f609760d1d32f183",
+      "windows_fingerprint": "3ea3a8f239b5b026",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "a_frame_hall--material-controls",
+      "linux_fingerprint": "46cc1981667a272d",
+      "windows_fingerprint": "204889c2b60703e3",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "a_frame_hall--seed-1701",
+      "linux_fingerprint": "fdba99070748e1b7",
+      "windows_fingerprint": "b9d3532a81098273",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "a_frame_hall--tall",
+      "linux_fingerprint": "1563e7072dc3a0ff",
+      "windows_fingerprint": "2a7a344076963a3d",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "barrel_arcade--compact",
+      "linux_fingerprint": "d4b32991bd411294",
+      "windows_fingerprint": "961711811b2fbede",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "barrel_arcade--default",
+      "linux_fingerprint": "8a167808ee09ab02",
+      "windows_fingerprint": "b6c0525b8ce0a154",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "barrel_arcade--large-1024",
+      "linux_fingerprint": "f9750959e46d9e66",
+      "windows_fingerprint": "9cb73f6320d3bae3",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "barrel_arcade--material-controls",
+      "linux_fingerprint": "37c70a624aa03937",
+      "windows_fingerprint": "afec18acec6e5681",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "barrel_arcade--seed-1701",
+      "linux_fingerprint": "06d1d0336e15953a",
+      "windows_fingerprint": "c635c2e341e0b71b",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "barrel_arcade--tall",
+      "linux_fingerprint": "dd7b7d3045778b00",
+      "windows_fingerprint": "13d4cf5e8dbc783a",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "basilica--compact",
+      "linux_fingerprint": "247a8268779c203d",
+      "windows_fingerprint": "aa7d74c15eb2370c",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "basilica--default",
+      "linux_fingerprint": "b2ece5a31e43b48d",
+      "windows_fingerprint": "ff88e38143a1273c",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "basilica--large-1024",
+      "linux_fingerprint": "0b5a2a69f8946cdf",
+      "windows_fingerprint": "3571eb4d1d9ffc52",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "basilica--material-controls",
+      "linux_fingerprint": "cc66cb1e46bb854e",
+      "windows_fingerprint": "f2feae4cf92a09c3",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "basilica--seed-1701",
+      "linux_fingerprint": "289a48f540758eae",
+      "windows_fingerprint": "14079e3c6856046e",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "basilica--tall",
+      "linux_fingerprint": "a7b8abcbff3fbd79",
+      "windows_fingerprint": "7de48b6f78a9a810",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "bowstring_truss--compact",
+      "linux_fingerprint": "a7a25b5c0206e7d1",
+      "windows_fingerprint": "361c46091c23b20c",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "bowstring_truss--default",
+      "linux_fingerprint": "76ea9774339764bf",
+      "windows_fingerprint": "068cc2e2b6b07a42",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "bowstring_truss--large-1024",
+      "linux_fingerprint": "41ad3de38eff8eba",
+      "windows_fingerprint": "122c1103df3cdfac",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "bowstring_truss--material-controls",
+      "linux_fingerprint": "b0b6f42ad52204cd",
+      "windows_fingerprint": "f6ae8edaa66bdbf8",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "bowstring_truss--seed-1701",
+      "linux_fingerprint": "b2a5301e11409856",
+      "windows_fingerprint": "55c608f80a4d4e14",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "bowstring_truss--tall",
+      "linux_fingerprint": "7b8c486ceb76a415",
+      "windows_fingerprint": "116494991157c630",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "bridgehouse--compact",
+      "linux_fingerprint": "699bbf27fc4bd3df",
+      "windows_fingerprint": "4efb6ee25c5e97f5",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "bridgehouse--default",
+      "linux_fingerprint": "0299d3af8e20b16b",
+      "windows_fingerprint": "aef80ff679e97381",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "bridgehouse--large-1024",
+      "linux_fingerprint": "3573013b57f929b3",
+      "windows_fingerprint": "a21aa1588016bcdf",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "bridgehouse--material-controls",
+      "linux_fingerprint": "256c89d69cd90c10",
+      "windows_fingerprint": "c73c72b8f7cf3a7a",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "bridgehouse--seed-1701",
+      "linux_fingerprint": "95273902b4206cbc",
+      "windows_fingerprint": "1f6abe745335c1b1",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "bridgehouse--tall",
+      "linux_fingerprint": "f4e0e7d639c09a0b",
+      "windows_fingerprint": "88272388a438d761",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "butterfly_hall--compact",
+      "linux_fingerprint": "310e50a82f1c54c3",
+      "windows_fingerprint": "6c5939b41bbf956d",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "butterfly_hall--default",
+      "linux_fingerprint": "62567556724d32fd",
+      "windows_fingerprint": "4154b208264d6e97",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "butterfly_hall--large-1024",
+      "linux_fingerprint": "54a765c26f7fed00",
+      "windows_fingerprint": "013c0596ac6d4f0f",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "butterfly_hall--material-controls",
+      "linux_fingerprint": "e3b8c4b74bb28267",
+      "windows_fingerprint": "3995a084b997d091",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "butterfly_hall--seed-1701",
+      "linux_fingerprint": "16d2a8c6eaa174df",
+      "windows_fingerprint": "57909070a51bfac2",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "butterfly_hall--tall",
+      "linux_fingerprint": "f5e1e8ca18a61747",
+      "windows_fingerprint": "8dead4826e9081b1",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "buttress_crown--compact",
+      "linux_fingerprint": "98f5deaf25ec5560",
+      "windows_fingerprint": "d7947d90d90eeccd",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "buttress_crown--default",
+      "linux_fingerprint": "bd535f230cae0cbc",
+      "windows_fingerprint": "59b97f43878dc991",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "buttress_crown--large-1024",
+      "linux_fingerprint": "eaa702cf2c277d38",
+      "windows_fingerprint": "39ff5e043f5890da",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "buttress_crown--material-controls",
+      "linux_fingerprint": "dbf73633ec57c182",
+      "windows_fingerprint": "b7c2654b02db71d3",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "buttress_crown--seed-1701",
+      "linux_fingerprint": "cbb7f73ebb581aa9",
+      "windows_fingerprint": "eecbb874eaf8a3a1",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "buttress_crown--tall",
+      "linux_fingerprint": "4cd337939fda0944",
+      "windows_fingerprint": "c88b666b1682e0e9",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "buttress_wall--compact",
+      "linux_fingerprint": "c9172ae60a1e2afd",
+      "windows_fingerprint": "452c214348c94d05",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "buttress_wall--default",
+      "linux_fingerprint": "eb627f9a35674ec5",
+      "windows_fingerprint": "2ab40f45b695436d",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "buttress_wall--large-1024",
+      "linux_fingerprint": "01fdc812ea2a02c7",
+      "windows_fingerprint": "f38a1f985df20a70",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "buttress_wall--material-controls",
+      "linux_fingerprint": "e5a0e79d7afae2bb",
+      "windows_fingerprint": "ab3f6d3ff3818a43",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "buttress_wall--seed-1701",
+      "linux_fingerprint": "492eafa160774d58",
+      "windows_fingerprint": "647845e5b1fc66de",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "buttress_wall--tall",
+      "linux_fingerprint": "3884de374a987521",
+      "windows_fingerprint": "2583ac8bd9bb6509",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "cable_gallery--compact",
+      "linux_fingerprint": "08486320a36bcbaf",
+      "windows_fingerprint": "9e34177639e26f80",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "cable_gallery--default",
+      "linux_fingerprint": "5a9f999c26bfdfb5",
+      "windows_fingerprint": "60fac9e7395d8182",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "cable_gallery--large-1024",
+      "linux_fingerprint": "2d9983a5bcd8f802",
+      "windows_fingerprint": "d9132ce820391505",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "cable_gallery--material-controls",
+      "linux_fingerprint": "21ace6bb716800c3",
+      "windows_fingerprint": "f31845a792a974cc",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "cable_gallery--seed-1701",
+      "linux_fingerprint": "59ece9e366950019",
+      "windows_fingerprint": "8603e91fe73fe434",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "cable_gallery--tall",
+      "linux_fingerprint": "05b0b5d0ae2ba65b",
+      "windows_fingerprint": "4f25b1cc84fc5bc4",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "cantilever_spine--compact",
+      "linux_fingerprint": "9759e2be632bd09e",
+      "windows_fingerprint": "bbcbd926b761937e",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "cantilever_spine--default",
+      "linux_fingerprint": "1b2c0ac894b0fb24",
+      "windows_fingerprint": "07c863dedc9d5ed4",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "cantilever_spine--large-1024",
+      "linux_fingerprint": "ba4a900db26993a9",
+      "windows_fingerprint": "d85179c76c76db85",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "cantilever_spine--material-controls",
+      "linux_fingerprint": "a371f7015fcfdee6",
+      "windows_fingerprint": "d2b40d347c6d0686",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "cantilever_spine--seed-1701",
+      "linux_fingerprint": "c0d94e208079bbac",
+      "windows_fingerprint": "757c7f9a4272153c",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "cantilever_spine--tall",
+      "linux_fingerprint": "8dea924722f11582",
+      "windows_fingerprint": "09cb08d6c5eb7db2",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "cascade_terrace--compact",
+      "linux_fingerprint": "83d3167c7e5a8d5c",
+      "windows_fingerprint": "c7b567366a195ae1",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "cascade_terrace--default",
+      "linux_fingerprint": "af9e926140f1544c",
+      "windows_fingerprint": "e35ddd3bf70e40d1",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "cascade_terrace--large-1024",
+      "linux_fingerprint": "3a5f9aea908c6aca",
+      "windows_fingerprint": "b99a1df92c405edb",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "cascade_terrace--material-controls",
+      "linux_fingerprint": "776291feabcb9145",
+      "windows_fingerprint": "b651b8ef06995360",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "cascade_terrace--seed-1701",
+      "linux_fingerprint": "620a166966d031e1",
+      "windows_fingerprint": "f7c3a8b480f7ff21",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "cascade_terrace--tall",
+      "linux_fingerprint": "766b970abaca2090",
+      "windows_fingerprint": "a7c3e11dd0a6aa0d",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "cathedral_megaframe--compact",
+      "linux_fingerprint": "91c9ee335301b7b7",
+      "windows_fingerprint": "9def22fb66b8041b",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "cathedral_megaframe--default",
+      "linux_fingerprint": "fd8cb261a6875e3d",
+      "windows_fingerprint": "163e1919b1ecfab5",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "cathedral_megaframe--doors-off",
+      "linux_fingerprint": "cc590125d4dd83f6",
+      "windows_fingerprint": "36f0bfa50ab02cfa",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "cathedral_megaframe--heavy",
+      "linux_fingerprint": "fd8cb261a6875e3d",
+      "windows_fingerprint": "163e1919b1ecfab5",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "cathedral_megaframe--large-1024",
+      "linux_fingerprint": "01c0dda3bfbddc0e",
+      "windows_fingerprint": "acebf1e73dec1dad",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "cathedral_megaframe--material-controls",
+      "linux_fingerprint": "8b505416f5dc01d2",
+      "windows_fingerprint": "f13545c2480e3606",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "cathedral_megaframe--seed-1701",
+      "linux_fingerprint": "9097ef0e3a601359",
+      "windows_fingerprint": "2aef7eb6d24c338f",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "cathedral_megaframe--signed-origin",
+      "linux_fingerprint": "b1e2763b7701ad2d",
+      "windows_fingerprint": "da23f03977aec867",
+      "chunk_receipts": 25,
+      "different_chunk_receipts": 25,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "cathedral_megaframe--tall",
+      "linux_fingerprint": "f5e7bd77416e22bb",
+      "windows_fingerprint": "675d8e98d66d75ef",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "cathedral_megaframe--thin",
+      "linux_fingerprint": "91cb6c74de2bbb0c",
+      "windows_fingerprint": "c2d7cbbd72d1a9f4",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "cathedral_megaframe--windows-off",
+      "linux_fingerprint": "0f48db16583fe644",
+      "windows_fingerprint": "75be5e3f74d48efc",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "chain_vault--compact",
+      "linux_fingerprint": "a7e666d3fbc5a457",
+      "windows_fingerprint": "b7a993f2ef1a5168",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "chain_vault--default",
+      "linux_fingerprint": "deae9fd5097ef491",
+      "windows_fingerprint": "863886c764619da6",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "chain_vault--large-1024",
+      "linux_fingerprint": "51e72ba235b9fbd0",
+      "windows_fingerprint": "cb13c014300c0712",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "chain_vault--material-controls",
+      "linux_fingerprint": "0ae9f6ccf2663ef4",
+      "windows_fingerprint": "4ad8bbb8de8bc783",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "chain_vault--seed-1701",
+      "linux_fingerprint": "92b8c4d9be48a16e",
+      "windows_fingerprint": "8e00a3a3e6f79fa3",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "chain_vault--tall",
+      "linux_fingerprint": "e870dd8f6b47803b",
+      "windows_fingerprint": "8f2a462cd6f731dc",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "chevron_hall--compact",
+      "linux_fingerprint": "584d9005cf283eed",
+      "windows_fingerprint": "b2e42735d2f5f815",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "chevron_hall--default",
+      "linux_fingerprint": "63da2af2db55b369",
+      "windows_fingerprint": "77b8c99981c4d5e9",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "chevron_hall--large-1024",
+      "linux_fingerprint": "ff007a9f01b9e596",
+      "windows_fingerprint": "12b7af3e29137e55",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "chevron_hall--material-controls",
+      "linux_fingerprint": "a18a79482907f4ef",
+      "windows_fingerprint": "a73e493490fa0d73",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "chevron_hall--seed-1701",
+      "linux_fingerprint": "3b1f8b5dd557aa0a",
+      "windows_fingerprint": "912bf6237dc6ea4d",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "chevron_hall--tall",
+      "linux_fingerprint": "427cb6c276685099",
+      "windows_fingerprint": "a636c51248040c19",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "clerestory_hall--compact",
+      "linux_fingerprint": "4ebd74564cf5037e",
+      "windows_fingerprint": "1c4558b8be626b65",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "clerestory_hall--default",
+      "linux_fingerprint": "9a3fc015224ec996",
+      "windows_fingerprint": "b75834fe37ef6ead",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "clerestory_hall--large-1024",
+      "linux_fingerprint": "99ee0e56300a1e1e",
+      "windows_fingerprint": "9619bee8b181cff0",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "clerestory_hall--material-controls",
+      "linux_fingerprint": "77514947b8b28ae9",
+      "windows_fingerprint": "c1ddcd103518adba",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "clerestory_hall--seed-1701",
+      "linux_fingerprint": "abd468b7ebfcfe93",
+      "windows_fingerprint": "5e51afe01a2527fc",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "clerestory_hall--tall",
+      "linux_fingerprint": "bec57b9df7719caa",
+      "windows_fingerprint": "f6d989cb869bd309",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "colonnade--compact",
+      "linux_fingerprint": "ed3a4acb0e27ceda",
+      "windows_fingerprint": "82cf4935ef0ade25",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "colonnade--default",
+      "linux_fingerprint": "db4f2868d2d8759e",
+      "windows_fingerprint": "25add39211b0af51",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "colonnade--large-1024",
+      "linux_fingerprint": "522d652c5813d8dd",
+      "windows_fingerprint": "30ffb67f3c72a716",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "colonnade--material-controls",
+      "linux_fingerprint": "eab4bd717b7ff9c3",
+      "windows_fingerprint": "b13255ffa4948878",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "colonnade--seed-1701",
+      "linux_fingerprint": "fb4c3e797bb345ed",
+      "windows_fingerprint": "370ce55894f33247",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "colonnade--tall",
+      "linux_fingerprint": "78113d44b43c92be",
+      "windows_fingerprint": "86f836caf6b1e031",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "corbel_arcade--compact",
+      "linux_fingerprint": "17f0933419e625b7",
+      "windows_fingerprint": "fbd3405fee4dcfcc",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "corbel_arcade--default",
+      "linux_fingerprint": "bb72f68776ea3645",
+      "windows_fingerprint": "8e79c3689f8edf42",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "corbel_arcade--large-1024",
+      "linux_fingerprint": "b67bed770931351a",
+      "windows_fingerprint": "2070ecf0d8da3547",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "corbel_arcade--material-controls",
+      "linux_fingerprint": "ccadf1a5ff5104e4",
+      "windows_fingerprint": "48f372287cbfa2b7",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "corbel_arcade--seed-1701",
+      "linux_fingerprint": "72e3423fdd8d976d",
+      "windows_fingerprint": "a7bb48aa60a11680",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "corbel_arcade--tall",
+      "linux_fingerprint": "95e77e2cc5b72c53",
+      "windows_fingerprint": "717b791492206aa0",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "cranked_beam--compact",
+      "linux_fingerprint": "aa4562c8157b08c7",
+      "windows_fingerprint": "aebe734769bd050c",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "cranked_beam--default",
+      "linux_fingerprint": "0468b27ec94f7e0b",
+      "windows_fingerprint": "ad66e640035db498",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "cranked_beam--large-1024",
+      "linux_fingerprint": "45d9e0a27b8048e3",
+      "windows_fingerprint": "ce3fc75739756e44",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "cranked_beam--material-controls",
+      "linux_fingerprint": "de506965687b4f9d",
+      "windows_fingerprint": "9b4314334447f602",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "cranked_beam--seed-1701",
+      "linux_fingerprint": "2afbb72f21735880",
+      "windows_fingerprint": "6235c22a7013baca",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "cranked_beam--tall",
+      "linux_fingerprint": "360910405cbe7afb",
+      "windows_fingerprint": "bdaa5006cf5057a8",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "crenellated_bridge--compact",
+      "linux_fingerprint": "18455cd7b1486bcb",
+      "windows_fingerprint": "57c823a0d8817f9d",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "crenellated_bridge--default",
+      "linux_fingerprint": "d1426c61f75f3147",
+      "windows_fingerprint": "95e4f2768c6da9e1",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "crenellated_bridge--large-1024",
+      "linux_fingerprint": "3854985e9804a58e",
+      "windows_fingerprint": "a6dbb47913cc682d",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "crenellated_bridge--material-controls",
+      "linux_fingerprint": "8f8ebfbab1f951ca",
+      "windows_fingerprint": "c1f58116af31e6c0",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "crenellated_bridge--seed-1701",
+      "linux_fingerprint": "89a6ef4c056a424b",
+      "windows_fingerprint": "0bb5090ec84511e7",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "crenellated_bridge--tall",
+      "linux_fingerprint": "7c3cb157a48dcec7",
+      "windows_fingerprint": "30e8802ee5623061",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "crossbeam_stack--compact",
+      "linux_fingerprint": "a811c5b3dc57bc60",
+      "windows_fingerprint": "e0aeeaed7a4e6ceb",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "crossbeam_stack--default",
+      "linux_fingerprint": "dcbf483225f118e0",
+      "windows_fingerprint": "caaae5881b480f6b",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "crossbeam_stack--large-1024",
+      "linux_fingerprint": "3c963d7dd2801cc3",
+      "windows_fingerprint": "c1aefb30120c25b8",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "crossbeam_stack--material-controls",
+      "linux_fingerprint": "3fc083df2a7337e2",
+      "windows_fingerprint": "aa83269ee40b245d",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "crossbeam_stack--seed-1701",
+      "linux_fingerprint": "20238ce0fd1cfceb",
+      "windows_fingerprint": "658dfc0e975d70a9",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "crossbeam_stack--tall",
+      "linux_fingerprint": "bc770a93ef47468c",
+      "windows_fingerprint": "2108cdba166797c7",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "crown_bridge--compact",
+      "linux_fingerprint": "15dd76db1101efc2",
+      "windows_fingerprint": "0f8c00240eba3562",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "crown_bridge--default",
+      "linux_fingerprint": "9951161196b5e0ee",
+      "windows_fingerprint": "dfa3bad27e623276",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "crown_bridge--large-1024",
+      "linux_fingerprint": "f44e2cb614f5478a",
+      "windows_fingerprint": "d05b60179fab2847",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "crown_bridge--material-controls",
+      "linux_fingerprint": "01d857def60067d7",
+      "windows_fingerprint": "efb3245b6e57b93f",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "crown_bridge--seed-1701",
+      "linux_fingerprint": "87c068dbdec766eb",
+      "windows_fingerprint": "260e9bdf525534e1",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "crown_bridge--tall",
+      "linux_fingerprint": "f77480fa081239de",
+      "windows_fingerprint": "408247cf53502146",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "diamond_truss--compact",
+      "linux_fingerprint": "cc7022b9fe837d19",
+      "windows_fingerprint": "74db3b9a8414e64d",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "diamond_truss--default",
+      "linux_fingerprint": "b94f767bc8adc61b",
+      "windows_fingerprint": "6d7a8f7f6e44ebd3",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "diamond_truss--large-1024",
+      "linux_fingerprint": "7860f08958b2d7f8",
+      "windows_fingerprint": "9d6c4f4d8656925f",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "diamond_truss--material-controls",
+      "linux_fingerprint": "20810a4bf34d1db9",
+      "windows_fingerprint": "93ff272fe37f012d",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "diamond_truss--seed-1701",
+      "linux_fingerprint": "f11ece45326c21f1",
+      "windows_fingerprint": "b22dc4be96d63960",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "diamond_truss--tall",
+      "linux_fingerprint": "19037f850ece5fed",
+      "windows_fingerprint": "b1ad7c63ac21dbd1",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "double_cantilever--compact",
+      "linux_fingerprint": "b5ca92424f993edb",
+      "windows_fingerprint": "f4c74702892d233d",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "double_cantilever--default",
+      "linux_fingerprint": "e4692ea0cba23471",
+      "windows_fingerprint": "d28d7f8a3a18760f",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "double_cantilever--large-1024",
+      "linux_fingerprint": "5d3eafe626e4e645",
+      "windows_fingerprint": "d61226f749a72b85",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "double_cantilever--material-controls",
+      "linux_fingerprint": "81fb24e28fac8447",
+      "windows_fingerprint": "129215119a966351",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "double_cantilever--seed-1701",
+      "linux_fingerprint": "099454ff032a64ec",
+      "windows_fingerprint": "864a9195d5fe1ea7",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "double_cantilever--tall",
+      "linux_fingerprint": "02cdd2e8887987a7",
+      "windows_fingerprint": "53a5f80f0c52d671",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "drum_vault--compact",
+      "linux_fingerprint": "a2d15fe4238a1d49",
+      "windows_fingerprint": "3491155ccb4917e0",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "drum_vault--default",
+      "linux_fingerprint": "c81cf47b3d44a063",
+      "windows_fingerprint": "3d7d420f43b5bae2",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "drum_vault--large-1024",
+      "linux_fingerprint": "2bbcffff220bf789",
+      "windows_fingerprint": "e208f81b994c4761",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "drum_vault--material-controls",
+      "linux_fingerprint": "6fbb0032000ce96c",
+      "windows_fingerprint": "eb293d19dffe9e0d",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "drum_vault--seed-1701",
+      "linux_fingerprint": "9a791c7ae432f2a7",
+      "windows_fingerprint": "52cbab57d45e554d",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "drum_vault--tall",
+      "linux_fingerprint": "de47e25b844f5a9d",
+      "windows_fingerprint": "69fe0df891acf58c",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "fan_truss--compact",
+      "linux_fingerprint": "a3dc91a1ff7396f5",
+      "windows_fingerprint": "0fc7a77bc9a2fc0f",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "fan_truss--default",
+      "linux_fingerprint": "dcb8c6e4750bec99",
+      "windows_fingerprint": "f8b735aca5d02a2b",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "fan_truss--large-1024",
+      "linux_fingerprint": "a8b20bacabdff77d",
+      "windows_fingerprint": "2473c126b84a465d",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "fan_truss--material-controls",
+      "linux_fingerprint": "7cfa5cfa4aa269a7",
+      "windows_fingerprint": "72ff71320a31f275",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "fan_truss--seed-1701",
+      "linux_fingerprint": "858339f5d20ba8db",
+      "windows_fingerprint": "79b033d2c503fbd3",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "fan_truss--tall",
+      "linux_fingerprint": "c6076256618faa99",
+      "windows_fingerprint": "e205d11e9253e82b",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "flying_buttress--compact",
+      "linux_fingerprint": "8754ca9e03e0a03e",
+      "windows_fingerprint": "275cf6148cfce568",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "flying_buttress--default",
+      "linux_fingerprint": "bd99270d4cd6a5ae",
+      "windows_fingerprint": "b6f07584c8a84978",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "flying_buttress--large-1024",
+      "linux_fingerprint": "23c6a2e73eaa4030",
+      "windows_fingerprint": "4b9cbca53be13605",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "flying_buttress--material-controls",
+      "linux_fingerprint": "fdf8bb6fc4eb81f4",
+      "windows_fingerprint": "2fccd6f9e096b256",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "flying_buttress--seed-1701",
+      "linux_fingerprint": "048041ad398032d4",
+      "windows_fingerprint": "a1da874a2a0421c2",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "flying_buttress--tall",
+      "linux_fingerprint": "e9afb3f67e303a22",
+      "windows_fingerprint": "ed1f262a71f31d74",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "folded_plate_hall--compact",
+      "linux_fingerprint": "48dee8f82ed5869e",
+      "windows_fingerprint": "5af8ed24de524dd9",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "folded_plate_hall--default",
+      "linux_fingerprint": "1b458be07df8bada",
+      "windows_fingerprint": "6d3f491105cbbc6d",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "folded_plate_hall--large-1024",
+      "linux_fingerprint": "f3a2d480bf9c39ce",
+      "windows_fingerprint": "968e4457b30e4abf",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "folded_plate_hall--material-controls",
+      "linux_fingerprint": "e36dc6bd7cae2f88",
+      "windows_fingerprint": "fd75e1ad8425ca03",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "folded_plate_hall--seed-1701",
+      "linux_fingerprint": "b44011a1faef8ec0",
+      "windows_fingerprint": "20bcb4d4812ab310",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "folded_plate_hall--tall",
+      "linux_fingerprint": "530903d04e520b8a",
+      "windows_fingerprint": "a0cc6a183dc874dd",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "forked_gantry--compact",
+      "linux_fingerprint": "5084b6c6d2cec21c",
+      "windows_fingerprint": "2677e90824156448",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "forked_gantry--default",
+      "linux_fingerprint": "d30941ff0ba52690",
+      "windows_fingerprint": "410bad1acc764384",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "forked_gantry--large-1024",
+      "linux_fingerprint": "5358fc4cd5fc29a8",
+      "windows_fingerprint": "aba190fa2803c555",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "forked_gantry--material-controls",
+      "linux_fingerprint": "b972515d3ed2bd6e",
+      "windows_fingerprint": "57ab9e35bcafdece",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "forked_gantry--seed-1701",
+      "linux_fingerprint": "09a4034880e3eaae",
+      "windows_fingerprint": "0a894566a8659c5c",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "forked_gantry--tall",
+      "linux_fingerprint": "8887c421d81f1b50",
+      "windows_fingerprint": "7958ee97b5908844",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "hanging_arcade--compact",
+      "linux_fingerprint": "aa0c3658fb8300ec",
+      "windows_fingerprint": "c0cae62607c3ca9e",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "hanging_arcade--default",
+      "linux_fingerprint": "b5aeaa4b5571b318",
+      "windows_fingerprint": "95d8c7099a890c4a",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "hanging_arcade--large-1024",
+      "linux_fingerprint": "6d3cebcaa30cac11",
+      "windows_fingerprint": "1412b04e59c7ed18",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "hanging_arcade--material-controls",
+      "linux_fingerprint": "09b296b82babc9d1",
+      "windows_fingerprint": "f26762e5c07534f3",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "hanging_arcade--seed-1701",
+      "linux_fingerprint": "6515bb3e7c32aab0",
+      "windows_fingerprint": "230a937707893176",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "hanging_arcade--tall",
+      "linux_fingerprint": "18a15016570d0338",
+      "windows_fingerprint": "401392142750732a",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "harp_bridge--compact",
+      "linux_fingerprint": "8aaafd012eae51b5",
+      "windows_fingerprint": "4325cef342832f18",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "harp_bridge--default",
+      "linux_fingerprint": "3b939fdefca72015",
+      "windows_fingerprint": "03bf6d9ad84d5af8",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "harp_bridge--large-1024",
+      "linux_fingerprint": "bcfe70960ae51bbb",
+      "windows_fingerprint": "8e610e8778f35f74",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "harp_bridge--material-controls",
+      "linux_fingerprint": "b1aff8f3a0e1a69f",
+      "windows_fingerprint": "a6b78a02ff58d576",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "harp_bridge--seed-1701",
+      "linux_fingerprint": "786fbe76d6a3075d",
+      "windows_fingerprint": "e0f4872ff24d7c89",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "harp_bridge--tall",
+      "linux_fingerprint": "4f1c54241a5f79a9",
+      "windows_fingerprint": "0fbbb106b3ef7d5c",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "hourglass_pier--compact",
+      "linux_fingerprint": "2d97d4ca55cf03a0",
+      "windows_fingerprint": "94b540649587dc1b",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "hourglass_pier--default",
+      "linux_fingerprint": "b03dbbd31a74ca86",
+      "windows_fingerprint": "67eeaeb21191e2f1",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "hourglass_pier--large-1024",
+      "linux_fingerprint": "71a2b901537c4280",
+      "windows_fingerprint": "3132e49ec7d9891e",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "hourglass_pier--material-controls",
+      "linux_fingerprint": "687829bc37ce844f",
+      "windows_fingerprint": "2156a39564cc7c7c",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "hourglass_pier--seed-1701",
+      "linux_fingerprint": "a7c639a6af40ab3e",
+      "windows_fingerprint": "388e0610383fdb6e",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "hourglass_pier--tall",
+      "linux_fingerprint": "0cc9c08087b47efc",
+      "windows_fingerprint": "19a4aa9410b6b5e7",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "interlaced_viaduct--compact",
+      "linux_fingerprint": "223f0ada97d3f99e",
+      "windows_fingerprint": "158ede62814f0266",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "interlaced_viaduct--default",
+      "linux_fingerprint": "cadc9f125383af5a",
+      "windows_fingerprint": "3c796202d72a828a",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "interlaced_viaduct--doors-off",
+      "linux_fingerprint": "f81f101a7f39c72b",
+      "windows_fingerprint": "8943b188a5304687",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "interlaced_viaduct--heavy",
+      "linux_fingerprint": "5d66adf4a195845e",
+      "windows_fingerprint": "825e04c2a31ef9a6",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "interlaced_viaduct--large-1024",
+      "linux_fingerprint": "9ea31a6b16df9626",
+      "windows_fingerprint": "b96d91e43ea9717a",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "interlaced_viaduct--material-controls",
+      "linux_fingerprint": "a8f650cff309f660",
+      "windows_fingerprint": "6b51f76e447745cc",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "interlaced_viaduct--seed-1701",
+      "linux_fingerprint": "cece5c69c9282042",
+      "windows_fingerprint": "ba0562e69d286d7a",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "interlaced_viaduct--signed-origin",
+      "linux_fingerprint": "ba7e96d368a6caf6",
+      "windows_fingerprint": "488b35f56cb20705",
+      "chunk_receipts": 25,
+      "different_chunk_receipts": 25,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "interlaced_viaduct--tall",
+      "linux_fingerprint": "cbb65d17ee894c52",
+      "windows_fingerprint": "10ba673100948022",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "interlaced_viaduct--thin",
+      "linux_fingerprint": "c85e930e25ea2a79",
+      "windows_fingerprint": "847535d9b666e961",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "interlaced_viaduct--windows-off",
+      "linux_fingerprint": "9b99939cc1120945",
+      "windows_fingerprint": "e8a5cb391284a865",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "interlock_brutalism--compact",
+      "linux_fingerprint": "da0c7fdcb8304389",
+      "windows_fingerprint": "57ac3e141665cc2f",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "interlock_brutalism--default",
+      "linux_fingerprint": "0f0e61f2f0272253",
+      "windows_fingerprint": "0b72ae42de42d57d",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "interlock_brutalism--doors-off",
+      "linux_fingerprint": "fc508e06fc19678a",
+      "windows_fingerprint": "272d706993993460",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "interlock_brutalism--heavy",
+      "linux_fingerprint": "5d897b0a84dc479f",
+      "windows_fingerprint": "3f3f12e7e570fe79",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "interlock_brutalism--large-1024",
+      "linux_fingerprint": "9815a9a4eb30a54b",
+      "windows_fingerprint": "2a0ed6bdd6842c42",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "interlock_brutalism--material-controls",
+      "linux_fingerprint": "72f33273a34677e9",
+      "windows_fingerprint": "ad040e8a48a8864f",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "interlock_brutalism--seed-1701",
+      "linux_fingerprint": "3e67ca475827e598",
+      "windows_fingerprint": "cb96c0c92d4f232b",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "interlock_brutalism--signed-origin",
+      "linux_fingerprint": "50cae0a4e19a2432",
+      "windows_fingerprint": "10108c60a78ca812",
+      "chunk_receipts": 25,
+      "different_chunk_receipts": 25,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "interlock_brutalism--tall",
+      "linux_fingerprint": "9e593557610c4c6d",
+      "windows_fingerprint": "68346703c10ded43",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "interlock_brutalism--thin",
+      "linux_fingerprint": "585d75f2928d8d04",
+      "windows_fingerprint": "b9cac647f9563f46",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "interlock_brutalism--windows-off",
+      "linux_fingerprint": "87f86ffbf1a67778",
+      "windows_fingerprint": "f4c290031ab4325a",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "inverted_arch--compact",
+      "linux_fingerprint": "8320d5096866b784",
+      "windows_fingerprint": "772212de41cb7c19",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "inverted_arch--default",
+      "linux_fingerprint": "613dd35a38fa94f0",
+      "windows_fingerprint": "98df2a26e3c80995",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "inverted_arch--large-1024",
+      "linux_fingerprint": "a937822aeb010def",
+      "windows_fingerprint": "4b31a8894d29af35",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "inverted_arch--material-controls",
+      "linux_fingerprint": "145a573993ab9412",
+      "windows_fingerprint": "4f42d9b506235b5f",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "inverted_arch--seed-1701",
+      "linux_fingerprint": "9b5311a99230432a",
+      "windows_fingerprint": "b32b290af1eee623",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "inverted_arch--tall",
+      "linux_fingerprint": "14b952759d4a3500",
+      "windows_fingerprint": "10eaf35d34d073c5",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "inverted_trestle--compact",
+      "linux_fingerprint": "2ae10019253e374e",
+      "windows_fingerprint": "17a668494fd1371a",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "inverted_trestle--default",
+      "linux_fingerprint": "0e99c6ae9daba1e4",
+      "windows_fingerprint": "99cf1affbf45906c",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "inverted_trestle--large-1024",
+      "linux_fingerprint": "1cca081fa59882b5",
+      "windows_fingerprint": "931e4ede03ba1592",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "inverted_trestle--material-controls",
+      "linux_fingerprint": "32de462edb8ed0d6",
+      "windows_fingerprint": "452213874d61fe72",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "inverted_trestle--seed-1701",
+      "linux_fingerprint": "46c3ecc5b310ae2f",
+      "windows_fingerprint": "4aa8e0d6143d9762",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "inverted_trestle--tall",
+      "linux_fingerprint": "b2a427b7a9dec94a",
+      "windows_fingerprint": "ad85e958b7c811de",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "kingpost_frame--compact",
+      "linux_fingerprint": "5fbdb6fd38e72f0b",
+      "windows_fingerprint": "8da84a1b9723e573",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "kingpost_frame--default",
+      "linux_fingerprint": "64508a9dd3f69e91",
+      "windows_fingerprint": "6793cf22bb62180d",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "kingpost_frame--large-1024",
+      "linux_fingerprint": "3eb39733fdfc5896",
+      "windows_fingerprint": "5df803d38feffd3f",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "kingpost_frame--material-controls",
+      "linux_fingerprint": "29bfcbf39f7585ac",
+      "windows_fingerprint": "ea912316ae58a4bc",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "kingpost_frame--seed-1701",
+      "linux_fingerprint": "a7c4d6016d315f0b",
+      "windows_fingerprint": "0075ee7301f89678",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "kingpost_frame--tall",
+      "linux_fingerprint": "c20d58e6e504410f",
+      "windows_fingerprint": "72d2e798d3298c7f",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "ladder_bridge--compact",
+      "linux_fingerprint": "b623b029dcfd6de8",
+      "windows_fingerprint": "c86fbbce96753b2e",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "ladder_bridge--default",
+      "linux_fingerprint": "a948345c1f94b89c",
+      "windows_fingerprint": "e4c7be8dea4b168a",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "ladder_bridge--large-1024",
+      "linux_fingerprint": "23ee931df662a267",
+      "windows_fingerprint": "2c210feb91610255",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "ladder_bridge--material-controls",
+      "linux_fingerprint": "36ec7c6795f134fa",
+      "windows_fingerprint": "b91ed4627c0cba90",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "ladder_bridge--seed-1701",
+      "linux_fingerprint": "5aadcdaaa9352a6c",
+      "windows_fingerprint": "9a0fafc940a38ee8",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "ladder_bridge--tall",
+      "linux_fingerprint": "3c241d8777940e8c",
+      "windows_fingerprint": "c25f6093985979fa",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "lantern_tower--compact",
+      "linux_fingerprint": "612d8b6b6c4b08ea",
+      "windows_fingerprint": "9c569b9c5825ddcc",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "lantern_tower--default",
+      "linux_fingerprint": "c13d3377c206124a",
+      "windows_fingerprint": "fd516750ba1267ac",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "lantern_tower--large-1024",
+      "linux_fingerprint": "858006e9cd075a5d",
+      "windows_fingerprint": "554d1daa4cd6b2ac",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "lantern_tower--material-controls",
+      "linux_fingerprint": "7e93c5731cd0fc60",
+      "windows_fingerprint": "7d44fb16bfcb4bb6",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "lantern_tower--seed-1701",
+      "linux_fingerprint": "97d8f10ec3552328",
+      "windows_fingerprint": "d7c65289a1ce2c6f",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "lantern_tower--tall",
+      "linux_fingerprint": "a29ef5e2ab4c6eae",
+      "windows_fingerprint": "436cbb10ac8e79a0",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "lattice_tower--compact",
+      "linux_fingerprint": "939bd5faad2c8fe4",
+      "windows_fingerprint": "18727642b75d2f8c",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "lattice_tower--default",
+      "linux_fingerprint": "524cd20e690109a0",
+      "windows_fingerprint": "484dd99ef6562118",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "lattice_tower--large-1024",
+      "linux_fingerprint": "b00cc7c582f6e818",
+      "windows_fingerprint": "bab624875513d82b",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "lattice_tower--material-controls",
+      "linux_fingerprint": "5133fe34a61840c6",
+      "windows_fingerprint": "a6d82971a73dd0ea",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "lattice_tower--seed-1701",
+      "linux_fingerprint": "518ffdefd6c3cead",
+      "windows_fingerprint": "92c1f7fbcc62e44e",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "lattice_tower--tall",
+      "linux_fingerprint": "c31a6cc34d19ddd8",
+      "windows_fingerprint": "14762591905657e0",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "lenticular_bridge--compact",
+      "linux_fingerprint": "eff46d9bb7ab60e5",
+      "windows_fingerprint": "d554e46c675c5a45",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "lenticular_bridge--default",
+      "linux_fingerprint": "1d8c969a1a12da65",
+      "windows_fingerprint": "75cb471b2ce1f3c5",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "lenticular_bridge--large-1024",
+      "linux_fingerprint": "828918f95757145a",
+      "windows_fingerprint": "6026f953e0e0540b",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "lenticular_bridge--material-controls",
+      "linux_fingerprint": "ed26b03877771ecf",
+      "windows_fingerprint": "1fa6f3d994a079df",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "lenticular_bridge--seed-1701",
+      "linux_fingerprint": "8cfe468549b801fe",
+      "windows_fingerprint": "8280c3eb4cbe5f8b",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "lenticular_bridge--tall",
+      "linux_fingerprint": "18b771f7ef137ca9",
+      "windows_fingerprint": "b7ef2b110ea41569",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "megatruss_station--compact",
+      "linux_fingerprint": "a1d6c420c9f0e9bb",
+      "windows_fingerprint": "1d29a8c92f73c2df",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "megatruss_station--default",
+      "linux_fingerprint": "e4cc686f50dc7e33",
+      "windows_fingerprint": "b93e41e22bbf0a07",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "megatruss_station--doors-off",
+      "linux_fingerprint": "5f00d3434c143c22",
+      "windows_fingerprint": "d1c18431824dca22",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "megatruss_station--heavy",
+      "linux_fingerprint": "bd6ebda545978b07",
+      "windows_fingerprint": "9d398e22770a5aeb",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "megatruss_station--large-1024",
+      "linux_fingerprint": "26bf14e4f0d7660a",
+      "windows_fingerprint": "8677634e72dbfc9a",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "megatruss_station--material-controls",
+      "linux_fingerprint": "2a9c3c8f172b9561",
+      "windows_fingerprint": "1ba4d75b71da0a75",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "megatruss_station--seed-1701",
+      "linux_fingerprint": "077261692e91d98b",
+      "windows_fingerprint": "ed90a43ddc69545c",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "megatruss_station--signed-origin",
+      "linux_fingerprint": "8feca3a80b54715b",
+      "windows_fingerprint": "10f42dcef075595f",
+      "chunk_receipts": 25,
+      "different_chunk_receipts": 25,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "megatruss_station--tall",
+      "linux_fingerprint": "700e763238565bcf",
+      "windows_fingerprint": "2ce94239987955e3",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "megatruss_station--thin",
+      "linux_fingerprint": "65ed5abe4973797c",
+      "windows_fingerprint": "268536a90f2cc99c",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "megatruss_station--windows-off",
+      "linux_fingerprint": "874cd1cd462354e8",
+      "windows_fingerprint": "831736c2cf1ba9a8",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "metabolist_spine--compact",
+      "linux_fingerprint": "a9244531763ceaf5",
+      "windows_fingerprint": "135da746ebbd548a",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "metabolist_spine--default",
+      "linux_fingerprint": "0c9fbcfc4feb291f",
+      "windows_fingerprint": "072327a422bc8b00",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "metabolist_spine--doors-off",
+      "linux_fingerprint": "1ff1233ea1a262bc",
+      "windows_fingerprint": "6390a9fd977eb6bb",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "metabolist_spine--heavy",
+      "linux_fingerprint": "828b77baafd27dd3",
+      "windows_fingerprint": "27bd71af0e625b0c",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "metabolist_spine--large-1024",
+      "linux_fingerprint": "6aad59c072a69218",
+      "windows_fingerprint": "c6c033ea153cc7b4",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "metabolist_spine--material-controls",
+      "linux_fingerprint": "c2bf7f7fc8a103bd",
+      "windows_fingerprint": "ab61577dd8c1ece2",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "metabolist_spine--seed-1701",
+      "linux_fingerprint": "af737f3022376b10",
+      "windows_fingerprint": "3bafd80ac0766d16",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "metabolist_spine--signed-origin",
+      "linux_fingerprint": "2e2922826e2460e8",
+      "windows_fingerprint": "c6b26d6a359104c3",
+      "chunk_receipts": 25,
+      "different_chunk_receipts": 25,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "metabolist_spine--tall",
+      "linux_fingerprint": "a38fc0db4eaf97d1",
+      "windows_fingerprint": "d80cc596c20f8bde",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "metabolist_spine--thin",
+      "linux_fingerprint": "5a40a327f7be4a8e",
+      "windows_fingerprint": "5950de228fb738c1",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "metabolist_spine--windows-off",
+      "linux_fingerprint": "e973c86735d388aa",
+      "windows_fingerprint": "2ea9e9eff6bcd435",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "monopod_tower--compact",
+      "linux_fingerprint": "c54451c24604f8fd",
+      "windows_fingerprint": "31763ef142c6eeea",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "monopod_tower--default",
+      "linux_fingerprint": "7795c2287f15fcdd",
+      "windows_fingerprint": "7bb4d444f06260ca",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "monopod_tower--large-1024",
+      "linux_fingerprint": "6b380cd79a45291f",
+      "windows_fingerprint": "0d9e7cab84c48397",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "monopod_tower--material-controls",
+      "linux_fingerprint": "f06ece45f4b99813",
+      "windows_fingerprint": "f8b568049ac9bc70",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "monopod_tower--seed-1701",
+      "linux_fingerprint": "ba85231046958b37",
+      "windows_fingerprint": "fc3005a17ec0b32f",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "monopod_tower--tall",
+      "linux_fingerprint": "62b1f000702c9509",
+      "windows_fingerprint": "57f0f01a20d63a8e",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "mushroom_deck--compact",
+      "linux_fingerprint": "5441292dbcceb6bc",
+      "windows_fingerprint": "46fb1940901217cf",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "mushroom_deck--default",
+      "linux_fingerprint": "24e10353ef8172e4",
+      "windows_fingerprint": "69e41dd0ad98f9f7",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "mushroom_deck--large-1024",
+      "linux_fingerprint": "237a3af582cb607b",
+      "windows_fingerprint": "64cf5885b37a3b9a",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "mushroom_deck--material-controls",
+      "linux_fingerprint": "3fdd0eaa04358902",
+      "windows_fingerprint": "4e4ccb5f7c18abdd",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "mushroom_deck--seed-1701",
+      "linux_fingerprint": "56cedcc5456c8cd4",
+      "windows_fingerprint": "dcc6eaf531e3f55d",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "mushroom_deck--tall",
+      "linux_fingerprint": "d8c43f6b89dd9220",
+      "windows_fingerprint": "94b8a2a399102e23",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "nested_arcade--compact",
+      "linux_fingerprint": "d8b722fba689a98a",
+      "windows_fingerprint": "579f3179383d8a49",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "nested_arcade--default",
+      "linux_fingerprint": "23050fe43af5e4ae",
+      "windows_fingerprint": "6f47ec95854ca3a5",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "nested_arcade--large-1024",
+      "linux_fingerprint": "d8c17bd9119e1778",
+      "windows_fingerprint": "77f900fcf74f9cbb",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "nested_arcade--material-controls",
+      "linux_fingerprint": "72e68259e2621edd",
+      "windows_fingerprint": "89c69f0f497d78aa",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "nested_arcade--seed-1701",
+      "linux_fingerprint": "02dd4f19bbdb38e7",
+      "windows_fingerprint": "ca744ee751d2b878",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "nested_arcade--tall",
+      "linux_fingerprint": "d5d135569942e95e",
+      "windows_fingerprint": "70c78050cdce19d5",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "offset_arcade--compact",
+      "linux_fingerprint": "d743f069578fa7b7",
+      "windows_fingerprint": "57a2d571fed99537",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "offset_arcade--default",
+      "linux_fingerprint": "49ed37a7c6a8351b",
+      "windows_fingerprint": "34f3a48035df4583",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "offset_arcade--large-1024",
+      "linux_fingerprint": "309495595f192470",
+      "windows_fingerprint": "ba31d882eb8d3501",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "offset_arcade--material-controls",
+      "linux_fingerprint": "5122af8a5fc5d3ea",
+      "windows_fingerprint": "bad305cb449e6a3a",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "offset_arcade--seed-1701",
+      "linux_fingerprint": "9bc2fc39272defff",
+      "windows_fingerprint": "9139ae698d976b79",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "offset_arcade--tall",
+      "linux_fingerprint": "9c294733a1c4701b",
+      "windows_fingerprint": "872fb40c10fb8083",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "pointed_arcade--compact",
+      "linux_fingerprint": "808583c6681956b5",
+      "windows_fingerprint": "11ef0c925f24a78f",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "pointed_arcade--default",
+      "linux_fingerprint": "bdf41d69bde7bfcf",
+      "windows_fingerprint": "150a2383ed1f8315",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "pointed_arcade--large-1024",
+      "linux_fingerprint": "827abf9ed9c56d0a",
+      "windows_fingerprint": "f27d6bef538ec36f",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "pointed_arcade--material-controls",
+      "linux_fingerprint": "df28a42decb62a68",
+      "windows_fingerprint": "584b291ab0fe2f9a",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "pointed_arcade--seed-1701",
+      "linux_fingerprint": "d4811335e58215a4",
+      "windows_fingerprint": "6c16c855a8667054",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "pointed_arcade--tall",
+      "linux_fingerprint": "b885a7762d445239",
+      "windows_fingerprint": "699927f39eef4073",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "portal_frame--compact",
+      "linux_fingerprint": "f0496518b3015b34",
+      "windows_fingerprint": "2a03e908e94da1d0",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "portal_frame--default",
+      "linux_fingerprint": "5eae6071097d056a",
+      "windows_fingerprint": "09f4acf4c66f02f2",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "portal_frame--large-1024",
+      "linux_fingerprint": "5df944c29d836163",
+      "windows_fingerprint": "7fc2e7ca7eb9a740",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "portal_frame--material-controls",
+      "linux_fingerprint": "611a835fd8ff4bec",
+      "windows_fingerprint": "369a0764fc0d1d58",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "portal_frame--seed-1701",
+      "linux_fingerprint": "fc00107b0a9b7800",
+      "windows_fingerprint": "515a598bab594324",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "portal_frame--tall",
+      "linux_fingerprint": "3e45e5d78ad1dc10",
+      "windows_fingerprint": "b2fa910fd042ef04",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "pratt_truss--compact",
+      "linux_fingerprint": "6ab58b4096572625",
+      "windows_fingerprint": "c0ce6855e3381174",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "pratt_truss--default",
+      "linux_fingerprint": "07f59d5c9eb5f129",
+      "windows_fingerprint": "3bd65c38aac9aa78",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "pratt_truss--large-1024",
+      "linux_fingerprint": "7d8e471d27f3da86",
+      "windows_fingerprint": "5d6a66841602cdc2",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "pratt_truss--material-controls",
+      "linux_fingerprint": "71f787141345676b",
+      "windows_fingerprint": "3b52639ae2503cfa",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "pratt_truss--seed-1701",
+      "linux_fingerprint": "d184678a7fe26acc",
+      "windows_fingerprint": "090a32d7b0aa5fec",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "pratt_truss--tall",
+      "linux_fingerprint": "84ca7df056dfe4e9",
+      "windows_fingerprint": "480b1d80bcadbd38",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "pyramidal_frame--compact",
+      "linux_fingerprint": "82df97c0910f83d4",
+      "windows_fingerprint": "5cadf1e993f044df",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "pyramidal_frame--default",
+      "linux_fingerprint": "c48b48c1f5c32b44",
+      "windows_fingerprint": "02a78558b13678af",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "pyramidal_frame--large-1024",
+      "linux_fingerprint": "f9981e9158947fa2",
+      "windows_fingerprint": "b536693d02deeccf",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "pyramidal_frame--material-controls",
+      "linux_fingerprint": "6a7e7eace7877436",
+      "windows_fingerprint": "86150c50dd61f115",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "pyramidal_frame--seed-1701",
+      "linux_fingerprint": "3d7a617b09144af5",
+      "windows_fingerprint": "78466437dd29c0f2",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "pyramidal_frame--tall",
+      "linux_fingerprint": "14aacd28ce73b108",
+      "windows_fingerprint": "f3f436759da409eb",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "queenpost_frame--compact",
+      "linux_fingerprint": "d7884962b8a1cde7",
+      "windows_fingerprint": "3e0537bb19b02973",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "queenpost_frame--default",
+      "linux_fingerprint": "e125b654fe004459",
+      "windows_fingerprint": "cfda1239324a27c9",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "queenpost_frame--large-1024",
+      "linux_fingerprint": "576e8f252a55be89",
+      "windows_fingerprint": "3054c0077c967ddf",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "queenpost_frame--material-controls",
+      "linux_fingerprint": "1556505098d18e8e",
+      "windows_fingerprint": "2f55ea4c8e34b86a",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "queenpost_frame--seed-1701",
+      "linux_fingerprint": "38520b786092b6e8",
+      "windows_fingerprint": "97f0c451b47ad786",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "queenpost_frame--tall",
+      "linux_fingerprint": "e703c6a8d1af3ea3",
+      "windows_fingerprint": "6170c5d29b477597",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "radial_stay_bridge--compact",
+      "linux_fingerprint": "bfaf7f9625a68da5",
+      "windows_fingerprint": "f138ac1607e902ae",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "radial_stay_bridge--default",
+      "linux_fingerprint": "44362e4f0dd80013",
+      "windows_fingerprint": "683353283bdf4474",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "radial_stay_bridge--large-1024",
+      "linux_fingerprint": "921819832e9726a7",
+      "windows_fingerprint": "783b4863cd035248",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "radial_stay_bridge--material-controls",
+      "linux_fingerprint": "fb99792fbbc69d05",
+      "windows_fingerprint": "7689aade1fba1f0e",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "radial_stay_bridge--seed-1701",
+      "linux_fingerprint": "f6f69dde79a15a0a",
+      "windows_fingerprint": "761e6893ac3900dc",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "radial_stay_bridge--tall",
+      "linux_fingerprint": "2a45c65434878349",
+      "windows_fingerprint": "1dd4fa33a7abf522",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "rib_vault--compact",
+      "linux_fingerprint": "8f04943744ba14c4",
+      "windows_fingerprint": "12c311b4dd739474",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "rib_vault--default",
+      "linux_fingerprint": "9a28f2ff9a045314",
+      "windows_fingerprint": "73eabb2556121e64",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "rib_vault--large-1024",
+      "linux_fingerprint": "b5765aacc36958c3",
+      "windows_fingerprint": "020d3ada28f5ca5b",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "rib_vault--material-controls",
+      "linux_fingerprint": "8667e7e24fe11fd5",
+      "windows_fingerprint": "bf0d6f825a46945d",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "rib_vault--seed-1701",
+      "linux_fingerprint": "aa9991b2efa05b17",
+      "windows_fingerprint": "4c0c0358ce4ca6a3",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "rib_vault--tall",
+      "linux_fingerprint": "718f727453963268",
+      "windows_fingerprint": "9a7b41cd48455430",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "ring_pier--compact",
+      "linux_fingerprint": "0818d2c3c5b953b9",
+      "windows_fingerprint": "d6670785ab9e84b4",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "ring_pier--default",
+      "linux_fingerprint": "b76fa22ba8b166b7",
+      "windows_fingerprint": "3df7817ed4f07912",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "ring_pier--large-1024",
+      "linux_fingerprint": "98f7ea20a9519bac",
+      "windows_fingerprint": "36b709bf8fe43a1b",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "ring_pier--material-controls",
+      "linux_fingerprint": "ff4b6a753d9b6d5d",
+      "windows_fingerprint": "01bb0fff26698a48",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "ring_pier--seed-1701",
+      "linux_fingerprint": "953fbf57fd8439a0",
+      "windows_fingerprint": "c8dabe05c23525c8",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "ring_pier--tall",
+      "linux_fingerprint": "0383bdd399aa48bd",
+      "windows_fingerprint": "94285ff2daa43a68",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "rosework_gatehouse--compact",
+      "linux_fingerprint": "b629ddbd75ed163e",
+      "windows_fingerprint": "87af129e6fe14a0a",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "rosework_gatehouse--default",
+      "linux_fingerprint": "66ea1261846792aa",
+      "windows_fingerprint": "fa7430cdb5a3a226",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "rosework_gatehouse--doors-off",
+      "linux_fingerprint": "107d97cbec02cb17",
+      "windows_fingerprint": "fbb3362db7b03ba7",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "rosework_gatehouse--heavy",
+      "linux_fingerprint": "96b302e2d364e706",
+      "windows_fingerprint": "438102b644a235f2",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "rosework_gatehouse--large-1024",
+      "linux_fingerprint": "9eb0a061a27cc398",
+      "windows_fingerprint": "7d7e1aac8a1adb82",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "rosework_gatehouse--material-controls",
+      "linux_fingerprint": "50e90aa60179314c",
+      "windows_fingerprint": "f2925c60b09c0910",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "rosework_gatehouse--seed-1701",
+      "linux_fingerprint": "58ad5beedd02a1df",
+      "windows_fingerprint": "692b1b0bd18fa56b",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "rosework_gatehouse--signed-origin",
+      "linux_fingerprint": "08c9b210a8a92336",
+      "windows_fingerprint": "32f40d5feac06e4a",
+      "chunk_receipts": 25,
+      "different_chunk_receipts": 25,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "rosework_gatehouse--tall",
+      "linux_fingerprint": "7d9f2cebe91e5a82",
+      "windows_fingerprint": "5e9873e1f8170dde",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "rosework_gatehouse--thin",
+      "linux_fingerprint": "64a20d87d561e825",
+      "windows_fingerprint": "db21a7595b0c6ead",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "rosework_gatehouse--windows-off",
+      "linux_fingerprint": "1ff1b4dcdb42b841",
+      "windows_fingerprint": "1f740a62e9d229a9",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "sawtooth_gallery--compact",
+      "linux_fingerprint": "a9351600cbd5314b",
+      "windows_fingerprint": "04ff700f733b3ef7",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "sawtooth_gallery--default",
+      "linux_fingerprint": "e09341e3c9bcfa07",
+      "windows_fingerprint": "2557583ec3519a7b",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "sawtooth_gallery--large-1024",
+      "linux_fingerprint": "accfcb085f7d4bd1",
+      "windows_fingerprint": "bceae9fb1d190b9c",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "sawtooth_gallery--material-controls",
+      "linux_fingerprint": "76d17d93a43ec37d",
+      "windows_fingerprint": "7512cf82b4fbc241",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "sawtooth_gallery--seed-1701",
+      "linux_fingerprint": "48a67b7b9c90d430",
+      "windows_fingerprint": "9a6df6257e0fc12c",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "sawtooth_gallery--tall",
+      "linux_fingerprint": "b06bc1549dab654f",
+      "windows_fingerprint": "7b5fcb1d842a56a3",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "scalloped_vault--compact",
+      "linux_fingerprint": "872d3a61dd034e3c",
+      "windows_fingerprint": "7de30e71255fa79c",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "scalloped_vault--default",
+      "linux_fingerprint": "760d222bcf2932b0",
+      "windows_fingerprint": "bfe9289833f311f8",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "scalloped_vault--large-1024",
+      "linux_fingerprint": "942cf0fc2812697b",
+      "windows_fingerprint": "e91ff406d07928a2",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "scalloped_vault--material-controls",
+      "linux_fingerprint": "8c6ad73a905d55f3",
+      "windows_fingerprint": "2544e77491b7fa67",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "scalloped_vault--seed-1701",
+      "linux_fingerprint": "85d6a8c693309cb4",
+      "windows_fingerprint": "a52dd7458168e04a",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "scalloped_vault--tall",
+      "linux_fingerprint": "ae040f382a186bd0",
+      "windows_fingerprint": "be76c1ad10d90cd8",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "seeded_typology_megablock--compact",
+      "linux_fingerprint": "c3d607e2137a6ce8",
+      "windows_fingerprint": "ea7e2a7516982ba5",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "seeded_typology_megablock--default",
+      "linux_fingerprint": "0ad6fde664d4ca44",
+      "windows_fingerprint": "e83e3a4363bcb3d1",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "seeded_typology_megablock--doors-off",
+      "linux_fingerprint": "c57ae9b5872bb809",
+      "windows_fingerprint": "75872c02c09d570c",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "seeded_typology_megablock--heavy",
+      "linux_fingerprint": "88e40a6aab21ecf8",
+      "windows_fingerprint": "9d1e353f42d57bd5",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "seeded_typology_megablock--large-1024",
+      "linux_fingerprint": "ee27697e83bfa27b",
+      "windows_fingerprint": "d3c966decf0426fe",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "seeded_typology_megablock--material-controls",
+      "linux_fingerprint": "6ef3541c425fc727",
+      "windows_fingerprint": "cd355a42f790d3c6",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "seeded_typology_megablock--seed-1701",
+      "linux_fingerprint": "d4b59b7cf1e64d3c",
+      "windows_fingerprint": "96e17a96df499b36",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "seeded_typology_megablock--signed-origin",
+      "linux_fingerprint": "68efe417faf72773",
+      "windows_fingerprint": "d00fa5b9bdff8478",
+      "chunk_receipts": 25,
+      "different_chunk_receipts": 25,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "seeded_typology_megablock--tall",
+      "linux_fingerprint": "71c7c7f914686bac",
+      "windows_fingerprint": "ac95624294b43529",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "seeded_typology_megablock--thin",
+      "linux_fingerprint": "0d5ed447cbcb712f",
+      "windows_fingerprint": "b79c62200fbe4cbe",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "seeded_typology_megablock--windows-off",
+      "linux_fingerprint": "e615e85cb33a664b",
+      "windows_fingerprint": "e008dca376d5ee0a",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "shelf_stack--compact",
+      "linux_fingerprint": "8ce8aec3f065d83b",
+      "windows_fingerprint": "7e2c3b3d068aea08",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "shelf_stack--default",
+      "linux_fingerprint": "7d22dcee45da9489",
+      "windows_fingerprint": "c31e1fb1f1fee40a",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "shelf_stack--large-1024",
+      "linux_fingerprint": "e7ddb695fdb19c95",
+      "windows_fingerprint": "e3e4449ce884094a",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "shelf_stack--material-controls",
+      "linux_fingerprint": "4b5abed40be3cfbf",
+      "windows_fingerprint": "ef4ec15cd3bf4fa4",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "shelf_stack--seed-1701",
+      "linux_fingerprint": "39d61f7841e57187",
+      "windows_fingerprint": "35d8e92f1e6b9bce",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "shelf_stack--tall",
+      "linux_fingerprint": "d70f231d2fdc90bf",
+      "windows_fingerprint": "7b0325a5f7b810a4",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "space_frame--compact",
+      "linux_fingerprint": "5cfaa9c95ee14408",
+      "windows_fingerprint": "d2936de0d59fe725",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "space_frame--default",
+      "linux_fingerprint": "6f6cbf86240c1654",
+      "windows_fingerprint": "67bc7aa750a62029",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "space_frame--large-1024",
+      "linux_fingerprint": "84b30ca4f007f0d2",
+      "windows_fingerprint": "51b71c1903dcce10",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "space_frame--material-controls",
+      "linux_fingerprint": "673ad770f0b11c2a",
+      "windows_fingerprint": "ec914455f87373af",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "space_frame--seed-1701",
+      "linux_fingerprint": "1eb3c68a0badcf23",
+      "windows_fingerprint": "0432b0bc6feb31ae",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "space_frame--tall",
+      "linux_fingerprint": "d05f2b3b7f6dc73c",
+      "windows_fingerprint": "f1a994fe660673a1",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "spine_arcade--compact",
+      "linux_fingerprint": "4a0bb43e7e5d429b",
+      "windows_fingerprint": "5b53681dba229a65",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "spine_arcade--default",
+      "linux_fingerprint": "4de1af0d318de009",
+      "windows_fingerprint": "84b7bdc946c53f6b",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "spine_arcade--large-1024",
+      "linux_fingerprint": "b1e2d02400f7c362",
+      "windows_fingerprint": "99cd8dc3ef5317c4",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "spine_arcade--material-controls",
+      "linux_fingerprint": "6557e0800631e8dc",
+      "windows_fingerprint": "f7a72b4e6fa4e3e2",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "spine_arcade--seed-1701",
+      "linux_fingerprint": "a9b3f79a520e4e3f",
+      "windows_fingerprint": "1100cd995ad486a7",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "spine_arcade--tall",
+      "linux_fingerprint": "b2df283178db317f",
+      "windows_fingerprint": "d8469bc77d081d59",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "split_pier--compact",
+      "linux_fingerprint": "5d92e879cd5684b8",
+      "windows_fingerprint": "4d7d5c2a45e21569",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "split_pier--default",
+      "linux_fingerprint": "a53a39e1233979b8",
+      "windows_fingerprint": "9524ad919bc50a69",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "split_pier--large-1024",
+      "linux_fingerprint": "d8256f17424bb2af",
+      "windows_fingerprint": "988ebcefc8ef1986",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "split_pier--material-controls",
+      "linux_fingerprint": "f20b4c111464f945",
+      "windows_fingerprint": "9273a242acd155ec",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "split_pier--seed-1701",
+      "linux_fingerprint": "c8658e96413bacca",
+      "windows_fingerprint": "c786e7e78a53d8b0",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "split_pier--tall",
+      "linux_fingerprint": "06db0edec46b2b34",
+      "windows_fingerprint": "6c9219f2f3b94705",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "stacked_arcade--compact",
+      "linux_fingerprint": "92216f3d5a52fa0b",
+      "windows_fingerprint": "fd907126efd66f2c",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "stacked_arcade--default",
+      "linux_fingerprint": "3da749002245efcf",
+      "windows_fingerprint": "52613a0198c35ec0",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "stacked_arcade--large-1024",
+      "linux_fingerprint": "a7c5f6b42273249f",
+      "windows_fingerprint": "7aeb7109854f1868",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "stacked_arcade--material-controls",
+      "linux_fingerprint": "64022d2769bdc104",
+      "windows_fingerprint": "04c449b9c436ccf3",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "stacked_arcade--seed-1701",
+      "linux_fingerprint": "782e0757860558c4",
+      "windows_fingerprint": "63b7bd113bd29bd3",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "stacked_arcade--tall",
+      "linux_fingerprint": "92d6a5a4a654a327",
+      "windows_fingerprint": "3c1bb6fd9250ef98",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "staggered_balcony--compact",
+      "linux_fingerprint": "0dffa00eadf798af",
+      "windows_fingerprint": "bcab83bffb35cb44",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "staggered_balcony--default",
+      "linux_fingerprint": "cb4fd4c52db0a8af",
+      "windows_fingerprint": "79fbb8767aeedb44",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "staggered_balcony--large-1024",
+      "linux_fingerprint": "252ca469c3763587",
+      "windows_fingerprint": "15562abec3c1de4a",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "staggered_balcony--material-controls",
+      "linux_fingerprint": "db57b96424c43799",
+      "windows_fingerprint": "1d72f8f50b841cca",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "staggered_balcony--seed-1701",
+      "linux_fingerprint": "a6cf307856daf505",
+      "windows_fingerprint": "d28f1f5fbfb8be69",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "staggered_balcony--tall",
+      "linux_fingerprint": "294fa2ec46b643ab",
+      "windows_fingerprint": "06ec0f538e4ac5b0",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "stepped_aqueduct--compact",
+      "linux_fingerprint": "213f31130dc501ba",
+      "windows_fingerprint": "2ce2cf2bc026bb36",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "stepped_aqueduct--default",
+      "linux_fingerprint": "98ee7f4979b3912a",
+      "windows_fingerprint": "290514f7bcd060e6",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "stepped_aqueduct--large-1024",
+      "linux_fingerprint": "c1e3b7337f3ba502",
+      "windows_fingerprint": "3e2c3eec072e7697",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "stepped_aqueduct--material-controls",
+      "linux_fingerprint": "399d64c3127fe43a",
+      "windows_fingerprint": "d45b12e4136bb8b6",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "stepped_aqueduct--seed-1701",
+      "linux_fingerprint": "8c56519d37ed1b38",
+      "windows_fingerprint": "46955c4bc761e380",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "stepped_aqueduct--tall",
+      "linux_fingerprint": "19275f495cc15c4e",
+      "windows_fingerprint": "ce9f195717f7657a",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "stepped_buttress--compact",
+      "linux_fingerprint": "4bf440f125fa26e3",
+      "windows_fingerprint": "d69e77782f866ffc",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "stepped_buttress--default",
+      "linux_fingerprint": "7ddbbadf11520e45",
+      "windows_fingerprint": "76bd1d30f87c4d32",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "stepped_buttress--large-1024",
+      "linux_fingerprint": "b67acb4f810d697d",
+      "windows_fingerprint": "d5bba9a061beec73",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "stepped_buttress--material-controls",
+      "linux_fingerprint": "38c663c3b8fc74b3",
+      "windows_fingerprint": "8d4899f88ba76dac",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "stepped_buttress--seed-1701",
+      "linux_fingerprint": "a24a0d28be758d35",
+      "windows_fingerprint": "801794dd07681f0c",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "stepped_buttress--tall",
+      "linux_fingerprint": "f67630c33eb844f7",
+      "windows_fingerprint": "fb8b110515047830",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "suspended_arcology--compact",
+      "linux_fingerprint": "fb15507756d3e53a",
+      "windows_fingerprint": "32496eca644b594d",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "suspended_arcology--default",
+      "linux_fingerprint": "796f9313bb824f94",
+      "windows_fingerprint": "a9ab44154d1f3c03",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "suspended_arcology--doors-off",
+      "linux_fingerprint": "dbc56f846adc516f",
+      "windows_fingerprint": "5bfd4e1c81a0964c",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "suspended_arcology--heavy",
+      "linux_fingerprint": "3ad91b4dda053ab8",
+      "windows_fingerprint": "c5552971644a99ff",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "suspended_arcology--large-1024",
+      "linux_fingerprint": "a463e9862ea80968",
+      "windows_fingerprint": "855c230d86e99922",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "suspended_arcology--material-controls",
+      "linux_fingerprint": "5d44abaf6547cc82",
+      "windows_fingerprint": "aeab8ecb4e0d4025",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "suspended_arcology--seed-1701",
+      "linux_fingerprint": "453179a6b508310b",
+      "windows_fingerprint": "eaf3557df4c8b8a2",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "suspended_arcology--signed-origin",
+      "linux_fingerprint": "b2d765d6a8a1844b",
+      "windows_fingerprint": "97e6db6602d7f9c7",
+      "chunk_receipts": 25,
+      "different_chunk_receipts": 25,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "suspended_arcology--tall",
+      "linux_fingerprint": "4a234f6264b149a6",
+      "windows_fingerprint": "10c87a0060a6d991",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "suspended_arcology--thin",
+      "linux_fingerprint": "143195d4214765d1",
+      "windows_fingerprint": "0315e20c9602b672",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "suspended_arcology--windows-off",
+      "linux_fingerprint": "70ecd645741ce1e5",
+      "windows_fingerprint": "626b37a3301ccd6e",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "suspended_deck--compact",
+      "linux_fingerprint": "b48537810d6cdbaf",
+      "windows_fingerprint": "d9fcaf36a4e6cf15",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "suspended_deck--default",
+      "linux_fingerprint": "634630a5c24b810d",
+      "windows_fingerprint": "2aa47068767d5307",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "suspended_deck--large-1024",
+      "linux_fingerprint": "d1a2046d5f5aae4b",
+      "windows_fingerprint": "f8d1aae83563bc00",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "suspended_deck--material-controls",
+      "linux_fingerprint": "e7300348702b9dcf",
+      "windows_fingerprint": "aac06cd90428b175",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "suspended_deck--seed-1701",
+      "linux_fingerprint": "3b658b4534d2ac84",
+      "windows_fingerprint": "e7e00784a3cb49df",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "suspended_deck--tall",
+      "linux_fingerprint": "e523a75b90e43163",
+      "windows_fingerprint": "5302be78d4680d39",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "suspension_pylon--compact",
+      "linux_fingerprint": "6ac9d588b40dd38b",
+      "windows_fingerprint": "f4b27456f3df2730",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "suspension_pylon--default",
+      "linux_fingerprint": "ed9f2a81f7970e39",
+      "windows_fingerprint": "abc92e54bcb48982",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "suspension_pylon--large-1024",
+      "linux_fingerprint": "1cdebf54c30f7211",
+      "windows_fingerprint": "468780934a6cb3f9",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "suspension_pylon--material-controls",
+      "linux_fingerprint": "7cc95eac28686483",
+      "windows_fingerprint": "44448853a314f798",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "suspension_pylon--seed-1701",
+      "linux_fingerprint": "68f35af3da534ce3",
+      "windows_fingerprint": "377a430e636203c7",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "suspension_pylon--tall",
+      "linux_fingerprint": "9b1aebc1d23ab9e7",
+      "windows_fingerprint": "ae7a1cab3c483054",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "trestle--compact",
+      "linux_fingerprint": "637bf69885348c3b",
+      "windows_fingerprint": "d1a26b0bc83dff6a",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "trestle--default",
+      "linux_fingerprint": "cd37798c2d282509",
+      "windows_fingerprint": "91604c90da99768c",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "trestle--large-1024",
+      "linux_fingerprint": "f05de27891986680",
+      "windows_fingerprint": "fcabf7e8f51cbcf8",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "trestle--material-controls",
+      "linux_fingerprint": "c63484229c33bce3",
+      "windows_fingerprint": "caecff889fa17722",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "trestle--seed-1701",
+      "linux_fingerprint": "f6f761efe7c31edc",
+      "windows_fingerprint": "fe24875e7cdabe1e",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "trestle--tall",
+      "linux_fingerprint": "7113c967f356217f",
+      "windows_fingerprint": "c7b86d90a8fe24fe",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "tripod_frame--compact",
+      "linux_fingerprint": "abcaddc32a519df6",
+      "windows_fingerprint": "d0baf32dc492d7bb",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "tripod_frame--default",
+      "linux_fingerprint": "2afac551d289c438",
+      "windows_fingerprint": "97303c4c70c064c5",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "tripod_frame--large-1024",
+      "linux_fingerprint": "806f39ab622764c9",
+      "windows_fingerprint": "893f7d3371d8c719",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "tripod_frame--material-controls",
+      "linux_fingerprint": "cadb304e8c764762",
+      "windows_fingerprint": "328765b2240f82df",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "tripod_frame--seed-1701",
+      "linux_fingerprint": "53ee0748b7aa792a",
+      "windows_fingerprint": "70c68bc47e20a8cb",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "tripod_frame--tall",
+      "linux_fingerprint": "fd98a5739c56ae7a",
+      "windows_fingerprint": "4e81485954fe1e57",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "triptych_arcade--compact",
+      "linux_fingerprint": "09630b734e0fbc3a",
+      "windows_fingerprint": "d5588ccf21abb7cc",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "triptych_arcade--default",
+      "linux_fingerprint": "1e9d1f1e2fe88335",
+      "windows_fingerprint": "fba5a577ee14324b",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "triptych_arcade--large-1024",
+      "linux_fingerprint": "f46e31632c80ccca",
+      "windows_fingerprint": "392a19f5427dcbc1",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "triptych_arcade--material-controls",
+      "linux_fingerprint": "029baa95800c2372",
+      "windows_fingerprint": "133a75f3321ccda4",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "triptych_arcade--seed-1701",
+      "linux_fingerprint": "4b2e821eedff9f47",
+      "windows_fingerprint": "4b6a527dbbcf8760",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "triptych_arcade--tall",
+      "linux_fingerprint": "25aa676cf8687ec6",
+      "windows_fingerprint": "593bd938d93b6060",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "twin_mast_bridge--compact",
+      "linux_fingerprint": "8a3ac23a39d7c655",
+      "windows_fingerprint": "68d6edf7f5252f96",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "twin_mast_bridge--default",
+      "linux_fingerprint": "d69891327cf901e7",
+      "windows_fingerprint": "52c8dd6c7d41d4c8",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "twin_mast_bridge--large-1024",
+      "linux_fingerprint": "da4e631c4fa3d544",
+      "windows_fingerprint": "4ad270b603c0010f",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "twin_mast_bridge--material-controls",
+      "linux_fingerprint": "5bbe1aae0f717ec1",
+      "windows_fingerprint": "7f97378c0f63f8a2",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "twin_mast_bridge--seed-1701",
+      "linux_fingerprint": "0bbb4096d944803f",
+      "windows_fingerprint": "65b6710baebfc938",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "twin_mast_bridge--tall",
+      "linux_fingerprint": "1d397d22d2a98f11",
+      "windows_fingerprint": "938b173549b69a72",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "vierendeel_frame--compact",
+      "linux_fingerprint": "7a9f76fe41b84387",
+      "windows_fingerprint": "aae3b2154dda9988",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "vierendeel_frame--default",
+      "linux_fingerprint": "a1f4c56e81c1622b",
+      "windows_fingerprint": "49d4fe45d55668a4",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "vierendeel_frame--large-1024",
+      "linux_fingerprint": "3406baeccd3ce985",
+      "windows_fingerprint": "41fc4b735c860b58",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "vierendeel_frame--material-controls",
+      "linux_fingerprint": "a16c32c189df7585",
+      "windows_fingerprint": "b5d93d86f41d6a7e",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "vierendeel_frame--seed-1701",
+      "linux_fingerprint": "23fe0ff00e8970ac",
+      "windows_fingerprint": "c86c23725712df36",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "vierendeel_frame--tall",
+      "linux_fingerprint": "e2e254ca0ae59c9b",
+      "windows_fingerprint": "907cef3d31232894",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "warren_truss--compact",
+      "linux_fingerprint": "87f0845ca4f52aa8",
+      "windows_fingerprint": "00b542a4919d1b1f",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "warren_truss--default",
+      "linux_fingerprint": "6da06d1598f326ec",
+      "windows_fingerprint": "07585781ca7b8b93",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "warren_truss--large-1024",
+      "linux_fingerprint": "b2e8c86ecbc2688f",
+      "windows_fingerprint": "9be2b1ca170bd312",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "warren_truss--material-controls",
+      "linux_fingerprint": "442e5f74ac4898b6",
+      "windows_fingerprint": "7bbf201fabf08101",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "warren_truss--seed-1701",
+      "linux_fingerprint": "570a6a68bfb440fc",
+      "windows_fingerprint": "c97ae7b1a2c03409",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "warren_truss--tall",
+      "linux_fingerprint": "c9d1b4387e5886dc",
+      "windows_fingerprint": "33bd780731b22263",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "wedge_gallery--compact",
+      "linux_fingerprint": "0826181983da4df8",
+      "windows_fingerprint": "b49fb8a219ed5f29",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "wedge_gallery--default",
+      "linux_fingerprint": "e08bd3b6158f931c",
+      "windows_fingerprint": "f6dedc27d9477e65",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "wedge_gallery--large-1024",
+      "linux_fingerprint": "d03a4e75cb770460",
+      "windows_fingerprint": "3271291eaae2dd18",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "wedge_gallery--material-controls",
+      "linux_fingerprint": "c4f0de635bc65e1a",
+      "windows_fingerprint": "454c83525ccdb42b",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "wedge_gallery--seed-1701",
+      "linux_fingerprint": "41b845690b4ff5de",
+      "windows_fingerprint": "b41892bb11977df9",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "wedge_gallery--tall",
+      "linux_fingerprint": "9d1730d6a74bb65c",
+      "windows_fingerprint": "b32f0ec8aa7c38a5",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "yoke_bridge--compact",
+      "linux_fingerprint": "cbcb7131911a4a61",
+      "windows_fingerprint": "8ef4831e922c7053",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "yoke_bridge--default",
+      "linux_fingerprint": "d75b78763163b3e7",
+      "windows_fingerprint": "34cb8669ebc3a8c9",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "yoke_bridge--large-1024",
+      "linux_fingerprint": "a2f7810da0540e48",
+      "windows_fingerprint": "38b01acba52680e4",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "yoke_bridge--material-controls",
+      "linux_fingerprint": "ab278746c1c74494",
+      "windows_fingerprint": "28c1fafccf375d0a",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "yoke_bridge--seed-1701",
+      "linux_fingerprint": "051fc1a09de780f3",
+      "windows_fingerprint": "42a09c730aadbbb9",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "yoke_bridge--tall",
+      "linux_fingerprint": "4591afdf46c0921d",
+      "windows_fingerprint": "c61c7e44568bb357",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "ziggurat_arcade--compact",
+      "linux_fingerprint": "ebfc666fec9cdfa7",
+      "windows_fingerprint": "4ad2d92d6380a57b",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "ziggurat_arcade--default",
+      "linux_fingerprint": "377e2c3a968fd6e3",
+      "windows_fingerprint": "d89553d063dd40cf",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "ziggurat_arcade--large-1024",
+      "linux_fingerprint": "ad4cb600896013a1",
+      "windows_fingerprint": "1600e123a5722a0c",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "ziggurat_arcade--material-controls",
+      "linux_fingerprint": "8f0cbb8e290777d5",
+      "windows_fingerprint": "59da305577e980c1",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "ziggurat_arcade--seed-1701",
+      "linux_fingerprint": "288a2f04ea9fd9b0",
+      "windows_fingerprint": "e414b13e65212b96",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "ziggurat_arcade--tall",
+      "linux_fingerprint": "70513ab5c763ff2b",
+      "windows_fingerprint": "5ec38e83abe401c7",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "zigzag_bridge--compact",
+      "linux_fingerprint": "56d5e416d2da8bc1",
+      "windows_fingerprint": "aa03e413ac86d980",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "zigzag_bridge--default",
+      "linux_fingerprint": "7458550953762573",
+      "windows_fingerprint": "9136cca5e56dee66",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "zigzag_bridge--large-1024",
+      "linux_fingerprint": "7ec50b098edb2a68",
+      "windows_fingerprint": "c0ceaf66698cdb7a",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "zigzag_bridge--material-controls",
+      "linux_fingerprint": "e748385618499705",
+      "windows_fingerprint": "d1e91e0169c099fc",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "zigzag_bridge--seed-1701",
+      "linux_fingerprint": "327bd6a7ba6c29df",
+      "windows_fingerprint": "3ecdd11874d99658",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "zigzag_bridge--tall",
+      "linux_fingerprint": "ce00dfd83da38475",
+      "windows_fingerprint": "93c6504e6ad26a2c",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "zigzag_pier--compact",
+      "linux_fingerprint": "073f56b97e51fd7e",
+      "windows_fingerprint": "af484a6d089c073e",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "zigzag_pier--default",
+      "linux_fingerprint": "c9e78c655cbae12c",
+      "windows_fingerprint": "79beec7903c60df8",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "zigzag_pier--large-1024",
+      "linux_fingerprint": "d11f72889c04fe7d",
+      "windows_fingerprint": "44ce8ecd944176bc",
+      "chunk_receipts": 64,
+      "different_chunk_receipts": 64,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "zigzag_pier--material-controls",
+      "linux_fingerprint": "fb01efefa669c066",
+      "windows_fingerprint": "87b7af00cc332fb6",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "zigzag_pier--seed-1701",
+      "linux_fingerprint": "c2ab0af69dc6417a",
+      "windows_fingerprint": "f8aa51607371a7fa",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    },
+    {
+      "name": "zigzag_pier--tall",
+      "linux_fingerprint": "4277b39d0e6ec952",
+      "windows_fingerprint": "4ec17e0f39e9979a",
+      "chunk_receipts": 16,
+      "different_chunk_receipts": 16,
+      "preparation_other_fields_equal": true
+    }
+  ],
+  "same_platform_independent_replay": {
+    "linux": {
+      "independent_defaults": 80,
+      "all_material_recipe_fingerprint_and_receipts_equal": true,
+      "checks": 1843,
+      "failures": []
+    },
+    "windows": {
+      "independent_defaults": 80,
+      "all_material_recipe_fingerprint_and_receipts_equal": true,
+      "checks": 1843,
+      "failures": []
+    }
+  },
+  "source_trace": {
+    "memory_ledger": "native/src/generation_typed_fields.cpp: SpatialGraph::compile accounts sizeof(Impl), max_nodes*(sizeof(SpatialNode)+sizeof(Instruction)+3*8192), sizeof(SpatialScratch), and geometry/assignment storage; it hashes bytes and preparation limits/work into the spatial fingerprint.",
+    "generator_identity": "native/src/world_generation.cpp: Generator::compile hashes the spatial graph fingerprint for schema >= kTypedSchemaVersion.",
+    "prepared_identity": "godot/native_extension/cyber_world_generator.cpp: configure returns candidate->fingerprint().",
+    "chunk_identity": "native/src/world_generation.cpp: receipt_hash hashes result.fingerprint in addition to content_hash, coordinates, revision, operations and diagnostics; copy_result exposes receipt_hash. capture_gentek80.gd records packet.receipt_hash.",
+    "established_contract": "docs/systems/architectural-generator.md, Compatibility and native identity: libstdc++/libc++ structure sizes may change native fingerprints while canonical recipes/materials agree; saved typed-map receipts are checked on same-platform reopen, not promised portable across ABIs."
+  },
+  "extended_all_fields_comparison": {
+    "path": "/workspace/scratch/3992e7f5304e/qualification/cross-platform-s3-82da41a9.json",
+    "sha256": "e6e914d5d939f91f02ed8ea61a1be39bf8fd73b51406c0237fea4b9e9e02a6c9",
+    "status": "fail"
+  },
+  "archive_custody": {
+    "linux": {
+      "artifact_id": 14604798235,
+      "sha256": "554d66931ff60e2967a3458255cd5e916574ccce113aa8d1be9e436fa7132c6b"
+    },
+    "windows": {
+      "artifact_id": 14607203494,
+      "sha256": "4e66a26c5879271e2e404cf4c9a17dbda33f0c7b085b348412fde44c300df81c"
+    }
+  },
+  "admission": "Both actual S3 platform jobs and strict runtime admission passed. This is source-build evidence for S3, not a claim that the later publication-child final-head workflow or package executions have completed."
+}

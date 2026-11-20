@@ -1,0 +1,546 @@
+{
+  "schema": "gentek80-final-actual-workbench-ui-performance-v1",
+  "status": "readback-complete",
+  "application_source_commit": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0",
+  "native_build_commit": "82da41a945b1d98e0267a2a20b56ec66d83f71f6",
+  "orchestration_commit": "f69b68a88401b28b3fe688c3d070162ebcd090c5",
+  "run": 44690026779,
+  "definitions": [
+    "UI request-to-ready includes normal frame scheduling and native preview compilation.",
+    "First drawn frame is RenderingServer completion, not OS screen presentation.",
+    "Whole-style lifecycle includes installation, material edits, saving, simulation and selected screenshots;10author styles also reseed and replay. No separate install/edit timers were emitted.",
+    "Windows engine high-water RSS was not measured by the console-launcher monitor. It remains null; launcher bytes are not engine memory.",
+    "Linux memory is Godot process high-water RSS sampled while alive, excluding runner and display server.",
+    "Hosted software-rendering measurements are individual observations, not a hardware performance guarantee or controlled cross-host comparison."
+  ],
+  "runs": [
+    {
+      "label": "linux-checkout",
+      "original_admission_sha256": "fc3c11bd46c4e4019b136d42cf6ac3d2820ae6de1bcd09f959fa7cb32a643851",
+      "readback_path": "/workspace/scratch/3992e7f5304e/qualification/final-aux-linux-44690026779/readback-audit.json",
+      "readback_sha256": "5495b8f4092dc8b18c924f522b91823965a460288b9d844131384dcba08523f7",
+      "platform": "linux",
+      "native_runtime_sha256": "5195149bb4ee0b826d258f46627397d4a3e79d0d22cd3072ca0518aa75ebd878",
+      "memory": [
+        {
+          "phase": "author",
+          "peak_resident_bytes": 1099075584,
+          "scope": "Godot process high-water RSS sampled while alive; excludes runner and display server"
+        },
+        {
+          "phase": "reopen",
+          "peak_resident_bytes": 846356480,
+          "scope": "Godot process high-water RSS sampled while alive; excludes runner and display server"
+        }
+      ],
+      "phases": {
+        "author": {
+          "checks": 1786,
+          "process_id": 2631,
+          "process_wall_seconds": 872.969369529,
+          "engine_phase_seconds": 865.123634,
+          "renderer": "OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.4 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)",
+          "whole_style_lifecycle": {
+            "count": 80,
+            "minimum_ms": 8365.826,
+            "median_ms": 8868.961,
+            "p95_nearest_rank_ms": 23982.777,
+            "maximum_ms": 24812.13,
+            "minimum_case": "radial-stay-bridge",
+            "maximum_case": "megatruss-station"
+          },
+          "preview_groups": {
+            "preview": {
+              "request_to_ready_us": {
+                "count": 80,
+                "minimum_ms": 6653.096,
+                "median_ms": 6980.628000000001,
+                "p95_nearest_rank_ms": 7253.285,
+                "maximum_ms": 7743.666,
+                "minimum_case": "gentek80-buttress-crown-preview",
+                "maximum_case": "gentek80-cantilever-spine-preview"
+              },
+              "request_to_first_drawn_frame_us": {
+                "count": 80,
+                "minimum_ms": 6783.707,
+                "median_ms": 7119.835999999999,
+                "p95_nearest_rank_ms": 7389.676,
+                "maximum_ms": 7891.332,
+                "minimum_case": "gentek80-buttress-crown-preview",
+                "maximum_case": "gentek80-cantilever-spine-preview"
+              },
+              "native_configure_to_ready_us": {
+                "count": 80,
+                "minimum_ms": 6651.988,
+                "median_ms": 6979.397999999999,
+                "p95_nearest_rank_ms": 7252.134,
+                "maximum_ms": 7742.412,
+                "minimum_case": "gentek80-buttress-crown-preview",
+                "maximum_case": "gentek80-cantilever-spine-preview"
+              }
+            },
+            "reseed": {
+              "request_to_ready_us": {
+                "count": 10,
+                "minimum_ms": 6838.59,
+                "median_ms": 7025.152,
+                "p95_nearest_rank_ms": 7305.258,
+                "maximum_ms": 7305.258,
+                "minimum_case": "gentek80-suspended-deck-reseed",
+                "maximum_case": "gentek80-megatruss-station-reseed"
+              },
+              "request_to_first_drawn_frame_us": {
+                "count": 10,
+                "minimum_ms": 7012.762,
+                "median_ms": 7165.429,
+                "p95_nearest_rank_ms": 7467.161,
+                "maximum_ms": 7467.161,
+                "minimum_case": "gentek80-suspended-deck-reseed",
+                "maximum_case": "gentek80-megatruss-station-reseed"
+              },
+              "native_configure_to_ready_us": {
+                "count": 10,
+                "minimum_ms": 6837.429,
+                "median_ms": 7023.88,
+                "p95_nearest_rank_ms": 7304.004,
+                "maximum_ms": 7304.004,
+                "minimum_case": "gentek80-suspended-deck-reseed",
+                "maximum_case": "gentek80-megatruss-station-reseed"
+              }
+            },
+            "replay": {
+              "request_to_ready_us": {
+                "count": 10,
+                "minimum_ms": 6777.914,
+                "median_ms": 7001.440500000001,
+                "p95_nearest_rank_ms": 7395.362,
+                "maximum_ms": 7395.362,
+                "minimum_case": "gentek80-metabolist-spine-replay",
+                "maximum_case": "gentek80-rosework-gatehouse-replay"
+              },
+              "request_to_first_drawn_frame_us": {
+                "count": 10,
+                "minimum_ms": 6967.555,
+                "median_ms": 7163.327,
+                "p95_nearest_rank_ms": 7536.508,
+                "maximum_ms": 7536.508,
+                "minimum_case": "gentek80-metabolist-spine-replay",
+                "maximum_case": "gentek80-rosework-gatehouse-replay"
+              },
+              "native_configure_to_ready_us": {
+                "count": 10,
+                "minimum_ms": 6776.586,
+                "median_ms": 7000.1494999999995,
+                "p95_nearest_rank_ms": 7393.955,
+                "maximum_ms": 7393.955,
+                "minimum_case": "gentek80-metabolist-spine-replay",
+                "maximum_case": "gentek80-rosework-gatehouse-replay"
+              }
+            }
+          },
+          "separate_install_or_edit_timing": null
+        },
+        "reopen": {
+          "checks": 1068,
+          "process_id": 2817,
+          "process_wall_seconds": 652.1543549310002,
+          "engine_phase_seconds": 651.375318,
+          "renderer": "OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.4 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)",
+          "whole_style_lifecycle": {
+            "count": 80,
+            "minimum_ms": 7580.635,
+            "median_ms": 8064.891,
+            "p95_nearest_rank_ms": 8708.764,
+            "maximum_ms": 8888.207,
+            "minimum_case": "folded-plate-hall",
+            "maximum_case": "seeded-typology-megablock"
+          },
+          "preview_groups": {
+            "reopen": {
+              "request_to_ready_us": {
+                "count": 80,
+                "minimum_ms": 6720.051,
+                "median_ms": 7033.38,
+                "p95_nearest_rank_ms": 7326.719,
+                "maximum_ms": 7601.251,
+                "minimum_case": "gentek80-stepped-aqueduct-reopen",
+                "maximum_case": "gentek80-cantilever-spine-reopen"
+              },
+              "request_to_first_drawn_frame_us": {
+                "count": 80,
+                "minimum_ms": 6873.521,
+                "median_ms": 7167.8225,
+                "p95_nearest_rank_ms": 7506.987,
+                "maximum_ms": 7744.647,
+                "minimum_case": "gentek80-stepped-aqueduct-reopen",
+                "maximum_case": "gentek80-cantilever-spine-reopen"
+              },
+              "native_configure_to_ready_us": {
+                "count": 80,
+                "minimum_ms": 6716.491,
+                "median_ms": 7029.7645,
+                "p95_nearest_rank_ms": 7323.022,
+                "maximum_ms": 7597.833,
+                "minimum_case": "gentek80-stepped-aqueduct-reopen",
+                "maximum_case": "gentek80-cantilever-spine-reopen"
+              }
+            }
+          },
+          "separate_install_or_edit_timing": null
+        }
+      }
+    },
+    {
+      "label": "windows-checkout",
+      "original_admission_sha256": "4818dc54a6ea528fc3d6fa1ca2f4a2b620b56535f2b08b049449121b00bbc81e",
+      "readback_path": "/workspace/scratch/3992e7f5304e/qualification/final-aux-windows-44690026779/checkout/readback-audit.json",
+      "readback_sha256": "ec2deee0e2d94a32b1043ddda341c68b71f7ab8d746423623186df9988355305",
+      "platform": "windows",
+      "native_runtime_sha256": "2b7a1fbb8410270498e5c0ce8f9384a598c4467397e4ca1bda0111d6c5985447",
+      "memory": [
+        {
+          "phase": "author",
+          "peak_resident_bytes": null,
+          "scope": "Unavailable: Windows console launcher starts a separate engine; its child working set was not measured"
+        },
+        {
+          "phase": "reopen",
+          "peak_resident_bytes": null,
+          "scope": "Unavailable: Windows console launcher starts a separate engine; its child working set was not measured"
+        }
+      ],
+      "phases": {
+        "author": {
+          "checks": 1786,
+          "process_id": 4732,
+          "process_wall_seconds": 1623.8129999999999,
+          "engine_phase_seconds": 1620.217793,
+          "renderer": "OpenGL API OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Microsoft) - ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+          "whole_style_lifecycle": {
+            "count": 80,
+            "minimum_ms": 14640.164,
+            "median_ms": 16247.802,
+            "p95_nearest_rank_ms": 44439.772,
+            "maximum_ms": 48111.337,
+            "minimum_case": "barrel-arcade",
+            "maximum_case": "megatruss-station"
+          },
+          "preview_groups": {
+            "preview": {
+              "request_to_ready_us": {
+                "count": 80,
+                "minimum_ms": 10733.762,
+                "median_ms": 11860.389500000001,
+                "p95_nearest_rank_ms": 12764.165,
+                "maximum_ms": 13353.258,
+                "minimum_case": "gentek80-steel-trestle-preview",
+                "maximum_case": "gentek80-megatruss-station-preview"
+              },
+              "request_to_first_drawn_frame_us": {
+                "count": 80,
+                "minimum_ms": 11478.664,
+                "median_ms": 12300.1195,
+                "p95_nearest_rank_ms": 13239.271,
+                "maximum_ms": 13633.315,
+                "minimum_case": "gentek80-steel-trestle-preview",
+                "maximum_case": "gentek80-megatruss-station-preview"
+              },
+              "native_configure_to_ready_us": {
+                "count": 80,
+                "minimum_ms": 10732.232,
+                "median_ms": 11858.6345,
+                "p95_nearest_rank_ms": 12762.277,
+                "maximum_ms": 13351.406,
+                "minimum_case": "gentek80-steel-trestle-preview",
+                "maximum_case": "gentek80-megatruss-station-preview"
+              }
+            },
+            "reseed": {
+              "request_to_ready_us": {
+                "count": 10,
+                "minimum_ms": 11092.037,
+                "median_ms": 11782.892,
+                "p95_nearest_rank_ms": 12620.702,
+                "maximum_ms": 12620.702,
+                "minimum_case": "gentek80-rib-vault-reseed",
+                "maximum_case": "gentek80-rosework-gatehouse-reseed"
+              },
+              "request_to_first_drawn_frame_us": {
+                "count": 10,
+                "minimum_ms": 11324.706,
+                "median_ms": 12037.1155,
+                "p95_nearest_rank_ms": 12895.521,
+                "maximum_ms": 12895.521,
+                "minimum_case": "gentek80-rib-vault-reseed",
+                "maximum_case": "gentek80-rosework-gatehouse-reseed"
+              },
+              "native_configure_to_ready_us": {
+                "count": 10,
+                "minimum_ms": 11089.938,
+                "median_ms": 11781.5685,
+                "p95_nearest_rank_ms": 12619.41,
+                "maximum_ms": 12619.41,
+                "minimum_case": "gentek80-rib-vault-reseed",
+                "maximum_case": "gentek80-rosework-gatehouse-reseed"
+              }
+            },
+            "replay": {
+              "request_to_ready_us": {
+                "count": 10,
+                "minimum_ms": 11235.901,
+                "median_ms": 11769.075,
+                "p95_nearest_rank_ms": 12550.804,
+                "maximum_ms": 12550.804,
+                "minimum_case": "gentek80-rib-vault-replay",
+                "maximum_case": "gentek80-rosework-gatehouse-replay"
+              },
+              "request_to_first_drawn_frame_us": {
+                "count": 10,
+                "minimum_ms": 11492.653,
+                "median_ms": 12014.198,
+                "p95_nearest_rank_ms": 12813.288,
+                "maximum_ms": 12813.288,
+                "minimum_case": "gentek80-rib-vault-replay",
+                "maximum_case": "gentek80-megatruss-station-replay"
+              },
+              "native_configure_to_ready_us": {
+                "count": 10,
+                "minimum_ms": 11234.549,
+                "median_ms": 11767.752499999999,
+                "p95_nearest_rank_ms": 12549.411,
+                "maximum_ms": 12549.411,
+                "minimum_case": "gentek80-rib-vault-replay",
+                "maximum_case": "gentek80-rosework-gatehouse-replay"
+              }
+            }
+          },
+          "separate_install_or_edit_timing": null
+        },
+        "reopen": {
+          "checks": 1068,
+          "process_id": 2372,
+          "process_wall_seconds": 1168.687,
+          "engine_phase_seconds": 1167.860475,
+          "renderer": "OpenGL API OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Microsoft) - ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+          "whole_style_lifecycle": {
+            "count": 80,
+            "minimum_ms": 13551.649,
+            "median_ms": 14281.891,
+            "p95_nearest_rank_ms": 16091.107,
+            "maximum_ms": 17430.673,
+            "minimum_case": "drum-vault",
+            "maximum_case": "megatruss-station"
+          },
+          "preview_groups": {
+            "reopen": {
+              "request_to_ready_us": {
+                "count": 80,
+                "minimum_ms": 10992.064,
+                "median_ms": 11611.8305,
+                "p95_nearest_rank_ms": 12584.104,
+                "maximum_ms": 12911.741,
+                "minimum_case": "gentek80-steel-trestle-reopen",
+                "maximum_case": "gentek80-megatruss-station-reopen"
+              },
+              "request_to_first_drawn_frame_us": {
+                "count": 80,
+                "minimum_ms": 11395.269,
+                "median_ms": 11874.99,
+                "p95_nearest_rank_ms": 12905.921,
+                "maximum_ms": 13187.285,
+                "minimum_case": "gentek80-space-frame-reopen",
+                "maximum_case": "gentek80-megatruss-station-reopen"
+              },
+              "native_configure_to_ready_us": {
+                "count": 80,
+                "minimum_ms": 10758.298,
+                "median_ms": 11607.8495,
+                "p95_nearest_rank_ms": 12579.696,
+                "maximum_ms": 12907.35,
+                "minimum_case": "gentek80-steel-trestle-reopen",
+                "maximum_case": "gentek80-megatruss-station-reopen"
+              }
+            }
+          },
+          "separate_install_or_edit_timing": null
+        }
+      }
+    },
+    {
+      "label": "windows-package",
+      "original_admission_sha256": "fd728ee8e1ba78b65fc122a528d255b9f8c40d262941c2f6629cb6d74c690695",
+      "readback_path": "/workspace/scratch/3992e7f5304e/qualification/final-aux-windows-44690026779/package/readback-audit.json",
+      "readback_sha256": "55053871adf75d272fcf517498655ccfef0021164383af8204615bdac848423f",
+      "platform": "windows",
+      "native_runtime_sha256": "2b7a1fbb8410270498e5c0ce8f9384a598c4467397e4ca1bda0111d6c5985447",
+      "memory": [
+        {
+          "phase": "author",
+          "peak_resident_bytes": null,
+          "scope": "Unavailable: Windows console launcher starts a separate engine; its child working set was not measured"
+        },
+        {
+          "phase": "reopen",
+          "peak_resident_bytes": null,
+          "scope": "Unavailable: Windows console launcher starts a separate engine; its child working set was not measured"
+        }
+      ],
+      "phases": {
+        "author": {
+          "checks": 1786,
+          "process_id": 3188,
+          "process_wall_seconds": 1973.625,
+          "engine_phase_seconds": 1969.42514,
+          "renderer": "OpenGL API OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Microsoft) - ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+          "whole_style_lifecycle": {
+            "count": 80,
+            "minimum_ms": 18283.211,
+            "median_ms": 19813.1505,
+            "p95_nearest_rank_ms": 54597.226,
+            "maximum_ms": 57412.039,
+            "minimum_case": "drum-vault",
+            "maximum_case": "megatruss-station"
+          },
+          "preview_groups": {
+            "preview": {
+              "request_to_ready_us": {
+                "count": 80,
+                "minimum_ms": 12852.502,
+                "median_ms": 14390.453000000001,
+                "p95_nearest_rank_ms": 15434.753,
+                "maximum_ms": 15939.627,
+                "minimum_case": "gentek80-steel-trestle-preview",
+                "maximum_case": "gentek80-megatruss-station-preview"
+              },
+              "request_to_first_drawn_frame_us": {
+                "count": 80,
+                "minimum_ms": 13706.495,
+                "median_ms": 14841.681499999999,
+                "p95_nearest_rank_ms": 15984.814,
+                "maximum_ms": 16260.687,
+                "minimum_case": "gentek80-steel-trestle-preview",
+                "maximum_case": "gentek80-megatruss-station-preview"
+              },
+              "native_configure_to_ready_us": {
+                "count": 80,
+                "minimum_ms": 12850.886,
+                "median_ms": 14387.9005,
+                "p95_nearest_rank_ms": 15432.425,
+                "maximum_ms": 15937.013,
+                "minimum_case": "gentek80-steel-trestle-preview",
+                "maximum_case": "gentek80-megatruss-station-preview"
+              }
+            },
+            "reseed": {
+              "request_to_ready_us": {
+                "count": 10,
+                "minimum_ms": 13505.191,
+                "median_ms": 14196.143499999998,
+                "p95_nearest_rank_ms": 15088.105,
+                "maximum_ms": 15088.105,
+                "minimum_case": "gentek80-rib-vault-reseed",
+                "maximum_case": "gentek80-megatruss-station-reseed"
+              },
+              "request_to_first_drawn_frame_us": {
+                "count": 10,
+                "minimum_ms": 13787.424,
+                "median_ms": 14493.163499999999,
+                "p95_nearest_rank_ms": 15418.266,
+                "maximum_ms": 15418.266,
+                "minimum_case": "gentek80-rib-vault-reseed",
+                "maximum_case": "gentek80-megatruss-station-reseed"
+              },
+              "native_configure_to_ready_us": {
+                "count": 10,
+                "minimum_ms": 13503.71,
+                "median_ms": 14194.699,
+                "p95_nearest_rank_ms": 15086.604,
+                "maximum_ms": 15086.604,
+                "minimum_case": "gentek80-rib-vault-reseed",
+                "maximum_case": "gentek80-megatruss-station-reseed"
+              }
+            },
+            "replay": {
+              "request_to_ready_us": {
+                "count": 10,
+                "minimum_ms": 13553.469,
+                "median_ms": 14203.8325,
+                "p95_nearest_rank_ms": 15125.455,
+                "maximum_ms": 15125.455,
+                "minimum_case": "gentek80-rib-vault-replay",
+                "maximum_case": "gentek80-rosework-gatehouse-replay"
+              },
+              "request_to_first_drawn_frame_us": {
+                "count": 10,
+                "minimum_ms": 13840.874,
+                "median_ms": 14505.8845,
+                "p95_nearest_rank_ms": 15444.934,
+                "maximum_ms": 15444.934,
+                "minimum_case": "gentek80-rib-vault-replay",
+                "maximum_case": "gentek80-rosework-gatehouse-replay"
+              },
+              "native_configure_to_ready_us": {
+                "count": 10,
+                "minimum_ms": 13551.906,
+                "median_ms": 14202.342,
+                "p95_nearest_rank_ms": 15123.843,
+                "maximum_ms": 15123.843,
+                "minimum_case": "gentek80-rib-vault-replay",
+                "maximum_case": "gentek80-rosework-gatehouse-replay"
+              }
+            }
+          },
+          "separate_install_or_edit_timing": null
+        },
+        "reopen": {
+          "checks": 1068,
+          "process_id": 6460,
+          "process_wall_seconds": 1421.422,
+          "engine_phase_seconds": 1420.458191,
+          "renderer": "OpenGL API OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Microsoft) - ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+          "whole_style_lifecycle": {
+            "count": 80,
+            "minimum_ms": 16462.445,
+            "median_ms": 17471.3275,
+            "p95_nearest_rank_ms": 19740.91,
+            "maximum_ms": 20921.161,
+            "minimum_case": "barrel-arcade",
+            "maximum_case": "megatruss-station"
+          },
+          "preview_groups": {
+            "reopen": {
+              "request_to_ready_us": {
+                "count": 80,
+                "minimum_ms": 13104.579,
+                "median_ms": 13981.412,
+                "p95_nearest_rank_ms": 15061.837,
+                "maximum_ms": 15376.579,
+                "minimum_case": "gentek80-steel-trestle-reopen",
+                "maximum_case": "gentek80-megatruss-station-reopen"
+              },
+              "request_to_first_drawn_frame_us": {
+                "count": 80,
+                "minimum_ms": 13783.053,
+                "median_ms": 14326.015500000001,
+                "p95_nearest_rank_ms": 15387.151,
+                "maximum_ms": 15696.485,
+                "minimum_case": "gentek80-barrel-arcade-reopen",
+                "maximum_case": "gentek80-megatruss-station-reopen"
+              },
+              "native_configure_to_ready_us": {
+                "count": 80,
+                "minimum_ms": 12828.382,
+                "median_ms": 13975.543,
+                "p95_nearest_rank_ms": 15057.86,
+                "maximum_ms": 15370.422,
+                "minimum_case": "gentek80-steel-trestle-reopen",
+                "maximum_case": "gentek80-megatruss-station-reopen"
+              }
+            }
+          },
+          "separate_install_or_edit_timing": null
+        }
+      }
+    }
+  ]
+}

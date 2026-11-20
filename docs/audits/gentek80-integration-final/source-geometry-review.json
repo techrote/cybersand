@@ -1,0 +1,797 @@
+{
+  "accepted_main": "de109d0131641d6adc8d25bb9ced7ca3d4991105",
+  "advanced_classes_identical_to_showcase_aggregation": [
+    "CathedralMegaframe",
+    "InterlacedViaduct",
+    "InterlockBrutalism",
+    "MegatrussStation",
+    "MetabolistSpine",
+    "RoseworkGatehouse",
+    "SeededTypologyMegablock",
+    "SuspendedArcology"
+  ],
+  "all80_ui_presets_match_individual_authoritative_files": true,
+  "authorities": {
+    "classic": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+    "showcase": "eb786d97a769f4fed9f5d52bb0b50dd60f0ee16f"
+  },
+  "catalogue_entries": [
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "TrestleFrame",
+      "id": "steel-trestle",
+      "intentional_review_repair": false,
+      "module": "trestle",
+      "preset_sha256": "07d03070bb9d03c8f83e69459321090d5e898f8e04280cefec1fe5ced39e69da",
+      "source_class_sha256": "806f14da7f011a0ec7dd0799b291c5b9dca87a5b361d3e425986d102b90ff882"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "StackedArcade",
+      "id": "stacked-arcade",
+      "intentional_review_repair": false,
+      "module": "stacked_arcade",
+      "preset_sha256": "c4740e19ded05f808a1c17e134ce46ada36737e4d50e2ba4d4f89b8ce551a4f2",
+      "source_class_sha256": "9fdd394ed5af687f9d74a70013b1e32c0f0ab55bdaf606ba328bb8e2be79b084"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "FlyingButtress",
+      "id": "flying-buttress",
+      "intentional_review_repair": false,
+      "module": "flying_buttress",
+      "preset_sha256": "e2f594fbe9114fea6410a0db84d8a4899ddf12478ed81396ae4f8a19a0837574",
+      "source_class_sha256": "efae5d99ecccf1658c6820502a57b88e528be94404a2e0d0c05351b2c3ad3e1a"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "SawtoothGallery",
+      "id": "sawtooth-gallery",
+      "intentional_review_repair": false,
+      "module": "sawtooth_gallery",
+      "preset_sha256": "f77c35b12c555200b81fadf6a06900b2932c507b0b49840f097badb6fb5e33bf",
+      "source_class_sha256": "6e7217b7340044204354029868bf8693191e2f4d436a4cdbe90a06881925f02c"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "CantileverSpine",
+      "id": "cantilever-spine",
+      "intentional_review_repair": false,
+      "module": "cantilever_spine",
+      "preset_sha256": "6976d6caac7c3f100e457664bf296c43eab21d4b0fad067057320e0d27e44596",
+      "source_class_sha256": "982c0623272771d68521ed640a39c958cb36b76d905f9c80dd128cfb2e877656"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "RibVault",
+      "id": "rib-vault",
+      "intentional_review_repair": false,
+      "module": "rib_vault",
+      "preset_sha256": "da405f4ffe164a349cdf2cfd66baf55bf9942a8285bfd0999444a078a22984d2",
+      "source_class_sha256": "cf523414fd7ee04a42fb5d585c664cbbec6bfaf0922b217909de19b9c2781354"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "NestedArcade",
+      "id": "nested-arcade",
+      "intentional_review_repair": false,
+      "module": "nested_arcade",
+      "preset_sha256": "dc57be34c1f7757dd6e037965f2c234793709a4d2148fe033c2ead0881b3a683",
+      "source_class_sha256": "5c171f315f5d7d37f8a5223161ae44a5bfc6551d088b2d04425a29103542a03a"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "SuspendedDeck",
+      "id": "suspended-deck",
+      "intentional_review_repair": true,
+      "module": "suspended_deck",
+      "preset_sha256": "60a51620baa24352bbd033c0bb63d8c803d123a41260244370aa6b548b2e6d5a",
+      "source_class_sha256": "d60a28e3c47ef131104c4bf4f7d455c4269d11eba8e390bf809ec7b3dbe54156"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "BowstringTruss",
+      "id": "bowstring-truss",
+      "intentional_review_repair": false,
+      "module": "bowstring_truss",
+      "preset_sha256": "7984e2be5aa499e942da29b86d8bf6e217543ac0bed025ca3a3f0161fb1ce9b3",
+      "source_class_sha256": "4b51da2e2a2afee396d968fecd7ecfccb0a12c8bda42977e67a8ccabb6041a52"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "DiamondTruss",
+      "id": "diamond-truss",
+      "intentional_review_repair": false,
+      "module": "diamond_truss",
+      "preset_sha256": "6a1d82c057f270d7fe0f07eb75be15fcac7f85c434d619220f024a5545da4e1a",
+      "source_class_sha256": "9a6337f8747eab3e7694e85c8bf4d59627f07a68cb8506e8a7dad9f2e558ba9e"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "PortalFrame",
+      "id": "portal-frame",
+      "intentional_review_repair": false,
+      "module": "portal_frame",
+      "preset_sha256": "bd27a12451612bc32636f3ad31a06920f45d85f076fb32ee1aa0be98eeab9fa9",
+      "source_class_sha256": "9467067c8d01b3b111cc74d752a0ce16c1296fd2ab45c32c3ffd8b91dfb5c803"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "LadderBridge",
+      "id": "ladder-bridge",
+      "intentional_review_repair": false,
+      "module": "ladder_bridge",
+      "preset_sha256": "c61045106b40f88f068042077243dfc1dbe6317c051e1ea91ee8c3d651913e22",
+      "source_class_sha256": "4d9809ace6984cac97a7a0fa3642703566caa45a069cb17ba567c6a87316c32d"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "SteppedAqueduct",
+      "id": "stepped-aqueduct",
+      "intentional_review_repair": false,
+      "module": "stepped_aqueduct",
+      "preset_sha256": "cbc32329bffbde34721750fb410369f7f308ae4ce63a67803dc1a51cf21791b6",
+      "source_class_sha256": "514d367ca41203464de3fe01a92917d7e1d55b671f8d0463d65cba7a70eb2a56"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "SplitPier",
+      "id": "split-pier",
+      "intentional_review_repair": false,
+      "module": "split_pier",
+      "preset_sha256": "98eb3a51edfed50c97d8658fc72a4b71e55c49fa966544f32d40e1d5eba10b96",
+      "source_class_sha256": "ea5c5452fefc809c57a17a5d1fdc20bdcdd7f45ccf9b611f9346bf4c2b1ce384"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "CableGallery",
+      "id": "cable-gallery",
+      "intentional_review_repair": false,
+      "module": "cable_gallery",
+      "preset_sha256": "3bdc4aaf9beaf264b9ef969768ef24b5bff718704747dbb374efa0cf09aa5ea1",
+      "source_class_sha256": "084009addd39f529dd475181bed1d5bc2c58781b48a9a8f266ff59e5e1bf9ea4"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "ClerestoryHall",
+      "id": "clerestory-hall",
+      "intentional_review_repair": false,
+      "module": "clerestory_hall",
+      "preset_sha256": "e107b34706b9067fb7be0b0dee54eb6ce92e5db20faab9a20de54b1e2a33486e",
+      "source_class_sha256": "15a8236f363c5c158e06218a702d439585f092e2b4d4f0cbb0de1f47bc5ee83a"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "MushroomDeck",
+      "id": "mushroom-deck",
+      "intentional_review_repair": false,
+      "module": "mushroom_deck",
+      "preset_sha256": "2b26bd1f29c8c6a3cedbfe07026534205e0114af76ee1cf35a62e70620a39ccc",
+      "source_class_sha256": "7c41b0572578ede2c73d5fcd3840631dce05140148839264a52b4a557e70301f"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "ZigzagBridge",
+      "id": "zigzag-bridge",
+      "intentional_review_repair": false,
+      "module": "zigzag_bridge",
+      "preset_sha256": "8896b695cb960138832753ad12e9622dcf2a320105113ce39548f426dd4b6c70",
+      "source_class_sha256": "77a4b73cbb94142e9938175eda4fa2b7a24423247c1852853d56406d10ca22a9"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "ScallopedVault",
+      "id": "scalloped-vault",
+      "intentional_review_repair": true,
+      "module": "scalloped_vault",
+      "preset_sha256": "a50052742dfe4de57e88374469122b94ad66e37547374c971048abace1b0acdc",
+      "source_class_sha256": "d3ee0c1b17e432de8a6345971bb8c0fb0c73c40fd9e0e39c38295768f5690d97"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "LatticeTower",
+      "id": "lattice-tower",
+      "intentional_review_repair": false,
+      "module": "lattice_tower",
+      "preset_sha256": "09a9820e7e96ee51f8dfba14d77eed2b851949bc890ff1e651de131699f1bd01",
+      "source_class_sha256": "df4a65ff0b42317ea065110d780b15433ccd8e560863bf3d6bcdf9ce754b0ede"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "OffsetArcade",
+      "id": "offset-arcade",
+      "intentional_review_repair": false,
+      "module": "offset_arcade",
+      "preset_sha256": "93c958bcbdb90802491c032d7aa868151602d0c9f6663c7b283f811c4bdb6c9d",
+      "source_class_sha256": "43e7ca532716be1ea6323b8e40b752e5324ab170296b8cc2df70c5dda2df3362"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "Bridgehouse",
+      "id": "bridgehouse",
+      "intentional_review_repair": false,
+      "module": "bridgehouse",
+      "preset_sha256": "3664afbcc20d09506afff3559ebeb22eecd85dd405f186888852028bf5d3d2e3",
+      "source_class_sha256": "de0b4f97b59eb6351d730cbe5b6c860a315ce92eeaca734c1eb4b1eec99a3f6d"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "ForkedGantry",
+      "id": "forked-gantry",
+      "intentional_review_repair": false,
+      "module": "forked_gantry",
+      "preset_sha256": "e97035791015b359b5473f584f27c441d1efa6a36c7cb9d790044a3af1a2b6b9",
+      "source_class_sha256": "6315d50afa01888fcc94169a6e0ccb4415eb1b1970914fdcb102a38041f9a735"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "ButtressWall",
+      "id": "buttress-wall",
+      "intentional_review_repair": true,
+      "module": "buttress_wall",
+      "preset_sha256": "c7c17fbf7c3d08eca2c682263218a6c9f6af592a50712e11a83f24390090e19b",
+      "source_class_sha256": "c9859683811fc32b858b16539e154fb937af7a65c30a3ecf3eb8a3320ff170e9"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "FanTruss",
+      "id": "fan-truss",
+      "intentional_review_repair": false,
+      "module": "fan_truss",
+      "preset_sha256": "5fe779eb53d69a55bca37a1f49774d7d84c86eed4352100ed5db87a173762382",
+      "source_class_sha256": "ca68902cd67ca6ff1b7ffcf49c35aacfccb0ecede55b305cefbeff4655527652"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "PrattTruss",
+      "id": "pratt-truss",
+      "intentional_review_repair": false,
+      "module": "pratt_truss",
+      "preset_sha256": "521a01c1e343f0e8521398387eb9519c4d2c29990ed1f6c5f3020a049145ed76",
+      "source_class_sha256": "20c72908aa4cb9185eaebca6410710f25d9d96e0bf2d0dfbc426b40a4e4af5d2"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "VierendeelFrame",
+      "id": "vierendeel-frame",
+      "intentional_review_repair": false,
+      "module": "vierendeel_frame",
+      "preset_sha256": "74b442400609553d2c21ae5a87753c41d0f315cfd6d2ae0f013fb3a348a34030",
+      "source_class_sha256": "a6892871ef40212d8fca6c2d68961a48ebb2bf29fdd0188a9989ab5fb3427609"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "SuspensionPylon",
+      "id": "suspension-pylon",
+      "intentional_review_repair": false,
+      "module": "suspension_pylon",
+      "preset_sha256": "9c829e9bb352bd38d0f594a3cbd2a1fe935f7dcc0dba048e40628a2f97ad6618",
+      "source_class_sha256": "d21ec9887c1867d801036733b12b87262531185e0f6a1ba279cb8c3a8d026379"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "HarpBridge",
+      "id": "harp-bridge",
+      "intentional_review_repair": false,
+      "module": "harp_bridge",
+      "preset_sha256": "9e0be9567f96e395f9eb8c6d453312c76e5dae86dccf77552cdf72d5832d93da",
+      "source_class_sha256": "75ad56dc7e8c241fe02819ea0267dc150c9a90d6bcdae836c8984c67d882e163"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "DoubleCantilever",
+      "id": "double-cantilever",
+      "intentional_review_repair": false,
+      "module": "double_cantilever",
+      "preset_sha256": "3e2b45960530bacc8db69504ce3229a47566ea2104332678ab162e2a3e736491",
+      "source_class_sha256": "bf44fc61e288e79fa51cf11bacc7f0a1f2753bb8943e615e285cc83653a53118"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "SteppedButtress",
+      "id": "stepped-buttress",
+      "intentional_review_repair": false,
+      "module": "stepped_buttress",
+      "preset_sha256": "9ec9a1bff84ad01a256e84421cf1fd71a66c73f95fbde9473a041376aeef8d1a",
+      "source_class_sha256": "b2373e4712432fe924ee17142b7e3734fe7562fe204aa77e88c349da997afc59"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "Colonnade",
+      "id": "colonnade",
+      "intentional_review_repair": false,
+      "module": "colonnade",
+      "preset_sha256": "0ed356bd4413adf2e48dc07aa2c51faae0d535742533bad960264e37ec665853",
+      "source_class_sha256": "35cc4f3d2930ff942bf0d75b16bfe54d9d4a983e65c6c4337cb63b3f66d18010"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "Basilica",
+      "id": "basilica",
+      "intentional_review_repair": false,
+      "module": "basilica",
+      "preset_sha256": "6622e20bd758a89eb9fe109ef9c97be643717653e0890b79d534b16a6971f5a5",
+      "source_class_sha256": "e275fc2b02ca6f5cf5dd403f4487a08508e2eea49f454dd5bd42d27c1c17b76a"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "CrenellatedBridge",
+      "id": "crenellated-bridge",
+      "intentional_review_repair": false,
+      "module": "crenellated_bridge",
+      "preset_sha256": "9e3fdd8c25ae461918ecf50274394ece8c66febacd699b337fea7813d50ebae3",
+      "source_class_sha256": "9d1cfe4fb6f4e93e4f73d9b6ff9cfd3c5e710bc62907efa09131a8775d731a99"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "PointedArcade",
+      "id": "pointed-arcade",
+      "intentional_review_repair": false,
+      "module": "pointed_arcade",
+      "preset_sha256": "6c71ad908120af023a0e16a73822665833347975e6704d60074a7e00914798c8",
+      "source_class_sha256": "06d6d93b07677c9fca482788ad793db745ffd102dea8fb0bf754fa6a131d148f"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "InvertedArch",
+      "id": "inverted-arch",
+      "intentional_review_repair": false,
+      "module": "inverted_arch",
+      "preset_sha256": "d7a25289741abedaca3fa1fe4a1b785b662eb1a473c50c101f9204b869e0f481",
+      "source_class_sha256": "c4f6129c758d465424dda5fe11cc60da0a10b8dc7ddc875a62d635efe79e02ea"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "HourglassPier",
+      "id": "hourglass-pier",
+      "intentional_review_repair": false,
+      "module": "hourglass_pier",
+      "preset_sha256": "ecfb0a4ee5483d90afb7c9cb5a6385155c0ff6dad1f34e7a106d9ede67872516",
+      "source_class_sha256": "be32d120d3df58fd114d84109702d6e98129501bbc8615500ca010698a33387d"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "TripodFrame",
+      "id": "tripod-frame",
+      "intentional_review_repair": true,
+      "module": "tripod_frame",
+      "preset_sha256": "64a5c2f1be57f58e8cc8b77cd20e370f14c2a90c01c8404ef9b1ec64864bde37",
+      "source_class_sha256": "1dfda069dad29d3e19d7a2c0542782df67c50b2ff915d1df0e281ed6bcef5958"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "ChevronHall",
+      "id": "chevron-hall",
+      "intentional_review_repair": false,
+      "module": "chevron_hall",
+      "preset_sha256": "2a1176fea07d55889ed2ca520fa0cd0f0f07e4e9bf12604ab44c2163772dde25",
+      "source_class_sha256": "ba9761f20b5dcbedd412237f2c1cf9b47d13ab7f4c75cc23040c0acc37749341"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "HangingArcade",
+      "id": "hanging-arcade",
+      "intentional_review_repair": false,
+      "module": "hanging_arcade",
+      "preset_sha256": "b614694b7eded9d88343fb524b045c8fee0f677a93115399cceb71b261d1474e",
+      "source_class_sha256": "5a551f265bebbc557b73098d8f84303c7141609ecbd64561e2b760ad257e5047"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "ShelfStack",
+      "id": "shelf-stack",
+      "intentional_review_repair": false,
+      "module": "shelf_stack",
+      "preset_sha256": "49af13577686e6ea1f1365b14cd23ecd93eeaa511248b834d60ad7d6fd2dd0bb",
+      "source_class_sha256": "b81c84c6be411037d65d50b27d95362d79d59b3e43d67806ebef140722290169"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "StaggeredBalcony",
+      "id": "staggered-balcony",
+      "intentional_review_repair": false,
+      "module": "staggered_balcony",
+      "preset_sha256": "f226d5627f06d99f74b164a1b1dc88d3810a4ddefccc76623bbb318e4a2fe855",
+      "source_class_sha256": "f20c705e62f9d8cb0ecc0e4af7cb5952a0b7915cb311f783f01cd7f8c347d8a6"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "MonopodTower",
+      "id": "monopod-tower",
+      "intentional_review_repair": false,
+      "module": "monopod_tower",
+      "preset_sha256": "29abfe477198a066226298d34ce9746d1f0fc1403449f7e269a77a8859637298",
+      "source_class_sha256": "b74c33c76f7bc3c16897c870df62597f8381c02b5128be03ecbe1278feac87f9"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "WedgeGallery",
+      "id": "wedge-gallery",
+      "intentional_review_repair": false,
+      "module": "wedge_gallery",
+      "preset_sha256": "9a73e6a52d9be71389528237b568c564ce1118e01239e1b2c7cfb0b564a15c6a",
+      "source_class_sha256": "26c6c5859744a0f10656b32a42bf2fc365655b041ff4b6bcc4e8ae8144cd0654"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "CrownBridge",
+      "id": "crown-bridge",
+      "intentional_review_repair": false,
+      "module": "crown_bridge",
+      "preset_sha256": "3b6c364d5aead77b8c31b4f14ff6924708f8d11261d656a09e01f6505fb4df92",
+      "source_class_sha256": "05abe3c0f20255d8f72c066e1c45cbedfc78b3350947f4710d92d460d49c81ad"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "ZigzagPier",
+      "id": "zigzag-pier",
+      "intentional_review_repair": false,
+      "module": "zigzag_pier",
+      "preset_sha256": "e03efeca0d791307c55336ef455419660693f3a9df53335765f630e3f36fa67c",
+      "source_class_sha256": "f51f966c6f93fae3d6a6f5c703977abd8035b58a3be482ec3df468527b0573a4"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "DrumVault",
+      "id": "drum-vault",
+      "intentional_review_repair": false,
+      "module": "drum_vault",
+      "preset_sha256": "4a93e6e1dee754a6496f243fd10c32ae6cba73d170674197187e22bf2192083c",
+      "source_class_sha256": "51d858fc128f3fb57baa206da26e9baba963055a1ca7ef7917cbe1e538340c2d"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "PyramidalFrame",
+      "id": "pyramidal-frame",
+      "intentional_review_repair": false,
+      "module": "pyramidal_frame",
+      "preset_sha256": "fa699fd534b13b9a9ee02946f787845c567c138628c9258d23d26be21fe84df8",
+      "source_class_sha256": "0ed49e689b88b7d0ab02cab2c15bf132d943e40eb481346f34ffb11873af23df"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "WarrenTruss",
+      "id": "warren-truss",
+      "intentional_review_repair": false,
+      "module": "warren_truss",
+      "preset_sha256": "a00d6c9ef39d24e32cf2233466e96669e242eaf75a943e1ff903d74c447c5135",
+      "source_class_sha256": "2ae3d64b399a5699e207bb1028b4ae36b300eb44a8ea016304f1db5b2b49e06c"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "KingpostFrame",
+      "id": "kingpost-frame",
+      "intentional_review_repair": false,
+      "module": "kingpost_frame",
+      "preset_sha256": "1fbd2e96480e79b53d02454ce0e2093c83a7374e94926b4c326a8b8830a6622c",
+      "source_class_sha256": "49f23f45b496ddf89b9521df8cb1ae264ce404cbfbc17560b1977fccab76b5dc"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "QueenpostFrame",
+      "id": "queenpost-frame",
+      "intentional_review_repair": false,
+      "module": "queenpost_frame",
+      "preset_sha256": "bd3ff70b8cceca97bb85668b9d3953d563664ab54974eed937f067d49ad044ca",
+      "source_class_sha256": "4ca77db15baa5067ab637347380a23de0b313553bf731dfac84c4dd071657bf3"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "LenticularBridge",
+      "id": "lenticular-bridge",
+      "intentional_review_repair": false,
+      "module": "lenticular_bridge",
+      "preset_sha256": "0d690583cf755bf86e950e2145552c9f3e616264ea957b9e773a2cf706ba4da0",
+      "source_class_sha256": "5c2f12498efebcdbc80f7a9ce1f5430b08e9d9e6d14b11599c5362ad4907e1ca"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "RadialStayBridge",
+      "id": "radial-stay-bridge",
+      "intentional_review_repair": false,
+      "module": "radial_stay_bridge",
+      "preset_sha256": "555039d613246e946080f9142fe61261eaccfd120563d7287ce9a7655b1b84af",
+      "source_class_sha256": "0f8f5fcdf591f41519c96306cbd605e08ab6b22240e3c1028c37d2092b221b76"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "TwinMastBridge",
+      "id": "twin-mast-bridge",
+      "intentional_review_repair": false,
+      "module": "twin_mast_bridge",
+      "preset_sha256": "80059d77277faf474c21971fb8239ee5da4a4542fb71ea6b14990893dcaedb2f",
+      "source_class_sha256": "2b6e1c2d17b65dd4d5a91b18b50a8d8596298659f2c2b1bd53f46ed19fcd16a6"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "AFrameHall",
+      "id": "a-frame-hall",
+      "intentional_review_repair": false,
+      "module": "a_frame_hall",
+      "preset_sha256": "1c62851c7c1eff93e49bf5a5a3c1122ed0e788b73e6b5a4d1f42af966fe9524c",
+      "source_class_sha256": "22309137867a0e63fa633632198c9adb0ccbb1df2208ea7fc556ef2df1f2e2c3"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "ButterflyHall",
+      "id": "butterfly-hall",
+      "intentional_review_repair": false,
+      "module": "butterfly_hall",
+      "preset_sha256": "c8be8b5d54a58555d6b30d325dfa7cd25924461e0d00225033e458c6c127b458",
+      "source_class_sha256": "435e8ad24ba20bad1bb3b571df6c169f4259ac37582854adbde0a69bd8f527bd"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "ZigguratArcade",
+      "id": "ziggurat-arcade",
+      "intentional_review_repair": false,
+      "module": "ziggurat_arcade",
+      "preset_sha256": "ed6d05d52c4a0b8471c3ddc5adf6e51333621b58c2ff8e88495657235ef97da1",
+      "source_class_sha256": "8f04bbc1e3f32b0ff225bd73c233d3d3cdbd595413fd441d45e89349cfe98a9c"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "CorbelArcade",
+      "id": "corbel-arcade",
+      "intentional_review_repair": false,
+      "module": "corbel_arcade",
+      "preset_sha256": "06c29ac145feb8420d19fe7eccb0423b9dbb741ab00d1c978439b20d0997f068",
+      "source_class_sha256": "26bb5d9eecb86faa3eba335c2513509a5512f44fe5bddfa9c1d808f667815a39"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "ChainVault",
+      "id": "chain-vault",
+      "intentional_review_repair": false,
+      "module": "chain_vault",
+      "preset_sha256": "2b22c9714349d72c664a638d28ccf2ab642dca10adfd0f145168b7fa0e20d6da",
+      "source_class_sha256": "6e3f21d43238e408cdd1dcd7a4279236e23b0e8d5352b151626c585885f3525b"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "RingPier",
+      "id": "ring-pier",
+      "intentional_review_repair": true,
+      "module": "ring_pier",
+      "preset_sha256": "959504cb2fd0862a4c1162957f0618321d8610d71535052faa9c831468328f85",
+      "source_class_sha256": "0be98c5eff58863f7a36c635780714d7e8efa9ae3c7842a67c3d4066ad558086"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "FoldedPlateHall",
+      "id": "folded-plate-hall",
+      "intentional_review_repair": false,
+      "module": "folded_plate_hall",
+      "preset_sha256": "dad59da9ff8a66974256d644c8f6377a8c3648ef8215e3e48ace63618e70c061",
+      "source_class_sha256": "9dd2b7da3c1d7372908317f55b9eb073ddda688f3612c4d47dfa089090ff92ed"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "SpaceFrame",
+      "id": "space-frame",
+      "intentional_review_repair": false,
+      "module": "space_frame",
+      "preset_sha256": "9c9021f209124fb8684fcdc5bceca2fd2c80d3f90a0b090672e66a0796122ff1",
+      "source_class_sha256": "a020644d27d6540f14b7d068ee2c67333e5589f4c7d7f968a908def33dcdf427"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "CrossbeamStack",
+      "id": "crossbeam-stack",
+      "intentional_review_repair": false,
+      "module": "crossbeam_stack",
+      "preset_sha256": "f44dd2435dbdf24d237ad76ec14903e407c25bdfe7ebf27f5556fc9b620e0985",
+      "source_class_sha256": "73462120205820cdb656c794120d4a354be0f8666e0ad23b11ae13f4f5ae530f"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "YokeBridge",
+      "id": "yoke-bridge",
+      "intentional_review_repair": false,
+      "module": "yoke_bridge",
+      "preset_sha256": "b24471a544d77d6984194ac78ee73a1fbd764692ee048de9d063bc7bd31e4ae6",
+      "source_class_sha256": "f2d3b3c29fd1a4bfb72918f9e0ea1894045bb9cd3c49483ae957ac73c7ffa7f9"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "LanternTower",
+      "id": "lantern-tower",
+      "intentional_review_repair": false,
+      "module": "lantern_tower",
+      "preset_sha256": "eeb207fbd6cbc7b5178a9db4195cf21538768fa8a69b6670cda802827353658e",
+      "source_class_sha256": "7e6c639b89afa34de25b71da3fea579e0c56218307882fdbd292a9744cdc7fcc"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "SpineArcade",
+      "id": "spine-arcade",
+      "intentional_review_repair": false,
+      "module": "spine_arcade",
+      "preset_sha256": "bee3d55836f0323b5452a7e56d7f3e6645a31c7af65a9804a19197ae69f46c89",
+      "source_class_sha256": "a3a8a5c6a159cd02773efa46ff2209f988ae33f5e5158215366ab898b4741522"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "CascadeTerrace",
+      "id": "cascade-terrace",
+      "intentional_review_repair": true,
+      "module": "cascade_terrace",
+      "preset_sha256": "ff5ac0f87c176056c15b8c937eaaa5a3f7133ac0c003750496e0b9c09826b181",
+      "source_class_sha256": "d17def7a1e1621a577fcc7ddf8e7389e0d21fb9405e7a20aafc6bf1a6ab784d5"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "InvertedTrestle",
+      "id": "inverted-trestle",
+      "intentional_review_repair": false,
+      "module": "inverted_trestle",
+      "preset_sha256": "088839a229f32a6e0731df9dcb940ef96efe50f7963857ca7805f1f3e57b3837",
+      "source_class_sha256": "0d9ce58e727ff228bd4322e6521529bd8a321179cd44f4abd31d038df7143df3"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "CrankedBeam",
+      "id": "cranked-beam",
+      "intentional_review_repair": false,
+      "module": "cranked_beam",
+      "preset_sha256": "cc09fcf5cf0ae17aff511d20503e12399e6d5738113525eb81e2317752d8fde0",
+      "source_class_sha256": "8b6e2fda54f765bf6910635e3bfd9e2f75cfaab20581b4d1e70b74d764ccf190"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "BarrelArcade",
+      "id": "barrel-arcade",
+      "intentional_review_repair": false,
+      "module": "barrel_arcade",
+      "preset_sha256": "b79eb401a19950b22f4b505d51888ef33dbea01a0b74b4bb0e737f52fc90edcf",
+      "source_class_sha256": "53683d43d89e3b9009be2dd678642ee71d0ad3939a24a2e8463f4a5fcb435a89"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "ButtressCrown",
+      "id": "buttress-crown",
+      "intentional_review_repair": false,
+      "module": "buttress_crown",
+      "preset_sha256": "63378ac00f460bb7b2b8c4e10e0b5a04f18a59a9ec22a30d6f307b5d0b93f9e0",
+      "source_class_sha256": "1076a82b0f2e7047b67e066ad74416ea65e9161772de74c52e881d1b66487e93"
+    },
+    {
+      "authority": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "class": "TriptychArcade",
+      "id": "triptych-arcade",
+      "intentional_review_repair": false,
+      "module": "triptych_arcade",
+      "preset_sha256": "7d35102461185bc544d290edda11127b578229b032380e61f2c78b2371cda34a",
+      "source_class_sha256": "1f3fd5aa4efadd59ad8856c5670d376c23e005e8956885dc1c8de6ca61d4f84c"
+    },
+    {
+      "authority": "eb786d97a769f4fed9f5d52bb0b50dd60f0ee16f",
+      "class": "MegatrussStation",
+      "id": "megatruss-station",
+      "intentional_review_repair": false,
+      "module": "megatruss_station",
+      "preset_sha256": "56f631a9f0dfe1f50c03ccd83ab1077a58f76552e313dbae7445308b50f7f97f",
+      "source_class_sha256": "5131401ab478ee8942c85d37e4804d86599b51f018df723402f165efe1a86f83"
+    },
+    {
+      "authority": "eb786d97a769f4fed9f5d52bb0b50dd60f0ee16f",
+      "class": "CathedralMegaframe",
+      "id": "cathedral-megaframe",
+      "intentional_review_repair": false,
+      "module": "cathedral_megaframe",
+      "preset_sha256": "79a0722afeee05c7399541ac4198965a83f8d2df07a286ac8b055bdc1769c874",
+      "source_class_sha256": "5efff6efaa67441f64e088e9e852af684d38d183b35ecb5394b97e505bee6ab2"
+    },
+    {
+      "authority": "eb786d97a769f4fed9f5d52bb0b50dd60f0ee16f",
+      "class": "SeededTypologyMegablock",
+      "id": "seeded-typology-megablock",
+      "intentional_review_repair": false,
+      "module": "seeded_typology_megablock",
+      "preset_sha256": "ac33f5b9f4cd7cdc616d31adaca213707d26baa8666498a645bb07454e7a9703",
+      "source_class_sha256": "96d8da9128b729e555d6bcd4d3c430fa286908166f03851adbfc26f04ef6d28d"
+    },
+    {
+      "authority": "eb786d97a769f4fed9f5d52bb0b50dd60f0ee16f",
+      "class": "MetabolistSpine",
+      "id": "metabolist-spine",
+      "intentional_review_repair": false,
+      "module": "metabolist_spine",
+      "preset_sha256": "21944fc25adc6cbe33ecf4f04fda8bab37d4945706cc0a8bf0023d62aa0e261d",
+      "source_class_sha256": "7088286dfa5b7ab88166fbe4406d2723009a19f62fac5575125a8148c24ecaf2"
+    },
+    {
+      "authority": "eb786d97a769f4fed9f5d52bb0b50dd60f0ee16f",
+      "class": "InterlacedViaduct",
+      "id": "interlaced-viaduct",
+      "intentional_review_repair": false,
+      "module": "interlaced_viaduct",
+      "preset_sha256": "e1424f5dae913ba047d6661ab73a3cdf067a8b0693868c61cd6cd435e42b21fe",
+      "source_class_sha256": "16e8fd6bb398ff320de8288dbd7c2144c05f7ff20ed4e7cc58a134c5621a91eb"
+    },
+    {
+      "authority": "eb786d97a769f4fed9f5d52bb0b50dd60f0ee16f",
+      "class": "RoseworkGatehouse",
+      "id": "rosework-gatehouse",
+      "intentional_review_repair": false,
+      "module": "rosework_gatehouse",
+      "preset_sha256": "a822093c1c71b3bc5707c6af6260d5839c3933d443898108bbfc8b0b7e5f9903",
+      "source_class_sha256": "104f24841df978b35dd75f64cb8e426981df7657051ae93ece98f787cf9e2bf1"
+    },
+    {
+      "authority": "eb786d97a769f4fed9f5d52bb0b50dd60f0ee16f",
+      "class": "InterlockBrutalism",
+      "id": "interlock-brutalism",
+      "intentional_review_repair": false,
+      "module": "interlock_brutalism",
+      "preset_sha256": "5dfb60bab7c532691bd9c8688a5f5a619d956198cd49b76880700912cfd097f4",
+      "source_class_sha256": "b0b61d46268ecf3116319b1cacd0382bfef55888fb979a5e7369636c6b4a0fa1"
+    },
+    {
+      "authority": "eb786d97a769f4fed9f5d52bb0b50dd60f0ee16f",
+      "class": "SuspendedArcology",
+      "id": "suspended-arcology",
+      "intentional_review_repair": false,
+      "module": "suspended_arcology",
+      "preset_sha256": "2371205bd82359c7c0efef9d32fc5c307cdbc9f84b9416120e2b7e6b873d715c",
+      "source_class_sha256": "2de49c8db7581902f961db9e137a1177265f05e5db16380033e06eb434b9f46e"
+    }
+  ],
+  "classic_classes": 72,
+  "final_candidate_verdict": "pending_actual_supplemental_graphical_execution_and_final_evidence_join",
+  "findings_p1_p2": [],
+  "intentional_repair_classes": [
+    "ButtressWall",
+    "CascadeTerrace",
+    "RingPier",
+    "ScallopedVault",
+    "SuspendedDeck",
+    "TripodFrame"
+  ],
+  "mission_genteks": 80,
+  "native_module_version_pairs": 91,
+  "native_source_change_paths": [
+    "native/src/generation_architecture_classic.inc",
+    "native/src/generation_architecture_megablock.inc",
+    "native/src/generation_architecture_metabolist.inc",
+    "native/src/generation_architecture_rosework.inc",
+    "native/src/generation_interlaced_viaduct.inc",
+    "native/src/generation_interlock_brutalism.inc",
+    "native/src/generation_megablock_programme.hpp",
+    "native/src/generation_suspended_arcology.inc",
+    "native/src/world_generation.cpp"
+  ],
+  "ordinary_ui_choices": 93,
+  "original_classic_source_inputs_bound_to_authority": 67,
+  "protected_shared_actor_simulation_material_rapier_source_changes": [],
+  "pure_original_evidence_reduction": {
+    "all_original_contact_proofs_reproduced": true,
+    "both74entry3profile_maps_reproduced": true,
+    "checker_sha256": "4c9e2b316115f90b04f30f2fd896b5198f0dfdfa6f2ff9c545dcbc1801c0afcc",
+    "contact_cases": 192,
+    "contact_material_cells": 4005888,
+    "execution": "No new native/Godot execution; only immutable raw maps and unchanged independent contact/profile reducer read.",
+    "raw_capture_archive_sha256": "4bb448aac2154f0de9675fdac352e584ba406ae9d2525109329044aef455e6e9",
+    "two_qualifier_palettes": true
+  },
+  "recorded_at": "2026-11-20T09:07:42.688757+00:00",
+  "review_notes": [
+    "ArchitectureForm is unchanged accepted-main code and bounds dimensions/material choices before sampler construction. New native code is restricted to8immutable samplers/includes and registration/schema gates.",
+    "CLASSIC66 class bodies are exact repaired#624;6 reviewed additions preserve all existing occupied/glass cells except documented Tripod transfer-deck material reclassification.",
+    "The six repaired support/frame deltas were directly reviewed;192original raw positive/negative-origin/contact fixtures reproduce one connected structural/glass component with negative space retained.",
+    "All8advanced class bodies and7separate advanced/helper files exactly match principal#671, with private immutable local programmes and bounded integer geometry. No SWARM runtime dependency is introduced.",
+    "Reviewed advanced arithmetic is bounded by admitted local cell dimensions; no mutable World lookup, per-cell allocation or recursive neighbor generation is introduced.",
+    "Native registration and Godot permitted module/version lists retain legacy styles and require schema4 for new Genteks; stable chooser item IDs correctly survive filtering.",
+    "Original baseline window/Hive/Viaduct sampler source is byte-identical to accepted main. Existing default parameters and materials of all80 presets exactly match their authoritative donor files.",
+    "Geometry proofs concern sampled fixture continuity and native data, not engineering load-bearing certification or universal walkable cross-style interfaces.",
+    "71CLASSIC shapes are seed-independent by source; this is documented and is not counted as seed-driven variation."
+  ],
+  "rib_vault_exact_repaired_authority": true,
+  "schema": "gentek80-fresh-independent-source-and-geometry-review-v1",
+  "source_commit": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0",
+  "source_inputs_native_repair_capture_bound_to_F": 74,
+  "source_tree": "546750300019d2e5534e96d4e1dd751bc28d9f2e",
+  "status": "passed_reviewed_source_and_retained_geometry_proofs",
+  "suspended_deck_preserves_repaired_hangers_and_adds_outside_glazing_frame": true,
+  "unchanged_classic_classes": 66
+}
