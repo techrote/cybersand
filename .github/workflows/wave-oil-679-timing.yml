@@ -1,0 +1,40 @@
+name: Oil and Waterwall quiet comparison
+on:
+  push:
+    branches:
+      - codex/wave-oil-679-timing-20261120
+permissions:
+  contents: read
+jobs:
+  timings:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      GIT_LFS_SKIP_SMUDGE: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          path: control
+          persist-credentials: false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          path: old
+          ref: 551768ee9499f78fd656f5d2d99c5c944c8a1239
+          persist-credentials: false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          path: new
+          ref: b5f2f95a34a574c9aa76f79bfdcd897eb66fa727
+          persist-credentials: false
+      - name: Check runner policy and run six controlled comparisons per scene
+        run: |
+          python3 control/tools/ci/check_ci_provider_policy.py
+          python3 control/timing679/run.py
+      - name: Retain complete simulator output, hydrographs and build identity
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: water-oil-hosted-timings
+          path: evidence/
+          if-no-files-found: error
+          retention-days: 90
