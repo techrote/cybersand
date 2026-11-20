@@ -1,6 +1,14 @@
-> **Integrated ART-PIPELINE-UNIFICATION-001:** See [the canonical unification, provenance, large-canvas and native-compatibility contract](art-pipeline-unification.md). The unified branch includes the original 15 art collections in `docs/world-design`; an external art checkout is optional. No renderer or art source is modified during inspection/capture. Existing links to donor PRs below describe their historical qualification, not an independent admission of this integration.
+---
+title: World Art unattended capture
+status: Current
+document-kind: guide
+scope: Production Godot framebuffer capture, streamed PNG transport, provenance and publication safety
+canonical-for: [world-art-unattended-capture]
+last-reviewed: 2026-11-20
+related-documents: [art-pipeline-unification.md, world-art-preview.md, world-art-evaluation.md]
+---
 
-# World Art Unattended Capture — real Godot PNGs + manifest, no GUI
+# World Art unattended capture — real Godot PNGs and manifests
 
 **Experimental, independent presentation tooling (MAP-AUTO-01 / [#498](https://github.com/techrote/cybersand/issues/498)).** One command renders provisional world-design packs through the **production RG8 material palette, appearance LUT, emission and glow shaders in a real Godot 4.7 renderer** and writes PNG images plus a hash-bound JSON manifest. There is no mouse, keyboard or UI interaction, no SVG/Python rasterisation and no second renderer: it drives the same `world_art_render_rig.gd` and tiled full-export code as the interactive [World Art Preview](world-art-preview.md).
 
@@ -8,13 +16,19 @@ Downstream pipeline this enables: `Atlas source → unattended capture → PNG +
 
 ## Quick start (copy-paste)
 
-Prerequisites: Python 3.10+, an installed **Godot 4.7 desktop executable** (never downloaded for you), and a **read-only checkout of the art source** (`docs/world-design/<collection>/pack.json`, see [the checkout guide](world-art-preview.md#efficient-fresh-checkout--one-small-clone-no-unnecessary-git-lfs-binaries)). Windows: prefer the `*_console.exe` build (its log is captured); the GUI build works too (verified locally) but its log may not reach the launcher on every host; results are always verified from the evidence files.
+Prerequisites for a source checkout: Python 3.10+, Godot 4.7 desktop and a
+graphical display. The integrated repository already includes the read-only
+`docs/world-design` atlas; no second checkout is required. The
+[Windows evaluation package](world-art-evaluation.md) includes both runtimes,
+source and gallery. Windows captures use the console executable to retain
+engine diagnostics. Godot's display-less `--headless` backend cannot render
+framebuffer evidence; Linux unattended servers use X11/Xvfb and OpenGL.
 
 One collection, default shots (`full`, `viewport`, `detail`):
 
 ~~~bash
 python3 tools/world_art_preview_launcher.py --capture --godot=godot \
-  --art-root=/abs/art-source/docs/world-design --collection=lumen-fault \
+  --art-root=docs/world-design --collection=lumen-fault \
   --output-dir=/abs/captures/lumen-fault-before
 ~~~
 
@@ -22,14 +36,14 @@ All 15 collections (bounded batch, 1× full export):
 
 ~~~bash
 python3 tools/world_art_preview_launcher.py --capture --godot=godot \
-  --art-root=/abs/art-source/docs/world-design --scale=1 --output-dir=/abs/captures/atlas-all
+  --art-root=docs/world-design --scale=1 --output-dir=/abs/captures/atlas-all
 ~~~
 
 Windows PowerShell (ANGLE):
 
 ~~~powershell
-python tools/world_art_preview_launcher.py --capture --godot="C:\path\to\Godot_v4.7-stable_win64_console.exe" `
-  --rendering-driver=opengl3_angle --art-root="C:\art-source\docs\world-design" `
+python tools/world_art_preview_launcher.py --capture --godot="C:\Godot_v4.7-stable_win64_console.exe" `
+  --rendering-driver=opengl3_angle --art-root=docs/world-design `
   --collection=coral-telegraph --output-dir="C:\captures\coral-before"
 ~~~
 
@@ -38,18 +52,18 @@ Linux CI / headless server (needs X11 and OpenGL; Xvfb + llvmpipe is the support
 ~~~bash
 LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
   python3 tools/world_art_preview_launcher.py --capture --godot=godot --rendering-driver=opengl3 \
-  --art-root=/abs/art-source/docs/world-design --output-dir=/abs/captures/ci
+  --art-root=docs/world-design --output-dir=/abs/captures/ci
 ~~~
 
 An external worker only needs the **exit code**, the last-line `WORLD_ART_CAPTURE_RESULT {json}` on stdout, and `batch-manifest.json`. A ready-made wrapper is [`examples/world-art-capture/capture_atlas.py`](../../examples/world-art-capture/capture_atlas.py); a GitHub Actions template is [`github-actions-example.yml`](../../examples/world-art-capture/github-actions-example.yml) (not an active workflow).
 
 ## Integrated source, aspect-fit and capture custody
 
-In the unified branch, use `--art-root=docs/world-design` (or an absolute equivalent) to capture the 15 included original collections, without a second checkout. The source still receives byte-level identity guards. The user interface and this headless runner share the same `world_art_render_rig.gd` shader path. `--framing=width` or `--framing=height` selects a purposeful crop of the opposite axis, while `--framing=fit` preserves all authored geometry with aspect-correct letterboxing.
+In the unified branch, use `--art-root=docs/world-design` (or an absolute equivalent) to capture the 15 included original collections, without a second checkout. The source still receives byte-level identity guards. The user interface and this unattended graphical runner share the same `world_art_render_rig.gd` shader path. `--framing=width` or `--framing=height` selects a purposeful crop of the opposite axis, while `--framing=fit` preserves all authored geometry with aspect-correct letterboxing.
 
 The new `art_size_policy` manifest records which source sizes are presentation-previewable versus full-PNG-exportable at the selected scale; **`native_playable` is explicitly unqualified**. Up to 16,777,216 source cells are accepted at most 16,384 cells per side. The full-PNG renderer retains its 50-million-output-pixel cap and rejects overbudget requests without truncation or automatic size change. Bounded crops or a lower scale remain usable.
 
-Every capture destination has an exclusive per-output claim acquired before writing. Previous nonempty destinations, overlapping source directories and still-claimed directories are rejected. A failed/interrupted job never silently takes over another owner's output. For all details, safety boundaries and the 10-size regression matrix, see [ART-PIPELINE-UNIFICATION-001](art-pipeline-unification.md).
+Every capture destination has an exclusive per-output claim acquired before writing. Its contents are checked again under that claim to reject delayed competing publishers. The final manifest is exclusively created and flushed before releasing the claim; verification refuses active or retained claims. Previous nonempty destinations, overlapping source directories and still-claimed directories are rejected. A failed/interrupted job never silently takes over another owner's output. For all details, safety boundaries and the 10-size regression matrix, see [ART-PIPELINE-UNIFICATION-001](art-pipeline-unification.md).
 
 ## Optional bounded streamed full PNG above 50 million pixels
 
@@ -122,7 +136,7 @@ Presentation settings apply to every shot: `--time SECONDS` (**fixed shader pres
       full.png  viewport.png  detail.png  feature-<id>[--<variant>].png
 ~~~
 
-The manifest records: exact **input pack SHA-256** (and the pack's Git blob and whether it equals `HEAD`), the **art source Git revision** detected from the checkout (a mismatching `--design-revision` is rejected), the viewer's Git revision and the SHA-256 of every copied shader/tool file, the Godot version, renderer method/driver/adapter, the palette shader identity (source/variant hashes, source binding) plus appearance LUT hashes, the selected collection/feature/variant, the full camera (zoom, origin, visible native rectangle, whether the whole map is visible and which edges clip), resolution/crop/scale/time/glow/detail/background, output dimensions, PNG byte size and **PNG SHA-256**, the RG8 source hash, image statistics, the synthetic-condition notice and limitations, and an explicit `completed`/`failed` status. Manifests contain no timestamps or temporary paths, so identical inputs on the same renderer give byte-identical manifests.
+The manifest records: exact **input pack SHA-256** (and the pack's Git blob and whether it equals `HEAD`), the **art source Git revision** detected from the checkout (a mismatching `--design-revision` is rejected), the viewer's Git revision and the SHA-256 of every copied shader/tool file, the Godot version, renderer method/driver/adapter, the palette shader identity (source/variant hashes, source binding) plus appearance LUT hashes, the selected collection/feature/variant, the full camera (zoom, origin, visible native rectangle, whether the whole map is visible and which edges clip), resolution/crop/scale/time/glow/detail/background, output dimensions, PNG byte size and **PNG SHA-256**, the RG8 source hash, image statistics, the synthetic-condition notice and limitations, and an explicit `completed`/`failed` status. Manifests retain actual source, engine and Git/workspace identities, so relocation or a different machine can change manifest bytes. Fixed presentation time supports repeatable PNG output on the same renderer and settings; hashes across operating systems or GPUs are not expected to match.
 
 The batch manifest is sealed: `manifest_sha256` covers its own content and lists every job manifest hash, which lists every PNG hash. A successful run requires: Godot exit 0, no shader/script errors in the log, every PNG decoded back from disk to the same pixels, independently validated PNG structure/CRC/dimensions/hash, the pack bytes unchanged since hashing, and the **art source unchanged** (a hash snapshot of the art directories plus `git status` before and after).
 
@@ -133,7 +147,7 @@ python3 tools/world_art_preview_launcher.py --verify-bundle /abs/captures/lumen-
 python3 tools/world_art_preview_launcher.py --compare-bundles /abs/captures/before /abs/captures/after
 ~~~
 
-`--verify-bundle` re-hashes every PNG and manifest and re-hashes the packs if they still exist (reporting source edits made after capture). `--compare-bundles` reports per collection/shot whether the framing was equivalent and whether the pack, the RG8 cells and the PNG changed. **Before/after recipe:** capture the unedited pack, edit a writable copy, capture again with the *identical* flags, then compare. Fit framing depends on the map size, so for pixel-aligned comparisons of resized maps pass an explicit `--view` or `--zoom/--center` and `--resolution`.
+`--verify-bundle` binds the batch image list exactly to verified child manifests, rejects escaping/linked paths and malformed structures, validates PNG headers, filters and chunk order, and re-hashes every PNG and manifest and re-hashes the packs if they still exist (reporting source edits made after capture). `--compare-bundles` reports per collection/shot whether the framing was equivalent and whether the pack, the RG8 cells and the PNG changed. **Before/after recipe:** capture the unedited pack, edit a writable copy, capture again with the *identical* flags, then compare. Fit framing depends on the map size, so for pixel-aligned comparisons of resized maps pass an explicit `--view` or `--zoom/--center` and `--resolution`.
 
 ## Exit codes and failures
 
@@ -170,4 +184,19 @@ export WORLD_ART_EVIDENCE_DIR=/abs/evidence
 xvfb-run -a python3 tools/test_world_art_capture.py -v   # Linux; run directly on a Windows desktop
 ~~~
 
-The [capture workflow](../../.github/workflows/world-art-capture.yml) runs this on GitHub-hosted Linux X11/Xvfb OpenGL/llvmpipe and Windows OpenGL ANGLE against the **current** art branch head and uploads PNGs, manifests and logs as artifacts. The interactive viewer keeps its own [GUI qualification workflow](../../.github/workflows/world-art-preview.yml).
+The [capture workflow](../../.github/workflows/world-art-capture.yml) runs this on GitHub-hosted Linux X11/Xvfb OpenGL/llvmpipe and Windows OpenGL ANGLE against the **exact requested PR commit and its integrated atlas** and uploads PNGs, manifests and logs as artifacts. The interactive viewer keeps its own [GUI qualification workflow](../../.github/workflows/world-art-preview.yml).
+
+
+## Interruption and retry
+
+Timeout and Ctrl+C termination stop the owned renderer process tree, including
+the Windows console executable's engine child. Interrupted output keeps its
+claim/incomplete evidence and is not eligible for verification or automatic
+takeover. Retain it for diagnosis, then retry into a **new directory**. This
+conservative policy trades automatic resumption for unambiguous ownership; it
+does not block a new capture or require changing source artwork.
+
+The focused publication regressions run with
+`python -m unittest tools.test_world_art_evidence -v`. The full Windows capture
+job also builds and executes the portable evaluation package from the same
+source and accepted capture bundles before publishing its ZIP.

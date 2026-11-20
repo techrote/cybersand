@@ -123,6 +123,12 @@ def claim_output_directory(output: Path) -> Path:
     except OSError as error:
         raise CaptureError(EXIT_USAGE,
                            f"cannot reserve exclusive output claim in {output}: {error}") from error
+    # A competing publisher may have completed between our first emptiness
+    # check and acquiring the claim. Only an empty root is ours to publish into.
+    if any(child != claim for child in output.iterdir()):
+        claim.rmdir()  # only the empty reservation just created by this call
+        raise CaptureError(EXIT_USAGE,
+                           f"--output-dir {output} became nonempty before its claim was acquired; use a new directory")
     return claim
 
 
@@ -139,7 +145,8 @@ def sha256_file(path: Path) -> str:
 
 
 def canonical_json(value: object) -> bytes:
-    return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+    return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False,
+                      allow_nan=False).encode("utf-8")
 
 
 def seal_manifest(manifest: dict) -> dict:
@@ -151,7 +158,10 @@ def seal_manifest(manifest: dict) -> dict:
 
 def manifest_is_sealed(manifest: dict) -> bool:
     body = {key: value for key, value in manifest.items() if key != "manifest_sha256"}
-    return manifest.get("manifest_sha256") == sha256_bytes(canonical_json(body))
+    try:
+        return manifest.get("manifest_sha256") == sha256_bytes(canonical_json(body))
+    except (ValueError, UnicodeError):
+        return False
 
 
 def is_inside(child: Path, parent: Path) -> bool:
@@ -170,7 +180,7 @@ def _numbers(text: str, count: int, label: str, integer: bool) -> list:
         values = [int(p) if integer else float(p) for p in parts]
     except ValueError:
         raise CaptureError(EXIT_USAGE, f"{label} must be {'integers' if integer else 'numbers'}: {text!r}") from None
-    if not all(math.isfinite(v) for v in values):
+    if not integer and not all(math.isfinite(v) for v in values):
         raise CaptureError(EXIT_USAGE, f"{label} must be finite: {text!r}")
     return values
 
@@ -186,6 +196,8 @@ def parse_rect(text: str, label: str, integer: bool) -> list:
     rect = _numbers(text, 4, f"{label} (X,Y,WIDTH,HEIGHT)", integer)
     if rect[2] <= 0 or rect[3] <= 0:
         raise CaptureError(EXIT_USAGE, f"{label} width and height must be positive: {text!r}")
+    if integer and any(value < -MAX_SIDE or value > MAX_SIDE for value in rect):
+        raise CaptureError(EXIT_USAGE, f"{label} components must be within {-MAX_SIDE}..{MAX_SIDE} cells: {text!r}")
     return rect
 
 
@@ -385,9 +397,11 @@ def inspect_png(path: Path) -> dict:
     decoder = zlib.decompressobj()
     ended = False
     saw_idat = False
+    ended_idat = False
     count = 0
     expected = 0
     stride = 1
+    row_bytes = 1
     diversity: set[int] = set()
 
     def accept(raw: bytes) -> None:
@@ -396,6 +410,10 @@ def inspect_png(path: Path) -> dict:
             return
         if count + len(raw) > expected:
             raise ValueError("PNG decompressed pixel stream exceeds IHDR dimensions")
+        # Validate every scanline filter, even when a decompression block splits
+        # a row. A CRC-valid zlib stream can still contain an invalid PNG image.
+        if any(value > 4 for value in raw[(-count) % row_bytes::row_bytes]):
+            raise ValueError("PNG scanline uses an invalid filter type")
         start = (-count) % stride
         diversity.update(raw[start::stride])
         count += len(raw)
@@ -408,12 +426,23 @@ def inspect_png(path: Path) -> dict:
             if len(raw_head) != 8:
                 raise ValueError("truncated PNG chunk header or missing IEND")
             length, kind = struct.unpack(">I4s", raw_head)
+            if header is None and kind != b"IHDR":
+                raise ValueError("PNG IHDR must be the first chunk")
+            if length > 0x7fffffff or len(kind) != 4 or not all(
+                    65 <= byte <= 90 or 97 <= byte <= 122 for byte in kind) or kind[2] & 32:
+                raise ValueError("invalid PNG chunk header")
+            if kind not in (b"IHDR", b"PLTE", b"IDAT", b"IEND") and not kind[0] & 32:
+                raise ValueError("unsupported critical PNG chunk")
             crc = zlib.crc32(kind)
             if kind == b"IHDR":
                 if header is not None or length != 13 or saw_idat:
                     raise ValueError("duplicate or invalid PNG IHDR")
             if kind == b"IDAT" and header is None:
                 raise ValueError("IDAT appears before IHDR")
+            if kind == b"IDAT" and ended_idat:
+                raise ValueError("PNG IDAT chunks must be consecutive")
+            if saw_idat and kind != b"IDAT":
+                ended_idat = True
             if kind == b"IEND" and (length != 0 or not saw_idat):
                 raise ValueError("invalid PNG IEND")
             remaining = length
@@ -443,13 +472,17 @@ def inspect_png(path: Path) -> dict:
                 raise ValueError(f"PNG chunk {kind!r} CRC mismatch")
             if kind == b"IHDR":
                 header = struct.unpack(">IIBBBBB", meta)
-                width, height, depth, colour, _, _, interlace = header
-                channels = {0: 1, 2: 3, 3: 1, 4: 2, 6: 4}.get(colour)
-                if channels is None or interlace != 0 or depth != 8 or width < 1 or height < 1:
+                width, height, depth, colour, compression, filtering, interlace = header
+                # The Godot framebuffer paths emit direct grayscale/RGB/RGBA,
+                # never indexed colour; reject layouts we cannot validate.
+                channels = {0: 1, 2: 3, 4: 2, 6: 4}.get(colour)
+                if (channels is None or interlace != 0 or depth != 8 or width < 1 or height < 1
+                        or compression != 0 or filtering != 0):
                     raise ValueError(f"unsupported PNG layout (colour type {colour}, depth {depth}, interlace {interlace})")
                 if width > MAX_SIDE * 8 or height > MAX_SIDE * 8 or width * height > 100_000_000:
                     raise ValueError("PNG size exceeds bounded art-evidence policy")
-                expected = height * (1 + width * channels)
+                row_bytes = 1 + width * channels
+                expected = height * row_bytes
                 stride = max(1, expected // 1_000_000)
             if kind == b"IEND":
                 ended = True
@@ -477,10 +510,50 @@ def read_json(path: Path) -> dict:
     return value
 
 
+def evidence_path(root: Path, relative: object) -> Path:
+    """Resolve one portable bundle member without following symlinks or escapes.
+
+    Manifests are input, not filesystem authority. Windows drive/separator
+    aliases must also be refused when a Windows bundle is verified on Linux.
+    """
+    if not isinstance(relative, str) or not relative or "\\" in relative or ":" in relative:
+        raise ValueError("evidence path is not a portable relative path")
+    parts = relative.split("/")
+    if any(part in ("", ".", "..") for part in parts):
+        raise ValueError("evidence path is absolute or contains a traversal component")
+    current = root.resolve()
+    for part in parts:
+        current = current / part
+        if current.is_symlink():
+            raise ValueError("evidence members must not be symbolic links")
+    if not is_inside(current, root) or not current.is_file():
+        raise ValueError("evidence member is missing or outside its bundle")
+    return current
+
+
+def shot_summary(job_id: str, shots: list[dict]) -> list[dict]:
+    """The only batch/gallery image inventory, derived from verified job shots."""
+    return [{"id": shot.get("id"), "kind": shot.get("kind"),
+             "file": f"{job_id}/{shot.get('file')}",
+             "width": shot.get("width"), "height": shot.get("height"),
+             "png_sha256": shot.get("png_sha256")}
+            for shot in shots if shot.get("status") == "complete"]
+
+
 def verify_job(job_dir: Path, manifest: dict, expected_art: dict | None, expected_viewer: dict | None,
                recheck_packs: bool, allow_blank: bool = False) -> list[str]:
     problems: list[str] = []
     tag = job_dir.name
+    if not isinstance(manifest, dict):
+        return [f"{tag}: job manifest is not an object"]
+    for key in ("input_pack", "job", "viewer", "art_source", "renderer", "presentation"):
+        if not isinstance(manifest.get(key), dict):
+            problems.append(f"{tag}: {key} must be an object")
+    shots = manifest.get("shots")
+    if not isinstance(shots, list) or not shots or any(not isinstance(s, dict) for s in shots):
+        problems.append(f"{tag}: shots must be a nonempty list of objects")
+    if problems:
+        return problems
     if manifest.get("schema") != SCHEMA_JOB:
         problems.append(f"{tag}: wrong job manifest schema")
     if manifest.get("status") != "complete":
@@ -489,43 +562,65 @@ def verify_job(job_dir: Path, manifest: dict, expected_art: dict | None, expecte
         problems.append(f"{tag}: art_source identity differs from the batch manifest")
     if expected_viewer is not None and manifest.get("viewer") != expected_viewer:
         problems.append(f"{tag}: viewer identity differs from the batch manifest")
-    pack = manifest.get("input_pack", {})
+    pack = manifest["input_pack"]
+    if not isinstance(pack.get("path"), str) or not isinstance(pack.get("sha256"), str) \
+            or re.fullmatch(r"[0-9a-f]{64}", pack["sha256"]) is None:
+        return problems + [f"{tag}: input pack path/hash is invalid"]
+    job = manifest["job"]
+    if job.get("id") != tag or job.get("pack_path") != pack["path"]:
+        problems.append(f"{tag}: job ID or input pack path differs from its manifest")
+    if not isinstance(job.get("collection"), str) or not job["collection"]:
+        problems.append(f"{tag}: collection must be a nonempty string")
     if recheck_packs:
-        pack_path = Path(pack.get("path", ""))
+        pack_path = Path(pack["path"])
         if pack_path.is_file():
             if sha256_file(pack_path) != pack.get("sha256"):
                 problems.append(f"{tag}: pack bytes no longer match the recorded SHA-256 (source edited since capture)")
     if pack.get("sha256") != manifest.get("job", {}).get("pack_sha256_expected"):
         problems.append(f"{tag}: rendered pack SHA-256 differs from the independently hashed pack")
-    shots = manifest.get("shots", [])
-    if not shots:
-        problems.append(f"{tag}: no shots recorded")
     listed = set()
+    ids = set()
     for shot in shots:
         name = shot.get("file", "")
+        identifier = shot.get("id")
+        if (not isinstance(name, str) or not isinstance(identifier, str) or not identifier
+                or name != identifier + ".png" or "/" in name or "\\" in name
+                or identifier in ids or name in listed):
+            problems.append(f"{tag}: invalid or duplicate shot ID/filename")
+            continue
+        ids.add(identifier)
         listed.add(name)
+        if any(not isinstance(shot.get(key), dict) for key in ("stats", "source", "camera")):
+            problems.append(f"{tag}/{name}: stats/source/camera must be objects")
+            continue
+        source_hash = shot["source"].get("rg8_sha256")
+        if not isinstance(source_hash, str) or re.fullmatch(r"[0-9a-f]{64}", source_hash) is None:
+            problems.append(f"{tag}/{name}: source RG8 SHA-256 is missing or invalid")
+        if shot.get("kind") not in ("full", "feature", "viewport", "detail"):
+            problems.append(f"{tag}/{name}: unknown shot kind")
         if shot.get("status") != "complete":
             problems.append(f"{tag}/{name}: shot status {shot.get('status')!r}")
             continue
-        path = job_dir / name
-        if not path.is_file():
-            problems.append(f"{tag}/{name}: PNG missing")
-            continue
         try:
+            path = evidence_path(job_dir, name)
             png = inspect_png(path)
-        except (ValueError, zlib.error) as exc:
+        except (ValueError, OSError, zlib.error) as exc:
             problems.append(f"{tag}/{name}: invalid PNG: {exc}")
             continue
         if (png["width"], png["height"]) != (shot.get("width"), shot.get("height")):
             problems.append(f"{tag}/{name}: PNG is {png['width']}x{png['height']}, manifest says {shot.get('width')}x{shot.get('height')}")
         if png["sha256"] != shot.get("png_sha256"):
             problems.append(f"{tag}/{name}: PNG SHA-256 differs from the manifest")
-        if not allow_blank and (not shot.get("stats", {}).get("nonblank", False) or png["raw_byte_diversity"] < 4):
+        if not allow_blank and (shot["stats"].get("nonblank") is not True or png["raw_byte_diversity"] < 4):
             problems.append(f"{tag}/{name}: image is blank (diversity {png['raw_byte_diversity']})")
         if shot.get("kind") in ("full", "feature"):
             native = shot.get("source", {})
             scale = shot.get("camera", {}).get("scale")
-            if scale and (png["width"], png["height"]) != (native.get("native_width", 0) * scale, native.get("native_height", 0) * scale):
+            values = (scale, native.get("native_width"), native.get("native_height"))
+            if not all(isinstance(v, (int, float)) and not isinstance(v, bool)
+                       and 0 < v <= MAX_SIDE * 8 and v == int(v) for v in values):
+                problems.append(f"{tag}/{name}: invalid full-export native dimensions/scale")
+            elif not 1 <= scale <= 8 or (png["width"], png["height"]) != (values[1] * scale, values[2] * scale):
                 problems.append(f"{tag}/{name}: full export is not native size x {scale}")
     stray = sorted(p.name for p in job_dir.glob("*.png") if p.name not in listed)
     if stray:
@@ -540,23 +635,64 @@ def verify_bundle(bundle: Path, recheck_packs: bool = True) -> tuple[dict, list[
         raise CaptureError(EXIT_EVIDENCE, f"{path} not found; this directory is not a completed capture bundle")
     batch = read_json(path)
     problems: list[str] = []
+    if (bundle / ".world-art-exclusive-claim").exists():
+        problems.append("publication claim is active or retained; completion is uncertain")
     if batch.get("schema") != SCHEMA_BATCH:
         problems.append("wrong batch manifest schema")
     if not manifest_is_sealed(batch):
         problems.append("batch manifest_sha256 does not match its content (edited after capture)")
     if batch.get("status") != "completed":
         problems.append(f"batch status is {batch.get('status')!r}")
-    for entry in batch.get("jobs", []):
-        manifest_path = bundle / entry.get("manifest", "")
-        if not manifest_path.is_file():
-            problems.append(f"{entry.get('id')}: job manifest missing")
+    for key in ("viewer", "art_source", "engine", "presentation", "source_guard"):
+        if not isinstance(batch.get(key), dict):
+            problems.append(f"batch {key} must be an object")
+    jobs = batch.get("jobs")
+    if not isinstance(jobs, list) or not jobs or any(not isinstance(e, dict) for e in jobs):
+        problems.append("jobs must be a nonempty list of objects")
+    if problems:
+        return batch, problems
+    if batch.get("failures") != [] or batch["source_guard"].get("unchanged") is not True \
+            or batch["source_guard"].get("changes") != []:
+        problems.append("completed batch contains failures or does not prove unchanged art sources")
+    if type(batch.get("allow_blank")) is not bool:
+        problems.append("allow_blank must be a boolean")
+    ids: set[str] = set()
+    for entry in jobs:
+        identifier = entry.get("id")
+        if not isinstance(identifier, str) or not identifier or identifier in ids \
+                or entry.get("manifest") != identifier + "/manifest.json":
+            problems.append("invalid/duplicate job ID or manifest path")
             continue
-        if sha256_file(manifest_path) != entry.get("manifest_sha256"):
-            problems.append(f"{entry.get('id')}: job manifest bytes differ from the batch record")
-        problems += verify_job(manifest_path.parent, read_json(manifest_path), batch.get("art_source"),
-                               batch.get("viewer"), recheck_packs, bool(batch.get("allow_blank", False)))
-    if not batch.get("jobs"):
-        problems.append("no jobs recorded")
+        ids.add(identifier)
+        try:
+            manifest_path = evidence_path(bundle, entry["manifest"])
+            if sha256_file(manifest_path) != entry.get("manifest_sha256"):
+                problems.append(f"{identifier}: job manifest bytes differ from the batch record")
+                continue
+            manifest = read_json(manifest_path)
+            issues = verify_job(manifest_path.parent, manifest, batch["art_source"],
+                                batch["viewer"], recheck_packs, batch.get("allow_blank") is True)
+            problems += issues
+            if issues:
+                continue
+            if entry.get("status") != "complete":
+                problems.append(f"{identifier}: batch job is not complete")
+            if entry.get("shots") != shot_summary(identifier, manifest["shots"]):
+                problems.append(f"{identifier}: batch image inventory differs from verified job shots")
+            for key, expected in (("pack_sha256", manifest["input_pack"]["sha256"]),
+                                  ("pack_path", manifest["input_pack"]["path"]),
+                                  ("collection", manifest["job"].get("collection")),
+                                  ("art_size_policy", manifest.get("art_size_policy"))):
+                if entry.get(key) != expected:
+                    problems.append(f"{identifier}: batch {key} differs from its job manifest")
+            if manifest["presentation"] != batch["presentation"]:
+                problems.append(f"{identifier}: presentation differs from the batch")
+            renderer = {key: manifest["renderer"].get(key) for key in
+                        ("rendering_method", "rendering_driver", "graphics_adapter")}
+            if entry.get("renderer") != renderer:
+                problems.append(f"{identifier}: renderer summary differs from its job manifest")
+        except (CaptureError, OSError, ValueError, TypeError) as error:
+            problems.append(f"{identifier}: invalid evidence: {error}")
     return batch, problems
 
 
@@ -570,6 +706,9 @@ def compare_bundles(before: Path, after: Path) -> dict:
     batch_b, problems_b = verify_bundle(after, recheck_packs=False)
     report: dict = {"before_problems": problems_a, "after_problems": problems_b, "shots": [],
                     "presentation_equivalent": batch_a.get("presentation") == batch_b.get("presentation")}
+    if problems_a or problems_b:
+        report["comparable"] = False
+        return report
 
     def shots_of(batch: dict, root: Path) -> dict:
         found = {}

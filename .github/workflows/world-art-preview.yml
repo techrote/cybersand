@@ -5,11 +5,17 @@ on:
     types: [opened, synchronize, reopened]
     paths:
       - 'godot/tools/world_art_*'
+      - 'godot/shaders/material_*.gdshader'
+      - 'godot/shaders/glow_composite.gdshader'
+      - 'godot/scripts/palette_shader_selector.gd'
+      - 'godot/scripts/material_appearance_lut.gd'
       - 'godot/tools/world_design_pack_adapter.gd'
       - 'godot/tests/world_art_preview_smoke.gd'
       - 'godot/tests/test_world_design_pack_adapter.gd'
-      - 'docs/tools/world-art-preview.md'
-      - 'tools/world_art_preview_launcher.py'
+      - 'docs/tools/world-art*.md'
+      - 'docs/tools/art-pipeline-unification.md'
+      - 'tools/world_art_*.py'
+      - 'tools/test_world_art_*.py'
       - '.github/workflows/world-art-preview.yml'
       - 'docs/world-design/**'
   workflow_dispatch:
@@ -35,6 +41,7 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           lfs: false
           persist-credentials: false
       - name: Prepare Godot 4.7 stable on Linux
@@ -104,6 +111,7 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           lfs: false
           persist-credentials: false
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065

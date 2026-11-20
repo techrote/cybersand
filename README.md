@@ -99,6 +99,17 @@ construction details and reproducible captures.
 
 ![Neon Reliquary rendered in CyberSand](docs/images/neon-reliquary/overview.png)
 
+## World Art viewer and capture
+
+The [unified World Art pipeline](docs/tools/art-pipeline-unification.md) provides
+one standalone Godot 4.7 viewer and unattended capture path for fifteen original
+collections and 120 reusable features. Open the
+[portable Windows evaluator](docs/tools/world-art-evaluation.md) for its bundled
+runtime, interactive viewer and offline gallery, or use the
+[one-checkout launch instructions](docs/tools/world-art-preview.md).
+Large/asymmetric art dimensions are independent of native playable World limits.
+This integration remains Draft/HOLD pending explicit owner acceptance.
+
 ## Development
 
 **Current source, reviewed 2026-09-08:** this checkout preserves the acquired

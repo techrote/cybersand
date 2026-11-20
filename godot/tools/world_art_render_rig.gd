@@ -127,7 +127,6 @@ func _sync() -> void:
 	_overlay.size = Vector2(pixels)
 	_emission_viewport.size = Vector2i(maxi(1, (pixels.x + 1) / 2),
 		maxi(1, (pixels.y + 1) / 2))
-	_emission_rect.size = Vector2(_emission_viewport.size)
 	var view_end: Vector2 = _origin + _world_view
 	var clipped_origin: Vector2 = _origin.max(Vector2.ZERO)
 	var clipped_end: Vector2 = view_end.min(Vector2(_world_size))
@@ -138,6 +137,14 @@ func _sync() -> void:
 		(clipped_origin.x - _origin.x) / _world_view.x,
 		(clipped_origin.y - _origin.y) / _world_view.y,
 		clipped_size.x / _world_view.x, clipped_size.y / _world_view.y)
+	# The production emission shader clamps samples to the source boundary. Its
+	# draw rectangle must therefore cover only actual source cells, just like the
+	# palette mask. Otherwise bright edge cells repeat across the letterboxing.
+	# The composite still draws over the whole viewport and preserves edge halos.
+	var emission_pixels := Vector2(_emission_viewport.size)
+	_emission_rect.position = Vector2(view_rect.x, view_rect.y) * emission_pixels
+	_emission_rect.size = Vector2(view_rect.z, view_rect.w) * emission_pixels
+	_emission_rect.visible = clipped_size.x > 0.0 and clipped_size.y > 0.0
 	_palette.set_shader_parameter("world_size_px", Vector2(_world_size))
 	_palette.set_shader_parameter("view_size_px", clipped_size.max(Vector2.ONE * 0.0001))
 	_palette.set_shader_parameter("view_rect_uv", view_rect)
@@ -147,8 +154,8 @@ func _sync() -> void:
 	_palette.set_shader_parameter("structured_detail", 1.0 if _quality else 0.0)
 	_palette.set_shader_parameter("presentation_time_override", _time)
 	_emission.set_shader_parameter("world_size_px", Vector2(_world_size))
-	_emission.set_shader_parameter("view_size_px", _world_view)
-	_emission.set_shader_parameter("camera_origin_px", _origin)
+	_emission.set_shader_parameter("view_size_px", clipped_size.max(Vector2.ONE * 0.0001))
+	_emission.set_shader_parameter("camera_origin_px", clipped_origin)
 	_emission.set_shader_parameter("world_texture", _world)
 	_emission.set_shader_parameter("presentation_time_override", _time)
 	_overlay.visible = _glow

@@ -17,6 +17,7 @@ const EXPORT_HALO_CELLS: int = 32
 const MAX_EXPORT_PIXELS: int = 50000000
 
 var art_root := ""
+var _protect_art_root := true
 var export_root := ""
 var design_revision := "unverified external checkout"
 var pack_path := ""
@@ -48,6 +49,8 @@ var _baseline_time := 1.37
 var _baseline_glow := true
 var _baseline_quality := true
 var _baseline_dimensions := Vector2i.ZERO
+var _baseline_context: Dictionary = {}
+var _source_paths: Array[String] = []
 var last_export_dir := ""
 var last_error := ""
 
@@ -81,16 +84,23 @@ func _ready() -> void:
 	get_window().title = "CyberSand World Art Preview"
 	art_root = ProjectSettings.globalize_path("res://../docs/world-design")
 	export_root = ProjectSettings.globalize_path("user://world-art-preview/captures")
+	var explicit_art_root := false
 	for arg: String in OS.get_cmdline_user_args():
 		if arg.begins_with("--art-root="):
 			art_root = arg.trim_prefix("--art-root=")
+			explicit_art_root = true
 		elif arg.begins_with("--pack="):
 			pack_path = arg.trim_prefix("--pack=")
-			art_root = pack_path.get_base_dir().get_base_dir()
 		elif arg.begins_with("--export-root="):
 			export_root = arg.trim_prefix("--export-root=")
 		elif arg.begins_with("--design-revision="):
 			design_revision = arg.trim_prefix("--design-revision=")
+	if not pack_path.is_empty() and not explicit_art_root:
+		# This ancestor only helps discover sibling collections. An arbitrary
+		# direct pack may live in Downloads or at a drive root; its guessed
+		# ancestor is not an explicitly supplied read-only artwork tree.
+		art_root = _absolute_path(pack_path).get_base_dir().get_base_dir()
+		_protect_art_root = false
 	_build_ui()
 	_setup_initial_renderer()
 	root_entry.text = art_root
@@ -120,14 +130,14 @@ func _build_ui() -> void:
 	left_col.add_theme_constant_override("separation", 9)
 	left.add_child(left_col)
 	_label(left_col, "WORLD ART / COLLECTIONS", 15)
-	_label(left_col, "Read-only proposals from PR #454", 11)
+	_label(left_col, "15 collections / 120 reusable features", 11)
 	root_entry = LineEdit.new()
 	root_entry.placeholder_text = "World-design root directory"
 	root_entry.tooltip_text = "Folder containing lumen-fault/pack.json and the other art collections."
-	root_entry.text_submitted.connect(func(_v: String) -> void: art_root = root_entry.text; discover_collections())
+	root_entry.text_submitted.connect(func(_v: String) -> void: _choose_art_root(root_entry.text))
 	left_col.add_child(root_entry)
 	var browse := _button(left_col, "Choose directory…", func() -> void: directory_dialog.popup_centered_ratio(0.72))
-	var scan := _button(left_col, "Scan collections", func() -> void: art_root = root_entry.text; discover_collections())
+	var scan := _button(left_col, "Scan collections", func() -> void: _choose_art_root(root_entry.text))
 	collection_list = ItemList.new()
 	collection_list.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	collection_list.item_selected.connect(func(index: int) -> void: choose_collection(index))
@@ -189,7 +199,7 @@ func _build_ui() -> void:
 	baseline_overlay = TextureRect.new()
 	baseline_overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	baseline_overlay.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	baseline_overlay.stretch_mode = TextureRect.STRETCH_SCALE
+	baseline_overlay.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	baseline_overlay.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	baseline_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	baseline_overlay.visible = false
@@ -220,9 +230,9 @@ func _build_ui() -> void:
 	controls.add_theme_constant_override("separation", 9)
 	right.add_child(controls)
 	_label(controls, "PRESENTATION", 15)
-	glow_toggle = _check(controls, "Emission + glow", true, func(v: bool) -> void: _glow = v; _update_presentation())
-	quality_toggle = _check(controls, "Structured material detail", true, func(v: bool) -> void: _quality = v; _update_presentation())
-	background_toggle = _check(controls, "Background / decor", true, func(v: bool) -> void: _background_enabled = v; _update_presentation())
+	glow_toggle = _check(controls, "Emission + glow", true, func(v: bool) -> void: _hide_comparison(); _glow = v; _update_presentation())
+	quality_toggle = _check(controls, "Structured material detail", true, func(v: bool) -> void: _hide_comparison(); _quality = v; _update_presentation())
+	background_toggle = _check(controls, "Background / decor", true, func(v: bool) -> void: _hide_comparison(); _background_enabled = v; _update_presentation())
 	grid_toggle = _check(controls, "Native-cell grid", false, func(v: bool) -> void: grid_overlay.visible = v)
 	_label(controls, "PRESENTATION TIME", 11)
 	time_slider = HSlider.new()
@@ -230,11 +240,11 @@ func _build_ui() -> void:
 	time_slider.max_value = 60.0
 	time_slider.step = 0.01
 	time_slider.value = _presentation_time
-	time_slider.value_changed.connect(func(value: float) -> void: _presentation_time = value; _update_presentation())
+	time_slider.value_changed.connect(func(value: float) -> void: _hide_comparison(); _presentation_time = value; _update_presentation())
 	controls.add_child(time_slider)
-	play_toggle = _check(controls, "Play shader animation [Space]", false, func(v: bool) -> void: _playing = v)
+	play_toggle = _check(controls, "Play shader animation [Space]", false, func(v: bool) -> void: _hide_comparison(); _playing = v)
 	_label(controls, "EXPORT (REAL FRAMEBUFFER)", 13)
-	_label(controls, "Full-map export uses 32-cell halo tiles.", 11)
+	_label(controls, "Full export preserves authored bounds.", 11)
 	export_scale_picker = OptionButton.new()
 	export_scale_picker.add_item("1× native resolution", 1)
 	export_scale_picker.add_item("2× native resolution", 2)
@@ -258,7 +268,7 @@ func _build_ui() -> void:
 	directory_dialog = FileDialog.new()
 	directory_dialog.access = FileDialog.ACCESS_FILESYSTEM
 	directory_dialog.file_mode = FileDialog.FILE_MODE_OPEN_DIR
-	directory_dialog.dir_selected.connect(func(path: String) -> void: art_root = path; root_entry.text = path; discover_collections())
+	directory_dialog.dir_selected.connect(_choose_art_root)
 	add_child(directory_dialog)
 
 func _label(parent: Node, message: String, font_size: int) -> Label:
@@ -299,8 +309,13 @@ func _status(message: String, failed: bool = false) -> void:
 	if failed:
 		push_warning(message)
 
+func _choose_art_root(path: String) -> void:
+	art_root = path
+	_protect_art_root = true
+	discover_collections()
+
 func discover_collections() -> void:
-	art_root = art_root.simplify_path()
+	art_root = _absolute_path(art_root)
 	root_entry.text = art_root
 	_collections.clear()
 	collection_list.clear()
@@ -338,18 +353,27 @@ func choose_collection(index: int) -> void:
 		collection_list.select(index)
 
 func _read_pack(path: String) -> Dictionary:
-	if not FileAccess.file_exists(path):
+	var source := FileAccess.open(path, FileAccess.READ)
+	if source == null:
 		return {"ok": false, "error": "Missing pack: " + path}
-	var contents: String = FileAccess.get_file_as_string(path)
+	var contents: PackedByteArray = source.get_buffer(source.get_length())
+	var read_error: Error = source.get_error()
+	source.close()
+	if read_error != OK:
+		return {"ok": false, "error": "Cannot read pack: " + path}
 	var parser := JSON.new()
-	if parser.parse(contents) != OK:
+	if parser.parse(contents.get_string_from_utf8()) != OK:
 		return {"ok": false, "error": "JSON line %d: %s" % [
 			parser.get_error_line(), parser.get_error_message()]}
 	var inspection: Dictionary = Adapter.inspect(parser.data)
 	if not inspection.ok:
 		return inspection
+	# Hash the bytes actually parsed. An editor may replace the file during load.
+	var hash_context := HashingContext.new()
+	hash_context.start(HashingContext.HASH_SHA256)
+	hash_context.update(contents)
 	return {"ok": true, "pack": parser.data, "info": inspection,
-		"sha256": FileAccess.get_sha256(path)}
+		"sha256": hash_context.finish().hex_encode()}
 
 func _chosen_feature() -> String:
 	if feature_picker.selected <= 0 or feature_picker.selected - 1 >= _feature_ids.size():
@@ -362,6 +386,9 @@ func _chosen_variant() -> String:
 	return variant_picker.get_item_text(variant_picker.selected)
 
 func open_pack(path: String, preserve_view: bool = false) -> bool:
+	if _busy:
+		return false
+	path = _absolute_path(path)
 	_status("Loading " + path.get_file() + " …")
 	var loaded: Dictionary = _read_pack(path)
 	if not loaded.ok:
@@ -381,6 +408,7 @@ func open_pack(path: String, preserve_view: bool = false) -> bool:
 	if image == null or image.is_empty():
 		_status("Cannot construct RG8 source; last good render retained", true)
 		return false
+	_hide_comparison()
 	_pack = loaded.pack
 	_info = loaded.info
 	_result = input
@@ -388,6 +416,8 @@ func open_pack(path: String, preserve_view: bool = false) -> bool:
 	_native_size = input["size"]
 	pack_path = path
 	pack_hash = loaded.sha256
+	if not _source_paths.has(path):
+		_source_paths.append(path)
 	rig.replace_input(image)
 	_loaded = true
 	_feature_ids.clear()
@@ -436,6 +466,7 @@ func _select_render(preserve_view: bool) -> void:
 	if image == null or image.is_empty():
 		_status("RG8 image construction failed", true)
 		return
+	_hide_comparison()
 	_result = input
 	_rg8 = input.data
 	_native_size = input["size"]
@@ -463,8 +494,9 @@ func reload_pack() -> bool:
 	return open_pack(pack_path, true)
 
 func _on_canvas_resized() -> void:
-	if rig == null:
+	if rig == null or _busy:
 		return
+	_hide_comparison()
 	var old_size: Vector2i = rig.size
 	var centre: Vector2 = _origin + Vector2(old_size) / maxf(_zoom, 0.00001) * 0.5
 	var pixels := Vector2i(maxi(1, roundi(canvas_frame.size.x)), maxi(1, roundi(canvas_frame.size.y)))
@@ -485,8 +517,9 @@ func fit_height() -> void:
 	_fit_to("height")
 
 func _fit_to(mode: String) -> void:
-	if not _loaded:
+	if not _loaded or _busy:
 		return
+	_hide_comparison()
 	var pixels: Vector2 = Vector2(rig.size)
 	var horizontal: float = pixels.x / float(_native_size.x)
 	var vertical: float = pixels.y / float(_native_size.y)
@@ -495,7 +528,8 @@ func _fit_to(mode: String) -> void:
 		target = horizontal
 	elif mode == "height":
 		target = vertical
-	_zoom = clampf(target * 0.96, 0.03, 32.0)
+	# Automatic fitting must remain complete even on a small application window.
+	_zoom = clampf(target * 0.96, 0.00001, 32.0)
 	_fit_policy = mode
 	_origin = Vector2(_native_size) * 0.5 - pixels / _zoom * 0.5
 	_update_camera()
@@ -503,6 +537,7 @@ func _fit_to(mode: String) -> void:
 func _navigate_from_minimap(world_centre: Vector2) -> void:
 	if not _loaded or _busy:
 		return
+	_hide_comparison()
 	_fit_policy = "manual"
 	_origin = world_centre - Vector2(rig.size) / _zoom * 0.5
 	_update_camera()
@@ -510,6 +545,7 @@ func _navigate_from_minimap(world_centre: Vector2) -> void:
 func _pan_by_keyboard(direction: Vector2) -> void:
 	if not _loaded or _busy:
 		return
+	_hide_comparison()
 	_fit_policy = "manual"
 	_origin += direction * (Vector2(rig.size) / _zoom) * 0.18
 	_update_camera()
@@ -527,14 +563,18 @@ func _update_export_budget() -> void:
 			requested, scale, MAX_EXPORT_PIXELS]
 
 func actual_pixels() -> void:
-	if not _loaded:
+	if not _loaded or _busy:
 		return
+	_hide_comparison()
 	_fit_policy = "manual"
 	_zoom = 1.0
 	_origin = Vector2(_native_size) * 0.5 - Vector2(rig.size) * 0.5
 	_update_camera()
 
 func reset_view() -> void:
+	if _busy:
+		return
+	_hide_comparison()
 	_presentation_time = 1.37
 	time_slider.set_value_no_signal(_presentation_time)
 	_playing = false
@@ -549,7 +589,7 @@ func reset_view() -> void:
 	fit_view()
 
 func _update_camera() -> void:
-	if rig == null:
+	if rig == null or _busy:
 		return
 	var view_size := Vector2(rig.size) / maxf(_zoom, 0.00001)
 	rig.set_view(_origin, view_size)
@@ -566,13 +606,13 @@ func _update_camera() -> void:
 	size_label.text = "%d × %d cells · %.2f px/cell" % [_native_size.x, _native_size.y, _zoom]
 
 func _update_presentation() -> void:
-	if rig == null:
+	if rig == null or _busy:
 		return
 	rig.set_presentation(_presentation_time, _glow, _quality)
 	rig.set_background_enabled(_background_enabled)
 
 func _process(delta: float) -> void:
-	if _playing:
+	if _playing and not _busy:
 		_presentation_time = fposmod(_presentation_time + delta, 60.0)
 		time_slider.set_value_no_signal(_presentation_time)
 		_update_presentation()
@@ -583,6 +623,7 @@ func _on_canvas_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		var mouse: InputEventMouseButton = event
 		if mouse.pressed and mouse.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN]:
+			_hide_comparison()
 			var world_under: Vector2 = _origin + mouse.position / _zoom
 			var factor: float = 1.2 if mouse.button_index == MOUSE_BUTTON_WHEEL_UP else 1.0 / 1.2
 			_fit_policy = "manual"
@@ -596,6 +637,7 @@ func _on_canvas_input(event: InputEvent) -> void:
 	elif event is InputEventMouseMotion:
 		var motion: InputEventMouseMotion = event
 		if _dragging:
+			_hide_comparison()
 			_fit_policy = "manual"
 			_origin -= motion.relative / _zoom
 			_update_camera()
@@ -603,6 +645,9 @@ func _on_canvas_input(event: InputEvent) -> void:
 		viewport_container.accept_event()
 
 func _inspect(pixel: Vector2) -> void:
+	if baseline_overlay.visible:
+		pointer_label.text = "Pinned framebuffer\nSource " + _baseline_hash.substr(0, 12)
+		return
 	var world := _origin + pixel / _zoom
 	var point := Vector2i(floori(world.x), floori(world.y))
 	if point.x < 0 or point.y < 0 or point.x >= _native_size.x or point.y >= _native_size.y:
@@ -655,55 +700,133 @@ func pin_current() -> void:
 	_pin_after_frames()
 
 func _pin_after_frames() -> void:
+	_busy = true
+	var context: Dictionary = _frame_context()
 	await RenderingServer.frame_post_draw
 	await RenderingServer.frame_post_draw
 	_baseline = rig.get_texture().get_image()
 	if _baseline == null or _baseline.is_empty():
+		_end_busy()
 		_status("Pin failed: no graphical framebuffer", true)
 		return
 	_baseline.convert(Image.FORMAT_RGB8)
-	_baseline_origin = _origin
-	_baseline_zoom = _zoom
-	_baseline_time = _presentation_time
-	_baseline_glow = _glow
-	_baseline_quality = _quality
+	_baseline_origin = Vector2(context.presentation.camera_origin[0], context.presentation.camera_origin[1])
+	_baseline_zoom = context.presentation.zoom
+	_baseline_time = context.presentation.time
+	_baseline_glow = context.presentation.glow
+	_baseline_quality = context.presentation.structured_detail
 	_baseline_dimensions = rig.size
-	_baseline_hash = pack_hash
-	_baseline_rg8_hash = _result.get("rg8_sha256", "")
+	_baseline_hash = context.pack_sha256
+	_baseline_rg8_hash = context.source_rg8_sha256
+	_baseline_context = context
 	baseline_overlay.texture = ImageTexture.create_from_image(_baseline)
 	baseline_overlay.visible = false
 	compare_button.disabled = false
 	compare_button.text = "Show before [B]"
+	_end_busy()
 	_status("Pinned genuine rendered frame at source " + _baseline_hash.substr(0, 12))
 
-func toggle_comparison() -> void:
-	if _baseline == null or _baseline.is_empty() or not _loaded:
-		return
-	if baseline_overlay.visible:
+func _end_busy() -> void:
+	_busy = false
+	# Input controls may have changed while an asynchronous draw was frozen.
+	# Apply that pending presentation/selection only after its snapshot is saved.
+	var geometry: Dictionary = _result.get("geometry", {})
+	if _chosen_feature() != geometry.get("feature", "") or _chosen_variant() != geometry.get("variant", ""):
+		_select_render(true)
+	_select_list_for_path(pack_path)
+	var pixels := Vector2i(maxi(1, roundi(canvas_frame.size.x)), maxi(1, roundi(canvas_frame.size.y)))
+	if rig.size != pixels:
+		_on_canvas_resized()
+	_update_presentation()
+
+func _hide_comparison() -> void:
+	if baseline_overlay != null and baseline_overlay.visible:
 		baseline_overlay.visible = false
 		compare_button.text = "Show before [B]"
+		_update_camera()
+
+func toggle_comparison() -> void:
+	if _baseline == null or _baseline.is_empty() or not _loaded or _busy:
+		return
+	if baseline_overlay.visible:
+		_hide_comparison()
+		_update_camera()
 		_status("Current source " + pack_hash.substr(0, 12))
 		return
 	_origin = _baseline_origin
 	_zoom = _baseline_zoom
+	_fit_policy = "manual"
 	_presentation_time = _baseline_time
 	time_slider.set_value_no_signal(_presentation_time)
 	_glow = _baseline_glow
 	glow_toggle.set_pressed_no_signal(_glow)
 	_quality = _baseline_quality
 	quality_toggle.set_pressed_no_signal(_quality)
+	_background_enabled = _baseline_context.presentation.background
+	background_toggle.set_pressed_no_signal(_background_enabled)
 	_playing = false
 	play_toggle.set_pressed_no_signal(false)
 	_update_camera()
 	_update_presentation()
 	baseline_overlay.visible = true
+	var pinned_size: Array = _baseline_context.native_dimensions
+	minimap.set("native_size", Vector2i(pinned_size[0], pinned_size[1]))
+	minimap.set("view_size", Vector2(_baseline_dimensions) / _baseline_zoom)
+	minimap.queue_redraw()
+	size_label.text = "%d × %d cells · pinned frame" % [pinned_size[0], pinned_size[1]]
+	_inspect(Vector2.ZERO)
 	compare_button.text = "Show after [B]"
 	_status("BEFORE (captured image %s) ⇄ current %s" % [
 		_baseline_hash.substr(0, 12), pack_hash.substr(0, 12)])
 
+func _absolute_path(path: String) -> String:
+	var normal: String = path.replace("\\", "/")
+	if normal.begins_with("res://") or normal.begins_with("user://"):
+		normal = ProjectSettings.globalize_path(normal)
+	elif not normal.is_absolute_path():
+		normal = DirAccess.open(".").get_current_dir().path_join(normal)
+	normal = normal.simplify_path()
+	return normal if normal == "/" or normal.ends_with(":/") else normal.trim_suffix("/")
+
+func _path_is_inside(child: String, parent: String) -> bool:
+	var a: String = _absolute_path(child)
+	var b: String = _absolute_path(parent)
+	if OS.get_name() == "Windows":
+		a = a.to_lower()
+		b = b.to_lower()
+	return a == b or a.begins_with(b if b.ends_with("/") else b + "/")
+
+func _has_link_component(path: String) -> bool:
+	# Refuse aliases instead of guessing where an export will write. This also
+	# checks existing ancestors of a destination that has not been created yet.
+	var current: String = _absolute_path(path)
+	while not current.is_empty():
+		var parent: String = current.get_base_dir()
+		if parent == current or parent.is_empty():
+			break
+		var directory := DirAccess.open(parent)
+		if directory != null and directory.is_link(current.get_file()):
+			return true
+		current = parent
+	return false
+
 func _new_export_directory(kind: String) -> String:
-	var parent: String = export_root.simplify_path()
-	if parent == pack_path.get_base_dir() or parent.begins_with(pack_path.get_base_dir() + "/"):
+	var parent: String = _absolute_path(export_root)
+	if _has_link_component(parent):
+		return ""
+	var guarded: Array[String] = []
+	var sources: Array[String] = _source_paths.duplicate()
+	sources.append(pack_path)
+	for source: String in sources:
+		if _has_link_component(source):
+			return ""
+		guarded.append(source.get_base_dir())
+	if _protect_art_root and not art_root.is_empty():
+		guarded.append(art_root)
+	for source: String in guarded:
+		if _has_link_component(source) or _path_is_inside(parent, source):
+			return ""
+	if parent.is_empty():
 		return ""
 	if DirAccess.make_dir_recursive_absolute(parent) != OK:
 		return ""
@@ -732,18 +855,20 @@ func export_art(kind: String) -> void:
 		_status("Select a feature in the left panel before exporting it", true)
 		return
 	_busy = true
+	var pinned_before: bool = kind in ["viewport", "detail"] and baseline_overlay.visible and _baseline != null
+	# Keep provenance paired with the captured source across asynchronous draws.
+	var context: Dictionary = _baseline_context.duplicate(true) if pinned_before else _frame_context()
+	var current_hash: String = pack_hash
 	var directory: String = _new_export_directory(kind)
 	if directory.is_empty():
-		_busy = false
+		_end_busy()
 		_status("Cannot create a new safe export directory outside the source pack", true)
 		return
 	last_export_dir = directory
 	_json_file(directory.path_join("status.json"), {"status": "incomplete", "kind": kind})
 	_status("Exporting " + kind + " …")
 	var exported: Image
-	var source_size: Vector2i = _native_size
-	var source_rg8_hash: String = _result.get("rg8_sha256", "")
-	var pinned_before: bool = kind in ["viewport", "detail"] and baseline_overlay.visible and _baseline != null
+	var source_rg8_hash: String = context.source_rg8_sha256
 	if kind in ["viewport", "detail"]:
 		if pinned_before:
 			# The visible Before view is a captured original framebuffer, not
@@ -763,49 +888,63 @@ func export_art(kind: String) -> void:
 		var input: Dictionary = (Adapter.build_combined(_pack) if kind == "combined"
 			else Adapter.build_feature(_pack, _chosen_feature(), _chosen_variant()))
 		if input.ok:
-			source_size = input["size"]
+			var source_size: Vector2i = input["size"]
+			context.native_dimensions = [source_size.x, source_size.y]
+			context.selected_feature = "" if kind == "combined" else input.geometry.feature
+			context.selected_variant = "" if kind == "combined" else input.geometry.variant
 			source_rg8_hash = input.get("rg8_sha256", "")
-			exported = await _render_full(input, export_scale_picker.get_selected_id())
+			exported = await _render_full(input, export_scale_picker.get_selected_id(), context.presentation)
 	if exported == null or exported.is_empty():
-		_busy = false
+		_end_busy()
 		_status("Framebuffer export failed; incomplete status retained: " + directory, true)
 		return
 	exported.convert(Image.FORMAT_RGB8)
 	var image_path: String = directory.path_join(kind + ".png")
 	if exported.save_png(image_path) != OK:
-		_busy = false
+		_end_busy()
 		_status("PNG write failed; incomplete status retained: " + directory, true)
 		return
 	var metadata := {
-		"kind": kind, "pack_path": pack_path,
-		"pack_sha256": _baseline_hash if pinned_before else pack_hash,
-		"currently_loaded_pack_sha256": pack_hash,
+		"kind": kind, "pack_path": context.pack_path,
+		"pack_sha256": context.pack_sha256,
+		"currently_loaded_pack_sha256": current_hash,
 		"visible_frame": "pinned-before" if pinned_before else "current",
-		"design_revision": design_revision, "selected_feature": _chosen_feature(),
-		"selected_variant": _chosen_variant(), "native_dimensions": [source_size.x, source_size.y],
+		"design_revision": context.design_revision, "selected_feature": context.selected_feature,
+		"selected_variant": context.selected_variant, "native_dimensions": context.native_dimensions,
 		"pixels": [exported.get_width(), exported.get_height()],
 		"framebuffer": "Godot SubViewportTexture.get_image",
 		"input_format": "Image.FORMAT_RG8; native material IDs and synthetic conditions",
 		"source_rg8_sha256": source_rg8_hash,
-		"presentation": {"time": _presentation_time, "glow": _glow,
-			"structured_detail": _quality, "background": _background_enabled,
-			"zoom": _zoom, "camera_origin": [_origin.x, _origin.y]},
-		"renderer": rig.renderer_identity(),
+		"presentation": context.presentation,
+		"renderer": context.renderer,
 		"image_file": kind + ".png", "png_sha256": FileAccess.get_sha256(image_path),
 		"baseline_source_sha256": _baseline_hash if _baseline != null else "",
 	}
 	if not _json_file(directory.path_join("metadata.json"), metadata) or not _json_file(
 			directory.path_join("status.json"), {"status": "complete", "kind": kind,
 				"png_sha256": metadata.png_sha256}):
-		_busy = false
+		_end_busy()
 		_status("Export metadata failed; check partial output: " + directory, true)
 		return
-	_busy = false
+	_end_busy()
 	_status("Saved genuine %s PNG: %s" % [kind, image_path])
 	print("WORLD_ART_EXPORT " + JSON.stringify({"status": "complete", "path": image_path,
 		"sha256": metadata.png_sha256}))
 
-func _render_full(input: Dictionary, output_scale: int) -> Image:
+func _frame_context() -> Dictionary:
+	var geometry: Dictionary = _result.get("geometry", {})
+	return {"pack_path": pack_path, "pack_sha256": pack_hash,
+		"design_revision": design_revision,
+		"selected_feature": geometry.get("feature", ""),
+		"selected_variant": geometry.get("variant", ""),
+		"native_dimensions": [_native_size.x, _native_size.y],
+		"source_rg8_sha256": _result.get("rg8_sha256", ""),
+		"presentation": {"time": _presentation_time, "glow": _glow,
+			"structured_detail": _quality, "background": _background_enabled,
+			"zoom": _zoom, "camera_origin": [_origin.x, _origin.y], "fit_policy": _fit_policy},
+		"renderer": rig.renderer_identity()}
+
+func _render_full(input: Dictionary, output_scale: int, presentation: Dictionary) -> Image:
 	var dims: Vector2i = input["size"]
 	var scale: int = clampi(output_scale, 1, 2)
 	if dims.x * dims.y * scale * scale > MAX_EXPORT_PIXELS:
@@ -816,4 +955,4 @@ func _render_full(input: Dictionary, output_scale: int) -> Image:
 		return null
 	# The tiled halo renderer is shared with the unattended capture runner.
 	return await FullExport.render(get_tree(), input_image, scale,
-		_presentation_time, _glow, _quality, _background_enabled)
+		presentation.time, presentation.glow, presentation.structured_detail, presentation.background)

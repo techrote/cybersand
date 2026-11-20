@@ -485,7 +485,14 @@ func _frame_shot(shot: Dictionary, native: Vector2i) -> Dictionary:
 	if kind == "detail":
 		var rect := Rect2i(native.x / 4, native.y / 4, maxi(1, native.x / 2), maxi(1, native.y / 2))
 		if shot.get("crop") != null:
-			var raw: Array = shot.crop
+			var raw: Variant = shot.crop
+			if typeof(raw) != TYPE_ARRAY or raw.size() != 4:
+				return {"ok": false, "error": "crop must contain four bounded integer cell coordinates"}
+			for component: Variant in raw:
+				if typeof(component) not in [TYPE_INT, TYPE_FLOAT] \
+						or not is_finite(float(component)) or float(component) != floorf(float(component)) \
+						or float(component) < -Adapter.MAX_SIDE or float(component) > Adapter.MAX_SIDE:
+					return {"ok": false, "error": "crop component exceeds the art coordinate bounds"}
 			rect = Rect2i(int(raw[0]), int(raw[1]), int(raw[2]), int(raw[3]))
 			mode = "crop"
 		else:
@@ -513,7 +520,9 @@ func _frame_shot(shot: Dictionary, native: Vector2i) -> Dictionary:
 					target = horizontal
 				elif mode == "height":
 					target = vertical
-				zoom = clampf(target * 0.96, ZOOM_MIN, ZOOM_MAX)
+				# Automatic fit must include the requested axis even in a small
+				# viewport. ZOOM_MIN bounds manual zoom, not authored-world fitting.
+				zoom = minf(target * 0.96, ZOOM_MAX)
 				origin = Vector2(native) * 0.5 - Vector2(resolution) / zoom * 0.5
 			"native":
 				zoom = 1.0
@@ -533,7 +542,8 @@ func _frame_shot(shot: Dictionary, native: Vector2i) -> Dictionary:
 				origin = Vector2(float(rect[0]), float(rect[1])) + view_size * 0.5 - Vector2(resolution) / zoom * 0.5
 			_:
 				return {"ok": false, "error": "unknown framing mode '%s'" % mode}
-	if zoom < ZOOM_MIN or zoom > ZOOM_MAX:
+	if not is_finite(zoom) or zoom <= 0.0 or zoom > ZOOM_MAX \
+			or (zoom < ZOOM_MIN and mode not in ["fit", "width", "height"]):
 		return {"ok": false, "error": "zoom %.4f is outside %.2f..%.0f pixels per native cell" % [zoom, ZOOM_MIN, ZOOM_MAX]}
 	if resolution.x < 1 or resolution.y < 1 or resolution.x > MAX_SIDE or resolution.y > MAX_SIDE \
 			or resolution.x * resolution.y > MAX_PIXELS:

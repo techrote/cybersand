@@ -10,6 +10,18 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+## World Art inspection, capture and Windows evaluation
+
+| Question | Canonical route |
+| --- | --- |
+| How do I open all fifteen collections and 120 features without a native build? | [Portable Windows evaluator](../tools/world-art-evaluation.md), [one-checkout viewer](../tools/world-art-preview.md) |
+| Can I inspect 512×8192 or 16384×1024 art, and does that change the native World limit? | [Independent art capacity and compatibility](../tools/art-pipeline-unification.md#compatibility-contract-independent-limits) |
+| How do I capture a 67M-pixel PNG, verify it and safely retry after interruption? | [Unattended capture](../tools/world-art-capture.md) |
+| What is qualified on Windows and what still needs a physical GPU observation? | [Evaluation evidence and boundaries](../tools/world-art-evaluation.md) |
+
+[Additive World Art retrieval questions](retrieval-questions-world-art.json)
+are separate from the frozen evaluation set.
+
 For the combined #562 Materials Lab / #564 Workbench candidate, original source ancestry, shared history preservation, standalone evaluation and #563 merge-order boundaries, read the [combined qualification record](../audits/2026-11-12-mat-auth-workbench-integration.md).
 
 ## Materials Lab v1 review candidate — 2026-11-11

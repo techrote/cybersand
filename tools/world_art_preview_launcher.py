@@ -23,6 +23,7 @@ import os
 from pathlib import Path
 import platform
 import shutil
+import signal
 import subprocess
 import sys
 import tempfile
@@ -119,15 +120,35 @@ def run_logged(command: list[str], env: dict[str, str], timeout: float) -> tuple
     """Run, echo and record combined output. Returns (exit code or None on timeout, text)."""
     print("WORLD_ART_EXEC", json.dumps(command, ensure_ascii=False), flush=True)
     try:
+        process_options = ({"creationflags": subprocess.CREATE_NEW_PROCESS_GROUP}
+                           if os.name == "nt" else {"start_new_session": True})
         process = subprocess.Popen(command, env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                                   text=True, encoding="utf-8", errors="replace")
+                                   text=True, encoding="utf-8", errors="replace", **process_options)
     except OSError as exc:
         raise support.CaptureError(support.EXIT_ENGINE, f"cannot start Godot: {exc}") from None
     timed_out = threading.Event()
 
+    def terminate_owned_tree() -> None:
+        # Windows console Godot can own a second engine process. Killing only
+        # the console leaves a renderer writing into a supposedly failed bundle.
+        if os.name == "nt":
+            try:
+                subprocess.run(["taskkill", "/PID", str(process.pid), "/T", "/F"],
+                               stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                               timeout=15, check=False)
+            except (OSError, subprocess.TimeoutExpired):
+                pass
+            if process.poll() is None:
+                process.kill()
+        else:
+            try:
+                os.killpg(process.pid, signal.SIGKILL)
+            except ProcessLookupError:
+                pass
+
     def kill() -> None:
         timed_out.set()
-        process.kill()
+        terminate_owned_tree()
 
     timer = threading.Timer(timeout, kill)
     timer.start()
@@ -138,8 +159,14 @@ def run_logged(command: list[str], env: dict[str, str], timeout: float) -> tuple
             lines.append(line)
             print(line, end="", flush=True)
         process.wait()
+    except BaseException:
+        terminate_owned_tree()
+        process.wait(timeout=20)
+        raise
     finally:
         timer.cancel()
+        if process.stdout is not None:
+            process.stdout.close()
     return (None if timed_out.is_set() else process.returncode), "".join(lines)
 
 
@@ -393,9 +420,7 @@ def run_capture(args: argparse.Namespace, godot_executable: str) -> int:
             entry["manifest_sha256"] = support.sha256_file(manifest_path)
             issues = support.verify_job(manifest_path.parent, manifest, art_source, viewer_expected or None,
                                         recheck_packs=True, allow_blank=args.allow_blank)
-            entry["shots"] = [{"id": s.get("id"), "kind": s.get("kind"), "file": f"{job['id']}/{s.get('file')}",
-                               "width": s.get("width"), "height": s.get("height"), "png_sha256": s.get("png_sha256")}
-                              for s in manifest.get("shots", []) if s.get("status") == "complete"]
+            entry["shots"] = support.shot_summary(job["id"], manifest.get("shots", []))
             entry["renderer"] = {k: manifest.get("renderer", {}).get(k) for k in
                                  ("rendering_method", "rendering_driver", "graphics_adapter")}
             if issues:
@@ -408,13 +433,6 @@ def run_capture(args: argparse.Namespace, godot_executable: str) -> int:
             _fail(failures, support.EXIT_RENDER, f"{job['id']}: no manifest was written", state)
         job_entries.append(entry)
 
-    # Release only our empty reservation. If it changed or cannot be removed,
-    # fail closed; prior evidence remains and a subsequent capture refuses it.
-    try:
-        publication_claim.rmdir()
-    except OSError as error:
-        _fail(failures, support.EXIT_EVIDENCE,
-              f"exclusive output claim could not be released safely: {error}", state)
     status = "completed" if not failures else "failed"
     batch = {
         "schema": support.SCHEMA_BATCH, "status": status, "failures": failures,
@@ -437,7 +455,18 @@ def run_capture(args: argparse.Namespace, godot_executable: str) -> int:
         "source_guard": source_guard, "jobs": job_entries,
     }
     support.seal_manifest(batch)
-    (output / "batch-manifest.json").write_text(json.dumps(batch, indent=2) + "\n", encoding="utf-8")
+    # A partial final manifest is never valid while the claim remains. Publish
+    # exclusively, flush, then release only our empty reservation. Interrupted
+    # or uncertain publication remains refused by both retries and verification.
+    try:
+        with (output / "batch-manifest.json").open("x", encoding="utf-8") as handle:
+            handle.write(json.dumps(batch, indent=2) + "\n")
+            handle.flush()
+            os.fsync(handle.fileno())
+        publication_claim.rmdir()
+    except OSError as error:
+        raise support.CaptureError(support.EXIT_EVIDENCE,
+                                   f"final publication did not complete; retained bundle must not be reused: {error}") from error
     result = {"status": status, "exit_code": support.EXIT_OK if not failures else state.get("code", support.EXIT_RENDER),
               "bundle": str(output), "batch_manifest": str(output / "batch-manifest.json"),
               "manifest_sha256": batch["manifest_sha256"], "elapsed_seconds": round(time.monotonic() - started, 1),

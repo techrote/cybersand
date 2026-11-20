@@ -378,6 +378,22 @@ class GraphicalCaptureTests(unittest.TestCase):
         if done.returncode not in (support.EXIT_USAGE, support.EXIT_ENGINE):
             self.assertIsNotNone(result, f"{name}: no WORLD_ART_CAPTURE_RESULT line")
             self.assertEqual(result["exit_code"], done.returncode)
+        # Keep exact temporary input bytes for the accepted dimension/compare
+        # fixtures, so an owner can reopen them after the CI temp directory is gone.
+        if done.returncode == 0 and not art_root:
+            batch = support.read_json(out / "batch-manifest.json")
+            inputs = EVIDENCE / "source-inputs" / name
+            inputs.mkdir(parents=True, exist_ok=False)
+            records = []
+            for entry in batch["jobs"]:
+                pack = Path(entry["pack_path"])
+                self.assertEqual(support.sha256_file(pack), entry["pack_sha256"])
+                target = inputs / (entry["id"] + ".json")
+                shutil.copyfile(pack, target)
+                records.append({"file": target.name, "sha256": entry["pack_sha256"],
+                                "job": entry["id"], "original_path": str(pack)})
+            (inputs / "source-inputs.json").write_text(
+                json.dumps({"bundle": name, "inputs": records}, indent=2) + "\n", encoding="utf-8")
         return out, result, done
 
     def manifests(self, out):
@@ -759,17 +775,21 @@ class GraphicalCaptureTests(unittest.TestCase):
                     "features": [{"id": "matrix", "size": [4, 4],
                                   "rectangles": [[0, 0, 4, 4, 62]], "variants": []}],
                 }), encoding="utf-8")
+                resolution = (320, 180) if max(width, height) >= 8192 else (640, 360)
                 out, _, _ = self.capture(f"size-matrix-{width}x{height}", "--pack", str(pack),
-                                          "--shots", "viewport", "--resolution", "640x360",
+                                          "--shots", "viewport", "--resolution", f"{resolution[0]}x{resolution[1]}",
                                           "--framing", "fit", art_root=False)
                 batch, problems = support.verify_bundle(out)
                 self.assertEqual(problems, [], f"{width}x{height}: {problems}")
                 job = support.read_json(out / batch["jobs"][0]["manifest"])
                 self.assertEqual((job["native"]["width"], job["native"]["height"]), (width, height))
                 shot = job["shots"][0]
-                self.assertEqual((shot["width"], shot["height"]), (640, 360))
+                self.assertEqual((shot["width"], shot["height"]), resolution)
                 self.assertTrue(shot["camera"]["map_fully_visible"])
                 self.assertFalse(any(shot["camera"]["clips"].values()))
+                if width == 16384 or height == 8192:
+                    self.assertLess(shot["camera"]["zoom"], support.ZOOM_MIN,
+                                    "automatic fit must not silently crop at the manual zoom floor")
                 self.assertTrue(shot["stats"]["nonblank"])
                 self.assertEqual(batch["jobs"][0]["art_size_policy"]["native_playable"],
                                  "not-qualified-by-art-pipeline")

@@ -10,6 +10,15 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+## World Art pipeline
+
+[Architecture, capacity and native compatibility](tools/art-pipeline-unification.md),
+[interactive viewer and one-checkout launch](tools/world-art-preview.md),
+[unattended capture and publication](tools/world-art-capture.md), and
+[portable Windows evaluator with offline gallery](tools/world-art-evaluation.md)
+own the integrated fifteen-collection / 120-feature art workflow. Draft/HOLD;
+source-qualified graphical evidence and physical GPU acceptance remain distinct.
+
 For deliberate historical research, use the isolated
 [engineering archaeology index](history/engineering/README.md). It is excluded
 from default current-answer retrieval and grants no implementation authority.

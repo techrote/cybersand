@@ -10,6 +10,19 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Unified World Art pipeline — 2026-11-20
+
+**Implementation candidate, Draft/HOLD:** the [unified art contract](../tools/art-pipeline-unification.md)
+provides one shared Godot RG8 renderer, interactive viewer, unattended capture,
+verified offline gallery and portable Windows evaluator for fifteen collections
+and 120 features. Art-only bounds are 16,384 cells per axis and 16,777,216 cells
+in total; ordinary full export is limited to 50M pixels and opt-in streamed
+export to 100M pixels / 65,536 per output axis. Native simulation/import limits
+are unchanged. The [capture guide](../tools/world-art-capture.md) owns explicit
+failure/no-takeover semantics; the [evaluation guide](../tools/world-art-evaluation.md)
+owns owner usage. Exact-source qualification and independent review are recorded
+in PR #685. Hosted ANGLE is separate from owner Windows/NVIDIA acceptance.
+
 ## GEN-008 Flatten / Bake History — 2026-11-13
 
 **Implementation candidate, Draft/HOLD:** issue #548 starts independently from
