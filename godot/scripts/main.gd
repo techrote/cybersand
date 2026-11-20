@@ -787,8 +787,12 @@ func workbench_apply(candidate: Dictionary, actors: Array, rectangles: Array, ex
 		policy: PackedInt32Array, normalize_water: bool, radius: int, response: String,
 		preserve_cells: bool = false, convert_liquid_inventory: bool = false, resume_play: bool = false,
 		generated_packet: Dictionary = {}, material_baseline: Dictionary = {},
-		apply_staged_water: bool = true) -> bool:
+		apply_staged_water: bool = true, authoring_patch: Dictionary = {}) -> bool:
 	if shared_workbench == null: return false
+	if not authoring_patch.is_empty() and (not paused or not preserve_cells or convert_liquid_inventory \
+			or not generated_packet.is_empty() or not material_baseline.is_empty() or apply_staged_water):
+		microscenario_error = "Construction patch requires a paused retained World and unchanged settings."
+		return false
 	if not pending_microscenario_apply.is_empty():
 		microscenario_error = "Wait for the pending workbench installation."
 		return false
@@ -827,6 +831,8 @@ func workbench_apply(candidate: Dictionary, actors: Array, rectangles: Array, ex
 		settings["workbench_generated"] = generated_packet
 	if not material_baseline.is_empty():
 		settings["workbench_material_baseline"] = material_baseline
+	if not authoring_patch.is_empty():
+		settings["workbench_authoring_patch"] = authoring_patch.duplicate(true)
 	# Editing a body or restoring the current authored start must not apply
 	# unfinished Water controls. Only explicit Apply/Load promotes that proposal;
 	# the accepted setup is recorded after native preparation and commit succeed.

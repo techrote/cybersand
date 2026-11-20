@@ -10,6 +10,26 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## SWARM-004 reciprocal Gentek construction — 2026-11-20
+
+**Draft/HOLD implementation candidate:** [programme #687](https://github.com/techrote/cybersand/issues/687)
+adds a bounded authored parts grammar, reciprocal native geometry proposals and
+an explicitly dependent experimental Shared Workbench path. The [focused contract](../systems/gentek-reciprocal-assembly.md)
+separates native development witnesses, unresolved hard obligations, corpus
+qualification and actual Windows Apply/Undo/Save/reopen acceptance. No production
+default, material/physics change, Viaduct identity change or automatic merge is authorized.
+
+## SWARM-004 experimental reciprocal authoring
+
+**Implementation candidate, Draft/HOLD:** the separate FRAMEWEAVER × MOSAIC
+[reciprocal dock and native retained patch](../architecture/experimental-workbench-authoring-patch.md)
+provide bounded native generation, proposal inspection, atomic Apply and inverse
+Undo, with ordinary authored-start persistence. Native composition qualification
+and [actual Windows graphical/package authoring and reopen](../operations/swarm004-workbench-playtest.md)
+remain explicit gates. The candidate preserves accepted main's Water authority,
+material IDs, native world limits, existing catalogue and Art lifetime; no Ready
+promotion, merge or production-default selection is authorized.
+
 ## Floating Oil in Wave Water
 
 The [impingement tank replay](../audits/2026-11-20-wave-oil-impinge.md) tests whether Water waves can lift and lower a floating Oil slick. In the previous build the Water–Oil boundary remained fixed through 900 ticks of observation.
