@@ -116,6 +116,34 @@ jobs:
           set -euo pipefail
           timeout 480 "$GODOT_BIN" --headless --path godot -s res://tests/bench_script_hotpath_native_fill.gd 2>&1 | tee build/script-hotpath-godot/benchmark.log
           grep -q 'SCRIPT_HOTPATH_BENCH_RESULT PASS' build/script-hotpath-godot/benchmark.log
+      - name: Run existing PAINT shapes and worker contracts in both modes
+        timeout-minutes: 12
+        run: |
+          set -euo pipefail
+          for mode in native script; do
+            if [ "$mode" = script ]; then export CYBERSAND_NATIVE_PAINT_FILL=script; else unset CYBERSAND_NATIVE_PAINT_FILL || true; fi
+            timeout 300 "$GODOT_BIN" --headless --path godot -s res://tests/test_paint_editor_shapes.gd 2>&1 | tee "build/script-hotpath-godot/shapes-$mode.log"
+            grep -q 'PAINT_EDITOR_SHAPES' "build/script-hotpath-godot/shapes-$mode.log"
+            timeout 300 "$GODOT_BIN" --headless --path godot -s res://tests/test_paint_editor_executor.gd 2>&1 | tee "build/script-hotpath-godot/executor-$mode.log"
+            grep -q 'PAINT_EXECUTOR' "build/script-hotpath-godot/executor-$mode.log"
+          done
+      - name: Prepare software rendering for mounted Workbench frame-gap A/B
+        timeout-minutes: 15
+        run: bash tools/ci/prepare_linux_display.sh
+      - name: Mounted Workbench A/B with PAINT gestures and per-frame gap telemetry
+        timeout-minutes: 20
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+          LP_NUM_THREADS: '2'
+        run: |
+          set -euo pipefail
+          for mode in native script; do
+            mkdir -p "$GITHUB_WORKSPACE/build/script-hotpath-godot/userdata-$mode"
+            if [ "$mode" = script ]; then export CYBERSAND_NATIVE_PAINT_FILL=script; else unset CYBERSAND_NATIVE_PAINT_FILL || true; fi
+            export XDG_DATA_HOME="$GITHUB_WORKSPACE/build/script-hotpath-godot/userdata-$mode"
+            timeout 600 xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24 -nolisten tcp"               "$GODOT_BIN" --path godot -s res://tests/test_paint_editor_workbench.gd               2>&1 | tee "build/script-hotpath-godot/workbench-$mode.log"
+            grep -q 'PAINT_EDITOR_WORKBENCH' "build/script-hotpath-godot/workbench-$mode.log"
+          done
       - name: Preserve full qualification and failure logs
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
