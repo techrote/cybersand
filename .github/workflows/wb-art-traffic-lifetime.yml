@@ -13,8 +13,8 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: wb-art-traffic-${{ github.ref }}
-  cancel-in-progress: true
+  group: wb-art-traffic-${{ github.event_name }}-${{ github.event_name == 'push' && github.ref || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'push' }}
 
 jobs:
   windows:
