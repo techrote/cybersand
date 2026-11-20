@@ -1,0 +1,287 @@
+{
+  "schema": 1,
+  "created_utc": "2026-11-20T03:31:56.867069+00:00",
+  "verdict": "PASS for Draft/HOLD owner evaluation of the implemented actor composition; automated source, runtime, graphical function and package custody gates passed. Hardware playfeel, default-renderer launcher acceptance and graphical performance acceptance remain open.",
+  "independence": "Reviewer read the complete integrated changed production source and did not implement actor, UI or native gameplay code. Build/qualification infrastructure authored by this reviewer was independently reviewed by another engineering agent; those immutable receipts are linked. This final verdict combines direct source inspection, direct report/log/file verification and actual image inspection, not only worker summaries.",
+  "starting_main": "de109d0131641d6adc8d25bb9ced7ca3d4991105",
+  "qualified_source_commit": "2e9bba9c2d1c3f5b0b8cb644c860d4ce0c463fa3",
+  "qualified_source_tree": "296fcff5e3564e40ff9856dda1160e943feb9a68",
+  "runtime_publication_commit": "7d7100c66ecc7e8b5456d3267ac6d580330ac8ea",
+  "runtime_publication_single_parent": "2e9bba9c2d1c3f5b0b8cb644c860d4ce0c463fa3",
+  "pr_snapshot": {
+    "number": 683,
+    "url": "https://github.com/techrote/cybersand/pull/683",
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "auto_merge": null,
+    "head_at_review": "7d7100c66ecc7e8b5456d3267ac6d580330ac8ea",
+    "base": "main"
+  },
+  "workflow_run": 44663989761,
+  "workflow_url": "https://github.com/techrote/cybersand/actions/runs/44663989761",
+  "jobs": {
+    "linux": {
+      "id": 136048800388,
+      "conclusion": "success"
+    },
+    "windows": {
+      "id": 136054525823,
+      "conclusion": "success"
+    },
+    "publisher": {
+      "id": 136060324176,
+      "conclusion": "success"
+    }
+  },
+  "changed_production_coverage": {
+    "production_paths": 23,
+    "authored_examples": 1,
+    "all_changed_production_paths_covered": true,
+    "production_files": [
+      "godot/native_extension/cyber_native_cell_world.hpp",
+      "godot/scripts/actor_rig_effects.gd",
+      "godot/scripts/main.gd",
+      "godot/scripts/physical_actor_effects.gd",
+      "godot/scripts/physical_actor_overlay.gd",
+      "godot/scripts/physical_actor_rig.gd",
+      "godot/scripts/physical_actor_session.gd",
+      "godot/scripts/physical_usable_runtime.gd",
+      "godot/scripts/prepared_physical_session.gd",
+      "godot/scripts/shared_workbench.gd",
+      "godot/scripts/simulation_worker.gd",
+      "godot/scripts/workbench_actor_catalog.gd",
+      "godot/scripts/workbench_actor_control.gd",
+      "godot/scripts/workbench_actor_panel.gd",
+      "godot/scripts/workbench_generated_map.gd",
+      "godot/scripts/workbench_generator_dialog.gd",
+      "godot/scripts/workbench_material_baseline.gd",
+      "godot/scripts/workbench_paint_editor_controller.gd",
+      "godot/scripts/workbench_paint_editor_overlay.gd",
+      "godot/scripts/workbench_physics_bridge.gd",
+      "godot/scripts/workbench_reactive_policy.gd",
+      "godot/scripts/workbench_setup.gd",
+      "godot/scripts/workbench_water_lab.gd"
+    ],
+    "last_delta": "Four human-input cancellation call sites (Details, Flatten, Water Lab, Generator) across three production files; the reusable Generator only calls the optional hook when supplied."
+  },
+  "reviewed_inputs_sha256": {
+    "godot/scripts/main.gd": "aa0776da9019c8d0da9ffb5ad7b9df96b1f7e68265170daaf49fda5057218375",
+    "godot/scripts/shared_workbench.gd": "65929f062168aca770a01284dbcebe96a8478d419c158ff3c9e5e1325badbe34",
+    "godot/scripts/workbench_actor_catalog.gd": "404c48724375dca3c2ec557ab3fc609cccfa7f8088fc9ca7c2e133233a400927",
+    "godot/scripts/workbench_actor_control.gd": "f7a839765111f2494e5e141a1dc5037fd1b85fd0aad1167d3da33732807acc97",
+    "godot/scripts/workbench_reactive_policy.gd": "17097c342757755b469cda3f7c1b310a5de812d21e768488d79ade46fd3a4e6f",
+    "godot/scripts/workbench_actor_panel.gd": "6f455dd8844a2780ffd693a2eddfb3acd65a978790cce0c2fabe8223ef386aee",
+    "godot/scripts/workbench_setup.gd": "5d25c94eff697500e80bf057bb37244052c59151664f4c4c828e62d85adfd925",
+    "godot/scripts/workbench_generated_map.gd": "b3561ad426f6efa1ae0b4d148d561536824adaac06f0a9c427d0e4b67cd618c6",
+    "godot/scripts/workbench_material_baseline.gd": "33ad72104cb233214526248fcb629e77c825dcb705c5ed32d1e45bc1551aab63",
+    "godot/scripts/workbench_paint_editor_controller.gd": "49e17300fdc2fec27ea2bf20e70a33f91953661544419e2411d74faa6618d74e",
+    "godot/scripts/workbench_paint_editor_overlay.gd": "05931ebd0556de037006aeffdb4978a5ceeb7ceb7003f5a8955f96414e514f94",
+    "godot/scripts/physical_actor_session.gd": "ee2e37a8bfa5be65d8c04f746ae82f566d7c7708d96a907bfbf9f32faa365bd1",
+    "godot/scripts/physical_actor_rig.gd": "6fe7520c7a2da79d861e4f83fbe1773ef52bf4aac22db32833a4806eb41e8dd6",
+    "godot/scripts/workbench_physics_bridge.gd": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b",
+    "godot/scripts/prepared_physical_session.gd": "8dd8e54f5eb0776046211190739cdcfda5fd1a9bb088d5f0e304714cbe1f70b3",
+    "godot/scripts/simulation_worker.gd": "9ac215d288152a5cbd9e03ccd1faf86c24b6a8f721166a8b28fac0b9eb9c9d8f",
+    "godot/scripts/physical_actor_effects.gd": "e85b3902d753b207a4d3aea81c77e2034a97bb39e85cb0e263aeddffe8dc34da",
+    "godot/scripts/physical_usable_runtime.gd": "f1bb3377da73df672e24abbe06a84621042c64ced45fa96ec6de01616a3c7b18",
+    "godot/native_extension/cyber_native_cell_world.hpp": "3b7511bab4b6b10739b70f4cee783ab9c53cd9d336cd102e0d9c587f2c644a46",
+    "godot/scripts/actor_rig_effects.gd": "4f116db47173cb7ae000293541bf8fd5bcd64081dab801775b9624854ce146a4",
+    "godot/scripts/physical_actor_overlay.gd": "ef7e124bd2678c07467814c29e2ba09190d4669be4ac62be8bd3b5344fdc1be6",
+    "godot/scripts/workbench_generator_dialog.gd": "400507a0b42f4348caeaede0df1e6196858cf2236dd4cdf93f5e53a4e68362b9",
+    "godot/scripts/workbench_water_lab.gd": "8d722b6ba76098547f3bf7af09d8430191dfa204aa2b5da378fc76ed2bd7fe4d",
+    "godot/examples/workbench/mixed-actor-workshop.json": "25bd0700539b6936a42a941cd016aa96541e2c2cd945cb30f7d53f679c91c746"
+  },
+  "challenged_boundaries": {
+    "simulation": "Existing native cellular worker and manually stepped Rapier authority retained; no second simulation owner.",
+    "producer": "Per-actor takeover calls existing cancellation, revokes issued ring/generation, preserves physical RID and pose.",
+    "capacity": "8 logical actors, max8 parts each, bounded64 native owners/proxies including released equipment. Strict preflight, native64accept/65refuse.",
+    "material": "Existing ACT004/005 exclusive worker consumers; mask and copied equipment frame share atomic publication; cancellation linearized finite material transaction.",
+    "persistence": "Setup-v2 optional version1 per-actor control; authored starts only; failed preparation retains old live session and map.",
+    "research": "Bounded Thunderbowl steering helper and 4LY self-proprioception teacher are explicit adapters; no oracle/tag/learned-NCA/SLM claims.",
+    "ui": "Inspection separate from pilot; autonomous scripts not tied to panel visibility; lazy heavyweight author panel.",
+    "painting": "Actual canvas input Brush/Eraser live path through bounded legacy queue; paused full PAINT history separate.",
+    "publication": "Both pinned native candidates rebuilt at exact qualified source, exercised on target OS, exact Windows ZIP extracted and exercised, then only four matching runtime/provenance paths appended by a single-parent leased publication commit."
+  },
+  "resolved_findings": [
+    "Failed deferred preparation retained pilot/start metadata across unrelated later install",
+    "Running pointer PAINT route initially refused despite direct API success in tests",
+    "First-slot NPC equipment incorrectly qualified for legacy human pointer adapter",
+    "Native detail selection used authored instance identity instead of private multipart body mapping",
+    "Issued observation inspector retained prior inspected actor after selection changed",
+    "Rapid same-frame Pause/Resume now synchronously transitions session generations; prepared transactions suspend retained owner before worker cancellation and restore fresh authority on rollback.",
+    "Refused or missing live body publication now faults visibly, pauses both owners and prevents further Play or Step until reset/reprepare; intentional negative case proves reset recovery.",
+    "Pending single-step state is retired on frame fault, so failed publication cannot block the Reset recovery path.",
+    "Equipment mount parts use direct current RID transforms, matching native mask publication even for sleeping or stale bridge-cache bodies; strict mount-pose admission remains.",
+    "Fast running pointer strokes enqueue bounded actual samples including release; preview no longer promises interpolated live terrain that was not submitted.",
+    "Pilot handback state is scoped to current authored instance lifetime and preserves actual compatible equipment.",
+    "Opening non-focusable inline Details or embedded Water/Generator/Flatten panels explicitly cancels held human input; actual198-check host fixture proves NPC independence and neutral rearm.",
+    "Reusable generator dialog admits standalone plain-Control inspection while invoking human cancellation only when the host supplies the established _cancel hook."
+  ],
+  "functional_qualification": {
+    "linux_cases": 28,
+    "windows_source_cases": 28,
+    "windows_installed_cases": 4,
+    "case_count_scope": "Process cases include import, regression fixtures, capture and measurement; not a count of individual assertions.",
+    "linux_actor_author_checks": 198,
+    "linux_actor_reopen_checks": 15,
+    "windows_actor_author_checks": 198,
+    "windows_actor_reopen_checks": 15,
+    "installed_graphical_actor_author_checks": 206,
+    "installed_graphical_actor_reopen_checks": 17,
+    "catalogue_checks_each_platform": 415,
+    "catalogue_models": 59,
+    "composition_session_checks_each_platform": 84,
+    "actual_native_composition_checks_each_platform": 323,
+    "far_right_equipment_checks_each_platform": 29,
+    "prepared_owner_checks_each_platform": 49,
+    "effect_cancellation_checks_each_platform": 15,
+    "materials_lab_checks_each_platform": 97,
+    "all_case_logs_hash_verified": true,
+    "scene": "Ordinary main.tscn/SharedWorkbench with real native cellular terrain and Rapier,6 actors and24 prepared bodies/masks.",
+    "fresh_process": "Source and installed author/reopen receipts explicitly separate authored starts from live physics snapshots."
+  },
+  "native_runtime": {
+    "linux": {
+      "artifact": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "sha256": "7b20455aad35559ea638d7db1b09f6c85657823302e742ef04254730008454f2",
+      "size": 4734408,
+      "provenance_sha256": "0e233ddbb9ffbd43730404405bc1d589e307ffe4615ff84a19f681095e671da0",
+      "qualification_report_sha256": "8d72ee66d578dd559e51f6c5e067099407b2009dfb0873acccbf6d7b5a5a4444"
+    },
+    "windows": {
+      "artifact": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "sha256": "8d1d12dd63bb18466594df05589622a87b148a696cf418075d5c4d8fc11f518e",
+      "size": 5276160,
+      "provenance_sha256": "45cf139cf55bb721e3effc1f757b6cb8857ac58559488e27aa38d041b6e1c7f2",
+      "qualification_report_sha256": "d20725357839ef0b8a7979bbc18f3446b9b176d7849d3b7bf295b79af0db694e"
+    }
+  },
+  "package": {
+    "path": "/workspace/scratch/fd84be755318/qualification/hosted-2e9bba9c/evaluation/CyberSand-Mixed-Actor-Workshop-Windows-2e9bba9c2d1c.zip",
+    "sha256": "c177d09d88134280b7831a869575fe141f4759dd112855df7ff8683987b889f2",
+    "bytes": 93688763,
+    "manifest_payload_files_verified": 965,
+    "exact_zip_extraction_and_reexecution": true,
+    "source_commit": "2e9bba9c2d1c3f5b0b8cb644c860d4ce0c463fa3",
+    "native_sha256": "8d1d12dd63bb18466594df05589622a87b148a696cf418075d5c4d8fc11f518e",
+    "launch_file": "Open Workbench.cmd",
+    "qualified_renderer_command": "Godot_v4.7-stable_win64.exe --rendering-driver opengl3_angle --path godot -- --workbench",
+    "module_resolution": "The packaged engine, native DLL, retained Rapier DLL and signed VC runtime were observed at their app-local installed paths and exact packaged hashes.",
+    "no_repackaging": true
+  },
+  "visual_review": {
+    "directly_inspected": [
+      "Linux original01/02/03/04 frames",
+      "Windows exact-installed ZIP original01/02/03/04 frames"
+    ],
+    "finding": "Six real actors and legitimate material effects are visible. Human pilot, NPC inspection, ground takeover and policy handback roles agree with published UI labels and receipts. No visual ownership defect identified.",
+    "actual_framebuffer_pixels": [
+      1440,
+      810
+    ],
+    "nominal_capture_window": [
+      1440,
+      960
+    ],
+    "dimensions_note": "PNG IHDR dimensions differ from the nominal requested window; neither is represented as the other.",
+    "linux_renderer": "llvmpipe (LLVM 20.1.2, 256 bits)",
+    "windows_renderer": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+    "owner_playfeel": "Not established by automated capture."
+  },
+  "performance_disposition": {
+    "status": "Material limitation retained; not accepted as smooth graphical playfeel.",
+    "linux_graphical": "Software llvmpipe: roughly180-192ms mean frames, p95 about182-239ms across workloads; coupled native rates5.27-11.99Hz. Empty material world remains about60Hz.",
+    "windows_graphical": "Software ANGLE/Microsoft Basic Render Driver: coupled native rates10.59-28.18Hz, coupled p95frames about120-203ms, observed maximum261.58ms. Empty-world frames are also slow.",
+    "endpoint_counts": "Native publication and Rapier endpoint counters are both retained; some differ by1-2 ticks, including Linux landscape equipment26/24. No exact parity claim for these graphical measurement windows.",
+    "observation_costs": "Zero copied-observation timing samples in both graphical campaigns because each3s window has fewer than30frames. No numeric graphical observation-cost claim.",
+    "baseline": "No matched accepted-main graphical baseline. Earlier actual local headless baseline/candidate pairs, their variance and first slower result remain separate retained evidence; they do not replace these graphical measurements.",
+    "source_policy": "No competing renderer, camera coordinator or publication architecture was introduced to hide this limitation."
+  },
+  "remaining_owner_steps": [
+    "Extract the original evaluation ZIP and launch Open Workbench.cmd on owner hardware; the default-renderer launcher path was not directly exercised by hosted ANGLE fixtures.",
+    "Use the practical controller switching, NPC motion, equipment, live painting and save/reopen script in the packaged guide.",
+    "Assess interactive pacing and contacts on the target GPU and retain the Draft/HOLD boundary until owner approval."
+  ],
+  "capability_boundaries": [
+    "8 logical actors;64 actual body/proxy/mask budget including mounted and released equipment; unsupported mixtures must fail preflight.",
+    "Physical actors and4LY profiles use existing physical ownership. Sampled research hosts, Thunderbowl virtual combat/oracle semantics, untrained NCA and a live LLM/SLM service are not represented as implemented physical NPC capabilities.",
+    "External Policy currently has issued-observation/leased-action adapter and deterministic producer; no trained policy or model service is claimed.",
+    "Portable package includes interactive Workbench/runtime inspection, not a development source compiler for Materials Lab authoring.",
+    "Catalogue validation covers59 entries; this does not claim human graphical playtesting of every model/equipment/roster permutation."
+  ],
+  "unresolved_source_defects_identified": [],
+  "evidence_files": {
+    "hosted-2e9bba9c/linux-custody.json": {
+      "sha256": "e60754f60a01e327400ebfffd3da81f578c9714d3e1709a312d8ebc98d08fe8d",
+      "bytes": 9674
+    },
+    "hosted-2e9bba9c/windows-custody.json": {
+      "sha256": "00c197c11daa21144772e6575153c65da91bc8f0cbda4e4845b2e7b942b30c6a",
+      "bytes": 10521
+    },
+    "hosted-2e9bba9c/publication-custody.json": {
+      "sha256": "a325a1569201d5828cfbb727df47e01eb87d04a39a8a68ebcee8bfa7ec1a341f",
+      "bytes": 1888
+    },
+    "hosted-2e9bba9c/evaluation-custody.json": {
+      "sha256": "5ffa9c5964d3b4523261a45c6966f2526e03f2b7ff218b25cde863c975ee8315",
+      "bytes": 1044
+    },
+    "hosted-2e9bba9c/linux/evidence/linux/qualification.json": {
+      "sha256": "8d72ee66d578dd559e51f6c5e067099407b2009dfb0873acccbf6d7b5a5a4444",
+      "bytes": 273666
+    },
+    "hosted-2e9bba9c/windows/windows/qualification.json": {
+      "sha256": "d20725357839ef0b8a7979bbc18f3446b9b176d7849d3b7bf295b79af0db694e",
+      "bytes": 274653
+    },
+    "hosted-2e9bba9c/windows/installed-windows/qualification.json": {
+      "sha256": "9e30dd67e5a95223da70179e7726df54a6d8afb63ffcacc125963f35fbf8ddc5",
+      "bytes": 320971
+    },
+    "hosted-2e9bba9c/windows/installed-windows/runtime-modules.json": {
+      "sha256": "537eeeb75693becd4f4dd01107668a487a832527cd8bf070dbb510b5917ecc7c",
+      "bytes": 10709
+    },
+    "hosted-2e9bba9c/windows/windows-package-extraction.json": {
+      "sha256": "a55a22692ae5a46399e3c5380f88a28151d67457a7a379b6a4fa912cd01f04b9",
+      "bytes": 526
+    },
+    "hosted-2e9bba9c/publication/build/actor-publish/final-repository-check.json": {
+      "sha256": "43aa60dc33d38ab8166fc8237f70c090f59448409fcdd3eb5bac5e3d87b5ac48",
+      "bytes": 2546
+    }
+  },
+  "earlier_immutable_reviews": {
+    "independent-core-review-e8b7047f.json": {
+      "sha256": "20eb4e9987356f5fc1f71b9d36d04b00a8457c4f9d98102acb0806e24eceb372",
+      "bytes": 8862
+    },
+    "independent-core-review-2e9bba9c.json": {
+      "sha256": "5dbfb6ea1de98b98d3ff2d2ee43b42d14dbd9cef72dc1824707e991b6147fd2c",
+      "bytes": 10826
+    },
+    "independent-infrastructure-review-b0bbf4a1.json": {
+      "sha256": "fc09e86f87bf261c5c894521b4c9101e0d114636b455df41aac59da4671e1e1d",
+      "bytes": 9200
+    },
+    "independent-panel-owner-infrastructure-review-17bf-working-tree.json": {
+      "sha256": "8612c1db77c2e0960adb41444b7b5a2ae125aab1e1e71d04ae1161c1dfa789d6",
+      "bytes": 14321
+    },
+    "independent-generator-panel-compatibility-review-7ac-working-tree.json": {
+      "sha256": "7a6ff6d85390000ffec42b68728de2bf914d411dc71b289e93dda76e5d5274af",
+      "bytes": 5263
+    },
+    "independent-linux-visual-owner-review-2e9bba9c.json": {
+      "sha256": "7425642201ae107e7946a534e555cc14050083220d5fe2933fa9814ed8874948",
+      "bytes": 11807
+    },
+    "actor-runner-userdata-repair-review.json": {
+      "sha256": "7ba0e0c47057f8129409c6e23ebea5ddaaa45bb2f668dc8459376b992b0d7912",
+      "bytes": 2333
+    }
+  },
+  "negative_evidence": "Earlier b0bb Flatten lazy-panel fixture failure,17bf runner userdata source guard, pre-fix cancellation and cached-mount failures remain retained separately; none were relabelled as final passes.",
+  "approval_boundary": "No merge, Ready promotion or auto-merge. Review does not constitute owner playfeel or performance approval."
+}
