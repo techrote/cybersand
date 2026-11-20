@@ -44,6 +44,15 @@ material-only Flatten contract: two bytes per cell, unchanged live World, explic
 Save. The [qualification and Owner workflow](operations/gen008-flatten-qualification.md)
 keeps implementation evidence and human acceptance separate. Keep #548 Draft/HOLD.
 
+Large original Workbench starts: the Draft/HOLD
+[host-claim projection contract](architecture/shared-workbench-authoring-data.md#large-workbench-starts-and-host-claim-projection)
+separates the 32,768-rectangle native/source budget from the 32,768-value host
+observation Array limit. Full validated geometry still reaches native preparation;
+the [qualification record](audits/2026-11-20-workbench-host-claims-qualification.md)
+owns installed runtime and fresh-process results. The
+[focused retrieval question](reference/retrieval-questions-workbench-host-claims.json)
+is additive to the unchanged frozen evaluation set.
+
 GEN-007 Architectural Generator [merge hold, owner-reviewed](systems/architectural-generator.md):
 five simultaneous style columns, thirteen built-in presets, versioned native
 Terraces/Hive/Viaduct algorithms, deterministic zone allocation and source-bound

@@ -10,6 +10,49 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+## Large authored Workbench landscape admission
+
+**Draft/HOLD candidate, 2026-11-20:** WORKBENCH-HOST-CLAIMS-001 keeps the
+complete validated construction definition and bounds only its redundant,
+unverified observation representation. See the
+[authoring contract](../architecture/shared-workbench-authoring-data.md#large-workbench-starts-and-host-claim-projection)
+and [dated qualification](../audits/2026-11-20-workbench-host-claims-qualification.md).
+
+Use the repository-pinned Godot 4.7 and materialized, source-matched native and
+Rapier libraries. The runner verifies every native input and the actual retained
+binary bytes before starting; an old library's 4,096-record budget is not evidence
+about the host observation repair. No runtime rebuild is needed when those
+native inputs still match their retained publication.
+
+```sh
+godot --headless --path godot --script res://tests/test_workbench_host_claim_capacity.gd
+godot --headless --path godot --script res://tests/test_workbench_host_claim_native.gd
+python3 tools/qualify_workbench_landscapes.py --godot /absolute/path/to/pinned-godot --output /absolute/path/to/new-evidence-directory
+```
+
+The full runner imports the real project, executes both focused regressions, and
+downloads the commit-pinned original maps in
+`tools/fixtures/workbench_host_claim_landscapes.json`. Each map has two separate
+Godot processes and its own isolated user-data directory. Ordinary Shared
+Workbench Load start, real retained Midge/Rapier play, a refused replacement,
+read-only complete native stored-material capture, paint/erase, Save start and
+fresh-process reopening all require explicit successful receipts. The Python
+reducer independently replays the saved geometry and checks the complete material
+identity; evolved simulation state is not expected to equal an authored start.
+Raw logs, original map bytes, saves and failure results remain in the output.
+
+`--fixture-dir` reuses already verified source bytes. `--map NAME` restricts an
+explicit extracted-package retest. `--project` selects that extracted project
+while retaining strict source/binary identity checks. `--allow-source-delta` is
+for labeled local debugging only and cannot qualify an evaluation package.
+
+The bounded `Workbench host claims — native landscape admission` workflow uses
+the retained Windows DLL on `windows-2022`. It builds an owner ZIP, verifies the
+extracted bytes, repeats the largest landscape's install/reopen there and runs
+the ordinary interactive Workbench launcher. Its success is Windows native
+process evidence; physical GPU/display feel and owner acceptance remain separate.
+Neither the workflow nor the packaging tool merges or promotes the Draft PR.
+
 ## Source-built Windows candidate validation — 2026-11-08
 
 GDExtension Windows shards consume the same-run `native-candidate-windows`
