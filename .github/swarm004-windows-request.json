@@ -2,6 +2,6 @@
   "schema": 1,
   "programme": "GENTEK-SWARM-004",
   "action": "qualify-windows",
-  "source_sha": "ad8a29c1df324f408d23a71a3c24420deb11c67f",
-  "request_id": "recovery-20261120-2c4b8061-windows-02"
+  "source_sha": "963f7ca104ce4aa27dc49c7f1730c005576231fb",
+  "request_id": "swarm004-20261120-963f7ca1-windows-03"
 }
