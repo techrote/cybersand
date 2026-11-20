@@ -513,6 +513,13 @@ REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
   'source_commit': '461b1c1485418bcd8f83f29efe1cccf7ef4a9928',
   'record': 'docs/audits/2026-11-19-wave-oil-buoyancy.md',
   'issue': 678,
+  'pr': 679},
+ {'path': 'native/src/world_quantity.inc',
+  'from_lf_sha256': '75f9743ee614fd6e5ee6ae96d3f35445b3162e19c9f7686b9eefc29f97e52dae',
+  'to_lf_sha256': '4ff7dd56d93d389cb3451dae82619edf0934d2bed5703ce673e1a5d95310d489',
+  'source_commit': 'baa5699083f5f668f9c03309aceaccd0f1fb80d9',
+  'record': 'docs/audits/2026-11-19-wave-oil-lava.md',
+  'issue': 679,
   'pr': 679},)
 
 
