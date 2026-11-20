@@ -64,6 +64,8 @@ var tools_button := Button.new()
 var provider_message := "Idle"
 var log_draw := false
 var conversation: Array = []
+var _pending_traffic_path := ""
+var conversation_loaded := false
 var context_mode := OptionButton.new()
 var turn_limit := SpinBox.new()
 var guidance := TextEdit.new()
@@ -204,7 +206,16 @@ func _bind_selection() -> void:
 	selection_editor.selection_changed.connect(focus_selection)
 
 func _selection_visibility_changed() -> void:
+	if visible: _ensure_history_loaded()
 	_bind_selection()
+
+func _ensure_history_loaded() -> void:
+	if conversation_loaded: return
+	conversation_loaded = true
+	var source_path := provider.log_path if not provider.log_path.is_empty() else _pending_traffic_path
+	if source_path.is_empty(): return
+	conversation = provider.resume_traffic(source_path)
+	last_result = provider.resumed_last_result
 	# Opening/revealing the panel must not overwrite manually entered bounds with
 	# an old selection (image capture temporarily hides and restores this Window).
 
@@ -218,6 +229,7 @@ func focus_selection(region: Rect2i) -> void:
 	# Do not change request_area, request_guards or the executor's captured scope.
 
 func _open_conversation() -> void:
+	_ensure_history_loaded()
 	conversation_error = ""
 	conversation_editor.open_history(conversation)
 	_update_conversation_guard()
@@ -410,15 +422,17 @@ func _exit_tree() -> void:
 
 func mount_provider_controls(column: VBoxContainer) -> void:
 	settings.load("user://art-provider.cfg")
-	conversation = provider.resume_traffic(settings.get_value("session","traffic_path",""))
-	last_result = provider.resumed_last_result
+	_pending_traffic_path = str(settings.get_value("session","traffic_path",""))
+	provider.prepare_resume(_pending_traffic_path)
 	add_child(provider)
 	provider.finished.connect(provider_finished)
 	executor.native_receipt.connect(func(receipt: Dictionary) -> void:
 		if log_draw: provider.log_event("native_receipt",receipt))
 	executor.manual_receipt.connect(func(receipt: Dictionary) -> void:
 		provider.log_event("deferred_human_stroke",receipt))
-	provider.traffic_changed.connect(func() -> void: traffic_dirty = true)
+	provider.traffic_changed.connect(func() -> void:
+		traffic_dirty = true
+		persist_traffic_path())
 	var row := HBoxContainer.new()
 	for name_text: String in ["LM Studio","OpenAI","NVIDIA"]: source.add_item(name_text)
 	source.item_selected.connect(change_provider)
@@ -580,8 +594,8 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 	save.current_file = "cybersand-art-traffic.jsonl"
 	traffic_window.add_child(save)
 	save.file_selected.connect(func(path: String) -> void:
-		var err := DirAccess.copy_absolute(provider.log_path,path)
-		traffic_path.text = "Saved full session to "+path if err==OK else "Export failed (%d); original: %s" % [err,ProjectSettings.globalize_path(provider.log_path)])
+		var err := provider.export_traffic(path)
+		traffic_path.text = "Saved full session to "+path if err==OK else "Export failed (%d); source: %s" % [err,ProjectSettings.globalize_path(provider.log_path if not provider.log_path.is_empty() else provider.parent_log_path)]
 	export_button.pressed.connect(func() -> void: save.popup_centered_ratio(0.7))
 	actions.add_child(export_button)
 	box.add_child(actions)
@@ -675,6 +689,7 @@ func _history_action(action: String) -> void:
 # Append a new human result; never rewrite the model's historical receipts or
 # use model_feedback(), which can schedule another request in an active run.
 func history_edited(receipt: Dictionary) -> void:
+	_ensure_history_loaded()
 	var recorded := receipt.duplicate(true)
 	provider.log_event("history_result",recorded)
 	var action := str(recorded.get("action","undo"))
@@ -692,6 +707,7 @@ func history_edited(receipt: Dictionary) -> void:
 	input_error = provider_message
 
 func model_context() -> Array:
+	_ensure_history_loaded()
 	if context_mode.selected == 3: return []
 	var full := context_mode.selected == 0
 	var first := 0 if full else maxi(0,conversation.size()-12)
@@ -706,7 +722,7 @@ func model_context() -> Array:
 		if full and entry.has("image_offset") and not image_input.button_pressed:
 			message.content += "\nHistorical image omitted because Image is off."
 		elif full and entry.has("image_offset"):
-			var url := provider.historical_image(int(entry.image_offset))
+			var url := provider.historical_image(int(entry.image_offset),str(entry.get("image_log_path","")))
 			if url.is_empty():
 				message.content += "\nThis turn's image is unavailable in saved traffic."
 			elif current_provider == "OpenAI":
@@ -723,8 +739,11 @@ func model_feedback(feedback: String) -> void:
 		send_next.call_deferred(ui_epoch)
 
 func remember_turn(role: String, content: String, image_offset: int = -1) -> void:
+	_ensure_history_loaded()
 	var entry := {"role":role,"content":provider.redact(content)}
-	if image_offset >= 0: entry.image_offset = image_offset
+	if image_offset >= 0:
+		entry.image_offset = image_offset
+		entry.image_log_path = provider.log_path
 	conversation.append(entry)
 	provider.log_event("conversation",entry)
 	persist_traffic_path()
@@ -736,6 +755,7 @@ func persist_traffic_path() -> void:
 
 func send_prompt() -> void:
 	if executor.active or provider.active or capturing or remaining_turns != 0: return
+	_ensure_history_loaded()
 	if wb.paint_editor != null and wb.paint_editor.busy():
 		input_error = "Wait for the shared edit to finish before sending another model request."
 		return
