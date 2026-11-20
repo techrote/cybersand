@@ -39,6 +39,7 @@ FILES = (
     "tools/world_art_preview.gd",
     "tools/world_art_render_rig.gd",
     "tools/world_art_grid.gd",
+    "tools/world_art_minimap.gd",
     "tools/world_art_full_export.gd",
     "tools/world_art_capture.gd",
     "tools/world_design_pack_adapter.gd",
@@ -155,8 +156,8 @@ def add_capture_arguments(parser: argparse.ArgumentParser) -> None:
     group.add_argument("--all-features", action="store_true", help="render every feature's base variant")
     group.add_argument("--all-variants", action="store_true", help="render every feature and every authored variant")
     group.add_argument("--resolution", default="1920x1080", help="viewport/detail bound WIDTHxHEIGHT (default 1920x1080)")
-    group.add_argument("--framing", choices=("fit", "native"), default="fit",
-                       help="viewport framing: whole map (fit, default) or 1 px per native cell")
+    group.add_argument("--framing", choices=("fit", "width", "height", "native"), default="fit",
+                       help="viewport framing: whole map, fit-width, fit-height or 1 px/native cell")
     group.add_argument("--zoom", type=float, help="viewport pixels per native cell (0.03..32)")
     group.add_argument("--center", help="with --zoom: view centre X,Y in native cells (default map centre)")
     group.add_argument("--view", help="viewport fits this native-cell rectangle X,Y,W,H")
@@ -247,7 +248,18 @@ def run_capture(args: argparse.Namespace, godot_executable: str) -> int:
                     "background": not args.no_background}
     before = {str(g): support.snapshot_tree(g) for g in guards}
     git_before = art_source["dirty_entries"]
+    # Reserve publication before writing evidence. A simple exists()+mkdir(exist_ok=True)
+    # permits two publishers to race on the same initially empty directory.
     output.mkdir(parents=True, exist_ok=True)
+    publication_claim = output / ".world-art-exclusive-claim"
+    try:
+        publication_claim.mkdir(mode=0o700)
+    except FileExistsError as error:
+        raise support.CaptureError(support.EXIT_USAGE,
+                                   f"--output-dir {output} has an active or retained publication claim") from error
+    except OSError as error:
+        raise support.CaptureError(support.EXIT_USAGE,
+                                   f"cannot reserve exclusive output claim in {output}: {error}") from error
     failures: list[str] = []
     state: dict = {}
     log_text = ""
@@ -357,6 +369,13 @@ def run_capture(args: argparse.Namespace, godot_executable: str) -> int:
             _fail(failures, support.EXIT_RENDER, f"{job['id']}: no manifest was written", state)
         job_entries.append(entry)
 
+    # Release only our empty reservation. If it changed or cannot be removed,
+    # fail closed; prior evidence remains and a subsequent capture refuses it.
+    try:
+        publication_claim.rmdir()
+    except OSError as error:
+        _fail(failures, support.EXIT_EVIDENCE,
+              f"exclusive output claim could not be released safely: {error}", state)
     status = "completed" if not failures else "failed"
     batch = {
         "schema": support.SCHEMA_BATCH, "status": status, "failures": failures,
@@ -431,7 +450,13 @@ def main(argv: list[str] | None = None) -> int:
     if args.quit_after < 0:
         parser.error("--quit-after must be nonnegative")
     if not args.adapter_oracle and not pack_arg and not args.art_root:
-        parser.error("Provide --art-root or --pack")
+        # A combined source checkout carries its 15 original collections.
+        # External art checkouts and direct --pack inputs still work unchanged.
+        included = ROOT / "docs/world-design"
+        if included.is_dir():
+            args.art_root = str(included)
+        else:
+            parser.error("Provide --art-root or --pack")
     if args.art_root and not Path(args.art_root).is_dir() and not pack_arg:
         parser.error("The supplied --art-root is not a directory")
     if pack_arg and not Path(pack_arg).is_file():
@@ -449,7 +474,11 @@ def main(argv: list[str] | None = None) -> int:
             + " 'Get-Command godot, godot4 -ErrorAction SilentlyContinue'."
             + " This viewer does not need another CyberSand clone or native libraries."
         )
-    design_revision = args.design_revision or DEFAULT_REVISION_LABEL
+    integrated_art_root = ROOT / "docs/world-design"
+    revision_from_checkout = (support.git_identity(ROOT)["revision"]
+                              if args.art_root and Path(args.art_root).resolve() == integrated_art_root.resolve()
+                              else DEFAULT_REVISION_LABEL)
+    design_revision = args.design_revision or revision_from_checkout
     with tempfile.TemporaryDirectory(prefix="cybersand-world-art-") as scratch:
         project = Path(scratch)
         hashes = make_project(project)
