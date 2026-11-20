@@ -1,4 +1,4 @@
-name: World-art unattended capture real GUI qualification
+name: World-art integrated unattended capture qualification
 
 # MAP-AUTO-01 / #498. Runs the real Godot 4.7 renderer through the documented
 # `world_art_preview_launcher.py --capture` CLI on Linux X11/Xvfb (OpenGL/llvmpipe)
@@ -17,13 +17,14 @@ on:
       - 'tools/test_world_art_capture.py'
       - 'examples/world-art-capture/**'
       - 'docs/tools/world-art-capture.md'
+      - 'docs/world-design/**'
       - '.github/workflows/world-art-capture.yml'
   workflow_dispatch:
     inputs:
       art_ref:
-        description: 'Git ref of the art source to capture (default: current #454 atlas branch head)'
+        description: 'Historical input retained for dispatch compatibility; unified CI tests checked-out source'
         required: false
-        default: 'design/world-atlas-015-refinement-20261105'
+        default: ''
 
 permissions:
   contents: read
@@ -33,7 +34,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  ART_REF: ${{ inputs.art_ref || 'design/world-atlas-015-refinement-20261105' }}
+  ART_REF: ${{ github.event.pull_request.head.sha || github.sha }}
   GODOT_SILENCE_ROOT_WARNING: '1'
   WORLD_ART_REQUIRE_GRAPHICAL: '1'
 
@@ -49,13 +50,6 @@ jobs:
         with:
           lfs: false
           persist-credentials: false
-      - name: Read-only checkout of the current art source
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        with:
-          ref: ${{ env.ART_REF }}
-          path: art-source
-          lfs: false
-          persist-credentials: false
       - name: Prepare Godot 4.7 stable on Linux
         shell: bash
         run: |
@@ -68,12 +62,12 @@ jobs:
           unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/engine"
           chmod +x "$RUNNER_TEMP/engine/Godot_v4.7-stable_linux.x86_64"
           "$RUNNER_TEMP/engine/Godot_v4.7-stable_linux.x86_64" --headless --version
-          echo "ART_SHA=$(git -C art-source rev-parse HEAD)" >> "$GITHUB_ENV"
+          echo "ART_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
       - name: Unattended capture qualification (Xvfb + OpenGL/llvmpipe)
         shell: bash
         env:
           WORLD_ART_GODOT: ${{ runner.temp }}/engine/Godot_v4.7-stable_linux.x86_64
-          WORLD_ART_ART_ROOT: ${{ github.workspace }}/art-source/docs/world-design
+          WORLD_ART_ART_ROOT: ${{ github.workspace }}/docs/world-design
           WORLD_ART_RENDER_DRIVER: opengl3
           WORLD_ART_EXPECT_ADAPTER: llvmpipe
           WORLD_ART_EVIDENCE_DIR: ${{ github.workspace }}/build/world-art-capture-linux
@@ -124,13 +118,6 @@ jobs:
         with:
           lfs: false
           persist-credentials: false
-      - name: Read-only checkout of the current art source
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        with:
-          ref: ${{ env.ART_REF }}
-          path: art-source
-          lfs: false
-          persist-credentials: false
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
@@ -142,14 +129,14 @@ jobs:
             'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
           python -c 'import hashlib,os; p=os.path.join(os.environ["RUNNER_TEMP"],"world-art-godot.zip"); assert hashlib.sha512(open(p,"rb").read()).hexdigest()==os.environ["GODOT_WINDOWS_SHA512"]'
           python -c 'import zipfile,os; d=os.environ["RUNNER_TEMP"]; zipfile.ZipFile(os.path.join(d,"world-art-godot.zip")).extractall(os.path.join(d,"world-art-engine"))'
-          echo "ART_SHA=$(git -C art-source rev-parse HEAD)" >> "$GITHUB_ENV"
+          echo "ART_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
       - name: Unattended capture qualification (Windows OpenGL ANGLE)
         env:
           WORLD_ART_RENDER_DRIVER: opengl3_angle
         run: |
           set -euo pipefail
           export WORLD_ART_GODOT="$RUNNER_TEMP/world-art-engine/Godot_v4.7-stable_win64_console.exe"
-          export WORLD_ART_ART_ROOT="$GITHUB_WORKSPACE/art-source/docs/world-design"
+          export WORLD_ART_ART_ROOT="$GITHUB_WORKSPACE/docs/world-design"
           export WORLD_ART_EVIDENCE_DIR="$GITHUB_WORKSPACE/build/world-art-capture-windows"
           mkdir -p "$WORLD_ART_EVIDENCE_DIR"
           python tools/test_world_art_capture.py -v 2>&1 | tee "$WORLD_ART_EVIDENCE_DIR/qualification.log"
