@@ -108,7 +108,7 @@ Metadata includes actual input SHA-256, caller-supplied art revision, feature/va
 
 ## Integrated one-checkout usage and asymmetrical navigation
 
-With Godot 4.7 installed, run `python tools/world_art_preview_launcher.py --godot="C:\\Tools\\Godot\\Godot_v4.7-stable_win64_console.exe" --rendering-driver=opengl3_angle` from the integrated repository root on Windows. On Linux, `python3 tools/world_art_preview_launcher.py --godot=godot --rendering-driver=opengl3`. The tool loads the included `docs/world-design` automatically if no art source is provided; `--pack` and `--art-root` still override it for a writable work copy or external reference.
+With Godot 4.7 installed, run `python tools/world_art_preview_launcher.py --godot="C:\Godot_v4.7-stable_win64_console.exe" --rendering-driver=opengl3_angle` from the integrated repository root on Windows. On Linux, `python3 tools/world_art_preview_launcher.py --godot=godot --rendering-driver=opengl3`. The tool loads the included `docs/world-design` automatically if no art source is provided; `--pack` and `--art-root` still override it for a writable work copy or external reference.
 
 For 512×8192, 1024×4096, 8192×512 and other asymmetric compositions use **F** to fit all authored cells, **W** to fit the width, **H** to fit the height, **1** for one framebuffer pixel per cell, or click/drag the aspect-correct minimap. Wheel zoom remains anchored under the cursor. Arrow keys pan in world coordinates; fit modes persist on resize until a manual navigation command. The UI displays a computed full-export cost. At 2×, a 2048×8192 full PNG exceeds the bounded 50-million-pixel budget; select 1× or a viewport instead. No silent crop or upscaling/downscaling is performed.
 
