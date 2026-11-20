@@ -101,27 +101,7 @@ jobs:
           New-Item -ItemType Directory evidence -Force | Out-Null
           & $env:GODOT_EXE --headless --path godot --editor --quit > evidence/import.log 2>&1
           if ($LASTEXITCODE -ne 0) { throw 'Godot project import failed' }
-          # Godot import may rewrite these four tracked generated .import records.
-          # Do not treat generated resource import metadata as authored source,
-          # and refuse ALL changes outside the explicit existing importer set.
-          @'
-import pathlib, subprocess, sys
-allowed = {
- "godot/addons/godot-rapier2d/Radial2D.svg.import",
- "godot/addons/godot-rapier2d/icons/Fluid2D.svg.import",
- "godot/addons/godot-rapier2d/icons/StateManager2D.svg.import",
- "godot/addons/godot-rapier2d/logo_square_2d.png.import",
-}
-changed = set(filter(None, subprocess.check_output(
- ["git","diff","--name-only","--no-ext-diff"],text=True).splitlines()))
-unexpected = changed - allowed
-print("Godot import tracked changes:", sorted(changed), flush=True)
-if unexpected: raise SystemExit("Unexpected modified source: " + repr(sorted(unexpected)))
-if changed:
- subprocess.run(["git","restore","--worktree","--",*sorted(changed)],check=True)
-if subprocess.check_output(["git","diff","--name-only"],text=True).strip():
- raise SystemExit("Tracked source differs after isolated importer metadata restore")
-'@ | python -
+          python tools/architecture/check_gentek2048_importer_custody.py --out evidence/import-custody-initial.json
           if ($LASTEXITCODE -ne 0) { throw 'Importer metadata custody verification failed' }
           & $env:GODOT_EXE --headless --path godot --script res://tests/test_architectural_project_contract.gd > evidence/contract.log 2>&1
           if ($LASTEXITCODE -ne 0) { throw 'Project contract tests failed' }
@@ -129,27 +109,7 @@ if subprocess.check_output(["git","diff","--name-only"],text=True).strip():
           if ($LASTEXITCODE -ne 0) { throw 'Architectural UI tests failed' }
           python tools/architecture/qualify_gentek2048.py --godot $env:GODOT_EXE --out (Join-Path $PWD 'evidence/large') *> evidence/large.log
           if ($LASTEXITCODE -ne 0) { Get-Content evidence/large.log -Tail 140; throw '2048 Workbench case or independent reopen failed' }
-          # Godot import may rewrite these four tracked generated .import records.
-          # Do not treat generated resource import metadata as authored source,
-          # and refuse ALL changes outside the explicit existing importer set.
-          @'
-import pathlib, subprocess, sys
-allowed = {
- "godot/addons/godot-rapier2d/Radial2D.svg.import",
- "godot/addons/godot-rapier2d/icons/Fluid2D.svg.import",
- "godot/addons/godot-rapier2d/icons/StateManager2D.svg.import",
- "godot/addons/godot-rapier2d/logo_square_2d.png.import",
-}
-changed = set(filter(None, subprocess.check_output(
- ["git","diff","--name-only","--no-ext-diff"],text=True).splitlines()))
-unexpected = changed - allowed
-print("Godot import tracked changes:", sorted(changed), flush=True)
-if unexpected: raise SystemExit("Unexpected modified source: " + repr(sorted(unexpected)))
-if changed:
- subprocess.run(["git","restore","--worktree","--",*sorted(changed)],check=True)
-if subprocess.check_output(["git","diff","--name-only"],text=True).strip():
- raise SystemExit("Tracked source differs after isolated importer metadata restore")
-'@ | python -
+          python tools/architecture/check_gentek2048_importer_custody.py --out evidence/import-custody-final.json
           if ($LASTEXITCODE -ne 0) { throw 'Importer metadata final verification failed' }
           if (git status --porcelain --untracked-files=no) { throw 'Source modified by acceptance test' }
       - name: Retain exact-source Windows graphical and fresh-process evidence
