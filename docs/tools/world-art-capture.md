@@ -51,6 +51,42 @@ The new `art_size_policy` manifest records which source sizes are presentation-p
 
 Every capture destination has an exclusive per-output claim acquired before writing. Previous nonempty destinations, overlapping source directories and still-claimed directories are rejected. A failed/interrupted job never silently takes over another owner's output. For all details, safety boundaries and the 10-size regression matrix, see [ART-PIPELINE-UNIFICATION-001](art-pipeline-unification.md).
 
+## Optional bounded streamed full PNG above 50 million pixels
+
+The standard Godot `Image` full export is limited to 50,000,000 output
+pixels. **Explicitly** add `--stream-large` to `--capture` to allow an
+authored composition to export at up to **100,000,000 output pixels and
+65,536 pixels per output axis** without allocating a world-sized output
+`Image`. The source art adapter still requires at most 16,777,216 native
+material cells and 16,384 cells per input side.
+
+For example, an authored 1024×4096 map at 4× requests a real 4096×16384
+(67,108,864-pixel) PNG:
+
+~~~bash
+python3 tools/world_art_preview_launcher.py --capture --godot=godot \
+  --pack=/absolute/your/pack.json --shots=full --scale=4 --stream-large \
+  --output-dir=/absolute/captures/streamed-001
+~~~
+
+Godot renders the original RG8 production shaders into 512-native-cell
+tiles with a 32-cell halo, writes each exact cropped RGB8 framebuffer tile
+with SHA-256, then the trusted Python transport verifies and assembles
+those pixels by scanline with `zlib` into a final RGB PNG. The manifest is
+marked complete **only after** tile coverage, byte counts and SHA-256,
+PNG CRC/deflate, pixel length, output dimensions, source identity and
+source-immutability checks pass. Intermediate RGB files are deleted on
+success; failed evidence is retained with a failure status. This is
+streamed PNG *transport*, not a second material renderer.
+
+The CLI `--verify-bundle` also validates PNGs in bounded memory. Ordinary
+capture, viewer screenshots and all `--shots=viewport,detail` remain
+unchanged. The interactive **Save full** button retains its stricter 50M
+bound; use this CLI when a truly larger whole-map PNG is required.
+
+**No native playable World size, physics or save/load compatibility is
+inferred from art preview dimensions.**
+
 ## Inputs
 
 | Option | Meaning |
