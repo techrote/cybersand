@@ -124,11 +124,15 @@ source-matched Windows evaluator, remain explicit independent gates.
 
 ## Checkpoint status and documentation map
 
-Native development has produced source-attributed two-sided footprint revisions
-in the registered seed605 island and narrow-neck fixtures, with qualified joints
-and unresolved hard obligations retained. This is development evidence, not the
-final corpus or Windows qualification. Final exact-source results and negative
-outcomes belong in a dated evidence record, not a retroactive edit to SWARM-003.
+The [SWARM-004 research record](../../native/experiments/gentek_swarm/SWARM-004.md)
+records the complete qualified V1 and V2 known comparisons. V1 has four shared
+reciprocal Apply examples using small terminal bearings; larger multipart trusses
+remain blocked by original obligations. V2 produces real articulated triangles
+in partial outcomes but worsens the registered primary comparison and remains
+unselected. These results do not establish the complete large shared-zone
+truss/arch acceptance example. A predeclared fixed-territory round interaction
+supplement precedes final selection and unopened holdouts. Windows and Workbench
+acceptance remain separately source-bound; no predecessor evidence is rewritten.
 
 This contract owns the experimental interfaces and invariants. The linked
 preregistration owns experimental budgets and comparison policy; the programme

@@ -15,8 +15,9 @@ using namespace cybersand::gentek_swarm;
 using namespace cybersand::gentek_swarm::assembly004;
 
 namespace {
-constexpr std::array<const char*, 13> policies{{"no_negotiation", "legacy_vocabulary", "vocabulary_only", "flat_assembly",
-    "fixed_territory", "mosaic_only", "frame_only", "reciprocal_1", "reciprocal_2",
+constexpr std::array<const char*, 16> policies{{"no_negotiation", "legacy_vocabulary", "vocabulary_only", "flat_assembly",
+    "fixed_territory", "fixed_territory_1", "fixed_territory_3", "fixed_territory_4",
+    "mosaic_only", "frame_only", "reciprocal_1", "reciprocal_2",
     "reciprocal_3", "reciprocal_4", "native_bearing_off", "validation_off_diagnostic"}};
 struct Record {
     std::string file, case_id, fixture, profile, policy, status, view;
@@ -59,6 +60,10 @@ Options policy_options(const std::string& policy) {
         options.vocabulary = policy == "vocabulary_only";
     } else if (policy == "flat_assembly") options.hierarchy = false;
     else if (policy == "fixed_territory") options.shared_ownership = false;
+    else if (policy == "fixed_territory_1" || policy == "fixed_territory_3" || policy == "fixed_territory_4") {
+        options.shared_ownership = false;
+        options.rounds = static_cast<unsigned>(policy.back() - '0');
+    }
     else if (policy == "mosaic_only") options.frame_adaptation = false;
     else if (policy == "frame_only") options.mosaic_adaptation = false;
     else if (policy == "native_bearing_off") options.native_mosaic_bearing = false;
@@ -412,6 +417,7 @@ int main(int argc, char** argv) try {
                         result.joints.size(), metric(result.metrics, "still_required"), metric(result.metrics, "total_charged_work"),
                         metric(result.metrics, "both_genteks_revised") != 0, result.can_apply});
                     records.back().work_semantics = "aggregate charged candidate FRAME/MOSAIC/solver/shared work; excludes controls";
+                    records.back().closure_evaluated = result.metrics.contains("still_required");
                     if (!result.rounds.empty()) {
                         const auto& first_frame = result.rounds.front().frame.result.cells;
                         const auto& final_frame = result.rounds.back().frame.result.cells;

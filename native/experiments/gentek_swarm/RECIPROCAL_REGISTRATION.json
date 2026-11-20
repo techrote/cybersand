@@ -65,6 +65,9 @@
     "vocabulary_only",
     "flat_assembly",
     "fixed_territory",
+    "fixed_territory_1",
+    "fixed_territory_3",
+    "fixed_territory_4",
     "mosaic_only",
     "frame_only",
     "reciprocal_1",
@@ -87,6 +90,9 @@
     "vocabulary_only": "rounds=0; vocabulary=true, shared_ownership=false; no adaptations; matched to legacy_vocabulary",
     "flat_assembly": "rounds=2; hierarchy=false; other default reciprocal switches unchanged",
     "fixed_territory": "rounds=2; shared_ownership=false; other default reciprocal switches unchanged",
+    "fixed_territory_1": "rounds=1; shared_ownership=false; other default reciprocal switches unchanged",
+    "fixed_territory_3": "rounds=3; shared_ownership=false; other default reciprocal switches unchanged",
+    "fixed_territory_4": "rounds=4; shared_ownership=false; other default reciprocal switches unchanged",
     "mosaic_only": "rounds=2; frame_adaptation=false",
     "frame_only": "rounds=2; mosaic_adaptation=false",
     "reciprocal_1": "default reciprocal switches; rounds=1",
@@ -98,5 +104,28 @@
   },
   "assembly_authorization": "Every accepted historical Construction is reconstructed from its declared compiled FRAMEWEAVER factory, symbol, span, rise, handedness, input family and transform under the existing shared work allowance. Exact nodes, claims, sockets, internal joints and claim revisions must match. Each installed native part must match its component rule, transform and complete footprint. Components owning no newly installed cell are explicit original-host reuse, never additional constructed parts. Original-host welds must exist in the original source and remain within two Manhattan cells of the root. Missing/orphan/forged certificates refuse authorization.",
   "destruction": "Generate and retain all intact negotiation rounds first. Destruction is a separately declared deterministic native removal derivative with its own charged generator work. Final authorization reproduces the declared native seeded removal, forbids added/repainted architecture and checks survivor metadata and intact assembly receipts. Surviving final cells keep their intact 0..4 round history; removed cells have no owner. Lost originally fulfilled required internal joints remain unresolved.",
-  "source_reconciliation": "Native research stays on frozen #686. During implementation accepted main advanced to de58bf1997ca75825cf3b29e046dc1c1022c45bf (Water #679); the experimental Workbench branch explicitly merges that accepted main before integration. No #684/#685 branch import."
+  "source_reconciliation": "Native research stays on frozen #686. During implementation accepted main advanced to de58bf1997ca75825cf3b29e046dc1c1022c45bf (Water #679); the experimental Workbench branch explicitly merges that accepted main before integration. No #684/#685 branch import.",
+  "fixed_territory_round_interaction_addendum": {
+    "registered_date": "2026-11-20",
+    "retained_v1_source": "7fa0911e7ec3d0f2d52ecde7b538c55514d5d54d",
+    "reason": "Independent review identified that the first matrix compared rounds 0 through 4 under shared ownership but tested fixed territory only at round cap 2. Selecting a fixed-territory round cap from that matrix would confound round count with ownership. Complete the ownership-by-round interaction before selecting a policy or opening holdouts.",
+    "fixed_round_policies": {
+      "0": "vocabulary_only",
+      "1": "fixed_territory_1",
+      "2": "fixed_territory",
+      "3": "fixed_territory_3",
+      "4": "fixed_territory_4"
+    },
+    "shared_round_policies": {
+      "0": "no_negotiation",
+      "1": "reciprocal_1",
+      "2": "reciprocal_2",
+      "3": "reciprocal_3",
+      "4": "reciprocal_4"
+    },
+    "cohort": "All 108 established development cases: the same six fixtures, three profiles and six registered development seeds. Run every registered policy through the standard source-bound qualification campaign and retain its automatically generated exact same-FRAME controls.",
+    "unchanged_contract": "No engine, generator, authored grammar, revision rule, source receptor, protected mask, seed, profile, material, hard obligation or resource ceiling changes. This supplement adds only three CLI policy combinations of existing shared_ownership=false and round caps 1, 3 and 4. Existing vocabulary_only is fixed round 0 and fixed_territory is fixed round 2.",
+    "selection": "Keep the original primary score and tie-breaks unchanged: reject any hard invariant failure; prefer actual two-sided occupied-geometry revisions with valid native joints, then fewer still-required obligations, then lower work/round count. Report Complete, Blocked, UNSAT, Exhausted and unevaluated closure separately; no per-case policy selection.",
+    "execution_gate": "Commit and publish this registration with its exact CLI source before executing any added round-cap policy. Holdout seeds remain unopened; no tuning follows holdout execution."
+  }
 }

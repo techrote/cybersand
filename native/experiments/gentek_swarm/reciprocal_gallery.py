@@ -299,13 +299,29 @@ def audit_composition(document, source):
             required = {connector["id"] for connector in original if connector["required"] and not connector["fulfilled"]}
             originals = [receipt for receipt in obligations if receipt.get("origin") == "original_frame"]
             require(required == {receipt["connector"] for receipt in originals}, "original required obligations deleted or invented")
+            fulfilled_originals = {connector["id"]: connector for connector in original if connector["required"] and connector["fulfilled"]}
+            fulfilled_final = {connector["id"] for connector in frame["connectors"] if connector["fulfilled"]}
+            expected_damage_lost = set(fulfilled_originals) - fulfilled_final if damage else set()
+            damage_lost = [receipt for receipt in obligations if receipt.get("origin") == "damage_lost_internal"]
+            require(expected_damage_lost == {receipt["connector"] for receipt in damage_lost}, "damage-revoked required obligations deleted or invented")
+            require(document.get("metrics", {}).get("damage_lost_required", 0) == len(expected_damage_lost), "damage-revoked required obligation metric mismatch")
             require(len({receipt["connector"] for receipt in obligations}) == len(obligations), "duplicate obligation identity")
             for receipt in obligations:
-                require(receipt.get("origin") in ("original_frame", "new_assembly"), "unidentified hard obligation origin")
-                witnessed = receipt["connector"] in joint_connectors if receipt.get("origin") == "original_frame" else any(
-                    joint["slot"] == receipt["slot"] and joint["frame_face"] == receipt["original"] and
-                    joint["normal"] == receipt["facing"] and joint["frame_instance"] == receipt["instance"]
-                    for joint in document.get("joints", []))
+                origin = receipt.get("origin")
+                require(origin in ("original_frame", "new_assembly", "damage_lost_internal"), "unidentified hard obligation origin")
+                if origin == "damage_lost_internal":
+                    original_connector = fulfilled_originals.get(receipt["connector"])
+                    require(bool(damage) and original_connector is not None, "damage-revoked obligation lacks an original fulfilled required socket")
+                    if original_connector:
+                        require(receipt["instance"] == original_connector["instance"] and receipt["original"] == original_connector["a"] and
+                                receipt["facing"] == original_connector["facing"], "damage-revoked obligation changed original source identity")
+                    require(receipt["slot"] == 0 and not receipt["local_terminated"], "damage-revoked internal obligation invented a foreign slot or local ending")
+                    witnessed = False
+                else:
+                    witnessed = receipt["connector"] in joint_connectors if origin == "original_frame" else any(
+                        joint["slot"] == receipt["slot"] and joint["frame_face"] == receipt["original"] and
+                        joint["normal"] == receipt["facing"] and joint["frame_instance"] == receipt["instance"]
+                        for joint in document.get("joints", []))
                 require(receipt["foreign_joined"] == witnessed, "required closure lacks native joint witness")
                 require(receipt["state"] == ("FOREIGN_JOINED" if receipt["foreign_joined"] else "STILL_REQUIRED"), "local termination falsely fulfilled foreign obligation")
             used_targets = set()
@@ -350,6 +366,13 @@ def audit_composition(document, source):
             "frame_changed_rounds": frame_changes, "mosaic_changed_rounds": mosaic_changes,
             "frame_footprint_changed_rounds": frame_footprints, "mosaic_footprint_changed_rounds": mosaic_footprints,
             "both_revised": bool(frame_footprints and mosaic_footprints), "still_required": unresolved}
+
+
+def reciprocal_apply_qualified(document, audit):
+    """Keep transactional completion distinct from the decisive native mechanism."""
+    return (audit["result"] == "PASS" and bool(audit["both_revised"]) and
+            bool(document.get("joints")) and document.get("can_apply") is True and
+            document.get("status") == "complete")
 
 
 def audit_matched_control(document, candidate, source):
@@ -528,7 +551,7 @@ def main():
                 checks += audit["checks"]
                 audit_rows.append({"file": file, "case": case_id, "policy": policy, **audit})
                 totals[policy]["audit_failures"] += audit["result"] != "PASS"
-                policy_rows.append({**record, "native_both_revised": False, "audit": audit["result"], "raw_sha256": hashes[file]})
+                policy_rows.append({**record, "native_both_revised": False, "native_reciprocal_apply": False, "audit": audit["result"], "raw_sha256": hashes[file]})
                 comparison_name = case_id + "__" + policy + ".png"
                 q = request_for(document)
                 control_cells = document["cells"] or [a or b for a, b in zip(document["frame"]["cells"], q["context"])]
@@ -546,7 +569,7 @@ def main():
                     "control_only_work": document["work"]["total"], "audit": audit["result"]})
                 continue
             if document.get("schema") != 5:
-                policy_rows.append({**record, "native_both_revised": False, "audit": "legacy-control; native suites separately qualify", "raw_sha256": hashes[file]})
+                policy_rows.append({**record, "native_both_revised": False, "native_reciprocal_apply": False, "audit": "legacy-control; native suites separately qualify", "raw_sha256": hashes[file]})
                 continue
             audit = audit_composition(document, campaign["source"])
             if document["rounds"] and document["rounds"][0]["frame"]["result"]["cells"] != document["rounds"][-1]["frame"]["result"]["cells"]:
@@ -560,12 +583,14 @@ def main():
             audit_rows.append({"file": file, "case": case_id, "policy": policy, **audit})
             totals[policy]["both_revised"] += audit["both_revised"]
             totals[policy]["both_revised_with_joint"] += audit["both_revised"] and bool(document["joints"])
+            reciprocal_apply = reciprocal_apply_qualified(document, audit)
+            totals[policy]["both_footprint_with_joint_and_apply"] += reciprocal_apply
             totals[policy]["apply_authorized"] += document["can_apply"]
             if audit["still_required"] is not None:
                 totals[policy]["still_required_on_final_proposals"] += audit["still_required"]
                 totals[policy]["final_proposals"] += 1
             totals[policy]["audit_failures"] += audit["result"] != "PASS"
-            policy_rows.append({**record, "native_both_revised": audit["both_revised"], "audit": audit["result"], "raw_sha256": hashes[file]})
+            policy_rows.append({**record, "native_both_revised": audit["both_revised"], "native_reciprocal_apply": reciprocal_apply, "audit": audit["result"], "raw_sha256": hashes[file]})
             filename = case_id + "__" + policy
             round_file = filename + "__rounds.png"
             round_image(document, policy).save(images / round_file)
@@ -580,7 +605,7 @@ def main():
             diagnostic_file = filename + "__diagnostics.png"
             diagnostics.save(images / diagnostic_file)
             case_html += [f"<section><h2>{html.escape(policy)} · {html.escape(document['status'])}</h2>",
-                f"<p>{html.escape(document['reason'])}</p><p>Stop: {html.escape(document['stop_reason'])}; Apply authorized: {document['can_apply']}; joints: {len(document['joints'])}; both revised: {audit['both_revised']}; audit: {audit['result']}.</p>",
+                f"<p>{html.escape(document['reason'])}</p><p>Stop: {html.escape(document['stop_reason'])}; Apply authorized: {document['can_apply']}; joints: {len(document['joints'])}; both revised: {audit['both_revised']}; both + joint + Apply: {reciprocal_apply}; audit: {audit['result']}.</p>",
                 f"<a href='../images/{round_file}'><img loading='lazy' src='../images/{round_file}' alt='Exact native proposal sequence'></a>",
                 f"<details><summary>Ownership, revision and joint diagnostics</summary><a href='../images/{diagnostic_file}'><img loading='lazy' src='../images/{diagnostic_file}' alt='Native ownership and joint diagnostics'></a></details>",
                 declined_html,
@@ -663,10 +688,10 @@ def main():
             writer = csv.DictWriter(stream, fieldnames=list(policy_rows[0]))
             writer.writeheader()
             writer.writerows(policy_rows)
-    table = "<table><thead><tr><th>Policy</th><th>Cases</th><th>Complete</th><th>Blocked</th><th>UNSAT</th><th>Exhausted</th><th>Both revised</th><th>Both + joint</th><th>Legacy reported joints</th><th>SWARM-004 qualified joints</th><th>Apply</th><th>Audit errors</th></tr></thead><tbody>"
+    table = "<table><thead><tr><th>Policy</th><th>Cases</th><th>Complete</th><th>Blocked</th><th>UNSAT</th><th>Exhausted</th><th>Both revised</th><th>Both + joint</th><th>Both + joint + Apply</th><th>Legacy reported joints</th><th>SWARM-004 qualified joints</th><th>Apply</th><th>Audit errors</th></tr></thead><tbody>"
     for policy, counts in totals.items():
         values = [policy, counts["cases"], counts["complete"], counts["blocked"], counts["unsat"], counts["exhausted"],
-                  counts["both_revised"], counts["both_revised_with_joint"],
+                  counts["both_revised"], counts["both_revised_with_joint"], counts["both_footprint_with_joint_and_apply"],
                   counts["reported_legacy_joints"] if counts["legacy_control"] else "—",
                   counts["qualified_joints"] if counts["native_candidate"] else "—", counts["apply_authorized"], counts["audit_failures"]]
         table += "<tr>" + "".join(f"<td>{html.escape(str(value))}</td>" for value in values) + "</tr>"
@@ -676,7 +701,7 @@ def main():
     page += "<p>Original material-cell arrays rendered with the unchanged native material catalogue. Diagnostic ownership and joint views are labelled separately. No physical stability or Workbench acceptance is inferred.</p>"
     page += "<p>Complete MOSAIC and complete foreign-obligation closure are different. Legacy control complete counts describe their native solver status; SWARM-004 complete includes its composition gates. Every failure stays in the comparison.</p>"
     page += "<p>Frozen legacy joint counts and current SWARM-004 qualified joints use different contracts. The latter require native Solid materials at the receiver and along the witnessed path; the original Stone13 bands are Powder. Historical values remain exact, and are shown separately.</p>"
-    page += "<p>Both revised means both Genteks changed their occupied-cell footprints in accepted rounds. Material-ID changes, including bearing material variants, are counted separately and cannot alone establish architectural revision.</p>"
+    page += "<p>Both revised means both Genteks changed their occupied-cell footprints in accepted rounds. Material-ID changes, including bearing material variants, are counted separately and cannot alone establish architectural revision. Both + joint + Apply additionally requires a qualified foreign joint, native Complete/Apply authority and a passing direct array audit for the same case.</p>"
     page += "<div class='tablewrap'>" + table + "</div><p><a href='reciprocal_metrics.csv'>Metrics CSV</a> · <a href='reciprocal_summary.json'>Summary</a> · <a href='reciprocal_audit.json'>Direct native array audit</a> · <a href='reciprocal_comparisons.json'>All control comparisons</a> · <a href='campaign.json'>Native campaign</a></p>"
     page += "<h2>Every matched case</h2><input id='filter' placeholder='Filter fixture, profile or seed'><ul id='cases'>" + "".join(case_cards) + "</ul>"
     page += "<script>document.getElementById('filter').addEventListener('input',e=>{const q=e.target.value.toLowerCase();document.querySelectorAll('#cases li').forEach(x=>x.hidden=!x.dataset.case.toLowerCase().includes(q));});</script>"

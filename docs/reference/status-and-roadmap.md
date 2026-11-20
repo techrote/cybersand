@@ -18,6 +18,11 @@ an explicitly dependent experimental Shared Workbench path. The [focused contrac
 separates native development witnesses, unresolved hard obligations, corpus
 qualification and actual Windows Apply/Undo/Save/reopen acceptance. No production
 default, material/physics change, Viaduct identity change or automatic merge is authorized.
+The [qualified known comparisons](../../native/experiments/gentek_swarm/SWARM-004.md)
+retain genuine reciprocal terminal-bearing examples and blocked larger
+assemblies. They do not establish the requested complete large shared-zone
+truss/arch result. A registered fixed-territory round supplement precedes final
+source selection and the fresh holdouts.
 
 ## GEN-008 Flatten / Bake History — 2026-11-13
 

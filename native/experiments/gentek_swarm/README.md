@@ -11,6 +11,12 @@ capacities of four, six and eight. Its known regression seeds and fresh
 validation follow a separate [registration](CONTINUATION-PLAN.md); the original
 saved evidence is historical.
 
+The [SWARM-004 reciprocal assembly programme](SWARM-004.md) adds bounded authored
+assemblies and native reciprocal proposals, with a separately dependent
+experimental Workbench implementation. Its qualified controls, negative
+architectural results and remaining acceptance gates are separate from the
+frozen predecessor descriptions below.
+
 **Experimental native research. Draft / HOLD. No product acceptance.**
 
 This programme implements the owner-authorised three-Gentek brief of 15 November

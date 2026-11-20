@@ -17,7 +17,10 @@ continues the verified SWARM-003 parent `cd0de74b83a66b5408668f81c82d854db45479c
 Read the [reciprocal assembly contract](../systems/gentek-reciprocal-assembly.md)
 and its machine-readable native preregistration. Native grammar/reciprocal
 qualification precedes a dependent experimental Workbench PR based on accepted
-main `7b03aa437561ec63e31fd09531171360ab60eeb4`; #684/#685 remain separate.
+main explicitly reconciled to `de58bf1997ca75825cf3b29e046dc1c1022c45bf`;
+#684/#685 remain separate. The [known comparison record](../../native/experiments/gentek_swarm/SWARM-004.md)
+retains qualified V1, unselected articulated V2 and the registered fixed-round
+interaction supplement before final selection and holdouts.
 The owner authorized both implementation stages, not merge or Ready promotion.
 Development two-sided geometry witnesses do not establish full hard closure,
 Windows graphical acceptance or physical stability. Keep frozen B/C/E8 evidence,
