@@ -251,7 +251,7 @@ func _run_job(job: Dictionary) -> Dictionary:
 		var record: Dictionary = await _render_shot(shot, job, pack, combined, combined_image, rig, job_dir)
 		shot_records.append(record)
 		manifest["shots"] = shot_records
-		if record.status != "complete":
+		if record.status not in ["complete", "prepared"]:
 			error = "shot %s failed: %s" % [record.id, record.error]
 			break
 	rig.queue_free()
@@ -261,7 +261,11 @@ func _run_job(job: Dictionary) -> Dictionary:
 		return _fail_job(job, manifest, error)
 	if shot_records.is_empty():
 		return _fail_job(job, manifest, "no shots were requested")
-	manifest["status"] = "complete"
+	var requires_assembly: bool = false
+	for item: Dictionary in shot_records:
+		if item.status == "prepared":
+			requires_assembly = true
+	manifest["status"] = "needs-assembly" if requires_assembly else "complete"
 	manifest["error"] = ""
 	if not _write_json(job_dir.path_join("manifest.json"), manifest):
 		return {"id": job_id, "status": "failed", "error": "cannot write manifest.json", "manifest": ""}
@@ -384,20 +388,43 @@ func _render_shot(shot: Dictionary, job: Dictionary, pack: Variant, combined: Di
 		if scale < 1 or scale > FullExport.MAX_SCALE:
 			record["error"] = "scale %d is outside 1..%d" % [scale, FullExport.MAX_SCALE]
 			return record
-		if FullExport.output_pixels(native, scale) > MAX_PIXELS:
-			record["error"] = "export of %dx%d cells at %dx exceeds %d pixels" % [
-				native.x, native.y, scale, MAX_PIXELS]
+		var output_count: int = FullExport.output_pixels(native, scale)
+		var over_budget: bool = output_count > MAX_PIXELS
+		if over_budget and (not bool(_request.get("stream_large", false))
+				or output_count > FullExport.MAX_STREAM_PIXELS
+				or native.x * scale > FullExport.MAX_STREAM_SIDE
+				or native.y * scale > FullExport.MAX_STREAM_SIDE):
+			record["error"] = "export of %dx%d cells at %dx exceeds %d pixel image budget; " % [
+				native.x, native.y, scale, MAX_PIXELS] + (
+				"use --stream-large for at most %d pixels/%d per axis" % [
+					FullExport.MAX_STREAM_PIXELS, FullExport.MAX_STREAM_SIDE])
 			return record
 		var input_image: Image = combined_image if kind == "full" else _image_from_input(source)
 		if input_image == null:
 			record["error"] = "cannot construct RG8 source image"
 			return record
+		camera = {"mode": "tiled-stream-full" if over_budget else "tiled-full",
+			"scale": scale, "tile_cells": FullExport.TILE_CELLS,
+			"halo_cells": FullExport.HALO_CELLS, "native_rect": [0, 0, native.x, native.y],
+			"map_fully_visible": true}
+		if over_budget:
+			var tile_directory: String = job_dir.path_join("_stream-" + id)
+			var assembly: Dictionary = await FullExport.render_rgb_tiles(self, input_image, scale,
+				float(presentation.get("time", 1.37)), bool(presentation.get("glow", true)),
+				bool(presentation.get("structured_detail", true)),
+				bool(presentation.get("background", true)), tile_directory)
+			if not assembly.ok:
+				record["error"] = "Godot RGB tile transport failed: " + String(assembly.error)
+				return record
+			record["camera"] = camera
+			record["assembly"] = assembly
+			record["width"] = assembly.width
+			record["height"] = assembly.height
+			record["status"] = "prepared"
+			return record
 		image = await FullExport.render(self, input_image, scale, float(presentation.get("time", 1.37)),
 			bool(presentation.get("glow", true)), bool(presentation.get("structured_detail", true)),
 			bool(presentation.get("background", true)))
-		camera = {"mode": "tiled-full", "scale": scale, "tile_cells": FullExport.TILE_CELLS,
-			"halo_cells": FullExport.HALO_CELLS, "native_rect": [0, 0, native.x, native.y],
-			"map_fully_visible": true}
 	else:
 		var framed: Dictionary = _frame_shot(shot, native)
 		if not framed.ok:
