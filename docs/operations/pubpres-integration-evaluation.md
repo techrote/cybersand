@@ -121,3 +121,23 @@ arms. Frame p95 remained 32.656–34.227 ms against 9.275–9.392 ms for the
 same-run full-only references. Its 15 long intervals per arm moved to later
 sparse frames. Together with the direct-update and compact-re-entry results,
 this established full publication as the Windows software ANGLE path.
+
+The [fresh-whole result](https://github.com/techrote/cybersand/actions/runs/44745728887/artifacts/14633770983)
+is also **Rejected as the performance solution**. On its separately identified
+EPYC 9V45 WARP host, R–A–B–B–A–R frame p95 was
+9.275/29.361/34.227/32.656/30.044/9.392 ms. Whole uploads became cheap, but the
+ordinary sparse ring's first reuse spent approximately 7.6 ms in its 32 KiB
+upload, with subsequent frame tails near 32–34 ms. Both full histories stayed
+exact through all 180 admissions. The original archive SHA-256 is
+`a0654d50bf58d13ae65c6318813026c1c717404b3a27e85677702daabec3b977`.
+Do not compare this host's absolute timing to the earlier EPYC 7763 runs.
+
+The registered `sparse-storage` comparison uses that rejected fresh-whole path
+as A and adds fresh immutable layered staging storage as B. Each new RG8
+layered donor replaces the storage behind the existing stage RID; the same
+three slots, fixed samplers, sparse shader and two complete history RIDs remain.
+The first sparse draw can also promote sampled texture storage to render-target
+storage in ANGLE, so removing a later upload wait alone is insufficient. Both
+untimed history oracles must pass before the R–A–B–B–A–R comparison. Original
+frame tails and accepted cadence decide this probe, with gameplay still a
+separate source-matched gate.

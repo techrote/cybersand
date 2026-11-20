@@ -14,12 +14,13 @@ on:
         description: WARP comparison to run
         type: choice
         options:
+          - sparse-storage
           - fixed-material
           - fresh-drawable
           - direct-drawable
           - steady-sparse
           - reentry
-        default: fixed-material
+        default: sparse-storage
 
 permissions:
   actions: read
@@ -71,7 +72,7 @@ jobs:
       - name: Run the selected publication comparison on WARP
         shell: pwsh
         env:
-          PUBPRES_WARP_EXPERIMENT: ${{ inputs.experiment || 'fixed-material' }}
+          PUBPRES_WARP_EXPERIMENT: ${{ inputs.experiment || 'sparse-storage' }}
         run: |
           python tools/pubpres_integration/warp_transition.py `
             --installed (Join-Path $env:RUNNER_TEMP 'pubpres-warp-installed') `

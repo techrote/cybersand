@@ -29,11 +29,12 @@ STEADY_SWITCH = "CYBERSAND_PUBPRES_PROBE_STEADY_SPARSE"
 FIXED_MATERIAL_SWITCH = "CYBERSAND_PUBPRES_PROBE_FIXED_MATERIAL"
 DIRECT_SWITCH = "CYBERSAND_PUBPRES_PROBE_DIRECT_DRAWABLE"
 FRESH_SWITCH = "CYBERSAND_PUBPRES_PROBE_FRESH_DRAWABLE"
+STAGE_SWITCH = "CYBERSAND_PUBPRES_PROBE_FRESH_STAGING"
 PUBLISHER = "scripts/blit_material_publisher.gd"
 FIXTURE = "tests/pubpres_transition.gd"
 ORACLE = "tests/pubpres_warp_transition_oracle.gd"
 ORDERS = {"reentry": "RABBAR", "steady-sparse": "RSABBASR", "fixed-material": "RSABBASR",
-          "direct-drawable": "RABBAR", "fresh-drawable": "RABBAR"}
+          "direct-drawable": "RABBAR", "fresh-drawable": "RABBAR", "sparse-storage": "RABBAR"}
 TAPE_VARIANTS = {"steady-sparse": "steady_sparse", "fixed-material": "fixed_material"}
 TAPE_PAIRS = ((3, 2), (4, 5), (3, 1), (4, 6), (2, 0), (5, 7), (1, 0), (6, 7))
 PAIRINGS = {
@@ -42,6 +43,7 @@ PAIRINGS = {
     "fixed-material": TAPE_PAIRS,
     "direct-drawable": ((2, 1), (3, 4), (2, 0), (3, 5), (1, 0), (4, 5)),
     "fresh-drawable": ((2, 1), (3, 4), (2, 0), (3, 5), (1, 0), (4, 5)),
+    "sparse-storage": ((2, 1), (3, 4), (2, 0), (3, 5), (1, 0), (4, 5)),
 }
 PHASES = ("enter_dense", "dense", "enter_sparse", "sparse")
 EXPECTED_IMAGE_HASHES = {
@@ -80,6 +82,16 @@ def tape_for(arm, experiment):
 
 def material_for(arm):
     return "full" if arm in ("R", "S") else "blit"
+
+
+def direct_for(arm, experiment):
+    return (experiment in ("direct-drawable", "fresh-drawable") and arm == "B"
+            or experiment == "sparse-storage" and arm in ("A", "B"))
+
+
+def fresh_for(arm, experiment):
+    return (experiment == "fresh-drawable" and arm == "B"
+            or experiment == "sparse-storage" and arm in ("A", "B"))
 
 
 def initial_hash(tape):
@@ -193,6 +205,53 @@ def fresh_oracle_overlay(original):
     return changed.replace(validation, checks + validation)
 
 
+def sparse_storage_overlay(original):
+    changed = fresh_drawable_overlay(original)
+    anchor = b"\tstage.update_layer(atlas,0)\n"
+    need(changed.count(anchor) == 1, "Pinned sparse array upload differs")
+    replacement = b'''\tif OS.get_environment("CYBERSAND_PUBPRES_PROBE_FRESH_STAGING") == "1":
+\t\t# Immutable layered donor replaces only the existing stage storage;
+\t\t# its Texture2DArray object, sampler and logical RID remain owned.
+\t\tvar layers: Array[Image] = [atlas]
+\t\tvar transfer_started := Time.get_ticks_usec()
+\t\tvar donor: RID = RenderingServer.texture_2d_layered_create(layers,RenderingServer.TEXTURE_LAYERED_2D_ARRAY)
+\t\tlast_update["staging_storage_create_usec"] = Time.get_ticks_usec()-transfer_started
+\t\tif not donor.is_valid(): return false
+\t\ttransfer_started = Time.get_ticks_usec()
+\t\tRenderingServer.texture_replace(stage.get_rid(),donor)
+\t\tlast_update["staging_storage_replace_usec"] = Time.get_ticks_usec()-transfer_started
+\t\tlast_update["fresh_staging_storage"] = true
+\t\tlast_update["staging_storage_creations"] = 1
+\t\tlast_update["staging_storage_replacements"] = 1
+\telse:
+\t\tstage.update_layer(atlas,0)
+'''
+    changed = changed.replace(anchor, replacement)
+    initialization = b'\t\tfor key: String in ["submitted_bytes", "atlas_assembly_usec", "staging_upload_usec",\n'
+    need(changed.count(initialization) == 1, "Pinned distinct-history initialization counters differ")
+    counters = b'\t\t\t\t"whole_storage_creations", "whole_storage_replacements", "whole_storage_create_usec", "whole_storage_replace_usec",\n'
+    return changed.replace(initialization, initialization + counters)
+
+
+def sparse_oracle_overlay(original):
+    changed = fresh_oracle_overlay(original)
+    selector = b'\tvar fresh := OS.get_environment("CYBERSAND_PUBPRES_PROBE_FRESH_DRAWABLE") == "1"\n'
+    validation = b'\t\tif is_steady:\n'
+    need(changed.count(selector) == 1 and changed.count(validation) == 1,
+         "Pinned fresh storage oracle differs")
+    changed = changed.replace(selector, selector + b'\tvar fresh_stage := OS.get_environment("CYBERSAND_PUBPRES_PROBE_FRESH_STAGING") == "1"\n')
+    changed = changed.replace(b'\tif is_steady:\n', b'\tif fresh_stage: mode = "fresh_staging"\n\tif is_steady:\n', 1)
+    checks = b'''\t\tif fresh_stage:
+\t\t\tvar sparse: bool = row.phase == "sparse"
+\t\t\t_check(bool(material.get("fresh_staging_storage", false)) == sparse,
+\t\t\t\t"generation %d did not follow the fresh-stage selector" % index)
+\t\t\t_check(int(material.get("staging_storage_creations", 0)) == int(sparse)
+\t\t\t\tand int(material.get("staging_storage_replacements", 0)) == int(sparse),
+\t\t\t\t"generation %d did not consume exactly one fresh stage donor" % index)
+'''
+    return changed.replace(validation, checks + validation)
+
+
 def prepare_project(installed, project, output, manifest, oracle, experiment="reentry", fixture=None):
     expected = {}
     for name, sha in manifest["files_sha256"].items():
@@ -217,6 +276,9 @@ def prepare_project(installed, project, output, manifest, oracle, experiment="re
     elif experiment == "fresh-drawable":
         original = (project / PUBLISHER).read_bytes()
         apply_overlay(project, output, expected, PUBLISHER, fresh_drawable_overlay(original), "publisher-overlay.patch")
+    elif experiment == "sparse-storage":
+        original = (project / PUBLISHER).read_bytes()
+        apply_overlay(project, output, expected, PUBLISHER, sparse_storage_overlay(original), "publisher-overlay.patch")
 
     if fixture is not None:
         apply_overlay(project, output, expected, FIXTURE, fixture.read_bytes(), "fixture-overlay.patch")
@@ -227,6 +289,8 @@ def prepare_project(installed, project, output, manifest, oracle, experiment="re
     shutil.copyfile(oracle, project / ORACLE)
     if experiment == "fresh-drawable":
         apply_overlay(project, output, expected, ORACLE, fresh_oracle_overlay(oracle.read_bytes()), "oracle-overlay.patch")
+    elif experiment == "sparse-storage":
+        apply_overlay(project, output, expected, ORACLE, sparse_oracle_overlay(oracle.read_bytes()), "oracle-overlay.patch")
     shutil.copyfile(project / ORACLE, oracle_source)
     expected[ORACLE] = digest(oracle_source)
     need(not project_drift(project, expected), "Scratch project failed exact copy verification")
@@ -237,7 +301,7 @@ def project_drift(project, expected):
     return [name for name, sha in expected.items() if not (project / name).is_file() or digest(project / name) != sha]
 
 
-def capture(installed, project, folder, profiles, script=None, material="blit", skip=None, tape="transition", direct=None, fresh=None):
+def capture(installed, project, folder, profiles, script=None, material="blit", skip=None, tape="transition", direct=None, fresh=None, fresh_stage=None):
     folder.mkdir()
     created = datetime.datetime.now(datetime.timezone.utc)
     nonce = uuid.uuid4().hex
@@ -258,6 +322,8 @@ def capture(installed, project, folder, profiles, script=None, material="blit", 
         settings[DIRECT_SWITCH] = str(int(direct))
     if fresh is not None:
         settings[FRESH_SWITCH] = str(int(fresh))
+    if fresh_stage is not None:
+        settings[STAGE_SWITCH] = str(int(fresh_stage))
     profile = profiles / folder.name
     for key in ("APPDATA", "LOCALAPPDATA", "XDG_DATA_HOME", "XDG_CONFIG_HOME", "XDG_CACHE_HOME"):
         target = profile / key
@@ -348,14 +414,16 @@ def timing_statistics(rows):
     for name in ("staging_upload_usec", "atlas_assembly_usec", "history_copy_usec",
                  "gpu_blit_submit_usec", "backend_submit_usec", "image_patch_usec", "content_cache_usec",
                  "submitted_bytes", "allocated_gpu_bytes", "estimated_history_read_bytes",
-                 "whole_storage_create_usec", "whole_storage_replace_usec"):
+                 "whole_storage_create_usec", "whole_storage_replace_usec",
+                 "staging_storage_create_usec", "staging_storage_replace_usec"):
         result[name] = distribution(row["material"].get(name) for row in rows)
     result["history_copy_count"] = sum(bool(row["material"].get("history_copy")) for row in rows)
     result["history_staging_count"] = sum(bool(row["material"].get("history_staging")) for row in rows)
     result["direct_whole_count"] = sum(bool(row["material"].get("direct_whole")) for row in rows)
     result["direct_drawable_update_count"] = sum(bool(row["material"].get("direct_drawable_update")) for row in rows)
     result["fresh_drawable_storage_count"] = sum(bool(row["material"].get("fresh_drawable_storage")) for row in rows)
-    for name in ("whole_storage_creations", "whole_storage_replacements"):
+    result["fresh_staging_storage_count"] = sum(bool(row["material"].get("fresh_staging_storage")) for row in rows)
+    for name in ("whole_storage_creations", "whole_storage_replacements", "staging_storage_creations", "staging_storage_replacements"):
         result[name + "_total"] = sum(row["material"].get(name, 0) for row in rows)
     result["whole_gpu_copy_count"] = sum(bool(row["material"].get("whole_gpu_copy")) for row in rows)
     result["submitted_bytes_total"] = sum(row["material"]["submitted_bytes"] for row in rows)
@@ -384,6 +452,8 @@ def read_timed(receipt, arm, folder, experiment="reentry"):
     entry_followers = collections.defaultdict(list)
     sequence_offsets = collections.defaultdict(list)
     targets = None
+    stage_targets = {}
+    previous_stage_slot = None
     for index, row in enumerate(rows, start=30):
         offset = index % 12
         phase = "sparse" if steady else PHASES[min(offset, 3)]
@@ -397,17 +467,19 @@ def read_timed(receipt, arm, folder, experiment="reentry"):
              and math.isclose(row["publication_ms"], (row["publish_end_usec"] - row["publish_begin_usec"]) / 1000),
              f"Revision {index + 1} timeline is invalid")
         update = row["material"]
-        cloned = offset == 2 and (arm == "A" or (experiment == "fixed-material" and arm == "B"))
+        cloned = offset == 2 and experiment != "sparse-storage" and (arm == "A" or (experiment == "fixed-material" and arm == "B"))
         compact = experiment == "reentry" and arm == "B" and offset == 2
-        direct = experiment in ("direct-drawable", "fresh-drawable") and arm == "B" and offset <= 2
-        fresh = experiment == "fresh-drawable" and arm == "B" and offset <= 2
+        direct = direct_for(arm, experiment) and offset <= 2
+        fresh = fresh_for(arm, experiment) and offset <= 2
+        fresh_stage = experiment == "sparse-storage" and arm == "B" and offset >= 3
         whole = material == "blit" and (dense or compact or direct)
         need(update["requested_mode"] == material and update["backend"] == material and update["driver"] == "opengl3_angle"
              and not update["fallback_reason"] and bool(update.get("history_copy")) == cloned
              and bool(update.get("history_staging")) == cloned
              and bool(update.get("direct_whole")) == whole and bool(update.get("whole_gpu_copy")) == (whole and not direct)
              and bool(update.get("direct_drawable_update")) == direct
-             and bool(update.get("fresh_drawable_storage")) == fresh,
+             and bool(update.get("fresh_drawable_storage")) == fresh
+             and bool(update.get("fresh_staging_storage")) == fresh_stage,
              f"Revision {index + 1} used a different publisher or copy mechanism")
         need(update["submitted_bytes"] == (16777216 if direct else (8388608 if whole or material == "full" else 32768)),
              f"Revision {index + 1} staged unexpected bytes")
@@ -422,6 +494,13 @@ def read_timed(receipt, arm, folder, experiment="reentry"):
             need(update["whole_storage_create_usec"] >= 0 and update["whole_storage_replace_usec"] >= 0
                  and update["whole_storage_create_usec"] + update["whole_storage_replace_usec"] <= update["staging_upload_usec"],
                  f"Revision {index + 1} has invalid fresh storage timing")
+        need(update.get("staging_storage_creations", 0) == int(fresh_stage)
+             and update.get("staging_storage_replacements", 0) == int(fresh_stage),
+             f"Revision {index + 1} created or consumed an unexpected stage donor")
+        if fresh_stage:
+            need(update["staging_storage_create_usec"] >= 0 and update["staging_storage_replace_usec"] >= 0
+                 and update["staging_storage_create_usec"] + update["staging_storage_replace_usec"] <= update["staging_upload_usec"],
+                 f"Revision {index + 1} has invalid fresh stage timing")
         if material == "blit":
             pair = (update["current_texture_rid"], update["previous_texture_rid"])
             need(pair[0] > 0 and pair[1] > 0 and pair[0] != pair[1]
@@ -430,15 +509,29 @@ def read_timed(receipt, arm, folder, experiment="reentry"):
             if not whole:
                 need(update["atlas_capacity"] == 1 and update["staging_width"] == 128 and update["staging_height"] == 128,
                      f"Revision {index + 1} did not stage one 128×128 RG8 tile")
+                if experiment == "sparse-storage":
+                    slot, rid = update["staging_slot"], update["staging_resource_rid"]
+                    need(update["staging_slots"] == 3 and 0 <= slot < 3 and rid > 0 and rid not in pair
+                         and update["staging_layer"] == 0 and update["staging_resource_layers"] == 1
+                         and (previous_stage_slot is None or slot == (previous_stage_slot + 1) % 3),
+                         f"Revision {index + 1} changed the independent three-slot sparse ring")
+                    if slot in stage_targets:
+                        need(stage_targets[slot] == rid, f"Revision {index + 1} changed the logical sparse stage RID")
+                    else:
+                        need(rid not in stage_targets.values(), f"Revision {index + 1} aliased two sparse slots")
+                        stage_targets[slot] = rid
+                    previous_stage_slot = slot
         if cloned:
             need(update["atlas_capacity"] == 1 and update["estimated_history_read_bytes"] == 16777216
                  and update["history_copy_usec"] >= 0, f"Revision {index + 1} is missing the GPU history clone receipt")
         phases[phase].append(row)
         sequence_offsets[offset].append(row["frame_ms"])
-        if not steady and 2 <= offset <= 5:
+        if not steady and 2 <= offset <= (8 if experiment == "sparse-storage" else 5):
             entry_followers[f"entry_plus_{offset - 2}"].append(row)
     expected_phases = {"sparse": 180} if steady else dict(zip(PHASES, (15, 15, 15, 135)))
     need({name: len(group) for name, group in phases.items()} == expected_phases, "Input tape phase coverage differs")
+    if experiment == "sparse-storage" and material == "blit":
+        need(len(stage_targets) == 3, "Sparse storage experiment did not exercise every independent stage slot")
     return {
         "tape": tape,
         "accepted_revisions": len(rows), "accepted_updates_per_second": 1000 * len(rows) / sum(row["frame_ms"] for row in rows),
@@ -453,7 +546,9 @@ def read_timed(receipt, arm, folder, experiment="reentry"):
 def read_oracle(receipt, arm, experiment="reentry"):
     tape = tape_for(arm, experiment)
     mode = "clone" if arm == "A" else {"fresh-drawable": "fresh_drawable", "direct-drawable": "direct_drawable",
-                                       "reentry": "compact", **TAPE_VARIANTS}[experiment]
+                                       "reentry": "compact", "sparse-storage": "fresh_staging", **TAPE_VARIANTS}[experiment]
+    if experiment == "sparse-storage":
+        mode = "fresh_drawable" if arm == "A" else "fresh_staging"
     sparse_entries = 0 if tape == "steady_sparse" else 15
     need(receipt["schema"] == "pubpres-warp-history-oracle-v1" and receipt["case"] == "transition_2048_w1"
          and receipt["complete"] and not receipt["failures"] and receipt["mode"] == mode
@@ -482,8 +577,9 @@ def run_arm(installed, project, folder, profiles, manifest, project_hashes, arm,
     tape = tape_for(arm, experiment)
     record = capture(installed, project, folder, profiles, fixture, material_for(arm),
                      skip=arm == "B" if experiment == "reentry" else None, tape=tape,
-                     direct=arm == "B" if experiment in ("direct-drawable", "fresh-drawable") else None,
-                     fresh=arm == "B" if experiment == "fresh-drawable" else None)
+                     direct=direct_for(arm, experiment) if experiment in ("direct-drawable", "fresh-drawable", "sparse-storage") else None,
+                     fresh=fresh_for(arm, experiment) if experiment in ("fresh-drawable", "sparse-storage") else None,
+                     fresh_stage=arm == "B" if experiment == "sparse-storage" else None)
     result = {"arm": arm, "tape": tape, "status": "FAIL", "process": record}
     try:
         renderer = check_process(folder, record)
@@ -585,18 +681,19 @@ def run(installed, output, oracle, experiment="reentry", fixture=None):
             order = ORDERS[experiment]
             plan = {"experiment": experiment, "order": list(order), "arms": {
                     arm: {"tape": tape_for(arm, experiment), "material": material_for(arm),
-                          "bypass_history": experiment in ("reentry", "direct-drawable", "fresh-drawable") and arm == "B",
-                          "direct_drawable": experiment in ("direct-drawable", "fresh-drawable") and arm == "B",
-                          "fresh_drawable_storage": experiment == "fresh-drawable" and arm == "B"} for arm in sorted(set(order))},
+                          "bypass_history": (experiment == "reentry" and arm == "B") or direct_for(arm, experiment),
+                          "direct_drawable": direct_for(arm, experiment),
+                          "fresh_drawable_storage": fresh_for(arm, experiment),
+                          "fresh_staging_storage": experiment == "sparse-storage" and arm == "B"} for arm in sorted(set(order))},
                     "oracle_order": ["A", "B"],
-                    "untimed_oracles_before_timing": experiment == "fresh-drawable",
+                    "untimed_oracles_before_timing": experiment in ("fresh-drawable", "sparse-storage"),
                     "manifest_sha256": MANIFEST_SHA256, "source_publisher_sha256": manifest["files_sha256"]["godot/" + PUBLISHER],
                     "probe_publisher_sha256": expected[PUBLISHER], "oracle_sha256": expected[ORACLE],
                     "source_fixture_sha256": manifest["files_sha256"]["godot/" + FIXTURE],
                     "probe_fixture_sha256": expected[FIXTURE],
-                    "publisher_overlay_sha256": digest(output / "publisher-overlay.patch") if experiment in ("reentry", "direct-drawable", "fresh-drawable") else None,
+                    "publisher_overlay_sha256": digest(output / "publisher-overlay.patch") if experiment in ("reentry", "direct-drawable", "fresh-drawable", "sparse-storage") else None,
                     "oracle_source_sha256": digest(oracle),
-                    "oracle_overlay_sha256": digest(output / "oracle-overlay.patch") if experiment == "fresh-drawable" else None,
+                    "oracle_overlay_sha256": digest(output / "oracle-overlay.patch") if experiment in ("fresh-drawable", "sparse-storage") else None,
                     "fixture_overlay_sha256": digest(output / "fixture-overlay.patch") if fixture is not None else None,
                     "project_inputs_sha256": expected}
             if experiment in TAPE_VARIANTS:
@@ -615,6 +712,22 @@ def run(installed, output, oracle, experiment="reentry", fixture=None):
                     "source_inspected": ["godotengine/godot@4.7-stable", "google/angle@aaebda1c5a40"],
                     "memory_limit": "reported_video_memory counts logical GL allocation; it cannot prove driver-inflight residency",
                 }
+            if experiment == "sparse-storage":
+                plan["hypothesis"] = (
+                    "Fresh whole storage removed the first dense update wait but retained slow first sparse-stage ring reuse "
+                    "and later frame tails. A fresh immutable layered RG8 donor consumed by texture_replace tests that "
+                    "stage reuse wait without changing logical stage RIDs, fixed samplers, ring size or sparse draw work. "
+                    "Upstream render-target promotion remains an alternative cause; total frame tails, not moved waits, decide."
+                )
+                plan["control"] = "A is fresh whole storage only, the rejected treatment from run 44745728887; R is full RG8"
+                plan["fresh_storage_contract"] = {
+                    "image": "distinct immutable RG8 atlas, one layer, exact owned stage dimensions",
+                    "ownership": "one fresh layered donor per sparse submission; texture_replace consumes donor; stage RID and sampler unchanged",
+                    "unchanged": "both complete histories, whole-storage path, ring capacity, copy shader, tape, engine and runtime",
+                    "initialization_receipts": "distinct-history initialization sums whole-storage donor counts for both targets",
+                    "source_inspected": ["godotengine/godot@4.7-stable", "google/angle@aaebda1c5a40"],
+                    "memory_limit": "reported_video_memory counts logical GL allocation; it cannot prove driver-inflight residency",
+                }
             write_json(output / "probe-plan.json", plan)
             folder = output / "import"
             check_process(folder, capture(installed, project, folder, profiles))
@@ -624,7 +737,7 @@ def run(installed, output, oracle, experiment="reentry", fixture=None):
             need(set(drift) == set(mutable), "Editor import changed a pinned source, oracle or runtime")
             for name in mutable:
                 expected[name] = digest(project / name)
-            if experiment == "fresh-drawable":
+            if experiment in ("fresh-drawable", "sparse-storage"):
                 for arm in ("A", "B"):
                     folder = output / f"oracle-{arm}"
                     summary["untimed_oracles"].append(run_arm(installed, project, folder, profiles, manifest, expected, arm,
@@ -634,7 +747,7 @@ def run(installed, output, oracle, experiment="reentry", fixture=None):
             for index, arm in enumerate(order):
                 folder = output / f"timed-{index}-{arm}"
                 summary["timed"].append(run_arm(installed, project, folder, profiles, manifest, expected, arm, experiment=experiment))
-            if experiment != "fresh-drawable":
+            if experiment not in ("fresh-drawable", "sparse-storage"):
                 for arm in ("A", "B"):
                     folder = output / f"oracle-{arm}"
                     summary["untimed_oracles"].append(run_arm(installed, project, folder, profiles, manifest, expected, arm,
