@@ -60,8 +60,11 @@ def main() -> int:
     out.mkdir(parents=True)
     godot=args.godot.resolve()
     source=subprocess.check_output(["git","rev-parse","HEAD"],cwd=ROOT,text=True).strip()
-    if subprocess.check_output(["git","status","--porcelain","--untracked-files=no"],cwd=ROOT,text=True).strip():
-        parser.error("Exact-source clean checkout required.")
+    tracked_changes=subprocess.check_output(["git","status","--porcelain","--untracked-files=no"],cwd=ROOT,text=True).strip()
+    if tracked_changes:
+        diff=subprocess.check_output(["git","diff","--name-status"],cwd=ROOT,text=True).strip()
+        print("GENTEK2048_TRACKED_SOURCE_DELTA",tracked_changes, "DIFF",diff, file=sys.stderr)
+        parser.error("Tracked source changed during Godot import; refusing to treat changed bytes as exact-source qualification.")
     version=subprocess.check_output([str(godot),"--version"],text=True,timeout=45).strip()
     if version!=EXPECTED_GODOT:
         parser.error("Pinned Godot version differs: "+version)
