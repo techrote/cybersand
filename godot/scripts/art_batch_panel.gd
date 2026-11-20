@@ -208,6 +208,8 @@ func _bind_selection() -> void:
 func _selection_visibility_changed() -> void:
 	if visible: _ensure_history_loaded()
 	_bind_selection()
+	# Revealing the panel must not overwrite manually entered bounds with
+	# an old selection (image capture also hides and restores this Window).
 
 func _ensure_history_loaded() -> void:
 	if conversation_loaded: return
@@ -216,8 +218,6 @@ func _ensure_history_loaded() -> void:
 	if source_path.is_empty(): return
 	conversation = provider.resume_traffic(source_path)
 	last_result = provider.resumed_last_result
-	# Opening/revealing the panel must not overwrite manually entered bounds with
-	# an old selection (image capture temporarily hides and restores this Window).
 
 func focus_selection(region: Rect2i) -> void:
 	if not visible or fields.size() != 4 or wb == null or wb.applied.is_empty(): return
@@ -432,7 +432,7 @@ func mount_provider_controls(column: VBoxContainer) -> void:
 		provider.log_event("deferred_human_stroke",receipt))
 	provider.traffic_changed.connect(func() -> void:
 		traffic_dirty = true
-		persist_traffic_path())
+		if provider.last_event_stored: persist_traffic_path())
 	var row := HBoxContainer.new()
 	for name_text: String in ["LM Studio","OpenAI","NVIDIA"]: source.add_item(name_text)
 	source.item_selected.connect(change_provider)
@@ -1017,4 +1017,5 @@ func refresh_traffic() -> void:
 		content = "\n".join(matches)
 	if content.length() > 120000: content = "[Showing latest matching traffic; Save JSONL exports the complete session]\n"+content.right(120000)
 	traffic_text.text = content
-	traffic_path.text = ProjectSettings.globalize_path(provider.log_path)+(" · "+provider.log_warning if not provider.log_warning.is_empty() else "")
+	var active_path: String = provider.log_path if not provider.log_path.is_empty() else provider.parent_log_path
+	traffic_path.text = (ProjectSettings.globalize_path(active_path) if not active_path.is_empty() else "No traffic file yet")+(" · "+provider.log_warning if not provider.log_warning.is_empty() else "")
