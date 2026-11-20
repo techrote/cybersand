@@ -1,4 +1,5 @@
 #include "negotiated.hpp"
+#include "resilience.hpp"
 #include <algorithm>
 #include <array>
 #include <bit>
@@ -234,12 +235,27 @@ static NegotiatedResult prepare_case(const Fixture& f,const Profile& p,std::uint
 
 static NegotiatedResult finish_case(NegotiatedResult out,bool reverse,bool finish,
                                     const std::vector<TransitionSlot>* admitted = nullptr,
-                                    std::uint64_t join_work_limit = 2'000'000) {
+                                    std::uint64_t join_work_limit = 2'000'000,
+                                    const ResilienceOptions* resilience_options = nullptr,
+                                    ResilienceTrace* resilience_trace = nullptr) {
     const auto& f=out.control.fixture;
     auto fq=out.frame_request,mq=out.mosaic_request;
     auto offers=admitted?*admitted:out.frame.slots;if(reverse)std::reverse(offers.begin(),offers.end());
-    if(reverse){out.no_offers=negotiate_mosaic(mq,{});out.mosaic=negotiate_mosaic(mq,offers);}
-    else{out.mosaic=negotiate_mosaic(mq,offers);out.no_offers=negotiate_mosaic(mq,{});}
+    const auto solve_candidate=[&]() {
+        return resilience_options?negotiate_mosaic_resilient(mq,offers,*resilience_options,*resilience_trace):negotiate_mosaic(mq,offers);
+    };
+    if(reverse){out.no_offers=negotiate_mosaic(mq,{});out.mosaic=solve_candidate();}
+    else{out.mosaic=solve_candidate();out.no_offers=negotiate_mosaic(mq,{});}
+    // The resilient donor discovers the original universe before admission.
+    // Only its immutable admission decision may authorize a shared join.
+    // The historical C and geometric-cap paths remain byte-for-byte unchanged.
+    std::vector<TransitionSlot> resilient_authorized;
+    if(resilience_trace) {
+        for(const auto& offer:offers)
+            if(std::find(resilience_trace->final_authorized_ids.begin(),resilience_trace->final_authorized_ids.end(),offer.id)!=resilience_trace->final_authorized_ids.end())
+                resilient_authorized.push_back(offer);
+        admitted=&resilient_authorized;
+    }
     std::sort(out.frame.slots.begin(),out.frame.slots.end(),[](const auto& a,const auto& b){return a.id<b.id;});
     out.final_frame=out.frame.result;out.final_mosaic=out.mosaic.result;
     out.planned_cells=combine(f,out.final_frame,out.final_mosaic);
@@ -605,5 +621,90 @@ AdmissionResult negotiate_admission(const PreparedAdmission& prepared,const Admi
     a.reason="fixed admission applied once; no outcome-dependent subset search, rank refill, or enlarged structural work ceiling";
     if(a.diagnostic)a.reason+="; separately labelled lower-only solver-budget diagnostic";
     finish_admission_digest(out);return out;
+}
+
+namespace {
+void finish_resilience_digest(ResilienceResult& out) {
+    AdmissionHash h;
+    h.integer(out.candidate.digest);
+    h.integer(static_cast<unsigned>(out.options.admission));
+    h.integer(static_cast<unsigned>(out.options.schedule));
+    h.integer(static_cast<unsigned>(out.options.fallback));
+    h.integer(static_cast<unsigned>(out.options.receivers));
+    h.integer(out.options.optional_capacity);
+    h.integer(out.preparation_work);h.integer(out.join_work_limit);
+    const auto& t=out.trace;
+    h.text(t.reason);h.numbers(t.primary_selected_ids);h.numbers(t.fallback_selected_ids);
+    h.numbers(t.final_authorized_ids);h.numbers(t.dropped_preference_ids);
+    h.integer(t.receivers.size());
+    for(const auto& r:t.receivers) {
+        h.integer(r.slot_id);h.integer(r.original_tile);h.integer(r.selected_tile);
+        h.point(r.original_contact);h.point(r.selected_contact);
+        h.integer(r.original_compatible_domain);h.integer(r.original_supported_domain);
+        h.integer(r.selected_compatible_domain);h.integer(r.selected_supported_domain);
+        h.integer(r.original_admitted);h.integer(r.changed);h.integer(r.work);h.integer(r.points_examined);
+        h.text(r.reason);h.integer(r.faces.size());
+        for(const auto& f:r.faces) {
+            h.point(f.contact);h.integer(f.tile);h.integer(f.original_domain);h.integer(f.compatible_domain);
+            h.integer(f.supported_domain);h.integer(f.distance);h.integer(f.selected);
+        }
+    }
+    const auto& a=t.admission;
+    h.integer(static_cast<unsigned>(a.status));h.text(a.reason);h.integer(a.work);
+    h.integer(a.optional_capacity);h.integer(a.fallback_optional_capacity);
+    h.numbers(a.selected_ids);h.numbers(a.fallback_ids);h.numbers(a.original_domains);
+    h.numbers(a.hard_domains);h.numbers(a.preferred_domains);h.numbers(a.fallback_domains);
+    h.integer(a.decisions.size());
+    for(const auto& d:a.decisions) {
+        h.integer(d.slot_id);h.integer(d.tile);h.integer(d.hard);h.integer(d.geometry_admitted);
+        h.integer(d.selected);h.integer(d.fallback_selected);h.integer(d.domain_changed);h.integer(d.fallback_domain_changed);
+        h.integer(d.rank);h.integer(d.distance);h.point(d.contact);
+        h.integer(d.compatible_domain);h.integer(d.locally_supported_domain);h.integer(d.original_domain);
+        h.integer(d.hard_domain);h.integer(d.projected_domain);h.integer(d.fallback_domain);
+        for(auto pool:d.neighbor_pool)h.integer(pool);
+        h.integer(d.neighbor_support);h.integer(d.conflicts_with);h.text(d.disposition);h.text(d.reason);
+    }
+    const auto& s=t.solver;
+    h.integer(s.width);h.integer(s.height);h.integer(s.seed);h.integer(s.aggregate_limit);
+    h.integer(s.allocated_limit);h.integer(s.attempted_limit);h.integer(s.preparation_work);h.integer(s.fallback_used);
+    h.numbers(s.category_ids);for(const auto& row:s.adjacency)for(auto mask:row)h.integer(mask);
+    h.numbers(s.primary_optional_ids);h.numbers(s.fallback_optional_ids);h.integer(s.attempts.size());
+    for(const auto& attempt:s.attempts) {
+        const auto& record=attempt.solver;
+        h.text(record.policy);h.text(record.reason);h.integer(static_cast<unsigned>(record.status));
+        h.integer(record.attempted);h.integer(record.work_observed);h.integer(record.work);h.integer(record.work_limit);
+        h.numbers(attempt.domains);h.numbers(attempt.optional_ids);h.numbers(attempt.categories);
+        h.text(attempt.trigger);h.integer(attempt.fallback);
+    }
+    out.digest=h.value;
+}
+} // namespace
+
+ResilienceResult negotiate_resilient(const PreparedAdmission& prepared,const ResilienceOptions& options,bool reverse) {
+    ResilienceResult out;out.options=options;
+    const auto invalid=[&](const std::string& why) {
+        out.trace.reason=why;out.trace.admission.status=Status::Invalid;out.trace.admission.reason=why;
+        out.candidate.mosaic.result.status=Status::Invalid;out.candidate.mosaic.result.termination=why;
+        finish_resilience_digest(out);return out;
+    };
+    if(!valid_resilience_options(options))return invalid("unregistered resilience admission/schedule/receiver/capacity combination");
+    std::string reason;
+    if(prepared.status!=Status::Complete||!admission_shape(prepared.prepared,reason))
+        return invalid("invalid frozen resilience preparation: "+(reason.empty()?prepared.reason:reason));
+    if(prepared.ranking.size()!=prepared.prepared.frame.slots.size()||
+       prepared.ranking_work>admission_shared_limit-admission_selection_charge||
+       prepared.input_digest!=admission_input_digest(prepared.prepared)||
+       prepared.ranking_digest!=admission_ranking_digest(prepared))
+        return invalid("frozen resilience inputs or rank-once receipts were modified");
+    out.preparation_work=prepared.ranking_work+admission_selection_charge;
+    out.join_work_limit=admission_shared_limit-out.preparation_work;
+    auto candidate=prepared.prepared;
+    candidate.offer_policy=std::string("SWARM-003; ")+name(options.admission)+"; "+name(options.schedule)+"; "+
+        name(options.fallback)+"; "+name(options.receivers);
+    if(options.optional_capacity!=4)candidate.offer_policy+="; optional-capacity="+std::to_string(options.optional_capacity);
+    auto offers=candidate.frame.slots;
+    for(auto& slot:offers)if(slot.required||slot.hard)slot.hard=true;
+    out.candidate=finish_case(std::move(candidate),reverse,false,&offers,out.join_work_limit,&options,&out.trace);
+    finish_resilience_digest(out);return out;
 }
 } // namespace cybersand::gentek_swarm
