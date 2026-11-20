@@ -173,6 +173,7 @@ class Gentek80ReceiptGuards(unittest.TestCase):
         subject.validate_workbench(workbench(), "a" * 40, "b" * 64, "linux")
         mutations = [lambda v: v.update(graphical_requested=False), lambda v: v.update(smoke=4),
                      lambda v: v.update(failures=False), lambda v: v.update(runtime_sha256="e" * 64),
+                     lambda v: v["author"].update(schema=1), lambda v: v["reopen"].update(schema=1),
                      lambda v: v["reopen"].update(process_id=v["author"]["process_id"]),
                      lambda v: v["author"].update(display="headless"),
                      lambda v: v["author"]["cases"].pop(),

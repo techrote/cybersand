@@ -156,6 +156,12 @@ func _campaign(reopening: bool) -> void:
 		print("GENTEK80_WORKBENCH_PROGRESS ", completed_styles, "/", selected.size(), " ", identity)
 	complete = completed_styles == selected.size() and (limit > 0 or completed_styles == 80)
 
+func _assemble_phase_report(phase: String, began: int) -> Dictionary:
+	# The inherited architecture report starts with schema=1. Overwrite it with
+	# this phase's contract; Dictionary.merge otherwise keeps existing keys.
+	report.merge({"schema": "gentek80-workbench-phase-v1", "checks": checks, "failures": failures, "complete": complete, "completed": complete, "process_id": OS.get_process_id(), "catalogue_ids": Project.builtin_presets().slice(13).map(func(p: Dictionary) -> String: return str(p.id)), "styles": completed_styles, "catalogue_choices": catalogue_size, "elapsed_us": Time.get_ticks_usec() - began, "source_commit": OS.get_environment("CYBERSAND_SOURCE_REVISION"), "phase": phase}, true)
+	return report
+
 func run() -> void:
 	var phase := OS.get_environment("CYBERSAND_GENTEK80_WB_PHASE")
 	if phase.is_empty(): phase = "author"
@@ -164,8 +170,7 @@ func run() -> void:
 	if check(phase in ["author", "reopen"], "known Workbench campaign phase") and check(ClassDB.class_exists(&"CyberWorldGenerator"), "source-built native generator available"):
 		await _campaign(phase == "reopen")
 	check(complete, "mandatory complete Workbench campaign")
-	report.merge({"schema": "gentek80-workbench-phase-v1", "checks": checks, "failures": failures, "complete": complete, "completed": complete, "process_id": OS.get_process_id(), "catalogue_ids": Project.builtin_presets().slice(13).map(func(p: Dictionary) -> String: return str(p.id)), "styles": completed_styles, "catalogue_choices": catalogue_size, "elapsed_us": Time.get_ticks_usec() - began, "source_commit": OS.get_environment("CYBERSAND_SOURCE_REVISION")})
-	write_json("gentek80-workbench-" + phase + ".json", report)
+	write_json("gentek80-workbench-" + phase + ".json", _assemble_phase_report(phase, began))
 	if host != null:
 		preview_clock.queue_free()
 		host.queue_free()

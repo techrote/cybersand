@@ -48,6 +48,7 @@ engine.BUILD_EXACT = set(engine.BUILD_EXACT) | {
     "godot/tools/capture_gentek80.gd",
     "tools/architecture/gentek80_campaign.py",
     "tools/architecture/gentek80_workbench.py",
+    "tools/architecture/check_gentek80_workbench_receipt.py",
     "tools/architecture/gentek80_repair_comparison.py",
     "tools/architecture/test_gentek80_campaign.py",
     "docs/operations/gentek80-evaluation.md",

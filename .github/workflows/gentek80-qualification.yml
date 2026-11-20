@@ -105,6 +105,10 @@ jobs:
           timeout 3600 bash tools/build_pinned_godot_cpp.sh linux > evidence/build-godot-cpp.log 2>&1 || { tail -120 evidence/build-godot-cpp.log; exit 1; }
           timeout 3600 python3 tools/ci/build_gentek80_runtime.py --platform linux --ledger evidence/runtime-build-linux.json > evidence/build-native.log 2>&1 || { tail -160 evidence/build-native.log; exit 1; }
           sha256sum godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so > evidence/native.sha256
+          # Retain the actual executed bytes even if a later acceptance guard
+          # correctly refuses them; the validated publication artifact remains
+          # a separate success-only output.
+          cp godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so evidence/
           bash tools/check_linux_runtime_floor.sh > evidence/abi-floor.log 2>&1
       - name: Fetch pinned Godot and run actual graphical owner workflow
         env:
@@ -120,6 +124,9 @@ jobs:
           GODOT_BIN="$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64"
           chmod +x "$GODOT_BIN"
           bash tools/ci/prepare_linux_display.sh > evidence/display-setup.log 2>&1
+          # Exercise the actual inherited Godot receipt producer before the
+          # expensive graphical/native campaigns, not just synthetic JSON.
+          python3 tools/architecture/check_gentek80_workbench_receipt.py --godot "$GODOT_BIN" --output evidence/workbench-receipt-producer
           xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
             python3 tools/architecture/qualify.py --godot "$GODOT_BIN" --project godot --output evidence/architecture --graphical --legacy-regressions
           # This integrated candidate includes accepted GEN-008 Flatten. Exercise
@@ -304,7 +311,7 @@ jobs:
     name: Windows graphical owner workflow and packaged re-execution
     needs: windows-build
     runs-on: windows-2022
-    timeout-minutes: 120
+    timeout-minutes: 180
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -348,6 +355,11 @@ jobs:
           $engine = Join-Path $env:RUNNER_TEMP 'godot'
           Expand-Archive $zip $engine
           'GODOT_EXE=' + (Join-Path $engine 'Godot_v4.7-stable_win64_console.exe') | Out-File -Append $env:GITHUB_ENV
+      - name: Check actual inherited Workbench receipt producer before long campaigns
+        shell: pwsh
+        run: |
+          python tools/architecture/check_gentek80_workbench_receipt.py --godot $env:GODOT_EXE --output evidence/workbench-receipt-producer
+          if ($LASTEXITCODE -ne 0) { throw 'Actual Workbench receipt producer contract failed' }
       - name: Independently verify and execute immutable accepted-base Windows reference
         shell: pwsh
         run: |
@@ -447,13 +459,16 @@ jobs:
           if-no-files-found: error
           retention-days: 90
       - name: Retain Windows owner evaluation ZIP and exact archive hash
+        # Preserve a completed archive even when later attestation refuses it.
+        # Its existence never authorizes publication or package acceptance.
+        if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: gentek80-owner-windows-${{ github.sha }}
           path: |
             build/CyberSand-Gentek80-Windows-*.zip
             build/CyberSand-Gentek80-Windows-*.zip.sha256
-          if-no-files-found: error
+          if-no-files-found: warn
           retention-days: 90
       - name: Retain original Windows process evidence and captured frames
         if: always()
