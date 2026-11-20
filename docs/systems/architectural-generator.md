@@ -5,11 +5,20 @@ document-kind: contract
 scope: Opt-in schema-4 architectural controls, versioned native geometry and bounded one-to-five-style project compilation
 canonical-for: [architectural-generator-controls, architectural-style-projects, architectural-zone-coverage]
 keywords: [architecture, GEN-007, styles, zones, coverage, tunnels, doors, windows, Hilbert, Arcology, Vault]
-last-reviewed: 2026-11-15
+last-reviewed: 2026-11-20
 related-documents: [procedural-world-generation.md, procedural-typed-spatial-fields.md, procedural-hierarchical-generation.md, generation-workbench-2.md, explore001-generated-playable-maps.md, ../operations/architectural-generator-playtest.md]
 ---
 
 # Architectural Generator — Phase A and bounded Phase B
+
+**Experimental catalogue overlay (not accepted main):** the separate Draft/HOLD
+[#624](https://github.com/techrote/cybersand/pull/624) and stacked
+[#671](https://github.com/techrote/cybersand/pull/671) add 72 compact classic
+and eight advanced showcase samplers to the existing schema-4 module contract.
+The [integration research record](../operations/gentek-showcase-integration-001.md)
+carries their source-matched 80-way qualification, exact PNG references,
+source identities and outstanding owner/Windows review. These overlays are
+not an accepted-main change to the GEN-007 contract described below.
 
 The implementation is an opt-in initial-map authoring capability in **Shared
 Workbench → New from generator → Architectural Generator**. A small declarative
@@ -26,6 +35,63 @@ retains source identities, numerical comparisons and original native previews.
 The [15 November runtime completion record](../audits/2026-11-15-gen007-runtime-completion.md)
 separately binds the integrated source, actual Windows/Linux execution,
 retained libraries and independently verified Windows owner package.
+
+## 80-Gentek integration candidate — 20 November 2026
+
+The `integration/gentek-80-001` candidate starts from accepted main `de109d01`
+and reconciles repaired CLASSIC `e27ff757` with the eight-showcase aggregation
+`eb786d97`. It adds **80 Genteks (72 CLASSIC and eight advanced showcases)**
+without removing the thirteen accepted presets: the ordinary form has **93
+selectable presets**, while native metadata has **91 module/version entries**.
+All additions use the existing schema-4 native project path and single World.
+The [evaluation guide](../operations/gentek80-evaluation.md) describes selection,
+controls, source-bound packaging and the manual Test It procedure.
+
+Each of the five style cards has a **Find style** filter matching name, family
+and theme. Filtering keeps the current selection available, changes no project
+parameters, and uses stable catalogue identities when a filtered item is chosen.
+Clearing it restores the full list. The existing geometry, global apertures,
+material-role imports, preview/Stop, explicit install and authored-start saving
+retain their ordinary ownership.
+
+Suspended Deck carrier contacts and steep Rib Vault cardinal continuity use
+the repaired CLASSIC definitions. Showcase imports cannot replace these with
+older equivalents. Catalogue/schema contracts enumerate the expected identities
+independently; repaired-parent material oracles are measured from isolated
+`e27ff757` source. Arched Viaduct v1/v2 and the other accepted geometry versions
+remain unchanged. Generator inputs use the accepted material catalogue.
+
+The integration's visual review additionally found four inherited support
+defects. Ring Pier now joins its open diamond to both decks; Tripod Frame has
+continuous transfer support between tiers; Cascade Terrace has a rear core
+behind its staggered platforms; Scalloped Vault uses a local slope-aware stroke
+to keep thin quadratic ribs connected. Suspended Deck and Buttress Wall keep
+their complete existing glass panes and add frames connected to their structure.
+These six deliberate refinements have explicit before/after references; the
+remaining 66 CLASSIC definitions retain their authoritative material output.
+None of these checks asserts engineering load capacity.
+
+Gallery exporters compile every translation unit afresh in private directories
+keyed by source and compiler identity. `--no-build` validates driver, frontend,
+assembler/linker, version, target, environment, source/flags and executable hash.
+A compiler switch or missing/mismatched record is refused rather than relabelled.
+The separate compiler-switch regression uses real GCC 13 and GCC 14.
+This enforcement covers the gallery exporters and qualification runners; it
+does not change the repository's general Make cache behavior.
+
+The candidate's dedicated qualification runs native and sanitized suites,
+520 native-material captures, eighty independent process replays and 240 invalid
+input cases. Real Workbench author/reopen exercises each of the eighty styles,
+normal paint/erase, a native simulation tick and saved-start reconstruction.
+Windows also repeats the Workbench campaign from an independently extracted
+self-contained package. Exact execution outcomes, timings, source identities and
+remaining failures belong to the [integration record](../research/gentek-80-integration-001.md)
+and retained artifacts. These are requirements until their recorded run passes;
+this paragraph does not assert an unexecuted gate.
+
+The new branch remains **Draft / HOLD**. SWARM, negotiated boundaries and
+self-assembly are excluded. No shared Workbench, actor/Rapier, simulation,
+material-publication or camera implementation is changed by this integration.
 
 ## Compatibility and native identity
 

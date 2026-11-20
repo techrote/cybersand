@@ -1,0 +1,12 @@
+{
+  "status": "pass",
+  "initial_source": "0059f5e62592ed1fa8c46429fbc816cfb26f4b27",
+  "repaired_source": "279bc4634b1d2b3a47f747c628163e419a728be7",
+  "images_byte_identical": 24,
+  "native_arrays_byte_identical": 21,
+  "repaired_source_input_sha256": "8689d760e11dfbe5ec7114b343ff09396c69a5e441dd5eaa4732cc83f90ee6ec",
+  "repaired_source_input_count": 84,
+  "manifest_sha256": "041f1c0ca4dea42023b4d3105012405a65640c2fb4e45ffb6a79e5ff6d73c9a3",
+  "source_archive_sha256": "25f3c43cc559715b5408621da8377a75784047b2072199d41f0d5248b0bafc7d",
+  "native_geometry_changed": false
+}

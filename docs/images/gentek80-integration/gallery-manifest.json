@@ -1,0 +1,2962 @@
+{
+  "defaults": [
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "2eecc1e3f56fa56aef0a2223ff8689ab94ba440d420b0bd584b1ff68d23a7853",
+      "module": "trestle",
+      "occupancy_sha256": "f17dbb1c24ac796566938fcb78276a8248b7b23331a6620545b90e3a7d9da2c8",
+      "png": "trestle--default.png",
+      "png_sha256": "e88f8c0771352b4273552876b4964287d6c3a7970ca297b98b7757448672ccf1",
+      "preset_id": "steel-trestle",
+      "project_sha256": "280a8aa03ffdd0ef6937742e039e709711c1ec177b3f1e8ea6211ccc0e5aeb7b",
+      "recipe_sha256": "3b7a1f320eac98ee0610167af214e0050de540bd2e150163abc9dc1fd829fd34",
+      "rgba_sha256": "9643c5d78b48caf76ab41a5cc4806346253c6369da4a7c069d7e63e3e7a7b638",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "8055a3ea6527fbbdb53710d557d9fb83e4a4f967ef950e7f90c308b618ac914d",
+      "module": "stacked_arcade",
+      "occupancy_sha256": "a482b4faebefd2928a4b5837f4be0f01b73579ea273651d8e656d8ea2035c7fa",
+      "png": "stacked_arcade--default.png",
+      "png_sha256": "f330f1a5b93b02b0241a86dc7e123ca7db2e656c23c661fd349c3579720a00c5",
+      "preset_id": "stacked-arcade",
+      "project_sha256": "800514df2586d49831808b6d6bac4f96569c1c39574e89cd0e09abf43baa95d5",
+      "recipe_sha256": "9d60c64ca22a9bcd35825a78b94e628de926e69193b429ddccce6eb39bde3964",
+      "rgba_sha256": "1c7d31e467dc8318bdad78729957b418ec876db2ebd4fcca8806dc0dc639ed11",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "f13c6d43fb4dac7055e7faeb4b1ca7557dd85016eba7a4369407936f08acd865",
+      "module": "flying_buttress",
+      "occupancy_sha256": "a11e254724f5315e8897e2a0ca400cb215b3104bee9f87b35ff89e4b9da7a1f8",
+      "png": "flying_buttress--default.png",
+      "png_sha256": "28a91a0d46388be900fd8bf628a17385ea0907896c0eb8fa442024d9c19607f9",
+      "preset_id": "flying-buttress",
+      "project_sha256": "c71e5b7f98b96d3a1399b919ea47a1355482c76ebd9c7b4500a9e0586a23c419",
+      "recipe_sha256": "7433fe808c792233a8f474db0dfdaeebfd60c4606d68c9777ac362d5909f4d04",
+      "rgba_sha256": "0c373280068c5fb7e1e6094ccda8d89e45612b6634060bbaa96f66513bc6f747",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "4f4de9484b0fcc305f2a9289c2605a991945eff36bc271e14d0165ebde538128",
+      "module": "sawtooth_gallery",
+      "occupancy_sha256": "48d412c3e9b40c36232723c052446e54dda0d0d5280f3228ef6436a1df3e1ec8",
+      "png": "sawtooth_gallery--default.png",
+      "png_sha256": "e4cc531bd9d017ce978ee890838975b6f85b8112f7e013f7b5da1a7a4b3e980c",
+      "preset_id": "sawtooth-gallery",
+      "project_sha256": "00b1e2be318aa7bfe5983d083c62bee3262247d5c6b04b50d2f8692efc059da8",
+      "recipe_sha256": "5381d8820bb3bf475794c26a14de3a90e7e7e56edb928d485f2770e95f3ec940",
+      "rgba_sha256": "5d529a220c53215a52cdd3231c38bdf78df23fbd10985d982b0608669c625c79",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "3ffef46b058bc6466663115c601644ed36f10059f38c2a0a02e22a16f0af8f4f",
+      "module": "cantilever_spine",
+      "occupancy_sha256": "e620e7900b950920d2a5c84147e2b8da65cd8ea054a3146782fb38edaf545079",
+      "png": "cantilever_spine--default.png",
+      "png_sha256": "c82c9346cdae53441317568e439feafe78c2930325fffef9a6f117fb01b58508",
+      "preset_id": "cantilever-spine",
+      "project_sha256": "146ac310e7d4e2a14baca8d0855d3ee2b31153b3fb69e8c0895c5b6702794239",
+      "recipe_sha256": "d06aa189dda8edf6c435d7e9cbb7b496377852a08480bc6c85c538771136d2fd",
+      "rgba_sha256": "c1a7bff1d2e453068ad9c80d26eeab647453b32c5c632aa9bd960c31a24171e1",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "2f465de5e9d0f3bdb4a1d8dbd4f2712313fc5cbe9697f5e0c4621d52bcf93979",
+      "module": "rib_vault",
+      "occupancy_sha256": "5da1a48915c0300f606ed11e469282d15aebe0605d3dcef40b27b003073bdeb6",
+      "png": "rib_vault--default.png",
+      "png_sha256": "c448a3e6bd14eb137e60397f39416a619932342cf1eccf4feb69acb69dd5e46a",
+      "preset_id": "rib-vault",
+      "project_sha256": "4d4d58752a6ed56f8404c06026a7df36d93169bb5e4ec3b73f5b0a00861cb2f4",
+      "recipe_sha256": "062ecb968ca6d343b4c97f2f32cb94a18e49d0f52daddecabd022a232b1dee74",
+      "rgba_sha256": "f62160365c4667f4d3945bf6d233475c96ff30df2c14b51701ec6f98658b55d8",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "17c6eea03f59446e4d3cdc44ff76540b98b23af95b3fa1ccc1fe65c17a5fbb2d",
+      "module": "nested_arcade",
+      "occupancy_sha256": "8f2c8320b8829cc5ddbd20cee04937ca0e6818568fb5ca8c3af67a635b405a5f",
+      "png": "nested_arcade--default.png",
+      "png_sha256": "c8e5c34f085018a2f0d40cc9922687ce2926f0e778b4d684912ca5b3bfb84bfb",
+      "preset_id": "nested-arcade",
+      "project_sha256": "0632674e7db10cca11595876b879a93200d9e4de99e208091b984249c27714d5",
+      "recipe_sha256": "ff045fefa86c0720299d7494a5d7f822100cc2643c1aaf9a40176144a505bdcf",
+      "rgba_sha256": "71bfe9cf0b686c751c42f299852f100aa31cf70b91ef7740285f89062c9b599c",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "dff634cf4c3f130b91c25bc0548213397b9f49005426c979107a5c97216af65c",
+      "module": "suspended_deck",
+      "occupancy_sha256": "503738981b53353e9d09c2372c4202dfe19531517808a3e4c9fb3809783c69ab",
+      "png": "suspended_deck--default.png",
+      "png_sha256": "783b970c211b1b2db87c57e3fc4b277b62a50d030b636c833d9b01f6583a1192",
+      "preset_id": "suspended-deck",
+      "project_sha256": "cfa7503db88b120345a1b17e5eee8a639acd125d1100ad6232154f0447b8716a",
+      "recipe_sha256": "10338804d21f84ada9c093d891312d34c4635824a382cc223b9f4406d998226a",
+      "rgba_sha256": "d299975067098ea06e13145ae0dc3257d6bb38153a32424403e152ffb7b91cec",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "ab6083604eaffddd077ec6e969dfdfe188f9c28fc8dbe08f165d01df6d0f0a06",
+      "module": "bowstring_truss",
+      "occupancy_sha256": "fbde9d2be6fb4f42795af69edcb0dc683ffa87755abe2a0a61905d0229f776bc",
+      "png": "bowstring_truss--default.png",
+      "png_sha256": "c1582d514f542deb5b77f1028ef7e87b362671cb540f95d03f3725396fe63160",
+      "preset_id": "bowstring-truss",
+      "project_sha256": "52a371ce482b05989891e1942bf281d8fef7d48903d6e8c7fb31b08617fe1971",
+      "recipe_sha256": "a694ec83b6a6206e8a28339974f14458280343471ae9ca717149418be36a2bc1",
+      "rgba_sha256": "41ecc0fdcec078a9f2ea8954773b6a7ba75b50cafde8af2e2d8f715351984b74",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "c41beb8d04ceb5d8ece506c775e176ca858d80de2ddb69181fb35dc6d5563974",
+      "module": "diamond_truss",
+      "occupancy_sha256": "6cb7a6b52f3497d97b1ec6a596fc4d72d5aad7fad6c3614a705b782646d8b25f",
+      "png": "diamond_truss--default.png",
+      "png_sha256": "53541e7182a5224a06bb575324ae2bf84809c4fd7ad5b811630d49b08351425a",
+      "preset_id": "diamond-truss",
+      "project_sha256": "1071a72529726d5ac2aa50b5eee70e3612003e6950c66a955b07afadbbeb8c5f",
+      "recipe_sha256": "ef38f0867aa4c3a419d82629f9c09185a0b3aa2881f1e53669cfd4c90c47bd8a",
+      "rgba_sha256": "1dabcb5e8e14e7d15d59c92da16ad5f46ce95c09630c159aa9a0b5e858cd951a",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "31aa4c671cf8545aa470865544b804596131d143db45a8a9a3eb8e50ad4bed94",
+      "module": "portal_frame",
+      "occupancy_sha256": "63b44a7a9b7c492edc342a041f2b25338f6040f11a0ef5fe73db18a57f689a73",
+      "png": "portal_frame--default.png",
+      "png_sha256": "744296a93bcaaa3250ff7e164d28ba336e9cfc2d525f1b6a61da8cbf5d74f5ce",
+      "preset_id": "portal-frame",
+      "project_sha256": "fc131b78fd09db82f47aa3f8b4fa7ee6da351a43271ef215ba281d70ae1cc3b6",
+      "recipe_sha256": "c9e00c3376f3c6a26cc1253c3addebdf101755e70d6d0b5f885572cf5abf358b",
+      "rgba_sha256": "f65f005c30c3057f34641893daee4696767326bb847d0785c638be76a03ad952",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "5d8fb0d9f86ee2fc68d14473ebcaa8f2f6858d69248095648571cea67d8173cc",
+      "module": "ladder_bridge",
+      "occupancy_sha256": "b3db036dc5cfced6a22cf7dbd32d78885800d5308793735b8b47b212df30830e",
+      "png": "ladder_bridge--default.png",
+      "png_sha256": "97f15cb698e9457b6dbe04c3a8bb4dd1830bcb4c313068ad3d24c4cc8c3873d1",
+      "preset_id": "ladder-bridge",
+      "project_sha256": "1131ee5d02130f6b6630d180a716da5ed2a1bd8cebfad4a3ea3d09e84dee71b6",
+      "recipe_sha256": "51157fd12928465ce7adafe6766749b467ea07a0a5573208d9b998a361465602",
+      "rgba_sha256": "df5b387df0452326ff7df878042869ea8f7406b18efb061de28a77f478a08f2f",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "35e87177289c4b6e9ce9bcc3f857b016cbadfe05e44c23238a8e923954ba50d7",
+      "module": "stepped_aqueduct",
+      "occupancy_sha256": "86f08b13446ff3ae0e935e83ff50b33611dc5633f914ba7382b8970b292df55c",
+      "png": "stepped_aqueduct--default.png",
+      "png_sha256": "b3b048ea5a9400350f76c71645938c61f1f5bb70317403d2d2b01f9abc4831eb",
+      "preset_id": "stepped-aqueduct",
+      "project_sha256": "1309d0e4939086acb8b8d109128fdf3c7c335a60f7cb45ae9a426cadf34e926a",
+      "recipe_sha256": "d9647f975c76f4a0267e415eec7b4af328e4e658d7beed9fd6ead36b5fdd5627",
+      "rgba_sha256": "62d215e041516280ede29ae3e57fa3354b2a72f778d4cd8c44fdd34bf7decf5e",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "e6a41d168f56e03f5eefae19c66d76ab0fd4cb2d095453605038d3b5fbadbc7f",
+      "module": "split_pier",
+      "occupancy_sha256": "e22c0a2819983b939e289f0a6cd61c1ce6684eb910b0bfd8504d12359a827279",
+      "png": "split_pier--default.png",
+      "png_sha256": "997c2a4f23c2483ff86897419f924cbe7204adbd5f9ace20bfcb5d9a81059ee6",
+      "preset_id": "split-pier",
+      "project_sha256": "9dbc5ff7c0e03d1af83d9813eb2cfa11dba4e3bccbe6b19259ea71e3a07f3ea5",
+      "recipe_sha256": "3bd3c820b501c319ec5d6f73ee0fc609801a1f6864269325a05227f79c01e8dd",
+      "rgba_sha256": "1539771712a27008e0e712f158ff51e386f9a0354f4222490e51f050a11b4984",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "bcffc4dc611cad6e8b1d44b6ed318ef5fef76b3388fb71cd961960f5321c5b15",
+      "module": "cable_gallery",
+      "occupancy_sha256": "b562e4e3240851efee3550e8f3f26cb165bdc104c39f542601e6468bd775b537",
+      "png": "cable_gallery--default.png",
+      "png_sha256": "2e73c50dbd7a2f63c211a82d978d22eccf77589513eb528d43391e0abf447c5f",
+      "preset_id": "cable-gallery",
+      "project_sha256": "b043bbaf05a1c9041ca535b963e7ab6480cecae67428b7fee03ee73fa1d58415",
+      "recipe_sha256": "ed03ece8f9687648f089fde13349a6d861c4361dbb443700e2013635353b7df4",
+      "rgba_sha256": "bb7741ff0eba36942216a7d7011bc504fa031da573b7ec27ef0da6bfa8566c73",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "4a8ca610e7e54c1c11caa1935c2606c3b31415b0d8034a86a51912b1b77e1966",
+      "module": "clerestory_hall",
+      "occupancy_sha256": "77bc71007742760554ad2ebe8bf76cc0f3d21c208f78e633880b3bfaa2289346",
+      "png": "clerestory_hall--default.png",
+      "png_sha256": "c9b5bf55efcc97953320d6bc7964cb56cb4bbe36bee450cc527b2e4052675c4c",
+      "preset_id": "clerestory-hall",
+      "project_sha256": "2b92de9e5bb4b51f51c4e6de0eab108f0c716c929eec27f7fd8c3061cd7f8f88",
+      "recipe_sha256": "323d1b2eb6ce9d27bfaa145af6bf1b3da9f6490d56e011f51c747e11844623e0",
+      "rgba_sha256": "1d4f63963e1599ec2de01241588e818bbfa35a121d3eb6f8a2c966d8deccc3bf",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "6cd14550da6a163fe80d031ca75385f96385454b013e77ef5a40c6b384b91c95",
+      "module": "mushroom_deck",
+      "occupancy_sha256": "aa39f7e235841f50535b4a490a365dfbe324cddc5b8a5cfa5b0d79a4a8019aac",
+      "png": "mushroom_deck--default.png",
+      "png_sha256": "224c63334247905cdb2c365c93c419f70f6e6a716e7d599189990b1719ba03c0",
+      "preset_id": "mushroom-deck",
+      "project_sha256": "507e96b4db3032a14f3167e81683617055cd6ef3b3d5c902fd79cebd9de5514f",
+      "recipe_sha256": "7e31e6ebc7f9d01fa05d833dfe47bbc2289e924cfeeb43928db803bbc2ef5c42",
+      "rgba_sha256": "e84d86ffbe19a4adec4ecde387371aed1854f8d089055f6f74d11920ffc6c77a",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "52898487d111e3e7eb6de963a37639ca729979f99e754a2283b40dec8376f1f4",
+      "module": "zigzag_bridge",
+      "occupancy_sha256": "b9b0f98c0f2335af8c25708a044f2538adf6c603c3805b80272209826078d4dd",
+      "png": "zigzag_bridge--default.png",
+      "png_sha256": "38ef37c313d0ebd1234a7ce36953d3078755ab46fc5cbb23126a4cfe8842f26f",
+      "preset_id": "zigzag-bridge",
+      "project_sha256": "edd8fe0aaac20442f21405231d6d8e8aacf04435517bb76a8e471407bb935f13",
+      "recipe_sha256": "a968c1d8a2a8f1a1c47c85ba2e339e9f8f449b228d51044f1fc5ce00c3920d91",
+      "rgba_sha256": "725e2bac043db1abd18e361872900df64ecf614c81ad5faf097beae1d3d8d32f",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "adcde7f316db101f821bbaa056326be4bbe544a8e3ea1bb9e261284a11939b17",
+      "module": "scalloped_vault",
+      "occupancy_sha256": "9c159b0463d2700f0e444f717fdfa1d32c38282b8327bdd08c361469da7acd0c",
+      "png": "scalloped_vault--default.png",
+      "png_sha256": "f6e3bdd572cf11a3bf89f05348b3c9245a51be2210e06892a08d28216606e77b",
+      "preset_id": "scalloped-vault",
+      "project_sha256": "dc9737b216ea05a594e32d35b281c6d41e6244df03004136552f42a08d3fbf63",
+      "recipe_sha256": "fa8e13cd9d527f7a510e1846741ec87e2a42202bd1ca26efd8de3762cc6dce16",
+      "rgba_sha256": "99142c1f74706c5066513ea2e4869a5c7421859bc864165baa4aaa9ad7c6df7f",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "65805b0dc31d73ab54102bfa4cd69e1a54b7b198aa440f301053da1b90f56aad",
+      "module": "lattice_tower",
+      "occupancy_sha256": "6662f7eb8b64872bb7e9892dabc667bf78d573532e586fd3908668ca5cf97cb5",
+      "png": "lattice_tower--default.png",
+      "png_sha256": "4c54a713f661b17e41587d2484cf2fc3559f9ab2baa954766e67afc73098b1b0",
+      "preset_id": "lattice-tower",
+      "project_sha256": "6508ac5942f6f1959aead3bedfd62ef1552d6825955e785929bdf03e70192d2f",
+      "recipe_sha256": "e53c4817ee7290e44158e72c3d3a664637788812cb2174eee7de35255b314cd2",
+      "rgba_sha256": "f3cc6becfda98f2b5e9fb9219d6b25b485d14b53839705564417157c3b3d3fb8",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "598747235ffb8772ea5d9e1341f230d12e097ddc077d53eb9cd542356d746df2",
+      "module": "offset_arcade",
+      "occupancy_sha256": "d83688ef932b061d059c67a761d88d932bf3ce7a5740e4167fbfe270b9c07930",
+      "png": "offset_arcade--default.png",
+      "png_sha256": "482c79c044500c3086e2a04f2b9325b6fad6254ac436177f88ee35414681f857",
+      "preset_id": "offset-arcade",
+      "project_sha256": "55c81907d29a5cfc8397554857c6eb5e01595ada2f7d2f24ceea02262547ee32",
+      "recipe_sha256": "3e2300b1aa02b8e2cd03be571a0383441cad56bb4128e175cb20998eba2b7eb6",
+      "rgba_sha256": "4aa03cdcf90f1266efe9e12342b2bec63a87109f5930616c004a652e1dcd5ec4",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "914b73dff53731a475039a1b40d574d0e78fee7262ed7e1bb52d5cd3d0e0d4eb",
+      "module": "bridgehouse",
+      "occupancy_sha256": "9745d7cfc5c0a6c786073b610861a6f5d4107c11291611f011161c5aaf116f94",
+      "png": "bridgehouse--default.png",
+      "png_sha256": "37eee17c18dc91371fa307f4a8c7c1b446f1e28f10f8a512f79a742669c39b81",
+      "preset_id": "bridgehouse",
+      "project_sha256": "f62d496bd89c61794d82470b886a3aa1ed02e6c92f6f4b73455c31dc5ead3768",
+      "recipe_sha256": "46b03761d3be7d41070f1508a8395456b099ef6e802fbf34cdb48730b5f491e4",
+      "rgba_sha256": "e9d0ec4211de4993010ee2ce1b537d2328b9142b152973f9dc9139cecb3e1aa1",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "0649772b76b401d7f2b9ce72a7e4892a0f258938a50ddfc4f9bb934ea0757807",
+      "module": "forked_gantry",
+      "occupancy_sha256": "aca2d884fa490cb6c78a3b35b7264e2fa32a8eb314e826b36c9f139d4fba8a75",
+      "png": "forked_gantry--default.png",
+      "png_sha256": "506ae5ce7d7ef14aea8729a81ed3217d8d91df5f2c4f05df34613e73fb52f472",
+      "preset_id": "forked-gantry",
+      "project_sha256": "0add4dd382420ff8f26d8936c5c4b8ea5eef3daf0a2af1fd527c80b6efda99ea",
+      "recipe_sha256": "1d964727bce39cf10b7ef7c1ee7e316595ef306573670b561a38eb6465582a45",
+      "rgba_sha256": "a51a603f7fa9a9c34f8f7be2b05c2bceb9c376104981224a5f89708ed0eba9b2",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "3ad49c65f6723eb5650410eda2614fa2aaa405dd4913b7bc5561d59aba1cc2a5",
+      "module": "buttress_wall",
+      "occupancy_sha256": "b5f5a58b569b941a742ad2cd1ec9a01e2fbd9d5ad476a7c208e7037bf7d44940",
+      "png": "buttress_wall--default.png",
+      "png_sha256": "2b7167ae71662b74824b39bd2074b08dc17922083613dc1038b3b7a5c9035ff2",
+      "preset_id": "buttress-wall",
+      "project_sha256": "536479efa65b00f6783fd9771836ed284112f33bd897bcfa600b94775f77dd55",
+      "recipe_sha256": "a4a67e121f1047af161306d6b70df72962af3fe200aecffd26ea5a4bb7f48ee5",
+      "rgba_sha256": "f36fc9b0916f86c9d23ba4774bbe10d3d969612247b1e58180711329b8d6dee0",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "56ce725a68b97e6fbb32ce2f2aa086b1ed141c5993a904f833b44fa247c8e300",
+      "module": "fan_truss",
+      "occupancy_sha256": "32cb39e604c9504ed4d16a5a829bf5f3fc8e63d6fc4413d98f56028dbead590a",
+      "png": "fan_truss--default.png",
+      "png_sha256": "a8863cf1c1f0c55bb31050a407176590ca3897cc31b6416e726da61db365d2f4",
+      "preset_id": "fan-truss",
+      "project_sha256": "9ae0effbda53f9752d954e87ccef2a05c8823f7de131204e93ca7db7c5f686b7",
+      "recipe_sha256": "7bd4d2943ab4c90af37ecef0c1b4349c0ba0be11003026c11638f58f3f671019",
+      "rgba_sha256": "e170dae90555b8f6969899f6dad031348870f1b968c0957d1b09f6a64bc5e3c2",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "51bc64f1ab22081960246c10741284239dc90a37fad7c126602df073d6179462",
+      "module": "pratt_truss",
+      "occupancy_sha256": "91e13f1e676b8ae598f751c741e6863a1428dbdf1f327f612d78c8707e63cb99",
+      "png": "pratt_truss--default.png",
+      "png_sha256": "45867690a17a63883cc52e41334b86f1eb3c6b1912ba862252b3999873fbfdd9",
+      "preset_id": "pratt-truss",
+      "project_sha256": "3056be8a20703dc230ee4b884266685598c12e94f54f88342185ce28d7abdf3d",
+      "recipe_sha256": "316f6748597f9bd1e4affbeecd24acb86f775dfdcf0d179f5beabc4b2e609523",
+      "rgba_sha256": "11513370b4c305de0ee593b76b1eb3e21cb8461cbf998ddb1b7131d6761c8f9d",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "b9b45c14708123842e337b9c8adc78142b465936d9fa5e9fd6121970d34d9065",
+      "module": "vierendeel_frame",
+      "occupancy_sha256": "bb3829ad11666c23cff7dfefb7638e443725aebdce1aaf7d4d10e3bb5103621e",
+      "png": "vierendeel_frame--default.png",
+      "png_sha256": "ab0be7e5dcc91ef039ed64fc174268db9dccd6552f4a5a69d1eb7198cdf48fe9",
+      "preset_id": "vierendeel-frame",
+      "project_sha256": "7d89d7ac30022b2046aa001d545bdb28696f8323865fe1c59220bbeed8bb8299",
+      "recipe_sha256": "fb2564d6b67bd07590c06cb7131808a5b7c0483229489d81a43ae687650131a2",
+      "rgba_sha256": "b0ebb53483a48df6a665d142043f2ea878ce572d35a8341e1c1897f326e18c85",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "59cb1f1f981e32b9cc9d17d49db0d75f05b27f34288342374b50befdb7fbacda",
+      "module": "suspension_pylon",
+      "occupancy_sha256": "afc116fe627a2a8d9188715020343908ee7270735764cc36b62a5d0be79168ed",
+      "png": "suspension_pylon--default.png",
+      "png_sha256": "6f7756ff480806330f6ba047a69cefd69e926fb6b1947c92c95bcc1fab8a44e1",
+      "preset_id": "suspension-pylon",
+      "project_sha256": "4eb58bd2206ef0cd16f78d028039b9fa9b35d59ca70b54e7f6d5260e4811fcec",
+      "recipe_sha256": "c5e64c337940eef5573a3ea0c32a117c825a39acfd4c0f4fa26d8fea2223785e",
+      "rgba_sha256": "561b15df78708da546ebba3e42adadda232b1fd93cffb2a882b3251d4c094765",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "3c98d41ee0f20ef8755362efcf6eab24513506b75a91a8736a01c4781a001828",
+      "module": "harp_bridge",
+      "occupancy_sha256": "139bb6ca720d07f0b464ebf523a4c04b40bb7b7ccbe744c95f4ba7da2393a21e",
+      "png": "harp_bridge--default.png",
+      "png_sha256": "958e20ab2daf4bd3ecf1bbf27d0f46a39b38df06830b0de74066d0d7cc7de629",
+      "preset_id": "harp-bridge",
+      "project_sha256": "a6ccbcd1e576a5adfaaaa0eb4e6b6153622e1fd3caee85cb85d6aff3a8f7872e",
+      "recipe_sha256": "756ca59abbf6b928fc829f9c51348c9f1135a5c56afdec82a5c129550dd62642",
+      "rgba_sha256": "1754d1d7bc5c6d14f61776783c9e4a6af4d812b685296e8a12ba0c9bb6415212",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "30e1db2409bdb7961bb144da43fc994987994c290c842abfe0a505d9ccb3204e",
+      "module": "double_cantilever",
+      "occupancy_sha256": "23762c6c8b984b148d319073bc30387bd24a3d5b0acb0c2e5d18706ff2e9b3cb",
+      "png": "double_cantilever--default.png",
+      "png_sha256": "3d73a6bc65a09d04a08f9055d1b855d2d51a890035a71f210becf572c600fd39",
+      "preset_id": "double-cantilever",
+      "project_sha256": "4e411f2033f9a6b0935efced97443eb703d23e31e651de5cbd64224cd0873ef2",
+      "recipe_sha256": "b93611705b09ec6524dd5372f6ee3bc5db78c01be11a4a8150da028f6bd891b9",
+      "rgba_sha256": "0c48927cc41c1c1010fb5c2f1dae0a6f57ea43012d7d9f388aa0e1b360449f22",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "9ac4bd7feb702110a19031757520c06463b283f07b7bb51cc3eeac555a890dd8",
+      "module": "stepped_buttress",
+      "occupancy_sha256": "171406f5596e0cc42b2b0e03179484c821ff2cf27409394cef8e5fc244c2ad3c",
+      "png": "stepped_buttress--default.png",
+      "png_sha256": "1e7a00e9a847a76b8bd4b020e92456cbf508d83cff1030eca810ff51d982b0e0",
+      "preset_id": "stepped-buttress",
+      "project_sha256": "26a28be80c4b0f39b03c9d6f6fefa120ded75ac265d593cf81d36687db0e6694",
+      "recipe_sha256": "7c00879672497a111824578441e268500b70757dbba75fad68ae04d62d9057b2",
+      "rgba_sha256": "ab62bed29c82abecaa2f9e4bc93da55fb182d99232ea8a10206da5f5c0d138ad",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "495a62dd11a05afe3988b585109d3bb2c32d1c46a04ef8d961201d3cc6731f97",
+      "module": "colonnade",
+      "occupancy_sha256": "8146186c42fbddefb16042311e07d402f4ec2454301d7a63907e2d227677dc7f",
+      "png": "colonnade--default.png",
+      "png_sha256": "dce5363cef9dcf29c437db0ed0182c5f685cfe96c7abc720a650448723b822a2",
+      "preset_id": "colonnade",
+      "project_sha256": "904388f1c65cab4467bc26e2b6f24652cba16e416937e61ad8fe02bb94c5fcde",
+      "recipe_sha256": "065d5367071b002d5b61f163390d51eb1c73a253f8b199ca4cbb98d3c54c7450",
+      "rgba_sha256": "52d32ee5c89adb42b625fc32577cd91dd35aab6416aa97f33384e0934190587b",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "f4b67f5c93f0985db721bec912586dc27cbb0d6b361c7928174af27ebb46f7b2",
+      "module": "basilica",
+      "occupancy_sha256": "86e4c6bf587cbedf8ec4b1724d0cd77bb99d6a65c1081bbdf55861e231a31a23",
+      "png": "basilica--default.png",
+      "png_sha256": "5d32dbd333f9fa97c90076d7115a7ae202377d7e7d7371d8df8baee8a3627d9e",
+      "preset_id": "basilica",
+      "project_sha256": "8228ee2d83f4ff85129ca44d0b078770de2aecf83075a2ad88a348e4e477ad8f",
+      "recipe_sha256": "4567a2be1f19040d15228f99caa6974e43bce615839c5e554f3e47ca6e7186bf",
+      "rgba_sha256": "aabc254b7e4fbc1e300eecc0f9b00ef0126582caf7b6484721d4d47679121f49",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "c80380b22d7b9a5c46099a53cb30a642e8c55e8ab671f60787a3209ed5e52eb3",
+      "module": "crenellated_bridge",
+      "occupancy_sha256": "24cfd4c74e5262419ad373cded4d233f477debe87e10c2bc3b1b4ed5eda30ab1",
+      "png": "crenellated_bridge--default.png",
+      "png_sha256": "350dd7eb4ed097103e25b32a1ddd0d9f1eba78842e1d4ec67fcda72a567c74f0",
+      "preset_id": "crenellated-bridge",
+      "project_sha256": "6e01f5834ea1f9fc770e94227fc260a7b52e5776df1883f46e0b17ed0a6787bc",
+      "recipe_sha256": "b6f40fe550844c23bbbf281175acc4b5855fafb111fb4d6f3db0dc09ec8e7212",
+      "rgba_sha256": "992d892e60186213f6dbe78cfcd9bcdb963eab8b09971d0c9825a5094920f14e",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "f1282d9dd10451bbd9f8c83bcab51c6a8fb1419995b1868a28edc2937af4f4ee",
+      "module": "pointed_arcade",
+      "occupancy_sha256": "534bf21d93bf2166ff19f695b76e801c9ead9ede0beb33771326aaba0180694c",
+      "png": "pointed_arcade--default.png",
+      "png_sha256": "e8ee26bf40dc60ec6c5a9a434b25f95254781dc033e606096b52f8dbc4f490c4",
+      "preset_id": "pointed-arcade",
+      "project_sha256": "9ed8bbe869b126d2c9aa91b0a0c0aa1e9a68e9edc0e4b358c9e3e8ebd768186a",
+      "recipe_sha256": "9260bb62943224eb0e46afeca79451a723e71a064c0519f6ccd5a49dcc4f7099",
+      "rgba_sha256": "e7af15153be259b1673d3fad510dec822fe7f0167162ceb127a1619cd19dac01",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "07c1d19203963d213df8abacad6623cd61e62ae3283708bed94dd48909b1f182",
+      "module": "inverted_arch",
+      "occupancy_sha256": "26dd2a532398dfe4c94a026c6fc90d63d5dffa269c8ed341aee0f4ab7dd01248",
+      "png": "inverted_arch--default.png",
+      "png_sha256": "1c4f09ea5e9c01e15543cafe245aa67fcaa3cce3d77c28b4d05ad1d5dc415ac6",
+      "preset_id": "inverted-arch",
+      "project_sha256": "1643f1fec7a6e59d1f56210f3f347bd9f6b42280c9007ff1f29944f56d58c99d",
+      "recipe_sha256": "32accc54ef7f8354a853ae2c0019da250f6ad4920551ac532e1ac09271be14cd",
+      "rgba_sha256": "de3584008970620bac89c9ab3593145a8beea66ce53ff38670d29de4ea6804b2",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "f3259c0526e2f626bf39497503d79069933cd5617ed0d56b7490d7b7ab2748d9",
+      "module": "hourglass_pier",
+      "occupancy_sha256": "5471c9d0c80a05286613ef1b5ddbdc185e2047baeffc8c9e68373aa7edf065b3",
+      "png": "hourglass_pier--default.png",
+      "png_sha256": "74efde46342d1a14e9285e69d59906f3985c10ffd9acaff2cacfc30f288a267b",
+      "preset_id": "hourglass-pier",
+      "project_sha256": "a3cc5d6bf764852d2cabd50e139364f225c1022bd840ffaf4c09d4eeecb38fbf",
+      "recipe_sha256": "417f38d0e0b182c4331d784f6805670579b69256ca65c1f7746088014254f475",
+      "rgba_sha256": "27fa25f29491c234e07afdbb41328ef2e171fbe547323514b580eee1aeeb5e28",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "6a72997d9d3a42f7d7a5e5cbe4f8065a3c642999cbaab241d969f1bcf3e87d99",
+      "module": "tripod_frame",
+      "occupancy_sha256": "2a55ae9005358d6a9ebbf2c1783f166425d777dfb370fbdd014c2aa5cbe4dcc0",
+      "png": "tripod_frame--default.png",
+      "png_sha256": "36a0fbb46b744005f1ad6f8404142d9a38fbb784b29a3e4a96778e5917a95e71",
+      "preset_id": "tripod-frame",
+      "project_sha256": "da94b7d80b8b51e4ae39a2d50735dc720facdd548ab3010150ab6e4b1240eadf",
+      "recipe_sha256": "90856167889953e7bc8d8fadc53cb7a4cac2faa5d53dc72a1612e4b2abd968cf",
+      "rgba_sha256": "3514e4daee8ec1165fc8c6d04e8fc724e0a5c48e73df599a523abce4c07a0913",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "d7d9fc1ee234b0c3927fced09b7dba94d4bc36a6a8d8927d46f1f78a6af07844",
+      "module": "chevron_hall",
+      "occupancy_sha256": "bcfc43c879d54a3519dc45c55871a836c566ec9462a6a3f4148442c143b2e91a",
+      "png": "chevron_hall--default.png",
+      "png_sha256": "5dc4fee5cb25dfb79465f70764dd425a5003258e9b74163a2a970d3465d0a310",
+      "preset_id": "chevron-hall",
+      "project_sha256": "e38bbdb8fe490341e0166813d5d56278315246d1971f2e553580ebb5e14c964e",
+      "recipe_sha256": "bed87f1e0dbbdfcbbd290adaee1e656fc43d1b9d1772e4e2e4ff52b93e41dcb3",
+      "rgba_sha256": "6c38969ee028946381be18b778f07687f0b960709014cf610c81a399452f5d92",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "e3369f104ff9b822187a37d582bfd57a4f86e00a5a2de4fd63806cb5af14571c",
+      "module": "hanging_arcade",
+      "occupancy_sha256": "5c5ed311d5c0f70c033525c060e79796ac40dc6a25a09e8d34e82c5f43347a12",
+      "png": "hanging_arcade--default.png",
+      "png_sha256": "42ecd48af149fc5ee6e60ecc8bf13e82b69700d1177523374fe11239a9945b61",
+      "preset_id": "hanging-arcade",
+      "project_sha256": "2df1db3ddcb9d2b332c41dd5e93212c40962028d3a675ef9def9b57153bfdd56",
+      "recipe_sha256": "4e3b20d2d4ea52494788ecd12c824383ba5c0443d2ffcfae57e32e11be154371",
+      "rgba_sha256": "066d4abb7071ad7c64c0b134b5f4da864263e27e3cb711a3292c8f9005f5e1ef",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "1a60305053fcfa007675037df8d2e3d2be522f2246588bb26ee1488e126e9d35",
+      "module": "shelf_stack",
+      "occupancy_sha256": "0e99e85caff6cf58d04f157840e05642d1f14daabb8a2cde29bbcd0541faf14b",
+      "png": "shelf_stack--default.png",
+      "png_sha256": "33a81e47d1437c0979a55626adbe9a0198eec1bb7f21c362f5448322fa5b9430",
+      "preset_id": "shelf-stack",
+      "project_sha256": "c7d766e4cbc9cd29e8c43991ec8c93261dbc0caee95341437d695df4fe930cc5",
+      "recipe_sha256": "50d470e8a5034fbfee1ed0c4529722e78a5ad2bc2db34c26eaf6c3fd89d6d48e",
+      "rgba_sha256": "ebfe7a8839da23d01270da2dbc7b80b629994b205faca3902e2e23894259ace7",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "d51142abb4d9eedd184bd5de39da7d153addfeff68f912989faede2f1e34a1b8",
+      "module": "staggered_balcony",
+      "occupancy_sha256": "a75da4aebf64510018f6aa766a00ec2f4a73cb02a62af9e26b7634b55baf8780",
+      "png": "staggered_balcony--default.png",
+      "png_sha256": "e5c22a2fc10d73487b2245b8b550da6103bebb4bb12b81f7dc7ffab995518bc6",
+      "preset_id": "staggered-balcony",
+      "project_sha256": "7c9ebf3cd08d5b916cb310d7fefb0852a4a50704a72fff19c4b22de086a7d369",
+      "recipe_sha256": "2f7b4bfab2f22778dd0bc45fe5bf1ee14fe1aa243287f9aa578dcbbd9e5b3765",
+      "rgba_sha256": "4467022ee72d2b7937228b9962e0161816107acb819be480538f1a0d3cc5fe94",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "14b2072343b5f29299387f678c21a41ab771b9ed38823896e249b1fc2974f650",
+      "module": "monopod_tower",
+      "occupancy_sha256": "d626fe6f05aab7d8f9ab15090557333880d6bbd00bd9d28d795c8ab11b8a6c0c",
+      "png": "monopod_tower--default.png",
+      "png_sha256": "791a2bdc6b2a549739383ff19844de3812776331a48b45502b8bae1bf53a8093",
+      "preset_id": "monopod-tower",
+      "project_sha256": "1c9b9a89aefbf6a02e8185afd10060ae3018d59b6eea2d58ba68d79bd8713a48",
+      "recipe_sha256": "d6f05f80b08cb3cc2d4b8775cbdffea224b5025cf90a8aeefdc8a188e50ab3db",
+      "rgba_sha256": "baa4cbe0dff94f25bbae8d2d26ec7106f16448044b5f3b9d646f6dffa4d644ef",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "233ae3be818753fb6eb7618261af584bed3905b03980eef48cf05342f4028ef3",
+      "module": "wedge_gallery",
+      "occupancy_sha256": "633ac098461673e7b7f9d950d2c832eef9f216f3bf4b610c02c092482d1db6a7",
+      "png": "wedge_gallery--default.png",
+      "png_sha256": "9156f763d4ec72a6f6338634cab2c8d3c67248b04e2d8793480a11c1c546ccaa",
+      "preset_id": "wedge-gallery",
+      "project_sha256": "7f4f3906a172d5d297dd88872b5b5fefbe98ba8cbaf8bc7697f69054cd4beb99",
+      "recipe_sha256": "f223d1a73f9c199ab7651cc2c7cd642ce40d6e0df3c0f75fd6ddbe4e895d1008",
+      "rgba_sha256": "272f79b797c4d42769c0daf78cbbd08909b0b7b31134155a95637b6261549070",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "b150830d02d070ab41462322ea098c9f39fc8a09e94133dd400cb2b0960aab3f",
+      "module": "crown_bridge",
+      "occupancy_sha256": "bbd50ea6630f2a7f7a79e6f3be73f4f97e4658db82b8ee257c1970a8ef102500",
+      "png": "crown_bridge--default.png",
+      "png_sha256": "41245e2380c2fb467e857c7e3203335bf40a650946554ea92f27f5149f861d12",
+      "preset_id": "crown-bridge",
+      "project_sha256": "724cf5cb891b2dc6bef8a3d6f93215037cce2ec4f73e91995027cab68d827a9a",
+      "recipe_sha256": "71cccb43f7b194c381677229af418f6ed516fdc4ac2ae2d9830d28100647ec1a",
+      "rgba_sha256": "823a2c129140f75676dd0c95888d25d6a40789457b5633a2b8540950e862edff",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "fb92e14635a559412b726cc7a6de4ed9914430616dabbf2795a149a29840d67a",
+      "module": "zigzag_pier",
+      "occupancy_sha256": "9c88ec4193cf53771c7110534377f6a8401926c9840b60930b5f9d4583b0fe2f",
+      "png": "zigzag_pier--default.png",
+      "png_sha256": "94e68a83c193e00a8dfa5eaae64846c74226f80bbbd6e60a6c6504afb07541bc",
+      "preset_id": "zigzag-pier",
+      "project_sha256": "64b32e29e4ab9522030bba7acb186713e3c1ad77a81b11530f38893f522b50ac",
+      "recipe_sha256": "0664086e89d92cc20957b0362b32a5852fe5ff395153e48bb225ff6c5bb612d2",
+      "rgba_sha256": "ecee29d8fea2ffbf5f69dad320228bf8b3a04a05b3927cefaeb427e28f189b1b",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "254d3dd958895130188a773a2d328a961e199c99095c3273a165d814f02f15f1",
+      "module": "drum_vault",
+      "occupancy_sha256": "99201cf1d08530aab8e3c0018b1028c15601596232bd102a1958c9f9e1f153af",
+      "png": "drum_vault--default.png",
+      "png_sha256": "843fe75540339add68c91e4ae8a31c0d53577405e0d793d3e001b8d41113b401",
+      "preset_id": "drum-vault",
+      "project_sha256": "5cec48d5d022451e217d6364b4e46787033a5912b51f310dbe952af32cef6a5f",
+      "recipe_sha256": "bd0cdf1add41700fa086cb364cd51d263c663a40c42882de7b05e1d81cb28f4f",
+      "rgba_sha256": "e567db2d0da5036e491f9712d16292ad563b8707c7bc1fd86476dd12cbbf3ad9",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "284c1238f3c4eb770141031d74ce116d082a0777e63509e41996671df0eee1a3",
+      "module": "pyramidal_frame",
+      "occupancy_sha256": "cb5079409f9f20f6174a34f306c494e58bb1764f05dc6548c91f272d59091135",
+      "png": "pyramidal_frame--default.png",
+      "png_sha256": "f12f8d6b9747b1580fe1b40a03cdd67c3dfad689001e7de01bf585c452249dd2",
+      "preset_id": "pyramidal-frame",
+      "project_sha256": "eda2abed88ec26cca6b3baf35c8b4f0abbd4f1f217240e5c5750cb7797b080c7",
+      "recipe_sha256": "d44a1fe700606c9ac18cfa70bfecc23e6fdf0cd79677ae43d112135c3ca5b687",
+      "rgba_sha256": "d15c9972b640ba78cec846e322b00b6f23ffdc0e58816b9671cb7bbe44a205de",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "846cfc65ca072c0b783d802b438e47cae0b81606d390c272e2af452366c4e3fc",
+      "module": "warren_truss",
+      "occupancy_sha256": "fe0203365c19f2b1d96a57561315a717a3146d198d3c058a40189d4315df86b5",
+      "png": "warren_truss--default.png",
+      "png_sha256": "a2ae81e8954af245eb22dfe2123333853f755cce1c4ce6631340976941f1fd2d",
+      "preset_id": "warren-truss",
+      "project_sha256": "b8375b3e6938efac1f634e6c37bdf40791a6fba7f6ea1fa2f302bf0df155d7ca",
+      "recipe_sha256": "3e7bb335241caa0ad5fa655e3cef7aa10d296c8c377713151f645fa3fbe5e1cb",
+      "rgba_sha256": "df0fa7cccf9fa32eda410e101e8704c1674d875786de99c18c54955f7453b9af",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "536634a5170df7f4e07a155c882b26f037d97831355b1055aec07d62632d4169",
+      "module": "kingpost_frame",
+      "occupancy_sha256": "488b7aef0896ae1c661d218fea45389c38a8f27cbb3d0e0bfb7fcf1b28498298",
+      "png": "kingpost_frame--default.png",
+      "png_sha256": "9b7fa87f3dbac61e6777d542610363a9d5d0932db7cb9e9a3fe52a54cfc79ba7",
+      "preset_id": "kingpost-frame",
+      "project_sha256": "c5f4a91f15951f20512839b4b22a30d90b0925e73e39c7a76ae74781f491b8cc",
+      "recipe_sha256": "588a562adc41ea7f9c6378a970a06f456a2db8ea76bcab6cea752e959e3d24a6",
+      "rgba_sha256": "860e0f1f7df8f3dd9e05636dcbdf3ac9c72b05a469f182e7f0511536d2746abb",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "57843e9ef2395586ba4c6d061c7098682ee8fcb73cdf56567a4bf46220d62fea",
+      "module": "queenpost_frame",
+      "occupancy_sha256": "b564f974d205f4b93baa2f199cdf14a5ed3af916bc6092d3e8dc39d22b1407e3",
+      "png": "queenpost_frame--default.png",
+      "png_sha256": "27f9b66aaa983ef44d2c2ce739624046b0058c38acc4d38d54a03cb546575660",
+      "preset_id": "queenpost-frame",
+      "project_sha256": "e9abf53191a6461e14b0a670f0f53df67de58fa917ec7b6019b5131971bea9db",
+      "recipe_sha256": "6a74401a7c70dcf95f2ef845f225a30898712bf9ca67190dadc7c928e806d1a8",
+      "rgba_sha256": "29e66580d714c1d854a9eff1b8463250fbb4a49ce38f5328ca83593a66052667",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "df19089826a542d094c0ee6ae9668faa7eabd0e354ab415bb4c42abe43e1752e",
+      "module": "lenticular_bridge",
+      "occupancy_sha256": "584462ce5f969738142c9052ff3853e3aa8551ec354524ef8ae94503ce07af47",
+      "png": "lenticular_bridge--default.png",
+      "png_sha256": "8957ae23b67643e918bc51976fc67fb6acb67ae39c80a884e748f63503bbb063",
+      "preset_id": "lenticular-bridge",
+      "project_sha256": "894be48f0daf587aadbfa7724c8df5587672f1aa80413a86afb09d5f17ad01ea",
+      "recipe_sha256": "cde9b86e0d2df5cb9f5ded4fa5505bec1e0d9728c49bd7a127ddb0f65231f0d0",
+      "rgba_sha256": "1a0d6130e3f7fbd724e9248f21deef0a6bd4168936c46ed82fc1a7bd07a5c474",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "3376c4e601ef0588405c57823a7f3f96baf72790d2c548525381a02009677f2b",
+      "module": "radial_stay_bridge",
+      "occupancy_sha256": "b30fce5a6e12b97d92cc7d12114d5d7bc69d366d940037b95c6edbfbab55c978",
+      "png": "radial_stay_bridge--default.png",
+      "png_sha256": "e8356ed4473462b658db619ab9c0421e799e9ecd17cc962a4c41eeba957b35d0",
+      "preset_id": "radial-stay-bridge",
+      "project_sha256": "87275fd6c23e780d8a4b7f87265ae8de9f8c4050ea4bfbce7980ccdaad10aa91",
+      "recipe_sha256": "c1edf54e49e1780d8ec98b14dcb4d00af729654b282b2fd79db472bde5108169",
+      "rgba_sha256": "283a99bea3baa1287e1c901d1354d25f4bb9c064b9e3b138c474fa344cb32a3a",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "a5937a46437a19dd3e2b8decfba983d4bd31d9359b15b23f051fdbbaf0a6df7f",
+      "module": "twin_mast_bridge",
+      "occupancy_sha256": "b1a6dc3f853f8d87934714c9904e7ff0f1441b7895cbb714a8d6011c108d6439",
+      "png": "twin_mast_bridge--default.png",
+      "png_sha256": "58e024eef23935a715be811cc6e32f4ed7d26f4a74554eec9888d211ac356b10",
+      "preset_id": "twin-mast-bridge",
+      "project_sha256": "573986e86d528ea34fd9309635457e7dbd319905760c6d24a30e01bf3e6620b7",
+      "recipe_sha256": "941a98c1631e95aeda8490fc7284f6862c84a846230535bfdfc7b5140a2d0dd0",
+      "rgba_sha256": "192eff054898fa89e8137b323cf9fcdbf57e4332782569691880ebbfdb873822",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "66d604b893c16b70bb408a8b190f4c52fdcb4ede32e1e06446d719656c41b6b4",
+      "module": "a_frame_hall",
+      "occupancy_sha256": "1946cab2618e6056a9ac8c9e0076f17d39e599f5d24ea45c155e9ffe74c4dfb1",
+      "png": "a_frame_hall--default.png",
+      "png_sha256": "7f39efe6a36aee3e8a08c4e132326bbd4312e6df3893e883eccf464a8fa9e488",
+      "preset_id": "a-frame-hall",
+      "project_sha256": "58e4fe12fa98e6a97252d74824545c645e568a6f0c392843e893ddcffeda8431",
+      "recipe_sha256": "89061a1f25e4e0db962530afbaadfd9e1b6d4d187116d7d9775be2ba1cfe542f",
+      "rgba_sha256": "2a5fe467f401fc47ad1f79da67b2c1157c24091206d92754820849f76ba48ac0",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "0c77e89c6833237fa1f0ef92ac125822f80e922106dba4b07f92384f8009768b",
+      "module": "butterfly_hall",
+      "occupancy_sha256": "1517e94697f92bfcefe3e8514bd18ffeb51b26b52f6517e229beec0d2cc1b0f4",
+      "png": "butterfly_hall--default.png",
+      "png_sha256": "3739cd137de97ddb10a5e5507351ef234b9737b36b0584fa4e21c1b5e5eccbd0",
+      "preset_id": "butterfly-hall",
+      "project_sha256": "5ca02181ee2a465d9cf21ccfd6745497b99f6308b97b45e4bec7a9f48bc774d6",
+      "recipe_sha256": "3b7ce0e2801e7b9dec3789717f2b527be1f6aa2663085550df4c30377b03a884",
+      "rgba_sha256": "b29c56978214367ba29e4a3ca99f647884f9a2fa34d27652c406261ef405e98c",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "3b0fc0e21c2f7ce483b724b304450b5e5e513952982c56c4ac38ca5e3681dad6",
+      "module": "ziggurat_arcade",
+      "occupancy_sha256": "dc1a3751cee9f250b1b414655c1f65b9fcc01474b0a1bea22ce5943d90edffb2",
+      "png": "ziggurat_arcade--default.png",
+      "png_sha256": "649ced640e0af1475fd2aaa18b13ced6c4fc91df1740a87a2933cdb91fef1eae",
+      "preset_id": "ziggurat-arcade",
+      "project_sha256": "d6ff08212734ac6b2513783ef6b16a61c648100f9fed4e342eeb53aad7cc9531",
+      "recipe_sha256": "bf465294a0f3b036e5e4f7c1d92f04b1391aa4383fd8d7a1660a2368bc2a6dd2",
+      "rgba_sha256": "b6f88c6295b8688ece3cbb8309280b37a6776fd83ad7386c5b654c0b5bf3b6bf",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "71ecdaed86348eeb9117f6ca806e4f704ed9d2c310cd39e859d00eeba10264b9",
+      "module": "corbel_arcade",
+      "occupancy_sha256": "07a5bf39a9b1312ddfe01259e75bd08d0d28b69b02ee53e351e06bb9c6626c18",
+      "png": "corbel_arcade--default.png",
+      "png_sha256": "3ff736448c2da932f1bb3f88f83257e4b61eef503b089085f58655d0ff14ba11",
+      "preset_id": "corbel-arcade",
+      "project_sha256": "ca34a4e707021a2d8e069ff10da5eda5acf5e96a4aa1f67133ec9f92e37af5c2",
+      "recipe_sha256": "48574d150a73eb8a2416eba4d09c155020d3cfdbbedccc21951dc9567245b979",
+      "rgba_sha256": "1dee8757053d4048311d2fc532acbff8b4c70b8e3f83b006faf8b92046d0d335",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "17c86282a0202d24eeb0a3f83e4b88edd50d93cacc76188a826b87473db49ab3",
+      "module": "chain_vault",
+      "occupancy_sha256": "7e30fe052d9064f0c873413b082cc49f67d1570b9af12e7f1b3b2070784fc85b",
+      "png": "chain_vault--default.png",
+      "png_sha256": "b06ee629bd183e7eff754eeb6458ae9a2b22fca1cbd48e13963cbd31d35e2c2a",
+      "preset_id": "chain-vault",
+      "project_sha256": "617a8ffd94cbe24bbf657173f872b2c4fbaa8e4c55846f5e487b41c4a8325724",
+      "recipe_sha256": "c14ed400bf393de70000a42b89c05da7c259e4eeb82342b67de9a7f6d941e5b6",
+      "rgba_sha256": "457b60d42f877558868d31b6a4eff58da0960b612711cad16bce0f81e3fac0bc",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "5171563381abc4a174fca83a89976d233e202cc5a2373f5f30a3d49c48c24944",
+      "module": "ring_pier",
+      "occupancy_sha256": "538e77adb44f2cccc2b2e60dfa07be9c5e71f4f5ac5cb28a6fba98c3e30b33c3",
+      "png": "ring_pier--default.png",
+      "png_sha256": "d43274e45142c0cc4725fb0138f56f52c6dfc09149a4c61d3b61dc0779c0e975",
+      "preset_id": "ring-pier",
+      "project_sha256": "220a7dc27df2c0b4115d09ed991132771c3b63d5689acf150ae524a07816788e",
+      "recipe_sha256": "0a42fcaa3f28027447a4a02f18c4beec81c54bf8e3267de2be57c7e844fb3aaf",
+      "rgba_sha256": "e5e46a0acee12f1f0fa7fb0054d0354e21ac7d0203cc0a317fbce34df6986980",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "cfed3fdbc582fe8d123edffc2cc48d6472d277777ba46a0651f228fcc1ab7b21",
+      "module": "folded_plate_hall",
+      "occupancy_sha256": "7557c83e74aceee04eb14f521776373af95242aee86d3aaac42d4c8558144601",
+      "png": "folded_plate_hall--default.png",
+      "png_sha256": "d87742ae078bd592f6ee78ae24d5b1c9e641f76f64ff96f00ba55cb776d3b98c",
+      "preset_id": "folded-plate-hall",
+      "project_sha256": "eb3c8d3a506031984a7f54488541655946ae59659e902386b1b32f2ac1e20ec3",
+      "recipe_sha256": "84bfd6069d4932c19d79ddd67c0b65abfae54a4db0dfb19a3e10bf36490094ca",
+      "rgba_sha256": "b90abc7293c0104ac721f0a89b59fc8211429fe2ca3692a866c8a49cce3a6ac8",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "5990d1905274046f289be78ec85a5c74800b54dbf4421eb11455f42b9b0b4cf3",
+      "module": "space_frame",
+      "occupancy_sha256": "7fa703abd4970047071a88a19f84e64ff0b5599b66d71b672605418c74d2f09d",
+      "png": "space_frame--default.png",
+      "png_sha256": "359b79a82340ad9d1d88611b6b37680169c1a0a76b6e1e1565dae743baed9e54",
+      "preset_id": "space-frame",
+      "project_sha256": "47f0b6ac620caff086d91f1011f34c4deab7b76ad93969edee4410895165604f",
+      "recipe_sha256": "d7c5dc8852c0ad6151a7addbf596a2df8154b261ad56c6da4a2de7e160abc119",
+      "rgba_sha256": "0d3130c8d73163c1933b94eae7f2b16e229e8fa0f531c5eba9670195966f9883",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "e8a11cb4b65b3119e41daca796c817151cfe25dd003f229aa04f72882e420fe2",
+      "module": "crossbeam_stack",
+      "occupancy_sha256": "b75032f19654ae8fd68c653f64a451a97ad34a9ee28f0d3e752e74597dce2b4d",
+      "png": "crossbeam_stack--default.png",
+      "png_sha256": "f973d76584f298d7c330dd87fa9b4e7ea47ed6fb9b74b5c9ecb8f09d4d2aa66f",
+      "preset_id": "crossbeam-stack",
+      "project_sha256": "3f699fb1920f19703a858699d27db76cf3e95c9db6aa1b0734966dc74bceac5f",
+      "recipe_sha256": "876d89f8f20c3f63de23f28d80e95ab36a4d47ed54eeee1a676bfdeddba125f5",
+      "rgba_sha256": "8987e898600c583dd46413381158ef00e8fe71f1ddc94b42ae2c4cb7767d519d",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "a91dde0bfdfd5ccc6c483dc29d02ccd0141c3ef9ca67fc6f36fb0eeaa24a5f21",
+      "module": "yoke_bridge",
+      "occupancy_sha256": "1c5d7a5458cc987226559997b5f685e5cb00130519cf670b2b57d9938a1b3da6",
+      "png": "yoke_bridge--default.png",
+      "png_sha256": "9d10a34912ef427ef9902b28757a5856d2a029f54eadf49ea03c97fe1b339fd2",
+      "preset_id": "yoke-bridge",
+      "project_sha256": "9501d7d2c0e8e715dd143db9f799cbb084aa86a75b2632d71d8ee0196b75789f",
+      "recipe_sha256": "3580b61cca3bcd45200c1da07775aac47ad86298c8633bd3d59be062539f0546",
+      "rgba_sha256": "8fca262038f4d3ca65bbc41449efa77c2bacf514fa7166b4cc79d393c485274d",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "250414c74eddbd5fbd1324e89181781a90e72452d4ac075e4e2e5b8d504c7b8d",
+      "module": "lantern_tower",
+      "occupancy_sha256": "03358f9b585b6e3127466b62c5f733a7fa6c86d55a5d4051894820d79011426c",
+      "png": "lantern_tower--default.png",
+      "png_sha256": "6dd5129a00df3a08976bf7a280607b04ba4d4f77110ce37a334da5eacd016764",
+      "preset_id": "lantern-tower",
+      "project_sha256": "cba2873d01f80a4be153e44070168d645e2d04b4d4f832a1693f932158d3a704",
+      "recipe_sha256": "5654753cf3eb691569601111d68131505034ae7a25fd69e42d4061eb9d1dfaf7",
+      "rgba_sha256": "0b2f65ef2670ee65256bc37f1bb5690fb917ce6f04a14410eff6b8e1f573dc05",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "86190690957ee9bf5a62ab54bb2bfe614b2c6ed725f840f483785ac7eb27ce56",
+      "module": "spine_arcade",
+      "occupancy_sha256": "21cd87006326eaeed4c1a51cca3ac65ac03a254ac41822c49eef72e18b33b860",
+      "png": "spine_arcade--default.png",
+      "png_sha256": "8acdc94716c42fad7a3b2e8d11af96573b9c2af77b81db4123158a94b62224c6",
+      "preset_id": "spine-arcade",
+      "project_sha256": "131f2989070b5b750d1618fbcd6ee0895f14b213c0ed19b6302913597b746781",
+      "recipe_sha256": "57b82f74a5704ccc93286252df148efee129e59574955bc52565e0e6f4eb36e2",
+      "rgba_sha256": "182ddbbe9401016ab99cea939115c76c15a427412481d5c428ffc2978fe180f8",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "70d78142427bc6bdb09cbab276d4cdff38dda1b3a39030603d9012ce6dd159bf",
+      "module": "cascade_terrace",
+      "occupancy_sha256": "d614a19db4799586c20f0e0809c6a601eba2a08348e13f4191c29078db572fba",
+      "png": "cascade_terrace--default.png",
+      "png_sha256": "81ef9b4122d57fb96756fad892f4644ce936a94f96e4c3ea38603714d5677c0e",
+      "preset_id": "cascade-terrace",
+      "project_sha256": "294b7abe7df1d8529db7d90c93f55cecd45e3969c40236f0f2038219a03e2206",
+      "recipe_sha256": "d79470f3b0d67a705afadcf330c7b7a5ed19566ee7d1716f151f6e88e540b3ff",
+      "rgba_sha256": "12e43f84e179cd446da67171bc7f0e9925b6eea08be8df99d57dd345fa6e9b20",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "b8436e497b3ebfaafe5c65b01ee04557cb3e2b52b831327046425e505cd14fcd",
+      "module": "inverted_trestle",
+      "occupancy_sha256": "34191fd0b99ca3d17e47a67d7a4de38ab0af3c2a93f8ae356eadf4d3fea4429c",
+      "png": "inverted_trestle--default.png",
+      "png_sha256": "ddd9edc8124da942815a43c34ac8e0a0d7d58df1049b87613ae39501a089d1ae",
+      "preset_id": "inverted-trestle",
+      "project_sha256": "7ac576cfef7364adee1a1edf6e52d521d59341a4c282ab7175c3c0a9cf45713e",
+      "recipe_sha256": "f6c6a9e5e3fe56125dd5d253bf2efc36d6fa060a3e96f7584a5cfc86f442cfea",
+      "rgba_sha256": "e2e33e152167187d88f3c837a4d862c24a99bad9afd65a57976cb6b6d6b09530",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "0992588bd19352aecedc81b83881ba644ad3a83d848e027c0f6b61da6b62f6e1",
+      "module": "cranked_beam",
+      "occupancy_sha256": "aa9357ed1b4e3e5c4c0951c99d236e6bc5dcc8a708e3b48d6de6e28e5e54a5b3",
+      "png": "cranked_beam--default.png",
+      "png_sha256": "550f9c8404391ba3b802c28b7966248fcacb359dcdfb5506da57ad8841d8e0f5",
+      "preset_id": "cranked-beam",
+      "project_sha256": "3818f6dfcd8f0ea0a4ecdf11d7a20d668e36df28b2f6afa5e9d5e5b38879d173",
+      "recipe_sha256": "b76ab1d73ffb56c6be89a72cb8f0c9ffe3c70e9ebfb6d286450c8ae2887f6f6d",
+      "rgba_sha256": "89ac04a34214d6119a185f03645e62a0f6c2ab59bfb2b3ed54244d8f43f2d208",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "880fc95119262b9b9998952fb61278ea52bff350c74538e4f981c2b58eff51a7",
+      "module": "barrel_arcade",
+      "occupancy_sha256": "6ef28284bc4a9f47785a8a05beb19a1573bd5d812d80ba2f644889e3ec33be14",
+      "png": "barrel_arcade--default.png",
+      "png_sha256": "606c8eba78afeade09b10a461d00bed90f3f09c3db1be79e6b05e0d2843198cd",
+      "preset_id": "barrel-arcade",
+      "project_sha256": "52e4b41df3689157b59d52f1bd2b3439be83330d2dc5acb4ff5a303b2b6f60e6",
+      "recipe_sha256": "882c623d25e243a68f5ee0b50d1af62ced1db783ea17a03b4f012e70e2b5005f",
+      "rgba_sha256": "1f8986a86ebe2947127b1a9bb4c35adbbdc6b44635f2fe1780fa5b1954315175",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "59294d806b1cf848ad6697adc42fb2786e0844c846015f922e203697a3268d7c",
+      "module": "buttress_crown",
+      "occupancy_sha256": "19765d78c0d0d5b79ce07564fd1d774f7266dc798c72f53ad2ce0acfb156c25e",
+      "png": "buttress_crown--default.png",
+      "png_sha256": "b993cdc39fd3d1b8cea165227b9b7dda80369daff1f2ffaf95931ed821855df4",
+      "preset_id": "buttress-crown",
+      "project_sha256": "158536b75805ca9096e381bffb6df68c8c4b92bd1f3101dfae0dccddb4d44497",
+      "recipe_sha256": "e720bcae74ccf64aec01327cc5c6695d5eb0bc597e1eb7b985b5c27958dee301",
+      "rgba_sha256": "1af16e494b16dfaed4811af46b991bb35dcf9c714de428e3ccd2192c6d60875e",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "070d72be60e01d931f8655b90364fde3a4dc5d38c94305b96658094053a4a805",
+      "module": "triptych_arcade",
+      "occupancy_sha256": "bc2c7b85cbfc28e4657c7efdf25f6d029aa44afc3e28cae9313bfa83abb9b6b3",
+      "png": "triptych_arcade--default.png",
+      "png_sha256": "1d9a75db88c249f78e90cb71e4156ff2ea890d8e88ecc6406bf856f6a55e37bf",
+      "preset_id": "triptych-arcade",
+      "project_sha256": "d3f474b5666ddbc926188d141a44a6ea843f491a9b6b89ceda67a83929abc4bb",
+      "recipe_sha256": "6c663607591464b1b125a22392f0f4d8368d9c6758e9d3bf5eae7062a4e6f1b4",
+      "rgba_sha256": "d40e80b98c591f77e220c40178dd8d233c30b10b414550f660f5e625ce66667a",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "96f92d7b7325a9b8d13ca2c2d539ac6960d274bad056228e06b1f70b4f4a7171",
+      "module": "megatruss_station",
+      "occupancy_sha256": "0f503d50dcf5bdb410164a563e8174815f45119e814d683cc6fc31d46e657ca8",
+      "png": "megatruss_station--default.png",
+      "png_sha256": "4eef306f62745b091176a3483de682cb73b35306a459388d6ea6fa97a45d6d6e",
+      "preset_id": "megatruss-station",
+      "project_sha256": "281876da2208db689eaed6da26b2b7d651bff7cda3260e93ad984602e627f421",
+      "recipe_sha256": "d1c217dd1e509b37b28a7ebe9db964105bbd29c4fcb22afd461850a2263aea14",
+      "rgba_sha256": "c3b34008a8ef635cb4e161dc9a1c1f7332eb16cbd75475e3bbccd7791b4f15b3",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "edcae61718cc0cb6ccf6d07cc67017cc370e6a09b01a212ebd2c7b470ea4ddb2",
+      "module": "cathedral_megaframe",
+      "occupancy_sha256": "72c4c0ed59b01a4ad13eb560411908ee99ce752f9135f1ed751765af20c69256",
+      "png": "cathedral_megaframe--default.png",
+      "png_sha256": "07c269e252cd50b5dc8af9f563d5fd217c304d74a53b3dc67fe8c44566a0608d",
+      "preset_id": "cathedral-megaframe",
+      "project_sha256": "dd0f84ab8ca4f6d54350cc223f444ccb3ea3b653efb044c57400032ebfadb322",
+      "recipe_sha256": "bc5d47978ec92d4c0effe36ff2101778e48008f921d433d45fc6a7ca3d875d52",
+      "rgba_sha256": "85c219d52d048cc72594081b224330c89aef222a2c7490c1dcc06219a369afdd",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "f06684e0b9ed69f252b26a2599c9c34a1d66172fdc2ce93c54b19a78324843db",
+      "module": "seeded_typology_megablock",
+      "occupancy_sha256": "9eee2046141c96e9716cd0ca8950566d5bf3e357fad275cdaa49818afe003a7d",
+      "png": "seeded_typology_megablock--default.png",
+      "png_sha256": "a5eefe8a5056012a207aaeca3693077457747ae8970f9b19baaa121f15465b6c",
+      "preset_id": "seeded-typology-megablock",
+      "project_sha256": "986b602cfe7b417fc4f429c948cf99a63e557fd792bf3735b4140bfeaf7b68fa",
+      "recipe_sha256": "4b663c19163905a6d2202ee840e86d29efcd903de09725a0988b8f8023e6846b",
+      "rgba_sha256": "e0e716af0354a9e91481780846753197d10cfa1c087ef0bf4b48761be1b4f399",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "b62f24b69bb003c8f12f4feba6b835a1beaeacfb3355c33d1cd78f2ade5a1192",
+      "module": "metabolist_spine",
+      "occupancy_sha256": "bb41f5d44537f07aa18de3289ef63d53b3601b812ffff102adb6379f7169c84a",
+      "png": "metabolist_spine--default.png",
+      "png_sha256": "9e8022ca0b884e0d5220456b55d680fb41bad292b2b77d36c2eedd88b7570b62",
+      "preset_id": "metabolist-spine",
+      "project_sha256": "b2d5138f298764ed3409e93e0aaa7242b2737ebcc4c350adfc0f7f41c0dfe0b1",
+      "recipe_sha256": "03febd4e9ef97b06bc80f069b6507b418d42f208675205b2beff8c5953967f31",
+      "rgba_sha256": "cc54b9a7b7684fee4c497c290a7883acd2636a53975447102abda9da936f850b",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "1a3ed6b187e66b695f78134b876c6a8aa2ff5b04763e18fa5c1373ac23f8069c",
+      "module": "interlaced_viaduct",
+      "occupancy_sha256": "9198214c0489a8a416631356e19b007b6d21c8b34ee9160e52076eff54d35269",
+      "png": "interlaced_viaduct--default.png",
+      "png_sha256": "ce9e09f05bec0c8073f7606b9df62c3989dac8aca2f426609e9121ccbe1f82e0",
+      "preset_id": "interlaced-viaduct",
+      "project_sha256": "189dfc73c5e24e38e4b9cfff2e6798a512bada68ee8384810f4010e5e4eec8e6",
+      "recipe_sha256": "37c224e80f4cb79d54a2ceb6f9a72f4b6c0db15599fd87a6e73851aaedef923e",
+      "rgba_sha256": "d84fc428147c16497bf2e9e724160f5bc48ce806da4a44be668e37e9885a4541",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "1a2e4ed3a09a918101525887d1bda78241593eb0b44b224501702fe9ef89f994",
+      "module": "rosework_gatehouse",
+      "occupancy_sha256": "2371887a61bca6d9456425d3fb88d5f32778fab640d21bddec6930bdf7c42ba3",
+      "png": "rosework_gatehouse--default.png",
+      "png_sha256": "df0f07d81e83266c90f46b8b6483fa4fbb0854251f4a7a4d2c7557e4a3be0832",
+      "preset_id": "rosework-gatehouse",
+      "project_sha256": "8eef434c7b4ffe78eecd89299686a1046348d09923d43240526708f5f5d3dd17",
+      "recipe_sha256": "007889fc5cca4fe2fce5522bb650f3bf8112c61fe4a1aa5b004b024b0e9c2620",
+      "rgba_sha256": "8f9aa57add37c0900739a583dc62f428edf33d07374c782e463d93fd6a5fbc44",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "501dc58e96dd86d36677a56e6d4c51b41c5724b1b0ffe9385114732eb30d1019",
+      "module": "interlock_brutalism",
+      "occupancy_sha256": "af1f61a05f292082ffa270dcb0138d2672f3c392bdecc896cb48ff31ca40bde4",
+      "png": "interlock_brutalism--default.png",
+      "png_sha256": "d44719cb9dbf274097ab893817c7608d4f4a3a28fa11f225ce9e5f01dc88b27b",
+      "preset_id": "interlock-brutalism",
+      "project_sha256": "1e97f7ec2b37b4cabb41a872f350711b26123504f083fab5178d698b53d6de75",
+      "recipe_sha256": "0a558ecce2bcccdac2f91e59b844babf06b623a0ec2446c26e58e240a528c942",
+      "rgba_sha256": "0381c309fbca3a2ed1a5b7518ee7649f82b9fa449c03cad38e9665ff8d1dbcaf",
+      "seed": 271828
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "material_sha256": "de8fde572232500206fc756569afd183785c030c3f4e087c6c607da66f744ad6",
+      "module": "suspended_arcology",
+      "occupancy_sha256": "96ea4ced1fc3492d3039d98c74a084119342c690266ccd3b0028bd0e237533eb",
+      "png": "suspended_arcology--default.png",
+      "png_sha256": "4ad88237ed1786ad3cb83a0406a10d79565a1aaf6b8c2e3be1dbd19994f9e4d4",
+      "preset_id": "suspended-arcology",
+      "project_sha256": "96e0174aaa3fa05fbb19cbd161d29634186999d24e9ebc270ea0fec11f0b9668",
+      "recipe_sha256": "8c465feda21472ced2980efead875a0407e56ebbd14e7616cdfa9a5ce0db7c43",
+      "rgba_sha256": "5ba98b533de06b0a23ad963b75250d2fb622ab2994c8dcd4b35b53d2bddb00a7",
+      "seed": 271828
+    }
+  ],
+  "images": [
+    {
+      "caption": "Crossed braces divide a dense rectangular steel frame.",
+      "file": "trestle--default.png",
+      "kind": "original native default",
+      "module": "trestle",
+      "preset_id": "steel-trestle",
+      "sha256": "e88f8c0771352b4273552876b4964287d6c3a7970ca297b98b7757448672ccf1",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Alternating wide and narrow masonry arches repeat in stacked tiers.",
+      "file": "stacked_arcade--default.png",
+      "kind": "original native default",
+      "module": "stacked_arcade",
+      "preset_id": "stacked-arcade",
+      "sha256": "f330f1a5b93b02b0241a86dc7e123ca7db2e656c23c661fd349c3579720a00c5",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Triangular braces alternate with slender vertical piers.",
+      "file": "flying_buttress--default.png",
+      "kind": "original native default",
+      "module": "flying_buttress",
+      "preset_id": "flying-buttress",
+      "sha256": "28a91a0d46388be900fd8bf628a17385ea0907896c0eb8fa442024d9c19607f9",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Angled sawtooth bays contain broad repeated glazed surfaces.",
+      "file": "sawtooth_gallery--default.png",
+      "kind": "original native default",
+      "module": "sawtooth_gallery",
+      "preset_id": "sawtooth-gallery",
+      "sha256": "e4cc531bd9d017ce978ee890838975b6f85b8112f7e013f7b5da1a7a4b3e980c",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Vertical spines carry alternating short platform arms.",
+      "file": "cantilever_spine--default.png",
+      "kind": "original native default",
+      "module": "cantilever_spine",
+      "preset_id": "cantilever-spine",
+      "sha256": "c82c9346cdae53441317568e439feafe78c2930325fffef9a6f117fb01b58508",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Steep rib outlines enclose narrow glazed vault bays.",
+      "file": "rib_vault--default.png",
+      "kind": "original native default",
+      "module": "rib_vault",
+      "preset_id": "rib-vault",
+      "sha256": "c448a3e6bd14eb137e60397f39416a619932342cf1eccf4feb69acb69dd5e46a",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Small arches sit within alternating larger arcade tiers.",
+      "file": "nested_arcade--default.png",
+      "kind": "original native default",
+      "module": "nested_arcade",
+      "preset_id": "nested-arcade",
+      "sha256": "c8e5c34f085018a2f0d40cc9922687ce2926f0e778b4d684912ca5b3bfb84bfb",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Upper hangers meet their carrier; lower glazing keeps its full pane inside a connected frame.",
+      "file": "suspended_deck--default.png",
+      "kind": "original native default",
+      "module": "suspended_deck",
+      "preset_id": "suspended-deck",
+      "sha256": "783b970c211b1b2db87c57e3fc4b277b62a50d030b636c833d9b01f6583a1192",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Shallow arched chords meet straight lower decks through vertical hangers.",
+      "file": "bowstring_truss--default.png",
+      "kind": "original native default",
+      "module": "bowstring_truss",
+      "preset_id": "bowstring-truss",
+      "sha256": "c1582d514f542deb5b77f1028ef7e87b362671cb540f95d03f3725396fe63160",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Diagonal members form a continuous diamond lattice.",
+      "file": "diamond_truss--default.png",
+      "kind": "original native default",
+      "module": "diamond_truss",
+      "preset_id": "diamond-truss",
+      "sha256": "53541e7182a5224a06bb575324ae2bf84809c4fd7ad5b811630d49b08351425a",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Rectangular portal frames repeat across stacked floor bands.",
+      "file": "portal_frame--default.png",
+      "kind": "original native default",
+      "module": "portal_frame",
+      "preset_id": "portal-frame",
+      "sha256": "744296a93bcaaa3250ff7e164d28ba336e9cfc2d525f1b6a61da8cbf5d74f5ce",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Thin horizontal bridge bands use regularly spaced rung-like uprights.",
+      "file": "ladder_bridge--default.png",
+      "kind": "original native default",
+      "module": "ladder_bridge",
+      "preset_id": "ladder-bridge",
+      "sha256": "97f15cb698e9457b6dbe04c3a8bb4dd1830bcb4c313068ad3d24c4cc8c3873d1",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Tiered horizontal aqueduct runs cross squared pier tops.",
+      "file": "stepped_aqueduct--default.png",
+      "kind": "original native default",
+      "module": "stepped_aqueduct",
+      "preset_id": "stepped-aqueduct",
+      "sha256": "b3b048ea5a9400350f76c71645938c61f1f5bb70317403d2d2b01f9abc4831eb",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Forked Y piers meet broad horizontal decks.",
+      "file": "split_pier--default.png",
+      "kind": "original native default",
+      "module": "split_pier",
+      "preset_id": "split-pier",
+      "sha256": "997c2a4f23c2483ff86897419f924cbe7204adbd5f9ace20bfcb5d9a81059ee6",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Sagging cable curves meet lower gallery rails through vertical ties.",
+      "file": "cable_gallery--default.png",
+      "kind": "original native default",
+      "module": "cable_gallery",
+      "preset_id": "cable-gallery",
+      "sha256": "2e73c50dbd7a2f63c211a82d978d22eccf77589513eb528d43391e0abf447c5f",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Straight columns frame narrow upper glazing above open hall bays.",
+      "file": "clerestory_hall--default.png",
+      "kind": "original native default",
+      "module": "clerestory_hall",
+      "preset_id": "clerestory-hall",
+      "sha256": "c9b5bf55efcc97953320d6bc7964cb56cb4bbe36bee450cc527b2e4052675c4c",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Flared capitals widen column tops beneath continuous decks.",
+      "file": "mushroom_deck--default.png",
+      "kind": "original native default",
+      "module": "mushroom_deck",
+      "preset_id": "mushroom-deck",
+      "sha256": "224c63334247905cdb2c365c93c419f70f6e6a716e7d599189990b1719ba03c0",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Alternating pitched chords and short vertical members form a zigzag span.",
+      "file": "zigzag_bridge--default.png",
+      "kind": "original native default",
+      "module": "zigzag_bridge",
+      "preset_id": "zigzag-bridge",
+      "sha256": "38ef37c313d0ebd1234a7ce36953d3078755ab46fc5cbb23126a4cfe8842f26f",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Three tight curved vaults repeat per bay; steep ribs retain face contact.",
+      "file": "scalloped_vault--default.png",
+      "kind": "original native default",
+      "module": "scalloped_vault",
+      "preset_id": "scalloped-vault",
+      "sha256": "f6e3bdd572cf11a3bf89f05348b3c9245a51be2210e06892a08d28216606e77b",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Narrow towers use horizontal ties and repeated diagonal crosses.",
+      "file": "lattice_tower--default.png",
+      "kind": "original native default",
+      "module": "lattice_tower",
+      "preset_id": "lattice-tower",
+      "sha256": "4c54a713f661b17e41587d2484cf2fc3559f9ab2baa954766e67afc73098b1b0",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Wide arches shift sideways between floor levels.",
+      "file": "offset_arcade--default.png",
+      "kind": "original native default",
+      "module": "offset_arcade",
+      "preset_id": "offset-arcade",
+      "sha256": "482c79c044500c3086e2a04f2b9325b6fad6254ac436177f88ee35414681f857",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Small pitched house-like cells alternate with short bridge frames.",
+      "file": "bridgehouse--default.png",
+      "kind": "original native default",
+      "module": "bridgehouse",
+      "preset_id": "bridgehouse",
+      "sha256": "37eee17c18dc91371fa307f4a8c7c1b446f1e28f10f8a512f79a742669c39b81",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Repeated forked column tops meet a horizontal gantry.",
+      "file": "forked_gantry--default.png",
+      "kind": "original native default",
+      "module": "forked_gantry",
+      "preset_id": "forked-gantry",
+      "sha256": "506ae5ce7d7ef14aea8729a81ed3217d8d91df5f2c4f05df34613e73fb52f472",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "The central light slot keeps its original pane width between connected jambs and deep edge buttresses.",
+      "file": "buttress_wall--default.png",
+      "kind": "original native default",
+      "module": "buttress_wall",
+      "preset_id": "buttress-wall",
+      "sha256": "2b7167ae71662b74824b39bd2074b08dc17922083613dc1038b3b7a5c9035ff2",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Multiple diagonal rays converge at a high central truss node.",
+      "file": "fan_truss--default.png",
+      "kind": "original native default",
+      "module": "fan_truss",
+      "preset_id": "fan-truss",
+      "sha256": "a8863cf1c1f0c55bb31050a407176590ca3897cc31b6416e726da61db365d2f4",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Bridge strips use upright posts and diagonal web members.",
+      "file": "pratt_truss--default.png",
+      "kind": "original native default",
+      "module": "pratt_truss",
+      "preset_id": "pratt-truss",
+      "sha256": "45867690a17a63883cc52e41334b86f1eb3c6b1912ba862252b3999873fbfdd9",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Deep rectangular frame strips repeat a regular sequence of open bays.",
+      "file": "vierendeel_frame--default.png",
+      "kind": "original native default",
+      "module": "vierendeel_frame",
+      "preset_id": "vierendeel-frame",
+      "sha256": "ab0be7e5dcc91ef039ed64fc174268db9dccd6552f4a5a69d1eb7198cdf48fe9",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Heavy V-shaped outlines meet thin lower deck bands.",
+      "file": "suspension_pylon--default.png",
+      "kind": "original native default",
+      "module": "suspension_pylon",
+      "preset_id": "suspension-pylon",
+      "sha256": "6f7756ff480806330f6ba047a69cefd69e926fb6b1947c92c95bcc1fab8a44e1",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Dense diagonal stays cross between repeated main vertical members.",
+      "file": "harp_bridge--default.png",
+      "kind": "original native default",
+      "module": "harp_bridge",
+      "preset_id": "harp-bridge",
+      "sha256": "958e20ab2daf4bd3ecf1bbf27d0f46a39b38df06830b0de74066d0d7cc7de629",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Paired platform arms project from regularly spaced tall spines.",
+      "file": "double_cantilever--default.png",
+      "kind": "original native default",
+      "module": "double_cantilever",
+      "preset_id": "double-cantilever",
+      "sha256": "3d73a6bc65a09d04a08f9055d1b855d2d51a890035a71f210becf572c600fd39",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Broad tapered piers meet several small stepped horizontal ledges.",
+      "file": "stepped_buttress--default.png",
+      "kind": "original native default",
+      "module": "stepped_buttress",
+      "preset_id": "stepped-buttress",
+      "sha256": "1e7a00e9a847a76b8bd4b020e92456cbf508d83cff1030eca810ff51d982b0e0",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Dense slender columns connect stacked horizontal floor bands.",
+      "file": "colonnade--default.png",
+      "kind": "original native default",
+      "module": "colonnade",
+      "preset_id": "colonnade",
+      "sha256": "dce5363cef9dcf29c437db0ed0182c5f685cfe96c7abc720a650448723b822a2",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Peaked roof bays contain upper windows and tall open spaces.",
+      "file": "basilica--default.png",
+      "kind": "original native default",
+      "module": "basilica",
+      "preset_id": "basilica",
+      "sha256": "5d32dbd333f9fa97c90076d7115a7ae202377d7e7d7371d8df8baee8a3627d9e",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Crenellated parapets run above bridge decks with short downstands.",
+      "file": "crenellated_bridge--default.png",
+      "kind": "original native default",
+      "module": "crenellated_bridge",
+      "preset_id": "crenellated-bridge",
+      "sha256": "350dd7eb4ed097103e25b32a1ddd0d9f1eba78842e1d4ec67fcda72a567c74f0",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Pointed arches separate glazed triangular upper spandrels.",
+      "file": "pointed_arcade--default.png",
+      "kind": "original native default",
+      "module": "pointed_arcade",
+      "preset_id": "pointed-arcade",
+      "sha256": "e8ee26bf40dc60ec6c5a9a434b25f95254781dc033e606096b52f8dbc4f490c4",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "U-shaped hanging arches repeat below straight upper chords.",
+      "file": "inverted_arch--default.png",
+      "kind": "original native default",
+      "module": "inverted_arch",
+      "preset_id": "inverted-arch",
+      "sha256": "1c4f09ea5e9c01e15543cafe245aa67fcaa3cce3d77c28b4d05ad1d5dc415ac6",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Waisted piers flare into the decks above and below.",
+      "file": "hourglass_pier--default.png",
+      "kind": "original native default",
+      "module": "hourglass_pier",
+      "preset_id": "hourglass-pier",
+      "sha256": "74efde46342d1a14e9285e69d59906f3985c10ffd9acaff2cacfc30f288a267b",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Three splayed legs, a compact crown and a transfer deck connect vertical repeats.",
+      "file": "tripod_frame--default.png",
+      "kind": "original native default",
+      "module": "tripod_frame",
+      "preset_id": "tripod-frame",
+      "sha256": "36a0fbb46b744005f1ad6f8404142d9a38fbb784b29a3e4a96778e5917a95e71",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Pitched roof outlines span open, column-bounded hall bays.",
+      "file": "chevron_hall--default.png",
+      "kind": "original native default",
+      "module": "chevron_hall",
+      "preset_id": "chevron-hall",
+      "sha256": "5dc4fee5cb25dfb79465f70764dd425a5003258e9b74163a2a970d3465d0a310",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Shallow hanging arches descend from straight deck bands.",
+      "file": "hanging_arcade--default.png",
+      "kind": "original native default",
+      "module": "hanging_arcade",
+      "preset_id": "hanging-arcade",
+      "sha256": "42ecd48af149fc5ee6e60ecc8bf13e82b69700d1177523374fe11239a9945b61",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Tall spines carry alternating shelf beams.",
+      "file": "shelf_stack--default.png",
+      "kind": "original native default",
+      "module": "shelf_stack",
+      "preset_id": "shelf-stack",
+      "sha256": "33a81e47d1437c0979a55626adbe9a0198eec1bb7f21c362f5448322fa5b9430",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Short balcony platforms alternate on either side of narrow spines.",
+      "file": "staggered_balcony--default.png",
+      "kind": "original native default",
+      "module": "staggered_balcony",
+      "preset_id": "staggered-balcony",
+      "sha256": "e5c22a2fc10d73487b2245b8b550da6103bebb4bb12b81f7dc7ffab995518bc6",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Central poles carry stacked small triangular outriggers.",
+      "file": "monopod_tower--default.png",
+      "kind": "original native default",
+      "module": "monopod_tower",
+      "preset_id": "monopod-tower",
+      "sha256": "791a2bdc6b2a549739383ff19844de3812776331a48b45502b8bae1bf53a8093",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Shallow wedge-shaped spans form repeated horizontal bands.",
+      "file": "wedge_gallery--default.png",
+      "kind": "original native default",
+      "module": "wedge_gallery",
+      "preset_id": "wedge-gallery",
+      "sha256": "9156f763d4ec72a6f6338634cab2c8d3c67248b04e2d8793480a11c1c546ccaa",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Peaked crowns sit on straight decks with small suspended stems.",
+      "file": "crown_bridge--default.png",
+      "kind": "original native default",
+      "module": "crown_bridge",
+      "preset_id": "crown-bridge",
+      "sha256": "41245e2380c2fb467e857c7e3203335bf40a650946554ea92f27f5149f861d12",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Thin zigzag vertical piers meet sparse horizontal decks.",
+      "file": "zigzag_pier--default.png",
+      "kind": "original native default",
+      "module": "zigzag_pier",
+      "preset_id": "zigzag-pier",
+      "sha256": "94e68a83c193e00a8dfa5eaae64846c74226f80bbbd6e60a6c6504afb07541bc",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Rounded arch roofs meet short piers above open bays.",
+      "file": "drum_vault--default.png",
+      "kind": "original native default",
+      "module": "drum_vault",
+      "preset_id": "drum-vault",
+      "sha256": "843fe75540339add68c91e4ae8a31c0d53577405e0d793d3e001b8d41113b401",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Large triangular frames contain several internal horizontal ties.",
+      "file": "pyramidal_frame--default.png",
+      "kind": "original native default",
+      "module": "pyramidal_frame",
+      "preset_id": "pyramidal-frame",
+      "sha256": "f12f8d6b9747b1580fe1b40a03cdd67c3dfad689001e7de01bf585c452249dd2",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Repeated triangular web members link parallel upper and lower chords.",
+      "file": "warren_truss--default.png",
+      "kind": "original native default",
+      "module": "warren_truss",
+      "preset_id": "warren-truss",
+      "sha256": "a2ae81e8954af245eb22dfe2123333853f755cce1c4ce6631340976941f1fd2d",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Triangular roof trusses have a single vertical centre post.",
+      "file": "kingpost_frame--default.png",
+      "kind": "original native default",
+      "module": "kingpost_frame",
+      "preset_id": "kingpost-frame",
+      "sha256": "9b7fa87f3dbac61e6777d542610363a9d5d0932db7cb9e9a3fe52a54cfc79ba7",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Paired post details alternate with triangular truss webs.",
+      "file": "queenpost_frame--default.png",
+      "kind": "original native default",
+      "module": "queenpost_frame",
+      "preset_id": "queenpost-frame",
+      "sha256": "27f9b66aaa983ef44d2c2ce739624046b0058c38acc4d38d54a03cb546575660",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Lens-shaped paired curved chords join through fine vertical members.",
+      "file": "lenticular_bridge--default.png",
+      "kind": "original native default",
+      "module": "lenticular_bridge",
+      "preset_id": "lenticular-bridge",
+      "sha256": "8957ae23b67643e918bc51976fc67fb6acb67ae39c80a884e748f63503bbb063",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Large fan stays converge on heavy vertical supports.",
+      "file": "radial_stay_bridge--default.png",
+      "kind": "original native default",
+      "module": "radial_stay_bridge",
+      "preset_id": "radial-stay-bridge",
+      "sha256": "e8356ed4473462b658db619ab9c0421e799e9ecd17cc962a4c41eeba957b35d0",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Paired straight masts intersect a repeated diamond cable web.",
+      "file": "twin_mast_bridge--default.png",
+      "kind": "original native default",
+      "module": "twin_mast_bridge",
+      "preset_id": "twin-mast-bridge",
+      "sha256": "58e024eef23935a715be811cc6e32f4ed7d26f4a74554eec9888d211ac356b10",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Steep A-frame bays surround small lower rectangular windows.",
+      "file": "a_frame_hall--default.png",
+      "kind": "original native default",
+      "module": "a_frame_hall",
+      "preset_id": "a-frame-hall",
+      "sha256": "7f39efe6a36aee3e8a08c4e132326bbd4312e6df3893e883eccf464a8fa9e488",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Valley roof outlines sit above open rectilinear hall bays.",
+      "file": "butterfly_hall--default.png",
+      "kind": "original native default",
+      "module": "butterfly_hall",
+      "preset_id": "butterfly-hall",
+      "sha256": "3739cd137de97ddb10a5e5507351ef234b9737b36b0584fa4e21c1b5e5eccbd0",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Stepped masonry capitals meet horizontal lintels.",
+      "file": "ziggurat_arcade--default.png",
+      "kind": "original native default",
+      "module": "ziggurat_arcade",
+      "preset_id": "ziggurat-arcade",
+      "sha256": "649ced640e0af1475fd2aaa18b13ced6c4fc91df1740a87a2933cdb91fef1eae",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Tapered corbelled openings sit between broad piers.",
+      "file": "corbel_arcade--default.png",
+      "kind": "original native default",
+      "module": "corbel_arcade",
+      "preset_id": "corbel-arcade",
+      "sha256": "3ff736448c2da932f1bb3f88f83257e4b61eef503b089085f58655d0ff14ba11",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Dark chain-like hanging curves repeat beneath straight chords.",
+      "file": "chain_vault--default.png",
+      "kind": "original native default",
+      "module": "chain_vault",
+      "preset_id": "chain-vault",
+      "sha256": "b06ee629bd183e7eff754eeb6458ae9a2b22fca1cbd48e13963cbd31d35e2c2a",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Open diamond rings meet upper and lower decks through narrow stems.",
+      "file": "ring_pier--default.png",
+      "kind": "original native default",
+      "module": "ring_pier",
+      "preset_id": "ring-pier",
+      "sha256": "d43274e45142c0cc4725fb0138f56f52c6dfc09149a4c61d3b61dc0779c0e975",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Dense folded roof ridges alternate above slender posts.",
+      "file": "folded_plate_hall--default.png",
+      "kind": "original native default",
+      "module": "folded_plate_hall",
+      "preset_id": "folded-plate-hall",
+      "sha256": "d87742ae078bd592f6ee78ae24d5b1c9e641f76f64ff96f00ba55cb776d3b98c",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Narrow bands of crossed diagonals create deep lattice beams.",
+      "file": "space_frame--default.png",
+      "kind": "original native default",
+      "module": "space_frame",
+      "preset_id": "space-frame",
+      "sha256": "359b79a82340ad9d1d88611b6b37680169c1a0a76b6e1e1565dae743baed9e54",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Tall spines intersect short stacked crossbeams and narrow shelves.",
+      "file": "crossbeam_stack--default.png",
+      "kind": "original native default",
+      "module": "crossbeam_stack",
+      "preset_id": "crossbeam-stack",
+      "sha256": "f973d76584f298d7c330dd87fa9b4e7ea47ed6fb9b74b5c9ecb8f09d4d2aa66f",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Squared inverted-U yokes intersect thin bridge decks.",
+      "file": "yoke_bridge--default.png",
+      "kind": "original native default",
+      "module": "yoke_bridge",
+      "preset_id": "yoke-bridge",
+      "sha256": "9d10a34912ef427ef9902b28757a5856d2a029f54eadf49ea03c97fe1b339fd2",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Large rectangular glazed panels punctuate narrow vertical towers.",
+      "file": "lantern_tower--default.png",
+      "kind": "original native default",
+      "module": "lantern_tower",
+      "preset_id": "lantern-tower",
+      "sha256": "6dd5129a00df3a08976bf7a280607b04ba4d4f77110ce37a334da5eacd016764",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Tall vertical spines carry alternating curved masonry side wedges.",
+      "file": "spine_arcade--default.png",
+      "kind": "original native default",
+      "module": "spine_arcade",
+      "preset_id": "spine-arcade",
+      "sha256": "8acdc94716c42fad7a3b2e8d11af96573b9c2af77b81db4123158a94b62224c6",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Stepped terraces keep open leading edges and meet a continuous rear core.",
+      "file": "cascade_terrace--default.png",
+      "kind": "original native default",
+      "module": "cascade_terrace",
+      "preset_id": "cascade-terrace",
+      "sha256": "81ef9b4122d57fb96756fad892f4644ce936a94f96e4c3ea38603714d5677c0e",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Inverted triangular braces hang below upper deck bands.",
+      "file": "inverted_trestle--default.png",
+      "kind": "original native default",
+      "module": "inverted_trestle",
+      "preset_id": "inverted-trestle",
+      "sha256": "ddd9edc8124da942815a43c34ac8e0a0d7d58df1049b87613ae39501a089d1ae",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Cranked sloping chords meet short upright and downstand segments.",
+      "file": "cranked_beam--default.png",
+      "kind": "original native default",
+      "module": "cranked_beam",
+      "preset_id": "cranked-beam",
+      "sha256": "550f9c8404391ba3b802c28b7966248fcacb359dcdfb5506da57ad8841d8e0f5",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Broad barrel arches end on short paired piers.",
+      "file": "barrel_arcade--default.png",
+      "kind": "original native default",
+      "module": "barrel_arcade",
+      "preset_id": "barrel-arcade",
+      "sha256": "606c8eba78afeade09b10a461d00bed90f3f09c3db1be79e6b05e0d2843198cd",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Heavy tapered buttresses form alternating crown-like openings.",
+      "file": "buttress_crown--default.png",
+      "kind": "original native default",
+      "module": "buttress_crown",
+      "preset_id": "buttress-crown",
+      "sha256": "b993cdc39fd3d1b8cea165227b9b7dda80369daff1f2ffaf95931ed821855df4",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Groups of three slender pointed openings alternate with broad framing.",
+      "file": "triptych_arcade--default.png",
+      "kind": "original native default",
+      "module": "triptych_arcade",
+      "preset_id": "triptych-arcade",
+      "sha256": "1d9a75db88c249f78e90cb71e4156ff2ea890d8e88ecc6406bf856f6a55e37bf",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Large primary trusses, fine secondary bracing and forked columns carry smaller glazed galleries around open halls.",
+      "file": "megatruss_station--default.png",
+      "kind": "original native default",
+      "module": "megatruss_station",
+      "preset_id": "megatruss-station",
+      "sha256": "4eef306f62745b091176a3483de682cb73b35306a459388d6ea6fa97a45d6d6e",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Monumental pointed frames surround smaller arcades and upper tracery, with thick piers between bays.",
+      "file": "cathedral_megaframe--default.png",
+      "kind": "original native default",
+      "module": "cathedral_megaframe",
+      "preset_id": "cathedral-megaframe",
+      "sha256": "07c269e252cd50b5dc8af9f563d5fd217c304d74a53b3dc67fe8c44566a0608d",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Seed-selected roof, window and transfer structures form varied clusters around tall service spines.",
+      "file": "seeded_typology_megablock--default.png",
+      "kind": "original native default",
+      "module": "seeded_typology_megablock",
+      "preset_id": "seeded-typology-megablock",
+      "sha256": "a5eefe8a5056012a207aaeca3693077457747ae8970f9b19baaa121f15465b6c",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Glazed capsules and open platforms attach to tall spines through visibly braced arms.",
+      "file": "metabolist_spine--default.png",
+      "kind": "original native default",
+      "module": "metabolist_spine",
+      "preset_id": "metabolist-spine",
+      "sha256": "9e8022ca0b884e0d5220456b55d680fb41bad292b2b77d36c2eedd88b7570b62",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "A masonry arch frame interlaces with a contrasting suspended gallery; glazing stays outside the arch rib and primary piers.",
+      "file": "interlaced_viaduct--default.png",
+      "kind": "original native default",
+      "module": "interlaced_viaduct",
+      "preset_id": "interlaced-viaduct",
+      "sha256": "ce9e09f05bec0c8073f7606b9df62c3989dac8aca2f426609e9121ccbe1f82e0",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Radial petals and spokes sit inside a ring carried by paired towers above an open gate.",
+      "file": "rosework_gatehouse--default.png",
+      "kind": "original native default",
+      "module": "rosework_gatehouse",
+      "preset_id": "rosework-gatehouse",
+      "sha256": "df0f07d81e83266c90f46b8b6483fa4fbb0854251f4a7a4d2c7557e4a3be0832",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "Heavy service cores carry staggered platforms, braced cantilevers and occasional broad glazed bands.",
+      "file": "interlock_brutalism--default.png",
+      "kind": "original native default",
+      "module": "interlock_brutalism",
+      "preset_id": "interlock-brutalism",
+      "sha256": "d44719cb9dbf274097ab893817c7608d4f4a3a28fa11f225ce9e5f01dc88b27b",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "caption": "A deep overhead truss suspends pods of different depths through vertical hangers, leaving large clear spaces below.",
+      "file": "suspended_arcology--default.png",
+      "kind": "original native default",
+      "module": "suspended_arcology",
+      "preset_id": "suspended-arcology",
+      "sha256": "4ad88237ed1786ad3cb83a0406a10d79565a1aaf6b8c2e3be1dbd19994f9e4d4",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "artifact_source_images": [
+        "trestle--default.png",
+        "stacked_arcade--default.png",
+        "flying_buttress--default.png",
+        "sawtooth_gallery--default.png",
+        "cantilever_spine--default.png",
+        "rib_vault--default.png",
+        "nested_arcade--default.png",
+        "suspended_deck--default.png",
+        "bowstring_truss--default.png",
+        "diamond_truss--default.png",
+        "portal_frame--default.png",
+        "ladder_bridge--default.png",
+        "stepped_aqueduct--default.png",
+        "split_pier--default.png",
+        "cable_gallery--default.png",
+        "clerestory_hall--default.png",
+        "mushroom_deck--default.png",
+        "zigzag_bridge--default.png",
+        "scalloped_vault--default.png",
+        "lattice_tower--default.png",
+        "offset_arcade--default.png",
+        "bridgehouse--default.png",
+        "forked_gantry--default.png",
+        "buttress_wall--default.png",
+        "fan_truss--default.png",
+        "pratt_truss--default.png",
+        "vierendeel_frame--default.png",
+        "suspension_pylon--default.png",
+        "harp_bridge--default.png",
+        "double_cantilever--default.png",
+        "stepped_buttress--default.png",
+        "colonnade--default.png",
+        "basilica--default.png",
+        "crenellated_bridge--default.png",
+        "pointed_arcade--default.png",
+        "inverted_arch--default.png",
+        "hourglass_pier--default.png",
+        "tripod_frame--default.png",
+        "chevron_hall--default.png",
+        "hanging_arcade--default.png",
+        "shelf_stack--default.png",
+        "staggered_balcony--default.png",
+        "monopod_tower--default.png",
+        "wedge_gallery--default.png",
+        "crown_bridge--default.png",
+        "zigzag_pier--default.png",
+        "drum_vault--default.png",
+        "pyramidal_frame--default.png",
+        "warren_truss--default.png",
+        "kingpost_frame--default.png",
+        "queenpost_frame--default.png",
+        "lenticular_bridge--default.png",
+        "radial_stay_bridge--default.png",
+        "twin_mast_bridge--default.png",
+        "a_frame_hall--default.png",
+        "butterfly_hall--default.png",
+        "ziggurat_arcade--default.png",
+        "corbel_arcade--default.png",
+        "chain_vault--default.png",
+        "ring_pier--default.png",
+        "folded_plate_hall--default.png",
+        "space_frame--default.png",
+        "crossbeam_stack--default.png",
+        "yoke_bridge--default.png",
+        "lantern_tower--default.png",
+        "spine_arcade--default.png",
+        "cascade_terrace--default.png",
+        "inverted_trestle--default.png",
+        "cranked_beam--default.png",
+        "barrel_arcade--default.png",
+        "buttress_crown--default.png",
+        "triptych_arcade--default.png",
+        "megatruss_station--default.png",
+        "cathedral_megaframe--default.png",
+        "seeded_typology_megablock--default.png",
+        "metabolist_spine--default.png",
+        "interlaced_viaduct--default.png",
+        "rosework_gatehouse--default.png",
+        "interlock_brutalism--default.png",
+        "suspended_arcology--default.png"
+      ],
+      "caption": "Labelled nearest-neighbour composition of actual native renders; source images and profiles are listed in this manifest.",
+      "file": "all-80-index.png",
+      "kind": "labelled nearest-neighbour contact sheet",
+      "sha256": "b7c5e77269d26c32ba9de7d04e2d2b7093a4c5336ed68d04f48d5184602d98a7",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "artifact_source_images": [
+        "trestle--default.png",
+        "stacked_arcade--default.png",
+        "flying_buttress--default.png",
+        "sawtooth_gallery--default.png",
+        "cantilever_spine--default.png",
+        "rib_vault--default.png",
+        "nested_arcade--default.png",
+        "suspended_deck--default.png",
+        "bowstring_truss--default.png",
+        "diamond_truss--default.png",
+        "portal_frame--default.png",
+        "ladder_bridge--default.png",
+        "stepped_aqueduct--default.png",
+        "split_pier--default.png",
+        "cable_gallery--default.png",
+        "clerestory_hall--default.png",
+        "mushroom_deck--default.png",
+        "zigzag_bridge--default.png",
+        "scalloped_vault--default.png",
+        "lattice_tower--default.png"
+      ],
+      "caption": "Labelled nearest-neighbour composition of actual native renders; source images and profiles are listed in this manifest.",
+      "file": "catalogue-page-01.png",
+      "kind": "labelled nearest-neighbour contact sheet",
+      "sha256": "4c9779ee8ede1f20f441e086f3084bdfdc61f2e5a99cca9b916309eddec5ab9b",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "artifact_source_images": [
+        "offset_arcade--default.png",
+        "bridgehouse--default.png",
+        "forked_gantry--default.png",
+        "buttress_wall--default.png",
+        "fan_truss--default.png",
+        "pratt_truss--default.png",
+        "vierendeel_frame--default.png",
+        "suspension_pylon--default.png",
+        "harp_bridge--default.png",
+        "double_cantilever--default.png",
+        "stepped_buttress--default.png",
+        "colonnade--default.png",
+        "basilica--default.png",
+        "crenellated_bridge--default.png",
+        "pointed_arcade--default.png",
+        "inverted_arch--default.png",
+        "hourglass_pier--default.png",
+        "tripod_frame--default.png",
+        "chevron_hall--default.png",
+        "hanging_arcade--default.png"
+      ],
+      "caption": "Labelled nearest-neighbour composition of actual native renders; source images and profiles are listed in this manifest.",
+      "file": "catalogue-page-02.png",
+      "kind": "labelled nearest-neighbour contact sheet",
+      "sha256": "0e912f6e8f4b87238f8ab4d2407ca1ede0873a5b47ba9763ec00fb454da142df",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "artifact_source_images": [
+        "shelf_stack--default.png",
+        "staggered_balcony--default.png",
+        "monopod_tower--default.png",
+        "wedge_gallery--default.png",
+        "crown_bridge--default.png",
+        "zigzag_pier--default.png",
+        "drum_vault--default.png",
+        "pyramidal_frame--default.png",
+        "warren_truss--default.png",
+        "kingpost_frame--default.png",
+        "queenpost_frame--default.png",
+        "lenticular_bridge--default.png",
+        "radial_stay_bridge--default.png",
+        "twin_mast_bridge--default.png",
+        "a_frame_hall--default.png",
+        "butterfly_hall--default.png",
+        "ziggurat_arcade--default.png",
+        "corbel_arcade--default.png",
+        "chain_vault--default.png",
+        "ring_pier--default.png"
+      ],
+      "caption": "Labelled nearest-neighbour composition of actual native renders; source images and profiles are listed in this manifest.",
+      "file": "catalogue-page-03.png",
+      "kind": "labelled nearest-neighbour contact sheet",
+      "sha256": "d6c5c23e604f04ce1c098e5532750c7f2fcd23fd067c5fabd4b48caddced9505",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "artifact_source_images": [
+        "folded_plate_hall--default.png",
+        "space_frame--default.png",
+        "crossbeam_stack--default.png",
+        "yoke_bridge--default.png",
+        "lantern_tower--default.png",
+        "spine_arcade--default.png",
+        "cascade_terrace--default.png",
+        "inverted_trestle--default.png",
+        "cranked_beam--default.png",
+        "barrel_arcade--default.png",
+        "buttress_crown--default.png",
+        "triptych_arcade--default.png",
+        "megatruss_station--default.png",
+        "cathedral_megaframe--default.png",
+        "seeded_typology_megablock--default.png",
+        "metabolist_spine--default.png",
+        "interlaced_viaduct--default.png",
+        "rosework_gatehouse--default.png",
+        "interlock_brutalism--default.png",
+        "suspended_arcology--default.png"
+      ],
+      "caption": "Labelled nearest-neighbour composition of actual native renders; source images and profiles are listed in this manifest.",
+      "file": "catalogue-page-04.png",
+      "kind": "labelled nearest-neighbour contact sheet",
+      "sha256": "152e833d55050f1cc07868e65d1dd00dc5c7b933d6755ab68024cc4c7c7a3b6f",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "artifact_source_images": [
+        "megatruss_station--default.png",
+        "cathedral_megaframe--default.png",
+        "seeded_typology_megablock--default.png",
+        "metabolist_spine--default.png",
+        "interlaced_viaduct--default.png",
+        "rosework_gatehouse--default.png",
+        "interlock_brutalism--default.png",
+        "suspended_arcology--default.png"
+      ],
+      "caption": "Labelled nearest-neighbour composition of actual native renders; source images and profiles are listed in this manifest.",
+      "file": "eight-showcases.png",
+      "kind": "labelled nearest-neighbour contact sheet",
+      "sha256": "e3d467367af9076b3ac581a23251c116375a5c2c569e387f4f0b201635909805",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "artifact_source_images": [
+        "megatruss_station--default.png",
+        "cathedral_megaframe--default.png",
+        "seeded_typology_megablock--default.png",
+        "metabolist_spine--default.png",
+        "interlaced_viaduct--default.png",
+        "rosework_gatehouse--default.png",
+        "interlock_brutalism--default.png",
+        "suspended_arcology--default.png"
+      ],
+      "caption": "Support, glazing and joint assemblies selected from the eight native default PNGs; every crop coordinate and source image hash is retained.",
+      "crops": [
+        {
+          "crop": [
+            256,
+            48,
+            448,
+            240
+          ],
+          "module": "megatruss_station",
+          "scale": 2,
+          "source_png": "megatruss_station--default.png",
+          "source_png_sha256": "4eef306f62745b091176a3483de682cb73b35306a459388d6ea6fa97a45d6d6e"
+        },
+        {
+          "crop": [
+            96,
+            96,
+            288,
+            288
+          ],
+          "module": "cathedral_megaframe",
+          "scale": 2,
+          "source_png": "cathedral_megaframe--default.png",
+          "source_png_sha256": "07c269e252cd50b5dc8af9f563d5fd217c304d74a53b3dc67fe8c44566a0608d"
+        },
+        {
+          "crop": [
+            96,
+            96,
+            288,
+            288
+          ],
+          "module": "seeded_typology_megablock",
+          "scale": 2,
+          "source_png": "seeded_typology_megablock--default.png",
+          "source_png_sha256": "a5eefe8a5056012a207aaeca3693077457747ae8970f9b19baaa121f15465b6c"
+        },
+        {
+          "crop": [
+            304,
+            160,
+            496,
+            352
+          ],
+          "module": "metabolist_spine",
+          "scale": 2,
+          "source_png": "metabolist_spine--default.png",
+          "source_png_sha256": "9e8022ca0b884e0d5220456b55d680fb41bad292b2b77d36c2eedd88b7570b62"
+        },
+        {
+          "crop": [
+            96,
+            96,
+            288,
+            288
+          ],
+          "module": "interlaced_viaduct",
+          "scale": 2,
+          "source_png": "interlaced_viaduct--default.png",
+          "source_png_sha256": "ce9e09f05bec0c8073f7606b9df62c3989dac8aca2f426609e9121ccbe1f82e0"
+        },
+        {
+          "crop": [
+            96,
+            96,
+            288,
+            288
+          ],
+          "module": "rosework_gatehouse",
+          "scale": 2,
+          "source_png": "rosework_gatehouse--default.png",
+          "source_png_sha256": "df0f07d81e83266c90f46b8b6483fa4fbb0854251f4a7a4d2c7557e4a3be0832"
+        },
+        {
+          "crop": [
+            16,
+            48,
+            208,
+            240
+          ],
+          "module": "interlock_brutalism",
+          "scale": 2,
+          "source_png": "interlock_brutalism--default.png",
+          "source_png_sha256": "d44719cb9dbf274097ab893817c7608d4f4a3a28fa11f225ce9e5f01dc88b27b"
+        },
+        {
+          "crop": [
+            240,
+            136,
+            432,
+            328
+          ],
+          "module": "suspended_arcology",
+          "scale": 2,
+          "source_png": "suspended_arcology--default.png",
+          "source_png_sha256": "4ad88237ed1786ad3cb83a0406a10d79565a1aaf6b8c2e3be1dbd19994f9e4d4"
+        }
+      ],
+      "file": "showcase-details.png",
+      "kind": "curated native detail crops with nearest-neighbour labels",
+      "sha256": "d07492204f42419f25a061e99d28ab0e4a03b2c06dd6c68ce0a10a256c183022",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "artifact_source_images": [],
+      "caption": "Expected refused inputs and unexpected failure count; exact rejected requests remain in the complete qualification artifact.",
+      "file": "failure-and-rejection-index.png",
+      "kind": "text-only diagnostic cards; not native terrain",
+      "sha256": "ce110ad31e92cf3f929a5363d7c68a5b49eb477f3157cb9c3f30e75228a28ead",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "artifact_source_images": [
+        "megatruss_station--default.png",
+        "megatruss_station--seed-1701.png",
+        "megatruss_station--compact.png",
+        "megatruss_station--tall.png",
+        "megatruss_station--material-controls.png",
+        "megatruss_station--windows-off.png",
+        "megatruss_station--doors-off.png",
+        "megatruss_station--signed-origin.png",
+        "megatruss_station--thin.png",
+        "megatruss_station--heavy.png",
+        "megatruss_station--large-1024.png"
+      ],
+      "caption": "Labelled nearest-neighbour composition of actual native renders; source images and profiles are listed in this manifest.",
+      "file": "megatruss_station--variations.png",
+      "kind": "labelled nearest-neighbour contact sheet",
+      "sha256": "d3bc15fd4dd26b3302771a94924804fc435a2f6f322988fb24faaf96892cd148",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "artifact_source_images": [
+        "cathedral_megaframe--default.png",
+        "cathedral_megaframe--seed-1701.png",
+        "cathedral_megaframe--compact.png",
+        "cathedral_megaframe--tall.png",
+        "cathedral_megaframe--material-controls.png",
+        "cathedral_megaframe--windows-off.png",
+        "cathedral_megaframe--doors-off.png",
+        "cathedral_megaframe--signed-origin.png",
+        "cathedral_megaframe--thin.png",
+        "cathedral_megaframe--heavy.png",
+        "cathedral_megaframe--large-1024.png"
+      ],
+      "caption": "Labelled nearest-neighbour composition of actual native renders; source images and profiles are listed in this manifest.",
+      "file": "cathedral_megaframe--variations.png",
+      "kind": "labelled nearest-neighbour contact sheet",
+      "sha256": "846ecb6b4cf95d26352f54de258446d44043c210203ffa61a7e781caae8054dc",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "artifact_source_images": [
+        "seeded_typology_megablock--default.png",
+        "seeded_typology_megablock--seed-1701.png",
+        "seeded_typology_megablock--compact.png",
+        "seeded_typology_megablock--tall.png",
+        "seeded_typology_megablock--material-controls.png",
+        "seeded_typology_megablock--windows-off.png",
+        "seeded_typology_megablock--doors-off.png",
+        "seeded_typology_megablock--signed-origin.png",
+        "seeded_typology_megablock--thin.png",
+        "seeded_typology_megablock--heavy.png",
+        "seeded_typology_megablock--large-1024.png"
+      ],
+      "caption": "Labelled nearest-neighbour composition of actual native renders; source images and profiles are listed in this manifest.",
+      "file": "seeded_typology_megablock--variations.png",
+      "kind": "labelled nearest-neighbour contact sheet",
+      "sha256": "ec7fac64cd16456c78d379b4666a07ccfd5496ec0eba8ce97c939defbecfda22",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "artifact_source_images": [
+        "metabolist_spine--default.png",
+        "metabolist_spine--seed-1701.png",
+        "metabolist_spine--compact.png",
+        "metabolist_spine--tall.png",
+        "metabolist_spine--material-controls.png",
+        "metabolist_spine--windows-off.png",
+        "metabolist_spine--doors-off.png",
+        "metabolist_spine--signed-origin.png",
+        "metabolist_spine--thin.png",
+        "metabolist_spine--heavy.png",
+        "metabolist_spine--large-1024.png"
+      ],
+      "caption": "Labelled nearest-neighbour composition of actual native renders; source images and profiles are listed in this manifest.",
+      "file": "metabolist_spine--variations.png",
+      "kind": "labelled nearest-neighbour contact sheet",
+      "sha256": "d7b69936ed89ef090b2b3a9144d4b067eb5c7855caba4ddcee9bcb9fd7120178",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "artifact_source_images": [
+        "interlaced_viaduct--default.png",
+        "interlaced_viaduct--seed-1701.png",
+        "interlaced_viaduct--compact.png",
+        "interlaced_viaduct--tall.png",
+        "interlaced_viaduct--material-controls.png",
+        "interlaced_viaduct--windows-off.png",
+        "interlaced_viaduct--doors-off.png",
+        "interlaced_viaduct--signed-origin.png",
+        "interlaced_viaduct--thin.png",
+        "interlaced_viaduct--heavy.png",
+        "interlaced_viaduct--large-1024.png"
+      ],
+      "caption": "Labelled nearest-neighbour composition of actual native renders; source images and profiles are listed in this manifest.",
+      "file": "interlaced_viaduct--variations.png",
+      "kind": "labelled nearest-neighbour contact sheet",
+      "sha256": "be607a053b17518c4222f7d1595b250ee6a845e78cf5a5e754b9cd772fa85fea",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "artifact_source_images": [
+        "rosework_gatehouse--default.png",
+        "rosework_gatehouse--seed-1701.png",
+        "rosework_gatehouse--compact.png",
+        "rosework_gatehouse--tall.png",
+        "rosework_gatehouse--material-controls.png",
+        "rosework_gatehouse--windows-off.png",
+        "rosework_gatehouse--doors-off.png",
+        "rosework_gatehouse--signed-origin.png",
+        "rosework_gatehouse--thin.png",
+        "rosework_gatehouse--heavy.png",
+        "rosework_gatehouse--large-1024.png"
+      ],
+      "caption": "Labelled nearest-neighbour composition of actual native renders; source images and profiles are listed in this manifest.",
+      "file": "rosework_gatehouse--variations.png",
+      "kind": "labelled nearest-neighbour contact sheet",
+      "sha256": "8bdf816cb94be9dea2a93c7730cba60fd2d18454e9adebc9d3ed9d299cd81fcd",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "artifact_source_images": [
+        "interlock_brutalism--default.png",
+        "interlock_brutalism--seed-1701.png",
+        "interlock_brutalism--compact.png",
+        "interlock_brutalism--tall.png",
+        "interlock_brutalism--material-controls.png",
+        "interlock_brutalism--windows-off.png",
+        "interlock_brutalism--doors-off.png",
+        "interlock_brutalism--signed-origin.png",
+        "interlock_brutalism--thin.png",
+        "interlock_brutalism--heavy.png",
+        "interlock_brutalism--large-1024.png"
+      ],
+      "caption": "Labelled nearest-neighbour composition of actual native renders; source images and profiles are listed in this manifest.",
+      "file": "interlock_brutalism--variations.png",
+      "kind": "labelled nearest-neighbour contact sheet",
+      "sha256": "f8793ca938918be72d0bf9cbc47bdff1ea978576084b99937fe633b72aff574f",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "artifact_source_images": [
+        "suspended_arcology--default.png",
+        "suspended_arcology--seed-1701.png",
+        "suspended_arcology--compact.png",
+        "suspended_arcology--tall.png",
+        "suspended_arcology--material-controls.png",
+        "suspended_arcology--windows-off.png",
+        "suspended_arcology--doors-off.png",
+        "suspended_arcology--signed-origin.png",
+        "suspended_arcology--thin.png",
+        "suspended_arcology--heavy.png",
+        "suspended_arcology--large-1024.png"
+      ],
+      "caption": "Labelled nearest-neighbour composition of actual native renders; source images and profiles are listed in this manifest.",
+      "file": "suspended_arcology--variations.png",
+      "kind": "labelled nearest-neighbour contact sheet",
+      "sha256": "04bcb501417d13347eb092904bf7d3778bd8076ff395b3984ef9347128a3bcdb",
+      "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17"
+    },
+    {
+      "after_source": "507f49a1b585354607f53dd6de972bfcb218bd17",
+      "before_source": "615828b28337f85e4663e03ba479616db4ddf764",
+      "caption": "Suspended Deck: upper carrier / hanger contact. Occupied face-connected components 1 \u2192 1; 14 changed cells. Direct upper contact gaps 14 \u2192 0.",
+      "file": "suspended-deck-contacts--before-after.png",
+      "kind": "structural repair",
+      "sha256": "0cbaa129e55937984f3cbf7d0606429c22b3470164263ddf8c88344f1d6f337f"
+    },
+    {
+      "after_source": "507f49a1b585354607f53dd6de972bfcb218bd17",
+      "before_source": "615828b28337f85e4663e03ba479616db4ddf764",
+      "caption": "Rib Vault: steep face-connected rib stroke. Occupied face-connected components 29 \u2192 1; 234 changed cells.",
+      "file": "rib-vault-steep--before-after.png",
+      "kind": "structural repair",
+      "sha256": "4af815a773afa903f59940b1815462e311aa0082f4f1434961e37ab036dd23b1"
+    },
+    {
+      "after_source": "507f49a1b585354607f53dd6de972bfcb218bd17",
+      "before_source": "615828b28337f85e4663e03ba479616db4ddf764",
+      "caption": "Ring Pier: diamond-to-deck support stems. Occupied face-connected components 3 \u2192 1; 185 changed cells.",
+      "file": "ring-pier-supports--before-after.png",
+      "kind": "structural repair",
+      "sha256": "7a50b8924e3f844bf34ce34e11365bc3960142deba0b5edbd0dc4f7f6bcb26fa"
+    },
+    {
+      "after_source": "507f49a1b585354607f53dd6de972bfcb218bd17",
+      "before_source": "615828b28337f85e4663e03ba479616db4ddf764",
+      "caption": "Tripod Frame: transfer deck / upper neck continuity. Occupied face-connected components 2 \u2192 1; 716 changed cells.",
+      "file": "tripod-frame-continuity--before-after.png",
+      "kind": "structural repair",
+      "sha256": "e188e1b630dfc07cce8505c8883b17a9260622c2b08dff63bba6d28d07659550"
+    },
+    {
+      "after_source": "507f49a1b585354607f53dd6de972bfcb218bd17",
+      "before_source": "615828b28337f85e4663e03ba479616db4ddf764",
+      "caption": "Cascade Terrace: stepped decks meet the continuous core. Occupied face-connected components 8 \u2192 1; 408 changed cells.",
+      "file": "cascade-terrace-continuity--before-after.png",
+      "kind": "structural repair",
+      "sha256": "a88670579e37b1e5152913d6ca64dbfca9d414db665d2e3b84d4dad3bb27690b"
+    },
+    {
+      "after_source": "507f49a1b585354607f53dd6de972bfcb218bd17",
+      "before_source": "615828b28337f85e4663e03ba479616db4ddf764",
+      "caption": "Scalloped Vault: compact steep ribs retain face contact. Occupied face-connected components 20 \u2192 1; 162 changed cells.",
+      "file": "scalloped-vault-compact--before-after.png",
+      "kind": "structural repair",
+      "sha256": "51afc083f0a9a2a67fcb7935305715df19454b9d19b0d805112118371e5572fe"
+    },
+    {
+      "after_source": "507f49a1b585354607f53dd6de972bfcb218bd17",
+      "before_source": "615828b28337f85e4663e03ba479616db4ddf764",
+      "caption": "Suspended Deck: framed glazing preserves the full pane. Occupied face-connected components 2 \u2192 1; 386 changed cells. Every original glass cell remains at the same coordinate.",
+      "file": "suspended-deck-window-frame--before-after.png",
+      "kind": "pane close-up",
+      "sha256": "9836eba446dc0aec4daa8d7214793f58d28ea2e2beaeb7d44685edd950e75420"
+    },
+    {
+      "after_source": "507f49a1b585354607f53dd6de972bfcb218bd17",
+      "before_source": "615828b28337f85e4663e03ba479616db4ddf764",
+      "caption": "Buttress Wall: framed light slot preserves the full pane. Occupied face-connected components 2 \u2192 1; 624 changed cells. Every original glass cell remains at the same coordinate.",
+      "file": "buttress-wall-window-frame--before-after.png",
+      "kind": "pane close-up",
+      "sha256": "73cffe39c22a1de156824485f7a4a1a94558bfc78d14b18f58da191934c1ce33"
+    }
+  ],
+  "rendering_inputs_sha256": {
+    "Makefile": "a6b5855f6d5e4b61ef78184076356de599650ccf0c0554b0c6187abed21d23e7",
+    "examples/worldgen/architectural/a-frame-hall.style.json": "1c62851c7c1eff93e49bf5a5a3c1122ed0e788b73e6b5a4d1f42af966fe9524c",
+    "examples/worldgen/architectural/arched-viaduct.style.json": "9aee72a6511ce73b99f03f110ebce1e54dba57d2b90d475976cf144977809782",
+    "examples/worldgen/architectural/barrel-arcade.style.json": "b79eb401a19950b22f4b505d51888ef33dbea01a0b74b4bb0e737f52fc90edcf",
+    "examples/worldgen/architectural/basalt-archive.style.json": "9ba3ff94dd06b8f4a6083ab36ad5e3c9ff44a6a33dc53f869f12e9b75fce0bd8",
+    "examples/worldgen/architectural/basilica.style.json": "6622e20bd758a89eb9fe109ef9c97be643717653e0890b79d534b16a6971f5a5",
+    "examples/worldgen/architectural/bowstring-truss.style.json": "7984e2be5aa499e942da29b86d8bf6e217543ac0bed025ca3a3f0161fb1ce9b3",
+    "examples/worldgen/architectural/bridgehouse.style.json": "3664afbcc20d09506afff3559ebeb22eecd85dd405f186888852028bf5d3d2e3",
+    "examples/worldgen/architectural/butterfly-hall.style.json": "c8be8b5d54a58555d6b30d325dfa7cd25924461e0d00225033e458c6c127b458",
+    "examples/worldgen/architectural/buttress-crown.style.json": "63378ac00f460bb7b2b8c4e10e0b5a04f18a59a9ec22a30d6f307b5d0b93f9e0",
+    "examples/worldgen/architectural/buttress-wall.style.json": "c7c17fbf7c3d08eca2c682263218a6c9f6af592a50712e11a83f24390090e19b",
+    "examples/worldgen/architectural/cable-gallery.style.json": "3bdc4aaf9beaf264b9ef969768ef24b5bff718704747dbb374efa0cf09aa5ea1",
+    "examples/worldgen/architectural/cantilever-spine.style.json": "6976d6caac7c3f100e457664bf296c43eab21d4b0fad067057320e0d27e44596",
+    "examples/worldgen/architectural/cascade-terrace.style.json": "ff5ac0f87c176056c15b8c937eaaa5a3f7133ac0c003750496e0b9c09826b181",
+    "examples/worldgen/architectural/cathedral-megaframe.style.json": "79a0722afeee05c7399541ac4198965a83f8d2df07a286ac8b055bdc1769c874",
+    "examples/worldgen/architectural/cellular-hive.style.json": "56f7f1db8ca798986674a761d28c814d34734c3c29a161023526970a150829a4",
+    "examples/worldgen/architectural/chain-vault.style.json": "2b22c9714349d72c664a638d28ccf2ab642dca10adfd0f145168b7fa0e20d6da",
+    "examples/worldgen/architectural/chevron-hall.style.json": "2a1176fea07d55889ed2ca520fa0cd0f0f07e4e9bf12604ab44c2163772dde25",
+    "examples/worldgen/architectural/civic-atrium.style.json": "406b14e532c2e681be807ad78e3feca2bb9ffb2711c83a081f7d51ae466eb15a",
+    "examples/worldgen/architectural/clerestory-hall.style.json": "e107b34706b9067fb7be0b0dee54eb6ce92e5db20faab9a20de54b1e2a33486e",
+    "examples/worldgen/architectural/colonnade.style.json": "0ed356bd4413adf2e48dc07aa2c51faae0d535742533bad960264e37ec665853",
+    "examples/worldgen/architectural/corbel-arcade.style.json": "06c29ac145feb8420d19fe7eccb0423b9dbb741ab00d1c978439b20d0997f068",
+    "examples/worldgen/architectural/cranked-beam.style.json": "cc09fcf5cf0ae17aff511d20503e12399e6d5738113525eb81e2317752d8fde0",
+    "examples/worldgen/architectural/crenellated-bridge.style.json": "9e3fdd8c25ae461918ecf50274394ece8c66febacd699b337fea7813d50ebae3",
+    "examples/worldgen/architectural/crossbeam-stack.style.json": "f44dd2435dbdf24d237ad76ec14903e407c25bdfe7ebf27f5556fc9b620e0985",
+    "examples/worldgen/architectural/crown-bridge.style.json": "3b6c364d5aead77b8c31b4f14ff6924708f8d11261d656a09e01f6505fb4df92",
+    "examples/worldgen/architectural/custom-masonry-court.style.json": "5d335b31ad602d337f98ccbd57fb51e8af00d45906edde534e9410d5b2bca9e8",
+    "examples/worldgen/architectural/diamond-truss.style.json": "6a1d82c057f270d7fe0f07eb75be15fcac7f85c434d619220f024a5545da4e1a",
+    "examples/worldgen/architectural/double-cantilever.style.json": "3e2b45960530bacc8db69504ce3229a47566ea2104332678ab162e2a3e736491",
+    "examples/worldgen/architectural/drum-vault.style.json": "4a93e6e1dee754a6496f243fd10c32ae6cba73d170674197187e22bf2192083c",
+    "examples/worldgen/architectural/earthen-terraces.style.json": "2b1476bcec819539c4bdecdf10ce3bd961ae9d80d9f3be6f0eb27294cde4f20f",
+    "examples/worldgen/architectural/fan-truss.style.json": "5fe779eb53d69a55bca37a1f49774d7d84c86eed4352100ed5db87a173762382",
+    "examples/worldgen/architectural/flying-buttress.style.json": "e2f594fbe9114fea6410a0db84d8a4899ddf12478ed81396ae4f8a19a0837574",
+    "examples/worldgen/architectural/folded-plate-hall.style.json": "dad59da9ff8a66974256d644c8f6377a8c3648ef8215e3e48ace63618e70c061",
+    "examples/worldgen/architectural/forked-gantry.style.json": "e97035791015b359b5473f584f27c441d1efa6a36c7cb9d790044a3af1a2b6b9",
+    "examples/worldgen/architectural/habitation-arcology.style.json": "6862e046a840828327f68ad75479eccbc150b11c28644a0e6aaa3dde603871da",
+    "examples/worldgen/architectural/hanging-arcade.style.json": "b614694b7eded9d88343fb524b045c8fee0f677a93115399cceb71b261d1474e",
+    "examples/worldgen/architectural/harp-bridge.style.json": "9e0be9567f96e395f9eb8c6d453312c76e5dae86dccf77552cdf72d5832d93da",
+    "examples/worldgen/architectural/hourglass-pier.style.json": "ecfb0a4ee5483d90afb7c9cb5a6385155c0ff6dad1f34e7a106d9ede67872516",
+    "examples/worldgen/architectural/industrial-service.style.json": "19e489a62898654f0ea18c8053e6733e0502e50dcbf70d5c19e1da33a1cd7df8",
+    "examples/worldgen/architectural/interlaced-viaduct.style.json": "e1424f5dae913ba047d6661ab73a3cdf067a8b0693868c61cd6cd435e42b21fe",
+    "examples/worldgen/architectural/interlock-brutalism.style.json": "5dfb60bab7c532691bd9c8688a5f5a619d956198cd49b76880700912cfd097f4",
+    "examples/worldgen/architectural/inverted-arch.style.json": "d7a25289741abedaca3fa1fe4a1b785b662eb1a473c50c101f9204b869e0f481",
+    "examples/worldgen/architectural/inverted-trestle.style.json": "088839a229f32a6e0731df9dcb940ef96efe50f7963857ca7805f1f3e57b3837",
+    "examples/worldgen/architectural/kingpost-frame.style.json": "1fbd2e96480e79b53d02454ce0e2093c83a7374e94926b4c326a8b8830a6622c",
+    "examples/worldgen/architectural/ladder-bridge.style.json": "c61045106b40f88f068042077243dfc1dbe6317c051e1ea91ee8c3d651913e22",
+    "examples/worldgen/architectural/lantern-tower.style.json": "eeb207fbd6cbc7b5178a9db4195cf21538768fa8a69b6670cda802827353658e",
+    "examples/worldgen/architectural/lattice-tower.style.json": "09a9820e7e96ee51f8dfba14d77eed2b851949bc890ff1e651de131699f1bd01",
+    "examples/worldgen/architectural/lenticular-bridge.style.json": "0d690583cf755bf86e950e2145552c9f3e616264ea957b9e773a2cf706ba4da0",
+    "examples/worldgen/architectural/megatruss-station.style.json": "56f631a9f0dfe1f50c03ccd83ab1077a58f76552e313dbae7445308b50f7f97f",
+    "examples/worldgen/architectural/metabolist-spine.style.json": "21944fc25adc6cbe33ecf4f04fda8bab37d4945706cc0a8bf0023d62aa0e261d",
+    "examples/worldgen/architectural/monopod-tower.style.json": "29abfe477198a066226298d34ce9746d1f0fc1403449f7e269a77a8859637298",
+    "examples/worldgen/architectural/mushroom-deck.style.json": "2b26bd1f29c8c6a3cedbfe07026534205e0114af76ee1cf35a62e70620a39ccc",
+    "examples/worldgen/architectural/nested-arcade.style.json": "dc57be34c1f7757dd6e037965f2c234793709a4d2148fe033c2ead0881b3a683",
+    "examples/worldgen/architectural/offset-arcade.style.json": "93c958bcbdb90802491c032d7aa868151602d0c9f6663c7b283f811c4bdb6c9d",
+    "examples/worldgen/architectural/orbital-observatory.style.json": "e371f821bafc37cde36f06cd04431e99e73793533d563888e576ae0248c12a3a",
+    "examples/worldgen/architectural/overgrown-ruins.style.json": "80bd42a1372e2320344c297a843fefd0e1f9cc97577604d2b65dfd1be6db6f27",
+    "examples/worldgen/architectural/pointed-arcade.style.json": "6c71ad908120af023a0e16a73822665833347975e6704d60074a7e00914798c8",
+    "examples/worldgen/architectural/portal-frame.style.json": "bd27a12451612bc32636f3ad31a06920f45d85f076fb32ee1aa0be98eeab9fa9",
+    "examples/worldgen/architectural/pratt-truss.style.json": "521a01c1e343f0e8521398387eb9519c4d2c29990ed1f6c5f3020a049145ed76",
+    "examples/worldgen/architectural/pyramidal-frame.style.json": "fa699fd534b13b9a9ee02946f787845c567c138628c9258d23d26be21fe84df8",
+    "examples/worldgen/architectural/queenpost-frame.style.json": "bd3ff70b8cceca97bb85668b9d3953d563664ab54974eed937f067d49ad044ca",
+    "examples/worldgen/architectural/radial-stay-bridge.style.json": "555039d613246e946080f9142fe61261eaccfd120563d7287ce9a7655b1b84af",
+    "examples/worldgen/architectural/rib-vault.style.json": "da405f4ffe164a349cdf2cfd66baf55bf9942a8285bfd0999444a078a22984d2",
+    "examples/worldgen/architectural/ring-pier.style.json": "959504cb2fd0862a4c1162957f0618321d8610d71535052faa9c831468328f85",
+    "examples/worldgen/architectural/rosework-gatehouse.style.json": "a822093c1c71b3bc5707c6af6260d5839c3933d443898108bbfc8b0b7e5f9903",
+    "examples/worldgen/architectural/sawtooth-gallery.style.json": "f77c35b12c555200b81fadf6a06900b2932c507b0b49840f097badb6fb5e33bf",
+    "examples/worldgen/architectural/scalloped-vault.style.json": "a50052742dfe4de57e88374469122b94ad66e37547374c971048abace1b0acdc",
+    "examples/worldgen/architectural/seeded-typology-megablock.style.json": "ac33f5b9f4cd7cdc616d31adaca213707d26baa8666498a645bb07454e7a9703",
+    "examples/worldgen/architectural/shelf-stack.style.json": "49af13577686e6ea1f1365b14cd23ecd93eeaa511248b834d60ad7d6fd2dd0bb",
+    "examples/worldgen/architectural/skyline-terraces.style.json": "d447729b16f514aa8ac5549a73b02220ac04de03a9958224b212e3510b56aaae",
+    "examples/worldgen/architectural/solar-conservatory.style.json": "97314dd862b3601cbde9cfca23ccda93ab7e4aba4a63d57760eea39cf54c4e15",
+    "examples/worldgen/architectural/space-frame.style.json": "9c9021f209124fb8684fcdc5bceca2fd2c80d3f90a0b090672e66a0796122ff1",
+    "examples/worldgen/architectural/spine-arcade.style.json": "bee3d55836f0323b5452a7e56d7f3e6645a31c7af65a9804a19197ae69f46c89",
+    "examples/worldgen/architectural/split-pier.style.json": "98eb3a51edfed50c97d8658fc72a4b71e55c49fa966544f32d40e1d5eba10b96",
+    "examples/worldgen/architectural/stacked-arcade.style.json": "c4740e19ded05f808a1c17e134ce46ada36737e4d50e2ba4d4f89b8ce551a4f2",
+    "examples/worldgen/architectural/staggered-balcony.style.json": "f226d5627f06d99f74b164a1b1dc88d3810a4ddefccc76623bbb318e4a2fe855",
+    "examples/worldgen/architectural/steel-trestle.style.json": "07d03070bb9d03c8f83e69459321090d5e898f8e04280cefec1fe5ced39e69da",
+    "examples/worldgen/architectural/stepped-aqueduct.style.json": "cbc32329bffbde34721750fb410369f7f308ae4ce63a67803dc1a51cf21791b6",
+    "examples/worldgen/architectural/stepped-buttress.style.json": "9ec9a1bff84ad01a256e84421cf1fd71a66c73f95fbde9473a041376aeef8d1a",
+    "examples/worldgen/architectural/suspended-arcology.style.json": "2371205bd82359c7c0efef9d32fc5c307cdbc9f84b9416120e2b7e6b873d715c",
+    "examples/worldgen/architectural/suspended-deck.style.json": "60a51620baa24352bbd033c0bb63d8c803d123a41260244370aa6b548b2e6d5a",
+    "examples/worldgen/architectural/suspension-pylon.style.json": "9c829e9bb352bd38d0f594a3cbd2a1fe935f7dcc0dba048e40628a2f97ad6618",
+    "examples/worldgen/architectural/thermal-foundry.style.json": "7301a011bf0fee289f972c5ccec485993beabbb0987c49ea293d9a4fb2e62287",
+    "examples/worldgen/architectural/three-algorithms.project.json": "6e9b8025ee2404bc09043610edbaa7a489b78a9d37868f00b04cf0d121086299",
+    "examples/worldgen/architectural/three-style.project.json": "04da6b7ab511132cc0ec2aed5cc9bf2b3a6310b7391878946a4ac1ae5d2d434f",
+    "examples/worldgen/architectural/transit-spine.style.json": "f0fd9aed98c2912dedc795b0322e9d613027b6d9a35291e470939f8fe64c5a1b",
+    "examples/worldgen/architectural/tripod-frame.style.json": "64a5c2f1be57f58e8cc8b77cd20e370f14c2a90c01c8404ef9b1ec64864bde37",
+    "examples/worldgen/architectural/triptych-arcade.style.json": "7d35102461185bc544d290edda11127b578229b032380e61f2c78b2371cda34a",
+    "examples/worldgen/architectural/twin-mast-bridge.style.json": "80059d77277faf474c21971fb8239ee5da4a4542fb71ea6b14990893dcaedb2f",
+    "examples/worldgen/architectural/vierendeel-frame.style.json": "74b442400609553d2c21ae5a87753c41d0f315cfd6d2ae0f013fb3a348a34030",
+    "examples/worldgen/architectural/warren-truss.style.json": "a00d6c9ef39d24e32cf2233466e96669e242eaf75a943e1ff903d74c447c5135",
+    "examples/worldgen/architectural/wedge-gallery.style.json": "9a73e6a52d9be71389528237b568c564ce1118e01239e1b2c7cfb0b564a15c6a",
+    "examples/worldgen/architectural/yoke-bridge.style.json": "b24471a544d77d6984194ac78ee73a1fbd764692ee048de9d063bc7bd31e4ae6",
+    "examples/worldgen/architectural/ziggurat-arcade.style.json": "ed6d05d52c4a0b8471c3ddc5adf6e51333621b58c2ff8e88495657235ef97da1",
+    "examples/worldgen/architectural/zigzag-bridge.style.json": "8896b695cb960138832753ad12e9622dcf2a320105113ce39548f426dd4b6c70",
+    "examples/worldgen/architectural/zigzag-pier.style.json": "e03efeca0d791307c55336ef455419660693f3a9df53335765f630e3f36fa67c",
+    "godot/addons/cybersand_native/cybersand_native.gdextension": "9f02ab03e73abbe65eed39c55dd6af9bd7c35953893165067e0dcafa570297c7",
+    "godot/native_extension/cyber_demo_bridge.hpp": "13b3e9784deb432158611493a2b48064d54f8b980c131a606a4c4092d40901fa",
+    "godot/native_extension/cyber_native_cell_world.cpp": "5313e4027eda02e293d306cd948d85fb9a9fbe81ef8b2d34eed0270bab60a811",
+    "godot/native_extension/cyber_native_cell_world.hpp": "9522fe76c48edc78330a070749cc3835c6d339abc0bf0bc38122e0938f91ae89",
+    "godot/native_extension/cyber_observation_values.hpp": "47af553dafed4129aa689fef0e33214d3612148bbcb6b2c10dd6164dbcc3768f",
+    "godot/native_extension/cyber_prepared_level_payload.hpp": "bb414a0f5d2b6272dec3c9f386cee99eb70e1c2f1b5ce74b23fd5953f06c1b5a",
+    "godot/native_extension/cyber_prepared_liquid_world.hpp": "b6c26fb85e1426c40d3bd745f0c0cff456e00d8c50674edcdf993d2be96f7949",
+    "godot/native_extension/cyber_world_generator.cpp": "7c0570357f3f3a191c131b076ae914980250644ebe8cd017dfed9c57fd2676bd",
+    "godot/native_extension/cyber_world_generator.hpp": "8be2561cb5e81dee79b55fbe6431f3f50fca1ba89e4ec693fe12f4bed71e0822",
+    "godot/native_extension/generation_grammar_adapter.inc": "363255bf521f90435b620052ee8be288da5cefc4e7afe18f6871512949716b53",
+    "godot/native_extension/generation_grammar_inspection.inc": "5557ce1ef75f72862315ea69a196fd8c8449b7a6c9748e9bf57ee42dbfd3664c",
+    "godot/native_extension/generation_planes_adapter.inc": "f4b2eeba64b57140fb8e9f4f1ca5830cb12fc19b27c2b60367d65d51ff0e4d6b",
+    "godot/native_extension/generation_planes_inspection.inc": "299e87cf74bac6a4ace81e78e8ee052d4be8487f34be2e4c419680a07f9b0f72",
+    "godot/native_extension/generation_planes_methods.inc": "fcbffa284c0d2955bfcbf4ec40961f4ac4432400803470fa6f5f2984df6bf051",
+    "godot/native_extension/generation_workbench_inspection.inc": "13efa68f55fe2273ecf07a041ffcd5b4a274f808c9cb8f18fd260c4302c4e3cf",
+    "godot/native_extension/generation_workbench_methods.inc": "a7b74a41d6282777bd77220e6480258720dfde698938d3bef75d68a2841ae0d8",
+    "godot/native_extension/material_baseline_file.cpp": "03d7793bddc38414bca87d01f55d6c8d87553d49582bae547aef9bc6bbfd0873",
+    "godot/native_extension/material_baseline_file.hpp": "414558d0ebbdc73fcc43e216dd497a91d47ba142ef008cf7bbdd3352825a829f",
+    "godot/native_extension/material_lab_inspection.inc": "f02556482a21a8bf989be500a4f41e77144baf152b8fc9cb018db60fbdde67b4",
+    "godot/native_extension/pressure_optimization_inspection.inc": "d1d3044c05a50cddcae90fc96f46a3e04656e0ce034f650de50ecd431dc66b67",
+    "godot/native_extension/register_types.cpp": "2a225e31225918746121285f79f5dc91b3808ac3ec0a980d4eac62467e81c5c1",
+    "godot/native_extension/water_spray_coupling.inc": "02145fc4da1e45a99e2f46e3169f326aed89f22b44fb2189a1782dd284a095e9",
+    "godot/native_extension/workbench_granular_coupling.inc": "30893e2734bd8cecbaaed8d962710c7b958243d92cb6221f3d44af92f4b0f247",
+    "godot/native_extension/workbench_retained_setup.hpp": "ecb5a3e615ab7642b554c07a250d384579297b57644551a3fe1d876d0219f54a",
+    "godot/project.godot": "722e9d1180764a2cd942610ba44275d5ba457ed5e64ed2fa35caa46fb97c2efa",
+    "godot/scripts/actor_prototype.gd": "ccb25275e52150f1e4bfdd228854da3bcaa6e1d2026b52775c3150e6f451bb92",
+    "godot/scripts/actor_prototype_overlay.gd": "e87dcbf76ba33e3eceef42654e3be6e35b79a3d85cf73ee079406d11d3fe7735",
+    "godot/scripts/actor_prototype_panel.gd": "8c28e322bd8eca393441cd41dfd9e6d0a1ff75ca4612ec9816e4a25dfa4e8c1e",
+    "godot/scripts/actor_prototype_session.gd": "c87ed7c684675d686b093b1aab758c4099430343c4775dd36da89214354f7282",
+    "godot/scripts/actor_rig_actuation.gd": "78ba62edbffcf9af9e0f4f1b35831dd29d5ad67bc60e7b2ecbfd78fee59ae251",
+    "godot/scripts/actor_rig_catalog.gd": "5808438bd056686c7f96d4ee81908588a2004b49d4b7c048124a86042ade2944",
+    "godot/scripts/actor_rig_effects.gd": "8f9aa562fc023a32963ce8ad7c005f131d5ce655b5d2c401b624ce83918df2a1",
+    "godot/scripts/actor_rig_motor.gd": "2a876dcd7e7dd9b9506dd278f81090f1fab011b7bc8006886d2d4d796f6b5c90",
+    "godot/scripts/architectural_generator_dialog.gd": "c1af8e309a6d8dea460dd7d9ee7a12703a3ec503acb202c245313d6950a1ccf4",
+    "godot/scripts/architectural_generator_project.gd": "b2faa6d4de1f02dbd7d8326db2a62c36219b7fe8f6163ddc638563e269ede332",
+    "godot/scripts/art_batch_executor.gd": "2c7c7c1605a5cf9f630e6fabad6cb6d34804e0c0a19c9e8e96a7e9535489fc98",
+    "godot/scripts/art_batch_panel.gd": "4c5acd3fbe56f63350fde6eea9b9669827452c3f1f34381e05753673048b9601",
+    "godot/scripts/art_batch_plan.gd": "b9b011c8d38470ff7dab46e741e5d610addcda7ae9adbd79adcc3ef2b7d76df2",
+    "godot/scripts/art_conversation_editor.gd": "a5cb2c4f2b062531c0286b23a25331b93e3946f91c969a55fc0afd0685f3b4cd",
+    "godot/scripts/art_provider.gd": "1de35745efc53d5484ea6e32aebd8faebca0e318bade7c392154dfed79a0642d",
+    "godot/scripts/blacksite_nine.gd": "81b119e4b19a886f1864efc9dd3bbf2d61745adda7f6c470627cdc93acb28244",
+    "godot/scripts/blacksite_nine_art.gd": "651428983c725e1a2d87e3596279f8c7a5964a5e49663a35782bc3f1e450a22e",
+    "godot/scripts/blacksite_nine_depths.gd": "fe6db42104fc135e56aaa731895cb85b42ecbb5d29acf4ed79f2bb099638d2d1",
+    "godot/scripts/blacksite_nine_layout.gd": "ccc27cdaf2479d58a9ec4391485f9141c8ac07b58d0c1d97e2c35f4f286ac69d",
+    "godot/scripts/blacksite_nine_midworks.gd": "eaf655d2ccf6ce54551a49852e0a6c39038bfa93f1fb7624a2db68100d71ace6",
+    "godot/scripts/blacksite_nine_presentation.gd": "36e2b92a3b8b982b2fb1ecf9445a302120dad50cf5a22ae1f7609c3f10e23587",
+    "godot/scripts/blacksite_nine_surface.gd": "347888118cf2b20b564d8171f35d8d80feae1c0341f90829fbfee482b0397813",
+    "godot/scripts/cell_world.gd": "763f5047c2f028ec71109a3f44a420bab75122e3ce15cfbad9b6fb3787bee035",
+    "godot/scripts/decompression_diagnostic.gd": "fda5d64f917ddb4b65fd811784ce693177f1f1c76830ea55efe7c0a710c77ee9",
+    "godot/scripts/demo_save_codec.gd": "0f47752549ba84447e4168fcb6ae4ec4d7ba852a3c603cbc9d4bb92f92703047",
+    "godot/scripts/demo_worlds.gd": "a83ad490681cc9da262f9d2863d9b9100bbb5dbc17eef88e6cfba55d88a8cf5d",
+    "godot/scripts/experiment_tower.gd": "aa65451d8bacba91c715445a41cd64ef3849d6dce4e207166abc1a9410a545e8",
+    "godot/scripts/feature_launcher.gd": "230a684df591f0fe6affe5a281bcfb95b735e464e0bdc5ac2440019e85a67604",
+    "godot/scripts/feature_navigation.gd": "fb8357f636d918762852fa804df55275046c2d38f47bd52888a6d77cda68694c",
+    "godot/scripts/gameplay_recorder.gd": "d16aed6fdec7e5757522fd838ecc5e0c6f94ffdf4db2f71d6dabb3c4cb7b7c90",
+    "godot/scripts/gcr_flyer_authoring.gd": "f9e5795bc8ef2e4e28856b95949150aca03ccf2bc9b075ec66270606a1a642fd",
+    "godot/scripts/gcr_review_fleet.gd": "344f6fcbc30967ac7591aff03c00e47d8ed87594b7f4a35a28c48a2381c9467a",
+    "godot/scripts/gcr_review_fleet_controller.gd": "016400cd42ae2bde57d793c17635f34e3fd8e652d335fc83bcf9168bdf55d505",
+    "godot/scripts/hard_surface_packet_profile.gd": "db2686bd8a2ef46a4c5d5a3274d0a7b8e6806947854f49ba665963dbe435ba24",
+    "godot/scripts/industrial_underswamp.gd": "d603d587c36e1ebf0d2ec16bd244c03df1c0cab83896e95472d768fb9c418cf8",
+    "godot/scripts/interaction_policy.gd": "ba4acd7587b044ca412caaa75c740a6487f59ed6cae09c4d9d271a7342d06742",
+    "godot/scripts/interaction_policy_probe.gd": "e369778ca76a365af4cea4eccda7d288c2c498e623d6b3ff76f0d3cfcc01da36",
+    "godot/scripts/liquid_comparison_panel.gd": "6b2dfed4c4a8608d086d1c7f7c73af0e3e2fa4ddaa44595287c5b26c63f9f74a",
+    "godot/scripts/liquid_feel_probe.gd": "2785a4bc6ac7f6f202cfc431622727e72a296c8147ba720f7af459bba4d4e749",
+    "godot/scripts/liquid_host_evidence.gd": "ef44977aff88f5569a3fbc5495317f4c09671e42d0868b770677670cdf63cd0f",
+    "godot/scripts/liquid_host_web_probe.gd": "dbcfe003cf9f2c0fa41bdee2d3cbfec06620c18ddbf9c6329c7a67396e804ef2",
+    "godot/scripts/main.gd": "223c533e5d311f872bc0ba9c7bd55de11e513ac84d1f7c3f598d4578a7f4a9d8",
+    "godot/scripts/material_appearance_lut.gd": "1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a",
+    "godot/scripts/material_lab_catalogue.gd": "01391d9569fb20fee905ec4fc6705a6c443872e7fc87ed5960ae78650d7deb1f",
+    "godot/scripts/material_lab_experiment.gd": "f3512c6eb4663f629d790795be2f259f6484928d16cb1fbf0f52e0b7ada2c34e",
+    "godot/scripts/material_lab_panel.gd": "ef8630df18316f8e094712df73bd9e145b17554e01168486a2a701601e88abc5",
+    "godot/scripts/material_lab_property_tree.gd": "779b1266171d3d7197ef07955f25426c1158ca1d3d1f63f06e1f154c24e79058",
+    "godot/scripts/material_lab_screen.gd": "87fcc9c66dd57b765b2809a66d10e58051455449fe0d5a0408ca2acaac99e646",
+    "godot/scripts/material_lab_service.gd": "0981980b6500703aba771e7bd54f4a97070491db4b54bab8015ec8fa08dfb3e9",
+    "godot/scripts/material_lab_world_panel.gd": "138593f8a917c45d188df857ee2eea6e72a1673acc8552811c91ff309e1411b5",
+    "godot/scripts/microscenario_catalogue.gd": "37dfc628f5b23519a906fcb61cd2ba95671d49f9cc17a37704f55a7526182599",
+    "godot/scripts/microscenario_comparison.gd": "a4aab7a504db70698dafedb368384bcce61b73edaa01795b5ae368a8912a4890",
+    "godot/scripts/microscenario_contract.gd": "0a32ecacd2dff9f4712fd752d6d356d4937739abbf9f1d3c1c810047b7779af1",
+    "godot/scripts/microscenario_host.gd": "37e16026358597b1b44e75413f2f1cda63f9ec6610f7e74670ea8188efe52fbd",
+    "godot/scripts/microscenario_identity.gd": "84131b8d511ad5ed46d17f1743fef74d61e9fc9fdfbb3acebc384e30424121f6",
+    "godot/scripts/microscenario_panel.gd": "6ecb5a17645eaee40931a081a4e576a6be5c4df4a64130ab5f12f83c4113cba7",
+    "godot/scripts/microscenario_reference_pack.gd": "98e3c2f8d215c698ac4b13501934dec2e8c48fe8f992650be0f7b658a540480f",
+    "godot/scripts/microscenario_telemetry.gd": "539c9832b3514b844cd650afe56683dc2933bc8ed01822d04c2c1f793a52903d",
+    "godot/scripts/microscenario_workbench.gd": "e5b0aabc5579338e58c2d08cce7e0bd463bd01dd8a8629fe7c84e1fe61e09887",
+    "godot/scripts/middle_cyberberbia.gd": "aee352913a6cb7e067f3412f061698f1a6ee64c21044b5b7997cf7ac419420c8",
+    "godot/scripts/neon_reliquary.gd": "f48f4ffac8d8e112991ebc948864a3da7783439b0450e6e12df4b3a2073110fa",
+    "godot/scripts/palette_shader_selector.gd": "31785f54212aa743e4cae521907355a3780c4c2e9cc40f6e36aa8bc9f5974eb4",
+    "godot/scripts/physical_actor_arena.gd": "39ed6d5afcde4a6096d9a1ff9df28a78fc8007b79723304e3894f2117fef18c2",
+    "godot/scripts/physical_actor_catalog.gd": "a2d9a1d683ed07d344a9205b17c89e9ff0306f2e97723b748a3b2726dc4f02a8",
+    "godot/scripts/physical_actor_effects.gd": "335de660c67a446f77a1027b4d88b3218172fb6374dadc05cccd83a860251b1a",
+    "godot/scripts/physical_actor_overlay.gd": "a6f1f31a463cc9c211edea468834b26b2dac99fe2667c7ff1c565f9016b5202b",
+    "godot/scripts/physical_actor_rig.gd": "1751858e4fe1b882435c1bc13c0d160b12257aa5093a03ea337affdc61a998b7",
+    "godot/scripts/physical_actor_script.gd": "50eb5f452f28ae6c4d56cc0bded4d01d64eb56a95c2bc8a694f39ebf2f684da1",
+    "godot/scripts/physical_actor_session.gd": "e2c9f6e5bd92547c0f02cea2c2db22c816c1727013f07cd879d4b60be91d8c47",
+    "godot/scripts/physical_actor_trial.gd": "8f2255cc3eedef597c945d5d7a9b9a50a5937ccd3a21ff3383a4414404ef8ffe",
+    "godot/scripts/physical_flight_controller.gd": "47ce24b4253d8e4f7aee2d79bc329d2589fa416d258125c540a999e0151e7b4d",
+    "godot/scripts/physical_flight_course.gd": "29557a84577fce245fc84c9d5922939bf118404c223dcd0dad42b537e49c2915",
+    "godot/scripts/physical_flight_course_view.gd": "9534d0dd3ca39efd7a86fcdc57e92a83fbb588412d74de4e9e589671a426535a",
+    "godot/scripts/physical_flight_development_scoring.gd": "dc938fcb80a41dc5990662f9428cc871f80d8c488c7582866c5276dbbd73095e",
+    "godot/scripts/physical_flight_episode.gd": "b8b42195c97dcf3b5292f841ff53043db8b7fb486e8b46a35707838a7e75f8d0",
+    "godot/scripts/physical_flight_lab_screen.gd": "110cc086644517b49dffe9c033e952e05c783002fe97db370b8519e5691a1f90",
+    "godot/scripts/physical_flight_observation_adapter.gd": "afa43dad5ed8737961567070bbf04754107547c065ab61cb58c56b2df447d71d",
+    "godot/scripts/physical_flight_profile.gd": "82e9e7f156c29d9baf0fd4c6ac36ff6a130467e4209b7b28d22030554f57a440",
+    "godot/scripts/physical_flight_sealed_suite.gd": "2270b7b9a54a8380d0db9437fa33ffe1331bf5a92070f640db933e46965781f8",
+    "godot/scripts/physical_flight_teacher.gd": "0fb571cfd314a53fc86b3517fb5a8258a77d7215fcbcb43fc7f53519e7e29761",
+    "godot/scripts/physical_usable_course.gd": "4dc9cff392b2a82ceb8f63280f084b56d0ae11bc32020d7ccb4a1636b424f2c5",
+    "godot/scripts/physical_usable_equipment.gd": "5804fbda0a5ba055eae5e0bbecbb18fb2949bc844ed58988560095cde0352deb",
+    "godot/scripts/physical_usable_loadouts.gd": "f09afeabae2aea9abbc033b721bfa3d11f6dcadb110c0079c991d2f908826bcc",
+    "godot/scripts/physical_usable_runtime.gd": "37dcf991061b19d183131a3160f80f24e6d080fa0373df6c895f16585f87b314",
+    "godot/scripts/physical_usable_script.gd": "e21454479b42b1a54e001c02c219d8892101884348ad7aabc9ea4d1e3e58bb19",
+    "godot/scripts/physics_characterisation.gd": "43eca3584031d6059872d2d4b5e0b6b48d35511d01658673b5c78468dc7a1783",
+    "godot/scripts/playable_course_gamepad_events.gd": "6c27178e11ea723ec587158fc635372db1abcdc70c8492bec13e0a4d35c4c3d2",
+    "godot/scripts/playable_course_lap.gd": "17d93b12ad1d1123e63e9ab8e9f14c291c5288bd4edb0d1a7588909be6acab3e",
+    "godot/scripts/playable_course_overlay.gd": "83209ef8fda16c6479c0d4a3a10f307a6be055e453e8e241c02c0670c10b8a22",
+    "godot/scripts/playable_session_panel.gd": "49ef302fbbc9696478817c1acd0c1b67c2fdfc7abb72473168e68f07808d5456",
+    "godot/scripts/player_acrobat_controller.gd": "9cf4d6a65a9c8d7ee1c94179c53aaaf4e118662b52e4ad9469c78deef3fb04a7",
+    "godot/scripts/player_actor_catalog.gd": "f506c97fcfe6772ffb3a989b422c2d0a5e7ae189f2020bf15826fa4f6a0a7091",
+    "godot/scripts/player_environment_panel.gd": "743aea24cf53d583759fa39fad331804b5e88d017b784920d81f4897f9233115",
+    "godot/scripts/player_environment_profiles.gd": "7c9ee013758d303125da456e1128bbf3a7bbba3d841c65341ba38617d52fbc16",
+    "godot/scripts/player_playground.gd": "20822400c57998f4bef223b19920c551cf7ee0ff3cdb25c6221b0dd9d420b2e8",
+    "godot/scripts/player_playground_course.gd": "1fb66932f1c12f6d6d408afcd0ab42904bd858211a008ff1f8b5a4f81164997d",
+    "godot/scripts/player_playground_input.gd": "6a16650f9f6478a0053bc6b7f463d584fe74d9f6351a9909eaa655429315512c",
+    "godot/scripts/player_playground_overlay.gd": "bc297ae298a80a27c02459be098f9b3b975eb3c90d85564ebe3a67ff50aeee80",
+    "godot/scripts/player_playground_runtime.gd": "77ac953a10e5253e2c9bce4a08291f6ec3de9bf121d975499aa3e5a9685c3eb6",
+    "godot/scripts/player_representation.gd": "4b481c04af45ecf9139cd57d0c5ef3dd9d7579c1ce21addaef99132ff420dc96",
+    "godot/scripts/player_vehicle_controller.gd": "c20ab7420bde632b2d77efe1e17f3bc82910d2b8f07e1612890f05fac624f6d2",
+    "godot/scripts/prepared_level_session.gd": "ec3bde428d416751f10891075f0ac0193cb0f03014bb04977516cdad4776a855",
+    "godot/scripts/prepared_physical_session.gd": "faab78cbbbd3f49110f348cb502d60a9f2dd32a21efaef9bb1734736f97a3562",
+    "godot/scripts/prepared_reference_body_session.gd": "73992c1e6dc65252ba23398c3902ad077bc7f4efb4541ab07416115bddbe6f77",
+    "godot/scripts/prepared_sampled_session.gd": "9238e92229ae5ea1f703c0a025c5dbbbb680a3583622ed2698fc1c24b95635b0",
+    "godot/scripts/prepared_synchronous_reference_session.gd": "31115ef143804e2e60079c3a8917b600ca51e7790007bf0fbb53bb00453e7af9",
+    "godot/scripts/prepared_trial_body_session.gd": "52918effaa521f13912fce3c193aeb6dbae740fa522b70893693bbd13409e494",
+    "godot/scripts/rapier_physics_bridge.gd": "5785caced314952b70ea52a7a15cd5cc4409a0f44d6fddfe81f9964e91405217",
+    "godot/scripts/rigid_body_coupling.gd": "9882be8764318981aa8a8b4a189379012818984a28cb6a35f3bd5787f85ab724",
+    "godot/scripts/sampled_character.gd": "fb56187c5fa44cfd2124dd003fb2bb046d3ef5377e346c933d0bd377fa29fe40",
+    "godot/scripts/sewertech_alley.gd": "985371f4632880ceb297128b332bf6a265a83cbcc7675bde342119a6d2822357",
+    "godot/scripts/shared_workbench.gd": "8754d0ee0cbd90bff3a4bebbda775268f6e42ac81a64a3cb0c9d63f7a353b0fe",
+    "godot/scripts/showcase_presentation.gd": "e478efd9e63db7f3994c7e86ee73d1d32a276c0202fb37bbf20d270d25e16d6b",
+    "godot/scripts/showcase_tiles.gd": "c496da1fb7507e11763cec92113ad594b3f0fae44e54af040f8501f91e03a7d5",
+    "godot/scripts/simulation_snapshot.gd": "b36ac0cd147714e573e7c1f507e58d1c0273823b8227a31ed6ff264c96f554ea",
+    "godot/scripts/simulation_worker.gd": "fd190598f4ae4627ae98e39f8078a17c27106aa96e8cf3d00521a2ffcf06bdf4",
+    "godot/scripts/snapshot_publication_counter.gd": "89a7fe973cc8c162f3211c6c051dc9083a42a8775ec9bb3a155c106d3029f6d8",
+    "godot/scripts/thunderbowl_arena.gd": "d075422be9275fc3ca2543e977a39d39d2397335f2785d9c475df78c20fd5ab5",
+    "godot/scripts/thunderbowl_contract.gd": "1eb1c5cfcd6ec5db398a9677413ec1afefcaf0c2337427d51c6c545a21391218",
+    "godot/scripts/tick_failure_probe.gd": "575910573f6f70093fae9d5f8dfe20d8d6219e22671e0d6aa28603bc26c4f14a",
+    "godot/scripts/tower_panel.gd": "14cc8fa74867924d08477b76357ee5a958ad7f06ca4853e473b84c2cae79c255",
+    "godot/scripts/transport_probe.gd": "c7f495b72eeb165dc366667ac6d31bdbf79c0323a67f0779797cd73975d287e8",
+    "godot/scripts/transport_profile_panel.gd": "456e6c24213979c8ba2ff983078ad29d530acb80a2c929013aeae24c1b35bd6b",
+    "godot/scripts/transport_profiles.gd": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+    "godot/scripts/usable_catalog.gd": "e13abf66a92be690bc33f453f54bd04ef1e6af02e297df0b964c4154d78d0f7c",
+    "godot/scripts/usable_overlay.gd": "cd0d7adf024dcdedaf75dff21782ece2ad7070f2d37068ee0eebe6f64307c208",
+    "godot/scripts/usable_runtime.gd": "e50ee634ebd8237f17c72311c225f4e19185ee67f30d360815dfa6c1c3faf05b",
+    "godot/scripts/usable_session.gd": "0b6c3a1903f1469a7ee2a9f94e5f7fcb23687e1d2eeca9dcc79e670926c3bc50",
+    "godot/scripts/water_experiment_blind.gd": "25dab75373382c09d11afeda4e3b9ab027e491c4f83f6d4b526f5f824a11ae85",
+    "godot/scripts/water_experiment_contract.gd": "80c3147e28885b099d67dcb89d4327e58d84fed7357c76d2d42db65cc8375d6a",
+    "godot/scripts/water_experiment_panel.gd": "0ff5791741fcf72220a72f161ceecdb553bf827838c0d1aad9c19c420b5ee903",
+    "godot/scripts/water_experiment_profiles.gd": "172cd621c16561fce17f3a16e80a060007348201c2b901922531cd620dabaca5",
+    "godot/scripts/water_feel_scenarios.gd": "3eed68b0cf4a986c516f7b7962b91ad71e1059998ca794c0563026322b8628f7",
+    "godot/scripts/water_feel_web_probe.gd": "81ddc84d026fe7a81868a59ab5f0556e34885275ef3c1fc484e884d9549de2a4",
+    "godot/scripts/water_presentation_model.gd": "6c5d808c98ef3359b4d697a46750dec41f344894ec58b5e2adc5a7e9969c4f24",
+    "godot/scripts/wave_flow_evaluation.gd": "67be655258ab8d9a5bbf12460e1154270f620151c63caf54ad47ee4d8258828a",
+    "godot/scripts/wave_flow_session.gd": "8ec41d437370a8f42753c17caf13925265c6ff26bf944c70aa43d9e62590372a",
+    "godot/scripts/web_capabilities.gd": "c7435f4af9e5161e6aab337b1804e5fe2e39b974f2149b519778caaf6e311527",
+    "godot/scripts/web_demo_controller.gd": "d2115bbc71901a2baa1e49245e93a9c0643fc8546a763e29d3c49410abf67e9e",
+    "godot/scripts/web_demo_menu.gd": "0f7a0de13a45b9cb29b98061d564e9955c204155bdb76c5388cae0a339bcc272",
+    "godot/scripts/web_rapier_probe.gd": "d91540caab0ab3db296a55a45b6cc87c44780c6141cde85c6620462093065026",
+    "godot/scripts/web_worker_probe.gd": "e13b3e12484c41fd5d19b4b135bb2d464c576abce429a23cb3d1618a4150a2f5",
+    "godot/scripts/workbench_emitter.gd": "e962548d710f2d112f2424649487c1e62d44cf107072491e162400aa77bc531c",
+    "godot/scripts/workbench_generated_map.gd": "f65a37a99ac40abccc0a3ea3bad1e920051d597ceb46354e857dded9e6465ba5",
+    "godot/scripts/workbench_generator_dialog.gd": "e3bef8864313dbbffe7fc1522a76c1319ca07dfb0ac28a284e88ebd92c980214",
+    "godot/scripts/workbench_liquid_equipment.gd": "27411a621e6fb3faf98a19688aa31c7df8843c60dc4fcb662751162b27ff5ee4",
+    "godot/scripts/workbench_liquid_equipment_panel.gd": "30fd3eba2e3e68ff9859192fd46a5ada5955de536d4cdee4db601cf3505b44dc",
+    "godot/scripts/workbench_material_baseline.gd": "4839adb5001c0ffd1312ef2d4e26d73b9d241a9eb02f0f1423acd15eb99780c3",
+    "godot/scripts/workbench_paint_editor_controller.gd": "9f5211db9fbc1dd09cbc305618d417145d121b003ef3c3e77ca396991080735c",
+    "godot/scripts/workbench_paint_editor_executor.gd": "003f7bcff6ad5aaedbbd1657e006e8fb921d8d030def281652ce9468b27be4f4",
+    "godot/scripts/workbench_paint_editor_history.gd": "1e9aa02be1247874e9e507129a404c1aba9a76399a23978dd6039de0bf96732a",
+    "godot/scripts/workbench_paint_editor_overlay.gd": "f3f674f264bac2e2995750c2ee66043f0988ed932146eb00b3c7efcd5cfce1f0",
+    "godot/scripts/workbench_paint_editor_shapes.gd": "82c90552d04d975908f8a7ba14afc78ddb0152faf57684c1957b3f058c9e8e16",
+    "godot/scripts/workbench_physics_bridge.gd": "cb2084189217822170234c80537129e66f027d75685cbdb064ee81ef1ac13638",
+    "godot/scripts/workbench_powder_source.gd": "c724cc84ae5bd8cda3d8a83984b026948f57400bd313272fffc4bee0ae46a58c",
+    "godot/scripts/workbench_setup.gd": "5bb4a1a39753af988c6325486464161fea8a0ad64cc08db62828fcfc6b8c4469",
+    "godot/scripts/workbench_water_comparison_scenes.gd": "e2127c0da8ce3469054305631f7313a8d7a336723229214ce16e803accc371a4",
+    "godot/scripts/workbench_water_lab.gd": "a732401cd4559952171c5b615f9f195818846db38d985a53e7c64e7769d39c4b",
+    "godot/scripts/workbench_water_spray_panel.gd": "ccb6f0fd3466544ec61cc8f7fa16278d3d508425e86c46050722a92a2ae84200",
+    "godot/scripts/worker_benchmark.gd": "9028c48f440f3ee436403fa4b65e209094514ecceb274c6a1cbc6d81b539f121",
+    "godot/scripts/worldgen_preview.gd": "f9f23c1b0f968a341560646489ec940767a9efaaf11f23b0d1c5f0c58389bd3f",
+    "godot/scripts/worldgen_qualification.gd": "5b4a54e0a4933646e5822947040f1c3613a7387c3853a25f95d4b5429db354f5",
+    "godot/scripts/worldgen_qualification_data.gd": "ea518a05167d728df2dab4528152d6462c5b8dc873f75b8a3179eb6bf707da47",
+    "godot/scripts/worldgen_workbench.gd": "12e3cbf7869c7f84058599c2708c14f3c271672a79ecd42a2b785b052f6fc56f",
+    "godot/scripts/worldgen_workbench_tools.gd": "764e1eac346ea8fba5e29d572b22548e27971d766755291a67b2d35aacb38908",
+    "godot/tools/capture_gentek80.gd": "50581dfa108f7b8c8b81d337c7bfe81250e8a4cd51fd7ae9f7252fe858cb0da4",
+    "native/include/cybersand/ballistic_water.hpp": "88a290c712b34d857c8b452f9c3127e2e546f00c7177a84383fe7109602cd01e",
+    "native/include/cybersand/bounded_ordered_index.hpp": "79105fd5fe6f3a7f1bda463984aec01b2d067400957c60f88e38db86cc180147",
+    "native/include/cybersand/c_api.h": "2b92b5b79176ffc92d9d7e67f0ee087cd7200586d9024caa4e8dc46b0b600b45",
+    "native/include/cybersand/default_demo_recipe.hpp": "1ca54bd4939c2e7e458279fbd928c700cf835be5f72772472f7f01e911c69df4",
+    "native/include/cybersand/demo_snapshot.hpp": "d0110a269002fcc001619bb363c9ca83ec36de4e45517eebe525f40a46ffbc8d",
+    "native/include/cybersand/generation_fields.hpp": "e405c49a96e912ce07535c57fc42467849384eddb43d405718bbefa98356da79",
+    "native/include/cybersand/generation_grammar.hpp": "c44524b7523b93f403fb5e8cf751040197e7689850c980fe21bb9dd8a8c922a0",
+    "native/include/cybersand/generation_numeric.hpp": "231fd8547985397103388d863297009aee8df944d3be453e6a88ca24ee18bb3a",
+    "native/include/cybersand/generation_planes.hpp": "b0a2cf2c045664cff32818f0e3a6a36b64e95a61d52923091fe1201673968947",
+    "native/include/cybersand/generation_spatial.hpp": "8e02a001775915dc8d8fe9b79c0a1ffb65b51989ffd424a7b847d741a49065e2",
+    "native/include/cybersand/generation_typed_fields.hpp": "012dc286192086b134b1b0e21811aac25ca4cb62b20fd742895698c90d13f151",
+    "native/include/cybersand/granular_contact_response.hpp": "32877bbd6fc7eb85feabab5452250f4a318388cd7b5e7a64b93576123c7caedb",
+    "native/include/cybersand/inertial_cellular.hpp": "826af4e7b9c8d3d2ba0f7d7a6be98e4bbb7575bc12525fc6e7818f499a6c44f8",
+    "native/include/cybersand/interaction_policy.hpp": "d959a2ef74afee0f9c2f794ef5ee5362f1d8cfe6fc86a733acf2a17fec54d5ff",
+    "native/include/cybersand/interaction_rules.hpp": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+    "native/include/cybersand/liquid_comparison.hpp": "9212e0833cd5d2ff07ec37584a1579440991e87bcba7ee4aae88e4fc798e3105",
+    "native/include/cybersand/liquid_construction_refusal.hpp": "542db1338fc6bb86abf8d7b5c9eda664a4f172e19c99c94c9ee0da737d9f0c61",
+    "native/include/cybersand/liquid_policy_catalogue.hpp": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+    "native/include/cybersand/liquid_run_receipt.hpp": "0279b397afef4363122e67ffe3f4f543559b60d140232f7e188722c23498ac5c",
+    "native/include/cybersand/liquid_run_receipt_native_capture.hpp": "2c67c60aacb4ed160d69deef995f4d628fdc1714cdaadfadda80492b035901c2",
+    "native/include/cybersand/liquid_solver_policy.hpp": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+    "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+    "native/include/cybersand/material_appearance.hpp": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+    "native/include/cybersand/material_baseline.hpp": "f30727779d12bdcf7dd00f7fb7dc126b2c4d69ad9f289e3c94d4cf65398bc345",
+    "native/include/cybersand/material_capabilities.hpp": "564c15e56a7bbed737d5a495e24d311e3522bd57bcdff9a2d2752500532492c8",
+    "native/include/cybersand/material_rules.hpp": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+    "native/include/cybersand/physics_diagnostics.hpp": "f027346b04b12ca67a1d38d1e772ff3992ab0a1807f710ca4b709631dac7f0e4",
+    "native/include/cybersand/precision_storage.hpp": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+    "native/include/cybersand/prepared_setup_identity.hpp": "c923cf352014e143abca6ce8837e536edf3b9d69ea444a6cef805ddc8ea034ee",
+    "native/include/cybersand/prepared_world.hpp": "bf1fb2f551c54ab8818dcc6bb4486c0ecbf5997b98debd3b964e899bc159b8f2",
+    "native/include/cybersand/pressure_flow.hpp": "a01e3a6f8f95d52f6e370edacb29cc7408f5dc151b280acf7ad241b46e49627d",
+    "native/include/cybersand/pressure_optimization.hpp": "4ecc1609b07fd4ecbd50c752e11d8722c3353e3e6bbc17097c7a59967d9b6d33",
+    "native/include/cybersand/pressure_setup_capacity.hpp": "8461ef15f8603a39ae1c45d9a983370131f90c28f646173d03927cc3689c0239",
+    "native/include/cybersand/quantity_ledger.hpp": "d8c6463c7cea7193e8257115f6eddee911cc85467d5f2ab9be830f6ee7756a79",
+    "native/include/cybersand/render_snapshot.hpp": "116733aa9b0a384bd739764fb099bc2a95ac19022ba6688e085229898c0db7a3",
+    "native/include/cybersand/scheduler_geometry.hpp": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460",
+    "native/include/cybersand/settled_discovery.hpp": "e98d772de9ed42397da48b30dc20cd8527ef1100a71757cf0b8a0a6811b150c3",
+    "native/include/cybersand/settled_regions.hpp": "05577c38da9e7fa6f2bbf1e6d589ee104dba71a840974843ff582326900493a1",
+    "native/include/cybersand/settled_world_discovery.hpp": "ab71dc2e0e13b0cc580ba3ce981a321f36b7b83d7904dd899f8746fd0e8d7138",
+    "native/include/cybersand/sha256.hpp": "0dd46c3dd8d3222c659b6b602e0c798f3c22afc034a7f1587d6ca7bcb5b1fcf7",
+    "native/include/cybersand/soliding_lifecycle.hpp": "044335712b4bfcec62a239a57092f11bc5598cc1b9a2427ef0ddbaf1d1d214cd",
+    "native/include/cybersand/transport_policy.hpp": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+    "native/include/cybersand/water_cellular_yield.hpp": "64166e69983a5373a5d61539126e813d7797a69b61abd2d314f723bedd4fdd85",
+    "native/include/cybersand/water_experiment_policy.hpp": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+    "native/include/cybersand/water_normalization.hpp": "5f33817ee4b1600e8d16efb861b5a532222c8b8f95c05e05333c371518158d49",
+    "native/include/cybersand/wave_flow.hpp": "72ddc128734b2de76d745ef46b14dbe638921bec26dc97c0efa80f978c363e94",
+    "native/include/cybersand/world.hpp": "c97b761d650e8f9920f7e8eefc5eac25a113ac9aa992c91e6f7ac7854e0ce9b7",
+    "native/include/cybersand/world_generation.hpp": "48df4a3434ea9253527c8df3a315c5b52909aedc7ca95d2c827d63ba3c4d8d4d",
+    "native/src/c_api.cpp": "b5be05c36810bbb08268e81d1ecd093dd5970288a51346dd36ba3c6048dc1344",
+    "native/src/generation_architecture_classic.inc": "ae2ce0a5540619d3d81dfb6f6d075d11c13822d36d8e2848047adcf238937c6a",
+    "native/src/generation_architecture_megablock.inc": "d623a38d484c6b4a6d252c3404854a58f8297dfb7d5878bd226b5ac8b68da8b8",
+    "native/src/generation_architecture_metabolist.inc": "82c8431eb007ff864b8b56408d63f7ec42afb2f02728f756b7e5d7aab5cf2101",
+    "native/src/generation_architecture_modules.inc": "3bab22d7ab5430d083991c6dcfdafc2ae74fff64f57b042ccd04c4f4ba6fb732",
+    "native/src/generation_architecture_rosework.inc": "9782c6c9b5e7f90a74f0282c467c2206c50ceac93211d5f34435665dd8ea3823",
+    "native/src/generation_fields.cpp": "0f4139421792d9e17c069b542620356a2978a09f7254bc4f11c1b725729a4df3",
+    "native/src/generation_grammar.cpp": "9c0367c885f1107c00cc143334c57b49617bb7b0e7a02f5373fdd4d4bdf40453",
+    "native/src/generation_interlaced_viaduct.inc": "b5e48c47fced9c916b62334ba8805d5a3f291900d17d58f0c1c1c6c68c001986",
+    "native/src/generation_interlock_brutalism.inc": "83ef2033d7ac84f77a16aae871c23144f841836f46210a0402c51f1c655cec03",
+    "native/src/generation_megablock_programme.hpp": "578100da73227831b1da418bed63ef6e4931565cd56cc04971926aa73b3cb369",
+    "native/src/generation_planes.cpp": "fde22fa3495dacefc779a6187dd954289c9e0fc4c5ba83036a036f42d537a7cb",
+    "native/src/generation_spatial.cpp": "8f99e577b7bec07142daf7c0e273146991528cdc3a13e6bf2301f14a7f049961",
+    "native/src/generation_suspended_arcology.inc": "e4210a8e9401621c8aa12c2781218dc77842dcaa4d50afcf05ca0b72aed12258",
+    "native/src/generation_typed_fields.cpp": "c3d2c2767cd0a10af967e8c975f11cbad9761e2b819d013fc5f7cf91bd832f5d",
+    "native/src/material_rules.cpp": "94928fa8f16010efaa3326750a3e951101e6905f3eafe8f99c0935ab33f0de8d",
+    "native/src/render_snapshot.cpp": "b905363461d4aa31ffbeb94bd6717993597b9da23b5ea5d8fc717a56662dbf04",
+    "native/src/render_snapshot_internal.hpp": "c36e3b4f41db0f4ac96788a74f66b92407690dccc8609951428ec7b54c292998",
+    "native/src/scheduler_geometry.cpp": "6ddfd5c5601a63edbcc1a8c430dcfe6332cbe54109c6b1d3763f933a6be38764",
+    "native/src/settled_world_discovery.cpp": "5f56ab11ac22eb6af105f52a3abca4ef91a0db1d0046855793123fa941e728b6",
+    "native/src/world.cpp": "80e05f673b3d6ba35daa7c741805aa272f149e7742d162c94c8c0bd9bdbc1e83",
+    "native/src/world_ballistic.inc": "e335b2811961569d769bc328e331275ff06e20bcdea43a8427897d618be612f8",
+    "native/src/world_generation.cpp": "9d9d6e672f689b5824ab8869232070aa2bef61cd8c42869cc41430bc2f67cb52",
+    "native/src/world_inertial.inc": "51fa78b33df7ea5e7e468c670b348ae24a19fd41905e2e78d9e841fa99af1491",
+    "native/src/world_pressure.inc": "c5d639212290c9a4faee47f86a3cfe5bf664a5a51d241d4b5c9c1cdb985b6105",
+    "native/src/world_pressure_cache.inc": "9a90d1cae841fbb151658c4ed130d3f7b7fdb2bc883d2d2bfec54715476511b7",
+    "native/src/world_pressure_cache_state.inc": "cf516d4d6d3363563c2273e29ee0ef2525654cf552031c74efb923ed4ac062b3",
+    "native/src/world_pressure_column_failure.inc": "103cd884f1fd1ed6ca279be47aa6b8ba9f848f1c1205c632fa176c02e182a268",
+    "native/src/world_pressure_gas_cache.inc": "a93ee3fbd9911a4eba673ce3f5af573f8df8c66fe7f0dce7053921ebd22b4962",
+    "native/src/world_pressure_state.inc": "e7444b96c7e03cbd83b352707e55d999fb939859b41783f5bf51bb40b4d2caa2",
+    "native/src/world_quantity.inc": "75f9743ee614fd6e5ee6ae96d3f35445b3162e19c9f7686b9eefc29f97e52dae",
+    "native/src/world_wave.inc": "4ddd4e268853f0409b50f901b50a344e2f0021adcbef4c5ff92ead68854468a3",
+    "tools/architecture/gentek80_campaign.py": "04d724241868f6e9bb17eb77f1a0613e34e2643402afb942d6f86c50debebb26",
+    "tools/architecture/requirements-render-linux.txt": "3154c8b50a96167bb01e6bf8314938263083b2a0c1765ce90d2e5adeb4044032",
+    "tools/build_native_extension.sh": "9a38d32c93c8562803ea92d23903cdb40ce7a7e7d5a5ac5a36763c5f97153585"
+  },
+  "repair_comparison_sha256": "74f5dbdf2900794eb7871d3121d604387d7dec68076cf81b551f2fd47562e41f",
+  "runtime_sha256": "1044d96f535ebe943c5845fa0f80158ea310aa0b4d4edfc2f196250ccd798432",
+  "schema": "gentek80-public-gallery-v1",
+  "scope": "104 public PNGs selected from source-qualified 520-case native/Godot evidence and eight immutable-source repair comparisons. Later source commits require fresh native/pixel equivalence, not relabelled historical images.",
+  "source_commit": "507f49a1b585354607f53dd6de972bfcb218bd17",
+  "source_receipts_sha256": {
+    "campaign-identity.json": "63cb27822cceea2c6408982cb21597ffc4e152bf4a90d0d21b80f10072633a78",
+    "native-campaign.json": "b211902ad45b65345001a29f8b151932b4944bf73e87815f583039fc00e51564",
+    "pixel-and-connectivity-verification.json": "b6cd0af0134f7da07cbc0bb95f841f6ea05c30e7250205c8d48ec576c9a31938",
+    "process-reload.json": "0af61cd809ce4f1e727fe15aac772200f4507c15f1d1f5fe9a58f62a449abf33",
+    "runtime-build-ledger.json": "67e5ed044015651452261253f0fff440e266f26cb6cbd4d0d0f05e921536eeab"
+  },
+  "source_tree": "61120b631f49329182c8cebbd631e1e8ad207a59",
+  "staging_tool_sha256": "04d2237275a95298806f6638bb521132d0180cf66b5dd4ddda27d92a67eb6d77"
+}

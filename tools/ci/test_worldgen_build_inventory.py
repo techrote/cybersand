@@ -23,13 +23,13 @@ class WorldgenBuildInventoryTests(unittest.TestCase):
         row = self.report["families"][target]
         return row["serial"]["stdout"], row["two_jobs"]["stdout"]
 
-    def test_both_actual_graphs_have_twelve_objects_nine_binaries_and_ordered_tests(self):
+    def test_both_actual_graphs_have_twelve_objects_sixteen_binaries_and_ordered_tests(self):
         for target, row in self.report["families"].items():
             with self.subTest(target=target):
                 self.assertEqual(row["object_count"], 12)
-                self.assertEqual(row["binary_count"], 9)
-                self.assertEqual(len(row["compile_link_commands"]), 21)
-                self.assertEqual(len(row["ordered_tests"]), 9)
+                self.assertEqual(row["binary_count"], 16)
+                self.assertEqual(len(row["compile_link_commands"]), 28)
+                self.assertEqual(len(row["ordered_tests"]), 16)
 
     def test_missing_prerequisite_is_rejected(self):
         serial, bounded = self.streams()
@@ -43,7 +43,7 @@ class WorldgenBuildInventoryTests(unittest.TestCase):
         serial, bounded = self.streams()
         altered = "\n".join(line for line in bounded.splitlines()
                             if line != "./build/test_generation_planes_sanitized")
-        with self.assertRaisesRegex(ValueError, "Nine-test inventory/order"):
+        with self.assertRaisesRegex(ValueError, "Sixteen-test inventory/order"):
             inventory.compare(serial, altered, True)
 
     def test_reordered_tests_are_rejected(self):
@@ -51,8 +51,15 @@ class WorldgenBuildInventoryTests(unittest.TestCase):
         lines = bounded.splitlines()
         positions = [index for index, line in enumerate(lines) if line.startswith("./build/test_")]
         lines[positions[0]], lines[positions[1]] = lines[positions[1]], lines[positions[0]]
-        with self.assertRaisesRegex(ValueError, "Nine-test inventory/order"):
+        with self.assertRaisesRegex(ValueError, "Sixteen-test inventory/order"):
             inventory.compare(serial, "\n".join(lines), True)
+
+    def test_omitted_showcase_or_changed_sanitizer_environment_is_rejected(self):
+        serial, bounded = self.streams()
+        for before, after in (("build/test_suspended_arcology_sanitized; do", "; do"),
+                              ("UBSAN_OPTIONS=${UBSAN_OPTIONS:-halt_on_error=1}", "")):
+            with self.subTest(change=before), self.assertRaisesRegex(ValueError, "Seven-showcase"):
+                inventory.compare(serial, bounded.replace(before, after), True)
 
     def test_dropped_sanitizer_flag_fails_even_when_both_dry_runs_match(self):
         serial, bounded = self.streams()

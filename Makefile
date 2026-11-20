@@ -372,3 +372,61 @@ $(BUILD_DIR)/test_generation_planes: $(GENERATION_OPT_THREADED_OBJECTS) $(CORE_H
 
 $(BUILD_DIR)/test_generation_planes_sanitized: $(GENERATION_SAN_THREADED_OBJECTS) $(CORE_HEADERS) native/tests/test_generation_planes.cpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=address,undefined $(GENERATION_SAN_THREADED_OBJECTS) native/tests/test_generation_planes.cpp -o $@
+
+# GENTEK-SHOWCASE-INTEGRATION-001. All seven dedicated native suites are
+# built from the *same* combined GEN-007 source; Cathedral-specific assertions
+# remain in native/tests/test_world_generation.cpp.
+.PHONY: gentek-showcases-test gentek-showcases-sanitize
+GENTEK_SHOWCASE_TEST_BINS := $(BUILD_DIR)/test_megatruss_station $(BUILD_DIR)/test_seeded_typology_megablock $(BUILD_DIR)/test_metabolist_spine $(BUILD_DIR)/test_interlaced_viaduct $(BUILD_DIR)/test_rosework_gatehouse $(BUILD_DIR)/test_interlock_brutalism $(BUILD_DIR)/test_suspended_arcology
+GENTEK_SHOWCASE_SANITIZED_BINS := $(BUILD_DIR)/test_megatruss_station_sanitized $(BUILD_DIR)/test_seeded_typology_megablock_sanitized $(BUILD_DIR)/test_metabolist_spine_sanitized $(BUILD_DIR)/test_interlaced_viaduct_sanitized $(BUILD_DIR)/test_rosework_gatehouse_sanitized $(BUILD_DIR)/test_interlock_brutalism_sanitized $(BUILD_DIR)/test_suspended_arcology_sanitized
+$(BUILD_DIR)/test_megatruss_station: $(GENERATION_OPT_OBJECTS) $(CORE_HEADERS) native/tests/test_megatruss_station.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O2 -g -pthread -Werror $(GENERATION_OPT_OBJECTS) native/tests/test_megatruss_station.cpp -o $@
+
+$(BUILD_DIR)/test_megatruss_station_sanitized: $(GENERATION_SAN_OBJECTS) $(CORE_HEADERS) native/tests/test_megatruss_station.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=address,undefined $(GENERATION_SAN_OBJECTS) native/tests/test_megatruss_station.cpp -o $@
+
+$(BUILD_DIR)/test_seeded_typology_megablock: $(GENERATION_OPT_OBJECTS) $(CORE_HEADERS) native/tests/test_seeded_typology_megablock.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O2 -g -pthread -Werror $(GENERATION_OPT_OBJECTS) native/tests/test_seeded_typology_megablock.cpp -o $@
+
+$(BUILD_DIR)/test_seeded_typology_megablock_sanitized: $(GENERATION_SAN_OBJECTS) $(CORE_HEADERS) native/tests/test_seeded_typology_megablock.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=address,undefined $(GENERATION_SAN_OBJECTS) native/tests/test_seeded_typology_megablock.cpp -o $@
+
+$(BUILD_DIR)/test_metabolist_spine: $(GENERATION_OPT_OBJECTS) $(CORE_HEADERS) native/tests/test_metabolist_spine.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O2 -g -pthread -Werror $(GENERATION_OPT_OBJECTS) native/tests/test_metabolist_spine.cpp -o $@
+
+$(BUILD_DIR)/test_metabolist_spine_sanitized: $(GENERATION_SAN_OBJECTS) $(CORE_HEADERS) native/tests/test_metabolist_spine.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=address,undefined $(GENERATION_SAN_OBJECTS) native/tests/test_metabolist_spine.cpp -o $@
+
+$(BUILD_DIR)/test_interlaced_viaduct: $(GENERATION_OPT_OBJECTS) $(CORE_HEADERS) native/tests/test_interlaced_viaduct.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O2 -g -pthread -Werror $(GENERATION_OPT_OBJECTS) native/tests/test_interlaced_viaduct.cpp -o $@
+
+$(BUILD_DIR)/test_interlaced_viaduct_sanitized: $(GENERATION_SAN_OBJECTS) $(CORE_HEADERS) native/tests/test_interlaced_viaduct.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=address,undefined $(GENERATION_SAN_OBJECTS) native/tests/test_interlaced_viaduct.cpp -o $@
+
+$(BUILD_DIR)/test_rosework_gatehouse: $(GENERATION_OPT_OBJECTS) $(CORE_HEADERS) native/tests/test_rosework_gatehouse.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O2 -g -pthread -Werror $(GENERATION_OPT_OBJECTS) native/tests/test_rosework_gatehouse.cpp -o $@
+
+$(BUILD_DIR)/test_rosework_gatehouse_sanitized: $(GENERATION_SAN_OBJECTS) $(CORE_HEADERS) native/tests/test_rosework_gatehouse.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=address,undefined $(GENERATION_SAN_OBJECTS) native/tests/test_rosework_gatehouse.cpp -o $@
+
+$(BUILD_DIR)/test_interlock_brutalism: $(GENERATION_OPT_OBJECTS) $(CORE_HEADERS) native/tests/test_interlock_brutalism.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O2 -g -pthread -Werror $(GENERATION_OPT_OBJECTS) native/tests/test_interlock_brutalism.cpp -o $@
+
+$(BUILD_DIR)/test_interlock_brutalism_sanitized: $(GENERATION_SAN_OBJECTS) $(CORE_HEADERS) native/tests/test_interlock_brutalism.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=address,undefined $(GENERATION_SAN_OBJECTS) native/tests/test_interlock_brutalism.cpp -o $@
+
+$(BUILD_DIR)/test_suspended_arcology: $(GENERATION_OPT_OBJECTS) $(CORE_HEADERS) native/tests/test_suspended_arcology.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O2 -g -pthread -Werror $(GENERATION_OPT_OBJECTS) native/tests/test_suspended_arcology.cpp -o $@
+
+$(BUILD_DIR)/test_suspended_arcology_sanitized: $(GENERATION_SAN_OBJECTS) $(CORE_HEADERS) native/tests/test_suspended_arcology.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=address,undefined $(GENERATION_SAN_OBJECTS) native/tests/test_suspended_arcology.cpp -o $@
+
+gentek-showcases-test: $(GENTEK_SHOWCASE_TEST_BINS)
+	@set -eu; for binary in $(GENTEK_SHOWCASE_TEST_BINS); do echo "Running $$binary"; "$$binary"; done
+
+gentek-showcases-sanitize: $(GENTEK_SHOWCASE_SANITIZED_BINS)
+	@set -eu; for binary in $(GENTEK_SHOWCASE_SANITIZED_BINS); do echo "Running sanitized $$binary"; ASAN_OPTIONS=$${ASAN_OPTIONS:-detect_leaks=1:strict_string_checks=1} UBSAN_OPTIONS=$${UBSAN_OPTIONS:-halt_on_error=1} "$$binary"; done
+
+# Include every showcase-specific native test in the ordinary generation gate.
+worldgen-test: gentek-showcases-test
+worldgen-sanitize: gentek-showcases-sanitize

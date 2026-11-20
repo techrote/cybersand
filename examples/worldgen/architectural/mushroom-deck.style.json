@@ -1,0 +1,23 @@
+{
+  "format": "cybersand.architectural-style",
+  "version": 1,
+  "id": "mushroom-deck",
+  "name": "Mushroom Deck",
+  "module": "mushroom_deck",
+  "module_version": 1,
+  "theme": "industrial",
+  "geometry": {
+    "room_size": 96,
+    "floor_height": 80,
+    "wall_thickness": 4,
+    "door_width": 12,
+    "shaft_width": 0
+  },
+  "materials": {
+    "wall": 58,
+    "floor": 66,
+    "window": 120
+  },
+  "apertures": {},
+  "deterioration": 0
+}

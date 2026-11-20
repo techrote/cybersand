@@ -1,0 +1,23 @@
+{
+  "format": "cybersand.architectural-style",
+  "version": 1,
+  "id": "cathedral-megaframe",
+  "name": "Cathedral Megaframe",
+  "module": "cathedral_megaframe",
+  "module_version": 1,
+  "theme": "ruins",
+  "geometry": {
+    "room_size": 72,
+    "floor_height": 96,
+    "wall_thickness": 5,
+    "door_width": 12,
+    "shaft_width": 0
+  },
+  "materials": {
+    "wall": 98,
+    "floor": 119,
+    "window": 121
+  },
+  "apertures": {},
+  "deterioration": 0
+}

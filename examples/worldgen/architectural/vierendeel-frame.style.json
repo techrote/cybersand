@@ -1,0 +1,23 @@
+{
+  "format": "cybersand.architectural-style",
+  "version": 1,
+  "id": "vierendeel-frame",
+  "name": "Vierendeel Frame",
+  "module": "vierendeel_frame",
+  "module_version": 1,
+  "theme": "industrial",
+  "geometry": {
+    "room_size": 96,
+    "floor_height": 80,
+    "wall_thickness": 3,
+    "door_width": 10,
+    "shaft_width": 0
+  },
+  "materials": {
+    "wall": 58,
+    "floor": 66,
+    "window": 121
+  },
+  "apertures": {},
+  "deterioration": 0
+}

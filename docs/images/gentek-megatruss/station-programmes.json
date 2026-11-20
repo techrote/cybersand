@@ -1,0 +1,2048 @@
+[
+  {
+    "case": "01-hero-512",
+    "seed": 271828,
+    "station_programmes": [
+      {
+        "supercell_index": [
+          0,
+          0
+        ],
+        "origin": [
+          0,
+          0
+        ],
+        "programme_hash": "88f5de276bd1b28c",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "right",
+        "main_hall_bays": [
+          3,
+          4
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          0
+        ],
+        "origin": [
+          384,
+          0
+        ],
+        "programme_hash": "c39fee94471f393b",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "left",
+        "main_hall_bays": [
+          1,
+          2
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "crossed panels",
+        "hanging_gallery": "right",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          0,
+          1
+        ],
+        "origin": [
+          0,
+          288
+        ],
+        "programme_hash": "d1a1e75bab38d812",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "right",
+        "main_hall_bays": [
+          3,
+          4
+        ],
+        "upper_concourse": false,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          1
+        ],
+        "origin": [
+          384,
+          288
+        ],
+        "programme_hash": "df64a3fc782d3a89",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "central",
+        "main_hall_bays": [
+          2,
+          3
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      }
+    ]
+  },
+  {
+    "case": "02-hero-landscape",
+    "seed": 271828,
+    "station_programmes": [
+      {
+        "supercell_index": [
+          0,
+          0
+        ],
+        "origin": [
+          0,
+          0
+        ],
+        "programme_hash": "88f5de276bd1b28c",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "right",
+        "main_hall_bays": [
+          3,
+          4
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          0
+        ],
+        "origin": [
+          384,
+          0
+        ],
+        "programme_hash": "c39fee94471f393b",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "left",
+        "main_hall_bays": [
+          1,
+          2
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "crossed panels",
+        "hanging_gallery": "right",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          2,
+          0
+        ],
+        "origin": [
+          768,
+          0
+        ],
+        "programme_hash": "49ba40a86a0fef39",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "right",
+        "main_hall_bays": [
+          3,
+          4
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "crossed panels",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          0,
+          1
+        ],
+        "origin": [
+          0,
+          288
+        ],
+        "programme_hash": "d1a1e75bab38d812",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "right",
+        "main_hall_bays": [
+          3,
+          4
+        ],
+        "upper_concourse": false,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          1
+        ],
+        "origin": [
+          384,
+          288
+        ],
+        "programme_hash": "df64a3fc782d3a89",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "central",
+        "main_hall_bays": [
+          2,
+          3
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          2,
+          1
+        ],
+        "origin": [
+          768,
+          288
+        ],
+        "programme_hash": "605aa496a4bb43e2",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "right",
+        "main_hall_bays": [
+          3,
+          4
+        ],
+        "upper_concourse": false,
+        "secondary_truss": "crossed panels",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "right monitor and mast"
+      }
+    ]
+  },
+  {
+    "case": "03-hero-large",
+    "seed": 271828,
+    "station_programmes": [
+      {
+        "supercell_index": [
+          0,
+          0
+        ],
+        "origin": [
+          0,
+          0
+        ],
+        "programme_hash": "88f5de276bd1b28c",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "right",
+        "main_hall_bays": [
+          3,
+          4
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          0
+        ],
+        "origin": [
+          384,
+          0
+        ],
+        "programme_hash": "c39fee94471f393b",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "left",
+        "main_hall_bays": [
+          1,
+          2
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "crossed panels",
+        "hanging_gallery": "right",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          2,
+          0
+        ],
+        "origin": [
+          768,
+          0
+        ],
+        "programme_hash": "49ba40a86a0fef39",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "right",
+        "main_hall_bays": [
+          3,
+          4
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "crossed panels",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          0,
+          1
+        ],
+        "origin": [
+          0,
+          288
+        ],
+        "programme_hash": "d1a1e75bab38d812",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "right",
+        "main_hall_bays": [
+          3,
+          4
+        ],
+        "upper_concourse": false,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          1
+        ],
+        "origin": [
+          384,
+          288
+        ],
+        "programme_hash": "df64a3fc782d3a89",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "central",
+        "main_hall_bays": [
+          2,
+          3
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          2,
+          1
+        ],
+        "origin": [
+          768,
+          288
+        ],
+        "programme_hash": "605aa496a4bb43e2",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "right",
+        "main_hall_bays": [
+          3,
+          4
+        ],
+        "upper_concourse": false,
+        "secondary_truss": "crossed panels",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "right monitor and mast"
+      },
+      {
+        "supercell_index": [
+          0,
+          2
+        ],
+        "origin": [
+          0,
+          576
+        ],
+        "programme_hash": "ef87f1fc8787427f",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "left",
+        "main_hall_bays": [
+          1,
+          2
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "crossed panels",
+        "hanging_gallery": "right",
+        "roof_crown_variant": "right monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          2
+        ],
+        "origin": [
+          384,
+          576
+        ],
+        "programme_hash": "1be34c4538aa099a",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "central",
+        "main_hall_bays": [
+          2,
+          3
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "right",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          2,
+          2
+        ],
+        "origin": [
+          768,
+          576
+        ],
+        "programme_hash": "cd3cd6ef381e7edd",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "right",
+        "main_hall_bays": [
+          3,
+          4
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "right monitor and mast"
+      },
+      {
+        "supercell_index": [
+          0,
+          3
+        ],
+        "origin": [
+          0,
+          864
+        ],
+        "programme_hash": "63f3de7271b5e786",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "central",
+        "main_hall_bays": [
+          2,
+          3
+        ],
+        "upper_concourse": false,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          3
+        ],
+        "origin": [
+          384,
+          864
+        ],
+        "programme_hash": "d863ef55e377c5a3",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "left",
+        "main_hall_bays": [
+          1,
+          2
+        ],
+        "upper_concourse": false,
+        "secondary_truss": "crossed panels",
+        "hanging_gallery": "right",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          2,
+          3
+        ],
+        "origin": [
+          768,
+          864
+        ],
+        "programme_hash": "83b937732b3890d5",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "central",
+        "main_hall_bays": [
+          2,
+          3
+        ],
+        "upper_concourse": false,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "right",
+        "roof_crown_variant": "right monitor and mast"
+      }
+    ]
+  },
+  {
+    "case": "04-seed-1",
+    "seed": 1,
+    "station_programmes": [
+      {
+        "supercell_index": [
+          0,
+          0
+        ],
+        "origin": [
+          0,
+          0
+        ],
+        "programme_hash": "6d0b17ac46c0faa6",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "left",
+        "main_hall_bays": [
+          1,
+          2
+        ],
+        "upper_concourse": false,
+        "secondary_truss": "crossed panels",
+        "hanging_gallery": "right",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          0
+        ],
+        "origin": [
+          384,
+          0
+        ],
+        "programme_hash": "76e2c24e07ed5217",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "right",
+        "main_hall_bays": [
+          3,
+          4
+        ],
+        "upper_concourse": false,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          0,
+          1
+        ],
+        "origin": [
+          0,
+          288
+        ],
+        "programme_hash": "86d1325645e75912",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "right",
+        "main_hall_bays": [
+          3,
+          4
+        ],
+        "upper_concourse": false,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          1
+        ],
+        "origin": [
+          384,
+          288
+        ],
+        "programme_hash": "ef7260cabb09975e",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "left",
+        "main_hall_bays": [
+          1,
+          2
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "right",
+        "roof_crown_variant": "right monitor and mast"
+      }
+    ]
+  },
+  {
+    "case": "05-seed-7",
+    "seed": 7,
+    "station_programmes": [
+      {
+        "supercell_index": [
+          0,
+          0
+        ],
+        "origin": [
+          0,
+          0
+        ],
+        "programme_hash": "bbcd60cc042c5001",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "right",
+        "main_hall_bays": [
+          3,
+          4
+        ],
+        "upper_concourse": false,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          0
+        ],
+        "origin": [
+          384,
+          0
+        ],
+        "programme_hash": "44e9d3e7c575aa1a",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "central",
+        "main_hall_bays": [
+          2,
+          3
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "right",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          0,
+          1
+        ],
+        "origin": [
+          0,
+          288
+        ],
+        "programme_hash": "402334317c793015",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "left",
+        "main_hall_bays": [
+          1,
+          2
+        ],
+        "upper_concourse": false,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "right",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          1
+        ],
+        "origin": [
+          384,
+          288
+        ],
+        "programme_hash": "7b139c3da7113c42",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "left",
+        "main_hall_bays": [
+          1,
+          2
+        ],
+        "upper_concourse": false,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "right",
+        "roof_crown_variant": "right monitor and mast"
+      }
+    ]
+  },
+  {
+    "case": "06-seed-19",
+    "seed": 19,
+    "station_programmes": [
+      {
+        "supercell_index": [
+          0,
+          0
+        ],
+        "origin": [
+          0,
+          0
+        ],
+        "programme_hash": "1456398a4669358f",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "central",
+        "main_hall_bays": [
+          2,
+          3
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          0
+        ],
+        "origin": [
+          384,
+          0
+        ],
+        "programme_hash": "fe5e96ccaf0e547a",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "central",
+        "main_hall_bays": [
+          2,
+          3
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "crossed panels",
+        "hanging_gallery": "right",
+        "roof_crown_variant": "right monitor and mast"
+      },
+      {
+        "supercell_index": [
+          0,
+          1
+        ],
+        "origin": [
+          0,
+          288
+        ],
+        "programme_hash": "ebecff7ab4c2dfcc",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "central",
+        "main_hall_bays": [
+          2,
+          3
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "right monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          1
+        ],
+        "origin": [
+          384,
+          288
+        ],
+        "programme_hash": "c1b17bff35bc9fce",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "right",
+        "main_hall_bays": [
+          3,
+          4
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "right monitor and mast"
+      }
+    ]
+  },
+  {
+    "case": "07-seed-42",
+    "seed": 42,
+    "station_programmes": [
+      {
+        "supercell_index": [
+          0,
+          0
+        ],
+        "origin": [
+          0,
+          0
+        ],
+        "programme_hash": "7e8432120cf37ef5",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "left",
+        "main_hall_bays": [
+          1,
+          2
+        ],
+        "upper_concourse": false,
+        "secondary_truss": "crossed panels",
+        "hanging_gallery": "right",
+        "roof_crown_variant": "right monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          0
+        ],
+        "origin": [
+          384,
+          0
+        ],
+        "programme_hash": "e4b9b4843aa94300",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "central",
+        "main_hall_bays": [
+          2,
+          3
+        ],
+        "upper_concourse": false,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          0,
+          1
+        ],
+        "origin": [
+          0,
+          288
+        ],
+        "programme_hash": "ff4bfc20b3cf7502",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "left",
+        "main_hall_bays": [
+          1,
+          2
+        ],
+        "upper_concourse": false,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "right",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          1
+        ],
+        "origin": [
+          384,
+          288
+        ],
+        "programme_hash": "fd9ed7fa233c3333",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "right",
+        "main_hall_bays": [
+          3,
+          4
+        ],
+        "upper_concourse": false,
+        "secondary_truss": "crossed panels",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      }
+    ]
+  },
+  {
+    "case": "08-seed-271828",
+    "seed": 271828,
+    "station_programmes": [
+      {
+        "supercell_index": [
+          0,
+          0
+        ],
+        "origin": [
+          0,
+          0
+        ],
+        "programme_hash": "88f5de276bd1b28c",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "right",
+        "main_hall_bays": [
+          3,
+          4
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          0
+        ],
+        "origin": [
+          384,
+          0
+        ],
+        "programme_hash": "c39fee94471f393b",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "left",
+        "main_hall_bays": [
+          1,
+          2
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "crossed panels",
+        "hanging_gallery": "right",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          0,
+          1
+        ],
+        "origin": [
+          0,
+          288
+        ],
+        "programme_hash": "d1a1e75bab38d812",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "right",
+        "main_hall_bays": [
+          3,
+          4
+        ],
+        "upper_concourse": false,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          1
+        ],
+        "origin": [
+          384,
+          288
+        ],
+        "programme_hash": "df64a3fc782d3a89",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "central",
+        "main_hall_bays": [
+          2,
+          3
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      }
+    ]
+  },
+  {
+    "case": "09-seed-8675309",
+    "seed": 8675309,
+    "station_programmes": [
+      {
+        "supercell_index": [
+          0,
+          0
+        ],
+        "origin": [
+          0,
+          0
+        ],
+        "programme_hash": "9a154d468d975aa8",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "central",
+        "main_hall_bays": [
+          2,
+          3
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "crossed panels",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          0
+        ],
+        "origin": [
+          384,
+          0
+        ],
+        "programme_hash": "07b263b6dd3fedbd",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "central",
+        "main_hall_bays": [
+          2,
+          3
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "crossed panels",
+        "hanging_gallery": "right",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          0,
+          1
+        ],
+        "origin": [
+          0,
+          288
+        ],
+        "programme_hash": "77b685fa38c7efc4",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "left",
+        "main_hall_bays": [
+          1,
+          2
+        ],
+        "upper_concourse": false,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "right",
+        "roof_crown_variant": "right monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          1
+        ],
+        "origin": [
+          384,
+          288
+        ],
+        "programme_hash": "684e5dbfe5c01e83",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "left",
+        "main_hall_bays": [
+          1,
+          2
+        ],
+        "upper_concourse": false,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "right",
+        "roof_crown_variant": "left monitor and mast"
+      }
+    ]
+  },
+  {
+    "case": "10-compact-bays",
+    "seed": 271828,
+    "station_programmes": [
+      {
+        "supercell_index": [
+          0,
+          0
+        ],
+        "origin": [
+          0,
+          0
+        ],
+        "programme_hash": "88f5de276bd1b28c",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "right",
+        "main_hall_bays": [
+          3,
+          4
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          0
+        ],
+        "origin": [
+          288,
+          0
+        ],
+        "programme_hash": "c39fee94471f393b",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "left",
+        "main_hall_bays": [
+          1,
+          2
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "crossed panels",
+        "hanging_gallery": "right",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          0,
+          1
+        ],
+        "origin": [
+          0,
+          288
+        ],
+        "programme_hash": "d1a1e75bab38d812",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "right",
+        "main_hall_bays": [
+          3,
+          4
+        ],
+        "upper_concourse": false,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          1
+        ],
+        "origin": [
+          288,
+          288
+        ],
+        "programme_hash": "df64a3fc782d3a89",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "central",
+        "main_hall_bays": [
+          2,
+          3
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      }
+    ]
+  },
+  {
+    "case": "11-broad-bays",
+    "seed": 271828,
+    "station_programmes": [
+      {
+        "supercell_index": [
+          0,
+          0
+        ],
+        "origin": [
+          0,
+          0
+        ],
+        "programme_hash": "88f5de276bd1b28c",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "right",
+        "main_hall_bays": [
+          3,
+          4
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          0
+        ],
+        "origin": [
+          480,
+          0
+        ],
+        "programme_hash": "c39fee94471f393b",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "left",
+        "main_hall_bays": [
+          1,
+          2
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "crossed panels",
+        "hanging_gallery": "right",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          0,
+          1
+        ],
+        "origin": [
+          0,
+          288
+        ],
+        "programme_hash": "d1a1e75bab38d812",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "right",
+        "main_hall_bays": [
+          3,
+          4
+        ],
+        "upper_concourse": false,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          1
+        ],
+        "origin": [
+          480,
+          288
+        ],
+        "programme_hash": "df64a3fc782d3a89",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "central",
+        "main_hall_bays": [
+          2,
+          3
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      }
+    ]
+  },
+  {
+    "case": "12-shallow-station",
+    "seed": 271828,
+    "station_programmes": [
+      {
+        "supercell_index": [
+          0,
+          0
+        ],
+        "origin": [
+          0,
+          0
+        ],
+        "programme_hash": "88f5de276bd1b28c",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "right",
+        "main_hall_bays": [
+          3,
+          4
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          0
+        ],
+        "origin": [
+          384,
+          0
+        ],
+        "programme_hash": "c39fee94471f393b",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "left",
+        "main_hall_bays": [
+          1,
+          2
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "crossed panels",
+        "hanging_gallery": "right",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          0,
+          1
+        ],
+        "origin": [
+          0,
+          192
+        ],
+        "programme_hash": "d1a1e75bab38d812",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "right",
+        "main_hall_bays": [
+          3,
+          4
+        ],
+        "upper_concourse": false,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          1
+        ],
+        "origin": [
+          384,
+          192
+        ],
+        "programme_hash": "df64a3fc782d3a89",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "central",
+        "main_hall_bays": [
+          2,
+          3
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          0,
+          2
+        ],
+        "origin": [
+          0,
+          384
+        ],
+        "programme_hash": "ef87f1fc8787427f",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "left",
+        "main_hall_bays": [
+          1,
+          2
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "crossed panels",
+        "hanging_gallery": "right",
+        "roof_crown_variant": "right monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          2
+        ],
+        "origin": [
+          384,
+          384
+        ],
+        "programme_hash": "1be34c4538aa099a",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "central",
+        "main_hall_bays": [
+          2,
+          3
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "right",
+        "roof_crown_variant": "left monitor and mast"
+      }
+    ]
+  },
+  {
+    "case": "13-tall-station",
+    "seed": 271828,
+    "station_programmes": [
+      {
+        "supercell_index": [
+          0,
+          0
+        ],
+        "origin": [
+          0,
+          0
+        ],
+        "programme_hash": "88f5de276bd1b28c",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "right",
+        "main_hall_bays": [
+          3,
+          4
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          0
+        ],
+        "origin": [
+          384,
+          0
+        ],
+        "programme_hash": "c39fee94471f393b",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "left",
+        "main_hall_bays": [
+          1,
+          2
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "crossed panels",
+        "hanging_gallery": "right",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          0,
+          1
+        ],
+        "origin": [
+          0,
+          384
+        ],
+        "programme_hash": "d1a1e75bab38d812",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "right",
+        "main_hall_bays": [
+          3,
+          4
+        ],
+        "upper_concourse": false,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          1
+        ],
+        "origin": [
+          384,
+          384
+        ],
+        "programme_hash": "df64a3fc782d3a89",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "central",
+        "main_hall_bays": [
+          2,
+          3
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      }
+    ]
+  },
+  {
+    "case": "14-thin-members",
+    "seed": 271828,
+    "station_programmes": [
+      {
+        "supercell_index": [
+          0,
+          0
+        ],
+        "origin": [
+          0,
+          0
+        ],
+        "programme_hash": "88f5de276bd1b28c",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "right",
+        "main_hall_bays": [
+          3,
+          4
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          0
+        ],
+        "origin": [
+          384,
+          0
+        ],
+        "programme_hash": "c39fee94471f393b",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "left",
+        "main_hall_bays": [
+          1,
+          2
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "crossed panels",
+        "hanging_gallery": "right",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          0,
+          1
+        ],
+        "origin": [
+          0,
+          288
+        ],
+        "programme_hash": "d1a1e75bab38d812",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "right",
+        "main_hall_bays": [
+          3,
+          4
+        ],
+        "upper_concourse": false,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          1
+        ],
+        "origin": [
+          384,
+          288
+        ],
+        "programme_hash": "df64a3fc782d3a89",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "central",
+        "main_hall_bays": [
+          2,
+          3
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      }
+    ]
+  },
+  {
+    "case": "15-heavy-members",
+    "seed": 271828,
+    "station_programmes": [
+      {
+        "supercell_index": [
+          0,
+          0
+        ],
+        "origin": [
+          0,
+          0
+        ],
+        "programme_hash": "88f5de276bd1b28c",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "right",
+        "main_hall_bays": [
+          3,
+          4
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          0
+        ],
+        "origin": [
+          384,
+          0
+        ],
+        "programme_hash": "c39fee94471f393b",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "left",
+        "main_hall_bays": [
+          1,
+          2
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "crossed panels",
+        "hanging_gallery": "right",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          0,
+          1
+        ],
+        "origin": [
+          0,
+          288
+        ],
+        "programme_hash": "d1a1e75bab38d812",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "right",
+        "main_hall_bays": [
+          3,
+          4
+        ],
+        "upper_concourse": false,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          1
+        ],
+        "origin": [
+          384,
+          288
+        ],
+        "programme_hash": "df64a3fc782d3a89",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "central",
+        "main_hall_bays": [
+          2,
+          3
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      }
+    ]
+  },
+  {
+    "case": "16-glazing-on",
+    "seed": 271828,
+    "station_programmes": [
+      {
+        "supercell_index": [
+          0,
+          0
+        ],
+        "origin": [
+          0,
+          0
+        ],
+        "programme_hash": "88f5de276bd1b28c",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "right",
+        "main_hall_bays": [
+          3,
+          4
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          0
+        ],
+        "origin": [
+          384,
+          0
+        ],
+        "programme_hash": "c39fee94471f393b",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "left",
+        "main_hall_bays": [
+          1,
+          2
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "crossed panels",
+        "hanging_gallery": "right",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          0,
+          1
+        ],
+        "origin": [
+          0,
+          288
+        ],
+        "programme_hash": "d1a1e75bab38d812",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "right",
+        "main_hall_bays": [
+          3,
+          4
+        ],
+        "upper_concourse": false,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          1
+        ],
+        "origin": [
+          384,
+          288
+        ],
+        "programme_hash": "df64a3fc782d3a89",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "central",
+        "main_hall_bays": [
+          2,
+          3
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      }
+    ]
+  },
+  {
+    "case": "17-glazing-off",
+    "seed": 271828,
+    "station_programmes": [
+      {
+        "supercell_index": [
+          0,
+          0
+        ],
+        "origin": [
+          0,
+          0
+        ],
+        "programme_hash": "88f5de276bd1b28c",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "right",
+        "main_hall_bays": [
+          3,
+          4
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          0
+        ],
+        "origin": [
+          384,
+          0
+        ],
+        "programme_hash": "c39fee94471f393b",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "left",
+        "main_hall_bays": [
+          1,
+          2
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "crossed panels",
+        "hanging_gallery": "right",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          0,
+          1
+        ],
+        "origin": [
+          0,
+          288
+        ],
+        "programme_hash": "d1a1e75bab38d812",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "right",
+        "main_hall_bays": [
+          3,
+          4
+        ],
+        "upper_concourse": false,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          1
+        ],
+        "origin": [
+          384,
+          288
+        ],
+        "programme_hash": "df64a3fc782d3a89",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "central",
+        "main_hall_bays": [
+          2,
+          3
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      }
+    ]
+  },
+  {
+    "case": "18-portals-off",
+    "seed": 271828,
+    "station_programmes": [
+      {
+        "supercell_index": [
+          0,
+          0
+        ],
+        "origin": [
+          0,
+          0
+        ],
+        "programme_hash": "88f5de276bd1b28c",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "right",
+        "main_hall_bays": [
+          3,
+          4
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          0
+        ],
+        "origin": [
+          384,
+          0
+        ],
+        "programme_hash": "c39fee94471f393b",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "left",
+        "main_hall_bays": [
+          1,
+          2
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "crossed panels",
+        "hanging_gallery": "right",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          0,
+          1
+        ],
+        "origin": [
+          0,
+          288
+        ],
+        "programme_hash": "d1a1e75bab38d812",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "right",
+        "main_hall_bays": [
+          3,
+          4
+        ],
+        "upper_concourse": false,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          1
+        ],
+        "origin": [
+          384,
+          288
+        ],
+        "programme_hash": "df64a3fc782d3a89",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "central",
+        "main_hall_bays": [
+          2,
+          3
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      }
+    ]
+  },
+  {
+    "case": "19-negative-origin",
+    "seed": 271828,
+    "station_programmes": [
+      {
+        "supercell_index": [
+          -2,
+          -1
+        ],
+        "origin": [
+          -768,
+          -288
+        ],
+        "programme_hash": "cdaabd78afdb9e8a",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "left",
+        "main_hall_bays": [
+          1,
+          2
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "right",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          -1,
+          -1
+        ],
+        "origin": [
+          -384,
+          -288
+        ],
+        "programme_hash": "826edd57fe08afe4",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "right",
+        "main_hall_bays": [
+          3,
+          4
+        ],
+        "upper_concourse": false,
+        "secondary_truss": "crossed panels",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "right monitor and mast"
+      },
+      {
+        "supercell_index": [
+          0,
+          -1
+        ],
+        "origin": [
+          0,
+          -288
+        ],
+        "programme_hash": "46a13a7911f0a893",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "left",
+        "main_hall_bays": [
+          1,
+          2
+        ],
+        "upper_concourse": false,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "right",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          -1
+        ],
+        "origin": [
+          384,
+          -288
+        ],
+        "programme_hash": "aeeb2b6e4b255538",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "central",
+        "main_hall_bays": [
+          2,
+          3
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "crossed panels",
+        "hanging_gallery": "right",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          -2,
+          0
+        ],
+        "origin": [
+          -768,
+          0
+        ],
+        "programme_hash": "e43adb20494f1047",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "right",
+        "main_hall_bays": [
+          3,
+          4
+        ],
+        "upper_concourse": false,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "right monitor and mast"
+      },
+      {
+        "supercell_index": [
+          -1,
+          0
+        ],
+        "origin": [
+          -384,
+          0
+        ],
+        "programme_hash": "546abf4b6f14e88c",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "central",
+        "main_hall_bays": [
+          2,
+          3
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          0,
+          0
+        ],
+        "origin": [
+          0,
+          0
+        ],
+        "programme_hash": "88f5de276bd1b28c",
+        "primary_support_layout": "short arms with broad transfer capitals",
+        "main_hall_position": "right",
+        "main_hall_bays": [
+          3,
+          4
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "alternating diagonals",
+        "hanging_gallery": "left",
+        "roof_crown_variant": "left monitor and mast"
+      },
+      {
+        "supercell_index": [
+          1,
+          0
+        ],
+        "origin": [
+          384,
+          0
+        ],
+        "programme_hash": "c39fee94471f393b",
+        "primary_support_layout": "long forked transfer arms",
+        "main_hall_position": "left",
+        "main_hall_bays": [
+          1,
+          2
+        ],
+        "upper_concourse": true,
+        "secondary_truss": "crossed panels",
+        "hanging_gallery": "right",
+        "roof_crown_variant": "left monitor and mast"
+      }
+    ]
+  }
+]
