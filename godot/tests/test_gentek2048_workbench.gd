@@ -15,9 +15,10 @@ func _project_for(kind: String) -> Dictionary:
 	result.seed = 605 if kind == "cathedral" else 1701
 	result.origin = [0, 0] if kind == "cathedral" else [-256, 384]
 	result.automatic_tunnels = false
-	var ids: Array[String] = ["cathedral_megaframe"] if kind == "cathedral" else [
-		"cathedral_megaframe", "megatruss_station", "seeded_typology_megablock",
-		"interlaced_viaduct", "suspended_arcology"]
+	var ids: Array[String] = ["cathedral_megaframe"]
+	if kind == "mixed":
+		ids = ["cathedral_megaframe", "megatruss_station", "seeded_typology_megablock",
+			"interlaced_viaduct", "suspended_arcology"]
 	result.styles.clear()
 	for i: int in ids.size():
 		var chosen: Dictionary = {}
