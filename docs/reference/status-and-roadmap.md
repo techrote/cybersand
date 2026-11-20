@@ -10,6 +10,26 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Floating Oil in Wave Water
+
+The [impingement tank replay](../audits/2026-11-20-wave-oil-impinge.md) tests whether Water waves can lift and lower a floating Oil slick. In the previous build the Water–Oil boundary remained fixed through 900 ticks of observation.
+
+The [thick Oil and Lava evaluation](../audits/2026-11-19-wave-oil-lava.md) covers a radius-24 Oil brush on the owner’s ramp and Lava quenching compressed Wave Water. On one dedicated runner, the updated six-worker native tick cost 0.992 ms more on the Waterwall map and 0.775 ms more in the thick Oil tank at the median. The audit records p95, host differences and the source-matched Windows and Linux publication.
+
+The [Oil tank evaluation](../audits/wave-oil-buoyancy-2026-11-19/evaluation.md) measures a buried slick, falling Sand and a fresh wave in the Windows Workbench. The longer-term [per-material solver and tuning target](../architecture/liquid-solver-family-policy.md#status) is Planned.
+
+## Full-face Water release
+
+The [full-face evaluation](../audits/2026-11-19-wave-water-face-004.md) tests outward spray throughout an exposed wall at fall speed 3 and tracks abrupt ramp crests against the motion of the Water.
+
+## Water ramp and player defaults
+
+The owner selected Wave Flow with spill and ballistic release for new player sessions. The [water ramp experiment](../audits/2026-11-19-wave-water-ramp-003.md) measures floor-attached spread and returning waves against #676.
+
+## Wave Waterwall 002 owner evaluation
+
+The [Waterwall 002 candidate](../audits/2026-11-19-wave-waterwall-002.md) adds optional Wave settings for ledge sheets, crest flight and deep-water slosh. The [Water Lab](../operations/workbench-water-lab.md#try-the-waterwall-002-candidate) stages both bundles. The owner approved the combined gameplay profile after the [Oil impingement playtest](../audits/2026-11-20-wave-oil-impinge.md).
+
 ## Shared Workbench actor composition / #589 — 2026-11-20
 
 **Implementation candidate, Draft/HOLD; no merge authorization.** The owner
@@ -127,6 +147,14 @@ unchanged. Older dated boundaries below retain their historical scope.
 
 ## WB-ART-002 direct drawing — 2026-11-10
 
+**2026-11-20 conversation lifetime candidate:** PR #681 retains Draft/HOLD while
+finishing [lazy restore and immutable linked traffic](../systems/workbench-art-providers.md#lazy-reopening-and-traffic-storage).
+Idle Workbench startup must perform no archive I/O. Explicit Art opening restores
+incrementally; native atomic publication protects session checkpoints and full
+audit exports. Missing or inconsistent histories preserve their saved pointer.
+Source-matched runtime evidence and owner Windows acceptance are separate from
+implementation; the PR ledger records their exact tested identities.
+
 **Unmerged integrated candidate, 2026-11-11:** the [PAINT + agent runbook](../operations/wb-art-paint-integrated-candidate.md) records the preserved current #544/#560 heads, generator packaging repair, stored-material readback and one native edit/receipt boundary. The full multi-material PAINT editor and agent providers, conversation/context, scanlines, multiple turns and diagnostics are implemented together. Existing Setup/generated-start formats and PAINT capacity/recovery rules apply. Keep Draft; combined Windows/Linux qualification and owner acceptance remain distinct from earlier separate-branch passes. #531 remains reference only.
 
 **2026-11-12 hardening:** the same candidate closes queued-Save, late Fill-Cancel,
@@ -178,7 +206,7 @@ policy when changing Water law, and launch reaction bypassing Body push.
 The [remediation record](../audits/2026-11-18-waterwall-review-remediation.md)
 tracks the focused repairs and resulting-source qualification separately from
 the earlier green runs. Repairs belong to #672 only; #661/#631 stay unchanged.
-Keep merge HOLD and default-off behavior. The original surface-crest crash and
+That checkpoint held merge and used default-off behavior. The original surface-crest crash and
 physical Windows/NVIDIA owner acceptance remain separate unresolved evidence.
 
 **Waterwall provisional crash containment, 2026-11-18:** Draft #672 retains the

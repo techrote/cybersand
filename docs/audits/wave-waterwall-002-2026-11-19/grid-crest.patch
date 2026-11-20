@@ -1,0 +1,105 @@
+--- a/native/bench/wave_waterwall.cpp
++++ b/native/bench/wave_waterwall.cpp
+@@ -82,0 +83,2 @@
++    t.spill.grid_rounds = number("grid_rounds", 0);
++    if (t.spill.grid_rounds < 0 || t.spill.grid_rounds > 8) throw std::invalid_argument("grid_rounds outside 0..8");
+@@ -249 +251,2 @@
+-            rect(w, 16, 16, 1, 41, Material::Wall);
++            const int ofs = number("tank_x_offset",0);
++            rect(w, ofs+16, 16, 1, 41, Material::Wall);
+@@ -251,6 +254,6 @@
+-            rect(w, 81, lip, 1, 57 - lip, Material::Wall);
+-            rect(w, 16, 56, 66, 1, Material::Wall);
+-            rect(w, 16, 80, 98, 1, Material::Wall);
+-            rect(w, 113, 56, 1, 25, Material::Wall);
+-            rect(w, 17, 45, 64, 11, Material::Water);
+-            rect(w, 17, 39, 32, 6, Material::Water);
++            rect(w, ofs+81, lip, 1, 57 - lip, Material::Wall);
++            rect(w, ofs+16, 56, 66, 1, Material::Wall);
++            rect(w, ofs+16, 80, 98, 1, Material::Wall);
++            rect(w, ofs+113, 56, 1, 25, Material::Wall);
++            rect(w, ofs+17, 45, 64, 11, Material::Water);
++            rect(w, ofs+17, 39, 32, 6, Material::Water);
+@@ -326,0 +330,2 @@
++        if (number("test_wall",0)) rect(w,number("test_wall",0),0,1,80,Material::Wall);
++        if (number("pause128",0)) w.set_simulation_region(RectI64{0,0,128,128});
+--- a/native/include/cybersand/wave_flow.hpp
++++ b/native/include/cybersand/wave_flow.hpp
+@@ -106,0 +107 @@
++    std::int32_t grid_rounds = 0; // scratch pilot, 0..8
+--- a/native/src/world.cpp
++++ b/native/src/world.cpp
+@@ -1769 +1769 @@
+-        config_.wave_flow.flux_smoothing != 0);
++        config_.wave_flow.flux_smoothing != 0, config_.wave_flow.spill.grid_rounds != 0);
+--- a/native/src/world_pressure.inc
++++ b/native/src/world_pressure.inc
+@@ -2301,0 +2302 @@
++                if (!wave.hold.empty()) hash_integer(hash, wave.hold[i]);
+@@ -2396,0 +2398 @@
++        if (tune.spill.grid_rounds != 0) hash_integer(hash, tune.spill.grid_rounds);
+--- a/native/src/world_wave.inc
++++ b/native/src/world_wave.inc
+@@ -47,2 +47,2 @@
+-    explicit WaveChunk(std::size_t count, std::size_t columns, bool smooth)
+-        : flux(count, 0), prior_flux(smooth ? count : 0U), weight(count, 0), meta(count, 0), dry(columns, 0) {}
++    explicit WaveChunk(std::size_t count, std::size_t columns, bool smooth, bool grid)
++        : flux(count, 0), prior_flux(smooth ? count : 0U), hold(grid ? count : 0U), face_hold(grid ? count : 0U), weight(count, 0), meta(count, 0), dry(columns, 0) {}
+@@ -50,0 +51 @@
++    std::vector<std::int8_t> hold, face_hold; // signed remaining rounds, per cell and per face (scratch)
+@@ -274 +275 @@
+-                                chunk->wave->meta.capacity() + chunk->wave->dry.capacity() + sizeof(WaveChunk);
++                                chunk->wave->meta.capacity() + chunk->wave->hold.capacity() + chunk->wave->face_hold.capacity() + chunk->wave->dry.capacity() + sizeof(WaveChunk);
+@@ -313,0 +315 @@
++    if (tune.spill.grid_rounds != 0) hash_integer(hash, tune.spill.grid_rounds);
+@@ -361,0 +364 @@
++            if (!wave.hold.empty()) hash_integer(hash, wave.hold[i]);
+@@ -372,0 +376 @@
++        if (!chunk->wave->hold.empty()) chunk->wave->hold[at.index] = 0;
+@@ -483 +487,4 @@
+-                flags[base + ly] = meta[static_cast<std::size_t>(ly) * static_cast<std::size_t>(size)] & WaveChunk::kFull;
++                const auto i = static_cast<std::size_t>(ly) * static_cast<std::size_t>(size);
++                flags[base + ly] = meta[i] & WaveChunk::kFull;
++                if (material == Material::Water && !chunk.wave->hold.empty() && chunk.wave->hold[i + static_cast<std::size_t>(lx)] != 0)
++                    flags[base + ly] |= 128;
+@@ -526,0 +534,7 @@
++                continue;
++            }
++            if ((flags[r] & 128) && mass[r] > 0) {
++                // The grid owns this crest cell. Other Water can settle above
++                // it but never pass through it or steal the reserved walk.
++                retain_overfill(r + 1, segment_bottom);
++                segment_bottom = r - 1; dst = -1; chain = false;
+@@ -812,0 +827 @@
++                if (!wave.face_hold.empty()) wave.face_hold[i] = 0;
+@@ -844,0 +860,11 @@
++                if (!wave.hold.empty() && (wave.hold[i] != 0 || other->wave->hold[j] != 0)) {
++                    // Only one outward face can spend a tagged donor. Two
++                    // opposing donors split an Empty receiver's nominal room.
++                    const bool push_right = wave.hold[i] > 0 && a > 0 && b == 0;
++                    const bool push_left = other->wave->hold[j] < 0 && b > 0 && a == 0;
++                    const int units = push_right ? std::min(a, maximum / 2) : push_left ? -std::min(b, maximum / 2) : 0;
++                    wave.flux[i] = units * (1 << P::kFluxShift);
++                    wave.face_hold[i] = static_cast<std::int8_t>(push_right ? wave.hold[i] - 1 : push_left ? other->wave->hold[j] + 1 : 0);
++                    wave.half[task.half].pending_flux = wave.half[task.half].pending_flux || units != 0;
++                    continue;
++                }
+@@ -1007 +1033,6 @@
+-                    if (state.launch && throwing_row && !donor_falling && destination_mass == 0 && available >= spill.launch_min) {
++                    if (spill.grid_rounds && !donor_falling && donor_head <= maximum && destination_mass == 0 && available >= spill.launch_min) {
++                        // Select the same crest row as ballistic grace. Use
++                        // one conservative Wave face for entry into the air.
++                        wave.face_hold[i] = static_cast<std::int8_t>(rightward ? spill.grid_rounds : -spill.grid_rounds);
++                        flux = static_cast<std::int64_t>(rightward ? available : -available) * (1 << P::kFluxShift);
++                    } else if (state.launch && throwing_row && !donor_falling && destination_mass == 0 && available >= spill.launch_min) {
+@@ -1132,0 +1164,10 @@
++                if (!wave.hold.empty()) {
++                    const auto west = lx > wave.min_x ? wave.face_hold[i - 1] : lx == 0 && left != nullptr &&
++                        left->wave->included(size - 1, ly) ? left->wave->face_hold[row + stride - 1] : 0;
++                    const auto east = face_open ? wave.face_hold[i] : 0;
++                    // Head-on arrivals merge and drop on the next round. A
++                    // single arriving share inherits the sending face's TTL.
++                    wave.hold[i] = incoming > 0 && outgoing < 0 ? 0 :
++                        incoming > 0 && west > 0 ? static_cast<std::int8_t>(west) :
++                        outgoing < 0 && east < 0 ? static_cast<std::int8_t>(east) : 0;
++                }

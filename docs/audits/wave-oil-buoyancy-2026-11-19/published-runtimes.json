@@ -1,0 +1,23 @@
+{
+  "source_commit": "8359ec44e0f129addcf41a54877ed088830960ed",
+  "run": "https://github.com/techrote/cybersand/actions/runs/44632041754",
+  "platforms": {
+    "windows": {
+      "sha256": "1cb0351270c2f75a5b84c9b7c9d5418c2972e0840cd23db6adae6f0ab73b0fe5",
+      "native_inputs": 95,
+      "build_inputs": 872,
+      "validated_logs": 15,
+      "godot_error_lines": 0,
+      "qualification": "package-execution"
+    },
+    "linux": {
+      "sha256": "edc30015ee4283f9c03f1ec15358b2e1b672723235f0637ee90b9e4b648ef250",
+      "native_inputs": 95,
+      "build_inputs": 872,
+      "validated_logs": 12,
+      "godot_error_lines": 0,
+      "qualification": "graphical"
+    }
+  },
+  "canonical_git_blobs_verified": 967
+}

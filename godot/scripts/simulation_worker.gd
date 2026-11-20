@@ -36,7 +36,12 @@ var _mutex: Mutex = Mutex.new()
 var _native_worker_request: int = int(ProjectSettings.get_setting("cybersand/native_worker_threads", 0))
 # The Linux test build uses the compiled native phased backend. Unsupported
 # platforms retain the script world as a functional compatibility fallback.
-var _world = _create_world()
+var _world: Variant
+var _gameplay_water: bool
+
+func _init(gameplay_water: bool = false) -> void:
+	_gameplay_water = gameplay_water
+	_world = _create_world()
 var _character: CyberSampledCharacter = CyberSampledCharacter.new()
 var _actor_session: CyberActorPrototypeSession = ActorSession.new()
 var _usable_session: CyberUsableSession = UsableSession.new()
@@ -1041,7 +1046,7 @@ func _sample_worker_participation(now_usec: int) -> Dictionary:
 
 func _create_world():
 	if ClassDB.class_exists(&"CyberNativeCellWorld"):
-		var native_world: Object = ClassDB.instantiate(&"CyberNativeCellWorld")
+		var native_world: Object = ClassDB.class_call_static(&"CyberNativeCellWorld",&"create_gameplay_world") if _gameplay_water else ClassDB.instantiate(&"CyberNativeCellWorld")
 		if native_world != null:
 			return native_world
 	return CyberCellWorld.new()
@@ -2631,7 +2636,7 @@ func _worker_loop() -> void:
 			_physical_usables.reset()
 			var recovered: bool = true
 			if _world.has_method(&"has_failed"):
-				recovered = bool(_world.reset_demo_world())
+				recovered = bool(_world.reset_demo_world(true)) if _gameplay_water else bool(_world.reset_demo_world())
 			else:
 				_world.reset_demo_world()
 			if recovered:

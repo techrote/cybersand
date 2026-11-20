@@ -74,6 +74,7 @@ struct BallisticParcel {
     std::uint16_t source_body = 0; // launching transient body id; 0 = none
     std::uint8_t contacts = 0;     // hard rebounds so far
     std::uint8_t deferrals = 0;    // saturating deposition refusals
+    std::uint8_t coyote_left = 0;  // only Wave spill crest launches can start with grace
     [[nodiscard]] friend bool operator==(const BallisticParcel&, const BallisticParcel&) = default;
 };
 

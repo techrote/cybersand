@@ -134,6 +134,7 @@ func conversation_checks() -> void:
 	root.add_child(resumed)
 	check(resumed.resume_traffic(panel.provider.log_path) == panel.conversation,"edited transcript survives reopening traffic")
 	check(resumed.resumed_last_result == panel.last_result,"native feedback remains independent of editable transcript")
+	check(resumed.log_path.is_empty() and resumed.parent_log_path == panel.provider.log_path,"read-only transcript replay does not copy traffic")
 	var resume_path: String = resumed.log_path
 	resumed.queue_free()
 	if not resume_path.is_empty(): DirAccess.remove_absolute(resume_path)
@@ -173,6 +174,7 @@ func conversation_checks() -> void:
 	resumed = Provider.new()
 	root.add_child(resumed)
 	check(resumed.resume_traffic(panel.provider.log_path).is_empty(),"cleared transcript stays cleared after reopen")
+	check(resumed.log_path.is_empty(),"cleared transcript replay creates no duplicate archive")
 	resume_path = resumed.log_path
 	resumed.queue_free()
 	if not resume_path.is_empty(): DirAccess.remove_absolute(resume_path)

@@ -121,6 +121,9 @@ func run() -> void:
 	await until(func(): return not art.active,"Stop retires sparse polygon after partial progress")
 	panel.provider.requested_model = ""
 	# Context modes use this exact fixture, independently of any resumed session.
+	panel._ensure_history_loaded()
+	await until(func(): return panel.conversation_loaded or not panel.provider.resume_error.is_empty(),"history restore reaches a result before seeding context fixture")
+	check(panel.conversation_loaded,"history is available after hidden traffic before seeding context fixture")
 	panel.conversation.clear()
 	for i: int in range(16): panel.conversation.append({"role":"user","content":"turn %d" % i})
 	panel.context_mode.select(0)

@@ -61,9 +61,13 @@ constexpr double kGranularBearingCorrectionFraction = 0.99;
 
 }  // namespace
 
-CyberNativeCellWorld::CyberNativeCellWorld() {
+CyberNativeCellWorld::CyberNativeCellWorld(bool gameplay_water) {
     create_world();
-    reset_demo_world();
+    reset_demo_world(gameplay_water);
+}
+
+Ref<CyberNativeCellWorld> CyberNativeCellWorld::create_gameplay_world() {
+    return Ref<CyberNativeCellWorld>(memnew(CyberNativeCellWorld(true)));
 }
 
 CyberNativeCellWorld::~CyberNativeCellWorld() = default;
@@ -149,8 +153,12 @@ void CyberNativeCellWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("get_liquid_construction_attempt"), &CyberNativeCellWorld::get_liquid_construction_attempt);
     ClassDB::bind_static_method("CyberNativeCellWorld", D_METHOD("auto_worker_threads", "logical_threads"), &CyberNativeCellWorld::auto_worker_threads);
     ClassDB::bind_static_method("CyberNativeCellWorld", D_METHOD("logical_processor_count"), &CyberNativeCellWorld::logical_processor_count);
-    ClassDB::bind_method(D_METHOD("reset_demo_world"),
-                         &CyberNativeCellWorld::reset_demo_world);
+    ClassDB::bind_static_method("CyberNativeCellWorld", D_METHOD("create_gameplay_world"),
+                                &CyberNativeCellWorld::create_gameplay_world);
+    ClassDB::bind_static_method("CyberNativeCellWorld", D_METHOD("gameplay_water_options"),
+                                &CyberNativeCellWorld::gameplay_water_options);
+    ClassDB::bind_method(D_METHOD("reset_demo_world", "gameplay_water"),
+                         &CyberNativeCellWorld::reset_demo_world, DEFVAL(false));
     ClassDB::bind_method(D_METHOD("get_default_demo_identity"), &CyberNativeCellWorld::get_default_demo_identity);
     ClassDB::bind_method(D_METHOD("simulation_tick"),
                          &CyberNativeCellWorld::simulation_tick);
@@ -333,7 +341,72 @@ void CyberNativeCellWorld::create_world() {
     }
 }
 
-bool CyberNativeCellWorld::reset_demo_world() {
+void CyberNativeCellWorld::select_gameplay_water(cybersand::WorldConfig& config, bool enabled) {
+    if (enabled || config.wave_flow.enabled) config.ballistic_water = {};
+    config.wave_flow = {};
+    if (!enabled) return;
+    config.inertial_signed_vertical = false;
+    auto& wave = config.wave_flow;
+    wave.enabled = true;
+    wave.substeps = 2;
+    wave.gain = 32;
+    wave.deep_gain = 32;
+    wave.floor_gain = 1024;
+    wave.flux_smoothing = 16;
+    wave.coast = 32;
+    wave.empty_pour_shift = 2;
+    wave.damp_shift = 16;
+    wave.calm_damp_shift = 8;
+    wave.calm = 128;
+    wave.stick = 128;
+    wave.sleep_after = 90;
+    wave.body_push_by_mass = 1;
+    wave.spill.enabled = true;
+    wave.spill.sheet_rate = 64;
+    wave.spill.coyote_ticks = 4;
+    wave.spill.full_face = 1;
+    wave.spill.fall = 3;
+    wave.spill.draw = 127;
+    wave.spill.draw_head = 255;
+    wave.spill.deep_draw = 64;
+    wave.spill.launch_budget = 128;
+    config.ballistic_water.enabled = true;
+}
+
+Dictionary CyberNativeCellWorld::gameplay_water_options() {
+    cybersand::WorldConfig config{};
+    select_gameplay_water(config, true);
+    const auto& wave = config.wave_flow;
+    Dictionary options;
+    options["workbench_wave_flow"] = wave.enabled;
+    options["workbench_ballistic"] = config.ballistic_water.enabled;
+    options["workbench_wave_substeps"] = static_cast<std::int64_t>(wave.substeps);
+    options["workbench_wave_gain"] = wave.gain;
+    options["workbench_wave_deep_gain"] = wave.deep_gain;
+    options["workbench_wave_floor_gain"] = wave.floor_gain;
+    options["workbench_wave_flux_smoothing"] = wave.flux_smoothing;
+    options["workbench_wave_coast"] = wave.coast;
+    options["workbench_wave_empty_pour_shift"] = wave.empty_pour_shift;
+    options["workbench_wave_damp_shift"] = wave.damp_shift;
+    options["workbench_wave_calm_damp_shift"] = wave.calm_damp_shift;
+    options["workbench_wave_calm"] = wave.calm;
+    options["workbench_wave_stick"] = wave.stick;
+    options["workbench_wave_sleep_after"] = wave.sleep_after;
+    options["workbench_wave_body_push_by_mass"] = wave.body_push_by_mass;
+    options["workbench_wave_spill"] = wave.spill.enabled;
+    options["workbench_wave_spill_parcels"] = wave.spill.launch_budget > 0;
+    options["workbench_wave_spill_sheet_rate"] = wave.spill.sheet_rate;
+    options["workbench_wave_spill_coyote_ticks"] = wave.spill.coyote_ticks;
+    options["workbench_wave_spill_full_face"] = wave.spill.full_face != 0;
+    options["workbench_wave_spill_fall"] = wave.spill.fall;
+    options["workbench_wave_spill_draw"] = wave.spill.draw;
+    options["workbench_wave_spill_draw_head"] = wave.spill.draw_head;
+    options["workbench_wave_spill_deep_draw"] = wave.spill.deep_draw;
+    options["workbench_wave_spill_launch_budget"] = wave.spill.launch_budget;
+    return options;
+}
+
+bool CyberNativeCellWorld::reset_demo_world(bool gameplay_water) {
     if (world_ == nullptr) return false;
     bool committed = false;
     try {
@@ -341,7 +414,11 @@ bool CyberNativeCellWorld::reset_demo_world() {
         config.physics_diagnostics = {};
         config.interaction_policy = {};
         config.liquid_solver_policy = {}; // The ordinary demo runs every liquid's default.
-        config.wave_flow = {}; // Returning from the evaluator retires its opt-in law.
+        if (gameplay_water) {
+            config.transport_policy = {};
+            config.water_experiment_policy = cybersand::WaterExperimentPolicy{};
+        }
+        select_gameplay_water(config, gameplay_water);
         // Resetting to FreeMass also retires the PF-only gas-capacity profile.
         config.pressure_gas_compartment_capacity = cybersand::PressureFlowParameters::kCompartmentCapacity;
         config.maximum_rule_radius = kProtectedCurrentRuleRadius;
@@ -1902,6 +1979,9 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         };
         config.wave_flow.active_rows = wave_integer("wave_active_rows", config.wave_flow.active_rows);
         config.wave_flow.gain = wave_integer("wave_gain", config.wave_flow.gain);
+        config.wave_flow.deep_gain = wave_integer("wave_deep_gain", config.wave_flow.deep_gain);
+        config.wave_flow.floor_gain = wave_integer("wave_floor_gain", config.wave_flow.floor_gain);
+        config.wave_flow.flux_smoothing = wave_integer("wave_flux_smoothing", config.wave_flow.flux_smoothing);
         config.wave_flow.gain_confined = wave_integer("wave_gain_confined", config.wave_flow.gain_confined);
         config.wave_flow.stiffness = wave_integer("wave_stiffness", config.wave_flow.stiffness);
         config.wave_flow.damp_shift = wave_integer("wave_damp_shift", config.wave_flow.damp_shift);
@@ -2556,6 +2636,9 @@ Dictionary CyberNativeCellWorld::get_wave_flow_status() const try {
     Dictionary parameters;
     parameters["active_rows"] = config.wave_flow.active_rows;
     parameters["gain"] = config.wave_flow.gain;
+    parameters["deep_gain"] = config.wave_flow.deep_gain;
+    parameters["floor_gain"] = config.wave_flow.floor_gain;
+    parameters["flux_smoothing"] = config.wave_flow.flux_smoothing;
     parameters["gain_confined"] = config.wave_flow.gain_confined;
     parameters["stiffness"] = config.wave_flow.stiffness;
     parameters["damp_shift"] = config.wave_flow.damp_shift;
@@ -2581,10 +2664,12 @@ Dictionary CyberNativeCellWorld::get_wave_flow_status() const try {
         Dictionary spill;
         spill["enabled"] = wave_spill;
         spill["parcels"] = wave_spill && world_->ballistic_water_enabled() && s.launch_budget > 0;
+        spill["full_face"] = s.full_face != 0;
         spill["fall"] = s.fall;
         spill["share_shift"] = s.share_shift;
         spill["draw"] = s.draw;
         spill["draw_head"] = s.draw_head;
+        spill["deep_draw"] = s.deep_draw;
         spill["stream"] = s.stream;
         spill["launch_min"] = s.launch_min;
         spill["launch_budget"] = s.launch_budget;
@@ -2592,6 +2677,8 @@ Dictionary CyberNativeCellWorld::get_wave_flow_status() const try {
         spill["stream_share"] = s.stream_share;
         spill["blobs"] = s.catch_falling;
         spill["stream_draw"] = s.stream_draw;
+        spill["sheet_rate"] = s.sheet_rate;
+        spill["coyote_ticks"] = s.coyote_ticks;
         spill["spill_units"] = static_cast<std::int64_t>(wave.spill_units);
         spill["relief_units"] = static_cast<std::int64_t>(wave.relief_units);
         spill["spill_faces"] = static_cast<std::int64_t>(wave.spill_faces);

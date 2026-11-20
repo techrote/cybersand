@@ -1,0 +1,83 @@
+{
+  "source": "d0d939bdfa17446057e228ef0f910f6005e75b69",
+  "tree": "859f465a5c98ec43fa8858f9057f02730c1d07a8",
+  "godot": "4.7.stable.official.5b4e0cb0f",
+  "native": "4640207680cf5d23619b35beca1063f38576341b5d437ab3d37a2742bc95833c",
+  "map": "7aba8a47c926cc1911bc4ee519179c595b686692d5c78db8f103b8b62d311acb",
+  "zip": "CyberSand-Water-Ramp-Windows-d0d939bdfa17.zip",
+  "bytes": 92030100,
+  "sha256": "58279c0729c3983625e505ecb2f819620a7b480a2a1faa5717930e2cbc1d85cb",
+  "files": 950,
+  "input_fingerprint": "3a7124589cea4f9e14f3ad04ea8ba0c77b202ca7e46aa6f30603ea09e2ae142f",
+  "launcher_runs": 2,
+  "first_installed_exact_map": true,
+  "second_preserved_existing": true,
+  "verified_original_payload_files_after_execution": 950,
+  "unpacked_spill_log_sha256": "e9db9d3af2961ffff3834e0a429f9b7a0755e7c048ddce51fdc7eea6a14f0f29",
+  "extracted_graphical": [
+    {
+      "fixture": "map",
+      "submitted_frames": 4,
+      "samples": [
+        {
+          "tick": 0,
+          "water": "9773895",
+          "cells": 38329
+        },
+        {
+          "tick": 100,
+          "water": "9773895",
+          "cells": 38805
+        },
+        {
+          "tick": 300,
+          "water": "9773895",
+          "cells": 38779
+        },
+        {
+          "tick": 600,
+          "water": "9773895",
+          "cells": 39072
+        }
+      ],
+      "native": "4640207680cf5d23619b35beca1063f38576341b5d437ab3d37a2742bc95833c",
+      "fresh_workers": 6,
+      "capture_receipt_sha256": "0a17ba2b25493a35660a8d10a0c7cee65a7e7cd5d3ce1277f22592dcf49f1d2b"
+    },
+    {
+      "fixture": "flat",
+      "submitted_frames": 5,
+      "samples": [
+        {
+          "tick": 0,
+          "water": "261120",
+          "cells": 1024
+        },
+        {
+          "tick": 8,
+          "water": "261120",
+          "cells": 1046
+        },
+        {
+          "tick": 16,
+          "water": "261120",
+          "cells": 1022
+        },
+        {
+          "tick": 32,
+          "water": "261120",
+          "cells": 1055
+        },
+        {
+          "tick": 64,
+          "water": "261120",
+          "cells": 1100
+        }
+      ],
+      "native": "4640207680cf5d23619b35beca1063f38576341b5d437ab3d37a2742bc95833c",
+      "fresh_workers": 6,
+      "capture_receipt_sha256": "1c6ef7b2487958e46246e61c1eadacb03e1bcdf7e7b17a39d28a19b94ad03137"
+    }
+  ],
+  "hardware": "Windows 11 Pro x64, NVIDIA TITAN RTX, OpenGL ES via ANGLE D3D11"
+}

@@ -1,0 +1,169 @@
+{
+  "archive": "CyberSand-Wave-Oil-Lava-Windows-b5f2f95a34a5.zip",
+  "bytes": 92670937,
+  "clean_extractions_verified": 2,
+  "dll": "ad96ac5ff048a040515af4aa12d34eb624fa755f4ec0213e31e087fbff616d3f",
+  "file_count": 952,
+  "fingerprint": "87e95f6bc25abd6f469461d52f0efc28fb028efd8b666bc32985afda95a32d6f",
+  "manifest": "8853835f620ec2d0edeb4e83f64c37d34a53e49ef643977bed6a2d2d59294a99",
+  "maps": {
+    "maps/setup-oil-tank.json": "a74babb457c11d17b890b64745fe60438b256fa976b5563d3d67a9e5aaa11c7c",
+    "maps/setup-water-ramp.json": "7aba8a47c926cc1911bc4ee519179c595b686692d5c78db8f103b8b62d311acb",
+    "maps/setup-water-wall.json": "925096d1e9984b855b5465309ef12869a47e29052e0cabd5a25788a051b77107"
+  },
+  "parent_archive_sha256": "ebface6aa8dd410e93654886c4dfefce28e16d47ffd612246d6743d5d8a07288",
+  "sha256": "84b32e84db847911d81432b260060369ac5dbd18fdeb44333da4ffa802dd3da1",
+  "source": "b5f2f95a34a574c9aa76f79bfdcd897eb66fa727",
+  "tree": "8d9123779939c5a3d8ad7895603c1bb4e19d82a8",
+  "clean_owner_extraction_hashes_verified": 952,
+  "toolchain": "Godot 4.7.stable.official.5b4e0cb0f, Windows x86-64, LLVM-MinGW 20260826 / Clang 23.1.0",
+  "graphics": "NVIDIA TITAN RTX, OpenGL 3.3 / Compatibility",
+  "same_brush_sequence": {
+    "previous": {
+      "tick": 721,
+      "oil_cells": 1793,
+      "oil_span_cells": 85,
+      "oil_max_thickness": 47,
+      "oil_median_occupied_thickness": 19,
+      "oil_p90_occupied_thickness": 40,
+      "oil_in_original_brush_disc": 1201,
+      "oil_in_original_brush_columns": 1441,
+      "oil_without_water_above": 1215,
+      "stone_cells": 0,
+      "steam_cells": 0
+    },
+    "candidate": {
+      "tick": 721,
+      "oil_cells": 1793,
+      "oil_span_cells": 174,
+      "oil_max_thickness": 46,
+      "oil_median_occupied_thickness": 6.0,
+      "oil_p90_occupied_thickness": 32,
+      "oil_in_original_brush_disc": 998,
+      "oil_in_original_brush_columns": 1205,
+      "oil_without_water_above": 1284,
+      "stone_cells": 0,
+      "steam_cells": 0
+    },
+    "next_lava_tick": {
+      "tick": 722,
+      "oil_cells": 1016,
+      "oil_span_cells": 174,
+      "oil_max_thickness": 45,
+      "oil_median_occupied_thickness": 4.0,
+      "oil_p90_occupied_thickness": 22,
+      "oil_in_original_brush_disc": 425,
+      "oil_in_original_brush_columns": 602,
+      "oil_without_water_above": 591,
+      "stone_cells": 46,
+      "steam_cells": 46
+    },
+    "120_lava_ticks": {
+      "tick": 841,
+      "oil_cells": 1016,
+      "oil_span_cells": 182,
+      "oil_max_thickness": 37,
+      "oil_median_occupied_thickness": 4,
+      "oil_p90_occupied_thickness": 15,
+      "oil_in_original_brush_disc": 467,
+      "oil_in_original_brush_columns": 605,
+      "oil_without_water_above": 560,
+      "stone_cells": 646,
+      "steam_cells": 679
+    }
+  },
+  "delayed_lava_t1500": {
+    "previous": {
+      "tick": 1500,
+      "oil_cells": 1793,
+      "oil_span_cells": 69,
+      "oil_max_thickness": 43,
+      "oil_median_occupied_thickness": 26,
+      "oil_p90_occupied_thickness": 36,
+      "oil_in_original_brush_disc": 145,
+      "oil_in_original_brush_columns": 590,
+      "oil_without_water_above": 1328,
+      "stone_cells": 0,
+      "steam_cells": 0
+    },
+    "candidate": {
+      "tick": 1500,
+      "oil_cells": 1793,
+      "oil_span_cells": 258,
+      "oil_max_thickness": 27,
+      "oil_median_occupied_thickness": 7.0,
+      "oil_p90_occupied_thickness": 14,
+      "oil_in_original_brush_disc": 0,
+      "oil_in_original_brush_columns": 65,
+      "oil_without_water_above": 1480,
+      "stone_cells": 0,
+      "steam_cells": 0
+    },
+    "120_lava_ticks": {
+      "tick": 1620,
+      "oil_cells": 1631,
+      "oil_span_cells": 256,
+      "oil_max_thickness": 21,
+      "oil_median_occupied_thickness": 6,
+      "oil_p90_occupied_thickness": 11,
+      "oil_in_original_brush_disc": 0,
+      "oil_in_original_brush_columns": 47,
+      "oil_without_water_above": 1392,
+      "stone_cells": 829,
+      "steam_cells": 865
+    }
+  },
+  "checks": {
+    "candidate-launcher": {
+      "error_lines": 0,
+      "log_sha256": "2e2b04afc8ea211ad843686166935af6d7efadc76d5ec7d829da82dd31b1241d",
+      "observations": [
+        "\u001b[92m[ DONE ]\u001b[39m \u001b[1mfirst_scan_filesystem\u001b[22m",
+        "\u001b[92m[ DONE ]\u001b[39m \u001b[1mupdate_scripts_classes\u001b[22m",
+        "\u001b[92m[ DONE ]\u001b[39m \u001b[1m_update_scan_actions\u001b[22m",
+        "\u001b[92m[ DONE ]\u001b[39m \u001b[1mreimport\u001b[22m",
+        "\u001b[92m[ DONE ]\u001b[39m \u001b[1mreimport\u001b[22m",
+        "\u001b[92m[ DONE ]\u001b[39m \u001b[1mloading_editor_layout\u001b[22m",
+        "SHARED_WORKBENCH_LAUNCH_READY"
+      ]
+    },
+    "candidate-graphical": {
+      "error_lines": 0,
+      "log_sha256": "910028312fef8f48982df91dd4e156a6e04b927c466d673757e56c60440f5fd6",
+      "observations": [
+        "DONE [] {  }"
+      ]
+    },
+    "candidate-long": {
+      "error_lines": 0,
+      "log_sha256": "3af5d6f7832f4a7df6148ac6d505a05806ef7ed36f3748c1c073d482c79d36f4",
+      "observations": [
+        "DONE [] {  }"
+      ]
+    },
+    "candidate-tank": {
+      "error_lines": 0,
+      "log_sha256": "c16706795e02d6e6e317d4bdaaad7e00e955916e3a25fefde686672923c306b8",
+      "observations": [
+        "OIL_PACKAGE loaded {\"columns\":0,\"oil\":48,\"surfaced\":0} release=true fall=3",
+        "OIL_PACKAGE resting {\"columns\":38,\"oil\":48,\"surfaced\":48} sampled_ticks=540..600 launched=809..809",
+        "OIL_PACKAGE passed {\"columns\":38,\"fresh_thrown\":62604,\"late_thrown\":0,\"load\":\"real_workbench\",\"surfaced\":48,\"tick\":630}"
+      ]
+    }
+  },
+  "controls": {
+    "enabled": true,
+    "parcels": true,
+    "full_face": true,
+    "fall": 3,
+    "wave_enabled": true,
+    "workers": 6
+  },
+  "included_maps_verified_against_owner_zip": true,
+  "issuer_baseline_package": {
+    "archive": "CyberSand-Wave-Oil-Windows-461b1c148541.zip",
+    "dll": "2d31f8c7d732e1dad1973f2d6bc9dfbc6bed7c8150451269dfab601b886940e6",
+    "source": "461b1c1485418bcd8f83f29efe1cccf7ef4a9928",
+    "sha256": "ebface6aa8dd410e93654886c4dfefce28e16d47ffd612246d6743d5d8a07288"
+  }
+}

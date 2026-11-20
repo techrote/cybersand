@@ -1,0 +1,229 @@
+{
+  "source": "d4df71fc6bc1bf6267270a4c1445207a02716317",
+  "platform": "Ubuntu 24.04 WSL2, g++ 13.3.0 -O3 -DNDEBUG -pthread; 6 workers, 1 substep",
+  "candidate_bench_sha256": "2784d7f099e7e78caf3597aa88c50f5a17bc2c4709f9259b0878f44fe11215b1",
+  "wave_suite_sha256": "7b8bd16b5e45ed49930b267ebc06cfa43b9817a3f40093ef4654eb421aac3963",
+  "modes": {
+    "default": {
+      "tank": {
+        "scene": "tank",
+        "positive_extrema_tick_cells": [
+          [
+            0,
+            3.8201022
+          ],
+          [
+            396,
+            0.7306849
+          ],
+          [
+            788,
+            0.1394812
+          ]
+        ],
+        "period_ticks": 394,
+        "amplitude_retained_per_period": 0.19108225006678298,
+        "mean_curvature_rms_cells_t20_300": 0.1686163676056338,
+        "log_sha256": "28da12d5313d6e680b01a1e4620009a23a7d1b368cf70877b3357b9662904294",
+        "end_hash": "20dbda837486c834"
+      },
+      "tank_open": {
+        "scene": "tank_open",
+        "positive_extrema_tick_cells": [
+          [
+            0,
+            3.8201022
+          ],
+          [
+            392,
+            0.4933614
+          ],
+          [
+            808,
+            0.1342637
+          ]
+        ],
+        "period_ticks": 404,
+        "amplitude_retained_per_period": 0.18747433193585067,
+        "mean_curvature_rms_cells_t20_300": 0.1628556985915493,
+        "log_sha256": "38de5be28b1c58c5a0eb59a1a8785212b20d3e09f493240329612285bf9fa0bc",
+        "end_hash": "380503b3e1f2dda3"
+      },
+      "blob": {
+        "scene": "blob",
+        "front_right_x": {
+          "0": 69,
+          "20": 74,
+          "40": 77,
+          "80": 82,
+          "120": 85,
+          "160": 89
+        },
+        "log_sha256": "33fed9979018e893e39cf5b6f75ef6806869f154ccbd796dfeb3db1495e047e4",
+        "end_hash": "3c2efb424d408b42"
+      }
+    },
+    "slow": {
+      "tank": {
+        "scene": "tank",
+        "positive_extrema_tick_cells": [
+          [
+            0,
+            3.8201022
+          ],
+          [
+            488,
+            2.5275355
+          ],
+          [
+            968,
+            1.6386907
+          ]
+        ],
+        "period_ticks": 484,
+        "amplitude_retained_per_period": 0.6549543087380686,
+        "mean_curvature_rms_cells_t20_300": 0.4597780309859155,
+        "log_sha256": "a443ab2fa202f421f3fd873a7b5529dd76f1626ef216944eef014a06dea13b57",
+        "end_hash": "f664fd6ec91a0b83"
+      },
+      "tank_open": {
+        "scene": "tank_open",
+        "positive_extrema_tick_cells": [
+          [
+            0,
+            3.8201022
+          ],
+          [
+            476,
+            0.7255907
+          ],
+          [
+            1000,
+            0.2457303
+          ]
+        ],
+        "period_ticks": 500,
+        "amplitude_retained_per_period": 0.2536248858116979,
+        "mean_curvature_rms_cells_t20_300": 0.4073776704225352,
+        "log_sha256": "d3f5d0d6fa6ccaf6f00eb7b620869bfa304ab2554898ffcf53e5f369edbf7ffe",
+        "end_hash": "58eafb5ca899c84f"
+      },
+      "blob": {
+        "scene": "blob",
+        "front_right_x": {
+          "0": 69,
+          "20": 74,
+          "40": 78,
+          "80": 83,
+          "120": 87,
+          "160": 91
+        },
+        "log_sha256": "29a2eb9b3dd79d57605072edc7531a7021a43b745c90757a05bdb3114168e0bd",
+        "end_hash": "d5ab6a2eb191cb82"
+      }
+    },
+    "sloshy": {
+      "tank": {
+        "scene": "tank",
+        "positive_extrema_tick_cells": [
+          [
+            0,
+            3.8201022
+          ],
+          [
+            536,
+            2.9330092
+          ],
+          [
+            1072,
+            2.0681454
+          ]
+        ],
+        "period_ticks": 536,
+        "amplitude_retained_per_period": 0.7357885805049773,
+        "mean_curvature_rms_cells_t20_300": 0.07508787323943662,
+        "log_sha256": "095ff126a1ce558a4fb9afe31bd685b2f05e431ae1a872c5ec20d04c96bdfaab",
+        "end_hash": "554793d3ce9282a3"
+      },
+      "tank_open": {
+        "scene": "tank_open",
+        "positive_extrema_tick_cells": [
+          [
+            0,
+            3.8201022
+          ],
+          [
+            568,
+            0.4810281
+          ],
+          [
+            1164,
+            0.4244287
+          ]
+        ],
+        "period_ticks": 582,
+        "amplitude_retained_per_period": 0.3333226920869132,
+        "mean_curvature_rms_cells_t20_300": 0.07277386197183099,
+        "log_sha256": "31cccdb6b7633880ec556c1c77444774c0b65415e1babcbb497efb11f7069ae0",
+        "end_hash": "86a67117cbd2f666"
+      },
+      "blob": {
+        "scene": "blob",
+        "front_right_x": {
+          "0": 69,
+          "20": 75,
+          "40": 78,
+          "80": 84,
+          "120": 89,
+          "160": 94
+        },
+        "log_sha256": "cc620fb7be74a3a7221ec82abf5e04e14a221bb75696ec967a61da28b1ed4f9e",
+        "end_hash": "80c36995d68e6872"
+      }
+    }
+  },
+  "lip": {
+    "0": {
+      "first_flight_tick_in_probe": null,
+      "peak_probe_flight_units": 0,
+      "integrated_probe_flight_unit_ticks": 0,
+      "launched_parcels": 570,
+      "launched_units": 46236,
+      "launch_refusals": 0,
+      "launch_deferrals": 0,
+      "launch_capacity_skips": 0,
+      "max_live": 92,
+      "probe": [
+        85,
+        32,
+        32,
+        12
+      ],
+      "end_hash": "54832d60f2180576",
+      "hydrograph_sha256": "f9cc9aba610e208e9b701e8d4ae6fd940caaf3cec2640fd7a9bb59a6c5a9f683",
+      "log_sha256": "348aac9a5e267117475bbf5310e7d4039b22a70949fc0cfaa744d704deed9328",
+      "max_abs_drift_units": 0
+    },
+    "4": {
+      "first_flight_tick_in_probe": 146,
+      "peak_probe_flight_units": 597,
+      "integrated_probe_flight_unit_ticks": 90259,
+      "launched_parcels": 553,
+      "launched_units": 44537,
+      "launch_refusals": 0,
+      "launch_deferrals": 0,
+      "launch_capacity_skips": 0,
+      "max_live": 99,
+      "probe": [
+        85,
+        32,
+        32,
+        12
+      ],
+      "end_hash": "20136ad53e268cb5",
+      "hydrograph_sha256": "54ce237b0555c7fbd73adac7cb56505148b8d35411e13b5d53d5df29a7053fd5",
+      "log_sha256": "e73f270908beeb8b52d60805eaccc89bddc133faaec29e6e88755ee3ec73468d",
+      "max_abs_drift_units": 0
+    }
+  }
+}

@@ -118,12 +118,12 @@ func run() -> void:
 	var resumed = P.new()
 	root.add_child(resumed)
 	var restored: Array = resumed.resume_traffic(panel.provider.log_path)
-	check(restored == panel.conversation and resumed.log_path != panel.provider.log_path,"restore transcript with independent traffic file")
+	check(restored == panel.conversation and resumed.log_path.is_empty() and resumed.parent_log_path == panel.provider.log_path,"read-only transcript restore creates no duplicate traffic file")
 	if panel.image_input.button_pressed:
 		var original_image := ""
 		for entry: Dictionary in restored:
 			if entry.has("image_offset"):
-				original_image = resumed.historical_image(int(entry.image_offset))
+				original_image = resumed.historical_image(int(entry.image_offset),str(entry.get("image_log_path","")))
 				if not original_image.is_empty(): break
 		check(original_image.begins_with("data:image/png;base64,"),"original canvas image restored from request log")
 	resumed.queue_free()

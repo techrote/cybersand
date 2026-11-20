@@ -49,5 +49,27 @@ func _run() -> void:
 	invalid[0] = 255
 	expect(not bridge.import_level(world, invalid), "Invalid material accepted")
 	expect(bridge.export_level(world) == original, "Invalid native import changed level")
+	var host: Control = load("res://web_main.tscn").instantiate()
+	root.add_child(host)
+	host.set_process(false)
+	host.set_physics_process(false)
+	expect(host.ready_to_play and host.native_world.get_wave_flow_status().enabled
+		and host.native_world.get_wave_flow_status().spill.parcels, "Ordinary Web controller starts Wave with spray")
+	expect(not host._encode_current().ok and host._encode_current().error.contains("FreeMass"), "Wave save explains the CYSD1 boundary")
+	host.ui.next_water.item_selected.emit(1)
+	expect(host.native_world.get_wave_flow_status().enabled, "Web law selection is staged until a new demo")
+	host.select_demo("waterworks",false)
+	expect(not host.native_world.get_wave_flow_status().enabled and host._encode_current().ok,"explicit FreeMass game may save")
+	host.ui.next_water.item_selected.emit(0)
+	host.select_demo("neon_works",false)
+	expect(host.native_world.get_wave_flow_status().enabled, "new demo returns to Wave on request")
+	host.import_save(encoded.text)
+	expect(host.last_save_error.is_empty() and not host.gameplay_water and host.ui.next_water.selected == 1
+		and not host.native_world.get_wave_flow_status().enabled and bridge.export_level(host.native_world) == original,
+		"actual controller imports the legacy slot exactly and retains its law for restart")
+	host.restart_world()
+	expect(not host.native_world.get_wave_flow_status().enabled, "explicit legacy law survives restart")
+	host.queue_free()
+	await process_frame
 	print("Web demo setup fixture: four constructors, stepping, CYSD1 and native rejection; failures=", failures)
 	quit(0 if failures == 0 else 1)
