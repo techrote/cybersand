@@ -451,6 +451,31 @@ REVIEWED_TRANSITIONS += ({'path': 'native/src/world_pressure.inc',
   'issue': 661,
   'pr': 661},)
 
+# Waterwall 002 opts into Wave scratch storage and configuration/flight identity.
+REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
+  'from_lf_sha256': '80e05f673b3d6ba35daa7c741805aa272f149e7742d162c94c8c0bd9bdbc1e83',
+  'to_lf_sha256': 'fef05d7f0318f0a54948144ee22f30721555a567ac3963309c927b60fbfb0cf0',
+  'source_commit': 'd876bd57897dd421b720e73d15d7c89a830b4896',
+  'record': 'docs/audits/2026-11-19-wave-waterwall-002.md',
+  'issue': 672,
+  'pr': 676},
+ {'path': 'native/src/world_pressure.inc',
+  'from_lf_sha256': 'c5d639212290c9a4faee47f86a3cfe5bf664a5a51d241d4b5c9c1cdb985b6105',
+  'to_lf_sha256': 'bce02406c837967e95206ea6f6e93145b2b327a1d42e3e6e29da9d3507603d03',
+  'source_commit': 'd876bd57897dd421b720e73d15d7c89a830b4896',
+  'record': 'docs/audits/2026-11-19-wave-waterwall-002.md',
+  'issue': 672,
+  'pr': 676})
+
+# Apply bounds live crest grace to the destination's flight law.
+REVIEWED_TRANSITIONS += ({'path': 'native/src/world_pressure.inc',
+  'from_lf_sha256': 'bce02406c837967e95206ea6f6e93145b2b327a1d42e3e6e29da9d3507603d03',
+  'to_lf_sha256': '0e012c7f2944cf8d5f9d8aa383e8635bbbd313d26fc5079160a02d5f4e1e3a0f',
+  'source_commit': 'd4df71fc6bc1bf6267270a4c1445207a02716317',
+  'record': 'docs/audits/2026-11-19-wave-waterwall-002.md',
+  'issue': 672,
+  'pr': 676},)
+
 def lf(data: bytes) -> bytes:
     return data.replace(b"\r\n", b"\n")
 

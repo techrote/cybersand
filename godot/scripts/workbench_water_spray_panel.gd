@@ -40,6 +40,7 @@ var _spill_toggles: Dictionary = {}
 var _spill_fields: Dictionary = {}
 var _spill_applied: Dictionary = {}
 var _spill_status := Label.new()
+var _max_over_ledge: Button
 var _jet_point: Callable
 var _workbench: Control
 var _water_pages: Dictionary = {}
@@ -91,26 +92,31 @@ const WAVE_SPINS := [
 	["workbench_wave_adhesion_shift", "Adhesion shift", 0, 8, 1, 1, "Surface adhesion film is Water film / 2^N. Larger = less sticky."],
 	["workbench_wave_body_push", "Body push", 0, 1024, 16, 256, "How hard Wave Water pushes actors and bodies, n/256 of the original push. 0 = no push. Affects only the force offered to Rapier, never the Water itself."],
 	["workbench_wave_body_push_by_mass", "Push by amount", 0, 1, 1, 1, "1: each wet cell pushes in proportion to the Water it holds, so a faint trickle barely touches a flyer. 0: every wet cell pushes like a full one (original Wave)."],
+	["workbench_wave_deep_gain", "Deep gain", 0, 512, 1, 0, "Response of deep open Water. Lower values slow broad waves. Shallow Water keeps Gain. Zero uses Gain everywhere."],
+	["workbench_wave_flux_smoothing", "Flux smoothing", 0, 64, 1, 0, "Smooth changes in horizontal flow between nearby faces. Higher values soften short peaks. Zero turns smoothing off."],
 ]
 # WAVE-WATERWALL-001: Wave-only exposed-face spill. Off = original Wave Flow.
 const SPILL_SWITCHES := [
 	["workbench_wave_spill", "Waterwall spill", "enabled",
-		"Exposed Water faces beside open air discharge quickly, unsupported Water falls faster and a pool can feed its draining edge. Off = original Wave Flow, for comparison."],
+		"Exposed Water faces beside open air discharge quickly, unsupported Water falls faster and a pool can feed its draining edge. Off disables exposed-face discharge and keeps the selected Wave tuning."],
 	["workbench_wave_spill_parcels", "Ballistic release", "parcels",
 		"Exposed faces throw their Water outward as ballistic parcels that arc, land and rejoin the grid. Needs Waterwall spill and uses the Ballistic Water parcels, so it turns Ballistic Water on. Off = faces drain through the grid only and drop straight."],
 ]
 const SPILL_SPINS := [
 	["workbench_wave_spill_fall", "Fall speed", 1, 8, 1, 3, "fall", "Cells that unsupported Water falls per solver round."],
 	["workbench_wave_spill_draw", "Pool feed", 0, 127, 1, 64, "draw", "Mass units per round a pool may move toward a draining edge. Zero keeps the Wave Coast limit."],
+	["workbench_wave_spill_draw_head", "Feed head limit", 0, 65535, 1, 255, "draw_head", "Maximum opposing head (Water units) against which Pool feed stays active. Larger values sustain flow toward the edge as the surface changes."],
 	["workbench_wave_spill_launch_speed", "Throw speed", 0, 512, 8, 256, "launch_speed", "Outward parcel speed as n/256 of the head speed sqrt(2 g h). Ballistic release only."],
 	["workbench_wave_spill_launch_budget", "Parcels / tick", 0, 4096, 16, 256, "launch_budget", "Most parcels launched per native tick. Faces beyond it spill through the grid on the next tick. Zero never launches."],
 	["workbench_wave_spill_blobs", "Blobs", 0, 1, 1, 1, "blobs", "1: thrown water that meets falling water merges into it and clumps into blobs. 0: it flies through. Ballistic release only."],
 	["workbench_wave_spill_stream_share", "Stream share", 0, 255, 8, 0, "stream_share", "n/256 of each thrown share keeps pouring straight down as a vertical stream. Higher values thin the throw and slow draining. Ballistic release only."],
 	["workbench_wave_spill_stream_draw", "Stream draw", 0, 255, 8, 0, "stream_draw", "n/256 of each thrown share additionally pours straight down from the face as a vertical stream, without thinning the throw. The pool behind the face refills it. Ballistic release only."],
+	["workbench_wave_spill_sheet_rate", "Sheet rate", 0, 127, 1, 0, "sheet_rate", "Grid discharge per full cell of head per round. With a sheet, deep rows pour and the top edge can still throw. Zero keeps ordinary spill."],
+	["workbench_wave_spill_coyote_ticks", "Coyote ticks", 0, 8, 1, 0, "coyote_ticks", "Ticks a released crest travels outward before gravity pulls it down. Zero starts gravity immediately. Ballistic release only."],
 ]
 # Settings that only matter while Ballistic release is on.
 const SPILL_PARCEL_KEYS := ["workbench_wave_spill_launch_speed","workbench_wave_spill_launch_budget",
-	"workbench_wave_spill_blobs","workbench_wave_spill_stream_share","workbench_wave_spill_stream_draw"]
+	"workbench_wave_spill_blobs","workbench_wave_spill_stream_share","workbench_wave_spill_stream_draw","workbench_wave_spill_coyote_ticks"]
 const WAVE_PRESETS := [
 	{"label":"v2 defaults","values":{}},
 	{"label":"Lively","values":{
@@ -132,7 +138,17 @@ const WAVE_PRESETS := [
 		"workbench_wave_level_shift":4,"workbench_wave_sleep_after":20,"workbench_wave_rest_head":1,
 		"workbench_wave_stick":1024,"workbench_wave_calm":1024,"workbench_wave_calm_damp_shift":2,
 		"workbench_wave_empty_pour_shift":3,"workbench_wave_adhesion_shift":0}},
+	{"label":"Sloshy","values":{
+		"workbench_wave_deep_gain":16,"workbench_wave_flux_smoothing":16,
+		"workbench_wave_coast":64,"workbench_wave_sleep_after":90,
+		"workbench_wave_damp_shift":16,"workbench_wave_calm_damp_shift":8,
+		"workbench_wave_calm":128,"workbench_wave_stick":128}},
 ]
+const MAX_OVER_LEDGE := {
+	"workbench_wave_spill_sheet_rate":64,"workbench_wave_spill_coyote_ticks":4,
+	"workbench_wave_spill_draw":127,"workbench_wave_spill_draw_head":65535,
+	"workbench_wave_spill_fall":8,"workbench_wave_spill_launch_budget":128,
+}
 
 func build(owner: Control, parent: Control, row_factory: Callable, jet_point: Callable, water_pages: Dictionary = {}) -> void:
 	host = owner
@@ -222,12 +238,12 @@ func build(owner: Control, parent: Control, row_factory: Callable, jet_point: Ca
 	tuning.add_child(_wave_dialog_status)
 	var limitations := Label.new()
 	limitations.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	limitations.text = "Experimental: no PressureFlow pressure/gas field, buoyancy, falling lateral momentum or physical-state save."
+	limitations.text = "Wave omits pressure, gas and buoyancy. Grid Water falls vertically. Ballistic releases carry horizontal momentum. Save records the starting canvas."
 	tuning.add_child(limitations)
 	_wave_notice.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_wave_notice.text = "Reset stages v2 defaults. Apply solver / tuning or Load / reset scene installs requested values."
 	tuning.add_child(_wave_notice)
-	for group: Array in [["Motion / response",0,8],["Sleep / rest",8,14],["Transfer / capacity",14,18],["Bodies (Rapier actors)",18,20]]:
+	for group: Array in [["Motion / response",0,8],["Sleep / rest",8,14],["Transfer / capacity",14,18],["Bodies (Rapier actors)",18,20],["Wave shape",20,22]]:
 		var heading := Label.new()
 		heading.text = group[0]
 		tuning.add_child(heading)
@@ -363,17 +379,17 @@ func _free_unparented_controls() -> void:
 		if is_instance_valid(node) and node.get_parent() == null: node.free()
 
 func _build_spill(tuning: Control, row_factory: Callable) -> void:
-	# One Wave-specific subsection: a switch to compare against original Wave,
-	# the release mode and four meaningful numbers. Everything is a staged
-	# construction request until native acknowledges Apply.
+	var row: Control = row_factory.call(tuning)
 	var heading := Label.new()
 	heading.text = "Waterwall spill · exposed faces (experimental)"
-	tuning.add_child(heading)
+	row.add_child(heading)
+	_max_over_ledge = _button(row,"Max over-ledge",_stage_max_over_ledge)
+	_max_over_ledge.tooltip_text = "Stage a falling sheet with outward spray and a brief crest overhang. Apply installs the bundle."
 	var explanation := Label.new()
 	explanation.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	explanation.text = "Stops tall Water faces hanging beside open air. An approximation, not physics: quantity is conserved exactly. Presets and Reset Wave defaults do not change these."
+	explanation.text = "Max over-ledge stages the spill controls below. Wave presets and Reset Wave defaults affect only Wave tuning."
 	tuning.add_child(explanation)
-	var row: Control = row_factory.call(tuning)
+	row = row_factory.call(tuning)
 	for spec: Array in SPILL_SWITCHES:
 		var toggle := CheckButton.new()
 		var key: String = spec[0]
@@ -416,6 +432,15 @@ func _build_spill(tuning: Control, row_factory: Callable) -> void:
 	_spill_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_spill_status.text = "Waterwall spill · awaiting native readback"
 	tuning.add_child(_spill_status)
+
+func _stage_max_over_ledge() -> void:
+	_set_spill("workbench_wave_spill_parcels",true)
+	for spec: Array in SPILL_SPINS:
+		var key: String = spec[0]
+		var value := int(MAX_OVER_LEDGE.get(key,spec[5]))
+		host.workbench_water_options[key] = value
+		_spill_fields[key].set_value_no_signal(value)
+	_wave_notice.text = "Max over-ledge staged. Apply to use these spill settings."
 
 func _set_spill(key: String, on: bool) -> void:
 	host.workbench_water_options[key] = on
@@ -693,6 +718,7 @@ func _update_wave_controls() -> void:
 		var field: SpinBox = value
 		field.editable = enabled
 	_wave_preset.disabled = not enabled
+	if _max_over_ledge != null: _max_over_ledge.disabled = not enabled
 	var spill_on := enabled and _option_on("workbench_wave_spill")
 	for toggle: CheckButton in _spill_toggles.values(): toggle.disabled = not enabled
 	for key: String in _spill_fields:
@@ -945,7 +971,7 @@ func _refresh_spill(wave: Dictionary, wave_requested: bool, changes: Array[Strin
 		if different: changes.append(str(spec[1]))
 		actual_values.append("%s: requested %s; %s" % [spec[1],str(requested_value),label.text])
 	if not bool(spill.enabled):
-		_spill_status.text = "Waterwall spill OFF · original Wave Flow is running."
+		_spill_status.text = "Waterwall spill OFF"
 		return
 	_spill_status.text = "Waterwall spill ON · %s · exposed-face transfer %d units · falling %d cells\nParcels: launched %d (%d units) · in flight %d / %d (peak %d, %d units) · landed %d units · refused %d · deferred %d · pool full %d ticks · launch %.3f ms/tick · flight %.3f ms" % [
 		"ballistic release" if bool(spill.get("parcels",false)) else "grid only",

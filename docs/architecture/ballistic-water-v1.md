@@ -246,3 +246,7 @@ numbers and their advisory limits.
   refusals are described above.
 - Human gameplay acceptance, Windows/Linux CI, source-matched runtime publication
   and independent review remain open.
+
+## Wave Waterwall 002 crest flight
+
+With Wave spill release on, Coyote ticks gives a top-row throw up to eight active flight ticks of level travel. It starts with zero vertical velocity. Horizontal speed includes its outward face flux and obeys the parcel speed limit. The owner counts the grace down and books gravity impulse starting with the first tick that applies gravity. Paused-region and collision rules still apply. Applying a replacement law clamps remaining grace to the new owner's limit. Generic jets, spray, body launches and injected parcels start with zero grace. The [Wave law](wave-flow-v1.md#waterwall-002-sheet-crest-and-scale-selective-damping) owns eligibility and face budgets.

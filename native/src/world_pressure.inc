@@ -227,6 +227,10 @@ World::WorkbenchLiquidTransfer World::inherit_workbench_liquid_state(const World
             (!whole_cell_water_enabled() || origin.quantity == maximum) && origin.quantity <= maximum;
         if (!fits) { transfer.discarded_in_flight_water += origin.quantity; continue; }
         auto parcel = origin;
+        // A retained crest adopts the new owner's flight law on Workbench Apply.
+        const auto grace = config_.wave_flow.enabled && config_.wave_flow.spill.enabled
+            ? config_.wave_flow.spill.coyote_ticks : 0;
+        parcel.coyote_left = static_cast<std::uint8_t>(std::min<int>(parcel.coyote_left, grace));
         parcel.age = 0;
         parcel.source_body = 0;
         parcel.vx = std::clamp(parcel.vx, -config_.ballistic_water.max_speed_q, config_.ballistic_water.max_speed_q);
@@ -2390,6 +2394,14 @@ std::uint64_t World::physical_state_hash_impl(std::optional<LiquidStateProjectio
             hash_integer(hash, tune.empty_pour_shift); hash_integer(hash, tune.flow_share_shift);
             hash_integer(hash, tune.adhesion_shift);
         }
+        if (tune.flux_smoothing != 0) {
+            for (const char c : std::string_view{"wave-flux-smoothing"}) hash_byte(hash, static_cast<std::uint8_t>(c));
+            hash_integer(hash, tune.flux_smoothing);
+        }
+        if (tune.deep_gain != 0) {
+            for (const char c : std::string_view{"wave-deep-gain"}) hash_byte(hash, static_cast<std::uint8_t>(c));
+            hash_integer(hash, tune.deep_gain);
+        }
         if (tune.spill.enabled) {
             // WAVE-WATERWALL-001: absent while disabled, so the qualified
             // Wave stream is unchanged. Parcels are bound by the ballistic block.
@@ -2403,6 +2415,7 @@ std::uint64_t World::physical_state_hash_impl(std::optional<LiquidStateProjectio
                 for (const char c : std::string_view{"stream-draw"}) hash_byte(hash, static_cast<std::uint8_t>(c));
                 hash_integer(hash, tune.spill.stream_draw);
             }
+            hash_wave_discharge(hash, tune.spill, ballistic_parcels_);
         }
         hash_integer(hash, wave_->round);
     }

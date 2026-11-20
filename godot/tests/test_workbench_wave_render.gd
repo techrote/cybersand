@@ -40,11 +40,27 @@ func button(label: String, scope: Node = null) -> Button:
 
 func click(control: Button) -> bool:
 	if not expect(control != null and control.is_visible_in_tree(),"visible real control"): return false
-	var point := control.get_global_rect().get_center()
 	var window := control.get_window()
-	# Embedded windows receive real pointer events through the root viewport.
-	# A direct child-Window push does not route to its visible controls.
-	if window != root: point += Vector2(window.position)
+	# The toolbar can reflow when native status arrives. Move to its current
+	# centre and wait for the same routed hover and layout across one frame.
+	var point := Vector2.ZERO
+	var ready := false
+	var hovered: Control
+	var deadline := Time.get_ticks_msec()+5000
+	while Time.get_ticks_msec() < deadline:
+		var bounds := control.get_global_rect()
+		point = bounds.get_center()
+		if window != root: point += Vector2(window.position)
+		var motion := InputEventMouseMotion.new()
+		motion.position = point
+		motion.global_position = point
+		root.push_input(motion,true)
+		await process_frame
+		hovered = window.gui_get_hovered_control()
+		if not control.disabled and bounds == control.get_global_rect() and (hovered == control or (hovered != null and control.is_ancestor_of(hovered))):
+			ready = true
+			break
+	if not expect(ready,"pointer over "+control.text+" (hit "+str(hovered)+")"): return false
 	var pressed := [false]
 	control.pressed.connect(func() -> void: pressed[0] = true,CONNECT_ONE_SHOT)
 	for down: bool in [true,false]:
@@ -54,7 +70,7 @@ func click(control: Button) -> bool:
 		event.button_index = MOUSE_BUTTON_LEFT
 		event.pressed = down
 		root.push_input(event,true)
-		await process_frame
+	await process_frame
 	return expect(pressed[0],"real pointer event reaches "+control.text)
 
 func pick(picker: OptionButton, index: int) -> bool:

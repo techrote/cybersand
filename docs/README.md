@@ -10,6 +10,8 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+For Waterwall 002, see the [Water Lab controls](operations/workbench-water-lab.md#try-the-waterwall-002-candidate), [Wave law](architecture/wave-flow-v1.md#waterwall-002-sheet-crest-and-scale-selective-damping) and [dated comparison](audits/2026-11-19-wave-waterwall-002.md).
+
 For deliberate historical research, use the isolated
 [engineering archaeology index](history/engineering/README.md). It is excluded
 from default current-answer retrieval and grants no implementation authority.
