@@ -42,6 +42,21 @@ function Get-Distribution($Values) {
     return $Result
 }
 
+function Get-MaterialTreatment($Arm, [string]$Driver, [string]$Adapter) {
+    if ($Arm.material -ne 'full' -and $Driver -eq 'opengl3_angle' -and
+        $Adapter -match 'Microsoft Basic Render Driver.*Direct3D11') {
+        return [ordered]@{ requested=$Arm.material; backend='full'; policy='windows_angle_warp_full' }
+    }
+    return [ordered]@{ requested=$Arm.material; backend=$Arm.material; policy='' }
+}
+
+function Assert-MaterialTreatment($Publication, $Treatment) {
+    Assert-Result ($null -ne $Publication -and (Get-Field $Publication 'requested_mode') -eq $Treatment.requested -and
+        (Get-Field $Publication 'backend') -eq $Treatment.backend -and
+        (Get-Field $Publication 'policy' '') -eq $Treatment.policy -and
+        -not (Get-Field $Publication 'fallback_reason')) 'Material publication route differs from the expected backend policy'
+}
+
 function Read-Transition($Data, [string]$Folder, $Manifest, $Arm, [string]$Driver, [string]$Nonce) {
     Assert-Result ($Data.schema -eq 'pubpres-transition-v1' -and $Data.complete -eq $true -and $Data.case -eq 'transition_2048_w1') 'Transition receipt incomplete'
     Assert-Result ($Data.context.source_revision -eq $Manifest.source_commit -and $Data.context.display_server -ne 'headless' -and
@@ -51,6 +66,7 @@ function Read-Transition($Data, [string]$Folder, $Manifest, $Arm, [string]$Drive
     Assert-Result (($Data.display.window -join 'x') -eq '960x720' -and $Data.display.max_fps -eq 0 -and $Data.display.vsync_mode -eq 0) 'Transition display differs from uncapped donor setup'
     Assert-Result ($Data.history.current_matches -and $Data.history.previous_matches) 'Transition lost texture history'
     Assert-Result ((Get-Sha (Join-Path $Folder 'receipt-after.png')) -eq $Data.screenshot_sha256) 'Transition screenshot differs'
+    $Treatment = Get-MaterialTreatment $Arm $Driver $Data.context.video_adapter
     $Phases = [ordered]@{}
     $Modes = @{}
     $Dense = 0
@@ -63,12 +79,12 @@ function Read-Transition($Data, [string]$Folder, $Manifest, $Arm, [string]$Drive
         Assert-Result ($Sample.sequence -eq $Sequence -and $Sample.sample -eq $Index -and $Sample.accepted -eq $true -and
             $Sample.accepted_revision -eq $Sequence+1 -and $Sample.phase -eq $Phase -and $Sample.dense -eq $IsDense -and
             $Sample.patch_bytes -eq $(if ($IsDense) {8388608} else {128})) 'Transition silently changed cadence or skipped input'
+        Assert-MaterialTreatment $Sample.material $Treatment
         $Backend = $Sample.material.backend
         $Modes[$Backend] = 1 + [int]$Modes[$Backend]
         if ($IsDense) { $Dense++ } elseif ($Backend -eq 'blit') { $Sparse++ }
-        if ($Arm.material -eq 'full') { Assert-Result ($Backend -eq 'full') 'Control did not use full publication' }
     }
-    Assert-Result ($Dense -eq 30 -and ($Arm.material -ne 'blit' -or $Sparse -gt 0)) 'Missing dense/sparse transfer coverage'
+    Assert-Result ($Dense -eq 30 -and ($Treatment.backend -ne 'blit' -or $Sparse -gt 0)) 'Missing dense/sparse transfer coverage'
     foreach ($Phase in @('enter_dense','dense','enter_sparse','sparse')) {
         $Rows = @($Data.samples | Where-Object { $_.phase -eq $Phase })
         $Phases[$Phase] = @{ frame_ms=(Get-Distribution $Rows.frame_ms); publication_ms=(Get-Distribution $Rows.publication_ms)
@@ -82,7 +98,7 @@ function Read-Transition($Data, [string]$Folder, $Manifest, $Arm, [string]$Drive
             engine=$Data.context.engine_sha256; driver=$Data.context.backend; display_server=$Data.context.display_server; display=$Data.display
             adapter=$Data.context.video_adapter; fixture=$Data.initial_plane_sha256; history=$Data.history }
         frame_ms=(Get-Distribution $Data.samples.frame_ms); publication_ms=(Get-Distribution $Data.samples.publication_ms)
-        phases=$Phases; backend_modes=$Modes; publications_per_second=$Data.samples.Count/$Seconds; dense_inputs=$Dense
+        phases=$Phases; material_treatment=$Treatment; backend_modes=$Modes; publications_per_second=$Data.samples.Count/$Seconds; dense_inputs=$Dense
         setup_ms=$Data.setup_usec/1000.0; static_memory_peak_bytes=($Data.samples.godot_static_memory_peak_bytes | Measure-Object -Maximum).Maximum
         reported_video_memory_bytes=(Get-Distribution $Data.samples.reported_video_memory_bytes)
         owned_staging_bytes=(Get-Distribution @($Data.samples | ForEach-Object { Get-Field $_.material 'allocated_gpu_bytes' }))
@@ -96,9 +112,10 @@ function Read-Physical($Data, [string]$Folder, $Manifest, $Geometry, $Scenario, 
         $Data.display.server -ne 'headless' -and $Workers.case_nonce -eq $Nonce -and $Workers.engine_sha256 -eq $Manifest.engine.gui_sha256) 'Physical source, process, engine or renderer differs'
     Assert-Result ($Data.family -eq $Scenario.family -and $Data.camera -eq $Scenario.camera -and $Data.repeat -eq $Repeat -and
         $Data.pose_mode -eq 'guarded' -and $Data.presentation_mode -eq $Arm.presentation -and $Data.cadence_mode -eq 'repaired' -and
-        $Data.material_publication.requested_mode -eq $Arm.material -and $Data.material_publication.backend -eq $Arm.material -and
         $Data.physics_publication -eq $Arm.physics -and $Workers.native_rendezvous.mode -eq 'off' -and
         $Workers.native_rendezvous.separate_render_thread -eq ($Thread -eq 'separate')) 'Physical treatment did not reach runtime'
+    $Treatment = Get-MaterialTreatment $Arm $Driver $Data.video_adapter
+    Assert-MaterialTreatment $Data.material_publication $Treatment
     Assert-Result (($Data.world_size -join 'x') -eq ($Geometry.world -join 'x') -and $Data.reference.json_sha256 -eq $Geometry.recipe_sha256 -and
         $Data.reference.generated_material_sha256 -eq $Geometry.generated_sha256 -and
         $Data.reference.installed_generated_sha256 -eq $Geometry.generated_sha256 -and $Data.reference.native_receipts -eq $Geometry.generation_receipts -and
@@ -150,6 +167,7 @@ function Read-Physical($Data, [string]$Folder, $Manifest, $Geometry, $Scenario, 
     $Steps = @($Events | Where-Object { $_.event -eq 'rapier_step' } | Sort-Object step)
     $Native = @($Events | Where-Object { $_.event -eq 'native_tick' } | Sort-Object tick_index)
     $Uploads = @($Events | Where-Object { $_.event -eq 'texture_upload' } | Sort-Object { Get-EventTime $_ })
+    foreach ($Upload in $Uploads) { Assert-MaterialTreatment $Upload.material_publication $Treatment }
     $Draws = @($Events | Where-Object { $_.event -eq 'framebuffer_draw' } | Sort-Object time_usec)
     $Pauses = @($Events | Where-Object { $_.event -eq 'rapier_hold' -and $_.reason -eq 'paused' } | Sort-Object time_usec)
     Assert-Result ($Frames.Count -gt 1 -and $Main.Count -gt 1 -and $Steps.Count -ge $Geometry.physical_step_target -and
@@ -195,7 +213,7 @@ function Read-Physical($Data, [string]$Folder, $Manifest, $Geometry, $Scenario, 
         material_snapshot_to_upload_ms=(Get-Distribution @($Uploads | Where-Object { $_.generated_usec -gt 0 } | ForEach-Object { ((Get-EventTime $_)-$_.generated_usec)/1000.0 }))
         frame_material_age_at_submission_ms=(Get-Distribution @($Frames | Where-Object { $_.render_snapshot_built_usec -gt 0 } | ForEach-Object { ($_.time_usec-$_.render_snapshot_built_usec)/1000.0 }))
         native_ticks_per_second=$Native.Count/$Data.capture_wall_seconds; rapier_steps_per_second=$Steps.Count/$Data.capture_wall_seconds
-        publications_per_second=$Uploads.Count/$Data.capture_wall_seconds; physical_holds=$Holds; sample_count=$Samples.Count
+        publications_per_second=$Uploads.Count/$Data.capture_wall_seconds; material_treatment=$Treatment; physical_holds=$Holds; sample_count=$Samples.Count
         wave_flow=$Wave
         worker_observed=(Get-Distribution @($Samples.workers_observed)); visible_step_observations=$VisibleTime.Count; rewinds=$Rewinds
         static_memory_peak_bytes=$Workers.static_memory_peak_bytes; reported_video_memory_final_bytes=$Workers.reported_video_memory_bytes

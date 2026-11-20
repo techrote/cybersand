@@ -224,6 +224,9 @@ finally {
             $Frame = $Stats.frame_ms
             $Gap = Get-Field $Stats 'physical_gap_ms'
             $Lines.Add(('{0} {1}{2} | frame p50/p95/p99/max {3:N2}/{4:N2}/{5:N2}/{6:N2} ms' -f $Row.scenario,$Arm.arm,$Arm.index,$Frame.p50,$Frame.p95,$Frame.p99,$Frame.max))
+            $Treatment = $Stats.material_treatment
+            $Policy = if ($Treatment.policy) { " ($($Treatment.policy))" } else { '' }
+            $Lines.Add("  material requested=$($Treatment.requested) actual=$($Treatment.backend)$Policy")
             if ($null -ne $Gap) { $Lines.Add(('  physical gaps {0:N2}/{1:N2}/{2:N2}/{3:N2} ms | native={4:N2}/s Rapier={5:N2}/s uploads={6:N2}/s' -f $Gap.p50,$Gap.p95,$Gap.p99,$Gap.max,$Stats.native_ticks_per_second,$Stats.rapier_steps_per_second,$Stats.publications_per_second)) }
         }
     }

@@ -7,6 +7,8 @@
 3. Close other CyberSand windows and run **Test It.cmd**. The ordinary campaign runs the original 2048-square dense/sparse transition sequence, real Needle Free and Follow with one and four requested workers, and a separate native Wave Flow Follow comparison. Each case uses fresh A–B–B–A processes. **Run Diagnostic.cmd** runs the Wave Flow Follow case. The optional `Test It.cmd -Extended` adds PressureFlow, CellularYield and Inertial controls, delayed ACK, and slow native progression.
 4. Inspect `Test-It-Results` and fill in this file. **Pack Results.cmd** includes the latest run's raw data, original screenshots, logs, source identity and these notes in one ZIP. Automated capture completion and physical acceptance are separate fields.
 
+Windows software ANGLE uses full material uploads for both launchers. The candidate still selects the early physics handoff and coherent presentation. The campaign reports the requested and actual material routes.
+
 ## Owner result
 
 Replace each HOLD with PASS, FAIL, or HOLD. Leave HOLD when evidence is missing or inconclusive.

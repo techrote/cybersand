@@ -7,16 +7,24 @@ func _run() -> void:
 	var direct := OS.get_environment("CYBERSAND_PUBPRES_PROBE_DIRECT_DRAWABLE") == "1"
 	var is_steady := OS.get_environment("CYBERSAND_PUBPRES_PROBE_STEADY_SPARSE") == "1"
 	var is_fixed := OS.get_environment("CYBERSAND_PUBPRES_PROBE_FIXED_MATERIAL") == "1"
+	var expect_warp_full := "--expect-warp-full" in OS.get_cmdline_user_args()
 	var mode := "direct_drawable" if direct else ("compact" if compact else "clone")
 	if is_steady:
 		mode = "steady_sparse"
 	elif is_fixed:
 		mode = "fixed_material"
+	elif expect_warp_full:
+		mode = "warp_full"
 	root.size = Vector2i(960, 720)
 	RenderingServer.call_on_render_thread(Callable(DisplayServer, "window_set_vsync_mode").bind(DisplayServer.VSYNC_DISABLED))
 	_build_host()
 	await RenderingServer.frame_post_draw
-	_check(strategy == "blit", "history oracle requires the blit publisher")
+	_check(strategy == "blit", "history oracle requires a blit request")
+	if expect_warp_full:
+		var adapter := RenderingServer.get_video_adapter_name()
+		_check(RenderingServer.get_current_rendering_driver_name() == "opengl3_angle"
+			and "Microsoft Basic Render Driver" in adapter and "Direct3D11" in adapter,
+			"expected the Windows ANGLE WARP renderer")
 	_check(DisplayServer.window_get_vsync_mode() == DisplayServer.VSYNC_DISABLED, "VSync must be disabled")
 	var expected := host.image.duplicate() as Image
 	var previous_rid: RID = host.previous_texture.get_rid()
@@ -54,6 +62,14 @@ func _run() -> void:
 		previous_matches += int(_check(previous_ok, "generation %d previous GPU bytes differ" % index))
 		_check(host.image.get_data() == pixels, "generation %d CPU bytes differ" % index)
 		var material: Dictionary = row.material
+		if expect_warp_full:
+			_check(material.backend == "full" and material.get("policy") == "windows_angle_warp_full"
+				and material.get("submitted_bytes") == 8388608 and material.get("fallback_reason") == "",
+				"generation %d did not use the WARP full-upload policy" % index)
+			if row.phase == "enter_sparse" and current_ok and previous_ok:
+				entry_history.append({"sequence": index, "current_sha256": _hash(current.get_data()),
+					"previous_sha256": _hash(previous.get_data())})
+			continue
 		_check(material.backend == "blit", "generation %d left the blit publisher" % index)
 		if is_steady:
 			_check(row.phase == "sparse" and row.patch_bytes == 128

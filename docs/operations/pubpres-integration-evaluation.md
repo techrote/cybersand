@@ -47,6 +47,14 @@ A complete native packet arrives detached from World and exchange storage. The w
 
 The blit publisher rotates two persistent linear RGBA8 texture targets. It takes a large, entirely dirty image directly through bounded staging and avoids extracting every tile before the whole copy. When a dense publication invalidates all slots in the recycled plane and the incoming edit touches at most four tiles, it copies the complete accepted GPU plane to the recycled target and stages only those tiles. It never reads from the target it is writing. The two drawable identities and preceding frame remain intact. Small or partial areas normally take the tile path. Neither path swaps texture representations when density changes. Queued `Image` inputs have a distinct immutable lifetime. The stage ring offers reuse distance. A submission receipt establishes queued work and ACK authority. It supplies no completion or scanout timestamp.
 
+On Windows ANGLE with the Microsoft Basic Render Driver over D3D11, a blit or
+auto request uses Main's full R8/RG8 image texture pair. The
+`windows_angle_warp_full` receipt policy records the effective route separately
+from a structural fallback. Main keeps two complete histories and selects the
+route before allocating the pair. Hosted coverage checks this policy on every
+timed material acceptance and compares both histories after every admission in
+a separate untimed replay. Hardware driver paths retain the existing selection.
+
 At 128 or more logical tiles, the copy-and-patch transition has its own preallocated one-tile and four-tile staging rings. Each ring uses the same slot limit as ordinary staging and independent textures, samplers and cursors. At 2048² RG8 with three slots the additional GPU texture payload is 491,520 bytes. Setup warms and accounts for those resources. This keeps the transition's staging reuse independent of later ordinary sparse updates.
 
 The coherent controller uses copied Rapier observations with actual completed step timestamps. Historical endpoints need qualified receipts and bounded age. A currently paused step can remain current. A previously current pose may hold briefly while continuously visible and certified against every contributing material texture. After withholding, re-entry requires a fresh endpoint check. Workbench paint and actor selection use the last submitted camera mapping.
@@ -106,3 +114,10 @@ The `fixed-material` control keeps both full-plane writes in each cycle and
 uses Reinforced Concrete for both. The visual condition still varies and all
 ten 8×8 edits are retained. It compares the original and fixed-material tapes
 under both full-only and blit publication, with unchanged product runtimes.
+
+The [fresh-storage probe](https://github.com/techrote/cybersand/actions/runs/44745728887/artifacts/14633770983)
+preserved both byte-exact planes and improved cadence over the original blit
+arms. Frame p95 remained 32.656–34.227 ms against 9.275–9.392 ms for the
+same-run full-only references. Its 15 long intervals per arm moved to later
+sparse frames. Together with the direct-update and compact-re-entry results,
+this established full publication as the Windows software ANGLE path.

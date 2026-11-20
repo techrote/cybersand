@@ -18,6 +18,7 @@ const CAPACITY_TILE_EXTENTS: Dictionary = {
 	64:Vector2i(8,8), 128:Vector2i(16,8), 256:Vector2i(16,16),
 }
 const COPY_SHADER = preload("res://shaders/material_publication_blit.gdshader")
+const WARP_FULL_UPLOAD_POLICY := "windows_angle_warp_full"
 
 class MaterialPlane extends Texture2D:
 	var drawable: DrawableTexture2D
@@ -95,6 +96,12 @@ var last_update: Dictionary = {}
 static func supported_driver() -> bool:
 	return OS.get_name() in ["Linux", "Windows"] and DisplayServer.get_name() != "headless" \
 		and RenderingServer.get_current_rendering_driver_name() in ["opengl3", "opengl3_angle"]
+
+
+static func requires_warp_full_upload(platform: String, driver: String, adapter: String) -> bool:
+	var name := adapter.to_lower()
+	return platform == "Windows" and driver == "opengl3_angle" \
+		and "microsoft basic render driver" in name and "direct3d11" in name
 
 
 static func create_pair(current_image: Image, previous_image: Image) -> CyberBlitMaterialPublisher:

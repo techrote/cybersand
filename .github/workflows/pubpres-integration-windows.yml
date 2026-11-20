@@ -72,7 +72,34 @@ jobs:
           Expand-Archive -LiteralPath $Zip -DestinationPath $Installed
           python tools/pubpres_integration/package_windows.py --source-sha $env:PUBPRES_SOURCE --output $Installed --verify
           if ($LASTEXITCODE -ne 0) { throw 'Extracted evaluation payload did not match its manifest' }
+      - name: Verify the WARP policy with per-revision history readback
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $Installed = Join-Path $env:RUNNER_TEMP 'pubpres installed'
+          $Project = Join-Path $env:RUNNER_TEMP 'pubpres-warp-oracle'
+          $Evidence = Join-Path $PWD 'installed-evidence\warp-policy'
+          [void][IO.Directory]::CreateDirectory($Evidence)
+          Copy-Item -LiteralPath (Join-Path $Installed 'godot') -Destination $Project -Recurse
+          $Engine = Join-Path $Installed 'Godot_v4.7-stable_win64_console.exe'
+          $env:APPDATA = Join-Path $env:RUNNER_TEMP 'pubpres-warp-oracle-profile'
+          $env:LOCALAPPDATA = $env:APPDATA
+          [void][IO.Directory]::CreateDirectory($env:APPDATA)
+          $env:CYBERSAND_SOURCE_REVISION = $env:PUBPRES_SOURCE
+          $env:CYBERSAND_MATERIAL_PUBLICATION = 'blit'
+          & $Engine --headless --path $Project --editor --quit *> (Join-Path $Evidence 'import.log')
+          if ($LASTEXITCODE -ne 0) { throw 'WARP history fixture import failed' }
+          $Receipt = Join-Path $Evidence 'receipt.json'
+          & $Engine --path $Project --rendering-method gl_compatibility --rendering-driver opengl3_angle --render-thread safe --audio-driver Dummy --script res://tests/pubpres_warp_transition_oracle.gd -- --material=blit --expect-warp-full "--receipt=$Receipt" *> (Join-Path $Evidence 'history.log')
+          if ($LASTEXITCODE -ne 0) { throw 'WARP full-upload history fixture failed' }
+          $Json = Get-Content -LiteralPath $Receipt -Raw | ConvertFrom-Json
+          if (-not $Json.complete -or $Json.mode -ne 'warp_full' -or
+              $Json.context.source_revision -ne $env:PUBPRES_SOURCE -or
+              $Json.current_matches -ne 180 -or $Json.previous_matches -ne 180 -or $Json.sparse_entries -ne 15) {
+            throw 'WARP history receipt is incomplete'
+          }
       - name: Exercise installed Needle, transition and native Wave Flow on hosted Windows ANGLE
+        if: ${{ !cancelled() }}
         shell: powershell
         run: |
           $ErrorActionPreference = 'Stop'
