@@ -227,14 +227,14 @@ void validator_authorization_regressions() {
     }
 }
 
-void decisive_native_witness(const a::Input& input,const a::Composition& two) {
+void nominal_native_witness(const a::Input& input,const a::Composition& two) {
     // Fixed known development fixture, seed605. This is real native generator
     // execution; the synthetic validator controls above cannot satisfy it.
     require(two.rounds.size()>=3,"registered reciprocal witness requires two actual negotiation rounds");
     require(occupied_changes(two.rounds[0].mosaic.result,two.rounds[1].mosaic.result)>0,
-            "round1 MOSAIC must change native masonry footprint in response to FRAME");
+            "round1 MOSAIC must change its native masonry footprint");
     require(occupied_changes(two.rounds[1].frame.result,two.rounds[2].frame.result)>0,
-            "round2 FRAME must reciprocate by changing its own native footprint");
+            "round2 FRAME must change its own native footprint");
     const auto assembly=std::find_if(two.rounds[2].frame.constructions.begin(),two.rounds[2].frame.constructions.end(),[&](const auto& part){
         return part.parts.size()>=3&&part.assembly.instances.size()>=3&&!part.assembly.claims.empty()&&
             std::any_of(two.joints.begin(),two.joints.end(),[&](const auto& joint){return joint.slot==part.slot&&joint.connector==part.connector;});
@@ -261,10 +261,69 @@ void decisive_native_witness(const a::Input& input,const a::Composition& two) {
     require(occupied_changes(one.rounds.back().frame.result,two.rounds[2].frame.result)>0,
             "reciprocal FRAME assembly differs from the same-seed single-round footprint");
 }
+
+void matched_counterfactual_regressions() {
+    // The original seed605 witness changes both footprints, but its MOSAIC
+    // change also occurs without offers once prior protected passages are
+    // preserved. Never use an unmatched initial proposal as causal evidence.
+    // Seed4099 is the genuine same-mask two-direction positive witness.
+    for(const auto seed:{605ULL,4099ULL}) {
+        const auto input=a::input_for(fixture("island"),profile("branching_irregular"),
+                                     seed,"swarm004-matched-counterfactual-tests");
+        const auto candidate=a::assemble(input);audit(candidate);
+        require(candidate.rounds.size()==3&&candidate.metrics.at("both_genteks_revised")==1,
+                "counterfactual fixture must retain both nominal native revisions");
+        const auto& initial=candidate.rounds[0];const auto& revised=candidate.rounds[1];
+        auto request=input.mosaic;request.profile.destruction=0;
+        if(request.protected_void.empty())request.protected_void.assign(initial.frame.result.cells.size(),0);
+        for(std::size_t i=0;i<request.protected_void.size();++i)
+            request.protected_void[i]=static_cast<std::uint8_t>(request.protected_void[i]||
+                (!initial.frame.result.boundary.protected_geometry.empty()&&initial.frame.result.boundary.protected_geometry[i])||
+                (!initial.mosaic.result.boundary.protected_geometry.empty()&&initial.mosaic.result.boundary.protected_geometry[i]));
+        a::MosaicBudget budget;
+        budget.generator_remaining=input.mosaic.limits.max_work-initial.mosaic_work;
+        budget.solver_remaining=input.mosaic.limits.max_solver_work-initial.solver_work;
+        budget.max_bytes=input.mosaic.limits.max_bytes;budget.proposals_remaining=4;
+        const auto no_offer=a::propose_mosaic_revision(request,initial.frame.result,{},input.shared_zone,
+            budget,1,&initial.mosaic.result,&initial.mosaic.categories,
+            input.options.optional_negotiation,input.options.native_mosaic_bearing);
+        require(no_offer.status==a::MosaicRevisionStatus::Complete,
+                "matched no-offer control must complete under the same remaining allowance");
+        require(no_offer.request.eligible==revised.mosaic_request.eligible&&
+                no_offer.request.protected_void==revised.mosaic_request.protected_void&&
+                no_offer.request.context==revised.mosaic_request.context&&
+                no_offer.request.neighbor_cells==revised.mosaic_request.neighbor_cells,
+                "causal comparison requires exact accepted masks/context/peer cells");
+        const auto mosaic_effect=occupied_changes(revised.mosaic.result,no_offer.plan.result);
+        require(seed==605?mosaic_effect==0:mosaic_effect>0,
+                "preserved-mask false positive and genuine offer-causal geometry must stay distinct");
+        auto frozen_input=input;frozen_input.options.mosaic_adaptation=false;
+        const auto frozen_peer=a::assemble(frozen_input);audit(frozen_peer);
+        require(!frozen_peer.rounds.empty()&&
+                frozen_peer.rounds.front().frame.result.cells==initial.frame.result.cells&&
+                frozen_peer.rounds.front().mosaic.result.cells==initial.mosaic.result.cells,
+                "frozen-peer counterfactual must preserve the exact initial native pair");
+        for(const auto& round:frozen_peer.rounds)
+            require(round.mosaic.result.cells==initial.mosaic.result.cells,
+                    "frozen-peer control may not revise MOSAIC");
+        require(occupied_changes(candidate.rounds.back().frame.result,frozen_peer.rounds.back().frame.result)>0,
+                "FRAME revision must depend on the changed peer geometry");
+        if(seed==4099) {
+            require(candidate.can_apply&&candidate.status==a::CompositionStatus::Complete&&
+                    !candidate.joints.empty()&&candidate.metrics.at("still_required")==0,
+                    "genuine reciprocal witness must retain full native foreign closure and Apply authorization");
+            auto reverse=a::assemble(input,true);audit(reverse);
+            require(reverse.digest==candidate.digest&&reverse.cells==candidate.cells&&reverse.can_apply,
+                    "causal positive composition must preserve reverse-evaluation determinism");
+        } else require(!candidate.can_apply,
+                       "nominal seed605 negative remains blocked; it is not a reciprocal success");
+    }
+}
 }
 int main(int argc,char**) try {
     const bool probe=argc>1;
     validator_authorization_regressions();
+    matched_counterfactual_regressions();
     std::uint64_t both=0,joints=0,complete=0;
     bool decisive=false;
     for(const auto& id:fixture_names())for(const auto* p:{"sparse_regular","branching_irregular","dense_cohesive"}) {
@@ -274,7 +333,7 @@ int main(int argc,char**) try {
         require(c.status==rev.status&&c.cells==rev.cells&&c.digest==rev.digest&&c.rounds.size()==rev.rounds.size(),"reverse evaluation changed accepted composition");
         for(std::size_t r=0;r<c.rounds.size();++r)require(c.rounds[r].semantic_digest==rev.rounds[r].semantic_digest,"round replay differs");
         both+=c.metrics.contains("both_genteks_revised")?c.metrics.at("both_genteks_revised"):0;joints+=c.joints.size();complete+=c.can_apply;
-        if(id=="island"&&std::string(p)=="branching_irregular") {decisive_native_witness(in,c);decisive=true;}
+        if(id=="island"&&std::string(p)=="branching_irregular") {nominal_native_witness(in,c);decisive=true;}
         if(probe)std::cout<<id<<'/'<<p<<" status="<<a::name(c.status)<<" apply="<<c.can_apply
             <<" rounds="<<c.rounds.size()<<" joints="<<c.joints.size()<<" both="<<(c.metrics.contains("both_genteks_revised")?c.metrics.at("both_genteks_revised"):0)
             <<" reason="<<c.reason<<'\n';

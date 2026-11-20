@@ -295,6 +295,39 @@ def main():
                         campaign_error = error
             if isinstance(campaign_error, RunnerCancelled):
                 raise campaign_error
+            if campaign_error is None:
+                causal = campaign / "causal"
+                causal_compressor = CompressionWorker(causal)
+                causal_compressor.start()
+                causal_command = [build / "audit_reciprocal_causality", causal, identity, args.lane]
+                if args.selected_policy:
+                    causal_command.append(args.selected_policy)
+                causal_error = None
+                try:
+                    runner.execute(args.lane + "-native-causal-controls", causal_command, 3600)
+                except BaseException as error:
+                    causal_error = error
+                finally:
+                    try:
+                        causal_compressor.finish(drain=not isinstance(causal_error, RunnerCancelled))
+                    except BaseException as error:
+                        manifest["causal_compression_error"] = f"{type(error).__name__}: {error}"
+                        if causal_error is None:
+                            causal_error = error
+                if causal_error:
+                    raise causal_error
+                causal_summary = json.loads((causal / "causal_summary.json").read_text())
+                native_campaign = json.loads((campaign / "campaign.json").read_text())
+                if (causal_summary.get("result") != "PASS" or causal_summary.get("source") != identity or
+                        causal_summary.get("lane") != args.lane):
+                    raise RuntimeError("Native causal controls lack a passing exact-source/lane receipt")
+                if (set(causal_summary["policy_totals"]) != set(native_campaign["registered_policies"]) or
+                        any(counts.get("cases") != native_campaign["expected_cases_per_policy"]
+                            for counts in causal_summary["policy_totals"].values())):
+                    raise RuntimeError("Native causal controls lack complete registered policy/case coverage")
+                manifest["causal_controls"] = {"summary": str(causal / "causal_summary.json"),
+                    "sha256": fingerprint(causal / "causal_summary.json"),
+                    "policy_totals": causal_summary["policy_totals"]}
             if (campaign / "campaign.json").is_file():
                 runner.execute(args.lane + "-native-gallery", [sys.executable, HERE / "reciprocal_gallery.py", campaign], 1800)
                 manifest["native_summary"] = json.loads((campaign / "reciprocal_summary.json").read_text())
@@ -314,7 +347,7 @@ def main():
         for sig, handler in prior.items():
             signal.signal(sig, handler)
         manifest["finished_utc"] = now()
-        manifest["binaries"] = {name: fingerprint(build / name) for name in ("gentek_reciprocal", *SUITES) if (build / name).is_file()}
+        manifest["binaries"] = {name: fingerprint(build / name) for name in ("gentek_reciprocal", "audit_reciprocal_causality", *SUITES) if (build / name).is_file()}
         if manifest.get("sanitizer_build_directory"):
             sanitized = Path(manifest["sanitizer_build_directory"])
             manifest["sanitized_binaries"] = {name: fingerprint(sanitized / name) for name in SUITES if (sanitized / name).is_file()}

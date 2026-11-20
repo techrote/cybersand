@@ -56,9 +56,14 @@ Changed inputs require new work. Digest matches are confirmed by exact
 architectural comparison before fixed-point or oscillation decisions.
 
 Material-ID changes, occupied-footprint changes, category changes and provenance
-changes are separate evidence. The decisive two-sided geometry metric requires
-occupied-footprint changes in both Genteks; material substitution alone cannot
-qualify it. A final per-cell ledger records owner, structural instance, rule and
+changes are separate evidence. Two changed occupied-cell arrays establish a
+nominal two-sided revision. To attribute that revision to the exchange, replay
+MOSAIC with the exact round-one masks, initial peer and remaining budget but no
+offered slots; separately freeze the initial MOSAIC through the same coordinator
+and compare FRAME. Both controls must show an occupied-footprint effect for a
+both-direction causal claim. Preserved protection masks can otherwise explain a
+nominal revision. Material substitution alone cannot qualify either footprint
+metric. A final per-cell ledger records owner, structural instance, rule and
 accepted revision history.
 
 ## Joints, native materials and honest closure
@@ -81,6 +86,9 @@ this material variant. No production material definition or physics is changed.
 UNSAT, bounded exhaustion, invalid claims, cancellation, unresolved reservations
 and final-path failures remain distinct. A successful categorical assignment or
 geometric joint does not demonstrate stability after native simulation.
+An early refusal without a final closure ledger has `closure_evaluated=false`
+and unknown unresolved obligations. The gallery exports `null`, never a successful
+zero, for that unavailable measure; the failed case remains in its denominator.
 
 ## Resource and scientific contract
 
@@ -100,11 +108,26 @@ remain separate controls. A changed final FRAME also receives a MOSAIC no-offer
 control on that exact frame and accepted mask with an explicitly separate
 control budget. All failed cases are retained.
 
+The [committed selection](../../native/experiments/gentek_swarm/SELECTION-RECIPROCAL.json)
+freezes `fixed_territory`, two rounds, against the complete native source-input
+fingerprint before holdouts. On the recovered 108-case known corpus, it has 46
+nominal two-sided cases with qualified joints and 28 passing both causal controls;
+six of those 28 are fully closed and Apply-valid. Shared `reciprocal_2` has 12,
+six and two respectively. Fixed territory wins the preregistered first criterion
+before unresolved obligations or work become tie-breakers. The shared-territory
+default hypothesis is not the strongest evaluated policy; it remains a labeled
+experiment. Selection does not authorize production promotion.
+
 Build the focused suites with `make -f Makefile.reciprocal` from the native
 experiment directory. `SANITIZE=1` requires a separate build directory. The
 compiled definition fingerprint and clean source manifest bind binaries and
-evidence. `run_reciprocal.py --qualification` adds frozen-control reproduction;
-the offline gallery shows original material arrays and round/ownership overlays.
+evidence. `run_reciprocal.py --qualification --sanitize` adds frozen-control
+reproduction and the [native counterfactual audit](../../native/experiments/gentek_swarm/reciprocal_causal.cpp).
+Its extra work is control-only and does not enlarge candidate allowances. The
+offline gallery shows original material arrays and round/ownership overlays,
+nominal revisions, separately qualified causal counts and closure availability.
+Use the [native qualification commands](../operations/local-build-and-validation.md#swarm-004-native-recovery-and-qualification--2026-11-20)
+with fresh evidence directories. Actual Windows/Workbench acceptance is separate.
 
 ## Workbench dependency and acceptance
 
@@ -124,11 +147,15 @@ source-matched Windows evaluator, remain explicit independent gates.
 
 ## Checkpoint status and documentation map
 
-Native development has produced source-attributed two-sided footprint revisions
-in the registered seed605 island and narrow-neck fixtures, with qualified joints
-and unresolved hard obligations retained. This is development evidence, not the
-final corpus or Windows qualification. Final exact-source results and negative
-outcomes belong in a dated evidence record, not a retroactive edit to SWARM-003.
+The [20 November recovery and policy-freeze record](../audits/2026-11-20-swarm004-native-recovery.md)
+binds the recovered V1 source `7fa0911e` to its sealed known campaign, independent
+fresh build, all-policy causal review and retained negative outcomes. Shared
+island/branching/seed605 is a mask-confounded nominal revision; it is retained as
+a negative regression. Shared island/branching/seed4099 is a reproduced complete
+four-joint example with both causal effects. Neither example certifies physical
+stability. The recovered articulation V2 branch is not adopted. Qualification of
+the final published source and registered holdouts remain separately recorded
+gates; no Windows execution is claimed by the native recovery record.
 
 This contract owns the experimental interfaces and invariants. The linked
 preregistration owns experimental budgets and comparison policy; the programme

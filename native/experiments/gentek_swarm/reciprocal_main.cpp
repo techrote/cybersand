@@ -412,6 +412,7 @@ int main(int argc, char** argv) try {
                         result.joints.size(), metric(result.metrics, "still_required"), metric(result.metrics, "total_charged_work"),
                         metric(result.metrics, "both_genteks_revised") != 0, result.can_apply});
                     records.back().work_semantics = "aggregate charged candidate FRAME/MOSAIC/solver/shared work; excludes controls";
+                    records.back().closure_evaluated = result.metrics.contains("still_required");
                     if (!result.rounds.empty()) {
                         const auto& first_frame = result.rounds.front().frame.result.cells;
                         const auto& final_frame = result.rounds.back().frame.result.cells;
