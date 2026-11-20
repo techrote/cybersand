@@ -9,6 +9,7 @@ var secrets: Array[String] = []
 var traffic := ""
 var readable := ""
 var log_path := ""
+var parent_log_path := "" # Previous immutable JSONL segment; never copied on reopen.
 var log_warning := ""
 var last_request_offset := -1
 var resumed_last_result := ""
@@ -102,6 +103,55 @@ func new_log_path() -> String:
 	if DirAccess.make_dir_recursive_absolute(folder) != OK: return ""
 	return folder+"/"+str(Time.get_unix_time_from_system()).replace(".","-")+"-"+str(get_instance_id())+".jsonl"
 
+static func valid_traffic_path(path: String) -> bool:
+	return path.begins_with("user://art-traffic/") and path.get_base_dir() == "user://art-traffic"
+
+func prepare_resume(previous: String) -> void:
+	# Cheap startup path: remember the saved archive, without reading or writing it.
+	parent_log_path = previous if valid_traffic_path(previous) and FileAccess.file_exists(previous) else ""
+
+func traffic_chain(latest: String) -> Array[String]:
+	# Session continuation is an append-only chain of small JSONL segments.
+	# A malformed, missing or cyclic parent is not a valid full-session export.
+	var chain: Array[String] = []
+	var visited := {}
+	var current := latest
+	for _depth in range(4096):
+		if not valid_traffic_path(current) or visited.has(current) or not FileAccess.file_exists(current):
+			return []
+		visited[current] = true
+		chain.push_front(current)
+		var file := FileAccess.open(current,FileAccess.READ)
+		if file == null: return []
+		var header: Variant = JSON.parse_string(file.get_line())
+		if not header is Dictionary or header.get("kind") != "session_parent":
+			return chain
+		var data: Variant = header.get("data")
+		if not data is Dictionary or not data.get("path") is String: return []
+		current = data.path
+	return []
+
+func export_traffic(destination: String) -> Error:
+	# Only an explicit export materializes the full historical byte stream.
+	var latest := log_path if not log_path.is_empty() else parent_log_path
+	var chain := traffic_chain(latest)
+	if chain.is_empty(): return ERR_FILE_NOT_FOUND
+	for source_path: String in chain:
+		if ProjectSettings.globalize_path(source_path) == ProjectSettings.globalize_path(destination):
+			return ERR_INVALID_PARAMETER
+	var output := FileAccess.open(destination,FileAccess.WRITE)
+	if output == null: return FileAccess.get_open_error()
+	for source_path: String in chain:
+		var input_file := FileAccess.open(source_path,FileAccess.READ)
+		if input_file == null: return FileAccess.get_open_error()
+		while input_file.get_position() < input_file.get_length():
+			var chunk := input_file.get_buffer(mini(1048576,input_file.get_length()-input_file.get_position()))
+			if chunk.is_empty(): return ERR_FILE_CANT_READ
+			output.store_buffer(chunk)
+			if output.get_error() != OK: return output.get_error()
+	output.flush()
+	return output.get_error()
+
 static func checked_conversation(value: Variant) -> Variant:
 	if not value is Array: return null
 	var turns: Array = []
@@ -114,47 +164,53 @@ static func checked_conversation(value: Variant) -> Variant:
 			if not (offset is int or offset is float) or not is_finite(float(offset)) or offset < 0 or float(offset) != floor(float(offset)):
 				return null
 			turn.image_offset = int(offset)
+		if raw.has("image_log_path"):
+			if not raw.has("image_offset") or not raw.image_log_path is String or not valid_traffic_path(raw.image_log_path): return null
+			turn.image_log_path = raw.image_log_path
 		turns.append(turn)
 	return turns
 
 func resume_traffic(previous: String) -> Array:
 	var turns: Array = []
 	resumed_last_result = ""
-	if not previous.begins_with("user://art-traffic/") or previous.get_base_dir() != "user://art-traffic":
-		return turns
-	var file := FileAccess.open(previous,FileAccess.READ)
-	if file == null: return turns
-	var destination := new_log_path()
-	if destination.is_empty() or DirAccess.copy_absolute(previous,destination) != OK:
-		log_warning = "Could not reopen saved conversation traffic."
-		return turns
-	log_path = destination
-	while file.get_position() < file.get_length():
-		var line := file.get_line()
-		if not line.contains('"kind":"conversation'): continue
-		var parsed: Variant = JSON.parse_string(line)
-		if not parsed is Dictionary: continue
-		if parsed.get("kind") == "conversation_cleared":
-			turns.clear()
-			resumed_last_result = ""
-		elif parsed.get("kind") == "conversation_edited" and parsed.get("data") is Dictionary:
-			var edited: Variant = checked_conversation(parsed.data.get("turns"))
-			if edited != null and parsed.data.get("last_result") is String:
-				turns = edited
-				resumed_last_result = parsed.data.last_result
-		elif parsed.get("kind") == "conversation" and parsed.get("data") is Dictionary:
-			var restored: Variant = checked_conversation([parsed.data])
-			if restored != null:
-				turns.append(restored[0])
-				if str(restored[0].content).begins_with("Canvas result ("):
-					resumed_last_result = restored[0].content
+	prepare_resume(previous)
+	# Defer this potentially long read until conversation/model use, never on startup.
+	for source_path: String in traffic_chain(previous):
+		var file := FileAccess.open(source_path,FileAccess.READ)
+		if file == null: continue
+		while file.get_position() < file.get_length():
+			var line := file.get_line()
+			if not line.contains('"kind":"conversation'): continue
+			var parsed: Variant = JSON.parse_string(line)
+			if not parsed is Dictionary: continue
+			if parsed.get("kind") == "conversation_cleared":
+				turns.clear()
+				resumed_last_result = ""
+			elif parsed.get("kind") == "conversation_edited" and parsed.get("data") is Dictionary:
+				var edited: Variant = checked_conversation(parsed.data.get("turns"))
+				if edited != null and parsed.data.get("last_result") is String:
+					for turn: Dictionary in edited:
+						if turn.has("image_offset") and not turn.has("image_log_path"):
+							turn.image_log_path = source_path
+					turns = edited
+					resumed_last_result = parsed.data.last_result
+			elif parsed.get("kind") == "conversation" and parsed.get("data") is Dictionary:
+				var restored: Variant = checked_conversation([parsed.data])
+				if restored != null:
+					var turn: Dictionary = restored[0]
+					if turn.has("image_offset") and not turn.has("image_log_path"):
+						turn.image_log_path = source_path
+					turns.append(turn)
+					if str(turn.content).begins_with("Canvas result ("):
+						resumed_last_result = turn.content
 	traffic = "[Earlier conversation traffic retained in the export]\n"
 	readable = traffic
 	return turns
 
-func historical_image(offset: int) -> String:
-	if offset < 0 or log_path.is_empty(): return ""
-	var file := FileAccess.open(log_path,FileAccess.READ)
+func historical_image(offset: int, source_path: String = "") -> String:
+	var path := source_path if not source_path.is_empty() else log_path
+	if offset < 0 or not valid_traffic_path(path): return ""
+	var file := FileAccess.open(path,FileAccess.READ)
 	if file == null or offset >= file.get_length(): return ""
 	file.seek(offset)
 	var event: Variant = JSON.parse_string(file.get_line())
@@ -162,9 +218,9 @@ func historical_image(offset: int) -> String:
 	var body: Dictionary = event.data.body
 	var messages: Array = body.get("input",body.get("messages",[]))
 	if messages.is_empty() or not messages.back().get("content") is Array: return ""
-	for block: Dictionary in messages.back().content:
-		if block.get("type") == "input_image": return str(block.image_url)
-		if block.get("type") == "image_url": return str(block.image_url.url)
+	for image_block: Dictionary in messages.back().content:
+		if image_block.get("type") == "input_image": return str(image_block.image_url)
+		if image_block.get("type") == "image_url": return str(image_block.image_url.url)
 	return ""
 
 func log_event(kind: String, data: Variant) -> bool:
@@ -189,11 +245,14 @@ func log_event(kind: String, data: Variant) -> bool:
 	# The live surface is bounded independently of the durable, full-session log.
 	if traffic.length()>2000000: traffic = "[Earlier traffic retained on disk]\n"+traffic.right(1500000)
 	if kind == "request": last_request_offset = -1
-	if log_path.is_empty(): log_path = new_log_path()
+	var new_segment := log_path.is_empty()
+	if new_segment: log_path = new_log_path()
 	if not log_path.is_empty():
 		var file := FileAccess.open(log_path,FileAccess.READ_WRITE if FileAccess.file_exists(log_path) else FileAccess.WRITE)
 		if file != null:
 			file.seek_end()
+			if new_segment and not parent_log_path.is_empty():
+				file.store_line(JSON.stringify({"kind":"session_parent","data":{"path":parent_log_path}}))
 			var offset := file.get_position()
 			file.store_line(line)
 			if kind == "conversation_edited": file.flush()
