@@ -53,6 +53,13 @@ turn promptly. No-body and paused waits retain their prior cadence. Native
 health observations, prepared-World adoption and the exact sample/terrain
 admission fences remain in their existing owners.
 
+The launcher accepts saved Engine Lab worker requests only when the JSON
+value is a finite integral number from 0 through 32. Godot parses JSON numbers
+as floats, including integer values written by Engine Lab. The profile
+round-trip regression checks the real writer, launcher and newly constructed
+worker request; strings, booleans, fractions and out-of-range values keep the
+existing default. Saved requests still apply only to newly constructed workers.
+
 The blit publisher rotates two persistent linear RGBA8 texture targets. It takes a large, entirely dirty image directly through bounded staging and avoids extracting every tile before the whole copy. When a dense publication invalidates all slots in the recycled plane and the incoming edit touches at most four tiles, it copies the complete accepted GPU plane to the recycled target and stages only those tiles. It never reads from the target it is writing. The two drawable identities and preceding frame remain intact. Small or partial areas normally take the tile path. Neither path swaps texture representations when density changes. Queued `Image` inputs have a distinct immutable lifetime. The stage ring offers reuse distance. A submission receipt establishes queued work and ACK authority. It supplies no completion or scanout timestamp.
 
 On Windows ANGLE with the Microsoft Basic Render Driver over D3D11, a blit or

@@ -10,6 +10,7 @@ from package_windows import CONSOLE, digest, need, verify, write_json
 
 
 CASES = (
+    "test_feature_worker_preference",
     "test_material_tile_publication", "test_pubpres_transition_history_render",
     "test_material_vapour_pipeline_render", "test_render_patch_handoff_regression",
     "test_render_world_generation", "test_workbench_physics_publication",
