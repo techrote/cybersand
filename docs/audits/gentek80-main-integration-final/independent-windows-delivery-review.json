@@ -1,0 +1,120 @@
+{
+  "schema": "gentek80-main-independent-windows-delivery-review-v1",
+  "run_id": 44775033610,
+  "orchestration_commit": "cdc78e52b2007906737b19c169cb41ad77145e28",
+  "evidence_artifact_id": 14649687498,
+  "owner_artifact_id": 14649053225,
+  "source_commit": "87148d66e816f3fd4033e8227a7d310652e2812a",
+  "source_tree": "a24d0ed7a1f18d02716dec3a8cee378d18b38c63",
+  "archive_name": "CyberSand-Gentek80-Main-Windows-87148d66e816.zip",
+  "archive_sha256": "ab3f8887933380ecc45f95fddd6dac9c8a42fd690bc83a77a8707805de9c8c9a",
+  "archive_bytes": 107525777,
+  "archive_entries": 1115,
+  "verified_manifest_payloads": 1114,
+  "all_manifest_payloads_match_actual_zip_and_extraction": true,
+  "source_input_count": 1029,
+  "native_input_count": 103,
+  "native_runtime_sha256": "2b7a1fbb8410270498e5c0ce8f9384a598c4467397e4ca1bda0111d6c5985447",
+  "native_manifest_bytes_preserved": true,
+  "original_phase_comparison": {
+    "author": {
+      "aggregate_file_decoder": "cp1252",
+      "complete_object_equal": true,
+      "original_file_sha256": "e2bb3a71821e8e17f989700aac3e69eac5173fcf3c0539f9248c318c90cb14de"
+    },
+    "reopen": {
+      "aggregate_file_decoder": "cp1252",
+      "complete_object_equal": true,
+      "original_file_sha256": "a1a60187ea7937cf093d2858f308790567b24b2f7bc3076c9554e90e9f9df8bf"
+    }
+  },
+  "original_windows_saves_verified": 7,
+  "ordinary_workbench_launcher_verified": true,
+  "launcher_clicked_by_reviewer": false,
+  "pristine_project_graphical_pass": true,
+  "pristine_qualification_sha256": "b06b61b142c96c66762aabcbb851b790450aaa55df50849aa5d7fcfe86916ca1",
+  "fresh_phase_receipts_exact_UTF8": true,
+  "phases": {
+    "author": {
+      "checks_in_serialized_receipt": 289,
+      "process_id": 5644,
+      "display": "Windows",
+      "terminal": [
+        "GENTEK_MAIN_INTEGRATION phase=author styles=7 checks=290 failures=0 complete=true"
+      ],
+      "pilots": [
+        {
+          "case": "keyboard-flyer",
+          "changed_material_cells": 128,
+          "changed_sand_occupancy_cells": 128,
+          "distance": 10.361063003540039,
+          "input": "InputEventKey W+D through ordinary Main keyboard publisher; focus predicate supplied",
+          "material_id": 2,
+          "material_name": "Sand",
+          "model": "midge",
+          "native_ticks": 31,
+          "peak_force": 4.426341533660889,
+          "rapier_ticks": 33,
+          "sand_cells_after": 64,
+          "sand_cells_before": 64,
+          "stored_material_sha256_after": "15cae38dc2b3ef0c3851f224e689ef3ddbf4055f2e7ffe03e4bc4c913d18672d",
+          "stored_material_sha256_before": "ab202aca277f616b743d34437594c68cefca9c8deefd8fa4d8f4912fa1a3f73b"
+        }
+      ]
+    },
+    "reopen": {
+      "checks_in_serialized_receipt": 193,
+      "process_id": 2008,
+      "display": "Windows",
+      "terminal": [
+        "GENTEK_MAIN_INTEGRATION phase=reopen styles=7 checks=194 failures=0 complete=true"
+      ],
+      "pilots": [
+        {
+          "case": "keyboard-flyer",
+          "changed_material_cells": 128,
+          "changed_sand_occupancy_cells": 128,
+          "distance": 10.112574577331543,
+          "input": "InputEventKey W+D through ordinary Main keyboard publisher; focus predicate supplied",
+          "material_id": 2,
+          "material_name": "Sand",
+          "model": "midge",
+          "native_ticks": 32,
+          "peak_force": 4.431078910827637,
+          "rapier_ticks": 33,
+          "sand_cells_after": 64,
+          "sand_cells_before": 64,
+          "stored_material_sha256_after": "7414203c0a78ed7dddc3586324231a22a2954e2bfe579c32b26fe4783e8e86e1",
+          "stored_material_sha256_before": "ab202aca277f616b743d34437594c68cefca9c8deefd8fa4d8f4912fa1a3f73b"
+        }
+      ]
+    }
+  },
+  "screenshot_hashes_verified": 35,
+  "images_visually_inspected": [
+    {
+      "path": "main-expanded-catalogue.png",
+      "sha256": "fc35b65a7870e12c8ce072899b914b392a86230fb587177b9029dbc7115cb2a4"
+    },
+    {
+      "path": "main-buttress-wall-reopen-installed.png",
+      "sha256": "849c02a50730b12b076ba97655b746d5e470c7d30afbb83d2d077485de99795c"
+    },
+    {
+      "path": "main-cathedral-playable-flyer-author.png",
+      "sha256": "26a48cef6e0f2873c890a835ccefb4d49882d51d7799331dec6f6a5535257b81"
+    },
+    {
+      "path": "main-landscape-reopen-after-genteks.png",
+      "sha256": "62832e9bd3a8d32001ae8a3b51b53c7adf533dc8696e26811a76c34aa30309b4"
+    }
+  ],
+  "packaged_gallery_source": "https://github.com/techrote/cybersand/blob/fea465b014757fce9000be6b30e368d5ab187c43/docs/images/gentek80-integration/README.md",
+  "p1_p2_findings": [],
+  "visual_observations": [
+    "Pristine-extracted project displays ordinary Workbench and the expanded catalogue.",
+    "Freshly reopened Buttress Wall preserves textured structural cells and glazing.",
+    "Actual Midge and moving Sand fixture remain visible beside Cathedral architecture.",
+    "The large authored landscape remains visible in the same ordinary Workbench after generated starts and fresh reopening."
+  ]
+}

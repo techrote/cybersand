@@ -1,0 +1,180 @@
+{
+  "schema": "gentek80-main-independent-linux-continuation-review-v1",
+  "artifact_id": 14649425829,
+  "run_id": 44773594434,
+  "orchestration_commit": "4e55839d21677c8f3a2182c6293437c590913c71",
+  "source_commit": "87148d66e816f3fd4033e8227a7d310652e2812a",
+  "source_tree": "a24d0ed7a1f18d02716dec3a8cee378d18b38c63",
+  "source_input_count": 1029,
+  "original_files_verified_unchanged": 193,
+  "original_failed_attempt": {
+    "checks": 109,
+    "command": [
+      "/home/runner/work/_temp/godot/Godot_v4.7-stable_linux.x86_64",
+      "--audio-driver",
+      "Dummy",
+      "--path",
+      "/home/runner/work/cybersand/cybersand/candidate/godot",
+      "--rendering-method",
+      "gl_compatibility",
+      "--display-driver",
+      "x11",
+      "--script",
+      "res://tests/test_paint_editor_native.gd"
+    ],
+    "failures": [
+      "Stop reports truthful partial prefix"
+    ],
+    "log_sha256": "c8193486e63ff4fe381fbb11ad927aa64ac40e4014e1958eaa3fb1fc532d337b",
+    "passed": false,
+    "process_sha256": "bdc3c82c1bd8c6304f8ab9bafa48da1efeb48dd2d9c8341268bba3fe4829a65b",
+    "returncode": 1,
+    "workers": 0
+  },
+  "new_cases": [
+    {
+      "case": "import",
+      "passed": true,
+      "assertions": null,
+      "assertion_failures": null,
+      "workers": null,
+      "native_witness_sha256": null,
+      "wall_seconds": 9.565405603000002
+    },
+    {
+      "case": "paint-native-1",
+      "passed": true,
+      "assertions": 109,
+      "assertion_failures": [],
+      "workers": 1,
+      "native_witness_sha256": "5a11f2271d53ed3634936619fa67d019d2413905708f0b28ccb61b7596ad8154",
+      "wall_seconds": 14.240954762000001
+    },
+    {
+      "case": "paint-native-4",
+      "passed": true,
+      "assertions": 109,
+      "assertion_failures": [],
+      "workers": 4,
+      "native_witness_sha256": "5a11f2271d53ed3634936619fa67d019d2413905708f0b28ccb61b7596ad8154",
+      "wall_seconds": 14.241853927999998
+    },
+    {
+      "case": "material-baseline",
+      "passed": true,
+      "assertions": null,
+      "assertion_failures": null,
+      "workers": null,
+      "native_witness_sha256": null,
+      "wall_seconds": 0.8563310600000023
+    },
+    {
+      "case": "water-lab",
+      "passed": true,
+      "assertions": 618,
+      "assertion_failures": [],
+      "workers": null,
+      "native_witness_sha256": null,
+      "wall_seconds": 10.672235498000006
+    }
+  ],
+  "reused_cases": [
+    "architecture",
+    "installed-author",
+    "installed-reopen",
+    "paint-author",
+    "paint-reopen",
+    "art-lazy",
+    "art-integrity",
+    "art-panel-safety",
+    "art-native-batch",
+    "workbench_edit_ordering"
+  ],
+  "integration_report_sha256": "c9a483ca63951961a7efc5d1d3e6a29733dde7675f87f8e3fb60c82f51714096",
+  "integration_phases": {
+    "author": {
+      "sha256": "f15ca9beebe8a62525d4c6c7d44cab775e21e7d959b1a8e30705b12def27af27",
+      "checks_in_serialized_receipt": 289,
+      "process_id": 3195,
+      "display": "X11",
+      "pilots": [
+        {
+          "case": "keyboard-flyer",
+          "changed_material_cells": 128,
+          "changed_sand_occupancy_cells": 128,
+          "distance": 9.74343204498291,
+          "input": "InputEventKey W+D through ordinary Main keyboard publisher; focus predicate supplied",
+          "material_id": 2,
+          "material_name": "Sand",
+          "model": "midge",
+          "native_ticks": 31,
+          "peak_force": 4.437756061553955,
+          "rapier_ticks": 32,
+          "sand_cells_after": 64,
+          "sand_cells_before": 64,
+          "stored_material_sha256_after": "da0c13c72ce575a1eab72ca388acb1bf18faac5de04683524bc6165ac6ae1507",
+          "stored_material_sha256_before": "ab202aca277f616b743d34437594c68cefca9c8deefd8fa4d8f4912fa1a3f73b"
+        }
+      ],
+      "terminal": [
+        "GENTEK_MAIN_INTEGRATION phase=author styles=7 checks=290 failures=0 complete=true"
+      ]
+    },
+    "reopen": {
+      "sha256": "615e776fe0d35dc66e4b4374dd68559c59c6ffa9431bb502b5e7ce0a11398bca",
+      "checks_in_serialized_receipt": 193,
+      "process_id": 3283,
+      "display": "X11",
+      "pilots": [
+        {
+          "case": "keyboard-flyer",
+          "changed_material_cells": 128,
+          "changed_sand_occupancy_cells": 128,
+          "distance": 9.74343204498291,
+          "input": "InputEventKey W+D through ordinary Main keyboard publisher; focus predicate supplied",
+          "material_id": 2,
+          "material_name": "Sand",
+          "model": "midge",
+          "native_ticks": 30,
+          "peak_force": 4.437756061553955,
+          "rapier_ticks": 32,
+          "sand_cells_after": 64,
+          "sand_cells_before": 64,
+          "stored_material_sha256_after": "da0c13c72ce575a1eab72ca388acb1bf18faac5de04683524bc6165ac6ae1507",
+          "stored_material_sha256_before": "ab202aca277f616b743d34437594c68cefca9c8deefd8fa4d8f4912fa1a3f73b"
+        }
+      ],
+      "terminal": [
+        "GENTEK_MAIN_INTEGRATION phase=reopen styles=7 checks=194 failures=0 complete=true"
+      ]
+    }
+  },
+  "screenshots_hash_verified": 35,
+  "sample_saves_hash_verified": 7,
+  "landscape_report_sha256": "d407f41333630f06ba9745550979c8701da0198881cd7c162afc8cdb6d399255",
+  "landscape_status": "passed",
+  "images_visually_inspected": [
+    {
+      "path": "main-expanded-catalogue.png",
+      "sha256": "121c5af342ebc2566dedd7871e4d361efa7e734561bac5b215da6525db8cd9d2"
+    },
+    {
+      "path": "main-suspended-deck-author-installed.png",
+      "sha256": "8c940e875b8d55584300a30d2672a7d21aef17589f27c802ffe4bf826cc13100"
+    },
+    {
+      "path": "main-cathedral-playable-flyer-author.png",
+      "sha256": "4f6d7fd9fa2493d48d9778b0e16f6903fd0b5d93fdbc159a7adaf9ecb992a088"
+    },
+    {
+      "path": "main-landscape-reopen-after-genteks.png",
+      "sha256": "5a84e26b6a571ef3bbd6117abd1881574d09dea4c98a1f4f83590a579a525be2"
+    }
+  ],
+  "visual_observations": [
+    "Real X11 Workbench shows five-column form and expanded scrolling catalogue.",
+    "Installed Suspended Deck retains material-cell suspended structure and glazing.",
+    "Actual cyan Midge and Sand patch appear beside Cathedral in normal Workbench.",
+    "Fresh-process2048x1024Graftloom after allGenteks remains admitted and visibly complete."
+  ]
+}

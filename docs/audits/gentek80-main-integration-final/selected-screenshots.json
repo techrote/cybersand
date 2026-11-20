@@ -1,0 +1,55 @@
+{
+  "original_windows_artifact_id": 14648039440,
+  "original_artifact_sha256": "7188e27bd3981e397d56029e7f0f756a3a013b3030faff9d488fcd015d7bb218",
+  "screenshots": [
+    {
+      "file": "images/main-expanded-catalogue.png",
+      "sha256": "3a84813bdeeab13887c4acb4dc25801f25e0fa4759a839c45455795dfaca2817",
+      "original_file": "main-expanded-catalogue.png",
+      "source_run": 44770730491,
+      "source_commit": "87148d66e816f3fd4033e8227a7d310652e2812a"
+    },
+    {
+      "file": "images/main-ring-pier-author-installed.png",
+      "sha256": "4e72c019ec22cfa30528fcc5481b9a1534ebc09cff8e52fa8a309a858500b7ac",
+      "original_file": "main-ring-pier-author-installed.png",
+      "source_run": 44770730491,
+      "source_commit": "87148d66e816f3fd4033e8227a7d310652e2812a"
+    },
+    {
+      "file": "images/main-suspended-deck-author-preview.png",
+      "sha256": "7f9f841adc7fe220308a293a3ad90d5a78a5a8897860bf973dc094108410359c",
+      "original_file": "main-suspended-deck-author-preview.png",
+      "source_run": 44770730491,
+      "source_commit": "87148d66e816f3fd4033e8227a7d310652e2812a"
+    },
+    {
+      "file": "images/main-cathedral-megaframe-author-preview.png",
+      "sha256": "271426c9ff496f183b761c2e66268b61292ac81afed89579f8d63664455583f9",
+      "original_file": "main-cathedral-megaframe-author-preview.png",
+      "source_run": 44770730491,
+      "source_commit": "87148d66e816f3fd4033e8227a7d310652e2812a"
+    },
+    {
+      "file": "images/main-cathedral-megaframe-author-installed.png",
+      "sha256": "42e718a92d611d0b93002348a9131e41ce730f783830622d58e3548281b1e5b5",
+      "original_file": "main-cathedral-megaframe-author-installed.png",
+      "source_run": 44770730491,
+      "source_commit": "87148d66e816f3fd4033e8227a7d310652e2812a"
+    },
+    {
+      "file": "images/main-cathedral-playable-flyer-author.png",
+      "sha256": "d123750b1dadc0aa95e64c2c30c313c0d11e3d5c8c1d133377606c11b19cf824",
+      "original_file": "main-cathedral-playable-flyer-author.png",
+      "source_run": 44770730491,
+      "source_commit": "87148d66e816f3fd4033e8227a7d310652e2812a"
+    },
+    {
+      "file": "images/main-landscape-author-initial.png",
+      "sha256": "35427b4243c6dfae5467d9cebc33b7a168a69c76fe6434103a0347c4f20d0abc",
+      "original_file": "main-landscape-author-initial.png",
+      "source_run": 44770730491,
+      "source_commit": "87148d66e816f3fd4033e8227a7d310652e2812a"
+    }
+  ]
+}

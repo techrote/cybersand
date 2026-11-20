@@ -1,0 +1,68 @@
+{
+  "source_commit": "87148d66e816f3fd4033e8227a7d310652e2812a",
+  "source_tree": "a24d0ed7a1f18d02716dec3a8cee378d18b38c63",
+  "checks": {
+    "docs": {
+      "path": "final-87148d66-docs.json",
+      "sha256": "46531406cf2906f5f38b6712e0c5d0ad76b221a87970a90a7667beabb6cf5ffc",
+      "status": "passed"
+    },
+    "m11": {
+      "path": "final-87148d66-m11.json",
+      "sha256": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d",
+      "status": "passed",
+      "historical_source_commit": "05ea45fda7bdd7b0150eb86c4922c202e89e08f4",
+      "records_checked": 18,
+      "source_hashes_checked": 28
+    },
+    "repository": {
+      "path": "final-87148d66-repository.json",
+      "sha256": "8a8e51b965ad229447e050048bb8553bdff843b407664e7c8e4fa0fe91569872",
+      "status": "passed",
+      "materialized": 18,
+      "pointers": 0
+    },
+    "retrieval-frozen": {
+      "path": "final-87148d66-retrieval-frozen.json",
+      "sha256": "b42cbb3337d527359c5bf4e11f78a8926d10741aae0a200454defb72a1fa7741",
+      "summary": {
+        "questions": 32,
+        "canonical_hit_at_1": 19,
+        "canonical_hit_at_k": 30,
+        "mrr_at_k": 0.7292,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    },
+    "retrieval-art": {
+      "path": "final-87148d66-retrieval-art.json",
+      "sha256": "76263f8926c505899927413422951af7bac458da32ae615a63143690b1579fe5",
+      "summary": {
+        "questions": 4,
+        "canonical_hit_at_1": 4,
+        "canonical_hit_at_k": 4,
+        "mrr_at_k": 1.0,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    },
+    "retrieval-host": {
+      "path": "final-87148d66-retrieval-host.json",
+      "sha256": "fad29a15471fa983c30bd94947f0c18f73877d0e4485106023faced244a1c60d",
+      "summary": {
+        "questions": 1,
+        "canonical_hit_at_1": 1,
+        "canonical_hit_at_k": 1,
+        "mrr_at_k": 1.0,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      }
+    }
+  },
+  "runtime_compatibility": {
+    "native_input_count": 103,
+    "windows_sha256": "2b7a1fbb8410270498e5c0ce8f9384a598c4467397e4ca1bda0111d6c5985447",
+    "linux_sha256": "5195149bb4ee0b826d258f46627397d4a3e79d0d22cd3072ca0518aa75ebd878",
+    "native_build_source": "82da41a945b1d98e0267a2a20b56ec66d83f71f6",
+    "native_source_mismatches": []
+  },
+  "source_changes": [],
+  "limits": "Documentation/source/runtime identity checks only; target-platform application evidence is separate."
+}

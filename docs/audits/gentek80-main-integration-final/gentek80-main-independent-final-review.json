@@ -1,0 +1,121 @@
+{
+  "schema": "gentek80-main-independent-final-review-v1",
+  "reviewed_at": "2026-11-20T16:50:40.610519+00:00",
+  "reviewer": "independent_review",
+  "review_scope": "Exact combined source and original hosted qualification/delivery artifacts; independent of implementation engineering",
+  "verdict": "MERGE CANDIDATE ACCEPTED",
+  "outstanding_p1": 0,
+  "outstanding_p2": 0,
+  "findings": [],
+  "starting_main": "7b03aa437561ec63e31fd09531171360ab60eeb4",
+  "accepted_gentek": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0",
+  "candidate": "87148d66e816f3fd4033e8227a7d310652e2812a",
+  "candidate_tree": "a24d0ed7a1f18d02716dec3a8cee378d18b38c63",
+  "integration_specific_production_modifications": false,
+  "counts": {
+    "genteks": 80,
+    "classic": 72,
+    "unchanged_classic": 66,
+    "repaired_classic": 6,
+    "showcases": 8,
+    "legacy_presets": 13,
+    "all_ui_presets": 93,
+    "native_module_versions": 91,
+    "native_source_inputs": 103,
+    "combined_source_inputs": 1029
+  },
+  "runtime_source_build": "82da41a945b1d98e0267a2a20b56ec66d83f71f6",
+  "runtimes": {
+    "linux": "5195149bb4ee0b826d258f46627397d4a3e79d0d22cd3072ca0518aa75ebd878",
+    "windows": "2b7a1fbb8410270498e5c0ce8f9384a598c4467397e4ca1bda0111d6c5985447"
+  },
+  "runs": [
+    {
+      "id": 44770730491,
+      "orchestration": "561a0ac544027b8fa85b3e24ed7b903ab9732719",
+      "conclusion": "failure",
+      "preserved": true,
+      "scope": "Original Linux paint invocation failed; successful prefix/Windows execution retained; first packaging comparison failed"
+    },
+    {
+      "id": 44773594434,
+      "orchestration": "4e55839d21677c8f3a2182c6293437c590913c71",
+      "conclusion": "success",
+      "scope": "Linux bounded continuation, actual graphical join and real landscape"
+    },
+    {
+      "id": 44775033610,
+      "orchestration": "cdc78e52b2007906737b19c169cb41ad77145e28",
+      "conclusion": "success",
+      "scope": "Windows package and pristine graphical project replay"
+    },
+    {
+      "id": 44770757479,
+      "head_sha": "87148d66e816f3fd4033e8227a7d310652e2812a",
+      "conclusion": "success",
+      "scope": "Documentation and provenance"
+    }
+  ],
+  "owner_zip": {
+    "archive_name": "CyberSand-Gentek80-Main-Windows-87148d66e816.zip",
+    "archive_sha256": "ab3f8887933380ecc45f95fddd6dac9c8a42fd690bc83a77a8707805de9c8c9a",
+    "archive_bytes": 107525777,
+    "archive_entries": 1115,
+    "verified_manifest_payloads": 1114,
+    "owner_artifact_id": 14649053225
+  },
+  "original_artifacts": [
+    {
+      "id": 14648037406,
+      "sha256": "f4042fd567ca277d4a23de372b7d8109298e70a35f4062cc0d5f873575edf68d"
+    },
+    {
+      "id": 14648039440,
+      "sha256": "7188e27bd3981e397d56029e7f0f756a3a013b3030faff9d488fcd015d7bb218"
+    },
+    {
+      "id": 14649425829,
+      "sha256": "a75ee0bc449661eff38a9d5f4e1f4e7a34d5dc6f607bf1ecdf0ca258769bf7ba"
+    },
+    {
+      "id": 14649687498,
+      "sha256": "9de0b7e6ad1e20a039ce0bd5810c92b4aab5fc7e95eed6ffcd4d1c9b35898ceb"
+    },
+    {
+      "id": 14649053225,
+      "sha256": "02065fde99550ec3c984677417da6291fa6d6d7c3d9d9638fc37f7d28650f423"
+    }
+  ],
+  "live_pr_readback": {
+    "number": 684,
+    "head": "87148d66e816f3fd4033e8227a7d310652e2812a",
+    "base": "7b03aa437561ec63e31fd09531171360ab60eeb4",
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "mergeable": true,
+    "mergeable_state": "clean",
+    "auto_merge": null,
+    "main_protected": false,
+    "required_status_checks_enforcement": "off",
+    "required_contexts": []
+  },
+  "owner_action": "Explicit owner merge approval; retain Draft/HOLD until then",
+  "reviewer_external_writes": false,
+  "limitations": [
+    "Automated keyboard input with supplied window-focus predicate; no human gameplay feel or physical GPU acceptance claim.",
+    "Authored-start replay does not claim deterministic evolved coupled simulation.",
+    "Original extra graphical/default-worker Linux paint assertion remains an observed failure; timing cause is unproven.",
+    "Original Windows aggregate diagnostic text retains the disclosed CP1252 decoding; strict whole-object equivalence was verified.",
+    "Pristine project replay is distinct from a manual launcher click and direct reopening of every supplied sample."
+  ],
+  "receipt_sha256": {
+    "independent-merge-source-review.json": "e4b9cceb9b14bcb592e2c039bf0a86ebec38217b4b8663f813b33034a1146712",
+    "independent-documentation-readback.json": "72473a975af1cc088fe690911a5671986b68b41502ddc18e4cfa0ad7bb56ce32",
+    "independent-continuation-helper-review.json": "c4542c4130121f865ca89873891687cbe11f95d724e6f240ce5dc8c3010c02bf",
+    "independent-windows-original-review.json": "0b10c959ff9531201e8fff71877143305a7803e5b0f563a6d1e8a2d7c5320e9e",
+    "independent-linux-continuation-review.json": "51c02812c4e99726457d3ed26fc367e025233b61e1e6d91cc642de2543855178",
+    "independent-windows-delivery-review.json": "b59631e04be318c08c3ee69cfed7c7692a0f36625aecd60d7cdccd1b1f8fdf80"
+  },
+  "review_markdown_sha256": "4dcfb42a9c40198e0e34369a2e816e93a23553bd9c78631ce5af3029c4bf2b10"
+}

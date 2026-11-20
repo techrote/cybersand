@@ -1,0 +1,45 @@
+{
+  "helper_sha256": "1608f0e35a1083d52a7436fc320a382cd306e2fa818d2a99141e1a3f15d368ae",
+  "source": "87148d66e816f3fd4033e8227a7d310652e2812a",
+  "source_tree": "a24d0ed7a1f18d02716dec3a8cee378d18b38c63",
+  "source_input_count": 1029,
+  "reused_cases": [
+    "architecture",
+    "installed-author",
+    "installed-reopen",
+    "paint-author",
+    "paint-reopen",
+    "art-lazy",
+    "art-integrity",
+    "art-panel-safety",
+    "art-native-batch",
+    "workbench_edit_ordering"
+  ],
+  "original_passed": false,
+  "original_error": "Missing/duplicate result: paint-native",
+  "paint_attempt": {
+    "process_sha256": "bdc3c82c1bd8c6304f8ab9bafa48da1efeb48dd2d9c8341268bba3fe4829a65b",
+    "log_sha256": "c8193486e63ff4fe381fbb11ad927aa64ac40e4014e1958eaa3fb1fc532d337b",
+    "command": [
+      "/home/runner/work/_temp/godot/Godot_v4.7-stable_linux.x86_64",
+      "--audio-driver",
+      "Dummy",
+      "--path",
+      "/home/runner/work/cybersand/cybersand/candidate/godot",
+      "--rendering-method",
+      "gl_compatibility",
+      "--display-driver",
+      "x11",
+      "--script",
+      "res://tests/test_paint_editor_native.gd"
+    ],
+    "returncode": 1,
+    "passed": false,
+    "checks": 109,
+    "workers": 0,
+    "failures": [
+      "Stop reports truthful partial prefix"
+    ]
+  },
+  "rejects_different_source_tree": true
+}

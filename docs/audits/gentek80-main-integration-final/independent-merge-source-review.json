@@ -1,0 +1,653 @@
+{
+  "schema": "gentek80-main-independent-source-review-v1",
+  "reviewed_at": "2026-11-20T16:10:58.394751+00:00",
+  "source_head": "87148d66e816f3fd4033e8227a7d310652e2812a",
+  "source_index_tree": "a24d0ed7a1f18d02716dec3a8cee378d18b38c63",
+  "accepted_gentek": "bf1bd8c8e6f189b36a3cb0f582185e5d529297d0",
+  "accepted_main": "7b03aa437561ec63e31fd09531171360ab60eeb4",
+  "common_base": "de109d0131641d6adc8d25bb9ced7ca3d4991105",
+  "gentek_delta_count": 860,
+  "main_delta_count": 36,
+  "overlaps": [
+    "docs/README.md",
+    "docs/reference/retrieval-index.md",
+    "docs/reference/status-and-roadmap.md"
+  ],
+  "nonoverlap_gentek_preservation_mismatches": [
+    "docs/operations/gentek80-evaluation.md"
+  ],
+  "nonoverlap_main_preservation_mismatches": [],
+  "native_tree_preservation_mismatches": [],
+  "dependency_and_runtime_pointer_mismatches": [],
+  "UI_preset_count": 93,
+  "UI_unique_ids": 93,
+  "legacy_presets": [
+    [
+      "industrial-service",
+      "Industrial Service",
+      "vault"
+    ],
+    [
+      "habitation-arcology",
+      "Habitation / Arcology",
+      "arcology"
+    ],
+    [
+      "overgrown-ruins",
+      "Overgrown / Ruined Construction",
+      "arcology"
+    ],
+    [
+      "civic-atrium",
+      "Civic Atrium",
+      "arcology"
+    ],
+    [
+      "transit-spine",
+      "Transit Spine",
+      "arcology"
+    ],
+    [
+      "basalt-archive",
+      "Basalt Archive",
+      "vault"
+    ],
+    [
+      "solar-conservatory",
+      "Solar Conservatory",
+      "arcology"
+    ],
+    [
+      "thermal-foundry",
+      "Thermal Foundry",
+      "vault"
+    ],
+    [
+      "earthen-terraces",
+      "Earthen Terraces",
+      "arcology"
+    ],
+    [
+      "orbital-observatory",
+      "Orbital Observatory",
+      "arcology"
+    ],
+    [
+      "skyline-terraces",
+      "Skyline Terraces",
+      "terraced"
+    ],
+    [
+      "cellular-hive",
+      "Cellular Hive",
+      "hex_hive"
+    ],
+    [
+      "arched-viaduct",
+      "Arched Viaduct",
+      "arcade"
+    ]
+  ],
+  "mission_presets": [
+    [
+      "steel-trestle",
+      "Steel Trestle",
+      "trestle"
+    ],
+    [
+      "stacked-arcade",
+      "Stacked Arcade",
+      "stacked_arcade"
+    ],
+    [
+      "flying-buttress",
+      "Flying Buttress",
+      "flying_buttress"
+    ],
+    [
+      "sawtooth-gallery",
+      "Sawtooth Gallery",
+      "sawtooth_gallery"
+    ],
+    [
+      "cantilever-spine",
+      "Cantilever Spine",
+      "cantilever_spine"
+    ],
+    [
+      "rib-vault",
+      "Rib Vault",
+      "rib_vault"
+    ],
+    [
+      "nested-arcade",
+      "Nested Arcade",
+      "nested_arcade"
+    ],
+    [
+      "suspended-deck",
+      "Suspended Deck",
+      "suspended_deck"
+    ],
+    [
+      "bowstring-truss",
+      "Bowstring Truss",
+      "bowstring_truss"
+    ],
+    [
+      "diamond-truss",
+      "Diamond Truss",
+      "diamond_truss"
+    ],
+    [
+      "portal-frame",
+      "Portal Frame",
+      "portal_frame"
+    ],
+    [
+      "ladder-bridge",
+      "Ladder Bridge",
+      "ladder_bridge"
+    ],
+    [
+      "stepped-aqueduct",
+      "Stepped Aqueduct",
+      "stepped_aqueduct"
+    ],
+    [
+      "split-pier",
+      "Split Pier",
+      "split_pier"
+    ],
+    [
+      "cable-gallery",
+      "Cable Gallery",
+      "cable_gallery"
+    ],
+    [
+      "clerestory-hall",
+      "Clerestory Hall",
+      "clerestory_hall"
+    ],
+    [
+      "mushroom-deck",
+      "Mushroom Deck",
+      "mushroom_deck"
+    ],
+    [
+      "zigzag-bridge",
+      "Zigzag Bridge",
+      "zigzag_bridge"
+    ],
+    [
+      "scalloped-vault",
+      "Scalloped Vault",
+      "scalloped_vault"
+    ],
+    [
+      "lattice-tower",
+      "Lattice Tower",
+      "lattice_tower"
+    ],
+    [
+      "offset-arcade",
+      "Offset Arcade",
+      "offset_arcade"
+    ],
+    [
+      "bridgehouse",
+      "Bridgehouse",
+      "bridgehouse"
+    ],
+    [
+      "forked-gantry",
+      "Forked Gantry",
+      "forked_gantry"
+    ],
+    [
+      "buttress-wall",
+      "Buttress Wall",
+      "buttress_wall"
+    ],
+    [
+      "fan-truss",
+      "Fan Truss",
+      "fan_truss"
+    ],
+    [
+      "pratt-truss",
+      "Pratt Truss",
+      "pratt_truss"
+    ],
+    [
+      "vierendeel-frame",
+      "Vierendeel Frame",
+      "vierendeel_frame"
+    ],
+    [
+      "suspension-pylon",
+      "Suspension Pylon",
+      "suspension_pylon"
+    ],
+    [
+      "harp-bridge",
+      "Harp Bridge",
+      "harp_bridge"
+    ],
+    [
+      "double-cantilever",
+      "Double Cantilever",
+      "double_cantilever"
+    ],
+    [
+      "stepped-buttress",
+      "Stepped Buttress",
+      "stepped_buttress"
+    ],
+    [
+      "colonnade",
+      "Colonnade",
+      "colonnade"
+    ],
+    [
+      "basilica",
+      "Basilica",
+      "basilica"
+    ],
+    [
+      "crenellated-bridge",
+      "Crenellated Bridge",
+      "crenellated_bridge"
+    ],
+    [
+      "pointed-arcade",
+      "Pointed Arcade",
+      "pointed_arcade"
+    ],
+    [
+      "inverted-arch",
+      "Inverted Arch",
+      "inverted_arch"
+    ],
+    [
+      "hourglass-pier",
+      "Hourglass Pier",
+      "hourglass_pier"
+    ],
+    [
+      "tripod-frame",
+      "Tripod Frame",
+      "tripod_frame"
+    ],
+    [
+      "chevron-hall",
+      "Chevron Hall",
+      "chevron_hall"
+    ],
+    [
+      "hanging-arcade",
+      "Hanging Arcade",
+      "hanging_arcade"
+    ],
+    [
+      "shelf-stack",
+      "Shelf Stack",
+      "shelf_stack"
+    ],
+    [
+      "staggered-balcony",
+      "Staggered Balcony",
+      "staggered_balcony"
+    ],
+    [
+      "monopod-tower",
+      "Monopod Tower",
+      "monopod_tower"
+    ],
+    [
+      "wedge-gallery",
+      "Wedge Gallery",
+      "wedge_gallery"
+    ],
+    [
+      "crown-bridge",
+      "Crown Bridge",
+      "crown_bridge"
+    ],
+    [
+      "zigzag-pier",
+      "Zigzag Pier",
+      "zigzag_pier"
+    ],
+    [
+      "drum-vault",
+      "Drum Vault",
+      "drum_vault"
+    ],
+    [
+      "pyramidal-frame",
+      "Pyramidal Frame",
+      "pyramidal_frame"
+    ],
+    [
+      "warren-truss",
+      "Warren Truss",
+      "warren_truss"
+    ],
+    [
+      "kingpost-frame",
+      "Kingpost Frame",
+      "kingpost_frame"
+    ],
+    [
+      "queenpost-frame",
+      "Queenpost Frame",
+      "queenpost_frame"
+    ],
+    [
+      "lenticular-bridge",
+      "Lenticular Bridge",
+      "lenticular_bridge"
+    ],
+    [
+      "radial-stay-bridge",
+      "Radial Stay Bridge",
+      "radial_stay_bridge"
+    ],
+    [
+      "twin-mast-bridge",
+      "Twin Mast Bridge",
+      "twin_mast_bridge"
+    ],
+    [
+      "a-frame-hall",
+      "A-Frame Hall",
+      "a_frame_hall"
+    ],
+    [
+      "butterfly-hall",
+      "Butterfly Hall",
+      "butterfly_hall"
+    ],
+    [
+      "ziggurat-arcade",
+      "Ziggurat Arcade",
+      "ziggurat_arcade"
+    ],
+    [
+      "corbel-arcade",
+      "Corbel Arcade",
+      "corbel_arcade"
+    ],
+    [
+      "chain-vault",
+      "Chain Vault",
+      "chain_vault"
+    ],
+    [
+      "ring-pier",
+      "Ring Pier",
+      "ring_pier"
+    ],
+    [
+      "folded-plate-hall",
+      "Folded Plate Hall",
+      "folded_plate_hall"
+    ],
+    [
+      "space-frame",
+      "Space Frame",
+      "space_frame"
+    ],
+    [
+      "crossbeam-stack",
+      "Crossbeam Stack",
+      "crossbeam_stack"
+    ],
+    [
+      "yoke-bridge",
+      "Yoke Bridge",
+      "yoke_bridge"
+    ],
+    [
+      "lantern-tower",
+      "Lantern Tower",
+      "lantern_tower"
+    ],
+    [
+      "spine-arcade",
+      "Spine Arcade",
+      "spine_arcade"
+    ],
+    [
+      "cascade-terrace",
+      "Cascade Terrace",
+      "cascade_terrace"
+    ],
+    [
+      "inverted-trestle",
+      "Inverted Trestle",
+      "inverted_trestle"
+    ],
+    [
+      "cranked-beam",
+      "Cranked Beam",
+      "cranked_beam"
+    ],
+    [
+      "barrel-arcade",
+      "Barrel Arcade",
+      "barrel_arcade"
+    ],
+    [
+      "buttress-crown",
+      "Buttress Crown",
+      "buttress_crown"
+    ],
+    [
+      "triptych-arcade",
+      "Triptych Arcade",
+      "triptych_arcade"
+    ],
+    [
+      "megatruss-station",
+      "Megatruss Station",
+      "megatruss_station"
+    ],
+    [
+      "cathedral-megaframe",
+      "Cathedral Megaframe",
+      "cathedral_megaframe"
+    ],
+    [
+      "seeded-typology-megablock",
+      "Seeded Typology Megablock",
+      "seeded_typology_megablock"
+    ],
+    [
+      "metabolist-spine",
+      "Metabolist Spine",
+      "metabolist_spine"
+    ],
+    [
+      "interlaced-viaduct",
+      "Interlaced Viaduct",
+      "interlaced_viaduct"
+    ],
+    [
+      "rosework-gatehouse",
+      "Rosework Gatehouse",
+      "rosework_gatehouse"
+    ],
+    [
+      "interlock-brutalism",
+      "Interlock Brutalism",
+      "interlock_brutalism"
+    ],
+    [
+      "suspended-arcology",
+      "Suspended Arcology",
+      "suspended_arcology"
+    ]
+  ],
+  "native_module_version_count": 91,
+  "native_unique_module_versions": 91,
+  "classic_authority_classes": 72,
+  "unchanged_classic_classes": [
+    "TrestleFrame",
+    "StackedArcade",
+    "FlyingButtress",
+    "SawtoothGallery",
+    "CantileverSpine",
+    "RibVault",
+    "NestedArcade",
+    "BowstringTruss",
+    "DiamondTruss",
+    "PortalFrame",
+    "LadderBridge",
+    "SteppedAqueduct",
+    "SplitPier",
+    "CableGallery",
+    "ClerestoryHall",
+    "MushroomDeck",
+    "ZigzagBridge",
+    "LatticeTower",
+    "OffsetArcade",
+    "Bridgehouse",
+    "ForkedGantry",
+    "FanTruss",
+    "PrattTruss",
+    "VierendeelFrame",
+    "SuspensionPylon",
+    "HarpBridge",
+    "DoubleCantilever",
+    "SteppedButtress",
+    "Colonnade",
+    "Basilica",
+    "CrenellatedBridge",
+    "PointedArcade",
+    "InvertedArch",
+    "HourglassPier",
+    "ChevronHall",
+    "HangingArcade",
+    "ShelfStack",
+    "StaggeredBalcony",
+    "MonopodTower",
+    "WedgeGallery",
+    "CrownBridge",
+    "ZigzagPier",
+    "DrumVault",
+    "PyramidalFrame",
+    "WarrenTruss",
+    "KingpostFrame",
+    "QueenpostFrame",
+    "LenticularBridge",
+    "RadialStayBridge",
+    "TwinMastBridge",
+    "AFrameHall",
+    "ButterflyHall",
+    "ZigguratArcade",
+    "CorbelArcade",
+    "ChainVault",
+    "FoldedPlateHall",
+    "SpaceFrame",
+    "CrossbeamStack",
+    "YokeBridge",
+    "LanternTower",
+    "SpineArcade",
+    "InvertedTrestle",
+    "CrankedBeam",
+    "BarrelArcade",
+    "ButtressCrown",
+    "TriptychArcade"
+  ],
+  "intentional_classic_repair_classes": [
+    "SuspendedDeck",
+    "ScallopedVault",
+    "ButtressWall",
+    "TripodFrame",
+    "RingPier",
+    "CascadeTerrace"
+  ],
+  "class_deltas_from_qualified_F": [],
+  "manifests": [
+    {
+      "manifest": "godot/addons/cybersand_native/runtime-provenance.json",
+      "manifest_identical_to_F": true,
+      "source_commit": "82da41a945b1d98e0267a2a20b56ec66d83f71f6",
+      "build_commit": "82da41a945b1d98e0267a2a20b56ec66d83f71f6",
+      "runtime_sha256": "2b7a1fbb8410270498e5c0ce8f9384a598c4467397e4ca1bda0111d6c5985447",
+      "runtime_size": 5747200,
+      "artifact_materialized": true,
+      "artifact_identity_matches": true,
+      "source_inputs": {
+        "count": 103,
+        "changed": []
+      },
+      "build_inputs": {
+        "count": 951,
+        "changed": [
+          "docs/operations/gentek80-evaluation.md",
+          "godot/scripts/art_batch_panel.gd",
+          "godot/scripts/art_provider.gd",
+          "godot/scripts/microscenario_host.gd",
+          "godot/scripts/shared_workbench.gd",
+          "godot/tests/run_art_provider_local.gd",
+          "godot/tests/test_art_batch_native.gd",
+          "godot/tests/test_art_panel_ui.gd"
+        ]
+      }
+    },
+    {
+      "manifest": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+      "manifest_identical_to_F": true,
+      "source_commit": "82da41a945b1d98e0267a2a20b56ec66d83f71f6",
+      "build_commit": "82da41a945b1d98e0267a2a20b56ec66d83f71f6",
+      "runtime_sha256": "5195149bb4ee0b826d258f46627397d4a3e79d0d22cd3072ca0518aa75ebd878",
+      "runtime_size": 5183960,
+      "artifact_materialized": true,
+      "artifact_identity_matches": true,
+      "source_inputs": {
+        "count": 103,
+        "changed": []
+      },
+      "build_inputs": {
+        "count": 951,
+        "changed": [
+          "docs/operations/gentek80-evaluation.md",
+          "godot/scripts/art_batch_panel.gd",
+          "godot/scripts/art_provider.gd",
+          "godot/scripts/microscenario_host.gd",
+          "godot/scripts/shared_workbench.gd",
+          "godot/tests/run_art_provider_local.gd",
+          "godot/tests/test_art_batch_native.gd",
+          "godot/tests/test_art_panel_ui.gd"
+        ]
+      }
+    }
+  ],
+  "findings_P1_P2": [],
+  "verdict": "Source preservation verified; final acceptance pending combined runtime/package evidence.",
+  "reviewed_reconciliation_additions": {
+    "docs/operations/gentek80-evaluation.md": "4760012b9d819c8386d5a48087e22e618f92bfb3a57c2ddf91e036a9bd42a89a",
+    "godot/tools/qualify_gentek80_main_integration.gd": "ad05c83ce07b39fd41fd84ed10ff8218b3f57e54c78d5b4f96e32ed647d96354",
+    "tools/architecture/gentek80_main_integration.py": "3c186288402ff34b2f3c3ee767e64e0a7e0a7e9d7065b54958a65ba5359209eb"
+  },
+  "nonoverlap_gentek_delta_explanation": "Only the guide intentionally differs:26 added lines describe this combined qualification. No Gentek production content was modified.",
+  "routine_case_count": 328,
+  "seeded_apparatus_absent_from_default_discovery": true,
+  "superseded_100f_apparatus_identical_after_move": true,
+  "auxiliary_review": {
+    "scope": "main-integration-harness workflow + run_focused.py + prepare_inputs.py + package_main.py",
+    "resolved_findings": [
+      "Restored strict inherited leak guard by naming case workbench_edit_ordering.",
+      "Added actual native64-Sand conservation and changed occupancy proof alongside keyboard flyer.",
+      "Bound and rechecked exact supplemental runner and qualify.py hashes.",
+      "Opened actual catalogue popup for graphical capture.",
+      "Moved seeded apparatus out of default test discovery without weakening scanner."
+    ],
+    "cancellation_scope": "Exactly two finisher-owned run IDs, expected immutable SHA checks, current-run refusal, no candidate/source mutation.",
+    "outstanding_P1_P2": [],
+    "acceptance_limit": "Documentation dispatch job only proves dispatch; actual exact-candidate Documentation run must pass separately. Final acceptance pending actual hosted qualification/package evidence."
+  }
+}

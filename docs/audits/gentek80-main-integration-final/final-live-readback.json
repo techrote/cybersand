@@ -1,0 +1,38 @@
+{
+  "observed_at": "2026-11-20 16:46:41 UTC",
+  "pr": {
+    "number": 684,
+    "url": "https://github.com/techrote/cybersand/pull/684",
+    "head": "87148d66e816f3fd4033e8227a7d310652e2812a",
+    "base": "7b03aa437561ec63e31fd09531171360ab60eeb4",
+    "head_branch": "integration/gentek-80-001",
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "mergeable": true,
+    "mergeable_state": "clean",
+    "auto_merge": null
+  },
+  "main": {
+    "sha": "7b03aa437561ec63e31fd09531171360ab60eeb4",
+    "protected": false,
+    "protection": {
+      "enabled": false,
+      "required_status_checks": {
+        "enforcement_level": "off",
+        "contexts": [],
+        "checks": []
+      }
+    }
+  },
+  "check_runs": [
+    {
+      "name": "consistency",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "87148d66e816f3fd4033e8227a7d310652e2812a",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44770757479/job/136407469515"
+    }
+  ],
+  "repository_rulesets": []
+}

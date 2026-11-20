@@ -1,0 +1,482 @@
+{
+  "schema": "gentek80-main-independent-windows-original-review-v1",
+  "artifact_id": 14648039440,
+  "run_id": 44770730491,
+  "source_commit": "87148d66e816f3fd4033e8227a7d310652e2812a",
+  "source_tree": "a24d0ed7a1f18d02716dec3a8cee378d18b38c63",
+  "source_input_count": 1029,
+  "reports": {
+    "focused": {
+      "sha256": "f5dfe19c1909963638d746e758b96b3fe3934bdc94a2b5a33244b0766780a967",
+      "passed": true,
+      "case_count": 13,
+      "cases": [
+        {
+          "case": "architecture",
+          "checks": null,
+          "failures": null,
+          "wall_seconds": 267.54600000000005
+        },
+        {
+          "case": "installed-author",
+          "checks": null,
+          "failures": null,
+          "wall_seconds": 65.25
+        },
+        {
+          "case": "installed-reopen",
+          "checks": null,
+          "failures": null,
+          "wall_seconds": 28.656999999999925
+        },
+        {
+          "case": "paint-author",
+          "checks": 39,
+          "failures": [],
+          "wall_seconds": 58.187000000000126
+        },
+        {
+          "case": "paint-reopen",
+          "checks": 19,
+          "failures": [],
+          "wall_seconds": 23.218999999999824
+        },
+        {
+          "case": "art-lazy",
+          "checks": 21,
+          "failures": [],
+          "wall_seconds": 38.562000000000126
+        },
+        {
+          "case": "art-integrity",
+          "checks": 148,
+          "failures": [],
+          "wall_seconds": 3.6720000000000255
+        },
+        {
+          "case": "art-panel-safety",
+          "checks": 38,
+          "failures": [],
+          "wall_seconds": 35.26599999999985
+        },
+        {
+          "case": "art-native-batch",
+          "checks": 147,
+          "failures": 0,
+          "wall_seconds": 69.125
+        },
+        {
+          "case": "workbench_edit_ordering",
+          "checks": 144,
+          "failures": 0,
+          "wall_seconds": 4.125
+        },
+        {
+          "case": "paint-native",
+          "checks": 109,
+          "failures": [],
+          "wall_seconds": 73.125
+        },
+        {
+          "case": "material-baseline",
+          "checks": null,
+          "failures": null,
+          "wall_seconds": 2.6560000000001764
+        },
+        {
+          "case": "water-lab",
+          "checks": 618,
+          "failures": [],
+          "wall_seconds": 47.093999999999824
+        }
+      ]
+    },
+    "integration": {
+      "sha256": "19a67eb2ffe2998f4aecc4de15aa025fefc95c3ac70104bdafb920ba18327629",
+      "passed": true,
+      "case_count": 3,
+      "cases": [
+        {
+          "case": "import",
+          "checks": null,
+          "failures": null,
+          "wall_seconds": 4.3900000000001
+        },
+        {
+          "case": "author",
+          "checks": null,
+          "failures": null,
+          "wall_seconds": 203.6719999999998
+        },
+        {
+          "case": "reopen",
+          "checks": null,
+          "failures": null,
+          "wall_seconds": 117.79700000000003
+        }
+      ]
+    },
+    "landscape": {
+      "sha256": "269fbf7a502804b876546361b9eadd8c2190f2c13ff7165aa7fab74ec249fcaa",
+      "status": "passed",
+      "map_names": [
+        "graftloom-slipway"
+      ],
+      "receipt_keys": [
+        "cases",
+        "completed",
+        "explicit_map_subset",
+        "fixture_manifest_sha256",
+        "godot",
+        "input_custody",
+        "local_delta",
+        "maps",
+        "platform",
+        "project",
+        "runtime",
+        "schema_version",
+        "source_commit",
+        "source_inputs_sha256",
+        "source_tree",
+        "status"
+      ]
+    }
+  },
+  "phase_codec_readback": {
+    "author": {
+      "raw_sha256": "e2bb3a71821e8e17f989700aac3e69eac5173fcf3c0539f9248c318c90cb14de",
+      "exact_cp1252_equivalence": true,
+      "UTF8_aggregate_differing_paths": [
+        [
+          "cases",
+          1,
+          "status"
+        ],
+        [
+          "cases",
+          3,
+          "status"
+        ],
+        [
+          "cases",
+          5,
+          "status"
+        ],
+        [
+          "cases",
+          7,
+          "status"
+        ],
+        [
+          "cases",
+          9,
+          "status"
+        ],
+        [
+          "cases",
+          11,
+          "status"
+        ],
+        [
+          "cases",
+          13,
+          "status"
+        ]
+      ],
+      "checks_in_serialized_receipt": 289,
+      "failures": 0,
+      "process_id": 6416,
+      "display": "Windows",
+      "pilots": [
+        {
+          "case": "keyboard-flyer",
+          "changed_material_cells": 128,
+          "changed_sand_occupancy_cells": 128,
+          "distance": 8.066082000732422,
+          "input": "InputEventKey W+D through ordinary Main keyboard publisher; focus predicate supplied",
+          "material_id": 2,
+          "material_name": "Sand",
+          "model": "midge",
+          "native_ticks": 30,
+          "peak_force": 4.435781478881836,
+          "rapier_ticks": 30,
+          "sand_cells_after": 64,
+          "sand_cells_before": 64,
+          "stored_material_sha256_after": "da0c13c72ce575a1eab72ca388acb1bf18faac5de04683524bc6165ac6ae1507",
+          "stored_material_sha256_before": "ab202aca277f616b743d34437594c68cefca9c8deefd8fa4d8f4912fa1a3f73b"
+        }
+      ],
+      "landscapes": [
+        {
+          "actor_count": 1,
+          "case": "landscape",
+          "definition_sha256": "7cc2d455a42db4789b9017ce739debf620203632d7e0f520f4bcc0debb58c418",
+          "extent": [
+            2048,
+            1024
+          ],
+          "first": true,
+          "installed_rectangles": 13839,
+          "native_receipt_sha256": "850d90ea50d00ba102f09c9fdc06dd494ca0dc63843431605816d9e0364c469c",
+          "native_rectangle_capacity": 32768,
+          "source_rectangles": 13839,
+          "stored_material_sha256": "c91fc445f50a4a7d8c81b6c313fe4dce0007775f14f8981613508e1ef5d93ea6"
+        },
+        {
+          "actor_count": 1,
+          "case": "landscape",
+          "definition_sha256": "248d8ed9c4e93b28999c050a60467710f888c545de6e214afc42311d7c9a1770",
+          "extent": [
+            2048,
+            1024
+          ],
+          "first": false,
+          "installed_rectangles": 13844,
+          "native_receipt_sha256": "683f367089fbaeed875bcb5e141358718e66889ce6d9b618308d6b34fe911f79",
+          "native_rectangle_capacity": 32768,
+          "source_rectangles": 13839,
+          "stored_material_sha256": "86d9e56c337dcf2f57a1ce83478d60d4d7c60db4e4ff3faf99725a5246b4049f"
+        }
+      ],
+      "terminal": [
+        "GENTEK_MAIN_INTEGRATION phase=author styles=7 checks=290 failures=0 complete=true"
+      ]
+    },
+    "reopen": {
+      "raw_sha256": "a1a60187ea7937cf093d2858f308790567b24b2f7bc3076c9554e90e9f9df8bf",
+      "exact_cp1252_equivalence": true,
+      "UTF8_aggregate_differing_paths": [
+        [
+          "cases",
+          1,
+          "status"
+        ],
+        [
+          "cases",
+          3,
+          "status"
+        ],
+        [
+          "cases",
+          5,
+          "status"
+        ],
+        [
+          "cases",
+          7,
+          "status"
+        ],
+        [
+          "cases",
+          9,
+          "status"
+        ],
+        [
+          "cases",
+          11,
+          "status"
+        ],
+        [
+          "cases",
+          13,
+          "status"
+        ]
+      ],
+      "checks_in_serialized_receipt": 193,
+      "failures": 0,
+      "process_id": 3776,
+      "display": "Windows",
+      "pilots": [
+        {
+          "case": "keyboard-flyer",
+          "changed_material_cells": 128,
+          "changed_sand_occupancy_cells": 128,
+          "distance": 8.892885208129883,
+          "input": "InputEventKey W+D through ordinary Main keyboard publisher; focus predicate supplied",
+          "material_id": 2,
+          "material_name": "Sand",
+          "model": "midge",
+          "native_ticks": 30,
+          "peak_force": 4.442526817321777,
+          "rapier_ticks": 31,
+          "sand_cells_after": 64,
+          "sand_cells_before": 64,
+          "stored_material_sha256_after": "da0c13c72ce575a1eab72ca388acb1bf18faac5de04683524bc6165ac6ae1507",
+          "stored_material_sha256_before": "ab202aca277f616b743d34437594c68cefca9c8deefd8fa4d8f4912fa1a3f73b"
+        }
+      ],
+      "landscapes": [
+        {
+          "actor_count": 1,
+          "case": "landscape",
+          "definition_sha256": "248d8ed9c4e93b28999c050a60467710f888c545de6e214afc42311d7c9a1770",
+          "extent": [
+            2048,
+            1024
+          ],
+          "first": false,
+          "installed_rectangles": 13844,
+          "native_receipt_sha256": "cdaa4cc2b523f48a0e34199f7e6d59c556aebcb34a719f158f050c5c93407e1c",
+          "native_rectangle_capacity": 32768,
+          "source_rectangles": 13839,
+          "stored_material_sha256": "86d9e56c337dcf2f57a1ce83478d60d4d7c60db4e4ff3faf99725a5246b4049f"
+        },
+        {
+          "actor_count": 1,
+          "case": "landscape",
+          "definition_sha256": "248d8ed9c4e93b28999c050a60467710f888c545de6e214afc42311d7c9a1770",
+          "extent": [
+            2048,
+            1024
+          ],
+          "first": false,
+          "installed_rectangles": 13844,
+          "native_receipt_sha256": "6364f9574b2c7fae42b99dbe589580cf2e4cc99c444881e6ed5dd6c34259c1d6",
+          "native_rectangle_capacity": 32768,
+          "source_rectangles": 13839,
+          "stored_material_sha256": "86d9e56c337dcf2f57a1ce83478d60d4d7c60db4e4ff3faf99725a5246b4049f"
+        }
+      ],
+      "terminal": [
+        "GENTEK_MAIN_INTEGRATION phase=reopen styles=7 checks=194 failures=0 complete=true"
+      ]
+    }
+  },
+  "sample_saves": {
+    "buttress-wall": {
+      "sha256": "2b928d1c548203306a562ca392b0937656b44c055ebb659e2d01e3a3571215e4",
+      "stored_material_sha256": "3abacefba30ac0e513efaccf734e4a6689918e51104c0ecaff28cd3b0a53df30"
+    },
+    "cascade-terrace": {
+      "sha256": "4d07ad13e5c4863498fa91cbf4e7ec2caec7b09e36d1c6b94dc4e6c7d50d6c40",
+      "stored_material_sha256": "b3131487be3f1ff2e142f1e1a6e4de1b84070d147ba842769342d2a3a44fd392"
+    },
+    "cathedral-megaframe": {
+      "sha256": "c128664bfdc276bc10b84dcc9ad35984ae3e941b3203cd654890310671db44bc",
+      "stored_material_sha256": "ab202aca277f616b743d34437594c68cefca9c8deefd8fa4d8f4912fa1a3f73b"
+    },
+    "ring-pier": {
+      "sha256": "7cdb684d0820c0e645c0105264c29a698191bd8d2e86b6ba5a19154bf30fb899",
+      "stored_material_sha256": "e735e3ccb35fdca441fa0da198daef5f2c08ee796afc8e986a5a8b7b29e25905"
+    },
+    "scalloped-vault": {
+      "sha256": "a31a27cda3441d7279fb09631dbcc9aa12e0dd77e2f34c5d174502510c8e2bf8",
+      "stored_material_sha256": "f98eef5ec8cfbf37f64ddf0708b4bc6c9e9f9f568db5b9041f6367e1dc361552"
+    },
+    "suspended-deck": {
+      "sha256": "8674d8cb1e8184bd6cb5e1ac41fae4312430f364bbc4ff040affcda798097561",
+      "stored_material_sha256": "65a641280045149dc604f36310e678df4a9652bdf3f94e39561b0940401663c7"
+    },
+    "tripod-frame": {
+      "sha256": "7b29a3515f2c2af3f96b578f38171b686657334455752ac559a8bc11d9d7b92b",
+      "stored_material_sha256": "bc4abebd3ca4539fa1cbb05fb814b9123d18994f5f7baec9f23e69aa4e00b3c5"
+    }
+  },
+  "screenshots_verified": [
+    "main-architecture-form.png",
+    "main-buttress-wall-author-installed.png",
+    "main-buttress-wall-author-preview.png",
+    "main-buttress-wall-reopen-installed.png",
+    "main-buttress-wall-reopen-preview.png",
+    "main-cascade-terrace-author-installed.png",
+    "main-cascade-terrace-author-preview.png",
+    "main-cascade-terrace-reopen-installed.png",
+    "main-cascade-terrace-reopen-preview.png",
+    "main-cathedral-megaframe-author-installed.png",
+    "main-cathedral-megaframe-author-preview.png",
+    "main-cathedral-megaframe-reopen-installed.png",
+    "main-cathedral-megaframe-reopen-preview.png",
+    "main-cathedral-playable-flyer-author.png",
+    "main-cathedral-playable-flyer-reopen.png",
+    "main-expanded-catalogue.png",
+    "main-landscape-author-after-genteks.png",
+    "main-landscape-author-initial.png",
+    "main-landscape-reopen-after-genteks.png",
+    "main-ring-pier-author-installed.png",
+    "main-ring-pier-author-preview.png",
+    "main-ring-pier-reopen-installed.png",
+    "main-ring-pier-reopen-preview.png",
+    "main-scalloped-vault-author-installed.png",
+    "main-scalloped-vault-author-preview.png",
+    "main-scalloped-vault-reopen-installed.png",
+    "main-scalloped-vault-reopen-preview.png",
+    "main-suspended-deck-author-installed.png",
+    "main-suspended-deck-author-preview.png",
+    "main-suspended-deck-reopen-installed.png",
+    "main-suspended-deck-reopen-preview.png",
+    "main-tripod-frame-author-installed.png",
+    "main-tripod-frame-author-preview.png",
+    "main-tripod-frame-reopen-installed.png",
+    "main-tripod-frame-reopen-preview.png"
+  ],
+  "images_visually_inspected": [
+    {
+      "path": "main-architecture-form.png",
+      "sha256": "55dede1d3941d3b9ba44cb0335362d4a81cee09981c36481fbc21daa793e0836"
+    },
+    {
+      "path": "main-expanded-catalogue.png",
+      "sha256": "3a84813bdeeab13887c4acb4dc25801f25e0fa4759a839c45455795dfaca2817"
+    },
+    {
+      "path": "main-cathedral-megaframe-author-installed.png",
+      "sha256": "42e718a92d611d0b93002348a9131e41ce730f783830622d58e3548281b1e5b5"
+    },
+    {
+      "path": "main-cathedral-megaframe-author-preview.png",
+      "sha256": "271426c9ff496f183b761c2e66268b61292ac81afed89579f8d63664455583f9"
+    },
+    {
+      "path": "main-cathedral-playable-flyer-author.png",
+      "sha256": "d123750b1dadc0aa95e64c2c30c313c0d11e3d5c8c1d133377606c11b19cf824"
+    },
+    {
+      "path": "main-ring-pier-author-installed.png",
+      "sha256": "4e72c019ec22cfa30528fcc5481b9a1534ebc09cff8e52fa8a309a858500b7ac"
+    },
+    {
+      "path": "main-landscape-reopen-after-genteks.png",
+      "sha256": "dedc0a4d349a9e7943262df29c929cc637d53373d4d1bc8b20eff59c17adba23"
+    },
+    {
+      "path": "main-tripod-frame-author-installed.png",
+      "sha256": "386de90b91f479de430cdede22d264c217bdf4b8f5ab29e43878aceaf348b56a"
+    },
+    {
+      "path": "main-scalloped-vault-author-installed.png",
+      "sha256": "7e4f9464c44affe25b227d39540be44d0018ab33e342f19355296992d77b6de5"
+    },
+    {
+      "path": "main-suspended-deck-author-installed.png",
+      "sha256": "a879e9c71c3c66455fdc07d0c8742d5bb1ed1163a492d09828de6ade616df2b5"
+    },
+    {
+      "path": "main-cascade-terrace-author-installed.png",
+      "sha256": "817375267e6c56722dbb4875a817f7a60daf9ba60818b16edc835a9ba27b6df1"
+    },
+    {
+      "path": "main-buttress-wall-author-installed.png",
+      "sha256": "be72aeac61cd082f2bafbbc7a9fc2e54a3db6cfbe66a6ee201a62aea82621baa"
+    }
+  ],
+  "package_gate": "pending continuation; original package attempt stopped at phase codec comparison",
+  "architecture_processes_verified": [
+    "import",
+    "project-contract",
+    "native",
+    "ui",
+    "author",
+    "reopen",
+    "multistyle-author",
+    "multistyle-reopen",
+    "source-stability"
+  ],
+  "visual_observations": [
+    "Ordinary Workbench toolbar and five-column Architectural Generator are visible over the admitted landscape.",
+    "Expanded real dropdown lists original presets and CLASSIC entries with scrollbar; report/source enumerate all93.",
+    "All six repaired CLASSIC installed-world captures display their material-cell structure; Buttress Wall and Suspended Deck retain glazing.",
+    "Cathedral preview contains intact native architecture; installed actor fixture includes intentional authored clear rectangle and64Sand cells.",
+    "Zoomed Cathedral capture visibly contains the cyan Midge beside architectural material cells and Sand.",
+    "Fresh-process landscape after Genteks visibly retains the full2048x1024 authored scene and ordinary Workbench controls."
+  ]
+}
