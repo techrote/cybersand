@@ -447,7 +447,7 @@ def inspect_png(path: Path) -> dict:
                 channels = {0: 1, 2: 3, 3: 1, 4: 2, 6: 4}.get(colour)
                 if channels is None or interlace != 0 or depth != 8 or width < 1 or height < 1:
                     raise ValueError(f"unsupported PNG layout (colour type {colour}, depth {depth}, interlace {interlace})")
-                if width > 65_536 or height > 65_536 or width * height > 100_000_000:
+                if width > MAX_SIDE * 8 or height > MAX_SIDE * 8 or width * height > 100_000_000:
                     raise ValueError("PNG size exceeds bounded art-evidence policy")
                 expected = height * (1 + width * channels)
                 stride = max(1, expected // 1_000_000)
