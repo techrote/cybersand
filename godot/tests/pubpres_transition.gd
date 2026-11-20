@@ -18,11 +18,13 @@ var output: String
 var strategy: String
 var initialized_usec: int
 var initial_sha: String
+var steady_sparse: bool
 
 
 func _initialize() -> void:
 	initialized_usec = Time.get_ticks_usec()
 	Engine.max_fps = 0
+	steady_sparse = OS.get_environment("CYBERSAND_PUBPRES_PROBE_STEADY_SPARSE") == "1"
 	for arg: String in OS.get_cmdline_user_args():
 		if arg.begins_with("--receipt="):
 			output = arg.trim_prefix("--receipt=")
@@ -42,11 +44,23 @@ func _check(value: bool, reason: String) -> bool:
 
 
 func _input(index: int) -> Dictionary:
-	var dense := index % 12 < 2
+	var dense := not steady_sparse and index % 12 < 2
 	var region := Rect2i(Vector2i.ZERO, Extent) if dense else Rect2i(96, 96, 8, 8)
 	var patch := Image.create_empty(region.size.x, region.size.y, false, Image.FORMAT_RG8)
 	patch.fill(Color(float(3 if index % 2 == 0 else 58) / 255.0, float((index * 37) % 256) / 255.0, 0, 1))
 	return {"dense": dense, "region": region, "patch": patch}
+
+
+func _initial_plane() -> Image:
+	var plane := Image.create_empty(Extent.x, Extent.y, false, Image.FORMAT_RG8)
+	if steady_sparse:
+		# Match the off-patch substrate at the start of transition timing.
+		# The most recent dense generation at sample zero is sequence 25.
+		plane.fill(Color8(58, (25 * 37) % 256, 0))
+	else:
+		for y: int in range(8, Extent.y, 64):
+			plane.fill_rect(Rect2i(0, y, Extent.x, 16), Color(58.0 / 255.0, 0, 0, 1))
+	return plane
 
 
 func _build_host() -> void:
@@ -54,9 +68,7 @@ func _build_host() -> void:
 	host.world_extent = Extent
 	host.render_channels = Channels
 	host.render_image_format = Image.FORMAT_RG8
-	host.image = Image.create_empty(Extent.x, Extent.y, false, Image.FORMAT_RG8)
-	for y: int in range(8, Extent.y, 64):
-		host.image.fill_rect(Rect2i(0, y, Extent.x, 16), Color(58.0 / 255.0, 0, 0, 1))
+	host.image = _initial_plane()
 	initial_sha = _hash(host.image.get_data())
 	host.world_view = TextureRect.new()
 	host.world_view.size = Vector2(640, 360)
@@ -103,12 +115,11 @@ func _submit(index: int) -> Dictionary:
 	var status: Dictionary = host.material_publication_status()
 	_check(status.get("requested_mode") == strategy, "publication strategy did not reach Main")
 	var phase := "sparse"
-	if index % 12 == 0:
-		phase = "enter_dense"
-	elif index % 12 == 1:
-		phase = "dense"
-	elif index % 12 == 2:
-		phase = "enter_sparse"
+	if not steady_sparse:
+		match index % 12:
+			0: phase = "enter_dense"
+			1: phase = "dense"
+			2: phase = "enter_sparse"
 	return {"sample": index - Warmup, "sequence": index, "dense": input.dense,
 		"phase": phase, "accepted_revision": host.last_uploaded_revision, "accepted": accepted,
 		"patch_bytes": bytes.size(), "publish_begin_usec": started, "publish_end_usec": completed,
@@ -119,8 +130,8 @@ func _check_history() -> Dictionary:
 	# Build the expected final pair independently from the most recent full
 	# patch onward. Readback and PNG encoding are outside the sample window.
 	var final_index := Warmup + Samples - 1
-	var first := final_index - final_index % 12
-	var expected: Image = _input(first).patch
+	var first := -1 if steady_sparse else final_index - final_index % 12
+	var expected: Image = _initial_plane() if steady_sparse else _input(first).patch
 	var expected_previous: PackedByteArray
 	for index: int in range(first + 1, final_index + 1):
 		var input := _input(index)
@@ -171,6 +182,7 @@ func _run() -> void:
 		if _check(screenshot.save_png(screenshot_path) == OK, "could not save original framebuffer"):
 			screenshot_sha = FileAccess.get_sha256(screenshot_path)
 	var result := {"schema": "pubpres-transition-v1", "case": Case, "complete": failures.is_empty(),
+		"tape": "steady_sparse" if steady_sparse else "transition",
 		"failures": failures, "material_strategy": strategy, "context": Context.identity(get_script().resource_path, host.world_shader.shader),
 		"initial_plane_sha256": initial_sha, "setup_usec": preparation_usec, "warmup_frames": Warmup,
 		"display": {"window": [root.size.x, root.size.y], "max_fps": Engine.max_fps, "vsync_mode": vsync},
