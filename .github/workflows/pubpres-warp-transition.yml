@@ -14,10 +14,11 @@ on:
         description: WARP comparison to run
         type: choice
         options:
+          - fresh-drawable
           - direct-drawable
           - steady-sparse
           - reentry
-        default: direct-drawable
+        default: fresh-drawable
 
 permissions:
   actions: read
@@ -69,7 +70,7 @@ jobs:
       - name: Run the selected publication comparison on WARP
         shell: pwsh
         env:
-          PUBPRES_WARP_EXPERIMENT: ${{ inputs.experiment || 'direct-drawable' }}
+          PUBPRES_WARP_EXPERIMENT: ${{ inputs.experiment || 'fresh-drawable' }}
         run: |
           python tools/pubpres_integration/warp_transition.py `
             --installed (Join-Path $env:RUNNER_TEMP 'pubpres-warp-installed') `

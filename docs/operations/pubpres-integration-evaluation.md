@@ -81,3 +81,23 @@ ordinary sparse staging is unchanged. Full-only bookends surround the original
 blit / direct update / direct update / original blit comparison. Per-revision
 untimed readback verifies both complete histories. This registered repair probe
 does not change the installed application or establish gameplay acceptance.
+
+The [direct-update result](https://github.com/techrote/cybersand/actions/runs/44742148112/artifacts/14632191513)
+is **Rejected as the performance solution**. Frame p95 in R–A–B–B–A–R order
+was 13.918/42.105/40.012/40.048/42.141/14.042 ms. Both complete histories were
+exact at all 180 measured revisions and all six decoded framebuffers matched.
+The first dense update spent 27–28 ms in the upload call plus approximately
+8.4 ms in conversion; later dense uploads took approximately 4 ms. The old
+following-callback stalls moved into publication. The original archive SHA-256
+is `9149263ab65317ae0eea46439a8fe06da62fb8be28498331f64c58ffcecde349`.
+
+The next registered `fresh-drawable` probe changes that same whole-plane upload
+to public `texture_2d_create` followed by `texture_replace`. Each destination
+gets a separate immutable RGBA8 donor, consumed by replacement; destination
+RIDs and the two logical histories stay unchanged. This tests whether fresh
+storage avoids recovering a previously framebuffer-written texture into CPU
+staging. Godot 4.7 and its exact ANGLE implementation support that hypothesis;
+only matched end-to-end observations can establish the improvement. Two
+untimed 180-revision, both-plane oracles must pass before timed R–A–B–B–A–R
+capture starts. The original direct-update option and its negative evidence
+remain available. No native or physical behavior changes in this probe.
