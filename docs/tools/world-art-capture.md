@@ -1,3 +1,5 @@
+> **Integrated ART-PIPELINE-UNIFICATION-001:** See [the canonical unification, provenance, large-canvas and native-compatibility contract](art-pipeline-unification.md). The unified branch includes the original 15 art collections in `docs/world-design`; an external art checkout is optional. No renderer or art source is modified during inspection/capture. Existing links to donor PRs below describe their historical qualification, not an independent admission of this integration.
+
 # World Art Unattended Capture — real Godot PNGs + manifest, no GUI
 
 **Experimental, independent presentation tooling (MAP-AUTO-01 / [#498](https://github.com/techrote/cybersand/issues/498)).** One command renders provisional world-design packs through the **production RG8 material palette, appearance LUT, emission and glow shaders in a real Godot 4.7 renderer** and writes PNG images plus a hash-bound JSON manifest. There is no mouse, keyboard or UI interaction, no SVG/Python rasterisation and no second renderer: it drives the same `world_art_render_rig.gd` and tiled full-export code as the interactive [World Art Preview](world-art-preview.md).
@@ -40,6 +42,14 @@ LIBGL_ALWAYS_SOFTWARE=1 xvfb-run -a --server-args='-screen 0 1920x1080x24 -nolis
 ~~~
 
 An external worker only needs the **exit code**, the last-line `WORLD_ART_CAPTURE_RESULT {json}` on stdout, and `batch-manifest.json`. A ready-made wrapper is [`examples/world-art-capture/capture_atlas.py`](../../examples/world-art-capture/capture_atlas.py); a GitHub Actions template is [`github-actions-example.yml`](../../examples/world-art-capture/github-actions-example.yml) (not an active workflow).
+
+## Integrated source, aspect-fit and capture custody
+
+In the unified branch, use `--art-root=docs/world-design` (or an absolute equivalent) to capture the 15 included original collections, without a second checkout. The source still receives byte-level identity guards. The user interface and this headless runner share the same `world_art_render_rig.gd` shader path. `--framing=width` or `--framing=height` selects a purposeful crop of the opposite axis, while `--framing=fit` preserves all authored geometry with aspect-correct letterboxing.
+
+The new `art_size_policy` manifest records which source sizes are presentation-previewable versus full-PNG-exportable at the selected scale; **`native_playable` is explicitly unqualified**. Up to 16,777,216 source cells are accepted at most 16,384 cells per side. The full-PNG renderer retains its 50-million-output-pixel cap and rejects overbudget requests without truncation or automatic size change. Bounded crops or a lower scale remain usable.
+
+Every capture destination has an exclusive per-output claim acquired before writing. Previous nonempty destinations, overlapping source directories and still-claimed directories are rejected. A failed/interrupted job never silently takes over another owner's output. For all details, safety boundaries and the 10-size regression matrix, see [ART-PIPELINE-UNIFICATION-001](art-pipeline-unification.md).
 
 ## Inputs
 
