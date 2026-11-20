@@ -552,12 +552,12 @@ func _large_sparse_transfer() -> void:
 		"2048² RG8 uses 128² tiles and 256 bounded tile records")
 	var resources: Array[int] = host._material_blit_publisher.resource_identity()
 	var slots: int = host._material_blit_publisher.staging_slots
-	var expected_bytes: int = 33554437+15368192*slots
+	var expected_bytes: int = 33554437+(15368192+5*128*128*2)*slots
 	check(host._material_blit_publisher.gpu_storage_bytes() == expected_bytes,
 		"2048² allocation includes the configured number of bounded staging resources")
 	check(host._material_blit_publisher.full_staging == host._material_blit_publisher.staging[256],
 		"2048² full image and capacity256 share the same resource pool and cursor")
-	check(resources.size() == 4+6*slots, "two histories, sink, dummy and every independent array RID are counted")
+	check(resources.size() == 4+8*slots, "two histories, sink, dummy and every independent array RID are counted")
 	var result: Dictionary = _patch(host, Rect2i(1023, 1024, 1, 1), 3, 77, "2048² single cell")
 	check(result.gpu_blit_calls == 1 and result.retirement_blit_calls == 1, "sparse copy includes bounded retirement draw")
 	check(result.updated_tiles == 1 and result.submitted_bytes == 32768,

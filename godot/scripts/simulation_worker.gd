@@ -3048,6 +3048,9 @@ func _publish_snapshot(
 	var offered_body_publication: int = 0
 	var render_exchange_started_usec: int = 0
 	var render_exchange_completed_usec: int = 0
+	var native_render_capture_usec: int = 0
+	var native_render_status: int = -1
+	var native_render_recovery_status: int = -1
 	var render_full_refresh_requested: bool = false
 	_mutex.lock()
 	acknowledged_render_serial = _acknowledged_render_snapshot_serial
@@ -3109,9 +3112,16 @@ func _publish_snapshot(
 		render_exchange_started_usec = render_exchange_start_usec
 		if _world.has_method(&"take_render_snapshot"):
 			_pending_render_recovery_required = force_render_full_refresh
-			_append_native_render_packet(_take_native_render_snapshot(force_render_full_refresh))
+			var packet: Dictionary = _take_native_render_snapshot(force_render_full_refresh)
+			native_render_capture_usec = Time.get_ticks_usec() - render_exchange_start_usec
+			native_render_status = int(packet.get("status", -1))
+			_append_native_render_packet(packet)
 			if _pending_render_recovery_required and not force_render_full_refresh:
-				_append_native_render_packet(_take_native_render_snapshot(true))
+				var recovery_started_usec: int = Time.get_ticks_usec()
+				var recovery_packet: Dictionary = _take_native_render_snapshot(true)
+				native_render_capture_usec += Time.get_ticks_usec() - recovery_started_usec
+				native_render_recovery_status = int(recovery_packet.get("status", -1))
+				_append_native_render_packet(recovery_packet)
 		else:
 			_snapshot_cells = PackedByteArray(_world.get_cells())
 			_fallback_render_snapshot_serial += 1
@@ -3404,6 +3414,8 @@ func _publish_snapshot(
 			"forced_refresh_bypasses_ack":ack_gated_publication and force_render_full_refresh
 				and render_serial_before > acknowledged_render_serial,
 			"patch_count":snapshot.render_pending_patch_count,"patch_bytes":snapshot.render_pending_patch_bytes,
+			"native_capture_usec":native_render_capture_usec,"native_capture_status":native_render_status,
+			"native_force_full_requested":force_render_full_refresh,"native_recovery_status":native_render_recovery_status,
 			"full_refresh":snapshot.render_full_refresh},trace_generation)
 	if workbench_physics and _combined_physics_publication:
 		_published_physics_snapshot = snapshot if _running and rigid_body_epoch == _physical_effect_epoch \
@@ -3474,11 +3486,14 @@ func _clear_pending_render_patches() -> void:
 func _refresh_published_render_payload() -> void:
 	if _published_render_payload_generation == _pending_render_payload_generation:
 		return
-	# Packed arrays are reference types. These copies are the ownership boundary
-	# between the worker's mutable accumulation buffers and immutable snapshots
-	# consumed by the main thread.
+	# A lone complete packet stays immutable. The first appended delta detaches
+	# it from the worker journal. Once the journal contains deltas, every
+	# publication needs its own bytes because subsequent appends mutate it.
 	_published_render_patch_rectangles = _pending_render_patch_rectangles.duplicate()
-	_published_render_patch_cells = _pending_render_patch_cells.duplicate()
+	if _pending_render_baseline_bytes > 0 and _pending_render_patch_cells.size() == _pending_render_baseline_bytes:
+		_published_render_patch_cells = _pending_render_patch_cells
+	else:
+		_published_render_patch_cells = _pending_render_patch_cells.duplicate()
 	_published_render_payload_generation = _pending_render_payload_generation
 
 
@@ -3503,8 +3518,8 @@ func _append_native_render_packet(packet: Dictionary) -> void:
 			_pending_render_recovery_required = true
 			return
 		_pending_render_patch_rectangles = packet_rectangles.duplicate()
-		_pending_render_patch_cells = packet_cells.duplicate()
-		_snapshot_cells = packet_cells.duplicate()
+		_pending_render_patch_cells = packet_cells
+		_snapshot_cells = packet_cells
 		_pending_render_baseline_bytes = packet_cells.size()
 		_pending_render_full_refresh = true
 		_pending_render_recovery_required = false
@@ -3522,6 +3537,8 @@ func _append_native_render_packet(packet: Dictionary) -> void:
 					> MAX_PENDING_RENDER_PATCHES * RENDER_PATCH_METADATA_STRIDE:
 			_pending_render_recovery_required = true
 			return
+		if baseline_metadata > 0 and data_offset_base == _pending_render_baseline_bytes:
+			_pending_render_patch_cells = _pending_render_patch_cells.duplicate()
 		_pending_render_patch_cells.append_array(packet_cells)
 		for metadata_offset: int in range(
 			0,

@@ -8,6 +8,7 @@ extends RefCounted
 # Main owns the publisher; each public Texture2D owns its drawable and keeps
 # only a weak publisher link for legacy ImageTexture.update-style callers.
 const MAX_TILES: int = 256
+const HISTORY_STAGING_CAPACITIES: Array[int] = [1, 4]
 const MIN_TILE_SIDE: int = 64
 const MAX_TILE_SIDE: int = 1024
 const CAPACITIES: Array[int] = [1, 4, 16, 64, 128, 256]
@@ -73,6 +74,10 @@ var staging_slots: int = 3
 var copy_mode: String = "runs"
 var staging: Dictionary = {}
 var _staging_pool_ids: Dictionary = {}
+# The copy into the recycled history texture can outlive ordinary small
+# submissions. Give those patches independent upload resources and cursors.
+var _history_staging: Dictionary = {}
+var _history_staging_pool_ids: Dictionary = {}
 var full_staging: StagingPool
 var _full_staging_pool_id: int = 0
 var retirement_sink: DrawableTexture2D
@@ -145,6 +150,12 @@ func _setup(source: Image, preceding: Image) -> bool:
 		full_staging = _new_staging_pool(extent)
 		if full_staging == null: return false
 	_full_staging_pool_id = full_staging.get_instance_id()
+	if columns * rows >= 128:
+		for capacity: int in HISTORY_STAGING_CAPACITIES:
+			var pool: StagingPool = _new_staging_pool(_capacity_extent(capacity))
+			if pool == null: return false
+			_history_staging[capacity] = pool
+			_history_staging_pool_ids[capacity] = pool.get_instance_id()
 	current = _new_plane()
 	previous = _new_plane()
 	if current == null or previous == null: return false
@@ -171,8 +182,7 @@ func _setup(source: Image, preceding: Image) -> bool:
 	# all initialization uploads and preparation remain in the setup receipt.
 	initialized["copy_destinations"] = 2
 	var priming_started: int = Time.get_ticks_usec()
-	var pools: Array = staging.values()
-	if not pools.has(full_staging): pools.append(full_staging)
+	var pools: Array = _owned_staging_pools()
 	var sink_rids: Array[RID] = [retirement_sink.get_rid()]
 	# Prepare the built-in direct texture sampler with the already owned sink.
 	retirement_sink.blit_rect(Rect2i(0,0,1,1),dummy_source)
@@ -297,6 +307,13 @@ func _valid_state() -> bool:
 				or plane.drawable.get_rid() == retirement_sink.get_rid() \
 				or plane.drawable.get_rid() == dummy_source.get_rid(): return false
 	if staging.size() != _staging_pool_ids.size(): return false
+	var history_capacities: Array[int] = HISTORY_STAGING_CAPACITIES if columns*rows >= 128 else []
+	if _history_staging.size() != history_capacities.size() \
+			or _history_staging_pool_ids.size() != history_capacities.size(): return false
+	for capacity: int in history_capacities:
+		var pool: StagingPool = _history_staging.get(capacity) as StagingPool
+		if pool == null or pool.get_instance_id() != int(_history_staging_pool_ids.get(capacity,0)) \
+				or not _valid_staging_pool(pool,_capacity_extent(capacity)): return false
 	for capacity: int in staging:
 		if capacity not in CAPACITIES: return false
 		var pool: StagingPool = staging[capacity] as StagingPool
@@ -306,8 +323,7 @@ func _valid_state() -> bool:
 			or not _valid_staging_pool(full_staging,extent): return false
 	# Distinct capacity pools and slots must not alias a texture or sampler
 	# material. Only an equal-size full atlas shares its existing pool/cursor.
-	var pools: Array = staging.values()
-	if not pools.has(full_staging): pools.append(full_staging)
+	var pools: Array = _owned_staging_pools()
 	var texture_ids: Dictionary = {current.get_rid():true, previous.get_rid():true,
 		retirement_sink.get_rid():true, dummy_source.get_rid():true}
 	var material_ids: Dictionary = {}
@@ -461,7 +477,8 @@ func _submit(source: Image, destinations: Array[MaterialPlane],
 	var atlas_size: Vector2i = _capacity_extent(capacity)
 	var atlas_columns: int = atlas_size.x/tile_side
 	var whole: bool = direct_whole or atlas_size.x*atlas_size.y >= extent.x*extent.y
-	var pool: StagingPool = full_staging if whole else staging.get(capacity) as StagingPool
+	var pool: StagingPool = full_staging if whole else (
+		_history_staging.get(capacity) if base != null else staging.get(capacity)) as StagingPool
 	if pool == null: return false
 	var slot: int = pool.next_slot
 	var resource: StagingResource = pool.resources[slot]
@@ -570,6 +587,7 @@ func _submit(source: Image, destinations: Array[MaterialPlane],
 	last_update.staging_height = stage_size.y
 	last_update.staging_slot = slot
 	last_update.staging_resource_rid = stage.get_rid().get_id()
+	last_update["history_staging"] = base != null
 	# Rotate only after upload, all copies and retirement have been submitted.
 	# Byte-identical and rejected publications never consume a staging slot.
 	pool.next_slot = (slot+1)%staging_slots
@@ -581,8 +599,7 @@ func resource_identity() -> Array[int]:
 	var ids: Array[int] = [current.get_rid().get_id(),previous.get_rid().get_id()]
 	ids.append(retirement_sink.get_rid().get_id())
 	ids.append(dummy_source.get_rid().get_id())
-	var pools: Array = staging.values()
-	if not pools.has(full_staging): pools.append(full_staging)
+	var pools: Array = _owned_staging_pools()
 	for pool: StagingPool in pools:
 		for resource: StagingResource in pool.resources:
 			ids.append(resource.texture.get_rid().get_id())
@@ -590,10 +607,16 @@ func resource_identity() -> Array[int]:
 	return ids
 
 
-func gpu_storage_bytes() -> int:
-	var bytes: int = extent.x*extent.y*4*2+5
+func _owned_staging_pools() -> Array:
 	var pools: Array = staging.values()
 	if full_staging != null and not pools.has(full_staging): pools.append(full_staging)
+	pools.append_array(_history_staging.values())
+	return pools
+
+
+func gpu_storage_bytes() -> int:
+	var bytes: int = extent.x*extent.y*4*2+5
+	var pools: Array = _owned_staging_pools()
 	for pool: StagingPool in pools:
 		if pool != null: bytes += pool.extent.x*pool.extent.y*channels*staging_slots
 	return bytes

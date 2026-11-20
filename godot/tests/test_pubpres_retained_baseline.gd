@@ -39,6 +39,7 @@ func run() -> void:
 		var first: CyberSimulationSnapshot = worker.take_latest_snapshot(-1)
 		var baseline_bytes: int = extent.x * extent.y * 2
 		require(first.render_patch_cells.size() == baseline_bytes,"exact initial RG8 baseline")
+		var original_baseline: PackedByteArray = first.render_patch_cells.duplicate()
 		worker._world.emit_disc(400,250,0,CyberCellWorld.WATER)
 		worker._publish_snapshot(0.0,true,0)
 		var second: CyberSimulationSnapshot = worker.take_latest_snapshot(-1)
@@ -54,6 +55,10 @@ func run() -> void:
 			"future, stale and duplicate acknowledgments preserve newer accumulated pixels")
 		require(first.render_patch_cells.size() == baseline_bytes and second.render_patch_cells.size() == baseline_bytes + 2,
 			"retained publications remain immutable")
+		require(first.cells == original_baseline and first.render_patch_cells == original_baseline and second.cells == original_baseline
+			and third.cells == original_baseline and second.render_patch_cells[baseline_bytes] == CyberCellWorld.WATER
+			and third.render_patch_cells[baseline_bytes+2] == CyberCellWorld.SAND,
+			"appended deltas preserve every retained full packet and its separate material updates")
 		var stale: int = third.render_snapshot_serial
 		worker.request_render_full_refresh()
 		worker.refuse_next_full = true
@@ -66,5 +71,7 @@ func run() -> void:
 		var recovered: CyberSimulationSnapshot = worker.take_latest_snapshot(-1)
 		require(worker.forced == 3 and recovered.render_snapshot_serial > stale and recovered.render_patch_cells.size() == baseline_bytes,
 			"covering ACK releases old bytes but cannot clear an unfulfilled full request")
+		require(first.cells == original_baseline and first.render_patch_cells == original_baseline,
+			"full replacement leaves the previously published array intact")
 	print("PUBPRES_RETAINED_BASELINE checks=%d failures=%d" % [checks,failures])
 	quit(int(failures > 0))

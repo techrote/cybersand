@@ -70,7 +70,7 @@ change leaves retention, overflow, publication and ACK policy unchanged.
 
 ## Does a small dirty patch mean a small GPU upload?
 
-The [desktop evaluation candidate](../operations/pubpres-integration-evaluation.md) adds opt-in tile staging and persistent drawable history. The ordinary full-only path continues to submit the complete backing image.
+The [desktop evaluation candidate](../operations/pubpres-integration-evaluation.md) adds opt-in tile staging and persistent drawable history. Large transitions that first copy the accepted history use dedicated bounded staging rings. The ordinary full-only path continues to submit the complete backing image.
 
 No. **Current:** [main `apply_render_patches_to_image`](../../godot/scripts/main.gd)
 validates dimensions, channel count, offsets and exact byte sizes for the full
