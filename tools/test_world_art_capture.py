@@ -738,6 +738,42 @@ class GraphicalCaptureTests(unittest.TestCase):
         self.assertNotRegex(done.stdout + done.stderr, r"SCRIPT ERROR|Parse Error")
 
 
+    def test_14_all_ten_native_aspect_sizes_have_real_godot_fit_evidence(self):
+        dimensions = [
+            (512, 512), (1024, 1024), (2048, 1024), (1024, 2048),
+            (4096, 1024), (1024, 4096), (512, 8192), (8192, 512),
+            (2048, 8192), (16384, 1024),
+        ]
+        for width, height in dimensions:
+            with self.subTest(native=(width, height)):
+                source_dir = self.scratch / f"matrix-{width}x{height}"
+                source_dir.mkdir(parents=True, exist_ok=True)
+                pack = source_dir / "pack.json"
+                pack.write_text(json.dumps({
+                    "scene": {"size": [width, height], "placements": [],
+                              "rectangles": [
+                                  [0, 0, width, height, 58],
+                                  [width - 8, 0, 8, height, 65],
+                                  [0, height - 12, width, 12, 54],
+                              ]},
+                    "features": [{"id": "matrix", "size": [4, 4],
+                                  "rectangles": [[0, 0, 4, 4, 62]], "variants": []}],
+                }), encoding="utf-8")
+                out, _, _ = self.capture(f"size-matrix-{width}x{height}", "--pack", str(pack),
+                                          "--shots", "viewport", "--resolution", "640x360",
+                                          "--framing", "fit", art_root=False)
+                batch, problems = support.verify_bundle(out)
+                self.assertEqual(problems, [], f"{width}x{height}: {problems}")
+                job = support.read_json(out / batch["jobs"][0]["manifest"])
+                self.assertEqual((job["native"]["width"], job["native"]["height"]), (width, height))
+                shot = job["shots"][0]
+                self.assertEqual((shot["width"], shot["height"]), (640, 360))
+                self.assertTrue(shot["camera"]["map_fully_visible"])
+                self.assertFalse(any(shot["camera"]["clips"].values()))
+                self.assertTrue(shot["stats"]["nonblank"])
+                self.assertEqual(batch["jobs"][0]["art_size_policy"]["native_playable"],
+                                 "not-qualified-by-art-pipeline")
+
     def test_13_streamed_67m_pixel_true_godot_png_is_complete_and_bounded(self):
         width, height = 1024, 4096
         source = self.scratch / "streamed-art" / "pack.json"
