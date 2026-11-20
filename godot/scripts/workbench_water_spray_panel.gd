@@ -92,7 +92,8 @@ const WAVE_SPINS := [
 	["workbench_wave_adhesion_shift", "Adhesion shift", 0, 8, 1, 1, "Surface adhesion film is Water film / 2^N. Larger = less sticky."],
 	["workbench_wave_body_push", "Body push", 0, 1024, 16, 256, "How hard Wave Water pushes actors and bodies, n/256 of the original push. 0 = no push. Affects only the force offered to Rapier, never the Water itself."],
 	["workbench_wave_body_push_by_mass", "Push by amount", 0, 1, 1, 1, "1: each wet cell pushes in proportion to the Water it holds, so a faint trickle barely touches a flyer. 0: every wet cell pushes like a full one (original Wave)."],
-	["workbench_wave_deep_gain", "Deep gain", 0, 512, 1, 0, "Response of deep open Water. Lower values slow broad waves. Shallow Water keeps Gain. Zero uses Gain everywhere."],
+	["workbench_wave_deep_gain", "Deep gain", 0, 512, 1, 0, "Response of deep open Water. Lower values slow broad waves. Shallow Water keeps Gain. Zero inherits Gain."],
+	["workbench_wave_floor_gain", "Floor gain", 0, 4096, 1, 0, "Horizontal response of shallow Water spreading on a continuous level floor. Zero inherits the ordinary response."],
 	["workbench_wave_flux_smoothing", "Flux smoothing", 0, 64, 1, 0, "Smooth changes in horizontal flow between nearby faces. Higher values soften short peaks. Zero turns smoothing off."],
 ]
 # WAVE-WATERWALL-001: Wave-only exposed-face spill. Off = original Wave Flow.
@@ -143,6 +144,7 @@ const WAVE_PRESETS := [
 		"workbench_wave_coast":64,"workbench_wave_sleep_after":90,
 		"workbench_wave_damp_shift":16,"workbench_wave_calm_damp_shift":8,
 		"workbench_wave_calm":128,"workbench_wave_stick":128}},
+	{"label":"Gameplay default","values":{},"gameplay":true},
 ]
 const MAX_OVER_LEDGE := {
 	"workbench_wave_spill_sheet_rate":64,"workbench_wave_spill_coyote_ticks":4,
@@ -175,7 +177,7 @@ func build(owner: Control, parent: Control, row_factory: Callable, jet_point: Ca
 	_wave.focus_mode = Control.FOCUS_NONE
 	if embedded:
 		# One discoverable law selector replaces the historical button cluster.
-		for name: String in ["FreeMass · original","Wave Flow · experimental",
+		for name: String in ["FreeMass · original","Wave Flow · default",
 			"PressureFlow · reference","PressureFlow · cached",
 			"PressureFlow · dormant","Inertial cellular","Other · advanced policy"]:
 			_studio_solver.add_item(name)
@@ -224,6 +226,9 @@ func build(owner: Control, parent: Control, row_factory: Callable, jet_point: Ca
 	row = row_factory.call(tuning)
 	_wave_preset.tooltip_text = "v2 defaults is the original parameter point. Other presets are exploratory starting points. Selection stages values; Apply changes the native World."
 	for preset: Dictionary in WAVE_PRESETS: _wave_preset.add_item(str(preset.label))
+	if _option_on("workbench_wave_flow"):
+		_wave_preset.select(-1)
+		_wave_preset.text = "Stage preset…"
 	_wave_preset.item_selected.connect(_select_wave_preset)
 	row.add_child(_wave_preset)
 	_button(row,"Reset Wave defaults",_reset_wave_defaults)
@@ -243,7 +248,7 @@ func build(owner: Control, parent: Control, row_factory: Callable, jet_point: Ca
 	_wave_notice.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_wave_notice.text = "Reset stages v2 defaults. Apply solver / tuning or Load / reset scene installs requested values."
 	tuning.add_child(_wave_notice)
-	for group: Array in [["Motion / response",0,8],["Sleep / rest",8,14],["Transfer / capacity",14,18],["Bodies (Rapier actors)",18,20],["Wave shape",20,22]]:
+	for group: Array in [["Motion / response",0,8],["Sleep / rest",8,14],["Transfer / capacity",14,18],["Bodies (Rapier actors)",18,20],["Wave shape",20,WAVE_SPINS.size()]]:
 		var heading := Label.new()
 		heading.text = group[0]
 		tuning.add_child(heading)
@@ -387,7 +392,7 @@ func _build_spill(tuning: Control, row_factory: Callable) -> void:
 	_max_over_ledge.tooltip_text = "Stage a falling sheet with outward spray and a brief crest overhang. Apply installs the bundle."
 	var explanation := Label.new()
 	explanation.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	explanation.text = "Max over-ledge stages the spill controls below. Wave presets and Reset Wave defaults affect only Wave tuning."
+	explanation.text = "Max over-ledge stages the spill controls below. Gameplay default stages both Wave and spill. Other Wave presets affect only Wave tuning."
 	tuning.add_child(explanation)
 	row = row_factory.call(tuning)
 	for spec: Array in SPILL_SWITCHES:
@@ -434,16 +439,20 @@ func _build_spill(tuning: Control, row_factory: Callable) -> void:
 	tuning.add_child(_spill_status)
 
 func _stage_max_over_ledge() -> void:
+	_stage_spill_bundle(MAX_OVER_LEDGE)
+	_wave_notice.text = "Max over-ledge staged. Apply to use these spill settings."
+
+func _stage_spill_bundle(settings: Dictionary) -> void:
 	_set_spill("workbench_wave_spill_parcels",true)
 	for spec: Array in SPILL_SPINS:
 		var key: String = spec[0]
-		var value := int(MAX_OVER_LEDGE.get(key,spec[5]))
+		var value := int(settings.get(key,spec[5]))
 		host.workbench_water_options[key] = value
 		_spill_fields[key].set_value_no_signal(value)
-	_wave_notice.text = "Max over-ledge staged. Apply to use these spill settings."
 
 func _set_spill(key: String, on: bool) -> void:
 	host.workbench_water_options[key] = on
+	_spill_toggles[key].set_pressed_no_signal(on)
 	# Ballistic release is a mode of spill: it cannot be requested without it.
 	if key == "workbench_wave_spill" and not on:
 		host.workbench_water_options["workbench_wave_spill_parcels"] = false
@@ -512,7 +521,12 @@ func _qualified_wave_values() -> Dictionary:
 func _select_wave_preset(index: int) -> void:
 	if index < 0 or index >= WAVE_PRESETS.size(): return
 	var values := _qualified_wave_values()
-	values.merge(WAVE_PRESETS[index].values,true)
+	if WAVE_PRESETS[index].get("gameplay",false):
+		var defaults: Dictionary = ClassDB.class_call_static(&"CyberNativeCellWorld",&"gameplay_water_options")
+		_stage_spill_bundle(defaults)
+		for key: String in values: values[key] = defaults.get(key,values[key])
+	else:
+		values.merge(WAVE_PRESETS[index].values,true)
 	for key: String in values:
 		host.workbench_water_options[key] = int(values[key])
 		if _wave_fields.has(key): _wave_fields[key].set_value_no_signal(int(values[key]))
@@ -663,6 +677,16 @@ func _requested_water_family() -> String:
 		if int(assignment.get("material",-1)) == CyberCellWorld.WATER:
 			return str(assignment.get("applied_family",""))
 	return ""
+
+# An explicit family in Advanced is also a staged Water law selection.
+func stage_advanced_water_family() -> void:
+	if not _option_on("workbench_wave_flow"): return
+	host.workbench_water_options.workbench_wave_flow = false
+	_wave.set_pressed_no_signal(false)
+	_restore_non_wave_options()
+	_stage_inertial_signed(_requested_water_family())
+	_update_wave_controls()
+	_sync_studio_solver()
 
 func _choose_studio_solver(index: int) -> void:
 	var admitted := false

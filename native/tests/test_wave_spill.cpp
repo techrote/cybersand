@@ -1131,6 +1131,66 @@ void sheet_starts_from_rest_without_wave_gain() {
     require_ledger_closes(world, {0, 0, 64, 64}, 8 * 20 * 255, "zero-gain sheet");
 }
 
+void floor_gain_requires_a_level_solved_floor() {
+    constexpr int x = 127, y = 127;
+    const RectI64 all{0, -256, 256, 512};
+    auto run = [&](int gain, std::uint32_t workers, bool drop, bool paused, std::uint16_t mass) {
+        auto cfg = config(Mode::Hybrid, workers);
+        cfg.wave_flow.floor_gain = gain;
+        cfg.wave_flow.gain = 0;
+        cfg.wave_flow.empty_pour_shift = 1;
+        cfg.wave_flow.spill.launch_budget = 0;
+        World world(cfg);
+        rect(world, x-4, y+1, drop ? 5 : 9, 1, Material::Wall);
+        require(world.set_cell_state(x, y, Material::Water, mass, 0), "floor donor setup failed");
+        if (paused) world.set_simulation_region(RectI64{0, 0, 256, 128});
+        const auto before_state = world.state_hash(), before_physical = world.physical_state_hash();
+        (void)world.tick();
+        require_ledger_closes(world, all, mass, "floor donor " + std::to_string(mass) + " at four-chunk corner");
+        const auto left = world.water_quantity({x-4,y-6,4,8});
+        const auto right = world.water_quantity({x+1,y-6,4,8});
+        require(left + right <= mass, "two outgoing floor faces overdrew donor");
+        return std::array<std::uint64_t,6>{left, right, before_state, before_physical,
+                                            world.content_hash(), world.physical_state_hash()};
+    };
+    const auto plain = run(0, 1, false, false, 177);
+    const auto driven = run(4096, 1, false, false, 177);
+    require(plain[0] + plain[1] == 0 && driven[0] > 0 && driven[1] > 0,
+            "floor gain failed to drive both sides of a resting partial donor");
+    require(driven[2] != plain[2] && driven[3] != plain[3], "floor gain absent from identity");
+    require(driven == run(4096, 6, false, false, 177), "floor flow depends on worker count");
+    require(run(4096, 4, true, false, 177)[1] == 0, "floor acceleration crossed a descending step");
+    const auto paused = run(4096, 4, false, true, 177);
+    require(paused[0] + paused[1] == 0, "paused terrain supplied floor acceleration");
+    (void)run(4096, 6, false, false, 65535);
+    // Read the face shared by a three-cell column and its shallower neighbour.
+    // The whole supporting path must lead to the same floor elevation.
+    const auto top_flux = [](int donor_depth, int receiver_step) {
+        constexpr int left = 127, top = 127;
+        auto cfg = config(Mode::Hybrid, 4);
+        cfg.wave_flow.gain = 0;
+        cfg.wave_flow.floor_gain = 4096;
+        cfg.wave_flow.spill.launch_budget = 0;
+        World world(cfg);
+        rect(world, left-2, top+donor_depth, 3, 1, Material::Wall);
+        rect(world, left+1, top+donor_depth-receiver_step, 3, 1, Material::Wall);
+        for (int k = 0; k < donor_depth; ++k) world.set(left, top+k, Material::Water);
+        for (int k = 1; k < donor_depth-receiver_step; ++k) world.set(left+1, top+k, Material::Water);
+        (void)world.tick();
+        return world.wave_flow_flux(left, top);
+    };
+    require(top_flux(3, 0) > 0, "third supported row did not carry the surge");
+    require(top_flux(4, 0) == 0, "floor acceleration escaped the shallow band");
+    require(top_flux(3, 1) == 0, "floor acceleration climbed a riser");
+    for (int bad : {-1, 4097}) {
+        auto cfg = config(Mode::Hybrid);
+        cfg.wave_flow.floor_gain = bad;
+        bool refused = false;
+        try { World invalid(cfg); } catch (const std::invalid_argument&) { refused = true; }
+        require(refused, "invalid floor gain admitted");
+    }
+}
+
 void coyote_flight_pauses_expires_and_leaves_jets_alone() {
     auto cfg = config(Mode::Hybrid, 4);
     cfg.wave_flow.spill.coyote_ticks = 4;
@@ -1185,6 +1245,7 @@ int main(int argc, char** argv) {
         void (*function)();
     };
     const Test tests[] = {
+        {"floor gain requires real level terrain and conserves both shares", floor_gain_requires_a_level_solved_floor},
         {"crest Apply adopts the replacement flight law", retained_crest_adopts_replacement_flight_law},
         {"sheet starts with zero ordinary gain", sheet_starts_from_rest_without_wave_gain},
         {"sheet releases deep rows and keeps crest spray", sheet_releases_deep_rows_and_keeps_crest_spray},

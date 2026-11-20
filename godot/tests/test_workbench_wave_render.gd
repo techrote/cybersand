@@ -174,7 +174,7 @@ func run() -> void:
 	if not await open_lab(0): await finish(); return
 	if not await pick(bench.water_spray._studio_solver,1): await finish(); return
 	var tuning: Window = lab()
-	expect(tuning.visible and not bool(native().get("enabled",false)),"Wave selection stages while native stays unchanged")
+	expect(tuning.visible and bool(native().get("enabled",false)) and native().spill.parcels,"fresh Workbench displays its active gameplay Wave selection")
 	bench.water_lab.select_tab(1)
 	await process_frame
 	var rounds: SpinBox = bench.water_spray._wave_fields.workbench_wave_substeps
@@ -183,11 +183,15 @@ func run() -> void:
 	var gain: SpinBox = bench.water_spray._wave_fields.workbench_wave_gain
 	gain.get_line_edit().text = "48"
 	gain.apply()
+	var floor_gain: SpinBox = bench.water_spray._wave_fields.workbench_wave_floor_gain
+	floor_gain.get_line_edit().text = "960"
+	floor_gain.apply()
+	var initial_generation := int(native().session_generation)
 	if not await click(button("Apply solver / tuning",tuning)): await finish(); return
-	if not await until(func() -> bool: return installed() and bool(native().get("enabled",false)),"actual UI enables native Wave"):
+	if not await until(func() -> bool: return installed() and int(native().session_generation) > initial_generation and bool(native().get("enabled",false)),"actual UI retunes native Wave"):
 		await finish(); return
-	expect(int(native().get("substeps",0)) == 2 and int(native().get("parameters",{}).get("gain",0)) == 48,
-		"entered control values match authoritative native readback")
+	expect(int(native().get("substeps",0)) == 2 and int(native().get("parameters",{}).get("gain",0)) == 48
+		and native().parameters.floor_gain == 960, "entered gain, rounds and floor gain match authoritative native readback")
 	if not await close_lab(): await finish(); return
 	for index: int in Scenes.SCENES.size():
 		if not await load_scene(index,true): break

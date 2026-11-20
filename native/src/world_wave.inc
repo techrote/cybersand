@@ -192,6 +192,8 @@ void World::validate_wave_flow_config() const {
         throw std::invalid_argument("wave_flow active_rows must be between 1 and 32");
     if (tune.gain < 0 || tune.gain > P::kMaximumGain || tune.gain_confined < 0 || tune.gain_confined > P::kMaximumGain)
         throw std::invalid_argument("wave_flow gains outside 0..512");
+    if (tune.floor_gain < 0 || tune.floor_gain > P::kMaximumFloorGain)
+        throw std::invalid_argument("wave_flow floor_gain outside 0..4096");
     if (tune.deep_gain < 0 || tune.deep_gain > P::kMaximumGain)
         throw std::invalid_argument("wave_flow deep_gain outside 0..512");
     if (tune.flux_smoothing < 0 || tune.flux_smoothing > 64)
@@ -314,6 +316,10 @@ void World::hash_wave_state(std::uint64_t& hash) const {
     if (tune.flux_smoothing != 0) {
         for (const char c : std::string_view{"wave-flux-smoothing"}) hash_byte(hash, static_cast<std::uint8_t>(c));
         hash_integer(hash, tune.flux_smoothing);
+    }
+    if (tune.floor_gain != 0) {
+        for (const char c : std::string_view{"wave-floor-gain"}) hash_byte(hash, static_cast<std::uint8_t>(c));
+        hash_integer(hash, tune.floor_gain);
     }
     if (tune.deep_gain != 0) {
         for (const char c : std::string_view{"wave-deep-gain"}) hash_byte(hash, static_cast<std::uint8_t>(c));
@@ -864,7 +870,34 @@ void World::wave_flux_task(std::size_t task_index) noexcept {
                     return under == nullptr || !under->wave->included(column, 0) ||
                            (under->wave->meta[static_cast<std::size_t>(column)] & WaveChunk::kSolid) != 0U;
                 };
-                if (a != 0 && b != 0 && ((meta_a | meta_b) & WaveChunk::kFull) == 0U) {
+                // The leading film may retain momentum only along an actual,
+                // level floor. A solved-region edge, a body, Water underneath,
+                // or a step up/down cannot supply this extra acceleration.
+                const auto floor_depth = [&](const Chunk* owner, std::size_t at) noexcept {
+                    const auto x = static_cast<std::int32_t>(at - row);
+                    auto y = ly;
+                    for (int depth = 1; depth <= 3; ++depth) {
+                        if (++y == size) {
+                            owner = owner->wave->below;
+                            y = 0;
+                        }
+                        if (!owner || !owner->wave->solve || !owner->wave->included(x, y)) return 0;
+                        const auto below = static_cast<std::size_t>(y) * stride + static_cast<std::size_t>(x);
+                        const auto& cell = owner->cells[below];
+                        if (material_definition(cell.material_value()).state == MaterialState::Solid) return depth;
+                        if ((owner->wave->meta[below] & WaveChunk::kFull) == 0U) return 0;
+                    }
+                    return 0;
+                };
+                bool floor_front = false;
+                if (config_.wave_flow.floor_gain != 0 && code == WaveChunk::kGainNormal &&
+                    std::min(wave.weight[i], other->wave->weight[j]) < maximum && std::max(a, b) > film) {
+                    // The lowest three Water rows can travel as a sheet. Both
+                    // faces need full supporting Water down to the same floor.
+                    const auto depth = floor_depth(&chunk, i);
+                    floor_front = depth != 0 && floor_depth(other, j) == depth;
+                }
+                if (!floor_front && a != 0 && b != 0 && ((meta_a | meta_b) & WaveChunk::kFull) == 0U) {
                     // A film: two partly filled cells that both rest on a solid
                     // floor. Less than a cell of Water carries no wave worth
                     // keeping, and momentum would let it creep for thousands
@@ -942,6 +975,13 @@ void World::wave_flux_task(std::size_t task_index) noexcept {
                     if (deep_column(&chunk, i, meta_a) && deep_column(other, j, meta_b)) gain = tuning.deep_gain;
                 }
                 auto flux = static_cast<std::int64_t>(previous) - damping + static_cast<std::int64_t>(head) * gain;
+                if (floor_front) {
+                    // Accelerate at most one cell of head. Deeper head keeps
+                    // ordinary gain. The usual two-face donor and room bounds
+                    // below cap the resulting total flux, including inertia.
+                    const auto toe_head = std::clamp(head, -maximum, maximum);
+                    flux += static_cast<std::int64_t>(toe_head) * (tuning.floor_gain - gain);
+                }
                 // Rest rule: one unit cannot level a one-unit step (it only
                 // flips it), so a small flux across such a step is discarded.
                 // Larger flux retains its wave inertia until damping calms it.

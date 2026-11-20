@@ -404,6 +404,7 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
                 WaveKnob{"workbench_wave_active_rows", &cybersand::WaveFlowConfig::active_rows},
                 WaveKnob{"workbench_wave_gain", &cybersand::WaveFlowConfig::gain},
                 WaveKnob{"workbench_wave_deep_gain", &cybersand::WaveFlowConfig::deep_gain},
+                WaveKnob{"workbench_wave_floor_gain", &cybersand::WaveFlowConfig::floor_gain},
                 WaveKnob{"workbench_wave_flux_smoothing", &cybersand::WaveFlowConfig::flux_smoothing},
                 WaveKnob{"workbench_wave_gain_confined", &cybersand::WaveFlowConfig::gain_confined},
                 WaveKnob{"workbench_wave_stiffness", &cybersand::WaveFlowConfig::stiffness},
@@ -982,6 +983,7 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         wave_flow["active_rows"] = wave.active_rows;
         wave_flow["gain"] = wave.gain;
         wave_flow["deep_gain"] = wave.deep_gain;
+        wave_flow["floor_gain"] = wave.floor_gain;
         wave_flow["flux_smoothing"] = wave.flux_smoothing;
         wave_flow["gain_confined"] = wave.gain_confined;
         wave_flow["stiffness"] = wave.stiffness;

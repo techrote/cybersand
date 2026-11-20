@@ -51,6 +51,7 @@ struct WaveFlowParameters {
     // two opposing faces in a single apply pass.
     static constexpr std::int32_t kMaximumActiveRows = 32;
     static constexpr std::int32_t kMaximumGain = 512;
+    static constexpr std::int32_t kMaximumFloorGain = 4096;
     static constexpr std::int32_t kMaximumStiffness = 4096;
     static constexpr std::int32_t kMaximumDampingShift = 16;
     static constexpr std::int32_t kMaximumCoast = 65535;
@@ -135,6 +136,9 @@ struct WaveFlowConfig {
     // Fraction /256 of each adjacent retained wet-face velocity used per
     // round. At 64 an alternating one-face ripple loses all its old momentum.
     std::int32_t flux_smoothing = 0;
+    // Restoring gain at a shallow advancing toe on continuous solid terrain.
+    // Zero uses the ordinary face law, including static thin-film leveling.
+    std::int32_t floor_gain = 0;
     WaveSpillConfig spill{};
     // How hard Wave Water pushes transient bodies (Rapier actors). Observation
     // only: it changes the contact impulse offered to the body owner, never the

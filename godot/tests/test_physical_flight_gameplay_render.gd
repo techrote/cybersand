@@ -7,6 +7,8 @@ const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
 # run the real native worker + Rapier owner, and screenshot submitted GL frames.
 # This _render fixture is intentionally Linux-display-only; Windows headless
 # regression covers the same selection and physical state without GL claims.
+const SAMPLE_COLUMNS := 64
+const SAMPLE_ROWS := 48
 const Session = preload("res://scripts/physical_actor_session.gd")
 const Profile = preload("res://scripts/physical_flight_profile.gd")
 var desktop: Control
@@ -50,13 +52,24 @@ func nonblank_samples(image: Image) -> int:
 	var unique: Dictionary = {}
 	var w: int = image.get_width()
 	var h: int = image.get_height()
-	for iy: int in range(12):
-		for ix: int in range(16):
-			var colour: Color = image.get_pixel(clampi((ix * 2 + 1) * w / 32, 0, w - 1),
-				clampi((iy * 2 + 1) * h / 24, 0, h - 1))
+	for iy: int in range(SAMPLE_ROWS):
+		for ix: int in range(SAMPLE_COLUMNS):
+			var colour: Color = image.get_pixel(clampi((ix * 2 + 1) * w / (2 * SAMPLE_COLUMNS), 0, w - 1),
+				clampi((iy * 2 + 1) * h / (2 * SAMPLE_ROWS), 0, h - 1))
 			var rounded := Vector3i(roundi(colour.r * 31.0), roundi(colour.g * 31.0), roundi(colour.b * 31.0))
 			unique[rounded] = true
 	return unique.size()
+
+
+func check_framebuffer_sampling() -> void:
+	var fixture := Image.create_empty(640, 480, false, Image.FORMAT_RGBA8)
+	fixture.fill(Color.BLACK)
+	expect(nonblank_samples(fixture) == 1, "a solid framebuffer has one colour bucket")
+	# Small controls on a dark background model a sparse but visible HUD.
+	for swatch: int in range(5):
+		var shade: float = float(swatch + 1) / 6.0
+		fixture.fill_rect(Rect2i(100 + swatch * 40, 42, 12, 12), Color(shade, shade, shade))
+	expect(nonblank_samples(fixture) == 6, "sparse visible controls contribute five colour buckets")
 
 
 func run_profile(id: StringName, evidence_dir: String) -> void:
@@ -127,6 +140,7 @@ func _run() -> void:
 		print("4LY_GAMEPLAY_RENDER requires a real rendering display; headless output is not qualification")
 		quit(1)
 		return
+	check_framebuffer_sampling()
 	desktop = load("res://main.tscn").instantiate()
 	root.add_child(desktop)
 	await process_frame

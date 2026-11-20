@@ -10,6 +10,8 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+For the current Wave player defaults, see the [water ramp evaluation](audits/2026-11-19-wave-water-ramp-003.md) and [Water Lab](operations/workbench-water-lab.md).
+
 For Waterwall 002, see the [Water Lab controls](operations/workbench-water-lab.md#try-the-waterwall-002-candidate), [Wave law](architecture/wave-flow-v1.md#waterwall-002-sheet-crest-and-scale-selective-damping) and [dated comparison](audits/2026-11-19-wave-waterwall-002.md).
 
 For deliberate historical research, use the isolated
@@ -21,7 +23,7 @@ Current clarified intent is separate in the
 Wave Flow PR #631 (inherited from #618): [native contract and limitations](architecture/wave-flow-v1.md),
 [Shared Workbench tuning, Water comparison scenes and Windows evaluation](operations/wave-flow-evaluation.md),
 and [Workbench repair and qualification custody](audits/2026-11-16-wave-workbench-631-finisher.md).
-Experimental and default off; merge and human gameplay acceptance remain owner decisions.
+PR #631 originally shipped the evaluation default off. The water ramp branch promotes Wave for new player sessions. Merge and gameplay acceptance remain owner decisions.
 
 Current combined evaluation: [Materials Lab + Workbench integration](audits/2026-11-12-mat-auth-workbench-integration.md) preserves both current feature heads, shared manual/agent Undo/Redo and existing material/save contracts. Its own Windows/Linux/package qualification remains separate from each feature's preceding evidence.
 

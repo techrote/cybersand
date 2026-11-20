@@ -50,6 +50,14 @@ static func run(host: Node) -> Dictionary:
 	host._physics_process(1.0 / 60.0)
 	if host._metadata() != before or host.rapier_bridge.manual_step_count() != 600:
 		failures.append("Menu advanced Rapier")
+	if not host.native_world.get_wave_flow_status().enabled or host._encode_current().ok:
+		failures.append("Gameplay Wave must explicitly refuse the narrow CYSD1 save")
+	# The save round trip exercises the legacy on-disk law with moving bodies.
+	host.ui.next_water.item_selected.emit(1)
+	host.select_demo("physics_pit")
+	for tick: int in 60:
+		host._physics_process(1.0 / 60.0)
+		if tick % 20 == 0: await host.get_tree().process_frame
 	var encoded: Dictionary = host._encode_current()
 	if not encoded.ok:
 		failures.append("Physics save encode failed")
@@ -83,6 +91,8 @@ static func run(host: Node) -> Dictionary:
 	var result: Dictionary = {"ok": failures.is_empty(), "failures": failures, "ticks": 600,
 		"workers": int(host.native_world.get_worker_threads()), "bodies": bodies,
 		"maximum_floor_y": maximum_floor_y, "contacts": contacts, "displaced": displaced}
+	host.ui.next_water.select(0)
+	host.ui.next_water.item_selected.emit(0)
 	host.select_demo("neon_works", false)
 	host.ui.show_page("home")
 	host.set_process(true)

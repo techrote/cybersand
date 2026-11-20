@@ -24,7 +24,7 @@ Open it to access a resizable, scrollable, non-modal five-tab Water Lab:
 | Tab | Controls |
 |---|---|
 | Solvers & scenes | One Water-law selector for FreeMass, Wave Flow, PressureFlow reference/cached/dormant and Inertial; four authored comparison scenes and pool workers |
-| Wave tuning | All 18 bounded Wave controls, Body push (Water force on Rapier actors), presets, Reset, Revert and native values |
+| Wave tuning | Bounded Wave controls, Body push (Water force on Rapier actors), presets, Reset, Revert and native values |
 | Transport & spray | Ballistic, IN signed, face release and tuning, PF gas/capacity, fine cores, impact spray, jet tuning |
 | Equipment | Valves, drains, nozzles, aiming, pumps, supply, placement and built-in equipment starts |
 | Advanced policy | Full native-backed liquid policy assignment editor, original presets, geometry and one-shot normalization |
@@ -42,15 +42,13 @@ both reach an equipment action. Typing a value and clicking **Apply solver /
 tuning** does not require Enter or a click outside the field first. The moved
 scene, equipment and tuning actions use the same Window-aware field commitment.
 
-**Wave Flow is disabled by default.** Enabling it stages Wave and automatically
-requests its FreeMass carrier; native activation requires **Apply solver /
-tuning** or **Load / reset scene**, then a positive native readback. Returning
+**Fresh Workbench sessions use Wave Flow with Waterfall spill and Ballistic release.** Loading an ordinary authored canvas uses the current Water selection. To switch back to Wave after trying another solver, select it and press **Apply solver / tuning** or **Load / reset scene**. The active native column confirms the accepted law. Returning
 to PF/Inertial/FreeMass restores Water's law-specific requests over the current
 policy. Edits to Brine or other liquids made while Wave is active remain current.
 Remembered Water parameters return only where they belong to Water or to a
 currently dormant family; an already active shared family keeps its current
 parameters, including its defaults. Native validation still decides admission.
-The production Water default is unchanged.
+The [water ramp evaluation](../audits/2026-11-19-wave-water-ramp-003.md) compares the fresh settings against Sloshy + Max over-ledge on the same authored canvas.
 
 ## Body push (Water force on actors)
 
@@ -98,7 +96,7 @@ tuning** or **Load / reset scene**. The native readback beside each control and
 the spill status line show what is actually running: exposed-face transfer,
 falling cells, parcels launched, in flight, landed, refused or deferred, ticks
 with a full parcel pool, and launch and flight time. A spill request is only
-sent with Wave Flow. Presets and **Reset Wave defaults** do not change it.
+sent with Wave Flow. **Gameplay default** stages the complete Wave and spill bundle. The older Wave presets and **Reset Wave defaults** stage Wave tuning alone.
 
 **Ballistic Water** (Transport & spray tab) works with Wave Flow, with or
 without spill: impact spray, jets, nozzles and Water thrown by bodies fly as
@@ -158,6 +156,14 @@ stacked on #631. Review repairs are carried only by the combined
 `claude/wave-waterwall-001` candidate (#672); the parent branches stay unchanged.
 **HOLD, do not merge.** Source/runtime/CI qualification and human acceptance are
 separate evidence requirements.
+
+## Faster horizontal spread on the water ramp
+
+Open Shared Workbench, enter **water-ramp** in the setup name field, press **Load**, then **Run**. The Windows evaluation package installs this named canvas on first launch if the name is free. Fresh sessions already use Wave, spill, blobs and ballistic release. To return to that setup after trying another law, select **Wave Flow**, stage **Gameplay default**, then press **Apply solver / tuning**. Reload the canvas to start the Water from the top again.
+
+The gameplay profile runs **two rounds per tick**, with Gain 32, Deep gain 32, Floor gain 1024, flux smoothing 16, Coast 32, Empty pour shift 2 and Feed head limit 255. **Floor gain** adds horizontal momentum to the first few rows of a shallow front over continuous, level solid ground. **Gain** drives the general Water response and **Deep gain** controls the restoring force in a pool. **Feed head limit** bounds how strongly pool feed can persist against a rising Water level. Water can still run up a slope on impact. See the [measured ramp and flat-floor comparisons](../audits/2026-11-19-wave-water-ramp-003.md). To reduce frame cost, stage **Rounds** at 1 and Apply.
+
+The ordinary v2 setup records the material policy. It has no field for the Wave selection. A baseline-carrier file such as the ramp uses the session's current selection. A saved alternate Water law takes effect on load. The Water Lab shows the accepted solver after the replacement completes.
 
 ## Try the Waterwall 002 candidate
 

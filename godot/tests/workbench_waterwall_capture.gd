@@ -7,8 +7,8 @@ extends SceneTree
 # framebuffer captures plus copied native Water quantities.
 #
 #   godot --path godot --script res://tests/workbench_waterwall_capture.gd -- \
-#     MAP_JSON|tank|lip OUT_DIR MODE TICKS(comma list) [WORKERS] [VIEW x,y,w,h ...]
-# MODE = orig, spill, hybrid, sloshy, max, max-nograce, combined or combined-nograce.
+#     MAP_JSON|named=SETUP|tank|lip OUT_DIR MODE TICKS(comma list) [WORKERS] [VIEW x,y,w,h ...] [wave:gain=32 spill:draw_head=768 ...]
+# MODE = orig, spill, hybrid, sloshy, max, max-nograce, combined, combined-nograce or fresh (installed defaults).
 # max-nograce uses the Max over-ledge bundle with only Coyote ticks set to zero.
 const Setup = preload("res://scripts/workbench_setup.gd")
 const GeneratedMaps = preload("res://scripts/workbench_generated_map.gd")
@@ -18,6 +18,7 @@ var out := ""
 var mode := ""
 var fixture := ""
 var terrain_sha := ""
+var fresh_settings: Dictionary = {}
 var failures: Array[String] = []
 var rows: Array[Dictionary] = []
 var captures: Array[Dictionary] = []
@@ -105,6 +106,13 @@ func record(tag: String, started_usec: int) -> void:
 		"status":bench.water_spray._wave_status.text,"spill_status":bench.water_spray._spill_status.text})
 
 func install_fixture(path: String) -> bool:
+	if path.begins_with("named="):
+		var before := int(native().get("session_generation",-1))
+		bench._name.text = path.trim_prefix("named=")
+		if not bench.load_setup():
+			fail("named setup refused: "+str(bench.message))
+			return false
+		return await until(func() -> bool: return installed() and int(native().get("session_generation",-1)) > before,"load named setup")
 	if path in ["tank","lip"]:
 		# Same step and wall heights as the native slosh apparatus. Workbench
 		# admits a 512-cell minimum canvas, so enclose this 128-cell fixture.
@@ -149,7 +157,7 @@ func run() -> void:
 	out = args[1]
 	mode = args[2]
 	fixture = args[0].get_file()
-	if mode not in ["orig","spill","hybrid","sloshy","max","max-nograce","combined","combined-nograce"]:
+	if mode not in ["orig","spill","hybrid","sloshy","max","max-nograce","combined","combined-nograce","fresh"]:
 		fail("unknown mode "+mode)
 		await finish()
 		return
@@ -162,7 +170,17 @@ func run() -> void:
 		ticks.append(int(text))
 	var workers := int(args[4]) if args.size() > 4 else 4
 	var views: Array = []
+	var overrides := {}
 	for index: int in range(5,args.size()):
+		if args[index].begins_with("wave:") or args[index].begins_with("spill:"):
+			var is_spill := args[index].begins_with("spill:")
+			var pair := args[index].get_slice(":",1).split("=")
+			if pair.size() != 2 or not pair[1].is_valid_int():
+				fail("invalid Wave override "+args[index])
+				await finish()
+				return
+			overrides[("workbench_wave_spill_" if is_spill else "workbench_wave_")+pair[0]] = int(pair[1])
+			continue
 		var p := args[index].split(",")
 		views.append(Rect2i(int(p[0]),int(p[1]),int(p[2]),int(p[3])))
 	if views.is_empty(): views = [Rect2i(8,10,112,76)] if fixture in ["tank","lip"] else [Rect2i(0,0,1024,1024)]
@@ -186,12 +204,30 @@ func run() -> void:
 	# Water Lab: Wave Flow, optional Waterwall spill, workers, Apply.
 	var spray = bench.water_spray
 	host.workbench_water_options["workbench_worker_threads"] = workers
-	spray._set_wave(true)
+	if mode == "fresh":
+		var initial := native()
+		fresh_settings = {"substeps":int(initial.substeps),"parameters":initial.parameters.duplicate(true),
+			"spill":initial.spill.duplicate(true),"workers":int(initial.workers_requested)}
+		if not initial.get("enabled",false) or not initial.get("spill",{}).get("enabled",false) or not initial.get("spill",{}).get("parcels",false):
+			fail("freshly loaded start did not use Wave with spill and ballistic release")
+			await finish()
+			return
+	else:
+		# These comparison modes predate the gameplay defaults. Start each
+		# from its original raw tuning before selecting bundles and overrides.
+		spray._set_wave(true)
+		spray._reset_wave_defaults()
+		spray._ballistic.button_pressed = false
+		for field: Array in spray.SPILL_SPINS:
+			var key: String = field[0]
+			spray._spill_fields[key].value = field[5]
+			host.workbench_water_options[key] = int(field[5])
 	var is_sheet := mode in ["max","max-nograce","combined","combined-nograce"]
-	var has_parcels := mode == "hybrid" or is_sheet
+	var has_parcels := mode in ["hybrid","fresh"] or is_sheet
 	var has_spill := mode == "spill" or has_parcels
-	spray._set_spill("workbench_wave_spill",has_spill)
-	spray._set_spill("workbench_wave_spill_parcels",has_parcels)
+	if mode != "fresh":
+		spray._set_spill("workbench_wave_spill",has_spill)
+		spray._set_spill("workbench_wave_spill_parcels",has_parcels)
 	if mode in ["sloshy","combined","combined-nograce"]:
 		for index: int in spray._wave_preset.item_count:
 			if spray._wave_preset.get_item_text(index) == "Sloshy":
@@ -199,6 +235,13 @@ func run() -> void:
 	if is_sheet:
 		spray._stage_max_over_ledge()
 		if mode.ends_with("-nograce"): spray._spill_fields.workbench_wave_spill_coyote_ticks.value = 0
+	for key: String in overrides:
+		var fields: Dictionary = spray._spill_fields if key.begins_with("workbench_wave_spill_") else spray._wave_fields
+		if mode == "fresh" or not fields.has(key):
+			fail("unknown Wave field or override supplied to fresh comparison: "+key)
+			await finish()
+			return
+		fields[key].value = overrides[key]
 	var before_generation := int(native().get("session_generation",-1))
 	if not spray._apply_wave():
 		fail("apply refused: "+str(bench.message))
@@ -215,10 +258,19 @@ func run() -> void:
 		fail("native spill readback %s/%s does not match mode %s" % [spill_on,parcels_on,mode])
 	var accepted := native()
 	if int(accepted.workers_requested) != workers: fail("native workers do not match request")
-	for key: String in ["deep_gain","flux_smoothing"]:
+	for key: String in ["deep_gain","flux_smoothing","floor_gain"]:
 		if accepted.parameters.get(key) != host.workbench_water_options["workbench_wave_"+key]: fail("unconfirmed "+key)
 	for key: String in ["sheet_rate","coyote_ticks","draw_head"]:
 		if accepted.spill.get(key) != host.workbench_water_options["workbench_wave_spill_"+key]: fail("unconfirmed "+key)
+	if mode == "fresh" and (int(accepted.substeps) != int(fresh_settings.substeps) or accepted.parameters != fresh_settings.parameters):
+		fail("applying only workers changed the fresh Wave profile")
+	for key: String in overrides:
+		var field := key.trim_prefix("workbench_wave_")
+		var actual = accepted.substeps if field == "substeps" else accepted.parameters.get(field)
+		if key.begins_with("workbench_wave_spill_"):
+			actual = accepted.spill.get(key.trim_prefix("workbench_wave_spill_"))
+		if actual != overrides[key]:
+			fail("native override differs for "+field)
 	var initial_quantity := str(accepted.water_quantity)
 	if bench.water_lab != null and bench.water_lab.window != null: bench.water_lab.window.hide()
 	# Keep the paint cursor out of the submitted evidence. At high zoom its
@@ -238,8 +290,8 @@ func run() -> void:
 
 func finish() -> void:
 	var binary := "cybersand_native.windows.x86_64.dll" if OS.get_name() == "Windows" else "libcybersand_native.linux.x86_64.so"
-	var receipt := {"schema":"wave-waterwall-workbench-capture-v1","mode":mode,"fixture":fixture,"terrain_sha256":terrain_sha,
-		"kind":"ordinary Shared Workbench, authored tank or GEN-007 verified terrain, Water Lab Apply, exact single-step native ticks, submitted framebuffer crops",
+	var receipt := {"schema":"wave-waterwall-workbench-capture-v1","mode":mode,"fixture":fixture,"terrain_sha256":terrain_sha,"fresh_settings":fresh_settings,
+		"kind":"ordinary Shared Workbench, authored tank, named setup or GEN-007 verified terrain, Water Lab Apply, exact single-step native ticks, submitted framebuffer crops",
 		"godot":Engine.get_version_info().string,"display":DisplayServer.get_name(),"rendering":RenderingServer.get_video_adapter_name(),
 		"native_sha256":FileAccess.get_sha256("res://addons/cybersand_native/bin/"+binary),
 		"failures":failures,"rows":rows,"captures":captures}

@@ -2,9 +2,9 @@
 title: Wave flow Water solver (experimental)
 status: Current
 document-kind: reference
-scope: Experimental-branch WAVE-MT-001 wave_flow_v1 opt-in bulk strip-parallel Water law; mechanism, ownership, parallel execution, state and memory, admission and refusal, limits and the candidate comparison that selected it; not on main, no default changed, not a policy family yet
+scope: Branch-current Wave Flow law, player defaults, bulk strip-parallel execution, admission, state and memory
 canonical-for: [wave-flow-v1]
-last-reviewed: 2026-11-18
+last-reviewed: 2026-11-19
 related-documents: [liquid-solver-family-policy.md, pressure-flow-v1.md, inertial-cellular-v1.md, simulation-tick-and-threading.md, rigid-body-and-cellular-coupling.md, ../audits/2026-11-15-wave-mt-001-wave-flow.md, ../audits/2026-11-15-wave-mt-001-completion.md]
 ---
 
@@ -16,7 +16,7 @@ to [PR #631](https://github.com/techrote/cybersand/pull/631) on
 inherited PR #618 remain separate. `WorldConfig::wave_flow` opts in; a World that
 does not enable it keeps its existing kernels, physical hashes and save formats,
 and allocates no Wave storage. This is not another `LiquidSolverPolicy` family
-and does not change the default Water solver.
+in the liquid policy catalogue. On the [Water Ramp branch](../audits/2026-11-19-wave-water-ramp-003.md), fresh player sessions select Wave Flow, waterfall spill and ballistic release. Raw native fixture constructors keep their explicit law contracts.
 
 The additive C API and Godot evaluator expose the experimental law, worker and
 substep selection, representative scenarios and copied native diagnostics.
@@ -232,7 +232,7 @@ no strip cells. This avoids overflow before a clamp could take effect.
 ## Waterwall spill (experimental, WAVE-WATERWALL-001)
 
 **Status:** Draft/HOLD branch `claude/wave-waterwall-001`, stacked on PR #661. It is
-opt-in through `WaveFlowConfig::spill.enabled` and off by default. With spill off,
+selected through `WaveFlowConfig::spill.enabled`. The Water Ramp player profile enables it. With spill off,
 the law is the qualified Wave law: `test_wave_spill` pins cells, `state_hash`,
 `physical_state_hash` and `content_hash` for 12 scenes (1/4 workers, 1/3
 substeps, a selected region) to values computed from the unmodified #661 source.
@@ -468,7 +468,7 @@ and **Disturb pool** control the scenario. Native tick timing is reported
 separately from presentation rate. `get_wave_flow_status` returns copied
 selection, actual participants, timing, tasks, solved chunks, allocated storage
 and quantity; `inspect_wave_flow_cell` copies stored/visible uint16 mass and
-retained face flux. Returning to the ordinary demo retires the opt-in law.
+retained face flux. A replacement creates the Water law selected by its destination session.
 
 Moving-body and Needle scenes own actual Rapier objects on Godot's main thread;
 only their bounded transient masks/contact values cross into native simulation.
@@ -571,3 +571,11 @@ The Draft/HOLD successor to #672 exposes four optional integers. Zero selects th
 The column pass snapshots retained flux into four additional bytes per resident Wave cell only when smoothing is selected. The existing barrier separates writes from neighbor reads. Adjacent faces in a broad wave carry similar flux, so the correction is small. At strength 64 an alternating pattern of equal and opposite retained fluxes cancels in one round. Dry gaps, walls and selection boundaries end the stencil.
 
 Sheet discharge reuses falling Water, the active band and bounded parcel nominations. Two faces of a donor may each spend at most half of its starting mass. With either new spill control active, a face reserves its throw before spending the rest of its half-budget on a grid pour. Each receiving face also caps inflow to half the free space. Serial launch checks remaining Water, spawn path and pool capacity. A refused launch leaves its quantity in the grid. An active crest countdown is hashed as future physical state. See the [dated evidence](../audits/2026-11-19-wave-waterwall-002.md).
+
+## Shallow Water on level ground
+
+The shipping player profile sets `floor_gain` to 1024. In `World::wave_flux_task`, the extra restoring force acts only at a normal, shallow advancing face above a continuous level solid floor. The lower of the two heads must be less than one full cell. Each side must reach real solid material at the same depth within three rows. Every intervening cell must be full Water and included in the solved region. This allows the bottom of a breaking wave to spread as a low sheet. A floor step, an unsupported receiver or a solver boundary uses the ordinary flux law.
+
+The adjusted head contribution is limited to one cell of Water. Retained flux, the two-face donor bound, uint16 receiver room and the existing apply pass still account for every moved unit. The solver reads existing settled metadata and allocates no new state. Zero disables this law and omits it from both state hashes. The [ramp evaluation](../audits/2026-11-19-wave-water-ramp-003.md) compares a single active floor row, three active rows and raising gain throughout the pool.
+
+Normal desktop sandbox, new Shared Workbench and ordinary curated Web demo constructors request the gameplay Water bundle. The Play Session course and authored policy comparisons use their explicit experiment constructors. Plain native construction retains the historical baseline law. V2 Workbench starts save material assignments and the authored canvas. The Web CYSD1 format supports FreeMass new demos and legacy slots. Full physical persistence for a running Wave World remains unavailable.
