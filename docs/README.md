@@ -29,7 +29,7 @@ Current clarified intent is separate in the
 Wave Flow PR #631 (inherited from #618): [native contract and limitations](architecture/wave-flow-v1.md),
 [Shared Workbench tuning, Water comparison scenes and Windows evaluation](operations/wave-flow-evaluation.md),
 and [Workbench repair and qualification custody](audits/2026-11-16-wave-workbench-631-finisher.md).
-PR #631 originally shipped the evaluation default off. The water ramp branch promotes Wave for new player sessions. Merge and gameplay acceptance remain owner decisions.
+PR #631 introduced opt-in Wave Flow. Fresh player sessions now use the Wave gameplay profile with spill and ballistic release. The [owner’s final tank playtest](audits/2026-11-20-wave-oil-impinge.md) records the accepted settings and live frame timing.
 
 Current combined evaluation: [Materials Lab + Workbench integration](audits/2026-11-12-mat-auth-workbench-integration.md) preserves both current feature heads, shared manual/agent Undo/Redo and existing material/save contracts. Its own Windows/Linux/package qualification remains separate from each feature's preceding evidence.
 

@@ -28,7 +28,7 @@ The owner selected Wave Flow with spill and ballistic release for new player ses
 
 ## Wave Waterwall 002 owner evaluation
 
-The [Waterwall 002 candidate](../audits/2026-11-19-wave-waterwall-002.md) adds optional Wave settings for ledge sheets, crest flight and deep-water slosh. The [Water Lab](../operations/workbench-water-lab.md#try-the-waterwall-002-candidate) stages both bundles. Draft/HOLD pending owner evaluation.
+The [Waterwall 002 candidate](../audits/2026-11-19-wave-waterwall-002.md) adds optional Wave settings for ledge sheets, crest flight and deep-water slosh. The [Water Lab](../operations/workbench-water-lab.md#try-the-waterwall-002-candidate) stages both bundles. The owner approved the combined gameplay profile after the [Oil impingement playtest](../audits/2026-11-20-wave-oil-impinge.md).
 
 ## GEN-008 Flatten / Bake History — 2026-11-13
 

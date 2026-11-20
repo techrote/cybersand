@@ -2,21 +2,15 @@
 title: Wave flow Water solver (experimental)
 status: Current
 document-kind: reference
-scope: Branch-current Wave Flow law, player defaults, bulk strip-parallel execution, admission, state and memory
+scope: Current Wave Flow law, player defaults, bulk strip-parallel execution, admission, state and memory
 canonical-for: [wave-flow-v1]
-last-reviewed: 2026-11-19
+last-reviewed: 2026-11-20
 related-documents: [liquid-solver-family-policy.md, pressure-flow-v1.md, inertial-cellular-v1.md, simulation-tick-and-threading.md, rigid-body-and-cellular-coupling.md, ../audits/2026-11-15-wave-mt-001-wave-flow.md, ../audits/2026-11-15-wave-mt-001-completion.md]
 ---
 
 # Wave flow Water solver (experimental)
 
-**Status:** experimental implementation completed through PR #618 and handed
-to [PR #631](https://github.com/techrote/cybersand/pull/631) on
-`astra/wave-mt-001-669-finisher`, **not on main**. The original PR #617 and
-inherited PR #618 remain separate. `WorldConfig::wave_flow` opts in; a World that
-does not enable it keeps its existing kernels, physical hashes and save formats,
-and allocates no Wave storage. This is not another `LiquidSolverPolicy` family
-in the liquid policy catalogue. On the [Water Ramp branch](../audits/2026-11-19-wave-water-ramp-003.md), fresh player sessions select Wave Flow, waterfall spill and ballistic release. Raw native fixture constructors keep their explicit law contracts.
+Wave Flow entered the shared Workbench through PR #631. New sandbox and Workbench sessions use the owner-approved gameplay profile with waterfall spill and ballistic release. Native callers opt in through `WorldConfig::wave_flow`; disabled Worlds keep their original kernels, physical hashes, save formats and memory use. Wave runs on the FreeMass carrier. The [ramp evaluation](../audits/2026-11-19-wave-water-ramp-003.md) records the default transition and the [Oil tank](../audits/2026-11-20-wave-oil-impinge.md) records the final playtest.
 
 The additive C API and Godot evaluator expose the experimental law, worker and
 substep selection, representative scenarios and copied native diagnostics.

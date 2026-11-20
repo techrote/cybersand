@@ -12,7 +12,7 @@ related-documents: [../architecture/wave-flow-v1.md, lcb-manual-comparison-ux.md
 
 ## Water Lab (consolidated Workbench UI)
 
-On the Water Lab UI branch, open **Water Lab…** from the main Workbench toolbar.
+Open **Water Lab…** from the main Workbench toolbar.
 All Water-specific settings share one non-modal window. **Solvers & scenes**
 selects Wave/FreeMass/PressureFlow/Inertial, comparison canvases and workers;
 **Wave tuning** exposes the Wave fields and presets; **Transport & spray**
@@ -32,7 +32,7 @@ native CyberSand, Rapier and the required VC runtime; no repository checkout,
 Python installation or separate Godot installation is needed. First launch
 imports the bundled project before opening the ordinary Shared Workbench.
 
-Fresh Workbench sessions on the [water ramp branch](../audits/2026-11-19-wave-water-ramp-003.md) start with Wave, spill and ballistic release. Water Lab can still stage an explicit comparison with any admitted Water law.
+Fresh Workbench sessions start with Wave, spill and ballistic release. Water Lab can stage a comparison with any admitted Water law. [Water ramp evaluation](../audits/2026-11-19-wave-water-ramp-003.md)
 
 The full-face evaluation ZIP includes **water-wall** and **water-ramp**. Load **water-wall** to inspect the full-height spray, or **water-ramp** to inspect the crests. The launcher offers a missing setup and preserves any existing file of the same name. [Full-face Water Lab controls](workbench-water-lab.md#try-full-face-release-at-fall-speed-3)
 

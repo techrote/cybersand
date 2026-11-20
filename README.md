@@ -16,7 +16,7 @@ WASD moves, mouse aims, Q/E trims, Z/X reels and Space/Shift/C invoke the select
 rig's abilities. M uses its tool, N releases a held item and U reattaches a nearby
 item. Sampled rigs and the original physical hull trials remain reference choices.
 
-On the water ramp evaluation branch, new sandbox and Shared Workbench sessions start with Wave Flow, waterfall spill and ballistic release. Open **Water Lab** to tune the flat-ground surge or select an earlier Water law. [Water controls](docs/operations/workbench-water-lab.md)
+New sandbox and Shared Workbench sessions start with Wave Flow, waterfall spill and ballistic release. Open **Water Lab** to tune the flat-ground surge or select an earlier Water law. [Water controls](docs/operations/workbench-water-lab.md)
 
 ## Player playground
 
