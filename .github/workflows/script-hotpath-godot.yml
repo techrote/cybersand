@@ -1,0 +1,126 @@
+name: SCRIPT-HOTPATH-001 exact-head Godot differential and benchmark
+
+on:
+  push:
+    branches: [exp/script-hotpath-001-native-fill]
+    paths:
+      - 'native/include/cybersand/paint_fill_planner.hpp'
+      - 'native/tests/test_paint_fill_planner.cpp'
+      - 'godot/native_extension/**'
+      - 'godot/scripts/workbench_paint_editor_shapes.gd'
+      - 'godot/tests/*script_hotpath_native_fill.gd'
+      - '.github/workflows/script-hotpath-godot.yml'
+      - 'tools/build_native_extension.sh'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: script-hotpath-godot-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
+  GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+  GODOT_VERSION: 4.7.stable.official.5b4e0cb0f
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+
+jobs:
+  linux:
+    name: Source-matched Linux GDExtension + differential/latency
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    env:
+      GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+      SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+      SCONS_JOBS: '2'
+      CYBERSAND_REAL_CXX: /usr/bin/g++-13
+      LINUX_CXX: /usr/bin/g++-13
+      CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
+    steps:
+      - name: Check out immutable candidate
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          lfs: false
+          persist-credentials: true
+      - name: Record qualified source identity
+        run: |
+          set -euo pipefail
+          mkdir -p build/script-hotpath-godot
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          echo "$GITHUB_SHA" | tee build/script-hotpath-godot/source-sha.txt
+          g++-13 --version | head -1
+          ld --version | head -1
+          git status --short
+      - name: Install pinned SCons
+        run: |
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$SCONS_PYTHON" -m pip install --require-hashes -r tools/requirements-build.txt
+          "$SCONS_PYTHON" -c 'import SCons; assert SCons.__version__ == "4.10.1"'
+      - name: Fetch pinned godot-cpp at exact commit
+        run: |
+          set -euo pipefail
+          mkdir -p "$GODOT_CPP_ROOT"
+          git -C "$GODOT_CPP_ROOT" init
+          git -C "$GODOT_CPP_ROOT" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 600 git -C "$GODOT_CPP_ROOT" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$GODOT_CPP_ROOT" checkout --detach FETCH_HEAD
+          test "$(git -C "$GODOT_CPP_ROOT" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+      - name: Build pinned godot-cpp and exact-head Linux extension
+        timeout-minutes: 40
+        run: |
+          set -euo pipefail
+          bash tools/build_pinned_godot_cpp.sh linux 2>&1 | tee build/script-hotpath-godot/godot-cpp-build.log
+          bash tools/build_native_extension.sh 2>&1 | tee build/script-hotpath-godot/gdextension-build.log
+          file "$CYBERSAND_NATIVE_OUTPUT"
+          sha256sum "$CYBERSAND_NATIVE_OUTPUT" | tee build/script-hotpath-godot/extension-sha256.txt
+          mkdir -p godot/addons/cybersand_native/bin
+          cp "$CYBERSAND_NATIVE_OUTPUT" godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
+      - name: Restore source-matched Rapier native dependency
+        timeout-minutes: 10
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" --exclude=""
+          echo "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" | sha256sum --check --strict
+      - name: Download verified official Godot 4.7
+        timeout-minutes: 10
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/godot"
+          timeout 480 curl --fail --location --retry 3 --retry-all-errors --retry-delay 2 --output "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          GODOT_BIN="$(find "$RUNNER_TEMP/godot" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
+          test -n "$GODOT_BIN"
+          chmod +x "$GODOT_BIN"
+          test "$("$GODOT_BIN" --version)" = "$GODOT_VERSION"
+          echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
+      - name: Import project and verify native planner is present
+        timeout-minutes: 10
+        run: |
+          set -euo pipefail
+          timeout 300 "$GODOT_BIN" --headless --path godot --editor --import --quit 2>&1 | tee build/script-hotpath-godot/import.log
+      - name: Run exact-head Godot native-vs-script differential tests
+        timeout-minutes: 10
+        run: |
+          set -euo pipefail
+          timeout 480 "$GODOT_BIN" --headless --path godot -s res://tests/test_script_hotpath_native_fill.gd 2>&1 | tee build/script-hotpath-godot/differential-native.log
+          grep -q '"failures":\[\]' build/script-hotpath-godot/differential-native.log
+          timeout 480 env CYBERSAND_NATIVE_PAINT_FILL=script "$GODOT_BIN" --headless --path godot -s res://tests/test_script_hotpath_native_fill.gd 2>&1 | tee build/script-hotpath-godot/differential-fallback.log
+          grep -q '"failures":\[\]' build/script-hotpath-godot/differential-fallback.log
+      - name: Benchmark script vs compiled C++ and dispatch in same process
+        timeout-minutes: 10
+        run: |
+          set -euo pipefail
+          timeout 480 "$GODOT_BIN" --headless --path godot -s res://tests/bench_script_hotpath_native_fill.gd 2>&1 | tee build/script-hotpath-godot/benchmark.log
+          grep -q 'SCRIPT_HOTPATH_BENCH_RESULT PASS' build/script-hotpath-godot/benchmark.log
+      - name: Preserve full qualification and failure logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: script-hotpath-godot-${{ github.sha }}-${{ github.run_id }}
+          path: build/script-hotpath-godot/
+          if-no-files-found: warn
+          retention-days: 30
