@@ -102,19 +102,19 @@ void World::reset_ballistic_water() noexcept {
 // One exact transfer write: the stored Water quantity at (x, y) becomes
 // `visible` (Empty when zero). Never a source or sink, never under a foreign
 // family default: overfill and IN state follow write_cell's material-change rules.
-void World::ballistic_write_water(std::int64_t x, std::int64_t y, std::uint16_t visible) {
+void World::write_transferred_water(std::int64_t x, std::int64_t y, std::uint16_t visible) {
     const auto target = address(x, y);
     auto* chunk = find_chunk(target.chunk);
-    if (chunk == nullptr) throw std::logic_error("ballistic transfer reached a non-resident chunk");
+    if (chunk == nullptr) throw std::logic_error("Water transfer reached a non-resident chunk");
     auto& cell = chunk->cells[target.index];
     const auto before = cell.material_value();
     if (before != Material::Empty && before != Material::Water)
-        throw std::logic_error("ballistic transfer reached a foreign material");
+        throw std::logic_error("Water transfer reached a foreign material");
     const auto after = visible == 0U ? Material::Empty : Material::Water;
     if (chunk->granular_arrivals) (*chunk->granular_arrivals)[target.index] = 0;
     const auto old_overfill = chunk->pressure == nullptr ? std::uint16_t{0} : chunk->pressure->cells[target.index].overfill;
     if (before != after && old_overfill != 0U)
-        throw std::logic_error("ballistic transfer would discard pressurized overfill");
+        throw std::logic_error("Water transfer would discard pressurized overfill");
     record_quantity_transition(before, before == Material::Water ? cell.state_a_value() : std::uint16_t{0},
                                old_overfill, after, visible, before == after ? old_overfill : std::uint16_t{0},
                                nullptr, {}, false);
@@ -250,7 +250,7 @@ BallisticLaunchResult World::launch_ballistic_water_internal(std::int64_t source
     std::uint32_t quantity = std::min(std::min(mass, maximum_quantity), maximum);
     if (whole_cell_water_enabled()) quantity = maximum_quantity >= maximum ? mass : 0U;
     if (quantity == 0U) { result.outcome = BallisticLaunchOutcome::InsufficientQuantity; return result; }
-    ballistic_write_water(source_x, source_y, static_cast<std::uint16_t>(mass - quantity));
+    write_transferred_water(source_x, source_y, static_cast<std::uint16_t>(mass - quantity));
     BallisticParcel parcel;
     parcel.x = spawn_x;
     parcel.y = spawn_y;
@@ -335,7 +335,7 @@ bool World::deposit_ballistic_parcel(BallisticParcel& parcel, std::int64_t cx, s
             after = static_cast<std::uint16_t>(mass + amount);
         }
         if (amount == 0U) return;
-        ballistic_write_water(tx, ty, after);
+        write_transferred_water(tx, ty, after);
         if (material == Material::Empty && inertial_water) {
             // Hybrid handoff: the new IN carrier retains the parcel's momentum
             // (q256 -> q16 per cell); v1 may not hold upward velocity.

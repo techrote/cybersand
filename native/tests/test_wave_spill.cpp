@@ -1613,6 +1613,100 @@ void thick_oil_brush_spreads_on_water() {
     }
 }
 
+void wave_crosses_a_floating_oil_blanket() {
+    // The step starts well to the left of the probe. Read Water connected
+    // to the floor so an isolated drop or parcel cannot count as a crest.
+    constexpr int width = 48, left = 100, floor = 84, probe = left + width - 3;
+    constexpr RectI64 bounds{left - 1, floor - 79, width + 2, 80};
+    for (const int coat : {1, 4}) {
+        std::array<std::uint64_t, 3> reference{};
+        for (const auto workers : {1U, 6U}) {
+            World world(oil_tank_config(workers));
+            box(world, width + 2, 80, left - 1, floor - 79);
+            for (int dx = 0; dx < width; ++dx) {
+                const int depth = dx < width / 2 ? 32 : 16;
+                rect(world, left + dx, floor - depth, 1, depth, Material::Water);
+                rect(world, left + dx, floor - depth - coat, 1, coat, Material::Oil);
+            }
+            const auto water = owned(world, bounds);
+            const auto surface = [&](int x) {
+                int y = floor;
+                while (world.stored_material(x, y - 1) == Material::Water) --y;
+                return y;
+            };
+            const int initial = surface(probe);
+            int crest = initial, return_level = initial;
+            std::array<std::uint64_t, 3> hashes{};
+            for (int tick = 1; tick <= 600; ++tick) {
+                (void)world.tick();
+                if (tick <= 60) crest = std::min(crest, surface(probe));
+                if (tick == 60) return_level = surface(probe);
+                if (tick > 60 && tick <= 150) return_level = std::max(return_level, surface(probe));
+                if (tick != 60 && tick != 150 && tick != 600) continue;
+                require_ledger_closes(world, bounds, water, "wave under floating Oil");
+                require(world.quantity_ledger().material_cells[static_cast<std::size_t>(Material::Oil)] ==
+                        static_cast<std::uint64_t>(width * coat), "wave changed the Oil inventory");
+                hashes[tick == 60 ? 0U : tick == 150 ? 1U : 2U] = world.physical_state_hash();
+            }
+            // Visible displacement on arrival and reversal distinguish a
+            // travelling wave from slow draining or levelling the Water once.
+            require(initial - crest >= 6 && return_level - crest >= 4,
+                    "Oil pinned the arriving or receding Water wave");
+            int excess = 0;
+            for (int x = left; x < left + width; ++x)
+                excess += std::max(0, static_cast<int>(world.liquid_mass(x, surface(x))) - 255);
+            require(excess <= width * 255, "more than a full row of Water still trapped under the slick");
+            if (workers == 1) reference = hashes;
+            else require(hashes == reference, "Oil-covered wave differed by worker count");
+        }
+    }
+}
+
+void mobile_oil_only_rises_into_accessible_headroom() {
+    // One-cell-wide shaft: two full cells of Water compressed beneath
+    // four Oil cells. The bottom Oil and upper Water straddle a chunk seam.
+    constexpr int x = 69, y = 128, coat = 4;
+    constexpr RectI64 bounds{64, 116, 12, 16};
+    enum class Block { Wall, MaskInOil, MaskHeadroom, PausedUpper };
+    for (const auto block : {Block::Wall, Block::MaskInOil, Block::MaskHeadroom, Block::PausedUpper}) {
+        World world(oil_tank_config(6));
+        rect(world, x - 1, y - coat - 2, 1, coat + 4, Material::Wall);
+        rect(world, x + 1, y - coat - 2, 1, coat + 4, Material::Wall);
+        world.set(x, y + 1, Material::Wall);
+        require(world.set_cell_state(x, y, Material::Water, 510, 0), "compressed Water setup");
+        for (int row = 1; row <= coat; ++row)
+            require(world.set_cell_state(x, y - row, Material::Oil, static_cast<std::uint16_t>(170 + row), 0), "Oil payload setup");
+        world.set_temperature(x, y - 1, 315);
+        if (block == Block::Wall) world.set(x, y - coat - 1, Material::Wall);
+        if (block == Block::MaskInOil || block == Block::MaskHeadroom) {
+            world.configure_transient_obstacles(bounds);
+            const int mask_y = block == Block::MaskInOil ? y - 2 : y - coat - 1;
+            require(world.set_transient_obstacle(x, mask_y, 1), "Oil roof mask setup");
+        }
+        if (block == Block::PausedUpper) world.set_simulation_region(RectI64{64, y, 64, 64});
+        for (int tick = 0; tick < 4; ++tick) (void)world.tick();
+        require(world.liquid_mass(x, y) == 510 && world.stored_material(x, y - 1) == Material::Oil,
+                "Oil rose through a blocked or paused interface");
+        if (block == Block::Wall) world.set(x, y - coat - 1, Material::Empty);
+        if (block == Block::MaskInOil || block == Block::MaskHeadroom) world.clear_transient_obstacles();
+        if (block == Block::PausedUpper) world.set_simulation_region(std::nullopt);
+        for (int tick = 0; tick < 8; ++tick) (void)world.tick();
+        require(world.liquid_mass(x, y) == 255 && world.liquid_mass(x, y - 1) == 255,
+                "released Oil cap kept a full Water cell compressed");
+        require_ledger_closes(world, bounds, 510, "Oil cap released");
+        std::array<bool, coat> seen{};
+        for (int row = 2; row <= coat + 1; ++row) {
+            const auto tag = world.stored_state_a(x, y - row);
+            require(world.stored_material(x, y - row) == Material::Oil && tag >= 171 && tag <= 174,
+                    "Oil lift lost a material or its payload");
+            require(!seen[tag - 171], "Oil lift duplicated a payload");
+            seen[tag - 171] = true;
+            require(world.stored_temperature(x, y - row) == (tag == 171 ? 315 : 200),
+                    "Oil lift separated the payload from its temperature");
+        }
+    }
+}
+
 void warm_oil_surface_move_carries_tuple_across_chunk() {
     World world(oil_tank_config(6));
     box(world, 256, 80);
@@ -1825,6 +1919,8 @@ int main(int argc, char** argv) {
         void (*function)();
     };
     const Test tests[] = {
+        {"wave crosses a floating Oil blanket", wave_crosses_a_floating_oil_blanket},
+        {"mobile Oil only rises into accessible headroom", mobile_oil_only_rises_into_accessible_headroom},
         {"warm Oil surface move carries its tuple across chunks", warm_oil_surface_move_carries_tuple_across_chunk},
         {"thick Oil brush spreads on Water", thick_oil_brush_spreads_on_water},
         {"floating Oil preserves paused face momentum", floating_oil_preserves_paused_face_momentum},

@@ -24,7 +24,7 @@ struct World::WaveHalf {
     std::uint64_t spill_units = 0, relief_units = 0, spill_faces = 0;
     std::uint64_t falling_units = 0, falling_cells = 0;
     bool pending_flux = false;
-    // Row bounds of three-or-more Oil cells resting on Water in this half.
+    // Candidate rows for floating Oil to spread or follow a rising/falling Water surface.
     std::int32_t oil_first = std::numeric_limits<std::int32_t>::max(), oil_last = -1;
     // Separate neighbouring writers without over-aligning WaveChunk. C++17
     // aligned allocation imports CXXABI_1.3.11, above the Linux runtime floor.
@@ -129,6 +129,9 @@ struct World::WaveState {
     std::vector<Task> tasks;
     std::vector<Scratch> scratch;
     std::int32_t maximum = 0, film = 0;
+    // Hysteresis for the visible Oil/Water interface, in Water mass units.
+    [[nodiscard]] std::int32_t oil_lift_threshold() const noexcept { return maximum + maximum / 2; }
+    [[nodiscard]] std::int32_t oil_drop_threshold() const noexcept { return maximum / 4; }
     std::uint32_t round = 0;
     bool mask_present = false;
     // Hybrid release. `launch` and `final_round` are tick-local; `launch_backoff`
@@ -637,8 +640,10 @@ void World::wave_column_task(std::size_t task_index) noexcept {
             if (value < 0) {
                 // Propagate a rigid cap through Oil trapped immediately under
                 // it. A body mask or paused cell is always a rigid cap.
-                if (value == oil_lid && state.final_round && r >= 2 && r + 1 < rows &&
-                    mass[r - 1] == oil_lid && mass[r - 2] == oil_lid && mass[r + 1] > 0) {
+                if (value == oil_lid && state.final_round && r + 1 < rows && mass[r + 1] > 0 &&
+                    ((r >= 2 && mass[r - 1] == oil_lid && mass[r - 2] == oil_lid) ||
+                     mass[r + 1] > state.oil_lift_threshold() ||
+                     (mass[r + 1] < state.oil_drop_threshold() && r + 2 < rows && mass[r + 2] >= maximum))) {
                     auto& half = entries[r / size].chunk->wave->half[task.half];
                     half.oil_first = std::min(half.oil_first, r % size);
                     half.oil_last = std::max(half.oil_last, r % size);
@@ -1608,17 +1613,16 @@ void World::advance_wave_flow(TickStats& stats) {
         state.launch_backoff = held;
         diagnostics.launch_nanoseconds += elapsed(started);
     }
-    if (loaded_oil) spread_floating_oil();
+    if (loaded_oil) advance_floating_oil();
 }
 
 // Only the owner calls this, after the three Wave passes and ballistic launches.
-void World::spread_floating_oil() {
+void World::advance_floating_oil() {
     const auto& state = *wave_;
     const auto size = config_.chunk_size;
     const auto stride = static_cast<std::size_t>(size);
-    // Walk only a connected air/Oil-or-Water boundary. Keep at least two Oil
-    // cells on the donor, so a thin resting film has no lateral drive. One
-    // complete tuple moves only if the receiving pile is at least two thinner.
+    // Vertical motion needs an open top. Lateral spreading also needs a
+    // connected Water-backed surface and at least three Oil cells on the donor.
     constexpr int reach = 16, max_depth = 64;
     const auto surface_cell = [&](std::int64_t x, std::int64_t y) {
         const auto a = address(x, y);
@@ -1633,6 +1637,49 @@ void World::spread_floating_oil() {
         return !selected_core_region_ ||
             (scheduler_geometry_.core_for_cell(x - 1, y).x >= selected_core_region_->min_x &&
              scheduler_geometry_.core_for_cell(x + 1, y).x <= selected_core_region_->max_x);
+    };
+    const auto oil_available = [&](std::int64_t x, std::int64_t y) {
+        const auto a = address(x, y);
+        return find_chunk(a.chunk)->cells[a.index].epoch_value() != update_epoch_ && faces_selected(x, y);
+    };
+    // Pre-admit thermal storage before changing a tuple outside the material-job halo.
+    const auto move_oil = [&](std::int64_t x, std::int64_t y, std::int64_t tx, std::int64_t ty) {
+        if (stored_temperature(x, y) != config_.ambient_temperature)
+            ensure_temperature_field(*find_chunk(address(tx, ty).chunk));
+        move_cell(x, y, tx, ty, false, nullptr);
+    };
+    // Wave keeps excess volume underneath an impermeable cap. Let an exposed
+    // slick follow it by one grid row. Moving just the end Oil cell preserves
+    // the whole slick's occupancy and transports its complete stored tuple.
+    // The gap between the rise and fall thresholds keeps a level interface quiet.
+    const auto follow_water = [&](std::int64_t x, std::int64_t top, std::int64_t bottom) {
+        const auto water_y = bottom + 1;
+        const auto water = stored_state_a(x, water_y);
+        const auto maximum = state.maximum;
+        if (water > state.oil_lift_threshold() && oil_available(x, bottom) && faces_selected(x, top - 1)) {
+            const auto rise = static_cast<std::uint16_t>(std::min<int>(water - maximum, maximum));
+            const auto temperature = stored_temperature(x, water_y);
+            if (temperature != config_.ambient_temperature)
+                ensure_temperature_field(*find_chunk(address(x, bottom).chunk));
+            move_oil(x, bottom, x, top - 1);
+            write_transferred_water(x, water_y, static_cast<std::uint16_t>(water - rise));
+            write_transferred_water(x, bottom, rise);
+            set_temperature(x, bottom, temperature);
+            return true;
+        }
+        if (water >= state.oil_drop_threshold() || !oil_available(x, top) || !faces_selected(x, water_y) ||
+            surface_cell(x, water_y + 1) != Material::Water) return false;
+        const auto below = stored_state_a(x, water_y + 1);
+        if (below < maximum || below + water > std::min(65535, state.oil_lift_threshold())) return false;
+        // Only consolidate Water of equal temperature. Otherwise ordinary
+        // withdrawal can empty the cell without mixing unlike thermal states.
+        if (stored_temperature(x, water_y) != stored_temperature(x, water_y + 1)) return false;
+        if (stored_temperature(x, top) != config_.ambient_temperature)
+            ensure_temperature_field(*find_chunk(address(x, water_y).chunk));
+        write_transferred_water(x, water_y, 0);
+        write_transferred_water(x, water_y + 1, static_cast<std::uint16_t>(below + water));
+        move_cell(x, top, x, water_y, false, nullptr);
+        return true;
     };
     for (const auto& entry : state.sorted) {
         const auto& wave = *entry.chunk->wave;
@@ -1654,9 +1701,8 @@ void World::spread_floating_oil() {
                     int depth = 0;
                     while (depth < max_depth && surface_cell(x, bottom - depth) == Material::Oil) ++depth;
                     const auto top = bottom - depth + 1;
-                    if (depth < 3 || surface_cell(x, top - 1) != Material::Empty || !faces_selected(x, top)) continue;
-                    const auto donor = address(x, top);
-                    if (find_chunk(donor.chunk)->cells[donor.index].epoch_value() == update_epoch_) continue;
+                    if (surface_cell(x, top - 1) != Material::Empty || follow_water(x, top, bottom)) continue;
+                    if (depth < 3 || !oil_available(x, top)) continue;
                     auto target_x = x, target_y = top;
                     auto best = depth - 1;
                     const auto direction = deterministic_direction(x, bottom);
@@ -1693,11 +1739,7 @@ void World::spread_floating_oil() {
                         if (best == 0) break;
                     }
                     if (target_x == x) continue;
-                    // A warm tuple can travel farther than a cell job's prepared
-                    // halo. Admit destination thermal storage before either endpoint changes.
-                    if (stored_temperature(x, top) != config_.ambient_temperature)
-                        ensure_temperature_field(*find_chunk(address(target_x, target_y).chunk));
-                    move_cell(x, top, target_x, target_y, false, nullptr);
+                    move_oil(x, top, target_x, target_y);
                 }
             }
         }
