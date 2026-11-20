@@ -2,7 +2,7 @@
   "acceptance": "This exact source-matched runtime passed Exact-source Linux/Windows Godot 4.7 import, experimental Wave Flow construction, selection, mass/region/state/refusal contracts and real Rapier/Needle fixtures; ordinary Shared Workbench native activation, tuning, actual ticks, replacement lifecycle, invalid-setting recovery and Water-law comparisons; unchanged liquid-policy and PressureFlow/Rapier controls. Complete ordinary Native, sanitizer, Godot and Water gates remain separately required. WAVE-WATERWALL-001: native admission, refusal atomicity, exact conservation and worker parity of Waterwall spill with ballistic release, and its ordinary Workbench Water Lab apply/compare lifecycle; Body push scaling of impact-spray launch reaction; native exception containment, first-error retention, numeric boundary refusals, failed observation/mutation contracts, pre/late-publication quarantine and actual Workbench owner recovery. Native Wave body-boundary controls additionally cover prescribed body crossings, overlap relocation, ballistic capacity, region changes and worker parity. Waterwall 002 staged Sloshy and Max over-ledge controls and native conservation. Water ramp fresh Water defaults, staged tuning and native conservation. Full-face Water discharge at fall speed 3 and native conservation. Native Water and Oil conservation, slick formation and spray after a fresh wave.. Every required helper completed with no skips or errors.",
   "artifact": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
   "build_attempt": "1",
-  "build_commit": "0d4209fa0ffbd96de2eb897b7d4cb84ff840f647",
+  "build_commit": "6d46fe744ada8223e4976b444ca912f977011610",
   "build_inputs": {
     ".gitattributes": "e21eed6789784df22faff5eec492de22da4d49b3ef80fa3f6298e4f80dbb6812",
     ".github/workflows/gdextension.yml": "f85126b7daa01f53deee591bcb9f8e1dc2271f192d41a1a515ab4694133ab516",
@@ -164,7 +164,7 @@
     "godot/scripts/liquid_feel_probe.gd": "2785a4bc6ac7f6f202cfc431622727e72a296c8147ba720f7af459bba4d4e749",
     "godot/scripts/liquid_host_evidence.gd": "ef44977aff88f5569a3fbc5495317f4c09671e42d0868b770677670cdf63cd0f",
     "godot/scripts/liquid_host_web_probe.gd": "dbcfe003cf9f2c0fa41bdee2d3cbfec06620c18ddbf9c6329c7a67396e804ef2",
-    "godot/scripts/main.gd": "c978ac1ce12c0925b597b3b58f73ee036ea81ba3e99b63f6d5eeb73638f496f9",
+    "godot/scripts/main.gd": "6e09e1bbcab0fe628a6c6e52a9c507188515fff71389c757a3267a6771520a68",
     "godot/scripts/material_appearance_lut.gd": "1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a",
     "godot/scripts/material_lab_catalogue.gd": "01391d9569fb20fee905ec4fc6705a6c443872e7fc87ed5960ae78650d7deb1f",
     "godot/scripts/material_lab_experiment.gd": "f3512c6eb4663f629d790795be2f259f6484928d16cb1fbf0f52e0b7ada2c34e",
@@ -854,7 +854,7 @@
     "tools/ci/test_wave_waterwall_002_runtime_publication.py": "f7c1ad4dbb381ed6d25e9512285fed10ede0d8a80d43aecbec8eb63f11d6f40b",
     "tools/ci/test_wave_waterwall_runtime_publication.py": "e19be02d82956551520315b129b5ba2beb116b2a9d2dad4a140b1566fcfdfbb8",
     "tools/ci/wave_mt_runtime_publication.py": "c7dfbd51b8a422598afc7fcc09e1a04691af15b65274723288cc446e0bf5bd8c",
-    "tools/ci/wave_oil_buoyancy_publish_request.json": "605a504348e0751a6b8ab1ce2f5faf4c3b379b9244568663ca26bfe514d653bd",
+    "tools/ci/wave_oil_buoyancy_publish_request.json": "fe1c9765f0ca65c3819925a4ebac8afc8ef86adb0010c1dc2dee26bbf4da6303",
     "tools/ci/wave_oil_buoyancy_runtime_publication.py": "ea4c106c17f5d1bc88a4573118be4397a3944214c3320f280a5d23f81b7f7120",
     "tools/ci/wave_water_face_004_publish_request.json": "c2c63b563fe16383eb69e6b900cc032e8b3c18666c32331c3dc133bf72a60a2b",
     "tools/ci/wave_water_face_004_runtime_publication.py": "b188bb94cfa2414750f7b9b71352191cd4bfb077bd1c07be473c51f4056ccb65",
@@ -864,7 +864,7 @@
     "tools/ci/wave_waterwall_002_runtime_publication.py": "eed74c02928f446263742ebe47e07ea242e70f99026a52dd8929f7766b6186bd",
     "tools/ci/wave_waterwall_publish_request.json": "a708e194e857016268f7b4dc10c4be224814d5589e3ccfc863103c2967b2afb0",
     "tools/ci/wave_waterwall_runtime_publication.py": "271306fc0023b2345ab01628566b579103bcf1efc6ca11e3ec62bc8c91a59673",
-    "tools/material_catalogue/compatibility.py": "ff389ac26026e95cf35e28d2340eade76c0a94809b0de3c23c0ec1975857bdc8",
+    "tools/material_catalogue/compatibility.py": "d44c0a6fbc34bfd1b75c2cad8dcd99ffda30dfefd2e144533527d9be8d80dc2b",
     "tools/package_explore001_candidate.py": "08fe25690469a217ccd7583b492cef5d36eb199d201d4802d782fe1b03080cc5",
     "tools/package_wave_flow_candidate.py": "4fa1c05bbba30f8db60b8a6af1ecf8a1b7a10461bb26ff02a59802a7b536f682",
     "tools/requirements-build.txt": "6ef2d94fd9f11d4b4e95730c9c14468c739f51f22d175212b5019edd9dbe7409",
@@ -883,7 +883,7 @@
   "schema_version": 1,
   "sha256": "43c42c5521cdb688f9ec01d03ac9b554d1786deae7672efdf1448cbd1f32db46",
   "size": 4774720,
-  "source_commit": "0d4209fa0ffbd96de2eb897b7d4cb84ff840f647",
+  "source_commit": "6d46fe744ada8223e4976b444ca912f977011610",
   "source_input_hash_kind": "SHA-256 of canonical Git blob bytes; CRLF working files normalize to LF",
   "source_inputs": {
     "godot/native_extension/cyber_demo_bridge.hpp": "4808b768ade41dff1f73ddfccf292561438e4c23614018728af1079d45f2014c",
@@ -982,12 +982,12 @@
     "native/src/world_quantity.inc": "4ff7dd56d93d389cb3451dae82619edf0934d2bed5703ce673e1a5d95310d489",
     "native/src/world_wave.inc": "8dc6fca612cfb562778a6cbaef2e468e48f4b8164bcf98e2fc4ac05bd521706c"
   },
-  "source_tree": "8ee8dfe07016b1037df9999a8273f7aab7e83baa",
+  "source_tree": "2fa6435887e57663f99bf7d352f22b6bb52841ed",
   "status": "validated-development-runtime",
   "toolchain": "Build host: GitHub-hosted Ubuntu 24.04; Linux x86_64 target\ngodot-cpp=101ae38034304346a46ea9ea84ae156d3e860496; SCons=4.10.1\ng++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nGNU ld (GNU Binutils for Ubuntu) 2.42\nbc5f860471475c745ebad2b45988607a15c9a35c6996b0f08fea37570e6ef666  /home/runner/work/_temp/godot-cpp/bin/libgodot-cpp.linux.template_debug.x86_64.a",
   "validated_platform": "Linux x86_64 Godot 4.7 (actual GitHub-hosted headless execution)",
-  "validation_output": "wave-mt-runtime-attempt-1-linux-44640629358/validation.json",
-  "validation_sha256": "7b6855c6f34e51e9a50ff6c2d523e3642c296f1969fc4f72cbee64ff28187493",
+  "validation_output": "wave-mt-runtime-attempt-1-linux-44654167337/validation.json",
+  "validation_sha256": "9322b05398c3ce29b51148c39789f489b125f424a7ec247e1ece4c0ab79bbfcd",
   "workflow_attempt": "1",
-  "workflow_run": "https://github.com/techrote/cybersand/actions/runs/44640629358"
+  "workflow_run": "https://github.com/techrote/cybersand/actions/runs/44654167337"
 }
