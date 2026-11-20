@@ -12,7 +12,7 @@ jobs:
   installed:
     if: github.ref == 'refs/heads/codex/pubpres-integration-001'
     runs-on: windows-2022
-    timeout-minutes: 90
+    timeout-minutes: 120
     env:
       PUBPRES_ACCEPTED_MAIN: de109d0131641d6adc8d25bb9ced7ca3d4991105
       PUBPRES_SOURCE: ${{ github.sha }}
@@ -65,7 +65,7 @@ jobs:
           Expand-Archive -LiteralPath $Zip -DestinationPath $Installed
           python tools/pubpres_integration/package_windows.py --source-sha $env:PUBPRES_SOURCE --output $Installed --verify
           if ($LASTEXITCODE -ne 0) { throw 'Extracted evaluation payload did not match its manifest' }
-      - name: Exercise the installed diagnostic and mandatory transition on hosted Windows ANGLE
+      - name: Exercise installed Needle, transition and native Wave Flow on hosted Windows ANGLE
         shell: powershell
         run: |
           $ErrorActionPreference = 'Stop'
@@ -73,7 +73,7 @@ jobs:
           $Launcher = Join-Path $Installed 'Test It.cmd'
           $Evidence = Join-Path $PWD 'installed-evidence'
           [void][IO.Directory]::CreateDirectory($Evidence)
-          $Cases = @('-Quick','-Case transition_2048_w1')
+          $Cases = @('-Quick','-Case needle_follow_2048_w1','-Case transition_2048_w1')
           $Results = foreach ($Case in $Cases) {
             $ProcessInfo = [Diagnostics.ProcessStartInfo]::new()
             $ProcessInfo.FileName = Join-Path $env:SystemRoot 'System32\cmd.exe'

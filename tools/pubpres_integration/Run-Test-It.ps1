@@ -169,6 +169,8 @@ function Run-Arm($Scenario, [string]$Letter, [int]$Index) {
             "--ack-delay=$($Scenario.ack_delay)",'--ack-gated=0','--wait-sample=1','--sample-wake=1',
             '--smoothing=1','--cadence=repaired','--cadence-tape=1',"--presentation=$($Arm.presentation)",
             '--fire-mode=on-off',"--display-profile=$($Scenario.profile)","--receipt=$Receipt")
+        $Law = Get-Field $Scenario 'water_law'
+        if ($Law) { $Arguments += "--water-law=$Law" }
     }
     Write-Json (Join-Path $Folder 'arm.json') @{ scenario=$Scenario; arm=$Arm; order_index=$Index; nonce=$Nonce; selectors=$Settings; args=$Arguments }
     Write-Host "$($Scenario.id) | $Letter ($($Index+1)/4)"

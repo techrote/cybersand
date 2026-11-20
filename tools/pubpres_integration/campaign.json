@@ -16,10 +16,11 @@
   },
   "cases": [
     {"id": "transition_2048_w1", "kind": "transition", "campaign": "ordinary"},
-    {"id": "needle_follow_2048_w1", "kind": "physical", "family": "freemass", "camera": "follow", "workers": 1, "pixel_hz": 60, "ack_delay": 0, "profile": "interactive-default", "campaign": "ordinary", "quick": true},
+    {"id": "needle_follow_2048_w1", "kind": "physical", "family": "freemass", "camera": "follow", "workers": 1, "pixel_hz": 60, "ack_delay": 0, "profile": "interactive-default", "campaign": "ordinary"},
     {"id": "needle_free_2048_w1", "kind": "physical", "family": "freemass", "camera": "free", "workers": 1, "pixel_hz": 60, "ack_delay": 0, "profile": "interactive-default", "campaign": "ordinary"},
     {"id": "needle_follow_2048_w4", "kind": "physical", "family": "freemass", "camera": "follow", "workers": 4, "pixel_hz": 60, "ack_delay": 0, "profile": "interactive-default", "campaign": "ordinary"},
     {"id": "needle_free_2048_w4", "kind": "physical", "family": "freemass", "camera": "free", "workers": 4, "pixel_hz": 60, "ack_delay": 0, "profile": "interactive-default", "campaign": "ordinary"},
+    {"id": "needle_wave_follow_2048_w4", "kind": "physical", "family": "freemass", "water_law": "wave_flow_v1", "camera": "follow", "workers": 4, "pixel_hz": 60, "ack_delay": 0, "profile": "interactive-default", "campaign": "ordinary", "quick": true},
     {"id": "needle_pressure_2048_w4", "kind": "physical", "family": "pressure", "camera": "follow", "workers": 4, "pixel_hz": 60, "ack_delay": 0, "profile": "interactive-default", "campaign": "extended"},
     {"id": "needle_cellular_2048_w4", "kind": "physical", "family": "cellular", "camera": "follow", "workers": 4, "pixel_hz": 60, "ack_delay": 0, "profile": "interactive-default", "campaign": "extended"},
     {"id": "needle_inertial_2048_w4", "kind": "physical", "family": "inertial", "camera": "follow", "workers": 4, "pixel_hz": 60, "ack_delay": 0, "profile": "interactive-default", "campaign": "extended"},

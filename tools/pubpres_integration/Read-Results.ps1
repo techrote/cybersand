@@ -116,6 +116,20 @@ function Read-Physical($Data, [string]$Folder, $Manifest, $Geometry, $Scenario, 
     })
     Assert-Result ($Workers.requested -eq $Scenario.workers -and $Workers.observed_request -eq $Scenario.workers -and
         $Workers.resolved_capacity -gt 0 -and $Samples.Count -gt 0 -and -not $Workers.participation_overflow) 'Actual completed native worker tasks were not recorded'
+    $Law = Get-Field $Scenario 'water_law'
+    $Wave = Get-Field $Workers 'wave_flow'
+    if ($Law -eq 'wave_flow_v1') {
+        Assert-Result ($null -ne $Wave -and $Wave.carrier -eq 'freemass_v1') 'Missing native Wave Flow carrier receipt'
+        $Ticks = $Wave.after.ticks - $Wave.before.ticks
+        $Rounds = $Wave.after.rounds - $Wave.before.rounds
+        Assert-Result ($Wave.before.enabled -and $Wave.after.enabled -and $Wave.after.healthy -and
+            $Wave.before.construction_wave -and $Wave.after.construction_wave -and $Wave.after.construction_kind -eq 'applied_run' -and
+            $Wave.before.water_solver -eq $Law -and $Wave.after.water_solver -eq $Law -and
+            $Wave.before.generation -eq $Wave.after.generation -and $Wave.after.receipt_hash -match '^[0-9a-f]{64}$' -and
+            $Wave.before.receipt_hash -eq $Wave.after.receipt_hash -and $Ticks -gt 0 -and $Wave.after.substeps -gt 0 -and
+            $Rounds -eq $Ticks*$Wave.after.substeps -and [long]$Wave.before.water_quantity -gt 0 -and
+            $Wave.observed_tasks -gt 0 -and $Wave.observed_participants -gt 0) 'Wave Flow did not construct and advance on the measured World'
+    } else { Assert-Result ($null -eq $Wave) 'Unexpected Wave Flow in a carrier-only comparison' }
     Assert-Result ($Data.framebuffer_captures.Count -eq 2) 'Two original physical framebuffers required'
     foreach ($Capture in $Data.framebuffer_captures) {
         Assert-Result ($Capture.label -in @('before','after') -and
@@ -167,7 +181,8 @@ function Read-Physical($Data, [string]$Folder, $Manifest, $Geometry, $Scenario, 
     }
     return [ordered]@{ process_id=$Workers.process_id; match=[ordered]@{
             engine=$Workers.engine_sha256; driver=$Data.render_driver; display=$Data.display; adapter=$Data.video_adapter
-            fixture=$Data.reference.installed_generated_sha256; tape=$Data.input_tape.script; workers=$Workers.resolved_capacity; view=$Data.view_size }
+            fixture=$Data.reference.installed_generated_sha256; tape=$Data.input_tape.script; workers=$Workers.resolved_capacity; view=$Data.view_size
+            water_law=$(if ($Law) { $Law } else { $Data.family }); wave_receipt_hash=$(if ($Law) { $Wave.after.receipt_hash }) }
         frame_ms=(Get-Distribution $MainIntervals); draw_callback_gap_ms=(Get-Distribution $DrawIntervals)
         physical_gap_ms=(Get-Distribution $Gaps)
         timing_scopes=[ordered]@{ main_callback_wall_ms=(Get-Distribution @($Main | ForEach-Object { ($_.time_usec-$_.start_usec)/1000.0 }))
@@ -181,6 +196,7 @@ function Read-Physical($Data, [string]$Folder, $Manifest, $Geometry, $Scenario, 
         frame_material_age_at_submission_ms=(Get-Distribution @($Frames | Where-Object { $_.render_snapshot_built_usec -gt 0 } | ForEach-Object { ($_.time_usec-$_.render_snapshot_built_usec)/1000.0 }))
         native_ticks_per_second=$Native.Count/$Data.capture_wall_seconds; rapier_steps_per_second=$Steps.Count/$Data.capture_wall_seconds
         publications_per_second=$Uploads.Count/$Data.capture_wall_seconds; physical_holds=$Holds; sample_count=$Samples.Count
+        wave_flow=$Wave
         worker_observed=(Get-Distribution @($Samples.workers_observed)); visible_step_observations=$VisibleTime.Count; rewinds=$Rewinds
         static_memory_peak_bytes=$Workers.static_memory_peak_bytes; reported_video_memory_final_bytes=$Workers.reported_video_memory_bytes
         source_cold_preparation_seconds=$(if ($null -ne (Get-Field $Workers 'setup_usec')) { $Workers.setup_usec/1000000.0 }); trace_sha256=(Get-Sha $TracePath) }

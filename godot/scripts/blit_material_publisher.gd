@@ -174,13 +174,15 @@ func _setup(source: Image, preceding: Image) -> bool:
 	var pools: Array = staging.values()
 	if not pools.has(full_staging): pools.append(full_staging)
 	var sink_rids: Array[RID] = [retirement_sink.get_rid()]
+	# Prepare the built-in direct texture sampler with the already owned sink.
+	retirement_sink.blit_rect(Rect2i(0,0,1,1),dummy_source)
 	for pool: StagingPool in pools:
 		var source_rids: Array[RID] = [dummy_source.get_rid()]
 		RenderingServer.texture_drawable_blit_rect(sink_rids,Rect2i(0,0,1,1),
 			pool.resources[0].material.get_rid(),Color(0,0,1,1),source_rids,0)
 		pool.next_slot = maxi(1,pool.next_slot)%staging_slots
 	initialized["priming_usec"] = Time.get_ticks_usec()-priming_started
-	initialized["priming_blit_calls"] = pools.size()
+	initialized["priming_blit_calls"] = pools.size()+1
 	initialized["initialization_staging_zero_bytes"] = gpu_storage_bytes()-extent.x*extent.y*8-5
 	initialized["initialization_dummy_source_bytes"] = 1
 	initialized["submitted_bytes"] += initialized.initialization_staging_zero_bytes+initialized.initialization_dummy_source_bytes
@@ -332,21 +334,39 @@ func publish(source: Image, rectangles: Array[Rect2i]) -> bool:
 		and (rectangles.is_empty() or (rectangles.size() == 1 \
 			and rectangles[0] == Rect2i(Vector2i.ZERO, extent))) \
 		and source.get_data() == current.exact_whole_bytes
-	if not identical_full:
-		for plane: MaterialPlane in [current, previous]:
-			if rectangles.is_empty():
-				plane.pending.fill(1)
-			else:
-				for area: Rect2i in rectangles:
-					var first: Vector2i = area.position / tile_side
-					var last: Vector2i = (area.end - Vector2i.ONE) / tile_side
-					for y: int in range(first.y,last.y+1):
-						for x: int in range(first.x,last.x+1): plane.pending[y*columns+x] = 1
-	if not _submit(source, [previous]): return false
+	var incoming := PackedByteArray()
+	var reuse_current: bool = false
+	# Recycle a plane made entirely stale by the preceding dense frame. Copy
+	# the exact current GPU history, then submit only the new sparse coverage.
+	# Direct compatibility writes leave current.pending dirty and disable this.
+	if not identical_full and not rectangles.is_empty() and rectangles.size() <= 4 \
+			and columns*rows >= 128 and not previous.pending.has(0) and not current.pending.has(1):
+		incoming.resize(columns*rows)
+		_mark_pending(incoming,rectangles)
+		reuse_current = incoming.count(1) <= 4
+	if reuse_current:
+		if not _submit(source,[previous],incoming,current): return false
+		current.pending = incoming
+	else:
+		if not identical_full:
+			_mark_pending(current.pending,rectangles)
+			_mark_pending(previous.pending,rectangles)
+		if not _submit(source,[previous]): return false
 	var retired: MaterialPlane = previous
 	previous = current
 	current = retired
 	return true
+
+
+func _mark_pending(pending: PackedByteArray, rectangles: Array[Rect2i]) -> void:
+	if rectangles.is_empty():
+		pending.fill(1)
+		return
+	for area: Rect2i in rectangles:
+		var first: Vector2i = area.position / tile_side
+		var last: Vector2i = (area.end - Vector2i.ONE) / tile_side
+		for y: int in range(first.y,last.y+1):
+			for x: int in range(first.x,last.x+1): pending[y*columns+x] = 1
 
 
 func replace_plane(source: Image, destination: MaterialPlane) -> bool:
@@ -385,7 +405,8 @@ func _finish_metrics() -> void:
 	last_update["retained_cpu_picture_bytes"] = cpu_bytes
 
 
-func _submit(source: Image, destinations: Array[MaterialPlane]) -> bool:
+func _submit(source: Image, destinations: Array[MaterialPlane],
+		coverage: PackedByteArray = PackedByteArray(), base: MaterialPlane = null) -> bool:
 	var started: int = Time.get_ticks_usec()
 	last_update = {"mode":"blit", "candidate_tiles":0, "updated_tiles":0,
 		"submitted_bytes":0, "atlas_capacity":0, "staging_width":0, "staging_height":0, "atlas_assembly_usec":0,
@@ -399,7 +420,11 @@ func _submit(source: Image, destinations: Array[MaterialPlane]) -> bool:
 	for plane: MaterialPlane in destinations:
 		if plane not in [current,previous]: return false
 	last_update.copy_destinations = destinations.size()
-	var pending_count: int = destinations[0].pending.count(1)
+	var pending: PackedByteArray = coverage if base != null else destinations[0].pending
+	if base != null and (base != current or destinations != [previous] or pending.size() != columns*rows):
+		return false
+	var pending_count: int = pending.count(1)
+	last_update["history_copy"] = base != null
 	# The entire large plane is dirty. It is cheaper to transfer the immutable
 	# frame directly than to allocate and compare each staging tile first.
 	var direct_whole: bool = pending_count >= 128 and pending_count == columns*rows
@@ -408,14 +433,14 @@ func _submit(source: Image, destinations: Array[MaterialPlane]) -> bool:
 	var images: Array[Image] = []
 	var bytes: Array[PackedByteArray] = []
 	for index: int in range(0 if direct_whole else columns*rows):
-		if destinations[0].pending[index] == 0: continue
+		if pending[index] == 0: continue
 		last_update.candidate_tiles += 1
 		var image: Image = _tile(source,index)
 		if image == null or image.get_size() != Vector2i(tile_side,tile_side) \
 				or image.get_format() != logical_format or image.has_mipmaps(): return false
 		var tile_bytes: PackedByteArray = image.get_data()
 		if tile_bytes.size() != tile_side*tile_side*channels: return false
-		if tile_bytes == destinations[0].bytes[index]: continue
+		if base == null and tile_bytes == destinations[0].bytes[index]: continue
 		changed.append(index)
 		images.append(image)
 		bytes.append(tile_bytes)
@@ -487,6 +512,10 @@ func _submit(source: Image, destinations: Array[MaterialPlane]) -> bool:
 	last_update.staging_upload_usec = Time.get_ticks_usec()-started
 	var source_rids: Array[RID] = [dummy_source.get_rid()]
 	started = Time.get_ticks_usec()
+	if base != null:
+		previous.drawable.blit_rect(Rect2i(Vector2i.ZERO,extent),base.drawable)
+		last_update["history_copy_usec"] = Time.get_ticks_usec()-started
+		last_update["estimated_history_read_bytes"] = extent.x*extent.y*4
 	if whole:
 		for plane: MaterialPlane in destinations:
 			var output_rids: Array[RID] = [plane.drawable.get_rid()]
@@ -508,6 +537,11 @@ func _submit(source: Image, destinations: Array[MaterialPlane]) -> bool:
 				last_update.gpu_blit_calls += 1
 			last_update.blit_pixels += size.x*size.y*destinations.size()
 	last_update.coalesced_gpu_blit_calls_saved = last_update.uncoalesced_gpu_blit_calls-last_update.gpu_blit_calls
+	if base != null:
+		last_update.gpu_blit_calls += 1
+		last_update.uncoalesced_gpu_blit_calls += 1
+		last_update.blit_pixels += extent.x*extent.y
+		last_update.uncoalesced_blit_pixels += extent.x*extent.y
 	# Godot's persistent FBO retains attachments while unbound. Always detach
 	# large targets by replacing its sole attachment with one owned 1x1 sink.
 	# Single-target calls throughout ensure no hidden second MRT attachment.
@@ -523,6 +557,8 @@ func _submit(source: Image, destinations: Array[MaterialPlane]) -> bool:
 			plane.bytes.fill(PackedByteArray())
 		else:
 			plane.exact_whole_bytes = PackedByteArray()
+			if base != null:
+				plane.bytes = base.bytes.duplicate()
 			for item: int in range(changed.size()): plane.bytes[changed[item]] = bytes[item]
 		plane.pending.fill(0)
 	last_update.updated_tiles = pending_count if direct_whole else changed.size()
