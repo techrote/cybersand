@@ -26,15 +26,20 @@ PACKAGE_ARTIFACT = "https://github.com/techrote/cybersand/actions/runs/447062042
 ORIGINAL_ARTIFACT = "https://github.com/techrote/cybersand/actions/runs/44706204266/artifacts/14617316032"
 SWITCH = "CYBERSAND_PUBPRES_PROBE_SKIP_HISTORY"
 STEADY_SWITCH = "CYBERSAND_PUBPRES_PROBE_STEADY_SPARSE"
+FIXED_MATERIAL_SWITCH = "CYBERSAND_PUBPRES_PROBE_FIXED_MATERIAL"
 DIRECT_SWITCH = "CYBERSAND_PUBPRES_PROBE_DIRECT_DRAWABLE"
 FRESH_SWITCH = "CYBERSAND_PUBPRES_PROBE_FRESH_DRAWABLE"
 PUBLISHER = "scripts/blit_material_publisher.gd"
 FIXTURE = "tests/pubpres_transition.gd"
 ORACLE = "tests/pubpres_warp_transition_oracle.gd"
-ORDERS = {"reentry": "RABBAR", "steady-sparse": "RSABBASR", "direct-drawable": "RABBAR", "fresh-drawable": "RABBAR"}
+ORDERS = {"reentry": "RABBAR", "steady-sparse": "RSABBASR", "fixed-material": "RSABBASR",
+          "direct-drawable": "RABBAR", "fresh-drawable": "RABBAR"}
+TAPE_VARIANTS = {"steady-sparse": "steady_sparse", "fixed-material": "fixed_material"}
+TAPE_PAIRS = ((3, 2), (4, 5), (3, 1), (4, 6), (2, 0), (5, 7), (1, 0), (6, 7))
 PAIRINGS = {
     "reentry": ((2, 1), (3, 4), (2, 0), (3, 5), (1, 0), (4, 5)),
-    "steady-sparse": ((3, 2), (4, 5), (3, 1), (4, 6), (2, 0), (5, 7), (1, 0), (6, 7)),
+    "steady-sparse": TAPE_PAIRS,
+    "fixed-material": TAPE_PAIRS,
     "direct-drawable": ((2, 1), (3, 4), (2, 0), (3, 5), (1, 0), (4, 5)),
     "fresh-drawable": ((2, 1), (3, 4), (2, 0), (3, 5), (1, 0), (4, 5)),
 }
@@ -70,7 +75,7 @@ def load_json(path):
 
 
 def tape_for(arm, experiment):
-    return "steady_sparse" if experiment == "steady-sparse" and arm in ("S", "B") else "transition"
+    return TAPE_VARIANTS.get(experiment, "transition") if arm in ("S", "B") else "transition"
 
 
 def material_for(arm):
@@ -232,7 +237,7 @@ def project_drift(project, expected):
     return [name for name, sha in expected.items() if not (project / name).is_file() or digest(project / name) != sha]
 
 
-def capture(installed, project, folder, profiles, script=None, material="blit", skip=None, steady=False, direct=None, fresh=None):
+def capture(installed, project, folder, profiles, script=None, material="blit", skip=None, tape="transition", direct=None, fresh=None):
     folder.mkdir()
     created = datetime.datetime.now(datetime.timezone.utc)
     nonce = uuid.uuid4().hex
@@ -245,8 +250,10 @@ def capture(installed, project, folder, profiles, script=None, material="blit", 
     }
     if skip is not None:
         settings[SWITCH] = str(int(skip))
-    if steady:
+    if tape == "steady_sparse":
         settings[STEADY_SWITCH] = "1"
+    if tape == "fixed_material":
+        settings[FIXED_MATERIAL_SWITCH] = "1"
     if direct is not None:
         settings[DIRECT_SWITCH] = str(int(direct))
     if fresh is not None:
@@ -390,7 +397,7 @@ def read_timed(receipt, arm, folder, experiment="reentry"):
              and math.isclose(row["publication_ms"], (row["publish_end_usec"] - row["publish_begin_usec"]) / 1000),
              f"Revision {index + 1} timeline is invalid")
         update = row["material"]
-        cloned = arm == "A" and offset == 2
+        cloned = offset == 2 and (arm == "A" or (experiment == "fixed-material" and arm == "B"))
         compact = experiment == "reentry" and arm == "B" and offset == 2
         direct = experiment in ("direct-drawable", "fresh-drawable") and arm == "B" and offset <= 2
         fresh = experiment == "fresh-drawable" and arm == "B" and offset <= 2
@@ -445,9 +452,8 @@ def read_timed(receipt, arm, folder, experiment="reentry"):
 
 def read_oracle(receipt, arm, experiment="reentry"):
     tape = tape_for(arm, experiment)
-    mode = "clone" if arm == "A" else ("fresh_drawable" if experiment == "fresh-drawable"
-                                       else ("direct_drawable" if experiment == "direct-drawable"
-                                             else ("steady_sparse" if tape == "steady_sparse" else "compact")))
+    mode = "clone" if arm == "A" else {"fresh-drawable": "fresh_drawable", "direct-drawable": "direct_drawable",
+                                       "reentry": "compact", **TAPE_VARIANTS}[experiment]
     sparse_entries = 0 if tape == "steady_sparse" else 15
     need(receipt["schema"] == "pubpres-warp-history-oracle-v1" and receipt["case"] == "transition_2048_w1"
          and receipt["complete"] and not receipt["failures"] and receipt["mode"] == mode
@@ -462,7 +468,7 @@ def read_oracle(receipt, arm, experiment="reentry"):
     for entry in entries:
         need(all(re.fullmatch("[0-9a-f]{64}", entry[key]) for key in EXPECTED_IMAGE_HASHES),
              "Missing first-sparse per-plane history hash")
-    required_history = ("history", "warmup_history") if experiment == "steady-sparse" else ()
+    required_history = ("history", "warmup_history") if experiment in TAPE_VARIANTS else ()
     for key, expected in (("history", expected_history(tape)), ("warmup_history", EXPECTED_WARMUP_HISTORY)):
         if key in receipt or key in required_history:
             need(receipt[key] == expected, f"Independent oracle {key} differs from the exact tape")
@@ -475,7 +481,7 @@ def run_arm(installed, project, folder, profiles, manifest, project_hashes, arm,
     fixture = ORACLE if oracle else FIXTURE
     tape = tape_for(arm, experiment)
     record = capture(installed, project, folder, profiles, fixture, material_for(arm),
-                     skip=arm == "B" if experiment == "reentry" else None, steady=tape == "steady_sparse",
+                     skip=arm == "B" if experiment == "reentry" else None, tape=tape,
                      direct=arm == "B" if experiment in ("direct-drawable", "fresh-drawable") else None,
                      fresh=arm == "B" if experiment == "fresh-drawable" else None)
     result = {"arm": arm, "tape": tape, "status": "FAIL", "process": record}
@@ -508,8 +514,8 @@ def check_campaign(timed, oracles, experiment="reentry"):
     ), "Renderer or fixture context changed between fresh-process captures")
     first, second = (oracle["analysis"] for oracle in oracles)
     need(first["warmup_history"] == second["warmup_history"], "Untimed histories differ at the warmup boundary")
-    if experiment in ("reentry", "direct-drawable", "fresh-drawable"):
-        need(first["entry_history"] == second["entry_history"], "Untimed clone and bypass first-sparse GPU history hashes differ")
+    if experiment != "steady-sparse":
+        need(first["entry_history"] == second["entry_history"], "Untimed first-sparse GPU history hashes differ")
 
 
 def compare_arms(timed, experiment="reentry"):
@@ -531,7 +537,7 @@ def compare_arms(timed, experiment="reentry"):
     return comparisons
 
 
-def steady_interactions(timed):
+def tape_interactions(timed):
     interactions = []
     for indices in ((2, 0, 3, 1), (5, 7, 4, 6)):
         a, r, b, s = (timed[index]["analysis"] for index in indices)
@@ -593,8 +599,8 @@ def run(installed, output, oracle, experiment="reentry", fixture=None):
                     "oracle_overlay_sha256": digest(output / "oracle-overlay.patch") if experiment == "fresh-drawable" else None,
                     "fixture_overlay_sha256": digest(output / "fixture-overlay.patch") if fixture is not None else None,
                     "project_inputs_sha256": expected}
-            if experiment == "steady-sparse":
-                need(plan["source_publisher_sha256"] == plan["probe_publisher_sha256"], "Steady-sparse requires the unchanged production publisher")
+            if experiment in TAPE_VARIANTS:
+                need(plan["source_publisher_sha256"] == plan["probe_publisher_sha256"], "Tape comparisons require the unchanged production publisher")
             if experiment == "fresh-drawable":
                 plan["hypothesis"] = (
                     "The first dense RGBA8 upload after sparse FBO writes may recover the existing ANGLE Image11 GPU storage "
@@ -639,8 +645,8 @@ def run(installed, output, oracle, experiment="reentry", fixture=None):
         need(digest(installed / MANIFEST) == MANIFEST_SHA256, "Installed package identity changed on disk")
         check_campaign(summary["timed"], summary["untimed_oracles"], experiment)
         summary["paired_comparisons"] = compare_arms(summary["timed"], experiment)
-        if experiment == "steady-sparse":
-            summary["paired_interaction"] = steady_interactions(summary["timed"])
+        if experiment in TAPE_VARIANTS:
+            summary["paired_interaction"] = tape_interactions(summary["timed"])
         summary["complete"] = True
         summary["status"] = "PASS"
     except (KeyError, TypeError, ValueError, OSError) as error:
@@ -657,7 +663,7 @@ def main():
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--oracle", required=True, type=Path)
     parser.add_argument("--experiment", choices=tuple(ORDERS), default="reentry")
-    parser.add_argument("--fixture", type=Path, help="Checkout-only transition fixture with the steady-sparse tape")
+    parser.add_argument("--fixture", type=Path, help="Checkout-only transition fixture with the selected input tape")
     args = parser.parse_args()
     if os.name != "nt":
         parser.error("Windows ANGLE/D3D11 WARP is required")
@@ -667,8 +673,8 @@ def main():
     output = args.output.resolve()
     if not installed.is_dir() or not oracle.is_file() or oracle.suffix != ".gd":
         parser.error("Expected a fresh installed package directory and a GDScript oracle file")
-    if args.experiment == "steady-sparse" and fixture is None:
-        parser.error("Steady-sparse requires --fixture")
+    if args.experiment in TAPE_VARIANTS and fixture is None:
+        parser.error(f"{args.experiment} requires --fixture")
     if fixture is not None and (not fixture.is_file() or fixture.suffix != ".gd"):
         parser.error("Expected a GDScript tape fixture")
     if output.exists() or installed in output.parents:

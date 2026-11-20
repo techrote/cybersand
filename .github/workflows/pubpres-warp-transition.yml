@@ -14,11 +14,12 @@ on:
         description: WARP comparison to run
         type: choice
         options:
+          - fixed-material
           - fresh-drawable
           - direct-drawable
           - steady-sparse
           - reentry
-        default: fresh-drawable
+        default: fixed-material
 
 permissions:
   actions: read
@@ -70,7 +71,7 @@ jobs:
       - name: Run the selected publication comparison on WARP
         shell: pwsh
         env:
-          PUBPRES_WARP_EXPERIMENT: ${{ inputs.experiment || 'fresh-drawable' }}
+          PUBPRES_WARP_EXPERIMENT: ${{ inputs.experiment || 'fixed-material' }}
         run: |
           python tools/pubpres_integration/warp_transition.py `
             --installed (Join-Path $env:RUNNER_TEMP 'pubpres-warp-installed') `

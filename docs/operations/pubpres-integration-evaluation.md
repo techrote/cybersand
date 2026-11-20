@@ -101,3 +101,8 @@ only matched end-to-end observations can establish the improvement. Two
 untimed 180-revision, both-plane oracles must pass before timed R–A–B–B–A–R
 capture starts. The original direct-update option and its negative evidence
 remain available. No native or physical behavior changes in this probe.
+
+The `fixed-material` control keeps both full-plane writes in each cycle and
+uses Reinforced Concrete for both. The visual condition still varies and all
+ten 8×8 edits are retained. It compares the original and fixed-material tapes
+under both full-only and blit publication, with unchanged product runtimes.

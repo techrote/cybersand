@@ -19,12 +19,14 @@ var strategy: String
 var initialized_usec: int
 var initial_sha: String
 var steady_sparse: bool
+var fixed_material: bool
 
 
 func _initialize() -> void:
 	initialized_usec = Time.get_ticks_usec()
 	Engine.max_fps = 0
 	steady_sparse = OS.get_environment("CYBERSAND_PUBPRES_PROBE_STEADY_SPARSE") == "1"
+	fixed_material = OS.get_environment("CYBERSAND_PUBPRES_PROBE_FIXED_MATERIAL") == "1"
 	for arg: String in OS.get_cmdline_user_args():
 		if arg.begins_with("--receipt="):
 			output = arg.trim_prefix("--receipt=")
@@ -47,7 +49,8 @@ func _input(index: int) -> Dictionary:
 	var dense := not steady_sparse and index % 12 < 2
 	var region := Rect2i(Vector2i.ZERO, Extent) if dense else Rect2i(96, 96, 8, 8)
 	var patch := Image.create_empty(region.size.x, region.size.y, false, Image.FORMAT_RG8)
-	patch.fill(Color(float(3 if index % 2 == 0 else 58) / 255.0, float((index * 37) % 256) / 255.0, 0, 1))
+	var material_id := 3 if index % 2 == 0 and not (fixed_material and dense) else 58
+	patch.fill(Color(float(material_id) / 255.0, float((index * 37) % 256) / 255.0, 0, 1))
 	return {"dense": dense, "region": region, "patch": patch}
 
 
@@ -182,7 +185,7 @@ func _run() -> void:
 		if _check(screenshot.save_png(screenshot_path) == OK, "could not save original framebuffer"):
 			screenshot_sha = FileAccess.get_sha256(screenshot_path)
 	var result := {"schema": "pubpres-transition-v1", "case": Case, "complete": failures.is_empty(),
-		"tape": "steady_sparse" if steady_sparse else "transition",
+		"tape": "steady_sparse" if steady_sparse else ("fixed_material" if fixed_material else "transition"),
 		"failures": failures, "material_strategy": strategy, "context": Context.identity(get_script().resource_path, host.world_shader.shader),
 		"initial_plane_sha256": initial_sha, "setup_usec": preparation_usec, "warmup_frames": Warmup,
 		"display": {"window": [root.size.x, root.size.y], "max_fps": Engine.max_fps, "vsync_mode": vsync},

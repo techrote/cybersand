@@ -6,9 +6,12 @@ func _run() -> void:
 	var compact := OS.get_environment("CYBERSAND_PUBPRES_PROBE_SKIP_HISTORY") == "1"
 	var direct := OS.get_environment("CYBERSAND_PUBPRES_PROBE_DIRECT_DRAWABLE") == "1"
 	var is_steady := OS.get_environment("CYBERSAND_PUBPRES_PROBE_STEADY_SPARSE") == "1"
+	var is_fixed := OS.get_environment("CYBERSAND_PUBPRES_PROBE_FIXED_MATERIAL") == "1"
 	var mode := "direct_drawable" if direct else ("compact" if compact else "clone")
 	if is_steady:
 		mode = "steady_sparse"
+	elif is_fixed:
+		mode = "fixed_material"
 	root.size = Vector2i(960, 720)
 	RenderingServer.call_on_render_thread(Callable(DisplayServer, "window_set_vsync_mode").bind(DisplayServer.VSYNC_DISABLED))
 	_build_host()
@@ -75,7 +78,8 @@ func _run() -> void:
 	_check(entry_history.size() == (0 if is_steady else 15), "sparse entries must match the selected tape")
 	var history := _check_history()
 	var result := {"schema": "pubpres-warp-history-oracle-v1", "case": Case, "mode": mode,
-		"tape": "steady_sparse" if is_steady else "transition", "history": history, "warmup_history": warmup_history,
+		"tape": "steady_sparse" if is_steady else ("fixed_material" if is_fixed else "transition"),
+		"history": history, "warmup_history": warmup_history,
 		"complete": failures.is_empty(), "failures": failures, "frames_checked": Samples,
 		"current_matches": current_matches, "previous_matches": previous_matches,
 		"sparse_entries": entry_history.size(), "entry_history": entry_history,
