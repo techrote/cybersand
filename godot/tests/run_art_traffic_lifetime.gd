@@ -2,6 +2,7 @@ extends SceneTree
 ## One fresh-process phase for tools/ci/qualify_art_traffic_lifetime.py.
 ## Only generated fixtures in the harness's isolated user:// are permitted.
 const IMAGE_URL := "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGMwnnn3PwAFVQKpTzibEAAAAABJRU5ErkJggg=="
+const CANCEL_PROMPT := "continuation cancellation"
 var checks := 0
 var failures: Array[String] = []
 var result: Dictionary = {}
@@ -39,13 +40,17 @@ func checkpoint() -> void:
 		file.flush()
 	print("ART_LIFETIME_PROCESS ",JSON.stringify(result))
 
-func expected_history(panel: Variant, count: int) -> void:
+func expected_history(panel: Variant, count: int, cancelled_prompt: bool = false) -> void:
 	var expected: Array[String] = ["legacy seed"]
 	for i in range(1,count+1): expected.append("fresh process %d"%i)
+	if cancelled_prompt: expected.append(CANCEL_PROMPT)
 	var actual: Array[String] = []
 	var sources := {}
 	for turn: Dictionary in panel.conversation:
 		actual.append(str(turn.content))
+		if cancelled_prompt and turn.content==CANCEL_PROMPT:
+			check(turn.role=="user" and not turn.has("image_offset"),"cancelled text-only Send retains its user prompt without an image")
+			continue
 		var path := str(turn.get("image_log_path",""))
 		check(turn.has("image_offset") and not path.is_empty(),"image retains segment and byte offset")
 		if turn.has("image_offset"):
@@ -55,7 +60,7 @@ func expected_history(panel: Variant, count: int) -> void:
 			check(decoded.load_png_from_buffer(Marshalls.base64_to_raw(image_url.trim_prefix("data:image/png;base64,")))==OK and decoded.get_size()==Vector2i.ONE,"historical image bytes decode as valid PNG")
 		sources[path] = true
 	check(actual==expected,"transcript ordering across fresh processes")
-	check(sources.size()==expected.size(),"each historical image retains its original segment identity")
+	check(sources.size()==count+1,"each historical image retains its original segment identity")
 	result.contents = actual
 
 func run() -> void:
@@ -116,7 +121,7 @@ func run() -> void:
 		result.restore_longest_frame_ms = longest_frame/1000.0
 		check(panel.conversation_loaded and panel.provider.resume_ok,"explicit Art open restores a valid conversation")
 		result.resume_warning = panel.provider.resume_warning
-		expected_history(panel,ordinal-1 if mode in ["continue","crash_write"] else ordinal)
+		expected_history(panel,ordinal-1 if mode in ["continue","crash_write"] else ordinal,mode=="reopen_cancelled")
 		panel._open_conversation()
 		check(panel.conversation_editor.visible and panel.conversation_editor.baseline==panel.conversation and panel.conversation_editor.content.text=="legacy seed","Art history displays restored messages")
 		if DisplayServer.get_name()!="headless" and mode=="reopen":
@@ -178,8 +183,28 @@ func run() -> void:
 		elif mode=="cancel_continue":
 			var endpoint := OS.get_environment("ART_LIFETIME_ENDPOINT")
 			check(endpoint.begins_with("http://127.0.0.1:"),"only local fixture endpoint is permitted")
-			var error: String = panel.provider.send("LM Studio",endpoint,"slow","","continuation cancellation","test",4096,5)
-			check(error.is_empty() and panel.provider.active,"continuation HTTP request started")
+			var ready_deadline := Time.get_ticks_msec()+30000
+			while (panel.wb.busy() or panel.wb.applied.is_empty() or panel.wb.paint_editor.busy()) and Time.get_ticks_msec()<ready_deadline:
+				await process_frame
+			check(not panel.wb.busy() and not panel.wb.applied.is_empty() and not panel.wb.paint_editor.busy(),"native canvas ready for ordinary Send")
+			panel.source.select(0)
+			panel.source.item_selected.emit(0)
+			panel.endpoint.text = endpoint
+			panel.model.text = "slow"
+			panel.image_input.button_pressed = false
+			panel.context_mode.select(3)
+			panel.input_mode.select(1)
+			panel.input_mode.item_selected.emit(1)
+			panel.input.text = CANCEL_PROMPT
+			panel.turn_limit.value = 1
+			panel.spend_limit.value = 0
+			panel.tokens.value = 4096
+			panel.seconds.value = 5
+			# Ordinary Send captures the canvas/request epochs and persists the
+			# user prompt. Bypassing it would correctly trip the stale-run guard.
+			panel.send_prompt()
+			check(panel.input_error.is_empty() and panel.provider.active,"ordinary Send starts continuation HTTP request")
+			check(panel.request_epoch==host.simulation_worker.art_state().epoch and panel.sent_turns==1,"ordinary Send establishes request lifetime bookkeeping")
 			var received := OS.get_environment("ART_LIFETIME_REQUEST_RECEIVED")
 			var receive_deadline := Time.get_ticks_msec()+5000
 			while not FileAccess.file_exists(received) and panel.provider.active and Time.get_ticks_msec()<receive_deadline:
@@ -189,6 +214,7 @@ func run() -> void:
 			panel.stop_all()
 			for _i in range(3): await process_frame
 			check(not panel.provider.active,"Stop cancels active continuation")
+			expected_history(panel,ordinal,true)
 			result.log_path = panel.provider.log_path
 			result.chain = panel.provider.traffic_chain(panel.provider.log_path)
 	panel.hide()

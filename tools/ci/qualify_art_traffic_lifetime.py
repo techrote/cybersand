@@ -373,9 +373,19 @@ class Qualification:
         thread.start()
         try:
             before_cancel = inventory(traffic)
-            self.execute("cancel-continuation", dict(env, ART_LIFETIME_ENDPOINT=f"http://127.0.0.1:{server.server_port}/v1", ART_LIFETIME_REQUEST_RECEIVED=str(received_marker)), mode="cancel_continue", ordinal=5)
-            unchanged(before_cancel, inventory(traffic))
-            self.execute("reopen-cancelled-continuation", env, mode="reopen", ordinal=5)
+            receipt = self.execute("cancel-continuation", dict(env, ART_LIFETIME_ENDPOINT=f"http://127.0.0.1:{server.server_port}/v1", ART_LIFETIME_REQUEST_RECEIVED=str(received_marker)), mode="cancel_continue", ordinal=5)
+            after_cancel = inventory(traffic)
+            unchanged(before_cancel, after_cancel)
+            created = set(after_cancel)-set(before_cancel)
+            if len(created)!=1 or sum(after_cancel[n]["size"] for n in created)>16384:
+                raise AssertionError("Cancelled Send did not create one bounded continuation segment")
+            with (traffic / next(iter(created))).open(encoding="utf-8") as source:
+                events = [json.loads(line) for line in source]
+            kinds = [event["kind"] for event in events]
+            if kinds != ["session_parent", "request", "conversation", "cancelled"] or events[-1]["data"]!="Human Stop":
+                raise AssertionError("Cancelled Send did not preserve ordered request, user prompt and Human Stop events")
+            self.summary["cases"]["ordinary"]["cancelled_continuation"] = {"event_kinds": kinds, "request_received": receipt["request_received"], "growth_bytes": sum(after_cancel[n]["size"] for n in created)}
+            self.execute("reopen-cancelled-continuation", env, mode="reopen_cancelled", ordinal=5)
         finally:
             server.shutdown()
             server.server_close()
