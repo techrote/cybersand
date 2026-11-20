@@ -477,9 +477,15 @@ func _frame_shot(shot: Dictionary, native: Vector2i) -> Dictionary:
 		var framing: Dictionary = shot.get("framing", {"mode": "fit"})
 		mode = String(framing.get("mode", "fit"))
 		match mode:
-			"fit":
-				zoom = clampf(minf(float(resolution.x) / native.x, float(resolution.y) / native.y) * 0.96,
-					ZOOM_MIN, ZOOM_MAX)
+			"fit", "width", "height":
+				var horizontal: float = float(resolution.x) / float(native.x)
+				var vertical: float = float(resolution.y) / float(native.y)
+				var target: float = minf(horizontal, vertical)
+				if mode == "width":
+					target = horizontal
+				elif mode == "height":
+					target = vertical
+				zoom = clampf(target * 0.96, ZOOM_MIN, ZOOM_MAX)
 				origin = Vector2(native) * 0.5 - Vector2(resolution) / zoom * 0.5
 			"native":
 				zoom = 1.0
