@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-20",
+  "purpose": "One additive Workbench host-claim capacity question; separate from the unchanged frozen32 evaluation and its metrics.",
+  "questions": [
+    {
+      "id": "WORKBENCH-HOST-CLAIMS-001",
+      "query": "Why can a valid Workbench landscape fail at 6,554 rectangles when source construction allows 32,768, and does omitting geometry from the host claim skip validation?",
+      "canonical": [
+        "architecture/shared-workbench-authoring-data.md",
+        "architecture/liquid-prepared-setup-and-receipts.md"
+      ],
+      "facts": [
+        "A rectangle has five integer words, so 6,554 rectangles exceed the unrelated 32,768-values-per-Array host-observation limit while remaining within the 32,768-rectangle Workbench source budget.",
+        "The Draft/HOLD candidate validates the complete definition and passes all ordered rectangles unchanged to native preparation; only the unverified observation copy omits an oversized Workbench rectangle Array.",
+        "The projection discloses its status, omitted field, encoding, exact word and rectangle counts, and the canonical SHA-256 of the complete validated definition. It is not an installation acknowledgement or complete executed-host proof.",
+        "Smaller Workbench claims, strict non-Workbench validation, native limits, failure atomicity and Setup-v2/generated-start-v1 persistence remain unchanged.",
+        "Installed bridge capacity is independent: an older 4,096-rectangle binary is not upgraded by the claim repair. Actual platform native/Rapier progression and fresh-process reopening require separately recorded execution."
+      ],
+      "sources": [
+        "../godot/scripts/workbench_setup.gd::rectangles",
+        "../godot/scripts/microscenario_contract.gd::validate",
+        "../godot/scripts/microscenario_host.gd::install",
+        "../godot/scripts/microscenario_host.gd::host_definition_claim",
+        "../godot/scripts/liquid_host_evidence.gd::_claims",
+        "../godot/tests/test_workbench_host_claim_capacity.gd"
+      ]
+    }
+  ]
+}

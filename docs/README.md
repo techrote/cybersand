@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-11-16
+last-reviewed: 2026-11-20
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, operations/atlas-agent-runner.md, architecture/pressure-optimization.md]
 ---
 
@@ -43,11 +43,25 @@ MoltenGlass H1 from this Materials Lab continuation.
 
 Current Draft: [integrated PAINT + agent Workbench](operations/wb-art-paint-integrated-candidate.md), including standalone generator profiles, native stored-material receipts and one edit ordering boundary. Component contracts: [direct drawing](systems/workbench-direct-art-batches.md), [provider connection/context/scanlines](systems/workbench-art-providers.md), and [full PAINT editor](systems/paint-editor-bounded-shapes.md).
 
+Workbench Art conversation lifetime: [lazy restoration, immutable linked traffic,
+crash handling, atomic checkpoints and cancellable export](systems/workbench-art-providers.md#lazy-reopening-and-traffic-storage).
+PR #681 remains Draft/HOLD; its qualification ledger owns measured platform
+results and the remaining physical Windows acceptance.
+
 Shared authoring: [approved data contract and convergence plan](architecture/shared-workbench-authoring-data.md)
 defines the common desktop/agent/remote foundation and the GEN-008 candidate
 material-only Flatten contract: two bytes per cell, unchanged live World, explicit
 Save. The [qualification and Owner workflow](operations/gen008-flatten-qualification.md)
 keeps implementation evidence and human acceptance separate. Keep #548 Draft/HOLD.
+
+Large original Workbench starts: the Draft/HOLD
+[host-claim projection contract](architecture/shared-workbench-authoring-data.md#large-workbench-starts-and-host-claim-projection)
+separates the 32,768-rectangle native/source budget from the 32,768-value host
+observation Array limit. Full validated geometry still reaches native preparation;
+the [qualification record](audits/2026-11-20-workbench-host-claims-qualification.md)
+owns installed runtime and fresh-process results. The
+[focused retrieval question](reference/retrieval-questions-workbench-host-claims.json)
+is additive to the unchanged frozen evaluation set.
 
 GEN-007 Architectural Generator [merge hold, owner-reviewed](systems/architectural-generator.md):
 five simultaneous style columns, thirteen built-in presets, versioned native
