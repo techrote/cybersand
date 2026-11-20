@@ -20,6 +20,7 @@ class StalledRenderWorker extends "res://scripts/simulation_worker.gd":
 	var released: bool = false
 	var timed_out: bool = false
 	var target_serial: int = 0
+	var held_started_usec: int = 0
 	var target_completion: CyberSimulationSnapshot
 	var target_full: CyberSimulationSnapshot
 
@@ -35,6 +36,7 @@ class StalledRenderWorker extends "res://scripts/simulation_worker.gd":
 		released = false
 		timed_out = false
 		target_serial = 0
+		held_started_usec = 0
 		target_completion = null
 		target_full = null
 		probe_mutex.unlock()
@@ -42,7 +44,8 @@ class StalledRenderWorker extends "res://scripts/simulation_worker.gd":
 	func status() -> Dictionary:
 		probe_mutex.lock()
 		var result: Dictionary = {"held":held,"released":released,"timed_out":timed_out,
-			"serial":target_serial,"completion":target_completion,"full":target_full}
+			"serial":target_serial,"completion":target_completion,"full":target_full,
+			"held_started_usec":held_started_usec}
 		probe_mutex.unlock()
 		return result
 
@@ -60,6 +63,7 @@ class StalledRenderWorker extends "res://scripts/simulation_worker.gd":
 			armed = false
 			held = true
 			target_serial = _snapshot_serial
+			held_started_usec = Time.get_ticks_usec()
 			_mutex.lock()
 			target_completion = _published_physics_snapshot
 			_mutex.unlock()

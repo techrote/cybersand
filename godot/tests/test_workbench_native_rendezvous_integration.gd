@@ -49,17 +49,25 @@ func stalled_completion(combined: bool) -> void:
 	var held: Dictionary = worker.status()
 	var completion: CyberSimulationSnapshot = held.completion
 	var full: CyberSimulationSnapshot = held.full
-	if completion == null or full == null: return # Base fixture records the failure.
+	if full == null or (not combined and completion == null): return # Base fixture records the failure.
+	# Combined mode has no early completion for this turn. The retained
+	# completion can belong to an earlier turn and carries no early clock.
+	# Time waits at the injected packing hold, and observe the candidate
+	# admission from its actual handoff in early mode.
+	var held_started_usec: int = held.held_started_usec
+	check(held_started_usec > 0 and held_started_usec < full.worker_handoff_usec,
+		mode + " measures a real held interval before the full handoff")
 	var recorder: RecordedRendezvous = rendezvous_recorders.back()
 	var waits: Array = recorder.waits.filter(func(row: Dictionary) -> bool:
-		return int(row.start_usec) >= completion.physics_handoff_usec \
+		return int(row.start_usec) >= held_started_usec \
 			and int(row.completed_usec) <= full.worker_handoff_usec)
 	check(not waits.is_empty(), mode + " actual catch-up callbacks enter rendezvous during publication hold")
 	check(waits.any(func(row: Dictionary) -> bool: return row.status == "timeout" \
 		and int(row.sleeps) > 0 and int(row.polls) > 0),
 		mode + " actual Main exhausts a bounded wait while native authority is unavailable")
+	var admission_start_usec: int = held_started_usec if combined else completion.physics_handoff_usec
 	var admissions: Array = host.admissions.filter(func(row: Dictionary) -> bool:
-		return int(row.time_usec) >= completion.physics_handoff_usec \
+		return int(row.time_usec) >= admission_start_usec \
 			and int(row.time_usec) <= full.worker_handoff_usec)
 	check(admissions.size() == (0 if combined else 1),
 		mode + " no additional physical completion is fabricated by expired waits")
@@ -70,8 +78,9 @@ func stalled_completion(combined: bool) -> void:
 			"early admission retains exact sample and complete required native terrain")
 	observations.append({"mode":mode + "-rendezvous", "real_catchup_waits":waits.size(),
 		"waits":waits, "physical_admissions_during_hold":admissions.size(),
-		"completion_sample":completion.lab_context.workbench_completed_sample,
-		"physics_handoff_usec":completion.physics_handoff_usec,
+		"completion_sample":full.lab_context.workbench_completed_sample,
+		"held_started_usec":held_started_usec,
+		"physics_handoff_usec":completion.physics_handoff_usec if not combined else 0,
 		"full_handoff_usec":full.worker_handoff_usec,
 		"scope":"Actual engine callbacks; unchanged1/60 manual Rapier step; held native owner cannot produce the next sample."})
 
