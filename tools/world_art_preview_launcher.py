@@ -31,6 +31,7 @@ import time
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import world_art_capture_support as support  # noqa: E402
+import world_art_stream_png as stream_png  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 GODOT = ROOT / "godot"
@@ -164,6 +165,8 @@ def add_capture_arguments(parser: argparse.ArgumentParser) -> None:
     group.add_argument("--crop", help="detail crop in native cells X,Y,W,H (default centre half of the map)")
     group.add_argument("--detail-zoom", type=float, help="detail pixels per native cell (default largest integer fitting --resolution)")
     group.add_argument("--scale", type=int, default=2, help="full-composition output scale 1..8 (default 2)")
+    group.add_argument("--stream-large", action="store_true",
+                       help="explicit bounded RGB8 streamed full PNG above 50M up to 100M pixels; never changes native World limits")
     group.add_argument("--feature-scale", type=int, default=4, help="feature output scale 1..8 (default 4)")
     group.add_argument("--time", type=float, default=1.37,
                        help="fixed shader presentation time in seconds (default 1.37, the viewer default)")
@@ -249,7 +252,8 @@ def run_capture(args: argparse.Namespace, godot_executable: str) -> int:
             if isinstance(dimensions, list) and len(dimensions) == 2:
                 full_scale = next((int(shot.get("scale", 1)) for shot in shots
                                    if shot.get("kind") == "full"), 1)
-                art_policy = support.classify_art_dimensions(*dimensions, scale=full_scale)
+                art_policy = support.classify_art_dimensions(*dimensions, scale=full_scale,
+                                                             stream_large=args.stream_large)
         except (OSError, ValueError, TypeError, AttributeError):
             # Malformed packs remain the real Godot adapter's responsibility,
             # preserving its source-specific rendering failure diagnostics.
@@ -280,11 +284,13 @@ def run_capture(args: argparse.Namespace, godot_executable: str) -> int:
             viewer = {"git_revision": viewer_git["revision"], "git_dirty": viewer_git["dirty"],
                       "files": hashes,
                       "launcher_sha256": support.sha256_file(Path(__file__)),
-                      "capture_support_sha256": support.sha256_file(Path(support.__file__))}
+                      "capture_support_sha256": support.sha256_file(Path(support.__file__)),
+                      "stream_png_sha256": support.sha256_file(Path(stream_png.__file__))}
             viewer_expected = viewer
             request = {"schema": support.SCHEMA_REQUEST, "output_dir": str(output),
                        "art_source": art_source, "viewer": viewer, "presentation": presentation,
-                       "allow_blank": args.allow_blank, "jobs": jobs}
+                       "allow_blank": args.allow_blank,
+                       "stream_large": args.stream_large, "jobs": jobs}
             request_path = Path(scratch) / "request.json"
             request_path.write_text(json.dumps(request, indent=1), encoding="utf-8")
             code, text = run_logged([godot_executable, "--headless", "--path", str(project), "--editor",
@@ -318,6 +324,35 @@ def run_capture(args: argparse.Namespace, godot_executable: str) -> int:
     except support.CaptureError as error:
         _fail(failures, error.code, error.message, state)
     (output / "godot-capture.log").write_text(log_text, encoding="utf-8")
+
+    # Godot writes exact shader RGB8 tiles for explicit over-50M requests.
+    # Host transport validates each tile hash/geometry and assembles a PNG by
+    # scanline before ANY manifest is marked complete or batch-sealed.
+    for job in jobs:
+        manifest_path = output / job["id"] / "manifest.json"
+        if not manifest_path.is_file():
+            continue
+        manifest = support.read_json(manifest_path)
+        if manifest.get("status") != "needs-assembly":
+            continue
+        try:
+            pending = [shot for shot in manifest["shots"] if shot.get("status") == "prepared"]
+            if not pending:
+                raise ValueError("manifest requires assembly but no prepared shots exist")
+            for shot in pending:
+                info = stream_png.assemble_rgb_tiles(manifest_path.parent, shot)
+                shot.pop("assembly", None)
+                shot.update(info)
+                shot["status"] = "complete"
+            if any(shot.get("status") != "complete" for shot in manifest["shots"]):
+                raise ValueError("streamed job still contains incomplete shots")
+            manifest["status"] = "complete"
+            manifest["error"] = ""
+        except (OSError, ValueError, KeyError, TypeError) as error:
+            manifest["status"] = "failed"
+            manifest["error"] = f"streamed PNG assembly refused: {error}"
+            _fail(failures, support.EXIT_EVIDENCE, manifest["error"], state)
+        manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
 
     run_path = output / "godot-run.json"
     if run_path.is_file():
@@ -390,6 +425,7 @@ def run_capture(args: argparse.Namespace, godot_executable: str) -> int:
                    "requested_rendering_driver": args.rendering_driver or None,
                    "requested_display_driver": args.display_driver or None, "display": display},
         "presentation": presentation, "shots_requested": shots, "allow_blank": args.allow_blank,
+        "stream_large": args.stream_large,
         "synthetic_condition_notice": ("Material condition bytes are SYNTHETIC native creation-state fixtures; "
                                        "images are presentation of authored geometry, not simulated physical state."),
         "limitations": [
