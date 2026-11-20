@@ -17,11 +17,26 @@ programme remains Draft/HOLD under #687. The [native recovery and policy freeze]
 records the recovered known corpus, matched causal controls, fixed-territory
 selection and the distinction between unevaluated closure and zero obligations.
 
+For waves travelling under a floating Oil slick, see the [impingement tank comparison](audits/2026-11-20-wave-oil-impinge.md).
+
+For the radius-24 Oil drop and Lava on the Water ramp, see the [Workbench replay](audits/2026-11-19-wave-oil-lava.md).
+
+For full-face Water release, fall speed 3 and the ramp crest investigation, see the [full-face experiment](audits/2026-11-19-wave-water-face-004.md).
+
+For the Water Ramp 003 settings, see the [water ramp evaluation](audits/2026-11-19-wave-water-ramp-003.md) and [Water Lab](operations/workbench-water-lab.md).
+
+For Waterwall 002, see the [Water Lab controls](operations/workbench-water-lab.md#try-the-waterwall-002-candidate), [Wave law](architecture/wave-flow-v1.md#waterwall-002-sheet-crest-and-scale-selective-damping) and [dated comparison](audits/2026-11-19-wave-waterwall-002.md).
+
 For deliberate historical research, use the isolated
 [engineering archaeology index](history/engineering/README.md). It is excluded
 from default current-answer retrieval and grants no implementation authority.
 Current clarified intent is separate in the
 [14 November owner decision record](decisions/2026-11-14-owner-authoring-intent.md).
+
+Wave Flow PR #631 (inherited from #618): [native contract and limitations](architecture/wave-flow-v1.md),
+[Shared Workbench tuning, Water comparison scenes and Windows evaluation](operations/wave-flow-evaluation.md),
+and [Workbench repair and qualification custody](audits/2026-11-16-wave-workbench-631-finisher.md).
+PR #631 introduced opt-in Wave Flow. Fresh player sessions now use the Wave gameplay profile with spill and ballistic release. The [owner’s final tank playtest](audits/2026-11-20-wave-oil-impinge.md) records the accepted settings and live frame timing.
 
 Current combined evaluation: [Materials Lab + Workbench integration](audits/2026-11-12-mat-auth-workbench-integration.md) preserves both current feature heads, shared manual/agent Undo/Redo and existing material/save contracts. Its own Windows/Linux/package qualification remains separate from each feature's preceding evidence.
 
@@ -35,16 +50,37 @@ MoltenGlass H1 from this Materials Lab continuation.
 
 Current Draft: [integrated PAINT + agent Workbench](operations/wb-art-paint-integrated-candidate.md), including standalone generator profiles, native stored-material receipts and one edit ordering boundary. Component contracts: [direct drawing](systems/workbench-direct-art-batches.md), [provider connection/context/scanlines](systems/workbench-art-providers.md), and [full PAINT editor](systems/paint-editor-bounded-shapes.md).
 
+Workbench Art conversation lifetime: [lazy restoration, immutable linked traffic,
+crash handling, atomic checkpoints and cancellable export](systems/workbench-art-providers.md#lazy-reopening-and-traffic-storage).
+PR #681 remains Draft/HOLD; its qualification ledger owns measured platform
+results and the remaining physical Windows acceptance.
+
 Shared authoring: [approved data contract and convergence plan](architecture/shared-workbench-authoring-data.md)
 defines the common desktop/agent/remote foundation and the GEN-008 candidate
 material-only Flatten contract: two bytes per cell, unchanged live World, explicit
 Save. The [qualification and Owner workflow](operations/gen008-flatten-qualification.md)
 keeps implementation evidence and human acceptance separate. Keep #548 Draft/HOLD.
 
+Large original Workbench starts: the Draft/HOLD
+[host-claim projection contract](architecture/shared-workbench-authoring-data.md#large-workbench-starts-and-host-claim-projection)
+separates the 32,768-rectangle native/source budget from the 32,768-value host
+observation Array limit. Full validated geometry still reaches native preparation;
+the [qualification record](audits/2026-11-20-workbench-host-claims-qualification.md)
+owns installed runtime and fresh-process results. The
+[focused retrieval question](reference/retrieval-questions-workbench-host-claims.json)
+is additive to the unchanged frozen evaluation set.
+
 GEN-007 Architectural Generator [merge hold, owner-reviewed](systems/architectural-generator.md):
 five simultaneous style columns, thirteen built-in presets, versioned native
 Terraces/Hive/Viaduct algorithms, deterministic zone allocation and source-bound
 preview/install. See the [Windows owner walkthrough](operations/architectural-generator-playtest.md).
+
+SWARM-004 adds a separate Draft/HOLD [reciprocal composition controller and
+atomic native patch](architecture/experimental-workbench-authoring-patch.md).
+Its [owner guide](operations/swarm004-workbench-playtest.md) covers the bounded
+brush, native proposal rounds, Apply/Undo and ordinary Save/reopen. Windows
+graphical acceptance remains a source-qualified evidence gate; the interface
+does not alter the existing generator catalogue or accepted Water authority.
 The [15 November runtime completion record](audits/2026-11-15-gen007-runtime-completion.md)
 binds source `6d6e2cd6` to the qualified Linux/Windows and packaged replay,
 four-file publication `99d7bd2b`, and verified Git LFS/runtime provenance.

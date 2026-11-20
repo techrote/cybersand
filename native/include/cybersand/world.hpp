@@ -15,6 +15,7 @@
 #include "cybersand/settled_world_discovery.hpp"
 #include "cybersand/water_experiment_policy.hpp"
 #include "cybersand/water_cellular_yield.hpp"
+#include "cybersand/wave_flow.hpp"
 
 #include <array>
 #include <cstddef>
@@ -78,6 +79,9 @@ struct WorldConfig {
     // IN-B1 (experimental): signed-vertical inertial law for every IN material.
     // Requires an applied IN assignment; false keeps inertial_cellular_v1 exact.
     bool inertial_signed_vertical = false;
+    // WAVE-MT-001 wave_flow_v1 (experimental): opt-in bulk strip-parallel Water
+    // law. Disabled leaves every Current kernel, hash and format unchanged.
+    WaveFlowConfig wave_flow{};
 };
 
 struct ChunkCoord {
@@ -401,6 +405,13 @@ public:
     [[nodiscard]] PressureFlowLedger pressure_flow_ledger() const noexcept;
     [[nodiscard]] QuantityLedgerSnapshot quantity_ledger() const;
     [[nodiscard]] PressureFlowDiagnostics pressure_flow_diagnostics() const noexcept;
+    // WAVE-MT-001 wave_flow_v1: whether this World runs it, and cumulative
+    // diagnostic work/timing counters (all zero when disabled).
+    [[nodiscard]] bool wave_flow_enabled() const noexcept;
+    [[nodiscard]] WaveFlowDiagnostics wave_flow_diagnostics() const noexcept;
+    // Copied retained right-face flux, in 1/4096 mass units per substep.
+    // Includes frozen/excluded faces; zero when the solver/chunk is absent.
+    [[nodiscard]] std::int32_t wave_flow_flux(std::int64_t x, std::int64_t y) const noexcept;
     // Opt-in W-CY owns only Water motion/quantity; material identity and hooks
     // remain Water. No sidecar is needed for its indivisible full-cell state.
     [[nodiscard]] bool water_cellular_yield_enabled() const noexcept { return water_cellular_yield_; }
@@ -452,7 +463,8 @@ public:
     static constexpr std::uint32_t kPhysicalStateHashVersion = 2;
     // BW-001 ballistic Worlds report and emit version4 (IN or not).
     [[nodiscard]] std::uint32_t physical_state_hash_version() const noexcept {
-        return config_.pressure_gas_compartment_capacity == PressureFlowParameters::kAdmittedCompartmentCapacity ? 5U
+        return config_.wave_flow.enabled ? 6U
+             : config_.pressure_gas_compartment_capacity == PressureFlowParameters::kAdmittedCompartmentCapacity ? 5U
              : config_.ballistic_water.enabled || inertial_parameters_.signed_vertical ? 4U
              : inertial_enabled_ ? 3U : 2U;
     }
@@ -475,7 +487,9 @@ public:
     // incompatible payloads; the caller's live World is never touched.
     static constexpr std::uint32_t kPhysicalStateFormatVersion = 2;
     [[nodiscard]] std::uint32_t physical_state_format_version() const noexcept {
-        return config_.pressure_gas_compartment_capacity == PressureFlowParameters::kAdmittedCompartmentCapacity ? 5U
+        // Zero explicitly means that exact physical continuation is unsupported.
+        return config_.wave_flow.enabled ? 0U
+             : config_.pressure_gas_compartment_capacity == PressureFlowParameters::kAdmittedCompartmentCapacity ? 5U
              : config_.ballistic_water.enabled || inertial_parameters_.signed_vertical ? 4U
              : inertial_enabled_ ? 3U : 2U;
     }
@@ -512,6 +526,9 @@ private:
 
     struct Chunk;
     struct PressureChunk;
+    struct WaveChunk;
+    struct WaveHalf;
+    struct WaveState;
     struct PressureState;
     struct PressureCache;
     struct Address;
@@ -519,6 +536,8 @@ private:
     struct JobEffects;
     struct ParallelState;
     struct TransientObstacleState;
+    void wave_press_body(std::uint16_t body, int dx, int dy, std::int64_t x, std::int64_t y,
+                         std::int32_t cell_mass) noexcept;
     struct ExplosionCommand {
         std::int64_t x = 0;
         std::int64_t y = 0;
@@ -551,6 +570,19 @@ private:
     std::unique_ptr<PhysicsTotals> physics_totals_;
     std::unique_ptr<soliding::SettledWorldDiscoveryCoordinator> settled_discovery_;
     std::unique_ptr<PressureState> pressure_;
+    std::unique_ptr<WaveState> wave_;
+    void validate_wave_flow_config() const;
+    void advance_wave_flow(TickStats& stats);
+    void advance_floating_oil();
+    void wave_column_task(std::size_t task_index) noexcept;
+    void wave_flux_task(std::size_t task_index) noexcept;
+    void wave_apply_task(std::size_t task_index) noexcept;
+    void wake_wave_chunk(Chunk& chunk) noexcept;
+    void reset_wave_cell(std::int64_t x, std::int64_t y) noexcept;
+    void apply_wave_population(std::int64_t delta);
+    void hash_wave_state(std::uint64_t& hash) const;
+    void wave_write_mass(Chunk& chunk, std::size_t at, std::int32_t before, std::int32_t after,
+                         WaveHalf& half) noexcept;
     bool inertial_enabled_ = false;
     bool granular_arrival_enabled_ = false;
     std::size_t granular_arrival_storage_bytes_ = 0;
@@ -571,7 +603,7 @@ private:
     [[nodiscard]] bool step_ballistic_parcel(BallisticParcel& parcel);
     [[nodiscard]] bool deposit_ballistic_parcel(BallisticParcel& parcel, std::int64_t cx, std::int64_t cy,
                                                 const std::pair<std::int64_t, std::int64_t>* merge);
-    void ballistic_write_water(std::int64_t x, std::int64_t y, std::uint16_t visible);
+    void write_transferred_water(std::int64_t x, std::int64_t y, std::uint16_t visible);
     [[nodiscard]] BallisticCell classify_ballistic_cell(std::int64_t x, std::int64_t y,
         const BallisticParcel& parcel, std::uint16_t& body) const noexcept;
     [[nodiscard]] BallisticLaunchResult admit_ballistic_spawn(std::int64_t spawn_x, std::int64_t spawn_y,

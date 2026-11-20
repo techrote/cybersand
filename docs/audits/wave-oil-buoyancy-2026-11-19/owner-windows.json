@@ -1,0 +1,80 @@
+{
+  "source": "461b1c1485418bcd8f83f29efe1cccf7ef4a9928",
+  "tree": "855546dc3edfb8540fddfc3665a2767d47158275",
+  "dll": "2d31f8c7d732e1dad1973f2d6bc9dfbc6bed7c8150451269dfab601b886940e6",
+  "bytes": 92665605,
+  "sha256": "ebface6aa8dd410e93654886c4dfefce28e16d47ffd612246d6743d5d8a07288",
+  "fingerprint": "d2368b8a1afbb4f511279c5eca83d828dc8afb22ad057aac6a17a63309e140c1",
+  "file_count": 952,
+  "maps": {
+    "maps/setup-oil-tank.json": "a74babb457c11d17b890b64745fe60438b256fa976b5563d3d67a9e5aaa11c7c",
+    "maps/setup-water-ramp.json": "7aba8a47c926cc1911bc4ee519179c595b686692d5c78db8f103b8b62d311acb",
+    "maps/setup-water-wall.json": "925096d1e9984b855b5465309ef12869a47e29052e0cabd5a25788a051b77107"
+  },
+  "manifest": "7348d0faf16f3c24877cbc548da2cfac124f801aa8e7767ad8cbf613e91cbd3f",
+  "archive": "CyberSand-Wave-Oil-Windows-461b1c148541.zip",
+  "guide_commit": "8359ec44e0f129addcf41a54877ed088830960ed",
+  "godot": "4.7.stable.official.5b4e0cb0f",
+  "compiler": "LLVM-MinGW 20260826 / Clang 23.1.0",
+  "source_inputs_checked": 95,
+  "verified_digests_after_execution": 952,
+  "verified_digests_in_clean_extraction": 952,
+  "launcher": "Open Workbench.cmd --headless --quit-after 120",
+  "launcher_witness": "SHARED_WORKBENCH_LAUNCH_READY",
+  "launcher_installed_three_missing_maps": true,
+  "workbench": "Load start, run to tick 600, pause and erase the right gate, run 30 ticks",
+  "parent_package_source": "eb8298d689288bd3598540f03e4b258d4957c799",
+  "tank": "Interior 48 x 32, buried 48-cell Oil band 10 rows below the surface, 14 x 8 grains of Sand. All rects from native fixture translated by (+128,+192) into a 512 x 512 Workbench canvas. User gate erase uses radius 2.",
+  "readback": {
+    "wave": true,
+    "parcel_release": true,
+    "fall": 3
+  },
+  "before": {
+    "surface_oil": 0,
+    "surface_columns": 0,
+    "oil_cells": 48,
+    "launched_t540": 53291,
+    "launched_t600": 67226,
+    "late_thrown": 13935
+  },
+  "after": {
+    "surface_oil": 48,
+    "surface_columns": 41,
+    "oil_cells": 48,
+    "launched_t540": 809,
+    "launched_t600": 809,
+    "late_thrown": 0,
+    "fresh_thrown_at_t630": 62382
+  },
+  "checks": {
+    "before": {
+      "rc": 0,
+      "error_lines": 0,
+      "log_sha256": "3433d63ec70f13a2a7b095560367aee97f0f6338f30d8928b045d36ec8607f35",
+      "observations": [
+        "OIL_PACKAGE loaded {\"columns\":0,\"oil\":48,\"surfaced\":0} release=true fall=3",
+        "OIL_PACKAGE resting {\"columns\":0,\"oil\":48,\"surfaced\":0} sampled_ticks=540..600 launched=53291..67226",
+        "OIL_PACKAGE measured #678 baseline"
+      ]
+    },
+    "launcher": {
+      "rc": 0,
+      "error_lines": 0,
+      "log_sha256": "2e2b04afc8ea211ad843686166935af6d7efadc76d5ec7d829da82dd31b1241d",
+      "observations": [
+        "SHARED_WORKBENCH_LAUNCH_READY"
+      ]
+    },
+    "oil-tank": {
+      "rc": 0,
+      "error_lines": 0,
+      "log_sha256": "02bab8f0748edfe556aa0615a21d442d9b11f926df5444bb5b2a138eef0d0c45",
+      "observations": [
+        "OIL_PACKAGE loaded {\"columns\":0,\"oil\":48,\"surfaced\":0} release=true fall=3",
+        "OIL_PACKAGE resting {\"columns\":41,\"oil\":48,\"surfaced\":48} sampled_ticks=540..600 launched=809..809",
+        "OIL_PACKAGE passed {\"columns\":41,\"fresh_thrown\":62382,\"late_thrown\":0,\"load\":\"real_workbench\",\"surfaced\":48,\"tick\":630}"
+      ]
+    }
+  }
+}

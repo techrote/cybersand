@@ -415,7 +415,40 @@ int cybersand_world_queue_explosion(cybersand_world* world, int64_t x, int64_t y
 }
 
 uint8_t cybersand_world_liquid_mass(const cybersand_world* world, int64_t x, int64_t y) {
+    return world == nullptr ? 0 : static_cast<std::uint8_t>(
+        std::min<std::uint16_t>(255, world->implementation.liquid_mass(x, y)));
+}
+
+uint16_t cybersand_world_liquid_mass_v2(const cybersand_world* world, int64_t x, int64_t y) {
     return world == nullptr ? 0 : world->implementation.liquid_mass(x, y);
+}
+
+cybersand_world* cybersand_world_create_with_wave_flow_v1(
+    const cybersand_config_v2* config, const cybersand_wave_flow_config_v1* wave,
+    cybersand_liquid_policy_refusal_v1* refusal) {
+    try {
+        cybersand::WorldConfig native{};
+        if (!native_config_from_v2(config, native) || wave == nullptr ||
+            wave->struct_size < sizeof(*wave) ||
+            wave->abi_version != CYBERSAND_WAVE_FLOW_CONFIG_V1_ABI_VERSION ||
+            wave->enabled > 1 || wave->substeps < 1 ||
+            wave->substeps > cybersand::WaveFlowParameters::kMaximumSubsteps) {
+            fill_liquid_refusal(refusal, CYBERSAND_LIQUID_POLICY_CONSTRUCTION_FAILED,
+                -1, "invalid Wave Flow construction request");
+            return nullptr;
+        }
+        native.wave_flow.enabled = wave->enabled != 0;
+        native.wave_flow.substeps = static_cast<std::uint8_t>(wave->substeps);
+        auto* world = new cybersand_world(native);
+        fill_liquid_refusal(refusal, CYBERSAND_LIQUID_POLICY_ACCEPTED, -1, {});
+        return world;
+    } catch (const std::exception& error) {
+        fill_liquid_refusal(refusal, CYBERSAND_LIQUID_POLICY_CONSTRUCTION_FAILED, -1, error.what());
+        return nullptr;
+    } catch (...) {
+        fill_liquid_refusal(refusal, CYBERSAND_LIQUID_POLICY_CONSTRUCTION_FAILED, -1, "unknown failure");
+        return nullptr;
+    }
 }
 
 uint64_t cybersand_world_content_hash(const cybersand_world* world) {

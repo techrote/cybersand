@@ -61,12 +61,51 @@ constexpr double kGranularBearingCorrectionFraction = 0.99;
 
 }  // namespace
 
-CyberNativeCellWorld::CyberNativeCellWorld() {
+CyberNativeCellWorld::CyberNativeCellWorld(bool gameplay_water) {
     create_world();
-    reset_demo_world();
+    reset_demo_world(gameplay_water);
+}
+
+Ref<CyberNativeCellWorld> CyberNativeCellWorld::create_gameplay_world() {
+    return Ref<CyberNativeCellWorld>(memnew(CyberNativeCellWorld(true)));
 }
 
 CyberNativeCellWorld::~CyberNativeCellWorld() = default;
+
+void CyberNativeCellWorld::record_native_failure(const char* operation, const char* detail) const noexcept {
+    if (world_) world_->quarantine_external_coupling();
+    if (workbench_) workbench_->valid = false;
+    // World::tick() quarantines before rethrowing, so native health alone is
+    // not the latch. Healthy configuration refusals can also set error text.
+    if (tick_failure_count_ != 0) return;
+    ++tick_failure_count_;
+    try {
+        last_tick_error_ = String(operation) + " failed: " + String(detail);
+        const auto& context = coupling_failure_context_;
+        if (context.stage != nullptr) {
+            char location[256];
+            std::snprintf(location, sizeof(location),
+                " [stage=%s body=%u source=(%d,%d) target=(%d,%d)]",
+                context.stage, static_cast<unsigned>(context.body), context.source_x,
+                context.source_y, context.target_x, context.target_y);
+            last_tick_error_ += String(location);
+        }
+    } catch (...) {
+        // Quarantine and the latch above must survive even an allocation
+        // failure while retaining diagnostic text. Never throw into Godot.
+    }
+    coupling_failure_context_ = {};
+}
+
+Dictionary CyberNativeCellWorld::native_failure_status() const {
+    Dictionary result;
+    result["failed"] = true;
+    result["healthy"] = false;
+    result["ok"] = false;
+    result["accepted"] = false;
+    result["error"] = last_tick_error_;
+    return result;
+}
 
 void CyberNativeCellWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("diagnostic_reset", "options"), &CyberNativeCellWorld::diagnostic_reset);
@@ -83,6 +122,8 @@ void CyberNativeCellWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("inspect_ballistic_parcels", "maximum"), &CyberNativeCellWorld::inspect_ballistic_parcels);
     ClassDB::bind_method(D_METHOD("get_water_experiment_policy"),
                          &CyberNativeCellWorld::get_water_experiment_policy);
+    ClassDB::bind_method(D_METHOD("get_wave_flow_status"), &CyberNativeCellWorld::get_wave_flow_status);
+    ClassDB::bind_method(D_METHOD("inspect_wave_flow_cell", "point"), &CyberNativeCellWorld::inspect_wave_flow_cell);
     ClassDB::bind_method(D_METHOD("get_liquid_solver_policy"),
                          &CyberNativeCellWorld::get_liquid_solver_policy);
     ClassDB::bind_method(D_METHOD("get_liquid_policy_session_generation"),
@@ -112,8 +153,12 @@ void CyberNativeCellWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("get_liquid_construction_attempt"), &CyberNativeCellWorld::get_liquid_construction_attempt);
     ClassDB::bind_static_method("CyberNativeCellWorld", D_METHOD("auto_worker_threads", "logical_threads"), &CyberNativeCellWorld::auto_worker_threads);
     ClassDB::bind_static_method("CyberNativeCellWorld", D_METHOD("logical_processor_count"), &CyberNativeCellWorld::logical_processor_count);
-    ClassDB::bind_method(D_METHOD("reset_demo_world"),
-                         &CyberNativeCellWorld::reset_demo_world);
+    ClassDB::bind_static_method("CyberNativeCellWorld", D_METHOD("create_gameplay_world"),
+                                &CyberNativeCellWorld::create_gameplay_world);
+    ClassDB::bind_static_method("CyberNativeCellWorld", D_METHOD("gameplay_water_options"),
+                                &CyberNativeCellWorld::gameplay_water_options);
+    ClassDB::bind_method(D_METHOD("reset_demo_world", "gameplay_water"),
+                         &CyberNativeCellWorld::reset_demo_world, DEFVAL(false));
     ClassDB::bind_method(D_METHOD("get_default_demo_identity"), &CyberNativeCellWorld::get_default_demo_identity);
     ClassDB::bind_method(D_METHOD("simulation_tick"),
                          &CyberNativeCellWorld::simulation_tick);
@@ -288,19 +333,92 @@ void CyberNativeCellWorld::create_world() {
         world_->reserve_region({0, 0, kWorldWidth, kWorldHeight});
         world_->configure_transient_obstacles({0, 0, kWorldWidth, kWorldHeight});
     } catch (const std::exception& error) {
-        UtilityFunctions::push_error(String("CyberNativeCellWorld initialization failed: ") +
-                                     error.what());
+        record_native_failure("World initialization", error.what());
+        world_.reset();
+    } catch (...) {
+        record_native_failure("World initialization", "unknown native exception");
         world_.reset();
     }
 }
 
-bool CyberNativeCellWorld::reset_demo_world() {
+void CyberNativeCellWorld::select_gameplay_water(cybersand::WorldConfig& config, bool enabled) {
+    if (enabled || config.wave_flow.enabled) config.ballistic_water = {};
+    config.wave_flow = {};
+    if (!enabled) return;
+    config.inertial_signed_vertical = false;
+    auto& wave = config.wave_flow;
+    wave.enabled = true;
+    wave.substeps = 2;
+    wave.gain = 32;
+    wave.deep_gain = 32;
+    wave.floor_gain = 1024;
+    wave.flux_smoothing = 16;
+    wave.coast = 32;
+    wave.empty_pour_shift = 2;
+    wave.damp_shift = 16;
+    wave.calm_damp_shift = 8;
+    wave.calm = 128;
+    wave.stick = 128;
+    wave.sleep_after = 90;
+    wave.body_push_by_mass = 1;
+    wave.spill.enabled = true;
+    wave.spill.sheet_rate = 64;
+    wave.spill.coyote_ticks = 4;
+    wave.spill.full_face = 1;
+    wave.spill.fall = 3;
+    wave.spill.draw = 127;
+    wave.spill.draw_head = 255;
+    wave.spill.deep_draw = 64;
+    wave.spill.launch_budget = 128;
+    config.ballistic_water.enabled = true;
+}
+
+Dictionary CyberNativeCellWorld::gameplay_water_options() {
+    cybersand::WorldConfig config{};
+    select_gameplay_water(config, true);
+    const auto& wave = config.wave_flow;
+    Dictionary options;
+    options["workbench_wave_flow"] = wave.enabled;
+    options["workbench_ballistic"] = config.ballistic_water.enabled;
+    options["workbench_wave_substeps"] = static_cast<std::int64_t>(wave.substeps);
+    options["workbench_wave_gain"] = wave.gain;
+    options["workbench_wave_deep_gain"] = wave.deep_gain;
+    options["workbench_wave_floor_gain"] = wave.floor_gain;
+    options["workbench_wave_flux_smoothing"] = wave.flux_smoothing;
+    options["workbench_wave_coast"] = wave.coast;
+    options["workbench_wave_empty_pour_shift"] = wave.empty_pour_shift;
+    options["workbench_wave_damp_shift"] = wave.damp_shift;
+    options["workbench_wave_calm_damp_shift"] = wave.calm_damp_shift;
+    options["workbench_wave_calm"] = wave.calm;
+    options["workbench_wave_stick"] = wave.stick;
+    options["workbench_wave_sleep_after"] = wave.sleep_after;
+    options["workbench_wave_body_push_by_mass"] = wave.body_push_by_mass;
+    options["workbench_wave_spill"] = wave.spill.enabled;
+    options["workbench_wave_spill_parcels"] = wave.spill.launch_budget > 0;
+    options["workbench_wave_spill_sheet_rate"] = wave.spill.sheet_rate;
+    options["workbench_wave_spill_coyote_ticks"] = wave.spill.coyote_ticks;
+    options["workbench_wave_spill_full_face"] = wave.spill.full_face != 0;
+    options["workbench_wave_spill_fall"] = wave.spill.fall;
+    options["workbench_wave_spill_draw"] = wave.spill.draw;
+    options["workbench_wave_spill_draw_head"] = wave.spill.draw_head;
+    options["workbench_wave_spill_deep_draw"] = wave.spill.deep_draw;
+    options["workbench_wave_spill_launch_budget"] = wave.spill.launch_budget;
+    return options;
+}
+
+bool CyberNativeCellWorld::reset_demo_world(bool gameplay_water) {
     if (world_ == nullptr) return false;
+    bool committed = false;
     try {
         auto config = world_->config();
         config.physics_diagnostics = {};
         config.interaction_policy = {};
         config.liquid_solver_policy = {}; // The ordinary demo runs every liquid's default.
+        if (gameplay_water) {
+            config.transport_policy = {};
+            config.water_experiment_policy = cybersand::WaterExperimentPolicy{};
+        }
+        select_gameplay_water(config, gameplay_water);
         // Resetting to FreeMass also retires the PF-only gas-capacity profile.
         config.pressure_gas_compartment_capacity = cybersand::PressureFlowParameters::kCompartmentCapacity;
         config.maximum_rule_radius = kProtectedCurrentRuleRadius;
@@ -319,6 +437,9 @@ bool CyberNativeCellWorld::reset_demo_world() {
 
         candidate->set_simulation_region(world_->simulation_region());
         world_.swap(candidate);
+        committed = true;
+        tick_failure_count_ = 0; last_tick_error_ = String{};
+        coupling_failure_context_ = {};
         workbench_.reset(); extent_ = {kWorldWidth,kWorldHeight};
         retire_liquid_construction_identity();
         ++liquid_policy_session_generation_;
@@ -340,7 +461,12 @@ bool CyberNativeCellWorld::reset_demo_world() {
         refresh_simulation_region();
         return true;
     } catch (const std::exception& error) {
-        last_tick_error_ = String("Reset failed: ") + error.what();
+        if (committed) record_native_failure("Reset completion", error.what());
+        else if (tick_failure_count_ == 0) last_tick_error_ = String("Reset failed: ") + error.what();
+        return false;
+    } catch (...) {
+        if (committed) record_native_failure("Reset completion", "unknown native exception");
+        else if (tick_failure_count_ == 0) last_tick_error_ = "Reset failed: unknown native exception";
         return false;
     }
 }
@@ -374,9 +500,12 @@ bool CyberNativeCellWorld::simulation_tick() {
         if (last_stats_.moved_cells != 0U || last_stats_.deferred_events != 0U) ++revision_;
         succeeded = true;
     } catch (const std::exception& error) {
-        ++tick_failure_count_;
-        last_tick_error_ = error.what();
+        record_native_failure("simulation_tick", error.what());
         // Do not turn partial cells/results into a new successful publication.
+        last_stats_ = {};
+        clear_observations();
+    } catch (...) {
+        record_native_failure("simulation_tick", "unknown native exception");
         last_stats_ = {};
         clear_observations();
     }
@@ -388,12 +517,22 @@ bool CyberNativeCellWorld::simulation_tick() {
 
 void CyberNativeCellWorld::emit_disc(std::int64_t centre_x, std::int64_t centre_y,
                                      std::int64_t radius, std::int64_t material_id,
-                                     std::int64_t emission_flags) {
+                                     std::int64_t emission_flags) try {
     if (world_ == nullptr || world_->has_failed() || radius < 0 || radius > 128 || material_id < 0 ||
         material_id > 255 || !cybersand::valid_material(static_cast<std::uint16_t>(material_id))) {
         return;
     }
+    // Clip the brush's possible intersection before adding offsets to arbitrary
+    // int64 input. Even a centre far outside the canvas must not overflow.
+    if (centre_x < -radius || centre_y < -radius ||
+        centre_x >= static_cast<std::int64_t>(extent_.x) + radius ||
+        centre_y >= static_cast<std::int64_t>(extent_.y) + radius) return;
     const auto material = static_cast<cybersand::Material>(material_id);
+    if (world_->wave_flow_enabled() && material == cybersand::Material::Water &&
+        (emission_flags & 1) != 0) {
+        last_tick_error_ = "Wave Flow does not support coherent Water emission";
+        return; // Refuse the complete brush before any cell or revision changes.
+    }
     const auto& definition = cybersand::MaterialRules::descriptor(material);
     const auto radius_squared = radius * radius;
     bool changed = false;
@@ -424,21 +563,40 @@ void CyberNativeCellWorld::emit_disc(std::int64_t centre_x, std::int64_t centre_
     }
     if (changed) ++revision_;
     if (hard_changed) ++hard_surface_revision_;
+} catch (const std::exception& error) {
+    record_native_failure("emit_disc", error.what());
+    return;
+} catch (...) {
+    record_native_failure("emit_disc", "unknown native exception");
+    return;
 }
 
 void CyberNativeCellWorld::paint_disc(std::int64_t centre_x, std::int64_t centre_y,
                                       std::int64_t radius, std::int64_t material_id,
-                                      std::int64_t emission_flags) {
+                                      std::int64_t emission_flags) try {
     emit_disc(centre_x, centre_y, radius, material_id, emission_flags);
+} catch (const std::exception& error) {
+    record_native_failure("paint_disc", error.what());
+    return;
+} catch (...) {
+    record_native_failure("paint_disc", "unknown native exception");
+    return;
 }
 
-void CyberNativeCellWorld::prepare_rigid_body_coupling(const PackedFloat32Array& states, bool resolve_overlaps) {
+void CyberNativeCellWorld::prepare_rigid_body_coupling(const PackedFloat32Array& states, bool resolve_overlaps) try {
     if (workbench_ || world_ == nullptr || world_->has_failed()) return;
     parse_body_states(states);
     prepare_body_coupling(resolve_overlaps);
+} catch (const std::exception& error) {
+    record_native_failure("prepare_rigid_body_coupling", error.what());
+    return;
+} catch (...) {
+    record_native_failure("prepare_rigid_body_coupling", "unknown native exception");
+    return;
 }
 
 void CyberNativeCellWorld::prepare_body_coupling(bool resolve_overlaps) {
+    coupling_failure_context_ = {"clear swept mask"};
     world_->clear_transient_obstacles();
     clear_observations();
     spray_tick_ = {};
@@ -448,22 +606,31 @@ void CyberNativeCellWorld::prepare_body_coupling(bool resolve_overlaps) {
         const auto& body = current_bodies_[body_id];
         if (!body.valid) continue;
         const auto& previous = previous_bodies_[body_id];
+        coupling_failure_context_ = {"raster swept mask", static_cast<std::uint16_t>(body_id)};
         if (previous.valid) rasterize_body_sweep(body, previous);
         else rasterize_body(body);
     }
-    if (resolve_overlaps) reconcile_swept_overlaps();
+    if (resolve_overlaps) {
+        coupling_failure_context_ = {"reconcile overlaps"};
+        reconcile_swept_overlaps();
+    }
 
+    coupling_failure_context_ = {"clear final mask"};
     world_->clear_transient_obstacles();
     raster_indices_.clear();
     for (std::size_t body_id = 1; body_id < current_bodies_.size(); ++body_id) {
+        coupling_failure_context_ = {"raster final mask", static_cast<std::uint16_t>(body_id)};
         if (current_bodies_[body_id].valid) rasterize_body(current_bodies_[body_id]);
     }
     if (resolve_overlaps) {
+        coupling_failure_context_ = {"boundary pressure"};
         accumulate_boundary_pressure();
+        coupling_failure_context_ = {"contact sampling"};
         if (workbench_) accumulate_workbench_contacts();
         else accumulate_granular_bearing();
     }
     previous_bodies_ = current_bodies_;
+    coupling_failure_context_ = {};
 }
 
 void CyberNativeCellWorld::clear_observations() {
@@ -643,26 +810,30 @@ void CyberNativeCellWorld::reconcile_overlap(std::int32_t cell_index,
 
     if (workbench_) authored_entry_normal(body_id, x, y, outward, penetration);
     const auto target = find_ejection_target(x, y, body_id, outward, penetration);
+    coupling_failure_context_ = {"ballistic launch", body_id, x, y, target.x, target.y};
+    // Measured before the cell can leave as a parcel.
+    const auto push = water_push_scale(material, x, y);
     if (material == cybersand::Material::Water && try_water_spray(body, body_id, x, y, outward, target)) {
         // WCX/BW-001: the displaced Water left as a parcel. The body receives the
         // same displacement reaction as an ordinary relocation.
         ++observation.displaced;
-        const auto impulse = -outward * displacement_gain_ * density_scale(material);
+        const auto impulse = -outward * displacement_gain_ * density_scale(material) * push;
         if (body_diagnostics_) (*body_diagnostics_)[body_id].displacement += impulse;
         record_impulse(body_id, impulse);
         ++revision_;
         return;
     }
+    coupling_failure_context_ = {"cell relocation", body_id, x, y, target.x, target.y};
     if (target.x < 0 || !world_->relocate_stored_cell(x, y, target.x, target.y)) {
         ++observation.unresolved;
-        const auto impulse = -outward * displacement_gain_;
+        const auto impulse = -outward * displacement_gain_ * push;
         if (body_diagnostics_) (*body_diagnostics_)[body_id].displacement += impulse;
         if (!workbench_ || !cybersand::MaterialRules::supports_granular_load(material))
             record_impulse(body_id, impulse);
         return;
     }
     ++observation.displaced;
-    const auto impulse = -outward * displacement_gain_ * density_scale(material);
+    const auto impulse = -outward * displacement_gain_ * density_scale(material) * push;
     if (body_diagnostics_) (*body_diagnostics_)[body_id].displacement += impulse;
     if (!workbench_ || !cybersand::MaterialRules::supports_granular_load(material))
         record_impulse(body_id, impulse);
@@ -781,7 +952,8 @@ void CyberNativeCellWorld::accumulate_boundary_pressure() {
             if (workbench_ && cybersand::MaterialRules::supports_granular_load(material)) continue;
             const Vector2 normal{-static_cast<double>(direction.x),
                                  -static_cast<double>(direction.y)};
-            const auto impulse = normal * boundary_gain_ * density_scale(material, 0.01);
+            const auto impulse = normal * boundary_gain_ * density_scale(material, 0.01) *
+                water_push_scale(material, target_x, target_y);
             if (body_diagnostics_) {
                 auto& diagnostic = (*body_diagnostics_)[body_id];
                 diagnostic.boundary += impulse;
@@ -859,7 +1031,7 @@ void CyberNativeCellWorld::record_impulse(std::uint16_t body_id, Vector2 impulse
     observations_[body_id].impulse = combined;
 }
 
-PackedFloat32Array CyberNativeCellWorld::rigid_body_results() const {
+PackedFloat32Array CyberNativeCellWorld::rigid_body_results() const try {
     if (workbench_) return {};
     PackedFloat32Array results;
     if (world_ == nullptr || world_->has_failed()) return results;
@@ -900,9 +1072,17 @@ PackedFloat32Array CyberNativeCellWorld::rigid_body_results() const {
         results.append(static_cast<float>(body.sample_serial));
     }
     return results;
+} catch (const std::exception& error) {
+    record_native_failure("rigid_body_results", error.what());
+    return {};
+} catch (...) {
+    record_native_failure("rigid_body_results", "unknown native exception");
+    return {};
 }
 
 std::int64_t CyberNativeCellWorld::material_at(std::int64_t x, std::int64_t y) const {
+    // ADR-010: a quarantined World stays diagnosable through raw reads. The
+    // native read is noexcept on a failed World; collision queries fail closed.
     if (world_ == nullptr || !in_bounds(x, y)) {
         return static_cast<std::int64_t>(cybersand::Material::Wall);
     }
@@ -910,6 +1090,8 @@ std::int64_t CyberNativeCellWorld::material_at(std::int64_t x, std::int64_t y) c
 }
 
 std::int64_t CyberNativeCellWorld::stored_material_at(std::int64_t x, std::int64_t y) const {
+    // ADR-010: a quarantined World stays diagnosable through raw reads. The
+    // native read is noexcept on a failed World; collision queries fail closed.
     if (world_ == nullptr || !in_bounds(x, y)) {
         return static_cast<std::int64_t>(cybersand::Material::Wall);
     }
@@ -917,7 +1099,7 @@ std::int64_t CyberNativeCellWorld::stored_material_at(std::int64_t x, std::int64
 }
 
 std::int64_t CyberNativeCellWorld::rigid_body_id_at(std::int64_t x, std::int64_t y) const {
-    if (world_ == nullptr || !in_bounds(x, y)) return 0;
+    if (has_failed() || !in_bounds(x, y)) return 0;
     return world_->transient_obstacle_at(x, y);
 }
 
@@ -936,7 +1118,7 @@ bool CyberNativeCellWorld::character_box_collides_in(
     if (!origin.is_finite() || !size.is_finite() || size.x <= 0 || size.y <= 0 ||
         size.x > 32 || size.y > 32 || mode < 0 || mode > 3 ||
         origin.x < 0 || origin.y < 0 || origin.x + size.x > canvas.x ||
-        origin.y + size.y > canvas.y || world == nullptr) return true;
+        origin.y + size.y > canvas.y || world == nullptr || world->has_failed()) return true;
     const auto first_x = static_cast<std::int32_t>(std::floor(origin.x + 0.001));
     const auto first_y = static_cast<std::int32_t>(std::floor(origin.y + 0.001));
     const auto last_x = static_cast<std::int32_t>(std::ceil(origin.x + size.x - 0.001)) - 1;
@@ -953,7 +1135,7 @@ bool CyberNativeCellWorld::character_box_collides_in(
 }
 
 std::int64_t CyberNativeCellWorld::character_disturb_granular(
-    Vector2 origin, Vector2 size, double impact_speed) {
+    Vector2 origin, Vector2 size, double impact_speed) try {
     if (world_ == nullptr || world_->has_failed() || !origin.is_finite() ||
         !size.is_finite() || !std::isfinite(impact_speed) || impact_speed < 24.0 ||
         size.x <= 0 || size.y <= 0 || size.x > 32 || size.y > 32 ||
@@ -1004,6 +1186,12 @@ std::int64_t CyberNativeCellWorld::character_disturb_granular(
 
     if (moved != 0) ++revision_;
     return moved;
+} catch (const std::exception& error) {
+    record_native_failure("character_disturb_granular", error.what());
+    return 0;
+} catch (...) {
+    record_native_failure("character_disturb_granular", "unknown native exception");
+    return 0;
 }
 
 void CyberNativeCellWorld::refresh_render_cells() const {
@@ -1017,12 +1205,18 @@ void CyberNativeCellWorld::refresh_render_cells() const {
     render_cells_revision_ = revision_;
 }
 
-PackedByteArray CyberNativeCellWorld::get_cells() const {
+PackedByteArray CyberNativeCellWorld::get_cells() const try {
     if (render_cells_revision_ != revision_) refresh_render_cells();
     return render_cells_;
+} catch (const std::exception& error) {
+    record_native_failure("get_cells", error.what());
+    return {};
+} catch (...) {
+    record_native_failure("get_cells", "unknown native exception");
+    return {};
 }
 
-Dictionary CyberNativeCellWorld::take_render_snapshot(bool force_full) {
+Dictionary CyberNativeCellWorld::take_render_snapshot(bool force_full) try {
     Dictionary packet;
     if (has_failed()) {
         packet["failed"] = true;
@@ -1112,9 +1306,15 @@ Dictionary CyberNativeCellWorld::take_render_snapshot(bool force_full) {
     packet["rectangles"] = rectangles;
     packet["cells"] = cells;
     return packet;
+} catch (const std::exception& error) {
+    record_native_failure("take_render_snapshot", error.what());
+    return native_failure_status();
+} catch (...) {
+    record_native_failure("take_render_snapshot", "unknown native exception");
+    return native_failure_status();
 }
 
-PackedInt32Array CyberNativeCellWorld::get_hard_surface_rectangles() const {
+PackedInt32Array CyberNativeCellWorld::get_hard_surface_rectangles() const try {
     if (has_failed()) return hard_surface_rectangles_;
     if (world_ == nullptr) return {};
     const auto hard_revision = static_cast<std::uint64_t>(get_hard_surface_revision());
@@ -1199,9 +1399,15 @@ PackedInt32Array CyberNativeCellWorld::get_hard_surface_rectangles() const {
     }
     hard_surface_rectangles_revision_ = hard_revision;
     return hard_surface_rectangles_;
+} catch (const std::exception& error) {
+    record_native_failure("get_hard_surface_rectangles", error.what());
+    return {};
+} catch (...) {
+    record_native_failure("get_hard_surface_rectangles", "unknown native exception");
+    return {};
 }
 
-PackedInt32Array CyberNativeCellWorld::get_hard_surface_chunk_rectangles() const {
+PackedInt32Array CyberNativeCellWorld::get_hard_surface_chunk_rectangles() const try {
     if (has_failed()) return hard_surface_chunk_rectangles_;
     if (world_ == nullptr) return {};
     const auto hard_revision = static_cast<std::uint64_t>(get_hard_surface_revision());
@@ -1393,12 +1599,24 @@ PackedInt32Array CyberNativeCellWorld::get_hard_surface_chunk_rectangles() const
     hard_surface_cache_world_ = world_.get();
     hard_surface_cache_valid_ = true;
     return hard_surface_chunk_rectangles_;
+} catch (const std::exception& error) {
+    record_native_failure("get_hard_surface_chunk_rectangles", error.what());
+    return {};
+} catch (...) {
+    record_native_failure("get_hard_surface_chunk_rectangles", "unknown native exception");
+    return {};
 }
 
-PackedInt32Array CyberNativeCellWorld::diagnostic_full_hard_surface_chunk_rectangles() const {
+PackedInt32Array CyberNativeCellWorld::diagnostic_full_hard_surface_chunk_rectangles() const try {
     if (world_ == nullptr || has_failed()) return {};
     if (render_cells_revision_ != revision_) refresh_render_cells();
     return hard_surface_chunks_from_cells(render_cells_, extent_);
+} catch (const std::exception& error) {
+    record_native_failure("diagnostic_full_hard_surface_chunk_rectangles", error.what());
+    return {};
+} catch (...) {
+    record_native_failure("diagnostic_full_hard_surface_chunk_rectangles", "unknown native exception");
+    return {};
 }
 
 Dictionary CyberNativeCellWorld::diagnostic_hard_surface_packet_stats() const {
@@ -1526,47 +1744,74 @@ PackedInt32Array CyberNativeCellWorld::hard_surface_chunks_from_cells(const Pack
     return result;
 }
 
-void CyberNativeCellWorld::set_interest_center(Vector2i world_cell) {
+void CyberNativeCellWorld::set_interest_center(Vector2i world_cell) try {
+    if (has_failed()) return;
     interest_center_.x = std::clamp<std::int64_t>(world_cell.x, 0, extent_.x - 1);
     interest_center_.y = std::clamp<std::int64_t>(world_cell.y, 0, extent_.y - 1);
+} catch (const std::exception& error) {
+    record_native_failure("set_interest_center", error.what());
+    return;
+} catch (...) {
+    record_native_failure("set_interest_center", "unknown native exception");
+    return;
 }
 
 void CyberNativeCellWorld::set_simulation_window(Vector2i view_origin, Vector2i view_size,
                                                  std::int64_t horizontal_buffer,
-                                                 std::int64_t vertical_buffer) {
+                                                 std::int64_t vertical_buffer) try {
+    if (has_failed()) return;
     last_view_origin_ = view_origin;
     last_view_size_ = view_size;
     last_horizontal_buffer_ = std::max<std::int64_t>(0, horizontal_buffer);
     last_vertical_buffer_ = std::max<std::int64_t>(0, vertical_buffer);
     refresh_simulation_region();
+} catch (const std::exception& error) {
+    record_native_failure("set_simulation_window", error.what());
+    return;
+} catch (...) {
+    record_native_failure("set_simulation_window", "unknown native exception");
+    return;
 }
 
 void CyberNativeCellWorld::refresh_simulation_region() {
-    if (world_ == nullptr) return;
+    if (has_failed()) return;
     if (!simulation_window_enabled_) {
         world_->set_simulation_region(cybersand::RectI64{0, 0, extent_.x, extent_.y});
         return;
     }
+    // Keep off-canvas viewport/buffer semantics, while saturating extreme
+    // int64 buffers before the final finite-canvas clipping.
+    const auto subtract_buffer = [](std::int64_t value, std::int64_t buffer) {
+        return value < INT64_MIN + buffer ? INT64_MIN : value - buffer;
+    };
+    const auto add_buffer = [](std::int64_t value, std::int64_t buffer) {
+        return value > INT64_MAX - buffer ? INT64_MAX : value + buffer;
+    };
     const auto first_x = std::clamp<std::int64_t>(
-        static_cast<std::int64_t>(last_view_origin_.x) - last_horizontal_buffer_, 0, extent_.x - 1);
+        subtract_buffer(last_view_origin_.x, last_horizontal_buffer_), 0, extent_.x - 1);
     const auto first_y = std::clamp<std::int64_t>(
-        static_cast<std::int64_t>(last_view_origin_.y) - last_vertical_buffer_, 0, extent_.y - 1);
+        subtract_buffer(last_view_origin_.y, last_vertical_buffer_), 0, extent_.y - 1);
     const auto last_x = std::clamp<std::int64_t>(
-        static_cast<std::int64_t>(last_view_origin_.x) + last_view_size_.x +
-            last_horizontal_buffer_,
+        add_buffer(static_cast<std::int64_t>(last_view_origin_.x) + last_view_size_.x, last_horizontal_buffer_),
         first_x + 1, extent_.x);
     const auto last_y = std::clamp<std::int64_t>(
-        static_cast<std::int64_t>(last_view_origin_.y) + last_view_size_.y +
-            last_vertical_buffer_,
+        add_buffer(static_cast<std::int64_t>(last_view_origin_.y) + last_view_size_.y, last_vertical_buffer_),
         first_y + 1, extent_.y);
     world_->set_simulation_region(
         cybersand::RectI64{first_x, first_y, last_x - first_x, last_y - first_y});
 }
 
-void CyberNativeCellWorld::set_simulation_window_enabled(bool enabled) {
+void CyberNativeCellWorld::set_simulation_window_enabled(bool enabled) try {
+    if (has_failed()) return;
     if (simulation_window_enabled_ == enabled) return;
     simulation_window_enabled_ = enabled;
     refresh_simulation_region();
+} catch (const std::exception& error) {
+    record_native_failure("set_simulation_window_enabled", error.what());
+    return;
+} catch (...) {
+    record_native_failure("set_simulation_window_enabled", "unknown native exception");
+    return;
 }
 
 bool CyberNativeCellWorld::get_simulation_window_enabled() const {
@@ -1574,6 +1819,7 @@ bool CyberNativeCellWorld::get_simulation_window_enabled() const {
 }
 
 void CyberNativeCellWorld::set_cadence_lod_enabled(bool enabled) {
+    if (has_failed()) return;
     cadence_lod_enabled_ = enabled;
 }
 
@@ -1581,9 +1827,16 @@ bool CyberNativeCellWorld::get_cadence_lod_enabled() const {
     return cadence_lod_enabled_;
 }
 
-void CyberNativeCellWorld::set_liquid_surface_adhesion_enabled(bool enabled) {
+void CyberNativeCellWorld::set_liquid_surface_adhesion_enabled(bool enabled) try {
+    if (has_failed()) return;
     liquid_surface_adhesion_enabled_ = enabled;
     if (world_ != nullptr) world_->set_liquid_surface_adhesion_enabled(enabled);
+} catch (const std::exception& error) {
+    record_native_failure("set_liquid_surface_adhesion_enabled", error.what());
+    return;
+} catch (...) {
+    record_native_failure("set_liquid_surface_adhesion_enabled", "unknown native exception");
+    return;
 }
 
 bool CyberNativeCellWorld::get_liquid_surface_adhesion_enabled() const {
@@ -1661,6 +1914,17 @@ std::int64_t CyberNativeCellWorld::get_rigid_body_unresolved_last_tick() const {
     for (std::size_t id = 1; id < observations_.size(); ++id) total += observations_[id].unresolved;
     return static_cast<std::int64_t>(total);
 }
+double CyberNativeCellWorld::water_push_scale(cybersand::Material material, std::int32_t x, std::int32_t y) const {
+    if (material != cybersand::Material::Water || world_ == nullptr || !world_->wave_flow_enabled()) return 1.0;
+    const auto& tune = world_->config().wave_flow;
+    double scale = static_cast<double>(tune.body_push) / 256.0;
+    if (tune.body_push_by_mass != 0) {
+        const auto maximum = static_cast<double>(world_->config().water_experiment_policy.maximum());
+        scale *= std::min(1.0, static_cast<double>(world_->liquid_mass(x, y)) / maximum);
+    }
+    return scale;
+}
+
 double CyberNativeCellWorld::density_scale(cybersand::Material material, double minimum) const {
     return std::clamp(static_cast<double>(cybersand::MaterialRules::descriptor(material).density) /
                       1000.0, minimum, density_limit_);
@@ -1669,6 +1933,7 @@ double CyberNativeCellWorld::density_scale(cybersand::Material material, double 
 bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
     // Explicit API, fresh construction, no live descriptor edits. A demo reset
     // restores production defaults. Validate before replacing existing authority.
+    bool committed = false;
     try {
         const auto workers = static_cast<std::int64_t>(options.get("workers", 1));
         if (workers < 1 || workers > 32) return false;
@@ -1688,10 +1953,70 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         const auto density = gain("density_limit", 1.6);
         if (density < 0.05 || cap <= 0) return false;
         cybersand::WorldConfig config;
+        const auto extent_value = options.get("extent", Vector2i{kWorldWidth, kWorldHeight});
+        if (extent_value.get_type() != Variant::VECTOR2I)
+            throw std::invalid_argument("diagnostic extent must be Vector2i");
+        const Vector2i extent = extent_value;
+        if (extent.x < 64 || extent.y < 64 || extent.x > 2048 || extent.y > 2048)
+            throw std::invalid_argument("diagnostic extent outside 64..2048");
+        if (options.has("wave_flow") && options["wave_flow"].get_type() != Variant::BOOL)
+            throw std::invalid_argument("wave_flow must be boolean");
+        if (options.has("wave_substeps") && options["wave_substeps"].get_type() != Variant::INT)
+            throw std::invalid_argument("wave_substeps must be integer");
+        const auto wave_substeps = static_cast<std::int64_t>(options.get("wave_substeps", 1));
+        if (wave_substeps < 1 || wave_substeps > cybersand::WaveFlowParameters::kMaximumSubsteps)
+            throw std::invalid_argument("wave_substeps outside 1..8");
+        config.wave_flow.enabled = options.get("wave_flow", false);
+        config.wave_flow.substeps = static_cast<std::uint8_t>(wave_substeps);
+        const auto wave_integer = [&options](const char* key, std::int32_t fallback) {
+            if (!options.has(key)) return fallback;
+            if (options[key].get_type() != Variant::INT)
+                throw std::invalid_argument(std::string(key) + " must be integer");
+            const auto value = static_cast<std::int64_t>(options[key]);
+            if (value < std::numeric_limits<std::int32_t>::min() || value > std::numeric_limits<std::int32_t>::max())
+                throw std::invalid_argument(std::string(key) + " outside native integer range");
+            return static_cast<std::int32_t>(value);
+        };
+        config.wave_flow.active_rows = wave_integer("wave_active_rows", config.wave_flow.active_rows);
+        config.wave_flow.gain = wave_integer("wave_gain", config.wave_flow.gain);
+        config.wave_flow.deep_gain = wave_integer("wave_deep_gain", config.wave_flow.deep_gain);
+        config.wave_flow.floor_gain = wave_integer("wave_floor_gain", config.wave_flow.floor_gain);
+        config.wave_flow.flux_smoothing = wave_integer("wave_flux_smoothing", config.wave_flow.flux_smoothing);
+        config.wave_flow.gain_confined = wave_integer("wave_gain_confined", config.wave_flow.gain_confined);
+        config.wave_flow.stiffness = wave_integer("wave_stiffness", config.wave_flow.stiffness);
+        config.wave_flow.damp_shift = wave_integer("wave_damp_shift", config.wave_flow.damp_shift);
+        config.wave_flow.coast = wave_integer("wave_coast", config.wave_flow.coast);
+        config.wave_flow.level_shift = wave_integer("wave_level_shift", config.wave_flow.level_shift);
+        config.wave_flow.sleep_after = wave_integer("wave_sleep_after", config.wave_flow.sleep_after);
+        config.wave_flow.wake_peak = wave_integer("wave_wake_peak", config.wave_flow.wake_peak);
+        config.wave_flow.rest_head = wave_integer("wave_rest_head", config.wave_flow.rest_head);
+        config.wave_flow.stick = wave_integer("wave_stick", config.wave_flow.stick);
+        config.wave_flow.calm = wave_integer("wave_calm", config.wave_flow.calm);
+        config.wave_flow.calm_damp_shift = wave_integer("wave_calm_damp_shift", config.wave_flow.calm_damp_shift);
+        config.wave_flow.maximum_mass = wave_integer("wave_maximum_mass", config.wave_flow.maximum_mass);
+        config.wave_flow.empty_pour_shift = wave_integer("wave_empty_pour_shift", config.wave_flow.empty_pour_shift);
+        config.wave_flow.flow_share_shift = wave_integer("wave_flow_share_shift", config.wave_flow.flow_share_shift);
+        config.wave_flow.adhesion_shift = wave_integer("wave_adhesion_shift", config.wave_flow.adhesion_shift);
+        if (options.has("liquid_policy")) {
+            if (options["liquid_policy"].get_type() != Variant::PACKED_INT32_ARRAY)
+                throw std::invalid_argument("liquid_policy must be PackedInt32Array");
+            const PackedInt32Array request = options["liquid_policy"];
+            auto decoded = cybersand::LiquidSolverPolicy::decode(
+                std::span<const std::int32_t>{request.ptr(), static_cast<std::size_t>(request.size())});
+            if (!decoded.accepted()) throw std::invalid_argument(decoded.refusal.detail);
+            config.liquid_solver_policy = std::move(*decoded.policy);
+            for (const auto& assignment : config.liquid_solver_policy.assignments())
+                if (assignment.family == cybersand::LiquidSolverFamily::InertialCellularV1)
+                    config.maximum_rule_radius = cybersand::InertialParameters::kExecutionRadius;
+        }
+        if (options.has("workbench") && options["workbench"].get_type() != Variant::BOOL)
+            throw std::invalid_argument("workbench must be boolean");
+        const bool workbench = options.get("workbench", false);
         config.worker_threads = static_cast<std::uint32_t>(workers);
-        config.maximum_chunk_count = 128;
-        config.active_chunk_capacity = 128;
-        config.active_core_capacity = 1024;
+        config.maximum_chunk_count = std::max<std::size_t>(128,
+            static_cast<std::size_t>((extent.x + 127) / 128 + 2) * ((extent.y + 127) / 128 + 2));
+        config.active_chunk_capacity = config.maximum_chunk_count;
+        config.active_core_capacity = std::max<std::size_t>(1024, config.maximum_chunk_count * 4);
         config.parallel_job_threshold = 2;
         if (static_cast<bool>(options.get("serial", false))) config.backend = cybersand::SimulationBackend::SerialInPlace;
         config.physics_diagnostics.enabled = options.get("telemetry", true);
@@ -1712,12 +2037,23 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
                 {profile.ptr(),static_cast<std::size_t>(profile.size())});
         }
         auto candidate = std::make_unique<cybersand::World>(config);
-        candidate->reserve_region({0, 0, kWorldWidth, kWorldHeight});
-        candidate->configure_transient_obstacles({0, 0, kWorldWidth, kWorldHeight});
+        candidate->reserve_region({0, 0, extent.x, extent.y});
+        candidate->configure_transient_obstacles({0, 0, extent.x, extent.y}, workbench);
+        std::unique_ptr<Workbench> workbench_owner;
+        if (workbench) {
+            workbench_owner = std::make_unique<Workbench>();
+            workbench_owner->response = "LA-SELECTIVE";
+            candidate->enable_transient_granular_wrenches(true);
+            candidate->enable_granular_arrival_witness(true);
+            raster_indices_.reserve(static_cast<std::size_t>(extent.x) * extent.y);
+        }
         auto diagnostics = config.physics_diagnostics.enabled
             ? std::make_unique<BodyDiagnostics>() : nullptr;
         world_.swap(candidate);
-        workbench_.reset(); extent_ = {kWorldWidth,kWorldHeight};
+        committed = true;
+        tick_failure_count_ = 0; last_tick_error_ = String{};
+        coupling_failure_context_ = {};
+        workbench_ = std::move(workbench_owner); extent_ = extent;
         retire_liquid_construction_identity();
         ++liquid_policy_session_generation_;
         body_diagnostics_ = std::move(diagnostics);
@@ -1733,13 +2069,18 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         refresh_simulation_region();
         return true;
     } catch (const std::exception& error) {
-        last_tick_error_ = error.what();
+        if (committed) record_native_failure("Diagnostic reset completion", error.what());
+        else if (tick_failure_count_ == 0) last_tick_error_ = error.what();
+        return false;
+    } catch (...) {
+        if (committed) record_native_failure("Diagnostic reset completion", "unknown native exception");
+        else if (tick_failure_count_ == 0) last_tick_error_ = "Diagnostic reset failed: unknown native exception";
         return false;
     }
 }
 
 bool CyberNativeCellWorld::diagnostic_fill_rect(Vector2i origin, Vector2i size,
-    std::int64_t material, std::int64_t state_b) {
+    std::int64_t material, std::int64_t state_b) try {
     if (!diagnostic_fixture_ || has_failed() || material < 0 ||
         material > static_cast<std::int64_t>(cybersand::kLastMaterial) ||
         !cybersand::valid_material(static_cast<std::uint16_t>(material)) || state_b < 0 || state_b > 255 ||
@@ -1747,6 +2088,8 @@ bool CyberNativeCellWorld::diagnostic_fill_rect(Vector2i origin, Vector2i size,
         !in_bounds(origin.x, origin.y) || !in_bounds(static_cast<std::int64_t>(origin.x) + size.x - 1,
                                                    static_cast<std::int64_t>(origin.y) + size.y - 1)) return false;
     const auto value = static_cast<cybersand::Material>(material);
+    if (world_->wave_flow_enabled() && value == cybersand::Material::Water && state_b != 0)
+        return false; // Do not report success for an unsupported coherent write.
     const auto state_a = value == cybersand::Material::Water
         ? world_->config().water_experiment_policy.maximum()
         : static_cast<std::uint16_t>(cybersand::MaterialRules::descriptor(value).initial_state_a);
@@ -1756,10 +2099,16 @@ bool CyberNativeCellWorld::diagnostic_fill_rect(Vector2i origin, Vector2i size,
                                        static_cast<std::uint8_t>(state_b));
     ++revision_;
     return true;
+} catch (const std::exception& error) {
+    record_native_failure("diagnostic_fill_rect", error.what());
+    return false;
+} catch (...) {
+    record_native_failure("diagnostic_fill_rect", "unknown native exception");
+    return false;
 }
 
 Dictionary CyberNativeCellWorld::apply_player_material_field(Vector2i center,
-    Vector2 direction, std::int64_t material_id, std::int64_t mode, std::int64_t phase) {
+    Vector2 direction, std::int64_t material_id, std::int64_t mode, std::int64_t phase) try {
     Dictionary result;
     result["accepted"] = false;
     result["reason"] = "invalid_command";
@@ -1805,9 +2154,15 @@ Dictionary CyberNativeCellWorld::apply_player_material_field(Vector2i center,
     result["radius"] = cybersand::PlayerMaterialFieldCommand::kRadius;
     if (receipt.movement_steps > 0U) ++revision_;
     return result;
+} catch (const std::exception& error) {
+    record_native_failure("apply_player_material_field", error.what());
+    return native_failure_status();
+} catch (...) {
+    record_native_failure("apply_player_material_field", "unknown native exception");
+    return native_failure_status();
 }
 
-bool CyberNativeCellWorld::diagnostic_relocate_cell(Vector2i from, Vector2i to) {
+bool CyberNativeCellWorld::diagnostic_relocate_cell(Vector2i from, Vector2i to) try {
     if (!diagnostic_fixture_ || world_ == nullptr || world_->has_failed() ||
         !in_bounds(from.x, from.y) || !in_bounds(to.x, to.y)) {
         return false;
@@ -1822,6 +2177,12 @@ bool CyberNativeCellWorld::diagnostic_relocate_cell(Vector2i from, Vector2i to) 
     }
     ++revision_;
     return true;
+} catch (const std::exception& error) {
+    record_native_failure("diagnostic_relocate_cell", error.what());
+    return false;
+} catch (...) {
+    record_native_failure("diagnostic_relocate_cell", "unknown native exception");
+    return false;
 }
 
 Dictionary CyberNativeCellWorld::get_water_experiment_policy() const {
@@ -1865,6 +2226,12 @@ Dictionary CyberNativeCellWorld::liquid_policy_receipt(
     // other admitted policy is a qualified LCB candidate (pressure reference).
     result["admission"] = policy == cybersand::LiquidSolverPolicy{} ? "current_defaults_only"
                                                                     : "qualified_candidate";
+    if (actual && actual->wave_flow_enabled()) result["admission"] = "experimental_wave_flow_v1";
+    if (actual && actual->wave_flow_enabled()) {
+        result["wave_flow_enabled"] = true;
+        result["effective_water_solver"] = "wave_flow_v1";
+        result["wave_substeps"] = static_cast<std::int64_t>(actual->config().wave_flow.substeps);
+    }
     auto id = [](std::string_view text) { return String(std::string(text).c_str()); };
     Array assignments;
     for (const auto& item : policy.assignments()) {
@@ -1950,11 +2317,17 @@ Dictionary CyberNativeCellWorld::liquid_policy_receipt(
     return result;
 }
 
-String CyberNativeCellWorld::get_physical_state_hash() const {
-    if (world_ == nullptr) return {};
+String CyberNativeCellWorld::get_physical_state_hash() const try {
+    if (has_failed()) return {};
     char text[17];
     std::snprintf(text, sizeof(text), "%016llx", static_cast<unsigned long long>(world_->physical_state_hash()));
     return String(text);
+} catch (const std::exception& error) {
+    record_native_failure("get_physical_state_hash", error.what());
+    return {};
+} catch (...) {
+    record_native_failure("get_physical_state_hash", "unknown native exception");
+    return {};
 }
 
 std::int64_t CyberNativeCellWorld::get_physical_state_hash_version() const {
@@ -1965,7 +2338,7 @@ std::int64_t CyberNativeCellWorld::get_physical_state_format_version() const {
     return world_ ? static_cast<std::int64_t>(world_->physical_state_format_version()) : 0;
 }
 
-Dictionary CyberNativeCellWorld::inspect_inertial_cell(Vector2i point) const {
+Dictionary CyberNativeCellWorld::inspect_inertial_cell(Vector2i point) const try {
     if (!world_ || world_->has_failed() || point.x < 0 || point.y < 0 || point.x >= extent_.x || point.y >= extent_.y) {
         Dictionary refused; refused["ok"] = false; refused["error"] = "Healthy finite native cell required";
         return refused;
@@ -1979,6 +2352,12 @@ Dictionary CyberNativeCellWorld::inspect_inertial_cell(Vector2i point) const {
     out["vx"] = state.vx; out["vy"] = state.vy; out["ax"] = state.ax; out["ay"] = state.ay;
     out["physical_state_hash_version"] = static_cast<std::int64_t>(world_->physical_state_hash_version());
     return out;
+} catch (const std::exception& error) {
+    record_native_failure("inspect_inertial_cell", error.what());
+    return native_failure_status();
+} catch (...) {
+    record_native_failure("inspect_inertial_cell", "unknown native exception");
+    return native_failure_status();
 }
 
 namespace {
@@ -2000,7 +2379,7 @@ Dictionary gas_compartment_dictionary(const cybersand::GasCompartmentSnapshot& c
 }
 }  // namespace
 
-Dictionary CyberNativeCellWorld::inspect_gas_compartments() const {
+Dictionary CyberNativeCellWorld::inspect_gas_compartments() const try {
     Dictionary out;
     out["available"] = world_ != nullptr && world_->pressure_flow_enabled();
     if (world_ == nullptr || !world_->pressure_flow_enabled()) return out;
@@ -2043,9 +2422,15 @@ Dictionary CyberNativeCellWorld::inspect_gas_compartments() const {
     book["closes"] = ledger.amount_live + ledger.vented + ledger.collapsed == ledger.created + ledger.absorbed;
     out["ledger"] = book;
     return out;
+} catch (const std::exception& error) {
+    record_native_failure("inspect_gas_compartments", error.what());
+    return native_failure_status();
+} catch (...) {
+    record_native_failure("inspect_gas_compartments", "unknown native exception");
+    return native_failure_status();
 }
 
-Dictionary CyberNativeCellWorld::inspect_pressure_cell(Vector2i point) const {
+Dictionary CyberNativeCellWorld::inspect_pressure_cell(Vector2i point) const try {
     Dictionary out;
     out["available"] = false;
     if (world_ == nullptr || !in_bounds(point.x, point.y)) return out;
@@ -2063,9 +2448,15 @@ Dictionary CyberNativeCellWorld::inspect_pressure_cell(Vector2i point) const {
     out["gas_compartment"] = state.gas == 0U || state.gas >= cybersand::kVacuumLabel
         ? Variant() : Variant(static_cast<std::int64_t>(state.gas));
     return out;
+} catch (const std::exception& error) {
+    record_native_failure("inspect_pressure_cell", error.what());
+    return native_failure_status();
+} catch (...) {
+    record_native_failure("inspect_pressure_cell", "unknown native exception");
+    return native_failure_status();
 }
 
-Dictionary CyberNativeCellWorld::get_pressure_flow_ledger() const {
+Dictionary CyberNativeCellWorld::get_pressure_flow_ledger() const try {
     Dictionary out;
     out["available"] = world_ != nullptr && world_->pressure_flow_enabled();
     if (world_ == nullptr || !world_->pressure_flow_enabled()) return out;
@@ -2086,9 +2477,16 @@ Dictionary CyberNativeCellWorld::get_pressure_flow_ledger() const {
     diagnostics["woken_blocks"] = static_cast<std::int64_t>(d.woken_blocks);
     out["last_tick"] = diagnostics;
     return out;
+} catch (const std::exception& error) {
+    record_native_failure("get_pressure_flow_ledger", error.what());
+    return native_failure_status();
+} catch (...) {
+    record_native_failure("get_pressure_flow_ledger", "unknown native exception");
+    return native_failure_status();
 }
 
-Dictionary CyberNativeCellWorld::get_liquid_run_receipt(const Dictionary& setup) const {
+Dictionary CyberNativeCellWorld::get_liquid_run_receipt(const Dictionary& setup) const try {
+    if (has_failed()) return native_failure_status();
     Dictionary out;
     if (world_ == nullptr) return out;
     const auto& config = world_->config();
@@ -2141,6 +2539,10 @@ Dictionary CyberNativeCellWorld::get_liquid_run_receipt(const Dictionary& setup)
     add("simulation_region", region ? concat(region->x, ":", region->y, ":", region->width, ":", region->height)
                                      : std::string("unrestricted"));
     add("physical_state_hash_version", concat(world_->physical_state_hash_version()));
+    // Preserve every default-off receipt byte; the opt-in law has distinct
+    // authoritative execution inputs despite reusing the FreeMass carrier.
+    if (config.wave_flow.enabled)
+        add("wave_flow", concat(cybersand::WaveFlowParameters::kVersion, ":", config.wave_flow.substeps));
     if (world_->inertial_enabled())
         add("inertial_parameter_identity", cybersand::Sha256::hex(cybersand::inertial_extension_identity(world_->inertial_parameters())));
     for (const char* key : {"setup_hash", "seed", "normalization_receipt", "source_revision", "native_binary_sha256",
@@ -2152,6 +2554,12 @@ Dictionary CyberNativeCellWorld::get_liquid_run_receipt(const Dictionary& setup)
     out["components"] = components;
     out["tick"] = static_cast<std::int64_t>(world_->completed_tick_index());
     return out;
+} catch (const std::exception& error) {
+    record_native_failure("get_liquid_run_receipt", error.what());
+    return native_failure_status();
+} catch (...) {
+    record_native_failure("get_liquid_run_receipt", "unknown native exception");
+    return native_failure_status();
 }
 
 Dictionary CyberNativeCellWorld::get_applied_liquid_construction_receipt() const {
@@ -2173,10 +2581,169 @@ Dictionary CyberNativeCellWorld::get_liquid_construction_attempt() const {
 }
 
 
-Dictionary CyberNativeCellWorld::get_liquid_solver_policy() const {
-    if (world_ == nullptr) return {};
+Dictionary CyberNativeCellWorld::get_liquid_solver_policy() const try {
+    if (has_failed()) return native_failure_status();
     return liquid_policy_receipt(world_->liquid_solver_policy(),
                                  static_cast<std::int64_t>(liquid_policy_session_generation_),world_.get());
+} catch (const std::exception& error) {
+    record_native_failure("get_liquid_solver_policy", error.what());
+    return native_failure_status();
+} catch (...) {
+    record_native_failure("get_liquid_solver_policy", "unknown native exception");
+    return native_failure_status();
+}
+
+Dictionary CyberNativeCellWorld::get_wave_flow_status() const try {
+    Dictionary out;
+    if (!world_) return out;
+    const auto& config = world_->config();
+    const auto wave = world_->wave_flow_diagnostics();
+    // A bound method must never let an exception reach Godot (that aborts the
+    // process). A failed World has no admitted ledger; report it unhealthy.
+    cybersand::QuantityLedgerSnapshot quantity{};
+    bool ledger_ok = !world_->has_failed();
+    if (ledger_ok) {
+        try { quantity = world_->quantity_ledger(); }
+        catch (const std::exception& error) {
+            record_native_failure("get_wave_flow_status", error.what());
+            ledger_ok = false; out["ledger_error"] = String(error.what());
+        }
+    }
+    out["enabled"] = world_->wave_flow_enabled();
+    out["session_generation"] = static_cast<std::int64_t>(liquid_policy_session_generation_);
+    out["healthy"] = !world_->has_failed() && ledger_ok;
+    out["transport_configured"] = config.transport_policy.configured;
+    out["pressure_gas_compartment_capacity"] = static_cast<std::int64_t>(config.pressure_gas_compartment_capacity);
+    // The shared Apply action also owns non-Wave construction controls. Read
+    // them from this World, never from the last submitted Workbench request.
+    Dictionary construction;
+    // Ballistic Water is one parcel pool under every law. Under Wave spill's
+    // hybrid release (reported below) throws faces through the same pool.
+    const bool wave_spill = world_->wave_flow_enabled() && config.wave_flow.spill.enabled;
+    construction["workbench_ballistic"] = world_->ballistic_water_enabled();
+    construction["workbench_inertial_signed"] = world_->inertial_parameters().signed_vertical;
+    construction["workbench_face_release"] = config.ballistic_water.face_release;
+    construction["workbench_fine_cores"] = config.scheduling_core_size == 32;
+    construction["workbench_face_budget"] = static_cast<std::int64_t>(config.ballistic_water.face_budget);
+    construction["workbench_face_speed"] = static_cast<std::int64_t>(config.ballistic_water.face_speed);
+    construction["workbench_face_period"] = static_cast<std::int64_t>(config.ballistic_water.face_period);
+    construction["workbench_face_min_height"] = static_cast<std::int64_t>(config.ballistic_water.face_min_height);
+    construction["pressure_gas_compartment_capacity"] = static_cast<std::int64_t>(config.pressure_gas_compartment_capacity);
+    out["construction_options"] = construction;
+    out["scheduling_core_size"] = static_cast<std::int64_t>(config.scheduling_core_size);
+    out["version"] = static_cast<std::int64_t>(cybersand::WaveFlowParameters::kVersion);
+    out["substeps"] = static_cast<std::int64_t>(config.wave_flow.substeps);
+    Dictionary parameters;
+    parameters["active_rows"] = config.wave_flow.active_rows;
+    parameters["gain"] = config.wave_flow.gain;
+    parameters["deep_gain"] = config.wave_flow.deep_gain;
+    parameters["floor_gain"] = config.wave_flow.floor_gain;
+    parameters["flux_smoothing"] = config.wave_flow.flux_smoothing;
+    parameters["gain_confined"] = config.wave_flow.gain_confined;
+    parameters["stiffness"] = config.wave_flow.stiffness;
+    parameters["damp_shift"] = config.wave_flow.damp_shift;
+    parameters["coast"] = config.wave_flow.coast;
+    parameters["level_shift"] = config.wave_flow.level_shift;
+    parameters["sleep_after"] = config.wave_flow.sleep_after;
+    parameters["wake_peak"] = config.wave_flow.wake_peak;
+    parameters["rest_head"] = config.wave_flow.rest_head;
+    parameters["stick"] = config.wave_flow.stick;
+    parameters["calm"] = config.wave_flow.calm;
+    parameters["calm_damp_shift"] = config.wave_flow.calm_damp_shift;
+    parameters["maximum_mass"] = config.wave_flow.maximum_mass;
+    parameters["empty_pour_shift"] = config.wave_flow.empty_pour_shift;
+    parameters["flow_share_shift"] = config.wave_flow.flow_share_shift;
+    parameters["adhesion_shift"] = config.wave_flow.adhesion_shift;
+    parameters["body_push"] = config.wave_flow.body_push;
+    parameters["body_push_by_mass"] = config.wave_flow.body_push_by_mass;
+    out["parameters"] = parameters;
+    // WAVE-WATERWALL-001: applied spill configuration and copied counters.
+    {
+        const auto& s = config.wave_flow.spill;
+        const auto flight = world_->ballistic_water_snapshot();
+        Dictionary spill;
+        spill["enabled"] = wave_spill;
+        spill["parcels"] = wave_spill && world_->ballistic_water_enabled() && s.launch_budget > 0;
+        spill["full_face"] = s.full_face != 0;
+        spill["fall"] = s.fall;
+        spill["share_shift"] = s.share_shift;
+        spill["draw"] = s.draw;
+        spill["draw_head"] = s.draw_head;
+        spill["deep_draw"] = s.deep_draw;
+        spill["stream"] = s.stream;
+        spill["launch_min"] = s.launch_min;
+        spill["launch_budget"] = s.launch_budget;
+        spill["launch_speed"] = s.launch_speed;
+        spill["stream_share"] = s.stream_share;
+        spill["blobs"] = s.catch_falling;
+        spill["stream_draw"] = s.stream_draw;
+        spill["sheet_rate"] = s.sheet_rate;
+        spill["coyote_ticks"] = s.coyote_ticks;
+        spill["spill_units"] = static_cast<std::int64_t>(wave.spill_units);
+        spill["relief_units"] = static_cast<std::int64_t>(wave.relief_units);
+        spill["spill_faces"] = static_cast<std::int64_t>(wave.spill_faces);
+        spill["falling_units"] = static_cast<std::int64_t>(wave.last_falling_units);
+        spill["falling_cells"] = static_cast<std::int64_t>(wave.last_falling_cells);
+        spill["launched_parcels"] = static_cast<std::int64_t>(wave.launched_parcels);
+        spill["launched_units"] = static_cast<std::int64_t>(wave.launched_units);
+        spill["launch_refusals"] = static_cast<std::int64_t>(wave.launch_refusals);
+        spill["launch_deferrals"] = static_cast<std::int64_t>(wave.launch_deferrals);
+        spill["launch_capacity_skips"] = static_cast<std::int64_t>(wave.launch_capacity_skips);
+        spill["launch_ms_per_tick"] = wave.ticks == 0U ? 0.0
+            : static_cast<double>(wave.launch_nanoseconds) / 1.0e6 / static_cast<double>(wave.ticks);
+        spill["parcels_live"] = static_cast<std::int64_t>(flight.live);
+        spill["parcels_capacity"] = static_cast<std::int64_t>(flight.capacity);
+        spill["parcels_peak"] = static_cast<std::int64_t>(flight.ledger.maximum_live);
+        spill["in_flight_units"] = static_cast<std::int64_t>(flight.in_flight_quantity);
+        spill["deposited_units"] = static_cast<std::int64_t>(flight.ledger.deposited_quantity);
+        spill["deferred_deposits"] = static_cast<std::int64_t>(flight.ledger.deferred_deposits);
+        spill["parcel_advance_ms"] = static_cast<double>(flight.last_advance_nanoseconds) / 1.0e6;
+        out["spill"] = spill;
+    }
+    out["workers_requested"] = static_cast<std::int64_t>(config.worker_threads);
+    out["workers_observed"] = static_cast<std::int64_t>(last_stats_.worker_threads_observed);
+    out["maximum_participants"] = static_cast<std::int64_t>(wave.maximum_participants);
+    out["ticks"] = static_cast<std::int64_t>(wave.ticks);
+    out["rounds"] = static_cast<std::int64_t>(wave.rounds);
+    out["last_tasks"] = static_cast<std::int64_t>(wave.last_tasks);
+    out["last_solved_chunks"] = static_cast<std::int64_t>(wave.last_solved_chunks);
+    out["storage_bytes"] = static_cast<std::int64_t>(wave.storage_bytes);
+    out["capacity_refusals"] = static_cast<std::int64_t>(wave.capacity_refusals);
+    out["resident_cell_bytes"] = static_cast<std::int64_t>(world_->resident_cell_bytes());
+    out["active_chunks"] = static_cast<std::int64_t>(world_->active_chunk_count());
+    out["chunks"] = static_cast<std::int64_t>(world_->chunk_count());
+    out["water_quantity"] = String::num_uint64(quantity.water_visible + quantity.water_overfill + quantity.water_ballistic);
+    out["water_cells"] = static_cast<std::int64_t>(quantity.material_cells[static_cast<std::uint16_t>(cybersand::Material::Water)]);
+    out["native_tick_ms"] = simulation_time_ms_;
+    out["completed_tick"] = static_cast<std::int64_t>(world_->completed_tick_index());
+    out["physical_save_supported"] = !world_->wave_flow_enabled();
+    out["extent"] = extent_;
+    return out;
+} catch (const std::exception& error) {
+    record_native_failure("get_wave_flow_status", error.what());
+    return native_failure_status();
+} catch (...) {
+    record_native_failure("get_wave_flow_status", "unknown native exception");
+    return native_failure_status();
+}
+
+Dictionary CyberNativeCellWorld::inspect_wave_flow_cell(Vector2i point) const try {
+    Dictionary out;
+    out["ok"] = false;
+    if (!world_ || world_->has_failed() || !in_bounds(point.x, point.y)) return out;
+    out["ok"] = true;
+    out["enabled"] = world_->wave_flow_enabled();
+    out["material"] = static_cast<std::int64_t>(world_->stored_material(point.x, point.y));
+    out["stored_mass"] = static_cast<std::int64_t>(world_->stored_state_a(point.x, point.y));
+    out["liquid_mass"] = static_cast<std::int64_t>(world_->liquid_mass(point.x, point.y));
+    out["face_flux"] = static_cast<std::int64_t>(world_->wave_flow_flux(point.x, point.y));
+    return out;
+} catch (const std::exception& error) {
+    record_native_failure("inspect_wave_flow_cell", error.what());
+    return native_failure_status();
+} catch (...) {
+    record_native_failure("inspect_wave_flow_cell", "unknown native exception");
+    return native_failure_status();
 }
 
 std::int64_t CyberNativeCellWorld::get_liquid_policy_session_generation() const {
@@ -2185,7 +2752,7 @@ std::int64_t CyberNativeCellWorld::get_liquid_policy_session_generation() const 
 
 bool CyberNativeCellWorld::water_experiment_fill_rect(
     Vector2i origin, Vector2i size, std::int64_t normalized_mass,
-    std::int64_t coherence) {
+    std::int64_t coherence) try {
     if (world_ == nullptr || world_->has_failed() || normalized_mass < 1 ||
         normalized_mass > 255 || coherence < 0 ||
         coherence > world_->config().water_experiment_policy.coherence_ticks() ||
@@ -2194,6 +2761,10 @@ bool CyberNativeCellWorld::water_experiment_fill_rect(
         !in_bounds(static_cast<std::int64_t>(origin.x) + size.x - 1,
                    static_cast<std::int64_t>(origin.y) + size.y - 1)) {
         return false;
+    }
+    if (world_->wave_flow_enabled() && coherence != 0) {
+        last_tick_error_ = "Wave Flow does not support coherent Water emission";
+        return false; // Validate the entire fill before its first native write.
     }
     const auto& policy = world_->config().water_experiment_policy;
     const auto mass = static_cast<std::uint16_t>(
@@ -2220,9 +2791,15 @@ bool CyberNativeCellWorld::water_experiment_fill_rect(
     }
     if (changed) ++revision_;
     return true;
+} catch (const std::exception& error) {
+    record_native_failure("water_experiment_fill_rect", error.what());
+    return false;
+} catch (...) {
+    record_native_failure("water_experiment_fill_rect", "unknown native exception");
+    return false;
 }
 
-bool CyberNativeCellWorld::water_experiment_erase_rect(Vector2i origin, Vector2i size) {
+bool CyberNativeCellWorld::water_experiment_erase_rect(Vector2i origin, Vector2i size) try {
     if (world_ == nullptr || world_->has_failed() || size.x < 1 || size.y < 1 ||
         !in_bounds(origin.x, origin.y) ||
         !in_bounds(static_cast<std::int64_t>(origin.x) + size.x - 1,
@@ -2246,10 +2823,17 @@ bool CyberNativeCellWorld::water_experiment_erase_rect(Vector2i origin, Vector2i
     if (changed) ++revision_;
     if (hard_surface_changed) ++hard_surface_revision_;
     return true;
+} catch (const std::exception& error) {
+    record_native_failure("water_experiment_erase_rect", error.what());
+    return false;
+} catch (...) {
+    record_native_failure("water_experiment_erase_rect", "unknown native exception");
+    return false;
 }
 
 Dictionary CyberNativeCellWorld::water_experiment_observation(
-    Vector2i origin, Vector2i size) const {
+    Vector2i origin, Vector2i size) const try {
+    if (has_failed()) return native_failure_status();
     Dictionary result;
     if (world_ == nullptr || size.x < 1 || size.y < 1 ||
         !in_bounds(origin.x, origin.y) ||
@@ -2281,9 +2865,16 @@ Dictionary CyberNativeCellWorld::water_experiment_observation(
     result["content_hash"] = String::num_uint64(world_->content_hash(), 16);
     result["state_hash"] = String::num_uint64(world_->state_hash(), 16);
     return result;
+} catch (const std::exception& error) {
+    record_native_failure("water_experiment_observation", error.what());
+    return native_failure_status();
+} catch (...) {
+    record_native_failure("water_experiment_observation", "unknown native exception");
+    return native_failure_status();
 }
 
-Dictionary CyberNativeCellWorld::diagnostic_snapshot(Vector2i origin, Vector2i size, bool include_histogram) const {
+Dictionary CyberNativeCellWorld::diagnostic_snapshot(Vector2i origin, Vector2i size, bool include_histogram) const try {
+    if (has_failed()) return native_failure_status();
     Dictionary result;
     if (!diagnostic_fixture_ || size.x < 1 || size.y < 1 || size.x > 512 || size.y > 768 ||
         !in_bounds(origin.x, origin.y) || !in_bounds(static_cast<std::int64_t>(origin.x) + size.x - 1,
@@ -2326,9 +2917,15 @@ Dictionary CyberNativeCellWorld::diagnostic_snapshot(Vector2i origin, Vector2i s
         }
     }
     return result;
+} catch (const std::exception& error) {
+    record_native_failure("diagnostic_snapshot", error.what());
+    return native_failure_status();
+} catch (...) {
+    record_native_failure("diagnostic_snapshot", "unknown native exception");
+    return native_failure_status();
 }
 
-Array CyberNativeCellWorld::diagnostic_body_metrics() const {
+Array CyberNativeCellWorld::diagnostic_body_metrics() const try {
     Array result;
     if (!body_diagnostics_ || has_failed()) return result;
     for (std::size_t id = 1; id < current_bodies_.size(); ++id) {
@@ -2361,6 +2958,12 @@ Array CyberNativeCellWorld::diagnostic_body_metrics() const {
         result.append(row);
     }
     return result;
+} catch (const std::exception& error) {
+    record_native_failure("diagnostic_body_metrics", error.what());
+    return {};
+} catch (...) {
+    record_native_failure("diagnostic_body_metrics", "unknown native exception");
+    return {};
 }
 
 double CyberNativeCellWorld::get_simulation_time_ms() const { return simulation_time_ms_; }

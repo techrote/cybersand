@@ -44,6 +44,81 @@ $(BUILD_DIR)/libcybersand.so: $(CORE_SOURCES) $(CORE_HEADERS) | $(BUILD_DIR)
 $(BUILD_DIR)/tests_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) $(TEST_SOURCES) $(TEST_HEADERS) | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined $(CORE_SOURCES) $(TEST_SOURCES) -o $@
 
+# WAVE-MT-001 wave_flow_v1: standalone regressions (own main; not part of TEST_SOURCES).
+.PHONY: wave-flow-test wave-flow-sanitize wave-flow-thread-sanitize wave-mt-matrix
+
+$(BUILD_DIR)/test_wave_flow: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_wave_flow.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O2 -g -pthread $(CORE_SOURCES) native/tests/test_wave_flow.cpp -o $@
+
+$(BUILD_DIR)/test_wave_flow_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_wave_flow.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=address,undefined $(CORE_SOURCES) native/tests/test_wave_flow.cpp -o $@
+
+$(BUILD_DIR)/test_wave_flow_tsan: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_wave_flow.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=thread $(CORE_SOURCES) native/tests/test_wave_flow.cpp -o $@
+
+$(BUILD_DIR)/wave_mt_matrix: $(SIMULATION_SOURCES) $(CORE_HEADERS) native/bench/wave_mt_matrix.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O3 -DNDEBUG -pthread $(SIMULATION_SOURCES) native/bench/wave_mt_matrix.cpp -o $@
+
+wave-mt-matrix: $(BUILD_DIR)/wave_mt_matrix
+
+wave-flow-test: $(BUILD_DIR)/test_wave_flow
+	./$(BUILD_DIR)/test_wave_flow
+
+wave-flow-sanitize: $(BUILD_DIR)/test_wave_flow_sanitized
+	UBSAN_OPTIONS=halt_on_error=1 ./$(BUILD_DIR)/test_wave_flow_sanitized
+
+wave-flow-thread-sanitize: $(BUILD_DIR)/test_wave_flow_tsan
+	TSAN_OPTIONS=halt_on_error=1 ./$(BUILD_DIR)/test_wave_flow_tsan
+
+# WAVE-WATERWALL-001 exposed-face spill and hybrid ballistic release: standalone
+# regressions (own main) and the authored-map apparatus.
+.PHONY: wave-spill-test wave-spill-sanitize wave-spill-thread-sanitize wave-waterwall
+
+$(BUILD_DIR)/test_wave_spill: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_wave_spill.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O2 -g -pthread $(CORE_SOURCES) native/tests/test_wave_spill.cpp -o $@
+
+$(BUILD_DIR)/test_wave_spill_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_wave_spill.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=address,undefined $(CORE_SOURCES) native/tests/test_wave_spill.cpp -o $@
+
+$(BUILD_DIR)/test_wave_spill_tsan: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_wave_spill.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=thread $(CORE_SOURCES) native/tests/test_wave_spill.cpp -o $@
+
+$(BUILD_DIR)/wave_waterwall: $(SIMULATION_SOURCES) $(CORE_HEADERS) native/bench/wave_waterwall.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O3 -DNDEBUG -pthread $(SIMULATION_SOURCES) native/bench/wave_waterwall.cpp -o $@
+
+wave-waterwall: $(BUILD_DIR)/wave_waterwall
+
+wave-spill-test: $(BUILD_DIR)/test_wave_spill
+	./$(BUILD_DIR)/test_wave_spill
+
+wave-spill-sanitize: $(BUILD_DIR)/test_wave_spill_sanitized
+	UBSAN_OPTIONS=halt_on_error=1 ./$(BUILD_DIR)/test_wave_spill_sanitized
+
+wave-spill-thread-sanitize: $(BUILD_DIR)/test_wave_spill_tsan
+	TSAN_OPTIONS=halt_on_error=1 ./$(BUILD_DIR)/test_wave_spill_tsan
+
+# Body-occupancy boundary stress combines moving masks, external displacement,
+# Wave overfill, ballistic saturation, paused cores and exact worker parity.
+.PHONY: wave-body-boundary-test wave-body-boundary-sanitize wave-body-boundary-thread-sanitize
+
+$(BUILD_DIR)/test_wave_body_boundary: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_wave_body_boundary.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O2 -g -pthread $(CORE_SOURCES) native/tests/test_wave_body_boundary.cpp -o $@
+
+$(BUILD_DIR)/test_wave_body_boundary_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_wave_body_boundary.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=address,undefined $(CORE_SOURCES) native/tests/test_wave_body_boundary.cpp -o $@
+
+$(BUILD_DIR)/test_wave_body_boundary_tsan: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_wave_body_boundary.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=thread $(CORE_SOURCES) native/tests/test_wave_body_boundary.cpp -o $@
+
+wave-body-boundary-test: $(BUILD_DIR)/test_wave_body_boundary
+	./$(BUILD_DIR)/test_wave_body_boundary
+
+wave-body-boundary-sanitize: $(BUILD_DIR)/test_wave_body_boundary_sanitized
+	UBSAN_OPTIONS=halt_on_error=1 ./$(BUILD_DIR)/test_wave_body_boundary_sanitized
+
+wave-body-boundary-thread-sanitize: $(BUILD_DIR)/test_wave_body_boundary_tsan
+	TSAN_OPTIONS=halt_on_error=1 ./$(BUILD_DIR)/test_wave_body_boundary_tsan
+
 .PHONY: material-baseline-test material-baseline-sanitize
 
 $(BUILD_DIR)/test_material_baseline: $(SIMULATION_SOURCES) $(CORE_HEADERS) native/tests/test_material_baseline.cpp | $(BUILD_DIR)
@@ -57,6 +132,27 @@ material-baseline-test: $(BUILD_DIR)/test_material_baseline
 
 material-baseline-sanitize: $(BUILD_DIR)/test_material_baseline_sanitized
 	ASAN_OPTIONS=$${ASAN_OPTIONS:-detect_leaks=1:strict_string_checks=1} UBSAN_OPTIONS=$${UBSAN_OPTIONS:-halt_on_error=1} ./$(BUILD_DIR)/test_material_baseline_sanitized
+
+# The experimental authoring patch is strict-warning checked independently;
+# unchanged simulation translation units retain the repository warning policy.
+.PHONY: workbench-authoring-patch-test workbench-authoring-patch-sanitize
+
+$(BUILD_DIR)/test_workbench_authoring_patch: $(SIMULATION_SOURCES) $(CORE_HEADERS) native/tests/test_workbench_authoring_patch.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -Werror -fsyntax-only native/tests/test_workbench_authoring_patch.cpp
+	$(CXX) $(COMMON_FLAGS) -O2 -g -pthread $(SIMULATION_SOURCES) native/tests/test_workbench_authoring_patch.cpp -o $@
+
+$(BUILD_DIR)/test_workbench_authoring_patch_sanitized: $(SIMULATION_SOURCES) $(CORE_HEADERS) native/tests/test_workbench_authoring_patch.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -Werror -fsyntax-only native/tests/test_workbench_authoring_patch.cpp
+	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=address,undefined $(SIMULATION_SOURCES) native/tests/test_workbench_authoring_patch.cpp -o $@
+
+workbench-authoring-patch-test: $(BUILD_DIR)/test_workbench_authoring_patch
+	./$(BUILD_DIR)/test_workbench_authoring_patch
+
+workbench-authoring-patch-sanitize: $(BUILD_DIR)/test_workbench_authoring_patch_sanitized
+	ASAN_OPTIONS=$${ASAN_OPTIONS:-detect_leaks=1:strict_string_checks=1} UBSAN_OPTIONS=$${UBSAN_OPTIONS:-halt_on_error=1} ./$(BUILD_DIR)/test_workbench_authoring_patch_sanitized
+
+$(BUILD_DIR)/workbench_process_fixture: native/tests/workbench_process_fixture.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O2 -pthread -Werror $< -o $@
 
 .PHONY: physics-characterisation-test physics-characterisation-sanitize
 

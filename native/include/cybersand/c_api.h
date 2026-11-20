@@ -226,6 +226,10 @@ CYBERSAND_API int cybersand_world_queue_explosion(cybersand_world* world, int64_
                                                    uint8_t collapse_strength);
 CYBERSAND_API uint8_t cybersand_world_liquid_mass(const cybersand_world* world, int64_t x,
                                                    int64_t y);
+/* Legacy liquid_mass is a saturated 0..255 occupancy projection. This wider
+ * accessor preserves all native uint16 mass, including experimental overfill. */
+CYBERSAND_API uint16_t cybersand_world_liquid_mass_v2(const cybersand_world* world,
+                                                      int64_t x, int64_t y);
 CYBERSAND_API uint64_t cybersand_world_content_hash(const cybersand_world* world);
 CYBERSAND_API uint64_t cybersand_world_tick_index(const cybersand_world* world);
 CYBERSAND_API size_t cybersand_world_chunk_count(const cybersand_world* world);
@@ -261,6 +265,20 @@ CYBERSAND_API size_t cybersand_world_liquid_policy_v1(const cybersand_world* wor
                                                       int32_t* destination, size_t capacity);
 CYBERSAND_API int cybersand_world_liquid_policy_hash_v1(const cybersand_world* world,
                                                         uint8_t* destination_32);
+
+/* WAVE-MT-001 opt-in construction, separate from the stable config_v2 layout
+ * and policy catalogue. A rejected request leaves no World. Version/size,
+ * enabled (0 or 1), substeps (1..8) and native compatibility are validated. */
+#define CYBERSAND_WAVE_FLOW_CONFIG_V1_ABI_VERSION 1u
+typedef struct cybersand_wave_flow_config_v1 {
+    uint32_t struct_size;
+    uint32_t abi_version;
+    uint32_t enabled;
+    uint32_t substeps;
+} cybersand_wave_flow_config_v1;
+CYBERSAND_API cybersand_world* cybersand_world_create_with_wave_flow_v1(
+    const cybersand_config_v2* config, const cybersand_wave_flow_config_v1* wave,
+    cybersand_liquid_policy_refusal_v1* refusal);
 
 CYBERSAND_API cybersand_render_exchange* cybersand_render_exchange_create(
     size_t slot_count, size_t patch_capacity_per_slot, size_t byte_capacity_per_slot);

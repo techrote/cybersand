@@ -1,0 +1,87 @@
+name: Workbench Art traffic lifetime qualification
+on:
+  push:
+    branches:
+      - fix/wb-art-lazy-linked-traffic-20261120
+    paths:
+      - '.github/workflows/wb-art-traffic-lifetime.yml'
+      - 'godot/scripts/art*.gd'
+      - 'godot/scripts/shared_workbench.gd'
+      - 'godot/tests/*art*.gd'
+      - 'tools/ci/qualify_art_traffic_lifetime.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: wb-art-traffic-${{ github.event_name }}-${{ github.event_name == 'push' && github.ref || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'push' }}
+
+jobs:
+  windows:
+    name: Windows 4.7 extracted Workbench traffic lifetime
+    runs-on: windows-2022
+    timeout-minutes: 60
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Materialize source-matched retained runtimes
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force evidence | Out-Null
+          git rev-parse HEAD | Set-Content evidence/source-commit.txt
+          git lfs install --local
+          git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          if ($LASTEXITCODE -ne 0) { throw 'Runtime LFS materialization failed' }
+          python tools/ci/check_ci_provider_policy.py > evidence/ci-provider.json
+          if ($LASTEXITCODE -ne 0) { throw 'CI provider policy failed' }
+      - name: Authenticate pinned Godot Windows 4.7
+        shell: pwsh
+        run: |
+          $url = 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          $zip = Join-Path $env:RUNNER_TEMP 'godot-win47.zip'
+          curl.exe -fL --retry 3 -o $zip $url
+          if ($LASTEXITCODE -ne 0) { throw 'Godot download failed' }
+          $expected = '41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9'
+          if ((Get-FileHash $zip -Algorithm SHA512).Hash.ToLowerInvariant() -ne $expected) { throw 'Godot archive hash mismatch' }
+          $output = Join-Path $env:RUNNER_TEMP 'godot-win47'
+          Expand-Archive -Path $zip -DestinationPath $output
+          $exe = Join-Path $output 'Godot_v4.7-stable_win64_console.exe'
+          (& $exe --version) | Set-Content evidence/godot-version.txt
+          if (((Get-Content evidence/godot-version.txt) -join ' ') -notmatch '4.7.stable.official.5b4e0cb0f') { throw 'Godot runtime version mismatch' }
+          'GODOT_EXE=' + $exe | Out-File -Append -FilePath $env:GITHUB_ENV
+      - name: Build and extract a committed Workbench project package
+        shell: pwsh
+        run: |
+          # Verifies every native source input, retained native payload and Rapier
+          # LFS identity. No rebuild is claimed for unchanged native source.
+          python tools/ci/qualify_art_traffic_lifetime.py --package-project build/art-traffic-package > evidence/package-identity.json
+          if ($LASTEXITCODE -ne 0) { throw 'Exact-source project packaging refused' }
+      - name: Exercise real Windows GUI, restarts, crash recovery and 2 GiB history
+        shell: pwsh
+        run: |
+          $project = (Resolve-Path 'build/art-traffic-package/extracted/godot').Path
+          python tools/ci/qualify_art_traffic_lifetime.py --godot $env:GODOT_EXE --project $project --evidence evidence/lifetime --stress-mib 2048 --graphical
+          if ($LASTEXITCODE -ne 0) { throw 'Windows lifetime qualification failed' }
+      - name: Retain exact-source Windows receipts and graphical evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: wb-art-traffic-windows-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            evidence/**/*.json
+            evidence/**/*.log
+            evidence/**/*.txt
+            evidence/**/*.png
+            build/art-traffic-package/package-identity.json
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Retain tested Workbench project package
+        if: success()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: wb-art-traffic-workbench-project-${{ github.sha }}
+          path: build/art-traffic-package/workbench-project.zip
+          if-no-files-found: error
+          retention-days: 90

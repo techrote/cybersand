@@ -52,7 +52,23 @@ func click_at(viewport: Viewport, position: Vector2, button: MouseButton = MOUSE
 		await process_frame
 
 func click(button: Button) -> void:
-	await click_at(button.get_viewport(),button.get_global_rect().get_center())
+	# A Water Lab page scrolls: bring the control into view before clicking it.
+	var ancestor := button.get_parent()
+	while ancestor != null and not ancestor is ScrollContainer: ancestor = ancestor.get_parent()
+	if ancestor != null:
+		ancestor.ensure_control_visible(button)
+		await process_frame
+	var point := button.get_global_rect().get_center()
+	var window := button.get_window()
+	# Embedded windows (the Water Lab) receive real pointer events through the
+	# root viewport; a direct push to the child Window does not reach its controls.
+	if window != root:
+		var pressed := [button is OptionButton]
+		if not button is OptionButton: button.pressed.connect(func() -> void: pressed[0] = true,CONNECT_ONE_SHOT)
+		await click_at(root,point+Vector2(window.position))
+		require(pressed[0],"real pointer event reaches "+button.text+" / "+str(panel.message))
+		return
+	await click_at(button.get_viewport(),point)
 
 # Canvas space is live: a native preflight sample can yield across frames in
 # which the Workbench layout or the display's aspect-fit rectangle changes.
@@ -92,15 +108,30 @@ func click_world_cell(pos: Vector2i) -> bool:
 			"native brush press reached the exact intended world cell "+str(pos)): return false
 	return true
 
-func button_named(label: String) -> Button:
-	for child: Node in panel.find_children("*","Button",true,false):
+func button_named(label: String, root: Node = null) -> Button:
+	for child: Node in (panel if root == null else root).find_children("*","Button",true,false):
 		if child.text == label: return child
 	return null
+
+# The liquid solver controls live on the Water Lab "Advanced policy" page.
+func open_water_lab(tab: int) -> bool:
+	var lab: Window = panel.water_lab.window
+	if not lab.visible:
+		await click(button_named("Water Lab…"))
+		for frame: int in 3: await process_frame
+	panel.water_lab.select_tab(tab)
+	await process_frame
+	return require(lab.visible,"Water Lab window opens from the toolbar")
+
+func close_water_lab() -> bool:
+	var lab: Window = panel.water_lab.window
+	if lab.visible: await click(button_named("Close Water Lab",lab))
+	return require(not lab.visible,"Water Lab closes")
 
 func pick(picker: OptionButton, index: int) -> bool:
 	await click(picker)
 	var popup := picker.get_popup()
-	if not require(popup.visible,"real toolbar popup open"): return false
+	if not require(popup.visible,"real toolbar popup open: "+str(picker.get_path())+" lab="+str(panel.water_lab.window.visible)): return false
 	popup.set_item_accelerator(index,KEY_F19)
 	var key := InputEventKey.new()
 	key.keycode = KEY_F19
@@ -209,11 +240,13 @@ func edge_case(side: int, negative: bool) -> void:
 	if not await until(func() -> bool: return host.latest_snapshot.paused,"pause acknowledgement"): return
 	await click(button_named("Details"))
 	if not require(panel._liquids.preset_picker.selected==0 and active_water()=="freemass_v1","new canvas resets previous visual preset to native defaults"): return
+	if not await open_water_lab(4): return
 	if not await pick(panel._liquids.preset_picker,2): return # Water: pressure reference
 	if not require(panel._liquids._validation.receipt.assignments.any(func(a: Dictionary)->bool:
 		return a.material==3 and a.applied_family=="pressure_flow_v1"),"native menu stages selected Water solver"): return
 	var generation: int = host.last_uploaded_world_generation
-	await click(button_named("Apply liquid selection"))
+	await click(button_named("Apply liquid selection",panel.water_lab.window))
+	if not await close_water_lab(): return
 	if not await until(func() -> bool: return host.pending_microscenario_apply.is_empty() and active_water()=="pressure_flow_v1" and uploaded_after(generation),"Water switch after edge transport"): return
 	var first := receipt()
 	if not require(first.get("preserved_halo_visible_water",0)>0,"actually migrated native Water outside the canvas"): return
@@ -256,6 +289,7 @@ func switch_out_of_pressure(record: Dictionary, rock: Vector2i, capture_dir: Str
 
 	await click(button_named("Details"))
 	var editor = panel._liquids
+	if not await open_water_lab(4): return
 	if not await pick(editor.material_picker,editor.material_picker.get_item_index(3)): return
 	var target := -1
 	for i: int in range(editor._choices.size()):
@@ -268,7 +302,8 @@ func switch_out_of_pressure(record: Dictionary, rock: Vector2i, capture_dir: Str
 	if not require(active_water()=="pressure_flow_v1" and editor._validation.receipt.assignments.any(func(a: Dictionary)->bool:
 		return a.material==3 and a.applied_family=="freemass_v1"),"FreeMass staged while PressureFlow still runs"): return
 	generation = host.last_uploaded_world_generation
-	await click(button_named("Apply liquid selection"))
+	await click(button_named("Apply liquid selection",panel.water_lab.window))
+	if not await close_water_lab(): return
 	if not await until(func()->bool: return host.pending_microscenario_apply.is_empty() and active_water()=="freemass_v1" and uploaded_after(generation),"native FreeMass installed after PressureFlow"): return
 	var outgoing := receipt()
 	require(outgoing.requested and outgoing.source_policy_sha256==baseline.target_policy_sha256 and outgoing.source_policy_sha256!=outgoing.target_policy_sha256,"conversion receipt identifies the actual outgoing pressure owner")
@@ -288,6 +323,9 @@ func run() -> void:
 	root.size=Vector2i(1920,1080)
 	set_meta("cybersand_feature","shared_workbench")
 	host=load("res://main.tscn").instantiate()
+	# This retained-edge conversion compares the original narrow FreeMass
+	# law with PressureFlow, including its exact pre-switch cell inventory.
+	host.workbench_water_options = {"workbench_wave_flow":false}
 	root.add_child(host)
 	panel=host.shared_workbench
 	if await until(func()->bool: return not panel.applied.is_empty(),"blank workbench"):

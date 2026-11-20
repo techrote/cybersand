@@ -122,9 +122,16 @@ World::WorkbenchLiquidTransfer World::inherit_workbench_liquid_state(const World
         const auto first_x=coord.x*size, first_y=coord.y*size;
         const bool interior_chunk=first_x>=0 && first_y>=0 &&
             first_x<=canvas.width-size && first_y<=canvas.height-size;
-        if (interior_chunk && !source.pressure_ && !origin->inertial) continue;
+        if (interior_chunk && !source.pressure_ && !origin->inertial && !(source.wave_ && !wave_)) continue;
         for (std::size_t i=0; i<origin->cells.size(); ++i) {
             const auto material = origin->cells[i].material_value();
+            // The Wave carrier's uint16 inventory cannot be represented by a
+            // legacy visible lane. This includes retained halo cells: refuse
+            // before any normalization arithmetic or clipping can erase it.
+            if (source.wave_ && !wave_ && material == Material::Water &&
+                origin->cells[i].state_a_value() > maximum)
+                throw std::invalid_argument(
+                    "Retained Wave Water overfill exceeds the target law's cell capacity; load a comparison scene with the requested solver");
             const auto x=first_x+static_cast<std::int64_t>(i%size);
             const auto y=first_y+static_cast<std::int64_t>(i/size);
             const bool exterior=!interior_chunk && (x<0 || y<0 || x>=canvas.width || y>=canvas.height);
@@ -220,6 +227,10 @@ World::WorkbenchLiquidTransfer World::inherit_workbench_liquid_state(const World
             (!whole_cell_water_enabled() || origin.quantity == maximum) && origin.quantity <= maximum;
         if (!fits) { transfer.discarded_in_flight_water += origin.quantity; continue; }
         auto parcel = origin;
+        // A retained crest adopts the new owner's flight law on Workbench Apply.
+        const auto grace = config_.wave_flow.enabled && config_.wave_flow.spill.enabled
+            ? config_.wave_flow.spill.coyote_ticks : 0;
+        parcel.coyote_left = static_cast<std::uint8_t>(std::min<int>(parcel.coyote_left, grace));
         parcel.age = 0;
         parcel.source_body = 0;
         parcel.vx = std::clamp(parcel.vx, -config_.ballistic_water.max_speed_q, config_.ballistic_water.max_speed_q);
@@ -2270,6 +2281,26 @@ std::uint64_t World::physical_state_hash_impl(std::optional<LiquidStateProjectio
     std::sort(coordinates.begin(), coordinates.end());
     for (const auto coord : coordinates) {
         const auto* chunk = find_chunk(coord);
+        if (wave_ != nullptr) {
+            // Wave v6 binds its actual continuation, including previous full
+            // support, sparse eligibility and retained flux. Diagnostics and
+            // allocation capacities never enter this stream. Unlike legacy
+            // hashes, the experimental domain intentionally binds resident
+            // wave chunks because their paused/sleep state affects inclusion.
+            const auto& wave = *chunk->wave;
+            hash_integer(hash, std::uint8_t{0x57U});
+            hash_integer(hash, coord.x); hash_integer(hash, coord.y);
+            hash_integer(hash, wave.quiet);
+            hash_integer(hash, static_cast<std::uint8_t>(wave.woken));
+            for (const auto value : wave.clean) hash_integer(hash, static_cast<std::uint8_t>(value));
+            for (const auto value : wave.dry_reset) hash_integer(hash, static_cast<std::uint8_t>(value));
+            for (const auto value : wave.dry) hash_integer(hash, value);
+            for (std::size_t i = 0; i < wave.flux.size(); ++i) {
+                hash_integer(hash, wave.flux[i]);
+                hash_integer(hash, wave.weight[i]);
+                hash_integer(hash, wave.meta[i]);
+            }
+        }
         // Only non-default content enters the hash, so an allocated all-Empty,
         // inactive chunk is indistinguishable from an unallocated one.
         for (std::size_t index = 0; index < chunk->activity_blocks.size(); ++index) {
@@ -2332,6 +2363,66 @@ std::uint64_t World::physical_state_hash_impl(std::optional<LiquidStateProjectio
             hash_integer(hash, c.gauge);
         }
     }
+    if (wave_ != nullptr) {
+        hash_integer(hash, WaveFlowParameters::kVersion);
+        hash_integer(hash, config_.wave_flow.substeps);
+        // Preserve the exact qualified-v2 hash stream when the authoring
+        // profile is untouched. Non-default Workbench tuning changes future
+        // evolution, so it belongs to complete physical identity.
+        const auto& tune = config_.wave_flow;
+        const bool tuned = tune.active_rows != WaveFlowParameters::kActiveRows ||
+            tune.gain != WaveFlowParameters::kGain || tune.gain_confined != WaveFlowParameters::kGainConfined ||
+            tune.stiffness != WaveFlowParameters::kStiffness || tune.damp_shift != WaveFlowParameters::kDampShift ||
+            tune.coast != WaveFlowParameters::kCoast || tune.level_shift != WaveFlowParameters::kLevelShift ||
+            tune.sleep_after != WaveFlowParameters::kSleepAfter || tune.wake_peak != WaveFlowParameters::kWakePeak ||
+            tune.rest_head != WaveFlowParameters::kRestHead || tune.stick != WaveFlowParameters::kStick ||
+            tune.calm != WaveFlowParameters::kCalm || tune.calm_damp_shift != WaveFlowParameters::kCalmDampShift ||
+            tune.maximum_mass != WaveFlowParameters::kMaximumMass ||
+            tune.empty_pour_shift != WaveFlowParameters::kEmptyPourShift ||
+            tune.flow_share_shift != WaveFlowParameters::kFlowShareShift ||
+            tune.adhesion_shift != WaveFlowParameters::kAdhesionShift;
+        if (tuned) {
+            for (const char c : std::string_view{"wave-authoring-tuning-v1"})
+                hash_byte(hash, static_cast<std::uint8_t>(c));
+            hash_integer(hash, tune.active_rows); hash_integer(hash, tune.gain);
+            hash_integer(hash, tune.gain_confined); hash_integer(hash, tune.stiffness);
+            hash_integer(hash, tune.damp_shift); hash_integer(hash, tune.coast);
+            hash_integer(hash, tune.level_shift); hash_integer(hash, tune.sleep_after);
+            hash_integer(hash, tune.wake_peak); hash_integer(hash, tune.rest_head);
+            hash_integer(hash, tune.stick); hash_integer(hash, tune.calm);
+            hash_integer(hash, tune.calm_damp_shift); hash_integer(hash, tune.maximum_mass);
+            hash_integer(hash, tune.empty_pour_shift); hash_integer(hash, tune.flow_share_shift);
+            hash_integer(hash, tune.adhesion_shift);
+        }
+        if (tune.flux_smoothing != 0) {
+            for (const char c : std::string_view{"wave-flux-smoothing"}) hash_byte(hash, static_cast<std::uint8_t>(c));
+            hash_integer(hash, tune.flux_smoothing);
+        }
+        if (tune.floor_gain != 0) {
+            for (const char c : std::string_view{"wave-floor-gain"}) hash_byte(hash, static_cast<std::uint8_t>(c));
+            hash_integer(hash, tune.floor_gain);
+        }
+        if (tune.deep_gain != 0) {
+            for (const char c : std::string_view{"wave-deep-gain"}) hash_byte(hash, static_cast<std::uint8_t>(c));
+            hash_integer(hash, tune.deep_gain);
+        }
+        if (tune.spill.enabled) {
+            // WAVE-WATERWALL-001: absent while disabled, so the qualified
+            // Wave stream is unchanged. Parcels are bound by the ballistic block.
+            for (const char c : std::string_view{"wave-spill-v1"}) hash_byte(hash, static_cast<std::uint8_t>(c));
+            for (const auto value : {tune.spill.fall, tune.spill.share_shift, tune.spill.draw, tune.spill.draw_head,
+                                     tune.spill.stream, tune.spill.launch_min, tune.spill.launch_budget,
+                                     tune.spill.launch_speed}) hash_integer(hash, value);
+            hash_integer(hash, tune.spill.stream_share); hash_integer(hash, tune.spill.catch_falling);
+            hash_integer(hash, static_cast<std::uint8_t>(wave_->launch_backoff));
+            if (tune.spill.stream_draw != 0) {
+                for (const char c : std::string_view{"stream-draw"}) hash_byte(hash, static_cast<std::uint8_t>(c));
+                hash_integer(hash, tune.spill.stream_draw);
+            }
+            hash_wave_discharge(hash, tune.spill, ballistic_parcels_);
+        }
+        hash_integer(hash, wave_->round);
+    }
     return hash;
 }
 
@@ -2383,6 +2474,9 @@ void refuse_state(const char* detail) {
 }  // namespace
 
 std::vector<std::uint8_t> World::save_physical_state() const {
+    // wave_flow_v1 retained flux has no registered CYPS section: refuse rather
+    // than write a continuation that would silently drop authoritative state.
+    if (wave_ != nullptr) throw std::logic_error("wave_flow_v1 physical-state save is not admitted");
     require_healthy();
     if (tick_in_progress_) throw std::logic_error("cannot save during a world tick");
     if (settled_discovery_ != nullptr)
@@ -2581,6 +2675,8 @@ std::vector<std::uint8_t> World::save_physical_state() const {
 }
 
 std::unique_ptr<World> World::restore_physical_state(const WorldConfig& execution, std::span<const std::uint8_t> bytes) {
+    if (execution.wave_flow.enabled)
+        throw std::invalid_argument("wave_flow_v1 physical-state restore is not admitted");
     if (bytes.size() < 8U + 32U) refuse_state("payload is too short");
     const auto body = bytes.first(bytes.size() - 32U);
     const auto digest = Sha256::of(body);

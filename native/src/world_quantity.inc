@@ -174,6 +174,14 @@ void World::initialize_quantity_ledger(const QuantityConstructionSeed& seed) {
     quantity_ = initialized;
 }
 
+// wave_flow_v1 moves conserved Water between cells in bulk; only the number of
+// cells holding Water changes, with no source or sink.
+void World::apply_wave_population(std::int64_t delta) {
+    if (delta == 0) return;
+    auto& cells = quantity_.material_cells[static_cast<std::uint8_t>(Material::Water)];
+    cells = quantity_apply(cells, delta);
+}
+
 void World::record_quantity_transition(Material before, std::uint16_t before_visible,
     std::uint16_t before_overfill, Material after, std::uint16_t after_visible,
     std::uint16_t after_overfill, JobEffects* effects, QuantityCause cause,
@@ -387,7 +395,12 @@ void World::validate_quantity_ledger(bool scan_authority) const {
             if (events > std::numeric_limits<std::uint64_t>::max() / inputs ||
                 quantity_.pair_rules[i].consumed < events * inputs)
                 throw std::invalid_argument("quantity reaction input total inconsistent");
-            const auto input_bound = inputs * maximum * 2U;
+            // A pressure reaction can consume visible Water and its overfill
+            // sidecar. Wave keeps the whole quantity in one uint16 carrier.
+            const auto per_cell = wave_ != nullptr
+                ? static_cast<std::uint64_t>(std::numeric_limits<std::uint16_t>::max())
+                : maximum * 2U;
+            const auto input_bound = inputs * per_cell;
             if (events <= std::numeric_limits<std::uint64_t>::max() / input_bound &&
                 quantity_.pair_rules[i].consumed > events * input_bound)
                 throw std::invalid_argument("quantity reaction input exceeds cell bound");
@@ -400,8 +413,13 @@ void World::validate_quantity_ledger(bool scan_authority) const {
             quantity_.kinds[0] != WaterQuantityFlow{seed.normalization_produced, seed.normalization_consumed})
             throw std::invalid_argument("quantity construction binding mismatch");
         const auto prepared_water = quantity_.prepared_material_cells[static_cast<std::uint8_t>(Material::Water)];
-        if (prepared_water > std::numeric_limits<std::uint64_t>::max() / maximum ||
-            seed.expected_final_water < prepared_water || seed.expected_final_water > prepared_water * maximum ||
+        // A prepared Wave owner preserves the complete uint16 stored carrier,
+        // including conserved overfill retained during a Workbench retune.
+        // Other laws keep their nominal visible-cell construction bound.
+        const auto prepared_maximum = wave_ != nullptr
+            ? static_cast<std::uint64_t>(std::numeric_limits<std::uint16_t>::max()) : maximum;
+        if (prepared_water > std::numeric_limits<std::uint64_t>::max() / prepared_maximum ||
+            seed.expected_final_water < prepared_water || seed.expected_final_water > prepared_water * prepared_maximum ||
             ((seed.normalization_receipt_digest || whole_cell_water_enabled()) &&
              seed.expected_final_water != prepared_water * maximum))
             throw std::invalid_argument("quantity prepared Water population does not match initial mass");

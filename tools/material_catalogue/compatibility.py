@@ -333,8 +333,194 @@ REVIEWED_TRANSITIONS += ({'path': 'native/src/material_rules.cpp',
  'pr': 563},)
 
 
+# Reviewed default-off WAVE-MT-001 source; original catalogue lock stays immutable.
+REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
+  'from_lf_sha256': '36f928740f554cde7542bc16e8ef897317ea51f3897af665ff6bb7f9e1ca812b',
+  'to_lf_sha256': '9600f625792929db95481f45cca2233716df921ff5001a052d0839de043ff384',
+  'source_commit': '1e7fac9eb909b982c961f34eefe7859430728de8',
+  'record': 'docs/audits/2026-11-15-wave-mt-001-completion.md',
+  'issue': 618,
+  'pr': 618},
+ {'path': 'native/src/world_pressure.inc',
+  'from_lf_sha256': '899ada71b89d30ba063e047bdd5b02346948008f1b7c0bec9fa0f2272e4d86ec',
+  'to_lf_sha256': 'a545d153f0f68c930837c59be449ac455b3fd35f36e268f21cffbfc940cb6da9',
+  'source_commit': '1e7fac9eb909b982c961f34eefe7859430728de8',
+  'record': 'docs/audits/2026-11-15-wave-mt-001-completion.md',
+  'issue': 618,
+  'pr': 618},
+ {'path': 'native/src/world_quantity.inc',
+  'from_lf_sha256': 'd9e6835d092193e4976c728d90121c6dee4b421337e056b5fc3c74975491af6e',
+  'to_lf_sha256': '1dc5ac99aacb1bac6a41edb0aa7479ed4dbef2b493e1d26b02e185aaff9c3e1d',
+  'source_commit': '1e7fac9eb909b982c961f34eefe7859430728de8',
+  'record': 'docs/audits/2026-11-15-wave-mt-001-completion.md',
+  'issue': 618,
+  'pr': 618})
+
+# WAVE-MT-001 review repair: one conditional call that adds Wave solver state to
+# state_hash() for Wave Worlds only. Every other World keeps its hash stream.
+REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
+  'from_lf_sha256': '9600f625792929db95481f45cca2233716df921ff5001a052d0839de043ff384',
+  'to_lf_sha256': '09a34956642a203ae9b725875f0773001ab70bc22b478a904588604c7de866c1',
+  'source_commit': 'd3c2cacdf1c083b1c1bf0bfd0ed0e14690a48fe2',
+  'record': 'docs/audits/2026-11-15-wave-mt-001-completion.md',
+  'issue': 618,
+  'pr': 618},)
+
+# PR631 admission repair: reject unsupported coherent Water before zero-mass
+# normalization. Wave numerical law and all default-off writes are unchanged.
+REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
+  'from_lf_sha256': '09a34956642a203ae9b725875f0773001ab70bc22b478a904588604c7de866c1',
+  'to_lf_sha256': '911ac9df96c34f7bbc24e9de8b53099ba779ff6cc999c6ff349b61e4379ee143',
+  'source_commit': '66b7107dca129b85f5bcb1099b4d60149f87f429',
+  'record': 'docs/audits/2026-11-15-wave-mt-001-astra-takeover.md',
+  'issue': 631,
+  'pr': 631},)
+
+# PR631 Shared Workbench tuning: non-default Wave authoring parameters alter
+# future evolution, so complete physical identity now binds that tuning domain.
+# The qualified-v2/default parameter point retains its exact historical stream.
+REVIEWED_TRANSITIONS += ({'path': 'native/src/world_pressure.inc',
+  'from_lf_sha256': 'a545d153f0f68c930837c59be449ac455b3fd35f36e268f21cffbfc940cb6da9',
+  'to_lf_sha256': 'ccd3c773992560a22989a3009c5dc383e4a16cc83d6dd21be0ca4b5111a842b4',
+  'source_commit': '9bf39e70df4fbfdee87222cc8fa208a932729f72',
+  'record': 'docs/audits/2026-11-16-pr631-wave-workbench-transition.md',
+  'issue': 631,
+  'pr': 631},)
+
+# PR631 Workbench finisher: Wave-only construction bounds preserve uint16
+# inventory and refuse conversion to a law that cannot represent retained cells.
+# Catalogue IDs, payload/hash encodings, legacy bounds and numerical laws stay fixed.
+REVIEWED_TRANSITIONS += ({'path': 'native/src/world_pressure.inc',
+  'from_lf_sha256': 'ccd3c773992560a22989a3009c5dc383e4a16cc83d6dd21be0ca4b5111a842b4',
+  'to_lf_sha256': '9ee31ffc4ea89b50f78e39eecc8f5c9be5944bcbc2f6ead48698c714564b7067',
+  'source_commit': '1ca6da11427291a87409f7583df8cb4831a03bca',
+  'record': 'docs/audits/2026-11-16-wave-workbench-631-finisher.md',
+  'issue': 631,
+  'pr': 631},
+ {'path': 'native/src/world_quantity.inc',
+  'from_lf_sha256': '1dc5ac99aacb1bac6a41edb0aa7479ed4dbef2b493e1d26b02e185aaff9c3e1d',
+  'to_lf_sha256': '75f9743ee614fd6e5ee6ae96d3f35445b3162e19c9f7686b9eefc29f97e52dae',
+  'source_commit': '1ca6da11427291a87409f7583df8cb4831a03bca',
+  'record': 'docs/audits/2026-11-16-wave-workbench-631-finisher.md',
+  'issue': 631,
+  'pr': 631},)
+
 class CompatibilityError(ValueError):
     """An actionable source or baseline mismatch; never repairs the source."""
+
+
+# WAVE-WATERWALL-001 (Draft/HOLD, stacked on PR661): opt-in Wave spill. world.cpp
+# only resets the new carried launch back-off flag in clear(); world_pressure.inc
+# binds spill configuration into physical identity only while spill is enabled.
+# Spill-disabled Wave and every other World keep their exact hash streams.
+REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
+  'from_lf_sha256': '911ac9df96c34f7bbc24e9de8b53099ba779ff6cc999c6ff349b61e4379ee143',
+  'to_lf_sha256': '80e05f673b3d6ba35daa7c741805aa272f149e7742d162c94c8c0bd9bdbc1e83',
+  'source_commit': '751c1a951a8f76c397dd3f903f378208119d29f1',
+  'record': 'docs/audits/2026-11-17-wave-waterwall-001.md',
+  'issue': 661,
+  'pr': 661},
+ {'path': 'native/src/world_pressure.inc',
+  'from_lf_sha256': '9ee31ffc4ea89b50f78e39eecc8f5c9be5944bcbc2f6ead48698c714564b7067',
+  'to_lf_sha256': '64c3afbe1e368d24d3ac4d484a78fa8cd3fc380c80fe54bfeb8661738048254f',
+  'source_commit': '26d032f14820d6d46272d487d56cacaee4544368',
+  'record': 'docs/audits/2026-11-17-wave-waterwall-001.md',
+  'issue': 661,
+  'pr': 661})
+
+
+# WAVE-WATERWALL-001 follow-up: bind the blobs/stream-share look controls into
+# Wave physical identity, only while spill is enabled.
+REVIEWED_TRANSITIONS += ({'path': 'native/src/world_pressure.inc',
+  'from_lf_sha256': '64c3afbe1e368d24d3ac4d484a78fa8cd3fc380c80fe54bfeb8661738048254f',
+  'to_lf_sha256': 'df6558560b4bfe946a86826c83559138d279f94d77d0a7309a3551e671386fe8',
+  'source_commit': '1d71202a35a7945e496b0cb83a2d639b2ad2b5bc',
+  'record': 'docs/audits/2026-11-17-wave-waterwall-001.md',
+  'issue': 661,
+  'pr': 661},)
+
+
+# WAVE-WATERWALL-001 stream draw (2026-11-18): bind stream_draw into Wave
+# physical identity only while spill is enabled and stream_draw is non-zero, so
+# every earlier spill World keeps its exact hash (pinned in test_wave_spill.cpp).
+REVIEWED_TRANSITIONS += ({'path': 'native/src/world_pressure.inc',
+  'from_lf_sha256': 'df6558560b4bfe946a86826c83559138d279f94d77d0a7309a3551e671386fe8',
+  'to_lf_sha256': 'c5d639212290c9a4faee47f86a3cfe5bf664a5a51d241d4b5c9c1cdb985b6105',
+  'source_commit': 'd07f24c89b88a95803602d4187bd71e7f8933ec6',
+  'record': 'docs/audits/2026-11-17-wave-waterwall-001.md',
+  'issue': 661,
+  'pr': 661},)
+
+# Waterwall 002 opts into Wave scratch storage and configuration/flight identity.
+REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
+  'from_lf_sha256': '80e05f673b3d6ba35daa7c741805aa272f149e7742d162c94c8c0bd9bdbc1e83',
+  'to_lf_sha256': 'fef05d7f0318f0a54948144ee22f30721555a567ac3963309c927b60fbfb0cf0',
+  'source_commit': 'd876bd57897dd421b720e73d15d7c89a830b4896',
+  'record': 'docs/audits/2026-11-19-wave-waterwall-002.md',
+  'issue': 672,
+  'pr': 676},
+ {'path': 'native/src/world_pressure.inc',
+  'from_lf_sha256': 'c5d639212290c9a4faee47f86a3cfe5bf664a5a51d241d4b5c9c1cdb985b6105',
+  'to_lf_sha256': 'bce02406c837967e95206ea6f6e93145b2b327a1d42e3e6e29da9d3507603d03',
+  'source_commit': 'd876bd57897dd421b720e73d15d7c89a830b4896',
+  'record': 'docs/audits/2026-11-19-wave-waterwall-002.md',
+  'issue': 672,
+  'pr': 676})
+
+# Apply bounds live crest grace to the destination's flight law.
+REVIEWED_TRANSITIONS += ({'path': 'native/src/world_pressure.inc',
+  'from_lf_sha256': 'bce02406c837967e95206ea6f6e93145b2b327a1d42e3e6e29da9d3507603d03',
+  'to_lf_sha256': '0e012c7f2944cf8d5f9d8aa383e8635bbbd313d26fc5079160a02d5f4e1e3a0f',
+  'source_commit': 'd4df71fc6bc1bf6267270a4c1445207a02716317',
+  'record': 'docs/audits/2026-11-19-wave-waterwall-002.md',
+  'issue': 672,
+  'pr': 676},)
+
+# Bind the optional level-floor Wave gain to physical identity on the ramp branch.
+REVIEWED_TRANSITIONS += ({'path': 'native/src/world_pressure.inc',
+  'from_lf_sha256': '0e012c7f2944cf8d5f9d8aa383e8635bbbd313d26fc5079160a02d5f4e1e3a0f',
+  'to_lf_sha256': 'fca639dfbf6274c590fb38283207aa838d6aa659e3ed0e95b397f6a7d8ab5be1',
+  'source_commit': '1604b66b19705d79d2704e5119a25823caee0973',
+  'record': 'docs/audits/2026-11-19-wave-water-ramp-003.md',
+  'issue': 676,
+  'pr': 677},)
+
+# Wave Water uses the catalogue's existing Water/Oil density ordering.
+REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
+  'from_lf_sha256': 'fef05d7f0318f0a54948144ee22f30721555a567ac3963309c927b60fbfb0cf0',
+  'to_lf_sha256': 'fd8052ee6630ee5c9a664ff30611eddcbf9d74ac88203ac5143bbc9a2bcb52fc',
+  'source_commit': 'b8db73ce7d0f37c1a38690ea34749d1ccba3474b',
+  'record': 'docs/audits/2026-11-19-wave-oil-buoyancy.md',
+  'issue': 678,
+  'pr': 679},
+ {'path': 'native/src/world.cpp',
+  'from_lf_sha256': 'fd8052ee6630ee5c9a664ff30611eddcbf9d74ac88203ac5143bbc9a2bcb52fc',
+  'to_lf_sha256': 'c5b768aa5b2f80782f2c70327f8e267936bd0bc862f7fdcc72117d364e84bd0b',
+  'source_commit': '0b2a46cee3598ae8e6ce481167ff3f482f83580f',
+  'record': 'docs/audits/2026-11-19-wave-oil-buoyancy.md',
+  'issue': 678,
+  'pr': 679},
+ {'path': 'native/src/world.cpp',
+  'from_lf_sha256': 'c5b768aa5b2f80782f2c70327f8e267936bd0bc862f7fdcc72117d364e84bd0b',
+  'to_lf_sha256': '9969471e50b6f462dcd62dd66c9986d453b037f71d84d21f14a50859c86bebaf',
+  'source_commit': '932a811c474de7f2720719f258a9fd38d8aecdfd',
+  'record': 'docs/audits/2026-11-19-wave-oil-buoyancy.md',
+  'issue': 678,
+  'pr': 679},
+ {'path': 'native/src/world.cpp',
+  'from_lf_sha256': '9969471e50b6f462dcd62dd66c9986d453b037f71d84d21f14a50859c86bebaf',
+  'to_lf_sha256': 'ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a',
+  'source_commit': '461b1c1485418bcd8f83f29efe1cccf7ef4a9928',
+  'record': 'docs/audits/2026-11-19-wave-oil-buoyancy.md',
+  'issue': 678,
+  'pr': 679},
+ {'path': 'native/src/world_quantity.inc',
+  'from_lf_sha256': '75f9743ee614fd6e5ee6ae96d3f35445b3162e19c9f7686b9eefc29f97e52dae',
+  'to_lf_sha256': '4ff7dd56d93d389cb3451dae82619edf0934d2bed5703ce673e1a5d95310d489',
+  'source_commit': 'baa5699083f5f668f9c03309aceaccd0f1fb80d9',
+  'record': 'docs/audits/2026-11-19-wave-oil-lava.md',
+  'issue': 679,
+  'pr': 679},)
 
 
 def lf(data: bytes) -> bytes:

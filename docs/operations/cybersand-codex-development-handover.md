@@ -21,13 +21,29 @@ historical progress prose as engineering completion. The frozen native selection
 is `fixed_territory`, two rounds; matched controls distinguish causal exchange
 from mask-driven nominal changes. Native source qualification and unopened
 registered holdouts precede the dependent Workbench acceptance record. The
-Workbench lane explicitly reconciles accepted main `de58bf1997ca75825cf3b29e046dc1c1022c45bf`;
+Workbench lane was initially audited at accepted main
+`7b03aa437561ec63e31fd09531171360ab60eeb4` and explicitly reconciles accepted
+Water main `de58bf1997ca75825cf3b29e046dc1c1022c45bf`;
 #684/#685 remain separate.
 The owner authorized both implementation stages, not merge or Ready promotion.
 Development two-sided geometry witnesses do not establish full hard closure,
 Windows graphical acceptance or physical stability. No final closure ledger
 means unknown requirements, never a zero-required success. Keep frozen B/C/E8
 evidence, registered holdouts, failed cases and exact-source receipts intact.
+
+## Workbench Art traffic lifetime — 2026-11-20
+
+[Draft PR #681](https://github.com/techrote/cybersand/pull/681) completes the
+lazy conversation and immutable segment repair. Read the
+[provider contract](../systems/workbench-art-providers.md#lazy-reopening-and-traffic-storage)
+for current lifetime, validation, Stop/export and capacity behavior; the
+[dated finisher record](../audits/2026-11-20-wb-art-traffic-lifetime.md) separates
+engineering measurements from exact-source final qualification in the PR ledger.
+All destructive and multi-gigabyte tests use isolated synthetic user data.
+Existing archives remain immutable, and missing history must retain its saved
+pointer with a visible refusal. Keep **Draft / HOLD**; do not mark Ready,
+merge or enable auto-merge. Hosted Windows evidence does not establish acceptance
+on the owner's physical Windows installation.
 
 ## Architectural Generator runtime repair — 2026-11-15
 
@@ -111,6 +127,47 @@ game, opt-in deterministic rotation packing and registered run `packed-001`,
 which matched Windows and Linux. The default launch is unchanged. Remaining
 steps (input capture, terrain-installation fence, workbench measurement,
 semaphore wake) are separate and need their own registration.
+
+## Wave flow Water solver experiment (WAVE-MT-001) — 2026-11-15
+
+The 18 November [stack-review remediation](../audits/2026-11-18-waterwall-review-remediation.md)
+records five reproduced defects and focused repairs on #672 only: diagonal wet
+corners, checked ballistic spawn conversion, focused Water Lab field commitment,
+preservation of current non-Water policy, and Body push scaling of launch reaction.
+Parents #661/#631 remain unchanged. The repaired source requires its own native,
+desktop and publication evidence; predecessor passes do not qualify it. Keep
+merge HOLD and do not infer physical Windows/NVIDIA acceptance or resolution of
+the original surface-crest crash from these regressions.
+
+The 16 November [Workbench finisher](../audits/2026-11-16-wave-workbench-631-finisher.md)
+supersedes the earlier dedicated-evaluator handoff for human testing. Ordinary
+Workbench Apply must receive a positive native replacement receipt and show
+the actual World configuration; an empty pending request alone is not success.
+Exact Baseline transport is admitted for Wave, custom transport remains refused,
+and the source-matched publisher executes both the original canvas regression
+and the focused Workbench Wave lifecycle suite before producing the Windows
+`Open Workbench.cmd` package. Final full-source CI and independent review remain
+separate from publication. Keep Draft/HOLD after the controlled CI transition.
+
+PR [#631](https://github.com/techrote/cybersand/pull/631), owned branch
+`astra/wave-mt-001-669-finisher`, takes over the repaired experimental
+`wave_flow_v1` candidate exactly from #618 at `2a4edafa1c0b81b1f654bab28baae0e511c9a761`.
+The [takeover record](../audits/2026-11-15-wave-mt-001-astra-takeover.md) and
+PR #631 ledger own final qualification. PR #617 and #618 remain read-only. The
+[canonical contract](../architecture/wave-flow-v1.md) and
+[evaluation guide](wave-flow-evaluation.md) describe the native solver,
+versioned mass/configuration APIs, Godot selection, comparison fixtures and
+real Rapier/Needle paths. The [water ramp branch](../audits/2026-11-19-wave-water-ramp-003.md) selects Wave, spill and ballistic release for new player sessions. Raw solver selection remains outside the production policy catalogue. Complete state identity includes retained flux;
+physical save and restore explicitly refuse Wave Worlds.
+
+The [completion record](../audits/2026-11-15-wave-mt-001-completion.md)
+separates repaired source, local tests, exact-source runtime publication,
+complete hosted qualification, fresh benchmarks and final independent review.
+The [original measurements](../audits/2026-11-15-wave-mt-001-wave-flow.md)
+are historical evidence for #617, not qualification of #618. Protected-source
+transitions retain their source commits and require a merge commit eventually;
+do not squash or rebase away that history. Human Windows/GPU acceptance remains
+separate. Do not merge or enable auto-merge without the owner's approval.
 
 ## Ballistic Water experiment (#362) — 2026-11-05
 

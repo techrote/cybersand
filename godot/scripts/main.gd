@@ -11,6 +11,23 @@ const PlayableCourseLap = preload("res://scripts/playable_course_lap.gd")
 const PlayableCourseOverlay = preload("res://scripts/playable_course_overlay.gd")
 const SnapshotPublicationCounter = preload("res://scripts/snapshot_publication_counter.gd")
 const FACE_TUNING := ["workbench_face_budget","workbench_face_speed","workbench_face_period","workbench_face_min_height"]
+const WAVE_TUNING := [
+	"workbench_wave_substeps","workbench_wave_active_rows","workbench_wave_gain",
+	"workbench_wave_deep_gain","workbench_wave_floor_gain","workbench_wave_flux_smoothing",
+	"workbench_wave_gain_confined","workbench_wave_stiffness","workbench_wave_damp_shift",
+	"workbench_wave_coast","workbench_wave_level_shift","workbench_wave_sleep_after",
+	"workbench_wave_wake_peak","workbench_wave_rest_head","workbench_wave_stick",
+	"workbench_wave_calm","workbench_wave_calm_damp_shift","workbench_wave_maximum_mass",
+	"workbench_wave_empty_pour_shift","workbench_wave_flow_share_shift","workbench_wave_adhesion_shift",
+	"workbench_wave_body_push","workbench_wave_body_push_by_mass",
+]
+# WAVE-WATERWALL-001 exposed-face spill: Wave-only construction requests.
+const WAVE_SPILL_SWITCHES := ["workbench_wave_spill","workbench_wave_spill_parcels","workbench_wave_spill_full_face"]
+const WAVE_SPILL_TUNING := [
+	"workbench_wave_spill_fall","workbench_wave_spill_draw","workbench_wave_spill_deep_draw","workbench_wave_spill_draw_head","workbench_wave_spill_sheet_rate","workbench_wave_spill_coyote_ticks",
+	"workbench_wave_spill_launch_speed","workbench_wave_spill_launch_budget",
+	"workbench_wave_spill_stream_share","workbench_wave_spill_blobs","workbench_wave_spill_stream_draw",
+]
 const PlayableSessionPanel = preload("res://scripts/playable_session_panel.gd")
 const DEFAULT_PLAYABLE_OPTIONS: Dictionary = {"controls":"keyboard_gamepad", "rules":"lap", "camera":"follow"}
 const PLAYABLE_RECOVERY_META: StringName = &"cybersand_playable_recovery"
@@ -39,8 +56,9 @@ var physical_actor_overlay: CyberPhysicalActorOverlay
 var _workbench_wait_sample: int = -1
 var _workbench_collider_frame: int = -1
 var shared_workbench: Control
-# WCX/BW-001 experimental construction options for the next workbench build
-# (ballistic Water parcels, IN-B1 signed law). Empty keeps every default.
+# Experimental Water settings staged for explicit Apply/Load. Unrelated
+# lifecycle rebuilds reuse the last acknowledged native construction options.
+# Empty keeps every default.
 var workbench_water_options: Dictionary = {}
 var world_extent := Vector2i(CyberCellWorld.WORLD_WIDTH,CyberCellWorld.WORLD_HEIGHT)
 var playable_course_overlay: Control
@@ -261,7 +279,9 @@ const MATERIAL_GROUP_FIRST_IDS: Array[int] = [
 @onready var test_rigid_body_2: RigidBody2D = $RigidBodies/TestBody2
 @onready var test_rigid_body_3: RigidBody2D = $RigidBodies/TestBody3
 
-var simulation_worker: CyberSimulationWorker = CyberSimulationWorker.new()
+# Desktop construction samples the current native capacity before entering the
+# tree. The browser constructs its gameplay World in its synchronous controller.
+var simulation_worker: CyberSimulationWorker = CyberSimulationWorker.new(not OS.has_feature("web"))
 var gameplay_recorder = GameplayRecorder.new()
 var recording_button: Button
 var player_environment_panel
@@ -683,7 +703,18 @@ func workbench_restart(candidate: Dictionary) -> bool:
 	_playable_recovery_error = ""
 	paused = true
 	cancel_playable_course_input()
-	_reload_failed_playable_scene.call_deferred({"workbench":candidate.duplicate(true)})
+	# A restart creates a new Main as well as a new native owner. Carry the last
+	# accepted construction options, not unsubmitted/invalid edits in the panel.
+	# Otherwise an active Wave World silently returns to its FreeMass carrier.
+	var accepted_water := {}
+	var construction_keys: Array = FACE_TUNING + WAVE_TUNING + WAVE_SPILL_SWITCHES + WAVE_SPILL_TUNING + [
+		"workbench_wave_flow","workbench_ballistic","workbench_face_release",
+		"workbench_inertial_signed","workbench_fine_cores","workbench_worker_threads",
+		"pressure_gas_compartment_capacity"]
+	for key: String in construction_keys:
+		if microscenario_liquid_setup.has(key): accepted_water[key] = microscenario_liquid_setup[key]
+	_reload_failed_playable_scene.call_deferred({"workbench":candidate.duplicate(true),
+		"workbench_water_options":accepted_water})
 	return true
 
 func cancel_playable_session_recovery() -> void:
@@ -755,8 +786,13 @@ func apply_playable_session(selection: Dictionary, policy: PackedInt32Array,
 func workbench_apply(candidate: Dictionary, actors: Array, rectangles: Array, extent: Vector2i,
 		policy: PackedInt32Array, normalize_water: bool, radius: int, response: String,
 		preserve_cells: bool = false, convert_liquid_inventory: bool = false, resume_play: bool = false,
-		generated_packet: Dictionary = {}, material_baseline: Dictionary = {}) -> bool:
+		generated_packet: Dictionary = {}, material_baseline: Dictionary = {},
+		apply_staged_water: bool = true, authoring_patch: Dictionary = {}) -> bool:
 	if shared_workbench == null: return false
+	if not authoring_patch.is_empty() and (not paused or not preserve_cells or convert_liquid_inventory \
+			or not generated_packet.is_empty() or not material_baseline.is_empty() or apply_staged_water):
+		microscenario_error = "Construction patch requires a paused retained World and unchanged settings."
+		return false
 	if not pending_microscenario_apply.is_empty():
 		microscenario_error = "Wait for the pending workbench installation."
 		return false
@@ -795,15 +831,60 @@ func workbench_apply(candidate: Dictionary, actors: Array, rectangles: Array, ex
 		settings["workbench_generated"] = generated_packet
 	if not material_baseline.is_empty():
 		settings["workbench_material_baseline"] = material_baseline
-	# Developer-only explicit C2048 opt-in. Omitted means the native C1024 default.
-	if workbench_water_options.get("pressure_gas_compartment_capacity",1024) is int:
-		settings["pressure_gas_compartment_capacity"] = int(workbench_water_options.get("pressure_gas_compartment_capacity",1024))
-	for key: String in ["workbench_ballistic","workbench_inertial_signed","workbench_face_release","workbench_fine_cores"]:
-		if workbench_water_options.get(key,false) is bool and workbench_water_options.get(key,false):
-			settings[key] = true
+	if not authoring_patch.is_empty():
+		settings["workbench_authoring_patch"] = authoring_patch.duplicate(true)
+	# Editing a body or restoring the current authored start must not apply
+	# unfinished Water controls. Only explicit Apply/Load promotes that proposal;
+	# the accepted setup is recorded after native preparation and commit succeed.
+	var water_options: Dictionary = (workbench_water_options if apply_staged_water or shared_workbench.applied.is_empty()
+		else microscenario_liquid_setup)
+	# Preserve present values until native validation. Silently dropping a wrong
+	# type would falsely report that a different/default configuration applied.
+	for key: String in ["workbench_ballistic","workbench_inertial_signed","workbench_face_release","workbench_fine_cores","workbench_wave_flow"]:
+		if water_options.has(key):
+			if not water_options[key] is bool:
+				microscenario_error = key+" must be boolean; the running World is unchanged."
+				return false
+			settings[key] = water_options[key]
+	if water_options.has("workbench_worker_threads"):
+		settings["workbench_worker_threads"] = water_options.workbench_worker_threads
+	# A fresh authored setup may explicitly assign Water to another family.
+	# Its selected law wins on load. Validate retained/live Apply as requested.
+	var wave_requested := bool(settings.get("workbench_wave_flow",false))
+	var check_authored_law := not preserve_cells and apply_staged_water and wave_requested
+	var has_pressure_capacity := water_options.has("pressure_gas_compartment_capacity")
+	var water_family := ""
+	if check_authored_law or (not wave_requested and has_pressure_capacity):
+		var checked: Dictionary = shared_workbench._liquids.bridge.validate_liquid_policy(policy)
+		# A refused policy has no receipt. Native preparation publishes its refusal.
+		if checked.accepted:
+			for assignment: Dictionary in checked.receipt.assignments:
+				if int(assignment.material) == CyberCellWorld.WATER:
+					water_family = str(assignment.applied_family)
+					break
+	var adopt_authored_law := check_authored_law and not water_family.is_empty() and water_family != "freemass_v1"
+	if adopt_authored_law: settings.workbench_wave_flow = false
+	# C2048 belongs to PressureFlow. Keep its staged value for comparison, but
+	# every other law uses the ordinary non-pressure construction capacity.
+	if has_pressure_capacity and water_family == "pressure_flow_v1":
+		settings["pressure_gas_compartment_capacity"] = water_options.pressure_gas_compartment_capacity
 	if settings.get("workbench_face_release",false) and settings.get("workbench_ballistic",false):
 		for key: String in FACE_TUNING:
-			if workbench_water_options.get(key) is int: settings[key] = workbench_water_options[key]
+			if water_options.has(key): settings[key] = water_options[key]
+	if settings.get("workbench_wave_flow",false):
+		for key: String in WAVE_TUNING:
+			if water_options.has(key): settings[key] = water_options[key]
+		# Spill belongs to Wave only. A staged spill request is never sent to
+		# another law, and its tuning only accompanies an enabled spill.
+		for key: String in WAVE_SPILL_SWITCHES:
+			if water_options.has(key):
+				if not water_options[key] is bool:
+					microscenario_error = key+" must be boolean; the running World is unchanged."
+					return false
+				settings[key] = water_options[key]
+		if settings.get("workbench_wave_spill",false):
+			for key: String in WAVE_SPILL_TUNING:
+				if water_options.has(key): settings[key] = water_options[key]
 	# Lossy conversion belongs only to an explicit developer policy switch.
 	# Ordinary replacements (including Apply of an unchanged policy) keep
 	# all compatible native inventory and use the normal refusal contract.
@@ -815,6 +896,7 @@ func workbench_apply(candidate: Dictionary, actors: Array, rectangles: Array, ex
 	if not _apply_microscenario_definition(definition,"Play",config,policy,settings): return false
 	pending_microscenario_apply.workbench = candidate.duplicate(true)
 	pending_microscenario_apply.workbench_resume = resume_play
+	pending_microscenario_apply.workbench_adopt_authored_law = adopt_authored_law
 	return true
 
 func _apply_microscenario_definition(definition: Dictionary, mode: String, actor_configuration: Dictionary = {},
@@ -1767,6 +1849,21 @@ func _ready() -> void:
 	# fresh scene's _ready starts its worker. The envelope contains copied values.
 	var recovery: Dictionary = get_tree().get_meta(PLAYABLE_RECOVERY_META, {})
 	if get_tree().has_meta(PLAYABLE_RECOVERY_META): get_tree().remove_meta(PLAYABLE_RECOVERY_META)
+	if recovery.has("workbench_water_options"):
+		workbench_water_options = recovery.workbench_water_options.duplicate(true)
+	elif get_tree().get_meta("cybersand_feature","") == "shared_workbench" and ClassDB.class_exists(&"CyberNativeCellWorld"):
+		# Recovery envelopes and caller-supplied Water selections already describe
+		# a World. Only a new Workbench receives the current gameplay bundle.
+		if not workbench_water_options.has("workbench_wave_flow"):
+			var defaults: Dictionary = ClassDB.class_call_static(&"CyberNativeCellWorld",&"gameplay_water_options")
+			defaults.merge(workbench_water_options,true)
+			if defaults.get("workbench_ballistic") == false or defaults.get("workbench_wave_spill") == false:
+				defaults.workbench_wave_spill_parcels = false
+			if defaults.get("workbench_wave_spill") == false:
+				defaults.workbench_wave_spill_full_face = false
+			if defaults.get("workbench_face_release") == true or defaults.get("workbench_inertial_signed") == true:
+				defaults.workbench_wave_flow = false
+			workbench_water_options = defaults
 	if not recovery.is_empty() or get_tree().get_meta("cybersand_feature","") == "shared_workbench": paused = true
 	if OS.get_cmdline_user_args().has("--depth-lab") and not get_tree().has_meta("cybersand_depth_lab_visited"):
 		set_process(false)

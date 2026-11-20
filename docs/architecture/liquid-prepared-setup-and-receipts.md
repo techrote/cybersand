@@ -4,8 +4,8 @@ status: Current
 document-kind: design
 scope: Accepted main LCB-001 native construction contract — immutable final tuples, explicit Water normalization, prepared World ownership, typed native outcomes, native run and attempt receipts, exact quantity aggregates, physical hash/CYPS2 and source-matched Windows/Linux acceptance; application-host proof and downstream family work remain open
 canonical-for: [liquid-prepared-setup, liquid-native-run-receipt, liquid-quantity-accounting]
-last-reviewed: 2026-10-25
-related-documents: [liquid-solver-family-policy.md, pressure-flow-v1.md, liquid-state-transition-matrix.md, lcb-pressure-inertial-handoff.md, ../operations/lcb-water-comparison-and-fixtures.md, ../operations/lcb-manual-comparison-ux.md, ../operations/current-and-historical-validation.md, ../reference/status-and-roadmap.md]
+last-reviewed: 2026-11-20
+related-documents: [liquid-solver-family-policy.md, pressure-flow-v1.md, liquid-state-transition-matrix.md, lcb-pressure-inertial-handoff.md, shared-workbench-authoring-data.md, ../operations/lcb-water-comparison-and-fixtures.md, ../operations/lcb-manual-comparison-ux.md, ../operations/current-and-historical-validation.md, ../reference/status-and-roadmap.md]
 ---
 
 # Native liquid prepared setup, receipts and quantity accounting
@@ -458,6 +458,28 @@ prove complete executed host identity or matching publication. The
 records actual normal user selection/restart, deterministic collection/fence
 refusal, physical graph/record preservation and remaining constructor/platform gaps.
 
+### Workbench observation geometry capacity
+
+**WORKBENCH-HOST-CLAIMS-001 candidate, 20 November 2026; Draft/HOLD:** the
+[large-start authoring contract](shared-workbench-authoring-data.md#large-workbench-starts-and-host-claim-projection)
+defines a bounded observation projection. The validated complete Workbench
+definition and all ordered rectangles still reach native preparation. Only an
+unverified host-claim rectangle Array longer than 32,768 integer words is omitted
+from the observation copy; its exact word/rectangle counts, complete canonical
+definition SHA-256 and explicit `unverified_host_claim_projection` status remain.
+This admits otherwise valid starts at 6,554 or more rectangles without changing
+native construction authority or the global pure-value envelope. Smaller
+Workbench and all non-Workbench claims keep their existing behavior.
+
+The projection is collected after successful native preparation and before final
+owner commit. It neither acknowledges installation nor upgrades native-v1/full-host
+qualification. Collection or commit refusal retains the prior World and observation
+under the existing transaction. The installed native rectangle capacity remains an
+independent admission gate; source-level 32,768 support cannot qualify an old
+4,096-capacity binary. Setup-v2/generated-start-v1 persistence and native receipts
+are unchanged. Platform execution and saved-start reconstruction belong to the
+[dated qualification record](../audits/2026-11-20-workbench-host-claims-qualification.md).
+
 ## Inertial application readback and explicit geometry
 
 The integrated #202 branch exposes actual immutable IN parameters through
@@ -797,6 +819,13 @@ Water sinks, deferred-event Water sources, incapable kernel explanations and
 invalid production quanta. Prepared Water count/quantity bounds also constrain
 the declared initial state. Current species snapshots and rule aggregates do
 not authenticate every possible external history or provide an ordered replay.
+
+A pair reaction can consume all the Water in a compressed Wave cell, up to
+65,535 units. The Lava-Water quench converts that cell to Steam and the Lava
+to Stone. The ledger charges the actual stored Water to the reaction. The
+validation limit follows the active Water carrier. The spray readback compares
+grid plus in-flight Water with the quantity remaining after reactions and
+edits. [Windows reproduction and validation](../audits/2026-11-19-wave-oil-lava.md)
 
 Worker deltas are fixed per scheduling slot and merged after the phase barrier.
 There is no new tick-time allocation, per-cell lock or per-material thread.

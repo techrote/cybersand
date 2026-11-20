@@ -5,6 +5,7 @@ var host: Variant
 var overlay: ColorRect
 var pages: Dictionary = {}
 var buttons: Dictionary = {}
+var next_water := OptionButton.new()
 var save_text: TextEdit
 var notice: Label
 var capability: Label
@@ -76,7 +77,14 @@ func setup(controller: Control) -> void:
 	column.add_child(HSeparator.new())
 
 	var home: VBoxContainer = _page(column, "home")
-	_label(home, "DEMONSTRATIONS", 14)
+	var demo_settings := HBoxContainer.new()
+	home.add_child(demo_settings)
+	_label(demo_settings, "Water for new demos", 14)
+	next_water.add_item("Wave Flow")
+	next_water.add_item("FreeMass · CYSD1 saves")
+	next_water.tooltip_text = "Used when you open or reset a demo. Existing CYSD1 saves load with their original Water law."
+	next_water.item_selected.connect(func(index: int) -> void: host.gameplay_water = index == 0)
+	demo_settings.add_child(next_water)
 	var grid: GridContainer = GridContainer.new()
 	grid.columns = 2
 	grid.add_theme_constant_override("h_separation", 12)

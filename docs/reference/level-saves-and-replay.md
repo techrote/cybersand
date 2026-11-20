@@ -175,6 +175,13 @@ typed native receipt and provides no full host-replay proof.
 
 ## Which evidence applies?
 
+Experimental [Wave Flow](../architecture/wave-flow-v1.md) refuses physical-state
+save and restore, including restoring a legacy save into an existing Wave World.
+Its complete physical identity includes retained face flux and scheduling state;
+physical save format 0 explicitly reports unsupported continuation. This does
+not change legacy CYPS semantics. A material projection or level export is not
+a Wave continuation and must never be presented as one.
+
 `test_web_demo_setup.gd` covers construction, native rejection and exact level
 payload restoration; `test_web_rapier.gd` exercises body/lifecycle restoration.
 The native snapshot regression and

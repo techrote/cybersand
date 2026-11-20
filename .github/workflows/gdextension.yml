@@ -153,6 +153,7 @@ jobs:
           python3 tools/ci/test_execution_telemetry.py
           python3 tools/ci/test_job_performance.py
           python3 tools/ci/test_godot_job_plan.py
+          python3 tools/ci/test_godot_attempt_custody.py
             python3 tools/ci/test_godot_scheduling.py
           python3 tools/ci/test_verify_linux_godot_shards.py
           python3 tools/ci/test_verify_retained_play_readback.py
@@ -263,7 +264,8 @@ jobs:
       - name: Publish Linux runtime for isolated regression shards
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: linux-runtime-${{ github.run_id }}
+          # Artifact IDs can decrease across attempts; names must isolate them.
+          name: linux-runtime-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/linux-runtime/
           if-no-files-found: error
           retention-days: 1
@@ -283,7 +285,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: godot-build-timing-linux-${{ github.run_id }}
+          name: godot-build-timing-linux-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/build-timing/
           if-no-files-found: warn
           retention-days: 90
@@ -389,7 +391,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: godot-build-timing-windows-${{ github.run_id }}
+          name: godot-build-timing-windows-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/build-timing/
           if-no-files-found: warn
           retention-days: 90
@@ -496,7 +498,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: windows-godot-headless-${{ matrix.shard }}-${{ github.run_id }}
+          name: windows-godot-headless-${{ matrix.shard }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/godot-regressions/windows-${{ matrix.shard }}/
           if-no-files-found: error
           retention-days: 30
@@ -521,7 +523,7 @@ jobs:
       - name: Download every original Windows shard artifact
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
-          pattern: windows-godot-headless-*-${{ github.run_id }}
+          pattern: windows-godot-headless-*-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/windows-coverage-input
       - name: Download independently verified same-run Windows candidate
         timeout-minutes: 5
@@ -549,7 +551,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: windows-coverage-${{ github.run_id }}
+          name: windows-coverage-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             build/windows-coverage.json
             build/windows-coverage-verification.log
@@ -578,7 +580,7 @@ jobs:
         timeout-minutes: 5
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
-          name: linux-runtime-${{ github.run_id }}
+          name: linux-runtime-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/linux-runtime
 
       - name: Verify and install source-built runtime
@@ -595,7 +597,8 @@ jobs:
         timeout-minutes: 20
         run: |
           set -euo pipefail
-          timeout "$(python3 tools/ci/execution_policy.py seconds dependency_prepare_seconds)" curl --fail --location --retry 3 --output "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          godot_download_seconds="$(python3 tools/ci/execution_policy.py seconds dependency_prepare_seconds)"
+          timeout "$godot_download_seconds" curl --fail --location --retry 3 --retry-all-errors --retry-delay 2 --retry-max-time "$godot_download_seconds" --output "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
           echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
           unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
           GODOT_BIN="$(find "$RUNNER_TEMP/godot" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
@@ -655,7 +658,7 @@ jobs:
         timeout-minutes: 5
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
-          name: linux-runtime-${{ github.run_id }}
+          name: linux-runtime-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/linux-runtime
 
       - name: Verify and install runtime artifact
@@ -670,7 +673,8 @@ jobs:
       - name: Prepare exact Godot runtime
         timeout-minutes: 20
         run: |
-          timeout "$(python3 tools/ci/execution_policy.py seconds dependency_prepare_seconds)" curl --fail --location --retry 3 --output "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          godot_download_seconds="$(python3 tools/ci/execution_policy.py seconds dependency_prepare_seconds)"
+          timeout "$godot_download_seconds" curl --fail --location --retry 3 --retry-all-errors --retry-delay 2 --retry-max-time "$godot_download_seconds" --output "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
           echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
           unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
           GODOT_BIN="$(find "$RUNNER_TEMP/godot" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
@@ -705,7 +709,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: linux-godot-shard-${{ matrix.shard }}-${{ github.run_id }}
+          name: linux-godot-shard-${{ matrix.shard }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             build/godot-regressions/shard-${{ matrix.shard }}/
             build/linux-runtime/source-sha.txt
@@ -733,12 +737,12 @@ jobs:
       - name: Download every original Linux shard artifact
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
-          pattern: linux-godot-shard-*-${{ github.run_id }}
+          pattern: linux-godot-shard-*-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/linux-coverage-input
       - name: Download source-matched built runtime
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
-          name: linux-runtime-${{ github.run_id }}
+          name: linux-runtime-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/linux-runtime
       - name: Independently prove complete source and runtime matched Linux coverage
         if: always()
@@ -780,7 +784,7 @@ jobs:
       - name: Fetch existing per-platform Godot test evidence
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
-          pattern: '*godot*-${{ github.run_id }}'
+          pattern: '*-godot-*-${{ github.run_id }}-${{ github.run_attempt }}'
           path: build/physical-timing-input/
       - name: Produce source-bound distributions, retaining timeouts
         run: |
@@ -793,7 +797,7 @@ jobs:
         if: always()
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
-          pattern: godot-build-timing-*-${{ github.run_id }}
+          pattern: godot-build-timing-*-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/compiler-timing-input/
       - name: Compare complete observations with matching hosted history
         if: always()

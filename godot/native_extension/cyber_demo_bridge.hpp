@@ -529,6 +529,7 @@ public:
         if(adapter.is_null() || !adapter->world_) { error_="Native world unavailable"; return false; }
         try {
             auto config = adapter->world_->config();
+            CyberNativeCellWorld::select_gameplay_water(config, false);
             config.transport_policy = cybersand::TransportPolicy::unpack(
                 {profile.ptr(),static_cast<std::size_t>(profile.size())});
             config.physics_diagnostics = {}; config.physics_diagnostics.enabled = true;
@@ -651,6 +652,53 @@ public:
         }
         error_ = "Material has no liquid solver assignment";
         return choices;
+    }
+
+    // Restore one remembered material selection without rolling back edits to
+    // other materials. Current users of a shared family own its current values
+    // (including implicit defaults); remembered family parameters return only
+    // when that family is dormant in the current request. The wire format and
+    // admission remain native-owned, just as for assignment_choices above.
+    [[nodiscard]] Dictionary liquid_policy_restore_assignment(const PackedInt32Array& request,
+        const PackedInt32Array& remembered, std::int64_t material) const {
+        const auto current = cybersand::LiquidSolverPolicy::decode(std::span<const std::int32_t>(
+            request.ptr(), static_cast<std::size_t>(request.size())));
+        if (!current.accepted()) return validate_liquid_policy(request);
+        const auto previous = cybersand::LiquidSolverPolicy::decode(std::span<const std::int32_t>(
+            remembered.ptr(), static_cast<std::size_t>(remembered.size())));
+        if (!previous.accepted()) return validate_liquid_policy(remembered);
+        if (material < 0 || material > std::numeric_limits<std::uint16_t>::max() ||
+            !previous.policy->assignment(static_cast<std::uint16_t>(material))) {
+            Dictionary result; result["accepted"] = false; result["receipt"] = Variant();
+            result["refusal"] = refusal_dictionary({cybersand::LiquidPolicyRefusalCode::NotALiquid,
+                std::nullopt, "Remembered material has no liquid solver assignment"});
+            return result;
+        }
+        const auto restored = *previous.policy->assignment(static_cast<std::uint16_t>(material));
+        auto assignments = std::vector<cybersand::LiquidSolverAssignment>(
+            current.policy->assignments().begin(), current.policy->assignments().end());
+        const bool family_active = std::any_of(assignments.begin(), assignments.end(),
+            [&](const auto& item) { return item.family == restored.family; });
+        for (auto& item : assignments) if (item.material == material) item = restored;
+        std::vector<cybersand::LiquidParameterBlock> families, materials;
+        for (const auto& block : current.policy->family_blocks())
+            if (std::any_of(assignments.begin(), assignments.end(), [&](const auto& item) {
+                return static_cast<std::uint16_t>(item.family) == block.owner;
+            })) families.push_back(block);
+        if (!family_active)
+            for (const auto& block : previous.policy->family_blocks())
+                if (block.owner == static_cast<std::uint16_t>(restored.family)) families.push_back(block);
+        for (const auto& block : current.policy->material_blocks())
+            if (block.owner != material) materials.push_back(block);
+        for (const auto& block : previous.policy->material_blocks())
+            if (block.owner == material) materials.push_back(block);
+        const auto ordered = [](const auto& a, const auto& b) { return a.owner < b.owner; };
+        std::sort(families.begin(), families.end(), ordered);
+        std::sort(materials.begin(), materials.end(), ordered);
+        auto edited = policy_request_values(*current.policy, assignments, families, materials);
+        auto result = validate_liquid_policy(edited);
+        result["request"] = edited;
+        return result;
     }
 
     [[nodiscard]] Dictionary liquid_policy_with_inertial_damping(const PackedInt32Array& request, std::int64_t numerator) const {
@@ -841,6 +889,7 @@ private:
             }
 
             auto config = adapter->world_->config();
+            CyberNativeCellWorld::select_gameplay_water(config, false);
             config.transport_policy = cybersand::TransportPolicy::unpack(
                 {profile.ptr(), static_cast<std::size_t>(profile.size())});
             config.physics_diagnostics = {};
@@ -998,8 +1047,9 @@ public:
             return false;
         }
         try {
-            // A CYSD1 level is a finite-level reconstruction on default families.
+            // CYSD1 encodes the legacy finite level, including its narrow Water carrier.
             auto config = adapter->world_->config();
+            CyberNativeCellWorld::select_gameplay_water(config, false);
             config.liquid_solver_policy = {};
             // A default-family rebuild cannot inherit a PF-only C2048 budget.
             config.pressure_gas_compartment_capacity = cybersand::PressureFlowParameters::kCompartmentCapacity;
@@ -1014,7 +1064,7 @@ public:
         }
     }
 
-    [[nodiscard]] bool build_world(const Ref<CyberNativeCellWorld>& adapter, const PackedInt32Array& rectangles) {
+    [[nodiscard]] bool build_world(const Ref<CyberNativeCellWorld>& adapter, const PackedInt32Array& rectangles, bool gameplay_water = false) {
         error_ = String();
         if (adapter.is_null() || !adapter->world_) {
             error_ = "Native world unavailable";
@@ -1022,6 +1072,7 @@ public:
         }
         try {
             auto config = adapter->world_->config();
+            CyberNativeCellWorld::select_gameplay_water(config, gameplay_water);
             config.transport_policy = {}; // Ordinary demos retain production Baseline.
             config.water_experiment_policy = cybersand::WaterExperimentPolicy{};
             config.liquid_solver_policy = {};
@@ -1072,7 +1123,7 @@ protected:
         ClassDB::bind_method(D_METHOD("export_physical_state", "world"), &CyberDemoBridge::export_physical_state);
         ClassDB::bind_method(D_METHOD("import_physical_state", "world", "bytes"),
                              &CyberDemoBridge::import_physical_state);
-        ClassDB::bind_method(D_METHOD("build_world", "world", "rectangles"), &CyberDemoBridge::build_world);
+        ClassDB::bind_method(D_METHOD("build_world", "world", "rectangles", "gameplay_water"), &CyberDemoBridge::build_world, DEFVAL(false));
         ClassDB::bind_method(D_METHOD("build_tuned_world", "world", "rectangles", "profile"), &CyberDemoBridge::build_tuned_world);
         ClassDB::bind_method(D_METHOD("build_water_feel_world", "world", "rectangles",
                                      "profile", "policy", "water_fills"),
@@ -1084,6 +1135,8 @@ protected:
         ClassDB::bind_method(D_METHOD("default_liquid_policy"), &CyberDemoBridge::default_liquid_policy);
         ClassDB::bind_method(D_METHOD("liquid_policy_assignment_choices", "request", "material"),
                              &CyberDemoBridge::liquid_policy_assignment_choices);
+        ClassDB::bind_method(D_METHOD("liquid_policy_restore_assignment", "request", "remembered", "material"),
+                             &CyberDemoBridge::liquid_policy_restore_assignment);
         ClassDB::bind_method(D_METHOD("liquid_policy_with_inertial_damping", "request", "numerator"),
                              &CyberDemoBridge::liquid_policy_with_inertial_damping);
         ClassDB::bind_method(D_METHOD("liquid_policy_with_pressure_gas", "request", "gas_enabled"),

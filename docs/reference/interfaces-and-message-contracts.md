@@ -6,10 +6,30 @@ status: Current
 scope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct
 keywords: [C API v2, material_info_v3, material_info_v4, body packet, INPUT_STRIDE, RG8, gameplay command]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-11-18
 ---
 
 # Interfaces and message contracts
+
+The experimental PR #618 [Wave Flow interface](../architecture/wave-flow-v1.md)
+adds versioned construction options and full uint16 Water mass readback without
+changing the existing C ABI. Legacy uint8 mass readback saturates at 255.
+Godot construction and diagnostic getters expose the applied override, complete
+state version, flux, sparse work and capacity outcomes; render consumers still
+receive copied values. See the [evaluation guide](../operations/wave-flow-evaluation.md)
+for actual selection and target-platform qualification boundaries.
+
+The Draft Waterwall follow-up adds exception containment to potentially throwing
+`CyberNativeCellWorld` bindings without changing their argument layouts or native
+Water laws. Unexpected native exceptions quarantine the World and retain one
+operation/error through `get_last_tick_error()` / `get_tick_failure_count()`.
+Mutation calls return their existing false/no-op/`world_failed` outcomes;
+observation failures return a typed empty value or an explicit dictionary with
+`failed=true`, `healthy=false`, `ok=false`, `accepted=false` and `error`.
+Collision queries fail closed. Successful explicit World replacement clears
+the fault; candidate-validation refusal does not quarantine the old healthy
+World. The [failure contract](../architecture/simulation-tick-and-threading.md#what-happens-when-a-tick-fails-or-overloads)
+owns publication, first-error retention and recovery semantics.
 
 The new bounded desktop [trial-body continuation](../architecture/liquid-prepared-setup-and-receipts.md#desktop-single-trial-body-preparation)
 keeps the eleven-float body ABI unchanged. Main sends only copied values:

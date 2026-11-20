@@ -102,7 +102,7 @@ void refusals_and_no_live_conversion() {
                 normalized_comparator.normalization_receipt()->receipt_hash() ==
                     normalized_whole.normalization_receipt()->receipt_hash(),
             "explicit normalization differs between matched comparator arms");
-    refused(input, RefusalCode::UnknownParameter, static_cast<WaterQuantityRegime>(2));
+    refused(input, RefusalCode::UnknownParameter, static_cast<WaterQuantityRegime>(3));
     refused(input, RefusalCode::UnknownParameter, WaterQuantityRegime::WholeCell, static_cast<NormalizationOptIn>(2));
     input.cells[0].state_a = 255;
     const auto already_full = accepted(input, WaterQuantityRegime::WholeCell, NormalizationOptIn::None);
@@ -169,6 +169,49 @@ void refusals_and_no_live_conversion() {
     input.setup.domain = {0,0,1024,1024};
     input.setup.gaps = setup::Schedule;
     refused(input, RefusalCode::MalformedPolicy);
+}
+void wave_stored_quantity_domain() {
+    const auto input = fixture(8, 631,
+        {water(0, 0, 1), water(1, 0, 255), water(2, 0, 256), water(3, 0, 65535, 0, -123)},
+        200, {0, 0, 8, 8});
+    const auto original = input.cells;
+    const auto prepared = accepted(input, WaterQuantityRegime::WaveStored16, NormalizationOptIn::None);
+    require(std::vector<FinalSetupCell>(prepared.final_cells().begin(), prepared.final_cells().end()) == original &&
+                input.cells == original, "Wave stored uint16 boundaries were changed or caller input mutated");
+    require(!prepared.normalization_receipt(), "Wave stored Water unexpectedly created a normalization receipt");
+    std::uint64_t quantity = 0;
+    for (const auto& cell : prepared.final_cells()) quantity += cell.state_a;
+    require(quantity == 66047, "Wave stored uint16 quantity was truncated to the nominal byte domain");
+    auto changed = input;
+    changed.cells[2].state_a = 255;
+    const auto lower = accepted(changed, WaterQuantityRegime::WaveStored16, NormalizationOptIn::None);
+    require(lower.native_payload_hash() != prepared.native_payload_hash() && lower.setup_hash() != prepared.setup_hash(),
+            "Wave stored payload/setup identities omit the ninth mass bit");
+    changed = input;
+    changed.cells[3].state_a = 32767;
+    require(accepted(changed, WaterQuantityRegime::WaveStored16, NormalizationOptIn::None).native_payload_hash() !=
+                prepared.native_payload_hash(), "Wave stored payload identity omits the high mass bit");
+    // The new domain is explicit and exclusive to Wave. Other laws retain their
+    // old byte/coherence contracts, including an explicit normalization request.
+    for (const auto regime : {WaterQuantityRegime::Fractional, WaterQuantityRegime::WholeCell})
+        for (const auto opt_in : {NormalizationOptIn::None, NormalizationOptIn::WaterNormalizeV1})
+            refused(input, RefusalCode::MalformedPolicy, regime, opt_in);
+    refused(input, RefusalCode::MalformedPolicy, WaterQuantityRegime::WaveStored16,
+            NormalizationOptIn::WaterNormalizeV1);
+    for (std::uint8_t bits = 3; bits < 8; ++bits) {
+        changed = fixture(bits, 631, {water(0, 0, 1)});
+        refused(changed, RefusalCode::MalformedPolicy, WaterQuantityRegime::WaveStored16, NormalizationOptIn::None);
+    }
+    changed = input; changed.cells[0].state_a = 0;
+    refused(changed, RefusalCode::MalformedPolicy, WaterQuantityRegime::WaveStored16, NormalizationOptIn::None);
+    changed = input; changed.cells[0].state_b = 1;
+    refused(changed, RefusalCode::MalformedPolicy, WaterQuantityRegime::WaveStored16, NormalizationOptIn::None);
+    changed = input; changed.cells[2].material = Material::Oil;
+    refused(changed, RefusalCode::MalformedPolicy, WaterQuantityRegime::WaveStored16, NormalizationOptIn::None);
+    changed = fixture(8, 631, {water(0, 0, 255, 12)});
+    require(accepted(changed, WaterQuantityRegime::Fractional, NormalizationOptIn::None).final_cells()[0].state_b == 12,
+            "Wave-only coherence refusal leaked into ordinary fractional Water");
+    refused(changed, RefusalCode::MalformedPolicy, WaterQuantityRegime::WaveStored16, NormalizationOptIn::None);
 }
 void final_overlay_order_and_identity() {
     auto input = fixture(8, 1234,
@@ -312,7 +355,7 @@ static_assert(std::is_same_v<decltype(std::declval<const PreparedSetup&>().final
 static_assert(std::is_same_v<decltype(std::declval<const Receipt&>().totals()), const NormalizationTotals&>);
 
 void test_water_normalization_rounding() { exact_thresholds_and_all_precisions(); }
-void test_water_normalization_refusals() { refusals_and_no_live_conversion(); }
+void test_water_normalization_refusals() { refusals_and_no_live_conversion(); wave_stored_quantity_domain(); }
 void test_water_normalization_final_identity() { final_overlay_order_and_identity(); }
 void test_water_normalization_thermal() { empty_thermal_fields(); }
 void test_water_normalization_arithmetic() { arithmetic_and_signed_extremes(); }

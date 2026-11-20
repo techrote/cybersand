@@ -129,6 +129,8 @@ func builtin_water() -> bool:
 	# the native adapter admits them only inside its bounds, with face release.
 	for key: String in main.FACE_TUNING:
 		check(main.workbench_water_options.get(key) is int,"panel seeds "+key)
+	for key: String in main.WAVE_TUNING:
+		check(main.workbench_water_options.get(key) is int,"Wave panel seeds "+key)
 	var seeded: Dictionary = main.workbench_water_options.duplicate()
 	main.workbench_water_options.merge({"workbench_ballistic":true,"workbench_face_release":true,"workbench_face_budget":0},true)
 	panel._name.text = Setup.DEFAULT_LABEL
@@ -144,6 +146,48 @@ func builtin_water() -> bool:
 	var launched := int(main.tower_context.get("water_spray",{}).get("ledger",{}).get("launched_quantity",0))
 	check(launched > 0,"tuned face release launches parcels (%d)" % launched)
 	await until(installed,"paused after face release")
+	# Wave Flow now runs in the actual authored Workbench rather than only the
+	# rigid evaluator. Exercise the same live liquid-rebuild transaction the
+	# Water solver lab uses: stage the required FreeMass carrier, then apply
+	# tuning while retaining the authored canvas and actors.
+	var wave_request: PackedInt32Array = PackedInt32Array(panel.applied.liquid_policy)
+	var wave_found := false
+	for option: Dictionary in panel._liquids.bridge.liquid_policy_assignment_choices(wave_request,Setup.WATER):
+		if option.family == "freemass_v1" and option.variant == "reference" and option.accepted:
+			panel._liquids.requested_policy = PackedInt32Array(option.request)
+			wave_found = true
+			break
+	if not check(wave_found,"FreeMass carrier available for Workbench Wave"): return false
+	main.workbench_water_options = seeded.duplicate()
+	main.workbench_water_options.merge({"workbench_ballistic":false,"workbench_face_release":false,
+		"workbench_wave_flow":true,"workbench_wave_active_rows":33},true)
+	var before_wave_refusal: Dictionary = panel.applied.duplicate(true)
+	if panel.apply_liquids(): await until(func(): return main.pending_microscenario_apply.is_empty(),"out-of-bounds Wave tuning")
+	check(not str(main.microscenario_error).is_empty() and panel.applied == before_wave_refusal,
+		"Wave active rows 33 refused before replacing live Workbench")
+	main.workbench_water_options.workbench_wave_active_rows = 32
+	main.workbench_water_options.workbench_wave_substeps = 2
+	main.workbench_water_options.workbench_wave_gain = 48
+	var before_wave_generation: int = main.latest_snapshot.render_world_generation
+	loaded = check(panel.apply_liquids(),"Workbench Wave rebuild / "+panel.message)
+	if not loaded or not await until(installed,"Workbench Wave installed"): return false
+	check(main.microscenario_error.is_empty() and int(main.latest_snapshot.render_world_generation) > before_wave_generation,
+		"Workbench Wave positively acknowledged, not merely a completed refusal / "+main.microscenario_error)
+	var wave: Dictionary = main.tower_context.get("wave_flow",{})
+	check(wave.get("enabled",false) and int(wave.get("substeps",0)) == 2,
+		"Workbench Wave enabled with two rounds: "+str(wave))
+	check(int(wave.get("parameters",{}).get("gain",0)) == 48 and int(wave.get("parameters",{}).get("active_rows",0)) == 32,
+		"Workbench Wave tuning readback matches request: "+str(wave.get("parameters",{})))
+	var wave_tick: int = main.latest_snapshot.tick_index
+	panel.toggle_pause()
+	await until(func(): return int(main.latest_snapshot.tick_index) >= wave_tick+30,"Workbench Wave ticks")
+	panel.toggle_pause()
+	check(not main.simulation_worker.has_failed(),"Workbench Wave simulates with authored actors/terrain")
+	await until(installed,"paused after Workbench Wave")
+	wave = main.tower_context.get("wave_flow",{})
+	check(int(wave.get("ticks",0)) >= 30 and int(wave.get("rounds",0)) == 2*int(wave.get("ticks",0)),
+		"actual Workbench Wave ticks and two native rounds per tick: "+str(wave))
+	main.workbench_water_options = seeded
 	# Fine scheduling cores: workbench-only boolean construction option.
 	main.workbench_water_options = {"workbench_fine_cores":true}
 	panel._name.text = Setup.DEFAULT_LABEL
@@ -360,6 +404,12 @@ func run() -> void:
 			if check(panel.load_setup(),"load from separate process / "+panel.message+" / "+main.microscenario_error) and await until(installed,"reload acknowledged"):
 				await inspect()
 		else:
+			# The face-release and fine-core controls below compare their explicit
+			# pre-Wave laws. Each case then loads its own native construction.
+			panel.water_spray._choose_studio_solver(0)
+			panel.water_spray._set_spill("workbench_wave_spill",false)
+			panel.water_spray._ballistic.button_pressed = false
+			panel.water_spray._reset_wave_defaults()
 			rectangle_merge()
 			if await builtin_water() and await builtin_bench() and await builtin_stress() and paint_compaction(): await author()
 	else: check(false,"workbench launch")

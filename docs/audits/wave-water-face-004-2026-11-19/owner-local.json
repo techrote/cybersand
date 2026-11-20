@@ -1,0 +1,63 @@
+{
+  "source": "eb8298d689288bd3598540f03e4b258d4957c799",
+  "tree": "90aa542acf2c6c19537d644c714842a4089f2f59",
+  "dll": "7f3455daf35d004d64527ddb1967fb2a7a268d66b95fe8ab66c6c972115a1a66",
+  "zip": "CyberSand-Water-Face-Windows-eb8298d68928.zip",
+  "sha256": "7b20b1bb02f71d24598539dbf98a55a2f7cd8eb15369c7112d1b7e96c43b8222",
+  "bytes": 92663200,
+  "payload_file_hashes": 951,
+  "maps": {
+    "setup-water-ramp.json": "7aba8a47c926cc1911bc4ee519179c595b686692d5c78db8f103b8b62d311acb",
+    "setup-water-wall.json": "925096d1e9984b855b5465309ef12869a47e29052e0cabd5a25788a051b77107"
+  },
+  "launcher_initially_installed_both": true,
+  "launcher_preserved_both": true,
+  "cases": {
+    "launcher1": {
+      "sha256": "2e2b04afc8ea211ad843686166935af6d7efadc76d5ec7d829da82dd31b1241d",
+      "rc": 0,
+      "error_lines": 0,
+      "summary": [],
+      "shared_workbench_ready": true
+    },
+    "launcher2": {
+      "sha256": "867a7e923065cd5affdebaf39c76dcd13e105f82cb37f07d9bf86eefa435e355",
+      "rc": 0,
+      "error_lines": 0,
+      "summary": [],
+      "shared_workbench_ready": true
+    },
+    "spill": {
+      "sha256": "13c9f6a5dfd489dac4306b0f9f433c88d29c07e71348719efdca599e50fb612e",
+      "rc": 0,
+      "error_lines": 0,
+      "summary": {
+        "checks": 797,
+        "failures": [],
+        "sections": {
+          "lab_controls": true,
+          "native_admission": true,
+          "native_body_push_reaction": true,
+          "native_conservation": true,
+          "native_generic_ballistic": true,
+          "workbench_apply": true,
+          "workbench_generic_ballistic": true
+        }
+      }
+    },
+    "graphic": {
+      "sha256": "a14306f2161752c3ca8cc825702ace10846de78eaf8c1b66f577b3d4cb5b32ad",
+      "rc": 0,
+      "error_lines": 0,
+      "summary": {
+        "assertions": 217,
+        "captures": 6,
+        "failures": 0
+      }
+    }
+  },
+  "payload_verified_after": 951,
+  "local_compiler": "LLVM-MinGW 20260826 / Clang 23.1.0",
+  "godot": "4.7.stable.official.5b4e0cb0f",
+  "input_fingerprint": "1dd51bfe7aa4f0e6244d4be472cc480289394f6005b053661cc74bbdb1459e1f"
+}

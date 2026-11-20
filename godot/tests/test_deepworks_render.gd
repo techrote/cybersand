@@ -10,12 +10,14 @@ const PIXEL_DELTA: int = 4
 const MIN_REAR_PIXELS: int = 128
 const MIN_FAR_PIXELS: int = 256
 const MIN_ATMOSPHERE_PIXELS: int = 4
+const D1_PHASE_COUNT: int = 61
+const D1_ARMS: Array[String] = ["hybrid", "stack"]
 
 var checks: int = 0
 var failures: int = 0
 var artifact_errors: Array[String] = []
 var output_directory: String = ""
-var evidence: Dictionary = {"hud": [], "layers": {}, "atmosphere": []}
+var evidence: Dictionary = {"hud": [], "layers": {}, "atmosphere": [], "artifacts": []}
 
 
 func _init() -> void:
@@ -28,6 +30,7 @@ func _run() -> void:
 		quit(2)
 		return
 	var started: int = Time.get_ticks_msec()
+	output_directory = OS.get_environment("CYBERSAND_TEST_ARTIFACT_DIR")
 	for argument: String in OS.get_cmdline_user_args():
 		if argument.begins_with("--deepworks-render-output="):
 			output_directory = argument.trim_prefix("--deepworks-render-output=")
@@ -48,6 +51,16 @@ func _run() -> void:
 		return
 	_expect(controller.paused, "Exhibition must install paused before the first draw")
 	controller.compositor.set_options({"freeze_material_animation": true})
+	# Frozen surfaces still bake once after each admitted packet. Pin their
+	# shader clock as well, so those bakes do not sample staggered engine TIME.
+	for surface in controller.compositor._surfaces:
+		_set_material_phase(surface, 0.0)
+	controller.compositor.set_time(0.0)
+	evidence["recipe_sha256"] = Map.recipe_hash(controller.definition)
+	evidence["source_commit"] = OS.get_environment("CYBERSAND_SOURCE_REVISION")
+	if evidence["source_commit"].is_empty():
+		evidence["source_commit"] = OS.get_environment("GITHUB_SHA")
+	evidence["material_phase_seconds"] = 0.0
 	await _settle()
 	# Reproduce the header's former minimum-height failure at both usual window
 	# sizes. Pixel differences inside the real map catch an opaque UI overlay,
@@ -152,15 +165,194 @@ func _run() -> void:
 		_expect(int(fired.get(source["id"], 0)) >= 1, "The witnessed atmosphere source did not fire")
 		_expect(actual_air >= MIN_ATMOSPHERE_PIXELS,
 			"Native atmosphere is occluded in %s: %d visible material pixels" % [Map.district_code(district), actual_air])
+		var prefix: String = "atmosphere-%s" % Map.district_code(district).to_lower()
+		var native_cells: Array[Dictionary] = _native_air_cells(cells, witness)
+		var packet_sha256: String = _save_bytes(cells, prefix + "-effects.rg8")
+		_save_image(air_on, prefix + "-air-on.png")
+		_save_image(air_off, prefix + "-air-off.png")
 		evidence["atmosphere"].append({"district": Map.district_code(district), "effects_tick": target_tick,
-			"visible_native_air_pixels": actual_air, "source": source["id"], "material": source["material"]})
+			"visible_native_air_pixels": actual_air, "source": source["id"], "material": source["material"],
+			"source_rect": _rect_values(source_rect), "witness_rect": _rect_values(witness),
+			"native_mask_cells": native_cells.size(), "native_cells": native_cells,
+			"effects_packet_sha256": packet_sha256, "material_phase_seconds": 0.0,
+			"air_on": prefix + "-air-on.png", "air_off": prefix + "-air-off.png"})
 		controller.compositor.set_options({"layer_visibility": ALL_LAYERS})
-		if district in [0, 7, 15]:
-			_save_image(air_on, "atmosphere-%s.png" % Map.district_code(district).to_lower())
+		if district == 12:
+			await _sweep_d1_phases(controller, viewport, witness, cells)
 	_expect(controller.runtime.layer_tick("play") == 0 and controller.runtime.layer_tick("scripted") == 0,
 		"Rendering atmosphere advanced the paused chemistry worlds")
 	_expect(controller.runtime.layer_tick("background") == 0, "Frozen far background acquired a simulation tick")
 	await _finish(controller, viewport, started)
+
+
+func _sweep_d1_phases(controller: Control, viewport: SubViewport, witness: Rect2i, native_air: PackedByteArray) -> void:
+	# Every effects phase is required in the production Hybrid view. Stack is
+	# the same-phase control for projected relief; all native owners and their
+	# immutable packets stay fixed across both arms and the complete sweep.
+	_expect(controller.mode_index == 3 and int(controller.compositor._material.get_shader_parameter("mode")) == 3,
+		"D1 phase sweep must exercise the production Hybrid compositor")
+	var originals: Dictionary = {}
+	var packet_identity: Dictionary = {}
+	for index: int in range(Map.LAYERS.size()):
+		var id: String = Map.LAYERS[index]
+		var surface = controller.compositor._surfaces[index]
+		originals[id] = surface.cell_image.get_data()
+		packet_identity[id] = {"reset_generation": surface.reset_generation,
+			"layer_tick": surface.layer_tick, "serial": surface.last_serial,
+			"sha256": _save_bytes(originals[id], "d1-tick46-" + id + ".rg8")}
+	var ticks_before: Dictionary = _layer_ticks(controller)
+	var owner_before: Dictionary = _native_identity(controller)
+	var sources_before: Dictionary = controller.runtime.event_stats()
+	var native_cells: Array[Dictionary] = _native_air_cells(native_air, witness)
+	_expect(ticks_before == {"play": 0, "scripted": 0, "effects": 46, "background": 0},
+		"D1 presentation sweep must use the actual first-pulse native tick")
+	_expect(native_cells.size() == 6, "D1 native pulse must contain exactly six material cells")
+	var sweep: Dictionary = {"phases": [], "arms": D1_ARMS, "native_mask_cells": native_cells.size(),
+		"capture_coordinates": "Unscaled witness-ROI PNGs; add witness_rect origin to each image pixel for world coordinates",
+		"corridor_oracle": "Same native cell signed RGB contribution (air_on - air_off) must match Hybrid and Stack",
+		"witness_rect": _rect_values(witness), "packet_identity": packet_identity,
+		"ticks_before": ticks_before, "native_owner_before": owner_before,
+		"fixed_material_phase_seconds": {"play": 0.0, "scripted": 0.0, "background": 0.0},
+		"swept_material_surface": "effects", "depth_compositor_phase_seconds": 0.0}
+	evidence["d1_phase_sweep"] = sweep
+	var first_failure_retained: bool = false
+	for phase: int in range(D1_PHASE_COUNT):
+		_set_material_phase(controller.compositor._surfaces[2], float(phase))
+		var images: Dictionary = {}
+		var arms: Dictionary = {}
+		for arm: String in D1_ARMS:
+			controller.compositor.set_options({"mode": arm, "layer_visibility": ALL_LAYERS})
+			await _settle()
+			var effects_image: Image = _pixels(controller.compositor._surfaces[2])
+			var air_on: Image = _pixels(viewport)
+			controller.compositor.set_options({"layer_visibility": Vector4(1, 1, 0, 1)})
+			await _settle()
+			var air_off: Image = _pixels(viewport)
+			var visible: int = _changed_pixels(air_on, air_off, witness, native_air)
+			var prefix: String = "d1-phase-%02d-%s" % [phase, arm]
+			_save_image(air_on.get_region(witness), prefix + "-air-on-roi.png")
+			_save_image(air_off.get_region(witness), prefix + "-air-off-roi.png")
+			var samples: Array[Dictionary] = []
+			for cell: Dictionary in native_cells:
+				var point := Vector2i(cell["position"][0], cell["position"][1])
+				var on: Array[int] = _rgba(air_on, point)
+				var off: Array[int] = _rgba(air_off, point)
+				var contribution: Array[int] = _rgb_contribution(on, off)
+				var delta: int = maxi(absi(contribution[0]), maxi(absi(contribution[1]), absi(contribution[2])))
+				samples.append({"position": cell["position"], "material": cell["material"],
+					"visual_state_a": cell["visual_state_a"], "air_on_rgba8": on, "air_off_rgba8": off,
+					"effects_surface_rgba8": _rgba(effects_image, point), "maximum_rgb_channel_delta": delta,
+					"contribution_rgb": contribution, "passes_channel_threshold": delta >= PIXEL_DELTA})
+			arms[arm] = {"visible_native_air_pixels": visible, "cells": samples,
+				"meets_original_minimum": visible >= MIN_ATMOSPHERE_PIXELS,
+				"air_on_roi": prefix + "-air-on-roi.png", "air_off_roi": prefix + "-air-off-roi.png"}
+			images[arm] = {"on": air_on, "off": air_off}
+		var mismatches: Array[Dictionary] = []
+		for index: int in range(native_cells.size()):
+			var hybrid: Dictionary = arms["hybrid"]["cells"][index]
+			var stack: Dictionary = arms["stack"]["cells"][index]
+			if hybrid["contribution_rgb"] != stack["contribution_rgb"]:
+				mismatches.append({"position": native_cells[index]["position"],
+					"hybrid_contribution_rgb": hybrid["contribution_rgb"], "stack_contribution_rgb": stack["contribution_rgb"]})
+		var unchanged: bool = _packets_unchanged(controller, originals, packet_identity)
+		var ticks_unchanged: bool = _layer_ticks(controller) == ticks_before
+		_expect(arms["hybrid"]["visible_native_air_pixels"] >= MIN_ATMOSPHERE_PIXELS,
+			"Native atmosphere is occluded in D1 at phase %d: %d visible material pixels" % [phase, arms["hybrid"]["visible_native_air_pixels"]])
+		_expect(mismatches.is_empty(),
+			"Projected relief obscures D1's clear atmosphere corridor at phase %d: %d native contributions differ from Stack" % [phase, mismatches.size()])
+		_expect(unchanged and ticks_unchanged, "D1 phase %d changed native packet identity, bytes or ticks" % phase)
+		var failed: bool = not arms["hybrid"]["meets_original_minimum"] or not mismatches.is_empty() or not unchanged or not ticks_unchanged
+		var full_context: Array[String] = []
+		if phase == 0 or (failed and not first_failure_retained):
+			for arm: String in D1_ARMS:
+				var prefix: String = "d1-phase-%02d-%s" % [phase, arm]
+				for state: String in ["on", "off"]:
+					var filename: String = prefix + "-air-" + state + "-full.png"
+					_save_image(images[arm][state], filename)
+					full_context.append(filename)
+			if failed: first_failure_retained = true
+		var record: Dictionary = {"phase_seconds": phase, "arms": arms,
+			"native_mask_cells": native_cells.size(), "packet_bytes_unchanged": unchanged,
+			"native_ticks_unchanged": ticks_unchanged, "corridor_contributions_match": mismatches.is_empty(),
+			"contribution_mismatches": mismatches, "full_frame_context": full_context}
+		sweep["phases"].append(record)
+		print("DEEPWORKS_D1_PHASE ", JSON.stringify(record))
+	_expect(sweep["phases"].size() == D1_PHASE_COUNT, "All sixty-one registered D1 phases must be retained")
+	sweep["ticks_after"] = _layer_ticks(controller)
+	sweep["native_owner_after"] = _native_identity(controller)
+	sweep["packet_bytes_unchanged"] = _packets_unchanged(controller, originals, packet_identity)
+	_expect(sweep["native_owner_after"] == owner_before,
+		"D1 presentation sweep changed native owner identity or physical state")
+	_expect(controller.runtime.event_stats() == sources_before, "Presentation sweep advanced the source programme")
+	_expect(sweep["packet_bytes_unchanged"] and sweep["ticks_after"] == ticks_before,
+		"D1 presentation sweep must preserve all four native packets and clocks")
+	_set_material_phase(controller.compositor._surfaces[2], 0.0)
+	controller.compositor.set_options({"mode": "hybrid", "layer_visibility": ALL_LAYERS})
+	await _settle()
+
+
+func _set_material_phase(surface: SubViewport, phase: float) -> void:
+	surface._material.set_shader_parameter("presentation_time_override", phase)
+	surface.render_target_update_mode = SubViewport.UPDATE_ONCE
+
+
+func _layer_ticks(controller: Control) -> Dictionary:
+	var result: Dictionary = {}
+	for id: String in Map.LAYERS:
+		result[id] = controller.runtime.layer_tick(id)
+	return result
+
+
+func _native_identity(controller: Control) -> Dictionary:
+	var result: Dictionary = {}
+	for id: String in Map.LAYERS:
+		var world: Object = controller.runtime._worlds[id]
+		if world.has_failed():
+			_expect(false, "Native owner failed during D1 presentation sweep: " + id)
+			result[id] = {"failed": true}
+			continue
+		var state: Dictionary = world.diagnostic_snapshot(Vector2i.ZERO, Vector2i.ONE, false)
+		result[id] = {"generation": controller.runtime.generation(), "native_instance_id": world.get_instance_id(),
+			"world_generation": world.get_liquid_policy_session_generation(), "state_hash": state.get("hash", ""),
+			"completed_ticks": state.get("completed_ticks", -1), "attempted_ticks": state.get("attempted_ticks", -1)}
+		_expect(not str(result[id]["state_hash"]).is_empty(), "Native state identity unavailable: " + id)
+	return result
+
+
+func _packets_unchanged(controller: Control, originals: Dictionary, identity: Dictionary) -> bool:
+	for index: int in range(Map.LAYERS.size()):
+		var id: String = Map.LAYERS[index]
+		var surface = controller.compositor._surfaces[index]
+		if (surface.cell_image.get_data() != originals[id]
+				or surface.reset_generation != identity[id]["reset_generation"]
+				or surface.layer_tick != identity[id]["layer_tick"]
+				or surface.last_serial != identity[id]["serial"]):
+			return false
+	return true
+
+
+func _native_air_cells(cells: PackedByteArray, region: Rect2i) -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	for y: int in range(region.position.y, region.end.y):
+		for x: int in range(region.position.x, region.end.x):
+			var offset: int = (y * 1024 + x) * 2
+			var material: int = cells[offset]
+			if material != Cell.EMPTY and material != Cell.WALL:
+				result.append({"position": [x, y], "material": material, "visual_state_a": cells[offset + 1]})
+	return result
+
+
+func _rect_values(rect: Rect2i) -> Array[int]:
+	return [rect.position.x, rect.position.y, rect.size.x, rect.size.y]
+
+
+func _rgb_contribution(on: Array[int], off: Array[int]) -> Array[int]:
+	return [on[0] - off[0], on[1] - off[1], on[2] - off[2]]
+
+
+func _rgba(image: Image, point: Vector2i) -> Array[int]:
+	var colour: Color = image.get_pixelv(point)
+	return [roundi(colour.r * 255.0), roundi(colour.g * 255.0), roundi(colour.b * 255.0), roundi(colour.a * 255.0)]
 
 
 func _finish(controller: Control, viewport: SubViewport, started: int) -> void:
@@ -225,7 +417,32 @@ func _changed_pixels(left: Image, right: Image, region: Rect2i, native_air: Pack
 
 func _save_image(image: Image, filename: String) -> void:
 	if not output_directory.is_empty():
-		_artifact_check(image.save_png(output_directory.path_join(filename)) == OK, "Could not save " + filename)
+		var path: String = output_directory.path_join(filename)
+		var saved: bool = image.save_png(path) == OK
+		_artifact_check(saved, "Could not save " + filename)
+		if saved:
+			evidence["artifacts"].append({"filename": filename, "sha256": FileAccess.get_sha256(path),
+				"bytes": FileAccess.get_file_as_bytes(path).size(), "width": image.get_width(), "height": image.get_height()})
+
+
+func _save_bytes(bytes: PackedByteArray, filename: String) -> String:
+	var hashing := HashingContext.new()
+	hashing.start(HashingContext.HASH_SHA256)
+	hashing.update(bytes)
+	var digest: String = hashing.finish().hex_encode()
+	if not output_directory.is_empty():
+		var path: String = output_directory.path_join(filename)
+		var file := FileAccess.open(path, FileAccess.WRITE)
+		_artifact_check(file != null, "Could not open " + filename)
+		if file != null:
+			file.store_buffer(bytes)
+			file.flush()
+			var saved: bool = file.get_error() == OK
+			file.close()
+			_artifact_check(saved and FileAccess.get_sha256(path) == digest, "Could not retain exact " + filename)
+			if saved:
+				evidence["artifacts"].append({"filename": filename, "sha256": digest, "bytes": bytes.size()})
+	return digest
 
 
 func _artifact_check(condition: bool, message: String) -> void:

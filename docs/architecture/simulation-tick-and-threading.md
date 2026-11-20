@@ -6,7 +6,7 @@ status: Current
 scope: Desktop, Web and native stage ordering, fixed quanta, failure behavior and permitted thread access
 keywords: [fixed tick, desktop worker, Web synchronous, Rapier order, character order, tick failure, backlog]
 related-documents: [data-ownership-and-lifetimes.md, determinism-and-boundary-transfers.md, rigid-body-and-cellular-coupling.md, ../operations/web-threading.md]
-last-reviewed: 2026-11-05
+last-reviewed: 2026-11-18
 ---
 
 # Simulation tick and threading
@@ -300,8 +300,9 @@ The adapter returns `false` with first-error telemetry, zeroes unsuccessful tick
 statistics, exposes attempted/completed identity separately, and does not count
 rejected repeat calls as new failures. Its reset prepares a candidate before swap.
 Godot level export rejects failed state; CYSD1 replacement is level recovery, not
-exact replay. Region/configuration requests may be latched while failed, but cannot
-wake or advance that world. Fresh setup uses the latest requested region.
+exact replay. Region/configuration requests cannot wake or advance a failed
+World. Native region requests may be latched; the Waterwall adapter's stricter
+failed-setting admission is described below.
 
 **Rejected for this fix:** rollback, automatic retry, resuming partial state and
 silent event replay. **Planned separately:** state-preserving live capacity growth
@@ -318,6 +319,34 @@ local collision and conservation, and report its policy.
 [ADR-008](../decisions/ADR-008-bounded-approximate-fidelity.md) records that intent.
 Actual platform execution evidence is in the
 [validation ledger](../reference/validation-evidence.md).
+
+### Waterwall exceptions between ticks
+
+**Waterwall branch follow-up (Draft/HOLD):** native exceptions can also arise
+between ticks while a Godot binding edits cells, prepares body occupancy or
+copies an observation. `CyberNativeCellWorld` contains standard and unknown
+exceptions at these public boundaries, quarantines the World and records the
+first operation/error once. Later getters and rejected edits cannot overwrite
+that cause or increment its count. Ordinary validated refusals remain refusals;
+they do not quarantine a healthy World. Candidate construction refusal preserves
+the old World, while an unexpected error after installation quarantines the new
+World. Successful explicit replacement clears the previous fault.
+
+The desktop owner checks native health before constructing a publication and
+again after copying its render, collider and status payloads. An observation
+that discovers a fault cannot publish a partially assembled healthy snapshot.
+It retains the last valid payload, pauses actors and withholds body results.
+Body-occupancy failures additionally record the current stage, body/proxy ID,
+source cell and target cell. This context is fixed-size owner state; no strings,
+logging or Godot calls are added to native pool workers or successful cell loops.
+This is provisional containment and diagnosis, not proof that the reported
+underwater surface-crest trigger has been identified.
+
+The Godot adapter refuses region, cadence, adhesion and spray setting changes
+while failed; a fresh explicit setup owns the new configuration. Extreme adapter
+brush centres and unrepresentable parcel coordinates refuse before arithmetic;
+region endpoints saturate before finite canvas clipping, preserving off-canvas
+viewport semantics.
 
 
 ## Desktop development workbench on #394

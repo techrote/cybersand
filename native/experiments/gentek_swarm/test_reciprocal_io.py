@@ -137,13 +137,53 @@ class RequestParserTests(unittest.TestCase):
             self.assertFalse(document["can_apply"])
 
     def test_out_of_range_and_nonfinite_header_fields(self):
-        invalid = {0: "SWARM003", 1: "2", 2: "257", 3: "129", 4: "18446744073709551616",
+        invalid = {0: "SWARM003", 1: "3", 2: "257", 3: "129", 4: "18446744073709551616",
                    5: "-1000001", 6: "1000001", 7: "5", 8: "14", 9: "2", 10: "arbitrary_profile",
                    11: "nan", 12: "inf", 13: "-0.1", 14: "1.1", 18: "2", 19: "17"}
         for index, value in invalid.items():
             with self.subTest(index=index, value=value):
                 header = self.header.copy()
                 header[index] = value
+                process, output = self.invoke(self.payload(header=header))
+                self.assertEqual(process.returncode, 2)
+                self.assertFalse(output.exists())
+
+    def version_two_header(self, mosaic=None, sharing="1"):
+        header = self.header.copy()
+        header[1] = "2"
+        header[19:19] = list(mosaic or self.header[11:18]) + [sharing]
+        return header
+
+    def test_v2_linked_controls_are_exactly_v1_equivalent(self):
+        old_process, old_output = self.invoke(self.payload())
+        new_process, new_output = self.invoke(self.payload(header=self.version_two_header()))
+        self.assertEqual(old_process.returncode, new_process.returncode)
+        self.assertEqual(json.loads(old_output.read_text()), json.loads(new_output.read_text()))
+
+    def test_v2_per_gentek_values_and_fixed_ownership_preserve_transition(self):
+        changed = ["0.9", "0.8", "0.7", "0", "0.6", "0.4", "0.2"]
+        _, original_output = self.invoke(self.payload())
+        process, output = self.invoke(self.payload(header=self.version_two_header(changed, "0")))
+        self.assertIn(process.returncode, (0, 1))
+        original = json.loads(original_output.read_text())
+        document = json.loads(output.read_text())
+        frame, mosaic = document["input"]["frame"], document["input"]["mosaic"]
+        keys = ["variation", "irregularity", "clutter", "destruction", "branching", "environment_affinity", "cohesion"]
+        self.assertEqual(frame["profile"], original["input"]["frame"]["profile"])
+        self.assertEqual([mosaic["profile"][key] for key in keys], list(map(float, changed)))
+        self.assertFalse(document["input"]["options"]["shared_ownership"])
+        self.assertEqual(document["input"]["shared_zone"], [0] * (64 * 48))
+        self.assertTrue(any(frame["transition"]))
+        for gentek in ("frame", "mosaic"):
+            for field in ("transition", "eligible", "limits", "context", "protected"):
+                self.assertEqual(document["input"][gentek][field], original["input"][gentek][field])
+
+    def test_v2_independent_controls_are_strict_and_bounded(self):
+        for offset, value in [(0, "nan"), (1, "inf"), (2, "-0.01"), (3, "1.01"),
+                              (4, "true"), (5, "missing"), (6, "1.1"), (7, "2")]:
+            with self.subTest(offset=offset, value=value):
+                header = self.version_two_header()
+                header[19 + offset] = value
                 process, output = self.invoke(self.payload(header=header))
                 self.assertEqual(process.returncode, 2)
                 self.assertFalse(output.exists())

@@ -34,6 +34,17 @@ constexpr std::array<std::array<std::int8_t, 2>, 25> kBallisticDepositOrder{{
     {-2, 1}, {2, 1}, {0, 2}, {-1, 2}, {1, 2}, {-2, 2}, {2, 2},
 }};
 
+// Whether the selected simulation region includes a cell. wave_flow_v1 freezes
+// excluded Water, so its parcels neither enter, land in nor move inside an
+// excluded core. Other Water laws keep their established parcel semantics.
+template <typename Region, typename Geometry>
+[[nodiscard]] bool ballistic_region_selects(const Region& region, const Geometry& geometry,
+                                            std::int64_t x, std::int64_t y) noexcept {
+    if (!region) return true;
+    const auto core = geometry.core_for_cell(x, y);
+    return core.x >= region->min_x && core.x <= region->max_x && core.y >= region->min_y && core.y <= region->max_y;
+}
+
 } // namespace
 
 void World::validate_ballistic_config() const {
@@ -91,19 +102,19 @@ void World::reset_ballistic_water() noexcept {
 // One exact transfer write: the stored Water quantity at (x, y) becomes
 // `visible` (Empty when zero). Never a source or sink, never under a foreign
 // family default: overfill and IN state follow write_cell's material-change rules.
-void World::ballistic_write_water(std::int64_t x, std::int64_t y, std::uint16_t visible) {
+void World::write_transferred_water(std::int64_t x, std::int64_t y, std::uint16_t visible) {
     const auto target = address(x, y);
     auto* chunk = find_chunk(target.chunk);
-    if (chunk == nullptr) throw std::logic_error("ballistic transfer reached a non-resident chunk");
+    if (chunk == nullptr) throw std::logic_error("Water transfer reached a non-resident chunk");
     auto& cell = chunk->cells[target.index];
     const auto before = cell.material_value();
     if (before != Material::Empty && before != Material::Water)
-        throw std::logic_error("ballistic transfer reached a foreign material");
+        throw std::logic_error("Water transfer reached a foreign material");
     const auto after = visible == 0U ? Material::Empty : Material::Water;
     if (chunk->granular_arrivals) (*chunk->granular_arrivals)[target.index] = 0;
     const auto old_overfill = chunk->pressure == nullptr ? std::uint16_t{0} : chunk->pressure->cells[target.index].overfill;
     if (before != after && old_overfill != 0U)
-        throw std::logic_error("ballistic transfer would discard pressurized overfill");
+        throw std::logic_error("Water transfer would discard pressurized overfill");
     record_quantity_transition(before, before == Material::Water ? cell.state_a_value() : std::uint16_t{0},
                                old_overfill, after, visible, before == after ? old_overfill : std::uint16_t{0},
                                nullptr, {}, false);
@@ -136,6 +147,8 @@ World::BallisticCell World::classify_ballistic_cell(std::int64_t x, std::int64_t
     const auto target = address(x, y);
     const auto* chunk = find_chunk(target.chunk);
     if (chunk == nullptr) return BallisticCell::Outside;
+    if (wave_ != nullptr && !ballistic_region_selects(selected_core_region_, scheduler_geometry_, x, y))
+        return BallisticCell::Outside;
     if (const auto id = transient_obstacle_at(x, y); id != 0U) {
         if (id == parcel.source_body && parcel.age <= BallisticWaterConfig::kSelfContactGraceTicks)
             return BallisticCell::Free;
@@ -144,7 +157,18 @@ World::BallisticCell World::classify_ballistic_cell(std::int64_t x, std::int64_t
     }
     const auto material = chunk->cells[target.index].material_value();
     if (material == Material::Empty) return BallisticCell::Free;
-    if (material == Material::Water) return BallisticCell::Water;
+    if (material == Material::Water) {
+        // Wave spill: Water that is itself falling is not a surface to land on.
+        // A parcel passes it and merges with resting Water or meets a solid.
+        // With catch_falling a parcel merges into falling Water, which clumps a
+        // stream into blobs, but only after the self-contact grace so a fresh
+        // throw is not swallowed by the stream it leaves beside.
+        if (chunk->wave != nullptr && config_.wave_flow.spill.enabled &&
+            (config_.wave_flow.spill.catch_falling == 0 || parcel.age <= BallisticWaterConfig::kSelfContactGraceTicks) &&
+            (chunk->wave->meta[target.index] >> WaveChunk::kDepthShift) == WaveChunk::kFalling)
+            return BallisticCell::Free;
+        return BallisticCell::Water;
+    }
     if (MaterialRules::descriptor(material).state == MaterialState::Gas) return BallisticCell::Free;
     return BallisticCell::Solid;
 }
@@ -157,7 +181,7 @@ BallisticLaunchResult World::admit_ballistic_spawn(std::int64_t spawn_x, std::in
     if (tick_failed_) { result.outcome = BallisticLaunchOutcome::WorldFailed; return result; }
     // Only the World's own serialized tick-entry passes launch during a tick.
     if (tick_in_progress_ && !internal) { result.outcome = BallisticLaunchOutcome::TickInProgress; return result; }
-    constexpr std::int64_t limit = std::int64_t{1} << 52;
+    constexpr auto limit = BallisticWaterConfig::kMaximumSpawnCoordinateQ;
     if (std::abs(vx) > c.max_speed_q || std::abs(vy) > c.max_speed_q || spawn_x < -limit || spawn_x > limit ||
         spawn_y < -limit || spawn_y > limit) {
         result.outcome = BallisticLaunchOutcome::InvalidRequest;
@@ -168,8 +192,23 @@ BallisticLaunchResult World::admit_ballistic_spawn(std::int64_t spawn_x, std::in
     const auto* chunk = find_chunk(address(cx, cy).chunk);
     if (chunk == nullptr) { result.outcome = BallisticLaunchOutcome::NonResident; return result; }
     if (transient_obstacle_at(cx, cy) != 0U) { result.outcome = BallisticLaunchOutcome::Masked; return result; }
+    if (wave_ != nullptr && !ballistic_region_selects(selected_core_region_, scheduler_geometry_, cx, cy)) {
+        result.outcome = BallisticLaunchOutcome::Paused;
+        return result;
+    }
     const auto material = chunk->cells[address(cx, cy).index].material_value();
-    if (material != Material::Empty && MaterialRules::descriptor(material).state != MaterialState::Gas) {
+    // Wave spill only: the World's own release may throw from a face whose
+    // stream share has just poured into the spawn cell as falling Water.
+    const bool falling_spawn = internal && wave_ != nullptr && material == Material::Water &&
+        (config_.wave_flow.spill.stream_share != 0 || config_.wave_flow.spill.stream_draw != 0 ||
+         (config_.wave_flow.spill.enabled && config_.wave_flow.spill.full_face != 0)) && chunk->wave != nullptr &&
+        [&] {
+            // Round-start meta: the cell was dry (it just received the poured
+            // share this round) or already falling. Never resting Water.
+            const auto meta = chunk->wave->meta[address(cx, cy).index];
+            return (meta & WaveChunk::kWet) == 0U || (meta >> WaveChunk::kDepthShift) == WaveChunk::kFalling;
+        }();
+    if (!falling_spawn && material != Material::Empty && MaterialRules::descriptor(material).state != MaterialState::Gas) {
         result.outcome = BallisticLaunchOutcome::InvalidRequest;
         return result;
     }
@@ -197,16 +236,21 @@ BallisticLaunchResult World::launch_ballistic_water_internal(std::int64_t source
     if (chunk == nullptr) { result.outcome = BallisticLaunchOutcome::NonResident; return result; }
     const auto& cell = chunk->cells[source.index];
     if (cell.material_value() != Material::Water) { result.outcome = BallisticLaunchOutcome::NotWater; return result; }
+    if (wave_ != nullptr && !ballistic_region_selects(selected_core_region_, scheduler_geometry_, source_x, source_y)) {
+        result.outcome = BallisticLaunchOutcome::Paused;
+        return result;
+    }
     if (chunk->pressure != nullptr && chunk->pressure->cells[source.index].overfill != 0U) {
         result.outcome = BallisticLaunchOutcome::Pressurized;
         return result;
     }
     const auto mass = static_cast<std::uint32_t>(cell.state_a_value());
     const auto maximum = static_cast<std::uint32_t>(config_.water_experiment_policy.maximum());
-    std::uint32_t quantity = std::min(mass, maximum_quantity);
+    // A wave_flow_v1 cell may hold overfill above one cell; a parcel never does.
+    std::uint32_t quantity = std::min(std::min(mass, maximum_quantity), maximum);
     if (whole_cell_water_enabled()) quantity = maximum_quantity >= maximum ? mass : 0U;
     if (quantity == 0U) { result.outcome = BallisticLaunchOutcome::InsufficientQuantity; return result; }
-    ballistic_write_water(source_x, source_y, static_cast<std::uint16_t>(mass - quantity));
+    write_transferred_water(source_x, source_y, static_cast<std::uint16_t>(mass - quantity));
     BallisticParcel parcel;
     parcel.x = spawn_x;
     parcel.y = spawn_y;
@@ -272,6 +316,7 @@ bool World::deposit_ballistic_parcel(BallisticParcel& parcel, std::int64_t cx, s
     std::uint32_t remaining = parcel.quantity;
     const auto try_cell = [&](std::int64_t tx, std::int64_t ty) {
         if (remaining == 0U || transient_obstacle_at(tx, ty) != 0U) return;
+        if (wave_ != nullptr && !ballistic_region_selects(selected_core_region_, scheduler_geometry_, tx, ty)) return;
         const auto target = address(tx, ty);
         const auto* chunk = find_chunk(target.chunk);
         if (chunk == nullptr) return;
@@ -285,11 +330,12 @@ bool World::deposit_ballistic_parcel(BallisticParcel& parcel, std::int64_t cx, s
             after = static_cast<std::uint16_t>(amount);
         } else if (material == Material::Water && !whole) {
             const auto mass = cell.state_a_value();
-            amount = std::min<std::uint32_t>(remaining, static_cast<std::uint32_t>(maximum - mass));
+            // An overfilled wave_flow_v1 cell has no room (never a wrapped one).
+            amount = mass >= maximum ? 0U : std::min<std::uint32_t>(remaining, static_cast<std::uint32_t>(maximum - mass));
             after = static_cast<std::uint16_t>(mass + amount);
         }
         if (amount == 0U) return;
-        ballistic_write_water(tx, ty, after);
+        write_transferred_water(tx, ty, after);
         if (material == Material::Empty && inertial_water) {
             // Hybrid handoff: the new IN carrier retains the parcel's momentum
             // (q256 -> q16 per cell); v1 may not hold upward velocity.
@@ -318,6 +364,26 @@ bool World::deposit_ballistic_parcel(BallisticParcel& parcel, std::int64_t cx, s
     for (const auto& offset : kBallisticDepositOrder) {
         if (remaining == 0U) break;
         if (std::abs(offset[0]) > radius || std::abs(offset[1]) > radius) continue;
+        if (wave_ != nullptr && (std::abs(offset[0]) + std::abs(offset[1])) > 1) {
+            // Wave spill: Water may not land beyond a wall one cell thick or
+            // squeeze through a diagonal gap. A ring cell needs an open cell
+            // between it and the parcel (wave_flow_v1 Worlds only).
+            const auto passable = [&](std::int64_t px, std::int64_t py) {
+                if (transient_obstacle_at(px, py) != 0U || find_chunk(address(px, py).chunk) == nullptr) return false;
+                const auto material = stored_material(px, py);
+                return material == Material::Empty || material == Material::Water ||
+                       MaterialRules::descriptor(material).state == MaterialState::Gas;
+            };
+            const auto sx = offset[0] > 0 ? 1 : offset[0] < 0 ? -1 : 0, sy = offset[1] > 0 ? 1 : offset[1] < 0 ? -1 : 0;
+            const bool far_x = std::abs(offset[0]) > 1, far_y = std::abs(offset[1]) > 1;
+            bool reachable = false;
+            if (!far_x && !far_y) reachable = passable(cx + sx, cy) || passable(cx, cy + sy);
+            else if (far_x && far_y) reachable = passable(cx + sx, cy + sy) && (passable(cx + sx, cy) || passable(cx, cy + sy)) &&
+                                                 (passable(cx + 2 * sx, cy + sy) || passable(cx + sx, cy + 2 * sy));
+            else if (far_x) reachable = passable(cx + sx, cy) && (sy == 0 || passable(cx + sx, cy + sy) || passable(cx + 2 * sx, cy));
+            else reachable = passable(cx, cy + sy) && (sx == 0 || passable(cx + sx, cy + sy) || passable(cx, cy + 2 * sy));
+            if (!reachable) continue;
+        }
         try_cell(cx + offset[0], cy + offset[1]);
     }
     if (remaining != 0U) {
@@ -459,6 +525,9 @@ void World::release_water_faces() {
                     std::int64_t height = 0;
                     while (height < 64 && water_at(x, y - 1 - height)) ++height;
                     if (height < c.face_min_height) continue;
+                    std::int64_t spawn_x = 0, spawn_y = 0;
+                    if (!BallisticWaterConfig::spawn_cell_center_q(x, side, spawn_x) ||
+                        !BallisticWaterConfig::spawn_cell_center_q(y, 0, spawn_y)) continue;
                     // Integer sqrt(2 g h) in q256 per tick, scaled by face_speed / 256.
                     const auto energy = static_cast<std::uint64_t>(2 * c.gravity_q) *
                                         static_cast<std::uint64_t>(height * kBallisticQ);
@@ -467,8 +536,8 @@ void World::release_water_faces() {
                     while ((root + 1) * (root + 1) <= energy) ++root;
                     const auto speed = std::min<std::int64_t>(c.max_speed_q,
                         static_cast<std::int64_t>(root) * c.face_speed / 256);
-                    const auto r = launch_ballistic_water_internal(x, y, (x + side) * kBallisticQ + kBallisticQ / 2,
-                        y * kBallisticQ + kBallisticQ / 2, static_cast<std::int32_t>(side * speed), 0, 0,
+                    const auto r = launch_ballistic_water_internal(x, y, spawn_x, spawn_y,
+                        static_cast<std::int32_t>(side * speed), 0, 0,
                         std::numeric_limits<std::uint32_t>::max(), true);
                     if (r.outcome != BallisticLaunchOutcome::Launched) continue;
                     ++ballistic_ledger_.face_releases;
@@ -488,6 +557,12 @@ void World::advance_ballistic_water() {
     std::size_t index = 0;
     while (index < ballistic_parcels_.size()) {
         auto& parcel = ballistic_parcels_[index];
+        // A parcel inside a paused wave_flow_v1 core is frozen with its Water.
+        if (wave_ != nullptr && !ballistic_region_selects(selected_core_region_, scheduler_geometry_,
+                                                          ballistic_cell(parcel.x), ballistic_cell(parcel.y))) {
+            ++index;
+            continue;
+        }
         // Presentation: redraw the cell the parcel leaves and the one it reaches.
         mark_ballistic_render_dirty(ballistic_cell(parcel.x), ballistic_cell(parcel.y));
         if (step_ballistic_parcel(parcel)) {
@@ -509,8 +584,12 @@ bool World::step_ballistic_parcel(BallisticParcel& p) {
     ++l.parcel_ticks;
     const auto q = static_cast<std::int64_t>(p.quantity);
     // Gravity, drag and saturation; each term is booked separately and exactly.
-    p.vy += c.gravity_q;
-    l.gravity_py += ballistic_checked_product(q, c.gravity_q);
+    if (p.coyote_left > 0U) {
+        --p.coyote_left;
+    } else {
+        p.vy += c.gravity_q;
+        l.gravity_py += ballistic_checked_product(q, c.gravity_q);
+    }
     {
         const auto dx = -ballistic_scale(p.vx, c.air_drag), dy = -ballistic_scale(p.vy, c.air_drag);
         p.vx += dx;
@@ -545,7 +624,37 @@ bool World::step_ballistic_parcel(BallisticParcel& p) {
         const auto ncx = ballistic_cell(tx), ncy = ballistic_cell(ty);
         if (ncx == cx && ncy == cy) { p.x = tx; p.y = ty; continue; }
         std::uint16_t body = 0;
-        const auto kind = classify_ballistic_cell(ncx, ncy, p, body);
+        auto kind = classify_ballistic_cell(ncx, ncy, p, body);
+        if (wave_ != nullptr && (kind == BallisticCell::Free || kind == BallisticCell::Water) &&
+            ncx != cx && ncy != cy) {
+            // wave_flow_v1: a diagonal step between two closed axis cells would
+            // cross a one-cell diagonal wall. It meets the nearer of them instead.
+            // Existing Water beyond the corner is not a reachable merge target.
+            std::uint16_t side_body = 0, down_body = 0;
+            const auto side = classify_ballistic_cell(ncx, cy, p, side_body);
+            const auto down = classify_ballistic_cell(cx, ncy, p, down_body);
+            // A Water neighbour still connects a wet destination to this
+            // parcel. Keep its existing merge destination; only two blocking
+            // neighbours can make that wet diagonal cell unreachable.
+            if (side != BallisticCell::Free && down != BallisticCell::Free &&
+                (kind == BallisticCell::Free ||
+                 (side != BallisticCell::Water && down != BallisticCell::Water))) {
+                if (down == BallisticCell::Water) {
+                    surface = true;
+                    surface_cell = {cx, ncy};
+                    ++l.surface_entries;
+                    break;
+                }
+                if (side == BallisticCell::Water) {
+                    surface = true;
+                    surface_cell = {ncx, cy};
+                    ++l.surface_entries;
+                    break;
+                }
+                kind = down;
+                body = down_body;
+            }
+        }
         if (kind == BallisticCell::Free) {
             p.x = tx;
             p.y = ty;
