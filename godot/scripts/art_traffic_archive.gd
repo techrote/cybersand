@@ -268,9 +268,13 @@ func _complete_record(raw: PackedByteArray, consumer: Callable) -> bool:
 		if event.get("segment_id") != segment.id or not integer(event.get("event_index"), 1) or int(event.event_index) != _sequence or event.get("event_id") != str(segment.id) + ":" + str(_sequence):
 			return fail("Duplicate, missing or inconsistent conversation event identifier at %s:%d." % [segment.path, _record_start])
 	elif not bool(segment.modern) and event.has("event_id"):
-		if not event.event_id is String or event.event_id.is_empty() or _legacy_ids.has(event.event_id): return fail("Duplicate or malformed legacy event identifier: " + str(segment.path))
+		if not event.event_id is String or event.event_id.is_empty(): return fail("Malformed legacy event identifier: " + str(segment.path))
+		# Legacy IDs are arbitrary strings. Retain a fixed-size digest, not up to
+		# 32 MiB of identifier text per entry in the bounded duplicate set.
+		var identity_hash: String = event.event_id.sha256_text()
+		if _legacy_ids.has(identity_hash): return fail("Duplicate legacy event identifier: " + str(segment.path))
 		if _legacy_ids.size() >= 65536: return fail("Legacy event identifiers exceed the 65536-entry validation limit.")
-		_legacy_ids[event.event_id] = true
+		_legacy_ids[identity_hash] = true
 	if consumer.is_valid():
 		var result: String = consumer.call(event, str(segment.path), _record_start, raw)
 		if not result.is_empty(): return fail(result)

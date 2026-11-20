@@ -163,6 +163,22 @@ receipts before issuing its final verdict. Harness review also strengthened
 the process-kill export checkpoint and required proof of network dispatch before
 testing Stop; a same-frame cancellation alone was insufficient evidence.
 
+A final bounded-memory review also identified that the entry-limited legacy
+duplicate-ID set retained entire arbitrary-length ID strings. A crafted valid
+archive could therefore accumulate large amounts of metadata during export.
+The repair retains fixed-size SHA-256 fingerprints under the same entry limit;
+legacy bytes and duplicate refusal remain unchanged. Long-ID runtime and memory
+results, together with the superseding source identity, belong to the final PR
+ledger. Modern segment/event identities and optional legacy IDs are validated
+in their respective schema domains; equal spelling across those domains is not
+used for event merging, image lookup or parent selection.
+
+An oversized image offset also exposed a conversion overflow: an unchecked
+`1e30` value became a negative seek position. Image offsets now pass the common
+exact-integer validator before conversion, and queued image reads defend their
+seek bounds separately. Targeted restore, export and write regressions refuse
+the malformed offset while preserving existing archives and destinations.
+
 ## Reproduction and platform boundaries
 
 The focused driver is `tools/ci/qualify_art_traffic_lifetime.py`. It records

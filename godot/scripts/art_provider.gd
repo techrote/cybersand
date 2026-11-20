@@ -330,8 +330,8 @@ static func checked_conversation(value: Variant) -> Variant:
 		var turn := {"role":raw.role,"content":raw.content}
 		if raw.has("image_offset"):
 			var offset: Variant = raw.image_offset
-			if not (offset is int or offset is float) or not is_finite(float(offset)) or offset < 0 or float(offset) != floor(float(offset)):
-				return null
+			# JSON numbers must be exact, representable byte offsets before int().
+			if not Archive.integer(offset): return null
 			turn.image_offset = int(offset)
 		if raw.has("image_log_path"):
 			if not raw.has("image_offset") or not raw.image_log_path is String or not valid_traffic_path(raw.image_log_path): return null
@@ -485,6 +485,8 @@ func _poll_images(budget: int) -> String:
 	while not _image_queue.is_empty() and remaining > 0 and completed < 64:
 		var item := _image_queue[0]
 		var problem := "Conversation image reference is corrupt at %s:%d." % [item.path, int(item.offset)]
+		# Defend the queued reader too: a negative seek must never fall back to0.
+		if int(item.offset) < 0 or int(item.limit) <= 0 or int(item.offset) >= int(item.limit): return problem
 		if _image_file == null:
 			_image_file = FileAccess.open(item.path, FileAccess.READ)
 			if _image_file == null or int(item.offset) >= mini(int(item.limit), _image_file.get_length()): return problem

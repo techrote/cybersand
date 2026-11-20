@@ -163,8 +163,10 @@ New writes redact structured values before JSON serialization, preserving
 numeric native receipt tokens and valid JSON. The read-only legacy parser
 recognizes the earlier writer's exact unquoted credential-field `[redacted]`
 artifact, reports its use, and preserves every source byte. Unrelated malformed
-JSON, invalid UTF-8, duplicate identifiers and corrupt/unrelated image
-references refuse restoration. Image validation checks the record boundary,
+JSON, invalid UTF-8, duplicate modern segment/event identities, repeated
+explicit legacy event IDs and corrupt/unrelated image references refuse
+restoration. Modern event identity is the segment ID plus event index; optional
+opaque legacy IDs are validated within their legacy domain. Image validation checks the record boundary,
 segment membership, base64 and actual bounded PNG decoding.
 
 A terminated process can leave an unterminated record at the end of its newest
@@ -193,7 +195,9 @@ single-file conversation import format.
 `art_traffic_archive.gd` reads 64 KiB chunks; interactive restore/export polls
 admit at most 1 MiB of archive or image-record input. A record is limited to
 32 MiB, a chain to 4096 segments, and legacy explicit event-ID tracking to 65536
-identifiers per chain. Link metadata is bounded to 2 MiB per header and
+identifiers per chain. Legacy ID validation retains fixed-size SHA-256
+fingerprints rather than arbitrary-length ID strings, so that metadata cannot
+grow in proportion to historical ID text. Link metadata is bounded to 2 MiB per header and
 64 MiB across a chain. Image-reference validation caches at most 4096 small
 identities, with actual image bytes released after validation. PNG decoding
 checks a 16,777,216-pixel capacity before allocating the decoded image.
