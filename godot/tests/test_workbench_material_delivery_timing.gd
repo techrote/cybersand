@@ -21,6 +21,8 @@ func _initialize() -> void:
 			"CYBERSAND_DIAG_FLYER_POSE","CYBERSAND_DIAG_RENDER_CADENCE"]:
 		saved_environment[key] = OS.get_environment(key)
 		OS.set_environment(key,"")
+	OS.set_environment("CYBERSAND_DIAG_PRESENTATION","coherent")
+	OS.set_environment("CYBERSAND_DIAG_MATERIAL_TIMING","measured")
 	_run.call_deferred()
 
 

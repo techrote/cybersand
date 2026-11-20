@@ -53,6 +53,7 @@ $Hardware = [ordered]@{ source=$Manifest.source_commit; tree=$Manifest.source_tr
     started_utc=(Get-Date).ToUniversalTime().ToString('o'); powershell=$PSVersionTable.PSVersion.ToString() }
 try { $Hardware.cpu = @(Get-CimInstance Win32_Processor | Select-Object Name,NumberOfCores,NumberOfLogicalProcessors) } catch { $Hardware.cpu_error=$_.Exception.Message }
 try { $Hardware.gpu = @(Get-CimInstance Win32_VideoController | Select-Object Name,DriverVersion,CurrentHorizontalResolution,CurrentVerticalResolution,CurrentRefreshRate) } catch { $Hardware.gpu_error=$_.Exception.Message }
+try { $Hardware.os = Get-CimInstance Win32_OperatingSystem | Select-Object Caption,Version,BuildNumber } catch { $Hardware.os_error=$_.Exception.Message }
 Write-Json (Join-Path $Output 'hardware.json') $Hardware
 Write-Json (Join-Path $Output 'request.json') ([ordered]@{
     source=$Manifest.source_commit; tree=$Manifest.source_tree; parent=$Manifest.parent; accepted_main=$Manifest.accepted_main
@@ -89,10 +90,13 @@ function Start-Capture([string]$Folder, [string[]]$Arguments, $Settings, [int]$L
     $Process = [Diagnostics.Process]::Start($Info)
     $Stdout = $Process.StandardOutput.ReadToEndAsync()
     $Stderr = $Process.StandardError.ReadToEndAsync()
-    $PeakWorkingSet = 0L
-    $PeakPrivate = 0L
+    $PeakWorkingSet = $null
+    $PeakPrivate = $null
     $CpuTime = $null
     $TimedOut = $false
+    $AppProcess = $null
+    $AppPid = $null
+    $Discovery = 0
     try {
         while (-not $Process.WaitForExit(200)) {
             if ($Watch.Elapsed.TotalSeconds -gt $Limit) {
@@ -101,11 +105,25 @@ function Start-Capture([string]$Folder, [string[]]$Arguments, $Settings, [int]$L
                 break
             }
             try {
-                $Process.Refresh()
-                $PeakWorkingSet = [Math]::Max($PeakWorkingSet,$Process.WorkingSet64)
-                $PeakPrivate = [Math]::Max($PeakPrivate,$Process.PrivateMemorySize64)
-                $CpuTime = $Process.TotalProcessorTime.TotalMilliseconds
-            } catch [InvalidOperationException] { }
+                # The Windows console launcher is a small forwarding wrapper.
+                # Bind observations to its actual Godot child, verified again
+                # against the runtime receipt, before reporting process memory.
+                if ($null -eq $AppProcess -and $Discovery -lt 3) {
+                    $Discovery++
+                    $Child = @(Get-CimInstance -ClassName Win32_Process -Filter ('ParentProcessId = ' + $Process.Id) |
+                        Where-Object { $_.Name -eq 'Godot_v4.7-stable_win64.exe' })
+                    if ($Child.Count -eq 1) {
+                        $AppProcess = [Diagnostics.Process]::GetProcessById($Child[0].ProcessId)
+                        $AppPid = $AppProcess.Id
+                    }
+                }
+                if ($null -ne $AppProcess) {
+                    $AppProcess.Refresh()
+                    $PeakWorkingSet = [Math]::Max([long]$PeakWorkingSet,$AppProcess.PeakWorkingSet64)
+                    $PeakPrivate = [Math]::Max([long]$PeakPrivate,$AppProcess.PrivateMemorySize64)
+                    $CpuTime = $AppProcess.TotalProcessorTime.TotalMilliseconds
+                }
+            } catch { }
         }
         Assert-Result ($Process.WaitForExit(10000)) 'Application process did not terminate'
         $LogsRead = [Threading.Tasks.Task]::WaitAll([Threading.Tasks.Task[]]@($Stdout,$Stderr),10000)
@@ -116,11 +134,14 @@ function Start-Capture([string]$Folder, [string[]]$Arguments, $Settings, [int]$L
         [IO.File]::WriteAllText((Join-Path $Folder 'stderr.log'),$Errors)
         $Receipt = [ordered]@{ pid=$Process.Id; command=@($Engine)+$Arguments; elapsed_seconds=$Watch.Elapsed.TotalSeconds
             exit_code=$Process.ExitCode; timed_out=$TimedOut; sampled_peak_working_set_bytes=$PeakWorkingSet
-            sampled_peak_private_bytes=$PeakPrivate; last_sampled_process_cpu_ms=$CpuTime }
+            sampled_peak_private_bytes=$PeakPrivate; last_sampled_process_cpu_ms=$CpuTime; observed_application_pid=$AppPid }
         Write-Json (Join-Path $Folder 'process.json') $Receipt
         Assert-Result (-not $TimedOut -and $Process.ExitCode -eq 0 -and (($Text+$Errors) -notmatch 'SCRIPT ERROR:|Parse Error:|Failed to load script|Failed loading resource:|Unhandled XServer error|Error initializing GLAD|MakeCurrent failed')) "Application failed in $Folder; original process output is retained"
         return $Receipt
-    } finally { $Process.Dispose() }
+    } finally {
+        if ($null -ne $AppProcess) { $AppProcess.Dispose() }
+        $Process.Dispose()
+    }
 }
 
 function Run-Arm($Scenario, [string]$Letter, [int]$Index) {
@@ -158,6 +179,13 @@ function Run-Arm($Scenario, [string]$Letter, [int]$Index) {
     } else {
         $Stats = Read-Physical $Data $Folder $Manifest $Campaign.geometry $Scenario $Arm $RenderingDriver $RenderThread $Repeat $Nonce
     }
+    $Process['app_sampler_pid_matched'] = $Process.observed_application_pid -eq $Stats.process_id
+    if (-not $Process.app_sampler_pid_matched) {
+        $Process.sampled_peak_working_set_bytes = $null
+        $Process.sampled_peak_private_bytes = $null
+        $Process.last_sampled_process_cpu_ms = $null
+    }
+    Write-Json (Join-Path $Folder 'process.json') $Process
     Write-Json (Join-Path $Folder 'analysis.json') $Stats
     return [ordered]@{ arm=$Letter; index=$Index; process=$Process; statistics=$Stats; receipt_sha256=(Get-Sha $Receipt) }
 }

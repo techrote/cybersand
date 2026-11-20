@@ -22,6 +22,7 @@ var initial_sha: String
 
 func _initialize() -> void:
 	initialized_usec = Time.get_ticks_usec()
+	Engine.max_fps = 0
 	for arg: String in OS.get_cmdline_user_args():
 		if arg.begins_with("--receipt="):
 			output = arg.trim_prefix("--receipt=")
@@ -143,9 +144,12 @@ func _check_history() -> Dictionary:
 
 
 func _run() -> void:
-	root.size = Vector2i(640, 360)
+	root.size = Vector2i(960, 720)
+	RenderingServer.call_on_render_thread(Callable(DisplayServer, "window_set_vsync_mode").bind(DisplayServer.VSYNC_DISABLED))
 	_build_host()
 	await RenderingServer.frame_post_draw
+	var vsync := DisplayServer.window_get_vsync_mode()
+	_check(vsync == DisplayServer.VSYNC_DISABLED, "could not match the donor's uncapped transition display")
 	var preparation_usec := Time.get_ticks_usec() - initialized_usec
 	var previous_frame_usec := Time.get_ticks_usec()
 	for index: int in range(Warmup + Samples):
@@ -155,7 +159,8 @@ func _run() -> void:
 		if index >= Warmup:
 			row["frame_ms"] = float(now - previous_frame_usec) / 1000.0
 			row["godot_static_memory_peak_bytes"] = OS.get_static_memory_peak_usage()
-			row["reported_video_memory_bytes"] = int(Performance.get_monitor(Performance.RENDER_VIDEO_MEM_USED))
+			var video_bytes := int(Performance.get_monitor(Performance.RENDER_VIDEO_MEM_USED))
+			row["reported_video_memory_bytes"] = video_bytes if video_bytes > 0 else null
 			frames.append(row)
 		previous_frame_usec = now
 	var history := _check_history()
@@ -168,6 +173,7 @@ func _run() -> void:
 	var result := {"schema": "pubpres-transition-v1", "case": Case, "complete": failures.is_empty(),
 		"failures": failures, "material_strategy": strategy, "context": Context.identity(get_script().resource_path, host.world_shader.shader),
 		"initial_plane_sha256": initial_sha, "setup_usec": preparation_usec, "warmup_frames": Warmup,
+		"display": {"window": [root.size.x, root.size.y], "max_fps": Engine.max_fps, "vsync_mode": vsync},
 		"size": [Extent.x, Extent.y], "channels": Channels, "samples": frames, "history": history,
 		"screenshot_sha256": screenshot_sha, "scope": "Detached production Main renderer seam. Measures publication and post-draw intervals. No native or Rapier owner runs in this lane."}
 	var file := FileAccess.open(output, FileAccess.WRITE)

@@ -276,11 +276,11 @@ func identical_refresh_budget_controls() -> void:
 		check(decision.source=="hidden","unknown active old GPU history withholds even previously certified content slot "+str(decision.slot))
 	host._presentation_previous_unknown = prior_unknown
 	host.snapshot_blend_start_usec = Time.get_ticks_usec()-2000000
-	var expired: Dictionary = exhausted_capture("unchanged-refresh-expired-history-hold")
+	var expired: Dictionary = exhausted_capture("unchanged-refresh-expired-after-withholding")
 	check(not expired.previous_blend_active,"previous history expiry removes the old-texture obligation")
 	for slot: int in range(DENSE_BODIES):
-		check(expired.decisions[slot].source=="held" and expired.decisions[slot].step==prior_steps.get(slot,-2),
-			"expired identical previous texture preserves certified hold slot "+str(slot))
+		check(expired.decisions[slot].source=="hidden",
+			"history expiry cannot renew a hold after a withheld submission slot "+str(slot))
 	lineage_controls["unchanged_refresh"] = {"material_revision":revision,
 		"original_content_id":current,"current_content_id":content_id("current"),
 		"previous_content_id":content_id("previous"),"real_upload_serial":host.last_uploaded_render_snapshot_serial,
@@ -444,6 +444,7 @@ func changed_previous_content_controls() -> void:
 		"real clear Needle pose obtains initial content certificate"): return
 	var anchor: Transform2D = host.workbench_presentation_frame.poses[0]
 	var anchor_step: int = host.workbench_presentation_frame.selected_steps[0]
+	var continuously_visible_certificate: Dictionary = host._workbench_presentation_state[0].duplicate(true)
 	var clear_bytes: PackedByteArray = host.image.get_data()
 	var content_a: int = content_id("current")
 	controlled_step(Vector2(30,0))
@@ -494,7 +495,7 @@ func changed_previous_content_controls() -> void:
 		"expired B cannot revive a previously withheld pose at exhausted deadline")
 	# The same retained certificate covers A once B expires, but it is only
 	# sufficient for a hold when there was no intervening withheld submission.
-	host._workbench_presentation_state[0].withheld_frames = 0
+	host._workbench_presentation_state[0] = continuously_visible_certificate
 	var continuously_visible: Dictionary = exhausted_capture("content-A-previous-B-expired-continuous-control")
 	check(continuously_visible.valid and continuously_visible.decisions[0].source=="held" \
 		and host.workbench_presentation_frame.poses.get(0)==anchor and continuously_visible.decisions[0].step==anchor_step,

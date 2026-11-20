@@ -1332,7 +1332,7 @@ func _world_input(event: InputEvent) -> void:
 			return
 		if event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
 			zoom_by(-1 if event.button_index == MOUSE_BUTTON_WHEEL_UP else 1,event.position)
-			if paint_editor != null: paint_editor.cursor = host.world_cell_from_local_point(event.position, true)
+			if paint_editor != null: paint_editor.cursor = host.world_cell_from_local_point(event.position)
 			return
 		if event.button_index not in [MOUSE_BUTTON_LEFT,MOUSE_BUTTON_RIGHT]: return
 		_commit_field()
@@ -1342,7 +1342,7 @@ func _world_input(event: InputEvent) -> void:
 		if _pan:
 			var area: Rect2 = host.view_content_rect()
 			if area.has_area(): _set_view(Vector2(host.camera_origin)-event.relative*Vector2(host.current_view_size)/area.size,host.current_view_size)
-			if paint_editor != null: paint_editor.cursor = host.world_cell_from_local_point(event.position, true)
+			if paint_editor != null: paint_editor.cursor = host.world_cell_from_local_point(event.position)
 			return
 	else: return
 	var pos: Vector2i = host.world_cell_from_local_point(event.position, true)

@@ -48,7 +48,9 @@ func _native_worker_identity() -> Dictionary:
 		result["case_nonce"] = OS.get_environment("CYBERSAND_SHADER_NONCE")
 		result["native_rendezvous"] = host.native_rendezvous_status()
 		result["static_memory_peak_bytes"] = OS.get_static_memory_peak_usage()
-		result["reported_video_memory_bytes"] = int(Performance.get_monitor(Performance.RENDER_VIDEO_MEM_USED))
+		var video_bytes := int(Performance.get_monitor(Performance.RENDER_VIDEO_MEM_USED))
+		result["reported_video_memory_bytes"] = video_bytes if video_bytes > 0 else null
 		if capture_end_usec > 0:
 			result["engine_sha256"] = FileAccess.get_sha256(OS.get_executable_path())
+			result["setup_usec"] = capture_start_usec-started_usec
 	return result

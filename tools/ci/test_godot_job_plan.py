@@ -22,7 +22,8 @@ class HostedBudgetTests(unittest.TestCase):
                 self.assertEqual(Counter(row["name"] for shard in result["shards"] for row in shard["cases"]),
                                  Counter(case.name for case in cases))
                 self.assertGreaterEqual(result["shard_count"], 12)
-                self.assertLessEqual(result["shard_count"], 24)
+                # PUBPRES adds real Linux graphical camera and staging cases.
+                self.assertLessEqual(result["shard_count"], 25 if platform == "linux" else 24)
                 self.assertLessEqual(result["job_minutes"], 360)
                 for shard in result["shards"]:
                     self.assertTrue(shard["cases"])

@@ -342,7 +342,7 @@ func refresh_pointer() -> void:
 	# toolbar zoom, camera follow, window stretch and layout changes. No input
 	# is synthesized and active stroke/selection anchors remain untouched.
 	var local: Vector2 = host._world_view_screen_transform().affine_inverse() * _pointer_screen
-	cursor = host.world_cell_from_local_point(local, true)
+	cursor = host.world_cell_from_local_point(local)
 
 func world_input(event: InputEvent) -> bool:
 	if not paint_mode_active() or not event is InputEventMouse: return false
@@ -351,7 +351,8 @@ func world_input(event: InputEvent) -> bool:
 		if event.pressed: cancel_preview()
 		return false
 	if event is InputEventMouseMotion and bench._pan: return false
-	var position := _pixel(event)
+	var position: Vector2i = _pixel(event) if dragging or event is InputEventMouseButton \
+		else host.world_cell_from_local_point(event.position)
 	if position.x >= 0: cursor = position
 	if event is InputEventMouseMotion:
 		if dragging and position.x >= 0 and (tool_name() in ["Brush","Eraser"] or drag_erase):
@@ -883,7 +884,7 @@ func _start_reverse(action: String, continuing_history: bool = false) -> bool:
 	return _start_planner(job)
 
 func local_to_cell(position: Vector2) -> Vector2i:
-	return host.world_cell_from_local_point(position, true)
+	return host.world_cell_from_local_point(position)
 
 func _exit_tree() -> void:
 	if host != null and is_instance_valid(host) and not _operation.is_empty(): host.simulation_worker.paint_stop()

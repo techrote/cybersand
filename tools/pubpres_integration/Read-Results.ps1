@@ -25,6 +25,10 @@ function Get-Sha([string]$Path) {
     return (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash.ToLowerInvariant()
 }
 
+function Get-EventTime($Event) {
+    return Get-Field $Event 'time_usec' (Get-Field $Event 'completed_usec')
+}
+
 function Get-Distribution($Values) {
     $Sorted = @($Values | Where-Object { $null -ne $_ } | ForEach-Object { [double]$_ } | Sort-Object)
     if ($Sorted.Count -eq 0) { return $null }
@@ -44,6 +48,7 @@ function Read-Transition($Data, [string]$Folder, $Manifest, $Arm, [string]$Drive
         $Data.context.nonce -eq $Nonce -and $Data.context.backend -eq $Driver -and $Data.context.engine_sha256 -eq $Manifest.engine.gui_sha256) 'Transition source, process, engine or renderer differs'
     Assert-Result (($Data.size -join 'x') -eq '2048x2048' -and $Data.channels -eq 2 -and $Data.warmup_frames -eq 30 -and
         $Data.samples.Count -eq 180 -and $Data.material_strategy -eq $Arm.material -and $Data.initial_plane_sha256 -match '^[0-9a-f]{64}$') 'Transition geometry, treatment or tape differs'
+    Assert-Result (($Data.display.window -join 'x') -eq '960x720' -and $Data.display.max_fps -eq 0 -and $Data.display.vsync_mode -eq 0) 'Transition display differs from uncapped donor setup'
     Assert-Result ($Data.history.current_matches -and $Data.history.previous_matches) 'Transition lost texture history'
     Assert-Result ((Get-Sha (Join-Path $Folder 'receipt-after.png')) -eq $Data.screenshot_sha256) 'Transition screenshot differs'
     $Phases = [ordered]@{}
@@ -74,12 +79,12 @@ function Read-Transition($Data, [string]$Folder, $Manifest, $Arm, [string]$Drive
     }
     $Seconds = ($Data.samples.frame_ms | Measure-Object -Sum).Sum/1000.0
     return [ordered]@{ process_id=$Data.context.process_id; match=[ordered]@{
-            engine=$Data.context.engine_sha256; driver=$Data.context.backend; display=$Data.context.display_server
+            engine=$Data.context.engine_sha256; driver=$Data.context.backend; display_server=$Data.context.display_server; display=$Data.display
             adapter=$Data.context.video_adapter; fixture=$Data.initial_plane_sha256; history=$Data.history }
         frame_ms=(Get-Distribution $Data.samples.frame_ms); publication_ms=(Get-Distribution $Data.samples.publication_ms)
         phases=$Phases; backend_modes=$Modes; publications_per_second=$Data.samples.Count/$Seconds; dense_inputs=$Dense
         setup_ms=$Data.setup_usec/1000.0; static_memory_peak_bytes=($Data.samples.godot_static_memory_peak_bytes | Measure-Object -Maximum).Maximum
-        reported_video_memory_peak_bytes=($Data.samples.reported_video_memory_bytes | Measure-Object -Maximum).Maximum
+        reported_video_memory_bytes=(Get-Distribution $Data.samples.reported_video_memory_bytes)
         owned_staging_bytes=(Get-Distribution @($Data.samples | ForEach-Object { Get-Field $_.material 'allocated_gpu_bytes' }))
         screenshot_sha256=$Data.screenshot_sha256 }
 }
@@ -121,14 +126,25 @@ function Read-Physical($Data, [string]$Folder, $Manifest, $Geometry, $Scenario, 
     Assert-Result ($Trace.Count -gt 2 -and $Trace[0].type -eq 'header' -and $Trace[-1].type -eq 'summary' -and
         $Trace[-1].dropped -eq 0 -and $Trace[-1].events_dropped -eq 0 -and $Trace[-1].worker_events_dropped -eq 0) 'Physical trace incomplete or overflowed'
     $Frames = @($Trace | Where-Object { $_.type -eq 'frame' -and $_.time_usec -ge $Data.capture_start_usec -and $_.time_usec -le $Data.capture_end_usec } | Sort-Object time_usec)
-    $Events = @($Trace | Where-Object { $_.type -eq 'event' -and $_.time_usec -ge $Data.capture_start_usec -and $_.time_usec -le $Data.capture_end_usec })
+    $Events = @($Trace | Where-Object {
+        if ($_.type -eq 'event') {
+            $Time = Get-EventTime $_
+            $null -ne $Time -and $Time -ge $Data.capture_start_usec -and $Time -le $Data.capture_end_usec
+        }
+    })
     $Main = @($Events | Where-Object { $_.event -eq 'main_callback' } | Sort-Object time_usec)
     $Steps = @($Events | Where-Object { $_.event -eq 'rapier_step' } | Sort-Object step)
     $Native = @($Events | Where-Object { $_.event -eq 'native_tick' } | Sort-Object tick_index)
-    $Uploads = @($Events | Where-Object { $_.event -eq 'texture_upload' } | Sort-Object time_usec)
+    $Uploads = @($Events | Where-Object { $_.event -eq 'texture_upload' } | Sort-Object { Get-EventTime $_ })
+    $Draws = @($Events | Where-Object { $_.event -eq 'framebuffer_draw' } | Sort-Object time_usec)
     $Pauses = @($Events | Where-Object { $_.event -eq 'rapier_hold' -and $_.reason -eq 'paused' } | Sort-Object time_usec)
     Assert-Result ($Frames.Count -gt 1 -and $Main.Count -gt 1 -and $Steps.Count -ge $Geometry.physical_step_target -and
         $Native.Count -gt 1 -and $Uploads.Count -gt 1 -and $Steps[0].step -eq 1) 'Missing completed native ticks, uploads, Main callbacks or Rapier steps'
+    $BadTiming = @($Frames | Where-Object {
+        $Timing = $_.presentation.material_timing.timing_source
+        -not $Timing -or ($Arm.timing -eq 'legacy') -ne ($Timing -eq 'legacy_requested')
+    }).Count
+    Assert-Result ($BadTiming -eq 0) 'Material timing selector did not reach the actual presentation decision'
     $Gaps = for ($Index = 1; $Index -lt $Steps.Count; $Index++) {
         $Prior = $Steps[$Index-1]
         $Current = $Steps[$Index]
@@ -139,6 +155,7 @@ function Read-Physical($Data, [string]$Folder, $Manifest, $Geometry, $Scenario, 
     }
     Assert-Result ($Data.capture_wall_seconds -gt 0 -and $Data.rapier_steps -eq $Steps[-1].step) 'Incomplete physical close receipt'
     $MainIntervals = for ($Index = 1; $Index -lt $Main.Count; $Index++) { ($Main[$Index].time_usec-$Main[$Index-1].time_usec)/1000.0 }
+    $DrawIntervals = for ($Index = 1; $Index -lt $Draws.Count; $Index++) { ($Draws[$Index].time_usec-$Draws[$Index-1].time_usec)/1000.0 }
     $FollowVisible = @($Frames | ForEach-Object { Get-Field $_ 'bodies' } | Where-Object { $_.visible -eq $true })
     $VisibleTime = @($FollowVisible | Where-Object { $null -ne $_.presentation_step })
     $Rewinds = @($VisibleTime | Where-Object { $_.presentation_source_rewind -eq $true }).Count
@@ -150,22 +167,23 @@ function Read-Physical($Data, [string]$Folder, $Manifest, $Geometry, $Scenario, 
     }
     return [ordered]@{ process_id=$Workers.process_id; match=[ordered]@{
             engine=$Workers.engine_sha256; driver=$Data.render_driver; display=$Data.display; adapter=$Data.video_adapter
-            fixture=$Data.reference.installed_generated_sha256; tape=$Data.input_tape.script; workers=$Workers.resolved_capacity }
-        frame_ms=(Get-Distribution $MainIntervals); physical_gap_ms=(Get-Distribution $Gaps)
+            fixture=$Data.reference.installed_generated_sha256; tape=$Data.input_tape.script; workers=$Workers.resolved_capacity; view=$Data.view_size }
+        frame_ms=(Get-Distribution $MainIntervals); draw_callback_gap_ms=(Get-Distribution $DrawIntervals)
+        physical_gap_ms=(Get-Distribution $Gaps)
         timing_scopes=[ordered]@{ main_callback_wall_ms=(Get-Distribution @($Main | ForEach-Object { ($_.time_usec-$_.start_usec)/1000.0 }))
             native_tick_wall_ms=(Get-Distribution @($Native | ForEach-Object { ($_.completed_usec-$_.start_usec)/1000.0 }))
             rapier_step_wall_ms=(Get-Distribution @($Steps | ForEach-Object { ($_.time_usec-$_.start_usec)/1000.0 }))
             rapier_solver_wall_ms=(Get-Distribution @($Steps | ForEach-Object { $_.solver_usec/1000.0 }))
             rapier_flush_wall_ms=(Get-Distribution @($Steps | ForEach-Object { $_.flush_usec/1000.0 }))
-            material_publication_wall_ms=(Get-Distribution @($Uploads | ForEach-Object { ($_.time_usec-$_.start_usec)/1000.0 }))
+            material_publication_wall_ms=(Get-Distribution @($Uploads | ForEach-Object { ((Get-EventTime $_)-$_.start_usec)/1000.0 }))
             material_detailed_usec_or_byte_counts=$UploadScope }
-        material_snapshot_to_upload_ms=(Get-Distribution @($Uploads | Where-Object { $_.generated_usec -gt 0 } | ForEach-Object { ($_.time_usec-$_.generated_usec)/1000.0 }))
+        material_snapshot_to_upload_ms=(Get-Distribution @($Uploads | Where-Object { $_.generated_usec -gt 0 } | ForEach-Object { ((Get-EventTime $_)-$_.generated_usec)/1000.0 }))
         frame_material_age_at_submission_ms=(Get-Distribution @($Frames | Where-Object { $_.render_snapshot_built_usec -gt 0 } | ForEach-Object { ($_.time_usec-$_.render_snapshot_built_usec)/1000.0 }))
         native_ticks_per_second=$Native.Count/$Data.capture_wall_seconds; rapier_steps_per_second=$Steps.Count/$Data.capture_wall_seconds
         publications_per_second=$Uploads.Count/$Data.capture_wall_seconds; physical_holds=$Holds; sample_count=$Samples.Count
         worker_observed=(Get-Distribution @($Samples.workers_observed)); visible_step_observations=$VisibleTime.Count; rewinds=$Rewinds
         static_memory_peak_bytes=$Workers.static_memory_peak_bytes; reported_video_memory_final_bytes=$Workers.reported_video_memory_bytes
-        source_cold_preparation_seconds=$Data.elapsed_seconds-$Data.capture_wall_seconds; trace_sha256=(Get-Sha $TracePath) }
+        source_cold_preparation_seconds=$(if ($null -ne (Get-Field $Workers 'setup_usec')) { $Workers.setup_usec/1000000.0 }); trace_sha256=(Get-Sha $TracePath) }
 }
 
 function Assert-Matched($Arms) {

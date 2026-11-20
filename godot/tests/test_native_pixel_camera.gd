@@ -300,12 +300,21 @@ func mounted() -> void:
 	var anchor_before: Vector2 = Camera.local_to_world(anchor_local,host.camera_origin,host.current_view_size,area)
 	var presented_before: Vector2 = host.world_position_from_local_point(anchor_local)
 	var original_camera: Vector2 = host.camera_origin
+	var click_local: Vector2 = area.position + area.size*Vector2(0.23,0.61)
+	var submitted_cell: Vector2i = host.world_cell_from_local_point(click_local,true)
 	var wheel := InputEventMouseButton.new()
 	wheel.button_index = MOUSE_BUTTON_WHEEL_UP
 	wheel.pressed = true
 	wheel.position = anchor_local
 	bench._world_input(wheel)
 	check(host.current_view_size == Vector2i(240,135),"ordinary wheel changes magnification")
+	var same_batch_click := InputEventMouseButton.new()
+	same_batch_click.button_index = MOUSE_BUTTON_LEFT
+	same_batch_click.pressed = true
+	same_batch_click.position = click_local
+	check(submitted_cell.x >= 0 and editor._pixel(same_batch_click) == submitted_cell \
+		and host.world_cell_from_local_point(click_local) != submitted_cell,
+		"same-batch wheel and PAINT click use the last submitted terrain mapping")
 	check(editor.cursor == host.world_cell_from_local_point(anchor_local),
 		"wheel updates PAINT preview target immediately without another mouse event")
 	check(near(Camera.local_to_world(anchor_local,host.camera_origin,host.current_view_size,host.view_content_rect()),

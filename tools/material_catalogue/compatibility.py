@@ -323,6 +323,15 @@ REVIEWED_TRANSITIONS: tuple[dict, ...] = ({'path': 'native/src/world_pressure.in
    'issue': 292,
    'pr': 538})
 
+# The #566 native-pixel sampler is retained unchanged in the integrated Workbench.
+REVIEWED_TRANSITIONS += ({'path': 'godot/shaders/material_palette.gdshader',
+  'from_lf_sha256': 'f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1',
+  'to_lf_sha256': 'b8e5542dae2c36fd6fbef0170a7b537bce5c853fc10920174cefe13dbec78d4f',
+  'source_commit': '6a7069cc67167661497c319b4a73e8d381ea2564',
+  'record': 'docs/audits/2026-11-20-pubpres-sampler-transition.md',
+  'issue': 353,
+  'pr': 682},)
+
 # Bounded #353-B native capability consumer; retained values and identities are unchanged.
 REVIEWED_TRANSITIONS += ({'path': 'native/src/material_rules.cpp',
  'from_lf_sha256': '3afda824571842e387b0cac70218ee5f1f96005d07aaaafcf95c146c3eee3254',
