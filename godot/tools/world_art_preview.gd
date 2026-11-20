@@ -4,6 +4,7 @@ extends Control
 const Adapter = preload("res://tools/world_design_pack_adapter.gd")
 const RenderRig = preload("res://tools/world_art_render_rig.gd")
 const GridOverlay = preload("res://tools/world_art_grid.gd")
+const MinimapOverlay = preload("res://tools/world_art_minimap.gd")
 const FullExport = preload("res://tools/world_art_full_export.gd")
 const COLLECTION_ORDER = [
 	"lumen-fault", "chalkbone-coast", "carved-ice-choir", "ashroot-nursery",
@@ -29,6 +30,7 @@ var _collections: Array[String] = []
 var _feature_ids: Array[String] = []
 var _origin := Vector2.ZERO
 var _zoom: float = 1.0
+var _fit_policy := "all"
 var _presentation_time: float = 1.37
 var _glow: bool = true
 var _quality: bool = true
@@ -70,6 +72,8 @@ var viewport_container: SubViewportContainer
 var canvas_frame: Control
 var baseline_overlay: TextureRect
 var grid_overlay: Control
+var minimap: Control
+var export_limit_label: Label
 var rig
 var directory_dialog: FileDialog
 
@@ -158,6 +162,8 @@ func _build_ui() -> void:
 	_label(bar, "CYBERSAND · WORLD ART PREVIEW", 14)
 	_button(bar, "Reload [R]", func() -> void: reload_pack())
 	_button(bar, "Fit [F]", func() -> void: fit_view())
+	_button(bar, "Width [W]", func() -> void: fit_width())
+	_button(bar, "Height [H]", func() -> void: fit_height())
 	_button(bar, "1:1 [1]", func() -> void: actual_pixels())
 	_button(bar, "Reset", func() -> void: reset_view())
 	_button(bar, "Pin [P]", func() -> void: pin_current())
@@ -188,6 +194,18 @@ func _build_ui() -> void:
 	baseline_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	baseline_overlay.visible = false
 	canvas_frame.add_child(baseline_overlay)
+	minimap = Control.new()
+	minimap.set_script(MinimapOverlay)
+	canvas_frame.add_child(minimap)
+	minimap.set_anchors_preset(Control.PRESET_TOP_RIGHT)
+	minimap.offset_left = -224.0
+	minimap.offset_top = 12.0
+	minimap.offset_right = -12.0
+	minimap.offset_bottom = 148.0
+	minimap.tooltip_text = "Aspect-correct world overview. Click or drag to centre the camera."
+	minimap.mouse_filter = Control.MOUSE_FILTER_STOP
+	minimap.navigate_requested.connect(_navigate_from_minimap)
+	minimap.visible = false
 	canvas_frame.resized.connect(_on_canvas_resized)
 	var status_bar := HBoxContainer.new()
 	middle.add_child(status_bar)
@@ -222,6 +240,9 @@ func _build_ui() -> void:
 	export_scale_picker.add_item("2× native resolution", 2)
 	export_scale_picker.select(1)
 	controls.add_child(export_scale_picker)
+	export_limit_label = _label(controls, "Export bound: 50 million pixels", 11)
+	export_limit_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	export_scale_picker.item_selected.connect(func(_index: int) -> void: _update_export_budget())
 	_button(controls, "Save visible viewport", func() -> void: export_art("viewport"))
 	_button(controls, "Save full composition", func() -> void: export_art("combined"))
 	_button(controls, "Save selected feature", func() -> void: export_art("feature"))
@@ -230,9 +251,9 @@ func _build_ui() -> void:
 	pointer_label = _label(controls, "Point at map to inspect a cell", 12)
 	pointer_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_label(controls, "NOTICE", 13)
-	var notice := _label(controls, "SYNTHETIC material conditions.\nNo simulation, pressure, particles or physics state.", 11)
+	var notice := _label(controls, "SYNTHETIC material conditions.\nArt previewable does NOT mean native playable.\nNo simulation, pressure, particles or physics state.", 11)
 	notice.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	var help := _label(controls, "Wheel: cursor zoom\nMiddle / right drag: pan\nF: fit · 1: native pixels\nR: reload · P: pin · B: compare\nCtrl+S: save current view", 11)
+	var help := _label(controls, "Wheel: cursor zoom\nMiddle / right drag: pan; arrows: pan\nF: all · W: width · H: height · 1: pixels\nMinimap: click/drag to navigate\nR: reload · P: pin · B: compare\nCtrl+S: save current view", 11)
 	help.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	directory_dialog = FileDialog.new()
 	directory_dialog.access = FileDialog.ACCESS_FILESYSTEM
@@ -386,6 +407,7 @@ func open_pack(path: String, preserve_view: bool = false) -> bool:
 		fit_view()
 	else:
 		_update_camera()
+	_update_export_budget()
 	_status("Loaded %s | %s | %s" % [path.get_base_dir().get_file(), str(_native_size), pack_hash.substr(0, 12)])
 	return true
 
@@ -422,6 +444,7 @@ func _select_render(preserve_view: bool) -> void:
 		_update_camera()
 	else:
 		fit_view()
+	_update_export_budget()
 	_status("Viewing %s / %s" % [pack_path.get_base_dir().get_file(),
 		"combined" if feature.is_empty() else feature + " " + _chosen_variant()])
 
@@ -446,21 +469,67 @@ func _on_canvas_resized() -> void:
 	var centre: Vector2 = _origin + Vector2(old_size) / maxf(_zoom, 0.00001) * 0.5
 	var pixels := Vector2i(maxi(1, roundi(canvas_frame.size.x)), maxi(1, roundi(canvas_frame.size.y)))
 	rig.set_resolution(pixels)
+	if _loaded and _fit_policy != "manual":
+		_fit_to(_fit_policy)
+		return
 	_origin = centre - Vector2(pixels) / maxf(_zoom, 0.00001) * 0.5
 	_update_camera()
 
 func fit_view() -> void:
+	_fit_to("all")
+
+func fit_width() -> void:
+	_fit_to("width")
+
+func fit_height() -> void:
+	_fit_to("height")
+
+func _fit_to(mode: String) -> void:
 	if not _loaded:
 		return
 	var pixels: Vector2 = Vector2(rig.size)
-	_zoom = clampf(minf(pixels.x / float(_native_size.x),
-		pixels.y / float(_native_size.y)) * 0.96, 0.03, 32.0)
+	var horizontal: float = pixels.x / float(_native_size.x)
+	var vertical: float = pixels.y / float(_native_size.y)
+	var target: float = minf(horizontal, vertical)
+	if mode == "width":
+		target = horizontal
+	elif mode == "height":
+		target = vertical
+	_zoom = clampf(target * 0.96, 0.03, 32.0)
+	_fit_policy = mode
 	_origin = Vector2(_native_size) * 0.5 - pixels / _zoom * 0.5
 	_update_camera()
+
+func _navigate_from_minimap(world_centre: Vector2) -> void:
+	if not _loaded or _busy:
+		return
+	_fit_policy = "manual"
+	_origin = world_centre - Vector2(rig.size) / _zoom * 0.5
+	_update_camera()
+
+func _pan_by_keyboard(direction: Vector2) -> void:
+	if not _loaded or _busy:
+		return
+	_fit_policy = "manual"
+	_origin += direction * (Vector2(rig.size) / _zoom) * 0.18
+	_update_camera()
+
+func _update_export_budget() -> void:
+	if export_limit_label == null or not _loaded:
+		return
+	var scale: int = maxi(1, export_scale_picker.get_selected_id())
+	var requested: int = _native_size.x * _native_size.y * scale * scale
+	if requested > MAX_EXPORT_PIXELS:
+		export_limit_label.text = "%d×%d at %d× = %d pixels. Full export REFUSED (limit %d); choose 1× or viewport." % [
+			_native_size.x, _native_size.y, scale, requested, MAX_EXPORT_PIXELS]
+	else:
+		export_limit_label.text = "Full export: %d pixels at %d× (limit %d). Tiled rendering; one bounded PNG." % [
+			requested, scale, MAX_EXPORT_PIXELS]
 
 func actual_pixels() -> void:
 	if not _loaded:
 		return
+	_fit_policy = "manual"
 	_zoom = 1.0
 	_origin = Vector2(_native_size) * 0.5 - Vector2(rig.size) * 0.5
 	_update_camera()
@@ -488,6 +557,12 @@ func _update_camera() -> void:
 	grid_overlay.set("world_zoom", _zoom)
 	grid_overlay.set("native_size", _native_size)
 	grid_overlay.queue_redraw()
+	if minimap != null:
+		minimap.visible = _loaded
+		minimap.native_size = _native_size
+		minimap.view_origin = _origin
+		minimap.view_size = view_size
+		minimap.queue_redraw()
 	size_label.text = "%d × %d cells · %.2f px/cell" % [_native_size.x, _native_size.y, _zoom]
 
 func _update_presentation() -> void:
@@ -510,6 +585,7 @@ func _on_canvas_input(event: InputEvent) -> void:
 		if mouse.pressed and mouse.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN]:
 			var world_under: Vector2 = _origin + mouse.position / _zoom
 			var factor: float = 1.2 if mouse.button_index == MOUSE_BUTTON_WHEEL_UP else 1.0 / 1.2
+			_fit_policy = "manual"
 			_zoom = clampf(_zoom * factor, 0.03, 32.0)
 			_origin = world_under - mouse.position / _zoom
 			_update_camera()
@@ -520,6 +596,7 @@ func _on_canvas_input(event: InputEvent) -> void:
 	elif event is InputEventMouseMotion:
 		var motion: InputEventMouseMotion = event
 		if _dragging:
+			_fit_policy = "manual"
 			_origin -= motion.relative / _zoom
 			_update_camera()
 		_inspect(motion.position)
@@ -546,8 +623,20 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		export_art("viewport")
 	elif key.keycode == KEY_F:
 		fit_view()
+	elif key.keycode == KEY_W:
+		fit_width()
+	elif key.keycode == KEY_H:
+		fit_height()
 	elif key.keycode == KEY_1:
 		actual_pixels()
+	elif key.keycode == KEY_LEFT:
+		_pan_by_keyboard(Vector2.LEFT)
+	elif key.keycode == KEY_RIGHT:
+		_pan_by_keyboard(Vector2.RIGHT)
+	elif key.keycode == KEY_UP:
+		_pan_by_keyboard(Vector2.UP)
+	elif key.keycode == KEY_DOWN:
+		_pan_by_keyboard(Vector2.DOWN)
 	elif key.keycode == KEY_R:
 		reload_pack()
 	elif key.keycode == KEY_P:
