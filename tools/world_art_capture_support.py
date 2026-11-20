@@ -93,6 +93,30 @@ class CaptureError(Exception):
 
 # ------------------------------------------------------------------ primitives
 
+def claim_output_directory(output: Path) -> Path:
+    """Reserve one output root across concurrent capture publishers.
+
+    Earlier evidence is never overwritten. The directory itself is not a lock:
+    an initially empty directory can race between the caller's check and mkdir.
+    A child created with O_EXCL-equivalent mkdir is the publication authority.
+    Leave it in place on process death; never auto-steal a stale claim.
+    """
+    if output.exists() and (not output.is_dir() or any(output.iterdir())):
+        raise CaptureError(EXIT_USAGE,
+                           f"--output-dir {output} exists and is not empty; use a new directory so earlier evidence is never overwritten")
+    try:
+        output.mkdir(parents=True, exist_ok=True)
+        claim = output / ".world-art-exclusive-claim"
+        claim.mkdir(mode=0o700)
+    except FileExistsError as error:
+        raise CaptureError(EXIT_USAGE,
+                           f"--output-dir {output} has an active or retained publication claim") from error
+    except OSError as error:
+        raise CaptureError(EXIT_USAGE,
+                           f"cannot reserve exclusive output claim in {output}: {error}") from error
+    return claim
+
+
 def sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
