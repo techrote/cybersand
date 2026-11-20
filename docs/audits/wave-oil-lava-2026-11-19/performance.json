@@ -1,0 +1,350 @@
+{
+  "campaigns": [
+    {
+      "name": "Local WSL with simultaneous Godot activity",
+      "date_utc": "2026-11-19/20",
+      "platform": {
+        "cpu": "AMD Ryzen 5 5600X, 6 cores, 12 logical CPUs",
+        "os": "WSL2 Ubuntu 24.04.5 LTS, Linux 6.18.58.1-microsoft-standard-WSL2",
+        "compiler": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+      },
+      "source": {
+        "base": "551768ee9499f78fd656f5d2d99c5c944c8a1239",
+        "fixed_native": "b5f2f95a34a574c9aa76f79bfdcd897eb66fa727",
+        "apparatus": "oil-brush-cost.cpp beside this receipt, one shared object compiled against the base headers and test fixture"
+      },
+      "build": {
+        "map": "make CXX=g++-13 build/wave_waterwall in each checkout. Native and apparatus -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O3 -DNDEBUG -pthread, no LTO.",
+        "oil_solver": "g++-13 -std=c++20 -O2 -pthread -Inative/include -c each of native/src/world.cpp, material_rules.cpp, scheduler_geometry.cpp, settled_world_discovery.cpp. Only world.o differs between endpoints.",
+        "oil_driver": "In base checkout, g++-13 -std=c++20 -O2 -I. -Inative/include -ffunction-sections -fdata-sections -c <audit-dir>/oil-brush-cost.cpp -o cost.o. Link each endpoint with g++-13 -std=c++20 -O2 -pthread -Wl,--gc-sections cost.o <world.o> material_rules.o scheduler_geometry.o settled_world_discovery.o -o bench-oil.",
+        "sha256": {
+          "cost.o": "301a0f604e4e67e3d16f7ac74e08e6725d7bddd6faf3d0ad4fa95cb4908febe0",
+          "base/bench-oil": "3e7b187894c8f5fb989f570ea24356c6d66553e8de12b179c760cce626ecce45",
+          "base/build/wave_waterwall": "e15b1ce70afd21d9c7cd9cf8bc942e917d70c13731b2b1fe55017736524c7141",
+          "fixed/bench-oil": "7468d697acc8833d51cb4c0080cc5173eb78376d910c76d895418ae40460bd3b",
+          "fixed/build/wave_waterwall": "d5b5a4f25fc1a7008471d53f3c089283431add4489324bd3ab1110c9e94226ab"
+        },
+        "oil_link_inputs_sha256": {
+          "world.o": "30001e342c638824d3fcc069002a425167e6d03f60ba00394b2c9a842dc6105b",
+          "final-edge.o": "2eb39b3a13570e85c38433dad23fdd9d6ece0813d063d2c4d0a37cd9cbc07c7a",
+          "material_rules.o": "aaee28ad93cd933a479584b46759426d83f58799066beae16bdb36a76b5baf46",
+          "scheduler_geometry.o": "a7001157794173d39633baabdad160bf3f7233b1013a9169ac39d8d9a1715fa6",
+          "settled_world_discovery.o": "ae93ade3d274f7221b08d847de4e0a67ba3b16440d545750db036330b6e04ab0"
+        },
+        "solver_object_check": "All 327 shared non-cold World text symbols in the baseline Oil executable and 328 in the fixed Oil executable matched their respective solver objects in name and size. SHA-256 digests identify the actual objects and binaries."
+      },
+      "inputs": {
+        "saved_start_sha256": "925096d1e9984b855b5465309ef12869a47e29052e0cabd5a25788a051b77107",
+        "terrain_1024_bin_sha256": "9b8b4ef6339c4d922c499dd3240198209a8a3cfcca9f9fd49cf1b6fa918f91f5",
+        "stamps_txt_sha256": "c2dee3e3562b1369fdab0f3874716539704e5eae5a29951f262a0efc599b2a4e",
+        "oil_brush_cost_cpp_sha256": "de5f595d6f5b08132a01085948f52b29f28bb55ab4d675be63c243d801c17455",
+        "waterwall_map": "1024 x 1024, 166 Water stamps. Verified no Oil in the terrain byte plane or stamps.",
+        "oil_tank": "384 interior columns, 160 rows, initial Water y=64..158 inclusive, radius-24 Oil disc centered at (192,64); oil_tank_config(6), 900 ticks."
+      },
+      "commands": {
+        "map": "build/wave_waterwall map spill=1 ballistic=1 sheet_rate=64 draw=127 launch_budget=128 coyote_ticks=4 level_shift=3 damp_shift=16 calm_damp_shift=8 calm=128 stick=128 sleep_after=90 substeps=2 gain=32 deep_gain=32 flux_smoothing=16 coast=32 empty_pour_shift=2 floor_gain=1024 draw_head=255 fall=3 full_face=1 deep_draw=64 workers=6 terrain=<map-input-dir>/terrain-1024.bin stamps=<map-input-dir>/stamps.txt probe0=440,540,192,102 source_box=440,540,192,102 stream_box=627,644,24,24 hydrograph=map-selected-0-w6.csv ticks=1500 every=150",
+        "oil": "./bench-oil"
+      },
+      "method": [
+        "Both fixtures timed only native World::tick() in microseconds. Six workers and two substeps. Six sequential runs per fixture, base/fixed/fixed/base/base/fixed, map before Oil.",
+        "Waterwall median and p95 use sorted indices n/2 and floor(0.95*n). The driver rounds to whole microseconds. The Oil harness averages the middle two samples for the median and uses sorted index 854 of 900 for p95.",
+        "Summary compares the medians of three run-level medians or p95 values per build. Map conservation was sampled every 150 ticks including 0 and 1500. The reservoir probe reports stored units divided by 255.",
+        "Godot CPU is summed Windows process CPU time across Godot processes present before and after each run, divided by wall time for average logical cores. Wall time includes WSL startup. Tick metrics exclude setup, sampling and output."
+      ],
+      "limitations": [
+        "All 12 local runs competed with live Godot. These timings describe that loaded host. They cannot establish idle-machine cost or a statistically reliable small speedup. Other Windows/WSL processes were not monitored during these 12 runs.",
+        "A local repeat after Godot exited was deferred before any tick timing. A six-second preflight observed 2.72 other Windows logical cores including about 2.35 from Firefox. The desktop session and its processes were left intact.",
+        "The Oil timing harness emitted final inventories and a physical-state hash. It omitted parcel counters, per-tick inventories and pool occupancy. Waterwall inputs contain zero Oil, and its timing harness emitted sampled Water drift and a final World state hash.",
+        "All Oil workloads contain a radius-24 deposit, and the fixed solver deliberately spreads that mass over more columns. Total cost includes the larger moving surface. Each fixture was timed on one host and profile. Workbench rendering time was unmeasured."
+      ],
+      "shared_outcomes": {
+        "waterwall_all_six": {
+          "initial_water_units": 3052350,
+          "max_abs_sampled_total_water_drift_units": 0,
+          "initial_oil_cells": 0,
+          "final_in_flight_units_derived": 103222,
+          "probe_remaining_t900_cell_equivalents": 102.4,
+          "final_moved_units": 115174892,
+          "final_capacity_refusals": 0,
+          "launched_parcels": 119583,
+          "launched_units": 8549523,
+          "launch_refusals": 0,
+          "launch_deferrals": 6031,
+          "launch_capacity_skips": 0,
+          "live": 1707,
+          "max_live": 3743,
+          "deposited_units": 8446301,
+          "deferred_deposits": 0,
+          "forced": 0,
+          "final_stored_water_units_derived": 2949128,
+          "final_stored_plus_in_flight_units": 3052350,
+          "state_hash": "1c409b94ab0e0bdd"
+        },
+        "oil_base": {
+          "final_oil_cells": 1793,
+          "final_stored_plus_in_flight_water_units": 9067545,
+          "physical_hash": "ab91a7cc86e148a8",
+          "parcel_outcomes": null
+        },
+        "oil_fixed": {
+          "final_oil_cells": 1793,
+          "final_stored_plus_in_flight_water_units": 9067545,
+          "physical_hash": "82d6a64a618c08ee",
+          "parcel_outcomes": null
+        }
+      },
+      "runs": [
+        {
+          "run": "map-1-base",
+          "median_us": 12745.0,
+          "p95_us": 15433.0,
+          "shared_outcome": "waterwall_all_six",
+          "wall_seconds": 21.5116352,
+          "godot_cpu_seconds": 70.15625,
+          "godot_average_logical_cores": 3.261,
+          "log_sha256": "66433ec253a5d04191a4fa9079b513f2854afab2e747c034fc5d7f8a8bb924b6",
+          "max_us": 24619,
+          "wave_storage_bytes": 21962560,
+          "launch_ns_per_tick": 21107,
+          "last_parcel_advance_ns": 263566
+        },
+        {
+          "run": "map-2-fixed",
+          "median_us": 12654.0,
+          "p95_us": 15063.0,
+          "shared_outcome": "waterwall_all_six",
+          "wall_seconds": 21.2825729,
+          "godot_cpu_seconds": 68.34375,
+          "godot_average_logical_cores": 3.211,
+          "log_sha256": "e4d6cf5bc8714824f99e0a3e9a36460bf0e899d6bc0c5a41642d163fd97a898d",
+          "max_us": 20274,
+          "wave_storage_bytes": 21964160,
+          "launch_ns_per_tick": 21160,
+          "last_parcel_advance_ns": 160103
+        },
+        {
+          "run": "map-3-fixed",
+          "median_us": 12733.0,
+          "p95_us": 15037.0,
+          "shared_outcome": "waterwall_all_six",
+          "wall_seconds": 21.396571,
+          "godot_cpu_seconds": 65.34375,
+          "godot_average_logical_cores": 3.054,
+          "log_sha256": "df6a635d5360b762f925362c8cdbaf2d76b6d2c1530410402dcd5ced477518e0",
+          "max_us": 21346,
+          "wave_storage_bytes": 21964160,
+          "launch_ns_per_tick": 22681,
+          "last_parcel_advance_ns": 214607
+        },
+        {
+          "run": "map-4-base",
+          "median_us": 12616.0,
+          "p95_us": 14820.0,
+          "shared_outcome": "waterwall_all_six",
+          "wall_seconds": 21.1069758,
+          "godot_cpu_seconds": 66.25,
+          "godot_average_logical_cores": 3.139,
+          "log_sha256": "221bfb76d34e80ef9f24b5ba7b20ff13b999ce2cddcb992b5dcee63499b21693",
+          "max_us": 19661,
+          "wave_storage_bytes": 21962560,
+          "launch_ns_per_tick": 21062,
+          "last_parcel_advance_ns": 261238
+        },
+        {
+          "run": "map-5-base",
+          "median_us": 12858.0,
+          "p95_us": 15899.0,
+          "shared_outcome": "waterwall_all_six",
+          "wall_seconds": 21.8228051,
+          "godot_cpu_seconds": 70.78125,
+          "godot_average_logical_cores": 3.243,
+          "log_sha256": "5810445e5adb6059177d1fed9a14419a5cc1c5a013b2c7c9019b9ddb5e7cc314",
+          "max_us": 27925,
+          "wave_storage_bytes": 21962560,
+          "launch_ns_per_tick": 21175,
+          "last_parcel_advance_ns": 236058
+        },
+        {
+          "run": "map-6-fixed",
+          "median_us": 12545.0,
+          "p95_us": 14880.0,
+          "shared_outcome": "waterwall_all_six",
+          "wall_seconds": 21.0939133,
+          "godot_cpu_seconds": 67.0625,
+          "godot_average_logical_cores": 3.179,
+          "log_sha256": "ca3e1f778c9caf40744c263de1d80d4ea7c36fc78ba5b3b17a83e0795d9183e1",
+          "max_us": 21272,
+          "wave_storage_bytes": 21964160,
+          "launch_ns_per_tick": 21024,
+          "last_parcel_advance_ns": 145914
+        },
+        {
+          "run": "oil-1-base",
+          "median_us": 2256.9,
+          "p95_us": 3023.0,
+          "shared_outcome": "oil_base",
+          "wall_seconds": 2.4458994,
+          "godot_cpu_seconds": 7.0625,
+          "godot_average_logical_cores": 2.887,
+          "log_sha256": "8b0e0eca7267142f4a8a6ca3b7c200a0c77ec268264d42c920ad0ae18aace340"
+        },
+        {
+          "run": "oil-2-fixed",
+          "median_us": 2737.0,
+          "p95_us": 3652.3,
+          "shared_outcome": "oil_fixed",
+          "wall_seconds": 2.9278692,
+          "godot_cpu_seconds": 8.515625,
+          "godot_average_logical_cores": 2.908,
+          "log_sha256": "64849116dec0e25423b7101663db71b6a08eb8502d0fcdc22a11528006a881fe"
+        },
+        {
+          "run": "oil-3-fixed",
+          "median_us": 2643.4,
+          "p95_us": 3650.3,
+          "shared_outcome": "oil_fixed",
+          "wall_seconds": 2.9295989,
+          "godot_cpu_seconds": 7.796875,
+          "godot_average_logical_cores": 2.661,
+          "log_sha256": "46c29364e0d20223edd2982a086cbc78bf2ad9fc8744a3bfea0867f45c795499"
+        },
+        {
+          "run": "oil-4-base",
+          "median_us": 2289.5,
+          "p95_us": 3393.6,
+          "shared_outcome": "oil_base",
+          "wall_seconds": 2.579788,
+          "godot_cpu_seconds": 6.953125,
+          "godot_average_logical_cores": 2.695,
+          "log_sha256": "528c6bf89f1fac11cf6054fca45925f39f9a508269d654b246e46b3de72388bd"
+        },
+        {
+          "run": "oil-5-base",
+          "median_us": 2280.3,
+          "p95_us": 3398.7,
+          "shared_outcome": "oil_base",
+          "wall_seconds": 2.5767277,
+          "godot_cpu_seconds": 8.296875,
+          "godot_average_logical_cores": 3.22,
+          "log_sha256": "ba4e2b436b2a176fb6cee9be8e8be606ef206e854f27dffa23dc24f17afcdea8"
+        },
+        {
+          "run": "oil-6-fixed",
+          "median_us": 2643.7,
+          "p95_us": 3612.4,
+          "shared_outcome": "oil_fixed",
+          "wall_seconds": 2.8696864,
+          "godot_cpu_seconds": 7.234375,
+          "godot_average_logical_cores": 2.521,
+          "log_sha256": "4a09ea69110b681e8a447c5fd3c6750ec5439715aa9937b5149a0ad9aca3a1a3"
+        }
+      ],
+      "summary": {
+        "map": {
+          "base": {
+            "median_us": {
+              "median_of_three": 12745.0,
+              "range": [
+                12616.0,
+                12858.0
+              ]
+            },
+            "p95_us": {
+              "median_of_three": 15433.0,
+              "range": [
+                14820.0,
+                15899.0
+              ]
+            },
+            "godot_average_logical_cores": {
+              "median_of_three": 3.243,
+              "range": [
+                3.139,
+                3.261
+              ]
+            }
+          },
+          "fixed": {
+            "median_us": {
+              "median_of_three": 12654.0,
+              "range": [
+                12545.0,
+                12733.0
+              ]
+            },
+            "p95_us": {
+              "median_of_three": 15037.0,
+              "range": [
+                14880.0,
+                15063.0
+              ]
+            },
+            "godot_average_logical_cores": {
+              "median_of_three": 3.179,
+              "range": [
+                3.054,
+                3.211
+              ]
+            }
+          },
+          "change_percent_of_median_of_three": {
+            "median_us": -0.71,
+            "p95_us": -2.57
+          }
+        },
+        "oil": {
+          "base": {
+            "median_us": {
+              "median_of_three": 2280.3,
+              "range": [
+                2256.9,
+                2289.5
+              ]
+            },
+            "p95_us": {
+              "median_of_three": 3393.6,
+              "range": [
+                3023.0,
+                3398.7
+              ]
+            },
+            "godot_average_logical_cores": {
+              "median_of_three": 2.887,
+              "range": [
+                2.695,
+                3.22
+              ]
+            }
+          },
+          "fixed": {
+            "median_us": {
+              "median_of_three": 2643.7,
+              "range": [
+                2643.4,
+                2737.0
+              ]
+            },
+            "p95_us": {
+              "median_of_three": 3650.3,
+              "range": [
+                3612.4,
+                3652.3
+              ]
+            },
+            "godot_average_logical_cores": {
+              "median_of_three": 2.661,
+              "range": [
+                2.521,
+                2.908
+              ]
+            }
+          },
+          "change_percent_of_median_of_three": {
+            "median_us": 15.94,
+            "p95_us": 7.56
+          }
+        }
+      }
+    }
+  ]
+}

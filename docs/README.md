@@ -10,6 +10,16 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+For waves travelling under a floating Oil slick, see the [impingement tank comparison](audits/2026-11-20-wave-oil-impinge.md).
+
+For the radius-24 Oil drop and Lava on the Water ramp, see the [Workbench replay](audits/2026-11-19-wave-oil-lava.md).
+
+For full-face Water release, fall speed 3 and the ramp crest investigation, see the [full-face experiment](audits/2026-11-19-wave-water-face-004.md).
+
+For the Water Ramp 003 settings, see the [water ramp evaluation](audits/2026-11-19-wave-water-ramp-003.md) and [Water Lab](operations/workbench-water-lab.md).
+
+For Waterwall 002, see the [Water Lab controls](operations/workbench-water-lab.md#try-the-waterwall-002-candidate), [Wave law](architecture/wave-flow-v1.md#waterwall-002-sheet-crest-and-scale-selective-damping) and [dated comparison](audits/2026-11-19-wave-waterwall-002.md).
+
 For deliberate historical research, use the isolated
 [engineering archaeology index](history/engineering/README.md). It is excluded
 from default current-answer retrieval and grants no implementation authority.
@@ -19,7 +29,7 @@ Current clarified intent is separate in the
 Wave Flow PR #631 (inherited from #618): [native contract and limitations](architecture/wave-flow-v1.md),
 [Shared Workbench tuning, Water comparison scenes and Windows evaluation](operations/wave-flow-evaluation.md),
 and [Workbench repair and qualification custody](audits/2026-11-16-wave-workbench-631-finisher.md).
-Experimental and default off; merge and human gameplay acceptance remain owner decisions.
+PR #631 introduced opt-in Wave Flow. Fresh player sessions now use the Wave gameplay profile with spill and ballistic release. The [owner’s final tank playtest](audits/2026-11-20-wave-oil-impinge.md) records the accepted settings and live frame timing.
 
 **80-Gentek integration candidate:** [selection and Windows evaluation](operations/gentek80-evaluation.md),
 [source reconciliation and qualification](research/gentek-80-integration-001.md).

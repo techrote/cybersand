@@ -51,6 +51,7 @@ struct WaveFlowParameters {
     // two opposing faces in a single apply pass.
     static constexpr std::int32_t kMaximumActiveRows = 32;
     static constexpr std::int32_t kMaximumGain = 512;
+    static constexpr std::int32_t kMaximumFloorGain = 4096;
     static constexpr std::int32_t kMaximumStiffness = 4096;
     static constexpr std::int32_t kMaximumDampingShift = 16;
     static constexpr std::int32_t kMaximumCoast = 65535;
@@ -84,6 +85,7 @@ struct WaveSpillConfig {
     std::int32_t fall = 3;         // cells unsupported Water falls per round, 1..8
     std::int32_t share_shift = 1;  // an exposed face sheds 1/2^n of its cell per round, 1..8
     std::int32_t draw = 64;        // units per round a bulk face may carry, 0..127 (0: coast only)
+    std::int32_t deep_draw = 0;    // feed limit beside a stack of >=5 responding rows; 0 uses draw
     std::int32_t draw_head = 255;  // adverse head (mass units) above which the coast limit applies again
     std::int32_t stream = 128;     // falling Water denser than this (mass units) spreads sideways, 0..255
     // Hybrid release, used only when ballistic_water_v1 is enabled on the same
@@ -101,6 +103,11 @@ struct WaveSpillConfig {
     // vertical grid stream, without reducing the throw, 0..255. The pool feed
     // refills the face, so the stream is drawn from the volume behind it.
     std::int32_t stream_draw = 0;
+    // Sheet flow through each exposed resting row, in mass units per full cell
+    // of outward head per round. Deeper rows pour while the upper two can throw.
+    std::int32_t sheet_rate = 0;   // 0..127, 0 keeps the original discharge
+    std::int32_t coyote_ticks = 0; // 0..8 gravity-free flight ticks for a thrown crest
+    std::int32_t full_face = 0;    // 0: historical selection, 1: throw from all exposed resting rows
     [[nodiscard]] bool operator==(const WaveSpillConfig&) const = default;
 };
 
@@ -125,6 +132,15 @@ struct WaveFlowConfig {
     std::int32_t empty_pour_shift = WaveFlowParameters::kEmptyPourShift;
     std::int32_t flow_share_shift = WaveFlowParameters::kFlowShareShift;
     std::int32_t adhesion_shift = WaveFlowParameters::kAdhesionShift;
+    // Pool-to-pool restoring gain. Zero inherits gain. Dry fronts and shallow
+    // Water keep ordinary gain, and sealed stacks keep gain_confined.
+    std::int32_t deep_gain = 0;
+    // Fraction /256 of each adjacent retained wet-face velocity used per
+    // round. At 64 an alternating one-face ripple loses all its old momentum.
+    std::int32_t flux_smoothing = 0;
+    // Restoring gain at a shallow advancing toe on continuous solid terrain.
+    // Zero uses the ordinary face law, including static thin-film leveling.
+    std::int32_t floor_gain = 0;
     WaveSpillConfig spill{};
     // How hard Wave Water pushes transient bodies (Rapier actors). Observation
     // only: it changes the contact impulse offered to the body owner, never the

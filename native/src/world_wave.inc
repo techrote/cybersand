@@ -24,6 +24,8 @@ struct World::WaveHalf {
     std::uint64_t spill_units = 0, relief_units = 0, spill_faces = 0;
     std::uint64_t falling_units = 0, falling_cells = 0;
     bool pending_flux = false;
+    // Candidate rows for floating Oil to spread or follow a rising/falling Water surface.
+    std::int32_t oil_first = std::numeric_limits<std::int32_t>::max(), oil_last = -1;
     // Separate neighbouring writers without over-aligning WaveChunk. C++17
     // aligned allocation imports CXXABI_1.3.11, above the Linux runtime floor.
     // A full cache line between counter sets works with ordinary allocation.
@@ -38,15 +40,19 @@ struct World::WaveHalf {
 struct World::WaveChunk {
     static constexpr std::uint8_t kGainMask = 3, kGainNormal = 1, kGainConfined = 2;
     static constexpr std::uint8_t kFull = 4, kSolid = 8, kWet = 16;
+    // Gain bits are unused on solid faces. Keep a floating Oil lid distinct
+    // from a rigid ceiling when a column continues from a sleeping chunk.
+    static constexpr std::uint8_t kOilLid = kSolid | kGainNormal;
     // Bits 5-7: ceil(log2) of the responding rows of the cell's stack (0..5).
     static constexpr std::uint8_t kDepthShift = 5;
     static constexpr std::uint8_t kSaturated = 7; // depth code of a stack at the carrier ceiling
     // Spill only: depth code of a wet cell that nothing supports (it is falling).
     // Such a cell carries no hydrostatic head and never reports kFull.
     static constexpr std::uint8_t kFalling = 6;
-    explicit WaveChunk(std::size_t count, std::size_t columns)
-        : flux(count, 0), weight(count, 0), meta(count, 0), dry(columns, 0) {}
+    explicit WaveChunk(std::size_t count, std::size_t columns, bool smooth)
+        : flux(count, 0), prior_flux(smooth ? count : 0U), weight(count, 0), meta(count, 0), dry(columns, 0) {}
     std::vector<std::int32_t> flux;   // authoritative: retained flux through the right face
+    std::vector<std::int32_t> prior_flux; // derived snapshot, refilled by the column pass before every flux pass
     std::vector<std::int32_t> weight; // derived: head above the cell floor, in mass units
     std::vector<std::uint8_t> meta;   // derived: gain code, full, solid, wet
     Chunk* left = nullptr;            // solved neighbours this tick, else null
@@ -93,18 +99,39 @@ struct World::WaveState {
         std::int32_t head = 0;       // donor head in mass units
         std::int32_t quantity = 0;   // share to hand over
         std::int32_t side = 0;       // +1 right, -1 left
+        std::int32_t crest_speed_q = -1; // horizontal carried speed, or -1 for ordinary spray
     };
     struct Scratch {
         std::vector<std::int32_t> mass, weight;
         std::vector<std::uint8_t> flags;
         std::vector<Launch> launch;      // fixed capacity; filled only in the last round
-        std::uint32_t launch_overflow = 0;
+        std::uint64_t launch_overflow = 0;
+
+        // The strip visits faces in vertical order. A full list must not
+        // permanently exclude the bottom of a tall wall. For full-face mode
+        // keep a deterministic reservoir sample; no worker allocates here.
+        void nominate(const Launch& face, bool full_face, std::uint32_t round) noexcept {
+            constexpr auto limit = WaveSpillConfig::kLaunchCandidatesPerTask;
+            if (launch.size() < limit) {
+                launch.push_back(face);
+                return;
+            }
+            ++launch_overflow;
+            if (full_face) {
+                const auto seen = limit + launch_overflow;
+                const auto slot = mix64((static_cast<std::uint64_t>(round) << 32U) ^ seen) % seen;
+                if (slot < limit) launch[static_cast<std::size_t>(slot)] = face;
+            }
+        }
     };
     std::vector<Entry> sorted;
     std::vector<ChunkCoord> grow;
     std::vector<Task> tasks;
     std::vector<Scratch> scratch;
     std::int32_t maximum = 0, film = 0;
+    // Hysteresis for the visible Oil/Water interface, in Water mass units.
+    [[nodiscard]] std::int32_t oil_lift_threshold() const noexcept { return maximum + maximum / 2; }
+    [[nodiscard]] std::int32_t oil_drop_threshold() const noexcept { return maximum / 4; }
     std::uint32_t round = 0;
     bool mask_present = false;
     // Hybrid release. `launch` and `final_round` are tick-local; `launch_backoff`
@@ -162,6 +189,30 @@ namespace {
     return (flux + static_cast<std::int32_t>(k & 4095U)) >> WaveFlowParameters::kFluxShift;
 }
 
+// Wave Worlds already refuse physical serialization. Bind the new law and its
+// live flight countdowns in both Wave hashes, without changing historical streams.
+void hash_wave_discharge(std::uint64_t& hash, const WaveSpillConfig& spill,
+                         std::span<const BallisticParcel> parcels) {
+    if (spill.deep_draw != 0) {
+        for (const char c : std::string_view{"wave-deep-draw"}) hash_byte(hash, static_cast<std::uint8_t>(c));
+        hash_integer(hash, spill.deep_draw);
+    }
+    if (spill.full_face != 0) {
+        for (const char c : std::string_view{"wave-full-face-v1"}) hash_byte(hash, static_cast<std::uint8_t>(c));
+        hash_integer(hash, spill.full_face);
+    }
+    if (spill.sheet_rate != 0) {
+        for (const char c : std::string_view{"wave-sheet-rate"}) hash_byte(hash, static_cast<std::uint8_t>(c));
+        hash_integer(hash, spill.sheet_rate);
+    }
+    if (spill.coyote_ticks != 0) {
+        for (const char c : std::string_view{"wave-crest-flight"}) hash_byte(hash, static_cast<std::uint8_t>(c));
+        hash_integer(hash, spill.coyote_ticks);
+        hash_integer(hash, static_cast<std::uint64_t>(parcels.size()));
+        for (const auto& parcel : parcels) hash_integer(hash, parcel.coyote_left);
+    }
+}
+
 }  // namespace
 
 void World::validate_wave_flow_config() const {
@@ -174,6 +225,12 @@ void World::validate_wave_flow_config() const {
         throw std::invalid_argument("wave_flow active_rows must be between 1 and 32");
     if (tune.gain < 0 || tune.gain > P::kMaximumGain || tune.gain_confined < 0 || tune.gain_confined > P::kMaximumGain)
         throw std::invalid_argument("wave_flow gains outside 0..512");
+    if (tune.floor_gain < 0 || tune.floor_gain > P::kMaximumFloorGain)
+        throw std::invalid_argument("wave_flow floor_gain outside 0..4096");
+    if (tune.deep_gain < 0 || tune.deep_gain > P::kMaximumGain)
+        throw std::invalid_argument("wave_flow deep_gain outside 0..512");
+    if (tune.flux_smoothing < 0 || tune.flux_smoothing > 64)
+        throw std::invalid_argument("wave_flow flux_smoothing outside 0..64");
     if (tune.stiffness < tune.active_rows || tune.stiffness > P::kMaximumStiffness)
         throw std::invalid_argument("wave_flow stiffness must be at least active_rows and at most 4096");
     if (tune.damp_shift < 0 || tune.damp_shift > P::kMaximumDampingShift ||
@@ -199,6 +256,7 @@ void World::validate_wave_flow_config() const {
         if (tune.spill.fall < 1 || tune.spill.fall > S::kMaximumFall ||
             tune.spill.share_shift < 1 || tune.spill.share_shift > S::kMaximumShareShift ||
             tune.spill.draw < 0 || tune.spill.draw > S::kMaximumDraw ||
+            tune.spill.deep_draw < 0 || tune.spill.deep_draw > S::kMaximumDraw ||
             tune.spill.draw_head < 0 || tune.spill.draw_head > S::kMaximumDrawHead ||
             tune.spill.stream < 0 || tune.spill.stream > S::kMaximumStream ||
             tune.spill.launch_min < 1 || tune.spill.launch_min > 255 ||
@@ -206,7 +264,10 @@ void World::validate_wave_flow_config() const {
             tune.spill.launch_speed < 0 || tune.spill.launch_speed > S::kMaximumLaunchSpeed ||
             tune.spill.stream_share < 0 || tune.spill.stream_share > 255 ||
             tune.spill.catch_falling < 0 || tune.spill.catch_falling > 1 ||
-            tune.spill.stream_draw < 0 || tune.spill.stream_draw > 255)
+            tune.spill.stream_draw < 0 || tune.spill.stream_draw > 255 ||
+            tune.spill.sheet_rate < 0 || tune.spill.sheet_rate > 127 ||
+            tune.spill.coyote_ticks < 0 || tune.spill.coyote_ticks > 8 ||
+            tune.spill.full_face < 0 || tune.spill.full_face > 1)
             throw std::invalid_argument("wave_flow spill tuning outside native bounds");
     }
     if (config_.backend != SimulationBackend::PhasedInPlace)
@@ -246,7 +307,7 @@ WaveFlowDiagnostics World::wave_flow_diagnostics() const noexcept {
         (void)coord;
         if (chunk->wave == nullptr) continue;
         result.storage_bytes += chunk->wave->flux.capacity() * sizeof(std::int32_t) +
-                                chunk->wave->weight.capacity() * sizeof(std::int32_t) +
+                                (chunk->wave->weight.capacity() + chunk->wave->prior_flux.capacity()) * sizeof(std::int32_t) +
                                 chunk->wave->meta.capacity() + chunk->wave->dry.capacity() + sizeof(WaveChunk);
     }
     for (const auto& scratch : wave_->scratch)
@@ -287,6 +348,18 @@ void World::hash_wave_state(std::uint64_t& hash) const {
         hash_integer(hash, tune.calm_damp_shift); hash_integer(hash, tune.maximum_mass);
         hash_integer(hash, tune.empty_pour_shift); hash_integer(hash, tune.flow_share_shift); hash_integer(hash, tune.adhesion_shift);
     }
+    if (tune.flux_smoothing != 0) {
+        for (const char c : std::string_view{"wave-flux-smoothing"}) hash_byte(hash, static_cast<std::uint8_t>(c));
+        hash_integer(hash, tune.flux_smoothing);
+    }
+    if (tune.floor_gain != 0) {
+        for (const char c : std::string_view{"wave-floor-gain"}) hash_byte(hash, static_cast<std::uint8_t>(c));
+        hash_integer(hash, tune.floor_gain);
+    }
+    if (tune.deep_gain != 0) {
+        for (const char c : std::string_view{"wave-deep-gain"}) hash_byte(hash, static_cast<std::uint8_t>(c));
+        hash_integer(hash, tune.deep_gain);
+    }
     if (tune.spill.enabled) {
         // Absent while disabled, so every existing Wave World keeps its hash.
         for (const char c : std::string_view{"wave-spill-v1"}) hash_byte(hash, static_cast<std::uint8_t>(c));
@@ -302,6 +375,7 @@ void World::hash_wave_state(std::uint64_t& hash) const {
             for (const char c : std::string_view{"stream-draw"}) hash_byte(hash, static_cast<std::uint8_t>(c));
             hash_integer(hash, tune.spill.stream_draw);
         }
+        hash_wave_discharge(hash, tune.spill, ballistic_parcels_);
     }
     hash_integer(hash, wave_->round);
     std::vector<ChunkCoord> coordinates;
@@ -424,7 +498,9 @@ void World::wave_column_task(std::size_t task_index) noexcept {
                 continue;
             }
         }
-        // Gather the column: -1 solid, 0 empty, otherwise Water mass.
+        // Both negative codes block Water transport. Oil can float, so it
+        // does not supply the rigid-ceiling pressure response below it.
+        constexpr std::int32_t oil_lid = -2;
         for (std::uint32_t c = 0; c < task.count; ++c) {
             const auto& chunk = *entries[c].chunk;
             if (c < kMaximumGroup && skip[c]) {
@@ -446,7 +522,7 @@ void World::wave_column_task(std::size_t task_index) noexcept {
                     continue;
                 }
                 mass[base + ly] = material == Material::Water ? static_cast<std::int32_t>(cell.state_a_value())
-                                  : material == Material::Empty ? 0 : -1;
+                                  : material == Material::Empty ? 0 : material == Material::Oil ? oil_lid : -1;
                 flags[base + ly] = meta[static_cast<std::size_t>(ly) * static_cast<std::size_t>(size)] & WaveChunk::kFull;
             }
         }
@@ -542,6 +618,7 @@ void World::wave_column_task(std::size_t task_index) noexcept {
         std::int64_t carried = 0;
         std::int32_t index = 0;
         bool confined = false;
+        bool oil_above_group = false;
         if (above != nullptr && above->wave->included(lx, size - 1)) {
             const auto bottom = static_cast<std::size_t>(size - 1) * static_cast<std::size_t>(size) +
                                 static_cast<std::size_t>(lx);
@@ -550,7 +627,8 @@ void World::wave_column_task(std::size_t task_index) noexcept {
                 carried = above->wave->weight[bottom];
                 index = config_.wave_flow.active_rows;
             } else if ((meta & WaveChunk::kSolid) != 0U) {
-                index = -1; // a solid ceiling
+                oil_above_group = meta == WaveChunk::kOilLid;
+                if (!oil_above_group) index = -1;
             }
         } else {
             index = -1; // nothing resident above: treated as a ceiling
@@ -559,7 +637,24 @@ void World::wave_column_task(std::size_t task_index) noexcept {
         if (ceiling) index = 0;
         for (std::int32_t r = 0; r < rows; ++r) {
             const auto value = mass[r];
-            if (value < 0) { weight[r] = 0; flags[r] = WaveChunk::kSolid; carried = 0; index = 0; ceiling = true; continue; }
+            if (value < 0) {
+                // Propagate a rigid cap through Oil trapped immediately under
+                // it. A body mask or paused cell is always a rigid cap.
+                if (value == oil_lid && state.final_round && r + 1 < rows && mass[r + 1] > 0 &&
+                    ((r >= 2 && mass[r - 1] == oil_lid && mass[r - 2] == oil_lid) ||
+                     mass[r + 1] > state.oil_lift_threshold() ||
+                     (mass[r + 1] < state.oil_drop_threshold() && r + 2 < rows && mass[r + 2] >= maximum))) {
+                    auto& half = entries[r / size].chunk->wave->half[task.half];
+                    half.oil_first = std::min(half.oil_first, r % size);
+                    half.oil_last = std::max(half.oil_last, r % size);
+                }
+                ceiling = value != oil_lid || ceiling;
+                weight[r] = 0;
+                flags[r] = ceiling ? WaveChunk::kSolid : WaveChunk::kOilLid;
+                carried = 0;
+                index = 0;
+                continue;
+            }
             if (value == 0) { weight[r] = 0; flags[r] = 0; carried = 0; index = 0; ceiling = false; continue; }
             if (spill && weight[r] != 0) {
                 // Falling Water presses on nothing and starts no stack.
@@ -570,8 +665,9 @@ void World::wave_column_task(std::size_t task_index) noexcept {
                 continue;
             }
             if (index == 0) {
-                confined = value > maximum || (value == maximum && ceiling);
-                if (value > maximum) {
+                const bool under_oil = r == 0 ? oil_above_group : flags[r - 1] == WaveChunk::kOilLid;
+                confined = !under_oil && (value > maximum || (value == maximum && ceiling));
+                if (value > maximum && !under_oil) {
                     // Sealed overfill is stiff: scale by the rows that can respond.
                     std::int32_t responding = 1;
                     while (responding < config_.wave_flow.active_rows && r + responding < rows && mass[r + responding] > 0) ++responding;
@@ -675,6 +771,17 @@ void World::wave_column_task(std::size_t task_index) noexcept {
                             static_cast<std::size_t>(first_x), clear_end - first_x, 0);
         wave.clean[task.half] = true;
     }
+    // Flux workers overwrite their own faces in parallel. Sample all faces
+    // in this strip after local dry/empty resets, within the column barrier.
+    if (config_.wave_flow.flux_smoothing != 0) {
+        for (std::uint32_t c = 0; c < task.count; ++c) {
+            auto& wave = *entries[c].chunk->wave;
+            for (auto ly = wave.min_y; ly < wave.max_y; ++ly) {
+                const auto i = static_cast<std::size_t>(ly) * static_cast<std::size_t>(size) + static_cast<std::size_t>(first_x);
+                std::copy_n(wave.flux.data() + i, last_x - first_x, wave.prior_flux.data() + i);
+            }
+        }
+    }
 }
 
 // Offer Wave Water's push on a transient body. With the defaults this is
@@ -741,6 +848,8 @@ void World::wave_flux_task(std::size_t task_index) noexcept {
     const auto last_x = task.half == 0U ? size / 2 : size;
     const auto film = state.film;
     const auto& spill = config_.wave_flow.spill;
+    const bool full_face_hybrid = spill.enabled && spill.full_face != 0 &&
+        config_.ballistic_water.enabled && spill.launch_budget > 0;
     const auto maximum = state.maximum;
     for (std::uint32_t c = 0; c < task.count; ++c) {
         auto& chunk = *state.sorted[task.first + c].chunk;
@@ -807,7 +916,14 @@ void World::wave_flux_task(std::size_t task_index) noexcept {
                 // A face outside every active band keeps no momentum: coasting
                 // flux with no restoring force would pump energy into the surface.
                 if (code == 0U) { wave.flux[i] = 0; continue; }
-                const auto head = wave.weight[i] - other->wave->weight[j];
+                auto head = wave.weight[i] - other->wave->weight[j];
+                if (full_face_hybrid && a != 0 && b != 0) {
+                    // A passing curtain exerts no hydrostatic counter-head.
+                    // Otherwise one full falling cell can hide the entire crest.
+                    const bool left_falling = (meta_a >> WaveChunk::kDepthShift) == WaveChunk::kFalling;
+                    const bool right_falling = (meta_b >> WaveChunk::kDepthShift) == WaveChunk::kFalling;
+                    if (left_falling != right_falling) head = left_falling ? -other->wave->weight[j] : wave.weight[i];
+                }
                 // Whether the cell rests on something solid (or on the edge of
                 // what is solved, which is treated as a floor).
                 const auto supported = [&](const Chunk* owner, std::size_t at) noexcept {
@@ -820,7 +936,34 @@ void World::wave_flux_task(std::size_t task_index) noexcept {
                     return under == nullptr || !under->wave->included(column, 0) ||
                            (under->wave->meta[static_cast<std::size_t>(column)] & WaveChunk::kSolid) != 0U;
                 };
-                if (a != 0 && b != 0 && ((meta_a | meta_b) & WaveChunk::kFull) == 0U) {
+                // The leading film may retain momentum only along an actual,
+                // level floor. A solved-region edge, a body, Water underneath,
+                // or a step up/down cannot supply this extra acceleration.
+                const auto floor_depth = [&](const Chunk* owner, std::size_t at) noexcept {
+                    const auto x = static_cast<std::int32_t>(at - row);
+                    auto y = ly;
+                    for (int depth = 1; depth <= 3; ++depth) {
+                        if (++y == size) {
+                            owner = owner->wave->below;
+                            y = 0;
+                        }
+                        if (!owner || !owner->wave->solve || !owner->wave->included(x, y)) return 0;
+                        const auto below = static_cast<std::size_t>(y) * stride + static_cast<std::size_t>(x);
+                        const auto& cell = owner->cells[below];
+                        if (material_definition(cell.material_value()).state == MaterialState::Solid) return depth;
+                        if ((owner->wave->meta[below] & WaveChunk::kFull) == 0U) return 0;
+                    }
+                    return 0;
+                };
+                bool floor_front = false;
+                if (config_.wave_flow.floor_gain != 0 && code == WaveChunk::kGainNormal &&
+                    std::min(wave.weight[i], other->wave->weight[j]) < maximum && std::max(a, b) > film) {
+                    // The lowest three Water rows can travel as a sheet. Both
+                    // faces need full supporting Water down to the same floor.
+                    const auto depth = floor_depth(&chunk, i);
+                    floor_front = depth != 0 && floor_depth(other, j) == depth;
+                }
+                if (!floor_front && a != 0 && b != 0 && ((meta_a | meta_b) & WaveChunk::kFull) == 0U) {
                     // A film: two partly filled cells that both rest on a solid
                     // floor. Less than a cell of Water carries no wave worth
                     // keeping, and momentum would let it creep for thousands
@@ -841,7 +984,29 @@ void World::wave_flux_task(std::size_t task_index) noexcept {
                         continue;
                     }
                 }
-                const auto previous = wave.flux[i];
+                const auto& tuning = config_.wave_flow;
+                const bool pool_face = a != 0 && b != 0 && code == WaveChunk::kGainNormal &&
+                    (meta_a >> WaveChunk::kDepthShift) < WaveChunk::kFalling &&
+                    (meta_b >> WaveChunk::kDepthShift) < WaveChunk::kFalling;
+                auto previous = wave.flux[i];
+                if (tuning.flux_smoothing != 0 && pool_face) {
+                    // A missing, solid, dry, or paused outside cell ends the
+                    // stencil (zero gradient). Only connected Water contributes.
+                    const auto neighbour = [&](const Chunk* owner, std::int32_t x, bool left) noexcept {
+                        if (x < 0) { owner = owner->wave->left; x = size - 1; }
+                        else if (x == size) { owner = owner->wave->right; x = 0; }
+                        if (owner == nullptr || !owner->wave->included(x, ly)) return previous;
+                        const auto k = row + static_cast<std::size_t>(x);
+                        const auto m = owner->wave->meta[k];
+                        if ((m & WaveChunk::kWet) == 0 || (m & WaveChunk::kGainMask) != WaveChunk::kGainNormal ||
+                            (m >> WaveChunk::kDepthShift) >= WaveChunk::kFalling) return previous;
+                        return left ? owner->wave->prior_flux[k] : other->wave->prior_flux[j];
+                    };
+                    const auto left_flux = neighbour(&chunk, lx - 1, true);
+                    const auto right_flux = neighbour(other, static_cast<std::int32_t>(j - row) + 1, false);
+                    const auto curvature = static_cast<std::int64_t>(left_flux) + right_flux - 2LL * previous;
+                    previous += static_cast<std::int32_t>(curvature * tuning.flux_smoothing / 256);
+                }
                 // Flux below kCalm is damped hard. A real wave only passes
                 // through that range near its turning points, where its energy
                 // is in the heads, so it loses almost nothing; the residue that
@@ -850,20 +1015,57 @@ void World::wave_flux_task(std::size_t task_index) noexcept {
                 const auto speed = std::abs(previous);
                 const auto damping = previous == 0 ? 0
                     : (previous > 0 ? 1 : -1) * std::max(1, speed >> (speed < config_.wave_flow.calm ? config_.wave_flow.calm_damp_shift : config_.wave_flow.damp_shift));
-                auto flux = static_cast<std::int64_t>(previous) - damping +
-                            static_cast<std::int64_t>(head) * (code == WaveChunk::kGainConfined ? config_.wave_flow.gain_confined : config_.wave_flow.gain);
+                auto gain = code == WaveChunk::kGainConfined ? tuning.gain_confined : tuning.gain;
+                // Depth class two starts at three responding rows in each
+                // stack. A dry or thin advancing front always uses ordinary gain.
+                if (tuning.deep_gain != 0 && code == WaveChunk::kGainNormal) {
+                    // A partial top cell is its own one-row stack in Wave.
+                    // It belongs to the pool wave if a deep stack lies directly
+                    // beneath it. This also covers an Empty cell just above
+                    // the pool, without slowing a wave spreading onto dry land.
+                    const auto deep_stack = [](std::uint8_t meta) noexcept {
+                        const auto depth = meta >> WaveChunk::kDepthShift;
+                        return (meta & WaveChunk::kGainMask) == WaveChunk::kGainNormal &&
+                               depth >= 2 && depth < WaveChunk::kFalling;
+                    };
+                    const auto deep_column = [&](const Chunk* owner, std::size_t at, std::uint8_t meta) noexcept {
+                        if (deep_stack(meta)) return true;
+                        if ((meta >> WaveChunk::kDepthShift) >= WaveChunk::kFalling) return false;
+                        const auto column = static_cast<std::int32_t>(at - row);
+                        if (ly + 1 < size)
+                            return owner->wave->included(column, ly + 1) && deep_stack(owner->wave->meta[at + stride]);
+                        const auto* below = owner->wave->below;
+                        return below != nullptr && below->wave->solve && below->wave->included(column, 0) &&
+                               deep_stack(below->wave->meta[static_cast<std::size_t>(column)]);
+                    };
+                    if (deep_column(&chunk, i, meta_a) && deep_column(other, j, meta_b)) gain = tuning.deep_gain;
+                }
+                auto flux = static_cast<std::int64_t>(previous) - damping + static_cast<std::int64_t>(head) * gain;
+                if (floor_front) {
+                    // Accelerate at most one cell of head. Deeper head keeps
+                    // ordinary gain. The usual two-face donor and room bounds
+                    // below cap the resulting total flux, including inertia.
+                    const auto toe_head = std::clamp(head, -maximum, maximum);
+                    flux += static_cast<std::int64_t>(toe_head) * (tuning.floor_gain - gain);
+                }
                 // Rest rule: one unit cannot level a one-unit step (it only
                 // flips it), so a small flux across such a step is discarded.
                 // Larger flux retains its wave inertia until damping calms it.
                 if (a != 0 && b != 0 && std::abs(head) <= config_.wave_flow.rest_head && std::abs(flux) < config_.wave_flow.stick) flux = 0;
-                const bool rightward = flux > 0;
+                // A resting exposed stack can discharge under its own head even
+                // when the ordinary restoring gain is zero. Dry and blocked
+                // receivers still go through the open-face test below.
+                const bool sheet_start = flux == 0 && spill.enabled && spill.sheet_rate != 0 &&
+                    static_cast<std::int64_t>(std::abs(head)) * spill.sheet_rate >= maximum &&
+                    ((head > 0 ? meta_a : meta_b) >> WaveChunk::kDepthShift) != WaveChunk::kFalling;
+                const bool rightward = flux > 0 || (sheet_start && head > 0);
                 auto available = rightward ? a : b;
                 const auto destination_mass = rightward ? b : a;
                 // Spill: the receiver is open when it is falling Water, or an
                 // Empty cell with nothing under it that could hold Water up.
                 bool open = false;
                 int spill_kind = 0;
-                if (spill.enabled && flux != 0) {
+                if (spill.enabled && (flux != 0 || sheet_start)) {
                     if (destination_mass != 0) {
                         open = ((rightward ? meta_b : meta_a) >> WaveChunk::kDepthShift) == WaveChunk::kFalling;
                     } else {
@@ -894,31 +1096,65 @@ void World::wave_flux_task(std::size_t task_index) noexcept {
                         if (rightward ? supported(&chunk, i) : supported(other, j)) available -= film;
                         available = std::max(0, available) >> spill.share_shift;
                     }
+                    // A parcel flies out of the cell without occupying grid room.
+                    // A full falling curtain may still pass spray from the wall behind it.
+                    const auto face_share = std::min(available, maximum >> 1);
                     // Falling Water is never overfilled: two faces share the room.
                     available = std::min(available, std::max(0, maximum - destination_mass) >> 1);
-                    if (state.launch && !donor_falling && destination_mass == 0 && available >= spill.launch_min) {
-                        // Hybrid: this share leaves as a ballistic parcel after
-                        // the passes. The face itself carries nothing, so the
-                        // Water cannot be moved twice.
+                    const auto donor_head = rightward ? wave.weight[i] : other->wave->weight[j];
+                    const auto donor_mass = rightward ? a : b;
+                    if (spill.sheet_rate != 0 && !donor_falling && ((head > 0) == rightward)) {
+                        // Each wet row owns one slice of the vertical sheet. Supply
+                        // it immediately from head while retaining faster outward
+                        // momentum. The ordinary donor and room caps still apply.
+                        const auto sheet = std::min<std::int64_t>(available,
+                            static_cast<std::int64_t>(std::abs(head)) * spill.sheet_rate / maximum);
+                        const auto rate = sheet * (std::int64_t{1} << P::kFluxShift);
+                        flux = rightward ? std::max(flux, rate) : std::min(flux, -rate);
+                    }
+                    const bool full_face = spill.full_face != 0;
+                    const bool throwing_row = full_face || spill.sheet_rate == 0 || donor_head <= 2 * maximum;
+                    const auto release = full_face ? face_share : available;
+                    if (state.launch && throwing_row && !donor_falling && (destination_mass == 0 || full_face) &&
+                        release >= spill.launch_min) {
+                        // Reserve the thrown share before the grid transfer.
+                        // A successful launch debits its own donor after apply.
                         auto& list = state.scratch[task_index];
                         // stream_share keeps part of the face pouring as the
                         // vertical stream; the rest is thrown. stream_draw pours
                         // an extra share from the face cell itself, so the throw
                         // keeps its size and the pool feed refills the face.
-                        const auto keep = (available * spill.stream_share) >> 8;
-                        const auto drawn = (available * spill.stream_draw) >> 8;
-                        if (available - keep < spill.launch_min) {
+                        // In full-face mode the sheet fraction keeps a coherent grid
+                        // stream alongside spray. Either stream control can add to it.
+                        const auto fraction = full_face ? std::max(spill.sheet_rate, spill.stream_share) : spill.stream_share;
+                        const auto keep = (release * fraction) >> 8;
+                        const auto thrown = release - keep;
+                        const auto drawn = (release * spill.stream_draw) >> 8;
+                        if (thrown < spill.launch_min) {
                             // Too little left to throw: the whole share pours.
-                        } else if (list.launch.size() < list.launch.capacity()) {
-                            if (state.final_round)
-                                list.launch.push_back({origin_x + lx + (rightward ? 0 : 1), origin_y + ly,
-                                                       std::abs(head), available - keep, rightward ? 1 : -1});
+                        } else if (full_face || list.launch.size() < WaveSpillConfig::kLaunchCandidatesPerTask) {
+                            if (state.final_round) {
+                                // Carry the outward Wave velocity (mass flux / donor
+                                // mass, converted from rounds to ticks) into crest flight.
+                                std::int32_t crest_speed_q = -1;
+                                if (spill.coyote_ticks != 0 && donor_head <= maximum) {
+                                    const auto outward = std::min<std::int64_t>(std::abs(flux),
+                                        static_cast<std::int64_t>(release) << P::kFluxShift);
+                                    crest_speed_q = static_cast<std::int32_t>(outward * config_.wave_flow.substeps *
+                                        BallisticWaterConfig::kQ / (static_cast<std::int64_t>(donor_mass) << P::kFluxShift));
+                                }
+                                list.nominate({origin_x + lx + (rightward ? 0 : 1), origin_y + ly,
+                                               full_face ? donor_head : std::abs(head), thrown, rightward ? 1 : -1,
+                                               crest_speed_q}, full_face, state.round);
+                            }
                             // The receiver is Empty: two faces share its room.
                             // The launch takes what the cell still holds after
                             // the apply pass, so ownership stays exact.
                             // Never more than this face's own share: the two-face
                             // donor budget (share_shift >= 1) must still hold.
-                            available = std::min({keep + drawn, available, maximum >> 1});
+                            const auto grid_budget = (full_face || spill.sheet_rate != 0 || spill.coyote_ticks != 0)
+                                ? (donor_mass >> 1) - thrown : available;
+                            available = std::min({keep + drawn, grid_budget, available, maximum >> 1});
                         } else if (state.final_round) {
                             ++list.launch_overflow;
                         }
@@ -948,8 +1184,20 @@ void World::wave_flux_task(std::size_t task_index) noexcept {
                     // Spill: bulk flow may exceed the wave coast limit unless it
                     // runs against more than `draw_head` of head, so a pool can
                     // feed its draining edge while a reversing surge still relaxes.
-                    const auto coast = spill.enabled && ((head > 0) == rightward || std::abs(head) <= spill.draw_head)
-                        ? std::max(config_.wave_flow.coast, spill.draw) : config_.wave_flow.coast;
+                    auto coast = config_.wave_flow.coast;
+                    if (spill.enabled && ((head > 0) == rightward || std::abs(head) <= spill.draw_head)) {
+                        auto draw = spill.draw;
+                        if (spill.deep_draw != 0) {
+                            // Opposing draw faces can drain most of a tall column together.
+                            // Depth codes 3..5 denote 5..32 responding rows in one wet stack.
+                            const auto deep = [](std::uint8_t meta) noexcept {
+                                const auto d = meta >> WaveChunk::kDepthShift;
+                                return d >= 3 && d < WaveChunk::kFalling;
+                            };
+                            if (deep(meta_a) || deep(meta_b)) draw = std::min(draw, spill.deep_draw);
+                        }
+                        coast = std::max(coast, draw);
+                    }
                     available = std::min(available >> config_.wave_flow.flow_share_shift, std::max(coast, downhill));
                     if (((rightward ? meta_b : meta_a) >> WaveChunk::kDepthShift) == WaveChunk::kSaturated) available = 0;
                 }
@@ -1227,6 +1475,7 @@ void World::advance_wave_flow(TickStats& stats) {
 
     // Owner-side reduction: activity, render dirtiness and occupancy.
     started = Clock::now();
+    bool loaded_oil = false;
     std::uint64_t invalid = 0;
     std::int64_t population = 0;
     diagnostics.last_falling_units = diagnostics.last_falling_cells = 0;
@@ -1246,6 +1495,7 @@ void World::advance_wave_flow(TickStats& stats) {
             diagnostics.spill_faces += half.spill_faces;
             diagnostics.last_falling_units += half.falling_units;
             diagnostics.last_falling_cells += half.falling_cells;
+            loaded_oil = loaded_oil || half.oil_last >= 0;
             invalid += half.invalid;
             transitions += half.transitions;
             pending_flux = pending_flux || half.pending_flux;
@@ -1311,11 +1561,24 @@ void World::advance_wave_flow(TickStats& stats) {
         const auto& law = config_.ballistic_water;
         auto budget = static_cast<std::int32_t>(std::min<std::size_t>(static_cast<std::size_t>(spill.launch_budget),
             config_.ballistic_water.capacity - ballistic_parcels_.size()));
+        // Thin an over-budget full face evenly through the entire nomination
+        // sequence, instead of always spending the pool slots on the top rows.
+        std::uint64_t nominees = 0;
+        if (spill.full_face != 0)
+            for (std::size_t index = 0; index < state.tasks.size(); ++index) nominees += state.scratch[index].launch.size();
+        const auto quota = static_cast<std::uint64_t>(budget);
+        const bool thinning = nominees > quota;
+        auto phase = thinning ? mix64(state.round) % nominees : 0;
         bool held = false;
         for (std::size_t index = 0; index < state.tasks.size(); ++index) {
             auto& scratch = state.scratch[index];
             if (scratch.launch_overflow != 0U) { diagnostics.launch_deferrals += scratch.launch_overflow; held = true; }
             for (const auto& face : scratch.launch) {
+                if (thinning) {
+                    phase += quota;
+                    if (phase < nominees) { ++diagnostics.launch_deferrals; held = true; continue; }
+                    phase -= nominees;
+                }
                 if (budget == 0) { ++diagnostics.launch_deferrals; held = true; continue; }
                 std::int64_t spawn_x = 0, spawn_y = 0;
                 if (!BallisticWaterConfig::spawn_cell_center_q(face.x, face.side, spawn_x) ||
@@ -1335,11 +1598,13 @@ void World::advance_wave_flow(TickStats& stats) {
                                        static_cast<std::uint64_t>(face.y) * 0xc2b2ae3d27d4eb4fULL ^ state.round);
                 auto speed = static_cast<std::int64_t>(root) * spill.launch_speed / 256;
                 speed += speed * static_cast<std::int64_t>(key & 63U) / 256;
+                if (face.crest_speed_q >= 0) speed += face.crest_speed_q;
                 speed = std::min<std::int64_t>(speed, law.max_speed_q);
-                const auto drop = static_cast<std::int32_t>((key >> 8) & 15U);
+                const auto drop = face.crest_speed_q >= 0 ? 0 : static_cast<std::int32_t>((key >> 8) & 15U);
                 const auto result = launch_ballistic_water_internal(face.x, face.y, spawn_x, spawn_y,
                     static_cast<std::int32_t>(face.side * speed), drop, 0, static_cast<std::uint32_t>(face.quantity), true);
                 if (result.outcome != BallisticLaunchOutcome::Launched) { ++diagnostics.launch_refusals; held = true; continue; }
+                if (face.crest_speed_q >= 0) ballistic_parcels_.back().coyote_left = static_cast<std::uint8_t>(spill.coyote_ticks);
                 ++diagnostics.launched_parcels;
                 diagnostics.launched_units += result.quantity;
                 --budget;
@@ -1347,5 +1612,136 @@ void World::advance_wave_flow(TickStats& stats) {
         }
         state.launch_backoff = held;
         diagnostics.launch_nanoseconds += elapsed(started);
+    }
+    if (loaded_oil) advance_floating_oil();
+}
+
+// Only the owner calls this, after the three Wave passes and ballistic launches.
+void World::advance_floating_oil() {
+    const auto& state = *wave_;
+    const auto size = config_.chunk_size;
+    const auto stride = static_cast<std::size_t>(size);
+    // Vertical motion needs an open top. Lateral spreading also needs a
+    // connected Water-backed surface and at least three Oil cells on the donor.
+    constexpr int reach = 16, max_depth = 64;
+    const auto surface_cell = [&](std::int64_t x, std::int64_t y) {
+        const auto a = address(x, y);
+        const auto* chunk = find_chunk(a.chunk);
+        if (!chunk || !chunk->wave->solve || !chunk->wave->included(a.local_x, a.local_y) ||
+            (state.mask_present && transient_obstacle_at(x, y) != 0)) return Material::Wall;
+        return chunk->cells[a.index].material_value();
+    };
+    // Retiring an endpoint clears both incident horizontal faces. Hold an
+    // endpoint at a selected-region edge until its neighbouring core resumes.
+    const auto faces_selected = [&](std::int64_t x, std::int64_t y) {
+        return !selected_core_region_ ||
+            (scheduler_geometry_.core_for_cell(x - 1, y).x >= selected_core_region_->min_x &&
+             scheduler_geometry_.core_for_cell(x + 1, y).x <= selected_core_region_->max_x);
+    };
+    const auto oil_available = [&](std::int64_t x, std::int64_t y) {
+        const auto a = address(x, y);
+        return find_chunk(a.chunk)->cells[a.index].epoch_value() != update_epoch_ && faces_selected(x, y);
+    };
+    // Pre-admit thermal storage before changing a tuple outside the material-job halo.
+    const auto move_oil = [&](std::int64_t x, std::int64_t y, std::int64_t tx, std::int64_t ty) {
+        if (stored_temperature(x, y) != config_.ambient_temperature)
+            ensure_temperature_field(*find_chunk(address(tx, ty).chunk));
+        move_cell(x, y, tx, ty, false, nullptr);
+    };
+    // Wave keeps excess volume underneath an impermeable cap. Let an exposed
+    // slick follow it by one grid row. Moving just the end Oil cell preserves
+    // the whole slick's occupancy and transports its complete stored tuple.
+    // The gap between the rise and fall thresholds keeps a level interface quiet.
+    const auto follow_water = [&](std::int64_t x, std::int64_t top, std::int64_t bottom) {
+        const auto water_y = bottom + 1;
+        const auto water = stored_state_a(x, water_y);
+        const auto maximum = state.maximum;
+        if (water > state.oil_lift_threshold() && oil_available(x, bottom) && faces_selected(x, top - 1)) {
+            const auto rise = static_cast<std::uint16_t>(std::min<int>(water - maximum, maximum));
+            const auto temperature = stored_temperature(x, water_y);
+            if (temperature != config_.ambient_temperature)
+                ensure_temperature_field(*find_chunk(address(x, bottom).chunk));
+            move_oil(x, bottom, x, top - 1);
+            write_transferred_water(x, water_y, static_cast<std::uint16_t>(water - rise));
+            write_transferred_water(x, bottom, rise);
+            set_temperature(x, bottom, temperature);
+            return true;
+        }
+        if (water >= state.oil_drop_threshold() || !oil_available(x, top) || !faces_selected(x, water_y) ||
+            surface_cell(x, water_y + 1) != Material::Water) return false;
+        const auto below = stored_state_a(x, water_y + 1);
+        if (below < maximum || below + water > std::min(65535, state.oil_lift_threshold())) return false;
+        // Only consolidate Water of equal temperature. Otherwise ordinary
+        // withdrawal can empty the cell without mixing unlike thermal states.
+        if (stored_temperature(x, water_y) != stored_temperature(x, water_y + 1)) return false;
+        if (stored_temperature(x, top) != config_.ambient_temperature)
+            ensure_temperature_field(*find_chunk(address(x, water_y).chunk));
+        write_transferred_water(x, water_y, 0);
+        write_transferred_water(x, water_y + 1, static_cast<std::uint16_t>(below + water));
+        move_cell(x, top, x, water_y, false, nullptr);
+        return true;
+    };
+    for (const auto& entry : state.sorted) {
+        const auto& wave = *entry.chunk->wave;
+        for (std::int32_t h = 0; h < 2; ++h) {
+            const auto& half = wave.half[static_cast<std::size_t>(h)];
+            for (auto ly = half.oil_first; ly <= half.oil_last; ++ly) {
+                const auto bottom = entry.coord.y * size + ly;
+                // Keep every bounded search and its one-cell air clearance representable.
+                constexpr int margin = max_depth + reach + 3;
+                if (bottom < std::numeric_limits<std::int64_t>::min() + margin ||
+                    bottom > std::numeric_limits<std::int64_t>::max() - margin) continue;
+                for (auto lx = h == 0 ? 0 : size / 2; lx < (h == 0 ? size / 2 : size); ++lx) {
+                    const auto x = entry.coord.x * size + lx;
+                    if (x < std::numeric_limits<std::int64_t>::min() + reach + 1 ||
+                        x > std::numeric_limits<std::int64_t>::max() - reach - 1) continue;
+                    const auto idx = static_cast<std::size_t>(ly) * stride + static_cast<std::size_t>(lx);
+                    if (entry.chunk->cells[idx].material_value() != Material::Oil ||
+                        surface_cell(x, bottom + 1) != Material::Water) continue;
+                    int depth = 0;
+                    while (depth < max_depth && surface_cell(x, bottom - depth) == Material::Oil) ++depth;
+                    const auto top = bottom - depth + 1;
+                    if (surface_cell(x, top - 1) != Material::Empty || follow_water(x, top, bottom)) continue;
+                    if (depth < 3 || !oil_available(x, top)) continue;
+                    auto target_x = x, target_y = top;
+                    auto best = depth - 1;
+                    const auto direction = deterministic_direction(x, bottom);
+                    for (const auto dx : {direction, -direction}) {
+                        auto surface = top;
+                        for (int d = 1; d <= reach; ++d) {
+                            const auto nx = x + d * dx;
+                            // Follow a connected surface by at most one row per column.
+                            // On a rise both columns need open air at the higher level.
+                            auto next = surface;
+                            const auto air = surface_cell(nx, next - 1);
+                            if (air == Material::Water || air == Material::Oil) {
+                                if (surface_cell(nx - dx, next - 2) != Material::Empty ||
+                                    surface_cell(nx, next - 2) != Material::Empty) break;
+                                --next;
+                            } else if (air != Material::Empty) {
+                                break;
+                            } else if (surface_cell(nx, next) == Material::Empty) {
+                                ++next;
+                            }
+                            auto value = surface_cell(nx, next);
+                            int thickness = 0;
+                            while (thickness < max_depth && value == Material::Oil)
+                                value = surface_cell(nx, next + ++thickness);
+                            if (value != Material::Water) break;
+                            if (thickness < best && faces_selected(nx, next - 1)) {
+                                best = thickness;
+                                target_x = nx;
+                                target_y = next - 1;
+                            }
+                            surface = next;
+                            if (best == 0) break;
+                        }
+                        if (best == 0) break;
+                    }
+                    if (target_x == x) continue;
+                    move_oil(x, top, target_x, target_y);
+                }
+            }
+        }
     }
 }

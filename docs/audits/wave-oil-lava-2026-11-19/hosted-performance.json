@@ -1,0 +1,351 @@
+{
+  "platform": {
+    "os": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+    "cpu_model": "INTEL(R) XEON(R) PLATINUM 8573C",
+    "cpu_affinity": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "online_cpus": 4,
+    "nproc": 4,
+    "cpu_quota": null,
+    "runner_image": "ubuntu24",
+    "runner_image_version": "20261116.376.1",
+    "compiler": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0"
+  },
+  "control_commit": "9ccc381ece8f0d1cca13ded1d7af7148a212ec28",
+  "runner": "https://github.com/techrote/cybersand/actions/runs/44646742624",
+  "run_attempt": 1,
+  "sources": {
+    "old": "551768ee9499f78fd656f5d2d99c5c944c8a1239",
+    "new": "b5f2f95a34a574c9aa76f79bfdcd897eb66fa727"
+  },
+  "fixture_source": "c35ea6b064f4bb3934ea451b5b419c373c7d1780",
+  "oil_fixture": "docs/audits/wave-oil-lava-2026-11-19/oil-brush-cost.cpp",
+  "oil_fixture_sha256": "de5f595d6f5b08132a01085948f52b29f28bb55ab4d675be63c243d801c17455",
+  "wall_inputs": {
+    "terrain-wall.bin": "9b8b4ef6339c4d922c499dd3240198209a8a3cfcca9f9fd49cf1b6fa918f91f5",
+    "wall-stamps.txt": "c2dee3e3562b1369fdab0f3874716539704e5eae5a29951f262a0efc599b2a4e"
+  },
+  "wall_args": [
+    "./build/wave_waterwall",
+    "map",
+    "spill=1",
+    "ballistic=1",
+    "sheet_rate=64",
+    "draw=127",
+    "launch_budget=128",
+    "coyote_ticks=4",
+    "level_shift=3",
+    "damp_shift=16",
+    "calm_damp_shift=8",
+    "calm=128",
+    "stick=128",
+    "sleep_after=90",
+    "substeps=2",
+    "gain=32",
+    "deep_gain=32",
+    "flux_smoothing=16",
+    "coast=32",
+    "empty_pour_shift=2",
+    "floor_gain=1024",
+    "draw_head=255",
+    "fall=3",
+    "full_face=1",
+    "deep_draw=64",
+    "workers=6",
+    "terrain=terrain-wall.bin",
+    "stamps=wall-stamps.txt",
+    "probe0=440,540,192,102",
+    "source_box=440,540,192,102",
+    "stream_box=627,644,24,24",
+    "hydrograph=map-selected-0-w6.csv",
+    "ticks=1500",
+    "every=150"
+  ],
+  "compiler": {
+    "wall": "make CXX=g++-13 build/wave_waterwall",
+    "oil": [
+      "g++-13",
+      "-std=c++20",
+      "-O2",
+      "-pthread",
+      "-I",
+      "native/include",
+      "-I",
+      "."
+    ],
+    "objects": [
+      "native/src/world.cpp",
+      "native/src/material_rules.cpp",
+      "native/src/scheduler_geometry.cpp",
+      "native/src/settled_world_discovery.cpp"
+    ],
+    "binaries": {
+      "old": {
+        "wave_waterwall": "e15b1ce70afd21d9c7cd9cf8bc942e917d70c13731b2b1fe55017736524c7141",
+        "brush": "60ebbcbc7b6e6aa7d0f1e08fce485584aef9ef5c10dfd8c41de0eb922a7e66ab",
+        "brush-observe": "37b800472b08ea1a19346a6bda3d75eb3c403cb0fd85fc624d656bdf2c7dea7a"
+      },
+      "new": {
+        "wave_waterwall": "d5b5a4f25fc1a7008471d53f3c089283431add4489324bd3ab1110c9e94226ab",
+        "brush": "cd16b30b6515bb83985efbb7a5d664137e075d2ab6dfff40ad098f94fdfc84f7",
+        "brush-observe": "4bbaebcf704f91742fd5c4bd38536f38c4ff639651ed7fe1c42fdcf915fd9365"
+      }
+    }
+  },
+  "workers": 6,
+  "order": [
+    "old",
+    "new",
+    "new",
+    "old",
+    "old",
+    "new"
+  ],
+  "ticks": {
+    "wall": 1500,
+    "oil": 900
+  },
+  "method": "One GitHub-hosted Ubuntu 24.04 x64 VM, all builds completed before sampling; each process exits before the next starts. A separate post-measurement brush replay checks parcel and material ledgers. Wall checks both residual and in-flight quantities every 150 ticks. Ranges span the three trial medians and p95s.",
+  "summary": {
+    "wall": {
+      "old": {
+        "median_us": {
+          "median": 20862,
+          "min": 20832,
+          "max": 21001
+        },
+        "p95_us": {
+          "median": 24413,
+          "min": 24194,
+          "max": 24536
+        }
+      },
+      "new": {
+        "median_us": {
+          "median": 21854,
+          "min": 21609,
+          "max": 21870
+        },
+        "p95_us": {
+          "median": 25316,
+          "min": 25081,
+          "max": 25595
+        }
+      },
+      "median_change_percent": {
+        "median_us": 4.755,
+        "p95_us": 3.699
+      }
+    },
+    "oil": {
+      "old": {
+        "median_us": {
+          "median": 3940.1,
+          "min": 3936.7,
+          "max": 3943.3
+        },
+        "p95_us": {
+          "median": 4281.9,
+          "min": 4261.6,
+          "max": 4320.0
+        }
+      },
+      "new": {
+        "median_us": {
+          "median": 4715.0,
+          "min": 4672.4,
+          "max": 4719.1
+        },
+        "p95_us": {
+          "median": 5068.0,
+          "min": 4982.9,
+          "max": 5076.7
+        }
+      },
+      "median_change_percent": {
+        "median_us": 19.667,
+        "p95_us": 18.359
+      }
+    }
+  },
+  "per_run": {
+    "wall": [
+      {
+        "seq": 1,
+        "revision": "old",
+        "median_us": 21001,
+        "p95_us": 24536,
+        "max_tick_us": 31967
+      },
+      {
+        "seq": 2,
+        "revision": "new",
+        "median_us": 21854,
+        "p95_us": 25595,
+        "max_tick_us": 32488
+      },
+      {
+        "seq": 3,
+        "revision": "new",
+        "median_us": 21870,
+        "p95_us": 25316,
+        "max_tick_us": 34155
+      },
+      {
+        "seq": 4,
+        "revision": "old",
+        "median_us": 20862,
+        "p95_us": 24194,
+        "max_tick_us": 31946
+      },
+      {
+        "seq": 5,
+        "revision": "old",
+        "median_us": 20832,
+        "p95_us": 24413,
+        "max_tick_us": 32281
+      },
+      {
+        "seq": 6,
+        "revision": "new",
+        "median_us": 21609,
+        "p95_us": 25081,
+        "max_tick_us": 34498
+      }
+    ],
+    "oil": [
+      {
+        "seq": 1,
+        "revision": "old",
+        "median_us": 3943.3,
+        "p95_us": 4261.6
+      },
+      {
+        "seq": 2,
+        "revision": "new",
+        "median_us": 4672.4,
+        "p95_us": 4982.9
+      },
+      {
+        "seq": 3,
+        "revision": "new",
+        "median_us": 4719.1,
+        "p95_us": 5068.0
+      },
+      {
+        "seq": 4,
+        "revision": "old",
+        "median_us": 3936.7,
+        "p95_us": 4281.9
+      },
+      {
+        "seq": 5,
+        "revision": "old",
+        "median_us": 3940.1,
+        "p95_us": 4320.0
+      },
+      {
+        "seq": 6,
+        "revision": "new",
+        "median_us": 4715.0,
+        "p95_us": 5076.7
+      }
+    ]
+  },
+  "repeatable_outcomes": {
+    "wall": {
+      "old": {
+        "hash": "1c409b94ab0e0bdd",
+        "input_water": 3052350,
+        "max_abs_sampled_drift": 0,
+        "capacity_refusals": 0,
+        "hydrograph_sha256": "5e6b2db6a761aa9e26ff805c0364cde6ba6769fde5d0034a616eb0a525ce9d76",
+        "launched_parcels": 119583,
+        "launched_units": 8549523,
+        "launch_refusals": 0,
+        "launch_deferrals": 6031,
+        "launch_capacity_skips": 0,
+        "live": 1707,
+        "max_live": 3743,
+        "deposited_units": 8446301,
+        "deferred_deposits": 0,
+        "forced": 0
+      },
+      "new": {
+        "hash": "1c409b94ab0e0bdd",
+        "input_water": 3052350,
+        "max_abs_sampled_drift": 0,
+        "capacity_refusals": 0,
+        "hydrograph_sha256": "5e6b2db6a761aa9e26ff805c0364cde6ba6769fde5d0034a616eb0a525ce9d76",
+        "launched_parcels": 119583,
+        "launched_units": 8549523,
+        "launch_refusals": 0,
+        "launch_deferrals": 6031,
+        "launch_capacity_skips": 0,
+        "live": 1707,
+        "max_live": 3743,
+        "deposited_units": 8446301,
+        "deferred_deposits": 0,
+        "forced": 0
+      }
+    },
+    "oil": {
+      "old": {
+        "hash": "ab91a7cc86e148a8",
+        "oil": 1793,
+        "water": 9067545
+      },
+      "new": {
+        "hash": "82d6a64a618c08ee",
+        "oil": 1793,
+        "water": 9067545
+      }
+    }
+  },
+  "oil_ledgers": {
+    "old": {
+      "initial_water": 9067545,
+      "initial_oil": 1793,
+      "final_visible": 9067545,
+      "final_overfill": 0,
+      "final_in_flight": 0,
+      "launched_units": 2018,
+      "launched_parcels": 52,
+      "max_live": 15,
+      "live": 0,
+      "launch_refusals": 0,
+      "launch_capacity_skips": 0,
+      "launch_deferrals": 0,
+      "capacity_refusals": 0
+    },
+    "new": {
+      "initial_water": 9067545,
+      "initial_oil": 1793,
+      "final_visible": 9067545,
+      "final_overfill": 0,
+      "final_in_flight": 0,
+      "launched_units": 2562,
+      "launched_parcels": 55,
+      "max_live": 12,
+      "live": 0,
+      "launch_refusals": 0,
+      "launch_capacity_skips": 0,
+      "launch_deferrals": 0,
+      "capacity_refusals": 0
+    }
+  },
+  "job_id": 135991147401,
+  "evidence_artifact": {
+    "name": "water-oil-hosted-timings",
+    "id": 14588199120,
+    "archive_sha256": "e66792ce6c5ed51721b1bafcc9ade911782d6375ca2751f3988331157c82c925",
+    "expires_at": "2027-02-18T00:32:58Z",
+    "url": "https://github.com/techrote/cybersand/actions/runs/44646742624/artifacts/14588199120"
+  },
+  "controls_url": "https://github.com/techrote/cybersand/tree/9ccc381ece8f0d1cca13ded1d7af7148a212ec28/timing679",
+  "workflow_path": ".github/workflows/wave-oil-679-timing.yml"
+}
