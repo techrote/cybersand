@@ -53,6 +53,7 @@ var physical_rig_id: StringName = &""
 var physical_actor_session: CyberPhysicalActorSession
 var physical_actor_overlay: CyberPhysicalActorOverlay
 var _workbench_wait_sample: int = -1
+var _workbench_frame_error: String = ""
 var _workbench_collider_frame: int = -1
 var shared_workbench: Control
 # Experimental Water settings staged for explicit Apply/Load. Unrelated
@@ -973,6 +974,11 @@ func _apply_microscenario_definition(definition: Dictionary, mode: String, actor
 	}
 	microscenario_mode = mode
 	paused = true
+	# A fallible Workbench preparation can pause and roll back between physics
+	# callbacks. Retire the retained producers synchronously with worker pause;
+	# preserve their bodies/resources and renew authority if adoption refuses.
+	if shared_workbench != null and physical_actor_session != null:
+		physical_actor_session.set_suspended(true)
 	var requested_representation := StringName(
 		str(player_configuration.get("representation", "sampled"))
 	)
@@ -1042,6 +1048,7 @@ func _microscenario_installed(definition: Dictionary) -> void:
 	$Layout/Title.text = "CYBERSAND / MICROSCENARIO / " + str(definition.id)
 	if shared_workbench != null and pending_microscenario_apply.has("workbench"):
 		_workbench_wait_sample = -1
+		_workbench_frame_error = ""
 		var extent := Vector2i(definition.extent[0],definition.extent[1])
 		if world_extent != extent:
 			world_extent = extent
@@ -2055,6 +2062,7 @@ func _process(delta: float) -> void:
 
 
 func _physics_process(_delta: float) -> void:
+	if shared_workbench != null and not _workbench_frame_error.is_empty(): return
 	if _pending_physical_candidate != null:
 		# The retained manually stepped space stays at its actual prior pose.
 		# Do not reconfigure its equipment, revoke its leases or publish stale
@@ -3055,6 +3063,7 @@ func apply_latest_rigid_body_results(snapshot: CyberSimulationSnapshot = null) -
 	if shared_workbench != null:
 		if physical_actor_session != null:
 			physical_actor_session.apply_workbench_results(snapshot.serial,snapshot.lab_context.get("workbench_gcr",{}))
+			physical_actor_session.accept_equipment_feedback(snapshot.physical_usables)
 		return
 	rapier_bridge.apply_cellular_results(
 		snapshot.serial,
@@ -3121,6 +3130,10 @@ func consume_worker_snapshot() -> void:
 			microscenario_error = str(tower_context.status)
 			_close_pending_physical_candidate()
 			pending_microscenario_apply.clear()
+			if shared_workbench != null and physical_actor_session != null:
+				physical_actor_session.set_suspended(paused)
+				update_worker_frame_state()
+				if not paused and _workbench_frame_error.is_empty(): _publish_physical_body_state()
 	var capture_serial: int = int(tower_context.get("micro_capture_serial", 0))
 	if capture_serial > microscenario_capture_seen and not tower_context.get("micro_capture", {}).is_empty():
 		microscenario_capture_seen = capture_serial
@@ -3442,10 +3455,12 @@ func _advance_prepared_physical_candidate() -> void:
 		_prepared_physical_ready_sent=true;return
 	if _prepared_physical_identity.is_empty():
 		_prepared_physical_identity = publication.duplicate(true)
-		if publication.initial_bodies != _pending_physical_candidate.initial_body_states() \
-			or not _pending_physical_candidate.install_terrain(publication.terrain):
-			simulation_worker.complete_prepared_physical_liquid(_prepared_physical_identity,false,
-				"initial body identity or terrain refused")
+		if publication.initial_bodies != _pending_physical_candidate.initial_body_states():
+			simulation_worker.complete_prepared_physical_liquid(_prepared_physical_identity,false,"initial body identity changed")
+			_prepared_physical_ready_sent = true
+			return
+		if not _pending_physical_candidate.install_terrain(publication.terrain):
+			simulation_worker.complete_prepared_physical_liquid(_prepared_physical_identity,false,_pending_physical_candidate.last_error)
 			_prepared_physical_ready_sent = true
 			return
 	if not _pending_physical_candidate.verify_physics_frame() \
@@ -3571,8 +3586,14 @@ func _publish_physical_body_state() -> void:
 		if physical_actor_session != null:
 			var sample: Dictionary = physical_actor_session.pack_workbench_sample()
 			if not sample.is_empty() and not sample.states.is_empty():
-				_workbench_wait_sample = int(sample.states[10])
-				simulation_worker.set_workbench_sample(sample)
+				var admission: Dictionary = simulation_worker.set_workbench_sample(sample)
+				if admission.get("accepted",false): _workbench_wait_sample = int(sample.states[10])
+				if str(admission.get("status","")) == "refused":
+					physical_actor_session.reject_equipment_requests(sample.get("equipment_requests",[]),str(admission.get("reason","admission")))
+				if not admission.get("accepted",false):
+					_fault_workbench_frame(str(admission.get("reason","identity")))
+			else:
+				_fault_workbench_frame("missing_body_sample")
 		return
 	var effects: Array = physical_actor_session.drain_effects() if physical_actor_session != null else []
 	var states: PackedFloat32Array = pack_rigid_body_states()
@@ -3589,6 +3610,23 @@ func _publish_physical_body_state() -> void:
 		var publication: int = simulation_worker.rigid_body_publication()
 		_lockstep_publication_refused = publication == _lockstep_published
 		_lockstep_published = publication
+
+
+func _fault_workbench_frame(reason: String) -> void:
+	if shared_workbench == null or physical_actor_session == null or not _physical_terrain_ready \
+			or not pending_microscenario_apply.is_empty() or _pending_physical_candidate != null: return
+	# A completed old sample cannot authorize more Rapier steps after a missing
+	# or refused replacement frame. Ordinary refused actions still admit their
+	# coherent frame and never enter this physical-owner fault path.
+	_workbench_frame_error = "Physical frame refused (%s). Reset the actor or Restore start before playing." % reason
+	_workbench_wait_sample = -1
+	paused = true
+	shared_workbench.step_requested = false
+	shared_workbench.step_pending = false
+	physical_actor_session.set_suspended(true)
+	microscenario_error = _workbench_frame_error
+	shared_workbench.refuse(_workbench_frame_error)
+	update_worker_frame_state()
 
 
 func physical_actor_observation(actor_id: int = 0) -> Dictionary:
@@ -3943,6 +3981,9 @@ func apply_actor_equipment_configuration(usable_index: int, power: float) -> boo
 
 
 func actor_equipment_active() -> bool:
+	# Workbench equipment uses the explicit pilot's M/Alt/gamepad action lane.
+	# An equipped NPC (including slot zero) never claims the PAINT pointer.
+	if shared_workbench != null: return false
 	if physical_actor_session != null:
 		var view: Dictionary = physical_actor_session.observation(0)
 		return int(view.get("equipment", {}).get("usable_index", -1)) >= 0
@@ -3986,6 +4027,7 @@ func _actor_usable_input_allowed() -> bool:
 
 
 func _publish_actor_usable_buttons(trigger: bool, alternate: bool) -> void:
+	if shared_workbench != null: return
 	if physical_actor_session != null:
 		_publish_physical_keyboard_input(trigger, alternate)
 		return
@@ -4120,23 +4162,44 @@ func _publish_workbench_keyboard() -> void:
 		or get_viewport().gui_get_focus_owner() is LineEdit or get_viewport().gui_get_focus_owner() is TextEdit:
 		if not _actor_input_rearm: cancel_playable_course_input()
 		return
+	var slot: int = shared_workbench.pilot_slot
+	var observed: Dictionary = physical_actor_session._view(slot,false)
+	var model: String = str(observed.get("model",""))
+	var is_fleet: bool = shared_workbench.Fleet.index_for_id(model) >= 0
 	var action := CyberPlayerPlaygroundInput.sample(true,true)
 	var ports := {"q":_workbench_key(KEY_Q),"e":_workbench_key(KEY_E),
 		"s":_workbench_key(KEY_S) or _workbench_key(KEY_DOWN),"boost":_workbench_key(KEY_SHIFT)}
-	action.secondary = _workbench_key(KEY_CTRL)
+	if is_fleet: action.secondary = _workbench_key(KEY_CTRL)
+	var aim: Vector2 = Vector2(observed.get("aim",Vector2.RIGHT))
+	var pixel := view_pixel_from_local_point(world_view.get_local_mouse_position())
+	if pixel.x >= 0:
+		var body: Dictionary = shared_workbench.body_state(shared_workbench.pilot_id())
+		if not body.is_empty(): aim = (camera_origin.floor()+Vector2(pixel)-Vector2(body.position)).normalized()
+	if aim.length_squared() < 0.0001: aim = Vector2.RIGHT
+	action.aim = aim
+	action.reel = float(_workbench_key(KEY_X))-float(_workbench_key(KEY_Z))
+	var tool := _workbench_key(KEY_M)
+	var alternate := _workbench_key(KEY_ALT)
+	var drop := _workbench_key(KEY_N)
+	var attach := _workbench_key(KEY_U)
 	var pads := Input.get_connected_joypads()
 	if not pads.is_empty():
 		var pad := pads[0]
 		ports.q = ports.q or Input.is_joy_button_pressed(pad,JOY_BUTTON_LEFT_SHOULDER)
 		ports.e = ports.e or Input.is_joy_button_pressed(pad,JOY_BUTTON_RIGHT_SHOULDER)
 		ports.s = ports.s or Input.get_joy_axis(pad,JOY_AXIS_LEFT_Y) > 0.2
-		action.secondary = action.secondary or Input.is_joy_button_pressed(pad,JOY_BUTTON_B)
-	if physical_actor_session.observation(shared_workbench.pilot_slot).get("model","") == &"kestrel":
+		if is_fleet: action.secondary = action.secondary or Input.is_joy_button_pressed(pad,JOY_BUTTON_B)
+		tool = tool or Input.get_joy_axis(pad,JOY_AXIS_TRIGGER_RIGHT) > 0.3
+		alternate = alternate or Input.get_joy_axis(pad,JOY_AXIS_TRIGGER_LEFT) > 0.3
+	if model == "kestrel":
 		action.move.y = -1.0 if _workbench_key(KEY_W) or _workbench_key(KEY_UP) else minf(0.0,action.move.y)
 	if _actor_input_rearm:
-		if CyberPlayerPlaygroundInput.active(action) or ports.q or ports.e or ports.s or ports.boost: return
+		if CyberPlayerPlaygroundInput.active(action) or ports.q or ports.e or ports.s or ports.boost or tool or alternate or drop or attach or action.reel != 0.0: return
 		_actor_input_rearm = false
-	physical_actor_session.submit_workbench_action(shared_workbench.selected_id(),action,ports,shared_workbench.fire_enabled)
+	if not physical_actor_session.is_flight_actor(slot) and observed.get("equipment",{}).get("preparation","mounted") != "none":
+		action["equipment"] = {"usable_index":int(observed.get("equipment",{}).get("usable_index",-1)),
+			"aim":aim,"power":1.0,"trigger":tool,"alternate":alternate,"drop":drop,"attach":attach}
+	physical_actor_session.submit_workbench_action(shared_workbench.pilot_id(),action,ports,shared_workbench.fire_enabled)
 
 func publish_actor_keyboard_input() -> void:
 	if shared_workbench != null:

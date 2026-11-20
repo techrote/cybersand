@@ -4,11 +4,32 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-18
+last-reviewed: 2026-11-20
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Status and foundational roadmap
+
+## Shared Workbench actor composition / #589 — 2026-11-20
+
+**Implementation candidate, Draft/HOLD; no merge authorization.** The owner
+advanced #589's earlier planning boundary through WB-ACTOR-COMPOSE-001. The
+[composition contract](../systems/workbench-actor-composition.md) exposes 59 existing
+physical model identities through one prepared Workbench session: eight flyers,
+46 physical rigs, four 4LY profiles and the passive barrel. Per-instance Human,
+Scripted NPC, External Policy and Passive sources retain existing producer,
+issued-observation, lease and equipment admission. Live takeover preserves the
+body graph and resources. Inspection and painting do not take NPC control.
+
+The [Mixed Actor Workshop](../operations/workbench-actor-composition.md) uses six
+actors with different mechanisms, three compatible tools and an actual leased
+policy fixture in a material-cell canvas. Setup-v2 gains a strictly validated
+optional control-v1 extension; authored Save remains separate from live physics.
+Sampled arenas, oracle/tag combat, NCA training and model services remain outside
+this integration. A bounded adapter reuses Thunderbowl's pure local steering
+helper without importing its simulation owner. The
+[dated evidence](../audits/2026-11-20-workbench-actor-composition.md) owns exact
+source/runtime identities, platform results, failures and remaining owner checks.
 
 ## GEN-008 Flatten / Bake History — 2026-11-13
 

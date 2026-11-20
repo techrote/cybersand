@@ -58,7 +58,7 @@ func cell(point: Vector2i) -> int:
 	return int(receipt.materials[0])
 
 func rejected_replacement_prefix() -> bool:
-	var panel: Window = bench.art_batches
+	var panel: Window = bench._ensure_art_batches()
 	var art: RefCounted = panel.executor
 	# Hold main-thread receipt consumption, not native execution. This creates
 	# a real applied prefix whose authoring record is not yet acknowledged.

@@ -1267,25 +1267,52 @@ func _workbench_sample_pending() -> bool:
 	_mutex.unlock()
 	return pending
 
-func set_workbench_sample(value: Dictionary) -> void:
+func set_workbench_sample(value: Dictionary) -> Dictionary:
+	# Body masks and ACT-005 geometry are one copied publication. The worker
+	# captures both under this same mutex; it must never use a newer body mask
+	# with a request issued against an older equipment frame.
 	_mutex.lock()
-	if not value.is_empty() and not _workbench_sample.is_empty() and _prepared_physical_frame_hold.is_empty() \
-		and _workbench_sample.session == value.session and _workbench_sample.epoch == value.epoch:
-		_workbench_sample = value.duplicate(true)
-		if not _paused and not _reset_requested and _lab_request.is_empty() and _prepared_physical_publication.is_empty():
-			var emitters: Array = _workbench_sample.get("emitters",[])
-			if not emitters.is_empty() and not value.states.is_empty():
-				var serial := int(value.states[10])
-				if serial == _workbench_last_emitter_sample:
-					_workbench_emitter_receipts = [{"status":"duplicate_sample","sample":serial}]
-				elif emitters.size() + _workbench_emitters.size() > 24:
-					_workbench_emitter_receipts = [{"status":"capacity_refused","count":emitters.size()}]
-				else:
-					_workbench_last_emitter_sample = serial
-					for intent: Dictionary in emitters:
-						intent["sample"] = serial
-						_workbench_emitters.append(intent)
+	var result := {"accepted":false,"status":"refused","reason":"workbench_identity"}
+	if value.is_empty() or _workbench_sample.is_empty() or not _prepared_physical_frame_hold.is_empty() \
+			or value.get("session") != _workbench_sample.session or value.get("epoch") != _workbench_sample.epoch:
+		_mutex.unlock()
+		return result
+	var frame: Dictionary = value.get("equipment_frame",{})
+	if not frame.is_empty():
+		result = _set_physical_usable_state_locked(frame,value.get("equipment_requests",[]))
+		if not result.get("frame_admitted",false):
+			result["accepted"] = false
+			_mutex.unlock()
+			return result
+	elif not _physical_usable_frame.is_empty():
+		result.reason = "equipment_frame_missing"
+		_mutex.unlock()
+		return result
+	else:
+		result = {"status":"no_requests","reason":""}
+	_workbench_sample = value.duplicate(true)
+	# Requests belong to their bounded queues, never to repeatedly reused body
+	# samples. Their generation is checked again at the native consume boundary.
+	_workbench_sample.erase("equipment_requests")
+	_workbench_sample.erase("physical_effects")
+	_rigid_body_epoch = int(value.epoch)
+	result["effects"] = _queue_physical_effects_locked(int(value.epoch),value.get("physical_effects",[]))
+	result["accepted"] = true
+	if not _paused and not _reset_requested and _lab_request.is_empty() and _prepared_physical_publication.is_empty():
+		var emitters: Array = _workbench_sample.get("emitters",[])
+		if not emitters.is_empty() and not value.states.is_empty():
+			var serial := int(value.states[10])
+			if serial == _workbench_last_emitter_sample:
+				_workbench_emitter_receipts = [{"status":"duplicate_sample","sample":serial}]
+			elif emitters.size() + _workbench_emitters.size() > 24:
+				_workbench_emitter_receipts = [{"status":"capacity_refused","count":emitters.size()}]
+			else:
+				_workbench_last_emitter_sample = serial
+				for intent: Dictionary in emitters:
+					intent["sample"] = serial
+					_workbench_emitters.append(intent)
 	_mutex.unlock()
+	return result
 
 func cancel_workbench_emission() -> void:
 	_mutex.lock()
@@ -1478,12 +1505,19 @@ func set_rigid_body_states(states: PackedFloat32Array, body_epoch: int = 0, effe
 	_rigid_body_states = states.duplicate()
 	_rigid_body_epoch = body_epoch
 	_rigid_body_publication += 1
+	var result := _queue_physical_effects_locked(body_epoch,effects)
+	_mutex.unlock()
+	return result
+
+
+# Caller owns _mutex. Both ordinary and Workbench body publication use the
+# existing bounded actor-effect authority, cancellation generations and ledger.
+func _queue_physical_effects_locked(body_epoch: int, effects: Array) -> Dictionary:
 	var requested: int = effects.size()
 	var result: Dictionary = {"epoch": body_epoch, "status": "no_effects", "reason": "",
 		"requested": requested, "queued": 0, "refused": 0}
 	if requested == 0:
 		# Routine body-only frames must not erase the latest admission outcome.
-		_mutex.unlock()
 		return result
 	var reason: String = ""
 	if body_epoch <= 0 or body_epoch != _physical_effect_epoch:
@@ -1526,7 +1560,6 @@ func set_rigid_body_states(states: PackedFloat32Array, body_epoch: int = 0, effe
 			_physical_effect_overflow_batches += 1
 	_physical_effect_last_admission = result
 	var copied_result: Dictionary = result.duplicate(true)
-	_mutex.unlock()
 	return copied_result
 
 
@@ -1550,6 +1583,12 @@ func set_physical_usable_state(frame: Dictionary, requests: Array = [], states: 
 	# This publication and its batch have one admission point. Identity changes
 	# retire older queued work; capacity never replaces another actor's request.
 	_mutex.lock()
+	var result := _set_physical_usable_state_locked(frame,requests,states)
+	_mutex.unlock()
+	return result
+
+
+func _set_physical_usable_state_locked(frame: Dictionary, requests: Array = [], states: PackedFloat32Array = PackedFloat32Array()) -> Dictionary:
 	var reason: String = PhysicalUsables.frame_error(frame)
 	if reason.is_empty() and (states.size() > CyberRigidBodyCoupling.MAX_BODIES * CyberRigidBodyCoupling.INPUT_STRIDE \
 		or states.size() % CyberRigidBodyCoupling.INPUT_STRIDE != 0):
@@ -1561,7 +1600,7 @@ func set_physical_usable_state(frame: Dictionary, requests: Array = [], states: 
 				break
 	var result: Dictionary = {"epoch": frame.get("epoch", -1), "run_id": frame.get("run_id", ""),
 		"status": "no_requests", "reason": "", "requested": requests.size(), "queued": 0,
-		"refused": 0, "capacity": PhysicalUsables.MAX_REQUESTS}
+		"refused": 0, "capacity": PhysicalUsables.MAX_REQUESTS, "frame_admitted":false}
 	if reason.is_empty() and int(frame.epoch) != _physical_effect_epoch:
 		reason = "epoch"
 	if reason.is_empty() and not _physical_usable_frame.is_empty():
@@ -1573,6 +1612,7 @@ func set_physical_usable_state(frame: Dictionary, requests: Array = [], states: 
 				break
 	if reason.is_empty():
 		_physical_usable_frame = frame.duplicate(true)
+		result.frame_admitted = true
 		if not states.is_empty():
 			# Coherent with the admitted frame, but not a body publication: main
 			# follows with set_rigid_body_states in the same physics callback, the
@@ -1625,7 +1665,6 @@ func set_physical_usable_state(frame: Dictionary, requests: Array = [], states: 
 	result["pending"] = _physical_usable_inflight.size()
 	if not requests.is_empty() or not reason.is_empty():
 		_physical_usable_admission = result.duplicate(true)
-	_mutex.unlock()
 	return result
 
 
@@ -1684,10 +1723,10 @@ func _consume_physical_usables(requests: Array, body_epoch: int, allowed: bool, 
 					return true
 			return false)
 		if allowed and not _paused and not _reset_requested and _lab_request.is_empty():
-			_physical_usables.step(FIXED_TIMESTEP, _world, frame, admitted)
+			_physical_usables.step(FIXED_TIMESTEP, _world, frame, admitted,_physical_world_extent())
 		else:
 			frame.suspended = true
-			_physical_usables.step(FIXED_TIMESTEP, _world, frame, admitted)
+			_physical_usables.step(FIXED_TIMESTEP, _world, frame, admitted,_physical_world_extent())
 	_mutex.unlock()
 
 
@@ -1738,16 +1777,39 @@ func cancel_physical_actor_effects(epoch: int, actor_id: int = -1) -> bool:
 
 
 func _admit_physical_effects(packets: Array, epoch: int) -> Array:
-	var admitted: Array = []
+	# Read-only admission probe used by qualification. Applying these returned
+	# values later would lose the cancellation fence; production uses consume.
 	_mutex.lock()
+	var admitted := _admit_physical_effects_locked(packets,epoch)
+	_mutex.unlock()
+	return admitted
+
+
+func _admit_physical_effects_locked(packets: Array, epoch: int) -> Array:
+	var admitted: Array = []
 	if not _paused and not _reset_requested and _lab_request.is_empty() \
 		and epoch > 0 and epoch == _physical_effect_epoch:
 		for packet: Dictionary in packets:
 			var actor: int = packet.request.actor_slot
 			if packet.generation == _physical_effect_generations[actor]:
 				admitted.append(packet.request)
-	_mutex.unlock()
 	return admitted
+
+
+func _consume_physical_effects(packets: Array, epoch: int) -> void:
+	# As with ACT-005, cancellation and the finite material transaction must
+	# share one critical section. After cancellation returns, no earlier copied
+	# request may begin a cell write. This contains only the existing bounded
+	# effect consumer (at most eight requests); decisions never execute here.
+	_mutex.lock()
+	var admitted := _admit_physical_effects_locked(packets,epoch)
+	_physical_effect_receipts = _physical_effects.apply(_world,admitted,epoch,_physical_world_extent())
+	_mutex.unlock()
+
+
+func _physical_world_extent() -> Vector2i:
+	# Worker-owned committed construction metadata, not producer-supplied data.
+	return _workbench_extent if _workbench_extent != Vector2i.ZERO else Vector2i(1024,1024)
 
 
 func set_render_snapshot_hz(render_hz: int) -> void:
@@ -2371,6 +2433,7 @@ func _worker_loop() -> void:
 		var local_physical_effects: Array = []
 		var local_physical_usables: Array = []
 		var local_physical_usable_frame: Dictionary = {}
+		var local_workbench_sample: Dictionary = {}
 		var local_emissions: Array[Vector4i] = []
 		var local_cell_emissions: Array[Dictionary] = []
 		var local_reset_requested: bool = false
@@ -2407,6 +2470,7 @@ func _worker_loop() -> void:
 			local_physical_effects = _pending_physical_effects
 			_pending_physical_effects = []
 		local_physical_usable_frame = _physical_usable_frame.duplicate(true)
+		local_workbench_sample = _workbench_sample
 		if not physical_wait:
 			local_physical_usables = _pending_physical_usables
 			_pending_physical_usables = []
@@ -2486,6 +2550,8 @@ func _worker_loop() -> void:
 			_physical_usables.reset()
 			_mutex.lock()
 			_physical_usable_frame.clear()
+			local_physical_usable_frame.clear()
+			local_workbench_sample = _workbench_sample
 			_mutex.unlock()
 			if local_actor_prototype_request:
 				_actor_prototype_result_serial = local_actor_prototype_serial
@@ -2605,9 +2671,7 @@ func _worker_loop() -> void:
 			if _workbench_extent != Vector2i.ZERO:
 				# This worker is the only writer to native World. Serial and body
 				# identity are checked again by the native adapter and Rapier bridge.
-				_mutex.lock()
-				var sample: Dictionary = _workbench_sample
-				_mutex.unlock()
+				var sample: Dictionary = local_workbench_sample
 				workbench_serial = int(sample.states[10]) if not sample.states.is_empty() else -1
 				if workbench_serial >= 0 and workbench_serial == _workbench_prepared_sample:
 					local_paused = true
@@ -2640,9 +2704,7 @@ func _worker_loop() -> void:
 					and CyberMicroScenarioCatalogue.exploratory_actor_map(_scenario_host.definition())
 					and not _scenario_host.fixed_execution())))
 			if physical_effects_allowed and not local_physical_effects.is_empty():
-				local_physical_effects = _admit_physical_effects(local_physical_effects, local_rigid_body_epoch)
-				_physical_effect_receipts = _physical_effects.apply(
-					_world, local_physical_effects, local_rigid_body_epoch)
+				_consume_physical_effects(local_physical_effects, local_rigid_body_epoch)
 			_consume_physical_usables(local_physical_usables, local_rigid_body_epoch, physical_effects_allowed, local_physical_usable_frame)
 			_apply_emissions(local_emissions,local_cell_emissions)
 			if _world.has_method(&"has_failed") and _world.has_failed():

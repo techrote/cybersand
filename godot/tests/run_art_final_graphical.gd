@@ -62,7 +62,7 @@ func run() -> void:
 	current_scene.launch("shared_workbench");await scene_changed
 	host = current_scene
 	var wb: Node = host.shared_workbench
-	panel = wb.art_batches
+	panel = wb._ensure_art_batches()
 	# Ignore the human brush outline, which follows the physical mouse independently.
 	host.brush_preview.modulate.a = 0
 	# Integrated PAINT draws a separate hover preview on the same canvas.

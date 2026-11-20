@@ -4,11 +4,18 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-11-16
+last-reviewed: 2026-11-20
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, operations/atlas-agent-runner.md, architecture/pressure-optimization.md]
 ---
 
 # CyberSand documentation
+
+WB-ACTOR-COMPOSE-001 / #589 Draft/HOLD: [Shared Workbench actor composition](systems/workbench-actor-composition.md)
+integrates the existing physical catalogue, independent producers and live handoff.
+Use the [Mixed Actor Workshop owner procedure](operations/workbench-actor-composition.md)
+for ordinary UI controls, policy testing and authored saves; the
+[dated qualification record](audits/2026-11-20-workbench-actor-composition.md)
+separates actual platform evidence from owner playfeel acceptance.
 
 For deliberate historical research, use the isolated
 [engineering archaeology index](history/engineering/README.md). It is excluded

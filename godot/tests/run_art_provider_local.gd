@@ -25,7 +25,7 @@ func run() -> void:
 	current_scene.launch("shared_workbench")
 	await scene_changed
 	main = current_scene
-	panel = main.shared_workbench.art_batches
+	panel = main.shared_workbench._ensure_art_batches()
 	if not await until(func(): return not main.shared_workbench.applied.is_empty() and not main.shared_workbench.busy(),"native workbench ready"): quit(1); return
 	var one := P.payload("OpenAI","manual-alias","hello","instructions",4096,"PNG")
 	check(one.max_output_tokens==4096 and one.input[0].content[1].type=="input_image" and not one.store,"OpenAI Responses image and cap shaping")

@@ -4,11 +4,22 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-11-13
+last-reviewed: 2026-11-20
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/atlas-agent-runner.md, ../architecture/pressure-optimization.md]
 ---
 
 # Retrieval question index
+
+## Independently controlled actors in ordinary Shared Workbench
+
+For actor families, safe composition capacity, controller authority, live
+takeover, copied policy observations and the research boundary, use the
+[actor composition contract](../systems/workbench-actor-composition.md). For
+Mixed Actor Workshop, controls, tools, painting and authored Save/reopen, use the
+[owner procedure](../operations/workbench-actor-composition.md). The
+[focused actor questions](retrieval-questions-workbench-actors.json) are additive;
+the frozen retrieval set is unchanged. Exact platform evidence and remaining
+acceptance belong to the [dated record](../audits/2026-11-20-workbench-actor-composition.md).
 
 For the combined #562 Materials Lab / #564 Workbench candidate, original source ancestry, shared history preservation, standalone evaluation and #563 merge-order boundaries, read the [combined qualification record](../audits/2026-11-12-mat-auth-workbench-integration.md).
 

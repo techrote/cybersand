@@ -4,6 +4,7 @@ extends SceneTree
 # is a separate #202 phase; these tests never claim a prepared World was installed.
 const Candidate = preload("res://scripts/prepared_physical_session.gd")
 const Session = preload("res://scripts/physical_actor_session.gd")
+const Registry = preload("res://scripts/workbench_actor_catalog.gd")
 var failures: int = 0
 var assertions: int = 0
 
@@ -85,8 +86,62 @@ func run() -> void:
 		and Candidate._pose_values(candidate.session.bridge.pack_body_states()) == retained_pose,
 		"refusal and candidate cleanup retain the prior accepted physical graph and complete paused pose")
 	candidate.close()
+	await retained_articulated_pose(host)
 	host.queue_free();await process_frame
 	finish()
+
+func retained_articulated_pose(host: Node2D) -> void:
+	# Ordinary Workbench replacement must retain arbitrary rotated parts. These
+	# angles include the one-ULP failure observed after the mixed workshop ran.
+	var definitions: Array = []
+	var models: Array[String] = ["runner", "crawler", "skimmer"]
+	var angles: Array[float] = [-0.185859769583, 1.234567, -1.7320508, 0.33333333]
+	for slot: int in models.size():
+		var model: String = models[slot]
+		var origin := Vector2(100 + slot * 100, 90)
+		var control: Dictionary = Registry.default_control(model)
+		var retained: Array = []
+		var data: Dictionary = Registry.definition(model)
+		for index: int in data.parts.size():
+			retained.append({"position":origin + data.parts[index].offset,
+				"rotation":angles[(slot + index) % angles.size()],
+				"linear_velocity":Vector2(2 + index, -3), "angular_velocity":0.1 * index})
+		definitions.append({"model":model,"instance_id":slot + 1,"position":origin,
+			"producer":Registry.producer_for(str(control.source)),"workbench_control":control,
+			"usable_index":control.usable_index,"canvas_extent":Vector2i(512,384),
+			"retained_parts":retained,"workbench_options":{"response":"LA-SELECTIVE","budget":20.0,
+				"mass_multiplier":1.0,"inertia_multiplier":1.0,"thrust_multiplier":1.0,
+				"torque_multiplier":1.0,"boost_multiplier":2.0}})
+	var candidate = Candidate.new()
+	expect(candidate.prepare(host,definitions,21),"rotated retained articulated parts prepare in a frozen Workbench owner")
+	if candidate.session == null: return
+	var initial: PackedFloat32Array = candidate.initial_body_states()
+	for frame: int in range(8):
+		await physics_frame
+		expect(candidate.verify_physics_frame(),"retained articulated exact pose survives deferred scene synchronization: " + candidate.last_error)
+		expect(candidate.initial_body_states() == initial,"published initial identity remains immutable")
+	var world: Variant = ClassDB.instantiate(&"CyberNativeCellWorld")
+	var builder: Variant = ClassDB.instantiate(&"CyberDemoBridge")
+	expect(builder.build_world(world,PackedInt32Array([0,0,512,384,0,0,128,512,8,1])),"retained articulated terrain fixture builds")
+	expect(candidate.install_terrain(world.get_hard_surface_chunk_rectangles()),"rotated frozen composition accepts native terrain after real frames")
+	for index: int in range(32):
+		expect(candidate.prepare_terrain_budget(8,0),"rotated composition terrain preparation preserves exact pose")
+		if candidate.ready(): break
+	expect(candidate.ready(),"rotated multipart candidate is eligible for atomic adoption")
+	# A single representable position step after capture must still fail. This
+	# guards against solving deferred notifications by weakening the exact fence.
+	var body: RigidBody2D = candidate.bodies()[0]
+	var pose: Transform2D = PhysicsServer2D.body_get_state(body.get_rid(),PhysicsServer2D.BODY_STATE_TRANSFORM)
+	var bits := PackedByteArray()
+	bits.resize(4)
+	bits.encode_float(0,pose.origin.x)
+	bits.encode_u32(0,bits.decode_u32(0) + 1)
+	pose.origin.x = bits.decode_float(0)
+	PhysicsServer2D.body_set_state(body.get_rid(),PhysicsServer2D.BODY_STATE_TRANSFORM,pose)
+	expect(not candidate.pose_unchanged() and candidate.last_error.contains("body 1 component 1"),
+		"one float32 ULP of post-capture motion still refuses adoption with a body/component diagnostic")
+	expect(not candidate.ready(),"changed provisional geometry cannot become ready")
+	candidate.close()
 
 func finish() -> void:
 	print("PREPARED_PHYSICAL_OWNER: %d assertions; %d failures" % [assertions,failures])

@@ -323,7 +323,7 @@ func run() -> void:
 	root.size = Vector2i(1440,1000)
 	bench = host.shared_workbench
 	editor = bench.paint_editor
-	panel = bench.art_batches
+	panel = bench._ensure_art_batches()
 	art = panel.executor
 	worker = host.simulation_worker
 	var graphics_ok := OS.get_environment("FLATTEN_REQUIRE_GRAPHICS")!="1" or DisplayServer.get_name()!="headless"
