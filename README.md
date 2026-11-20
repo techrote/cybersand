@@ -214,3 +214,7 @@ The 61,845-byte qualification recipe generates four regions and eight galleries
 across a 1024 × 1024 map. Retained captures, native reaction observations and the
 candid Deepworks comparison are linked from the guide. Final acceptance is tracked in
 [PR #198](https://github.com/techrote/cybersand/pull/198).
+
+### World-art preview (experimental Draft tool)
+
+The [Godot World Art Preview](docs/tools/world-art-preview.md) opens provisional #454 map collections in an independent shader-rendered window for artists: choose scenes/features, zoom, pan, reload edited pack JSON, pin a comparison and export genuine framebuffer PNGs. The original art source remains outside the production branch and the preview does not execute physics. See the linked guide for the exact checkout and launch command.
