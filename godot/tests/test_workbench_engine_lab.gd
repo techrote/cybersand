@@ -352,6 +352,18 @@ func _run() -> void:
 		check(host.material_publication_status().requested_mode=="auto" and
 			host.last_uploaded_revision==before_publication_revision,
 			"live automatic publication restores selection without a native edit")
+		menu._widgets["publication"].item_selected.emit(2)
+		var publication_state: Dictionary = host.material_publication_status()
+		check(publication_state.requested_mode == "blit" and host.last_uploaded_revision == before_publication_revision
+			and "Requested: Incremental GPU" in menu._publication_status.text,
+			"incremental request is displayed separately from its effective backend")
+		if publication_state.get("policy","") == "windows_angle_warp_full":
+			check(publication_state.backend == "full" and publication_state.fallback_reason == ""
+				and "Active: Full texture" in menu._publication_status.text
+				and "Windows software renderer" in menu._publication_status.text
+				and not "could not be changed" in menu._status.text,
+				"intentional WARP full policy is explained without a mode-change failure")
+		menu._widgets["publication"].item_selected.emit(0)
 		menu._widgets["fps"].value = 144
 		check(Engine.max_fps==144,"UI changes live render FPS cap")
 		menu._widgets["pixel"].value = 30

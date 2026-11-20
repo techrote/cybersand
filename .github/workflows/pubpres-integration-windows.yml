@@ -10,12 +10,6 @@ on:
       - 'godot/tests/pubpres_transition.gd'
       - 'godot/tests/pubpres_warp_transition_oracle.gd'
       - 'tools/pubpres_integration/warp_transition.py'
-      - '.github/workflows/pubpres-full-storage.yml'
-      - 'tools/pubpres_integration/full_storage_gameplay.py'
-      - 'godot/tests/pubpres_source_gameplay.gd'
-      - 'godot/tests/pubpres_source_transition_oracle.gd'
-      - 'tools/pubpres_integration/source_results.py'
-      - 'tools/pubpres_integration/source_campaign.json'
   workflow_dispatch:
 
 permissions:
@@ -25,7 +19,7 @@ jobs:
   installed:
     if: github.ref == 'refs/heads/codex/pubpres-integration-001'
     runs-on: windows-2022
-    timeout-minutes: 120
+    timeout-minutes: 180
     env:
       PUBPRES_ACCEPTED_MAIN: de109d0131641d6adc8d25bb9ced7ca3d4991105
       PUBPRES_SOURCE: ${{ github.sha }}
@@ -104,20 +98,36 @@ jobs:
               $Json.current_matches -ne 180 -or $Json.previous_matches -ne 180 -or $Json.sparse_entries -ne 15) {
             throw 'WARP history receipt is incomplete'
           }
-      - name: Exercise installed Needle, transition and native Wave Flow on hosted Windows ANGLE
+      - name: Verify the portable PowerShell entry points
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $Installed = Join-Path $env:RUNNER_TEMP 'pubpres installed'
+          foreach ($File in Get-ChildItem -LiteralPath (Join-Path $Installed 'tools\pubpres_integration') -Filter '*.ps1') {
+            $Tokens = $null
+            $Errors = $null
+            [void][Management.Automation.Language.Parser]::ParseFile($File.FullName,[ref]$Tokens,[ref]$Errors)
+            if ($Errors.Count -ne 0) { throw ($File.Name+': '+($Errors | Out-String)) }
+          }
+          & (Join-Path $Installed 'Verify Package.cmd')
+          if ($LASTEXITCODE -ne 0) { throw 'Portable manifest verification failed' }
+      - name: Compare all three installed sources and retained transitions on hosted Windows ANGLE
         if: ${{ !cancelled() }}
         shell: powershell
         run: |
           $ErrorActionPreference = 'Stop'
           $Installed = Join-Path $env:RUNNER_TEMP 'pubpres installed'
-          $Launcher = Join-Path $Installed 'Test It.cmd'
           $Evidence = Join-Path $PWD 'installed-evidence'
           [void][IO.Directory]::CreateDirectory($Evidence)
-          $Cases = @('-Quick','-Case needle_follow_2048_w1','-Case transition_2048_w1')
+          $Cases = @(
+            @{launcher='Quick A-B Test.cmd'; flags='-Extended -TimeoutSeconds 900'},
+            @{launcher='Transition A-B Test.cmd'; flags='-TimeoutSeconds 480'}
+          )
           $Results = foreach ($Case in $Cases) {
+            $Launcher = Join-Path $Installed $Case.launcher
             $ProcessInfo = [Diagnostics.ProcessStartInfo]::new()
             $ProcessInfo.FileName = Join-Path $env:SystemRoot 'System32\cmd.exe'
-            $ProcessInfo.Arguments = '/d /s /c ""' + $Launcher + '" ' + $Case + ' -RenderingDriver opengl3_angle -RenderThread safe -TimeoutSeconds 480"'
+            $ProcessInfo.Arguments = '/d /s /c ""' + $Launcher + '" ' + $Case.flags + ' -RenderingDriver opengl3_angle -RenderThread safe"'
             $ProcessInfo.WorkingDirectory = $Installed
             $ProcessInfo.UseShellExecute = $false
             $Process = [Diagnostics.Process]::Start($ProcessInfo)
@@ -127,12 +137,69 @@ jobs:
           @{ source=$env:PUBPRES_SOURCE; render='hosted Windows ANGLE'; physical_acceptance='HOLD'; runs=@($Results) } |
             ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $Evidence 'hosted-receipt.json') -Encoding UTF8
           if (@($Results | Where-Object {$_.exit_code -ne 0}).Count -gt 0) { throw 'Installed campaign incomplete; original evidence retained' }
+      - name: Qualify installed histories, queue lifetime, gameplay and recovery
+        if: always()
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $Installed = Join-Path $env:RUNNER_TEMP 'pubpres installed'
+          if (-not (Test-Path -LiteralPath (Join-Path $Installed 'PUBPRES-MANIFEST.json'))) {
+            throw 'No verified installed payload is available for regression execution'
+          }
+          python tools/pubpres_integration/qualify_installed.py `
+            --installed $Installed --source-sha $env:PUBPRES_SOURCE `
+            --output (Join-Path $PWD 'installed-evidence\regressions')
+          if ($LASTEXITCODE -ne 0) { throw 'Installed focused regression gate failed; original logs retained' }
+      - name: Qualify the portable complete-results collector
+        if: always()
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $Installed = Join-Path $env:RUNNER_TEMP 'pubpres installed'
+          $Results = Join-Path $Installed 'Test-It-Results'
+          $Evidence = Join-Path $PWD 'installed-evidence'
+          [void][IO.Directory]::CreateDirectory($Evidence)
+          if (Test-Path -LiteralPath $Results) {
+            $Captured = @(Get-ChildItem -LiteralPath $Results -Directory | Where-Object {
+              Test-Path -LiteralPath (Join-Path $_.FullName 'summary.json') -PathType Leaf
+            })
+            if ($Captured.Count -gt 0) {
+              & (Join-Path $Installed 'Pack Results.cmd')
+              if ($LASTEXITCODE -ne 0) { throw 'Portable result collection failed' }
+              $Collection = Get-ChildItem -LiteralPath $Results -File -Filter 'All-Results-*.zip' |
+                Sort-Object -Property Name -Descending | Select-Object -First 1
+              if ($null -eq $Collection) { throw 'Portable result collection did not create its ZIP' }
+              Add-Type -AssemblyName System.IO.Compression,System.IO.Compression.FileSystem
+              $Archive = [IO.Compression.ZipFile]::OpenRead($Collection.FullName)
+              try {
+                $Entry = $Archive.GetEntry('COLLECTION.json')
+                if ($null -eq $Entry) { throw 'Result collection lacks its run index' }
+                $Reader = [IO.StreamReader]::new($Entry.Open())
+                try { $Index = $Reader.ReadToEnd() | ConvertFrom-Json } finally { $Reader.Dispose() }
+                if ($Index.physical_acceptance -ne 'HOLD' -or $Index.runs.Count -ne $Captured.Count -or
+                    $null -eq $Archive.GetEntry('ACCEPTANCE.md') -or
+                    $null -eq $Archive.GetEntry('CURRENT-PACKAGE-MANIFEST.json')) {
+                  throw 'Result collection omitted a captured run or owner/source context'
+                }
+                foreach ($Folder in $Captured) {
+                  if ($Folder.Name -notin $Index.runs -or $null -eq $Archive.GetEntry('runs/'+$Folder.Name+'/summary.json')) {
+                    throw 'Result collection omitted an original run summary'
+                  }
+                }
+              } finally { $Archive.Dispose() }
+              @{ complete=$true; source=$env:PUBPRES_SOURCE; captured_runs=$Captured.Count;
+                 archive=$Collection.Name; sha256=(Get-FileHash -LiteralPath $Collection.FullName -Algorithm SHA256).Hash.ToLower();
+                 physical_acceptance='HOLD' } | ConvertTo-Json -Depth 5 |
+                Set-Content -LiteralPath (Join-Path $Evidence 'portable-result-collection.json') -Encoding UTF8
+            }
+          }
       - name: Retain original installed evidence and failure receipts
         if: always()
         shell: powershell
         run: |
           $Evidence = Join-Path $PWD 'installed-evidence'
-          $Results = Join-Path $env:RUNNER_TEMP 'pubpres installed\Test-It-Results'
+          $Installed = Join-Path $env:RUNNER_TEMP 'pubpres installed'
+          $Results = Join-Path $Installed 'Test-It-Results'
           [void][IO.Directory]::CreateDirectory($Evidence)
           if (Test-Path -LiteralPath $Results) {
             Get-ChildItem -LiteralPath $Results -File -Filter '*.zip' | Copy-Item -Destination $Evidence

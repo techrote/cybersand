@@ -26,7 +26,10 @@ ACCEPTANCE = "ACCEPTANCE.md"
 GUI = "Godot_v4.7-stable_win64.exe"
 CONSOLE = "Godot_v4.7-stable_win64_console.exe"
 BOOTSTRAP = {"godot/.godot/.gdignore", "godot/.godot/extension_list.cfg", "godot/.godot/global_script_class_cache.cfg"}
-PORTABLE = {"Run-Test-It.ps1", "Read-Results.ps1", "Pack-Results.ps1", "campaign.json"}
+PORTABLE = {"Run-Test-It.ps1", "Read-Results.ps1", "Pack-Results.ps1", "campaign.json",
+            "Run-Source-Comparison.ps1", "Read-Source-Results.ps1", "Read-Source-Transition.ps1",
+            "source_campaign.json", "Verify-Package.ps1"}
+REFERENCE_INTEGRATION = "8503ec19e4d620e125dc6df2c5c6571b1256cb92"
 NOTICE_HASHES = {
     "LICENSE.txt": "b0435e3b3e4e55238f05f4b306f30524a1b2e20147810d436eaa554fa6855c80",
     "COPYRIGHT.txt": "cb1980c88089573bcacd7221d777c689bb8bbd778799f24c27fca0fe5f774d6d",
@@ -134,15 +137,66 @@ def stage_dependencies(destination, engine_zip, notices, vc):
             "console_sha256": digest(destination / CONSOLE)}
 
 
-def stage_launchers(destination, source):
+def stage_reference(destination, source, name, identity):
+    """Retain reference production source; add observers only to run copies."""
+    need(re.fullmatch(r"[0-9a-f]{40}", source), "Reference must be an exact commit")
+    # Refuse to substitute current binaries if a reference has different inputs.
+    paths = ["native/include", "native/src", "godot/native_extension",
+             "godot/addons/cybersand_native", "godot/addons/godot-rapier2d",
+             "godot/third_party/rapier2d.lock.json", "third_party/native-toolchain.lock.json",
+             "third_party/rapier-bvh-build.lock.json", "third_party/godot-runtime.lock.json"]
+    git("diff", "--exit-code", source, identity["source_commit"], "--", *paths)
+    target_root = destination / "references" / name
+    target_root.mkdir(parents=True)
+    with tempfile.TemporaryFile() as body:
+        subprocess.run(["git", "archive", "--format=tar", source, "--", "godot", "examples/worldgen"],
+                       stdout=body, cwd=ROOT, check=True, timeout=150)
+        body.seek(0)
+        with tarfile.open(fileobj=body) as archive:
+            for member in archive:
+                if member.isdir():
+                    continue
+                need(member.isfile(), "Unexpected reference member: " + member.name)
+                path = safe_name(member.name)
+                if member.name.startswith("godot/.godot/") and member.name not in BOOTSTRAP:
+                    continue
+                if (path.suffix.lower() in {".dll", ".so", ".dylib", ".wasm"} or ".framework/" in member.name) and member.name not in {NATIVE, RAPIER}:
+                    continue
+                target = target_root / path
+                target.parent.mkdir(parents=True, exist_ok=True)
+                if member.name in {NATIVE, RAPIER}:
+                    shutil.copyfile(ROOT / member.name, target)
+                else:
+                    with archive.extractfile(member) as incoming, target.open("wb") as outgoing:
+                        prefix = incoming.read(50)
+                        need(not prefix.startswith(b"version https://git-lfs.github.com/spec/v1\n"),
+                             "Unmaterialized reference LFS input: " + member.name)
+                        outgoing.write(prefix)
+                        shutil.copyfileobj(incoming, outgoing)
+    need(all((target_root / path).is_file() for path in BOOTSTRAP), "Reference bootstrap missing")
+    stage_generator_profiles(target_root)
+    return {"source_commit": source, "source_tree": git("rev-parse", source + "^{tree}"),
+            "project": f"references/{name}/godot", "native": identity["native"],
+            "rapier": identity["rapier"], "observer_overlay": "Only in isolated comparison run copies"}
+
+
+def stage_launchers(destination, source, references):
     campaign = json.loads((destination / TOOLS / "campaign.json").read_text(encoding="utf-8"))
     prefix = '@echo off\nsetlocal\ncd /d "%~dp0"\n'
-    for filename, arm_name in (("Open Workbench.cmd", "B"), ("Open Baseline Workbench.cmd", "A")):
+    launchers = (("Open Workbench.cmd", "B", source, "godot", "Workbench-Project"),
+                 ("Open Baseline Workbench.cmd", "B", references["integration"]["source_commit"],
+                  references["integration"]["project"], "Workbench-Baseline-Project"),
+                 ("Open Accepted Main.cmd", "A", references["main"]["source_commit"],
+                  references["main"]["project"], "Workbench-Main-Project"),
+                 ("Open Full Control Workbench.cmd", "A", source, "godot", "Workbench-Full-Project"))
+    for filename, arm_name, application_source, project, working_project in launchers:
         arm = campaign["arms"][arm_name]
+        project = project.replace("/", "\\")
         script = prefix + (
             'set "APPDATA=%~dp0Workbench-Profile"\n'
             'set "LOCALAPPDATA=%~dp0Workbench-Profile"\n'
-            f'set "CYBERSAND_SOURCE_REVISION={source}"\n'
+            f'set "CYBERSAND_SOURCE_REVISION={application_source}"\n'
+            f'set "CYBERSAND_SOURCE_SHA={application_source}"\n'
             'set "CYBERSAND_DIAG_FLYER_POSE="\n'
             'set "CYBERSAND_DIAG_RENDER_CADENCE="\n'
             'set "CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS="\n'
@@ -154,16 +208,19 @@ def stage_launchers(destination, source):
             f'set "CYBERSAND_MATERIAL_PUBLICATION={arm["material"]}"\n'
             f'set "CYBERSAND_DIAG_PHYSICS_PUBLICATION={arm["physics"]}"\n'
             f'set "CYBERSAND_DIAG_NATIVE_RENDEZVOUS={arm["rendezvous"]}"\n'
-            '"%SystemRoot%\\System32\\robocopy.exe" "%~dp0godot" "%~dp0Workbench-Project" /E /XJ /R:1 /W:1 /NFL /NDL /NJH /NJS /NP\n'
+            f'"%SystemRoot%\\System32\\robocopy.exe" "%~dp0{project}" "%~dp0{working_project}" /E /XJ /R:1 /W:1 /NFL /NDL /NJH /NJS /NP\n'
             'if errorlevel 8 exit /b 1\n'
-            f'"%~dp0{CONSOLE}" --headless --path "%~dp0Workbench-Project" --editor --quit\n'
+            f'"%~dp0{CONSOLE}" --headless --path "%~dp0{working_project}" --editor --quit\n'
             'if errorlevel 1 exit /b 1\n'
-            f'start "" "%~dp0{GUI}" --path "%~dp0Workbench-Project" %* -- --workbench\n'
+            f'start "" "%~dp0{GUI}" --path "%~dp0{working_project}" %* -- --workbench\n'
         )
         (destination / filename).write_bytes(script.replace("\n", "\r\n").encode())
     for name, script, flags in (("Test It.cmd", "Run-Test-It.ps1", ""),
                                 ("Run Diagnostic.cmd", "Run-Test-It.ps1", " -Quick"),
-                                ("Pack Results.cmd", "Pack-Results.ps1", "")):
+                                ("Quick A-B Test.cmd", "Run-Source-Comparison.ps1", ""),
+                                ("Transition A-B Test.cmd", "Run-Source-Comparison.ps1", " -Case transition_2048_w1"),
+                                ("Verify Package.cmd", "Verify-Package.ps1", ""),
+                                ("Pack Results.cmd", "Pack-Results.ps1", " -All")):
         path = f"{TOOLS}/{script}".replace("/", "\\")
         body = prefix + (f'"%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -NoLogo -NoProfile '
                          f'-ExecutionPolicy Bypass -File "%~dp0{path}"{flags} %*\nexit /b %errorlevel%\n')
@@ -192,6 +249,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source-sha", required=True)
     parser.add_argument("--accepted-main")
+    parser.add_argument("--reference-integration", default=REFERENCE_INTEGRATION)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--archive", type=Path)
     parser.add_argument("--godot-zip", type=Path)
@@ -212,8 +270,12 @@ def main():
     identity = source_identity(args.source_sha, args.accepted_main)
     output.mkdir(parents=True)
     stage_source(output, identity)
+    identity["source_references"] = {
+        "main": stage_reference(output, args.accepted_main, "main", identity),
+        "integration": stage_reference(output, args.reference_integration, "integration", identity),
+    }
     identity["engine"] = stage_dependencies(output, args.godot_zip, args.notices, args.vc)
-    stage_launchers(output, identity["source_commit"])
+    stage_launchers(output, identity["source_commit"], identity["source_references"])
     identity["acceptance_template_sha256"] = digest(output / ACCEPTANCE)
     identity["files_sha256"] = file_hashes(output)
     write_json(output / MANIFEST, identity)

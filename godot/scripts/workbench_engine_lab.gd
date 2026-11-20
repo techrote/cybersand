@@ -159,7 +159,7 @@ func mount(controller: Control,wb: Control) -> void:
 	publication_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	var publication := OptionButton.new()
 	publication.custom_minimum_size = Vector2(220,32)
-	publication.add_item("Automatic (incremental)")
+	publication.add_item("Automatic")
 	publication.add_item("Full texture control")
 	publication.add_item("Incremental GPU updates")
 	publication.tooltip_text = "Compare bounded staging uploads and GPU rectangle copies with full texture updates. Physics coupling and the material history stay intact."
@@ -434,9 +434,14 @@ func _refresh_publication() -> void:
 	_syncing = true
 	(_widgets["publication"] as OptionButton).select(maxi(0,index))
 	_syncing = false
-	_publication_status.text = "Active: %s | last update: %s bytes%s" % [
-		str(state.get("backend","pending")),str(state.get("submitted_bytes",0)),
-		(" | "+str(state.fallback_reason)) if not str(state.get("fallback_reason","")).is_empty() else ""]
+	var labels := {"auto":"Automatic", "full":"Full texture", "blit":"Incremental GPU"}
+	var explanation := str(state.get("fallback_reason",""))
+	if state.get("policy","") == "windows_angle_warp_full":
+		explanation = "Full updates are used for this Windows software renderer."
+	_publication_status.text = "Requested: %s | Active: %s | last update: %s bytes%s" % [
+		str(labels.get(state.get("requested_mode","auto"),"Automatic")),
+		str(labels.get(state.get("backend","pending"),"Pending")),str(state.get("submitted_bytes",0)),
+		(" | "+explanation) if not explanation.is_empty() else ""]
 
 func _refresh() -> void:
 	if host == null or _status == null or _capturing: return

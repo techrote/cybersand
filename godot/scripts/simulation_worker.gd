@@ -1301,10 +1301,39 @@ func set_frame_state(
 	_mutex.unlock()
 
 
-func _workbench_sample_pending() -> bool:
+func _workbench_owner_work_pending(pause_request: bool, settings_revision: int,
+		paint_epoch: int, art_epoch: int, pixel_interval_usec: int,
+		render_interval_usec: int, rebased_wait: bool) -> bool:
+	# Wait only on copied owner state. Retirement and already admitted commands
+	# interrupt the same bounded poll as a fresh body sample; no World getter,
+	# main-thread object or second simulation owner participates in this wait.
 	_mutex.lock()
 	var states: Variant = _workbench_sample.get("states",null)
-	var pending: bool = states != null and states.size() > 10 and int(states[10]) >= 0 		and int(states[10]) != _workbench_prepared_sample
+	var pending: bool = (
+		not _running
+		or (states != null and states.size() > 10 and int(states[10]) >= 0
+			and int(states[10]) != _workbench_prepared_sample))
+	# Other Workbench waits retain their original fresh-sample cadence. In
+	# particular, an ACK must not authorize an early ordinary native tick in a
+	# World without bodies. Expanded wakeups only preserve prompt control
+	# service where rebasing otherwise added a new idle interval.
+	if rebased_wait:
+		pending = pending or (
+			_paused != pause_request or _reset_requested or not _lab_request.is_empty()
+			or _construction_settings_revision != settings_revision
+			or _paint_epoch != paint_epoch or _art_epoch != art_epoch
+			or not _pending_player_environment_profile.is_empty()
+			or not _pending_emissions.is_empty() or not _pending_cell_emissions.is_empty()
+			or not _pending_physical_effects.is_empty() or not _pending_physical_usables.is_empty()
+			or not _workbench_source_commands.is_empty() or not _workbench_equipment_commands.is_empty()
+			or not _water_spray_requests.is_empty() or not _paint_pending.is_empty() or not _art_pending.is_empty()
+			or (not _material_capture_request.is_empty() and _material_capture_result.is_empty())
+			or _render_full_refresh_requested or not _engine_lab_sample_wake
+			or _engine_lab_pixel_interval_usec != pixel_interval_usec
+			or _render_snapshot_interval_usec != render_interval_usec
+			or (_published_snapshot != null and (
+				_acknowledged_render_snapshot_serial > _published_snapshot.render_acknowledged_serial
+				or _engine_lab_ack_gated_publication != _published_snapshot.render_publication_ack_gated)))
 	_mutex.unlock()
 	return pending
 
@@ -2530,6 +2559,10 @@ func _worker_loop() -> void:
 		var local_pixel_interval_usec: int = TICK_INTERVAL_USEC
 		var local_pixel_target_hz: int = 60
 		var local_sample_wake: bool = true
+		var local_pause_request: bool = false
+		var local_settings_revision: int = 0
+		var local_paint_epoch: int = 0
+		var local_art_epoch: int = 0
 		var local_trace_generation: int = 0
 		var local_rigid_body_states: PackedFloat32Array = PackedFloat32Array()
 		var local_rigid_body_epoch: int = 0
@@ -2552,6 +2585,10 @@ func _worker_loop() -> void:
 		_mutex.lock()
 		local_running = _running
 		local_paused = _paused
+		local_pause_request = _paused
+		local_settings_revision = _construction_settings_revision
+		local_paint_epoch = _paint_epoch
+		local_art_epoch = _art_epoch
 		local_horizontal_input = _horizontal_input
 		local_jetpack_active = _jetpack_active
 		local_interest_center = _interest_center
@@ -2911,7 +2948,24 @@ func _worker_loop() -> void:
 			# against the physics frame and misses alternate frames (exact 30 Hz
 			# plateaus) even for short ticks, so wake as soon as the next sample
 			# arrives. Still one tick per sample; never earlier than the sample.
-			while now_usec < next_tick_usec and not _workbench_sample_pending():
+			# A completed body sample cannot authorize another native tick.
+			# Only retire overdue timer debt in that unpaused, sample-fenced
+			# case. Worlds without bodies and paused authoring retain their
+			# original timer cadence; a pending sample, ACK or command still
+			# interrupts this same poll without waiting for the new deadline.
+			var rebased_wait: bool = false
+			if (next_tick_usec < now_usec and not local_pause_request
+					and workbench_serial >= 0
+					and workbench_serial == _workbench_prepared_sample
+					and workbench_serial == _workbench_completed_sample
+					and not _workbench_consumed_sample.is_empty()
+					and bool(_workbench_result.get("valid",false))):
+				next_tick_usec = now_usec + local_pixel_interval_usec
+				rebased_wait = true
+			while now_usec < next_tick_usec and not _workbench_owner_work_pending(
+					local_pause_request, local_settings_revision, local_paint_epoch,
+					local_art_epoch, local_pixel_interval_usec, local_render_snapshot_interval_usec,
+					rebased_wait):
 				OS.delay_usec(WORKBENCH_SAMPLE_POLL_USEC)
 				now_usec = Time.get_ticks_usec()
 			next_tick_usec = mini(next_tick_usec, now_usec)

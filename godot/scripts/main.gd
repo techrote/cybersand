@@ -6310,7 +6310,8 @@ func set_material_publication_mode(mode: String) -> bool:
 	_material_publication_mode = mode
 	_create_material_texture_pair(image, _material_previous_cpu_image())
 	_bind_material_texture_consumers()
-	return mode != "blit" or texture is MaterialPublisher.MaterialPlane
+	return mode != "blit" or texture is MaterialPublisher.MaterialPlane \
+		or _material_publication_policy == MaterialPublisher.WARP_FULL_UPLOAD_POLICY
 
 
 func update_shader_parameters() -> void:

@@ -45,6 +45,14 @@ The worker holds one exact full frame plus the existing maximum of 256 dirty rec
 
 A complete native packet arrives detached from World and exchange storage. The worker retains that immutable byte array as both the full baseline and the publication while it contains only the baseline. The first unacknowledged delta copies the baseline into a writable journal before appending. Later snapshots copy the accumulated journal for publication. This keeps older snapshots valid through ACKs, refreshes and appended deltas. The trace records the first native capture status and total time inside native capture, including a retry when required. The existing exchange interval also covers worker retention.
 
+The bounded owner-deadline repair discards overdue polling debt only after an
+unpaused Workbench's valid consumed body sample has actually completed. It
+does not turn unused callback time into native or physical progression. During
+that rebased wait, pending control work and render ACKs wake the ordinary owner
+turn promptly. No-body and paused waits retain their prior cadence. Native
+health observations, prepared-World adoption and the exact sample/terrain
+admission fences remain in their existing owners.
+
 The blit publisher rotates two persistent linear RGBA8 texture targets. It takes a large, entirely dirty image directly through bounded staging and avoids extracting every tile before the whole copy. When a dense publication invalidates all slots in the recycled plane and the incoming edit touches at most four tiles, it copies the complete accepted GPU plane to the recycled target and stages only those tiles. It never reads from the target it is writing. The two drawable identities and preceding frame remain intact. Small or partial areas normally take the tile path. Neither path swaps texture representations when density changes. Queued `Image` inputs have a distinct immutable lifetime. The stage ring offers reuse distance. A submission receipt establishes queued work and ACK authority. It supplies no completion or scanout timestamp.
 
 On Windows ANGLE with the Microsoft Basic Render Driver over D3D11, a blit or
@@ -141,3 +149,127 @@ storage in ANGLE, so removing a later upload wait alone is insufficient. Both
 untimed history oracles must pass before the R–A–B–B–A–R comparison. Original
 frame tails and accepted cadence decide this probe, with gameplay still a
 separate source-matched gate.
+
+The [sparse-storage result](https://github.com/techrote/cybersand/actions/runs/44749261508/artifacts/14634428498)
+is **Rejected as the performance solution**. R–A–B–B–A–R frame p95 was
+9.333/33.678/31.608/33.620/34.651/10.613 ms on this separately identified WARP
+host. All four blit arms retained 15 intervals of at least 30 ms out of 180;
+neither full-only reference had one. Fresh layered storage reduced the first
+reuse upload call from roughly 8 ms to 0.23 ms, but the time reappeared after
+submission and in later callbacks. Both complete histories remained exact.
+Archive SHA-256:
+`db8676d6960d2194aee5e6798f3597410745453e06ded434e60d00ea063c0ac5`.
+The earlier fixed-material control also retained the blit tail with unchanged
+production code. These mechanisms remain available only through an explicit
+workflow dispatch; ordinary source changes now use the installed production
+comparison and do not automatically repeat rejected experiments.
+
+The portable **Quick A-B Test.cmd** compares accepted `de109d01`, prior
+integration `8503ec19`, and the package's exact candidate in M–I–C–C–I–M order.
+**Transition A-B Test.cmd** applies the retained `transition_2048_w1` inputs to
+those three actual source renderers. Separate untimed processes first verify
+both history planes after every one of 180 admissions. Timing processes use
+the same pinned engine, window, uncapped display, source-verified observer and
+input sequence, and retain original framebuffers. The prior integration still
+executes its real blit renderer on WARP; only the repaired candidate selects its
+registered full-upload policy. Gameplay remains a separate real-owner lane,
+with 144 completed physical steps and wall-time windows reported independently.
+
+## Actual full-upload gameplay and the remaining main-thread wait
+
+The [installed `673204d1` Windows campaign](https://github.com/techrote/cybersand/actions/runs/44747735460/artifacts/14635876030)
+verified the software ANGLE policy in ordinary Workbench. Its transition frame
+p95 was 13.707/13.752/13.683/13.745 ms in A–B–B–A order, with both histories
+exact. This same-source comparison used full/combined/legacy in A and
+policy-full/early/coherent in B. It is not the separate M/I/C source comparison.
+
+Actual Wave Follow remained slow: frame p95 was
+277.362/276.355/305.052/303.391 ms and the worst completed physical gap was
+315.775/285.221/471.496/376.949 ms. The native and physical clocks are distinct.
+In the 471.496 ms interval, native completion arrived at +99.771 ms and the
+first healthy matching physical publication at +101.648 ms. A full texture
+submission began at +196.306 ms and ended at +461.245 ms. Its existing backend
+timer measured 263.125 ms around detached-image creation and
+`ImageTexture.update`; the eventual Rapier solver call took 0.701 ms. These are
+wall intervals, not per-thread active CPU or independent GPU completion times.
+The unchanged health, terrain and completed-step checks still apply.
+
+This localizes an implementable full-path hypothesis that the rejected RGBA8
+blit probes did not test. The [bounded full-storage comparison](../../.github/workflows/pubpres-full-storage.yml)
+uses that exact retained package and changes only the full R8/RG8 texture leaf
+in disposable source copies: update existing storage versus
+`ImageTexture.set_image` with the same immutable detached image. Both histories,
+native worker, actor input, shader and presentation selectors remain identical.
+The test separates detachment and API wall time, checks both complete GPU
+histories before timing, and uses ABBA actual Wave Follow on 2048×1024 and
+2048² Worlds. Whole frame and physical tails, accepted native progress and
+actual process memory determine the result; a shorter API call alone does not.
+
+The original installed-evidence archive SHA-256 is
+`8e6535636e1ea9b5db7bdb2e1c4a1415418ac34751c2967128aaf4f5d530f9a0`.
+The performance objective remains **unmet** on this evidence and physical
+Windows/NVIDIA owner acceptance remains **HOLD**.
+
+The [actual full-storage result](https://github.com/techrote/cybersand/actions/runs/44757331392/artifacts/14639644280)
+is **Rejected as the performance solution**. Both treatments passed all
+180 current and 180 previous history comparisons before timing. All eight
+Wave Follow arms completed at least 144 real physical steps, with exact
+first-144 body trajectories within each World. On this separately identified
+Windows WARP host (EPYC 9V74, four logical processors), the first-144 results in A/update–B/set_image–B/set_image–A/update
+order were:
+
+| World | Frame p95, ms | Physical gap p95, ms | Worst physical gap, ms | Actual steps/s |
+| --- | --- | --- | --- | --- |
+| 2048×1024 | 480.854 / 567.049 / 521.374 / 468.451 | 246.956 / 246.361 / 245.806 / 247.260 | 685.525 / 713.611 / 691.775 / 719.865 | 9.836 / 9.756 / 9.369 / 10.146 |
+| 2048² | 666.884 / 861.690 / 975.493 / 635.723 | 537.691 / 916.146 / 1000.433 / 697.451 | 757.416 / 1023.645 / 1033.163 / 759.239 | 4.348 / 3.622 / 3.357 / 4.061 |
+
+Replacement reduced API p95 from 236–700 ms to 1.1–3.3 ms and increased actual
+process peak working set. The complete larger-World frame and physical tails
+worsened. In B1's 1023.645 ms physical gap, native completion arrived at
++20.425 ms and the first healthy matching handoff at +22.313 ms. The texture
+API took 0.876 ms; Main finished its callback at +25.463 ms, but post-draw
+arrived at +1021.295 ms. The eventual Rapier solver took 0.344 ms. B2 retained
+the same pattern with a 1033.163 ms gap. These end-to-end intervals demonstrate
+real physical waiting after timely native completion; reducing the API wall
+interval did not remove the underlying render/post-draw delay. A separate GPU
+completion timestamp and per-thread active/wait attribution remain unavailable.
+
+No `set_image` change enters production. Image detachment itself measured only
+microseconds in both treatments and remains required for immutable queue
+ownership. The prior default-off fixed16 native-wait policy also stays disabled:
+its [donor completion audit](https://github.com/techrote/cybersand/blob/5a36ce49404ed7dc8a9e5815593d250ab990615a/docs/audits/2026-11-16-physics-freeze-remediation-002-completion.md)
+already rejects its physical p95 and frame-cadence regressions. It was not rerun
+as a new repair. The successful full-storage original archive SHA-256 is
+`96223317862ce453a2b3ec86e681b5940d776e96a43a5a40a52925b58cc01bf4`.
+The first attempt's source-guard failure, before any oracle or timing, is also
+retained with SHA-256
+`0dd4906220f2245514c5080ff9e78dfb261f736fba45257787d645cb15792270`.
+
+## Bounded worker scheduling control
+
+The final worker bytes `b547f7a5c640f70fed3a15441cb7d89a7478a9c826640be4b901f5d6407d5549`
+were compared against the original worker in an isolated, preregistered ABBA
+control on base `df804bb40e83af14002fe44e2f7a9745b85ee46f`. It used real Wave
+Follow, four participating native workers, identical full RG8 publication and
+Godot 4.7 on Linux llvmpipe. This is a component control; the complete candidate
+still requires its separate M/I/C application comparison.
+
+Over the same 144 completed physical steps, immediate duplicate publications
+fell from 163/166 in A to zero in both B runs. Total repeated publications fell
+from 406/412 to 182/181. Frame p95 in A–B–B–A order was
+75.770/67.397/70.358/76.837 ms and p99 was
+90.271/75.624/80.246/100.038 ms. Physical p95 remained mixed at
+124.929/113.128/126.221/122.259 ms; completed physical rates were
+14.299/14.744/14.293/14.312 steps/s. Each step still represents exactly 1/60
+second of simulation. This establishes reduced repeated work, not recovered
+real-time physical progression.
+
+All four first-144 body trajectories and all 143 shared native Water ledgers,
+body samples and terrain revisions were exact. The independent real-owner
+control passed 60 checks including no-body timing, paused paint, ACK/resync,
+reset and stop. The two earlier measured scheduling variants remain rejected:
+the broad rebase altered ordinary timing, and the first narrowed version let
+ACK/control wakeups affect ordinary waits. Their traces and adverse tails are
+retained. The portable evidence includes these originals in
+`pubpres-native-physical-local-originals.zip` with SHA-256
+`21d5d0c700a9213f2f3975ed07c1c6b3ee963a867e65ccf06092fa735dddfbec`.

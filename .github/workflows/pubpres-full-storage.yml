@@ -1,11 +1,8 @@
 name: PUBPRES Windows full-texture storage comparison
 
 on:
-  push:
-    branches: [codex/pubpres-integration-001]
-    paths:
-      - '.github/workflows/pubpres-full-storage.yml'
-      - 'tools/pubpres_integration/full_storage_gameplay.py'
+  # Rejected mechanism retained for explicit reproduction only. Subsequent
+  # production changes use the installed M/I/C comparison workflow.
   workflow_dispatch:
 
 permissions:

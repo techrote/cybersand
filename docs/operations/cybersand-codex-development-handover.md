@@ -10,6 +10,17 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Workbench publication and progression repair — 2026-11-20
+
+PR #682 remains **Draft/HOLD; no merge or Ready promotion**. Continue from the
+[PUBPRES integration evaluation](pubpres-integration-evaluation.md), which owns
+the source/runtime controls, preserved negative renderer results and actual
+three-source Windows comparison. The repair keeps the full-upload policy
+limited to Windows software ANGLE and bounds idle timer debt after completed
+physical samples. Accepted main and the previous integration are preserved as
+complete executable references. Owner physical Windows/NVIDIA acceptance is
+separate from hosted WARP and Linux software-renderer qualification.
+
 ## Architectural Generator runtime repair — 2026-11-15
 
 The owner-authorized Phase A plus bounded Phase B implementation began at

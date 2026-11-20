@@ -57,7 +57,7 @@ function Assert-MaterialTreatment($Publication, $Treatment) {
         -not (Get-Field $Publication 'fallback_reason')) 'Material publication route differs from the expected backend policy'
 }
 
-function Read-Transition($Data, [string]$Folder, $Manifest, $Arm, [string]$Driver, [string]$Nonce) {
+function Read-Transition($Data, [string]$Folder, $Manifest, $Arm, [string]$Driver, [string]$Nonce, $Treatment = $null) {
     Assert-Result ($Data.schema -eq 'pubpres-transition-v1' -and $Data.complete -eq $true -and $Data.case -eq 'transition_2048_w1') 'Transition receipt incomplete'
     Assert-Result ($Data.context.source_revision -eq $Manifest.source_commit -and $Data.context.display_server -ne 'headless' -and
         $Data.context.nonce -eq $Nonce -and $Data.context.backend -eq $Driver -and $Data.context.engine_sha256 -eq $Manifest.engine.gui_sha256) 'Transition source, process, engine or renderer differs'
@@ -66,7 +66,7 @@ function Read-Transition($Data, [string]$Folder, $Manifest, $Arm, [string]$Drive
     Assert-Result (($Data.display.window -join 'x') -eq '960x720' -and $Data.display.max_fps -eq 0 -and $Data.display.vsync_mode -eq 0) 'Transition display differs from uncapped donor setup'
     Assert-Result ($Data.history.current_matches -and $Data.history.previous_matches) 'Transition lost texture history'
     Assert-Result ((Get-Sha (Join-Path $Folder 'receipt-after.png')) -eq $Data.screenshot_sha256) 'Transition screenshot differs'
-    $Treatment = Get-MaterialTreatment $Arm $Driver $Data.context.video_adapter
+    if ($null -eq $Treatment) { $Treatment = Get-MaterialTreatment $Arm $Driver $Data.context.video_adapter }
     $Phases = [ordered]@{}
     $Modes = @{}
     $Dense = 0
@@ -194,7 +194,9 @@ function Read-Physical($Data, [string]$Folder, $Manifest, $Geometry, $Scenario, 
     Assert-Result ($Arm.presentation -ne 'coherent' -or ($VisibleTime.Count -gt 0 -and $Rewinds -eq 0)) 'Missing visible coherent physical steps or temporal rewind'
     $Holds = @($Events | Where-Object { $_.event -eq 'rapier_hold' } | Group-Object reason | ForEach-Object { @{ reason=$_.Name; count=$_.Count } })
     $UploadScope = [ordered]@{}
-    foreach ($Stage in @('image_patch_usec','tile_assembly_usec','atlas_assembly_usec','backend_submit_usec','initialization_usec','allocated_gpu_bytes')) {
+    foreach ($Stage in @('image_patch_usec','tile_assembly_usec','atlas_assembly_usec','backend_submit_usec',
+        'staging_upload_usec','gpu_blit_submit_usec','direct_upload_usec','whole_storage_create_usec',
+        'whole_storage_replace_usec','initialization_usec','allocated_gpu_bytes')) {
         $UploadScope[$Stage] = Get-Distribution @($Uploads | ForEach-Object { Get-Field $_.material_publication $Stage })
     }
     return [ordered]@{ process_id=$Workers.process_id; match=[ordered]@{
