@@ -250,6 +250,8 @@ may consume the interfaces without gaining mutable cell access.
 
 ## When can a render payload be reused?
 
+The [desktop evaluation](../operations/pubpres-integration-evaluation.md) specifies bounded independent baseline and dirty budgets, and the lifetime of queued staging images.
+
 **Current native lease:** `RenderSnapshotLease` exposes const payload spans;
 the final lease release permits slot reuse. Consumers may acquire/release
 concurrently with serialized publication. A lease retains shared slot state

@@ -44,6 +44,8 @@ protects this boundary; historical results remain in the
 
 ## Consequences and alternatives
 
+The [desktop publication candidate](../operations/pubpres-integration-evaluation.md) evaluates sparse GPU updates within this immutable ownership decision. Promotion depends on matched delivery and gameplay evidence.
+
 The choice enables concurrent desktop rendering, standalone data fixtures and
 explicit pressure diagnostics. It costs copying/encoding, retained publication
 storage, acknowledgement and a consumer-lag policy. Native publication pressure

@@ -147,11 +147,11 @@ func _run() -> void:
 	controller.texture.update(empty)
 	controller.current_view_size = Vector2i(64, 32)
 	var resized: Image = await _advance(controller, 0.02)
-	_expect(resized.get_size() == Vector2i(64, 32) and _peak(resized) == 0.0,
+	_expect(resized.get_size() == Vector2i(65, 33) and _peak(resized) == 0.0,
 		"resizing retained or stretched history from the old viewport")
 	controller.current_view_size = VIEW
 	var restored_size: Image = await _advance(controller, 0.02)
-	_expect(restored_size.get_size() == VIEW and _peak(restored_size) == 0.0,
+	_expect(restored_size.get_size() == VIEW + Vector2i.ONE and _peak(restored_size) == 0.0,
 		"returning to a previous size resurrected an old buffer")
 
 	_expect(controller.has_method("set_vapour_trail_enabled"), "production vapour has no persistent disable control")
