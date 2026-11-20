@@ -14,6 +14,7 @@ on:
       - 'godot/tools/world_design_pack_adapter.gd'
       - 'tools/world_art_preview_launcher.py'
       - 'tools/world_art_capture_support.py'
+      - 'tools/world_art_stream_png.py'
       - 'tools/test_world_art_capture.py'
       - 'examples/world-art-capture/**'
       - 'docs/tools/world-art-capture.md'
