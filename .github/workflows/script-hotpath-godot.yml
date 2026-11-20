@@ -32,12 +32,12 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 75
     env:
-      GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
-      SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+      GODOT_CPP_ROOT: /tmp/cybersand-script-hotpath-godot-cpp
+      SCONS_PYTHON: /tmp/cybersand-script-hotpath-scons/bin/python
       SCONS_JOBS: '2'
       CYBERSAND_REAL_CXX: /usr/bin/g++-13
       LINUX_CXX: /usr/bin/g++-13
-      CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
+      CYBERSAND_NATIVE_OUTPUT: /tmp/cybersand-script-hotpath-linux.so
     steps:
       - name: Check out immutable candidate
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -55,7 +55,7 @@ jobs:
           git status --short
       - name: Install pinned SCons
         run: |
-          python3 -m venv "$RUNNER_TEMP/scons"
+          python3 -m venv /tmp/cybersand-script-hotpath-scons
           "$SCONS_PYTHON" -m pip install --require-hashes -r tools/requirements-build.txt
           "$SCONS_PYTHON" -c 'import SCons; assert SCons.__version__ == "4.10.1"'
       - name: Fetch pinned godot-cpp at exact commit
