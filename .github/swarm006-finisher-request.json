@@ -2,7 +2,7 @@
   "schema": 1,
   "programme": "GENTEK-SWARM-006-INTEGRATION-FINISHER",
   "draft_hold": true,
-  "request": "2026-11-21-input-and-source-integrity-repair-03",
+  "request": "2026-11-21-windows-fixture-canonical-path-repair-04",
   "accepted_base": "846fe0533b3170e7b01f690518da49fc40cc24d1",
   "swarm004_005_accepted_merge": "pending",
   "native_definition_sha256": "72779688b897e4707d89ac1f6e692046abbc806bd27b4c129bd77fcd995093a0",
@@ -18,5 +18,5 @@
     "owner_launcher"
   ],
   "publication": "isolated provisional successor; no merge, Ready, auto-merge or production-runtime publication",
-  "superseded_candidate": "8cf93e48bc23370c6ef7b835978689ca3aa3e9f8"
+  "superseded_candidate": "ca63445888d818ed868f71869abb37ae4d00975e"
 }
