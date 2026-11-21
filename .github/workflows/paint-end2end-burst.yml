@@ -25,6 +25,7 @@ jobs:
     timeout-minutes: 35
     strategy:
       fail-fast: false
+      max-parallel: 3
       matrix:
         slices: [1, 4, 8]
     env:
