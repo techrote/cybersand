@@ -1,0 +1,58 @@
+name: GENTEK-691 final source CI follow-up (HOLD)
+on:
+  push:
+    branches: [qualification/gentek691-final-ci-followup]
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: write
+concurrency:
+  group: gentek691-final-ci-followup-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  final-ci:
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/qualification/gentek691-final-ci-followup'
+    name: Verify final source, retain focused evidence, request standard CI
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      CANDIDATE_SHA: 8fbfa41208aa15afde6dd86abe5367b94bdd1db0
+      CANDIDATE_TREE: a2feaac1bc32ed089c53ee245a1539ec6238df16
+      CANDIDATE_FOCUSED_RUN: 44933218176
+    steps:
+      - name: Check out the separate reviewed dispatcher
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          path: harness
+          persist-credentials: false
+      - name: Check out the exact final candidate with materialized libraries
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.CANDIDATE_SHA }}
+          path: candidate
+          fetch-depth: 0
+          lfs: true
+          persist-credentials: false
+      - name: Verify source scope and original same-commit focused evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 harness/tools/ci/gentek691_final_ci_followup.py scope --candidate candidate --evidence evidence/final-ci-followup
+      - name: Execute source-matched publisher and classifier guards
+        run: |
+          set -euo pipefail
+          python3 harness/tools/ci/test_gentek691_final_ci_followup.py --fixture-dir evidence/final-ci-followup/scope --candidate-sha "$CANDIDATE_SHA" --candidate-tree "$CANDIDATE_TREE" > evidence/final-ci-followup/dispatcher-negative-fixtures.log 2>&1
+          cat evidence/final-ci-followup/dispatcher-negative-fixtures.log
+          python3 harness/tools/ci/gentek691_final_ci_followup.py guards --candidate candidate --evidence evidence/final-ci-followup
+      - name: Request six standard workflows and retain the seventh focused gate
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 harness/tools/ci/gentek691_final_ci_followup.py dispatch --candidate candidate --evidence evidence/final-ci-followup
+      - name: Retain scope, original focused artifacts, guards and every dispatch result
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gentek691-final-ci-followup-${{ github.run_id }}
+          path: evidence/final-ci-followup/
+          if-no-files-found: error
+          retention-days: 90
