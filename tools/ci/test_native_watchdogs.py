@@ -105,7 +105,7 @@ class NativeShellTests(unittest.TestCase):
         rows = [json.loads(line) for line in self.log.read_text().splitlines()] if self.log.exists() else []
         return result, rows
 
-    def test_all_twenty_original_invocations_and_environments_are_preserved(self):
+    def test_all_twenty_policy_invocations_and_environments_are_preserved(self):
         count = 0
         for suite, expected in gate.COMMANDS.items():
             with self.subTest(suite=suite):
@@ -118,6 +118,15 @@ class NativeShellTests(unittest.TestCase):
                     self.assertEqual(row["timeout_seconds"], native_policy.command_timeout_seconds(suite, label))
                 count += len(rows)
         self.assertEqual(count, 20)
+
+    def test_only_two_worldgen_commands_group_output_under_the_same_two_job_cap(self):
+        grouped = [(suite, label) for suite, commands in gate.COMMANDS.items()
+                   for label, _, command in commands if "--output-sync=target" in command]
+        self.assertEqual(grouped, [("worldgen", "worldgen-test"), ("worldgen", "worldgen-sanitize")])
+        for label, _, command in gate.COMMANDS["worldgen"]:
+            if label in {"worldgen-test", "worldgen-sanitize"}:
+                self.assertEqual(command[command.index("make"):],
+                                 ["make", "-j2", "--output-sync=target", label])
 
     def test_each_original_command_preserves_error_and_timeout_exit(self):
         for suite, commands in gate.COMMANDS.items():

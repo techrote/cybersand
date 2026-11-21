@@ -54,8 +54,8 @@ case "$suite" in
     native_command physics-characterisation-sanitize native_case_seconds env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 make physics-characterisation-sanitize 2>&1 | tee build/physics-cli-validation/validation.log
     # Two prerequisite jobs; the nine test recipe lines remain serial.
     # time reports max-child RSS, not concurrent aggregate RSS.
-    native_command worldgen-test native_case_seconds /usr/bin/time -v make -j2 worldgen-test
-    native_command worldgen-sanitize native_case_seconds env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 /usr/bin/time -v make -j2 worldgen-sanitize
+    native_command worldgen-test native_case_seconds /usr/bin/time -v make -j2 --output-sync=target worldgen-test
+    native_command worldgen-sanitize native_case_seconds env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 /usr/bin/time -v make -j2 --output-sync=target worldgen-sanitize
     ;;
   soliding-normal)
     native_command soliding-test native_case_seconds make soliding-test

@@ -1089,20 +1089,25 @@ The native targets reuse generation objects within each existing compiler flag
 set under `$(BUILD_DIR)/worldgen-objects`: normal/sanitized and
 threaded/non-threaded variants stay separate. Source, shared-header and Makefile
 changes invalidate those objects. This avoids recompiling the same generation
-sources for each test. The current aggregates contain nine executables each,
-including GEN-005 semantic planes, with five-minute normal and ten-minute
-sanitizer CI bounds. The
+sources for each test. The current aggregates contain sixteen executables each:
+seven showcases and nine principal tests, including GEN-005 semantic planes.
+The [shared execution policy](ci-execution-and-performance.md#owner-policy-and-acceptance-boundary)
+owns current command and family watchdogs. The earlier five/ten-minute bounds
+below describe historical qualification. The
 [dated audit](../audits/2026-10-21-gen004-hierarchical-generation.md)
 retains the cold-build timeout that motivated this change and subsequent results.
 
 The [bounded build investigation](../audits/2026-10-31-worldgen-bounded-build.md)
 retains the later post-merge sanitizer timeout: eight tests passed, and the ninth
 was interrupted after prerequisite compilation consumed most of its ten-minute
-budget. The candidate Native workflow uses exactly `make -j2` for these two
-aggregates only. Their nine test recipe lines remain sequential after all
-prerequisites complete; no compilation moves outside the original deadlines.
-The inventory helper checks forced serial/two-job dry runs without executing a
-compiler, and rejects omitted/reordered tests or altered source/flag families.
+budget. The current Native workflow uses `make -j2 --output-sync=target` for these
+two aggregates. Seven independent showcases use the same two-job Make budget as
+compilation, followed by the nine principal recipes in their original order.
+See [parallel showcase execution](ci-execution-and-performance.md#parallel-worldgen-showcase-execution)
+for the complete test and failure contract. No compilation moves outside the
+original command watchdog. The inventory helper checks forced serial/two-job
+dry runs without executing a compiler and rejects omitted/duplicated showcases,
+omitted/reordered principal tests or altered source/flag families.
 Its passing checks do not replace actual cold compilation/execution. The first
 local two-job normal build failed at linking with an unexplained empty object;
 the separate sanitizer attempt stopped at its second test with a nonexecutable

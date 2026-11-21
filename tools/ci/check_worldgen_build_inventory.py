@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Check bounded worldgen prerequisite parallelism without executing a compiler.
+"""Check the bounded worldgen build/execution graph without running a compiler.
 
 The sentinel compiler is intentionally nonexistent. These are forced cold
-dry-runs only; real compilation, all nine ordered generation tests and the seven
-showcase tests remain within their shared execution-policy command watchdog.
+dry-runs only. Seven independently scheduled showcases must precede the nine
+ordered generation tests; compilation and showcases share the existing jobserver
+and all work remains within the execution-policy command watchdog.
 """
 
 from __future__ import annotations
@@ -83,25 +84,32 @@ def expected_commands(sanitized: bool) -> dict[str, list[str]]:
     return expected
 
 
-def showcase_loop(sanitized: bool) -> list[str]:
-    suffix = "_sanitized" if sanitized else ""
-    binaries = " ".join(f"build/test_{test}{suffix}" for test in SHOWCASES)
-    execution = ('ASAN_OPTIONS=${ASAN_OPTIONS:-detect_leaks=1:strict_string_checks=1} '
-                 'UBSAN_OPTIONS=${UBSAN_OPTIONS:-halt_on_error=1} ' if sanitized else '')
-    label = "Running sanitized" if sanitized else "Running"
-    return shlex.split(f'set -eu; for binary in {binaries}; do echo "{label} $binary"; '
-                       f'{execution}"$binary"; done')
+def showcase_command(binary: str, sanitized: bool) -> list[str]:
+    environment = (["ASAN_OPTIONS=${ASAN_OPTIONS:-detect_leaks=1:strict_string_checks=1}",
+                    "UBSAN_OPTIONS=${UBSAN_OPTIONS:-halt_on_error=1}"] if sanitized else [])
+    return [*environment, binary]
 
 
 def inspect_commands(text: str, sanitized: bool) -> dict:
     expected = expected_commands(sanitized)
     suffix = "_sanitized" if sanitized else ""
     compile_commands: list[list[str]] = []
-    tests: list[str] = []
+    required_showcases = [f"build/test_{test}{suffix}" for test in SHOWCASES]
+    required_main = [f"./build/test_{test}{suffix}" for test in TESTS]
+    showcases: list[str] = []
+    main_tests: list[str] = []
+    pending_showcase: str | None = None
+    label = "Running sanitized" if sanitized else "Running"
     outputs: set[str] = set()
     for line in text.splitlines():
         command = shlex.split(line)
         if not command:
+            continue
+        if pending_showcase is not None:
+            require(command == showcase_command(pending_showcase, sanitized),
+                    "Seven-showcase execution inventory/environment changed")
+            showcases.append(pending_showcase)
+            pending_showcase = None
             continue
         if command[:2] == ["mkdir", "-p"]:
             require(len(command) == 3 and command[2] in {
@@ -109,25 +117,36 @@ def inspect_commands(text: str, sanitized: bool) -> dict:
                 "build/worldgen-objects/sanitized", "build/worldgen-objects/sanitized-threaded",
             }, "Unexpected directory prerequisite")
         elif command[0] == COMPILER:
-            require(not tests, "Compilation appears after test execution starts")
+            require(not main_tests, "Compilation appears after ordered main tests start")
             require(command.count("-o") == 1 and command[-2] == "-o", "Malformed compiler output")
             output = command[-1]
             require(output in expected and output not in outputs, "Wrong or duplicate object/binary family")
             require(command == expected[output], "Compiler flag/source contract changed: " + output)
+            require(all(item in outputs for item in command if item.endswith(".o") and item != output),
+                    "Link appears before object prerequisite")
             outputs.add(output)
             compile_commands.append(command)
-        elif command[0] == "set":
-            require(not tests and command == showcase_loop(sanitized),
-                    "Seven-showcase execution inventory/environment changed")
-            tests.extend(f"./build/test_{test}{suffix}" for test in SHOWCASES)
+        elif command[0] == "echo":
+            require(not main_tests and len(command) == 2 and command[1].startswith(label + " "),
+                    "Unexpected showcase marker")
+            binary = command[1][len(label) + 1:]
+            require(binary in required_showcases and binary not in showcases,
+                    "Wrong or duplicate showcase execution")
+            require(binary in outputs, "Showcase execution precedes its binary link")
+            pending_showcase = binary
         else:
             require(len(command) == 1 and command[0].startswith("./build/test_"),
                     "Unexpected executable command in dry-run")
-            tests.append(command[0])
+            require(set(showcases) == set(required_showcases), "Main tests start before all seven showcases")
+            require(command[0][2:] in outputs, "Main test execution precedes its binary link")
+            main_tests.append(command[0])
+    require(pending_showcase is None and set(showcases) == set(required_showcases),
+            "Missing showcase execution")
     require(outputs == set(expected), "Missing compilation or link prerequisite")
-    require(tests == [f"./build/test_{test}{suffix}" for test in (*SHOWCASES, *TESTS)],
-            "Sixteen-test inventory/order changed")
-    return {"compile_link_commands":compile_commands, "ordered_tests":tests,
+    require(main_tests == required_main, "Nine-main-test inventory/order changed")
+    return {"compile_link_commands":compile_commands,
+            "required_showcase_tests":required_showcases, "ordered_main_tests":main_tests,
+            "execution_count":len(showcases) + len(main_tests),
             "object_count":sum(output.endswith(".o") for output in outputs),
             "binary_count":sum(not output.endswith(".o") for output in outputs)}
 
@@ -136,7 +155,8 @@ def compare(serial: str, bounded: str, sanitized: bool) -> dict:
     first, second = inspect_commands(serial, sanitized), inspect_commands(bounded, sanitized)
     require(Counter(map(tuple, first["compile_link_commands"])) ==
             Counter(map(tuple, second["compile_link_commands"])), "Parallel prerequisite inventory changed")
-    require(first["ordered_tests"] == second["ordered_tests"], "Parallel test order changed")
+    require(first["required_showcase_tests"] == second["required_showcase_tests"] and
+            first["ordered_main_tests"] == second["ordered_main_tests"], "Parallel test inventory changed")
     return second
 
 
@@ -144,7 +164,7 @@ def dry_run(root: Path, target: str, jobs: int) -> dict:
     require(target in {"worldgen-test", "worldgen-sanitize"} and jobs in {1, 2},
             "Unbounded or unrelated make request")
     command = ["make", "--no-print-directory", "--dry-run", "--always-make",
-               f"-j{jobs}", f"CXX={COMPILER}", target]
+               f"-j{jobs}", "--output-sync=target", f"CXX={COMPILER}", target]
     env = os.environ.copy()
     for variable in ("MAKEFLAGS", "MFLAGS"):
         env.pop(variable, None)
@@ -162,8 +182,11 @@ def check(root: Path) -> dict:
         inventory = compare(serial["stdout"], bounded["stdout"], target == "worldgen-sanitize")
         reports[target] = {"serial":serial, "two_jobs":bounded, **inventory}
     return {
-        "schema":"cybersand-worldgen-build-inventory-v1", "status":"passed",
-        "scope":"forced cold dry-run prerequisite/flag/test-order equivalence; no compiler or test executed",
+        "schema":"cybersand-worldgen-build-inventory-v2", "status":"passed",
+        "scope":"forced cold dry-run flags/build/showcase union/ordered main-tail equivalence; no execution",
+        "execution_contract":{"showcases":"seven independent phony targets sharing make's build jobserver",
+                              "main_tests":"nine ordered tests after all seven showcases pass",
+                              "ci_jobs":2, "ci_output_sync":"target"},
         "source_revision":subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True,
                                                    timeout=watchdog_seconds("operation_seconds")).strip(),
         "makefile_sha256":hashlib.sha256((root / "Makefile").read_bytes()).hexdigest(),
@@ -187,7 +210,9 @@ def main() -> int:
     args.output.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"status":report["status"],
                       "families":{name:{"objects":row["object_count"], "binaries":row["binary_count"],
-                                        "ordered_tests":len(row["ordered_tests"])}
+                                        "showcases":len(row["required_showcase_tests"]),
+                                        "ordered_main_tests":len(row["ordered_main_tests"]),
+                                        "executions":row["execution_count"]}
                                   for name, row in report.get("families", {}).items()},
                       "error":report.get("error", "")}))
     return int(report["status"] != "passed")
