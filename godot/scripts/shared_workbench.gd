@@ -5,6 +5,7 @@ const WaterComparisonScenes = preload("res://scripts/workbench_water_comparison_
 const GeneratedMaps = preload("res://scripts/workbench_generated_map.gd")
 const MaterialBaseline = preload("res://scripts/workbench_material_baseline.gd")
 const PaintEditor = preload("res://scripts/workbench_paint_editor_controller.gd")
+const ArtBatchPanel = preload("res://scripts/art_batch_panel.gd")
 const Fleet = Setup.Fleet
 const ActorCatalog = Setup.ActorCatalog
 const RESPONSE_LABELS := ["LA-SA · selective arrivals","LA · all events","LA · events off","RFT · fixed 20"]
@@ -301,7 +302,14 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	paint_editor.deferred_brush_finished.connect(func(token: int, result: Dictionary) -> void:
 		if art_batches != null: art_batches.executor.manual_finished(token,result))
 	paint_editor.history_action_finished.connect(func(receipt: Dictionary) -> void:
-		if art_batches != null: art_batches.history_edited(receipt))
+		if art_batches != null:
+			art_batches.history_edited(receipt)
+		else:
+			# Do not defeat lazy Art construction merely to preserve a confirmed
+			# native receipt. Stage it in the bounded atomic per-receipt journal.
+			var epoch: int = int(host.simulation_worker.art_state().epoch)
+			if not ArtBatchPanel.stage_unopened_history_receipt(receipt,epoch):
+				message = "Confirmed Art history receipt was not durably journalled; prior transcript preserved.")
 	_name.reparent(paint_editor)
 	_name.tooltip_text = "Name of the authored starting map; Save does not capture evolved simulation."
 	save_start_button.reparent(paint_editor)
