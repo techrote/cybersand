@@ -156,7 +156,13 @@ func mount() -> void:
 		chooser.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		chooser.clip_text = true
 		chooser.custom_minimum_size.x = 135
+		chooser.get_popup().max_size = Vector2i(480, 520)
 		card.add_child(chooser)
+		var search := LineEdit.new()
+		search.placeholder_text = "Find style…"
+		search.clear_button_enabled = true
+		search.tooltip_text = "Filter by style name, structural family or theme. The current selection stays available."
+		card.add_child(search)
 		var grid := GridContainer.new()
 		grid.columns = 2
 		grid.add_theme_constant_override("h_separation", 5)
@@ -174,9 +180,10 @@ func mount() -> void:
 		var description := _note(card, "")
 		description.add_theme_font_size_override("font_size", 11)
 		description.clip_text = true
-		_style_controls.append({"card": frame, "enabled": enabled, "chooser": chooser,
+		_style_controls.append({"card": frame, "enabled": enabled, "chooser": chooser, "search": search,
 			"share": share, "geometry": dimensions, "description": description})
 		chooser.item_selected.connect(_choose_style.bind(slot))
+		search.text_changed.connect(func(_text: String) -> void: _filter_styles(slot))
 		enabled.toggled.connect(func(_value: bool) -> void: _update_summary())
 		share.value_changed.connect(func(_value: float) -> void: _update_summary())
 
@@ -242,17 +249,7 @@ func _sync_controls() -> void:
 		var preset: Dictionary = style.preset
 		controls.enabled.set_pressed_no_signal(bool(style.enabled))
 		controls.share.set_value_no_signal(float(style.share))
-		controls.chooser.clear()
-		var selected := -1
-		for index: int in presets.size():
-			var builtin: Dictionary = presets[index]
-			controls.chooser.add_item(str(builtin.name))
-			if str(builtin.id) == str(preset.id): selected = index
-		if selected == -1:
-			controls.chooser.add_item(str(preset.name) + " (custom)")
-			selected = controls.chooser.item_count - 1
-		controls.chooser.select(selected)
-		controls.chooser.tooltip_text = str(preset.name)
+		_fill_style_choices(controls, preset)
 		for spec: Array in DIMENSIONS:
 			var control: SpinBox = controls.geometry[spec[0]]
 			if spec[0] == "room_size":
@@ -269,6 +266,32 @@ func _sync_controls() -> void:
 			_aperture_label(preset,"automatic_windows"), 100.0 * float(preset.deterioration)]
 	_syncing = false
 	_update_summary()
+
+func _fill_style_choices(controls: Dictionary, preset: Dictionary) -> void:
+	var chooser: OptionButton = controls.chooser
+	var query: String = controls.search.text.strip_edges().to_lower()
+	var presets: Array = Project.builtin_presets()
+	chooser.clear()
+	var selected := -1
+	for index: int in presets.size():
+		var builtin: Dictionary = presets[index]
+		var current: bool = str(builtin.id) == str(preset.id)
+		var words: String = "%s %s %s" % [builtin.name, str(builtin.module).replace("_", " "), builtin.theme]
+		if not query.is_empty() and not words.to_lower().contains(query) and not current: continue
+		chooser.add_item(str(builtin.name), index)
+		chooser.set_item_tooltip(chooser.item_count - 1, words)
+		if current: selected = chooser.item_count - 1
+	if selected == -1:
+		chooser.add_item(str(preset.name) + " (custom)", presets.size())
+		selected = chooser.item_count - 1
+	chooser.select(selected)
+	chooser.tooltip_text = "%s\n%d catalogue styles; type below to filter." % [preset.name, presets.size()]
+
+func _filter_styles(slot: int) -> void:
+	if _syncing: return
+	var value: Dictionary = project()
+	_ensure_slot(value, slot)
+	_fill_style_choices(_style_controls[slot], value.styles[slot].preset)
 
 func _update_summary() -> void:
 	if _syncing: return
@@ -326,10 +349,11 @@ func _ensure_slot(value: Dictionary, slot: int) -> void:
 func _choose_style(index: int, slot: int) -> void:
 	if _syncing: return
 	var presets: Array = Project.builtin_presets()
-	if index >= presets.size(): return
+	var preset_index: int = _style_controls[slot].chooser.get_item_id(index)
+	if preset_index < 0 or preset_index >= presets.size(): return
 	_project = project()
 	_ensure_slot(_project, slot)
-	_project.styles[slot].preset = presets[index].duplicate(true)
+	_project.styles[slot].preset = presets[preset_index].duplicate(true)
 	_sync_controls()
 	_status.text = ""
 

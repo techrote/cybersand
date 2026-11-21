@@ -1,0 +1,359 @@
+{
+  "schema": "gentek691-art-durability-qualification-v1",
+  "passed": true,
+  "status": "passed",
+  "development_only": true,
+  "errors": [],
+  "positive_assertions": 964,
+  "source_base_commit": "c163f1af722e37f802eb0a89a7aff6fa76634e04",
+  "native_build_commit": "16dd1e225ed974789c8b1fbc46718a06b1f61fc8",
+  "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "compiled_native_input_count": 105,
+  "source_and_runtime_unchanged_during_run": true,
+  "full_report_sha256": "d9d8a9048b814640df1aef2a1329019d241455c08123106d76bcc224b88c8fe8",
+  "cases": [
+    {
+      "name": "import",
+      "status": "passed",
+      "returncode": 0,
+      "completion": null,
+      "elapsed_seconds": 6.293312268000591,
+      "log_sha256": "7e236b36954ff52e9a325ddb7589c2a1a2ac00808538d9b6a933e02b78aabaa8",
+      "boundary_sha256": null,
+      "pending_at_kill_sha256": null,
+      "interruption": null
+    },
+    {
+      "name": "test_art_provider",
+      "status": "passed",
+      "returncode": 0,
+      "completion": {
+        "checks": 54,
+        "failures": 0
+      },
+      "elapsed_seconds": 0.41608447899852763,
+      "log_sha256": "a94c05d761d2f8a2eea617ddc591c0dd86331254fdebece261d5c0ca633436a5",
+      "boundary_sha256": null,
+      "pending_at_kill_sha256": null,
+      "interruption": null
+    },
+    {
+      "name": "test_art_lazy_traffic",
+      "status": "passed",
+      "returncode": 0,
+      "completion": {
+        "checks": 23,
+        "display": "headless",
+        "failures": [],
+        "original_bytes": 2097522
+      },
+      "elapsed_seconds": 6.902832212999783,
+      "log_sha256": "e59651ca45aed78049a57ed99f5cf479bf8185a31c5b625c3ebd7aebeef65bc8",
+      "boundary_sha256": null,
+      "pending_at_kill_sha256": null,
+      "interruption": null
+    },
+    {
+      "name": "test_art_traffic_integrity",
+      "status": "passed",
+      "returncode": 0,
+      "completion": {
+        "checks": 148,
+        "failures": [],
+        "user_data": "/workspace/scratch/80a85ca37e54/evidence/combined-local-v2/test_art_traffic_integrity-userdata/godot/app_userdata/Cyber Sand Reference Sandbox"
+      },
+      "elapsed_seconds": 4.087048125000365,
+      "log_sha256": "47ba2810f7fc9f6dceb6c49184ea27529832c8da06b25344744d30ed39ebd0e0",
+      "boundary_sha256": null,
+      "pending_at_kill_sha256": null,
+      "interruption": null
+    },
+    {
+      "name": "test_art_traffic_panel_safety",
+      "status": "passed",
+      "returncode": 0,
+      "completion": {
+        "checks": 55,
+        "display": "headless",
+        "failures": []
+      },
+      "elapsed_seconds": 14.016477622999446,
+      "log_sha256": "a69d3399539370f7543fa57017355c349462d48619a5612490042dab6a0bb013",
+      "boundary_sha256": null,
+      "pending_at_kill_sha256": null,
+      "interruption": null
+    },
+    {
+      "name": "test_art_history_receipt_identity",
+      "status": "passed",
+      "returncode": 0,
+      "completion": {
+        "checks": 122,
+        "failures": []
+      },
+      "elapsed_seconds": 1.1219944410004246,
+      "log_sha256": "3176b0b9397a811f6155e0b4a8cd53c78711cba6a7681feb9d858aaaa82b8b30",
+      "boundary_sha256": null,
+      "pending_at_kill_sha256": null,
+      "interruption": null
+    },
+    {
+      "name": "test_workbench_actor_equipment_extent",
+      "status": "passed",
+      "returncode": 0,
+      "completion": {
+        "checks": 29,
+        "failures": 0
+      },
+      "elapsed_seconds": 1.727507510000578,
+      "log_sha256": "f723968bcf26befb16a4257196a72394da1d2957f5f725d85c5ea070b77dcfa9",
+      "boundary_sha256": null,
+      "pending_at_kill_sha256": null,
+      "interruption": null
+    },
+    {
+      "name": "art-durability-suite",
+      "status": "passed",
+      "returncode": 0,
+      "completion": {
+        "case": "suite",
+        "checks": 345,
+        "failures": [],
+        "godot": "4.7-stable (official)",
+        "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+        "os": "Linux",
+        "test_sha256": "6659b017334d87f3f63c001caa402e08c6be24bdbb27579875a7d1a3aeb75a7a"
+      },
+      "elapsed_seconds": 56.467148487001396,
+      "log_sha256": "f6d3e74e304f4bdd5b5d00463769eb5f74ee98d70b3bf830b229c08508e8dae7",
+      "boundary_sha256": null,
+      "pending_at_kill_sha256": null,
+      "interruption": null
+    },
+    {
+      "name": "art-durability-restart-seed",
+      "status": "passed",
+      "returncode": 0,
+      "completion": {
+        "case": "restart-seed",
+        "checks": 14,
+        "failures": [],
+        "godot": "4.7-stable (official)",
+        "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+        "os": "Linux",
+        "test_sha256": "6659b017334d87f3f63c001caa402e08c6be24bdbb27579875a7d1a3aeb75a7a"
+      },
+      "elapsed_seconds": 5.907836157000929,
+      "log_sha256": "7819e61c544a580c52603bcdfa2c19e4e0ac433964319512ac227d9fa5ed10de",
+      "boundary_sha256": null,
+      "pending_at_kill_sha256": null,
+      "interruption": null
+    },
+    {
+      "name": "art-durability-restart-recover",
+      "status": "passed",
+      "returncode": 0,
+      "completion": {
+        "case": "restart-recover",
+        "checks": 13,
+        "failures": [],
+        "godot": "4.7-stable (official)",
+        "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+        "os": "Linux",
+        "test_sha256": "6659b017334d87f3f63c001caa402e08c6be24bdbb27579875a7d1a3aeb75a7a"
+      },
+      "elapsed_seconds": 5.76835513900005,
+      "log_sha256": "961b2d864a127d36a02db60fb78c38c6077163bdb8a72a0bc6bf647473a430a2",
+      "boundary_sha256": null,
+      "pending_at_kill_sha256": null,
+      "interruption": null
+    },
+    {
+      "name": "art-durability-crash-seed",
+      "status": "passed",
+      "returncode": -9,
+      "completion": {
+        "boundary": "conversation-committed-before-journal-delete",
+        "case": "crash-seed",
+        "checks": 8,
+        "failures": [],
+        "journal": "user://art-pending-history/00001795271447998371_00001795271447997795-6365702915d9e9a1f26255eaa8504c30.json",
+        "original": "user://art-traffic/durability-crash.jsonl",
+        "original_sha256": "b5caf40a0bed043e1a4267a533abe7417b1d4091201d3d0d9afb8a2ea8e85de9",
+        "receipt_id": "00001795271447997795-6365702915d9e9a1f26255eaa8504c30",
+        "source": "user://art-traffic/0fdc54d63b3f66c6d83f5f641be98782.jsonl"
+      },
+      "elapsed_seconds": 4.381230830998902,
+      "log_sha256": "4a34a0d927e1575c577384d8726a2b2545ebe4d64c2fce51309232553cc44ccb",
+      "boundary_sha256": "6ff65bbe795def6b18aee0259e25b76495cbfd8f0229eafbb2926d567803db8a",
+      "pending_at_kill_sha256": "043d6525aa1ae5279df41636cf2867bf15bfeebb630c48edd7b2257b00174e48",
+      "interruption": "SIGKILL"
+    },
+    {
+      "name": "art-durability-crash-recover",
+      "status": "passed",
+      "returncode": 0,
+      "completion": {
+        "case": "crash-recover",
+        "checks": 8,
+        "failures": [],
+        "godot": "4.7-stable (official)",
+        "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+        "os": "Linux",
+        "test_sha256": "6659b017334d87f3f63c001caa402e08c6be24bdbb27579875a7d1a3aeb75a7a"
+      },
+      "elapsed_seconds": 5.4546639710006275,
+      "log_sha256": "491b676df76a9038bb58a93407840a0322a539351b34204e809898d9a3005898",
+      "boundary_sha256": null,
+      "pending_at_kill_sha256": null,
+      "interruption": null
+    },
+    {
+      "name": "art-durability-secret-turn-seed",
+      "status": "passed",
+      "returncode": -9,
+      "completion": {
+        "boundary": "secret-turn-committed-before-journal-delete",
+        "case": "secret-turn-seed",
+        "checks": 24,
+        "expected_content": "[redacted] result (world epoch 3): Human undo: {\"_history_receipt_id\":\"00001795271457442237-3f0fd3275aca70c1ff65fa93c6224a54\",\"_history_world_epoch\":3.0,\"action\":\"undo\",\"applied\":1.0,\"label\":\"secret-turn\",\"reason\":\"[redacted]\",\"status\":\"completed\"}",
+        "failures": [],
+        "journal": "user://art-pending-history/00001795271457442826_00001795271457442237-3f0fd3275aca70c1ff65fa93c6224a54.json",
+        "label": "secret-turn",
+        "original": "user://art-traffic/durability-secret-turn.jsonl",
+        "original_sha256": "3b1390dc4765c577e4b51c60b8c7c8940b3f1763d97c38fe0b4565164fbd1a35",
+        "receipt_id": "00001795271457442237-3f0fd3275aca70c1ff65fa93c6224a54",
+        "source": "user://art-traffic/e5c2956f076a261174ee7684422ab9b6.jsonl",
+        "source_sha256": "f15ca1a5dd05e5be401f3772d33e8db1df15d0e9ddcdb6723d4e712a63520005"
+      },
+      "elapsed_seconds": 3.9968703629983793,
+      "log_sha256": "312fb8d71755801f8c036c86646a196d69990bb646e1e6a0d863f10142f33a51",
+      "boundary_sha256": "469cc7f40c33193e93fd8bcb56212a46c472ee3bb615a1c97df764d5f9936351",
+      "pending_at_kill_sha256": "a03e8d71a3713a84fb901f94a22483fe379f2eaf00ad26b3ab18f888a92a7562",
+      "interruption": "SIGKILL"
+    },
+    {
+      "name": "art-durability-secret-turn-recover",
+      "status": "passed",
+      "returncode": 0,
+      "completion": {
+        "case": "secret-turn-recover",
+        "checks": 15,
+        "failures": [],
+        "godot": "4.7-stable (official)",
+        "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+        "os": "Linux",
+        "test_sha256": "6659b017334d87f3f63c001caa402e08c6be24bdbb27579875a7d1a3aeb75a7a"
+      },
+      "elapsed_seconds": 5.651693712001361,
+      "log_sha256": "2877d4ac74ead601aace14e7bd892924c9834820a69ea0ba5c3fe7d5d1636dc7",
+      "boundary_sha256": null,
+      "pending_at_kill_sha256": null,
+      "interruption": null
+    },
+    {
+      "name": "art-durability-secret-raw-seed",
+      "status": "passed",
+      "returncode": 0,
+      "completion": {
+        "case": "secret-raw-seed",
+        "checks": 31,
+        "failures": [],
+        "godot": "4.7-stable (official)",
+        "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+        "os": "Linux",
+        "test_sha256": "6659b017334d87f3f63c001caa402e08c6be24bdbb27579875a7d1a3aeb75a7a"
+      },
+      "elapsed_seconds": 5.280435503998888,
+      "log_sha256": "210f5f1e33314365c6da394d034a06fb9a612ac71d0fe51fb2ba9475da8e187b",
+      "boundary_sha256": null,
+      "pending_at_kill_sha256": null,
+      "interruption": null
+    },
+    {
+      "name": "art-durability-secret-raw-recover",
+      "status": "passed",
+      "returncode": 0,
+      "completion": {
+        "case": "secret-raw-recover",
+        "checks": 17,
+        "failures": [],
+        "godot": "4.7-stable (official)",
+        "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+        "os": "Linux",
+        "test_sha256": "6659b017334d87f3f63c001caa402e08c6be24bdbb27579875a7d1a3aeb75a7a"
+      },
+      "elapsed_seconds": 5.764787568999964,
+      "log_sha256": "07cdf418b1c193ca3b951947d40814d64fd24795b6bcfe795e4215ea8ca22e89",
+      "boundary_sha256": null,
+      "pending_at_kill_sha256": null,
+      "interruption": null
+    },
+    {
+      "name": "art-durability-posix-listing",
+      "status": "passed",
+      "returncode": 0,
+      "completion": {
+        "case": "posix-listing",
+        "checks": 29,
+        "failures": [],
+        "godot": "4.7-stable (official)",
+        "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+        "os": "Linux",
+        "test_sha256": "6659b017334d87f3f63c001caa402e08c6be24bdbb27579875a7d1a3aeb75a7a"
+      },
+      "elapsed_seconds": 10.046197145000406,
+      "log_sha256": "caf66ffe64b77b2964a19154555efbe9835573ddb167ad482f7661f94574fc42",
+      "boundary_sha256": null,
+      "pending_at_kill_sha256": null,
+      "interruption": null
+    },
+    {
+      "name": "art-durability-listing-clock-seed",
+      "status": "passed",
+      "returncode": 0,
+      "completion": {
+        "case": "listing-clock-seed",
+        "checks": 12,
+        "failures": [],
+        "godot": "4.7-stable (official)",
+        "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+        "os": "Linux",
+        "test_sha256": "6659b017334d87f3f63c001caa402e08c6be24bdbb27579875a7d1a3aeb75a7a"
+      },
+      "elapsed_seconds": 8.849918230000185,
+      "log_sha256": "9998ff5fa83d7e32f934487a25819d274cd3bd11eefc0399569d6956ed780a58",
+      "boundary_sha256": null,
+      "pending_at_kill_sha256": null,
+      "interruption": null
+    },
+    {
+      "name": "art-durability-listing-clock-recover",
+      "status": "passed",
+      "returncode": 0,
+      "completion": {
+        "case": "listing-clock-recover",
+        "checks": 17,
+        "failures": [],
+        "godot": "4.7-stable (official)",
+        "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+        "os": "Linux",
+        "test_sha256": "6659b017334d87f3f63c001caa402e08c6be24bdbb27579875a7d1a3aeb75a7a"
+      },
+      "elapsed_seconds": 5.741029688999333,
+      "log_sha256": "84918d2e45ee3f9e2ffb8b9bd2753aae611c154465665714432a5801608ea2f7",
+      "boundary_sha256": null,
+      "pending_at_kill_sha256": null,
+      "interruption": null
+    }
+  ],
+  "changed_script_sha256": {
+    "scripts/art_batch_panel.gd": "29da7f411f618bfb9aabc3c2d342cf0ae965b52d6767cb8b0984f2e263e96b85",
+    "scripts/art_provider.gd": "dabad42f3385d06d62463f8a1e4a36c173cbccbaec9075ae83ccc92e83f3a09f",
+    "scripts/shared_workbench.gd": "fcd89085d5a3aff47d3bdf6c8d6013ebfdcb015ff8a8db33d328f2a1fca34185",
+    "tests/test_art_history_durability.gd": "6659b017334d87f3f63c001caa402e08c6be24bdbb27579875a7d1a3aeb75a7a",
+    "tests/test_art_history_receipt_identity.gd": "7988e8d6c5a9ab6827d21d09a671da7893d29f62e0f75de9c9ee58677008f149"
+  },
+  "runner_sha256": "58a0f92d59a9994911c760b3d36cadbab735923ea51e808097f3377c74007895"
+}

@@ -1,0 +1,768 @@
+{
+  "artifact": {
+    "archive_sha256": "6f7f88f47efbe7997aca65ec7af76595e1ba5f21e243bc426c0c2e334abe3bc6",
+    "expires_at": "2027-02-14T22:22:18Z",
+    "id": 14279355327,
+    "name": "gentek-cathedral-showcase-b63314d14df6b8ba660f7823687e3738b28d28e6",
+    "run_id": 43969407871,
+    "sealed_file_count": 198,
+    "url": "https://github.com/techrote/cybersand/actions/runs/43969407871/artifacts/14279355327"
+  },
+  "case": "GENTEK-SHOWCASE-CATHEDRAL-001",
+  "comparisons_and_replay": [
+    {
+      "case": "room-size response",
+      "different_material_cells": 117044,
+      "different_occupied_empty_cells": 97783,
+      "left": "cathedral-megaframe-hero-512",
+      "right": "cathedral-megaframe-broad"
+    },
+    {
+      "case": "floor-height response",
+      "different_material_cells": 104804,
+      "different_occupied_empty_cells": 88068,
+      "left": "cathedral-megaframe-hero-512",
+      "right": "cathedral-megaframe-tall"
+    },
+    {
+      "case": "wall-mass response",
+      "different_material_cells": 58622,
+      "different_occupied_empty_cells": 42368,
+      "left": "cathedral-megaframe-thin",
+      "right": "cathedral-megaframe-heavy"
+    },
+    {
+      "case": "clerestory toggle",
+      "different_material_cells": 12382,
+      "different_occupied_empty_cells": 0,
+      "left": "cathedral-megaframe-windows-on",
+      "right": "cathedral-megaframe-windows-off"
+    },
+    {
+      "case": "portal toggle",
+      "different_material_cells": 473,
+      "different_occupied_empty_cells": 473,
+      "left": "cathedral-megaframe-doors-on",
+      "right": "cathedral-megaframe-doors-off"
+    },
+    {
+      "case": "hierarchical geometry comparison",
+      "different_material_cells": 157248,
+      "different_occupied_empty_cells": 122581,
+      "left": "cathedral-megaframe-hero-512",
+      "right": "comparison-arched-viaduct"
+    },
+    {
+      "case": "hierarchical geometry comparison",
+      "different_material_cells": 178790,
+      "different_occupied_empty_cells": 130731,
+      "left": "cathedral-megaframe-hero-512",
+      "right": "comparison-pointed-arcade"
+    },
+    {
+      "case": "hierarchical geometry comparison",
+      "different_material_cells": 148132,
+      "different_occupied_empty_cells": 122896,
+      "left": "cathedral-megaframe-hero-512",
+      "right": "comparison-basilica"
+    },
+    {
+      "case": "same-seed",
+      "identical_cells": true,
+      "identical_receipts": true,
+      "material_sha256": "edcae61718cc0cb6ccf6d07cc67017cc370e6a09b01a212ebd2c7b470ea4ddb2",
+      "receipt_count": 16
+    },
+    {
+      "case": "reverse-order",
+      "identical_cells": true,
+      "identical_receipts": true,
+      "material_sha256": "edcae61718cc0cb6ccf6d07cc67017cc370e6a09b01a212ebd2c7b470ea4ddb2",
+      "receipt_count": 16
+    },
+    {
+      "case": "sliced",
+      "identical_cells": true,
+      "identical_receipts": true,
+      "material_sha256": "edcae61718cc0cb6ccf6d07cc67017cc370e6a09b01a212ebd2c7b470ea4ddb2",
+      "receipt_count": 16
+    },
+    {
+      "case": "signed-origin-order-slicing",
+      "identical_cells": true,
+      "identical_receipts": true,
+      "material_sha256": "edcae61718cc0cb6ccf6d07cc67017cc370e6a09b01a212ebd2c7b470ea4ddb2",
+      "origin": [
+        -385,
+        -257
+      ]
+    }
+  ],
+  "module": {
+    "id": "cathedral_megaframe",
+    "recipe_schema": 4,
+    "version": 1
+  },
+  "native_crop_count": 2,
+  "native_full_map_count": 20,
+  "palette_sha256": "1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a",
+  "parent_commit": "615828b28337f85e4663e03ba479616db4ddf764",
+  "performance": {
+    "clock": "Godot monotonic Time.get_ticks_usec",
+    "description": "one warmup, five measured full native 512x512 chunk generations; matched seed, geometry, palette and existing spatial-mask/receipt path",
+    "rows": [
+      {
+        "cells": 262144,
+        "median_ns_per_cell": 1604.0763854980469,
+        "median_us": 420499,
+        "name": "comparison-arched-viaduct",
+        "native_raster_us_sorted": [
+          419009,
+          420093,
+          420499,
+          420842,
+          421001
+        ]
+      },
+      {
+        "cells": 262144,
+        "median_ns_per_cell": 1602.3483276367188,
+        "median_us": 420046,
+        "name": "comparison-nested-arcade",
+        "native_raster_us_sorted": [
+          419334,
+          419780,
+          420046,
+          420274,
+          421581
+        ]
+      },
+      {
+        "cells": 262144,
+        "median_ns_per_cell": 1626.2588500976562,
+        "median_us": 426314,
+        "name": "cathedral-megaframe-hero-512",
+        "native_raster_us_sorted": [
+          425977,
+          426198,
+          426314,
+          426428,
+          426587
+        ]
+      }
+    ]
+  },
+  "pngs": [
+    {
+      "bytes": 9173,
+      "doors": true,
+      "extent": [
+        512,
+        512
+      ],
+      "file": "cathedral-megaframe-broad.png",
+      "geometry": {
+        "door_width": 12,
+        "floor_height": 96,
+        "room_size": 96,
+        "shaft_width": 0,
+        "wall_thickness": 5
+      },
+      "material_sha256": "06f03ee8f2485da121a8fe4fb7109b1f1b2866bf024df411726d4f3b99295269",
+      "module": "cathedral_megaframe",
+      "module_version": 1,
+      "negative_space_fraction": 0.5799217224121094,
+      "origin": [
+        0,
+        0
+      ],
+      "png_sha256": "8a1e7450523eaedf6ffc2aba14bc28f17ef5096619bfc5a49aa63a34f8163242",
+      "seed": 271828,
+      "windows": true
+    },
+    {
+      "bytes": 9870,
+      "doors": true,
+      "extent": [
+        512,
+        512
+      ],
+      "file": "cathedral-megaframe-compact.png",
+      "geometry": {
+        "door_width": 12,
+        "floor_height": 64,
+        "room_size": 48,
+        "shaft_width": 0,
+        "wall_thickness": 5
+      },
+      "material_sha256": "feeecb3d65888e66c14c84e16910d6f8e7c1d37bb6a9e4a1bbb512df0234ed2c",
+      "module": "cathedral_megaframe",
+      "module_version": 1,
+      "negative_space_fraction": 0.4829559326171875,
+      "origin": [
+        0,
+        0
+      ],
+      "png_sha256": "5a5d870ae54f900b5c78fb258e2fb399c2e2983b2f0a7184eb2aa5ffdfd3e01b",
+      "seed": 271828,
+      "windows": true
+    },
+    {
+      "bytes": 3203,
+      "case": "detail-crop",
+      "file": "cathedral-megaframe-detail-apex-buttress.png",
+      "png_sha256": "1607958f484aa2a2b1f586f0ce92ce8a92f66d6be351fd74732bc6c88dcc64d3",
+      "rect": [
+        0,
+        0,
+        384,
+        192
+      ],
+      "source": "cathedral-megaframe-hero-1024.png"
+    },
+    {
+      "bytes": 2480,
+      "case": "detail-crop",
+      "file": "cathedral-megaframe-detail-arcade-clerestory.png",
+      "png_sha256": "aef292f866dc48412ab19961628564012d7237e3be8caa8bdd2afed4eb6eceb7",
+      "rect": [
+        0,
+        144,
+        384,
+        208
+      ],
+      "source": "cathedral-megaframe-hero-1024.png"
+    },
+    {
+      "bytes": 9093,
+      "doors": false,
+      "extent": [
+        512,
+        512
+      ],
+      "file": "cathedral-megaframe-doors-off.png",
+      "geometry": {
+        "door_width": 12,
+        "floor_height": 96,
+        "room_size": 72,
+        "shaft_width": 0,
+        "wall_thickness": 5
+      },
+      "material_sha256": "8148ea5d48081cc4566bf144c57b83d307d768fed22bb4436a603c365f7d6f0b",
+      "module": "cathedral_megaframe",
+      "module_version": 1,
+      "negative_space_fraction": 0.5772743225097656,
+      "origin": [
+        0,
+        0
+      ],
+      "png_sha256": "f98d8594f1e921989f4c294cad6b43b82465dbfe1b854ccec274c765f0b67b82",
+      "seed": 271828,
+      "windows": true
+    },
+    {
+      "bytes": 9148,
+      "doors": true,
+      "extent": [
+        512,
+        512
+      ],
+      "file": "cathedral-megaframe-doors-on.png",
+      "geometry": {
+        "door_width": 12,
+        "floor_height": 96,
+        "room_size": 72,
+        "shaft_width": 0,
+        "wall_thickness": 5
+      },
+      "material_sha256": "edcae61718cc0cb6ccf6d07cc67017cc370e6a09b01a212ebd2c7b470ea4ddb2",
+      "module": "cathedral_megaframe",
+      "module_version": 1,
+      "negative_space_fraction": 0.5790786743164062,
+      "origin": [
+        0,
+        0
+      ],
+      "png_sha256": "07c269e252cd50b5dc8af9f563d5fd217c304d74a53b3dc67fe8c44566a0608d",
+      "seed": 271828,
+      "windows": true
+    },
+    {
+      "bytes": 9148,
+      "doors": true,
+      "extent": [
+        512,
+        512
+      ],
+      "file": "cathedral-megaframe-heavy.png",
+      "geometry": {
+        "door_width": 12,
+        "floor_height": 96,
+        "room_size": 72,
+        "shaft_width": 0,
+        "wall_thickness": 5
+      },
+      "material_sha256": "edcae61718cc0cb6ccf6d07cc67017cc370e6a09b01a212ebd2c7b470ea4ddb2",
+      "module": "cathedral_megaframe",
+      "module_version": 1,
+      "negative_space_fraction": 0.5790786743164062,
+      "origin": [
+        0,
+        0
+      ],
+      "png_sha256": "07c269e252cd50b5dc8af9f563d5fd217c304d74a53b3dc67fe8c44566a0608d",
+      "seed": 271828,
+      "windows": true
+    },
+    {
+      "bytes": 26694,
+      "doors": true,
+      "extent": [
+        1024,
+        1024
+      ],
+      "file": "cathedral-megaframe-hero-1024.png",
+      "geometry": {
+        "door_width": 12,
+        "floor_height": 96,
+        "room_size": 72,
+        "shaft_width": 0,
+        "wall_thickness": 5
+      },
+      "material_sha256": "92b821d0702cd6ab4f60d0066f6b7721a90f04769a140741445bf48bba5aa36c",
+      "module": "cathedral_megaframe",
+      "module_version": 1,
+      "negative_space_fraction": 0.5642566680908203,
+      "origin": [
+        0,
+        0
+      ],
+      "png_sha256": "33ebd6617d0f33fce77c270763a7b92abf82b5dcf8184f0e875af4c57f2dc701",
+      "seed": 271828,
+      "windows": true
+    },
+    {
+      "bytes": 9148,
+      "doors": true,
+      "extent": [
+        512,
+        512
+      ],
+      "file": "cathedral-megaframe-hero-512.png",
+      "geometry": {
+        "door_width": 12,
+        "floor_height": 96,
+        "room_size": 72,
+        "shaft_width": 0,
+        "wall_thickness": 5
+      },
+      "material_sha256": "edcae61718cc0cb6ccf6d07cc67017cc370e6a09b01a212ebd2c7b470ea4ddb2",
+      "module": "cathedral_megaframe",
+      "module_version": 1,
+      "negative_space_fraction": 0.5790786743164062,
+      "origin": [
+        0,
+        0
+      ],
+      "png_sha256": "07c269e252cd50b5dc8af9f563d5fd217c304d74a53b3dc67fe8c44566a0608d",
+      "seed": 271828,
+      "windows": true
+    },
+    {
+      "bytes": 10828,
+      "doors": true,
+      "extent": [
+        512,
+        512
+      ],
+      "file": "cathedral-megaframe-limit.png",
+      "geometry": {
+        "door_width": 10,
+        "floor_height": 46,
+        "room_size": 46,
+        "shaft_width": 0,
+        "wall_thickness": 5
+      },
+      "material_sha256": "2cf9045c86cf4edbdd45e5b72a1623606564bb061673be077f0823f06e71fc44",
+      "module": "cathedral_megaframe",
+      "module_version": 1,
+      "negative_space_fraction": 0.44171905517578125,
+      "origin": [
+        0,
+        0
+      ],
+      "png_sha256": "803eaa632dce87460ba8c8d7b93823ffca3f1febdbafcd64dd338f607d040e80",
+      "seed": 271828,
+      "windows": true
+    },
+    {
+      "bytes": 9148,
+      "doors": true,
+      "extent": [
+        512,
+        512
+      ],
+      "file": "cathedral-megaframe-seed-a.png",
+      "geometry": {
+        "door_width": 12,
+        "floor_height": 96,
+        "room_size": 72,
+        "shaft_width": 0,
+        "wall_thickness": 5
+      },
+      "material_sha256": "edcae61718cc0cb6ccf6d07cc67017cc370e6a09b01a212ebd2c7b470ea4ddb2",
+      "module": "cathedral_megaframe",
+      "module_version": 1,
+      "negative_space_fraction": 0.5790786743164062,
+      "origin": [
+        0,
+        0
+      ],
+      "png_sha256": "07c269e252cd50b5dc8af9f563d5fd217c304d74a53b3dc67fe8c44566a0608d",
+      "seed": 271828,
+      "windows": true
+    },
+    {
+      "bytes": 9121,
+      "doors": true,
+      "extent": [
+        512,
+        512
+      ],
+      "file": "cathedral-megaframe-seed-b.png",
+      "geometry": {
+        "door_width": 12,
+        "floor_height": 96,
+        "room_size": 72,
+        "shaft_width": 0,
+        "wall_thickness": 5
+      },
+      "material_sha256": "9ea43b811fcd172ec3e03b4b70b17765e65dba2cefac4f58597f4264b60f1208",
+      "module": "cathedral_megaframe",
+      "module_version": 1,
+      "negative_space_fraction": 0.5821723937988281,
+      "origin": [
+        0,
+        0
+      ],
+      "png_sha256": "29ebdf74a891ced123f45845abed3a6046783f02adc70e6701b75eb721645168",
+      "seed": 314159,
+      "windows": true
+    },
+    {
+      "bytes": 9124,
+      "doors": true,
+      "extent": [
+        512,
+        512
+      ],
+      "file": "cathedral-megaframe-seed-c.png",
+      "geometry": {
+        "door_width": 12,
+        "floor_height": 96,
+        "room_size": 72,
+        "shaft_width": 0,
+        "wall_thickness": 5
+      },
+      "material_sha256": "cd27b2e4ecb6dc9adab0f176cb7461c3cef894cf0490080013e74c2733a2ab3f",
+      "module": "cathedral_megaframe",
+      "module_version": 1,
+      "negative_space_fraction": 0.5830421447753906,
+      "origin": [
+        0,
+        0
+      ],
+      "png_sha256": "ea44aa55dce2619a88d9b89f09d1461f9f1d2abb1f7fda751bf249215a685792",
+      "seed": 161803,
+      "windows": true
+    },
+    {
+      "bytes": 9118,
+      "doors": true,
+      "extent": [
+        512,
+        512
+      ],
+      "file": "cathedral-megaframe-seed-d.png",
+      "geometry": {
+        "door_width": 12,
+        "floor_height": 96,
+        "room_size": 72,
+        "shaft_width": 0,
+        "wall_thickness": 5
+      },
+      "material_sha256": "16bbc9c88a47634982c338f6d06a741343f810676386e4a840a118bf77173e25",
+      "module": "cathedral_megaframe",
+      "module_version": 1,
+      "negative_space_fraction": 0.5803604125976562,
+      "origin": [
+        0,
+        0
+      ],
+      "png_sha256": "9326c0e24dac328cb90882523309888b7d7836dba6591b26d3a0fe16e82a94a5",
+      "seed": 57721,
+      "windows": true
+    },
+    {
+      "bytes": 8112,
+      "doors": true,
+      "extent": [
+        512,
+        512
+      ],
+      "file": "cathedral-megaframe-tall.png",
+      "geometry": {
+        "door_width": 12,
+        "floor_height": 128,
+        "room_size": 72,
+        "shaft_width": 0,
+        "wall_thickness": 5
+      },
+      "material_sha256": "ba6082e7579045a0ceb2eda1e127a4e6ec653e8ea4a3c0479be625c1b547827b",
+      "module": "cathedral_megaframe",
+      "module_version": 1,
+      "negative_space_fraction": 0.5823593139648438,
+      "origin": [
+        0,
+        0
+      ],
+      "png_sha256": "c6396798f2252c0d3461309b9b48160b11672b995bc842fdf4c99f7e57d212e9",
+      "seed": 271828,
+      "windows": true
+    },
+    {
+      "bytes": 8645,
+      "doors": true,
+      "extent": [
+        512,
+        512
+      ],
+      "file": "cathedral-megaframe-thin.png",
+      "geometry": {
+        "door_width": 12,
+        "floor_height": 96,
+        "room_size": 72,
+        "shaft_width": 0,
+        "wall_thickness": 1
+      },
+      "material_sha256": "e194ef842013ea906b641a268ca2b1270652fbf77dc718750c5140014db23124",
+      "module": "cathedral_megaframe",
+      "module_version": 1,
+      "negative_space_fraction": 0.7288589477539062,
+      "origin": [
+        0,
+        0
+      ],
+      "png_sha256": "9d280f11d657ba787501a335221ce3bbce388db59f67a624b2f0c2367cd85a4a",
+      "seed": 271828,
+      "windows": true
+    },
+    {
+      "bytes": 9021,
+      "doors": true,
+      "extent": [
+        512,
+        512
+      ],
+      "file": "cathedral-megaframe-windows-off.png",
+      "geometry": {
+        "door_width": 12,
+        "floor_height": 96,
+        "room_size": 72,
+        "shaft_width": 0,
+        "wall_thickness": 5
+      },
+      "material_sha256": "c15f570ae373c202ad363067b974364efbc9d9c323df396b995a1926ea0aa30d",
+      "module": "cathedral_megaframe",
+      "module_version": 1,
+      "negative_space_fraction": 0.5790786743164062,
+      "origin": [
+        0,
+        0
+      ],
+      "png_sha256": "980cdf38b5f08a7d88e71719637879fe714d7afcbcc4239bd725e1b14cfc2b39",
+      "seed": 271828,
+      "windows": false
+    },
+    {
+      "bytes": 9148,
+      "doors": true,
+      "extent": [
+        512,
+        512
+      ],
+      "file": "cathedral-megaframe-windows-on.png",
+      "geometry": {
+        "door_width": 12,
+        "floor_height": 96,
+        "room_size": 72,
+        "shaft_width": 0,
+        "wall_thickness": 5
+      },
+      "material_sha256": "edcae61718cc0cb6ccf6d07cc67017cc370e6a09b01a212ebd2c7b470ea4ddb2",
+      "module": "cathedral_megaframe",
+      "module_version": 1,
+      "negative_space_fraction": 0.5790786743164062,
+      "origin": [
+        0,
+        0
+      ],
+      "png_sha256": "07c269e252cd50b5dc8af9f563d5fd217c304d74a53b3dc67fe8c44566a0608d",
+      "seed": 271828,
+      "windows": true
+    },
+    {
+      "bytes": 9434,
+      "doors": true,
+      "extent": [
+        512,
+        512
+      ],
+      "file": "comparison-arched-viaduct.png",
+      "geometry": {
+        "door_width": 12,
+        "floor_height": 96,
+        "room_size": 72,
+        "shaft_width": 0,
+        "wall_thickness": 5
+      },
+      "material_sha256": "e328168e635290c4d84f4676efbf61413f16428a02081dacd0ec67a1c68b988f",
+      "module": "arcade",
+      "module_version": 2,
+      "negative_space_fraction": 0.5176277160644531,
+      "origin": [
+        0,
+        0
+      ],
+      "png_sha256": "bdc5b85e57b6d1c472fdf2ff32d06f70f04b3b839fffbd4103754167226bba53",
+      "seed": 271828,
+      "windows": true
+    },
+    {
+      "bytes": 7468,
+      "doors": true,
+      "extent": [
+        512,
+        512
+      ],
+      "file": "comparison-basilica.png",
+      "geometry": {
+        "door_width": 12,
+        "floor_height": 96,
+        "room_size": 72,
+        "shaft_width": 0,
+        "wall_thickness": 5
+      },
+      "material_sha256": "81f416fc9519c9fdeaa524484c92997c74a5f02f78b959a3e91a0147146c49bf",
+      "module": "basilica",
+      "module_version": 1,
+      "negative_space_fraction": 0.6299667358398438,
+      "origin": [
+        0,
+        0
+      ],
+      "png_sha256": "23f221c7fd73381171ca49a26886e13ef40577abc717218d666691a26e38fbf7",
+      "seed": 271828,
+      "windows": true
+    },
+    {
+      "bytes": 7171,
+      "doors": true,
+      "extent": [
+        512,
+        512
+      ],
+      "file": "comparison-nested-arcade.png",
+      "geometry": {
+        "door_width": 12,
+        "floor_height": 96,
+        "room_size": 72,
+        "shaft_width": 0,
+        "wall_thickness": 5
+      },
+      "material_sha256": "081798a16ecef439c4d6ab9e81877a3c1eb89718faee68c78614facb52117231",
+      "module": "nested_arcade",
+      "module_version": 1,
+      "negative_space_fraction": 0.38262176513671875,
+      "origin": [
+        0,
+        0
+      ],
+      "png_sha256": "b1ae351051b1f84b8e28073963250752d6dee871296eb5afbf1918b91671b9c5",
+      "seed": 271828,
+      "windows": true
+    },
+    {
+      "bytes": 7912,
+      "doors": true,
+      "extent": [
+        512,
+        512
+      ],
+      "file": "comparison-pointed-arcade.png",
+      "geometry": {
+        "door_width": 12,
+        "floor_height": 96,
+        "room_size": 72,
+        "shaft_width": 0,
+        "wall_thickness": 5
+      },
+      "material_sha256": "8bb66efe2216775238aaf505b94ef389d488c0cdb9cfa8838e6ade54f0803a67",
+      "module": "pointed_arcade",
+      "module_version": 1,
+      "negative_space_fraction": 0.3877906799316406,
+      "origin": [
+        0,
+        0
+      ],
+      "png_sha256": "b850ca063638b94010764d2321e43109ea98e125f8d9caff2e5d300cb3f7bc98",
+      "seed": 271828,
+      "windows": true
+    }
+  ],
+  "preset": {
+    "id": "cathedral-megaframe",
+    "name": "Cathedral Megaframe",
+    "path": "examples/worldgen/architectural/cathedral-megaframe.style.json"
+  },
+  "pull_request": "https://github.com/techrote/cybersand/pull/664",
+  "purpose": "Permanent selected native-material PNG evidence; complete raw maps, recipes, receipts, logs, runtime and source ledgers are in the linked Actions artifact.",
+  "qualification": {
+    "adapter_checks": 6320,
+    "adapter_failures": 0,
+    "additional_native_suites_without_printed_counts": 5,
+    "cathedral_assertions_included_in_native_total": 552616,
+    "checks_by_phase": {
+      "cathedral_campaign": 1005,
+      "classic_73": 2490,
+      "fresh_process_reopen": 21,
+      "graphical_author": 42,
+      "project_contract": 2762
+    },
+    "native_counted_assertions": 1966986,
+    "native_executables_passed": 9,
+    "native_failures": 0,
+    "parent_72_material_aggregate_fnv64": "4a92810d575d9201",
+    "viaduct_v1_v2_frozen_chunks": 8
+  },
+  "review": {
+    "all_selected_pngs_match_reviewed_source": true,
+    "artifact_hashes_verified": 198,
+    "independent_review": true,
+    "limits": [
+      "Finite style masks/canvas edges can clip supports outside the map; complete supercells and their joins are qualified.",
+      "Source-matched Linux research runtime; no Windows owner acceptance or published-runtime re-attestation.",
+      "PR remains Draft/HOLD; no merge or Ready promotion."
+    ],
+    "literal_crops_verified": 2,
+    "pixel_verified_full_native_maps": 20,
+    "source_input_hashes_verified": 727,
+    "verdict": "GO for Draft/HOLD research handoff"
+  },
+  "runtime_sha256": "b8159685736e0ed8caabe307532cafe6d80d337f053568a30690888f086d9201",
+  "schema": 1,
+  "source_input_count": 727,
+  "source_inputs_sha256": "5aa4a6b03f92f8cf3574ba65e3c1dc280ec065dc3dacd120bc42d8c6e961eeaf",
+  "source_map_encoding": "row-major uint8 native material IDs; no rescale or recolouring beyond existing BASE_RGBA8 LUT",
+  "tested_source_commit": "b63314d14df6b8ba660f7823687e3738b28d28e6"
+}

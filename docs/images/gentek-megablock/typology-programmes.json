@@ -1,0 +1,6437 @@
+{
+  "diagnostic": "private source-matched production programme helper; not a runtime format or independent oracle",
+  "seeds": [
+    {
+      "families": 9,
+      "programmes": [
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "core",
+              "atrium",
+              "crown",
+              "crown"
+            ],
+            [
+              "core",
+              "bridge",
+              "open_frame",
+              "cantilever"
+            ],
+            [
+              "core",
+              "atrium",
+              "habitation",
+              "habitation"
+            ],
+            [
+              "core",
+              "arcade",
+              "buttress",
+              "arcade"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": true,
+          "core_column": 0,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 96,
+            "y": 128
+          },
+          "spare_column": 3,
+          "supercell": [
+            0,
+            0
+          ],
+          "support_column": 2,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "crown",
+              "atrium",
+              "core"
+            ],
+            [
+              "cantilever",
+              "open_frame",
+              "bridge",
+              "core"
+            ],
+            [
+              "habitation",
+              "habitation",
+              "atrium",
+              "core"
+            ],
+            [
+              "arcade",
+              "buttress",
+              "arcade",
+              "core"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": false,
+          "core_column": 3,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 128
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            0
+          ],
+          "support_column": 1,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "core",
+              "atrium",
+              "crown",
+              "crown"
+            ],
+            [
+              "core",
+              "atrium",
+              "habitation",
+              "habitation"
+            ],
+            [
+              "core",
+              "bridge",
+              "habitation",
+              "cantilever"
+            ],
+            [
+              "core",
+              "arcade",
+              "buttress",
+              "arcade"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": true,
+          "core_column": 0,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 96,
+            "y": 320
+          },
+          "spare_column": 3,
+          "supercell": [
+            0,
+            1
+          ],
+          "support_column": 2,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "core",
+              "atrium",
+              "crown"
+            ],
+            [
+              "cantilever",
+              "core",
+              "bridge",
+              "habitation"
+            ],
+            [
+              "habitation",
+              "core",
+              "atrium",
+              "habitation"
+            ],
+            [
+              "arcade",
+              "core",
+              "arcade",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": false,
+          "core_column": 1,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 384
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            1
+          ],
+          "support_column": 3,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        }
+      ],
+      "seed": 0,
+      "typology_lots_in_capture": {
+        "arcade": 6,
+        "atrium": 4,
+        "bridge": 2,
+        "buttress": 3,
+        "cantilever": 4,
+        "core": 12,
+        "crown": 7,
+        "habitation": 8,
+        "open_frame": 2
+      }
+    },
+    {
+      "families": 8,
+      "programmes": [
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "core",
+              "atrium",
+              "crown"
+            ],
+            [
+              "habitation",
+              "core",
+              "atrium",
+              "habitation"
+            ],
+            [
+              "open_frame",
+              "core",
+              "bridge",
+              "open_frame"
+            ],
+            [
+              "arcade",
+              "core",
+              "arcade",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": true,
+          "core_column": 1,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 192,
+            "y": 64
+          },
+          "spare_column": 0,
+          "supercell": [
+            0,
+            0
+          ],
+          "support_column": 3,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "atrium",
+              "core",
+              "crown"
+            ],
+            [
+              "open_frame",
+              "bridge",
+              "core",
+              "cantilever"
+            ],
+            [
+              "habitation",
+              "atrium",
+              "core",
+              "habitation"
+            ],
+            [
+              "buttress",
+              "arcade",
+              "core",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": false,
+          "core_column": 2,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 480,
+            "y": 128
+          },
+          "spare_column": 3,
+          "supercell": [
+            1,
+            0
+          ],
+          "support_column": 0,
+          "visible_protected_void_cells": 2048,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "core",
+              "atrium",
+              "crown",
+              "crown"
+            ],
+            [
+              "core",
+              "atrium",
+              "habitation",
+              "habitation"
+            ],
+            [
+              "core",
+              "bridge",
+              "open_frame",
+              "open_frame"
+            ],
+            [
+              "core",
+              "arcade",
+              "buttress",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": true,
+          "core_column": 0,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 96,
+            "y": 320
+          },
+          "spare_column": 3,
+          "supercell": [
+            0,
+            1
+          ],
+          "support_column": 2,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "core",
+              "atrium",
+              "crown"
+            ],
+            [
+              "open_frame",
+              "core",
+              "bridge",
+              "open_frame"
+            ],
+            [
+              "open_frame",
+              "core",
+              "atrium",
+              "habitation"
+            ],
+            [
+              "arcade",
+              "core",
+              "arcade",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": false,
+          "core_column": 1,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 384
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            1
+          ],
+          "support_column": 3,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        }
+      ],
+      "seed": 1,
+      "typology_lots_in_capture": {
+        "arcade": 5,
+        "atrium": 6,
+        "bridge": 3,
+        "buttress": 4,
+        "cantilever": 0,
+        "core": 12,
+        "crown": 6,
+        "habitation": 5,
+        "open_frame": 7
+      }
+    },
+    {
+      "families": 9,
+      "programmes": [
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "core",
+              "atrium",
+              "crown"
+            ],
+            [
+              "open_frame",
+              "core",
+              "bridge",
+              "open_frame"
+            ],
+            [
+              "open_frame",
+              "core",
+              "atrium",
+              "habitation"
+            ],
+            [
+              "buttress",
+              "core",
+              "arcade",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": true,
+          "core_column": 1,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 192,
+            "y": 128
+          },
+          "spare_column": 0,
+          "supercell": [
+            0,
+            0
+          ],
+          "support_column": 3,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "atrium",
+              "core",
+              "crown"
+            ],
+            [
+              "habitation",
+              "atrium",
+              "core",
+              "open_frame"
+            ],
+            [
+              "open_frame",
+              "bridge",
+              "core",
+              "cantilever"
+            ],
+            [
+              "buttress",
+              "arcade",
+              "core",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": false,
+          "core_column": 2,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 480,
+            "y": 64
+          },
+          "spare_column": 3,
+          "supercell": [
+            1,
+            0
+          ],
+          "support_column": 0,
+          "visible_protected_void_cells": 2048,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "atrium",
+              "core",
+              "crown"
+            ],
+            [
+              "habitation",
+              "bridge",
+              "core",
+              "cantilever"
+            ],
+            [
+              "habitation",
+              "atrium",
+              "core",
+              "open_frame"
+            ],
+            [
+              "buttress",
+              "arcade",
+              "core",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": true,
+          "core_column": 2,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 96,
+            "y": 384
+          },
+          "spare_column": 3,
+          "supercell": [
+            0,
+            1
+          ],
+          "support_column": 0,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "crown",
+              "atrium",
+              "core"
+            ],
+            [
+              "cantilever",
+              "habitation",
+              "bridge",
+              "core"
+            ],
+            [
+              "open_frame",
+              "habitation",
+              "atrium",
+              "core"
+            ],
+            [
+              "buttress",
+              "buttress",
+              "arcade",
+              "core"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": false,
+          "core_column": 3,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 384
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            1
+          ],
+          "support_column": 1,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        }
+      ],
+      "seed": 2,
+      "typology_lots_in_capture": {
+        "arcade": 3,
+        "atrium": 6,
+        "bridge": 3,
+        "buttress": 7,
+        "cantilever": 2,
+        "core": 8,
+        "crown": 7,
+        "habitation": 6,
+        "open_frame": 6
+      }
+    },
+    {
+      "families": 9,
+      "programmes": [
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "crown",
+              "atrium",
+              "core"
+            ],
+            [
+              "open_frame",
+              "habitation",
+              "bridge",
+              "core"
+            ],
+            [
+              "open_frame",
+              "habitation",
+              "atrium",
+              "core"
+            ],
+            [
+              "arcade",
+              "buttress",
+              "arcade",
+              "core"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": true,
+          "core_column": 3,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 192,
+            "y": 128
+          },
+          "spare_column": 0,
+          "supercell": [
+            0,
+            0
+          ],
+          "support_column": 1,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "core",
+              "atrium",
+              "crown",
+              "crown"
+            ],
+            [
+              "core",
+              "bridge",
+              "habitation",
+              "open_frame"
+            ],
+            [
+              "core",
+              "atrium",
+              "habitation",
+              "habitation"
+            ],
+            [
+              "core",
+              "arcade",
+              "buttress",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": false,
+          "core_column": 0,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 480,
+            "y": 128
+          },
+          "spare_column": 3,
+          "supercell": [
+            1,
+            0
+          ],
+          "support_column": 2,
+          "visible_protected_void_cells": 2048,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "core",
+              "atrium",
+              "crown",
+              "crown"
+            ],
+            [
+              "core",
+              "atrium",
+              "habitation",
+              "open_frame"
+            ],
+            [
+              "core",
+              "bridge",
+              "open_frame",
+              "cantilever"
+            ],
+            [
+              "core",
+              "arcade",
+              "buttress",
+              "arcade"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": true,
+          "core_column": 0,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 96,
+            "y": 320
+          },
+          "spare_column": 3,
+          "supercell": [
+            0,
+            1
+          ],
+          "support_column": 2,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "crown",
+              "atrium",
+              "core"
+            ],
+            [
+              "cantilever",
+              "habitation",
+              "bridge",
+              "core"
+            ],
+            [
+              "habitation",
+              "habitation",
+              "atrium",
+              "core"
+            ],
+            [
+              "buttress",
+              "buttress",
+              "arcade",
+              "core"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": false,
+          "core_column": 3,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 384
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            1
+          ],
+          "support_column": 1,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        }
+      ],
+      "seed": 3,
+      "typology_lots_in_capture": {
+        "arcade": 5,
+        "atrium": 6,
+        "bridge": 3,
+        "buttress": 4,
+        "cantilever": 2,
+        "core": 12,
+        "crown": 6,
+        "habitation": 6,
+        "open_frame": 4
+      }
+    },
+    {
+      "families": 8,
+      "programmes": [
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "core",
+              "atrium",
+              "crown"
+            ],
+            [
+              "open_frame",
+              "core",
+              "bridge",
+              "habitation"
+            ],
+            [
+              "habitation",
+              "core",
+              "atrium",
+              "habitation"
+            ],
+            [
+              "arcade",
+              "core",
+              "arcade",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": true,
+          "core_column": 1,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 192,
+            "y": 128
+          },
+          "spare_column": 0,
+          "supercell": [
+            0,
+            0
+          ],
+          "support_column": 3,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "core",
+              "atrium",
+              "crown",
+              "crown"
+            ],
+            [
+              "core",
+              "atrium",
+              "habitation",
+              "habitation"
+            ],
+            [
+              "core",
+              "bridge",
+              "open_frame",
+              "cantilever"
+            ],
+            [
+              "core",
+              "arcade",
+              "buttress",
+              "arcade"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": false,
+          "core_column": 0,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 480,
+            "y": 64
+          },
+          "spare_column": 3,
+          "supercell": [
+            1,
+            0
+          ],
+          "support_column": 2,
+          "visible_protected_void_cells": 2048,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "core",
+              "atrium",
+              "crown"
+            ],
+            [
+              "habitation",
+              "core",
+              "atrium",
+              "habitation"
+            ],
+            [
+              "open_frame",
+              "core",
+              "bridge",
+              "habitation"
+            ],
+            [
+              "arcade",
+              "core",
+              "arcade",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": true,
+          "core_column": 1,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 192,
+            "y": 320
+          },
+          "spare_column": 0,
+          "supercell": [
+            0,
+            1
+          ],
+          "support_column": 3,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "crown",
+              "atrium",
+              "core"
+            ],
+            [
+              "open_frame",
+              "habitation",
+              "atrium",
+              "core"
+            ],
+            [
+              "open_frame",
+              "habitation",
+              "bridge",
+              "core"
+            ],
+            [
+              "arcade",
+              "buttress",
+              "arcade",
+              "core"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": false,
+          "core_column": 3,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 320
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            1
+          ],
+          "support_column": 1,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        }
+      ],
+      "seed": 4,
+      "typology_lots_in_capture": {
+        "arcade": 6,
+        "atrium": 6,
+        "bridge": 3,
+        "buttress": 3,
+        "cantilever": 0,
+        "core": 12,
+        "crown": 6,
+        "habitation": 8,
+        "open_frame": 4
+      }
+    },
+    {
+      "families": 9,
+      "programmes": [
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "atrium",
+              "core",
+              "crown"
+            ],
+            [
+              "habitation",
+              "atrium",
+              "core",
+              "open_frame"
+            ],
+            [
+              "habitation",
+              "bridge",
+              "core",
+              "cantilever"
+            ],
+            [
+              "buttress",
+              "arcade",
+              "core",
+              "arcade"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": true,
+          "core_column": 2,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 96,
+            "y": 64
+          },
+          "spare_column": 3,
+          "supercell": [
+            0,
+            0
+          ],
+          "support_column": 0,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "core",
+              "atrium",
+              "crown",
+              "crown"
+            ],
+            [
+              "core",
+              "bridge",
+              "open_frame",
+              "open_frame"
+            ],
+            [
+              "core",
+              "atrium",
+              "habitation",
+              "open_frame"
+            ],
+            [
+              "core",
+              "arcade",
+              "buttress",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": false,
+          "core_column": 0,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 480,
+            "y": 128
+          },
+          "spare_column": 3,
+          "supercell": [
+            1,
+            0
+          ],
+          "support_column": 2,
+          "visible_protected_void_cells": 2048,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "core",
+              "atrium",
+              "crown",
+              "crown"
+            ],
+            [
+              "core",
+              "bridge",
+              "habitation",
+              "open_frame"
+            ],
+            [
+              "core",
+              "atrium",
+              "habitation",
+              "open_frame"
+            ],
+            [
+              "core",
+              "arcade",
+              "buttress",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": true,
+          "core_column": 0,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 96,
+            "y": 384
+          },
+          "spare_column": 3,
+          "supercell": [
+            0,
+            1
+          ],
+          "support_column": 2,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "core",
+              "atrium",
+              "crown"
+            ],
+            [
+              "habitation",
+              "core",
+              "atrium",
+              "habitation"
+            ],
+            [
+              "cantilever",
+              "core",
+              "bridge",
+              "open_frame"
+            ],
+            [
+              "arcade",
+              "core",
+              "arcade",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": false,
+          "core_column": 1,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 320
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            1
+          ],
+          "support_column": 3,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        }
+      ],
+      "seed": 5,
+      "typology_lots_in_capture": {
+        "arcade": 5,
+        "atrium": 6,
+        "bridge": 3,
+        "buttress": 3,
+        "cantilever": 2,
+        "core": 16,
+        "crown": 5,
+        "habitation": 5,
+        "open_frame": 3
+      }
+    },
+    {
+      "families": 9,
+      "programmes": [
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "core",
+              "atrium",
+              "crown"
+            ],
+            [
+              "habitation",
+              "core",
+              "atrium",
+              "habitation"
+            ],
+            [
+              "cantilever",
+              "core",
+              "bridge",
+              "open_frame"
+            ],
+            [
+              "buttress",
+              "core",
+              "arcade",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": true,
+          "core_column": 1,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 192,
+            "y": 64
+          },
+          "spare_column": 0,
+          "supercell": [
+            0,
+            0
+          ],
+          "support_column": 3,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "crown",
+              "atrium",
+              "core"
+            ],
+            [
+              "cantilever",
+              "open_frame",
+              "bridge",
+              "core"
+            ],
+            [
+              "habitation",
+              "habitation",
+              "atrium",
+              "core"
+            ],
+            [
+              "arcade",
+              "buttress",
+              "arcade",
+              "core"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": false,
+          "core_column": 3,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 128
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            0
+          ],
+          "support_column": 1,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "core",
+              "atrium",
+              "crown",
+              "crown"
+            ],
+            [
+              "core",
+              "atrium",
+              "habitation",
+              "open_frame"
+            ],
+            [
+              "core",
+              "bridge",
+              "habitation",
+              "open_frame"
+            ],
+            [
+              "core",
+              "arcade",
+              "buttress",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": true,
+          "core_column": 0,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 96,
+            "y": 320
+          },
+          "spare_column": 3,
+          "supercell": [
+            0,
+            1
+          ],
+          "support_column": 2,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "core",
+              "atrium",
+              "crown"
+            ],
+            [
+              "cantilever",
+              "core",
+              "bridge",
+              "habitation"
+            ],
+            [
+              "habitation",
+              "core",
+              "atrium",
+              "habitation"
+            ],
+            [
+              "arcade",
+              "core",
+              "arcade",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": false,
+          "core_column": 1,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 384
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            1
+          ],
+          "support_column": 3,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        }
+      ],
+      "seed": 6,
+      "typology_lots_in_capture": {
+        "arcade": 4,
+        "atrium": 4,
+        "bridge": 2,
+        "buttress": 5,
+        "cantilever": 3,
+        "core": 12,
+        "crown": 7,
+        "habitation": 7,
+        "open_frame": 4
+      }
+    },
+    {
+      "families": 9,
+      "programmes": [
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "crown",
+              "atrium",
+              "core"
+            ],
+            [
+              "cantilever",
+              "habitation",
+              "bridge",
+              "core"
+            ],
+            [
+              "open_frame",
+              "habitation",
+              "atrium",
+              "core"
+            ],
+            [
+              "arcade",
+              "buttress",
+              "arcade",
+              "core"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": true,
+          "core_column": 3,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 192,
+            "y": 128
+          },
+          "spare_column": 0,
+          "supercell": [
+            0,
+            0
+          ],
+          "support_column": 1,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "core",
+              "atrium",
+              "crown",
+              "crown"
+            ],
+            [
+              "core",
+              "bridge",
+              "habitation",
+              "open_frame"
+            ],
+            [
+              "core",
+              "atrium",
+              "habitation",
+              "habitation"
+            ],
+            [
+              "core",
+              "arcade",
+              "buttress",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": false,
+          "core_column": 0,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 480,
+            "y": 128
+          },
+          "spare_column": 3,
+          "supercell": [
+            1,
+            0
+          ],
+          "support_column": 2,
+          "visible_protected_void_cells": 2048,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "atrium",
+              "core",
+              "crown"
+            ],
+            [
+              "open_frame",
+              "bridge",
+              "core",
+              "open_frame"
+            ],
+            [
+              "habitation",
+              "atrium",
+              "core",
+              "habitation"
+            ],
+            [
+              "buttress",
+              "arcade",
+              "core",
+              "arcade"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": true,
+          "core_column": 2,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 96,
+            "y": 384
+          },
+          "spare_column": 3,
+          "supercell": [
+            0,
+            1
+          ],
+          "support_column": 0,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "core",
+              "atrium",
+              "crown",
+              "crown"
+            ],
+            [
+              "core",
+              "atrium",
+              "habitation",
+              "habitation"
+            ],
+            [
+              "core",
+              "bridge",
+              "open_frame",
+              "open_frame"
+            ],
+            [
+              "core",
+              "arcade",
+              "buttress",
+              "arcade"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": false,
+          "core_column": 0,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 480,
+            "y": 320
+          },
+          "spare_column": 3,
+          "supercell": [
+            1,
+            1
+          ],
+          "support_column": 2,
+          "visible_protected_void_cells": 2048,
+          "visible_protected_void_empty": true
+        }
+      ],
+      "seed": 7,
+      "typology_lots_in_capture": {
+        "arcade": 6,
+        "atrium": 8,
+        "bridge": 4,
+        "buttress": 2,
+        "cantilever": 1,
+        "core": 16,
+        "crown": 4,
+        "habitation": 4,
+        "open_frame": 3
+      }
+    },
+    {
+      "families": 9,
+      "programmes": [
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "crown",
+              "atrium",
+              "core"
+            ],
+            [
+              "open_frame",
+              "habitation",
+              "bridge",
+              "core"
+            ],
+            [
+              "habitation",
+              "habitation",
+              "atrium",
+              "core"
+            ],
+            [
+              "buttress",
+              "buttress",
+              "arcade",
+              "core"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": true,
+          "core_column": 3,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 192,
+            "y": 128
+          },
+          "spare_column": 0,
+          "supercell": [
+            0,
+            0
+          ],
+          "support_column": 1,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "crown",
+              "atrium",
+              "core"
+            ],
+            [
+              "habitation",
+              "habitation",
+              "atrium",
+              "core"
+            ],
+            [
+              "cantilever",
+              "open_frame",
+              "bridge",
+              "core"
+            ],
+            [
+              "arcade",
+              "buttress",
+              "arcade",
+              "core"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": false,
+          "core_column": 3,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 64
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            0
+          ],
+          "support_column": 1,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "atrium",
+              "core",
+              "crown"
+            ],
+            [
+              "habitation",
+              "atrium",
+              "core",
+              "open_frame"
+            ],
+            [
+              "habitation",
+              "bridge",
+              "core",
+              "open_frame"
+            ],
+            [
+              "buttress",
+              "arcade",
+              "core",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": true,
+          "core_column": 2,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 96,
+            "y": 320
+          },
+          "spare_column": 3,
+          "supercell": [
+            0,
+            1
+          ],
+          "support_column": 0,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "crown",
+              "atrium",
+              "core"
+            ],
+            [
+              "open_frame",
+              "habitation",
+              "atrium",
+              "core"
+            ],
+            [
+              "open_frame",
+              "open_frame",
+              "bridge",
+              "core"
+            ],
+            [
+              "buttress",
+              "buttress",
+              "arcade",
+              "core"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": false,
+          "core_column": 3,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 320
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            1
+          ],
+          "support_column": 1,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        }
+      ],
+      "seed": 8,
+      "typology_lots_in_capture": {
+        "arcade": 3,
+        "atrium": 4,
+        "bridge": 2,
+        "buttress": 7,
+        "cantilever": 1,
+        "core": 8,
+        "crown": 8,
+        "habitation": 8,
+        "open_frame": 7
+      }
+    },
+    {
+      "families": 9,
+      "programmes": [
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "crown",
+              "atrium",
+              "core"
+            ],
+            [
+              "open_frame",
+              "habitation",
+              "bridge",
+              "core"
+            ],
+            [
+              "habitation",
+              "habitation",
+              "atrium",
+              "core"
+            ],
+            [
+              "buttress",
+              "buttress",
+              "arcade",
+              "core"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": true,
+          "core_column": 3,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 192,
+            "y": 128
+          },
+          "spare_column": 0,
+          "supercell": [
+            0,
+            0
+          ],
+          "support_column": 1,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "core",
+              "atrium",
+              "crown",
+              "crown"
+            ],
+            [
+              "core",
+              "atrium",
+              "habitation",
+              "habitation"
+            ],
+            [
+              "core",
+              "bridge",
+              "habitation",
+              "cantilever"
+            ],
+            [
+              "core",
+              "arcade",
+              "buttress",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": false,
+          "core_column": 0,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 480,
+            "y": 64
+          },
+          "spare_column": 3,
+          "supercell": [
+            1,
+            0
+          ],
+          "support_column": 2,
+          "visible_protected_void_cells": 2048,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "crown",
+              "atrium",
+              "core"
+            ],
+            [
+              "cantilever",
+              "habitation",
+              "bridge",
+              "core"
+            ],
+            [
+              "open_frame",
+              "habitation",
+              "atrium",
+              "core"
+            ],
+            [
+              "arcade",
+              "buttress",
+              "arcade",
+              "core"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": true,
+          "core_column": 3,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 192,
+            "y": 384
+          },
+          "spare_column": 0,
+          "supercell": [
+            0,
+            1
+          ],
+          "support_column": 1,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "crown",
+              "atrium",
+              "core"
+            ],
+            [
+              "open_frame",
+              "habitation",
+              "atrium",
+              "core"
+            ],
+            [
+              "cantilever",
+              "habitation",
+              "bridge",
+              "core"
+            ],
+            [
+              "buttress",
+              "buttress",
+              "arcade",
+              "core"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": false,
+          "core_column": 3,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 320
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            1
+          ],
+          "support_column": 1,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        }
+      ],
+      "seed": 9,
+      "typology_lots_in_capture": {
+        "arcade": 4,
+        "atrium": 6,
+        "bridge": 3,
+        "buttress": 5,
+        "cantilever": 2,
+        "core": 12,
+        "crown": 6,
+        "habitation": 7,
+        "open_frame": 3
+      }
+    },
+    {
+      "families": 9,
+      "programmes": [
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "core",
+              "atrium",
+              "crown",
+              "crown"
+            ],
+            [
+              "core",
+              "bridge",
+              "open_frame",
+              "cantilever"
+            ],
+            [
+              "core",
+              "atrium",
+              "habitation",
+              "open_frame"
+            ],
+            [
+              "core",
+              "arcade",
+              "buttress",
+              "arcade"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": true,
+          "core_column": 0,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 96,
+            "y": 128
+          },
+          "spare_column": 3,
+          "supercell": [
+            0,
+            0
+          ],
+          "support_column": 2,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "atrium",
+              "core",
+              "crown"
+            ],
+            [
+              "habitation",
+              "bridge",
+              "core",
+              "open_frame"
+            ],
+            [
+              "habitation",
+              "atrium",
+              "core",
+              "open_frame"
+            ],
+            [
+              "buttress",
+              "arcade",
+              "core",
+              "arcade"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": false,
+          "core_column": 2,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 480,
+            "y": 128
+          },
+          "spare_column": 3,
+          "supercell": [
+            1,
+            0
+          ],
+          "support_column": 0,
+          "visible_protected_void_cells": 2048,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "atrium",
+              "core",
+              "crown"
+            ],
+            [
+              "habitation",
+              "atrium",
+              "core",
+              "habitation"
+            ],
+            [
+              "open_frame",
+              "bridge",
+              "core",
+              "open_frame"
+            ],
+            [
+              "buttress",
+              "arcade",
+              "core",
+              "arcade"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": true,
+          "core_column": 2,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 96,
+            "y": 320
+          },
+          "spare_column": 3,
+          "supercell": [
+            0,
+            1
+          ],
+          "support_column": 0,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "crown",
+              "atrium",
+              "core"
+            ],
+            [
+              "open_frame",
+              "habitation",
+              "atrium",
+              "core"
+            ],
+            [
+              "open_frame",
+              "habitation",
+              "bridge",
+              "core"
+            ],
+            [
+              "arcade",
+              "buttress",
+              "arcade",
+              "core"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": false,
+          "core_column": 3,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 320
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            1
+          ],
+          "support_column": 1,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        }
+      ],
+      "seed": 10,
+      "typology_lots_in_capture": {
+        "arcade": 6,
+        "atrium": 6,
+        "bridge": 3,
+        "buttress": 4,
+        "cantilever": 1,
+        "core": 8,
+        "crown": 7,
+        "habitation": 7,
+        "open_frame": 6
+      }
+    },
+    {
+      "families": 9,
+      "programmes": [
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "core",
+              "atrium",
+              "crown"
+            ],
+            [
+              "habitation",
+              "core",
+              "atrium",
+              "habitation"
+            ],
+            [
+              "open_frame",
+              "core",
+              "bridge",
+              "habitation"
+            ],
+            [
+              "buttress",
+              "core",
+              "arcade",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": true,
+          "core_column": 1,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 192,
+            "y": 64
+          },
+          "spare_column": 0,
+          "supercell": [
+            0,
+            0
+          ],
+          "support_column": 3,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "crown",
+              "atrium",
+              "core"
+            ],
+            [
+              "habitation",
+              "habitation",
+              "atrium",
+              "core"
+            ],
+            [
+              "cantilever",
+              "open_frame",
+              "bridge",
+              "core"
+            ],
+            [
+              "arcade",
+              "buttress",
+              "arcade",
+              "core"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": false,
+          "core_column": 3,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 64
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            0
+          ],
+          "support_column": 1,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "core",
+              "atrium",
+              "crown"
+            ],
+            [
+              "habitation",
+              "core",
+              "atrium",
+              "habitation"
+            ],
+            [
+              "cantilever",
+              "core",
+              "bridge",
+              "open_frame"
+            ],
+            [
+              "arcade",
+              "core",
+              "arcade",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": true,
+          "core_column": 1,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 192,
+            "y": 320
+          },
+          "spare_column": 0,
+          "supercell": [
+            0,
+            1
+          ],
+          "support_column": 3,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "core",
+              "atrium",
+              "crown"
+            ],
+            [
+              "habitation",
+              "core",
+              "atrium",
+              "habitation"
+            ],
+            [
+              "cantilever",
+              "core",
+              "bridge",
+              "habitation"
+            ],
+            [
+              "arcade",
+              "core",
+              "arcade",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": false,
+          "core_column": 1,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 320
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            1
+          ],
+          "support_column": 3,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        }
+      ],
+      "seed": 11,
+      "typology_lots_in_capture": {
+        "arcade": 5,
+        "atrium": 4,
+        "bridge": 2,
+        "buttress": 4,
+        "cantilever": 3,
+        "core": 12,
+        "crown": 7,
+        "habitation": 8,
+        "open_frame": 3
+      }
+    },
+    {
+      "families": 9,
+      "programmes": [
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "core",
+              "atrium",
+              "crown"
+            ],
+            [
+              "open_frame",
+              "core",
+              "bridge",
+              "open_frame"
+            ],
+            [
+              "habitation",
+              "core",
+              "atrium",
+              "habitation"
+            ],
+            [
+              "buttress",
+              "core",
+              "arcade",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": true,
+          "core_column": 1,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 192,
+            "y": 128
+          },
+          "spare_column": 0,
+          "supercell": [
+            0,
+            0
+          ],
+          "support_column": 3,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "core",
+              "atrium",
+              "crown"
+            ],
+            [
+              "open_frame",
+              "core",
+              "bridge",
+              "open_frame"
+            ],
+            [
+              "open_frame",
+              "core",
+              "atrium",
+              "habitation"
+            ],
+            [
+              "buttress",
+              "core",
+              "arcade",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": false,
+          "core_column": 1,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 128
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            0
+          ],
+          "support_column": 3,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "crown",
+              "atrium",
+              "core"
+            ],
+            [
+              "open_frame",
+              "habitation",
+              "atrium",
+              "core"
+            ],
+            [
+              "cantilever",
+              "open_frame",
+              "bridge",
+              "core"
+            ],
+            [
+              "arcade",
+              "buttress",
+              "arcade",
+              "core"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": true,
+          "core_column": 3,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 192,
+            "y": 320
+          },
+          "spare_column": 0,
+          "supercell": [
+            0,
+            1
+          ],
+          "support_column": 1,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "crown",
+              "atrium",
+              "core"
+            ],
+            [
+              "open_frame",
+              "habitation",
+              "atrium",
+              "core"
+            ],
+            [
+              "open_frame",
+              "habitation",
+              "bridge",
+              "core"
+            ],
+            [
+              "buttress",
+              "buttress",
+              "arcade",
+              "core"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": false,
+          "core_column": 3,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 320
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            1
+          ],
+          "support_column": 1,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        }
+      ],
+      "seed": 12,
+      "typology_lots_in_capture": {
+        "arcade": 3,
+        "atrium": 4,
+        "bridge": 2,
+        "buttress": 6,
+        "cantilever": 1,
+        "core": 12,
+        "crown": 7,
+        "habitation": 5,
+        "open_frame": 8
+      }
+    },
+    {
+      "families": 9,
+      "programmes": [
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "atrium",
+              "core",
+              "crown"
+            ],
+            [
+              "habitation",
+              "atrium",
+              "core",
+              "habitation"
+            ],
+            [
+              "habitation",
+              "bridge",
+              "core",
+              "cantilever"
+            ],
+            [
+              "buttress",
+              "arcade",
+              "core",
+              "arcade"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": true,
+          "core_column": 2,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 96,
+            "y": 64
+          },
+          "spare_column": 3,
+          "supercell": [
+            0,
+            0
+          ],
+          "support_column": 0,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "core",
+              "atrium",
+              "crown"
+            ],
+            [
+              "open_frame",
+              "core",
+              "bridge",
+              "habitation"
+            ],
+            [
+              "habitation",
+              "core",
+              "atrium",
+              "habitation"
+            ],
+            [
+              "buttress",
+              "core",
+              "arcade",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": false,
+          "core_column": 1,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 128
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            0
+          ],
+          "support_column": 3,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "crown",
+              "atrium",
+              "core"
+            ],
+            [
+              "cantilever",
+              "open_frame",
+              "bridge",
+              "core"
+            ],
+            [
+              "habitation",
+              "habitation",
+              "atrium",
+              "core"
+            ],
+            [
+              "arcade",
+              "buttress",
+              "arcade",
+              "core"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": true,
+          "core_column": 3,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 192,
+            "y": 384
+          },
+          "spare_column": 0,
+          "supercell": [
+            0,
+            1
+          ],
+          "support_column": 1,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "core",
+              "atrium",
+              "crown"
+            ],
+            [
+              "open_frame",
+              "core",
+              "atrium",
+              "habitation"
+            ],
+            [
+              "cantilever",
+              "core",
+              "bridge",
+              "habitation"
+            ],
+            [
+              "buttress",
+              "core",
+              "arcade",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": false,
+          "core_column": 1,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 320
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            1
+          ],
+          "support_column": 3,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        }
+      ],
+      "seed": 13,
+      "typology_lots_in_capture": {
+        "arcade": 4,
+        "atrium": 4,
+        "bridge": 2,
+        "buttress": 4,
+        "cantilever": 3,
+        "core": 16,
+        "crown": 6,
+        "habitation": 6,
+        "open_frame": 3
+      }
+    },
+    {
+      "families": 9,
+      "programmes": [
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "core",
+              "atrium",
+              "crown",
+              "crown"
+            ],
+            [
+              "core",
+              "bridge",
+              "open_frame",
+              "cantilever"
+            ],
+            [
+              "core",
+              "atrium",
+              "habitation",
+              "habitation"
+            ],
+            [
+              "core",
+              "arcade",
+              "buttress",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": true,
+          "core_column": 0,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 96,
+            "y": 128
+          },
+          "spare_column": 3,
+          "supercell": [
+            0,
+            0
+          ],
+          "support_column": 2,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "core",
+              "atrium",
+              "crown",
+              "crown"
+            ],
+            [
+              "core",
+              "atrium",
+              "habitation",
+              "open_frame"
+            ],
+            [
+              "core",
+              "bridge",
+              "habitation",
+              "open_frame"
+            ],
+            [
+              "core",
+              "arcade",
+              "buttress",
+              "arcade"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": false,
+          "core_column": 0,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 480,
+            "y": 64
+          },
+          "spare_column": 3,
+          "supercell": [
+            1,
+            0
+          ],
+          "support_column": 2,
+          "visible_protected_void_cells": 2048,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "crown",
+              "atrium",
+              "core"
+            ],
+            [
+              "habitation",
+              "habitation",
+              "atrium",
+              "core"
+            ],
+            [
+              "open_frame",
+              "open_frame",
+              "bridge",
+              "core"
+            ],
+            [
+              "arcade",
+              "buttress",
+              "arcade",
+              "core"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": true,
+          "core_column": 3,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 192,
+            "y": 320
+          },
+          "spare_column": 0,
+          "supercell": [
+            0,
+            1
+          ],
+          "support_column": 1,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "atrium",
+              "core",
+              "crown"
+            ],
+            [
+              "habitation",
+              "bridge",
+              "core",
+              "cantilever"
+            ],
+            [
+              "habitation",
+              "atrium",
+              "core",
+              "open_frame"
+            ],
+            [
+              "buttress",
+              "arcade",
+              "core",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": false,
+          "core_column": 2,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 480,
+            "y": 384
+          },
+          "spare_column": 3,
+          "supercell": [
+            1,
+            1
+          ],
+          "support_column": 0,
+          "visible_protected_void_cells": 2048,
+          "visible_protected_void_empty": true
+        }
+      ],
+      "seed": 14,
+      "typology_lots_in_capture": {
+        "arcade": 5,
+        "atrium": 8,
+        "bridge": 4,
+        "buttress": 4,
+        "cantilever": 1,
+        "core": 12,
+        "crown": 5,
+        "habitation": 6,
+        "open_frame": 3
+      }
+    },
+    {
+      "families": 9,
+      "programmes": [
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "atrium",
+              "core",
+              "crown"
+            ],
+            [
+              "habitation",
+              "bridge",
+              "core",
+              "open_frame"
+            ],
+            [
+              "habitation",
+              "atrium",
+              "core",
+              "habitation"
+            ],
+            [
+              "buttress",
+              "arcade",
+              "core",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": true,
+          "core_column": 2,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 96,
+            "y": 128
+          },
+          "spare_column": 3,
+          "supercell": [
+            0,
+            0
+          ],
+          "support_column": 0,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "atrium",
+              "core",
+              "crown"
+            ],
+            [
+              "habitation",
+              "bridge",
+              "core",
+              "open_frame"
+            ],
+            [
+              "habitation",
+              "atrium",
+              "core",
+              "open_frame"
+            ],
+            [
+              "buttress",
+              "arcade",
+              "core",
+              "arcade"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": false,
+          "core_column": 2,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 480,
+            "y": 128
+          },
+          "spare_column": 3,
+          "supercell": [
+            1,
+            0
+          ],
+          "support_column": 0,
+          "visible_protected_void_cells": 2048,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "core",
+              "atrium",
+              "crown",
+              "crown"
+            ],
+            [
+              "core",
+              "atrium",
+              "habitation",
+              "open_frame"
+            ],
+            [
+              "core",
+              "bridge",
+              "habitation",
+              "open_frame"
+            ],
+            [
+              "core",
+              "arcade",
+              "buttress",
+              "arcade"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": true,
+          "core_column": 0,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 96,
+            "y": 320
+          },
+          "spare_column": 3,
+          "supercell": [
+            0,
+            1
+          ],
+          "support_column": 2,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "crown",
+              "atrium",
+              "core"
+            ],
+            [
+              "cantilever",
+              "open_frame",
+              "bridge",
+              "core"
+            ],
+            [
+              "habitation",
+              "habitation",
+              "atrium",
+              "core"
+            ],
+            [
+              "buttress",
+              "buttress",
+              "arcade",
+              "core"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": false,
+          "core_column": 3,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 384
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            1
+          ],
+          "support_column": 1,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        }
+      ],
+      "seed": 15,
+      "typology_lots_in_capture": {
+        "arcade": 4,
+        "atrium": 6,
+        "bridge": 3,
+        "buttress": 6,
+        "cantilever": 1,
+        "core": 8,
+        "crown": 7,
+        "habitation": 9,
+        "open_frame": 4
+      }
+    },
+    {
+      "families": 9,
+      "programmes": [
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "core",
+              "atrium",
+              "crown",
+              "crown"
+            ],
+            [
+              "core",
+              "bridge",
+              "habitation",
+              "cantilever"
+            ],
+            [
+              "core",
+              "atrium",
+              "habitation",
+              "open_frame"
+            ],
+            [
+              "core",
+              "arcade",
+              "buttress",
+              "arcade"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": true,
+          "core_column": 0,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 96,
+            "y": 128
+          },
+          "spare_column": 3,
+          "supercell": [
+            0,
+            0
+          ],
+          "support_column": 2,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "atrium",
+              "core",
+              "crown"
+            ],
+            [
+              "habitation",
+              "atrium",
+              "core",
+              "habitation"
+            ],
+            [
+              "habitation",
+              "bridge",
+              "core",
+              "cantilever"
+            ],
+            [
+              "buttress",
+              "arcade",
+              "core",
+              "arcade"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": false,
+          "core_column": 2,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 480,
+            "y": 64
+          },
+          "spare_column": 3,
+          "supercell": [
+            1,
+            0
+          ],
+          "support_column": 0,
+          "visible_protected_void_cells": 2048,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "core",
+              "atrium",
+              "crown"
+            ],
+            [
+              "open_frame",
+              "core",
+              "bridge",
+              "habitation"
+            ],
+            [
+              "habitation",
+              "core",
+              "atrium",
+              "habitation"
+            ],
+            [
+              "arcade",
+              "core",
+              "arcade",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": true,
+          "core_column": 1,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 192,
+            "y": 384
+          },
+          "spare_column": 0,
+          "supercell": [
+            0,
+            1
+          ],
+          "support_column": 3,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "core",
+              "atrium",
+              "crown"
+            ],
+            [
+              "habitation",
+              "core",
+              "atrium",
+              "habitation"
+            ],
+            [
+              "cantilever",
+              "core",
+              "bridge",
+              "habitation"
+            ],
+            [
+              "buttress",
+              "core",
+              "arcade",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": false,
+          "core_column": 1,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 320
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            1
+          ],
+          "support_column": 3,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        }
+      ],
+      "seed": 16,
+      "typology_lots_in_capture": {
+        "arcade": 5,
+        "atrium": 6,
+        "bridge": 3,
+        "buttress": 4,
+        "cantilever": 2,
+        "core": 12,
+        "crown": 6,
+        "habitation": 8,
+        "open_frame": 2
+      }
+    },
+    {
+      "families": 9,
+      "programmes": [
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "core",
+              "atrium",
+              "crown",
+              "crown"
+            ],
+            [
+              "core",
+              "bridge",
+              "open_frame",
+              "open_frame"
+            ],
+            [
+              "core",
+              "atrium",
+              "habitation",
+              "habitation"
+            ],
+            [
+              "core",
+              "arcade",
+              "buttress",
+              "arcade"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": true,
+          "core_column": 0,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 96,
+            "y": 128
+          },
+          "spare_column": 3,
+          "supercell": [
+            0,
+            0
+          ],
+          "support_column": 2,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "core",
+              "atrium",
+              "crown"
+            ],
+            [
+              "open_frame",
+              "core",
+              "bridge",
+              "habitation"
+            ],
+            [
+              "open_frame",
+              "core",
+              "atrium",
+              "habitation"
+            ],
+            [
+              "arcade",
+              "core",
+              "arcade",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": false,
+          "core_column": 1,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 128
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            0
+          ],
+          "support_column": 3,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "core",
+              "atrium",
+              "crown"
+            ],
+            [
+              "habitation",
+              "core",
+              "atrium",
+              "habitation"
+            ],
+            [
+              "cantilever",
+              "core",
+              "bridge",
+              "open_frame"
+            ],
+            [
+              "buttress",
+              "core",
+              "arcade",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": true,
+          "core_column": 1,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 192,
+            "y": 320
+          },
+          "spare_column": 0,
+          "supercell": [
+            0,
+            1
+          ],
+          "support_column": 3,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "crown",
+              "atrium",
+              "core"
+            ],
+            [
+              "habitation",
+              "habitation",
+              "atrium",
+              "core"
+            ],
+            [
+              "cantilever",
+              "habitation",
+              "bridge",
+              "core"
+            ],
+            [
+              "arcade",
+              "buttress",
+              "arcade",
+              "core"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": false,
+          "core_column": 3,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 320
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            1
+          ],
+          "support_column": 1,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        }
+      ],
+      "seed": 17,
+      "typology_lots_in_capture": {
+        "arcade": 5,
+        "atrium": 4,
+        "bridge": 2,
+        "buttress": 4,
+        "cantilever": 2,
+        "core": 12,
+        "crown": 7,
+        "habitation": 7,
+        "open_frame": 5
+      }
+    },
+    {
+      "families": 9,
+      "programmes": [
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "core",
+              "atrium",
+              "crown",
+              "crown"
+            ],
+            [
+              "core",
+              "atrium",
+              "habitation",
+              "open_frame"
+            ],
+            [
+              "core",
+              "bridge",
+              "habitation",
+              "open_frame"
+            ],
+            [
+              "core",
+              "arcade",
+              "buttress",
+              "arcade"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": true,
+          "core_column": 0,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 96,
+            "y": 64
+          },
+          "spare_column": 3,
+          "supercell": [
+            0,
+            0
+          ],
+          "support_column": 2,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "core",
+              "atrium",
+              "crown"
+            ],
+            [
+              "cantilever",
+              "core",
+              "bridge",
+              "habitation"
+            ],
+            [
+              "open_frame",
+              "core",
+              "atrium",
+              "habitation"
+            ],
+            [
+              "arcade",
+              "core",
+              "arcade",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": false,
+          "core_column": 1,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 128
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            0
+          ],
+          "support_column": 3,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "core",
+              "atrium",
+              "crown"
+            ],
+            [
+              "cantilever",
+              "core",
+              "bridge",
+              "habitation"
+            ],
+            [
+              "habitation",
+              "core",
+              "atrium",
+              "habitation"
+            ],
+            [
+              "arcade",
+              "core",
+              "arcade",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": true,
+          "core_column": 1,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 192,
+            "y": 384
+          },
+          "spare_column": 0,
+          "supercell": [
+            0,
+            1
+          ],
+          "support_column": 3,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "crown",
+              "atrium",
+              "core"
+            ],
+            [
+              "open_frame",
+              "habitation",
+              "atrium",
+              "core"
+            ],
+            [
+              "cantilever",
+              "habitation",
+              "bridge",
+              "core"
+            ],
+            [
+              "arcade",
+              "buttress",
+              "arcade",
+              "core"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": false,
+          "core_column": 3,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 320
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            1
+          ],
+          "support_column": 1,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        }
+      ],
+      "seed": 18,
+      "typology_lots_in_capture": {
+        "arcade": 6,
+        "atrium": 4,
+        "bridge": 2,
+        "buttress": 3,
+        "cantilever": 3,
+        "core": 12,
+        "crown": 7,
+        "habitation": 7,
+        "open_frame": 4
+      }
+    },
+    {
+      "families": 9,
+      "programmes": [
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "core",
+              "atrium",
+              "crown",
+              "crown"
+            ],
+            [
+              "core",
+              "atrium",
+              "habitation",
+              "habitation"
+            ],
+            [
+              "core",
+              "bridge",
+              "open_frame",
+              "open_frame"
+            ],
+            [
+              "core",
+              "arcade",
+              "buttress",
+              "arcade"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": true,
+          "core_column": 0,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 96,
+            "y": 64
+          },
+          "spare_column": 3,
+          "supercell": [
+            0,
+            0
+          ],
+          "support_column": 2,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "core",
+              "atrium",
+              "crown"
+            ],
+            [
+              "open_frame",
+              "core",
+              "bridge",
+              "habitation"
+            ],
+            [
+              "open_frame",
+              "core",
+              "atrium",
+              "habitation"
+            ],
+            [
+              "arcade",
+              "core",
+              "arcade",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": false,
+          "core_column": 1,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 128
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            0
+          ],
+          "support_column": 3,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "atrium",
+              "core",
+              "crown"
+            ],
+            [
+              "open_frame",
+              "bridge",
+              "core",
+              "open_frame"
+            ],
+            [
+              "habitation",
+              "atrium",
+              "core",
+              "open_frame"
+            ],
+            [
+              "buttress",
+              "arcade",
+              "core",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": true,
+          "core_column": 2,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 96,
+            "y": 384
+          },
+          "spare_column": 3,
+          "supercell": [
+            0,
+            1
+          ],
+          "support_column": 0,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "core",
+              "atrium",
+              "crown"
+            ],
+            [
+              "open_frame",
+              "core",
+              "atrium",
+              "habitation"
+            ],
+            [
+              "cantilever",
+              "core",
+              "bridge",
+              "open_frame"
+            ],
+            [
+              "buttress",
+              "core",
+              "arcade",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": false,
+          "core_column": 1,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 320
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            1
+          ],
+          "support_column": 3,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        }
+      ],
+      "seed": 19,
+      "typology_lots_in_capture": {
+        "arcade": 4,
+        "atrium": 4,
+        "bridge": 2,
+        "buttress": 4,
+        "cantilever": 1,
+        "core": 16,
+        "crown": 6,
+        "habitation": 3,
+        "open_frame": 8
+      }
+    },
+    {
+      "families": 8,
+      "programmes": [
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "core",
+              "atrium",
+              "crown",
+              "crown"
+            ],
+            [
+              "core",
+              "atrium",
+              "habitation",
+              "habitation"
+            ],
+            [
+              "core",
+              "bridge",
+              "open_frame",
+              "open_frame"
+            ],
+            [
+              "core",
+              "arcade",
+              "buttress",
+              "arcade"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": true,
+          "core_column": 0,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 96,
+            "y": 64
+          },
+          "spare_column": 3,
+          "supercell": [
+            0,
+            0
+          ],
+          "support_column": 2,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "crown",
+              "atrium",
+              "core"
+            ],
+            [
+              "open_frame",
+              "habitation",
+              "bridge",
+              "core"
+            ],
+            [
+              "open_frame",
+              "habitation",
+              "atrium",
+              "core"
+            ],
+            [
+              "buttress",
+              "buttress",
+              "arcade",
+              "core"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": false,
+          "core_column": 3,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 128
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            0
+          ],
+          "support_column": 1,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "atrium",
+              "core",
+              "crown"
+            ],
+            [
+              "habitation",
+              "atrium",
+              "core",
+              "open_frame"
+            ],
+            [
+              "open_frame",
+              "bridge",
+              "core",
+              "open_frame"
+            ],
+            [
+              "buttress",
+              "arcade",
+              "core",
+              "arcade"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": true,
+          "core_column": 2,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 96,
+            "y": 320
+          },
+          "spare_column": 3,
+          "supercell": [
+            0,
+            1
+          ],
+          "support_column": 0,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "core",
+              "atrium",
+              "crown",
+              "crown"
+            ],
+            [
+              "core",
+              "bridge",
+              "habitation",
+              "open_frame"
+            ],
+            [
+              "core",
+              "atrium",
+              "habitation",
+              "habitation"
+            ],
+            [
+              "core",
+              "arcade",
+              "buttress",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": false,
+          "core_column": 0,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 480,
+            "y": 384
+          },
+          "spare_column": 3,
+          "supercell": [
+            1,
+            1
+          ],
+          "support_column": 2,
+          "visible_protected_void_cells": 2048,
+          "visible_protected_void_empty": true
+        }
+      ],
+      "seed": 20,
+      "typology_lots_in_capture": {
+        "arcade": 5,
+        "atrium": 6,
+        "bridge": 3,
+        "buttress": 4,
+        "cantilever": 0,
+        "core": 12,
+        "crown": 6,
+        "habitation": 5,
+        "open_frame": 7
+      }
+    },
+    {
+      "families": 9,
+      "programmes": [
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "core",
+              "atrium",
+              "crown",
+              "crown"
+            ],
+            [
+              "core",
+              "atrium",
+              "habitation",
+              "open_frame"
+            ],
+            [
+              "core",
+              "bridge",
+              "habitation",
+              "cantilever"
+            ],
+            [
+              "core",
+              "arcade",
+              "buttress",
+              "arcade"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": true,
+          "core_column": 0,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 96,
+            "y": 64
+          },
+          "spare_column": 3,
+          "supercell": [
+            0,
+            0
+          ],
+          "support_column": 2,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "core",
+              "atrium",
+              "crown"
+            ],
+            [
+              "open_frame",
+              "core",
+              "bridge",
+              "habitation"
+            ],
+            [
+              "habitation",
+              "core",
+              "atrium",
+              "habitation"
+            ],
+            [
+              "buttress",
+              "core",
+              "arcade",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": false,
+          "core_column": 1,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 128
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            0
+          ],
+          "support_column": 3,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "core",
+              "atrium",
+              "crown",
+              "crown"
+            ],
+            [
+              "core",
+              "atrium",
+              "habitation",
+              "open_frame"
+            ],
+            [
+              "core",
+              "bridge",
+              "open_frame",
+              "open_frame"
+            ],
+            [
+              "core",
+              "arcade",
+              "buttress",
+              "arcade"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": true,
+          "core_column": 0,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 96,
+            "y": 320
+          },
+          "spare_column": 3,
+          "supercell": [
+            0,
+            1
+          ],
+          "support_column": 2,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "core",
+              "atrium",
+              "crown"
+            ],
+            [
+              "habitation",
+              "core",
+              "atrium",
+              "habitation"
+            ],
+            [
+              "cantilever",
+              "core",
+              "bridge",
+              "habitation"
+            ],
+            [
+              "arcade",
+              "core",
+              "arcade",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": false,
+          "core_column": 1,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 320
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            1
+          ],
+          "support_column": 3,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        }
+      ],
+      "seed": 21,
+      "typology_lots_in_capture": {
+        "arcade": 5,
+        "atrium": 4,
+        "bridge": 2,
+        "buttress": 3,
+        "cantilever": 2,
+        "core": 16,
+        "crown": 6,
+        "habitation": 5,
+        "open_frame": 5
+      }
+    },
+    {
+      "families": 9,
+      "programmes": [
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "atrium",
+              "core",
+              "crown"
+            ],
+            [
+              "habitation",
+              "atrium",
+              "core",
+              "habitation"
+            ],
+            [
+              "open_frame",
+              "bridge",
+              "core",
+              "cantilever"
+            ],
+            [
+              "buttress",
+              "arcade",
+              "core",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": true,
+          "core_column": 2,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 96,
+            "y": 64
+          },
+          "spare_column": 3,
+          "supercell": [
+            0,
+            0
+          ],
+          "support_column": 0,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "core",
+              "atrium",
+              "crown",
+              "crown"
+            ],
+            [
+              "core",
+              "atrium",
+              "habitation",
+              "open_frame"
+            ],
+            [
+              "core",
+              "bridge",
+              "open_frame",
+              "open_frame"
+            ],
+            [
+              "core",
+              "arcade",
+              "buttress",
+              "arcade"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": false,
+          "core_column": 0,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 480,
+            "y": 64
+          },
+          "spare_column": 3,
+          "supercell": [
+            1,
+            0
+          ],
+          "support_column": 2,
+          "visible_protected_void_cells": 2048,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "crown",
+              "atrium",
+              "core"
+            ],
+            [
+              "cantilever",
+              "open_frame",
+              "bridge",
+              "core"
+            ],
+            [
+              "open_frame",
+              "habitation",
+              "atrium",
+              "core"
+            ],
+            [
+              "buttress",
+              "buttress",
+              "arcade",
+              "core"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": true,
+          "core_column": 3,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 192,
+            "y": 384
+          },
+          "spare_column": 0,
+          "supercell": [
+            0,
+            1
+          ],
+          "support_column": 1,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "core",
+              "atrium",
+              "crown",
+              "crown"
+            ],
+            [
+              "core",
+              "atrium",
+              "habitation",
+              "habitation"
+            ],
+            [
+              "core",
+              "bridge",
+              "open_frame",
+              "cantilever"
+            ],
+            [
+              "core",
+              "arcade",
+              "buttress",
+              "arcade"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": false,
+          "core_column": 0,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 480,
+            "y": 320
+          },
+          "spare_column": 3,
+          "supercell": [
+            1,
+            1
+          ],
+          "support_column": 2,
+          "visible_protected_void_cells": 2048,
+          "visible_protected_void_empty": true
+        }
+      ],
+      "seed": 22,
+      "typology_lots_in_capture": {
+        "arcade": 4,
+        "atrium": 8,
+        "bridge": 4,
+        "buttress": 4,
+        "cantilever": 2,
+        "core": 16,
+        "crown": 4,
+        "habitation": 3,
+        "open_frame": 3
+      }
+    },
+    {
+      "families": 9,
+      "programmes": [
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "crown",
+              "atrium",
+              "core"
+            ],
+            [
+              "cantilever",
+              "habitation",
+              "bridge",
+              "core"
+            ],
+            [
+              "habitation",
+              "habitation",
+              "atrium",
+              "core"
+            ],
+            [
+              "buttress",
+              "buttress",
+              "arcade",
+              "core"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": true,
+          "core_column": 3,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 192,
+            "y": 128
+          },
+          "spare_column": 0,
+          "supercell": [
+            0,
+            0
+          ],
+          "support_column": 1,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "core",
+              "atrium",
+              "crown",
+              "crown"
+            ],
+            [
+              "core",
+              "atrium",
+              "habitation",
+              "habitation"
+            ],
+            [
+              "core",
+              "bridge",
+              "open_frame",
+              "cantilever"
+            ],
+            [
+              "core",
+              "arcade",
+              "buttress",
+              "arcade"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": false,
+          "core_column": 0,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 480,
+            "y": 64
+          },
+          "spare_column": 3,
+          "supercell": [
+            1,
+            0
+          ],
+          "support_column": 2,
+          "visible_protected_void_cells": 2048,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "atrium",
+              "core",
+              "crown"
+            ],
+            [
+              "habitation",
+              "atrium",
+              "core",
+              "open_frame"
+            ],
+            [
+              "open_frame",
+              "bridge",
+              "core",
+              "cantilever"
+            ],
+            [
+              "buttress",
+              "arcade",
+              "core",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": true,
+          "core_column": 2,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 96,
+            "y": 320
+          },
+          "spare_column": 3,
+          "supercell": [
+            0,
+            1
+          ],
+          "support_column": 0,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "atrium",
+              "core",
+              "crown"
+            ],
+            [
+              "habitation",
+              "atrium",
+              "core",
+              "habitation"
+            ],
+            [
+              "habitation",
+              "bridge",
+              "core",
+              "open_frame"
+            ],
+            [
+              "buttress",
+              "arcade",
+              "core",
+              "arcade"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": false,
+          "core_column": 2,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 480,
+            "y": 320
+          },
+          "spare_column": 3,
+          "supercell": [
+            1,
+            1
+          ],
+          "support_column": 0,
+          "visible_protected_void_cells": 2048,
+          "visible_protected_void_empty": true
+        }
+      ],
+      "seed": 23,
+      "typology_lots_in_capture": {
+        "arcade": 4,
+        "atrium": 8,
+        "bridge": 4,
+        "buttress": 5,
+        "cantilever": 2,
+        "core": 12,
+        "crown": 5,
+        "habitation": 6,
+        "open_frame": 2
+      }
+    },
+    {
+      "families": 9,
+      "programmes": [
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "crown",
+              "atrium",
+              "core"
+            ],
+            [
+              "cantilever",
+              "open_frame",
+              "bridge",
+              "core"
+            ],
+            [
+              "open_frame",
+              "habitation",
+              "atrium",
+              "core"
+            ],
+            [
+              "buttress",
+              "buttress",
+              "arcade",
+              "core"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": true,
+          "core_column": 3,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 192,
+            "y": 128
+          },
+          "spare_column": 0,
+          "supercell": [
+            0,
+            0
+          ],
+          "support_column": 1,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "atrium",
+              "core",
+              "crown"
+            ],
+            [
+              "open_frame",
+              "bridge",
+              "core",
+              "cantilever"
+            ],
+            [
+              "habitation",
+              "atrium",
+              "core",
+              "open_frame"
+            ],
+            [
+              "buttress",
+              "arcade",
+              "core",
+              "arcade"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": false,
+          "core_column": 2,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 480,
+            "y": 128
+          },
+          "spare_column": 3,
+          "supercell": [
+            1,
+            0
+          ],
+          "support_column": 0,
+          "visible_protected_void_cells": 2048,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "core",
+              "atrium",
+              "crown"
+            ],
+            [
+              "open_frame",
+              "core",
+              "bridge",
+              "habitation"
+            ],
+            [
+              "habitation",
+              "core",
+              "atrium",
+              "habitation"
+            ],
+            [
+              "arcade",
+              "core",
+              "arcade",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": true,
+          "core_column": 1,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 192,
+            "y": 384
+          },
+          "spare_column": 0,
+          "supercell": [
+            0,
+            1
+          ],
+          "support_column": 3,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "atrium",
+              "core",
+              "crown"
+            ],
+            [
+              "open_frame",
+              "bridge",
+              "core",
+              "open_frame"
+            ],
+            [
+              "habitation",
+              "atrium",
+              "core",
+              "habitation"
+            ],
+            [
+              "buttress",
+              "arcade",
+              "core",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": false,
+          "core_column": 2,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 480,
+            "y": 384
+          },
+          "spare_column": 3,
+          "supercell": [
+            1,
+            1
+          ],
+          "support_column": 0,
+          "visible_protected_void_cells": 2048,
+          "visible_protected_void_empty": true
+        }
+      ],
+      "seed": 24,
+      "typology_lots_in_capture": {
+        "arcade": 5,
+        "atrium": 8,
+        "bridge": 4,
+        "buttress": 5,
+        "cantilever": 1,
+        "core": 8,
+        "crown": 6,
+        "habitation": 6,
+        "open_frame": 5
+      }
+    },
+    {
+      "families": 9,
+      "programmes": [
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "atrium",
+              "core",
+              "crown"
+            ],
+            [
+              "open_frame",
+              "bridge",
+              "core",
+              "cantilever"
+            ],
+            [
+              "habitation",
+              "atrium",
+              "core",
+              "habitation"
+            ],
+            [
+              "buttress",
+              "arcade",
+              "core",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": true,
+          "core_column": 2,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 96,
+            "y": 128
+          },
+          "spare_column": 3,
+          "supercell": [
+            0,
+            0
+          ],
+          "support_column": 0,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "core",
+              "atrium",
+              "crown",
+              "crown"
+            ],
+            [
+              "core",
+              "bridge",
+              "habitation",
+              "open_frame"
+            ],
+            [
+              "core",
+              "atrium",
+              "habitation",
+              "open_frame"
+            ],
+            [
+              "core",
+              "arcade",
+              "buttress",
+              "arcade"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": false,
+          "core_column": 0,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 480,
+            "y": 128
+          },
+          "spare_column": 3,
+          "supercell": [
+            1,
+            0
+          ],
+          "support_column": 2,
+          "visible_protected_void_cells": 2048,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "core",
+              "atrium",
+              "crown"
+            ],
+            [
+              "open_frame",
+              "core",
+              "bridge",
+              "open_frame"
+            ],
+            [
+              "open_frame",
+              "core",
+              "atrium",
+              "habitation"
+            ],
+            [
+              "buttress",
+              "core",
+              "arcade",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": true,
+          "core_column": 1,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 192,
+            "y": 384
+          },
+          "spare_column": 0,
+          "supercell": [
+            0,
+            1
+          ],
+          "support_column": 3,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "atrium",
+              "core",
+              "crown"
+            ],
+            [
+              "habitation",
+              "bridge",
+              "core",
+              "cantilever"
+            ],
+            [
+              "habitation",
+              "atrium",
+              "core",
+              "open_frame"
+            ],
+            [
+              "buttress",
+              "arcade",
+              "core",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": false,
+          "core_column": 2,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 480,
+            "y": 384
+          },
+          "spare_column": 3,
+          "supercell": [
+            1,
+            1
+          ],
+          "support_column": 0,
+          "visible_protected_void_cells": 2048,
+          "visible_protected_void_empty": true
+        }
+      ],
+      "seed": 25,
+      "typology_lots_in_capture": {
+        "arcade": 4,
+        "atrium": 8,
+        "bridge": 4,
+        "buttress": 5,
+        "cantilever": 1,
+        "core": 12,
+        "crown": 5,
+        "habitation": 5,
+        "open_frame": 4
+      }
+    },
+    {
+      "families": 8,
+      "programmes": [
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "core",
+              "atrium",
+              "crown",
+              "crown"
+            ],
+            [
+              "core",
+              "bridge",
+              "habitation",
+              "open_frame"
+            ],
+            [
+              "core",
+              "atrium",
+              "habitation",
+              "open_frame"
+            ],
+            [
+              "core",
+              "arcade",
+              "buttress",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": true,
+          "core_column": 0,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 96,
+            "y": 128
+          },
+          "spare_column": 3,
+          "supercell": [
+            0,
+            0
+          ],
+          "support_column": 2,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "crown",
+              "atrium",
+              "core"
+            ],
+            [
+              "open_frame",
+              "habitation",
+              "bridge",
+              "core"
+            ],
+            [
+              "open_frame",
+              "habitation",
+              "atrium",
+              "core"
+            ],
+            [
+              "arcade",
+              "buttress",
+              "arcade",
+              "core"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": false,
+          "core_column": 3,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 128
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            0
+          ],
+          "support_column": 1,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "atrium",
+              "core",
+              "crown"
+            ],
+            [
+              "open_frame",
+              "bridge",
+              "core",
+              "open_frame"
+            ],
+            [
+              "habitation",
+              "atrium",
+              "core",
+              "habitation"
+            ],
+            [
+              "buttress",
+              "arcade",
+              "core",
+              "arcade"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": true,
+          "core_column": 2,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 96,
+            "y": 384
+          },
+          "spare_column": 3,
+          "supercell": [
+            0,
+            1
+          ],
+          "support_column": 0,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "crown",
+              "atrium",
+              "core"
+            ],
+            [
+              "open_frame",
+              "habitation",
+              "atrium",
+              "core"
+            ],
+            [
+              "open_frame",
+              "open_frame",
+              "bridge",
+              "core"
+            ],
+            [
+              "arcade",
+              "buttress",
+              "arcade",
+              "core"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": false,
+          "core_column": 3,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 320
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            1
+          ],
+          "support_column": 1,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        }
+      ],
+      "seed": 26,
+      "typology_lots_in_capture": {
+        "arcade": 5,
+        "atrium": 4,
+        "bridge": 2,
+        "buttress": 5,
+        "cantilever": 0,
+        "core": 8,
+        "crown": 8,
+        "habitation": 7,
+        "open_frame": 9
+      }
+    },
+    {
+      "families": 8,
+      "programmes": [
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "core",
+              "atrium",
+              "crown"
+            ],
+            [
+              "open_frame",
+              "core",
+              "bridge",
+              "open_frame"
+            ],
+            [
+              "habitation",
+              "core",
+              "atrium",
+              "habitation"
+            ],
+            [
+              "buttress",
+              "core",
+              "arcade",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": true,
+          "core_column": 1,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 192,
+            "y": 128
+          },
+          "spare_column": 0,
+          "supercell": [
+            0,
+            0
+          ],
+          "support_column": 3,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "core",
+              "atrium",
+              "crown"
+            ],
+            [
+              "open_frame",
+              "core",
+              "bridge",
+              "habitation"
+            ],
+            [
+              "habitation",
+              "core",
+              "atrium",
+              "habitation"
+            ],
+            [
+              "arcade",
+              "core",
+              "arcade",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": false,
+          "core_column": 1,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 128
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            0
+          ],
+          "support_column": 3,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "atrium",
+              "core",
+              "crown"
+            ],
+            [
+              "habitation",
+              "bridge",
+              "core",
+              "open_frame"
+            ],
+            [
+              "habitation",
+              "atrium",
+              "core",
+              "habitation"
+            ],
+            [
+              "buttress",
+              "arcade",
+              "core",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": true,
+          "core_column": 2,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 96,
+            "y": 384
+          },
+          "spare_column": 3,
+          "supercell": [
+            0,
+            1
+          ],
+          "support_column": 0,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "crown",
+              "atrium",
+              "core"
+            ],
+            [
+              "open_frame",
+              "habitation",
+              "bridge",
+              "core"
+            ],
+            [
+              "open_frame",
+              "habitation",
+              "atrium",
+              "core"
+            ],
+            [
+              "buttress",
+              "buttress",
+              "arcade",
+              "core"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": false,
+          "core_column": 3,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 384
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            1
+          ],
+          "support_column": 1,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        }
+      ],
+      "seed": 27,
+      "typology_lots_in_capture": {
+        "arcade": 3,
+        "atrium": 4,
+        "bridge": 2,
+        "buttress": 6,
+        "cantilever": 0,
+        "core": 12,
+        "crown": 7,
+        "habitation": 8,
+        "open_frame": 6
+      }
+    },
+    {
+      "families": 9,
+      "programmes": [
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "core",
+              "atrium",
+              "crown"
+            ],
+            [
+              "open_frame",
+              "core",
+              "atrium",
+              "habitation"
+            ],
+            [
+              "open_frame",
+              "core",
+              "bridge",
+              "habitation"
+            ],
+            [
+              "arcade",
+              "core",
+              "arcade",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": true,
+          "core_column": 1,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 192,
+            "y": 64
+          },
+          "spare_column": 0,
+          "supercell": [
+            0,
+            0
+          ],
+          "support_column": 3,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "core",
+              "atrium",
+              "crown"
+            ],
+            [
+              "open_frame",
+              "core",
+              "atrium",
+              "habitation"
+            ],
+            [
+              "open_frame",
+              "core",
+              "bridge",
+              "habitation"
+            ],
+            [
+              "arcade",
+              "core",
+              "arcade",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": false,
+          "core_column": 1,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 64
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            0
+          ],
+          "support_column": 3,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "core",
+              "atrium",
+              "crown",
+              "crown"
+            ],
+            [
+              "core",
+              "atrium",
+              "habitation",
+              "habitation"
+            ],
+            [
+              "core",
+              "bridge",
+              "habitation",
+              "cantilever"
+            ],
+            [
+              "core",
+              "arcade",
+              "buttress",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": true,
+          "core_column": 0,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 96,
+            "y": 320
+          },
+          "spare_column": 3,
+          "supercell": [
+            0,
+            1
+          ],
+          "support_column": 2,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "crown",
+              "atrium",
+              "core"
+            ],
+            [
+              "open_frame",
+              "habitation",
+              "atrium",
+              "core"
+            ],
+            [
+              "open_frame",
+              "open_frame",
+              "bridge",
+              "core"
+            ],
+            [
+              "buttress",
+              "buttress",
+              "arcade",
+              "core"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": false,
+          "core_column": 3,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 320
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            1
+          ],
+          "support_column": 1,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        }
+      ],
+      "seed": 28,
+      "typology_lots_in_capture": {
+        "arcade": 4,
+        "atrium": 4,
+        "bridge": 2,
+        "buttress": 5,
+        "cantilever": 1,
+        "core": 12,
+        "crown": 7,
+        "habitation": 6,
+        "open_frame": 7
+      }
+    },
+    {
+      "families": 9,
+      "programmes": [
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "atrium",
+              "core",
+              "crown"
+            ],
+            [
+              "open_frame",
+              "bridge",
+              "core",
+              "cantilever"
+            ],
+            [
+              "habitation",
+              "atrium",
+              "core",
+              "open_frame"
+            ],
+            [
+              "buttress",
+              "arcade",
+              "core",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": true,
+          "core_column": 2,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 96,
+            "y": 128
+          },
+          "spare_column": 3,
+          "supercell": [
+            0,
+            0
+          ],
+          "support_column": 0,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "crown",
+              "atrium",
+              "core"
+            ],
+            [
+              "cantilever",
+              "habitation",
+              "bridge",
+              "core"
+            ],
+            [
+              "open_frame",
+              "habitation",
+              "atrium",
+              "core"
+            ],
+            [
+              "arcade",
+              "buttress",
+              "arcade",
+              "core"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": false,
+          "core_column": 3,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 128
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            0
+          ],
+          "support_column": 1,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "core",
+              "atrium",
+              "crown",
+              "crown"
+            ],
+            [
+              "core",
+              "bridge",
+              "open_frame",
+              "open_frame"
+            ],
+            [
+              "core",
+              "atrium",
+              "habitation",
+              "open_frame"
+            ],
+            [
+              "core",
+              "arcade",
+              "buttress",
+              "arcade"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": true,
+          "core_column": 0,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 96,
+            "y": 384
+          },
+          "spare_column": 3,
+          "supercell": [
+            0,
+            1
+          ],
+          "support_column": 2,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "core",
+              "atrium",
+              "crown"
+            ],
+            [
+              "habitation",
+              "core",
+              "atrium",
+              "habitation"
+            ],
+            [
+              "open_frame",
+              "core",
+              "bridge",
+              "habitation"
+            ],
+            [
+              "arcade",
+              "core",
+              "arcade",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": false,
+          "core_column": 1,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 320
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            1
+          ],
+          "support_column": 3,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        }
+      ],
+      "seed": 29,
+      "typology_lots_in_capture": {
+        "arcade": 5,
+        "atrium": 4,
+        "bridge": 2,
+        "buttress": 4,
+        "cantilever": 2,
+        "core": 12,
+        "crown": 7,
+        "habitation": 5,
+        "open_frame": 7
+      }
+    },
+    {
+      "families": 9,
+      "programmes": [
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "atrium",
+              "core",
+              "crown"
+            ],
+            [
+              "habitation",
+              "atrium",
+              "core",
+              "open_frame"
+            ],
+            [
+              "habitation",
+              "bridge",
+              "core",
+              "open_frame"
+            ],
+            [
+              "buttress",
+              "arcade",
+              "core",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": true,
+          "core_column": 2,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 96,
+            "y": 64
+          },
+          "spare_column": 3,
+          "supercell": [
+            0,
+            0
+          ],
+          "support_column": 0,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "crown",
+              "atrium",
+              "core"
+            ],
+            [
+              "open_frame",
+              "habitation",
+              "atrium",
+              "core"
+            ],
+            [
+              "cantilever",
+              "open_frame",
+              "bridge",
+              "core"
+            ],
+            [
+              "arcade",
+              "buttress",
+              "arcade",
+              "core"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": false,
+          "core_column": 3,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 64
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            0
+          ],
+          "support_column": 1,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "atrium",
+              "core",
+              "crown"
+            ],
+            [
+              "habitation",
+              "atrium",
+              "core",
+              "open_frame"
+            ],
+            [
+              "habitation",
+              "bridge",
+              "core",
+              "open_frame"
+            ],
+            [
+              "buttress",
+              "arcade",
+              "core",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": true,
+          "core_column": 2,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 96,
+            "y": 320
+          },
+          "spare_column": 3,
+          "supercell": [
+            0,
+            1
+          ],
+          "support_column": 0,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "core",
+              "atrium",
+              "crown"
+            ],
+            [
+              "open_frame",
+              "core",
+              "bridge",
+              "habitation"
+            ],
+            [
+              "open_frame",
+              "core",
+              "atrium",
+              "habitation"
+            ],
+            [
+              "buttress",
+              "core",
+              "arcade",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": false,
+          "core_column": 1,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 576,
+            "y": 384
+          },
+          "spare_column": 0,
+          "supercell": [
+            1,
+            1
+          ],
+          "support_column": 3,
+          "visible_protected_void_cells": 0,
+          "visible_protected_void_empty": true
+        }
+      ],
+      "seed": 30,
+      "typology_lots_in_capture": {
+        "arcade": 3,
+        "atrium": 4,
+        "bridge": 2,
+        "buttress": 6,
+        "cantilever": 1,
+        "core": 12,
+        "crown": 7,
+        "habitation": 5,
+        "open_frame": 8
+      }
+    },
+    {
+      "families": 9,
+      "programmes": [
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "atrium",
+              "core",
+              "crown"
+            ],
+            [
+              "habitation",
+              "atrium",
+              "core",
+              "open_frame"
+            ],
+            [
+              "open_frame",
+              "bridge",
+              "core",
+              "open_frame"
+            ],
+            [
+              "buttress",
+              "arcade",
+              "core",
+              "arcade"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": true,
+          "core_column": 2,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 96,
+            "y": 64
+          },
+          "spare_column": 3,
+          "supercell": [
+            0,
+            0
+          ],
+          "support_column": 0,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "atrium",
+              "core",
+              "crown"
+            ],
+            [
+              "habitation",
+              "bridge",
+              "core",
+              "cantilever"
+            ],
+            [
+              "habitation",
+              "atrium",
+              "core",
+              "open_frame"
+            ],
+            [
+              "buttress",
+              "arcade",
+              "core",
+              "arcade"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": false,
+          "core_column": 2,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 480,
+            "y": 128
+          },
+          "spare_column": 3,
+          "supercell": [
+            1,
+            0
+          ],
+          "support_column": 0,
+          "visible_protected_void_cells": 2048,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 2,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "core",
+              "atrium",
+              "crown"
+            ],
+            [
+              "habitation",
+              "core",
+              "atrium",
+              "habitation"
+            ],
+            [
+              "cantilever",
+              "core",
+              "bridge",
+              "open_frame"
+            ],
+            [
+              "buttress",
+              "core",
+              "arcade",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 2,
+          "complete_in_capture": true,
+          "core_column": 1,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 192,
+            "y": 320
+          },
+          "spare_column": 0,
+          "supercell": [
+            0,
+            1
+          ],
+          "support_column": 3,
+          "visible_protected_void_cells": 6144,
+          "visible_protected_void_empty": true
+        },
+        {
+          "atrium_column": 1,
+          "bands_top_to_bottom": [
+            [
+              "crown",
+              "atrium",
+              "core",
+              "crown"
+            ],
+            [
+              "habitation",
+              "bridge",
+              "core",
+              "cantilever"
+            ],
+            [
+              "habitation",
+              "atrium",
+              "core",
+              "habitation"
+            ],
+            [
+              "buttress",
+              "arcade",
+              "core",
+              "buttress"
+            ]
+          ],
+          "bridge_band": 1,
+          "complete_in_capture": false,
+          "core_column": 2,
+          "protected_void": {
+            "height": 64,
+            "width": 96,
+            "x": 480,
+            "y": 384
+          },
+          "spare_column": 3,
+          "supercell": [
+            1,
+            1
+          ],
+          "support_column": 0,
+          "visible_protected_void_cells": 2048,
+          "visible_protected_void_empty": true
+        }
+      ],
+      "seed": 31,
+      "typology_lots_in_capture": {
+        "arcade": 5,
+        "atrium": 8,
+        "bridge": 4,
+        "buttress": 5,
+        "cantilever": 1,
+        "core": 8,
+        "crown": 6,
+        "habitation": 7,
+        "open_frame": 4
+      }
+    }
+  ]
+}

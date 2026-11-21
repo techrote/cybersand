@@ -1,0 +1,11 @@
+{
+  "qualified_source_commit": "5132a454f1db80c5b54dc6fef56b488ef9b3edc9",
+  "qualified_source_tree": "5f61ff783dd17174df056e796aa1ec719bd27063",
+  "parent_commit": "615828b28337f85e4663e03ba479616db4ddf764",
+  "branch": "experiment/gentek-showcase-rosework-001",
+  "evidence_scope": "This directory contains evidence only; the source-input ledger identifies every qualified input independently of a later documentation commit.",
+  "native_captures": 23,
+  "derived_pngs": 5,
+  "source_input_digest": "7778471bf4f8f6d2f57decb98c4a95b0e6dc50b77d08bccb0e478277e14b2a28",
+  "qualification_directory": "rosework-qualification-final"
+}

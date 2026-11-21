@@ -68,6 +68,28 @@ source/runtime identities, platform results, failures and remaining owner checks
 
 The [PUBPRES-INTEGRATION-001 evaluation](../operations/pubpres-integration-evaluation.md) joins sparse publication, strict physical feedback and a bounded presentation timeline. Matched actual gameplay rejected the temporary automatic Windows software-ANGLE full-upload override; the repair removes it while retaining explicit full selection. The candidate also removes overdue non-progressing owner turns after a completed body sample. Native health fences and real physical admission remain intact. It remains Draft/HOLD pending fresh source-matched long-tail, freshness and owner gameplay evidence; rejected renderer treatments and policies are retained separately.
 
+## Experimental Gentek catalogue integration — Draft/HOLD, 2026-11-17
+
+The stacked [GENTEK-SHOWCASE-INTEGRATION-001 #671](https://github.com/techrote/cybersand/pull/671)
+collects all eight independent advanced showcase PRs (#663–#670) onto the frozen
+72-module [CLASSIC #624](https://github.com/techrote/cybersand/pull/624).
+The combined source-matched native and Linux/Godot material qualification passes
+for an **80-module candidate** and two mixed five-style maps; the
+[research integration record](../operations/gentek-showcase-integration-001.md)
+owns exact source/PNG provenance, remaining review and owner approval.
+Both PRs remain **Draft/HOLD; not accepted main, not Ready, not merge-authorized**.
+
+## GENTEK-80 integration candidate — 20 November 2026
+
+A fresh Draft/HOLD branch from accepted `de109d01` reconciles all 72 repaired
+CLASSIC samplers and eight advanced showcases through the existing Architectural
+Generator. See the [source reconciliation](../research/gentek-80-integration-001.md)
+and [evaluation procedure](../operations/gentek80-evaluation.md). The 80 additions
+coexist with 13 accepted presets; catalogue counts do not remove legacy choices.
+Compiler cache identity, complete native visual evidence, target-OS Workbench
+persistence and source-qualified Windows packaging are mandatory admission gates.
+Exact results remain in dated evidence. Owner merge approval remains required.
+
 ## GEN-008 Flatten / Bake History — 2026-11-13
 
 **Implementation candidate, Draft/HOLD:** issue #548 starts independently from

@@ -5,6 +5,7 @@ const WaterComparisonScenes = preload("res://scripts/workbench_water_comparison_
 const GeneratedMaps = preload("res://scripts/workbench_generated_map.gd")
 const MaterialBaseline = preload("res://scripts/workbench_material_baseline.gd")
 const PaintEditor = preload("res://scripts/workbench_paint_editor_controller.gd")
+const ArtBatchPanel = preload("res://scripts/art_batch_panel.gd")
 const Fleet = Setup.Fleet
 const ActorCatalog = Setup.ActorCatalog
 const RESPONSE_LABELS := ["LA-SA · selective arrivals","LA · all events","LA · events off","RFT · fixed 20"]
@@ -28,6 +29,13 @@ var _flatten_button: Button
 var _flatten_confirmation := ConfirmationDialog.new()
 var art_batches: Window
 var engine_lab: Window
+# A small session association is read once without constructing Art or opening
+# any traffic archive. It binds native completions through profile outages.
+var _art_history_session: Dictionary = {}
+var _unopened_history_pending: Array[Dictionary] = []
+var _unopened_history_error := ""
+var _unopened_history_retry_ms := 0
+var art_history_persistence: Dictionary = {}
 var host: Control
 var applied: Dictionary = {}
 var pilot_slot := -1
@@ -208,6 +216,7 @@ func _spin(row: Control, caption: String, field: SpinBox, low: float, high: floa
 
 func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	host = controller
+	_art_history_session = ArtBatchPanel.read_history_session()
 	host.tower_panel.refresh(false,0,{})
 	var layout: Control = host.get_node("Layout")
 	for child: Control in layout.get_children():
@@ -329,7 +338,21 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	paint_editor.deferred_brush_finished.connect(func(token: int, result: Dictionary) -> void:
 		if art_batches != null: art_batches.executor.manual_finished(token,result))
 	paint_editor.history_action_finished.connect(func(receipt: Dictionary) -> void:
-		if art_batches != null: art_batches.history_edited(receipt))
+		if art_batches != null:
+			art_batches.history_edited(receipt)
+		else:
+			# Do not defeat lazy Art construction merely to preserve a confirmed
+			# native receipt. Stage it in the bounded atomic per-receipt journal.
+			var epoch: int = int(host.simulation_worker.art_state().epoch)
+			art_history_persistence = ArtBatchPanel.capture_unopened_history_receipt(receipt,epoch,_art_history_session,not _unopened_history_pending.is_empty())
+			if not bool(art_history_persistence.ok):
+				_unopened_history_error = str(art_history_persistence.error)
+				var item: Dictionary = art_history_persistence.item
+				if not item.is_empty() and not ArtBatchPanel.retain_volatile_receipt(_unopened_history_pending,item):
+					_unopened_history_error += " Bounded retry capacity exhausted; receipt could not be retained."
+				message = _unopened_history_error
+			elif art_history_persistence.status == "no_session":
+				message = "Native history completed; no saved Art conversation is associated.")
 	_name.reparent(paint_editor)
 	_name.tooltip_text = "Name of the authored starting map; Save does not capture evolved simulation."
 	save_start_button.reparent(paint_editor)
@@ -377,6 +400,10 @@ func _ensure_art_batches() -> Window:
 		# _process callback (e.g. an explicit hidden-panel agent transaction).
 		# Bind immediately, while preserving lazy panel/provider construction.
 		art_batches.executor.wb = self
+		art_batches.pending_history_receipts = _unopened_history_pending
+		art_batches._history_retry_needed = not _unopened_history_pending.is_empty()
+		art_batches._history_persistence_error = _unopened_history_error
+		_unopened_history_pending = []
 		art_batches.hide()
 		add_child(art_batches)
 	return art_batches
@@ -1305,7 +1332,7 @@ func finish_art_history() -> void:
 	if paint_editor != null: paint_editor.finish_agent_history()
 
 func art_history_guard() -> String:
-	return art_batches.history_block_reason() if art_batches != null else ""
+	return art_batches.history_block_reason() if art_batches != null else _unopened_history_error
 
 # Built-in #361 equipment starts. Each asks the native validator for one of
 # the existing opt-in liquid presets (inertial Water by default) and sets
@@ -1588,6 +1615,14 @@ func update_camera(presentation: Dictionary = {}) -> void:
 
 func _process(_delta: float) -> void:
 	if host == null: return
+	if art_batches == null and not _unopened_history_pending.is_empty() and Time.get_ticks_msec() >= _unopened_history_retry_ms:
+		_unopened_history_retry_ms = Time.get_ticks_msec()+1000
+		while not _unopened_history_pending.is_empty():
+			if not ArtBatchPanel._persist_history_receipt(_unopened_history_pending[0]): break
+			_unopened_history_pending.pop_front()
+		if _unopened_history_pending.is_empty():
+			_unopened_history_error = ""
+			message = "Pending Art history receipts are durably saved; open Art to restore them."
 	_poll_flatten()
 	if paint_editor != null and host.brush_preview != null: host.brush_preview.hide()
 	if step_pending:

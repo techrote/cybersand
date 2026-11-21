@@ -1,0 +1,21 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+ART_DURABILITY_BEFORE_CHECK saved profile fixture true
+ART_DURABILITY_BEFORE_CHECK native-backed Workbench keeps Art lazy true
+ART_DURABILITY_BEFORE_CHECK unreadable profile real filesystem fixture true
+BEFORE_FINDING_A {"explicit_failure":false,"message":"","original_message":"","pending":0,"retained":false}
+ART_DURABILITY_BEFORE_CHECK A confirmed native receipt is retained or explicit failure is surfaced false
+ART_DURABILITY_BEFORE_CHECK load valid session for loaded-Art fault true
+ART_DURABILITY_BEFORE_CHECK create writable continuation true
+ART_DURABILITY_BEFORE_CHECK raw append blocked by actual directory true
+BEFORE_FINDING_B_RAW {"error":"Confirmed history result could not be archived. Cannot write traffic log; live traffic remains available.","pending":0,"turns":2}
+ART_DURABILITY_BEFORE_CHECK B raw append failure retains durable receipt false
+ART_DURABILITY_BEFORE_CHECK filesystem obstruction placed after committed raw event true
+BEFORE_FINDING_B_TURN {"error":"Conversation turn was not saved. Cannot write traffic log; live traffic remains available.","pending":0,"raw_committed":true,"turns":2}
+ART_DURABILITY_BEFORE_CHECK raw event really committed before conversation failure true
+ART_DURABILITY_BEFORE_CHECK B conversation append failure retains durable receipt false
+ART_DURABILITY_BEFORE_CHECK failed conversation writes never invent live turn true
+ART_DURABILITY_BEFORE_CHECK all failures preserve original archive bytes true
+ART_DURABILITY_BEFORE_RESULT {"checks":13,"failures":["A confirmed native receipt is retained or explicit failure is surfaced","B raw append failure retains durable receipt","B conversation append failure retains durable receipt"],"godot":"4.7-stable (official)","native_sha256":"a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7"}

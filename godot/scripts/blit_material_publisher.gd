@@ -73,6 +73,10 @@ var rows: int = 0
 # Three is provisional for the diagnostic experiment, not an acceptance claim.
 var staging_slots: int = 3
 var copy_mode: String = "runs"
+# PUBPRES-PLAYABILITY-001 residency control. The ordinary eager policy remains
+# the default. Reachable omits only atlases which _submit always replaces with
+# the exact full-image pool; every resource it can select still exists at setup.
+var staging_pool_policy: String = "eager"
 var staging: Dictionary = {}
 var _staging_pool_ids: Dictionary = {}
 # The copy into the recycled history texture can outlive ordinary small
@@ -122,6 +126,7 @@ func _setup(source: Image, preceding: Image) -> bool:
 	var requested_slots: String = OS.get_environment("CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS")
 	staging_slots = int(requested_slots) if requested_slots in ["1","2","3"] else 3
 	copy_mode = "tiles" if OS.get_environment("CYBERSAND_DIAG_MATERIAL_COPY_MODE") == "tiles" else "runs"
+	staging_pool_policy = "reachable" if OS.get_environment("CYBERSAND_DIAG_MATERIAL_POOL_POLICY") == "reachable" else "eager"
 	channels = 1 if logical_format == Image.FORMAT_R8 else 2
 	while true:
 		columns = ceili(float(extent.x) / tile_side)
@@ -137,7 +142,7 @@ func _setup(source: Image, preceding: Image) -> bool:
 	retirement_sink.setup(1,1,DrawableTexture2D.DRAWABLE_FORMAT_RGBA8,Color(0,0,0,1),false)
 	retirement_owned_id = retirement_sink.get_instance_id()
 	retirement_owned_rid = retirement_sink.get_rid()
-	for capacity: int in CAPACITIES:
+	for capacity: int in _required_staging_capacities():
 		# The 128-tile rectangle bounds the measured 65..128-tile case without
 		# rounding it to a full 256-tile World. Allocate and prime it here so
 		# its bounded storage/setup cost is visible before interactive uploads.
@@ -146,17 +151,15 @@ func _setup(source: Image, preceding: Image) -> bool:
 		staging[capacity] = pool
 		_staging_pool_ids[capacity] = pool.get_instance_id()
 		if pool.extent == extent: full_staging = pool
-		if capacity >= columns * rows: break
 	if full_staging == null:
 		full_staging = _new_staging_pool(extent)
 		if full_staging == null: return false
 	_full_staging_pool_id = full_staging.get_instance_id()
-	if columns * rows >= HISTORY_COPY_MIN_TILES:
-		for capacity: int in HISTORY_STAGING_CAPACITIES:
-			var pool: StagingPool = _new_staging_pool(_capacity_extent(capacity))
-			if pool == null: return false
-			_history_staging[capacity] = pool
-			_history_staging_pool_ids[capacity] = pool.get_instance_id()
+	for capacity: int in _required_history_staging_capacities():
+		var pool: StagingPool = _new_staging_pool(_capacity_extent(capacity))
+		if pool == null: return false
+		_history_staging[capacity] = pool
+		_history_staging_pool_ids[capacity] = pool.get_instance_id()
 	current = _new_plane()
 	previous = _new_plane()
 	if current == null or previous == null: return false
@@ -234,6 +237,32 @@ func _capacity_extent(capacity: int) -> Vector2i:
 	return CAPACITY_TILE_EXTENTS.get(capacity,Vector2i.ZERO)*tile_side
 
 
+func _required_staging_capacities() -> Array[int]:
+	var result: Array[int] = []
+	for capacity: int in CAPACITIES:
+		var size: Vector2i = _capacity_extent(capacity)
+		# _submit selects full_staging whenever atlas area reaches World area.
+		# Equal shape must retain its existing alias and shared cursor. A larger
+		# or differently shaped atlas at that area is otherwise unreachable.
+		if staging_pool_policy != "reachable" or size == extent \
+				or size.x*size.y < extent.x*extent.y:
+			result.append(capacity)
+		if capacity >= columns*rows: break
+	return result
+
+
+func _required_history_staging_capacities() -> Array[int]:
+	var result: Array[int] = []
+	if columns*rows < HISTORY_COPY_MIN_TILES: return result
+	for capacity: int in HISTORY_STAGING_CAPACITIES:
+		var size: Vector2i = _capacity_extent(capacity)
+		# Whole-image history copies also use full_staging. A dedicated history
+		# pool has no full-image alias and is required only for smaller atlases.
+		if staging_pool_policy != "reachable" or size.x*size.y < extent.x*extent.y:
+			result.append(capacity)
+	return result
+
+
 func _valid_staging_pool(pool: StagingPool, size: Vector2i) -> bool:
 	if pool == null or pool.extent != size or pool.next_slot < 0 or pool.next_slot >= staging_slots \
 			or pool.resources.size() != staging_slots or pool.owned_resource_ids.size() != staging_slots: return false
@@ -285,7 +314,8 @@ func _tile(source: Image, index: int) -> Image:
 
 
 func _valid_state() -> bool:
-	if staging_slots not in [1,2,3] or copy_mode not in ["tiles","runs"]: return false
+	if staging_slots not in [1,2,3] or copy_mode not in ["tiles","runs"] \
+			or staging_pool_policy not in ["eager","reachable"]: return false
 	if extent.x <= 0 or extent.y <= 0 or extent.x >= 16384 or extent.y >= 16384 \
 			or logical_format not in [Image.FORMAT_R8,Image.FORMAT_RG8] \
 			or channels != (1 if logical_format == Image.FORMAT_R8 else 2): return false
@@ -307,19 +337,17 @@ func _valid_state() -> bool:
 				or plane.bytes.size() != columns*rows or plane.pending.size() != columns*rows \
 				or plane.drawable.get_rid() == retirement_sink.get_rid() \
 				or plane.drawable.get_rid() == dummy_source.get_rid(): return false
-	if staging.size() != _staging_pool_ids.size(): return false
-	var history_capacities: Array[int] = []
-	if columns * rows >= HISTORY_COPY_MIN_TILES:
-		history_capacities = HISTORY_STAGING_CAPACITIES
+	var capacities: Array[int] = _required_staging_capacities()
+	if staging.size() != capacities.size() or _staging_pool_ids.size() != capacities.size(): return false
+	var history_capacities: Array[int] = _required_history_staging_capacities()
 	if _history_staging.size() != history_capacities.size() \
 			or _history_staging_pool_ids.size() != history_capacities.size(): return false
 	for capacity: int in history_capacities:
 		var pool: StagingPool = _history_staging.get(capacity) as StagingPool
 		if pool == null or pool.get_instance_id() != int(_history_staging_pool_ids.get(capacity,0)) \
 				or not _valid_staging_pool(pool,_capacity_extent(capacity)): return false
-	for capacity: int in staging:
-		if capacity not in CAPACITIES: return false
-		var pool: StagingPool = staging[capacity] as StagingPool
+	for capacity: int in capacities:
+		var pool: StagingPool = staging.get(capacity) as StagingPool
 		if pool == null or pool.get_instance_id() != int(_staging_pool_ids.get(capacity,0)): return false
 		if not _valid_staging_pool(pool,_capacity_extent(capacity)): return false
 	if full_staging == null or full_staging.get_instance_id() != _full_staging_pool_id \
@@ -412,6 +440,7 @@ func _finish_metrics() -> void:
 	last_update["tile_side"] = tile_side
 	last_update["tile_count"] = columns*rows
 	last_update["staging_slots"] = staging_slots
+	last_update["staging_pool_policy"] = staging_pool_policy
 	last_update["staging_backend"] = "texture2d_array"
 	last_update["staging_layer"] = 0 if int(last_update.get("staging_slot",-1)) >= 0 else -1
 	last_update["staging_resource_layers"] = 1

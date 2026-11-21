@@ -1,0 +1,153 @@
+name: GENTEK-691 targeted Flatten redo and lazy Art qualification
+# The focused first gate may also run on an isolated Art-only staging branch
+# before the owning integration branch starts its full guarded publisher.
+# Both targets require committed provenance and unchanged compiled native inputs.
+# A source-only reconciliation changing native inputs still fails closed.
+on:
+  push:
+    branches: [qualification/gentek691-art-durability]
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: gentek691-history-${{ github.ref }}
+  cancel-in-progress: false
+# The focused replay consumes the *committed, provenance-verified* native
+# runtime on this exact HEAD. It never downloads binaries from an obsolete run.
+# Both targets also assert native input directories are unchanged since the
+# recorded build commit; new native work requires a full requalification.
+jobs:
+  linux:
+    name: Linux X11 full native Flatten 512 + Art deferred-history
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      GODOT_URL: 'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
+      GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+      LIBGL_ALWAYS_SOFTWARE: '1'
+      LP_NUM_THREADS: '2'
+      GALLIVM_PERF: nopt
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Require unchanged compiled native inputs and pin Rapier
+        shell: bash
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
+          git lfs pull --include='godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so' --exclude=''
+          echo '566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' | sha256sum --check --strict
+      - name: Verify committed Linux source-matched extension and pinned Godot
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, json, subprocess
+          from pathlib import Path
+          manifest = json.loads(Path("godot/addons/cybersand_native/runtime-provenance.linux.json").read_text())
+          path = Path("godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so")
+          assert manifest["platform"] == "linux" and manifest["status"] == "validated-development-runtime"
+          assert manifest["artifact"] == path.as_posix()
+          assert path.stat().st_size == manifest["size"]
+          assert hashlib.sha256(path.read_bytes()).hexdigest() == manifest["sha256"]
+          subprocess.run(["git", "merge-base", "--is-ancestor", manifest["source_commit"], "HEAD"], check=True)
+          subprocess.run(["git", "diff", "--exit-code", manifest["source_commit"], "HEAD",
+                          "--", "native/include", "native/src", "godot/native_extension"], check=True)
+          print("Verified Linux native: " + manifest["sha256"] + " built from " + manifest["source_commit"])
+          PY
+          curl -fL --retry 3 --max-time 600 -o "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          mkdir -p "$RUNNER_TEMP/godot"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          chmod +x "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64"
+          bash tools/ci/prepare_linux_display.sh
+      - name: Qualify original Art suites and adversarial receipt recovery
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          GODOT_BIN="$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64"
+          python3 tools/ci/run_art_history_recovery.py --godot "$GODOT_BIN" --project godot \
+            --evidence evidence/art-recovery > evidence/art-recovery.log 2>&1 || { tail -120 evidence/art-recovery.log; exit 1; }
+          cat evidence/art-recovery.log
+      - name: Reproduce complete original Flatten author and independent reopen
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          GODOT_BIN="$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64"
+          xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
+            python3 tools/ci/run_flatten_qualification.py --godot "$GODOT_BIN" --project godot \
+            --evidence evidence/flatten --cases 512x1 > evidence/flatten.log 2>&1 || { tail -120 evidence/flatten.log; exit 1; }
+      - name: Retain original exact-run logs and framebuffer evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gentek691-focused-linux-${{ github.run_id }}
+          path: evidence/
+          retention-days: 90
+          if-no-files-found: warn
+  windows:
+    name: Windows ANGLE full native Flatten 512 + Art deferred-history
+    runs-on: windows-2022
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Require unchanged compiled native inputs and pin Rapier
+        shell: pwsh
+        run: |
+          git lfs install --local
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          if ($LASTEXITCODE -ne 0) { throw 'Rapier materialization failed' }
+          git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll' --exclude=''
+          if ($LASTEXITCODE -ne 0) { throw 'Compiled native DLL materialization failed' }
+          $rapier = 'godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll'
+          if ((Get-FileHash $rapier -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7') { throw 'Rapier pin mismatch' }
+      - name: Verify committed Windows source-matched DLL and pinned Godot
+        shell: pwsh
+        run: |
+          $ErrorActionPreference='Stop'
+          $manifest = Get-Content 'godot/addons/cybersand_native/runtime-provenance.json' -Raw | ConvertFrom-Json
+          $dll = 'godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll'
+          if ($manifest.platform -ne 'windows' -or $manifest.status -ne 'validated-development-runtime' -or $manifest.artifact -ne $dll) { throw 'Windows runtime provenance is not a validated committed DLL' }
+          if ((Get-FileHash $dll -Algorithm SHA256).Hash.ToLowerInvariant() -ne $manifest.sha256 -or (Get-Item $dll).Length -ne $manifest.size) { throw 'Windows DLL does not match committed provenance' }
+          git merge-base --is-ancestor $manifest.source_commit HEAD
+          if ($LASTEXITCODE -ne 0) { throw 'Runtime build commit is not an ancestor of HEAD' }
+          git diff --exit-code $manifest.source_commit HEAD -- native/include native/src godot/native_extension
+          if ($LASTEXITCODE -ne 0) { throw 'Native source differs from the provenance-attested compiled DLL' }
+          $archive=Join-Path $env:RUNNER_TEMP 'godot47.zip'
+          curl.exe -fL --retry 3 -o $archive 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          if ($LASTEXITCODE -ne 0) { throw 'Godot download failed' }
+          $expected='41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9'
+          if ((Get-FileHash $archive -Algorithm SHA512).Hash.ToLowerInvariant() -ne $expected) { throw 'Godot pin mismatch' }
+          $folder=Join-Path $env:RUNNER_TEMP 'godot47'
+          Expand-Archive -LiteralPath $archive -DestinationPath $folder
+          'GODOT_EXE=' + (Join-Path $folder 'Godot_v4.7-stable_win64_console.exe') | Out-File -Append $env:GITHUB_ENV
+      - name: Qualify original Art suites and adversarial receipt recovery
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory evidence -Force | Out-Null
+          python tools/ci/run_art_history_recovery.py --godot $env:GODOT_EXE --project godot --evidence evidence/art-recovery *> evidence/art-recovery.log
+          if ($LASTEXITCODE -ne 0) { Get-Content evidence/art-recovery.log -Tail 120; throw 'Windows Art durability regression failed' }
+          Get-Content evidence/art-recovery.log
+      - name: Reproduce complete original Flatten author and independent reopen
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory evidence -Force | Out-Null
+          python tools/ci/run_flatten_qualification.py --godot $env:GODOT_EXE --project godot --evidence evidence/flatten --cases 512x1 *> evidence/flatten.log
+          if ($LASTEXITCODE -ne 0) { Get-Content evidence/flatten.log -Tail 120; throw 'Windows Flatten 512 author/reopen failed' }
+      - name: Retain original exact-run logs and framebuffer evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gentek691-focused-windows-${{ github.run_id }}
+          path: evidence/
+          retention-days: 90
+          if-no-files-found: warn

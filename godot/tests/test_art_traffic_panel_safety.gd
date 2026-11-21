@@ -39,8 +39,6 @@ func run() -> void:
 	var host: Node = load("res://main.tscn").instantiate()
 	root.add_child(host)
 	check(host.shared_workbench.art_batches == null,"startup keeps Art unconstructed")
-	# The safety controls below intentionally exercise a separately created,
-	# still-hidden panel; this must not force saved-history restoration.
 	var panel: Window = host.shared_workbench._ensure_art_batches()
 	for _frame in range(3): await process_frame
 	check(not panel.visible and not panel.conversation_loaded,"hidden startup leaves missing saved history unexamined")
@@ -140,15 +138,105 @@ func run() -> void:
 	var reopened: Node = load("res://main.tscn").instantiate()
 	root.add_child(reopened)
 	check(reopened.shared_workbench.art_batches == null,"reopened Workbench has no eager Art panel")
+	var old_archive_path: String = saved_path()
+	var old_archive_hash: String = FileAccess.get_sha256(old_archive_path)
+	reopened.shared_workbench.paint_editor.history_action_finished.emit({"action":"undo","status":"completed","label":"confirmed while hidden","applied":1})
+	check(reopened.shared_workbench.art_batches == null
+		and DirAccess.get_files_at("user://art-pending-history").size() == 1,
+		"unopened Art journals native Undo without constructing the window or reading its transcript")
 	var reopened_panel: Window = reopened.shared_workbench._ensure_art_batches()
+	check(not reopened_panel.visible and not reopened_panel.conversation_loaded
+		and reopened_panel.provider.log_path.is_empty() and not reopened_panel.provider.resume_active,
+		"explicitly created hidden Art panel still defers old conversation restore")
+	check(reopened_panel.history_block_reason().is_empty(),
+		"hidden deferred Art receipt does not block the immediately following Redo")
 	reopened_panel.show()
-	reopened.shared_workbench.paint_editor.history_action_finished.emit({"action":"undo","status":"completed","label":"confirmed during restore","applied":1})
-	check(reopened_panel.provider.resume_active and reopened_panel.pending_history_receipts.size() == 1,"confirmed editor receipt arriving during restore is retained")
+	reopened.shared_workbench.paint_editor.history_action_finished.emit({"action":"redo","status":"completed","label":"confirmed during restore","applied":1})
+	check(reopened_panel.provider.resume_active and reopened_panel.pending_history_receipts.size() == 1
+		and DirAccess.get_files_at("user://art-pending-history").size() == 2,
+		"visible restore buffers concurrent Redo alongside earlier unopened-panel Undo")
 	deadline = Time.get_ticks_msec()+60000
 	while reopened_panel.provider.resume_active and Time.get_ticks_msec()<deadline: await process_frame
-	check(reopened_panel.conversation_loaded and reopened_panel.pending_history_receipts.is_empty() and reopened_panel.conversation.size() == 1,"successful restore drains confirmed receipt exactly once")
-	check(reopened_panel.conversation[0].content.contains("confirmed during restore"),"restored model context includes confirmed editor result")
+	check(reopened_panel.conversation_loaded and reopened_panel.pending_history_receipts.is_empty()
+		and reopened_panel.conversation.size() == 2,
+		"explicit restore drains both independently confirmed history receipts exactly once")
+	if reopened_panel.conversation.size() == 2:
+		check(reopened_panel.conversation[0].content.contains("confirmed while hidden")
+			and reopened_panel.conversation[1].content.contains("confirmed during restore"),
+			"deferred native Undo and Redo retain their original chronological order")
+	check(FileAccess.get_sha256(old_archive_path) == old_archive_hash
+		and reopened_panel.provider.log_path != old_archive_path,
+		"deferred history continuation never overwrites or copies the original traffic archive")
+	check(DirAccess.get_files_at("user://art-pending-history").is_empty(),
+		"successful history restoration clears the durable receipt journal")
 	reopened.queue_free()
+	await process_frame
+	await process_frame
+
+	# More than 64 confirmed native receipts must survive a hidden shutdown.
+	var batch_host: Node = load("res://main.tscn").instantiate()
+	root.add_child(batch_host)
+	check(batch_host.shared_workbench.art_batches == null,
+		"new Workbench has no Art panel before its 75 native history events")
+	var batch_parent := saved_path()
+	var batch_parent_hash := FileAccess.get_sha256(batch_parent)
+	for index in range(75):
+		batch_host.shared_workbench.paint_editor.history_action_finished.emit(
+			{"action":"undo","status":"completed","label":"durable-%03d" % index,"applied":1})
+	var pending_files := DirAccess.get_files_at("user://art-pending-history")
+	check(batch_host.shared_workbench.art_batches == null and pending_files.size() == 75,
+		"75 hidden native receipts are durably journalled without opening the Art transcript")
+	var recovered_receipt_path := "user://art-pending-history/".path_join(pending_files[0]) if not pending_files.is_empty() else ""
+	var recovered_receipt_bytes := FileAccess.get_file_as_string(recovered_receipt_path) if not recovered_receipt_path.is_empty() else ""
+	check(FileAccess.get_sha256(batch_parent) == batch_parent_hash,
+		"large hidden receipt batches do not mutate the historical Art archive")
+	batch_host.queue_free()
+	await process_frame
+	await process_frame
+	var restored_host: Node = load("res://main.tscn").instantiate()
+	root.add_child(restored_host)
+	check(restored_host.shared_workbench.art_batches == null,
+		"restarted Workbench keeps Art lazy until explicitly opened")
+	var restored_panel: Window = restored_host.shared_workbench._ensure_art_batches()
+	check(not restored_panel.visible and not restored_panel.conversation_loaded
+		and restored_panel.pending_history_receipts.is_empty()
+		and DirAccess.get_files_at("user://art-pending-history").size() == 75,
+		"fresh Workbench process discovers 75 durable receipts without loading the conversation")
+	restored_panel.show()
+	deadline = Time.get_ticks_msec()+60000
+	while restored_panel.provider.resume_active and Time.get_ticks_msec()<deadline: await process_frame
+	var original_count := 2
+	check(restored_panel.conversation_loaded and restored_panel.conversation.size() == original_count+75
+		and DirAccess.get_files_at("user://art-pending-history").is_empty(),
+		"restart restores all 75 receipts exactly once and removes committed journal files")
+	var ordered: bool = restored_panel.conversation.size() == original_count+75
+	if ordered:
+		for index in range(75):
+			if not str(restored_panel.conversation[original_count+index].content).contains("durable-%03d" % index):
+				ordered = false
+				break
+	check(ordered,"durable receipts retain original Undo chronology across shutdown and restart")
+	check(FileAccess.get_sha256(batch_parent) == batch_parent_hash,
+		"recovered receipts preserve the immutable prior archive bytes")
+	restored_host.queue_free()
+	await process_frame
+	await process_frame
+
+	# Model a crash after archive commit but before sidecar unlink: the ID in
+	# the committed conversation must prevent a duplicate replay.
+	if not recovered_receipt_path.is_empty(): write_text(recovered_receipt_path,recovered_receipt_bytes)
+	var dedupe_host: Node = load("res://main.tscn").instantiate()
+	root.add_child(dedupe_host)
+	check(dedupe_host.shared_workbench.art_batches == null,
+		"interrupted-cleanup test starts without constructing Art")
+	var dedupe_panel: Window = dedupe_host.shared_workbench._ensure_art_batches()
+	dedupe_panel.show()
+	deadline = Time.get_ticks_msec()+60000
+	while dedupe_panel.provider.resume_active and Time.get_ticks_msec()<deadline: await process_frame
+	check(dedupe_panel.conversation_loaded and dedupe_panel.conversation.size() == original_count+75
+		and DirAccess.get_files_at("user://art-pending-history").is_empty(),
+		"archive-committed journal receipt is deduplicated after simulated interrupted cleanup")
+	dedupe_host.queue_free()
 	await process_frame
 	await process_frame
 	print("ART_TRAFFIC_PANEL ",JSON.stringify({"checks":checks,"failures":failures,"display":DisplayServer.get_name()}))

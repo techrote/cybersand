@@ -1,0 +1,389 @@
+{
+  "candidate_fixture": {
+    "chunks_per_configuration": 4,
+    "configurations_per_module": 3,
+    "fingerprints_and_receipts_included": true,
+    "material_cells": 3538944,
+    "modules": 72,
+    "status": "pass"
+  },
+  "cells_compared": 3538944,
+  "chunks_per_configuration": 4,
+  "configurations_per_module": 3,
+  "exact_bytes_compared": 7093458,
+  "module_receipts": [
+    {
+      "exact_bytes_equal": true,
+      "module": "trestle",
+      "sha256": "e85ee9ea9b3c371c5e973f16a876e7f5154d098401e7cfb8f2f240ac3344a9fe"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "stacked_arcade",
+      "sha256": "548965692e91769ac708d5bbcc0ff9d27e5d9214a81e1779165bc88ce97172b4"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "flying_buttress",
+      "sha256": "a777c05ea361da2add94f9e60ea390796f9592aec1fac6d8d8dd58df742baa17"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "sawtooth_gallery",
+      "sha256": "7f9a7204a9720e4852b11122ce490d9461d51c603960f3cdcaa6f6e741b20a0d"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "cantilever_spine",
+      "sha256": "2f6b6aae4cbdc45dd885218b832fd233016f2cecd4d424ae7e892134f774a8d4"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "rib_vault",
+      "sha256": "49c753908498b7686db05f06b03007da1ed31d5b04635cb5ca688086c5c9abf0"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "nested_arcade",
+      "sha256": "96c242b2cc6e7fe9489469b281c24524cf8d7b43999246b0bb71b77b20f88379"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "suspended_deck",
+      "sha256": "d933fa7d70cd4d047fe25c4c66026331640fb0411891ab811c8518382e28c828"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "bowstring_truss",
+      "sha256": "9ddb935ff01f2bcd05421b42aac28486a39656ec7753b62c6811484eac2a944d"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "diamond_truss",
+      "sha256": "730986d3401ce20be19a67cb297dfddfd5f5b14b0cdf13b6e82fe605c5fb3480"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "portal_frame",
+      "sha256": "295c8ec373288a28a2207b73191d61a8ca79b9c8be8beaeee85af00cc5035d0e"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "ladder_bridge",
+      "sha256": "fec28fc4c5cbf46ca5d88d07f865ba650372367eed24fe33e41904fd390b4581"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "stepped_aqueduct",
+      "sha256": "4c80d3202a6f85ab1acce4e959c848f7ee4e34f51dcbae145ad0d0d7b1a8e084"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "split_pier",
+      "sha256": "56186e373fa8ef055192e4686a21d2c59b7a3d74555d956cdfa27b5405024840"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "cable_gallery",
+      "sha256": "c320923dd04266f4f538370c6b1325c86b58af2429b56801201ad346a4719930"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "clerestory_hall",
+      "sha256": "2bb9aae6b806a736f2b82c9ff3132426633ce19d68be349a57db80a44c516ff5"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "mushroom_deck",
+      "sha256": "35a35850df7515a2ae286b00b65207d0bfb60411fd200fcaa44de20714fe6a65"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "zigzag_bridge",
+      "sha256": "2cda1bd22d00458f486f102447472505e6c365eb83cf9877a295f24a3f4025a0"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "scalloped_vault",
+      "sha256": "3c99b4721c98cf183923e8dfdcba898afa20dc9f000648b1596a8bab82b024a6"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "lattice_tower",
+      "sha256": "bc90b4bb2b3376bd1829bbf796fb2f3606012ddeab722567932edb97d378bf11"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "offset_arcade",
+      "sha256": "2a3d256908959ecd0e99e274daa0a8fbd637776c27334cc8de7d6db1f3af0960"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "bridgehouse",
+      "sha256": "4596446a2207aad42ad266995f65ce480e2b233bdab18e4ca2189d40ff1d39dc"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "forked_gantry",
+      "sha256": "2d219a41b565b96147a8667df94c4e3e3b810000a07b28af76ee1d3db371446b"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "buttress_wall",
+      "sha256": "6cdcecb0bbac064eb3a89309958e7b382c6b9006094212030bcc889bf0e00b5f"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "fan_truss",
+      "sha256": "5deed93da3a361f1a77f16169f8b6299b0076052af9bf1e2c3e8e92ce5037594"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "pratt_truss",
+      "sha256": "571e1ae46dddd45af8f77cde0fab0cfec8147f05d32cb84c3c8ea51df41f1308"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "vierendeel_frame",
+      "sha256": "43cbeb5302f8f64147153d42edfb70963f2d3bb05f72c6eded60a682b923aaa3"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "suspension_pylon",
+      "sha256": "c29e89e9d58ec012c86f9bc2bf646ef40d897e3e98cfff46c010c8eee5cbcfd7"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "harp_bridge",
+      "sha256": "e08cf51fb54a8d4e7d340296bc8dbd6f483d73a4f4f9231c0189abe53190774b"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "double_cantilever",
+      "sha256": "23992f354b43d1a41940904bf8536c9aac12e533c85eb1b915beaaabccce1c81"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "stepped_buttress",
+      "sha256": "0f111b1e61213c88890c768ffd24cdd21d09856689b1e490ad8b1e9a41c78b32"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "colonnade",
+      "sha256": "bc00954e7d1353ba0f5ad595564fdbac4c7b8157b459421caa84f5d15d4fc4db"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "basilica",
+      "sha256": "54a0e128c3e70c423baa1a78036395cdbc0ae4f35763e9af7bc1c9dc02a65e62"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "crenellated_bridge",
+      "sha256": "660477fbbe9996bbcd0dcc7fc6f483690e2200a8d56e03e6026425aca44e887c"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "pointed_arcade",
+      "sha256": "d13710018465b85e3b3c56c8cfbd570e4a173fd61b0f0c82e3646bc0d6dc0612"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "inverted_arch",
+      "sha256": "f5650243446805d5069c9eb4f44f61b684ff788e4f0b16193ee2185b4e8c0fe8"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "hourglass_pier",
+      "sha256": "d1279147938fa0c76a5b0780883bfebcc6c82d4762c39baa890ca136225879a4"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "tripod_frame",
+      "sha256": "bf1b34dd72760c1a75b020a86bec1b7a365fae9b2629dc6de55dcfa2787b4343"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "chevron_hall",
+      "sha256": "7a1881614d13002c376fea8439839ea5f9b312314c7c387b123a6f161f3eba15"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "hanging_arcade",
+      "sha256": "75e4c532c3f61912d6cb50405406bfeef3715e74ef7fa9ffafb51ca778b5d66f"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "shelf_stack",
+      "sha256": "0a51633cc7147a5693cf8a2d9d1440dcdd9fba744f87d04d602b423a4d03b813"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "staggered_balcony",
+      "sha256": "47a50ce5a0354504d0f34bfff97764e07e64d79b9ea2f902eee19c08d3b421af"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "monopod_tower",
+      "sha256": "c83393885c8b27bc79fac309c73341d6eaafe17ed8f91e3124e7a85cc8195c7a"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "wedge_gallery",
+      "sha256": "8af48c288ac74001dd5672aab0d68a0ea17112a2cf3daabdecf378c245372d40"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "crown_bridge",
+      "sha256": "d911075398fc66fd1115ffaa46496f495d5db4290369c8d4bcc07ff53326648c"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "zigzag_pier",
+      "sha256": "ddd138bbd96e2060b879cb9521afe8dbd644b92fd481061ac556d2ac42935263"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "drum_vault",
+      "sha256": "0d0439791c0ce91d9d73ee7fab7ec4d24c2811952912d937fd662930d6566222"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "pyramidal_frame",
+      "sha256": "0e178631117df4bf11de715f889fbb514a4f58cfcf33b6eb5f6a9e579eb1696f"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "warren_truss",
+      "sha256": "0bb4de5bb09e789edf74e8447fdb7efe92daabe05f25abdc0589995642072c64"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "kingpost_frame",
+      "sha256": "21f83e105cd725a46160ff6fb784c1e30f1919687fd237db7f3d74b05e42a116"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "queenpost_frame",
+      "sha256": "415fc108b6e8960ff8f51fc4e6913d37f404d292f03b8712861c9201291903ee"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "lenticular_bridge",
+      "sha256": "c8852807ac1b6f04dc00eb4217187b443e708e8674b83d93989f94eb413cae76"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "radial_stay_bridge",
+      "sha256": "fda33e0e6b83bbe82130e7bb7384162d1d7ab0271ebfc84f41333ced7152cbe2"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "twin_mast_bridge",
+      "sha256": "b8a0e688191c13bf86b70bd1fdd8479995fb2b34073f78c93c194f29f84af6d6"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "a_frame_hall",
+      "sha256": "a3bb0de28313c543bb22538d8a9107ab5580c4128ee08452d622d01f3668562c"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "butterfly_hall",
+      "sha256": "2578066f99cb4ff7b4a0ec37fa56f387d63b8c75e3a19191d655aa73ab850251"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "ziggurat_arcade",
+      "sha256": "49187eecdc6b02e99be989ce1f51a4b7284b2e99072d3dd4cadc28ec3191364a"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "corbel_arcade",
+      "sha256": "c4cfbc92b3501942cf07dbb146c2afd5660dacfa486d54dc2b3921e444d89915"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "chain_vault",
+      "sha256": "1445890693d3015bb1f51dd7c7871daeeeeab84775cd2a84491d32f1b03aebee"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "ring_pier",
+      "sha256": "e92baf4e3b363ceb4c30bd333759b22b58c2ed94d23f8bb1fd5c414b4e293053"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "folded_plate_hall",
+      "sha256": "2f73acf281706f92a8a33998c32b8771c444b73503c70b6b485363cbe9be3a7f"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "space_frame",
+      "sha256": "39fe4ddc9433317081461dddb07e5dd7b1050e44b63a705edc1731cb048d47a2"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "crossbeam_stack",
+      "sha256": "720c5dbc3bc8386c518981e9a64ccd4437a0b4fa8736c921f2b41376760a7b03"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "yoke_bridge",
+      "sha256": "6cce5cf4833cde066f225821343f9980d792595a651065a1804245dc3f9dd885"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "lantern_tower",
+      "sha256": "3fb23030098d339087b3250db97d520d8722bf997402e733de0e50c1e22bb370"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "spine_arcade",
+      "sha256": "12c19f9faff300848d4e63e06e7d03a3d4a292ab9d32e3dc0ba614739c3de761"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "cascade_terrace",
+      "sha256": "7edb8b1b8ddebf7047e6a5e0f2dcc454464a2a565711718c3799fbbf9b3451fd"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "inverted_trestle",
+      "sha256": "5f7c2ea85b9cc0e615da2d9666d19b790c2a03ecbbb105e1ecccdf495bef0b38"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "cranked_beam",
+      "sha256": "dfe3902dc4a0b36ad070b2ee3601c7d42c9b1aa57e5002f7cc25454682779d9a"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "barrel_arcade",
+      "sha256": "72c1c008e3c26775e31f10c958b8ea36439c444538558a701170ddae5cb03d37"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "buttress_crown",
+      "sha256": "d7a75978468cc75959f7446f4672a9d253d7d424ba8061a871031ad38171b040"
+    },
+    {
+      "exact_bytes_equal": true,
+      "module": "triptych_arcade",
+      "sha256": "255dea3dcc1cbf73b9d13e05aa153b73fbcda624168e68b5a1e0b36f7ff09b3c"
+    }
+  ],
+  "modules": 72,
+  "parent_fixture": {
+    "chunks_per_configuration": 4,
+    "configurations_per_module": 3,
+    "fingerprints_and_receipts_included": true,
+    "material_cells": 3538944,
+    "modules": 72,
+    "status": "pass"
+  },
+  "parent_source": "615828b28337f85e4663e03ba479616db4ddf764",
+  "same_platform_native_fingerprints_and_receipts_equal": true,
+  "snapshot_sha256": "74fcb5ecb28585c2a57f04cd9f1d980d98fff4b24c495420667c03c1d431452f",
+  "status": "pass"
+}

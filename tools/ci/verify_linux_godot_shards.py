@@ -77,7 +77,8 @@ def verify(root: Path, *, cases: list, source: str, tree: str, runtime: dict,
             log = local_file(path.parent, row.get("log"))
             require(digest(log) == row.get("log_sha256"), "Original Linux log changed")
             text = log.read_text(encoding="utf-8", errors="replace")
-            require("ERROR:" not in text and not re.search(r"\bskipped\b|^\s*SKIP\b", text, re.I | re.M),
+            require(not runner.case_diagnostic_error(case.name, text, row["returncode"])
+                    and not re.search(r"\bskipped\b|^\s*SKIP\b", text, re.I | re.M),
                     "Original Linux log contains an error or skipped check")
             require(isinstance(row.get("command"), list)
                     and row["command"][1:] == runner.case_command("GODOT", case, "linux")[1:],
