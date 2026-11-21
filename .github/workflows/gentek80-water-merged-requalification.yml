@@ -1,30 +1,22 @@
 name: GENTEK80 Water-main source requalification (HOLD)
 on:
+  # CI-OPT-002: a separate explicit publish-request commit is required.
+  # Ordinary Art/Gentek edit pushes never launch another 80-style campaign.
   push:
     branches: [integration/gentek80-water-conflict-reconcile]
     paths:
-      - 'Makefile'
-      - 'tools/ci/test_gentek80*'
-      - 'native/**'
-      - 'godot/**'
-      - 'examples/worldgen/**'
-      - 'tools/architecture/**'
-      - 'tools/ci/gentek80*'
-      - 'tools/ci/build_gentek80_runtime.py'
-      - 'tools/ci/run_gentek80_native.py'
-      - '.github/workflows/gentek80-qualification.yml'
-      - '.github/workflows/gentek80-water-merged-requalification.yml'
-      - '.github/workflows/gentek691-art-history-repro.yml'
-      - 'docs/research/gentek-80-integration-001.md'
-      - 'docs/images/gentek-80/**'
-      - 'docs/images/gentek80-integration/**'
-      - 'docs/operations/gentek80-evaluation.md'
-  workflow_dispatch:
+      - 'tools/ci/gentek80_water_publish_request.json'
+# This gating intentionally does NOT use cancel-in-progress: true. A pushed
+# publish request supersedes pending jobs, while an already running source-frozen
+# campaign preserves its evidence and cannot mutate an advanced branch. Each
+# expensive phase repeats the remote HEAD lease and exits before the next phase.
 permissions:
   contents: read
   actions: read
 concurrency:
-  group: gentek80-${{ github.run_id }}
+  # One running owner qualification and at most one latest pending request.
+  # Never cancel a publishing run: the four-file lease/fence remains atomic.
+  group: gentek80-final-${{ github.ref }}
   cancel-in-progress: false
 env:
   ARCHITECTURE_BASE_SHA: ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742
@@ -46,6 +38,11 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
           ref: ${{ github.sha }}
+      - name: Fail closed on superseded source before any expensive qualification
+        run: |
+          set -euo pipefail
+          python3 tools/ci/gentek80_water_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+          python3 tools/ci/ci_opt_publish_request.py --source-sha "$GITHUB_SHA"
       - name: Compile and challenge source-bound publisher
         run: |
           set -euo pipefail
@@ -53,8 +50,7 @@ jobs:
           python3 tools/ci/test_gentek80_runtime_publication.py
           python3 tools/ci/test_gentek80_water_runtime_publication.py
           python3 tools/architecture/test_gentek80_reference_inputs.py
-          # Fail closed on foreign branch/workflow, wrong source or stale remote lease.
-          python3 tools/ci/gentek80_water_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+          # Source/branch/workflow/request fence already passed before this suite.
           python3 tools/ci/test_gen007_architectural_runtime_publication.py
           python3 tools/ci/test_lcb001_shared_contract_runtime_publication.py
           python3 tools/ci/check_ci_provider_policy.py
@@ -93,12 +89,16 @@ jobs:
           git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
           timeout 600 git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
           git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+      - name: Refuse superseded Linux source before existing native generation and hierarchy suites
+        run: python3 tools/ci/gentek80_water_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
       - name: Existing native generation and hierarchy suites
         run: |
           set -euo pipefail
           timeout 3600 python3 tools/ci/run_gentek80_native.py --compiler g++-13 --output evidence/native-worldgen --include-worldgen > evidence/native-worldgen.log 2>&1 || { tail -150 evidence/native-worldgen.log; exit 1; }
           ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 \
             timeout 5400 make -j2 worldgen-sanitize CXX=g++-13 > evidence/native-sanitized.log 2>&1 || { tail -150 evidence/native-sanitized.log; exit 1; }
+      - name: Refuse superseded Linux source before build exact-source native extension
+        run: python3 tools/ci/gentek80_water_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
       - name: Build exact-source native extension
         env:
           GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
@@ -116,6 +116,8 @@ jobs:
           # a separate success-only output.
           cp godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so evidence/
           bash tools/check_linux_runtime_floor.sh > evidence/abi-floor.log 2>&1
+      - name: Refuse superseded Linux source before fetch pinned godot and run actual graphical owner workflow
+        run: python3 tools/ci/gentek80_water_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
       - name: Fetch pinned Godot and run actual graphical owner workflow
         env:
           LIBGL_ALWAYS_SOFTWARE: '1'
@@ -142,6 +144,8 @@ jobs:
           xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
             python3 tools/ci/run_flatten_qualification.py --godot "$GODOT_BIN" --project godot \
               --evidence evidence/flatten-integration --cases 512x1
+      - name: Refuse superseded Linux source before complete catalogue, repaired geometry and compiler cache campaign
+        run: python3 tools/ci/gentek80_water_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
       - name: Complete catalogue, repaired geometry and compiler cache campaign
         env:
           GENTEK_TEST_COMPILER_A: /usr/bin/g++-13
@@ -175,6 +179,8 @@ jobs:
           "$RUNNER_TEMP/gallery/bin/python" tools/architecture/test_gentek80_campaign.py > evidence/gallery-boundaries.log 2>&1
           "$RUNNER_TEMP/gallery/bin/python" tools/architecture/gentek80_campaign.py --godot "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" --output evidence/gentek80-gallery --require-clean-source --runtime-build-ledger evidence/runtime-build-linux.json --reference-gallery docs/images/gentek80-integration/gallery-manifest.json --reference-input-policy tools/architecture/gentek80_water_reference_delta.json
           "$RUNNER_TEMP/gallery/bin/python" tools/architecture/gentek80_repair_comparison.py --before 615828b28337f85e4663e03ba479616db4ddf764 --after "$GITHUB_SHA" --compiler g++-13 --output evidence/gentek80-repairs
+      - name: Refuse superseded Linux source before all 80 real workbench selections, material edits and separate-process reopen
+        run: python3 tools/ci/gentek80_water_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
       - name: All 80 real Workbench selections, material edits and separate-process reopen
         env:
           LIBGL_ALWAYS_SOFTWARE: '1'
@@ -184,6 +190,8 @@ jobs:
           set -euo pipefail
           xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
             python3 tools/architecture/gentek80_workbench.py --godot "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" --output evidence/gentek80-workbench --graphical
+      - name: Refuse superseded Linux source before record and attest actual source-matched linux library
+        run: python3 tools/ci/gentek80_water_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
       - name: Record and attest actual source-matched Linux library
         if: github.event_name == 'push'
         run: |
@@ -230,6 +238,11 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
           ref: ${{ github.sha }}
+      - name: Refuse superseded Windows source before prepare exact pinned windows build inputs
+        shell: pwsh
+        run: |
+          python tools/ci/gentek80_water_runtime_publication.py check-source --source-sha "$env:GITHUB_SHA"
+          if ($LASTEXITCODE -ne 0) { throw 'CI-OPT-002: source was superseded before prepare exact pinned windows build inputs' }
       - name: Prepare exact pinned Windows build inputs
         run: |
           set -euo pipefail
@@ -249,6 +262,11 @@ jobs:
           mkdir -p "$RUNNER_TEMP/llvm-mingw"
           tar -xJf "$RUNNER_TEMP/llvm-mingw.tar.xz" -C "$RUNNER_TEMP/llvm-mingw" --strip-components=1
           if test ! -e "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"; then ln -s llvm-ar "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"; fi
+      - name: Refuse superseded Windows source before build pinned godot-cpp and candidate extension
+        shell: pwsh
+        run: |
+          python tools/ci/gentek80_water_runtime_publication.py check-source --source-sha "$env:GITHUB_SHA"
+          if ($LASTEXITCODE -ne 0) { throw 'CI-OPT-002: source was superseded before build pinned godot-cpp and candidate extension' }
       - name: Build pinned godot-cpp and candidate extension
         env:
           GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
@@ -272,6 +290,11 @@ jobs:
           timeout 3600 bash "$RUNNER_TEMP/architecture-immutable-base/tools/build_native_extension_windows.sh" > evidence/build-immutable-base.log 2>&1 || { tail -160 evidence/build-immutable-base.log; exit 1; }
           python3 "$RUNNER_TEMP/architecture-immutable-base/tools/ci/native_candidate_identity.py" "$GITHUB_WORKSPACE/build/architecture-windows-base" --create
           sha256sum "$GODOT_CPP_ROOT/bin/libgodot-cpp.windows.template_debug.x86_64.a" > evidence/shared-godot-cpp.sha256
+      - name: Refuse superseded Windows source before bind cross-compiled windows binary to pinned compiler and source
+        shell: pwsh
+        run: |
+          python tools/ci/gentek80_water_runtime_publication.py check-source --source-sha "$env:GITHUB_SHA"
+          if ($LASTEXITCODE -ne 0) { throw 'CI-OPT-002: source was superseded before bind cross-compiled windows binary to pinned compiler and source' }
       - name: Bind cross-compiled Windows binary to pinned compiler and source
         if: github.event_name == 'push'
         run: |
@@ -287,6 +310,11 @@ jobs:
             --bundle build/gentek80-publish-windows \
             --runtime build/architecture-windows/cybersand_native.windows.x86_64.dll \
             --toolchain evidence/native-publisher-toolchain.txt
+      - name: Refuse superseded Windows source before retain windows source-bound prepublication custody
+        shell: pwsh
+        run: |
+          python tools/ci/gentek80_water_runtime_publication.py check-source --source-sha "$env:GITHUB_SHA"
+          if ($LASTEXITCODE -ne 0) { throw 'CI-OPT-002: source was superseded before retain windows source-bound prepublication custody' }
       - name: Retain Windows source-bound prepublication custody
         if: github.event_name == 'push'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -336,6 +364,11 @@ jobs:
         with:
           name: architecture-windows-base-${{ github.run_id }}
           path: build/architecture-windows-base
+      - name: Refuse superseded Windows source before restore independently recorded windows build custody
+        shell: pwsh
+        run: |
+          python tools/ci/gentek80_water_runtime_publication.py check-source --source-sha "$env:GITHUB_SHA"
+          if ($LASTEXITCODE -ne 0) { throw 'CI-OPT-002: source was superseded before restore independently recorded windows build custody' }
       - name: Restore independently recorded Windows build custody
         if: github.event_name == 'push'
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
@@ -383,6 +416,11 @@ jobs:
           if ((Get-FileHash (Join-Path $base $rapier) -Algorithm SHA256).Hash.ToLowerInvariant() -ne $env:RAPIER_WINDOWS_SHA256) { throw 'Immutable-base Rapier pin mismatch' }
           python tools/architecture/qualify.py --godot $env:GODOT_EXE --project (Join-Path $base 'godot') --source-root $base --output evidence/windows-base --suite legacy-reference
           if ($LASTEXITCODE -ne 0) { throw 'Immutable-base Windows capture failed' }
+      - name: Refuse superseded Windows source before execute exact-source native materials, ui, author and independent reopen
+        shell: pwsh
+        run: |
+          python tools/ci/gentek80_water_runtime_publication.py check-source --source-sha "$env:GITHUB_SHA"
+          if ($LASTEXITCODE -ne 0) { throw 'CI-OPT-002: source was superseded before execute exact-source native materials, ui, author and independent reopen' }
       - name: Execute exact-source native materials, UI, author and independent reopen
         shell: pwsh
         run: |
@@ -393,6 +431,11 @@ jobs:
         run: |
           python tools/ci/run_flatten_qualification.py --godot $env:GODOT_EXE --project godot --evidence evidence/flatten-integration --cases 512x1
           if ($LASTEXITCODE -ne 0) { throw 'Combined Windows architecture/Flatten qualification failed' }
+      - name: Refuse superseded Windows source before qualify all 80 catalogue styles in native materials and ordinary windows workbench
+        shell: pwsh
+        run: |
+          python tools/ci/gentek80_water_runtime_publication.py check-source --source-sha "$env:GITHUB_SHA"
+          if ($LASTEXITCODE -ne 0) { throw 'CI-OPT-002: source was superseded before qualify all 80 catalogue styles in native materials and ordinary windows workbench' }
       - name: Qualify all 80 catalogue styles in native materials and ordinary Windows Workbench
         shell: pwsh
         run: |
@@ -402,6 +445,11 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Complete Windows catalogue campaign failed' }
           python tools/architecture/gentek80_workbench.py --godot $env:GODOT_EXE --output evidence/gentek80-workbench --graphical
           if ($LASTEXITCODE -ne 0) { throw 'All-80 Windows Workbench author/reopen failed' }
+      - name: Refuse superseded Windows source before package source-matched windows owner candidate
+        shell: pwsh
+        run: |
+          python tools/ci/gentek80_water_runtime_publication.py check-source --source-sha "$env:GITHUB_SHA"
+          if ($LASTEXITCODE -ne 0) { throw 'CI-OPT-002: source was superseded before package source-matched windows owner candidate' }
       - name: Package source-matched Windows owner candidate
         shell: pwsh
         run: |
@@ -449,6 +497,11 @@ jobs:
           Expand-Archive $archive $gentekValidation
           python tools/architecture/gentek80_workbench.py --godot (Join-Path $gentekValidation 'Godot_v4.7-stable_win64_console.exe') --project (Join-Path $gentekValidation 'godot') --package $gentekValidation --output evidence/package-gentek80-workbench --graphical
           if ($LASTEXITCODE -ne 0) { throw 'All-80 extracted Windows package replay failed' }
+      - name: Refuse superseded Windows source before attest windows graphical native, flatten and extracted owner package
+        shell: pwsh
+        run: |
+          python tools/ci/gentek80_water_runtime_publication.py check-source --source-sha "$env:GITHUB_SHA"
+          if ($LASTEXITCODE -ne 0) { throw 'CI-OPT-002: source was superseded before attest windows graphical native, flatten and extracted owner package' }
       - name: Attest Windows graphical native, Flatten and extracted owner package
         if: github.event_name == 'push'
         shell: pwsh

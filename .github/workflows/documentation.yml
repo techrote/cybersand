@@ -31,8 +31,20 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           path: workspace/source
-          lfs: true
+          lfs: false
           fetch-depth: 0
+      - name: Reject stale native provenance before full docs/history validation
+        id: ci_opt_preflight
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          python3 tools/ci/ci_opt_runtime_preflight.py --platform both --expect-sha "$GITHUB_SHA"
+      - name: Materialize original Git LFS objects only for admitted source
+        timeout-minutes: 15
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include='*' --exclude=''
       - name: Validate active CI provider policy
         run: timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/ci/check_ci_provider_policy.py
       - name: Test CI provider policy checker
@@ -56,7 +68,9 @@ jobs:
           "$RUNNER_TEMP/ci-audit/bin/python" tools/ci/check_ci_scheduling_policy.py --output build/ci-workflow-inventory.json
           python3 tools/ci/test_ci_run_metrics.py
       - name: Retain machine-readable workflow inventory
-        if: always()
+        # No inventory is created when stale native provenance blocks the job.
+        # The preflight remains red; do not add a misleading second failure.
+        if: always() && steps.ci_opt_preflight.outcome == 'success'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: ci-workflow-inventory-${{ github.run_id }}-${{ github.run_attempt }}

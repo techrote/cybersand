@@ -70,6 +70,11 @@ jobs:
           fetch-depth: 0
           lfs: false
           persist-credentials: false
+      - name: Reject stale native provenance before allocating graphics cohorts
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          python3 tools/ci/ci_opt_runtime_preflight.py --platform both --expect-sha "$PALETTE_SOURCE_SHA"
       - name: Select Python
         timeout-minutes: 5
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
