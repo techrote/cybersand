@@ -45,6 +45,35 @@ protocol inputs. They do not become watchdogs merely because they contain a
 number. In particular, BUSY001's held native phase controls retain their original
 protocol bounds and the scene smoke check retains its 180-frame count.
 
+## Workload classes and admission
+
+These categories describe the existing workflow boundaries; they are not a new
+global scheduler or permission to omit required acceptance. CI-OPT-002 changes
+admission order and Native scheduling, without changing these event routes.
+
+| Workload | Existing events and scope | Required evidence |
+|---|---|---|
+| Routine development | Main pushes and applicable PR changes run [Documentation](../../.github/workflows/documentation.yml), [Native](../../.github/workflows/native.yml), [GDExtension](../../.github/workflows/gdextension.yml), and the existing path-scoped [Palette](../../.github/workflows/palette-shader-qualification.yml) and [Wave](../../.github/workflows/wave-flow.yml) gates. Explicit dispatch remains available. | Stable `consistency`, admitted `native`, Linux and Windows build/execution/coverage, and applicable scoped checks. Draft skips and admission-only results do not qualify behavior. |
+| Native/runtime publication | Each publisher owns its request, branch and admission. For example, [GEN-008](../../.github/workflows/gen008-flatten-qualification.yml) and [Wave Oil](../../.github/workflows/wave-oil-buoyancy-runtime-publication.yml) require their named branch and armed publication request. | Exact source/binary and dependency identity, separate Linux/Windows qualification, complete runtime/provenance paths, LFS custody, request/run/attempt identity and the existing remote lease. Publication is not merge approval. |
+| Comprehensive feature/release acceptance | Feature-specific paths, named owner branches or explicit dispatch select their complete apparatus. The [Gentek 80](../../.github/workflows/gentek80-qualification.yml) and [merged-Water requalification](../../.github/workflows/gentek80-water-merged-requalification.yml) campaigns are confined to their named integration branches or dispatch, not ordinary main pushes. | Complete applicable native, graphical, persistence, generated-output and extracted-package replay. Hosted evidence does not substitute for required physical-device or owner acceptance. |
+| Research campaigns | Explicit campaign branches, dispatch or workflow calls select work such as the [Cathedral showcase](../../.github/workflows/gentek-cathedral-showcase.yml) and [physical actor stress](../../.github/workflows/physical-actor-stress.yml). | Their original scientific fixtures, failure semantics and source-bound artifacts. Research results cannot replace routine or publication gates. |
+
+Native/GDExtension's existing fixed exclusions cover workflow files, documentation,
+`AGENTS.md`, the PR template and the CI-provider checker/tests. Paths outside that
+list select their full validation route. The ready-transition classifier applies
+the same rule, and its failure cannot make an admitted required aggregate pass.
+The separate [Native scope advisory](../../.github/workflows/native-scope-advisory.yml)
+always reports `native_skip_authorized=false`; no required job consumes an
+advisory exemption. Unknown source impact has no new fast-path waiver.
+
+Draft suppresses the expensive routine Native/GDExtension and scoped Water lanes,
+but is not a universal campaign switch: feature workflows keep their own explicit
+conditions. Required check names remain unchanged, and existing evidence contracts
+remain enforced across all seven Native families. A missing, failed, cancelled
+or incomplete worker cannot become a passed test through a
+scope decision. Publisher concurrency and irreversible publication boundaries
+are outside these scheduling changes.
+
 ## Scheduling estimates and hosted safety boundaries
 
 [The Godot planner](../../tools/ci/godot_job_plan.py) discovers every current
@@ -71,14 +100,23 @@ records estimator inputs, selected counts, original results and limitations.
 The [hosted job limit](https://docs.github.com/en/actions/reference/limits) remains
 six hours; an individual case that cannot fit or an oversized matrix is rejected.
 
-The six Native families retain the exact original 20 commands and scientific
-inputs. [Their planner](../../tools/ci/native_execution_policy.py) derives
-180/350/180/333/284/223-minute parents for TSan, normal, ASan, worldgen,
-soliding-normal and soliding-ASan respectively. The physics CLI inventory still
-contains all 154 original invocations, each with a 300-second operation budget;
-a bounded eight-process dispatch preserves arguments and output identity while
-all assertions run in their original order on the main test thread. The source
-inventory and family receipts remain required by the stable `native` gate.
+The seven Native families retain the exact original 20 commands and scientific
+inputs. CI-OPT-002 separates `worldgen-sanitize` onto a clean runner while
+`worldgen` retains physics characterisation and ordinary worldgen. Their build
+outputs were already disjoint; no compiler cache or binary is shared across
+source revisions or sanitizer modes. Each aggregate keeps `make -j2`, its
+original ordered tests, sanitizer environment and complete child allowance.
+[The planner](../../tools/ci/native_execution_policy.py) derives each parent
+from its complete owned command inventory. The matrix lists the longer families
+before `soliding-normal`, while retaining a six-job concurrency cap; this order
+is a scheduling preference, not a guarantee about hosted runner assignment.
+The physics CLI inventory still contains all 154 original invocations, each
+with a 300-second operation budget; a bounded eight-process dispatch preserves
+arguments and output identity while all assertions run in their original order
+on the main test thread. The source inventory and all seven source/run/attempt-bound
+family receipts remain required by the stable `native` gate. Missing the new
+sanitizer family cannot produce a successful aggregate, even if every other
+family succeeds.
 
 All independent matrices use `fail-fast: false`. New PR commits cancel superseded
 automatic checks for that PR; manual qualification and main push runs have unique
@@ -107,8 +145,9 @@ wall time. It changes neither publication ownership nor runtime provenance.
 
 ## Shared capacity and concurrency
 
-The GDExtension matrices each use `max-parallel: 8`. Together with Native's six
-families, the routine regression phase can use 22 slots before small auxiliary
+The GDExtension matrices each use `max-parallel: 8`. Together with Native's
+`max-parallel: 6` cap across seven required families, the routine regression
+phase can use 22 slots before small auxiliary
 jobs. This leaves capacity within the owner's stated 40 standard hosted slots,
 but is not an account-wide cap: multiple PRs and other repositories add demand.
 Physical stress has its own smaller matrix budgets. Launch exceptional campaigns

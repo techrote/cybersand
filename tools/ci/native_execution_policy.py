@@ -38,6 +38,8 @@ COMMANDS = {
             "env", "ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1",
             "UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1", "make", "physics-characterisation-sanitize"]),
         ("worldgen-test", "native_case_seconds", ["/usr/bin/time", "-v", "make", "-j2", "worldgen-test"]),
+    ],
+    "worldgen-sanitize": [
         ("worldgen-sanitize", "native_case_seconds", [*ASAN, "/usr/bin/time", "-v", "make", "-j2", "worldgen-sanitize"]),
     ],
     "soliding-normal": [
@@ -56,6 +58,10 @@ COMMANDS = {
         ("soliding-sanitize", "native_case_seconds", [*ASAN, "make", "soliding-sanitize"]),
     ],
 }
+# Prefer the longer families before the short ordinary soliding family while
+# retaining the workflow's six-runner cap. Hosted dispatch order is not assured.
+MATRIX_ORDER = ("worldgen-sanitize", "tsan", "asan-ubsan", "worldgen",
+                "native-normal", "soliding-asan", "soliding-normal")
 
 
 def _values(policy=None):
@@ -111,8 +117,11 @@ def budget_inventory(policy=None):
 
 def matrix(policy=None):
     inventory = budget_inventory(policy)
+    if len(MATRIX_ORDER) != len(inventory["families"]) or set(MATRIX_ORDER) != set(inventory["families"]):
+        raise ValueError("Native matrix order does not contain every family exactly once")
     rows = []
-    for suite, row in inventory["families"].items():
+    for suite in MATRIX_ORDER:
+        row = inventory["families"][suite]
         if row["hosted_job_minutes"] > MAX_HOSTED_JOB_MINUTES:
             raise ValueError("Native execution allowance exceeds the supported hosted job limit: " + suite)
         rows.append({"suite": suite, "job_minutes": row["hosted_job_minutes"],

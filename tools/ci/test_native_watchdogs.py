@@ -116,8 +116,28 @@ class NativeShellTests(unittest.TestCase):
                 for row, (label, _, _) in zip(rows, expected):
                     self.assertEqual(row["output_dir"], f"build/native-parallel/{suite}/commands/{label}")
                     self.assertEqual(row["timeout_seconds"], native_policy.command_timeout_seconds(suite, label))
+                if suite in ("worldgen", "worldgen-sanitize"):
+                    self.assertTrue((self.root / f"build/native-parallel/{suite}/build-inventory.json").is_file())
                 count += len(rows)
         self.assertEqual(count, 20)
+
+    def test_worldgen_sanitizer_has_no_physics_preparation_dependency(self):
+        self.assertFalse((self.root / "build").exists())
+        result, rows = self.execute("worldgen-sanitize")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertEqual([row["command"] for row in rows], [[
+            "env", "ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1", "UBSAN_OPTIONS=halt_on_error=1",
+            "/usr/bin/time", "-v", "make", "-j2", "worldgen-sanitize"]])
+        self.assertTrue((self.root / "build/native-parallel/worldgen-sanitize/build-inventory.json").is_file())
+        self.assertFalse((self.root / "build/physics-cli-validation").exists())
+
+    def test_inventory_failure_stops_each_worldgen_family_before_native_commands(self):
+        (self.root / "tools/ci/check_worldgen_build_inventory.py").write_text("raise SystemExit(23)\n")
+        for suite in ("worldgen", "worldgen-sanitize"):
+            with self.subTest(suite=suite):
+                result, rows = self.execute(suite)
+                self.assertEqual(result.returncode, 23, result.stdout + result.stderr)
+                self.assertEqual(rows, [])
 
     def test_each_original_command_preserves_error_and_timeout_exit(self):
         for suite, commands in gate.COMMANDS.items():
@@ -148,14 +168,16 @@ class NativeShellTests(unittest.TestCase):
         self.assertEqual((folder / "log-capture-exit-code.txt").read_text(), "0\n")
 
     def test_workflow_retains_original_error_and_timeout_before_aggregation(self):
-        for code in (19, 124):
-            with self.subTest(code=code):
-                result, _ = self.execute("native-normal", failure="build-tests", code=code, workflow=True)
-                folder = self.root / "build/native-parallel/native-normal"
-                self.assertEqual(result.returncode, code)
-                self.assertEqual((folder / "family-exit-code.txt").read_text(), str(code) + "\n")
-                self.assertEqual((folder / "log-capture-exit-code.txt").read_text(), "0\n")
-                self.assertNotIn("Native family passed:", (folder / "run.log").read_text())
+        for suite, label in (("native-normal", "build-tests"), ("worldgen", "worldgen-test"),
+                             ("worldgen-sanitize", "worldgen-sanitize")):
+            for code in (19, 124):
+                with self.subTest(suite=suite, code=code):
+                    result, _ = self.execute(suite, failure=label, code=code, workflow=True)
+                    folder = self.root / "build/native-parallel" / suite
+                    self.assertEqual(result.returncode, code)
+                    self.assertEqual((folder / "family-exit-code.txt").read_text(), str(code) + "\n")
+                    self.assertEqual((folder / "log-capture-exit-code.txt").read_text(), "0\n")
+                    self.assertNotIn("Native family passed:", (folder / "run.log").read_text())
 
     def test_workflow_log_capture_failure_cannot_become_a_pass(self):
         tee = self.bin / "tee"
@@ -174,6 +196,23 @@ class NativeShellTests(unittest.TestCase):
 
 
 class NativePolicyTests(unittest.TestCase):
+    def test_seven_required_families_keep_six_runner_cap_and_short_family_last(self):
+        matrix = native_policy.matrix()["include"]
+        self.assertEqual([row["suite"] for row in matrix], [
+            "worldgen-sanitize", "tsan", "asan-ubsan", "worldgen", "native-normal", "soliding-asan", "soliding-normal"])
+        self.assertEqual(set(native_policy.COMMANDS), gate.SUITES)
+        self.assertEqual(re.findall(r"^\s+max-parallel: (\d+)\s*$", WORKFLOW.read_text(), re.M), ["6"])
+        self.assertEqual([label for label, _, _ in native_policy.COMMANDS["worldgen"]],
+                         ["physics-characterisation-sanitize", "worldgen-test"])
+        self.assertEqual([label for label, _, _ in native_policy.COMMANDS["worldgen-sanitize"]], ["worldgen-sanitize"])
+
+    def test_matrix_cannot_omit_duplicate_or_invent_a_family(self):
+        order = native_policy.MATRIX_ORDER
+        for changed in (order[:-1], order + (order[0],), order[:-1] + ("unregistered",)):
+            with self.subTest(order=changed), mock.patch.object(native_policy, "MATRIX_ORDER", changed):
+                with self.assertRaisesRegex(ValueError, "every family exactly once"):
+                    native_policy.matrix()
+
     def test_hosted_jobs_leave_headroom_after_complete_family_watchdog(self):
         identity = execution_policy.identity()
         policy = identity["watchdogs"]

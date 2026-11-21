@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Local repository policy and unresolved remote CI and release prerequisites
 canonical-for: [repository-policy, ci-contradictions, release-prerequisites]
-last-reviewed: 2026-11-06
+last-reviewed: 2026-11-21
 related-documents: [source-checkpoint-and-recovery.md, local-build-and-validation.md, documentation-maintenance.md, ../audits/2026-09-19-runner-routing-weekend-benchmark.md]
 ---
 
@@ -96,8 +96,13 @@ a hand-edited hash.
 ## Parallel validation and source-scope advice — 2026-10-31
 
 The [shared execution policy](ci-execution-and-performance.md) now supersedes
-historical short command limits. Six Native families preserve every original
-command and scientific input, with complete derived parent budgets. Godot uses
+historical short command limits. Seven Native families preserve every original
+command and scientific input, with complete derived parent budgets and at most
+six active family jobs. CI-OPT-002 separates the existing worldgen sanitizer
+command from physics and ordinary worldgen; all seven receipts are mandatory.
+The [workload admission policy](ci-execution-and-performance.md#workload-classes-and-admission)
+distinguishes routine checks, publication, full acceptance and research without
+introducing a source-coverage exemption. Godot uses
 source-derived Linux/Windows matrices balanced by expected execution cost,
 full-watchdog admission within a hosted safety boundary, and independent
 exact-coverage readers. Historical elapsed-time weights and rolling

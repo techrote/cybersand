@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-21
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/atlas-agent-runner.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -238,6 +238,7 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | Question family | Canonical route |
 |---|---|
 | How are CI scheduling costs separated from watchdogs, how do hosted parents admit children, and do performance ratios fail correctness? | [Shared execution and advisory history](../operations/ci-execution-and-performance.md), [focused implementation audit](../audits/2026-10-31-execution-watchdog-modernization.md). Complete original suites and source-matched review remain required; [scheduling qualification](../audits/2026-11-01-ci-scheduling-qualification.md) and [all-workflow audit](../audits/2026-11-01-ci-workflow-audit.md) record capacity and concurrency. |
+| How does CI-OPT-002 separate routine CI from publication and research, and preserve coverage with seven Native families? | [Workload admission](../operations/ci-execution-and-performance.md#workload-classes-and-admission) and [Native scheduling](../operations/ci-execution-and-performance.md#scheduling-estimates-and-hosted-safety-boundaries). All 20 commands and seven required receipts remain; only six family jobs may run at once. Unknown impact grants no new skip exemption. |
 | How are imported CYSD temperatures and heated Empty cells preserved when preparing another liquid solver, and is the normal importer complete? | [Native payload preparation and explicit normalization](../architecture/liquid-prepared-setup-and-receipts.md#imported-cysd-payload-preparation), [local Windows proof](../audits/2026-10-25-lcb003-thermal-level-preparation.md). Bounded ordinary body-free import is implemented; physical importers, complete host identity and final platforms remain open. |
 | Can the Water IN publisher run without disturbing the Brine branch, and is its request armed? | [Separate Water profile, actual native-repair sequence2 publication and required final-head gates](../operations/github-development-and-release.md#isolated-water-inertial-runtime-publication). Preparation does not qualify new runtime artifacts or waive full gates. |
 | How does Water IN retain momentum and coherence through two grain pickups, what complete radius/quantity refusal applies, and did Current behavior change? | [Water native adapter and carrier ownership](../architecture/inertial-cellular-v1.md#water-in-native-successor--2026-10-25), [dated source/Current identity proof](../audits/2026-10-25-water-inertial-native.md). Runtime/scientific/full-host qualification remains separate. |
