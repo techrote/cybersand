@@ -55,6 +55,7 @@ def run(args):
     version = subprocess.check_output([str(args.godot), "--version"], text=True).strip()
     require(version == "4.7.stable.official.5b4e0cb0f", "Unexpected Godot engine version")
 
+    args.output = args.output.resolve()
     args.output.mkdir(parents=True, exist_ok=True)
     report = {"schema": "paint-fill-total-latency-abba-v1",
               "status": "running", "source_commit": source, "godot_version": version,
@@ -156,8 +157,7 @@ def run(args):
     ]
     persist()
     print("PAINT_FILL_TOTAL_ABBA",json.dumps({"status":report["status"],"scenario":args.scenario,
-          "source_sha":source,"total":metrics["request_to_draw_usec"],
-          "geometry":metrics["plan_geometry_usec"]}),flush=True)
+          "source_sha":source,"metrics":metrics},sort_keys=True),flush=True)
 
 
 def main():
