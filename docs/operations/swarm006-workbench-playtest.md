@@ -12,6 +12,10 @@ related-documents: [swarm005-workbench-playtest.md, swarm004-workbench-playtest.
 
 **Draft/HOLD.** Programme [#704](https://github.com/techrote/cybersand/issues/704) extends the native SWARM-005 work in [#696](https://github.com/techrote/cybersand/pull/696) and the Workbench integration in [#697](https://github.com/techrote/cybersand/pull/697). SWARM-004/005 branches, receipts and comparison definitions remain historical evidence. This package is a new source-built evaluator. It does not promote a production default or provide owner NVIDIA acceptance by itself.
 
+## Frozen native qualification status
+
+The frozen two-round native holdout improved from **14/96 to 82/96 Apply-authorized cases** and from **3/96 to 81/96 Apply-authorized cases with a qualified foreign joint**, comparing SWARM-005 both ON with SWARM-006 recovery. The [independent evidence review](https://github.com/techrote/cybersand/issues/704#issuecomment-7062877115) retained four cache-digest inconsistencies in rejected, nonauthorizing histories, while the [acceptance coverage review](https://github.com/techrote/cybersand/issues/704#issuecomment-7063144002) found that some diagnostic causes remain combined; these keep the native candidate on **HOLD**. More rounds lost closure within the unchanged work allowances: three rounds produced 6/96 Apply-authorized cases, while four rounds exhausted all 96 cases. These are revealed native corpus findings, not owner NVIDIA or existing-World acceptance; both remain pending. The frozen native source and every unsuccessful result are retained.
+
 ## Obtain and verify the actual owner package
 
 Download the GitHub artifact named `swarm006-owner-windows-<full 40-character Workbench SHA>` from the source-matched SWARM-006 Windows workflow. Build-evidence and Windows-runtime artifacts serve different purposes and are not complete evaluators. The owner artifact contains:

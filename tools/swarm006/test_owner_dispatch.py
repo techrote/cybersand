@@ -24,6 +24,16 @@ def fixture() -> dict:
 
 
 class DispatchAdmission(unittest.TestCase):
+    def test_windows_powershell_rebuilds_its_child_only_module_path(self):
+        for spelling in ('PSModulePath', 'PSMODULEPATH', 'psmodulepath'):
+            inherited = {spelling: r'C:\Program Files\PowerShell\7\Modules',
+                         'PATH': r'C:\Windows\System32', 'APPDATA': r'C:\Owner profile with spaces',
+                         'CYBERSAND_SOURCE_REVISION': 'a' * 40}
+            before = inherited.copy()
+            child = dispatch.windows_powershell_env(inherited)
+            self.assertEqual(child, {key: value for key, value in before.items() if key != spelling})
+            self.assertEqual(inherited, before)
+
     def test_full_observation_and_paths_with_spaces_are_required(self):
         self.assertEqual(dispatch.evidence_errors(fixture()), [])
         self.assertTrue(dispatch.owner_command([ENGINE, '--path', PROJECT, '--', '--workbench'], ENGINE, PROJECT))

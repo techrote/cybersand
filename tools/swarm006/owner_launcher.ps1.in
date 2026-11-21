@@ -18,7 +18,15 @@ if ($ExpectedSource -notmatch '^[0-9a-f]{40}$' -or $ExpectedZipSha256 -notmatch 
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 function Get-Sha256([string]$Path) {
     if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) { throw "Missing required file: $Path" }
-    return (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash.ToLowerInvariant()
+    $algorithm = [Security.Cryptography.SHA256]::Create()
+    $stream = $null
+    try {
+        $stream = [IO.File]::OpenRead($Path)
+        return [BitConverter]::ToString($algorithm.ComputeHash($stream)).Replace('-','').ToLowerInvariant()
+    } finally {
+        if ($null -ne $stream) { $stream.Dispose() }
+        $algorithm.Dispose()
+    }
 }
 function Expand-CheckedZip([string]$Path, [string]$Target) {
     if (Test-Path -LiteralPath $Target) { throw "Extraction destination already exists: $Target. Choose a fresh folder." }

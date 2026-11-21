@@ -186,6 +186,17 @@ jobs:
           if-no-files-found: warn
           retention-days: 90
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: failure()
+        with:
+          name: swarm006-unqualified-owner-package-Draft-HOLD-${{ github.sha }}-${{ github.run_id }}
+          path: |
+            build/swarm006-sealed/CyberSand-SWARM006-Draft-HOLD-Windows-*.zip
+            build/swarm006-sealed/CyberSand-SWARM006-Draft-HOLD-Windows-*.zip.sha256
+            build/swarm006-sealed/CyberSand-SWARM006-Windows-Owner-Acceptance.ps1
+            build/swarm006-sealed/swarm006-owner-seal.json
+          if-no-files-found: warn
+          retention-days: 90
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: swarm006-owner-windows-${{ github.sha }}
           path: |

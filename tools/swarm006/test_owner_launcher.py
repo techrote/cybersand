@@ -41,7 +41,8 @@ def main() -> None:
     def invoke(label: str, selected: Path, destination: Path, success: bool, reason: str = '') -> None:
         command = ['powershell.exe', '-NoLogo', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', str(launcher),
                    '-Archive', str(selected), '-Destination', str(destination), '-VerifyOnly']
-        result = subprocess.run(command, capture_output=True, text=True, timeout=240)
+        result = subprocess.run(command, capture_output=True, text=True, timeout=240,
+                                env=owner_dispatch.windows_powershell_env())
         log = result.stdout + result.stderr
         (output/(label+'.log')).write_text(log, encoding='utf-8')
         passed = ((result.returncode == 0) == success and (not reason or reason in log))

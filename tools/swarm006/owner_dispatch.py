@@ -30,6 +30,13 @@ STABLE_SECONDS = 10
 MAX_LOG_BYTES = 16 * 1024 * 1024
 
 
+def windows_powershell_env(environment: dict[str, str] | None = None) -> dict[str, str]:
+    # pwsh -> Python -> powershell.exe otherwise inherits PS7 module locations.
+    # Let Windows PowerShell construct its own defaults in this child only.
+    return {key: value for key, value in (os.environ if environment is None else environment).items()
+            if key.casefold() != 'psmodulepath'}
+
+
 def same_path(left: str, right: str) -> bool:
     return ntpath.normcase(ntpath.normpath(left)) == ntpath.normcase(ntpath.normpath(right))
 
@@ -180,7 +187,7 @@ class WindowsObserver:
     def argv(self, pid: int) -> tuple[list[str], dict]:
         script = f"Get-CimInstance Win32_Process -Filter 'ProcessId={pid}' | Select-Object ProcessId,ParentProcessId,ExecutablePath,CommandLine | ConvertTo-Json -Compress"
         value = subprocess.run(['powershell.exe', '-NoLogo', '-NoProfile', '-NonInteractive', '-Command', script],
-                               capture_output=True, text=True, timeout=20, check=True)
+                               capture_output=True, text=True, timeout=20, check=True, env=windows_powershell_env())
         process = json.loads(value.stdout)
         count = ctypes.c_int();arguments = self.shell.CommandLineToArgvW(process['CommandLine'], ctypes.byref(count))
         if not arguments: raise ctypes.WinError(ctypes.get_last_error())
@@ -238,7 +245,7 @@ def qualify(launcher: Path, archive: Path, destination: Path, output: Path, sour
     if os.name != 'nt': raise OSError('Actual owner dispatch requires Windows')
     if destination.exists() or output.exists(): raise ValueError('Owner dispatch requires fresh output and extraction paths')
     output.mkdir(parents=True)
-    profile = output / 'isolated profile with spaces';env = os.environ.copy()
+    profile = output / 'isolated profile with spaces';env = windows_powershell_env()
     for key, name in [('APPDATA', 'roaming'), ('LOCALAPPDATA', 'local'), ('XDG_DATA_HOME', 'data'), ('XDG_CONFIG_HOME', 'config'), ('XDG_CACHE_HOME', 'cache')]:
         path = profile / name;path.mkdir(parents=True);env[key] = str(path)
     for key in list(env):
