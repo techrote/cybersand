@@ -39,6 +39,7 @@ jobs:
           mkdir -p evidence/swarm006-build build/swarm006-windows
           python3 tools/swarm006/test_qualify_workbench.py > evidence/swarm006-build/qualification-gate-tests.log 2>&1
           python3 tools/swarm006/test_seal_owner.py > evidence/swarm006-build/owner-package-tests.log 2>&1
+          python3 tools/swarm006/test_owner_dispatch.py > evidence/swarm006-build/owner-dispatch-admission-tests.log 2>&1
           python3 tools/swarm006/test_prepare_publication.py > evidence/swarm006-build/source-publication-tests.log 2>&1
           python3 tools/swarm006/test_registered_references.py > evidence/swarm006-build/registered-reference-tests.log 2>&1
           python3 tools/ci/check_ci_provider_policy.py > evidence/swarm006-build/provider.json

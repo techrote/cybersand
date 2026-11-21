@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Exercise the sealed owner PowerShell script against its actual Windows ZIP.
 
-These are package admission checks, separate from graphical/native qualification.
-The nested artifact uses the same exact inner names delivered by GitHub Actions.
+Admission checks are followed by actual PowerShell/CMD graphical dispatch of
+the sealed package. Full native Apply qualification and owner NVIDIA acceptance
+remain separate. The nested artifact uses the exact delivered inner names.
 """
 from __future__ import annotations
 import argparse
@@ -14,6 +15,7 @@ import subprocess
 import zipfile
 
 from seal_owner import sha, validate_package
+import owner_dispatch
 
 
 def main() -> None:
@@ -32,6 +34,8 @@ def main() -> None:
     if metadata['source_commit'] != args.source:
         raise ValueError('Seal source mismatch')
     archive, launcher = sealed/metadata['archive'], sealed/'CyberSand-SWARM006-Windows-Owner-Acceptance.ps1'
+    if sha(archive) != metadata['archive_sha256'] or sha(launcher) != metadata['launcher_sha256']:
+        raise ValueError('Sealed archive or launcher changed before qualification')
     records = []
 
     def invoke(label: str, selected: Path, destination: Path, success: bool, reason: str = '') -> None:
@@ -52,7 +56,8 @@ def main() -> None:
     try:
         # Use the native Windows PowerShell5 path that the owner handoff names.
         invoke('direct-inner-archive', archive, output/'direct', True)
-        wrapper = output/f'swarm006-owner-windows-{args.source}.zip'
+        nested_inputs = output/'nested artifact inputs with spaces';nested_inputs.mkdir()
+        wrapper = nested_inputs/f'swarm006-owner-windows-{args.source}.zip'
         with zipfile.ZipFile(wrapper, 'x', zipfile.ZIP_STORED) as outer:
             for path in sorted(sealed.iterdir()):
                 if path.is_file(): outer.write(path, path.name)
@@ -71,13 +76,23 @@ def main() -> None:
         absent = output/'missing';absent.mkdir()
         shutil.copyfile(archive, absent/archive.name)
         invoke('missing-sidecar', absent/archive.name, output/'missing-extract', False, 'Missing separate SHA-256 sidecar')
+        dispatch = owner_dispatch.qualify(launcher, wrapper, output/'actual owner package with spaces',
+                                          output/'dispatch', args.source, metadata)
+        records.append({'case': 'actual-owner-graphical-dispatch', 'passed': dispatch['passed'],
+                        'expected_success': True, 'evidence': 'dispatch/owner-dispatch-qualification.json',
+                        'evidence_sha256': sha(output/'dispatch/owner-dispatch-qualification.json')})
+        if not dispatch['passed']:
+            raise ValueError('Actual owner PowerShell/CMD graphical dispatch failed: '+json.dumps(dispatch.get('validation_errors')))
     finally:
         summary = {'source_commit': args.source, 'archive_sha256': sha(archive), 'launcher_sha256': sha(launcher),
-                   'platform': 'Windows', 'passed': len(records) == 6 and all(r['passed'] for r in records),
-                   'graphical_qualification': False, 'owner_nvidia_acceptance': 'pending', 'results': records}
+                   'platform': 'Windows', 'passed': len(records) == 7 and all(r['passed'] for r in records),
+                   'graphical_qualification': False, 'graphical_dispatch_passed': len(records) == 7 and records[-1]['passed'],
+                   'owner_nvidia_acceptance': 'pending', 'results': records}
         (output/'owner-launcher-qualification.json').write_text(json.dumps(summary, indent=2)+'\n')
         # Keep the original logs and hash receipts, not redundant large binaries.
-        for name in ('direct', 'nested', 'nested-artifact', 'corrupt', 'wrong-name', 'missing'):
+        for name in ('direct', 'nested', 'nested-artifact', 'corrupt', 'wrong-name', 'missing',
+                     'actual owner package with spaces', 'actual owner package with spaces-artifact',
+                     'nested artifact inputs with spaces'):
             shutil.rmtree(output/name, ignore_errors=True)
         for path in output.glob('swarm006-owner-windows-*.zip'): path.unlink()
     print(json.dumps(summary))
