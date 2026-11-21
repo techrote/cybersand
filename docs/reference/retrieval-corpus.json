@@ -161,6 +161,10 @@
   ],
   "excluded": [
     {
+      "path": "systems/equip-recovery-001.md",
+      "reason": "PR #724 branch-scoped Draft/HOLD BS-001 source-recovery register; explicitly excluded from current-answer retrieval until accepted and independently qualified. Read directly only for the experimental PR and its follow-on handoff."
+    },
+    {
       "path": "research/gentek-classic-001.md",
       "reason": "Branch-scoped Draft/HOLD PR #624 sampler catalogue and qualification scope. Read directly for explicit CLASSIC research reviews; the Architectural Generator contract remains the canonical home for accepted controls and runtime publication requirements."
     },
