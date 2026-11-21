@@ -1,12 +1,8 @@
 name: GENTEK-691 targeted Flatten redo and lazy Art qualification
+# The guarded full native publisher dispatches this focused replay only after
+# its exact-source Linux SO, Windows DLL and both provenance records are committed.
+# Source-only reconciliations cannot safely run the prior compiled libraries.
 on:
-  push:
-    branches: [integration/gentek80-water-conflict-reconcile]
-    paths:
-      - 'godot/scripts/art_batch_panel.gd'
-      - 'godot/tests/test_art_traffic_panel_safety.gd'
-      - 'godot/tests/test_workbench_flatten.gd'
-      - '.github/workflows/gentek691-art-history-repro.yml'
   workflow_dispatch:
 permissions:
   contents: read
