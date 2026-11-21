@@ -71,14 +71,29 @@ class SourceAdmissionTests(unittest.TestCase):
             self.assertEqual("", q.source_delta(q.SOURCE_PATHS))
 
     def test_changed_import_asset_script_and_attributes_refuse_with_evidence(self):
-        engine, cli = Path(self.folder.name) / "godot", Path(self.folder.name) / "cli"
+        alias = Path(self.folder.name) / "runtime-alias"
+        alias.mkdir()
+        engine, cli = alias / ".." / "godot", Path(self.folder.name) / "cli"
         engine.write_bytes(b"engine fixture");cli.write_bytes(b"native fixture")
+        # main() resolves paths before checking the engine version. Exercise
+        # an actual alias on every host, including Windows TEMP path aliases.
+        self.assertNotEqual(str(engine), str(engine.resolve()))
         original_check_output = subprocess.check_output
+        version_commands = []
 
         def command_output(command, **kwargs):
-            if command == [str(engine), "--version"]:
-                return q.VERSION + "\n"
-            return original_check_output(command, **kwargs)
+            if command[0] == "git":
+                return original_check_output(command, **kwargs)
+            self.assertEqual(Path(command[0]).resolve(), engine.resolve(), "unexpected non-Git executable")
+            self.assertEqual(command[1:], ["--version"], "only the engine version query is mocked")
+            self.assertEqual(kwargs, {"text": True, "timeout": 30})
+            version_commands.append(command)
+            return q.VERSION + "\n"
+
+        for unexpected in ([str(cli), "--version"], [str(engine), "--headless"],
+                           [str(engine), "--version", "--extra"]):
+            with self.assertRaises(AssertionError):
+                command_output(unexpected, text=True, timeout=30)
 
         for index, name in enumerate((IMPORT_PATHS[0], "godot/example.svg", "godot/scripts/example.gd", ".gitattributes")):
             path = self.root / name
@@ -106,6 +121,7 @@ class SourceAdmissionTests(unittest.TestCase):
                 self.assertFalse((output / "qualification.json").exists())
                 self.assertIn(name, q.source_delta(q.SOURCE_PATHS))
             path.write_bytes(original)
+        self.assertEqual([[str(engine.resolve()), "--version"]] * 4, version_commands)
 
     def test_deleted_import_preserves_refusal_when_full_inventory_is_unavailable(self):
         (self.root / IMPORT_PATHS[0]).unlink()

@@ -1,0 +1,88 @@
+name: SWARM006 Windows fixture diagnostic ONLY
+on:
+  push:
+    branches: [diagnostic/swarm006-windows-fixture-20261121]
+    paths:
+      - .github/workflows/swarm006-windows-fixture-diagnostic.yml
+      - tools/swarm006/test_qualify_preserved_workbench.py
+permissions:
+  contents: read
+jobs:
+  fixture:
+    name: Exact Windows helper fixture diagnostic
+    runs-on: windows-2022
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 2
+      - name: Record identities and execute all twelve helper tests
+        shell: pwsh
+        timeout-minutes: 3
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $output = 'evidence/windows-fixture-diagnostic'
+          New-Item -ItemType Directory -Path $output | Out-Null
+          $record = [ordered]@{schema=1; diagnostic_only=$true; owner_qualification=$false; draft_hold=$true; passed=$false; phase='admission'; errors=@(); expected_parent='ca63445888d818ed868f71869abb37ae4d00975e'; run_id=$env:GITHUB_RUN_ID; run_attempt=$env:GITHUB_RUN_ATTEMPT}
+          $pins = [ordered]@{
+            'tools/swarm006/qualify_preserved_workbench.py'='0125b4fbbd174e83dee7cd83144356f45134e4ef59a0bf4a46ebb14fdc659882'
+            'tools/swarm006/qualify_workbench.py'='890369a1abfe4ca08937e2c86073fd4c518f00823b63655da4e960e7a2fb102d'
+            'tools/swarm006/test_qualify_preserved_workbench.py'='02bab18e7d4e470e7788435bcf7337c97856a440228a5b3777fcc6e12c13a9a6'
+          }
+          try {
+            $record.source = (git rev-parse HEAD).Trim()
+            $record.tree = (git rev-parse 'HEAD^{tree}').Trim()
+            $record.parent = (git rev-parse 'HEAD^').Trim()
+            if ($LASTEXITCODE -ne 0 -or $record.source -ne $env:GITHUB_SHA -or $record.parent -ne $record.expected_parent) { throw 'Wrong diagnostic commit or parent' }
+            $changed = @(git diff --name-only $record.expected_parent HEAD)
+            if ($LASTEXITCODE -ne 0) { throw 'Cannot read diagnostic source projection' }
+            $allowed = @('.github/workflows/swarm006-windows-fixture-diagnostic.yml','tools/swarm006/test_qualify_preserved_workbench.py')
+            if ($changed.Count -ne 2 -or @(Compare-Object $allowed $changed).Count -ne 0) { throw 'Diagnostic changed files outside the reviewed test and workflow' }
+            $record.changed_paths = $changed
+            $record.files_sha256 = [ordered]@{}
+            foreach ($path in $pins.Keys) {
+              $actual = (Get-FileHash $path -Algorithm SHA256).Hash.ToLowerInvariant()
+              $record.files_sha256[$path] = $actual
+              if ($actual -ne $pins[$path]) { throw "Reviewed diagnostic bytes changed: $path" }
+            }
+            $record.workflow_sha256 = (Get-FileHash '.github/workflows/swarm006-windows-fixture-diagnostic.yml' -Algorithm SHA256).Hash.ToLowerInvariant()
+            $python = (python -c 'import sys; print(sys.executable)').Trim()
+            if ($LASTEXITCODE -ne 0) { throw 'Cannot identify Python' }
+            $record.python_executable = $python
+            $record.python_version = (& $python --version).Trim()
+            $record.python_sha256 = (Get-FileHash $python -Algorithm SHA256).Hash.ToLowerInvariant()
+            $record.git_executable = (Get-Command git).Source
+            $record.git_version = (git --version).Trim()
+            $record.git_sha256 = (Get-FileHash $record.git_executable -Algorithm SHA256).Hash.ToLowerInvariant()
+            $record.command = @($python,'-B','tools/swarm006/test_qualify_preserved_workbench.py')
+            $record.phase = 'tests-running'
+            $record | ConvertTo-Json -Depth 10 | Set-Content -Encoding utf8 "$output/diagnostic-result.json"
+            & $python -B tools/swarm006/test_qualify_preserved_workbench.py *> "$output/helper-tests.log"
+            $record.returncode = $LASTEXITCODE
+            $record.log_sha256 = (Get-FileHash "$output/helper-tests.log" -Algorithm SHA256).Hash.ToLowerInvariant()
+            $log = Get-Content -Raw "$output/helper-tests.log"
+            if ($record.returncode -ne 0 -or $log -notmatch '(?m)^Ran 12 tests in [0-9.]+s\r?$' -or $log -notmatch '(?m)^OK\r?$') { throw 'The full twelve-test Windows fixture suite did not pass' }
+            foreach ($path in $pins.Keys) {
+              if ((Get-FileHash $path -Algorithm SHA256).Hash.ToLowerInvariant() -ne $pins[$path]) { throw "Diagnostic source changed during tests: $path" }
+            }
+            $record.tests_run = 12
+            $record.passed = $true
+            $record.phase = 'complete'
+          } catch {
+            $record.errors += $_.Exception.ToString()
+            $record.phase = 'failed'
+            throw
+          } finally {
+            $record | ConvertTo-Json -Depth 10 | Set-Content -Encoding utf8 "$output/diagnostic-result.json"
+            Get-Content "$output/diagnostic-result.json"
+            if (Test-Path "$output/helper-tests.log") { Get-Content "$output/helper-tests.log" }
+          }
+      - name: Retain diagnostic identities and logs even on failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: swarm006-windows-fixture-DIAGNOSTIC-ONLY-${{ github.run_id }}
+          path: evidence/windows-fixture-diagnostic/
+          if-no-files-found: warn
+          retention-days: 30
