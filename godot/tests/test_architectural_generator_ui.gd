@@ -54,7 +54,24 @@ func run() -> void:
 	check(panel.visible, "Architecture form is reachable from the ordinary generator dialog")
 	check(dialog._profile.selected == original_profile and dialog._ready_packet.is_empty(), "opening the form leaves source selection and installed proposal untouched")
 	check(panel._style_controls.size() == 5, "five independently editable style columns")
-	check(panel._style_controls[0].chooser.item_count >= 13, "three new native algorithms join the expanded preset catalogue")
+	check(panel._style_controls[0].chooser.item_count == 93, "exactly 80 Genteks and 13 accepted presets are reachable")
+	var original_selection: Dictionary = panel.project()
+	var search: LineEdit = panel._style_controls[0].search
+	search.text = "interlaced"
+	search.text_changed.emit(search.text)
+	check(panel._style_controls[0].chooser.item_count == 2, "catalogue search retains current and matching styles")
+	check(panel.project() == original_selection, "filtering does not alter selected style or parameters")
+	var filtered: OptionButton = panel._style_controls[0].chooser
+	filtered.select(1)
+	filtered.item_selected.emit(1)
+	check(panel.project().styles[0].preset.id == "interlaced-viaduct", "filtered choice resolves its stable catalogue identity")
+	search.text = "no-matching-style"
+	search.text_changed.emit(search.text)
+	check(filtered.item_count == 1 and panel.project().styles[0].preset.id == "interlaced-viaduct", "empty search result retains current selection")
+	search.text = ""
+	search.text_changed.emit("")
+	check(filtered.item_count == 93, "clearing filter restores complete catalogue")
+	panel.set_project(original_selection)
 	var columns_visible := true
 	for index: int in range(1,5):
 		var previous: Rect2 = panel._style_controls[index - 1].card.get_global_rect()

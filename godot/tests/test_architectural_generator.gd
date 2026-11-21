@@ -323,6 +323,152 @@ func native_algorithm_gallery() -> void:
 			report.cases.append({"case":"native-algorithm-difference",
 				"first":pair[0],"second":pair[1],"different_material_cells":delta})
 
+func classic_gentek_gallery() -> void:
+	var ids: Array[String] = ["trestle","stacked_arcade","flying_buttress","sawtooth_gallery",
+		"cantilever_spine","rib_vault","nested_arcade","suspended_deck",
+		"bowstring_truss","diamond_truss","portal_frame","ladder_bridge","stepped_aqueduct","split_pier",
+		"cable_gallery","clerestory_hall","mushroom_deck","zigzag_bridge","scalloped_vault","lattice_tower",
+		"offset_arcade","bridgehouse","forked_gantry","buttress_wall",
+		"fan_truss","pratt_truss","vierendeel_frame","suspension_pylon","harp_bridge","double_cantilever",
+		"stepped_buttress","colonnade","basilica","crenellated_bridge","pointed_arcade","inverted_arch",
+		"hourglass_pier","tripod_frame","chevron_hall","hanging_arcade","shelf_stack","staggered_balcony",
+		"monopod_tower","wedge_gallery","crown_bridge","zigzag_pier","drum_vault","pyramidal_frame",
+		"warren_truss","kingpost_frame","queenpost_frame","lenticular_bridge","radial_stay_bridge","twin_mast_bridge",
+		"a_frame_hall","butterfly_hall","ziggurat_arcade","corbel_arcade","chain_vault","ring_pier",
+		"folded_plate_hall","space_frame","crossbeam_stack","yoke_bridge","lantern_tower","spine_arcade",
+		"cascade_terrace","inverted_trestle","cranked_beam","barrel_arcade","buttress_crown","triptych_arcade",
+		"megatruss_station","cathedral_megaframe","seeded_typology_megablock","metabolist_spine",
+		"interlaced_viaduct","rosework_gatehouse","interlock_brutalism","suspended_arcology"]
+	var builtins: Array = Project.builtin_presets()
+	var hashes := {}
+	var samples := {}
+	for algorithm: String in ids:
+		var style: Dictionary = {}
+		for preset: Dictionary in builtins:
+			if preset.module == algorithm: style = preset.duplicate(true)
+		if not check(not style.is_empty(), "classic gallery includes: " + algorithm): continue
+		var project: Dictionary = Project.default_project()
+		project.seed = 271828
+		project.extent = [512,512]
+		# Isolate the Gentek geometry in the retained gallery. Automatic shared
+		# macro tunnels remain an independent normal Workbench control.
+		project.automatic_tunnels = false
+		project.styles = [{"enabled":true,"share":100.0,"preset":style}]
+		var compiled: Dictionary = Project.compile(project)
+		if not check(compiled.get("ok",false), "classic project compiles: " + algorithm): continue
+		var data: Dictionary = generation(compiled.recipe, Rect2i(0,0,512,512))
+		if not data.has("cells"): continue
+		check(not hashes.has(data.material_sha256), "classic full-map geometry differs: " + algorithm)
+		hashes[data.material_sha256] = algorithm
+		samples[algorithm] = data.cells
+		var png_us := preview("classic-gentek-" + algorithm, data.cells, Vector2i(512,512))
+		report.cases.append({"case":"gentek-classic-001","algorithm":algorithm,"preset_id":style.id,
+			"module_version":int(style.module_version),"seed":project.seed,"material_sha256":data.material_sha256,
+			"recipe_sha256":data.recipe_sha256,"preview_colour_and_png_us":png_us})
+	check(samples.size() == 80 and hashes.size() == 80, "eighty CLASSIC and showcase Genteks render distinct native maps")
+	if samples.size() == 80:
+		for algorithm: String in ids:
+			if algorithm == "trestle": continue
+			var delta: int = changed_cells(samples[algorithm],samples["trestle"],true)
+			check(delta > 1024, algorithm + " differs in occupied/empty geometry from trestle")
+			report.cases.append({"case":"gentek-classic-structural-difference","algorithm":algorithm,
+				"against":"trestle","occupied_empty_difference_cells":delta})
+
+func showcase_mixed_gallery() -> void:
+	# Two deliberately different five-slot projects collectively cover all
+	# eight advanced modules. These are native material maps, not concept art.
+	var combinations: Array = [
+		["cathedral_megaframe","seeded_typology_megablock","megatruss_station",
+			"interlaced_viaduct","suspended_arcology"],
+		["metabolist_spine","rosework_gatehouse","interlock_brutalism",
+			"cathedral_megaframe","megatruss_station"]
+	]
+	var catalogue: Array = Project.builtin_presets()
+	var signatures := {}
+	for scenario: int in combinations.size():
+		var project: Dictionary = Project.default_project()
+		project.seed = 161803 + scenario * 110025
+		project.extent = [512,512]
+		project.origin = [0,0] if scenario == 0 else [-512,-512]
+		project.zone_scale = 64
+		project.automatic_tunnels = false
+		project.styles = []
+		var selected: Array = combinations[scenario]
+		for id: String in selected:
+			var match_preset: Dictionary = {}
+			for preset: Dictionary in catalogue:
+				if preset.module == id:
+					match_preset = preset.duplicate(true)
+					break
+			if not check(not match_preset.is_empty(), "mixed showcase style available: " + id):
+				return
+			project.styles.append({"enabled":true,"share":20.0,"preset":match_preset})
+		var compiled: Dictionary = Project.compile(project)
+		if not check(compiled.get("ok",false), "five-showcase project compiles: " + str(compiled.get("error",""))):
+			continue
+		check(compiled.recipe.modules.size() == 5 and compiled.coverage.size() == 5,
+			"five independent showcase masks survive compilation")
+		for coverage: Dictionary in compiled.coverage:
+			check(components(compiled.zones,int(coverage.slot)) == 1,
+				"each selected showcase occupies one four-connected allocated zone")
+		var bounds := Rect2i(Vector2i(int(project.origin[0]),int(project.origin[1])),Vector2i(512,512))
+		var rendered: Dictionary = generation(compiled.recipe,bounds)
+		if not check(rendered.has("cells"), "mixed showcase native raster ready"):
+			continue
+		check(not signatures.has(rendered.material_sha256), "different five-style projects produce different material geometry")
+		signatures[rendered.material_sha256] = true
+		var basename := "showcase-mixed-five-a" if scenario == 0 else "showcase-mixed-five-b-negative-origin"
+		var png_us := preview(basename,rendered.cells,Vector2i(512,512))
+		report.cases.append({"case":"showcase-integration-five-style","modules":selected,
+			"seed":project.seed,"origin":project.origin,"coverage":compiled.coverage,
+			"material_sha256":rendered.material_sha256,"recipe_sha256":rendered.recipe_sha256,
+			"preview_colour_and_png_us":png_us})
+	check(signatures.size() == 2, "two five-style showcase combinations render and differ")
+
+func classic_repair_previews() -> void:
+	# Complete native bays expose the two review regressions without shared
+	# tunnels or glazing obscuring structural contact. These are additional
+	# witnesses; the seventy-two unmodified preset requests remain above.
+	for algorithm: String in ["rib_vault", "suspended_deck"]:
+		var style: Dictionary = {}
+		for preset: Dictionary in Project.builtin_presets():
+			if preset.module == algorithm: style = preset.duplicate(true)
+		if not check(not style.is_empty(), "repair preview preset " + algorithm): continue
+		if algorithm == "rib_vault":
+			style.geometry.room_size = 32
+			style.geometry.floor_height = 128
+			style.geometry.wall_thickness = 1
+			style.geometry.door_width = 2
+		style.geometry.shaft_width = 0
+		style.apertures["automatic_windows"] = false
+		var project: Dictionary = small_project()
+		project.seed = 271828
+		project.automatic_tunnels = false
+		project.styles = [{"enabled":true,"share":100.0,"preset":style}]
+		var compiled: Dictionary = Project.compile(project)
+		if not check(compiled.get("ok", false), "repair preview compiles " + algorithm + ": " + str(compiled.get("error", ""))): continue
+		var extent := Vector2i(int(style.geometry.room_size), int(style.geometry.floor_height))
+		var data: Dictionary = generation(compiled.recipe, Rect2i(Vector2i.ZERO, extent))
+		if not data.has("cells"): continue
+		var occupied := PackedByteArray()
+		occupied.resize(data.cells.size())
+		for i: int in occupied.size(): occupied[i] = 0 if data.cells[i] == 0 else 1
+		var component_count: int = components({"width":extent.x,"height":extent.y,"cells":occupied}, 1)
+		check(component_count == 1, "repair bay has one cardinally connected structure: " + algorithm)
+		if algorithm == "suspended_deck":
+			var wall: int = int(style.geometry.wall_thickness)
+			for hanger: int in [extent.x / 4, 3 * extent.x / 4]:
+				var contact := true
+				for x: int in range(hanger - wall, hanger + wall + 1):
+					contact = contact and data.cells[(wall - 1) * extent.x + x] != 0 and data.cells[wall * extent.x + x] != 0
+				check(contact, "suspended hanger meets the upper deck at " + str(hanger))
+		var name := "classic-repair-rib-vault-steep" if algorithm == "rib_vault" else "classic-repair-suspended-deck-contact"
+		preview(name, data.cells, extent)
+		report.cases.append({"case":"gentek-classic-repair","algorithm":algorithm,
+			"geometry":style.geometry,"automatic_windows":false,"cardinal_components":component_count,
+			"material_sha256":data.material_sha256,"recipe_sha256":data.recipe_sha256,
+			"preview":name + ".png"})
+
 func native_contracts() -> void:
 	compiler_contracts()
 	var hashes: Dictionary = {}
@@ -756,6 +902,9 @@ func run() -> void:
 	if check(ClassDB.class_exists(&"CyberWorldGenerator"), "native generator runtime available"):
 		if phase == "native":
 			native_algorithm_gallery()
+			classic_gentek_gallery()
+			classic_repair_previews()
+			showcase_mixed_gallery()
 			native_contracts()
 		elif phase in ["author", "reopen"]: await authoring(phase == "reopen")
 		elif phase in ["multistyle-author", "multistyle-reopen"]:

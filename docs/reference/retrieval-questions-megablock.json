@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "purpose": "Additive branch-scoped Megablock questions; frozen evaluations unchanged.",
+  "questions": [
+    {
+      "id": "MEGABLOCK-01",
+      "query": "How does Seeded Typology Megablock guarantee coherent varied architecture without mutable negotiation?",
+      "canonical": [
+        "research/gentek-showcase-megablock-001.md"
+      ],
+      "facts": [
+        "A deterministic four-by-four programme selects a continuous core, an interior atrium, a bridge with both landings, habitation and lower supports.",
+        "Neighbour cooperation is intra-supercell; a common lower transfer slab crosses supercells.",
+        "Complete-supercell guarantees exclude clipping, shaft carving, deterioration and later paths."
+      ],
+      "sources": [
+        "../../native/src/generation_megablock_programme.hpp",
+        "../../native/src/generation_architecture_megablock.inc"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MEGABLOCK-02",
+      "query": "Which existing controls alter Seeded Typology Megablock and how does it differ from classic repeating samplers or GENTEK-SWARM?",
+      "canonical": [
+        "research/gentek-showcase-megablock-001.md"
+      ],
+      "facts": [
+        "Room size and floor height scale lots, wall thickness changes mass, windows affect habitation only, and doors open the lower arcade gateway.",
+        "Bay and floor height must be at least six wall thicknesses plus twelve cells.",
+        "It remains an immutable schema-four module v1, with no editor, new material schema, search or runtime negotiation."
+      ],
+      "sources": [
+        "../../godot/scripts/architectural_generator_project.gd",
+        "../../examples/worldgen/architectural/seeded-typology-megablock.style.json"
+      ],
+      "revision_sensitive": true
+    }
+  ]
+}

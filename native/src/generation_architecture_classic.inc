@@ -1,0 +1,1629 @@
+// GENTEK-CLASSIC-001: compact schema-4 architectural samplers.
+// Each is deliberately small and uses the existing immutable ArchitectureForm.
+
+class TrestleFrame final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit TrestleFrame(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level);
+        if (fy<p_.wall || fy>=p_.level-p_.wall) return p_.deck;
+        if (bx<p_.wall || bx>=p_.bay-p_.wall) return p_.shell;
+        const auto tolerance=p_.wall*std::max(p_.bay,p_.level);
+        if (std::abs(bx*p_.level-fy*p_.bay)<=tolerance ||
+            std::abs((p_.bay-1-bx)*p_.level-fy*p_.bay)<=tolerance) return p_.accent;
+        return Material::Empty;
+    }
+};
+
+class StackedArcade final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit StackedArcade(const ModuleInstance& i) : p_(i) {
+        require(p_.bay>=4*p_.wall+12 && p_.level>=4*p_.wall+12,
+            "stacked_arcade requires room for two visible arch tiers");
+    }
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), tier=p_.level/2;
+        const auto span=fy<tier?p_.bay/2:p_.bay, sy=fy<tier?fy:fy-tier, sx=positive_mod(bx,span);
+        const auto radius=span/2-p_.wall, dx=std::abs(sx-span/2);
+        const auto roof=p_.wall+(tier-p_.wall)*dx*dx/(radius*radius);
+        if (sy<p_.wall) return p_.deck;
+        if (dx<radius && sy>=roof) return Material::Empty;
+        if (p_.windows && sy>p_.wall+2 && sy<roof-2 && dx>radius/2) return p_.glazing;
+        return p_.shell;
+    }
+};
+
+class FlyingButtress final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit FlyingButtress(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level);
+        if (fy<p_.wall || fy>=p_.level-p_.wall) return p_.deck;
+        if (bx<p_.wall || bx>=p_.bay-p_.wall) return p_.shell;
+        const auto center=p_.bay/2;
+        const auto left=center-fy*center/std::max<std::int64_t>(1,p_.level-1);
+        const auto right=p_.bay-1-left;
+        if (std::abs(bx-left)<=p_.wall || std::abs(bx-right)<=p_.wall) return p_.accent;
+        return Material::Empty;
+    }
+};
+
+class SawtoothGallery final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit SawtoothGallery(const ModuleInstance& i) : p_(i) {
+        require(p_.bay/2>=2*p_.wall+4, "sawtooth_gallery bay is too narrow for roof teeth");
+    }
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level);
+        const auto tooth=p_.bay/2, tx=positive_mod(bx,tooth);
+        const auto roof=p_.wall+tx*(p_.level/3)/std::max<std::int64_t>(1,tooth-1);
+        if (std::abs(fy-roof)<=p_.wall || fy>=p_.level-p_.wall) return p_.deck;
+        if (tx<p_.wall) return p_.shell;
+        if (p_.windows && tx>2*p_.wall && tx<tooth-2*p_.wall &&
+            fy>roof+p_.wall && fy<p_.level-2*p_.wall) return p_.glazing;
+        return Material::Empty;
+    }
+};
+
+class CantileverSpine final : public FeatureSampler {
+    ArchitectureForm p_; std::uint64_t seed_;
+public:
+    CantileverSpine(const ModuleInstance& i, std::uint64_t seed) : p_(i), seed_(seed) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), center=p_.bay/2;
+        if (fy<p_.wall || std::abs(bx-center)<=p_.wall) return fy<p_.wall?p_.deck:p_.shell;
+        const bool left=(hash_xy(seed_,floor_div(x,p_.bay),floor_div(y,p_.level),431)&1U)!=0;
+        const auto upper=p_.level/3, lower=2*p_.level/3;
+        if (std::abs(fy-upper)<=p_.wall && (left?bx<=center:bx>=center)) return p_.deck;
+        if (std::abs(fy-lower)<=p_.wall && (left?bx>=center:bx<=center)) return p_.deck;
+        const auto hanger=left?p_.bay/4:3*p_.bay/4;
+        if (std::abs(bx-hanger)<=p_.wall && fy>upper && fy<lower) return p_.accent;
+        return Material::Empty;
+    }
+};
+
+class RibVault final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit RibVault(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), center=p_.bay/2;
+        const auto apex=2*p_.wall+1, base=p_.level-p_.wall-1;
+        const auto span=std::max<std::int64_t>(1,center-p_.wall);
+        const auto expected=apex+std::min(std::abs(bx-center),span)*(base-apex)/span;
+        // Adjacent column bands must overlap even when a rib is steep.
+        const auto stroke=std::max(p_.wall,(std::abs(base-apex)+2*span-1)/(2*span));
+        if (fy>=base) return p_.deck;
+        if (bx<p_.wall || bx>=p_.bay-p_.wall) return p_.shell;
+        if (std::abs(fy-expected)<=stroke) return p_.accent;
+        if (p_.windows && std::abs(bx-center)<center/2 && fy>expected+stroke && fy<base-p_.wall)
+            return p_.glazing;
+        return Material::Empty;
+    }
+};
+
+class NestedArcade final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit NestedArcade(const ModuleInstance& i) : p_(i) {
+        require(p_.bay>=4*p_.wall+12 && p_.level>=4*p_.wall+12,
+            "nested_arcade requires room for large and small arch spans");
+    }
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), center=p_.bay/2;
+        if (fy<p_.wall) return p_.deck;
+        const auto radius=center-p_.wall, dx=std::abs(bx-center);
+        const auto outer_roof=p_.wall+(p_.level-p_.wall)*dx*dx/(radius*radius);
+        if (!(dx<radius && fy>=outer_roof)) return p_.shell;
+        const auto mid=p_.level/2;
+        if (fy<mid) return Material::Empty;
+        const auto sub=p_.bay/2, sx=positive_mod(bx,sub), sr=sub/2-p_.wall;
+        const auto sy=fy-mid, sdx=std::abs(sx-sub/2);
+        const auto small_roof=p_.wall+(p_.level-mid-p_.wall)*sdx*sdx/(sr*sr);
+        if (sy<p_.wall) return p_.deck;
+        if (sdx<sr && sy>=small_roof) return Material::Empty;
+        return p_.accent;
+    }
+};
+
+class SuspendedDeck final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit SuspendedDeck(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level);
+        const auto lower=p_.level/2, q1=p_.bay/4, q3=3*p_.bay/4;
+        if (fy<p_.wall || std::abs(fy-lower)<=p_.wall) return p_.deck;
+        if (bx<p_.wall || bx>=p_.bay-p_.wall) return p_.shell;
+        if ((std::abs(bx-q1)<=p_.wall || std::abs(bx-q3)<=p_.wall) &&
+            fy>=p_.wall && fy<lower) return p_.accent;
+        if (p_.windows) {
+            const auto left=p_.bay/2-p_.bay/6, right=p_.bay/2+p_.bay/6;
+            const auto top=lower+2*p_.wall+1, bottom=p_.level-2*p_.wall-1;
+            if (top<=bottom) {
+                if (bx>=left && bx<=right && fy>=top && fy<=bottom) return p_.glazing;
+                // Preserve the entire existing pane; add its frame outside it.
+                // The jambs hang directly from the already supported lower deck.
+                if (fy>=lower+p_.wall && fy<=bottom+p_.wall &&
+                    ((bx>=left-p_.wall && bx<left) || (bx>right && bx<=right+p_.wall))) return p_.shell;
+                if (bx>=left-p_.wall && bx<=right+p_.wall &&
+                    ((fy>=top-p_.wall && fy<top) || (fy>bottom && fy<=bottom+p_.wall))) return p_.shell;
+            }
+        }
+        return Material::Empty;
+    }
+};
+
+// 9. BowstringTruss: curved upper chord, straight lower deck and vertical hangers.
+class BowstringTruss final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit BowstringTruss(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), center=p_.bay/2;
+        const auto radius=std::max<std::int64_t>(1,center-p_.wall), dx=std::abs(bx-center);
+        const auto chord=p_.wall+(p_.level/3)*dx*dx/(radius*radius), deck=2*p_.level/3;
+        if (std::abs(fy-chord)<=p_.wall) return p_.accent;
+        if (std::abs(fy-deck)<=p_.wall) return p_.deck;
+        const auto hanger=std::max<std::int64_t>(8,p_.bay/5);
+        if (positive_mod(bx,hanger)<p_.wall && fy>chord && fy<deck) return p_.shell;
+        return Material::Empty;
+    }
+};
+
+// 10. DiamondTruss: a central spine wrapped by a large four-sided truss cell.
+class DiamondTruss final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit DiamondTruss(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level);
+        const auto cx=p_.bay/2, cy=p_.level/2;
+        if (fy<p_.wall || fy>=p_.level-p_.wall) return p_.deck;
+        if (std::abs(bx-cx)<=p_.wall) return p_.shell;
+        const auto value=std::abs(bx-cx)*p_.level+std::abs(fy-cy)*p_.bay;
+        const auto edge=cx*p_.level, tolerance=p_.wall*std::max(p_.bay,p_.level);
+        if (std::abs(value-edge)<=tolerance) return p_.accent;
+        return Material::Empty;
+    }
+};
+
+// 11. PortalFrame: repeated two-leg portals with a high crossbeam and open centre.
+class PortalFrame final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit PortalFrame(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level);
+        const auto left=p_.bay/4, right=3*p_.bay/4, beam=p_.level/3;
+        if (std::abs(fy-beam)<=p_.wall && bx>=left && bx<=right) return p_.deck;
+        if ((std::abs(bx-left)<=p_.wall || std::abs(bx-right)<=p_.wall) && fy>=beam)
+            return p_.shell;
+        if (fy>=p_.level-p_.wall) return p_.accent;
+        return Material::Empty;
+    }
+};
+
+// 12. LadderBridge: paired long chords joined by closely spaced vertical rungs.
+class LadderBridge final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit LadderBridge(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level);
+        const auto upper=p_.level/3, lower=2*p_.level/3;
+        if (std::abs(fy-upper)<=p_.wall || std::abs(fy-lower)<=p_.wall) return p_.deck;
+        const auto rung=std::max<std::int64_t>(8,p_.bay/5);
+        if (positive_mod(bx,rung)<p_.wall && fy>upper && fy<lower) return p_.accent;
+        return Material::Empty;
+    }
+};
+
+// 13. SteppedAqueduct: narrowing terraces connected by paired masonry piers.
+class SteppedAqueduct final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit SteppedAqueduct(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level);
+        for (std::int64_t tier=1;tier<=3;++tier) {
+            const auto height=tier*p_.level/4, margin=(3-tier)*p_.bay/10;
+            if (std::abs(fy-height)<=p_.wall && bx>=margin && bx<p_.bay-margin) return p_.deck;
+        }
+        if ((std::abs(bx-p_.bay/4)<=p_.wall || std::abs(bx-3*p_.bay/4)<=p_.wall) &&
+            fy>=p_.level/4) return p_.shell;
+        return Material::Empty;
+    }
+};
+
+// 14. SplitPier: one lower pier divides into two diagonal branches beneath a deck.
+class SplitPier final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit SplitPier(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), center=p_.bay/2;
+        if (fy<p_.wall) return p_.deck;
+        if (fy>=p_.level/2 && std::abs(bx-center)<=p_.wall) return p_.shell;
+        if (fy<p_.level/2) {
+            const auto spread=(p_.level/2-fy)*(p_.bay/4)/std::max<std::int64_t>(1,p_.level/2);
+            if (std::abs(bx-(center-spread))<=p_.wall || std::abs(bx-(center+spread))<=p_.wall)
+                return p_.accent;
+        }
+        return Material::Empty;
+    }
+};
+
+// 15. CableGallery: parabolic carrier cable, lower deck and repeated hangers.
+class CableGallery final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit CableGallery(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), center=p_.bay/2;
+        const auto radius=std::max<std::int64_t>(1,center), dx=std::abs(bx-center);
+        const auto cable=p_.wall+(p_.level/3)*(radius*radius-dx*dx)/(radius*radius);
+        const auto deck=2*p_.level/3;
+        if (std::abs(fy-cable)<=p_.wall) return p_.accent;
+        if (std::abs(fy-deck)<=p_.wall) return p_.deck;
+        const auto hanger=std::max<std::int64_t>(8,p_.bay/6);
+        if (positive_mod(bx,hanger)<p_.wall && fy>cable && fy<deck) return p_.shell;
+        return Material::Empty;
+    }
+};
+
+// 16. ClerestoryHall: tall hall walls, roof, upper glazing band and internal columns.
+class ClerestoryHall final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit ClerestoryHall(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level);
+        if (fy<p_.wall || fy>=p_.level-p_.wall) return p_.deck;
+        if (bx<p_.wall || bx>=p_.bay-p_.wall || std::abs(bx-p_.bay/2)<=p_.wall) return p_.shell;
+        if (p_.windows && fy>p_.level/5 && fy<p_.level/3) return p_.glazing;
+        return Material::Empty;
+    }
+};
+
+// 17. MushroomDeck: a broad top deck carried by tapered mushroom-cap columns.
+class MushroomDeck final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit MushroomDeck(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), center=p_.bay/2;
+        if (fy<p_.wall) return p_.deck;
+        if (fy>=p_.level/3 && std::abs(bx-center)<=p_.wall) return p_.shell;
+        if (fy<p_.level/3) {
+            const auto reach=p_.wall+(p_.level/3-fy)*(p_.bay/3)/std::max<std::int64_t>(1,p_.level/3);
+            if (std::abs(bx-center)<=reach) return p_.accent;
+        }
+        return Material::Empty;
+    }
+};
+
+// 18. ZigzagBridge: a continuous folded deck with periodic vertical supports.
+class ZigzagBridge final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit ZigzagBridge(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level);
+        const auto half=std::max<std::int64_t>(1,p_.bay/2);
+        const auto tri=bx<=half?bx:p_.bay-bx;
+        const auto deck=p_.level/3+tri*(p_.level/3)/half;
+        if (std::abs(fy-deck)<=p_.wall) return p_.deck;
+        if ((bx<p_.wall || bx>=p_.bay-p_.wall) && fy>=deck) return p_.shell;
+        return Material::Empty;
+    }
+};
+
+// 19. ScallopedVault: three smaller quadratic vaults share one repeating bay.
+class ScallopedVault final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit ScallopedVault(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level);
+        const auto span=std::max<std::int64_t>(8,p_.bay/3), sx=positive_mod(bx,span);
+        const auto radius=std::max<std::int64_t>(1,span/2-p_.wall), dx=std::abs(sx-span/2);
+        const auto roof=p_.wall+(p_.level/2-p_.wall)*dx*dx/(radius*radius);
+        // Bound the adjacent-column rise of the quadratic. Half that rise on
+        // each column makes their bands overlap by a face, even for thin,
+        // steep scallops, without widening the flatter crown unnecessarily.
+        const auto adjacent_rise=((p_.level/2-p_.wall)*(2*dx+1)+radius*radius-1)/(radius*radius);
+        const auto stroke=std::max(p_.wall,(adjacent_rise+1)/2);
+        if (fy>=p_.level-p_.wall) return p_.deck;
+        if (std::abs(fy-roof)<=stroke || sx<p_.wall) return p_.accent;
+        return Material::Empty;
+    }
+};
+
+// 20. LatticeTower: narrow tower bays with edge rails, floors and crossed braces.
+class LatticeTower final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit LatticeTower(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level);
+        const auto left=p_.bay/4, right=3*p_.bay/4, width=right-left;
+        if (bx<left-p_.wall || bx>right+p_.wall) return Material::Empty;
+        if (std::abs(bx-left)<=p_.wall || std::abs(bx-right)<=p_.wall) return p_.shell;
+        if (fy<p_.wall || std::abs(fy-p_.level/2)<=p_.wall || fy>=p_.level-p_.wall) return p_.deck;
+        const auto local=bx-left, tolerance=p_.wall*std::max(width,p_.level);
+        if (std::abs(local*p_.level-fy*width)<=tolerance ||
+            std::abs((width-local)*p_.level-fy*width)<=tolerance) return p_.accent;
+        return Material::Empty;
+    }
+};
+
+// 21. OffsetArcade: successive levels shift their arch centres left and right.
+class OffsetArcade final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit OffsetArcade(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level);
+        const auto level=floor_div(y,p_.level), shift=(positive_mod(level,2)==0?-p_.bay/6:p_.bay/6);
+        const auto center=p_.bay/2+shift, radius=std::max<std::int64_t>(1,p_.bay/2-p_.wall);
+        const auto dx=std::abs(bx-center);
+        if (fy<p_.wall) return p_.deck;
+        const auto roof=p_.wall+(p_.level-p_.wall)*dx*dx/(radius*radius);
+        if (dx<radius && fy>=roof) return Material::Empty;
+        if (p_.windows && dx>radius/2 && fy>p_.wall+2 && fy<roof-2) return p_.glazing;
+        return p_.shell;
+    }
+};
+
+// 22. Bridgehouse: a mid-level bridge carries repeated gabled structural rooms.
+class Bridgehouse final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit Bridgehouse(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level);
+        const auto deck=p_.level/2, left=p_.bay/4, right=3*p_.bay/4, center=p_.bay/2;
+        if (std::abs(fy-deck)<=p_.wall) return p_.deck;
+        if ((std::abs(bx-left)<=p_.wall || std::abs(bx-right)<=p_.wall) && fy>deck) return p_.shell;
+        if (fy<deck) {
+            const auto roof=p_.wall+std::abs(bx-center)*(deck/2)/std::max<std::int64_t>(1,p_.bay/4);
+            if (std::abs(fy-roof)<=p_.wall || std::abs(bx-left)<=p_.wall || std::abs(bx-right)<=p_.wall)
+                return p_.accent;
+            if (p_.windows && bx>left+p_.wall && bx<right-p_.wall && fy>deck/3) return p_.glazing;
+        }
+        return Material::Empty;
+    }
+};
+
+// 23. ForkedGantry: central lower stem splits into two upper legs beneath a deck.
+class ForkedGantry final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit ForkedGantry(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), center=p_.bay/2;
+        if (fy<p_.wall) return p_.deck;
+        if (fy>=p_.level/2 && std::abs(bx-center)<=p_.wall) return p_.shell;
+        if (fy<p_.level/2) {
+            const auto offset=(p_.level/2-fy)*(p_.bay/3)/std::max<std::int64_t>(1,p_.level/2);
+            if (std::abs(bx-(center-offset))<=p_.wall || std::abs(bx-(center+offset))<=p_.wall)
+                return p_.accent;
+        }
+        if (fy>=p_.level-p_.wall) return p_.deck;
+        return Material::Empty;
+    }
+};
+
+// 24. ButtressWall: heavy edge piers, deep diagonal buttresses and a central light slot.
+class ButtressWall final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit ButtressWall(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), center=p_.bay/2;
+        if (bx<2*p_.wall || bx>=p_.bay-2*p_.wall || fy>=p_.level-p_.wall) return p_.shell;
+        const auto reach=(p_.level-1-fy)*(p_.bay/4)/std::max<std::int64_t>(1,p_.level);
+        if (bx<=reach+p_.wall || bx>=p_.bay-1-reach-p_.wall) return p_.accent;
+        if (p_.windows) {
+            const auto left=center-p_.bay/10, right=center+p_.bay/10;
+            const auto top=p_.level/4+1, bottom=3*p_.level/4-1;
+            if (top<=bottom) {
+                if (bx>=left && bx<=right && fy>=top && fy<=bottom) return p_.glazing;
+                // Frame the unchanged light slot and carry its jambs to the base.
+                if (fy>=top-p_.wall &&
+                    ((bx>=left-p_.wall && bx<left) || (bx>right && bx<=right+p_.wall))) return p_.shell;
+                if (bx>=left-p_.wall && bx<=right+p_.wall &&
+                    ((fy>=top-p_.wall && fy<top) || (fy>bottom && fy<=bottom+p_.wall))) return p_.shell;
+            }
+        }
+        return Material::Empty;
+    }
+};
+
+// 25. FanTruss: one high central node fans several braces toward a lower deck.
+class FanTruss final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit FanTruss(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), center=p_.bay/2;
+        const auto apex=p_.level/5, deck=3*p_.level/4;
+        if (std::abs(fy-deck)<=p_.wall) return p_.deck;
+        for (const auto target : {p_.bay/8,3*p_.bay/8,5*p_.bay/8,7*p_.bay/8}) {
+            const auto lhs=(bx-center)*(deck-apex), rhs=(fy-apex)*(target-center);
+            if (std::abs(lhs-rhs)<=p_.wall*std::max(p_.bay,p_.level)) return p_.accent;
+        }
+        return Material::Empty;
+    }
+};
+
+// 26. PrattTruss: two chords, vertical posts and alternating inward diagonals.
+class PrattTruss final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit PrattTruss(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level);
+        const auto top=p_.level/4, bottom=3*p_.level/4, panel=std::max<std::int64_t>(8,p_.bay/4);
+        if (std::abs(fy-top)<=p_.wall || std::abs(fy-bottom)<=p_.wall) return p_.deck;
+        if (positive_mod(bx,panel)<p_.wall && fy>top && fy<bottom) return p_.shell;
+        const auto local=positive_mod(bx,panel), tolerance=p_.wall*std::max(panel,bottom-top);
+        const bool flip=(bx/panel)%2!=0;
+        const auto lhs=local*(bottom-top), rhs=(fy-top)*panel;
+        if (std::abs((flip?panel*(bottom-top)-lhs:lhs)-rhs)<=tolerance) return p_.accent;
+        return Material::Empty;
+    }
+};
+
+// 27. VierendeelFrame: heavy rectangular bays with no diagonal bracing.
+class VierendeelFrame final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit VierendeelFrame(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level);
+        const auto top=p_.level/4, bottom=3*p_.level/4, panel=std::max<std::int64_t>(8,p_.bay/4);
+        if (std::abs(fy-top)<=2*p_.wall || std::abs(fy-bottom)<=2*p_.wall) return p_.deck;
+        if (positive_mod(bx,panel)<2*p_.wall && fy>=top && fy<=bottom) return p_.shell;
+        return Material::Empty;
+    }
+};
+
+// 28. SuspensionPylon: paired pylons, a low deck and sloping carrier stays.
+class SuspensionPylon final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit SuspensionPylon(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level);
+        const auto left=p_.bay/4, right=3*p_.bay/4, deck=3*p_.level/4, crown=p_.level/5;
+        if (std::abs(fy-deck)<=p_.wall) return p_.deck;
+        if ((std::abs(bx-left)<=p_.wall || std::abs(bx-right)<=p_.wall) && fy>=crown) return p_.shell;
+        const auto tol=p_.wall*std::max(p_.bay,p_.level);
+        if (std::abs((bx-left)*(deck-crown)-(fy-crown)*(-left))<=tol ||
+            std::abs((bx-right)*(deck-crown)-(fy-crown)*(p_.bay-1-right))<=tol) return p_.accent;
+        return Material::Empty;
+    }
+};
+
+// 29. HarpBridge: a single mast with several straight harp stays to a deck.
+class HarpBridge final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit HarpBridge(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), mast=p_.bay/2;
+        const auto deck=3*p_.level/4;
+        if (std::abs(fy-deck)<=p_.wall) return p_.deck;
+        if (std::abs(bx-mast)<=p_.wall) return p_.shell;
+        const auto tol=p_.wall*std::max(p_.bay,p_.level);
+        for (const auto target : {p_.bay/8,p_.bay/4,3*p_.bay/4,7*p_.bay/8}) {
+            const auto anchor=p_.level/5+std::abs(target-mast)*(p_.level/3)/std::max<std::int64_t>(1,mast);
+            if (std::abs((bx-mast)*(deck-anchor)-(fy-anchor)*(target-mast))<=tol) return p_.accent;
+        }
+        return Material::Empty;
+    }
+};
+
+// 30. DoubleCantilever: twin piers carry inward shelves at three distinct levels.
+class DoubleCantilever final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit DoubleCantilever(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level);
+        const auto left=p_.bay/4, right=3*p_.bay/4;
+        if (std::abs(bx-left)<=p_.wall || std::abs(bx-right)<=p_.wall) return p_.shell;
+        for (const auto h : {p_.level/4,p_.level/2,3*p_.level/4}) {
+            if (std::abs(fy-h)<=p_.wall && bx>=left && bx<=right) return p_.deck;
+        }
+        return Material::Empty;
+    }
+};
+
+// 31. SteppedButtress: dense edge masses step inward as they rise.
+class SteppedButtress final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit SteppedButtress(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level);
+        const auto tier=std::min<std::int64_t>(3,3*fy/std::max<std::int64_t>(1,p_.level));
+        const auto reach=(3-tier)*p_.bay/10+p_.wall;
+        if (bx<reach || bx>=p_.bay-reach || fy>=p_.level-p_.wall) return p_.shell;
+        if (std::abs(fy-(tier+1)*p_.level/4)<=p_.wall) return p_.accent;
+        return Material::Empty;
+    }
+};
+
+// 32. Colonnade: entablature over a dense rhythm of slender columns and plinth.
+class Colonnade final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit Colonnade(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level);
+        const auto pitch=std::max<std::int64_t>(8,p_.bay/5);
+        if (fy<p_.wall*2 || fy>=p_.level-p_.wall*2) return p_.deck;
+        if (positive_mod(bx,pitch)<p_.wall*2) return p_.shell;
+        if (fy<p_.level/5 && positive_mod(bx,pitch)<pitch/2) return p_.accent;
+        return Material::Empty;
+    }
+};
+
+// 33. Basilica: tall nave roof with lower side aisles and paired interior columns.
+class Basilica final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit Basilica(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), center=p_.bay/2;
+        const auto dx=std::abs(bx-center), nave=p_.bay/4;
+        const auto roof=dx<=nave?p_.level/6+dx*(p_.level/5)/std::max<std::int64_t>(1,nave):
+            p_.level/3+(dx-nave)*(p_.level/8)/std::max<std::int64_t>(1,center-nave);
+        if (std::abs(fy-roof)<=p_.wall || fy>=p_.level-p_.wall) return p_.deck;
+        if (std::abs(dx-nave)<=p_.wall && fy>roof) return p_.shell;
+        if (p_.windows && dx<nave && fy>p_.level/3 && fy<p_.level/2) return p_.glazing;
+        return Material::Empty;
+    }
+};
+
+// 34. CrenellatedBridge: a high deck with repeated merlons and deep supporting piers.
+class CrenellatedBridge final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit CrenellatedBridge(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), deck=p_.level/3;
+        if (std::abs(fy-deck)<=p_.wall) return p_.deck;
+        const auto pitch=std::max<std::int64_t>(8,p_.bay/6);
+        if (fy<deck && positive_mod(bx,pitch)<pitch/2 && fy>=deck-p_.level/6) return p_.accent;
+        if ((bx<p_.wall*2 || bx>=p_.bay-p_.wall*2) && fy>deck) return p_.shell;
+        return Material::Empty;
+    }
+};
+
+// 35. PointedArcade: Gothic V-curves form pointed openings under a continuous deck.
+class PointedArcade final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit PointedArcade(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), center=p_.bay/2;
+        if (fy<p_.wall) return p_.deck;
+        const auto roof=p_.wall+std::abs(bx-center)*(p_.level-p_.wall)/std::max<std::int64_t>(1,center-p_.wall);
+        if (bx>p_.wall && bx<p_.bay-p_.wall && fy>=roof) return Material::Empty;
+        if (p_.windows && fy>p_.wall*3 && fy<roof-p_.wall && std::abs(bx-center)>center/2) return p_.glazing;
+        return p_.shell;
+    }
+};
+
+// 36. InvertedArch: a hanging quadratic rib descends from an upper carrier deck.
+class InvertedArch final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit InvertedArch(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), center=p_.bay/2;
+        if (fy<p_.wall) return p_.deck;
+        const auto radius=std::max<std::int64_t>(1,center), dx=std::abs(bx-center);
+        const auto rib=p_.level/5+(p_.level/2)*(radius*radius-dx*dx)/(radius*radius);
+        if (std::abs(fy-rib)<=p_.wall) return p_.accent;
+        if ((bx<p_.wall || bx>=p_.bay-p_.wall) && fy<rib) return p_.shell;
+        return Material::Empty;
+    }
+};
+
+// 37. HourglassPier: a single support narrows at mid-height and flares at both ends.
+class HourglassPier final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit HourglassPier(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), center=p_.bay/2;
+        if (fy<p_.wall || fy>=p_.level-p_.wall) return p_.deck;
+        const auto dy=std::abs(fy-p_.level/2);
+        const auto reach=p_.wall+dy*(p_.bay/5)/std::max<std::int64_t>(1,p_.level/2);
+        if (std::abs(bx-center)<=reach) return dy>p_.level/3?p_.accent:p_.shell;
+        return Material::Empty;
+    }
+};
+
+// 38. TripodFrame: three splayed legs share a transfer deck and compact crown.
+class TripodFrame final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit TripodFrame(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), center=p_.bay/2;
+        const auto crown=p_.level/4;
+        // The previous tier's feet bear on this tier's centred crown through
+        // a short neck, while a full lower deck joins the three splayed feet.
+        // Without these contacts repeated tripods were isolated in mid-air.
+        if (fy>=p_.level-p_.wall) return p_.deck;
+        if (std::abs(fy-crown)<=p_.wall && std::abs(bx-center)<=p_.bay/4) return p_.deck;
+        if (fy<crown && std::abs(bx-center)<=p_.wall) return p_.shell;
+        const auto run=std::max<std::int64_t>(1,p_.level-crown);
+        const auto spread=(fy-crown)*(p_.bay/3)/run;
+        // Face-connect each rasterized leg even in admitted wide, low bays.
+        const auto stroke=std::max<std::int64_t>(p_.wall,((p_.bay/3)+run-1)/run);
+        if (fy>=crown && (std::abs(bx-center)<=p_.wall ||
+            std::abs(bx-(center-spread))<=stroke || std::abs(bx-(center+spread))<=stroke)) return p_.accent;
+        return Material::Empty;
+    }
+};
+
+// 39. ChevronHall: repeated peaked roof with sparse load-bearing side columns.
+class ChevronHall final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit ChevronHall(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), center=p_.bay/2;
+        const auto roof=p_.wall+std::abs(bx-center)*(p_.level/3)/std::max<std::int64_t>(1,center);
+        if (std::abs(fy-roof)<=p_.wall) return p_.accent;
+        if ((bx<p_.wall*2 || bx>=p_.bay-p_.wall*2) && fy>=roof) return p_.shell;
+        if (fy>=p_.level-p_.wall) return p_.deck;
+        return Material::Empty;
+    }
+};
+
+// 40. HangingArcade: repeated shallow hanging arches descend from a top deck.
+class HangingArcade final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit HangingArcade(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), center=p_.bay/2;
+        if (fy<p_.wall) return p_.deck;
+        const auto radius=std::max<std::int64_t>(1,center), dx=std::abs(bx-center);
+        const auto rib=p_.level/5+(p_.level/3)*dx*dx/(radius*radius);
+        if (std::abs(fy-rib)<=p_.wall) return p_.accent;
+        if ((bx<p_.wall || bx>=p_.bay-p_.wall) && fy<2*p_.level/3) return p_.shell;
+        return Material::Empty;
+    }
+};
+
+// 41. ShelfStack: one central spine carries alternating full and half-width shelves.
+class ShelfStack final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit ShelfStack(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), center=p_.bay/2;
+        if (std::abs(bx-center)<=p_.wall) return p_.shell;
+        for (std::int64_t n=1;n<=4;++n) {
+            const auto h=n*p_.level/5;
+            if (std::abs(fy-h)<=p_.wall && (n%2==0 || std::abs(bx-center)<=p_.bay/3)) return p_.deck;
+        }
+        return Material::Empty;
+    }
+};
+
+// 42. StaggeredBalcony: alternating side balconies project from paired edge towers.
+class StaggeredBalcony final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit StaggeredBalcony(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level);
+        if (bx<p_.wall*2 || bx>=p_.bay-p_.wall*2) return p_.shell;
+        const auto band=std::max<std::int64_t>(1,p_.level/4), row=fy/band, h=row*band;
+        if (std::abs(fy-h)<=p_.wall) {
+            const bool left=row%2==0;
+            if ((left && bx<p_.bay/2) || (!left && bx>=p_.bay/2)) return p_.deck;
+        }
+        return Material::Empty;
+    }
+};
+
+// 43. MonopodTower: a central mast supports periodic diamond-shaped observation pods.
+class MonopodTower final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit MonopodTower(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), center=p_.bay/2;
+        if (std::abs(bx-center)<=p_.wall) return p_.shell;
+        const auto pod=std::max<std::int64_t>(12,p_.level/3), py=positive_mod(fy,pod), cy=pod/2;
+        const auto diamond=std::abs(bx-center)*pod+std::abs(py-cy)*(p_.bay/2);
+        const auto edge=(p_.bay/5)*pod, tol=p_.wall*std::max(p_.bay,pod);
+        if (std::abs(diamond-edge)<=tol) return p_.accent;
+        return Material::Empty;
+    }
+};
+
+// 44. WedgeGallery: paired sloping shelves create an asymmetric wedge-shaped passage.
+class WedgeGallery final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit WedgeGallery(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level);
+        const auto upper=p_.level/5+bx*(p_.level/4)/std::max<std::int64_t>(1,p_.bay-1);
+        const auto lower=4*p_.level/5-bx*(p_.level/5)/std::max<std::int64_t>(1,p_.bay-1);
+        if (std::abs(fy-upper)<=p_.wall || std::abs(fy-lower)<=p_.wall) return p_.deck;
+        if (bx<p_.wall && fy>=upper && fy<=lower) return p_.shell;
+        return Material::Empty;
+    }
+};
+
+// 45. CrownBridge: repeated triangular crown ribs stand above a heavy mid-level deck.
+class CrownBridge final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit CrownBridge(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), center=p_.bay/2;
+        const auto deck=2*p_.level/3;
+        if (std::abs(fy-deck)<=p_.wall) return p_.deck;
+        const auto crown=p_.level/6+std::abs(bx-center)*(deck-p_.level/6)/std::max<std::int64_t>(1,center);
+        if (std::abs(fy-crown)<=p_.wall && fy<deck) return p_.accent;
+        if ((bx<p_.wall || bx>=p_.bay-p_.wall) && fy>=deck) return p_.shell;
+        return Material::Empty;
+    }
+};
+
+// 46. ZigzagPier: a single load path switches left/right at each vertical quarter.
+class ZigzagPier final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit ZigzagPier(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level);
+        if (fy<p_.wall) return p_.deck;
+        const auto seg=std::max<std::int64_t>(1,p_.level/4), row=std::min<std::int64_t>(3,fy/seg), local=positive_mod(fy,seg);
+        const auto a=row%2==0?p_.bay/3:2*p_.bay/3, b=row%2==0?2*p_.bay/3:p_.bay/3;
+        const auto expected=a+(b-a)*local/seg;
+        if (std::abs(bx-expected)<=p_.wall) return row%2==0?p_.accent:p_.shell;
+        return Material::Empty;
+    }
+};
+
+// 47. DrumVault: a broad rounded barrel shell with straight side walls.
+class DrumVault final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit DrumVault(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), center=p_.bay/2;
+        const auto radius=std::max<std::int64_t>(1,center-p_.wall), dx=std::min(std::abs(bx-center),radius);
+        const auto roof=p_.level/5+(p_.level/3)*dx*dx/(radius*radius);
+        if (std::abs(fy-roof)<=p_.wall) return p_.accent;
+        if ((bx<p_.wall*2 || bx>=p_.bay-p_.wall*2) && fy>=roof) return p_.shell;
+        if (fy>=p_.level-p_.wall) return p_.deck;
+        return Material::Empty;
+    }
+};
+
+// 48. PyramidalFrame: triangular outer frame with three internal horizontal ties.
+class PyramidalFrame final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit PyramidalFrame(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), center=p_.bay/2;
+        const auto edge=p_.wall+fy*center/std::max<std::int64_t>(1,p_.level-1);
+        if (std::abs(std::abs(bx-center)-edge)<=p_.wall) return p_.accent;
+        for (const auto h : {p_.level/3,p_.level/2,2*p_.level/3})
+            if (std::abs(fy-h)<=p_.wall && std::abs(bx-center)<=edge) return p_.deck;
+        if (fy>=p_.level-p_.wall) return p_.shell;
+        return Material::Empty;
+    }
+};
+
+// 49. WarrenTruss: triangular diagonals repeat between two long chords.
+class WarrenTruss final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit WarrenTruss(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level);
+        const auto top=p_.level/4, bottom=3*p_.level/4, panel=std::max<std::int64_t>(8,p_.bay/4);
+        if (std::abs(fy-top)<=p_.wall || std::abs(fy-bottom)<=p_.wall) return p_.deck;
+        const auto local=positive_mod(bx,panel), row=bx/panel;
+        const auto target=(row%2==0)?top+(bottom-top)*local/panel:bottom-(bottom-top)*local/panel;
+        if (std::abs(fy-target)<=p_.wall) return p_.accent;
+        return Material::Empty;
+    }
+};
+
+class KingpostFrame final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit KingpostFrame(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), center=p_.bay/2;
+        const auto apex=p_.level/5, deck=3*p_.level/4;
+        if (std::abs(fy-deck)<=p_.wall) return p_.deck;
+        if (std::abs(bx-center)<=p_.wall && fy>=apex && fy<=deck) return p_.shell;
+        const auto roof=apex+std::abs(bx-center)*(deck-apex)/std::max<std::int64_t>(1,center);
+        if (std::abs(fy-roof)<=p_.wall && fy<=deck) return p_.accent;
+        return Material::Empty;
+    }
+};
+
+class QueenpostFrame final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit QueenpostFrame(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level);
+        const auto left=p_.bay/3, right=2*p_.bay/3, tie=p_.level/3, deck=3*p_.level/4;
+        if (std::abs(fy-tie)<=p_.wall && bx>=left && bx<=right) return p_.deck;
+        if (std::abs(fy-deck)<=p_.wall) return p_.deck;
+        if ((std::abs(bx-left)<=p_.wall || std::abs(bx-right)<=p_.wall) && fy>=tie && fy<=deck) return p_.shell;
+        const auto tol=p_.wall*std::max(p_.bay,p_.level);
+        if (std::abs(bx*(deck-tie)-(fy-tie)*left)<=tol ||
+            std::abs((p_.bay-1-bx)*(deck-tie)-(fy-tie)*(p_.bay-1-right))<=tol) return p_.accent;
+        return Material::Empty;
+    }
+};
+
+class LenticularBridge final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit LenticularBridge(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), center=p_.bay/2;
+        const auto r=std::max<std::int64_t>(1,center), dx=std::abs(bx-center);
+        const auto curve=(p_.level/4)*(r*r-dx*dx)/(r*r);
+        const auto upper=p_.level/2-curve, lower=p_.level/2+curve;
+        if (std::abs(fy-upper)<=p_.wall || std::abs(fy-lower)<=p_.wall) return p_.accent;
+        const auto tie=std::max<std::int64_t>(8,p_.bay/6);
+        if (positive_mod(bx,tie)<p_.wall && fy>upper && fy<lower) return p_.shell;
+        return Material::Empty;
+    }
+};
+
+class RadialStayBridge final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit RadialStayBridge(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), mast=p_.bay/2;
+        const auto hub=p_.level/4, deck=3*p_.level/4;
+        if (std::abs(fy-deck)<=p_.wall) return p_.deck;
+        if (std::abs(bx-mast)<=p_.wall && fy>=hub) return p_.shell;
+        const auto tol=p_.wall*std::max(p_.bay,p_.level);
+        for (const auto target : {p_.bay/10,p_.bay/4,3*p_.bay/4,9*p_.bay/10})
+            if (std::abs((bx-mast)*(deck-hub)-(fy-hub)*(target-mast))<=tol) return p_.accent;
+        return Material::Empty;
+    }
+};
+
+class TwinMastBridge final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit TwinMastBridge(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level);
+        const auto left=p_.bay/4, right=3*p_.bay/4, crown=p_.level/5, deck=3*p_.level/4;
+        if (std::abs(fy-deck)<=p_.wall) return p_.deck;
+        if ((std::abs(bx-left)<=p_.wall || std::abs(bx-right)<=p_.wall) && fy>=crown) return p_.shell;
+        const auto tol=p_.wall*std::max(p_.bay,p_.level);
+        if (std::abs((bx-left)*(deck-crown)-(fy-crown)*(right-left))<=tol ||
+            std::abs((bx-right)*(deck-crown)-(fy-crown)*(left-right))<=tol) return p_.accent;
+        return Material::Empty;
+    }
+};
+
+class AFrameHall final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit AFrameHall(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), center=p_.bay/2;
+        const auto edge=p_.wall+fy*center/std::max<std::int64_t>(1,p_.level-1);
+        if (std::abs(std::abs(bx-center)-edge)<=p_.wall) return p_.shell;
+        if (fy>=p_.level-p_.wall) return p_.deck;
+        if (p_.windows && fy>p_.level/2 && std::abs(bx-center)<p_.bay/8) return p_.glazing;
+        return Material::Empty;
+    }
+};
+
+class ButterflyHall final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit ButterflyHall(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), center=p_.bay/2;
+        const auto roof=p_.level/5+(center-std::abs(bx-center))*(p_.level/4)/std::max<std::int64_t>(1,center);
+        if (std::abs(fy-roof)<=p_.wall) return p_.accent;
+        if ((bx<p_.wall*2 || bx>=p_.bay-p_.wall*2) && fy>=roof) return p_.shell;
+        if (fy>=p_.level-p_.wall) return p_.deck;
+        return Material::Empty;
+    }
+};
+
+class ZigguratArcade final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit ZigguratArcade(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), center=p_.bay/2;
+        const auto tier=std::min<std::int64_t>(3,3*fy/std::max<std::int64_t>(1,p_.level));
+        const auto inset=tier*p_.bay/10;
+        if (bx<inset || bx>=p_.bay-inset) return Material::Empty;
+        const auto slot=p_.bay/8+tier*p_.wall;
+        if (std::abs(bx-center)<slot && fy>p_.level/4) return Material::Empty;
+        if (std::abs(fy-(tier+1)*p_.level/4)<=p_.wall) return p_.deck;
+        return p_.shell;
+    }
+};
+
+class CorbelArcade final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit CorbelArcade(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), center=p_.bay/2;
+        if (fy<p_.wall) return p_.deck;
+        const auto step=std::max<std::int64_t>(1,p_.level/6), course=fy/step;
+        const auto half=std::max<std::int64_t>(p_.wall+2,p_.bay/2-course*p_.bay/18);
+        if (std::abs(bx-center)<half && fy>p_.level/5) return Material::Empty;
+        if (std::abs(std::abs(bx-center)-half)<=p_.wall) return p_.accent;
+        return p_.shell;
+    }
+};
+
+class ChainVault final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit ChainVault(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), center=p_.bay/2;
+        const auto r=std::max<std::int64_t>(1,center), dx=std::abs(bx-center);
+        const auto band=(floor_div(x,p_.bay)&1)==0?p_.level/3:p_.level/2;
+        const auto curve=p_.level/6+band*(r*r-dx*dx)/(r*r);
+        if (std::abs(fy-curve)<=p_.wall) return p_.accent;
+        if (fy>=p_.level-p_.wall) return p_.deck;
+        return Material::Empty;
+    }
+};
+
+class RingPier final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit RingPier(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), cx=p_.bay/2, cy=p_.level/2;
+        if (fy<p_.wall || fy>=p_.level-p_.wall) return p_.deck;
+        const auto metric=std::abs(bx-cx)*p_.level+std::abs(fy-cy)*p_.bay;
+        const auto outer=(p_.bay/3)*p_.level, inner=(p_.bay/5)*p_.level;
+        if (metric<=outer && metric>=inner) return p_.accent;
+        // Carry the open diamond between its two decks. Limit the stems to
+        // outside the ring so its central void and accent outline stay intact.
+        if (metric>outer && std::abs(bx-cx)<=p_.wall) return p_.shell;
+        return Material::Empty;
+    }
+};
+
+class FoldedPlateHall final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit FoldedPlateHall(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level);
+        const auto panel=std::max<std::int64_t>(8,p_.bay/4), local=positive_mod(bx,panel);
+        const auto tri=local<=panel/2?local:panel-local;
+        const auto roof=p_.level/5+tri*(p_.level/3)/std::max<std::int64_t>(1,panel/2);
+        if (std::abs(fy-roof)<=p_.wall) return p_.deck;
+        if ((bx<p_.wall || bx>=p_.bay-p_.wall) && fy>=roof) return p_.shell;
+        return Material::Empty;
+    }
+};
+
+class SpaceFrame final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit SpaceFrame(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level);
+        const auto top=p_.level/4, bottom=3*p_.level/4, panel=std::max<std::int64_t>(8,p_.bay/6);
+        if (std::abs(fy-top)<=p_.wall || std::abs(fy-bottom)<=p_.wall) return p_.deck;
+        const auto local=positive_mod(bx,panel), span=bottom-top, tol=p_.wall*std::max(panel,span);
+        if (std::abs(local*span-(fy-top)*panel)<=tol ||
+            std::abs((panel-local)*span-(fy-top)*panel)<=tol) return p_.accent;
+        return Material::Empty;
+    }
+};
+
+class CrossbeamStack final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit CrossbeamStack(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), center=p_.bay/2;
+        if (std::abs(bx-center)<=p_.wall) return p_.shell;
+        for (std::int64_t n=1;n<=5;++n) {
+            const auto h=n*p_.level/6, reach=(n%2==0?p_.bay/2:p_.bay/4);
+            if (std::abs(fy-h)<=p_.wall && std::abs(bx-center)<=reach)
+                return n%2==0?p_.deck:p_.accent;
+        }
+        return Material::Empty;
+    }
+};
+
+class YokeBridge final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit YokeBridge(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level);
+        const auto left=p_.bay/4, right=3*p_.bay/4, yoke=p_.level/4, deck=2*p_.level/3;
+        if (std::abs(fy-yoke)<=p_.wall && bx>=left && bx<=right) return p_.accent;
+        if (std::abs(fy-deck)<=p_.wall) return p_.deck;
+        if ((std::abs(bx-left)<=p_.wall || std::abs(bx-right)<=p_.wall) && fy>=yoke) return p_.shell;
+        return Material::Empty;
+    }
+};
+
+class LanternTower final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit LanternTower(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), center=p_.bay/2;
+        if (fy>=p_.level/2 && std::abs(bx-center)<=p_.bay/10) return p_.shell;
+        if (fy<p_.level/2 && std::abs(bx-center)<=p_.bay/3) {
+            if (fy<p_.wall || std::abs(fy-p_.level/2)<=p_.wall) return p_.deck;
+            if (std::abs(bx-center)>=p_.bay/3-p_.wall) return p_.accent;
+            if (p_.windows) return p_.glazing;
+        }
+        return Material::Empty;
+    }
+};
+
+class SpineArcade final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit SpineArcade(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), center=p_.bay/2;
+        if (std::abs(bx-center)<=p_.wall) return p_.shell;
+        const bool left=(floor_div(y,p_.level)&1)==0;
+        const auto side=left?center-bx:bx-center;
+        if (side<0) return Material::Empty;
+        const auto r=std::max<std::int64_t>(1,center-p_.wall), roof=p_.wall+(p_.level-p_.wall)*side*side/(r*r);
+        if (side<r && fy>=roof) return Material::Empty;
+        if (side<=r) return p_.accent;
+        return Material::Empty;
+    }
+};
+
+class CascadeTerrace final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit CascadeTerrace(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level);
+        for (std::int64_t n=0;n<4;++n) {
+            const auto h=(n+1)*p_.level/5, start=n*p_.bay/8;
+            if (std::abs(fy-h)<=p_.wall && bx>=start) return p_.deck;
+            if (std::abs(bx-start)<=p_.wall && fy>=h && fy<(n+2)*p_.level/5) return p_.shell;
+        }
+        // A continuous rear core carries every cantilevered terrace and joins
+        // vertical repeats; the stepped leading edges and downstands stay open.
+        if (bx>=p_.bay-p_.wall) return p_.shell;
+        return Material::Empty;
+    }
+};
+
+class InvertedTrestle final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit InvertedTrestle(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), center=p_.bay/2;
+        const auto deck=p_.level/4, foot=3*p_.level/4;
+        if (std::abs(fy-deck)<=p_.wall) return p_.deck;
+        const auto spread=(fy-deck)*center/std::max<std::int64_t>(1,foot-deck);
+        if (fy>=deck && fy<=foot &&
+            (std::abs(bx-(center-spread))<=p_.wall || std::abs(bx-(center+spread))<=p_.wall)) return p_.accent;
+        return Material::Empty;
+    }
+};
+
+class CrankedBeam final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit CrankedBeam(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level);
+        const auto quarter=std::max<std::int64_t>(1,p_.bay/4), seg=std::min<std::int64_t>(3,bx/quarter);
+        const auto local=positive_mod(bx,quarter);
+        const std::array<std::int64_t,5> levels{p_.level/3,p_.level/2,2*p_.level/5,3*p_.level/5,p_.level/2};
+        const auto beam=levels[seg]+(levels[seg+1]-levels[seg])*local/quarter;
+        if (std::abs(fy-beam)<=p_.wall) return p_.accent;
+        if ((bx<p_.wall || bx>=p_.bay-p_.wall) && fy>=beam) return p_.shell;
+        return Material::Empty;
+    }
+};
+
+class BarrelArcade final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit BarrelArcade(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), center=p_.bay/2;
+        const auto r=std::max<std::int64_t>(1,center), dx=std::abs(bx-center);
+        const auto roof=p_.level/6+(p_.level/3)*dx*dx/(r*r);
+        if (std::abs(fy-roof)<=p_.wall) return p_.accent;
+        if ((bx<p_.wall*2 || bx>=p_.bay-p_.wall*2) && fy>=roof) return p_.shell;
+        if (std::abs(fy-2*p_.level/3)<=p_.wall && (bx<p_.bay/4 || bx>3*p_.bay/4)) return p_.deck;
+        return Material::Empty;
+    }
+};
+
+class ButtressCrown final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit ButtressCrown(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level), center=p_.bay/2;
+        const auto reach=(p_.level-fy)*(p_.bay/4)/std::max<std::int64_t>(1,p_.level);
+        if (bx<reach+p_.wall || bx>=p_.bay-reach-p_.wall) return p_.shell;
+        if (fy<p_.level/3 && std::abs(bx-center)<=p_.bay/8) return p_.accent;
+        if (fy>=p_.level-p_.wall) return p_.deck;
+        return Material::Empty;
+    }
+};
+
+class TriptychArcade final : public FeatureSampler {
+    ArchitectureForm p_;
+public:
+    explicit TriptychArcade(const ModuleInstance& i) : p_(i) {}
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+        const auto bx=positive_mod(x,p_.bay), fy=positive_mod(y,p_.level);
+        if (fy<p_.wall || fy>=p_.level-p_.wall) return p_.deck;
+        const auto third=std::max<std::int64_t>(8,p_.bay/3), which=std::min<std::int64_t>(2,bx/third);
+        const auto start=which*third, width=(which==1?p_.bay-2*third:third), center=start+width/2;
+        const auto r=std::max<std::int64_t>(1,width/2-p_.wall), dx=std::abs(bx-center);
+        const auto roof=p_.wall+dx*(p_.level-p_.wall)/r;
+        if (dx<r && fy>=roof) return Material::Empty;
+        if (std::abs(dx-r)<=p_.wall) return p_.accent;
+        return p_.shell;
+    }
+};
+
+// 73. MegatrussStation: six ordinary bays form one infrastructural supercell.
+// Bounds ONLY clip this sampler. Its phase and programme use signed world cells.
+class MegatrussStation final : public FeatureSampler {
+    ArchitectureForm p_;
+    std::uint64_t seed_;
+public:
+    MegatrussStation(const ModuleInstance& i, std::uint64_t seed) : p_(i), seed_(seed) {
+        require(p_.bay >= 4*p_.wall+24 && p_.level >= 8*p_.wall+32,
+            "megatruss_station needs bay >= 4*wall+24 and floor >= 8*wall+32");
+    }
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        // SUPER CELL COORDINATES: macro / bay / band / secondary panel.
+        const auto B=p_.bay, L=p_.level, w=p_.wall, span=6*B, height=3*L;
+        const auto super_x=positive_mod(c.x,span), super_y=positive_mod(c.y,height);
+        const auto bay_index=super_x/B, bay_x=super_x%B;
+        const auto major_band=super_y/L, panel_pitch=B/4, panel_x=bay_x%panel_pitch;
+        const auto top=L/2, bottom=3*L/2, main_deck=5*L/2;
+        const auto primary=2*w, secondary=std::max<std::int64_t>(1,w/2);
+        const auto edge=std::min(super_x,span-super_x);
+        if (p_.shaft>0 && std::abs(super_x-span/2)<(p_.shaft+1)/2) return Material::Empty;
+
+        // SEEDED MACRO PROGRAMME: no independent per-member random decisions.
+        const auto programme=hash_xy(seed_,floor_div(c.x,span),floor_div(c.y,height),1773);
+        const bool forked=(programme&1U)!=0, concourse=(programme&8U)!=0;
+        const auto hall=static_cast<std::int64_t>((programme>>1U)%3U);
+        const bool gallery_right=hall==0 || (hall==1 && (programme&16U)!=0);
+        const bool crossed=(programme&32U)!=0, crown_right=(programme&64U)!=0;
+        const auto hall_start=(1+hall)*B;
+        const auto gallery_start=gallery_right?span-7*B/4:B/4;
+        const auto gallery_end=gallery_start+3*B/2;
+        const auto gallery_y=2*L;
+
+        // Integer strip raster with square end caps. All products are local,
+        // bounded by 1536 x 768; no world-coordinate multiply or float distance.
+        const auto member=[&](std::int64_t x1,std::int64_t y1,std::int64_t x2,
+                std::int64_t y2,std::int64_t radius) {
+            if (super_x<std::min(x1,x2)-radius || super_x>std::max(x1,x2)+radius ||
+                super_y<std::min(y1,y2)-radius || super_y>std::max(y1,y2)+radius) return false;
+            const auto dx=x2-x1, dy=y2-y1;
+            return std::abs((super_x-x1)*dy-(super_y-y1)*dx)<=radius*std::max(std::abs(dx),std::abs(dy));
+        };
+
+        // PRIMARY CHORDS / MAIN TRANSIT DECK: unbroken six-bay datums.
+        if (std::abs(super_y-main_deck)<=w) return p_.deck;
+        if (std::abs(super_y-top)<=primary || std::abs(super_y-bottom)<=primary) return p_.accent;
+
+        // PRIMARY DIAGONALS: each member crosses THREE normal bays.
+        if (member(0,top,3*B,bottom,primary) || member(3*B,bottom,span,top,primary) ||
+            member(3*B,top,3*B,bottom,w)) return p_.accent;
+
+        // TRANSFER PIERS / CORES: continuous across all three vertical bands.
+        // The invariant seam core joins adjacent programmes without negotiation.
+        if (edge<=3*w) return p_.shell;
+        if (major_band>=1 && super_y>=bottom) {
+            const auto reach=forked?3*B/4:B/2;
+            if (member(0,main_deck,reach,bottom,2*w) ||
+                member(span,main_deck,span-reach,bottom,2*w)) return p_.shell;
+            if (!forked && super_y<=bottom+L/5 && edge<=B/2) return p_.shell;
+        }
+
+        // SECONDARY TRUSS: four small panels per base bay, in two pockets only.
+        // Keeping the central two bays unmeshed makes the primary span legible.
+        const auto secondary_bottom=top+L/4;
+        if ((bay_index==1 || bay_index==4) && super_y>=top && super_y<=secondary_bottom) {
+            if (std::abs(super_y-secondary_bottom)<=secondary || bay_x<=secondary ||
+                bay_x>=B-secondary || panel_x<=secondary) return p_.accent;
+            const auto py=super_y-top, depth=secondary_bottom-top;
+            const auto tolerance=secondary*std::max(panel_pitch,depth);
+            const bool reverse=((bay_x/panel_pitch)&1)!=0;
+            const auto diagonal=(reverse?panel_pitch-panel_x:panel_x)*depth;
+            if (std::abs(diagonal-py*panel_pitch)<=tolerance ||
+                (crossed && std::abs(panel_pitch*depth-diagonal-py*panel_pitch)<=tolerance)) return p_.accent;
+        }
+
+        // LARGE STATION HALL: a protected two-bay rectangle below the truss.
+        // Primary/support layers above cannot enter this corridor at valid sizes.
+        if (super_x>=hall_start && super_x<hall_start+2*B &&
+            super_y>bottom+primary && super_y<main_deck-w) return Material::Empty;
+
+        // HANGERS / SUSPENDED GALLERY: anchored to the lower mega-chord.
+        if (super_x>=gallery_start && super_x<=gallery_end) {
+            if (std::abs(super_y-gallery_y)<=w) return p_.deck;
+            if (super_y>bottom && super_y<gallery_y &&
+                (std::abs(super_x-gallery_start)<=secondary ||
+                 std::abs(super_x-gallery_end)<=secondary)) return p_.accent;
+            const auto pod_top=gallery_y-L/4;
+            if (super_y>=pod_top && super_y<gallery_y-w) {
+                if (super_y<pod_top+w || super_x<gallery_start+w || super_x>gallery_end-w)
+                    return p_.shell;
+                const auto gx=super_x-gallery_start;
+                if (p_.doors && std::abs(gx-3*B/4)<p_.door/2 &&
+                    super_y>=gallery_y-w-p_.door) return Material::Empty;
+                if (p_.windows && super_y>=pod_top+2*w &&
+                    positive_mod(gx,panel_pitch)>secondary) return p_.glazing;
+                return p_.shell;
+            }
+        }
+
+        // UPPER CONCOURSE: a bounded enclosure tied into a core and diagonal.
+        const auto concourse_x=gallery_right?span-super_x:super_x, concourse_y=5*L/4;
+        if (concourse && concourse_x<=5*B/2 && super_y>=L && super_y<=concourse_y+w) {
+            if (std::abs(super_y-concourse_y)<=w) return p_.deck;
+            if (super_y<L+w || concourse_x>=5*B/2-w) return p_.shell;
+            if (p_.doors && std::abs(concourse_x-2*B)<p_.door/2 &&
+                super_y>=concourse_y-w-p_.door) return Material::Empty;
+            if (p_.windows && super_y>=L+2*w && positive_mod(concourse_x,panel_pitch)>secondary)
+                return p_.glazing;
+            return p_.shell;
+        }
+
+        // LOWER TECHNICAL GALLERY: short shelves rooted in the transfer cores.
+        if (edge<=B && std::abs(super_y-11*L/4)<=w) return p_.deck;
+        if (super_y>main_deck && super_y<11*L/4 && std::abs(edge-B/2)<=secondary) return p_.accent;
+
+        // ROOF / EQUIPMENT CROWN: offset monitor with framed glazing and mast.
+        const auto crown_x=crown_right?span-B:B, crown_half=B/3, crown_top=L/6;
+        const auto cx=std::abs(super_x-crown_x);
+        if (super_y>=crown_top && super_y<top && cx<=crown_half) {
+            if (super_y<crown_top+w || cx>=crown_half-w) return p_.accent;
+            if (p_.windows && positive_mod(super_x,panel_pitch)>secondary) return p_.glazing;
+            return p_.shell;
+        }
+        if (cx<=secondary && super_y<crown_top) return p_.accent;
+        return Material::Empty;
+    }
+};
+
+// 73. Cathedral Megaframe: four nested scales share one immutable supercell.
+// Local Y points down. Integer lens inequalities give pointed, curved arches
+// without square roots, per-cell randomness, neighbour queries or allocation.
+class CathedralMegaframe final : public FeatureSampler {
+    ArchitectureForm p_;
+    std::uint64_t seed_;
+    std::int64_t span_, height_, radius_, spring_, rise_, mass_, fine_;
+
+    static bool beneath_arch(std::int64_t dx, std::int64_t y,
+            std::int64_t spring, std::int64_t radius, std::int64_t rise) noexcept {
+        if (dx >= radius) return false;
+        if (y >= spring) return true;
+        const auto dy = spring - y;
+        if (dy > rise) return false;
+        const auto u = dx + radius;
+        return 3 * radius * radius * dy * dy + rise * rise * u * u <=
+            4 * radius * radius * rise * rise;
+    }
+public:
+    CathedralMegaframe(const ModuleInstance& i, std::uint64_t seed)
+        : p_(i), seed_(seed), span_(4*p_.bay), height_(3*p_.level),
+          radius_(3*p_.bay/2), spring_(7*p_.level/4), rise_(5*p_.level/4),
+          mass_(2*p_.wall+p_.bay/32), fine_(std::max<std::int64_t>(1,p_.wall/2)) {
+        require(p_.bay >= 6*p_.wall+16 && p_.level >= 6*p_.wall+16,
+            "cathedral_megaframe needs bay/floor at least 6 * wall + 16 cells");
+    }
+    std::optional<Material> sample(const ModuleContext& c, Material) const override {
+        const auto x=c.x-p_.bounds.x, y=c.y-p_.bounds.y;
+        if (p_.in_shaft(x)) return Material::Empty;
+
+        // SUPERFRAME: four base bays, three storeys, one protected nave.
+        const auto mx=positive_mod(x,span_), my=positive_mod(y,height_);
+        const auto cell_x=floor_div(x,span_), cell_y=floor_div(y,height_);
+        const auto center=span_/2, dx=std::abs(mx-center), edge=std::min(mx,span_-mx);
+        const auto base=height_-p_.wall, clerestory_top=p_.level/8;
+        if (my>=base) return p_.deck;
+
+        // SEEDED VARIATION: one choice per supercell; shared boundary towers
+        // use the boundary's own key so adjacent frames agree at their seam.
+        const auto choice=hash_xy(seed_,cell_x,cell_y,7301);
+        const auto boundary=cell_x+(mx>center?1:0);
+        const auto tower=hash_xy(seed_,boundary,cell_y,7302);
+        const auto tower_top=(tower&1U)?p_.level/12:p_.level/3;
+        const auto tower_width=p_.bay/8+p_.wall;
+
+        // BUTTRESSES: broad lower steps, a lighter upper tower, and a curved
+        // flying rib landing on the primary pier (not a full-height diagonal).
+        auto buttress_width=my>=2*p_.level?p_.bay/4+p_.wall:
+            (my>=p_.level?p_.bay/6+p_.wall:tower_width);
+        if (my>=tower_top && my<tower_top+p_.level/8)
+            buttress_width=fine_+(tower_width-fine_)*(my-tower_top)/(p_.level/8);
+        if (my>=tower_top && edge<=buttress_width) {
+            const auto portal_radius=std::min(p_.door/2,buttress_width-fine_-1);
+            if (p_.doors && my>base-p_.level/3 &&
+                beneath_arch(edge,my,base-p_.level/6,portal_radius,p_.level/6))
+                return Material::Empty;
+            if (my<tower_top+fine_ || std::abs(my-p_.level)<=fine_ ||
+                std::abs(my-2*p_.level)<=fine_ || edge>buttress_width-fine_)
+                return p_.accent;
+            return p_.shell;
+        }
+        const auto fly_end=p_.bay/2, fly_start=tower_width;
+        if (edge>=fly_start && edge<=fly_end) {
+            const auto t=edge-fly_start, width=fly_end-fly_start;
+            const auto fly_y=p_.level+3*p_.level/8-
+                (3*p_.level/8)*t*(2*width-t)/(width*width);
+            const auto next=std::min(t+1,width);
+            const auto next_y=p_.level+3*p_.level/8-
+                (3*p_.level/8)*next*(2*width-next)/(width*width);
+            if (my>=next_y-p_.wall && my<=fly_y+p_.wall) return p_.accent;
+        }
+
+        // PRIMARY PIERS + RIB: a thick lens-shaped pointed arch, with a
+        // continuous inner accent and piers carrying the high clerestory.
+        const auto pier_distance=std::abs(dx-(radius_-mass_/2));
+        // Continue to the supercell ceiling: vertically repeated frames share
+        // these load paths rather than floating below the preceding deck.
+        if (pier_distance<=mass_/2)
+            return pier_distance<=fine_?p_.accent:p_.shell;
+        const bool outer=beneath_arch(dx,my,spring_,radius_,rise_);
+        // Contract the inner aperture by one raster column. Adjacent columns
+        // then overlap even at the valid narrow/tall limit; no World lookup.
+        const bool opening=beneath_arch(dx+1,my,spring_,radius_-mass_,rise_-mass_);
+        if (outer && !opening)
+            return beneath_arch(dx+1,my,spring_,radius_-mass_+fine_,rise_-mass_+fine_)
+                ?p_.accent:p_.shell;
+
+        // INTERMEDIATE RIB: a second, slender curved order nested within the
+        // main frame. Its legs meet the side galleries and continue to base.
+        const auto inner_radius=radius_-mass_-p_.bay/12;
+        const auto inner_rise=rise_-mass_-p_.level/10;
+        if (beneath_arch(dx,my,spring_,inner_radius,inner_rise) &&
+            !beneath_arch(dx+1,my,spring_,inner_radius-fine_,inner_rise-fine_))
+            return p_.accent;
+
+        // CLERESTORY: a high horizontal band of small framed lancets. The
+        // off state fills glass with shell; every load path and aperture mask
+        // outside the glazing stays identical. No glass occupies the nave.
+        const auto sill=p_.level/2, pitch=p_.bay/((choice&2U)?3:4);
+        if (dx<=radius_ && my>=clerestory_top && my<=sill) {
+            const auto local=positive_mod(mx-(center-radius_),pitch);
+            const auto window_dx=std::abs(local-pitch/2), window_radius=pitch/2-fine_;
+            const auto window_spring=sill-2*fine_, window_rise=sill-clerestory_top-4*fine_;
+            if (my>=sill-fine_ || my<=clerestory_top+fine_) return p_.deck;
+            if (local<=fine_ || local>=pitch-fine_) return p_.shell;
+            if (beneath_arch(window_dx,my,window_spring,window_radius,window_rise))
+                return p_.windows?p_.glazing:p_.shell;
+            if (beneath_arch(window_dx,my,window_spring,window_radius+fine_,window_rise+fine_))
+                return p_.accent;
+            return Material::Empty;
+        }
+
+        // SECONDARY ARCADE: two lower openings per side; these support a
+        // triforium with half-bay frequency, leaving a whole central bay void.
+        const auto arcade_pitch=p_.bay/2, gallery=2*p_.level;
+        const bool side_aisle=edge>=p_.bay/2 && edge<=3*p_.bay/2;
+        if (side_aisle && my>=gallery && my<base) {
+            const auto local=positive_mod(edge-p_.bay/2,arcade_pitch);
+            const auto sub_dx=std::abs(local-arcade_pitch/2);
+            const auto sub_spring=gallery+p_.level/2;
+            const auto sub_radius=arcade_pitch/2, sub_rise=p_.level/2-p_.wall;
+            if (beneath_arch(sub_dx,my,sub_spring,sub_radius,sub_rise) &&
+                !beneath_arch(sub_dx+1,my,sub_spring,sub_radius-p_.wall,sub_rise-p_.wall))
+                return p_.shell;
+            if (local<=p_.wall || local>=arcade_pitch-p_.wall) return p_.accent;
+        }
+
+        // GALLERIES: two side datums, with bounded asymmetry. Each terminal
+        // is a supported arcade pier; no deck crosses the central nave.
+        const bool extended=((choice>>2U)&1U)==static_cast<std::uint64_t>(mx>center);
+        const auto upper_end=extended?3*p_.bay/2:p_.bay;
+        if (edge<=3*p_.bay/2 && std::abs(my-gallery)<=p_.wall) return p_.deck;
+        if (edge<=upper_end && std::abs(my-3*p_.level/2)<=fine_) return p_.deck;
+        if (std::abs(edge-upper_end)<=fine_ && my>=3*p_.level/2 && my<=gallery)
+            return p_.shell;
+
+        // TERTIARY: short balustrade posts grow from the triforium deck;
+        // smaller spacing changes with room_size, independently of storeys.
+        const auto detail_pitch=std::max<std::int64_t>(4,p_.bay/8);
+        if (edge<=3*p_.bay/2 && my<gallery-p_.wall && my>=gallery-p_.level/8 &&
+            positive_mod(edge,detail_pitch)<=fine_) return p_.accent;
+        return Material::Empty;
+    }
+};

@@ -1,0 +1,158 @@
+{
+  "benchmark": "ordinary-native-generate",
+  "checksum": 5501764641959199040,
+  "configuration": {
+    "accent_material": 119,
+    "bay_width": 128,
+    "chunk_size": 64,
+    "floor_height": 80,
+    "floor_material": 119,
+    "schema": 4,
+    "seed": 271828,
+    "wall": 3,
+    "wall_material": 100,
+    "window_material": 55
+  },
+  "results": [
+    {
+      "extent": 512,
+      "logical_operations_per_cell": 472,
+      "max_ms": 262.061567,
+      "median_ms": 253.884033,
+      "min_ms": 230.012643,
+      "module": "pointed_arcade",
+      "trials_ms": [
+        259.573065,
+        250.793028,
+        243.804577,
+        253.884033,
+        262.061567,
+        230.012643,
+        254.424457
+      ]
+    },
+    {
+      "extent": 512,
+      "logical_operations_per_cell": 468,
+      "max_ms": 273.421477,
+      "median_ms": 242.87017,
+      "min_ms": 230.806474,
+      "module": "drum_vault",
+      "trials_ms": [
+        239.949009,
+        240.467458,
+        246.640738,
+        273.421477,
+        257.771604,
+        230.806474,
+        242.87017
+      ]
+    },
+    {
+      "extent": 512,
+      "logical_operations_per_cell": 484,
+      "max_ms": 272.750378,
+      "median_ms": 249.861625,
+      "min_ms": 229.662939,
+      "module": "arcade",
+      "trials_ms": [
+        262.808033,
+        272.750378,
+        245.877843,
+        269.48445,
+        249.861625,
+        229.662939,
+        239.189059
+      ]
+    },
+    {
+      "extent": 512,
+      "logical_operations_per_cell": 1192,
+      "max_ms": 267.488838,
+      "median_ms": 246.956984,
+      "min_ms": 230.359254,
+      "module": "rosework_gatehouse",
+      "trials_ms": [
+        246.415956,
+        258.737648,
+        246.956984,
+        267.488838,
+        252.054287,
+        242.357099,
+        230.359254
+      ]
+    },
+    {
+      "extent": 1024,
+      "logical_operations_per_cell": 472,
+      "max_ms": 1037.89007,
+      "median_ms": 962.447123,
+      "min_ms": 928.848773,
+      "module": "pointed_arcade",
+      "trials_ms": [
+        997.209431,
+        962.447123,
+        928.848773,
+        996.186299,
+        947.025568,
+        944.315955,
+        1037.89007
+      ]
+    },
+    {
+      "extent": 1024,
+      "logical_operations_per_cell": 468,
+      "max_ms": 1011.53459,
+      "median_ms": 1000.84307,
+      "min_ms": 964.271827,
+      "module": "drum_vault",
+      "trials_ms": [
+        964.271827,
+        979.696302,
+        1008.2813,
+        991.372123,
+        1003.78924,
+        1000.84307,
+        1011.53459
+      ]
+    },
+    {
+      "extent": 1024,
+      "logical_operations_per_cell": 484,
+      "max_ms": 1000.34502,
+      "median_ms": 976.744443,
+      "min_ms": 923.553059,
+      "module": "arcade",
+      "trials_ms": [
+        942.302413,
+        989.889948,
+        983.404249,
+        1000.34502,
+        923.553059,
+        944.331654,
+        976.744443
+      ]
+    },
+    {
+      "extent": 1024,
+      "logical_operations_per_cell": 1192,
+      "max_ms": 1054.23755,
+      "median_ms": 1001.16502,
+      "min_ms": 963.439047,
+      "module": "rosework_gatehouse",
+      "trials_ms": [
+        1000.23309,
+        963.439047,
+        1001.16502,
+        1027.1106,
+        1054.23755,
+        1031.69842,
+        969.052724
+      ]
+    }
+  ],
+  "timed_scope": "complete native chunk generation, allocation and content hashing; preparation excluded",
+  "trial_order": "rotating-module-order",
+  "warm_trials": 7,
+  "warmup_trials": 1
+}

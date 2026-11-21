@@ -1,0 +1,107 @@
+[
+  {
+    "cells": 262144,
+    "direct_sampler_median_ms": 8.683173,
+    "direct_sampler_ms": [
+      8.723181,
+      8.683173,
+      8.592558,
+      8.550647,
+      8.97377
+    ],
+    "direct_sampler_ns_per_cell": 33.12367630004883,
+    "generator_median_ms": 169.012733,
+    "generator_raster_ms": [
+      172.680717,
+      159.454963,
+      169.012733,
+      210.476009,
+      160.243662
+    ],
+    "module": "seeded_typology_megablock"
+  },
+  {
+    "cells": 262144,
+    "direct_sampler_median_ms": 2.951091,
+    "direct_sampler_ms": [
+      2.957651,
+      2.886375,
+      3.051979,
+      2.841489,
+      2.951091
+    ],
+    "direct_sampler_ns_per_cell": 11.257518768310547,
+    "generator_median_ms": 166.527801,
+    "generator_raster_ms": [
+      143.009815,
+      181.316099,
+      182.744604,
+      166.527801,
+      135.875898
+    ],
+    "module": "cantilever_spine"
+  },
+  {
+    "cells": 262144,
+    "direct_sampler_median_ms": 1.501553,
+    "direct_sampler_ms": [
+      1.486871,
+      1.454584,
+      1.501553,
+      1.525879,
+      1.54634
+    ],
+    "direct_sampler_ns_per_cell": 5.727970123291016,
+    "generator_median_ms": 135.815599,
+    "generator_raster_ms": [
+      154.04252,
+      173.923589,
+      134.983923,
+      135.815599,
+      135.11156
+    ],
+    "module": "staggered_balcony"
+  },
+  {
+    "cells": 262144,
+    "direct_sampler_median_ms": 1.62116,
+    "direct_sampler_ms": [
+      1.633649,
+      1.603273,
+      1.591466,
+      1.670794,
+      1.62116
+    ],
+    "direct_sampler_ns_per_cell": 6.184234619140625,
+    "generator_median_ms": 156.099368,
+    "generator_raster_ms": [
+      155.056916,
+      157.221827,
+      170.203817,
+      156.099368,
+      137.791701
+    ],
+    "module": "bridgehouse"
+  },
+  {
+    "cells": 262144,
+    "direct_sampler_median_ms": 2.935297,
+    "direct_sampler_ms": [
+      3.181466,
+      3.247107,
+      2.935297,
+      2.243998,
+      2.234995
+    ],
+    "direct_sampler_ns_per_cell": 11.197269439697266,
+    "generator_median_ms": 139.059101,
+    "generator_raster_ms": [
+      157.519576,
+      155.250977,
+      136.361224,
+      139.059101,
+      138.624009
+    ],
+    "module": "stacked_arcade"
+  }
+]

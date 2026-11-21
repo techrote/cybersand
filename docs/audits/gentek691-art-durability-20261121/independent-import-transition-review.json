@@ -1,0 +1,54 @@
+{
+  "runner_sha256": "248e7399f042a668a4d44b1afc063c708b73d13b47377ef8834312745d156e68",
+  "cases": [
+    {
+      "case": "line-endings-only",
+      "accepted": true,
+      "expected_accept": true,
+      "passed": true,
+      "error": ""
+    },
+    {
+      "case": "descriptor-source-reference",
+      "accepted": false,
+      "expected_accept": false,
+      "passed": true,
+      "error": "ValueError: Editor import changed descriptor content beyond permitted line endings"
+    },
+    {
+      "case": "unknown-import",
+      "accepted": false,
+      "expected_accept": false,
+      "passed": true,
+      "error": "ValueError: Editor import changed another tracked input"
+    },
+    {
+      "case": "application-source",
+      "accepted": false,
+      "expected_accept": false,
+      "passed": true,
+      "error": "ValueError: Editor import changed another tracked input"
+    },
+    {
+      "case": "source-image",
+      "accepted": false,
+      "expected_accept": false,
+      "passed": true,
+      "error": "ValueError: Editor import changed another tracked input"
+    },
+    {
+      "case": "descriptor-symlink",
+      "accepted": false,
+      "expected_accept": false,
+      "passed": true,
+      "error": "ValueError: An import descriptor is unexpectedly a symbolic link: godot/addons/godot-rapier2d/Radial2D.svg.import"
+    },
+    {
+      "case": "post-import-same-status-mutation",
+      "same_status": true,
+      "identity_changed": true,
+      "passed": true
+    }
+  ],
+  "passed": true
+}

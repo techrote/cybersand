@@ -64,6 +64,28 @@ helper without importing its simulation owner. The
 [dated evidence](../audits/2026-11-20-workbench-actor-composition.md) owns exact
 source/runtime identities, platform results, failures and remaining owner checks.
 
+## Experimental Gentek catalogue integration — Draft/HOLD, 2026-11-17
+
+The stacked [GENTEK-SHOWCASE-INTEGRATION-001 #671](https://github.com/techrote/cybersand/pull/671)
+collects all eight independent advanced showcase PRs (#663–#670) onto the frozen
+72-module [CLASSIC #624](https://github.com/techrote/cybersand/pull/624).
+The combined source-matched native and Linux/Godot material qualification passes
+for an **80-module candidate** and two mixed five-style maps; the
+[research integration record](../operations/gentek-showcase-integration-001.md)
+owns exact source/PNG provenance, remaining review and owner approval.
+Both PRs remain **Draft/HOLD; not accepted main, not Ready, not merge-authorized**.
+
+## GENTEK-80 integration candidate — 20 November 2026
+
+A fresh Draft/HOLD branch from accepted `de109d01` reconciles all 72 repaired
+CLASSIC samplers and eight advanced showcases through the existing Architectural
+Generator. See the [source reconciliation](../research/gentek-80-integration-001.md)
+and [evaluation procedure](../operations/gentek80-evaluation.md). The 80 additions
+coexist with 13 accepted presets; catalogue counts do not remove legacy choices.
+Compiler cache identity, complete native visual evidence, target-OS Workbench
+persistence and source-qualified Windows packaging are mandatory admission gates.
+Exact results remain in dated evidence. Owner merge approval remains required.
+
 ## GEN-008 Flatten / Bake History — 2026-11-13
 
 **Implementation candidate, Draft/HOLD:** issue #548 starts independently from

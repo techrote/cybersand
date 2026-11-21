@@ -2,8 +2,8 @@
 """Check bounded worldgen prerequisite parallelism without executing a compiler.
 
 The sentinel compiler is intentionally nonexistent. These are forced cold
-dry-runs only; real compilation and all nine ordered tests remain within their
-shared execution-policy command watchdog.
+dry-runs only; real compilation, all nine ordered generation tests and the seven
+showcase tests remain within their shared execution-policy command watchdog.
 """
 
 from __future__ import annotations
@@ -26,6 +26,9 @@ SOURCES = ("world_generation", "generation_fields", "generation_typed_fields",
 TESTS = ("world_generation", "world_generation_install", "generation_fields",
          "generation_modifiers", "generation_typed", "generation_typed_integration",
          "generation_spatial", "generation_grammar", "generation_planes")
+SHOWCASES = ("megatruss_station", "seeded_typology_megablock", "metabolist_spine",
+             "interlaced_viaduct", "rosework_gatehouse", "interlock_brutalism",
+             "suspended_arcology")
 THREADED = frozenset(("generation_typed", "generation_typed_integration", "generation_spatial",
                       "generation_grammar", "generation_planes"))
 COMMON = ("-std=c++20", "-Wall", "-Wextra", "-Wpedantic", "-Wconversion", "-Wshadow", "-Inative/include")
@@ -71,7 +74,23 @@ def expected_commands(sanitized: bool) -> dict[str, list[str]]:
         output = f"build/test_{test}{suffix}"
         expected[output] = [COMPILER, *flags(sanitized, threaded, test == "world_generation_install"),
                             *inputs, f"native/tests/test_{test}.cpp", "-o", output]
+    for test in SHOWCASES:
+        inputs = [f"build/worldgen-objects/{family}/{source}.o" for source in SOURCES]
+        output = f"build/test_{test}{suffix}"
+        options = flags(sanitized, True)
+        expected[output] = [COMPILER, *options, *inputs,
+                            f"native/tests/test_{test}.cpp", "-o", output]
     return expected
+
+
+def showcase_loop(sanitized: bool) -> list[str]:
+    suffix = "_sanitized" if sanitized else ""
+    binaries = " ".join(f"build/test_{test}{suffix}" for test in SHOWCASES)
+    execution = ('ASAN_OPTIONS=${ASAN_OPTIONS:-detect_leaks=1:strict_string_checks=1} '
+                 'UBSAN_OPTIONS=${UBSAN_OPTIONS:-halt_on_error=1} ' if sanitized else '')
+    label = "Running sanitized" if sanitized else "Running"
+    return shlex.split(f'set -eu; for binary in {binaries}; do echo "{label} $binary"; '
+                       f'{execution}"$binary"; done')
 
 
 def inspect_commands(text: str, sanitized: bool) -> dict:
@@ -97,13 +116,17 @@ def inspect_commands(text: str, sanitized: bool) -> dict:
             require(command == expected[output], "Compiler flag/source contract changed: " + output)
             outputs.add(output)
             compile_commands.append(command)
+        elif command[0] == "set":
+            require(not tests and command == showcase_loop(sanitized),
+                    "Seven-showcase execution inventory/environment changed")
+            tests.extend(f"./build/test_{test}{suffix}" for test in SHOWCASES)
         else:
             require(len(command) == 1 and command[0].startswith("./build/test_"),
                     "Unexpected executable command in dry-run")
             tests.append(command[0])
     require(outputs == set(expected), "Missing compilation or link prerequisite")
-    require(tests == [f"./build/test_{test}{suffix}" for test in TESTS],
-            "Nine-test inventory/order changed")
+    require(tests == [f"./build/test_{test}{suffix}" for test in (*SHOWCASES, *TESTS)],
+            "Sixteen-test inventory/order changed")
     return {"compile_link_commands":compile_commands, "ordered_tests":tests,
             "object_count":sum(output.endswith(".o") for output in outputs),
             "binary_count":sum(not output.endswith(".o") for output in outputs)}

@@ -1,0 +1,8 @@
+{
+  "family": "gen007-architectural-generator",
+  "intent": "publish-source-matched-runtimes",
+  "request_sequence": 1,
+  "schema": "gentek80-runtime-publish-request-v1",
+  "scope": "linux-windows-80-gentek-graphical-workbench-gallery-flatten-owner-package",
+  "variant": "72-repaired-classic-plus-eight-showcases"
+}

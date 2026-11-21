@@ -20,6 +20,112 @@ def fake(name: str, weight: float) -> subject.Case:
     return subject.Case(name, ("--script", name + ".gd"), 180, weight)
 
 
+def art_durability_output() -> str:
+    """Synthetic classifier control; never a replacement Godot qualification."""
+    prefix = "ART_HISTORY_DURABILITY_CHECK "
+    lines = [prefix + f"controlled assertion {index} true" for index in range(339)]
+    lines += [
+        "ERROR: ConfigFile parse error at user://art-provider.cfg:0: Unexpected EOF while parsing simple tag.",
+        "   at: _parse (core/io/config_file.cpp:293)",
+        "   GDScript backtrace (most recent call first):",
+        "       [0] read_history_session (res://scripts/art_batch_panel.gd:908)",
+        "       [4] unknown_profile_outage (res://tests/test_art_history_durability.gd:323)",
+        prefix + "unknown corrupt profile cannot fabricate a source association true",
+        prefix + "unknown corrupt profile reports actionable persistence failure true",
+        "ERROR: Parse JSON failed. Error at line 0: Expected 'true', 'false', or 'null', got 'not'",
+        "   at: parse_string (core/io/json.cpp:629)",
+        "   GDScript backtrace (most recent call first):",
+        "       [0] _read_pending_history_receipts (res://scripts/art_batch_panel.gd:1141)",
+        "       [3] invalid_journal (res://tests/test_art_history_durability.gd:410)",
+        prefix + "invalid malformed journal fails closed before writing valid receipts true",
+        prefix + "invalid malformed preserves exact original archive bytes true",
+        prefix + "valid journal recovers after malformed obstruction removed true",
+        prefix + "all thirteen adversarial scenario families executed true",
+        "ART_HISTORY_DURABILITY_RESULT " + json.dumps({"case": "suite", "checks": 345, "failures": [],
+            "godot": "4.7-stable (official)", "os": "Windows", "native_sha256": "1" * 64,
+            "test_sha256": "6659b017334d87f3f63c001caa402e08c6be24bdbb27579875a7d1a3aeb75a7a"}),
+    ]
+    return "\n".join(lines) + "\n"
+
+
+class ArtDurabilityDiagnosticTests(unittest.TestCase):
+    def test_exact_complete_negative_fixture_is_recognized(self):
+        for newline in ("\n", "\r\n"):
+            with self.subTest(newline=repr(newline)):
+                self.assertFalse(subject.case_diagnostic_error("test_art_history_durability",
+                    art_durability_output().replace("\n", newline), 0))
+
+    def test_ordinary_cases_keep_original_error_semantics(self):
+        for name in ("fixture", "test_art_traffic_panel_safety", "test_art_history_receipt_identity", "import"):
+            for output in ("", "12 assertions passed", "ERROR: failure", "SCRIPT ERROR: failure", art_durability_output()):
+                with self.subTest(name=name, output=output[:50]):
+                    self.assertEqual(subject.case_diagnostic_error(name, output, 0),
+                                     "SCRIPT ERROR:" in output or "ERROR:" in output)
+
+    def test_registered_case_refuses_missing_duplicate_and_unexpected_diagnostics(self):
+        good = art_durability_output()
+        errors = [line for line in good.splitlines() if line.startswith("ERROR:")]
+        controls = {
+            "missing-all-errors": "\n".join(line for line in good.splitlines() if not line.startswith("ERROR:")),
+            "unrelated-error": "ERROR: unexpected native failure\n" + good,
+            "script-error": "SCRIPT ERROR: actual exception\n" + good,
+            "script-parse-error": "SCRIPT ERROR: Parse Error: unexpected token\n" + good,
+            "native-loader-error": "ERROR: GDExtension library could not be loaded\n" + good,
+            "skipped-case": "SKIP: unavailable native runtime\n" + good,
+            "shutdown-error": good + "ERROR: shutdown access violation\n",
+            "nonterminal-footer": good + "unexpected activity after completion\n",
+            "wrong-native-producer": good.replace("_parse (core/io/config_file.cpp:293)", "_parse (unrelated.cpp:293)"),
+            "wrong-profile-producer": good.replace("read_history_session (", "unrelated_session ("),
+            "wrong-json-producer": good.replace("_read_pending_history_receipts (", "unrelated_parser ("),
+            "wrong-profile-fixture": good.replace("unknown_profile_outage (", "unrelated_profile_fixture ("),
+            "wrong-journal-fixture": good.replace("invalid_journal (", "unrelated_journal_fixture ("),
+            "missing-refusal-witness": good.replace("unknown corrupt profile reports actionable persistence failure true", "unrelated assertion true"),
+            "missing-recovery-witness": good.replace("valid journal recovers after malformed obstruction removed true", "unrelated recovery true"),
+            "missing-family-completion": good.replace("all thirteen adversarial scenario families executed true", "other completion true"),
+            "false-assertion": good.replace("controlled assertion 1 true", "controlled assertion 1 false"),
+            "missing-assertion": good.replace("ART_HISTORY_DURABILITY_CHECK controlled assertion 1 true\n", ""),
+            "extra-assertion": "ART_HISTORY_DURABILITY_CHECK extra true\n" + good,
+        }
+        for index, error in enumerate(errors):
+            controls[f"missing-error-{index}"] = good.replace(error + "\n", "")
+            controls[f"duplicate-error-{index}"] = good.replace(error + "\n", error + "\n" + error + "\n")
+            controls[f"altered-error-{index}"] = good.replace(error, error + " unexpected detail")
+        for name, output in controls.items():
+            with self.subTest(name=name):
+                self.assertTrue(subject.case_diagnostic_error("test_art_history_durability", output, 0))
+
+    def test_registered_case_requires_exact_successful_terminal_receipt(self):
+        good = art_durability_output()
+        marker = "ART_HISTORY_DURABILITY_RESULT "
+        prefix, raw = good.rsplit(marker, 1)
+        for key, value in (("case", "restart-recover"), ("checks", 344), ("checks", 346), ("checks", True),
+                           ("failures", ["failure"]), ("failures", 0), ("test_sha256", "0" * 64),
+                           ("passed", False), ("godot", "4.6"), ("os", "unknown"), ("native_sha256", "missing")):
+            result = json.loads(raw); result[key] = value
+            with self.subTest(key=key, value=value):
+                self.assertTrue(subject.case_diagnostic_error("test_art_history_durability", prefix + marker + json.dumps(result), 0))
+        for output in (prefix, prefix + marker + "{", good + marker + raw):
+            with self.subTest(output=output[-120:]):
+                self.assertTrue(subject.case_diagnostic_error("test_art_history_durability", output, 0))
+        for returncode in (1, 7, -9, 3221225477, None, False):
+            with self.subTest(returncode=returncode):
+                self.assertTrue(subject.case_diagnostic_error("test_art_history_durability", good, returncode))
+
+    def test_actual_child_process_uses_narrow_classification_and_keeps_original_log(self):
+        for code in (0, 7):
+            with self.subTest(code=code), tempfile.TemporaryDirectory() as directory, redirect_stdout(io.StringIO()):
+                output = Path(directory)
+                original = art_durability_output()
+                command = [sys.executable, "-c", "import sys; sys.stdout.write(" + repr(original) + "); sys.exit(" + str(code) + ")"]
+                case = subject.Case("test_art_history_durability", ("--script", "res://tests/test_art_history_durability.gd"), 5, 1)
+                with mock.patch.object(subject, "case_command", return_value=command):
+                    record, failed = subject.run_case("unused", case, output, "case")
+                self.assertEqual(record["returncode"], code)
+                self.assertEqual(failed, code != 0)
+                self.assertEqual(record["status"], "passed" if code == 0 else "failed")
+                self.assertEqual((output / record["log"]).read_text(), original)
+
+
 class ShardingTests(unittest.TestCase):
     def test_runtime_identity_follows_host_platform(self):
         windows_runtime, windows_rapier = subject.runtime_paths("win32")

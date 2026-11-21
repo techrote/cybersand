@@ -9,6 +9,7 @@ import unittest
 
 import execution_policy
 import verify_windows_godot_shards as subject
+from test_godot_regression_sharding import art_durability_output
 
 SOURCE = "a" * 40
 
@@ -97,6 +98,37 @@ class WindowsCoverageTests(unittest.TestCase):
         path = self.root / f"shard-{shard}" / "windows-execution.json"
         data = json.loads(path.read_text(encoding="utf-8")); change(data)
         path.write_text(json.dumps(data), encoding="utf-8")
+
+    def test_art_negative_diagnostics_are_rechecked_from_original_logs(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            expected, manifest = fixture_contract()
+            name = "test_art_history_durability"
+            expected["applicable_cases"][0] = name
+            expected["plans"][0][0] = case(name)
+            make_fixture(root, expected, manifest)
+            path = root / "shard-0/windows-execution.json"
+            report = json.loads(path.read_text())
+            row = next(row for row in report["results"] if row["name"] == name)
+            log = path.parent / row["log"]
+            original = art_durability_output()
+            def replace_log(text):
+                log.write_text(text)
+                value = digest(log.read_bytes())
+                row.update(log_sha256=value, diagnostic_error=False)
+                report["log_sha256"][row["log"]] = value
+                path.write_text(json.dumps(report))
+            replace_log(original)
+            self.assertEqual(subject.verify(root, SOURCE, "123", "1", 2, expected=expected)["unique_case_count"], 3)
+            for data in ("ERROR: unexpected native failure\n" + original,
+                         "SCRIPT ERROR: failure\n" + original,
+                         original.replace("controlled assertion 1 true", "controlled assertion 1 false"),
+                         original.replace("ERROR: ConfigFile parse error", "ConfigFile parse error"),
+                         original.replace('"checks": 345', '"checks": 344')):
+                with self.subTest(data=data[:60]):
+                    replace_log(data)
+                    with self.assertRaisesRegex(ValueError, "error or skipped"):
+                        subject.verify(root, SOURCE, "123", "1", 2, expected=expected)
 
     def test_complete_source_matched_shards(self):
         result = self.verify()

@@ -1,0 +1,278 @@
+{
+  "run_id": 44914680994,
+  "tested_commit": "0d961464cf0afe20e8b8d5594faa901b1c7853f0",
+  "tested_tree": "4a0c74461e4ee86f7efed84a4d1014735d21a0ff",
+  "overall_verdict": "HOLD: original Windows qualification failed source-identity guard; original Windows graphics were not run",
+  "platforms": {
+    "linux": {
+      "art_assertions": 964,
+      "art_cases": [
+        {
+          "name": "test_art_provider",
+          "checks": 54,
+          "returncode": 0
+        },
+        {
+          "name": "test_art_lazy_traffic",
+          "checks": 23,
+          "returncode": 0
+        },
+        {
+          "name": "test_art_traffic_integrity",
+          "checks": 148,
+          "returncode": 0
+        },
+        {
+          "name": "test_art_traffic_panel_safety",
+          "checks": 55,
+          "returncode": 0
+        },
+        {
+          "name": "test_art_history_receipt_identity",
+          "checks": 122,
+          "returncode": 0
+        },
+        {
+          "name": "test_workbench_actor_equipment_extent",
+          "checks": 29,
+          "returncode": 0
+        },
+        {
+          "name": "art-durability-suite",
+          "checks": 345,
+          "returncode": 0
+        },
+        {
+          "name": "art-durability-restart-seed",
+          "checks": 14,
+          "returncode": 0
+        },
+        {
+          "name": "art-durability-restart-recover",
+          "checks": 13,
+          "returncode": 0
+        },
+        {
+          "name": "art-durability-crash-seed",
+          "checks": 8,
+          "returncode": -9
+        },
+        {
+          "name": "art-durability-crash-recover",
+          "checks": 8,
+          "returncode": 0
+        },
+        {
+          "name": "art-durability-secret-turn-seed",
+          "checks": 24,
+          "returncode": -9
+        },
+        {
+          "name": "art-durability-secret-turn-recover",
+          "checks": 15,
+          "returncode": 0
+        },
+        {
+          "name": "art-durability-secret-raw-seed",
+          "checks": 31,
+          "returncode": 0
+        },
+        {
+          "name": "art-durability-secret-raw-recover",
+          "checks": 17,
+          "returncode": 0
+        },
+        {
+          "name": "art-durability-posix-listing",
+          "checks": 29,
+          "returncode": 0
+        },
+        {
+          "name": "art-durability-listing-clock-seed",
+          "checks": 12,
+          "returncode": 0
+        },
+        {
+          "name": "art-durability-listing-clock-recover",
+          "checks": 17,
+          "returncode": 0
+        }
+      ],
+      "original_art_qualification_passed": true,
+      "identity_difference_fields": [],
+      "original_errors": [],
+      "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+      "native_build_commit": "16dd1e225ed974789c8b1fbc46718a06b1f61fc8",
+      "native_source_input_count": 105,
+      "gdscript_source_input_count": 660,
+      "profile_seed_recovery_continuity_verified": true,
+      "flatten_graphical_passed": true,
+      "flatten_cases": [
+        {
+          "name": "flatten-import",
+          "checks": null,
+          "returncode": 0
+        },
+        {
+          "name": "standalone-format-adversarial",
+          "checks": 102,
+          "returncode": 0
+        },
+        {
+          "name": "side-512-workers-1-author",
+          "checks": 196,
+          "returncode": 0
+        },
+        {
+          "name": "side-512-workers-1-reopen",
+          "checks": 44,
+          "returncode": 0
+        },
+        {
+          "name": "owner-failure-author",
+          "checks": 53,
+          "returncode": 0
+        },
+        {
+          "name": "owner-failure-reopen",
+          "checks": 44,
+          "returncode": 0
+        }
+      ],
+      "flatten_assertions": 439,
+      "storage_faults": {
+        "schema": "gen008-flatten-storage-faults-v1",
+        "platform": "linux",
+        "status": "passed",
+        "completed": true,
+        "cases": [
+          {
+            "kind": "partial-write",
+            "prior_sha256": "56f73e74fe7e24f9f35907085109daf5489d239d8aeb5b1eed59f75287749d83",
+            "after_sha256": "56f73e74fe7e24f9f35907085109daf5489d239d8aeb5b1eed59f75287749d83",
+            "exit_code": 0,
+            "explicit_refusal": true,
+            "attempted_plane_bytes": 524288,
+            "partial_temporary_bytes": [],
+            "retry_ok": true,
+            "retry_sha256": "13464b8dceaef3e712ab9ead1404584cece4d7787cbf5462720f9a419614cd61",
+            "operation": "production-baseline-writer",
+            "file_size_limit_bytes": 65536
+          },
+          {
+            "kind": "process-termination",
+            "prior_sha256": "56f73e74fe7e24f9f35907085109daf5489d239d8aeb5b1eed59f75287749d83",
+            "after_sha256": "56f73e74fe7e24f9f35907085109daf5489d239d8aeb5b1eed59f75287749d83",
+            "exit_code": -25,
+            "explicit_refusal": false,
+            "attempted_plane_bytes": 524288,
+            "partial_temporary_bytes": [
+              65536
+            ],
+            "retry_ok": true,
+            "retry_sha256": "13464b8dceaef3e712ab9ead1404584cece4d7787cbf5462720f9a419614cd61",
+            "operation": "production-baseline-writer",
+            "file_size_limit_bytes": 65536,
+            "signal": 25
+          }
+        ]
+      }
+    },
+    "windows": {
+      "art_assertions": 906,
+      "art_cases": [
+        {
+          "name": "test_art_provider",
+          "checks": 54,
+          "returncode": 0
+        },
+        {
+          "name": "test_art_lazy_traffic",
+          "checks": 23,
+          "returncode": 0
+        },
+        {
+          "name": "test_art_traffic_integrity",
+          "checks": 148,
+          "returncode": 0
+        },
+        {
+          "name": "test_art_traffic_panel_safety",
+          "checks": 55,
+          "returncode": 0
+        },
+        {
+          "name": "test_art_history_receipt_identity",
+          "checks": 122,
+          "returncode": 0
+        },
+        {
+          "name": "test_workbench_actor_equipment_extent",
+          "checks": 29,
+          "returncode": 0
+        },
+        {
+          "name": "art-durability-suite",
+          "checks": 345,
+          "returncode": 0
+        },
+        {
+          "name": "art-durability-restart-seed",
+          "checks": 14,
+          "returncode": 0
+        },
+        {
+          "name": "art-durability-restart-recover",
+          "checks": 13,
+          "returncode": 0
+        },
+        {
+          "name": "art-durability-crash-seed",
+          "checks": 8,
+          "returncode": 1
+        },
+        {
+          "name": "art-durability-crash-recover",
+          "checks": 8,
+          "returncode": 0
+        },
+        {
+          "name": "art-durability-secret-turn-seed",
+          "checks": 24,
+          "returncode": 1
+        },
+        {
+          "name": "art-durability-secret-turn-recover",
+          "checks": 15,
+          "returncode": 0
+        },
+        {
+          "name": "art-durability-secret-raw-seed",
+          "checks": 31,
+          "returncode": 0
+        },
+        {
+          "name": "art-durability-secret-raw-recover",
+          "checks": 17,
+          "returncode": 0
+        }
+      ],
+      "original_art_qualification_passed": false,
+      "identity_difference_fields": [
+        "working_status"
+      ],
+      "original_errors": [
+        "RuntimeError: Source, runtime, Godot or test input identity changed during the focused suite"
+      ],
+      "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+      "native_sha256": "3692fe02eeb1adf383ed2abdce6641efadbaf7a0009c4574ec2c5d536bcd8e73",
+      "native_build_commit": "16dd1e225ed974789c8b1fbc46718a06b1f61fc8",
+      "native_source_input_count": 105,
+      "gdscript_source_input_count": 660,
+      "profile_seed_recovery_continuity_verified": true,
+      "flatten_graphical_passed": false
+    }
+  },
+  "artifact_audit_completed": true
+}

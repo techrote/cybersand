@@ -1,0 +1,33 @@
+{
+  "parent": "615828b28337f85e4663e03ba479616db4ddf764",
+  "diagnosis": [
+    {
+      "manifest": "godot/addons/cybersand_native/runtime-provenance.json",
+      "source": "godot/native_extension/cyber_world_generator.cpp",
+      "retained_runtime_input": "5cc4ea8c46f443c5059e53f0631430aff0710dc9c56d82fe9060fcd217986aa8",
+      "parent_source_sha256": "acaa38b340b6f4a32cf4082507888aab66428b590ebb91e9d8f0bf2cbaf5c55e",
+      "already_mismatched_in_parent": true
+    },
+    {
+      "manifest": "godot/addons/cybersand_native/runtime-provenance.json",
+      "source": "native/src/world_generation.cpp",
+      "retained_runtime_input": "ce96312d131ad5a455a55a8f4f368b6b9fa4adf19bf8244e78635bd872585fca",
+      "parent_source_sha256": "01108f2cb6f05502fcb7c46dca3f1ed19f1a29712b8cee7bc2185d5eb76a9401",
+      "already_mismatched_in_parent": true
+    },
+    {
+      "manifest": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+      "source": "godot/native_extension/cyber_world_generator.cpp",
+      "retained_runtime_input": "5cc4ea8c46f443c5059e53f0631430aff0710dc9c56d82fe9060fcd217986aa8",
+      "parent_source_sha256": "acaa38b340b6f4a32cf4082507888aab66428b590ebb91e9d8f0bf2cbaf5c55e",
+      "already_mismatched_in_parent": true
+    },
+    {
+      "manifest": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+      "source": "native/src/world_generation.cpp",
+      "retained_runtime_input": "ce96312d131ad5a455a55a8f4f368b6b9fa4adf19bf8244e78635bd872585fca",
+      "parent_source_sha256": "01108f2cb6f05502fcb7c46dca3f1ed19f1a29712b8cee7bc2185d5eb76a9401",
+      "already_mismatched_in_parent": true
+    }
+  ]
+}

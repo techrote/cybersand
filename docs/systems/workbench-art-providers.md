@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Unmerged OpenAI Responses, NVIDIA and LM Studio art UI, collaboration preview, cancellation, traffic and qualification
 canonical-for: [workbench-art-providers]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-21
 related-documents: [workbench-direct-art-batches.md, ../architecture/shared-workbench-authoring-data.md, ../reference/status-and-roadmap.md]
 ---
 
@@ -115,9 +115,10 @@ arbitrary secret the user invents; do not put unrelated credentials in prompts.
 
 ### Lazy reopening and traffic storage
 
-Shared Workbench constructs the Art window hidden, but **does not scan, clone or
-resume saved traffic at Workbench startup**. Its provider reads only the small
-profile configuration and remembers the previous session path. Revealing Art
+Shared Workbench constructs the Art window only when the owner opens it and
+**does not scan, clone or resume saved traffic at Workbench startup**. It reads
+only the bounded profile configuration and remembers the previous session path.
+Revealing Art
 starts incremental, read-only replay with progress in the status line. **Stop**
 cancels restoration and retains the saved pointer; revealing Art again or
 selecting Conversation retries. Send and conversation edits wait for successful
@@ -142,11 +143,13 @@ Unavailable or invalid history is a visible refusal, not an empty conversation.
 The panel retains its saved pointer, refuses Send/Edit/Clear for that failed
 restore, and permits another attempt after the missing file is restored.
 Provider/model selection reads the small profile only. Shared PAINT Undo/Redo
-is an explicit history action: its confirmed result may restore and append Art
-context even while the Art window is hidden. A confirmed result arriving during
-incremental restore is retained in a bounded queue and applied once after
-success. Idle construction, selection binding, deferred UI refresh and shutdown
-do not perform that action.
+records a confirmed completion in a separate receipt journal even when no Art
+window exists. It does not construct Art or initiate transcript restoration.
+Explicit Art restoration later consumes the journal in order. A completion
+arriving during incremental restoration keeps its captured native result and
+world epoch; persistence recovery never repeats the native edit. Idle
+construction, selection binding, deferred UI refresh and shutdown do not scan
+the transcript.
 
 The panel publishes `art-provider.cfg` through a complete temporary sibling and
 the existing native `CyberDemoBridge.replace_material_baseline_file` primitive.
@@ -158,6 +161,65 @@ pointer and live conversation remain active; the unreferenced new segment is
 retained and named in the error, never silently installed by a later edit.
 Credentials remain process-local; no archive is rewritten, compressed or
 deleted by restore.
+
+### Durable native history receipts
+
+**Implementation candidate in GENTEK-691, Draft/HOLD:** every confirmed native
+Undo/Redo associated with a known Art session is assigned one stable receipt ID
+and atomically published as a small file in `user://art-pending-history` before
+an archive append is attempted. Schema-2 receipts freeze the native result's
+JSON-representable values, captured world epoch, original session path and
+sanitized visible turn. The raw result binds that exact projection's SHA-256;
+retry and restart do not reapply a different process-local secret list. Only
+registered, exactly matching frozen history writes use this representation;
+ordinary traffic retains the existing credential redactor. Schema-1 pending
+receipts remain readable through their original matching contract.
+Durable publication order is stored separately from the stable receipt ID and
+assigned only after the pending directory can be listed. It remains monotonic
+across restart, a system-clock adjustment or a temporary directory outage.
+Later grouped completions wait behind earlier volatile receipts. Journalling
+reads no historical transcript.
+
+A genuinely absent profile with no retained Art storage, or an explicitly empty
+saved session, has a no-session outcome. Missing configuration alongside retained
+archives is an explicit failure, not a fresh profile. Directory enumeration must
+succeed before storage is classified as empty; an openable but unlistable
+directory is an explicit failure. An existing corrupt, inaccessible, oversized or incomplete
+profile is a persistence error; it is never treated as evidence that no
+conversation exists. A session path already captured by this Workbench remains
+the association during a later profile outage. When the initial association is
+unknown, the failure is reported and no receipt is assigned to a subsequently
+selected session. Repairing a profile does not authorize guessing where an
+unassociated result belongs.
+
+The raw `history_result` event and its user-visible conversation turn are
+separate commit boundaries. The provider tracks both for each pending ID,
+requiring the exact expected payload, role, result text and epoch within the
+same validated source ancestry. A committed raw event is not enough to retire
+the journal record. The conversation turn and profile checkpoint must complete
+before journal deletion. Archive refusal, checkpoint refusal and failed
+deletion leave the same stable ID pending for retry. New model-context traffic
+waits for pending native results so it cannot overtake a failed history append.
+If the first new raw segment was written but its profile checkpoint refused,
+retry verifies and reuses that one bounded segment instead of creating a new
+orphan on every attempt. Restart may preserve that one unreferenced segment;
+the durable receipt still recovers from the original saved parent.
+
+Incremental restoration observes only registered pending IDs rather than
+retaining an index of every historical event. Its commit observations remain
+provisional until the entire archive chain validates. Cancellation or a corrupt
+later record cannot falsely discharge a receipt from a valid-looking prefix.
+Existing ID-bearing Canvas-result text remains readable; exact duplicate
+pending results are deduplicated in restored context without rewriting raw
+archives. Clearing or editing the conversation does not erase the fact that an
+earlier receipt committed, so interrupted cleanup cannot resurrect a result the
+owner intentionally removed.
+
+Source association uses the saved archive path and the existing validated
+archive ancestry. It prevents pending results migrating to a different selected
+session; it does not introduce an independent archive identity snapshot at
+Workbench startup. Existing segment identities, parent hashes and read-only
+validation still govern archive integrity.
 
 New writes redact structured values before JSON serialization, preserving
 numeric native receipt tokens and valid JSON. The read-only legacy parser
@@ -209,12 +271,27 @@ capacity. Existing content exceeding a bound is preserved with a visible
 refusal; full audit export does not accumulate the transcript in memory.
 These are safety capacities, not changes to native World dimensions.
 
+The native-history journal admits at most 4096 committed records, 64 MiB in
+total and 256 KiB per record. Only the corresponding pending receipt IDs and
+fixed-size content digests enter the provider's commit tracker. Filename, source,
+epoch, UTF-8, complete-record and capacity failures refuse replay while keeping
+original data. Unpublished temporary files do not count as committed receipts.
+An unavailable journal may retain at most 64 receipts / 4 MiB in process for
+explicit retry while Workbench stays open; reaching either limit is a visible
+persistence failure, never an unbounded or silently dropping queue. The profile
+reader has a separate 1 MiB bound.
+
 `test_art_lazy_traffic.gd` covers deferred replay and linked append.
 `test_art_traffic_panel_safety.gd` exercises the actual mounted controls for
 unavailable-history refusal/retry, model selection, failed-append pointer
-retention, cancellable export and explicit conversation clearing. Runtime
+retention, cancellable export and explicit conversation clearing.
+`test_art_history_durability.gd` and its process runner exercise real filesystem
+failures, repair, restart and the raw-event/conversation crash boundary.
+`test_art_history_receipt_identity.gd` covers pending-ID capacity, exact
+source/content/epoch matching, provisional replay state, legacy result identity,
+credential redaction and clear/edit deduplication. Runtime
 measurements and platform qualifications belong to the
-[dated finisher evidence](../audits/2026-11-20-wb-art-traffic-lifetime.md);
+[durability qualification record](../audits/2026-11-21-gentek691-art-durability.md);
 passing source checks alone does not establish Windows acceptance.
 
 ## Reproducible qualification and local setup

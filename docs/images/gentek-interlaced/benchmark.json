@@ -1,0 +1,158 @@
+{
+  "benchmark": "ordinary-native-generate",
+  "checksum": 1227958111800268976,
+  "configuration": {
+    "accent_material": 65,
+    "bay_width": 80,
+    "chunk_size": 64,
+    "floor_height": 64,
+    "floor_material": 62,
+    "schema": 4,
+    "seed": 271828,
+    "wall": 3,
+    "wall_material": 58,
+    "window_material": 121
+  },
+  "results": [
+    {
+      "extent": 512,
+      "logical_operations_per_cell": 468,
+      "max_ms": 246.773017,
+      "median_ms": 237.611916,
+      "min_ms": 227.070369,
+      "module": "hanging_arcade",
+      "trials_ms": [
+        241.779986,
+        236.598719,
+        236.051753,
+        227.070369,
+        246.557901,
+        246.773017,
+        237.611916
+      ]
+    },
+    {
+      "extent": 512,
+      "logical_operations_per_cell": 468,
+      "max_ms": 283.039169,
+      "median_ms": 234.605911,
+      "min_ms": 224.869222,
+      "module": "suspended_deck",
+      "trials_ms": [
+        234.605911,
+        283.039169,
+        224.869222,
+        250.487708,
+        233.409819,
+        263.902947,
+        234.453293
+      ]
+    },
+    {
+      "extent": 512,
+      "logical_operations_per_cell": 484,
+      "max_ms": 270.561715,
+      "median_ms": 238.425585,
+      "min_ms": 231.246519,
+      "module": "arcade",
+      "trials_ms": [
+        238.425585,
+        259.713249,
+        232.72081,
+        270.561715,
+        242.873788,
+        237.893011,
+        231.246519
+      ]
+    },
+    {
+      "extent": 512,
+      "logical_operations_per_cell": 584,
+      "max_ms": 296.797055,
+      "median_ms": 243.395634,
+      "min_ms": 237.81733,
+      "module": "interlaced_viaduct",
+      "trials_ms": [
+        245.078135,
+        296.797055,
+        243.395634,
+        251.181596,
+        238.467589,
+        237.81733,
+        241.592946
+      ]
+    },
+    {
+      "extent": 1024,
+      "logical_operations_per_cell": 468,
+      "max_ms": 1041.41346,
+      "median_ms": 974.309592,
+      "min_ms": 939.973443,
+      "module": "hanging_arcade",
+      "trials_ms": [
+        1002.97289,
+        966.591264,
+        966.490505,
+        1041.41346,
+        939.973443,
+        1040.70485,
+        974.309592
+      ]
+    },
+    {
+      "extent": 1024,
+      "logical_operations_per_cell": 468,
+      "max_ms": 1010.74868,
+      "median_ms": 970.422273,
+      "min_ms": 920.191415,
+      "module": "suspended_deck",
+      "trials_ms": [
+        965.52474,
+        931.367527,
+        920.191415,
+        978.919152,
+        976.185145,
+        1010.74868,
+        970.422273
+      ]
+    },
+    {
+      "extent": 1024,
+      "logical_operations_per_cell": 484,
+      "max_ms": 1026.57731,
+      "median_ms": 979.510224,
+      "min_ms": 955.159633,
+      "module": "arcade",
+      "trials_ms": [
+        1026.57731,
+        959.232622,
+        960.910024,
+        979.510224,
+        955.159633,
+        982.635693,
+        1005.79238
+      ]
+    },
+    {
+      "extent": 1024,
+      "logical_operations_per_cell": 584,
+      "max_ms": 1036.16839,
+      "median_ms": 997.984976,
+      "min_ms": 969.150794,
+      "module": "interlaced_viaduct",
+      "trials_ms": [
+        992.303465,
+        1032.02456,
+        984.697878,
+        997.984976,
+        969.150794,
+        1036.16839,
+        1030.89688
+      ]
+    }
+  ],
+  "timed_scope": "complete native chunk generation, allocation and content hashing; preparation excluded",
+  "trial_order": "rotating-module-order",
+  "warm_trials": 7,
+  "warmup_trials": 1
+}

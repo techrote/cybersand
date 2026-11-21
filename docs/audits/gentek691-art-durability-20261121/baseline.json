@@ -1,0 +1,23 @@
+{
+  "schema": "gentek691-art-durability-baseline-v1",
+  "source_commit": "c163f1af722e37f802eb0a89a7aff6fa76634e04",
+  "accepted_main": "69209acaffb34ebe18c45e19290b5976b7fb2c82",
+  "godot": "4.7.stable.official.5b4e0cb0f",
+  "godot_archive_sha256": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+  "godot_executable_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+  "checks": 13,
+  "failed_assertions": 3,
+  "returncode": 1,
+  "failures": [
+    "unreadable existing profile silently drops completion",
+    "raw append refusal has no durable receipt",
+    "raw append commits but failed conversation append has no durable receipt"
+  ],
+  "files": {
+    "before-reproducer.gd": "81fa76e1a1c020e8932df9827de9ae2e08108f16c4101003ac25e0b3fcf7cd38",
+    "before-failure.log.txt": "a0bc94ac163b7919ed4e2caad2171733f9022c14e758fe730f346f3d802576b7"
+  },
+  "command": "XDG_DATA_HOME=<isolated-userdir> Godot_v4.7-stable_linux.x86_64 --headless --audio-driver Dummy --path godot --script res://tests/repro_art_history_durability_before.gd",
+  "scope": "Original unmodified source plus isolated reproducer only; native-backed Workbench event delivery with real filesystem obstructions, no model/network request."
+}

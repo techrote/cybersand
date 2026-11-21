@@ -1,0 +1,213 @@
+{
+  "workflow": "/workspace/scratch/80a85ca37e54/cybersand/.github/workflows/gentek80-water-merged-requalification.yml",
+  "workflow_sha256": "edb1c67b1e9d4f79ac40602faa4c9ce4f37edaa84ffeb87a38967958f7a3b374",
+  "hook_sha256": "8620bba2d6c201dd945e946d9536fd3f54a1853787eee3f581f4e5814bed3d0d",
+  "cases": [
+    {
+      "name": "ordinary-success",
+      "returncode": 0,
+      "remote_before_early_fence": "cd43d5a4dd5df9c69edbf38a43bcc34fd871324b",
+      "remote_after": "74e2d7eecaeb5f82bf7f611309d7140c7ca46730",
+      "expected_remote_after": "74e2d7eecaeb5f82bf7f611309d7140c7ca46730",
+      "command": [
+        "/usr/local/bin/git",
+        "-c",
+        "core.hooksPath=/workspace/scratch/80a85ca37e54/evidence/publication-lease-fixture/hooks",
+        "push",
+        "origin",
+        "HEAD:refs/heads/integration/gentek80-water-conflict-reconcile"
+      ],
+      "log_sha256": "52a4e502723207a3b871981a9442268af18a81ffd73ba2b790be936785e478df",
+      "passed": true
+    },
+    {
+      "name": "advertised-rewind",
+      "returncode": 1,
+      "remote_before_early_fence": "cd43d5a4dd5df9c69edbf38a43bcc34fd871324b",
+      "remote_after": "c4418465f8f1e00c6c1e79b64f0c0c504b7f41bb",
+      "expected_remote_after": "c4418465f8f1e00c6c1e79b64f0c0c504b7f41bb",
+      "command": [
+        "/usr/local/bin/git",
+        "-c",
+        "core.hooksPath=/workspace/scratch/80a85ca37e54/evidence/publication-lease-fixture/hooks",
+        "push",
+        "origin",
+        "HEAD:refs/heads/integration/gentek80-water-conflict-reconcile"
+      ],
+      "log_sha256": "95617b94b8f49e2256ba27be470afeefe0205a4c85dd5db824d203cfd93b7266",
+      "passed": true
+    },
+    {
+      "name": "advertised-deletion",
+      "returncode": 1,
+      "remote_before_early_fence": "cd43d5a4dd5df9c69edbf38a43bcc34fd871324b",
+      "remote_after": null,
+      "expected_remote_after": null,
+      "command": [
+        "/usr/local/bin/git",
+        "-c",
+        "core.hooksPath=/workspace/scratch/80a85ca37e54/evidence/publication-lease-fixture/hooks",
+        "push",
+        "origin",
+        "HEAD:refs/heads/integration/gentek80-water-conflict-reconcile"
+      ],
+      "log_sha256": "6beb7b14b0556b77ed157164baed8fdebef61304162a0e1a031556c0f10dad9e",
+      "passed": true
+    },
+    {
+      "name": "wrong-remote-ref",
+      "returncode": 1,
+      "remote_before_early_fence": "cd43d5a4dd5df9c69edbf38a43bcc34fd871324b",
+      "remote_after": "cd43d5a4dd5df9c69edbf38a43bcc34fd871324b",
+      "expected_remote_after": "cd43d5a4dd5df9c69edbf38a43bcc34fd871324b",
+      "command": [
+        "/usr/local/bin/git",
+        "-c",
+        "core.hooksPath=/workspace/scratch/80a85ca37e54/evidence/publication-lease-fixture/hooks",
+        "push",
+        "origin",
+        "HEAD:refs/heads/other"
+      ],
+      "log_sha256": "aecc11ac329925362276588821a0f4f70fde76acce433dfdae2076a97d4652f1",
+      "passed": true
+    },
+    {
+      "name": "multiple-updates",
+      "returncode": 1,
+      "remote_before_early_fence": "cd43d5a4dd5df9c69edbf38a43bcc34fd871324b",
+      "remote_after": "cd43d5a4dd5df9c69edbf38a43bcc34fd871324b",
+      "expected_remote_after": "cd43d5a4dd5df9c69edbf38a43bcc34fd871324b",
+      "command": [
+        "/usr/local/bin/git",
+        "-c",
+        "core.hooksPath=/workspace/scratch/80a85ca37e54/evidence/publication-lease-fixture/hooks",
+        "push",
+        "origin",
+        "HEAD:refs/heads/integration/gentek80-water-conflict-reconcile",
+        "HEAD:refs/heads/other"
+      ],
+      "log_sha256": "4fd32a408ebb33de72057f22d491ae870fb8bd3804026c6bdb06cbf5efc24970",
+      "passed": true
+    },
+    {
+      "name": "non-head-local-oid",
+      "returncode": 1,
+      "remote_before_early_fence": "cd43d5a4dd5df9c69edbf38a43bcc34fd871324b",
+      "remote_after": "cd43d5a4dd5df9c69edbf38a43bcc34fd871324b",
+      "expected_remote_after": "cd43d5a4dd5df9c69edbf38a43bcc34fd871324b",
+      "command": [
+        "/usr/local/bin/git",
+        "-c",
+        "core.hooksPath=/workspace/scratch/80a85ca37e54/evidence/publication-lease-fixture/hooks",
+        "push",
+        "origin",
+        "f61d3b4caa4dec41b74f2eed5bc8e615b7ee5535:refs/heads/integration/gentek80-water-conflict-reconcile"
+      ],
+      "log_sha256": "c2d7e40294c9a2b5c0da17607754009e8844d1ec96f5273412ece2257160e4ab",
+      "passed": true
+    },
+    {
+      "name": "indirect-parent",
+      "returncode": 1,
+      "remote_before_early_fence": "cd43d5a4dd5df9c69edbf38a43bcc34fd871324b",
+      "remote_after": "cd43d5a4dd5df9c69edbf38a43bcc34fd871324b",
+      "expected_remote_after": "cd43d5a4dd5df9c69edbf38a43bcc34fd871324b",
+      "command": [
+        "/usr/local/bin/git",
+        "-c",
+        "core.hooksPath=/workspace/scratch/80a85ca37e54/evidence/publication-lease-fixture/hooks",
+        "push",
+        "origin",
+        "HEAD:refs/heads/integration/gentek80-water-conflict-reconcile"
+      ],
+      "log_sha256": "cd6d4cf8667c13418fa391e7bed711bf4ff66f8629fac7055c1e2bc81d0cf041",
+      "passed": true
+    },
+    {
+      "name": "advertised-concurrent-advance",
+      "returncode": 1,
+      "remote_before_early_fence": "cd43d5a4dd5df9c69edbf38a43bcc34fd871324b",
+      "remote_after": "f61d3b4caa4dec41b74f2eed5bc8e615b7ee5535",
+      "expected_remote_after": "f61d3b4caa4dec41b74f2eed5bc8e615b7ee5535",
+      "command": [
+        "/usr/local/bin/git",
+        "-c",
+        "core.hooksPath=/workspace/scratch/80a85ca37e54/evidence/publication-lease-fixture/hooks",
+        "push",
+        "origin",
+        "HEAD:refs/heads/integration/gentek80-water-conflict-reconcile"
+      ],
+      "log_sha256": "c80c40e13c60c9dc7c53d1b4326e9ac3413a303f04dc5e3b550400f69d4c52b5",
+      "passed": true
+    },
+    {
+      "name": "post-advertisement-advance",
+      "returncode": 1,
+      "remote_before_early_fence": "cd43d5a4dd5df9c69edbf38a43bcc34fd871324b",
+      "remote_after": "f61d3b4caa4dec41b74f2eed5bc8e615b7ee5535",
+      "expected_remote_after": "f61d3b4caa4dec41b74f2eed5bc8e615b7ee5535",
+      "command": [
+        "/usr/local/bin/git",
+        "-c",
+        "core.hooksPath=/workspace/scratch/80a85ca37e54/evidence/publication-lease-fixture/hooks",
+        "push",
+        "origin",
+        "HEAD:refs/heads/integration/gentek80-water-conflict-reconcile"
+      ],
+      "log_sha256": "71c88860972564e60d634e8e67a2b59d4c5e14021a3dd3737dea430035a02cc1",
+      "passed": true
+    },
+    {
+      "name": "post-advertisement-rewind",
+      "returncode": 1,
+      "remote_before_early_fence": "cd43d5a4dd5df9c69edbf38a43bcc34fd871324b",
+      "remote_after": "c4418465f8f1e00c6c1e79b64f0c0c504b7f41bb",
+      "expected_remote_after": "c4418465f8f1e00c6c1e79b64f0c0c504b7f41bb",
+      "command": [
+        "/usr/local/bin/git",
+        "-c",
+        "core.hooksPath=/workspace/scratch/80a85ca37e54/evidence/publication-lease-fixture/hooks",
+        "push",
+        "origin",
+        "HEAD:refs/heads/integration/gentek80-water-conflict-reconcile"
+      ],
+      "log_sha256": "bc3123ec102e011868a26eabb49f9f183b81fb6c33a8ea9fb2d74866204c2138",
+      "passed": true
+    },
+    {
+      "name": "post-advertisement-delete",
+      "returncode": 1,
+      "remote_before_early_fence": "cd43d5a4dd5df9c69edbf38a43bcc34fd871324b",
+      "remote_after": null,
+      "expected_remote_after": null,
+      "command": [
+        "/usr/local/bin/git",
+        "-c",
+        "core.hooksPath=/workspace/scratch/80a85ca37e54/evidence/publication-lease-fixture/hooks",
+        "push",
+        "origin",
+        "HEAD:refs/heads/integration/gentek80-water-conflict-reconcile"
+      ],
+      "log_sha256": "3eba50dd1920fa433de8bffcf9940b19ac4b9426a296b3424f253a81193dcc93",
+      "passed": true
+    },
+    {
+      "name": "lfs-delegation",
+      "returncode": 0,
+      "input_sha256": "72f153a73d4a3d991c8d886554b2f70d45bec10c0cc7a7638f15dcd6d248956a",
+      "exact_args": [
+        "pre-push",
+        "origin",
+        "/workspace/scratch/80a85ca37e54/evidence/publication-lease-fixture/lfs-delegation.git"
+      ],
+      "identical_stdin": true,
+      "passed": true
+    }
+  ],
+  "passed": true,
+  "base": "c4418465f8f1e00c6c1e79b64f0c0c504b7f41bb",
+  "source": "cd43d5a4dd5df9c69edbf38a43bcc34fd871324b",
+  "candidate": "74e2d7eecaeb5f82bf7f611309d7140c7ca46730",
+  "advanced": "f61d3b4caa4dec41b74f2eed5bc8e615b7ee5535",
+  "indirect": "645762668a8cd7017c3c620c389a2666ffd317f7"
+}
