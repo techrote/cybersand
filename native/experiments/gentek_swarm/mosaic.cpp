@@ -765,6 +765,47 @@ bool prepare_resilient_domains(const Request& req, Result& result, const std::ve
 }
 } // namespace
 
+MosaicSourceReceiverProbe probe_mosaic_source_receiver(const MosaicSourceTile& source,
+    Point contact, Point source_facing, std::uint64_t work_limit) {
+    MosaicSourceReceiverProbe out;
+    // 256 mask checks, at most six authored occupancy queries (each scans at
+    // most 64 span cells), and the finite category loop. Charge before querying
+    // even if the hypothetical native contact cannot be constructed.
+    constexpr std::uint64_t work_bound = 1024;
+    if (work_limit < work_bound) { out.exhausted = true; return out; }
+    out.work = work_bound;
+    if (source.width < 1 || source.width > pitch || source.height < 1 || source.height > pitch ||
+        source.origin.x < 0 || source.origin.y < 0 || source.origin.x > 240 || source.origin.y > 112 ||
+        source.origin.x % pitch || source.origin.y % pitch ||
+        std::abs(static_cast<std::int64_t>(source_facing.x)) +
+            std::abs(static_cast<std::int64_t>(source_facing.y)) != 1 ||
+        contact.x < source.origin.x || contact.x >= source.origin.x + source.width ||
+        contact.y < source.origin.y || contact.y >= source.origin.y + source.height ||
+        std::any_of(source.admitted.begin(), source.admitted.end(), [](auto x) { return x > 1; })) return out;
+    Tile tile;
+    tile.x = source.origin.x; tile.y = source.origin.y;
+    tile.width = source.width; tile.height = source.height;
+    for (int y = 0; y < pitch; ++y) for (int x = 0; x < pitch; ++x) {
+        const bool live = source.admitted[static_cast<std::size_t>(y * pitch + x)] != 0;
+        if (live && (x >= tile.width || y >= tile.height)) return out;
+        tile.mask[y][x] = live;
+        tile.admitted += live;
+    }
+    tile.full = tile.admitted == pitch * pitch;
+    out.valid = true;
+    if (tile.admitted < 9) return out; // native domain is Exterior only
+    const unsigned edge = source_facing.x > 0 ? TermWest : source_facing.x < 0 ? TermEast :
+                          source_facing.y > 0 ? TermNorth : TermSouth;
+    TransitionSlot slot;
+    slot.kind = SlotKind::PointSocket; slot.facing = source_facing;
+    // The closed receiving-category predicate is exactly the one used by
+    // native negotiation. Buttress depends on the full territory's selected
+    // contour edge, so this source probe conservatively retains only the
+    // corresponding authored closed termination, never an invented domain.
+    out.categories = static_cast<std::uint16_t>(receiving_categories(tile, slot, contact) & bit(edge));
+    return out;
+}
+
 static Result generate_mosaic_impl(const Request& req, const std::vector<TransitionSlot>* slots,
                                   MosaicPlan* plan, const ResilienceOptions* options = nullptr,
                                   ResilienceTrace* trace = nullptr) {

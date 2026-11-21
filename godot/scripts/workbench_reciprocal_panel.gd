@@ -120,6 +120,11 @@ func mount(workbench: Control) -> void:
 	supported.tooltip_text="Opt-in real backed native masonry receptors; final foreign joint and material path are still mandatory."
 	row.add_child(supported);controls.supported_native_receptors=supported
 	supported.toggled.connect(func(_value: bool) -> void: invalidate("SWARM-005 native receptor negotiation changed; regenerate before Apply."))
+	row=_row(fields)
+	var recovery:=CheckButton.new();recovery.text="Bounded reciprocal recovery (SWARM-006)";recovery.button_pressed=false
+	recovery.tooltip_text="Search finite native structural and receiver alternatives. Bids and reservations require genuine material-path proof before Apply."
+	row.add_child(recovery);controls.negotiated_recovery=recovery
+	recovery.toggled.connect(func(_value: bool) -> void: invalidate("SWARM-006 recovery changed; regenerate before Apply."))
 	for spec: Array in CONTROL_SPECS:
 		row=_row(fields);_spin(row,spec[0],spec[1],0,1,0.05,spec[2])
 	for key: String in Protocol.EXPRESSION_DEFAULTS[0]: controls[key].set_value_no_signal(Protocol.EXPRESSION_DEFAULTS[0][key])
@@ -288,6 +293,7 @@ func _recipe() -> Dictionary:
 		"optional":controls.optional.button_pressed,"shared_ownership":controls.shared_ownership.button_pressed,
 		"compact_native_termination":controls.compact_native_termination.button_pressed,
 		"supported_native_receptors":controls.supported_native_receptors.button_pressed,
+		"negotiated_recovery":controls.negotiated_recovery.button_pressed,
 		"parameters":parameters,"activation":points,
 		"protected":protected_points.duplicate()}
 	var profiles: Dictionary={}
@@ -400,7 +406,19 @@ func _poll_thread() -> void:
 	if _thread_cancelled:
 		_thread_cancelled=false;phase="idle";_cleanup_job();_refresh();return
 	if _thread_kind=="prepare": _launch(result);return
-	if not result.ok: phase="idle";_say(result.error);_cleanup_job();return
+	if not result.ok:
+		phase="idle"
+		if result.get("diagnostic_refusal",false) and _thread_kind=="decode" and not _job_dir.is_empty():
+			# Keep the exact rejected request and response as evidence. No proposal,
+			# material preview, acceptance receipt or native World action is created.
+			var retained:=_job_dir
+			_job_dir=""
+			proposal.clear();document.clear();_preview.texture=null
+			_inspector.text=result.error+"\nRaw native request/response: "+retained+"\nResponse SHA-256: "+str(result.response_sha256)
+			_say(result.error+" Evidence retained: "+retained)
+		else:
+			_say(result.error);_cleanup_job()
+		return
 	if _thread_kind=="load_saved":
 		proposal=result;document=result.result;prepared=result.prepared;phase="historical"
 		_runtime={"source":result.receipt.native_source,"sha256":result.receipt.cli_sha256}
@@ -449,6 +467,20 @@ func _render() -> void:
 			damage.get("mosaic_changed",0),damage.get("work",0),damage.get("reason","")])
 	if 13.0 in document.cells or 13 in document.cells:
 		rows.append("Stone keeps its native powder behavior. Solver acceptance does not certify physical stability.")
+	if prepared.recipe.get("negotiated_recovery",false):
+		rows.append("SWARM-006 recovery · %s · Apply %s. Offers and reservations require qualified native foreign joints." % [document.stop_reason,"authorized" if document.can_apply else "blocked"])
+		var metrics: Dictionary=document.get("metrics",{})
+		rows.append("Charged native work · FRAME %s / MOSAIC %s / categorical %s / coordinator %s" % [
+			metrics.get("frame_work",0),metrics.get("mosaic_work",0),metrics.get("solver_work",0),metrics.get("shared_work",0)])
+		var detail_count:=0
+		for record: Dictionary in document.rounds:
+			var attempts: Array=record.get("recovery_attempts",[])
+			rows.append("Round %s recovery · %d candidate attempts · %d native receptor receipts · frontier exhausted %s" % [
+				record.number,attempts.size(),record.get("mosaic_recovery_receipts",[]).size(),record.get("recovery_frontier_exhausted",false)])
+			for attempt: Dictionary in attempts:
+				if detail_count>=128: break
+				rows.append("Native alternative · "+JSON.stringify(attempt).left(1200));detail_count+=1
+		if detail_count>=128: rows.append("Additional alternative receipts remain in the retained native evidence.")
 	for obligation: Dictionary in document.obligations:
 		if obligation.get("state")=="STILL_REQUIRED": rows.append("Required socket %s · %s" % [obligation.connector,obligation.reason])
 	_inspector.text="\n".join(rows)

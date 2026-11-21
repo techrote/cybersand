@@ -7,9 +7,13 @@
 
 namespace cybersand::gentek_swarm::assembly004 {
 namespace {
+int custody_encoding_index(){static const int index=std::ios_base::xalloc();return index;}
+void varuint(std::ostream& o,std::uint64_t value){while(value>=128){o.put(static_cast<char>((value&127U)|128U));value>>=7U;}o.put(static_cast<char>(value));}
 void str(std::ostream& o,const std::string& s){o<<'"';for(const unsigned char c:s){switch(c){case '"':o<<"\\\"";break;case '\\':o<<"\\\\";break;case '\n':o<<"\\n";break;case '\r':o<<"\\r";break;case '\t':o<<"\\t";break;default:if(c<32)o<<"?";else o<<c;}}o<<'"';}
 void point(std::ostream& o,Point p){o<<'['<<p.x<<','<<p.y<<']';}
-template<class T>void numbers(std::ostream& o,const std::vector<T>& v){o<<'[';bool first=true;for(auto x:v){if(!first)o<<',';first=false;o<<static_cast<std::uint64_t>(x);}o<<']';}
+template<class T>void numbers(std::ostream& o,const std::vector<T>& v){
+    if(o.iword(custody_encoding_index())){o.put('\0');varuint(o,v.size());for(auto x:v)varuint(o,static_cast<std::uint64_t>(x));return;}
+    o<<'[';bool first=true;for(auto x:v){if(!first)o<<',';first=false;o<<static_cast<std::uint64_t>(x);}o<<']';}
 template<class T,class F>void array(std::ostream& o,const std::vector<T>& v,F f){o<<'[';bool first=true;for(const auto& x:v){if(!first)o<<',';first=false;f(o,x);}o<<']';}
 void stats(std::ostream& o,const std::map<std::string,std::uint64_t>& m){o<<'{';bool first=true;for(const auto& [k,v]:m){if(!first)o<<',';first=false;str(o,k);o<<':'<<v;}o<<'}';}
 void offer(std::ostream& o,const Affordance& a){o<<"{\"id\":"<<a.id<<",\"instance\":"<<a.instance<<",\"a\":";point(o,a.a);o<<",\"b\":";point(o,a.b);o<<",\"facing\":";point(o,a.facing);o<<",\"family\":";str(o,name(a.family));o<<",\"required\":"<<(a.required?"true":"false")<<",\"strength\":"<<a.strength<<",\"tag\":";str(o,a.tag);o<<'}';}
@@ -209,18 +213,19 @@ void frame_revision(std::ostream& stream, const FrameRevision& frame) {
 }
 }
 
-void write_composition_json(const std::string& path, const Composition& c) {
-    const std::filesystem::path destination(path), temporary(path + ".partial");
-    if (std::filesystem::exists(destination) || std::filesystem::exists(temporary))
-        throw std::invalid_argument("refusing to overwrite retained reciprocal evidence: " + path);
-    auto o = output(temporary.string());
-    o << "{\"schema\":5,\"type\":\"reciprocal_assembly\",\"programme\":\"GENTEK-SWARM-004\",\"identity\":";
-    str(o, composition_identity);
+namespace {
+void composition_json(std::ostream& o,const Composition& c,bool custody) {
+    o << "{\"schema\":" << (c.input.options.negotiated_recovery?6:5)
+      << ",\"type\":\"reciprocal_assembly\",\"programme\":";
+    str(o,c.input.options.negotiated_recovery?"GENTEK-SWARM-006":"GENTEK-SWARM-004");o<<",\"identity\":";
+    str(o, c.input.options.negotiated_recovery?recovery_identity:composition_identity);
     o << ",\"source\":"; str(o, c.input.frame.source_identity);
+    if(!custody) {
     o << ",\"status\":"; str(o, name(c.status));
     o << ",\"reason\":"; str(o, c.reason);
     o << ",\"stop_reason\":"; str(o, c.stop_reason);
     o << ",\"can_apply\":" << (c.can_apply ? "true" : "false") << ",\"digest\":"; str(o, hex(c.digest));
+    }
     o << ",\"input\":{\"frame\":"; request(o, c.input.frame);
     o << ",\"mosaic\":"; request(o, c.input.mosaic);
     o << ",\"shared_zone\":"; numbers(o, c.input.shared_zone);
@@ -237,13 +242,26 @@ void write_composition_json(const std::string& path, const Composition& c) {
       << ",\"compact_native_termination\":" << (options.compact_native_termination ? "true" : "false")
       << ",\"final_validation\":" << (options.final_validation ? "true" : "false")
       << ",\"shared_extent\":" << options.shared_extent
-      << ",\"orientation_preference\":" << options.orientation_preference << "}}";
+      << ",\"orientation_preference\":" << options.orientation_preference;
+    if(options.negotiated_recovery)o<<",\"negotiated_recovery\":true,\"recovery_offers\":"<<(options.recovery_offers?"true":"false");
+    o<<"}}";
     o << ",\"original_frame\":{\"core\":"; result(o, c.original_frame.core);
     o << ",\"result\":"; result(o, c.original_frame.result);
     o << ",\"slots\":"; array(o, c.original_frame.slots, slot);
-    o << ",\"reservation_rejections\":"; array(o, c.original_frame.reservation_rejections, str); o << '}';
+    o << ",\"reservation_rejections\":"; array(o, c.original_frame.reservation_rejections, str);
+    if(options.negotiated_recovery) {
+        o<<",\"source_feasibility\":";
+        array(o,c.original_frame.source_feasibility,[](auto& s,const SourceFeasibilityDecision& d){
+            s<<"{\"connector\":"<<d.connector<<",\"instance\":"<<d.instance<<",\"source\":";point(s,d.source);
+            s<<",\"face\":";point(s,d.face);s<<",\"facing\":";point(s,d.facing);s<<",\"contact\":";point(s,d.contact);
+            s<<",\"backing\":";point(s,d.backing);s<<",\"receiver_categories\":"<<d.receiver_categories
+             <<",\"local_termination_possible\":"<<(d.local_termination_possible?"true":"false")
+             <<",\"foreign_opportunity\":"<<(d.foreign_opportunity?"true":"false")<<",\"work\":"<<d.work
+             <<",\"part\":";str(s,d.part);s<<",\"reason\":";str(s,d.reason);s<<'}';});
+    }
+    o<<'}';
     o << ",\"rounds\":";
-    array(o, c.rounds, [](auto& stream, const Round& round) {
+    array(o, c.rounds, [&](auto& stream, const Round& round) {
         stream << "{\"number\":" << round.number << ",\"reason\":"; str(stream, round.reason);
         stream << ",\"geometry_digest\":"; str(stream, hex(round.geometry_digest));
         stream << ",\"semantic_digest\":"; str(stream, hex(round.semantic_digest));
@@ -287,6 +305,35 @@ void write_composition_json(const std::string& path, const Composition& c) {
             s << ",\"facing\":"; point(s, r.facing); s << '}';
         });
         stream << ",\"mosaic_trace\":"; resilience_trace(stream, round.mosaic_trace);
+        if(options.negotiated_recovery) {
+            stream<<",\"recovery_work\":"<<round.recovery_work
+                  <<",\"recovery_frontier_exhausted\":"<<(round.recovery_frontier_exhausted?"true":"false")
+                  <<",\"recovery_frontier\":";
+            array(stream,round.recovery_frontier,[](auto& s,const RecoveryCursor& r){
+                s<<"{\"slot\":"<<r.slot<<",\"next\":"<<r.next<<",\"observation\":";str(s,hex(r.observation));
+                s<<",\"exhausted\":"<<(r.exhausted?"true":"false")<<'}';});
+            stream<<",\"recovery_attempts\":";
+            array(stream,round.recovery_attempts,[](auto& s,const RecoveryAttempt& r){
+                s<<"{\"slot\":"<<r.slot<<",\"connector\":"<<r.connector<<",\"ordinal\":"<<r.ordinal
+                 <<",\"round\":"<<r.round<<",\"source_instance\":"<<r.source_instance<<",\"host_instance\":"<<r.host_instance
+                 <<",\"root\":";point(s,r.root);s<<",\"contact\":";point(s,r.contact);s<<",\"axis\":";point(s,r.axis);
+                s<<",\"length\":"<<r.length<<",\"variant\":"<<r.variant<<",\"work\":"<<r.work<<",\"phase\":";str(s,r.phase);
+                s<<",\"outcome\":";str(s,r.outcome);s<<",\"reason\":";str(s,r.reason);s<<'}';});
+            stream<<",\"mosaic_recovery_receipts\":";
+            array(stream,round.mosaic_recovery_receipts,[](auto& s,const MosaicRecoveryReceipt& r){
+                s<<"{\"slot\":"<<r.slot<<",\"connector\":"<<r.connector<<",\"source_instance\":"<<r.source_instance
+                 <<",\"host_instance\":"<<r.host_instance<<",\"receiving_instance\":"<<r.receiving_instance
+                 <<",\"port_id\":"<<r.port_id<<",\"round\":"<<r.round<<",\"candidate\":"<<r.candidate;
+                s<<",\"root\":";point(s,r.root);s<<",\"contact\":";point(s,r.contact);s<<",\"backing\":";point(s,r.backing);
+                s<<",\"axis\":";point(s,r.axis);s<<",\"cross\":";point(s,r.cross);s<<",\"host\":";point(s,r.host);
+                s<<",\"length\":"<<r.length<<",\"variant\":"<<r.variant<<",\"source_family\":";str(s,name(r.source_family));
+                s<<",\"receiving_family\":";str(s,name(r.receiving_family));s<<",\"source_digest\":";str(s,hex(r.source_digest));
+                s<<",\"prior_digest\":";str(s,hex(r.prior_digest));s<<",\"work\":"<<r.work<<",\"edits\":";
+                array(s,r.edits,[](auto& t,const RecoveryEdit& e){t<<"{\"point\":";point(t,e.point);
+                    t<<",\"before\":"<<static_cast<unsigned>(e.before)<<",\"after\":"<<static_cast<unsigned>(e.after)
+                     <<",\"before_role\":"<<static_cast<unsigned>(e.before_role)<<",\"after_role\":"<<static_cast<unsigned>(e.after_role)
+                     <<",\"before_owner\":"<<e.before_owner<<",\"after_owner\":"<<e.after_owner<<'}';});s<<'}';});
+        }
         stream << '}';
     });
     o << ",\"damage_derivative\":";
@@ -299,6 +346,23 @@ void write_composition_json(const std::string& path, const Composition& c) {
           << ",\"mosaic_footprint_changed\":" << damage.mosaic_footprint_changed
           << ",\"work\":" << damage.work << ",\"reason\":"; str(o, damage.reason); o << '}';
     } else o << "null";
+    if(custody) {
+        // JSON renders unavailable solver work as null. The in-process seal
+        // also binds the raw native fields; no hidden field can be rewritten.
+        o << ",\"raw_solver_debits\":[";
+        const auto raw=[&](const Result& r){o<<r.solver_work<<',';};
+        raw(c.original_frame.core);raw(c.original_frame.result);
+        for(const auto& round:c.rounds){raw(round.frame.result);raw(round.mosaic.result);
+            raw(round.proposed_frame);raw(round.proposed_mosaic);
+            for(const auto& attempt:round.mosaic.attempts)o<<attempt.work<<',';
+            for(const auto& attempt:round.mosaic_trace.solver.attempts)o<<attempt.solver.work<<',';
+        }
+        if(c.damage_derivative){raw(c.damage_derivative->frame.result);raw(c.damage_derivative->mosaic.result);
+            for(const auto& attempt:c.damage_derivative->mosaic.attempts)o<<attempt.work<<',';}
+        o<<"0],\"raw_request_definitions\":[";str(o,c.input.frame.definition_fingerprint);o<<',';str(o,c.input.mosaic.definition_fingerprint);
+        for(const auto& round:c.rounds){o<<',';str(o,round.mosaic_request.definition_fingerprint);}
+        o<<"],\"rejections\":";array(o,c.rejections,str);o<<'}';return;
+    }
     o << ",\"cells\":"; numbers(o, c.cells);
     o << ",\"ledger_columns\":[\"owner\",\"instance\",\"rule\",\"first_round\",\"last_round\",\"revision_mask\"]";
     o << ",\"owner_names\":[\"empty\",\"FRAMEWEAVER\",\"MOSAIC\",\"immutable_environment\"],\"ledger\":";
@@ -332,9 +396,24 @@ void write_composition_json(const std::string& path, const Composition& c) {
     o << ",\"metrics\":"; stats(o, c.metrics);
     o << ",\"rejections\":"; array(o, c.rejections, str);
     o << "}\n";
-    o.close();
-    if (!o) throw std::runtime_error("reciprocal evidence write failed; partial retained: " + temporary.string());
-    std::filesystem::rename(temporary, destination);
+}
+} // namespace
+
+CustodyDigest fingerprint_native_custody(const Composition& c,std::uint64_t& charged,std::uint64_t ceiling) {
+    CustodyHashBuffer buffer(charged,ceiling,c.input.cancel);std::ostream stream(&buffer);
+    stream.exceptions(std::ios::badbit|std::ios::failbit);stream<<std::setprecision(17);
+    stream.iword(custody_encoding_index())=1;
+    stream<<"SWARM006/native-custody-binary-arrays-v1:";
+    composition_json(stream,c,true);return buffer.finish();
+}
+
+void write_composition_json(const std::string& path,const Composition& c) {
+    const std::filesystem::path destination(path),temporary(path+".partial");
+    if(std::filesystem::exists(destination)||std::filesystem::exists(temporary))
+        throw std::invalid_argument("refusing to overwrite retained reciprocal evidence: "+path);
+    auto o=output(temporary.string());composition_json(o,c,false);o.close();
+    if(!o)throw std::runtime_error("reciprocal evidence write failed; partial retained: "+temporary.string());
+    std::filesystem::rename(temporary,destination);
 }
 
 void write_matched_mosaic_control_json(const std::string& path, const std::string& policy,

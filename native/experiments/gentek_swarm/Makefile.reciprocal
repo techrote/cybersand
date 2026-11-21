@@ -8,11 +8,11 @@ ifeq ($(SANITIZE),1)
 MODE := -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined
 endif
 LEGACY := common fixtures meshing io frameweaver mosaic receptor negotiated mosaic_admission resilience_solver
-CORE := $(addprefix $(BUILD)/,$(addsuffix .o,$(LEGACY) assembly reciprocal_mosaic reciprocal)) $(BUILD)/generation_spatial.o
+CORE := $(addprefix $(BUILD)/,$(addsuffix .o,$(LEGACY) assembly reciprocal_mosaic mosaic_recovery recovery_admission reciprocal reciprocal_io)) $(BUILD)/generation_spatial.o
 HEADERS := $(wildcard *.hpp) $(wildcard $(ROOT)/native/include/cybersand/*.hpp)
 .PHONY: all tests test
 all: tests $(BUILD)/gentek_reciprocal $(BUILD)/audit_reciprocal_causality
-tests: $(BUILD)/test_assembly $(BUILD)/test_reciprocal_mosaic $(BUILD)/test_reciprocal $(BUILD)/test_swarm005
+tests: $(BUILD)/test_assembly $(BUILD)/test_reciprocal_mosaic $(BUILD)/test_reciprocal $(BUILD)/test_swarm005 $(BUILD)/test_swarm006_source $(BUILD)/test_swarm006_admission $(BUILD)/test_custody_hash $(BUILD)/test_swarm006_recovery
 $(BUILD):
 	mkdir -p $@
 $(BUILD)/definition-$(DEFINITION_HASH): | $(BUILD)
@@ -27,14 +27,26 @@ $(BUILD)/test_reciprocal_mosaic: $(CORE) $(BUILD)/reciprocal_mosaic_tests.o
 	$(CXX) $(MODE) $^ $(LDFLAGS) -o $@
 $(BUILD)/test_swarm005: $(CORE) $(BUILD)/swarm005_research_tests.o
 	$(CXX) $(MODE) $^ $(LDFLAGS) -o $@
+$(BUILD)/test_swarm006_source: $(CORE) $(BUILD)/swarm006_source_tests.o
+	$(CXX) $(MODE) $^ $(LDFLAGS) -o $@
+$(BUILD)/test_swarm006_admission: $(BUILD)/recovery_admission.o $(BUILD)/recovery_admission_tests.o
+	$(CXX) $(MODE) $^ $(LDFLAGS) -o $@
+$(BUILD)/test_custody_hash: $(BUILD)/custody_hash_tests.o
+	$(CXX) $(MODE) $^ $(LDFLAGS) -o $@
+$(BUILD)/test_swarm006_recovery: $(CORE) $(BUILD)/swarm006_recovery_tests.o
+	$(CXX) $(MODE) $^ $(LDFLAGS) -o $@
 $(BUILD)/test_reciprocal: $(CORE) $(BUILD)/reciprocal_tests.o
 	$(CXX) $(MODE) $^ $(LDFLAGS) -o $@
-$(BUILD)/gentek_reciprocal: $(CORE) $(BUILD)/reciprocal_io.o $(BUILD)/reciprocal_main.o
+$(BUILD)/gentek_reciprocal: $(CORE) $(BUILD)/reciprocal_main.o
 	$(CXX) $(MODE) $^ $(LDFLAGS) -o $@
-$(BUILD)/audit_reciprocal_causality: $(CORE) $(BUILD)/reciprocal_io.o $(BUILD)/reciprocal_causal.o
+$(BUILD)/audit_reciprocal_causality: $(CORE) $(BUILD)/reciprocal_causal.o
 	$(CXX) $(MODE) $^ $(LDFLAGS) -o $@
 test: tests
 	$(BUILD)/test_assembly
 	$(BUILD)/test_reciprocal_mosaic
 	$(BUILD)/test_reciprocal
 	$(BUILD)/test_swarm005
+	$(BUILD)/test_swarm006_source
+	$(BUILD)/test_swarm006_admission
+	$(BUILD)/test_custody_hash
+	$(BUILD)/test_swarm006_recovery

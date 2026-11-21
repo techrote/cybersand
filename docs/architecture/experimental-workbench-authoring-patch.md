@@ -5,7 +5,7 @@ document-kind: contract
 scope: SWARM-004 Draft/HOLD native retained-patch interface and experimental controller; qualification is separately evidenced
 canonical-for: [swarm004-workbench-native-transaction, swarm004-experimental-controller]
 last-reviewed: 2026-11-20
-related-documents: [shared-workbench-authoring-data.md, liquid-prepared-setup-and-receipts.md, ../operations/swarm004-workbench-playtest.md]
+related-documents: [shared-workbench-authoring-data.md, liquid-prepared-setup-and-receipts.md, ../operations/swarm004-workbench-playtest.md, ../operations/swarm006-workbench-playtest.md]
 ---
 
 # SWARM-004 reciprocal Workbench native transaction
@@ -245,3 +245,30 @@ The [owner guide](../operations/swarm004-workbench-playtest.md) describes the
 interactive controls and exact evidence requirements. Windows graphical results
 must be supplied by a source-qualified run; the guide itself is not evidence
 that a run has succeeded.
+
+## SWARM-006 successor transport and custody
+
+The separately staged GENTEK-SWARM-006 integration adds an explicit default-OFF
+bounded recovery switch. ON emits `SWARM006 4`: V3's independent FRAME/MOSAIC
+profile controls plus a third experimental flag. OFF retains the old V1/V2/V3
+transport choice and meaning. The native ON response uses schema6 and its own
+`gentek_swarm_006_negotiated_recovery_v1` identity. No UI component constructs
+material paths or changes native source obligations.
+
+The inspector admits bounded alternative-attempt, frontier and native receptor
+receipt arrays and displays the native stopping reason, remaining hard
+obligations and aggregate charged work. Reservations remain distinct from
+qualified native joints. The existing material renderer, ownership ledger,
+atomic native patch, Undo and persistence path supply the same authority.
+Historical SWARM-004/005 definition hashes are allowed only for saved-evidence
+inspection; newly generated proposals must match the current frozen definition.
+
+`tools/swarm006/` and `swarm006-workbench-windows.yml` are separately versioned
+successors. They preserve the earlier qualification machinery and evidence.
+The owner ZIP, `.sha256` sidecar and PowerShell launcher are generated from the
+exact source-built package. The launcher binds the entire manifest, generator,
+Windows GDExtension and launch contents, and supports GitHub's nested artifact
+without guessing a SWARM-004/005 archive name. Source and pristine-package
+Windows graphical tests remain distinct from physical owner NVIDIA acceptance.
+See the [SWARM-006 owner guide](../operations/swarm006-workbench-playtest.md) for
+finite controls, honest negative-result reporting and qualification scope.

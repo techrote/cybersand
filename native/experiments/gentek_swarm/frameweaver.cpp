@@ -24,6 +24,20 @@ struct Part {
     std::vector<std::pair<Point, Point>> receptors;
 };
 struct Frontier { std::size_t connector; unsigned depth; };
+struct SourceReservation {
+    std::uint32_t connector{};
+    bool foreign = false;
+    std::vector<Point> cells;
+};
+struct SourceReservations {
+    std::vector<SourceReservation> entries;
+    std::vector<std::uint32_t> owners;
+};
+struct SourceTrial {
+    std::size_t port{};
+    SourceFeasibilityDecision receipt;
+    std::vector<Point> reserved;
+};
 struct Placement {
     Part part;
     Point origin;
@@ -32,6 +46,7 @@ struct Placement {
     double score = -std::numeric_limits<double>::infinity();
     std::uint64_t tie{};
     std::vector<std::pair<std::size_t, std::size_t>> closures{};
+    std::vector<SourceTrial> source_trials{};
 };
 
 Point add(Point a, Point b) { return {a.x + b.x, a.y + b.y}; }
@@ -117,6 +132,16 @@ bool secondary_capacity(const Request& q, const Result& r) {
     return r.instances.size() < q.limits.max_instances - seam_reserve;
 }
 
+bool secondary_capacity_with_source(const Request& q, Result& r, const SourceReservations* reservations) {
+    if (!reservations) return secondary_capacity(q, r);
+    if (!charge(q, r, reservations->entries.size())) return false;
+    const auto pending = static_cast<std::size_t>(std::count_if(reservations->entries.begin(), reservations->entries.end(),
+        [&](const auto& item) { return !item.foreign && item.connector && item.connector <= r.connectors.size() &&
+            !r.connectors[item.connector - 1].fulfilled; }));
+    const auto seam_reserve = q.limits.max_instances >= 8 ? 4U : 0U;
+    return r.instances.size() + pending < q.limits.max_instances - seam_reserve;
+}
+
 bool qualify_closures(const Request& q, Result& r, Placement& c, std::size_t parent_index) {
     for (std::size_t pi = 0; pi < c.part.ports.size(); ++pi) {
         if (pi == c.input) continue;
@@ -168,14 +193,220 @@ bool preflight_required_exits(const Request& own, const Request* peer, Result& r
     return true;
 }
 
+bool shared_allowed(const Request& own, const Request& peer, Point p,
+                    const SourceFeasibilityOptions& options) {
+    if (!options.shared_zone || !inside(own, p)) return false;
+    const auto i = index(own, p);
+    if ((*options.shared_zone)[i] == 0 || !transition_at(own, p)) return false;
+    for (const auto* q : {&own, &peer}) {
+        if ((!q->protected_void.empty() && q->protected_void[i]) ||
+            (!q->context.empty() && q->context[i] != Material::Empty) ||
+            (!q->neighbor_cells.empty() && q->neighbor_cells[i] != Material::Empty) ||
+            (!q->neighbors.protected_geometry.empty() && q->neighbors.protected_geometry[i])) return false;
+    }
+    return true;
+}
+
+// Provisional exits keep the exact clear native cap or source-to-receiver
+// opportunity footprint until their connector is extended/closed. An unrelated
+// later source branch may not make its earlier feasibility witness impossible.
+bool reservation_clear(const Request& q, Result& r, Point p,
+    const SourceReservations* reservations, std::uint32_t consuming = 0,
+    const Placement* joining = nullptr) {
+    if (!reservations) return true;
+    if (!charge(q, r) || !inside(q, p)) return false;
+    const auto connector = reservations->owners[index(q, p)];
+    if (connector == consuming || connector == 0 ||
+        (connector <= r.connectors.size() && r.connectors[connector - 1].fulfilled)) return true;
+    if (joining) {
+        if (!charge(q, r, joining->closures.size())) return false;
+        if (std::any_of(joining->closures.begin(), joining->closures.end(),
+            [&](const auto& closure) { return r.connectors[closure.second].id == connector; })) return true;
+    }
+    return false;
+}
+
+bool preflight_native_required_exits(const Request& own, const Request& peer, Result& r,
+    Placement& prospective, const Connector& host, bool compact,
+    const SourceFeasibilityOptions& options, const SourceReservations& reservations) {
+    if (!options.enabled) return true;
+    std::vector<Point> occupied;
+    occupied.reserve(prospective.part.cells.size());
+    for (const auto p : prospective.part.cells) {
+        if (!charge(own, r)) return false;
+        occupied.push_back(transformed(p, prospective));
+    }
+    // Existing authored footprints are at most 81 cells; a conservative fixed
+    // sort allowance covers comparisons without a second unbounded raster.
+    if (!charge(own, r, occupied.size() * 8U)) return false;
+    std::sort(occupied.begin(), occupied.end());
+    const auto planned = [&](Point p) { return std::binary_search(occupied.begin(), occupied.end(), p); };
+    for (std::size_t port = 0; port < prospective.part.ports.size(); ++port) {
+        if (port == prospective.input || !prospective.part.ports[port].required ||
+            std::any_of(prospective.closures.begin(), prospective.closures.end(),
+                [&](const auto& closure) { return closure.first == port; })) continue;
+        const auto started = r.work;
+        SourceTrial trial;
+        trial.port = port;
+        auto& receipt = trial.receipt;
+        receipt.part = prospective.part.kind;
+        receipt.source = transformed(prospective.part.ports[port].point, prospective);
+        receipt.face = receipt.source;
+        receipt.facing = rotate(prospective.part.ports[port].facing, prospective.rotation);
+        ++r.metrics["swarm006_source_exit_candidates"];
+        if (std::abs(receipt.facing.x) + std::abs(receipt.facing.y) != 1 ||
+            prospective.part.material == Material::Empty ||
+            material_definition(prospective.part.material).state != MaterialState::Solid ||
+            prospective.part.ports.size() + prospective.part.receptors.size() > own.limits.max_connectors_per_instance) {
+            ++r.rejected["swarm006_source_facing_family_or_material"];
+            return false;
+        }
+        for (unsigned step = 0; step < 3; ++step) {
+            if (!charge(own, r, 8)) return false;
+            const auto next = add(receipt.face, receipt.facing);
+            if (!planned(next)) break;
+            receipt.face = next;
+        }
+        // Enumerate the exact same authored terminal shapes used by the source
+        // generator. A pair of free centerline cells is not a cap certificate.
+        const bool terminal_capacity = r.instances.size() + 2 <= own.limits.max_instances &&
+            r.candidates < own.limits.max_candidates && own.limits.max_connectors_per_instance >= 2;
+        if (terminal_capacity) {
+            std::vector<Part> endings{cap()};
+            if (compact) endings.push_back(compact_terminal());
+            for (const auto& ending : endings) {
+                if (!candidate(own, r)) return false;
+                unsigned orientation = 0;
+                while (orientation < 4 && rotate({1, 0}, static_cast<int>(orientation)) != receipt.facing) ++orientation;
+                bool legal = true;
+                std::vector<Point> fresh;
+                for (const auto local : ending.cells) {
+                    if (!charge(own, r, 8)) return false;
+                    const auto p = add(receipt.source, rotate(local, static_cast<int>(orientation)));
+                    if (!allowed(own, p)) { legal = false; break; }
+                    const auto i = index(own, p);
+                    if (planned(p) || r.cells[i] != Material::Empty) {
+                        if (!near_joint(p, receipt.source) ||
+                            (!planned(p) && (r.cells[i] != Material::SteelPlate || r.roles[i] == Role::Cohesion))) {
+                            legal = false; break;
+                        }
+                    } else {
+                        if (!reservation_clear(own, r, p, &reservations, host.id, &prospective)) { legal = false; break; }
+                        fresh.push_back(p);
+                    }
+                }
+                if (r.status == Status::Exhausted) return false;
+                if (!legal || fresh.empty()) continue;
+                // Reserve future material write and terminal candidate capacity
+                // geometrically; actual work remains charged when it executes.
+                receipt.local_termination_possible = true;
+                receipt.reason = "source-time exact native " + ending.kind + " footprint remains available";
+                trial.reserved = std::move(fresh);
+                break;
+            }
+        }
+        if (!receipt.local_termination_possible) {
+            if (!terminal_capacity) ++r.rejected["swarm006_source_terminal_capacity"];
+            if (!charge(own, r, reservations.entries.size())) return false;
+            const auto pending = std::count_if(reservations.entries.begin(), reservations.entries.end(), [&](const auto& v) {
+                return v.foreign && v.connector != host.id && v.connector && v.connector <= r.connectors.size() &&
+                    !r.connectors[v.connector - 1].fulfilled && r.connectors[v.connector - 1].required;
+            });
+            bool reachable = false, backing = false, native_category = false;
+            const bool foreign_capacity = pending < static_cast<std::ptrdiff_t>(max_transition_slots) &&
+                pending < static_cast<std::ptrdiff_t>(own.limits.max_affordances) && peer.limits.max_instances &&
+                peer.limits.max_affordances && peer.limits.max_connectors_per_instance &&
+                peer.limits.max_work >= 1024 && peer.limits.max_solver_work;
+            if (foreign_capacity) {
+                Point cached_origin{-1, -1};
+                MosaicSourceTile tile;
+                std::vector<Point> clear_path;
+                for (int distance = 1; distance <= 14; ++distance) {
+                    if (!candidate(own, r) || !charge(own, r, 24)) return false;
+                    const Point contact{receipt.face.x + distance * receipt.facing.x,
+                                        receipt.face.y + distance * receipt.facing.y};
+                    const Point rear = add(contact, receipt.facing);
+                    if (!inside(own, contact) || !transition_at(own, contact)) break;
+                    const auto ci = index(own, contact);
+                    if (planned(contact) || r.cells[ci] != Material::Empty ||
+                        !reservation_clear(own, r, contact, &reservations, host.id, &prospective)) break;
+                    const bool shared = shared_allowed(own, peer, contact, options);
+                    if (allowed(peer, contact) || shared) {
+                        reachable = true;
+                        const bool rear_allowed = inside(own, rear) && (allowed(peer, rear) || shared_allowed(own, peer, rear, options));
+                        if (rear_allowed && r.cells[index(own, rear)] == Material::Empty && !planned(rear) &&
+                            reservation_clear(own, r, rear, &reservations, host.id, &prospective)) {
+                            backing = true;
+                            const Point origin{(contact.x / 16) * 16, (contact.y / 16) * 16};
+                            if (origin != cached_origin) {
+                                tile = {}; tile.origin = origin;
+                                tile.width = std::min(16, own.width - origin.x);
+                                tile.height = std::min(16, own.height - origin.y);
+                                for (int y = 0; y < tile.height; ++y) for (int x = 0; x < tile.width; ++x) {
+                                    if (!charge(own, r, 12)) return false;
+                                    const Point p{origin.x + x, origin.y + y};
+                                    tile.admitted[static_cast<std::size_t>(y * 16 + x)] =
+                                        (allowed(peer, p) || shared_allowed(own, peer, p, options)) &&
+                                        r.cells[index(own, p)] == Material::Empty && !planned(p) &&
+                                        reservation_clear(own, r, p, &reservations, host.id, &prospective);
+                                }
+                                if (r.status == Status::Exhausted) return false;
+                                cached_origin = origin;
+                            }
+                            const auto probe = probe_mosaic_source_receiver(tile, contact, receipt.facing,
+                                own.limits.max_work - r.work);
+                            if (probe.exhausted) {
+                                r.status = Status::Exhausted; r.termination = "source native category probe work allowance";
+                                return false;
+                            }
+                            if (!charge(own, r, probe.work)) return false;
+                            if (probe.valid && probe.categories) {
+                                native_category = true;
+                                receipt.foreign_opportunity = true;
+                                receipt.receiver_categories = probe.categories;
+                                receipt.contact = contact; receipt.backing = rear;
+                                receipt.reason = "source-time authored native MOSAIC receiver opportunity; bid, assignment and joint remain unproved";
+                                trial.reserved = clear_path;
+                                trial.reserved.push_back(contact); trial.reserved.push_back(rear);
+                                break;
+                            }
+                        }
+                    }
+                    // Any eventual FRAME path must stay within its own or
+                    // explicitly shared mask, not merely traverse peer land.
+                    if (!allowed(own, contact) && !shared) break;
+                    clear_path.push_back(contact);
+                }
+            }
+            if (!receipt.foreign_opportunity) {
+                ++r.rejected[!foreign_capacity ?
+                    "swarm006_source_reservation_capacity" : !reachable ?
+                    "swarm006_source_unreachable_receiver_territory" : !backing ?
+                    "swarm006_source_missing_native_backing" : !native_category ?
+                    "swarm006_source_missing_mosaic_category" : "swarm006_source_unconstructible_span"];
+                ++r.rejected["swarm006_source_part_refused_before_freeze"];
+                return false;
+            }
+        }
+        receipt.work = r.work - started;
+        prospective.source_trials.push_back(std::move(trial));
+    }
+    return true;
+}
+
 bool valid_placement(const Request& q, Result& r, const Placement& c,
-                     const Connector* parent, bool only_transition = false) {
+                     const Connector* parent, bool only_transition = false,
+                     const SourceReservations* reservations = nullptr) {
     std::size_t new_cells = 0;
     for (auto local : c.part.cells) {
         if (!charge(q, r)) return false;
         const auto p = transformed(local, c);
         if (!allowed(q, p) || (only_transition && !transition_at(q, p))) {
             ++r.rejected["footprint_mask_or_collision"];
+            return false;
+        }
+        if (!reservation_clear(q, r, p, reservations, parent ? parent->id : 0, &c)) {
+            ++r.rejected["swarm006_source_competing_reservation"];
             return false;
         }
         const auto i = index(q, p);
@@ -369,7 +600,8 @@ double candidate_score(const Request& q, const Result& r, const Placement& c,
     return score;
 }
 
-void terminate_connector(const Request& q, Result& r, std::size_t ci, bool compact_native_termination) {
+void terminate_connector(const Request& q, Result& r, std::size_t ci, bool compact_native_termination,
+                         const SourceReservations* reservations = nullptr) {
     if (r.connectors[ci].fulfilled || r.connectors[ci].state == "terminal_plate" ||
         r.status == Status::Exhausted) return;
     const auto host = r.connectors[ci];
@@ -379,7 +611,7 @@ void terminate_connector(const Request& q, Result& r, std::size_t ci, bool compa
         if (!candidate(q, r)) return;
         end.rotation = rotation;
         end.origin = host.a;
-        if (valid_placement(q, r, end, &host)) {
+        if (valid_placement(q, r, end, &host, false, reservations)) {
             commit(q, r, end, ci);
             return;
         }
@@ -391,7 +623,7 @@ void terminate_connector(const Request& q, Result& r, std::size_t ci, bool compa
             if (!candidate(q, r)) return;
             tiny.rotation = rotation;
             tiny.origin = host.a;
-            if (!valid_placement(q,r,tiny,&host)) continue;
+            if (!valid_placement(q,r,tiny,&host,false,reservations)) continue;
             const auto before = r.instances.size();
             commit(q,r,tiny,ci);
             if (r.instances.size() == before) return;
@@ -413,7 +645,7 @@ bool point_on_segment(Point p, Point a, Point b) {
 
 // Secondary braces are chosen between two independently declared segment
 // receptors. A nearby occupied cell alone never qualifies as a brace endpoint.
-void reinforce(const Request& q, Result& r) {
+void reinforce(const Request& q, Result& r, const SourceReservations* reservations = nullptr) {
     std::vector<std::size_t> receptors;
     for (std::size_t i = 0; i < r.connectors.size(); ++i) {
         if (r.connectors[i].family == Family::Brace) receptors.push_back(i);
@@ -422,7 +654,7 @@ void reinforce(const Request& q, Result& r) {
     unsigned accepted = 0;
     for (std::size_t a = 0; a < receptors.size() && accepted < budget; ++a) {
         for (std::size_t b = a + 1; b < receptors.size() && accepted < budget; ++b) {
-            if (r.status == Status::Exhausted || !secondary_capacity(q, r)) return;
+            if (r.status == Status::Exhausted || !secondary_capacity_with_source(q, r, reservations)) return;
             const auto ra = r.connectors[receptors[a]], rb = r.connectors[receptors[b]];
             if (ra.instance == rb.instance) continue;
             const Point pa{(ra.a.x + ra.b.x) / 2, (ra.a.y + ra.b.y) / 2};
@@ -436,6 +668,7 @@ void reinforce(const Request& q, Result& r) {
             for (auto p : cells) {
                 if (!charge(q, r)) return;
                 if (!allowed(q, p)) { valid = false; break; }
+                if (!reservation_clear(q, r, p, reservations)) { valid = false; break; }
                 const auto idx = index(q, p);
                 if (r.cells[idx] == Material::Empty) { ++fresh; continue; }
                 const bool endpoint = (distance(p, pa) <= 4 && r.provenance[idx] == ra.instance) ||
@@ -484,7 +717,8 @@ bool unresolved_near(const Request& q, const Result& r, Point p) {
     return false;
 }
 
-void cohesion(const Request& q, Result& r, bool only_transition) {
+void cohesion(const Request& q, Result& r, bool only_transition,
+              const SourceReservations* reservations = nullptr) {
     if (q.profile.cohesion <= 0 || r.status == Status::Exhausted) return;
     const auto intact = r.cells;
     unsigned patches = 0;
@@ -497,7 +731,7 @@ void cohesion(const Request& q, Result& r, bool only_transition) {
     // enlarges its envelope or provides a structural receptor.
     const auto pre_fill_instances = r.instances;
     for (const auto& center_instance : pre_fill_instances) {
-        if (patches >= patch_limit || !secondary_capacity(q, r)) break;
+        if (patches >= patch_limit || !secondary_capacity_with_source(q, r, reservations)) break;
         if (center_instance.kind != "branch_junction") continue;
         const auto center = center_instance.origin;
         const int radius = 3 + static_cast<int>(q.profile.cohesion * 4);
@@ -508,6 +742,7 @@ void cohesion(const Request& q, Result& r, bool only_transition) {
                 Point p{center.x + dx, center.y + dy};
                 if (!allowed(q, p) || (only_transition && !transition_at(q, p)) ||
                     r.cells[index(q, p)] != Material::Empty || unresolved_near(q, r, p)) continue;
+                if (!reservation_clear(q, r, p, reservations)) continue;
                 // A residual must sit between two perpendicular old members.
                 bool left = false, right = false, up = false, down = false;
                 for (int d = 1; d <= 3; ++d) {
@@ -527,7 +762,7 @@ void cohesion(const Request& q, Result& r, bool only_transition) {
         }
         if (admissible.empty()) continue;
         std::set<Point> remaining(admissible.begin(), admissible.end());
-        while (!remaining.empty() && patches < patch_limit && secondary_capacity(q, r)) {
+        while (!remaining.empty() && patches < patch_limit && secondary_capacity_with_source(q, r, reservations)) {
             std::vector<Point> pending{*remaining.begin()}, accepted;
             remaining.erase(pending.front());
             for (std::size_t head = 0; head < pending.size() && accepted.size() < q.limits.max_cohesion_cells_per_patch; ++head) {
@@ -611,13 +846,24 @@ void expose_boundary_contacts(const Request& q, Result& r) {
     }
 }
 
-void export_boundary(const Request& q, Result& r) {
+void export_boundary(const Request& q, Result& r, bool required_first = false) {
     expose_boundary_contacts(q, r);
     r.boundary.hard.clear();
     r.boundary.soft.clear();
     r.boundary.transition = q.transition;
     r.boundary.protected_geometry = q.protected_void;
-    for (const auto& c : r.connectors) {
+    std::vector<const Connector*> ordered;
+    if (required_first) {
+        if (!charge(q, r, r.connectors.size() * 16ULL)) return;
+        ordered.reserve(r.connectors.size());
+        for (const auto& c : r.connectors) ordered.push_back(&c);
+        std::stable_sort(ordered.begin(), ordered.end(), [](const auto* x, const auto* y) {
+            return std::tuple{!(x->required && !x->fulfilled), x->id} <
+                   std::tuple{!(y->required && !y->fulfilled), y->id};
+        });
+    }
+    for (std::size_t ci = 0; ci < r.connectors.size(); ++ci) {
+        const auto& c = required_first ? *ordered[ci] : r.connectors[ci];
         if (r.boundary.hard.size() >= q.limits.max_affordances) break;
         if (!inside(q, c.a) || r.cells[index(q, c.a)] == Material::Empty) continue;
         if (c.family == Family::Brace) {
@@ -685,7 +931,8 @@ Part receiving_terminal(int reach) {
     return p;
 }
 
-void terminate_reserved(const Request& own, const Request& peer, Result& r, std::size_t ci, bool compact_native_termination) {
+void terminate_reserved(const Request& own, const Request& peer, Result& r, std::size_t ci, bool compact_native_termination,
+                        const SourceReservations* reservations = nullptr) {
     if (r.status == Status::Exhausted || r.connectors[ci].fulfilled ||
         r.connectors[ci].state == "terminal_plate") return;
     const auto host = r.connectors[ci];
@@ -698,7 +945,7 @@ void terminate_reserved(const Request& own, const Request& peer, Result& r, std:
             if (rotate({1, 0}, rotation) != host.facing) continue;
             if (!candidate(own, r) || !secondary_capacity(own, r)) return;
             Placement ending{reach == -1 ? cap() : receiving_terminal(reach), host.a, rotation, 0};
-            if (!valid_placement(own, r, ending, &host, true)) continue;
+            if (!valid_placement(own, r, ending, &host, true, reservations)) continue;
             const auto old_count = r.connectors.size();
             const auto old_instances = r.instances.size();
             commit(own, r, ending, ci);
@@ -734,7 +981,7 @@ void terminate_reserved(const Request& own, const Request& peer, Result& r, std:
             if (rotate(tiny.part.ports[0].facing, rotation) != neg(host.facing)) continue;
             if (!candidate(own,r) || !secondary_capacity(own,r)) return;
             tiny.rotation = rotation;
-            if (!valid_placement(own,r,tiny,&host,true)) continue;
+            if (!valid_placement(own,r,tiny,&host,true,reservations)) continue;
             const auto old_count=r.instances.size();
             commit(own,r,tiny,ci);
             if(r.instances.size()==old_count)return;
@@ -838,14 +1085,18 @@ void reserve_slots(const Request& own, const Request& peer, Result& r, FramePlan
 
 } // namespace
 
-static Result generate_frameweaver_plan(const Request& q, const Request* peer, FramePlan* plan, bool compact_native_termination) {
+static Result generate_frameweaver_plan(const Request& q, const Request* peer, FramePlan* plan, bool compact_native_termination,
+    const SourceFeasibilityOptions* feasibility = nullptr) {
     auto r = begin_result(q, plan ? "reserved-frontier-growth-v1" : "frontier-growth-v0");
+    const bool source_feasibility = feasibility && feasibility->enabled && plan && peer;
+    if (source_feasibility) r.implementation += "+swarm006-native-source-opportunities-v1";
     if (plan && compact_native_termination) r.implementation += "+swarm005-native-source-feasibility-v1";
     if (r.status == Status::Invalid || r.status == Status::Exhausted || r.cells.empty()) return r;
     if (plan) {
         // Additional immutable core snapshot and finite slot receipts are part
         // of admission, not a hidden unlimited second representation.
-        const auto memory = r.cells.size() * 160ULL + q.limits.max_instances * 16384ULL + 1024 * 1024ULL;
+        const auto memory = r.cells.size() * 160ULL + q.limits.max_instances * 16384ULL + 1024 * 1024ULL +
+            (source_feasibility ? r.cells.size() * 4ULL + q.limits.max_instances * 1024ULL + 16384ULL : 0ULL);
         r.metrics["conservative_memory_bound_bytes"] = memory;
         if (memory > q.limits.max_bytes) {
             r.status = Status::Exhausted; r.termination = "reserved plan and immutable core exceed declared memory";
@@ -864,6 +1115,12 @@ static Result generate_frameweaver_plan(const Request& q, const Request* peer, F
         return r;
     }
     std::vector<Frontier> frontier;
+    SourceReservations source_reservations;
+    const auto* reservations = source_feasibility ? &source_reservations : nullptr;
+    if (source_feasibility) {
+        if (!charge(q, r, r.cells.size())) { finish_result(q, r); return r; }
+        source_reservations.owners.assign(r.cells.size(), 0);
+    }
     if (!plant_root(q, r, frontier)) {
         if (r.status != Status::Exhausted) { r.status = Status::Blocked; r.termination = "no_legal_root"; }
         finish_result(q, r);
@@ -912,8 +1169,15 @@ static Result generate_frameweaver_plan(const Request& q, const Request* peer, F
                     c.tie = mix(q.seed ^ (static_cast<std::uint64_t>(host.id) << 32) ^
                                 (static_cast<std::uint64_t>(part.cells.size()) << 9) ^ (rotation * 67 + pi));
                     if (!qualify_closures(q, r, c, current.connector)) break;
-                    if (compact_native_termination && !preflight_required_exits(q, peer, r, c)) continue;
-                    if (!valid_placement(q, r, c, &host)) continue;
+                    if (compact_native_termination && !source_feasibility && !preflight_required_exits(q, peer, r, c)) continue;
+                    if (!valid_placement(q, r, c, &host, false, reservations)) continue;
+                    if (source_feasibility) {
+                        const auto before = r.work;
+                        const bool feasible = preflight_native_required_exits(q, *peer, r, c, host,
+                            compact_native_termination, *feasibility, source_reservations);
+                        r.metrics["swarm006_source_feasibility_work"] += r.work - before;
+                        if (!feasible) continue;
+                    }
                     if (!charge(q, r, q.neighbors.hard.size() * c.part.ports.size())) break;
                     c.score = candidate_score(q, r, c, host, current.depth);
                     if (!found || c.score > best.score || (c.score == best.score && c.tie < best.tie)) {
@@ -926,7 +1190,31 @@ static Result generate_frameweaver_plan(const Request& q, const Request* peer, F
         }
         if (r.status == Status::Exhausted) break;
         if (found) {
-            for (auto ci : commit(q, r, best, current.connector)) {
+            const auto old_connectors = r.connectors.size();
+            const auto old_instances = r.instances.size();
+            const auto new_frontier = commit(q, r, best, current.connector);
+            if (source_feasibility && r.instances.size() != old_instances) {
+                if (!charge(q, r, source_reservations.entries.size())) break;
+                // Filled source connectors are semantically retired by their
+                // exact ID. Stale map entries are harmless and reusable because
+                // reservation_clear reads that immutable connector state.
+                source_reservations.entries.erase(std::remove_if(source_reservations.entries.begin(), source_reservations.entries.end(),
+                    [&](const auto& reservation) { return r.connectors[reservation.connector - 1].fulfilled; }), source_reservations.entries.end());
+                for (const auto& trial : best.source_trials) {
+                    auto receipt = trial.receipt;
+                    receipt.connector = static_cast<std::uint32_t>(old_connectors + trial.port + 1);
+                    receipt.instance = static_cast<std::uint32_t>(r.instances.size());
+                    plan->source_feasibility.push_back(receipt);
+                    if (!charge(q, r, trial.reserved.size())) break;
+                    source_reservations.entries.push_back({receipt.connector, receipt.foreign_opportunity, trial.reserved});
+                    for (const auto p : trial.reserved) source_reservations.owners[index(q, p)] = receipt.connector;
+                    ++r.metrics[receipt.foreign_opportunity ? "swarm006_source_foreign_opportunities" :
+                        "swarm006_source_local_opportunities"];
+                }
+                r.metrics["swarm006_source_peak_reservations"] = std::max(r.metrics["swarm006_source_peak_reservations"],
+                    static_cast<std::uint64_t>(source_reservations.entries.size()));
+            }
+            for (auto ci : new_frontier) {
                 if (frontier.size() >= q.limits.max_frontier) {
                     r.status = Status::Exhausted; r.termination = "frontier_limit"; break;
                 }
@@ -936,7 +1224,7 @@ static Result generate_frameweaver_plan(const Request& q, const Request* peer, F
             }
         } else if (plan && peer_distance(q, *peer, r, host.a, host.facing, host.instance) > 0) {
             r.connectors[current.connector].state = "reserved_pending";
-        } else terminate_connector(q, r, current.connector, compact_native_termination);
+        } else terminate_connector(q, r, current.connector, compact_native_termination, reservations);
     }
     // Explicit terminal pass, including nodes removed from the frontier by a
     // budget stop. A failed cap leaves a visible unresolved required joint.
@@ -945,24 +1233,24 @@ static Result generate_frameweaver_plan(const Request& q, const Request* peer, F
         if (r.connectors[i].family == Family::Frame && !r.connectors[i].fulfilled) {
             if (plan && peer_distance(q, *peer, r, r.connectors[i].a, r.connectors[i].facing,
                                       r.connectors[i].instance) > 0) continue;
-            terminate_connector(q, r, i, compact_native_termination);
+            terminate_connector(q, r, i, compact_native_termination, reservations);
         }
     }
-    reinforce(q, r);
+    reinforce(q, r, reservations);
     if (plan) {
         // All macrostructure and nonstructural additions precede this freeze.
         // Only transition-local authored terminal pieces may be added below.
-        cohesion(q, r, false);
+        cohesion(q, r, false, reservations);
         plan->core = r;
         finish_result(q, plan->core);
         for (std::size_t i = 0; i < socket_count && r.status != Status::Exhausted; ++i)
             if (r.connectors[i].family == Family::Frame && !r.connectors[i].fulfilled)
-                terminate_reserved(q, *peer, r, i, compact_native_termination);
+                terminate_reserved(q, *peer, r, i, compact_native_termination, reservations);
     } else {
         expose_boundary_contacts(q, r);
         cohesion(q, r, false);
     }
-    export_boundary(q, r);
+    export_boundary(q, r, source_feasibility);
     if (plan && r.status != Status::Exhausted) reserve_slots(q, *peer, r, *plan);
     r.metrics["part_vocabulary_families"] = plan ? 8 : 6;
     r.metrics["frontier_processed"] = processed;
@@ -982,7 +1270,8 @@ Result generate_frameweaver(const Request& q) {
     return generate_frameweaver_plan(q, nullptr, nullptr, false);
 }
 
-FramePlan plan_frameweaver(const Request& own, const Request& peer, bool compact_native_termination) {
+FramePlan plan_frameweaver(const Request& own, const Request& peer, bool compact_native_termination,
+                          const SourceFeasibilityOptions& feasibility) {
     FramePlan plan;
     std::string reason;
     if (!validate_request(own, reason)) {
@@ -1011,7 +1300,32 @@ FramePlan plan_frameweaver(const Request& own, const Request& peer, bool compact
         plan.result.termination = "SWARM-002 reservations require an intact plan; damage is a separate derivative";
         return plan;
     }
-    plan.result = generate_frameweaver_plan(own, &peer, &plan, compact_native_termination);
+    if (feasibility.enabled) {
+        bool valid = peer.gentek == Kind::Mosaic && own.limits.max_work <= 2'000'000 &&
+            peer.limits.max_work <= 2'000'000 && peer.limits.max_solver_work <= 4'000'000 &&
+            own.limits.max_candidates <= 8192 && peer.limits.max_candidates <= 8192 &&
+            own.limits.max_instances <= 64 && peer.limits.max_instances <= 192 &&
+            own.limits.max_bytes <= 16U * 1024U * 1024U && peer.limits.max_bytes <= 16U * 1024U * 1024U;
+        if (feasibility.shared_zone) {
+            const auto& mask = *feasibility.shared_zone;
+            const auto count = static_cast<std::size_t>(own.width) * static_cast<std::size_t>(own.height);
+            valid = valid && mask.size() == count;
+            if (valid) for (std::size_t i = 0; i < count; ++i) {
+                const Point p{static_cast<int>(i % own.width), static_cast<int>(i / own.width)};
+                const bool territory = (own.eligible.empty() || own.eligible[i]) ||
+                    (peer.eligible.empty() || peer.eligible[i]);
+                if (mask[i] > 1 || (mask[i] && (!transition_at(own, p) || !territory))) { valid = false; break; }
+            }
+        }
+        if (!valid) {
+            plan.result = begin_result(own, "swarm006-native-source-opportunities-v1");
+            plan.result.status = Status::Invalid;
+            plan.result.termination = "invalid SWARM006 source opportunity mask, peer or comparison bounds";
+            return plan;
+        }
+    }
+    plan.result = generate_frameweaver_plan(own, &peer, &plan, compact_native_termination,
+        feasibility.enabled ? &feasibility : nullptr);
     if (plan.result.status == Status::Exhausted) {
         plan.slots.clear();
         plan.reservation_rejections.push_back("exhaustion prevents publication of a complete reserved plan");
@@ -1097,6 +1411,9 @@ void adapt_frameweaver(const Request& q, Result& r) {
 } // namespace cybersand::gentek_swarm
 
 namespace cybersand::gentek_swarm {
+FramePlan plan_frameweaver(const Request& own, const Request& peer, bool compact_native_termination) {
+    return plan_frameweaver(own, peer, compact_native_termination, {});
+}
 FramePlan plan_frameweaver(const Request& own, const Request& peer) {
     return plan_frameweaver(own, peer, false);
 }

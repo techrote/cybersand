@@ -47,7 +47,8 @@ func exercise()->void:
 	bench.open_reciprocal();panel=bench.reciprocal_panel
 	check(not panel.controls.shared_ownership.button_pressed and panel.controls.rounds.value==2 \
 		and not panel.controls.compact_native_termination.button_pressed \
-		and not panel.controls.supported_native_receptors.button_pressed,
+		and not panel.controls.supported_native_receptors.button_pressed \
+		and not panel.controls.negotiated_recovery.button_pressed,
 		"SWARM-005 source feasibility and source-bound native receptors remain opt-in")
 	panel.controls.profile.select(1);panel._select_expression(1)
 	panel.controls.width.value=128;panel.controls.height.value=96
@@ -95,6 +96,16 @@ func exercise()->void:
 	panel.controls.supported_native_receptors.button_pressed=false
 	check(panel.document.is_empty() and panel._apply.disabled,
 		"changing opt-in receptor source retires previous Apply authority")
+	panel.controls.negotiated_recovery.button_pressed=true
+	check(panel.generate(),"SWARM-006 V4 real native recovery transport admitted")
+	if not await until(func()->bool:return not panel.busy(),"SWARM-006 V4 native child settles"): return
+	if not check(panel.phase=="ready" and not panel.document.is_empty(),"V4 native evidence decoded: "+panel.status): return
+	check(panel.prepared.text.begins_with("SWARM006 4\n") and panel.document.schema==6 \
+		and panel.document.input.options.negotiated_recovery,"V4 binds the requested native recovery policy")
+	check((await capture()).cells==before.cells and bench.applied.edits.is_empty(),
+		"recovery native preview leaves every live World cell and history unchanged")
+	panel.controls.negotiated_recovery.button_pressed=false
+	check(panel.document.is_empty() and panel._apply.disabled,"changing recovery retires prior Apply authority")
 	completed=true
 
 func run()->void:

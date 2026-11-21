@@ -10,6 +10,10 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+For SWARM-006 feasibility, source-bound receiver negotiation, bounded recovery,
+native custody and distinct Windows acceptance gates, read the
+[experimental recovery contract](../systems/gentek-negotiated-recovery.md).
+
 ## Reciprocal FRAMEWEAVER × MOSAIC construction
 
 For SWARM-004 component grammar, independent shared-zone revisions, retained hard
@@ -509,3 +513,15 @@ coalesced publication counts, use the [player-control contract](../systems/playe
 How do I place multiple independently configured flyers with a passive barrel, select granular and liquid responses, paint a large canvas and save an authored start? Use the [desktop workbench controls and format](../systems/player-control-playground.md#development-workbench-on-desktop) and its [qualification record](../audits/2026-11-04-workbench-consolidation.md). Tuning retention and lifetime corrections are in the [cleanup evidence](../audits/2026-11-04-workbench394-cleanup.md); MAT source admission is [separate](../audits/2026-11-04-workbench394-material-source-transition.md).
 
 For #394 owner acceptance, accepted-main pressure reconciliation and final gate status, use the [resulting-source qualification record](../audits/2026-11-04-workbench394-ready-validation.md). Current workbench controls remain in the player playground guide.
+
+## SWARM-006 experimental Workbench recovery
+
+For the default-OFF recovery control, V4 native transport, unchanged V1/V2/V3
+controls, exact Windows package naming and SHA verification, use the
+[SWARM-006 owner guide](../operations/swarm006-workbench-playtest.md). It separates
+native attempts/reservations from qualified foreign joints, synthetic blank
+World comparisons from the owner's actual World, and source/pristine automated
+Windows qualification from owner NVIDIA acceptance. The
+[SWARM-005 owner guide](../operations/swarm005-workbench-playtest.md) preserves
+its historical two-switch scope. Neither guide authorizes Ready, merge or
+production-default promotion.
