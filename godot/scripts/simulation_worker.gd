@@ -48,6 +48,7 @@ func _init(gameplay_water: bool = false) -> void:
 	var configured_paint_budget: int = int(OS.get_environment("CYBERSAND_PAINT_BURST_BUDGET_USEC"))
 	_paint_burst_budget_usec = clampi(configured_paint_budget if configured_paint_budget > 0 else 6000, 1000, 8000)
 	_paint_profile_enabled = OS.get_environment("CYBERSAND_PAINT_BURST_PROFILE") == "1"
+	_paint_test_gates_enabled = OS.get_environment("CYBERSAND_PAINT_TEST_GATES") == "1"
 	_world = _create_world()
 var _character: CyberSampledCharacter = CyberSampledCharacter.new()
 var _actor_session: CyberActorPrototypeSession = ActorSession.new()
@@ -144,6 +145,12 @@ var _paint_profile_gap_usec: int = 0
 var _paint_profile_max_gap_usec: int = 0
 var _paint_profile_last_end_usec: int = 0
 var _paint_profile_max_chunks: int = 0
+# Exact boundary barriers are confined to the experimental test process. They
+# cannot be armed in normal Workbench runs; the owner never calls into the UI.
+var _paint_test_gates_enabled: bool = false
+var _paint_test_gate_phase: String = ""
+var _paint_test_gate_entered: bool = false
+var _paint_test_gate_released: bool = false
 
 # WB-ART-002: one bounded chunk/result, ordinary owner loop; no authorizing session.
 var _art_epoch := 1
@@ -2288,9 +2295,63 @@ func paint_stop() -> Dictionary:
 	return result
 
 
+# Deterministic tests use the real owner thread, not a mock native World.
+# A gate is armed only by an explicit test-process environment opt-in. Waiting
+# never holds _mutex: Stop, setting changes and reset can be admitted normally.
+func paint_test_arm_gate(phase: String) -> bool:
+	if not _paint_test_gates_enabled or phase not in ["before_consume", "after_validation_slice", "after_first_write"]:
+		return false
+	_mutex.lock()
+	var allowed: bool = _running and _paint_test_gate_phase.is_empty() and not _paint_test_gate_entered
+	if allowed:
+		_paint_test_gate_phase = phase
+		_paint_test_gate_entered = false
+		_paint_test_gate_released = false
+	_mutex.unlock()
+	return allowed
+
+
+func paint_test_gate_engaged() -> bool:
+	_mutex.lock()
+	var entered: bool = _paint_test_gate_entered
+	_mutex.unlock()
+	return entered
+
+
+func paint_test_release_gate() -> bool:
+	_mutex.lock()
+	var entered: bool = _paint_test_gate_entered
+	if entered: _paint_test_gate_released = true
+	_mutex.unlock()
+	return entered
+
+
+func _paint_test_wait_gate(phase: String) -> void:
+	_mutex.lock()
+	var armed: bool = _paint_test_gate_phase == phase
+	if armed: _paint_test_gate_entered = true
+	_mutex.unlock()
+	if not armed: return
+	# Tests are explicitly bounded; a failed main-thread assertion must not
+	# strand the simulation worker indefinitely.
+	var deadline_usec: int = Time.get_ticks_usec() + 15000000
+	while Time.get_ticks_usec() < deadline_usec:
+		_mutex.lock()
+		var released: bool = _paint_test_gate_released or not _running
+		_mutex.unlock()
+		if released: break
+		OS.delay_usec(250)
+	_mutex.lock()
+	_paint_test_gate_phase = ""
+	_paint_test_gate_entered = false
+	_paint_test_gate_released = false
+	_mutex.unlock()
+
+
 func _consume_paint(local_paused: bool) -> void:
 	# This method runs only on the existing exclusive simulation thread, after
 	# ordinary emissions/ticks. No caller can read or own the mutable World.
+	if _paint_test_gates_enabled: _paint_test_wait_gate("before_consume")
 	_mutex.lock()
 	var context := {"epoch":_paint_epoch,"generation":_world_generation,
 		"revision":int(_world.revision),"tick":int(_world.tick_index),
@@ -2352,6 +2413,14 @@ func _consume_paint(local_paused: bool) -> void:
 			_mutex.unlock()
 		receipt = _paint_owner.step(_world, context)
 		chunks_this_cycle += 1
+		if _paint_test_gates_enabled and receipt.is_empty():
+			# Hold exactly after the first validation or application chunk,
+			# before the next refreshed Stop/settings/reset fence.
+			var step_progress: Dictionary = _paint_owner.progress()
+			if int(step_progress.get("applied",0)) == PaintEditorExecutor.SLICE_CELLS:
+				_paint_test_wait_gate("after_first_write")
+			elif int(step_progress.get("checked",0)) == PaintEditorExecutor.SLICE_CELLS:
+				_paint_test_wait_gate("after_validation_slice")
 		if not receipt.is_empty(): break
 	var finished_usec: int = Time.get_ticks_usec()
 	if _paint_profile_enabled:

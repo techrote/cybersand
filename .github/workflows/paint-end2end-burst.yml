@@ -18,8 +18,9 @@ permissions:
   contents: read
 
 concurrency:
-  group: paint-end2end-002-${{ github.run_id }}
-  cancel-in-progress: false
+  # Branch pushes supersede older copies; manually dispatched evidence stays independent.
+  group: paint-end2end-002-${{ github.event_name == 'push' && github.ref || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'push' }}
 
 jobs:
   actual-worker:
@@ -196,8 +197,10 @@ jobs:
               --display-driver x11 --audio-driver Dummy --path godot \
               -s res://tests/test_paint_end2end_burst.gd \
               2>&1 | tee "build/paint-burst-native/burst-${variant}.log"
-            if [ "$slices" = 1 ]; then
-              xvfb-run -a -s '-screen 0 1600x1000x24 -nolisten tcp' \
+            # Exercise the complete negative-case oracle on the combined four-slice
+            # candidate too, with deterministic test-only worker boundary gates.
+            if [ "$slices" = 1 ] || [ "$variant" = "1-4" ]; then
+              CYBERSAND_PAINT_TEST_GATES=1 xvfb-run -a -s '-screen 0 1600x1000x24 -nolisten tcp' \
                 timeout 11m "$GODOT_BIN" --rendering-method gl_compatibility \
                 --display-driver x11 --audio-driver Dummy --path godot \
                 -s res://tests/test_paint_editor_native.gd \
@@ -228,11 +231,13 @@ jobs:
                   assert profile["executor_steps"]>0 and profile["worker_cycles"]>0,profile
                   assert profile["max_chunks_per_cycle"]<=slices,profile
               summary={"pilot":pilot}
-              if slices==1:
+              if slices==1 or variant=="1-4":
                   native=parse(f"contracts-{variant}.log","PAINT_EDITOR_NATIVE ")
                   assert native["failures"]==[] and native["checks"]>=25,native
                   assert len(native["measurements"])>=4,native
+                  assert native["test_gates"] is True and native["fence_cases"]==3,native
                   summary["native_contract_checks"]=native["checks"]
+                  summary["native_fence_cases"]=native["fence_cases"]
               summaries[variant]=summary
           base=summaries["0-1"]["pilot"]["profiles"][0]
           native=summaries["1-1"]["pilot"]["profiles"][0]

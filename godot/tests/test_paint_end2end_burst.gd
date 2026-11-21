@@ -156,11 +156,37 @@ func run() -> void:
 		return
 	var cancellation_cells := square_cells(512,58)
 	var first: Dictionary = worker.paint_queue(request({"kind":"edit","cells":cancellation_cells}))
-	if check(first.get("status","")=="queued","preflight cancellation admitted"):
-		worker.paint_stop()
+	if check(first.get("status","")=="queued","early cancellation admitted"):
+		# Between admission and Stop the worker may already have entered a
+		# nonpreemptible chunk. Distinguish the valid outcomes, then prove that
+		# every actual acknowledged prefix is reversible with no hidden tail.
+		var stop_request: Dictionary = worker.paint_stop()
 		var stopped: Dictionary = await finished()
-		check(stopped.get("status","")=="cancelled" and int(stopped.get("applied",-1))==0,
-			"Stop before first write has no hidden material prefix")
+		var early_applied: int = int(stopped.get("applied",-1))
+		var early_status: String = str(stopped.get("status",""))
+		check((early_status == "cancelled" and early_applied == 0) 			or (early_status == "partial" and early_applied > 0 and early_applied < maximum
+				and stopped.get("termination","") == "cancelled") 			or (early_status == "completed" and early_applied == maximum
+				and bool(stop_request.get("acknowledged",false))),
+			"early Stop reports a truthful completed/cancelled/partial outcome")
+		var early_cells: PackedInt32Array = stopped.get("cells",PackedInt32Array())
+		var early_before: PackedInt32Array = stopped.get("before",PackedInt32Array())
+		var early_after: PackedInt32Array = stopped.get("after",PackedInt32Array())
+		if check(early_applied >= 0 and early_cells.size() == early_applied*3
+				and early_before.size() == early_applied and early_after.size() == early_applied,
+				"early Stop exact native prefix lengths"):
+			if early_applied > 0:
+				var early_inverse: PackedInt32Array = early_cells.duplicate()
+				for i: int in early_applied: early_inverse[i*3+2] = early_before[i]
+				var early_undo: Dictionary = await submit({
+					"kind":"edit","cells":early_inverse,"expected_before":early_after})
+				check(early_undo.get("status","")=="completed" and int(early_undo.get("applied",0))==early_applied,
+					"early Stop committed prefix can be fully reversed")
+			var early_readback: Dictionary = await submit({
+				"kind":"capture","region":Rect2i(0,0,512,512)})
+			var early_materials: PackedInt32Array = early_readback.get("materials",PackedInt32Array())
+			check(early_readback.get("status","")=="completed" and early_materials.size()==maximum
+				and early_materials.count(0)==maximum,
+				"early Stop recovery leaves no hidden native material tail")
 
 	first = worker.paint_queue(request({"kind":"edit","cells":cancellation_cells}))
 	if check(first.get("status","")=="queued","late cancellation admitted"):
