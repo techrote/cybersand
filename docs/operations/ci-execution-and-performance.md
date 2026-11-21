@@ -4,7 +4,7 @@ status: Current
 document-kind: runbook
 scope: Independent scheduling estimates, Godot and native watchdogs, hosted safety boundaries, retained failures and comparable performance history
 canonical-for: [ci-execution-watchdogs, advisory-performance-history, ci-scheduling]
-last-reviewed: 2026-11-03
+last-reviewed: 2026-11-21
 related-documents: [github-development-and-release.md, profiling-observability-and-performance.md, testing-validation-and-replay.md, ../audits/2026-10-31-execution-watchdog-modernization.md, ../audits/2026-11-03-linux-display-mesa-utils-removal.md]
 ---
 
@@ -90,6 +90,20 @@ admitted run. It checks the complete original inventory, source/tree, runtime,
 policy, run/attempt, real rendered commands, natural completion, unchanged raw
 logs and required independent PLAY readbacks. The existing Windows coverage
 reader derives its complete plan from the same source.
+
+## Early Documentation admission
+
+CI-OPT-002 moves the existing documentation and published-runtime identity checks
+ahead of native-compiling LCB and material-catalogue checks in the
+[Documentation workflow](../../.github/workflows/documentation.yml). Cheap
+provider, syntax and scheduling-policy checks still run first. Every original
+step, command, timeout, artifact rule and required `consistency` context remains.
+The full `check_repository.py --require-materialized` gate keeps its existing
+non-Draft condition; Drafts continue to run their ordinary documentation checks.
+Invalid documentation or stale runtime inputs fail sooner, while a successful
+candidate still executes the complete original inventory. This ordering change
+targets time to actionable failure, not a claimed reduction in successful-run
+wall time. It changes neither publication ownership nor runtime provenance.
 
 ## Shared capacity and concurrency
 
