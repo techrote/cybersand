@@ -72,7 +72,7 @@ engine.BUILD_EXACT = (set(engine.BUILD_EXACT) - {_old_workflow, _old_request}) |
     "tools/ci/execution_policy.py", "tools/ci/execution_telemetry.py",
     "tools/ci/godot_scheduling.py", "tools/ci/godot_scheduling_profile.json",
     "tools/ci/performance_history.py", "godot/tests/support/ci_execution_policy.json",
-}
+} | set(engine.windows.RAPIER_IMPORT_DESCRIPTORS)
 
 REQUIRED_LABELS = frozenset({
     "native-bridge", "clock", "store-unit", "owner-adversarial", "owner-timeout", "ordinary-workbench-launcher",
@@ -163,6 +163,7 @@ def verify_qualification(directory: Path, value: dict, platform: str, source: st
         and Path(path).suffix in {".gd", ".tscn", ".tres", ".gdshader"}}
     required |= {"Makefile", "tools/build_native_extension.sh", "tools/build_native_extension_windows.sh",
                  "tools/ci/run_persistent_areas_qualification.py"}
+    required |= set(engine.windows.RAPIER_IMPORT_DESCRIPTORS)
     require(isinstance(supplied, dict) and required.issubset(supplied)
             and all(expected.get(path) == digest for path, digest in supplied.items()),
             "Qualification omitted or changed a required source input")
@@ -180,6 +181,24 @@ def verify_qualification(directory: Path, value: dict, platform: str, source: st
         require(isinstance(row, dict) and row.get("failures") == [] and row.get("graphical") is True,
                 "Actual graphical Workbench qualification failed: " + label)
     verify_files(directory, value.get("files_sha256"))
+    custody = value.get("custody_checks", [])
+    require(isinstance(custody, list)
+            and [row.get("phase") for row in custody] == ["after-import", "after-campaign"]
+            and all(row.get("unchanged") is True for row in custody),
+            "Missing or failing original before/after source custody observations")
+    require("source-custody.json" in value["files_sha256"], "Original source custody report is not bound")
+    custody_report = json.loads((directory / "source-custody.json").read_text(encoding="utf-8"))
+    require(custody_report.get("schema") == "gen006-source-custody-v1"
+            and custody_report.get("checks") == custody,
+            "Original source custody observations differ from qualification")
+    before = {key:value.get(key) for key in ("source_commit", "source_tree", "source_inputs_sha256",
+                                           "missing_source_inputs", "local_delta")}
+    require(before["missing_source_inputs"] == [] and custody_report.get("source_before") == before,
+            "Source custody baseline differs from qualification")
+    binaries = {key:value[key] for key in ("native_sha256", "rapier_sha256", "engine_sha256")}
+    require(all(row.get("source_after") == before and row.get("binaries_before") == binaries
+                and row.get("binaries_after") == binaries for row in custody),
+            "Source or executed runtime changed across a custody checkpoint")
     for row in rows:
         require(type(row.get("pid")) is int and row["pid"] > 0
                 and row.get("log") in value["files_sha256"],

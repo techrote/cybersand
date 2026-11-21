@@ -19,7 +19,9 @@ import sys
 import time
 
 from run_flatten_qualification import ProcessMemory, direct_engine
-from run_windows_godot_regressions import GODOT_VERSION, RAPIER_SHA256, native_input_paths
+from run_windows_godot_regressions import (
+    GODOT_VERSION, RAPIER_IMPORT_DESCRIPTORS, RAPIER_SHA256, native_input_paths,
+)
 
 ROOT = Path(__file__).resolve().parents[2]
 SUFFIXES = {".gd", ".tscn", ".tres", ".gdshader"}
@@ -62,6 +64,20 @@ def write(path: Path, value: object) -> None:
     path.write_bytes((json.dumps(value, indent=2, sort_keys=True) + "\n").encode())
 
 
+def unchanged_import_descriptor(source_root: Path, relative: str, tracked: set[str]) -> bool:
+    """Admit only the known importer's canonical-equal working-copy rewrite."""
+    path = source_root / relative
+    if relative not in RAPIER_IMPORT_DESCRIPTORS or relative not in tracked \
+            or not path.is_file() or path.is_symlink():
+        return False
+    committed = subprocess.check_output(["git", "show", "HEAD:" + relative], cwd=source_root)
+    if path.read_bytes().replace(b"\r\n", b"\n") != committed.replace(b"\r\n", b"\n"):
+        return False
+    # Canonical bytes alone must not hide a mode or other structural change.
+    return subprocess.run(["git", "diff", "--quiet", "--ignore-cr-at-eol", "--no-ext-diff", "--", relative],
+                          cwd=source_root, check=False).returncode == 0
+
+
 def source_identity(project: Path) -> dict:
     source_root = project.parent
     def git(*args: str) -> str:
@@ -72,8 +88,9 @@ def source_identity(project: Path) -> dict:
               if p.is_file() and p.suffix in SUFFIXES and ".godot" not in p.parts}
     paths |= {"Makefile", "tools/build_native_extension.sh", "tools/build_native_extension_windows.sh",
               "tools/ci/run_persistent_areas_qualification.py", "tools/ci/run_gen006_storage_recovery.py"}
+    paths |= {p for p in RAPIER_IMPORT_DESCRIPTORS if (source_root / p).is_file()}
     hashes = {p: hashlib.sha256((source_root / p).read_bytes().replace(b"\r\n", b"\n")).hexdigest()
-              for p in sorted(paths)}
+              for p in sorted(paths) if (source_root / p).is_file()}
     tracked = set(git("ls-files", "-z").split("\0"))
     delta = []
     for line in git("status", "--porcelain=v1", "--untracked-files=all").splitlines():
@@ -84,10 +101,32 @@ def source_identity(project: Path) -> dict:
         generated_uid = (line.startswith("?? ")
                          and path.endswith((".gd.uid", ".gdshader.uid"))
                          and path[:-4] in tracked)
-        if path not in RUNTIME_PATHS and not generated_uid:
+        # Windows imports re-save these four text files from CRLF to LF. A
+        # porcelain M alone can survive that canonical no-op. Do not suppress
+        # semantic edits, staged changes, symlinks, deletions or unknown files.
+        imported_canonical_noop = (line.startswith(" M ")
+                                  and unchanged_import_descriptor(source_root, path, tracked))
+        if path not in RUNTIME_PATHS and not generated_uid and not imported_canonical_noop:
             delta.append(line)
     return {"source_commit":git("rev-parse", "HEAD"), "source_tree":git("rev-parse", "HEAD^{tree}"),
-            "source_inputs_sha256":hashes, "local_delta":delta}
+            "source_inputs_sha256":hashes, "missing_source_inputs":sorted(paths - hashes.keys()),
+            "local_delta":delta}
+
+
+def custody_difference(before: dict, after: dict, binaries_before: dict, binaries_after: dict) -> dict:
+    first, last = before.get("source_inputs_sha256", {}), after.get("source_inputs_sha256", {})
+    return {
+        "unchanged":before == after and binaries_before == binaries_after,
+        "source_identity_changed":{key:{"before":before.get(key), "after":after.get(key)}
+            for key in ("source_commit", "source_tree", "missing_source_inputs") if before.get(key) != after.get(key)},
+        "source_added":{p:last[p] for p in sorted(last.keys() - first.keys())},
+        "source_removed":{p:first[p] for p in sorted(first.keys() - last.keys())},
+        "source_changed":{p:{"before":first[p], "after":last[p]}
+            for p in sorted(first.keys() & last.keys()) if first[p] != last[p]},
+        "git_status_before":before.get("local_delta", []),
+        "git_status_after":after.get("local_delta", []),
+        "binaries_before":binaries_before, "binaries_after":binaries_after,
+    }
 
 
 def completion(text: str, marker: str) -> dict:
@@ -144,6 +183,7 @@ class Campaign:
         self.native = self.project / "addons/cybersand_native/bin" / native_name
         self.rapier = self.project / "addons/godot-rapier2d/bin" / rapier_name
         self.identity = source_identity(self.project)
+        self.custody_checks: list[dict] = []
         self.results: list[dict] = []
         self.report = {"schema":"gen006-persistent-areas-qualification-v1", "status":"running", "completed":False,
                        "platform":self.platform, **self.identity, "native_sha256":sha(self.native),
@@ -151,6 +191,8 @@ class Campaign:
                        "engine_version":subprocess.check_output([str(self.engine), "--version"], text=True).strip(),
                        "graphical":not args.headless, "results":self.results, "workbench":{}, "store_recovery":[],
                        "native_build_ledger_sha256":"", "input_custody":"pending"}
+        if self.identity["missing_source_inputs"]:
+            raise RuntimeError("Qualification is missing source inputs: " + str(self.identity["missing_source_inputs"]))
         if self.report["engine_version"] != GODOT_VERSION:
             raise RuntimeError("Unpinned Godot engine.")
         expected_rapier = RAPIER_SHA256 if os.name == "nt" else "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
@@ -169,6 +211,33 @@ class Campaign:
                 raise RuntimeError("Actual native build custody differs from this source/runtime.")
             self.report["native_build_ledger_sha256"] = sha(args.native_build_ledger)
             write(self.output / "native-build-ledger.json", ledger)
+
+    def record_custody(self, phase: str) -> bool:
+        before = {name:self.report[name] for name in ("native_sha256", "rapier_sha256", "engine_sha256")}
+        after = {}
+        errors = {}
+        for name, path in (("native_sha256", self.native), ("rapier_sha256", self.rapier), ("engine_sha256", self.engine)):
+            try:
+                after[name] = sha(path)
+            except OSError as error:
+                after[name] = None
+                errors[name] = str(error)
+        try:
+            identity = source_identity(self.project)
+            observation = {"phase":phase, "source_after":identity,
+                           **custody_difference(self.identity, identity, before, after)}
+        except Exception as error:
+            observation = {"phase":phase, "unchanged":False, "source_observation_error":str(error),
+                           "binaries_before":before, "binaries_after":after}
+        if errors:
+            observation["binary_observation_errors"] = errors
+        self.custody_checks.append(observation)
+        self.report["custody_checks"] = self.custody_checks
+        if not observation["unchanged"]:
+            self.report["input_custody"] = "failed"
+        write(self.output / "source-custody.json", {"schema":"gen006-source-custody-v1",
+              "source_before":self.identity, "checks":self.custody_checks})
+        return bool(observation["unchanged"])
 
     def command(self, script: str, arguments: list[str] = [], graphical: bool = False) -> list[str]:
         command = [str(self.engine), "--path", str(self.project), "--audio-driver", "Dummy"]
@@ -283,6 +352,8 @@ class Campaign:
     def execute(self) -> dict:
         try:
             self.run("import", [str(self.engine), "--headless", "--path", str(self.project), "--editor", "--import", "--quit"], timeout=120)
+            if not self.record_custody("after-import"):
+                raise RuntimeError("Source or executed binary changed during import; see source-custody.json.")
             for label, script, marker in UNIT_CASES:
                 arguments = (["--persistent-start-paused",
                               f"--persistent-profile={self.output / 'owner-timeout' / 'profile'}",
@@ -314,14 +385,15 @@ class Campaign:
                     for phase in ("source_durable", "candidate_durable"):
                         self.workbench("workbench-crash-"+phase, "crash", workers, phase)
                         self.workbench("workbench-recover-"+phase, "reopen", workers)
-            if source_identity(self.project) != self.identity or sha(self.native) != self.report["native_sha256"] \
-                    or sha(self.rapier) != self.report["rapier_sha256"] or sha(self.engine) != self.report["engine_sha256"]:
-                raise RuntimeError("Source or executed binary changed during the campaign.")
+            if not self.record_custody("after-campaign"):
+                raise RuntimeError("Source or executed binary changed during the campaign; see source-custody.json.")
             self.report.update(status="passed", completed=True, input_custody="passed")
         except Exception as error:
             self.report.update(status="failed", error=str(error))
             print("FAIL", error, flush=True)
         finally:
+            if not self.custody_checks or self.custody_checks[-1]["phase"] != "after-campaign":
+                self.record_custody("after-failure")
             write(self.output / "results.json", self.results)
             self.report["files_sha256"] = {p.relative_to(self.output).as_posix():sha(p)
                 for p in sorted(self.output.rglob("*")) if p.is_file() and p.suffix in {".json", ".log", ".png"}

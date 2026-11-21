@@ -91,6 +91,7 @@ class QualificationGuards(unittest.TestCase):
             "build_inputs": {key: DIGEST for key in (
                 "Makefile", "tools/build_native_extension.sh", "tools/build_native_extension_windows.sh",
                 "tools/ci/run_persistent_areas_qualification.py", "godot/scripts/persistent_areas_main.gd")}}
+        self.ledgers["build_inputs"].update({key:DIGEST for key in engine.windows.RAPIER_IMPORT_DESCRIPTORS})
         files = {}
         rows = []
         for index, label in enumerate(sorted(profile.REQUIRED_LABELS), start=1):
@@ -105,12 +106,21 @@ class QualificationGuards(unittest.TestCase):
             files[name] = profile.sha(path)
         self.value = {"schema": "gen006-persistent-areas-qualification-v1", "status": "passed", "completed": True,
             "platform": "linux", "source_commit": SOURCE, "source_tree": TREE, "graphical": True,
-            "input_custody": "passed", "local_delta": [], "native_sha256": DIGEST,
+            "input_custody": "passed", "local_delta": [], "missing_source_inputs": [], "native_sha256": DIGEST,
             "engine_sha256": DIGEST, "engine_version": engine.GODOT_VERSION,
             "rapier_sha256": engine.RAPIER["linux"][1], "native_build_ledger_sha256": DIGEST,
             "source_inputs_sha256": self.ledgers["source_inputs"] | self.ledgers["build_inputs"],
             "results": rows, "files_sha256": files,
             "workbench": {label: {"failures": [], "graphical": True} for label in profile.WORKBENCH_LABELS}}
+        before = {key:self.value[key] for key in ("source_commit", "source_tree", "source_inputs_sha256",
+                                                "missing_source_inputs", "local_delta")}
+        binaries = {key:self.value[key] for key in ("native_sha256", "rapier_sha256", "engine_sha256")}
+        self.value["custody_checks"] = [{"phase":phase, "unchanged":True, "source_after":before,
+            "binaries_before":binaries, "binaries_after":binaries} for phase in ("after-import", "after-campaign")]
+        custody = self.root / "source-custody.json"
+        custody.write_text(json.dumps({"schema":"gen006-source-custody-v1", "source_before":before,
+                                      "checks":self.value["custody_checks"]}))
+        files[custody.name] = profile.sha(custody)
         self.git_patch = patch.object(engine, "git", return_value=TREE.encode())
         self.git_patch.start()
 
@@ -149,11 +159,23 @@ class QualificationGuards(unittest.TestCase):
                 with self.assertRaises(RuntimeError): self.verify(value)
 
     def test_missing_native_script_or_unknown_changed_input_refused(self):
-        for mutation in ("native/src/world.cpp", "godot/scripts/persistent_areas_main.gd", "unknown.py"):
+        for mutation in ("native/src/world.cpp", "godot/scripts/persistent_areas_main.gd", "unknown.py",
+                         *engine.windows.RAPIER_IMPORT_DESCRIPTORS):
             with self.subTest(mutation=mutation):
                 value = copy.deepcopy(self.value)
                 if mutation == "unknown.py": value["source_inputs_sha256"][mutation] = DIGEST
                 else: del value["source_inputs_sha256"][mutation]
+                with self.assertRaises(RuntimeError): self.verify(value)
+
+    def test_missing_or_disagreeing_custody_observations_refused(self):
+        for mutation in ("missing", "missing-original", "unchanged-claim", "source-after", "binary-after"):
+            with self.subTest(mutation=mutation):
+                value = copy.deepcopy(self.value)
+                if mutation == "missing": del value["custody_checks"]
+                elif mutation == "missing-original": del value["files_sha256"]["source-custody.json"]
+                elif mutation == "unchanged-claim": value["custody_checks"][-1]["unchanged"] = False
+                elif mutation == "source-after": value["custody_checks"][-1]["source_after"]["source_commit"] = "d" * 40
+                else: value["custody_checks"][-1]["binaries_after"]["native_sha256"] = "d" * 64
                 with self.assertRaises(RuntimeError): self.verify(value)
 
     def test_failed_or_nongraphical_workbench_receipt_refused(self):

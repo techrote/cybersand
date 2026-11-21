@@ -110,11 +110,42 @@ and presentation together finish in three seconds. Final platform reports must
 publish travel-only percentiles, actual slice throughput and explicit measurement
 scope; waiting elapsed time must not be reported as productive simulation work.
 
+## First pinned campaign and custody repair
+
+[Run 44955779630](https://github.com/techrote/cybersand/actions/runs/44955779630)
+executed source `c4f7e9e2a87e5fab793c55d0e226b1d444c3fa07`. Native continuation,
+fresh-process native restore, ASan/UBSan and the complete Linux graphical
+campaign passed. Windows recorded 29 successful process rows, including actual
+graphical travel and forced-process recovery, but its final input-custody guard
+failed. Publication and evaluator packaging were correctly withheld. This
+Windows campaign remains failed; its missing final identity snapshot cannot be
+reconstructed from the retained artifact.
+
+A separate real Godot import in a CRLF checkout reproduced a matching mechanism:
+Git reported four modified Rapier import descriptors after their CRLF-to-LF
+rewrite, while all source hashes and the descriptors' canonical committed
+contents remained identical. The narrow repair admits only those four tracked
+descriptors when canonical HEAD equality and the Git structural check both
+hold. Semantic edits, deletions, staged changes and unknown files still refuse.
+The runner now retains explicit source/runtime before-and-after custody and
+checks immediately after import as well as after the campaign. No application,
+native simulation or persistence-format change accompanies this repair.
+
+Independent additional recovery with the pinned GCC13.3 Linux artifact passed
+963 checks: PID 7 was killed after durably publishing B tick 96 with 804 ticks
+of debt; PID 112 completed exactly the remaining 804 ticks while global time
+stayed 900. All three identities and destructive edits survived. B's complete
+tick-900 CYPS bytes matched an uninterrupted reference. C's remaining 300 ticks
+stayed explicit. This fixture was headless Linux, not an additional Windows or
+graphical claim.
+
 ## Remaining delivery gates
 
-Exact candidate freeze; complete graphical write/reopen and transition-crash
-matrix; source-matched pinned Linux/Windows builds and original test reports;
-representative sanitizer execution; transition/CPU/RSS/disk metrics; wholly
-independent final review; verified extracted Windows evaluator; exact final HEAD
-and owner instructions. Physical NVIDIA owner acceptance remains unperformed
-until the owner runs the evaluator.
+Renewed exact-source pinned Linux/Windows campaigns after the custody-tooling
+repair; verified extracted Windows evaluator; final platform performance and
+provenance audit; exact final HEAD and owner instructions. The measured Linux
+travel medians of 8.4–8.9 seconds and zero-debt returns around 7.5 seconds do not
+meet the few-seconds responsiveness target. The whole-fixture maximum callback
+gap reached 6.9 seconds; its exact phase was not recorded. These limits must stay
+visible in the final disposition. Physical NVIDIA owner acceptance remains
+unperformed until the owner runs the evaluator.
