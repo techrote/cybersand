@@ -260,6 +260,10 @@ artifacts. The final campaign repeats the shipped regressions on exact source.
 The shared-provider repair preserves its transport, ordinary session stack and
 trusted native receipt keys. Canonical directory and file checks reject archive
 aliases crossing the two namespaces.
+Windows qualification also exposed automatic CRLF conversion of the versioned
+prompt files: the text editor normalized their display, causing an unchanged
+template to be classified as custom. A scoped Batch Lab attribute keeps those
+files LF across checkouts, preserving exact prompt and template identities.
 No native C++ input, worker ownership, physics default,
 material identity or ordinary Workbench save format changed.
 
