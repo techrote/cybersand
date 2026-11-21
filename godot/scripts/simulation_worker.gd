@@ -151,6 +151,9 @@ var _paint_test_gates_enabled: bool = false
 var _paint_test_gate_phase: String = ""
 var _paint_test_gate_entered: bool = false
 var _paint_test_gate_released: bool = false
+# Separate source-fence injection; the real World transition lifecycle owns
+# _world_change_inflight and rewrites it each worker turn.
+var _paint_test_world_change_fence: bool = false
 
 # WB-ART-002: one bounded chunk/result, ordinary owner loop; no authorizing session.
 var _art_epoch := 1
@@ -2333,8 +2336,8 @@ func paint_test_begin_world_change_fence() -> bool:
 	if not _paint_test_gates_enabled: return false
 	_mutex.lock()
 	var allowed: bool = _paint_test_gate_entered and _paint_test_gate_phase == "after_validation_slice" \
-		and not _world_change_inflight and not _reset_requested
-	if allowed: _world_change_inflight = true
+		and not _paint_test_world_change_fence and not _world_change_inflight and not _reset_requested
+	if allowed: _paint_test_world_change_fence = true
 	_mutex.unlock()
 	return allowed
 
@@ -2342,8 +2345,8 @@ func paint_test_begin_world_change_fence() -> bool:
 func paint_test_end_world_change_fence() -> bool:
 	if not _paint_test_gates_enabled: return false
 	_mutex.lock()
-	var was_active: bool = _world_change_inflight
-	if was_active: _world_change_inflight = false
+	var was_active: bool = _paint_test_world_change_fence
+	if was_active: _paint_test_world_change_fence = false
 	_mutex.unlock()
 	return was_active
 
@@ -2384,7 +2387,7 @@ func _consume_paint(local_paused: bool) -> void:
 		"erase_allowed":not _micro_active or _scenario_host.allows_tool("erase")}
 	if _simulation_failed: context.error = "The native simulation failed."
 	elif _water_lab_active: context.error = "Controlled Water experiments do not admit construction edits."
-	elif _world_change_inflight or _reset_requested or not _lab_request.is_empty() or not _prepared_physical_publication.is_empty(): context.error = "The canvas is changing."
+	elif _world_change_inflight or _paint_test_world_change_fence or _reset_requested or not _lab_request.is_empty() or not _prepared_physical_publication.is_empty(): context.error = "The canvas is changing."
 	elif _workbench_extent == Vector2i.ZERO: context.error = "The Workbench World was replaced."
 	elif not _workbench_refusal.is_empty(): context.error = _workbench_refusal
 	_paint_context = context.duplicate()
@@ -2428,7 +2431,7 @@ func _consume_paint(local_paused: bool) -> void:
 			context.paused = local_paused and _paused
 			if _simulation_failed: context.error = "The native simulation failed."
 			elif _water_lab_active: context.error = "Controlled Water experiments do not admit construction edits."
-			elif _world_change_inflight or _reset_requested or not _lab_request.is_empty() or not _prepared_physical_publication.is_empty():
+			elif _world_change_inflight or _paint_test_world_change_fence or _reset_requested or not _lab_request.is_empty() or not _prepared_physical_publication.is_empty():
 				context.error = "The canvas is changing."
 			elif _workbench_extent == Vector2i.ZERO: context.error = "The Workbench World was replaced."
 			elif not _workbench_refusal.is_empty(): context.error = _workbench_refusal
