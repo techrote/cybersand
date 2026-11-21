@@ -106,6 +106,19 @@ func known_recipe()->void:
 		panel.controls.seed.value=4099
 		panel.controls.shared_ownership.button_pressed=false
 		panel.controls.clutter.value=0
+	if example.begins_with("swarm005_"):
+		var profile_index:int=2 if example=="swarm005_irregular" else 1
+		panel.controls.width.value=192;panel.controls.height.value=112
+		panel.controls.profile.select(profile_index);panel.controls.profile.item_selected.emit(profile_index)
+		panel.controls.layout.select(0);panel.controls.layout.item_selected.emit(0)
+		panel.controls.seed.value=605
+		panel.controls.shared_ownership.button_pressed=true
+		panel.controls.clutter.value=0.25 if example=="swarm005_irregular" else 0.15
+		panel.controls.compact_native_termination.button_pressed=true
+		panel.controls.supported_native_receptors.button_pressed=true
+
+func map_name()->String:
+	return "swarm005-v3-irregular-evaluation" if example=="swarm005_irregular" else "swarm004-interactive-evaluation"
 
 func reciprocal_witness()->Dictionary:
 	var document:Dictionary=panel.document
@@ -142,11 +155,16 @@ func native_recipe()->Dictionary:
 		var values:Dictionary={}
 		for key:String in Protocol.PARAMETERS:values[key]=input[owner].profile[key]
 		profiles[owner]=values
-	return {"size":[input.frame.width,input.frame.height],"origin":input.frame.origin,
+
+	var recipe:Dictionary={"size":[input.frame.width,input.frame.height],"origin":input.frame.origin,
 		"seed":input.frame.seed,"profile":input.frame.profile.name,"activation":input.frame.activation,
 		"layout":panel.prepared.recipe.layout,"border":panel.prepared.recipe.border,
 		"rounds":options.rounds,"shared_extent":options.shared_extent,"orientation":options.orientation_preference,
 		"optional":options.optional_negotiation,"shared_ownership":options.shared_ownership,"gentek_parameters":profiles}
+	if example.begins_with("swarm005_"):
+		recipe["compact_native_termination"]=options.get("compact_native_termination",false)
+		recipe["supported_native_receptors"]=options.get("supported_native_receptors",false)
+	return recipe
 
 func stale_job_refusal(baseline:Dictionary)->void:
 	# A crashed process may leave this PID/serial folder. It must be refused
@@ -233,8 +251,8 @@ func create_map()->void:
 	panel=bench.reciprocal_panel
 	if not check(panel!=null and panel.visible,"real button opens one lazy inline dock"): return
 	check(panel._pid<0 and panel._thread==null,"opening the dock launches no generation")
-	if mode=="create":known_recipe()
-	await paint_activation(mode=="create")
+	if mode=="create" or mode=="blocked":known_recipe()
+	await paint_activation(mode=="create" or mode=="blocked")
 	if mode=="lifecycle":await lifecycle(baseline);return
 	if mode=="smoke":
 		await screenshot("dock-open")
@@ -255,11 +273,17 @@ func create_map()->void:
 	check(preview.cells==baseline.cells,"real native preview leaves all World cells unchanged")
 	await screenshot("native-preview")
 	if mode=="blocked":
+		check(example=="swarm005_viaduct","only explicit V3 Viaduct negative is designated blocked")
 		check(not panel.document.can_apply and panel._apply.disabled,"blocked native proposal cannot be installed")
+		check(panel.document.get("status","")=="blocked" and reciprocal_witness().unresolved>0,
+			"V3 Viaduct negative retains genuinely required unresolved foreign obligations")
+		check(bool(panel.prepared.recipe.get("compact_native_termination",false)) and bool(panel.prepared.recipe.get("supported_native_receptors",false)),
+			"blocked V3 case actually exercises both explicit experimental switches")
 		for i:int in panel._layer.item_count:
 			panel._layer.select(i);panel._render();await process_frame
-		check(panel.prepared.recipe.parameters.clutter==0 and panel.prepared.recipe.parameters.destruction==0,
-			"independent native decoration and destruction defaults are explicit")
+		check(panel.prepared.recipe.parameters.clutter==0.15 and panel.prepared.recipe.parameters.destruction==0,
+			"V3 negative retains independent native decoration and destruction")
+		await screenshot("native-unresolved")
 		await click(panel._apply)
 		check((await capture()).cells==baseline.cells and bench.applied.edits.is_empty(),"disabled Apply preserves World and authored history")
 		await click(find_button(panel,"Close"))
@@ -273,9 +297,17 @@ func create_map()->void:
 		if not check(panel.phase=="ready" and panel.document.get("can_apply",false),"fresh successful native execution restores Apply authority"):return
 	if not check(panel.document.can_apply,"native composition independently authorizes Apply: "+panel.status):return
 	native_identity_refusals()
-	check(panel.prepared.recipe.origin==Vector2i.ZERO and panel.prepared.recipe.activation==[Vector2i(64,48)] \
-		and panel.prepared.recipe.layout=="centered_frame_rectangle" and panel.prepared.recipe.border==4,
-		"visible controls and actual brush reproduce the declared transaction territory")
+	if example=="swarm005_irregular":
+		check(panel.prepared.recipe.origin==Vector2i.ZERO and panel.prepared.recipe.activation==[Vector2i(64,48)]
+			and panel.prepared.recipe.layout=="left_right" and panel.prepared.recipe.border==4
+			and panel.prepared.recipe.get("size",Vector2i.ZERO)==Vector2i(192,112),
+			"native V3 authoring uses the owner's 192x112 left-right source geometry")
+		check(bool(panel.prepared.recipe.get("compact_native_termination",false)) and bool(panel.prepared.recipe.get("supported_native_receptors",false)),
+			"both SWARM005 source-feasibility/receptor options passed to native V3")
+	else:
+		check(panel.prepared.recipe.origin==Vector2i.ZERO and panel.prepared.recipe.activation==[Vector2i(64,48)]
+			and panel.prepared.recipe.layout=="centered_frame_rectangle" and panel.prepared.recipe.border==4,
+			"visible controls and actual brush reproduce the declared transaction territory")
 	if example=="reciprocal":
 		var witness:=reciprocal_witness()
 		if not check(witness.both_footprints_changed and witness.joint_count>0 and witness.obligation_count>0 and witness.all_foreign_closed,
@@ -305,7 +337,7 @@ func create_map()->void:
 	var regenerated:=await capture()
 	native_planes["regenerated"]=Protocol.digest(regenerated.cells)
 	check(regenerated.cells==expected,"same-seed regenerated native construction is exact")
-	bench._name.text="swarm004-interactive-evaluation"
+	bench._name.text=map_name()
 	var save:=find_button(bench,"Save start [Ctrl+S]")
 	if not check(save!=null,"ordinary Save start button exists"):return
 	await click(save)
@@ -323,7 +355,7 @@ func create_map()->void:
 	completed=true
 
 func reopen_map()->void:
-	bench._name.text="swarm004-interactive-evaluation"
+	bench._name.text=map_name()
 	await click(find_button(bench,"Load start"))
 	if not await until(settled,"saved map installs in a fresh OS process"):return
 	var actual:=await capture()
@@ -335,7 +367,8 @@ func reopen_map()->void:
 	await click(find_button(bench,"Reciprocal assembly…"));panel=bench.reciprocal_panel
 	await click(find_button(panel,"Inspect saved evidence"))
 	if not await until(func()->bool:return panel.phase=="historical","saved native evidence opens in the fresh process"):return
-	check(panel._apply.disabled and panel._pid<0 and panel.prepared.recipe.layout=="centered_frame_rectangle" \
+	check(panel._apply.disabled and panel._pid<0
+		and panel.prepared.recipe.layout==("left_right" if example=="swarm005_irregular" else "centered_frame_rectangle")
 		and panel.prepared.recipe.border==4,"saved ownership and revision evidence is inspection-only without child generation")
 	if example=="reciprocal":
 		var witness:=reciprocal_witness()
@@ -346,7 +379,7 @@ func reopen_map()->void:
 
 func run()->void:
 	if example.is_empty():example="transaction"
-	if not check(example in ["transaction","reciprocal"],"explicit registered authoring example"):
+	if not check(example in ["transaction","reciprocal","swarm005_irregular","swarm005_viaduct"],"explicit registered authoring example"):
 		quit(1);return
 	root.size=Vector2i(1920,1080)
 	if not evidence.is_empty():DirAccess.make_dir_recursive_absolute(evidence)

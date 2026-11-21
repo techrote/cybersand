@@ -248,9 +248,10 @@ private:
 Input read_request(const std::filesystem::path& path, const std::string& source) {
     if (source.empty() || source.size() > 128) throw std::invalid_argument("invalid request source identity");
     RequestTokens tokens(path);
-    if (tokens.token() != "SWARM004")
+    const auto protocol_magic = tokens.token();
+    if (protocol_magic != "SWARM004" && protocol_magic != "SWARM005")
         throw std::invalid_argument("unknown reciprocal request protocol or version");
-    const auto protocol_version = tokens.integer(1, 2);
+    const auto protocol_version = protocol_magic == "SWARM005" ? tokens.integer(3, 3) : tokens.integer(1, 2);
     Input input;
     input.frame.gentek = Kind::Frameweaver;
     input.mosaic.gentek = Kind::Mosaic;
@@ -278,11 +279,15 @@ Input read_request(const std::filesystem::path& path, const std::string& source)
     };
     input.frame.profile = input.mosaic.profile = parameters();
     input.options.optional_negotiation = tokens.integer(0, 1) != 0;
-    // V1 remains byte-for-byte compatible. V2 carries an independently authored
-    // MOSAIC profile; it does not change generator laws, default knobs or budgets.
-    if (protocol_version == 2) {
+    // SWARM004 V1/V2 remain unchanged. New SWARM005 V3 is opt-in and
+    // carries independent profiles, sharing and exact sourced closure switches.
+    if (protocol_version >= 2) {
         input.mosaic.profile = parameters();
         input.options.shared_ownership = tokens.integer(0, 1) != 0;
+    }
+    if (protocol_version == 3) {
+        input.options.compact_native_termination = tokens.integer(0, 1) != 0;
+        input.options.supported_native_receptors = tokens.integer(0, 1) != 0;
     }
     const auto activation_count = tokens.integer(0, 16);
     for (int i = 0; i < activation_count; ++i) {

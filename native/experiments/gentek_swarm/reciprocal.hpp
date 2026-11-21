@@ -11,6 +11,8 @@ struct Options {
     bool frame_adaptation = true, mosaic_adaptation = true, optional_negotiation = true;
     bool final_validation = true;
     bool native_mosaic_bearing = true;
+    bool supported_native_receptors = false; // SWARM-005 opt-in; frozen SWARM-004 controls remain off
+    bool compact_native_termination = false; // Opt-in genuine pre-freeze authored cap for constrained exits
     unsigned shared_extent = 13;
     int orientation_preference = -1; // -1 balanced; 0 horizontal; 1 vertical
 };
@@ -53,6 +55,8 @@ struct Round {
     std::vector<MosaicBearingReplacement> mosaic_bearing_replacements;
     std::vector<std::string> mosaic_bearing_rejections;
     std::uint64_t mosaic_bearing_work{};
+    std::uint64_t mosaic_supported_receptor_work{};
+    std::vector<SupportedNativeReceptor> mosaic_supported_receptors;
     bool mosaic_reused = false, frame_reused = false;
     unsigned mosaic_reuse_round{}, frame_reuse_round{};
     std::uint64_t geometry_digest{}, semantic_digest{};

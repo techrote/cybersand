@@ -59,6 +59,7 @@ struct MosaicPlan {
     std::vector<SlotResponse> responses;
 };
 FramePlan plan_frameweaver(const Request& own, const Request& peer);
+FramePlan plan_frameweaver(const Request& own, const Request& peer, bool compact_native_termination);
 MosaicPlan negotiate_mosaic(const Request&, const std::vector<TransitionSlot>&);
 const char* name(SlotKind) noexcept;
 const char* mosaic_category_name(unsigned) noexcept;
