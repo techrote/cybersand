@@ -125,7 +125,7 @@ jobs:
           start "" "%~dp0Godot_v4.7-stable_win64.exe" --path "%~dp0godot"
           '@
           $launcher = $launcher.Replace('__SOURCE__', $env:FRIEND_SOURCE_SHA)
-          [IO.File]::WriteAllText((Join-Path $package 'Open CyberSand.cmd'), ($launcher -replace "\n", "\r\n") + "\r\n", [Text.Encoding]::ASCII)
+          [IO.File]::WriteAllText((Join-Path $package 'Open CyberSand.cmd'), ($launcher -replace "`r?`n", "`r`n") + "`r`n", [Text.Encoding]::ASCII)
           $guide = @'
           CYBERSAND - FRIEND WINDOWS PLAYTEST
 
@@ -149,7 +149,7 @@ jobs:
           NOTE: Project licensing status and third-party notices are bundled. Not a public release.
           '@
           $guide = $guide.Replace('__SOURCE__', $env:FRIEND_SOURCE_SHA).Replace('__NATIVE_RUN__', $env:FRIEND_NATIVE_RUN)
-          [IO.File]::WriteAllText((Join-Path $package 'START-HERE.txt'), (($guide -replace "\n", "\r\n") + "\r\n"), [Text.Encoding]::UTF8)
+          [IO.File]::WriteAllText((Join-Path $package 'START-HERE.txt'), (($guide -replace "`r?`n", "`r`n") + "`r`n"), [Text.Encoding]::UTF8)
           $files = Get-ChildItem -LiteralPath $package -Recurse -File
           $manifest = [ordered]@{ schema = 1; kind = 'private-friend-playtest-wrapper'; source_commit = $env:FRIEND_SOURCE_SHA; tested_native_workflow_run = [int64]$env:FRIEND_NATIVE_RUN; file_sha256 = [ordered]@{} }
           foreach ($item in $files) {
