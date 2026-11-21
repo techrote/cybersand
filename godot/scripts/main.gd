@@ -1657,6 +1657,21 @@ var lockstep_main_held_frames: int = 0
 var lockstep_main_hold_timeouts: int = 0
 var lockstep_main_fenced_steps: int = 0
 var lockstep_main_unfenced_steps: int = 0
+# ENG-LAB-001: counters are sampled only when the passive benchmark is armed.
+# They count skipped physics callbacks, not time held or failed transactions.
+var engine_lab_benchmark_active: bool = false
+var _engine_lab_workbench_sample_holds: int = 0
+var _engine_lab_workbench_terrain_holds: int = 0
+var _engine_lab_workbench_no_snapshot_holds: int = 0
+var _engine_lab_lockstep_holds: int = 0
+
+
+func engine_lab_coupling_counts() -> Dictionary:
+	return {"workbench_sample":_engine_lab_workbench_sample_holds,
+		"workbench_terrain":_engine_lab_workbench_terrain_holds,
+		"workbench_no_snapshot":_engine_lab_workbench_no_snapshot_holds,
+		"lockstep":_engine_lab_lockstep_holds}
+
 
 var image: Image
 var texture: ImageTexture
@@ -2102,14 +2117,22 @@ func _physics_process(_delta: float) -> void:
 		# callback. Its native terrain revision, sample fence and wrench must
 		# all belong to the same publication.
 		physics_snapshot = simulation_worker.take_latest_snapshot(0)
-		if physics_snapshot == null or physics_snapshot.simulation_failed or physics_snapshot.rigid_body_epoch != _body_owner_epoch(): return
-		if not str(physics_snapshot.lab_context.get("workbench_refusal","")).is_empty(): return
-		if not _workbench_terrain_installed(physics_snapshot): return
+		if physics_snapshot == null or physics_snapshot.simulation_failed or physics_snapshot.rigid_body_epoch != _body_owner_epoch():
+			if engine_lab_benchmark_active: _engine_lab_workbench_no_snapshot_holds += 1
+			return
+		if not str(physics_snapshot.lab_context.get("workbench_refusal","")).is_empty():
+			if engine_lab_benchmark_active: _engine_lab_workbench_no_snapshot_holds += 1
+			return
+		if not _workbench_terrain_installed(physics_snapshot):
+			if engine_lab_benchmark_active: _engine_lab_workbench_terrain_holds += 1
+			return
 		if paused and not single_step:
 			_workbench_wait_sample = -1
 			return
 		# A single step can restart a previously unpublished paused frame.
-		if _workbench_wait_sample >= 0 and physics_snapshot.lab_context.get("workbench_completed_sample",-1) != _workbench_wait_sample and not single_step: return
+		if _workbench_wait_sample >= 0 and physics_snapshot.lab_context.get("workbench_completed_sample",-1) != _workbench_wait_sample and not single_step:
+			if engine_lab_benchmark_active: _engine_lab_workbench_sample_holds += 1
+			return
 	if paused or simulation_worker.has_failed():
 		physical_trial_input.armed = false
 	if simulation_worker.has_failed():
@@ -2133,6 +2156,7 @@ func _physics_process(_delta: float) -> void:
 				_lockstep_hold_started_msec = -1
 				lockstep_main_unfenced_steps += 1
 			elif _lockstep_hold(fenced_snapshot):
+				if engine_lab_benchmark_active: _engine_lab_lockstep_holds += 1
 				return # Skip this physics frame: no step and no new publication.
 			elif fenced_snapshot != null:
 				physics_snapshot = fenced_snapshot

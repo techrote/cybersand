@@ -26,6 +26,7 @@ var _flatten_status: Dictionary = {"status":"idle"}
 var _flatten_button: Button
 var _flatten_confirmation := ConfirmationDialog.new()
 var art_batches: Window
+var engine_lab: Window # Passive clock/benchmark diagnostics; optional and never changes physics.
 var host: Control
 var applied: Dictionary = {}
 var pilot_slot := -1
@@ -209,6 +210,10 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	art_batches.hide()
 	add_child(art_batches)
 	_button(row,"Art batches",func() -> void: art_batches.popup_centered())
+	engine_lab = preload("res://scripts/engine_lab_passive_panel.gd").new()
+	add_child(engine_lab)
+	engine_lab.hide()
+	_button(row,"Engine Lab",func() -> void: engine_lab.open_for(host))
 	_button(row,"Details",func() -> void: _details.visible = not _details.visible)
 	_button(row,"Menu [F2]",func() -> void: get_tree().change_scene_to_file("res://feature_launcher.tscn"))
 	row = _row(self)
