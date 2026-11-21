@@ -26,6 +26,7 @@ jobs:
     timeout-minutes: 90
     strategy:
       fail-fast: false
+      max-parallel: 3
       matrix:
         scenario: [16k, 65k, 262k]
     env:
