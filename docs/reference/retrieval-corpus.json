@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewed": "2026-11-14",
+  "reviewed": "2026-11-21",
   "scope": "Explicit current-answer corpus; status and scope must accompany every chunk. Historical records are separately routed, never silently mixed into current answers.",
   "documents": [
     "operations/wb-art-paint-integrated-candidate.md",
@@ -138,7 +138,8 @@
     "systems/architectural-generator.md",
     "operations/architectural-generator-playtest.md",
     "decisions/2026-11-14-owner-authoring-intent.md",
-    "systems/gentek-reciprocal-assembly.md"
+    "systems/gentek-reciprocal-assembly.md",
+    "systems/gentek-negotiated-recovery.md"
   ],
   "navigation": [
     "README.md",

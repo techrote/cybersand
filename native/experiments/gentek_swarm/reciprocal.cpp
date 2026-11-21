@@ -1,4 +1,6 @@
 #include "reciprocal.hpp"
+#include "reciprocal_io.hpp"
+#include "recovery_admission.hpp"
 #include <algorithm>
 #include <array>
 #include <cmath>
@@ -9,6 +11,19 @@
 #include <tuple>
 
 namespace cybersand::gentek_swarm::assembly004 {
+// Only assemble() can attach a freshly minted authority to a Composition.
+// Public copies retain it immutably; edits cannot reseal their own transcript.
+// This authenticates native observations, not material correctness: the final
+// grammar, ownership, continuous-path and obligation proofs still run below.
+class NativeRunAuthority final {
+    friend Composition assemble(const Input&, bool);
+    friend bool validate_composition(Composition&);
+    CustodyDigest transcript;
+    std::map<std::string,std::uint64_t> reported_metrics;
+    std::string reported_stop, reported_reason;
+    const std::atomic_bool* cancellation_token;
+    NativeRunAuthority(CustodyDigest value,const Composition& c):transcript(value),reported_metrics(c.metrics),reported_stop(c.stop_reason),reported_reason(c.reason),cancellation_token(c.input.cancel){}
+};
 namespace {
 constexpr std::array<Point,4> dirs{{{1,0},{0,1},{-1,0},{0,-1}}};
 Point plus(Point a, Point b) { return {a.x+b.x,a.y+b.y}; }
@@ -243,6 +258,15 @@ std::uint64_t semantic(const Round& r) {
         for(int v:{s.a.x,s.a.y,s.b.x,s.b.y,s.facing.x,s.facing.y})h=mix(h^static_cast<std::uint64_t>(v));
     }
     for(int k:r.mosaic.categories)h=mix(h^static_cast<std::uint64_t>(k+1));
+    if(!r.recovery_frontier.empty()||!r.mosaic_recovery_receipts.empty()) {
+        // Recovery's semantic state includes the authorized alternative cursor
+        // and pending-reply phase. Repeating pixels while advancing either is
+        // not an oscillation or a fixed point. OFF fingerprints stay unchanged.
+        h=mix(h^0x535741524d303036ULL^r.recovery_frontier_exhausted);
+        for(const auto& cursor:r.recovery_frontier){h=mix(h^cursor.slot);h=mix(h^cursor.next);h=mix(h^cursor.observation);h=mix(h^cursor.exhausted);}
+        for(const auto& receipt:r.mosaic_recovery_receipts){h=mix(h^receipt.slot);h=mix(h^receipt.connector);h=mix(h^receipt.candidate);
+            h=mix(h^(r.number<receipt.round+2?receipt.round+2-r.number:0));}
+    }
     return h;
 }
 std::vector<std::uint8_t> protected_union(const Input& in,const Result& f,const Result& m) {
@@ -447,7 +471,7 @@ FrameRevision initial_frame(const Input& in,const FramePlan& original,Budget& bu
     }
     return out;
 }
-struct Receiver { Point root{},contact{},normal{};std::uint32_t part{}; };
+struct Receiver { Point root{},contact{},normal{};std::uint32_t part{},port{}; };
 struct Retirement {std::set<std::uint32_t> ids;bool admitted=false,exhausted=false;};
 Retirement replaceable_endings(const Result& base,Point root,std::uint32_t needed,std::uint32_t limit,Budget& budget) {
     Retirement plan;
@@ -475,6 +499,7 @@ std::vector<Receiver> receivers(const Input& in,const TransitionSlot& slot,const
     const auto& m=mosaic.result;
     for(const auto& port:m.boundary.hard) {
         if(port.family!=Family::Frame||port.facing!=neg(slot.facing))continue;
+        if(port.tag.starts_with("swarm006/")&&port.tag!=("swarm006/source-slot="+std::to_string(slot.id)+";connector="+std::to_string(slot.connector)))continue;
         for(auto p:line(port.a,port.b))for(auto root:line(slot.a,slot.b)) {
             if(!frame_charge(budget,1))return {};
             const auto d=minus(p,root);
@@ -486,12 +511,12 @@ std::vector<Receiver> receivers(const Input& in,const TransitionSlot& slot,const
             if(!native_bearing(m.cells[i],m.roles[i])||m.provenance[i]!=port.instance||
                !inside(in.frame,behind)||!native_bearing(m.cells[index(in.frame,behind)],m.roles[index(in.frame,behind)])||
                (inside(in.frame,air)&&m.cells[index(in.frame,air)]!=Material::Empty))continue;
-            found.push_back({root,p,port.facing,port.instance});
+            found.push_back({root,p,port.facing,port.instance,port.id});
         }
     }
     std::sort(found.begin(),found.end(),[](const auto& a,const auto& b){
-        return std::tuple{dist(a.root,a.contact),a.root,a.contact,a.part}<
-               std::tuple{dist(b.root,b.contact),b.root,b.contact,b.part};
+        return std::tuple{dist(a.root,a.contact),a.root,a.contact,a.part,a.port}<
+               std::tuple{dist(b.root,b.contact),b.root,b.contact,b.part,b.port};
     });
     found.erase(std::unique(found.begin(),found.end(),[](const auto& a,const auto& b){return a.root==b.root&&a.contact==b.contact;}),found.end());
     if(!frame_charge(budget,found.size()*12ULL))return {};
@@ -606,6 +631,118 @@ bool material_path(Composition& c,const Result& f,Point start,Point end,std::vec
     }
     return false;
 }
+
+bool certify_recovery_history(Composition& c) {
+    const auto refuse=[&](const std::string& why){c.status=CompositionStatus::Invalid;c.reason="SWARM006 native certificate: "+why;return false;};
+    const auto& in=c.input;const auto& source=c.original_frame.result;
+    if(!in.options.negotiated_recovery) {
+        for(const auto& r:c.rounds) {
+            if(!r.recovery_attempts.empty()||!r.mosaic_recovery_receipts.empty()||!r.recovery_frontier.empty()||r.recovery_work)
+                return refuse("recovery receipts without opt-in authority");
+            for(const auto& port:r.mosaic.result.boundary.hard)if(port.tag.starts_with("swarm006/"))return refuse("unreceipted recovery port");
+        }
+        return true;
+    }
+    // Search observations are authenticated by the opaque native run authority,
+    // not by trusting public JSON or spending another categorical solve. This
+    // independent certificate proves each accepted finite masonry part against
+    // its actual original host, exact typed source, native cells and ownership.
+    const auto cost=8192ULL+c.rounds.size()*4096ULL;
+    if(!charge_shared(c,cost)){c.status=CompositionStatus::Exhausted;c.reason="budget_exhaustion: native receiver certificates";return false;}
+    c.metrics["recovery_validation_work"]+=cost;
+    std::uint64_t attempts=0,work=0,frame_revised=0,mosaic_revised=0;
+    for(std::size_t ordinal=0;ordinal<c.rounds.size();++ordinal) {
+        const auto& round=c.rounds[ordinal];const auto& m=round.mosaic.result;
+        if(round.mosaic.categories!=c.rounds.front().mosaic.categories)return refuse("recovery changed the native categorical assignment");
+        if(ordinal==0&&(!round.recovery_attempts.empty()||!round.mosaic_recovery_receipts.empty()||!round.recovery_frontier.empty()||round.recovery_work))
+            return refuse("initial source already contains negotiated geometry");
+        frame_revised+=round.frame_footprint_changed>0;mosaic_revised+=round.mosaic_footprint_changed>0;
+        attempts+=round.recovery_attempts.size();work+=round.recovery_work;
+        const auto tagged=std::count_if(m.boundary.hard.begin(),m.boundary.hard.end(),[](const auto& p){return p.tag.starts_with("swarm006/");});
+        if(static_cast<std::size_t>(tagged)!=round.mosaic_recovery_receipts.size())return refuse("unreceipted native receiving port");
+        std::set<std::uint32_t> ports,slots;std::set<Point> contacts;
+        for(const auto& r:round.mosaic_recovery_receipts) {
+            if(!r.round||r.round>ordinal||!ports.insert(r.port_id).second||!slots.insert(r.slot).second||!contacts.insert(r.contact).second)
+                return refuse("duplicate or future receiving reservation");
+            const auto& prior=c.rounds[r.round-1].mosaic.result;
+            const auto slot=std::find_if(c.rounds.front().frame.slots.begin(),c.rounds.front().frame.slots.end(),[&](const auto& x){return x.id==r.slot&&x.connector==r.connector;});
+            const auto connector=std::find_if(source.connectors.begin(),source.connectors.end(),[&](const auto& x){return x.id==r.connector&&x.instance==r.source_instance;});
+            if(slot==c.rounds.front().frame.slots.end()||connector==source.connectors.end()||!cardinal(slot->facing)||
+               connector->fulfilled||connector->family!=r.source_family||connector->facing!=slot->facing||
+               r.source_digest!=source.material_digest||r.prior_digest!=prior.material_digest)
+                return refuse("source connector, authored family or source-time identity changed");
+            const auto roots=line(connector->a,connector->b);const int distance=dist(r.root,r.contact);
+            if(std::find(roots.begin(),roots.end(),r.root)==roots.end()||distance<1||distance>14||
+               r.contact!=Point{r.root.x+distance*slot->facing.x,r.root.y+distance*slot->facing.y}||
+               r.backing!=plus(r.contact,slot->facing)||!in_box(r.contact,slot->envelope)||
+               !inside(in.frame,r.root)||!inside(in.frame,r.contact)||!inside(in.frame,r.backing)||!inside(in.frame,r.host)||
+               source.provenance[index(in.frame,r.root)]!=r.source_instance||
+               !native_bearing(source.cells[index(in.frame,r.root)],source.roles[index(in.frame,r.root)]))
+                return refuse("receiver is outside the finite original source interface");
+            const auto family=distance==1?connector->family:Family::Frame;
+            const auto port=std::find_if(m.boundary.hard.begin(),m.boundary.hard.end(),[&](const auto& x){return x.id==r.port_id;});
+            if(port==m.boundary.hard.end()||port->instance!=r.receiving_instance||port->a!=r.contact||port->b!=r.contact||
+               port->facing!=neg(slot->facing)||port->family!=family||r.receiving_family!=family||port->required||port->strength!=slot->strength||
+               port->tag!=("swarm006/source-slot="+std::to_string(r.slot)+";connector="+std::to_string(r.connector)))
+                return refuse("typed receptor is not bound to the exact source obligation");
+            const auto owner=std::find_if(m.instances.begin(),m.instances.end(),[&](const auto& x){return x.id==r.receiving_instance;});
+            const auto host=std::find_if(prior.instances.begin(),prior.instances.end(),[&](const auto& x){return x.id==r.host_instance;});
+            if(owner==m.instances.end()||host==prior.instances.end()||host->kind.starts_with("swarm006/"))return refuse("missing original native host");
+            const auto tile=static_cast<std::size_t>(r.host.y/16)*static_cast<std::size_t>((in.mosaic.width+15)/16)+static_cast<std::size_t>(r.host.x/16);
+            if(tile>=round.mosaic.categories.size()||round.mosaic.categories[tile]<0||host->kind!=mosaic_category_name(static_cast<unsigned>(round.mosaic.categories[tile])))
+                return refuse("native host does not match its immutable masonry category");
+            std::vector<Point> expected;
+            if(r.variant) {
+                const Point tangent{-slot->facing.y,slot->facing.x};
+                const auto axis=r.variant==1?slot->facing:r.variant==2?tangent:neg(tangent);
+                const auto cross=r.variant==1?tangent:slot->facing;
+                if(r.variant>3||(r.length!=2&&r.length!=4&&r.length!=6)||r.axis!=axis||r.cross!=cross||
+                   r.host!=Point{r.contact.x+static_cast<int>(r.length)*axis.x,r.contact.y+static_cast<int>(r.length)*axis.y}||
+                   owner->kind!="swarm006/supported_masonry_corbel"||owner->origin!=r.contact||
+                   owner->orientation!=static_cast<int>(rotation(axis))||!owner->structural||owner->damaged||
+                   owner->reason!="MOSAIC/source-bound-solid-corbel-v1;host="+std::to_string(r.host_instance)+";length="+std::to_string(r.length))
+                    return refuse("receiver differs from its finite authored corbel");
+                for(unsigned a=0;a<r.length;++a)for(unsigned b=0;b<2;++b)
+                    expected.push_back({r.contact.x+static_cast<int>(a)*axis.x+static_cast<int>(b)*cross.x,
+                                        r.contact.y+static_cast<int>(a)*axis.y+static_cast<int>(b)*cross.y});
+                if(owner->cells!=expected)return refuse("invented native corbel footprint");
+            }else if(r.length||r.axis!=Point{}||r.cross!=Point{}||r.host!=r.contact||r.receiving_instance!=r.host_instance)
+                return refuse("existing bearing receipt invented geometry");
+            const auto host2=r.variant?plus(r.host,r.cross):r.backing;
+            for(const auto p:{r.host,host2}) {
+                if(!inside(in.mosaic,p)||std::find(host->cells.begin(),host->cells.end(),p)==host->cells.end())return refuse("authored host footprint missing backing");
+                const auto i=index(in.mosaic,p);
+                if(prior.provenance[i]!=r.host_instance||!structural(prior.roles[i])||
+                   (prior.cells[i]!=Material::Stone&&!native_bearing(prior.cells[i],prior.roles[i])))return refuse("host was not real native structure");
+                if(m.provenance[i]!=r.host_instance||!native_bearing(m.cells[i],m.roles[i]))
+                    return refuse("native corbel host lost its current solid backing");
+            }
+            for(const auto p:{r.contact,r.backing}) {
+                const auto i=index(in.mosaic,p);
+                if(std::find(owner->cells.begin(),owner->cells.end(),p)==owner->cells.end()||m.provenance[i]!=r.receiving_instance||!native_bearing(m.cells[i],m.roles[i]))
+                    return refuse("receiver lacks exact native solid contact and backing");
+            }
+            std::set<Point> edits;
+            for(const auto& e:r.edits) {
+                if(!inside(in.mosaic,e.point)||!edits.insert(e.point).second)return refuse("duplicate receiver edit");
+                const auto i=index(in.mosaic,e.point);
+                if(prior.cells[i]!=e.before||prior.roles[i]!=e.before_role||prior.provenance[i]!=e.before_owner||
+                   m.cells[i]!=e.after||m.roles[i]!=e.after_role||m.provenance[i]!=e.after_owner||e.after!=Material::LimestoneBlock)
+                    return refuse("native receiver edit/history/owner mismatch");
+                const bool new_cell=std::find(expected.begin(),expected.end(),e.point)!=expected.end();
+                if(new_cell) {if(e.before!=Material::Empty||e.before_owner||e.after_owner!=r.receiving_instance||e.after_role!=Role::Structure)
+                    return refuse("corbel collision or invented material path");}
+                else if((e.point!=r.host&&e.point!=host2)||e.before!=Material::Stone||e.before_owner!=r.host_instance||
+                        e.after_owner!=r.host_instance||e.before_role!=e.after_role)return refuse("unauthored native material variant");
+            }
+            for(const auto p:expected)if(!edits.contains(p))return refuse("missing corbel cell receipt");
+        }
+    }
+    if(c.metrics["recovery_attempts"]!=attempts||c.metrics["recovery_work"]!=work||
+       c.metrics["frame_footprint_changed_rounds"]!=frame_revised||c.metrics["mosaic_footprint_changed_rounds"]!=mosaic_revised||
+       c.metrics["both_genteks_revised"]!=static_cast<unsigned>(frame_revised>0&&mosaic_revised>0))return refuse("false scientific summary");
+    return true;
+}
 void fill_ledger(Composition& c) {
     const auto& last=c.rounds.back();const auto n=last.frame.result.cells.size();
     const auto& final_frame=c.damage_derivative?c.damage_derivative->frame:last.frame;
@@ -700,7 +837,14 @@ Composition assemble(const Input& input,bool reverse) {
     auto fail=[&](CompositionStatus s,const std::string& why){
         out.metrics["frame_work"]=std::max(out.metrics["frame_work"],out.original_frame.result.work);
         out.metrics["total_charged_work"]=total_work(out);
-        out.status=s;out.reason=why;out.can_apply=false;out.cells.clear();out.ledger.clear();return out;
+        out.status=s;out.reason=why;out.can_apply=false;out.cells.clear();out.ledger.clear();
+        if(input.options.negotiated_recovery) {
+            if(s==CompositionStatus::Exhausted)out.stop_reason="budget_exhaustion";
+            else if(s==CompositionStatus::Cancelled)out.stop_reason="cancellation";
+            else if(s==CompositionStatus::Unsat)out.stop_reason="proven_infeasibility";
+            else if(s==CompositionStatus::Invalid)out.stop_reason="invalid_native_proposal";
+        }
+        return out;
     };
     std::string why;
     if(!paired_input_valid(input,why))return fail(why.starts_with("capacity:")?CompositionStatus::Exhausted:CompositionStatus::Invalid,why);
@@ -709,13 +853,17 @@ Composition assemble(const Input& input,bool reverse) {
     const auto n=static_cast<std::size_t>(f.width)*static_cast<std::size_t>(f.height);
     out.metrics["shared_work"]=n*8ULL;
     const auto derivative_bytes=(f.profile.destruction>0||m.profile.destruction>0)?64ULL:0ULL;
-    const auto bytes=n*(256ULL+input.options.rounds*64ULL+derivative_bytes)+(64ULL+192ULL)*16384ULL+512ULL*1024ULL;
+    const auto bytes=n*(256ULL+input.options.rounds*64ULL+derivative_bytes)+(64ULL+192ULL)*16384ULL+512ULL*1024ULL+
+        (input.options.negotiated_recovery?768ULL*1024ULL:0ULL);
     out.metrics["conservative_memory_bound_bytes"]=bytes;
     if(bytes>std::min(f.limits.max_bytes,m.limits.max_bytes))return fail(CompositionStatus::Exhausted,"aggregate proposal/snapshot memory admission");
     if(cancelled(input))return fail(CompositionStatus::Cancelled,"cancelled before generation");
     // Intact proposals first. Damage is an independent final derivative.
     auto intact=input;intact.frame.profile.destruction=intact.mosaic.profile.destruction=0;
-    out.original_frame=plan_frameweaver(intact.frame,intact.mosaic,input.options.compact_native_termination);
+    out.original_frame=input.options.negotiated_recovery?
+        plan_frameweaver(intact.frame,intact.mosaic,input.options.compact_native_termination,
+            {true,input.options.shared_ownership?&input.shared_zone:nullptr}):
+        plan_frameweaver(intact.frame,intact.mosaic,input.options.compact_native_termination);
     if(!usable(out.original_frame.result))return fail(out.original_frame.result.status==Status::Exhausted?CompositionStatus::Exhausted:CompositionStatus::Invalid,out.original_frame.result.termination);
     Budget budget;budget.cancel=input.cancel;budget.limits.max_work=f.limits.max_work;
     budget.limits.max_instances=f.limits.max_instances;budget.limits.max_candidates=f.limits.max_candidates;
@@ -772,7 +920,11 @@ Composition assemble(const Input& input,bool reverse) {
             }}};
         auto make_mosaic=[&](){if(input.options.mosaic_adaptation){auto request=intact.mosaic;
             request.protected_void=protected_cells;
-            if(mosaic_cache_result>0&&same_slots(old.frame.slots,mosaic_cache_slots)&&
+            if(input.options.negotiated_recovery) {
+                next_mosaic=propose_mosaic_recovery(request,intact.frame,old.frame.result,out.original_frame.result,
+                    input.options.recovery_offers?base.slots:std::vector<TransitionSlot>{},shared,old.mosaic,
+                    old.mosaic_recovery_receipts,old.recovery_frontier,mb,r,input.options.optional_negotiation);
+            }else if(mosaic_cache_result>0&&same_slots(old.frame.slots,mosaic_cache_slots)&&
                same_native_input(old.frame.result,out.rounds[mosaic_cache_observation].frame.result)) {
                 next_mosaic.plan=out.rounds[mosaic_cache_result].mosaic;next_mosaic.request=out.rounds[mosaic_cache_result].mosaic_request;
                 next_mosaic.bearing_replacements=out.rounds[mosaic_cache_result].mosaic_bearing_replacements;
@@ -793,6 +945,13 @@ Composition assemble(const Input& input,bool reverse) {
         next.mosaic_bearing_work=next_mosaic.bearing_work;
         next.mosaic_supported_receptors=next_mosaic.supported_receptors;
         next.mosaic_supported_receptor_work=next_mosaic.supported_receptor_work;
+        if(input.options.negotiated_recovery) {
+            next.recovery_attempts=next_mosaic.recovery_attempts;
+            next.mosaic_recovery_receipts=next_mosaic.recovery_receipts;
+            next.recovery_frontier=next_mosaic.recovery_frontier;
+            next.recovery_work=next_mosaic.recovery_work;
+            next.recovery_frontier_exhausted=next_mosaic.recovery_frontier_exhausted;
+        }
         next.mosaic_reused=reused_mosaic;next.frame_reused=reused_frame;
         next.mosaic_reuse_round=mosaic_cache_result;next.frame_reuse_round=frame_cache_result;
         if(cancelled(input)||next_mosaic.status==MosaicRevisionStatus::Cancelled||
@@ -815,6 +974,11 @@ Composition assemble(const Input& input,bool reverse) {
             } else {next.frame=old.frame;next.mosaic=old.mosaic;next.mosaic_request=old.mosaic_request;next.frame_accepted=next.mosaic_accepted=false;next.reason+="; atomic rollback of both proposals";}
         } else next.reason="both immutable own proposals accepted under canonical complete-footprint claims";
         if(!next.mosaic_accepted)next.mosaic_supported_receptors=old.mosaic_supported_receptors;
+        if(!next.mosaic_accepted&&input.options.negotiated_recovery) {
+            next.mosaic_recovery_receipts=old.mosaic_recovery_receipts;
+            // Failed bids and the advanced frontier remain observable; material
+            // and accepted reservations roll back atomically to the prior state.
+        }
         if(next_mosaic.status==MosaicRevisionStatus::Unsat){out.rejections.push_back("round "+std::to_string(r)+": categorical UNSAT; previous masonry retained");out.metrics["categorical_unsat_rounds"]++;}
         if(next_mosaic.status==MosaicRevisionStatus::Invalid){out.rejections.push_back("round "+std::to_string(r)+": invalid MOSAIC proposal: "+next_mosaic.reason);out.metrics["invalid_proposal_rounds"]++;}
         next.frame_changed=changed(old.frame.result,next.frame.result);next.mosaic_changed=changed(old.mosaic.result,next.mosaic.result);
@@ -824,6 +988,9 @@ Composition assemble(const Input& input,bool reverse) {
         next.geometry_digest=mix(next.frame.result.material_digest)^mix(next.mosaic.result.material_digest);
         next.semantic_digest=semantic(next);const auto digest=next.semantic_digest;
         bool fixed=false,oscillation=false;
+        // A growing authorized frontier already rules out convergence; avoid
+        // an otherwise unused full equality scan and its associated debit.
+        if(!input.options.negotiated_recovery||next.recovery_frontier_exhausted)
         for(std::size_t previous=0;previous<out.rounds.size();++previous)if(digest==out.rounds[previous].semantic_digest) {
             if(!charge_shared(out,n*6ULL+8192ULL)){sync_work();return fail(CompositionStatus::Exhausted,"exact architectural equality allowance");}
             if(same_architecture(next,out.rounds[previous])){fixed=previous+1==out.rounds.size();oscillation=!fixed;break;}
@@ -835,7 +1002,10 @@ Composition assemble(const Input& input,bool reverse) {
             frame_cache_observation=static_cast<unsigned>(out.rounds.size()-1);frame_cache_result=static_cast<unsigned>(out.rounds.size());has_frame_cache=true;
         }
         out.rounds.push_back(std::move(next));sync_work();
-        if(fixed){out.stop_reason="fixed_point";break;}
+        if(fixed&&(!input.options.negotiated_recovery||out.rounds.back().recovery_frontier_exhausted)){
+            out.stop_reason=input.options.negotiated_recovery?
+                (out.rounds.back().recovery_frontier.empty()?"semantic_fixed_point":"candidate_frontier_exhausted"):"fixed_point";break;}
+        if(input.options.negotiated_recovery&&oscillation&&!out.rounds.back().recovery_frontier_exhausted)oscillation=false;
         if(oscillation){out.stop_reason="oscillation";return fail(CompositionStatus::Oscillation,"repeated earlier semantic geometry state; no commit");}
     }
     out.metrics["frame_work"]=budget.work;out.metrics["mosaic_work"]=m.limits.max_work-mb.generator_remaining;
@@ -845,6 +1015,11 @@ Composition assemble(const Input& input,bool reverse) {
     for(const auto& r:out.rounds){out.metrics["frame_changed_rounds"]+=r.frame_changed>0;out.metrics["mosaic_changed_rounds"]+=r.mosaic_changed>0;
         out.metrics["frame_footprint_changed_rounds"]+=r.frame_footprint_changed>0;out.metrics["mosaic_footprint_changed_rounds"]+=r.mosaic_footprint_changed>0;}
     out.metrics["both_genteks_revised"]=out.metrics["frame_footprint_changed_rounds"]>0&&out.metrics["mosaic_footprint_changed_rounds"]>0;
+    if(input.options.negotiated_recovery)for(const auto& round:out.rounds) {
+        out.metrics["recovery_work"]+=round.recovery_work;
+        out.metrics["recovery_attempts"]+=round.recovery_attempts.size();
+        for(const auto& attempt:round.recovery_attempts)out.metrics["recovery_"+attempt.outcome]++;
+    }
     if(f.profile.destruction>0||m.profile.destruction>0) {
         const auto& last=out.rounds.back();auto fq=f,mq=last.mosaic_request;
         fq.profile.destruction=f.profile.destruction;mq.profile.destruction=m.profile.destruction;
@@ -864,16 +1039,64 @@ Composition assemble(const Input& input,bool reverse) {
         out.metrics["destruction_applied"]=1;
     }
     out.status=CompositionStatus::Blocked;
-    if(!validate_composition(out))return out;
+    if(input.options.negotiated_recovery)for(const auto* owner:{"frame","mosaic","solver"})
+        out.metrics[std::string("proposal_")+owner+"_work"]=out.metrics[std::string(owner)+"_work"];
+    if(input.options.negotiated_recovery) {
+        // Native custody is a capability of this in-process run, never a public
+        // receipt which a JSON reader or caller can recompute to gain authority.
+        const auto admission_work=8192ULL+n*(out.rounds.size()+1ULL);
+        if(!charge_shared(out,admission_work))return fail(CompositionStatus::Exhausted,"budget_exhaustion: native custody admission");
+        out.metrics["custody_admission_work"]+=admission_work;
+        out.metrics["custody_policy_version"]=1;
+        std::uint64_t bytes=0;
+        if(!admit_recovery_history(out,why,bytes))return fail(CompositionStatus::Invalid,"native custody admission: "+why);
+        out.metrics["custody_memory_bound_bytes"]=bytes;
+        const auto before=out.metrics["shared_work"];
+        try {
+            const auto transcript=fingerprint_native_custody(out,out.metrics["shared_work"],2'000'000);
+            out.metrics["custody_mint_work"]=out.metrics["shared_work"]-before;
+            out.metrics["total_charged_work"]=total_work(out);
+            out.native_authority_=std::shared_ptr<const NativeRunAuthority>(new NativeRunAuthority(transcript,out));
+        }catch(const std::exception&) {
+            out.metrics["custody_mint_work"]=out.metrics["shared_work"]-before;
+            return fail(cancelled(input)?CompositionStatus::Cancelled:CompositionStatus::Exhausted,
+                cancelled(input)?"cancellation: native custody mint":"budget_exhaustion: native custody mint");
+        }
+    }
+    if(!validate_composition(out)) {
+        if(input.options.negotiated_recovery&&out.status==CompositionStatus::Exhausted)out.stop_reason="budget_exhaustion";
+        if(out.native_authority_)out.native_authority_=std::shared_ptr<const NativeRunAuthority>(new NativeRunAuthority(out.native_authority_->transcript,out));
+        return out;
+    }
+    if(input.options.negotiated_recovery&&out.can_apply)out.stop_reason="successful_full_closure";
     if(input.options.final_validation){out.reason=out.can_apply?"complete native composition with qualified obligations":"native proposal retained; unresolved hard obligations prevent Apply";}
     else {out.can_apply=false;out.reason="validator-disabled diagnostic, never eligible for Apply";}
+    if(out.native_authority_)out.native_authority_=std::shared_ptr<const NativeRunAuthority>(new NativeRunAuthority(out.native_authority_->transcript,out));
     return out;
 }
 
 bool validate_composition(Composition& c) {
-    c.can_apply=false;c.joints.clear();c.obligations.clear();c.cells.clear();c.ledger.clear();
+    c.can_apply=false;
+    // Check the private origin even if a caller clears the public experiment
+    // option; downgrade, authority transplant and refunded counters fail closed.
+    if(c.native_authority_||c.input.options.negotiated_recovery) {
+        if(!c.native_authority_||!c.input.options.negotiated_recovery||
+           c.metrics!=c.native_authority_->reported_metrics||c.stop_reason!=c.native_authority_->reported_stop||c.reason!=c.native_authority_->reported_reason||
+           c.input.cancel!=c.native_authority_->cancellation_token) {
+            c.status=CompositionStatus::Invalid;c.reason="SWARM006 custody: absent native authority, changed mode, work or scientific receipts";return false;
+        }
+    }
+    if(!c.native_authority_){c.joints.clear();c.obligations.clear();c.cells.clear();c.ledger.clear();}
+    if(c.input.options.negotiated_recovery&&c.metrics.contains("total_charged_work")&&c.metrics.at("total_charged_work")!=total_work(c)) {
+        c.status=CompositionStatus::Invalid;c.reason="SWARM006 transcript: inconsistent aggregate work receipt";return false;
+    }
     auto& total=c.metrics["total_charged_work"];
-    struct WorkReceipt {Composition& composition;std::uint64_t& total;~WorkReceipt(){total=total_work(composition);}} receipt{c,total};
+    bool custody_verified=false;
+    struct WorkReceipt {Composition& composition;std::uint64_t& total;bool& verified;
+        ~WorkReceipt(){total=total_work(composition);
+            if(verified&&composition.native_authority_)composition.native_authority_=std::shared_ptr<const NativeRunAuthority>(
+                new NativeRunAuthority(composition.native_authority_->transcript,composition));}
+    } receipt{c,total,custody_verified};
     for(const auto* key:{"new_assembly_required","candidate_native_contacts","unchecked_candidate_contacts","rejected_joint_source_bindings"})c.metrics[key]=0;
     if(c.rounds.empty()||c.rounds.size()>5){c.status=CompositionStatus::Invalid;c.reason="missing or unbounded accepted revision history";return false;}
     if(cancelled(c.input)||c.status==CompositionStatus::Cancelled){c.status=CompositionStatus::Cancelled;c.reason="cancelled before final authorization";return false;}
@@ -883,6 +1106,25 @@ bool validate_composition(Composition& c) {
         c.status=CompositionStatus::Invalid;c.reason="malformed final input: "+input_reason;return false;
     }
     const auto& fq=c.input.frame;const auto count=static_cast<std::size_t>(fq.width)*static_cast<std::size_t>(fq.height);
+    if(c.native_authority_) {
+        const auto admission_work=8192ULL+count*(c.rounds.size()+1ULL);
+        if(!charge_shared(c,admission_work)){c.status=CompositionStatus::Exhausted;c.reason="budget_exhaustion: custody verification admission";return false;}
+        c.metrics["custody_admission_work"]+=admission_work;
+        std::uint64_t bytes=0;
+        if(!admit_recovery_history(c,input_reason,bytes)) {c.status=CompositionStatus::Invalid;c.reason="SWARM006 custody admission: "+input_reason;return false;}
+        const auto before=c.metrics["shared_work"];
+        try {
+            const auto fingerprint=fingerprint_native_custody(c,c.metrics["shared_work"],2'000'000);
+            c.metrics["custody_verification_work"]+=c.metrics["shared_work"]-before;
+            if(fingerprint!=c.native_authority_->transcript){c.status=CompositionStatus::Invalid;c.reason="SWARM006 custody: mutated native source, proposal or history";return false;}
+            custody_verified=true;
+            c.joints.clear();c.obligations.clear();c.cells.clear();c.ledger.clear();
+        }catch(const std::exception&) {
+            c.metrics["custody_verification_work"]+=c.metrics["shared_work"]-before;
+            c.status=cancelled(c.input)?CompositionStatus::Cancelled:CompositionStatus::Exhausted;
+            c.reason=cancelled(c.input)?"cancellation: native custody verification":"budget_exhaustion: native custody verification";return false;
+        }
+    }
     for(const auto& round:c.rounds)for(const auto* result:{&round.frame.result,&round.mosaic.result}) {
         if(result->cells.size()!=count||result->roles.size()!=count||result->provenance.size()!=count) {
             c.status=CompositionStatus::Invalid;c.reason="malformed accepted revision snapshot";return false;
@@ -900,6 +1142,7 @@ bool validate_composition(Composition& c) {
             for(auto id:result->provenance)if(id>256){c.status=CompositionStatus::Invalid;c.reason="invalid historical cell identity";return false;}
         }
     }
+    if(!certify_recovery_history(c))return false;
     // SWARM-005: every opt-in supported receptor is a replayable native fact,
     // never an unverified interface annotation. Validate all retained rounds,
     // not just a favourable final proposal, against their actual immutable
@@ -1113,6 +1356,10 @@ bool validate_composition(Composition& c) {
             if(found)break;
             const auto expected_family=constructed==final_frame.constructions.end()?original->family:Family::Frame;
             if((expected_family!=Family::Frame&&expected_family!=Family::Brace)||port.family!=expected_family||port.facing!=neg(slot.facing))continue;
+            if(port.tag.starts_with("swarm006/")&&std::none_of(last.mosaic_recovery_receipts.begin(),last.mosaic_recovery_receipts.end(),[&](const auto& r){
+                return r.port_id==port.id&&r.slot==slot.id&&r.connector==slot.connector&&r.source_instance==original->instance&&
+                       r.receiving_instance==port.instance&&r.contact==port.a&&r.receiving_family==expected_family;
+            }))continue; // a valid port for another source is not a claimed match
             if(!inside(q,port.a)||!inside(q,port.b)||(port.a.x!=port.b.x&&port.a.y!=port.b.y)||dist(port.a,port.b)>32)continue;
             for(auto face:line(slot.a,slot.b)) {
                 if(found)break;
@@ -1146,7 +1393,15 @@ bool validate_composition(Composition& c) {
         if(slot!=final_frame.slots.end())r.slot=slot->id;
         r.foreign_joined=joined_connectors.contains(original.id);
         if(r.foreign_joined){r.state="FOREIGN_JOINED";r.reason="unique typed native receptor and material path";}
-        else {++unresolved;r.reason=r.slot?"reserved source lacks a qualified final material path":"original source has no constructible reserved receiver";}
+        else {
+            ++unresolved;r.reason=r.slot?"reserved source lacks a qualified final material path":"original source has no constructible reserved receiver";
+            if(c.input.options.negotiated_recovery) {
+                r.reason=r.slot?"no_qualifying_continuous_material_path":"unreachable_receiver_territory_or_reservation_capacity";
+                for(const auto& round:c.rounds)for(const auto& attempt:round.recovery_attempts)if(attempt.connector==original.id)r.reason=attempt.reason;
+                if(std::any_of(last.mosaic_recovery_receipts.begin(),last.mosaic_recovery_receipts.end(),[&](const auto& bid){return bid.connector==original.id;}))
+                    r.reason="native_receiver_reserved_but_no_qualifying_continuous_material_path";
+            }
+        }
         // A local engineered ending is reported separately and cannot change state.
         for(const auto& part:final_frame.result.instances)if(part.kind=="swarm004/local_flush_ending"&&part.origin==original.a)r.local_terminated=true;
         c.obligations.push_back(std::move(r));
@@ -1175,6 +1430,15 @@ bool validate_composition(Composition& c) {
             lost.origin="damage_lost_internal";lost.reason="separate destruction revoked a previously qualified original required joint";
             c.obligations.push_back(std::move(lost));++unresolved;c.metrics["damage_lost_required"]++;
         }
+    }
+    if(c.input.options.negotiated_recovery) {
+        // Best among the closure proofs actually attempted, not an assertion
+        // that every earlier geometric prefix was separately qualified.
+        c.metrics["closure_proof_rounds"]=1;c.metrics["best_proven_closure_round"]=last.number;
+        c.metrics["best_proven_qualified_joints"]=c.joints.size();c.metrics["best_proven_remaining_requirements"]=unresolved;
+        const auto compact=c.original_frame.result.metrics.find("swarm005_source_compact_terminations");
+        c.metrics["source_time_compact_terminations"]=compact==c.original_frame.result.metrics.end()?0:compact->second;
+        c.metrics["source_feasibility_opportunities"]=c.original_frame.source_feasibility.size();
     }
     c.metrics["still_required"]=unresolved;c.metrics["qualified_joints"]=c.joints.size();
     c.metrics["local_terminations"]=final_frame.local_terminations;c.metrics["coordinator_created_cells"]=0;

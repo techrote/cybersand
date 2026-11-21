@@ -1,5 +1,6 @@
 #pragma once
 #include "swarm.hpp"
+#include <array>
 
 namespace cybersand::gentek_swarm {
 
@@ -18,10 +19,43 @@ struct TransitionSlot {
     double strength = 1.0;
     std::string owner = "FRAMEWEAVER", reason;
 };
+// SWARM-006 source-time opportunity screening. This is a necessary geometric
+// admission check, not a receptor bid, joint or categorical-solver success.
+// The optional shared mask is borrowed only for the duration of planning.
+struct SourceFeasibilityOptions {
+    bool enabled = false;
+    const std::vector<std::uint8_t>* shared_zone = nullptr;
+};
+struct SourceFeasibilityDecision {
+    std::uint32_t connector{}, instance{};
+    Point source{}, face{}, facing{}, contact{}, backing{};
+    std::uint16_t receiver_categories{};
+    bool local_termination_possible = false, foreign_opportunity = false;
+    std::uint64_t work{};
+    std::string part, reason;
+    bool operator==(const SourceFeasibilityDecision&) const = default;
+};
+// A bounded hypothetical native MOSAIC tile. The caller derives admission from
+// immutable context, authorized territory and the prospective FRAME footprint.
+// The probe reuses MOSAIC's actual authored raster predicates; it does not solve
+// categories, allocate material, claim ownership or certify a connection.
+struct MosaicSourceTile {
+    Point origin{};
+    int width = 16, height = 16;
+    std::array<std::uint8_t, 256> admitted{};
+};
+struct MosaicSourceReceiverProbe {
+    std::uint16_t categories{};
+    std::uint64_t work{};
+    bool valid = false, exhausted = false;
+};
+MosaicSourceReceiverProbe probe_mosaic_source_receiver(const MosaicSourceTile&,
+    Point contact, Point source_facing, std::uint64_t work_limit);
 struct FramePlan {
     Result core, result; // core is the immutable accepted macrostructure snapshot
     std::vector<TransitionSlot> slots;
     std::vector<std::string> reservation_rejections;
+    std::vector<SourceFeasibilityDecision> source_feasibility;
 };
 struct DomainInfluence {
     std::uint32_t slot_id{};
@@ -60,6 +94,8 @@ struct MosaicPlan {
 };
 FramePlan plan_frameweaver(const Request& own, const Request& peer);
 FramePlan plan_frameweaver(const Request& own, const Request& peer, bool compact_native_termination);
+FramePlan plan_frameweaver(const Request& own, const Request& peer, bool compact_native_termination,
+    const SourceFeasibilityOptions&);
 MosaicPlan negotiate_mosaic(const Request&, const std::vector<TransitionSlot>&);
 const char* name(SlotKind) noexcept;
 const char* mosaic_category_name(unsigned) noexcept;

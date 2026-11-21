@@ -10,6 +10,10 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+For SWARM-006 feasibility, source-bound receiver negotiation, bounded recovery,
+native custody and distinct Windows acceptance gates, read the
+[experimental recovery contract](../systems/gentek-negotiated-recovery.md).
+
 ## Reciprocal FRAMEWEAVER × MOSAIC construction
 
 For SWARM-004 component grammar, independent shared-zone revisions, retained hard
