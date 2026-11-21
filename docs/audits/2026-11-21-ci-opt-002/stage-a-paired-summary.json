@@ -1,0 +1,894 @@
+{
+  "artifacts": {
+    "after": {
+      "artifact_id": 14724086691,
+      "ledger_files_verified": 12,
+      "name": "ci-opt-002-admission-proof-after-44946486076-1",
+      "report_sha256": "b9e3df1badb6a75524830c7f5a5698fcdae2926b3d25b07cdfb6e0664adecc20",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44946486076/artifacts/14724086691",
+      "zip_bytes": 21639,
+      "zip_sha256": "6650b7ad4af881089210bd243c9f7d8afc90771f052fbdb8b793ff9c6fc649c1"
+    },
+    "before": {
+      "artifact_id": 14724023560,
+      "ledger_files_verified": 17,
+      "name": "ci-opt-002-admission-proof-before-44946486076-1",
+      "report_sha256": "e50242921804a064ddf52eb9da50308587ad898461c00877a6e3ac69abd0daa3",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44946486076/artifacts/14724023560",
+      "zip_bytes": 33899,
+      "zip_sha256": "5ebc389304dae798583aa33a78cddba5385c570c853e31be1e538fd968ddfcc0"
+    }
+  },
+  "baseline_commit": "0f0161af337d6d0cee8fa961a9667aff570a75b0",
+  "candidate_commit": "68e0261466fc275a095360c63ed6f67311ecc0f6",
+  "deltas": {
+    "job_wall_seconds": {
+      "absolute_reduction": 592.0,
+      "after": 50.0,
+      "before": 642.0,
+      "relative_reduction_percent": 92.21183800623054
+    },
+    "run_created_to_actual_refusal_seconds": {
+      "absolute_reduction": 592.227171,
+      "after": 47.444987,
+      "before": 639.672158,
+      "relative_reduction_percent": 92.58292135953806
+    },
+    "run_created_to_job_end_seconds": {
+      "absolute_reduction": 592.0,
+      "after": 53.0,
+      "before": 645.0,
+      "relative_reduction_percent": 91.78294573643412
+    },
+    "runner_minutes_unweighted": {
+      "absolute_reduction": 9.866666666666665,
+      "after": 0.8333333333333334,
+      "before": 10.7,
+      "relative_reduction_percent": 92.21183800623052
+    },
+    "seconds_to_expected_refusal_postinventory": {
+      "absolute_reduction": 591.1283663849999,
+      "after": 2.767057805,
+      "before": 593.89542419,
+      "relative_reduction_percent": 99.5340833264082
+    }
+  },
+  "harness_sha256": "cf4a87c0a72cdd6093fd9db0e5b76a4f46a30ed6b2dd6ea03e0a316ae19d8305",
+  "limitations": [
+    "One paired negative-admission run on two separate GitHub-hosted workers; not a distribution or percentile estimate.",
+    "The under-test canonical checker failed intentionally with exit 1 in both arms. Proof success attests the expected refusal, not application qualification.",
+    "The primary timing begins after the original workflow inventory boundary and excludes checkout, LFS, parser preparation, probes and final restoration. Full job timings are separately reported.",
+    "Positive and negative controls run before timing in both arms, warming filesystem reads. No compiler cache is restored; before runs the actual original expensive commands.",
+    "Hosted CPU and queue variability affects full-job comparison; API job and step times have one-second resolution, command timings use monotonic nanoseconds.",
+    "The exact candidate passed its complete Documentation job separately. Its total duration is not a matched causal green-run speed comparison.",
+    "No claim of 30% faster routine CI or lower successful Native/GDExtension critical path; unchanged successful-run test inventory still executes."
+  ],
+  "measurement_scope": "Actual paired negative admission comparison; same proof commit, identical canonical command definitions, changed order only.",
+  "paired_arms": {
+    "after": {
+      "completed_at": "2026-11-21T20:29:43Z",
+      "conclusion": "success",
+      "created_at": "2026-11-21T20:28:50Z",
+      "harness_seconds_outside_measured_interval": 11.239765195,
+      "harness_total_seconds": 14.006823,
+      "job_created_to_start_seconds": 3.0,
+      "job_id": 136974839525,
+      "job_name": "Expected stale-source rejection (after)",
+      "job_wall_seconds": 50.0,
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "measured_original_command_seconds_sum": 2.7662239680000003,
+      "negative_control_seconds_sum": 5.9718990210000005,
+      "original_commands": [
+        {
+          "command": "timeout \"$(python3 tools/ci/execution_policy.py seconds operation_seconds)\" python3 tools/ci/check_docs.py",
+          "condition_evaluated": true,
+          "elapsed_seconds": 1.198324392,
+          "exit_code": 0,
+          "name": "Validate current documentation",
+          "original_if": null,
+          "phase": "timed-original-step"
+        },
+        {
+          "command": "timeout \"$(python3 tools/ci/execution_policy.py seconds operation_seconds)\" python3 tools/ci/check_repository.py --require-materialized",
+          "condition_evaluated": true,
+          "elapsed_seconds": 1.567899576,
+          "exit_code": 1,
+          "name": "Validate dependency pins and published runtime provenance",
+          "original_if": "github.event_name != 'pull_request' || github.event.pull_request.draft == false",
+          "phase": "timed-original-step"
+        }
+      ],
+      "positive_control_seconds_sum": 4.702608473,
+      "reported_host_environment": {
+        "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+        "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+        "runner_arch": "X64",
+        "runner_os": "Linux"
+      },
+      "run_created_to_actual_refusal_seconds": 47.444987,
+      "run_created_to_job_end_seconds": 53.0,
+      "run_created_to_job_start_seconds": 3.0,
+      "runner_minutes_unweighted": 0.8333333333333334,
+      "runner_name": "GitHub Actions 1000140964",
+      "seconds_to_expected_refusal_postinventory": 2.767057805,
+      "started_at": "2026-11-21T20:28:53Z",
+      "steps": [
+        {
+          "completed_at": "2026-11-21T20:28:55Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "started_at": "2026-11-21T20:28:54Z",
+          "wall_seconds": 1.0
+        },
+        {
+          "completed_at": "2026-11-21T20:28:56Z",
+          "conclusion": "success",
+          "name": "Check out the original pinned companion documentation",
+          "number": 2,
+          "started_at": "2026-11-21T20:28:55Z",
+          "wall_seconds": 1.0
+        },
+        {
+          "completed_at": "2026-11-21T20:29:21Z",
+          "conclusion": "success",
+          "name": "Check out the same immutable proof source in both arms",
+          "number": 3,
+          "started_at": "2026-11-21T20:28:56Z",
+          "wall_seconds": 25.0
+        },
+        {
+          "completed_at": "2026-11-21T20:29:24Z",
+          "conclusion": "success",
+          "name": "Install the existing hash-pinned workflow parser",
+          "number": 4,
+          "started_at": "2026-11-21T20:29:21Z",
+          "wall_seconds": 3.0
+        },
+        {
+          "completed_at": "2026-11-21T20:29:39Z",
+          "conclusion": "success",
+          "name": "Run original commands and require genuine canonical refusal",
+          "number": 5,
+          "started_at": "2026-11-21T20:29:25Z",
+          "wall_seconds": 14.0
+        },
+        {
+          "completed_at": "2026-11-21T20:29:40Z",
+          "conclusion": "success",
+          "name": "Retain complete or partial proof evidence",
+          "number": 6,
+          "started_at": "2026-11-21T20:29:39Z",
+          "wall_seconds": 1.0
+        },
+        {
+          "completed_at": "2026-11-21T20:29:40Z",
+          "conclusion": "success",
+          "name": "Post Check out the same immutable proof source in both arms",
+          "number": 11,
+          "started_at": "2026-11-21T20:29:40Z",
+          "wall_seconds": 0.0
+        },
+        {
+          "completed_at": "2026-11-21T20:29:40Z",
+          "conclusion": "success",
+          "name": "Post Check out the original pinned companion documentation",
+          "number": 12,
+          "started_at": "2026-11-21T20:29:40Z",
+          "wall_seconds": 0.0
+        },
+        {
+          "completed_at": "2026-11-21T20:29:40Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 13,
+          "started_at": "2026-11-21T20:29:40Z",
+          "wall_seconds": 0.0
+        }
+      ],
+      "under_test_exit_code": 1,
+      "under_test_qualification": "failed-as-expected-stale-source",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44946486076/job/136974839525"
+    },
+    "before": {
+      "completed_at": "2026-11-21T20:39:35Z",
+      "conclusion": "success",
+      "created_at": "2026-11-21T20:28:50Z",
+      "harness_seconds_outside_measured_interval": 13.658330810000052,
+      "harness_total_seconds": 607.553755,
+      "job_created_to_start_seconds": 3.0,
+      "job_id": 136974839745,
+      "job_name": "Expected stale-source rejection (before)",
+      "job_wall_seconds": 642.0,
+      "labels": [
+        "ubuntu-24.04"
+      ],
+      "measured_original_command_seconds_sum": 593.889924748,
+      "negative_control_seconds_sum": 7.222787264,
+      "original_commands": [
+        {
+          "command": "timeout \"$(python3 tools/ci/execution_policy.py seconds operation_seconds)\" python3 tools/lcb/derive_capability_matrix.py --check",
+          "condition_evaluated": true,
+          "elapsed_seconds": 0.114540008,
+          "exit_code": 0,
+          "name": "Check LCB capability matrix is source-derived",
+          "original_if": null,
+          "phase": "timed-original-step"
+        },
+        {
+          "command": "timeout \"$(python3 tools/ci/execution_policy.py seconds operation_seconds)\" python3 tools/lcb/policy_contract.py --check\ntimeout \"$(python3 tools/ci/execution_policy.py seconds operation_seconds)\" python3 -m unittest discover -s tools/lcb -p test_policy_contract.py\ntimeout \"$(python3 tools/ci/execution_policy.py seconds operation_seconds)\" python3 tools/lcb/native_policy_artifacts.py --check\n",
+          "condition_evaluated": true,
+          "elapsed_seconds": 0.365300647,
+          "exit_code": 0,
+          "name": "Check LCB policy wire/hash contract vectors",
+          "original_if": null,
+          "phase": "timed-original-step"
+        },
+        {
+          "command": "timeout \"$(python3 tools/ci/execution_policy.py seconds operation_seconds)\" python3 tools/lcb/water_normalization_contract.py --check\ntimeout \"$(python3 tools/ci/execution_policy.py seconds operation_seconds)\" python3 tools/lcb/liquid_run_receipt_contract.py --check\n",
+          "condition_evaluated": true,
+          "elapsed_seconds": 0.164917026,
+          "exit_code": 0,
+          "name": "Check native LCB setup and run receipt canonical vectors",
+          "original_if": null,
+          "phase": "timed-original-step"
+        },
+        {
+          "command": "timeout \"$(python3 tools/ci/execution_policy.py seconds operation_seconds)\" python3 tools/material_catalogue/compatibility.py --check\ntimeout \"$(python3 tools/ci/execution_policy.py seconds operation_seconds)\" python3 tools/material_catalogue/compiler.py --check\n# Aggregate suite compiles and executes multiple independent native Worlds.\ntimeout \"$(python3 tools/ci/execution_policy.py seconds native_suite_seconds)\" python3 -m unittest discover -s tools/material_catalogue -p 'test_*.py'\ntimeout \"$(python3 tools/ci/execution_policy.py seconds operation_seconds)\" python3 tools/material_catalogue/check_native_parity.py --output build/material-catalogue/native-parity.json\n",
+          "condition_evaluated": true,
+          "elapsed_seconds": 534.922678879,
+          "exit_code": 0,
+          "name": "Check material catalogue shadow compatibility",
+          "original_if": null,
+          "phase": "timed-original-step"
+        },
+        {
+          "command": "timeout \"$(python3 tools/ci/execution_policy.py seconds operation_seconds)\" python3 tools/lcb/scenario_catalogue.py --check\ntimeout \"$(python3 tools/ci/execution_policy.py seconds operation_seconds)\" python3 tools/lcb/lcb_registry.py build --check\ntimeout \"$(python3 tools/ci/execution_policy.py seconds operation_seconds)\" python3 tools/lcb/lcb_registry.py reledger --check\ntimeout \"$(python3 tools/ci/execution_policy.py seconds operation_seconds)\" python3 tools/lcb/lcb_registry.py reledger --version v2 --check\ntimeout \"$(python3 tools/ci/execution_policy.py seconds operation_seconds)\" python3 tools/lcb/lcb_registry.py reledger --version v3 --check\ntimeout \"$(python3 tools/ci/execution_policy.py seconds operation_seconds)\" python3 tools/lcb/lcb_registry.py reledger --version v4 --check\ntimeout \"$(python3 tools/ci/execution_policy.py seconds operation_seconds)\" python3 tools/lcb/lcb_registry.py reledger --version v5 --check\ntimeout \"$(python3 tools/ci/execution_policy.py seconds operation_seconds)\" python3 tools/lcb/lcb_registry.py reledger --version v6 --check\ntimeout \"$(python3 tools/ci/execution_policy.py seconds operation_seconds)\" python3 -m unittest discover -s tools/lcb -p test_lcb_registry.py\ntimeout \"$(python3 tools/ci/execution_policy.py seconds operation_seconds)\" python3 tools/lcb/physics_contracts.py --check\ntimeout \"$(python3 tools/ci/execution_policy.py seconds operation_seconds)\" python3 -m unittest discover -s tools/lcb -p test_inertial_contract.py\n",
+          "condition_evaluated": true,
+          "elapsed_seconds": 55.036291174,
+          "exit_code": 0,
+          "name": "Check LCB scenario definitions and registry are source-derived",
+          "original_if": null,
+          "phase": "timed-original-step"
+        },
+        {
+          "command": "timeout \"$(python3 tools/ci/execution_policy.py seconds operation_seconds)\" python3 tools/ci/check_docs.py",
+          "condition_evaluated": true,
+          "elapsed_seconds": 1.367418908,
+          "exit_code": 0,
+          "name": "Validate current documentation",
+          "original_if": null,
+          "phase": "timed-original-step"
+        },
+        {
+          "command": "timeout \"$(python3 tools/ci/execution_policy.py seconds operation_seconds)\" python3 tools/ci/check_repository.py --require-materialized",
+          "condition_evaluated": true,
+          "elapsed_seconds": 1.918778106,
+          "exit_code": 1,
+          "name": "Validate dependency pins and published runtime provenance",
+          "original_if": "github.event_name != 'pull_request' || github.event.pull_request.draft == false",
+          "phase": "timed-original-step"
+        }
+      ],
+      "positive_control_seconds_sum": 5.755561565,
+      "reported_host_environment": {
+        "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
+        "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+        "runner_arch": "X64",
+        "runner_os": "Linux"
+      },
+      "run_created_to_actual_refusal_seconds": 639.672158,
+      "run_created_to_job_end_seconds": 645.0,
+      "run_created_to_job_start_seconds": 3.0,
+      "runner_minutes_unweighted": 10.7,
+      "runner_name": "GitHub Actions 1000140965",
+      "seconds_to_expected_refusal_postinventory": 593.89542419,
+      "started_at": "2026-11-21T20:28:53Z",
+      "steps": [
+        {
+          "completed_at": "2026-11-21T20:28:54Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "started_at": "2026-11-21T20:28:54Z",
+          "wall_seconds": 0.0
+        },
+        {
+          "completed_at": "2026-11-21T20:28:56Z",
+          "conclusion": "success",
+          "name": "Check out the original pinned companion documentation",
+          "number": 2,
+          "started_at": "2026-11-21T20:28:54Z",
+          "wall_seconds": 2.0
+        },
+        {
+          "completed_at": "2026-11-21T20:29:20Z",
+          "conclusion": "success",
+          "name": "Check out the same immutable proof source in both arms",
+          "number": 3,
+          "started_at": "2026-11-21T20:28:56Z",
+          "wall_seconds": 24.0
+        },
+        {
+          "completed_at": "2026-11-21T20:29:23Z",
+          "conclusion": "success",
+          "name": "Install the existing hash-pinned workflow parser",
+          "number": 4,
+          "started_at": "2026-11-21T20:29:20Z",
+          "wall_seconds": 3.0
+        },
+        {
+          "completed_at": "2026-11-21T20:39:31Z",
+          "conclusion": "success",
+          "name": "Run original commands and require genuine canonical refusal",
+          "number": 5,
+          "started_at": "2026-11-21T20:29:23Z",
+          "wall_seconds": 608.0
+        },
+        {
+          "completed_at": "2026-11-21T20:39:32Z",
+          "conclusion": "success",
+          "name": "Retain complete or partial proof evidence",
+          "number": 6,
+          "started_at": "2026-11-21T20:39:31Z",
+          "wall_seconds": 1.0
+        },
+        {
+          "completed_at": "2026-11-21T20:39:32Z",
+          "conclusion": "success",
+          "name": "Post Check out the same immutable proof source in both arms",
+          "number": 11,
+          "started_at": "2026-11-21T20:39:32Z",
+          "wall_seconds": 0.0
+        },
+        {
+          "completed_at": "2026-11-21T20:39:33Z",
+          "conclusion": "success",
+          "name": "Post Check out the original pinned companion documentation",
+          "number": 12,
+          "started_at": "2026-11-21T20:39:32Z",
+          "wall_seconds": 1.0
+        },
+        {
+          "completed_at": "2026-11-21T20:39:33Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 13,
+          "started_at": "2026-11-21T20:39:33Z",
+          "wall_seconds": 0.0
+        }
+      ],
+      "under_test_exit_code": 1,
+      "under_test_qualification": "failed-as-expected-stale-source",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44946486076/job/136974839745"
+    }
+  },
+  "paired_run_runner_minutes_unweighted": 11.533333333333333,
+  "paired_run_wall_seconds": 645.0,
+  "positive_candidate_documentation_qualification": {
+    "admission_results_seconds_from_run_created": {
+      "Validate current documentation": 35.0,
+      "Validate dependency pins and published runtime provenance": 37.0
+    },
+    "causal_speed_comparison_claimed": false,
+    "completed_at": "2026-11-21T20:27:08Z",
+    "conclusion": "success",
+    "created_at": "2026-11-21T20:20:00Z",
+    "executed_merge_checkout": "6263af276946aa3f08b7ae5436c45b360aa1e10e",
+    "executed_merge_parents": [
+      "0f0161af337d6d0cee8fa961a9667aff570a75b0",
+      "68e0261466fc275a095360c63ed6f67311ecc0f6"
+    ],
+    "executed_tree": "1232a6e825561ce8b5cd125e1bad7fa6aa7e1590",
+    "executed_tree_equals_candidate": true,
+    "head_sha": "68e0261466fc275a095360c63ed6f67311ecc0f6",
+    "job_created_to_start_seconds": 3.0,
+    "job_id": 136972440220,
+    "job_log_sha256": "c265638d4bf8a796a29d2570efcb592260915bfe3bda7b59e1cd87a8270c3755",
+    "job_name": "consistency",
+    "job_wall_seconds": 425.0,
+    "labels": [
+      "ubuntu-24.04"
+    ],
+    "run_created_to_job_end_seconds": 428.0,
+    "run_created_to_job_start_seconds": 3.0,
+    "run_id": 44945708005,
+    "runner_minutes_unweighted": 7.083333333333333,
+    "runner_name": "GitHub Actions 1000140962",
+    "started_at": "2026-11-21T20:20:03Z",
+    "steps": [
+      {
+        "completed_at": "2026-11-21T20:20:05Z",
+        "conclusion": "success",
+        "name": "Set up job",
+        "number": 1,
+        "started_at": "2026-11-21T20:20:03Z",
+        "wall_seconds": 2.0
+      },
+      {
+        "completed_at": "2026-11-21T20:20:09Z",
+        "conclusion": "success",
+        "name": "Check out pinned companion workspace documentation",
+        "number": 2,
+        "started_at": "2026-11-21T20:20:05Z",
+        "wall_seconds": 4.0
+      },
+      {
+        "completed_at": "2026-11-21T20:20:26Z",
+        "conclusion": "success",
+        "name": "Check out current source and complete audited history",
+        "number": 3,
+        "started_at": "2026-11-21T20:20:09Z",
+        "wall_seconds": 17.0
+      },
+      {
+        "completed_at": "2026-11-21T20:20:27Z",
+        "conclusion": "success",
+        "name": "Validate active CI provider policy",
+        "number": 4,
+        "started_at": "2026-11-21T20:20:26Z",
+        "wall_seconds": 1.0
+      },
+      {
+        "completed_at": "2026-11-21T20:20:27Z",
+        "conclusion": "success",
+        "name": "Test CI provider policy checker",
+        "number": 5,
+        "started_at": "2026-11-21T20:20:27Z",
+        "wall_seconds": 0.0
+      },
+      {
+        "completed_at": "2026-11-21T20:20:27Z",
+        "conclusion": "success",
+        "name": "Validate Actions syntax with pinned actionlint",
+        "number": 6,
+        "started_at": "2026-11-21T20:20:27Z",
+        "wall_seconds": 0.0
+      },
+      {
+        "completed_at": "2026-11-21T20:20:33Z",
+        "conclusion": "success",
+        "name": "Audit workflow inventory and scheduling policies",
+        "number": 7,
+        "started_at": "2026-11-21T20:20:27Z",
+        "wall_seconds": 6.0
+      },
+      {
+        "completed_at": "2026-11-21T20:20:34Z",
+        "conclusion": "success",
+        "name": "Retain machine-readable workflow inventory",
+        "number": 8,
+        "started_at": "2026-11-21T20:20:33Z",
+        "wall_seconds": 1.0
+      },
+      {
+        "completed_at": "2026-11-21T20:20:35Z",
+        "conclusion": "success",
+        "name": "Validate current documentation",
+        "number": 9,
+        "started_at": "2026-11-21T20:20:34Z",
+        "wall_seconds": 1.0
+      },
+      {
+        "completed_at": "2026-11-21T20:20:37Z",
+        "conclusion": "success",
+        "name": "Validate dependency pins and published runtime provenance",
+        "number": 10,
+        "started_at": "2026-11-21T20:20:35Z",
+        "wall_seconds": 2.0
+      },
+      {
+        "completed_at": "2026-11-21T20:20:37Z",
+        "conclusion": "success",
+        "name": "Check LCB capability matrix is source-derived",
+        "number": 11,
+        "started_at": "2026-11-21T20:20:37Z",
+        "wall_seconds": 0.0
+      },
+      {
+        "completed_at": "2026-11-21T20:20:37Z",
+        "conclusion": "success",
+        "name": "Check LCB policy wire/hash contract vectors",
+        "number": 12,
+        "started_at": "2026-11-21T20:20:37Z",
+        "wall_seconds": 0.0
+      },
+      {
+        "completed_at": "2026-11-21T20:20:37Z",
+        "conclusion": "success",
+        "name": "Check native LCB setup and run receipt canonical vectors",
+        "number": 13,
+        "started_at": "2026-11-21T20:20:37Z",
+        "wall_seconds": 0.0
+      },
+      {
+        "completed_at": "2026-11-21T20:26:25Z",
+        "conclusion": "success",
+        "name": "Check material catalogue shadow compatibility",
+        "number": 14,
+        "started_at": "2026-11-21T20:20:37Z",
+        "wall_seconds": 348.0
+      },
+      {
+        "completed_at": "2026-11-21T20:26:59Z",
+        "conclusion": "success",
+        "name": "Check LCB scenario definitions and registry are source-derived",
+        "number": 15,
+        "started_at": "2026-11-21T20:26:25Z",
+        "wall_seconds": 34.0
+      },
+      {
+        "completed_at": "2026-11-21T20:26:59Z",
+        "conclusion": "success",
+        "name": "Verify retained M11 records against their audited Git revision",
+        "number": 16,
+        "started_at": "2026-11-21T20:26:59Z",
+        "wall_seconds": 0.0
+      },
+      {
+        "completed_at": "2026-11-21T20:26:59Z",
+        "conclusion": "success",
+        "name": "Test validation failure contracts",
+        "number": 17,
+        "started_at": "2026-11-21T20:26:59Z",
+        "wall_seconds": 0.0
+      },
+      {
+        "completed_at": "2026-11-21T20:26:59Z",
+        "conclusion": "success",
+        "name": "Test soliding evidence integrity contracts",
+        "number": 18,
+        "started_at": "2026-11-21T20:26:59Z",
+        "wall_seconds": 0.0
+      },
+      {
+        "completed_at": "2026-11-21T20:27:01Z",
+        "conclusion": "success",
+        "name": "Test coupled-lockstep evidence reducer contracts",
+        "number": 19,
+        "started_at": "2026-11-21T20:26:59Z",
+        "wall_seconds": 2.0
+      },
+      {
+        "completed_at": "2026-11-21T20:27:02Z",
+        "conclusion": "success",
+        "name": "Evaluate current retrieval routes",
+        "number": 20,
+        "started_at": "2026-11-21T20:27:01Z",
+        "wall_seconds": 1.0
+      },
+      {
+        "completed_at": "2026-11-21T20:27:05Z",
+        "conclusion": "success",
+        "name": "Validate Git LFS objects and whitespace",
+        "number": 21,
+        "started_at": "2026-11-21T20:27:02Z",
+        "wall_seconds": 3.0
+      },
+      {
+        "completed_at": "2026-11-21T20:27:06Z",
+        "conclusion": "success",
+        "name": "Retain retrieval evidence",
+        "number": 22,
+        "started_at": "2026-11-21T20:27:05Z",
+        "wall_seconds": 1.0
+      },
+      {
+        "completed_at": "2026-11-21T20:27:06Z",
+        "conclusion": "success",
+        "name": "Retain material catalogue parity evidence",
+        "number": 23,
+        "started_at": "2026-11-21T20:27:06Z",
+        "wall_seconds": 0.0
+      },
+      {
+        "completed_at": "2026-11-21T20:27:06Z",
+        "conclusion": "success",
+        "name": "Post Check out current source and complete audited history",
+        "number": 45,
+        "started_at": "2026-11-21T20:27:06Z",
+        "wall_seconds": 0.0
+      },
+      {
+        "completed_at": "2026-11-21T20:27:07Z",
+        "conclusion": "success",
+        "name": "Post Check out pinned companion workspace documentation",
+        "number": 46,
+        "started_at": "2026-11-21T20:27:06Z",
+        "wall_seconds": 1.0
+      },
+      {
+        "completed_at": "2026-11-21T20:27:07Z",
+        "conclusion": "success",
+        "name": "Complete job",
+        "number": 47,
+        "started_at": "2026-11-21T20:27:07Z",
+        "wall_seconds": 0.0
+      }
+    ],
+    "url": "https://github.com/techrote/cybersand/actions/runs/44945708005/job/136972440220"
+  },
+  "proof_commit": "726e442334cd73db87dac69ac6510b3c6c57f159",
+  "proof_tree": "dae3f3451301341b2634f8ac50b3d0063e770c00",
+  "raw_metadata_sha256": {
+    "artifacts-44946486076.json": "e68e98196dc82c3886e187ba8330c1098f55c8f31a331f5aeef333e996672b87",
+    "jobs-44945708005.json": "25010e4249394efc0b938bae896217796b378244ee4e733a3569c27a592a8831",
+    "jobs-44946486076.json": "7d36d98f9b662a730f98e25f99d52b8e59ff770c29a6d4fac34def5cb80cb013",
+    "run-44945708005.json": "4ee043636218c92dffefb40ba205d86dfc45f25f73677f37f616446935a28897",
+    "run-44946486076.json": "306f5794bdd6007c1e53cacaa2fe0cc70b344c03e6cf34f9bceb8c9320f80e31"
+  },
+  "run_attempt": 1,
+  "run_id": 44946486076,
+  "run_url": "https://github.com/techrote/cybersand/actions/runs/44946486076",
+  "schema": "ci-opt-002-stage-a-independent-performance-audit-v1",
+  "source_and_runtime_inputs": {
+    "runtime-provenance.json": {
+      "artifact": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "manifest_sha256": "01620e5d54ae3098a5d2fae0d8a44ab476dc8cf18a21defb3b83087d18b4676d",
+      "materialized_artifact_sha256": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e",
+      "source_inputs": {
+        "godot/native_extension/cyber_demo_bridge.hpp": "4808b768ade41dff1f73ddfccf292561438e4c23614018728af1079d45f2014c",
+        "godot/native_extension/cyber_native_cell_world.cpp": "435de9baa6aec527fa9e2243d6f4bd82f6442700177342f46113abf4c2657a9b",
+        "godot/native_extension/cyber_native_cell_world.hpp": "ccc5c0a5030a36d93dd125f49d5c261fc680bfea92d63c1634ee6323e1f06e3c",
+        "godot/native_extension/cyber_native_paint_planner.hpp": "ebd43289791d4638619600b5c5256f86c7625a950f4fda8dc39ca7ce4c364ccd",
+        "godot/native_extension/cyber_observation_values.hpp": "47af553dafed4129aa689fef0e33214d3612148bbcb6b2c10dd6164dbcc3768f",
+        "godot/native_extension/cyber_prepared_level_payload.hpp": "bb414a0f5d2b6272dec3c9f386cee99eb70e1c2f1b5ce74b23fd5953f06c1b5a",
+        "godot/native_extension/cyber_prepared_liquid_world.hpp": "bf6191413e2246baed163461829148fd8bc955b058221fc03d97b6b9b5220351",
+        "godot/native_extension/cyber_world_generator.cpp": "7c0570357f3f3a191c131b076ae914980250644ebe8cd017dfed9c57fd2676bd",
+        "godot/native_extension/cyber_world_generator.hpp": "8be2561cb5e81dee79b55fbe6431f3f50fca1ba89e4ec693fe12f4bed71e0822",
+        "godot/native_extension/generation_grammar_adapter.inc": "363255bf521f90435b620052ee8be288da5cefc4e7afe18f6871512949716b53",
+        "godot/native_extension/generation_grammar_inspection.inc": "5557ce1ef75f72862315ea69a196fd8c8449b7a6c9748e9bf57ee42dbfd3664c",
+        "godot/native_extension/generation_planes_adapter.inc": "f4b2eeba64b57140fb8e9f4f1ca5830cb12fc19b27c2b60367d65d51ff0e4d6b",
+        "godot/native_extension/generation_planes_inspection.inc": "299e87cf74bac6a4ace81e78e8ee052d4be8487f34be2e4c419680a07f9b0f72",
+        "godot/native_extension/generation_planes_methods.inc": "fcbffa284c0d2955bfcbf4ec40961f4ac4432400803470fa6f5f2984df6bf051",
+        "godot/native_extension/generation_workbench_inspection.inc": "13efa68f55fe2273ecf07a041ffcd5b4a274f808c9cb8f18fd260c4302c4e3cf",
+        "godot/native_extension/generation_workbench_methods.inc": "a7b74a41d6282777bd77220e6480258720dfde698938d3bef75d68a2841ae0d8",
+        "godot/native_extension/material_baseline_file.cpp": "03d7793bddc38414bca87d01f55d6c8d87553d49582bae547aef9bc6bbfd0873",
+        "godot/native_extension/material_baseline_file.hpp": "414558d0ebbdc73fcc43e216dd497a91d47ba142ef008cf7bbdd3352825a829f",
+        "godot/native_extension/material_lab_inspection.inc": "f02556482a21a8bf989be500a4f41e77144baf152b8fc9cb018db60fbdde67b4",
+        "godot/native_extension/pressure_optimization_inspection.inc": "d1d3044c05a50cddcae90fc96f46a3e04656e0ce034f650de50ecd431dc66b67",
+        "godot/native_extension/register_types.cpp": "fe6aab15186356478a3b6e7fe1ad6d61c504574864a77ea0302d2875263e9ae3",
+        "godot/native_extension/water_spray_coupling.inc": "02145fc4da1e45a99e2f46e3169f326aed89f22b44fb2189a1782dd284a095e9",
+        "godot/native_extension/workbench_granular_coupling.inc": "30893e2734bd8cecbaaed8d962710c7b958243d92cb6221f3d44af92f4b0f247",
+        "godot/native_extension/workbench_retained_setup.hpp": "ecb5a3e615ab7642b554c07a250d384579297b57644551a3fe1d876d0219f54a",
+        "native/include/cybersand/ballistic_water.hpp": "a278129b53d3fe5d67f8fcfc73af6b40d5603fbdda32ddacef27a9460ae2d534",
+        "native/include/cybersand/bounded_ordered_index.hpp": "79105fd5fe6f3a7f1bda463984aec01b2d067400957c60f88e38db86cc180147",
+        "native/include/cybersand/c_api.h": "2b92b5b79176ffc92d9d7e67f0ee087cd7200586d9024caa4e8dc46b0b600b45",
+        "native/include/cybersand/default_demo_recipe.hpp": "1ca54bd4939c2e7e458279fbd928c700cf835be5f72772472f7f01e911c69df4",
+        "native/include/cybersand/demo_snapshot.hpp": "d0110a269002fcc001619bb363c9ca83ec36de4e45517eebe525f40a46ffbc8d",
+        "native/include/cybersand/generation_fields.hpp": "e405c49a96e912ce07535c57fc42467849384eddb43d405718bbefa98356da79",
+        "native/include/cybersand/generation_grammar.hpp": "c44524b7523b93f403fb5e8cf751040197e7689850c980fe21bb9dd8a8c922a0",
+        "native/include/cybersand/generation_numeric.hpp": "231fd8547985397103388d863297009aee8df944d3be453e6a88ca24ee18bb3a",
+        "native/include/cybersand/generation_planes.hpp": "b0a2cf2c045664cff32818f0e3a6a36b64e95a61d52923091fe1201673968947",
+        "native/include/cybersand/generation_spatial.hpp": "8e02a001775915dc8d8fe9b79c0a1ffb65b51989ffd424a7b847d741a49065e2",
+        "native/include/cybersand/generation_typed_fields.hpp": "012dc286192086b134b1b0e21811aac25ca4cb62b20fd742895698c90d13f151",
+        "native/include/cybersand/granular_contact_response.hpp": "32877bbd6fc7eb85feabab5452250f4a318388cd7b5e7a64b93576123c7caedb",
+        "native/include/cybersand/inertial_cellular.hpp": "826af4e7b9c8d3d2ba0f7d7a6be98e4bbb7575bc12525fc6e7818f499a6c44f8",
+        "native/include/cybersand/interaction_policy.hpp": "d959a2ef74afee0f9c2f794ef5ee5362f1d8cfe6fc86a733acf2a17fec54d5ff",
+        "native/include/cybersand/interaction_rules.hpp": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+        "native/include/cybersand/liquid_comparison.hpp": "9212e0833cd5d2ff07ec37584a1579440991e87bcba7ee4aae88e4fc798e3105",
+        "native/include/cybersand/liquid_construction_refusal.hpp": "542db1338fc6bb86abf8d7b5c9eda664a4f172e19c99c94c9ee0da737d9f0c61",
+        "native/include/cybersand/liquid_policy_catalogue.hpp": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+        "native/include/cybersand/liquid_run_receipt.hpp": "0279b397afef4363122e67ffe3f4f543559b60d140232f7e188722c23498ac5c",
+        "native/include/cybersand/liquid_run_receipt_native_capture.hpp": "2c67c60aacb4ed160d69deef995f4d628fdc1714cdaadfadda80492b035901c2",
+        "native/include/cybersand/liquid_solver_policy.hpp": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+        "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+        "native/include/cybersand/material_appearance.hpp": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+        "native/include/cybersand/material_baseline.hpp": "f30727779d12bdcf7dd00f7fb7dc126b2c4d69ad9f289e3c94d4cf65398bc345",
+        "native/include/cybersand/material_capabilities.hpp": "564c15e56a7bbed737d5a495e24d311e3522bd57bcdff9a2d2752500532492c8",
+        "native/include/cybersand/material_rules.hpp": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+        "native/include/cybersand/paint_fill_planner.hpp": "ea2296d9cc3bfb57c506af4abcccef57bd92447e24ff4aa72aed33f1cf0f7cd1",
+        "native/include/cybersand/physics_diagnostics.hpp": "f027346b04b12ca67a1d38d1e772ff3992ab0a1807f710ca4b709631dac7f0e4",
+        "native/include/cybersand/precision_storage.hpp": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+        "native/include/cybersand/prepared_setup_identity.hpp": "c923cf352014e143abca6ce8837e536edf3b9d69ea444a6cef805ddc8ea034ee",
+        "native/include/cybersand/prepared_world.hpp": "bf1fb2f551c54ab8818dcc6bb4486c0ecbf5997b98debd3b964e899bc159b8f2",
+        "native/include/cybersand/pressure_flow.hpp": "a01e3a6f8f95d52f6e370edacb29cc7408f5dc151b280acf7ad241b46e49627d",
+        "native/include/cybersand/pressure_optimization.hpp": "4ecc1609b07fd4ecbd50c752e11d8722c3353e3e6bbc17097c7a59967d9b6d33",
+        "native/include/cybersand/pressure_setup_capacity.hpp": "8461ef15f8603a39ae1c45d9a983370131f90c28f646173d03927cc3689c0239",
+        "native/include/cybersand/quantity_ledger.hpp": "d8c6463c7cea7193e8257115f6eddee911cc85467d5f2ab9be830f6ee7756a79",
+        "native/include/cybersand/render_snapshot.hpp": "116733aa9b0a384bd739764fb099bc2a95ac19022ba6688e085229898c0db7a3",
+        "native/include/cybersand/scheduler_geometry.hpp": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460",
+        "native/include/cybersand/settled_discovery.hpp": "e98d772de9ed42397da48b30dc20cd8527ef1100a71757cf0b8a0a6811b150c3",
+        "native/include/cybersand/settled_regions.hpp": "05577c38da9e7fa6f2bbf1e6d589ee104dba71a840974843ff582326900493a1",
+        "native/include/cybersand/settled_world_discovery.hpp": "ab71dc2e0e13b0cc580ba3ce981a321f36b7b83d7904dd899f8746fd0e8d7138",
+        "native/include/cybersand/sha256.hpp": "0dd46c3dd8d3222c659b6b602e0c798f3c22afc034a7f1587d6ca7bcb5b1fcf7",
+        "native/include/cybersand/soliding_lifecycle.hpp": "044335712b4bfcec62a239a57092f11bc5598cc1b9a2427ef0ddbaf1d1d214cd",
+        "native/include/cybersand/transport_policy.hpp": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+        "native/include/cybersand/water_cellular_yield.hpp": "64166e69983a5373a5d61539126e813d7797a69b61abd2d314f723bedd4fdd85",
+        "native/include/cybersand/water_experiment_policy.hpp": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+        "native/include/cybersand/water_normalization.hpp": "5f33817ee4b1600e8d16efb861b5a532222c8b8f95c05e05333c371518158d49",
+        "native/include/cybersand/wave_flow.hpp": "4166f4622ce64ced588afc7bac8e4c6c52aa68134d4bc983e28a8cd56341200b",
+        "native/include/cybersand/world.hpp": "6a1e5e89fe988301b56920ae8b23f723fdc1045c396ccc05f67f9be17f8cc45e",
+        "native/include/cybersand/world_generation.hpp": "48df4a3434ea9253527c8df3a315c5b52909aedc7ca95d2c827d63ba3c4d8d4d",
+        "native/src/c_api.cpp": "b5be05c36810bbb08268e81d1ecd093dd5970288a51346dd36ba3c6048dc1344",
+        "native/src/generation_architecture_classic.inc": "ae2ce0a5540619d3d81dfb6f6d075d11c13822d36d8e2848047adcf238937c6a",
+        "native/src/generation_architecture_megablock.inc": "d623a38d484c6b4a6d252c3404854a58f8297dfb7d5878bd226b5ac8b68da8b8",
+        "native/src/generation_architecture_metabolist.inc": "82c8431eb007ff864b8b56408d63f7ec42afb2f02728f756b7e5d7aab5cf2101",
+        "native/src/generation_architecture_modules.inc": "3bab22d7ab5430d083991c6dcfdafc2ae74fff64f57b042ccd04c4f4ba6fb732",
+        "native/src/generation_architecture_rosework.inc": "9782c6c9b5e7f90a74f0282c467c2206c50ceac93211d5f34435665dd8ea3823",
+        "native/src/generation_fields.cpp": "0f4139421792d9e17c069b542620356a2978a09f7254bc4f11c1b725729a4df3",
+        "native/src/generation_grammar.cpp": "9c0367c885f1107c00cc143334c57b49617bb7b0e7a02f5373fdd4d4bdf40453",
+        "native/src/generation_interlaced_viaduct.inc": "b5e48c47fced9c916b62334ba8805d5a3f291900d17d58f0c1c1c6c68c001986",
+        "native/src/generation_interlock_brutalism.inc": "83ef2033d7ac84f77a16aae871c23144f841836f46210a0402c51f1c655cec03",
+        "native/src/generation_megablock_programme.hpp": "578100da73227831b1da418bed63ef6e4931565cd56cc04971926aa73b3cb369",
+        "native/src/generation_planes.cpp": "fde22fa3495dacefc779a6187dd954289c9e0fc4c5ba83036a036f42d537a7cb",
+        "native/src/generation_spatial.cpp": "8f99e577b7bec07142daf7c0e273146991528cdc3a13e6bf2301f14a7f049961",
+        "native/src/generation_suspended_arcology.inc": "e4210a8e9401621c8aa12c2781218dc77842dcaa4d50afcf05ca0b72aed12258",
+        "native/src/generation_typed_fields.cpp": "c3d2c2767cd0a10af967e8c975f11cbad9761e2b819d013fc5f7cf91bd832f5d",
+        "native/src/material_rules.cpp": "94928fa8f16010efaa3326750a3e951101e6905f3eafe8f99c0935ab33f0de8d",
+        "native/src/render_snapshot.cpp": "b905363461d4aa31ffbeb94bd6717993597b9da23b5ea5d8fc717a56662dbf04",
+        "native/src/render_snapshot_internal.hpp": "c36e3b4f41db0f4ac96788a74f66b92407690dccc8609951428ec7b54c292998",
+        "native/src/scheduler_geometry.cpp": "6ddfd5c5601a63edbcc1a8c430dcfe6332cbe54109c6b1d3763f933a6be38764",
+        "native/src/settled_world_discovery.cpp": "5f56ab11ac22eb6af105f52a3abca4ef91a0db1d0046855793123fa941e728b6",
+        "native/src/world.cpp": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a",
+        "native/src/world_ballistic.inc": "71bfdbc843cd0fc0ee76d8cc7cab919b19fa18aba08c856af6d52f5dfd35796a",
+        "native/src/world_generation.cpp": "9d9d6e672f689b5824ab8869232070aa2bef61cd8c42869cc41430bc2f67cb52",
+        "native/src/world_inertial.inc": "51fa78b33df7ea5e7e468c670b348ae24a19fd41905e2e78d9e841fa99af1491",
+        "native/src/world_pressure.inc": "fca639dfbf6274c590fb38283207aa838d6aa659e3ed0e95b397f6a7d8ab5be1",
+        "native/src/world_pressure_cache.inc": "9a90d1cae841fbb151658c4ed130d3f7b7fdb2bc883d2d2bfec54715476511b7",
+        "native/src/world_pressure_cache_state.inc": "cf516d4d6d3363563c2273e29ee0ef2525654cf552031c74efb923ed4ac062b3",
+        "native/src/world_pressure_column_failure.inc": "103cd884f1fd1ed6ca279be47aa6b8ba9f848f1c1205c632fa176c02e182a268",
+        "native/src/world_pressure_gas_cache.inc": "a93ee3fbd9911a4eba673ce3f5af573f8df8c66fe7f0dce7053921ebd22b4962",
+        "native/src/world_pressure_state.inc": "e7444b96c7e03cbd83b352707e55d999fb939859b41783f5bf51bb40b4d2caa2",
+        "native/src/world_quantity.inc": "4ff7dd56d93d389cb3451dae82619edf0934d2bed5703ce673e1a5d95310d489",
+        "native/src/world_wave.inc": "7658d06173f5badb686d674fce51076ffcfa876bd85961237b5950cc28db0d81"
+      }
+    },
+    "runtime-provenance.linux.json": {
+      "artifact": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "manifest_sha256": "4ad998411383bde857d9ff00348eb097ebf83e14d6227bb5af1b4960569a0bd1",
+      "materialized_artifact_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+      "source_inputs": {
+        "godot/native_extension/cyber_demo_bridge.hpp": "4808b768ade41dff1f73ddfccf292561438e4c23614018728af1079d45f2014c",
+        "godot/native_extension/cyber_native_cell_world.cpp": "435de9baa6aec527fa9e2243d6f4bd82f6442700177342f46113abf4c2657a9b",
+        "godot/native_extension/cyber_native_cell_world.hpp": "ccc5c0a5030a36d93dd125f49d5c261fc680bfea92d63c1634ee6323e1f06e3c",
+        "godot/native_extension/cyber_native_paint_planner.hpp": "ebd43289791d4638619600b5c5256f86c7625a950f4fda8dc39ca7ce4c364ccd",
+        "godot/native_extension/cyber_observation_values.hpp": "47af553dafed4129aa689fef0e33214d3612148bbcb6b2c10dd6164dbcc3768f",
+        "godot/native_extension/cyber_prepared_level_payload.hpp": "bb414a0f5d2b6272dec3c9f386cee99eb70e1c2f1b5ce74b23fd5953f06c1b5a",
+        "godot/native_extension/cyber_prepared_liquid_world.hpp": "bf6191413e2246baed163461829148fd8bc955b058221fc03d97b6b9b5220351",
+        "godot/native_extension/cyber_world_generator.cpp": "7c0570357f3f3a191c131b076ae914980250644ebe8cd017dfed9c57fd2676bd",
+        "godot/native_extension/cyber_world_generator.hpp": "8be2561cb5e81dee79b55fbe6431f3f50fca1ba89e4ec693fe12f4bed71e0822",
+        "godot/native_extension/generation_grammar_adapter.inc": "363255bf521f90435b620052ee8be288da5cefc4e7afe18f6871512949716b53",
+        "godot/native_extension/generation_grammar_inspection.inc": "5557ce1ef75f72862315ea69a196fd8c8449b7a6c9748e9bf57ee42dbfd3664c",
+        "godot/native_extension/generation_planes_adapter.inc": "f4b2eeba64b57140fb8e9f4f1ca5830cb12fc19b27c2b60367d65d51ff0e4d6b",
+        "godot/native_extension/generation_planes_inspection.inc": "299e87cf74bac6a4ace81e78e8ee052d4be8487f34be2e4c419680a07f9b0f72",
+        "godot/native_extension/generation_planes_methods.inc": "fcbffa284c0d2955bfcbf4ec40961f4ac4432400803470fa6f5f2984df6bf051",
+        "godot/native_extension/generation_workbench_inspection.inc": "13efa68f55fe2273ecf07a041ffcd5b4a274f808c9cb8f18fd260c4302c4e3cf",
+        "godot/native_extension/generation_workbench_methods.inc": "a7b74a41d6282777bd77220e6480258720dfde698938d3bef75d68a2841ae0d8",
+        "godot/native_extension/material_baseline_file.cpp": "03d7793bddc38414bca87d01f55d6c8d87553d49582bae547aef9bc6bbfd0873",
+        "godot/native_extension/material_baseline_file.hpp": "414558d0ebbdc73fcc43e216dd497a91d47ba142ef008cf7bbdd3352825a829f",
+        "godot/native_extension/material_lab_inspection.inc": "f02556482a21a8bf989be500a4f41e77144baf152b8fc9cb018db60fbdde67b4",
+        "godot/native_extension/pressure_optimization_inspection.inc": "d1d3044c05a50cddcae90fc96f46a3e04656e0ce034f650de50ecd431dc66b67",
+        "godot/native_extension/register_types.cpp": "fe6aab15186356478a3b6e7fe1ad6d61c504574864a77ea0302d2875263e9ae3",
+        "godot/native_extension/water_spray_coupling.inc": "02145fc4da1e45a99e2f46e3169f326aed89f22b44fb2189a1782dd284a095e9",
+        "godot/native_extension/workbench_granular_coupling.inc": "30893e2734bd8cecbaaed8d962710c7b958243d92cb6221f3d44af92f4b0f247",
+        "godot/native_extension/workbench_retained_setup.hpp": "ecb5a3e615ab7642b554c07a250d384579297b57644551a3fe1d876d0219f54a",
+        "native/include/cybersand/ballistic_water.hpp": "a278129b53d3fe5d67f8fcfc73af6b40d5603fbdda32ddacef27a9460ae2d534",
+        "native/include/cybersand/bounded_ordered_index.hpp": "79105fd5fe6f3a7f1bda463984aec01b2d067400957c60f88e38db86cc180147",
+        "native/include/cybersand/c_api.h": "2b92b5b79176ffc92d9d7e67f0ee087cd7200586d9024caa4e8dc46b0b600b45",
+        "native/include/cybersand/default_demo_recipe.hpp": "1ca54bd4939c2e7e458279fbd928c700cf835be5f72772472f7f01e911c69df4",
+        "native/include/cybersand/demo_snapshot.hpp": "d0110a269002fcc001619bb363c9ca83ec36de4e45517eebe525f40a46ffbc8d",
+        "native/include/cybersand/generation_fields.hpp": "e405c49a96e912ce07535c57fc42467849384eddb43d405718bbefa98356da79",
+        "native/include/cybersand/generation_grammar.hpp": "c44524b7523b93f403fb5e8cf751040197e7689850c980fe21bb9dd8a8c922a0",
+        "native/include/cybersand/generation_numeric.hpp": "231fd8547985397103388d863297009aee8df944d3be453e6a88ca24ee18bb3a",
+        "native/include/cybersand/generation_planes.hpp": "b0a2cf2c045664cff32818f0e3a6a36b64e95a61d52923091fe1201673968947",
+        "native/include/cybersand/generation_spatial.hpp": "8e02a001775915dc8d8fe9b79c0a1ffb65b51989ffd424a7b847d741a49065e2",
+        "native/include/cybersand/generation_typed_fields.hpp": "012dc286192086b134b1b0e21811aac25ca4cb62b20fd742895698c90d13f151",
+        "native/include/cybersand/granular_contact_response.hpp": "32877bbd6fc7eb85feabab5452250f4a318388cd7b5e7a64b93576123c7caedb",
+        "native/include/cybersand/inertial_cellular.hpp": "826af4e7b9c8d3d2ba0f7d7a6be98e4bbb7575bc12525fc6e7818f499a6c44f8",
+        "native/include/cybersand/interaction_policy.hpp": "d959a2ef74afee0f9c2f794ef5ee5362f1d8cfe6fc86a733acf2a17fec54d5ff",
+        "native/include/cybersand/interaction_rules.hpp": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+        "native/include/cybersand/liquid_comparison.hpp": "9212e0833cd5d2ff07ec37584a1579440991e87bcba7ee4aae88e4fc798e3105",
+        "native/include/cybersand/liquid_construction_refusal.hpp": "542db1338fc6bb86abf8d7b5c9eda664a4f172e19c99c94c9ee0da737d9f0c61",
+        "native/include/cybersand/liquid_policy_catalogue.hpp": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+        "native/include/cybersand/liquid_run_receipt.hpp": "0279b397afef4363122e67ffe3f4f543559b60d140232f7e188722c23498ac5c",
+        "native/include/cybersand/liquid_run_receipt_native_capture.hpp": "2c67c60aacb4ed160d69deef995f4d628fdc1714cdaadfadda80492b035901c2",
+        "native/include/cybersand/liquid_solver_policy.hpp": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+        "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+        "native/include/cybersand/material_appearance.hpp": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+        "native/include/cybersand/material_baseline.hpp": "f30727779d12bdcf7dd00f7fb7dc126b2c4d69ad9f289e3c94d4cf65398bc345",
+        "native/include/cybersand/material_capabilities.hpp": "564c15e56a7bbed737d5a495e24d311e3522bd57bcdff9a2d2752500532492c8",
+        "native/include/cybersand/material_rules.hpp": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+        "native/include/cybersand/paint_fill_planner.hpp": "ea2296d9cc3bfb57c506af4abcccef57bd92447e24ff4aa72aed33f1cf0f7cd1",
+        "native/include/cybersand/physics_diagnostics.hpp": "f027346b04b12ca67a1d38d1e772ff3992ab0a1807f710ca4b709631dac7f0e4",
+        "native/include/cybersand/precision_storage.hpp": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+        "native/include/cybersand/prepared_setup_identity.hpp": "c923cf352014e143abca6ce8837e536edf3b9d69ea444a6cef805ddc8ea034ee",
+        "native/include/cybersand/prepared_world.hpp": "bf1fb2f551c54ab8818dcc6bb4486c0ecbf5997b98debd3b964e899bc159b8f2",
+        "native/include/cybersand/pressure_flow.hpp": "a01e3a6f8f95d52f6e370edacb29cc7408f5dc151b280acf7ad241b46e49627d",
+        "native/include/cybersand/pressure_optimization.hpp": "4ecc1609b07fd4ecbd50c752e11d8722c3353e3e6bbc17097c7a59967d9b6d33",
+        "native/include/cybersand/pressure_setup_capacity.hpp": "8461ef15f8603a39ae1c45d9a983370131f90c28f646173d03927cc3689c0239",
+        "native/include/cybersand/quantity_ledger.hpp": "d8c6463c7cea7193e8257115f6eddee911cc85467d5f2ab9be830f6ee7756a79",
+        "native/include/cybersand/render_snapshot.hpp": "116733aa9b0a384bd739764fb099bc2a95ac19022ba6688e085229898c0db7a3",
+        "native/include/cybersand/scheduler_geometry.hpp": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460",
+        "native/include/cybersand/settled_discovery.hpp": "e98d772de9ed42397da48b30dc20cd8527ef1100a71757cf0b8a0a6811b150c3",
+        "native/include/cybersand/settled_regions.hpp": "05577c38da9e7fa6f2bbf1e6d589ee104dba71a840974843ff582326900493a1",
+        "native/include/cybersand/settled_world_discovery.hpp": "ab71dc2e0e13b0cc580ba3ce981a321f36b7b83d7904dd899f8746fd0e8d7138",
+        "native/include/cybersand/sha256.hpp": "0dd46c3dd8d3222c659b6b602e0c798f3c22afc034a7f1587d6ca7bcb5b1fcf7",
+        "native/include/cybersand/soliding_lifecycle.hpp": "044335712b4bfcec62a239a57092f11bc5598cc1b9a2427ef0ddbaf1d1d214cd",
+        "native/include/cybersand/transport_policy.hpp": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+        "native/include/cybersand/water_cellular_yield.hpp": "64166e69983a5373a5d61539126e813d7797a69b61abd2d314f723bedd4fdd85",
+        "native/include/cybersand/water_experiment_policy.hpp": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+        "native/include/cybersand/water_normalization.hpp": "5f33817ee4b1600e8d16efb861b5a532222c8b8f95c05e05333c371518158d49",
+        "native/include/cybersand/wave_flow.hpp": "4166f4622ce64ced588afc7bac8e4c6c52aa68134d4bc983e28a8cd56341200b",
+        "native/include/cybersand/world.hpp": "6a1e5e89fe988301b56920ae8b23f723fdc1045c396ccc05f67f9be17f8cc45e",
+        "native/include/cybersand/world_generation.hpp": "48df4a3434ea9253527c8df3a315c5b52909aedc7ca95d2c827d63ba3c4d8d4d",
+        "native/src/c_api.cpp": "b5be05c36810bbb08268e81d1ecd093dd5970288a51346dd36ba3c6048dc1344",
+        "native/src/generation_architecture_classic.inc": "ae2ce0a5540619d3d81dfb6f6d075d11c13822d36d8e2848047adcf238937c6a",
+        "native/src/generation_architecture_megablock.inc": "d623a38d484c6b4a6d252c3404854a58f8297dfb7d5878bd226b5ac8b68da8b8",
+        "native/src/generation_architecture_metabolist.inc": "82c8431eb007ff864b8b56408d63f7ec42afb2f02728f756b7e5d7aab5cf2101",
+        "native/src/generation_architecture_modules.inc": "3bab22d7ab5430d083991c6dcfdafc2ae74fff64f57b042ccd04c4f4ba6fb732",
+        "native/src/generation_architecture_rosework.inc": "9782c6c9b5e7f90a74f0282c467c2206c50ceac93211d5f34435665dd8ea3823",
+        "native/src/generation_fields.cpp": "0f4139421792d9e17c069b542620356a2978a09f7254bc4f11c1b725729a4df3",
+        "native/src/generation_grammar.cpp": "9c0367c885f1107c00cc143334c57b49617bb7b0e7a02f5373fdd4d4bdf40453",
+        "native/src/generation_interlaced_viaduct.inc": "b5e48c47fced9c916b62334ba8805d5a3f291900d17d58f0c1c1c6c68c001986",
+        "native/src/generation_interlock_brutalism.inc": "83ef2033d7ac84f77a16aae871c23144f841836f46210a0402c51f1c655cec03",
+        "native/src/generation_megablock_programme.hpp": "578100da73227831b1da418bed63ef6e4931565cd56cc04971926aa73b3cb369",
+        "native/src/generation_planes.cpp": "fde22fa3495dacefc779a6187dd954289c9e0fc4c5ba83036a036f42d537a7cb",
+        "native/src/generation_spatial.cpp": "8f99e577b7bec07142daf7c0e273146991528cdc3a13e6bf2301f14a7f049961",
+        "native/src/generation_suspended_arcology.inc": "e4210a8e9401621c8aa12c2781218dc77842dcaa4d50afcf05ca0b72aed12258",
+        "native/src/generation_typed_fields.cpp": "c3d2c2767cd0a10af967e8c975f11cbad9761e2b819d013fc5f7cf91bd832f5d",
+        "native/src/material_rules.cpp": "94928fa8f16010efaa3326750a3e951101e6905f3eafe8f99c0935ab33f0de8d",
+        "native/src/render_snapshot.cpp": "b905363461d4aa31ffbeb94bd6717993597b9da23b5ea5d8fc717a56662dbf04",
+        "native/src/render_snapshot_internal.hpp": "c36e3b4f41db0f4ac96788a74f66b92407690dccc8609951428ec7b54c292998",
+        "native/src/scheduler_geometry.cpp": "6ddfd5c5601a63edbcc1a8c430dcfe6332cbe54109c6b1d3763f933a6be38764",
+        "native/src/settled_world_discovery.cpp": "5f56ab11ac22eb6af105f52a3abca4ef91a0db1d0046855793123fa941e728b6",
+        "native/src/world.cpp": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a",
+        "native/src/world_ballistic.inc": "71bfdbc843cd0fc0ee76d8cc7cab919b19fa18aba08c856af6d52f5dfd35796a",
+        "native/src/world_generation.cpp": "9d9d6e672f689b5824ab8869232070aa2bef61cd8c42869cc41430bc2f67cb52",
+        "native/src/world_inertial.inc": "51fa78b33df7ea5e7e468c670b348ae24a19fd41905e2e78d9e841fa99af1491",
+        "native/src/world_pressure.inc": "fca639dfbf6274c590fb38283207aa838d6aa659e3ed0e95b397f6a7d8ab5be1",
+        "native/src/world_pressure_cache.inc": "9a90d1cae841fbb151658c4ed130d3f7b7fdb2bc883d2d2bfec54715476511b7",
+        "native/src/world_pressure_cache_state.inc": "cf516d4d6d3363563c2273e29ee0ef2525654cf552031c74efb923ed4ac062b3",
+        "native/src/world_pressure_column_failure.inc": "103cd884f1fd1ed6ca279be47aa6b8ba9f848f1c1205c632fa176c02e182a268",
+        "native/src/world_pressure_gas_cache.inc": "a93ee3fbd9911a4eba673ce3f5af573f8df8c66fe7f0dce7053921ebd22b4962",
+        "native/src/world_pressure_state.inc": "e7444b96c7e03cbd83b352707e55d999fb939859b41783f5bf51bb40b4d2caa2",
+        "native/src/world_quantity.inc": "4ff7dd56d93d389cb3451dae82619edf0934d2bed5703ce673e1a5d95310d489",
+        "native/src/world_wave.inc": "7658d06173f5badb686d674fce51076ffcfa876bd85961237b5950cc28db0d81"
+      }
+    }
+  },
+  "source_checks": {
+    "0f0161af337d6d0cee8fa961a9667aff570a75b0": {
+      "manifest_source_hash_checks": 210,
+      "manifests": 2,
+      "native_lfs_runtime_identity_checks": 2
+    },
+    "68e0261466fc275a095360c63ed6f67311ecc0f6": {
+      "manifest_source_hash_checks": 210,
+      "manifests": 2,
+      "native_lfs_runtime_identity_checks": 2
+    },
+    "726e442334cd73db87dac69ac6510b3c6c57f159": {
+      "manifest_source_hash_checks": 210,
+      "manifests": 2,
+      "native_lfs_runtime_identity_checks": 2
+    }
+  },
+  "source_diffs": {
+    "0f0161af337d6d0cee8fa961a9667aff570a75b0..68e0261466fc275a095360c63ed6f67311ecc0f6": [
+      "M\t.github/workflows/documentation.yml",
+      "M\tdocs/operations/ci-execution-and-performance.md"
+    ],
+    "68e0261466fc275a095360c63ed6f67311ecc0f6..726e442334cd73db87dac69ac6510b3c6c57f159": [
+      "A\t.github/workflows/ci-opt-002-admission-proof.yml",
+      "A\ttools/ci/run_ci_opt_002_admission_demo.py"
+    ]
+  },
+  "step_inventory_sha256": "3da6cf6de71eb606d493851a44338abcab189c02791d8dab9c1e3762d6849ff0",
+  "unchanged_step_count": 22,
+  "verified": {
+    "all_artifact_file_ledgers": true,
+    "all_manifest_input_hashes_at_three_commits": true,
+    "all_original_predecessors_pass_before_genuine_rejection": true,
+    "both_zip_digests": true,
+    "complete_single_attempt_job_inventory": true,
+    "identical_runtime_input_ledgers": true,
+    "native_binary_hashes_match_committed_lfs": true,
+    "only_admission_steps_reordered": true,
+    "same_four_adverse_controls_and_three_positive_checks_per_arm": true,
+    "same_immutable_proof_source": true,
+    "unchanged_22_step_definition_inventory": true
+  }
+}

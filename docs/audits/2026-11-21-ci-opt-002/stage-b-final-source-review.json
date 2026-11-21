@@ -1,0 +1,217 @@
+{
+  "status": "passed",
+  "reviewed_head": "65aa1382a49bb01571177b4639f27b64f5dcb66d",
+  "reviewed_base": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+  "changed_paths": [
+    "docs/operations/ci-execution-and-performance.md",
+    "docs/operations/github-development-and-release.md",
+    "docs/operations/testing-validation-and-replay.md",
+    "docs/reference/retrieval-index.md",
+    "docs/reference/retrieval-questions-ci.json",
+    "tools/ci/native_execution_policy.py",
+    "tools/ci/run_native_family.sh",
+    "tools/ci/test_native_shards.py",
+    "tools/ci/test_native_watchdogs.py",
+    "tools/ci/verify_native_shards.py"
+  ],
+  "original_command_count": 20,
+  "command_and_child_timeout_inventory_sha256": "00adda9e23d3b402ffc6a5ea2c4633d1792d406f1228f3c62e69b385cf94e500",
+  "required_suites": [
+    "asan-ubsan",
+    "native-normal",
+    "soliding-asan",
+    "soliding-normal",
+    "tsan",
+    "worldgen",
+    "worldgen-sanitize"
+  ],
+  "canonical_native_workflow_identical": true,
+  "production_inputs_unchanged": true,
+  "child_commands": {
+    "build-tests-tsan": {
+      "key": "native_compile_seconds",
+      "command": [
+        "make",
+        "build/tests_tsan"
+      ],
+      "child_seconds": 3600
+    },
+    "tests-tsan": {
+      "key": "native_case_seconds",
+      "command": [
+        "env",
+        "TSAN_OPTIONS=halt_on_error=1",
+        "./build/tests_tsan"
+      ],
+      "child_seconds": 3600
+    },
+    "c-header-check": {
+      "key": "operation_seconds",
+      "command": [
+        "make",
+        "c-header-check"
+      ],
+      "child_seconds": 300
+    },
+    "build-tests": {
+      "key": "native_compile_seconds",
+      "command": [
+        "make",
+        "build/tests"
+      ],
+      "child_seconds": 3600
+    },
+    "tests": {
+      "key": "native_case_seconds",
+      "command": [
+        "./build/tests"
+      ],
+      "child_seconds": 3600
+    },
+    "shared": {
+      "key": "native_compile_seconds",
+      "command": [
+        "make",
+        "shared"
+      ],
+      "child_seconds": 3600
+    },
+    "build-benchmark": {
+      "key": "native_compile_seconds",
+      "command": [
+        "make",
+        "build/benchmark"
+      ],
+      "child_seconds": 3600
+    },
+    "benchmark": {
+      "key": "native_case_seconds",
+      "command": [
+        "./build/benchmark"
+      ],
+      "child_seconds": 3600
+    },
+    "build-tests-sanitized": {
+      "key": "native_compile_seconds",
+      "command": [
+        "make",
+        "build/tests_sanitized"
+      ],
+      "child_seconds": 3600
+    },
+    "tests-sanitized": {
+      "key": "native_case_seconds",
+      "command": [
+        "env",
+        "ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1",
+        "UBSAN_OPTIONS=halt_on_error=1",
+        "./build/tests_sanitized"
+      ],
+      "child_seconds": 3600
+    },
+    "physics-characterisation-sanitize": {
+      "key": "native_case_seconds",
+      "command": [
+        "env",
+        "ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1",
+        "UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1",
+        "make",
+        "physics-characterisation-sanitize"
+      ],
+      "child_seconds": 10200
+    },
+    "worldgen-test": {
+      "key": "native_case_seconds",
+      "command": [
+        "/usr/bin/time",
+        "-v",
+        "make",
+        "-j2",
+        "worldgen-test"
+      ],
+      "child_seconds": 3600
+    },
+    "worldgen-sanitize": {
+      "key": "native_case_seconds",
+      "command": [
+        "env",
+        "ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1",
+        "UBSAN_OPTIONS=halt_on_error=1",
+        "/usr/bin/time",
+        "-v",
+        "make",
+        "-j2",
+        "worldgen-sanitize"
+      ],
+      "child_seconds": 3600
+    },
+    "soliding-test": {
+      "key": "native_case_seconds",
+      "command": [
+        "make",
+        "soliding-test"
+      ],
+      "child_seconds": 3600
+    },
+    "soliding-benchmark-smoke": {
+      "key": "native_case_seconds",
+      "command": [
+        "make",
+        "soliding-benchmark-smoke"
+      ],
+      "child_seconds": 3600
+    },
+    "soliding-stage3b-validation-apparatus-test": {
+      "key": "native_case_seconds",
+      "command": [
+        "make",
+        "soliding-stage3b-validation-apparatus-test"
+      ],
+      "child_seconds": 3600
+    },
+    "soliding-stage3-cost-smoke": {
+      "key": "native_case_seconds",
+      "command": [
+        "make",
+        "soliding-stage3-cost-smoke"
+      ],
+      "child_seconds": 3600
+    },
+    "build-settled-regions-sanitized": {
+      "key": "native_compile_seconds",
+      "command": [
+        "/usr/bin/time",
+        "-v",
+        "make",
+        "build/test_settled_regions_sanitized"
+      ],
+      "child_seconds": 3600
+    },
+    "build-soliding-sanitized": {
+      "key": "native_compile_seconds",
+      "command": [
+        "make",
+        "build/test_soliding_lifecycle_sanitized",
+        "build/test_settled_discovery_sanitized",
+        "build/test_settled_regions_sanitized",
+        "build/test_settled_world_discovery_sanitized",
+        "build/test_stage3b_runtime_storage_sanitized",
+        "build/test_stage3b_bounded_spatial_index_sanitized",
+        "build/test_stage3b_sparse_mutation_witness_sanitized",
+        "build/test_stage3b_sparse_activity_deadline_sanitized"
+      ],
+      "child_seconds": 3600
+    },
+    "soliding-sanitize": {
+      "key": "native_case_seconds",
+      "command": [
+        "env",
+        "ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1",
+        "UBSAN_OPTIONS=halt_on_error=1",
+        "make",
+        "soliding-sanitize"
+      ],
+      "child_seconds": 3600
+    }
+  }
+}

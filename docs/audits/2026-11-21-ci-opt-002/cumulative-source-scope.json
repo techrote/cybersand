@@ -1,0 +1,22 @@
+{
+  "status": "passed",
+  "base": "0f0161af337d6d0cee8fa961a9667aff570a75b0",
+  "candidate": "65aa1382a49bb01571177b4639f27b64f5dcb66d",
+  "cumulative_changed_paths": [
+    ".github/workflows/documentation.yml",
+    "docs/operations/ci-execution-and-performance.md",
+    "docs/operations/github-development-and-release.md",
+    "docs/operations/testing-validation-and-replay.md",
+    "docs/reference/retrieval-index.md",
+    "docs/reference/retrieval-questions-ci.json",
+    "tools/ci/native_execution_policy.py",
+    "tools/ci/run_native_family.sh",
+    "tools/ci/test_native_shards.py",
+    "tools/ci/test_native_watchdogs.py",
+    "tools/ci/verify_native_shards.py"
+  ],
+  "cumulative_path_count": 11,
+  "no_makefile_native_godot_diff": true,
+  "original_ci_retrieval_questions_byte_equivalent_as_objects": true,
+  "working_tree_clean": true
+}

@@ -1,0 +1,432 @@
+{
+  "check_count": 7,
+  "checks": [
+    {
+      "name": "clean exact-source identity",
+      "source": "c9b9d2ceec1ca67f45e1d4f2bed81fbb0ef34f0a",
+      "status": "passed"
+    },
+    {
+      "earlier_worker": {
+        "exit": 0,
+        "message": {
+          "phase": "finished",
+          "source": "c9b9d2ceec1ca67f45e1d4f2bed81fbb0ef34f0a"
+        },
+        "stderr": ""
+      },
+      "name": "two real rapid local pushes during earlier worker",
+      "old_result_for_new_source_errors": [
+        "Verifier checkout differs from workflow event SHA"
+      ],
+      "pushes": [
+        {
+          "completed_monotonic": 37389.598016893,
+          "label": "B",
+          "sha": "e6601c87239c5e258624c2bf33aa0a45e0e0450f",
+          "started_monotonic": 37389.563236846
+        },
+        {
+          "completed_monotonic": 37389.654004054,
+          "label": "C",
+          "sha": "b59c1cf235ca8e19b3b8e862b1f8f1c7818c1fba",
+          "started_monotonic": 37389.618329309
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "exit": 1,
+      "name": "superseded local remote lease refuses old source",
+      "status": "passed",
+      "stderr": "To /workspace/scratch/4dc696b25568/cybersand-ci-opt-002/build/ci-opt-002/final-review/git-process-3t97ni1l/origin.git\n ! [rejected]        c9b9d2ceec1ca67f45e1d4f2bed81fbb0ef34f0a -> review (stale info)\nerror: failed to push some refs to '/workspace/scratch/4dc696b25568/cybersand-ci-opt-002/build/ci-opt-002/final-review/git-process-3t97ni1l/origin.git'\n",
+      "unchanged_remote": "b59c1cf235ca8e19b3b8e862b1f8f1c7818c1fba"
+    },
+    {
+      "errors": [
+        "Verifier checkout differs from workflow event SHA"
+      ],
+      "name": "new checkout cannot attest earlier workflow SHA",
+      "status": "passed"
+    },
+    {
+      "name": "actual tracked source change during worker is refused",
+      "restored_sha256": "4e26b4536f91da47b8d7d2da381158c95689ca6ede789a482bf2b1f513e5b0f3",
+      "status": "passed",
+      "worker": {
+        "exit": 1,
+        "message": {
+          "error": "Native execution inputs changed: native/src/world_generation.cpp",
+          "phase": "refused"
+        },
+        "stderr": ""
+      }
+    },
+    {
+      "errors": [
+        "exit codes: ValueError: Original family or log capture exited nonzero",
+        "execution outputs: ValueError: Native command receipt inventory differs",
+        "Native family execution outcome: failure"
+      ],
+      "exit": 19,
+      "name": "actual failure retains original partial worker outcome",
+      "receipt": "/workspace/scratch/4dc696b25568/cybersand-ci-opt-002/build/ci-opt-002/final-review/git-process-3t97ni1l/evidence-failure/native-parallel/worldgen-sanitize/receipt.json",
+      "status": "passed"
+    },
+    {
+      "errors": [
+        "exit codes: ValueError: Original family or log capture exited nonzero",
+        "execution outputs: ValueError: Native command receipt inventory differs",
+        "Native family execution outcome: cancelled"
+      ],
+      "exit": 143,
+      "name": "actual cancelled retains original partial worker outcome",
+      "receipt": "/workspace/scratch/4dc696b25568/cybersand-ci-opt-002/build/ci-opt-002/final-review/git-process-3t97ni1l/evidence-cancelled/native-parallel/worldgen-sanitize/receipt.json",
+      "status": "passed"
+    }
+  ],
+  "command_ledger": [
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/workspace/scratch/4dc696b25568/cybersand-ci-opt-002",
+      "exit": 0,
+      "seconds": 0.0031501539997407235,
+      "stdout_sha256": "08acae6cfdbd009760035d109f5750caaf24b2e3af0ef26c20a8d845f3ef57fe",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "git",
+        "init",
+        "--bare"
+      ],
+      "cwd": "/workspace/scratch/4dc696b25568/cybersand-ci-opt-002/build/ci-opt-002/final-review/git-process-3t97ni1l/origin.git",
+      "exit": 0,
+      "seconds": 0.005843091996212024,
+      "stdout_sha256": "b01c8c8ba98e317a282f2d39298e2db46a1aaaa70350cc5086a37839fc890566",
+      "stderr_sha256": "3e70934f1909b0f5a846d62237fcc1509d733b9fb0321187024723dfc67176d3"
+    },
+    {
+      "command": [
+        "git",
+        "init",
+        "--initial-branch=review"
+      ],
+      "cwd": "/workspace/scratch/4dc696b25568/cybersand-ci-opt-002/build/ci-opt-002/final-review/git-process-3t97ni1l/producer",
+      "exit": 0,
+      "seconds": 0.004355507997388486,
+      "stdout_sha256": "6045985ad446e3cc9b676ff0ca8b1fe9d647f1a5e16f7f4953c7a6029404a389",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "git",
+        "config",
+        "user.name",
+        "CI qualification fixture"
+      ],
+      "cwd": "/workspace/scratch/4dc696b25568/cybersand-ci-opt-002/build/ci-opt-002/final-review/git-process-3t97ni1l/producer",
+      "exit": 0,
+      "seconds": 0.0025924029978341423,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "git",
+        "config",
+        "user.email",
+        "ci-fixture@example.invalid"
+      ],
+      "cwd": "/workspace/scratch/4dc696b25568/cybersand-ci-opt-002/build/ci-opt-002/final-review/git-process-3t97ni1l/producer",
+      "exit": 0,
+      "seconds": 0.0024925819961936213,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "git",
+        "add",
+        "."
+      ],
+      "cwd": "/workspace/scratch/4dc696b25568/cybersand-ci-opt-002/build/ci-opt-002/final-review/git-process-3t97ni1l/producer",
+      "exit": 0,
+      "seconds": 0.015977898001438007,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "git",
+        "commit",
+        "-m",
+        "local control source A"
+      ],
+      "cwd": "/workspace/scratch/4dc696b25568/cybersand-ci-opt-002/build/ci-opt-002/final-review/git-process-3t97ni1l/producer",
+      "exit": 0,
+      "seconds": 0.019377402997633908,
+      "stdout_sha256": "8a682b3b8dccb10936317342c55b86a7719e3da9ceb17b3a0d37a7e99b75c6f1",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/workspace/scratch/4dc696b25568/cybersand-ci-opt-002/build/ci-opt-002/final-review/git-process-3t97ni1l/producer",
+      "exit": 0,
+      "seconds": 0.0021801500042784028,
+      "stdout_sha256": "6d483332533bfc62c16eb58b839e6aeef8cbef6bef031b23e3d7fe1395900926",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "git",
+        "remote",
+        "add",
+        "origin",
+        "/workspace/scratch/4dc696b25568/cybersand-ci-opt-002/build/ci-opt-002/final-review/git-process-3t97ni1l/origin.git"
+      ],
+      "cwd": "/workspace/scratch/4dc696b25568/cybersand-ci-opt-002/build/ci-opt-002/final-review/git-process-3t97ni1l/producer",
+      "exit": 0,
+      "seconds": 0.008964578002633061,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "git",
+        "push",
+        "--set-upstream",
+        "origin",
+        "review"
+      ],
+      "cwd": "/workspace/scratch/4dc696b25568/cybersand-ci-opt-002/build/ci-opt-002/final-review/git-process-3t97ni1l/producer",
+      "exit": 0,
+      "seconds": 0.0936454640032025,
+      "stdout_sha256": "55a23f76f2344df4c4764e8571f22dc8f0d1c42a36492da94d77522bab511b09",
+      "stderr_sha256": "e2827f280cdcd3c8c419c03700cb0cc5df916bbb390770e36bb9a191711085b3"
+    },
+    {
+      "command": [
+        "git",
+        "clone",
+        "--branch",
+        "review",
+        "/workspace/scratch/4dc696b25568/cybersand-ci-opt-002/build/ci-opt-002/final-review/git-process-3t97ni1l/origin.git",
+        "/workspace/scratch/4dc696b25568/cybersand-ci-opt-002/build/ci-opt-002/final-review/git-process-3t97ni1l/worker"
+      ],
+      "cwd": "/workspace/scratch/4dc696b25568/cybersand-ci-opt-002/build/ci-opt-002/final-review/git-process-3t97ni1l",
+      "exit": 0,
+      "seconds": 0.02296640200074762,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "837d8ff42e5c9b13093b483aa6eb61f2cd9884e7b702a764848daf198da0ac68"
+    },
+    {
+      "command": [
+        "git",
+        "add",
+        "native/src/world_generation.cpp"
+      ],
+      "cwd": "/workspace/scratch/4dc696b25568/cybersand-ci-opt-002/build/ci-opt-002/final-review/git-process-3t97ni1l/producer",
+      "exit": 0,
+      "seconds": 0.008843988995067775,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "git",
+        "commit",
+        "-m",
+        "local rapid source advance B"
+      ],
+      "cwd": "/workspace/scratch/4dc696b25568/cybersand-ci-opt-002/build/ci-opt-002/final-review/git-process-3t97ni1l/producer",
+      "exit": 0,
+      "seconds": 0.011325040999508929,
+      "stdout_sha256": "793275a512bc05550e441ef95ff410e7357e3126293494ae844b88f868748c3a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/workspace/scratch/4dc696b25568/cybersand-ci-opt-002/build/ci-opt-002/final-review/git-process-3t97ni1l/producer",
+      "exit": 0,
+      "seconds": 0.003596791000745725,
+      "stdout_sha256": "560627ea94982fda49f89ee715231b0a3d5e0102de217f6203f30aa357bb8c28",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "git",
+        "push",
+        "origin",
+        "review"
+      ],
+      "cwd": "/workspace/scratch/4dc696b25568/cybersand-ci-opt-002/build/ci-opt-002/final-review/git-process-3t97ni1l/producer",
+      "exit": 0,
+      "seconds": 0.034774548999848776,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "26aaa7fa01a44449c5ef3d6339520e0942e5ffaa8c65699081179f7e330b7dcf"
+    },
+    {
+      "command": [
+        "git",
+        "add",
+        "native/src/world_generation.cpp"
+      ],
+      "cwd": "/workspace/scratch/4dc696b25568/cybersand-ci-opt-002/build/ci-opt-002/final-review/git-process-3t97ni1l/producer",
+      "exit": 0,
+      "seconds": 0.006739112999639474,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "git",
+        "commit",
+        "-m",
+        "local rapid source advance C"
+      ],
+      "cwd": "/workspace/scratch/4dc696b25568/cybersand-ci-opt-002/build/ci-opt-002/final-review/git-process-3t97ni1l/producer",
+      "exit": 0,
+      "seconds": 0.009869071996945422,
+      "stdout_sha256": "6c0211cb1e734b8321b7f0d32c6c337da18ec553a42b444db2fc014d9c3bb612",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/workspace/scratch/4dc696b25568/cybersand-ci-opt-002/build/ci-opt-002/final-review/git-process-3t97ni1l/producer",
+      "exit": 0,
+      "seconds": 0.0035937270004069433,
+      "stdout_sha256": "fef88e5173088dc45e0fa6008108c871068783dfd6e859a311aaeb8b192f1c04",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "git",
+        "push",
+        "origin",
+        "review"
+      ],
+      "cwd": "/workspace/scratch/4dc696b25568/cybersand-ci-opt-002/build/ci-opt-002/final-review/git-process-3t97ni1l/producer",
+      "exit": 0,
+      "seconds": 0.035669415003212634,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "46f9b020c41ff1f1874c337b6549becf04ec3c74513ec324fcbb0f8708f0ea90"
+    },
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "refs/heads/review"
+      ],
+      "cwd": "/workspace/scratch/4dc696b25568/cybersand-ci-opt-002/build/ci-opt-002/final-review/git-process-3t97ni1l/origin.git",
+      "exit": 0,
+      "seconds": 0.0030907750042388216,
+      "stdout_sha256": "fef88e5173088dc45e0fa6008108c871068783dfd6e859a311aaeb8b192f1c04",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "git",
+        "push",
+        "--force-with-lease=refs/heads/review:c9b9d2ceec1ca67f45e1d4f2bed81fbb0ef34f0a",
+        "origin",
+        "c9b9d2ceec1ca67f45e1d4f2bed81fbb0ef34f0a:refs/heads/review"
+      ],
+      "cwd": "/workspace/scratch/4dc696b25568/cybersand-ci-opt-002/build/ci-opt-002/final-review/git-process-3t97ni1l/producer",
+      "exit": 1,
+      "seconds": 0.007444157003192231,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "f907f83369f1cd8f554f99596413cb4513e44276e608f53442e3aeae78048e8a"
+    },
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "refs/heads/review"
+      ],
+      "cwd": "/workspace/scratch/4dc696b25568/cybersand-ci-opt-002/build/ci-opt-002/final-review/git-process-3t97ni1l/origin.git",
+      "exit": 0,
+      "seconds": 0.0023723929989500903,
+      "stdout_sha256": "fef88e5173088dc45e0fa6008108c871068783dfd6e859a311aaeb8b192f1c04",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "git",
+        "fetch",
+        "--no-tags",
+        "origin",
+        "review"
+      ],
+      "cwd": "/workspace/scratch/4dc696b25568/cybersand-ci-opt-002/build/ci-opt-002/final-review/git-process-3t97ni1l/worker",
+      "exit": 0,
+      "seconds": 0.037845746002858505,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "8cbeef75435be4f5b4ca9d60a83d564b70a21464696ddbd53411605e2339133b"
+    },
+    {
+      "command": [
+        "git",
+        "checkout",
+        "--detach",
+        "b59c1cf235ca8e19b3b8e862b1f8f1c7818c1fba"
+      ],
+      "cwd": "/workspace/scratch/4dc696b25568/cybersand-ci-opt-002/build/ci-opt-002/final-review/git-process-3t97ni1l/worker",
+      "exit": 0,
+      "seconds": 0.009559468999214005,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "a4c19ed970213553348158a2e3428771968a8159bd22f66862ef9112bc8299e6"
+    },
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/workspace/scratch/4dc696b25568/cybersand-ci-opt-002",
+      "exit": 0,
+      "seconds": 0.0021729959989897907,
+      "stdout_sha256": "08acae6cfdbd009760035d109f5750caaf24b2e3af0ef26c20a8d845f3ef57fe",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "fixture_root": "/workspace/scratch/4dc696b25568/cybersand-ci-opt-002/build/ci-opt-002/final-review/git-process-3t97ni1l",
+  "reviewed_input_hashes": {
+    ".github/workflows/native.yml": "7cfb1aed6ae2b810e77812444340f6a8844cb480c05a8f218d45ddee76e18379",
+    "Makefile": "abe1920b1a89b1444ada36e97c9e81f7a0657f06f447845294aa18aca122baf9",
+    "godot/tests/support/ci_execution_policy.json": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+    "native/tests/test_world.cpp": "17719612e2ba29dc14d8964db54fdd0d4700909a9a1c81c8af6c4df1ef648933",
+    "tools/ci/check_worldgen_build_inventory.py": "94a44ae85778ca866416cfcf3cac915211cb40f66004afc2423c71db27f15ea5",
+    "tools/ci/execution_policy.py": "7bf7c89f51b8edc6c14e9b600a843c6b56f4806c902b09058912a32c881b63d6",
+    "tools/ci/native_execution_policy.py": "b601942740306409d09a3ad78da1ceb6a38b846c66f1b0fa3b619d5b2ae1e2eb",
+    "tools/ci/run_native_family.sh": "b7183c3532ba294076d688c06908e7882d2cf3e90d254a09bf4cc27644ddf480",
+    "tools/ci/run_timed_command.py": "f9d8d2979335c7a59e2b3d47e8956e1c157f8c7d74bf74b57bb9cfd1c56663da",
+    "tools/ci/test_native_shards.py": "b131ceabd15d784b486fb99860b83218da6f5df3cc31468e4cda94ddb32b700a",
+    "tools/ci/test_native_watchdogs.py": "b1bdd82326adb2cd27cc5f9b5d9a8fc1f76ec3999838e47cfa47d455f00ef6c2",
+    "tools/ci/verify_native_shards.py": "a230b8f65d1c4cb8583749c4c88822e90d03944c5c9df79e9951e7ac5ae22397",
+    "tools/physics/test_characterisation_cli.py": "513db5608e722bcd03823744a33f4f81554eb31aedecbde8a3a452e45296e720"
+  },
+  "root_head_at_end": "65aa1382a49bb01571177b4639f27b64f5dcb66d",
+  "root_head_at_start": "65aa1382a49bb01571177b4639f27b64f5dcb66d",
+  "schema": "ci-opt-002-final-local-adverse-controls-v1",
+  "scope": "actual local Git/process and real verifier controls; not hosted cancellation/publication or application qualification",
+  "status": "passed",
+  "retention_note": "Summary preserves all seven control results and command identities; original local stdout/stderr ledger remains in the source report. Hosted artifacts and qualification are separate.",
+  "original_report_sha256": "56453c52e60de1d399f67826ff2151f80834df3bb7d973fa4ecd09c1f98b42a3"
+}

@@ -1,0 +1,77 @@
+{
+  "status": "passed",
+  "baseline_sha": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+  "command_count": 20,
+  "command_inventory_with_child_timeouts_sha256": "fc545dee7e24238e760ac746fd0898812625ee9099ea653720e61dee01d145aa",
+  "changed_family_assignments": {
+    "worldgen-sanitize": {
+      "before": "worldgen",
+      "after": "worldgen-sanitize"
+    }
+  },
+  "native_workflow_byte_identical": true,
+  "production_source_and_runtime_diff_empty": true,
+  "before_families": {
+    "tsan": {
+      "family_seconds": 7880,
+      "job_minutes": 180
+    },
+    "native-normal": {
+      "family_seconds": 19140,
+      "job_minutes": 350
+    },
+    "asan-ubsan": {
+      "family_seconds": 7880,
+      "job_minutes": 180
+    },
+    "worldgen": {
+      "family_seconds": 18120,
+      "job_minutes": 333
+    },
+    "soliding-normal": {
+      "family_seconds": 15160,
+      "job_minutes": 284
+    },
+    "soliding-asan": {
+      "family_seconds": 11520,
+      "job_minutes": 223
+    }
+  },
+  "after_families": [
+    {
+      "suite": "worldgen-sanitize",
+      "job_minutes": 180,
+      "family_seconds": 7200
+    },
+    {
+      "suite": "tsan",
+      "job_minutes": 180,
+      "family_seconds": 7880
+    },
+    {
+      "suite": "asan-ubsan",
+      "job_minutes": 180,
+      "family_seconds": 7880
+    },
+    {
+      "suite": "worldgen",
+      "job_minutes": 272,
+      "family_seconds": 14480
+    },
+    {
+      "suite": "native-normal",
+      "job_minutes": 350,
+      "family_seconds": 19140
+    },
+    {
+      "suite": "soliding-asan",
+      "job_minutes": 223,
+      "family_seconds": 11520
+    },
+    {
+      "suite": "soliding-normal",
+      "job_minutes": 284,
+      "family_seconds": 15160
+    }
+  ]
+}
