@@ -142,7 +142,8 @@ func run() -> void:
 		quit(1)
 		return
 	await RenderingServer.frame_post_draw
-	var pixel: Vector2i = Vector2i(cell_position(seed).round())
+	# Mouse input is WorldView-local; the root framebuffer uses global pixels.
+	var pixel: Vector2i = Vector2i((host.world_view.global_position + cell_position(seed)).round())
 	var before: Color = root.get_texture().get_image().get_pixelv(pixel)
 	if not check(await native_readback(seed)==0,"source cell initially Empty"):
 		quit(1)
