@@ -1,0 +1,40 @@
+{
+  "manifest_path": "/workspace/scratch/038267c40e11/cybersand-swarm45-mainline/evidence/swarm45-local/published-source-provenance-r3.json",
+  "manifest_sha256": "805ebd2893a157b87e50e6aadc2008e51822448ea877b6ea991c8efd245228b3",
+  "changed_records_verified": 159,
+  "donor_identical_count": 85,
+  "accepted_existing_native_unchanged": 81,
+  "source_ledgers_verified": [
+    {
+      "name": "build_inputs_sha256",
+      "count": 1763,
+      "qualified_equals_published": true
+    },
+    {
+      "name": "source_inputs_sha256",
+      "count": 147,
+      "qualified_equals_published": true
+    },
+    {
+      "name": "extension_inputs_sha256",
+      "count": 106,
+      "qualified_equals_published": true
+    },
+    {
+      "name": "native_definition_inputs_sha256",
+      "count": 43,
+      "qualified_equals_published": true
+    }
+  ],
+  "recomputed_native_definition": {
+    "692": "07901d11889c217ebe61e9ab3562046914a1e9e31865281fe8667b4124adbc71",
+    "693": "57ff699bf5c9833a2a5e2198ff2ef0b07cfd051069013776e6427f1e9d6694ec",
+    "696": "4ef94e7b1b13506f50318791a2c9d3f632e3eccca3889c7d12b01e0e61759365",
+    "697": "12a4816dab749a9c872a4d531836db8ec6a170aab31576d70086efa80eeb3b6b",
+    "700": "12a4816dab749a9c872a4d531836db8ec6a170aab31576d70086efa80eeb3b6b",
+    "published": "217bfa716e61198f5b3849f2ae14c30e85bc9f623fc1d05438c59df2296ce7f7"
+  },
+  "source_chain_verified": true,
+  "prior_manifest_hash_verified": true,
+  "scope": "Independent structural/hash/source-custody verification. Remote run conclusions and owner acceptance are separate; UI defaults are interpreted as Workbench dock defaults."
+}

@@ -1,0 +1,129 @@
+{
+  "all_8_binaries_pe_amd64": true,
+  "build_evidence_commands": {
+    "adapter": {
+      "bytes": 1984,
+      "returncode": 0,
+      "sha256": "825b967c242f13cf3e6a5621eff2baabd6953ddc5a4568073f14d58e1c913a53",
+      "wall_seconds": 48.59210851300003
+    },
+    "authoring-patch": {
+      "bytes": 3030,
+      "returncode": 0,
+      "sha256": "3e00416343540ef7ccd2f71915aad2d4ced8a4e79ee95a6439cb6077d74e475b",
+      "wall_seconds": 16.805772044000037
+    },
+    "authoring-patch-strict": {
+      "bytes": 0,
+      "returncode": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.9157258000000184
+    },
+    "fixture-strict": {
+      "bytes": 0,
+      "returncode": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "wall_seconds": 0.7157802229999675
+    },
+    "godot-cpp": {
+      "bytes": 60086,
+      "returncode": 0,
+      "sha256": "b2ef05e6253755893d8425140c23c2289a9a3cf79a56c8d20c6dddd324afbc40",
+      "wall_seconds": 177.49645691900002
+    },
+    "reciprocal-strict": {
+      "bytes": 13812,
+      "returncode": 0,
+      "sha256": "dfb8956e87a69f447c98448f65f3c8182559316ebbf339d3593cc854393cd4a8",
+      "wall_seconds": 17.50975076499998
+    }
+  },
+  "candidate_provenance_sha256": "77e7b7c6534e7c4158959023768ae7bb238d082d4f137b3ccd0fb0c0ef6e379b",
+  "frozen_source_commit": "79b8a0a4a1c2ace435d709b35114ee7065c935e6",
+  "git_blob_ledger_recomputed": true,
+  "native_definition_sha256": "217bfa716e61198f5b3849f2ae14c30e85bc9f623fc1d05438c59df2296ce7f7",
+  "not_yet_reviewed": [
+    "Windows source graphical/full native result logs",
+    "Pristine extracted Windows package graphical/smokes/ownerZIP",
+    "Linux strict/sanitizer/full graphical/control evidence",
+    "Final eight-path publication candidate and actual publication",
+    "Final five workflow results",
+    "Physical owner original-map/NVIDIA evaluation"
+  ],
+  "overall_admission": "PENDING",
+  "owner_visual_acceptance": "pending",
+  "production_runtime_verifier_inspect_only_passed": true,
+  "request_only_history_verified": true,
+  "review": "Independent R3 Windows cross-build/runtime custody partial checkpoint",
+  "reviewed_at": "2026-11-21T22:00:54.840259+00:00",
+  "run_attempt": 1,
+  "run_id": 44953582341,
+  "runtime_manifest_sha256": "fbeee25f6723166d1beeac3ead33de73f97dd941f9c454d2a55506521285dee5",
+  "runtime_payloads": {
+    "cybersand_native.windows.x86_64.dll": {
+      "bytes": 5844992,
+      "sha256": "c7fc1fbfea2999489ae83a6da100ca795b336dc6efa251af7e5003071a2bb43d"
+    },
+    "gentek_reciprocal.exe": {
+      "bytes": 3100672,
+      "sha256": "001672a6961c113f51b4f483e33cbb97702fec09616a60949c26a991a5a18105"
+    },
+    "test_assembly.exe": {
+      "bytes": 1656320,
+      "sha256": "114b3cf6c6cf55622c1c7964353625212473491c118f28770f5dd75a3448106c"
+    },
+    "test_reciprocal.exe": {
+      "bytes": 2817536,
+      "sha256": "bcedab6a52845a70d242b12d7111c02e572aa335749663ac056a32f9266e1fe0"
+    },
+    "test_reciprocal_mosaic.exe": {
+      "bytes": 2767360,
+      "sha256": "ad0aafe7f5835cfb2a2855dc196ffde477414d4429f555bd8df6a751b4a1c5f6"
+    },
+    "test_swarm005.exe": {
+      "bytes": 2762240,
+      "sha256": "95d370d83086d0c2203bbee3bb244165ed1f06967f596a4feabe510ad2cb47e1"
+    },
+    "test_workbench_authoring_patch.exe": {
+      "bytes": 12245504,
+      "sha256": "4276c464719093ddc81174f1886b3dafcb30fa38fba0312ccba5811cb7061282"
+    },
+    "toolchain.txt": {
+      "bytes": 836,
+      "sha256": "86f9765954860ceb6be13c7c5192a05f54d1765d5c5eccf1a358ae3f104d4da3"
+    },
+    "workbench_process_fixture.exe": {
+      "bytes": 775168,
+      "sha256": "89fec921113cab14b7c0c27fbe9b2b076ba3e3da8e7c52b75fc2a35fa66cf066"
+    }
+  },
+  "scope_verdict": "GO for source-bound Windows build/runtime custody only",
+  "source_commit": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f",
+  "source_ledgers": {
+    "build_inputs_sha256": 1763,
+    "extension_inputs_sha256": 106,
+    "native_definition_inputs_sha256": 43,
+    "source_inputs_sha256": 147
+  },
+  "source_tree": "a3312e00b971cf6859922b2b70eb8ed5da0f66b7",
+  "unchanged_final_workflow_and_publisher_blobs_vs_10fe": true,
+  "windows_native_step_api_success_only_pending_log_review": true,
+  "zip_artifacts": {
+    "windows-build": {
+      "all_extracted_bytes_match": true,
+      "artifact_id": 14726234776,
+      "artifact_name": "swarm45-windows-build-evidence-44953582341-1",
+      "bytes": 104840,
+      "member_count": 9,
+      "sha256": "f381c157b234c1c47b80367913db7ea44552eb441f2863fc8daaf4d50c9105cf"
+    },
+    "windows-runtime": {
+      "all_extracted_bytes_match": true,
+      "artifact_id": 14726647933,
+      "artifact_name": "swarm45-windows-runtime-44953582341-1",
+      "bytes": 10226912,
+      "member_count": 11,
+      "sha256": "16f729d519019089becf566e71d19acd355b7f4bb1dcdf42d3afdf87bda3d794"
+    }
+  }
+}

@@ -1,0 +1,364 @@
+{
+  "schema": 1,
+  "review_date": "2026-11-21",
+  "disposition": "GO: prior scientific/native review carries to unchanged published build inputs; not owner/full-CI acceptance",
+  "review_scope": "Short read-only publication delta and scientific-claims review; no native campaign rerun",
+  "qualified_source": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f",
+  "published_candidate": "919134a39d31461947c410c233d59d1965c48414",
+  "published_manifest": {
+    "path": "/workspace/scratch/038267c40e11/cybersand-swarm45-mainline/evidence/swarm45-local/published-source-provenance-r3.json",
+    "bytes": 414742,
+    "sha256": "805ebd2893a157b87e50e6aadc2008e51822448ea877b6ea991c8efd245228b3"
+  },
+  "source_only_manifest_sha256": "f335475d7df31e2a370613d185ce97e354984ce09c983d0d6897ac633af75489",
+  "native_definition_sha256": "217bfa716e61198f5b3849f2ae14c30e85bc9f623fc1d05438c59df2296ce7f7",
+  "source_chain_verified": [
+    {
+      "commit": "79b8a0a4a1c2ace435d709b35114ee7065c935e6",
+      "parents": [
+        "10fe808ac7f6a4b9c07f7d168763b41957359e57"
+      ],
+      "role": "frozen implementation",
+      "tree": "db1393c21a5e58137f06e6b6008f1001775da89f"
+    },
+    {
+      "commit": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f",
+      "parents": [
+        "79b8a0a4a1c2ace435d709b35114ee7065c935e6"
+      ],
+      "role": "qualified build source",
+      "tree": "a3312e00b971cf6859922b2b70eb8ed5da0f66b7"
+    },
+    {
+      "commit": "a7c0a6d42f4a41622faf183c01818ffb73c56899",
+      "parents": [
+        "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f"
+      ],
+      "role": "publication request only",
+      "tree": "ff989cbd8d8ff0cef39cefec5ea0890346b0f65d"
+    },
+    {
+      "commit": "919134a39d31461947c410c233d59d1965c48414",
+      "parents": [
+        "a7c0a6d42f4a41622faf183c01818ffb73c56899"
+      ],
+      "role": "published candidate",
+      "tree": "78d6df75cb3534238c81b40e7bcdbe0cf693d012"
+    }
+  ],
+  "ledgers": {
+    "build_inputs_sha256": {
+      "count": 1763,
+      "equal_qualified_manifest": true,
+      "all_git_blobs_and_modes_equal_qualified_source": true
+    },
+    "source_inputs_sha256": {
+      "count": 147,
+      "equal_qualified_manifest": true,
+      "all_git_blobs_and_modes_equal_qualified_source": true
+    },
+    "extension_inputs_sha256": {
+      "count": 106,
+      "equal_qualified_manifest": true,
+      "all_git_blobs_and_modes_equal_qualified_source": true
+    },
+    "native_definition_inputs_sha256": {
+      "count": 43,
+      "equal_qualified_manifest": true,
+      "all_git_blobs_and_modes_equal_qualified_source": true
+    }
+  },
+  "publication_request_only_paths": [
+    ".github/swarm45-runtime-publication-request.json"
+  ],
+  "exact_eight_publication_paths": [
+    "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+    "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+    "godot/addons/cybersand_native/runtime-provenance.json",
+    "godot/addons/cybersand_native/runtime-provenance.linux.json",
+    "godot/tools/gentek_reciprocal",
+    "godot/tools/gentek_reciprocal.exe",
+    "godot/tools/swarm004-runtime.linux.json",
+    "godot/tools/swarm004-runtime.windows.json"
+  ],
+  "changed_paths_against_accepted_main": [
+    ".gitattributes",
+    ".github/swarm004-windows-request.json",
+    ".github/swarm45-mainline-request.json",
+    ".github/swarm45-runtime-publication-request.json",
+    ".github/workflows/architectural-generator-qualification.yml",
+    ".github/workflows/explore001-windows.yml",
+    ".github/workflows/gentek80-qualification.yml",
+    ".github/workflows/gentek80-water-merged-requalification.yml",
+    ".github/workflows/swarm004-workbench-windows.yml",
+    ".github/workflows/swarm005-workbench-windows.yml",
+    ".github/workflows/swarm45-mainline-qualification.yml",
+    ".github/workflows/swarm45-runtime-publication.yml",
+    ".github/workflows/wb-art-paint-qualification.yml",
+    ".github/workflows/workbench-actor-composition.yml",
+    "Makefile",
+    "docs/README.md",
+    "docs/architecture/experimental-workbench-authoring-patch.md",
+    "docs/audits/2026-11-20-swarm004-native-recovery.md",
+    "docs/operations/cybersand-codex-development-handover.md",
+    "docs/operations/local-build-and-validation.md",
+    "docs/operations/swarm004-workbench-playtest.md",
+    "docs/operations/swarm005-workbench-playtest.md",
+    "docs/operations/swarm45-mainline-integration.md",
+    "docs/reference/retrieval-corpus.json",
+    "docs/reference/retrieval-index.md",
+    "docs/reference/retrieval-questions-swarm004-workbench.json",
+    "docs/reference/retrieval-questions-swarm004.json",
+    "docs/reference/retrieval-questions-swarm45.json",
+    "docs/reference/status-and-roadmap.md",
+    "docs/systems/gentek-reciprocal-assembly.md",
+    "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+    "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+    "godot/addons/cybersand_native/runtime-provenance.json",
+    "godot/addons/cybersand_native/runtime-provenance.linux.json",
+    "godot/native_extension/cyber_prepared_liquid_world.hpp",
+    "godot/native_extension/workbench_retained_setup.hpp",
+    "godot/scripts/main.gd",
+    "godot/scripts/microscenario_host.gd",
+    "godot/scripts/shared_workbench.gd",
+    "godot/scripts/workbench_reciprocal_overlay.gd",
+    "godot/scripts/workbench_reciprocal_panel.gd",
+    "godot/scripts/workbench_reciprocal_protocol.gd",
+    "godot/tests/swarm45_reciprocal_controls.gd",
+    "godot/tests/swarm45_reciprocal_ui.gd",
+    "godot/tests/test_workbench_authoring_patch.gd",
+    "godot/tests/test_workbench_reciprocal_controller.gd",
+    "godot/tests/test_workbench_reciprocal_protocol.gd",
+    "godot/tests/test_workbench_reciprocal_runtime.gd",
+    "godot/tools/gentek_reciprocal",
+    "godot/tools/gentek_reciprocal.exe",
+    "godot/tools/swarm004-runtime.linux.json",
+    "godot/tools/swarm004-runtime.windows.json",
+    "native/experiments/gentek_swarm/CONTINUATION-PLAN.md",
+    "native/experiments/gentek_swarm/Makefile",
+    "native/experiments/gentek_swarm/Makefile.reciprocal",
+    "native/experiments/gentek_swarm/OPTIONAL-OFFERS.md",
+    "native/experiments/gentek_swarm/README.md",
+    "native/experiments/gentek_swarm/RECIPROCAL_DESIGN.md",
+    "native/experiments/gentek_swarm/RECIPROCAL_REGISTRATION.json",
+    "native/experiments/gentek_swarm/SELECTION-CONTINUATION.json",
+    "native/experiments/gentek_swarm/SELECTION-RECIPROCAL.json",
+    "native/experiments/gentek_swarm/SWARM-002.md",
+    "native/experiments/gentek_swarm/SWARM-003-CONTINUATION.md",
+    "native/experiments/gentek_swarm/SWARM-005.md",
+    "native/experiments/gentek_swarm/admission_gallery.py",
+    "native/experiments/gentek_swarm/admission_main.cpp",
+    "native/experiments/gentek_swarm/admission_resilience_tests.cpp",
+    "native/experiments/gentek_swarm/admission_tests.cpp",
+    "native/experiments/gentek_swarm/assembly.cpp",
+    "native/experiments/gentek_swarm/assembly.hpp",
+    "native/experiments/gentek_swarm/assembly_tests.cpp",
+    "native/experiments/gentek_swarm/common.cpp",
+    "native/experiments/gentek_swarm/fixtures.cpp",
+    "native/experiments/gentek_swarm/frameweaver.cpp",
+    "native/experiments/gentek_swarm/gallery.py",
+    "native/experiments/gentek_swarm/io.cpp",
+    "native/experiments/gentek_swarm/main.cpp",
+    "native/experiments/gentek_swarm/meshing.cpp",
+    "native/experiments/gentek_swarm/mosaic.cpp",
+    "native/experiments/gentek_swarm/mosaic_admission.cpp",
+    "native/experiments/gentek_swarm/mosaic_admission.hpp",
+    "native/experiments/gentek_swarm/negotiated.cpp",
+    "native/experiments/gentek_swarm/negotiated.hpp",
+    "native/experiments/gentek_swarm/negotiated_gallery.py",
+    "native/experiments/gentek_swarm/negotiated_main.cpp",
+    "native/experiments/gentek_swarm/negotiated_tests.cpp",
+    "native/experiments/gentek_swarm/receptor.cpp",
+    "native/experiments/gentek_swarm/reciprocal.cpp",
+    "native/experiments/gentek_swarm/reciprocal.hpp",
+    "native/experiments/gentek_swarm/reciprocal_causal.cpp",
+    "native/experiments/gentek_swarm/reciprocal_gallery.py",
+    "native/experiments/gentek_swarm/reciprocal_io.cpp",
+    "native/experiments/gentek_swarm/reciprocal_io.hpp",
+    "native/experiments/gentek_swarm/reciprocal_main.cpp",
+    "native/experiments/gentek_swarm/reciprocal_mosaic.cpp",
+    "native/experiments/gentek_swarm/reciprocal_mosaic.hpp",
+    "native/experiments/gentek_swarm/reciprocal_mosaic_tests.cpp",
+    "native/experiments/gentek_swarm/reciprocal_tests.cpp",
+    "native/experiments/gentek_swarm/reproduce_reciprocal_controls.py",
+    "native/experiments/gentek_swarm/resilience.hpp",
+    "native/experiments/gentek_swarm/resilience_gallery.py",
+    "native/experiments/gentek_swarm/resilience_main.cpp",
+    "native/experiments/gentek_swarm/resilience_solver.cpp",
+    "native/experiments/gentek_swarm/resilience_solver.hpp",
+    "native/experiments/gentek_swarm/resilience_solver_tests.cpp",
+    "native/experiments/gentek_swarm/resilience_tests.cpp",
+    "native/experiments/gentek_swarm/run.py",
+    "native/experiments/gentek_swarm/run_admission.py",
+    "native/experiments/gentek_swarm/run_negotiated.py",
+    "native/experiments/gentek_swarm/run_reciprocal.py",
+    "native/experiments/gentek_swarm/run_resilience.py",
+    "native/experiments/gentek_swarm/swarm.hpp",
+    "native/experiments/gentek_swarm/swarm005_research_tests.cpp",
+    "native/experiments/gentek_swarm/test_reciprocal_gallery.py",
+    "native/experiments/gentek_swarm/test_reciprocal_io.py",
+    "native/experiments/gentek_swarm/test_resilience_runner.py",
+    "native/experiments/gentek_swarm/tests.cpp",
+    "native/include/cybersand/workbench_authoring_patch.hpp",
+    "native/tests/test_workbench_authoring_patch.cpp",
+    "native/tests/workbench_process_fixture.cpp",
+    "tools/ci/check_repository.py",
+    "tools/ci/check_swarm_runtime.py",
+    "tools/ci/run_workbench_qualification.py",
+    "tools/ci/test_swarm_package.py",
+    "tools/ci/test_swarm_runtime.py",
+    "tools/ci/test_validation_contracts.py",
+    "tools/package_explore001_candidate.py",
+    "tools/swarm004/package_owner.py",
+    "tools/swarm004/qualify_workbench.py",
+    "tools/swarm004/run_request.py",
+    "tools/swarm004/runtime_custody.py",
+    "tools/swarm004/test_qualify_workbench.py",
+    "tools/swarm004/test_run_request.py",
+    "tools/swarm005/package_owner.py",
+    "tools/swarm005/qualify_workbench.py",
+    "tools/swarm005/runtime_custody.py",
+    "tools/swarm005/test_qualify_workbench.py",
+    "tools/swarm005/test_v3_request.py",
+    "tools/swarm45/accepted_main_smokes.py",
+    "tools/swarm45/build_runtime.py",
+    "tools/swarm45/install_runtime.py",
+    "tools/swarm45/linux_floor.py",
+    "tools/swarm45/native_checks.py",
+    "tools/swarm45/package_owner.py",
+    "tools/swarm45/prepare_build.sh",
+    "tools/swarm45/prepare_windows.ps1",
+    "tools/swarm45/publication_candidate.py",
+    "tools/swarm45/publish_runtime.py",
+    "tools/swarm45/qualify_workbench.py",
+    "tools/swarm45/replay_known_control.cpp",
+    "tools/swarm45/replay_known_controls.py",
+    "tools/swarm45/run_request.py",
+    "tools/swarm45/runtime_custody.py",
+    "tools/swarm45/shared.py",
+    "tools/swarm45/stage_source.py",
+    "tools/swarm45/test_custody.py",
+    "tools/swarm45/test_linux_stage.py",
+    "tools/swarm45/test_request.py",
+    "tools/swarm45/test_source_stage.py"
+  ],
+  "control_serializer": {
+    "path": "native/experiments/gentek_swarm/reciprocal_io.cpp",
+    "function": "write_matched_mosaic_control_json",
+    "schema": 6,
+    "type": "matched_final_frame_no_offer",
+    "programme": "GENTEK-SWARM-004",
+    "control_only": true,
+    "can_apply": false,
+    "offered_slots": [],
+    "same_function_across_all_five_donors_and_both_sources": true,
+    "records": [
+      {
+        "commit": "2c4b8061ef5315de6a31df933e9f84c31865284e",
+        "function_bytes": 4097,
+        "function_sha256": "daaf9f2ff805fc98c735fcadca4129ad5fd3a479c8e2009ecf643888f983b7b2",
+        "io_git_blob": "85c6a2601d4d17135d3eb1417297026b744b25fc",
+        "gallery_git_blob": "df0446b49e96bf2430e9d265d88c545987b1e9ad"
+      },
+      {
+        "commit": "16a11ef2d25f03d58b229f4bba3f88009ebe1154",
+        "function_bytes": 4097,
+        "function_sha256": "daaf9f2ff805fc98c735fcadca4129ad5fd3a479c8e2009ecf643888f983b7b2",
+        "io_git_blob": "85c6a2601d4d17135d3eb1417297026b744b25fc",
+        "gallery_git_blob": "df0446b49e96bf2430e9d265d88c545987b1e9ad"
+      },
+      {
+        "commit": "c178feeb39899fd155b7deb9d5bde3f50ee28548",
+        "function_bytes": 4097,
+        "function_sha256": "daaf9f2ff805fc98c735fcadca4129ad5fd3a479c8e2009ecf643888f983b7b2",
+        "io_git_blob": "e6db9fb7d887041e5de63af37c22c707426f6b37",
+        "gallery_git_blob": "df0446b49e96bf2430e9d265d88c545987b1e9ad"
+      },
+      {
+        "commit": "8ec6d3c62197f3ef4088d79e4aa2910f5eaa36f7",
+        "function_bytes": 4097,
+        "function_sha256": "daaf9f2ff805fc98c735fcadca4129ad5fd3a479c8e2009ecf643888f983b7b2",
+        "io_git_blob": "e6db9fb7d887041e5de63af37c22c707426f6b37",
+        "gallery_git_blob": "df0446b49e96bf2430e9d265d88c545987b1e9ad"
+      },
+      {
+        "commit": "580ff82f285b7aeda8fb4a2a0d034425f0d0401d",
+        "function_bytes": 4097,
+        "function_sha256": "daaf9f2ff805fc98c735fcadca4129ad5fd3a479c8e2009ecf643888f983b7b2",
+        "io_git_blob": "e6db9fb7d887041e5de63af37c22c707426f6b37",
+        "gallery_git_blob": "df0446b49e96bf2430e9d265d88c545987b1e9ad"
+      },
+      {
+        "commit": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f",
+        "function_bytes": 4097,
+        "function_sha256": "daaf9f2ff805fc98c735fcadca4129ad5fd3a479c8e2009ecf643888f983b7b2",
+        "io_git_blob": "e6db9fb7d887041e5de63af37c22c707426f6b37",
+        "gallery_git_blob": "df0446b49e96bf2430e9d265d88c545987b1e9ad"
+      },
+      {
+        "commit": "919134a39d31461947c410c233d59d1965c48414",
+        "function_bytes": 4097,
+        "function_sha256": "daaf9f2ff805fc98c735fcadca4129ad5fd3a479c8e2009ecf643888f983b7b2",
+        "io_git_blob": "e6db9fb7d887041e5de63af37c22c707426f6b37",
+        "gallery_git_blob": "df0446b49e96bf2430e9d265d88c545987b1e9ad"
+      }
+    ]
+  },
+  "composition_schema": 5,
+  "request_transport_versions": [
+    1,
+    2,
+    3
+  ],
+  "reviewed_document_snapshots": {
+    "SWARM006-SUCCESSOR-HANDOFF.md": {
+      "bytes": 7200,
+      "sha256": "608d99ba5cb9e2e9a992b0f0a458d8cc25a9304fa12aebb999d24a94cf5e421a",
+      "text": "# SWARM-006 successor handoff \u2014 SWARM-004/005 integration candidate\n\n**This is a qualified source candidate, not a new accepted-main baseline.**\nIntegration [PR #715](https://github.com/techrote/cybersand/pull/715) remains\nDraft/HOLD. No merge or Ready transition has occurred. At this checkpoint,\naccepted `main` is `846fe0533b3170e7b01f690518da49fc40cc24d1`.\n\n## Exact source and runtime chain\n\n| Role | Commit / tree |\n| --- | --- |\n| Frozen implementation | `79b8a0a4a1c2ace435d709b35114ee7065c935e6` / `db1393c21a5e58137f06e6b6008f1001775da89f` |\n| Qualified original build source | `96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f` / `a3312e00b971cf6859922b2b70eb8ed5da0f66b7` |\n| Publication request only | `a7c0a6d42f4a41622faf183c01818ffb73c56899` / `ff989cbd8d8ff0cef39cefec5ea0890346b0f65d` |\n| Published integration candidate | `919134a39d31461947c410c233d59d1965c48414` / `78d6df75cb3534238c81b40e7bcdbe0cf693d012` |\n\nBranch: `integration/swarm004-005-mainline-20261121`. The latter three commits\nare direct children in the order above. Source-to-execution and execution-to-\npublication-request changes are request files only; actual publication changes\nexactly eight approved runtime/provenance/binding paths. Build records retain\ntheir original `96b8d3fb\u2026` identity.\n\nThe [published manifest](published-source-provenance-r3.json), SHA-256\n`805ebd2893a157b87e50e6aadc2008e51822448ea877b6ea991c8efd245228b3`, maps\nall **159 changed paths** against accepted main and all five frozen donors.\nIt records Git blob identities separately from LFS payload SHA-256/size, the\nLinux CLI executable mode, and all **1,763 build / 147 native / 106 extension /\n43 definition** inputs. Those inputs are identical between the qualified build\nsource and published candidate. All 81 existing accepted-main native source and\nheader files are unchanged.\n\nNative definition: `217bfa716e61198f5b3849f2ae14c30e85bc9f623fc1d05438c59df2296ce7f7`.\nTransport remains **V1/V2 compatible, V3 for the two opt-in SWARM-005 controls**;\ncomposition evidence remains **schema 5**. The independently inherited donor\nschema-6 control serializer is unchanged and is not a SWARM-006 composition\ntransport or recovery-policy import.\n\n## Frozen donors and deliberate differences\n\n| Donor | Frozen HEAD |\n| --- | --- |\n| #692 native SWARM-004 | `2c4b8061ef5315de6a31df933e9f84c31865284e` |\n| #693 Workbench SWARM-004 | `16a11ef2d25f03d58b229f4bba3f88009ebe1154` |\n| #696 native SWARM-005 | `c178feeb39899fd155b7deb9d5bde3f50ee28548` |\n| #697 Workbench SWARM-005 | `8ec6d3c62197f3ef4088d79e4aa2910f5eaa36f7` |\n| #700 documentation registration | `580ff82f285b7aeda8fb4a2a0d034425f0d0401d` |\n\nThe current integration imports reviewed source and preserves the true donor\ngraph. It does not replace any frozen SWARM-006 baseline with current output.\nThe substantive differences from frozen SWARM-005 are narrowly scoped:\n\n- Reconcile accepted-main Paint, Art, actor and retained-World transaction seams;\n  make the experimental dock discoverable and lazy. Opening it does not generate.\n- Charge actual bounded receptor visits and finalization against the original\n  allowance, with immutable source-root membership and no partial receptors on\n  cancellation/exhaustion. Policies, seeds, fixtures and budgets are not tuned.\n- Retire stale transaction authority on pending numeric text, gesture start and\n  failed runtime admission; consume territory input during generation.\n- Publish source-bound Linux/Windows reciprocal CLIs and adapters with strict\n  platform bindings. Use C stdio at five CLI console sites to preserve the existing\n  Linux symbol floor; native JSON/generation policy remains unchanged.\n- Preserve read-only inspection of the reviewed historical paired definitions.\n  Fresh successful current-source Generate is required for transaction authority.\n- Stage canonical committed text for source installations and evaluator archives,\n  retaining explicit attributes, binary bytes and every import sidecar.\n- Register the valid #700 documentation and current integration procedure, plus\n  bounded source/platform/custody qualification.\n\nBoth SWARM-005 switches remain OFF in ordinary Workbench. Workbench negotiated\nsharing also remains OFF; the historical native V1 shared-ownership default\nremains true. These are distinct scopes, not a native-default migration.\n\n## Scientific continuity\n\nOriginal receipts, immutable corpora, registrations and negative results remain\nunchanged. SWARM-005 OFF and BOTH each retain **1 Complete / 14 Blocked /\n21 Exhausted** over the 36-case primary arms, with no new Apply-valid cases and no\nnet qualified-joint gain. A local welded termination is not a foreign joint.\nUnmeasured closure on exhausted runs remains unknown.\n\nThe full 360-case integration replay is an already-revealed regression corpus,\nnot new unseen qualification. Relative to the frozen reference, corrected work\naccounting changes one final fixed-territory result: case 19 moves from Exhausted\nto Blocked with four joints, one unresolved obligation and Apply false. The other\ndifferences are recorded in the independent scientific audit; historical evidence\nhas not been edited to claim improvement. R3 raw results and binaries exactly\nmatch R2 where the native input identities justify reuse.\n\nDo not silently substitute this integration's native definition or results for\nthe frozen SWARM-006 controls. Any later successor rebase needs explicit source\nmapping and its own required qualification. This mission has not mutated #705,\n#707, #709, #710, their source branches, scientific fixtures or acceptance evidence.\n\n## Qualification and remaining admission\n\n[R3 scoped qualification](https://github.com/techrote/cybersand/actions/runs/44953582341)\npassed on the exact original build source: Linux strict native and relevant\nASan/UBSan, all 360 known controls, actual hosted Windows native execution, and\nGodot 4.7 source/Linux, source/Windows and pristine-extracted-Windows layouts.\nEach layout passed 14 required child processes and all 17 accepted-main smoke\ncases. [Runtime publication](https://github.com/techrote/cybersand/actions/runs/44956855133)\npassed and published the exact eight qualified paths.\n\nThe five final ordinary workflows are bound to published `919134a3\u2026`: documentation\n44957191341, native 44957198003, GDExtension 44957204571, palette 44957211504 and\nPLAY 44957219135. Their current/final results and independent evidence reviews\nare tracked in PR #715; dispatch is not itself a result.\n\nThe [current owner guide](OWNER-EVALUATION.md) identifies the unchanged evaluator\nZIP, SHA-256 `ce50316be11caafe32879395b681ef7f131541732061ded5db36dc3af6236c6d`.\nPhysical NVIDIA evaluation of the original saved/painted 2048\u00d72048 map remains a\nmandatory separate gate. Earlier donor acceptance and hosted graphics do not\naccept this new package. Until all gates pass and a manual merge is verified,\n`919134a3\u2026` is an unmerged candidate and `846fe053\u2026` remains accepted main.\n\nAfter a successful merge, #692/#693/#696/#697/#700 can be reviewed for closure as\nsuperseded. Keep their source branches and historical research foundations. No\ndonor PR has been closed by this integration mission.\n"
+    },
+    "PUBLIC-EVIDENCE-README.md": {
+      "bytes": 7426,
+      "sha256": "1bedd9c2db0dbfa4b29ee1cf36aaf7b61552309c59bc02762e8e6a22c69c51c3",
+      "text": "# SWARM-004/005 admission control and evidence\n\nThis separate branch contains the reviewed bounded CI dispatch control and\nadditive evidence for [integration PR #715](https://github.com/techrote/cybersand/pull/715).\nIt is not intended to merge into main. Generated audit payloads and this control\nare excluded from the production integration.\n\n## Published candidate and exact evaluator\n\n**Draft/HOLD.** The frozen implementation is `79b8a0a4a1c2ace435d709b35114ee7065c935e6`;\nthe original qualified build source is `96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f`;\nthe published integration HEAD is `919134a39d31461947c410c233d59d1965c48414`.\nAccepted main remains `846fe0533b3170e7b01f690518da49fc40cc24d1`.\n\nThe [published source/provenance manifest](published-source-provenance-r3.json)\nmaps all 159 changed paths to main and all five donors, with Git/LFS identities,\nall 1,763 build / 147 native / 106 extension / 43 definition input hashes, and\nthe exact eight published runtime paths. It preserves the original qualified\nbuild identity. All 81 pre-existing native source/header files are unchanged.\nThe earlier [source-only r3 manifest](frozen-source-provenance-r3.json) is retained.\n\nUse the [current physical owner instructions](OWNER-EVALUATION.md) with the\nunchanged `CyberSand-SWARM45-Draft-HOLD-Windows-96b8d3fb9d5a.zip`, SHA-256\n`ce50316be11caafe32879395b681ef7f131541732061ded5db36dc3af6236c6d`.\nThe owner ZIP is artifact `14727701534` in the completed qualification run (inside\nthe GitHub artifact wrapper). Its 1,087 payload files plus package manifest have\nbeen independently verified. The package's original donor guide is preserved;\nthe current guide above supplies the missing offline runbook route and exact\ncurrent-source recipes. No ZIP bytes were changed after qualification.\n\nThe [SWARM-006 successor handoff](SWARM006-SUCCESSOR-HANDOFF.md) distinguishes\naccepted main from this unmerged candidate, records every deliberate donor delta,\nand preserves V1/V2/V3 with composition schema 5. No SWARM-006 branch, PR, fixture\nor evidence was mutated by this mission.\n\n## Completed source and publication qualification\n\n[R3 qualification run 44953582341](https://github.com/techrote/cybersand/actions/runs/44953582341),\nattempt 1, passed in **34m26s**. [The complete observation](swarm45-r3-ci-observation.json)\nrecords jobs, steps, artifacts, exact source and the measured critical path.\nLinux strict native, relevant ASan/UBSan, all 360 known controls, actual Windows\nnative execution, and three Godot 4.7 graphical layouts passed. Each layout\npassed all 14 required child processes and 17 accepted-main smokes: **51 smoke\npasses** across Linux source, Windows source and the real extracted evaluator.\nThe extracted package passed post-import and Flatten custody with all four\ncanonical Rapier sidecars intact. Startup remains bounded at 60 seconds.\n\n[Runtime publication run 44956855133](https://github.com/techrote/cybersand/actions/runs/44956855133)\npassed. It added exactly eight runtime/provenance/binding paths to the dedicated\nintegration branch under an exact-parent lease. The four published LFS payload\nidentities and Linux executable bit match the original qualified artifacts.\nNo Ready, merge or source-policy action was performed by publication.\n\nIndependent completed reviews:\n\n- [Committed source / historical-inspection closure](swarm45-r3-committed-source-review.md),\n  with [259 independent assertions and genuine historical saves](swarm45-historical-inspection-fix-review.md).\n- [Canonical archive repair](swarm45-package-archive-review-003.md), preserving\n  exact committed metadata instead of relaxing package hashes.\n- [Hosted r3 native/scientific integrity](swarm45-science-evidence/swarm45-hosted-r3-scientific-native-review.md),\n  with the full machine audit and reproduction checker alongside it.\n- [Windows source, actual package, current guide and publication candidate](swarm45-r3-windows-delivery-and-publication-review.md).\n- [Windows build and original runtime inventories](swarm45-r3-windows-build-runtime-review.md).\n- [Actual published source/protocol/security](swarm45-published-source-security-review.md),\n  including the complete final donor/source manifest.\n- [Actual runtime publication and final dispatch](swarm45-r3-actual-publication-and-dispatch-review.md),\n  including Git/LFS bytes, uploaded objects and unchanged original build identity.\n\nEach report states its own scope. Later final-CI and actual-publication reviews\nare additive; a completed source review is not represented as owner acceptance.\n\n## Final ordinary admission\n\nThe reviewed dispatcher [run 44957145764](https://github.com/techrote/cybersand/actions/runs/44957145764)\ncompleted after verifying source qualification, exact publication, fixed workflow\ndefinitions and live PR/head/base leases. It dispatched only these existing\nworkflows on exact published HEAD `919134a3\u2026`, attempt 1:\n\n| Gate | Run |\n| --- | --- |\n| Documentation / provenance | [44957191341](https://github.com/techrote/cybersand/actions/runs/44957191341) |\n| Native | [44957198003](https://github.com/techrote/cybersand/actions/runs/44957198003) |\n| GDExtension / current Godot | [44957204571](https://github.com/techrote/cybersand/actions/runs/44957204571) |\n| Palette / actual backends | [44957211504](https://github.com/techrote/cybersand/actions/runs/44957211504) |\n| PLAY desktop packet identity | [44957219135](https://github.com/techrote/cybersand/actions/runs/44957219135) |\n\nThis checkpoint records dispatch and identity, not a blanket PASS. The final\nobservation/reviews and PR record the completed results. The dispatcher cannot\nalter readiness, merge state, source branches or SWARM-006. Its successful\nexecution does not satisfy or waive any admission gate.\n\n## Retained failures and negative scientific evidence\n\nR1 run 44947666723 remains failed: the Linux CLI symbol floor, dirty source UID\nadmission and a cold-start timeout were correctly refused. R2 run 44950154534\nremains failed: both source layouts passed, but package smoke admission caught\nfour Git archive CRLF sidecars rewritten by Godot. The r3 canonical-archive repair\nclosed that defect without removing metadata or relaxing hashes. Earlier failed\nreports and causality records remain available in this directory.\n\nOriginal research receipts and results remain unchanged. SWARM-005 OFF/OFF and\nBOTH retain 1 Complete / 14 Blocked / 21 Exhausted, with no new Apply success or\nnet foreign-joint gain. Unknown closure stays explicit. The replay is a known\nregression corpus, not new unseen qualification. All 360 r3 raw/gzip outputs and\nall 14 Linux native binary payloads equal r2 where source identity permits comparison;\noriginal producer identities are still separately recorded.\n\nThe earlier complete 720-output paired known-replay archive is retained separately,\nSHA-256 `e8820a0b30036aee4fd0be71537400db55bdacc1f1c6d5eab20d37741ab6956f`.\nOriginal donor branches, registrations, immutable corpora and SWARM-006 fixtures\nare preserved.\n\n## Remaining physical acceptance\n\nThe new package still requires physical NVIDIA/original saved or painted\n2048\u00d72048-map visual, architectural, collision and usability evaluation required\nby #698. Hosted software-rendered graphics and earlier donor acceptance do not\nsatisfy it. Draft/HOLD remains until all source-matched gates, independent final\nreviews and that owner gate pass. No auto-merge is enabled.\n"
+    }
+  },
+  "authoritative_prior_records": {
+    "swarm45-hosted-r3-scientific-native-review.md": {
+      "bytes": 7902,
+      "sha256": "8263b0923889a6cbaea6f7724857b89ac9eca4b211ab6c904d00b6488a718e85",
+      "unchanged": true
+    },
+    "swarm45-hosted-r3-native-science-audit-96b8d3f.json": {
+      "bytes": 354569,
+      "sha256": "092da9142ae67ec1db9a5aabc732207069125c1f6786300e1950cd52c4693be4",
+      "unchanged": true
+    },
+    "swarm45-hosted-r3-scientific-chain.json": {
+      "bytes": 891,
+      "sha256": "97bbf5d9adf3e5c57f375fe97beeb86778f648033f256ff3a79a0a248b393f2a",
+      "unchanged": true
+    },
+    "swarm45-finaldelta-difference-classification-9b688aed.json": {
+      "bytes": 55963,
+      "sha256": "08bd9a02baf43470f4de43924ce0d735ac7c849c4cb8889c033e0ac55b895787",
+      "unchanged": true
+    }
+  },
+  "scientific_claims_verified": [
+    "Original registered SWARM004/005 holdouts were already completed; current replay is regression, not new unseen qualification.",
+    "Original SWARM005 OFF and BOTH each: 1 Complete, 14 Blocked, 21 Exhausted; zero new Apply-valid cases or net qualified joints.",
+    "Fixed-territory replay case19 changes Exhausted to Blocked under corrected work accounting; 4 joints, 1 unresolved, Apply false. Original negative evidence remains unchanged.",
+    "Local source-feasible termination is not a foreign reciprocal joint; exhausted closure remains unknown."
+  ],
+  "historical_custody_correction": "Archived #696 receipts label the #697/#700 definition; original receipts are retained unchanged and are not exact native-only binary evidence.",
+  "scope_limits": [
+    "Original R3 producer identity is retained; publication is not a new native execution.",
+    "Known 360-case replay is regression, not a new unseen campaign.",
+    "Original negative conclusions and unknown exhausted closure remain intact.",
+    "Case19 remains Blocked, four joints, one unresolved obligation, Apply false.",
+    "Inherited donor schema6 matched-control serializer is not SWARM006 composition or V4 transport.",
+    "No SWARM006 frozen baseline, control, fixture, result or definition is replaced or accepted by this review.",
+    "No remote state audit, source mutation, donor mutation, native campaign or CI trigger was performed.",
+    "Owner acceptance and final ordinary CI/publication admission have separate records."
+  ]
+}

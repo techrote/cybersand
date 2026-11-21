@@ -1,0 +1,19 @@
+{
+  "status": "passed",
+  "platforms": {
+    "linux": {
+      "artifact": "godot/tools/gentek_reciprocal",
+      "source": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f",
+      "sha256": "a3690011da97b12a6bfdc8d461e33dde9f98c1418fef89a3f3de994bd239da53",
+      "materialized": false
+    },
+    "windows": {
+      "artifact": "godot/tools/gentek_reciprocal.exe",
+      "source": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f",
+      "sha256": "001672a6961c113f51b4f483e33cbb97702fec09616a60949c26a991a5a18105",
+      "materialized": false
+    }
+  },
+  "errors": [],
+  "scope": "source identity and native executable binding; execution and owner acceptance are separate"
+}

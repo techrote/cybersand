@@ -1,0 +1,138 @@
+{
+  "dispatcher_conclusion": "success",
+  "dispatcher_receipt_sha256": "b8b523de73bc06fd08a9de2216730c259aa2274774a484ce39aefbe6f9f99b6f",
+  "dispatcher_run_id": 44957145764,
+  "exact_eight_paths": true,
+  "files": [
+    {
+      "git_blob_sha1": "65d9598c6d08aec3fd6e7a102bcd63df2fecab7d",
+      "lfs": true,
+      "local_materialized": false,
+      "mode": "100644",
+      "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "payload_bytes": 5844992,
+      "payload_sha256": "c7fc1fbfea2999489ae83a6da100ca795b336dc6efa251af7e5003071a2bb43d"
+    },
+    {
+      "git_blob_sha1": "2201cad131c206886d63327424c63ef621df549b",
+      "lfs": true,
+      "local_materialized": false,
+      "mode": "100644",
+      "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "payload_bytes": 5278840,
+      "payload_sha256": "1db5702cf59f02d1ca4b6e7c0b34a73f3d106e67cec73b4901c0c10cd4c1cbb1"
+    },
+    {
+      "git_blob_sha1": "896190fe843006fa67b8035308e296bedfd30684",
+      "lfs": false,
+      "local_materialized": true,
+      "mode": "100644",
+      "path": "godot/addons/cybersand_native/runtime-provenance.json",
+      "payload_bytes": 226532,
+      "payload_sha256": "bd05d2280e5f4692888d47da2ddc3539f7e0da65a0e22ab76c7bdaa85331e513"
+    },
+    {
+      "git_blob_sha1": "b9b878ba5b5922b36cec8045e5b127de3f015fed",
+      "lfs": false,
+      "local_materialized": true,
+      "mode": "100644",
+      "path": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+      "payload_bytes": 226175,
+      "payload_sha256": "7b021644bdfb7212ad138b1d701db310618f0b6a608091b20be66a4d65d30e52"
+    },
+    {
+      "git_blob_sha1": "0fa28badf287b3392a910e3da58598eb288e193a",
+      "lfs": true,
+      "local_materialized": false,
+      "mode": "100755",
+      "path": "godot/tools/gentek_reciprocal",
+      "payload_bytes": 1312360,
+      "payload_sha256": "a3690011da97b12a6bfdc8d461e33dde9f98c1418fef89a3f3de994bd239da53"
+    },
+    {
+      "git_blob_sha1": "a555d3009870984491d0871052949b18fdc00f90",
+      "lfs": true,
+      "local_materialized": false,
+      "mode": "100644",
+      "path": "godot/tools/gentek_reciprocal.exe",
+      "payload_bytes": 3100672,
+      "payload_sha256": "001672a6961c113f51b4f483e33cbb97702fec09616a60949c26a991a5a18105"
+    },
+    {
+      "git_blob_sha1": "f564eb0e69eed4e38fb13df51808e8e59efe2c7d",
+      "lfs": false,
+      "local_materialized": true,
+      "mode": "100644",
+      "path": "godot/tools/swarm004-runtime.linux.json",
+      "payload_bytes": 6355,
+      "payload_sha256": "89ef9fc7313c901a69e270d12dff335c0b5dd18787bb8187e8eff7b95baf3dbc"
+    },
+    {
+      "git_blob_sha1": "369ab37cf33a432ae9691bf971de59c4d4e82dab",
+      "lfs": false,
+      "local_materialized": true,
+      "mode": "100644",
+      "path": "godot/tools/swarm004-runtime.windows.json",
+      "payload_bytes": 6361,
+      "payload_sha256": "4500f86447fdab4206dc8a6fca95b10c2e3dccd4268ebba741a10d42f1805fe2"
+    }
+  ],
+  "final_workflow_results": "pending separate completion review",
+  "five_only_exact_head_dispatches": [
+    {
+      "head": "919134a39d31461947c410c233d59d1965c48414",
+      "run_id": 44957191341,
+      "workflow": "documentation.yml"
+    },
+    {
+      "head": "919134a39d31461947c410c233d59d1965c48414",
+      "run_id": 44957198003,
+      "workflow": "native.yml"
+    },
+    {
+      "head": "919134a39d31461947c410c233d59d1965c48414",
+      "run_id": 44957204571,
+      "workflow": "gdextension.yml"
+    },
+    {
+      "head": "919134a39d31461947c410c233d59d1965c48414",
+      "run_id": 44957211504,
+      "workflow": "palette-shader-qualification.yml"
+    },
+    {
+      "head": "919134a39d31461947c410c233d59d1965c48414",
+      "run_id": 44957219135,
+      "workflow": "play-desktop-packet.yml"
+    }
+  ],
+  "live_pr_snapshot": {
+    "auto_merge": null,
+    "base": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+    "draft": true,
+    "head": "919134a39d31461947c410c233d59d1965c48414",
+    "mergeable": true,
+    "merged": false,
+    "number": 715,
+    "state": "open"
+  },
+  "native_definition_sha256": "217bfa716e61198f5b3849f2ae14c30e85bc9f623fc1d05438c59df2296ce7f7",
+  "no_local_runtime_execution_claim": true,
+  "original_qualified_source": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f",
+  "overall_admission": "HOLD",
+  "owner_visual_acceptance": "pending",
+  "published_commit": "919134a39d31461947c410c233d59d1965c48414",
+  "published_manifest_sha256": "805ebd2893a157b87e50e6aadc2008e51822448ea877b6ea991c8efd245228b3",
+  "published_tree": "78d6df75cb3534238c81b40e7bcdbe0cf693d012",
+  "publisher_attempt": 1,
+  "publisher_conclusion": "success",
+  "publisher_log_four_lfs_uploads_confirmed": true,
+  "publisher_log_sha256": "653fad88af6f7052303109b3b1e1b7e9a55cb80d5cc587204e24a2938a04b8a4",
+  "publisher_receipt_sha256": "74912918e7191d68189d6d01e40f06d0c7727212354191693e9699299ac45cae",
+  "publisher_run_id": 44956855133,
+  "ready_or_merge_authorized": false,
+  "review": "Independent actual runtime publication and bounded final dispatch checkpoint",
+  "reviewed_at": "2026-11-21T22:40:12.839454+00:00",
+  "scope_verdict": "GO: actual eight-path runtime publication and bounded exact-head final dispatch are verified",
+  "sole_parent": "a7c0a6d42f4a41622faf183c01818ffb73c56899",
+  "unchanged_qualified_build_inputs": 1763
+}

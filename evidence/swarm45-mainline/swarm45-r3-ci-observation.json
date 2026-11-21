@@ -1,0 +1,894 @@
+{
+  "schema": 1,
+  "run_id": 44953582341,
+  "run_attempt": 1,
+  "run_url": "https://github.com/techrote/cybersand/actions/runs/44953582341",
+  "checked_at": "2026-11-21T22:26:11.672Z",
+  "run_status": "completed",
+  "run_conclusion": "success",
+  "created_at": "2026-11-21T21:50:09Z",
+  "completed_at": "2026-11-21T22:24:35Z",
+  "elapsed_seconds": 2066,
+  "execution_head": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f",
+  "frozen_source": "79b8a0a4a1c2ace435d709b35114ee7065c935e6",
+  "accepted_main": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+  "native_definition_sha256": "217bfa716e61198f5b3849f2ae14c30e85bc9f623fc1d05438c59df2296ce7f7",
+  "request_sha256": "f4eaa1f5d736f3fb94949a3cf6cbe5f0fc745029d056c30195b8b8fba44b1d15",
+  "jobs": [
+    {
+      "id": 136996663880,
+      "name": "Explicit frozen-source request and helper guards",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-21T21:50:11Z",
+      "completed_at": "2026-11-21T21:50:32Z",
+      "elapsed_seconds": 21,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T21:50:12Z",
+          "completed_at": "2026-11-21T21:50:13Z",
+          "elapsed_seconds": 1
+        },
+        {
+          "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T21:50:13Z",
+          "completed_at": "2026-11-21T21:50:28Z",
+          "elapsed_seconds": 15
+        },
+        {
+          "name": "Verify request, source and no paid-provider routing",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T21:50:28Z",
+          "completed_at": "2026-11-21T21:50:29Z",
+          "elapsed_seconds": 1
+        },
+        {
+          "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T21:50:29Z",
+          "completed_at": "2026-11-21T21:50:30Z",
+          "elapsed_seconds": 1
+        },
+        {
+          "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T21:50:30Z",
+          "completed_at": "2026-11-21T21:50:30Z",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T21:50:30Z",
+          "completed_at": "2026-11-21T21:50:30Z",
+          "elapsed_seconds": 0
+        }
+      ]
+    },
+    {
+      "id": 136996764947,
+      "name": "Linux full-source strict, sanitizers, graphical and known360",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-21T21:50:34Z",
+      "completed_at": "2026-11-21T22:22:18Z",
+      "elapsed_seconds": 1904,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T21:50:35Z",
+          "completed_at": "2026-11-21T21:50:36Z",
+          "elapsed_seconds": 1
+        },
+        {
+          "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T21:50:36Z",
+          "completed_at": "2026-11-21T21:50:54Z",
+          "elapsed_seconds": 18
+        },
+        {
+          "name": "Validate request and prepare compiler inputs",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T21:50:54Z",
+          "completed_at": "2026-11-21T21:51:00Z",
+          "elapsed_seconds": 6
+        },
+        {
+          "name": "Build source-matched native payload once",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T21:51:00Z",
+          "completed_at": "2026-11-21T22:04:03Z",
+          "elapsed_seconds": 783
+        },
+        {
+          "name": "Execute strict native, ASan/UBSan and fixed V3 request",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T22:04:03Z",
+          "completed_at": "2026-11-21T22:04:28Z",
+          "elapsed_seconds": 25
+        },
+        {
+          "name": "Replay all360 revealed controls with full native JSON",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T22:04:28Z",
+          "completed_at": "2026-11-21T22:07:08Z",
+          "elapsed_seconds": 160
+        },
+        {
+          "name": "Restore verified official graphical engine and Rapier",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T22:07:08Z",
+          "completed_at": "2026-11-21T22:07:47Z",
+          "elapsed_seconds": 39
+        },
+        {
+          "name": "Real graphical Generate Preview Apply Undo Save quit reopen",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T22:07:47Z",
+          "completed_at": "2026-11-21T22:12:19Z",
+          "elapsed_seconds": 272
+        },
+        {
+          "name": "Accepted-main Paint Water Art Flatten and actors",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T22:12:19Z",
+          "completed_at": "2026-11-21T22:22:00Z",
+          "elapsed_seconds": 581
+        },
+        {
+          "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T22:22:00Z",
+          "completed_at": "2026-11-21T22:22:09Z",
+          "elapsed_seconds": 9
+        },
+        {
+          "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T22:22:09Z",
+          "completed_at": "2026-11-21T22:22:15Z",
+          "elapsed_seconds": 6
+        },
+        {
+          "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T22:22:15Z",
+          "completed_at": "2026-11-21T22:22:15Z",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T22:22:15Z",
+          "completed_at": "2026-11-21T22:22:15Z",
+          "elapsed_seconds": 0
+        }
+      ]
+    },
+    {
+      "id": 136996764954,
+      "name": "Windows full-source cross build once",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-21T21:50:35Z",
+      "completed_at": "2026-11-21T21:55:33Z",
+      "elapsed_seconds": 298,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T21:50:36Z",
+          "completed_at": "2026-11-21T21:50:38Z",
+          "elapsed_seconds": 2
+        },
+        {
+          "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T21:50:38Z",
+          "completed_at": "2026-11-21T21:50:53Z",
+          "elapsed_seconds": 15
+        },
+        {
+          "name": "Validate request and prepare pinned compiler",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T21:50:53Z",
+          "completed_at": "2026-11-21T21:51:03Z",
+          "elapsed_seconds": 10
+        },
+        {
+          "name": "Build Windows adapter CLI process fixture and strict tests",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T21:51:03Z",
+          "completed_at": "2026-11-21T21:55:26Z",
+          "elapsed_seconds": 263
+        },
+        {
+          "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T21:55:26Z",
+          "completed_at": "2026-11-21T21:55:29Z",
+          "elapsed_seconds": 3
+        },
+        {
+          "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T21:55:29Z",
+          "completed_at": "2026-11-21T21:55:31Z",
+          "elapsed_seconds": 2
+        },
+        {
+          "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T21:55:31Z",
+          "completed_at": "2026-11-21T21:55:31Z",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T21:55:31Z",
+          "completed_at": "2026-11-21T21:55:31Z",
+          "elapsed_seconds": 0
+        }
+      ]
+    },
+    {
+      "id": 136998061277,
+      "name": "Real extracted Windows evaluator and accepted-main smokes",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-21T21:55:36Z",
+      "completed_at": "2026-11-21T22:20:39Z",
+      "elapsed_seconds": 1503,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T21:55:37Z",
+          "completed_at": "2026-11-21T21:55:39Z",
+          "elapsed_seconds": 2
+        },
+        {
+          "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T21:55:39Z",
+          "completed_at": "2026-11-21T21:56:00Z",
+          "elapsed_seconds": 21
+        },
+        {
+          "name": "Run actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T21:56:00Z",
+          "completed_at": "2026-11-21T21:56:01Z",
+          "elapsed_seconds": 1
+        },
+        {
+          "name": "Verify request and construct the licensed evaluator ZIP",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T21:56:01Z",
+          "completed_at": "2026-11-21T21:56:51Z",
+          "elapsed_seconds": 50
+        },
+        {
+          "name": "Pristine extracted graphical authoring and lifecycle",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T21:56:51Z",
+          "completed_at": "2026-11-21T22:06:05Z",
+          "elapsed_seconds": 554
+        },
+        {
+          "name": "Extracted evaluator Paint Water Art Flatten and actors",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T22:06:05Z",
+          "completed_at": "2026-11-21T22:20:29Z",
+          "elapsed_seconds": 864
+        },
+        {
+          "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T22:20:29Z",
+          "completed_at": "2026-11-21T22:20:32Z",
+          "elapsed_seconds": 3
+        },
+        {
+          "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T22:20:32Z",
+          "completed_at": "2026-11-21T22:20:36Z",
+          "elapsed_seconds": 4
+        },
+        {
+          "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T22:20:36Z",
+          "completed_at": "2026-11-21T22:20:37Z",
+          "elapsed_seconds": 1
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T22:20:37Z",
+          "completed_at": "2026-11-21T22:20:37Z",
+          "elapsed_seconds": 0
+        }
+      ]
+    },
+    {
+      "id": 136998061301,
+      "name": "Actual Windows native and graphical source gates",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-21T21:55:36Z",
+      "completed_at": "2026-11-21T22:24:06Z",
+      "elapsed_seconds": 1710,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T21:55:37Z",
+          "completed_at": "2026-11-21T21:55:38Z",
+          "elapsed_seconds": 1
+        },
+        {
+          "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T21:55:38Z",
+          "completed_at": "2026-11-21T21:56:03Z",
+          "elapsed_seconds": 25
+        },
+        {
+          "name": "Run actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T21:56:03Z",
+          "completed_at": "2026-11-21T21:56:04Z",
+          "elapsed_seconds": 1
+        },
+        {
+          "name": "Verify request runtime and official engine",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T21:56:04Z",
+          "completed_at": "2026-11-21T21:56:42Z",
+          "elapsed_seconds": 38
+        },
+        {
+          "name": "Execute all strict native tests on actual Windows",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T21:56:42Z",
+          "completed_at": "2026-11-21T21:56:47Z",
+          "elapsed_seconds": 5
+        },
+        {
+          "name": "Source graphical authoring and lifecycle",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T21:56:47Z",
+          "completed_at": "2026-11-21T22:07:04Z",
+          "elapsed_seconds": 617
+        },
+        {
+          "name": "Accepted-main Paint Water Art Flatten and actors",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T22:07:04Z",
+          "completed_at": "2026-11-21T22:24:00Z",
+          "elapsed_seconds": 1016
+        },
+        {
+          "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T22:24:00Z",
+          "completed_at": "2026-11-21T22:24:03Z",
+          "elapsed_seconds": 3
+        },
+        {
+          "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T22:24:03Z",
+          "completed_at": "2026-11-21T22:24:04Z",
+          "elapsed_seconds": 1
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T22:24:04Z",
+          "completed_at": "2026-11-21T22:24:04Z",
+          "elapsed_seconds": 0
+        }
+      ]
+    },
+    {
+      "id": 137005852252,
+      "name": "Verify every scoped gate and stage eight reviewable runtime paths",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-21T22:24:09Z",
+      "completed_at": "2026-11-21T22:24:35Z",
+      "elapsed_seconds": 26,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T22:24:09Z",
+          "completed_at": "2026-11-21T22:24:11Z",
+          "elapsed_seconds": 2
+        },
+        {
+          "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T22:24:11Z",
+          "completed_at": "2026-11-21T22:24:26Z",
+          "elapsed_seconds": 15
+        },
+        {
+          "name": "Run actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T22:24:26Z",
+          "completed_at": "2026-11-21T22:24:28Z",
+          "elapsed_seconds": 2
+        },
+        {
+          "name": "Run actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T22:24:28Z",
+          "completed_at": "2026-11-21T22:24:29Z",
+          "elapsed_seconds": 1
+        },
+        {
+          "name": "Run actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T22:24:29Z",
+          "completed_at": "2026-11-21T22:24:30Z",
+          "elapsed_seconds": 1
+        },
+        {
+          "name": "Revalidate and prepare manual publication candidate",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T22:24:30Z",
+          "completed_at": "2026-11-21T22:24:32Z",
+          "elapsed_seconds": 2
+        },
+        {
+          "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T22:24:32Z",
+          "completed_at": "2026-11-21T22:24:33Z",
+          "elapsed_seconds": 1
+        },
+        {
+          "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T22:24:33Z",
+          "completed_at": "2026-11-21T22:24:33Z",
+          "elapsed_seconds": 0
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-11-21T22:24:33Z",
+          "completed_at": "2026-11-21T22:24:33Z",
+          "elapsed_seconds": 0
+        }
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 14727751402,
+      "name": "swarm45-windows-package-evidence-44953582341-1",
+      "bytes": 13296974,
+      "sha256": "fe8b0f72292508530d359bc0826c623ec4a70a78399ba6212a66562a210d5894",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44953582341/artifacts/14727751402"
+    },
+    {
+      "id": 14727701534,
+      "name": "swarm45-owner-windows-96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f-44953582341-1",
+      "bytes": 95032005,
+      "sha256": "18e70a2708d71b1757153400b01390c6ace4147057b3957fec8ccd9cb1d426ad",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44953582341/artifacts/14727701534"
+    },
+    {
+      "id": 14727612467,
+      "name": "swarm45-runtime-publication-candidate-96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f-44953582341-1",
+      "bytes": 6046809,
+      "sha256": "271294630bcd8282cdc1c4914392d8a24a39defc034ab125f1b9f2794440f14c",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44953582341/artifacts/14727612467"
+    },
+    {
+      "id": 14727344824,
+      "name": "swarm45-windows-source-evidence-44953582341-1",
+      "bytes": 15180107,
+      "sha256": "d70cbee6a1d1aa7a018702b2f87dfd27a8049587cfb08c13d9452ff56c8beb8f",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44953582341/artifacts/14727344824"
+    },
+    {
+      "id": 14726659913,
+      "name": "swarm45-linux-runtime-44953582341-1",
+      "bytes": 77157548,
+      "sha256": "5bb7b48ce0156e359c1c1394d32e45a68e4badef6154191300a2c254face4302",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44953582341/artifacts/14726659913"
+    },
+    {
+      "id": 14726647933,
+      "name": "swarm45-windows-runtime-44953582341-1",
+      "bytes": 10226912,
+      "sha256": "16f729d519019089becf566e71d19acd355b7f4bb1dcdf42d3afdf87bda3d794",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44953582341/artifacts/14726647933"
+    },
+    {
+      "id": 14726599971,
+      "name": "swarm45-linux-evidence-44953582341-1",
+      "bytes": 79930037,
+      "sha256": "4de8f1a18fb95d508a073945c4d2c28a47b7a00d1f7c3ea60fbc050e8503353b",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44953582341/artifacts/14726599971"
+    },
+    {
+      "id": 14726486823,
+      "name": "swarm45-request-44953582341-1",
+      "bytes": 4211,
+      "sha256": "c51a5742e63bd185dd895f2f0ab61ee57cc393cdc91bce8fdefe69469069cd69",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44953582341/artifacts/14726486823"
+    },
+    {
+      "id": 14726234776,
+      "name": "swarm45-windows-build-evidence-44953582341-1",
+      "bytes": 104840,
+      "sha256": "f381c157b234c1c47b80367913db7ea44552eb441f2863fc8daaf4d50c9105cf",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44953582341/artifacts/14726234776"
+    }
+  ],
+  "smoke_cases": {
+    "linux": [
+      {
+        "time": "2026-11-21T22:12:25.1475119",
+        "case": "import",
+        "checks": null
+      },
+      {
+        "time": "2026-11-21T22:13:11.2075539",
+        "case": "workbench-canvas",
+        "checks": 199
+      },
+      {
+        "time": "2026-11-21T22:15:09.6836149",
+        "case": "workbench-wave",
+        "checks": null
+      },
+      {
+        "time": "2026-11-21T22:15:24.4707690",
+        "case": "paint-workbench-author",
+        "checks": 66
+      },
+      {
+        "time": "2026-11-21T22:15:30.9074621",
+        "case": "paint-workbench-reopen",
+        "checks": 12
+      },
+      {
+        "time": "2026-11-21T22:15:50.9068262",
+        "case": "paint-generated-author",
+        "checks": 40
+      },
+      {
+        "time": "2026-11-21T22:16:07.8351322",
+        "case": "paint-generated-reopen",
+        "checks": 20
+      },
+      {
+        "time": "2026-11-21T22:16:08.2029912",
+        "case": "art-provider",
+        "checks": 54
+      },
+      {
+        "time": "2026-11-21T22:16:09.1723088",
+        "case": "art-receipt-identity",
+        "checks": 122
+      },
+      {
+        "time": "2026-11-21T22:16:43.9744194",
+        "case": "art-durability",
+        "checks": 345
+      },
+      {
+        "time": "2026-11-21T22:17:07.6970950",
+        "case": "art-native-render",
+        "checks": 151
+      },
+      {
+        "time": "2026-11-21T22:17:42.5922470",
+        "case": "art-undo",
+        "checks": 260
+      },
+      {
+        "time": "2026-11-21T22:17:43.4610997",
+        "case": "actors-session",
+        "checks": 84
+      },
+      {
+        "time": "2026-11-21T22:17:46.0834241",
+        "case": "actors-native",
+        "checks": 323
+      },
+      {
+        "time": "2026-11-21T22:20:31.6639668",
+        "case": "actors-author",
+        "checks": 207
+      },
+      {
+        "time": "2026-11-21T22:20:50.2262271",
+        "case": "actors-reopen",
+        "checks": 17
+      },
+      {
+        "time": "2026-11-21T22:21:59.9743067",
+        "case": "flatten-512x1",
+        "checks": null
+      }
+    ],
+    "windows_source": [
+      {
+        "time": "2026-11-21T22:07:10.2679170",
+        "case": "import",
+        "checks": null
+      },
+      {
+        "time": "2026-11-21T22:07:56.1310473",
+        "case": "workbench-canvas",
+        "checks": 199
+      },
+      {
+        "time": "2026-11-21T22:11:58.7725574",
+        "case": "workbench-wave",
+        "checks": null
+      },
+      {
+        "time": "2026-11-21T22:12:35.1281777",
+        "case": "paint-workbench-author",
+        "checks": 66
+      },
+      {
+        "time": "2026-11-21T22:12:45.3468298",
+        "case": "paint-workbench-reopen",
+        "checks": 12
+      },
+      {
+        "time": "2026-11-21T22:13:27.0893192",
+        "case": "paint-generated-author",
+        "checks": 40
+      },
+      {
+        "time": "2026-11-21T22:14:01.2506825",
+        "case": "paint-generated-reopen",
+        "checks": 20
+      },
+      {
+        "time": "2026-11-21T22:14:01.6446122",
+        "case": "art-provider",
+        "checks": 54
+      },
+      {
+        "time": "2026-11-21T22:14:02.7840292",
+        "case": "art-receipt-identity",
+        "checks": 122
+      },
+      {
+        "time": "2026-11-21T22:14:43.9011635",
+        "case": "art-durability",
+        "checks": 345
+      },
+      {
+        "time": "2026-11-21T22:15:36.1912722",
+        "case": "art-native-render",
+        "checks": 151
+      },
+      {
+        "time": "2026-11-21T22:16:12.6210155",
+        "case": "art-undo",
+        "checks": 260
+      },
+      {
+        "time": "2026-11-21T22:16:13.6675290",
+        "case": "actors-session",
+        "checks": 84
+      },
+      {
+        "time": "2026-11-21T22:16:16.5707883",
+        "case": "actors-native",
+        "checks": 323
+      },
+      {
+        "time": "2026-11-21T22:19:31.2977992",
+        "case": "actors-author",
+        "checks": 207
+      },
+      {
+        "time": "2026-11-21T22:19:55.1081507",
+        "case": "actors-reopen",
+        "checks": 17
+      },
+      {
+        "time": "2026-11-21T22:23:59.6122874",
+        "case": "flatten-512x1",
+        "checks": null
+      }
+    ],
+    "windows_package": [
+      {
+        "time": "2026-11-21T22:06:11.5026893",
+        "case": "import",
+        "checks": null
+      },
+      {
+        "time": "2026-11-21T22:06:48.9653731",
+        "case": "workbench-canvas",
+        "checks": 199
+      },
+      {
+        "time": "2026-11-21T22:10:12.5938539",
+        "case": "workbench-wave",
+        "checks": null
+      },
+      {
+        "time": "2026-11-21T22:10:44.7354552",
+        "case": "paint-workbench-author",
+        "checks": 66
+      },
+      {
+        "time": "2026-11-21T22:10:53.0816762",
+        "case": "paint-workbench-reopen",
+        "checks": 12
+      },
+      {
+        "time": "2026-11-21T22:11:28.8431497",
+        "case": "paint-generated-author",
+        "checks": 40
+      },
+      {
+        "time": "2026-11-21T22:11:59.1808348",
+        "case": "paint-generated-reopen",
+        "checks": 20
+      },
+      {
+        "time": "2026-11-21T22:11:59.5568057",
+        "case": "art-provider",
+        "checks": 54
+      },
+      {
+        "time": "2026-11-21T22:12:00.4927153",
+        "case": "art-receipt-identity",
+        "checks": 122
+      },
+      {
+        "time": "2026-11-21T22:12:32.6702515",
+        "case": "art-durability",
+        "checks": 345
+      },
+      {
+        "time": "2026-11-21T22:13:19.3951680",
+        "case": "art-native-render",
+        "checks": 151
+      },
+      {
+        "time": "2026-11-21T22:13:53.1738449",
+        "case": "art-undo",
+        "checks": 260
+      },
+      {
+        "time": "2026-11-21T22:13:54.0121093",
+        "case": "actors-session",
+        "checks": 84
+      },
+      {
+        "time": "2026-11-21T22:13:56.2457225",
+        "case": "actors-native",
+        "checks": 323
+      },
+      {
+        "time": "2026-11-21T22:16:40.4194685",
+        "case": "actors-author",
+        "checks": 207
+      },
+      {
+        "time": "2026-11-21T22:17:01.6653327",
+        "case": "actors-reopen",
+        "checks": 17
+      },
+      {
+        "time": "2026-11-21T22:20:28.7940425",
+        "case": "flatten-512x1",
+        "checks": null
+      }
+    ]
+  },
+  "full_360_replay": {
+    "completed": 360,
+    "errors": 0,
+    "elapsed_seconds": 159.539,
+    "result": "PASS",
+    "scope": "Revealed-control replay integrity; no new scientific generalization claim"
+  },
+  "measured_bottlenecks_seconds": {
+    "linux_compile": 783,
+    "linux_strict_sanitizers_floor_v3": 25,
+    "linux_replay": 160,
+    "linux_engine_stage": 39,
+    "linux_graphical": 272,
+    "linux_smokes": 581,
+    "linux_job": 1904,
+    "windows_compile": 263,
+    "windows_build_job": 298,
+    "windows_source_graphical": 617,
+    "windows_source_smokes": 1016,
+    "windows_source_job": 1710,
+    "windows_package_construction": 50,
+    "windows_package_graphical": 554,
+    "windows_package_smokes": 864,
+    "windows_package_job": 1503,
+    "publication_candidate_job": 26
+  },
+  "critical_path": "Request guard -> Windows cross-build -> Windows source native/graphical/accepted-main smokes -> final eight-path candidate preparation. Linux finished 108s before Windows source.",
+  "archive_repair_result": "Hosted extracted package passed graphical aggregate, post-import package custody admission, all 17 accepted-main cases, and Flatten package recheck. No import sidecars/settings were omitted and no hash gate was relaxed.",
+  "startup_timeout_seconds": 60,
+  "publication_status": "Eight-path candidate prepared successfully; runtime publication is a separate guarded action owned by root.",
+  "general_final_admission": "Existing five final workflows still required on the published head.",
+  "physical_owner_acceptance": "pending",
+  "branch_mutations_or_workflow_triggers_by_monitor": "none"
+}

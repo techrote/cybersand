@@ -1,0 +1,30 @@
+{
+  "time_utc": "2026-11-21T22:40:44.436641+00:00",
+  "reviewer": "independent native/protocol reviewer",
+  "decision": "GO for source/protocol/security continuity through exact published919134; no final CI/owner/merge claim",
+  "qualified_source": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f",
+  "publication_request": "a7c0a6d42f4a41622faf183c01818ffb73c56899",
+  "published_commit": "919134a39d31461947c410c233d59d1965c48414",
+  "published_tree": "78d6df75cb3534238c81b40e7bcdbe0cf693d012",
+  "confirmed_P1_P2": [],
+  "historical_P2": "closed at r3; exact five-file hashes unchanged at published head",
+  "manifest_sha256": "805ebd2893a157b87e50e6aadc2008e51822448ea877b6ea991c8efd245228b3",
+  "manifest_scope_correction": "Added defaults_scope distinguishing ordinary Workbench defaults from retained native/V1 shared ownership semantics; resolved",
+  "native_definition_sha256": "217bfa716e61198f5b3849f2ae14c30e85bc9f623fc1d05438c59df2296ce7f7",
+  "protocols": [
+    1,
+    2,
+    3
+  ],
+  "composition_schema": 5,
+  "validation_receipts": {
+    "verification.json": "59739d8a2e533e6fb752d3cfc58ca68f9877956a2be9e09783cf24a6d804602c",
+    "manifest-verification.json": "0759b03b8a2d18e461d9a99d5cad4ea08fa130808131cdba67a4c7977ca8b096",
+    "ordinary-runtime-binding.json": "80bd2b18541ad48e63c48e94564073483f48a6e6d088c2cc3526882d252049e4"
+  },
+  "remaining_boundaries": [
+    "Final exact919 ordinary CI admission is recorded separately; no passing result inferred here",
+    "Physical original-user-map/NVIDIA owner acceptance remains pending",
+    "No merge, Ready, auto-merge or scientific programme acceptance"
+  ]
+}

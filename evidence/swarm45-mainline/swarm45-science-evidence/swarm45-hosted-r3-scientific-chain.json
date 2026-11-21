@@ -1,0 +1,16 @@
+{
+  "scope": "R3 exact-byte equality preserves the previously reviewed scientific classification; no retagging",
+  "source": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f",
+  "r3_audit_sha256": "092da9142ae67ec1db9a5aabc732207069125c1f6786300e1950cd52c4693be4",
+  "r2_audit_sha256": "40764003ef42f523649c3f6c081fe36396fba96507785950de9dac5af591caac",
+  "classification_sha256": "08bd9a02baf43470f4de43924ce0d735ac7c849c4cb8889c033e0ac55b895787",
+  "classification_counts": {
+    "normalized_equal": 251,
+    "work_counters_only": 96,
+    "work_and_remaining_proposal_grant_only": 1,
+    "fixed_territory_budget_admission_or_partial_failure_trace": 12
+  },
+  "committed_control_copy": "395b93393adcc379dabeffeb75be9eb19557ad33",
+  "public_classification_path": "evidence/swarm45-mainline/science/swarm45-finaldelta-difference-classification-9b688aed.json",
+  "public_copy_byte_identical": true
+}

@@ -1,0 +1,1066 @@
+{
+  "all_packaged_godot_source_inputs_match": true,
+  "archives": {
+    "owner-artifact.zip": {
+      "artifact_id": 14727701534,
+      "bytes": 95032005,
+      "files": 2,
+      "sha256": "18e70a2708d71b1757153400b01390c6ace4147057b3957fec8ccd9cb1d426ad"
+    },
+    "owner-artifact/CyberSand-SWARM45-Draft-HOLD-Windows-96b8d3fb9d5a.zip": {
+      "artifact_id": null,
+      "bytes": 95359907,
+      "files": 1088,
+      "sha256": "ce50316be11caafe32879395b681ef7f131541732061ded5db36dc3af6236c6d"
+    },
+    "windows-package.zip": {
+      "artifact_id": 14727751402,
+      "bytes": 13296974,
+      "files": 532,
+      "sha256": "fe8b0f72292508530d359bc0826c623ec4a70a78399ba6212a66562a210d5894"
+    },
+    "windows-source.zip": {
+      "artifact_id": 14727344824,
+      "bytes": 15180107,
+      "files": 567,
+      "sha256": "d70cbee6a1d1aa7a018702b2f87dfd27a8049587cfb08c13d9452ff56c8beb8f"
+    }
+  },
+  "build_context": {
+    "branch": "integration/swarm004-005-mainline-20261121",
+    "repository": "techrote/cybersand",
+    "run_attempt": "1",
+    "run_id": "44953582341",
+    "workflow": ".github/workflows/swarm45-mainline-qualification.yml",
+    "workflow_run": "https://github.com/techrote/cybersand/actions/runs/44953582341"
+  },
+  "canonical_rapier_import_sidecars": {
+    "godot/addons/godot-rapier2d/Radial2D.svg.import": "144414e0a3068759478e69d7af908620b3a396fb075944cf258cb5051d313d82",
+    "godot/addons/godot-rapier2d/icons/Fluid2D.svg.import": "f4624fa6418203f7d3f58a65703d450cd80f6900750736b72cd2b1215bdf5e2e",
+    "godot/addons/godot-rapier2d/icons/StateManager2D.svg.import": "3b4d1ae5b01aad5f1b62aef26fe06c09d6766d579e9d43bae3859b6686e644a0",
+    "godot/addons/godot-rapier2d/logo_square_2d.png.import": "2f5527b8bea78ee1ca403de3de46844b375a8f1fff140994171a75ebd79dfd07"
+  },
+  "complete_zip_inventories_match": true,
+  "current_owner_guide_sha256": "74688f455b2a60075ebcde3e21a0147b7e1ab5d936e7d048476ebceff4b3745e",
+  "guide_only_replaces_two_reviewed_placeholders": true,
+  "layouts": {
+    "windows-package": {
+      "examples": {
+        "reciprocal": {
+          "create_pid": 6860,
+          "foreign_joints": 8,
+          "local_terminations": 0,
+          "material_cells": 4001,
+          "native_cells_equal_applied_plane": true,
+          "obligations": 8,
+          "reopen_pid": 1784,
+          "saved_map_and_receipt_hashes_match": true,
+          "whole_plane_sha256": "ef057497c4d7ff17cb3dbe0b99bb64771406223cab7743351bda0161302ea436"
+        },
+        "swarm005_irregular": {
+          "create_pid": 6520,
+          "foreign_joints": 0,
+          "local_terminations": 10,
+          "material_cells": 6026,
+          "native_cells_equal_applied_plane": true,
+          "obligations": 0,
+          "reopen_pid": 748,
+          "saved_map_and_receipt_hashes_match": true,
+          "whole_plane_sha256": "88d708134222eca62c33aeb36854a0abd329c338aa0883e87721bd38044f38ab"
+        },
+        "swarm005_viaduct": {
+          "blocked": true,
+          "joints": 0,
+          "preview_baseline_equal": true,
+          "unresolved": 1
+        },
+        "transaction": {
+          "create_pid": 3100,
+          "foreign_joints": 0,
+          "local_terminations": 0,
+          "material_cells": 4834,
+          "native_cells_equal_applied_plane": true,
+          "obligations": 0,
+          "reopen_pid": 5568,
+          "saved_map_and_receipt_hashes_match": true,
+          "whole_plane_sha256": "2a7166559b1e23af4a2324ebe088db99727d045c1564da62d79f803939c02fc6"
+        }
+      },
+      "flatten_graphical_and_windows_storage_faults_pass": true,
+      "graphical_inventory_files": 255,
+      "graphical_processes": 14,
+      "headless_checks": {
+        "controller-mechanical": 40,
+        "controls-native": 32,
+        "native-adapter": 127,
+        "protocol": 182,
+        "runtime-selector": 12
+      },
+      "pngs": {
+        "windows-package-smokes/actors-author-frames/01-mixed-workshop-paused.png": {
+          "sha256": "f5118bea506af9b0323b182077c428ae177dda3b4df08b4038156bcd59a83897",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-package-smokes/actors-author-frames/02-independent-npcs-running.png": {
+          "sha256": "52103c8840e6904bac9d1d091995c3d1b269ef86d5bbbcfb3195a2253ee4f4fd",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-package-smokes/actors-author-frames/03-human-ground-pilot.png": {
+          "sha256": "17f3308e87b1465cdad62328a56806602ce6a83988344b72472432957ca4a9af",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-package-smokes/actors-author-frames/04-painted-obstacle.png": {
+          "sha256": "0f25c92650ea7e6a335876d48dd89a2ae59e89ccf70a0c766d252a5460efe633",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-package-smokes/actors-reopen-frames/05-reopened-authored-start.png": {
+          "sha256": "8985cc79f8da2108c926f4cf321a8f9760aa0609e3f1c56e875f3710cd92babd",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-package-smokes/art-frames/native-material-readback.png": {
+          "sha256": "08db3c1d0c687e45fa988c84223d57009338c5f70cfd6eddcd3d88a0e6760a88",
+          "size": [
+            2048,
+            2048
+          ]
+        },
+        "windows-package-smokes/art-frames/stage1-1280.png": {
+          "sha256": "fa889d2e9bc817e03a3c205d87ccc3da232705a6e2ea0fbc26fc9d53b79bca46",
+          "size": [
+            1280,
+            720
+          ]
+        },
+        "windows-package-smokes/art-frames/stage1.png": {
+          "sha256": "862e5cc42cecfaac0eba0275db71a13222e4c7ef0b535522158c53ba767ad2e7",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-package-smokes/flatten/side-512-workers-1-author-frames/flatten-explicitly-saved.png": {
+          "sha256": "d3ce3b05dfbeb0fc9567096c17a6d06faf2f84a330b2ad1493ec241c0aa5b34f",
+          "size": [
+            1440,
+            810
+          ]
+        },
+        "windows-package-smokes/flatten/side-512-workers-1-author-frames/flatten-identical-live-world.png": {
+          "sha256": "982a8f2639d46c83431120a0eae1ed9b27ae1e7aa34aae66c2ba907b397fb510",
+          "size": [
+            1440,
+            810
+          ]
+        },
+        "windows-package-smokes/flatten/side-512-workers-1-reopen-frames/flatten-reopened-and-continued.png": {
+          "sha256": "423f46d09973eb106f947ba142e28c6aedff4517159c72d786c1fd394dd60bc6",
+          "size": [
+            1440,
+            810
+          ]
+        },
+        "windows-package-smokes/paint-generated-frames/paint001-generated-authored.png": {
+          "sha256": "edae77691bd7d07d8147bf893c3a6a2aac2ff6f1fbbebc85c20cacc06f0de4c9",
+          "size": [
+            1440,
+            810
+          ]
+        },
+        "windows-package-smokes/paint-generated-frames/paint001-generated-reopened.png": {
+          "sha256": "0a6b2b2202dffeebdd98b38453045e2c779b7a56f60c7394725b06120c75d5b6",
+          "size": [
+            1440,
+            810
+          ]
+        },
+        "windows-package-smokes/paint-workbench-frames/paint001-mixed-stamp-preview.png": {
+          "sha256": "fc746a5bc2424bd29561eb99b6477669680bf25231ac4ff35184a796ce821fe6",
+          "size": [
+            1440,
+            810
+          ]
+        },
+        "windows-package-smokes/paint-workbench-frames/paint001-mounted-editor.png": {
+          "sha256": "42fb24251fe7bdc61541bdc2850c4b27763c70461ea76eadfe7bcf9f3bfa47ff",
+          "size": [
+            1440,
+            810
+          ]
+        },
+        "windows-package/reciprocal/native-applied.png": {
+          "sha256": "8a4fedfa6bccdcd6371f2f0399e208f00d909da887e79cf688fb6552fe3e33d2",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-package/reciprocal/native-preview.png": {
+          "sha256": "0d40d2f7fda6a4f2aa9135cc804af6f0235b4bfc1f39214dd5d1c6f637d36ad0",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-package/reciprocal/native-reopened.png": {
+          "sha256": "9055fe0b06aea10b68d12092f993181ec8e81ff1f6753638ce83464d1aa1faac",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-package/reciprocal/native-saved.png": {
+          "sha256": "b081bc17453228761f0770f875387c0768f340f5a98ec89d09cf4f4fb5eb51d0",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-package/reciprocal/native-undone.png": {
+          "sha256": "0e8e5f46c936943851e0f9ad9d916c99b6fb8ed7e5bfef2a86c75bc5831a768d",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-package/swarm005_irregular/native-applied.png": {
+          "sha256": "e736b1fa6c379936af879266073d2499c388cc521a88c4ea01732a2aac7b36a5",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-package/swarm005_irregular/native-preview.png": {
+          "sha256": "c8e9aa8b01f55cb74ee9b03ef56194942d52648b10d4851b00ca914e3de2c050",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-package/swarm005_irregular/native-reopened.png": {
+          "sha256": "b854373bfbf62b24646a76b18650e1d2166ef89d1f11b0b6a20bfda86c097d01",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-package/swarm005_irregular/native-saved.png": {
+          "sha256": "026b96f11d71d5e29c15fa19f59616d022c4b2bc57cfcea774f0d09b92b49102",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-package/swarm005_irregular/native-undone.png": {
+          "sha256": "bb3c3c6f31930b18bd70ba63b538d5d9328ad9e8173450e29819fb434c0154c9",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-package/swarm005_viaduct/native-preview.png": {
+          "sha256": "f1e820e27ec0482fd17e512fabbc4ba3378b7a7867fc7b477432b19aaee0bf8d",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-package/swarm005_viaduct/native-unresolved.png": {
+          "sha256": "bcc31b4c08aaededdb3dc295e34dbc3542fe44fb94f836f034094b9845bf7586",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-package/transaction/native-applied.png": {
+          "sha256": "6654d751451c0043abe48a9527f33c664f26b71f6db222d2530f7d291118a21f",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-package/transaction/native-preview.png": {
+          "sha256": "30254e767d707e36fcbccda194bb93d6d3dcbc8387ba0cffdb0394f20cb06ea2",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-package/transaction/native-reopened.png": {
+          "sha256": "fd44da2761c8b906ddd352d0add8ba907cccf7156f657609c2373d56a23ceae0",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-package/transaction/native-saved.png": {
+          "sha256": "6145751968330faf3dfa512e6de85333bdd525d175fb593d40935b2867a00372",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-package/transaction/native-undone.png": {
+          "sha256": "23548a4668c9a5a8cc08a6455506695e8c0f95ad134d2624f41162c7385e2c82",
+          "size": [
+            1920,
+            1080
+          ]
+        }
+      },
+      "smoke_cases": 17,
+      "smoke_inventory_files": 274,
+      "smoke_results": [
+        {
+          "case": "import",
+          "checks": null,
+          "passed": true
+        },
+        {
+          "case": "workbench-canvas",
+          "checks": 199,
+          "passed": true
+        },
+        {
+          "case": "workbench-wave",
+          "checks": 1272,
+          "passed": true
+        },
+        {
+          "case": "paint-workbench-author",
+          "checks": 66,
+          "passed": true
+        },
+        {
+          "case": "paint-workbench-reopen",
+          "checks": 12,
+          "passed": true
+        },
+        {
+          "case": "paint-generated-author",
+          "checks": 40,
+          "passed": true
+        },
+        {
+          "case": "paint-generated-reopen",
+          "checks": 20,
+          "passed": true
+        },
+        {
+          "case": "art-provider",
+          "checks": 54,
+          "passed": true
+        },
+        {
+          "case": "art-receipt-identity",
+          "checks": 122,
+          "passed": true
+        },
+        {
+          "case": "art-durability",
+          "checks": 345,
+          "passed": true
+        },
+        {
+          "case": "art-native-render",
+          "checks": 151,
+          "passed": true
+        },
+        {
+          "case": "art-undo",
+          "checks": 260,
+          "passed": true
+        },
+        {
+          "case": "actors-session",
+          "checks": 84,
+          "passed": true
+        },
+        {
+          "case": "actors-native",
+          "checks": 323,
+          "passed": true
+        },
+        {
+          "case": "actors-author",
+          "checks": 207,
+          "passed": true
+        },
+        {
+          "case": "actors-reopen",
+          "checks": 17,
+          "passed": true
+        },
+        {
+          "case": "flatten-512x1",
+          "checks": null,
+          "passed": true
+        }
+      ],
+      "ui": [
+        {
+          "checks": 101,
+          "example": "transaction",
+          "mode": "create",
+          "native_can_apply": true,
+          "native_status": "complete",
+          "process_id": 3100,
+          "transport_refusals": {
+            "failed_child_positive": true,
+            "preexisting_job_directory": true
+          }
+        },
+        {
+          "checks": 15,
+          "example": "transaction",
+          "mode": "reopen",
+          "native_can_apply": true,
+          "native_status": "complete",
+          "process_id": 5568,
+          "transport_refusals": {}
+        },
+        {
+          "checks": 84,
+          "example": "reciprocal",
+          "mode": "create",
+          "native_can_apply": true,
+          "native_status": "complete",
+          "process_id": 6860,
+          "transport_refusals": {
+            "failed_child_positive": true,
+            "preexisting_job_directory": true
+          }
+        },
+        {
+          "checks": 16,
+          "example": "reciprocal",
+          "mode": "reopen",
+          "native_can_apply": true,
+          "native_status": "complete",
+          "process_id": 1784,
+          "transport_refusals": {}
+        },
+        {
+          "checks": 83,
+          "example": "swarm005_irregular",
+          "mode": "create",
+          "native_can_apply": true,
+          "native_status": "complete",
+          "process_id": 6520,
+          "transport_refusals": {
+            "failed_child_positive": true,
+            "preexisting_job_directory": true
+          }
+        },
+        {
+          "checks": 15,
+          "example": "swarm005_irregular",
+          "mode": "reopen",
+          "native_can_apply": true,
+          "native_status": "complete",
+          "process_id": 748,
+          "transport_refusals": {}
+        },
+        {
+          "checks": 28,
+          "example": "swarm005_viaduct",
+          "mode": "blocked",
+          "native_can_apply": false,
+          "native_status": "blocked",
+          "process_id": 2808,
+          "transport_refusals": {}
+        },
+        {
+          "checks": 32,
+          "example": "lifecycle",
+          "mode": "lifecycle",
+          "native_can_apply": null,
+          "native_status": null,
+          "process_id": 6876,
+          "transport_refusals": {}
+        }
+      ],
+      "wave_assertions": 1272,
+      "wave_native_ticks": 42
+    },
+    "windows-source": {
+      "examples": {
+        "reciprocal": {
+          "create_pid": 7120,
+          "foreign_joints": 8,
+          "local_terminations": 0,
+          "material_cells": 4001,
+          "native_cells_equal_applied_plane": true,
+          "obligations": 8,
+          "reopen_pid": 2352,
+          "saved_map_and_receipt_hashes_match": true,
+          "whole_plane_sha256": "ef057497c4d7ff17cb3dbe0b99bb64771406223cab7743351bda0161302ea436"
+        },
+        "swarm005_irregular": {
+          "create_pid": 1560,
+          "foreign_joints": 0,
+          "local_terminations": 10,
+          "material_cells": 6026,
+          "native_cells_equal_applied_plane": true,
+          "obligations": 0,
+          "reopen_pid": 5908,
+          "saved_map_and_receipt_hashes_match": true,
+          "whole_plane_sha256": "88d708134222eca62c33aeb36854a0abd329c338aa0883e87721bd38044f38ab"
+        },
+        "swarm005_viaduct": {
+          "blocked": true,
+          "joints": 0,
+          "preview_baseline_equal": true,
+          "unresolved": 1
+        },
+        "transaction": {
+          "create_pid": 2804,
+          "foreign_joints": 0,
+          "local_terminations": 0,
+          "material_cells": 4834,
+          "native_cells_equal_applied_plane": true,
+          "obligations": 0,
+          "reopen_pid": 5900,
+          "saved_map_and_receipt_hashes_match": true,
+          "whole_plane_sha256": "2a7166559b1e23af4a2324ebe088db99727d045c1564da62d79f803939c02fc6"
+        }
+      },
+      "flatten_graphical_and_windows_storage_faults_pass": true,
+      "graphical_inventory_files": 255,
+      "graphical_processes": 14,
+      "headless_checks": {
+        "controller-mechanical": 40,
+        "controls-native": 32,
+        "native-adapter": 127,
+        "protocol": 182,
+        "runtime-selector": 12
+      },
+      "pngs": {
+        "windows-smokes/actors-author-frames/01-mixed-workshop-paused.png": {
+          "sha256": "01f39cec77966be7a85703d2a022beb2e589258af1615f385c0267a2d03da847",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-smokes/actors-author-frames/02-independent-npcs-running.png": {
+          "sha256": "9885fea7957b047eb020d1432c76adf53586f58e3958109fda8b8bb55a72295d",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-smokes/actors-author-frames/03-human-ground-pilot.png": {
+          "sha256": "608bfa16df1a4a5f196384a944f548906e1f78b72db7a336b3e8ecea3b1069d8",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-smokes/actors-author-frames/04-painted-obstacle.png": {
+          "sha256": "ec67be93d4cf6c3fe3ac179b411f7561b9d0aec9e993f91a5b73ba90a74f3594",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-smokes/actors-reopen-frames/05-reopened-authored-start.png": {
+          "sha256": "ea2ac6eaea8ad46a9acad6c14e1a3a446df9626c46d8bd0c1e3df8fd70d4285c",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-smokes/art-frames/native-material-readback.png": {
+          "sha256": "08db3c1d0c687e45fa988c84223d57009338c5f70cfd6eddcd3d88a0e6760a88",
+          "size": [
+            2048,
+            2048
+          ]
+        },
+        "windows-smokes/art-frames/stage1-1280.png": {
+          "sha256": "fa889d2e9bc817e03a3c205d87ccc3da232705a6e2ea0fbc26fc9d53b79bca46",
+          "size": [
+            1280,
+            720
+          ]
+        },
+        "windows-smokes/art-frames/stage1.png": {
+          "sha256": "862e5cc42cecfaac0eba0275db71a13222e4c7ef0b535522158c53ba767ad2e7",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-smokes/flatten/side-512-workers-1-author-frames/flatten-explicitly-saved.png": {
+          "sha256": "2b10785df332562062897f1c069a6f92acd422c4a633454d681e565a8a1ea153",
+          "size": [
+            1440,
+            810
+          ]
+        },
+        "windows-smokes/flatten/side-512-workers-1-author-frames/flatten-identical-live-world.png": {
+          "sha256": "e593257bfb0df00b9534743540d2dec17b0c873b2fb12a9a238fd6eb0cbbe714",
+          "size": [
+            1440,
+            810
+          ]
+        },
+        "windows-smokes/flatten/side-512-workers-1-reopen-frames/flatten-reopened-and-continued.png": {
+          "sha256": "6ce83b5f447ca0dcc7ff718fe60523e59088b38a5f4112cc85b47f4279b6d778",
+          "size": [
+            1440,
+            810
+          ]
+        },
+        "windows-smokes/paint-generated-frames/paint001-generated-authored.png": {
+          "sha256": "67a1edd91a8dfec1578e77bc5b05fa77e4c4293c72c3b1d9c19088fe227758d1",
+          "size": [
+            1440,
+            810
+          ]
+        },
+        "windows-smokes/paint-generated-frames/paint001-generated-reopened.png": {
+          "sha256": "19bc0636ed760f947bd6f52dd7defa4d0d2ecd9584d89839ac7c45db1a5eea3a",
+          "size": [
+            1440,
+            810
+          ]
+        },
+        "windows-smokes/paint-workbench-frames/paint001-mixed-stamp-preview.png": {
+          "sha256": "54c28d27ab3d39cf1d437bfcfb28ee2bc7ecc657d9c1cfbc309245e8055a0972",
+          "size": [
+            1440,
+            810
+          ]
+        },
+        "windows-smokes/paint-workbench-frames/paint001-mounted-editor.png": {
+          "sha256": "1b5c5583526bdcee5cc0bf320ab33c7a2b732474bdd6497aa2e384ff4f9ce646",
+          "size": [
+            1440,
+            810
+          ]
+        },
+        "windows-source/reciprocal/native-applied.png": {
+          "sha256": "f01647da3883bea90c6e51b157f9ccad4e974c65304ee7e80ad56c372164f0c2",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-source/reciprocal/native-preview.png": {
+          "sha256": "0d40d2f7fda6a4f2aa9135cc804af6f0235b4bfc1f39214dd5d1c6f637d36ad0",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-source/reciprocal/native-reopened.png": {
+          "sha256": "06d9652de75d808dd163fb416f5dfb0ca89ee6cefa67b080353df9120db4c92d",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-source/reciprocal/native-saved.png": {
+          "sha256": "1a69661f84cb537c18ab68a47a7b6dff980a2b1ec45835361faa46cb3f09fbb0",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-source/reciprocal/native-undone.png": {
+          "sha256": "0e8e5f46c936943851e0f9ad9d916c99b6fb8ed7e5bfef2a86c75bc5831a768d",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-source/swarm005_irregular/native-applied.png": {
+          "sha256": "f9a5ebddd37291031e62f5e48566e62549e2a197680c4066f0ab07d76b699a20",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-source/swarm005_irregular/native-preview.png": {
+          "sha256": "c8e9aa8b01f55cb74ee9b03ef56194942d52648b10d4851b00ca914e3de2c050",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-source/swarm005_irregular/native-reopened.png": {
+          "sha256": "cfafe4e10dad042b82530d8caf9e72c46c589886f9d3895f17d6c4034729ce0a",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-source/swarm005_irregular/native-saved.png": {
+          "sha256": "a0baf4acc8cbc4cee00f5e7b7e5aefbe0b0742226a2b1ed398e2d0fa7d449e4a",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-source/swarm005_irregular/native-undone.png": {
+          "sha256": "bb3c3c6f31930b18bd70ba63b538d5d9328ad9e8173450e29819fb434c0154c9",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-source/swarm005_viaduct/native-preview.png": {
+          "sha256": "f1e820e27ec0482fd17e512fabbc4ba3378b7a7867fc7b477432b19aaee0bf8d",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-source/swarm005_viaduct/native-unresolved.png": {
+          "sha256": "bcc31b4c08aaededdb3dc295e34dbc3542fe44fb94f836f034094b9845bf7586",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-source/transaction/native-applied.png": {
+          "sha256": "badf34070cac24cfae9d88d6a2be5794267c798bd5f0275976a51fd945241fa7",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-source/transaction/native-preview.png": {
+          "sha256": "30254e767d707e36fcbccda194bb93d6d3dcbc8387ba0cffdb0394f20cb06ea2",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-source/transaction/native-reopened.png": {
+          "sha256": "e45a54023c6b0c271d5b306f2cd2ab14e131c9daaecef6ed653f4db706712171",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-source/transaction/native-saved.png": {
+          "sha256": "bda7518c899c1f646329a5e715f2c4b919fbd15ba4adaae1822ed14d2bb4ba6b",
+          "size": [
+            1920,
+            1080
+          ]
+        },
+        "windows-source/transaction/native-undone.png": {
+          "sha256": "23548a4668c9a5a8cc08a6455506695e8c0f95ad134d2624f41162c7385e2c82",
+          "size": [
+            1920,
+            1080
+          ]
+        }
+      },
+      "smoke_cases": 17,
+      "smoke_inventory_files": 275,
+      "smoke_results": [
+        {
+          "case": "import",
+          "checks": null,
+          "passed": true
+        },
+        {
+          "case": "workbench-canvas",
+          "checks": 199,
+          "passed": true
+        },
+        {
+          "case": "workbench-wave",
+          "checks": 1272,
+          "passed": true
+        },
+        {
+          "case": "paint-workbench-author",
+          "checks": 66,
+          "passed": true
+        },
+        {
+          "case": "paint-workbench-reopen",
+          "checks": 12,
+          "passed": true
+        },
+        {
+          "case": "paint-generated-author",
+          "checks": 40,
+          "passed": true
+        },
+        {
+          "case": "paint-generated-reopen",
+          "checks": 20,
+          "passed": true
+        },
+        {
+          "case": "art-provider",
+          "checks": 54,
+          "passed": true
+        },
+        {
+          "case": "art-receipt-identity",
+          "checks": 122,
+          "passed": true
+        },
+        {
+          "case": "art-durability",
+          "checks": 345,
+          "passed": true
+        },
+        {
+          "case": "art-native-render",
+          "checks": 151,
+          "passed": true
+        },
+        {
+          "case": "art-undo",
+          "checks": 260,
+          "passed": true
+        },
+        {
+          "case": "actors-session",
+          "checks": 84,
+          "passed": true
+        },
+        {
+          "case": "actors-native",
+          "checks": 323,
+          "passed": true
+        },
+        {
+          "case": "actors-author",
+          "checks": 207,
+          "passed": true
+        },
+        {
+          "case": "actors-reopen",
+          "checks": 17,
+          "passed": true
+        },
+        {
+          "case": "flatten-512x1",
+          "checks": null,
+          "passed": true
+        }
+      ],
+      "ui": [
+        {
+          "checks": 101,
+          "example": "transaction",
+          "mode": "create",
+          "native_can_apply": true,
+          "native_status": "complete",
+          "process_id": 2804,
+          "transport_refusals": {
+            "failed_child_positive": true,
+            "preexisting_job_directory": true
+          }
+        },
+        {
+          "checks": 15,
+          "example": "transaction",
+          "mode": "reopen",
+          "native_can_apply": true,
+          "native_status": "complete",
+          "process_id": 5900,
+          "transport_refusals": {}
+        },
+        {
+          "checks": 84,
+          "example": "reciprocal",
+          "mode": "create",
+          "native_can_apply": true,
+          "native_status": "complete",
+          "process_id": 7120,
+          "transport_refusals": {
+            "failed_child_positive": true,
+            "preexisting_job_directory": true
+          }
+        },
+        {
+          "checks": 16,
+          "example": "reciprocal",
+          "mode": "reopen",
+          "native_can_apply": true,
+          "native_status": "complete",
+          "process_id": 2352,
+          "transport_refusals": {}
+        },
+        {
+          "checks": 83,
+          "example": "swarm005_irregular",
+          "mode": "create",
+          "native_can_apply": true,
+          "native_status": "complete",
+          "process_id": 1560,
+          "transport_refusals": {
+            "failed_child_positive": true,
+            "preexisting_job_directory": true
+          }
+        },
+        {
+          "checks": 15,
+          "example": "swarm005_irregular",
+          "mode": "reopen",
+          "native_can_apply": true,
+          "native_status": "complete",
+          "process_id": 5908,
+          "transport_refusals": {}
+        },
+        {
+          "checks": 28,
+          "example": "swarm005_viaduct",
+          "mode": "blocked",
+          "native_can_apply": false,
+          "native_status": "blocked",
+          "process_id": 6276,
+          "transport_refusals": {}
+        },
+        {
+          "checks": 32,
+          "example": "lifecycle",
+          "mode": "lifecycle",
+          "native_can_apply": null,
+          "native_status": null,
+          "process_id": 5632,
+          "transport_refusals": {}
+        }
+      ],
+      "wave_assertions": 1272,
+      "wave_native_ticks": 36
+    }
+  },
+  "malformed_requests_refused": 4,
+  "native_definition_sha256": "217bfa716e61198f5b3849f2ae14c30e85bc9f623fc1d05438c59df2296ce7f7",
+  "overall_admission": "HOLD pending actual publication review, final CI and physical owner acceptance",
+  "owner_visual_acceptance": "pending",
+  "package_manifest_payload_count": 1087,
+  "package_manifest_sha256": "73ae92f19034bf8a9311430200c269df1b18e6c2a2ee18c8609ef62379daaf3b",
+  "reciprocal_programme_acceptance": false,
+  "review": "Independent R3 Windows source, actual evaluator and final guide evidence",
+  "reviewed_at": "2026-11-21T22:29:51.428162+00:00",
+  "runtime_and_os_bindings_exact": true,
+  "scope_verdict": "GO for source-bound Windows native/source and actual extracted evaluator qualification and owner-guide readiness",
+  "source_commit": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f",
+  "source_tree": "a3312e00b971cf6859922b2b70eb8ed5da0f66b7",
+  "windows_native_markers": {
+    "test_assembly": [
+      "SWARM004_ASSEMBLY: PASS checks=99729"
+    ],
+    "test_reciprocal": [
+      "reciprocal checks=263015 both=3 joints=9 complete=0"
+    ],
+    "test_reciprocal_mosaic": [
+      "reciprocal MOSAIC tests: 8 passed, 0 failed, 274661 checks"
+    ],
+    "test_swarm005": [
+      "SWARM005_NATIVE_PILOT: PASS tests=7/7 assertions=42"
+    ],
+    "test_workbench_authoring_patch": [
+      "WORKBENCH_AUTHORING_PATCH_NATIVE checks=131158 failures=0"
+    ]
+  },
+  "windows_v3_cases": [
+    {
+      "can_apply": false,
+      "compact": 0,
+      "joints": 0,
+      "native_material_cells": 6035,
+      "profile": "viaduct_like",
+      "status": "blocked",
+      "still_required": 1,
+      "supported": 0
+    },
+    {
+      "can_apply": false,
+      "compact": 1,
+      "joints": 0,
+      "native_material_cells": 6035,
+      "profile": "viaduct_like",
+      "status": "blocked",
+      "still_required": 1,
+      "supported": 0
+    },
+    {
+      "can_apply": false,
+      "compact": 0,
+      "joints": 0,
+      "native_material_cells": 6035,
+      "profile": "viaduct_like",
+      "status": "blocked",
+      "still_required": 1,
+      "supported": 1
+    },
+    {
+      "can_apply": false,
+      "compact": 1,
+      "joints": 0,
+      "native_material_cells": 6035,
+      "profile": "viaduct_like",
+      "status": "blocked",
+      "still_required": 1,
+      "supported": 1
+    },
+    {
+      "can_apply": false,
+      "compact": 0,
+      "joints": 0,
+      "native_material_cells": 6034,
+      "profile": "irregular_megastructure",
+      "status": "blocked",
+      "still_required": 1,
+      "supported": 0
+    },
+    {
+      "can_apply": true,
+      "compact": 1,
+      "joints": 0,
+      "native_material_cells": 6026,
+      "profile": "irregular_megastructure",
+      "status": "complete",
+      "still_required": 0,
+      "supported": 0
+    },
+    {
+      "can_apply": false,
+      "compact": 0,
+      "joints": 0,
+      "native_material_cells": 6034,
+      "profile": "irregular_megastructure",
+      "status": "blocked",
+      "still_required": 1,
+      "supported": 1
+    },
+    {
+      "can_apply": true,
+      "compact": 1,
+      "joints": 0,
+      "native_material_cells": 6026,
+      "profile": "irregular_megastructure",
+      "status": "complete",
+      "still_required": 0,
+      "supported": 1
+    }
+  ]
+}

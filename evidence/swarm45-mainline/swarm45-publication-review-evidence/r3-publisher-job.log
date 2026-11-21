@@ -1,0 +1,961 @@
+﻿2026-11-21T22:27:44.6200353Z Current runner version: '2.338.2'
+2026-11-21T22:27:44.6217492Z ##[group]Runner Image Provisioner
+2026-11-21T22:27:44.6218166Z Hosted Compute Agent
+2026-11-21T22:27:44.6218580Z Version: 20261111.635
+2026-11-21T22:27:44.6219014Z Commit: b8a594ea514ff44cadb5342986c68b1eac6e22ed
+2026-11-21T22:27:44.6219562Z Build Date: 2026-11-11T01:49:01Z
+2026-11-21T22:27:44.6220062Z Worker ID: {9a84abe3-e70e-41d7-910f-ac15740130d9}
+2026-11-21T22:27:44.6220604Z Region: us-west-2
+2026-11-21T22:27:44.6220988Z Cloud: AWS
+2026-11-21T22:27:44.6221343Z ##[endgroup]
+2026-11-21T22:27:44.6222531Z ##[group]Operating System
+2026-11-21T22:27:44.6223000Z Ubuntu
+2026-11-21T22:27:44.6223388Z 24.04.5
+2026-11-21T22:27:44.6223760Z LTS
+2026-11-21T22:27:44.6224121Z ##[endgroup]
+2026-11-21T22:27:44.6224761Z ##[group]Runner Image
+2026-11-21T22:27:44.6225211Z Image: ubuntu-24.04
+2026-11-21T22:27:44.6225634Z Version: 20261116.133.1
+2026-11-21T22:27:44.6226532Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261116.133/images/ubuntu/Ubuntu2404-Readme.md
+2026-11-21T22:27:44.6227646Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261116.133
+2026-11-21T22:27:44.6228358Z ##[endgroup]
+2026-11-21T22:27:44.6229188Z ##[group]GITHUB_TOKEN Permissions
+2026-11-21T22:27:44.6230855Z Actions: read
+2026-11-21T22:27:44.6231265Z Contents: write
+2026-11-21T22:27:44.6231690Z Metadata: read
+2026-11-21T22:27:44.6232352Z ##[endgroup]
+2026-11-21T22:27:44.6234081Z Secret source: Actions
+2026-11-21T22:27:44.6234732Z Cache mode: write
+2026-11-21T22:27:44.6235234Z Prepare workflow directory
+2026-11-21T22:27:44.6458484Z Prepare all required actions
+2026-11-21T22:27:44.6494145Z Getting action download info
+2026-11-21T22:27:45.0087314Z Download action repository 'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683' (SHA:11bd71901bbe5b1630ceea73d27597364c9af683)
+2026-11-21T22:27:45.9734833Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-11-21T22:27:46.2158022Z Complete job name: Verify original qualified bytes and publish eight leased paths
+2026-11-21T22:27:46.2785797Z ##[group]Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+2026-11-21T22:27:46.2786660Z with:
+2026-11-21T22:27:46.2787127Z   ref: a7c0a6d42f4a41622faf183c01818ffb73c56899
+2026-11-21T22:27:46.2787686Z   fetch-depth: 0
+2026-11-21T22:27:46.2788093Z   lfs: false
+2026-11-21T22:27:46.2788501Z   repository: techrote/cybersand
+2026-11-21T22:27:46.2792294Z   token: ***
+2026-11-21T22:27:46.2792759Z   ssh-strict: true
+2026-11-21T22:27:46.2793195Z   ssh-user: git
+2026-11-21T22:27:46.2793619Z   persist-credentials: true
+2026-11-21T22:27:46.2794062Z   clean: true
+2026-11-21T22:27:46.2794508Z   sparse-checkout-cone-mode: true
+2026-11-21T22:27:46.2795020Z   fetch-tags: false
+2026-11-21T22:27:46.2795453Z   show-progress: true
+2026-11-21T22:27:46.2795886Z   submodules: false
+2026-11-21T22:27:46.2796341Z   set-safe-directory: true
+2026-11-21T22:27:46.2796968Z ##[endgroup]
+2026-11-21T22:27:48.2219245Z Syncing repository: techrote/cybersand
+2026-11-21T22:27:48.2220614Z ##[group]Getting Git version info
+2026-11-21T22:27:48.2220996Z Working directory is '/home/runner/work/cybersand/cybersand'
+2026-11-21T22:27:48.2221644Z [command]/usr/bin/git version
+2026-11-21T22:27:48.4120184Z git version 2.56.1
+2026-11-21T22:27:48.4128840Z ##[endgroup]
+2026-11-21T22:27:48.4139341Z Temporarily overriding HOME='/home/runner/work/_temp/7c8f7173-7de0-4c84-9e51-fa31581eed0a' before making global git config changes
+2026-11-21T22:27:48.4140065Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-21T22:27:48.4143583Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/cybersand/cybersand
+2026-11-21T22:27:48.4541824Z Deleting the contents of '/home/runner/work/cybersand/cybersand'
+2026-11-21T22:27:48.4544533Z ##[group]Initializing the repository
+2026-11-21T22:27:48.4547958Z [command]/usr/bin/git init /home/runner/work/cybersand/cybersand
+2026-11-21T22:27:48.5051731Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-21T22:27:48.5052639Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-21T22:27:48.5053248Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-21T22:27:48.5053688Z hint: call:
+2026-11-21T22:27:48.5053986Z hint:
+2026-11-21T22:27:48.5054356Z hint: 	git config --global init.defaultBranch <name>
+2026-11-21T22:27:48.5054682Z hint:
+2026-11-21T22:27:48.5055158Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-21T22:27:48.5055768Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-21T22:27:48.5056313Z hint:
+2026-11-21T22:27:48.5056638Z hint: 	git branch -m <name>
+2026-11-21T22:27:48.5056995Z hint:
+2026-11-21T22:27:48.5057451Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-21T22:27:48.5057985Z Initialized empty Git repository in /home/runner/work/cybersand/cybersand/.git/
+2026-11-21T22:27:48.5064436Z [command]/usr/bin/git remote add origin https://github.com/techrote/cybersand
+2026-11-21T22:27:48.5103309Z ##[endgroup]
+2026-11-21T22:27:48.5103997Z ##[group]Disabling automatic garbage collection
+2026-11-21T22:27:48.5105649Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-21T22:27:48.5128213Z ##[endgroup]
+2026-11-21T22:27:48.5128705Z ##[group]Setting up auth
+2026-11-21T22:27:48.5132959Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-21T22:27:48.5158546Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-21T22:27:48.7808213Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-21T22:27:48.7836616Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-21T22:27:48.7988462Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-21T22:27:48.8016249Z ##[endgroup]
+2026-11-21T22:27:48.8016953Z ##[group]Fetching the repository
+2026-11-21T22:27:48.8027578Z [command]/usr/bin/git -c protocol.version=2 fetch --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
+2026-11-21T22:28:01.0968170Z From https://github.com/techrote/cybersand
+2026-11-21T22:28:01.0969058Z  * [new branch]          agent/pf201-selective-gas-cache-20261107 -> origin/agent/pf201-selective-gas-cache-20261107
+2026-11-21T22:28:01.0970006Z  * [new branch]          archaeology/571-m1-knowledge-capture -> origin/archaeology/571-m1-knowledge-capture
+2026-11-21T22:28:01.0970715Z  * [new branch]          artifacts/material-tiles-20261105 -> origin/artifacts/material-tiles-20261105
+2026-11-21T22:28:01.0971467Z  * [new branch]          astra/wave-mt-001-669-finisher -> origin/astra/wave-mt-001-669-finisher
+2026-11-21T22:28:01.0972501Z  * [new branch]          audit/in-tools-383-qualification-20261104 -> origin/audit/in-tools-383-qualification-20261104
+2026-11-21T22:28:01.0973760Z  * [new branch]          audit/mat-sol-protected-consumer-20261104 -> origin/audit/mat-sol-protected-consumer-20261104
+2026-11-21T22:28:01.0976921Z  * [new branch]          avrea/convert-09ccaeffecbe  -> origin/avrea/convert-09ccaeffecbe
+2026-11-21T22:28:01.0979036Z  * [new branch]          avrea/convert-6905f97e81b2  -> origin/avrea/convert-6905f97e81b2
+2026-11-21T22:28:01.0979782Z  * [new branch]          avrea/convert-b12ea4f16103  -> origin/avrea/convert-b12ea4f16103
+2026-11-21T22:28:01.0980572Z  * [new branch]          avrea/convert-df472865011b  -> origin/avrea/convert-df472865011b
+2026-11-21T22:28:01.0981381Z  * [new branch]          bench/weekend-slim-avrea-2026-09-19 -> origin/bench/weekend-slim-avrea-2026-09-19
+2026-11-21T22:28:01.0983014Z  * [new branch]          chatgpt/issue-233-physical-timeout-diagnostics -> origin/chatgpt/issue-233-physical-timeout-diagnostics
+2026-11-21T22:28:01.0993957Z  * [new branch]          chatgpt/lcb001-pressure-publisher-prep -> origin/chatgpt/lcb001-pressure-publisher-prep
+2026-11-21T22:28:01.0995132Z  * [new branch]          chore/repository-housekeeping-20261107 -> origin/chore/repository-housekeeping-20261107
+2026-11-21T22:28:01.0996162Z  * [new branch]          ci/ci-opt-002-admission-proof-20261121 -> origin/ci/ci-opt-002-admission-proof-20261121
+2026-11-21T22:28:01.0996968Z  * [new branch]          ci/ci-opt-002-evidence-20261121 -> origin/ci/ci-opt-002-evidence-20261121
+2026-11-21T22:28:01.0997728Z  * [new branch]          ci/ci-opt-002-finisher-20261121 -> origin/ci/ci-opt-002-finisher-20261121
+2026-11-21T22:28:01.0998460Z  * [new branch]          ci/ci-opt-002-native-control-20261121 -> origin/ci/ci-opt-002-native-control-20261121
+2026-11-21T22:28:01.0999218Z  * [new branch]          ci/ci-opt-002-rapid-20261121 -> origin/ci/ci-opt-002-rapid-20261121
+2026-11-21T22:28:01.0999970Z  * [new branch]          ci/ci-opt-002-worldgen-split-20261121 -> origin/ci/ci-opt-002-worldgen-split-20261121
+2026-11-21T22:28:01.1000692Z  * [new branch]          ci/circleci-windows-cutover -> origin/ci/circleci-windows-cutover
+2026-11-21T22:28:01.1001360Z  * [new branch]          ci/circleci-windows-gdext   -> origin/ci/circleci-windows-gdext
+2026-11-21T22:28:01.1002435Z  * [new branch]          ci/copy292-main-branch-regression-20261107 -> origin/ci/copy292-main-branch-regression-20261107
+2026-11-21T22:28:01.1003254Z  * [new branch]          ci/draft-pr-cost-guard      -> origin/ci/draft-pr-cost-guard
+2026-11-21T22:28:01.1003969Z  * [new branch]          ci/drop-mesa-utils-display  -> origin/ci/drop-mesa-utils-display
+2026-11-21T22:28:01.1004773Z  * [new branch]          ci/fix-gdextension-ready-regressions -> origin/ci/fix-gdextension-ready-regressions
+2026-11-21T22:28:01.1005815Z  * [new branch]          ci/gdextension-linux-shards-stage-a -> origin/ci/gdextension-linux-shards-stage-a
+2026-11-21T22:28:01.1006847Z  * [new branch]          ci/gentek80-final-admission -> origin/ci/gentek80-final-admission
+2026-11-21T22:28:01.1007640Z  * [new branch]          ci/gentek80-main-integration -> origin/ci/gentek80-main-integration
+2026-11-21T22:28:01.1008739Z  * [new branch]          ci/gentek80-mixed-admission -> origin/ci/gentek80-mixed-admission
+2026-11-21T22:28:01.1009270Z  * [new branch]          ci/native-parallel-isolated-20261030 -> origin/ci/native-parallel-isolated-20261030
+2026-11-21T22:28:01.1010021Z  * [new branch]          ci/native-pixel-13way-abba-20261113 -> origin/ci/native-pixel-13way-abba-20261113
+2026-11-21T22:28:01.1010625Z  * [new branch]          ci/native-scope-advisory-20261030 -> origin/ci/native-scope-advisory-20261030
+2026-11-21T22:28:01.1011239Z  * [new branch]          ci/parallel-production-integration-20261031 -> origin/ci/parallel-production-integration-20261031
+2026-11-21T22:28:01.1011856Z  * [new branch]          ci/pr593-owner-windows-9628729a-20261114 -> origin/ci/pr593-owner-windows-9628729a-20261114
+2026-11-21T22:28:01.1012742Z  * [new branch]          ci/restore-github-hosted-runners -> origin/ci/restore-github-hosted-runners
+2026-11-21T22:28:01.1013545Z  * [new branch]          ci/script-hotpath-690-exact-5cdf41b0 -> origin/ci/script-hotpath-690-exact-5cdf41b0
+2026-11-21T22:28:01.1014391Z  * [new branch]          ci/script-hotpath-latency-prune-20261121 -> origin/ci/script-hotpath-latency-prune-20261121
+2026-11-21T22:28:01.1014942Z  * [new branch]          ci/sengi-benchmark-run      -> origin/ci/sengi-benchmark-run
+2026-11-21T22:28:01.1015372Z  * [new branch]          ci/sengi-defaults           -> origin/ci/sengi-defaults
+2026-11-21T22:28:01.1015928Z  * [new branch]          ci/swarm45-final-admission-dispatch-20261121 -> origin/ci/swarm45-final-admission-dispatch-20261121
+2026-11-21T22:28:01.1016543Z  * [new branch]          ci/windows-four-shard-isolated-20261030 -> origin/ci/windows-four-shard-isolated-20261030
+2026-11-21T22:28:01.1017298Z  * [new branch]          circleci-project-setup      -> origin/circleci-project-setup
+2026-11-21T22:28:01.1017849Z  * [new branch]          circleci/pilot-issue61      -> origin/circleci/pilot-issue61
+2026-11-21T22:28:01.1018431Z  * [new branch]          claude/cybersand-wave-mt-001-9d38c0 -> origin/claude/cybersand-wave-mt-001-9d38c0
+2026-11-21T22:28:01.1018986Z  * [new branch]          claude/dazzling-nobel-943f75 -> origin/claude/dazzling-nobel-943f75
+2026-11-21T22:28:01.1019462Z  * [new branch]          claude/gifted-franklin-0cd8e3 -> origin/claude/gifted-franklin-0cd8e3
+2026-11-21T22:28:01.1020182Z  * [new branch]          claude/godot-atlas-unattended-render-af7b88 -> origin/claude/godot-atlas-unattended-render-af7b88
+2026-11-21T22:28:01.1020805Z  * [new branch]          claude/lcb-physics-prepass  -> origin/claude/lcb-physics-prepass
+2026-11-21T22:28:01.1021320Z  * [new branch]          claude/lcb000-comparison-design -> origin/claude/lcb000-comparison-design
+2026-11-21T22:28:01.1021941Z  * [new branch]          claude/lcb000-water-architecture -> origin/claude/lcb000-water-architecture
+2026-11-21T22:28:01.1022591Z  * [new branch]          claude/lcb001-pressure-reference -> origin/claude/lcb001-pressure-reference
+2026-11-21T22:28:01.1023186Z  * [new branch]          claude/lcb003-scenario-qualification -> origin/claude/lcb003-scenario-qualification
+2026-11-21T22:28:01.1023696Z  * [new branch]          claude/lcb005-inertial      -> origin/claude/lcb005-inertial
+2026-11-21T22:28:01.1024143Z  * [new branch]          claude/lcb201-p1-wake-summaries -> origin/claude/lcb201-p1-wake-summaries
+2026-11-21T22:28:01.1024677Z  * [new branch]          claude/lcb201-pressure-idle-cost -> origin/claude/lcb201-pressure-idle-cost
+2026-11-21T22:28:01.1025161Z  * [new branch]          claude/lcb201-region-flip   -> origin/claude/lcb201-region-flip
+2026-11-21T22:28:01.1025669Z  * [new branch]          claude/lcb360-feel          -> origin/claude/lcb360-feel
+2026-11-21T22:28:01.1026318Z  * [new branch]          claude/lockstep-opt-in-mode -> origin/claude/lockstep-opt-in-mode
+2026-11-21T22:28:01.1026814Z  * [new branch]          claude/loving-bose-34b309   -> origin/claude/loving-bose-34b309
+2026-11-21T22:28:01.1027332Z  * [new branch]          claude/map-auto-02-api-agent-runner -> origin/claude/map-auto-02-api-agent-runner
+2026-11-21T22:28:01.1027913Z  * [new branch]          claude/mat-auth-reviewed-transitions -> origin/claude/mat-auth-reviewed-transitions
+2026-11-21T22:28:01.1028460Z  * [new branch]          claude/palette-fxc-cost     -> origin/claude/palette-fxc-cost
+2026-11-21T22:28:01.1028997Z  * [new branch]          claude/pf201-moving-camera  -> origin/claude/pf201-moving-camera
+2026-11-21T22:28:01.1029506Z  * [new branch]          claude/play-pace003-successor-graphics -> origin/claude/play-pace003-successor-graphics
+2026-11-21T22:28:01.1030208Z  * [new branch]          claude/rapier-water-splash-discrimination-dc6b5c -> origin/claude/rapier-water-splash-discrimination-dc6b5c
+2026-11-21T22:28:01.1030822Z  * [new branch]          claude/render-copy-per-run  -> origin/claude/render-copy-per-run
+2026-11-21T22:28:01.1031402Z  * [new branch]          claude/sol-bearing-gate-diagnostic-20261106 -> origin/claude/sol-bearing-gate-diagnostic-20261106
+2026-11-21T22:28:01.1031943Z  * [new branch]          claude/ui005-real-cursor-click -> origin/claude/ui005-real-cursor-click
+2026-11-21T22:28:01.1032683Z  * [new branch]          claude/water-ballistic-hybrid -> origin/claude/water-ballistic-hybrid
+2026-11-21T22:28:01.1033226Z  * [new branch]          claude/water-pressure-prototype -> origin/claude/water-pressure-prototype
+2026-11-21T22:28:01.1033719Z  * [new branch]          claude/wave-waterwall-001   -> origin/claude/wave-waterwall-001
+2026-11-21T22:28:01.1034159Z  * [new branch]          claude/window-placement     -> origin/claude/window-placement
+2026-11-21T22:28:01.1034688Z  * [new branch]          codex/act001-actor-control-prototypes -> origin/codex/act001-actor-control-prototypes
+2026-11-21T22:28:01.1035280Z  * [new branch]          codex/act002-actor-rig-sets -> origin/codex/act002-actor-rig-sets
+2026-11-21T22:28:01.1035864Z  * [new branch]          codex/act003-thunderbowl-control-lab -> origin/codex/act003-thunderbowl-control-lab
+2026-11-21T22:28:01.1036399Z  * [new branch]          codex/act004-complete-41-rigs -> origin/codex/act004-complete-41-rigs
+2026-11-21T22:28:01.1036908Z  * [new branch]          codex/agent-art-workbench-v2 -> origin/codex/agent-art-workbench-v2
+2026-11-21T22:28:01.1037436Z  * [new branch]          codex/agent-painter-foundation-568 -> origin/codex/agent-painter-foundation-568
+2026-11-21T22:28:01.1037945Z  * [new branch]          codex/agent-painter-lfm25-vl-568 -> origin/codex/agent-painter-lfm25-vl-568
+2026-11-21T22:28:01.1038486Z  * [new branch]          codex/agent-painter-smol-568 -> origin/codex/agent-painter-smol-568
+2026-11-21T22:28:01.1038993Z  * [new branch]          codex/agent-painter-sprocket-568 -> origin/codex/agent-painter-sprocket-568
+2026-11-21T22:28:01.1039520Z  * [new branch]          codex/agent-painter-void-568 -> origin/codex/agent-painter-void-568
+2026-11-21T22:28:01.1040013Z  * [new branch]          codex/c128-workflow-publication -> origin/codex/c128-workflow-publication
+2026-11-21T22:28:01.1040605Z  * [new branch]          codex/ci-scheduling-rehabilitation-20261101 -> origin/codex/ci-scheduling-rehabilitation-20261101
+2026-11-21T22:28:01.1041216Z  * [new branch]          codex/ci-worker-parity-shard-fix -> origin/codex/ci-worker-parity-shard-fix
+2026-11-21T22:28:01.1041699Z  * [new branch]          codex/combined-feature-launcher -> origin/codex/combined-feature-launcher
+2026-11-21T22:28:01.1042521Z  * [new branch]          codex/experiment-la-selective-sol-feasibility-20261105 -> origin/codex/experiment-la-selective-sol-feasibility-20261105
+2026-11-21T22:28:01.1043243Z  * [new branch]          codex/exploratory-actor-selection -> origin/codex/exploratory-actor-selection
+2026-11-21T22:28:01.1043926Z  * [new branch]          codex/fast-in-chunk-neighbour-cursor-20261106 -> origin/codex/fast-in-chunk-neighbour-cursor-20261106
+2026-11-21T22:28:01.1044574Z  * [new branch]          codex/flyer-options-20261105 -> origin/codex/flyer-options-20261105
+2026-11-21T22:28:01.1045054Z  * [new branch]          codex/gcr-admission-only-20261101 -> origin/codex/gcr-admission-only-20261101
+2026-11-21T22:28:01.1045657Z  * [new branch]          codex/gcr-authored-compound-scooper-20261104 -> origin/codex/gcr-authored-compound-scooper-20261104
+2026-11-21T22:28:01.1046259Z  * [new branch]          codex/gcr-causal-tests-20261103 -> origin/codex/gcr-causal-tests-20261103
+2026-11-21T22:28:01.1046851Z  * [new branch]          codex/gcr-creep-investigation-20261103 -> origin/codex/gcr-creep-investigation-20261103
+2026-11-21T22:28:01.1047497Z  * [new branch]          codex/gcr-detachment-integration-20261101 -> origin/codex/gcr-detachment-integration-20261101
+2026-11-21T22:28:01.1048118Z  * [new branch]          codex/gcr-flight-review-controls-20261104 -> origin/codex/gcr-flight-review-controls-20261104
+2026-11-21T22:28:01.1048700Z  * [new branch]          codex/gcr-granular-events-20261104 -> origin/codex/gcr-granular-events-20261104
+2026-11-21T22:28:01.1049277Z  * [new branch]          codex/gcr-load-aware-20261102 -> origin/codex/gcr-load-aware-20261102
+2026-11-21T22:28:01.1049897Z  * [new branch]          codex/gcr-powder-review-tests-20261104 -> origin/codex/gcr-powder-review-tests-20261104
+2026-11-21T22:28:01.1050543Z  * [new branch]          codex/gcr-repeatable-flight-ui-20261104 -> origin/codex/gcr-repeatable-flight-ui-20261104
+2026-11-21T22:28:01.1051095Z  * [new branch]          codex/gcr-rest-comparison-20261102 -> origin/codex/gcr-rest-comparison-20261102
+2026-11-21T22:28:01.1051725Z  * [new branch]          codex/gcr-scooper-leak-investigation-20261104 -> origin/codex/gcr-scooper-leak-investigation-20261104
+2026-11-21T22:28:01.1052507Z  * [new branch]          codex/gcr-scooper-u-hull-20261104 -> origin/codex/gcr-scooper-u-hull-20261104
+2026-11-21T22:28:01.1053127Z  * [new branch]          codex/gcr-selective-events-20261104 -> origin/codex/gcr-selective-events-20261104
+2026-11-21T22:28:01.1053744Z  * [new branch]          codex/gcr001-category-contact-20261101 -> origin/codex/gcr001-category-contact-20261101
+2026-11-21T22:28:01.1054250Z  * [new branch]          codex/gen007-source-checkpoint -> origin/codex/gen007-source-checkpoint
+2026-11-21T22:28:01.1054797Z  * [new branch]          codex/gen007-workbench-qualification -> origin/codex/gen007-workbench-qualification
+2026-11-21T22:28:01.1055399Z  * [new branch]          codex/granular-bearing-candidates-20261101 -> origin/codex/granular-bearing-candidates-20261101
+2026-11-21T22:28:01.1056044Z  * [new branch]          codex/granular-bearing-pre-overlap-20261101 -> origin/codex/granular-bearing-pre-overlap-20261101
+2026-11-21T22:28:01.1056572Z  * [new branch]          codex/h-gate-capture-ux     -> origin/codex/h-gate-capture-ux
+2026-11-21T22:28:01.1057111Z  * [new branch]          codex/hard-surface-tile-revisions-20261106 -> origin/codex/hard-surface-tile-revisions-20261106
+2026-11-21T22:28:01.1057699Z  * [new branch]          codex/inv154-windows-thread-time-20261105 -> origin/codex/inv154-windows-thread-time-20261105
+2026-11-21T22:28:01.1058322Z  * [new branch]          codex/issue-10-player-and-exchange -> origin/codex/issue-10-player-and-exchange
+2026-11-21T22:28:01.1058786Z  * [new branch]          codex/issue-11-repair       -> origin/codex/issue-11-repair
+2026-11-21T22:28:01.1059279Z  * [new branch]          codex/issue-12-incremental-foundation -> origin/codex/issue-12-incremental-foundation
+2026-11-21T22:28:01.1059763Z  * [new branch]          codex/issue-12-soliding     -> origin/codex/issue-12-soliding
+2026-11-21T22:28:01.1060217Z  * [new branch]          codex/issue-12-stage3-freeze -> origin/codex/issue-12-stage3-freeze
+2026-11-21T22:28:01.1060713Z  * [new branch]          codex/issue-12-stage3-integration -> origin/codex/issue-12-stage3-integration
+2026-11-21T22:28:01.1061316Z  * [new branch]          codex/issue-12-stage3b-architecture-packet -> origin/codex/issue-12-stage3b-architecture-packet
+2026-11-21T22:28:01.1061939Z  * [new branch]          codex/issue-12-stage3b-production-plan -> origin/codex/issue-12-stage3b-production-plan
+2026-11-21T22:28:01.1062624Z  * [new branch]          codex/issue-135-gameplay-recording -> origin/codex/issue-135-gameplay-recording
+2026-11-21T22:28:01.1063162Z  * [new branch]          codex/issue-15-liquid-characterization -> origin/codex/issue-15-liquid-characterization
+2026-11-21T22:28:01.1063723Z  * [new branch]          codex/issue-16-cell-layout  -> origin/codex/issue-16-cell-layout
+2026-11-21T22:28:01.1064226Z  * [new branch]          codex/issue-160-contact-fixture-20261019 -> origin/codex/issue-160-contact-fixture-20261019
+2026-11-21T22:28:01.1064764Z  * [new branch]          codex/issue-17-state-precision -> origin/codex/issue-17-state-precision
+2026-11-21T22:28:01.1065252Z  * [new branch]          codex/issue-182-physical-usables -> origin/codex/issue-182-physical-usables
+2026-11-21T22:28:01.1065736Z  * [new branch]          codex/issue-19-water-feel-lab -> origin/codex/issue-19-water-feel-lab
+2026-11-21T22:28:01.1066244Z  * [new branch]          codex/issue-19-water-feel-lab-sync -> origin/codex/issue-19-water-feel-lab-sync
+2026-11-21T22:28:01.1066730Z  * [new branch]          codex/issue-24-focus-fix    -> origin/codex/issue-24-focus-fix
+2026-11-21T22:28:01.1067185Z  * [new branch]          codex/issue-26-water-leveling -> origin/codex/issue-26-water-leveling
+2026-11-21T22:28:01.1067685Z  * [new branch]          codex/issue-26-water-leveling-2026-09-19 -> origin/codex/issue-26-water-leveling-2026-09-19
+2026-11-21T22:28:01.1068246Z  * [new branch]          codex/issue-27-microscenarios-harness -> origin/codex/issue-27-microscenarios-harness
+2026-11-21T22:28:01.1068819Z  * [new branch]          codex/issue-27-ms000-validated -> origin/codex/issue-27-ms000-validated
+2026-11-21T22:28:01.1069280Z  * [new branch]          codex/issue-28-finalize-review -> origin/codex/issue-28-finalize-review
+2026-11-21T22:28:01.1069771Z  * [new branch]          codex/issue-28-ms001        -> origin/codex/issue-28-ms001
+2026-11-21T22:28:01.1070205Z  * [new branch]          codex/issue-29-int000       -> origin/codex/issue-29-int000
+2026-11-21T22:28:01.1070682Z  * [new branch]          codex/issue-29-preflight    -> origin/codex/issue-29-preflight
+2026-11-21T22:28:01.1071302Z  * [new branch]          codex/issue-49-water-apparatus-correction-records -> origin/codex/issue-49-water-apparatus-correction-records
+2026-11-21T22:28:01.1071921Z  * [new branch]          codex/issue-49-water-apparatus-v2 -> origin/codex/issue-49-water-apparatus-v2
+2026-11-21T22:28:01.1072618Z  * [new branch]          codex/issue-57-stage3b-event-halo -> origin/codex/issue-57-stage3b-event-halo
+2026-11-21T22:28:01.1073151Z  * [new branch]          codex/issue-58-stage3b-lifecycle -> origin/codex/issue-58-stage3b-lifecycle
+2026-11-21T22:28:01.1073769Z  * [new branch]          codex/issue-59-stage3b-runtime-sized-storage -> origin/codex/issue-59-stage3b-runtime-sized-storage
+2026-11-21T22:28:01.1074447Z  * [new branch]          codex/issue-60-stage3b-bounded-spatial-index -> origin/codex/issue-60-stage3b-bounded-spatial-index
+2026-11-21T22:28:01.1075219Z  * [new branch]          codex/issue-61-stage3b-sparse-mutation-witness -> origin/codex/issue-61-stage3b-sparse-mutation-witness
+2026-11-21T22:28:01.1075922Z  * [new branch]          codex/issue-62-stage3b-activity-deadline-sparse-state -> origin/codex/issue-62-stage3b-activity-deadline-sparse-state
+2026-11-21T22:28:01.1076660Z  * [new branch]          codex/issue-63-stage3b-sparse-coverage-witnesses -> origin/codex/issue-63-stage3b-sparse-coverage-witnesses
+2026-11-21T22:28:01.1077296Z  * [new branch]          codex/issue-64-runtime-publication -> origin/codex/issue-64-runtime-publication
+2026-11-21T22:28:01.1077939Z  * [new branch]          codex/issue-64-stage3b-local-graph -> origin/codex/issue-64-stage3b-local-graph
+2026-11-21T22:28:01.1078769Z  * [new branch]          codex/issue-65-stage3b-exact-reconstruction -> origin/codex/issue-65-stage3b-exact-reconstruction
+2026-11-21T22:28:01.1079392Z  * [new branch]          codex/issue-69-stage3b-validation -> origin/codex/issue-69-stage3b-validation
+2026-11-21T22:28:01.1080092Z  * [new branch]          codex/issue-80-remediation-rag -> origin/codex/issue-80-remediation-rag
+2026-11-21T22:28:01.1080635Z  * [new branch]          codex/issue-9-physics-characterisation -> origin/codex/issue-9-physics-characterisation
+2026-11-21T22:28:01.1081364Z  * [new branch]          codex/issue-91-wex001-water-body-baseline -> origin/codex/issue-91-wex001-water-body-baseline
+2026-11-21T22:28:01.1082149Z  * [new branch]          codex/issue-93-wex003-gas-regions -> origin/codex/issue-93-wex003-gas-regions
+2026-11-21T22:28:01.1082752Z  * [new branch]          codex/issue-94-wex004-decompression-proof -> origin/codex/issue-94-wex004-decompression-proof
+2026-11-21T22:28:01.1083294Z  * [new branch]          codex/issue18-subagent-config -> origin/codex/issue18-subagent-config
+2026-11-21T22:28:01.1083731Z  * [new branch]          codex/issue233-evidence     -> origin/codex/issue233-evidence
+2026-11-21T22:28:01.1084183Z  * [new branch]          codex/issue234-qualification -> origin/codex/issue234-qualification
+2026-11-21T22:28:01.1084604Z  * [new branch]          codex/issues-1-2            -> origin/codex/issues-1-2
+2026-11-21T22:28:01.1085091Z  * [new branch]          codex/lcb-pressure-moving-body-gas -> origin/codex/lcb-pressure-moving-body-gas
+2026-11-21T22:28:01.1085584Z  * [new branch]          codex/lcb-session-handover  -> origin/codex/lcb-session-handover
+2026-11-21T22:28:01.1086033Z  * [new branch]          codex/lcb-status-reconciliation -> origin/codex/lcb-status-reconciliation
+2026-11-21T22:28:01.1086567Z  * [new branch]          codex/lcb001-accepted-checkpoint -> origin/codex/lcb001-accepted-checkpoint
+2026-11-21T22:28:01.1087043Z  * [new branch]          codex/lcb001-shared-contract -> origin/codex/lcb001-shared-contract
+2026-11-21T22:28:01.1087566Z  * [new branch]          codex/lcb002-pressure-variants -> origin/codex/lcb002-pressure-variants
+2026-11-21T22:28:01.1088064Z  * [new branch]          codex/lcb003-actor-host     -> origin/codex/lcb003-actor-host
+2026-11-21T22:28:01.1088495Z  * [new branch]          codex/lcb003-application-host -> origin/codex/lcb003-application-host
+2026-11-21T22:28:01.1088964Z  * [new branch]          codex/lcb003-desktop-default -> origin/codex/lcb003-desktop-default
+2026-11-21T22:28:01.1089416Z  * [new branch]          codex/lcb003-final-integration -> origin/codex/lcb003-final-integration
+2026-11-21T22:28:01.1090034Z  * [new branch]          codex/lcb003-thermal-import -> origin/codex/lcb003-thermal-import
+2026-11-21T22:28:01.1090483Z  * [new branch]          codex/lcb003-trial-body     -> origin/codex/lcb003-trial-body
+2026-11-21T22:28:01.1090890Z  * [new branch]          codex/lcb004-observer       -> origin/codex/lcb004-observer
+2026-11-21T22:28:01.1091337Z  * [new branch]          codex/lcb004-science        -> origin/codex/lcb004-science
+2026-11-21T22:28:01.1091744Z  * [new branch]          codex/lcb005-inertial       -> origin/codex/lcb005-inertial
+2026-11-21T22:28:01.1092361Z  * [new branch]          codex/lcb005-water-inertial -> origin/codex/lcb005-water-inertial
+2026-11-21T22:28:01.1092879Z  * [new branch]          codex/lcb370-workbench-salvage-20261107 -> origin/codex/lcb370-workbench-salvage-20261107
+2026-11-21T22:28:01.1093399Z  * [new branch]          codex/mat-003prepass-foundation -> origin/codex/mat-003prepass-foundation
+2026-11-21T22:28:01.1093917Z  * [new branch]          codex/mat-003prepass-s2-feasibility -> origin/codex/mat-003prepass-s2-feasibility
+2026-11-21T22:28:01.1094516Z  * [new branch]          codex/mat-auth-workbench-integration-20261112 -> origin/codex/mat-auth-workbench-integration-20261112
+2026-11-21T22:28:01.1095204Z  * [new branch]          codex/mat-workbench-evaluation-preparation-20261113 -> origin/codex/mat-workbench-evaluation-preparation-20261113
+2026-11-21T22:28:01.1095967Z  * [new branch]          codex/mat-workbench-evaluation-release-20261113 -> origin/codex/mat-workbench-evaluation-release-20261113
+2026-11-21T22:28:01.1096644Z  * [new branch]          codex/mat-workbench-evaluation-release-r2-20261113 -> origin/codex/mat-workbench-evaluation-release-r2-20261113
+2026-11-21T22:28:01.1097408Z  * [new branch]          codex/mat-workbench-evaluation-transport-20261113 -> origin/codex/mat-workbench-evaluation-transport-20261113
+2026-11-21T22:28:01.1098076Z  * [new branch]          codex/mat-workbench-windows-diagnostic-20261113 -> origin/codex/mat-workbench-windows-diagnostic-20261113
+2026-11-21T22:28:01.1098794Z  * [new branch]          codex/mat-workbench-windows-diagnostic2-20261113 -> origin/codex/mat-workbench-windows-diagnostic2-20261113
+2026-11-21T22:28:01.1099509Z  * [new branch]          codex/mat-workbench-windows-diagnostic3-20261113 -> origin/codex/mat-workbench-windows-diagnostic3-20261113
+2026-11-21T22:28:01.1100064Z  * [new branch]          codex/mat003-continuation   -> origin/codex/mat003-continuation
+2026-11-21T22:28:01.1100622Z  * [new branch]          codex/mat003-overnight-requalification -> origin/codex/mat003-overnight-requalification
+2026-11-21T22:28:01.1101238Z  * [new branch]          codex/mat003-readback-verifier-repair-20261023 -> origin/codex/mat003-readback-verifier-repair-20261023
+2026-11-21T22:28:01.1101801Z  * [new branch]          codex/materials-lab-v1-20261111 -> origin/codex/materials-lab-v1-20261111
+2026-11-21T22:28:01.1102554Z  * [new branch]          codex/materials-native-capabilities-20261111 -> origin/codex/materials-native-capabilities-20261111
+2026-11-21T22:28:01.1103119Z  * [new branch]          codex/microscenarios-programme -> origin/codex/microscenarios-programme
+2026-11-21T22:28:01.1103657Z  * [new branch]          codex/native-pixel-scrolling-20261113 -> origin/codex/native-pixel-scrolling-20261113
+2026-11-21T22:28:01.1104249Z  * [new branch]          codex/native-worldgen-bounded-build-20261031 -> origin/codex/native-worldgen-bounded-build-20261031
+2026-11-21T22:28:01.1105092Z  * [new branch]          codex/neighbour-cursor-independent-qualification-20261106 -> origin/codex/neighbour-cursor-independent-qualification-20261106
+2026-11-21T22:28:01.1105827Z  * [new branch]          codex/neighbour-cursor-timing-only-20261106 -> origin/codex/neighbour-cursor-timing-only-20261106
+2026-11-21T22:28:01.1106397Z  * [new branch]          codex/paired-materials-20261103 -> origin/codex/paired-materials-20261103
+2026-11-21T22:28:01.1106883Z  * [new branch]          codex/pf-c2048-admitted-20261107 -> origin/codex/pf-c2048-admitted-20261107
+2026-11-21T22:28:01.1107405Z  * [new branch]          codex/pf-gas-exact-hotpath-20261107 -> origin/codex/pf-gas-exact-hotpath-20261107
+2026-11-21T22:28:01.1107909Z  * [new branch]          codex/pf-run-head-repair-20261106 -> origin/codex/pf-run-head-repair-20261106
+2026-11-21T22:28:01.1108544Z  * [new branch]          codex/pf504-real-workbench-stress-20261107 -> origin/codex/pf504-real-workbench-stress-20261107
+2026-11-21T22:28:01.1109129Z  * [new branch]          codex/pf504-stress-gas-cpu-20261107 -> origin/codex/pf504-stress-gas-cpu-20261107
+2026-11-21T22:28:01.1109661Z  * [new branch]          codex/physical-actor-timeouts -> origin/codex/physical-actor-timeouts
+2026-11-21T22:28:01.1110195Z  * [new branch]          codex/physical-detachment-a2-20261031 -> origin/codex/physical-detachment-a2-20261031
+2026-11-21T22:28:01.1110742Z  * [new branch]          codex/physical-detachment-abc-20261031 -> origin/codex/physical-detachment-abc-20261031
+2026-11-21T22:28:01.1111282Z  * [new branch]          codex/play-acceptance-20261029 -> origin/codex/play-acceptance-20261029
+2026-11-21T22:28:01.1111771Z  * [new branch]          codex/play-async-001-architecture -> origin/codex/play-async-001-architecture
+2026-11-21T22:28:01.1112535Z  * [new branch]          codex/play-auto002-publisher-retirement -> origin/codex/play-auto002-publisher-retirement
+2026-11-21T22:28:01.1113249Z  * [new branch]          codex/play-auto003-local-six-evidence -> origin/codex/play-auto003-local-six-evidence
+2026-11-21T22:28:01.1113780Z  * [new branch]          codex/play-auto004-wsl-six-evidence -> origin/codex/play-auto004-wsl-six-evidence
+2026-11-21T22:28:01.1114350Z  * [new branch]          codex/play-busy001a-pool-20261029 -> origin/codex/play-busy001a-pool-20261029
+2026-11-21T22:28:01.1114887Z  * [new branch]          codex/play-busy001c-cleanup-20261103 -> origin/codex/play-busy001c-cleanup-20261103
+2026-11-21T22:28:01.1115429Z  * [new branch]          codex/play-busy001c-rendered-20261029 -> origin/codex/play-busy001c-rendered-20261029
+2026-11-21T22:28:01.1116076Z  * [new branch]          codex/play-comp001-existing-host-spike-20261026 -> origin/codex/play-comp001-existing-host-spike-20261026
+2026-11-21T22:28:01.1116887Z  * [new branch]          codex/play-comp002-course-solvers-20261027 -> origin/codex/play-comp002-course-solvers-20261027
+2026-11-21T22:28:01.1117770Z  * [new branch]          codex/play-comp002-five-rig-course-20261027 -> origin/codex/play-comp002-five-rig-course-20261027
+2026-11-21T22:28:01.1118598Z  * [new branch]          codex/play-input010-pause-transitions-20261031 -> origin/codex/play-input010-pause-transitions-20261031
+2026-11-21T22:28:01.1119464Z  * [new branch]          codex/play-input011-authority-20261031 -> origin/codex/play-input011-authority-20261031
+2026-11-21T22:28:01.1120336Z  * [new branch]          codex/play-integration-handoff-final-20261031 -> origin/codex/play-integration-handoff-final-20261031
+2026-11-21T22:28:01.1121101Z  * [new branch]          codex/play-life002-solver-stress -> origin/codex/play-life002-solver-stress
+2026-11-21T22:28:01.1121920Z  * [new branch]          codex/play-life003-prepared-shutdown -> origin/codex/play-life003-prepared-shutdown
+2026-11-21T22:28:01.1123021Z  * [new branch]          codex/play-life004-populated-retirement -> origin/codex/play-life004-populated-retirement
+2026-11-21T22:28:01.1123878Z  * [new branch]          codex/play-life005-failure-recovery -> origin/codex/play-life005-failure-recovery
+2026-11-21T22:28:01.1124699Z  * [new branch]          codex/play-life006-integrated-stress-20261030 -> origin/codex/play-life006-integrated-stress-20261030
+2026-11-21T22:28:01.1125359Z  * [new branch]          codex/play-life009-pause-resume-20261031 -> origin/codex/play-life009-pause-resume-20261031
+2026-11-21T22:28:01.1125955Z  * [new branch]          codex/play-life010-live-delivery-20261031 -> origin/codex/play-life010-live-delivery-20261031
+2026-11-21T22:28:01.1126533Z  * [new branch]          codex/play-life011-solver-matrix-20261031 -> origin/codex/play-life011-solver-matrix-20261031
+2026-11-21T22:28:01.1127125Z  * [new branch]          codex/play-pace001-shared-host-20261029 -> origin/codex/play-pace001-shared-host-20261029
+2026-11-21T22:28:01.1127778Z  * [new branch]          codex/play-pace002-constructed-policies-20261029 -> origin/codex/play-pace002-constructed-policies-20261029
+2026-11-21T22:28:01.1128374Z  * [new branch]          codex/play-pace003-cold-start-20261030 -> origin/codex/play-pace003-cold-start-20261030
+2026-11-21T22:28:01.1129005Z  * [new branch]          codex/play-pace003-palette-decomposition-20261031 -> origin/codex/play-pace003-palette-decomposition-20261031
+2026-11-21T22:28:01.1129802Z  * [new branch]          codex/play-pace003-windows-diagnosis-20261030 -> origin/codex/play-pace003-windows-diagnosis-20261030
+2026-11-21T22:28:01.1130425Z  * [new branch]          codex/play-pace004-input-custody-20261031 -> origin/codex/play-pace004-input-custody-20261031
+2026-11-21T22:28:01.1131000Z  * [new branch]          codex/play-pace004-qualified-20261031 -> origin/codex/play-pace004-qualified-20261031
+2026-11-21T22:28:01.1131570Z  * [new branch]          codex/play-recovery-qualified-20261031 -> origin/codex/play-recovery-qualified-20261031
+2026-11-21T22:28:01.1132313Z  * [new branch]          codex/play-shader-qualified-20261031 -> origin/codex/play-shader-qualified-20261031
+2026-11-21T22:28:01.1133000Z  * [new branch]          codex/play-ui005-integrated-session-20261030 -> origin/codex/play-ui005-integrated-session-20261030
+2026-11-21T22:28:01.1133616Z  * [new branch]          codex/play-ui007-desktop-readiness-20261031 -> origin/codex/play-ui007-desktop-readiness-20261031
+2026-11-21T22:28:01.1134212Z  * [new branch]          codex/play-wait001-snapshot-lock-20261029 -> origin/codex/play-wait001-snapshot-lock-20261029
+2026-11-21T22:28:01.1134745Z  * [new branch]          codex/play-watchdogs-20261031 -> origin/codex/play-watchdogs-20261031
+2026-11-21T22:28:01.1135326Z  * [new branch]          codex/play-windows-capture-successor-20261031 -> origin/codex/play-windows-capture-successor-20261031
+2026-11-21T22:28:01.1135983Z  * [new branch]          codex/play-windows-exception-capture-20261031 -> origin/codex/play-windows-exception-capture-20261031
+2026-11-21T22:28:01.1136551Z  * [new branch]          codex/player-playground-maps -> origin/codex/player-playground-maps
+2026-11-21T22:28:01.1137067Z  * [new branch]          codex/pr383-retention-readback-tests -> origin/codex/pr383-retention-readback-tests
+2026-11-21T22:28:01.1137593Z  * [new branch]          codex/pr405-matched-bench-20261107 -> origin/codex/pr405-matched-bench-20261107
+2026-11-21T22:28:01.1138087Z  * [new branch]          codex/pr405-sanitizer-20261107 -> origin/codex/pr405-sanitizer-20261107
+2026-11-21T22:28:01.1138634Z  * [new branch]          codex/pr566-artifact-readback-20261114 -> origin/codex/pr566-artifact-readback-20261114
+2026-11-21T22:28:01.1139199Z  * [new branch]          codex/pr566-fire-smoke-recoil-ab-20261114 -> origin/codex/pr566-fire-smoke-recoil-ab-20261114
+2026-11-21T22:28:01.1139813Z  * [new branch]          codex/pr566-flyer-pose-presentation-ab-20261114 -> origin/codex/pr566-flyer-pose-presentation-ab-20261114
+2026-11-21T22:28:01.1140422Z  * [new branch]          codex/pr566-mask-coherent-flyer-20261114 -> origin/codex/pr566-mask-coherent-flyer-20261114
+2026-11-21T22:28:01.1140991Z  * [new branch]          codex/pr593-win-evaluation-zip-20261114 -> origin/codex/pr593-win-evaluation-zip-20261114
+2026-11-21T22:28:01.1141585Z  * [new branch]          codex/pubpres-integration-001 -> origin/codex/pubpres-integration-001
+2026-11-21T22:28:01.1142252Z  * [new branch]          codex/reconcile-architecture-gates -> origin/codex/reconcile-architecture-gates
+2026-11-21T22:28:01.1142794Z  * [new branch]          codex/release-hash-artifact-name -> origin/codex/release-hash-artifact-name
+2026-11-21T22:28:01.1143326Z  * [new branch]          codex/render-copy-production-20261101 -> origin/codex/render-copy-production-20261101
+2026-11-21T22:28:01.1143965Z  * [new branch]          codex/render-publication-abc-20261031 -> origin/codex/render-publication-abc-20261031
+2026-11-21T22:28:01.1144572Z  * [new branch]          codex/render-retention-production-20261101 -> origin/codex/render-retention-production-20261101
+2026-11-21T22:28:01.1145149Z  * [new branch]          codex/research-preparation-2026-09-12 -> origin/codex/research-preparation-2026-09-12
+2026-11-21T22:28:01.1145739Z  * [new branch]          codex/s2p-workflow-publication -> origin/codex/s2p-workflow-publication
+2026-11-21T22:28:01.1146281Z  * [new branch]          codex/sol-active-normal-live-20261105 -> origin/codex/sol-active-normal-live-20261105
+2026-11-21T22:28:01.1146871Z  * [new branch]          codex/sol-chamber-yielding-20261105 -> origin/codex/sol-chamber-yielding-20261105
+2026-11-21T22:28:01.1147444Z  * [new branch]          codex/sol-contact-gravity-order-20261106 -> origin/codex/sol-contact-gravity-order-20261106
+2026-11-21T22:28:01.1148028Z  * [new branch]          codex/sol-energy-precision-20261105 -> origin/codex/sol-energy-precision-20261105
+2026-11-21T22:28:01.1148576Z  * [new branch]          codex/sol-normal-active-20261105 -> origin/codex/sol-normal-active-20261105
+2026-11-21T22:28:01.1149116Z  * [new branch]          codex/sol-response-cost-20261105 -> origin/codex/sol-response-cost-20261105
+2026-11-21T22:28:01.1149654Z  * [new branch]          codex/sol-structure-cut-20261106 -> origin/codex/sol-structure-cut-20261106
+2026-11-21T22:28:01.1150218Z  * [new branch]          codex/sol-workbench-law-20261106 -> origin/codex/sol-workbench-law-20261106
+2026-11-21T22:28:01.1150682Z  * [new branch]          codex/usables-set-a         -> origin/codex/usables-set-a
+2026-11-21T22:28:01.1151219Z  * [new branch]          codex/water-h-gate-synthesis-2026-09-18 -> origin/codex/water-h-gate-synthesis-2026-09-18
+2026-11-21T22:28:01.1151829Z  * [new branch]          codex/water-hybrid-pressure-extension-rag -> origin/codex/water-hybrid-pressure-extension-rag
+2026-11-21T22:28:01.1152626Z  * [new branch]          codex/wave-mt-001-parallel-20261115 -> origin/codex/wave-mt-001-parallel-20261115
+2026-11-21T22:28:01.1153173Z  * [new branch]          codex/wave-oil-679-timing-20261120 -> origin/codex/wave-oil-679-timing-20261120
+2026-11-21T22:28:01.1153640Z  * [new branch]          codex/wave-oil-buoyancy     -> origin/codex/wave-oil-buoyancy
+2026-11-21T22:28:01.1154116Z  * [new branch]          codex/wave-water-face-004   -> origin/codex/wave-water-face-004
+2026-11-21T22:28:01.1154596Z  * [new branch]          codex/wave-water-ramp-003   -> origin/codex/wave-water-ramp-003
+2026-11-21T22:28:01.1155039Z  * [new branch]          codex/wave-waterwall-002    -> origin/codex/wave-waterwall-002
+2026-11-21T22:28:01.1155544Z  * [new branch]          codex/wb-agent-528-panel-openai-20261107 -> origin/codex/wb-agent-528-panel-openai-20261107
+2026-11-21T22:28:01.1156134Z  * [new branch]          codex/wb-art-paint-integrated-20261111 -> origin/codex/wb-art-paint-integrated-20261111
+2026-11-21T22:28:01.1156657Z  * [new branch]          codex/wb-art-repair-20261111 -> origin/codex/wb-art-repair-20261111
+2026-11-21T22:28:01.1157102Z  * [new branch]          codex/wb-art-slm-001        -> origin/codex/wb-art-slm-001
+2026-11-21T22:28:01.1157514Z  * [new branch]          codex/wb-art-slm-controls   -> origin/codex/wb-art-slm-controls
+2026-11-21T22:28:01.1157934Z  * [new branch]          codex/wb-art-slm-corpus     -> origin/codex/wb-art-slm-corpus
+2026-11-21T22:28:01.1158412Z  * [new branch]          codex/wb-art-slm-evaluation -> origin/codex/wb-art-slm-evaluation
+2026-11-21T22:28:01.1158879Z  * [new branch]          codex/wb-art-slm-training   -> origin/codex/wb-art-slm-training
+2026-11-21T22:28:01.1159396Z  * [new branch]          codex/wb-provider-ui-integration-20261108 -> origin/codex/wb-provider-ui-integration-20261108
+2026-11-21T22:28:01.1160003Z  * [new branch]          codex/wb525-combined-qualification-20261107 -> origin/codex/wb525-combined-qualification-20261107
+2026-11-21T22:28:01.1160644Z  * [new branch]          codex/wb525-strike-evidence-20261107 -> origin/codex/wb525-strike-evidence-20261107
+2026-11-21T22:28:01.1161229Z  * [new branch]          codex/wb531-configurable-budgets-20261108 -> origin/codex/wb531-configurable-budgets-20261108
+2026-11-21T22:28:01.1161807Z  * [new branch]          codex/wb531-conversation-filters-20261108 -> origin/codex/wb531-conversation-filters-20261108
+2026-11-21T22:28:01.1162535Z  * [new branch]          codex/wb531-usable-console-20261108 -> origin/codex/wb531-usable-console-20261108
+2026-11-21T22:28:01.1163070Z  * [new branch]          codex/wclear-workflow-publication -> origin/codex/wclear-workflow-publication
+2026-11-21T22:28:01.1163652Z  * [new branch]          codex/workbench-consolidation-retry-20261104 -> origin/codex/workbench-consolidation-retry-20261104
+2026-11-21T22:28:01.1164247Z  * [new branch]          codex/workbench-player-usables-20261105 -> origin/codex/workbench-player-usables-20261105
+2026-11-21T22:28:01.1164884Z  * [new branch]          codex/workbench-rectangle-core-20261107 -> origin/codex/workbench-rectangle-core-20261107
+2026-11-21T22:28:01.1165494Z  * [new branch]          codex/workbench-small-cut-debris-20261107 -> origin/codex/workbench-small-cut-debris-20261107
+2026-11-21T22:28:01.1166041Z  * [new branch]          codex/workspace-docs        -> origin/codex/workspace-docs
+2026-11-21T22:28:01.1166497Z  * [new branch]          codex/worldgen-candidates   -> origin/codex/worldgen-candidates
+2026-11-21T22:28:01.1167061Z  * [new branch]          codex/worldgen-fields-and-aggregates -> origin/codex/worldgen-fields-and-aggregates
+2026-11-21T22:28:01.1167658Z  * [new branch]          codex/y1-post-arrest-clearance-20261101 -> origin/codex/y1-post-arrest-clearance-20261101
+2026-11-21T22:28:01.1168241Z  * [new branch]          codex/y1-production-envelope-20261101 -> origin/codex/y1-production-envelope-20261101
+2026-11-21T22:28:01.1168790Z  * [new branch]          compare/owner-five-windows-20260926 -> origin/compare/owner-five-windows-20260926
+2026-11-21T22:28:01.1169406Z  * [new branch]          design/world-ashroot-nursery-20261105 -> origin/design/world-ashroot-nursery-20261105
+2026-11-21T22:28:01.1170091Z  * [new branch]          design/world-atlas-015-refinement-20261105 -> origin/design/world-atlas-015-refinement-20261105
+2026-11-21T22:28:01.1170718Z  * [new branch]          design/world-carved-ice-choir-20261105 -> origin/design/world-carved-ice-choir-20261105
+2026-11-21T22:28:01.1171336Z  * [new branch]          design/world-cathedral-of-capacitors-20261105 -> origin/design/world-cathedral-of-capacitors-20261105
+2026-11-21T22:28:01.1171927Z  * [new branch]          design/world-chalkbone-coast-20261105 -> origin/design/world-chalkbone-coast-20261105
+2026-11-21T22:28:01.1172677Z  * [new branch]          design/world-coral-telegraph-20261105 -> origin/design/world-coral-telegraph-20261105
+2026-11-21T22:28:01.1173305Z  * [new branch]          design/world-drowned-observatory-20261105 -> origin/design/world-drowned-observatory-20261105
+2026-11-21T22:28:01.1173906Z  * [new branch]          design/world-dust-meridian-20261105 -> origin/design/world-dust-meridian-20261105
+2026-11-21T22:28:01.1174481Z  * [new branch]          design/world-emberglass-fumaroles-20261105 -> origin/design/world-emberglass-fumaroles-20261105
+2026-11-21T22:28:01.1175052Z  * [new branch]          design/world-fallow-carnival-20261105 -> origin/design/world-fallow-carnival-20261105
+2026-11-21T22:28:01.1175747Z  * [new branch]          design/world-ironroot-necropolis-20261105 -> origin/design/world-ironroot-necropolis-20261105
+2026-11-21T22:28:01.1176301Z  * [new branch]          design/world-lumen-fault-20261105 -> origin/design/world-lumen-fault-20261105
+2026-11-21T22:28:01.1176861Z  * [new branch]          design/world-mirror-marsh-20261105 -> origin/design/world-mirror-marsh-20261105
+2026-11-21T22:28:01.1177388Z  * [new branch]          design/world-signal-orchard-20261105 -> origin/design/world-signal-orchard-20261105
+2026-11-21T22:28:01.1177906Z  * [new branch]          design/world-silt-clockworks-20261105 -> origin/design/world-silt-clockworks-20261105
+2026-11-21T22:28:01.1178473Z  * [new branch]          design/world-tectonic-archive-20261105 -> origin/design/world-tectonic-archive-20261105
+2026-11-21T22:28:01.1179065Z  * [new branch]          diagnostic/swarm006-source-admission-20261121 -> origin/diagnostic/swarm006-source-admission-20261121
+2026-11-21T22:28:01.1179701Z  * [new branch]          diagnostics/engine-lab-pose-trace-20261115 -> origin/diagnostics/engine-lab-pose-trace-20261115
+2026-11-21T22:28:01.1180335Z  * [new branch]          diagnostics/godot117991-windbg-oneoff-20261107 -> origin/diagnostics/godot117991-windbg-oneoff-20261107
+2026-11-21T22:28:01.1180930Z  * [new branch]          diagnostics/material-staging-reuse-20261116 -> origin/diagnostics/material-staging-reuse-20261116
+2026-11-21T22:28:01.1181567Z  * [new branch]          diagnostics/paint-startup-readiness-20261116 -> origin/diagnostics/paint-startup-readiness-20261116
+2026-11-21T22:28:01.1182309Z  * [new branch]          diagnostics/physics-angle-context-20261116 -> origin/diagnostics/physics-angle-context-20261116
+2026-11-21T22:28:01.1182970Z  * [new branch]          diagnostics/physics-completion-source-20261117 -> origin/diagnostics/physics-completion-source-20261117
+2026-11-21T22:28:01.1183571Z  * [new branch]          diagnostics/physics-rendezvous-20261116 -> origin/diagnostics/physics-rendezvous-20261116
+2026-11-21T22:28:01.1184188Z  * [new branch]          docs/active-work-ledger-001-20261104 -> origin/docs/active-work-ledger-001-20261104
+2026-11-21T22:28:01.1184748Z  * [new branch]          docs/agent-paint-001-evidence-20261109 -> origin/docs/agent-paint-001-evidence-20261109
+2026-11-21T22:28:01.1185312Z  * [new branch]          docs/in-tools-361-admission-20261104 -> origin/docs/in-tools-361-admission-20261104
+2026-11-21T22:28:01.1185860Z  * [new branch]          docs/lcb-reassess-359-20261103 -> origin/docs/lcb-reassess-359-20261103
+2026-11-21T22:28:01.1186368Z  * [new branch]          docs/map-authoring-guide-20261020 -> origin/docs/map-authoring-guide-20261020
+2026-11-21T22:28:01.1186907Z  * [new branch]          docs/mat-auth-catalogue-plan-20261102 -> origin/docs/mat-auth-catalogue-plan-20261102
+2026-11-21T22:28:01.1187590Z  * [new branch]          docs/mat003prepass-gen006-state-contract-20261023 -> origin/docs/mat003prepass-gen006-state-contract-20261023
+2026-11-21T22:28:01.1188212Z  * [new branch]          docs/materials-wiki-2026-11-02 -> origin/docs/materials-wiki-2026-11-02
+2026-11-21T22:28:01.1188726Z  * [new branch]          docs/owner-priority-reset-20261107 -> origin/docs/owner-priority-reset-20261107
+2026-11-21T22:28:01.1189278Z  * [new branch]          docs/polished-map-production-guide -> origin/docs/polished-map-production-guide
+2026-11-21T22:28:01.1189901Z  * [new branch]          docs/sol-structural-detachment-primary-20261027 -> origin/docs/sol-structural-detachment-primary-20261027
+2026-11-21T22:28:01.1190601Z  * [new branch]          docs/sol347-independent-physical-review-20261104 -> origin/docs/sol347-independent-physical-review-20261104
+2026-11-21T22:28:01.1191243Z  * [new branch]          docs/stage3b-close-g2-open-60 -> origin/docs/stage3b-close-g2-open-60
+2026-11-21T22:28:01.1191751Z  * [new branch]          evidence/gentek80-final-bf1bd8c8 -> origin/evidence/gentek80-final-bf1bd8c8
+2026-11-21T22:28:01.1192474Z  * [new branch]          exp/gen006-persistent-areas-001-20261121 -> origin/exp/gen006-persistent-areas-001-20261121
+2026-11-21T22:28:01.1193115Z  * [new branch]          exp/paint-end2end-002-bounded-burst -> origin/exp/paint-end2end-002-bounded-burst
+2026-11-21T22:28:01.1193684Z  * [new branch]          exp/paint-end2end-002-owner-windows -> origin/exp/paint-end2end-002-owner-windows
+2026-11-21T22:28:01.1194246Z  * [new branch]          exp/script-hotpath-001-native-fill -> origin/exp/script-hotpath-001-native-fill
+2026-11-21T22:28:01.1194917Z  * [new branch]          exp/script-hotpath-end-to-end-latency-001 -> origin/exp/script-hotpath-end-to-end-latency-001
+2026-11-21T22:28:01.1195635Z  * [new branch]          experiment/gen006-native-bundle-partial-admission-20261105 -> origin/experiment/gen006-native-bundle-partial-admission-20261105
+2026-11-21T22:28:01.1196400Z  * [new branch]          experiment/gen006-native-cyps-scaling-20261106 -> origin/experiment/gen006-native-cyps-scaling-20261106
+2026-11-21T22:28:01.1197047Z  * [new branch]          experiment/gen006-native-demand-fence-20261105 -> origin/experiment/gen006-native-demand-fence-20261105
+2026-11-21T22:28:01.1197714Z  * [new branch]          experiment/gen006-native-dynamic-fullworld-20261107 -> origin/experiment/gen006-native-dynamic-fullworld-20261107
+2026-11-21T22:28:01.1198375Z  * [new branch]          experiment/gen006-native-material-only-20261105 -> origin/experiment/gen006-native-material-only-20261105
+2026-11-21T22:28:01.1199064Z  * [new branch]          experiment/gen006-native-private-stage-20261105 -> origin/experiment/gen006-native-private-stage-20261105
+2026-11-21T22:28:01.1199675Z  * [new branch]          experiment/gen006-save-ack-fault-20261105 -> origin/experiment/gen006-save-ack-fault-20261105
+2026-11-21T22:28:01.1200323Z  * [new branch]          experiment/gen006-selective-domain-refusal-20261105 -> origin/experiment/gen006-selective-domain-refusal-20261105
+2026-11-21T22:28:01.1200960Z  * [new branch]          experiment/gen006-storage-journal-20261107 -> origin/experiment/gen006-storage-journal-20261107
+2026-11-21T22:28:01.1201602Z  * [new branch]          experiment/gen006-windows-reader-lease-20261106 -> origin/experiment/gen006-windows-reader-lease-20261106
+2026-11-21T22:28:01.1202349Z  * [new branch]          experiment/gentek-classic-001-20261115 -> origin/experiment/gentek-classic-001-20261115
+2026-11-21T22:28:01.1202936Z  * [new branch]          experiment/gentek-showcase-cathedral-001 -> origin/experiment/gentek-showcase-cathedral-001
+2026-11-21T22:28:01.1203545Z  * [new branch]          experiment/gentek-showcase-interlaced-001 -> origin/experiment/gentek-showcase-interlaced-001
+2026-11-21T22:28:01.1204132Z  * [new branch]          experiment/gentek-showcase-interlock-001 -> origin/experiment/gentek-showcase-interlock-001
+2026-11-21T22:28:01.1204701Z  * [new branch]          experiment/gentek-showcase-megablock-001 -> origin/experiment/gentek-showcase-megablock-001
+2026-11-21T22:28:01.1205297Z  * [new branch]          experiment/gentek-showcase-megatruss-001 -> origin/experiment/gentek-showcase-megatruss-001
+2026-11-21T22:28:01.1205916Z  * [new branch]          experiment/gentek-showcase-metabolist-001 -> origin/experiment/gentek-showcase-metabolist-001
+2026-11-21T22:28:01.1206524Z  * [new branch]          experiment/gentek-showcase-rosework-001 -> origin/experiment/gentek-showcase-rosework-001
+2026-11-21T22:28:01.1207148Z  * [new branch]          experiment/gentek-showcase-suspended-001 -> origin/experiment/gentek-showcase-suspended-001
+2026-11-21T22:28:01.1207704Z  * [new branch]          experiment/gentek-swarm-001-20261115 -> origin/experiment/gentek-swarm-001-20261115
+2026-11-21T22:28:01.1208284Z  * [new branch]          experiment/gentek-swarm-001-corpus-100 -> origin/experiment/gentek-swarm-001-corpus-100
+2026-11-21T22:28:01.1208892Z  * [new branch]          experiment/gentek-swarm-001-corpus-100-evidence -> origin/experiment/gentek-swarm-001-corpus-100-evidence
+2026-11-21T22:28:01.1209705Z  * [new branch]          experiment/gentek-swarm-002-negotiated-boundary -> origin/experiment/gentek-swarm-002-negotiated-boundary
+2026-11-21T22:28:01.1210474Z  * [new branch]          experiment/gentek-swarm-003-negotiation-resilience -> origin/experiment/gentek-swarm-003-negotiation-resilience
+2026-11-21T22:28:01.1211135Z  * [new branch]          experiment/gentek-swarm-004-fixed-round-audit -> origin/experiment/gentek-swarm-004-fixed-round-audit
+2026-11-21T22:28:01.1211827Z  * [new branch]          experiment/gentek-swarm-004-reciprocal-assembly -> origin/experiment/gentek-swarm-004-reciprocal-assembly
+2026-11-21T22:28:01.1212669Z  * [new branch]          experiment/gentek-swarm-004-workbench -> origin/experiment/gentek-swarm-004-workbench
+2026-11-21T22:28:01.1213224Z  * [new branch]          experiment/gentek-swarm-005-doc-gate -> origin/experiment/gentek-swarm-005-doc-gate
+2026-11-21T22:28:01.1213859Z  * [new branch]          experiment/gentek-swarm-005-native-closure -> origin/experiment/gentek-swarm-005-native-closure
+2026-11-21T22:28:01.1214480Z  * [new branch]          experiment/gentek-swarm-005-workbench-closure -> origin/experiment/gentek-swarm-005-workbench-closure
+2026-11-21T22:28:01.1215160Z  * [new branch]          experiment/gentek-swarm-006-exact-crop-compare -> origin/experiment/gentek-swarm-006-exact-crop-compare
+2026-11-21T22:28:01.1215881Z  * [new branch]          experiment/gentek-swarm-006-final-round-inspector-fix -> origin/experiment/gentek-swarm-006-final-round-inspector-fix
+2026-11-21T22:28:01.1216565Z  * [new branch]          experiment/gentek-swarm-006-native-recovery -> origin/experiment/gentek-swarm-006-native-recovery
+2026-11-21T22:28:01.1217280Z  * [new branch]          experiment/gentek-swarm-006-workbench-recovery -> origin/experiment/gentek-swarm-006-workbench-recovery
+2026-11-21T22:28:01.1217871Z  * [new branch]          experiment/hs-pkt-active-stress-20261106 -> origin/experiment/hs-pkt-active-stress-20261106
+2026-11-21T22:28:01.1218504Z  * [new branch]          experiment/pf504-current-msvc-baseline-20261107 -> origin/experiment/pf504-current-msvc-baseline-20261107
+2026-11-21T22:28:01.1219205Z  * [new branch]          experiment/pf504-post405-reduced-godot-20261107 -> origin/experiment/pf504-post405-reduced-godot-20261107
+2026-11-21T22:28:01.1219851Z  * [new branch]          experiment/pr379-godot117991-windows-ab-20261105 -> origin/experiment/pr379-godot117991-windows-ab-20261105
+2026-11-21T22:28:01.1220435Z  * [new branch]          experiment/pubpres-playability-001 -> origin/experiment/pubpres-playability-001
+2026-11-21T22:28:01.1221019Z  * [new branch]          experiment/sol-active-normal-weight-20261105 -> origin/experiment/sol-active-normal-weight-20261105
+2026-11-21T22:28:01.1221655Z  * [new branch]          experiment/waterlab-631-consolidated-ui -> origin/experiment/waterlab-631-consolidated-ui
+2026-11-21T22:28:01.1222426Z  * [new branch]          experiment/wb-agent-signed-translation-parity-20261107 -> origin/experiment/wb-agent-signed-translation-parity-20261107
+2026-11-21T22:28:01.1223050Z  * [new branch]          feat/4ly-001-physical-flight -> origin/feat/4ly-001-physical-flight
+2026-11-21T22:28:01.1223538Z  * [new branch]          feat/4ly-002-profiles-selection -> origin/feat/4ly-002-profiles-selection
+2026-11-21T22:28:01.1223978Z  * [new branch]          feat/4ly-003-flight-lab     -> origin/feat/4ly-003-flight-lab
+2026-11-21T22:28:01.1224456Z  * [new branch]          feat/act-ik-001-joint-owner -> origin/feat/act-ik-001-joint-owner
+2026-11-21T22:28:01.1224916Z  * [new branch]          feat/ballistic-solids-20261110 -> origin/feat/ballistic-solids-20261110
+2026-11-21T22:28:01.1225446Z  * [new branch]          feat/explore001-gen007-playable-workbench -> origin/feat/explore001-gen007-playable-workbench
+2026-11-21T22:28:01.1226005Z  * [new branch]          feat/gen003-typed-spatial-fields -> origin/feat/gen003-typed-spatial-fields
+2026-11-21T22:28:01.1226506Z  * [new branch]          feat/gen004-hierarchical-grammar -> origin/feat/gen004-hierarchical-grammar
+2026-11-21T22:28:01.1227007Z  * [new branch]          feat/gen005-semantic-planes -> origin/feat/gen005-semantic-planes
+2026-11-21T22:28:01.1227768Z  * [new branch]          feat/gen006-native-streaming-vertical-slice-20261107 -> origin/feat/gen006-native-streaming-vertical-slice-20261107
+2026-11-21T22:28:01.1228471Z  * [new branch]          feat/gen006-persistent-native-controller-20261107 -> origin/feat/gen006-persistent-native-controller-20261107
+2026-11-21T22:28:01.1229195Z  * [new branch]          feat/gen006-persistent-native-session-20261107 -> origin/feat/gen006-persistent-native-session-20261107
+2026-11-21T22:28:01.1229878Z  * [new branch]          feat/gen006-shared-world-pristine-release-20261107 -> origin/feat/gen006-shared-world-pristine-release-20261107
+2026-11-21T22:28:01.1230549Z  * [new branch]          feat/gen007-architectural-generator-ab -> origin/feat/gen007-architectural-generator-ab
+2026-11-21T22:28:01.1231123Z  * [new branch]          feat/gen008-flatten-material-baseline -> origin/feat/gen008-flatten-material-baseline
+2026-11-21T22:28:01.1231782Z  * [new branch]          feat/in-tools-361-current-main-admission-20261105 -> origin/feat/in-tools-361-current-main-admission-20261105
+2026-11-21T22:28:01.1232563Z  * [new branch]          feat/in-tools-361-implementation-20261106 -> origin/feat/in-tools-361-implementation-20261106
+2026-11-21T22:28:01.1233182Z  * [new branch]          feat/in-tools-361-main-a01-successor-20261107 -> origin/feat/in-tools-361-main-a01-successor-20261107
+2026-11-21T22:28:01.1233870Z  * [new branch]          feat/in-tools-361-workbench-equipment-20261109 -> origin/feat/in-tools-361-workbench-equipment-20261109
+2026-11-21T22:28:01.1234486Z  * [new branch]          feat/in-tools-361a-metered-liquid-drain -> origin/feat/in-tools-361a-metered-liquid-drain
+2026-11-21T22:28:01.1235072Z  * [new branch]          feat/map-auto03-three-lane-pilot-20261107 -> origin/feat/map-auto03-three-lane-pilot-20261107
+2026-11-21T22:28:01.1235783Z  * [new branch]          feat/mat-auth-353a-compatibility-shadow-20261104 -> origin/feat/mat-auth-353a-compatibility-shadow-20261104
+2026-11-21T22:28:01.1236505Z  * [new branch]          feat/mat-auth-353b-display-names-20261104 -> origin/feat/mat-auth-353b-display-names-20261104
+2026-11-21T22:28:01.1237102Z  * [new branch]          feat/paint001-shape-planner-20261108 -> origin/feat/paint001-shape-planner-20261108
+2026-11-21T22:28:01.1237644Z  * [new branch]          feat/player-control-playground -> origin/feat/player-control-playground
+2026-11-21T22:28:01.1238298Z  * [new branch]          feat/wb-agent-527-sand-hopper-native-control-20261107 -> origin/feat/wb-agent-527-sand-hopper-native-control-20261107
+2026-11-21T22:28:01.1239006Z  * [new branch]          feat/workbench-001-shared-sandbox-20261104 -> origin/feat/workbench-001-shared-sandbox-20261104
+2026-11-21T22:28:01.1239587Z  * [new branch]          feat/workbench-actor-composition-589 -> origin/feat/workbench-actor-composition-589
+2026-11-21T22:28:01.1240134Z  * [new branch]          feature/engine-lab-controls-20261114 -> origin/feature/engine-lab-controls-20261114
+2026-11-21T22:28:01.1240629Z  * [new branch]          feature/gentek-2048-square-001 -> origin/feature/gentek-2048-square-001
+2026-11-21T22:28:01.1241194Z  * [new branch]          feature/wb-agent-authoring-foundation-526-20261107 -> origin/feature/wb-agent-authoring-foundation-526-20261107
+2026-11-21T22:28:01.1241869Z  * [new branch]          feature/wb-api-agent-provider-neutral-20261108 -> origin/feature/wb-api-agent-provider-neutral-20261108
+2026-11-21T22:28:01.1242677Z  * [new branch]          feature/wb-remote-codespaces-iteration-20261108 -> origin/feature/wb-remote-codespaces-iteration-20261108
+2026-11-21T22:28:01.1243302Z  * [new branch]          feature/wb-remote-file-bridge-20261108 -> origin/feature/wb-remote-file-bridge-20261108
+2026-11-21T22:28:01.1243870Z  * [new branch]          feature/wb-remote-mcp-chat-adapter-20261108 -> origin/feature/wb-remote-mcp-chat-adapter-20261108
+2026-11-21T22:28:01.1244406Z  * [new branch]          fix/4ly003-episode-lease-expiry -> origin/fix/4ly003-episode-lease-expiry
+2026-11-21T22:28:01.1244962Z  * [new branch]          fix/gen007-acceptance-water-exit -> origin/fix/gen007-acceptance-water-exit
+2026-11-21T22:28:01.1245522Z  * [new branch]          fix/mat354b-moltenglass-deadline-20261104 -> origin/fix/mat354b-moltenglass-deadline-20261104
+2026-11-21T22:28:01.1246249Z  * [new branch]          fix/native-copy-extreme-coordinate-preflight-292-20261107 -> origin/fix/native-copy-extreme-coordinate-preflight-292-20261107
+2026-11-21T22:28:01.1246889Z  * [new branch]          fix/presentation-time-001-20261115 -> origin/fix/presentation-time-001-20261115
+2026-11-21T22:28:01.1247367Z  * [new branch]          fix/render-cadence-001-20261115 -> origin/fix/render-cadence-001-20261115
+2026-11-21T22:28:01.1247911Z  * [new branch]          fix/sol347-facade-refusal-20261104-095628 -> origin/fix/sol347-facade-refusal-20261104-095628
+2026-11-21T22:28:01.1248571Z  * [new branch]          fix/wb-art-lazy-linked-traffic-20261120 -> origin/fix/wb-art-lazy-linked-traffic-20261120
+2026-11-21T22:28:01.1249224Z  * [new branch]          fix/workbench-host-claims-large-landscapes-20261119 -> origin/fix/workbench-host-claims-large-landscapes-20261119
+2026-11-21T22:28:01.1250035Z  * [new branch]          gpt/hard-surface-dirty-tiles-20261106 -> origin/gpt/hard-surface-dirty-tiles-20261106
+2026-11-21T22:28:01.1250560Z  * [new branch]          gpt/hs-packet-benchmark-20261106 -> origin/gpt/hs-packet-benchmark-20261106
+2026-11-21T22:28:01.1251144Z  * [new branch]          integrate/hs-pkt-neighbour-20261107 -> origin/integrate/hs-pkt-neighbour-20261107
+2026-11-21T22:28:01.1251760Z  * [new branch]          integration/camera-stack-reconciliation-20261115 -> origin/integration/camera-stack-reconciliation-20261115
+2026-11-21T22:28:01.1252533Z  * [new branch]          integration/gentek-80-001   -> origin/integration/gentek-80-001
+2026-11-21T22:28:01.1253028Z  * [new branch]          integration/gentek-showcases-001 -> origin/integration/gentek-showcases-001
+2026-11-21T22:28:01.1253630Z  * [new branch]          integration/gentek-swarm-006-finisher-20261121 -> origin/integration/gentek-swarm-006-finisher-20261121
+2026-11-21T22:28:01.1254418Z  * [new branch]          integration/gentek80-actor-reconcile-stage-20261121 -> origin/integration/gentek80-actor-reconcile-stage-20261121
+2026-11-21T22:28:01.1255112Z  * [new branch]          integration/gentek80-water-conflict-reconcile -> origin/integration/gentek80-water-conflict-reconcile
+2026-11-21T22:28:01.1255787Z  * [new branch]          integration/paint001-corpus-registration-20261108 -> origin/integration/paint001-corpus-registration-20261108
+2026-11-21T22:28:01.1256421Z  * [new branch]          integration/pf504-after-405-20261107 -> origin/integration/pf504-after-405-20261107
+2026-11-21T22:28:01.1256986Z  * [new branch]          integration/swarm004-005-mainline-20261121 -> origin/integration/swarm004-005-mainline-20261121
+2026-11-21T22:28:01.1257657Z  * [new branch]          integration/wb525-released-common-ci-20261107 -> origin/integration/wb525-released-common-ci-20261107
+2026-11-21T22:28:01.1258290Z  * [new branch]          integration/wb525-step-stop-release-20261108 -> origin/integration/wb525-step-stop-release-20261108
+2026-11-21T22:28:01.1258969Z  * [new branch]          investigation/mat-auth-002-liveness-20261104 -> origin/investigation/mat-auth-002-liveness-20261104
+2026-11-21T22:28:01.1259460Z  * [new branch]          main                        -> origin/main
+2026-11-21T22:28:01.1259875Z  * [new branch]          mat/material-fidelity-pass-2 -> origin/mat/material-fidelity-pass-2
+2026-11-21T22:28:01.1260415Z  * [new branch]          mat/material-readability-shader-pass -> origin/mat/material-readability-shader-pass
+2026-11-21T22:28:01.1260971Z  * [new branch]          mat/persistent-reaction-progress -> origin/mat/persistent-reaction-progress
+2026-11-21T22:28:01.1261440Z  * [new branch]          mat/phase-quantity-quench   -> origin/mat/phase-quantity-quench
+2026-11-21T22:28:01.1261957Z  * [new branch]          pchar/issue-137-barrel-player-experiment -> origin/pchar/issue-137-barrel-player-experiment
+2026-11-21T22:28:01.1262744Z  * [new branch]          penv/issue-138-player-environment-profiles -> origin/penv/issue-138-player-environment-profiles
+2026-11-21T22:28:01.1263303Z  * [new branch]          penv/issue-138-reconcile-pchar -> origin/penv/issue-138-reconcile-pchar
+2026-11-21T22:28:01.1263782Z  * [new branch]          penv/issue-138-reconcile-testux -> origin/penv/issue-138-reconcile-testux
+2026-11-21T22:28:01.1264330Z  * [new branch]          penv/issue-147-local-contour-traversal -> origin/penv/issue-147-local-contour-traversal
+2026-11-21T22:28:01.1264925Z  * [new branch]          perf/inv154-acrobat-uncapped-sweep-20261106 -> origin/perf/inv154-acrobat-uncapped-sweep-20261106
+2026-11-21T22:28:01.1265530Z  * [new branch]          perf/inv154-main-phase-windows-20261105 -> origin/perf/inv154-main-phase-windows-20261105
+2026-11-21T22:28:01.1266109Z  * [new branch]          perf/inv154-main-scheduler-abba-20261105 -> origin/perf/inv154-main-scheduler-abba-20261105
+2026-11-21T22:28:01.1266741Z  * [new branch]          perf/inv154-microscenario-frame-copy-probe-20261105 -> origin/perf/inv154-microscenario-frame-copy-probe-20261105
+2026-11-21T22:28:01.1267417Z  * [new branch]          perf/inv154-physical-overlay-clone-probe-20261105 -> origin/perf/inv154-physical-overlay-clone-probe-20261105
+2026-11-21T22:28:01.1268081Z  * [new branch]          perf/inv154-physics-stage-abba-20261105 -> origin/perf/inv154-physics-stage-abba-20261105
+2026-11-21T22:28:01.1268709Z  * [new branch]          perf/inv154-physics-wrapper-attribution-20261105 -> origin/perf/inv154-physics-wrapper-attribution-20261105
+2026-11-21T22:28:01.1269370Z  * [new branch]          perf/inv154-rapier-threadstate-20261105 -> origin/perf/inv154-rapier-threadstate-20261105
+2026-11-21T22:28:01.1269980Z  * [new branch]          perf/inv154-rg8-upload-windows-angle-20261105 -> origin/perf/inv154-rg8-upload-windows-angle-20261105
+2026-11-21T22:28:01.1270602Z  * [new branch]          perf/inv154-space-step-threadtime-20261105 -> origin/perf/inv154-space-step-threadtime-20261105
+2026-11-21T22:28:01.1271241Z  * [new branch]          perf/pf-gas-acceptance-20261107 -> origin/perf/pf-gas-acceptance-20261107
+2026-11-21T22:28:01.1271850Z  * [new branch]          perf/render-upload-577-finisher-20261116 -> origin/perf/render-upload-577-finisher-20261116
+2026-11-21T22:28:01.1272621Z  * [new branch]          perf/stress-canvas-pf-ballistic-splash-20261107 -> origin/perf/stress-canvas-pf-ballistic-splash-20261107
+2026-11-21T22:28:01.1273278Z  * [new branch]          perf/stress-canvas-representative-20261107 -> origin/perf/stress-canvas-representative-20261107
+2026-11-21T22:28:01.1273862Z  * [new branch]          perf/water-factorial-stress-20261107 -> origin/perf/water-factorial-stress-20261107
+2026-11-21T22:28:01.1274507Z  * [new branch]          physics/pf522-paired-provenance-repair-20261107 -> origin/physics/pf522-paired-provenance-repair-20261107
+2026-11-21T22:28:01.1275157Z  * [new branch]          play-266-auto-host-readback-20261027 -> origin/play-266-auto-host-readback-20261027
+2026-11-21T22:28:01.1275739Z  * [new branch]          play-266-worker-matrix-20261027 -> origin/play-266-worker-matrix-20261027
+2026-11-21T22:28:01.1276245Z  * [new branch]          play-268-course-camera-20261027 -> origin/play-268-course-camera-20261027
+2026-11-21T22:28:01.1276762Z  * [new branch]          play-268-course-lap-ticks-20261027 -> origin/play-268-course-lap-ticks-20261027
+2026-11-21T22:28:01.1277340Z  * [new branch]          play-268-course-shared-input-20261027 -> origin/play-268-course-shared-input-20261027
+2026-11-21T22:28:01.1277920Z  * [new branch]          play-268-gamepad-event-edges-20261028 -> origin/play-268-gamepad-event-edges-20261028
+2026-11-21T22:28:01.1278511Z  * [new branch]          play-269-shared-host-lifecycle-20261027 -> origin/play-269-shared-host-lifecycle-20261027
+2026-11-21T22:28:01.1279170Z  * [new branch]          playval/issue-139-selectable-player-fixtures -> origin/playval/issue-139-selectable-player-fixtures
+2026-11-21T22:28:01.1279960Z  * [new branch]          prep/render-copy290-lfs-publish-gate-20261029 -> origin/prep/render-copy290-lfs-publish-gate-20261029
+2026-11-21T22:28:01.1280586Z  * [new branch]          prep/render-copy290-publisher-20261029 -> origin/prep/render-copy290-publisher-20261029
+2026-11-21T22:28:01.1281165Z  * [new branch]          prep/render-copy290-runtime-writer-20261029 -> origin/prep/render-copy290-runtime-writer-20261029
+2026-11-21T22:28:01.1281813Z  * [new branch]          prepass/render-copy290-play-integration-20261031 -> origin/prepass/render-copy290-play-integration-20261031
+2026-11-21T22:28:01.1282515Z  * [new branch]          prototype/depth-parallax-lab -> origin/prototype/depth-parallax-lab
+2026-11-21T22:28:01.1283039Z  * [new branch]          publish/render-copy290-runtime-20261029 -> origin/publish/render-copy290-runtime-20261029
+2026-11-21T22:28:01.1283714Z  * [new branch]          qa/gen006-godot-actual-frame-qualification-20261107 -> origin/qa/gen006-godot-actual-frame-qualification-20261107
+2026-11-21T22:28:01.1284419Z  * [new branch]          qa/gen006-native-record-coordinate-binding-20261107 -> origin/qa/gen006-native-record-coordinate-binding-20261107
+2026-11-21T22:28:01.1285114Z  * [new branch]          qa/gen006-shared-world-parity-readmission-20261107 -> origin/qa/gen006-shared-world-parity-readmission-20261107
+2026-11-21T22:28:01.1285795Z  * [new branch]          qa/gen006-surface-crash-ownership-loss-20261107 -> origin/qa/gen006-surface-crash-ownership-loss-20261107
+2026-11-21T22:28:01.1286443Z  * [new branch]          qa/gen006-visible-pin-recovery-20261107 -> origin/qa/gen006-visible-pin-recovery-20261107
+2026-11-21T22:28:01.1287050Z  * [new branch]          qa/gen006-windows-desktop-playtest-20261107 -> origin/qa/gen006-windows-desktop-playtest-20261107
+2026-11-21T22:28:01.1287597Z  * [new branch]          qa/hs-pkt489-windows-20261107 -> origin/qa/hs-pkt489-windows-20261107
+2026-11-21T22:28:01.1288215Z  * [new branch]          qualification/current-main-gameplay-acceptance-20261106 -> origin/qualification/current-main-gameplay-acceptance-20261106
+2026-11-21T22:28:01.1288917Z  * [new branch]          qualification/gentek691-art-durability -> origin/qualification/gentek691-art-durability
+2026-11-21T22:28:01.1289492Z  * [new branch]          qualification/gentek691-final-ci-followup -> origin/qualification/gentek691-final-ci-followup
+2026-11-21T22:28:01.1290221Z  * [new branch]          qualification/gentek691-journal-bytes -> origin/qualification/gentek691-journal-bytes
+2026-11-21T22:28:01.1290912Z  * [new branch]          qualification/godot117991-production-candidate-20261107 -> origin/qualification/godot117991-production-candidate-20261107
+2026-11-21T22:28:01.1291601Z  * [new branch]          qualification/physics-worker-1v4-20261107 -> origin/qualification/physics-worker-1v4-20261107
+2026-11-21T22:28:01.1292408Z  * [new branch]          qualification/render-production-harness-20261101 -> origin/qualification/render-production-harness-20261101
+2026-11-21T22:28:01.1293137Z  * [new branch]          qualification/render-retention-paired-harness-20261101 -> origin/qualification/render-retention-paired-harness-20261101
+2026-11-21T22:28:01.1293971Z  * [new branch]          qualification/render-retention-paired-harness-v2b-20261101 -> origin/qualification/render-retention-paired-harness-v2b-20261101
+2026-11-21T22:28:01.1294736Z  * [new branch]          qualification/render-retention-slow250-harness-20261101 -> origin/qualification/render-retention-slow250-harness-20261101
+2026-11-21T22:28:01.1295404Z  * [new branch]          qualification/wb-agent-e7-527-528-20261107 -> origin/qualification/wb-agent-e7-527-528-20261107
+2026-11-21T22:28:01.1296015Z  * [new branch]          qualification/world-design-capture-457-20261106 -> origin/qualification/world-design-capture-457-20261106
+2026-11-21T22:28:01.1296718Z  * [new branch]          rec/issue-135-actor-capture-integration -> origin/rec/issue-135-actor-capture-integration
+2026-11-21T22:28:01.1297286Z  * [new branch]          recovery/issue-94-wex004-clean -> origin/recovery/issue-94-wex004-clean
+2026-11-21T22:28:01.1297861Z  * [new branch]          recovery/rec-007-ci-guardrails -> origin/recovery/rec-007-ci-guardrails
+2026-11-21T22:28:01.1298386Z  * [new branch]          recovery/rec-007-ci-guardrails-final -> origin/recovery/rec-007-ci-guardrails-final
+2026-11-21T22:28:01.1298918Z  * [new branch]          recovery/rec-007-policy-final -> origin/recovery/rec-007-policy-final
+2026-11-21T22:28:01.1299380Z  * [new branch]          recovery/rec-007-ready-scope -> origin/recovery/rec-007-ready-scope
+2026-11-21T22:28:01.1299913Z  * [new branch]          recovery/rec-007-validation-scope -> origin/recovery/rec-007-validation-scope
+2026-11-21T22:28:01.1300457Z  * [new branch]          recovery/rec-007-validation-scope-fix -> origin/recovery/rec-007-validation-scope-fix
+2026-11-21T22:28:01.1301067Z  * [new branch]          recovery/rec-008-final-audit -> origin/recovery/rec-008-final-audit
+2026-11-21T22:28:01.1301605Z  * [new branch]          rem/issue-81-body-coupling-reconciliation -> origin/rem/issue-81-body-coupling-reconciliation
+2026-11-21T22:28:01.1302295Z  * [new branch]          rem/issue-82-player-granular-acceptance -> origin/rem/issue-82-player-granular-acceptance
+2026-11-21T22:28:01.1302837Z  * [new branch]          rem/issue-82-web-acceptance -> origin/rem/issue-82-web-acceptance
+2026-11-21T22:28:01.1303357Z  * [new branch]          repair/gen006-486-restore-regression-20261107 -> origin/repair/gen006-486-restore-regression-20261107
+2026-11-21T22:28:01.1303929Z  * [new branch]          research/570-d-common-interfaces-v1 -> origin/research/570-d-common-interfaces-v1
+2026-11-21T22:28:01.1304456Z  * [new branch]          research/570-d-m2-preflight -> origin/research/570-d-m2-preflight
+2026-11-21T22:28:01.1304900Z  * [new branch]          research/570-d-m3-history-short -> origin/research/570-d-m3-history-short
+2026-11-21T22:28:01.1305387Z  * [new branch]          research/570-d-m3-native-smoke -> origin/research/570-d-m3-native-smoke
+2026-11-21T22:28:01.1305880Z  * [new branch]          research/570-d1a-long-horizon -> origin/research/570-d1a-long-horizon
+2026-11-21T22:28:01.1306333Z  * [new branch]          research/570-d1b-soft-guidance -> origin/research/570-d1b-soft-guidance
+2026-11-21T22:28:01.1306858Z  * [new branch]          research/570-d2-procedural-discovery -> origin/research/570-d2-procedural-discovery
+2026-11-21T22:28:01.1307338Z  * [new branch]          research/570-driv3r-stage-a -> origin/research/570-driv3r-stage-a
+2026-11-21T22:28:01.1307899Z  * [new branch]          research/570-fleet-training-throughput-001 -> origin/research/570-fleet-training-throughput-001
+2026-11-21T22:28:01.1308475Z  * [new branch]          research/570-game-action-language-001 -> origin/research/570-game-action-language-001
+2026-11-21T22:28:01.1309034Z  * [new branch]          research/570-guidance-recovery-training -> origin/research/570-guidance-recovery-training
+2026-11-21T22:28:01.1309540Z  * [new branch]          research/570-m3-model-short -> origin/research/570-m3-model-short
+2026-11-21T22:28:01.1309985Z  * [new branch]          research/570-m4-a1a2a3-native -> origin/research/570-m4-a1a2a3-native
+2026-11-21T22:28:01.1310509Z  * [new branch]          research/570-m5-forced-recovery-controls -> origin/research/570-m5-forced-recovery-controls
+2026-11-21T22:28:01.1311099Z  * [new branch]          research/570-population-game-policy-001 -> origin/research/570-population-game-policy-001
+2026-11-21T22:28:01.1311661Z  * [new branch]          research/570-slmworm-q4-shadow -> origin/research/570-slmworm-q4-shadow
+2026-11-21T22:28:01.1312270Z  * [new branch]          research/570-wormbrain-body-lab -> origin/research/570-wormbrain-body-lab
+2026-11-21T22:28:01.1312813Z  * [new branch]          research/570-wormbrain-native-pilot -> origin/research/570-wormbrain-native-pilot
+2026-11-21T22:28:01.1313352Z  * [new branch]          research/570-wormfleet-inference -> origin/research/570-wormfleet-inference
+2026-11-21T22:28:01.1313850Z  * [new branch]          research/612-sprocket-surgery -> origin/research/612-sprocket-surgery
+2026-11-21T22:28:01.1314446Z  * [new branch]          research/612-worm-common    -> origin/research/612-worm-common
+2026-11-21T22:28:01.1314920Z  * [new branch]          research/612-worm-lfm-support -> origin/research/612-worm-lfm-support
+2026-11-21T22:28:01.1315424Z  * [new branch]          research/612-worm-sprocket-support -> origin/research/612-worm-sprocket-support
+2026-11-21T22:28:01.1315968Z  * [new branch]          research/619-d1-frankenlayers-yolo -> origin/research/619-d1-frankenlayers-yolo
+2026-11-21T22:28:01.1316469Z  * [new branch]          research/619-frankenlayers-lab -> origin/research/619-frankenlayers-lab
+2026-11-21T22:28:01.1316970Z  * [new branch]          research/620-d1-m1-long-trajectory -> origin/research/620-d1-m1-long-trajectory
+2026-11-21T22:28:01.1317530Z  * [new branch]          research/620-d1-rusty-spoon-m0 -> origin/research/620-d1-rusty-spoon-m0
+2026-11-21T22:28:01.1318066Z  * [new branch]          research/620-franken-mutagen-ten-brains -> origin/research/620-franken-mutagen-ten-brains
+2026-11-21T22:28:01.1318670Z  * [new branch]          research/b2-region-invalidation-20261109 -> origin/research/b2-region-invalidation-20261109
+2026-11-21T22:28:01.1319241Z  * [new branch]          research/b3-handoff-proof-20261109 -> origin/research/b3-handoff-proof-20261109
+2026-11-21T22:28:01.1319824Z  * [new branch]          research/b4-hs470-independent-abba-20261109 -> origin/research/b4-hs470-independent-abba-20261109
+2026-11-21T22:28:01.1320487Z  * [new branch]          research/driv3r-game-corpus-factory-v1-20261116 -> origin/research/driv3r-game-corpus-factory-v1-20261116
+2026-11-21T22:28:01.1321161Z  * [new branch]          research/driv3r-game-distill-student-001 -> origin/research/driv3r-game-distill-student-001
+2026-11-21T22:28:01.1321816Z  * [new branch]          research/driv3r-long-horizon-policy-trainer-001 -> origin/research/driv3r-long-horizon-policy-trainer-001
+2026-11-21T22:28:01.1322699Z  * [new branch]          research/driv3r-preference-eval-proxy-20261116 -> origin/research/driv3r-preference-eval-proxy-20261116
+2026-11-21T22:28:01.1323298Z  * [new branch]          research/driv3r-quant-lab-ql001-20261116 -> origin/research/driv3r-quant-lab-ql001-20261116
+2026-11-21T22:28:01.1323877Z  * [new branch]          research/eng-lab-001-passive-benchmark -> origin/research/eng-lab-001-passive-benchmark
+2026-11-21T22:28:01.1324443Z  * [new branch]          research/eng-lab-001-water-family-matched -> origin/research/eng-lab-001-water-family-matched
+2026-11-21T22:28:01.1324996Z  * [new branch]          research/lfm-game-policy-350m -> origin/research/lfm-game-policy-350m
+2026-11-21T22:28:01.1325534Z  * [new branch]          research/model-zoo-diagonal-state-mz011 -> origin/research/model-zoo-diagonal-state-mz011
+2026-11-21T22:28:01.1326078Z  * [new branch]          research/model-zoo-frame-audit-mz014 -> origin/research/model-zoo-frame-audit-mz014
+2026-11-21T22:28:01.1326608Z  * [new branch]          research/model-zoo-gru-game-mz007 -> origin/research/model-zoo-gru-game-mz007
+2026-11-21T22:28:01.1327122Z  * [new branch]          research/model-zoo-history-law-mz008 -> origin/research/model-zoo-history-law-mz008
+2026-11-21T22:28:01.1327606Z  * [new branch]          research/model-zoo-mamba130 -> origin/research/model-zoo-mamba130
+2026-11-21T22:28:01.1328166Z  * [new branch]          research/model-zoo-material-forks-mz009 -> origin/research/model-zoo-material-forks-mz009
+2026-11-21T22:28:01.1328679Z  * [new branch]          research/model-zoo-memory-mz008 -> origin/research/model-zoo-memory-mz008
+2026-11-21T22:28:01.1329205Z  * [new branch]          research/model-zoo-modernbert-mz006 -> origin/research/model-zoo-modernbert-mz006
+2026-11-21T22:28:01.1329820Z  * [new branch]          research/model-zoo-mz001-pythia70 -> origin/research/model-zoo-mz001-pythia70
+2026-11-21T22:28:01.1330356Z  * [new branch]          research/model-zoo-phase-state-mz012 -> origin/research/model-zoo-phase-state-mz012
+2026-11-21T22:28:01.1330960Z  * [new branch]          research/model-zoo-pythia70-mz004 -> origin/research/model-zoo-pythia70-mz004
+2026-11-21T22:28:01.1331473Z  * [new branch]          research/model-zoo-qwen3-mz005 -> origin/research/model-zoo-qwen3-mz005
+2026-11-21T22:28:01.1331967Z  * [new branch]          research/model-zoo-rwkv7-mz003 -> origin/research/model-zoo-rwkv7-mz003
+2026-11-21T22:28:01.1332755Z  * [new branch]          research/model-zoo-spatial-paint-mz013 -> origin/research/model-zoo-spatial-paint-mz013
+2026-11-21T22:28:01.1333327Z  * [new branch]          research/model-zoo-turning-maps-mz015 -> origin/research/model-zoo-turning-maps-mz015
+2026-11-21T22:28:01.1333875Z  * [new branch]          research/model-zoo-wide-gru-mz010 -> origin/research/model-zoo-wide-gru-mz010
+2026-11-21T22:28:01.1334470Z  * [new branch]          research/pf-gas-capacity-native-20261106-gpt6-2120 -> origin/research/pf-gas-capacity-native-20261106-gpt6-2120
+2026-11-21T22:28:01.1335090Z  * [new branch]          research/render-ack-feedback-001 -> origin/research/render-ack-feedback-001
+2026-11-21T22:28:01.1335579Z  * [new branch]          research/render-ack-pacing-002 -> origin/research/render-ack-pacing-002
+2026-11-21T22:28:01.1336045Z  * [new branch]          research/render-upload-001  -> origin/research/render-upload-001
+2026-11-21T22:28:01.1336573Z  * [new branch]          research/tiny-policy-trainer-20261116-m0 -> origin/research/tiny-policy-trainer-20261116-m0
+2026-11-21T22:28:01.1337184Z  * [new branch]          review/lcb000-gatea-gateb-s2a-refresh-20261023 -> origin/review/lcb000-gatea-gateb-s2a-refresh-20261023
+2026-11-21T22:28:01.1337780Z  * [new branch]          review/lcb000-sol-admission-20261023 -> origin/review/lcb000-sol-admission-20261023
+2026-11-21T22:28:01.1338376Z  * [new branch]          review/mat003prepass-c-carrier-synthesis-20261023 -> origin/review/mat003prepass-c-carrier-synthesis-20261023
+2026-11-21T22:28:01.1338991Z  * [new branch]          review/pr179-validation-progress -> origin/review/pr179-validation-progress
+2026-11-21T22:28:01.1339519Z  * [new branch]          scene/blacksite-nine        -> origin/scene/blacksite-nine
+2026-11-21T22:28:01.1339967Z  * [new branch]          scene/deepworks-exhibition-1024 -> origin/scene/deepworks-exhibition-1024
+2026-11-21T22:28:01.1340419Z  * [new branch]          scene/grey-area-51          -> origin/scene/grey-area-51
+2026-11-21T22:28:01.1340830Z  * [new branch]          scene/neon-reliquary-demo   -> origin/scene/neon-reliquary-demo
+2026-11-21T22:28:01.1341303Z  * [new branch]          scheduswarm/adopt-policy-20261030 -> origin/scheduswarm/adopt-policy-20261030
+2026-11-21T22:28:01.1341800Z  * [new branch]          scheduswarm/queue           -> origin/scheduswarm/queue
+2026-11-21T22:28:01.1342367Z  * [new branch]          sol-detach-001-compound-interface -> origin/sol-detach-001-compound-interface
+2026-11-21T22:28:01.1342911Z  * [new branch]          sol-detach-001-current-main -> origin/sol-detach-001-current-main
+2026-11-21T22:28:01.1343408Z  * [new branch]          sol/433-msvc-redgreen-host-20261105 -> origin/sol/433-msvc-redgreen-host-20261105
+2026-11-21T22:28:01.1344019Z  * [new branch]          sol/active-normal-fallback-provenance-20261105 -> origin/sol/active-normal-fallback-provenance-20261105
+2026-11-21T22:28:01.1344712Z  * [new branch]          sol/active-normal-passivity-fallback-20261105 -> origin/sol/active-normal-passivity-fallback-20261105
+2026-11-21T22:28:01.1345348Z  * [new branch]          sol/bin-mean-range-guard-20261105 -> origin/sol/bin-mean-range-guard-20261105
+2026-11-21T22:28:01.1345890Z  * [new branch]          sol/copy-body-domain-guard-20261105 -> origin/sol/copy-body-domain-guard-20261105
+2026-11-21T22:28:01.1346511Z  * [new branch]          sol/live-active-normal-body-domain-guard-20261105 -> origin/sol/live-active-normal-body-domain-guard-20261105
+2026-11-21T22:28:01.1347186Z  * [new branch]          sol/live-active-passivity-fallback-20261105 -> origin/sol/live-active-passivity-fallback-20261105
+2026-11-21T22:28:01.1347858Z  * [new branch]          sol/live-bin-domain-guard-20261105 -> origin/sol/live-bin-domain-guard-20261105
+2026-11-21T22:28:01.1348433Z  * [new branch]          sol/live-derived-geometry-refusal-20261105 -> origin/sol/live-derived-geometry-refusal-20261105
+2026-11-21T22:28:01.1349090Z  * [new branch]          sol/mixed-face-envelope-probe-20261105 -> origin/sol/mixed-face-envelope-probe-20261105
+2026-11-21T22:28:01.1349706Z  * [new branch]          sol/pf-gas-selective-bootstrap-20261107 -> origin/sol/pf-gas-selective-bootstrap-20261107
+2026-11-21T22:28:01.1350249Z  * [new branch]          sol/pf-v2-discrimination-20261106 -> origin/sol/pf-v2-discrimination-20261106
+2026-11-21T22:28:01.1350797Z  * [new branch]          sol/safety-composition-20261105 -> origin/sol/safety-composition-20261105
+2026-11-21T22:28:01.1351335Z  * [new branch]          sol6/pf-run-head-repair-20261106-2100 -> origin/sol6/pf-run-head-repair-20261106-2100
+2026-11-21T22:28:01.1351923Z  * [new branch]          test/pf504-fullsize-cpu-physics-20261107 -> origin/test/pf504-fullsize-cpu-physics-20261107
+2026-11-21T22:28:01.1352669Z  * [new branch]          tmp/4ly003-248-rebase-20261025 -> origin/tmp/4ly003-248-rebase-20261025
+2026-11-21T22:28:01.1353152Z  * [new branch]          tooling/friend-playtest-win64 -> origin/tooling/friend-playtest-win64
+2026-11-21T22:28:01.1353738Z  * [new branch]          tools/art-pipeline-unification-001-20261120 -> origin/tools/art-pipeline-unification-001-20261120
+2026-11-21T22:28:01.1354368Z  * [new branch]          tools/rec001-observation-bookmarks-20261105 -> origin/tools/rec001-observation-bookmarks-20261105
+2026-11-21T22:28:01.1354975Z  * [new branch]          tools/rec001-offline-comparison-20261105 -> origin/tools/rec001-offline-comparison-20261105
+2026-11-21T22:28:01.1355637Z  * [new branch]          tools/rec001-windows-recorder-cost-probe-20261105 -> origin/tools/rec001-windows-recorder-cost-probe-20261105
+2026-11-21T22:28:01.1356321Z  * [new branch]          tools/world-art-interactive-preview-20261107 -> origin/tools/world-art-interactive-preview-20261107
+2026-11-21T22:28:01.1357085Z  * [new branch]          tools/world-art-physical-nvidia-acceptance-20261121 -> origin/tools/world-art-physical-nvidia-acceptance-20261121
+2026-11-21T22:28:01.1357945Z  * [new branch]          tools/world-design-capture-final-r1d-visibility-archive-repair-20261106 -> origin/tools/world-design-capture-final-r1d-visibility-archive-repair-20261106
+2026-11-21T22:28:01.1358866Z  * [new branch]          tools/world-design-capture-final-repair-independent-20261106 -> origin/tools/world-design-capture-final-repair-independent-20261106
+2026-11-21T22:28:01.1359691Z  * [new branch]          tools/world-design-capture-identity-fencing-20261106 -> origin/tools/world-design-capture-identity-fencing-20261106
+2026-11-21T22:28:01.1360445Z  * [new branch]          tools/world-design-capture-live-claim-probe-20261106 -> origin/tools/world-design-capture-live-claim-probe-20261106
+2026-11-21T22:28:01.1361209Z  * [new branch]          tools/world-design-capture-live-owner-repair-20261106 -> origin/tools/world-design-capture-live-owner-repair-20261106
+2026-11-21T22:28:01.1361933Z  * [new branch]          tools/world-design-capture-repair-r1-r5-20261106 -> origin/tools/world-design-capture-repair-r1-r5-20261106
+2026-11-21T22:28:01.1362700Z  * [new branch]          tools/world-design-godot-capture-20261105 -> origin/tools/world-design-godot-capture-20261105
+2026-11-21T22:28:01.1363271Z  * [new branch]          ux/issue-136-test-ux-001    -> origin/ux/issue-136-test-ux-001
+2026-11-21T22:28:01.1363778Z  * [new branch]          verify/render-copy-per-run-20261029 -> origin/verify/render-copy-per-run-20261029
+2026-11-21T22:28:01.1364397Z  * [new branch]          verify/render-copy-per-run-godot-20261029 -> origin/verify/render-copy-per-run-godot-20261029
+2026-11-21T22:28:01.1365007Z  * [new branch]          verify/render-copy-production-20261101 -> origin/verify/render-copy-production-20261101
+2026-11-21T22:28:01.1365608Z  * [new branch]          verify/render-copy290-fixed-godot-20261029 -> origin/verify/render-copy290-fixed-godot-20261029
+2026-11-21T22:28:01.1366310Z  * [new branch]          verify/render-copy290-fixed-native-20261029 -> origin/verify/render-copy290-fixed-native-20261029
+2026-11-21T22:28:01.1366936Z  * [new branch]          verify/render-copy290-host-producer-20261029 -> origin/verify/render-copy290-host-producer-20261029
+2026-11-21T22:28:01.1367575Z  * [new branch]          verify/render-copy290-live-custody-20261029 -> origin/verify/render-copy290-live-custody-20261029
+2026-11-21T22:28:01.1368291Z  * [new branch]          verify/render-copy290-live-custody-integrated-20261029 -> origin/verify/render-copy290-live-custody-integrated-20261029
+2026-11-21T22:28:01.1369049Z  * [new branch]          verify/render-copy290-monolithic-sanitizer-20261029 -> origin/verify/render-copy290-monolithic-sanitizer-20261029
+2026-11-21T22:28:01.1369861Z  * [new branch]          verify/render-copy290-postpublication-20261029 -> origin/verify/render-copy290-postpublication-20261029
+2026-11-21T22:28:01.1370539Z  * [new branch]          verify/render-copy290-sanitizer-shards-20261029 -> origin/verify/render-copy290-sanitizer-shards-20261029
+2026-11-21T22:28:01.1371178Z  * [new branch]          verify/render-retention-final-20261101 -> origin/verify/render-retention-final-20261101
+2026-11-21T22:28:01.1371832Z  * [new branch]          verify/render-retention-paired-windows-20261101 -> origin/verify/render-retention-paired-windows-20261101
+2026-11-21T22:28:01.1372578Z  * [new branch]          web-demo-m11                -> origin/web-demo-m11
+2026-11-21T22:28:01.1373053Z  * [new branch]          wex/issue-92-blocked-disposition -> origin/wex/issue-92-blocked-disposition
+2026-11-21T22:28:01.1373587Z  * [new branch]          work/pr304-cleanup-prepare-20261103 -> origin/work/pr304-cleanup-prepare-20261103
+2026-11-21T22:28:01.1374131Z  * [new branch]          work/pr304-cleanup-source-20261103 -> origin/work/pr304-cleanup-source-20261103
+2026-11-21T22:28:01.1374717Z  * [new branch]          work/sol281-native-detachment-20261027 -> origin/work/sol281-native-detachment-20261027
+2026-11-21T22:28:01.1375398Z  * [new branch]          work/sol281-render-ack-consumer-20261028-run4 -> origin/work/sol281-render-ack-consumer-20261028-run4
+2026-11-21T22:28:01.1375925Z  * [new branch]          workspace-build             -> origin/workspace-build
+2026-11-21T22:28:01.1376401Z  * [new tag]             agent-painter-foundation-568-18fa55e80b4b -> agent-painter-foundation-568-18fa55e80b4b
+2026-11-21T22:28:01.1376965Z  * [new tag]             agent-painter-foundation-568-633920373a3d -> agent-painter-foundation-568-633920373a3d
+2026-11-21T22:28:01.1377603Z  * [new tag]             agent-painter-preflight-lfm25_vl-2a565df45efc-43515770587-1 -> agent-painter-preflight-lfm25_vl-2a565df45efc-43515770587-1
+2026-11-21T22:28:01.1378356Z  * [new tag]             agent-painter-preflight-sprocket-2a565df45efc-43515770587-1 -> agent-painter-preflight-sprocket-2a565df45efc-43515770587-1
+2026-11-21T22:28:01.1379151Z  * [new tag]             agent-painter-preflight-void-2a565df45efc-43515770587-1 -> agent-painter-preflight-void-2a565df45efc-43515770587-1
+2026-11-21T22:28:01.1379723Z  * [new tag]             codex/c128-70-001-authorized -> codex/c128-70-001-authorized
+2026-11-21T22:28:01.1380130Z  * [new tag]             codex/s2p-56-001-authorized -> codex/s2p-56-001-authorized
+2026-11-21T22:28:01.1380581Z  * [new tag]             codex/wclear-001-672-001-authorized -> codex/wclear-001-672-001-authorized
+2026-11-21T22:28:01.1380999Z  * [new tag]             correctness-2026-09-08      -> correctness-2026-09-08
+2026-11-21T22:28:01.1381416Z  * [new tag]             docs-correctness-2026-09-08 -> docs-correctness-2026-09-08
+2026-11-21T22:28:01.1381888Z  * [new tag]             driv3r-stage-a-c5329498937e-43536143188-1 -> driv3r-stage-a-c5329498937e-43536143188-1
+2026-11-21T22:28:01.1382584Z  * [new tag]             driv3r-stage-a-ee95f547f31f-43537377045-1 -> driv3r-stage-a-ee95f547f31f-43537377045-1
+2026-11-21T22:28:01.1383192Z  * [new tag]             driv3r-stage-b-2ea0f09c8fbb-43546244572-1 -> driv3r-stage-b-2ea0f09c8fbb-43546244572-1
+2026-11-21T22:28:01.1383716Z  * [new tag]             driv3r-stage-c-6067ea31adb8-43587940174-1 -> driv3r-stage-c-6067ea31adb8-43587940174-1
+2026-11-21T22:28:01.1384274Z  * [new tag]             eval-mat-workbench-20261113-266d43a33e9e -> eval-mat-workbench-20261113-266d43a33e9e
+2026-11-21T22:28:01.1384941Z  * [new tag]             evidence-coupling-lockstep-001-20261106 -> evidence-coupling-lockstep-001-20261106
+2026-11-21T22:28:01.1385544Z  * [new tag]             evidence-lockstep-opt-in-packed-001-20261106 -> evidence-lockstep-opt-in-packed-001-20261106
+2026-11-21T22:28:01.1386019Z  * [new tag]             m11-audited                 -> m11-audited
+2026-11-21T22:28:01.1386413Z  * [new tag]             research/gentek-swarm-003-cd0de74b -> research/gentek-swarm-003-cd0de74b
+2026-11-21T22:28:01.1386910Z  * [new tag]             workspace-correctness-2026-09-08 -> workspace-correctness-2026-09-08
+2026-11-21T22:28:01.1387410Z  * [new tag]             workspace-docs-correctness-2026-09-08 -> workspace-docs-correctness-2026-09-08
+2026-11-21T22:28:01.1388495Z [command]/usr/bin/git rev-parse --verify --quiet a7c0a6d42f4a41622faf183c01818ffb73c56899^{object}
+2026-11-21T22:28:01.1388909Z a7c0a6d42f4a41622faf183c01818ffb73c56899
+2026-11-21T22:28:01.1389628Z ##[endgroup]
+2026-11-21T22:28:01.1390077Z ##[group]Determining the checkout info
+2026-11-21T22:28:01.1390474Z ##[endgroup]
+2026-11-21T22:28:01.1390717Z [command]/usr/bin/git sparse-checkout disable
+2026-11-21T22:28:01.1391375Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-11-21T22:28:01.1392260Z ##[group]Checking out the ref
+2026-11-21T22:28:01.1392631Z [command]/usr/bin/git checkout --progress --force a7c0a6d42f4a41622faf183c01818ffb73c56899
+2026-11-21T22:28:02.5989495Z Updating files:  59% (2496/4197)
+2026-11-21T22:28:02.5998715Z Updating files:  60% (2519/4197)
+2026-11-21T22:28:02.6007294Z Updating files:  61% (2561/4197)
+2026-11-21T22:28:02.6031106Z Updating files:  62% (2603/4197)
+2026-11-21T22:28:02.6059421Z Updating files:  63% (2645/4197)
+2026-11-21T22:28:02.6090776Z Updating files:  64% (2687/4197)
+2026-11-21T22:28:02.6120368Z Updating files:  65% (2729/4197)
+2026-11-21T22:28:02.6143476Z Updating files:  66% (2771/4197)
+2026-11-21T22:28:02.6172893Z Updating files:  67% (2812/4197)
+2026-11-21T22:28:02.6209872Z Updating files:  68% (2854/4197)
+2026-11-21T22:28:02.6237408Z Updating files:  69% (2896/4197)
+2026-11-21T22:28:02.6247114Z Updating files:  70% (2938/4197)
+2026-11-21T22:28:02.6266746Z Updating files:  71% (2980/4197)
+2026-11-21T22:28:02.6289442Z Updating files:  72% (3022/4197)
+2026-11-21T22:28:02.6310852Z Updating files:  73% (3064/4197)
+2026-11-21T22:28:02.6337088Z Updating files:  74% (3106/4197)
+2026-11-21T22:28:02.6361478Z Updating files:  75% (3148/4197)
+2026-11-21T22:28:02.6385507Z Updating files:  76% (3190/4197)
+2026-11-21T22:28:02.6393146Z Updating files:  77% (3232/4197)
+2026-11-21T22:28:02.6401349Z Updating files:  78% (3274/4197)
+2026-11-21T22:28:02.6420338Z Updating files:  79% (3316/4197)
+2026-11-21T22:28:02.6447446Z Updating files:  80% (3358/4197)
+2026-11-21T22:28:02.6473414Z Updating files:  81% (3400/4197)
+2026-11-21T22:28:02.6503473Z Updating files:  82% (3442/4197)
+2026-11-21T22:28:02.6540601Z Updating files:  83% (3484/4197)
+2026-11-21T22:28:02.6568237Z Updating files:  84% (3526/4197)
+2026-11-21T22:28:02.6597085Z Updating files:  85% (3568/4197)
+2026-11-21T22:28:02.6651611Z Updating files:  86% (3610/4197)
+2026-11-21T22:28:02.6688104Z Updating files:  87% (3652/4197)
+2026-11-21T22:28:02.6724246Z Updating files:  88% (3694/4197)
+2026-11-21T22:28:02.6737990Z Updating files:  89% (3736/4197)
+2026-11-21T22:28:02.6759692Z Updating files:  90% (3778/4197)
+2026-11-21T22:28:02.6778956Z Updating files:  91% (3820/4197)
+2026-11-21T22:28:02.6799785Z Updating files:  92% (3862/4197)
+2026-11-21T22:28:02.6824461Z Updating files:  93% (3904/4197)
+2026-11-21T22:28:02.6843989Z Updating files:  94% (3946/4197)
+2026-11-21T22:28:02.6873029Z Updating files:  95% (3988/4197)
+2026-11-21T22:28:02.6902895Z Updating files:  96% (4030/4197)
+2026-11-21T22:28:02.6928197Z Updating files:  97% (4072/4197)
+2026-11-21T22:28:02.6951900Z Updating files:  98% (4114/4197)
+2026-11-21T22:28:02.6978927Z Updating files:  99% (4156/4197)
+2026-11-21T22:28:02.6979423Z Updating files: 100% (4197/4197)
+2026-11-21T22:28:02.6979757Z Updating files: 100% (4197/4197), done.
+2026-11-21T22:28:02.7022621Z Note: switching to 'a7c0a6d42f4a41622faf183c01818ffb73c56899'.
+2026-11-21T22:28:02.7023108Z 
+2026-11-21T22:28:02.7023558Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-11-21T22:28:02.7024160Z changes and commit them, and you can discard any commits you make in this
+2026-11-21T22:28:02.7024793Z state without impacting any branches by switching back to a branch.
+2026-11-21T22:28:02.7025123Z 
+2026-11-21T22:28:02.7025333Z If you want to create a new branch to retain commits you create, you may
+2026-11-21T22:28:02.7025887Z do so (now or later) by using -c with the switch command. Example:
+2026-11-21T22:28:02.7026252Z 
+2026-11-21T22:28:02.7026426Z   git switch -c <new-branch-name>
+2026-11-21T22:28:02.7026631Z 
+2026-11-21T22:28:02.7026788Z Or undo this operation with:
+2026-11-21T22:28:02.7026959Z 
+2026-11-21T22:28:02.7027160Z   git switch -
+2026-11-21T22:28:02.7027337Z 
+2026-11-21T22:28:02.7027571Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-11-21T22:28:02.7027929Z 
+2026-11-21T22:28:02.7028168Z HEAD is now at a7c0a6d42 ci(swarm45): request publication of qualified r3 runtimes
+2026-11-21T22:28:02.7322270Z ##[endgroup]
+2026-11-21T22:28:02.7357514Z [command]/usr/bin/git log -1 --format=%H
+2026-11-21T22:28:02.7376548Z a7c0a6d42f4a41622faf183c01818ffb73c56899
+2026-11-21T22:28:02.7541448Z ##[group]Run set -euo pipefail
+2026-11-21T22:28:02.7541780Z [36;1mset -euo pipefail[0m
+2026-11-21T22:28:02.7542489Z [36;1mpython3 -m unittest discover -s tools/swarm45 -p 'test_*.py' -v[0m
+2026-11-21T22:28:02.7542882Z [36;1mpython3 tools/ci/check_ci_provider_policy.py[0m
+2026-11-21T22:28:02.7543350Z [36;1mpython3 tools/swarm45/publish_runtime.py gate --output build/swarm45-publication-gate.json[0m
+2026-11-21T22:28:02.7675975Z shell: /usr/bin/bash -e {0}
+2026-11-21T22:28:02.7676342Z env:
+2026-11-21T22:28:02.7678558Z   GH_TOKEN: ***
+2026-11-21T22:28:02.7678787Z ##[endgroup]
+2026-11-21T22:28:02.9723842Z test_extracted_zip_requires_all_exact_archived_bytes (test_custody.EvidenceGates.test_extracted_zip_requires_all_exact_archived_bytes) ... ok
+2026-11-21T22:28:02.9734321Z test_failed_linux_floor_names_binary_and_retains_both_symbol_tables (test_custody.EvidenceGates.test_failed_linux_floor_names_binary_and_retains_both_symbol_tables) ... ok
+2026-11-21T22:28:02.9736382Z test_linux_and_windows_graphics_are_distinct_actual_os_gates (test_custody.EvidenceGates.test_linux_and_windows_graphics_are_distinct_actual_os_gates) ... ok
+2026-11-21T22:28:02.9737858Z test_linux_symbol_ceiling_includes_the_cli_and_rejects_new_abi (test_custody.EvidenceGates.test_linux_symbol_ceiling_includes_the_cli_and_rejects_new_abi) ... ok
+2026-11-21T22:28:02.9742339Z test_native_markers_require_positive_complete_assertions (test_custody.EvidenceGates.test_native_markers_require_positive_complete_assertions) ... ok
+2026-11-21T22:28:02.9760189Z test_changed_or_missing_runtime_bytes_fail_closed (test_custody.RuntimeCustody.test_changed_or_missing_runtime_bytes_fail_closed) ... ok
+2026-11-21T22:28:02.9776231Z test_changed_source_or_retagged_build_is_refused (test_custody.RuntimeCustody.test_changed_source_or_retagged_build_is_refused) ... ok
+2026-11-21T22:28:02.9788573Z test_cli_binding_preserves_original_source_and_definition_inputs (test_custody.RuntimeCustody.test_cli_binding_preserves_original_source_and_definition_inputs) ... ok
+2026-11-21T22:28:02.9801443Z test_evidence_path_traversal_and_symlinks_are_refused (test_custody.RuntimeCustody.test_evidence_path_traversal_and_symlinks_are_refused) ... ok
+2026-11-21T22:28:02.9820872Z test_local_diagnostics_cannot_be_admitted_as_hosted (test_custody.RuntimeCustody.test_local_diagnostics_cannot_be_admitted_as_hosted) ... ok
+2026-11-21T22:28:02.9836417Z test_missing_native_or_sanitizer_test_cannot_pass_inventory (test_custody.RuntimeCustody.test_missing_native_or_sanitizer_test_cannot_pass_inventory) ... ok
+2026-11-21T22:28:02.9849381Z test_platform_binary_architecture_is_checked (test_custody.RuntimeCustody.test_platform_binary_architecture_is_checked) ... ok
+2026-11-21T22:28:02.9878602Z test_run_attempt_is_part_of_producer_consumer_custody (test_custody.RuntimeCustody.test_run_attempt_is_part_of_producer_consumer_custody) ... ok
+2026-11-21T22:28:02.9910116Z test_only_linux_cli_is_materialized_and_execute_mode_survives_archive (test_linux_stage.LinuxInstalledLayout.test_only_linux_cli_is_materialized_and_execute_mode_survives_archive) ... ok
+2026-11-21T22:28:03.0192523Z test_branch_created_force_or_wrong_target_is_refused (test_request.History.test_branch_created_force_or_wrong_target_is_refused) ... ok
+2026-11-21T22:28:03.0579426Z test_publication_cannot_hide_source_edits_even_when_reverted (test_request.History.test_publication_cannot_hide_source_edits_even_when_reverted) ... ok
+2026-11-21T22:28:03.0829901Z test_publication_contract_rejects_duplicate_keys_and_merge_ancestry (test_request.History.test_publication_contract_rejects_duplicate_keys_and_merge_ancestry) ... ok
+2026-11-21T22:28:03.1105988Z test_publication_is_request_only_and_preserves_original_source (test_request.History.test_publication_is_request_only_and_preserves_original_source) ... ok
+2026-11-21T22:28:03.1425217Z test_publication_parent_branch_and_action_are_fenced (test_request.History.test_publication_parent_branch_and_action_are_fenced) ... ok
+2026-11-21T22:28:03.1733892Z test_qualification_binds_execution_and_separately_published_source (test_request.History.test_qualification_binds_execution_and_separately_published_source) ... ok
+2026-11-21T22:28:03.2176911Z test_source_delta_and_definition_change_are_not_requests (test_request.History.test_source_delta_and_definition_change_are_not_requests) ... ok
+2026-11-21T22:28:03.2178626Z test_exact_completed_run_attempt_and_artifact_are_required (test_request.ImmutableArtifact.test_exact_completed_run_attempt_and_artifact_are_required) ... ok
+2026-11-21T22:28:03.2179837Z test_wrong_workflow_artifact_or_missing_digest_is_refused (test_request.ImmutableArtifact.test_wrong_workflow_artifact_or_missing_digest_is_refused) ... ok
+2026-11-21T22:28:03.2193353Z test_source_checkout_and_existing_destinations_are_refused_before_install (test_source_stage.PlatformSourceStage.test_source_checkout_and_existing_destinations_are_refused_before_install) ... ok
+2026-11-21T22:28:03.2244708Z test_source_is_exact_and_generated_uid_remains_outside_checkout (test_source_stage.PlatformSourceStage.test_source_is_exact_and_generated_uid_remains_outside_checkout) ... ok
+2026-11-21T22:28:03.2245988Z 
+2026-11-21T22:28:03.2246260Z ----------------------------------------------------------------------
+2026-11-21T22:28:03.2247090Z Ran 25 tests in 0.255s
+2026-11-21T22:28:03.2247342Z 
+2026-11-21T22:28:03.2247521Z OK
+2026-11-21T22:28:03.2247946Z /tmp/tmp5i4pjfuv/installed
+2026-11-21T22:28:03.3180045Z {
+2026-11-21T22:28:03.3180687Z   "status": "passed",
+2026-11-21T22:28:03.3181263Z   "scope": "active CI provider and runner routing",
+2026-11-21T22:28:03.3181838Z   "errors": [],
+2026-11-21T22:28:03.3182357Z   "policy": {
+2026-11-21T22:28:03.3182681Z     "routine_provider": "GitHub-hosted Actions",
+2026-11-21T22:28:03.3183218Z     "external_provider_config": "forbidden unless policy is explicitly changed",
+2026-11-21T22:28:03.3183712Z     "runner_indirection": "forbidden"
+2026-11-21T22:28:03.3184046Z   }
+2026-11-21T22:28:03.3184312Z }
+2026-11-21T22:28:04.4930760Z {"source": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f", "artifact_id": 14727612467, "branch": "integration/swarm004-005-mainline-20261121"}
+2026-11-21T22:28:04.5083086Z ##[group]Run python3 tools/swarm45/publish_runtime.py download --gate build/swarm45-publication-gate.json --output build/swarm45-publication
+2026-11-21T22:28:04.5083927Z [36;1mpython3 tools/swarm45/publish_runtime.py download --gate build/swarm45-publication-gate.json --output build/swarm45-publication[0m
+2026-11-21T22:28:04.5110737Z shell: /usr/bin/bash -e {0}
+2026-11-21T22:28:04.5111035Z env:
+2026-11-21T22:28:04.5113215Z   GH_TOKEN: ***
+2026-11-21T22:28:04.5113446Z ##[endgroup]
+2026-11-21T22:28:09.2900125Z ##[group]Run set -euo pipefail
+2026-11-21T22:28:09.2900443Z [36;1mset -euo pipefail[0m
+2026-11-21T22:28:09.2900740Z [36;1mgit lfs install --local[0m
+2026-11-21T22:28:09.2901218Z [36;1mpython3 tools/swarm45/publish_runtime.py stage --bundle build/swarm45-publication --gate build/swarm45-publication-gate.json[0m
+2026-11-21T22:28:09.2902825Z [36;1mgit add -- godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll godot/addons/cybersand_native/runtime-provenance.linux.json godot/addons/cybersand_native/runtime-provenance.json[0m
+2026-11-21T22:28:09.2903962Z [36;1mgit add -- godot/tools/gentek_reciprocal godot/tools/gentek_reciprocal.exe godot/tools/swarm004-runtime.linux.json godot/tools/swarm004-runtime.windows.json[0m
+2026-11-21T22:28:09.2904578Z [36;1mpython3 tools/swarm45/publish_runtime.py check-index[0m
+2026-11-21T22:28:09.2931205Z shell: /usr/bin/bash -e {0}
+2026-11-21T22:28:09.2931645Z env:
+2026-11-21T22:28:09.2934117Z   GH_TOKEN: ***
+2026-11-21T22:28:09.2934420Z ##[endgroup]
+2026-11-21T22:28:09.3201475Z Updated Git hooks.
+2026-11-21T22:28:09.3201796Z Git LFS initialized.
+2026-11-21T22:28:10.1230536Z Staged exactly eight verified runtime paths; original source/build identities retained
+2026-11-21T22:28:10.6761561Z ##[group]Run set -euo pipefail
+2026-11-21T22:28:10.6761892Z [36;1mset -euo pipefail[0m
+2026-11-21T22:28:10.6762404Z [36;1mtest "$(git rev-parse HEAD)" = "$GITHUB_SHA"[0m
+2026-11-21T22:28:10.6763043Z [36;1mtest "$(git ls-remote --exit-code origin refs/heads/integration/swarm004-005-mainline-20261121)" = "$GITHUB_SHA"$'\trefs/heads/integration/swarm004-005-mainline-20261121'[0m
+2026-11-21T22:28:10.6763692Z [36;1mgit config user.name 'github-actions[bot]'[0m
+2026-11-21T22:28:10.6764069Z [36;1mgit config user.email '41898282+github-actions[bot]@users.noreply.github.com'[0m
+2026-11-21T22:28:10.6764525Z [36;1mgit commit -m 'build(swarm45): publish qualified mainline evaluation runtimes'[0m
+2026-11-21T22:28:10.6764924Z [36;1mtest "$(git rev-parse HEAD^)" = "$GITHUB_SHA"[0m
+2026-11-21T22:28:10.6765510Z [36;1mgit push --force-with-lease="refs/heads/integration/swarm004-005-mainline-20261121:$GITHUB_SHA" origin HEAD:refs/heads/integration/swarm004-005-mainline-20261121[0m
+2026-11-21T22:28:10.6766146Z [36;1m{[0m
+2026-11-21T22:28:10.6766420Z [36;1m  echo "Published runtime commit: $(git rev-parse HEAD)"[0m
+2026-11-21T22:28:10.6766847Z [36;1m  echo 'The original qualified source/build identity remains in both manifests.'[0m
+2026-11-21T22:28:10.6767351Z [36;1m  echo 'Draft/HOLD remains; full admission and physical owner acceptance are still mandatory.'[0m
+2026-11-21T22:28:10.6767744Z [36;1m} >> "$GITHUB_STEP_SUMMARY"[0m
+2026-11-21T22:28:10.6793294Z shell: /usr/bin/bash -e {0}
+2026-11-21T22:28:10.6793671Z ##[endgroup]
+2026-11-21T22:28:11.0152998Z [detached HEAD 919134a39] build(swarm45): publish qualified mainline evaluation runtimes
+2026-11-21T22:28:11.0153613Z  8 files changed, 1904 insertions(+), 180 deletions(-)
+2026-11-21T22:28:11.0154029Z  create mode 100755 godot/tools/gentek_reciprocal
+2026-11-21T22:28:11.0154351Z  create mode 100644 godot/tools/gentek_reciprocal.exe
+2026-11-21T22:28:11.0154716Z  create mode 100644 godot/tools/swarm004-runtime.linux.json
+2026-11-21T22:28:11.0155119Z  create mode 100644 godot/tools/swarm004-runtime.windows.json
+2026-11-21T22:28:13.7142748Z Uploading LFS objects: 100% (4/4), 16 MB | 0 B/s, done.
+2026-11-21T22:28:15.0120827Z To https://github.com/techrote/cybersand
+2026-11-21T22:28:15.0121317Z    a7c0a6d42..919134a39  HEAD -> integration/swarm004-005-mainline-20261121
+2026-11-21T22:28:15.0249471Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-11-21T22:28:15.0249829Z with:
+2026-11-21T22:28:15.0250303Z   name: swarm45-runtime-publication-receipt-44956855133-1
+2026-11-21T22:28:15.0250668Z   path: build/swarm45-publication-gate.json
+2026-11-21T22:28:15.0250953Z   if-no-files-found: error
+2026-11-21T22:28:15.0251204Z   retention-days: 90
+2026-11-21T22:28:15.0251433Z   compression-level: 6
+2026-11-21T22:28:15.0251669Z   overwrite: false
+2026-11-21T22:28:15.0251894Z   include-hidden-files: false
+2026-11-21T22:28:15.0252329Z ##[endgroup]
+2026-11-21T22:28:15.1550158Z (node:2754) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-21T22:28:15.1550737Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-21T22:28:15.1582459Z With the provided path, there will be 1 file uploaded
+2026-11-21T22:28:15.1586615Z Artifact name is valid!
+2026-11-21T22:28:15.1587240Z Root directory input is valid!
+2026-11-21T22:28:15.7081161Z Beginning upload of artifact content to blob storage
+2026-11-21T22:28:15.7219862Z (node:2754) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-11-21T22:28:16.0641195Z Uploaded bytes 2434
+2026-11-21T22:28:16.1562574Z Finished uploading artifact content to blob storage!
+2026-11-21T22:28:16.1563188Z SHA256 digest of uploaded artifact zip is 74912918e7191d68189d6d01e40f06d0c7727212354191693e9699299ac45cae
+2026-11-21T22:28:16.1563720Z Finalizing artifact upload
+2026-11-21T22:28:16.6260730Z Artifact swarm45-runtime-publication-receipt-44956855133-1.zip successfully finalized. Artifact ID 14727568272
+2026-11-21T22:28:16.6261473Z Artifact swarm45-runtime-publication-receipt-44956855133-1 has been successfully uploaded! Final size is 2434 bytes. Artifact ID is 14727568272
+2026-11-21T22:28:16.6266681Z Artifact download URL: https://github.com/techrote/cybersand/actions/runs/44956855133/artifacts/14727568272
+2026-11-21T22:28:16.6421097Z Post job cleanup.
+2026-11-21T22:28:16.7062385Z [command]/usr/bin/git version
+2026-11-21T22:28:16.7093346Z git version 2.56.1
+2026-11-21T22:28:16.7119239Z Temporarily overriding HOME='/home/runner/work/_temp/9118fe91-03c8-40e6-a8f9-cb57e2b93b58' before making global git config changes
+2026-11-21T22:28:16.7120360Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-21T22:28:16.7121237Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/cybersand/cybersand
+2026-11-21T22:28:16.7148210Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-21T22:28:16.7170974Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-21T22:28:16.7345957Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-21T22:28:16.7361724Z http.https://github.com/.extraheader
+2026-11-21T22:28:16.7369468Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-11-21T22:28:16.7393983Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-21T22:28:16.7710540Z Cleaning up orphan processes
+2026-11-21T22:28:16.7985848Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683, actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

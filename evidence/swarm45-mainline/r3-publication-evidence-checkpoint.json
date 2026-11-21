@@ -1,0 +1,154 @@
+{
+  "accepted_main": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+  "expected_evidence_parent": "c7e3f577d0fdfb1d49d03593f7df2ee5b4873bee",
+  "files": [
+    {
+      "bytes": 5647,
+      "path": "evidence/swarm45-mainline/OWNER-EVALUATION.md",
+      "sha256": "74688f455b2a60075ebcde3e21a0147b7e1ab5d936e7d048476ebceff4b3745e"
+    },
+    {
+      "bytes": 7426,
+      "path": "evidence/swarm45-mainline/README.md",
+      "sha256": "1bedd9c2db0dbfa4b29ee1cf36aaf7b61552309c59bc02762e8e6a22c69c51c3"
+    },
+    {
+      "bytes": 7200,
+      "path": "evidence/swarm45-mainline/SWARM006-SUCCESSOR-HANDOFF.md",
+      "sha256": "608d99ba5cb9e2e9a992b0f0a458d8cc25a9304fa12aebb999d24a94cf5e421a"
+    },
+    {
+      "bytes": 414742,
+      "path": "evidence/swarm45-mainline/published-source-provenance-r3.json",
+      "sha256": "805ebd2893a157b87e50e6aadc2008e51822448ea877b6ea991c8efd245228b3"
+    },
+    {
+      "bytes": 3154,
+      "path": "evidence/swarm45-mainline/r3-actual-publication-verification.json",
+      "sha256": "106f2e61e148e3fc625e7d95d6677508d1ce9294ab210b46789117d92fb52f89"
+    },
+    {
+      "bytes": 6934,
+      "path": "evidence/swarm45-mainline/r3-original-final-admission-dispatch.json",
+      "sha256": "0fe61d4c3e3ca720a61b4547fc04b084fc1a46d9c9c2e16f18f4f5d82369940e"
+    },
+    {
+      "bytes": 16207,
+      "path": "evidence/swarm45-mainline/r3-original-publication-gate.json",
+      "sha256": "60fbb86c093f3aaaa91761374205c7995a50d06eba6e927b3cc6ce686bbaff19"
+    },
+    {
+      "bytes": 2150,
+      "path": "evidence/swarm45-mainline/r3-publication-bundle-verification.json",
+      "sha256": "f5a74a237355a1e729b5d3480605ac8c57b8cabca9e7047200183bf5e05c1dc2"
+    },
+    {
+      "bytes": 18196,
+      "path": "evidence/swarm45-mainline/swarm45-publication-review-evidence/audit_r3_windows_delivery.py",
+      "sha256": "50929250082a837bdff8cc5a1697ff5bfd6b3d358456900bb7386254cbbd7d4c"
+    },
+    {
+      "bytes": 5338,
+      "path": "evidence/swarm45-mainline/swarm45-publication-review-evidence/r3-actual-publication-checkpoint.json",
+      "sha256": "bd39848ba627071e915624bb66c629c64345d600af16f9bd53accf6463e10323"
+    },
+    {
+      "bytes": 4665,
+      "path": "evidence/swarm45-mainline/swarm45-publication-review-evidence/r3-publication-candidate-checkpoint.json",
+      "sha256": "128a99dbdd1775765cde8c96922196d92078cb1059d9e34b923c66667ad6733c"
+    },
+    {
+      "bytes": 118799,
+      "path": "evidence/swarm45-mainline/swarm45-publication-review-evidence/r3-publisher-job.log",
+      "sha256": "653fad88af6f7052303109b3b1e1b7e9a55cb80d5cc587204e24a2938a04b8a4"
+    },
+    {
+      "bytes": 4890,
+      "path": "evidence/swarm45-mainline/swarm45-publication-review-evidence/r3-windows-build-runtime-checkpoint.json",
+      "sha256": "f76a547ba7eacf60ccf73da7fc842621656f4ff5da2f4b296f8c3c971daba107"
+    },
+    {
+      "bytes": 32867,
+      "path": "evidence/swarm45-mainline/swarm45-publication-review-evidence/r3-windows-source-package-checkpoint.json",
+      "sha256": "9deb77ca8f5c53d3a11e6cadb600a7682643d134e268c5c88a7a427c2674182a"
+    },
+    {
+      "bytes": 9265,
+      "path": "evidence/swarm45-mainline/swarm45-published-source-security-review.md",
+      "sha256": "56efa53b5bcf0276c535fbf527c2b02bc5e483df3c42bb94fa11a1ede6b22e86"
+    },
+    {
+      "bytes": 1627,
+      "path": "evidence/swarm45-mainline/swarm45-published-source-security-review/decision.json",
+      "sha256": "b0dcb04dc97a9daa57f3d8321a973811b8652071ab3d2de8b046a4bf89a367e3"
+    },
+    {
+      "bytes": 1616,
+      "path": "evidence/swarm45-mainline/swarm45-published-source-security-review/manifest-verification.json",
+      "sha256": "0759b03b8a2d18e461d9a99d5cad4ea08fa130808131cdba67a4c7977ca8b096"
+    },
+    {
+      "bytes": 663,
+      "path": "evidence/swarm45-mainline/swarm45-published-source-security-review/ordinary-runtime-binding.json",
+      "sha256": "80bd2b18541ad48e63c48e94564073483f48a6e6d088c2cc3526882d252049e4"
+    },
+    {
+      "bytes": 6859,
+      "path": "evidence/swarm45-mainline/swarm45-published-source-security-review/verification.json",
+      "sha256": "59739d8a2e533e6fb752d3cfc58ca68f9877956a2be9e09783cf24a6d804602c"
+    },
+    {
+      "bytes": 6715,
+      "path": "evidence/swarm45-mainline/swarm45-r3-actual-publication-and-dispatch-review.md",
+      "sha256": "b01005ba204b7c0b43dc3e06dbb91018020460efdf301b6caa8ca569bb3cc33f"
+    },
+    {
+      "bytes": 29589,
+      "path": "evidence/swarm45-mainline/swarm45-r3-ci-observation.json",
+      "sha256": "3287c069980b9d0ac26c7f139abfe8e2ec5abea5674ce42480de1f19c0111762"
+    },
+    {
+      "bytes": 6325,
+      "path": "evidence/swarm45-mainline/swarm45-r3-windows-build-runtime-review.md",
+      "sha256": "7b75c516d38b9e9cc364b91e56addcadd4d7a7f2b2d4a927e496c278151d3543"
+    },
+    {
+      "bytes": 12413,
+      "path": "evidence/swarm45-mainline/swarm45-r3-windows-delivery-and-publication-review.md",
+      "sha256": "9d3f9568f5dbbe4a1ce79ac5a3f562104b72d1afa0826d6342e74e1b05313cc5"
+    },
+    {
+      "bytes": 20670,
+      "path": "evidence/swarm45-mainline/swarm45-science-evidence/audit_hosted_r3_native_science.py",
+      "sha256": "75e961fe1992a87a4db54d693410d93c54746deae02edb8f0a3d91dd6021e0c9"
+    },
+    {
+      "bytes": 354569,
+      "path": "evidence/swarm45-mainline/swarm45-science-evidence/swarm45-hosted-r3-native-science-audit-96b8d3f.json",
+      "sha256": "092da9142ae67ec1db9a5aabc732207069125c1f6786300e1950cd52c4693be4"
+    },
+    {
+      "bytes": 891,
+      "path": "evidence/swarm45-mainline/swarm45-science-evidence/swarm45-hosted-r3-scientific-chain.json",
+      "sha256": "97bbf5d9adf3e5c57f375fe97beeb86778f648033f256ff3a79a0a248b393f2a"
+    },
+    {
+      "bytes": 7902,
+      "path": "evidence/swarm45-mainline/swarm45-science-evidence/swarm45-hosted-r3-scientific-native-review.md",
+      "sha256": "8263b0923889a6cbaea6f7724857b89ac9eca4b211ab6c904d00b6488a718e85"
+    },
+    {
+      "bytes": 31966,
+      "path": "evidence/swarm45-mainline/swarm45-science-evidence/swarm45-published-scientific-delta-919134a.json",
+      "sha256": "08066a681199ba77b6e64e119136f1900d09e3c672534bbe897bb9103f92fc89"
+    },
+    {
+      "bytes": 5488,
+      "path": "evidence/swarm45-mainline/swarm45-science-evidence/swarm45-published-scientific-delta-review-919134a.md",
+      "sha256": "a953e9cad8d12e456b3552abd9013baba73ea1b3f13c82c2035d4c2fe3a71e36"
+    }
+  ],
+  "published_product_head": "919134a39d31461947c410c233d59d1965c48414",
+  "schema": 1,
+  "scope": "Additive completed R3 source/platform/publication evidence; final ordinary CI and owner acceptance separate"
+}

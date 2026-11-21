@@ -1,0 +1,99 @@
+{
+  "artifact_bytes": 6046809,
+  "artifact_id": 14727612467,
+  "artifact_sha256": "271294630bcd8282cdc1c4914392d8a24a39defc034ab125f1b9f2794440f14c",
+  "exact_nine_safe_archive_members_match": true,
+  "files_sha256": {
+    "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": "c7fc1fbfea2999489ae83a6da100ca795b336dc6efa251af7e5003071a2bb43d",
+    "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "1db5702cf59f02d1ca4b6e7c0b34a73f3d106e67cec73b4901c0c10cd4c1cbb1",
+    "godot/addons/cybersand_native/runtime-provenance.json": "bd05d2280e5f4692888d47da2ddc3539f7e0da65a0e22ab76c7bdaa85331e513",
+    "godot/addons/cybersand_native/runtime-provenance.linux.json": "7b021644bdfb7212ad138b1d701db310618f0b6a608091b20be66a4d65d30e52",
+    "godot/tools/gentek_reciprocal": "a3690011da97b12a6bfdc8d461e33dde9f98c1418fef89a3f3de994bd239da53",
+    "godot/tools/gentek_reciprocal.exe": "001672a6961c113f51b4f483e33cbb97702fec09616a60949c26a991a5a18105",
+    "godot/tools/swarm004-runtime.linux.json": "89ef9fc7313c901a69e270d12dff335c0b5dd18787bb8187e8eff7b95baf3dbc",
+    "godot/tools/swarm004-runtime.windows.json": "4500f86447fdab4206dc8a6fca95b10c2e3dccd4268ebba741a10d42f1805fe2"
+  },
+  "four_payloads_equal_original_runtime_build_artifacts": true,
+  "live_qualified_run_conclusion": "success",
+  "native_definition_sha256": "217bfa716e61198f5b3849f2ae14c30e85bc9f623fc1d05438c59df2296ce7f7",
+  "overall_admission": "HOLD",
+  "owner_visual_acceptance": "pending",
+  "pure_verify_bundle_passed": true,
+  "qualifications": {
+    "linux": {
+      "graphical": {
+        "child_process_count": 14,
+        "inventory_files": 417,
+        "passed": true,
+        "sha256": "cc500443d15ea4bf234141d96f6728e5215cd7a4fc69957b8a3044ac73016762",
+        "source_commit": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f"
+      },
+      "native": {
+        "child_process_count": 11,
+        "inventory_files": 46,
+        "passed": true,
+        "sha256": "86d8e7580a5e95df66bdd73b0499b3878f76d553208695090fb245eba0fa9ab0",
+        "source_commit": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f"
+      },
+      "smokes": {
+        "child_process_count": 17,
+        "inventory_files": 185,
+        "passed": true,
+        "sha256": "52bd08fd2f8d7dfe1d8b7650fc954428dccbcd2beb3b232762df851603294a78",
+        "source_commit": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f"
+      }
+    },
+    "windows": {
+      "extracted_graphical": {
+        "child_process_count": 14,
+        "inventory_files": 255,
+        "passed": true,
+        "sha256": "e65b1fe3477fd65e0c30623cf78054f8e5cedde1acf23954058bc5ecd3626d23",
+        "source_commit": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f"
+      },
+      "extracted_smokes": {
+        "child_process_count": 17,
+        "inventory_files": 274,
+        "passed": true,
+        "sha256": "6f5f9876a9d757920827fa8a18745406d53f85c2aff45129f31683d02ad1697b",
+        "source_commit": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f"
+      },
+      "graphical": {
+        "child_process_count": 14,
+        "inventory_files": 255,
+        "passed": true,
+        "sha256": "3efb1f4c60664307ed898802e0fc4e420d5e898934f8c115cb20e8e51df81dbf",
+        "source_commit": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f"
+      },
+      "native": {
+        "child_process_count": 6,
+        "inventory_files": 33,
+        "passed": true,
+        "sha256": "b587d841592d2933f822ee919312095d75cee27fbc93eced0c1a4073395ee279",
+        "source_commit": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f"
+      },
+      "smokes": {
+        "child_process_count": 17,
+        "inventory_files": 275,
+        "passed": true,
+        "sha256": "b765b0c57d16b808f95b6b4327f7ddf1c83fde4dbcdf5661aa96daf0cfb86f73",
+        "source_commit": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f"
+      }
+    }
+  },
+  "qualified_attempt": 1,
+  "qualified_run_id": 44953582341,
+  "ready_or_merge_authorized": false,
+  "remaining": [
+    "Inspect actual publication commit/LFS pointers/Linux executable mode and final branch/base identities",
+    "Verify all five final admission workflow results",
+    "Complete final Windows source evidence detail review",
+    "Physical owner original-map/NVIDIA evaluation"
+  ],
+  "review": "Independent R3 exact eight-path publication candidate checkpoint",
+  "reviewed_at": "2026-11-21T22:27:52.443614+00:00",
+  "scope_verdict": "GO for exact eight-path runtime publication to the dedicated integration branch under the reviewed live lease and publisher guards",
+  "source_and_platform_ledgers_match": true,
+  "source_commit": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f",
+  "source_tree": "a3312e00b971cf6859922b2b70eb8ed5da0f66b7"
+}

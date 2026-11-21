@@ -1,0 +1,181 @@
+{
+  "admission_result": "pending; exact-head executions confirmed, their results must be reviewed",
+  "complete": true,
+  "control_branch": "ci/swarm45-final-admission-dispatch-20261121",
+  "dispatches": [
+    {
+      "accepted_at": "2026-11-21T22:31:31.936922+00:00",
+      "action": "dispatch accepted",
+      "expected_head_sha": "919134a39d31461947c410c233d59d1965c48414",
+      "http_status": 204,
+      "run": {
+        "conclusion": null,
+        "created_at": "2026-11-21T22:31:33Z",
+        "event": "workflow_dispatch",
+        "head_branch": "integration/swarm004-005-mainline-20261121",
+        "head_sha": "919134a39d31461947c410c233d59d1965c48414",
+        "html_url": "https://github.com/techrote/cybersand/actions/runs/44957191341",
+        "id": 44957191341,
+        "run_attempt": 1,
+        "status": "in_progress",
+        "workflow_id": 344993860
+      },
+      "workflow": "documentation.yml"
+    },
+    {
+      "accepted_at": "2026-11-21T22:31:36.651130+00:00",
+      "action": "dispatch accepted",
+      "expected_head_sha": "919134a39d31461947c410c233d59d1965c48414",
+      "http_status": 204,
+      "run": {
+        "conclusion": null,
+        "created_at": "2026-11-21T22:31:37Z",
+        "event": "workflow_dispatch",
+        "head_branch": "integration/swarm004-005-mainline-20261121",
+        "head_sha": "919134a39d31461947c410c233d59d1965c48414",
+        "html_url": "https://github.com/techrote/cybersand/actions/runs/44957198003",
+        "id": 44957198003,
+        "run_attempt": 1,
+        "status": "in_progress",
+        "workflow_id": 344993864
+      },
+      "workflow": "native.yml"
+    },
+    {
+      "accepted_at": "2026-11-21T22:31:41.053628+00:00",
+      "action": "dispatch accepted",
+      "expected_head_sha": "919134a39d31461947c410c233d59d1965c48414",
+      "http_status": 204,
+      "run": {
+        "conclusion": null,
+        "created_at": "2026-11-21T22:31:42Z",
+        "event": "workflow_dispatch",
+        "head_branch": "integration/swarm004-005-mainline-20261121",
+        "head_sha": "919134a39d31461947c410c233d59d1965c48414",
+        "html_url": "https://github.com/techrote/cybersand/actions/runs/44957204571",
+        "id": 44957204571,
+        "run_attempt": 1,
+        "status": "in_progress",
+        "workflow_id": 344993861
+      },
+      "workflow": "gdextension.yml"
+    },
+    {
+      "accepted_at": "2026-11-21T22:31:45.497195+00:00",
+      "action": "dispatch accepted",
+      "expected_head_sha": "919134a39d31461947c410c233d59d1965c48414",
+      "http_status": 204,
+      "run": {
+        "conclusion": null,
+        "created_at": "2026-11-21T22:31:46Z",
+        "event": "workflow_dispatch",
+        "head_branch": "integration/swarm004-005-mainline-20261121",
+        "head_sha": "919134a39d31461947c410c233d59d1965c48414",
+        "html_url": "https://github.com/techrote/cybersand/actions/runs/44957211504",
+        "id": 44957211504,
+        "run_attempt": 1,
+        "status": "in_progress",
+        "workflow_id": 403062058
+      },
+      "workflow": "palette-shader-qualification.yml"
+    },
+    {
+      "accepted_at": "2026-11-21T22:31:49.880024+00:00",
+      "action": "dispatch accepted",
+      "expected_head_sha": "919134a39d31461947c410c233d59d1965c48414",
+      "http_status": 204,
+      "run": {
+        "conclusion": null,
+        "created_at": "2026-11-21T22:31:51Z",
+        "event": "workflow_dispatch",
+        "head_branch": "integration/swarm004-005-mainline-20261121",
+        "head_sha": "919134a39d31461947c410c233d59d1965c48414",
+        "html_url": "https://github.com/techrote/cybersand/actions/runs/44957219135",
+        "id": 44957219135,
+        "run_attempt": 1,
+        "status": "queued",
+        "workflow_id": 402516490
+      },
+      "workflow": "play-desktop-packet.yml"
+    }
+  ],
+  "owner_visual_acceptance": "pending",
+  "permitted_workflows": [
+    "documentation.yml",
+    "native.yml",
+    "gdextension.yml",
+    "palette-shader-qualification.yml",
+    "play-desktop-packet.yml"
+  ],
+  "pr_lease": {
+    "base": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+    "draft": true,
+    "head": "919134a39d31461947c410c233d59d1965c48414",
+    "number": 715
+  },
+  "programme": "GENTEK-SWARM-004-005-MAINLINE",
+  "publication": {
+    "attempt": 1,
+    "conclusion": "success",
+    "head_sha": "a7c0a6d42f4a41622faf183c01818ffb73c56899",
+    "id": 44956855133,
+    "url": "https://github.com/techrote/cybersand/actions/runs/44956855133",
+    "workflow_id": 426348434
+  },
+  "published_payload": {
+    "bytes": 6046809,
+    "digest": "sha256:271294630bcd8282cdc1c4914392d8a24a39defc034ab125f1b9f2794440f14c",
+    "exact_published_paths": [
+      "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "godot/addons/cybersand_native/runtime-provenance.json",
+      "godot/addons/cybersand_native/runtime-provenance.linux.json",
+      "godot/tools/gentek_reciprocal",
+      "godot/tools/gentek_reciprocal.exe",
+      "godot/tools/swarm004-runtime.linux.json",
+      "godot/tools/swarm004-runtime.windows.json"
+    ],
+    "id": 14727612467,
+    "name": "swarm45-runtime-publication-candidate-96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f-44953582341-1",
+    "original_build_identity_retained": true,
+    "source_equivalent": true
+  },
+  "qualification": {
+    "attempt": 1,
+    "conclusion": "success",
+    "head_sha": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f",
+    "id": 44953582341,
+    "url": "https://github.com/techrote/cybersand/actions/runs/44953582341",
+    "workflow_id": 426283450
+  },
+  "ready_or_merge_authorized": false,
+  "request": {
+    "action": "dispatch-final-admission",
+    "execution_sha": "c7e3f577d0fdfb1d49d03593f7df2ee5b4873bee",
+    "expected_parent_sha": "395b93393adcc379dabeffeb75be9eb19557ad33",
+    "programme": "GENTEK-SWARM-004-005-MAINLINE",
+    "publication_request_sha": "a7c0a6d42f4a41622faf183c01818ffb73c56899",
+    "publication_run_attempt": "1",
+    "publication_run_id": "44956855133",
+    "qualification_run_attempt": "1",
+    "qualification_run_id": "44953582341",
+    "qualification_source_sha": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f",
+    "request_id": "swarm45-final-admission-20261121-r3",
+    "request_sha256": "179fe5fff1cf7d5e681f847d6798b342d3b83b2dd095c3b1deb47a63ea8163b1",
+    "schema": 1,
+    "target_sha": "919134a39d31461947c410c233d59d1965c48414"
+  },
+  "schema": 1,
+  "source_branch_mutated": false,
+  "source_chain": {
+    "artifact_id": "14727612467",
+    "publication_request": "a7c0a6d42f4a41622faf183c01818ffb73c56899",
+    "published": "919134a39d31461947c410c233d59d1965c48414",
+    "request_only_commits": [
+      "a7c0a6d42f4a41622faf183c01818ffb73c56899"
+    ],
+    "source": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f",
+    "source_tree": "a3312e00b971cf6859922b2b70eb8ed5da0f66b7"
+  },
+  "target_branch": "integration/swarm004-005-mainline-20261121"
+}
