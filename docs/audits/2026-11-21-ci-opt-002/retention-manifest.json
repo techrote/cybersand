@@ -1,0 +1,151 @@
+{
+  "scope": "CI-OPT-002 retained reports; no runtime/build archives or raw execution logs",
+  "merged_head": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+  "held_head": "65aa1382a49bb01571177b4639f27b64f5dcb66d",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 10881,
+      "sha256": "af1df371be73f9554b99215d45336047ae7dec25630d5263efd093b69d18e57d"
+    },
+    {
+      "path": "baseline-report.md",
+      "bytes": 10122,
+      "sha256": "7a626d0022565b4c1470c3f553bbbb816ccb849507e53a8b8b76a5f41121ac43"
+    },
+    {
+      "path": "baseline-summary.json",
+      "bytes": 276226,
+      "sha256": "5ea429cae43651c637fcde3e932ef82364d1754ea2a59762181031b190b8e9d2"
+    },
+    {
+      "path": "ci-policy.md",
+      "bytes": 5588,
+      "sha256": "0637f993e115c996e6738bd566bbb965b577a70e2b1f03cd229a59761e4e5211"
+    },
+    {
+      "path": "cumulative-source-scope.json",
+      "bytes": 847,
+      "sha256": "8df356616d1c8dc8a6d9c9d5d09bc12125682f5d6f00980b47c71077a6117fe4"
+    },
+    {
+      "path": "final-verdict.json",
+      "bytes": 1572,
+      "sha256": "1d184e820e1e54f1435f53adaa9d425a7e7ff8dab9b285dae688ad74d0811189"
+    },
+    {
+      "path": "final-verdict.md",
+      "bytes": 7438,
+      "sha256": "4bf7ecfba4e24a5732e3a57038359de29b5c42803b246426ffce741958f1d127"
+    },
+    {
+      "path": "historical-native-diagnostics/report.md",
+      "bytes": 1646,
+      "sha256": "3dbf98be690e5370b7cec223a97bd21c648da88e889ea48e4674211c9bc9f29f"
+    },
+    {
+      "path": "historical-native-diagnostics/summary.json",
+      "bytes": 16558,
+      "sha256": "20211520b977b4d095cfb236344acbd6fcc49991cc0edbf0b340c608e7553605"
+    },
+    {
+      "path": "merged-source-scope.json",
+      "bytes": 551,
+      "sha256": "4d18a4e50d56b7ffae8e967d542f836d058f8b345a9c7e433f09891a4bad2b4e"
+    },
+    {
+      "path": "native-final-spotcheck.json",
+      "bytes": 2345,
+      "sha256": "b5796e9b23264c2ae0645df8ae6396bf14fc5fab7fa5eea9962ec9530e499a1b"
+    },
+    {
+      "path": "stage-a-paired-report.md",
+      "bytes": 11371,
+      "sha256": "d4ed3aa9d6849440f12548618e6f1de31ab6d0c1e1d0873d56c45a381673fea1"
+    },
+    {
+      "path": "stage-a-paired-summary.json",
+      "bytes": 55293,
+      "sha256": "5027c9657f1b7d6c514ad21d1416a2b1ccfff8c1a7d03d501a01280e06d38bec"
+    },
+    {
+      "path": "stage-b-candidate/summary.json",
+      "bytes": 146269,
+      "sha256": "1ea71e1537eff30382e53625b501a920a276f652ee65ee49dc93b632a3be147f"
+    },
+    {
+      "path": "stage-b-candidate-cohort.json",
+      "bytes": 300467,
+      "sha256": "3aeee15a5e16819456d79723d6124a7de7446e186cdecd8434cbee73b2008f99"
+    },
+    {
+      "path": "stage-b-candidate-cohort.md",
+      "bytes": 2000,
+      "sha256": "1aa32a9ddbc30092126e6c4af0581fad13d48c5c9adf6278b4f40204e1fd30d0"
+    },
+    {
+      "path": "stage-b-command-equivalence.json",
+      "bytes": 1702,
+      "sha256": "72a6e351aee7b54af7a5e81975bdc0c538ca419594cc70978f080a0e2edfeb34"
+    },
+    {
+      "path": "stage-b-control/summary.json",
+      "bytes": 140781,
+      "sha256": "7000c95439ec586441a8f0c94c11ce8af53f6ae02eefb35d8a092c36ecda4cfa"
+    },
+    {
+      "path": "stage-b-final-source-review.json",
+      "bytes": 5602,
+      "sha256": "350ab9f03c029b1f7a22160755aa31b625b05eb4085f0fd087ab2b8bdc602ed7"
+    },
+    {
+      "path": "stage-b-local-adverse-summary.json",
+      "bytes": 17862,
+      "sha256": "41e0b02c1a9a6bbb8b17db4657110722aa9463ec17e8e412f0069eba32350d4a"
+    },
+    {
+      "path": "stage-b-native-paired-report.md",
+      "bytes": 15914,
+      "sha256": "b6c8cbf68214f5e5502bce4387cb474707764944b823fcdb4b4d88dfc4f2a24c"
+    },
+    {
+      "path": "stage-b-native-paired-summary.json",
+      "bytes": 347287,
+      "sha256": "b57dfe88af23017c9ad23ff8a96b869e75a38d7362a573128a863ad1883b3551"
+    },
+    {
+      "path": "stage-b-platform-final-spotcheck.json",
+      "bytes": 1709,
+      "sha256": "2c7dbfdd12bf6dd3d68d3821b53889b394c517e12556d6209e165c70b89e8f47"
+    },
+    {
+      "path": "stage-b-platform-review.json",
+      "bytes": 4351,
+      "sha256": "97fc557026c0ab4abd5a2f17b243143e0f228210dea07dbc3a2921097585bbe3"
+    },
+    {
+      "path": "stage-b-platform-review.md",
+      "bytes": 3021,
+      "sha256": "75895de5885b1af12f6623212f9b5b3569360f1fa922904bcd25253debf43c08"
+    },
+    {
+      "path": "stage-b-source-equivalence.json",
+      "bytes": 9216,
+      "sha256": "727ac02c9d551d4879526625f1f9af6c59f280c21f51cffd66d2c1248c8a4771"
+    }
+  ],
+  "original_review_hashes": {
+    "source": "final-verdict.json files_sha256 records ORIGINAL reviewer files, not renamed or adapted retained copies",
+    "navigation_only_adaptation": {
+      "retained_path": "final-verdict.md",
+      "original_sha256": "74820ac3b5d2679119f40f2ec16cfb70eae157b1c177a2c2bc018b8c1a28e786",
+      "retained_sha256": "4bf7ecfba4e24a5732e3a57038359de29b5c42803b246426ffce741958f1d127",
+      "change": "Footer only: correct retained-copy links and original raw-record location. All verdict and evidence interpretation text unchanged."
+    },
+    "adverse_summary": {
+      "retained_path": "stage-b-local-adverse-summary.json",
+      "original_sha256": "56453c52e60de1d399f67826ff2151f80834df3bb7d973fa4ecd09c1f98b42a3",
+      "change": "Retains all seven controls and original report digest; raw stdout/stderr are represented by hashes rather than copied as logs."
+    }
+  }
+}

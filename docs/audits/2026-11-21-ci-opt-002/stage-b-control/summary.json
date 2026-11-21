@@ -1,0 +1,3246 @@
+{
+  "created_at": "2026-11-21T20:48:56Z",
+  "event": "push",
+  "metadata_head_sha": "8fada1df005553eecb98935afdbcebd27615bd13",
+  "metadata_sha256": {
+    "artifacts.json": "0a05f532a9533317a5fb69926415dc912efa4715c744a5ec4fd9d3f70f0c9ccd",
+    "jobs.json": "76232d6ccf01abfe0783524a511a3c4ca8daf2b28ef2130df2fd9d535f99aa74",
+    "run.json": "9196bd7fefeb0d23959f1abe55017c233eeeacf02504ad9d5abea34b0b046201"
+  },
+  "metrics": {
+    "aggregate_wait_after_last_family_seconds": 3.0,
+    "complete_job_count": 9,
+    "conditional_skipped_job_count": 1,
+    "earliest_completed_native_family": {
+      "conclusion": "success",
+      "job": "Native family / soliding-normal",
+      "seconds_from_event": 181.0
+    },
+    "earliest_reliable_result": {
+      "conclusion": "success",
+      "job": "Native evidence and provider policy",
+      "seconds_from_event": 34.0
+    },
+    "executed_job_count": 8,
+    "execution_envelope_seconds": 2245.0,
+    "family_ready_to_start_combined_matrix_and_runner_wait_seconds": {
+      "asan-ubsan": 3.0,
+      "native-normal": 3.0,
+      "soliding-asan": 2.0,
+      "soliding-normal": 3.0,
+      "tsan": 3.0,
+      "worldgen": 2.0
+    },
+    "initial_queue_seconds": 3.0,
+    "jobs": [
+      {
+        "completed_at": "2026-11-21T20:49:30Z",
+        "conclusion": "success",
+        "created_at": "2026-11-21T20:48:56Z",
+        "created_to_start_seconds": 3.0,
+        "executed": true,
+        "job_id": 136980254699,
+        "job_wall_seconds": 31.0,
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "name": "Native evidence and provider policy",
+        "runner_minutes_unweighted": 0.5166666666666667,
+        "runner_name": "GitHub Actions 1000141017",
+        "started_at": "2026-11-21T20:48:59Z",
+        "steps": [
+          {
+            "completed_at": "2026-11-21T20:49:00Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "seconds": 1.0,
+            "started_at": "2026-11-21T20:48:59Z"
+          },
+          {
+            "completed_at": "2026-11-21T20:49:06Z",
+            "conclusion": "success",
+            "name": "Check out source",
+            "seconds": 6.0,
+            "started_at": "2026-11-21T20:49:00Z"
+          },
+          {
+            "completed_at": "2026-11-21T20:49:08Z",
+            "conclusion": "success",
+            "name": "Derive complete family and hosted job allowances",
+            "seconds": 2.0,
+            "started_at": "2026-11-21T20:49:06Z"
+          },
+          {
+            "completed_at": "2026-11-21T20:49:27Z",
+            "conclusion": "success",
+            "name": "Check hosted provider and evidence failure controls",
+            "seconds": 19.0,
+            "started_at": "2026-11-21T20:49:08Z"
+          },
+          {
+            "completed_at": "2026-11-21T20:49:28Z",
+            "conclusion": "success",
+            "name": "Preserve Native policy check results",
+            "seconds": 1.0,
+            "started_at": "2026-11-21T20:49:27Z"
+          },
+          {
+            "completed_at": "2026-11-21T20:49:28Z",
+            "conclusion": "success",
+            "name": "Post Check out source",
+            "seconds": 0.0,
+            "started_at": "2026-11-21T20:49:28Z"
+          },
+          {
+            "completed_at": "2026-11-21T20:49:28Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "seconds": 0.0,
+            "started_at": "2026-11-21T20:49:28Z"
+          }
+        ],
+        "url": "https://github.com/techrote/cybersand/actions/runs/44948256292/job/136980254699"
+      },
+      {
+        "completed_at": "2026-11-21T20:48:56Z",
+        "conclusion": "skipped",
+        "created_at": "2026-11-21T20:48:57Z",
+        "created_to_start_seconds": null,
+        "executed": false,
+        "job_id": 136980255909,
+        "job_wall_seconds": 0,
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "name": "ready validation scope",
+        "runner_minutes_unweighted": 0.0,
+        "runner_name": null,
+        "started_at": "2026-11-21T20:48:57Z",
+        "steps": [],
+        "url": "https://github.com/techrote/cybersand/actions/runs/44948256292/job/136980255909"
+      },
+      {
+        "completed_at": "2026-11-21T21:02:27Z",
+        "conclusion": "success",
+        "created_at": "2026-11-21T20:49:30Z",
+        "created_to_start_seconds": 3.0,
+        "executed": true,
+        "job_id": 136980406646,
+        "job_wall_seconds": 774.0,
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "name": "Native family / tsan",
+        "runner_minutes_unweighted": 12.9,
+        "runner_name": "GitHub Actions 1000141019",
+        "started_at": "2026-11-21T20:49:33Z",
+        "steps": [
+          {
+            "completed_at": "2026-11-21T20:49:36Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "seconds": 2.0,
+            "started_at": "2026-11-21T20:49:34Z"
+          },
+          {
+            "completed_at": "2026-11-21T20:49:45Z",
+            "conclusion": "success",
+            "name": "Check out source",
+            "seconds": 9.0,
+            "started_at": "2026-11-21T20:49:36Z"
+          },
+          {
+            "completed_at": "2026-11-21T20:49:46Z",
+            "conclusion": "success",
+            "name": "Record compiler, linker and exact source identity",
+            "seconds": 1.0,
+            "started_at": "2026-11-21T20:49:45Z"
+          },
+          {
+            "completed_at": "2026-11-21T21:02:22Z",
+            "conclusion": "success",
+            "name": "Execute complete test family with shared watchdogs",
+            "seconds": 756.0,
+            "started_at": "2026-11-21T20:49:46Z"
+          },
+          {
+            "completed_at": "2026-11-21T21:02:23Z",
+            "conclusion": "success",
+            "name": "Retain original family outcome and source fingerprints",
+            "seconds": 1.0,
+            "started_at": "2026-11-21T21:02:22Z"
+          },
+          {
+            "completed_at": "2026-11-21T21:02:24Z",
+            "conclusion": "success",
+            "name": "Preserve original family logs and scientific outputs",
+            "seconds": 1.0,
+            "started_at": "2026-11-21T21:02:23Z"
+          },
+          {
+            "completed_at": "2026-11-21T21:02:24Z",
+            "conclusion": "success",
+            "name": "Post Check out source",
+            "seconds": 0.0,
+            "started_at": "2026-11-21T21:02:24Z"
+          },
+          {
+            "completed_at": "2026-11-21T21:02:24Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "seconds": 0.0,
+            "started_at": "2026-11-21T21:02:24Z"
+          }
+        ],
+        "url": "https://github.com/techrote/cybersand/actions/runs/44948256292/job/136980406646"
+      },
+      {
+        "completed_at": "2026-11-21T21:01:32Z",
+        "conclusion": "success",
+        "created_at": "2026-11-21T20:49:30Z",
+        "created_to_start_seconds": 3.0,
+        "executed": true,
+        "job_id": 136980406649,
+        "job_wall_seconds": 719.0,
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "name": "Native family / asan-ubsan",
+        "runner_minutes_unweighted": 11.983333333333333,
+        "runner_name": "GitHub Actions 1000141021",
+        "started_at": "2026-11-21T20:49:33Z",
+        "steps": [
+          {
+            "completed_at": "2026-11-21T20:49:36Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "seconds": 2.0,
+            "started_at": "2026-11-21T20:49:34Z"
+          },
+          {
+            "completed_at": "2026-11-21T20:49:46Z",
+            "conclusion": "success",
+            "name": "Check out source",
+            "seconds": 10.0,
+            "started_at": "2026-11-21T20:49:36Z"
+          },
+          {
+            "completed_at": "2026-11-21T20:49:46Z",
+            "conclusion": "success",
+            "name": "Record compiler, linker and exact source identity",
+            "seconds": 0.0,
+            "started_at": "2026-11-21T20:49:46Z"
+          },
+          {
+            "completed_at": "2026-11-21T21:01:27Z",
+            "conclusion": "success",
+            "name": "Execute complete test family with shared watchdogs",
+            "seconds": 701.0,
+            "started_at": "2026-11-21T20:49:46Z"
+          },
+          {
+            "completed_at": "2026-11-21T21:01:27Z",
+            "conclusion": "success",
+            "name": "Retain original family outcome and source fingerprints",
+            "seconds": 0.0,
+            "started_at": "2026-11-21T21:01:27Z"
+          },
+          {
+            "completed_at": "2026-11-21T21:01:29Z",
+            "conclusion": "success",
+            "name": "Preserve original family logs and scientific outputs",
+            "seconds": 2.0,
+            "started_at": "2026-11-21T21:01:27Z"
+          },
+          {
+            "completed_at": "2026-11-21T21:01:29Z",
+            "conclusion": "success",
+            "name": "Post Check out source",
+            "seconds": 0.0,
+            "started_at": "2026-11-21T21:01:29Z"
+          },
+          {
+            "completed_at": "2026-11-21T21:01:29Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "seconds": 0.0,
+            "started_at": "2026-11-21T21:01:29Z"
+          }
+        ],
+        "url": "https://github.com/techrote/cybersand/actions/runs/44948256292/job/136980406649"
+      },
+      {
+        "completed_at": "2026-11-21T20:51:57Z",
+        "conclusion": "success",
+        "created_at": "2026-11-21T20:49:30Z",
+        "created_to_start_seconds": 3.0,
+        "executed": true,
+        "job_id": 136980406661,
+        "job_wall_seconds": 144.0,
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "name": "Native family / soliding-normal",
+        "runner_minutes_unweighted": 2.4,
+        "runner_name": "GitHub Actions 1000141018",
+        "started_at": "2026-11-21T20:49:33Z",
+        "steps": [
+          {
+            "completed_at": "2026-11-21T20:49:36Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "seconds": 2.0,
+            "started_at": "2026-11-21T20:49:34Z"
+          },
+          {
+            "completed_at": "2026-11-21T20:49:44Z",
+            "conclusion": "success",
+            "name": "Check out source",
+            "seconds": 8.0,
+            "started_at": "2026-11-21T20:49:36Z"
+          },
+          {
+            "completed_at": "2026-11-21T20:49:45Z",
+            "conclusion": "success",
+            "name": "Record compiler, linker and exact source identity",
+            "seconds": 1.0,
+            "started_at": "2026-11-21T20:49:44Z"
+          },
+          {
+            "completed_at": "2026-11-21T20:51:52Z",
+            "conclusion": "success",
+            "name": "Execute complete test family with shared watchdogs",
+            "seconds": 127.0,
+            "started_at": "2026-11-21T20:49:45Z"
+          },
+          {
+            "completed_at": "2026-11-21T20:51:52Z",
+            "conclusion": "success",
+            "name": "Retain original family outcome and source fingerprints",
+            "seconds": 0.0,
+            "started_at": "2026-11-21T20:51:52Z"
+          },
+          {
+            "completed_at": "2026-11-21T20:51:54Z",
+            "conclusion": "success",
+            "name": "Preserve original family logs and scientific outputs",
+            "seconds": 2.0,
+            "started_at": "2026-11-21T20:51:52Z"
+          },
+          {
+            "completed_at": "2026-11-21T20:51:54Z",
+            "conclusion": "success",
+            "name": "Post Check out source",
+            "seconds": 0.0,
+            "started_at": "2026-11-21T20:51:54Z"
+          },
+          {
+            "completed_at": "2026-11-21T20:51:54Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "seconds": 0.0,
+            "started_at": "2026-11-21T20:51:54Z"
+          }
+        ],
+        "url": "https://github.com/techrote/cybersand/actions/runs/44948256292/job/136980406661"
+      },
+      {
+        "completed_at": "2026-11-21T21:15:36Z",
+        "conclusion": "success",
+        "created_at": "2026-11-21T20:49:30Z",
+        "created_to_start_seconds": 2.0,
+        "executed": true,
+        "job_id": 136980406665,
+        "job_wall_seconds": 1564.0,
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "name": "Native family / soliding-asan",
+        "runner_minutes_unweighted": 26.066666666666666,
+        "runner_name": "GitHub Actions 1000141020",
+        "started_at": "2026-11-21T20:49:32Z",
+        "steps": [
+          {
+            "completed_at": "2026-11-21T20:49:34Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "seconds": 1.0,
+            "started_at": "2026-11-21T20:49:33Z"
+          },
+          {
+            "completed_at": "2026-11-21T20:49:40Z",
+            "conclusion": "success",
+            "name": "Check out source",
+            "seconds": 6.0,
+            "started_at": "2026-11-21T20:49:34Z"
+          },
+          {
+            "completed_at": "2026-11-21T20:49:40Z",
+            "conclusion": "success",
+            "name": "Record compiler, linker and exact source identity",
+            "seconds": 0.0,
+            "started_at": "2026-11-21T20:49:40Z"
+          },
+          {
+            "completed_at": "2026-11-21T21:15:33Z",
+            "conclusion": "success",
+            "name": "Execute complete test family with shared watchdogs",
+            "seconds": 1553.0,
+            "started_at": "2026-11-21T20:49:40Z"
+          },
+          {
+            "completed_at": "2026-11-21T21:15:33Z",
+            "conclusion": "success",
+            "name": "Retain original family outcome and source fingerprints",
+            "seconds": 0.0,
+            "started_at": "2026-11-21T21:15:33Z"
+          },
+          {
+            "completed_at": "2026-11-21T21:15:34Z",
+            "conclusion": "success",
+            "name": "Preserve original family logs and scientific outputs",
+            "seconds": 1.0,
+            "started_at": "2026-11-21T21:15:33Z"
+          },
+          {
+            "completed_at": "2026-11-21T21:15:34Z",
+            "conclusion": "success",
+            "name": "Post Check out source",
+            "seconds": 0.0,
+            "started_at": "2026-11-21T21:15:34Z"
+          },
+          {
+            "completed_at": "2026-11-21T21:15:34Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "seconds": 0.0,
+            "started_at": "2026-11-21T21:15:34Z"
+          }
+        ],
+        "url": "https://github.com/techrote/cybersand/actions/runs/44948256292/job/136980406665"
+      },
+      {
+        "completed_at": "2026-11-21T20:56:26Z",
+        "conclusion": "success",
+        "created_at": "2026-11-21T20:49:30Z",
+        "created_to_start_seconds": 3.0,
+        "executed": true,
+        "job_id": 136980406673,
+        "job_wall_seconds": 413.0,
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "name": "Native family / native-normal",
+        "runner_minutes_unweighted": 6.883333333333334,
+        "runner_name": "GitHub Actions 1000141022",
+        "started_at": "2026-11-21T20:49:33Z",
+        "steps": [
+          {
+            "completed_at": "2026-11-21T20:49:36Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "seconds": 2.0,
+            "started_at": "2026-11-21T20:49:34Z"
+          },
+          {
+            "completed_at": "2026-11-21T20:49:46Z",
+            "conclusion": "success",
+            "name": "Check out source",
+            "seconds": 10.0,
+            "started_at": "2026-11-21T20:49:36Z"
+          },
+          {
+            "completed_at": "2026-11-21T20:49:46Z",
+            "conclusion": "success",
+            "name": "Record compiler, linker and exact source identity",
+            "seconds": 0.0,
+            "started_at": "2026-11-21T20:49:46Z"
+          },
+          {
+            "completed_at": "2026-11-21T20:56:21Z",
+            "conclusion": "success",
+            "name": "Execute complete test family with shared watchdogs",
+            "seconds": 395.0,
+            "started_at": "2026-11-21T20:49:46Z"
+          },
+          {
+            "completed_at": "2026-11-21T20:56:21Z",
+            "conclusion": "success",
+            "name": "Retain original family outcome and source fingerprints",
+            "seconds": 0.0,
+            "started_at": "2026-11-21T20:56:21Z"
+          },
+          {
+            "completed_at": "2026-11-21T20:56:23Z",
+            "conclusion": "success",
+            "name": "Preserve original family logs and scientific outputs",
+            "seconds": 2.0,
+            "started_at": "2026-11-21T20:56:21Z"
+          },
+          {
+            "completed_at": "2026-11-21T20:56:23Z",
+            "conclusion": "success",
+            "name": "Post Check out source",
+            "seconds": 0.0,
+            "started_at": "2026-11-21T20:56:23Z"
+          },
+          {
+            "completed_at": "2026-11-21T20:56:23Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "seconds": 0.0,
+            "started_at": "2026-11-21T20:56:23Z"
+          }
+        ],
+        "url": "https://github.com/techrote/cybersand/actions/runs/44948256292/job/136980406673"
+      },
+      {
+        "completed_at": "2026-11-21T21:25:30Z",
+        "conclusion": "success",
+        "created_at": "2026-11-21T20:49:30Z",
+        "created_to_start_seconds": 2.0,
+        "executed": true,
+        "job_id": 136980406715,
+        "job_wall_seconds": 2158.0,
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "name": "Native family / worldgen",
+        "runner_minutes_unweighted": 35.96666666666667,
+        "runner_name": "GitHub Actions 1000141023",
+        "started_at": "2026-11-21T20:49:32Z",
+        "steps": [
+          {
+            "completed_at": "2026-11-21T20:49:34Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "seconds": 1.0,
+            "started_at": "2026-11-21T20:49:33Z"
+          },
+          {
+            "completed_at": "2026-11-21T20:49:39Z",
+            "conclusion": "success",
+            "name": "Check out source",
+            "seconds": 5.0,
+            "started_at": "2026-11-21T20:49:34Z"
+          },
+          {
+            "completed_at": "2026-11-21T20:49:39Z",
+            "conclusion": "success",
+            "name": "Record compiler, linker and exact source identity",
+            "seconds": 0.0,
+            "started_at": "2026-11-21T20:49:39Z"
+          },
+          {
+            "completed_at": "2026-11-21T21:25:26Z",
+            "conclusion": "success",
+            "name": "Execute complete test family with shared watchdogs",
+            "seconds": 2147.0,
+            "started_at": "2026-11-21T20:49:39Z"
+          },
+          {
+            "completed_at": "2026-11-21T21:25:27Z",
+            "conclusion": "success",
+            "name": "Retain original family outcome and source fingerprints",
+            "seconds": 1.0,
+            "started_at": "2026-11-21T21:25:26Z"
+          },
+          {
+            "completed_at": "2026-11-21T21:25:28Z",
+            "conclusion": "success",
+            "name": "Preserve original family logs and scientific outputs",
+            "seconds": 1.0,
+            "started_at": "2026-11-21T21:25:27Z"
+          },
+          {
+            "completed_at": "2026-11-21T21:25:28Z",
+            "conclusion": "success",
+            "name": "Post Check out source",
+            "seconds": 0.0,
+            "started_at": "2026-11-21T21:25:28Z"
+          },
+          {
+            "completed_at": "2026-11-21T21:25:28Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "seconds": 0.0,
+            "started_at": "2026-11-21T21:25:28Z"
+          }
+        ],
+        "url": "https://github.com/techrote/cybersand/actions/runs/44948256292/job/136980406715"
+      },
+      {
+        "completed_at": "2026-11-21T21:26:24Z",
+        "conclusion": "success",
+        "created_at": "2026-11-21T21:25:30Z",
+        "created_to_start_seconds": 3.0,
+        "executed": true,
+        "job_id": 136990104986,
+        "job_wall_seconds": 51.0,
+        "labels": [
+          "ubuntu-24.04"
+        ],
+        "name": "native",
+        "runner_minutes_unweighted": 0.85,
+        "runner_name": "GitHub Actions 1000141156",
+        "started_at": "2026-11-21T21:25:33Z",
+        "steps": [
+          {
+            "completed_at": "2026-11-21T21:25:37Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "seconds": 3.0,
+            "started_at": "2026-11-21T21:25:34Z"
+          },
+          {
+            "completed_at": "2026-11-21T21:25:44Z",
+            "conclusion": "success",
+            "name": "Check out exact verifier source",
+            "seconds": 7.0,
+            "started_at": "2026-11-21T21:25:37Z"
+          },
+          {
+            "completed_at": "2026-11-21T21:25:45Z",
+            "conclusion": "success",
+            "name": "Download all original family evidence",
+            "seconds": 1.0,
+            "started_at": "2026-11-21T21:25:44Z"
+          },
+          {
+            "completed_at": "2026-11-21T21:25:46Z",
+            "conclusion": "success",
+            "name": "Verify complete exact-source Native qualification",
+            "seconds": 1.0,
+            "started_at": "2026-11-21T21:25:45Z"
+          },
+          {
+            "completed_at": "2026-11-21T21:25:47Z",
+            "conclusion": "success",
+            "name": "Retain Native aggregate proof and failures",
+            "seconds": 1.0,
+            "started_at": "2026-11-21T21:25:46Z"
+          },
+          {
+            "completed_at": "2026-11-21T21:26:19Z",
+            "conclusion": "success",
+            "name": "Retain advisory history across comparable native runs",
+            "seconds": 32.0,
+            "started_at": "2026-11-21T21:25:47Z"
+          },
+          {
+            "completed_at": "2026-11-21T21:26:21Z",
+            "conclusion": "success",
+            "name": "Publish native execution performance observations",
+            "seconds": 2.0,
+            "started_at": "2026-11-21T21:26:19Z"
+          },
+          {
+            "completed_at": "2026-11-21T21:26:21Z",
+            "conclusion": "success",
+            "name": "Post Check out exact verifier source",
+            "seconds": 0.0,
+            "started_at": "2026-11-21T21:26:21Z"
+          },
+          {
+            "completed_at": "2026-11-21T21:26:21Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "seconds": 0.0,
+            "started_at": "2026-11-21T21:26:21Z"
+          }
+        ],
+        "url": "https://github.com/techrote/cybersand/actions/runs/44948256292/job/136990104986"
+      }
+    ],
+    "last_native_family": {
+      "conclusion": "success",
+      "job": "Native family / worldgen",
+      "seconds_from_event": 2194.0
+    },
+    "required_native_result_seconds_from_event": 2248.0,
+    "runner_minutes_unweighted": 97.56666666666666,
+    "wall_seconds_from_event": 2248.0
+  },
+  "qualification": {
+    "canonical_aggregate_replay_equals_hosted": true,
+    "case_inventory": [
+      "player material field payloads and signed seams",
+      "player material field blocking and invalid nonmutation",
+      "player material field budgets and source snapshot",
+      "player material field storage refusal",
+      "player material field distinct spread and squeeze",
+      "player material field native quantity and worker parity",
+      "persistent material contacts survive sleep",
+      "Ice contact boundaries and worker parity",
+      "inert material contacts still sleep",
+      "material deadlines pause and unmask",
+      "Ice neighbor success keeps pending contact",
+      "material deadlines follow contact removal and reset",
+      "material deadlines with discovery observer",
+      "INT-000 sparse schema shadow equivalence",
+      "flow resting packing, films, barriers and signed seams",
+      "flow conserved state, temperature, workers and exclusion",
+      "powder pairs and void-driven rearrangement",
+      "Mercury lanes, sleeping wakes, seams and worker parity",
+      "granular sampled support policy",
+      "physics diagnostic observer and worker parity",
+      "physics diagnostic isolated controls",
+      "physics masked source characterisation",
+      "ACT-004 articulated body identity capacity",
+      "negative coordinates",
+      "scheduler geometry",
+      "sand fall",
+      "cross chunk",
+      "cross scheduler core",
+      "activity sleep and wake",
+      "serial/phased behavioral parity",
+      "density swap",
+      "conserved water",
+      "Water lateral speed",
+      "level water surface",
+      "water single/multiworker parity",
+      "water storage boundary",
+      "runtime Water experiment policy",
+      "odd-lattice Water boundaries and ledgers",
+      "Water experiment validation and coherence",
+      "Water coherence gravity and exhaustive merge",
+      "Water experiment worker parity",
+      "default Water experiment state-hash correspondence",
+      "optional temperature movement",
+      "serialized relocation preserves payload",
+      "preallocated hot path",
+      "chunk capacity",
+      "smoke",
+      "smoke density displacement",
+      "smoke lifecycle and fire exclusion",
+      "fire and extinguishing",
+      "hot material reactions",
+      "acid and stone",
+      "water/oil density",
+      "cloner",
+      "deferred explosion",
+      "explosion worker parity",
+      "growth and seed",
+      "mite and rocket",
+      "complete material worker parity",
+      "determinism",
+      "single/multiworker determinism",
+      "sleeping",
+      "issue #1 failed tick stop/reset",
+      "issue #1 late failure and publication",
+      "issue #1 C API failure/recovery",
+      "issue #2 interest resume boundaries",
+      "issue #2 sleeping region transitions",
+      "issue #2 conservation and worker determinism",
+      "issues #1/#2 failed re-entry and recovery",
+      "dirty rectangles",
+      "immutable render snapshots",
+      "render copy production qualification",
+      "concurrent render leases",
+      "C API and RGBA",
+      "extended material families",
+      "Sandspiel material catalog",
+      "themed static material catalog",
+      "themed combustible kernels",
+      "building material catalog",
+      "building combustibles ignite",
+      "building pair reactions execute",
+      "building inert controls stay inert",
+      "building CYSD1 constructor and snapshot round trip",
+      "building transport schema bounds",
+      "building contact boundaries and worker parity",
+      "LCB-001 liquid policy SHA-256 known answers",
+      "LCB-001 liquid policy identity matches source",
+      "LCB-001 liquid policy catalogue matches descriptors",
+      "LCB-001 liquid policy wire vectors",
+      "LCB-001 liquid policy session transcript",
+      "LCB-001 liquid policy running build admits defaults and qualified candidates",
+      "LCB-001 liquid policy World construction and refusal",
+      "LCB-001 liquid policy default behavior and workers",
+      "LCB-001 liquid policy C API transaction",
+      "LCB-005 inertial boundary workers",
+      "LCB-005 inertial reset products",
+      "LCB-005 inertial storage capture",
+      "LCB-005 inertial residual motion",
+      "LCB-005 inertial admission",
+      "Water IN admission and normalization",
+      "Water IN coherence and resting contacts",
+      "Water IN actual carrier and complete footprint",
+      "Water IN real workers and continuation",
+      "worker activity publication and observer independence",
+      "Water IN mandatory material hooks and lifecycle",
+      "Water IN independent arithmetic examples",
+      "Water IN cadence and powder exchange control",
+      "Water IN storage pause and capacity",
+      "LCB-005 inertial damping parameters",
+      "LCB-005 inertial comparison projections",
+      "LCB-005 inertial contract examples",
+      "LCB-005 inertial ledgers rest parity",
+      "LCB-005 inertial no tunnelling",
+      "LCB-005 inertial lifecycle",
+      "LCB-005 inertial three families",
+      "LCB-005 inertial body contact",
+      "LCB-001 pressure admission and refusal",
+      "LCB-001 pressure gas ID restore bounds",
+      "LCB-001 pressure gas ID creation exhaustion",
+      "LCB-001 pressure gas ID split exhaustion",
+      "LCB-001 pressure quantity rectangle bounds",
+      "LCB-001 pressure pending event restore bounds",
+      "LCB-001 pressure gas single and twin pockets",
+      "LCB-001 pressure gas unequal merge",
+      "LCB-001 pressure gas compress, vent and reseal",
+      "LCB-001 pressure gas split",
+      "LCB-001 pressure gas in Empty-only and unallocated chunks",
+      "LCB-001 pressure quantity, motion and worker parity",
+      "LCB-001 pressure vented two-limb head transmission",
+      "LCB-001 pressure walls and body masks block head",
+      "LCB-001 pressure static rest, sleep and remote wake",
+      "LCB-001 pressure lifecycle state and ledgers",
+      "LCB-001 pressure physical hash and exact persistence",
+      "LCB-001 pressure default policy untouched",
+      "LCB-002 comparison static content and retained authority",
+      "LCB-002 comparison pressure variant normalization",
+      "LCB-002 cached incremental heads and continuation",
+      "LCB-002 native optimization identity and readback",
+      "LCB-002 deterministic dormant proof-cost admission",
+      "LCB-002 cached gas invalidation and exact fallback",
+      "LCB-002 affected gas component discovery and continuation",
+      "LCB-002 gas component capacity and pair-budget fallback",
+      "LCB-002 dormant motion and stationary body obligations",
+      "LCB-002 acceptance remote hydraulic wake and sparse interest",
+      "LCB-002 acceptance rotating native masks",
+      "LCB-002 acceptance mandatory obligations and reconstruction",
+      "LCB-002 acceptance communicating narrow and broad passages",
+      "LCB-002 acceptance isolated vent into certified target",
+      "LCB-002 moving gas masks retire and preserve exact identities",
+      "LCB-002 P1 wake summaries skip quiet scans and stay exact",
+      "LCB-001 gas exact hotpath seams, masks and worker parity",
+      "LCB-002 #201 moving region keeps exact warm pressure caches",
+      "LCB-003 prepared initial pressure gas capacity",
+      "LCB-001 liquid policy C API allocation failures",
+      "LCB-001 W-CY admission and ingress",
+      "LCB-001 W-CY coherence, viscosity and masks",
+      "LCB-001 W-CY material hooks",
+      "LCB-001 W-CY workers, persistence and transport",
+      "LCB-001 W-CY liveness and cadence",
+      "LCB-001 Water normalization rounding",
+      "LCB-001 Water normalization refusals",
+      "LCB-001 Water normalization final identity",
+      "LCB-001 Water normalization thermal fields",
+      "LCB-001 Water normalization arithmetic",
+      "LCB-001 Water normalization canonical vectors",
+      "LCB-001 native run receipt identity",
+      "LCB-001 native-issued construction refusals",
+      "LCB-001 native quantity ledger",
+      "BW-001 ballistic Water defaults unchanged",
+      "BW-001 ballistic Water upward arc and return",
+      "BW-001 ballistic Water ceiling wall no tunnel",
+      "BW-001 ballistic Water surface merge and injection",
+      "BW-001 ballistic Water families",
+      "BW-001 ballistic Water capacity mask deferral",
+      "BW-001 ballistic Water body contact",
+      "BW-001 ballistic Water persistence and parity",
+      "BW-001 ballistic Water render overlay and forced age",
+      "BW-001 ballistic Water run receipt identity",
+      "BW-001 ballistic Water engulfed parcel column",
+      "BW-001 ballistic Water retained rebuild inheritance",
+      "BW-001 ballistic Water face release dam break",
+      "BW-001 ballistic Water face release pooled pre-pass matches serial",
+      "IN-B1 signed vertical control and identity",
+      "IN-B1 signed vertical arc ceiling parity",
+      "IN-B1 signed vertical support and hybrid",
+      "Workbench parallel PressureFlow heads match serial (all variants)",
+      "Pair reaction tables match the authored resolver",
+      "Active-core capacity counts distinct cores",
+      "Hard-surface bits match the display projection",
+      "Hard-surface invalidation is independent and tile exact",
+      "Hard-surface invalidation matches across worker counts",
+      "LCB-002 PressureFlow pocket sealed from open air is atmospheric"
+    ],
+    "commands": [
+      {
+        "command": [
+          "./build/benchmark"
+        ],
+        "elapsed_seconds": 1.1702860519999945,
+        "id": "benchmark",
+        "log_sha256": "4ada736d126702677ed2b32edf8584ca9eaa2d4669eedbb3bd87b685c36744f3",
+        "policy_key": "native_case_seconds",
+        "resources": {
+          "available": true,
+          "cpu_seconds": 1.07,
+          "peak_rss_bytes": 52871168,
+          "scope": "direct_process_only"
+        },
+        "returncode": 0,
+        "started_utc": "2026-11-21T20:56:20.484746+00:00",
+        "status": "passed",
+        "suite": "native-normal",
+        "timeout_seconds": 3600.0
+      },
+      {
+        "command": [
+          "make",
+          "build/benchmark"
+        ],
+        "elapsed_seconds": 18.263768164999988,
+        "id": "build-benchmark",
+        "log_sha256": "bc1f4cca52af2632f2eba812da14b9182bf9f3d92687bc6f5c8c028b67af4cfe",
+        "policy_key": "native_compile_seconds",
+        "resources": {
+          "available": true,
+          "cpu_seconds": 0.01,
+          "peak_rss_bytes": 3751936,
+          "scope": "direct_process_only"
+        },
+        "returncode": 0,
+        "started_utc": "2026-11-21T20:56:02.069632+00:00",
+        "status": "passed",
+        "suite": "native-normal",
+        "timeout_seconds": 3600.0
+      },
+      {
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "make",
+          "build/test_settled_regions_sanitized"
+        ],
+        "elapsed_seconds": 701.299533828,
+        "id": "build-settled-regions-sanitized",
+        "log_sha256": "c7be4843ee34001470aa22386f842bfed3175c6fac139ab5ef51b5ce97c65102",
+        "policy_key": "native_compile_seconds",
+        "resources": {
+          "available": true,
+          "cpu_seconds": 0.0,
+          "peak_rss_bytes": 1531904,
+          "scope": "direct_process_only"
+        },
+        "returncode": 0,
+        "started_utc": "2026-11-21T20:49:40.424316+00:00",
+        "status": "passed",
+        "suite": "soliding-asan",
+        "timeout_seconds": 3600.0
+      },
+      {
+        "command": [
+          "make",
+          "build/test_soliding_lifecycle_sanitized",
+          "build/test_settled_discovery_sanitized",
+          "build/test_settled_regions_sanitized",
+          "build/test_settled_world_discovery_sanitized",
+          "build/test_stage3b_runtime_storage_sanitized",
+          "build/test_stage3b_bounded_spatial_index_sanitized",
+          "build/test_stage3b_sparse_mutation_witness_sanitized",
+          "build/test_stage3b_sparse_activity_deadline_sanitized"
+        ],
+        "elapsed_seconds": 849.291533177,
+        "id": "build-soliding-sanitized",
+        "log_sha256": "ff1438f4432cb59e53745ea36ddeeee6df018e4d2144ee029c7b26436cc19f68",
+        "policy_key": "native_compile_seconds",
+        "resources": {
+          "available": true,
+          "cpu_seconds": 0.01,
+          "peak_rss_bytes": 3825664,
+          "scope": "direct_process_only"
+        },
+        "returncode": 0,
+        "started_utc": "2026-11-21T21:01:21.848065+00:00",
+        "status": "passed",
+        "suite": "soliding-asan",
+        "timeout_seconds": 3600.0
+      },
+      {
+        "command": [
+          "make",
+          "build/tests"
+        ],
+        "elapsed_seconds": 43.788605837999995,
+        "id": "build-tests",
+        "log_sha256": "f96bf1bfe67ef0580ed3a7a42af13f142e7c86b54370a2c65c8ae0d3cd1cea65",
+        "policy_key": "native_compile_seconds",
+        "resources": {
+          "available": true,
+          "cpu_seconds": 0.01,
+          "peak_rss_bytes": 3858432,
+          "scope": "direct_process_only"
+        },
+        "returncode": 0,
+        "started_utc": "2026-11-21T20:49:47.915925+00:00",
+        "status": "passed",
+        "suite": "native-normal",
+        "timeout_seconds": 3600.0
+      },
+      {
+        "command": [
+          "make",
+          "build/tests_sanitized"
+        ],
+        "elapsed_seconds": 256.715596261,
+        "id": "build-tests-sanitized",
+        "log_sha256": "5ad2552bd60d15ba3130eb86ebcd6dd443ebc6cd97e3c8cc08f625996774c609",
+        "policy_key": "native_compile_seconds",
+        "resources": {
+          "available": true,
+          "cpu_seconds": 0.01,
+          "peak_rss_bytes": 3858432,
+          "scope": "direct_process_only"
+        },
+        "returncode": 0,
+        "started_utc": "2026-11-21T20:49:46.596628+00:00",
+        "status": "passed",
+        "suite": "asan-ubsan",
+        "timeout_seconds": 3600.0
+      },
+      {
+        "command": [
+          "make",
+          "build/tests_tsan"
+        ],
+        "elapsed_seconds": 83.10524438300001,
+        "id": "build-tests-tsan",
+        "log_sha256": "60a6fb61349570023c84df58e4114e7ae5f0c7f198d6656972bc7efdc517aaba",
+        "policy_key": "native_compile_seconds",
+        "resources": {
+          "available": true,
+          "cpu_seconds": 0.01,
+          "peak_rss_bytes": 3858432,
+          "scope": "direct_process_only"
+        },
+        "returncode": 0,
+        "started_utc": "2026-11-21T20:49:46.872889+00:00",
+        "status": "passed",
+        "suite": "tsan",
+        "timeout_seconds": 3600.0
+      },
+      {
+        "command": [
+          "make",
+          "c-header-check"
+        ],
+        "elapsed_seconds": 0.5949622879999907,
+        "id": "c-header-check",
+        "log_sha256": "faae0c301255a0637135dc95fc6c41a7d68b97de4d3c5a24e681e89d3c3493a6",
+        "policy_key": "operation_seconds",
+        "resources": {
+          "available": true,
+          "cpu_seconds": 0.0,
+          "peak_rss_bytes": 3141632,
+          "scope": "direct_process_only"
+        },
+        "returncode": 0,
+        "started_utc": "2026-11-21T20:49:47.161395+00:00",
+        "status": "passed",
+        "suite": "native-normal",
+        "timeout_seconds": 300.0
+      },
+      {
+        "command": [
+          "env",
+          "ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1",
+          "UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1",
+          "make",
+          "physics-characterisation-sanitize"
+        ],
+        "elapsed_seconds": 96.55639194099999,
+        "id": "physics-characterisation-sanitize",
+        "log_sha256": "9b04dc645af3fe0937519ffce8b464bc902ba57e04ebefd6ee06e670323f55a2",
+        "policy_key": "native_case_seconds",
+        "resources": {
+          "available": true,
+          "cpu_seconds": 0.01,
+          "peak_rss_bytes": null,
+          "scope": "direct_process_only"
+        },
+        "returncode": 0,
+        "started_utc": "2026-11-21T20:49:40.949729+00:00",
+        "status": "passed",
+        "suite": "worldgen",
+        "timeout_seconds": 10200.0
+      },
+      {
+        "command": [
+          "make",
+          "shared"
+        ],
+        "elapsed_seconds": 21.538321209000003,
+        "id": "shared",
+        "log_sha256": "0b5dfc8ebacb5f37be8055f57dccc80a5f4e4b93276b9caa139196708c194883",
+        "policy_key": "native_compile_seconds",
+        "resources": {
+          "available": true,
+          "cpu_seconds": 0.01,
+          "peak_rss_bytes": 3739648,
+          "scope": "direct_process_only"
+        },
+        "returncode": 0,
+        "started_utc": "2026-11-21T20:55:40.378940+00:00",
+        "status": "passed",
+        "suite": "native-normal",
+        "timeout_seconds": 3600.0
+      },
+      {
+        "command": [
+          "make",
+          "soliding-benchmark-smoke"
+        ],
+        "elapsed_seconds": 1.0092499120000014,
+        "id": "soliding-benchmark-smoke",
+        "log_sha256": "67ced0f72e2d30e911bc9185d577c6a63f54b382971a590823eb711a13dd6047",
+        "policy_key": "native_case_seconds",
+        "resources": {
+          "available": true,
+          "cpu_seconds": 0.0,
+          "peak_rss_bytes": 3162112,
+          "scope": "direct_process_only"
+        },
+        "returncode": 0,
+        "started_utc": "2026-11-21T20:51:28.820700+00:00",
+        "status": "passed",
+        "suite": "soliding-normal",
+        "timeout_seconds": 3600.0
+      },
+      {
+        "command": [
+          "env",
+          "ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1",
+          "UBSAN_OPTIONS=halt_on_error=1",
+          "make",
+          "soliding-sanitize"
+        ],
+        "elapsed_seconds": 2.236651552000012,
+        "id": "soliding-sanitize",
+        "log_sha256": "f97a1c222461c80ab42b1d76dfdcd80687c13d7bec1e60b65384d1ebb75e6d3d",
+        "policy_key": "native_case_seconds",
+        "resources": {
+          "available": true,
+          "cpu_seconds": 0.02,
+          "peak_rss_bytes": 3739648,
+          "scope": "direct_process_only"
+        },
+        "returncode": 0,
+        "started_utc": "2026-11-21T21:15:31.255428+00:00",
+        "status": "passed",
+        "suite": "soliding-asan",
+        "timeout_seconds": 3600.0
+      },
+      {
+        "command": [
+          "make",
+          "soliding-stage3-cost-smoke"
+        ],
+        "elapsed_seconds": 22.09700591799998,
+        "id": "soliding-stage3-cost-smoke",
+        "log_sha256": "bc43752a7d7c873761f3180a9d0a0e082a3d3963596bbf8d04334794a9459aa0",
+        "policy_key": "native_case_seconds",
+        "resources": {
+          "available": true,
+          "cpu_seconds": 0.01,
+          "peak_rss_bytes": 3756032,
+          "scope": "direct_process_only"
+        },
+        "returncode": 0,
+        "started_utc": "2026-11-21T20:51:30.587935+00:00",
+        "status": "passed",
+        "suite": "soliding-normal",
+        "timeout_seconds": 3600.0
+      },
+      {
+        "command": [
+          "make",
+          "soliding-stage3b-validation-apparatus-test"
+        ],
+        "elapsed_seconds": 0.45851258500002245,
+        "id": "soliding-stage3b-validation-apparatus-test",
+        "log_sha256": "f62f5f9aa37c7d8dd54257d38f97f97ee65c136e5796ea835504dec77592e7ea",
+        "policy_key": "native_case_seconds",
+        "resources": {
+          "available": true,
+          "cpu_seconds": 0.0,
+          "peak_rss_bytes": 3141632,
+          "scope": "direct_process_only"
+        },
+        "returncode": 0,
+        "started_utc": "2026-11-21T20:51:29.982003+00:00",
+        "status": "passed",
+        "suite": "soliding-normal",
+        "timeout_seconds": 3600.0
+      },
+      {
+        "command": [
+          "make",
+          "soliding-test"
+        ],
+        "elapsed_seconds": 103.27997144999999,
+        "id": "soliding-test",
+        "log_sha256": "67005039dc846756e4448e1590cfe5f6300e3dd2de834241dd944476c05369ac",
+        "policy_key": "native_case_seconds",
+        "resources": {
+          "available": true,
+          "cpu_seconds": 0.01,
+          "peak_rss_bytes": 3825664,
+          "scope": "direct_process_only"
+        },
+        "returncode": 0,
+        "started_utc": "2026-11-21T20:49:45.383703+00:00",
+        "status": "passed",
+        "suite": "soliding-normal",
+        "timeout_seconds": 3600.0
+      },
+      {
+        "command": [
+          "./build/tests"
+        ],
+        "elapsed_seconds": 308.36111068599996,
+        "id": "tests",
+        "log_sha256": "9dc75b490901ea4b7e2b3a5b581487522c437e9ea7ba56ceb2081bb8f5391205",
+        "policy_key": "native_case_seconds",
+        "resources": {
+          "available": true,
+          "cpu_seconds": 321.12,
+          "peak_rss_bytes": 1290625024,
+          "scope": "direct_process_only"
+        },
+        "returncode": 0,
+        "started_utc": "2026-11-21T20:50:31.865424+00:00",
+        "status": "passed",
+        "suite": "native-normal",
+        "timeout_seconds": 3600.0
+      },
+      {
+        "command": [
+          "env",
+          "ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1",
+          "UBSAN_OPTIONS=halt_on_error=1",
+          "./build/tests_sanitized"
+        ],
+        "elapsed_seconds": 443.78413089899993,
+        "id": "tests-sanitized",
+        "log_sha256": "6bdd492a8bf7f923682118e7dac3b6d679b61492c024d87bc7af6f3838050ad8",
+        "policy_key": "native_case_seconds",
+        "resources": {
+          "available": true,
+          "cpu_seconds": 470.91,
+          "peak_rss_bytes": null,
+          "scope": "direct_process_only"
+        },
+        "returncode": 0,
+        "started_utc": "2026-11-21T20:54:03.525979+00:00",
+        "status": "passed",
+        "suite": "asan-ubsan",
+        "timeout_seconds": 3600.0
+      },
+      {
+        "command": [
+          "env",
+          "TSAN_OPTIONS=halt_on_error=1",
+          "./build/tests_tsan"
+        ],
+        "elapsed_seconds": 671.9921234419999,
+        "id": "tests-tsan",
+        "log_sha256": "0b8a1c6c118bf454185f28ee557c3aa9252faf0d545e4bfcde577429888983fa",
+        "policy_key": "native_case_seconds",
+        "resources": {
+          "available": true,
+          "cpu_seconds": 724.61,
+          "peak_rss_bytes": null,
+          "scope": "direct_process_only"
+        },
+        "returncode": 0,
+        "started_utc": "2026-11-21T20:51:10.351167+00:00",
+        "status": "passed",
+        "suite": "tsan",
+        "timeout_seconds": 3600.0
+      },
+      {
+        "command": [
+          "env",
+          "ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1",
+          "UBSAN_OPTIONS=halt_on_error=1",
+          "/usr/bin/time",
+          "-v",
+          "make",
+          "-j2",
+          "worldgen-sanitize"
+        ],
+        "elapsed_seconds": 1691.766929179,
+        "id": "worldgen-sanitize",
+        "log_sha256": "044e1683397bef1b1decca87d9d08b53e9692951b8f7b39427016631c20fd4ab",
+        "policy_key": "native_case_seconds",
+        "resources": {
+          "available": true,
+          "cpu_seconds": 0.0,
+          "peak_rss_bytes": 1597440,
+          "scope": "direct_process_only"
+        },
+        "returncode": 0,
+        "started_utc": "2026-11-21T20:57:14.074546+00:00",
+        "status": "passed",
+        "suite": "worldgen",
+        "timeout_seconds": 3600.0
+      },
+      {
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "make",
+          "-j2",
+          "worldgen-test"
+        ],
+        "elapsed_seconds": 354.881676539,
+        "id": "worldgen-test",
+        "log_sha256": "44222a3fd6a943a6ea46e665c299cd623de027a6ec0f524c1b5d2a4312449311",
+        "policy_key": "native_case_seconds",
+        "resources": {
+          "available": true,
+          "cpu_seconds": 0.0,
+          "peak_rss_bytes": 1597440,
+          "scope": "direct_process_only"
+        },
+        "returncode": 0,
+        "started_utc": "2026-11-21T20:51:18.346410+00:00",
+        "status": "passed",
+        "suite": "worldgen",
+        "timeout_seconds": 3600.0
+      }
+    ],
+    "executed_source_sha": "8fada1df005553eecb98935afdbcebd27615bd13",
+    "executed_tree": "704886453b1452f6481290f9ed94454cc3736ac3",
+    "executed_tree_equals_metadata_head": true,
+    "expected_suites": [
+      "asan-ubsan",
+      "native-normal",
+      "soliding-asan",
+      "soliding-normal",
+      "tsan",
+      "worldgen"
+    ],
+    "family_details": {
+      "asan-ubsan": {
+        "family_budget_seconds": 7880.0,
+        "family_command_resources": {
+          "available": true,
+          "cpu_seconds": 0.0,
+          "peak_rss_bytes": 3768320,
+          "scope": "direct_process_only"
+        },
+        "family_command_seconds": 700.980742035,
+        "family_command_started_utc": "2026-11-21T20:49:46.368175+00:00",
+        "host": {
+          "architecture": "x86_64",
+          "cpu_model": "Intel(R) Xeon(R) 6975P-C",
+          "hardware_cohort": "github-hosted",
+          "logical_cpu_count": 4,
+          "os": "Linux 7.0.0-1014-aws #14~24.04.1-Ubuntu SMP PREEMPT Fri Sep 18 21:24:59 UTC 2026",
+          "platform": "Linux",
+          "runner_class": "github-hosted",
+          "runner_environment": "github-hosted",
+          "runner_image": "ubuntu24",
+          "runner_image_version": "20261116.133.1"
+        },
+        "job_id": 136980406649,
+        "job_url": "https://github.com/techrote/cybersand/actions/runs/44948256292/job/136980406649"
+      },
+      "native-normal": {
+        "family_budget_seconds": 19140.0,
+        "family_command_resources": {
+          "available": true,
+          "cpu_seconds": 0.0,
+          "peak_rss_bytes": 3751936,
+          "scope": "direct_process_only"
+        },
+        "family_command_seconds": 394.70300298,
+        "family_command_started_utc": "2026-11-21T20:49:47.001158+00:00",
+        "host": {
+          "architecture": "x86_64",
+          "cpu_model": "Intel(R) Xeon(R) 6975P-C",
+          "hardware_cohort": "github-hosted",
+          "logical_cpu_count": 4,
+          "os": "Linux 7.0.0-1014-aws #14~24.04.1-Ubuntu SMP PREEMPT Fri Sep 18 21:24:59 UTC 2026",
+          "platform": "Linux",
+          "runner_class": "github-hosted",
+          "runner_environment": "github-hosted",
+          "runner_image": "ubuntu24",
+          "runner_image_version": "20261116.133.1"
+        },
+        "job_id": 136980406673,
+        "job_url": "https://github.com/techrote/cybersand/actions/runs/44948256292/job/136980406673"
+      },
+      "soliding-asan": {
+        "family_budget_seconds": 11520.0,
+        "family_command_resources": {
+          "available": true,
+          "cpu_seconds": 0.0,
+          "peak_rss_bytes": 3702784,
+          "scope": "direct_process_only"
+        },
+        "family_command_seconds": 1553.2460536390001,
+        "family_command_started_utc": "2026-11-21T20:49:40.283220+00:00",
+        "host": {
+          "architecture": "x86_64",
+          "cpu_model": "AMD EPYC 7763 64-Core Processor",
+          "hardware_cohort": "github-hosted",
+          "logical_cpu_count": 4,
+          "os": "Linux 7.0.0-1017-azure #17~24.04.1-Ubuntu SMP PREEMPT Thu Sep 24 18:46:57 UTC 2026",
+          "platform": "Linux",
+          "runner_class": "github-hosted",
+          "runner_environment": "github-hosted",
+          "runner_image": "ubuntu24",
+          "runner_image_version": "20261116.376.1"
+        },
+        "job_id": 136980406665,
+        "job_url": "https://github.com/techrote/cybersand/actions/runs/44948256292/job/136980406665"
+      },
+      "soliding-normal": {
+        "family_budget_seconds": 15160.0,
+        "family_command_resources": {
+          "available": true,
+          "cpu_seconds": 0.0,
+          "peak_rss_bytes": 3743744,
+          "scope": "direct_process_only"
+        },
+        "family_command_seconds": 127.518310795,
+        "family_command_started_utc": "2026-11-21T20:49:45.226239+00:00",
+        "host": {
+          "architecture": "x86_64",
+          "cpu_model": "Intel(R) Xeon(R) 6975P-C",
+          "hardware_cohort": "github-hosted",
+          "logical_cpu_count": 4,
+          "os": "Linux 7.0.0-1014-aws #14~24.04.1-Ubuntu SMP PREEMPT Fri Sep 18 21:24:59 UTC 2026",
+          "platform": "Linux",
+          "runner_class": "github-hosted",
+          "runner_environment": "github-hosted",
+          "runner_image": "ubuntu24",
+          "runner_image_version": "20261116.133.1"
+        },
+        "job_id": 136980406661,
+        "job_url": "https://github.com/techrote/cybersand/actions/runs/44948256292/job/136980406661"
+      },
+      "tsan": {
+        "family_budget_seconds": 7880.0,
+        "family_command_resources": {
+          "available": true,
+          "cpu_seconds": 0.0,
+          "peak_rss_bytes": 3710976,
+          "scope": "direct_process_only"
+        },
+        "family_command_seconds": 755.904392867,
+        "family_command_started_utc": "2026-11-21T20:49:46.480445+00:00",
+        "host": {
+          "architecture": "x86_64",
+          "cpu_model": "Intel(R) Xeon(R) 6975P-C",
+          "hardware_cohort": "github-hosted",
+          "logical_cpu_count": 4,
+          "os": "Linux 7.0.0-1014-aws #14~24.04.1-Ubuntu SMP PREEMPT Fri Sep 18 21:24:59 UTC 2026",
+          "platform": "Linux",
+          "runner_class": "github-hosted",
+          "runner_environment": "github-hosted",
+          "runner_image": "ubuntu24",
+          "runner_image_version": "20261116.133.1"
+        },
+        "job_id": 136980406646,
+        "job_url": "https://github.com/techrote/cybersand/actions/runs/44948256292/job/136980406646"
+      },
+      "worldgen": {
+        "family_budget_seconds": 18120.0,
+        "family_command_resources": {
+          "available": true,
+          "cpu_seconds": 0.0,
+          "peak_rss_bytes": 3739648,
+          "scope": "direct_process_only"
+        },
+        "family_command_seconds": 2145.933234347,
+        "family_command_started_utc": "2026-11-21T20:49:39.949076+00:00",
+        "host": {
+          "architecture": "x86_64",
+          "cpu_model": "AMD EPYC 9V74 80-Core Processor",
+          "hardware_cohort": "github-hosted",
+          "logical_cpu_count": 4,
+          "os": "Linux 7.0.0-1017-azure #17~24.04.1-Ubuntu SMP PREEMPT Thu Sep 24 18:46:57 UTC 2026",
+          "platform": "Linux",
+          "runner_class": "github-hosted",
+          "runner_environment": "github-hosted",
+          "runner_image": "ubuntu24",
+          "runner_image_version": "20261116.376.1"
+        },
+        "job_id": 136980406715,
+        "job_url": "https://github.com/techrote/cybersand/actions/runs/44948256292/job/136980406715"
+      }
+    },
+    "input_paths": {
+      "command_runner": "tools/ci/run_timed_command.py",
+      "execution_policy": "tools/ci/execution_policy.py",
+      "makefile": "Makefile",
+      "native_execution_policy": "tools/ci/native_execution_policy.py",
+      "native_family": "tools/ci/run_native_family.sh",
+      "native_watchdog_tests": "tools/ci/test_native_watchdogs.py",
+      "physics_cli": "tools/physics/test_characterisation_cli.py",
+      "test_registry": "native/tests/test_world.cpp",
+      "verifier": "tools/ci/verify_native_shards.py",
+      "verifier_tests": "tools/ci/test_native_shards.py",
+      "watchdog_policy": "godot/tests/support/ci_execution_policy.json",
+      "workflow": ".github/workflows/native.yml",
+      "worldgen_inventory": "tools/ci/check_worldgen_build_inventory.py"
+    },
+    "metadata_head_sha": "8fada1df005553eecb98935afdbcebd27615bd13",
+    "original_evidence": [
+      {
+        "command_outputs": {
+          "commands/build-tests-sanitized/command.log": {
+            "bytes": 24206,
+            "sha256": "5ad2552bd60d15ba3130eb86ebcd6dd443ebc6cd97e3c8cc08f625996774c609"
+          },
+          "commands/build-tests-sanitized/performance.jsonl": {
+            "bytes": 2741,
+            "sha256": "ed59a5886a81e168b41bbecc47786fd9c766cd4604d27ac622398be863a9a7ab"
+          },
+          "commands/build-tests-sanitized/receipt.json": {
+            "bytes": 2124,
+            "sha256": "5f260a1d73a60158f2ca133d0741422c7128f1e423b759e4bb12b4db57ec7899"
+          },
+          "commands/tests-sanitized/command.log": {
+            "bytes": 14706,
+            "sha256": "6bdd492a8bf7f923682118e7dac3b6d679b61492c024d87bc7af6f3838050ad8"
+          },
+          "commands/tests-sanitized/performance.jsonl": {
+            "bytes": 2739,
+            "sha256": "70a79025e36a9de17e8c8f2598ccfda20fe2c55e89cf884addc11b9b32c8be92"
+          },
+          "commands/tests-sanitized/receipt.json": {
+            "bytes": 2218,
+            "sha256": "d48d50dafdd7c9ac29e13989089025e1f777bd3442acc58a96fea4621a9399d7"
+          },
+          "family/command.log": {
+            "bytes": 39054,
+            "sha256": "0c6e8a4edc7156d4c0148b0d34696f4b75dba5a80d96c2a5f4a67454a9a31f37"
+          },
+          "family/performance.jsonl": {
+            "bytes": 2732,
+            "sha256": "e86fa4f9d7b2031e779e670364363108abffb6bd803bd96a12b76f550658cf7d"
+          },
+          "family/receipt.json": {
+            "bytes": 2181,
+            "sha256": "7e620238fc4bfe867b68597873bc30715fe39dafa8e8edba7df7d7be5bba805d"
+          }
+        },
+        "exit_code_sha256": {
+          "family": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+          "log_capture": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        "exit_codes": {
+          "family": 0,
+          "log_capture": 0
+        },
+        "log": "native-shard-asan-ubsan-44948256292-1/native-parallel/asan-ubsan/run.log",
+        "log_bytes": 39304,
+        "log_sha256": "e70c2eeb3c34550259dcf61d71b5218b650b9456eee396ac27e443b76aa87b06",
+        "receipt": "native-shard-asan-ubsan-44948256292-1/native-parallel/asan-ubsan/receipt.json",
+        "receipt_sha256": "4b203981d87570419959e2982144117144fec524e501fc2525416efedeceae26",
+        "scientific_outputs": {},
+        "source_case_passes": 192,
+        "suite": "asan-ubsan"
+      },
+      {
+        "command_outputs": {
+          "commands/benchmark/command.log": {
+            "bytes": 538,
+            "sha256": "4ada736d126702677ed2b32edf8584ca9eaa2d4669eedbb3bd87b685c36744f3"
+          },
+          "commands/benchmark/performance.jsonl": {
+            "bytes": 2738,
+            "sha256": "7cbec1fec91fd649dc2d64023c30ddad7e14337d0f6dc24d05b0b4739afb51e9"
+          },
+          "commands/benchmark/receipt.json": {
+            "bytes": 2105,
+            "sha256": "a4b74854d06678a108c12f0acd32a64f93f8eb5ea5288d795e89150ec18f4435"
+          },
+          "commands/build-benchmark/command.log": {
+            "bytes": 1867,
+            "sha256": "bc1f4cca52af2632f2eba812da14b9182bf9f3d92687bc6f5c8c028b67af4cfe"
+          },
+          "commands/build-benchmark/performance.jsonl": {
+            "bytes": 2743,
+            "sha256": "4a6e6cec82badb5f1a5fd856d5b851e8cb1e9f431bd9c1bbc3e6db7ad780a085"
+          },
+          "commands/build-benchmark/receipt.json": {
+            "bytes": 2120,
+            "sha256": "56f641e2d6d97a5420235194ab791a00020266ed533880c5ba29b692e0a6205b"
+          },
+          "commands/build-tests/command.log": {
+            "bytes": 12631,
+            "sha256": "f96bf1bfe67ef0580ed3a7a42af13f142e7c86b54370a2c65c8ae0d3cd1cea65"
+          },
+          "commands/build-tests/performance.jsonl": {
+            "bytes": 2739,
+            "sha256": "f5bc1be70b7f47bdeb6b9a7a0d1f0bfe37756369aaf16d7549c2cbeda89a2db7"
+          },
+          "commands/build-tests/receipt.json": {
+            "bytes": 2112,
+            "sha256": "a986ec5aae16a8a69106b5593ce57ff567f323c5d0ef72c8ca63aa41d8a87760"
+          },
+          "commands/c-header-check/command.log": {
+            "bytes": 101,
+            "sha256": "faae0c301255a0637135dc95fc6c41a7d68b97de4d3c5a24e681e89d3c3493a6"
+          },
+          "commands/c-header-check/performance.jsonl": {
+            "bytes": 2740,
+            "sha256": "418202b814db3d8c00b951486a28b1e7d2e1310cbfd37e9c03bce3e35a1f664d"
+          },
+          "commands/c-header-check/receipt.json": {
+            "bytes": 2116,
+            "sha256": "5b49c9d944e7cc8a318d53bdb3babf6c9e425d1d5c8813933af66a68fed1c9fb"
+          },
+          "commands/shared/command.log": {
+            "bytes": 1937,
+            "sha256": "0b5dfc8ebacb5f37be8055f57dccc80a5f4e4b93276b9caa139196708c194883"
+          },
+          "commands/shared/performance.jsonl": {
+            "bytes": 2734,
+            "sha256": "ba2013f33474b49e5e4c9d1e140fe41f04ab4eb2ce23c2160f1a32f437308497"
+          },
+          "commands/shared/receipt.json": {
+            "bytes": 2102,
+            "sha256": "75fe03b7419c49b8e9475f2bb33f51701ed3f48ef47946ffed3e8543e1825d11"
+          },
+          "commands/tests/command.log": {
+            "bytes": 14705,
+            "sha256": "9dc75b490901ea4b7e2b3a5b581487522c437e9ea7ba56ceb2081bb8f5391205"
+          },
+          "commands/tests/performance.jsonl": {
+            "bytes": 2738,
+            "sha256": "8c573045163d10bff45185e882074ec56a427c4ca3e96d48c6bf4a532b9af0a4"
+          },
+          "commands/tests/receipt.json": {
+            "bytes": 2101,
+            "sha256": "1ea11bd20626af9ed40dd5da1813189dd37b23fb2a35796ed9ed363532fb239d"
+          },
+          "family/command.log": {
+            "bytes": 32168,
+            "sha256": "ce2191aa89341abd224168e7298f577322270c48327203572e69d76f10a37a9f"
+          },
+          "family/performance.jsonl": {
+            "bytes": 2735,
+            "sha256": "df903a188a14b5b926a8c246309da227e2cf28256d790df89ed4206ff8dc49c1"
+          },
+          "family/receipt.json": {
+            "bytes": 2190,
+            "sha256": "16c579458f78d284d08a8911dff0a75e3967fadd598192eeec9fd7a75c9274fa"
+          }
+        },
+        "exit_code_sha256": {
+          "family": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+          "log_capture": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        "exit_codes": {
+          "family": 0,
+          "log_capture": 0
+        },
+        "log": "native-shard-native-normal-44948256292-1/native-parallel/native-normal/run.log",
+        "log_bytes": 32427,
+        "log_sha256": "48703fe3e093c15dc56b17f787c4275acd94baad96ede66112c8a55deff8a2ee",
+        "receipt": "native-shard-native-normal-44948256292-1/native-parallel/native-normal/receipt.json",
+        "receipt_sha256": "31bbe8137e2f8af5bada0a3a897c7484dc57cd8f47fcdbc3f5da9db0d6d55da7",
+        "scientific_outputs": {},
+        "source_case_passes": 192,
+        "suite": "native-normal"
+      },
+      {
+        "command_outputs": {
+          "commands/build-settled-regions-sanitized/command.log": {
+            "bytes": 1003,
+            "sha256": "c7be4843ee34001470aa22386f842bfed3175c6fac139ab5ef51b5ce97c65102"
+          },
+          "commands/build-settled-regions-sanitized/performance.jsonl": {
+            "bytes": 2762,
+            "sha256": "777618950ee387e6fa05f9fb3e4925da7a512916eadfad01ca692e2026064a79"
+          },
+          "commands/build-settled-regions-sanitized/receipt.json": {
+            "bytes": 2182,
+            "sha256": "e781f5e33619c94aaa14b658e1177e6d739cf20aeb7b026489120fbf944914b4"
+          },
+          "commands/build-soliding-sanitized/command.log": {
+            "bytes": 27133,
+            "sha256": "ff1438f4432cb59e53745ea36ddeeee6df018e4d2144ee029c7b26436cc19f68"
+          },
+          "commands/build-soliding-sanitized/performance.jsonl": {
+            "bytes": 2756,
+            "sha256": "50d9c60350cbf62bf70aea649703eada9e0e32136ca6ca83a75ddd1a0c73747e"
+          },
+          "commands/build-soliding-sanitized/receipt.json": {
+            "bytes": 2521,
+            "sha256": "900dc0789dbf6d7384556ffca2053f45b1fd03602110ec2652227e4c2b473d6d"
+          },
+          "commands/soliding-sanitize/command.log": {
+            "bytes": 1000,
+            "sha256": "f97a1c222461c80ab42b1d76dfdcd80687c13d7bec1e60b65384d1ebb75e6d3d"
+          },
+          "commands/soliding-sanitize/performance.jsonl": {
+            "bytes": 2753,
+            "sha256": "11dd4da58e36b4bc264a0d04b8d6304b2a3d9b3f92578585173a671bc1056567"
+          },
+          "commands/soliding-sanitize/receipt.json": {
+            "bytes": 2229,
+            "sha256": "06d6c5cfaf81283e07a64387ab4ec813d450cc6ec3e40c6937f41678264fbe53"
+          },
+          "family/command.log": {
+            "bytes": 29374,
+            "sha256": "37398a38e236a71af4456bde5286cf4544a6eba04224dcd7044e6a6db33172b4"
+          },
+          "family/performance.jsonl": {
+            "bytes": 2750,
+            "sha256": "23a4f62e7ae2a1d9a8927678bbd1f36a0f14141eac80d44f29b3e9cd9d0bf33a"
+          },
+          "family/receipt.json": {
+            "bytes": 2196,
+            "sha256": "6de53dc8349e03b21909236b87fdf8f46ab685a6b11dd7c93b590cfb318325c8"
+          }
+        },
+        "exit_code_sha256": {
+          "family": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+          "log_capture": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        "exit_codes": {
+          "family": 0,
+          "log_capture": 0
+        },
+        "log": "native-shard-soliding-asan-44948256292-1/native-parallel/soliding-asan/run.log",
+        "log_bytes": 29634,
+        "log_sha256": "4050d2461d8f46366d30f2521bd0d7f10a88cf9efa8b29aa6182a9002f39063b",
+        "receipt": "native-shard-soliding-asan-44948256292-1/native-parallel/soliding-asan/receipt.json",
+        "receipt_sha256": "5db0f06a80f9ba15073a524f46347ed2ff68327643f05d8aa515e16a11df04ce",
+        "scientific_outputs": {},
+        "source_case_passes": 0,
+        "suite": "soliding-asan"
+      },
+      {
+        "command_outputs": {
+          "commands/soliding-benchmark-smoke/command.log": {
+            "bytes": 2449,
+            "sha256": "67ced0f72e2d30e911bc9185d577c6a63f54b382971a590823eb711a13dd6047"
+          },
+          "commands/soliding-benchmark-smoke/performance.jsonl": {
+            "bytes": 3389,
+            "sha256": "3e019070b585dc42305c8a1991e91ec7e7cddec41eca6153621bc7ae873e76b4"
+          },
+          "commands/soliding-benchmark-smoke/receipt.json": {
+            "bytes": 2139,
+            "sha256": "efd6b758089e2a848f70fd5a450ce3675fcbf6b8193e8d6a01775df2e6e64f6b"
+          },
+          "commands/soliding-stage3-cost-smoke/command.log": {
+            "bytes": 4245,
+            "sha256": "bc43752a7d7c873761f3180a9d0a0e082a3d3963596bbf8d04334794a9459aa0"
+          },
+          "commands/soliding-stage3-cost-smoke/performance.jsonl": {
+            "bytes": 3468,
+            "sha256": "bf84e7b3587135272d99bc6bdeb5ca0c069941584dc91e3b0a88203f4675c27c"
+          },
+          "commands/soliding-stage3-cost-smoke/receipt.json": {
+            "bytes": 2143,
+            "sha256": "59a0d97f99bc88aa07eb254d71d6565bdfdcd29f8cdace9c4f7001ba75f4797e"
+          },
+          "commands/soliding-stage3b-validation-apparatus-test/command.log": {
+            "bytes": 604,
+            "sha256": "f62f5f9aa37c7d8dd54257d38f97f97ee65c136e5796ea835504dec77592e7ea"
+          },
+          "commands/soliding-stage3b-validation-apparatus-test/performance.jsonl": {
+            "bytes": 2772,
+            "sha256": "3a1c1fdf766333d7c330725cb6b83eeb5d63027370b0fcdb9df7e88477b99dff"
+          },
+          "commands/soliding-stage3b-validation-apparatus-test/receipt.json": {
+            "bytes": 2176,
+            "sha256": "1279fbb49f667185b800ecd38d961368a3270f91fdfbdd8616bdb6b8c181e401"
+          },
+          "commands/soliding-test/command.log": {
+            "bytes": 12076,
+            "sha256": "67005039dc846756e4448e1590cfe5f6300e3dd2de834241dd944476c05369ac"
+          },
+          "commands/soliding-test/performance.jsonl": {
+            "bytes": 2743,
+            "sha256": "410c0331ad68f38bd840d55308ebd3fb6598e0bc780fff7116718c66339011f6"
+          },
+          "commands/soliding-test/receipt.json": {
+            "bytes": 2118,
+            "sha256": "fce745dddbc780aafee42b742e077e65519539ed66249c7aa1c738d7cfc81d15"
+          },
+          "family/command.log": {
+            "bytes": 19706,
+            "sha256": "7c41dca1ab57681ee9f355813da44795dd7479b54efc71d43e428d921fc0382d"
+          },
+          "family/performance.jsonl": {
+            "bytes": 4089,
+            "sha256": "d8fc6a1774bbc119a1d01adb85b3c439bf7624f2b5a485be2cfdc8d5063f0286"
+          },
+          "family/receipt.json": {
+            "bytes": 2197,
+            "sha256": "459a2181c121482d4443a0222e65bfd4ed430fd5744f1a3ad4d27796ef98479a"
+          }
+        },
+        "exit_code_sha256": {
+          "family": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+          "log_capture": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        "exit_codes": {
+          "family": 0,
+          "log_capture": 0
+        },
+        "log": "native-shard-soliding-normal-44948256292-1/native-parallel/soliding-normal/run.log",
+        "log_bytes": 19971,
+        "log_sha256": "c528e49e6666fc2c387feafd0491231b7537cf4916958b8c3f614904b97c85de",
+        "receipt": "native-shard-soliding-normal-44948256292-1/native-parallel/soliding-normal/receipt.json",
+        "receipt_sha256": "4c4b6d38423f6490f8e78623130850dc00704728f9838e23a0279d9bdaa4e2da",
+        "scientific_outputs": {
+          "stage3b-validation-plan-smoke.json": {
+            "bytes": 331774,
+            "sha256": "6b254a509b43045db88ddf5d2a26bcb8991121105d14da36c827919e456ceafb"
+          },
+          "stage3b-validation-synthetic-smoke.json": {
+            "bytes": 873588,
+            "sha256": "d367b33f4326f44057b1aad0addddceb00f5bb61fee6a7385de3a4573e1966f1"
+          }
+        },
+        "source_case_passes": 0,
+        "suite": "soliding-normal"
+      },
+      {
+        "command_outputs": {
+          "commands/build-tests-tsan/command.log": {
+            "bytes": 12677,
+            "sha256": "60a6fb61349570023c84df58e4114e7ae5f0c7f198d6656972bc7efdc517aaba"
+          },
+          "commands/build-tests-tsan/performance.jsonl": {
+            "bytes": 2734,
+            "sha256": "1b6b73a8de723fc8e3b6c92e4f7ed81c75ad559636fb7d62e412661a59a2b48d"
+          },
+          "commands/build-tests-tsan/receipt.json": {
+            "bytes": 2112,
+            "sha256": "7dbc84f3def3cac84c6b2b4072b35e8e9d2dd534c53f3309d00b13cf223c122a"
+          },
+          "commands/tests-tsan/command.log": {
+            "bytes": 14705,
+            "sha256": "0b8a1c6c118bf454185f28ee557c3aa9252faf0d545e4bfcde577429888983fa"
+          },
+          "commands/tests-tsan/performance.jsonl": {
+            "bytes": 2727,
+            "sha256": "2493ecaa2d7c0065d042a232964cb981f9d6da4db0e7381792d8e56c953e7ec9"
+          },
+          "commands/tests-tsan/receipt.json": {
+            "bytes": 2142,
+            "sha256": "0f8f0e797980f3d45d6b6253a26f7607ebece7a4c93f95999b8fb99d7055c30a"
+          },
+          "family/command.log": {
+            "bytes": 27501,
+            "sha256": "5e8f8f72b55f163968d79efc0574bcc8e5bda8b6086f5082ea083fcb5d949d1f"
+          },
+          "family/performance.jsonl": {
+            "bytes": 2726,
+            "sha256": "a5c696a10d7bf85b1e2ef3d8d32b96a488b0e610a8f36a93ca8f62af0651dce5"
+          },
+          "family/receipt.json": {
+            "bytes": 2163,
+            "sha256": "6f081c23ffbdc9a4fea86a85c0c7294df816af95664a1b19ac187d11a6c1aacb"
+          }
+        },
+        "exit_code_sha256": {
+          "family": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+          "log_capture": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        "exit_codes": {
+          "family": 0,
+          "log_capture": 0
+        },
+        "log": "native-shard-tsan-44948256292-1/native-parallel/tsan/run.log",
+        "log_bytes": 27733,
+        "log_sha256": "81994de407f2d92ec51e07a7560b910bb11a6ed19c48c0dcbc9c9499fd06638e",
+        "receipt": "native-shard-tsan-44948256292-1/native-parallel/tsan/receipt.json",
+        "receipt_sha256": "e4c28e44a3924867dc2694c143e5ca517f1ed5497971e5377059a1b7a772e1dc",
+        "scientific_outputs": {},
+        "source_case_passes": 192,
+        "suite": "tsan"
+      },
+      {
+        "command_outputs": {
+          "commands/physics-characterisation-sanitize/command.log": {
+            "bytes": 4625,
+            "sha256": "9b04dc645af3fe0937519ffce8b464bc902ba57e04ebefd6ee06e670323f55a2"
+          },
+          "commands/physics-characterisation-sanitize/performance.jsonl": {
+            "bytes": 2762,
+            "sha256": "81b5e910251c68ec3ad2bf5d11cccdcc00d52dece32c14f554cde9a514112732"
+          },
+          "commands/physics-characterisation-sanitize/receipt.json": {
+            "bytes": 2273,
+            "sha256": "2aee9fc75892c7cb4e98000aa8509aee1ff0b480be821e13f55f993cba7f697d"
+          },
+          "commands/worldgen-sanitize/command.log": {
+            "bytes": 41707,
+            "sha256": "044e1683397bef1b1decca87d9d08b53e9692951b8f7b39427016631c20fd4ab"
+          },
+          "commands/worldgen-sanitize/performance.jsonl": {
+            "bytes": 2744,
+            "sha256": "1b62421d80d6c933521fe21885edcc4e3a39bf5fb069c79b45e443c6540f0536"
+          },
+          "commands/worldgen-sanitize/receipt.json": {
+            "bytes": 2262,
+            "sha256": "f7934f46e4d44558b18f8709b58db99994d8b1a31b551df72de6d3f5e66c9fa9"
+          },
+          "commands/worldgen-test/command.log": {
+            "bytes": 23139,
+            "sha256": "44222a3fd6a943a6ea46e665c299cd623de027a6ec0f524c1b5d2a4312449311"
+          },
+          "commands/worldgen-test/performance.jsonl": {
+            "bytes": 2739,
+            "sha256": "09c4b8ba909d88703538a479694380b8abf091e59e1f516a62dc91f2ad5b99de"
+          },
+          "commands/worldgen-test/receipt.json": {
+            "bytes": 2147,
+            "sha256": "21038c62652cf7282ae100099819386e22318acbb0c114cfc2806e170a4ac085"
+          },
+          "family/command.log": {
+            "bytes": 69911,
+            "sha256": "1180d7382c0edf870b68ca7b73c823dafe76950dad3ceeed020a9a5a07dd67ba"
+          },
+          "family/performance.jsonl": {
+            "bytes": 2741,
+            "sha256": "b950743feed0f3f29acb8e5fcda61f75569bdcfffbd24d4ad812be05cde50d83"
+          },
+          "family/receipt.json": {
+            "bytes": 2177,
+            "sha256": "386b5cc178adbfa9174016ffb8cf9c271a7885a472d09a86560ca89348499b19"
+          }
+        },
+        "exit_code_sha256": {
+          "family": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+          "log_capture": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        "exit_codes": {
+          "family": 0,
+          "log_capture": 0
+        },
+        "log": "native-shard-worldgen-44948256292-1/native-parallel/worldgen/run.log",
+        "log_bytes": 70156,
+        "log_sha256": "b84a0b90054798364cb9d160f8042d0063e838da2c7c7ae4e9a1e05619a9b8e0",
+        "receipt": "native-shard-worldgen-44948256292-1/native-parallel/worldgen/receipt.json",
+        "receipt_sha256": "6bac983f4910da902d75bc2bb43aa0b879f093bf3ef9aea68b4821d14a6aad9f",
+        "scientific_outputs": {
+          "physics-cli-validation/sanitized/invalid-0-lower.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-0-lower.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-0-upper.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-0-upper.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-1-lower.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-1-lower.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-1-upper.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-1-upper.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-10-lower.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-10-lower.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-10-upper.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-10-upper.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-11-lower.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-11-lower.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-11-upper.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-11-upper.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-12-lower.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-12-lower.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-12-upper.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-12-upper.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-13-lower.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-13-lower.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-13-upper.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-13-upper.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-14-lower.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-14-lower.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-14-upper.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-14-upper.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-15-lower.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-15-lower.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-15-upper.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-15-upper.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-16-lower.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-16-lower.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-16-upper.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-16-upper.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-17-lower.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-17-lower.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-17-upper.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-17-upper.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-18-lower.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-18-lower.stderr.log": {
+            "bytes": 6,
+            "sha256": "ebfa9aaf1fd7252153d4ec6af4a3f621a97fc622869a796a51de4928fd27c0ee"
+          },
+          "physics-cli-validation/sanitized/invalid-18-upper.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-18-upper.stderr.log": {
+            "bytes": 6,
+            "sha256": "ebfa9aaf1fd7252153d4ec6af4a3f621a97fc622869a796a51de4928fd27c0ee"
+          },
+          "physics-cli-validation/sanitized/invalid-19-lower.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-19-lower.stderr.log": {
+            "bytes": 6,
+            "sha256": "ebfa9aaf1fd7252153d4ec6af4a3f621a97fc622869a796a51de4928fd27c0ee"
+          },
+          "physics-cli-validation/sanitized/invalid-19-upper.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-19-upper.stderr.log": {
+            "bytes": 6,
+            "sha256": "ebfa9aaf1fd7252153d4ec6af4a3f621a97fc622869a796a51de4928fd27c0ee"
+          },
+          "physics-cli-validation/sanitized/invalid-2-lower.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-2-lower.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-2-upper.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-2-upper.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-20-lower.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-20-lower.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-20-upper.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-20-upper.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-21-lower.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-21-lower.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-21-upper.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-21-upper.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-22-lower.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-22-lower.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-22-upper.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-22-upper.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-23-lower.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-23-lower.stderr.log": {
+            "bytes": 6,
+            "sha256": "ebfa9aaf1fd7252153d4ec6af4a3f621a97fc622869a796a51de4928fd27c0ee"
+          },
+          "physics-cli-validation/sanitized/invalid-23-upper.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-23-upper.stderr.log": {
+            "bytes": 6,
+            "sha256": "ebfa9aaf1fd7252153d4ec6af4a3f621a97fc622869a796a51de4928fd27c0ee"
+          },
+          "physics-cli-validation/sanitized/invalid-3-lower.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-3-lower.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-3-upper.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-3-upper.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-4-lower.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-4-lower.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-4-upper.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-4-upper.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-5-lower.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-5-lower.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-5-upper.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-5-upper.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-6-lower.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-6-lower.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-6-upper.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-6-upper.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-7-lower.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-7-lower.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-7-upper.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-7-upper.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-8-lower.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-8-lower.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-8-upper.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-8-upper.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-9-lower.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-9-lower.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/invalid-9-upper.jsonl": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/invalid-9-upper.stderr.log": {
+            "bytes": 24,
+            "sha256": "c1155dfd322d72c16acbedf1653189ead9151aae146fc2c4d0df1d0e6dbbab67"
+          },
+          "physics-cli-validation/sanitized/material-100-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "555f208d9c78c83647ec8cd24e8cb41e7bf8c7a3012933abdf11ef26ffae1311"
+          },
+          "physics-cli-validation/sanitized/material-100-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-100-upper.jsonl": {
+            "bytes": 1679,
+            "sha256": "08a51a0df1f438b23c6ee850c2c39b29dac19515a85d1809a9804aa4784e89aa"
+          },
+          "physics-cli-validation/sanitized/material-100-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-101-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "b38344945f53a92152800ee87d5a36d0aae8fcdba8204fdf2053b27efe0e34f5"
+          },
+          "physics-cli-validation/sanitized/material-101-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-101-upper.jsonl": {
+            "bytes": 1679,
+            "sha256": "d005af559eea29645423ccb305b139e71fba0028a25fb3184d28970f99e967f7"
+          },
+          "physics-cli-validation/sanitized/material-101-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-102-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "c369d8557bdfafa51bb9a5cf301c39d24c81d3b26f1b15bbba9352755f51695f"
+          },
+          "physics-cli-validation/sanitized/material-102-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-102-upper.jsonl": {
+            "bytes": 1667,
+            "sha256": "8553297fe5a4a35102ad867bc4a0c2e4e5062d65eee16133b32f3469115082ad"
+          },
+          "physics-cli-validation/sanitized/material-102-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-103-lower.jsonl": {
+            "bytes": 1672,
+            "sha256": "0b7e3da6d3de76bf6cbbb73c10f2e55a601f09e177d9087b78a1b04415110622"
+          },
+          "physics-cli-validation/sanitized/material-103-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-103-upper.jsonl": {
+            "bytes": 1676,
+            "sha256": "2b3ce22f00c113ad0bb6a38d3e357743e930b3a01736944407b14b51739ca3cd"
+          },
+          "physics-cli-validation/sanitized/material-103-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-104-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "957c3922e5b5ba06aa883064168b409781c9c6aaf01a00db7bc7a5dc9b1c8226"
+          },
+          "physics-cli-validation/sanitized/material-104-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-104-upper.jsonl": {
+            "bytes": 1678,
+            "sha256": "c34b948fd02510cbeab75b40630e01d66a1f1fd084cf7e18204be095ac52f8fa"
+          },
+          "physics-cli-validation/sanitized/material-104-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-105-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "e3a797134f6e5c0c97f8b68feb529b1f440661dfc9f71cd34c45878180fa5762"
+          },
+          "physics-cli-validation/sanitized/material-105-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-105-upper.jsonl": {
+            "bytes": 1679,
+            "sha256": "efbbbdd597dd79e509b42c12475a4f60f9e006d03fb2110fc7fca7856cdef882"
+          },
+          "physics-cli-validation/sanitized/material-105-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-106-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "98c17b93283b1c9122440df38fabb6d8fd9648e7f100f1e6c151f5b3ee715c15"
+          },
+          "physics-cli-validation/sanitized/material-106-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-106-upper.jsonl": {
+            "bytes": 1678,
+            "sha256": "be5bd73b18e2c99edd1ef62b54c02a7e8304314a86e782a62d6bd7296554f4c7"
+          },
+          "physics-cli-validation/sanitized/material-106-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-107-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "1c7029823cbe01d0512e6399970da0ee7d42df892947273b1d03cf94f0bc9caf"
+          },
+          "physics-cli-validation/sanitized/material-107-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-107-upper.jsonl": {
+            "bytes": 1679,
+            "sha256": "640f9f33d6b5bae5ee057c8c207fbef15fa984c117965a8bbdaaa73948f715b9"
+          },
+          "physics-cli-validation/sanitized/material-107-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-108-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "f0eb3097025c6245495ee1a01957c0c192ff1bb88883306a19afa20427f9f7ce"
+          },
+          "physics-cli-validation/sanitized/material-108-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-108-upper.jsonl": {
+            "bytes": 1676,
+            "sha256": "da89f368188d69d8e0fdb570ac1e94a16cdd76e0d88f730acf517d20e1faee13"
+          },
+          "physics-cli-validation/sanitized/material-108-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-109-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "21caa0b2a7e050346800c9e0655eff2c4f515163d2e337a04a4937b78ad0dab3"
+          },
+          "physics-cli-validation/sanitized/material-109-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-109-upper.jsonl": {
+            "bytes": 1679,
+            "sha256": "d8d492fd071c373cec60187e111c202c33d7fb766e9e30725358453e4f93f82a"
+          },
+          "physics-cli-validation/sanitized/material-109-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-110-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "9f6cb59fd70cce67f4f46b72fb5d2e76778aee548a5a915fded0ab6761df83f0"
+          },
+          "physics-cli-validation/sanitized/material-110-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-110-upper.jsonl": {
+            "bytes": 1679,
+            "sha256": "94b34ae0398b27349e41d756504d363d08713cbfd786768b1a68e2bda6679905"
+          },
+          "physics-cli-validation/sanitized/material-110-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-111-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "4d37d9bf6fcf52e529035f9c3b196d2b84891fa46c9b6acb7c95ee463b8e7c0c"
+          },
+          "physics-cli-validation/sanitized/material-111-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-111-upper.jsonl": {
+            "bytes": 1679,
+            "sha256": "82b67921d9d85210e7969ffeef74931000e31dbb3e7237b82db55b87bd8ca754"
+          },
+          "physics-cli-validation/sanitized/material-111-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-112-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "6dcbfcb2c42e98b1029fc6954852598f2f0cd3baeabb6b184a365e49141f5a5b"
+          },
+          "physics-cli-validation/sanitized/material-112-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-112-upper.jsonl": {
+            "bytes": 1670,
+            "sha256": "1964df5fb9754809917a3196f3f81abffc0682c4e079220725f4f9231de32adb"
+          },
+          "physics-cli-validation/sanitized/material-112-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-113-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "e08207821cfa7ba94ff11a9a06655c064ae5368407052d0724af4ed3a96c97b1"
+          },
+          "physics-cli-validation/sanitized/material-113-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-113-upper.jsonl": {
+            "bytes": 1678,
+            "sha256": "da7b3efdb903ef86d57a4000bb6ec0bd63318548981c6f06f9be2f5c0fb6328f"
+          },
+          "physics-cli-validation/sanitized/material-113-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-114-lower.jsonl": {
+            "bytes": 1670,
+            "sha256": "8eb972e72d1ff59fb91187517f254185b796923fb4b68e8c40cece52185d033a"
+          },
+          "physics-cli-validation/sanitized/material-114-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-114-upper.jsonl": {
+            "bytes": 1678,
+            "sha256": "bf53870c2b6e51f1524186a5c731f123443534d66c8a893b4941eeee0b6bad75"
+          },
+          "physics-cli-validation/sanitized/material-114-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-115-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "ae1aa9a2bdf53cdc8f694091dc43a4345f72c1cc1599db75b3a17070fd6f758d"
+          },
+          "physics-cli-validation/sanitized/material-115-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-115-upper.jsonl": {
+            "bytes": 1679,
+            "sha256": "e2cd5a152a74fe0e2a9e5624441939b3d6e256c5b5110d5de632b44f71e298db"
+          },
+          "physics-cli-validation/sanitized/material-115-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-116-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "54b2a723dc3b79b6ec0e86f3ecc020d5b494c36feda4605894cdee7dfe70f0c3"
+          },
+          "physics-cli-validation/sanitized/material-116-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-116-upper.jsonl": {
+            "bytes": 1679,
+            "sha256": "8960febe6aa73d797bc9045115dcfa2bcf79962dddd9abf91cfca11660863486"
+          },
+          "physics-cli-validation/sanitized/material-116-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-117-lower.jsonl": {
+            "bytes": 1672,
+            "sha256": "c56e21d36ad439a08092dcd03e9a42da40c0cde771745c3e03473bd6e528c4ba"
+          },
+          "physics-cli-validation/sanitized/material-117-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-117-upper.jsonl": {
+            "bytes": 1679,
+            "sha256": "fd3046c7474873e04de2222a4637a36843742e7b1e0ab69ece7e90da35ed039f"
+          },
+          "physics-cli-validation/sanitized/material-117-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-118-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "b1fe83e2721731ce6d54f06b871c7ffddc488a21f54eec4e99f2a6e08e847294"
+          },
+          "physics-cli-validation/sanitized/material-118-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-118-upper.jsonl": {
+            "bytes": 1676,
+            "sha256": "d2b1819f5d829f58184ffefb38ccb7c512a8546a96a44ea7cf9a701f3c3d0d96"
+          },
+          "physics-cli-validation/sanitized/material-118-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-119-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "e5063e3b48d113e0c925a8686dc1f02339bcd718adbe1171106fe52de49d2d6b"
+          },
+          "physics-cli-validation/sanitized/material-119-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-119-upper.jsonl": {
+            "bytes": 1679,
+            "sha256": "1e57585cc057f39179f83a9f2db9317ec438a2164436cc1398bb3cc3e8eb495f"
+          },
+          "physics-cli-validation/sanitized/material-119-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-120-lower.jsonl": {
+            "bytes": 1672,
+            "sha256": "31f0df1efd20dd149b90dcd735c6be3abe9304f44ae50479f5d15967db36715d"
+          },
+          "physics-cli-validation/sanitized/material-120-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-120-upper.jsonl": {
+            "bytes": 1679,
+            "sha256": "fa56f0473a27128368b2bf93f39ce6e9f4ba2f169221ea88ff3d5298dfb06178"
+          },
+          "physics-cli-validation/sanitized/material-120-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-121-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "b48cebed6c51778d599187f6747ea17ca4230b4f540903fd0c5c8d9710d35c70"
+          },
+          "physics-cli-validation/sanitized/material-121-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-121-upper.jsonl": {
+            "bytes": 1679,
+            "sha256": "af51724dfe305ee3a816bad39a0b6088ad5e9e5a909c35d07a6ebf82a58dffd8"
+          },
+          "physics-cli-validation/sanitized/material-121-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-122-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "08a0275e058ccf40932cd57009c821433ec5a72311599c71040b176542b5773c"
+          },
+          "physics-cli-validation/sanitized/material-122-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-122-upper.jsonl": {
+            "bytes": 1679,
+            "sha256": "1f7e7369dbed30f75cd83f5d477af0ed04a84827dde96802fc0654371887b242"
+          },
+          "physics-cli-validation/sanitized/material-122-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-123-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "7dfcafd535eef3d129eb35b0963c1caf99b9da765831f14009fc8b30ca72ee75"
+          },
+          "physics-cli-validation/sanitized/material-123-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-123-upper.jsonl": {
+            "bytes": 1678,
+            "sha256": "8f72f517a5b269326ee36addf978bbf96465960f07a89f4439d1d3a600b7a956"
+          },
+          "physics-cli-validation/sanitized/material-123-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-124-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "3336223c90548b39ee8b8f23ff5597bdfdbf51706a8ed9ba174d6f69ce9e888d"
+          },
+          "physics-cli-validation/sanitized/material-124-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-124-upper.jsonl": {
+            "bytes": 1676,
+            "sha256": "4d255422d1878e1c826547c62b3f808035d44733ee6fe288f2dd9d0512ec36c3"
+          },
+          "physics-cli-validation/sanitized/material-124-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-125-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "7952cc4cfcb89ea8e295619a07b67617198665f61230e79102be68a68d0f030d"
+          },
+          "physics-cli-validation/sanitized/material-125-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-125-upper.jsonl": {
+            "bytes": 1679,
+            "sha256": "4b462a387ee5340f70b518c98a3fc9ff7457642dcd40b044e414f653ad5a0ef3"
+          },
+          "physics-cli-validation/sanitized/material-125-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-126-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "451c5e6f72fb460d744d86e505c8c1fabf006b647c0be3d8fb70707b1efb97e9"
+          },
+          "physics-cli-validation/sanitized/material-126-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-126-upper.jsonl": {
+            "bytes": 1679,
+            "sha256": "49ed4b2b26fed53c1b1c8bed98ea32062a9b0076b427a621e6351f98bd7a2779"
+          },
+          "physics-cli-validation/sanitized/material-126-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-127-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "d0bf15fee457a72a4666c32051018d2fd0caa6c4479beb3d214ef28d15ee2395"
+          },
+          "physics-cli-validation/sanitized/material-127-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-127-upper.jsonl": {
+            "bytes": 1679,
+            "sha256": "5605224526178e4b34673679190688cb834fe7ce15ea2a04c31b56ab5ffcd53b"
+          },
+          "physics-cli-validation/sanitized/material-127-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-128-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "6e899bd8a3370a858506604d769035fe67f9b271ed993ff8b19d5cee98c12516"
+          },
+          "physics-cli-validation/sanitized/material-128-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-128-upper.jsonl": {
+            "bytes": 1676,
+            "sha256": "18b6704b8d9866a09fbf380df44235b3ddc2657d09950602dbd7391c866c0684"
+          },
+          "physics-cli-validation/sanitized/material-128-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-129-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "e13e0c11d7be493366bda62603b7d9779b104014250440231909efaf1187cf26"
+          },
+          "physics-cli-validation/sanitized/material-129-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-129-upper.jsonl": {
+            "bytes": 1679,
+            "sha256": "d1d21d5a1f91e22ec01b09de2fc2847aa35d8d5ea29002cb8e6ad01e017d3316"
+          },
+          "physics-cli-validation/sanitized/material-129-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-130-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "b18d2cea89c6941416b89824035139ab4c4d17b9622c7a04905cb70e9990b1e5"
+          },
+          "physics-cli-validation/sanitized/material-130-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-130-upper.jsonl": {
+            "bytes": 1679,
+            "sha256": "60a0a6d384fa59ea8c0d6a78385cf0c4c531ac36c4fc9d10227ad58c7a5f2342"
+          },
+          "physics-cli-validation/sanitized/material-130-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-131-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "335f4703ac5d341e86fa9bd2e14fe04a68f28b5edcee3ccd4c016beac16ff117"
+          },
+          "physics-cli-validation/sanitized/material-131-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-131-upper.jsonl": {
+            "bytes": 1676,
+            "sha256": "a103eee9e25b2a7667705bbbfeb2e711dafa1bda6d3bf39b4e696ac623cb515e"
+          },
+          "physics-cli-validation/sanitized/material-131-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-2-lower.jsonl": {
+            "bytes": 1751,
+            "sha256": "79f642b658eac69d8a05ef11ed4bc022e3092726ed075926e3c097bddff31baf"
+          },
+          "physics-cli-validation/sanitized/material-2-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-2-upper.jsonl": {
+            "bytes": 1759,
+            "sha256": "6a774ffbd2d709fa89a99950ae48d912527a780dad4627aedbd4479faf9136aa"
+          },
+          "physics-cli-validation/sanitized/material-2-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-80-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "3481d3c2bedd4c75f543ea284be58bb97b077969cb4424fdde1b08cbc6e4c063"
+          },
+          "physics-cli-validation/sanitized/material-80-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-80-upper.jsonl": {
+            "bytes": 1676,
+            "sha256": "557c15ce86608fcc840b67d74b1609f62c0a8b6f7476fd2f768ba896ba30df50"
+          },
+          "physics-cli-validation/sanitized/material-80-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-81-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "3360a50e94ded56e8b2fd0bff18d073e9aa0412452706b1c184984f689cf7d0c"
+          },
+          "physics-cli-validation/sanitized/material-81-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-81-upper.jsonl": {
+            "bytes": 1679,
+            "sha256": "c96cb6a6e34c46716e1b02d6acdbe8980ffd71829a520f51e42cce9b7f5d925a"
+          },
+          "physics-cli-validation/sanitized/material-81-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-82-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "6654cfbbdfa4c6a217cfb1bc258bc4ea39e4b64a52c7da84ba5f2884e00cba31"
+          },
+          "physics-cli-validation/sanitized/material-82-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-82-upper.jsonl": {
+            "bytes": 1678,
+            "sha256": "29557f4751572984db70f27cc1d94c8cef0707b1bb928625623592bab9fb5064"
+          },
+          "physics-cli-validation/sanitized/material-82-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-83-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "2facd54f4a712abf7f916d9c6759e1cbf02eb093881b18810da62380f5701ce1"
+          },
+          "physics-cli-validation/sanitized/material-83-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-83-upper.jsonl": {
+            "bytes": 1679,
+            "sha256": "7d5aa429138310b0bc385a079757e8671009822ea777c9053713530bcdff698b"
+          },
+          "physics-cli-validation/sanitized/material-83-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-84-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "7b3038101d4839f974fe7a1ec230bee658f68016c7001377551ff7011eb6d7c6"
+          },
+          "physics-cli-validation/sanitized/material-84-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-84-upper.jsonl": {
+            "bytes": 1679,
+            "sha256": "e2a0a76b4163c0f42ea1981916288d985faddfe4ac1e6664759f2921417312cb"
+          },
+          "physics-cli-validation/sanitized/material-84-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-85-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "6d0afa4593722f044573dba9a4ce24e789eda3ce16e4ac1a700ee7c5088cfd95"
+          },
+          "physics-cli-validation/sanitized/material-85-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-85-upper.jsonl": {
+            "bytes": 1678,
+            "sha256": "280d442f214bea6dd0e5cf95078f7578cb32fbbbdd073e1ae18944f70eb13134"
+          },
+          "physics-cli-validation/sanitized/material-85-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-86-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "125aff7ea3b87241428fcf47b1e414a1f3404bf24eeb74f45a8da8d7773f7366"
+          },
+          "physics-cli-validation/sanitized/material-86-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-86-upper.jsonl": {
+            "bytes": 1679,
+            "sha256": "e33f23c88aa917b323b2f3ca77d0b4644ded534f23b68217b35010af9fefd9e0"
+          },
+          "physics-cli-validation/sanitized/material-86-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-87-lower.jsonl": {
+            "bytes": 1670,
+            "sha256": "189de544b777a626f2947bf35eddbea45e73a9d692dd0ca0201064db9b1adacb"
+          },
+          "physics-cli-validation/sanitized/material-87-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-87-upper.jsonl": {
+            "bytes": 1679,
+            "sha256": "66c45b954549cd5e9dc0759848366c835373a8f29a737d09c33bf588428b081f"
+          },
+          "physics-cli-validation/sanitized/material-87-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-88-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "32ebf7a2ce4004d298d1a794905c012fe442d297ef152c229909e0e23d6429a3"
+          },
+          "physics-cli-validation/sanitized/material-88-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-88-upper.jsonl": {
+            "bytes": 1679,
+            "sha256": "b683b900b70cbf98767262cc8e165f3f3713614f4211e3e9ed1aa3fbf29f8441"
+          },
+          "physics-cli-validation/sanitized/material-88-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-89-lower.jsonl": {
+            "bytes": 1670,
+            "sha256": "9fa68d93257d4c42a71aa7dfc8fc9d2125c788cbb53d97b83344985115562c38"
+          },
+          "physics-cli-validation/sanitized/material-89-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-89-upper.jsonl": {
+            "bytes": 1679,
+            "sha256": "b90f85148354ebeec6d0b86906795511556730f608eec47f476d42f16d55bb85"
+          },
+          "physics-cli-validation/sanitized/material-89-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-90-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "02d5e26409267f35b438f60735c469da20fee4dd545a7663aaf8967023ed9372"
+          },
+          "physics-cli-validation/sanitized/material-90-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-90-upper.jsonl": {
+            "bytes": 1679,
+            "sha256": "72c4d49e9f3af2fa4a55948cea33e2c884f9a366c319704fd8c7640220b41580"
+          },
+          "physics-cli-validation/sanitized/material-90-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-91-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "6ac7bb228f902517ba5b06bc0a3ac904ac137f44ff35eeb68f82e7a0c94fc939"
+          },
+          "physics-cli-validation/sanitized/material-91-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-91-upper.jsonl": {
+            "bytes": 1679,
+            "sha256": "ae4703e3249a6201cb7e5c32feb9ffd6699c28c284ebcd8be2bd7c7d624627e6"
+          },
+          "physics-cli-validation/sanitized/material-91-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-92-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "927320e6d1c79cf0bfc36acdf6ec6da37cfc8e98fdab27fe1c4aaccf392c1bee"
+          },
+          "physics-cli-validation/sanitized/material-92-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-92-upper.jsonl": {
+            "bytes": 1679,
+            "sha256": "0fb92bf507e7b2e06f15469cf97cdc4e69a67ced54dfd5d92d006977a95c7b77"
+          },
+          "physics-cli-validation/sanitized/material-92-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-93-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "25837cda17997626ffebfa22363ccaed2c03646faa8f038a58a6e7ff45eed658"
+          },
+          "physics-cli-validation/sanitized/material-93-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-93-upper.jsonl": {
+            "bytes": 1679,
+            "sha256": "4f938ec278566015a5cda7562fc9e01f245db74a4962f134df7401a0cf0875eb"
+          },
+          "physics-cli-validation/sanitized/material-93-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-94-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "39a8d73db509fccb5ee280baab892d928ad703a5dd44f9f215ceed2c2357679d"
+          },
+          "physics-cli-validation/sanitized/material-94-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-94-upper.jsonl": {
+            "bytes": 1679,
+            "sha256": "44db31a494c657a65429f475cd4d87dfaf18b58978127dd34ff7da9b4ff3896b"
+          },
+          "physics-cli-validation/sanitized/material-94-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-95-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "091cf830a48538781b3a4018d8ec9d14bb20d161039b71e91a405f5def9c38ed"
+          },
+          "physics-cli-validation/sanitized/material-95-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-95-upper.jsonl": {
+            "bytes": 1679,
+            "sha256": "ec84469f9ef5b6b3d91abd91ea6d663d524a4f224630e271dd4d0ac1d57ae82a"
+          },
+          "physics-cli-validation/sanitized/material-95-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-96-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "5d99ad37238841b7869c504e7e29c51ff1e6cdf5f3756a30fbed04bee0549984"
+          },
+          "physics-cli-validation/sanitized/material-96-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-96-upper.jsonl": {
+            "bytes": 1679,
+            "sha256": "ee6899a85dd1f35b0be87d4ce82dc9c8d22aba698292c2d52f1a574f7802155d"
+          },
+          "physics-cli-validation/sanitized/material-96-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-97-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "2c762132e262f69a492e9d057f54eacc386633432af19736b19649c4f60fd3b9"
+          },
+          "physics-cli-validation/sanitized/material-97-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-97-upper.jsonl": {
+            "bytes": 1679,
+            "sha256": "d597eda16e2d66702a013f7d26cf6749fb7ee657c3be712a1b5e707fb4b80bb3"
+          },
+          "physics-cli-validation/sanitized/material-97-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-98-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "9e8a67215a61397bb7b01db80cef9aff51e3cbd770f8d60ec324e6965c9d21a7"
+          },
+          "physics-cli-validation/sanitized/material-98-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-98-upper.jsonl": {
+            "bytes": 1679,
+            "sha256": "9ef19218fbe6699b7e8c2e8817e0258435fdb85ebe447083313d7792cd8556d3"
+          },
+          "physics-cli-validation/sanitized/material-98-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-99-lower.jsonl": {
+            "bytes": 1673,
+            "sha256": "27d0d4a254e434a98409c441fa509973cc64ff27aabd84ef8a5958f32cd05b08"
+          },
+          "physics-cli-validation/sanitized/material-99-lower.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/material-99-upper.jsonl": {
+            "bytes": 1679,
+            "sha256": "2c453cb97f6bc036a4a236fbd59a2d64f100b1b449eb80c5a949d84bbf61c141"
+          },
+          "physics-cli-validation/sanitized/material-99-upper.stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "physics-cli-validation/sanitized/results.json": {
+            "bytes": 113589,
+            "sha256": "9a02543e31fd37467acea94e1f75e15cd453cf0b0a424d99e3f0144e987874ee"
+          },
+          "physics-cli-validation/validation.log": {
+            "bytes": 4708,
+            "sha256": "eb97cfe0eaac72506ce42c78775da692f0780b0314d2828a437947a00d5254c6"
+          }
+        },
+        "source_case_passes": 0,
+        "suite": "worldgen"
+      }
+    ],
+    "required_native_check_conclusion": "success",
+    "retained_artifacts": [
+      {
+        "bytes": 11503,
+        "id": 14725866462,
+        "name": "native-qualification-44948256292-1",
+        "sha256": "56d8bdef7847a59e316232b9553afeb16498778bf9992bb968be1dc5f439a12b",
+        "url": "https://github.com/techrote/cybersand/actions/runs/44948256292/artifacts/14725866462"
+      },
+      {
+        "bytes": 45058,
+        "id": 14725295111,
+        "name": "native-shard-native-normal-44948256292-1",
+        "sha256": "cbcf3a047ab0c90f09bed0daf49e17150390d6a58214db026ca265ff721c0b6c",
+        "url": "https://github.com/techrote/cybersand/actions/runs/44948256292/artifacts/14725295111"
+      },
+      {
+        "bytes": 31327,
+        "id": 14725276340,
+        "name": "native-shard-asan-ubsan-44948256292-1",
+        "sha256": "91e19eccc8fe4a1fc473e607a2dc7c498e54909293f74a080e6aab5e24fbdb19",
+        "url": "https://github.com/techrote/cybersand/actions/runs/44948256292/artifacts/14725276340"
+      },
+      {
+        "bytes": 161184,
+        "id": 14725108726,
+        "name": "native-shard-worldgen-44948256292-1",
+        "sha256": "3a5a402f27fef61e2f9c940e212d339187dc2b26ed79fa9ee99ef3ee37826e9f",
+        "url": "https://github.com/techrote/cybersand/actions/runs/44948256292/artifacts/14725108726"
+      },
+      {
+        "bytes": 21197,
+        "id": 14725009368,
+        "name": "native-shard-soliding-asan-44948256292-1",
+        "sha256": "dedc87d4e13b203eb3a1ea466d4b92766e220a9c4d266e398d8a7432094805b2",
+        "url": "https://github.com/techrote/cybersand/actions/runs/44948256292/artifacts/14725009368"
+      },
+      {
+        "bytes": 83402,
+        "id": 14724925725,
+        "name": "native-shard-soliding-normal-44948256292-1",
+        "sha256": "c6c666a6b33a12a1bf2b0bbd2d5b692262aa5c1259e376bcd020b6c989eee1f7",
+        "url": "https://github.com/techrote/cybersand/actions/runs/44948256292/artifacts/14724925725"
+      },
+      {
+        "bytes": 29786,
+        "id": 14724907366,
+        "name": "native-shard-tsan-44948256292-1",
+        "sha256": "0fc7edc3b48f3f7ef425a729f9efd5e47a01fbc0420793582a2a6761450167e3",
+        "url": "https://github.com/techrote/cybersand/actions/runs/44948256292/artifacts/14724907366"
+      }
+    ],
+    "source_binding_note": "Immutable committed input bytes and tree reconstruct expected identity; every retained producer receipt independently attests its original empty local delta. No runtime tests were re-executed by this audit.",
+    "source_fingerprints": {
+      "command_runner": "f9d8d2979335c7a59e2b3d47e8956e1c157f8c7d74bf74b57bb9cfd1c56663da",
+      "execution_policy": "7bf7c89f51b8edc6c14e9b600a843c6b56f4806c902b09058912a32c881b63d6",
+      "makefile": "abe1920b1a89b1444ada36e97c9e81f7a0657f06f447845294aa18aca122baf9",
+      "native_execution_policy": "16c2c5f3b8920c0ece202cdaf9bb674dfcc03a4f72934af84885ed7bc7d7f7b1",
+      "native_family": "5a3cbcf58659d4ac91da3334e4e2ad68788b669b445bcb240c3134e3c6327b1b",
+      "native_watchdog_tests": "45905d6838d8c0b61edb8bd466288110bde8c633e688910f304c28e7e33abdad",
+      "physics_cli": "513db5608e722bcd03823744a33f4f81554eb31aedecbde8a3a452e45296e720",
+      "test_registry": "17719612e2ba29dc14d8964db54fdd0d4700909a9a1c81c8af6c4df1ef648933",
+      "verifier": "7cfdf6bccf0fbd17786b38acc8ebc45e23d57493e53fc0fc16263b9ce942c2c3",
+      "verifier_tests": "bd28a9d1a680c43d3ec5ff2d11c7f61146f3161f88f3c151c7f989ceb4190f75",
+      "watchdog_policy": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+      "workflow": "7cfb1aed6ae2b810e77812444340f6a8844cb480c05a8f218d45ddee76e18379",
+      "worldgen_inventory": "94a44ae85778ca866416cfcf3cac915211cb40f66004afc2423c71db27f15ea5"
+    },
+    "status": "passed",
+    "workflow_conclusion": "success"
+  },
+  "run_attempt": 1,
+  "run_conclusion": "success",
+  "run_id": 44948256292,
+  "run_url": "https://github.com/techrote/cybersand/actions/runs/44948256292",
+  "schema": "ci-opt-002-native-campaign-audit-v1"
+}

@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "base": "0f0161af337d6d0cee8fa961a9667aff570a75b0",
+  "merged_head": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+  "merged_tree": "1232a6e825561ce8b5cd125e1bad7fa6aa7e1590",
+  "changed_paths": [
+    ".github/workflows/documentation.yml",
+    "docs/operations/ci-execution-and-performance.md"
+  ],
+  "production_source_runtime_diff_empty": true,
+  "stage_b_pr": 718,
+  "stage_b_head": "65aa1382a49bb01571177b4639f27b64f5dcb66d",
+  "stage_b_disposition": "Draft/HOLD, not merged; source/coverage safety GO, performance HOLD"
+}

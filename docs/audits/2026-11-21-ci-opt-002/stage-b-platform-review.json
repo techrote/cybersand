@@ -1,0 +1,98 @@
+{
+  "schema": "ci-opt-002-platform-gates-independent-review-v1",
+  "reviewer": "independent source/safety reviewer; complementary platform evidence audit",
+  "reviewed_utc": "2026-11-21T21:17:02.949424+00:00",
+  "verdict": "PASS for candidate Documentation, Palette and GDExtension platform gates; Native/performance and overall merge judgement owned by separate reviewers",
+  "candidate_head": "65aa1382a49bb01571177b4639f27b64f5dcb66d",
+  "accepted_base": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+  "tested_merge_sha": "9ae8b2a483d756af18ad21f1d99f529645640f12",
+  "tested_tree": "b01d95a8cb90ae0be9fb36e368694167dd80efb6",
+  "palette_tested_head": "65aa1382a49bb01571177b4639f27b64f5dcb66d",
+  "metrics": {
+    "docs": {
+      "run_id": 44948729294,
+      "attempt": 1,
+      "status": "passed",
+      "total_jobs": 1,
+      "successful_jobs": 1,
+      "conditional_skips": [],
+      "event_to_final_job_seconds": 436.0,
+      "unweighted_runner_minutes": 7.216666666666667,
+      "first_job_start_delay_seconds": 3.0
+    },
+    "palette": {
+      "run_id": 44948729280,
+      "attempt": 1,
+      "status": "passed",
+      "total_jobs": 8,
+      "successful_jobs": 8,
+      "conditional_skips": [],
+      "event_to_final_job_seconds": 436.0,
+      "unweighted_runner_minutes": 16.716666666666665,
+      "first_job_start_delay_seconds": 4.0
+    },
+    "gde": {
+      "run_id": 44948729275,
+      "attempt": 1,
+      "status": "passed",
+      "total_jobs": 56,
+      "successful_jobs": 54,
+      "conditional_skips": [
+        "ready validation scope",
+        "physical-actor-stress"
+      ],
+      "event_to_final_job_seconds": 1140.0,
+      "unweighted_runner_minutes": 172.71666666666667,
+      "first_job_start_delay_seconds": 3.0
+    }
+  },
+  "documentation": {
+    "unchanged_steps_passed": 22,
+    "materialized_runtime_files": 18,
+    "unmaterialized_runtime_files": 0,
+    "errors": 0
+  },
+  "gdextension": {
+    "linux_cases": 338,
+    "linux_shards": 24,
+    "windows_headless_cases": 315,
+    "windows_shards": 23,
+    "total_case_executions": 653,
+    "total_shards": 47,
+    "windows_graphical_exclusions_already_covered_by_linux": 23,
+    "windows_logs_verified_by_hosted_reducer": 338,
+    "linux_source_inputs_verified_by_hosted_reducer": 41,
+    "windows_source_inputs_verified_by_hosted_reducer": 1090,
+    "art_graphical_smoke": "passed",
+    "runtime_source": "9ae8b2a483d756af18ad21f1d99f529645640f12",
+    "windows_native_sha256": "f11ff00ac648d0b29783ea753ca6d4c8380a097bf9fada897362420ae9dda800",
+    "windows_manifest_source_inputs_independently_hashed": 105,
+    "linux_runtime_hashes": {
+      "libcybersand_native.linux.x86_64.so": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+      "libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+    },
+    "representative_execution_audits": [
+      "windows-shard-2-independent-audit.json",
+      "linux-shard-15-independent-audit.json"
+    ]
+  },
+  "palette": {
+    "acceptance_schema": "palette-shader-suite-v3",
+    "status": "passed",
+    "cohorts": 6,
+    "process_cases": 19,
+    "v3_bounded_semantics": "passed",
+    "retained_v2_finished_image_diagnostic": "failed; explicitly non-gating in unchanged v3 contract; no universal cross-backend pixel parity claim"
+  },
+  "artifact_digests_verified": 9,
+  "total_download_bytes": 24669607,
+  "artifact_directory": "build/ci-opt-002/platform-review",
+  "digest_ledger": "build/ci-opt-002/platform-review/artifact-digest-ledger.json",
+  "evidence_scope": [
+    "All final run/job metadata pages were retrieved with returned counts checked; no failed or cancelled jobs omitted.",
+    "All downloaded ZIP digests and ZIP integrity were independently checked against GitHub artifact metadata.",
+    "Both full source-built runtime artifacts were hashed; representative Linux and Windows execution records and their original logs were independently checked.",
+    "The existing exact-source hosted reducers verified all platform shard case unions, original logs and runtime identity. This audit did not download and locally replay every shard or the approximately 800 MB Palette image/cache corpus.",
+    "No new qualification campaign, production edit, source/binary publication or GitHub mutation was performed by this reviewer."
+  ]
+}

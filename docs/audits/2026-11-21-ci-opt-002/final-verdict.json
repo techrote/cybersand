@@ -1,0 +1,31 @@
+{
+  "decision": "hold-performance",
+  "safety": "go",
+  "confirmed_p1_p2_findings": 0,
+  "pr": 718,
+  "head": "65aa1382a49bb01571177b4639f27b64f5dcb66d",
+  "base": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+  "executed_merge": "9ae8b2a483d756af18ad21f1d99f529645640f12",
+  "tree": "b01d95a8cb90ae0be9fb36e368694167dd80efb6",
+  "native_before_seconds": 2248,
+  "native_after_seconds": 2223,
+  "observed_reduction_seconds": 25,
+  "observed_reduction_percent": 1.112099644128114,
+  "native_before_runner_minutes": 97.56666666666666,
+  "native_after_runner_minutes": 102.53333333333333,
+  "first_native_family_before_seconds": 181,
+  "first_native_family_after_seconds": 390,
+  "candidate_hosted_gates": "all applicable completed successfully",
+  "actual_local_adverse_controls": 7,
+  "native_artifact_digests_independently_verified": 15,
+  "platform_artifact_digests_independently_verified": 9,
+  "source_changes_by_final_reviewer": false,
+  "files_sha256": {
+    "final-verdict.md": "74820ac3b5d2679119f40f2ec16cfb70eae157b1c177a2c2bc018b8c1a28e786",
+    "final-source-review.json": "350ab9f03c029b1f7a22160755aa31b625b05eb4085f0fd087ab2b8bdc602ed7",
+    "adverse-git-process-report.json": "56453c52e60de1d399f67826ff2151f80834df3bb7d973fa4ecd09c1f98b42a3",
+    "native-final-spotcheck.json": "b5796e9b23264c2ae0645df8ae6396bf14fc5fab7fa5eea9962ec9530e499a1b",
+    "platform-final-spotcheck.json": "2c7dbfdd12bf6dd3d68d3821b53889b394c517e12556d6209e165c70b89e8f47",
+    "platform-gates-review.json": "97fc557026c0ab4abd5a2f17b243143e0f228210dea07dbc3a2921097585bbe3"
+  }
+}
