@@ -203,7 +203,7 @@ func run() -> void:
 	check(restored_panel.conversation_loaded and restored_panel.conversation.size() == original_count+75
 		and DirAccess.get_files_at("user://art-pending-history").is_empty(),
 		"restart restores all 75 receipts exactly once and removes committed journal files")
-	var ordered := restored_panel.conversation.size() == original_count+75
+	var ordered: bool = restored_panel.conversation.size() == original_count+75
 	if ordered:
 		for index in range(75):
 			if not str(restored_panel.conversation[original_count+index].content).contains("durable-%03d" % index):
