@@ -31,8 +31,19 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           path: workspace/source
-          lfs: true
+          lfs: false
           fetch-depth: 0
+      - name: Reject stale native provenance before full docs/history validation
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          python3 tools/ci/ci_opt_runtime_preflight.py --platform both --expect-sha "$GITHUB_SHA"
+      - name: Materialize original Git LFS objects only for admitted source
+        timeout-minutes: 15
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include='*' --exclude=''
       - name: Validate active CI provider policy
         run: timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/ci/check_ci_provider_policy.py
       - name: Test CI provider policy checker
