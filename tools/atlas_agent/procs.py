@@ -14,7 +14,8 @@ from pathlib import Path
 from .errors import SandboxViolation
 
 _ENV_KEEP = ("PATH", "SYSTEMROOT", "SystemRoot", "WINDIR", "windir", "COMSPEC", "PATHEXT", "TEMP", "TMP", "TMPDIR",
-             "LANG", "LC_ALL", "SYSTEMDRIVE")
+             "LANG", "LC_ALL", "SYSTEMDRIVE", "DISPLAY", "XAUTHORITY", "LIBGL_ALWAYS_SOFTWARE",
+             "GODOT_SILENCE_ROOT_WARNING")
 ALLOWED_EXECUTABLE_NAMES = ("python", "node")
 
 

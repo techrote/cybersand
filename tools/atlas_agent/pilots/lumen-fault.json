@@ -1,0 +1,36 @@
+{
+  "source_sha": "c4aab63eed538a25687c66d368b0801d2d2e04d0",
+  "collection": "lumen-fault",
+  "lane": "terrain-art",
+  "description": "Curated source-reviewed gate shoulder/crown accents; drop all floating edits and preserve the cistern",
+  "rectangle_edits": [
+    {
+      "feature_id": "seal-gate",
+      "rectangles": [
+        [
+          2,
+          3,
+          20,
+          5,
+          100
+        ],
+        [
+          58,
+          1,
+          19,
+          7,
+          101
+        ],
+        [
+          23,
+          6,
+          3,
+          2,
+          65
+        ]
+      ],
+      "note": "Curated source-reviewed gate shoulder/crown accents; drop all floating edits and preserve the cistern"
+    }
+  ],
+  "edits": []
+}
