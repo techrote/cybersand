@@ -1,0 +1,58 @@
+{
+  "base": "10fe808ac7f6a4b9c07f7d168763b41957359e57",
+  "source_commit": "79b8a0a4a1c2ace435d709b35114ee7065c935e6",
+  "source_tree": "db1393c21a5e58137f06e6b6008f1001775da89f",
+  "source_parents": [
+    "10fe808ac7f6a4b9c07f7d168763b41957359e57"
+  ],
+  "request_commit": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f",
+  "request_tree": "a3312e00b971cf6859922b2b70eb8ed5da0f66b7",
+  "request_parents": [
+    "79b8a0a4a1c2ace435d709b35114ee7065c935e6"
+  ],
+  "source_delta_paths": [
+    "docs/operations/swarm45-mainline-integration.md",
+    "godot/scripts/workbench_reciprocal_panel.gd",
+    "godot/scripts/workbench_reciprocal_protocol.gd",
+    "godot/tests/swarm45_reciprocal_ui.gd",
+    "godot/tests/test_workbench_reciprocal_controller.gd",
+    "godot/tests/test_workbench_reciprocal_protocol.gd",
+    "tools/ci/test_swarm_package.py",
+    "tools/package_explore001_candidate.py",
+    "tools/swarm45/stage_source.py",
+    "tools/swarm45/test_source_stage.py"
+  ],
+  "request_delta_paths": [
+    ".github/swarm45-mainline-request.json"
+  ],
+  "five_reviewed_files": [
+    {
+      "path": "godot/scripts/workbench_reciprocal_protocol.gd",
+      "sha256": "1c2c4da1c379e83e1a01455a90eb899c7b98411d79eda75989a523ab395109d1",
+      "equal_at_source_and_request": true
+    },
+    {
+      "path": "godot/scripts/workbench_reciprocal_panel.gd",
+      "sha256": "b53951bad17ef2e50add2afccf8c0575aa143969fa6b06eb7f03635112d39413",
+      "equal_at_source_and_request": true
+    },
+    {
+      "path": "godot/tests/test_workbench_reciprocal_protocol.gd",
+      "sha256": "ece8fc6a491b06e8ee6adfc5d973150bb6099a6f54182632c0f05b567143222a",
+      "equal_at_source_and_request": true
+    },
+    {
+      "path": "godot/tests/test_workbench_reciprocal_controller.gd",
+      "sha256": "cbae21dfcd94a223c62a1cc136c0fc42958c69c61136403d898f6c4e012dadf5",
+      "equal_at_source_and_request": true
+    },
+    {
+      "path": "godot/tests/swarm45_reciprocal_ui.gd",
+      "sha256": "a57618ed8491431aee4865936077082ffcd2b62d52980a72374cb2443301fac8",
+      "equal_at_source_and_request": true
+    }
+  ],
+  "native_changes": "",
+  "source_review_report_sha256": "7acb555d8ca062720b5a4b9b73b032c6af3d896901da412442b82377c85bfed4",
+  "scope": "Exact committed source/hash checkpoint only; no hosted r3, package custody, publication or merge approval."
+}

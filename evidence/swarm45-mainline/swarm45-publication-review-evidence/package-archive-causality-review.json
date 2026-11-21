@@ -1,0 +1,96 @@
+{
+  "source": "10fe808ac7f6a4b9c07f7d168763b41957359e57",
+  "comparison_sha256": "56d45173db18aff795a92d2a5f9381f7e2d224604a1ffbd9ea5c0d3c520540f4",
+  "scope": "independent actual Git archive reconstruction and retained post-Godot byte comparison; Linux editor diagnosis, not Windows execution",
+  "records": [
+    {
+      "layout": "windows-archive",
+      "path": "godot/addons/godot-rapier2d/Radial2D.svg.import",
+      "original_git_sha256": "144414e0a3068759478e69d7af908620b3a396fb075944cf258cb5051d313d82",
+      "raw_before_sha256": "9b560fca94b9c53c16fe619e31cf80b4425dc0b7657bcd6f38af90843725543d",
+      "actual_after_sha256": "144414e0a3068759478e69d7af908620b3a396fb075944cf258cb5051d313d82",
+      "passed": true
+    },
+    {
+      "layout": "windows-archive",
+      "path": "godot/addons/godot-rapier2d/logo_square_2d.png.import",
+      "original_git_sha256": "2f5527b8bea78ee1ca403de3de46844b375a8f1fff140994171a75ebd79dfd07",
+      "raw_before_sha256": "e19e505076e4d2a7cce0af093d27f1e2d99c281ca21d5a584c38bd63b484bf48",
+      "actual_after_sha256": "2f5527b8bea78ee1ca403de3de46844b375a8f1fff140994171a75ebd79dfd07",
+      "passed": true
+    },
+    {
+      "layout": "windows-archive",
+      "path": "godot/addons/godot-rapier2d/icons/Fluid2D.svg.import",
+      "original_git_sha256": "f4624fa6418203f7d3f58a65703d450cd80f6900750736b72cd2b1215bdf5e2e",
+      "raw_before_sha256": "e2c800a9eac87c0989efe5aa646d16e2c75e665005250420b97ce1525e68d390",
+      "actual_after_sha256": "f4624fa6418203f7d3f58a65703d450cd80f6900750736b72cd2b1215bdf5e2e",
+      "passed": true
+    },
+    {
+      "layout": "windows-archive",
+      "path": "godot/addons/godot-rapier2d/icons/StateManager2D.svg.import",
+      "original_git_sha256": "3b4d1ae5b01aad5f1b62aef26fe06c09d6766d579e9d43bae3859b6686e644a0",
+      "raw_before_sha256": "7fe48849837bd7a399b92db5ca780e163bc00e1f7d8ead074b6a2c7a1bf26d90",
+      "actual_after_sha256": "3b4d1ae5b01aad5f1b62aef26fe06c09d6766d579e9d43bae3859b6686e644a0",
+      "passed": true
+    },
+    {
+      "layout": "canonical-archive",
+      "path": "godot/addons/godot-rapier2d/Radial2D.svg.import",
+      "original_git_sha256": "144414e0a3068759478e69d7af908620b3a396fb075944cf258cb5051d313d82",
+      "raw_before_sha256": "144414e0a3068759478e69d7af908620b3a396fb075944cf258cb5051d313d82",
+      "actual_after_sha256": "144414e0a3068759478e69d7af908620b3a396fb075944cf258cb5051d313d82",
+      "passed": true
+    },
+    {
+      "layout": "canonical-archive",
+      "path": "godot/addons/godot-rapier2d/logo_square_2d.png.import",
+      "original_git_sha256": "2f5527b8bea78ee1ca403de3de46844b375a8f1fff140994171a75ebd79dfd07",
+      "raw_before_sha256": "2f5527b8bea78ee1ca403de3de46844b375a8f1fff140994171a75ebd79dfd07",
+      "actual_after_sha256": "2f5527b8bea78ee1ca403de3de46844b375a8f1fff140994171a75ebd79dfd07",
+      "passed": true
+    },
+    {
+      "layout": "canonical-archive",
+      "path": "godot/addons/godot-rapier2d/icons/Fluid2D.svg.import",
+      "original_git_sha256": "f4624fa6418203f7d3f58a65703d450cd80f6900750736b72cd2b1215bdf5e2e",
+      "raw_before_sha256": "f4624fa6418203f7d3f58a65703d450cd80f6900750736b72cd2b1215bdf5e2e",
+      "actual_after_sha256": "f4624fa6418203f7d3f58a65703d450cd80f6900750736b72cd2b1215bdf5e2e",
+      "passed": true
+    },
+    {
+      "layout": "canonical-archive",
+      "path": "godot/addons/godot-rapier2d/icons/StateManager2D.svg.import",
+      "original_git_sha256": "3b4d1ae5b01aad5f1b62aef26fe06c09d6766d579e9d43bae3859b6686e644a0",
+      "raw_before_sha256": "3b4d1ae5b01aad5f1b62aef26fe06c09d6766d579e9d43bae3859b6686e644a0",
+      "actual_after_sha256": "3b4d1ae5b01aad5f1b62aef26fe06c09d6766d579e9d43bae3859b6686e644a0",
+      "passed": true
+    }
+  ],
+  "checkpoint_files_sha256_canonical_lf": {
+    "tools/package_explore001_candidate.py": "e5b384b89a01cad341e8b43bd27b281a134e30cbae448565ac8b484af3ab8cb8",
+    "tools/ci/test_swarm_package.py": "e6521db2b99d3ce2978cd5dc4177ebeb5d319587e3c2636decb831b1b7808f0f",
+    "tools/swarm45/stage_source.py": "3325a7ecbf0b0846187bd87551b65c07123a79dcd24bc6e7cc72e734279f474d",
+    "tools/swarm45/test_source_stage.py": "5428209ac7da0bcc2432ee6463527d5bf74086b0d188fc707b758acb4076e49e"
+  },
+  "passed": true,
+  "independently_executed_tests": {
+    "swarm_package": {
+      "passed": 2,
+      "failed": 0
+    },
+    "swarm45_helpers": {
+      "passed": 25,
+      "failed": 0
+    }
+  },
+  "integrity_guards_unchanged_from_10fe": [
+    "tools/swarm45/runtime_custody.py",
+    "tools/swarm45/shared.py",
+    "tools/swarm45/package_owner.py",
+    "tools/swarm45/publication_candidate.py",
+    "tools/swarm45/publish_runtime.py"
+  ],
+  "verdict": "GO for four-file source delta to freeze/requalify; Windows hosted lifecycle result still pending"
+}

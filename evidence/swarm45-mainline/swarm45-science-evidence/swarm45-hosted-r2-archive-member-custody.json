@@ -1,0 +1,13 @@
+{
+  "scope": "Direct archive member to extracted evidence/payload byte comparison; no GUI/package acceptance",
+  "verified": {
+    "linux-evidence.zip": {
+      "scientific_native_members_byte_matched": 419,
+      "member_bytes": 117340098
+    },
+    "linux-runtime.zip": {
+      "scientific_native_members_byte_matched": 16,
+      "member_bytes": 334996787
+    }
+  }
+}

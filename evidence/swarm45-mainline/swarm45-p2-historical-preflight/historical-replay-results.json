@@ -1,0 +1,102 @@
+[
+  {
+    "case": "r1_transaction",
+    "exit": 0,
+    "seconds": 9.619030216999818,
+    "scope": "local P2 GDScript delta; hosted r2 native runtime; Godot4.7 Linux headless diagnostic; no hosted graphical qualification",
+    "original_hashes": {
+      "/workspace/scratch/038267c40e11/swarm45-hosted-r1/windows-source/windows-source/transaction/profile/roaming/Godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-swarm004-interactive-evaluation.json": "9f672a4ade2e34385174d6286f4c733d97cdaf9e102ff33b534e379d27e7b212",
+      "/workspace/scratch/038267c40e11/swarm45-hosted-r1/windows-source/windows-source/transaction/profile/roaming/Godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-swarm004-interactive-evaluation.json.swarm004.json": "97ffaa579a2337e6813dd4fb01584d9900e00780769e218781ac935b576aeebb",
+      "/workspace/scratch/038267c40e11/swarm45-hosted-r1/windows-source/windows-source/transaction/profile/roaming/Godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-swarm004-interactive-evaluation.json.swarm004-evidence.json": "c2acf68bf1620f1ef8ea099097b2fcf9009b40e7a87bb2bd6564fa6760b3dd85"
+    },
+    "originals_unchanged": true,
+    "loaded_copies_unchanged": true,
+    "checks": 13,
+    "completed": true,
+    "failures": [],
+    "native_can_apply": true,
+    "historical_only": true,
+    "controller_phase": "historical",
+    "apply_disabled": true,
+    "undo_disabled": true,
+    "native_planes_sha256": {
+      "expected": "2a7166559b1e23af4a2324ebe088db99727d045c1564da62d79f803939c02fc6",
+      "reopened": "2a7166559b1e23af4a2324ebe088db99727d045c1564da62d79f803939c02fc6"
+    }
+  },
+  {
+    "case": "r1_reciprocal",
+    "exit": 0,
+    "seconds": 10.830524482997134,
+    "scope": "local P2 GDScript delta; hosted r2 native runtime; Godot4.7 Linux headless diagnostic; no hosted graphical qualification",
+    "original_hashes": {
+      "/workspace/scratch/038267c40e11/swarm45-hosted-r1/windows-source/windows-source/reciprocal/profile/roaming/Godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-swarm004-interactive-evaluation.json": "29c7944db2ea21d947361ccbe8d3ab1e51bdca19fc30aefa9a16af7356ad0c81",
+      "/workspace/scratch/038267c40e11/swarm45-hosted-r1/windows-source/windows-source/reciprocal/profile/roaming/Godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-swarm004-interactive-evaluation.json.swarm004.json": "71bdad51f188089811ff51923013a998b080255928d2daf6b7e1b676075ef173",
+      "/workspace/scratch/038267c40e11/swarm45-hosted-r1/windows-source/windows-source/reciprocal/profile/roaming/Godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-swarm004-interactive-evaluation.json.swarm004-evidence.json": "0426ae950b65d783c65b0c23ac6c72d07d37c118aa7544f34b00d66962e05c66"
+    },
+    "originals_unchanged": true,
+    "loaded_copies_unchanged": true,
+    "checks": 14,
+    "completed": true,
+    "failures": [],
+    "native_can_apply": true,
+    "historical_only": true,
+    "controller_phase": "historical",
+    "apply_disabled": true,
+    "undo_disabled": true,
+    "native_planes_sha256": {
+      "expected": "ef057497c4d7ff17cb3dbe0b99bb64771406223cab7743351bda0161302ea436",
+      "reopened": "ef057497c4d7ff17cb3dbe0b99bb64771406223cab7743351bda0161302ea436"
+    }
+  },
+  {
+    "case": "r1_swarm005_irregular",
+    "exit": 0,
+    "seconds": 11.073968598000647,
+    "scope": "local P2 GDScript delta; hosted r2 native runtime; Godot4.7 Linux headless diagnostic; no hosted graphical qualification",
+    "original_hashes": {
+      "/workspace/scratch/038267c40e11/swarm45-hosted-r1/windows-source/windows-source/swarm005_irregular/profile/roaming/Godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-swarm005-v3-irregular-evaluation.json": "d79d4b0726d9b46e1049399a4766e88bf90e571d0bfc77193f1221d7b3d00dfe",
+      "/workspace/scratch/038267c40e11/swarm45-hosted-r1/windows-source/windows-source/swarm005_irregular/profile/roaming/Godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-swarm005-v3-irregular-evaluation.json.swarm004.json": "10002b67649b3c7df8b4053b26ee99a537ffb9c70194779a37beef5fee6c2295",
+      "/workspace/scratch/038267c40e11/swarm45-hosted-r1/windows-source/windows-source/swarm005_irregular/profile/roaming/Godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-swarm005-v3-irregular-evaluation.json.swarm004-evidence.json": "ffc1dc4b4db77cf4019fb7bf7f831ac2b55ed1d36a44c5f402f7c6a1170350e3"
+    },
+    "originals_unchanged": true,
+    "loaded_copies_unchanged": true,
+    "checks": 13,
+    "completed": true,
+    "failures": [],
+    "native_can_apply": true,
+    "historical_only": true,
+    "controller_phase": "historical",
+    "apply_disabled": true,
+    "undo_disabled": true,
+    "native_planes_sha256": {
+      "expected": "88d708134222eca62c33aeb36854a0abd329c338aa0883e87721bd38044f38ab",
+      "reopened": "88d708134222eca62c33aeb36854a0abd329c338aa0883e87721bd38044f38ab"
+    }
+  },
+  {
+    "case": "legacy697_irregular",
+    "exit": 0,
+    "seconds": 11.063339063999592,
+    "scope": "local P2 GDScript delta; hosted r2 native runtime; Godot4.7 Linux headless diagnostic; no hosted graphical qualification",
+    "original_hashes": {
+      "/workspace/scratch/038267c40e11/swarm45-p2-historical-preflight/legacy697-source/setup-swarm005-v3-irregular-evaluation.json": "d79d4b0726d9b46e1049399a4766e88bf90e571d0bfc77193f1221d7b3d00dfe",
+      "/workspace/scratch/038267c40e11/swarm45-p2-historical-preflight/legacy697-source/setup-swarm005-v3-irregular-evaluation.json.swarm004.json": "9b66db960bf120a958d189b990791c60d74e8c01ce65332650f5af6dd4f8fb13",
+      "/workspace/scratch/038267c40e11/swarm45-p2-historical-preflight/legacy697-source/setup-swarm005-v3-irregular-evaluation.json.swarm004-evidence.json": "20a855697f6991231403e408b11b81af7370856b9c440fa341d75307fc0d5bb5"
+    },
+    "originals_unchanged": true,
+    "loaded_copies_unchanged": true,
+    "checks": 13,
+    "completed": true,
+    "failures": [],
+    "native_can_apply": true,
+    "historical_only": true,
+    "controller_phase": "historical",
+    "apply_disabled": true,
+    "undo_disabled": true,
+    "native_planes_sha256": {
+      "expected": "88d708134222eca62c33aeb36854a0abd329c338aa0883e87721bd38044f38ab",
+      "reopened": "88d708134222eca62c33aeb36854a0abd329c338aa0883e87721bd38044f38ab"
+    }
+  }
+]

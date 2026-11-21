@@ -1,0 +1,252 @@
+{
+  "schema": 1,
+  "task": "SWARM004/005 P2 bounded historical saved inspection compatibility",
+  "source_base": "10fe808ac7f6a4b9c07f7d168763b41957359e57",
+  "source_status": "uncommitted local P2 Godot delta; no commits or remote actions by Workbench engineer",
+  "native_definition": "217bfa716e61198f5b3849f2ae14c30e85bc9f623fc1d05438c59df2296ce7f7",
+  "native_code_changed": false,
+  "source_sha256": {
+    "godot/scripts/workbench_reciprocal_protocol.gd": "1c2c4da1c379e83e1a01455a90eb899c7b98411d79eda75989a523ab395109d1",
+    "godot/scripts/workbench_reciprocal_panel.gd": "b53951bad17ef2e50add2afccf8c0575aa143969fa6b06eb7f03635112d39413",
+    "godot/tests/test_workbench_reciprocal_protocol.gd": "ece8fc6a491b06e8ee6adfc5d973150bb6099a6f54182632c0f05b567143222a",
+    "godot/tests/test_workbench_reciprocal_controller.gd": "cbae21dfcd94a223c62a1cc136c0fc42958c69c61136403d898f6c4e012dadf5",
+    "godot/tests/swarm45_reciprocal_ui.gd": "a57618ed8491431aee4865936077082ffcd2b62d52980a72374cb2443301fac8"
+  },
+  "patch": {
+    "path": "/workspace/scratch/038267c40e11/swarm45-p2-historical-preflight/historical-inspection.patch",
+    "sha256": "b8a18d69c587ed4a9a376ec0e532f122c7b3e8ff7674b8ec33fe0b3087826a99"
+  },
+  "runtime": {
+    "scope": "Godot4.7 exact engine and verified hosted-r2 source10fe native CLI/adapter; local P2 GDScript delta and Linux headless diagnostics only; not hosted qualification",
+    "source_base": "10fe808ac7f6a4b9c07f7d168763b41957359e57",
+    "refreshed_source_files": 851,
+    "files": {
+      "scripts/workbench_reciprocal_protocol.gd": "1c2c4da1c379e83e1a01455a90eb899c7b98411d79eda75989a523ab395109d1",
+      "scripts/workbench_reciprocal_panel.gd": "b53951bad17ef2e50add2afccf8c0575aa143969fa6b06eb7f03635112d39413",
+      "tests/test_workbench_reciprocal_protocol.gd": "ece8fc6a491b06e8ee6adfc5d973150bb6099a6f54182632c0f05b567143222a",
+      "tests/test_workbench_reciprocal_controller.gd": "cbae21dfcd94a223c62a1cc136c0fc42958c69c61136403d898f6c4e012dadf5",
+      "tests/swarm45_reciprocal_ui.gd": "a57618ed8491431aee4865936077082ffcd2b62d52980a72374cb2443301fac8"
+    },
+    "native_build_source": "10fe808ac7f6a4b9c07f7d168763b41957359e57",
+    "native_definition": "217bfa716e61198f5b3849f2ae14c30e85bc9f623fc1d05438c59df2296ce7f7",
+    "native_files": {
+      "gentek_reciprocal": {
+        "bytes": 1312360,
+        "sha256": "a3690011da97b12a6bfdc8d461e33dde9f98c1418fef89a3f3de994bd239da53"
+      },
+      "libcybersand_native.linux.x86_64.so": {
+        "bytes": 5278840,
+        "sha256": "1db5702cf59f02d1ca4b6e7c0b34a73f3d106e67cec73b4901c0c10cd4c1cbb1"
+      }
+    }
+  },
+  "tests": {
+    "protocol": {
+      "checks": 182,
+      "completed": true,
+      "failures": [],
+      "scope": "transport/admission only"
+    },
+    "controller": {
+      "checks": 40,
+      "completed": true,
+      "failures": [],
+      "reciprocal_acceptance": false,
+      "scope": "private mechanical transaction/history/Undo/Save seam; can_apply=false"
+    },
+    "historical_replays": [
+      {
+        "case": "r1_transaction",
+        "exit": 0,
+        "seconds": 9.619030216999818,
+        "scope": "local P2 GDScript delta; hosted r2 native runtime; Godot4.7 Linux headless diagnostic; no hosted graphical qualification",
+        "original_hashes": {
+          "/workspace/scratch/038267c40e11/swarm45-hosted-r1/windows-source/windows-source/transaction/profile/roaming/Godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-swarm004-interactive-evaluation.json": "9f672a4ade2e34385174d6286f4c733d97cdaf9e102ff33b534e379d27e7b212",
+          "/workspace/scratch/038267c40e11/swarm45-hosted-r1/windows-source/windows-source/transaction/profile/roaming/Godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-swarm004-interactive-evaluation.json.swarm004.json": "97ffaa579a2337e6813dd4fb01584d9900e00780769e218781ac935b576aeebb",
+          "/workspace/scratch/038267c40e11/swarm45-hosted-r1/windows-source/windows-source/transaction/profile/roaming/Godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-swarm004-interactive-evaluation.json.swarm004-evidence.json": "c2acf68bf1620f1ef8ea099097b2fcf9009b40e7a87bb2bd6564fa6760b3dd85"
+        },
+        "originals_unchanged": true,
+        "loaded_copies_unchanged": true,
+        "checks": 13,
+        "completed": true,
+        "failures": [],
+        "native_can_apply": true,
+        "historical_only": true,
+        "controller_phase": "historical",
+        "apply_disabled": true,
+        "undo_disabled": true,
+        "native_planes_sha256": {
+          "expected": "2a7166559b1e23af4a2324ebe088db99727d045c1564da62d79f803939c02fc6",
+          "reopened": "2a7166559b1e23af4a2324ebe088db99727d045c1564da62d79f803939c02fc6"
+        }
+      },
+      {
+        "case": "r1_reciprocal",
+        "exit": 0,
+        "seconds": 10.830524482997134,
+        "scope": "local P2 GDScript delta; hosted r2 native runtime; Godot4.7 Linux headless diagnostic; no hosted graphical qualification",
+        "original_hashes": {
+          "/workspace/scratch/038267c40e11/swarm45-hosted-r1/windows-source/windows-source/reciprocal/profile/roaming/Godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-swarm004-interactive-evaluation.json": "29c7944db2ea21d947361ccbe8d3ab1e51bdca19fc30aefa9a16af7356ad0c81",
+          "/workspace/scratch/038267c40e11/swarm45-hosted-r1/windows-source/windows-source/reciprocal/profile/roaming/Godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-swarm004-interactive-evaluation.json.swarm004.json": "71bdad51f188089811ff51923013a998b080255928d2daf6b7e1b676075ef173",
+          "/workspace/scratch/038267c40e11/swarm45-hosted-r1/windows-source/windows-source/reciprocal/profile/roaming/Godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-swarm004-interactive-evaluation.json.swarm004-evidence.json": "0426ae950b65d783c65b0c23ac6c72d07d37c118aa7544f34b00d66962e05c66"
+        },
+        "originals_unchanged": true,
+        "loaded_copies_unchanged": true,
+        "checks": 14,
+        "completed": true,
+        "failures": [],
+        "native_can_apply": true,
+        "historical_only": true,
+        "controller_phase": "historical",
+        "apply_disabled": true,
+        "undo_disabled": true,
+        "native_planes_sha256": {
+          "expected": "ef057497c4d7ff17cb3dbe0b99bb64771406223cab7743351bda0161302ea436",
+          "reopened": "ef057497c4d7ff17cb3dbe0b99bb64771406223cab7743351bda0161302ea436"
+        }
+      },
+      {
+        "case": "r1_swarm005_irregular",
+        "exit": 0,
+        "seconds": 11.073968598000647,
+        "scope": "local P2 GDScript delta; hosted r2 native runtime; Godot4.7 Linux headless diagnostic; no hosted graphical qualification",
+        "original_hashes": {
+          "/workspace/scratch/038267c40e11/swarm45-hosted-r1/windows-source/windows-source/swarm005_irregular/profile/roaming/Godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-swarm005-v3-irregular-evaluation.json": "d79d4b0726d9b46e1049399a4766e88bf90e571d0bfc77193f1221d7b3d00dfe",
+          "/workspace/scratch/038267c40e11/swarm45-hosted-r1/windows-source/windows-source/swarm005_irregular/profile/roaming/Godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-swarm005-v3-irregular-evaluation.json.swarm004.json": "10002b67649b3c7df8b4053b26ee99a537ffb9c70194779a37beef5fee6c2295",
+          "/workspace/scratch/038267c40e11/swarm45-hosted-r1/windows-source/windows-source/swarm005_irregular/profile/roaming/Godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-swarm005-v3-irregular-evaluation.json.swarm004-evidence.json": "ffc1dc4b4db77cf4019fb7bf7f831ac2b55ed1d36a44c5f402f7c6a1170350e3"
+        },
+        "originals_unchanged": true,
+        "loaded_copies_unchanged": true,
+        "checks": 13,
+        "completed": true,
+        "failures": [],
+        "native_can_apply": true,
+        "historical_only": true,
+        "controller_phase": "historical",
+        "apply_disabled": true,
+        "undo_disabled": true,
+        "native_planes_sha256": {
+          "expected": "88d708134222eca62c33aeb36854a0abd329c338aa0883e87721bd38044f38ab",
+          "reopened": "88d708134222eca62c33aeb36854a0abd329c338aa0883e87721bd38044f38ab"
+        }
+      },
+      {
+        "case": "legacy697_irregular",
+        "exit": 0,
+        "seconds": 11.063339063999592,
+        "scope": "local P2 GDScript delta; hosted r2 native runtime; Godot4.7 Linux headless diagnostic; no hosted graphical qualification",
+        "original_hashes": {
+          "/workspace/scratch/038267c40e11/swarm45-p2-historical-preflight/legacy697-source/setup-swarm005-v3-irregular-evaluation.json": "d79d4b0726d9b46e1049399a4766e88bf90e571d0bfc77193f1221d7b3d00dfe",
+          "/workspace/scratch/038267c40e11/swarm45-p2-historical-preflight/legacy697-source/setup-swarm005-v3-irregular-evaluation.json.swarm004.json": "9b66db960bf120a958d189b990791c60d74e8c01ce65332650f5af6dd4f8fb13",
+          "/workspace/scratch/038267c40e11/swarm45-p2-historical-preflight/legacy697-source/setup-swarm005-v3-irregular-evaluation.json.swarm004-evidence.json": "20a855697f6991231403e408b11b81af7370856b9c440fa341d75307fc0d5bb5"
+        },
+        "originals_unchanged": true,
+        "loaded_copies_unchanged": true,
+        "checks": 13,
+        "completed": true,
+        "failures": [],
+        "native_can_apply": true,
+        "historical_only": true,
+        "controller_phase": "historical",
+        "apply_disabled": true,
+        "undo_disabled": true,
+        "native_planes_sha256": {
+          "expected": "88d708134222eca62c33aeb36854a0abd329c338aa0883e87721bd38044f38ab",
+          "reopened": "88d708134222eca62c33aeb36854a0abd329c338aa0883e87721bd38044f38ab"
+        }
+      }
+    ],
+    "current_generation": [
+      [
+        {
+          "case": "current217_transaction",
+          "mode": "create",
+          "exit": 0,
+          "seconds": 33.74139817899413,
+          "scope": "P2 local GDScript delta with exact hosted-r2 source10fe CLI+adapter; Godot4.7 headless diagnostic only",
+          "checks": 96,
+          "completed": true,
+          "failures": [],
+          "controller_phase": "installed",
+          "historical_only": false,
+          "apply_disabled": true,
+          "native_can_apply": true,
+          "native_source": {
+            "ok": true,
+            "path": "/workspace/scratch/038267c40e11/swarm45-hosted-r2/linux-runtime/gentek_reciprocal",
+            "sha256": "a3690011da97b12a6bfdc8d461e33dde9f98c1418fef89a3f3de994bd239da53",
+            "source": "10fe808ac7f6a4b9c07f7d168763b41957359e57"
+          },
+          "native_planes_sha256": {
+            "applied": "2a7166559b1e23af4a2324ebe088db99727d045c1564da62d79f803939c02fc6",
+            "baseline": "07854d2fef297a06ba81685e660c332de36d5d18d546927d30daad6d7fda1541",
+            "expected": "2a7166559b1e23af4a2324ebe088db99727d045c1564da62d79f803939c02fc6",
+            "preview": "07854d2fef297a06ba81685e660c332de36d5d18d546927d30daad6d7fda1541",
+            "regenerated": "2a7166559b1e23af4a2324ebe088db99727d045c1564da62d79f803939c02fc6",
+            "saved": "2a7166559b1e23af4a2324ebe088db99727d045c1564da62d79f803939c02fc6",
+            "undone": "07854d2fef297a06ba81685e660c332de36d5d18d546927d30daad6d7fda1541"
+          },
+          "script_sha256": "a57618ed8491431aee4865936077082ffcd2b62d52980a72374cb2443301fac8"
+        },
+        {
+          "case": "current217_transaction",
+          "mode": "reopen",
+          "exit": 0,
+          "seconds": 8.3814562119951,
+          "scope": "P2 local GDScript delta with exact hosted-r2 source10fe CLI+adapter; Godot4.7 headless diagnostic only",
+          "checks": 13,
+          "completed": true,
+          "failures": [],
+          "controller_phase": "historical",
+          "historical_only": true,
+          "apply_disabled": true,
+          "native_can_apply": true,
+          "native_source": {
+            "sha256": "a3690011da97b12a6bfdc8d461e33dde9f98c1418fef89a3f3de994bd239da53",
+            "source": "10fe808ac7f6a4b9c07f7d168763b41957359e57"
+          },
+          "native_planes_sha256": {
+            "expected": "2a7166559b1e23af4a2324ebe088db99727d045c1564da62d79f803939c02fc6",
+            "reopened": "2a7166559b1e23af4a2324ebe088db99727d045c1564da62d79f803939c02fc6"
+          },
+          "script_sha256": "a57618ed8491431aee4865936077082ffcd2b62d52980a72374cb2443301fac8"
+        }
+      ],
+      [
+        {
+          "case": "r1_to_current217_recovery",
+          "mode": "reopen",
+          "exit": 0,
+          "seconds": 13.007691803002672,
+          "scope": "P2 local GDScript delta with exact hosted-r2 source10fe CLI+adapter; Godot4.7 headless diagnostic only",
+          "checks": 24,
+          "completed": true,
+          "failures": [],
+          "controller_phase": "ready",
+          "historical_only": false,
+          "apply_disabled": false,
+          "native_can_apply": true,
+          "native_source": {
+            "ok": true,
+            "path": "/workspace/scratch/038267c40e11/swarm45-hosted-r2/linux-runtime/gentek_reciprocal",
+            "sha256": "a3690011da97b12a6bfdc8d461e33dde9f98c1418fef89a3f3de994bd239da53",
+            "source": "10fe808ac7f6a4b9c07f7d168763b41957359e57"
+          },
+          "native_planes_sha256": {
+            "expected": "2a7166559b1e23af4a2324ebe088db99727d045c1564da62d79f803939c02fc6",
+            "reopened": "2a7166559b1e23af4a2324ebe088db99727d045c1564da62d79f803939c02fc6"
+          },
+          "script_sha256": "f45a3a2371c6de5332456fa988cabd7c7ecef1c8ed910582bc7a48d77a8f85d8"
+        }
+      ]
+    ],
+    "recovery_original_copy_hashes_unchanged": true
+  },
+  "limitations": [
+    "Local Godot4.7 Linux headless diagnostics with verified hosted-r2 native binaries; no new hosted graphical acceptance claimed.",
+    "Genuine #697 and r1 saved records were exercised; #693 is represented by controlled transport fixtures and an independent immutable donor schema review, not an unavailable genuine saved triple.",
+    "Historical native can_apply is preserved as evidence only; historical_only controller authority forbids Apply/submission/attestation/Undo until a successful fresh current-source generation.",
+    "No historical files, native definition inputs, production defaults, or startup timeout were changed.",
+    "Independent review and required exact-source hosted gates remain owned by root."
+  ]
+}

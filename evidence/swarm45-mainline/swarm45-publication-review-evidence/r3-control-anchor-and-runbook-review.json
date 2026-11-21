@@ -1,0 +1,29 @@
+{
+  "control_head": "bb045b5c0463f34e4e468fe27f0692cd29ea1607",
+  "control_parent": "10fe808ac7f6a4b9c07f7d168763b41957359e57",
+  "control_anchor": "10fe808ac7f6a4b9c07f7d168763b41957359e57",
+  "accepted_main": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+  "live_branch_confirmed_read_only": true,
+  "committed_control_files_sha256": {
+    ".github/workflows/swarm45-final-admission-dispatch.yml": "f4f331d52a0f4a2bfe69b3ebd6d54244c6e3960f20e300796db1e31b00795fe0",
+    "tools/swarm45_control/dispatch_final_admission.py": "59ed14452307d411d26aa09f043cb6f65606044e61dbbc9b065b9d6e0b31a06f",
+    "tools/swarm45_control/test_dispatch_final_admission.py": "919f752c2c70e1e154fb17eaf9531d482e9ce5589093f1bc5dbcd067399f8135"
+  },
+  "unchanged_anchor_workflow_files_sha256": {
+    "documentation.yml": "934ebe4f8f749e9ca222a00f5ac7b5445cb8308c882aab8fe86d72198da26960",
+    "native.yml": "7cfb1aed6ae2b810e77812444340f6a8844cb480c05a8f218d45ddee76e18379",
+    "gdextension.yml": "f85126b7daa01f53deee591bcb9f8e1dc2271f192d41a1a515ab4694133ab516",
+    "palette-shader-qualification.yml": "42d7b10cbb805d6b2a8ece873e97932e43b09af8c3b26cf9ba1db1876d7568d0",
+    "play-desktop-packet.yml": "db9a0ea6bcd3ec3d3d404d2b072e98fe89fb522d2e37ec52bc8a1805d2602fbc",
+    "swarm45-runtime-publication.yml": "f23273d24b1d457b96e08f0b35adfe104a6c962e781cd23923130c27570673da"
+  },
+  "runbook_delta_sha256": "d84f6d187a80612ba9ede07be9bff47b4dc4d7783b8dcf9b5f5ed24c6df58cc5",
+  "anchor_verdict": "Retain10fe; descendant qualification is intentional. No repin or merge of r3 into control branch required.",
+  "documentation_verdict": "GO for current runbook delta; native historical-inspection implementation reviewed separately",
+  "conditions": [
+    "r3 qualification source remains descendant of10fe and accepted846 main",
+    "five fixed final workflows and publisher bytes remain unchanged",
+    "new qualification/publication exact source, artifacts, ledgers and liveleases must pass",
+    "no dispatch before successful runtime publication; no hosted/mergeGO"
+  ]
+}

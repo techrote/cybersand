@@ -1,0 +1,102 @@
+{
+  "scope": "Hosted native synthetic V3 cases, not original owner map/NVIDIA acceptance",
+  "result": "PASS",
+  "cases": [
+    {
+      "file": "viaduct_like-cap0-receptor0.json",
+      "sha256": "64b5529ec1da2cced8f1bb33342966500b141a3dea62efb8f10632795edae914",
+      "profile": "viaduct_like",
+      "compact": 0,
+      "supported": 0,
+      "status": "blocked",
+      "can_apply": false,
+      "still_required": 1,
+      "joints": 0,
+      "native_material_cells": 6035
+    },
+    {
+      "file": "viaduct_like-cap1-receptor0.json",
+      "sha256": "92ee4d8edfbfae83bb7a84a8a5043b35a54e5b92cf49da354172085f582c46d9",
+      "profile": "viaduct_like",
+      "compact": 1,
+      "supported": 0,
+      "status": "blocked",
+      "can_apply": false,
+      "still_required": 1,
+      "joints": 0,
+      "native_material_cells": 6035
+    },
+    {
+      "file": "viaduct_like-cap0-receptor1.json",
+      "sha256": "22b299ecbf86c2f02a24fc08a5ee6d307ceae0cbbb75b14246e3b5eb89b66522",
+      "profile": "viaduct_like",
+      "compact": 0,
+      "supported": 1,
+      "status": "blocked",
+      "can_apply": false,
+      "still_required": 1,
+      "joints": 0,
+      "native_material_cells": 6035
+    },
+    {
+      "file": "viaduct_like-cap1-receptor1.json",
+      "sha256": "0ec171c82bca5e6cb26ea818b289e4375971ea7918895f56bcdd891b819b1174",
+      "profile": "viaduct_like",
+      "compact": 1,
+      "supported": 1,
+      "status": "blocked",
+      "can_apply": false,
+      "still_required": 1,
+      "joints": 0,
+      "native_material_cells": 6035
+    },
+    {
+      "file": "irregular_megastructure-cap0-receptor0.json",
+      "sha256": "96ddbe462668f05517fa50b388c4dcdf4d420726272437907a2680366a5ef51b",
+      "profile": "irregular_megastructure",
+      "compact": 0,
+      "supported": 0,
+      "status": "blocked",
+      "can_apply": false,
+      "still_required": 1,
+      "joints": 0,
+      "native_material_cells": 6034
+    },
+    {
+      "file": "irregular_megastructure-cap1-receptor0.json",
+      "sha256": "4569c1625417f905c4d78e63ac95fb4d4e50b1a1dbba31625ae4d4e674c4650e",
+      "profile": "irregular_megastructure",
+      "compact": 1,
+      "supported": 0,
+      "status": "complete",
+      "can_apply": true,
+      "still_required": 0,
+      "joints": 0,
+      "native_material_cells": 6026
+    },
+    {
+      "file": "irregular_megastructure-cap0-receptor1.json",
+      "sha256": "54d1bbde00fbe846a0968345cbf75d114549e44efa374d43775c9a4ea7b40186",
+      "profile": "irregular_megastructure",
+      "compact": 0,
+      "supported": 1,
+      "status": "blocked",
+      "can_apply": false,
+      "still_required": 1,
+      "joints": 0,
+      "native_material_cells": 6034
+    },
+    {
+      "file": "irregular_megastructure-cap1-receptor1.json",
+      "sha256": "823b1ef791eb4508e8340986e44873a4424a589f86263de346ad3d132e0be862",
+      "profile": "irregular_megastructure",
+      "compact": 1,
+      "supported": 1,
+      "status": "complete",
+      "can_apply": true,
+      "still_required": 0,
+      "joints": 0,
+      "native_material_cells": 6026
+    }
+  ]
+}
