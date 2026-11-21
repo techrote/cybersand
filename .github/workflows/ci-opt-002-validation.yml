@@ -1,0 +1,59 @@
+name: CI-OPT-002 fast contract qualification
+on:
+  push:
+    branches: [ci/ci-opt-002-finisher-20261121]
+    paths:
+      - 'tools/ci/ci_opt_*'
+      - 'tools/ci/test_ci_opt_*'
+      - '.github/workflows/ci-opt-002-validation.yml'
+      - '.github/workflows/gentek80-water-merged-requalification.yml'
+      - '.github/workflows/documentation.yml'
+      - '.github/workflows/palette-shader-qualification.yml'
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'tools/ci/ci_opt_*'
+      - 'tools/ci/test_ci_opt_*'
+      - '.github/workflows/ci-opt-002-validation.yml'
+      - '.github/workflows/gentek80-water-merged-requalification.yml'
+      - '.github/workflows/documentation.yml'
+      - '.github/workflows/palette-shader-qualification.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-opt-002-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  policy-fixtures:
+    name: Source gates, cost accounting and workflow safety contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - name: Check out exact source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          lfs: false
+      - name: Compile fast preflights and run adversarial fixtures
+        run: |
+          set -euo pipefail
+          python3 -m py_compile tools/ci/ci_opt_runtime_preflight.py tools/ci/ci_opt_run_audit.py
+          python3 -m unittest discover -s tools/ci -p 'test_ci_opt_*.py' -v
+      - name: Preserve GitHub-hosted CI provider policy
+        run: |
+          set -euo pipefail
+          python3 tools/ci/check_ci_provider_policy.py
+      - name: Retain checked scripts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ci-opt-002-fast-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            tools/ci/ci_opt_runtime_preflight.py
+            tools/ci/ci_opt_run_audit.py
+          if-no-files-found: error
+          retention-days: 30
