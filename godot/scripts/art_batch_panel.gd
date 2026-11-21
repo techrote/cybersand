@@ -76,7 +76,7 @@ var history_load_error := ""
 # after explicit Art restoration, and never treated as an archive themselves.
 const HISTORY_RECEIPT_DIR := "user://art-pending-history"
 const MAX_HISTORY_RECEIPT_BYTES := 262144
-var _history_receipt_clock_us := 0
+static var _history_receipt_clock_us := 0
 var pending_history_receipts: Array[Dictionary] = []
 var context_mode := OptionButton.new()
 var turn_limit := SpinBox.new()
@@ -804,7 +804,7 @@ func _history_receipt_source() -> String:
 	if not _pending_traffic_path.is_empty(): return _pending_traffic_path
 	return provider.parent_log_path
 
-func _persist_history_receipt(item: Dictionary) -> bool:
+static func _persist_history_receipt(item: Dictionary) -> bool:
 	if not Provider.valid_traffic_path(str(item.source)): return false
 	var payload := (JSON.stringify(item)+"\n").to_utf8_buffer()
 	if payload.size() > MAX_HISTORY_RECEIPT_BYTES: return false
@@ -824,17 +824,32 @@ func _persist_history_receipt(item: Dictionary) -> bool:
 	DirAccess.remove_absolute(temporary)
 	return false
 
-func _queue_history_receipt(receipt: Dictionary, epoch: int) -> void:
+static func _make_history_receipt(receipt: Dictionary, epoch: int, source: String, masker: Node) -> Dictionary:
 	var tick := maxi(int(Time.get_unix_time_from_system()*1000000.0),_history_receipt_clock_us+1)
 	_history_receipt_clock_us = tick
 	var identity := "%020d-%s" % [tick,Crypto.new().generate_random_bytes(16).hex_encode()]
-	var recorded: Dictionary = provider._sanitized_event_data("history_result",receipt)
+	var recorded: Dictionary = masker._sanitized_event_data("history_result",receipt)
 	recorded["_history_receipt_id"] = identity
-	var item: Dictionary = {"schema":1,"id":identity,"source":_history_receipt_source(),
-		"epoch":epoch,"receipt":recorded}
+	return {"schema":1,"id":identity,"source":source,"epoch":epoch,"receipt":recorded}
+
+# Accepted Workbench creates the Art window only on explicit owner access.
+# Native Undo/Redo before that point still needs a durable history receipt:
+# journal it without constructing a Window/provider or scanning the archive.
+static func stage_unopened_history_receipt(receipt: Dictionary, epoch: int) -> bool:
+	var config := ConfigFile.new()
+	if config.load("user://art-provider.cfg") != OK: return true # No previous Art conversation.
+	var source := str(config.get_value("session","traffic_path",""))
+	if source.is_empty(): return true
+	var masker := Provider.new()
+	var item := _make_history_receipt(receipt,epoch,source,masker)
+	masker.free()
+	return _persist_history_receipt(item)
+
+func _queue_history_receipt(receipt: Dictionary, epoch: int) -> void:
+	var item := _make_history_receipt(receipt,epoch,_history_receipt_source(),provider)
 	var durable := _persist_history_receipt(item)
 	item["volatile"] = not durable
-	item["file"] = HISTORY_RECEIPT_DIR.path_join(identity+".json") if durable else ""
+	item["file"] = HISTORY_RECEIPT_DIR.path_join(str(item.id)+".json") if durable else ""
 	pending_history_receipts.append(item)
 	if not durable:
 		input_error = "Confirmed history receipt could not be saved to its pending journal; keep Workbench open and reopen Art to retry."
