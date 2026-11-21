@@ -2,9 +2,11 @@
 #include "assembly.hpp"
 #include "reciprocal_mosaic.hpp"
 #include <optional>
+#include <memory>
 
 namespace cybersand::gentek_swarm::assembly004 {
 inline constexpr const char* composition_identity = "gentek_swarm_004_reciprocal_assembly_v1";
+inline constexpr const char* recovery_identity = "gentek_swarm_006_negotiated_recovery_v1";
 struct Options {
     unsigned rounds = 2;
     bool vocabulary = true, hierarchy = true, shared_ownership = true;
@@ -13,6 +15,8 @@ struct Options {
     bool native_mosaic_bearing = true;
     bool supported_native_receptors = false; // SWARM-005 opt-in; frozen SWARM-004 controls remain off
     bool compact_native_termination = false; // Opt-in genuine pre-freeze authored cap for constrained exits
+    bool negotiated_recovery = false; // SWARM-006: independently versioned, never a production default
+    bool recovery_offers = true; // matched no-offer scientific control; meaningful only with recovery
     unsigned shared_extent = 13;
     int orientation_preference = -1; // -1 balanced; 0 horizontal; 1 vertical
 };
@@ -58,6 +62,11 @@ struct Round {
     std::uint64_t mosaic_supported_receptor_work{};
     std::vector<SupportedNativeReceptor> mosaic_supported_receptors;
     bool mosaic_reused = false, frame_reused = false;
+    std::vector<RecoveryAttempt> recovery_attempts;
+    std::vector<MosaicRecoveryReceipt> mosaic_recovery_receipts;
+    std::vector<RecoveryCursor> recovery_frontier;
+    std::uint64_t recovery_work{};
+    bool recovery_frontier_exhausted = false;
     unsigned mosaic_reuse_round{}, frame_reuse_round{};
     std::uint64_t geometry_digest{}, semantic_digest{};
     std::uint64_t frame_changed{}, mosaic_changed{}, category_changed{};
@@ -90,6 +99,7 @@ struct DamageDerivative {
     std::uint64_t frame_changed{}, mosaic_changed{}, frame_footprint_changed{}, mosaic_footprint_changed{}, work{};
     std::string reason;
 };
+class NativeRunAuthority; // opaque: never deserialized, never minted by callers
 struct Composition {
     Input input;
     CompositionStatus status = CompositionStatus::Invalid;
@@ -106,6 +116,10 @@ struct Composition {
     std::vector<std::string> rejections;
     std::uint64_t digest{};
     bool can_apply = false;
+private:
+    std::shared_ptr<const NativeRunAuthority> native_authority_;
+    friend Composition assemble(const Input&, bool);
+    friend bool validate_composition(Composition&);
 };
 Profile expression_profile(const std::string&);
 Input input_for(const Fixture&, const Profile&, std::uint64_t, const std::string&, Options = {});

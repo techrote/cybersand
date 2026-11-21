@@ -10,6 +10,11 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+SWARM-006 [source feasibility and bounded reciprocal recovery](systems/gentek-negotiated-recovery.md)
+continues verified SWARM-005 under [#704](https://github.com/techrote/cybersand/issues/704).
+Native and Workbench stages remain separate Draft/HOLD candidates; original
+controls, budgets and owner acceptance boundaries are preserved.
+
 SWARM-004 [experimental reciprocal Gentek assembly](systems/gentek-reciprocal-assembly.md)
 covers the bounded native grammar, independent architectural revisions, honest
 closure and separately qualified experimental Workbench bridge. The full

@@ -10,6 +10,16 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## SWARM-006 native recovery — 2026-11-21
+
+Programme [#704](https://github.com/techrote/cybersand/issues/704) continues verified
+SWARM-005 on new native and Workbench branches, all Draft/HOLD. Read the
+[bounded recovery contract](../systems/gentek-negotiated-recovery.md) and
+[baseline custody audit](../audits/2026-11-21-swarm006-baseline-custody.md).
+Retain negative/exhausted development evidence and exact source identities; a
+preregistered corpus may be opened only after source and policy freeze.
+Do not import current main into this historical candidate or relabel old packages.
+
 ## SWARM-004 reciprocal assembly — 2026-11-20
 
 **Experimental implementation / Draft / HOLD:** owner-authorized [programme #687](https://github.com/techrote/cybersand/issues/687)

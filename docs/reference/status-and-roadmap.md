@@ -10,6 +10,15 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## SWARM-006 feasible reciprocal construction — 2026-11-21
+
+**Experimental implementation, Draft/HOLD:** [#704](https://github.com/techrote/cybersand/issues/704)
+adds prospective connector screening, native receptor/corbel negotiation and
+bounded recovery on verified SWARM-005. The [focused contract](../systems/gentek-negotiated-recovery.md)
+preserves original foreign obligations and authoritative material-path validation.
+Published exact-head qualification, fresh preregistered comparisons and Windows
+owner acceptance have separate gates. No Ready, merge or default promotion is authorized.
+
 ## SWARM-004 reciprocal Gentek construction — 2026-11-20
 
 **Draft/HOLD implementation candidate:** [programme #687](https://github.com/techrote/cybersand/issues/687)
