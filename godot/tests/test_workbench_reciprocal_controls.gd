@@ -73,6 +73,34 @@ func exercise()->void:
 		and input.frame.transition.any(func(value:Variant)->bool:return int(value)!=0) \
 		and input.frame.transition==input.mosaic.transition,"fixed ownership retains both transition masks but no shared cell authority")
 	check(panel._pid<0 and panel._thread==null,"generation and decoding leave no native child or worker")
+	# Final composition is index zero, NOT a proposal with Godot's auto-assigned ID zero.
+	# Proposal-only layer restrictions must never hide genuine final joint/path evidence.
+	check(panel._round.item_count==panel.document.rounds.size()+1 and panel._round.selected==0 \
+		and panel._round.get_item_text(0)=="Final composition" \
+		and panel._selected_proposal_round_index()==-1,
+		"the generated preview selects the authoritative final composition")
+	for final_layer:int in [3,5,6,8]:
+		check(not panel._layer.is_item_disabled(final_layer),
+			"final composition enables "+panel.LAYERS[final_layer])
+	panel._layer.select(panel.LAYERS.find("Joints"));panel._render()
+	check(panel._layer.selected==panel.LAYERS.find("Joints") and panel._preview.texture!=null,
+		"the final joint overlay is selectable and rendered")
+	panel._layer.select(panel.LAYERS.find("Unresolved"));panel._render()
+	check(panel._layer.selected==panel.LAYERS.find("Unresolved"),
+		"the final remaining-obligation overlay is selectable")
+	for proposal_index:int in range(1,panel._round.item_count):
+		panel._round.select(proposal_index);panel._render()
+		check(panel._selected_proposal_round_index()==proposal_index-1,
+			"UI proposal item selects the corresponding native round")
+		for final_layer:int in [3,5,6,8]:
+			check(panel._layer.is_item_disabled(final_layer),
+				"provisional proposal does not invent final "+panel.LAYERS[final_layer])
+	panel._round.select(0);panel._render()
+	check(panel._selected_proposal_round_index()==-1,
+		"returning to Final composition restores native final evidence")
+	for final_layer:int in [3,5,6,8]:
+		check(not panel._layer.is_item_disabled(final_layer),
+			"returning to Final composition re-enables "+panel.LAYERS[final_layer])
 	for layer:int in panel._layer.item_count:
 		panel._layer.select(layer);panel._render()
 	for round_index:int in panel._round.item_count:
