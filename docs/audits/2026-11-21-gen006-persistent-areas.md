@@ -139,13 +139,35 @@ tick-900 CYPS bytes matched an uninterrupted reference. C's remaining 300 ticks
 stayed explicit. This fixture was headless Linux, not an additional Windows or
 graphical claim.
 
+## Renewed campaign and portable PowerShell repair
+
+[Run 44959367569](https://github.com/techrote/cybersand/actions/runs/44959367569)
+executed source `f94e0ecbb9e4d7395ec343b6899426731e75ba79`. Native continuation,
+fresh-process restore, sanitizers and both complete graphical campaigns passed.
+The original Windows source and runtime custody observations were retained and
+verified. The generated evaluator passed file verification, but its extracted
+Windows PowerShell 5 smoke script stopped on Godot's benign OpenGL-to-ANGLE
+warning written to standard error. The evaluator gate failed and publication
+was correctly withheld; the ZIP from this run is retained failed evidence.
+
+The packaging repair scopes PowerShell's native standard-error handling to the
+process invocation while preserving its text. Null or nonzero exit status,
+Godot error markers, incomplete graphical receipts and a reused process ID
+still refuse. Log-write failures remain terminating errors. An early actual
+Windows PowerShell 5 adversarial guard now precedes expensive qualification,
+and partial portable-smoke evidence is retained even when the smoke fails.
+No Godot application, native simulation or persistence-format file changes.
+
 ## Remaining delivery gates
 
-Renewed exact-source pinned Linux/Windows campaigns after the custody-tooling
-repair; verified extracted Windows evaluator; final platform performance and
+Renewed exact-source pinned Linux/Windows campaigns after the packaging repair;
+verified extracted Windows evaluator; final platform performance and
 provenance audit; exact final HEAD and owner instructions. The measured Linux
-travel medians of 8.4–8.9 seconds and zero-debt returns around 7.5 seconds do not
+travel medians of 6.4 seconds in the renewed run (8.4–8.9 in the first run) and
+renewed zero-debt returns around 5.4–5.6 seconds do not
 meet the few-seconds responsiveness target. The whole-fixture maximum callback
-gap reached 6.9 seconds; its exact phase was not recorded. These limits must stay
+gap reached 5.9 seconds in the renewed run and 6.9 seconds in the first; its exact
+phase was not recorded. There was no product optimization between these runs.
+These limits must stay
 visible in the final disposition. Physical NVIDIA owner acceptance remains
 unperformed until the owner runs the evaluator.

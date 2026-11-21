@@ -83,18 +83,36 @@ $env:LOCALAPPDATA = Join-Path $output 'localdata'
 $env:XDG_DATA_HOME = $env:APPDATA
 $engine = Join-Path $base 'Godot_v4.7-stable_win64_console.exe'
 $project = Join-Path $base 'godot'
-& $engine --headless --path $project --editor --import --quit 2>&1 | Tee-Object -FilePath (Join-Path $output 'import.log')
-if ($LASTEXITCODE -ne 0) { throw 'Godot import failed.' }
-if ((Get-Content -Raw (Join-Path $output 'import.log')) -match 'SCRIPT ERROR:|(?m)^ERROR:') { throw 'Godot import reported an error.' }
+function Invoke-LoggedGodot {
+    param([string[]]$GodotArguments, [string]$LogPath, [string]$Label)
+    $previousPreference = $ErrorActionPreference
+    $nativeExitCode = $null
+    try {
+        # Windows PowerShell 5 wraps native stderr (including warnings) in
+        # ErrorRecords. Preserve their text without treating the stream itself
+        # as failure; exit status, error markers and receipts remain mandatory.
+        $ErrorActionPreference = 'Continue'
+        $global:LASTEXITCODE = $null
+        & $engine @GodotArguments 2>&1 |
+            ForEach-Object { $_.ToString() } -ErrorAction Stop |
+            Tee-Object -FilePath $LogPath -ErrorAction Stop
+        $nativeExitCode = $global:LASTEXITCODE
+    } finally {
+        $ErrorActionPreference = $previousPreference
+    }
+    if ($null -eq $nativeExitCode -or $nativeExitCode -ne 0) { throw "$Label process failed (exit $nativeExitCode)." }
+    if ((Get-Content -Raw -LiteralPath $LogPath) -match 'SCRIPT ERROR:|(?m)^ERROR:') { throw "$Label reported an error." }
+}
+Invoke-LoggedGodot -GodotArguments @('--headless','--path',$project,'--editor','--import','--quit') `
+    -LogPath (Join-Path $output 'import.log') -Label 'Godot import'
 foreach ($mode in @('write', 'reopen')) {
-    $args = @('--path',$project,'--rendering-method','gl_compatibility','--rendering-driver','opengl3',
+    $godotArguments = @('--path',$project,'--rendering-method','gl_compatibility','--rendering-driver','opengl3',
         '--audio-driver','Dummy','--script','res://tests/test_persistent_areas_workbench.gd','--',
         "--persistent-profile=$output\profile","--persistent-evidence=$output",
         "--persistent-test-mode=$mode",'--persistent-test-workers=1',
         '--persistent-start-paused','--persistent-require-graphics')
-    & $engine @args 2>&1 | Tee-Object -FilePath (Join-Path $output "$mode.log")
-    if ($LASTEXITCODE -ne 0) { throw "Native graphical $mode process failed." }
-    if ((Get-Content -Raw (Join-Path $output "$mode.log")) -match 'SCRIPT ERROR:|(?m)^ERROR:') { throw "Native graphical $mode reported an error." }
+    Invoke-LoggedGodot -GodotArguments $godotArguments -LogPath (Join-Path $output "$mode.log") `
+        -Label "Native graphical $mode"
     $receipt = Get-Content -Raw (Join-Path $output "workbench-$mode.json") | ConvertFrom-Json
     if ($receipt.failures.Count -ne 0 -or !$receipt.graphical -or
         ($receipt.assertions -isnot [int] -and $receipt.assertions -isnot [long]) -or

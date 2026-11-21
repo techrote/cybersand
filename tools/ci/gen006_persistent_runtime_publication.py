@@ -56,6 +56,7 @@ engine.BUILD_EXACT = (set(engine.BUILD_EXACT) - {_old_workflow, _old_request}) |
     "tools/ci/gen006_persistent_runtime_publication.py",
     "tools/ci/test_gen006_persistent_runtime_publication.py",
     "tools/ci/test_gen006_source_custody.py",
+    "tools/ci/test_gen006_packaged_smoke.ps1",
     "tools/ci/run_persistent_areas_qualification.py",
     "tools/ci/run_gen006_storage_recovery.py",
     "tools/ci/build_gentek80_runtime.py",
