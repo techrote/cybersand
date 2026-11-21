@@ -31,6 +31,11 @@ EXAMPLES = {
                     "scope": "retained known605 zero-joint authoring transaction regression"},
     "reciprocal": {"seed": 4099, "shared_ownership": False, "clutter": 0.0,
                    "scope": "known4099 fixed-territory reciprocal authoring; offer causality separately controlled"},
+    "swarm005_irregular": {"seed": 605, "shared_ownership": True, "clutter": 0.25,
+                          "scope": "SWARM005 V3 192x112 shared-owner real GUI Apply/Undo/Save/reopen"},
+    "swarm005_viaduct": {"seed": 605, "shared_ownership": True, "clutter": 0.15,
+                        "negative": True,
+                        "scope": "SWARM005 V3 192x112 shared-owner blocked preview and disabled Apply"},
 }
 PROFILE_DIRECTORIES = (("XDG_DATA_HOME", "data"), ("XDG_CONFIG_HOME", "config"), ("XDG_CACHE_HOME", "cache"),
                        ("APPDATA", "roaming"), ("LOCALAPPDATA", "local"))
@@ -42,11 +47,20 @@ def expected_recipe(example: str) -> dict:
     selected = EXAMPLES[example]
     parameters = {"variation": 0.65, "irregularity": 0.05, "clutter": selected["clutter"],
                   "destruction": 0.0, "branching": 0.55, "environment_affinity": 0.25, "cohesion": 0.35}
-    return {"size": [128, 96], "origin": [0, 0], "seed": selected["seed"], "rounds": 2,
-            "shared_extent": 13, "orientation": -1, "profile": "viaduct_like",
-            "layout": "centered_frame_rectangle", "border": 4, "optional": True,
-            "shared_ownership": selected["shared_ownership"], "activation": [[64, 48]],
-            "gentek_parameters": {"frame": parameters.copy(), "mosaic": parameters.copy()}}
+
+    if example == "swarm005_irregular":
+        parameters.update(irregularity=0.95, branching=1.0, environment_affinity=0.7, cohesion=0.2)
+    recipe = {"size": [192, 112] if example.startswith("swarm005_") else [128, 96],
+              "origin": [0, 0], "seed": selected["seed"], "rounds": 2,
+              "shared_extent": 13, "orientation": -1,
+              "profile": "irregular_megastructure" if example == "swarm005_irregular" else "viaduct_like",
+              "layout": "left_right" if example.startswith("swarm005_") else "centered_frame_rectangle",
+              "border": 4, "optional": True,
+              "shared_ownership": selected["shared_ownership"], "activation": [[64, 48]],
+              "gentek_parameters": {"frame": parameters.copy(), "mosaic": parameters.copy()}}
+    if example.startswith("swarm005_"):
+        recipe.update(compact_native_termination=True, supported_native_receptors=True)
+    return recipe
 
 
 def isolated_environment(parent: dict[str, str], directory: Path, example: str) -> dict[str, str]:
@@ -117,15 +131,25 @@ def ui_report_errors(report: dict, mode: str, example: str, source: str, cli_sha
         errors.append("automated UI checks must leave owner visual and programme acceptance pending")
     if mode == "lifecycle":
         return errors
+    if (mode == "blocked") != (example == "swarm005_viaduct"):
+        errors.append("blocked owner style is neither substituted nor treated as positive")
     if mode == "create" and report.get("transport_refusals") != {"preexisting_job_directory": True, "failed_child_positive": True}:
         errors.append("stale-folder and failed-child Apply refusal gates did not both pass")
     native = object_dict(report.get("native_source"))
     if native.get("source") != source or native.get("sha256") != cli_sha:
         errors.append("native report is not bound to the attested source and generator")
-    if report.get("native_status") != "complete" or report.get("native_can_apply") is not True:
-        errors.append("native composition did not independently authorize Apply")
+
     if report.get("native_recipe") != expected_recipe(example):
         errors.append("native recipe differs from the fixed declared example")
+    if mode == "blocked":
+        witness = object_dict(report.get("reciprocal_witness"))
+        if (report.get("native_status") != "blocked" or report.get("native_can_apply") is not False
+                or witness.get("unresolved", 0) < 1 or report.get("joint_count") != witness.get("joint_count")
+                or report.get("obligation_count") != witness.get("obligation_count")):
+            errors.append("V3 Viaduct negative must remain Blocked with actual unresolved obligations and no Apply")
+        return errors
+    if report.get("native_status") != "complete" or report.get("native_can_apply") is not True:
+        errors.append("native composition did not independently authorize Apply")
     receipt = object_dict(report.get("native_receipt"))
     proposal = report.get("proposal_sha256", "")
     if not isinstance(proposal, str) or not SHA256.fullmatch(proposal) or receipt.get("proposal_sha256") != proposal:
@@ -208,6 +232,27 @@ def example_evidence(directory: Path, reports: dict[str, dict]) -> dict:
     return {"passed": not errors, "validation_errors": errors, "native_plane_sha256": plane_sha,
             "screenshots_sha256": screenshots, "process_ids": {mode: report.get("process_id") for mode, report in reports.items()},
             "recipe": create.get("native_recipe"), "reciprocal_witness": create.get("reciprocal_witness")}
+
+
+
+def blocked_evidence(directory: Path, report: dict) -> dict:
+    """A negative graphical preview is not a saved-map or Apply qualification."""
+    errors = []
+    planes = object_dict(report.get("native_planes_sha256"))
+    baseline = planes.get("baseline")
+    if not isinstance(baseline, str) or not SHA256.fullmatch(baseline) or planes.get("preview") != baseline:
+        errors.append("blocked preview did not preserve the independent original native World")
+    screenshots = {}
+    for name in ("native-preview.png", "native-unresolved.png"):
+        path = directory / name
+        if not original_png(path):
+            errors.append("missing original negative-example screenshot: " + name)
+        else:
+            screenshots[name] = custody.native.sha(path)
+    return {"passed": not errors, "validation_errors": errors, "native_plane_sha256": baseline,
+            "screenshots_sha256": screenshots, "process_ids": {"blocked": report.get("process_id")},
+            "recipe": report.get("native_recipe"), "reciprocal_witness": report.get("reciprocal_witness"),
+            "blocked_negative": True, "applied": False}
 
 
 def package_identity(directory: Path, source: str) -> dict:
@@ -352,7 +397,8 @@ def main() -> int:
             example_env = isolated_environment(env, directory, example)
             reports = {}
             example_results = []
-            for mode in ("create", "reopen"):
+            modes = ("blocked",) if definition.get("negative") else ("create", "reopen")
+            for mode in modes:
                 mode_env = dict(example_env, SWARM004_UI_MODE=mode)
                 result = execute(mode, [*base, *display, "--script", "res://" + UI_SCRIPT], mode_env, directory, 180)
                 report = read_report(directory / (mode + ".json"))
@@ -364,8 +410,12 @@ def main() -> int:
                 reports[mode] = report
                 if not result["passed"]:
                     break
-            examples[example] = {"scope": definition["scope"], **example_evidence(directory, reports)}
-            examples[example]["passed"] = bool(examples[example]["passed"] and len(reports) == 2
+            if definition.get("negative"):
+                record = blocked_evidence(directory, reports.get("blocked", {}))
+            else:
+                record = example_evidence(directory, reports)
+            examples[example] = {"scope": definition["scope"], **record}
+            examples[example]["passed"] = bool(record["passed"] and len(reports) == len(modes)
                                                and all(result["passed"] for result in example_results))
         directory = output / "lifecycle"
         lifecycle_env = isolated_environment(env, directory, "transaction")
@@ -382,7 +432,7 @@ def main() -> int:
                 and lifecycle_passed and all(result["passed"] for result in results))
     summary = {"schema": 2, "source_commit": receipt["source_commit"], "platform": sys.platform,
                "graphical": True, "package": bool(package), "passed": bool(complete),
-               "graphical_scope": "two actual Main create/reopen pairs with isolated profiles, plus lifecycle once; native adapter, transport, controls and mechanical fixtures headless",
+               "graphical_scope": "three real Main create/reopen pairs (two inherited SWARM004, one V3 irregular) plus a real V3 Viaduct blocked negative and lifecycle; source and pristine package each",
                "windows_automated_authoring_qualification": bool(complete),
                "owner_visual_acceptance": "pending",
                "reciprocal_programme_acceptance": False,
