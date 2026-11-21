@@ -1,0 +1,9 @@
+{
+  "evidence_commit": "1f13b8d4eecd0be4f1f36fa507a3ac3f9997c782",
+  "parent": "c7e3f577d0fdfb1d49d03593f7df2ee5b4873bee",
+  "tree": "390eee2a6954da2a834918a65cedb9e17aa62dd4",
+  "verified_files": 30,
+  "evidence_only": true,
+  "product_head_unchanged": true,
+  "published_manifest_sha256": "805ebd2893a157b87e50e6aadc2008e51822448ea877b6ea991c8efd245228b3"
+}

@@ -5,6 +5,20 @@ additive evidence for [integration PR #715](https://github.com/techrote/cybersan
 It is not intended to merge into main. Generated audit payloads and this control
 are excluded from the production integration.
 
+## Final disposition
+
+**All five final automated workflows passed at published `919134a3…`, attempt 1.
+Independent final review gives automated-admission GO. Physical owner evaluation
+of the exact package remains mandatory, so PR #715 is still Draft/HOLD.**
+
+The [final admission report](FINAL-ADMISSION.md) identifies the sole external
+blocker, exact evaluator, completed coverage, measured CI bottleneck and honest
+limits. The [independent final review](swarm45-r3-final-automated-admission-review.md)
+and [frozen observation ledger](swarm45-final-admission-ci-observation.json)
+record all results. No source, Ready, merge or auto-merge change followed the
+published candidate. Earlier checkpoint reports below retain their original
+scope and chronology.
+
 ## Published candidate and exact evaluator
 
 **Draft/HOLD.** The frozen implementation is `79b8a0a4a1c2ace435d709b35114ee7065c935e6`;

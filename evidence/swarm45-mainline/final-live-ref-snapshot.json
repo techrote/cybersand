@@ -1,0 +1,27 @@
+{
+  "checked_at": "2026-11-21 23:02:51 UTC",
+  "native_run": {
+    "id": 44957198003,
+    "head": "919134a39d31461947c410c233d59d1965c48414",
+    "attempt": 1,
+    "status": "completed",
+    "conclusion": "success",
+    "created": "2026-11-21T22:31:37Z",
+    "updated": "2026-11-21T23:01:56Z"
+  },
+  "pr": {
+    "number": 715,
+    "state": "open",
+    "draft": true,
+    "head": "919134a39d31461947c410c233d59d1965c48414",
+    "base": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+    "mergeable": true,
+    "mergeable_state": "unstable",
+    "merged": false,
+    "auto_merge": null
+  },
+  "main": {
+    "ref": "refs/heads/main",
+    "sha": "846fe0533b3170e7b01f690518da49fc40cc24d1"
+  }
+}

@@ -106,6 +106,12 @@ The five final ordinary workflows are bound to published `919134a3…`: document
 PLAY 44957219135. Their current/final results and independent evidence reviews
 are tracked in PR #715; dispatch is not itself a result.
 
+All five workflows subsequently passed on attempt 1 at the same published HEAD.
+The [final admission report](FINAL-ADMISSION.md) and independent final review
+record automated-admission GO, including the actual 80-Gentek catalogue and all
+eight showcase suites in normal and sanitized execution. The physical owner
+gate below remains pending; this update does not designate a new accepted main.
+
 The [current owner guide](OWNER-EVALUATION.md) identifies the unchanged evaluator
 ZIP, SHA-256 `ce50316be11caafe32879395b681ef7f131541732061ded5db36dc3af6236c6d`.
 Physical NVIDIA evaluation of the original saved/painted 2048×2048 map remains a

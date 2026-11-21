@@ -1,0 +1,135 @@
+{
+  "accepted_main": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+  "expected_evidence_parent": "1f13b8d4eecd0be4f1f36fa507a3ac3f9997c782",
+  "files": [
+    {
+      "bytes": 13999,
+      "git_blob_sha1": "d3506e2a9dccadfc2c717ce0538e4e83bb33831a",
+      "path": "evidence/swarm45-mainline/FINAL-ADMISSION.md",
+      "sha256": "0110fee485529b8bb2afac093eab9403834cf1eb83619e0170697a30f3690e18"
+    },
+    {
+      "bytes": 8186,
+      "git_blob_sha1": "262ca19c843659759faad9595a620d4ba005f452",
+      "path": "evidence/swarm45-mainline/README.md",
+      "sha256": "1478f63e50659c42521138bbf423ffc42b792184f65d08aebed58e938cb801b9"
+    },
+    {
+      "bytes": 7595,
+      "git_blob_sha1": "f691232182c3310b66794bfce1a5c550d0ca4613",
+      "path": "evidence/swarm45-mainline/SWARM006-SUCCESSOR-HANDOFF.md",
+      "sha256": "4a00712d98dd2a7d991f901136cbfe4d1173294578e413fddbbd4a9e024f5994"
+    },
+    {
+      "bytes": 3759,
+      "git_blob_sha1": "e3565a71b0a29b0c3d17c3114dd176c231bd9a04",
+      "path": "evidence/swarm45-mainline/final-donor-and-protected-references.json",
+      "sha256": "25502c49e459bbd0cab78d225cac89d1b1924518b11708c7cabe682c21607a89"
+    },
+    {
+      "bytes": 31016,
+      "git_blob_sha1": "ad9b29536b06073d306f198690262ae0bf02d538",
+      "path": "evidence/swarm45-mainline/final-github-check-runs.json",
+      "sha256": "0425b5652cb54931e4d82482822436822ef2790e811a118b44b3df985dc24c8f"
+    },
+    {
+      "bytes": 688,
+      "git_blob_sha1": "cfab3eaa1e4579c3f19544c0ba93ab6639928ba3",
+      "path": "evidence/swarm45-mainline/final-live-ref-snapshot.json",
+      "sha256": "d34677bd60166788ad0c69d92779c40469472b5511e1bdaf17789fdb0c25c4ed"
+    },
+    {
+      "bytes": 435,
+      "git_blob_sha1": "88396b4dda22bb09f14ca762dd466d6767ba841c",
+      "path": "evidence/swarm45-mainline/hosted-evidence-capsule.json",
+      "sha256": "10de5468412e8841eb4a4f3094811672a22e2cf8fdda4eb41f83d271355cba1c"
+    },
+    {
+      "bytes": 360,
+      "git_blob_sha1": "68f632b13c5f61747837ab916e130302c982f62e",
+      "path": "evidence/swarm45-mainline/r3-evidence-publication-readback.json",
+      "sha256": "5a19e3f8cb4228d4892f56a353f9e6a53159b30e48bf3e7b01785a2d80068d42"
+    },
+    {
+      "bytes": 371664,
+      "git_blob_sha1": "1b8b9880a3ae861eef70464ae956568f782a2c7f",
+      "path": "evidence/swarm45-mainline/swarm45-final-admission-ci-observation.json",
+      "sha256": "c4fb5903cf8d7197fc2dccdcc7388225889e8911cd7b0402f938707801891f0f"
+    },
+    {
+      "bytes": 20750,
+      "git_blob_sha1": "d90c1f9ec4f24e892fbe566a1b8a35fc290e1494",
+      "path": "evidence/swarm45-mainline/swarm45-publication-review-evidence/final-gates/completed-gdextension-checkpoint.json",
+      "sha256": "a2b58cfb8c78a08cdbd1fe9c4d5f5fb3dec96dea6b3052d796d1dda1b0ca1f0c"
+    },
+    {
+      "bytes": 4787,
+      "git_blob_sha1": "36add685a8fdcee100e125e272cf2abce670ce99",
+      "path": "evidence/swarm45-mainline/swarm45-publication-review-evidence/final-gates/completed-three-checkpoint.json",
+      "sha256": "393658b1821e76aca2b412ead125dfc2baf6cee7cb672772fe28324357c487eb"
+    },
+    {
+      "bytes": 9499,
+      "git_blob_sha1": "dd3831a0167679fe98461d048de280ce4c7c714b",
+      "path": "evidence/swarm45-mainline/swarm45-publication-review-evidence/final-gates/final-automated-admission-checkpoint.json",
+      "sha256": "f1227eadb82683c3262cc2c48b8a641aeab7ebcd53bb6a65d27b200bdc720d9d"
+    },
+    {
+      "bytes": 6882,
+      "git_blob_sha1": "2591a3a746493189d71e2f213234c9db8cf199e4",
+      "path": "evidence/swarm45-mainline/swarm45-publication-review-evidence/final-gates/independent-gdextension-runtime-binding.json",
+      "sha256": "0e4162f627aebf4783ff8bfe4323e6c660665bfc3e8f18e6e5175c4aba3ea37c"
+    },
+    {
+      "bytes": 18793,
+      "git_blob_sha1": "33a926947eb6a52c19223a126736576c617eb25d",
+      "path": "evidence/swarm45-mainline/swarm45-publication-review-evidence/final-gates/independent-linux-coverage.json",
+      "sha256": "81ff4fbaff59f86d83a116e11f1116ec4a38e8dba049c43feb48e2844a86cb2f"
+    },
+    {
+      "bytes": 80919,
+      "git_blob_sha1": "dcfabb48495588478d935800aea15ebbe3145ede",
+      "path": "evidence/swarm45-mainline/swarm45-publication-review-evidence/final-gates/independent-native-complete.json",
+      "sha256": "06ebd57da3e08c77f6164262d3d2b9fcbd3b16fe7e083cea126e7781fbebe4f2"
+    },
+    {
+      "bytes": 22637,
+      "git_blob_sha1": "8c4af4ba2b83eb3030ff608bae323c63b6ceb825",
+      "path": "evidence/swarm45-mainline/swarm45-publication-review-evidence/final-gates/independent-windows-coverage.json",
+      "sha256": "0e0fa12c4b36be6e1131ccb0cfbb9982ff59340612206d3ffdc64c3cf98078cf"
+    },
+    {
+      "bytes": 34009,
+      "git_blob_sha1": "51002bc721a52225e776fd09e28d6fe9d133bfa7",
+      "path": "evidence/swarm45-mainline/swarm45-publication-review-evidence/final-gates/worldgen-catalogue-showcase-proof.json",
+      "sha256": "ae8d6b897b074368f3a793468f1153980e20c08ccb2b4e305f0e340cb28afbd2"
+    },
+    {
+      "bytes": 14790,
+      "git_blob_sha1": "6ab49c8ded95111ec937ccd1a90ceabae4634277",
+      "path": "evidence/swarm45-mainline/swarm45-r3-final-automated-admission-review.md",
+      "sha256": "daa3242a113aa95b1b5553536c34a4be5541b519e786cbf3e596c90fe24ddbda"
+    },
+    {
+      "bytes": 5524,
+      "git_blob_sha1": "0ccbcccacb3e7d36d5a1ee8e79334ce4b2216a08",
+      "path": "evidence/swarm45-mainline/swarm45-r3-final-ci-three-gates-review.md",
+      "sha256": "75dfe755914aee510bffcbdd53063af4848a724fc115272338d971acd55c7083"
+    },
+    {
+      "bytes": 9069,
+      "git_blob_sha1": "084b19251e886bc4fa9782398e98af771c99cac2",
+      "path": "evidence/swarm45-mainline/swarm45-r3-final-gdextension-and-native-partial-review.md",
+      "sha256": "ac4eb6c339a346b85fe0e9287748496f44c97201db43948faa9f66263a788e20"
+    },
+    {
+      "bytes": 8825,
+      "git_blob_sha1": "00b9b3743b7d022054b18824b345a0053e7de87c",
+      "path": "evidence/swarm45-mainline/worldgen-timing-readback.json",
+      "sha256": "3644e835c04e6a17b416f757277c6d1809ad40710fed2557a70d4cc4bad5ed7e"
+    }
+  ],
+  "product_head": "919134a39d31461947c410c233d59d1965c48414",
+  "schema": 1,
+  "scope": "Final automated admission GO; physical owner gate pending; no product/source/readiness/merge change"
+}

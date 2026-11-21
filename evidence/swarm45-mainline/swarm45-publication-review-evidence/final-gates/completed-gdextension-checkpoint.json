@@ -1,0 +1,490 @@
+{
+  "aggregate_artifact_downloads": [
+    {
+      "id": 14728312956,
+      "name": "windows-coverage-44957204571-1",
+      "sha256": "16f08d2b775e932e6e7f0a48bd577e47c503a5557234bf9951c24a99c451ceee",
+      "size": 84503
+    },
+    {
+      "id": 14727554569,
+      "name": "linux-coverage-44957204571-1",
+      "sha256": "1f88e8637d9a1aa679e9bbcff25dc2717280f2afadcbd5fc45f942c154b4a446",
+      "size": 83067
+    },
+    {
+      "id": 14728122059,
+      "name": "godot-execution-plan-44957204571-1",
+      "sha256": "dd75840095ad9e37b326f5ece7a226751636e723a6877e12f0a7dedb592e3965",
+      "size": 12958
+    },
+    {
+      "id": 14727843953,
+      "name": "execution-performance-godot-44957204571-1",
+      "sha256": "ed17e3155774dada4f7b41b77af008b13face7b4bb0cc9afbeaa742e548907e2",
+      "size": 812129
+    },
+    {
+      "id": 14728900345,
+      "name": "physical-timing-44957204571-1",
+      "sha256": "9c4aa3d0d361c56bbe2b90d5bbe6b8e979a5e34e6405f76922fbc76ddd7932fc",
+      "size": 4117
+    }
+  ],
+  "conclusion": "success",
+  "event": "workflow_dispatch",
+  "evidence_files": [
+    {
+      "path": "native-gdextension-completed-gde-api.json",
+      "sha256": "cdd10c52cc12e945b22e63ec7e3208595d11e88b38c8fb2c58e8dbf9c21b5b90",
+      "size": 309629
+    },
+    {
+      "path": "independent-linux-coverage.json",
+      "sha256": "81ff4fbaff59f86d83a116e11f1116ec4a38e8dba049c43feb48e2844a86cb2f",
+      "size": 18793
+    },
+    {
+      "path": "independent-windows-coverage.json",
+      "sha256": "0e0fa12c4b36be6e1131ccb0cfbb9982ff59340612206d3ffdc64c3cf98078cf",
+      "size": 22637
+    },
+    {
+      "path": "independent-gdextension-runtime-binding.json",
+      "sha256": "0e4162f627aebf4783ff8bfe4323e6c660665bfc3e8f18e6e5175c4aba3ea37c",
+      "size": 6882
+    },
+    {
+      "path": "independent-native-partial.json",
+      "sha256": "741a7c512b7a678c2461e88d4855678e666f3ba9be3fd6a12c188cad3103e71d",
+      "size": 18042
+    },
+    {
+      "path": "job-137012246791.log",
+      "sha256": "c0d7d2fa40d3fdef1369777716e0dba547c0d2ea7460cad7f7868e3a12d936e6",
+      "size": 77582
+    },
+    {
+      "path": "job-137012731983.log",
+      "sha256": "9cf1c03f40df45e82a6172f3a5feb797781aa2df438f4bd061eb0d57c7326259",
+      "size": 42240
+    },
+    {
+      "path": "job-137012732020.log",
+      "sha256": "a02bd6b0528515712bf2f66634708b1485a8753088f3690f8dff46dd06c63120",
+      "size": 66039
+    },
+    {
+      "path": "job-137007964654.log",
+      "sha256": "d57617337f80237269e52450f90fb233325977bce488be79bd0a2f8c9500a4a1",
+      "size": 65657
+    }
+  ],
+  "linux": {
+    "cases": 342,
+    "coverage_replay": "passed",
+    "inputs": 41,
+    "raw_logs": 366,
+    "shards": 24
+  },
+  "other_gate_status": {
+    "documentation": "passed",
+    "native": "worldgen and final aggregate pending",
+    "palette": "registered unchanged v3 passed; older v2 finished-image diagnostic failed and retained",
+    "physical_owner_acceptance": "pending",
+    "play": "identity/preflight passed; 51 manual rows per platform untested",
+    "ready_or_merge_authority": false
+  },
+  "raw_artifact_downloads": [
+    {
+      "id": 14728885767,
+      "name": "windows-godot-headless-21-44957204571-1",
+      "sha256": "6db9da0031468e4424089e75dd6f5f08366b14de070eab80d2441b93883504a3",
+      "size": 126953
+    },
+    {
+      "id": 14728875336,
+      "name": "linux-godot-shard-18-44957204571-1",
+      "sha256": "e01162f4dd44573b12788c9799db827156513d109e1ad3d59be55c71bdc56e19",
+      "size": 380190
+    },
+    {
+      "id": 14728835915,
+      "name": "linux-godot-shard-20-44957204571-1",
+      "sha256": "bf6163c06a0518393784133473134a995853342f887fb0be5d5678c4984e3f3e",
+      "size": 144014
+    },
+    {
+      "id": 14728805716,
+      "name": "windows-godot-headless-19-44957204571-1",
+      "sha256": "14e4984f0607d67135514e12ffd72d432b3e79f117cc50d79af935b4e146c510",
+      "size": 148299
+    },
+    {
+      "id": 14728761316,
+      "name": "linux-godot-shard-21-44957204571-1",
+      "sha256": "cc683cf5429ed215cef352db638c00ebbe8590aa618ea60c1288d08be5ea2fdd",
+      "size": 414519
+    },
+    {
+      "id": 14728680241,
+      "name": "native-candidate-windows-44957204571-1",
+      "sha256": "8211c572bf087e7904038c5c201a9839b0f61697b517df7dc813ffd6e2327000",
+      "size": 2115720
+    },
+    {
+      "id": 14728672669,
+      "name": "linux-godot-shard-23-44957204571-1",
+      "sha256": "88278d08baa2b3da00a224d5c3447813a36d12894aa80d0bb90e709a82aa47b1",
+      "size": 601773
+    },
+    {
+      "id": 14728660903,
+      "name": "windows-godot-headless-8-44957204571-1",
+      "sha256": "c1c3cdbe3ee181a714762c0fd4009567403e786eaef91291e873b0b5a309a543",
+      "size": 98770
+    },
+    {
+      "id": 14728627879,
+      "name": "windows-godot-headless-18-44957204571-1",
+      "sha256": "954c153b8e78c0c4097f6bf3d411e3603d6b525c76898cb4ba4e9323060b9589",
+      "size": 150094
+    },
+    {
+      "id": 14728622189,
+      "name": "linux-godot-shard-7-44957204571-1",
+      "sha256": "5d7a26739d0e27fd462de55acf3ffb96376bdddf867776b871fd7c1e3534967e",
+      "size": 77254
+    },
+    {
+      "id": 14728597754,
+      "name": "linux-godot-shard-13-44957204571-1",
+      "sha256": "5781e1dd5ed42945ae4fb206e655566b7985400f81d1cce18d419cf38c916121",
+      "size": 131573
+    },
+    {
+      "id": 14728562798,
+      "name": "windows-godot-headless-14-44957204571-1",
+      "sha256": "5fbb13156f10ee863e30dbecea4af67f4627c19272b16f479a5b90229eccda8b",
+      "size": 406628
+    },
+    {
+      "id": 14728541783,
+      "name": "linux-godot-shard-10-44957204571-1",
+      "sha256": "441c986c7c966cb600203cf18a55ce1aeb20f306de4121a2a0c84ead6cfec5ee",
+      "size": 160490
+    },
+    {
+      "id": 14728532557,
+      "name": "windows-godot-headless-9-44957204571-1",
+      "sha256": "c1a07a287bfd16115f6c0ea2908c448ff98143ecd2fc4dafde1d30247edb7669",
+      "size": 130846
+    },
+    {
+      "id": 14728508360,
+      "name": "windows-godot-headless-22-44957204571-1",
+      "sha256": "b4f8cc2a8907df8f5718c1147e3ad9db5a5cfc85853e6bd7e07113f18fb4fa11",
+      "size": 157416
+    },
+    {
+      "id": 14728497295,
+      "name": "windows-godot-headless-1-44957204571-1",
+      "sha256": "2d8b291d6bd1fd446c13bf84094b43514de7bfd70a14d2b53b91c2964bead81c",
+      "size": 137175
+    },
+    {
+      "id": 14728463182,
+      "name": "windows-godot-headless-15-44957204571-1",
+      "sha256": "4da724b7a2f3edb43eaf0f777b9e3c70de72630492e0a4fddfc90f35e71f0f21",
+      "size": 337217
+    },
+    {
+      "id": 14728401645,
+      "name": "linux-godot-shard-1-44957204571-1",
+      "sha256": "37c77a4365d4b199fb32e9fabb3e59019fe49f183734096bdf5da54f0936db3c",
+      "size": 257769
+    },
+    {
+      "id": 14728397014,
+      "name": "windows-godot-headless-12-44957204571-1",
+      "sha256": "131c8678b3c1b8db8e9013d09cda57707e590e5de2c81dc184d6227dbe3cdbe8",
+      "size": 408112
+    },
+    {
+      "id": 14728393266,
+      "name": "linux-godot-shard-9-44957204571-1",
+      "sha256": "75fe1297aa4c1c5474aef17238693db372f870550335576c411982ae085d8bc4",
+      "size": 1312740
+    },
+    {
+      "id": 14728347561,
+      "name": "windows-godot-headless-16-44957204571-1",
+      "sha256": "fe6da3b039d3083b0bdb32225ad844db36c361990762a7da4b06bf4b7640deef",
+      "size": 97882
+    },
+    {
+      "id": 14728347180,
+      "name": "linux-godot-shard-11-44957204571-1",
+      "sha256": "ce58d9fa909232ea13ef462aba560d9ab8a741579acfe41e4a03b78cb340bfaa",
+      "size": 92808754
+    },
+    {
+      "id": 14728328752,
+      "name": "linux-godot-shard-17-44957204571-1",
+      "sha256": "ea176a98ab58f1d5a542b548375f4c0ab7861e09f6903a5f2e8d1f6fedf4d9fe",
+      "size": 272156
+    },
+    {
+      "id": 14728302923,
+      "name": "windows-godot-headless-2-44957204571-1",
+      "sha256": "b2ae180adb868634edd3bcb0aa0debae430758c3d5a66db23e198389a9d0d1d6",
+      "size": 86210
+    },
+    {
+      "id": 14728278569,
+      "name": "windows-godot-headless-17-44957204571-1",
+      "sha256": "e4c68ec33b738ec535012e96d60689d1da70f5ddf1ea29c8f87959f4cc82ff66",
+      "size": 319696
+    },
+    {
+      "id": 14728187558,
+      "name": "windows-godot-headless-20-44957204571-1",
+      "sha256": "41381f832f478c3f3401a8410b347d75fc02b571b8aa91863f1a143fd5123a0b",
+      "size": 128832
+    },
+    {
+      "id": 14728178371,
+      "name": "linux-godot-shard-6-44957204571-1",
+      "sha256": "3223c7457ad8247fd28946669b70a4fa54f43c571dd3362e7e2a4e5216af0602",
+      "size": 158037
+    },
+    {
+      "id": 14728163104,
+      "name": "windows-godot-headless-3-44957204571-1",
+      "sha256": "e9693497a563287252d1979e029f3c6549e4eb6a29f7f2c185c606b27c6cda46",
+      "size": 92382
+    },
+    {
+      "id": 14728113785,
+      "name": "windows-godot-headless-11-44957204571-1",
+      "sha256": "d9aa094a959c94c3b33be895b24320ba0ff50db529070bef33d20798fde44995",
+      "size": 182524
+    },
+    {
+      "id": 14728068613,
+      "name": "linux-godot-shard-5-44957204571-1",
+      "sha256": "2cd12cca3eeef883fed3bfe07a692d15fbd93b3e872929632c4a6f483d9841f8",
+      "size": 4032995
+    },
+    {
+      "id": 14728004195,
+      "name": "linux-godot-shard-15-44957204571-1",
+      "sha256": "a5fd6f9a8efa25d1d19b763e9986261438992570642f78912f4170e713b887ab",
+      "size": 42222
+    },
+    {
+      "id": 14727929390,
+      "name": "linux-godot-shard-14-44957204571-1",
+      "sha256": "4bfa9368658ed3ffbefaf6b6140b8c7f32305a017e73371e2ab7f7a9645ae74e",
+      "size": 129568
+    },
+    {
+      "id": 14727903118,
+      "name": "linux-godot-shard-12-44957204571-1",
+      "sha256": "81bbc79ce6263087beb669c9a88007231de51dbeaa2d9e0bc3192cde793d0974",
+      "size": 138743
+    },
+    {
+      "id": 14727893201,
+      "name": "linux-godot-shard-16-44957204571-1",
+      "sha256": "1a10db49272d2070b462987cc353f4285e2a1446f3e25ba3719f7f1ef67b898d",
+      "size": 163735
+    },
+    {
+      "id": 14727884362,
+      "name": "windows-godot-headless-10-44957204571-1",
+      "sha256": "ef4fbfe9dc560de135a0f3ba180f7963a23a40a209d64ff68c5bc3b9b6d1e5f3",
+      "size": 186404
+    },
+    {
+      "id": 14727879144,
+      "name": "windows-godot-headless-7-44957204571-1",
+      "sha256": "56071e241e5542e77ff34ed6923b0526ae5301389fad36158ae9315e26e35029",
+      "size": 88807
+    },
+    {
+      "id": 14727864268,
+      "name": "linux-godot-shard-3-44957204571-1",
+      "sha256": "a8682498db78062839b7e59f2f12dc56283d672d4029f66e58e1ed4da1f5531f",
+      "size": 77963
+    },
+    {
+      "id": 14727777685,
+      "name": "linux-runtime-44957204571-1",
+      "sha256": "b3f46843365c18d2fc4f349330a55738088c0ca0ede423e19bb70f420a14e0cb",
+      "size": 22262437
+    },
+    {
+      "id": 14727764873,
+      "name": "linux-godot-shard-8-44957204571-1",
+      "sha256": "ac4ce42413681b24d23e7dbf2eee7810b0ef4c43498096a44e8c4570538ce6e0",
+      "size": 2680565
+    },
+    {
+      "id": 14727732992,
+      "name": "windows-godot-headless-0-44957204571-1",
+      "sha256": "21bd44c2e99937648dc2096c376a7450e71f934e4ec33ed47648ff4a427eadb6",
+      "size": 477371
+    },
+    {
+      "id": 14727713959,
+      "name": "linux-godot-shard-22-44957204571-1",
+      "sha256": "ee7d783a907cc1e103ba289d0a040ef442d66d75cc601f7db6902225707f8ac5",
+      "size": 55883
+    },
+    {
+      "id": 14727654860,
+      "name": "linux-godot-shard-2-44957204571-1",
+      "sha256": "977ab57eeaa64e6ce875b3055b76305b91bc29cb84d3a8af0f3898b376de0b81",
+      "size": 72901
+    },
+    {
+      "id": 14727633399,
+      "name": "linux-godot-shard-4-44957204571-1",
+      "sha256": "ec0f88099891cfa4edf4f567aed9c1b903ab98245fba41a22fa57b3f8f23a6f9",
+      "size": 262802
+    },
+    {
+      "id": 14727614947,
+      "name": "windows-godot-headless-6-44957204571-1",
+      "sha256": "4e1878d96b763e6d18f6ba84c6d8dd844bb95d56238fbbf236949e0c6ac84771",
+      "size": 127760
+    },
+    {
+      "id": 14727608261,
+      "name": "windows-godot-headless-5-44957204571-1",
+      "sha256": "e3182a09271e3826afc14d411c7d508924c1cdf2165f1863d29d82dc2a6c9432",
+      "size": 140489
+    },
+    {
+      "id": 14727599239,
+      "name": "linux-godot-shard-19-44957204571-1",
+      "sha256": "4a878c2064688f3dd3e61e374c38ffb02f5009431ada834366537f9605017e3e",
+      "size": 318067
+    },
+    {
+      "id": 14727538979,
+      "name": "windows-godot-headless-13-44957204571-1",
+      "sha256": "b8d9d7fd21297be185f7d9847cb6860295c121f1d550e73372e7e2aeb7e9eda5",
+      "size": 403350
+    },
+    {
+      "id": 14727538512,
+      "name": "windows-godot-headless-4-44957204571-1",
+      "sha256": "1c2cf6313bbedb8de351e6ca22c7d2aa5c6cc0ef488a48d744fbdad63f7a1ab0",
+      "size": 139482
+    },
+    {
+      "id": 14727534095,
+      "name": "linux-godot-shard-0-44957204571-1",
+      "sha256": "f610dd1bc8c211a8259ec349f08e993bb5cff96e52557730274a751bd4035515",
+      "size": 421642
+    }
+  ],
+  "replay_portability_note": "Only the expected Linux absolute --path checkout prefix was set to the original GitHub host path for command comparison. Original artifact bytes, commands, source inputs, seals, success predicates, policy, complete coverage and retained PLAY verifier results were not modified. Windows aggregate report paths were re-expressed with the original extraction prefix for report equality.",
+  "reviewed_commit": "919134a39d31461947c410c233d59d1965c48414",
+  "reviewed_tree": "78d6df75cb3534238c81b40e7bcdbe0cf693d012",
+  "run_attempt": 1,
+  "run_id": 44957204571,
+  "runtime_bindings": {
+    "linux_built_runtime": {
+      "cybersand_runtime": {
+        "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "sha256": "1db5702cf59f02d1ca4b6e7c0b34a73f3d106e67cec73b4901c0c10cd4c1cbb1"
+      },
+      "rapier_runtime": {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+        "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+      }
+    },
+    "linux_replay_expected_absolute_checkout": "/home/runner/work/cybersand/cybersand/godot",
+    "linux_source_inputs": {
+      "materials/catalogue/catalogue.json": "3a5250a07912dc9530172cb2fccecd526606e242209d666cb2da202e1cfc9f14",
+      "materials/catalogue/compatibility-lock.json": "8b4d3351cbe4380e976655d10dc34c4bf9e81d95442719a53770b62d219183dc",
+      "materials/catalogue/fixtures/lab-low-density-sand-world-v1.json": "68ca2e76e347803e874517f3a9f13eee1720149eb5b96c3296057f0400c8e02d",
+      "materials/catalogue/fixtures/lab-metal-charge-world-v2.json": "6a9a0a014f84d1c12d9d5d67e33b9787d9457e6ffc31f9a9c8404467ba624811",
+      "materials/catalogue/fixtures/lab-salt-retain-world-v2.json": "1cd5a84fe0f503cfca6d02ca5b18f82cf02a68cbc2198e70b1f63a97c3ef0c5b",
+      "materials/catalogue/fixtures/lab-salt-stone-world-v1.json": "df9c60947897409485e62ec4e5b98946d140d71ae8222dac06f10674e4d22af3",
+      "materials/catalogue/fixtures/lab-synthetic-powder-v1.json": "71b127d1801b46124f9b2a23f16aea801e633a3c22ea4146327243dff9f7684c",
+      "materials/catalogue/fixtures/lab-zero-threshold-quench-v1.json": "6be375f775908ef5f3f055ec6c02cd7681fb254fdd994ede95a56527a0db7fe4",
+      "materials/catalogue/generated/catalogue.shadow.hpp": "03ef653ea391ae82e076e3f3940bbd173360e77ed0473dddd5f412ae99244c12",
+      "materials/catalogue/generated/catalogue_shadow.gd": "f9823df9332307bc10e63082438d74b527cbd525786d702ac7057243e309caed",
+      "materials/catalogue/generated/inspection.json": "0738c134c4d31c87292c03703df15a9eb49bb07d6bc9123be1a545c19a4c44c2",
+      "materials/catalogue/generated/manifest.json": "bf10ed86b548df9551092a155c19cbbdba71e373f54bac8dcec5237c6496a975",
+      "tools/material_catalogue/benchmark_capability_transition.py": "02f23cf9ed02bb09557945f3ae2dc04a9dbeb2b4c4c7462f8431de938b47c2f4",
+      "tools/material_catalogue/capability_benchmark.cpp": "8845e9c54492ddbe6375c0b3a59800d8ca7b8a2cac428518aba9875f26a9195b",
+      "tools/material_catalogue/capability_world_probe.cpp": "db6342088e661f215b67b36905991bf67c9063dd95349de873c0580a23398a72",
+      "tools/material_catalogue/check_capability_transition.py": "26c374066d75f8fe4c05e2239cafa86e33c923dad6cb46512fbefad8bfc98894",
+      "tools/material_catalogue/check_gdscript_shadow.py": "be9c8542a9bfc1b6725474b8719a640909b1f42b551b6e1a208ecd555a5d7b10",
+      "tools/material_catalogue/check_native_parity.py": "bf7413ad46541e5e83bec474a4eb627fe3b81c63bee3c0a5a874e128afa69696",
+      "tools/material_catalogue/compatibility.py": "d44c0a6fbc34bfd1b75c2cad8dcd99ffda30dfefd2e144533527d9be8d80dc2b",
+      "tools/material_catalogue/compiler.py": "81a0658655574ee5e65ecc144db9750b9128380595d51af70c2b04d0a209a098",
+      "tools/material_catalogue/lab.py": "730710e02f4c7a2fc65e43bb98b6f5c138d843d2f1ca05b91992cf9c094cd1c9",
+      "tools/material_catalogue/lab_effects_probe.hpp": "5a9085010ed9630a52036943175e981607a1639ebfdb2aed66f0db14c1d52647",
+      "tools/material_catalogue/lab_native_probe.cpp": "4f79fb94fcf2f491c936d45f732c1c2aab5d82bfcba336e13533f7b7f8db0e1a",
+      "tools/material_catalogue/lab_world_probe.cpp": "49d57cf3234f46eb41bbb11ef2e2f58c43851c493b538e8219feb1fbdf20f7bf",
+      "tools/material_catalogue/native_capabilities.py": "a72f20047ac1619d0149ee3da29e97477c53815f79d79f6b2981542c8ae7e2d5",
+      "tools/material_catalogue/native_oracle.cpp": "a9ef69fedea104d8838360ba274cfcc28c6cd0131ce3f0e98988fd83754e4256",
+      "tools/material_catalogue/process_owner.py": "69d118e55582c6e8d639abf272835758a11e82861dbf7e91bef3406b1abfb22a",
+      "tools/material_catalogue/reaction_effects.py": "6ad898ee23cda7ba82c7dcbc32094ca5d57dfd63bbf0f9965882a4e351483d29",
+      "tools/material_catalogue/test_compatibility.py": "98577ee4b97a0d840a9381c25c6d9071457b56fd1833797633860174839d57fd",
+      "tools/material_catalogue/test_compiler.py": "41b211a0946638bba2b7db671b50a93335bf0c3904ed550d7ccdd9e709ae89bd",
+      "tools/material_catalogue/test_gdscript_shadow.py": "c7f7757a62d8172fdba0a9145d80f614135005bfba8bc5d97348362c70aea158",
+      "tools/material_catalogue/test_lab.py": "aeadd2e7cf65ae7c0e3a830d2fbe1f4c746fc3a3344f1a701a8c453c49d870b2",
+      "tools/material_catalogue/test_native_capabilities.py": "3d6798f123495c7c4e1ac31922d5966b751c40590acbd7cb9cc2c574c8715fb5",
+      "tools/material_catalogue/test_native_capability_guard.py": "cd4c55efdc27ff64011c3c9e07d42ccdd88cbc0b4908884fd1e405ea5b19c880",
+      "tools/material_catalogue/test_parity_tools.py": "5e6b4ba2fe1f80696077ef63eef52935179394f78b0e5fe1d78961266e22c7cb",
+      "tools/material_catalogue/test_process_owner.py": "4aadec8099c05e646c1597db1146eb71c219859531c9393c5c94fd26b289ef72",
+      "tools/material_catalogue/test_reaction_effects.py": "67a218618f56d90e8c08b5ed8f6a7d7e40c36b39f501ec98bea3ac8c5a4569e7",
+      "tools/material_catalogue/test_world_candidate.py": "c81a89546b7a2ed6f934740c2179262323d5fc322a2216c592dad500ad3b0831",
+      "tools/material_catalogue/test_world_case.py": "052c31771ba6812f4b50772e936f52828137c740436568e93170078fd114cb1a",
+      "tools/material_catalogue/world_candidate.py": "8b1b2f68bb0a299dc83f6e06c71dd36209b9b4742eb6eb086a888ff3d28747a1",
+      "tools/material_catalogue/world_case.py": "4150d948277370fd1ad2ec51eb1a7f09428f4c9048c2998ac1b404cd17e2a9a3"
+    },
+    "source_sha": "919134a39d31461947c410c233d59d1965c48414",
+    "source_tree": "78d6df75cb3534238c81b40e7bcdbe0cf693d012",
+    "windows_source_contract": {
+      "cybersand_runtime": {
+        "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+        "sha256": "a51594220c382090267bc92be1a495a64652251e504b6d46ba8343c32e7e66fb",
+        "size": 5844992
+      },
+      "godot_archive_sha512": "41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9",
+      "godot_version": "4.7.stable.official.5b4e0cb0f",
+      "rapier_runtime": {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+        "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "size": 9987072
+      },
+      "runtime_build_commit": "919134a39d31461947c410c233d59d1965c48414",
+      "runtime_provenance": {
+        "path": "source-built-candidate-provenance.json",
+        "sha256": "0a8c5a335d623e3f2517d5dd8bfdae208906777a4d3cd9e8b90b3f09bdc40e4b"
+      },
+      "runtime_source_commit": "919134a39d31461947c410c233d59d1965c48414",
+      "source_tree": "78d6df75cb3534238c81b40e7bcdbe0cf693d012"
+    },
+    "windows_source_input_count": 1104
+  },
+  "schema": "swarm45-final-gdextension-independent-review-v1",
+  "windows": {
+    "cases": 319,
+    "coverage_replay": "passed",
+    "display_cases_explicitly_out_of_headless_scope": 23,
+    "inputs": 1104,
+    "native_rebuild_input_count": 106,
+    "native_rebuild_inputs_equal_published_runtime": true,
+    "raw_logs": 342,
+    "shards": 23
+  }
+}

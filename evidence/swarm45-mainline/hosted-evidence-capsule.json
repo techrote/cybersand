@@ -1,0 +1,15 @@
+{
+  "path": "/workspace/scratch/038267c40e11/CyberSand-SWARM45-919134a-Hosted-Evidence.zip",
+  "bytes": 342753737,
+  "sha256": "f79099f5ac19ae823b9e5437afea3b181ce80ea17556f871089dd3e9cd4ae51f",
+  "members": 214,
+  "published_candidate": "919134a39d31461947c410c233d59d1965c48414",
+  "final_ci_runs": [
+    44957191341,
+    44957198003,
+    44957204571,
+    44957211504,
+    44957219135
+  ],
+  "physical_owner_acceptance": "pending"
+}

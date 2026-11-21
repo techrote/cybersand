@@ -1,0 +1,105 @@
+{
+  "recorded_at_utc": "2026-11-21 23:07:05 UTC",
+  "scope": "Read-only final source-reference snapshot. Protected SWARM006 branches may be advanced by their separate owner; this mission made no mutations to them.",
+  "prs": [
+    {
+      "number": 692,
+      "url": "https://github.com/techrote/cybersand/pull/692",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "head": "2c4b8061ef5315de6a31df933e9f84c31865284e",
+      "branch": "experiment/gentek-swarm-004-reciprocal-assembly",
+      "base": "experiment/gentek-swarm-003-negotiation-resilience",
+      "updated_at": "2026-11-21T00:16:52Z"
+    },
+    {
+      "number": 693,
+      "url": "https://github.com/techrote/cybersand/pull/693",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "head": "16a11ef2d25f03d58b229f4bba3f88009ebe1154",
+      "branch": "experiment/gentek-swarm-004-workbench",
+      "base": "experiment/gentek-swarm-004-reciprocal-assembly",
+      "updated_at": "2026-11-21T00:16:22Z"
+    },
+    {
+      "number": 696,
+      "url": "https://github.com/techrote/cybersand/pull/696",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "head": "c178feeb39899fd155b7deb9d5bde3f50ee28548",
+      "branch": "experiment/gentek-swarm-005-native-closure",
+      "base": "experiment/gentek-swarm-004-reciprocal-assembly",
+      "updated_at": "2026-11-21T02:16:48Z"
+    },
+    {
+      "number": 697,
+      "url": "https://github.com/techrote/cybersand/pull/697",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "head": "8ec6d3c62197f3ef4088d79e4aa2910f5eaa36f7",
+      "branch": "experiment/gentek-swarm-005-workbench-closure",
+      "base": "experiment/gentek-swarm-004-workbench",
+      "updated_at": "2026-11-21T02:10:58Z"
+    },
+    {
+      "number": 700,
+      "url": "https://github.com/techrote/cybersand/pull/700",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "head": "580ff82f285b7aeda8fb4a2a0d034425f0d0401d",
+      "branch": "experiment/gentek-swarm-005-doc-gate",
+      "base": "experiment/gentek-swarm-005-workbench-closure",
+      "updated_at": "2026-11-21T02:21:21Z"
+    },
+    {
+      "number": 705,
+      "url": "https://github.com/techrote/cybersand/pull/705",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "head": "a757ed4f0aa1c4ebfb1b235c657fbd3741c1c94d",
+      "branch": "experiment/gentek-swarm-006-native-recovery",
+      "base": "experiment/gentek-swarm-005-native-closure",
+      "updated_at": "2026-11-21T12:53:33Z"
+    },
+    {
+      "number": 707,
+      "url": "https://github.com/techrote/cybersand/pull/707",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "head": "4e8ff0b01043d9e1bed336559b17e37283094add",
+      "branch": "experiment/gentek-swarm-006-workbench-recovery",
+      "base": "experiment/gentek-swarm-005-workbench-closure",
+      "updated_at": "2026-11-21T15:56:28Z"
+    },
+    {
+      "number": 709,
+      "url": "https://github.com/techrote/cybersand/pull/709",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "head": "9daceee82b5f06b1c32867a1f274f4bebf9f91ff",
+      "branch": "experiment/gentek-swarm-006-exact-crop-compare",
+      "base": "experiment/gentek-swarm-006-workbench-recovery",
+      "updated_at": "2026-11-21T16:46:06Z"
+    },
+    {
+      "number": 710,
+      "url": "https://github.com/techrote/cybersand/pull/710",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "head": "8fad90c78c7c0edb111a27fb21b69f94eadb629a",
+      "branch": "experiment/gentek-swarm-006-final-round-inspector-fix",
+      "base": "experiment/gentek-swarm-006-workbench-recovery",
+      "updated_at": "2026-11-21T17:07:19Z"
+    }
+  ]
+}

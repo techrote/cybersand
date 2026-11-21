@@ -1,0 +1,233 @@
+{
+  "accepted_main": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+  "all_five_final_workflows_passed": true,
+  "decision": "GO for completed automated source/publication/platform/CI evidence; HOLD for overall admission until physical owner gate",
+  "evidence": [
+    {
+      "bytes": 6715,
+      "path": "swarm45-r3-actual-publication-and-dispatch-review.md",
+      "sha256": "b01005ba204b7c0b43dc3e06dbb91018020460efdf301b6caa8ca569bb3cc33f"
+    },
+    {
+      "bytes": 12413,
+      "path": "swarm45-r3-windows-delivery-and-publication-review.md",
+      "sha256": "9d3f9568f5dbbe4a1ce79ac5a3f562104b72d1afa0826d6342e74e1b05313cc5"
+    },
+    {
+      "bytes": 5524,
+      "path": "swarm45-r3-final-ci-three-gates-review.md",
+      "sha256": "75dfe755914aee510bffcbdd53063af4848a724fc115272338d971acd55c7083"
+    },
+    {
+      "bytes": 9069,
+      "path": "swarm45-r3-final-gdextension-and-native-partial-review.md",
+      "sha256": "ac4eb6c339a346b85fe0e9287748496f44c97201db43948faa9f66263a788e20"
+    },
+    {
+      "bytes": 4787,
+      "path": "swarm45-publication-review-evidence/final-gates/completed-three-checkpoint.json",
+      "sha256": "393658b1821e76aca2b412ead125dfc2baf6cee7cb672772fe28324357c487eb"
+    },
+    {
+      "bytes": 20750,
+      "path": "swarm45-publication-review-evidence/final-gates/completed-gdextension-checkpoint.json",
+      "sha256": "a2b58cfb8c78a08cdbd1fe9c4d5f5fb3dec96dea6b3052d796d1dda1b0ca1f0c"
+    },
+    {
+      "bytes": 80919,
+      "path": "swarm45-publication-review-evidence/final-gates/independent-native-complete.json",
+      "sha256": "06ebd57da3e08c77f6164262d3d2b9fcbd3b16fe7e083cea126e7781fbebe4f2"
+    },
+    {
+      "bytes": 34009,
+      "path": "swarm45-publication-review-evidence/final-gates/worldgen-catalogue-showcase-proof.json",
+      "sha256": "ae8d6b897b074368f3a793468f1153980e20c08ccb2b4e305f0e340cb28afbd2"
+    },
+    {
+      "bytes": 36701,
+      "path": "swarm45-publication-review-evidence/final-gates/all-five-final-api.json",
+      "sha256": "b049b0fc075acf263a7050d7540d09dca46691f4ec0e12e801b1f6e8267b4ce0"
+    },
+    {
+      "bytes": 52373,
+      "path": "swarm45-publication-review-evidence/final-gates/native-final-api.json",
+      "sha256": "80ce0f6aecb2f407667117d58fed49c9ca822556010ae180fdc89a589bcd987f"
+    },
+    {
+      "bytes": 201566,
+      "path": "swarm45-publication-review-evidence/final-gates/job-137007964709.log",
+      "sha256": "184f9b30fef5de3abb112b71641e1397a1a9104d978ed93e983467f4c442e21f"
+    },
+    {
+      "bytes": 154010,
+      "path": "swarm45-publication-review-evidence/final-gates/job-137015517489.log",
+      "sha256": "886abb8fe7b513f0e019442c20bd70b9526056a02b7059ebdbde4451e76d2137"
+    },
+    {
+      "bytes": 560,
+      "path": "swarm45-publication-review-evidence/final-gates/native-completed-artifact-downloads.json",
+      "sha256": "db0f0cbb91aa13a4df100ad8d695807dcc47966a4c5244b14911f49c1c51dcf0"
+    },
+    {
+      "bytes": 1108,
+      "path": "swarm45-publication-review-evidence/final-gates/native-artifact-downloads.json",
+      "sha256": "c5cf871135eb052bde8d0c117a41858da302ffbd8da49cd0b730c90486889ce3"
+    },
+    {
+      "bytes": 450881,
+      "path": "swarm45-publication-review-evidence/final-gates/final-check-status-api.json",
+      "sha256": "1df0ccce811d81b478c2e2575677156db28f6dfe04c2bb1c66b5f1d248a40832"
+    }
+  ],
+  "gdextension": {
+    "independent_original_artifact_coverage_replay_pass": true,
+    "linux_cases": 342,
+    "linux_shards": 24,
+    "separate_r3_windows_graphical_package_pass": true,
+    "windows_graphical_cases_outside_headless_scope": 23,
+    "windows_headless_cases": 319,
+    "windows_shards": 23
+  },
+  "github_check_summary": {
+    "clean_ready_state_claimed": false,
+    "completed": 77,
+    "legacy_combined_status": "pending",
+    "legacy_status_context_count": 0,
+    "skipped": 3,
+    "skips": [
+      "Ready-event classifier (Native)",
+      "Ready-event classifier (GDExtension)",
+      "Optional physical-actor stress campaign"
+    ],
+    "success": 74,
+    "total": 77
+  },
+  "native": {
+    "all_six_family_originals_verified": true,
+    "catalogue_modules": 80,
+    "catalogue_witness": "Actual successful source-bound procedural executions with unconditional catalogue invocation, not a separate per-module printed PASS table",
+    "core_cases_per_normal_asan_ubsan_tsan": 192,
+    "errors": [],
+    "independent_replay_matches_hosted_aggregate": true,
+    "normal_and_sanitized_showcase_assertions": {
+      "cathedral_megaframe": 552616,
+      "interlaced_viaduct": 1305,
+      "interlock_brutalism": 1725,
+      "megatruss_station": 1499,
+      "metabolist_spine": 204424,
+      "rosework_gatehouse": 166489,
+      "seeded_typology_megablock": 19750,
+      "suspended_arcology": 26265
+    },
+    "retained_classic_oracle_modules": 72,
+    "worldgen_normal_and_sanitized_ordered_binaries_each": 16,
+    "worldgen_procedural_assertions_each": 969803
+  },
+  "native_definition_sha256": "217bfa716e61198f5b3849f2ae14c30e85bc9f623fc1d05438c59df2296ce7f7",
+  "owner_package": {
+    "current_guide_sha256": "74688f455b2a60075ebcde3e21a0147b7e1ab5d936e7d048476ebceff4b3745e",
+    "manifest_sha256": "73ae92f19034bf8a9311430200c269df1b18e6c2a2ee18c8609ef62379daaf3b",
+    "sha256": "ce50316be11caafe32879395b681ef7f131541732061ded5db36dc3af6236c6d",
+    "size": 95359907
+  },
+  "pr_snapshot": {
+    "auto_merge": null,
+    "base": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+    "draft": true,
+    "head": "919134a39d31461947c410c233d59d1965c48414",
+    "mergeable": true,
+    "mergeable_state": "unstable",
+    "merged": false,
+    "number": 715,
+    "state": "open"
+  },
+  "preserved_limits": {
+    "full_scientific_general_solution_claim": false,
+    "historical_owner_donor_evaluation_not_current_acceptance": true,
+    "historical_scientific_receipts_not_rewritten": true,
+    "palette_older_v2_finished_image_diagnostic": "failed; six frames each 11/2304 pixels beyond older2/255 tolerance; maximum0.3009393513202667",
+    "palette_registered_v3": "passed; unchanged accepted policy",
+    "physical_owner_acceptance": "pending for this exact reconstructed package",
+    "play_manual_result": "all untested",
+    "play_manual_rows_per_platform": 51,
+    "windows_final_build_candidate_not_published_binary": true
+  },
+  "published_commit": "919134a39d31461947c410c233d59d1965c48414",
+  "published_tree": "78d6df75cb3534238c81b40e7bcdbe0cf693d012",
+  "qualified_build_source": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f",
+  "review_actions": "Read-only GitHub/source/artifact inspection and offline evidence verification; no generation campaign, mutation, workflow trigger, retry, Ready, merge, or SWARM006 changes",
+  "reviewer": "independent publication and CI reviewer",
+  "runs": [
+    {
+      "conclusion": "success",
+      "created_at": "2026-11-21T22:31:33Z",
+      "event": "workflow_dispatch",
+      "head_branch": "integration/swarm004-005-mainline-20261121",
+      "head_sha": "919134a39d31461947c410c233d59d1965c48414",
+      "id": 44957191341,
+      "name": "documentation",
+      "path": ".github/workflows/documentation.yml",
+      "run_attempt": 1,
+      "status": "completed",
+      "updated_at": "2026-11-21T22:40:42Z",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44957191341"
+    },
+    {
+      "conclusion": "success",
+      "created_at": "2026-11-21T22:31:37Z",
+      "event": "workflow_dispatch",
+      "head_branch": "integration/swarm004-005-mainline-20261121",
+      "head_sha": "919134a39d31461947c410c233d59d1965c48414",
+      "id": 44957198003,
+      "name": "native",
+      "path": ".github/workflows/native.yml",
+      "run_attempt": 1,
+      "status": "completed",
+      "updated_at": "2026-11-21T23:01:56Z",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44957198003"
+    },
+    {
+      "conclusion": "success",
+      "created_at": "2026-11-21T22:31:42Z",
+      "event": "workflow_dispatch",
+      "head_branch": "integration/swarm004-005-mainline-20261121",
+      "head_sha": "919134a39d31461947c410c233d59d1965c48414",
+      "id": 44957204571,
+      "name": "gdextension",
+      "path": ".github/workflows/gdextension.yml",
+      "run_attempt": 1,
+      "status": "completed",
+      "updated_at": "2026-11-21T22:51:32Z",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44957204571"
+    },
+    {
+      "conclusion": "success",
+      "created_at": "2026-11-21T22:31:46Z",
+      "event": "workflow_dispatch",
+      "head_branch": "integration/swarm004-005-mainline-20261121",
+      "head_sha": "919134a39d31461947c410c233d59d1965c48414",
+      "id": 44957211504,
+      "name": "palette",
+      "path": ".github/workflows/palette-shader-qualification.yml",
+      "run_attempt": 1,
+      "status": "completed",
+      "updated_at": "2026-11-21T22:38:54Z",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44957211504"
+    },
+    {
+      "conclusion": "success",
+      "created_at": "2026-11-21T22:31:51Z",
+      "event": "workflow_dispatch",
+      "head_branch": "integration/swarm004-005-mainline-20261121",
+      "head_sha": "919134a39d31461947c410c233d59d1965c48414",
+      "id": 44957219135,
+      "name": "play",
+      "path": ".github/workflows/play-desktop-packet.yml",
+      "run_attempt": 1,
+      "status": "completed",
+      "updated_at": "2026-11-21T22:33:18Z",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44957219135"
+    }
+  ],
+  "schema": "swarm45-final-independent-automated-admission-v1"
+}

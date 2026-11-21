@@ -1,0 +1,138 @@
+{
+  "gates": {
+    "docs": {
+      "all_steps_succeeded": true,
+      "conclusion": "success",
+      "current_parity_input_and_tool_hashes_verified": 8,
+      "head_sha": "919134a39d31461947c410c233d59d1965c48414",
+      "lfs_fsck_passed": true,
+      "metadata_parity_historical_baseline": "0fd4af5987e77db4da3e37c757cf2c0917ae9e15",
+      "require_materialized_executed": true,
+      "run_id": 44957191341,
+      "successful_jobs": 1,
+      "workflow_inventory_count": 96
+    },
+    "palette": {
+      "all_old_cpu_base_pixels_within_original_tolerance": true,
+      "all_steps_succeeded": true,
+      "cohorts": 6,
+      "conclusion": "success",
+      "gate_passed": true,
+      "head_sha": "919134a39d31461947c410c233d59d1965c48414",
+      "older_finished_image_diagnostic": {
+        "frames": [
+          {
+            "blend": 0.0,
+            "condition": 0,
+            "max_rgba_difference": 0.0009804069995880127,
+            "pixels_exceeding_original_threshold": 0,
+            "total_pixels": 2304
+          },
+          {
+            "blend": 0.5,
+            "condition": 0,
+            "max_rgba_difference": 0.15097513794898987,
+            "pixels_exceeding_original_threshold": 11,
+            "total_pixels": 2304
+          },
+          {
+            "blend": 1.0,
+            "condition": 0,
+            "max_rgba_difference": 0.3009393513202667,
+            "pixels_exceeding_original_threshold": 11,
+            "total_pixels": 2304
+          },
+          {
+            "blend": 0.0,
+            "condition": 128,
+            "max_rgba_difference": 0.0019492805004119873,
+            "pixels_exceeding_original_threshold": 0,
+            "total_pixels": 2304
+          },
+          {
+            "blend": 0.5,
+            "condition": 128,
+            "max_rgba_difference": 0.15079322457313538,
+            "pixels_exceeding_original_threshold": 11,
+            "total_pixels": 2304
+          },
+          {
+            "blend": 1.0,
+            "condition": 128,
+            "max_rgba_difference": 0.3009393513202667,
+            "pixels_exceeding_original_threshold": 11,
+            "total_pixels": 2304
+          },
+          {
+            "blend": 0.0,
+            "condition": 255,
+            "max_rgba_difference": 0.0019608139991760254,
+            "pixels_exceeding_original_threshold": 0,
+            "total_pixels": 2304
+          },
+          {
+            "blend": 0.5,
+            "condition": 255,
+            "max_rgba_difference": 0.15134277939796448,
+            "pixels_exceeding_original_threshold": 11,
+            "total_pixels": 2304
+          },
+          {
+            "blend": 1.0,
+            "condition": 255,
+            "max_rgba_difference": 0.3009393513202667,
+            "pixels_exceeding_original_threshold": 11,
+            "total_pixels": 2304
+          }
+        ],
+        "original_threshold": 0.00784313725490196,
+        "scope": "Retained v2 finished-image identity diagnostic, not the v3 acceptance predicate. Procedural hash finish is stable on one GPU; no tolerated-pixel allowance is introduced.",
+        "status": "failed"
+      },
+      "policy_equal_accepted_main": true,
+      "process_cases": 19,
+      "registered_gate": "palette-shader-suite-v3 / palette-bounded-semantics-v3",
+      "run_id": 44957211504,
+      "successful_jobs": 8,
+      "unchanged_policy_paths": [
+        ".github/workflows/palette-shader-qualification.yml",
+        "tools/play/run_palette_shader_qualification.py",
+        "tools/play/palette_qualification_contract.py",
+        "tools/play/test_palette_qualification.py",
+        "godot/shaders/material_palette.gdshader"
+      ]
+    },
+    "play": {
+      "all_steps_succeeded": true,
+      "conclusion": "success",
+      "head_sha": "919134a39d31461947c410c233d59d1965c48414",
+      "packets": {
+        "linux": {
+          "all_four_published_binary_paths_materialized": true,
+          "manual_rows_untested": 51,
+          "materialized_runtime_files": 20,
+          "physical_acceptance_claimed": false
+        },
+        "windows": {
+          "all_four_published_binary_paths_materialized": true,
+          "manual_rows_untested": 51,
+          "materialized_runtime_files": 20,
+          "physical_acceptance_claimed": false
+        }
+      },
+      "run_id": 44957219135,
+      "successful_jobs": 3
+    }
+  },
+  "no_claim_of_pixel_identical_cross_backend_finished_image": true,
+  "no_manual_PLAY_acceptance_inferred": true,
+  "overall_admission": "HOLD",
+  "owner_visual_acceptance": "pending",
+  "published_head": "919134a39d31461947c410c233d59d1965c48414",
+  "remaining_final_ci": [
+    "Native C++ validation44957198003",
+    "GDExtension44957204571"
+  ],
+  "reviewed_at": "2026-11-21T22:44:22.714229+00:00",
+  "scope": "Three completed final-admission gates only"
+}
