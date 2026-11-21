@@ -141,12 +141,7 @@ jobs:
           if ((Get-FileHash $zip -Algorithm SHA512).Hash.ToLowerInvariant() -ne $sha) { throw 'Godot archive pin mismatch' }
           Expand-Archive $zip (Join-Path $env:RUNNER_TEMP 'godot')
           'GODOT_EXE=' + (Join-Path $env:RUNNER_TEMP 'godot/Godot_v4.7-stable_win64_console.exe') | Out-File -Append $env:GITHUB_ENV
-      - name: Qualify historical controls and SWARM006 recovery in actual Windows graphics
-        shell: pwsh
-        run: |
-          python tools/swarm006/qualify_workbench.py --godot $env:GODOT_EXE --project godot --native-candidate build/swarm006-windows --output evidence/swarm006-source
-          if ($LASTEXITCODE -ne 0) { throw 'Source graphical reciprocal and transaction qualification failed' }
-      - name: Build owner ZIP with pinned runtime licences
+      - name: Seal owner ZIP and qualify all seven real launcher exercises
         shell: pwsh
         run: |
           $notices = Join-Path $env:RUNNER_TEMP 'swarm006-notices'
@@ -171,6 +166,14 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Owner package seal failed' }
           python tools/swarm006/test_owner_launcher.py --sealed build/swarm006-sealed --output evidence/swarm006-launcher --source $env:TARGET_SOURCE
           if ($LASTEXITCODE -ne 0) { throw 'Actual Windows owner launcher qualification failed' }
+      - name: Qualify historical controls and SWARM006 recovery in source Windows graphics
+        shell: pwsh
+        run: |
+          python tools/swarm006/qualify_workbench.py --godot $env:GODOT_EXE --project godot --native-candidate build/swarm006-windows --output evidence/swarm006-source
+          if ($LASTEXITCODE -ne 0) { throw 'Source graphical reciprocal and transaction qualification failed' }
+      - name: Qualify pristine owner ZIP graphics and fresh-process material reopening
+        shell: pwsh
+        run: |
           $archive = "build/swarm006-sealed/CyberSand-SWARM006-Draft-HOLD-Windows-$($env:TARGET_SOURCE.Substring(0,12)).zip"
           $launcher = 'build/swarm006-sealed/CyberSand-SWARM006-Windows-Owner-Acceptance.ps1'
           $validation = Join-Path $env:RUNNER_TEMP 'swarm006-pristine-package'

@@ -28,6 +28,18 @@ TITLE = 'Development workbench'
 MAX_SECONDS = 240
 STABLE_SECONDS = 10
 MAX_LOG_BYTES = 16 * 1024 * 1024
+AUDIO_POLICY = 'pinned-godot-4.7-wasapi-dummy-recovery-v1'
+AUDIO_PREFIX_GRACE_SECONDS = 2.0
+PINNED_ENGINE_HEADER = 'Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org'
+STARTUP_ERROR = re.compile(r'(?:^|\s)(?:ERROR:|SCRIPT ERROR:|Parse Error:|Failed to load|Unable to create)')
+RECOVERED_AUDIO_BLOCK = (
+    'ERROR: Condition "hr != ((HRESULT)0x00000000)" is true. Returning: ERR_CANT_OPEN',
+    'at: audio_device_init (drivers/wasapi/audio_driver_wasapi.cpp:275)',
+    'ERROR: WASAPI: init_output_device error.',
+    'at: init (drivers/wasapi/audio_driver_wasapi.cpp:600)',
+    'WARNING: All audio drivers failed, falling back to the dummy driver.',
+    'at: initialize (servers/audio/audio_server.cpp:258)',
+)
 
 
 def windows_powershell_env(environment: dict[str, str] | None = None) -> dict[str, str]:
@@ -56,6 +68,9 @@ def owner_command(argv: list[str], engine: str, project: str) -> bool:
 
 def evidence_errors(report: dict) -> list[str]:
     errors = []
+    if (report.get('schema') != 2 or report.get('audio_diagnostic_policy') != AUDIO_POLICY
+            or report.get('audio_prefix_grace_seconds') != AUDIO_PREFIX_GRACE_SECONDS):
+        errors.append('the explicit recovered-audio observation policy is required')
     if report.get('platform') != 'Windows' or report.get('verify_only') is not False:
         errors.append('actual Windows owner dispatch is required')
     if report.get('launcher_returncode') != 0 or report.get('verified_source_logged') is not True:
@@ -69,15 +84,33 @@ def evidence_errors(report: dict) -> list[str]:
         errors.append('source-bound Godot did not sustain a responsive visible Workbench window')
     if not owner_command(report.get('godot_argv', []), report.get('expected_engine', ''), report.get('expected_project', '')):
         errors.append('the actual packaged graphical Workbench command was not observed')
-    if report.get('launch_marker_observed') is not True or report.get('initialization_errors') != []:
+    if (report.get('launch_marker_observed') is not True or report.get('initialization_errors') != []
+            or report.get('pending_audio_diagnostics') != []):
         errors.append('Workbench entry marker is missing or startup reported an error')
+    recovered = report.get('recovered_audio_diagnostics')
+    covered = []
+    if not isinstance(recovered, list):
+        errors.append('recovered audio diagnostics must be retained explicitly')
+    else:
+        for item in recovered:
+            lines = item.get('raw_lines', []) if isinstance(item, dict) else []
+            if (not all(isinstance(line, str) for line in lines)
+                    or tuple(line.strip() for line in lines) != RECOVERED_AUDIO_BLOCK
+                    or item.get('engine') != PINNED_ENGINE_HEADER
+                    or not isinstance(item.get('source_log'), str) or not item['source_log']
+                    or type(item.get('start_line')) is not int or item['start_line'] < 1):
+                errors.append('unrecognized recovered audio diagnostic')
+            else:
+                covered.extend((lines[0], lines[2]))
+    if report.get('raw_initialization_errors') != covered:
+        errors.append('raw startup errors are not fully accounted for by the exact recovered audio blocks')
     screenshot = report.get('screenshot', {})
     if (screenshot.get('distinct_sampled_colors', 0) < 32 or not re.fullmatch('[0-9a-f]{64}', screenshot.get('sha256', ''))
             or screenshot.get('width', 0) < 640 or screenshot.get('height', 0) < 360):
         errors.append('a nonblank original graphical window capture is required')
     for key in ('engine_sha256', 'native_sha256', 'reciprocal_cli_sha256', 'manifest_sha256'):
         if not re.fullmatch('[0-9a-f]{64}', report.get(key, '')) or report.get(key) != report.get('expected_' + key):
-            errors.append('packaged source/binary custody changed: ' + key)
+            errors.append('post-boot source/binary custody missing or mismatched: ' + key)
     return errors
 
 
@@ -228,7 +261,38 @@ class WindowsObserver:
             if screen: self.user.ReleaseDC(None, screen)
 
 
-def read_logs(profile: Path, launcher_log: Path) -> tuple[dict[str, str], list[str]]:
+def classify_startup_logs(logs: dict[str, str]) -> dict:
+    raw, fatal, recovered, pending = [], [], [], []
+    for name, text in logs.items():
+        lines = text.splitlines();clean = [line.strip() for line in lines]
+        covered = set();waiting = set();engine = ''
+        for index, line in enumerate(clean):
+            if line.startswith('Godot Engine '): engine = line
+            if engine != PINNED_ENGINE_HEADER or not line or not RECOVERED_AUDIO_BLOCK[0].startswith(line): continue
+            block = clean[index:index + len(RECOVERED_AUDIO_BLOCK)]
+            record = {'source_log': name, 'start_line': index + 1, 'engine': engine,
+                      'raw_lines': lines[index:index + len(RECOVERED_AUDIO_BLOCK)]}
+            if tuple(block) == RECOVERED_AUDIO_BLOCK:
+                recovered.append({**record, 'reason': 'pinned engine explicitly recovered unavailable WASAPI output through Dummy audio'})
+                covered.update((index, index + 2))
+                continue
+            # Only an exact sequence prefix at EOF may be a partial file flush.
+            # A different stack/error, another boot or another file cannot qualify.
+            if (len(clean) - index <= len(RECOVERED_AUDIO_BLOCK)
+                    and all((expected.startswith(actual) if index + offset == len(clean) - 1
+                             and not text.endswith(('\n', '\r')) else actual == expected)
+                            for offset, (actual, expected) in enumerate(zip(block, RECOVERED_AUDIO_BLOCK)))):
+                pending.append({**record, 'reason': 'incomplete pinned WASAPI/Dummy sequence; no recovery accepted yet'})
+                waiting.update(range(index, len(lines)))
+        for index, line in enumerate(lines):
+            if STARTUP_ERROR.search(line):
+                raw.append(line)
+                if index not in covered and index not in waiting: fatal.append(line)
+    return {'raw_initialization_errors': raw, 'initialization_errors': fatal,
+            'recovered_audio_diagnostics': recovered, 'pending_audio_diagnostics': pending}
+
+
+def read_logs(profile: Path, launcher_log: Path) -> tuple[dict[str, str], dict]:
     paths = [launcher_log, *sorted(profile.rglob('godot*.log'))]
     if len(paths) > 32: raise ValueError('Owner launch exceeds bounded log inventory')
     logs = {}
@@ -236,9 +300,7 @@ def read_logs(profile: Path, launcher_log: Path) -> tuple[dict[str, str], list[s
         if not path.exists(): continue
         if path.stat().st_size > MAX_LOG_BYTES: raise ValueError('Owner launch exceeded bounded log size: ' + str(path))
         logs[str(path)] = path.read_text(encoding='utf-8', errors='replace')
-    errors = [line for text in logs.values() for line in text.splitlines()
-              if re.search(r'(?:^|\s)(?:ERROR:|SCRIPT ERROR:|Parse Error:|Failed to load|Unable to create)', line)]
-    return logs, errors
+    return logs, classify_startup_logs(logs)
 
 
 def qualify(launcher: Path, archive: Path, destination: Path, output: Path, source: str, metadata: dict) -> dict:
@@ -254,13 +316,15 @@ def qualify(launcher: Path, archive: Path, destination: Path, output: Path, sour
                '-Archive', str(archive), '-Destination', str(destination)]
     engine, project = destination / 'Godot_v4.7-stable_win64.exe', destination / 'godot'
     log_path = output / 'owner-dispatch.log'
-    report = {'schema': 1, 'source_commit': source, 'platform': 'Windows', 'verify_only': False,
+    report = {'schema': 2, 'source_commit': source, 'platform': 'Windows', 'verify_only': False,
+              'audio_diagnostic_policy': AUDIO_POLICY, 'audio_prefix_grace_seconds': AUDIO_PREFIX_GRACE_SECONDS,
               'scope': 'actual owner PowerShell/CMD dispatch and graphical Workbench boot; native Apply qualification separate',
               'command': command, 'timeout_seconds': MAX_SECONDS, 'stable_required_seconds': STABLE_SECONDS,
               'expected_engine': str(engine), 'expected_project': str(project), 'archive_sha256': metadata['archive_sha256'],
               'launcher_sha256': sha(launcher), 'test_sha256': sha(Path(__file__)), 'job_helper_sha256': sha(JOB_HELPER),
               'owned_before_resume': False, 'job_empty_after_retirement': False, 'passed': False,
-              'owner_nvidia_acceptance': 'pending', 'observed_processes': [], 'initialization_errors': []}
+              'owner_nvidia_acceptance': 'pending', 'observed_processes': [], 'initialization_errors': [],
+              'raw_initialization_errors': [], 'recovered_audio_diagnostics': [], 'pending_audio_diagnostics': []}
     specification = importlib.util.spec_from_file_location('swarm006_owned_process', JOB_HELPER)
     module = importlib.util.module_from_spec(specification);specification.loader.exec_module(module)
     owner = module.WindowsJob();observer = WindowsObserver(owner);process = None;started = time.monotonic()
@@ -270,7 +334,7 @@ def qualify(launcher: Path, archive: Path, destination: Path, output: Path, sour
                                        creationflags=module.CREATE_SUSPENDED | subprocess.CREATE_NEW_PROCESS_GROUP | subprocess.CREATE_NO_WINDOW)
             report['launcher_pid'] = process.pid
             owner.assign_and_resume(process);report['owned_before_resume'] = True
-            deadline = started + MAX_SECONDS;stable_since = None;stable_identity = None;known = {}
+            deadline = started + MAX_SECONDS;stable_since = None;stable_identity = None;known = {};audio_pending_since = None
             while time.monotonic() < deadline:
                 members = observer.members()
                 for pid in members:
@@ -278,13 +342,18 @@ def qualify(launcher: Path, archive: Path, destination: Path, output: Path, sour
                     if identity: known[(pid, identity['created_filetime'])] = identity
                 if len(known) > 64: raise ValueError('Owner dispatch exceeds bounded process history')
                 report['observed_processes'] = list(known.values())
-                logs, errors = read_logs(profile, log_path)
-                report['initialization_errors'] = errors[:100]
-                if errors: raise ValueError('Actual owner launch reported initialization errors')
+                logs, diagnostics = read_logs(profile, log_path);report.update(diagnostics)
+                if diagnostics['initialization_errors']: raise ValueError('Actual owner launch reported initialization errors')
+                if diagnostics['pending_audio_diagnostics']:
+                    if audio_pending_since is None: audio_pending_since = time.monotonic()
+                    if time.monotonic() - audio_pending_since > AUDIO_PREFIX_GRACE_SECONDS:
+                        raise ValueError('Incomplete audio recovery exceeded the bounded log-flush grace')
+                else:
+                    audio_pending_since = None
                 if process.poll() not in (None, 0): raise ValueError('Owner PowerShell launcher failed')
                 windows = [w for w in observer.windows(members, engine) if TITLE in w['title'] and w['responsive']]
                 if len(windows) > 1: raise ValueError('Owner launch created ambiguous Workbench windows')
-                if windows and any(MARKER in text for text in logs.values()):
+                if windows and any(MARKER in text for text in logs.values()) and not diagnostics['pending_audio_diagnostics']:
                     window = windows[0];identity = (window['pid'], window['created_filetime'], window['hwnd'])
                     if identity != stable_identity:
                         observer.foreground(window);stable_identity = identity;stable_since = time.monotonic()
@@ -333,9 +402,8 @@ def qualify(launcher: Path, archive: Path, destination: Path, output: Path, sour
             try: owner.close()
             except Exception as error: report['cleanup_failure'] = str(error)
         try:
-            logs, errors = read_logs(profile, log_path)
+            logs, diagnostics = read_logs(profile, log_path);report.update(diagnostics)
             report['logs_sha256'] = {str(Path(path).relative_to(output)): sha(Path(path)) for path in logs}
-            report['initialization_errors'] = errors[:100]
             report['launch_marker_observed'] = any(MARKER in text for text in logs.values())
             report['verified_source_logged'] = f'Verified GENTEK-SWARM-006 source {source};' in logs.get(str(log_path), '')
         except Exception as error:
