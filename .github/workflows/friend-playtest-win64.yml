@@ -1,0 +1,184 @@
+name: CyberSand Windows friend playtest package
+
+on:
+  push:
+    branches: [tooling/friend-playtest-win64]
+    paths: [.github/workflows/friend-playtest-win64.yml]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: friend-playtest-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  package:
+    if: github.repository == 'techrote/cybersand'
+    runs-on: windows-2022
+    timeout-minutes: 120
+    defaults:
+      run:
+        shell: pwsh
+        working-directory: source
+    steps:
+      - name: Check out the accepted main source (not experimental PR code)
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: main
+          path: source
+          lfs: false
+          persist-credentials: false
+      - name: Select Python 3.12
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Find successfully tested exact-main Windows native binary
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $sha = (git rev-parse HEAD).Trim()
+          if ($LASTEXITCODE -ne 0 -or $sha -notmatch '^[0-9a-f]{40}$') { throw 'Cannot establish checked-out source identity' }
+          $runs = gh api "repos/$env:GITHUB_REPOSITORY/actions/workflows/gdextension.yml/runs?branch=main&status=success&per_page=100" | ConvertFrom-Json
+          if ($LASTEXITCODE -ne 0) { throw 'Could not retrieve tested main workflows' }
+          $run = @($runs.workflow_runs | Where-Object { $_.head_sha -eq $sha -and $_.event -eq 'push' -and $_.conclusion -eq 'success' } | Select-Object -First 1)
+          if ($run.Count -ne 1) { throw "No successful complete GDExtension main run at $sha. Refusing stale binary." }
+          $run = $run[0]
+          $artifactName = "native-candidate-windows-$($run.id)-$($run.run_attempt)"
+          $artifactList = gh api "repos/$env:GITHUB_REPOSITORY/actions/runs/$($run.id)/artifacts?per_page=100" | ConvertFrom-Json
+          if ($LASTEXITCODE -ne 0 -or @($artifactList.artifacts | Where-Object { $_.name -eq $artifactName -and -not $_.expired }).Count -ne 1) { throw "Source-matched Windows artifact $artifactName is missing or expired" }
+          New-Item -ItemType Directory -Force build/windows-candidate | Out-Null
+          gh run download $run.id --repo $env:GITHUB_REPOSITORY --name $artifactName --dir build/windows-candidate
+          if ($LASTEXITCODE -ne 0) { throw 'Source-matched Windows candidate download failed' }
+          python tools/ci/native_candidate_identity.py build/windows-candidate
+          if ($LASTEXITCODE -ne 0) { throw 'Native source/commit/tree/binary identity verification failed' }
+          "FRIEND_SOURCE_SHA=$sha" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          "FRIEND_NATIVE_RUN=$($run.id)" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+      - name: Materialize and verify Windows Rapier from LFS
+        run: |
+          git lfs install --local
+          if ($LASTEXITCODE -ne 0) { throw 'Git LFS init failed' }
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          if ($LASTEXITCODE -ne 0) { throw 'Rapier LFS download failed' }
+          $rapier = 'godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll'
+          $expected = 'b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7'
+          if ((Get-FileHash $rapier -Algorithm SHA256).Hash.ToLowerInvariant() -ne $expected) { throw 'Rapier binary hash mismatch' }
+      - name: Download and authenticate exact official Godot 4.7 Windows runtime
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $url = 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          $archive = Join-Path $env:RUNNER_TEMP 'cybersand-godot-4.7.zip'
+          curl.exe -fL --retry 3 --connect-timeout 30 --max-time 1200 -o $archive $url
+          if ($LASTEXITCODE -ne 0) { throw 'Official Godot archive download failed' }
+          $expected = '41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9'
+          if ((Get-FileHash $archive -Algorithm SHA512).Hash.ToLowerInvariant() -ne $expected) { throw 'Godot official archive SHA-512 mismatch' }
+          $directory = Join-Path $env:RUNNER_TEMP 'cybersand-godot-4.7'
+          Expand-Archive -Path $archive -DestinationPath $directory
+          $console = Join-Path $directory 'Godot_v4.7-stable_win64_console.exe'
+          if (!(Test-Path $console) -or !(Test-Path (Join-Path $directory 'Godot_v4.7-stable_win64.exe'))) { throw 'Godot Windows executables missing' }
+          if ((& $console --version | Select-Object -First 1).Trim() -ne '4.7.stable.official.5b4e0cb0f') { throw 'Godot version mismatch' }
+          "FRIEND_GODOT_DIR=$directory" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+      - name: Stage verified license notices and redistributable runtime
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $notices = Join-Path $env:RUNNER_TEMP 'cybersand-friend-notices'
+          New-Item -ItemType Directory $notices | Out-Null
+          foreach ($name in @('LICENSE.txt', 'COPYRIGHT.txt')) {
+            curl.exe -fL --retry 3 -o (Join-Path $notices $name) "https://raw.githubusercontent.com/godotengine/godot/5b4e0cb0f/$name"
+            if ($LASTEXITCODE -ne 0) { throw "Godot notice download failed: $name" }
+          }
+          if ((Get-FileHash (Join-Path $notices 'LICENSE.txt') -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'b0435e3b3e4e55238f05f4b306f30524a1b2e20147810d436eaa554fa6855c80') { throw 'Godot license hash mismatch' }
+          if ((Get-FileHash (Join-Path $notices 'COPYRIGHT.txt') -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'cb1980c88089573bcacd7221d777c689bb8bbd778799f24c27fca0fe5f774d6d') { throw 'Godot copyright hash mismatch' }
+          $runtimeLicense = Join-Path $notices 'Microsoft-Visual-C-Runtime-LICENSE.docx'
+          $developerLicense = Join-Path $notices 'Microsoft-Visual-Studio-2022-LICENSE.docx'
+          curl.exe -fL --retry 3 -o $runtimeLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/09/Visual-C-Runtime-2015-2022-License-1.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'VC runtime license download failed' }
+          curl.exe -fL --retry 3 -o $developerLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Visual-Studio-2022-Enterprise-Professional-License-EN.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'VS license download failed' }
+          $vc = Join-Path $env:RUNNER_TEMP 'cybersand-friend-vc'
+          & ./tools/ci/stage_windows_vc_runtime.ps1 -Output $vc -License $runtimeLicense -DeveloperLicense $developerLicense
+          if ($LASTEXITCODE -ne 0) { throw 'Verified VC runtime staging failed' }
+          "FRIEND_NOTICES_DIR=$notices" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          "FRIEND_VC_DIR=$vc" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+      - name: Build self-contained Windows desktop package from exact main source
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $engine = Join-Path $env:FRIEND_GODOT_DIR 'Godot_v4.7-stable_win64.exe'
+          python tools/package_explore001_candidate.py --engine $engine --engine-notices $env:FRIEND_NOTICES_DIR --native-candidate build/windows-candidate --vc-runtime $env:FRIEND_VC_DIR --output build/friend-playtest
+          if ($LASTEXITCODE -ne 0) { throw 'Existing audited portable packaging refused' }
+          $package = Join-Path (Get-Location) 'build/friend-playtest'
+          $launcher = @'
+          @echo off
+          setlocal
+          cd /d "%~dp0"
+          set "CYBERSAND_SOURCE_REVISION=__SOURCE__"
+          echo Preparing CyberSand. The first run may import assets...
+          "%~dp0Godot_v4.7-stable_win64_console.exe" --headless --path "%~dp0godot" --editor --quit
+          if errorlevel 1 (
+            echo CyberSand project import failed. Please report this window.
+            pause
+            exit /b 1
+          )
+          start "" "%~dp0Godot_v4.7-stable_win64.exe" --path "%~dp0godot"
+          '@
+          $launcher = $launcher.Replace('__SOURCE__', $env:FRIEND_SOURCE_SHA)
+          [IO.File]::WriteAllText((Join-Path $package 'Open CyberSand.cmd'), ($launcher -replace "`r?`n", "`r`n") + "`r`n", [Text.Encoding]::ASCII)
+          $guide = @'
+          CYBERSAND - FRIEND WINDOWS PLAYTEST
+
+          1. Extract the WHOLE downloaded ZIP into a writable folder, e.g. Documents\CyberSand-Playtest.
+          2. Double-click "Open CyberSand.cmd" for the main feature menu.
+             Or double-click "Open Workbench.cmd" to enter Shared Workbench directly.
+          3. First startup imports resources. Keep the Godot executables, godot folder and DLLs together.
+          4. In the main menu try Player Playground, Shared Workbench, Deepworks or Blacksite Nine.
+             F2 returns to the feature menu. Controls are displayed within each experiment.
+          5. Saves live in Godot's user-data folder, not necessarily alongside this package.
+             Back up important saves before updating or deleting this development build.
+
+          This is an experimental Windows x64 development playtest, not a supported game release.
+          No Git, Godot, Python, compiler or VC++ installer should be required on the tester PC.
+          If Windows blocks an unsigned downloaded file, verify it came from the project owner.
+          Do not disable antivirus or system protection to run it.
+
+          Source commit: __SOURCE__
+          Tested source-built native Windows CI run: __NATIVE_RUN__
+          Godot: 4.7.stable.official.5b4e0cb0f
+          NOTE: Project licensing status and third-party notices are bundled. Not a public release.
+          '@
+          $guide = $guide.Replace('__SOURCE__', $env:FRIEND_SOURCE_SHA).Replace('__NATIVE_RUN__', $env:FRIEND_NATIVE_RUN)
+          [IO.File]::WriteAllText((Join-Path $package 'START-HERE.txt'), (($guide -replace "`r?`n", "`r`n") + "`r`n"), [Text.Encoding]::UTF8)
+          $files = Get-ChildItem -LiteralPath $package -Recurse -File
+          $manifest = [ordered]@{ schema = 1; kind = 'private-friend-playtest-wrapper'; source_commit = $env:FRIEND_SOURCE_SHA; tested_native_workflow_run = [int64]$env:FRIEND_NATIVE_RUN; file_sha256 = [ordered]@{} }
+          foreach ($item in $files) {
+            $relative = $item.FullName.Substring($package.Length + 1).Replace('\', '/')
+            $manifest.file_sha256[$relative] = (Get-FileHash $item.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+          }
+          $manifest | ConvertTo-Json -Depth 6 | Set-Content -Path (Join-Path $package 'friend-package-manifest.json') -Encoding UTF8
+          Write-Host "Portable CyberSand source: $env:FRIEND_SOURCE_SHA; files: $($files.Count)"
+      - name: Validate a freshly extracted equivalent in actual Windows Godot
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $copy = Join-Path $env:RUNNER_TEMP 'CyberSand Friend Smoke (copy)'
+          Copy-Item -LiteralPath 'build/friend-playtest' -Destination $copy -Recurse
+          $engine = Join-Path $copy 'Godot_v4.7-stable_win64_console.exe'
+          $project = Join-Path $copy 'godot'
+          & $engine --headless --path $project --editor --quit *> "$env:RUNNER_TEMP\friend-import.log"
+          if ($LASTEXITCODE -ne 0) { Get-Content "$env:RUNNER_TEMP\friend-import.log" -Tail 120; throw 'Extracted package import failed' }
+          & $engine --headless --path $project --quit-after 5 *> "$env:RUNNER_TEMP\friend-menu.log"
+          if ($LASTEXITCODE -ne 0) { Get-Content "$env:RUNNER_TEMP\friend-menu.log" -Tail 120; throw 'Extracted package main menu failed' }
+          & $engine --headless --path $project --script res://tests/test_explore001_generated_workbench.gd *> "$env:RUNNER_TEMP\friend-workbench.log"
+          if ($LASTEXITCODE -ne 0) { Get-Content "$env:RUNNER_TEMP\friend-workbench.log" -Tail 120; throw 'Extracted package Workbench test failed' }
+          if (-not (Select-String -Path "$env:RUNNER_TEMP\friend-workbench.log" -Pattern 'EXPLORE001_RESULTS checks=[1-9][0-9]+ failures=0')) { throw 'Missing Workbench success receipt' }
+          if (Select-String -Path "$env:RUNNER_TEMP\friend-workbench.log" -Pattern 'SCRIPT ERROR:|Failed to load script') { throw 'Godot emitted a script error despite zero exit' }
+          Write-Host 'Extracted package smoke PASS (real Windows process; GPU feel remains untested)'
+      - name: Retain complete private shareable Windows playtest ZIP
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: CyberSand-Friend-Playtest-Win64-${{ env.FRIEND_SOURCE_SHA }}
+          path: source/build/friend-playtest/
+          if-no-files-found: error
+          compression-level: 6
+          retention-days: 90
