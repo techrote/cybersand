@@ -56,8 +56,13 @@ class PublisherSafetyTests(unittest.TestCase):
     def test_original_native_and_godot_shards_stay_present(self):
         native = (ROOT / ".github/workflows/native.yml").read_text()
         ext = (ROOT / ".github/workflows/gdextension.yml").read_text()
-        for marker in ("native-shards:", "asan-ubsan", "tsan", "worldgen"):
+        for marker in ("native-shards:", "native_execution_policy.py matrix",
+                       "max-parallel: 6"):
             self.assertIn(marker, native)
+        native_policy = (ROOT / "tools/ci/native_execution_policy.py").read_text()
+        for marker in ('"asan-ubsan"', '"tsan"', '"worldgen"',
+                       '"soliding-normal"', '"soliding-asan"', '"native-normal"'):
+            self.assertIn(marker, native_policy)
         for marker in ("linux-regression:", "windows-regression:",
                        "linux-regression-gate:", "windows-coverage:"):
             self.assertIn(marker, ext)
