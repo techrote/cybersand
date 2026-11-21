@@ -1,0 +1,1434 @@
+{
+  "schema": "swarm45-r1-windows-startup-diagnosis-v1",
+  "run_id": "44947666723",
+  "run_attempt": 1,
+  "identity_comparison": {
+    "source_commit": {
+      "source": "9b688aed1f06f031f983c27f50d1f17821446e43",
+      "package": "9b688aed1f06f031f983c27f50d1f17821446e43",
+      "equal": true
+    },
+    "source_tree": {
+      "source": "5d048be7dc3248dd2e0ecd8e13ac1eca7c8b7a77",
+      "package": "5d048be7dc3248dd2e0ecd8e13ac1eca7c8b7a77",
+      "equal": true
+    },
+    "godot_sha256": {
+      "source": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+      "package": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+      "equal": true
+    },
+    "godot_version": {
+      "source": "4.7.stable.official.5b4e0cb0f",
+      "package": "4.7.stable.official.5b4e0cb0f",
+      "equal": true
+    },
+    "native_adapter_sha256": {
+      "source": "84f08979546f1d250fa7f2e4a94617bee060eb4ce1bb6e2997134ea2a366d2d7",
+      "package": "84f08979546f1d250fa7f2e4a94617bee060eb4ce1bb6e2997134ea2a366d2d7",
+      "equal": true
+    },
+    "runtime_manifest_sha256": {
+      "source": "7a0b0ff8050d23429ffb06d49bef81f1e49fa9a4095601a53e3a8f39035e2868",
+      "package": "7a0b0ff8050d23429ffb06d49bef81f1e49fa9a4095601a53e3a8f39035e2868",
+      "equal": true
+    },
+    "platform": {
+      "source": "windows",
+      "package": "windows",
+      "equal": true
+    },
+    "graphical_required": {
+      "source": true,
+      "package": true,
+      "equal": true
+    }
+  },
+  "r1_source_files": {
+    "godot/shaders/material_palette.gdshader": {
+      "r1_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+      "current_bytes_equal_to_r1": true
+    },
+    "godot/scripts/palette_shader_selector.gd": {
+      "r1_sha256": "31785f54212aa743e4cae521907355a3780c4c2e9cc40f6e36aa8bc9f5974eb4",
+      "current_bytes_equal_to_r1": true
+    },
+    "godot/scripts/main.gd": {
+      "r1_sha256": "347a8d11e5ea4db717945b6077cfba35c068191d0138cc006e6a1dba0a1d2ec5",
+      "current_bytes_equal_to_r1": true
+    },
+    "godot/tests/swarm45_reciprocal_ui.gd": {
+      "r1_sha256": "6b56a28b7105ef32b4d6b4b8531cb7244adec051e267cba8141b8f64ba2834f7",
+      "current_bytes_equal_to_r1": true
+    }
+  },
+  "cases": {
+    "source": {
+      "transaction/create": {
+        "completed": true,
+        "checks": 99,
+        "failures": [],
+        "startup": {
+          "elapsed_msec": 42577,
+          "initial": {
+            "art": {
+              "epoch": 1,
+              "executing": false,
+              "flatten_busy": false,
+              "legacy_busy": false,
+              "paint_busy": false,
+              "queued": false,
+              "receipt_ready": false,
+              "transition_busy": false
+            },
+            "elapsed_msec": 6609,
+            "microscenario_error": "",
+            "paint": {
+              "art_busy": false,
+              "authoring_generation": 1,
+              "busy": false,
+              "epoch": 1,
+              "executing": false,
+              "flatten_busy": false,
+              "generation": 1,
+              "legacy_busy": false,
+              "paused": true,
+              "queued": false,
+              "receipt_ready": false,
+              "revision": 1,
+              "status": "idle",
+              "tick": 0,
+              "transition_busy": false
+            },
+            "paused": true,
+            "pending_serial": -1,
+            "pending_workbench": false,
+            "physical_candidate": false,
+            "physical_epoch": 0,
+            "physical_identity_present": false,
+            "physical_ready_sent": false,
+            "physical_terrain_ready": false,
+            "physics_frame": 1,
+            "process_frame": 0,
+            "waiting_for": "startup",
+            "workbench": {
+              "applied": false,
+              "busy": false,
+              "flatten_pending": false,
+              "message": "",
+              "pending_serial": 0,
+              "step_pending": false
+            },
+            "workbench_frame_error": "",
+            "worker_failed": false
+          },
+          "scene_ready_msec": 2915,
+          "settled": true,
+          "timeout_seconds": 60
+        },
+        "timeout_diagnostics": [],
+        "wall_seconds": 118.13999999999999,
+        "test_sha256": "6b56a28b7105ef32b4d6b4b8531cb7244adec051e267cba8141b8f64ba2834f7"
+      },
+      "reciprocal/create": {
+        "completed": true,
+        "checks": 82,
+        "failures": [],
+        "startup": {
+          "elapsed_msec": 42977,
+          "initial": {
+            "art": {
+              "epoch": 1,
+              "executing": false,
+              "flatten_busy": false,
+              "legacy_busy": false,
+              "paint_busy": false,
+              "queued": false,
+              "receipt_ready": false,
+              "transition_busy": false
+            },
+            "elapsed_msec": 6472,
+            "microscenario_error": "",
+            "paint": {
+              "art_busy": false,
+              "authoring_generation": 1,
+              "busy": false,
+              "epoch": 1,
+              "executing": false,
+              "flatten_busy": false,
+              "generation": 1,
+              "legacy_busy": false,
+              "paused": true,
+              "queued": false,
+              "receipt_ready": false,
+              "revision": 1,
+              "status": "idle",
+              "tick": 0,
+              "transition_busy": false
+            },
+            "paused": true,
+            "pending_serial": -1,
+            "pending_workbench": false,
+            "physical_candidate": false,
+            "physical_epoch": 0,
+            "physical_identity_present": false,
+            "physical_ready_sent": false,
+            "physical_terrain_ready": false,
+            "physics_frame": 1,
+            "process_frame": 0,
+            "waiting_for": "startup",
+            "workbench": {
+              "applied": false,
+              "busy": false,
+              "flatten_pending": false,
+              "message": "",
+              "pending_serial": 0,
+              "step_pending": false
+            },
+            "workbench_frame_error": "",
+            "worker_failed": false
+          },
+          "scene_ready_msec": 2917,
+          "settled": true,
+          "timeout_seconds": 60
+        },
+        "timeout_diagnostics": [],
+        "wall_seconds": 100.65600000000006,
+        "test_sha256": "6b56a28b7105ef32b4d6b4b8531cb7244adec051e267cba8141b8f64ba2834f7"
+      },
+      "swarm005_irregular/create": {
+        "completed": true,
+        "checks": 81,
+        "failures": [],
+        "startup": {
+          "elapsed_msec": 43650,
+          "initial": {
+            "art": {
+              "epoch": 1,
+              "executing": false,
+              "flatten_busy": false,
+              "legacy_busy": false,
+              "paint_busy": false,
+              "queued": false,
+              "receipt_ready": false,
+              "transition_busy": false
+            },
+            "elapsed_msec": 6537,
+            "microscenario_error": "",
+            "paint": {
+              "art_busy": false,
+              "authoring_generation": 1,
+              "busy": false,
+              "epoch": 1,
+              "executing": false,
+              "flatten_busy": false,
+              "generation": 1,
+              "legacy_busy": false,
+              "paused": true,
+              "queued": false,
+              "receipt_ready": false,
+              "revision": 1,
+              "status": "idle",
+              "tick": 0,
+              "transition_busy": false
+            },
+            "paused": true,
+            "pending_serial": -1,
+            "pending_workbench": false,
+            "physical_candidate": false,
+            "physical_epoch": 0,
+            "physical_identity_present": false,
+            "physical_ready_sent": false,
+            "physical_terrain_ready": false,
+            "physics_frame": 1,
+            "process_frame": 0,
+            "waiting_for": "startup",
+            "workbench": {
+              "applied": false,
+              "busy": false,
+              "flatten_pending": false,
+              "message": "",
+              "pending_serial": 0,
+              "step_pending": false
+            },
+            "workbench_frame_error": "",
+            "worker_failed": false
+          },
+          "scene_ready_msec": 2982,
+          "settled": true,
+          "timeout_seconds": 60
+        },
+        "timeout_diagnostics": [],
+        "wall_seconds": 113.67100000000005,
+        "test_sha256": "6b56a28b7105ef32b4d6b4b8531cb7244adec051e267cba8141b8f64ba2834f7"
+      },
+      "swarm005_viaduct/blocked": {
+        "completed": true,
+        "checks": 28,
+        "failures": [],
+        "startup": {
+          "elapsed_msec": 44249,
+          "initial": {
+            "art": {
+              "epoch": 1,
+              "executing": false,
+              "flatten_busy": false,
+              "legacy_busy": false,
+              "paint_busy": false,
+              "queued": false,
+              "receipt_ready": false,
+              "transition_busy": false
+            },
+            "elapsed_msec": 6532,
+            "microscenario_error": "",
+            "paint": {
+              "art_busy": false,
+              "authoring_generation": 1,
+              "busy": false,
+              "epoch": 1,
+              "executing": false,
+              "flatten_busy": false,
+              "generation": 1,
+              "legacy_busy": false,
+              "paused": true,
+              "queued": false,
+              "receipt_ready": false,
+              "revision": 1,
+              "status": "idle",
+              "tick": 0,
+              "transition_busy": false
+            },
+            "paused": true,
+            "pending_serial": -1,
+            "pending_workbench": false,
+            "physical_candidate": false,
+            "physical_epoch": 0,
+            "physical_identity_present": false,
+            "physical_ready_sent": false,
+            "physical_terrain_ready": false,
+            "physics_frame": 1,
+            "process_frame": 0,
+            "waiting_for": "startup",
+            "workbench": {
+              "applied": false,
+              "busy": false,
+              "flatten_pending": false,
+              "message": "",
+              "pending_serial": 0,
+              "step_pending": false
+            },
+            "workbench_frame_error": "",
+            "worker_failed": false
+          },
+          "scene_ready_msec": 2914,
+          "settled": true,
+          "timeout_seconds": 60
+        },
+        "timeout_diagnostics": [],
+        "wall_seconds": 67.93700000000013,
+        "test_sha256": "6b56a28b7105ef32b4d6b4b8531cb7244adec051e267cba8141b8f64ba2834f7"
+      },
+      "lifecycle/lifecycle": {
+        "completed": true,
+        "checks": 32,
+        "failures": [],
+        "startup": {
+          "elapsed_msec": 43979,
+          "initial": {
+            "art": {
+              "epoch": 1,
+              "executing": false,
+              "flatten_busy": false,
+              "legacy_busy": false,
+              "paint_busy": false,
+              "queued": false,
+              "receipt_ready": false,
+              "transition_busy": false
+            },
+            "elapsed_msec": 6520,
+            "microscenario_error": "",
+            "paint": {
+              "art_busy": false,
+              "authoring_generation": 1,
+              "busy": false,
+              "epoch": 1,
+              "executing": false,
+              "flatten_busy": false,
+              "generation": 1,
+              "legacy_busy": false,
+              "paused": true,
+              "queued": false,
+              "receipt_ready": false,
+              "revision": 1,
+              "status": "idle",
+              "tick": 0,
+              "transition_busy": false
+            },
+            "paused": true,
+            "pending_serial": -1,
+            "pending_workbench": false,
+            "physical_candidate": false,
+            "physical_epoch": 0,
+            "physical_identity_present": false,
+            "physical_ready_sent": false,
+            "physical_terrain_ready": false,
+            "physics_frame": 1,
+            "process_frame": 0,
+            "waiting_for": "startup",
+            "workbench": {
+              "applied": false,
+              "busy": false,
+              "flatten_pending": false,
+              "message": "",
+              "pending_serial": 0,
+              "step_pending": false
+            },
+            "workbench_frame_error": "",
+            "worker_failed": false
+          },
+          "scene_ready_msec": 2927,
+          "settled": true,
+          "timeout_seconds": 60
+        },
+        "timeout_diagnostics": [],
+        "wall_seconds": 95.84399999999982,
+        "test_sha256": "6b56a28b7105ef32b4d6b4b8531cb7244adec051e267cba8141b8f64ba2834f7"
+      },
+      "transaction/reopen": {
+        "completed": true,
+        "checks": 9,
+        "failures": [],
+        "startup": {
+          "elapsed_msec": 5675,
+          "initial": {
+            "art": {
+              "epoch": 1,
+              "executing": false,
+              "flatten_busy": false,
+              "legacy_busy": false,
+              "paint_busy": false,
+              "queued": false,
+              "receipt_ready": false,
+              "transition_busy": false
+            },
+            "elapsed_msec": 3495,
+            "microscenario_error": "",
+            "paint": {
+              "art_busy": false,
+              "authoring_generation": 1,
+              "busy": false,
+              "epoch": 1,
+              "executing": false,
+              "flatten_busy": false,
+              "generation": 1,
+              "legacy_busy": false,
+              "paused": true,
+              "queued": false,
+              "receipt_ready": false,
+              "revision": 1,
+              "status": "idle",
+              "tick": 0,
+              "transition_busy": false
+            },
+            "paused": true,
+            "pending_serial": -1,
+            "pending_workbench": false,
+            "physical_candidate": false,
+            "physical_epoch": 0,
+            "physical_identity_present": false,
+            "physical_ready_sent": false,
+            "physical_terrain_ready": false,
+            "physics_frame": 1,
+            "process_frame": 0,
+            "waiting_for": "startup",
+            "workbench": {
+              "applied": false,
+              "busy": false,
+              "flatten_pending": false,
+              "message": "",
+              "pending_serial": 0,
+              "step_pending": false
+            },
+            "workbench_frame_error": "",
+            "worker_failed": false
+          },
+          "scene_ready_msec": 2913,
+          "settled": true,
+          "timeout_seconds": 60
+        },
+        "timeout_diagnostics": [],
+        "wall_seconds": 16.765999999999963,
+        "test_sha256": "6b56a28b7105ef32b4d6b4b8531cb7244adec051e267cba8141b8f64ba2834f7"
+      },
+      "reciprocal/reopen": {
+        "completed": true,
+        "checks": 10,
+        "failures": [],
+        "startup": {
+          "elapsed_msec": 6115,
+          "initial": {
+            "art": {
+              "epoch": 1,
+              "executing": false,
+              "flatten_busy": false,
+              "legacy_busy": false,
+              "paint_busy": false,
+              "queued": false,
+              "receipt_ready": false,
+              "transition_busy": false
+            },
+            "elapsed_msec": 3528,
+            "microscenario_error": "",
+            "paint": {
+              "art_busy": false,
+              "authoring_generation": 1,
+              "busy": false,
+              "epoch": 1,
+              "executing": false,
+              "flatten_busy": false,
+              "generation": 1,
+              "legacy_busy": false,
+              "paused": true,
+              "queued": false,
+              "receipt_ready": false,
+              "revision": 1,
+              "status": "idle",
+              "tick": 0,
+              "transition_busy": false
+            },
+            "paused": true,
+            "pending_serial": -1,
+            "pending_workbench": false,
+            "physical_candidate": false,
+            "physical_epoch": 0,
+            "physical_identity_present": false,
+            "physical_ready_sent": false,
+            "physical_terrain_ready": false,
+            "physics_frame": 1,
+            "process_frame": 0,
+            "waiting_for": "startup",
+            "workbench": {
+              "applied": false,
+              "busy": false,
+              "flatten_pending": false,
+              "message": "",
+              "pending_serial": 0,
+              "step_pending": false
+            },
+            "workbench_frame_error": "",
+            "worker_failed": false
+          },
+          "scene_ready_msec": 2940,
+          "settled": true,
+          "timeout_seconds": 60
+        },
+        "timeout_diagnostics": [],
+        "wall_seconds": 17.312999999999988,
+        "test_sha256": "6b56a28b7105ef32b4d6b4b8531cb7244adec051e267cba8141b8f64ba2834f7"
+      },
+      "swarm005_irregular/reopen": {
+        "completed": true,
+        "checks": 9,
+        "failures": [],
+        "startup": {
+          "elapsed_msec": 6106,
+          "initial": {
+            "art": {
+              "epoch": 1,
+              "executing": false,
+              "flatten_busy": false,
+              "legacy_busy": false,
+              "paint_busy": false,
+              "queued": false,
+              "receipt_ready": false,
+              "transition_busy": false
+            },
+            "elapsed_msec": 3509,
+            "microscenario_error": "",
+            "paint": {
+              "art_busy": false,
+              "authoring_generation": 1,
+              "busy": false,
+              "epoch": 1,
+              "executing": false,
+              "flatten_busy": false,
+              "generation": 1,
+              "legacy_busy": false,
+              "paused": true,
+              "queued": false,
+              "receipt_ready": false,
+              "revision": 1,
+              "status": "idle",
+              "tick": 0,
+              "transition_busy": false
+            },
+            "paused": true,
+            "pending_serial": -1,
+            "pending_workbench": false,
+            "physical_candidate": false,
+            "physical_epoch": 0,
+            "physical_identity_present": false,
+            "physical_ready_sent": false,
+            "physical_terrain_ready": false,
+            "physics_frame": 1,
+            "process_frame": 0,
+            "waiting_for": "startup",
+            "workbench": {
+              "applied": false,
+              "busy": false,
+              "flatten_pending": false,
+              "message": "",
+              "pending_serial": 0,
+              "step_pending": false
+            },
+            "workbench_frame_error": "",
+            "worker_failed": false
+          },
+          "scene_ready_msec": 2928,
+          "settled": true,
+          "timeout_seconds": 60
+        },
+        "timeout_diagnostics": [],
+        "wall_seconds": 17.9849999999999,
+        "test_sha256": "6b56a28b7105ef32b4d6b4b8531cb7244adec051e267cba8141b8f64ba2834f7"
+      }
+    },
+    "package": {
+      "transaction/create": {
+        "completed": false,
+        "checks": 4,
+        "failures": [
+          "real Shared Workbench startup completed",
+          "complete interactive test sequence reached its final assertion"
+        ],
+        "startup": {
+          "elapsed_msec": 86946,
+          "initial": {
+            "art": {
+              "epoch": 1,
+              "executing": false,
+              "flatten_busy": false,
+              "legacy_busy": false,
+              "paint_busy": false,
+              "queued": false,
+              "receipt_ready": false,
+              "transition_busy": false
+            },
+            "elapsed_msec": 7879,
+            "microscenario_error": "",
+            "paint": {
+              "art_busy": false,
+              "authoring_generation": 1,
+              "busy": false,
+              "epoch": 1,
+              "executing": false,
+              "flatten_busy": false,
+              "generation": 1,
+              "legacy_busy": false,
+              "paused": true,
+              "queued": false,
+              "receipt_ready": false,
+              "revision": 1,
+              "status": "idle",
+              "tick": 0,
+              "transition_busy": false
+            },
+            "paused": true,
+            "pending_serial": -1,
+            "pending_workbench": false,
+            "physical_candidate": false,
+            "physical_epoch": 0,
+            "physical_identity_present": false,
+            "physical_ready_sent": false,
+            "physical_terrain_ready": false,
+            "physics_frame": 1,
+            "process_frame": 0,
+            "waiting_for": "startup",
+            "workbench": {
+              "applied": false,
+              "busy": false,
+              "flatten_pending": false,
+              "message": "",
+              "pending_serial": 0,
+              "step_pending": false
+            },
+            "workbench_frame_error": "",
+            "worker_failed": false
+          },
+          "scene_ready_msec": 3700,
+          "settled": false,
+          "timeout_seconds": 60
+        },
+        "timeout_diagnostics": [
+          {
+            "art": {
+              "epoch": 4,
+              "executing": false,
+              "flatten_busy": false,
+              "legacy_busy": false,
+              "paint_busy": false,
+              "queued": false,
+              "receipt_ready": false,
+              "transition_busy": false
+            },
+            "elapsed_msec": 89417,
+            "microscenario_error": "",
+            "paint": {
+              "art_busy": false,
+              "authoring_generation": 1,
+              "busy": false,
+              "epoch": 3,
+              "executing": false,
+              "flatten_busy": false,
+              "generation": 2,
+              "legacy_busy": false,
+              "paused": true,
+              "queued": false,
+              "receipt_ready": false,
+              "revision": 2,
+              "status": "idle",
+              "tick": 0,
+              "transition_busy": false
+            },
+            "paused": true,
+            "pending_serial": 1,
+            "pending_workbench": true,
+            "physical_candidate": false,
+            "physical_epoch": 0,
+            "physical_identity_present": false,
+            "physical_ready_sent": false,
+            "physical_terrain_ready": false,
+            "physics_frame": 16,
+            "process_frame": 1,
+            "screenshot": "timeout-00.png",
+            "screenshot_error": 0,
+            "timeout_seconds": 60,
+            "waiting_for": "real Shared Workbench startup completed",
+            "workbench": {
+              "applied": false,
+              "busy": true,
+              "flatten_pending": false,
+              "message": "",
+              "pending_serial": 1,
+              "step_pending": false
+            },
+            "workbench_frame_error": "",
+            "worker_failed": false
+          }
+        ],
+        "wall_seconds": 91.5,
+        "test_sha256": "6b56a28b7105ef32b4d6b4b8531cb7244adec051e267cba8141b8f64ba2834f7"
+      },
+      "reciprocal/create": {
+        "completed": false,
+        "checks": 4,
+        "failures": [
+          "real Shared Workbench startup completed",
+          "complete interactive test sequence reached its final assertion"
+        ],
+        "startup": {
+          "elapsed_msec": 77189,
+          "initial": {
+            "art": {
+              "epoch": 1,
+              "executing": false,
+              "flatten_busy": false,
+              "legacy_busy": false,
+              "paint_busy": false,
+              "queued": false,
+              "receipt_ready": false,
+              "transition_busy": false
+            },
+            "elapsed_msec": 7485,
+            "microscenario_error": "",
+            "paint": {
+              "art_busy": false,
+              "authoring_generation": 1,
+              "busy": false,
+              "epoch": 1,
+              "executing": false,
+              "flatten_busy": false,
+              "generation": 1,
+              "legacy_busy": false,
+              "paused": true,
+              "queued": false,
+              "receipt_ready": false,
+              "revision": 1,
+              "status": "idle",
+              "tick": 0,
+              "transition_busy": false
+            },
+            "paused": true,
+            "pending_serial": -1,
+            "pending_workbench": false,
+            "physical_candidate": false,
+            "physical_epoch": 0,
+            "physical_identity_present": false,
+            "physical_ready_sent": false,
+            "physical_terrain_ready": false,
+            "physics_frame": 1,
+            "process_frame": 0,
+            "waiting_for": "startup",
+            "workbench": {
+              "applied": false,
+              "busy": false,
+              "flatten_pending": false,
+              "message": "",
+              "pending_serial": 0,
+              "step_pending": false
+            },
+            "workbench_frame_error": "",
+            "worker_failed": false
+          },
+          "scene_ready_msec": 3572,
+          "settled": false,
+          "timeout_seconds": 60
+        },
+        "timeout_diagnostics": [
+          {
+            "art": {
+              "epoch": 4,
+              "executing": false,
+              "flatten_busy": false,
+              "legacy_busy": false,
+              "paint_busy": false,
+              "queued": false,
+              "receipt_ready": false,
+              "transition_busy": false
+            },
+            "elapsed_msec": 79484,
+            "microscenario_error": "",
+            "paint": {
+              "art_busy": false,
+              "authoring_generation": 1,
+              "busy": false,
+              "epoch": 3,
+              "executing": false,
+              "flatten_busy": false,
+              "generation": 2,
+              "legacy_busy": false,
+              "paused": true,
+              "queued": false,
+              "receipt_ready": false,
+              "revision": 2,
+              "status": "idle",
+              "tick": 0,
+              "transition_busy": false
+            },
+            "paused": true,
+            "pending_serial": 1,
+            "pending_workbench": true,
+            "physical_candidate": false,
+            "physical_epoch": 0,
+            "physical_identity_present": false,
+            "physical_ready_sent": false,
+            "physical_terrain_ready": false,
+            "physics_frame": 16,
+            "process_frame": 1,
+            "screenshot": "timeout-00.png",
+            "screenshot_error": 0,
+            "timeout_seconds": 60,
+            "waiting_for": "real Shared Workbench startup completed",
+            "workbench": {
+              "applied": false,
+              "busy": true,
+              "flatten_pending": false,
+              "message": "",
+              "pending_serial": 1,
+              "step_pending": false
+            },
+            "workbench_frame_error": "",
+            "worker_failed": false
+          }
+        ],
+        "wall_seconds": 81.5,
+        "test_sha256": "6b56a28b7105ef32b4d6b4b8531cb7244adec051e267cba8141b8f64ba2834f7"
+      },
+      "swarm005_irregular/create": {
+        "completed": false,
+        "checks": 4,
+        "failures": [
+          "real Shared Workbench startup completed",
+          "complete interactive test sequence reached its final assertion"
+        ],
+        "startup": {
+          "elapsed_msec": 73246,
+          "initial": {
+            "art": {
+              "epoch": 1,
+              "executing": false,
+              "flatten_busy": false,
+              "legacy_busy": false,
+              "paint_busy": false,
+              "queued": false,
+              "receipt_ready": false,
+              "transition_busy": false
+            },
+            "elapsed_msec": 7420,
+            "microscenario_error": "",
+            "paint": {
+              "art_busy": false,
+              "authoring_generation": 1,
+              "busy": false,
+              "epoch": 1,
+              "executing": false,
+              "flatten_busy": false,
+              "generation": 1,
+              "legacy_busy": false,
+              "paused": true,
+              "queued": false,
+              "receipt_ready": false,
+              "revision": 1,
+              "status": "idle",
+              "tick": 0,
+              "transition_busy": false
+            },
+            "paused": true,
+            "pending_serial": -1,
+            "pending_workbench": false,
+            "physical_candidate": false,
+            "physical_epoch": 0,
+            "physical_identity_present": false,
+            "physical_ready_sent": false,
+            "physical_terrain_ready": false,
+            "physics_frame": 1,
+            "process_frame": 0,
+            "waiting_for": "startup",
+            "workbench": {
+              "applied": false,
+              "busy": false,
+              "flatten_pending": false,
+              "message": "",
+              "pending_serial": 0,
+              "step_pending": false
+            },
+            "workbench_frame_error": "",
+            "worker_failed": false
+          },
+          "scene_ready_msec": 3517,
+          "settled": false,
+          "timeout_seconds": 60
+        },
+        "timeout_diagnostics": [
+          {
+            "art": {
+              "epoch": 4,
+              "executing": false,
+              "flatten_busy": false,
+              "legacy_busy": false,
+              "paint_busy": false,
+              "queued": false,
+              "receipt_ready": false,
+              "transition_busy": false
+            },
+            "elapsed_msec": 75452,
+            "microscenario_error": "",
+            "paint": {
+              "art_busy": false,
+              "authoring_generation": 1,
+              "busy": false,
+              "epoch": 3,
+              "executing": false,
+              "flatten_busy": false,
+              "generation": 2,
+              "legacy_busy": false,
+              "paused": true,
+              "queued": false,
+              "receipt_ready": false,
+              "revision": 2,
+              "status": "idle",
+              "tick": 0,
+              "transition_busy": false
+            },
+            "paused": true,
+            "pending_serial": 1,
+            "pending_workbench": true,
+            "physical_candidate": false,
+            "physical_epoch": 0,
+            "physical_identity_present": false,
+            "physical_ready_sent": false,
+            "physical_terrain_ready": false,
+            "physics_frame": 16,
+            "process_frame": 1,
+            "screenshot": "timeout-00.png",
+            "screenshot_error": 0,
+            "timeout_seconds": 60,
+            "waiting_for": "real Shared Workbench startup completed",
+            "workbench": {
+              "applied": false,
+              "busy": true,
+              "flatten_pending": false,
+              "message": "",
+              "pending_serial": 1,
+              "step_pending": false
+            },
+            "workbench_frame_error": "",
+            "worker_failed": false
+          }
+        ],
+        "wall_seconds": 77.56200000000001,
+        "test_sha256": "6b56a28b7105ef32b4d6b4b8531cb7244adec051e267cba8141b8f64ba2834f7"
+      },
+      "swarm005_viaduct/blocked": {
+        "completed": false,
+        "checks": 4,
+        "failures": [
+          "real Shared Workbench startup completed",
+          "complete interactive test sequence reached its final assertion"
+        ],
+        "startup": {
+          "elapsed_msec": 66589,
+          "initial": {
+            "art": {
+              "epoch": 1,
+              "executing": false,
+              "flatten_busy": false,
+              "legacy_busy": false,
+              "paint_busy": false,
+              "queued": false,
+              "receipt_ready": false,
+              "transition_busy": false
+            },
+            "elapsed_msec": 7498,
+            "microscenario_error": "",
+            "paint": {
+              "art_busy": false,
+              "authoring_generation": 1,
+              "busy": false,
+              "epoch": 1,
+              "executing": false,
+              "flatten_busy": false,
+              "generation": 1,
+              "legacy_busy": false,
+              "paused": true,
+              "queued": false,
+              "receipt_ready": false,
+              "revision": 1,
+              "status": "idle",
+              "tick": 0,
+              "transition_busy": false
+            },
+            "paused": true,
+            "pending_serial": -1,
+            "pending_workbench": false,
+            "physical_candidate": false,
+            "physical_epoch": 0,
+            "physical_identity_present": false,
+            "physical_ready_sent": false,
+            "physical_terrain_ready": false,
+            "physics_frame": 1,
+            "process_frame": 0,
+            "waiting_for": "startup",
+            "workbench": {
+              "applied": false,
+              "busy": false,
+              "flatten_pending": false,
+              "message": "",
+              "pending_serial": 0,
+              "step_pending": false
+            },
+            "workbench_frame_error": "",
+            "worker_failed": false
+          },
+          "scene_ready_msec": 3539,
+          "settled": false,
+          "timeout_seconds": 60
+        },
+        "timeout_diagnostics": [
+          {
+            "art": {
+              "epoch": 4,
+              "executing": false,
+              "flatten_busy": false,
+              "legacy_busy": false,
+              "paint_busy": false,
+              "queued": false,
+              "receipt_ready": false,
+              "transition_busy": false
+            },
+            "elapsed_msec": 69045,
+            "microscenario_error": "",
+            "paint": {
+              "art_busy": false,
+              "authoring_generation": 1,
+              "busy": false,
+              "epoch": 3,
+              "executing": false,
+              "flatten_busy": false,
+              "generation": 2,
+              "legacy_busy": false,
+              "paused": true,
+              "queued": false,
+              "receipt_ready": false,
+              "revision": 2,
+              "status": "idle",
+              "tick": 0,
+              "transition_busy": false
+            },
+            "paused": true,
+            "pending_serial": 1,
+            "pending_workbench": true,
+            "physical_candidate": false,
+            "physical_epoch": 0,
+            "physical_identity_present": false,
+            "physical_ready_sent": false,
+            "physical_terrain_ready": false,
+            "physics_frame": 16,
+            "process_frame": 1,
+            "screenshot": "timeout-00.png",
+            "screenshot_error": 0,
+            "timeout_seconds": 60,
+            "waiting_for": "real Shared Workbench startup completed",
+            "workbench": {
+              "applied": false,
+              "busy": true,
+              "flatten_pending": false,
+              "message": "",
+              "pending_serial": 1,
+              "step_pending": false
+            },
+            "workbench_frame_error": "",
+            "worker_failed": false
+          }
+        ],
+        "wall_seconds": 70.96899999999994,
+        "test_sha256": "6b56a28b7105ef32b4d6b4b8531cb7244adec051e267cba8141b8f64ba2834f7"
+      },
+      "lifecycle/lifecycle": {
+        "completed": false,
+        "checks": 4,
+        "failures": [
+          "real Shared Workbench startup completed",
+          "complete interactive test sequence reached its final assertion"
+        ],
+        "startup": {
+          "elapsed_msec": 69949,
+          "initial": {
+            "art": {
+              "epoch": 1,
+              "executing": false,
+              "flatten_busy": false,
+              "legacy_busy": false,
+              "paint_busy": false,
+              "queued": false,
+              "receipt_ready": false,
+              "transition_busy": false
+            },
+            "elapsed_msec": 7128,
+            "microscenario_error": "",
+            "paint": {
+              "art_busy": false,
+              "authoring_generation": 1,
+              "busy": false,
+              "epoch": 1,
+              "executing": false,
+              "flatten_busy": false,
+              "generation": 1,
+              "legacy_busy": false,
+              "paused": true,
+              "queued": false,
+              "receipt_ready": false,
+              "revision": 1,
+              "status": "idle",
+              "tick": 0,
+              "transition_busy": false
+            },
+            "paused": true,
+            "pending_serial": -1,
+            "pending_workbench": false,
+            "physical_candidate": false,
+            "physical_epoch": 0,
+            "physical_identity_present": false,
+            "physical_ready_sent": false,
+            "physical_terrain_ready": false,
+            "physics_frame": 1,
+            "process_frame": 0,
+            "waiting_for": "startup",
+            "workbench": {
+              "applied": false,
+              "busy": false,
+              "flatten_pending": false,
+              "message": "",
+              "pending_serial": 0,
+              "step_pending": false
+            },
+            "workbench_frame_error": "",
+            "worker_failed": false
+          },
+          "scene_ready_msec": 3358,
+          "settled": false,
+          "timeout_seconds": 60
+        },
+        "timeout_diagnostics": [
+          {
+            "art": {
+              "epoch": 4,
+              "executing": false,
+              "flatten_busy": false,
+              "legacy_busy": false,
+              "paint_busy": false,
+              "queued": false,
+              "receipt_ready": false,
+              "transition_busy": false
+            },
+            "elapsed_msec": 72054,
+            "microscenario_error": "",
+            "paint": {
+              "art_busy": false,
+              "authoring_generation": 1,
+              "busy": false,
+              "epoch": 3,
+              "executing": false,
+              "flatten_busy": false,
+              "generation": 2,
+              "legacy_busy": false,
+              "paused": true,
+              "queued": false,
+              "receipt_ready": false,
+              "revision": 2,
+              "status": "idle",
+              "tick": 0,
+              "transition_busy": false
+            },
+            "paused": true,
+            "pending_serial": 1,
+            "pending_workbench": true,
+            "physical_candidate": false,
+            "physical_epoch": 0,
+            "physical_identity_present": false,
+            "physical_ready_sent": false,
+            "physical_terrain_ready": false,
+            "physics_frame": 16,
+            "process_frame": 1,
+            "screenshot": "timeout-00.png",
+            "screenshot_error": 0,
+            "timeout_seconds": 60,
+            "waiting_for": "real Shared Workbench startup completed",
+            "workbench": {
+              "applied": false,
+              "busy": true,
+              "flatten_pending": false,
+              "message": "",
+              "pending_serial": 1,
+              "step_pending": false
+            },
+            "workbench_frame_error": "",
+            "worker_failed": false
+          }
+        ],
+        "wall_seconds": 74.125,
+        "test_sha256": "6b56a28b7105ef32b4d6b4b8531cb7244adec051e267cba8141b8f64ba2834f7"
+      }
+    }
+  },
+  "cache_comparison": {
+    "common_count": 34,
+    "all_common_bytes_identical": true,
+    "source_only": [
+      "EGL/4MbNHWfzdlioeepVxeyQ5LuKzUE=.cache"
+    ],
+    "package_only": [],
+    "common": {
+      "CanvasShaderGLES3/45a350cecb283a355d1d98b87c8c00898257a32d8feff3fc4939e86531e3f851/104b6b2525291e2d53908134c06b63b1ff731d31.cache": {
+        "bytes": 32527,
+        "sha256": "6a7ceee8740c1b778ac67cea010ad2389f003fbb2c0070f5389c402f82b25ff8"
+      },
+      "CanvasShaderGLES3/45a350cecb283a355d1d98b87c8c00898257a32d8feff3fc4939e86531e3f851/7fc0f7e5f39495b3057991721a729796679c3b84.cache": {
+        "bytes": 748248,
+        "sha256": "ed3ecbf751186cd13a34bec2ad19a11571384cb0b4c45dac4978ec46447e4a08"
+      },
+      "CanvasShaderGLES3/45a350cecb283a355d1d98b87c8c00898257a32d8feff3fc4939e86531e3f851/981e273b7e9094f670bbf61ef628c92057e9d77a.cache": {
+        "bytes": 28607,
+        "sha256": "d330285ddb42a0b1d1d45fc6bf78cdeb97d7a2f7fd762abc83ec40eb199be24c"
+      },
+      "CanvasShaderGLES3/45a350cecb283a355d1d98b87c8c00898257a32d8feff3fc4939e86531e3f851/b7bf26eb787d221ffda92ad4ca9427812ee879e2.cache": {
+        "bytes": 101338,
+        "sha256": "c2df6df3ba544440201bf54c8c9a74181f71b608ffa65b85c06b6c80844bbf9c"
+      },
+      "CanvasShaderGLES3/45a350cecb283a355d1d98b87c8c00898257a32d8feff3fc4939e86531e3f851/fa7b62523470356194bdf709eb2639ab149a07cc.cache": {
+        "bytes": 52504,
+        "sha256": "4ebd23815333a80a4fbb3b925e6c263aa2d4d357bbef307a14c9a508c01fa119"
+      },
+      "CopyShaderGLES3/4fc88d68897a50a9605acc30479eff94f46250a44a55c8cc0df5a9854fcf0455/fa7b62523470356194bdf709eb2639ab149a07cc.cache": {
+        "bytes": 118729,
+        "sha256": "2cd514a26d494c7c4be19b030729e622737444656aacb5aabc99874ae6890d6d"
+      },
+      "EGL/1R0mNmMTpC_pHlumlFaApF+5mr8=.cache": {
+        "bytes": 43655,
+        "sha256": "86f4f670d7be0a908b4bde90426181c22cff7dc499e35cb9fc6f299ed296cdd7"
+      },
+      "EGL/1z6eBJGw1w0koU1AhU41AhX3d3U=.cache": {
+        "bytes": 2462,
+        "sha256": "31ea48b2d9ca7c2da94ba1f349a4cda6a5a661adc250e18a5c23ec3a219c49d5"
+      },
+      "EGL/7n0NdjMApmAO34d5Y+cKU+NzV6I=.cache": {
+        "bytes": 6649,
+        "sha256": "c78e5d1414f5b69156cd296ea4a1dc9027bc31f464038b0b791a12aecaf08d7c"
+      },
+      "EGL/8POlCCNihhOG0pwjpMCYhTjFGRw=.cache": {
+        "bytes": 43243,
+        "sha256": "fc1bf88a79dc2789dada8808bb69678284d20e46b2f1a6bade28cce78eeff5ef"
+      },
+      "EGL/9c5LmMURzNsNhL0E4mbg6MQcbJM=.cache": {
+        "bytes": 6455,
+        "sha256": "32a8f42ab5c9bc5de8843a315b906602fb7391bdb3585b3087f40b872fc1acd5"
+      },
+      "EGL/AV42Cz3Jv8pmrGkLKHBTEzq1oIE=.cache": {
+        "bytes": 1535,
+        "sha256": "09a132a4ec21ab1dd24975536e34d397a97908c317a4d3b702d0f3f1e106dcf7"
+      },
+      "EGL/Db7uIBwGDTjnswkle7esOpDKlTw=.cache": {
+        "bytes": 7720,
+        "sha256": "88051f24e5afbd76cdc7a063a60f1edf595520aa1bba1ca859694a237f495132"
+      },
+      "EGL/DjN+1Ql6of6eqrdfKFv1eq5laFE=.cache": {
+        "bytes": 4273,
+        "sha256": "76df2b307e1da3dc6877fe51e188b753a9db2f44ed9749d834956a6a891a1cde"
+      },
+      "EGL/E0KSKi78b5Lq4jTAM30tyC3v9nE=.cache": {
+        "bytes": 2184,
+        "sha256": "4b8a08761e6fc802801960d4ab11602671184d6bb537f9250fa748bdc04aa50a"
+      },
+      "EGL/FIjN_V8jvYzipsNuan74x+vfrDc=.cache": {
+        "bytes": 2966,
+        "sha256": "38d6fd85759509e9679aedc40268946b104875c90d33985e23297e5cabac2d43"
+      },
+      "EGL/MH3eSdY26FHj3u4LU2OJnIhT7Lc=.cache": {
+        "bytes": 2478,
+        "sha256": "c654a75de5130124e5db013a620cd5513c912f0ffb62b2c3acfe6bffcefee32d"
+      },
+      "EGL/MoAiqGJIb4D1lUIVFO5DlcuG1ic=.cache": {
+        "bytes": 5809,
+        "sha256": "093c5afc139155cda21013b54f63c7ba82918bb2330f3840bf156fbf3750cfe0"
+      },
+      "EGL/U0tW8ZPkTGFauMNexgIPR70NUhY=.cache": {
+        "bytes": 2512,
+        "sha256": "0bed27f04678803eed24af4c7e916470847e310043f41d50c0e48bdc727d943f"
+      },
+      "EGL/U3KEKDjjvjt6ETOKMx6qhlgJbQ4=.cache": {
+        "bytes": 5974,
+        "sha256": "0a970bbfe20eaa5bf51a4c2d59218143bfd1066d26c6065be1e3449c7408fc5e"
+      },
+      "EGL/XMtc58mFGPwjBYjTZQacr3jUKF0=.cache": {
+        "bytes": 2385,
+        "sha256": "b55c050b2125912e0376438de48d4cadfdd31d151e055a0733470731d58f14d7"
+      },
+      "EGL/Yy1sTWPHZbzU6bvFLvbYgdwghgw=.cache": {
+        "bytes": 2024,
+        "sha256": "947101bc3ba96531a2fc4a9280207a0802cc5d2232eb847b0b52a107bfa2ee94"
+      },
+      "EGL/aNmrpbTuPF3F5qSapOpPbFti_k0=.cache": {
+        "bytes": 2855,
+        "sha256": "5e6c814b296b3728dea8ef0ed307d6e20d5de91d85f1a2bf6461f3c4a1afbd93"
+      },
+      "EGL/buqQ5O7H9iOawbE5dH8c+klXvkU=.cache": {
+        "bytes": 2237,
+        "sha256": "5e44fbe93e99a1361309effc17c7ec456998e3f32a7bf5eb66f4439568df89e7"
+      },
+      "EGL/hba7AO6A6C4hIjgru88INIHWSss=.cache": {
+        "bytes": 2032,
+        "sha256": "ac79720c160126bac23a6c0391bb46c593af53af4fe4cd4f8dcd832b1f77f20b"
+      },
+      "EGL/lFlBkVf_QpyRTxNLno_WJhB9Z+Q=.cache": {
+        "bytes": 2147,
+        "sha256": "6ced6159728b8a509f727a0fb5ebdbaecf3b1930a72b68a2175d3a72b86f187d"
+      },
+      "EGL/t+gTItMgqjooVhk87t7IStaa6U0=.cache": {
+        "bytes": 116239,
+        "sha256": "bd7178611927ce4d7e3aa9e81d4dd722f94ff72e1d9deba8a88bac330dca0611"
+      },
+      "EGL/t5YLeacnlqeywXGhIha7eOT9+3s=.cache": {
+        "bytes": 2381,
+        "sha256": "a8e13531e86e923b7b8959eaf6beb5cb806178ad807283f29ea6fe99dc9f5134"
+      },
+      "EGL/uDZjmHY6+fJux3gv94RLMj1ysus=.cache": {
+        "bytes": 5450,
+        "sha256": "0a74b3cd86310a3068939e996cfecf7812f6d840ba4719e08de702bebcfac6f6"
+      },
+      "EGL/uKH3fe6N6dh4obNDBYCVq_ZPFH0=.cache": {
+        "bytes": 14538,
+        "sha256": "09d42c4461eea2616955a224fbab94257545aeb48d20a5f35929f5bec8473434"
+      },
+      "EGL/vSwwrZdiEYS3M0lb4kgqgSDtwB4=.cache": {
+        "bytes": 1865,
+        "sha256": "29db1da32bfdb787cfd1195379e86f1d9d6140cbc01f1e14f435b74ccef08eac"
+      },
+      "FeedShaderGLES3/f321a92fe6ec82f8f68d477f1368525d75c46087ded233638400be69485ad209/fa7b62523470356194bdf709eb2639ab149a07cc.cache": {
+        "bytes": 7872,
+        "sha256": "fd63caff637cb139af623dcfb31d4b0dbdb632c4bca18aa1daeb4406a0051d5d"
+      },
+      "PostShaderGLES3/4d94a75ab9f2c65a94e886b37bb4d80083b6e77174747cbec9e675287a8d138d/fa7b62523470356194bdf709eb2639ab149a07cc.cache": {
+        "bytes": 15572,
+        "sha256": "77331d215e201ccc865cd79c171224f5ba0391b6ef1191da7f1b3114d6fc72e2"
+      },
+      "SceneShaderGLES3/5bdf157992731b4951a3584a99bba7eefedd313e8cebca30d4214abea4d961ae/fa7b62523470356194bdf709eb2639ab149a07cc.cache": {
+        "bytes": 729768,
+        "sha256": "2df79cd270b77cb60a322b2c5b7f795d651ba3014265563e6b2d25186188862f"
+      }
+    }
+  },
+  "cache_timing": {
+    "source": {
+      "palette_cache_zip_mtime": [
+        2026,
+        11,
+        21,
+        20,
+        49,
+        44
+      ],
+      "last_prior_cache_zip_mtime": [
+        2026,
+        11,
+        21,
+        20,
+        49,
+        8
+      ],
+      "observed_cache_write_gap_seconds": 36.0,
+      "scope": "ZIP timestamps bracket cache creation; not a compiler-only timer",
+      "archive_sha256": "51924dc6499920be937f9872eddb9e9399687df212fedfa5b8d7562e2d4dbc15"
+    },
+    "package": {
+      "palette_cache_zip_mtime": [
+        2026,
+        11,
+        21,
+        20,
+        51,
+        20
+      ],
+      "last_prior_cache_zip_mtime": [
+        2026,
+        11,
+        21,
+        20,
+        50,
+        2
+      ],
+      "observed_cache_write_gap_seconds": 78.0,
+      "scope": "ZIP timestamps bracket cache creation; not a compiler-only timer",
+      "archive_sha256": "06133cd7740c70a3ee96362e4d7ad0752c8b5801e4d6966fa6b37d2be2174cb4"
+    }
+  },
+  "identified_palette_hlsl": {
+    "path": "/workspace/scratch/038267c40e11/swarm45-workbench-preflight/r1-palette-hlsl-0.txt",
+    "bytes": 178895,
+    "sha256": "8b3d23272dd6ad2e5e88ce12b3ae54805e73db3e3e63c90231138a460bf916e3",
+    "material_colour_definition_plus_calls": 2,
+    "previous_flair_present": true,
+    "previous_base_colour_present": true,
+    "conclusion": "The slow canvas cache contains the actual bounded-crossfade material palette, not an incorrect full-crossfade selection."
+  },
+  "diagnosis": {
+    "observed": "First graphical frame remains in progress until deadline; worker published generation/revision advanced without owner error; ordinary Workbench pending install has not yet been consumed. Identical initial shader caches appear after long first-frame delay. Source cold launches are much slower than same-profile reopens.",
+    "inference": "Cold software ANGLE material-palette compilation dominates the delayed frame and explains the deadline failure; no package source/runtime divergence or Workbench deadlock demonstrated.",
+    "limits": [
+      "Different hosted runners; actual CPU/compiler module provenance was not retained.",
+      "Cache write intervals are not exclusive compiler measurements.",
+      "No new Windows reproduction or graphical acceptance is claimed."
+    ],
+    "source_mutations": [],
+    "recommended_next_step": "Keep60-second startup check unchanged. Preserve r1 failure and run the already-required exact-source r2 gates for ABI/staging/main reconciliation. If failure recurs, perform a bounded same-host cold/warm engine-placement/compiler-module diagnostic before any further retry; no shader warmup or presentation/default change."
+  }
+}

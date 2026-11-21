@@ -1,0 +1,2496 @@
+{
+  "schema": 1,
+  "programme": "GENTEK-SWARM-004-005-MAINLINE",
+  "state": "frozen source; hosted qualification/publication/owner gate pending",
+  "accepted_main": "0f0161af337d6d0cee8fa961a9667aff570a75b0",
+  "frozen_source": "a08c0e77601c9451ece3a15248d4255164911d5f",
+  "frozen_tree": "2caadc63dbf22b056fc5147b55ef57079b270324",
+  "qualification_execution_head": "9b688aed1f06f031f983c27f50d1f17821446e43",
+  "frozen_source_parents": [
+    "0f0161af337d6d0cee8fa961a9667aff570a75b0",
+    "580ff82f285b7aeda8fb4a2a0d034425f0d0401d"
+  ],
+  "frozen_donors": {
+    "692": "2c4b8061ef5315de6a31df933e9f84c31865284e",
+    "693": "16a11ef2d25f03d58b229f4bba3f88009ebe1154",
+    "696": "c178feeb39899fd155b7deb9d5bde3f50ee28548",
+    "697": "8ec6d3c62197f3ef4088d79e4aa2910f5eaa36f7",
+    "700": "580ff82f285b7aeda8fb4a2a0d034425f0d0401d"
+  },
+  "native_definition_sha256": "fe62e15412459c22c6f81e479fa1ff2917d7359d747581c9891b83fbf2f75618",
+  "transport_versions": [
+    1,
+    2,
+    3
+  ],
+  "composition_schema": 5,
+  "accepted_existing_native_source_files_unchanged": 81,
+  "changed_existing_native_source_files": [],
+  "files_changed_from_accepted_main": [
+    {
+      "path": ".gitattributes",
+      "accepted_main": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "cc8288dabac3402cc88e3e575f9e42e895deac90"
+      },
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "cc8288dabac3402cc88e3e575f9e42e895deac90"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "2300051a192bc4e2f9c7a95f10faf18775088f90"
+      },
+      "integrated_sha256": "34caa3afce71d2f9ca3feb50bc0150d2e03fe363d01dd83751bf6eef6be2826d",
+      "bytes": 1442,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": ".github/swarm004-windows-request.json",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "656c4ec46053735e9cc9ce8a9e42eb7cb9016a82"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "656c4ec46053735e9cc9ce8a9e42eb7cb9016a82"
+      },
+      "integrated_sha256": "77154f9f91eadc1ede33bf90f0312b5ddf13a8a1ee946b756691c425e1ec9888",
+      "bytes": 201,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": ".github/workflows/architectural-generator-qualification.yml",
+      "accepted_main": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "f19228db486dbfd9e6abe3a8749b3e53dafd5ca3"
+      },
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "f7a9d23f8142ca7db1e77fb3fab959d2d6e987c2"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "9da69a511eee18b6d07adf4cb896c77c50f38af5"
+      },
+      "integrated_sha256": "46eb8323406964288fba45f7da0813e8b3b5eff03094ebaf16dedc816d6fa36f",
+      "bytes": 30848,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": ".github/workflows/explore001-windows.yml",
+      "accepted_main": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "a141bc2e73aab168130c403a6ac81cd84f038361"
+      },
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "a141bc2e73aab168130c403a6ac81cd84f038361"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "bc436bd0552ebe9feedda4fd2d34b7c1160aac0c"
+      },
+      "integrated_sha256": "aaac9b2860ebc7c9bd419c9e512f163107ce8e4468feeccbcd637dd2fbab165d",
+      "bytes": 16420,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": ".github/workflows/gentek80-qualification.yml",
+      "accepted_main": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "29ba1df475423ef2c6da2552597d0b2b53fa3b64"
+      },
+      "frozen_donor_700": null,
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "93b21aa3ecfc3ac32de28440d46605d69b45ef94"
+      },
+      "integrated_sha256": "78a47e2f06111fd8ba24d9414b67b65fb2fc3d9b54a60088c2d39d33cd7a19fc",
+      "bytes": 45634,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": ".github/workflows/gentek80-water-merged-requalification.yml",
+      "accepted_main": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "143a80a83008dc680047fcb4a6fab03c4f24be27"
+      },
+      "frozen_donor_700": null,
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "ffd799391232854c00f29c1428aa15c19f23d88c"
+      },
+      "integrated_sha256": "c274698bd84fb7c112f16286bf556f6b6377f47ad6ac2744dd0972b871e6e721",
+      "bytes": 49228,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": ".github/workflows/swarm004-workbench-windows.yml",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "0b318072e1ed76394c1a452756c32fc96547d37f"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "0b318072e1ed76394c1a452756c32fc96547d37f"
+      },
+      "integrated_sha256": "187996ea13c7bf7409a5293c4b1a9a9d35428c0c323e793e209d192c26466fc0",
+      "bytes": 13097,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": ".github/workflows/swarm005-workbench-windows.yml",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "9f287289134a69972047d3200cbc36d24f8323af"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "9f287289134a69972047d3200cbc36d24f8323af"
+      },
+      "integrated_sha256": "f4f5ee18865adf9a76977d668a47df6b3eb7d3cd383d76a5905fc474ff4fbb82",
+      "bytes": 12974,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": ".github/workflows/swarm45-mainline-qualification.yml",
+      "accepted_main": null,
+      "frozen_donor_700": null,
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "eb6b142cca69f1f40660239004b87da651f5d70d"
+      },
+      "integrated_sha256": "e63965e0414efaad62495c30d8ac878a80188a10a157035cb760b602d9d09aac",
+      "bytes": 13343,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": ".github/workflows/swarm45-runtime-publication.yml",
+      "accepted_main": null,
+      "frozen_donor_700": null,
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "54378ff458b07b36dad6041a7663607e3106f813"
+      },
+      "integrated_sha256": "f23273d24b1d457b96e08f0b35adfe104a6c962e781cd23923130c27570673da",
+      "bytes": 3849,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": ".github/workflows/wb-art-paint-qualification.yml",
+      "accepted_main": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "08fdd8f9283fd851ff86cf59077b19debecfef2d"
+      },
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "08fdd8f9283fd851ff86cf59077b19debecfef2d"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "f71aff1440968e613289da1f35ed8fdf0ab1da64"
+      },
+      "integrated_sha256": "8c95343e7e28bb2832b3c94d88e53e10bf39782dfa0e21959e35930b29cfaa02",
+      "bytes": 20849,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": ".github/workflows/workbench-actor-composition.yml",
+      "accepted_main": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "79edd55ed165347dc8f29a9e203a122ad1ecda7c"
+      },
+      "frozen_donor_700": null,
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "67c2a1825dd15766027b9683d6a497f34b69dc8c"
+      },
+      "integrated_sha256": "2a9005d74d3fefd2490636b1ac11e53107c43bbc40b78a02d86af1771c69e689",
+      "bytes": 24192,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "Makefile",
+      "accepted_main": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "389c6963db9243528cb94d156740ef41d1033c2b"
+      },
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "d59c06629e7d94496a63cbf9d1015ec06149d2a7"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "b1bdafe5e72c6a2703d1a66e77e6bb9513028a65"
+      },
+      "integrated_sha256": "64b6b56519a1b52fbb1a6d75d857bdf625d8801ff3d10db7b54da751daa51899",
+      "bytes": 36680,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "docs/README.md",
+      "accepted_main": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "127aeaff4089b60dcaba0ebbb00b661dc411fa57"
+      },
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "9966b8c4d566ebcefe06a5ee9ce52e76ff01a34b"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "f0a3710c757fc27f85f0f13c472d5db9940eb86f"
+      },
+      "integrated_sha256": "1a131ffcf1306a31b79ef502b72f1eb64cf858662713da61cadb61a35219d05d",
+      "bytes": 61805,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "docs/architecture/experimental-workbench-authoring-patch.md",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "f233920fec509e1af12fb361a81404fda8c68620"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "f233920fec509e1af12fb361a81404fda8c68620"
+      },
+      "integrated_sha256": "5058c9f88b6e87a207b7683c14b464c7087ddf6f9c7c4a48c4a7ef6e7b86e64c",
+      "bytes": 14639,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "docs/audits/2026-11-20-swarm004-native-recovery.md",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "f0d012412fe49428ee55bcf48b818528aa94a13d"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "f0d012412fe49428ee55bcf48b818528aa94a13d"
+      },
+      "integrated_sha256": "dbb20da93a524a8e21e2c7ddb19cafdbab74b70b480060185988cb8d609786c6",
+      "bytes": 21825,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "docs/operations/cybersand-codex-development-handover.md",
+      "accepted_main": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "7053b77baf4e706c00a60c7305f88d2c2589bf91"
+      },
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "89c56696e0c442a7ccd52d97d8c9c1fef6060cfe"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "2a98e244b33a0382dc11ead40b3ef643fb1caf10"
+      },
+      "integrated_sha256": "38b98932f5cb82f40583c97c84d9ba052ce759dd673aefa66b3b8c20bf2d6b38",
+      "bytes": 130169,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "docs/operations/local-build-and-validation.md",
+      "accepted_main": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "fe0a532495c44fe41fd442ad92617afcda771ac5"
+      },
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "e84137c14fd7c6349aee3a481c64f985512b296b"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "e84137c14fd7c6349aee3a481c64f985512b296b"
+      },
+      "integrated_sha256": "e6babe9239350817264642f3bcd4e5092dbc1e7c4bed5368d2027b460db72760",
+      "bytes": 118551,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "docs/operations/swarm004-workbench-playtest.md",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "49bb6c601042c1af711199639ace3dd653df7941"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "a8ba89da5544e8ce4325c66cf6433915a39eb6fd"
+      },
+      "integrated_sha256": "12445d01914d636cc1639cafff61bb06f1e1f9e793c5e389eaa5eda9a591f12b",
+      "bytes": 15547,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "docs/operations/swarm005-workbench-playtest.md",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "f7f4e270f87318c00ea4bf9dece7f95adf92b958"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "573f480319ca4895eccfa97867836d22568820a1"
+      },
+      "integrated_sha256": "4cbeb0b58cbd2c340792c6a340e5e7fe7fbb8b7b80bf9fcaa469e0dcca1bf65d",
+      "bytes": 4357,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "docs/operations/swarm45-mainline-integration.md",
+      "accepted_main": null,
+      "frozen_donor_700": null,
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "8bfad472cf70915845b2a968a3b7ca89b2cfcbd6"
+      },
+      "integrated_sha256": "a9313918b1c908b66ed8ba776bb6a3739f0edb5fb9e7c7324c50b53cf32a87e9",
+      "bytes": 13751,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "docs/reference/retrieval-corpus.json",
+      "accepted_main": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "98ef62690b118f6826f01d4bf8fec57ae487aab3"
+      },
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "ec0c47707088497a7182235616cbbfe4199cdcbd"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "c6a6a22972c48cbdfbf6e5467c558f6e12670a41"
+      },
+      "integrated_sha256": "c0080c2051f07756b72902f90ed2ab58fdf887267d47eba6a7e9518f63823294",
+      "bytes": 50629,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "docs/reference/retrieval-index.md",
+      "accepted_main": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "1fa708702d0e7e8c8b34ce4740d57eb36c3ee43a"
+      },
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "004b1823b8b967e50f0d979c700ac889f71f5a20"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "db51161f14776d79589708cc039d9f8341e17fd9"
+      },
+      "integrated_sha256": "117b802480472501874ecd980130aeed8cead48e70cb57e33f9c82d8dac2da35",
+      "bytes": 74431,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "docs/reference/retrieval-questions-swarm004-workbench.json",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "ea346484f23d85b789e5a58ccbc9b2d9b022d162"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "c7694334e2335611516b8d62cd0f70fc7f0c4ec0"
+      },
+      "integrated_sha256": "4681e6e3756d63ab1024c6f9a381bfd89bd8955d0f74d89433864ccae2536501",
+      "bytes": 2757,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "docs/reference/retrieval-questions-swarm004.json",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "6c9fdedc3e0450d44bb506d95c5a8cdf819982f9"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "6c9fdedc3e0450d44bb506d95c5a8cdf819982f9"
+      },
+      "integrated_sha256": "b3122a97878b7b9454dc99171eb83e477427b2c5fd3c201c478d86401316012c",
+      "bytes": 3085,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "docs/reference/retrieval-questions-swarm45.json",
+      "accepted_main": null,
+      "frozen_donor_700": null,
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "22912cb07206669e612fdd97b8cb38e8608447fb"
+      },
+      "integrated_sha256": "26fa26faf808b7e975052cb0093bb1998438f00461c630884e2b2bfb00115bbb",
+      "bytes": 1936,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "docs/reference/status-and-roadmap.md",
+      "accepted_main": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "a44ebe055c9eaac1a0689d3ecc7a4d5a6867566c"
+      },
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "177498eb426638984d8490c99f78ad5f11d34e47"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "e88fbc569e8f0c083d1598397b7c327fbf0c90fe"
+      },
+      "integrated_sha256": "3f72aed450934f848e0eb11310511efa44d2f3715af5d20311e9caf2ae77a6aa",
+      "bytes": 162465,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "docs/systems/gentek-reciprocal-assembly.md",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "6bbd4933eeaedd67e7f10a08f56799815786b7b2"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "39fa032723221e94fb4d3c8101a5961b375e4e3c"
+      },
+      "integrated_sha256": "77fe0f9489fa3d0d61de01b9b586749c5742711d38852e688e1c26f9e57d241e",
+      "bytes": 10830,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "godot/native_extension/cyber_prepared_liquid_world.hpp",
+      "accepted_main": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "b493fb47a1a7faa5d8422d401df55be6766cbeb9"
+      },
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "ab4f99777d88a37a8ba37638dda8a8a0cd09d223"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "ab4f99777d88a37a8ba37638dda8a8a0cd09d223"
+      },
+      "integrated_sha256": "92c0d6795025f0aaab86d5d5fe9176d87c0797b90503e7a9d0f70e562faa4032",
+      "bytes": 83493,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "godot/native_extension/workbench_retained_setup.hpp",
+      "accepted_main": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "ac06cdd260492207fd9b306c51657130c66a469c"
+      },
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "8a8c2a6d084722ae4ba296fac54f357443174cb7"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "8a8c2a6d084722ae4ba296fac54f357443174cb7"
+      },
+      "integrated_sha256": "801fd58a1560a57cd5d14383ee69b8d243d8245719f786806f196a5ec06edb36",
+      "bytes": 9051,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "godot/scripts/main.gd",
+      "accepted_main": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "56b8e685f4f4c9eb4219c6ba02c2eca69e9c7bf1"
+      },
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "e8534ff72e8c0d1c61e8053d298a1394a5aa049b"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "a4dad2fa0ca46398b7b12fa51f87c273d95d6387"
+      },
+      "integrated_sha256": "347a8d11e5ea4db717945b6077cfba35c068191d0138cc006e6a1dba0a1d2ec5",
+      "bytes": 244188,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "godot/scripts/microscenario_host.gd",
+      "accepted_main": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "694085b15b91ba04549715e68a2cf81671f15bdc"
+      },
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "dcd3aec1e429018b0f46248e3363ce9ac403bbab"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "dcd3aec1e429018b0f46248e3363ce9ac403bbab"
+      },
+      "integrated_sha256": "70d0af6f958ae5f735c8c777335cc754e9f4db70305c7162c2d1582f4c878984",
+      "bytes": 33727,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "godot/scripts/shared_workbench.gd",
+      "accepted_main": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "4bf80e83c1bb9261f66383da6e82ede23acbfc03"
+      },
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "6908b0536bb2a9859ae69ab892eecc4a092751fe"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "633fd5cb799622dc159f9afda538349e843ad816"
+      },
+      "integrated_sha256": "7c2b2eba531b0923d556b42eda8d3fb18134e0d7b780f86b64fd1ee9b81ce3cf",
+      "bytes": 83718,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "godot/scripts/workbench_reciprocal_overlay.gd",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "28542967d23e0ee2bb9d0ebde2c515bed422f824"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "28542967d23e0ee2bb9d0ebde2c515bed422f824"
+      },
+      "integrated_sha256": "39f82206cb6bd5e40915a6307264691a03b06e845376eb63d8066373ec64b411",
+      "bytes": 1589,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "godot/scripts/workbench_reciprocal_panel.gd",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "ccd20880f13e68a0a80c131628e30a94bd0ff9a8"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "e835f3b0f049b0803b0730a6f8c404b34ef10028"
+      },
+      "integrated_sha256": "1a689a37522aee8ff36118a2d12704f89ea7425c522826608e1123f6676f7d80",
+      "bytes": 40343,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "godot/scripts/workbench_reciprocal_protocol.gd",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "50a2fd3de9f4def655ae5b8316cabc06a90e25a0"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "e150e33e8188d1e6ac84cbe9d8d5d095ce971ab7"
+      },
+      "integrated_sha256": "5bfe67fe0e3b4587e584bd45f5e7a003ad796ed319a54ba420b8e760c9cf1694",
+      "bytes": 40857,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "godot/tests/swarm45_reciprocal_controls.gd",
+      "accepted_main": null,
+      "frozen_donor_700": null,
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "6f4b30a75e2cb1ccf0bba368b17e98cddce03d92"
+      },
+      "integrated_sha256": "c4ecf9a19b8b07cb6ab1e41eda1a0a2a5eecbfc7314bcc27affbb5958abbdead",
+      "bytes": 9777,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "godot/tests/swarm45_reciprocal_ui.gd",
+      "accepted_main": null,
+      "frozen_donor_700": null,
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "b0f2ca02314f87428a0ff8e94d02b7f6aa24eec9"
+      },
+      "integrated_sha256": "6b56a28b7105ef32b4d6b4b8531cb7244adec051e267cba8141b8f64ba2834f7",
+      "bytes": 35503,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "godot/tests/test_workbench_authoring_patch.gd",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "53052a93c6a9e5fee8e3b9e0938aec6d442b27e6"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "53052a93c6a9e5fee8e3b9e0938aec6d442b27e6"
+      },
+      "integrated_sha256": "3d00cca3369ae25ad391eb626cf2b013b9955d53222980f06073a2da3736cf09",
+      "bytes": 17375,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "godot/tests/test_workbench_reciprocal_controller.gd",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "82624a7a2d95cd1875f09b9ba0e42360b7e2641c"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "82624a7a2d95cd1875f09b9ba0e42360b7e2641c"
+      },
+      "integrated_sha256": "7f2b0fb418bd00614a319c7c6652951c6a3681837b79d41a5247e0a2c8c5a194",
+      "bytes": 8718,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "godot/tests/test_workbench_reciprocal_protocol.gd",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "fc1e9b9e87cfc441428833bf91b88cb07729bed4"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "fc1e9b9e87cfc441428833bf91b88cb07729bed4"
+      },
+      "integrated_sha256": "cf883c32ff8f50f6a676baef9679ade4f49a39ec7295dc9f0fdce66d1444477c",
+      "bytes": 16993,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "godot/tests/test_workbench_reciprocal_runtime.gd",
+      "accepted_main": null,
+      "frozen_donor_700": null,
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "e4a8e3c0bc8c17e42cf8af0fee2aceb49fad3960"
+      },
+      "integrated_sha256": "8b9ae251e675a59d7f768d0f86d31573e6a77a92904471407009323ad7b2378a",
+      "bytes": 4902,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/CONTINUATION-PLAN.md",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "ce5f1c7f448ccef49448f89c341851b57febe081"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "ce5f1c7f448ccef49448f89c341851b57febe081"
+      },
+      "integrated_sha256": "62ff6d43fe014b6907c35c41d59618feb9f6325cf3ffd5966a50ac5d527b6f65",
+      "bytes": 6844,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/Makefile",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "48288df18a00d0b581c13d8986997124875da60f"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "48288df18a00d0b581c13d8986997124875da60f"
+      },
+      "integrated_sha256": "cabb291f61c3b4b12813b675848c131b918266dedcbf2d6ab6b7ee4f5c6a70c0",
+      "bytes": 5924,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/Makefile.reciprocal",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "19b8aa0d934c0674ae860017309acf5324f406f2"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "290e32d7049bd92a2e4fb7dbce826a20e5a43078"
+      },
+      "integrated_sha256": "3f8d7676cc0a5f74db8c936c4618af708c304200c5a1a286f68dd4a1fc9a490c",
+      "bytes": 2819,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/OPTIONAL-OFFERS.md",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "c03aae0e63fcbf2a4555bc494b1874ee4f40ad16"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "c03aae0e63fcbf2a4555bc494b1874ee4f40ad16"
+      },
+      "integrated_sha256": "c071877d702e360d050fbe338e9e078f4b8cdfeb0b616d41049fe2938f8429a8",
+      "bytes": 21552,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/README.md",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "1ca665e734e8d8b3c93bd6e8fab6175b59b7d52f"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "1ca665e734e8d8b3c93bd6e8fab6175b59b7d52f"
+      },
+      "integrated_sha256": "9110c45d3c7188c04e0c2403f7aa45a532d16780a17972b4d2b45448be17eaec",
+      "bytes": 26150,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/RECIPROCAL_DESIGN.md",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "f08b2ccab3202b573e855451c16e5c29fd023ddd"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "f08b2ccab3202b573e855451c16e5c29fd023ddd"
+      },
+      "integrated_sha256": "aa9324a0d9c259f4054e95020a3067036b13ab38b76ccf0d21ea2e37874965c4",
+      "bytes": 7140,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/RECIPROCAL_REGISTRATION.json",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "de7445c1c68268c5e07954177cd36b96d4a2f657"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "de7445c1c68268c5e07954177cd36b96d4a2f657"
+      },
+      "integrated_sha256": "a6d3bd71c6ee33a0b4eea7b6b68721078013423f0834ca3e285ced82c0dbc53d",
+      "bytes": 7202,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/SELECTION-CONTINUATION.json",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "b8ef0eaad67a887ca5a12d0f1505ea9b48223f65"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "b8ef0eaad67a887ca5a12d0f1505ea9b48223f65"
+      },
+      "integrated_sha256": "38ab8fe0bf2069f8f18a5a24564da01781b37002243fb99cb01a5b25cf0ef3b4",
+      "bytes": 18280,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/SELECTION-RECIPROCAL.json",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "24280e821873fb667b9d00c8b7dd8de94995736a"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "24280e821873fb667b9d00c8b7dd8de94995736a"
+      },
+      "integrated_sha256": "d5b318f94918202f567f88723e036868a019c511840a04d6e516802af7c661e6",
+      "bytes": 4717,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/SWARM-002.md",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "2a90bcbf7a599e53c82d55643af79493d12cd2f8"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "2a90bcbf7a599e53c82d55643af79493d12cd2f8"
+      },
+      "integrated_sha256": "96678798acce198096b7f47080746628bdd69f85145de2d4e8d62fda15a9524e",
+      "bytes": 20115,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/SWARM-003-CONTINUATION.md",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "dd06590102973dd0e11496adbd8819a447723384"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "dd06590102973dd0e11496adbd8819a447723384"
+      },
+      "integrated_sha256": "922f25231ec1e6d0d57c8f2fedd97474cd6fe6eeba2c8f5adcce074688111786",
+      "bytes": 12774,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/SWARM-005.md",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "6495952d86b03050cd1a822923dcd8f7237636a9"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "6495952d86b03050cd1a822923dcd8f7237636a9"
+      },
+      "integrated_sha256": "c8466178c82d9e356f459e2051011098272e70b2b1ed9f859de83b6c2ef09a75",
+      "bytes": 5812,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/admission_gallery.py",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "2c3219ff10fe4498e1609eee166c1a64edd5ce51"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "2c3219ff10fe4498e1609eee166c1a64edd5ce51"
+      },
+      "integrated_sha256": "001945f1683eeb28c4c89d67c11826ab5874daa4c422d384e1a985c6e56a2ecd",
+      "bytes": 24648,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/admission_main.cpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "44886b3f653db513913503d542deb2afe6cebd01"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "44886b3f653db513913503d542deb2afe6cebd01"
+      },
+      "integrated_sha256": "fdbf37cf5f3aa73643c036b8b543ef7e42b796f2813f51c57f2a76f3e93fe4c0",
+      "bytes": 6956,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/admission_resilience_tests.cpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "8b9a95774f44a1ca40be448832421bc8b82f7478"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "8b9a95774f44a1ca40be448832421bc8b82f7478"
+      },
+      "integrated_sha256": "0201d2af2cdfec823a0dc596996ca258dd35e313c253ede53b5cae36ea642ac8",
+      "bytes": 20652,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/admission_tests.cpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "8a474aaeb43127261056195f6e0e5a7586ad7a14"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "8a474aaeb43127261056195f6e0e5a7586ad7a14"
+      },
+      "integrated_sha256": "7cd4aa43f6648ba82fc143d1f0f974748fbf7cb5c5fe589c030c3bbf39c79889",
+      "bytes": 28364,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/assembly.cpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "392f2b30ecfbab228c52122db7ce6e03090d8a7b"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "392f2b30ecfbab228c52122db7ce6e03090d8a7b"
+      },
+      "integrated_sha256": "d4546d654f7af516e471b791ac6460ef5daa90506f8265a3e0f17e90f428df8d",
+      "bytes": 35455,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/assembly.hpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "5e7b20a31e0dda0aec3f9b87f6fdbbb1db21ddf5"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "5e7b20a31e0dda0aec3f9b87f6fdbbb1db21ddf5"
+      },
+      "integrated_sha256": "2c1b589be93d0e5381b4e5974e931e8d01d93b8c9583ab6bda2c03ef423055f4",
+      "bytes": 6446,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/assembly_tests.cpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "fe83ecba7d260ee022bc758d87bc5326c4fb6c64"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "fe83ecba7d260ee022bc758d87bc5326c4fb6c64"
+      },
+      "integrated_sha256": "10d18fdf68e04f4f571ae70273127cdaae8a0085d62f16583b6cdd155598e221",
+      "bytes": 22340,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/common.cpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "55acfa8ff95d091e84470afa2590a80c3929621c"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "55acfa8ff95d091e84470afa2590a80c3929621c"
+      },
+      "integrated_sha256": "df5a180b86ad978a2dd91e415c3a38a25828b20f7a9739d6f7f2ea31edcc3941",
+      "bytes": 19510,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/fixtures.cpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "43af985e9fb240a5b8f1c045199ecc2ae258aa35"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "43af985e9fb240a5b8f1c045199ecc2ae258aa35"
+      },
+      "integrated_sha256": "2d5025763ad0f741f5fd77d25d38f9f448cef601cbcd9a6c9b58a70e0c2d8142",
+      "bytes": 4361,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/frameweaver.cpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "279877c3c39e08b94af880ff6d01b20080fddf85"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "279877c3c39e08b94af880ff6d01b20080fddf85"
+      },
+      "integrated_sha256": "5a63f29909a520c10b08da9c6a632b3e24fb99d81e1ad5817ef738927de3961e",
+      "bytes": 56575,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/gallery.py",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "3645147a794200aa9b30649ab175b1a0a4784ce0"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "3645147a794200aa9b30649ab175b1a0a4784ce0"
+      },
+      "integrated_sha256": "5c134035452fab486a53c615a3a91538b1b4202dc936c96d2b2187a72bc45bb7",
+      "bytes": 16665,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/io.cpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "724d0cfe0de8c5fc736792112826e66b2a7c881b"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "724d0cfe0de8c5fc736792112826e66b2a7c881b"
+      },
+      "integrated_sha256": "e3e6f012a28a17952af1a3c95c947631cef620eb2d6de3e49abe6a8e0f29c1a2",
+      "bytes": 20245,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/main.cpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "411940e2be17940697d378557e4341f4625aa032"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "411940e2be17940697d378557e4341f4625aa032"
+      },
+      "integrated_sha256": "1e101edb2d197c7e425eea058098c5a3310b1c8a5703a55ba5b6d817329921c0",
+      "bytes": 3689,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/meshing.cpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "698683a8b644282276492da383197052aa30a3ad"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "698683a8b644282276492da383197052aa30a3ad"
+      },
+      "integrated_sha256": "4fc5961f62c00f24a0c5405a2b8ed94bc82cb0a17eaa1859dcce9b65460b5f29",
+      "bytes": 13391,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/mosaic.cpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "1c8a8951ead729494d7228de4295a95e3a8928b7"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "1c8a8951ead729494d7228de4295a95e3a8928b7"
+      },
+      "integrated_sha256": "c76074d92798112e981abb54002667847853f697969876431712bde506f2f20c",
+      "bytes": 72854,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/mosaic_admission.cpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "d998e54bd86c8b7fa8cb290ee95677c3e5614097"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "d998e54bd86c8b7fa8cb290ee95677c3e5614097"
+      },
+      "integrated_sha256": "3ab2cf07a02858859b7ecb979f3d1f2dfb2c68c683905708f1ee165608819b30",
+      "bytes": 18450,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/mosaic_admission.hpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "5e4dda141827a653012b605d62784bac11894643"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "5e4dda141827a653012b605d62784bac11894643"
+      },
+      "integrated_sha256": "c6b8f8435a238b1c55be09127450865401768dc0081de61edd5e29ac210769d9",
+      "bytes": 2266,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/negotiated.cpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "199f7c6feaad39e828ec69f447ae52fdbe528e5f"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "199f7c6feaad39e828ec69f447ae52fdbe528e5f"
+      },
+      "integrated_sha256": "c16618da630d5d3da68f5be003229c8d1f11694cdf01468a2688535ec0a34eea",
+      "bytes": 49056,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/negotiated.hpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "911fba64a2ad62aa6c755608b9b34eafa00ee652"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "911fba64a2ad62aa6c755608b9b34eafa00ee652"
+      },
+      "integrated_sha256": "be3f093d463348fef6615c5cbeb3a7c6fa66f789afeeac54e0dd665978b0d861",
+      "bytes": 5378,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/negotiated_gallery.py",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "3ed3e7e71d86359eb6d9e7f40f0eff906b5f389f"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "3ed3e7e71d86359eb6d9e7f40f0eff906b5f389f"
+      },
+      "integrated_sha256": "5651a1da006b2108fafae05c6ae92559aa849073b178c289ba1b21b14941b900",
+      "bytes": 13119,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/negotiated_main.cpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "ceb7c1aaea61a7b1b4c8941026bff1b738accf57"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "ceb7c1aaea61a7b1b4c8941026bff1b738accf57"
+      },
+      "integrated_sha256": "b3ce696435f43a7ea88554783d37dc2b1710b7d6f0456a7de4c05db7a0e7e6d0",
+      "bytes": 1698,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/negotiated_tests.cpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "a7eea8ce9f389a46c3da7fb98e7eab6148064e05"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "a7eea8ce9f389a46c3da7fb98e7eab6148064e05"
+      },
+      "integrated_sha256": "a7390f42f204ed801c0ef9e6172426fb6d6521fa32f1a2fdef53ae9487dcb3d1",
+      "bytes": 8419,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/receptor.cpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "ed78f666956ab2de6255fce761b284e5f64e4ea7"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "ed78f666956ab2de6255fce761b284e5f64e4ea7"
+      },
+      "integrated_sha256": "c6bef593754c055cea373bdbc139f82035b513582b4c20fcb9771c87c80e72d5",
+      "bytes": 22609,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/reciprocal.cpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "69c94493ec341271d956375d25c6dbd85bbc9e93"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "69c94493ec341271d956375d25c6dbd85bbc9e93"
+      },
+      "integrated_sha256": "87509449efcfddfc059ae2f9d8d91bd79939d815592209de77faa826ea2fcb92",
+      "bytes": 93146,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/reciprocal.hpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "4e565a6d72b36b108d29b5ddcd083118f9c73038"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "4e565a6d72b36b108d29b5ddcd083118f9c73038"
+      },
+      "integrated_sha256": "176930d3b1e519b407d00cb83e48e2f5ee720683d9b7c80a1d007190d94a407e",
+      "bytes": 4879,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/reciprocal_causal.cpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "87a3a82a252ea89350f1e0af7c64550427027684"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "87a3a82a252ea89350f1e0af7c64550427027684"
+      },
+      "integrated_sha256": "cb2e828d70fb1f4c44d2c1bd750bfe35f5a520270a3c4a611f7b9884112f7ba2",
+      "bytes": 13910,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/reciprocal_gallery.py",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "df0446b49e96bf2430e9d265d88c545987b1e9ad"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "df0446b49e96bf2430e9d265d88c545987b1e9ad"
+      },
+      "integrated_sha256": "6cdf56abbde65d97fab4eaecfb590738455190a76e6245ecb8dd40f883d3cc06",
+      "bytes": 54407,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/reciprocal_io.cpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "e6db9fb7d887041e5de63af37c22c707426f6b37"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "e6db9fb7d887041e5de63af37c22c707426f6b37"
+      },
+      "integrated_sha256": "cc21b79130f5aaec4bf0f4f13268f40dfa4208d92e528bd7bfc2c51df9f76172",
+      "bytes": 32222,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/reciprocal_io.hpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "28cbb763395843f70ec870da273f88e0a0dc8fef"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "28cbb763395843f70ec870da273f88e0a0dc8fef"
+      },
+      "integrated_sha256": "4bbe5005c779131648e09d4acfba42e1f35a26e6e047fca05b2316a6dda3b4df",
+      "bytes": 521,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/reciprocal_main.cpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "ae48ec4580eeecc8f9231995b2b1e4be4b37a86b"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "ae48ec4580eeecc8f9231995b2b1e4be4b37a86b"
+      },
+      "integrated_sha256": "54756a97a35105c6588eb4381928f88090719570f6d55742c0a34050caeaf41a",
+      "bytes": 29407,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/reciprocal_mosaic.cpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "86cc8945dfc59dd6adb1fe79952228c62fd7ca09"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "e87ed4f9c808362f953bf74baedccacd372ad362"
+      },
+      "integrated_sha256": "94a38e05026e6f16b84d1ba2e506775f4159e21424c958e4886e4981cc65579d",
+      "bytes": 38200,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/reciprocal_mosaic.hpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "a6e521405878687368792ea5b564522e3cbbe004"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "a6e521405878687368792ea5b564522e3cbbe004"
+      },
+      "integrated_sha256": "e10b677fcde41ab9045873690cea422279a4f0ba15c8b38c138960b389c1e6cb",
+      "bytes": 3826,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/reciprocal_mosaic_tests.cpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "b29aef5f08c0d4adf5f162fcc9cb353f8d7ed71d"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "b29aef5f08c0d4adf5f162fcc9cb353f8d7ed71d"
+      },
+      "integrated_sha256": "d9bc4880851c44c8a9f0fcbbde1744527b65f1a141ea49b55aad3489ebebc982",
+      "bytes": 18887,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/reciprocal_tests.cpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "f74ac1d2cbf078a4feecb4aaccabbf3edd2ecf2c"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "f74ac1d2cbf078a4feecb4aaccabbf3edd2ecf2c"
+      },
+      "integrated_sha256": "a53b63867e8222e18dcc27fe523be2cd077ae7b59d5b2a2137d90562cb8b780b",
+      "bytes": 29482,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/reproduce_reciprocal_controls.py",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "167eb3ef02471cf6f3cf24687b953d7a27c00fa4"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "167eb3ef02471cf6f3cf24687b953d7a27c00fa4"
+      },
+      "integrated_sha256": "cb514a04ff3573d9530f3ec2b9402c9e93a48e0769b33cb729cf3b658e04256b",
+      "bytes": 15792,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/resilience.hpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "dc9eb9c50dd1b84b9ec401cd4328f5417edc5299"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "dc9eb9c50dd1b84b9ec401cd4328f5417edc5299"
+      },
+      "integrated_sha256": "134250470152e0a56b23fddad706d507642dfd47dcb400b431ee9f0653800a5c",
+      "bytes": 2733,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/resilience_gallery.py",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "c374fc6b2a4ed211952b13ad05d1f3bab982b1cc"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "c374fc6b2a4ed211952b13ad05d1f3bab982b1cc"
+      },
+      "integrated_sha256": "9784e5cfaff0d8640408347c3d50a0e4df5a785ad68619f21bacd3686e52dd21",
+      "bytes": 59189,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/resilience_main.cpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "b4f768be0e856de88097eafb9e4bec5cbb57328b"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "b4f768be0e856de88097eafb9e4bec5cbb57328b"
+      },
+      "integrated_sha256": "c2b3d31b58e6762a7e39a61cba5502ce12e2b197e43a8123cc3597ffe5fc60a2",
+      "bytes": 12314,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/resilience_solver.cpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "3a38c2624c1b5c20ed0d200b2347b781f01a5375"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "3a38c2624c1b5c20ed0d200b2347b781f01a5375"
+      },
+      "integrated_sha256": "ba6f72bc4768875f377c296b7910e24b1227d5dcec0cf9ac267d921a47a66206",
+      "bytes": 13349,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/resilience_solver.hpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "c38d11850556912164b878021b0129b17e36387d"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "c38d11850556912164b878021b0129b17e36387d"
+      },
+      "integrated_sha256": "a13f5f0b68796024a030f683fbc6c15ae86b3ec7e3d9a0d397b377f5a86fbccd",
+      "bytes": 1707,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/resilience_solver_tests.cpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "8e5df7af723e7278c77c1b06d6a940cab6c34868"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "8e5df7af723e7278c77c1b06d6a940cab6c34868"
+      },
+      "integrated_sha256": "6c5c53ad6080017de739f18d3f88b06ede81d64fd568f142cf2b9f85009f5d01",
+      "bytes": 11242,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/resilience_tests.cpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "12a6a2602a45502e2d58df35fc601b6513cc0d5d"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "12a6a2602a45502e2d58df35fc601b6513cc0d5d"
+      },
+      "integrated_sha256": "5b52b859e2302ea828a5498834315767a1af2223ad0c0d0e37d01d9117cddf14",
+      "bytes": 19424,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/run.py",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "08cd1e0ac649014cef8bad7c8e76bed38501ca58"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "08cd1e0ac649014cef8bad7c8e76bed38501ca58"
+      },
+      "integrated_sha256": "46b92d1af87661aac44b3ebbcd2cbe1e626a9e1716cc1cca79ca9788ac39ce69",
+      "bytes": 6075,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/run_admission.py",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "8298ed39bc8e817b0d671cc1e91fc0b33e4e766e"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "8298ed39bc8e817b0d671cc1e91fc0b33e4e766e"
+      },
+      "integrated_sha256": "e6c0c34cadfaacbe15bd6c149f4097999f8c25416a4b94fe4a399bfe34be64fa",
+      "bytes": 14519,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/run_negotiated.py",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "ce9b3429f025938644560d2fab798d1f0c3db31c"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "ce9b3429f025938644560d2fab798d1f0c3db31c"
+      },
+      "integrated_sha256": "10cc8f762c8a61ceadd8297c887c236a76b7f8120b82d24f74451b57c45aacbd",
+      "bytes": 20990,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/run_reciprocal.py",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "c0c8a6b64e7efd1b4ed757a33bb08da18faf0fa2"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "c0c8a6b64e7efd1b4ed757a33bb08da18faf0fa2"
+      },
+      "integrated_sha256": "15f34ffb4ce2c73216b2199bbdfd48fbc494e608bb40cd3ee7562f16c7ee02bd",
+      "bytes": 20165,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/run_resilience.py",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "ee671e96e455e87edac83649edf13f1557cf4ca5"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "ee671e96e455e87edac83649edf13f1557cf4ca5"
+      },
+      "integrated_sha256": "3d2a0d1075f6dd068ffaa15359422c866a095773039921ef39ae247b174966bf",
+      "bytes": 70025,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/swarm.hpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "d57dc1b66120187b0e99a93d597221266a360607"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "d57dc1b66120187b0e99a93d597221266a360607"
+      },
+      "integrated_sha256": "f1739832a3f695bb127f6064a1ac622c7ebb30134d291f0e3712304db3bb53f6",
+      "bytes": 7223,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/swarm005_research_tests.cpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "1a813d0eb5cd71e43cedd3e8988ef5788d46c78c"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "c430a918a55a5d8f982b0c38dd3374235dfe11aa"
+      },
+      "integrated_sha256": "c7226cae0f92858dad52ff8e285eee22b40274e7c1a01d45d7e840fd3a4861b1",
+      "bytes": 14166,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/test_reciprocal_gallery.py",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "5434b9295784821c8992ffba00fe0f13d74b45f9"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "5434b9295784821c8992ffba00fe0f13d74b45f9"
+      },
+      "integrated_sha256": "404fa5f18ef235f0a233e2a3d029d4c81ef56bf524a2e75efc5bf09795ab8c7b",
+      "bytes": 6005,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/test_reciprocal_io.py",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "ddf3d1c7ee772700d4f4830569f818d3e7f8b55b"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "ddf3d1c7ee772700d4f4830569f818d3e7f8b55b"
+      },
+      "integrated_sha256": "3fcafb942c2311c20a9ed07cb5fccf51aeae83e7a27fd83c745c96b8700f7b33",
+      "bytes": 10947,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/test_resilience_runner.py",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "80444e63f1a4051f5a33c0aa0362b4e7174b2b7d"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "80444e63f1a4051f5a33c0aa0362b4e7174b2b7d"
+      },
+      "integrated_sha256": "af5355b88b13b21fa9a7161bd93040ddb23c8047cdcd4ff29ca6fb2e0723c2c2",
+      "bytes": 17503,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/experiments/gentek_swarm/tests.cpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "59a3218acb80529f740d57c4c91351c6d756bf80"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "59a3218acb80529f740d57c4c91351c6d756bf80"
+      },
+      "integrated_sha256": "ad5dea12e3941eab55816d611ab4ca140aba8c18c2d105e3bde64ab98bb69b96",
+      "bytes": 13495,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/include/cybersand/workbench_authoring_patch.hpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "44bfc284011d52b0fc4ed53741d2064c18c7d84a"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "44bfc284011d52b0fc4ed53741d2064c18c7d84a"
+      },
+      "integrated_sha256": "ac2b359e9b4daba1d6ef57fa65e813475d247dddb49cc634b0104262f0517314",
+      "bytes": 7673,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/tests/test_workbench_authoring_patch.cpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "44a1c3ed7f6e529bbbc3606e0200e97da63b98d5"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "44a1c3ed7f6e529bbbc3606e0200e97da63b98d5"
+      },
+      "integrated_sha256": "a0ae60026a83b56d61c7f25e4b73274267af7dcd77afd3903bd3096a4a515142",
+      "bytes": 7831,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "native/tests/workbench_process_fixture.cpp",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "4c200cf24138f6ae41152afd54b89127f94ab321"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "4c200cf24138f6ae41152afd54b89127f94ab321"
+      },
+      "integrated_sha256": "ed19cb469202553e3d16d00eaf0b62d222bed7517c8af0f49d68e6956a5ea1ae",
+      "bytes": 1447,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "tools/ci/check_repository.py",
+      "accepted_main": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "5e86aab672b71d6c33ba6a67f6f58cf44057962f"
+      },
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "5e86aab672b71d6c33ba6a67f6f58cf44057962f"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "9909ca81817d7d4b234df095e6854f1a9bfd1546"
+      },
+      "integrated_sha256": "e4ebfd2e6faca4ea9a12785be8afb60a5c5479edcd555ddf436c3081a4302e03",
+      "bytes": 9094,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "tools/ci/check_swarm_runtime.py",
+      "accepted_main": null,
+      "frozen_donor_700": null,
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "504bf58ef77e336d2cec9b9382a2d6881fd9b3f5"
+      },
+      "integrated_sha256": "c626f2a0856125326c74fdfdb3b284ed543d391b95ae8518b093f2341f4a5f57",
+      "bytes": 5785,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "tools/ci/run_workbench_qualification.py",
+      "accepted_main": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "cf63969df76b2eb4b85a0d291aeb499cb5bc92fe"
+      },
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "cf63969df76b2eb4b85a0d291aeb499cb5bc92fe"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "d8ffaab1c519ba3c3c6a04628c90ad06f792e61c"
+      },
+      "integrated_sha256": "f93462a655c5db263a562186aab0a078300e1b9502a12c1490000d6612ffe400",
+      "bytes": 25182,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "tools/ci/test_swarm_package.py",
+      "accepted_main": null,
+      "frozen_donor_700": null,
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "97c2613a4600fc3fc4064eafb518272eda36dc81"
+      },
+      "integrated_sha256": "3fe20c037179d2c360780460f60feb11441cc9cb185ad3065390cf75d8912151",
+      "bytes": 3041,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "tools/ci/test_swarm_runtime.py",
+      "accepted_main": null,
+      "frozen_donor_700": null,
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "24c0f783801fb8ffe7791f361edf061328dd21bb"
+      },
+      "integrated_sha256": "6bd65924c42e3766f1dd20a7f0fcb2961a70ee01b789da8c4c8bc97bd0443760",
+      "bytes": 4773,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "tools/ci/test_validation_contracts.py",
+      "accepted_main": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "9e401337c8f9692a0e3ac3150f8b5d928c20f98c"
+      },
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "9e401337c8f9692a0e3ac3150f8b5d928c20f98c"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "6dc358775a8c75ddd8823f78e6be352ea389b2cb"
+      },
+      "integrated_sha256": "59ccfd7901a519c8930423df65a3bf77c2139b074fe9487f974fb5afc9883bf0",
+      "bytes": 12105,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "tools/package_explore001_candidate.py",
+      "accepted_main": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "ce2f25012dff4e123a88d55b097a60ba59f89ea9"
+      },
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "ce2f25012dff4e123a88d55b097a60ba59f89ea9"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "ea77a7d909e10a8caabb0a180385298c76da9b5d"
+      },
+      "integrated_sha256": "2bfe119fde8412d0aa0e3a620fba45405d712f8d2964387b3adde8fd17ebae8d",
+      "bytes": 8846,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "tools/swarm004/package_owner.py",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "acb7043a546a166684591ce682175801daeb90eb"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "acb7043a546a166684591ce682175801daeb90eb"
+      },
+      "integrated_sha256": "c1f9cb2dcb506e5c6b282882b6ab935401b4d0ec1a3106a0f6e4e623757a39a5",
+      "bytes": 3372,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "tools/swarm004/qualify_workbench.py",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "300518316d494fade16081ba9abc31c52efaebbb"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "fdefd2fb603deaa65655dd3b1d55afec20b98c74"
+      },
+      "integrated_sha256": "3ced3441794a504cff60e64dd88235150aa2995e33f9c2cba35df657d1c5e421",
+      "bytes": 23607,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "tools/swarm004/run_request.py",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "bae8286de23834dba2a59f7ece69af9d3fefc0ed"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "bae8286de23834dba2a59f7ece69af9d3fefc0ed"
+      },
+      "integrated_sha256": "cc089646b23a6273e9305aadb1becd9c651d0f7e14f69c76fc7f3cf8e737cd5f",
+      "bytes": 8091,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "tools/swarm004/runtime_custody.py",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "db61c3cea7d6e1d8267bca6fa6614612d5461320"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "db61c3cea7d6e1d8267bca6fa6614612d5461320"
+      },
+      "integrated_sha256": "c82bcd8fc299331e1093dd212ae0e90c29420892700cc9beea1bab0708e33b98",
+      "bytes": 4562,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "tools/swarm004/test_qualify_workbench.py",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "673f030131f63f9a25918a3527ca59c51c4a1106"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "673f030131f63f9a25918a3527ca59c51c4a1106"
+      },
+      "integrated_sha256": "5fa7894cca641be7bd50f1c817188bb856d2b63e1c5c9101398caf7cacbd4c6c",
+      "bytes": 11551,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "tools/swarm004/test_run_request.py",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "5f665cdf7ad92a66af962d75371b98dba68abe33"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "5f665cdf7ad92a66af962d75371b98dba68abe33"
+      },
+      "integrated_sha256": "435dcaa87d50c3c002e5e488affe636a19d21ad88208969f61796bae20273107",
+      "bytes": 12422,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "tools/swarm005/package_owner.py",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "7680152fe934d13512ea3b40ed29ae00478e258b"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "7680152fe934d13512ea3b40ed29ae00478e258b"
+      },
+      "integrated_sha256": "e47a75f1927aa077671e75b5d61a572302e7672080341a162da694ab4d1699fb",
+      "bytes": 3372,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "tools/swarm005/qualify_workbench.py",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "f88d3dafa5f83cf0890a140c0674a4e8597b5a9a"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "12e69c5b3671ab80b2a28467b92418eec84f4b8a"
+      },
+      "integrated_sha256": "51d439d177974036f9e4b62d3a72c253ec55ea8f74f3727e9c96db05df674291",
+      "bytes": 26610,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "tools/swarm005/runtime_custody.py",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "bff255d9048374f4460157868368f3d1bcbe1146"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "bff255d9048374f4460157868368f3d1bcbe1146"
+      },
+      "integrated_sha256": "9b9c412854b5087724abdf67895eb45fc3c3d984618f565918cf0a12ff56f049",
+      "bytes": 4562,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "tools/swarm005/test_qualify_workbench.py",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "f8623164cc03eee2270063c1c00ec0da7f6fbd7e"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "f8623164cc03eee2270063c1c00ec0da7f6fbd7e"
+      },
+      "integrated_sha256": "a2c11a6cdac0398159db2c62b8dc4cfdc0f872f9eb068c5e0594483dbef080c2",
+      "bytes": 13653,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "tools/swarm005/test_v3_request.py",
+      "accepted_main": null,
+      "frozen_donor_700": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "57237015ab84a3a2ad9a32448b6e066ed44b18d1"
+      },
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "57237015ab84a3a2ad9a32448b6e066ed44b18d1"
+      },
+      "integrated_sha256": "c9127b0bef9f2acc277981f7600d8a421689331b35f8de9e20931b45069da257",
+      "bytes": 4386,
+      "custody": "byte-identical donor import"
+    },
+    {
+      "path": "tools/swarm45/accepted_main_smokes.py",
+      "accepted_main": null,
+      "frozen_donor_700": null,
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "fd8d99ca4cad8cf7e0db0563def8ef9e3620db94"
+      },
+      "integrated_sha256": "6df57bcb7ca7cb1c053e4eeff680d8d7b8491f77d30b664888cfcdd8462bc4ca",
+      "bytes": 9024,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "tools/swarm45/build_runtime.py",
+      "accepted_main": null,
+      "frozen_donor_700": null,
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "d487854b37891f2ecb6c17ccee24d74dd817ebdf"
+      },
+      "integrated_sha256": "38daf09d56e15fcd07642c36253fd33482af328cf620586b863202ed9d717954",
+      "bytes": 6669,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "tools/swarm45/install_runtime.py",
+      "accepted_main": null,
+      "frozen_donor_700": null,
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "3de849670a2511887f50ce24d6ed4d82ddef0226"
+      },
+      "integrated_sha256": "9c66b90acd6d8587d5e99e0b017e325f82edb9c7c9c3a4266aec451fa5aab7a2",
+      "bytes": 1329,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "tools/swarm45/linux_floor.py",
+      "accepted_main": null,
+      "frozen_donor_700": null,
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "af015c8012014cac456110840339ed06668c355c"
+      },
+      "integrated_sha256": "601a9b537d1f526363e1305746927d52451f6800033dc9ee8682584bf92fa1b6",
+      "bytes": 1876,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "tools/swarm45/native_checks.py",
+      "accepted_main": null,
+      "frozen_donor_700": null,
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "b4393b9bbf77298b83fc82648b9f70538017f412"
+      },
+      "integrated_sha256": "59c3c2f3baa9476d6092ae0b5ed837f0a744641c7106edc746380ec2bbdfaffb",
+      "bytes": 4177,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "tools/swarm45/package_owner.py",
+      "accepted_main": null,
+      "frozen_donor_700": null,
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "62c3f141d2de9faae7de2c37b93c2e077cacfede"
+      },
+      "integrated_sha256": "f790a1a02b57e71f5b8e6eeddb1fef9097dd9a30f0ce5d1850eff4d8438e07f6",
+      "bytes": 3726,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "tools/swarm45/prepare_build.sh",
+      "accepted_main": null,
+      "frozen_donor_700": null,
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "6eb217df9935a35b8301fe4938dc97186bb6e296"
+      },
+      "integrated_sha256": "2a0730597dc142faea74af201b69fcae4f8d9a33f852d54228f9dff49bd510f8",
+      "bytes": 1734,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "tools/swarm45/prepare_windows.ps1",
+      "accepted_main": null,
+      "frozen_donor_700": null,
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "c0a294333b10e8ca7ade53a5b83fc80df7208a3d"
+      },
+      "integrated_sha256": "e6e9a9a9251d1dbcdc5d04817c20d91c58eb3199ca51d87d4527791edfd070ed",
+      "bytes": 4337,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "tools/swarm45/publication_candidate.py",
+      "accepted_main": null,
+      "frozen_donor_700": null,
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "53a3e940057bbfaf11f0c9cdbce9ed1caa2e387e"
+      },
+      "integrated_sha256": "b56264592f786443f576c6e8fb8bc7209ff09dd11b76f2c17c30f012608d2ba1",
+      "bytes": 10829,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "tools/swarm45/publish_runtime.py",
+      "accepted_main": null,
+      "frozen_donor_700": null,
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "458e2d1050526b5f1c19d9903d997d418dd287d1"
+      },
+      "integrated_sha256": "92525565195b014ad276729de0c6901cfdb9b4bb22b226970e5b9a0530139aa7",
+      "bytes": 17817,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "tools/swarm45/qualify_workbench.py",
+      "accepted_main": null,
+      "frozen_donor_700": null,
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "6b1737f06aa4a19a34164148f9cef1f39220e076"
+      },
+      "integrated_sha256": "0ce9bc120ea679ea8f2aba679208039893edafc118d3da13db1ef0e0928ecdd7",
+      "bytes": 9696,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "tools/swarm45/replay_known_control.cpp",
+      "accepted_main": null,
+      "frozen_donor_700": null,
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "487ca898828a42d65437347b15726f8f73865c27"
+      },
+      "integrated_sha256": "50136c27e43402290f89cd66d4e5c9f3ddb059f6047fa6b05fb1abf208367218",
+      "bytes": 2929,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "tools/swarm45/replay_known_controls.py",
+      "accepted_main": null,
+      "frozen_donor_700": null,
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "3592dacd6e7480db0b21713a508a78d0d3e1c9c1"
+      },
+      "integrated_sha256": "9ef1bcdbb3bdfad734453a8457acfd95eb5847a9e16a1a73d0acbd8cea1bc1be",
+      "bytes": 9651,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "tools/swarm45/run_request.py",
+      "accepted_main": null,
+      "frozen_donor_700": null,
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "4f2a0cb72d4d3da7f00a5d7d7ea196a702ee6798"
+      },
+      "integrated_sha256": "01817df0772eb549e99bf3c5864c3b83f4fc4d95182fbb9c46aa06b5f514cd99",
+      "bytes": 9457,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "tools/swarm45/runtime_custody.py",
+      "accepted_main": null,
+      "frozen_donor_700": null,
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "d620bb3445261c72739f77ffc413a20eb730a596"
+      },
+      "integrated_sha256": "8b0ca1cab4d01ac32af29a2102a12186c719666ab75d2a6601b9134e0633ed3d",
+      "bytes": 14546,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "tools/swarm45/shared.py",
+      "accepted_main": null,
+      "frozen_donor_700": null,
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "4fc831a3f35782c2832e45a0b4081b4a6f93d8e1"
+      },
+      "integrated_sha256": "d2c9d14f52eeb439928a57d7b1dff2f43c11cd8de6d9c982218d4c2915e5e5a6",
+      "bytes": 3248,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "tools/swarm45/test_custody.py",
+      "accepted_main": null,
+      "frozen_donor_700": null,
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "7a8fd1c9da465ce8cf77e070a02b676dbe449075"
+      },
+      "integrated_sha256": "ed3c2fa471c82bc3e50dea74bd981a39b45f6ee3fc8b9dd246c0777ed2f4f147",
+      "bytes": 9212,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "tools/swarm45/test_linux_stage.py",
+      "accepted_main": null,
+      "frozen_donor_700": null,
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "4070bfbee391fdca36a5552bade892300d12ba4b"
+      },
+      "integrated_sha256": "fbe198e4cf87af35d90082998e9225910dd33e0ec8c9a60ede55c3ebf66dc848",
+      "bytes": 3115,
+      "custody": "reviewed integration delta"
+    },
+    {
+      "path": "tools/swarm45/test_request.py",
+      "accepted_main": null,
+      "frozen_donor_700": null,
+      "integrated": {
+        "mode": "100644",
+        "type": "blob",
+        "git_blob_sha1": "cf32fb7981b7cf140edae00b7922426327043d70"
+      },
+      "integrated_sha256": "d0c5fa2f1eff771b1ea6fbf233451d1b6dbd9121f0d4678c7a491b72bed50cc0",
+      "bytes": 8521,
+      "custody": "reviewed integration delta"
+    }
+  ],
+  "protected_swarm006": "No branches, PRs, V4/schema6 policies, fixtures or evidence imported or changed by this mission",
+  "source_equivalence_limit": "Git-blob identity is source custody, not executable or output qualification; hosted resulting-source gates remain mandatory."
+}

@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "programme": "GENTEK-SWARM-004-005-MAINLINE",
+  "action": "dispatch-final-admission",
+  "request_id": "final-admission-20261121-1",
+  "expected_parent_sha": "CONTROL_BRANCH_TIP_BEFORE_THIS_REQUEST",
+  "target_sha": "EXACT_EIGHT_PATH_PUBLICATION_COMMIT",
+  "qualification_source_sha": "EXACT_SOURCE_THAT_PRODUCED_THE_QUALIFIED_ARTIFACT",
+  "qualification_run_id": "DECIMAL_QUALIFICATION_RUN_ID",
+  "qualification_run_attempt": "DECIMAL_QUALIFICATION_ATTEMPT",
+  "publication_request_sha": "PUBLISHER_WORKFLOW_HEAD_AND_PUBLICATION_COMMIT_PARENT",
+  "publication_run_id": "DECIMAL_PUBLICATION_RUN_ID",
+  "publication_run_attempt": "DECIMAL_PUBLICATION_ATTEMPT"
+}

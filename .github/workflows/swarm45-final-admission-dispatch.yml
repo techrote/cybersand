@@ -1,0 +1,44 @@
+name: SWARM-004/005 explicit final admission dispatch control
+
+on:
+  push:
+    branches: [ci/swarm45-final-admission-dispatch-20261121]
+    paths: ['.github/swarm45-final-admission-request.json']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: swarm45-final-admission-dispatch-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  dispatch:
+    name: Verify exact published head and dispatch five existing admission workflows
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/ci/swarm45-final-admission-dispatch-20261121' && github.event_name == 'push'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pull-requests: read
+      actions: write
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Verify control contracts without network writes
+        run: python3 -m unittest discover -s tools/swarm45_control -p 'test_*.py' -v
+      - name: Lease PR715 and exact publication bytes before the fixed five dispatches
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 tools/swarm45_control/dispatch_final_admission.py --output build/swarm45-final-admission-dispatch.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: swarm45-final-admission-dispatch-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/swarm45-final-admission-dispatch.json
+          if-no-files-found: error
+          retention-days: 90

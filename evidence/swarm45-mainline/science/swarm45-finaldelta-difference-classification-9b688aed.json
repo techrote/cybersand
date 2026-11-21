@@ -1,0 +1,1625 @@
+{
+  "scope": "Additive independent classification of all109 normalized changes; no new unseen or owner acceptance",
+  "source": "9b688aed1f06f031f983c27f50d1f17821446e43",
+  "main_audit_sha256": "01c372b58dd00315637ed944e4fe4e0dfac3473f008a68dd9374c606e16fe7cd",
+  "counts": {
+    "normalized_equal": 251,
+    "work_counters_only": 96,
+    "work_and_remaining_proposal_grant_only": 1,
+    "fixed_territory_budget_admission_or_partial_failure_trace": 12
+  },
+  "work_only_case_ids": [
+    8,
+    18,
+    29,
+    38,
+    39,
+    48,
+    49,
+    58,
+    59,
+    68,
+    69,
+    78,
+    79,
+    88,
+    98,
+    102,
+    103,
+    104,
+    106,
+    108,
+    109,
+    119,
+    139,
+    149,
+    159,
+    169,
+    189,
+    199,
+    219,
+    229,
+    239,
+    242,
+    243,
+    244,
+    246,
+    248,
+    252,
+    253,
+    254,
+    256,
+    258,
+    262,
+    263,
+    264,
+    266,
+    268,
+    272,
+    273,
+    274,
+    276,
+    278,
+    279,
+    282,
+    283,
+    284,
+    286,
+    288,
+    292,
+    293,
+    294,
+    296,
+    298,
+    302,
+    303,
+    304,
+    306,
+    308,
+    309,
+    312,
+    313,
+    314,
+    316,
+    318,
+    319,
+    322,
+    323,
+    324,
+    326,
+    328,
+    332,
+    333,
+    334,
+    336,
+    338,
+    342,
+    343,
+    344,
+    346,
+    348,
+    349,
+    352,
+    353,
+    354,
+    356,
+    358,
+    359
+  ],
+  "proposal_allowance_only": [
+    {
+      "case_id": 289,
+      "case": [
+        "foreign_solid",
+        "viaduct_like",
+        707861,
+        "both_fixed_territory"
+      ],
+      "extra": {
+        "path": "/rounds/2/mosaic_request/limits/work",
+        "reference": 612304,
+        "candidate": 641630
+      },
+      "interpretation": "Changed remaining per-proposal grant; same original aggregate limit, same material/graph/status/closure."
+    }
+  ],
+  "trace_cases": [
+    {
+      "case_id": 9,
+      "case": [
+        "island",
+        "industrial",
+        707861,
+        "both_fixed_territory"
+      ],
+      "classification": "Same round1 plans admitted by lower exact scan charge; later round2 aggregate allowance refusal. Final closure unavailable in both.",
+      "round1_proposals_normalized_equal": {
+        "proposed_frame": true,
+        "proposed_mosaic": true
+      },
+      "new_round1_supported_receptors": 0,
+      "raw_sha256": {
+        "candidate": "25c68c29bc88cfa9ffa5ffb7459107b8ae09b5acdf6173f63d93288e7363d8c4",
+        "reference": "5bb86fb4772700b5cca9d68ac2f5243637c3ea9846068dd8fdea30b99f744206"
+      },
+      "sides": {
+        "candidate": {
+          "status": "exhausted",
+          "can_apply": false,
+          "reason": "proposal refused: MOSAIC aggregate proposal, operation, solver or memory allowance exhausted",
+          "cells_length": 0,
+          "joints": 0,
+          "closure_evaluated": false,
+          "still_required": null,
+          "rounds": [
+            {
+              "round": 0,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 0,
+              "proposal_work": 681161,
+              "mosaic_work": 681161,
+              "solver_debit": 1161376,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 1,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 8433,
+              "proposal_work": 1279646,
+              "mosaic_work": 1960807,
+              "solver_debit": 1073248,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 2,
+              "accepted": [
+                false,
+                false
+              ],
+              "receptor_work": 0,
+              "proposal_work": 0,
+              "mosaic_work": 1960807,
+              "solver_debit": 0,
+              "reason": "MOSAIC aggregate proposal, operation, solver or memory allowance exhausted",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "complete"
+            }
+          ]
+        },
+        "reference": {
+          "status": "exhausted",
+          "can_apply": false,
+          "reason": "proposal refused: supported receptor scan exceeded aggregate native MOSAIC work",
+          "cells_length": 0,
+          "joints": 0,
+          "closure_evaluated": false,
+          "still_required": null,
+          "rounds": [
+            {
+              "round": 0,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 0,
+              "proposal_work": 681161,
+              "mosaic_work": 681161,
+              "solver_debit": 1161376,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 1,
+              "accepted": [
+                false,
+                false
+              ],
+              "receptor_work": 0,
+              "proposal_work": 1271213,
+              "mosaic_work": 1952374,
+              "solver_debit": 1073248,
+              "reason": "supported receptor scan exceeded aggregate native MOSAIC work",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": 19,
+      "case": [
+        "island",
+        "industrial",
+        414855,
+        "both_fixed_territory"
+      ],
+      "classification": "Same round1 plans admitted by lower exact scan charge; candidate reaches Blocked with four joints and one still-required. Apply false.",
+      "round1_proposals_normalized_equal": {
+        "proposed_frame": true,
+        "proposed_mosaic": true
+      },
+      "new_round1_supported_receptors": 0,
+      "raw_sha256": {
+        "candidate": "9b0a9dc57e167cf9e2e42063465c6925600c61ea139375ab3d2b5f72fc886fa9",
+        "reference": "c784f9f7a6711471ca71acf58421eed0af5d5761de3ca63f7f3d5c349043aa96"
+      },
+      "sides": {
+        "candidate": {
+          "status": "blocked",
+          "can_apply": false,
+          "reason": "native proposal retained; unresolved hard obligations prevent Apply",
+          "cells_length": 21504,
+          "joints": 4,
+          "closure_evaluated": true,
+          "still_required": 1,
+          "rounds": [
+            {
+              "round": 0,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 0,
+              "proposal_work": 681693,
+              "mosaic_work": 681693,
+              "solver_debit": 1161376,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 1,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 8561,
+              "proposal_work": 1280530,
+              "mosaic_work": 1962223,
+              "solver_debit": 1045120,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 2,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 8561,
+              "proposal_work": 0,
+              "mosaic_work": 1962223,
+              "solver_debit": 0,
+              "reason": "reused identical immutable input; original successful solve retained",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            }
+          ]
+        },
+        "reference": {
+          "status": "exhausted",
+          "can_apply": false,
+          "reason": "proposal refused: supported receptor scan exceeded aggregate native MOSAIC work",
+          "cells_length": 0,
+          "joints": 0,
+          "closure_evaluated": false,
+          "still_required": null,
+          "rounds": [
+            {
+              "round": 0,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 0,
+              "proposal_work": 681693,
+              "mosaic_work": 681693,
+              "solver_debit": 1161376,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 1,
+              "accepted": [
+                false,
+                false
+              ],
+              "receptor_work": 0,
+              "proposal_work": 1271969,
+              "mosaic_work": 1953662,
+              "solver_debit": 1045120,
+              "reason": "supported receptor scan exceeded aggregate native MOSAIC work",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": 89,
+      "case": [
+        "island",
+        "irregular_megastructure",
+        707861,
+        "both_fixed_territory"
+      ],
+      "classification": "Different remaining round2 work causes different partial rejected MOSAIC native output; both remain Exhausted and final closure unavailable.",
+      "round1_proposals_normalized_equal": {
+        "proposed_frame": true,
+        "proposed_mosaic": true
+      },
+      "new_round1_supported_receptors": 0,
+      "raw_sha256": {
+        "candidate": "3eb2029c812a093007827940b6aaeafbe915187a653a32e62ce037344a34ee43",
+        "reference": "6bf96859228d8acf7de2e88b0df9c7aec3079b45bbbff3bc094b5fb14bfaa5af"
+      },
+      "sides": {
+        "candidate": {
+          "status": "exhausted",
+          "can_apply": false,
+          "reason": "proposal refused: work budget exhausted",
+          "cells_length": 0,
+          "joints": 0,
+          "closure_evaluated": false,
+          "still_required": null,
+          "rounds": [
+            {
+              "round": 0,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 0,
+              "proposal_work": 681011,
+              "mosaic_work": 681011,
+              "solver_debit": 1216384,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 1,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 8273,
+              "proposal_work": 757104,
+              "mosaic_work": 1438115,
+              "solver_debit": 1101376,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 2,
+              "accepted": [
+                false,
+                false
+              ],
+              "receptor_work": 0,
+              "proposal_work": 559198,
+              "mosaic_work": 1997313,
+              "solver_debit": 1101376,
+              "reason": "work budget exhausted",
+              "proposed_mosaic_status": "exhausted",
+              "proposed_mosaic_termination": "work budget exhausted"
+            }
+          ]
+        },
+        "reference": {
+          "status": "exhausted",
+          "can_apply": false,
+          "reason": "proposal refused: work budget exhausted",
+          "cells_length": 0,
+          "joints": 0,
+          "closure_evaluated": false,
+          "still_required": null,
+          "rounds": [
+            {
+              "round": 0,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 0,
+              "proposal_work": 681011,
+              "mosaic_work": 681011,
+              "solver_debit": 1216384,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 1,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 48288,
+              "proposal_work": 797119,
+              "mosaic_work": 1478130,
+              "solver_debit": 1101376,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 2,
+              "accepted": [
+                false,
+                false
+              ],
+              "receptor_work": 0,
+              "proposal_work": 519262,
+              "mosaic_work": 1997392,
+              "solver_debit": 1101376,
+              "reason": "work budget exhausted",
+              "proposed_mosaic_status": "exhausted",
+              "proposed_mosaic_termination": "work budget exhausted"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": 99,
+      "case": [
+        "island",
+        "irregular_megastructure",
+        414855,
+        "both_fixed_territory"
+      ],
+      "classification": "Different remaining round2 work causes different partial rejected MOSAIC native output; both remain Exhausted and final closure unavailable.",
+      "round1_proposals_normalized_equal": {
+        "proposed_frame": true,
+        "proposed_mosaic": true
+      },
+      "new_round1_supported_receptors": 0,
+      "raw_sha256": {
+        "candidate": "2ace4fefc38bc4fc722aaea204f891a75a625be4aa2b3db03ee4e550f3209013",
+        "reference": "84ec4b6ba4224f2cc9cc45af0c0944f2e08e08ac2a7efd878a0a89d675679207"
+      },
+      "sides": {
+        "candidate": {
+          "status": "exhausted",
+          "can_apply": false,
+          "reason": "proposal refused: work budget exhausted",
+          "cells_length": 0,
+          "joints": 0,
+          "closure_evaluated": false,
+          "still_required": null,
+          "rounds": [
+            {
+              "round": 0,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 0,
+              "proposal_work": 681246,
+              "mosaic_work": 681246,
+              "solver_debit": 1188256,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 1,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 8753,
+              "proposal_work": 757883,
+              "mosaic_work": 1439129,
+              "solver_debit": 990112,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 2,
+              "accepted": [
+                false,
+                false
+              ],
+              "receptor_work": 0,
+              "proposal_work": 559465,
+              "mosaic_work": 1998594,
+              "solver_debit": 990112,
+              "reason": "work budget exhausted",
+              "proposed_mosaic_status": "exhausted",
+              "proposed_mosaic_termination": "work budget exhausted"
+            }
+          ]
+        },
+        "reference": {
+          "status": "exhausted",
+          "can_apply": false,
+          "reason": "proposal refused: work budget exhausted",
+          "cells_length": 0,
+          "joints": 0,
+          "closure_evaluated": false,
+          "still_required": null,
+          "rounds": [
+            {
+              "round": 0,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 0,
+              "proposal_work": 681246,
+              "mosaic_work": 681246,
+              "solver_debit": 1188256,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 1,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 48832,
+              "proposal_work": 797962,
+              "mosaic_work": 1479208,
+              "solver_debit": 990112,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 2,
+              "accepted": [
+                false,
+                false
+              ],
+              "receptor_work": 0,
+              "proposal_work": 519529,
+              "mosaic_work": 1998737,
+              "solver_debit": 990112,
+              "reason": "work budget exhausted",
+              "proposed_mosaic_status": "exhausted",
+              "proposed_mosaic_termination": "work budget exhausted"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": 129,
+      "case": [
+        "concave_intrusion",
+        "industrial",
+        707861,
+        "both_fixed_territory"
+      ],
+      "classification": "Lower round1 scan charge allows round2 bounded solver attempt; both remain Exhausted/unknown, with changed retained solver-failure trace.",
+      "round1_proposals_normalized_equal": {
+        "proposed_frame": true,
+        "proposed_mosaic": true
+      },
+      "new_round1_supported_receptors": 0,
+      "raw_sha256": {
+        "candidate": "9d7e028cf2ff7470adb807a25556a0af9f1240024a3111334df234854b70d32d",
+        "reference": "11e91df971e0953dd8ce42357b14bd159a385603bf06df3705cfe7cd5b034dfb"
+      },
+      "sides": {
+        "candidate": {
+          "status": "exhausted",
+          "can_apply": false,
+          "reason": "proposal refused: configured domain sets remain unknown after bounded exhaustion; a later nonmonotone fallback does not prove the preferred problem UNSAT",
+          "cells_length": 0,
+          "joints": 0,
+          "closure_evaluated": false,
+          "still_required": null,
+          "rounds": [
+            {
+              "round": 0,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 0,
+              "proposal_work": 570874,
+              "mosaic_work": 570874,
+              "solver_debit": 1903360,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 1,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 7571,
+              "proposal_work": 1160057,
+              "mosaic_work": 1730931,
+              "solver_debit": 1816480,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 2,
+              "accepted": [
+                false,
+                false
+              ],
+              "receptor_work": 0,
+              "proposal_work": 248848,
+              "mosaic_work": 1979779,
+              "solver_debit": 280160,
+              "reason": "configured domain sets remain unknown after bounded exhaustion; a later nonmonotone fallback does not prove the preferred problem UNSAT",
+              "proposed_mosaic_status": "exhausted",
+              "proposed_mosaic_termination": "configured domain sets remain unknown after bounded exhaustion; a later nonmonotone fallback does not prove the preferred problem UNSAT"
+            }
+          ]
+        },
+        "reference": {
+          "status": "exhausted",
+          "can_apply": false,
+          "reason": "proposal refused: work budget exhausted",
+          "cells_length": 0,
+          "joints": 0,
+          "closure_evaluated": false,
+          "still_required": null,
+          "rounds": [
+            {
+              "round": 0,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 0,
+              "proposal_work": 570874,
+              "mosaic_work": 570874,
+              "solver_debit": 1903360,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 1,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 45568,
+              "proposal_work": 1198054,
+              "mosaic_work": 1768928,
+              "solver_debit": 1816480,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 2,
+              "accepted": [
+                false,
+                false
+              ],
+              "receptor_work": 0,
+              "proposal_work": 231034,
+              "mosaic_work": 1999962,
+              "solver_debit": 0,
+              "reason": "work budget exhausted",
+              "proposed_mosaic_status": "exhausted",
+              "proposed_mosaic_termination": "work budget exhausted"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": 179,
+      "case": [
+        "concave_intrusion",
+        "viaduct_like",
+        414855,
+        "both_fixed_territory"
+      ],
+      "classification": "Lower round1 scan charge allows round2 bounded solver attempt; both remain Exhausted/unknown, with changed retained solver-failure trace.",
+      "round1_proposals_normalized_equal": {
+        "proposed_frame": true,
+        "proposed_mosaic": true
+      },
+      "new_round1_supported_receptors": 0,
+      "raw_sha256": {
+        "candidate": "863d515bd6e0a38ac697f88cda6e29faa1fa6681bb57219d3f6fa99f8349043f",
+        "reference": "e4672c78d5cec817357ff779bb2be79c21c2003157b6d06867481d852c511979"
+      },
+      "sides": {
+        "candidate": {
+          "status": "exhausted",
+          "can_apply": false,
+          "reason": "proposal refused: configured domain sets remain unknown after bounded exhaustion; a later nonmonotone fallback does not prove the preferred problem UNSAT",
+          "cells_length": 0,
+          "joints": 0,
+          "closure_evaluated": false,
+          "still_required": null,
+          "rounds": [
+            {
+              "round": 0,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 0,
+              "proposal_work": 570372,
+              "mosaic_work": 570372,
+              "solver_debit": 1903360,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 1,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 5679,
+              "proposal_work": 1154715,
+              "mosaic_work": 1725087,
+              "solver_debit": 1843360,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 2,
+              "accepted": [
+                false,
+                false
+              ],
+              "receptor_work": 0,
+              "proposal_work": 249955,
+              "mosaic_work": 1975042,
+              "solver_debit": 253280,
+              "reason": "configured domain sets remain unknown after bounded exhaustion; a later nonmonotone fallback does not prove the preferred problem UNSAT",
+              "proposed_mosaic_status": "exhausted",
+              "proposed_mosaic_termination": "configured domain sets remain unknown after bounded exhaustion; a later nonmonotone fallback does not prove the preferred problem UNSAT"
+            }
+          ]
+        },
+        "reference": {
+          "status": "exhausted",
+          "can_apply": false,
+          "reason": "proposal refused: work budget exhausted",
+          "cells_length": 0,
+          "joints": 0,
+          "closure_evaluated": false,
+          "still_required": null,
+          "rounds": [
+            {
+              "round": 0,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 0,
+              "proposal_work": 570372,
+              "mosaic_work": 570372,
+              "solver_debit": 1903360,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 1,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 34352,
+              "proposal_work": 1183388,
+              "mosaic_work": 1753760,
+              "solver_debit": 1843360,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 2,
+              "accepted": [
+                false,
+                false
+              ],
+              "receptor_work": 0,
+              "proposal_work": 246179,
+              "mosaic_work": 1999939,
+              "solver_debit": 0,
+              "reason": "work budget exhausted",
+              "proposed_mosaic_status": "exhausted",
+              "proposed_mosaic_termination": "work budget exhausted"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": 249,
+      "case": [
+        "foreign_solid",
+        "industrial",
+        707861,
+        "both_fixed_territory"
+      ],
+      "classification": "Lower round1 scan charge allows round2 to pass local admission and attempt native material generation before work exhaustion; both final closures unavailable.",
+      "round1_proposals_normalized_equal": {
+        "proposed_frame": true,
+        "proposed_mosaic": true
+      },
+      "new_round1_supported_receptors": 0,
+      "raw_sha256": {
+        "candidate": "b57dee2d9aee5c5000dd44e6629052ed39426341c384c739e318aba4a0284991",
+        "reference": "4395b7792f875eee077f086e1ece290b8108136c4ac2144ae42ff3be8334e17d"
+      },
+      "sides": {
+        "candidate": {
+          "status": "exhausted",
+          "can_apply": false,
+          "reason": "proposal refused: work budget exhausted",
+          "cells_length": 0,
+          "joints": 0,
+          "closure_evaluated": false,
+          "still_required": null,
+          "rounds": [
+            {
+              "round": 0,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 0,
+              "proposal_work": 564218,
+              "mosaic_work": 564218,
+              "solver_debit": 1270144,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 1,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 7570,
+              "proposal_work": 1154640,
+              "mosaic_work": 1718858,
+              "solver_debit": 1128256,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 2,
+              "accepted": [
+                false,
+                false
+              ],
+              "receptor_work": 0,
+              "proposal_work": 275432,
+              "mosaic_work": 1994290,
+              "solver_debit": 1128256,
+              "reason": "work budget exhausted",
+              "proposed_mosaic_status": "exhausted",
+              "proposed_mosaic_termination": "work budget exhausted"
+            }
+          ]
+        },
+        "reference": {
+          "status": "exhausted",
+          "can_apply": false,
+          "reason": "proposal refused: MOSAIC local admission exhausted the unchanged generator work allowance; no solve authorized",
+          "cells_length": 0,
+          "joints": 0,
+          "closure_evaluated": false,
+          "still_required": null,
+          "rounds": [
+            {
+              "round": 0,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 0,
+              "proposal_work": 564218,
+              "mosaic_work": 564218,
+              "solver_debit": 1270144,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 1,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 46592,
+              "proposal_work": 1193662,
+              "mosaic_work": 1757880,
+              "solver_debit": 1128256,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 2,
+              "accepted": [
+                false,
+                false
+              ],
+              "receptor_work": 0,
+              "proposal_work": 242120,
+              "mosaic_work": 2000000,
+              "solver_debit": 0,
+              "reason": "MOSAIC local admission exhausted the unchanged generator work allowance; no solve authorized",
+              "proposed_mosaic_status": "exhausted",
+              "proposed_mosaic_termination": "MOSAIC local admission exhausted the unchanged generator work allowance; no solve authorized"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": 259,
+      "case": [
+        "foreign_solid",
+        "industrial",
+        414855,
+        "both_fixed_territory"
+      ],
+      "classification": "Different remaining round2 work causes different partial rejected MOSAIC native output; both remain Exhausted and final closure unavailable.",
+      "round1_proposals_normalized_equal": {
+        "proposed_frame": true,
+        "proposed_mosaic": true
+      },
+      "new_round1_supported_receptors": 0,
+      "raw_sha256": {
+        "candidate": "d370cb86217169357aefe634f049808ce4f1548c60c53160dccecc1993a58a55",
+        "reference": "a92908740b382d52f28d3abb517d69ccc5583345b8d0853c7b33efe6e779e07c"
+      },
+      "sides": {
+        "candidate": {
+          "status": "exhausted",
+          "can_apply": false,
+          "reason": "proposal refused: work budget exhausted",
+          "cells_length": 0,
+          "joints": 0,
+          "closure_evaluated": false,
+          "still_required": null,
+          "rounds": [
+            {
+              "round": 0,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 0,
+              "proposal_work": 563954,
+              "mosaic_work": 563954,
+              "solver_debit": 1270144,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 1,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 5132,
+              "proposal_work": 1137189,
+              "mosaic_work": 1701143,
+              "solver_debit": 1155136,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 2,
+              "accepted": [
+                false,
+                false
+              ],
+              "receptor_work": 0,
+              "proposal_work": 293585,
+              "mosaic_work": 1994728,
+              "solver_debit": 1155136,
+              "reason": "work budget exhausted",
+              "proposed_mosaic_status": "exhausted",
+              "proposed_mosaic_termination": "work budget exhausted"
+            }
+          ]
+        },
+        "reference": {
+          "status": "exhausted",
+          "can_apply": false,
+          "reason": "proposal refused: work budget exhausted",
+          "cells_length": 0,
+          "joints": 0,
+          "closure_evaluated": false,
+          "still_required": null,
+          "rounds": [
+            {
+              "round": 0,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 0,
+              "proposal_work": 563954,
+              "mosaic_work": 563954,
+              "solver_debit": 1270144,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 1,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 29628,
+              "proposal_work": 1161685,
+              "mosaic_work": 1725639,
+              "solver_debit": 1155136,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 2,
+              "accepted": [
+                false,
+                false
+              ],
+              "receptor_work": 0,
+              "proposal_work": 273617,
+              "mosaic_work": 1999256,
+              "solver_debit": 1155136,
+              "reason": "work budget exhausted",
+              "proposed_mosaic_status": "exhausted",
+              "proposed_mosaic_termination": "work budget exhausted"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": 269,
+      "case": [
+        "foreign_solid",
+        "industrial",
+        959922,
+        "both_fixed_territory"
+      ],
+      "classification": "Different remaining round2 work causes different partial rejected MOSAIC native output; both remain Exhausted and final closure unavailable.",
+      "round1_proposals_normalized_equal": {
+        "proposed_frame": true,
+        "proposed_mosaic": true
+      },
+      "new_round1_supported_receptors": 0,
+      "raw_sha256": {
+        "candidate": "302b792b11ba31436ec4e8a87c7936b0f10d3882ec48825f83959c89dbab82c9",
+        "reference": "6d4f1611ee9585de52a5573bad9a37a054888d072232e9804e32f577554d2e04"
+      },
+      "sides": {
+        "candidate": {
+          "status": "exhausted",
+          "can_apply": false,
+          "reason": "proposal refused: work budget exhausted",
+          "cells_length": 0,
+          "joints": 0,
+          "closure_evaluated": false,
+          "still_required": null,
+          "rounds": [
+            {
+              "round": 0,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 0,
+              "proposal_work": 564425,
+              "mosaic_work": 564425,
+              "solver_debit": 1270144,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 1,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 6129,
+              "proposal_work": 1144980,
+              "mosaic_work": 1709405,
+              "solver_debit": 1128256,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 2,
+              "accepted": [
+                false,
+                false
+              ],
+              "receptor_work": 0,
+              "proposal_work": 289410,
+              "mosaic_work": 1998815,
+              "solver_debit": 1128256,
+              "reason": "work budget exhausted",
+              "proposed_mosaic_status": "exhausted",
+              "proposed_mosaic_termination": "work budget exhausted"
+            }
+          ]
+        },
+        "reference": {
+          "status": "exhausted",
+          "can_apply": false,
+          "reason": "proposal refused: work budget exhausted",
+          "cells_length": 0,
+          "joints": 0,
+          "closure_evaluated": false,
+          "still_required": null,
+          "rounds": [
+            {
+              "round": 0,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 0,
+              "proposal_work": 564425,
+              "mosaic_work": 564425,
+              "solver_debit": 1270144,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 1,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 35432,
+              "proposal_work": 1174283,
+              "mosaic_work": 1738708,
+              "solver_debit": 1128256,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 2,
+              "accepted": [
+                false,
+                false
+              ],
+              "receptor_work": 0,
+              "proposal_work": 256130,
+              "mosaic_work": 1994838,
+              "solver_debit": 1128256,
+              "reason": "work budget exhausted",
+              "proposed_mosaic_status": "exhausted",
+              "proposed_mosaic_termination": "work budget exhausted"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": 299,
+      "case": [
+        "foreign_solid",
+        "viaduct_like",
+        414855,
+        "both_fixed_territory"
+      ],
+      "classification": "Different remaining round2 work causes different partial rejected MOSAIC native output; both remain Exhausted and final closure unavailable.",
+      "round1_proposals_normalized_equal": {
+        "proposed_frame": true,
+        "proposed_mosaic": true
+      },
+      "new_round1_supported_receptors": 0,
+      "raw_sha256": {
+        "candidate": "33754916cc8f5dd57befc730059f20ae4ed3c4d12b4ba0d401c2a7ae63d908e5",
+        "reference": "311a0dc921b1fdbc4d22f9a9cdb3550db2e0294e1303d76e8e6902acf2bd15c2"
+      },
+      "sides": {
+        "candidate": {
+          "status": "exhausted",
+          "can_apply": false,
+          "reason": "proposal refused: work budget exhausted",
+          "cells_length": 0,
+          "joints": 0,
+          "closure_evaluated": false,
+          "still_required": null,
+          "rounds": [
+            {
+              "round": 0,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 0,
+              "proposal_work": 563608,
+              "mosaic_work": 563608,
+              "solver_debit": 1270144,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 1,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 4952,
+              "proposal_work": 1138466,
+              "mosaic_work": 1702074,
+              "solver_debit": 1155136,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 2,
+              "accepted": [
+                false,
+                false
+              ],
+              "receptor_work": 0,
+              "proposal_work": 295065,
+              "mosaic_work": 1997139,
+              "solver_debit": 1155136,
+              "reason": "work budget exhausted",
+              "proposed_mosaic_status": "exhausted",
+              "proposed_mosaic_termination": "work budget exhausted"
+            }
+          ]
+        },
+        "reference": {
+          "status": "exhausted",
+          "can_apply": false,
+          "reason": "proposal refused: work budget exhausted",
+          "cells_length": 0,
+          "joints": 0,
+          "closure_evaluated": false,
+          "still_required": null,
+          "rounds": [
+            {
+              "round": 0,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 0,
+              "proposal_work": 563608,
+              "mosaic_work": 563608,
+              "solver_debit": 1270144,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 1,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 29448,
+              "proposal_work": 1162962,
+              "mosaic_work": 1726570,
+              "solver_debit": 1155136,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 2,
+              "accepted": [
+                false,
+                false
+              ],
+              "receptor_work": 0,
+              "proposal_work": 268441,
+              "mosaic_work": 1995011,
+              "solver_debit": 1155136,
+              "reason": "work budget exhausted",
+              "proposed_mosaic_status": "exhausted",
+              "proposed_mosaic_termination": "work budget exhausted"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": 329,
+      "case": [
+        "foreign_solid",
+        "irregular_megastructure",
+        707861,
+        "both_fixed_territory"
+      ],
+      "classification": "Different remaining round2 work causes different partial rejected MOSAIC native output; both remain Exhausted and final closure unavailable.",
+      "round1_proposals_normalized_equal": {
+        "proposed_frame": true,
+        "proposed_mosaic": true
+      },
+      "new_round1_supported_receptors": 0,
+      "raw_sha256": {
+        "candidate": "843564a210820dae44423c5d249a835776683131634a1ed7611536eb718808ee",
+        "reference": "afbec5f0f073df33104a012f8e5092f49b1063cffab1e726c2ea43451a1fba6d"
+      },
+      "sides": {
+        "candidate": {
+          "status": "exhausted",
+          "can_apply": false,
+          "reason": "proposal refused: work budget exhausted",
+          "cells_length": 0,
+          "joints": 0,
+          "closure_evaluated": false,
+          "still_required": null,
+          "rounds": [
+            {
+              "round": 0,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 0,
+              "proposal_work": 564137,
+              "mosaic_work": 564137,
+              "solver_debit": 1353280,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 1,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 6904,
+              "proposal_work": 1149506,
+              "mosaic_work": 1713643,
+              "solver_debit": 1294528,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 2,
+              "accepted": [
+                false,
+                false
+              ],
+              "receptor_work": 0,
+              "proposal_work": 280922,
+              "mosaic_work": 1994565,
+              "solver_debit": 1294528,
+              "reason": "work budget exhausted",
+              "proposed_mosaic_status": "exhausted",
+              "proposed_mosaic_termination": "work budget exhausted"
+            }
+          ]
+        },
+        "reference": {
+          "status": "exhausted",
+          "can_apply": false,
+          "reason": "proposal refused: work budget exhausted",
+          "cells_length": 0,
+          "joints": 0,
+          "closure_evaluated": false,
+          "still_required": null,
+          "rounds": [
+            {
+              "round": 0,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 0,
+              "proposal_work": 564137,
+              "mosaic_work": 564137,
+              "solver_debit": 1353280,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 1,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 41136,
+              "proposal_work": 1183738,
+              "mosaic_work": 1747875,
+              "solver_debit": 1294528,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 2,
+              "accepted": [
+                false,
+                false
+              ],
+              "receptor_work": 0,
+              "proposal_work": 247642,
+              "mosaic_work": 1995517,
+              "solver_debit": 1294528,
+              "reason": "work budget exhausted",
+              "proposed_mosaic_status": "exhausted",
+              "proposed_mosaic_termination": "work budget exhausted"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case_id": 339,
+      "case": [
+        "foreign_solid",
+        "irregular_megastructure",
+        414855,
+        "both_fixed_territory"
+      ],
+      "classification": "Different remaining round2 work causes different partial rejected MOSAIC native output; both remain Exhausted and final closure unavailable.",
+      "round1_proposals_normalized_equal": {
+        "proposed_frame": true,
+        "proposed_mosaic": true
+      },
+      "new_round1_supported_receptors": 0,
+      "raw_sha256": {
+        "candidate": "d384608efdedc5ce664672d3e73e362a70989db82d1d2ac267cfdad04ba9b279",
+        "reference": "60a579b32f4e2c443db30bbe7ccf8c4588aa0285353d46694d8b4a7bb7af35b4"
+      },
+      "sides": {
+        "candidate": {
+          "status": "exhausted",
+          "can_apply": false,
+          "reason": "proposal refused: work budget exhausted",
+          "cells_length": 0,
+          "joints": 0,
+          "closure_evaluated": false,
+          "still_required": null,
+          "rounds": [
+            {
+              "round": 0,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 0,
+              "proposal_work": 563920,
+              "mosaic_work": 563920,
+              "solver_debit": 1325152,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 1,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 5794,
+              "proposal_work": 1147628,
+              "mosaic_work": 1711548,
+              "solver_debit": 1265172,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 2,
+              "accepted": [
+                false,
+                false
+              ],
+              "receptor_work": 0,
+              "proposal_work": 288242,
+              "mosaic_work": 1999790,
+              "solver_debit": 1265172,
+              "reason": "work budget exhausted",
+              "proposed_mosaic_status": "exhausted",
+              "proposed_mosaic_termination": "work budget exhausted"
+            }
+          ]
+        },
+        "reference": {
+          "status": "exhausted",
+          "can_apply": false,
+          "reason": "proposal refused: work budget exhausted",
+          "cells_length": 0,
+          "joints": 0,
+          "closure_evaluated": false,
+          "still_required": null,
+          "rounds": [
+            {
+              "round": 0,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 0,
+              "proposal_work": 563920,
+              "mosaic_work": 563920,
+              "solver_debit": 1325152,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 1,
+              "accepted": [
+                true,
+                true
+              ],
+              "receptor_work": 35120,
+              "proposal_work": 1176954,
+              "mosaic_work": 1740874,
+              "solver_debit": 1265172,
+              "reason": "finite GEN-003 motif assignment completed before raster sampling",
+              "proposed_mosaic_status": "complete",
+              "proposed_mosaic_termination": "finite GEN-003 motif assignment completed before raster sampling"
+            },
+            {
+              "round": 2,
+              "accepted": [
+                false,
+                false
+              ],
+              "receptor_work": 0,
+              "proposal_work": 254962,
+              "mosaic_work": 1995836,
+              "solver_debit": 1265172,
+              "reason": "work budget exhausted",
+              "proposed_mosaic_status": "exhausted",
+              "proposed_mosaic_termination": "work budget exhausted"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "result": "All changes explained by charged-work/admission effects; primary scientific conclusion unchanged."
+}

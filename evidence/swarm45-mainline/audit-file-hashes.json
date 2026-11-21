@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "sha256": {
+    ".github/workflows/swarm45-final-admission-dispatch.yml": "f4f331d52a0f4a2bfe69b3ebd6d54244c6e3960f20e300796db1e31b00795fe0",
+    "evidence/swarm45-mainline/REQUEST.example.json": "e8a226425e48ece4d4f032b3022529258ea31e9703b8909e70f0ec570ea3d7e4",
+    "evidence/swarm45-mainline/diagnostics/windows-r1-startup-diagnosis.json": "6e59e658443882b1f4b26cdde9f486e8a4f87574132afea781691d63644defd6",
+    "evidence/swarm45-mainline/diagnostics/windows-r1-startup-diagnosis.md": "3ee59ab4c0c7a0adef5c37f479ed08f792472717d1ed524f87e1b684478fa9c8",
+    "evidence/swarm45-mainline/frozen-source-provenance-r2.json": "af6307178233262700fdd9e4b2f8cf89a39314a987fe968d94d6bd92fc185ec3",
+    "evidence/swarm45-mainline/frozen-source-provenance.json": "10db6e3aed11ffd3feeb1003f4a32b65f82e9769a96f7a9280a0d33b2b347515",
+    "evidence/swarm45-mainline/reviews/delta-002-and-control-checkpoint.json": "266bf8ddf31647193e4bbb7673981e5edc126833fdafe11a13ee95ee2b6f943f",
+    "evidence/swarm45-mainline/reviews/delta-002-committed-and-control-pin-checkpoint.json": "9837fa7244e025bac84c7fd243769f24534971d61ff1e0e06f17138fe12fd690",
+    "evidence/swarm45-mainline/reviews/swarm45-ci-delta-and-control-review-002.md": "44068fe9f3e401d0919053fb8388f1f549354dd19250f870e75f5359021e4d38",
+    "evidence/swarm45-mainline/reviews/swarm45-committed-source-review.md": "3e2c93217a2f4d4177f94948621fa7880d6f27547457bb151305fc32238db389",
+    "evidence/swarm45-mainline/reviews/swarm45-control-pin-review.md": "cec5014e5ebd8ae7aaffa4814f082fbc510a71bc3be806668d554df3b41cb9c0",
+    "evidence/swarm45-mainline/reviews/swarm45-native-review.md": "88e21f4483030f90fb72a277b9ae28333df01d2d5dd0e1f96d3d089da0117d33",
+    "evidence/swarm45-mainline/reviews/swarm45-publication-review.md": "0a47bd5c3fd51e134e9d9ce79d72ff7a39c10123071073c0d6bf851a61615601",
+    "evidence/swarm45-mainline/reviews/swarm45-r2-committed-source-review-inputs.json": "4af54e5ed58f4317d46388ec67f71e2ea68664c8dc55bcc6ae6e4cceaf8c34a0",
+    "evidence/swarm45-mainline/reviews/swarm45-r2-committed-source-review.md": "c1734c36d57f9dcdd971914ee9a17f6e00db75193a628d1b2a9d4bba5f38e9c4",
+    "evidence/swarm45-mainline/reviews/swarm45-runtime-delta-review.md": "dfcd78b0380d2621e0f331b5c4c0e04ebbae78d2a0a41ed5373e78a12b84ac20",
+    "evidence/swarm45-mainline/reviews/swarm45-stdio-portability-review.md": "42a53a7e99da3ab8b3e4a8a7b107d0ef8e282d640a2234d9bffb8b56b07ba15e",
+    "evidence/swarm45-mainline/science/swarm45-finaldelta-difference-classification-9b688aed.json": "08bd9a02baf43470f4de43924ce0d735ac7c849c4cb8889c033e0ac55b895787",
+    "evidence/swarm45-mainline/science/swarm45-finaldelta-known360-audit-9b688aed.json": "01c372b58dd00315637ed944e4fe4e0dfac3473f008a68dd9374c606e16fe7cd",
+    "evidence/swarm45-mainline/science/swarm45-finaldelta-scientific-outcome-review-9b688aed.md": "55e56a12fb2fb23904a16269dd1afbf191cbeba8b3aec3ac79aadb261084350b",
+    "tools/swarm45_control/dispatch_final_admission.py": "59ed14452307d411d26aa09f043cb6f65606044e61dbbc9b065b9d6e0b31a06f",
+    "tools/swarm45_control/test_dispatch_final_admission.py": "919f752c2c70e1e154fb17eaf9531d482e9ce5589093f1bc5dbcd067399f8135"
+  }
+}

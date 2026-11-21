@@ -1,0 +1,47 @@
+{
+  "reviewer": "/root/swarm45_publication_review",
+  "timestamp_utc": "2026-11-21T21:07:32.014466+00:00",
+  "kind": "CI source-staging/stdio delta and isolated final-admission control design review",
+  "accepted_main": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+  "native_definition_sha256": "217bfa716e61198f5b3849f2ae14c30e85bc9f623fc1d05438c59df2296ce7f7",
+  "candidate_files_sha256_canonical_lf": {
+    "tools/swarm45/stage_source.py": "a0c63f08f512b78fa22793995dc39fe70ea0ddb08104f7a5506eee1575c9f4a8",
+    "tools/swarm45/test_source_stage.py": "a70ae28a5127bf0fc1ed2f32b8ae888d11f726ee1be28ca8835e0613a0f8bd16",
+    "tools/swarm45/prepare_windows.ps1": "b597d80be69f08ec1d80e8a1fbb27b58a92938fbde4089b173d341d9cd9ab4c5",
+    ".github/workflows/swarm45-mainline-qualification.yml": "e50ee30b353fb214237df9355ff07f4485ecb92892619ba75c7e0c79366c7ed9",
+    "tools/swarm45/linux_floor.py": "b875adefdd56fa1cd3727b25ab22f435ecce4dad9b482eb86cee4e4aed693b5d",
+    "tools/swarm45/native_checks.py": "16b8a1bb7d37a4f912a54483c1315cf07112fd7507dfa928c888b0c2fddc4349",
+    "tools/swarm45/test_custody.py": "223c0fa59b36f787a88c267c191edc6b5c636cd830745c206121fe2a7eceb8f0",
+    "native/experiments/gentek_swarm/reciprocal_main.cpp": "85610d2d00e997278394d3ed6310097c546b26ab6588b6b16b7f30de6b46c1ac",
+    "tools/swarm45/run_request.py": "912b8b83ecbc27fc1934bd4b60431525a965fafc929bc88fee185154ea96fbbe",
+    "docs/operations/swarm45-mainline-integration.md": "b37f760b7e8cb6e5725bd6d78628471598612afa0ced5a9d942dd4150fe75bd2",
+    ".github/workflows/documentation.yml": "934ebe4f8f749e9ca222a00f5ac7b5445cb8308c882aab8fe86d72198da26960",
+    "docs/operations/ci-execution-and-performance.md": "de73080d9dfdec97cfad04a56dfba5c4703d0577a1bf5878fa3601fc5c399772",
+    "godot/scripts/workbench_reciprocal_protocol.gd": "8c1e392a108884e1d6a4340d80c9ddf2b6a2b0e28e2d4d9b934ea50927f1ef72"
+  },
+  "control_files_sha256_canonical_lf": {
+    ".github/workflows/swarm45-final-admission-dispatch.yml": "f4f331d52a0f4a2bfe69b3ebd6d54244c6e3960f20e300796db1e31b00795fe0",
+    "tools/swarm45_control/dispatch_final_admission.py": "5d43f110b095be390d7dab86bf99c325339fdaeb22d36e7d3acceea0fdd22df2",
+    "tools/swarm45_control/test_dispatch_final_admission.py": "919f752c2c70e1e154fb17eaf9531d482e9ce5589093f1bc5dbcd067399f8135",
+    "REQUEST.example.json": "e8a226425e48ece4d4f032b3022529258ea31e9703b8909e70f0ec570ea3d7e4"
+  },
+  "independent_checks": {
+    "candidate_helper_tests": {
+      "passed": 25,
+      "failed": 0
+    },
+    "control_tests": {
+      "passed": 12,
+      "failed": 0
+    },
+    "eight_file_ci_checkpoint_match": true,
+    "accepted_main_two_files_worktree_and_index_byte_identical": true
+  },
+  "source_delta_verdict": "GO to freeze and requalify; no confirmed unresolved P1/P2 in this delta",
+  "control_design_verdict": "GO design; pin-only final review required before using bridge",
+  "required_control_pin_updates": [
+    "ACCEPTED_MAIN from0f0161 to846fe053",
+    "CONTROL_BASE from9b688aed to next frozen source containing acceptedmain and exactfinal workflow definitions"
+  ],
+  "hosted_acceptance": "pending; no hosted or merge GO"
+}

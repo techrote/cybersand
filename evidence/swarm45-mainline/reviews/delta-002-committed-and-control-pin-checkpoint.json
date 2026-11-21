@@ -1,0 +1,63 @@
+{
+  "freeze": "96cc2772b0b7cf8e273526d3efd081596be1ad85",
+  "execution": "10fe808ac7f6a4b9c07f7d168763b41957359e57",
+  "accepted_main": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+  "control_file_checks": {
+    ".github/workflows/swarm45-final-admission-dispatch.yml": {
+      "unchanged": true,
+      "sha256": "f4f331d52a0f4a2bfe69b3ebd6d54244c6e3960f20e300796db1e31b00795fe0"
+    },
+    "tools/swarm45_control/dispatch_final_admission.py": {
+      "only_two_pin_changes": true,
+      "sha256": "59ed14452307d411d26aa09f043cb6f65606044e61dbbc9b065b9d6e0b31a06f"
+    },
+    "tools/swarm45_control/test_dispatch_final_admission.py": {
+      "unchanged": true,
+      "sha256": "919f752c2c70e1e154fb17eaf9531d482e9ce5589093f1bc5dbcd067399f8135"
+    },
+    "REQUEST.example.json": {
+      "unchanged": true,
+      "sha256": "e8a226425e48ece4d4f032b3022529258ea31e9703b8909e70f0ec570ea3d7e4"
+    }
+  },
+  "candidate_file_checks": {
+    "tools/swarm45/stage_source.py": "matches reviewed delta at both commits",
+    "tools/swarm45/test_source_stage.py": "matches reviewed delta at both commits",
+    "tools/swarm45/prepare_windows.ps1": "matches reviewed delta at both commits",
+    ".github/workflows/swarm45-mainline-qualification.yml": "matches reviewed delta at both commits",
+    "tools/swarm45/linux_floor.py": "matches reviewed delta at both commits",
+    "tools/swarm45/native_checks.py": "matches reviewed delta at both commits",
+    "tools/swarm45/test_custody.py": "matches reviewed delta at both commits",
+    "native/experiments/gentek_swarm/reciprocal_main.cpp": "matches reviewed delta at both commits",
+    "tools/swarm45/run_request.py": "matches reviewed delta at both commits",
+    "docs/operations/swarm45-mainline-integration.md": "matches reviewed delta at both commits",
+    ".github/workflows/documentation.yml": "matches reviewed delta at both commits",
+    "docs/operations/ci-execution-and-performance.md": "matches reviewed delta at both commits",
+    "godot/scripts/workbench_reciprocal_protocol.gd": "matches reviewed delta at both commits"
+  },
+  "workflow_checks": {
+    "documentation.yml": "934ebe4f8f749e9ca222a00f5ac7b5445cb8308c882aab8fe86d72198da26960",
+    "native.yml": "7cfb1aed6ae2b810e77812444340f6a8844cb480c05a8f218d45ddee76e18379",
+    "gdextension.yml": "f85126b7daa01f53deee591bcb9f8e1dc2271f192d41a1a515ab4694133ab516",
+    "palette-shader-qualification.yml": "42d7b10cbb805d6b2a8ece873e97932e43b09af8c3b26cf9ba1db1876d7568d0",
+    "play-desktop-packet.yml": "db9a0ea6bcd3ec3d3d404d2b072e98fe89fb522d2e37ec52bc8a1805d2602fbc",
+    "swarm45-runtime-publication.yml": "f23273d24b1d457b96e08f0b35adfe104a6c962e781cd23923130c27570673da"
+  },
+  "freeze_tree": "550224ac8447ac2c6748dab840da974ed9d13c57",
+  "execution_tree": "1259e2a16cd0e598fe0f758eff72fd88891ab98a",
+  "execution_delta": [
+    ".github/swarm45-mainline-request.json"
+  ],
+  "required_ancestry_verified": true,
+  "source_ledger_count": 1763,
+  "source_ledger_at_both_commits_verified": true,
+  "native_definition_sha256": "217bfa716e61198f5b3849f2ae14c30e85bc9f623fc1d05438c59df2296ce7f7",
+  "passed": true,
+  "permission_scope": "GO to publish reviewed control branch source; no dispatch until qualified runtime publication passes the unchanged guards",
+  "pin_delta_tests": {
+    "command": "python3 -m unittest discover -s tools/swarm45_control -p test_*.py -v",
+    "exit_code": 0,
+    "tests_passed": 12,
+    "log_sha256": "81769faeb0cefb3b495bcce0e6a30c166dff762ca8470881285848d4a45f9a5c"
+  }
+}
