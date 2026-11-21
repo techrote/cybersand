@@ -60,20 +60,58 @@ submission, or general gameplay FPS. Measure them separately for an end-to-end
 benefit claim. Rebuild after changing native sources: existing DLLs do not
 implicitly pick up a new registered class.
 
-## Evidence captured so far
+## Measured and source-locked qualification
 
-- The pure C++ kernel and standalone oracle test were compiled locally with
-  GCC 14.2.0, `-O2 -Wall -Wextra -Werror -Wpedantic -Wconversion -Wshadow`:
-  `SCRIPT_HOTPATH_NATIVE_TEST PASS`.
-- The same source-identity kernel/test also passed
-  `-fsanitize=address,undefined` locally.
-- Godot/GDExtension builds and source-matched Windows/Linux runtime benchmarks
-  **have not yet run in this environment** (pinned Godot and godot-cpp absent).
-  Do not treat pure-C++ passes as a qualified GDExtension or claim speedup.
-- Target decision: promote only if differential parity holds and the end-to-end
-  planning path demonstrates a meaningful repeatable gain, ideally at least 3x
-  median at 262K cells without p95 regressions; otherwise preserve the negative
-  result and return to the GDScript planner.
+At the accepted experimental implementation SHA
+`e943a0f87a6c8beea99caf33f1f85c7ae3c9f4e2`:
+
+- [Exact-source Linux GDExtension and differential/latency checks passed](https://github.com/techrote/cybersand/actions/runs/44836004256);
+  819 native and 819 script-fallback comparisons, plus native PAINT shapes,
+  worker executor, and mounted Workbench checks.
+- [Windows target-OS CI passed](https://github.com/techrote/cybersand/actions/runs/44837049074).
+  The source-built Windows DLL hash was
+  `4d46ecb1efdd23ce6dd2f6e61f7b353e41e7d61f1346bc4c90852960b22b7981`.
+- Owner Windows 11 rendered qualification passed all 16 processes.
+  Four interleaved native and four script Workbench executions recorded p95
+  gaps **16.8625 ms native** and **16.8425 ms script** (a +0.119% difference),
+  with 64 checks per Workbench run and no recorded failures. The separate
+  rendered Godot Workbench probe selected **NVIDIA TITAN RTX, OpenGL3**.
+  This separate device probe must not be represented as per-process adapter
+  identity for every earlier A/B execution.
+- Owner PAINT shape measurement for the 262,144-cell *planning* phase was
+  11.395 ms native and 771.266 ms GDScript (approximately 67.7×).
+  This is **not** a gameplay FPS gain or a capture/apply/render benchmark.
+
+## SCRIPT-HOTPATH-PRODUCTION-001 — runtime publication
+
+The committed GDExtension binaries are currently the desktop LFS pair:
+`libcybersand_native.linux.x86_64.so` and
+`cybersand_native.windows.x86_64.dll`. Their separately committed
+`runtime-provenance.linux.json` and `runtime-provenance.json` manifests
+must be rebuilt **together** from a single immutable PR source commit.
+
+The dedicated
+[`script-hotpath-production.yml`](../../.github/workflows/script-hotpath-production.yml)
+is branch-scoped to `exp/script-hotpath-001-native-fill`.
+Only an explicit `script_hotpath_production_publish_request.json` can arm
+publication. The publisher inherits the established exact-source input
+ledgers, pinned Godot 4.7 / godot-cpp toolchains, target-OS actual execution,
+LFS pointer checks, four-path stage admission and branch-head lease.
+A successful publisher appends a new binary/provenance commit to **PR #690
+only**; it never merges or changes `main`.
+
+The subsequent **full Ready-for-Review CI** must run on the resulting
+publication commit before merge approval. Until that happens, all source
+and runtime qualification remains an evaluation candidate, and the old
+retained desktop binaries may still dispatch to the GDScript fallback.
+The publication commit itself is not proof of a gameplay frame-rate gain.
+
+Web `libcybersand_native.web.*.wasm` modules are **not committed LFS
+objects** in this repository. They are compiled/exported by
+`tools/build_web.py` with separate Emscripten/toolchain inputs, and
+are not included in this four-file desktop publication. Web export
+compatibility must be tested independently; an older module continues to
+use GDScript fallback when the versioned native class is unavailable.
 
 ## Known limitations
 
@@ -83,5 +121,6 @@ implicitly pick up a new registered class.
 - A high-throughput fill planner can still spend time in native material
   readback and PAINT executor application; the user-facing operation might
   not speed up by the same factor.
-- Source-matched Godot differential tests and a genuine Windows owner
-  evaluation remain required before merge approval.
+- The previous Windows owner and pinned Linux/Windows demonstrator
+  validations have passed. Production publication and full integration CI
+  remain separate, independently checked acceptance gates.
