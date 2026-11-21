@@ -255,7 +255,7 @@ func run() -> void:
 	check(await native_readback(seed)==58,"independent native readback confirms painted material")
 	var captures: Array=trace.get("captures",[])
 	var capture: Dictionary=captures[0] if not captures.is_empty() else {}
-	var started: int=int(trace.get("requested_usec",draw_usec))
+	var started: int=int(trace.get("requested_usec",first_post_draw_usec))
 	var admitted: int=int(capture.get("admitted_usec",started))
 	var captured: int=int(capture.get("receipt_usec",admitted))
 	var plan_start: int=int(trace.get("plan_started_usec",captured))
