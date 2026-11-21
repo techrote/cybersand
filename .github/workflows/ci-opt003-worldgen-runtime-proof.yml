@@ -1,0 +1,78 @@
+name: CI-OPT-003 complete worldgen same-worker proof
+on:
+  push:
+    branches: [ci/ci-opt-003-worldgen-runtime-proof-20261121]
+permissions:
+  contents: read
+concurrency:
+  group: ci-opt003-worldgen-runtime-proof-${{ github.run_id }}
+  cancel-in-progress: false
+jobs:
+  pair:
+    name: Complete cold worldgen family pair
+    runs-on: ubuntu-24.04
+    # The two original family watchdogs are NOT reduced to fit this hosted cap.
+    # A cap hit is an incomplete failed experiment, never qualification.
+    timeout-minutes: 360
+    env:
+      CYBERSAND_CI_WATCHDOG_SCALE: '1'
+      CC: gcc-13
+      CXX: g++-13
+      MAKEFLAGS: ''
+      MFLAGS: ''
+      GNUMAKEFLAGS: ''
+      MAKEFILES: ''
+      GIT_LFS_SKIP_SMUDGE: '1'
+      SUITE: worldgen
+    steps:
+      - name: Check out immutable proof controller
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+      - name: Fence fixed sources and create two empty build trees
+        id: prepare
+        run: python3 tools/ci/ci_opt003_worldgen_runtime_proof/proof.py prepare --suite "$SUITE"
+      - name: Execute complete original family once
+        id: baseline
+        run: bash tools/ci/ci_opt003_worldgen_runtime_proof/run_arm.sh baseline "$SUITE"
+      - name: Record original source and original evidence
+        id: baseline_capture
+        if: always() && steps.prepare.outcome == 'success'
+        env:
+          ARM_OUTCOME: ${{ steps.baseline.outcome }}
+        run: python3 tools/ci/ci_opt003_worldgen_runtime_proof/proof.py capture --suite "$SUITE" --arm baseline --outcome "$ARM_OUTCOME"
+      - name: Execute complete candidate family once on same worker
+        id: candidate
+        if: '!cancelled() && steps.prepare.outcome == ''success'''
+        run: bash tools/ci/ci_opt003_worldgen_runtime_proof/run_arm.sh candidate "$SUITE"
+      - name: Record candidate source and original evidence
+        id: candidate_capture
+        if: always() && steps.prepare.outcome == 'success'
+        env:
+          ARM_OUTCOME: ${{ steps.candidate.outcome }}
+        run: python3 tools/ci/ci_opt003_worldgen_runtime_proof/proof.py capture --suite "$SUITE" --arm candidate --outcome "$ARM_OUTCOME"
+      - name: Verify original receipts and compare complete families
+        if: always() && steps.prepare.outcome == 'success'
+        run: |
+          python3 tools/ci/ci_opt003_worldgen_runtime_proof/compare_pair.py \
+            --repository . --directory "build/proof/$SUITE" --suite "$SUITE" \
+            --run-id "$GITHUB_RUN_ID" --run-attempt "$GITHUB_RUN_ATTEMPT" --proof-sha "$GITHUB_SHA" \
+            --output "build/proof/$SUITE/comparison.json"
+      - name: Preserve original complete or partial evidence without binaries
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ci-opt003-worldgen-runtime-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/proof/worldgen/proof.json
+            build/proof/worldgen/comparison.json
+            build/proof/worldgen/baseline/*.json
+            build/proof/worldgen/baseline/source/build/native-parallel/
+            build/proof/worldgen/baseline/source/build/physics-cli-validation/
+            build/proof/worldgen/baseline/source/build/worldgen-showcase-logs/
+            build/proof/worldgen/candidate/*.json
+            build/proof/worldgen/candidate/source/build/native-parallel/
+            build/proof/worldgen/candidate/source/build/physics-cli-validation/
+            build/proof/worldgen/candidate/source/build/worldgen-showcase-logs/
+          if-no-files-found: error
+          retention-days: 90
