@@ -223,6 +223,7 @@ def execute(engine, args, folder, source_sha, settings, timeout, wrapper=None):
         path.mkdir(parents=True, exist_ok=True)
         env[name] = str(path)
     env.update(settings, CYBERSAND_SOURCE_REVISION=source_sha, CYBERSAND_SOURCE_SHA=source_sha)
+    env["PUBPRES_DISPLAY_RECEIPT"] = str(folder / "display-owner.json")
     command = engine_command(engine,args,wrapper)
     clock = time.monotonic()
     samples, child_pid = [], None
@@ -261,12 +262,31 @@ def execute(engine, args, folder, source_sha, settings, timeout, wrapper=None):
               "wrapper_pid": process.pid if process is not None else None, "observed_application_pid": child_pid,
               "sampled_peak_rss_bytes": max((s["peak_rss_bytes"] for s in samples if s["peak_rss_bytes"] is not None), default=None),
               "memory_scope": "250ms actual Godot process working-set/RSS samples including setup and capture; valid only after receipt PID match. Windows virtual size unavailable; commit reported separately."}
+    if wrapper is not None:
+        result["display_wrapper_sha256"] = digest(Path(shutil.which(str(wrapper)) or wrapper).resolve())
+    if wrapper is not None and Path(wrapper).name == "owned_xvfb.py":
+        display_path = folder / "display-owner.json"
+        try:
+            display = json.loads(display_path.read_text(encoding="utf-8")) if display_path.is_file() else {}
+        except (ValueError, OSError) as error:
+            display = {}
+            result["display_owner_error"] = str(error)
+        result["display_owner_sha256"] = digest(display_path) if display_path.is_file() else None
+        result["display_owner_verified"] = bool(display.get("schema") == "pubpres-owned-display-v1"
+            and display.get("wrapper_pid") == (process.pid if process is not None else None)
+            and display.get("server_reaped") is True and display.get("forced_server_kill") is False
+            and display.get("server_tree_closed") is True and display.get("unexpected_server_members") is False
+            and display.get("server_returncode") in (0, -15)
+            and display.get("server_alive_before_requested_shutdown") is True
+            and display.get("application_returncode") == 0 and display.get("returncode") == 0
+            and display.get("application_timeout") is False and display.get("failure") is None)
     write_json(folder / "process.json", result)
     write_json(folder / "process-memory.json", samples)
     if failure is not None:
         raise failure
     logs = (folder / "stdout.log").read_text() + (folder / "stderr.log").read_text()
-    need(not timed_out and not surviving_children and exit_code == 0 and not any(x in logs for x in ("SCRIPT ERROR:", "Parse Error:", "Failed to load script", "Failed loading resource:", "Error initializing GLAD", "MakeCurrent failed")), f"Process failed: {folder}")
+    need(not timed_out and not surviving_children and exit_code == 0 and result.get("display_owner_verified", True)
+        and not any(x in logs for x in ("SCRIPT ERROR:", "Parse Error:", "Failed to load script", "Failed loading resource:", "Error initializing GLAD", "MakeCurrent failed")), f"Process failed: {folder}")
     return result
 
 

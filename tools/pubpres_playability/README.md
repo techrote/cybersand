@@ -259,6 +259,19 @@ initial sentinel, physics-only render generation0, positive completion fields
 and refusal to substitute a render owner for an invalid physics owner. It does
 not run native progression, render a frame or qualify physical performance.
 
+Linux development run44956244125 retained successful application captures as
+failed process qualifications because its `xvfb-run` wrapper left descendants
+for the outer owner to retire. Those originals are not requalified. The next
+source checkpoint uses `tools/pubpres_playability_build/owned_xvfb.py` as the
+explicit display wrapper: each invocation still has a fresh1920×1080×24 X server,
+with a private authorization file and TCP disabled. It waits for that exact
+server to exit before the wrapper exits; application descendants remain subject
+to the original strict refusal. Each arm retains `display-owner.json`, wrapper
+and receipt hashes, display/server PID, application status and confirmed server
+join. The native work, input, capture bounds and render selectors are unchanged.
+Its process-only tests and separate actual X11 connection gate do not qualify
+Godot rendering. No new local graphical result is claimed.
+
 The retired four-column native search remains separate negative development
 evidence. This delivery harness explicitly refuses an enabled request. The only
 new native stage probe is OFF by default and reports existing counters when the

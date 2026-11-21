@@ -52,6 +52,19 @@ physical samples. Accepted main and the previous integration are preserved as
 complete executable references. Owner physical Windows/NVIDIA acceptance is
 separate from hosted WARP and Linux software-renderer qualification.
 
+The dedicated [PUBPRES-PLAYABILITY-001 successor](pubpres-playability-evaluation.md)
+is issue #717 / Draft #719. Its a707 development campaign retains negative
+Windows512 progression, queued-pixel failures and distinct Separate-renderer
+crashes. Source-reviewed display/package harness repairs require fresh execution;
+they do not upgrade the failed original campaign. Keep the earlier #682 and its
+evidence unchanged, and keep the successor Draft/HOLD with ordinary defaults.
+
+For the PUBPRES-PLAYABILITY successor, the
+[isolated renderer runbook](../../tools/pubpres_render_probes/README.md) provides
+finite font/startup/material controls before expensive native builds. It keeps
+the original first-read pixel oracle and all negative arm receipts. These
+diagnostics grant no native, package, pacing or gameplay acceptance; keep Draft/HOLD.
+
 ## Architectural Generator runtime repair — 2026-11-15
 
 The owner-authorized Phase A plus bounded Phase B implementation began at

@@ -15,10 +15,13 @@ related-documents: [pubpres-integration-evaluation.md, ../architecture/rendering
 [Draft PR #719](https://github.com/techrote/cybersand/pull/719). It adds a bounded,
 opt-in staging-allocation change, diagnostic adapter readback, a new registered
 measurement campaign and an independently assembled Windows evaluator. **No new
-graphical playability improvement is established.** Actual Linux/Windows
-graphical qualification and physical Windows/NVIDIA acceptance remain pending.
-Available local evidence covers headless adapter checks, parsing and logical
-allocation arithmetic; those checks do not establish graphical acceptance.
+graphical playability improvement is established.** The first source-matched
+[development campaign](https://github.com/techrote/cybersand/actions/runs/44956244125)
+at `a7074ab1bb4fede30d75a7924b4a5bfb7ea963d1` contains valid Windows
+software-renderer progression comparisons with negative results, actual queued
+GPU-pixel failures, and failed Linux process qualification. Its original results
+remain unchanged. Final Linux/Windows qualification and physical Windows/NVIDIA
+acceptance remain pending; source-reviewed harness repairs need fresh execution.
 Keep Draft/HOLD: Ready, merge and default promotion are not authorized.
 
 The preceding [PUBPRES-INTEGRATION-001 evaluation](pubpres-integration-evaluation.md)
@@ -109,7 +112,7 @@ no material exchange.
 
 ## Registered playability workloads
 
-**Current apparatus; execution pending:**
+**Current apparatus; partial development execution, final campaign pending:**
 [`campaign.json`](../../tools/pubpres_playability/campaign.json) owns the v2
 registration, fixture/profile/overlay hashes and exact controls. The
 [measurement guide](../../tools/pubpres_playability/README.md) owns commands.
@@ -174,6 +177,28 @@ without an additional native query. Missing historical clocks or disabled
 probe fields remain null. Full observation requires actual Main, physics,
 native-completion/capture, worker-snapshot, upload and draw channels.
 
+## Isolated render diagnostics
+
+**Current diagnostic tooling; prospective graphical execution:** the
+[isolated renderer probes](../../tools/pubpres_render_probes/README.md) run
+before native builds with the exact pinned engine and no GDExtension. Four
+Linux font controls or two Windows empty-scene controls are followed by four
+R8 material cases on each platform: Safe reachable slots 2/3 and Separate
+reachable slots 2/1. Linux owns and joins its private display; Windows uses
+its hosted desktop. Every actual Godot child has a 60-second bound plus owned
+cleanup. All ordinary failed arms are retained before aggregate nonzero;
+cancellation or uncertain ownership records the remaining arms as not run.
+
+The material project keeps exact a707 publisher/shader/fixture copies and the
+original first current/previous full-byte oracle. Only post-burst observations
+add staging-layer, repeated and later-frame readback. Later correct bytes cannot
+erase a first-read failure. Source, engine, script, receipt PID, nonce and empty
+loaded-extension identity are joined. These native-independent diagnostics are
+separate from pacing and do not establish a gameplay improvement, native or
+package acceptance, physical NVIDIA qualification or Separate promotion.
+The [focused retrieval questions](../reference/retrieval-questions-pubpres-render-probes.json)
+are additive to the unchanged general and earlier mission questions.
+
 ## What do the timing and memory receipts establish?
 
 The [reducer](../../tools/pubpres_playability/results.py) retains first-ten-second,
@@ -211,7 +236,7 @@ separate and consult the preserved #682 evidence through the preceding evaluatio
 
 ## Windows verification, isolated profiles and reopen
 
-**Current tooling; new package execution pending:** the
+**Current tooling; first archive built, final package qualification pending:** the
 [Windows evaluator guide](../../tools/pubpres_playability_windows/README.md)
 provides the exact PowerShell commands and controls. Its new package is named
 `CyberSand-PUBPRES-PLAYABILITY-001-<candidate first 12 SHA characters>-Windows.zip`.
@@ -250,16 +275,23 @@ child, cancellation/timeout, stale-folder and corruption results.
 | --- | --- |
 | Native source comparison | Delivered `native/` equals main846f; four-column experiment remains reverted |
 | Repaired adapter regression | 222 local headless checks passed against source `573be351`, with final test bytes from `1c949532`; Linux/GCC 14.2 toolchain drift explicitly recorded |
-| Queued staging regression source | `test_material_staging_reachability.gd` at `8f078ac06` parses under pinned Godot 4.7; R8/RG8, 1/2/3-slot rings and both histories are exercised by the test design; actual GPU execution pending |
+| Actual queued GPU staging histories at a707 | All 23 ordinary history cases pass internally; queued Separate slots 2/3 have eight current-plane mismatches, and Safe reachable R8/slots 2 has one. Previous planes match. Original failed first reads remain failures; no later await/read substitutes for them |
 | Logical allocation model | Confirms the bounded source arithmetic above; no RSS/residency or frame-rate result |
-| v2 measurement/build/package tooling | Source and focused local checks provide apparatus evidence; actual final graphical campaign and pristine Windows execution pending |
+| Windows Wave512 Follow MICCIM at a707 | Six admitted processes; first-144 body/move hashes match. Mean rates M 11.414, I 9.636, C 9.248 steps/s. C is 18.98% below M and 4.03% below I in these two repeats; C maximum physical gaps are 817.639/821.692 ms despite approximately 1.6 ms median upload calls |
+| Windows observation/input/probe controls at a707 | Full/reduced, repeated/once and native-probe OFF/ON controls retain matched physical outcomes. Small or negative timing differences are reported without subtracting an assumed diagnostic overhead |
+| Actual Separate renderer controls at a707 | Windows ANGLE fails at GLAD startup; Linux full-Workbench Separate fails inside the engine Image upload path. These are distinct failures, not zero-throughput samples or physical NVIDIA evidence |
+| Linux process qualification at a707 | Original xvfb-run invocations leave owned descendants. Their internally complete captures remain process-invalid. A private, bounded display owner has independently reviewed process-only repairs; hosted X11/Godot evidence is still required |
+| Windows evaluator at a707 | Newly built archive and all 3,492 payload hashes verified. Unsafe-path test helper shadowed its actual input, so the package gate failed and later graphical gates were skipped. The source-only correction preserves the validator; original failure is not reclassified |
+| Final measurement/build/package tooling | New source-matched final campaign, complete Windows source/installed graphical qualification and owner exercise remain pending |
 | Owner physical Windows/NVIDIA | Pending; software rendering, metadata checks and headless tests cannot supply this acceptance |
 
 The adapter check covers copied counters, 24-tick ON/OFF neutrality, a closed
 Water basin and invalid-initialization recovery. It does not establish all Water
 families, spill/ballistic gameplay, general parallel determinism or human feel.
-The queued GPU test must actually run in both Compatibility Safe and Separate,
-retaining both complete GPU histories and actual renderer identity.
+The queued GPU failures require a causal repair and new complete history
+qualification. Isolated prospective font/context/material probes distinguish
+engine startup, mutable atlas uploads, stage contents, blit execution and
+readback; a diagnostic probe cannot replace the unchanged full pixel oracle.
 
 The [scoped workflow](../../.github/workflows/pubpres-playability.yml) and
 [measurement guide](../../tools/pubpres_playability/README.md) route prospective

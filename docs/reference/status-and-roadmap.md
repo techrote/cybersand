@@ -74,9 +74,18 @@ The [PUBPRES-INTEGRATION-001 evaluation](../operations/pubpres-integration-evalu
 adds default-off reachable staging pools, reviewed adapter diagnostics and a new
 M/I/C campaign with separately built runtimes. The four-column native experiment
 was reverted. Logical allocation savings do not establish playability, and the
-original 2048²/2048 × 1024 controls save nothing. Actual graphical Linux/Windows
-results and physical NVIDIA acceptance remain pending. Keep Draft/HOLD; #682
-and its prior negative evidence remain preserved.
+original 2048²/2048 × 1024 controls save nothing. The first exact-source a707
+Windows software-renderer campaign has valid negative progression results:
+Wave512 Follow C averages 9.248 completed steps/s against M 11.414, with
+approximately 0.82-second physical gaps. Actual queued-pixel failures and
+Separate-renderer crashes remain open; Linux process qualification failed.
+Source-reviewed harness repairs do not requalify those original results.
+Final graphical qualification and physical NVIDIA acceptance remain pending.
+Keep Draft/HOLD; #682 and its prior negative evidence remain preserved.
+
+The [isolated render diagnostics](../operations/pubpres-playability-evaluation.md#isolated-render-diagnostics)
+add bounded engine-only controls with frozen publisher inputs. They preserve
+first-read pixel failures and are separate from native, package and playability acceptance.
 
 ## Experimental Gentek catalogue integration — Draft/HOLD, 2026-11-17
 

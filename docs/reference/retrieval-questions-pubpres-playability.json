@@ -9,8 +9,8 @@
       "canonical": ["operations/pubpres-playability-evaluation.md"],
       "facts": [
         "The successor is issue 717 and Draft PR 719; prior Draft PR 682 and original negative evidence remain preserved.",
-        "No new graphical playability improvement is established; actual Linux/Windows graphical qualification and physical Windows/NVIDIA acceptance are pending.",
-        "Local headless adapter checks, parse checks and logical allocation arithmetic have narrower scopes; Ready, merge and default promotion remain unauthorized."
+        "No new graphical playability improvement is established: exact-source a707 Windows Wave512 Follow progression is negative, Linux process qualification failed, queued GPU pixels and Separate renderer crashes remain open; final qualification and physical NVIDIA acceptance are pending.",
+        "Source-reviewed process/package fixture repairs require new execution and do not requalify original failures; Ready, merge and default promotion remain unauthorized."
       ],
       "sources": ["operations/pubpres-playability-evaluation.md"],
       "revision_sensitive": true

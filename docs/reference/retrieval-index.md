@@ -10,6 +10,14 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+## Native-independent PUBPRES renderer diagnosis
+
+For the finite Linux/Windows font, Separate startup and queued material controls,
+source/engine/PID custody, first-read pixel oracle and acceptance limits, retrieve
+[isolated render diagnostics](../operations/pubpres-playability-evaluation.md#isolated-render-diagnostics).
+The [focused questions](retrieval-questions-pubpres-render-probes.json) are additive;
+the general frozen evaluation set and earlier mission questions remain unchanged.
+
 ## World Art inspection, capture and Windows evaluation
 
 | Question | Canonical route |

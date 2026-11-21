@@ -24,12 +24,14 @@ Assert-PP (-not (Test-Path -LiteralPath $Output) -and -not $Output.StartsWith($P
 $Checks = [Collections.Generic.List[object]]::new()
 $Failures = [Collections.Generic.List[string]]::new()
 
-function Expect-PPRefusal([string]$Name,[scriptblock]$Action,[string]$Pattern) {
-    $Rejected = $false; $Reason = ''
-    try { & $Action | Out-Null } catch { $Rejected = $true; $Reason = $_.Exception.Message }
-    $Pass = $Rejected -and $Reason -match $Pattern
-    $Checks.Add([ordered]@{name=$Name;passed=$Pass;rejected=$Rejected;reason=$Reason})
-    if (-not $Pass) { $Failures.Add($Name+': unexpected acceptance or reason: '+$Reason) }
+function Expect-PPRefusal([string]$CaseLabel,[scriptblock]$Probe,[string]$ExpectedPattern,[object[]]$ProbeArguments=@()) {
+    # Distinct helper names avoid dynamically shadowing variables in callers.
+    # Data-dependent probes pass their input explicitly through parameters.
+    $ProbeRejected = $false; $ProbeReason = ''
+    try { & $Probe @ProbeArguments | Out-Null } catch { $ProbeRejected = $true; $ProbeReason = $_.Exception.Message }
+    $ProbePassed = $ProbeRejected -and $ProbeReason -match $ExpectedPattern
+    $Checks.Add([ordered]@{name=$CaseLabel;passed=$ProbePassed;rejected=$ProbeRejected;reason=$ProbeReason})
+    if (-not $ProbePassed) { $Failures.Add($CaseLabel+': unexpected acceptance or reason: '+$ProbeReason) }
 }
 function Add-PPZipFile($Zip,[string]$Name,[string]$Source) {
     $Entry = $Zip.CreateEntry($Name,[IO.Compression.CompressionLevel]::NoCompression)
@@ -54,8 +56,19 @@ try {
     Assert-PP (@($Lifecycle.failures).Count -eq 0 -and @($Lifecycle.checks).Count -eq 4) 'Owned descendant lifecycle controls failed'
     $Checks.Add([ordered]@{name='creation-time-job-and-descendant-lifecycle';passed=$true;controls=$Lifecycle.checks})
     Expect-PPRefusal 'wrong-expected-source' { Test-PPPackage $PackageRoot ('0'*40) } 'identity|candidate|SHA'
-    foreach ($Name in @('../escape','/absolute','a\b','a:stream','a/CON.txt','a/../bad')) {
-        Expect-PPRefusal ('unsafe-path-'+$Name) { Test-PPSafeName $Name } 'Unsafe'
+    foreach ($UnsafePath in @('../escape','/absolute','a\b','a:stream','a/CON.txt','a/../bad')) {
+        $PathAudit = [ordered]@{actual_input=$null}
+        Expect-PPRefusal ('unsafe-path-'+$UnsafePath) {
+            param([string]$ActualPath,[Collections.IDictionary]$Audit)
+            $Audit['actual_input'] = $ActualPath
+            Test-PPSafeName $ActualPath
+        } 'Unsafe' @($UnsafePath,$PathAudit)
+        $PathCheck = $Checks[$Checks.Count-1]
+        $PathCheck['expected_input'] = $UnsafePath
+        $PathCheck['actual_input'] = $PathAudit.actual_input
+        $PathCheck['input_matches_fixture'] = $PathAudit.actual_input -ceq $UnsafePath
+        if (-not $PathCheck.input_matches_fixture) { $PathCheck['passed'] = $false }
+        Assert-PP $PathCheck.input_matches_fixture 'Unsafe-path probe executed a different input from its fixture'
     }
     $Run = New-PPRun $PackageRoot $Manifest 'C' 'eager' 'safe' 'opengl3'
     $RunRecord = Test-PPRun $Run $PackageRoot $Manifest

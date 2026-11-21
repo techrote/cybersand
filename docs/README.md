@@ -42,6 +42,9 @@ The separate [PUBPRES-PLAYABILITY-001 evaluation](operations/pubpres-playability
 owns the opt-in staging change, v2 matched progression campaign and new Windows
 evaluator. Draft/HOLD; new graphical results and physical NVIDIA acceptance remain pending.
 
+For native-independent font/startup and queued-history diagnosis before native
+builds, use [isolated render diagnostics](operations/pubpres-playability-evaluation.md#isolated-render-diagnostics).
+
 For deliberate historical research, use the isolated
 [engineering archaeology index](history/engineering/README.md). It is excluded
 from default current-answer retrieval and grants no implementation authority.

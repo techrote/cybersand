@@ -144,15 +144,30 @@ def combined_evidence(text, project, native_sha, screenshots, *, graphical, reop
     if not re.fullmatch(r"[0-9a-f]{64}", result.get("prepared_sha256", "")) or result.get("map_side") != 512:
         raise ValueError("Complete saved native plane identity or requested map differs")
     images = {}
+    framebuffer_dimensions = None
     if graphical:
+        # The fixture requests a 1440x1000 window, but project.godot keeps the
+        # 1920x1080 canvas aspect. get_texture() captures its 1440x810 viewport,
+        # excluding the window's letterbox bars. Do not invent extra pixels.
+        settings = (project / "project.godot").read_text(encoding="utf-8")
+        required = ("window/size/viewport_width=1920", "window/size/viewport_height=1080",
+                    'window/stretch/mode="canvas_items"')
+        if any(line not in settings.splitlines() for line in required):
+            raise ValueError("Combined graphical fixture viewport policy differs")
+        aspect = re.search(r'^window/stretch/aspect=(.+)$', settings, re.M)
+        if aspect and aspect.group(1).strip() != '"keep"':
+            raise ValueError("Combined graphical fixture aspect policy differs")
+        scale = min(1440 / 1920, 1000 / 1080)
+        framebuffer_dimensions = [round(1920 * scale), round(1080 * scale)]
         labels = ("generator-profiles", "reopened-and-continued") if reopen else (
             "generator-profiles", "generator-preview", "agent-and-paint", "equipment-simulation", "authored-saved")
         for label in labels:
             path = screenshots / ("combined-" + label + ".png")
-            check_framebuffer(path, {"width": 1440, "height": 1000}, [1440, 1000])
+            check_framebuffer(path, {"width": framebuffer_dimensions[0], "height": framebuffer_dimensions[1]}, framebuffer_dimensions)
             images[path.name] = digest(path)
     return {"prepared_sha256": result["prepared_sha256"], "source_identity": identity,
-            "phases": result["phases"], "screenshots_sha256": images, "checks": result["checks"]}
+            "phases": result["phases"], "screenshots_sha256": images, "checks": result["checks"],
+            "framebuffer_dimensions": framebuffer_dimensions}
 
 
 def run(command, environment, folder, timeout):
@@ -167,6 +182,24 @@ def run(command, environment, folder, timeout):
         outcome["terminal_interruption"] = type(error).__name__ + ": " + str(error)
         raise
     finally:
+        display_path = folder / "display-owner.json"
+        if any(Path(str(arg)).name == "owned_xvfb.py" for arg in command):
+            outcome["display_wrapper_sha256"] = digest(next(Path(str(arg)) for arg in command
+                                                           if Path(str(arg)).name == "owned_xvfb.py"))
+            try:
+                display = json.loads(display_path.read_text(encoding="utf-8"))
+                outcome["display_owner_sha256"] = digest(display_path)
+                outcome["display_owner_verified"] = bool(display.get("schema") == "pubpres-owned-display-v1"
+                    and display.get("server_reaped") is True and display.get("forced_server_kill") is False
+                    and display.get("server_tree_closed") is True and display.get("unexpected_server_members") is False
+                    and display.get("server_returncode") in (0, -15)
+                    and display.get("server_alive_before_requested_shutdown") is True
+                    and display.get("application_returncode") == 0 and display.get("returncode") == 0
+                    and display.get("application_timeout") is False and display.get("failure") is None)
+            except (ValueError, OSError) as error:
+                outcome.update(display_owner_verified=False, display_owner_error=str(error))
+            if not outcome["display_owner_verified"] and outcome["returncode"] == 0:
+                outcome["returncode"] = 125
         outcome.update(elapsed_seconds=time.monotonic() - start, log_sha256=digest(folder / "stdout.log"))
         (folder / "process.json").write_text(json.dumps(outcome, indent=2) + "\n")
     return outcome
@@ -232,7 +265,11 @@ def main() -> int:
             environment[receipt_env] = str(output / (label + ".json"))
         command = [str(engine), "--path", str(project), "--audio-driver", "Dummy", *options]
         if graphical and args.display_wrapper:
-            command = [str(args.display_wrapper), "-a", "-s", "-screen 0 1920x1080x24", *command]
+            if args.display_wrapper.suffix == ".py":
+                command = [sys.executable, str(args.display_wrapper), *command]
+            else:
+                command = [str(args.display_wrapper), "-a", "-s", "-screen 0 1920x1080x24", *command]
+            environment["PUBPRES_DISPLAY_RECEIPT"] = str(output / label / "display-owner.json")
         test = Path(options[options.index("--script") + 1]).stem if "--script" in options else "import"
         if test == "test_workbench_combined_authoring":
             environment.update(WB_COMBINED_SIDE="512", WB_COMBINED_WORKERS="1",

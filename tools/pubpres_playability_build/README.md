@@ -3,6 +3,12 @@
 These programme-scoped helpers build and qualify the Draft/HOLD candidate.
 They do not replace production runtime provenance or the ordinary CI pipelines.
 
+The separate [isolated render diagnostics](../pubpres_render_probes/README.md)
+reuse the process owner and reviewed private-display helper without native or
+godot-cpp inputs. They may run immediately after the exact engine download.
+Their failed first-read pixels/startup crashes remain failed diagnostic arms;
+their results never qualify the native build, package or gameplay campaign.
+
 `build_runtime.py` uses each M/I/C source's own native build script and exact
 native input closure. It requires the actual `LINUX_CXX` or `WINDOWS_CXX`, the
 pinned `GODOT_CPP_ROOT`, and `PUBPRES_GODOT_CPP_BUILD_LOG` from the completed
@@ -44,3 +50,20 @@ The isolated workflow runs only for an explicit committed
 requests select a small registered comparison set. A final request is reserved
 for the frozen source and measurement policy. No Ready, merge, auto-merge or
 production-default action is performed by these helpers.
+
+After development-01, independent Windows package gates continue after another
+gate fails, provided the exact package was built successfully. This retains
+startup, source correctness and installed author/reopen evidence without turning
+any failed step into success. Installed startup/reopening uses Safe rendering;
+Separate/ANGLE crashed before application startup in development-01 and remains
+an unqualified diagnostic, investigated separately with retained crash controls.
+Safe startup does not qualify Separate or establish material-history parity.
+
+A `probes` request is a deliberately smaller source-frozen diagnostic phase:
+process ownership prerequisites and isolated engine/font/material probes only.
+It skips native builds, source comparisons, packaging and native correctness.
+Its artifacts cannot qualify the complete application or an owner evaluator.
+The Linux probe parent reserves 45 minutes for all eight 180-second outer
+allowances, their bounded cleanup, pinned engine preparation and artifact upload.
+Each actual Godot diagnostic still has the same 60-second limit. This parent
+allowance changes no gameplay capture, native work or performance comparison.

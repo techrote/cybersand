@@ -88,6 +88,14 @@ material histories. They save allocation on some padded/rectangular extents.
 That memory repair is not evidence of playable-progression recovery. Safe and
 Separate comparisons must use identical workloads and source/runtime identities.
 
+Development-01 at a707 has retained queued-pixel failures and Separate-renderer
+crashes. Windows Separate/ANGLE fails during GLAD initialization before app
+startup; Linux full-Workbench Separate fails in the pinned engine's Image upload
+path. Safe reachable R8/two-slot queued history also has one current-plane
+mismatch. These options remain unqualified. A successful ordinary Safe startup
+does not resolve a failed history oracle or qualify Separate. Use the current
+frozen handoff for the status of later repairs and their exact-source evidence.
+
 The rejected four-column Wave experiment is absent from this candidate. There
 is no Wave-columns-On selector. An inherited request to enable it is refused.
 The optional Wave stage probe remains off for ordinary owner sessions; the

@@ -30,7 +30,11 @@ function Assert-PP([bool]$Condition,[string]$Message) {
     if (-not $Condition) { throw $Message }
 }
 function Read-PPJson([string]$Path) { return [IO.File]::ReadAllText($Path) | ConvertFrom-Json }
-function Write-PPJson([string]$Path,$Value) { [IO.File]::WriteAllText($Path,($Value | ConvertTo-Json -Depth 100)+"`n",$script:PPUtf8) }
+function Write-PPJson([string]$Path,$Value) {
+    # Pipeline enumeration drops an empty array and collapses a singleton.
+    # Pass the actual object so evidence keeps its zero/one/many array shape.
+    [IO.File]::WriteAllText($Path,(ConvertTo-Json -InputObject $Value -Depth 100)+"`n",$script:PPUtf8)
+}
 function Get-PPHash([string]$Path) { return (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash.ToLowerInvariant() }
 function Get-PPCanonicalHash([string]$Path) {
     $Bytes = $script:PPUtf8.GetBytes([IO.File]::ReadAllText($Path).Replace("`r`n","`n"))
