@@ -299,7 +299,9 @@ def self_test() -> None:
     for mode in ORDER:
         row=dict(fixture,mode=mode,bulk_capture_enabled=mode=="bulk4",
                  max_slices_per_cycle=4 if mode=="bulk4" else 1,
-                 request_to_draw_usec=1400000 if mode=="bulk4" else 2000000)
+                 request_to_draw_usec=1400000 if mode=="bulk4" else 2000000,
+                 request_to_receipt_usec=1100000 if mode=="bulk4" else 1500000,
+                 edit_native_executor_usec=900000 if mode=="bulk4" else 1500000)
         validate_receipt(row,"262k",mode)
         trials.append({"mode":mode,"receipt":row})
     assert summarize(trials)["preliminary_performance_goal_met"]
