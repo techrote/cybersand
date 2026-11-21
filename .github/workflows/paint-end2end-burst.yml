@@ -1,0 +1,104 @@
+name: PAINT-END2END-002 isolated owner-worker burst pilot
+
+# Research-only; preserve default production behaviour and source-pinned LFS.
+on:
+  push:
+    branches: [exp/paint-end2end-002-bounded-burst]
+    paths:
+      - ".github/workflows/paint-end2end-burst.yml"
+      - "godot/scripts/simulation_worker.gd"
+      - "godot/tests/test_paint_end2end_burst.gd"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: paint-end2end-002-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  actual-worker:
+    name: Actual Workbench PAINT ${{ matrix.slices }} slice budget
+    if: github.repository == 'techrote/cybersand'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        slices: [1, 4, 8]
+    env:
+      GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
+      GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+      NATIVE_SHA256: cf2a3f05f30fa5aee6b4b07a67613de75313b96a1e29ceb3a5f6566ded6502c9
+      RAPIER_SHA256: 566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a
+      CYBERSAND_PAINT_BURST_SLICES: "${{ matrix.slices }}"
+      CYBERSAND_PAINT_BURST_BUDGET_USEC: "6000"
+      CYBERSAND_PAINT_BURST_PROFILE: "1"
+      GODOT_SILENCE_ROOT_WARNING: "1"
+    steps:
+      - name: Source checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+      - name: Install actual retained native and Rapier from Git LFS
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include="godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" --exclude=""
+          echo "$NATIVE_SHA256  godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so" | sha256sum --check --strict
+          echo "$RAPIER_SHA256  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" | sha256sum --check --strict
+      - name: Install pinned Godot 4.7 and import Workbench
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --connect-timeout 60 --max-time 600 -o "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          mkdir -p "$RUNNER_TEMP/godot"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          GODOT_BIN="$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64"
+          chmod +x "$GODOT_BIN"
+          test "$("$GODOT_BIN" --version)" = "4.7.stable.official.5b4e0cb0f"
+          echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
+          timeout 240 "$GODOT_BIN" --headless --editor --path godot --import
+          bash tools/ci/prepare_linux_display.sh
+      - name: Exercise installed source with real rendered Workbench/worker
+        timeout-minutes: 20
+        env:
+          LIBGL_ALWAYS_SOFTWARE: "1"
+        run: |
+          set -euo pipefail
+          mkdir -p "build/paint-burst-${{ matrix.slices }}"
+          xvfb-run -a -s '-screen 0 1600x1000x24 -nolisten tcp' \
+            timeout 16m "$GODOT_BIN" --rendering-method gl_compatibility \
+            --display-driver x11 --audio-driver Dummy --path godot \
+            -s res://tests/test_paint_end2end_burst.gd \
+            2>&1 | tee "build/paint-burst-${{ matrix.slices }}/owner.log"
+          python3 - <<'PY'
+          import json,os,pathlib
+          size=os.environ["CYBERSAND_PAINT_BURST_SLICES"]
+          lines=(pathlib.Path("build")/f"paint-burst-{size}"/"owner.log").read_text().splitlines()
+          rows=[json.loads(x.partition("PAINT_BURST_PILOT ")[2])
+                for x in lines if x.startswith("PAINT_BURST_PILOT ")]
+          assert len(rows)==1, f"Expected one real owner receipt: {len(rows)}"
+          r=rows[0]
+          assert r["failures"]==[] and r["checks"]>=24, r
+          assert r["mode_slices"]==int(size) and len(r["profiles"])>=2, r
+          for p in r["profiles"]:
+              assert p["executor_steps"]>=1 and p["worker_cycles"]>=1,p
+              assert p["max_chunks_per_cycle"]<=int(size),p
+              if int(size)==1: assert p["max_chunks_per_cycle"]==1,p
+          path=pathlib.Path("build")/f"paint-burst-{size}"/"profile.json"
+          path.write_text(json.dumps(r,indent=2)+"\n")
+          print("PAINT_BURST_PILOT_RECEIPT_PASS",size,
+                [(p["kind"],p["worker_cycles"],p["executor_steps"],p["worker_cpu_wall_usec"])
+                 for p in r["profiles"]])
+          PY
+      - name: Preserve source-bound owner logs/profiles on success or failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: paint-end2end-002-${{ matrix.slices }}-${{ github.sha }}-${{ github.run_id }}
+          path: build/paint-burst-${{ matrix.slices }}/
+          retention-days: 90
+          if-no-files-found: warn
