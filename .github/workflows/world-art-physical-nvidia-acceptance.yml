@@ -1,0 +1,47 @@
+name: World Art physical NVIDIA acceptance script syntax
+
+# This workflow deliberately does not claim GPU qualification. Only the owner
+# can exercise the real package on a physical Windows/NVIDIA machine.
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - 'tools/windows/CyberSand-World-Art-NVIDIA-Acceptance.ps1'
+      - 'docs/tools/world-art-evaluation.md'
+      - '.github/workflows/world-art-physical-nvidia-acceptance.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'tools/windows/CyberSand-World-Art-NVIDIA-Acceptance.ps1'
+      - 'docs/tools/world-art-evaluation.md'
+      - '.github/workflows/world-art-physical-nvidia-acceptance.yml'
+permissions:
+  contents: read
+jobs:
+  windows-powershell-static:
+    name: Windows PowerShell 5.1 parse and contract
+    runs-on: windows-2022
+    timeout-minutes: 10
+    steps:
+      - name: Check out source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Parse acceptance script without running GPU operations
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $path = Join-Path $env:GITHUB_WORKSPACE 'tools/windows/CyberSand-World-Art-NVIDIA-Acceptance.ps1'
+          if (-not (Test-Path -LiteralPath $path -PathType Leaf)) { throw 'Owner acceptance script missing' }
+          $tokens = $null
+          $parseErrors = $null
+          $null = [System.Management.Automation.Language.Parser]::ParseFile($path, [ref]$tokens, [ref]$parseErrors)
+          if ($parseErrors.Count -gt 0) {
+            $parseErrors | ForEach-Object { Write-Error $_.ToString() }
+            throw "PowerShell parse failed: $($parseErrors.Count) error(s)"
+          }
+          $content = Get-Content -LiteralPath $path -Raw
+          foreach ($marker in @('#requires -Version 5.1', 'Assert-NvidiaRenderer', 'WORLD_ART_PACKAGE_OK', 'Get-FileHash', '--verify-bundle', 'five_asymmetric_canvases', '67m_streamed_png', 'no_overwrite', 'corrupt_input_refusal', 'PASS_PHYSICAL_WINDOWS_NVIDIA_AND_OWNER_VISUAL')) {
+            if (-not $content.Contains($marker)) { throw "Acceptance contract marker missing: $marker" }
+          }
+          if ($content -notmatch 'physical-nvidia-acceptance[.]json') { throw 'Receipt is missing' }
+          if ($content -notmatch '(?i)Microsoft Basic') { throw 'No software-renderer refusal found' }
+          Write-Host 'PASS: PowerShell syntax and explicit physical-GPU contract; no GPU acceptance performed.' -ForegroundColor Green
