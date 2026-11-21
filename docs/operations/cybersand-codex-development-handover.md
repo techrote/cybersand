@@ -10,6 +10,10 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## WORLD-STEER-BATCH-001 — 2026-11-21
+
+Continue `feat/world-steer-batch-001-20261121` as Draft/HOLD. The [canonical guide](world-steer-batch-lab.md) owns the M0–M2 controls, dependency/write-set map, native material isolation, exact-source qualification and Windows acceptance. Preserve the five concurrent missions and existing worker/provider ownership; the Batch Lab workflow is request-scoped to its own branch. Do not turn deterministic fixtures or hosted rendering into model-quality or physical desktop acceptance claims.
+
 ## Workbench Art traffic lifetime — 2026-11-20
 
 [Draft PR #681](https://github.com/techrote/cybersand/pull/681) completes the

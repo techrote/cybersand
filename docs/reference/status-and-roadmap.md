@@ -10,6 +10,10 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## WORLD-STEER-BATCH-001 M0–M2 — Draft/HOLD
+
+The [Native Batch Lab guide](../operations/world-steer-batch-lab.md) owns optional independent native construction, comparative inspection, retained attempts and bounded experiments on the dedicated branch from accepted `846fe0533b3170e7b01f690518da49fc40cc24d1`. Qualification artifacts distinguish actual native/control outcomes, protocol fixtures, pending real model comparisons and physical owner acceptance. M3–M7 remain deferred; no merge, production default, paid call or schedule is authorized here.
+
 ## Floating Oil in Wave Water
 
 The [impingement tank replay](../audits/2026-11-20-wave-oil-impinge.md) tests whether Water waves can lift and lower a floating Oil slick. In the previous build the Water–Oil boundary remained fixed through 900 ticks of observation.

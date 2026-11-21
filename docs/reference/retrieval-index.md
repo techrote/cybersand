@@ -10,6 +10,10 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+## Native Workbench Batch Lab
+
+For independent native tiles, 2×2/4×4 operation, Stop/replay, P0–P3 controls, source-grounded references, blinded review and Windows evaluator custody, use the [Batch Lab guide](../operations/world-steer-batch-lab.md). This is an M0–M2 Draft/HOLD candidate; model-quality and physical owner acceptance are separate. [Focused questions](retrieval-questions-batch-lab.json) are additive.
+
 ## World Art inspection, capture and Windows evaluation
 
 | Question | Canonical route |

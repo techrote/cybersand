@@ -10,6 +10,8 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+**Native Batch Lab / #579 — Draft/HOLD:** [owner workflow, isolation and experiment contract](operations/world-steer-batch-lab.md) covers the optional 2×2/4×4 native authoring grid. Actual model comparisons and physical Windows acceptance remain separate from deterministic native qualification.
+
 For waves travelling under a floating Oil slick, see the [impingement tank comparison](audits/2026-11-20-wave-oil-impinge.md).
 
 For the radius-24 Oil drop and Lava on the Water ramp, see the [Workbench replay](audits/2026-11-19-wave-oil-lava.md).
