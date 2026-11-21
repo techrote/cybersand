@@ -69,6 +69,7 @@ def run(args):
         log = args.output / f"run-{index:02d}-{mode}.log"
         env = os.environ.copy()
         env["FILL_TOTAL_CASE"] = args.scenario
+        env["FILL_TOTAL_CAPTURE_DIR"] = str(args.output / f"verification-{index:02d}")
         env["CYBERSAND_NATIVE_PAINT_FILL"] = "script" if mode == "script" else "native"
         # Isolate user:// settings, archives, save names from test runs.
         storage = args.output / f"user-data-{index:02d}"
@@ -100,6 +101,12 @@ def run(args):
             require(data.get("status")=="passed" and data.get("failures")==[],"Failed Workbench assertions")
             require(data.get("rendered") is True and data.get("image_pixel_changed") is True,
                     "Actual updated framebuffer not proved")
+            require(data.get("raw_material_pixel_changed") is True
+                    and data.get("changed_interior_samples",0) >= 3,
+                    "Actual native image and at least three changed viewport pixels required")
+            require(data.get("render_attempts",0)>=1
+                    and data.get("first_visible_post_draw_usec",-1)>=data.get("first_post_draw_usec",0),
+                    "Missing actual first visible draw identity")
             require("NVIDIA" in data.get("active_graphics_adapter","").upper(),
                     "Godot did not report an actual NVIDIA renderer in this trial")
             require(data.get("display_server")=="Windows" and data.get("rendering_driver")=="opengl3",
