@@ -18,6 +18,7 @@ class PublisherSafetyTests(unittest.TestCase):
         self.assertIn("branches: [integration/gentek80-water-conflict-reconcile]", trigger)
         self.assertIn("'tools/ci/gentek80_water_publish_request.json'", trigger)
         self.assertNotIn("workflow_dispatch:", trigger)
+        self.assertIn("ci_opt_publish_request.py --source-sha", self.publisher)
         for invalid in ("native/**", "godot/**", "Makefile", "tools/architecture/**"):
             self.assertNotIn(invalid, trigger)
 

@@ -42,6 +42,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 tools/ci/gentek80_water_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+          python3 tools/ci/ci_opt_publish_request.py --source-sha "$GITHUB_SHA"
       - name: Compile and challenge source-bound publisher
         run: |
           set -euo pipefail

@@ -24,6 +24,8 @@ engine.REQUEST_VALUE = {
 engine.BUILD_EXACT = set(engine.BUILD_EXACT) | {
     engine.WORKFLOW, engine.REQUEST, engine.EVIDENCE,
     "tools/ci/gentek80_water_runtime_publication.py",
+    "tools/ci/ci_opt_publish_request.py",
+    "tools/ci/test_ci_opt_publish_request.py",
     "tools/ci/test_gentek80_water_runtime_publication.py",
     "tools/architecture/gentek80_reference_inputs.py",
     "tools/architecture/test_gentek80_reference_inputs.py",
