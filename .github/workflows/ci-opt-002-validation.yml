@@ -43,6 +43,17 @@ jobs:
           set -euo pipefail
           python3 -m py_compile tools/ci/ci_opt_runtime_preflight.py tools/ci/ci_opt_run_audit.py
           python3 -m unittest discover -s tools/ci -p 'test_ci_opt_*.py' -v
+      - name: Validate all workflow YAML with independently pinned actionlint
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --retry-all-errors --connect-timeout 60 --max-time 300 \
+            --output "$RUNNER_TEMP/actionlint.tar.gz" \
+            https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz
+          echo "8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8  $RUNNER_TEMP/actionlint.tar.gz" | sha256sum --check --strict
+          mkdir -p "$RUNNER_TEMP/actionlint"
+          tar -xzf "$RUNNER_TEMP/actionlint.tar.gz" -C "$RUNNER_TEMP/actionlint" actionlint
+          "$RUNNER_TEMP/actionlint/actionlint" -shellcheck='' -pyflakes=''
       - name: Preserve GitHub-hosted CI provider policy
         run: |
           set -euo pipefail
