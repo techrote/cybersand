@@ -86,6 +86,39 @@ func native_readback(cell: Vector2i) -> int:
 	if not check(cells.size()==1,"independent readback one native ID"): return -1
 	return cells[0]
 
+# The pointer is WorldView-local, but the root framebuffer is Window pixels.
+# Sample a regular set of interior cells rather than trusting a single
+# possibly occluded point. Never infer visible success from revision ACK alone.
+func interior_frame_samples(seed: Vector2i, side: int, screenshot: Image) -> Array[Dictionary]:
+	var locations: Array[Dictionary] = []
+	var spread: int = maxi(8, int(side / 6))
+	var extent := Rect2i(Vector2i.ZERO,screenshot.get_size())
+	for dy: int in [-2,-1,0,1,2]:
+		for dx: int in [-2,-1,0,1,2]:
+			var cell: Vector2i = seed + Vector2i(dx,dy)*spread
+			var local: Vector2 = cell_position(cell)
+			var screen: Vector2 = host.world_view.get_global_transform_with_canvas() * local
+			var pixel: Vector2i = Vector2i(screen.round())
+			if not extent.has_point(pixel): continue
+			locations.append({"cell":cell,"pixel":pixel,"before":screenshot.get_pixelv(pixel)})
+	return locations
+
+func changed_sample_count(locations: Array[Dictionary], screenshot: Image) -> int:
+	var count := 0
+	for sample: Dictionary in locations:
+		var prior: Color = sample.before
+		var after: Color = screenshot.get_pixelv(sample.pixel)
+		var delta: float = absf(prior.r-after.r)+absf(prior.g-after.g)+absf(prior.b-after.b)
+		if delta > 0.12: count += 1
+	return count
+
+func save_failure_frames(before: Image, after: Image) -> void:
+	var directory := OS.get_environment("FILL_TOTAL_CAPTURE_DIR")
+	if directory.is_empty(): return
+	if DirAccess.make_dir_recursive_absolute(directory) != OK: return
+	before.save_png(directory.path_join("verification-before.png"))
+	after.save_png(directory.path_join("verification-after.png"))
+
 func percentile(samples: Array[int], fraction: float) -> int:
 	if samples.is_empty(): return -1
 	var sorted: Array[int] = samples.duplicate()
@@ -144,9 +177,13 @@ func run() -> void:
 		quit(1)
 		return
 	await RenderingServer.frame_post_draw
-	# Mouse input is WorldView-local; the root framebuffer uses global pixels.
-	var pixel: Vector2i = Vector2i((host.world_view.global_position + cell_position(seed)).round())
-	var before: Color = root.get_texture().get_image().get_pixelv(pixel)
+	await RenderingServer.frame_post_draw
+	var before_frame: Image = root.get_texture().get_image()
+	var pixels: Array[Dictionary] = interior_frame_samples(seed,side,before_frame)
+	if not check(pixels.size()>=9,"at least nine mapped interior viewport samples"):
+		quit(1)
+		return
+	var raw_before: Color = host.image.get_pixelv(seed)
 	if not check(await native_readback(seed)==0,"source cell initially Empty"):
 		quit(1)
 		return
@@ -181,11 +218,40 @@ func run() -> void:
 		quit(1)
 		return
 	var upload_observed_usec: int=Time.get_ticks_usec()
-	await RenderingServer.frame_post_draw
-	var draw_usec: int=Time.get_ticks_usec()
+	# A single post-draw event can still show the old ping-pong texture while
+	# blending. Measure the first drawn frame whose actual on-screen world
+	# pixels materially change. Do not accept only a texture-upload receipt.
+	var first_post_draw_usec := -1
+	var visible_change_usec := -1
+	var changed_pixels := 0
+	var render_attempts := 0
+	var after_frame: Image
+	for attempt: int in range(12):
+		await RenderingServer.frame_post_draw
+		var frame_usec: int = Time.get_ticks_usec()
+		if first_post_draw_usec < 0: first_post_draw_usec = frame_usec
+		after_frame = root.get_texture().get_image()
+		render_attempts = attempt+1
+		changed_pixels = changed_sample_count(pixels,after_frame)
+		if changed_pixels >= 3:
+			visible_change_usec = frame_usec
+			break
 	collect_frames = false
-	var after: Color=root.get_texture().get_image().get_pixelv(pixel)
-	check(before!=after,"framebuffer pixel changed after upload")
+	var raw_after: Color = host.image.get_pixelv(seed)
+	var raw_material_changed: bool = raw_before != raw_after
+	check(raw_material_changed,"GPU-backed material image changed after native edit")
+	if visible_change_usec < 0:
+		print("PAINT_FILL_TOTAL_VISUAL_DIAGNOSTIC ",JSON.stringify({
+			"seed":seed,"side":side,"screen_size":before_frame.get_size(),
+			"world_view_rect":Rect2(host.world_view.global_position,host.world_view.size),
+			"view_content":host.view_content_rect(),
+			"mapped_samples":pixels,"changed_pixels":changed_pixels,
+			"render_attempts":render_attempts,
+			"raw_before":raw_before,"raw_after":raw_after,
+			"last_uploaded_revision":host.last_uploaded_revision,
+			"receipt_revision":receipt.get("revision",-1)}))
+		save_failure_frames(before_frame,after_frame)
+	check(visible_change_usec >= 0,"rendered viewport material changed at three interior points")
 	check(await native_readback(seed)==58,"independent native readback confirms painted material")
 	var captures: Array=trace.get("captures",[])
 	var capture: Dictionary=captures[0] if not captures.is_empty() else {}
@@ -217,9 +283,15 @@ func run() -> void:
 		"maximum_slice_usec":int(trace.get("edit_max_slice_usec",-1)),
 		"receipt_to_record_usec":recorded-edit_done,
 		"edit_receipt_to_upload_observed_usec":upload_observed_usec-edit_done,
-		"request_to_draw_usec":draw_usec-started,
+		"request_to_draw_usec":(visible_change_usec if visible_change_usec >= 0 else first_post_draw_usec)-started,
+		"request_to_first_post_draw_usec":first_post_draw_usec-started,
 		"render_upload_observed_usec":upload_observed_usec,
-		"first_post_draw_usec":draw_usec,
+		"first_post_draw_usec":first_post_draw_usec,
+		"first_visible_post_draw_usec":visible_change_usec,
+		"render_attempts":render_attempts,
+		"mapped_interior_samples":pixels.size(),
+		"changed_interior_samples":changed_pixels,
+		"raw_material_pixel_changed":raw_material_changed,
 		"frame_gap_p95_usec":percentile(frame_gaps,0.95),
 		"frame_gap_p99_usec":percentile(frame_gaps,0.99),
 		"frame_samples":frame_gaps.size(),
@@ -227,9 +299,9 @@ func run() -> void:
 		"render_patch_count":host.last_render_patch_count,
 		"render_patch_bytes":host.last_render_patch_bytes,
 		"render_was_full_refresh":host.last_render_was_full_refresh,
-		"image_pixel_changed":before!=after,
+		"image_pixel_changed":visible_change_usec >= 0 and changed_pixels>=3,
 		"failures":failures,
-		"measurement_boundary":"UI request to first frame_post_draw after matching uploaded revision; not physical scanout",
+		"measurement_boundary":"UI request to first visibly changed post-draw screenshot after matching uploaded revision; GPU readback verification, not physical scanout",
 		"timing_note":"Stages run across threads/frames and are not assumed additive; native worker elapsed includes scheduling gaps."}
 	print("PAINT_FILL_TOTAL_LATENCY ",JSON.stringify(result))
 	host.queue_free()
