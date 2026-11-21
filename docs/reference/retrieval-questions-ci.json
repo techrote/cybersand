@@ -1,7 +1,7 @@
 {
   "version": 1,
   "frozen_date": "2026-10-31",
-  "purpose": "Bounded CI production-integration development retrieval; separate from the frozen historical development set and held-outs.",
+  "purpose": "Bounded CI development retrieval. CI001-CI003 retain their frozen 2026-10-31 questions; source-current CI004 was appended on 2026-11-21. Separate from the frozen historical development set and held-outs.",
   "questions": [
     {
       "id": "CI001",
@@ -54,6 +54,27 @@
       "sources": [
         "../tools/ci/native_scope_classifier.py",
         "../.github/workflows/native-scope-advisory.yml"
+      ]
+    },
+    {
+      "id": "CI004",
+      "query": "How does CI-OPT-002 separate routine checks from publication and research while preserving all coverage across seven Native families?",
+      "canonical": [
+        "operations/ci-execution-and-performance.md",
+        "operations/github-development-and-release.md",
+        "operations/testing-validation-and-replay.md"
+      ],
+      "facts": [
+        "The seven required families preserve all 20 accepted commands, scientific inputs, sanitizer environments and child watchdogs; max-parallel remains six.",
+        "Only worldgen-sanitize moves to a clean runner. Physics outputs remain owned by worldgen, and the stable native aggregate rejects a missing or unsuccessful seventh receipt.",
+        "Routine checks, native publication, complete feature acceptance and research retain their existing distinct event and evidence routes; full Gentek campaigns do not run on ordinary main pushes.",
+        "Native scope advice grants no skipping authority. Unknown source impact outside the fixed exclusions selects full validation, and Draft skips are not behavioral qualification."
+      ],
+      "sources": [
+        "../.github/workflows/native.yml",
+        "../tools/ci/native_execution_policy.py",
+        "../tools/ci/run_native_family.sh",
+        "../tools/ci/verify_native_shards.py"
       ]
     }
   ]

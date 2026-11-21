@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Retain and independently verify the six required Native runner families."""
+"""Retain and independently verify the seven required Native runner families."""
 from __future__ import annotations
 
 import argparse
@@ -15,7 +15,8 @@ from execution_policy import identity as execution_policy_identity, watchdog_sec
 from native_execution_policy import COMMANDS, command_timeout_seconds, family_timeout_seconds
 
 ROOT = Path(__file__).resolve().parents[2]
-SUITES = frozenset({"tsan", "native-normal", "asan-ubsan", "worldgen", "soliding-normal", "soliding-asan"})
+SUITES = frozenset({"tsan", "native-normal", "asan-ubsan", "worldgen", "worldgen-sanitize",
+                    "soliding-normal", "soliding-asan"})
 CASE_SUITES = frozenset({"tsan", "native-normal", "asan-ubsan"})
 SCHEMA = "cybersand-native-shard-v2"
 INPUTS = {

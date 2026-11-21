@@ -8,14 +8,14 @@ fi
 suite="$1"
 output_directory="$2"
 case "$suite" in
-  tsan|native-normal|asan-ubsan|worldgen|soliding-normal|soliding-asan) ;;
+  tsan|native-normal|asan-ubsan|worldgen|worldgen-sanitize|soliding-normal|soliding-asan) ;;
   *) echo "Unknown suite: $suite" >&2; exit 2 ;;
 esac
 mkdir -p "$output_directory/commands"
 
-# Keep every original invocation and sanitizer environment. Only execution
-# watchdogs change; native sample counts, fixtures and gate holds stay intact.
-# The workflow wraps this complete family with native_suite_seconds as well.
+# Keep every original invocation and sanitizer environment. Family placement and
+# watchdogs leave native sample counts, fixtures and gate holds intact.
+# The workflow wraps this complete family with its derived allowance as well.
 native_command() {
   local label="$1"
   local policy_key="$2"
@@ -52,9 +52,15 @@ case "$suite" in
     awk '/^MemTotal:/ { print }' /proc/meminfo
     mkdir -p build/physics-cli-validation
     native_command physics-characterisation-sanitize native_case_seconds env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 make physics-characterisation-sanitize 2>&1 | tee build/physics-cli-validation/validation.log
-    # Two prerequisite jobs; the nine test recipe lines remain serial.
+    # Two prerequisite jobs; the complete test recipe remains serial.
     # time reports max-child RSS, not concurrent aggregate RSS.
     native_command worldgen-test native_case_seconds /usr/bin/time -v make -j2 worldgen-test
+    ;;
+  worldgen-sanitize)
+    # Independently required on a clean runner, with its own inventory guard.
+    python3 tools/ci/check_worldgen_build_inventory.py --output "$output_directory/build-inventory.json"
+    nproc
+    awk '/^MemTotal:/ { print }' /proc/meminfo
     native_command worldgen-sanitize native_case_seconds env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 /usr/bin/time -v make -j2 worldgen-sanitize
     ;;
   soliding-normal)

@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Executable test selection and future gates; dated results and save format live in separate references
 canonical-for: [test-inventory, test-selection, future-validation-gates]
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-21
 related-documents: [local-build-and-validation.md, ../reference/validation-evidence.md, ../reference/level-saves-and-replay.md]
 ---
 
@@ -114,11 +114,14 @@ separate Windows cross-build check must retain their distinct evidence scopes.
 ### Parallel Native and four-way Windows admission
 
 The2026-10-31 [production CI integration](../audits/2026-10-31-ci-parallel-production-integration.md)
-keeps the Native test/scientific command set intact while executing its six
-families concurrently. Its stable `native` reducer rejects any failed, missing,
-duplicate or foreign source/run/attempt evidence, and all original command
-budgets remain in force. In particular, historical TSan exit124 is not repaired
-by rescheduling or a larger time limit.
+established six Native families. CI-OPT-002 keeps all 20 test/scientific commands
+intact and separates the existing worldgen sanitizer command into a seventh
+required family, with at most six family jobs active. Physics outputs remain
+owned by `worldgen`; `worldgen-sanitize` runs on a clean runner with its original
+environment, `make -j2`, test order and child allowance. The stable `native`
+reducer requires all seven receipts and rejects failed, missing, duplicate,
+cancelled or foreign source/run/attempt evidence. Historical TSan exit124 is not
+repaired by rescheduling or a larger time limit.
 
 Windows and Linux now use the complete source-derived matrix from
 [godot_job_plan.py](../../tools/ci/godot_job_plan.py). Both independent coverage

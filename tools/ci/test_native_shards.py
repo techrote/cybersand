@@ -101,8 +101,8 @@ class NativeEvidenceTests(unittest.TestCase):
         args.update(overrides)
         return gate.verify_evidence(**args)
 
-    def alter(self, **values):
-        path = self.receipts["tsan"]
+    def alter(self, *, family="tsan", **values):
+        path = self.receipts[family]
         receipt = json.loads(path.read_text())
         receipt.update(values)
         path.write_text(json.dumps(receipt))
@@ -112,13 +112,13 @@ class NativeEvidenceTests(unittest.TestCase):
         (self.receipts["tsan"].parent / "run.log").write_bytes(raw)
         self.alter(log_bytes=len(raw), log_sha256=gate.digest(raw))
 
-    def alter_command(self, directory="commands/tests-tsan", **values):
-        folder = self.receipts["tsan"].parent
+    def alter_command(self, directory="commands/tests-tsan", *, family="tsan", **values):
+        folder = self.receipts[family].parent
         path = folder / directory / "receipt.json"
         record = json.loads(path.read_text())
         record.update(values)
         path.write_text(json.dumps(record))
-        self.alter(command_outputs=gate.command_inventory(folder))
+        self.alter(family=family, command_outputs=gate.command_inventory(folder))
 
     def assert_failed(self, report, fragment=None):
         self.assertEqual(report["status"], "failed")
@@ -131,12 +131,70 @@ class NativeEvidenceTests(unittest.TestCase):
         self.assertEqual(report["status"], "passed")
         self.assertEqual(report["errors"], [])
         self.assertEqual(set(report["received_suites"]), gate.SUITES)
-        self.assertEqual(len(report["original_evidence"]), 6)
+        self.assertEqual(len(report["original_evidence"]), 7)
         self.assertEqual(report["expected_native_case_count"], 2)
 
     def test_missing_family_cannot_be_hidden_by_matrix_success(self):
-        self.receipts["tsan"].unlink()
-        self.assert_failed(self.verify(), "Missing Native families: tsan")
+        for suite, path in self.receipts.items():
+            with self.subTest(suite=suite):
+                original = path.read_bytes()
+                try:
+                    path.unlink()
+                    self.assert_failed(self.verify(), "Missing Native families: " + suite)
+                finally:
+                    path.write_bytes(original)
+
+    def test_both_worldgen_families_require_current_successful_source_matched_evidence(self):
+        fingerprints = self.identity["source_fingerprints"] | {"native_family": "0" * 64}
+        controls = (
+            ({"source_sha": "c" * 40}, "source/event SHA mismatch"),
+            ({"event_sha": "c" * 40}, "source/event SHA mismatch"),
+            ({"source_tree": "c" * 40}, "tree mismatch"),
+            ({"run_id": 1235}, "run/attempt mismatch"),
+            ({"run_attempt": 2}, "run/attempt mismatch"),
+            ({"job_outcome": "failure"}, "did not succeed"),
+            ({"job_outcome": "cancelled"}, "did not succeed"),
+            ({"job_outcome": "skipped"}, "did not succeed"),
+            ({"source_delta_paths": ["native/src/world_generation.cpp"]}, "source/custody errors"),
+            ({"source_fingerprints": fingerprints}, "fingerprints differ"),
+        )
+        for suite in ("worldgen", "worldgen-sanitize"):
+            path = self.receipts[suite]
+            original = path.read_bytes()
+            for changes, error in controls:
+                with self.subTest(suite=suite, changes=changes):
+                    try:
+                        self.alter(family=suite, **changes)
+                        self.assert_failed(self.verify(), error)
+                    finally:
+                        path.write_bytes(original)
+
+    def test_split_worldgen_sanitizer_requires_its_complete_original_command(self):
+        suite = "worldgen-sanitize"
+        folder = self.receipts[suite].parent
+        receipt = folder / "commands/worldgen-sanitize/receipt.json"
+        original = receipt.read_bytes()
+        controls = (
+            ({"command": ["make", "-j2", "worldgen-sanitize"]}, "identity or ordered arguments differ"),
+            ({"returncode": 124, "status": "timeout", "timed_out": True}, "did not complete naturally"),
+            ({"complete": False}, "did not complete naturally"),
+            ({"timeout_seconds": 1}, "execution policy differs"),
+        )
+        for changes, error in controls:
+            with self.subTest(changes=changes):
+                receipt.write_bytes(original)
+                self.alter_command(directory="commands/worldgen-sanitize", family=suite, **changes)
+                self.assert_failed(self.verify(), error)
+        receipt.unlink()
+        self.alter(family=suite, command_outputs=gate.command_inventory(folder))
+        self.assert_failed(self.verify(), "command receipt inventory differs")
+
+    def test_split_worldgen_sanitizer_cannot_borrow_physics_scientific_outputs(self):
+        ordinary = self.receipts["worldgen"].parents[2]
+        sanitized = self.receipts["worldgen-sanitize"].parents[2]
+        shutil.copytree(ordinary / "physics-cli-validation", sanitized / "physics-cli-validation")
+        self.alter(family="worldgen-sanitize", scientific_outputs=gate.scientific_inventory(sanitized))
+        self.assert_failed(self.verify(), "Unexpected scientific output for Native family")
 
     def test_duplicate_family_is_rejected(self):
         shutil.copytree(self.receipts["tsan"].parent, self.evidence / "duplicate" / "tsan")
