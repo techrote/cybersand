@@ -116,6 +116,7 @@ jobs:
           path: |
             build/paint-fill-total-${{ matrix.scenario }}/qualification.json
             build/paint-fill-total-${{ matrix.scenario }}/run-*.log
+            build/paint-fill-total-${{ matrix.scenario }}/verification-*/verification-*.png
             build/paint-latency-repository-check.json
           if-no-files-found: warn
           retention-days: 90
