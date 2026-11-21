@@ -5,6 +5,7 @@
   "documents": [
     "architecture/experimental-workbench-authoring-patch.md",
     "operations/swarm004-workbench-playtest.md",
+    "operations/swarm005-workbench-playtest.md",
     "operations/wb-art-paint-integrated-candidate.md",
     "operations/gen008-flatten-qualification.md",
     "systems/workbench-direct-art-batches.md",
