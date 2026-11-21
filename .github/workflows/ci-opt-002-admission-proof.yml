@@ -1,0 +1,68 @@
+name: CI-OPT-002 paired admission rejection proof
+
+on:
+  push:
+    branches: [ci/ci-opt-002-admission-proof-20261121]
+    paths:
+      - '.github/workflows/ci-opt-002-admission-proof.yml'
+      - 'tools/ci/run_ci_opt_002_admission_demo.py'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-opt-002-admission-proof-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  admission-rejection-proof:
+    name: Expected stale-source rejection (${{ matrix.arm }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        arm: [before, after]
+    defaults:
+      run:
+        shell: bash
+        working-directory: workspace/source
+    steps:
+      - name: Check out the original pinned companion documentation
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 6a58311982941b75f46e22109a0829e5acb83c7e
+          path: workspace
+          persist-credentials: false
+      - name: Check out the same immutable proof source in both arms
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          path: workspace/source
+          lfs: true
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Install the existing hash-pinned workflow parser
+        timeout-minutes: 10
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/ci-opt-proof"
+          "$RUNNER_TEMP/ci-opt-proof/bin/python" -m pip install --require-hashes -r tools/requirements-ci-audit.txt
+      - name: Run original commands and require genuine canonical refusal
+        timeout-minutes: 230
+        env:
+          PROOF_ARM: ${{ matrix.arm }}
+        run: |
+          set -euo pipefail
+          "$RUNNER_TEMP/ci-opt-proof/bin/python" tools/ci/run_ci_opt_002_admission_demo.py \
+            --arm "$PROOF_ARM" --expect-sha "$GITHUB_SHA" \
+            --output "build/ci-opt-002-admission-proof/$PROOF_ARM" --max-seconds 13200
+      - name: Retain complete or partial proof evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ci-opt-002-admission-proof-${{ matrix.arm }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: workspace/source/build/ci-opt-002-admission-proof/${{ matrix.arm }}/
+          if-no-files-found: error
+          retention-days: 30
