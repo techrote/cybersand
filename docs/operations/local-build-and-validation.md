@@ -1089,9 +1089,14 @@ The native targets reuse generation objects within each existing compiler flag
 set under `$(BUILD_DIR)/worldgen-objects`: normal/sanitized and
 threaded/non-threaded variants stay separate. Source, shared-header and Makefile
 changes invalidate those objects. This avoids recompiling the same generation
-sources for each test. The current aggregates contain nine executables each,
-including GEN-005 semantic planes, with five-minute normal and ten-minute
-sanitizer CI bounds. The
+sources for each test. Current aggregates contain sixteen executables each:
+nine ordinary generation suites, including GEN-005 semantic planes, and seven
+Gentek showcases. Both expensive `world_generation.cpp` object variants start
+first under the existing two-job Native build cap; test execution stays serial.
+See the [current compilation-order contract](ci-execution-and-performance.md#native-worldgen-compilation-order).
+The historical five-minute normal and ten-minute sanitizer limits below are
+superseded by the [shared watchdog policy](ci-execution-and-performance.md).
+The
 [dated audit](../audits/2026-10-21-gen004-hierarchical-generation.md)
 retains the cold-build timeout that motivated this change and subsequent results.
 

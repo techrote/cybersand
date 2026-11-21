@@ -497,6 +497,15 @@ Owner holds remain: no shader compilation/cache/decomposition work; #308/#310
 held, #312/#316 frozen and unmerged; Scheduswarm paused. Follow the current
 #305 manual ownership ledger before assigning successor source owners.
 
+## Routine CI compilation — 2026-11-21
+
+CI-OPT-003 preserves the six Native families, all scientific inputs and the
+two-job worldgen compiler cap while admitting the two largest independent
+generation objects first. The [compilation-order contract](../operations/ci-execution-and-performance.md#native-worldgen-compilation-order)
+separates exact inventory/graph tests from hosted execution and performance
+evidence. Issue #706 and the dedicated CI-only PR own the current qualification
+and merge decision; source inspection does not establish a turnaround saving.
+
 ## Production CI parallelism — 2026-10-31
 
 **Implemented in this integration source; resulting-head qualification remains
