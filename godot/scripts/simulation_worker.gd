@@ -2441,6 +2441,7 @@ func _worker_loop() -> void:
 		var local_paused: bool = false
 		var pause_requested_at_entry: bool = false
 		var pause_request_serial_at_entry: int = 0
+		var native_ticked_this_turn: bool = false
 		var local_horizontal_input: float = 0.0
 		var local_jetpack_active: bool = false
 		var local_interest_center: Vector2i = Vector2i.ZERO
@@ -2737,6 +2738,7 @@ func _worker_loop() -> void:
 				_simulation_failed = true
 
 			if not local_paused and not _simulation_failed:
+				native_ticked_this_turn = true
 				if (
 					_sampled_character_enabled
 					and (not _micro_active or _scenario_host.player_enabled())
@@ -2786,7 +2788,9 @@ func _worker_loop() -> void:
 		# A paused snapshot can arise from a stale body sample even during Play.
 		# Acknowledge the UI pause only after this worker turn actually consumed
 		# the corresponding command and did not execute a Step/native tick.
-		if pause_requested_at_entry and local_paused:
+		# A lab Step may set local_paused back to true after simulation; that
+		# cannot falsely acknowledge a non-stepping pause boundary.
+		if pause_requested_at_entry and local_paused and not native_ticked_this_turn:
 			_workbench_pause_ack_serial = pause_request_serial_at_entry
 		var worker_step_time_ms: float = float(Time.get_ticks_usec() - step_start_usec) / 1000.0
 		_publish_snapshot(
