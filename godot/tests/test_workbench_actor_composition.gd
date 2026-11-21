@@ -644,8 +644,10 @@ func paused_editor() -> void:
 	# A retained paused snapshot can predate this Pause request when rendering
 	# lags worker publication. Require a NEW worker acknowledgement, not only
 	# the previously cached paused bit plus immediate session suspension.
-	if not await until(func() -> bool: return host.paused and int(host.latest_snapshot.serial)>before_serial
-		and host.latest_snapshot.paused and bool(ui.actor_observation(2).suspended),"both simulation owners acknowledged this pause"): return
+	var pause_acknowledged := func() -> bool:
+		return host.paused and int(host.latest_snapshot.serial) > before_serial \
+			and host.latest_snapshot.paused and bool(ui.actor_observation(2).suspended)
+	if not await until(pause_acknowledged,"both simulation owners acknowledged this pause"): return
 	var stopped_native := native_tick()
 	var stopped_physics := physical_tick()
 	for i: int in 6: await process_frame
