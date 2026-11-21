@@ -1,0 +1,84 @@
+name: CI-OPT-003 worldgen same-worker proof
+on:
+  push:
+    branches: [ci/ci-opt-003-worldgen-proof-20261121]
+permissions:
+  contents: read
+concurrency:
+  group: ci-opt003-worldgen-proof-${{ github.run_id }}
+  cancel-in-progress: false
+jobs:
+  pair:
+    name: Cold same-worker pair / ${{ matrix.target }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        target: [worldgen-test, worldgen-sanitize]
+    env:
+      CYBERSAND_CI_WATCHDOG_SCALE: '1'
+      CC: gcc-13
+      CXX: g++-13
+      ASAN_OPTIONS: detect_leaks=0:strict_string_checks=1
+      UBSAN_OPTIONS: halt_on_error=1
+      GIT_LFS_SKIP_SMUDGE: '1'
+    steps:
+      - name: Check out immutable instrumentation
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+      - name: Fence exact source and prepare isolated cold trees
+        env:
+          TARGET: ${{ matrix.target }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          mkdir -p "build/proof/$TARGET"
+          {
+            echo "proof_source=$GITHUB_SHA run=$GITHUB_RUN_ID attempt=$GITHUB_RUN_ATTEMPT"
+            echo "image=$ImageOS image_version=$ImageVersion"
+            lscpu
+            free -b
+            gcc-13 --version
+            g++-13 --version
+            ld --version
+            make --version
+          } > "build/proof/$TARGET/host.txt"
+          git worktree add --detach "$RUNNER_TEMP/baseline" 846fe0533b3170e7b01f690518da49fc40cc24d1
+          git worktree add --detach "$RUNNER_TEMP/candidate" 506dfc8c343c5d24fe26e89a9542cf985c52853e
+          git diff --exit-code 846fe0533b3170e7b01f690518da49fc40cc24d1 506dfc8c343c5d24fe26e89a9542cf985c52853e -- native tools/physics godot third_party .github/workflows/native.yml tools/ci/run_native_family.sh tools/ci/native_execution_policy.py tools/ci/verify_native_shards.py tools/ci/check_worldgen_build_inventory.py
+          python3 "$RUNNER_TEMP/baseline/tools/ci/check_worldgen_build_inventory.py" --output "build/proof/$TARGET/baseline-inventory.json"
+          python3 "$RUNNER_TEMP/candidate/tools/ci/check_worldgen_build_inventory.py" --output "build/proof/$TARGET/candidate-inventory.json"
+      - name: Run original cold target
+        env:
+          TARGET: ${{ matrix.target }}
+        run: |
+          python3 tools/ci/run_timed_command.py --policy-key native_case_seconds \
+            --label "baseline-$TARGET" --output-dir "build/proof/$TARGET/baseline-watchdog" -- \
+            python3 tools/ci/ci_opt003_proof/profile_make.py --source "$RUNNER_TEMP/baseline" \
+              --output "$GITHUB_WORKSPACE/build/proof/$TARGET/baseline" --target "$TARGET" --jobs 2 --cxx g++-13
+      - name: Run candidate cold target on same worker
+        if: success() || failure()
+        env:
+          TARGET: ${{ matrix.target }}
+        run: |
+          python3 tools/ci/run_timed_command.py --policy-key native_case_seconds \
+            --label "candidate-$TARGET" --output-dir "build/proof/$TARGET/candidate-watchdog" -- \
+            python3 tools/ci/ci_opt003_proof/profile_make.py --source "$RUNNER_TEMP/candidate" \
+              --output "$GITHUB_WORKSPACE/build/proof/$TARGET/candidate" --target "$TARGET" --jobs 2 --cxx g++-13
+      - name: Verify complete source-bound paired evidence
+        if: always()
+        env:
+          TARGET: ${{ matrix.target }}
+        run: |
+          python3 tools/ci/ci_opt003_proof/compare_profiles.py --directory "build/proof/$TARGET"
+      - name: Preserve original proof and incomplete outcomes
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ci-opt003-worldgen-${{ matrix.target }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/proof/
+          if-no-files-found: error
+          retention-days: 90
