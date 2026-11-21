@@ -103,7 +103,11 @@ func test_native() -> void:
 		var stale := request({"kind":"edit","cells":PackedInt32Array([100,100,58])})
 		stale[field]-=1
 		check(worker.paint_queue(stale).status=="refused","stale "+field+" refused")
-	var large := rectangle(Rect2i(120,120,128,128),2)
+	# 16,384 cells can finish between two rendered-frame polls on a busy
+	# software renderer, making a late Stop race indistinguishable from a
+	# cancellation defect. Use a 65,536-cell request so completion cannot
+	# overtake the first recorded native 4,096-cell prefix within one frame.
+	var large := rectangle(Rect2i(120,120,256,256),2)
 	check(worker.paint_queue(request({"kind":"edit","cells":large})).status=="queued","large shape admitted")
 	check(not worker.queue_emit_cells(PackedInt32Array([2,2]),58),"legacy brush cannot interleave")
 	check(worker.paint_queue(request({"kind":"edit","cells":large})).status=="refused","single bounded operation slot")
@@ -114,13 +118,14 @@ func test_native() -> void:
 	check(await wait_for(func()->bool:return int(worker.paint_state().get("applied",0))>=4096),"native application prefix observed")
 	worker.paint_stop()
 	edit=await result()
-	check(edit.get("status")=="partial" and edit.get("applied",0)>=4096 and edit.get("applied",0)<16384,"Stop reports truthful partial prefix")
+	check(edit.get("status")=="partial" and edit.get("applied",0)>=4096 and edit.get("applied",0)<65536,
+		"Stop reports truthful partial prefix: status=%s applied=%s" % [edit.get("status","?"), edit.get("applied",-1)])
 	var recovery: PackedInt32Array = edit.cells.duplicate()
 	for i: int in range(recovery.size()/3): recovery[i*3+2]=edit.before[i]
 	inverse=await submit({"kind":"edit","cells":recovery,"expected_before":edit.after})
 	check(inverse.get("status")=="completed","partial prefix can be reversed safely")
-	capture=await submit({"kind":"capture","region":Rect2i(120,120,128,128)})
-	var empty := PackedInt32Array(); empty.resize(16384); empty.fill(0)
+	capture=await submit({"kind":"capture","region":Rect2i(120,120,256,256)})
+	var empty := PackedInt32Array(); empty.resize(65536); empty.fill(0)
 	check(capture.get("materials")==empty,"recovered cancellation has no hidden tail")
 	for size: int in [512,1024,2048]:
 		if not await install(size): return
