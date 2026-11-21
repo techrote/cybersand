@@ -1,0 +1,20 @@
+PASS import: import checks; exit=0
+PASS test_art_provider: 54 checks; exit=0
+PASS test_art_lazy_traffic: 23 checks; exit=0
+PASS test_art_traffic_integrity: 148 checks; exit=0
+PASS test_art_traffic_panel_safety: 55 checks; exit=0
+PASS test_art_history_receipt_identity: 122 checks; exit=0
+PASS test_workbench_actor_equipment_extent: 29 checks; exit=0
+PASS art-durability-suite: 345 checks; exit=0
+PASS art-durability-restart-seed: 14 checks; exit=0
+PASS art-durability-restart-recover: 13 checks; exit=0
+PASS art-durability-crash-seed: 8 checks; exit=-9
+PASS art-durability-crash-recover: 8 checks; exit=0
+PASS art-durability-secret-turn-seed: 24 checks; exit=-9
+PASS art-durability-secret-turn-recover: 15 checks; exit=0
+PASS art-durability-secret-raw-seed: 31 checks; exit=0
+PASS art-durability-secret-raw-recover: 17 checks; exit=0
+PASS art-durability-posix-listing: 29 checks; exit=0
+PASS art-durability-listing-clock-seed: 12 checks; exit=0
+PASS art-durability-listing-clock-recover: 17 checks; exit=0
+{"passed": true, "status": "passed", "errors": []}

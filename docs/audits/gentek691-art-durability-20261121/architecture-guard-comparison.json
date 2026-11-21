@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "commands_identical": [
+    [
+      "python3",
+      "-m",
+      "py_compile",
+      "tools/ci/gen007_architectural_runtime_publication.py"
+    ],
+    [
+      "python3",
+      "tools/ci/test_gen007_architectural_runtime_publication.py"
+    ],
+    [
+      "python3",
+      "tools/ci/test_lcb001_shared_contract_runtime_publication.py"
+    ],
+    [
+      "python3",
+      "tools/ci/check_ci_provider_policy.py"
+    ]
+  ],
+  "exact_final_candidate_sha_and_tree_fenced": true,
+  "all_returncodes_and_logs_recorded": true,
+  "source_workflow_sha256": "7e6d482e55dd12908b0704098ff47ba5a907d70189c84028fd19236f877e1085",
+  "final_workflow_sha256": "edb1c67b1e9d4f79ac40602faa4c9ce4f37edaa84ffeb87a38967958f7a3b374",
+  "scope": "Architecture original publisher-guards commands only; no claim that legacy platform campaign was dispatched."
+}

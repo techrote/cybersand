@@ -1,8 +1,11 @@
 name: GENTEK-691 targeted Flatten redo and lazy Art qualification
-# The guarded full native publisher dispatches this focused replay only after
-# its exact-source Linux SO, Windows DLL and both provenance records are committed.
-# Source-only reconciliations cannot safely run the prior compiled libraries.
+# The focused first gate may also run on an isolated Art-only staging branch
+# before the owning integration branch starts its full guarded publisher.
+# Both targets require committed provenance and unchanged compiled native inputs.
+# A source-only reconciliation changing native inputs still fails closed.
 on:
+  push:
+    branches: [qualification/gentek691-art-durability]
   workflow_dispatch:
 permissions:
   contents: read
@@ -62,6 +65,15 @@ jobs:
           unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
           chmod +x "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64"
           bash tools/ci/prepare_linux_display.sh
+      - name: Qualify original Art suites and adversarial receipt recovery
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          GODOT_BIN="$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64"
+          python3 tools/ci/run_art_history_recovery.py --godot "$GODOT_BIN" --project godot \
+            --evidence evidence/art-recovery > evidence/art-recovery.log 2>&1 || { tail -120 evidence/art-recovery.log; exit 1; }
+          cat evidence/art-recovery.log
       - name: Reproduce complete original Flatten author and independent reopen
         shell: bash
         run: |
@@ -71,15 +83,6 @@ jobs:
           xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
             python3 tools/ci/run_flatten_qualification.py --godot "$GODOT_BIN" --project godot \
             --evidence evidence/flatten --cases 512x1 > evidence/flatten.log 2>&1 || { tail -120 evidence/flatten.log; exit 1; }
-      - name: Verify hidden Art receipt queues and explicit restoration
-        shell: bash
-        run: |
-          set -euo pipefail
-          GODOT_BIN="$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64"
-          mkdir -p "$RUNNER_TEMP/gentek691-art-user"
-          XDG_DATA_HOME="$RUNNER_TEMP/gentek691-art-user" "$GODOT_BIN" --audio-driver Dummy --headless --path godot \
-            --script res://tests/test_art_traffic_panel_safety.gd > evidence/art-panel.log 2>&1 || { tail -120 evidence/art-panel.log; exit 1; }
-          grep 'ART_TRAFFIC_PANEL' evidence/art-panel.log
       - name: Retain original exact-run logs and framebuffer evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -127,20 +130,19 @@ jobs:
           $folder=Join-Path $env:RUNNER_TEMP 'godot47'
           Expand-Archive -LiteralPath $archive -DestinationPath $folder
           'GODOT_EXE=' + (Join-Path $folder 'Godot_v4.7-stable_win64_console.exe') | Out-File -Append $env:GITHUB_ENV
+      - name: Qualify original Art suites and adversarial receipt recovery
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory evidence -Force | Out-Null
+          python tools/ci/run_art_history_recovery.py --godot $env:GODOT_EXE --project godot --evidence evidence/art-recovery *> evidence/art-recovery.log
+          if ($LASTEXITCODE -ne 0) { Get-Content evidence/art-recovery.log -Tail 120; throw 'Windows Art durability regression failed' }
+          Get-Content evidence/art-recovery.log
       - name: Reproduce complete original Flatten author and independent reopen
         shell: pwsh
         run: |
           New-Item -ItemType Directory evidence -Force | Out-Null
           python tools/ci/run_flatten_qualification.py --godot $env:GODOT_EXE --project godot --evidence evidence/flatten --cases 512x1 *> evidence/flatten.log
           if ($LASTEXITCODE -ne 0) { Get-Content evidence/flatten.log -Tail 120; throw 'Windows Flatten 512 author/reopen failed' }
-      - name: Verify hidden Art receipt queues and explicit restoration
-        shell: pwsh
-        run: |
-          $env:APPDATA=Join-Path $env:RUNNER_TEMP 'gentek691-art-user'
-          New-Item -ItemType Directory $env:APPDATA -Force | Out-Null
-          & $env:GODOT_EXE --audio-driver Dummy --headless --path godot --script res://tests/test_art_traffic_panel_safety.gd *> evidence/art-panel.log
-          if ($LASTEXITCODE -ne 0) { Get-Content evidence/art-panel.log -Tail 120; throw 'Windows hidden Art receipt regression failed' }
-          Select-String 'ART_TRAFFIC_PANEL' evidence/art-panel.log
       - name: Retain original exact-run logs and framebuffer evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

@@ -542,8 +542,46 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git commit -m 'build(gentek80-water): retain exact combined-source Linux and Windows runtimes'
           test "$(git rev-list --parents -n 1 HEAD)" = "$(git rev-parse HEAD) $GITHUB_SHA"
-          git push --force-with-lease="refs/heads/integration/gentek80-water-conflict-reconcile:$GITHUB_SHA" \
-            origin HEAD:refs/heads/integration/gentek80-water-conflict-reconcile
+          # Fence early, then bind the transport's advertised old OID in the
+          # pre-push hook. A reset/delete between ls-remote and push must not
+          # turn a stale publication into an otherwise valid fast-forward.
+          test "$(git ls-remote --exit-code origin refs/heads/integration/gentek80-water-conflict-reconcile | cut -f1)" = "$GITHUB_SHA"
+          hook_directory="$(mktemp -d "$RUNNER_TEMP/gentek80-push-hooks.XXXXXX")"
+          trap 'rm -rf "$hook_directory"' EXIT
+          cat > "$hook_directory/pre-push" <<'PY'
+          #!/usr/bin/env python3
+          import os, re, subprocess, sys
+          payload = sys.stdin.buffer.read(4097)
+          try:
+              if len(payload) > 4096 or len(sys.argv) != 3 or sys.argv[1] != 'origin':
+                  raise RuntimeError('Unexpected publication push transport or oversized update list')
+              rows = payload.splitlines()
+              if len(rows) != 1:
+                  raise RuntimeError('Publication must update exactly one remote ref')
+              fields = rows[0].decode('ascii').split()
+              if len(fields) != 4:
+                  raise RuntimeError('Malformed publication ref advertisement')
+              local_ref, local_oid, remote_ref, remote_oid = fields
+              source = os.environ['GITHUB_SHA']
+              head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
+              if (re.fullmatch(r'[0-9a-f]{40}', source) is None
+                      or local_oid != head or remote_oid != source
+                      or remote_ref != 'refs/heads/integration/gentek80-water-conflict-reconcile'):
+                  raise RuntimeError('Advertised publication ref does not match the exact source lease')
+              parents = subprocess.check_output(['git', 'rev-list', '--parents', '-n', '1', head], text=True).split()
+              if parents != [head, source]:
+                  raise RuntimeError('Publication must be one direct child of the qualified source')
+          except Exception as error:
+              print('GENTEK publication refused: ' + str(error), file=sys.stderr)
+              raise SystemExit(1)
+          # Preserve the ordinary Git LFS upload hook's arguments and original
+          # stdin byte-for-byte. receive-pack subsequently compares its old OID
+          # atomically, so a ref change after advertisement also fails closed.
+          raise SystemExit(subprocess.run(['git', 'lfs', 'pre-push', *sys.argv[1:]], input=payload).returncode)
+          PY
+          chmod +x "$hook_directory/pre-push"
+          # This is an ordinary fast-forward push, with no force option.
+          git -c core.hooksPath="$hook_directory" push origin HEAD:refs/heads/integration/gentek80-water-conflict-reconcile
           {
             echo "GENTEK_FINAL_SHA=$(git rev-parse HEAD)"
             echo "GENTEK_FINAL_TREE=$(git rev-parse HEAD^{tree})"
