@@ -120,7 +120,9 @@ func run() -> void:
 	if not await until(ready,"new native 512 World installed",60000):
 		quit(1)
 		return
-	bench._set_view(Vector2.ZERO,Vector2i(480,270))
+	# A square camera keeps both corners of the 256x256 closed pocket visible.
+	# The older 480x270 test view would send the far wall outside the canvas UI.
+	bench._set_view(Vector2.ZERO,Vector2i(512,512))
 	bench._brush.value = 0
 	await process_frame
 	var region := Rect2i(Vector2i.ZERO,Vector2i(512,512))
