@@ -247,7 +247,30 @@ static func grow_fill_capture(region: Rect2i, unread_edge: String,
 	return Rect2i(position,size)
 
 
+# Experimental native accelerator: a single value-only call, with exact script
+# fallback for old/missing GDExtension binaries. Use
+# CYBERSAND_NATIVE_PAINT_FILL=script to force baseline for A/B evaluation.
 static func fill_connected(
+		seed_cell: Vector2i,
+		sample_origin: Vector2i,
+		sample_size: Vector2i,
+		sample_materials: PackedInt32Array,
+		extent: Vector2i,
+		cell_limit: int = MAX_CELLS
+) -> Dictionary:
+	if OS.get_environment("CYBERSAND_NATIVE_PAINT_FILL") != "script" \
+			and ClassDB.class_exists(&"CyberNativePaintPlanner"):
+		var native: Object = ClassDB.instantiate(&"CyberNativePaintPlanner")
+		if native != null and native.has_method(&"interface_version") \
+				and native.has_method(&"fill_connected") and int(native.interface_version()) == 1:
+			return native.fill_connected(seed_cell, sample_origin, sample_size,
+				sample_materials, extent, cell_limit)
+	return fill_connected_reference(seed_cell, sample_origin, sample_size,
+		sample_materials, extent, cell_limit)
+
+
+# Preserved oracle for differential testing and compatibility fallback.
+static func fill_connected_reference(
 		seed_cell: Vector2i,
 		sample_origin: Vector2i,
 		sample_size: Vector2i,

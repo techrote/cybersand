@@ -1,0 +1,35 @@
+name: SCRIPT-HOTPATH-001 native kernel smoke
+
+on:
+  push:
+    branches: [exp/script-hotpath-001-native-fill]
+    paths:
+      - 'native/include/cybersand/paint_fill_planner.hpp'
+      - 'native/tests/test_paint_fill_planner.cpp'
+      - 'Makefile'
+      - '.github/workflows/script-hotpath-native.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native-kernel:
+    name: Pure C++ bounds, oracle and ASan/UBSan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Verify exact source and compiler
+        run: |
+          git rev-parse HEAD
+          g++-13 --version
+      - name: Build and test native kernel
+        run: make CXX=g++-13 script-hotpath-native-test
+      - name: Build and test sanitized kernel
+        run: |
+          g++-13 -std=c++20 -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined \
+            -Wall -Wextra -Werror -Wpedantic -Wconversion -Wshadow -I native/include \
+            native/tests/test_paint_fill_planner.cpp -o build/test_paint_fill_planner_sanitized
+          ASAN_OPTIONS=detect_leaks=1 ./build/test_paint_fill_planner_sanitized
