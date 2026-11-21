@@ -83,6 +83,11 @@ func profile(result: Dictionary, kind: String, expected_cells: int) -> void:
 	check(str(witness.get("kind",""))==kind,kind+" profile kind matches")
 	check(int(witness.get("executor_steps",-1))==int(result.get("slices",-2)),
 		kind+" every bounded native step counted")
+	var use_bulk: bool = OS.get_environment("CYBERSAND_PAINT_BULK_CAPTURE") == "1"
+	var actual_bulk_calls: int = int(result.get("bulk_capture_native_calls",-1))
+	var expected_bulk_calls: int = expected_cells / 4096 if kind == "capture" and use_bulk else 0
+	check(actual_bulk_calls == expected_bulk_calls,
+		kind+" native bulk readback only when opted-in, exact 4096-cell slice count")
 	check(int(witness.get("worker_cycles",0))>0,kind+" worker cycle count recorded")
 	check(int(witness.get("max_chunks_per_cycle",0)) in range(1,9),
 		kind+" hard maximum eight chunks per cycle")
@@ -165,6 +170,7 @@ func run() -> void:
 		check(false,"source changed during test")
 	print("PAINT_BURST_PILOT ",JSON.stringify({"schema":"paint-end2end-002-pilot-v1",
 		"source_sha256":source_sha,"mode_slices":configured,
+		"bulk_capture":OS.get_environment("CYBERSAND_PAINT_BULK_CAPTURE") == "1",
 		"checks":checks,"failures":failures,"profiles":rows}))
 	host.queue_free()
 	await process_frame
