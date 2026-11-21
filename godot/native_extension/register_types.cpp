@@ -1,6 +1,7 @@
 #include "cyber_native_cell_world.hpp"
 #include "cyber_demo_bridge.hpp"
 #include "cyber_world_generator.hpp"
+#include "cyber_native_paint_planner.hpp"
 
 #include <gdextension_interface.h>
 #include <godot_cpp/core/class_db.hpp>
@@ -14,6 +15,7 @@ void initialize_cybersand_native(ModuleInitializationLevel level) {
     GDREGISTER_CLASS(CyberNativeCellWorld);
     GDREGISTER_CLASS(CyberDemoBridge);
     GDREGISTER_CLASS(CyberWorldGenerator);
+    GDREGISTER_CLASS(CyberNativePaintPlanner);
 }
 
 void uninitialize_cybersand_native(ModuleInitializationLevel level) {
