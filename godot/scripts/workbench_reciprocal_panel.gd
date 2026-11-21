@@ -435,12 +435,19 @@ func _poll_thread() -> void:
 	_refresh()
 
 func _populate_rounds() -> void:
-	_round.clear();_round.add_item("Final composition",-1)
-	for i: int in document.rounds.size(): _round.add_item("Proposal round %d" % int(document.rounds[i].number),i)
+	# OptionButton uses -1 to request an automatic ID. Use the selected INDEX
+	# instead: index 0 is the final composition, indices 1..N are proposals.
+	_round.clear();_round.add_item("Final composition")
+	for i: int in document.rounds.size(): _round.add_item("Proposal round %d" % int(document.rounds[i].number))
+	_round.select(0)
+
+func _selected_proposal_round_index() -> int:
+	# Native raster/inspector use -1 for final; provisional round zero is UI item one.
+	return _round.selected - 1
 
 func _render() -> void:
 	if document.is_empty() or prepared.is_empty(): return
-	var round_index:=_round.get_selected_id()
+	var round_index:=_selected_proposal_round_index()
 	for i: int in [3,5,6,8]: _layer.set_item_disabled(i,round_index>=0)
 	if _layer.is_item_disabled(_layer.selected): _layer.select(0)
 	var bytes:=Protocol.raster(document,prepared,round_index,LAYERS[_layer.selected])
@@ -492,7 +499,7 @@ func _inspect_cell(event: InputEvent) -> void:
 	var point:=Vector2i((event.position-(_preview.size-Vector2(size)*scale)/2)/scale)
 	if not Rect2i(Vector2i.ZERO,size).has_point(point): return
 	var at:=point.y*size.x+point.x
-	var round_index:=_round.get_selected_id()
+	var round_index:=_selected_proposal_round_index()
 	if round_index>=0:
 		var record: Dictionary=document.rounds[round_index]
 		var frame: Dictionary=record.proposed_frame;var mosaic: Dictionary=record.proposed_mosaic
