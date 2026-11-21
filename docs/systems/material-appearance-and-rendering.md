@@ -92,6 +92,10 @@ it adds no per-cell object, particle, light, or physics field. The common relief
 stage then reads four neighbors from the same already-uploaded world texture
 to derive structural highlights/shadows, liquid surface lips, and contact shadow.
 
+The [2026-11-05 FXC attribution](../audits/2026-11-05-play-pace003-successor-graphics.md)
+shows the ANGLE cold cost is one super-linear D3DCompile of the whole inlined
+palette program and retains four neutral/negative compiler-input experiments.
+
 Animated branches read one `presentation_time()` helper. Its
 `presentation_time_override` uniform (also on the
 [emission shader](../../godot/shaders/material_emission.gdshader)) defaults to

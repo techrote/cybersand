@@ -1,0 +1,4 @@
+LIBRARY d3dcompiler_47
+EXPORTS
+  D3DCompile
+  D3DDisassemble
