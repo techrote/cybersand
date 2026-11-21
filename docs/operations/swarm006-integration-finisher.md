@@ -25,6 +25,15 @@ SWARM-004/005 accepted merge must be observed and mapped before claiming final
 integration on that foundation. A provisional evaluator identifies its actual
 source; it does not pretend that an unaccepted integration is main.
 
+Accepted main advanced during the first publication to
+`846fe0533b3170e7b01f690518da49fc40cc24d1`, merging #714's two-file CI-only
+admission reorder. This successor adopts that accepted commit. All native,
+Godot and qualification-tool bytes remain equal to initial successor
+`09561b21be09b99c312a442b15e35f5dae6ece17`; the source-sensitive final campaign
+and evaluator use the newly published reconciled identity. The
+[accepted-main reconciliation record](../audits/swarm006-finisher/accepted-main-reconciliation.json)
+does not claim that SWARM-004/005 has merged.
+
 | Preserved donor | Exact intake head | Successor use |
 | --- | --- | --- |
 | Native #705 | `a757ed4f0aa1c4ebfb1b235c657fbd3741c1c94d` | Frozen original implementation and scientific identity; bounded corrections are successor changes. |
@@ -39,7 +48,8 @@ The initial merge resolves three additive conflicts: retain both documentation
 navigation sets, and retain both the accepted actor-workshop refresh and the
 reciprocal panel's native-install acknowledgement in Shared Workbench. Accepted
 Art, Paint, Water, Rapier, Flatten, architectural catalogue and actor source
-remain the foundation. No unrelated experiment or CI-OPT-002 change is imported.
+remain the foundation. No unrelated experiment is imported. The subsequent
+CI-OPT-002 addition is limited to the already accepted #714 source described above.
 
 The [native source projection](../audits/swarm006-finisher/prepared-source-mapping.json)
 binds all 52 compiled-definition inputs to the frozen native donor: 50 are
