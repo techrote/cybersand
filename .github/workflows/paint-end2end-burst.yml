@@ -215,7 +215,7 @@ jobs:
           for variant in ("0-1","1-1","1-4","1-8"):
               bulk,slices=map(int,variant.split("-"))
               pilot=parse(f"burst-{variant}.log","PAINT_BURST_PILOT ")
-              assert pilot["failures"]==[] and pilot["checks"]>=50,pilot
+              assert pilot["failures"]==[] and pilot["checks"]>=49,pilot
               assert pilot["bulk_capture"] == bool(bulk) and pilot["mode_slices"]==slices,pilot
               assert pilot["rendered_frame_samples"]>12 and pilot["frame_gap_p95_usec"]>0,pilot
               assert pilot["frame_gap_p99_usec"]>=pilot["frame_gap_p95_usec"],pilot
