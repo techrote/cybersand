@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Portable owner evaluation of the standalone World Art viewer, capture tools and verified gallery
 canonical-for: [world-art-windows-evaluation]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-21
 related-documents: [art-pipeline-unification.md, world-art-preview.md, world-art-capture.md]
 ---
 
@@ -152,6 +152,44 @@ simulation or save/import limits, and static images do not qualify physics,
 Rapier, traversal, Water behaviour or gameplay performance. Material conditions
 are explicit synthetic creation-state fixtures.
 
+## Physical Windows/NVIDIA acceptance (owner hardware)
+
+[PR #685](https://github.com/techrote/cybersand/pull/685) merged the World Art
+pipeline to `main`. Its archived, source-qualified owner package is independent
+of native playable World validation. Run the checked-in
+[PowerShell acceptance script](../../tools/windows/CyberSand-World-Art-NVIDIA-Acceptance.ps1)
+on a **physical Windows/NVIDIA workstation** (PowerShell 5.1 or later), not
+on GitHub-hosted ANGLE or software rendering. The script verifies the frozen
+package and pin, actual Godot-selected NVIDIA adapter, ordinary and five
+asymmetric canvas captures, 67-million-pixel streamed PNG, no-overwrite and
+invalid-source refusal, followed by an explicit manual art/viewer checklist.
+
+Download the original [Windows evaluation artifact](https://github.com/techrote/cybersand/actions/runs/44732085788/artifacts/14626733328)
+before its **20 December 2026** expiry and supply the downloaded ZIP, or
+authenticate `gh` so the script can retrieve the named artifact automatically:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\windows\CyberSand-World-Art-NVIDIA-Acceptance.ps1 `
+  -ArchivePath "$HOME\Downloads\world-art-windows-evaluation-44732085788-1.zip"
+```
+
+The script accepts the downloaded outer GitHub Actions ZIP **or** the
+`CyberSand-World-Art-Windows.zip` inside it; both are pinned by SHA-256.
+Alternatively use `-PackageDirectory` for an already extracted and verified
+package. The script **never overwrites** an existing run; it creates an
+individually named Downloads directory containing logs, captures and the
+`physical-nvidia-acceptance.json` receipt. Record each manual PASS/FAIL in the
+prompts; `-SkipManual`, `-SkipSizeMatrix` and `-SkipLargeExport` produce
+**partial/not-accepted** results rather than a false physical pass. An adapter
+such as Microsoft Basic Render Driver or WARP is a failure even if Windows also
+lists an installed NVIDIA card. Open the receipt and inspect actual PNGs before
+claiming hardware acceptance.
+
+This is **owner hardware acceptance**, not native simulation admission or a
+release gate. The [CI workflow](../../.github/workflows/world-art-physical-nvidia-acceptance.yml)
+checks PowerShell syntax and safety markers only; it cannot manufacture a
+physical NVIDIA test result.
+
 ## Verification and rebuilding
 
 To check delivered file integrity after extraction:
@@ -190,7 +228,8 @@ the same Godot viewer and gallery. Such a package explicitly requires Python
 Python command in examples with `py -3.12`. The CI owner-evaluation ZIP bundles
 Python and requires its real Windows smoke to pass before publication.
 
-This remains a **Draft/HOLD evaluation candidate**. Windows hosted ANGLE
-qualification uses the runner's rendering adapter. Acceptance on the owner's
-physical Windows/NVIDIA GPU remains a separate observation and is not inferred
-from software-rendered CI. The package grants no Ready, merge or release action.
+The original package was produced from the **Draft/HOLD candidate** before
+PR #685 merged. Hosted Windows ANGLE qualification uses the runner's rendering
+adapter; the owner must record physical Windows/NVIDIA acceptance separately.
+This package is an evaluation artifact, not permission to change native World
+limits, release builds or merge unrelated work.
