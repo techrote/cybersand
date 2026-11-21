@@ -10,6 +10,23 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+SWARM-006 Draft/HOLD: [integration successor, qualification boundaries and owner
+acceptance](operations/swarm006-integration-finisher.md). The original frozen
+holdout remains historical evidence; corrected-source replay is explicitly
+revealed-corpus regression, and the separate SWARM-004/005 merge owns its baseline.
+
+SWARM-006 [source feasibility and bounded reciprocal recovery](systems/gentek-negotiated-recovery.md)
+continues verified SWARM-005 under [#704](https://github.com/techrote/cybersand/issues/704).
+Native and Workbench stages remain separate Draft/HOLD candidates; original
+controls, budgets and owner acceptance boundaries are preserved.
+
+SWARM-004 [experimental reciprocal Gentek assembly](systems/gentek-reciprocal-assembly.md)
+covers the bounded native grammar, independent architectural revisions, honest
+closure and separately qualified experimental Workbench bridge. The full
+programme remains Draft/HOLD under #687. The [native recovery and policy freeze](audits/2026-11-20-swarm004-native-recovery.md)
+records the recovered known corpus, matched causal controls, fixed-territory
+selection and the distinction between unevaluated closure and zero obligations.
+
 For waves travelling under a floating Oil slick, see the [impingement tank comparison](audits/2026-11-20-wave-oil-impinge.md).
 
 For the radius-24 Oil drop and Lava on the Water ramp, see the [Workbench replay](audits/2026-11-19-wave-oil-lava.md).
@@ -93,6 +110,13 @@ GEN-007 Architectural Generator [merge hold, owner-reviewed](systems/architectur
 five simultaneous style columns, thirteen built-in presets, versioned native
 Terraces/Hive/Viaduct algorithms, deterministic zone allocation and source-bound
 preview/install. See the [Windows owner walkthrough](operations/architectural-generator-playtest.md).
+
+SWARM-004 adds a separate Draft/HOLD [reciprocal composition controller and
+atomic native patch](architecture/experimental-workbench-authoring-patch.md).
+Its [owner guide](operations/swarm004-workbench-playtest.md) covers the bounded
+brush, native proposal rounds, Apply/Undo and ordinary Save/reopen. Windows
+graphical acceptance remains a source-qualified evidence gate; the interface
+does not alter the existing generator catalogue or accepted Water authority.
 The [15 November runtime completion record](audits/2026-11-15-gen007-runtime-completion.md)
 binds source `6d6e2cd6` to the qualified Linux/Windows and packaged replay,
 four-file publication `99d7bd2b`, and verified Git LFS/runtime provenance.
@@ -689,3 +713,13 @@ For final Gate Aâ€“E PASS, the landed stack, the bounded #200 policy founda
 the [current roadmap checkpoint](reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23),
 the [pressure reference entry](reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)
 and the [dated reconciliation](audits/2026-10-24-lcb000-landed-status-reconciliation.md).
+
+## SWARM-006 experimental owner evaluator
+
+The [SWARM-006 Workbench owner guide](operations/swarm006-workbench-playtest.md)
+covers the default-OFF bounded recovery control, native V4 semantics, declared
+finite synthetic controls, full Apply/Undo/Save/reopen exercises, and the
+source-bound Windows ZIP, sidecar and PowerShell launcher. Native feasibility,
+a qualified foreign joint, Windows graphical qualification and physical owner
+NVIDIA acceptance are separate results. Programme #704 remains Draft/HOLD;
+SWARM-004/005 historical receipts and controls retain their original scope.

@@ -4,11 +4,54 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-21
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
+
+## SWARM-006 integration successor — 2026-11-21
+
+The separate [integration finisher](swarm006-integration-finisher.md) repairs
+rejected native histories and the actual final-composition inspector on accepted
+main `0f0161af337d6d0cee8fa961a9667aff570a75b0`. Its new branch preserves all
+frozen donors and original 2,400-execution evidence, including negative results.
+Corrected-source replay is a revealed-corpus regression. The independently owned
+SWARM-004/005 accepted merge remains a precise later integration gate until its
+actual commit is published; do not substitute an unaccepted branch. Exact
+Windows source/pristine package, source custody and independent final reviews
+are recorded in the successor PR ledger. Retain Draft/HOLD and recovery OFF.
+
+## SWARM-006 native recovery — 2026-11-21
+
+Programme [#704](https://github.com/techrote/cybersand/issues/704) continues verified
+SWARM-005 on new native and Workbench branches, all Draft/HOLD. Read the
+[bounded recovery contract](../systems/gentek-negotiated-recovery.md) and
+[baseline custody audit](../audits/2026-11-21-swarm006-baseline-custody.md).
+Retain negative/exhausted development evidence and exact source identities; a
+preregistered corpus may be opened only after source and policy freeze.
+Do not import current main into this historical candidate or relabel old packages.
+
+## SWARM-004 reciprocal assembly — 2026-11-20
+
+**Experimental implementation / Draft / HOLD:** owner-authorized [programme #687](https://github.com/techrote/cybersand/issues/687)
+continues the verified SWARM-003 parent `cd0de74b83a66b5408668f81c82d854db45479ce`.
+Read the [reciprocal assembly contract](../systems/gentek-reciprocal-assembly.md)
+and its machine-readable native preregistration. The [native recovery record](../audits/2026-11-20-swarm004-native-recovery.md)
+verifies the surviving V1 implementation and known corpus instead of treating
+historical progress prose as engineering completion. The frozen native selection
+is `fixed_territory`, two rounds; matched controls distinguish causal exchange
+from mask-driven nominal changes. Native source qualification and unopened
+registered holdouts precede the dependent Workbench acceptance record. The
+Workbench lane was initially audited at accepted main
+`7b03aa437561ec63e31fd09531171360ab60eeb4` and explicitly reconciles accepted
+Water main `de58bf1997ca75825cf3b29e046dc1c1022c45bf`;
+#684/#685 remain separate.
+The owner authorized both implementation stages, not merge or Ready promotion.
+Development two-sided geometry witnesses do not establish full hard closure,
+Windows graphical acceptance or physical stability. No final closure ledger
+means unknown requirements, never a zero-required success. Keep frozen B/C/E8
+evidence, registered holdouts, failed cases and exact-source receipts intact.
 
 ## Workbench Art traffic lifetime — 2026-11-20
 

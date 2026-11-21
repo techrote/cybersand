@@ -4,11 +4,55 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-21
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Status and foundational roadmap
+
+## SWARM-006 integration repair — 2026-11-21
+
+The [dedicated successor](../operations/swarm006-integration-finisher.md) adds
+funded rejected-proposal finalization, clean empty-refusal metadata, exact native
+round inspection and stale-preview invalidation. Its evidence distinguishes the
+frozen historical study from corrected-source revealed replay and binds a newly
+built Windows evaluator to its actual source. The SWARM-004/005 accepted-main
+mapping and subsequent owner acceptance remain explicit gates. No frozen donor,
+ordinary default, Ready state or merge authority changes.
+
+## SWARM-006 feasible reciprocal construction — 2026-11-21
+
+**Experimental implementation, Draft/HOLD:** [#704](https://github.com/techrote/cybersand/issues/704)
+adds prospective connector screening, native receptor/corbel negotiation and
+bounded recovery on verified SWARM-005. The [focused contract](../systems/gentek-negotiated-recovery.md)
+preserves original foreign obligations and authoritative material-path validation.
+Published exact-head qualification, fresh preregistered comparisons and Windows
+owner acceptance have separate gates. No Ready, merge or default promotion is authorized.
+
+## SWARM-004 reciprocal Gentek construction — 2026-11-20
+
+**Draft/HOLD implementation candidate:** [programme #687](https://github.com/techrote/cybersand/issues/687)
+adds a bounded authored parts grammar, reciprocal native geometry proposals and
+an explicitly dependent experimental Shared Workbench path. The [focused contract](../systems/gentek-reciprocal-assembly.md)
+separates native development witnesses, unresolved hard obligations, corpus
+qualification and actual Windows Apply/Undo/Save/reopen acceptance. No production
+default, material/physics change, Viaduct identity change or automatic merge is authorized.
+The [recovered V1 audit and policy freeze](../audits/2026-11-20-swarm004-native-recovery.md)
+selects two-round fixed territory from the completed known corpus: 28 cases with
+both matched causal effects and qualified joints, including six fully applicable
+cases. Shared two-round mode has six and two. Final published-source qualification,
+registered holdouts and Workbench platform acceptance have separate receipts.
+
+## SWARM-004 experimental reciprocal authoring
+
+**Implementation candidate, Draft/HOLD:** the separate FRAMEWEAVER × MOSAIC
+[reciprocal dock and native retained patch](../architecture/experimental-workbench-authoring-patch.md)
+provide bounded native generation, proposal inspection, atomic Apply and inverse
+Undo, with ordinary authored-start persistence. Native composition qualification
+and [actual Windows graphical/package authoring and reopen](../operations/swarm004-workbench-playtest.md)
+remain explicit gates. The candidate preserves accepted main's Water authority,
+material IDs, native world limits, existing catalogue and Art lifetime; no Ready
+promotion, merge or production-default selection is authorized.
 
 ## Floating Oil in Wave Water
 

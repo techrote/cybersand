@@ -4,11 +4,15 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-21
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/atlas-agent-runner.md, ../architecture/pressure-optimization.md]
 ---
 
 # Retrieval question index
+
+For the repaired SWARM-006 successor, final-composition inspector, preserved
+negative holdout, new Windows evaluator and accepted-main dependency, see the
+[integration finisher](../operations/swarm006-integration-finisher.md).
 
 ## World Art inspection, capture and Windows evaluation
 
@@ -40,6 +44,22 @@ native preview co-existence, read the
 [integration research record](../operations/gentek-showcase-integration-001.md).
 This is an explicit research route, **not** a current-main architectural
 generator behaviour claim.
+
+For SWARM-006 feasibility, source-bound receiver negotiation, bounded recovery,
+native custody and distinct Windows acceptance gates, read the
+[experimental recovery contract](../systems/gentek-negotiated-recovery.md).
+
+## Reciprocal FRAMEWEAVER × MOSAIC construction
+
+For SWARM-004 component grammar, independent shared-zone revisions, retained hard
+obligations, Stone13 versus solid-bearing semantics, exact-source controls and
+separate Windows Workbench acceptance, read the [reciprocal assembly contract](../systems/gentek-reciprocal-assembly.md).
+It distinguishes nominal footprint revisions from matched offer causality,
+unknown closure from zero obligations, and the frozen fixed-territory selection
+from the original shared-territory hypothesis. The [dated recovery record](../audits/2026-11-20-swarm004-native-recovery.md)
+retains the source identities, causal comparison and negative results.
+[Focused questions](retrieval-questions-swarm004.json) are an additive development
+set; the frozen retrieval questions are unchanged.
 
 For the combined #562 Materials Lab / #564 Workbench candidate, original source ancestry, shared history preservation, standalone evaluation and #563 merge-order boundaries, read the [combined qualification record](../audits/2026-11-12-mat-auth-workbench-integration.md).
 
@@ -80,6 +100,16 @@ Donor manifests and source-specific historical galleries remain explicit researc
 references; only a current candidate's source-matched receipts qualify its runtime.
 
 ## Generated terrain in the playable workbench
+
+For SWARM-004 FRAMEWEAVER × MOSAIC reciprocal composition, finite territory and
+rounds, exact native-cell Apply, fresh inverse Undo and child cancellation, use
+the [experimental retained-patch contract](../architecture/experimental-workbench-authoring-patch.md).
+The [Windows owner guide](../operations/swarm004-workbench-playtest.md) separates
+Draft/HOLD implementation from required graphical and pristine-package
+qualification. Saved round/provenance sidecars are historical evidence; the
+ordinary starting map remains reconstruction authority. The
+[focused SWARM-004 questions](retrieval-questions-swarm004-workbench.json) are
+additive to the frozen retrieval evaluation.
 
 For shared baseline/edits/actors versus live session, Save versus Flatten,
 desktop/agent/remote convergence and the required combined regression, retrieve
@@ -527,3 +557,15 @@ coalesced publication counts, use the [player-control contract](../systems/playe
 How do I place multiple independently configured flyers with a passive barrel, select granular and liquid responses, paint a large canvas and save an authored start? Use the [desktop workbench controls and format](../systems/player-control-playground.md#development-workbench-on-desktop) and its [qualification record](../audits/2026-11-04-workbench-consolidation.md). Tuning retention and lifetime corrections are in the [cleanup evidence](../audits/2026-11-04-workbench394-cleanup.md); MAT source admission is [separate](../audits/2026-11-04-workbench394-material-source-transition.md).
 
 For #394 owner acceptance, accepted-main pressure reconciliation and final gate status, use the [resulting-source qualification record](../audits/2026-11-04-workbench394-ready-validation.md). Current workbench controls remain in the player playground guide.
+
+## SWARM-006 experimental Workbench recovery
+
+For the default-OFF recovery control, V4 native transport, unchanged V1/V2/V3
+controls, exact Windows package naming and SHA verification, use the
+[SWARM-006 owner guide](../operations/swarm006-workbench-playtest.md). It separates
+native attempts/reservations from qualified foreign joints, synthetic blank
+World comparisons from the owner's actual World, and source/pristine automated
+Windows qualification from owner NVIDIA acceptance. The
+[SWARM-005 owner guide](../operations/swarm005-workbench-playtest.md) preserves
+its historical two-switch scope. Neither guide authorizes Ready, merge or
+production-default promotion.
