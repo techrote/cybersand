@@ -112,6 +112,26 @@ class RuntimeCustody(unittest.TestCase):
 
 
 class EvidenceGates(unittest.TestCase):
+    def test_failed_linux_floor_names_binary_and_retains_both_symbol_tables(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            paths = [root / "adapter.so", root / "gentek_reciprocal"]
+            for path in paths:
+                path.write_bytes(elf())
+            good = "(GLIBC_2.34) (GLIBCXX_3.4.30) (CXXABI_1.3.9)"
+            bad = good + " (GLIBCXX_3.4.32) _ZSt21ios_base_library_initv"
+            evidence = root / "evidence"
+            with patch.object(linux_floor.subprocess, "check_output", side_effect=[good, bad]):
+                with self.assertRaisesRegex(ValueError, "gentek_reciprocal: Raised Linux GLIBCXX requirement: 3.4.32"):
+                    linux_floor.inspect(paths, evidence)
+            report = json.loads((evidence / "linux-runtime-floor.json").read_text())
+            self.assertFalse(report["passed"])
+            self.assertTrue(report["binaries"][0]["passed"])
+            self.assertFalse(report["binaries"][1]["passed"])
+            for binary in report["binaries"]:
+                self.assertEqual(custody.sha(evidence / binary["symbol_table"]), binary["symbol_table_sha256"])
+            self.assertIn("_ZSt21ios_base_library_initv", (evidence / "gentek_reciprocal.objdump-T.log").read_text())
+
     def test_linux_symbol_ceiling_includes_the_cli_and_rejects_new_abi(self):
         good = "(GLIBC_2.34) (GLIBCXX_3.4.30) (CXXABI_1.3.9)"
         self.assertEqual(linux_floor.symbol_versions(good)["GLIBC"], "2.34")

@@ -39,7 +39,7 @@ def main() -> int:
     floor = None
     if platform == "linux":
         import linux_floor
-        floor = linux_floor.inspect([runtime / receipt["extension"], runtime / receipt["cli"]])
+        floor = linux_floor.inspect([runtime / receipt["extension"], runtime / receipt["cli"]], output)
         custody.write_json(output / "linux-runtime-floor.json", floor)
     env = dict(os.environ, ASAN_OPTIONS="detect_leaks=1:strict_string_checks=1:halt_on_error=1",
                UBSAN_OPTIONS="halt_on_error=1:print_stacktrace=1")

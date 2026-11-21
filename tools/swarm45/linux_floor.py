@@ -24,13 +24,31 @@ def symbol_versions(text: str) -> dict:
     return result
 
 
-def inspect(paths: list[Path]) -> dict:
+def inspect(paths: list[Path], evidence: Path | None = None) -> dict:
     records = []
+    errors = []
+    if evidence is not None:
+        evidence.mkdir(parents=True, exist_ok=True)
     for path in paths:
         custody.require(custody.binary_format(path, "linux"), "Linux floor check requires x86_64 ELF")
         output = subprocess.check_output(["objdump", "-T", str(path)], text=True, timeout=45)
-        records.append({"file": path.name, "sha256": custody.sha(path), "maximum_imported_versions": symbol_versions(output)})
-    return {"passed": True, "ceilings": {key: ".".join(map(str, value)) for key, value in CEILINGS.items()}, "binaries": records}
+        record = {"file": path.name, "sha256": custody.sha(path)}
+        if evidence is not None:
+            log = evidence / (path.name + ".objdump-T.log")
+            log.write_text(output, encoding="utf-8")
+            record.update(symbol_table=log.name, symbol_table_sha256=custody.sha(log))
+        try:
+            record.update(passed=True, maximum_imported_versions=symbol_versions(output))
+        except ValueError as error:
+            record.update(passed=False, error=str(error))
+            errors.append(path.name + ": " + str(error))
+        records.append(record)
+    result = {"passed": not errors, "ceilings": {key: ".".join(map(str, value)) for key, value in CEILINGS.items()},
+              "binaries": records, "errors": errors}
+    if evidence is not None:
+        custody.write_json(evidence / "linux-runtime-floor.json", result)
+    custody.require(not errors, "Linux runtime floor failed: " + "; ".join(errors))
+    return result
 
 
 def main() -> None:
@@ -38,7 +56,7 @@ def main() -> None:
     parser.add_argument("binaries", type=Path, nargs="+")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
-    result = inspect(args.binaries)
+    result = inspect(args.binaries, args.output.parent)
     custody.write_json(args.output, result)
     print(result)
 

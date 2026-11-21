@@ -20,7 +20,7 @@ const PARAMETERS := ["variation","irregularity","clutter","destruction","branchi
 # The suffix is Makefile.reciprocal's hash of its complete C++/header inputs.
 # A changed definition requires a separately qualified bridge; source labels or
 # a successful child exit do not authorize a different Gentek or larger budget.
-const NATIVE_DEFINITION := "fe62e15412459c22c6f81e479fa1ff2917d7359d747581c9891b83fbf2f75618"
+const NATIVE_DEFINITION := "217bfa716e61198f5b3849f2ae14c30e85bc9f623fc1d05438c59df2296ce7f7"
 const NATIVE_IDENTITIES := {
 	"frame":{"gentek":"FRAMEWEAVER","version":0,"fixture":"workbench_territory",
 		"definition":"frameweaver.frontier-growth-v0."+NATIVE_DEFINITION},

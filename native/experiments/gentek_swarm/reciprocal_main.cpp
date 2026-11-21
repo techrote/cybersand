@@ -6,7 +6,7 @@
 #include <cmath>
 #include <filesystem>
 #include <fstream>
-#include <iostream>
+#include <cstdio>
 #include <sstream>
 #include <stdexcept>
 #include <string_view>
@@ -338,8 +338,8 @@ int main(int argc, char** argv) try {
         const auto input = read_request(argv[2], argv[4]);
         const auto result = assemble(input);
         write_composition_json(argv[3], result);
-        std::cout << "RECIPROCAL_REQUEST status=" << name(result.status) << " joints=" << result.joints.size()
-                  << " apply=" << result.can_apply << '\n';
+        std::printf("RECIPROCAL_REQUEST status=%s joints=%zu apply=%d\n", name(result.status),
+                    result.joints.size(), static_cast<int>(result.can_apply));
         return result.status == CompositionStatus::Invalid ? 1 : 0;
     }
     if (mode == "single") {
@@ -352,8 +352,8 @@ int main(int argc, char** argv) try {
         options.rounds = static_cast<unsigned>(rounds);
         const auto result = assemble(input_for(fixture(argv[4]), selected_profile(argv[5]), number(argv[6]), argv[3], options));
         write_composition_json(out.string(), result);
-        std::cout << "RECIPROCAL_SINGLE status=" << name(result.status) << " rounds=" << result.rounds.size()
-                  << " joints=" << result.joints.size() << " apply=" << result.can_apply << '\n';
+        std::printf("RECIPROCAL_SINGLE status=%s rounds=%zu joints=%zu apply=%d\n", name(result.status),
+                    result.rounds.size(), result.joints.size(), static_cast<int>(result.can_apply));
         return result.status == CompositionStatus::Invalid ? 1 : 0;
     }
     if (mode != "campaign" || argc < 5 || argc > 6) throw std::invalid_argument("campaign requires OUTPUT SOURCE known|holdout [SELECTED]");
@@ -451,15 +451,18 @@ int main(int argc, char** argv) try {
                             records.back().work_semantics = "separate control-only generator+solver debit; not candidate work; closure not evaluated";
                         }
                     }
-                    std::cout << file << " status=" << name(result.status) << " joints=" << result.joints.size()
-                              << " both=" << metric(result.metrics, "both_genteks_revised") << " apply=" << result.can_apply << std::endl;
+                    std::printf("%s status=%s joints=%zu both=%llu apply=%d\n", file.c_str(), name(result.status),
+                                result.joints.size(), static_cast<unsigned long long>(metric(result.metrics, "both_genteks_revised")),
+                                static_cast<int>(result.can_apply));
+                    std::fflush(stdout);
                 }
                 write_campaign(out, source, lane, selected, seeds, records, "RUNNING", violations, invalid);
             }
     write_campaign(out, source, lane, selected, seeds, records, violations || invalid ? "FAIL" : "PASS", violations, invalid);
-    std::cout << "RECIPROCAL lane=" << lane << " records=" << records.size() << " hard_violations=" << violations << " invalid=" << invalid << '\n';
+    std::printf("RECIPROCAL lane=%s records=%zu hard_violations=%llu invalid=%llu\n", lane.c_str(), records.size(),
+                static_cast<unsigned long long>(violations), static_cast<unsigned long long>(invalid));
     return violations || invalid ? 1 : 0;
 } catch (const std::exception& error) {
-    std::cerr << error.what() << '\n';
+    std::fprintf(stderr, "%s\n", error.what());
     return 2;
 }

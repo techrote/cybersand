@@ -15,9 +15,12 @@ authorized reconciliation, qualification and a manual merge after every admissio
 gate passes on 21 November 2026. This is not an automatic merge authorization.
 No source in the concurrent SWARM-006 mission is adopted or modified.
 
-The branch `integration/swarm004-005-mainline-20261121` starts from accepted main
+The branch `integration/swarm004-005-mainline-20261121` started from accepted main
 `0f0161af337d6d0cee8fa961a9667aff570a75b0` and imports the reviewed donor graph
-through #700. Accepted Water/Wave Flow, all 80 Genteks, Paint, SCRIPT-HOTPATH, Art
+through #700. Its second freeze reconciles accepted main
+`846fe0533b3170e7b01f690518da49fc40cc24d1`: PR #714 changed only Documentation
+check ordering and the CI performance runbook, and those accepted files are
+preserved exactly. Accepted Water/Wave Flow, all 80 Genteks, Paint, SCRIPT-HOTPATH, Art
 history and lazy restoration, Flatten, actors, existing saves and publication
 remain the baseline. The new source must earn its own runtime and platform
 evidence; green donor results cannot stand in for that qualification.
@@ -128,6 +131,10 @@ authority. See the [transaction contract](../architecture/experimental-workbench
 - Ship source-bound reciprocal executables with both retained runtimes, with
   platform-specific lookup and fail-closed stale-binary handling. This closes the
   donor's evaluator-only executable installation gap in ordinary Workbench use.
+- Use C stdio for the CLI's five progress/error output sites to preserve the
+  existing Linux runtime compatibility floor. Native JSON serialization and
+  generation semantics remain unchanged; the changed source receives a new
+  native definition and explicit protocol pin.
 
 These choices are reversible as separate integration deltas, but reverting the
 authority or accounting repairs would restore demonstrated defects. No SWARM-006

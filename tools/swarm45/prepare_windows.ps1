@@ -9,8 +9,10 @@ if ($LASTEXITCODE -ne 0) { throw 'Rapier materialization failed' }
 $rapier = 'godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll'
 if ((Get-FileHash $rapier -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7') { throw 'Rapier pin mismatch' }
 if (-not $Package) {
-    python tools/swarm45/install_runtime.py --runtime build/swarm45-windows --project godot
-    if ($LASTEXITCODE -ne 0) { throw 'Source-bound ordinary runtime installation failed' }
+    $sourceStage = Join-Path $env:RUNNER_TEMP 'swarm45-source'
+    python tools/swarm45/stage_source.py --runtime build/swarm45-windows --output $sourceStage
+    if ($LASTEXITCODE -ne 0) { throw 'Source-bound isolated Windows project staging failed' }
+    'SWARM45_SOURCE_PROJECT=' + (Join-Path $sourceStage 'godot') | Out-File -Append $env:GITHUB_ENV
 }
 $zip = Join-Path $env:RUNNER_TEMP 'swarm45-godot.zip'
 curl.exe -fL --retry 3 -o $zip https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip

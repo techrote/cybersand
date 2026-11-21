@@ -74,18 +74,19 @@ jobs:
       - name: Restore verified official graphical engine and Rapier
         run: |
           set -euo pipefail
-          python3 tools/swarm45/install_runtime.py --runtime build/swarm45-linux --project godot
           git lfs install --local
           git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
           echo '566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' | sha256sum -c --strict
+          python3 tools/swarm45/stage_source.py --runtime build/swarm45-linux --output "$RUNNER_TEMP/swarm45-source"
+          echo "SWARM45_SOURCE_PROJECT=$RUNNER_TEMP/swarm45-source/godot" >> "$GITHUB_ENV"
           curl -fL --retry 3 -o "$RUNNER_TEMP/swarm45-godot.zip" https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip
           echo "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  $RUNNER_TEMP/swarm45-godot.zip" | sha256sum -c --strict
           unzip -q "$RUNNER_TEMP/swarm45-godot.zip" -d "$RUNNER_TEMP/swarm45-godot"
           echo "GODOT_EXE=$RUNNER_TEMP/swarm45-godot/Godot_v4.7-stable_linux.x86_64" >> "$GITHUB_ENV"
       - name: Real graphical Generate Preview Apply Undo Save quit reopen
-        run: xvfb-run -a -s '-screen 0 1920x1080x24' python3 tools/swarm45/qualify_workbench.py --godot "$GODOT_EXE" --project godot --runtime build/swarm45-linux --output evidence/linux-source
+        run: xvfb-run -a -s '-screen 0 1920x1080x24' python3 tools/swarm45/qualify_workbench.py --godot "$GODOT_EXE" --project "$SWARM45_SOURCE_PROJECT" --runtime build/swarm45-linux --output evidence/linux-source
       - name: Accepted-main Paint Water Art Flatten and actors
-        run: xvfb-run -a -s '-screen 0 1920x1080x24' python3 tools/swarm45/accepted_main_smokes.py --godot "$GODOT_EXE" --project godot --runtime build/swarm45-linux --evidence evidence/linux-smokes
+        run: xvfb-run -a -s '-screen 0 1920x1080x24' python3 tools/swarm45/accepted_main_smokes.py --godot "$GODOT_EXE" --project "$SWARM45_SOURCE_PROJECT" --runtime build/swarm45-linux --evidence evidence/linux-smokes
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: swarm45-linux-runtime-${{ github.run_id }}-${{ github.run_attempt }}
@@ -159,12 +160,12 @@ jobs:
       - name: Source graphical authoring and lifecycle
         shell: pwsh
         run: |
-          python tools/swarm45/qualify_workbench.py --godot $env:GODOT_EXE --project godot --runtime build/swarm45-windows --output evidence/windows-source
+          python tools/swarm45/qualify_workbench.py --godot $env:GODOT_EXE --project $env:SWARM45_SOURCE_PROJECT --runtime build/swarm45-windows --output evidence/windows-source
           if ($LASTEXITCODE -ne 0) { throw 'Source graphical qualification failed' }
       - name: Accepted-main Paint Water Art Flatten and actors
         shell: pwsh
         run: |
-          python tools/swarm45/accepted_main_smokes.py --godot $env:GODOT_EXE --project godot --runtime build/swarm45-windows --evidence evidence/windows-smokes
+          python tools/swarm45/accepted_main_smokes.py --godot $env:GODOT_EXE --project $env:SWARM45_SOURCE_PROJECT --runtime build/swarm45-windows --evidence evidence/windows-smokes
           if ($LASTEXITCODE -ne 0) { throw 'Accepted-main source smoke failed' }
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()

@@ -20,7 +20,7 @@ import runtime_custody as custody
 ROOT = Path(__file__).resolve().parents[2]
 BRANCH = "refs/heads/" + custody.BRANCH
 REQUEST = ".github/swarm45-mainline-request.json"
-ACCEPTED_MAIN = "0f0161af337d6d0cee8fa961a9667aff570a75b0"
+ACCEPTED_MAIN = "846fe0533b3170e7b01f690518da49fc40cc24d1"
 DONORS = {"692": "2c4b8061ef5315de6a31df933e9f84c31865284e",
           "693": "16a11ef2d25f03d58b229f4bba3f88009ebe1154",
           "696": "c178feeb39899fd155b7deb9d5bde3f50ee28548",
