@@ -21,20 +21,24 @@ SOURCE, CLI, TEST, PROPOSAL = "a" * 40, "b" * 64, "c" * 64, "d" * 64
 
 def report(example: str = "reciprocal", mode: str = "create") -> dict:
     reciprocal = example == "reciprocal"
-    return {"schema": 2, "mode": mode, "example": example, "checks": 40, "completed": True,
+    blocked = example == "swarm005_viaduct"
+    base = {"schema": 2, "mode": mode, "example": example, "checks": 40, "completed": True,
             "failures": [], "platform": "Windows", "display": "windows", "process_id": 41 if mode == "create" else 42,
             "engine": "4.7-stable (official)", "test_sha256": TEST,
             "owner_visual_acceptance": "pending", "reciprocal_programme_acceptance": False,
             "transport_refusals": {"preexisting_job_directory": True, "failed_child_positive": True},
-            "native_source": {"source": SOURCE, "sha256": CLI}, "native_status": "complete", "native_can_apply": True,
+            "native_source": {"source": SOURCE, "sha256": CLI},
+            "native_status": "blocked" if blocked else "complete", "native_can_apply": not blocked,
             "native_recipe": qualification.expected_recipe(example), "proposal_sha256": PROPOSAL,
             "native_receipt": {"operation": "build", "changed_cells": 100, "proposal_sha256": PROPOSAL},
-            "joint_count": 8 if reciprocal else 0, "obligation_count": 8 if reciprocal else 0,
+            "joint_count": 8 if reciprocal else 0, "obligation_count": 8 if reciprocal else (1 if blocked else 0),
             "reciprocal_witness_passed": reciprocal,
             "reciprocal_witness": {"frame_occupied_changes": 55, "mosaic_occupied_changes": 56,
                                    "both_footprints_changed": True, "joint_count": 8 if reciprocal else 0,
-                                   "obligation_count": 8 if reciprocal else 0, "foreign_joined": 8 if reciprocal else 0,
-                                   "unresolved": 0, "all_foreign_closed": True}}
+                                   "obligation_count": 8 if reciprocal else (1 if blocked else 0),
+                                   "foreign_joined": 8 if reciprocal else 0,
+                                   "unresolved": 1 if blocked else 0, "all_foreign_closed": not blocked}}
+    return base
 
 
 def errors(value: dict, example: str = "reciprocal", mode: str = "create") -> list[str]:
@@ -49,11 +53,40 @@ def synthetic_png() -> bytes:
 
 
 class EvidenceGates(unittest.TestCase):
-    def test_both_fixed_recipes_and_pending_acceptance_pass(self) -> None:
-        for example in qualification.EXAMPLES:
-            for mode in ("create", "reopen"):
+    def test_all_v3_and_inherited_recipes_and_pending_acceptance_pass(self) -> None:
+        for example, selection in qualification.EXAMPLES.items():
+            modes = ("blocked",) if selection.get("negative") else ("create", "reopen")
+            for mode in modes:
                 with self.subTest(example=example, mode=mode):
                     self.assertEqual([], errors(report(example, mode), example, mode))
+
+    def test_v3_specific_negative_and_switch_admission_are_fail_closed(self) -> None:
+        for example, mode in (("swarm005_irregular", "create"), ("swarm005_viaduct", "blocked")):
+            actual = report(example, mode)
+            self.assertEqual([], errors(actual, example, mode))
+            for field in ("compact_native_termination", "supported_native_receptors"):
+                broken = copy.deepcopy(actual)
+                broken["native_recipe"][field] = False
+                self.assertTrue(errors(broken, example, mode), field)
+            broken = copy.deepcopy(actual)
+            broken["native_recipe"]["layout"] = "centered_frame_rectangle"
+            self.assertTrue(errors(broken, example, mode))
+        blocked = report("swarm005_viaduct", "blocked")
+        for key, value in (("native_status", "complete"), ("native_can_apply", True)):
+            bad = copy.deepcopy(blocked);bad[key] = value
+            self.assertTrue(errors(bad, "swarm005_viaduct", "blocked"), key)
+        blocked["reciprocal_witness"]["unresolved"] = 0
+        self.assertTrue(errors(blocked, "swarm005_viaduct", "blocked"))
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder)
+            negative = report("swarm005_viaduct", "blocked")
+            sha = hashlib.sha256(bytes(512*512*2)).hexdigest()
+            negative["native_planes_sha256"] = {"baseline": sha, "preview": sha}
+            for name in ("native-preview.png", "native-unresolved.png"):
+                (path / name).write_bytes(synthetic_png())
+            self.assertTrue(qualification.blocked_evidence(path, negative)["passed"])
+            negative["native_planes_sha256"]["preview"] = "d"*64
+            self.assertFalse(qualification.blocked_evidence(path, negative)["passed"])
 
     def test_saved_godot_json_retains_integral_receipt_numbers(self) -> None:
         candidate = report(mode="reopen")
