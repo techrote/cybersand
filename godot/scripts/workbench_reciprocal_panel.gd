@@ -170,13 +170,18 @@ func _label(parent: Control, text: String) -> Label:
 	var value:=Label.new();value.text=text;parent.add_child(value);return value
 
 func _button(parent: Control, text: String, action: Callable) -> Button:
-	var value:=Button.new();value.text=text;value.focus_mode=FOCUS_NONE;value.pressed.connect(action);parent.add_child(value);return value
+	var value:=Button.new();value.text=text;value.focus_mode=FOCUS_NONE
+	value.pressed.connect(func() -> void:
+		bench._commit_field(get_viewport())
+		action.call())
+	parent.add_child(value);return value
 
 func _spin(parent: Control, text: String, key: String, low: float, high: float, step: float, value: float) -> void:
 	_label(parent,text)
 	var spin:=SpinBox.new();spin.min_value=low;spin.max_value=high;spin.step=step;spin.value=value
 	spin.custom_minimum_size.x=80;parent.add_child(spin);controls[key]=spin
 	spin.value_changed.connect(func(_number: float) -> void: invalidate("Recipe changed."))
+	spin.get_line_edit().text_changed.connect(func(_text: String) -> void: invalidate("Recipe text changed; Generate to use the edited value."))
 
 func _mount_gentek_controls(parent: Control, gentek: String, title: String) -> void:
 	var enabled:=CheckButton.new();enabled.text="Independent "+title+" controls";parent.add_child(enabled)
@@ -187,6 +192,7 @@ func _mount_gentek_controls(parent: Control, gentek: String, title: String) -> v
 		var spin:=SpinBox.new();spin.min_value=0;spin.max_value=1;spin.step=0.05;spin.value=controls[spec[1]].value
 		spin.custom_minimum_size.x=80;row.add_child(spin);values[spec[1]]=spin
 		spin.value_changed.connect(func(_value: float) -> void: invalidate(title+" controls changed."))
+		spin.get_line_edit().text_changed.connect(func(_text: String) -> void: invalidate(title+" control text changed; regenerate before Apply."))
 	gentek_controls[gentek]={"enabled":enabled,"fields":fields,"values":values,"initialized":false}
 	enabled.toggled.connect(func(active: bool) -> void:
 		if active and not gentek_controls[gentek].initialized:
@@ -267,6 +273,7 @@ func world_input(event: InputEvent) -> bool:
 	if not visible or not _paint.button_pressed or busy(): return false
 	if event is InputEventMouseButton:
 		if event.button_index!=MOUSE_BUTTON_LEFT: return false
+		if event.pressed: invalidate("Territory editing started; regenerate before Apply.")
 		_dragging=event.pressed
 		if _dragging:
 			_points.clear();bench.cancel_stroke()
@@ -349,6 +356,7 @@ func _runtime_info() -> Dictionary:
 	return {"ok":true,"path":path,"source":str(manifest.source),"sha256":str(manifest.sha256)}
 
 func generate() -> bool:
+	bench._commit_field(get_viewport())
 	if busy() or bench.busy(): return _say("Wait for the active native transaction.")
 	if activation.is_empty(): return _say("Paint an activation stroke on the native canvas first.")
 	invalidate("Checking the native generator source…")
@@ -533,6 +541,7 @@ func _inspect_cell(event: InputEvent) -> void:
 	_inspector.text+="\n"+"\n".join(Protocol.inspect_sockets(document,round_index,point))
 
 func apply_construction() -> bool:
+	bench._commit_field(get_viewport())
 	if phase!="ready" or not document.get("can_apply",false): return _say("Apply requires an accepted native composition with all mandatory obligations resolved.")
 	if _fence()!=_source_fence or _history()!=_source_history: invalidate("Source changed; regenerate before Apply.");return false
 	var staged:=History.prepare(bench.applied,proposal.cells,bench._generated_active,bench._material_baseline)

@@ -17,9 +17,11 @@ import re
 import subprocess
 import sys
 
+import qualify_workbench as input_qualification
+
 ROOT = Path(__file__).resolve().parents[2]
 VERSION = "4.7.stable.official.5b4e0cb0f"
-SOURCE_PATHS = ("godot", "native/include", "native/src", "native/experiments/gentek_swarm", "tools/swarm006")
+SOURCE_PATHS = (".gitattributes", "godot", "native/include", "native/src", "native/experiments/gentek_swarm", "tools/swarm006")
 SOURCE_EXCLUDES = (":(exclude)godot/addons/**/bin/**",)
 ERRORS = re.compile(r"SCRIPT ERROR:|Parse Error:|Failed to load script|Failed loading resource:|GDExtension library not found")
 WATER_SECTIONS = {"activation", "parameters", "workers_substeps", "runtime_apply", "regeneration", "scenario_change",
@@ -29,6 +31,7 @@ CASES = (
     ("protocol", "test_workbench_reciprocal_protocol.gd", "SWARM004_PROTOCOL", {}, 60),
     ("controller", "test_workbench_reciprocal_controller.gd", "SWARM004_CONTROLLER", {}, 120),
     ("controls-inspector", "test_workbench_reciprocal_controls.gd", "SWARM004_CONTROLS", {}, 180),
+    ("input-integrity", "swarm006_reciprocal_input.gd", "SWARM006_INPUT_INTEGRITY", {}, 180),
     ("art", "test_art_undo.gd", "ART_UNDO_RESULT", {"ART_UNDO_WORKERS": "1"}, 300),
     ("paint-author", "test_paint_editor_workbench.gd", "PAINT_EDITOR_WORKBENCH", {"PAINT_REOPEN": "0"}, 240),
     ("paint-reopen", "test_paint_editor_workbench.gd", "PAINT_EDITOR_WORKBENCH", {"PAINT_REOPEN": "1"}, 240),
@@ -62,6 +65,124 @@ def source_inputs() -> dict:
     # as well as scripts. Runtime binaries have their own identity below.
     paths = git("ls-files", "--", *SOURCE_PATHS, *SOURCE_EXCLUDES).splitlines()
     return {path: sha(ROOT / path) for path in paths}
+
+
+def native_paths() -> tuple[Path, Path]:
+    native = ROOT / "godot/addons/cybersand_native/bin" / ("cybersand_native.windows.x86_64.dll" if os.name == "nt" else "libcybersand_native.linux.x86_64.so")
+    rapier = ROOT / "godot/addons/godot-rapier2d/bin" / ("libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" if os.name == "nt" else "libgodot_rapier.linux.x86_64-unknown-linux-gnu.so")
+    return native, rapier
+
+
+def identity_errors(identity: dict, engine: Path, cli: Path) -> list[str]:
+    """The same exact-byte custody check ends the suite and follows graphics."""
+    native, rapier = native_paths()
+    checks = {"source": lambda: git("rev-parse", "HEAD"), "tree": lambda: git("rev-parse", "HEAD^{tree}"),
+              "platform": lambda: sys.platform, "engine_sha256": lambda: sha(engine), "cli_sha256": lambda: sha(cli),
+              "native_sha256": lambda: sha(native), "rapier_sha256": lambda: sha(rapier),
+              "inputs": source_inputs, "source_delta": lambda: source_delta(SOURCE_PATHS)}
+    errors = []
+    for key, read in checks.items():
+        try:
+            if read() != identity.get(key):
+                errors.append("Preservation identity changed: " + key)
+        except (OSError, subprocess.SubprocessError) as error:
+            errors.append("Cannot recheck preservation " + key + ": " + str(error))
+    return errors
+
+
+def recheck_preservation(prior: Path, output: Path, engine: Path, cli: Path) -> int:
+    """Recheck a completed suite after graphical consumers, without rerunning it."""
+    if output.exists():
+        raise ValueError("Refusing existing evidence directory")
+    errors = []
+    records = {}
+    for name in ("identity", "qualification", "qualification-integrity"):
+        try:
+            value = json.loads((prior / (name + ".json")).read_text(encoding="utf-8"))
+            if not isinstance(value, dict):
+                raise ValueError("Expected an object")
+            records[name] = value
+        except (OSError, ValueError) as error:
+            records[name] = {}
+            errors.append("Missing or malformed prior " + name + ": " + str(error))
+    identity, qualification, integrity = (records[key] for key in ("identity", "qualification", "qualification-integrity"))
+    if type(integrity.get("schema")) is not int or integrity.get("schema") != 1 or integrity.get("source") != identity.get("source"):
+        errors.append("Prior preservation integrity identity is invalid")
+    for name in ("identity", "qualification"):
+        path = prior / (name + ".json")
+        if not path.is_file() or sha(path) != integrity.get(name + "_sha256"):
+            errors.append("Prior preservation bytes changed: " + name)
+    if (identity.get("development") is not False or identity.get("source_delta") != ""
+            or not isinstance(identity.get("inputs"), dict) or ".gitattributes" not in identity.get("inputs", {})):
+        errors.append("Prior preservation is not a clean source-bound qualification")
+    if (qualification.get("passed") is not True or qualification.get("inputs_unchanged") is not True
+            or qualification.get("identity") != identity):
+        errors.append("Prior preservation did not finish with unchanged identity")
+    results = qualification.get("results")
+    expected = [("import", "")] + [(name, script) for name, script, _, _, _ in CASES]
+    if (not isinstance(results, list) or len(results) != len(expected)
+            or any(not isinstance(result, dict) or (result.get("name"), result.get("script")) != pair
+                   for result, pair in zip(results if isinstance(results, list) else [], expected))):
+        errors.append("Prior preservation has missing or unexpected completed cases")
+    else:
+        for result in results:
+            if (result.get("passed") is not True or result.get("errors") != [] or result.get("returncode") != 0
+                    or type(result.get("returncode")) is not int or result.get("timed_out") is not False
+                    or result.get("child_reaped") is not True):
+                errors.append("Prior preservation process did not pass: " + result["name"])
+            path = prior / (result["name"] + ".log")
+            if not path.is_file() or sha(path) != result.get("log_sha256"):
+                errors.append("Prior preservation process log changed: " + result["name"])
+    errors.extend(identity_errors(identity, engine, cli))
+    output.mkdir(parents=True)
+    record = {"schema": 1, "stage": "post-consumer-identity", "passed": not errors, "errors": errors,
+              "prior_directory": str(prior), "prior_source": identity.get("source"),
+              "prior_identity_sha256": integrity.get("identity_sha256"),
+              "prior_qualification_sha256": integrity.get("qualification_sha256"),
+              "scope": "Exact source/runtime and completed preservation evidence recheck; no tests rerun"}
+    (output / "identity-recheck.json").write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
+    print(json.dumps(record), flush=True)
+    return int(bool(errors))
+
+
+def retain_source_refusal(output: Path, dirty: str, engine: Path, cli: Path) -> Path:
+    """Keep exact admission evidence without accepting or rewriting dirty inputs."""
+    # Porcelain can report M even when a filtered semantic diff is empty.
+    # Preserve exactly those refused paths, including both sides of a rename.
+    status = subprocess.check_output(["git", "status", "--porcelain=v1", "-z", "--untracked-files=all", "--",
+                                      *SOURCE_PATHS, *SOURCE_EXCLUDES], cwd=ROOT, timeout=60).decode("utf-8")
+    entries = iter(status.split("\0"))
+    paths = set()
+    for entry in entries:
+        if not entry:
+            continue
+        code, path = entry[:2], entry[3:]
+        if code != "??" or not path.endswith(".uid"):
+            paths.add(path)
+        if "R" in code or "C" in code:
+            original = next(entries, "")
+            if original:
+                paths.add(original)
+    files = {}
+    for path in sorted(paths):
+        committed = subprocess.run(["git", "show", "HEAD:" + path], cwd=ROOT, capture_output=True, timeout=60)
+        actual = ROOT / path
+        files[path] = {"working_sha256": sha(actual) if actual.is_file() else None,
+                       "committed_sha256": hashlib.sha256(committed.stdout).hexdigest() if committed.returncode == 0 else None}
+    try:
+        inputs, inventory_error = source_inputs(), None
+    except OSError as error:
+        inputs, inventory_error = None, str(error)
+    record = {"schema": 1, "stage": "source-admission", "passed": False,
+              "reason": "Qualification source must be committed and clean", "source": git("rev-parse", "HEAD"),
+              "tree": git("rev-parse", "HEAD^{tree}"), "platform": sys.platform, "source_delta": dirty,
+              "porcelain_status": status, "changed_files": files, "inputs": inputs, "source_input_inventory_error": inventory_error,
+              "engine_sha256": sha(engine) if engine.is_file() else None,
+              "cli_sha256": sha(cli) if cli.is_file() else None}
+    output.mkdir(parents=True)
+    path = output / "source-admission-refusal.json"
+    path.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
+    return path
 
 
 def completion(text: str, marker: str, case: str = "") -> dict:
@@ -108,18 +229,21 @@ def main() -> int:
     parser.add_argument("--cli", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--development", action="store_true", help="Explicitly unqualified local dirty-source engineering run")
+    parser.add_argument("--recheck", type=Path, help="Only recheck exact custody of this earlier successful preservation directory")
     args = parser.parse_args()
     output, engine, cli = args.output.resolve(), args.godot.resolve(), args.cli.resolve()
     if output.exists():
         raise ValueError("Refusing existing evidence directory")
+    if args.recheck is not None:
+        return recheck_preservation(args.recheck.resolve(), output, engine, cli)
     if subprocess.check_output([str(engine), "--version"], text=True, timeout=30).strip() != VERSION:
         raise ValueError("Godot pin mismatch")
     dirty = source_delta(SOURCE_PATHS)
     if dirty and not args.development:
-        raise ValueError("Qualification source must be committed and clean")
+        evidence = retain_source_refusal(output, dirty, engine, cli)
+        raise ValueError("Qualification source must be committed and clean; evidence: " + str(evidence))
     output.mkdir(parents=True)
-    native = ROOT / "godot/addons/cybersand_native/bin" / ("cybersand_native.windows.x86_64.dll" if os.name == "nt" else "libcybersand_native.linux.x86_64.so")
-    rapier = ROOT / "godot/addons/godot-rapier2d/bin" / ("libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" if os.name == "nt" else "libgodot_rapier.linux.x86_64-unknown-linux-gnu.so")
+    native, rapier = native_paths()
     magic = b"MZ" if os.name == "nt" else b"\x7fELF"
     if not native.read_bytes().startswith(magic):
         raise ValueError("Native runtime is not materialized for this host")
@@ -145,6 +269,9 @@ def main() -> int:
             target.mkdir(parents=True, exist_ok=True)
             env[variable] = str(target)
         env.update(extra)
+        if name == "input-integrity":
+            (output / name).mkdir()
+            env["SWARM004_UI_EVIDENCE"] = str(output / name)
         command = [*base, "--editor", "--quit"] if name == "import" else [*base, "--script", "res://tests/" + script]
         # Frozen process helper inherits its environment; run this script's
         # sequential children with isolated per-fixture profiles and no providers.
@@ -161,19 +288,22 @@ def main() -> int:
         try:
             if marker:
                 record["assertions"] = completion(text, marker, name)
+            if name == "input-integrity":
+                errors.extend(input_qualification.input_integrity_errors(output / name, record["assertions"],
+                    identity["source"], identity["cli_sha256"], sha(ROOT / "godot" / input_qualification.INPUT_SCRIPT), require_graphics=False))
         except (ValueError, TypeError) as error:
             errors.append(str(error))
         record.update(name=name, script=script, errors=errors, passed=not errors)
         results.append(record)
         (output / (name + "-process.json")).write_text(json.dumps(record, indent=2) + "\n")
         print(json.dumps({"case": name, "passed": not errors, "errors": errors}), flush=True)
-    unchanged = (git("rev-parse", "HEAD") == identity["source"] and sha(engine) == identity["engine_sha256"]
-                 and sha(cli) == identity["cli_sha256"]
-                 and sha(native) == identity["native_sha256"] and sha(rapier) == identity["rapier_sha256"]
-                 and source_inputs() == inputs and source_delta(SOURCE_PATHS) == dirty)
+    custody_errors = identity_errors(identity, engine, cli)
+    unchanged = not custody_errors
     passed = unchanged and all(r["passed"] for r in results)
     (output / "qualification.json").write_text(json.dumps({"scope": __doc__, "identity": identity,
-        "passed": passed, "inputs_unchanged": unchanged, "results": results}, indent=2) + "\n")
+        "passed": passed, "inputs_unchanged": unchanged, "identity_errors": custody_errors, "results": results}, indent=2) + "\n")
+    (output / "qualification-integrity.json").write_text(json.dumps({"schema": 1, "source": identity["source"],
+        "identity_sha256": sha(output / "identity.json"), "qualification_sha256": sha(output / "qualification.json")}, indent=2) + "\n")
     return int(not passed)
 
 

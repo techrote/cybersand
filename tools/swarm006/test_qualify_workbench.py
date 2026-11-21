@@ -95,7 +95,125 @@ def rewrite_native(directory: Path, candidate: dict, stage: str, value: object) 
     candidate["native_evidence_sha256"][stage][path.name] = hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def input_fixture(directory: Path) -> dict:
+    """Synthetic consumer fixture; the Godot script supplies actual input evidence."""
+    cases = {}
+    for name in qualification.INPUT_CASES - {"keyboard"}:
+        cases[name] = {"world_unchanged": True, "history_unchanged": True, "apply_delta": 0}
+    for name, typed, old, new in (("shared", "606", 605, 606), ("independent", "0.2", 0.15, 0.2)):
+        cases[name].update(typed_text=typed, old_value=old, pending_value=old, committed_value=new,
+                           native_value=new, retired_before_apply=True, typed_generate_matches=True)
+    cases["gesture"].update(new_protected_count=49, dragging_on_press=True, retired_on_press=True)
+    for kind in ("active", "off", "hidden"):
+        cases["busy-" + kind].update(job_observed=True, paint_dragging_after_press=False,
+            visible_before_input=kind != "hidden", territory_mode_before_input=kind != "off",
+            phase_before_input="cancelling" if kind == "hidden" else "running",
+            thread_pending_before_hide=True, child_alive_before_input=True, child_pid=87)
+    cases["keyboard"] = {"idle_paint_changes_world": True, "idle_paint_history": True}
+    for action in ("undo", "redo"):
+        cases["keyboard"].update({action + suffix: True for suffix in ("_child_live", "_child_live_before_shortcut", "_callback_refused", "_button_disabled", "_blocked")})
+        cases["keyboard"].update({"idle_" + action + "_works": True, action + "_child_pid": 88})
+    result = {"schema": 1, "completed": True, "checks": 120, "failures": [], "cases": cases,
+              "engine": "4.7-stable (official)", "platform": "Windows", "display": "windows",
+              "test_sha256": TEST, "native_source": {"source": SOURCE, "sha256": CLI},
+              "native_planes_sha256": {}, "native_records_sha256": {}}
+    for stage in qualification.INPUT_PLANES:
+        painted = stage in ("idle-painted", "idle-redo", "keyboard-undo-before", "keyboard-undo-after")
+        data = (b"\x01\x00" if painted else b"\x00\x00") * (512*512)
+        (directory / (stage + ".le16")).write_bytes(data)
+        result["native_planes_sha256"][stage] = hashlib.sha256(data).hexdigest()
+    for label in ("shared-initial", "shared-typed", "independent-initial", "independent-typed", "gesture-initial"):
+        value = {"source": SOURCE, "schema": 6, "type": "reciprocal_assembly", "programme": "GENTEK-SWARM-006",
+            "identity": "gentek_swarm_006_negotiated_recovery_v1", "status": "complete", "can_apply": True,
+            "metrics": {"still_required": 0}, "input": {"options": {"negotiated_recovery": True}, "frame": {
+            "source": SOURCE, "seed": 606 if label == "shared-typed" else 605,
+            "profile": {"cohesion": 0.2 if label == "independent-typed" else 0.15}}}}
+        files = {label + "-request.txt": b"SWARM006 4\nsynthetic input transport fixture\n", label + "-result.json": json.dumps(value).encode()}
+        for name, data in files.items(): (directory / name).write_bytes(data)
+        result["native_records_sha256"][label] = {name: hashlib.sha256(data).hexdigest() for name, data in files.items()}
+    for name in qualification.INPUT_CAPTURES: (directory / name).write_bytes(synthetic_png())
+    return result
+
+
 class EvidenceGates(unittest.TestCase):
+    def test_input_integrity_requires_all_actual_cases_and_source_identity(self) -> None:
+        with tempfile.TemporaryDirectory() as folder:
+            directory = Path(folder); candidate = input_fixture(directory)
+            validate = lambda value: qualification.input_integrity_errors(directory, value, SOURCE, CLI, TEST)
+            self.assertEqual([], validate(candidate))
+            for name in qualification.INPUT_CASES:
+                changed = copy.deepcopy(candidate);changed["cases"].pop(name)
+                self.assertTrue(validate(changed), name)
+            for name, key in (("shared", "retired_before_apply"), ("independent", "typed_generate_matches"),
+                              ("gesture", "retired_on_press"), ("busy-active", "child_alive_before_input"),
+                              ("busy-hidden", "thread_pending_before_hide"), ("keyboard", "undo_child_live_before_shortcut"),
+                              ("keyboard", "redo_callback_refused"), ("keyboard", "undo_button_disabled"),
+                              ("keyboard", "idle_redo_works")):
+                changed = copy.deepcopy(candidate);changed["cases"][name][key] = False
+                self.assertTrue(validate(changed), (name, key))
+            for key, value in (("native_source", {}), ("test_sha256", "0"*64), ("completed", False),
+                               ("cases", []), ("display", "headless"), ("platform", "Linux")):
+                changed = copy.deepcopy(candidate);changed[key] = value
+                self.assertTrue(validate(changed), key)
+            self.assertTrue(validate(None))
+            headless = copy.deepcopy(candidate);headless.update(platform="Linux", display="headless")
+            self.assertEqual([], qualification.input_integrity_errors(directory, headless, SOURCE, CLI, TEST, require_graphics=False))
+
+    def test_input_integrity_rehashed_native_planes_and_typed_metadata_cannot_lie(self) -> None:
+        with tempfile.TemporaryDirectory() as folder:
+            directory = Path(folder); candidate = input_fixture(directory)
+            validate = lambda value: qualification.input_integrity_errors(directory, value, SOURCE, CLI, TEST)
+            for stage in ("shared-after", "busy-off-after", "keyboard-undo-after", "idle-redo"):
+                path = directory / (stage + ".le16");original = path.read_bytes()
+                path.write_bytes(b"\x02\x00" * (512*512))
+                changed = copy.deepcopy(candidate);changed["native_planes_sha256"][stage] = hashlib.sha256(path.read_bytes()).hexdigest()
+                self.assertTrue(validate(changed), stage)
+                path.write_bytes(original)
+            for label, field, value in (("shared-typed", "seed", 605), ("independent-typed", "profile", {"cohesion": 0.15})):
+                path = directory / (label + "-result.json");original = path.read_bytes();raw = json.loads(original)
+                raw["input"]["frame"][field] = value;path.write_text(json.dumps(raw))
+                changed = copy.deepcopy(candidate);changed["native_records_sha256"][label][path.name] = hashlib.sha256(path.read_bytes()).hexdigest()
+                self.assertTrue(validate(changed), label)
+                path.write_bytes(original)
+            (directory / "busy-active-before.le16").write_bytes(b"\x00\x00")
+            self.assertTrue(validate(candidate))
+
+    def test_input_integrity_requires_original_screenshots_and_complete_native_records(self) -> None:
+        with tempfile.TemporaryDirectory() as folder:
+            directory = Path(folder);candidate = input_fixture(directory)
+            for name in qualification.INPUT_CAPTURES:
+                path = directory / name;original = path.read_bytes();path.write_bytes(original[:24])
+                self.assertTrue(qualification.input_integrity_errors(directory, candidate, SOURCE, CLI, TEST), name)
+                path.write_bytes(original)
+            for label in candidate["native_records_sha256"]:
+                changed = copy.deepcopy(candidate);changed["native_records_sha256"].pop(label)
+                self.assertTrue(qualification.input_integrity_errors(directory, changed, SOURCE, CLI, TEST), label)
+
+    def test_input_integrity_rehashed_native_identity_and_authority_must_agree(self) -> None:
+        with tempfile.TemporaryDirectory() as folder:
+            directory = Path(folder);candidate = input_fixture(directory)
+            def validate_raw(label, raw):
+                path = directory / (label + "-result.json");path.write_text(json.dumps(raw))
+                changed = copy.deepcopy(candidate);changed["native_records_sha256"][label][path.name] = hashlib.sha256(path.read_bytes()).hexdigest()
+                return qualification.input_integrity_errors(directory, changed, SOURCE, CLI, TEST)
+            for label in ("shared-initial", "shared-typed"):
+                path = directory / (label + "-result.json");original = path.read_bytes();raw = json.loads(original)
+                for key, value in (("schema", 1), ("type", "not_native"), ("programme", "not_swarm"),
+                                   ("identity", "different"), ("source", "0"*40), ("status", "blocked"),
+                                   ("status", "unknown"), ("can_apply", 1), ("metrics", {}),
+                                   ("metrics", {"still_required": 1}), ("metrics", {"still_required": False})):
+                    self.assertTrue(validate_raw(label, dict(raw, **{key: value})), (label, key, value))
+                negative = dict(raw, status="blocked", can_apply=False, metrics={"still_required": 1})
+                if label.endswith("-typed"):
+                    self.assertEqual([], validate_raw(label, negative))
+                else:
+                    self.assertTrue(validate_raw(label, negative))
+                self.assertTrue(validate_raw(label, []))
+                path.write_bytes(original)
+            path = directory / "shared-typed-request.txt";path.write_bytes(b"SWARM004 3\n")
+            changed = copy.deepcopy(candidate);changed["native_records_sha256"]["shared-typed"][path.name] = hashlib.sha256(path.read_bytes()).hexdigest()
+            self.assertTrue(qualification.input_integrity_errors(directory, changed, SOURCE, CLI, TEST))
+
     def test_actual_inspector_source_rounds_and_all_predicates_are_required(self) -> None:
         for mode, stage in (("create", "initial"), ("create", "regenerated"), ("reopen", "reopened")):
             candidate = report(mode=mode)

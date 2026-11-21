@@ -84,6 +84,68 @@ fails. It rejects letterbox coordinates before converting them to integer cells.
 Reset replaces captured dictionaries instead of clearing objects still owned by
 a retiring decoder. Final-only layers remain unavailable in provisional views.
 
+## Late input-integrity findings and successor repair — 21 November
+
+Read-only integration preflight exposed current defects in exact successor
+`8cf93e48bc23370c6ef7b835978689ca3aa3e9f8`. An isolated copy of that committed
+Godot project reproduced them with actual keyboard/mouse input and complete
+native World readback. The existing positive qualifications for that source
+remain retained evidence; they do not cover or excuse these failures.
+
+| Exact-source observation | Bounded successor correction |
+| --- | --- |
+| Visible seed text changed from 605 to 606 while the SpinBox still held 605. Clicking the old enabled Apply installed 5,832 cells from the previous proposal. | Shared and independent numeric text edits immediately retire the proposal. Panel buttons commit focused numeric text before their action; Generate and Apply also commit before their direct-call admission checks. |
+| A territory gesture during a live native child entered ordinary Paint and changed 197 native cells. | The Shared Workbench canvas router consumes input while reciprocal work owns the source, including territory mode OFF and a hidden dock whose cancellation thread is still retiring. Idle Paint routing stays intact. |
+| Real Ctrl+Z during a live native child removed a previously painted 197-cell edit. | The existing shared Art/Paint history guard refuses reciprocal-busy Undo/Redo. Both keyboard and direct history callbacks use that guard; text-field shortcut routing is unchanged. |
+| The first Protect press created 49 protected marks while the old preview and Apply remained ready until release. The tested outside release retired the proposal; unauthorized Apply was **not** reproduced in this case. | Retire the old proposal at the first admitted territory press, before any marks change. |
+
+These are this successor's own repairs. No source from the separate unaccepted
+SWARM-004/005 candidate is imported. Native implementation, registrations,
+resource ceilings, policy definitions, ordinary defaults and the compiled native
+definition remain byte-identical to the preceding successor. The native
+definition is still
+`72779688b897e4707d89ac1f6e692046abbc806bd27b4c129bd77fcd995093a0`.
+
+`godot/tests/swarm006_reciprocal_input.gd` now drives the actual Workbench for
+seven cases: pending shared text, pending independent text, initial Protect
+press, live-child territory input, live-child input with territory mode OFF,
+hidden-dock cancellation with a real preparation thread, and busy versus idle
+Paint history. It verifies typed values in retained native responses, observes
+real child liveness immediately before history shortcuts, checks disabled
+buttons and rejected direct callbacks, and compares all 20 complete 512×512
+material planes. Idle Paint, Undo and Redo must succeed as positive controls.
+Focused LineEdit/TextEdit Undo preservation is source-reviewed here; the World
+history shortcut test deliberately releases text focus.
+
+The first repaired development run completed 93 assertions with seven cases,
+five retained native request/result pairs, and no failures. Its official Godot
+4.7 Linux headless execution used the explicitly identified development native
+adapter; it is not a Windows graphical or owner acceptance result. The original
+failed reproduction and keyboard probe remain under
+`swarm006-evidence/workbench-dev/adjacent-input-repro-8cf/`; repaired execution,
+source/runtime hashes, complete native planes and semantic verification remain
+under `swarm006-evidence/workbench-dev/input-integrity-dev-attempt1/`. Staged
+project copies, import caches and duplicate runtime binaries are excluded from
+the durable evidence packet; their reconstruction identities are retained.
+
+Both source and pristine-package Windows qualification now require this input
+test, its three original graphical captures and the same raw evidence gate.
+The final-head Linux preservation runner adds it to the existing bounded cases
+and uses that verifier without claiming graphical acceptance: 13 test processes
+plus import. The gate rejects missing cases, changed or incomplete planes,
+rehashed contradictory V4/schema6 native identity/status/Apply authority, and
+typed values that differ from the native result. Initial proposals must have
+native-authorized complete closure; a valid negative typed-value result does
+not become a scientific failure or fabricated success. Physical joint authority
+continues to belong to native validation and Protocol.
+
+Affected source-sensitive Workbench receipts, independent reviews and evaluator
+packages must be renewed at the newly published source. Old `8cf93e48` Windows
+results remain attached to their original identity. This UI repair does not
+change revealed-corpus native outcomes or supply the still-pending accepted-main
+mapping, physical Windows/NVIDIA owner acceptance, or permission to leave
+Draft/HOLD.
+
 ## Scientific custody and claims
 
 The original **SWARM006-HOLDOUT-001 is revealed and frozen**. Its 96 stratified
@@ -129,6 +191,41 @@ The dated review records cover [native repair and independent Workbench review](
 and [platform and publication review](../audits/swarm006-finisher-platform-review.md).
 Their stated source and execution scope is binding; final hosted receipts and
 independent follow-up reviews are retained in the successor PR's ledger.
+
+The exact `8cf93e48` Windows source and pristine graphical runs completed, but
+ordinary preservation refused source admission before running its cases. The
+separate Windows diagnostic run `44955629441` found a clean checkout and clean
+source after runtime installation, followed by four changed Rapier `.import`
+files after successful Godot editor import. Their pre-import hashes are exactly
+the CRLF expansions of the committed files; their post-import bytes are exactly
+the original LF Git blobs. No import parameter, resource UID or asset content
+changed. The failed qualification and diagnostic artifact `14727373214` remain
+retained; the old preservation refusal is not relabelled a pass.
+
+The bounded successor correction adds `*.import text eol=lf` beside the existing
+Godot text attributes. It preserves exact committed importer bytes in Windows
+checkouts and Git archives. `.gitattributes` itself now participates in the
+preservation source admission and complete source-input hash inventory. The
+source guard still rejects changed import metadata, assets, scripts and
+attributes; it neither exempts importer files nor normalizes execution hashes
+to conceal edits. A source-admission refusal now retains its source/tree,
+runtime hashes, effective dirty paths, changed-file hashes and source inventory
+before stopping. Deleted inputs are recorded as missing instead of losing the
+refusal evidence while computing the inventory.
+
+The regression uses real Git checkout/archive operations with
+`core.autocrlf=true`, an ordinary CRLF text control and all four actual import
+descriptors. Separate mutations prove that import metadata, SVG assets, scripts
+and `.gitattributes` still refuse, with retained diagnostics; deleted import
+metadata also refuses. Actual Windows repeats those unit checks before the
+ordinary preservation and longer graphical stages. A new published-source
+Windows run must confirm import stability and complete the previously blocked
+preservation cases; local Git conversion checks alone do not supply that result.
+After source and pristine graphical execution, `qualify_preserved_workbench.py
+--recheck` revalidates the earlier complete preservation record and every bound
+source/runtime input without rerunning the tests. Its separate final receipt
+must pass before owner-package success is reported; missing or altered prior
+results, development-only evidence and later source/binary changes refuse.
 
 The new workflow `swarm006-finisher-qualification.yml` uses ordinary hosted
 Ubuntu and Windows runners. A dedicated request-file change starts its source
@@ -187,6 +284,9 @@ reopening separately from the owner's own hardware and setup acceptance.
   Save start records authored state; it is not a save of evolved simulation.
 - Confirm changed World/settings, stale executable identity and altered native
   evidence refuse without mutating the World.
+- Edit pending numeric text or start a Protect gesture and confirm the old
+  preview/Apply retires immediately. While native generation runs, Paint and
+  World Undo/Redo must refuse; after it settles, ordinary Paint/Undo/Redo must work.
 - Record the physical Windows/NVIDIA version, exact binary identities and any
   failures or visual problems. Exact original-owner-world socket repair remains
   a separate reproduction gate if the input is unavailable.

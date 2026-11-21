@@ -202,6 +202,15 @@ jobs:
         with:
           name: swarm006-finisher-windows-runtime-${{ github.run_id }}
           path: build/swarm006-windows
+      - name: Check Windows source admission and importer archive contracts
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force evidence/swarm006-windows-gates | Out-Null
+          python tools/swarm006/test_qualify_preserved_workbench.py *> evidence/swarm006-windows-gates/preservation-gate-tests.log
+          if ($LASTEXITCODE -ne 0) {
+            Get-Content evidence/swarm006-windows-gates/preservation-gate-tests.log
+            throw 'Windows source admission or importer archive regression failed'
+          }
       - name: Verify source custody and official Windows runtime
         shell: pwsh
         run: |
@@ -227,6 +236,11 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Windows V3 native transport regression failed' }
           python tools/swarm006/test_v4_request.py --exe build/swarm006-windows/gentek_reciprocal.exe --output evidence/swarm006-windows-native-v4 --source $env:TARGET_SOURCE
           if ($LASTEXITCODE -ne 0) { throw 'Windows V4 native transport regression failed' }
+      - name: Preserve accepted Art Paint Water Rapier Flatten and architecture
+        shell: pwsh
+        run: |
+          python tools/swarm006/qualify_preserved_workbench.py --godot $env:GODOT_EXE --cli build/swarm006-windows/gentek_reciprocal.exe --output evidence/swarm006-preservation
+          if ($LASTEXITCODE -ne 0) { throw 'Accepted Workbench preservation regression failed' }
       - name: Seal owner ZIP and qualify all seven real launcher exercises
         shell: pwsh
         run: |
@@ -268,11 +282,11 @@ jobs:
         run: |
           python tools/swarm006/qualify_workbench.py --godot $env:GODOT_EXE --project godot --native-candidate build/swarm006-windows --output evidence/swarm006-source
           if ($LASTEXITCODE -ne 0) { throw 'Source graphical reciprocal and transaction qualification failed' }
-      - name: Preserve accepted Art Paint Water Rapier Flatten and architecture
+      - name: Recheck complete source and runtime identity after both graphical campaigns
         shell: pwsh
         run: |
-          python tools/swarm006/qualify_preserved_workbench.py --godot $env:GODOT_EXE --cli build/swarm006-windows/gentek_reciprocal.exe --output evidence/swarm006-preservation
-          if ($LASTEXITCODE -ne 0) { throw 'Accepted Workbench preservation regression failed' }
+          python tools/swarm006/qualify_preserved_workbench.py --godot $env:GODOT_EXE --cli build/swarm006-windows/gentek_reciprocal.exe --recheck evidence/swarm006-preservation --output evidence/swarm006-final-custody
+          if ($LASTEXITCODE -ne 0) { throw 'Final source or runtime custody changed after graphical qualification' }
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:

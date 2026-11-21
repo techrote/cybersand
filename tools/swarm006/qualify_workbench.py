@@ -57,6 +57,11 @@ EXAMPLES = {
 PROFILE_DIRECTORIES = (("XDG_DATA_HOME", "data"), ("XDG_CONFIG_HOME", "config"), ("XDG_CACHE_HOME", "cache"),
                        ("APPDATA", "roaming"), ("LOCALAPPDATA", "local"))
 UI_SCRIPT = "tests/test_workbench_swarm006_ui.gd"
+INPUT_SCRIPT = "tests/swarm006_reciprocal_input.gd"
+INPUT_CASES = {"shared", "independent", "gesture", "busy-active", "busy-off", "busy-hidden", "keyboard"}
+INPUT_PAIRS = ("shared", "independent", "gesture", "busy-active", "busy-off", "busy-hidden", "keyboard-undo", "keyboard-redo")
+INPUT_PLANES = tuple(prefix + "-" + phase for prefix in INPUT_PAIRS for phase in ("before", "after")) + ("idle-baseline", "idle-painted", "idle-undo", "idle-redo")
+INPUT_CAPTURES = ("shared-pending.png", "independent-pending.png", "territory-pressed.png")
 SHA256 = re.compile(r"[0-9a-f]{64}\Z")
 
 
@@ -415,6 +420,120 @@ def world_plane_errors(directory: Path, report: dict, stages: tuple[str, ...]) -
     return errors
 
 
+def input_integrity_errors(directory: Path, report: dict, source: str, cli_sha: str,
+                           test_sha: str, require_graphics: bool = True) -> list[str]:
+    """Verify actual input assertions and their complete native before/after planes."""
+    errors = assertion_errors(report)
+    if not isinstance(report, dict):
+        return errors
+    native = object_dict(report.get("native_source"))
+    if (report.get("schema") != 1 or report.get("engine") != "4.7-stable (official)"
+            or report.get("test_sha256") != test_sha or native.get("source") != source or native.get("sha256") != cli_sha):
+        errors.append("input integrity is not bound to the exact test/engine/native source")
+    if require_graphics and (report.get("platform") != "Windows" or report.get("display") in (None, "", "headless")):
+        errors.append("input integrity requires actual Windows graphical execution")
+    cases = object_dict(report.get("cases"))
+    if set(cases) != INPUT_CASES:
+        errors.append("missing or unexpected actual input integrity cases")
+    for name in INPUT_CASES - {"keyboard"}:
+        item = object_dict(cases.get(name))
+        for key in ("world_unchanged", "history_unchanged"):
+            if item.get(key) is not True:
+                errors.append("input integrity predicate failed: " + name + "/" + key)
+        if not nonnegative_integer(item.get("apply_delta")) or item["apply_delta"] != 0:
+            errors.append("input integrity allowed an old Apply: " + name)
+    for name, typed, old, new in (("shared", "606", 605, 606), ("independent", "0.2", 0.15, 0.2)):
+        item = object_dict(cases.get(name))
+        if item.get("typed_text") != typed or item.get("retired_before_apply") is not True or item.get("typed_generate_matches") is not True:
+            errors.append("actual pending input did not retire and regenerate: " + name)
+        for key, expected in (("old_value", old), ("pending_value", old), ("committed_value", new), ("native_value", new)):
+            if type(item.get(key)) not in (int, float) or item[key] != expected:
+                errors.append("typed/native numeric value changed: " + name + "/" + key)
+    gesture = object_dict(cases.get("gesture"))
+    if (gesture.get("retired_on_press") is not True or gesture.get("dragging_on_press") is not True
+            or not positive_integer(gesture.get("new_protected_count"))):
+        errors.append("initial actual territory press did not retire authority")
+    for kind in ("active", "off", "hidden"):
+        item = object_dict(cases.get("busy-" + kind))
+        if item.get("job_observed") is not True or item.get("paint_dragging_after_press") is not False:
+            errors.append("busy input did not observe work and refuse Paint: " + kind)
+        if item.get("visible_before_input") is not (kind != "hidden") or item.get("territory_mode_before_input") is not (kind != "off"):
+            errors.append("busy input visibility/territory case changed: " + kind)
+        if kind == "hidden":
+            if item.get("thread_pending_before_hide") is not True or item.get("phase_before_input") != "cancelling":
+                errors.append("hidden case lacks an actual retiring preparation thread")
+        elif item.get("phase_before_input") != "running" or item.get("child_alive_before_input") is not True or not positive_integer(item.get("child_pid")):
+            errors.append("busy input lacks a live native child: " + kind)
+    keyboard = object_dict(cases.get("keyboard"))
+    required = ["idle_paint_changes_world", "idle_paint_history"]
+    for action in ("undo", "redo"):
+        required += [action + suffix for suffix in ("_child_live", "_child_live_before_shortcut", "_callback_refused", "_button_disabled", "_blocked")]
+        required.append("idle_" + action + "_works")
+        if not positive_integer(keyboard.get(action + "_child_pid")):
+            errors.append("keyboard refusal lacks an actual child: " + action)
+    if any(keyboard.get(key) is not True for key in required):
+        errors.append("busy history refusal or ordinary idle Paint/Undo/Redo failed")
+
+    hashes = object_dict(report.get("native_planes_sha256"))
+    if set(hashes) != set(INPUT_PLANES):
+        errors.append("missing complete input integrity native plane inventory")
+    actual = {}
+    for stage in INPUT_PLANES:
+        path = directory / (stage + ".le16")
+        if not path.is_file() or path.stat().st_size != 512*512*2:
+            errors.append("missing complete input integrity plane: " + stage)
+        else:
+            actual[stage] = custody.native.sha(path)
+            if actual[stage] != hashes.get(stage):
+                errors.append("input integrity plane bytes changed: " + stage)
+    if len(actual) == len(INPUT_PLANES):
+        for prefix in INPUT_PAIRS:
+            if actual[prefix + "-before"] != actual[prefix + "-after"]:
+                errors.append("actual input mutated native World: " + prefix)
+        if (actual["idle-baseline"] == actual["idle-painted"] or actual["idle-undo"] != actual["idle-baseline"]
+                or actual["idle-redo"] != actual["idle-painted"] or actual["keyboard-undo-before"] != actual["idle-painted"]
+                or actual["keyboard-redo-before"] != actual["idle-baseline"]):
+            errors.append("ordinary Paint and idle/busy history planes do not agree")
+
+    records = object_dict(report.get("native_records_sha256"))
+    labels = {"shared-initial", "shared-typed", "independent-initial", "independent-typed", "gesture-initial"}
+    if set(records) != labels:
+        errors.append("missing input integrity native request/result inventory")
+    for label in sorted(labels):
+        files = object_dict(records.get(label))
+        if set(files) != {label + "-request.txt", label + "-result.json"}:
+            errors.append("missing input native records: " + label); continue
+        if any(not (directory / name).is_file() or custody.native.sha(directory / name) != digest for name, digest in files.items()):
+            errors.append("input native record bytes changed: " + label); continue
+        raw = read_report(directory / (label + "-result.json"))
+        inputs = object_dict(raw.get("input"))
+        frame = object_dict(inputs.get("frame"))
+        identity = {"schema": 6, "type": "reciprocal_assembly", "programme": "GENTEK-SWARM-006",
+                    "identity": "gentek_swarm_006_negotiated_recovery_v1"}
+        if (any(raw.get(key) != expected for key, expected in identity.items())
+                or object_dict(inputs.get("options")).get("negotiated_recovery") is not True
+                or not (directory / (label + "-request.txt")).read_bytes().startswith(b"SWARM006 4\n")):
+            errors.append("input native record is not the expected V4/schema6 identity: " + label)
+        if (raw.get("status") not in ("complete", "blocked", "unsat", "exhausted", "oscillation", "invalid", "cancelled")
+                or type(raw.get("can_apply")) is not bool):
+            errors.append("input native record has malformed status/Apply authority: " + label)
+        closure = closure_outcome(raw.get("status"), raw.get("metrics"))
+        if raw.get("can_apply") is True and (raw.get("status") != "complete"
+                or not closure["closure_evaluated"] or closure["remaining"] != 0):
+            errors.append("input native Apply lacks complete evaluated closure: " + label)
+        if (raw.get("source") != source or frame.get("source") != source
+                or (label.endswith("-initial") and (raw.get("can_apply") is not True or raw.get("status") != "complete"))):
+            errors.append("input native record has changed source/initial authority: " + label)
+        expected_seed = 606 if label == "shared-typed" else 605
+        if frame.get("seed") != expected_seed:
+            errors.append("actual native request used the wrong typed seed: " + label)
+        if label == "independent-typed" and object_dict(frame.get("profile")).get("cohesion") != 0.2:
+            errors.append("actual native request lost the typed independent parameter")
+    if require_graphics:
+        errors += ["missing original input screenshot: " + name for name in INPUT_CAPTURES if not original_png(directory / name)]
+    return errors
+
+
 def example_evidence(directory: Path, reports: dict[str, dict]) -> dict:
     """Validate persistence using independent process reports and entire planes."""
     errors: list[str] = []
@@ -609,6 +728,18 @@ def main() -> int:
             break
         result = execute(name, [*base, "--headless", "--script", "res://tests/" + script], headless_env, headless, timeout)
         results.append(validate_result(result, marker_errors(headless / (name + ".log"), marker, name == "controller-mechanical"), headless))
+    input_integrity_passed = False
+    if all(result["passed"] for result in results):
+        directory = output / "input-integrity"
+        input_env = isolated_environment(env, directory, "transaction")
+        result = execute("input-integrity", [*base, *display, "--script", "res://" + INPUT_SCRIPT], input_env, directory, 180)
+        report = read_report(directory / "input-integrity.json")
+        errors = marker_errors(directory / "input-integrity.log", "SWARM006_INPUT_INTEGRITY ")
+        errors.extend(input_integrity_errors(directory, report, receipt["source_commit"],
+            receipt["files"][custody.CLI]["sha256"], custody.native.sha(project / INPUT_SCRIPT)))
+        result = validate_result(result, errors, directory)
+        results.append(result)
+        input_integrity_passed = result["passed"]
     examples = {}
     lifecycle_passed = False
     if all(result["passed"] for result in results):
@@ -657,7 +788,7 @@ def main() -> int:
         result = validate_result(result, ui_report_errors(report, "lifecycle", "transaction", receipt["source_commit"], cli_sha, test_sha), directory)
         lifecycle_passed = result["passed"]
         results.append(result)
-    complete = (set(examples) == set(EXAMPLES) and all(record["passed"] for record in examples.values())
+    complete = (input_integrity_passed and set(examples) == set(EXAMPLES) and all(record["passed"] for record in examples.values())
                 and lifecycle_passed and all(result["passed"] for result in results))
     summary = {"schema": 2, "source_commit": receipt["source_commit"], "platform": sys.platform,
                "graphical": True, "package": bool(package), "passed": bool(complete),
@@ -665,7 +796,7 @@ def main() -> int:
                "windows_automated_authoring_qualification": bool(complete),
                "owner_visual_acceptance": "pending",
                "reciprocal_programme_acceptance": False,
-               "examples": examples, "lifecycle_passed": lifecycle_passed, "results": results}
+               "examples": examples, "lifecycle_passed": lifecycle_passed, "input_integrity_passed": input_integrity_passed, "results": results}
     (output / "qualification.json").write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({key: summary[key] for key in ("source_commit", "platform", "graphical", "package", "passed", "windows_automated_authoring_qualification", "owner_visual_acceptance")}))
     return 0 if complete else 1
