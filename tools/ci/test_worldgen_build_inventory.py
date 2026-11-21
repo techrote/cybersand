@@ -4,14 +4,67 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import os
 from pathlib import Path
 import shutil
+import shlex
+import subprocess
+import sys
 import tempfile
 import unittest
 from unittest.mock import patch
 
 import check_worldgen_build_inventory as inventory
+
+
+# This executable double exercises the real make graph, not native behavior or
+# elapsed performance. Its rendezvous fails unless both long objects are admitted
+# together on a genuinely cold build with no pre-created object directories.
+COMPILER_DOUBLE = r"""import json
+import os
+from pathlib import Path
+import shlex
+import sys
+import time
+
+
+def record(event):
+    fd = os.open(os.environ["WORLDGEN_SCHEDULE_LOG"], os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o600)
+    try:
+        os.write(fd, (json.dumps(event) + "\n").encode())
+    finally:
+        os.close(fd)
+
+
+args = sys.argv[1:]
+if args[0] == "--test":
+    record({"kind": "test", "output": args[1]})
+    raise SystemExit(19 if os.environ.get("WORLDGEN_SCHEDULE_FAIL") == args[1] else 0)
+output = args[args.index("-o") + 1]
+record({"kind": "compile", "output": output, "args": args})
+path = Path(output)
+assert path.parent.is_dir(), "The production make recipe must create the directory"
+if output.endswith("/world_generation.o"):
+    marker = path.with_suffix(".started")
+    marker.write_text("started")
+    folder = path.parent.name
+    other = folder.removesuffix("-threaded") if folder.endswith("-threaded") else folder + "-threaded"
+    sibling = path.parent.parent / other / marker.name
+    deadline = time.monotonic() + 5
+    while not sibling.exists():
+        if time.monotonic() >= deadline:
+            raise SystemExit("Both long translation units were not admitted together")
+        time.sleep(0.005)
+    if os.environ.get("WORLDGEN_SCHEDULE_FAIL") == "compile":
+        raise SystemExit(19)
+if output.endswith(".o"):
+    path.write_bytes(b"compiler double; not native code")
+else:
+    path.write_text("#!/bin/sh\nexec " + shlex.quote(sys.executable) + " " +
+                    shlex.quote(__file__) + " --test " + shlex.quote(output) + "\n")
+    path.chmod(0o755)
+"""
 
 
 class WorldgenBuildInventoryTests(unittest.TestCase):
@@ -30,6 +83,55 @@ class WorldgenBuildInventoryTests(unittest.TestCase):
                 self.assertEqual(row["binary_count"], 16)
                 self.assertEqual(len(row["compile_link_commands"]), 28)
                 self.assertEqual(len(row["ordered_tests"]), 16)
+
+
+    def run_actual_graph(self, target, failure=""):
+        with tempfile.TemporaryDirectory(prefix="worldgen-schedule-") as directory:
+            root = Path(directory)
+            shutil.copy2(inventory.ROOT / "Makefile", root / "Makefile")
+            shutil.copytree(inventory.ROOT / "native", root / "native")
+            compiler = root / "compiler_double.py"
+            compiler.write_text(COMPILER_DOUBLE)
+            log = root / "schedule.jsonl"
+            env = os.environ.copy()
+            for variable in ("MAKEFLAGS", "MFLAGS"):
+                env.pop(variable, None)
+            env.update(WORLDGEN_SCHEDULE_LOG=str(log), WORLDGEN_SCHEDULE_FAIL=failure)
+            command = ["make", "--no-print-directory", "-j2",
+                       f"CXX={shlex.quote(sys.executable)} {shlex.quote(str(compiler))}", target]
+            process = subprocess.run(command, cwd=root, env=env, text=True,
+                                     capture_output=True, timeout=30)
+            records = [json.loads(line) for line in log.read_text().splitlines()]
+            return process, records
+
+    def test_actual_cold_graph_starts_both_long_objects_and_retains_every_command(self):
+        for target, family in (("worldgen-test", "normal"), ("worldgen-sanitize", "sanitized")):
+            with self.subTest(target=target):
+                process, records = self.run_actual_graph(target)
+                self.assertEqual(process.returncode, 0, process.stderr)
+                compiles = [row for row in records if row["kind"] == "compile"]
+                self.assertEqual({row["output"] for row in compiles[:2]}, {
+                    f"build/worldgen-objects/{family}/world_generation.o",
+                    f"build/worldgen-objects/{family}-threaded/world_generation.o",
+                })
+                expected = inventory.expected_commands(target.endswith("sanitize"))
+                self.assertEqual(len(compiles), len(expected))
+                self.assertEqual({row["output"]: row["args"] for row in compiles},
+                                 {output: argv[1:] for output, argv in expected.items()})
+                self.assertEqual(["./" + row["output"] for row in records if row["kind"] == "test"],
+                                 self.report["families"][target]["ordered_tests"])
+
+    def test_actual_graph_refuses_compile_failure_and_stops_after_test_failure(self):
+        for target, suffix in (("worldgen-test", ""), ("worldgen-sanitize", "_sanitized")):
+            with self.subTest(target=target, failure="compile"):
+                process, records = self.run_actual_graph(target, "compile")
+                self.assertNotEqual(process.returncode, 0)
+                self.assertFalse(any(row["kind"] == "test" for row in records))
+            with self.subTest(target=target, failure="test"):
+                process, records = self.run_actual_graph(target, f"build/test_world_generation{suffix}")
+                self.assertNotEqual(process.returncode, 0)
+                self.assertEqual(["./" + row["output"] for row in records if row["kind"] == "test"],
+                                 self.report["families"][target]["ordered_tests"][:8])
 
     def test_missing_prerequisite_is_rejected(self):
         serial, bounded = self.streams()

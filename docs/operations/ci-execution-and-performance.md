@@ -105,6 +105,27 @@ candidate still executes the complete original inventory. This ordering change
 targets time to actionable failure, not a claimed reduction in successful-run
 wall time. It changes neither publication ownership nor runtime provenance.
 
+## Native worldgen compilation order
+
+The two `world_generation.cpp` object variants are the first prerequisites of
+`worldgen-test` and `worldgen-sanitize` in the [Makefile](../../Makefile).
+Their object recipes create their own directories before invoking the compiler;
+an order-only directory job must not cause GNU Make to defer those prerequisites.
+The Native family still uses exactly two make jobs. Threaded and plain objects
+remain separate, with the original flags, headers and Makefile dependencies.
+Every normal and sanitized aggregate still compiles twelve generation objects,
+links sixteen binaries, then executes the seven showcases and nine ordinary
+generation tests in the original order. No compiled result or test outcome is
+reused across workflow jobs or source commits by this change.
+
+The [inventory regressions](../../tools/ci/test_worldgen_build_inventory.py)
+check the original compiler arguments and executable inventory. A compiler
+double exercises GNU Make's actual prerequisite scheduling and failure behavior;
+it is graph evidence, not native runtime or performance qualification. Actual
+cold builds and exact-source hosted family receipts remain mandatory. The
+CI-OPT-003 PR ledger records the bounded same-worker comparison and independent
+merge decision; source ordering alone establishes no measured speedup.
+
 ## Shared capacity and concurrency
 
 The GDExtension matrices each use `max-parallel: 8`. Together with Native's six
