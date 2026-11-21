@@ -1,0 +1,76 @@
+name: SWARM006 source admission diagnostic ONLY
+on:
+  push:
+    branches: [diagnostic/swarm006-source-admission-20261121]
+    paths:
+      - .github/workflows/swarm006-source-admission-diagnostic.yml
+      - tools/swarm006/source_admission_diagnostic.py
+permissions:
+  contents: read
+  actions: read
+jobs:
+  diagnose:
+    name: Frozen 8cf Windows source mutation diagnostic
+    runs-on: windows-2022
+    timeout-minutes: 15
+    steps:
+      - name: Read this owned diagnostic driver
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          path: diagnostic-support
+          sparse-checkout: tools/swarm006/source_admission_diagnostic.py
+          sparse-checkout-cone-mode: false
+      - name: Checkout the exact failed subject independently
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 8cf93e48bc23370c6ef7b835978689ca3aa3e9f8
+          persist-credentials: false
+          path: subject
+          fetch-depth: 1
+      - name: Download only the archived runtime from our own failed run
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          New-Item -ItemType Directory -Path evidence | Out-Null
+          $headers = @{Authorization="Bearer $env:GH_TOKEN"; Accept='application/vnd.github+json'; 'X-GitHub-Api-Version'='2022-11-28'}
+          $endpoint = 'https://api.github.com/repos/techrote/cybersand/actions/artifacts/14724736852'
+          $metadata = Invoke-RestMethod -Uri $endpoint -Headers $headers
+          if ($metadata.id -ne 14724736852 -or $metadata.name -ne 'swarm006-finisher-windows-runtime-44948307043' -or $metadata.workflow_run.id -ne 44948307043 -or $metadata.workflow_run.head_sha -ne '8cf93e48bc23370c6ef7b835978689ca3aa3e9f8' -or $metadata.digest -ne 'sha256:927e0c44c5baa462a36d4aaa92ecd9b64871d336dd8ccc075095c4c998132dbf') { throw 'Wrong archived diagnostic artifact' }
+          $metadata | ConvertTo-Json -Depth 8 | Set-Content evidence/source-admission-runtime-artifact.json
+          $archive = Join-Path $env:RUNNER_TEMP 'swarm006-diagnostic-runtime.zip'
+          Invoke-WebRequest -Uri ($endpoint + '/zip') -Headers $headers -OutFile $archive
+          if ((Get-FileHash $archive -Algorithm SHA256).Hash.ToLowerInvariant() -ne '927e0c44c5baa462a36d4aaa92ecd9b64871d336dd8ccc075095c4c998132dbf') { throw 'Archived runtime ZIP changed' }
+          Expand-Archive -LiteralPath $archive -DestinationPath runtime
+      - name: Install the same pinned engine and physics dependency
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          git -C subject lfs install --local
+          if ($LASTEXITCODE -ne 0) { throw 'LFS installation failed' }
+          git -C subject lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned Rapier fetch failed' }
+          $rapier = 'subject/godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll'
+          if ((Get-FileHash $rapier -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7') { throw 'Rapier pin mismatch' }
+          $archive = Join-Path $env:RUNNER_TEMP 'swarm006-diagnostic-godot.zip'
+          curl.exe -fL --retry 2 --max-time 120 -o $archive https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned Godot download failed' }
+          if ((Get-FileHash $archive -Algorithm SHA512).Hash.ToLowerInvariant() -ne '41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9') { throw 'Godot archive pin mismatch' }
+          Expand-Archive -LiteralPath $archive -DestinationPath (Join-Path $env:RUNNER_TEMP 'swarm006-diagnostic-godot')
+      - name: Diagnose exact source admission without relaxing it
+        shell: pwsh
+        run: |
+          $engine = Join-Path $env:RUNNER_TEMP 'swarm006-diagnostic-godot/Godot_v4.7-stable_win64_console.exe'
+          $work = Join-Path $env:RUNNER_TEMP 'swarm006-source-admission-work'
+          python -B diagnostic-support/tools/swarm006/source_admission_diagnostic.py --root subject --runtime runtime --godot $engine --output evidence/source-admission-diagnostic --work $work
+          if ($LASTEXITCODE -ne 0) { throw 'Diagnostic found a source delta or failed stage; inspect retained evidence. This is not owner qualification.' }
+      - name: Retain bounded diagnostic evidence even on failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: swarm006-source-admission-DIAGNOSTIC-ONLY-${{ github.run_id }}
+          path: evidence/source-admission*
+          if-no-files-found: warn
+          retention-days: 30
