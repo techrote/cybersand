@@ -1,3 +1,13 @@
+---
+title: SWARM-005 experimental Workbench owner evaluation
+status: Current
+document-kind: guide
+scope: Historical SWARM-005 experimental controls and owner exercises; qualification remains source-bound and separate
+canonical-for: [swarm005-workbench-owner-evaluation]
+last-reviewed: 2026-11-21
+related-documents: [swarm004-workbench-playtest.md, ../architecture/experimental-workbench-authoring-patch.md]
+---
+
 # SWARM-005 experimental Workbench owner evaluation
 
 **Draft/HOLD only.** Native pilot: issue #695, PR #696. Experimental integration: PR #697. This is a new source/binary identity, not a replacement for the prior qualified SWARM-004 evaluator.
