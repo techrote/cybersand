@@ -228,7 +228,9 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_button(row,"Actor Composition…",open_actor_composition)
 	_button(row,"Art batches",open_art_batches)
 	_button(row,"Details",func() -> void: _details.visible = not _details.visible)
-	_button(row,"Menu [F2]",func() -> void: get_tree().change_scene_to_file("res://feature_launcher.tscn"))
+	_button(row,"Menu [F2]",func() -> void:
+		if host.has_method(&"request_persistent_exit"): host.call(&"request_persistent_exit","launcher")
+		else: get_tree().change_scene_to_file("res://feature_launcher.tscn"))
 	row = _row(self)
 	_picker(row,_tool,TOOL_NAMES)
 	var names: Array = []
@@ -359,6 +361,7 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	var binary := "cybersand_native.windows.x86_64.dll" if OS.get_name() == "Windows" else "libcybersand_native.linux.x86_64.so"
 	var binary_hash := FileAccess.get_sha256("res://addons/cybersand_native/bin/"+binary)
 	_runtime_label = "%s · Godot %s · native %s · definitions %s" % [OS.get_name(),Engine.get_version_info().string,binary_hash.left(12),Fleet.registry_hash().left(12)]
+	if host.has_method(&"persistent_bootstrap_pending") and host.call(&"persistent_bootstrap_pending"): return
 	if recovery.is_empty(): new_canvas.call_deferred()
 	else: apply.call_deferred(recovery)
 
@@ -578,8 +581,26 @@ func refuse(reason: String) -> bool:
 	return false
 
 func busy() -> bool:
-	return not host.pending_microscenario_apply.is_empty() or step_pending or host.simulation_worker.has_failed() \
+	return (host.has_method(&"persistent_operation_allowed") and not str(host.call(&"persistent_operation_allowed","authoring",{})).is_empty()) \
+		or not host.pending_microscenario_apply.is_empty() or step_pending or host.simulation_worker.has_failed() \
 		or is_flatten_pending() or (paint_editor != null and paint_editor.busy())
+
+func persistent_stage_authoring(authoring: Dictionary) -> void:
+	_pending_generated = authoring.get("generated_packet",{}).duplicate(true)
+	_pending_material_baseline = authoring.get("material_baseline",{}).duplicate(true)
+	_pending_retain_generated = false
+	_pending_request_serial = int(host.pending_microscenario_apply.get("serial",0))
+
+func persistent_restore_camera(camera: Dictionary) -> void:
+	if camera.is_empty(): return
+	var origin: Variant = camera.get("origin")
+	var size: Variant = camera.get("size")
+	if not origin is Array or origin.size() != 2 or not size is Array or size.size() != 2: return
+	if not is_finite(float(origin[0])) or not is_finite(float(origin[1])): return
+	_zoom = clampi(int(camera.get("zoom",1)),0,ZOOMS.size()-1)
+	_camera.select(clampi(int(camera.get("mode",0)),0,2))
+	host.current_view_size = Vector2i(clampi(int(size[0]),1,2048),clampi(int(size[1]),1,2048))
+	host.camera_origin = Vector2(origin[0],origin[1])
 
 func _editable() -> bool:
 	if busy() or applied.is_empty():

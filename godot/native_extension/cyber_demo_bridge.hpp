@@ -8,6 +8,7 @@
 #include "cybersand/material_rules.hpp"
 #include "cybersand/material_appearance.hpp"
 #include "cybersand/material_baseline.hpp"
+#include "cybersand/persistent_area_continuation.hpp"
 #include <bit>
 #include <algorithm>
 #include <chrono>
@@ -760,7 +761,25 @@ public:
         const PackedInt32Array& policy, const PackedInt32Array& liquid_policy, const Dictionary& options);
     [[nodiscard]] std::int64_t prepare_liquid_default_demo(const Ref<CyberNativeCellWorld>& adapter,
         const PackedInt32Array& liquid_policy, const Dictionary& options);
+    // GEN-006: exclusive-owner, complete native continuation. Unsupported host
+    // dependencies pin the active area rather than being discarded.
+    [[nodiscard]] Dictionary capture_workbench_continuation(const Ref<CyberNativeCellWorld>& adapter);
+    [[nodiscard]] Dictionary capture_prepared_workbench_continuation(
+        const Ref<CyberNativeCellWorld>& adapter, std::int64_t token);
+    [[nodiscard]] Dictionary advance_workbench_continuation(const Ref<CyberNativeCellWorld>& adapter,
+        std::int64_t token, std::int64_t maximum_ticks, std::int64_t maximum_microseconds);
+    [[nodiscard]] Dictionary assess_workbench_coarse_advance(const Ref<CyberNativeCellWorld>& adapter,
+        std::int64_t requested_ticks);
 private:
+    [[nodiscard]] std::int64_t prepare_workbench_continuation(const Ref<CyberNativeCellWorld>& adapter,
+        const PackedInt32Array& rectangles, const PackedInt32Array& profile,
+        const PackedInt32Array& policy, const PackedInt32Array& water_fills,
+        const PackedInt32Array& liquid_policy, const Dictionary& options);
+    [[nodiscard]] static Dictionary continuation_capsule(const cybersand::World& world,
+        const cybersand::setup::SetupDescriptor& setup, const String& response, bool window);
+    static void refresh_continuation_receipt(CyberNativeCellWorld& adapter);
+    static void validate_continuation_dependencies(const CyberNativeCellWorld& adapter);
+    static void validate_continuation_host(const CyberNativeCellWorld& adapter);
     [[nodiscard]] std::int64_t prepare_liquid_candidate(const Ref<CyberNativeCellWorld>& adapter,
         const PackedInt32Array& rectangles, const PackedInt32Array& profile,
         const PackedInt32Array& policy, const PackedInt32Array& water_fills,
@@ -810,6 +829,14 @@ public:
             adapter->pending_liquid_world_->token != static_cast<std::uint64_t>(token)) {
             error_ = "Preparation token is absent or retired";
             return {};
+        }
+        if (adapter->pending_liquid_world_->continuation_dirty) {
+            try { refresh_continuation_receipt(*adapter.ptr()); }
+            catch (const std::exception& error) {
+                adapter->pending_liquid_world_.reset();
+                error_ = String(error.what());
+                return {};
+            }
         }
         // The encoding was captured during preparation. This copied wrapper
         // explicitly remains pending; it does not install or expose a World.
@@ -1123,6 +1150,14 @@ protected:
         ClassDB::bind_method(D_METHOD("export_physical_state", "world"), &CyberDemoBridge::export_physical_state);
         ClassDB::bind_method(D_METHOD("import_physical_state", "world", "bytes"),
                              &CyberDemoBridge::import_physical_state);
+        ClassDB::bind_method(D_METHOD("capture_workbench_continuation", "world"),
+            &CyberDemoBridge::capture_workbench_continuation);
+        ClassDB::bind_method(D_METHOD("capture_prepared_workbench_continuation", "world", "token"),
+            &CyberDemoBridge::capture_prepared_workbench_continuation);
+        ClassDB::bind_method(D_METHOD("advance_workbench_continuation", "world", "token", "maximum_ticks", "maximum_microseconds"),
+            &CyberDemoBridge::advance_workbench_continuation);
+        ClassDB::bind_method(D_METHOD("assess_workbench_coarse_advance", "world", "requested_ticks"),
+            &CyberDemoBridge::assess_workbench_coarse_advance);
         ClassDB::bind_method(D_METHOD("build_world", "world", "rectangles", "gameplay_water"), &CyberDemoBridge::build_world, DEFVAL(false));
         ClassDB::bind_method(D_METHOD("build_tuned_world", "world", "rectangles", "profile"), &CyberDemoBridge::build_tuned_world);
         ClassDB::bind_method(D_METHOD("build_water_feel_world", "world", "rectangles",
@@ -1173,3 +1208,4 @@ protected:
 }  // namespace godot
 
 #include "cyber_prepared_liquid_world.hpp"
+#include "cyber_persistent_area_continuation.hpp"

@@ -338,6 +338,12 @@ private:
         std::unique_ptr<cybersand::RenderSnapshotExchange> exchange;
         cybersand::setup::SetupDescriptor setup;
         Dictionary receipt;
+        // GEN-006 continuation has distinct authority from the tick-zero
+        // authored-source construction receipt. Both are copied values.
+        Dictionary continuation_identity, continuation_capsule, source_construction_receipt;
+        String source_checkpoint_sha256;
+        std::uint64_t source_checkpoint_tick = 0;
+        bool continuation = false, continuation_dirty = false;
         BodyStates initial_bodies{};
         PackedFloat32Array initial_body_input;
         String initial_body_digest, workbench_initial_digest;

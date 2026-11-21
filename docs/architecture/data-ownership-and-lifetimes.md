@@ -6,10 +6,12 @@ status: Current
 scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
 keywords: [ownership, lifetime, chunks, immutable lease, render handoff, body mask, queue]
 related-documents: [simulation-tick-and-threading.md, rendering-and-gameplay-bridges.md, ../reference/interfaces-and-message-contracts.md, ../reference/invariants.md]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-21
 ---
 
 # Data ownership and lifetimes
+
+The opt-in [persistent-area prototype](../systems/persistent-authored-areas.md) retains the existing exclusive native worker. One nonreusable capture lease freezes the live area through durable publication and at most one private target preparation. A separate serialized I/O owner holds the OS profile lock. Only copied capsules, validated definitions, typed receipts and immutable fences cross these boundaries. Late saves, unsupported live dependencies and uncertain publication cannot discard or resume an older authoritative incarnation. Main adopts through its existing serial/hash/generation acknowledgement; ordinary scene ownership is unchanged.
 
 The [Workbench actor-composition candidate](../systems/workbench-actor-composition.md#ownership-and-lifecycle)
 keeps the existing native worker and main-thread Rapier owner. Each multipart

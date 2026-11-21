@@ -788,8 +788,13 @@ func workbench_apply(candidate: Dictionary, actors: Array, rectangles: Array, ex
 		policy: PackedInt32Array, normalize_water: bool, radius: int, response: String,
 		preserve_cells: bool = false, convert_liquid_inventory: bool = false, resume_play: bool = false,
 		generated_packet: Dictionary = {}, material_baseline: Dictionary = {},
-		apply_staged_water: bool = true) -> bool:
+		apply_staged_water: bool = true, persistent_options: Dictionary = {}) -> bool:
 	if shared_workbench == null: return false
+	if persistent_options.is_empty() and has_method(&"persistent_operation_allowed"):
+		var refused: String = call(&"persistent_operation_allowed","replace_world",candidate)
+		if not refused.is_empty():
+			microscenario_error = refused
+			return false
 	if not pending_microscenario_apply.is_empty():
 		microscenario_error = "Wait for the pending workbench installation."
 		return false
@@ -808,6 +813,13 @@ func workbench_apply(candidate: Dictionary, actors: Array, rectangles: Array, ex
 	definition.tools = ["paint","erase"]
 	definition.interest = {"policy":"fixed","region":[0,0,extent.x,extent.y]}
 	definition.execution.cadence_lod_enabled = false
+	if persistent_options.has("source_definition"):
+		var source_checked := CyberMicroScenarioContract.validate(persistent_options.source_definition)
+		if not source_checked.ok or source_checked.definition.id != CyberMicroScenarioContract.WORKBENCH_ID \
+				or source_checked.definition.extent != [extent.x,extent.y]:
+			microscenario_error = "Persistent source definition is invalid or belongs to another canvas."
+			return false
+		definition = source_checked.definition
 	var config := {"actor_model":"","physical_rig":"workbench" if not actors.is_empty() else "",
 		"actor_producer":"human","representation":"barrel-rapier" if not actors.is_empty() else "sampled",
 		"workbench_actors":actors}
@@ -822,6 +834,12 @@ func workbench_apply(candidate: Dictionary, actors: Array, rectangles: Array, ex
 		"maximum_rule_radius":radius,"workbench_response":response,"workbench_retain_cells":preserve_cells,
 		"workbench_sample":{"session":_microscenario_request_serial+1,"epoch":_physical_epoch+1,
 			"states":PackedFloat64Array(),"geometry":PackedFloat64Array(),"bodies":[],"emitters":[]}}
+	if not persistent_options.is_empty():
+		settings["persistent_operation_id"] = str(persistent_options.get("operation_id",""))
+		settings["persistent_stage"] = bool(persistent_options.get("stage",false))
+		if not persistent_options.get("capsule",{}).is_empty():
+			settings["workbench_continuation"] = persistent_options.capsule
+			settings["workbench_continuation_identity"] = persistent_options.get("identity",{})
 	# The copied native proposal belongs to preparation only; it is not a
 	# second World, and never enters the saved v2 starting-setup schema.
 	if not generated_packet.is_empty():
@@ -894,8 +912,66 @@ func workbench_apply(candidate: Dictionary, actors: Array, rectangles: Array, ex
 	pending_microscenario_apply.workbench_adopt_authored_law = adopt_authored_law
 	return true
 
+# Optional GEN-006 host hooks. They keep construction-source identity separate
+# from authoring history, which legitimately changes after paint and Flatten.
+func persistent_authoring_state() -> Dictionary:
+	if shared_workbench == null or shared_workbench.applied.is_empty(): return {}
+	return {"setup":shared_workbench.applied.duplicate(true),
+		"definition":microscenario_definition.duplicate(true),
+		"generated_packet":shared_workbench._generated_active.duplicate(true),
+		"material_baseline":shared_workbench._material_baseline.duplicate(true),
+		"camera":{"origin":[camera_origin.x,camera_origin.y],
+			"size":[current_view_size.x,current_view_size.y],"zoom":shared_workbench._zoom,
+			"mode":shared_workbench._camera.selected}}
+
+func persistent_install_area(authoring: Dictionary, capsule: Dictionary, identity: Dictionary, stage: bool = true) -> bool:
+	if not has_method(&"persistent_operation_allowed") or shared_workbench == null:
+		microscenario_error = "Persistent area installation requires the opt-in host."
+		return false
+	var candidate: Dictionary = authoring.get("setup",{}).duplicate(true)
+	var setup_script := preload("res://scripts/workbench_setup.gd")
+	var error: String = setup_script.validate(candidate)
+	if not error.is_empty() or not candidate.get("actors",[]).is_empty() or not candidate.get("source",[]).is_empty():
+		microscenario_error = error if not error.is_empty() else "Persistent areas do not admit host actors or sources."
+		return false
+	var extent: Vector2i = setup_script.extent_of(candidate)
+	if extent != Vector2i(512,512):
+		microscenario_error = "Persistent area extent must be 512 by 512."
+		return false
+	var options := {"operation_id":str(identity.get("operation_id","")),"identity":identity,
+		"capsule":capsule,"stage":stage and not capsule.is_empty()}
+	var runs := []
+	var generated := {}
+	var baseline := {}
+	if capsule.is_empty():
+		var recipe: Dictionary = setup_script.rectangles(candidate)
+		if recipe.has("error"):
+			microscenario_error = str(recipe.error)
+			return false
+		runs = recipe.runs
+	else:
+		var checked := CyberMicroScenarioContract.validate(authoring.get("definition",{}))
+		if not checked.ok or str(checked.hash) != str(capsule.get("authored_source_sha256","")):
+			microscenario_error = "Persistent authored source definition differs from the native checkpoint identity."
+			return false
+		options["source_definition"] = checked.definition
+		runs = checked.definition.rectangles
+	paused = true
+	update_worker_frame_state()
+	if not workbench_apply(candidate,[],runs,extent,PackedInt32Array(candidate.liquid_policy),
+		false,int(candidate.rule_radius),str(candidate.response),false,false,false,generated,baseline,
+		false,options): return false
+	shared_workbench.persistent_stage_authoring(authoring)
+	pending_microscenario_apply["persistent_authoring"] = authoring.duplicate(true)
+	return true
+
 func _apply_microscenario_definition(definition: Dictionary, mode: String, actor_configuration: Dictionary = {},
 		liquid_policy: Variant = null, controlled_setup: Dictionary = {}, retain_trial_motion: bool = false) -> bool:
+	if has_method(&"persistent_operation_allowed") and str(controlled_setup.get("persistent_operation_id","")).is_empty():
+		var refused: String = call(&"persistent_operation_allowed","replace_world",definition)
+		if not refused.is_empty():
+			microscenario_error = refused
+			return false
 	if not pending_microscenario_apply.is_empty() or not pending_water_apply.is_empty(): return false
 	if not water_blind_set.is_empty() or not water_active_blind_label.is_empty(): return false
 	# F5 rebuilds retain an explicitly accepted exploratory solver selection.
@@ -1035,6 +1111,8 @@ func _microscenario_installed(definition: Dictionary) -> void:
 	microscenario_liquid_policy = pending_microscenario_apply.get("liquid_policy", null)
 	microscenario_liquid_setup = pending_microscenario_apply.get("controlled_liquid_setup", {}).duplicate(true)
 	microscenario_liquid_setup.erase("physical_owner")
+	for continuation_key: String in ["workbench_continuation","workbench_continuation_identity","persistent_operation_id","persistent_stage"]:
+		microscenario_liquid_setup.erase(continuation_key)
 	tower_active = true
 	paused = true
 	# Preserve the original course's 256x128 close actor view and its
@@ -1074,6 +1152,8 @@ func _microscenario_installed(definition: Dictionary) -> void:
 			world_shader.set_shader_parameter("current_world_texture",texture)
 			world_shader.set_shader_parameter("previous_world_texture",previous_texture)
 		shared_workbench.installed(pending_microscenario_apply.workbench)
+		if pending_microscenario_apply.has("persistent_authoring"):
+			shared_workbench.persistent_restore_camera(pending_microscenario_apply.persistent_authoring.get("camera",{}))
 	elif showcase_presentation != null:
 		showcase_presentation.installed(definition)
 	if shared_workbench == null and blacksite_nine_presentation != null:
@@ -2165,6 +2245,8 @@ func _physics_process(_delta: float) -> void:
 
 func workbench_source(origin: Vector2i, material: int, command: String) -> bool:
 	if shared_workbench == null: return false
+	if has_method(&"persistent_operation_allowed") and not str(call(&"persistent_operation_allowed","source",{})).is_empty():
+		return false
 	if not pending_microscenario_apply.is_empty() and not (command == "configure"
 		and tower_context.get("scenario_request_applied",false)
 		and tower_context.get("scenario_request_serial",-1) == pending_microscenario_apply.serial): return false
@@ -2174,6 +2256,8 @@ func workbench_source(origin: Vector2i, material: int, command: String) -> bool:
 # a configure may follow the acknowledged install of a pending replacement.
 func workbench_equipment(request: Dictionary) -> bool:
 	if shared_workbench == null: return false
+	if has_method(&"persistent_operation_allowed") and not str(call(&"persistent_operation_allowed","equipment",request)).is_empty():
+		return false
 	if not pending_microscenario_apply.is_empty() and not (str(request.get("command","")) == "configure"
 		and tower_context.get("scenario_request_applied",false)
 		and tower_context.get("scenario_request_serial",-1) == pending_microscenario_apply.serial): return false

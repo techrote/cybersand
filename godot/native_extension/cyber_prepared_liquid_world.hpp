@@ -60,6 +60,8 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_world(
     const PackedInt32Array& profile, const PackedInt32Array& policy,
     const PackedInt32Array& water_fills, const PackedInt32Array& liquid_policy,
     const Dictionary& options) {
+    if (options.has("workbench_continuation") || options.has("workbench_continuation_identity"))
+        return prepare_workbench_continuation(adapter, rectangles, profile, policy, water_fills, liquid_policy, options);
     return prepare_liquid_candidate(adapter, rectangles, profile, policy, water_fills, liquid_policy, options, nullptr);
 }
 
@@ -1070,8 +1072,27 @@ inline bool CyberDemoBridge::commit_liquid_world(const Ref<CyberNativeCellWorld>
         error_ = "Preparation token is absent or retired";
         return false;
     }
+    if (adapter->pending_liquid_world_->continuation) {
+        // Body masks are intentionally absent from physical_state_hash(). A
+        // new host dependency can therefore appear without a physical-hash
+        // change; refuse it before any swap even for a direct native caller.
+        try { validate_continuation_dependencies(*adapter.ptr()); }
+        catch (const std::exception& error) {
+            adapter->pending_liquid_world_.reset();
+            error_ = String(error.what());
+            return false;
+        }
+    }
+    if (adapter->pending_liquid_world_->continuation_dirty) {
+        try { refresh_continuation_receipt(*adapter.ptr()); }
+        catch (const std::exception& error) {
+            adapter->pending_liquid_world_.reset();
+            error_ = String(error.what());
+            return false;
+        }
+    }
     auto pending = std::move(adapter->pending_liquid_world_); // One use, also on refusal.
-    if (adapter->world_->has_failed() || pending->retained_generation != adapter->liquid_policy_session_generation_ ||
+    if (adapter->world_->has_failed() || pending->world->has_failed() || pending->retained_generation != adapter->liquid_policy_session_generation_ ||
         pending->retained_revision != adapter->revision_ || pending->retained_hash != adapter->world_->physical_state_hash() ||
         pending->retained_cadence != adapter->cadence_lod_enabled_ || pending->retained_window != adapter->simulation_window_enabled_) {
         error_ = "Retained World changed after preparation";

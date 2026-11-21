@@ -4,11 +4,15 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-21
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
+
+## GEN-006 persistent authored-area milestone
+
+The owner-authorised #591 candidate is isolated on `exp/gen006-persistent-areas-001-20261121` and remains Draft/HOLD. Read the [native/profile/time contract](../systems/persistent-authored-areas.md), [owner evaluation guide](persistent-areas-evaluation.md) and [dated source/platform ledger](../audits/2026-11-21-gen006-persistent-areas.md). One fixed active canvas, three native continuation checkpoints and bounded completed game time do not complete broader #194 streaming, selective eviction, actor persistence or recipe reconciliation. Preserve the ordinary Workbench defaults and other active missions.
 
 ## Workbench Art traffic lifetime — 2026-11-20
 

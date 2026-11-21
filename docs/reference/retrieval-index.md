@@ -4,11 +4,18 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-21
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/atlas-agent-runner.md, ../architecture/pressure-optimization.md]
 ---
 
 # Retrieval question index
+
+## Persistent authored areas · GEN-006
+
+The opt-in Draft/HOLD [three-area native continuation contract](../systems/persistent-authored-areas.md) owns retained dynamic state, completed game-time debt and conservative dependency refusal. The [desktop evaluator guide](../operations/persistent-areas-evaluation.md) explains travel, Simulate Ahead, isolated profiles and recovery. The [dated qualification ledger](../audits/2026-11-21-gen006-persistent-areas.md) separates actual platform results from physical NVIDIA owner acceptance and the broader unfinished #194 programme.
+
+The [three focused retrieval questions](retrieval-questions-persistent-areas.json)
+are additive to the unchanged frozen evaluation set.
 
 ## World Art inspection, capture and Windows evaluation
 
