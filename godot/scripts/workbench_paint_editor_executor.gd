@@ -246,11 +246,12 @@ func _finish(termination: String, reason: String, context: Dictionary) -> Dictio
 		"authoring_generation":int(context.get("authoring_generation",1)),
 		"tick": int(command.expected_tick), "observed_generation": int(context.generation),
 		"backend": "CyberNativeCellWorld", "slices": slices,
-		"bulk_capture_native_calls": _bulk_capture_native_calls,
 		"maximum_slice_usec": maximum_slice_usec, "elapsed_usec": Time.get_ticks_usec() - _started_usec,
 		"recovery_possible": int(context.generation) == int(command.expected_generation) \
 			and int(context.tick) == int(command.expected_tick) and int(context.revision) == _revision and bool(context.paused) \
 			and str(context.get("error", "")).is_empty()}
+	if command.kind == "capture" and _bulk_capture_requested:
+		result.bulk_capture_native_calls = _bulk_capture_native_calls
 	if command.kind == "capture":
 		result.region = _region
 		result.materials = _before if status == "completed" else PackedInt32Array()
