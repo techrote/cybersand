@@ -133,7 +133,7 @@ jobs:
           if ((Get-FileHash $zip -Algorithm SHA512).Hash.ToLowerInvariant() -ne $sha) { throw 'Godot archive pin mismatch' }
           Expand-Archive $zip (Join-Path $env:RUNNER_TEMP 'godot')
           'GODOT_EXE=' + (Join-Path $env:RUNNER_TEMP 'godot/Godot_v4.7-stable_win64_console.exe') | Out-File -Append $env:GITHUB_ENV
-      - name: Qualify reciprocal4099 and transaction605 with independent reopen
+      - name: Qualify inherited controls and SWARM005 V3 Irregular/Viaduct graphical cases
         shell: pwsh
         run: |
           python tools/swarm005/qualify_workbench.py --godot $env:GODOT_EXE --project godot --native-candidate build/swarm005-windows --output evidence/swarm005-source
@@ -159,7 +159,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Runtime staging failed' }
           python tools/swarm005/package_owner.py --engine $env:GODOT_EXE.Replace('_console.exe','.exe') --engine-notices $notices --native-candidate build/swarm005-windows --vc-runtime $vc --output build/swarm005-owner
           if ($LASTEXITCODE -ne 0) { throw 'Owner packaging failed' }
-          $archive = "build/CyberSand-SWARM004-Draft-HOLD-Windows-$($env:TARGET_SOURCE.Substring(0,12)).zip"
+          $archive = "build/CyberSand-SWARM005-Draft-HOLD-Windows-$($env:TARGET_SOURCE.Substring(0,12)).zip"
           Compress-Archive -Path build/swarm005-owner/* -DestinationPath $archive -CompressionLevel Optimal
           (Get-FileHash $archive -Algorithm SHA256).Hash.ToLowerInvariant() + '  ' + (Split-Path $archive -Leaf) | Set-Content "$archive.sha256"
           $validation = Join-Path $env:RUNNER_TEMP 'swarm005-pristine-package'
@@ -177,7 +177,7 @@ jobs:
         with:
           name: swarm005-owner-windows-${{ github.sha }}
           path: |
-            build/CyberSand-SWARM004-Draft-HOLD-Windows-*.zip
-            build/CyberSand-SWARM004-Draft-HOLD-Windows-*.zip.sha256
+            build/CyberSand-SWARM005-Draft-HOLD-Windows-*.zip
+            build/CyberSand-SWARM005-Draft-HOLD-Windows-*.zip.sha256
           if-no-files-found: error
           retention-days: 90
