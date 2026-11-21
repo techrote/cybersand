@@ -25,7 +25,11 @@ engine.BUILD_EXACT = set(engine.BUILD_EXACT) | {
     engine.WORKFLOW, engine.REQUEST, engine.EVIDENCE,
     "tools/ci/gentek80_water_runtime_publication.py",
     "tools/ci/test_gentek80_water_runtime_publication.py",
+    "tools/architecture/gentek80_reference_inputs.py",
+    "tools/architecture/test_gentek80_reference_inputs.py",
+    "tools/architecture/gentek80_water_reference_delta.json",
 }
+gentek80.REFERENCE_DELTA_POLICY = "tools/architecture/gentek80_water_reference_delta.json"
 
 def main() -> int:
     return gentek80.main()

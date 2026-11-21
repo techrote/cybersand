@@ -1,0 +1,33 @@
+{
+  "schema": "gentek80-merged-reference-delta-v1",
+  "reference_commit": "507f49a1b585354607f53dd6de972bfcb218bd17",
+  "reference_tree": "61120b631f49329182c8cebbd631e1e8ad207a59",
+  "scope": "Enumerated Water+Art+source-qualification drift only; require fresh 80/80 native material, recipe and RGBA pixel hashes before acceptance",
+  "baseline_sha256": {
+    "godot/native_extension/cyber_demo_bridge.hpp": "13b3e9784deb432158611493a2b48064d54f8b980c131a606a4c4092d40901fa",
+    "godot/native_extension/cyber_native_cell_world.cpp": "5313e4027eda02e293d306cd948d85fb9a9fbe81ef8b2d34eed0270bab60a811",
+    "godot/native_extension/cyber_native_cell_world.hpp": "9522fe76c48edc78330a070749cc3835c6d339abc0bf0bc38122e0938f91ae89",
+    "godot/native_extension/cyber_prepared_liquid_world.hpp": "b6c26fb85e1426c40d3bd745f0c0cff456e00d8c50674edcdf993d2be96f7949",
+    "godot/scripts/art_batch_panel.gd": "4c5acd3fbe56f63350fde6eea9b9669827452c3f1f34381e05753673048b9601",
+    "godot/scripts/art_provider.gd": "1de35745efc53d5484ea6e32aebd8faebca0e318bade7c392154dfed79a0642d",
+    "godot/scripts/art_traffic_archive.gd": null,
+    "godot/scripts/liquid_comparison_panel.gd": "6b2dfed4c4a8608d086d1c7f7c73af0e3e2fa4ddaa44595287c5b26c63f9f74a",
+    "godot/scripts/main.gd": "223c533e5d311f872bc0ba9c7bd55de11e513ac84d1f7c3f598d4578a7f4a9d8",
+    "godot/scripts/microscenario_host.gd": "37e16026358597b1b44e75413f2f1cda63f9ec6610f7e74670ea8188efe52fbd",
+    "godot/scripts/shared_workbench.gd": "8754d0ee0cbd90bff3a4bebbda775268f6e42ac81a64a3cb0c9d63f7a353b0fe",
+    "godot/scripts/simulation_worker.gd": "fd190598f4ae4627ae98e39f8078a17c27106aa96e8cf3d00521a2ffcf06bdf4",
+    "godot/scripts/web_demo_controller.gd": "d2115bbc71901a2baa1e49245e93a9c0643fc8546a763e29d3c49410abf67e9e",
+    "godot/scripts/web_demo_menu.gd": "0f7a0de13a45b9cb29b98061d564e9955c204155bdb76c5388cae0a339bcc272",
+    "godot/scripts/web_rapier_probe.gd": "d91540caab0ab3db296a55a45b6cc87c44780c6141cde85c6620462093065026",
+    "godot/scripts/workbench_water_spray_panel.gd": "ccb6f0fd3466544ec61cc8f7fa16278d3d508425e86c46050722a92a2ae84200",
+    "native/include/cybersand/ballistic_water.hpp": "88a290c712b34d857c8b452f9c3127e2e546f00c7177a84383fe7109602cd01e",
+    "native/include/cybersand/wave_flow.hpp": "72ddc128734b2de76d745ef46b14dbe638921bec26dc97c0efa80f978c363e94",
+    "native/include/cybersand/world.hpp": "c97b761d650e8f9920f7e8eefc5eac25a113ac9aa992c91e6f7ac7854e0ce9b7",
+    "native/src/world.cpp": "80e05f673b3d6ba35daa7c741805aa272f149e7742d162c94c8c0bd9bdbc1e83",
+    "native/src/world_ballistic.inc": "e335b2811961569d769bc328e331275ff06e20bcdea43a8427897d618be612f8",
+    "native/src/world_pressure.inc": "c5d639212290c9a4faee47f86a3cfe5bf664a5a51d241d4b5c9c1cdb985b6105",
+    "native/src/world_quantity.inc": "75f9743ee614fd6e5ee6ae96d3f35445b3162e19c9f7686b9eefc29f97e52dae",
+    "native/src/world_wave.inc": "4ddd4e268853f0409b50f901b50a344e2f0021adcbef4c5ff92ead68854468a3",
+    "tools/architecture/gentek80_campaign.py": "04d724241868f6e9bb17eb77f1a0613e34e2643402afb942d6f86c50debebb26"
+  }
+}

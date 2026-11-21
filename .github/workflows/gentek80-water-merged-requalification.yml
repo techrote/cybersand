@@ -52,6 +52,7 @@ jobs:
           python3 -m py_compile tools/ci/gentek80_runtime_publication.py
           python3 tools/ci/test_gentek80_runtime_publication.py
           python3 tools/ci/test_gentek80_water_runtime_publication.py
+          python3 tools/architecture/test_gentek80_reference_inputs.py
           # Fail closed on foreign branch/workflow, wrong source or stale remote lease.
           python3 tools/ci/gentek80_water_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
           python3 tools/ci/test_gen007_architectural_runtime_publication.py
@@ -172,7 +173,7 @@ jobs:
           fi
           "$RUNNER_TEMP/gallery/bin/python" tools/architecture/qualify_interlaced.py --compiler /usr/bin/g++-13 --parent-ref e27ff75758ef51c7b7c8b4d8a7093343cc2ecede --output evidence/interlaced-parent > evidence/interlaced-parent.log 2>&1
           "$RUNNER_TEMP/gallery/bin/python" tools/architecture/test_gentek80_campaign.py > evidence/gallery-boundaries.log 2>&1
-          "$RUNNER_TEMP/gallery/bin/python" tools/architecture/gentek80_campaign.py --godot "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" --output evidence/gentek80-gallery --require-clean-source --runtime-build-ledger evidence/runtime-build-linux.json --reference-gallery docs/images/gentek80-integration/gallery-manifest.json
+          "$RUNNER_TEMP/gallery/bin/python" tools/architecture/gentek80_campaign.py --godot "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" --output evidence/gentek80-gallery --require-clean-source --runtime-build-ledger evidence/runtime-build-linux.json --reference-gallery docs/images/gentek80-integration/gallery-manifest.json --reference-input-policy tools/architecture/gentek80_water_reference_delta.json
           "$RUNNER_TEMP/gallery/bin/python" tools/architecture/gentek80_repair_comparison.py --before 615828b28337f85e4663e03ba479616db4ddf764 --after "$GITHUB_SHA" --compiler g++-13 --output evidence/gentek80-repairs
       - name: All 80 real Workbench selections, material edits and separate-process reopen
         env:
@@ -397,7 +398,7 @@ jobs:
         run: |
           python -m pip install Pillow==13.0.0
           if ($LASTEXITCODE -ne 0) { throw 'Gallery dependency installation failed' }
-          python tools/architecture/gentek80_campaign.py --godot $env:GODOT_EXE --output evidence/gentek80-gallery --require-clean-source --runtime-build-ledger build/architecture-windows/runtime-build-windows.json --reference-gallery docs/images/gentek80-integration/gallery-manifest.json
+          python tools/architecture/gentek80_campaign.py --godot $env:GODOT_EXE --output evidence/gentek80-gallery --require-clean-source --runtime-build-ledger build/architecture-windows/runtime-build-windows.json --reference-gallery docs/images/gentek80-integration/gallery-manifest.json --reference-input-policy tools/architecture/gentek80_water_reference_delta.json
           if ($LASTEXITCODE -ne 0) { throw 'Complete Windows catalogue campaign failed' }
           python tools/architecture/gentek80_workbench.py --godot $env:GODOT_EXE --output evidence/gentek80-workbench --graphical
           if ($LASTEXITCODE -ne 0) { throw 'All-80 Windows Workbench author/reopen failed' }
@@ -507,6 +508,7 @@ jobs:
           set -euo pipefail
           python3 tools/ci/test_gentek80_runtime_publication.py
           python3 tools/ci/test_gentek80_water_runtime_publication.py
+          python3 tools/architecture/test_gentek80_reference_inputs.py
           python3 tools/ci/gentek80_water_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
           git lfs install --local
       - name: Retrieve validated Linux runtime and receipts

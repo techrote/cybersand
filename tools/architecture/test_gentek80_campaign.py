@@ -80,6 +80,19 @@ class EvidenceBoundaries(unittest.TestCase):
         self.assertEqual(result["status"], "pass")
         self.assertEqual(result["matched_defaults"], 80)
         self.assertNotEqual(result["reference_source_commit"], result["candidate_source_commit"])
+        policy = {"schema":"gentek80-merged-reference-delta-v1",
+                  "reference_commit":reference["source_commit"],
+                  "reference_tree":reference["source_tree"],
+                  "baseline_sha256":{campaign.PALETTE:inputs[campaign.PALETTE]}}
+        drifted = copy.deepcopy(source)
+        drifted["inputs"][campaign.PALETTE] = "0"*64
+        self.assertEqual(campaign.reference_gallery_comparison(reference,drifted,{"cases":records},records)["status"],"fail")
+        admitted = campaign.reference_gallery_comparison(reference,drifted,{"cases":records},records,policy)
+        self.assertEqual(admitted["status"],"pass")
+        self.assertFalse(admitted["rendering_inputs_equal"])
+        modified = copy.deepcopy(reference)
+        modified["defaults"][17]["rgba_sha256"]="f"*64
+        self.assertEqual(campaign.reference_gallery_comparison(modified,drifted,{"cases":records},records,policy)["status"],"fail")
         changed = copy.deepcopy(reference)
         changed["defaults"][17]["rgba_sha256"] = "f" * 64
         self.assertEqual(campaign.reference_gallery_comparison(changed, source, {"cases": records}, records)["status"], "fail")
