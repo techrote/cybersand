@@ -65,6 +65,11 @@ public:
     // Authoritative stored identity, without the transient rigid-body overlay.
     // Editing callers must still check rigid_body_id_at before mutating a cell.
     [[nodiscard]] std::int64_t stored_material_at(std::int64_t x, std::int64_t y) const;
+    // EXPERIMENT/HOLD: immutable, bounded material and transient-body source
+    // readback, callable only by the existing exclusive PAINT worker. No World
+    // mutation, UI authority or bypass of the script-level protected policy.
+    [[nodiscard]] Dictionary paint_read_stored_slice(
+        Vector2i origin, Vector2i size, std::int64_t offset, std::int64_t length) const;
     [[nodiscard]] std::int64_t rigid_body_id_at(std::int64_t x, std::int64_t y) const;
     [[nodiscard]] bool box_collides(Vector2 origin, Vector2 size) const;
     [[nodiscard]] bool character_box_collides(Vector2 origin, Vector2 size, std::int64_t mode) const;
