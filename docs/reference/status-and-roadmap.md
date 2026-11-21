@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-21
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -67,6 +67,16 @@ source/runtime identities, platform results, failures and remaining owner checks
 ## Workbench publication and progression candidate
 
 The [PUBPRES-INTEGRATION-001 evaluation](../operations/pubpres-integration-evaluation.md) joins sparse publication, strict physical feedback and a bounded presentation timeline. Matched actual gameplay rejected the temporary automatic Windows software-ANGLE full-upload override; the repair removes it while retaining explicit full selection. The candidate also removes overdue non-progressing owner turns after a completed body sample. Native health fences and real physical admission remain intact. It remains Draft/HOLD pending fresh source-matched long-tail, freshness and owner gameplay evidence; rejected renderer treatments and policies are retained separately.
+
+## Workbench playability successor — 2026-11-21
+
+[PUBPRES-PLAYABILITY-001 / #717 / Draft #719](../operations/pubpres-playability-evaluation.md)
+adds default-off reachable staging pools, reviewed adapter diagnostics and a new
+M/I/C campaign with separately built runtimes. The four-column native experiment
+was reverted. Logical allocation savings do not establish playability, and the
+original 2048²/2048 × 1024 controls save nothing. Actual graphical Linux/Windows
+results and physical NVIDIA acceptance remain pending. Keep Draft/HOLD; #682
+and its prior negative evidence remain preserved.
 
 ## Experimental Gentek catalogue integration — Draft/HOLD, 2026-11-17
 

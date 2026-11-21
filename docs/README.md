@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-21
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, operations/atlas-agent-runner.md, architecture/pressure-optimization.md]
 ---
 
@@ -37,6 +37,10 @@ for ordinary UI controls, policy testing and authored saves; the
 separates actual platform evidence from owner playfeel acceptance.
 
 The [Workbench publication and progression evaluation](operations/pubpres-integration-evaluation.md) tracks PUBPRES-INTEGRATION-001 and its Draft/HOLD gates.
+
+The separate [PUBPRES-PLAYABILITY-001 evaluation](operations/pubpres-playability-evaluation.md)
+owns the opt-in staging change, v2 matched progression campaign and new Windows
+evaluator. Draft/HOLD; new graphical results and physical NVIDIA acceptance remain pending.
 
 For deliberate historical research, use the isolated
 [engineering archaeology index](history/engineering/README.md). It is excluded

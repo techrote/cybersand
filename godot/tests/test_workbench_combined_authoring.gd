@@ -696,6 +696,14 @@ func reopen() -> void:
 		"reopened equipment starts stopped with authored supply, without saved transient effects")
 	check(panel.model.text==expected.provider_model and panel.context_mode.selected==expected.provider_context,
 		"provider model and context settings survive restart")
+	# Mounted Art controls leave saved history unopened. Exercise the same
+	# explicit, cancellable restore as a user opening Art after restarting.
+	panel.popup_centered()
+	var history_restored := await until(func() -> bool: return not panel.provider.resume_active,
+		"fresh-process incremental Art conversation restoration")
+	panel.hide()
+	if not history_restored or not check(panel.conversation_loaded,
+		"explicit Art open restores the saved conversation before inspection"): return
 	var resumed_prompt := false
 	for turn: Dictionary in panel.conversation:
 		if str(turn.get("content",""))==FOLLOWUP_PROMPT: resumed_prompt=true

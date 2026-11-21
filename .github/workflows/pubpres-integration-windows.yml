@@ -139,6 +139,7 @@ jobs:
     timeout-minutes: 110
     strategy:
       fail-fast: false
+      max-parallel: 1
       matrix:
         case:
           - needle_wave_follow_landscape_w4

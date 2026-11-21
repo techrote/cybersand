@@ -8,6 +8,7 @@ extends SceneTree
 const Publisher = preload("res://scripts/blit_material_publisher.gd")
 const POLICY_ENV := "CYBERSAND_DIAG_MATERIAL_POOL_POLICY"
 const SLOTS_ENV := "CYBERSAND_DIAG_MATERIAL_STAGING_SLOTS"
+const COPY_ENV := "CYBERSAND_DIAG_MATERIAL_COPY_MODE"
 const FIXTURES: Array[Dictionary] = [
 	{"name":"padded-small","extent":Vector2i(317,259),"ordinary":[1,4,16,64],
 		"reachable":[1,4,16],"history":[],"reachable_history":[],"full_alias":0,
@@ -35,6 +36,39 @@ const SUBMISSION_FIELDS: Array[String] = ["submitted_bytes","updated_tiles","can
 var checks := 0
 var failures: Array[String] = []
 var observations: Array[Dictionary] = []
+var queued_observations: Array[Dictionary] = []
+var separate := false
+
+
+# Same bounded test-only queue gate as run_material_threaded_publication.gd.
+# Setup/readback happen before this gate; only publications are retained.
+class QueueGate extends RefCounted:
+	var entered := Semaphore.new()
+	var resume := Semaphore.new()
+	var cancel := Semaphore.new()
+	var watcher := Thread.new()
+	var expired := false
+	var was_render_owner := false
+	func block_queue() -> void:
+		was_render_owner = RenderingServer.is_on_render_thread()
+		entered.post()
+		resume.wait()
+	func watch() -> void:
+		var deadline: int = Time.get_ticks_msec()+10000
+		while Time.get_ticks_msec() < deadline:
+			if cancel.try_wait(): return
+			OS.delay_msec(5)
+		expired = true
+		entered.post()
+		resume.post()
+	func begin() -> void:
+		watcher.start(watch)
+		RenderingServer.call_on_render_thread(block_queue)
+		entered.wait()
+	func end() -> void:
+		resume.post()
+		cancel.post()
+		watcher.wait_to_finish()
 
 
 func _init() -> void:
@@ -68,13 +102,15 @@ func _source(size: Vector2i, channels: int, value: int) -> Image:
 	return result
 
 
-func _histories(owner: Publisher, current: Image, previous: Image, label: String) -> void:
+func _histories(owner: Publisher, current: Image, previous: Image, label: String) -> Dictionary:
 	var a: Image = owner.current.get_image()
 	var b: Image = owner.previous.get_image()
 	check(a != null and a.get_size() == current.get_size() and a.get_format() == current.get_format()
 		and a.get_data() == current.get_data(),label+" exact current GPU bytes")
 	check(b != null and b.get_size() == previous.get_size() and b.get_format() == previous.get_format()
 		and b.get_data() == previous.get_data(),label+" exact previous GPU bytes")
+	return {"current_sha256":_hash(a.get_data()) if a != null else "",
+		"previous_sha256":_hash(b.get_data()) if b != null else ""}
 
 
 func _expected_bytes(fixture: Dictionary, reachable: bool, channels: int, slots: int) -> int:
@@ -150,15 +186,16 @@ func _case(fixture: Dictionary, channels: int, slots: int, requested: String) ->
 	check(resources.size() == 4+owner._owned_staging_pools().size()*slots,label+" bounded texture identity count")
 	if shared:
 		check(owner.full_staging == owner.staging[int(fixture.full_alias)],label+" exact-shape full alias preserved")
-	_histories(owner,source,preceding,label+" setup")
+	var gpu_hashes: Dictionary = _histories(owner,source,preceding,label+" setup")
 	_refusal_contract(owner,source,label)
 	var submissions: Array[Dictionary] = []
 	var total: int = owner.columns*owner.rows
 	var counts: Array[int] = []
 	for count: int in [1,4,16,64,65,128,129,total]:
 		if count <= total and not counts.has(count): counts.append(count)
-	# A genuine dense edit followed by small edits reaches the independent
-	# history-copy pool and then ordinary small-pool wrap, for every ring size.
+	# Synchronous full and sparse parity. Only fixtures with >=128 tiles reach
+	# dedicated history pools here; the queued matrix below covers both history
+	# capacities across every ring size and both formats.
 	counts.append(0)
 	for repeat: int in range(slots*2+1): counts.append(1 if repeat % 2 == 0 else 4)
 	for turn: int in range(counts.size()):
@@ -177,12 +214,12 @@ func _case(fixture: Dictionary, channels: int, slots: int, requested: String) ->
 		check(owner.publish(source,regions),label+" publication%d accepted" % turn)
 		var update: Dictionary = owner.last_update
 		check(owner.resource_identity() == resources and owner.gpu_storage_bytes() == expected_bytes,
-			label+" publication%d makes no first-use allocation" % turn)
+			label+" publication%d preserves fixed logical texture ownership" % turn)
 		check(owner.current.get_rid() in pair and owner.previous.get_rid() in pair,
 			label+" publication%d preserves both history targets" % turn)
 		check(update.staging_pool_policy == owner.staging_pool_policy and update.allocated_gpu_bytes == expected_bytes,
 			label+" publication%d reports effective policy and exact ownership" % turn)
-		_histories(owner,source,preceding,label+" publication%d" % turn)
+		gpu_hashes = _histories(owner,source,preceding,label+" publication%d" % turn)
 		var comparable: Dictionary = {}
 		for field: String in SUBMISSION_FIELDS: comparable[field] = update.get(field)
 		submissions.append(comparable)
@@ -191,15 +228,110 @@ func _case(fixture: Dictionary, channels: int, slots: int, requested: String) ->
 		"expected_gpu_bytes":expected_bytes,"ordinary_classes":_keys(owner.staging),
 		"history_classes":_keys(owner._history_staging),"resource_count":resources.size(),
 		"all_histories_verified":failures.size() == initial_failures,"submissions":submissions,
-		"current_sha256":_hash(source.get_data()),"previous_sha256":_hash(preceding.get_data()),
+		"current_sha256":gpu_hashes.current_sha256,"previous_sha256":gpu_hashes.previous_sha256,
+		"expected_current_sha256":_hash(source.get_data()),"expected_previous_sha256":_hash(preceding.get_data()),
 		"initialization":initial}
 	observations.append(record)
 	return record
 
 
+func _queued_history_case(channels: int, slots: int, policy: String) -> Dictionary:
+	var initial_failures: int = failures.size()
+	OS.set_environment(POLICY_ENV,policy)
+	OS.set_environment(SLOTS_ENV,str(slots))
+	# 18x12 tiles at side64: both dedicated history pools are reachable while
+	# the ordinary 256-tile atlas is provably unreachable in this rectangle.
+	var size := Vector2i(1152,768)
+	var label := "queued-history/%s/R%d/%d" % [policy,channels*8,slots]
+	var source: Image = _source(size,channels,5)
+	var owner: Publisher = Publisher.create_pair(source,source)
+	check(owner != null,label+" owner initializes")
+	if owner == null: return {}
+	check(owner.columns*owner.rows == 216 and _keys(owner._history_staging) == [1,4],
+		label+" reaches both actual dedicated history classes")
+	var resources: Array[int] = owner.resource_identity()
+	var resident: int = owner.gpu_storage_bytes()
+	_histories(owner,source,source,label+" setup")
+	# Prepare owned CPU images before blocking the renderer. The gate contains
+	# no readback, await, forced draw, resource construction or test sync.
+	var sources: Array[Image] = []
+	var areas: Array = []
+	var expected_paths: Array[Dictionary] = []
+	var turns: int = slots*2+1
+	for capacity: int in [1,4]:
+		for repeat: int in range(turns):
+			for phase: int in range(3):
+				source = source.duplicate()
+				var regions: Array[Rect2i] = []
+				var value: int = 20+sources.size()
+				if phase == 0:
+					source.fill(Color8(value,240-value,0))
+				else:
+					for index: int in range(capacity):
+						var point := Vector2i(index*64+63,63)
+						source.set_pixelv(point,Color8(value,240-value,0))
+						regions.append(Rect2i(point,Vector2i.ONE))
+				sources.append(source)
+				areas.append(regions)
+				expected_paths.append({"history":phase == 1,"capacity":capacity if phase != 0 else 256,
+					"kind":"history" if phase == 1 else ("full" if phase == 0 else "ordinary")})
+	var expected_current: Image = sources[-1].duplicate()
+	var expected_previous: Image = sources[-2].duplicate()
+	var next_slots := {"full":owner.full_staging.next_slot,
+		"history1":owner._history_staging[1].next_slot,"history4":owner._history_staging[4].next_slot,
+		"ordinary1":owner.staging[1].next_slot,"ordinary4":owner.staging[4].next_slot}
+	var counts := {"history1":0,"history4":0,"ordinary1":0,"ordinary4":0,"full":0}
+	var submitted: Array[Dictionary] = []
+	var gate: QueueGate = null
+	if separate:
+		gate = QueueGate.new()
+		gate.begin()
+	for index: int in range(sources.size()):
+		check(owner.publish(sources[index],areas[index]),label+" queued publication%d" % index)
+		var update: Dictionary = owner.last_update
+		var expected: Dictionary = expected_paths[index]
+		var key: String = expected.kind+(str(expected.capacity) if expected.kind != "full" else "")
+		check(update.history_copy == expected.history and update.history_staging == expected.history
+			and update.atlas_capacity == expected.capacity and update.staging_slot == next_slots[key]
+			and update.submitted_bytes > 0,label+" exact class/path/slot%d" % index)
+		counts[key] += 1
+		next_slots[key] = (int(next_slots[key])+1)%slots
+		check(owner.resource_identity() == resources and owner.gpu_storage_bytes() == resident,
+			label+" fixed logical resources during queued publication%d" % index)
+		var comparable: Dictionary = {}
+		for field: String in SUBMISSION_FIELDS: comparable[field] = update.get(field)
+		submitted.append(comparable)
+	# Queued RenderingServer calls must own immutable bytes independently of
+	# these mutable source Images, including after repeated ring wraps.
+	for original: Image in sources: original.fill(Color.BLACK)
+	sources.clear()
+	source = null
+	if gate != null:
+		gate.end()
+		check(gate.was_render_owner and not gate.expired,label+" bounded rendering gate did not synchronize")
+	for key: String in ["history1","history4","ordinary1","ordinary4"]:
+		check(int(counts[key]) == turns and int(counts[key]) > slots,label+" wraps "+key+" beyond ring depth")
+	var gpu: Dictionary = _histories(owner,expected_current,expected_previous,label+" burst completion")
+	var result := {"channels":channels,"slots":slots,"policy":policy,"extent":[size.x,size.y],
+		"separate":separate,"render_gate_completed":gate != null and not gate.expired,
+		"counts":counts,"queued_publications":submitted.size(),"submissions":submitted,
+		"resource_count":resources.size(),"allocated_gpu_bytes":resident,
+		"current_sha256":gpu.current_sha256,"previous_sha256":gpu.previous_sha256,
+		"expected_current_sha256":_hash(expected_current.get_data()),"expected_previous_sha256":_hash(expected_previous.get_data()),
+		"verified":failures.size() == initial_failures}
+	queued_observations.append(result)
+	return result
+
+
 func _run() -> void:
 	var prior_policy: String = OS.get_environment(POLICY_ENV)
 	var prior_slots: String = OS.get_environment(SLOTS_ENV)
+	var prior_copy: String = OS.get_environment(COPY_ENV)
+	OS.set_environment(COPY_ENV,"runs")
+	separate = not RenderingServer.is_on_render_thread()
+	var requested_thread: String = OS.get_environment("CYBERSAND_MATERIAL_QUEUE_THREAD")
+	check(requested_thread in ["safe","separate"] and separate == (requested_thread == "separate"),
+		"requested and actual rendering ownership agree")
 	if not Publisher.supported_driver():
 		check(false,"graphical supported Compatibility renderer required; headless cannot qualify GPU histories")
 	else:
@@ -220,8 +352,18 @@ func _run() -> void:
 		# Unknown launch text must not silently enable the experimental policy.
 		var unknown: Dictionary = _case(FIXTURES[0],1,1,"unrecognized")
 		check(not unknown.is_empty() and unknown.get("policy") == "eager","unknown selector retains ordinary eager allocation")
+		for channels: int in [1,2]:
+			for slots: int in [1,2,3]:
+				var eager: Dictionary = _queued_history_case(channels,slots,"eager")
+				await process_frame
+				var reachable: Dictionary = _queued_history_case(channels,slots,"reachable")
+				check(not eager.is_empty() and not reachable.is_empty() and eager.submissions == reachable.submissions
+					and eager.current_sha256 == reachable.current_sha256 and eager.previous_sha256 == reachable.previous_sha256,
+					"queued policies preserve submissions and both complete GPU histories")
+				await process_frame
 	OS.set_environment(POLICY_ENV,prior_policy)
 	OS.set_environment(SLOTS_ENV,prior_slots)
+	OS.set_environment(COPY_ENV,prior_copy)
 	var report := {"schema":"material-staging-reachability-v1","checks":checks,"failures":failures,
 		"source_sha":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
 		"source_files":{"res://scripts/blit_material_publisher.gd":FileAccess.get_sha256("res://scripts/blit_material_publisher.gd"),
@@ -229,8 +371,8 @@ func _run() -> void:
 		"engine":Engine.get_version_info(),"engine_sha256":FileAccess.get_sha256(OS.get_executable_path()),
 		"platform":OS.get_name(),"display":DisplayServer.get_name(),"driver":RenderingServer.get_current_rendering_driver_name(),
 		"adapter":RenderingServer.get_video_adapter_name(),"render_thread_inline":RenderingServer.is_on_render_thread(),
-		"observations":observations,
-		"scope":"Actual complete GPU current/previous histories and setup-only logical resource ownership. No native/Rapier progression or timing acceptance. Original square/landscape cases save zero allocation bytes."}
+		"observations":observations,"queued_observations":queued_observations,
+		"scope":"Actual complete GPU histories, bounded queued ring reuse and fixed setup-only logical texture ownership. Texture identity does not establish absence of driver allocations. No native/Rapier progression or timing acceptance. Original square/landscape cases save zero allocation bytes."}
 	var output: String = OS.get_environment("CYBERSAND_MATERIAL_STAGING_REACHABILITY_OUTPUT")
 	if not output.is_empty():
 		DirAccess.make_dir_recursive_absolute(output.get_base_dir())
