@@ -639,11 +639,22 @@ func external_policy() -> void:
 
 
 func paused_editor() -> void:
+	var before_serial: int = int(host.latest_snapshot.serial)
 	check(ui.toggle_pause(),"pause actual mixed workshop")
-	if not await until(func() -> bool: return host.latest_snapshot.paused and bool(ui.actor_observation(2).suspended),"both simulation owners paused"): return
+	# A retained paused snapshot can predate this Pause request when rendering
+	# lags worker publication. Require a NEW worker acknowledgement, not only
+	# the previously cached paused bit plus immediate session suspension.
+	if not await until(func() -> bool: return host.paused and int(host.latest_snapshot.serial)>before_serial
+		and host.latest_snapshot.paused and bool(ui.actor_observation(2).suspended),"both simulation owners acknowledged this pause"): return
 	var stopped_native := native_tick()
 	var stopped_physics := physical_tick()
 	for i: int in 6: await process_frame
+	if native_tick()!=stopped_native or physical_tick()!=stopped_physics:
+		print("WB_ACTOR_COMPOSE_PAUSE_DRIFT ",JSON.stringify({"native_before":stopped_native,
+			"native_after":native_tick(),"rapier_before":stopped_physics,"rapier_after":physical_tick(),
+			"host_paused":host.paused,"latest_paused":host.latest_snapshot.paused,
+			"latest_serial":host.latest_snapshot.serial,"worker_paused":host.simulation_worker._paused,
+			"session_suspended":host.physical_actor_session._suspended}))
 	check(native_tick()==stopped_native and physical_tick()==stopped_physics,"pause freezes native and Rapier progression")
 	var session = host.physical_actor_session
 	var editor: Control = ui.paint_editor

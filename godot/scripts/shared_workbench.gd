@@ -345,6 +345,10 @@ func _ensure_art_batches() -> Window:
 	if not is_instance_valid(art_batches):
 		art_batches = preload("res://scripts/art_batch_panel.gd").new()
 		art_batches.wb = self
+		# Executor calls are also permitted before the Window receives its first
+		# _process callback (e.g. an explicit hidden-panel agent transaction).
+		# Bind immediately, while preserving lazy panel/provider construction.
+		art_batches.executor.wb = self
 		art_batches.hide()
 		add_child(art_batches)
 	return art_batches
