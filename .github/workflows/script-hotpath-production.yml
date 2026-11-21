@@ -58,7 +58,7 @@ jobs:
           python3 tools/ci/check_ci_provider_policy.py
 
   admission:
-    name: require an explicit residual shared-contract publication request
+    name: require an explicit native PAINT publication request
     if: github.repository == 'techrote/cybersand' && github.event_name == 'push' && github.ref == 'refs/heads/exp/script-hotpath-001-native-fill'
     runs-on: ubuntu-24.04
     timeout-minutes: 5
@@ -106,7 +106,7 @@ jobs:
 
   linux:
     needs: admission
-    name: build and execute the Linux shared-contract runtime
+    name: source-matched Linux PAINT and legacy control execution
     if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/exp/script-hotpath-001-native-fill' && needs.admission.outputs.armed == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 150
@@ -170,6 +170,33 @@ jobs:
           timeout 10m curl --fail --location --retry 3 --output "$RUNNER_TEMP/godot-linux.zip" "$GODOT_URL"
           python3 tools/ci/script_hotpath_production_publication.py test --platform linux --source-sha "$GITHUB_SHA" --godot-archive "$RUNNER_TEMP/godot-linux.zip" --bundle build/script-hotpath-production-linux
 
+      - name: Verify preserved GDScript fallback and native timing on Linux
+        run: |
+          set -euo pipefail
+          mkdir -p build/script-hotpath-production-linux/fallback
+          GODOT_BIN="$RUNNER_TEMP/godot-linux/Godot_v4.7-stable_linux.x86_64"
+          CYBERSAND_NATIVE_PAINT_FILL=script timeout 8m "$GODOT_BIN" --headless --path godot -s res://tests/test_script_hotpath_native_fill.gd \
+            2>&1 | tee build/script-hotpath-production-linux/fallback/differential.log
+          grep -q 'SCRIPT_HOTPATH_RESULT' build/script-hotpath-production-linux/fallback/differential.log
+          grep -q '"failures":\[\]' build/script-hotpath-production-linux/fallback/differential.log
+          timeout 8m "$GODOT_BIN" --headless --path godot -s res://tests/bench_script_hotpath_native_fill.gd \
+            2>&1 | tee build/script-hotpath-production-linux/fallback/benchmark.log
+          grep -q 'SCRIPT_HOTPATH_BENCH_RESULT PASS' build/script-hotpath-production-linux/fallback/benchmark.log
+
+      - name: Qualify rendered Linux Workbench with exact compiled native library
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+          LP_NUM_THREADS: '2'
+        run: |
+          set -euo pipefail
+          bash tools/ci/prepare_linux_display.sh
+          xvfb-run -a -s '-screen 0 1600x1000x24 -nolisten tcp' \
+            timeout 12m "$RUNNER_TEMP/godot-linux/Godot_v4.7-stable_linux.x86_64" \
+            --path godot -s res://tests/test_paint_editor_workbench.gd \
+            2>&1 | tee build/script-hotpath-production-linux/workbench-rendered.log
+          grep -q 'PAINT_EDITOR_WORKBENCH' build/script-hotpath-production-linux/workbench-rendered.log
+          grep -q '"failures":\[\]' build/script-hotpath-production-linux/workbench-rendered.log
+
       - name: Retain Linux runtime and execution evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -182,7 +209,7 @@ jobs:
 
   windows-build:
     needs: admission
-    name: cross-build the Windows shared-contract runtime
+    name: pinned source-matched Windows GDExtension build
     if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/exp/script-hotpath-001-native-fill' && needs.admission.outputs.armed == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 150
@@ -258,7 +285,7 @@ jobs:
           retention-days: 30
 
   windows-execution:
-    name: execute Windows shared-contract cases
+    name: Windows native PAINT fallback and ABBA regression
     needs: windows-build
     if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/exp/script-hotpath-001-native-fill'
     runs-on: windows-2022
@@ -302,6 +329,16 @@ jobs:
           curl --fail --location --retry 3 --connect-timeout 20 --max-time 600 --output "$RUNNER_TEMP/godot-windows.zip" "$GODOT_WINDOWS_URL"
           python tools/ci/script_hotpath_production_publication.py test --platform windows --source-sha "$GITHUB_SHA" --godot-archive "$RUNNER_TEMP/godot-windows.zip" --bundle build/script-hotpath-production-windows
 
+      - name: Re-run native versus script Windows differential and interleaved Workbench A/B
+        run: |
+          set -euo pipefail
+          python tools/ci/native_candidate_identity.py build/script-hotpath-production-windows --create
+          python tools/ci/qualify_script_hotpath_windows.py \
+            --archive "$RUNNER_TEMP/godot-windows.zip" \
+            --candidate build/script-hotpath-production-windows \
+            --source-sha "$GITHUB_SHA" \
+            --output build/script-hotpath-production-windows/repeated-abba
+
       - name: Retain Windows runtime and execution evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -313,7 +350,7 @@ jobs:
           retention-days: 30
 
   publish:
-    name: fast-forward the source branch with both validated runtimes
+    name: append two verified LFS native runtimes and provenance
     needs: [native-kernel, linux, windows-execution]
     if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/exp/script-hotpath-001-native-fill'
     runs-on: ubuntu-24.04
