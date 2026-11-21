@@ -6,7 +6,7 @@ status: Approved design
 scope: Stable review IDs with current enforcement, known exceptions and approved requirements; this register is not a test-result ledger
 keywords: [invariants, ownership, threading, replay, conservation, capacity, body mask, interest defect]
 related-documents: [../architecture/principles-and-non-goals.md, interfaces-and-message-contracts.md, validation-evidence.md, status-and-roadmap.md, ../architecture/pressure-optimization.md]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-11-20
 ---
 
 # Architectural and simulation invariants
@@ -169,6 +169,13 @@ Source/tests: [native adapter](../../godot/native_extension/cyber_native_cell_wo
 | BODY-008 | Current: direct server state, not stale scene transforms, owns post-step body results |
 
 ## Physical actor invariants
+
+For the [Workbench composition candidate](../systems/workbench-actor-composition.md),
+inspection never grants human producer authority. Source switching uses existing
+takeover cancellation and generation fences without reconstructing the body.
+Eight logical slots, eight prepared parts per actor and 64 response bodies/mask
+proxies are separate bounds; equipment remains reserved after release. Complete
+validation and prepared adoption precede changing the applied authored map.
 
 Contract: [articulated actors](../systems/physical-actor-rigs.md),
 [physical commands](interfaces-and-message-contracts.md#physical-actor-control-and-effects).

@@ -62,7 +62,11 @@ func run() -> void:
 
 	var host: Node = load("res://main.tscn").instantiate()
 	root.add_child(host)
-	var panel: Window = host.shared_workbench.art_batches
+	check(host.shared_workbench.art_batches == null and traffic_files() == initial_files and size_of(old_path) == source_size,
+		"startup leaves Art unconstructed and never copies traffic")
+	# Explicitly construct a hidden panel to separately check that construction
+	# alone does not read or duplicate a saved conversation.
+	var panel: Window = host.shared_workbench._ensure_art_batches()
 	for _i in range(3): await process_frame
 	check(not panel.visible and not panel.conversation_loaded,"Workbench starts with Art hidden and transcript deferred")
 	check(panel.provider.log_path.is_empty() and panel.provider.parent_log_path == old_path,"startup remembers old session without opening a new log")
@@ -99,7 +103,9 @@ func run() -> void:
 	var before_relaunch := traffic_files()
 	var host2: Node = load("res://main.tscn").instantiate()
 	root.add_child(host2)
-	var panel2: Window = host2.shared_workbench.art_batches
+	check(host2.shared_workbench.art_batches == null and traffic_files() == before_relaunch,
+		"relaunch keeps the linked conversation unopened and Art unconstructed")
+	var panel2: Window = host2.shared_workbench._ensure_art_batches()
 	for _i in range(3): await process_frame
 	check(not panel2.conversation_loaded and traffic_files() == before_relaunch,"relaunch does not copy the new linked conversation")
 	panel2.show()

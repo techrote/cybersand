@@ -29,6 +29,13 @@ For Waterwall 002, see the [Water Lab controls](operations/workbench-water-lab.m
 own the integrated fifteen-collection / 120-feature art workflow. Draft/HOLD;
 source-qualified graphical evidence and physical GPU acceptance remain distinct.
 
+WB-ACTOR-COMPOSE-001 / #589 Draft/HOLD: [Shared Workbench actor composition](systems/workbench-actor-composition.md)
+integrates the existing physical catalogue, independent producers and live handoff.
+Use the [Mixed Actor Workshop owner procedure](operations/workbench-actor-composition.md)
+for ordinary UI controls, policy testing and authored saves; the
+[dated qualification record](audits/2026-11-20-workbench-actor-composition.md)
+separates actual platform evidence from owner playfeel acceptance.
+
 For deliberate historical research, use the isolated
 [engineering archaeology index](history/engineering/README.md). It is excluded
 from default current-answer retrieval and grants no implementation authority.
@@ -39,16 +46,6 @@ Wave Flow PR #631 (inherited from #618): [native contract and limitations](archi
 [Shared Workbench tuning, Water comparison scenes and Windows evaluation](operations/wave-flow-evaluation.md),
 and [Workbench repair and qualification custody](audits/2026-11-16-wave-workbench-631-finisher.md).
 PR #631 introduced opt-in Wave Flow. Fresh player sessions now use the Wave gameplay profile with spill and ballistic release. The [owner’s final tank playtest](audits/2026-11-20-wave-oil-impinge.md) records the accepted settings and live frame timing.
-
-**80-Gentek integration candidate:** [selection and Windows evaluation](operations/gentek80-evaluation.md),
-[source reconciliation and qualification](research/gentek-80-integration-001.md).
-Repaired CLASSIC and all eight showcases share the ordinary generator entry point.
-
-**Retained donor research:** parent [#624](https://github.com/techrote/cybersand/pull/624)
-contains 72 classic samplers; stacked [integration #671](https://github.com/techrote/cybersand/pull/671)
-collects eight advanced showcases into an 80-module evaluation candidate.
-See the [integration evidence and owner gate](operations/gentek-showcase-integration-001.md).
-Neither candidate is part of accepted `main` or authorized to merge.
 
 Current combined evaluation: [Materials Lab + Workbench integration](audits/2026-11-12-mat-auth-workbench-integration.md) preserves both current feature heads, shared manual/agent Undo/Redo and existing material/save contracts. Its own Windows/Linux/package qualification remains separate from each feature's preceding evidence.
 

@@ -35,13 +35,18 @@ func clear() -> void:
 	strength = 0.0
 
 
-func apply(world, requested_kind: int, target: Vector2, requested_radius: int, power: float = 1.0) -> void:
+func apply(world, requested_kind: int, target: Vector2, requested_radius: int, power: float = 1.0,
+		extent: Vector2i = Vector2i(WORLD_LIMIT, WORLD_LIMIT)) -> void:
 	# At most one effect per actor update. No deferred effect survives cancellation.
 	if kind != NONE or world == null or not target.is_finite() or not is_finite(power):
 		return
+	# Sampled callers retain the 1024-square contract. The physical exclusive
+	# owner may supply its already accepted finite Workbench extent.
+	if extent.x < 1 or extent.y < 1 or extent.x > 2048 or extent.y > 2048:
+		return
 	# Guard the floating-point coordinates before narrowing to Vector2i: very
 	# large finite values can otherwise wrap into apparently valid grid cells.
-	if target.x < 0.0 or target.y < 0.0 or target.x >= float(WORLD_LIMIT) or target.y >= float(WORLD_LIMIT):
+	if target.x < 0.0 or target.y < 0.0 or target.x >= float(extent.x) or target.y >= float(extent.y):
 		return
 	if requested_kind != DIG and requested_kind != BLAST:
 		return
@@ -50,7 +55,7 @@ func apply(world, requested_kind: int, target: Vector2, requested_radius: int, p
 	if world.has_method(&"has_failed") and bool(world.has_failed()):
 		return
 	var centre: Vector2i = Vector2i(floori(target.x), floori(target.y))
-	if centre.x < 0 or centre.y < 0 or centre.x >= WORLD_LIMIT or centre.y >= WORLD_LIMIT:
+	if centre.x < 0 or centre.y < 0 or centre.x >= extent.x or centre.y >= extent.y:
 		return
 	var bounded_radius: int = clampi(requested_radius, 1, MAX_RADIUS)
 	kind = requested_kind
@@ -70,7 +75,7 @@ func apply(world, requested_kind: int, target: Vector2, requested_radius: int, p
 				return
 			var x: int = centre.x + offset_x
 			var y: int = centre.y + offset_y
-			if x < 0 or y < 0 or x >= WORLD_LIMIT or y >= WORLD_LIMIT:
+			if x < 0 or y < 0 or x >= extent.x or y >= extent.y:
 				continue
 			reads_last += 1
 			_materials[_index(offset_x, offset_y)] = int(world.material_at(x, y))
@@ -82,7 +87,7 @@ func apply(world, requested_kind: int, target: Vector2, requested_radius: int, p
 				return
 			var x: int = centre.x + offset_x
 			var y: int = centre.y + offset_y
-			if x < 0 or y < 0 or x >= WORLD_LIMIT or y >= WORLD_LIMIT:
+			if x < 0 or y < 0 or x >= extent.x or y >= extent.y:
 				continue
 			var before: int = _materials[_index(offset_x, offset_y)]
 			var fire_centre: bool = requested_kind == BLAST and offset_x == 0 and offset_y == 0

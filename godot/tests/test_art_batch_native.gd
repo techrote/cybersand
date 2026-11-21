@@ -37,8 +37,9 @@ func run() -> void:
 	main = current_scene
 	wb = main.shared_workbench
 	if not await until(installed,"blank native workbench ready"): quit(1); return
-	art = wb.art_batches.executor
-	var panel = wb.art_batches
+	check(wb.art_batches == null,"ordinary Workbench startup does not initialize Art or conversation state")
+	art = wb._ensure_art_batches().executor
+	var panel = wb._ensure_art_batches()
 	panel.provider.log_event("fixture","hidden traffic should stay off the UI")
 	check(panel.traffic_dirty and panel.traffic_text.text.is_empty(),"hidden traffic does not rebuild text")
 	panel.traffic_window.show()

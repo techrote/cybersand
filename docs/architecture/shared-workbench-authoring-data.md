@@ -49,6 +49,14 @@ Keep Draft/HOLD. The dated candidate paragraphs above retain their original scop
 
 ## Common authored document semantics
 
+The [WB-ACTOR-COMPOSE-001 candidate](../systems/workbench-actor-composition.md#authored-data-options-and-compatibility)
+adds an optional versioned actor-control extension within existing Setup-v2,
+generated-start and material-baseline containers. Source, bounded cadence,
+starting equipment and compatible tuning are authored values. Live policy
+memory, leases, issued observations, resource consumption, momentum and evolved
+cells are not serialized by ordinary Save. Invalid definitions or controls refuse
+the complete preparation while retaining the previous applied map and session.
+
 **Approved requirements for convergence:**
 
 | Part | Meaning |

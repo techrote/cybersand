@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "source_commit": "2e9bba9c2d1c3f5b0b8cb644c860d4ce0c463fa3",
+  "workflow_run": 44663989761,
+  "native_sha256": "7b20455aad35559ea638d7db1b09f6c85657823302e742ef04254730008454f2",
+  "display": "X11",
+  "renderer": "llvmpipe (LLVM 20.1.2, 256 bits)",
+  "scope": "Actual application framebuffer and functional host operation; subjective owner playfeel remains separate.",
+  "images": [
+    {
+      "caption": "Actual Shared Workbench: human flyer, three scripted mechanisms, external-policy fixture and passive barrel; labels show producer roles.",
+      "file": "linux-01-mixed-cast.png",
+      "inspected": 1,
+      "native_tick": 102,
+      "pilot": 1,
+      "rapier_tick": 102,
+      "sha256": "d1d11acb5839950eb2c886f799c2840e8d7875544e8acfd20c3110be990358d8",
+      "size": 110566
+    },
+    {
+      "caption": "Crawler selected for inspection while the flyer retains the human pilot and all enabled NPCs keep running.",
+      "file": "linux-02-npc-inspector.png",
+      "inspected": 3,
+      "native_tick": 129,
+      "pilot": 1,
+      "rapier_tick": 129,
+      "sha256": "9ee58f8a6557748c010be1c2b94243373a4275cc5716d580cf122cf1fc4f0a36",
+      "size": 165629
+    },
+    {
+      "caption": "Existing Stuntbuggy body taken over from the external-policy fixture; the same authored actor remains in the material canvas.",
+      "file": "linux-03-ground-takeover.png",
+      "inspected": 5,
+      "native_tick": 138,
+      "pilot": 5,
+      "rapier_tick": 138,
+      "sha256": "1338f2c43c5cd4526b6b403dd76cb8eef2b78ec731b491464675426aa4541712",
+      "size": 110280
+    },
+    {
+      "caption": "Ground actor handed back to its external-policy test producer; heterogeneous autonomous cast continues in the same World.",
+      "file": "linux-04-policy-handback.png",
+      "inspected": 5,
+      "native_tick": 159,
+      "pilot": 0,
+      "rapier_tick": 159,
+      "sha256": "2c8c335809fcba11c32ad15dda87d789fb8d1c402febf2e5951d2f94812c8c78",
+      "size": 111249
+    }
+  ]
+}

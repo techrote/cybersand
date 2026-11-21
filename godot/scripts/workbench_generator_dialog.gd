@@ -250,6 +250,9 @@ func _fit_available_bounds() -> void:
 		position = position.clamp(bounds.position,bounds.end-size)
 
 func _popup_bounded() -> void:
+	# The reusable form also supports a plain Control host for recipe inspection.
+	# An ordinary Workbench supplies the existing human-input cancellation hook.
+	if _workbench != null and _workbench.has_method("_cancel"): _workbench._cancel()
 	_fit_available_bounds()
 	popup_centered_clamped(Vector2i(720,610),0.9)
 

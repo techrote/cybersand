@@ -17,7 +17,7 @@ func run() -> void:
 	await scene_changed
 	var host = current_scene
 	var workbench = host.shared_workbench
-	var panel = workbench.art_batches
+	var panel = workbench._ensure_art_batches()
 	var deadline := Time.get_ticks_msec()+30000
 	while (workbench.applied.is_empty() or workbench.busy()) and Time.get_ticks_msec()<deadline:
 		await process_frame

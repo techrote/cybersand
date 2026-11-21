@@ -43,27 +43,26 @@ failure/no-takeover semantics; the [evaluation guide](../tools/world-art-evaluat
 owns owner usage. Exact-source qualification and independent review are recorded
 in PR #685. Hosted ANGLE is separate from owner Windows/NVIDIA acceptance.
 
-## Experimental Gentek catalogue integration — Draft/HOLD, 2026-11-17
+## Shared Workbench actor composition / #589 — 2026-11-20
 
-The stacked [GENTEK-SHOWCASE-INTEGRATION-001 #671](https://github.com/techrote/cybersand/pull/671)
-collects all eight independent advanced showcase PRs (#663–#670) onto the frozen
-72-module [CLASSIC #624](https://github.com/techrote/cybersand/pull/624).
-The combined source-matched native and Linux/Godot material qualification passes
-for an **80-module candidate** and two mixed five-style maps; the
-[research integration record](../operations/gentek-showcase-integration-001.md)
-owns exact source/PNG provenance, remaining review and owner approval.
-Both PRs remain **Draft/HOLD; not accepted main, not Ready, not merge-authorized**.
+**Implementation candidate, Draft/HOLD; no merge authorization.** The owner
+advanced #589's earlier planning boundary through WB-ACTOR-COMPOSE-001. The
+[composition contract](../systems/workbench-actor-composition.md) exposes 59 existing
+physical model identities through one prepared Workbench session: eight flyers,
+46 physical rigs, four 4LY profiles and the passive barrel. Per-instance Human,
+Scripted NPC, External Policy and Passive sources retain existing producer,
+issued-observation, lease and equipment admission. Live takeover preserves the
+body graph and resources. Inspection and painting do not take NPC control.
 
-## GENTEK-80 integration candidate — 20 November 2026
-
-A fresh Draft/HOLD branch from accepted `de109d01` reconciles all 72 repaired
-CLASSIC samplers and eight advanced showcases through the existing Architectural
-Generator. See the [source reconciliation](../research/gentek-80-integration-001.md)
-and [evaluation procedure](../operations/gentek80-evaluation.md). The 80 additions
-coexist with 13 accepted presets; catalogue counts do not remove legacy choices.
-Compiler cache identity, complete native visual evidence, target-OS Workbench
-persistence and source-qualified Windows packaging are mandatory admission gates.
-Exact results remain in dated evidence. Owner merge approval remains required.
+The [Mixed Actor Workshop](../operations/workbench-actor-composition.md) uses six
+actors with different mechanisms, three compatible tools and an actual leased
+policy fixture in a material-cell canvas. Setup-v2 gains a strictly validated
+optional control-v1 extension; authored Save remains separate from live physics.
+Sampled arenas, oracle/tag combat, NCA training and model services remain outside
+this integration. A bounded adapter reuses Thunderbowl's pure local steering
+helper without importing its simulation owner. The
+[dated evidence](../audits/2026-11-20-workbench-actor-composition.md) owns exact
+source/runtime identities, platform results, failures and remaining owner checks.
 
 ## GEN-008 Flatten / Bake History — 2026-11-13
 
