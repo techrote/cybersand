@@ -1,0 +1,28 @@
+# TEMPLATE ONLY (lives outside .github/workflows, so it never runs). Copy into a workflow
+# to let an art/agent job render real Godot pixels without a GUI. The repository's own
+# qualification is .github/workflows/world-art-capture.yml.
+name: atlas-capture-example
+on: workflow_dispatch
+jobs:
+  capture:
+    runs-on: ubuntu-24.04
+    env:
+      LIBGL_ALWAYS_SOFTWARE: '1'
+    steps:
+      - uses: actions/checkout@v4            # viewer + capture tooling (pin to a SHA in real use)
+        with: { lfs: false }
+      - uses: actions/checkout@v4            # art source, read-only, current head of the branch
+        with: { ref: design/world-atlas-015-refinement-20261105, path: art-source, lfs: false }
+      - name: Provide Godot 4.7 (see .github/workflows/world-art-capture.yml for the verified download)
+        run: echo "GODOT_BIN=$RUNNER_TEMP/engine/Godot_v4.7-stable_linux.x86_64" >> "$GITHUB_ENV"
+      - name: Capture the whole atlas (or --collection NAME --shots viewport,detail)
+        run: |
+          xvfb-run -a --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
+            python3 examples/world-art-capture/capture_atlas.py --godot "$GODOT_BIN" --rendering-driver opengl3 \
+            --art-root "$GITHUB_WORKSPACE/art-source/docs/world-design" --scale 1 \
+            --output-dir "$GITHUB_WORKSPACE/captures/atlas" | tee capture-result.json
+      - name: Re-verify the retained bundle
+        run: python3 tools/world_art_preview_launcher.py --verify-bundle "$GITHUB_WORKSPACE/captures/atlas"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: atlas-capture, path: captures/atlas, retention-days: 14 }

@@ -30,6 +30,19 @@ The owner selected Wave Flow with spill and ballistic release for new player ses
 
 The [Waterwall 002 candidate](../audits/2026-11-19-wave-waterwall-002.md) adds optional Wave settings for ledge sheets, crest flight and deep-water slosh. The [Water Lab](../operations/workbench-water-lab.md#try-the-waterwall-002-candidate) stages both bundles. The owner approved the combined gameplay profile after the [Oil impingement playtest](../audits/2026-11-20-wave-oil-impinge.md).
 
+## Unified World Art pipeline — 2026-11-20
+
+**Implementation candidate, Draft/HOLD:** the [unified art contract](../tools/art-pipeline-unification.md)
+provides one shared Godot RG8 renderer, interactive viewer, unattended capture,
+verified offline gallery and portable Windows evaluator for fifteen collections
+and 120 features. Art-only bounds are 16,384 cells per axis and 16,777,216 cells
+in total; ordinary full export is limited to 50M pixels and opt-in streamed
+export to 100M pixels / 65,536 per output axis. Native simulation/import limits
+are unchanged. The [capture guide](../tools/world-art-capture.md) owns explicit
+failure/no-takeover semantics; the [evaluation guide](../tools/world-art-evaluation.md)
+owns owner usage. Exact-source qualification and independent review are recorded
+in PR #685. Hosted ANGLE is separate from owner Windows/NVIDIA acceptance.
+
 ## GEN-008 Flatten / Bake History — 2026-11-13
 
 **Implementation candidate, Draft/HOLD:** issue #548 starts independently from

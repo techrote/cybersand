@@ -24,6 +24,22 @@ pointer with a visible refusal. Keep **Draft / HOLD**; do not mark Ready,
 merge or enable auto-merge. Hosted Windows evidence does not establish acceptance
 on the owner's physical Windows installation.
 
+## World Art finisher — 2026-11-20
+
+Continue the existing `tools/art-pipeline-unification-001-20261120` branch and
+[PR #685](https://github.com/techrote/cybersand/pull/685). It is the authoritative
+integrated art viewer/capture implementation. The [contract](../tools/art-pipeline-unification.md),
+[viewer guide](../tools/world-art-preview.md), [capture guide](../tools/world-art-capture.md)
+and [Windows evaluator](../tools/world-art-evaluation.md) replace historical
+two-checkout assembly instructions. No donor merge is needed. Source artwork,
+production shaders, native physics/import formats and World limits are preserved.
+
+Both art workflows explicitly check out the requested source commit. The capture
+workflow also builds a source-bound portable Windows package and executes its
+shipped launchers. An independent final review and exact-source graphical results
+belong in the PR ledger. Keep Draft/HOLD until explicit owner approval; software
+rendering does not establish physical Windows/NVIDIA acceptance.
+
 ## Architectural Generator runtime repair — 2026-11-15
 
 The owner-authorized Phase A plus bounded Phase B implementation began at
