@@ -46,15 +46,19 @@ jobs:
           assert hashlib.sha256(payload).hexdigest() == request['frozen_payload_tree_sha256']
           campaign = json.loads(campaign_path.read_text())
           windows = [c['id'] for c in campaign['cases'] if c['primary']] if phase == 'final' else ['wave_512_follow', 'wave_2048_follow']
-          linux = ['wave_512_follow', 'wave_2048_follow', 'wave_gameplay_2048_follow', 'pressure_512_follow', 'freemass_2048_follow'] if phase == 'final' else ['wave_512_follow']
+          linux = ['wave_512_free', 'wave_512_follow', 'wave_2048_follow', 'wave_gameplay_2048_follow', 'pressure_512_follow', 'freemass_2048_follow', 'cellular_512_follow'] if phase == 'final' else ['wave_512_follow']
           if phase == 'probes':
               windows, linux = [], []
           def matrix(cases):
               rows = []
               for case in cases:
                   rows.append({'case': case, 'stage': 'source', 'job_minutes': 150})
-                  for stage, key in [('thread', 'render_thread_calibration'), ('observer', 'calibration'), ('native-probe', 'native_probe_calibration'), ('input', 'input_equivalence')]:
-                      spec = campaign[key]
+                  for stage, key in [('thread', 'render_thread_calibration'), ('observer', 'calibration'), ('native-probe', 'native_probe_calibration'), ('input', 'input_equivalence'), ('same-frame', 'same_frame_calibration')]:
+                      spec = campaign.get(key, {})
+                      if not spec.get('enabled', True):
+                          continue
+                      if phase == 'development' and campaign['schema'] == 'pubpres-playability-campaign-v3' and stage not in ('same-frame', 'observer'):
+                          continue
                       if case in spec.get('cases', [spec.get('case')]):
                           rows.append({'case': case, 'stage': stage, 'job_minutes': 120})
               return {'include': rows}
@@ -68,6 +72,8 @@ jobs:
         run: |
           python3 tools/ci/check_ci_provider_policy.py
           python3 tools/pubpres_playability/test_results.py
+          python3 tools/pubpres_playability/test_results_same_frame.py
+          python3 tools/pubpres_playability/test_protocol.py
           python3 tools/pubpres_playability_windows/test_package_windows.py
           python3 tools/pubpres_playability_build/test_helpers.py
           python3 tools/pubpres_render_probes/test_probes.py
@@ -263,7 +269,9 @@ jobs:
   linux-correctness:
     needs: [plan, runtimes]
     runs-on: ubuntu-24.04
-    timeout-minutes: 150
+    # 27 admitted cases: 23x300s + 4x600s, then owned display/process
+    # retirement, source/engine preparation and evidence upload.
+    timeout-minutes: 210
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with: {persist-credentials: false}
@@ -332,7 +340,10 @@ jobs:
   windows-package:
     needs: [plan, runtimes]
     runs-on: windows-2022
-    timeout-minutes: 240
+    # Source correctness 155m + installed OFF/ON 50m + seven bounded
+    # launcher import/start pairs 77m, plus ownership/preparation/upload.
+    # This parent allowance changes no capture, native or child deadline.
+    timeout-minutes: 360
     defaults:
       run: {shell: powershell}
     steps:
@@ -416,16 +427,43 @@ jobs:
           & $Launcher -PackageRoot $Payload -ExpectedCandidate $env:GITHUB_SHA -Action Open -ReopenRun $Reopen[0].FullName -QuitAfterReady
           python tools/pubpres_playability_windows/package_windows.py --verify --candidate-sha $env:GITHUB_SHA --output-dir $Payload
           if ($LASTEXITCODE -ne 0) { throw 'Pristine payload changed during installed qualification' }
+      - name: Independent continuation ON installed startup and same-profile reopening
+        if: always() && steps.package-build.outcome == 'success'
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $Payload = Join-Path $env:RUNNER_TEMP 'pubpres-payload'
+          $Launcher = Join-Path $Payload 'tools/pubpres_playability_windows/Start-PUBPRES-Playability.ps1'
+          $Runs = Join-Path $env:RUNNER_TEMP 'Runs'
+          if (-not (Test-Path -LiteralPath $Runs)) { New-Item -ItemType Directory -Path $Runs | Out-Null }
+          $BeforeContinuation = @(Get-ChildItem -LiteralPath $Runs -Directory | ForEach-Object { $_.FullName })
+          & $Launcher -PackageRoot $Payload -ExpectedCandidate $env:GITHUB_SHA -Action Open -Source Candidate -SameFrameContinuation On -RenderThread Safe -RenderingDriver opengl3_angle -QuitAfterReady
+          $ContinuationRun = @(Get-ChildItem -LiteralPath $Runs -Directory | Where-Object {
+            $RunRecord = Get-Content -LiteralPath (Join-Path $_.FullName 'run.json') -Raw | ConvertFrom-Json
+            $BeforeContinuation -cnotcontains $_.FullName -and $RunRecord.source -ceq 'C' -and
+              $RunRecord.same_frame_continuation -ceq 'on' -and $RunRecord.render_driver -ceq 'opengl3_angle' -and
+              $RunRecord.render_thread -ceq 'safe' -and $RunRecord.staging_pools -ceq 'eager'
+          })
+          if ($ContinuationRun.Count -ne 1) { throw 'Expected one exact continuation-On run to reopen' }
+          $VerifiedOn = @(Get-ChildItem -LiteralPath (Join-Path $ContinuationRun[0].FullName 'launches') -Filter 'verified-startup.json' -Recurse -File)
+          if ($VerifiedOn.Count -ne 1) { throw 'Fresh continuation-On run has no unique verified graphical startup' }
+          & $Launcher -PackageRoot $Payload -ExpectedCandidate $env:GITHUB_SHA -Action Open -ReopenRun $ContinuationRun[0].FullName -SameFrameContinuation On -QuitAfterReady
+          python tools/pubpres_playability_windows/package_windows.py --verify --candidate-sha $env:GITHUB_SHA --output-dir $Payload
+          if ($LASTEXITCODE -ne 0) { throw 'Pristine payload changed during On startup qualification' }
       - name: Exact-source Windows authoring, ownership and GPU history gates
         if: always() && steps.package-build.outcome == 'success'
         run: |
           python tools/pubpres_playability_build/run_regressions.py --engine (Join-Path $env:RUNNER_TEMP 'godot/Godot_v4.7-stable_win64.exe') --runtime build/runtime/C --output build/pubpres-windows-correctness
           if ($LASTEXITCODE -ne 0) { throw 'Windows scoped source qualification failed' }
-      - name: Actual installed graphical Save and fresh-process native-plane reconstruction
+      - name: Installed continuation OFF graphical Save and fresh-process native-plane reconstruction
         if: always() && steps.package-build.outcome == 'success'
         run: |
-          python tools/pubpres_playability_build/run_installed_authoring.py --package (Join-Path $env:RUNNER_TEMP 'pubpres-payload') --candidate $env:GITHUB_SHA --output build/pubpres-installed-authoring
+          python tools/pubpres_playability_build/run_installed_authoring.py --package (Join-Path $env:RUNNER_TEMP 'pubpres-payload') --candidate $env:GITHUB_SHA --output build/pubpres-installed-authoring-off --same-frame off
           if ($LASTEXITCODE -ne 0) { throw 'Installed graphical author/Save/reopen failed' }
+      - name: Installed continuation ON graphical Save and fresh-process native-plane reconstruction
+        if: always() && steps.package-build.outcome == 'success'
+        run: |
+          python tools/pubpres_playability_build/run_installed_authoring.py --package (Join-Path $env:RUNNER_TEMP 'pubpres-payload') --candidate $env:GITHUB_SHA --output build/pubpres-installed-authoring-on --same-frame on
+          if ($LASTEXITCODE -ne 0) { throw 'Installed continuation-On graphical author/Save/reopen failed' }
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
@@ -441,7 +479,8 @@ jobs:
           path: |
             build/pubpres-package-checks/
             build/pubpres-windows-correctness/
-            build/pubpres-installed-authoring/
+            build/pubpres-installed-authoring-off/
+            build/pubpres-installed-authoring-on/
             ${{ runner.temp }}/Runs/
           if-no-files-found: warn
           retention-days: 90

@@ -58,6 +58,10 @@ Windows512 progression, queued-pixel failures and distinct Separate-renderer
 crashes. Source-reviewed display/package harness repairs require fresh execution;
 they do not upgrade the failed original campaign. Keep the earlier #682 and its
 evidence unchanged, and keep the successor Draft/HOLD with ordinary defaults.
+The new default-off same-frame continuation has independent source-safety
+clearance and explicit v3 callback-credit measurement. Its prospective paired
+source/runtime campaign and versioned owner evaluator must establish graphical
+progression; headless positive admission does not establish a speed improvement.
 
 For the PUBPRES-PLAYABILITY successor, the
 [isolated renderer runbook](../../tools/pubpres_render_probes/README.md) provides

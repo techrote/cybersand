@@ -36,6 +36,8 @@ var prepared_sha256 := ""
 var stopped_prefix := 0
 var simulation_evidence: Dictionary = {}
 var source_identity: Dictionary = {}
+var same_frame_configuration := {"schema":"pubpres-authoring-continuation-evidence-v1",
+	"mode":"source-default","claim":"configuration-only","before":{},"after":{}}
 var started_usec := 0
 # Separate container invocations may reuse the same namespace-local PID.
 # This in-memory witness is never restored from the saved expectation.
@@ -82,7 +84,8 @@ func json_equivalent(actual: Variant,expected: Variant) -> bool:
 func identity() -> Dictionary:
 	var result := {"godot":Engine.get_version_info().string,"os":OS.get_name(),
 		"display":DisplayServer.get_name()}
-	for path: String in ["scripts/simulation_worker.gd","scripts/shared_workbench.gd",
+	for path: String in ["scripts/main.gd","scripts/workbench_same_frame_continuation.gd",
+		"scripts/simulation_worker.gd","scripts/shared_workbench.gd",
 		"scripts/workbench_generator_dialog.gd","scripts/art_batch_executor.gd",
 		"scripts/art_batch_panel.gd","scripts/art_provider.gd",
 		"scripts/workbench_liquid_equipment.gd","scripts/workbench_liquid_equipment_panel.gd",
@@ -94,6 +97,34 @@ func identity() -> Dictionary:
 		"cybersand_native.windows.x86_64.dll" if OS.get_name()=="Windows" else "libcybersand_native.linux.x86_64.so")
 	result.native_sha256 = FileAccess.get_sha256(native_path)
 	return result
+
+func observe_continuation_configuration() -> Dictionary:
+	# This authoring fixture checks the requested configuration around its
+	# transactions. It neither counts nor attributes any step to continuation.
+	var mode := str(same_frame_configuration.mode)
+	check(mode in ["source-default","off","on"],"combined continuation mode is explicit or source-default")
+	var expected_selectors := {"CYBERSAND_DIAG_SAME_FRAME_CONTINUATION":"1" if mode=="on" else "0",
+		"CYBERSAND_DIAG_NATIVE_RENDEZVOUS":"0","CYBERSAND_DIAG_PHYSICS_PUBLICATION":"early",
+		"CYBERSAND_DIAG_PRESENTATION":"coherent","CYBERSAND_DIAG_MATERIAL_TIMING":"measured",
+		"CYBERSAND_DIAG_RENDER_CADENCE":"repaired","CYBERSAND_MATERIAL_PUBLICATION":"blit",
+		"CYBERSAND_MATERIAL_QUEUE_THREAD":"safe","CYBERSAND_DIAG_MATERIAL_POOL_POLICY":"eager"}
+	var selectors := {}
+	for name: String in expected_selectors:
+		selectors[name] = OS.get_environment(name)
+	if not check(host.has_method("same_frame_continuation_status"),"Main exposes actual continuation configuration"):
+		return {"selectors":selectors,"status":{}}
+	var status: Variant = host.call("same_frame_continuation_status")
+	if not check(status is Dictionary,"Main continuation status is a dictionary"):
+		return {"selectors":selectors,"status":{}}
+	if mode in ["off","on"]:
+		check(selectors==expected_selectors,"all continuation and publication selectors match the requested test policy")
+		var enabled := mode=="on"
+		var expected_status := {"version":1,"requested":enabled,"enabled":enabled,"disabled_reason":"",
+			"mode":"same_frame_once" if enabled else "off","maximum_attempts_per_process_frame":1,
+			"maximum_mailbox_reads_per_attempt":1,"wait_usec":0,"new_physics_callbacks":0,
+			"carried_time_credit":false}
+		check(status==expected_status,"Main continuation configuration matches the explicit selector")
+	return {"selectors":selectors,"status":status.duplicate(true)}
 
 func screenshot(label: String) -> void:
 	var directory := OS.get_environment("WB_COMBINED_SCREENSHOTS")
@@ -742,11 +773,15 @@ func run() -> void:
 	art = panel.executor
 	worker = host.simulation_worker
 	dialog = bench._generated_dialog
+	var same_frame_mode := OS.get_environment("WB_COMBINED_SAME_FRAME")
+	if not same_frame_mode.is_empty(): same_frame_configuration.mode = same_frame_mode
+	same_frame_configuration.before = observe_continuation_configuration()
 	var reopening := OS.get_environment("WB_COMBINED_REOPEN")=="1"
 	var graphics_ok := OS.get_environment("WB_COMBINED_REQUIRE_GRAPHICS")!="1" or DisplayServer.get_name()!="headless"
 	var initial_wait_started := Time.get_ticks_msec()
 	# Allow cold graphical/native startup without extending authoring deadlines.
-	var initial_ready := check(graphics_ok,"requested graphical backend is active") and await until(ready,"full native Shared Workbench installed",180000)
+	var initial_ready := check(graphics_ok,"requested graphical backend is active") and failures.is_empty() \
+		and await until(ready,"full native Shared Workbench installed",180000)
 	print("WB_COMBINED_INITIAL_READY ",JSON.stringify({"ready":initial_ready,"budget_ms":180000,
 		"wait_ms":Time.get_ticks_msec()-initial_wait_started,"startup_ms":(Time.get_ticks_usec()-started_usec)/1000,
 		"applied":not bench.applied.is_empty(),"pending_install":not host.pending_microscenario_apply.is_empty(),
@@ -764,14 +799,18 @@ func run() -> void:
 			"late_response","human_after_agent","stop","agent_undo_saved","simulation_equipment","save"]:
 			check(bool(phases[phase]),"mandatory combined author phase executed: "+phase)
 		check(author_complete,"complete combined authoring flow reached Save")
+	same_frame_configuration.after = observe_continuation_configuration()
+	check(same_frame_configuration.before==same_frame_configuration.after,
+		"continuation selectors and actual configuration remain unchanged across authoring transactions")
 	check(source_identity==identity(),"tested source and native runtime bytes did not change during execution")
 	host.queue_free()
 	await process_frame
 	await process_frame
-	print("WB_COMBINED_EVIDENCE ",JSON.stringify({"checks":checks,"failures":failures,"phases":phases,
+	print("WB_COMBINED_EVIDENCE ",JSON.stringify({"schema":"workbench-combined-authoring-v2",
+		"checks":checks,"failures":failures,"phases":phases,
 		"author_complete":author_complete,"reopen_complete":reopen_complete,"profile_count":profile_count,
 		"prepared_sha256":prepared_sha256,"stop_prefix":stopped_prefix,"map_side":map_side,"source_identity":source_identity,
-		"simulation_equipment":simulation_evidence,
+		"simulation_equipment":simulation_evidence,"same_frame_continuation":same_frame_configuration,
 		"provider_qualification":"deterministic completion fixture; separate transport suite; no inference",
 		"elapsed_usec":Time.get_ticks_usec()-started_usec}))
 	print("WB_COMBINED_AUTHORING checks=%d failures=%d author_complete=%s reopen_complete=%s" % [

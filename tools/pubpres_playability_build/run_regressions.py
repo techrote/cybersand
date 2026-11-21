@@ -33,6 +33,21 @@ HEADLESS = (
     "test_workbench_combined_authoring", "test_art_history_durability",
     "test_workbench_material_baseline", "test_physical_actor_integration",
 )
+SAME_FRAME_HEADLESS = (
+    ("same-frame-unit-off", "test_workbench_same_frame_continuation", "off"),
+    ("same-frame-integration-on", "test_workbench_same_frame_integration", "on"),
+    ("physics-publication-off", "test_workbench_physics_publication", "off"),
+    ("physics-publication-on", "test_workbench_physics_publication", "on"),
+)
+SAME_FRAME_COMPLETIONS = {
+    "test_workbench_same_frame_continuation": (
+        "SAME_FRAME_UNIT_RESULT ", "workbench-same-frame-unit-v1", 90),
+    "test_workbench_same_frame_integration": (
+        "SAME_FRAME_INTEGRATION_RESULT ", "workbench-same-frame-integration-v1", 52),
+    "test_workbench_physics_publication": (
+        "PHYSICS_PUBLICATION_RESULT ", "workbench-physics-publication-v1", 60),
+}
+AUTHORING_MODES = ("off", "on")
 GRAPHICS = (
     ("test_material_staging_reachability", "safe", "eager"),
     ("test_material_staging_reachability", "separate", "eager"),
@@ -44,6 +59,61 @@ GRAPHICS = (
     ("run_material_threaded_publication", "separate", "reachable"),
     ("test_native_pixel_camera", "safe", "reachable"),
 )
+
+
+def continuation_policy(mode: str) -> dict:
+    """Explicit test configuration; it makes no continuation-causal step claim."""
+    if mode not in ("off", "on"):
+        raise ValueError("Same-frame authoring mode must be off or on")
+    return {
+        "schema": "pubpres-authoring-continuation-policy-v1",
+        "mode": mode,
+        "claim": "configuration-only",
+        "selectors": {
+            "CYBERSAND_DIAG_SAME_FRAME_CONTINUATION": "1" if mode == "on" else "0",
+            "CYBERSAND_DIAG_NATIVE_RENDEZVOUS": "0",
+            "CYBERSAND_DIAG_PHYSICS_PUBLICATION": "early",
+            "CYBERSAND_DIAG_PRESENTATION": "coherent",
+            "CYBERSAND_DIAG_MATERIAL_TIMING": "measured",
+            "CYBERSAND_DIAG_RENDER_CADENCE": "repaired",
+            "CYBERSAND_MATERIAL_PUBLICATION": "blit",
+            "CYBERSAND_MATERIAL_QUEUE_THREAD": "safe",
+            "CYBERSAND_DIAG_MATERIAL_POOL_POLICY": "eager",
+        },
+    }
+
+
+def validate_continuation_evidence(evidence, mode: str) -> dict:
+    policy = continuation_policy(mode)
+    if (not isinstance(evidence, dict)
+            or set(evidence) != {"schema", "mode", "claim", "before", "after"}
+            or evidence.get("schema") != "pubpres-authoring-continuation-evidence-v1"
+            or evidence.get("mode") != mode or evidence.get("claim") != "configuration-only"):
+        raise ValueError("Combined authoring continuation policy differs")
+    enabled = mode == "on"
+    expected_status = {
+        "version": 1, "requested": enabled, "enabled": enabled, "disabled_reason": "",
+        "mode": "same_frame_once" if enabled else "off",
+        "maximum_attempts_per_process_frame": 1, "maximum_mailbox_reads_per_attempt": 1,
+        "wait_usec": 0, "new_physics_callbacks": 0, "carried_time_credit": False,
+    }
+    expected = {"selectors": policy["selectors"], "status": expected_status}
+    for phase in ("before", "after"):
+        # JSON comparison also distinguishes forged 0/1 from actual booleans.
+        if json.dumps(evidence[phase], sort_keys=True) != json.dumps(expected, sort_keys=True):
+            raise ValueError("Combined authoring continuation selectors/status differ: " + phase)
+    return evidence
+
+
+def invoke_authoring_pairs(invoke, display, graphical):
+    """Keep independent profiles and retain every outcome, including failed OFF."""
+    test = "test_workbench_combined_authoring"
+    for mode in AUTHORING_MODES:
+        label = test + "-" + mode
+        options = [*display, "--script", "res://tests/" + test + ".gd"]
+        invoke(label, options, graphical=graphical, same_frame=mode)
+        invoke(label + "-reopen", options, graphical=graphical, profile_key=label,
+               reopen=True, same_frame=mode)
 
 
 def stage_source(root: Path, source: str, output: Path) -> Path:
@@ -110,7 +180,13 @@ def validate_completion(test: str, text: str, returncode, *, reopen=False) -> li
         "test_native_pixel_camera": "NATIVE_PIXEL_CAMERA_RESULT ",
     }
     try:
-        if test in patterns:
+        if test in SAME_FRAME_COMPLETIONS:
+            marker, schema, checks = SAME_FRAME_COMPLETIONS[test]
+            result = terminal_json(text, marker)
+            if (result.get("schema") != schema or result["checks"] != checks
+                    or not isinstance(result.get("failures"), list) or result["failures"] != []):
+                raise ValueError("Same-frame/publication schema or complete assertion count differs")
+        elif test in patterns:
             if len(re.findall(patterns[test], text, re.M)) != 1:
                 raise ValueError("Missing or repeated successful assertion footer")
         elif test in markers:
@@ -126,12 +202,17 @@ def validate_completion(test: str, text: str, returncode, *, reopen=False) -> li
     return errors
 
 
-def combined_evidence(text, project, native_sha, screenshots, *, graphical, reopen):
+def combined_evidence(text, project, native_sha, screenshots, *, graphical, reopen, same_frame="off"):
     result = terminal_json(text, "WB_COMBINED_EVIDENCE ")
+    if result.get("schema") != "workbench-combined-authoring-v2":
+        raise ValueError("Combined authoring evidence schema differs")
+    continuation = validate_continuation_evidence(result.get("same_frame_continuation"), same_frame)
     identity = result["source_identity"]
     if identity.get("native_sha256") != native_sha or graphical and identity.get("display") == "headless":
         raise ValueError("Combined authoring did not use the requested native/graphical runtime")
-    if "tests/test_workbench_combined_authoring.gd" not in identity:
+    required_source = {"tests/test_workbench_combined_authoring.gd", "scripts/main.gd",
+                       "scripts/workbench_same_frame_continuation.gd"}
+    if not required_source.issubset(identity):
         raise ValueError("Combined authoring source identity missing")
     for name, value in identity.items():
         if "/" in name and digest(project / name) != value:
@@ -167,7 +248,7 @@ def combined_evidence(text, project, native_sha, screenshots, *, graphical, reop
             images[path.name] = digest(path)
     return {"prepared_sha256": result["prepared_sha256"], "source_identity": identity,
             "phases": result["phases"], "screenshots_sha256": images, "checks": result["checks"],
-            "framebuffer_dimensions": framebuffer_dimensions}
+            "framebuffer_dimensions": framebuffer_dimensions, "same_frame_continuation": continuation}
 
 
 def run(command, environment, folder, timeout):
@@ -247,10 +328,12 @@ def main() -> int:
     shutil.copyfile(root / rapier["artifact"], project / Path(rapier["artifact"]).relative_to("godot"))
     source_files = {p.relative_to(output).as_posix(): digest(p) for directory in (project, output / "examples")
                     for p in directory.rglob("*") if p.is_file()}
-    common = {k: v for k, v in os.environ.items() if not k.startswith("CYBERSAND_")}
-    common.update(CYBERSAND_SOURCE_REVISION=source, CYBERSAND_MATERIAL_PUBLICATION="blit")
+    common = {k: v for k, v in os.environ.items() if not k.startswith(("CYBERSAND_", "WB_COMBINED_"))}
+    common.update(CYBERSAND_SOURCE_REVISION=source, CYBERSAND_MATERIAL_PUBLICATION="blit",
+                  CYBERSAND_DIAG_SAME_FRAME_CONTINUATION="0")
     outcomes = []
-    def invoke(label, options, graphical=False, pool="eager", receipt_env=None, profile_key=None, reopen=False):
+    def invoke(label, options, graphical=False, pool="eager", receipt_env=None, profile_key=None,
+               reopen=False, same_frame=None):
         profile = output / ((profile_key or label) + "-profile")
         profile.mkdir(exist_ok=True)
         environment = dict(common, APPDATA=str(profile), LOCALAPPDATA=str(profile),
@@ -258,6 +341,9 @@ def main() -> int:
                            CYBERSAND_DIAG_MATERIAL_POOL_POLICY=pool)
         environment["CYBERSAND_MATERIAL_QUEUE_THREAD"] = (
             options[options.index("--render-thread") + 1] if "--render-thread" in options else "safe")
+        policy = continuation_policy(same_frame) if same_frame is not None else None
+        if policy is not None:
+            environment.update(policy["selectors"])
         environment["CYBERSAND_TEST_ARTIFACT_DIR"] = str(output / label / "receipts")
         if reopen:
             environment["WB_COMBINED_REOPEN"] = "1"
@@ -274,6 +360,7 @@ def main() -> int:
         if test == "test_workbench_combined_authoring":
             environment.update(WB_COMBINED_SIDE="512", WB_COMBINED_WORKERS="1",
                                WB_COMBINED_REOPEN="1" if reopen else "0",
+                               WB_COMBINED_SAME_FRAME=same_frame,
                                WB_COMBINED_REQUIRE_GRAPHICS="1" if graphical else "0",
                                WB_COMBINED_SCREENSHOTS=str(output / label / "screenshots"))
         item = run(command, environment, output / label, 600 if test == "test_workbench_combined_authoring" else 300)
@@ -282,7 +369,7 @@ def main() -> int:
         if test == "test_workbench_combined_authoring":
             try:
                 item["authoring_evidence"] = combined_evidence(log_text, project, record["runtime_sha256"],
-                    output / label / "screenshots", graphical=graphical, reopen=reopen)
+                    output / label / "screenshots", graphical=graphical, reopen=reopen, same_frame=same_frame)
                 if reopen:
                     previous = next(x for x in outcomes if x["label"] == profile_key)
                     if item["authoring_evidence"]["prepared_sha256"] != previous.get("authoring_evidence", {}).get("prepared_sha256"):
@@ -319,6 +406,8 @@ def main() -> int:
             except (ValueError, TypeError, KeyError, OSError) as error:
                 item["validation_errors"].append(str(error))
         item.update(label=label, graphical=graphical, pool=pool)
+        if policy is not None:
+            item["same_frame_continuation_policy"] = policy
         (output / label / "process.json").write_text(json.dumps(item, indent=2) + "\n")
         outcomes.append(item)
         print(json.dumps({k: item[k] for k in ("label", "returncode", "timed_out", "elapsed_seconds")}), flush=True)
@@ -330,11 +419,13 @@ def main() -> int:
             display = (["--rendering-method", "gl_compatibility", "--rendering-driver",
                         "opengl3_angle" if os.name == "nt" else "opengl3", "--render-thread", "safe"]
                        if graphical else ["--headless"])
-            invoke(test, [*display, "--script", "res://tests/" + test + ".gd"], graphical=graphical,
-                   receipt_env="CYBERSAND_PUBPRES_NATIVE_PROBE_OUTPUT" if test == HEADLESS[0] else None)
             if test == "test_workbench_combined_authoring":
-                invoke(test + "-reopen", [*display, "--script", "res://tests/" + test + ".gd"],
-                       graphical=graphical, profile_key=test, reopen=True)
+                invoke_authoring_pairs(invoke, display, graphical)
+            else:
+                invoke(test, [*display, "--script", "res://tests/" + test + ".gd"], graphical=graphical,
+                       receipt_env="CYBERSAND_PUBPRES_NATIVE_PROBE_OUTPUT" if test == HEADLESS[0] else None)
+        for label, test, mode in SAME_FRAME_HEADLESS:
+            invoke(label, ["--headless", "--script", "res://tests/" + test + ".gd"], same_frame=mode)
         if not args.headless_only:
             driver = "opengl3_angle" if os.name == "nt" else "opengl3"
             for test, thread, pool in GRAPHICS:
@@ -343,14 +434,19 @@ def main() -> int:
                         "--render-thread", thread, "--script", "res://tests/" + test + ".gd"],
                        graphical=True, pool=pool, receipt_env="CYBERSAND_MATERIAL_STAGING_REACHABILITY_OUTPUT"
                        if test == "test_material_staging_reachability" else None)
-    expected = 1 + len(HEADLESS) + 1 + (0 if args.headless_only else len(GRAPHICS))
+    # Expand the one combined-authoring entry into separate author/reopen pairs.
+    expected = (1 + len(HEADLESS) - 1 + 2 * len(AUTHORING_MODES) + len(SAME_FRAME_HEADLESS)
+                + (0 if args.headless_only else len(GRAPHICS)))
     complete = imported and len(outcomes) == expected and all(
         x["returncode"] == 0 and not x["timed_out"] and not x["validation_errors"] for x in outcomes)
-    summary = {"schema": "pubpres-scoped-regressions-v1", "source_commit": source,
+    summary = {"schema": "pubpres-scoped-regressions-v2", "source_commit": source,
                "source_tree": record["source_tree"], "native_runtime": record,
                "rapier_sha256": rapier["sha256"], "engine_version": version, "engine_sha256": digest(engine),
                "headless_only": args.headless_only, "complete": complete, "outcomes": outcomes,
-               "expected_cases": expected, "staged_source_sha256": source_files}
+               "expected_cases": expected, "staged_source_sha256": source_files,
+               "authoring_modes": list(AUTHORING_MODES),
+               "same_frame_cases": [{"label": label, "test": test, "mode": mode}
+                                    for label, test, mode in SAME_FRAME_HEADLESS]}
     (output / "SUMMARY.json").write_text(json.dumps(summary, indent=2) + "\n")
     # Application copies are reproducible from the source and runtime receipts;
     # retain the smaller original logs/profiles, never confuse them with a ZIP.

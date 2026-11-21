@@ -51,7 +51,7 @@ func _poll() -> void:
 	ready_frames += 1
 	if ready_frames < 2: return
 	var material: Variant = app.call("material_publication_status") if app.has_method("material_publication_status") else null
-	var receipt := {"schema":"pubpres-playability-owner-start-v1","ready":true,
+	var receipt := {"schema":"pubpres-playability-owner-start-v2","ready":true,
 		"source_commit":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
 		"engine":Engine.get_version_info(),"engine_sha256":FileAccess.get_sha256(OS.get_executable_path()),
 		"native_sha256":FileAccess.get_sha256("res://addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll"),
@@ -62,7 +62,9 @@ func _poll() -> void:
 		"override_sha256":FileAccess.get_sha256("res://override.cfg"),
 		"world_generation":app.last_uploaded_world_generation,"material_revision":app.last_uploaded_revision,
 		"native_tick":app.latest_snapshot.tick_index,"authored_actor_count":actor_count,
-		"material_publication":material,"render_thread_inline":RenderingServer.is_on_render_thread(),
+		"material_publication":material,
+		"same_frame_continuation":app.call("same_frame_continuation_status") if app.has_method("same_frame_continuation_status") else null,
+		"render_thread_inline":RenderingServer.is_on_render_thread(),
 		"render_driver":RenderingServer.get_current_rendering_driver_name(),
 		"adapter":RenderingServer.get_video_adapter_name(),"platform":OS.get_name(),"process_id":OS.get_process_id(),
 		"profile":OS.get_user_data_dir(),"physical_acceptance":"HOLD",

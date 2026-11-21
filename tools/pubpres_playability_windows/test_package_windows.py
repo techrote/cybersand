@@ -104,7 +104,7 @@ def fixture(root):
                         "rapier": {"path": prefix + "/" + package.RAPIER, "sha256": package.digest(rapier_dll),
                                    "bytes": rapier_dll.stat().st_size, "receipt": prefix + "/" + package.RAPIER_RECEIPT},
                         "toolchain": copy.deepcopy(toolchain), "features": {"reachable_staging_pools": key == "C",
-                        "wave_stage_probe": key == "C", "wave_column_tiles": False, "wave_column_slots": 1}}
+                        "wave_stage_probe": key == "C", "wave_column_tiles": False, "wave_column_slots": 1, "same_frame_continuation": key == "C"}}
     engine = {"version": package.GODOT_VERSION, "archive_sha512": package.GODOT_SHA512}
     for label, name in (("gui", package.GUI), ("console", package.CONSOLE)):
         engine[label] = {"path": name, "sha256": package.digest(put(root, name, pe(label)))}
@@ -114,7 +114,7 @@ def fixture(root):
     observer = put(root, "sources/C/godot/tests/observer.gd", "extends SceneTree\n")
     campaign = "tools/pubpres_playability/campaign.json"
     (root / campaign).parent.mkdir(parents=True)
-    package.write_json(root / campaign, {"schema": "pubpres-playability-campaign-v2",
+    package.write_json(root / campaign, {"schema": "pubpres-playability-campaign-v3",
                       "source_commits": {"main": sources["M"]["source_commit"], "integration": sources["I"]["source_commit"]},
                       "overlay_sha256": {"tests/observer.gd": package.digest(observer)}})
     put(root, package.TOOLS + "/Start-PUBPRES-Playability.ps1", "# synthetic owner launcher\n")
@@ -125,7 +125,7 @@ def fixture(root):
               "campaign": campaign, "campaign_sha256": package.digest(root / campaign),
               "owner_launcher": package.TOOLS + "/Start-PUBPRES-Playability.ps1", "owner_observer": package.TOOLS + "/owner_start.gd",
               "physical_acceptance": "HOLD", "production_defaults_changed": False,
-              "experimental_defaults": {"staging_pools": "eager", "render_thread": "safe", "wave_column_tiles": False}}
+              "experimental_defaults": {"staging_pools": "eager", "render_thread": "safe", "wave_column_tiles": False, "same_frame_continuation": "off"}}
     save(root, record)
     return record
 
@@ -249,6 +249,21 @@ class PackageTests(unittest.TestCase):
         self.manifest["sources"]["C"]["features"]["wave_column_tiles"] = True
         save(self.root, self.manifest)
         self.check_bad("feature advertisement")
+
+    def test_historical_source_cannot_claim_new_continuation(self):
+        self.manifest["sources"]["M"]["features"]["same_frame_continuation"] = True
+        save(self.root, self.manifest)
+        self.check_bad("feature advertisement")
+
+    def test_new_continuation_cannot_be_a_package_default(self):
+        self.manifest["experimental_defaults"]["same_frame_continuation"] = "on"
+        save(self.root, self.manifest)
+        self.check_bad("defaults or owner hold")
+
+    def test_v1_package_is_not_reinterpreted_as_v2(self):
+        self.manifest["schema"] = "pubpres-playability-windows-v1"
+        save(self.root, self.manifest)
+        self.check_bad("candidate/schema")
 
     def test_wrong_historical_package_name_is_rejected(self):
         self.manifest["package_filename"] = "CyberSand-SWARM005-Windows.zip"

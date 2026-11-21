@@ -13,15 +13,18 @@ related-documents: [pubpres-integration-evaluation.md, ../architecture/rendering
 **Draft/HOLD, reviewed 2026-11-21.** PUBPRES-PLAYABILITY-001 is tracked in
 [#717](https://github.com/techrote/cybersand/issues/717) and
 [Draft PR #719](https://github.com/techrote/cybersand/pull/719). It adds a bounded,
-opt-in staging-allocation change, diagnostic adapter readback, a new registered
-measurement campaign and an independently assembled Windows evaluator. **No new
+opt-in staging-allocation change, diagnostic adapter readback, a default-off
+same-frame physics continuation, a versioned registered measurement campaign
+and an independently assembled Windows evaluator. **No new
 graphical playability improvement is established.** The first source-matched
 [development campaign](https://github.com/techrote/cybersand/actions/runs/44956244125)
 at `a7074ab1bb4fede30d75a7924b4a5bfb7ea963d1` contains valid Windows
 software-renderer progression comparisons with negative results, actual queued
 GPU-pixel failures, and failed Linux process qualification. Its original results
 remain unchanged. Final Linux/Windows qualification and physical Windows/NVIDIA
-acceptance remain pending; source-reviewed harness repairs need fresh execution.
+acceptance remain pending. The source-matched renderer-only run at `0940114ddf8ef65b1f7b088dc5812776a1c02e25`
+reproduces engine and history failures without native simulation and verifies
+private-display cleanup on its eight Linux arms; it does not qualify full gameplay.
 Keep Draft/HOLD: Ready, merge and default promotion are not authorized.
 
 The preceding [PUBPRES-INTEGRATION-001 evaluation](pubpres-integration-evaluation.md)
@@ -81,6 +84,70 @@ save nothing. The primary registered M/I/C campaign keeps C on `eager`; the
 reachable-pool comparison is an explicit separate control. Source ownership,
 native health, World/session/generation/revision, terrain and exact body-sample
 admission remain governed by the linked bridge and lifetime contracts.
+
+## What does the same-frame continuation experiment change?
+
+**Implemented experiment, default OFF; performance unqualified.** Setting
+`CYBERSAND_DIAG_SAME_FRAME_CONTINUATION=1` lets Main attempt one continuation
+of an actual physics callback that was withheld solely for its awaited native
+body sample. The attempt runs at the start of Main's process callback, before
+snapshot consumption and presentation. It reads the existing physics mailbox
+once with `try_lock`; contention or missing readiness spends the permit without
+waiting. The existing fixed-time rendezvous and render-overlap controls are
+mutually exclusive with this experiment. Ordinary launch remains unchanged.
+
+The [one-shot permit](../../godot/scripts/workbench_same_frame_continuation.gd)
+stores the real callback/frame, body sample, World generation, owner/session,
+actor and manual-step counters, installed native terrain revision and bounded
+input sequence/generation/lease counters. Another real physics callback replaces
+the permit; another process frame expires it. Pause/resume, cancellation,
+takeover, prepared replacement, changed terrain, owner retirement, a changed
+physical step or changed input refuse it. Owner object identities use canonical
+decimal strings because Godot's RefCounted IDs occupy the signed 64-bit range.
+
+An admitted continuation uses the same Main-owned inactive Rapier space and
+the same native-response validation, actor advance, fixed-delta step, completion
+and body-publication transaction as an ordinary callback. It creates no engine
+callback, accumulated time debt, native tick, input refresh or additional terrain
+installation allowance. It does not add a wait for rendering or native work.
+Every response remains subject to the unchanged native body/wrench/history
+validator. A failed attempt is retained as a failure, not physical progress.
+The existing session transaction still performs legitimate scripted/policy input
+and lease expiry. The new observation corpus uses a human Needle; its unchanged
+post-step input proof must not be generalized to other producers.
+
+The prospective
+[v3 observer](../../godot/tests/pubpres_same_frame_gameplay.gd) and
+[v3 reducer](../../tools/pubpres_playability/results_same_frame.py) preserve the
+original v2 files and receipts. Both full and reduced v3 observation retain real
+callback identities; continuation attempts have a distinct event type. Every
+completed step must spend one unique callback, and every deferred step must use
+the same frame, exact sample/World/terrain and unchanged admitted input. The
+first-144-step body and move oracles, native Water ledger, capture limits and
+source/runtime checks still apply. Native publication age uses the first matching
+healthy packet. Physical execution clocks and engine callback clocks remain
+distinct. Neither hosted software rendering nor a headless guard test establishes
+physical Windows/NVIDIA playability acceptance.
+
+The focused tests are
+[`test_workbench_same_frame_continuation.gd`](../../godot/tests/test_workbench_same_frame_continuation.gd),
+[`test_workbench_same_frame_integration.gd`](../../godot/tests/test_workbench_same_frame_integration.gd)
+and [`test_results_same_frame.py`](../../tools/pubpres_playability/test_results_same_frame.py).
+The real integration fixture delays delivery of an already genuine native packet;
+its result is admission/lifecycle evidence, not a gameplay performance comparison.
+Exact frozen-candidate graphical ABBA and independent review remain required.
+
+The current [v3 registration](../../tools/pubpres_playability/campaign.json)
+explicitly selects continuation ON for primary C and OFF/ON/ON/OFF for six
+same-source controls. Application and owner-launch defaults remain OFF.
+The [frozen development-01 v2 registration](../../tools/pubpres_playability/campaign-development-01-v2.json)
+retains SHA-256 `d44ba75d49c708de409633659caadeb9f284c69623c649296342ec5c89ef1286`.
+The old observer/reducer keep their original meaning. V3 reduced observation
+retains compact callback-credit evidence and requires its own overhead control.
+At an exact time or first-N-step cutoff, continuation completions use the actual
+Rapier step timestamp, separately from completed/censored attempt observations.
+An independent reviewer found and repaired that endpoint-count distinction
+before any v3 graphical campaign; old evidence was not recalculated.
 
 ## What remains from the native experiment?
 
@@ -159,17 +226,18 @@ across distinct source versions.
 | Separate candidate-only diagnostic | Registered order and interpretation |
 | --- | --- |
 | Input equivalence | Repeated/once/once/repeated; once-per-step cannot replace primary input without equal-step body and admitted-move parity |
-| Observer overhead | Full/reduced/reduced/full; reduced observation retains body/command oracles and is not uninstrumented |
-| Render owner | Safe/Separate/Separate/Safe on the declared cases; verify requested and actual mode in every arm |
+| Observer overhead | Full/reduced/reduced/full; v3 reduced observation retains callback-credit and body/command oracles and is not uninstrumented |
+| Render owner | Original v2 Safe/Separate/Separate/Safe registration preserved; retired from v3 after engine failures, with independent renderer probes retained |
 | Native stage readback | OFF/ON/ON/OFF; primary C stays OFF because dictionary packing occurs before the physics mailbox |
+| Same-frame continuation | V3 OFF/ON/ON/OFF; Safe only, same source/runtime and unchanged first-144 body/move oracles |
 
-The six registered render-owner controls cover small and large Wave, current
+The six registered v3 continuation controls cover small and large Wave, current
 gameplay Wave, PressureFlow, FreeMass and CellularYield. Keep source, native
 workload and input fixed within each control. No measured overhead is silently
 subtracted, and different render modes are never pooled as identical controls.
 Ordinary launch defaults remain unchanged.
 
-The [gameplay observer](../../godot/tests/pubpres_playability_gameplay.gd)
+The [v3 gameplay observer](../../godot/tests/pubpres_same_frame_gameplay.gd)
 bounds Main/worker traces and command attempts at 30,000 each; overflow fails
 capture. Full material readback, PNG and JSON output occur outside timing.
 Native capture records the actual `force_full` argument and returned status
@@ -179,7 +247,7 @@ native-completion/capture, worker-snapshot, upload and draw channels.
 
 ## Isolated render diagnostics
 
-**Current diagnostic tooling; prospective graphical execution:** the
+**Current diagnostic tooling; executed at source `0940114`:** the
 [isolated renderer probes](../../tools/pubpres_render_probes/README.md) run
 before native builds with the exact pinned engine and no GDExtension. Four
 Linux font controls or two Windows empty-scene controls are followed by four
@@ -199,9 +267,20 @@ package acceptance, physical NVIDIA qualification or Separate promotion.
 The [focused retrieval questions](../reference/retrieval-questions-pubpres-render-probes.json)
 are additive to the unchanged general and earlier mission questions.
 
+The [renderer-only campaign](https://github.com/techrote/cybersand/actions/runs/44962312107)
+attempted every registered arm. Linux Safe/text, Separate/empty and
+Separate/text-with-mipmaps completed; ordinary Separate/text reproduced the
+Image-upload crash. Both Safe material controls passed. Separate/two-slot
+material history failed its original first-read oracle; Separate/one-slot passed.
+On Windows, all three Safe controls passed; all three Separate/ANGLE controls
+failed before script receipts, including the empty scene. These results narrow
+the engine/lifetime hypotheses but do not prove a full-Workbench repair or
+erase the original intermittent Safe queued-pixel failure. All original logs,
+receipts and raw byte arrays remain retained. Hosted renderers are not NVIDIA.
+
 ## What do the timing and memory receipts establish?
 
-The [reducer](../../tools/pubpres_playability/results.py) retains first-ten-second,
+The [v3 reducer](../../tools/pubpres_playability/results_same_frame.py) retains first-ten-second,
 first-144-step and whole-capture windows, quantiles, maxima and consecutive gaps.
 It separates native completion, the first healthy mailbox, callback/real Rapier
 completion, material age and publication calls. Packet joins include World

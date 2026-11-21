@@ -11,6 +11,7 @@ const WorkbenchMaterialTimeline = preload("res://scripts/workbench_material_time
 const WorkbenchPresentationHistory = preload("res://scripts/workbench_presentation_history.gd")
 const WorkbenchPoseTrace = preload("res://scripts/workbench_pose_trace.gd")
 const WorkbenchNativeRendezvous = preload("res://scripts/workbench_native_rendezvous.gd")
+const WorkbenchSameFrameContinuation = preload("res://scripts/workbench_same_frame_continuation.gd")
 const PhysicalOverlay = preload("res://scripts/physical_actor_overlay.gd")
 const PhysicalLoadouts = preload("res://scripts/physical_usable_loadouts.gd")
 const PhysicalEquipment = preload("res://scripts/physical_usable_equipment.gd")
@@ -69,6 +70,11 @@ var _workbench_native_rendezvous = WorkbenchNativeRendezvous.new()
 # --render-thread option. This scheduling experiment is never enabled silently.
 var _workbench_native_rendezvous_selection: String = OS.get_environment("CYBERSAND_DIAG_NATIVE_RENDEZVOUS")
 var _workbench_native_rendezvous_enabled: bool = _workbench_native_rendezvous_selection in ["1", "render-overlap"]
+# Independent, explicitly selected experiment. Existing rendezvous and its
+# waits are mutually exclusive with a nonblocking same-frame continuation.
+var _workbench_same_frame = WorkbenchSameFrameContinuation.new()
+var _workbench_same_frame_requested: bool = OS.get_environment("CYBERSAND_DIAG_SAME_FRAME_CONTINUATION") == "1"
+var _workbench_same_frame_enabled: bool = _workbench_same_frame_requested and not _workbench_native_rendezvous_enabled
 var shared_workbench: Control
 # Opt-in physical presentation trace. Empty and inactive in normal operation.
 var workbench_pose_trace = WorkbenchPoseTrace.new()
@@ -2149,6 +2155,7 @@ var _launcher_ready_frames: int = 0
 
 func _process(delta: float) -> void:
 	var callback_started_usec: int = Time.get_ticks_usec() if workbench_pose_trace.active and _publication_detail_trace else 0
+	if _workbench_same_frame_enabled: _try_same_frame_continuation()
 	_workbench_mapping_locked = false
 	_engine_lab_pump_ack()
 	if shared_workbench == null:
@@ -2271,6 +2278,8 @@ func _write_launcher_ready_receipt() -> void:
 
 
 func _physics_process(_delta: float) -> void:
+	if _workbench_same_frame_enabled:
+		_workbench_same_frame.begin_callback(Engine.get_process_frames(), Engine.get_physics_frames(), Time.get_ticks_usec())
 	if shared_workbench != null and not _workbench_frame_error.is_empty(): return
 	if _workbench_native_rendezvous_enabled:
 		_workbench_native_rendezvous.begin_callback(Engine.get_process_frames(),
@@ -2344,8 +2353,17 @@ func _physics_process(_delta: float) -> void:
 						_cadence_physics_hold("terrain_installation",physics_snapshot)
 						return
 			if physics_snapshot.lab_context.get("workbench_completed_sample",-1) != _workbench_wait_sample:
+				if _workbench_same_frame_enabled: _arm_same_frame_continuation(_delta, physics_snapshot)
 				_cadence_physics_hold("native_sample",physics_snapshot)
 				return
+	_complete_physics_callback(_delta, single_step, physics_snapshot)
+
+
+# The same sole Main owner completes a callback using its original admission
+# and manual Rapier transaction. The continuation never calls _physics_process,
+# publishes fresh keyboard/usable input, installs terrain or starts rendezvous.
+func _complete_physics_callback(_delta: float, single_step: bool,
+		physics_snapshot: CyberSimulationSnapshot) -> void:
 	if paused or simulation_worker.has_failed():
 		physical_trial_input.armed = false
 	if simulation_worker.has_failed():
@@ -2395,6 +2413,88 @@ func _physics_process(_delta: float) -> void:
 		shared_workbench.step_requested = false
 		tower_command({"step":true,"workbench_step_serial":shared_workbench.step_serial})
 		if physical_actor_session != null: physical_actor_session.set_suspended(true)
+
+func same_frame_continuation_status() -> Dictionary:
+	return {"version":WorkbenchSameFrameContinuation.VERSION,
+		"requested":_workbench_same_frame_requested,"enabled":_workbench_same_frame_enabled,
+		"disabled_reason":"rendezvous_selected" if _workbench_same_frame_requested and _workbench_native_rendezvous_enabled else "",
+		"mode":"same_frame_once" if _workbench_same_frame_enabled else "off",
+		"maximum_attempts_per_process_frame":1,"maximum_mailbox_reads_per_attempt":1,
+		"wait_usec":0,"new_physics_callbacks":0,"carried_time_credit":false}
+
+
+func _same_frame_identity() -> Dictionary:
+	# All values are bounded copied owner/lease counters. In particular an
+	# intervening cancellation, pause/resume or takeover changes generations,
+	# even if it leaves the same actor pose and then restores the same input.
+	if OS.get_thread_caller_id() != OS.get_main_thread_id() \
+		or shared_workbench == null or physical_actor_session == null \
+		or not physical_actor_session.bridge is WorkbenchBridge \
+		or physical_actor_session.bridge != rapier_bridge \
+		or not physical_actor_session.active() or physical_actor_session._suspended \
+		or paused or shared_workbench.step_requested or shared_workbench.step_pending \
+		or not _workbench_frame_error.is_empty() or not engine_lab_wait_native_sample \
+		or _workbench_wait_sample < 0 or _pending_physical_candidate != null \
+		or _actor_reset_receipt != 0 or not pending_microscenario_apply.is_empty() \
+		or worker_start_error != OK or not _physical_terrain_ready \
+		or not rapier_bridge.is_initialized() or rapier_bridge.pending_hard_surface_chunks() != 0:
+		return {}
+	return {"owner":str(physical_actor_session.get_instance_id()),"bridge":str(rapier_bridge.get_instance_id()),
+		"worker":str(simulation_worker.get_instance_id()),"epoch":_body_owner_epoch(),
+		"session":physical_actor_session.bridge._session,"tick":physical_actor_session.tick,
+		"manual_steps":rapier_bridge.manual_step_count(),"sample":_workbench_wait_sample,
+		"bridge_sample":physical_actor_session.bridge._serial,"installed_revision":last_hard_surface_revision,
+		"accepted_commands":physical_actor_session.accepted_commands,
+		"sequences":physical_actor_session._sequences.duplicate(),
+		"generations":physical_actor_session._generations.duplicate(),
+		"deadlines":physical_actor_session._deadlines.duplicate()}
+
+
+func _arm_same_frame_continuation(delta: float, snapshot: CyberSimulationSnapshot) -> void:
+	# Only the final native_sample hold may arm a permit. Every earlier gate
+	# has already passed and no admitted step or body publication occurred.
+	var identity: Dictionary = _same_frame_identity()
+	if identity.is_empty() or snapshot == null: return
+	_workbench_same_frame.arm(identity, snapshot.physics_world_generation,
+		int(snapshot.lab_context.get("workbench_hard_surface_revision",-1)), delta, Time.get_ticks_usec())
+
+
+func _same_frame_continuation_observed(_phase: String, _evidence: Dictionary) -> void:
+	# Observation seam only. Ordinary Main records no unbounded history.
+	pass
+
+
+func _try_same_frame_continuation() -> void:
+	if _workbench_same_frame.pending.is_empty(): return
+	var started_usec: int = Time.get_ticks_usec()
+	var before: int = physical_actor_session.tick if physical_actor_session != null else -1
+	var attempt: Dictionary = _workbench_same_frame.take_ready(Engine.get_process_frames(),
+		_same_frame_identity(), simulation_worker.try_read_physics_mailbox)
+	attempt["start_usec"] = started_usec
+	attempt["before_step"] = before
+	attempt["attempt_process_frame"] = Engine.get_process_frames()
+	# Immutable snapshots are retained locally until the ordinary transaction
+	# ends. The observer gets only identity/scalars, never a mutable packet.
+	var snapshot: CyberSimulationSnapshot = attempt.get("snapshot")
+	attempt.erase("snapshot")
+	_same_frame_continuation_observed("begin", attempt.duplicate(true))
+	if attempt.status == "ready":
+		# No new event-loop turn can intervene here. Repeat the read-only Main
+		# guards after the one nonblocking owner-mailbox observation. Changed
+		# terrain waits for a real physics callback; no extra install allowance.
+		if _same_frame_identity() != attempt.identity:
+			attempt.status = "owner_or_input_changed"
+		else:
+			_complete_physics_callback(float(attempt.delta), false, snapshot)
+	attempt["time_usec"] = Time.get_ticks_usec()
+	attempt["after_step"] = physical_actor_session.tick if physical_actor_session != null else -1
+	attempt["advanced"] = int(attempt.after_step) == before + 1
+	_same_frame_continuation_observed("end", attempt.duplicate(true))
+	if workbench_pose_trace.active:
+		var event: Dictionary = attempt.duplicate(true)
+		event["event"] = "physics_continuation"
+		workbench_pose_trace.observe_event(event)
+
 
 func workbench_source(origin: Vector2i, material: int, command: String) -> bool:
 	if shared_workbench == null: return false
@@ -3924,6 +4024,7 @@ func begin_workbench_pose_trace(settings: Dictionary = {}) -> bool:
 	identity["render_cadence_mode"] = "legacy" if _legacy_render_cadence() else "repaired"
 	identity["fixed_physics_delta"] = rapier_bridge.fixed_delta()
 	identity["native_rendezvous"] = native_rendezvous_status()
+	identity["same_frame_continuation"] = same_frame_continuation_status()
 	identity["clock_notice"] = "Rapier targets alter callbacks; fixed 1/60 steps are compared by simulation index. CPU upload ACK and frame_post_draw are not GPU fences or scanout."
 	if not workbench_pose_trace.begin(identity): return false
 	_cadence_physics_hold_counts.clear()

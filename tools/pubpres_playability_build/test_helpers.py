@@ -2,16 +2,24 @@
 """Adversarial controls for the programme's process and source boundaries."""
 import os
 import ast
+import copy
+import io
+import json
 from pathlib import Path
 import subprocess
 import sys
 import tempfile
 import time
+from types import SimpleNamespace
 import unittest
+from unittest import mock
 
-from build_runtime import bounded_process
+from build_runtime import bounded_process, digest
 from process_owner import OwnedProcess
-from run_regressions import stage_source, validate_completion, terminal_json
+from run_regressions import (SAME_FRAME_COMPLETIONS, SAME_FRAME_HEADLESS, combined_evidence,
+                             continuation_policy, invoke_authoring_pairs, stage_source,
+                             validate_completion, terminal_json)
+import run_installed_authoring
 
 
 class HelperContracts(unittest.TestCase):
@@ -46,6 +54,178 @@ class HelperContracts(unittest.TestCase):
         text = 'WB_COMBINED_EVIDENCE {"checks":10,"failures":[],"author_complete":true,"reopen_complete":false}\n'
         self.assertFalse(validate_completion("test_workbench_combined_authoring", text, 0))
         self.assertTrue(validate_completion("test_workbench_combined_authoring", text, 0, reopen=True))
+
+    def test_same_frame_suites_require_exact_markers_and_assertion_counts(self):
+        for test, (marker, schema, count) in SAME_FRAME_COMPLETIONS.items():
+            result = {"schema": schema, "checks": count, "failures": []}
+            good = marker + json.dumps(result) + "\n"
+            with self.subTest(test=test):
+                self.assertFalse(validate_completion(test, good, 0))
+                for text in ("", good + good, good + "SCRIPT ERROR: deliberate negative\n"):
+                    self.assertTrue(validate_completion(test, text, 0))
+                self.assertTrue(validate_completion(test, good, 1))
+                for key, value in (("checks", count - 1), ("checks", count + 1), ("checks", True),
+                                   ("schema", schema + "-other"), ("failures", ["failed"]),
+                                   ("failures", 0), ("failures", False)):
+                    forged = dict(result, **{key: value})
+                    self.assertTrue(validate_completion(test, marker + json.dumps(forged) + "\n", 0),
+                                    (test, key, value))
+
+    def test_same_frame_regression_matrix_keeps_both_publication_controls(self):
+        self.assertEqual([(test, mode) for _, test, mode in SAME_FRAME_HEADLESS], [
+            ("test_workbench_same_frame_continuation", "off"),
+            ("test_workbench_same_frame_integration", "on"),
+            ("test_workbench_physics_publication", "off"),
+            ("test_workbench_physics_publication", "on"),
+        ])
+        self.assertEqual(len({label for label, _, _ in SAME_FRAME_HEADLESS}), 4)
+
+    def test_failed_off_authoring_does_not_skip_on_or_either_fresh_process(self):
+        calls = []
+        def refuse(label, options, **settings):
+            calls.append((label, options, settings))
+            return False
+        invoke_authoring_pairs(refuse, ["--headless"], False)
+        prefix = "test_workbench_combined_authoring-"
+        self.assertEqual([label for label, _, _ in calls],
+                         [prefix + suffix for suffix in ("off", "off-reopen", "on", "on-reopen")])
+        for index, (_, options, settings) in enumerate(calls):
+            mode = "off" if index < 2 else "on"
+            self.assertEqual(settings["same_frame"], mode)
+            self.assertEqual(options, ["--headless", "--script", "res://tests/test_workbench_combined_authoring.gd"])
+            self.assertFalse(settings["graphical"])
+            if index % 2:
+                self.assertEqual(settings["profile_key"], prefix + mode)
+                self.assertTrue(settings["reopen"])
+            else:
+                self.assertNotIn("profile_key", settings)
+                self.assertNotIn("reopen", settings)
+
+    @staticmethod
+    def continuation_receipt(mode):
+        enabled = mode == "on"
+        observed = {"selectors": continuation_policy(mode)["selectors"], "status": {
+            "version": 1, "requested": enabled, "enabled": enabled, "disabled_reason": "",
+            "mode": "same_frame_once" if enabled else "off",
+            "maximum_attempts_per_process_frame": 1, "maximum_mailbox_reads_per_attempt": 1,
+            "wait_usec": 0, "new_physics_callbacks": 0, "carried_time_credit": False,
+        }}
+        return {"schema": "pubpres-authoring-continuation-evidence-v1", "mode": mode,
+                "claim": "configuration-only", "before": copy.deepcopy(observed), "after": observed}
+
+    def test_combined_authoring_binds_configuration_and_main_helper_hashes(self):
+        with tempfile.TemporaryDirectory() as folder:
+            project = Path(folder)
+            identity = {"native_sha256": "a" * 64, "display": "headless"}
+            for name in ("scripts/main.gd", "scripts/workbench_same_frame_continuation.gd",
+                         "tests/test_workbench_combined_authoring.gd"):
+                path = project / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text("extends Node\n# " + name + "\n")
+                identity[name] = digest(path)
+            phases = {name: True for name in ("discovery", "generation", "manual", "leases", "agent",
+                "provider_fixture", "late_response", "human_after_agent", "stop", "agent_undo_saved",
+                "simulation_equipment", "save", "reopen", "continued_authoring")}
+            result = {"schema": "workbench-combined-authoring-v2", "checks": 10, "failures": [],
+                      "prepared_sha256": "b" * 64, "map_side": 512, "source_identity": identity,
+                      "phases": phases, "same_frame_continuation": self.continuation_receipt("on")}
+            def evaluate(receipt, mode="on", reopen=False):
+                return combined_evidence("WB_COMBINED_EVIDENCE " + json.dumps(receipt), project,
+                    "a" * 64, project / "screenshots", graphical=False, reopen=reopen, same_frame=mode)
+            for mode in ("off", "on"):
+                result["same_frame_continuation"] = self.continuation_receipt(mode)
+                for reopen in (False, True):
+                    self.assertEqual(evaluate(result, mode, reopen)["prepared_sha256"], "b" * 64)
+            for missing in ("scripts/main.gd", "scripts/workbench_same_frame_continuation.gd"):
+                altered = copy.deepcopy(result)
+                del altered["source_identity"][missing]
+                with self.assertRaisesRegex(ValueError, "source identity"):
+                    evaluate(altered)
+            changes = (
+                (("schema",), "workbench-combined-authoring-v1"),
+                (("source_identity", "scripts/main.gd"), "c" * 64),
+                (("source_identity", "scripts/workbench_same_frame_continuation.gd"), "c" * 64),
+                (("same_frame_continuation", "claim"), "continuation-caused-steps"),
+                (("same_frame_continuation", "mode"), "off"),
+                (("same_frame_continuation", "before", "status", "wait_usec"), 16000),
+                (("same_frame_continuation", "after", "status", "enabled"), False),
+                (("same_frame_continuation", "after", "status", "requested"), 1),
+                (("same_frame_continuation", "after", "status", "new_physics_callbacks"), 1),
+                (("same_frame_continuation", "after", "selectors", "CYBERSAND_DIAG_NATIVE_RENDEZVOUS"), "1"),
+                (("same_frame_continuation", "before", "selectors", "CYBERSAND_DIAG_PHYSICS_PUBLICATION"), "combined"),
+            )
+            for keys, value in changes:
+                with self.subTest(keys=keys):
+                    altered = copy.deepcopy(result)
+                    target = altered
+                    for key in keys[:-1]:
+                        target = target[key]
+                    target[keys[-1]] = value
+                    with self.assertRaises(ValueError):
+                        evaluate(altered)
+
+    def test_installed_authoring_selector_defaults_off_and_refuses_unknown(self):
+        required = ["--package", "payload", "--candidate", "a" * 40, "--output", "evidence"]
+        self.assertEqual(run_installed_authoring.parse_arguments(required).same_frame, "off")
+        self.assertEqual(run_installed_authoring.parse_arguments(required + ["--same-frame", "on"]).same_frame, "on")
+        with mock.patch("sys.stderr", io.StringIO()), self.assertRaises(SystemExit):
+            run_installed_authoring.parse_arguments(required + ["--same-frame", "auto"])
+        with self.assertRaises(ValueError):
+            continuation_policy("auto")
+
+    def test_installed_policy_and_fresh_process_material_mismatch_fail_closed(self):
+        # Mocked transport tests the Windows runner contract, not actual Windows
+        # rendering or native simulation. Those remain separate platform gates.
+        for mode in ("off", "on"):
+            for changed_plane in (False, True):
+                with self.subTest(mode=mode, changed_plane=changed_plane), tempfile.TemporaryDirectory() as folder:
+                    root = Path(folder)
+                    payload = root / "payload"
+                    (payload / "C/godot").mkdir(parents=True)
+                    (payload / "godot.exe").write_bytes(b"mock-engine")
+                    (payload / run_installed_authoring.package_windows.MANIFEST).write_text("{}\n")
+                    manifest = {"sources": {"C": {"root": "C", "native": {"sha256": "a" * 64}}},
+                                "engine": {"gui": {"path": "godot.exe"}}}
+                    args = SimpleNamespace(package=payload, candidate="c" * 40, output=root / "output", same_frame=mode)
+                    calls = []
+                    def fake_run(command, environment, output, timeout):
+                        calls.append((list(command), dict(environment)))
+                        output.mkdir(parents=True)
+                        (output / "stdout.log").write_text("mocked transport\n")
+                        return {"returncode": 0, "timed_out": False}
+                    def fake_evidence(text, project, native_sha, screenshots, *, graphical, reopen, same_frame):
+                        self.assertEqual((native_sha, graphical, same_frame), ("a" * 64, True, mode))
+                        return {"prepared_sha256": ("d" if reopen and changed_plane else "b") * 64,
+                                "same_frame_continuation": self.continuation_receipt(mode)}
+                    inherited = {"CYBERSAND_DIAG_NATIVE_RENDEZVOUS": "render-overlap",
+                                 "CYBERSAND_DIAG_SAME_FRAME_CONTINUATION": "1",
+                                 "WB_COMBINED_REOPEN": "1"}
+                    with mock.patch.object(run_installed_authoring, "parse_arguments", return_value=args), \
+                            mock.patch.object(run_installed_authoring, "os", SimpleNamespace(name="nt", environ=inherited)), \
+                            mock.patch.object(run_installed_authoring.package_windows, "verify", return_value=manifest) as verify, \
+                            mock.patch.object(run_installed_authoring, "run", side_effect=fake_run), \
+                            mock.patch.object(run_installed_authoring, "validate_completion", return_value=[]), \
+                            mock.patch.object(run_installed_authoring, "combined_evidence", side_effect=fake_evidence):
+                        self.assertEqual(run_installed_authoring.main(), 1 if changed_plane else 0)
+                    summary = json.loads((args.output / "SUMMARY.json").read_text())
+                    self.assertEqual(summary["schema"], "pubpres-installed-authoring-v2")
+                    self.assertEqual(summary["same_frame_continuation_policy"], continuation_policy(mode))
+                    self.assertEqual(summary["complete"], not changed_plane)
+                    if changed_plane:
+                        self.assertIn("native material digest differs", summary["failure"])
+                    self.assertEqual(verify.call_count, 2)
+                    self.assertEqual(len(calls), 3)
+                    for _, environment in calls:
+                        for name, value in continuation_policy(mode)["selectors"].items():
+                            self.assertEqual(environment[name], value)
+                        self.assertEqual(environment["WB_COMBINED_SAME_FRAME"], mode)
+                    self.assertEqual(calls[1][1]["WB_COMBINED_REOPEN"], "0")
+                    self.assertEqual(calls[2][1]["WB_COMBINED_REOPEN"], "1")
+                    self.assertEqual(calls[1][1]["APPDATA"], calls[2][1]["APPDATA"])
+                    for command, _ in calls[1:]:
+                        self.assertNotIn("--headless", command)
+                        self.assertEqual(command[command.index("--render-thread") + 1], "safe")
+                        self.assertEqual(command[command.index("--rendering-driver") + 1], "opengl3_angle")
 
     def test_exact_source_includes_recipes_and_refuses_project_delta(self):
         with tempfile.TemporaryDirectory() as folder:

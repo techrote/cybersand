@@ -19,7 +19,7 @@ import uuid
 # The owner package is a pristine, inventoried payload. Importing its reader
 # must not create an unlisted __pycache__ before verification.
 sys.dont_write_bytecode = True
-from results import canonical, digest, need, reduce_receipt
+from results import canonical, digest, need, reduce_receipt as reduce_receipt_v2
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "pubpres_playability_build"))
 from process_owner import OwnedProcess
 import dependency_custody
@@ -34,7 +34,32 @@ DIAGNOSTICS = {
     "input_equivalence": ("input_equivalence", ["repeated_callback","once_per_step","once_per_step","repeated_callback"]),
     "render_thread_calibration": ("render_thread_calibration", ["safe","separate","separate","safe"]),
     "native_probe_calibration": ("native_probe_calibration", [False,True,True,False]),
+    "same_frame_calibration": ("same_frame_calibration", [False,True,True,False]),
 }
+
+
+def measurement_protocol(campaign):
+    """Select an explicit observer/reducer pair; never reinterpret old v2 data."""
+    schema = campaign.get("schema")
+    if schema == "pubpres-playability-campaign-v2":
+        need(all(arm.get("same_frame_continuation") is None for arm in campaign["arms"].values()),
+             "V2 cannot select or attest the new continuation treatment")
+        return "v2", "tests/pubpres_playability_gameplay.gd", reduce_receipt_v2
+    need(schema == "pubpres-playability-campaign-v3", "Unknown measurement protocol")
+    need(campaign.get("observer_entrypoint") == "tests/pubpres_same_frame_gameplay.gd",
+         "V3 observer entrypoint differs")
+    need(campaign["measurement"].get("receipt_schema") == "pubpres-playability-gameplay-v3",
+         "V3 receipt schema differs")
+    expected_overlay = {"tests/pubpres_same_frame_gameplay.gd", "scripts/engine_lab_reference_fixture.gd",
+        "tests/fixtures/engine_lab/setup-gate-canvas.json", "tests/pubpres_playability_compatibility.gd",
+        "tests/pubpres_playability_profile.gd"}
+    need(set(campaign["overlay_sha256"]) == expected_overlay, "V3 observation overlay inventory differs")
+    need(type(campaign["arms"]["C"].get("same_frame_continuation")) is bool
+         and campaign["arms"]["C"]["rendezvous"] == "0"
+         and all(campaign["arms"][key].get("same_frame_continuation") is None for key in ("M", "I")),
+         "V3 must declare the candidate-only continuation and disable rendezvous")
+    from results_same_frame import reduce_receipt
+    return "v3", campaign["observer_entrypoint"], reduce_receipt
 
 
 def select_cases(campaign, requested, extended, diagnostic, development=False):
@@ -45,6 +70,7 @@ def select_cases(campaign, requested, extended, diagnostic, development=False):
     if diagnostic:
         key,expected=DIAGNOSTICS[diagnostic]
         registration=campaign[key]
+        need(registration.get("enabled", True) is True, "Diagnostic was explicitly retired in this protocol")
         need(registration["source"]=="candidate" and registration["order"]==expected,"Diagnostic source/order differs from its registered policy")
         eligible=registration.get("cases",[registration.get("case")])
         need(eligible and None not in eligible and len(eligible)==len(set(eligible)) and set(eligible)<=registered,"Invalid diagnostic case registration")
@@ -375,13 +401,18 @@ def main():
     modes.add_argument("--input-equivalence", action="store_true", help="C-only repeated/once/once/repeated input diagnostic")
     modes.add_argument("--thread-calibration", action="store_true", help="C-only safe/separate/separate/safe diagnostic")
     modes.add_argument("--native-probe-calibration", action="store_true", help="C-only native stage probe off/on/on/off diagnostic")
+    modes.add_argument("--same-frame-calibration", action="store_true", help="C-only same-frame continuation off/on/on/off diagnostic")
     args = parser.parse_args()
     campaign = json.loads(args.campaign.read_text())
-    need(campaign["schema"] == "pubpres-playability-campaign-v2" and campaign["order"] == list("MICCIM"), "Unknown or unbalanced campaign")
+    protocol, observer_script, reduce_receipt = measurement_protocol(campaign)
+    need(campaign["order"] == list("MICCIM"), "Unbalanced source campaign")
+    need(not args.same_frame_calibration or protocol == "v3", "Same-frame treatment requires the explicit V3 protocol")
+    need(protocol != "v3" or args.render_thread == "safe" and not args.thread_calibration,
+         "V3 continuation qualification uses Safe; retain Separate diagnostics under their original protocol")
     need(not args.output.exists(), "Output already exists; retain original evidence and choose a new directory")
     need(not (args.case and args.extended), "Select cases or the extended campaign")
     need(args.development or (args.order == "MICCIM" and args.candidate_pool is None), "Unregistered treatment override requires development label")
-    diagnostic = "observer_calibration" if args.observer_calibration else "input_equivalence" if args.input_equivalence else "render_thread_calibration" if args.thread_calibration else "native_probe_calibration" if args.native_probe_calibration else None
+    diagnostic = "observer_calibration" if args.observer_calibration else "input_equivalence" if args.input_equivalence else "render_thread_calibration" if args.thread_calibration else "native_probe_calibration" if args.native_probe_calibration else "same_frame_calibration" if args.same_frame_calibration else None
     need(not diagnostic or args.order=="MICCIM","--order selects source comparisons; diagnostic order comes from registration")
     cases,diagnostic_registration=select_cases(campaign,args.case,args.extended,diagnostic,args.development)
     roots = {"M":args.main,"I":args.integration,"C":args.candidate}
@@ -424,8 +455,9 @@ def main():
     case_orders = {c["id"]:(order if diagnostic or args.order != "MICCIM" else c.get("arm_order",order)) for c in cases}
     template_letters = set(letter for case_order in case_orders.values() for letter in case_order)
     if any(c.get("compatibility_preflight") for c in cases):template_letters.add("I")
-    request = {"schema":"pubpres-playability-request-v2","sources":sources,"engine":str(engine),"engine_sha256":digest(engine),"order":order,"case_orders":case_orders,"cases":cases,
+    request = {"schema":"pubpres-playability-request-"+protocol,"sources":sources,"engine":str(engine),"engine_sha256":digest(engine),"order":order,"case_orders":case_orders,"cases":cases,
                "arms":arms_config,"campaign_sha256":digest(args.campaign),"overlay_sha256":overlay_hashes,"diagnostic":diagnostic,
+               "observer_entrypoint":observer_script,
                "diagnostic_registration":diagnostic_registration,
                "development":args.development,"rendering_driver":args.driver,"render_thread":args.render_thread,"measurement":campaign["measurement"],
                "cache_policy":"Fresh source copy, process and profile per arm; driver-global caches uncontrolled and order-balanced"}
@@ -487,6 +519,7 @@ def main():
             for index,letter in enumerate(case_order):
                 source,arm=sources[letter],dict(arms_config[letter])
                 if args.native_probe_calibration:arm["wave_column_probe"]=diagnostic_registration["order"][index]
+                if args.same_frame_calibration:arm["same_frame_continuation"]=diagnostic_registration["order"][index]
                 folder=output/case["id"]/f"{index}-{letter}"
                 project=projects/f"{case['id']}-{index}-{letter}"
                 nonce=uuid.uuid4().hex
@@ -505,9 +538,13 @@ def main():
                     for key,field in (("CYBERSAND_PLAYABILITY_WAVE_COLUMN_TILES","wave_column_tiles"),("CYBERSAND_PLAYABILITY_WAVE_COLUMN_PROBE","wave_column_probe")):
                         if arm.get(field) is not None:settings[key]="1" if arm[field] else "0"
                     if arm.get("material_pool_policy") is not None:settings["CYBERSAND_DIAG_MATERIAL_POOL_POLICY"]=arm["material_pool_policy"]
+                    if arm.get("same_frame_continuation") is not None:
+                        need(letter == "C" and type(arm["same_frame_continuation"]) is bool,
+                             "Same-frame treatment requires the candidate and an explicit boolean")
+                        settings["CYBERSAND_DIAG_SAME_FRAME_CONTINUATION"]="1" if arm["same_frame_continuation"] else "0"
                     arguments=["--path",str(project),"--rendering-method","gl_compatibility","--rendering-driver",args.driver,
                         "--render-thread",render_thread,"--audio-driver","Dummy","--log-file",str(folder/"godot.log"),
-                        "--script","res://tests/pubpres_playability_gameplay.gd","--",f"--receipt={receipt}",f"--fixture={case['fixture']}",
+                        "--script","res://"+observer_script,"--",f"--receipt={receipt}",f"--fixture={case['fixture']}",
                         f"--camera={case['camera']}",f"--workers={case['workers']}",f"--water-law={case['water_law']}",f"--water-variant={case.get('water_variant','reference')}",
                         f"--water-profile={case.get('water_profile',campaign['measurement']['water_profile'])}",
                         f"--input-mode={case.get('input_mode','tape')}",f"--command-mode={command}",f"--observer-mode={observer}"]
@@ -550,7 +587,7 @@ def main():
     except Exception as error:failures.append({"reason":str(error)})
     finally:
         complete=not failures and len(results)==len(cases)
-        write_json(output/"summary.json",{"schema":"pubpres-playability-comparison-v2","complete":complete,"physical_acceptance":"HOLD","development":args.development,
+        write_json(output/"summary.json",{"schema":"pubpres-playability-comparison-"+protocol,"complete":complete,"physical_acceptance":"HOLD","development":args.development,
             "diagnostic":diagnostic,"cases":results,"failures":failures,"sources":sources,"order":order,
             "meaning":"Capture completion is not a performance win or owner NVIDIA acceptance. Retain both repeats, all failures and tail/freshness distributions."})
         print(f"Results: {output} | complete={complete} | HOLD",flush=True)

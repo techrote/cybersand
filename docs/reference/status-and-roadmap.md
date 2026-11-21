@@ -83,6 +83,13 @@ Source-reviewed harness repairs do not requalify those original results.
 Final graphical qualification and physical NVIDIA acceptance remain pending.
 Keep Draft/HOLD; #682 and its prior negative evidence remain preserved.
 
+A new default-off same-frame continuation is implemented and independently
+source-reviewed. It reuses one genuinely withheld callback within its original
+process frame, retaining native/terrain/actor/input fences and no wait or carried
+physics credit. Prospective v3 observation preserves the v2 campaign and adds
+same-source OFF/ON/ON/OFF controls. Correctness/compatibility evidence is headless;
+new graphical timing and exact-HEAD Linux/Windows qualification remain pending.
+
 The [isolated render diagnostics](../operations/pubpres-playability-evaluation.md#isolated-render-diagnostics)
 add bounded engine-only controls with frozen publisher inputs. They preserve
 first-read pixel failures and are separate from native, package and playability acceptance.

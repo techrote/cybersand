@@ -1,6 +1,6 @@
 {
-  "schema": "pubpres-playability-campaign-v2",
-  "design": "PUBPRES-PLAYABILITY-001. Fresh sequential M-I-C-C-I-M with each exact source and its verified own native runtime. All options explicit; source-matched timing, not owner NVIDIA acceptance. Original source-campaign-v1 and its evidence remain unchanged.",
+  "schema": "pubpres-playability-campaign-v3",
+  "design": "PUBPRES-PLAYABILITY-001 prospective same-frame continuation. M-I-C-C-I-M source comparison and C-only OFF-ON-ON-OFF; exact historical source/runtime controls, unchanged workload/capture budgets. This explicitly versioned callback-credit apparatus does not reinterpret development-01 v2 evidence. All new negatives retained; physical NVIDIA acceptance remains HOLD.",
   "order": [
     "M",
     "I",
@@ -14,11 +14,11 @@
     "integration": "8503ec19e4d620e125dc6df2c5c6571b1256cb92"
   },
   "overlay_sha256": {
-    "tests/pubpres_playability_gameplay.gd": "5cd0eccd28db2d66b3c912bd5b18c004f0c1c47675e74760e1772189f2828b91",
     "scripts/engine_lab_reference_fixture.gd": "b5b10d5de557395066aa07802c40e43c6bf47df6b997f5dcd1510c63aaed9934",
     "tests/fixtures/engine_lab/setup-gate-canvas.json": "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954",
     "tests/pubpres_playability_compatibility.gd": "65ae7a99546b4d6f120a100f9306e2f1c8aa1d3da95938a457f3d37a343eb90b",
-    "tests/pubpres_playability_profile.gd": "f73f37a3c7932f026700bbf325d56a649b84c365dbbfc4f9c1a8aec11e5ded10"
+    "tests/pubpres_playability_profile.gd": "f73f37a3c7932f026700bbf325d56a649b84c365dbbfc4f9c1a8aec11e5ded10",
+    "tests/pubpres_same_frame_gameplay.gd": "b914d02ed562c7c5454629925ec3038ab96c9ccb2829510012ac6e599cfd0c18"
   },
   "arms": {
     "M": {
@@ -31,7 +31,8 @@
       "rendezvous": "0",
       "material_pool_policy": null,
       "wave_column_tiles": null,
-      "wave_column_probe": null
+      "wave_column_probe": null,
+      "same_frame_continuation": null
     },
     "I": {
       "reference": "integration",
@@ -43,7 +44,8 @@
       "rendezvous": "0",
       "material_pool_policy": null,
       "wave_column_tiles": null,
-      "wave_column_probe": null
+      "wave_column_probe": null,
+      "same_frame_continuation": null
     },
     "C": {
       "reference": "candidate",
@@ -55,7 +57,8 @@
       "rendezvous": "0",
       "material_pool_policy": "eager",
       "wave_column_tiles": false,
-      "wave_column_probe": false
+      "wave_column_probe": false,
+      "same_frame_continuation": true
     }
   },
   "measurement": {
@@ -88,7 +91,11 @@
       "Once-per-step is a separately labelled diagnostic requiring equal-step body and admitted-move parity before use. Six-tick input leases expire by completed physical ticks, not wall time.",
       "Render owner must match safe/separate in every arm. Next delivered frame_post_draw callback is not an upload-specific draw receipt.",
       "Reduced-observer calibration disables detailed Main/worker traces and participation sampling; the completed-step/body and command oracle remains. It is not an uninstrumented owner run.",
-      "The historical Wave cohort explicitly requests one round, core reference parameters, no spill and no ballistic transport. Current owner gameplay Wave defaults are a separate workload."
+      "The historical Wave cohort explicitly requests one round, core reference parameters, no spill and no ballistic transport. Current owner gameplay Wave defaults are a separate workload.",
+      "Same-frame continuation is at most one nonblocking attempt within the latest withheld genuine physics callback's original process frame. It does not create a callback or carry physics time credit.",
+      "V3 observer records genuine callback ownership and continuation attempts. Its reduced observer retains that proof and cannot reuse the v2 observer calibration as an overhead bound.",
+      "Source C primary explicitly enables the experiment. Ordinary application and owner launcher defaults remain OFF. C-only OFF/ON/ON/OFF is the causal control; M/I/C timings alone are whole-source comparisons.",
+      "Separate full-Workbench controls are retired from this prospective Safe-only campaign after the original engine startup/crash failures. Their v2 registration and every negative receipt remain frozen; native-independent renderer probes separately investigate the failure."
     ],
     "input_tape": [
       {
@@ -188,7 +195,8 @@
       "producer": "human",
       "body_count": 1
     },
-    "validation_revision": "review-repair-3: original whole-capture limits; actual physics-only owner and body-sample identity; retain zero/one-step first-10-second prefixes and censored boundary stalls; all before new graphical timing"
+    "validation_revision": "prospective-v3: genuine callback credit and one same-frame continuation; unchanged native/actor/terrain/input/body/material oracles and capture bounds; separate execution-start clocks; reduced observer retains compact callback/continuation proof",
+    "receipt_schema": "pubpres-playability-gameplay-v3"
   },
   "fixtures": {
     "landscape2048x1024": {
@@ -422,7 +430,9 @@
       "pressure_512_follow",
       "freemass_2048_follow",
       "cellular_512_follow"
-    ]
+    ],
+    "enabled": false,
+    "retired_reason": "Original development-01 Separate/ANGLE startup failure and Linux font/Image upload crash. No current engine repair is claimed; v3 continuation is only evaluated under Safe."
   },
   "native_probe_calibration": {
     "order": [
@@ -434,5 +444,31 @@
     "source": "candidate",
     "case": "wave_2048_follow",
     "require": "Exact source, workload, body trajectory and admitted moves. New native readback dictionary work occurs before physics mailbox; primary comparisons keep the probe OFF. Do not subtract an assumed overhead."
+  },
+  "observer_entrypoint": "tests/pubpres_same_frame_gameplay.gd",
+  "predecessor": {
+    "path": "campaign-development-01-v2.json",
+    "sha256": "d44ba75d49c708de409633659caadeb9f284c69623c649296342ec5c89ef1286",
+    "source": "a7074ab1bb4fede30d75a7924b4a5bfb7ea963d1",
+    "run_id": 44956244125,
+    "disposition": "Revealed development evidence; original v2 observer/reducer and registration preserved."
+  },
+  "same_frame_calibration": {
+    "source": "candidate",
+    "order": [
+      false,
+      true,
+      true,
+      false
+    ],
+    "cases": [
+      "wave_512_follow",
+      "wave_2048_follow",
+      "wave_gameplay_2048_follow",
+      "pressure_512_follow",
+      "freemass_2048_follow",
+      "cellular_512_follow"
+    ],
+    "require": "Identical source/runtime, native workload, body trajectory and admitted moves. Separate every actual callback, one-shot continuation attempt and completion. Retain zero-step and failed arms; no higher tick/native/work budgets."
   }
 }

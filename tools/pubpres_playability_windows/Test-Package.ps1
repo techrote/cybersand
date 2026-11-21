@@ -72,7 +72,12 @@ try {
     }
     $Run = New-PPRun $PackageRoot $Manifest 'C' 'eager' 'safe' 'opengl3'
     $RunRecord = Test-PPRun $Run $PackageRoot $Manifest
+    Assert-PP ($RunRecord.same_frame_continuation -ceq 'off' -and $RunRecord.settings.CYBERSAND_DIAG_SAME_FRAME_CONTINUATION -ceq '0') 'Continuation default changed'
     $Checks.Add([ordered]@{name='pristine-isolated-run';passed=$true;run=$Run})
+    $ContinuationRun = New-PPRun $PackageRoot $Manifest 'C' 'eager' 'safe' 'opengl3' 'on'
+    $ContinuationRecord = Test-PPRun $ContinuationRun $PackageRoot $Manifest
+    Assert-PP ($ContinuationRecord.same_frame_continuation -ceq 'on' -and $ContinuationRecord.settings.CYBERSAND_DIAG_SAME_FRAME_CONTINUATION -ceq '1') 'Explicit continuation selector differs'
+    $Checks.Add([ordered]@{name='explicit-continuation-isolated-run';passed=$true;run=$ContinuationRun})
     $World = Join-PPSafe $Run 'source/native/src/world.cpp'
     if (-not (Test-Path -LiteralPath $World -PathType Leaf)) {
         $World = @(Get-ChildItem -LiteralPath (Join-PPSafe $Run 'source/native/src') -Filter '*.cpp' -Recurse)[0].FullName
@@ -97,6 +102,12 @@ try {
         Write-PPJson (Join-Path $Run 'run.json') $Changed
         Expect-PPRefusal 'forged-rendezvous-selector' { Test-PPRun $Run $PackageRoot $Manifest } 'selectors changed'
     } finally { [IO.File]::WriteAllBytes((Join-Path $Run 'run.json'),$OriginalRun) }
+    $Changed = Read-PPJson (Join-Path $Run 'run.json')
+    try {
+        $Changed.settings.CYBERSAND_DIAG_SAME_FRAME_CONTINUATION = '1'
+        Write-PPJson (Join-Path $Run 'run.json') $Changed
+        Expect-PPRefusal 'forged-continuation-selector' { Test-PPRun $Run $PackageRoot $Manifest } 'selectors changed'
+    } finally { [IO.File]::WriteAllBytes((Join-Path $Run 'run.json'),$OriginalRun) }
     Test-PPRun $Run $PackageRoot $Manifest | Out-Null
     $Extra = Join-PPSafe $Run 'source/godot/scripts/unexpected_source.gd'
     try {
@@ -104,6 +115,9 @@ try {
         Expect-PPRefusal 'unexpected-world-source-file' { Test-PPRun $Run $PackageRoot $Manifest } 'Unexpected run source'
     } finally { Remove-Item -LiteralPath $Extra }
     Expect-PPRefusal 'historical-source-cannot-enable-new-pools' { Get-PPSettings 'M' 'reachable' 'safe' 'opengl3' } 'Unsupported run selectors'
+    Expect-PPRefusal 'main-cannot-enable-continuation' { Get-PPSettings 'M' 'eager' 'safe' 'opengl3' 'on' } 'Unsupported run selectors'
+    Expect-PPRefusal 'reference-cannot-enable-continuation' { Get-PPSettings 'I' 'eager' 'safe' 'opengl3' 'on' } 'Unsupported run selectors'
+    Expect-PPRefusal 'continuation-requires-qualified-render-owner' { Get-PPSettings 'C' 'eager' 'separate' 'opengl3' 'on' } 'Unsupported run selectors'
 
     # One separate payload copy permits corruption tests without mutating
     # the pristine package, binary history or any previous evidence.

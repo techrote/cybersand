@@ -25,7 +25,7 @@ def main() -> int:
         parser.add_argument("--" + name, type=Path, required=True)
     parser.add_argument("--case", required=True)
     parser.add_argument("--display-wrapper", type=Path)
-    parser.add_argument("--stage", choices=("source", "thread", "observer", "native-probe", "input"), required=True)
+    parser.add_argument("--stage", choices=("source", "thread", "observer", "native-probe", "input", "same-frame"), required=True)
     args = parser.parse_args()
     output = args.output.resolve()
     if output.exists():
@@ -45,10 +45,13 @@ def main() -> int:
                "thread": ("render-thread-abba", ["--thread-calibration"], "render_thread_calibration"),
                "observer": ("observer-abba", ["--observer-calibration"], "calibration"),
                "native-probe": ("native-probe-abba", ["--native-probe-calibration"], "native_probe_calibration"),
+               "same-frame": ("same-frame-abba", ["--same-frame-calibration"], "same_frame_calibration"),
                "input": ("input-mode-abba", ["--input-equivalence"], "input_equivalence")}
     name, flags, key = options[args.stage]
     if key:
         spec = registration[key]
+        if spec.get("enabled", True) is not True:
+            raise ValueError("Diagnostic is retired in the selected registration")
         if args.case not in spec.get("cases", [spec.get("case")]):
             raise ValueError("Case is not registered for the selected diagnostic")
     stages = [(name, flags)]

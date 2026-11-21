@@ -79,6 +79,7 @@ timing acceptance test.
 | `-StagingPools Reachable` | Candidate only: omit provably unreachable atlas allocations at setup | Off |
 | `-RenderThread Safe` | Existing Godot safe/inline rendering mode | Safe |
 | `-RenderThread Separate` | Existing Godot separate rendering owner; experimental comparison | Off |
+| `-SameFrameContinuation On` | Candidate/Safe only: one nonblocking continuation of a withheld real callback in its original process frame | Off |
 | `-RenderingDriver opengl3` | Native Windows desktop OpenGL; use for owner NVIDIA comparison | opengl3 |
 | `-RenderingDriver opengl3_angle` | ANGLE, available for hosted Windows qualification | — |
 
@@ -95,6 +96,22 @@ path. Safe reachable R8/two-slot queued history also has one current-plane
 mismatch. These options remain unqualified. A successful ordinary Safe startup
 does not resolve a failed history oracle or qualify Separate. Use the current
 frozen handoff for the status of later repairs and their exact-source evidence.
+
+The new manifest, owner-run and startup-receipt formats are explicitly v2;
+the measured gameplay corpus is explicitly v3. Use each historical evaluator's
+original launcher. This launcher refuses an old manifest instead of giving it
+new selector meanings. To compare the continuation alone, open two new Candidate
+runs with identical fixture, Water law, workers, camera, Eager pools and Safe
+rendering, selecting `-SameFrameContinuation Off` and `On` respectively. The
+launcher records the actual Main status, including its one-attempt, one-read,
+zero-wait bounds. `-ReopenRun` retains the recorded policy; an explicit conflicting
+selector is refused. Startup readback proves configuration, not physical gains.
+
+For example, add `-SameFrameContinuation On` to the Candidate Open command above.
+Keep ordinary runs OFF unless deliberately evaluating the experiment. The
+package qualification exercises graphical Save and fresh-process native-material
+reconstruction separately with OFF and ON; hosted results remain distinct from
+the owner's physical Windows/NVIDIA exercise.
 
 The rejected four-column Wave experiment is absent from this candidate. There
 is no Wave-columns-On selector. An inherited request to enable it is refused.

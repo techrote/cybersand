@@ -54,7 +54,7 @@ def complete_reader_fixture(folder):
     Extends the independent reviewer's intentionally incomplete receipt so
     every rejection below changes one otherwise valid observation contract.
     """
-    campaign=json.loads(Path(__file__).with_name("campaign.json").read_text())
+    campaign=json.loads(Path(__file__).with_name("campaign-development-01-v2.json").read_text())
     tape=campaign["measurement"]["input_tape"]
     source={"source_sha":campaign["source_commits"]["main"],"engine_sha256":"e"*64,
         "files":{"res://"+k:v for k,v in campaign["overlay_sha256"].items()}}
@@ -288,7 +288,7 @@ class ReceiptTests(unittest.TestCase):
 
 class RegistrationTests(unittest.TestCase):
     def test_diagnostics_use_registered_cases_and_order(self):
-        campaign=json.loads(Path(__file__).with_name("campaign.json").read_text())
+        campaign=json.loads(Path(__file__).with_name("campaign-development-01-v2.json").read_text())
         cases,registration=select_cases(campaign,[],False,"render_thread_calibration")
         self.assertEqual({c["id"] for c in cases},set(campaign["render_thread_calibration"]["cases"]))
         self.assertEqual(len(cases),6)

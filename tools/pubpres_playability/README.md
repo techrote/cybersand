@@ -1,10 +1,28 @@
-# PUBPRES-PLAYABILITY-001 measurement v2
+# PUBPRES-PLAYABILITY-001 measurement v3
 
 This apparatus compares actual native Workbench and Rapier progression. It does
 not select an application default or authorize promotion. All outcomes remain
 Draft/HOLD until the source, platform and owner evidence support a decision.
 The historical `tools/pubpres_integration/` campaign, overlays and hashes are
 unchanged.
+
+The current prospective `campaign.json` uses `pubpres_same_frame_gameplay.gd`
+and `results_same_frame.py`. Primary C explicitly enables the default-off
+same-frame continuation; `--same-frame-calibration` compares the same exact C
+OFF/ON/ON/OFF in Safe rendering. M/I advertise no continuation capability.
+All source/runtime, workload, capture limits, Water and equal-step body/move
+requirements remain. Each completed continuation must spend one genuine withheld
+callback in its original process frame, with one nonblocking mailbox observation
+and unchanged owner/World/terrain/input identity. Attempt and completion are
+distinct events; a first-N cutoff counts actual step completion even when the
+enclosing attempt observation finishes later.
+
+`campaign-development-01-v2.json` is the exact original registration, SHA-256
+`d44ba75d49c708de409633659caadeb9f284c69623c649296342ec5c89ef1286`.
+Its v2 observer and reducer are preserved, and `--campaign` selects that old
+protocol explicitly. No old receipt is silently read as v3. The new protocol
+rejects Separate: its original full-Workbench failures are retained, with small
+native-independent engine/material probes used for diagnosis instead.
 
 ## Source and runtime custody
 
@@ -116,7 +134,9 @@ null; an unobserved byte count or duration is never substituted with zero.
 
 `--observer-calibration` runs C-only full/reduced/reduced/full. Reduced observation
 disables detailed Main/worker traces and task-participation sampling, while
-retaining completed-step/body and command oracles. It is not an uninstrumented
+retaining completed-step/body, command and compact genuine-callback/continuation
+oracles. This v3 definition requires fresh calibration; the revealed v2 result
+is not an overhead bound for the new apparatus. It is not an uninstrumented
 owner run. Report the measured difference; do not subtract an assumed overhead
 or silently adjust primary results.
 
@@ -164,11 +184,13 @@ it and does not measure GPU completion or scanout. The metric is explicitly name
 `upload_return_to_next_delivered_draw_callback_ms`. Stage wall times cannot
 independently distinguish CPU work, driver waiting and OS descheduling.
 
-`--thread-calibration` runs one candidate and workload in
+Under the retained v2 registration, `--thread-calibration` runs one candidate and workload in
 Safe–Separate–Separate–Safe order, keeping source and native inputs fixed.
 Every arm checks its requested and actual rendering owner. Different thread modes
 are compared only as the declared treatment; they are never pooled as matching
 controls. Ordinary launch/render defaults remain unchanged.
+V3 explicitly retires that full-Workbench engine control. Its same-source
+`--same-frame-calibration` uses OFF/ON/ON/OFF and Safe rendering instead.
 The registered cases are Wave512 Follow, historical Wave2048 Follow, current
 gameplay Wave2048 Follow, Pressure512 Follow, FreeMass2048 Follow and
 Cellular512 Follow. Observer/input diagnostics remain restricted to Wave512

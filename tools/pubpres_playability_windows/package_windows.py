@@ -26,7 +26,7 @@ sys.dont_write_bytecode = True
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "pubpres_playability_build"))
 import dependency_custody
 
-SCHEMA = "pubpres-playability-windows-v1"
+SCHEMA = "pubpres-playability-windows-v2"
 MANIFEST = "PUBPRES-PLAYABILITY-MANIFEST.json"
 RUNTIME_RECEIPT = "PUBPRES-RUNTIME.json"
 NATIVE = "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll"
@@ -222,7 +222,7 @@ def stage_project(root, source, key, runtime_dir, output):
                 "receipt": prefix + "/" + RAPIER_RECEIPT},
             "toolchain": {name: runtime[name] for name in ("godot_cpp_commit", "godot_cpp_library_sha256", "godot_cpp_dependency_sha256", "compiler_command", "compiler_version", "toolchain_drift_allowed")},
             "features": {"reachable_staging_pools": key == "C", "wave_column_tiles": False,
-                         "wave_column_slots": 1, "wave_stage_probe": key == "C"},
+                         "wave_column_slots": 1, "wave_stage_probe": key == "C", "same_frame_continuation": key == "C"},
             "source_projection": "Exact committed project and closure; new source-matched DLL/provenance and canonical recipe copies are explicit package additions."}
 
 
@@ -338,12 +338,12 @@ def verify(output, candidate):
              and derived["build_receipt_sha256"] == source["native"]["receipt_sha256"] and derived["production_runtime_promotion"] is False,
              "Runtime observation would read stale or misleading provenance")
         need(source["features"] == {"reachable_staging_pools": key == "C", "wave_column_tiles": False,
-                                   "wave_column_slots": 1, "wave_stage_probe": key == "C"}, "Unsupported experimental feature advertisement")
+                                   "wave_column_slots": 1, "wave_stage_probe": key == "C", "same_frame_continuation": key == "C"}, "Unsupported experimental feature advertisement")
         toolchains.append(source["toolchain"])
     need(toolchains[0] == toolchains[1] == toolchains[2], "Comparison runtimes use unmatched toolchains")
     need(record["sources"]["C"]["source_commit"] == candidate and record["physical_acceptance"] == "HOLD"
          and record["production_defaults_changed"] is False
-         and record["experimental_defaults"] == {"staging_pools": "eager", "render_thread": "safe", "wave_column_tiles": False},
+         and record["experimental_defaults"] == {"staging_pools": "eager", "render_thread": "safe", "wave_column_tiles": False, "same_frame_continuation": "off"},
          "Candidate source, defaults or owner hold differs")
     need(record["package_filename"] == "CyberSand-PUBPRES-PLAYABILITY-001-" + candidate[:12] + "-Windows.zip",
          "Incorrect evaluator filename")
@@ -362,7 +362,7 @@ def verify(output, candidate):
          and record["owner_observer"] == TOOLS + "/owner_start.gd", "Owner entrypoint changed")
     need(digest(output / record["campaign"]) == record["campaign_sha256"], "Frozen comparison corpus differs")
     campaign = json.loads((output / record["campaign"]).read_text(encoding="utf-8"))
-    need(campaign["schema"] == "pubpres-playability-campaign-v2"
+    need(campaign["schema"] == "pubpres-playability-campaign-v3"
          and campaign["source_commits"] == {"main": record["sources"]["M"]["source_commit"], "integration": record["sources"]["I"]["source_commit"]},
          "Comparison source registration differs")
     for name, expected in campaign["overlay_sha256"].items():
@@ -411,8 +411,8 @@ def main():
     archive_source(root, args.candidate_sha, output, [TOOLS, "tools/pubpres_playability", "tools/pubpres_playability_build"])
     engine = stage_dependencies(output, args.godot_zip, args.vc_runtime, args.notices)
     campaign = json.loads((output / "tools/pubpres_playability/campaign.json").read_text())
-    need(campaign["schema"] == "pubpres-playability-campaign-v2" and campaign["source_commits"]["main"] == args.main_sha
-         and campaign["source_commits"]["integration"] == args.integration_sha, "V2 corpus sources differ")
+    need(campaign["schema"] == "pubpres-playability-campaign-v3" and campaign["source_commits"]["main"] == args.main_sha
+         and campaign["source_commits"]["integration"] == args.integration_sha, "V3 corpus sources differ")
     for name, expected in campaign["overlay_sha256"].items():
         need(digest(output / sources["C"]["project"] / safe_name(name)) == expected, "Frozen observer overlay differs")
     shutil.copyfile(output / TOOLS / "README.md", output / "READ-ME.md")
@@ -420,7 +420,7 @@ def main():
               "package_filename": expected_name, "sources": sources, "engine": engine,
               "campaign": "tools/pubpres_playability/campaign.json", "campaign_sha256": digest(output / "tools/pubpres_playability/campaign.json"),
               "owner_launcher": TOOLS + "/Start-PUBPRES-Playability.ps1", "owner_observer": TOOLS + "/owner_start.gd",
-              "experimental_defaults": {"staging_pools": "eager", "render_thread": "safe", "wave_column_tiles": False},
+              "experimental_defaults": {"staging_pools": "eager", "render_thread": "safe", "wave_column_tiles": False, "same_frame_continuation": "off"},
               "physical_acceptance": "HOLD", "production_defaults_changed": False,
               "qualification_scope": "Fresh source-matched Windows evaluator. Hosted software-renderer results and owner physical NVIDIA acceptance are distinct."}
     record["files_sha256"] = file_hashes(output)

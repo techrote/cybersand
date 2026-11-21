@@ -39,8 +39,10 @@ separates actual platform evidence from owner playfeel acceptance.
 The [Workbench publication and progression evaluation](operations/pubpres-integration-evaluation.md) tracks PUBPRES-INTEGRATION-001 and its Draft/HOLD gates.
 
 The separate [PUBPRES-PLAYABILITY-001 evaluation](operations/pubpres-playability-evaluation.md)
-owns the opt-in staging change, v2 matched progression campaign and new Windows
-evaluator. Draft/HOLD; new graphical results and physical NVIDIA acceptance remain pending.
+owns the opt-in staging change, default-off same-frame continuation, prospective
+v3 matched progression campaign and new Windows evaluator. The original negative
+v2 results remain preserved. Draft/HOLD; continuation graphical timing and
+physical NVIDIA acceptance remain pending.
 
 For native-independent font/startup and queued-history diagnosis before native
 builds, use [isolated render diagnostics](operations/pubpres-playability-evaluation.md#isolated-render-diagnostics).

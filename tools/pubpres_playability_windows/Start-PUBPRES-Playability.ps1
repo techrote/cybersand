@@ -10,6 +10,7 @@ param(
     [ValidateSet('Candidate','Integration','Main')][string]$Source = 'Candidate',
     [ValidateSet('Eager','Reachable')][string]$StagingPools = 'Eager',
     [ValidateSet('Safe','Separate')][string]$RenderThread = 'Safe',
+    [ValidateSet('Off','On')][string]$SameFrameContinuation = 'Off',
     [ValidateSet('opengl3','opengl3_angle')][string]$RenderingDriver = 'opengl3',
     [string]$ReopenRun = '',
     [switch]$QuitAfterReady,
@@ -102,7 +103,7 @@ function Test-PPPackage([string]$Root,[string]$Candidate) {
     $Expected = Read-PPChecksum ($ManifestPath+'.sha256') $script:PPManifestName
     Assert-PP ((Get-PPHash $ManifestPath) -ceq $Expected) 'Package manifest checksum differs'
     $Manifest = Read-PPJson $ManifestPath
-    Assert-PP ($Manifest.schema -ceq 'pubpres-playability-windows-v1' -and $Manifest.candidate_commit -ceq $Candidate -and
+    Assert-PP ($Manifest.schema -ceq 'pubpres-playability-windows-v2' -and $Manifest.candidate_commit -ceq $Candidate -and
         $Manifest.physical_acceptance -ceq 'HOLD' -and $Manifest.production_defaults_changed -eq $false) 'Package identity or HOLD status differs'
     $ExpectedName = 'CyberSand-PUBPRES-PLAYABILITY-001-'+$Candidate.Substring(0,12)+'-Windows.zip'
     Assert-PP ($Manifest.package_filename -ceq $ExpectedName) 'Package uses an incorrect historical or renamed evaluator filename'
@@ -197,7 +198,8 @@ function Test-PPPackage([string]$Root,[string]$Candidate) {
         $Current = @($Build.godot_cpp_commit,$Build.godot_cpp_library_sha256,$Build.godot_cpp_dependency_sha256,$Build.compiler_command,$Build.compiler_version) -join "`n"
         if ($null -eq $Toolchain) { $Toolchain = $Current } else { Assert-PP ($Toolchain -ceq $Current) 'M/I/C toolchains are unmatched' }
         Assert-PP ($Item.features.wave_column_tiles -eq $false -and $Item.features.wave_column_slots -eq 1 -and
-            $Item.features.reachable_staging_pools -eq ($Key -ceq 'C') -and $Item.features.wave_stage_probe -eq ($Key -ceq 'C')) 'Unsupported experimental feature advertisement'
+            $Item.features.reachable_staging_pools -eq ($Key -ceq 'C') -and $Item.features.wave_stage_probe -eq ($Key -ceq 'C') -and
+            $Item.features.same_frame_continuation -eq ($Key -ceq 'C')) 'Unsupported experimental feature advertisement'
         $Rapier = Read-PPJson (Join-PPSafe $Root $Item.rapier.receipt)
         Assert-PP ($Rapier.artifact -ceq 'godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' -and
             $Rapier.sha256 -ceq $Item.rapier.sha256 -and $Rapier.size -eq $Item.rapier.bytes -and
@@ -229,10 +231,11 @@ function Test-PPPackage([string]$Root,[string]$Candidate) {
         $Manifest.owner_launcher -ceq 'tools/pubpres_playability_windows/Start-PUBPRES-Playability.ps1' -and
         $Manifest.owner_observer -ceq 'tools/pubpres_playability_windows/owner_start.gd' -and
         $Manifest.experimental_defaults.staging_pools -ceq 'eager' -and $Manifest.experimental_defaults.render_thread -ceq 'safe' -and
-        $Manifest.experimental_defaults.wave_column_tiles -eq $false) 'Entrypoint or experimental default differs'
+        $Manifest.experimental_defaults.wave_column_tiles -eq $false -and
+        $Manifest.experimental_defaults.same_frame_continuation -ceq 'off') 'Entrypoint or experimental default differs'
     Assert-PP ((Get-PPHash (Join-PPSafe $Root $Manifest.campaign)) -ceq $Manifest.campaign_sha256) 'Registered comparison corpus changed'
     $Campaign = Read-PPJson (Join-PPSafe $Root $Manifest.campaign)
-    Assert-PP ($Campaign.schema -ceq 'pubpres-playability-campaign-v2' -and $Campaign.source_commits.main -ceq $Manifest.sources.M.source_commit -and
+    Assert-PP ($Campaign.schema -ceq 'pubpres-playability-campaign-v3' -and $Campaign.source_commits.main -ceq $Manifest.sources.M.source_commit -and
         $Campaign.source_commits.integration -ceq $Manifest.sources.I.source_commit) 'Comparison source registration differs'
     foreach ($Entry in $Campaign.overlay_sha256.PSObject.Properties) {
         Assert-PP ((Get-PPHash (Join-PPSafe (Join-PPSafe $Root $Manifest.sources.C.project) $Entry.Name)) -ceq $Entry.Value) 'Frozen observer overlay differs'
@@ -405,10 +408,12 @@ function Invoke-PPProcess([string]$Engine,[string[]]$Arguments,[string]$Folder,[
     return Read-PPJson (Join-Path $Folder 'process.json')
 }
 
-function Get-PPSettings([string]$Key,[string]$Pools,[string]$Thread,[string]$Driver) {
+function Get-PPSettings([string]$Key,[string]$Pools,[string]$Thread,[string]$Driver,[string]$Continuation='off') {
     Assert-PP ($Key -cin @('M','I','C') -and $Pools -cin @('eager','reachable') -and $Thread -cin @('safe','separate') -and
-        $Driver -cin @('opengl3','opengl3_angle') -and ($Pools -ceq 'eager' -or $Key -ceq 'C')) 'Unsupported run selectors'
-    $Settings = [ordered]@{CYBERSAND_PLAYABILITY_RENDER_THREAD=$Thread;CYBERSAND_DIAG_NATIVE_RENDEZVOUS='0'}
+        $Driver -cin @('opengl3','opengl3_angle') -and ($Pools -ceq 'eager' -or $Key -ceq 'C') -and
+        $Continuation -cin @('off','on') -and ($Continuation -ceq 'off' -or ($Key -ceq 'C' -and $Thread -ceq 'safe'))) 'Unsupported run selectors'
+    $Settings = [ordered]@{CYBERSAND_PLAYABILITY_RENDER_THREAD=$Thread;CYBERSAND_DIAG_NATIVE_RENDEZVOUS='0';
+        CYBERSAND_DIAG_SAME_FRAME_CONTINUATION=$(if ($Continuation -ceq 'on') {'1'} else {'0'})}
     if ($Key -cne 'M') {
         $Settings['CYBERSAND_MATERIAL_PUBLICATION']='blit'; $Settings['CYBERSAND_DIAG_PHYSICS_PUBLICATION']='early'
         $Settings['CYBERSAND_DIAG_PRESENTATION']='coherent'; $Settings['CYBERSAND_DIAG_MATERIAL_TIMING']='measured'
@@ -433,8 +438,10 @@ function Get-PPExpectedRunFiles([string]$Root,$Manifest,[string]$Key) {
     finally { $Hash.Dispose() }
     return $Files
 }
-function New-PPRun([string]$Root,$Manifest,[string]$Key,[string]$Pools,[string]$Thread,[string]$Driver) {
+function New-PPRun([string]$Root,$Manifest,[string]$Key,[string]$Pools,[string]$Thread,[string]$Driver,[string]$Continuation='off') {
+    $Settings = Get-PPSettings $Key $Pools $Thread $Driver $Continuation
     $Item = $Manifest.sources.$Key
+    Assert-PP ($Continuation -ceq 'off' -or $Item.features.same_frame_continuation) 'This historical source does not support same-frame continuation'
     Assert-PP ($Pools -ceq 'eager' -or $Item.features.reachable_staging_pools) 'This historical source does not support reachable staging pools'
     $Run = Join-Path ([IO.Path]::GetDirectoryName($Root)) ('Runs\'+(Get-Date).ToUniversalTime().ToString('yyyyMMdd-HHmmss')+'-'+[Guid]::NewGuid().ToString('N').Substring(0,12))
     Assert-PP (-not (Test-Path -LiteralPath $Run)) 'Refusing stale run folder'
@@ -453,10 +460,9 @@ function New-PPRun([string]$Root,$Manifest,[string]$Key,[string]$Pools,[string]$
     Assert-PP (-not (Test-Path -LiteralPath $Override)) 'Committed override.cfg must be reviewed explicitly before owner overlay'
     [IO.File]::WriteAllText($Override,(Get-PPOverride),$script:PPUtf8)
     $Files = Get-PPExpectedRunFiles $Root $Manifest $Key
-    $Settings = Get-PPSettings $Key $Pools $Thread $Driver
-    $Record = [ordered]@{schema='pubpres-playability-owner-run-v1'; candidate_commit=$Manifest.candidate_commit; source=$Key;
+    $Record = [ordered]@{schema='pubpres-playability-owner-run-v2'; candidate_commit=$Manifest.candidate_commit; source=$Key;
         source_commit=$Item.source_commit; package_manifest_sha256=(Get-PPHash (Join-Path $Root $script:PPManifestName));
-        staging_pools=$Pools;render_thread=$Thread;render_driver=$Driver;settings=$Settings;files_sha256=$Files;
+        staging_pools=$Pools;render_thread=$Thread;render_driver=$Driver;same_frame_continuation=$Continuation;settings=$Settings;files_sha256=$Files;
         wave_column_tiles=$false;profile='profile';project='source/godot';physical_acceptance='HOLD'}
     Write-PPJson (Join-Path $Run 'run.json') $Record
     return $Run
@@ -464,11 +470,11 @@ function New-PPRun([string]$Root,$Manifest,[string]$Key,[string]$Pools,[string]$
 
 function Test-PPRun([string]$Run,[string]$Root,$Manifest) {
     $Record = Read-PPJson (Join-Path $Run 'run.json')
-    Assert-PP ($Record.schema -ceq 'pubpres-playability-owner-run-v1' -and $Record.candidate_commit -ceq $Manifest.candidate_commit -and
+    Assert-PP ($Record.schema -ceq 'pubpres-playability-owner-run-v2' -and $Record.candidate_commit -ceq $Manifest.candidate_commit -and
         $Record.package_manifest_sha256 -ceq (Get-PPHash (Join-Path $Root $script:PPManifestName)) -and
         $Record.source -cin @('M','I','C') -and $Record.source_commit -ceq $Manifest.sources.($Record.source).source_commit -and
         $Record.wave_column_tiles -eq $false -and $Record.project -ceq 'source/godot' -and $Record.profile -ceq 'profile') 'Reopen source/package identity differs'
-    $Settings = Get-PPSettings $Record.source $Record.staging_pools $Record.render_thread $Record.render_driver
+    $Settings = Get-PPSettings $Record.source $Record.staging_pools $Record.render_thread $Record.render_driver $Record.same_frame_continuation
     Assert-PP (@($Record.settings.PSObject.Properties).Count -eq $Settings.Count) 'Unexpected run selector'
     foreach ($Name in $Settings.Keys) { Assert-PP ($Record.settings.$Name -ceq $Settings[$Name]) 'Requested run selectors changed' }
     $Expected = Get-PPExpectedRunFiles $Root $Manifest $Record.source
@@ -506,12 +512,12 @@ if ($ReopenRun) {
     $Run = [IO.Path]::GetFullPath($ReopenRun)
     $RunRecord = Test-PPRun $Run $PackageRoot $Manifest
     if ($PSBoundParameters.ContainsKey('Source')) { Assert-PP (@{Candidate='C';Integration='I';Main='M'}[$Source] -ceq $RunRecord.source) 'Explicit reopen source differs' }
-    foreach ($Choice in @(@('StagingPools','staging_pools'),@('RenderThread','render_thread'),@('RenderingDriver','render_driver'))) {
+    foreach ($Choice in @(@('StagingPools','staging_pools'),@('RenderThread','render_thread'),@('RenderingDriver','render_driver'),@('SameFrameContinuation','same_frame_continuation'))) {
         if ($PSBoundParameters.ContainsKey($Choice[0])) { Assert-PP ((Get-Variable -Name $Choice[0] -ValueOnly).ToLowerInvariant() -ceq $RunRecord.($Choice[1])) 'Explicit reopen selector differs from saved run' }
     }
 } else {
     $Key = @{Candidate='C';Integration='I';Main='M'}[$Source]
-    $Run = New-PPRun $PackageRoot $Manifest $Key ($StagingPools.ToLowerInvariant()) ($RenderThread.ToLowerInvariant()) $RenderingDriver
+    $Run = New-PPRun $PackageRoot $Manifest $Key ($StagingPools.ToLowerInvariant()) ($RenderThread.ToLowerInvariant()) $RenderingDriver ($SameFrameContinuation.ToLowerInvariant())
     $RunRecord = Test-PPRun $Run $PackageRoot $Manifest
 }
 $Item = $Manifest.sources.($RunRecord.source)
@@ -524,21 +530,31 @@ Test-PPRun $Run $PackageRoot $Manifest | Out-Null
 $ReadyPath = Join-Path $Run ('ready-'+[Guid]::NewGuid().ToString('N')+'.json')
 $Settings['CYBERSAND_PLAYABILITY_OWNER_RECEIPT'] = $ReadyPath
 if ($QuitAfterReady) { $Settings['CYBERSAND_PLAYABILITY_OWNER_QUIT_AFTER_READY']='1' }
-Write-Host ('Opening source '+$RunRecord.source+'; staging='+$RunRecord.staging_pools+'; render thread='+$RunRecord.render_thread)
+Write-Host ('Opening source '+$RunRecord.source+'; staging='+$RunRecord.staging_pools+'; render thread='+$RunRecord.render_thread+'; same-frame continuation='+$RunRecord.same_frame_continuation)
 Write-Host ('Save/reopen profile and evidence: '+$Run)
 $OverallSeconds = if ($QuitAfterReady) { 360 } else { 0 }
 $Process = Invoke-PPProcess $Engine @('--path',$Project,'--rendering-method','gl_compatibility','--rendering-driver',$RunRecord.render_driver,
     '--render-thread',$RunRecord.render_thread,'--audio-driver','Dummy','--script','res://tests/pubpres_playability_owner_start.gd') $Launch $Profile $Settings $Item.source_commit $OverallSeconds $ReadyPath 300
 Assert-PP (Test-Path -LiteralPath $ReadyPath -PathType Leaf) 'Application exited without an installed native World receipt'
 $Ready = Read-PPJson $ReadyPath
-Assert-PP ($Ready.ready -eq $true -and $Ready.source_commit -ceq $Item.source_commit -and $Ready.process_id -eq $Process.process_id -and
+Assert-PP ($Ready.schema -ceq 'pubpres-playability-owner-start-v2' -and $Ready.ready -eq $true -and $Ready.source_commit -ceq $Item.source_commit -and $Ready.process_id -eq $Process.process_id -and
     $Ready.native_sha256 -ceq $Item.native.sha256 -and $Ready.rapier_sha256 -ceq $Item.rapier.sha256 -and
     $Ready.engine_sha256 -ceq $Manifest.engine.gui.sha256 -and $Ready.render_thread_inline -eq ($RunRecord.render_thread -ceq 'safe') -and
+    $Ready.render_driver -ceq $RunRecord.render_driver -and
     $Ready.main_sha256 -ceq $RunRecord.files_sha256.'godot/scripts/main.gd' -and
     $Ready.project_sha256 -ceq $RunRecord.files_sha256.'godot/project.godot' -and
     $Ready.observer_sha256 -ceq $RunRecord.files_sha256.'godot/tests/pubpres_playability_owner_start.gd' -and
     $Ready.override_sha256 -ceq $RunRecord.files_sha256.'godot/override.cfg') 'Actual process/source/runtime/thread receipt differs'
-if ($RunRecord.source -eq 'C') { Assert-PP ($Ready.material_publication.staging_pool_policy -ceq $RunRecord.staging_pools) 'Requested staging policy did not reach actual native-pixel publisher' }
+if ($RunRecord.source -eq 'C') {
+    Assert-PP ($Ready.material_publication.staging_pool_policy -ceq $RunRecord.staging_pools) 'Requested staging policy did not reach actual native-pixel publisher'
+    $Continuation = $Ready.same_frame_continuation
+    $ExpectedOn = $RunRecord.same_frame_continuation -ceq 'on'
+    $ExpectedMode = if ($ExpectedOn) { 'same_frame_once' } else { 'off' }
+    Assert-PP ($null -ne $Continuation -and $Continuation.version -eq 1 -and $Continuation.requested -eq $ExpectedOn -and
+        $Continuation.enabled -eq $ExpectedOn -and $Continuation.mode -ceq $ExpectedMode -and $Continuation.disabled_reason -ceq '' -and
+        $Continuation.maximum_attempts_per_process_frame -eq 1 -and $Continuation.maximum_mailbox_reads_per_attempt -eq 1 -and
+        $Continuation.wait_usec -eq 0 -and $Continuation.new_physics_callbacks -eq 0 -and $Continuation.carried_time_credit -eq $false) 'Requested continuation policy did not reach actual Main owner'
+} else { Assert-PP ($null -eq $Ready.same_frame_continuation) 'Historical source unexpectedly advertises the new continuation' }
 Test-PPRun $Run $PackageRoot $Manifest | Out-Null
 Write-PPJson (Join-Path $Launch 'verified-startup.json') $Ready
 Write-Host ('Closed verified owner session; evidence retained at '+$Run)
