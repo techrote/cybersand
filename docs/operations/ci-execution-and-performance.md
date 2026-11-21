@@ -105,6 +105,34 @@ candidate still executes the complete original inventory. This ordering change
 targets time to actionable failure, not a claimed reduction in successful-run
 wall time. It changes neither publication ownership nor runtime provenance.
 
+## Soliding compilation reuse
+
+The six core-linked soliding test executables use one local object set per
+compiler configuration. Normal and ASan/UBSan objects have separate directories;
+the original flags, source order at link time, eight executables and eight test
+invocations remain unchanged. A cold complete target compiles 14 translation
+units instead of 44. The lifecycle and settled-region standalone compilations
+remain separate, and the memory-intensive sanitizer build remains serial.
+
+[`native_build_configuration.py`](../../tools/ci/native_build_configuration.py)
+binds reuse to compiler and compiler-component bytes, compiler identity, flags,
+relevant environment, core source/header contents and the Makefile. A changed
+identity invalidates the local objects; an unavailable identity fails the build.
+Objects are published by atomic replacement only after successful compilation.
+The helper executes in a Make recipe, so inventory dry-runs execute no compiler.
+No CI job restores compiled objects or previous test outcomes from an artifact
+or shared cache.
+
+The [expanded build inventory](../../tools/ci/check_soliding_build_inventory.py)
+checks the original per-executable source/flag contract and ordered tests.
+[Actual Make/compiler regressions](../../tools/ci/test_soliding_build_reuse.py)
+exercise invalidation, profile isolation and interrupted builds. Documentation
+runs these after its original early documentation/provenance admission. The six
+Native families, their 20 outer commands and final source/run/attempt reducer
+remain the behavioral acceptance route. The CI-OPT-003 PR evidence records exact
+hosted source identities and measured costs; eliminated compilations alone do
+not establish an end-to-end turnaround percentage.
+
 ## Shared capacity and concurrency
 
 The GDExtension matrices each use `max-parallel: 8`. Together with Native's six

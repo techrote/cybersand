@@ -4,11 +4,21 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-21
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Status and foundational roadmap
+
+## CI-OPT-003 soliding compilation reuse — 2026-11-21
+
+The [soliding build change](../operations/ci-execution-and-performance.md#soliding-compilation-reuse)
+removes 30 repeated translation-unit compilations per complete normal or
+sanitized target while retaining the original eight executables and test order.
+Compiler/configuration/source identity guards local object reuse; interrupted
+compilations cannot publish partial objects. Full Native and Windows/Linux
+regression admission remains required. The dedicated CI-only PR records exact
+source qualification and controlled timings before any merge or speed claim.
 
 ## Floating Oil in Wave Water
 
