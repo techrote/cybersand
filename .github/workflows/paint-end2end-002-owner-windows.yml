@@ -1,0 +1,147 @@
+name: PAINT-END2END-002 physical Windows evaluator package
+
+# Separate Draft/HOLD child of PR #703. Source-pinned research DLL only.
+on:
+  push:
+    branches: [exp/paint-end2end-002-owner-windows]
+    paths:
+      - '.github/workflows/paint-end2end-002-owner-windows.yml'
+      - 'tools/ci/qualify_paint_end2end_002_owner_windows.py'
+      - 'tools/windows/RUN-PAINT-END2END-002-OWNER.ps1'
+      - 'tools/windows/README-PAINT-END2END-002-OWNER.md'
+      - 'godot/tests/bench_paint_end2end_002_owner.gd'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: paint-end2end-002-owner-${{ github.event_name == 'workflow_dispatch' && github.run_id || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'push' }}
+
+env:
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+  LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+  LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
+  GODOT_WINDOWS_URL: https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
+
+jobs:
+  windows-build:
+    name: Exact-source experimental Windows DLL and physical owner packet
+    # Routine Windows cross-build validation runs on the standard GitHub-hosted
+    # Ubuntu runner using the pinned LLVM-MinGW toolchain below.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 140
+    steps:
+      - name: Check out source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Verify required host tools
+        run: |
+          python3 --version
+          git --version
+          curl --version
+          tar --version
+          xz --version
+          file --version
+
+      - name: Install pinned SCons
+        run: |
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          "$RUNNER_TEMP/scons/bin/python" -c 'import SCons; assert SCons.__version__ == "4.10.1"'
+
+      - name: Check out exact godot-cpp source
+        run: |
+          mkdir "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout "$(python3 tools/ci/execution_policy.py seconds dependency_prepare_seconds)" git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+
+      - name: Prepare exact LLVM-MinGW
+        run: |
+          timeout "$(python3 tools/ci/execution_policy.py seconds dependency_prepare_seconds)" curl --fail --location --retry 3 --output "$RUNNER_TEMP/llvm-mingw.tar.xz" "$LLVM_MINGW_URL"
+          echo "$LLVM_MINGW_SHA256  $RUNNER_TEMP/llvm-mingw.tar.xz" | sha256sum --check --strict
+          mkdir "$RUNNER_TEMP/llvm-mingw"
+          tar -xJf "$RUNNER_TEMP/llvm-mingw.tar.xz" -C "$RUNNER_TEMP/llvm-mingw" --strip-components=1
+          test -x "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-g++"
+          if test ! -e "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"; then
+            ln -s llvm-ar "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"
+          fi
+
+      - name: Build Windows godot-cpp and CyberSand extension
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: "2"
+          LLVM_MINGW_ROOT: ${{ runner.temp }}/llvm-mingw
+          WINDOWS_CXX: ${{ runner.temp }}/llvm-mingw/bin/x86_64-w64-mingw32-g++
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/cybersand_native.windows.x86_64.dll
+        run: |
+          python3 tools/ci/run_timed_command.py --policy-key native_compile_seconds --label godot-cpp-windows --output-dir build/build-timing/godot-cpp-windows -- tools/build_pinned_godot_cpp.sh windows
+          python3 tools/ci/run_timed_command.py --policy-key native_compile_seconds --label extension-windows --output-dir build/build-timing/extension-windows -- tools/build_native_extension_windows.sh
+          file "$CYBERSAND_NATIVE_OUTPUT" | tee "$RUNNER_TEMP/windows-file.txt"
+          grep -q 'PE32+ executable (DLL).*x86-64' "$RUNNER_TEMP/windows-file.txt"
+          "$LLVM_MINGW_ROOT/bin/llvm-objdump" -p "$CYBERSAND_NATIVE_OUTPUT" > "$RUNNER_TEMP/windows-imports.txt"
+          sha256sum "$CYBERSAND_NATIVE_OUTPUT"
+
+      - name: Stage exact-source Windows GDExtension candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          source_sha="$(git rev-parse HEAD)"
+          test "$source_sha" = "$GITHUB_SHA"
+          mkdir -p build/windows-candidate
+          cp "$RUNNER_TEMP/cybersand_native.windows.x86_64.dll" build/windows-candidate/
+          echo "$source_sha" > build/windows-candidate/source-sha.txt
+          {
+            echo "godot_cpp_commit=$GODOT_CPP_COMMIT"
+            echo "llvm_mingw_sha256=$LLVM_MINGW_SHA256"
+          } > build/windows-candidate/toolchain.txt
+          ( cd build/windows-candidate
+            sha256sum cybersand_native.windows.x86_64.dll > runtime.sha256
+            sha256sum --check --strict runtime.sha256
+          )
+          python3 tools/ci/native_candidate_identity.py build/windows-candidate --create
+
+      - name: Self-test physical Windows qualification runner on CI
+        run: |
+          set -euo pipefail
+          python3 -m py_compile tools/ci/qualify_paint_end2end_002_owner_windows.py
+          python3 tools/ci/qualify_paint_end2end_002_owner_windows.py --self-test
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+
+      - name: Assemble source-pinned physical Windows/NVIDIA evaluator ZIP
+        run: |
+          set -euo pipefail
+          mkdir -p build/owner-evaluator/packet/windows-candidate
+          cp build/windows-candidate/* build/owner-evaluator/packet/windows-candidate/
+          cp tools/windows/RUN-PAINT-END2END-002-OWNER.ps1 build/owner-evaluator/packet/
+          cp tools/windows/README-PAINT-END2END-002-OWNER.md build/owner-evaluator/packet/
+          printf '%s\n' "$GITHUB_SHA" > build/owner-evaluator/packet/source-sha.txt
+          ( cd build/owner-evaluator/packet/windows-candidate && sha256sum --check --strict runtime.sha256 )
+          (
+            cd build/owner-evaluator/packet
+            zip -q -r "../paint-end2end-002-owner-evaluator-${GITHUB_SHA}-${GITHUB_RUN_ID}.zip" .
+          )
+          unzip -l "build/owner-evaluator/paint-end2end-002-owner-evaluator-${GITHUB_SHA}-${GITHUB_RUN_ID}.zip"
+
+      - name: Retain exact-source owner evaluator ZIP
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: paint-end2end-002-owner-evaluator-${{ github.sha }}-${{ github.run_id }}
+          path: build/owner-evaluator/*.zip
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Preserve source-matched build logs and timing even on failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: paint-end2end-002-windows-build-logs-${{ github.sha }}-${{ github.run_id }}
+          path: build/build-timing/
+          if-no-files-found: warn
+          retention-days: 90
