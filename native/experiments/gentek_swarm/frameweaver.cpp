@@ -91,6 +91,19 @@ Part cap() {
     return p;
 }
 
+// Genuine source-time mechanical alternative: a small welded steel corner
+// cap. Its input is the real required parent socket, and commit() records a
+// reciprocal local joint with a separate native part; it is never a post hoc
+// waiver of an already-frozen foreign-required obligation.
+Part compact_terminal() {
+    Part p;
+    p.kind = "swarm005/compact_native_terminal";
+    p.material = Material::SteelPlate;
+    p.cells = {{0,0},{1,0},{1,-1},{1,1}};
+    p.ports = {{{0,0},{-1,0},true},{{1,0},{1,0},false}};
+    return p;
+}
+
 bool reserve_instance(const Request& q, Result& r) {
     if (r.instances.size() < q.limits.max_instances) return true;
     ++r.rejected["instance_limit"];
@@ -118,6 +131,39 @@ bool qualify_closures(const Request& q, Result& r, Placement& c, std::size_t par
                 break;
             }
         }
+    }
+    return true;
+}
+
+// A prospective required output is not admitted if it would immediately
+// face a disallowed finite territory edge with no space for a genuine native
+// cap and no facing peer territory. This is source-time choice of PARTS,
+// before any original required ledger freezes. It never retypes or removes
+// a connector from an accepted part.
+bool preflight_required_exits(const Request& own, const Request* peer, Result& r, const Placement& candidate) {
+    const auto& ports=candidate.part.ports;
+    for(std::size_t i=0;i<ports.size();++i) {
+        if(i==candidate.input || !ports[i].required ||
+           std::any_of(candidate.closures.begin(),candidate.closures.end(),
+               [&](const auto& pair){return pair.first==i;}))continue;
+        const auto root=transformed(ports[i].point,candidate);
+        const auto facing=rotate(ports[i].facing,candidate.rotation);
+        bool can_cap=true;
+        for(int distance=1;distance<=2;++distance) {
+            const Point p{root.x+distance*facing.x,root.y+distance*facing.y};
+            if(!charge(own,r))return false;
+            if(!allowed(own,p)){can_cap=false;break;}
+        }
+        if(can_cap)continue;
+        bool near_peer=false;
+        if(peer)for(int distance=1;distance<=15;++distance) {
+            const Point p{root.x+distance*facing.x,root.y+distance*facing.y};
+            if(!charge(own,r))return false;
+            if(!inside(own,p))break;
+            if(allowed(*peer,p)){near_peer=true;break;}
+            if(!allowed(own,p))break;
+        }
+        if(!near_peer) {++r.rejected["swarm005_unserviceable_required_exit_preflight"];return false;}
     }
     return true;
 }
@@ -323,7 +369,7 @@ double candidate_score(const Request& q, const Result& r, const Placement& c,
     return score;
 }
 
-void terminate_connector(const Request& q, Result& r, std::size_t ci) {
+void terminate_connector(const Request& q, Result& r, std::size_t ci, bool compact_native_termination) {
     if (r.connectors[ci].fulfilled || r.connectors[ci].state == "terminal_plate" ||
         r.status == Status::Exhausted) return;
     const auto host = r.connectors[ci];
@@ -335,6 +381,22 @@ void terminate_connector(const Request& q, Result& r, std::size_t ci) {
         end.origin = host.a;
         if (valid_placement(q, r, end, &host)) {
             commit(q, r, end, ci);
+            return;
+        }
+    }
+    if (compact_native_termination && host.required) {
+        Placement tiny{compact_terminal(), {}, 0, 0};
+        for (int rotation = 0; rotation < 4; ++rotation) {
+            if (rotate(tiny.part.ports[0].facing, rotation) != neg(host.facing)) continue;
+            if (!candidate(q, r)) return;
+            tiny.rotation = rotation;
+            tiny.origin = host.a;
+            if (!valid_placement(q,r,tiny,&host)) continue;
+            const auto before = r.instances.size();
+            commit(q,r,tiny,ci);
+            if (r.instances.size() == before) return;
+            r.instances.back().reason = "swarm005/source-authored native compact weld; full material path and reciprocal input socket";
+            ++r.metrics["swarm005_source_compact_terminations"];
             return;
         }
     }
@@ -623,7 +685,7 @@ Part receiving_terminal(int reach) {
     return p;
 }
 
-void terminate_reserved(const Request& own, const Request& peer, Result& r, std::size_t ci) {
+void terminate_reserved(const Request& own, const Request& peer, Result& r, std::size_t ci, bool compact_native_termination) {
     if (r.status == Status::Exhausted || r.connectors[ci].fulfilled ||
         r.connectors[ci].state == "terminal_plate") return;
     const auto host = r.connectors[ci];
@@ -663,6 +725,21 @@ void terminate_reserved(const Request& own, const Request& peer, Result& r, std:
             ++r.metrics["preplanned_terminal_pieces"];
             for (auto p : part.cells)
                 if (r.provenance[index(own, p)] == part.id) ++r.metrics["preplanned_terminal_cells"];
+            return;
+        }
+    }
+    if (compact_native_termination && host.required) {
+        Placement tiny{compact_terminal(),host.a,0,0};
+        for (int rotation = 0; rotation < 4; ++rotation) {
+            if (rotate(tiny.part.ports[0].facing, rotation) != neg(host.facing)) continue;
+            if (!candidate(own,r) || !secondary_capacity(own,r)) return;
+            tiny.rotation = rotation;
+            if (!valid_placement(own,r,tiny,&host,true)) continue;
+            const auto old_count=r.instances.size();
+            commit(own,r,tiny,ci);
+            if(r.instances.size()==old_count)return;
+            r.instances.back().reason="swarm005/source-authored native transition weld; not a waived foreign-required socket";
+            ++r.metrics["swarm005_source_compact_terminations"];
             return;
         }
     }
@@ -761,8 +838,9 @@ void reserve_slots(const Request& own, const Request& peer, Result& r, FramePlan
 
 } // namespace
 
-static Result generate_frameweaver_plan(const Request& q, const Request* peer, FramePlan* plan) {
+static Result generate_frameweaver_plan(const Request& q, const Request* peer, FramePlan* plan, bool compact_native_termination) {
     auto r = begin_result(q, plan ? "reserved-frontier-growth-v1" : "frontier-growth-v0");
+    if (plan && compact_native_termination) r.implementation += "+swarm005-native-source-feasibility-v1";
     if (r.status == Status::Invalid || r.status == Status::Exhausted || r.cells.empty()) return r;
     if (plan) {
         // Additional immutable core snapshot and finite slot receipts are part
@@ -834,6 +912,7 @@ static Result generate_frameweaver_plan(const Request& q, const Request* peer, F
                     c.tie = mix(q.seed ^ (static_cast<std::uint64_t>(host.id) << 32) ^
                                 (static_cast<std::uint64_t>(part.cells.size()) << 9) ^ (rotation * 67 + pi));
                     if (!qualify_closures(q, r, c, current.connector)) break;
+                    if (compact_native_termination && !preflight_required_exits(q, peer, r, c)) continue;
                     if (!valid_placement(q, r, c, &host)) continue;
                     if (!charge(q, r, q.neighbors.hard.size() * c.part.ports.size())) break;
                     c.score = candidate_score(q, r, c, host, current.depth);
@@ -857,7 +936,7 @@ static Result generate_frameweaver_plan(const Request& q, const Request* peer, F
             }
         } else if (plan && peer_distance(q, *peer, r, host.a, host.facing, host.instance) > 0) {
             r.connectors[current.connector].state = "reserved_pending";
-        } else terminate_connector(q, r, current.connector);
+        } else terminate_connector(q, r, current.connector, compact_native_termination);
     }
     // Explicit terminal pass, including nodes removed from the frontier by a
     // budget stop. A failed cap leaves a visible unresolved required joint.
@@ -866,7 +945,7 @@ static Result generate_frameweaver_plan(const Request& q, const Request* peer, F
         if (r.connectors[i].family == Family::Frame && !r.connectors[i].fulfilled) {
             if (plan && peer_distance(q, *peer, r, r.connectors[i].a, r.connectors[i].facing,
                                       r.connectors[i].instance) > 0) continue;
-            terminate_connector(q, r, i);
+            terminate_connector(q, r, i, compact_native_termination);
         }
     }
     reinforce(q, r);
@@ -878,7 +957,7 @@ static Result generate_frameweaver_plan(const Request& q, const Request* peer, F
         finish_result(q, plan->core);
         for (std::size_t i = 0; i < socket_count && r.status != Status::Exhausted; ++i)
             if (r.connectors[i].family == Family::Frame && !r.connectors[i].fulfilled)
-                terminate_reserved(q, *peer, r, i);
+                terminate_reserved(q, *peer, r, i, compact_native_termination);
     } else {
         expose_boundary_contacts(q, r);
         cohesion(q, r, false);
@@ -900,10 +979,10 @@ static Result generate_frameweaver_plan(const Request& q, const Request* peer, F
 }
 
 Result generate_frameweaver(const Request& q) {
-    return generate_frameweaver_plan(q, nullptr, nullptr);
+    return generate_frameweaver_plan(q, nullptr, nullptr, false);
 }
 
-FramePlan plan_frameweaver(const Request& own, const Request& peer) {
+FramePlan plan_frameweaver(const Request& own, const Request& peer, bool compact_native_termination) {
     FramePlan plan;
     std::string reason;
     if (!validate_request(own, reason)) {
@@ -932,7 +1011,7 @@ FramePlan plan_frameweaver(const Request& own, const Request& peer) {
         plan.result.termination = "SWARM-002 reservations require an intact plan; damage is a separate derivative";
         return plan;
     }
-    plan.result = generate_frameweaver_plan(own, &peer, &plan);
+    plan.result = generate_frameweaver_plan(own, &peer, &plan, compact_native_termination);
     if (plan.result.status == Status::Exhausted) {
         plan.slots.clear();
         plan.reservation_rejections.push_back("exhaustion prevents publication of a complete reserved plan");
@@ -1016,3 +1095,9 @@ void adapt_frameweaver(const Request& q, Result& r) {
 }
 
 } // namespace cybersand::gentek_swarm
+
+namespace cybersand::gentek_swarm {
+FramePlan plan_frameweaver(const Request& own, const Request& peer) {
+    return plan_frameweaver(own, peer, false);
+}
+}
