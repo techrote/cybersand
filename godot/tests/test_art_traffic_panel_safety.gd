@@ -163,7 +163,72 @@ func run() -> void:
 	check(FileAccess.get_sha256(old_archive_path) == old_archive_hash
 		and reopened_panel.provider.log_path != old_archive_path,
 		"deferred history continuation never overwrites or copies the original traffic archive")
+	check(DirAccess.get_files_at("user://art-pending-history").is_empty(),
+		"successful history restoration clears the durable receipt journal")
 	reopened.queue_free()
+	await process_frame
+	await process_frame
+
+	# More than 64 confirmed native receipts must survive a hidden shutdown.
+	var batch_host: Node = load("res://main.tscn").instantiate()
+	root.add_child(batch_host)
+	var batch_panel: Window = batch_host.shared_workbench.art_batches
+	var batch_parent := saved_path()
+	var batch_parent_hash := FileAccess.get_sha256(batch_parent)
+	for index in range(75):
+		batch_host.shared_workbench.paint_editor.history_action_finished.emit(
+			{"action":"undo","status":"completed","label":"durable-%03d" % index,"applied":1})
+	var pending_files := DirAccess.get_files_at("user://art-pending-history")
+	check(not batch_panel.visible and not batch_panel.provider.resume_active
+		and batch_panel.provider.log_path.is_empty() and pending_files.size() == 75,
+		"75 hidden native receipts are durably journalled without opening the Art transcript")
+	var recovered_receipt_path := "user://art-pending-history/".path_join(pending_files[0]) if not pending_files.is_empty() else ""
+	var recovered_receipt_bytes := FileAccess.get_file_as_string(recovered_receipt_path) if not recovered_receipt_path.is_empty() else ""
+	check(FileAccess.get_sha256(batch_parent) == batch_parent_hash,
+		"large hidden receipt batches do not mutate the historical Art archive")
+	batch_host.queue_free()
+	await process_frame
+	await process_frame
+	var restored_host: Node = load("res://main.tscn").instantiate()
+	root.add_child(restored_host)
+	var restored_panel: Window = restored_host.shared_workbench.art_batches
+	check(not restored_panel.visible and not restored_panel.conversation_loaded
+		and restored_panel.pending_history_receipts.is_empty()
+		and DirAccess.get_files_at("user://art-pending-history").size() == 75,
+		"fresh Workbench process discovers 75 durable receipts without loading the conversation")
+	restored_panel.show()
+	deadline = Time.get_ticks_msec()+60000
+	while restored_panel.provider.resume_active and Time.get_ticks_msec()<deadline: await process_frame
+	var original_count := 2
+	check(restored_panel.conversation_loaded and restored_panel.conversation.size() == original_count+75
+		and DirAccess.get_files_at("user://art-pending-history").is_empty(),
+		"restart restores all 75 receipts exactly once and removes committed journal files")
+	var ordered := restored_panel.conversation.size() == original_count+75
+	if ordered:
+		for index in range(75):
+			if not str(restored_panel.conversation[original_count+index].content).contains("durable-%03d" % index):
+				ordered = false
+				break
+	check(ordered,"durable receipts retain original Undo chronology across shutdown and restart")
+	check(FileAccess.get_sha256(batch_parent) == batch_parent_hash,
+		"recovered receipts preserve the immutable prior archive bytes")
+	restored_host.queue_free()
+	await process_frame
+	await process_frame
+
+	# Model a crash after archive commit but before sidecar unlink: the ID in
+	# the committed conversation must prevent a duplicate replay.
+	if not recovered_receipt_path.is_empty(): write_text(recovered_receipt_path,recovered_receipt_bytes)
+	var dedupe_host: Node = load("res://main.tscn").instantiate()
+	root.add_child(dedupe_host)
+	var dedupe_panel: Window = dedupe_host.shared_workbench.art_batches
+	dedupe_panel.show()
+	deadline = Time.get_ticks_msec()+60000
+	while dedupe_panel.provider.resume_active and Time.get_ticks_msec()<deadline: await process_frame
+	check(dedupe_panel.conversation_loaded and dedupe_panel.conversation.size() == original_count+75
+		and DirAccess.get_files_at("user://art-pending-history").is_empty(),
+		"archive-committed journal receipt is deduplicated after simulated interrupted cleanup")
+	dedupe_host.queue_free()
 	await process_frame
 	await process_frame
 	print("ART_TRAFFIC_PANEL ",JSON.stringify({"checks":checks,"failures":failures,"display":DisplayServer.get_name()}))
