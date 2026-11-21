@@ -103,3 +103,132 @@ jobs:
           path: build/paint-burst-${{ matrix.slices }}/
           retention-days: 90
           if-no-files-found: warn
+
+  native-bulk-capture:
+    name: Compile exact-head GDExtension and A/B real native bulk source capture
+    if: github.repository == 'techrote/cybersand'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 110
+    env:
+      GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+      GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
+      GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+      RAPIER_SHA256: 566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a
+      CYBERSAND_PAINT_BURST_PROFILE: '1'
+      CYBERSAND_PAINT_BURST_SLICES: '1'
+      CYBERSAND_PAINT_BURST_BUDGET_USEC: '6000'
+      GODOT_SILENCE_ROOT_WARNING: '1'
+    steps:
+      - name: Checkout exact immutable experimental source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+      - name: Install actual Rapier and pin toolchain
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" --exclude=""
+          echo "$RAPIER_SHA256  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" | sha256sum --check --strict
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          "$RUNNER_TEMP/scons/bin/python" -c 'import SCons; assert SCons.__version__ == "4.10.1"'
+          mkdir -p "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 15m git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+      - name: Compile the exact source-matched native Linux GDExtension
+        timeout-minutes: 55
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: '2'
+          CYBERSAND_REAL_CXX: /usr/bin/g++-13
+          LINUX_CXX: /usr/bin/g++-13
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
+        run: |
+          set -euo pipefail
+          mkdir -p build/paint-burst-native
+          tools/build_pinned_godot_cpp.sh linux 2>&1 | tee build/paint-burst-native/build-godot-cpp.log
+          tools/build_native_extension.sh 2>&1 | tee build/paint-burst-native/build-cybersand.log
+          cp "$CYBERSAND_NATIVE_OUTPUT" godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
+          file "$CYBERSAND_NATIVE_OUTPUT" | tee build/paint-burst-native/native-type.txt
+          grep -q 'ELF 64-bit.*x86-64' build/paint-burst-native/native-type.txt
+          sha256sum "$CYBERSAND_NATIVE_OUTPUT" | tee build/paint-burst-native/native.sha256
+          git rev-parse HEAD | tee build/paint-burst-native/source-sha.txt
+      - name: Install and import pinned Godot 4.7
+        timeout-minutes: 15
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --connect-timeout 60 --max-time 600 -o "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          mkdir -p "$RUNNER_TEMP/godot"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          GODOT_BIN="$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64"
+          chmod +x "$GODOT_BIN"
+          test "$("$GODOT_BIN" --version)" = "4.7.stable.official.5b4e0cb0f"
+          echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
+          timeout 240 "$GODOT_BIN" --headless --editor --path godot --import
+          bash tools/ci/prepare_linux_display.sh
+      - name: Execute source-matched bulk off/on tests with unchanged owner semantics
+        timeout-minutes: 25
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+        run: |
+          set -euo pipefail
+          for bulk in 0 1; do
+            mkdir -p "build/paint-burst-native/user-${bulk}"
+            export XDG_DATA_HOME="$PWD/build/paint-burst-native/user-${bulk}"
+            export CYBERSAND_PAINT_BULK_CAPTURE="$bulk"
+            xvfb-run -a -s '-screen 0 1600x1000x24 -nolisten tcp' \
+              timeout 11m "$GODOT_BIN" --rendering-method gl_compatibility \
+              --display-driver x11 --audio-driver Dummy --path godot \
+              -s res://tests/test_paint_end2end_burst.gd \
+              2>&1 | tee "build/paint-burst-native/burst-${bulk}.log"
+            xvfb-run -a -s '-screen 0 1600x1000x24 -nolisten tcp' \
+              timeout 11m "$GODOT_BIN" --rendering-method gl_compatibility \
+              --display-driver x11 --audio-driver Dummy --path godot \
+              -s res://tests/test_paint_editor_native.gd \
+              2>&1 | tee "build/paint-burst-native/contracts-${bulk}.log"
+          done
+          python3 - <<'PY'
+          import json, pathlib
+          root=pathlib.Path("build/paint-burst-native")
+          summaries={}
+          for bulk in ("0","1"):
+              def parse(log,marker):
+                  text=(root/log).read_text(errors="replace").splitlines()
+                  values=[json.loads(x.partition(marker)[2]) for x in text if x.startswith(marker)]
+                  assert len(values)==1,(log,len(values))
+                  return values[0]
+              row=parse(f"burst-{bulk}.log","PAINT_BURST_PILOT ")
+              assert row["failures"]==[] and row["checks"]>=48,row
+              assert row["bulk_capture"] == (bulk=="1"),row
+              assert len(row["profiles"])>=2,row
+              native=parse(f"contracts-{bulk}.log","PAINT_EDITOR_NATIVE ")
+              assert native["failures"]==[] and native["checks"]>=25,native
+              assert len(native["measurements"])>=4,native
+              summaries[bulk]={"pilot":row,"native_contract_checks":native["checks"]}
+          off=summaries["0"]["pilot"]["profiles"][0]
+          on=summaries["1"]["pilot"]["profiles"][0]
+          assert off["kind"] == on["kind"] == "capture"
+          assert off["requested_cells"] == on["requested_cells"] == 262144
+          assert off["executor_steps"] == on["executor_steps"] == 64
+          print("PAINT_BULK_CAPTURE_AB_PASS",json.dumps({
+              "baseline_elapsed_usec":off["executor_elapsed_usec"],
+              "native_bulk_elapsed_usec":on["executor_elapsed_usec"],
+              "baseline_cpu_wall_usec":off["worker_cpu_wall_usec"],
+              "native_bulk_cpu_wall_usec":on["worker_cpu_wall_usec"],
+              "source_bound":True}))
+          (root/"summary.json").write_text(json.dumps(summaries,indent=2)+"\n")
+          PY
+      - name: Retain native build logs and both complete A/B trial receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: paint-end2end-bulk-${{ github.sha }}-${{ github.run_id }}
+          path: build/paint-burst-native/
+          retention-days: 90
+          if-no-files-found: warn
