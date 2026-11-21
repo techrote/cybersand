@@ -32,6 +32,8 @@ def duration(start, end):
 
 
 def category(name: str) -> str:
+    if name.startswith("Pinned Linux Godot archive") or name.startswith("Pinned Windows Godot archive"):
+        return "engine-preparation"
     if "regression shard " in name:
         return "godot-regression"
     if name.startswith("Native family / "):
@@ -99,7 +101,10 @@ def compare(before: dict, after: dict) -> dict:
     if not before["complete"] or not after["complete"]:
         raise ValueError("incomplete or in-flight evidence cannot establish savings")
     def fingerprint(run):
-        return sorted((job["name"], job["group"], job["conclusion"]) for job in run["jobs"])
+        # New same-run preparation jobs count against runner cost but are
+        # not required test coverage. Preserve every substantive test job.
+        return sorted((job["name"], job["group"], job["conclusion"]) for job in run["jobs"]
+                      if job["group"] != "engine-preparation")
     if fingerprint(before) != fingerprint(after) or any(
         row["conclusion"] != "success" for run in (before, after) for row in run["jobs"]
     ):

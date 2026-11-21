@@ -62,6 +62,19 @@ class AuditTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             audit.analyze(changed)
 
+    def test_new_engine_fetch_job_counts_cost_but_does_not_fake_test_coverage(self):
+        old = audit.analyze(fixture())
+        new = fixture()
+        new["total_count"] = 3
+        new["jobs"].append({
+            "id": 3, "name": "Pinned Linux Godot archive shared by same-run shards",
+            "status": "completed", "conclusion": "success",
+            "started_at": "2026-11-21T10:01:00Z",
+            "completed_at": "2026-11-21T10:02:00Z"})
+        after = audit.analyze(new)
+        self.assertEqual(after["runner_minutes_by_group"]["engine-preparation"], 1)
+        self.assertEqual(audit.compare(old, after)["change_percent"], 5.88)
+
     def test_true_same_source_positive_comparison(self):
         before = audit.analyze(fixture())
         after = fixture()
