@@ -1,0 +1,19 @@
+{
+  "observed_at_utc": "2026-11-21 22:50:34 UTC",
+  "main": {
+    "sha": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+    "tree": "1232a6e825561ce8b5cd125e1bad7fa6aa7e1590"
+  },
+  "pr": {
+    "number": 715,
+    "url": "https://github.com/techrote/cybersand/pull/715",
+    "head": "919134a39d31461947c410c233d59d1965c48414",
+    "base": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "merged_at": null,
+    "updated_at": "2026-11-21T22:47:33Z"
+  },
+  "note": "Second read-only live recheck; accepted main unchanged and PR715 still unmerged."
+}

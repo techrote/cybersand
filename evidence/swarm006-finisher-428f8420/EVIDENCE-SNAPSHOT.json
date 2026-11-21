@@ -1,0 +1,109 @@
+{
+  "schema": 1,
+  "software_source": "428f842034a1f80d593bcc6bb32af2dd99cd0105",
+  "software_tree": "cb1f4fdaf7b9cb487e850f1702a4f9085d0cb300",
+  "actual_scientific_execution_source": "ca63445888d818ed868f71869abb37ae4d00975e",
+  "classification": "review/coordination checkpoint; final Windows pending",
+  "files": [
+    {
+      "path": "evidence/swarm006-finisher-428f8420/pending-integration/artifact-index.json",
+      "bytes": 1619,
+      "sha256": "1e745f2684a0f80216c5ac77385290f1104d58e1543a148c5d793a7090145142"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/pending-integration/final-test-only-source-projection-428f8420.json",
+      "bytes": 1096,
+      "sha256": "4345dd337b30f4bc20efe6ac956faef7d42cde0b6780910d6a6249eb2ce4775a"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/pending-integration/github-final-recheck.json",
+      "bytes": 604,
+      "sha256": "33426600d8813e736962d8864e1700f98d5f8018fa20dc805ccd782ee38b8551"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/pending-integration/github-observation.json",
+      "bytes": 11771,
+      "sha256": "c2506ffce193c6517f1a27bbec355d55fcc2b2c81f2dc6029cb6c5e406cbc5e5"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/pending-integration/inventory.py",
+      "bytes": 9939,
+      "sha256": "5aed21973271463476dfbc46dc24e5e6ce4b0449850879c1d1602555e176f463"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/pending-integration/merge-tree-candidate.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/pending-integration/merge-tree-candidate.stdout.txt",
+      "bytes": 4307,
+      "sha256": "9ad3cea694aef05241911b69e75a00158c8c761cc3f73611cb00683ae16d61ae"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/pending-integration/merge-tree-requested_candidate.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/pending-integration/merge-tree-requested_candidate.stdout.txt",
+      "bytes": 4307,
+      "sha256": "d45e9191998eb8bb9ad892f89797da26bbdfee25fcd4d2742b675f9da6745bad"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/pending-integration/native-source-review-projection.json",
+      "bytes": 17766,
+      "sha256": "efbed82883ccb7ff24220c0d1900cba9259535ba82789b2a55d54e07721b4c1f"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/pending-integration/pending-reconciliation-contract.md",
+      "bytes": 22545,
+      "sha256": "2f7eec61d5dd451c220e0337bb3488df76412447b2564db61e7a480b48078183"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/pending-integration/semantic-projection.json",
+      "bytes": 47206,
+      "sha256": "d1098d7951374984f73480fe3b68ca87415c2021f7695179c85800f6d0e65cb8"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/pending-integration/simulation.json",
+      "bytes": 3655,
+      "sha256": "dec4bada90db1df34855faf6d230a5f44ff3a803656ece3358c5fec88be865ca"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/pending-integration/source-custody.json",
+      "bytes": 525624,
+      "sha256": "80f0dbb2e9737d63d706de5211385db92c256dbc93363e362c6913b208fe379c"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/pending-integration/successor-to-requested_simulation.diff",
+      "bytes": 333706,
+      "sha256": "beb382861821cd32e4d9f89ca85678762da77ed1bc21709f380b20a7ac86e5cf"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/pending-integration/successor-to-simulation.diff",
+      "bytes": 666914,
+      "sha256": "0c809d3829267e19fd2b6a54fb9ce0a11051006e755149befc68c145f74f8a2e"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/science/final-scientific-review.md",
+      "bytes": 15829,
+      "sha256": "0047b75030881459d1475337fdc630d1179328d26e25f8981df246a0b9d1e3ee"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/science/final-scientific-summary.json",
+      "bytes": 26683,
+      "sha256": "a2744cf3335784c128853cdae5c6a3b0948decd14dc9b991eba738950478be7e"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/native-carry-forward-428f8420.json",
+      "bytes": 46057,
+      "sha256": "a1033d4876f2fd71c42c031c0eafcadb1f0f66d222972f8ff8c3de584c7d1041"
+    },
+    {
+      "path": "evidence/swarm006-finisher-428f8420/README.md",
+      "bytes": 3142,
+      "sha256": "9c13879d4ab53a9bd43f0e8f378cc8ba654e7ec99dea48c44141d26bba24275e"
+    }
+  ]
+}

@@ -1,0 +1,849 @@
+{
+  "schema": "swarm006-final-independent-science-summary/v2",
+  "recorded_utc": "2026-11-21T23:25:53.322650+00:00",
+  "classification": "revealed_corpus_correctness_replay_with_explicit_native_evidence_carry_forward",
+  "actual_execution_source": "ca63445888d818ed868f71869abb37ae4d00975e",
+  "actual_execution_tree": "0ae689ea2757dbeee926ffac692a8e46f65a1862",
+  "actual_new_candidate_executions": 1920,
+  "actual_retained_reference_executions": 480,
+  "final_source": "428f842034a1f80d593bcc6bb32af2dd99cd0105",
+  "final_tree": "cb1f4fdaf7b9cb487e850f1702a4f9085d0cb300",
+  "native_executions_under_final_source_label": 0,
+  "native_executions_by_reviewer": 0,
+  "raw_gate": "PASS",
+  "native_evidence_mapping": "PASS_NATIVE_EVIDENCE_EQUIVALENCE",
+  "integration_disposition": "Draft/HOLD",
+  "definition_sha256": "72779688b897e4707d89ac1f6e692046abbc806bd27b4c129bd77fcd995093a0",
+  "experiment_binary_sha256": "c6fc32eb164c79e472b6531bc1a5e0e006a8581229144b700b4a16ac67b5c14b",
+  "raw_artifacts": 12000,
+  "native_material_digests": 26171,
+  "baseline_parity_passed": 480,
+  "reverse_exact_passed": 96,
+  "bilateral_primary_R": 18,
+  "endpoint_definitions": {
+    "A": "Complete + native Apply + zero unresolved mandatory obligations",
+    "R": "A + at least one physically qualified foreign joint",
+    "original_FOREIGN_JOINED": "Original connector closure, separate from new exports and witness totals"
+  },
+  "policy_distributions": {
+    "swarm006": {
+      "off@2": {
+        "n": 96,
+        "A": 10,
+        "R": 2,
+        "statuses": {
+          "blocked": 66,
+          "complete": 10,
+          "exhausted": 20
+        },
+        "closure_unknown": 20,
+        "raw_joints": 22,
+        "proof_joints": 22,
+        "apply_joints": 3,
+        "work_known_sum": 589414836,
+        "work_unknown": 0,
+        "original_foreign_required_known": 198,
+        "original_foreign_required_unknown": 20,
+        "original_FOREIGN_JOINED_in_Apply": 2,
+        "new_hard_exports_in_Apply": 2
+      },
+      "terminal_only@2": {
+        "n": 96,
+        "A": 13,
+        "R": 2,
+        "statuses": {
+          "complete": 13,
+          "blocked": 63,
+          "exhausted": 20
+        },
+        "closure_unknown": 20,
+        "raw_joints": 23,
+        "proof_joints": 23,
+        "apply_joints": 3,
+        "work_known_sum": 589703044,
+        "work_unknown": 0,
+        "original_foreign_required_known": 169,
+        "original_foreign_required_unknown": 20,
+        "original_FOREIGN_JOINED_in_Apply": 2,
+        "new_hard_exports_in_Apply": 2
+      },
+      "receptor_only@2": {
+        "n": 96,
+        "A": 11,
+        "R": 3,
+        "statuses": {
+          "blocked": 64,
+          "complete": 11,
+          "exhausted": 21
+        },
+        "closure_unknown": 21,
+        "raw_joints": 36,
+        "proof_joints": 36,
+        "apply_joints": 6,
+        "work_known_sum": 594061676,
+        "work_unknown": 0,
+        "original_foreign_required_known": 194,
+        "original_foreign_required_unknown": 21,
+        "original_FOREIGN_JOINED_in_Apply": 5,
+        "new_hard_exports_in_Apply": 4
+      },
+      "both@2": {
+        "n": 96,
+        "A": 14,
+        "R": 3,
+        "statuses": {
+          "complete": 14,
+          "blocked": 62,
+          "exhausted": 20
+        },
+        "closure_unknown": 20,
+        "raw_joints": 37,
+        "proof_joints": 37,
+        "apply_joints": 6,
+        "work_known_sum": 595548714,
+        "work_unknown": 0,
+        "original_foreign_required_known": 169,
+        "original_foreign_required_unknown": 20,
+        "original_FOREIGN_JOINED_in_Apply": 5,
+        "new_hard_exports_in_Apply": 4
+      },
+      "recovery@0": {
+        "n": 96,
+        "A": 62,
+        "R": 0,
+        "statuses": {
+          "complete": 62,
+          "blocked": 34
+        },
+        "closure_unknown": 0,
+        "raw_joints": 0,
+        "proof_joints": 0,
+        "apply_joints": 0,
+        "work_known_sum": 361822555,
+        "work_unknown": 0,
+        "original_foreign_required_known": 63,
+        "original_foreign_required_unknown": 0,
+        "original_FOREIGN_JOINED_in_Apply": 0,
+        "new_hard_exports_in_Apply": 0
+      },
+      "recovery@1": {
+        "n": 96,
+        "A": 92,
+        "R": 87,
+        "statuses": {
+          "complete": 92,
+          "blocked": 4
+        },
+        "closure_unknown": 0,
+        "raw_joints": 357,
+        "proof_joints": 357,
+        "apply_joints": 342,
+        "work_known_sum": 470987654,
+        "work_unknown": 0,
+        "original_foreign_required_known": 63,
+        "original_foreign_required_unknown": 0,
+        "original_FOREIGN_JOINED_in_Apply": 58,
+        "new_hard_exports_in_Apply": 0
+      },
+      "recovery@2": {
+        "n": 96,
+        "A": 82,
+        "R": 81,
+        "statuses": {
+          "complete": 82,
+          "exhausted": 12,
+          "blocked": 2
+        },
+        "closure_unknown": 12,
+        "raw_joints": 442,
+        "proof_joints": 373,
+        "apply_joints": 363,
+        "work_known_sum": 566677700,
+        "work_unknown": 0,
+        "original_foreign_required_known": 36,
+        "original_foreign_required_unknown": 12,
+        "original_FOREIGN_JOINED_in_Apply": 34,
+        "new_hard_exports_in_Apply": 78
+      },
+      "recovery@3": {
+        "n": 96,
+        "A": 6,
+        "R": 6,
+        "statuses": {
+          "exhausted": 90,
+          "complete": 6
+        },
+        "closure_unknown": 90,
+        "raw_joints": 78,
+        "proof_joints": 44,
+        "apply_joints": 44,
+        "work_known_sum": 583407179,
+        "work_unknown": 0,
+        "original_foreign_required_known": 0,
+        "original_foreign_required_unknown": 90,
+        "original_FOREIGN_JOINED_in_Apply": 0,
+        "new_hard_exports_in_Apply": 0
+      },
+      "recovery@4": {
+        "n": 96,
+        "A": 0,
+        "R": 0,
+        "statuses": {
+          "exhausted": 96
+        },
+        "closure_unknown": 96,
+        "raw_joints": 0,
+        "proof_joints": 0,
+        "apply_joints": 0,
+        "work_known_sum": 582700975,
+        "work_unknown": 0,
+        "original_foreign_required_known": 0,
+        "original_foreign_required_unknown": 96,
+        "original_FOREIGN_JOINED_in_Apply": 0,
+        "new_hard_exports_in_Apply": 0
+      },
+      "recovery+no_offers@2": {
+        "n": 96,
+        "A": 62,
+        "R": 0,
+        "statuses": {
+          "complete": 62,
+          "blocked": 34
+        },
+        "closure_unknown": 0,
+        "raw_joints": 0,
+        "proof_joints": 0,
+        "apply_joints": 0,
+        "work_known_sum": 446644401,
+        "work_unknown": 0,
+        "original_foreign_required_known": 63,
+        "original_foreign_required_unknown": 0,
+        "original_FOREIGN_JOINED_in_Apply": 0,
+        "new_hard_exports_in_Apply": 0
+      },
+      "recovery+frame_frozen@2": {
+        "n": 96,
+        "A": 82,
+        "R": 77,
+        "statuses": {
+          "complete": 82,
+          "exhausted": 10,
+          "blocked": 4
+        },
+        "closure_unknown": 10,
+        "raw_joints": 352,
+        "proof_joints": 302,
+        "apply_joints": 287,
+        "work_known_sum": 552299607,
+        "work_unknown": 0,
+        "original_foreign_required_known": 36,
+        "original_foreign_required_unknown": 10,
+        "original_FOREIGN_JOINED_in_Apply": 31,
+        "new_hard_exports_in_Apply": 0
+      },
+      "recovery+mosaic_frozen@2": {
+        "n": 96,
+        "A": 62,
+        "R": 0,
+        "statuses": {
+          "complete": 62,
+          "exhausted": 6,
+          "blocked": 28
+        },
+        "closure_unknown": 6,
+        "raw_joints": 0,
+        "proof_joints": 0,
+        "apply_joints": 0,
+        "work_known_sum": 471297561,
+        "work_unknown": 0,
+        "original_foreign_required_known": 46,
+        "original_foreign_required_unknown": 6,
+        "original_FOREIGN_JOINED_in_Apply": 0,
+        "new_hard_exports_in_Apply": 0
+      },
+      "recovery+hard_only@2": {
+        "n": 96,
+        "A": 88,
+        "R": 26,
+        "statuses": {
+          "complete": 88,
+          "exhausted": 6,
+          "blocked": 2
+        },
+        "closure_unknown": 6,
+        "raw_joints": 61,
+        "proof_joints": 44,
+        "apply_joints": 44,
+        "work_known_sum": 478865211,
+        "work_unknown": 0,
+        "original_foreign_required_known": 46,
+        "original_foreign_required_unknown": 6,
+        "original_FOREIGN_JOINED_in_Apply": 44,
+        "new_hard_exports_in_Apply": 2
+      },
+      "recovery+fixed@2": {
+        "n": 96,
+        "A": 77,
+        "R": 77,
+        "statuses": {
+          "complete": 77,
+          "exhausted": 19
+        },
+        "closure_unknown": 19,
+        "raw_joints": 339,
+        "proof_joints": 274,
+        "apply_joints": 274,
+        "work_known_sum": 542257873,
+        "work_unknown": 0,
+        "original_foreign_required_known": 28,
+        "original_foreign_required_unknown": 19,
+        "original_FOREIGN_JOINED_in_Apply": 28,
+        "new_hard_exports_in_Apply": 206
+      },
+      "recovery+reverse@2": {
+        "n": 96,
+        "A": 82,
+        "R": 81,
+        "statuses": {
+          "complete": 82,
+          "exhausted": 12,
+          "blocked": 2
+        },
+        "closure_unknown": 12,
+        "raw_joints": 442,
+        "proof_joints": 373,
+        "apply_joints": 363,
+        "work_known_sum": 566677700,
+        "work_unknown": 0,
+        "original_foreign_required_known": 36,
+        "original_foreign_required_unknown": 12,
+        "original_FOREIGN_JOINED_in_Apply": 34,
+        "new_hard_exports_in_Apply": 78
+      },
+      "recovery+cancel@2": {
+        "n": 96,
+        "A": 0,
+        "R": 0,
+        "statuses": {
+          "cancelled": 96
+        },
+        "closure_unknown": 96,
+        "raw_joints": 0,
+        "proof_joints": 0,
+        "apply_joints": 0,
+        "work_known_sum": 16023552,
+        "work_unknown": 0,
+        "original_foreign_required_known": 0,
+        "original_foreign_required_unknown": 96,
+        "original_FOREIGN_JOINED_in_Apply": 0,
+        "new_hard_exports_in_Apply": 0
+      },
+      "recovery+frame_budget@2": {
+        "n": 96,
+        "A": 0,
+        "R": 0,
+        "statuses": {
+          "exhausted": 96
+        },
+        "closure_unknown": 96,
+        "raw_joints": 0,
+        "proof_joints": 0,
+        "apply_joints": 0,
+        "work_known_sum": 16023552,
+        "work_unknown": 0,
+        "original_foreign_required_known": 0,
+        "original_foreign_required_unknown": 96,
+        "original_FOREIGN_JOINED_in_Apply": 0,
+        "new_hard_exports_in_Apply": 0
+      },
+      "recovery+mosaic_budget@2": {
+        "n": 96,
+        "A": 0,
+        "R": 0,
+        "statuses": {
+          "exhausted": 96
+        },
+        "closure_unknown": 96,
+        "raw_joints": 0,
+        "proof_joints": 0,
+        "apply_joints": 0,
+        "work_known_sum": 78049405,
+        "work_unknown": 0,
+        "original_foreign_required_known": 0,
+        "original_foreign_required_unknown": 96,
+        "original_FOREIGN_JOINED_in_Apply": 0,
+        "new_hard_exports_in_Apply": 0
+      },
+      "recovery+solver_budget@2": {
+        "n": 96,
+        "A": 0,
+        "R": 0,
+        "statuses": {
+          "exhausted": 96
+        },
+        "closure_unknown": 96,
+        "raw_joints": 0,
+        "proof_joints": 0,
+        "apply_joints": 0,
+        "work_known_sum": 101998371,
+        "work_unknown": 0,
+        "original_foreign_required_known": 0,
+        "original_foreign_required_unknown": 96,
+        "original_FOREIGN_JOINED_in_Apply": 0,
+        "new_hard_exports_in_Apply": 0
+      },
+      "recovery+memory_budget@2": {
+        "n": 96,
+        "A": 0,
+        "R": 0,
+        "statuses": {
+          "exhausted": 96
+        },
+        "closure_unknown": 96,
+        "raw_joints": 0,
+        "proof_joints": 0,
+        "apply_joints": 0,
+        "work_known_sum": 0,
+        "work_unknown": 0,
+        "original_foreign_required_known": 0,
+        "original_foreign_required_unknown": 96,
+        "original_FOREIGN_JOINED_in_Apply": 0,
+        "new_hard_exports_in_Apply": 0
+      }
+    },
+    "swarm004": {
+      "off@2": {
+        "n": 96,
+        "A": 10,
+        "R": 2,
+        "statuses": {
+          "blocked": 66,
+          "complete": 10,
+          "exhausted": 20
+        },
+        "closure_unknown": 20,
+        "raw_joints": 22,
+        "proof_joints": 22,
+        "apply_joints": 3,
+        "work_known_sum": 589414836,
+        "work_unknown": 0,
+        "original_foreign_required_known": 198,
+        "original_foreign_required_unknown": 20,
+        "original_FOREIGN_JOINED_in_Apply": 2,
+        "new_hard_exports_in_Apply": 2
+      }
+    },
+    "swarm005": {
+      "off@2": {
+        "n": 96,
+        "A": 10,
+        "R": 2,
+        "statuses": {
+          "blocked": 66,
+          "complete": 10,
+          "exhausted": 20
+        },
+        "closure_unknown": 20,
+        "raw_joints": 22,
+        "proof_joints": 22,
+        "apply_joints": 3,
+        "work_known_sum": 589414836,
+        "work_unknown": 0,
+        "original_foreign_required_known": 198,
+        "original_foreign_required_unknown": 20,
+        "original_FOREIGN_JOINED_in_Apply": 2,
+        "new_hard_exports_in_Apply": 2
+      },
+      "terminal_only@2": {
+        "n": 96,
+        "A": 13,
+        "R": 2,
+        "statuses": {
+          "complete": 13,
+          "blocked": 63,
+          "exhausted": 20
+        },
+        "closure_unknown": 20,
+        "raw_joints": 23,
+        "proof_joints": 23,
+        "apply_joints": 3,
+        "work_known_sum": 589703044,
+        "work_unknown": 0,
+        "original_foreign_required_known": 169,
+        "original_foreign_required_unknown": 20,
+        "original_FOREIGN_JOINED_in_Apply": 2,
+        "new_hard_exports_in_Apply": 2
+      },
+      "receptor_only@2": {
+        "n": 96,
+        "A": 11,
+        "R": 3,
+        "statuses": {
+          "blocked": 64,
+          "complete": 11,
+          "exhausted": 21
+        },
+        "closure_unknown": 21,
+        "raw_joints": 36,
+        "proof_joints": 36,
+        "apply_joints": 6,
+        "work_known_sum": 594061676,
+        "work_unknown": 0,
+        "original_foreign_required_known": 194,
+        "original_foreign_required_unknown": 21,
+        "original_FOREIGN_JOINED_in_Apply": 5,
+        "new_hard_exports_in_Apply": 4
+      },
+      "both@2": {
+        "n": 96,
+        "A": 14,
+        "R": 3,
+        "statuses": {
+          "complete": 14,
+          "blocked": 62,
+          "exhausted": 20
+        },
+        "closure_unknown": 20,
+        "raw_joints": 37,
+        "proof_joints": 37,
+        "apply_joints": 6,
+        "work_known_sum": 595548714,
+        "work_unknown": 0,
+        "original_foreign_required_known": 169,
+        "original_foreign_required_unknown": 20,
+        "original_FOREIGN_JOINED_in_Apply": 5,
+        "new_hard_exports_in_Apply": 4
+      }
+    }
+  },
+  "primary_vs_retained_swarm005": {
+    "A": {
+      "1->1": 13,
+      "0->1": 69,
+      "0->0": 13,
+      "1->0": 1
+    },
+    "R": {
+      "0->1": 79,
+      "0->0": 14,
+      "1->0": 1,
+      "1->1": 2
+    }
+  },
+  "original_obligation_totals": {
+    "successor": {
+      "n": 96,
+      "original_plans_present": 96,
+      "original_unfulfilled_required": 63,
+      "original_requirements_in_cases_with_unknown_final_closure": 27,
+      "final_closure_evaluated_cases": 84,
+      "evaluated_original_FOREIGN_JOINED": 34,
+      "evaluated_original_STILL_REQUIRED": 2,
+      "Apply_original_FOREIGN_JOINED": 34,
+      "Apply_new_export_FOREIGN_JOINED": 78,
+      "Apply_cases_with_original_FOREIGN_JOINED": 22,
+      "evaluated_new_exports": 79,
+      "evaluated_new_export_FOREIGN_JOINED": 79,
+      "evaluated_new_export_STILL_REQUIRED": 0
+    },
+    "retained_swarm005": {
+      "n": 96,
+      "original_plans_present": 96,
+      "original_unfulfilled_required": 223,
+      "original_requirements_in_cases_with_unknown_final_closure": 54,
+      "final_closure_evaluated_cases": 76,
+      "evaluated_original_FOREIGN_JOINED": 34,
+      "evaluated_original_STILL_REQUIRED": 135,
+      "Apply_original_FOREIGN_JOINED": 5,
+      "Apply_new_export_FOREIGN_JOINED": 4,
+      "Apply_cases_with_original_FOREIGN_JOINED": 2,
+      "evaluated_new_exports": 13,
+      "evaluated_new_export_FOREIGN_JOINED": 13,
+      "evaluated_new_export_STILL_REQUIRED": 0
+    }
+  },
+  "matched_controls": {
+    "recovery+no_offers": {
+      "A_rescues": 22,
+      "A_regressions": 2,
+      "unchanged_original_obligations_joined_in_rescues": 34,
+      "new_exports_joined_in_rescues": 16,
+      "rescues_with_original_joins": 22,
+      "rescue_ids": [
+        "island--viaduct_like--s1739290799--recovery--r2",
+        "island--viaduct_like--s2102315902--recovery--r2",
+        "concave_intrusion--industrial--s1193465773--recovery--r2",
+        "concave_intrusion--industrial--s1210246191--recovery--r2",
+        "concave_intrusion--viaduct_like--s1336795556--recovery--r2",
+        "concave_intrusion--irregular_megastructure--s1254609464--recovery--r2",
+        "concave_intrusion--irregular_megastructure--s1906091073--recovery--r2",
+        "concave_intrusion--irregular_megastructure--s1244105313--recovery--r2",
+        "foreign_solid--irregular_megastructure--s1944155167--recovery--r2",
+        "protected_corridor--industrial--s1281790250--recovery--r2",
+        "protected_corridor--industrial--s1869986787--recovery--r2",
+        "protected_corridor--industrial--s1850950734--recovery--r2",
+        "protected_corridor--industrial_gui--s1914589100--recovery--r2",
+        "protected_corridor--industrial_gui--s2144401836--recovery--r2",
+        "protected_corridor--industrial_gui--s1729217120--recovery--r2",
+        "protected_corridor--viaduct_like--s1568355439--recovery--r2",
+        "protected_corridor--viaduct_like--s1954438259--recovery--r2",
+        "protected_corridor--viaduct_like--s1574643062--recovery--r2",
+        "protected_corridor--irregular_megastructure--s1956733346--recovery--r2",
+        "protected_corridor--irregular_megastructure--s1110445127--recovery--r2",
+        "protected_corridor--irregular_megastructure--s1763626408--recovery--r2",
+        "stepped_diagonal--viaduct_like--s1954006258--recovery--r2"
+      ]
+    },
+    "recovery+mosaic_frozen": {
+      "A_rescues": 22,
+      "A_regressions": 2,
+      "unchanged_original_obligations_joined_in_rescues": 34,
+      "new_exports_joined_in_rescues": 16,
+      "rescues_with_original_joins": 22,
+      "rescue_ids": [
+        "island--viaduct_like--s1739290799--recovery--r2",
+        "island--viaduct_like--s2102315902--recovery--r2",
+        "concave_intrusion--industrial--s1193465773--recovery--r2",
+        "concave_intrusion--industrial--s1210246191--recovery--r2",
+        "concave_intrusion--viaduct_like--s1336795556--recovery--r2",
+        "concave_intrusion--irregular_megastructure--s1254609464--recovery--r2",
+        "concave_intrusion--irregular_megastructure--s1906091073--recovery--r2",
+        "concave_intrusion--irregular_megastructure--s1244105313--recovery--r2",
+        "foreign_solid--irregular_megastructure--s1944155167--recovery--r2",
+        "protected_corridor--industrial--s1281790250--recovery--r2",
+        "protected_corridor--industrial--s1869986787--recovery--r2",
+        "protected_corridor--industrial--s1850950734--recovery--r2",
+        "protected_corridor--industrial_gui--s1914589100--recovery--r2",
+        "protected_corridor--industrial_gui--s2144401836--recovery--r2",
+        "protected_corridor--industrial_gui--s1729217120--recovery--r2",
+        "protected_corridor--viaduct_like--s1568355439--recovery--r2",
+        "protected_corridor--viaduct_like--s1954438259--recovery--r2",
+        "protected_corridor--viaduct_like--s1574643062--recovery--r2",
+        "protected_corridor--irregular_megastructure--s1956733346--recovery--r2",
+        "protected_corridor--irregular_megastructure--s1110445127--recovery--r2",
+        "protected_corridor--irregular_megastructure--s1763626408--recovery--r2",
+        "stepped_diagonal--viaduct_like--s1954006258--recovery--r2"
+      ]
+    },
+    "recovery+frame_frozen": {
+      "A_rescues": 2,
+      "A_regressions": 2,
+      "unchanged_original_obligations_joined_in_rescues": 3,
+      "new_exports_joined_in_rescues": 3,
+      "rescues_with_original_joins": 2,
+      "rescue_ids": [
+        "protected_corridor--industrial--s1281790250--recovery--r2",
+        "stepped_diagonal--viaduct_like--s1954006258--recovery--r2"
+      ]
+    }
+  },
+  "all_history_vs_8cf": {
+    "compared": 1920,
+    "unchanged": 1920,
+    "changed": 0,
+    "failures": 0
+  },
+  "all_history_vs_a757": {
+    "compared": 1920,
+    "unchanged": 1847,
+    "changed": 73,
+    "endpoint_changes": 0,
+    "selected_plan_changes": 0,
+    "top_level_metric_changes": 0,
+    "total_work_delta": 0,
+    "all_changed_are_exhausted_non_apply": true,
+    "empty_to_empty_failed_proposals": 40,
+    "copied_nonempty_to_empty_failed_proposals": 33,
+    "failures": 0,
+    "changed_fields": {
+      "proposed_mosaic": 73,
+      "mosaic_recovery_receipts": 33,
+      "mosaic_proposal_reason": 4,
+      "reason": 4,
+      "recovery_attempts": 4,
+      "recovery_frontier": 4
+    },
+    "policy_summary": {
+      "off@2": {
+        "n": 96,
+        "unchanged": 96,
+        "changed": 0,
+        "endpoint_changes": 0,
+        "metric_changes": 0
+      },
+      "terminal_only@2": {
+        "n": 96,
+        "unchanged": 96,
+        "changed": 0,
+        "endpoint_changes": 0,
+        "metric_changes": 0
+      },
+      "receptor_only@2": {
+        "n": 96,
+        "unchanged": 96,
+        "changed": 0,
+        "endpoint_changes": 0,
+        "metric_changes": 0
+      },
+      "both@2": {
+        "n": 96,
+        "unchanged": 96,
+        "changed": 0,
+        "endpoint_changes": 0,
+        "metric_changes": 0
+      },
+      "recovery@0": {
+        "n": 96,
+        "unchanged": 96,
+        "changed": 0,
+        "endpoint_changes": 0,
+        "metric_changes": 0
+      },
+      "recovery@1": {
+        "n": 96,
+        "unchanged": 96,
+        "changed": 0,
+        "endpoint_changes": 0,
+        "metric_changes": 0
+      },
+      "recovery@2": {
+        "n": 96,
+        "unchanged": 95,
+        "changed": 1,
+        "endpoint_changes": 0,
+        "metric_changes": 0
+      },
+      "recovery@3": {
+        "n": 96,
+        "unchanged": 78,
+        "changed": 18,
+        "endpoint_changes": 0,
+        "metric_changes": 0
+      },
+      "recovery@4": {
+        "n": 96,
+        "unchanged": 51,
+        "changed": 45,
+        "endpoint_changes": 0,
+        "metric_changes": 0
+      },
+      "recovery+no_offers@2": {
+        "n": 96,
+        "unchanged": 96,
+        "changed": 0,
+        "endpoint_changes": 0,
+        "metric_changes": 0
+      },
+      "recovery+frame_frozen@2": {
+        "n": 96,
+        "unchanged": 95,
+        "changed": 1,
+        "endpoint_changes": 0,
+        "metric_changes": 0
+      },
+      "recovery+mosaic_frozen@2": {
+        "n": 96,
+        "unchanged": 96,
+        "changed": 0,
+        "endpoint_changes": 0,
+        "metric_changes": 0
+      },
+      "recovery+hard_only@2": {
+        "n": 96,
+        "unchanged": 96,
+        "changed": 0,
+        "endpoint_changes": 0,
+        "metric_changes": 0
+      },
+      "recovery+fixed@2": {
+        "n": 96,
+        "unchanged": 89,
+        "changed": 7,
+        "endpoint_changes": 0,
+        "metric_changes": 0
+      },
+      "recovery+reverse@2": {
+        "n": 96,
+        "unchanged": 95,
+        "changed": 1,
+        "endpoint_changes": 0,
+        "metric_changes": 0
+      },
+      "recovery+cancel@2": {
+        "n": 96,
+        "unchanged": 96,
+        "changed": 0,
+        "endpoint_changes": 0,
+        "metric_changes": 0
+      },
+      "recovery+frame_budget@2": {
+        "n": 96,
+        "unchanged": 96,
+        "changed": 0,
+        "endpoint_changes": 0,
+        "metric_changes": 0
+      },
+      "recovery+mosaic_budget@2": {
+        "n": 96,
+        "unchanged": 96,
+        "changed": 0,
+        "endpoint_changes": 0,
+        "metric_changes": 0
+      },
+      "recovery+solver_budget@2": {
+        "n": 96,
+        "unchanged": 96,
+        "changed": 0,
+        "endpoint_changes": 0,
+        "metric_changes": 0
+      },
+      "recovery+memory_budget@2": {
+        "n": 96,
+        "unchanged": 96,
+        "changed": 0,
+        "endpoint_changes": 0,
+        "metric_changes": 0
+      }
+    }
+  },
+  "native_repair_disposition": "Inspected bounded v2 finalization correction remains unchanged. All revealed raw/history invariants pass. Four original stale-history failures and first-repair orphan receipts stay preserved failures. No observed endpoint/work or final-material effect on this corpus.",
+  "source_science_review": "Ca changed only the reviewed UI input/evidence/source-admission paths; its full native projection matched8cf. Final428 changes only the reviewed test-fixture path mock and qualification request; native, Godot production and qualification implementation bytes matchCa.",
+  "scope_boundary": "Actual Ca evidence applies to byte-identical final native code/build under the recorded test inputs. No final-source-labelled corpus execution is claimed. Final Windows/UI/package/CI and owner acceptance remain separate.",
+  "reports": [
+    {
+      "path": "successor-final-ca634458/independent-replay-review.json",
+      "bytes": 7077529,
+      "sha256": "14ee8871c0fd6c060a7f03460eda1cec02ffa37837c9b85d82a7297374f9b6d8"
+    },
+    {
+      "path": "successor-final-ca634458/independent-replay-raw-hashes.json",
+      "bytes": 4187607,
+      "sha256": "87e0653a08a9fd8ea78b4680fd21ec66b9686dfdefd71f5f49055d8055535b11"
+    },
+    {
+      "path": "successor-final-ca634458/original-obligation-accounting.json",
+      "bytes": 142224,
+      "sha256": "1b3911997b376ad4d05bd13fab1c075d416660f00b446e3a862049a9b87f89b7"
+    },
+    {
+      "path": "successor-history-vs-8cf-ca634458/complete-history-change-inventory.json",
+      "bytes": 147480,
+      "sha256": "b215dacd42de13910e1cb90f84556983477fc2a4ad8d56b0cb7dbcfc9c8854e5"
+    },
+    {
+      "path": "successor-history-vs-a757-ca634458/complete-history-change-inventory.json",
+      "bytes": 337157,
+      "sha256": "111321183d77f08d9290607a611131e4a1b4d6923459ca5a02a7c89ae00fefcd"
+    },
+    {
+      "path": "native-carry-forward-428f8420.json",
+      "bytes": 46057,
+      "sha256": "a1033d4876f2fd71c42c031c0eafcadb1f0f66d222972f8ff8c3de584c7d1041"
+    },
+    {
+      "path": "successor-final-ca634458/final-scientific-review.md",
+      "bytes": 15829,
+      "sha256": "0047b75030881459d1475337fdc630d1179328d26e25f8981df246a0b9d1e3ee"
+    }
+  ]
+}

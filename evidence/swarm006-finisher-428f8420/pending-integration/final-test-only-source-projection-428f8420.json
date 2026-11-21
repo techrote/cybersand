@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "kind": "test-only source projection of pending integration contract",
+  "qualified_final_source": "428f842034a1f80d593bcc6bb32af2dd99cd0105",
+  "qualified_final_tree": "cb1f4fdaf7b9cb487e850f1702a4f9085d0cb300",
+  "actual_preflight_source": "ca63445888d818ed868f71869abb37ae4d00975e",
+  "actual_preflight_tree": "0ae689ea2757dbeee926ffac692a8e46f65a1862",
+  "accepted_main": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+  "unaccepted_pr715_head": "919134a39d31461947c410c233d59d1965c48414",
+  "changed_paths": [
+    ".github/swarm006-finisher-request.json",
+    "tools/swarm006/test_qualify_preserved_workbench.py"
+  ],
+  "contract_sha256": "2f7eec61d5dd451c220e0337bb3488df76412447b2564db61e7a480b48078183",
+  "disposition": "All implementation/test-routing/package-source bytes discussed by the Ca preflight remain identical in final tree. The two-file child fixes only an unrelated helper fixture and request trigger. No new merge simulation, accepted merge or combined qualification is claimed; the original ten-conflict contract and clean-merge hazards remain pending."
+}

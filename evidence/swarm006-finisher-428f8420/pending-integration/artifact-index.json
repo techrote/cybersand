@@ -1,0 +1,21 @@
+{
+  "created_utc": "2026-11-21T22:53:29.613618+00:00",
+  "source_head": "ca63445888d818ed868f71869abb37ae4d00975e",
+  "source_status": "",
+  "files": {
+    "github-final-recheck.json": "33426600d8813e736962d8864e1700f98d5f8018fa20dc805ccd782ee38b8551",
+    "github-observation.json": "c2506ffce193c6517f1a27bbec355d55fcc2b2c81f2dc6029cb6c5e406cbc5e5",
+    "inventory.py": "5aed21973271463476dfbc46dc24e5e6ce4b0449850879c1d1602555e176f463",
+    "merge-tree-candidate.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "merge-tree-candidate.stdout.txt": "9ad3cea694aef05241911b69e75a00158c8c761cc3f73611cb00683ae16d61ae",
+    "merge-tree-requested_candidate.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "merge-tree-requested_candidate.stdout.txt": "d45e9191998eb8bb9ad892f89797da26bbdfee25fcd4d2742b675f9da6745bad",
+    "native-source-review-projection.json": "efbed82883ccb7ff24220c0d1900cba9259535ba82789b2a55d54e07721b4c1f",
+    "pending-reconciliation-contract.md": "2f7eec61d5dd451c220e0337bb3488df76412447b2564db61e7a480b48078183",
+    "semantic-projection.json": "d1098d7951374984f73480fe3b68ca87415c2021f7695179c85800f6d0e65cb8",
+    "simulation.json": "dec4bada90db1df34855faf6d230a5f44ff3a803656ece3358c5fec88be865ca",
+    "source-custody.json": "80f0dbb2e9737d63d706de5211385db92c256dbc93363e362c6913b208fe379c",
+    "successor-to-requested_simulation.diff": "beb382861821cd32e4d9f89ca85678762da77ed1bc21709f380b20a7ac86e5cf",
+    "successor-to-simulation.diff": "0c809d3829267e19fd2b6a54fb9ce0a11051006e755149befc68c145f74f8a2e"
+  }
+}

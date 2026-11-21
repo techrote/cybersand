@@ -1,0 +1,56 @@
+eff7ed15cf588a4e21bcb85cc0cdf64f29070828
+100644 393e959e00805e4a492b563fbba1bf7a9f49b1c2 1	docs/README.md
+100644 4ee5bbf9878f5ebec2b7a6d9a4af28f3fd89512b 2	docs/README.md
+100644 f0a3710c757fc27f85f0f13c472d5db9940eb86f 3	docs/README.md
+100644 5a5b7811589ee6393353962dacb6d096f811d991 1	docs/operations/cybersand-codex-development-handover.md
+100644 ed64283123cc7e0c1b64cac567be21f97709dceb 2	docs/operations/cybersand-codex-development-handover.md
+100644 2a98e244b33a0382dc11ead40b3ef643fb1caf10 3	docs/operations/cybersand-codex-development-handover.md
+100644 f7f4e270f87318c00ea4bf9dece7f95adf92b958 1	docs/operations/swarm005-workbench-playtest.md
+100644 a976c922a49df64f1917bc5f159a094700d1a0a7 2	docs/operations/swarm005-workbench-playtest.md
+100644 573f480319ca4895eccfa97867836d22568820a1 3	docs/operations/swarm005-workbench-playtest.md
+100644 7843a824ffc2128c3d20c69e4bd26841cd82d73f 1	docs/reference/retrieval-corpus.json
+100644 dc970ca033347f30882124b66f973a6494f0d600 2	docs/reference/retrieval-corpus.json
+100644 c6a6a22972c48cbdfbf6e5467c558f6e12670a41 3	docs/reference/retrieval-corpus.json
+100644 ed3d336542bb71dcc5523ac9674968248cc945a6 1	docs/reference/retrieval-index.md
+100644 144d5acae3f1da2353006fd9b04cb793e6bb1f01 2	docs/reference/retrieval-index.md
+100644 db51161f14776d79589708cc039d9f8341e17fd9 3	docs/reference/retrieval-index.md
+100644 7f30e8b506271207b48bc8fc4c3381987151d0df 1	docs/reference/status-and-roadmap.md
+100644 95268972557208da0416b2eed857e5559a1c47fd 2	docs/reference/status-and-roadmap.md
+100644 e88fbc569e8f0c083d1598397b7c327fbf0c90fe 3	docs/reference/status-and-roadmap.md
+100644 ccd20880f13e68a0a80c131628e30a94bd0ff9a8 1	godot/scripts/workbench_reciprocal_panel.gd
+100644 c14dcaec93448b1d39915d552fe18e2f81e89828 2	godot/scripts/workbench_reciprocal_panel.gd
+100644 b523d6c283f352910388422a3ccad4b6fef74d10 3	godot/scripts/workbench_reciprocal_panel.gd
+100644 50a2fd3de9f4def655ae5b8316cabc06a90e25a0 1	godot/scripts/workbench_reciprocal_protocol.gd
+100644 172f8e2dac5e2daff7a4e3075c871f8ec77b8a91 2	godot/scripts/workbench_reciprocal_protocol.gd
+100644 c223889b18b5ab2c60c1581a72834b0d43038b43 3	godot/scripts/workbench_reciprocal_protocol.gd
+100644 0fc22014285d798dff3bc10391b41051f690de63 1	godot/tests/swarm45_reciprocal_controls.gd
+100644 4163a2fa27bdae0d00990c5a631eb8bc1c2723fc 2	godot/tests/swarm45_reciprocal_controls.gd
+100644 6f4b30a75e2cb1ccf0bba368b17e98cddce03d92 3	godot/tests/swarm45_reciprocal_controls.gd
+100644 fc1e9b9e87cfc441428833bf91b88cb07729bed4 1	godot/tests/test_workbench_reciprocal_protocol.gd
+100644 34d33cc9916b318203f58c77cb62e19c7860c394 2	godot/tests/test_workbench_reciprocal_protocol.gd
+100644 561746b8fe9beb2a83e1ce4c1fa3316ba7d3443b 3	godot/tests/test_workbench_reciprocal_protocol.gd
+
+Auto-merging .gitattributes
+Auto-merging docs/README.md
+CONFLICT (content): Merge conflict in docs/README.md
+Auto-merging docs/operations/cybersand-codex-development-handover.md
+CONFLICT (content): Merge conflict in docs/operations/cybersand-codex-development-handover.md
+Auto-merging docs/operations/swarm005-workbench-playtest.md
+CONFLICT (content): Merge conflict in docs/operations/swarm005-workbench-playtest.md
+Auto-merging docs/reference/retrieval-corpus.json
+CONFLICT (content): Merge conflict in docs/reference/retrieval-corpus.json
+Auto-merging docs/reference/retrieval-index.md
+CONFLICT (content): Merge conflict in docs/reference/retrieval-index.md
+Auto-merging docs/reference/status-and-roadmap.md
+CONFLICT (content): Merge conflict in docs/reference/status-and-roadmap.md
+Auto-merging godot/scripts/shared_workbench.gd
+Auto-merging godot/scripts/workbench_reciprocal_panel.gd
+CONFLICT (content): Merge conflict in godot/scripts/workbench_reciprocal_panel.gd
+Auto-merging godot/scripts/workbench_reciprocal_protocol.gd
+CONFLICT (content): Merge conflict in godot/scripts/workbench_reciprocal_protocol.gd
+Auto-merging godot/tests/swarm45_reciprocal_controls.gd
+CONFLICT (content): Merge conflict in godot/tests/swarm45_reciprocal_controls.gd
+Auto-merging godot/tests/test_workbench_reciprocal_protocol.gd
+CONFLICT (content): Merge conflict in godot/tests/test_workbench_reciprocal_protocol.gd
+Auto-merging native/experiments/gentek_swarm/Makefile.reciprocal
+Auto-merging native/experiments/gentek_swarm/reciprocal_main.cpp

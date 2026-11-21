@@ -1,0 +1,1077 @@
+{
+  "schema": 1,
+  "scope": "Source-only projection; unaccepted candidate manifests and LFS pointer Git blobs only",
+  "refs": {
+    "accepted_base": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+    "shared_donor_base": "8ec6d3c62197f3ef4088d79e4aa2910f5eaa36f7",
+    "reviewed_successor": "8cf93e48bc23370c6ef7b835978689ca3aa3e9f8",
+    "successor": "ca63445888d818ed868f71869abb37ae4d00975e",
+    "frozen_candidate": "79b8a0a4a1c2ace435d709b35114ee7065c935e6",
+    "requested_candidate": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f",
+    "candidate": "919134a39d31461947c410c233d59d1965c48414",
+    "requested_simulation": "4ba29d767e60dd76721378d96d76c4d654e37c4e",
+    "simulation": "eff7ed15cf588a4e21bcb85cc0cdf64f29070828"
+  },
+  "runtime_manifests": [
+    {
+      "path": "godot/tools/swarm004-runtime.linux.json",
+      "git_blob": "f564eb0e69eed4e38fb13df51808e8e59efe2c7d",
+      "sha256": "89ef9fc7313c901a69e270d12dff335c0b5dd18787bb8187e8eff7b95baf3dbc",
+      "scalar_fields": {
+        "artifact": "godot/tools/gentek_reciprocal",
+        "build_commit": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f",
+        "bytes": 1312360,
+        "draft_hold": true,
+        "native_definition_sha256": "217bfa716e61198f5b3849f2ae14c30e85bc9f623fc1d05438c59df2296ce7f7",
+        "owner_visual_acceptance": "pending",
+        "platform": "linux",
+        "programme": "GENTEK-SWARM-004-005-MAINLINE",
+        "schema": 1,
+        "sha256": "a3690011da97b12a6bfdc8d461e33dde9f98c1418fef89a3f3de994bd239da53",
+        "source": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f",
+        "source_commit": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f",
+        "source_tree": "a3312e00b971cf6859922b2b70eb8ed5da0f66b7"
+      },
+      "container_counts": {
+        "build_context": 6,
+        "native_definition_inputs_sha256": 43
+      }
+    },
+    {
+      "path": "godot/tools/swarm004-runtime.windows.json",
+      "git_blob": "369ab37cf33a432ae9691bf971de59c4d4e82dab",
+      "sha256": "4500f86447fdab4206dc8a6fca95b10c2e3dccd4268ebba741a10d42f1805fe2",
+      "scalar_fields": {
+        "artifact": "godot/tools/gentek_reciprocal.exe",
+        "build_commit": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f",
+        "bytes": 3100672,
+        "draft_hold": true,
+        "native_definition_sha256": "217bfa716e61198f5b3849f2ae14c30e85bc9f623fc1d05438c59df2296ce7f7",
+        "owner_visual_acceptance": "pending",
+        "platform": "windows",
+        "programme": "GENTEK-SWARM-004-005-MAINLINE",
+        "schema": 1,
+        "sha256": "001672a6961c113f51b4f483e33cbb97702fec09616a60949c26a991a5a18105",
+        "source": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f",
+        "source_commit": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f",
+        "source_tree": "a3312e00b971cf6859922b2b70eb8ed5da0f66b7"
+      },
+      "container_counts": {
+        "build_context": 6,
+        "native_definition_inputs_sha256": 43
+      }
+    },
+    {
+      "path": "godot/addons/cybersand_native/runtime-provenance.json",
+      "git_blob": "896190fe843006fa67b8035308e296bedfd30684",
+      "sha256": "bd05d2280e5f4692888d47da2ddc3539f7e0da65a0e22ab76c7bdaa85331e513",
+      "scalar_fields": {
+        "acceptance": "Draft/HOLD: exact-source scoped native, graphical authoring and accepted-main smoke passed. Full ordinary admission and physical original-user-map/NVIDIA owner acceptance remain mandatory.",
+        "artifact": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+        "build_attempt": "1",
+        "build_commit": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f",
+        "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "kind": "source-matched-swarm45-mainline-evaluation-candidate",
+        "native_definition_sha256": "217bfa716e61198f5b3849f2ae14c30e85bc9f623fc1d05438c59df2296ce7f7",
+        "owner_visual_acceptance": "pending",
+        "platform": "windows x86_64",
+        "reciprocal_programme_acceptance": false,
+        "schema_version": 1,
+        "sha256": "c7fc1fbfea2999489ae83a6da100ca795b336dc6efa251af7e5003071a2bb43d",
+        "size": 5844992,
+        "source_commit": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f",
+        "source_input_hash_kind": "sha256-canonical-lf",
+        "source_tree": "a3312e00b971cf6859922b2b70eb8ed5da0f66b7",
+        "status": "evaluation-candidate-scoped-qualified",
+        "toolchain": "compiler_policy=pinned-hosted\ntoolchain_drift=false\nsource_commit=96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f\ngodot_cpp_commit=101ae38034304346a46ea9ea84ae156d3e860496\ngodot_cpp_archive_sha256=f67f59bb3e2e2364fb0f37ad4545cfa832a4e40a7f350bb5af426ff0ce94a137\nnative_definition_sha256=217bfa716e61198f5b3849f2ae14c30e85bc9f623fc1d05438c59df2296ce7f7\nscons=4.10.1\nreciprocal_flags=Makefile.reciprocal strict C++20 -Wall -Wextra -Wpedantic -Werror\nwindows_compatibility=-include cstdlib; -static\nsanitizers=Linux qualification only\nclang version 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4)\nTarget: x86_64-w64-windows-gnu\nThread model: posix\nInstalledDir: /home/runner/work/_temp/swarm45-llvm-mingw/bin\nConfiguration file: /home/runner/work/_temp/swarm45-llvm-mingw/bin/x86_64-w64-windows-gnu.cfg\n",
+        "workflow_run": "https://github.com/techrote/cybersand/actions/runs/44953582341"
+      },
+      "container_counts": {
+        "build_inputs": 1763,
+        "qualification": 5,
+        "source_inputs": 106,
+        "supersedes": 2
+      }
+    },
+    {
+      "path": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+      "git_blob": "b9b878ba5b5922b36cec8045e5b127de3f015fed",
+      "sha256": "7b021644bdfb7212ad138b1d701db310618f0b6a608091b20be66a4d65d30e52",
+      "scalar_fields": {
+        "acceptance": "Draft/HOLD: exact-source scoped native, graphical authoring and accepted-main smoke passed. Full ordinary admission and physical original-user-map/NVIDIA owner acceptance remain mandatory.",
+        "artifact": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "build_attempt": "1",
+        "build_commit": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f",
+        "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "kind": "source-matched-swarm45-mainline-evaluation-candidate",
+        "native_definition_sha256": "217bfa716e61198f5b3849f2ae14c30e85bc9f623fc1d05438c59df2296ce7f7",
+        "owner_visual_acceptance": "pending",
+        "platform": "linux x86_64",
+        "reciprocal_programme_acceptance": false,
+        "schema_version": 1,
+        "sha256": "1db5702cf59f02d1ca4b6e7c0b34a73f3d106e67cec73b4901c0c10cd4c1cbb1",
+        "size": 5278840,
+        "source_commit": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f",
+        "source_input_hash_kind": "sha256-canonical-lf",
+        "source_tree": "a3312e00b971cf6859922b2b70eb8ed5da0f66b7",
+        "status": "evaluation-candidate-scoped-qualified",
+        "toolchain": "compiler_policy=pinned-hosted\ntoolchain_drift=false\nsource_commit=96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f\ngodot_cpp_commit=101ae38034304346a46ea9ea84ae156d3e860496\ngodot_cpp_archive_sha256=bc5f860471475c745ebad2b45988607a15c9a35c6996b0f08fea37570e6ef666\nnative_definition_sha256=217bfa716e61198f5b3849f2ae14c30e85bc9f623fc1d05438c59df2296ce7f7\nscons=4.10.1\nreciprocal_flags=Makefile.reciprocal strict C++20 -Wall -Wextra -Wpedantic -Werror\nreciprocal_cppflags=-D_GLIBCXX_USE_CXX11_ABI=0; extension ABI unchanged; native CLI ABI floor checked\nsanitizers=address,undefined; -fno-omit-frame-pointer\ng++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n",
+        "workflow_run": "https://github.com/techrote/cybersand/actions/runs/44953582341"
+      },
+      "container_counts": {
+        "build_inputs": 1763,
+        "qualification": 3,
+        "source_inputs": 106,
+        "supersedes": 2
+      }
+    }
+  ],
+  "lfs_pointers": [
+    {
+      "path": "godot/tools/gentek_reciprocal",
+      "pointer_bytes": "version https://git-lfs.github.com/spec/v1\noid sha256:a3690011da97b12a6bfdc8d461e33dde9f98c1418fef89a3f3de994bd239da53\nsize 1312360\n",
+      "pointer_sha256": "d58b3d868b854fde61d316f1d76598e93b39ad459024218e1b85f53aa49b075d",
+      "materialized_or_executed": false
+    },
+    {
+      "path": "godot/tools/gentek_reciprocal.exe",
+      "pointer_bytes": "version https://git-lfs.github.com/spec/v1\noid sha256:001672a6961c113f51b4f483e33cbb97702fec09616a60949c26a991a5a18105\nsize 3100672\n",
+      "pointer_sha256": "623034d49c382592880c07f7a05b81cbd5385b948b4b6f4c05b8e7bff2c7fc81",
+      "materialized_or_executed": false
+    },
+    {
+      "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "pointer_bytes": "version https://git-lfs.github.com/spec/v1\noid sha256:c7fc1fbfea2999489ae83a6da100ca795b336dc6efa251af7e5003071a2bb43d\nsize 5844992\n",
+      "pointer_sha256": "f9ac0394c05a6d92a213539fce4aa33b3f04c276106f5f1b1ebfa16a7aa6e6d8",
+      "materialized_or_executed": false
+    },
+    {
+      "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "pointer_bytes": "version https://git-lfs.github.com/spec/v1\noid sha256:1db5702cf59f02d1ca4b6e7c0b34a73f3d106e67cec73b4901c0c10cd4c1cbb1\nsize 5278840\n",
+      "pointer_sha256": "8138367c33a0d3b7d882b047159f7fb38d052a65b350bd6278d57def13815d8a",
+      "materialized_or_executed": false
+    }
+  ],
+  "control_routing": {
+    "successor": [
+      "ca63445888d818ed868f71869abb37ae4d00975e:tools/swarm004/qualify_workbench.py:37:UI_SCRIPT = \"tests/test_workbench_reciprocal_ui.gd\"",
+      "ca63445888d818ed868f71869abb37ae4d00975e:tools/swarm004/qualify_workbench.py:340:            (\"controls-native\", \"test_workbench_reciprocal_controls.gd\", \"SWARM004_CONTROLS \", 90)):",
+      "ca63445888d818ed868f71869abb37ae4d00975e:tools/swarm005/qualify_workbench.py:42:UI_SCRIPT = \"tests/test_workbench_reciprocal_ui.gd\"",
+      "ca63445888d818ed868f71869abb37ae4d00975e:tools/swarm005/qualify_workbench.py:385:            (\"controls-native\", \"test_workbench_reciprocal_controls.gd\", \"SWARM004_CONTROLS \", 90)):",
+      "ca63445888d818ed868f71869abb37ae4d00975e:tools/swarm006/qualify_preserved_workbench.py:33:    (\"controls-inspector\", \"test_workbench_reciprocal_controls.gd\", \"SWARM004_CONTROLS\", {}, 180),",
+      "ca63445888d818ed868f71869abb37ae4d00975e:tools/swarm006/qualify_workbench.py:726:            (\"controls-native\", \"test_workbench_reciprocal_controls.gd\", \"SWARM004_CONTROLS \", 90)):"
+    ],
+    "candidate": [
+      "919134a39d31461947c410c233d59d1965c48414:tools/swarm004/qualify_workbench.py:37:UI_SCRIPT = \"tests/swarm45_reciprocal_ui.gd\"",
+      "919134a39d31461947c410c233d59d1965c48414:tools/swarm004/qualify_workbench.py:340:            (\"controls-native\", \"swarm45_reciprocal_controls.gd\", \"SWARM004_CONTROLS \", 90)):",
+      "919134a39d31461947c410c233d59d1965c48414:tools/swarm005/qualify_workbench.py:42:UI_SCRIPT = \"tests/swarm45_reciprocal_ui.gd\"",
+      "919134a39d31461947c410c233d59d1965c48414:tools/swarm005/qualify_workbench.py:385:            (\"controls-native\", \"swarm45_reciprocal_controls.gd\", \"SWARM004_CONTROLS \", 90)):",
+      "919134a39d31461947c410c233d59d1965c48414:tools/swarm45/qualify_workbench.py:84:            (\"controls-native\", \"swarm45_reciprocal_controls.gd\", \"SWARM004_CONTROLS \", 90)):"
+    ],
+    "simulation": [
+      "eff7ed15cf588a4e21bcb85cc0cdf64f29070828:tools/swarm004/qualify_workbench.py:37:UI_SCRIPT = \"tests/swarm45_reciprocal_ui.gd\"",
+      "eff7ed15cf588a4e21bcb85cc0cdf64f29070828:tools/swarm004/qualify_workbench.py:340:            (\"controls-native\", \"swarm45_reciprocal_controls.gd\", \"SWARM004_CONTROLS \", 90)):",
+      "eff7ed15cf588a4e21bcb85cc0cdf64f29070828:tools/swarm005/qualify_workbench.py:42:UI_SCRIPT = \"tests/swarm45_reciprocal_ui.gd\"",
+      "eff7ed15cf588a4e21bcb85cc0cdf64f29070828:tools/swarm005/qualify_workbench.py:385:            (\"controls-native\", \"swarm45_reciprocal_controls.gd\", \"SWARM004_CONTROLS \", 90)):",
+      "eff7ed15cf588a4e21bcb85cc0cdf64f29070828:tools/swarm006/qualify_preserved_workbench.py:33:    (\"controls-inspector\", \"test_workbench_reciprocal_controls.gd\", \"SWARM004_CONTROLS\", {}, 180),",
+      "eff7ed15cf588a4e21bcb85cc0cdf64f29070828:tools/swarm006/qualify_workbench.py:726:            (\"controls-native\", \"test_workbench_reciprocal_controls.gd\", \"SWARM004_CONTROLS \", 90)):",
+      "eff7ed15cf588a4e21bcb85cc0cdf64f29070828:tools/swarm45/qualify_workbench.py:84:            (\"controls-native\", \"swarm45_reciprocal_controls.gd\", \"SWARM004_CONTROLS \", 90)):"
+    ]
+  },
+  "focus_paths": {
+    ".gitattributes": {
+      "path": ".gitattributes",
+      "textual_conflict": false,
+      "accepted_base": {
+        "mode": "100644",
+        "git_blob": "cc8288dabac3402cc88e3e575f9e42e895deac90",
+        "sha256": "e21eed6789784df22faff5eec492de22da4d49b3ef80fa3f6298e4f80dbb6812",
+        "bytes": 1306
+      },
+      "shared_donor_base": {
+        "mode": "100644",
+        "git_blob": "cc8288dabac3402cc88e3e575f9e42e895deac90",
+        "sha256": "e21eed6789784df22faff5eec492de22da4d49b3ef80fa3f6298e4f80dbb6812",
+        "bytes": 1306
+      },
+      "reviewed_successor": {
+        "mode": "100644",
+        "git_blob": "cc8288dabac3402cc88e3e575f9e42e895deac90",
+        "sha256": "e21eed6789784df22faff5eec492de22da4d49b3ef80fa3f6298e4f80dbb6812",
+        "bytes": 1306
+      },
+      "successor": {
+        "mode": "100644",
+        "git_blob": "7039a1e36e7d5de84eb0bc644fb24ee206054086",
+        "sha256": "4a2778f918a6a7672e322f34e425b2a7eddba3eafc9bdda8066a3487c30a53e3",
+        "bytes": 1327
+      },
+      "frozen_candidate": {
+        "mode": "100644",
+        "git_blob": "2300051a192bc4e2f9c7a95f10faf18775088f90",
+        "sha256": "34caa3afce71d2f9ca3feb50bc0150d2e03fe363d01dd83751bf6eef6be2826d",
+        "bytes": 1442
+      },
+      "requested_candidate": {
+        "mode": "100644",
+        "git_blob": "2300051a192bc4e2f9c7a95f10faf18775088f90",
+        "sha256": "34caa3afce71d2f9ca3feb50bc0150d2e03fe363d01dd83751bf6eef6be2826d",
+        "bytes": 1442
+      },
+      "candidate": {
+        "mode": "100644",
+        "git_blob": "2300051a192bc4e2f9c7a95f10faf18775088f90",
+        "sha256": "34caa3afce71d2f9ca3feb50bc0150d2e03fe363d01dd83751bf6eef6be2826d",
+        "bytes": 1442
+      },
+      "requested_simulation": {
+        "mode": "100644",
+        "git_blob": "477aeb4238392dfd970e68698bed5dcbff335143",
+        "sha256": "7b44d59b8cbe5bf27cfe1a39257e9f7d33ba0f6d0a7680adce4dea37edfc63da",
+        "bytes": 1463
+      },
+      "simulation": {
+        "mode": "100644",
+        "git_blob": "477aeb4238392dfd970e68698bed5dcbff335143",
+        "sha256": "7b44d59b8cbe5bf27cfe1a39257e9f7d33ba0f6d0a7680adce4dea37edfc63da",
+        "bytes": 1463
+      }
+    },
+    "godot/scripts/workbench_reciprocal_panel.gd": {
+      "path": "godot/scripts/workbench_reciprocal_panel.gd",
+      "textual_conflict": true,
+      "accepted_base": null,
+      "shared_donor_base": {
+        "mode": "100644",
+        "git_blob": "ccd20880f13e68a0a80c131628e30a94bd0ff9a8",
+        "sha256": "b345c5a8574dd7c3eb19132f5732c4055ed4567142e5049aed0f2ec1e1a1700e",
+        "bytes": 37425
+      },
+      "reviewed_successor": {
+        "mode": "100644",
+        "git_blob": "a3d374d5c78052b3cbb6764f567699a3c84df0b3",
+        "sha256": "f14d6be1bb14687272dd9c8d1474a408db44e4efded7385cb9c306403995cd61",
+        "bytes": 40889
+      },
+      "successor": {
+        "mode": "100644",
+        "git_blob": "c14dcaec93448b1d39915d552fe18e2f81e89828",
+        "sha256": "cadf5a0835ce7332e5b0923664341903fb8b11f683e2c04a929f75962b49cb7a",
+        "bytes": 41398
+      },
+      "frozen_candidate": {
+        "mode": "100644",
+        "git_blob": "b523d6c283f352910388422a3ccad4b6fef74d10",
+        "sha256": "b53951bad17ef2e50add2afccf8c0575aa143969fa6b06eb7f03635112d39413",
+        "bytes": 41463
+      },
+      "requested_candidate": {
+        "mode": "100644",
+        "git_blob": "b523d6c283f352910388422a3ccad4b6fef74d10",
+        "sha256": "b53951bad17ef2e50add2afccf8c0575aa143969fa6b06eb7f03635112d39413",
+        "bytes": 41463
+      },
+      "candidate": {
+        "mode": "100644",
+        "git_blob": "b523d6c283f352910388422a3ccad4b6fef74d10",
+        "sha256": "b53951bad17ef2e50add2afccf8c0575aa143969fa6b06eb7f03635112d39413",
+        "bytes": 41463
+      },
+      "requested_simulation": {
+        "mode": "100644",
+        "git_blob": "dd852f24a0c305d7ff3c661aa99efeea28b5fd44",
+        "sha256": "94e93fffe963dd76900c9edfffc944296d6062e37b3ff52c8f62db44278f247a",
+        "bytes": 46584
+      },
+      "simulation": {
+        "mode": "100644",
+        "git_blob": "ca43395cf8bbac3b299de87847fcaa94dc4bf392",
+        "sha256": "22b422ffda0a67afd41139e93afe90d1de31db7bffccd5af1fc2d1fc13e77233",
+        "bytes": 46584
+      }
+    },
+    "godot/scripts/workbench_reciprocal_protocol.gd": {
+      "path": "godot/scripts/workbench_reciprocal_protocol.gd",
+      "textual_conflict": true,
+      "accepted_base": null,
+      "shared_donor_base": {
+        "mode": "100644",
+        "git_blob": "50a2fd3de9f4def655ae5b8316cabc06a90e25a0",
+        "sha256": "468c548a7b8bc7033d0b0142357825751b41b06e741595a6231b938abe7919e9",
+        "bytes": 40857
+      },
+      "reviewed_successor": {
+        "mode": "100644",
+        "git_blob": "172f8e2dac5e2daff7a4e3075c871f8ec77b8a91",
+        "sha256": "2681ddbc986c3728b8a0ff670c39a20affe00d6ad3104409a391fa0e35d5e186",
+        "bytes": 50449
+      },
+      "successor": {
+        "mode": "100644",
+        "git_blob": "172f8e2dac5e2daff7a4e3075c871f8ec77b8a91",
+        "sha256": "2681ddbc986c3728b8a0ff670c39a20affe00d6ad3104409a391fa0e35d5e186",
+        "bytes": 50449
+      },
+      "frozen_candidate": {
+        "mode": "100644",
+        "git_blob": "c223889b18b5ab2c60c1581a72834b0d43038b43",
+        "sha256": "1c2c4da1c379e83e1a01455a90eb899c7b98411d79eda75989a523ab395109d1",
+        "bytes": 42786
+      },
+      "requested_candidate": {
+        "mode": "100644",
+        "git_blob": "c223889b18b5ab2c60c1581a72834b0d43038b43",
+        "sha256": "1c2c4da1c379e83e1a01455a90eb899c7b98411d79eda75989a523ab395109d1",
+        "bytes": 42786
+      },
+      "candidate": {
+        "mode": "100644",
+        "git_blob": "c223889b18b5ab2c60c1581a72834b0d43038b43",
+        "sha256": "1c2c4da1c379e83e1a01455a90eb899c7b98411d79eda75989a523ab395109d1",
+        "bytes": 42786
+      },
+      "requested_simulation": {
+        "mode": "100644",
+        "git_blob": "c3dd0419c6db63378ca75cfc2cdd76981cc3b868",
+        "sha256": "90edb258123d75aa09a63a17ddfe729890d05e63fa0308cc04c04ca540b38017",
+        "bytes": 54008
+      },
+      "simulation": {
+        "mode": "100644",
+        "git_blob": "169bdbfe227066bd65902ed7c6c22e9f530119c7",
+        "sha256": "b0fdcda18038e918661d44b6d6fbc325cb30252265753cc4289a5fc50b0a899d",
+        "bytes": 54008
+      }
+    },
+    "godot/scripts/shared_workbench.gd": {
+      "path": "godot/scripts/shared_workbench.gd",
+      "textual_conflict": false,
+      "accepted_base": {
+        "mode": "100644",
+        "git_blob": "4bf80e83c1bb9261f66383da6e82ede23acbfc03",
+        "sha256": "fcd89085d5a3aff47d3bdf6c8d6013ebfdcb015ff8a8db33d328f2a1fca34185",
+        "bytes": 82502
+      },
+      "shared_donor_base": {
+        "mode": "100644",
+        "git_blob": "6908b0536bb2a9859ae69ab892eecc4a092751fe",
+        "sha256": "9a6d20e99052f54a380b93fcfedd0a7e57ba86812e4bc224b0d19309a8d1c966",
+        "bytes": 71525
+      },
+      "reviewed_successor": {
+        "mode": "100644",
+        "git_blob": "633fd5cb799622dc159f9afda538349e843ad816",
+        "sha256": "7c2b2eba531b0923d556b42eda8d3fb18134e0d7b780f86b64fd1ee9b81ce3cf",
+        "bytes": 83718
+      },
+      "successor": {
+        "mode": "100644",
+        "git_blob": "9d156fa7c2565a0890175a63a7e7399bdd79373c",
+        "sha256": "7dc1047f40a40f2347d8167f60a8ac9547ffc62077a8a8637f460f9c9d22bc74",
+        "bytes": 84136
+      },
+      "frozen_candidate": {
+        "mode": "100644",
+        "git_blob": "633fd5cb799622dc159f9afda538349e843ad816",
+        "sha256": "7c2b2eba531b0923d556b42eda8d3fb18134e0d7b780f86b64fd1ee9b81ce3cf",
+        "bytes": 83718
+      },
+      "requested_candidate": {
+        "mode": "100644",
+        "git_blob": "633fd5cb799622dc159f9afda538349e843ad816",
+        "sha256": "7c2b2eba531b0923d556b42eda8d3fb18134e0d7b780f86b64fd1ee9b81ce3cf",
+        "bytes": 83718
+      },
+      "candidate": {
+        "mode": "100644",
+        "git_blob": "633fd5cb799622dc159f9afda538349e843ad816",
+        "sha256": "7c2b2eba531b0923d556b42eda8d3fb18134e0d7b780f86b64fd1ee9b81ce3cf",
+        "bytes": 83718
+      },
+      "requested_simulation": {
+        "mode": "100644",
+        "git_blob": "9d156fa7c2565a0890175a63a7e7399bdd79373c",
+        "sha256": "7dc1047f40a40f2347d8167f60a8ac9547ffc62077a8a8637f460f9c9d22bc74",
+        "bytes": 84136
+      },
+      "simulation": {
+        "mode": "100644",
+        "git_blob": "9d156fa7c2565a0890175a63a7e7399bdd79373c",
+        "sha256": "7dc1047f40a40f2347d8167f60a8ac9547ffc62077a8a8637f460f9c9d22bc74",
+        "bytes": 84136
+      }
+    },
+    "godot/tests/test_workbench_reciprocal_protocol.gd": {
+      "path": "godot/tests/test_workbench_reciprocal_protocol.gd",
+      "textual_conflict": true,
+      "accepted_base": null,
+      "shared_donor_base": {
+        "mode": "100644",
+        "git_blob": "fc1e9b9e87cfc441428833bf91b88cb07729bed4",
+        "sha256": "cf883c32ff8f50f6a676baef9679ade4f49a39ec7295dc9f0fdce66d1444477c",
+        "bytes": 16993
+      },
+      "reviewed_successor": {
+        "mode": "100644",
+        "git_blob": "34d33cc9916b318203f58c77cb62e19c7860c394",
+        "sha256": "a077a8af3684041a6a22f55670ad757dc0614e76d8006dafc8d7e81ab7c48793",
+        "bytes": 27793
+      },
+      "successor": {
+        "mode": "100644",
+        "git_blob": "34d33cc9916b318203f58c77cb62e19c7860c394",
+        "sha256": "a077a8af3684041a6a22f55670ad757dc0614e76d8006dafc8d7e81ab7c48793",
+        "bytes": 27793
+      },
+      "frozen_candidate": {
+        "mode": "100644",
+        "git_blob": "561746b8fe9beb2a83e1ce4c1fa3316ba7d3443b",
+        "sha256": "ece8fc6a491b06e8ee6adfc5d973150bb6099a6f54182632c0f05b567143222a",
+        "bytes": 22215
+      },
+      "requested_candidate": {
+        "mode": "100644",
+        "git_blob": "561746b8fe9beb2a83e1ce4c1fa3316ba7d3443b",
+        "sha256": "ece8fc6a491b06e8ee6adfc5d973150bb6099a6f54182632c0f05b567143222a",
+        "bytes": 22215
+      },
+      "candidate": {
+        "mode": "100644",
+        "git_blob": "561746b8fe9beb2a83e1ce4c1fa3316ba7d3443b",
+        "sha256": "ece8fc6a491b06e8ee6adfc5d973150bb6099a6f54182632c0f05b567143222a",
+        "bytes": 22215
+      },
+      "requested_simulation": {
+        "mode": "100644",
+        "git_blob": "9066e2d13ac3d26f45e7bd767e4cd3718f31c4ef",
+        "sha256": "31503f7e73beeea97ffffb58f3fe9d38dbcef0031c52ddc8705ea0f1d6147135",
+        "bytes": 33281
+      },
+      "simulation": {
+        "mode": "100644",
+        "git_blob": "8d0b9df5e7d5b417dd41a44fc7721eafceb8a04d",
+        "sha256": "c1b841678ead591e9115e4b5e66cf29e5df714636aad08746be3b13e7e5c28c3",
+        "bytes": 33281
+      }
+    },
+    "godot/tests/test_workbench_reciprocal_controls.gd": {
+      "path": "godot/tests/test_workbench_reciprocal_controls.gd",
+      "textual_conflict": false,
+      "accepted_base": null,
+      "shared_donor_base": {
+        "mode": "100644",
+        "git_blob": "0fc22014285d798dff3bc10391b41051f690de63",
+        "sha256": "eda47eea5dc977f639dbadc0e7f98474de4aa626c0f4a48880e5002ab89c08eb",
+        "bytes": 6848
+      },
+      "reviewed_successor": {
+        "mode": "100644",
+        "git_blob": "4163a2fa27bdae0d00990c5a631eb8bc1c2723fc",
+        "sha256": "79d871ae0fb07774e9a3e5d0683ec83288a88864ebc1f48aa7f3ea7cd1f0f834",
+        "bytes": 9243
+      },
+      "successor": {
+        "mode": "100644",
+        "git_blob": "4163a2fa27bdae0d00990c5a631eb8bc1c2723fc",
+        "sha256": "79d871ae0fb07774e9a3e5d0683ec83288a88864ebc1f48aa7f3ea7cd1f0f834",
+        "bytes": 9243
+      },
+      "frozen_candidate": null,
+      "requested_candidate": null,
+      "candidate": null,
+      "requested_simulation": null,
+      "simulation": null
+    },
+    "godot/tests/swarm45_reciprocal_controls.gd": {
+      "path": "godot/tests/swarm45_reciprocal_controls.gd",
+      "textual_conflict": true,
+      "accepted_base": null,
+      "shared_donor_base": null,
+      "reviewed_successor": null,
+      "successor": null,
+      "frozen_candidate": {
+        "mode": "100644",
+        "git_blob": "6f4b30a75e2cb1ccf0bba368b17e98cddce03d92",
+        "sha256": "c4ecf9a19b8b07cb6ab1e41eda1a0a2a5eecbfc7314bcc27affbb5958abbdead",
+        "bytes": 9777
+      },
+      "requested_candidate": {
+        "mode": "100644",
+        "git_blob": "6f4b30a75e2cb1ccf0bba368b17e98cddce03d92",
+        "sha256": "c4ecf9a19b8b07cb6ab1e41eda1a0a2a5eecbfc7314bcc27affbb5958abbdead",
+        "bytes": 9777
+      },
+      "candidate": {
+        "mode": "100644",
+        "git_blob": "6f4b30a75e2cb1ccf0bba368b17e98cddce03d92",
+        "sha256": "c4ecf9a19b8b07cb6ab1e41eda1a0a2a5eecbfc7314bcc27affbb5958abbdead",
+        "bytes": 9777
+      },
+      "requested_simulation": {
+        "mode": "100644",
+        "git_blob": "a7d8cfadafcb30fce39d59da1fba1897745aa14a",
+        "sha256": "52f28b58cb45501166e896030226d06fa6c021e4d6d3126b287eeb704a3f10b2",
+        "bytes": 13235
+      },
+      "simulation": {
+        "mode": "100644",
+        "git_blob": "1e825c4793417dd581ec57339f66f2e7d739fbbd",
+        "sha256": "76884b62e660764c68f6299af03e5694c673ec9cbc3a2ee14d48b4faf7faa238",
+        "bytes": 13235
+      }
+    },
+    "godot/tests/swarm45_reciprocal_ui.gd": {
+      "path": "godot/tests/swarm45_reciprocal_ui.gd",
+      "textual_conflict": false,
+      "accepted_base": null,
+      "shared_donor_base": null,
+      "reviewed_successor": null,
+      "successor": null,
+      "frozen_candidate": {
+        "mode": "100644",
+        "git_blob": "a276a5718a9dbf96d8a4b567792437e6845b766e",
+        "sha256": "a57618ed8491431aee4865936077082ffcd2b62d52980a72374cb2443301fac8",
+        "bytes": 37256
+      },
+      "requested_candidate": {
+        "mode": "100644",
+        "git_blob": "a276a5718a9dbf96d8a4b567792437e6845b766e",
+        "sha256": "a57618ed8491431aee4865936077082ffcd2b62d52980a72374cb2443301fac8",
+        "bytes": 37256
+      },
+      "candidate": {
+        "mode": "100644",
+        "git_blob": "a276a5718a9dbf96d8a4b567792437e6845b766e",
+        "sha256": "a57618ed8491431aee4865936077082ffcd2b62d52980a72374cb2443301fac8",
+        "bytes": 37256
+      },
+      "requested_simulation": {
+        "mode": "100644",
+        "git_blob": "a276a5718a9dbf96d8a4b567792437e6845b766e",
+        "sha256": "a57618ed8491431aee4865936077082ffcd2b62d52980a72374cb2443301fac8",
+        "bytes": 37256
+      },
+      "simulation": {
+        "mode": "100644",
+        "git_blob": "a276a5718a9dbf96d8a4b567792437e6845b766e",
+        "sha256": "a57618ed8491431aee4865936077082ffcd2b62d52980a72374cb2443301fac8",
+        "bytes": 37256
+      }
+    },
+    "tools/swarm006/qualify_workbench.py": {
+      "path": "tools/swarm006/qualify_workbench.py",
+      "textual_conflict": false,
+      "accepted_base": null,
+      "shared_donor_base": null,
+      "reviewed_successor": {
+        "mode": "100644",
+        "git_blob": "3ba93edb60cf6763a67fd8bbc2c184ee73e23531",
+        "sha256": "52e69a858ab9857236dbec93acf0023b78f67f0513c7138a985c32e63df178e8",
+        "bytes": 42673
+      },
+      "successor": {
+        "mode": "100644",
+        "git_blob": "d59bfa5c2a5c934905944728bc77d16ef863c3da",
+        "sha256": "890369a1abfe4ca08937e2c86073fd4c518f00823b63655da4e960e7a2fb102d",
+        "bytes": 52379
+      },
+      "frozen_candidate": null,
+      "requested_candidate": null,
+      "candidate": null,
+      "requested_simulation": {
+        "mode": "100644",
+        "git_blob": "d59bfa5c2a5c934905944728bc77d16ef863c3da",
+        "sha256": "890369a1abfe4ca08937e2c86073fd4c518f00823b63655da4e960e7a2fb102d",
+        "bytes": 52379
+      },
+      "simulation": {
+        "mode": "100644",
+        "git_blob": "d59bfa5c2a5c934905944728bc77d16ef863c3da",
+        "sha256": "890369a1abfe4ca08937e2c86073fd4c518f00823b63655da4e960e7a2fb102d",
+        "bytes": 52379
+      }
+    },
+    "tools/swarm006/qualify_preserved_workbench.py": {
+      "path": "tools/swarm006/qualify_preserved_workbench.py",
+      "textual_conflict": false,
+      "accepted_base": null,
+      "shared_donor_base": null,
+      "reviewed_successor": {
+        "mode": "100644",
+        "git_blob": "45b8f2c47823b7415dcfacbb62536a85ca9505ca",
+        "sha256": "9464316c9d422246960e4d27f4b923ca01bf55e46c248ce1182611603ba65c68",
+        "bytes": 10884
+      },
+      "successor": {
+        "mode": "100644",
+        "git_blob": "9672092c0404d8693dbb7b4ac0f136c7b305d3be",
+        "sha256": "0125b4fbbd174e83dee7cd83144356f45134e4ef59a0bf4a46ebb14fdc659882",
+        "bytes": 18808
+      },
+      "frozen_candidate": null,
+      "requested_candidate": null,
+      "candidate": null,
+      "requested_simulation": {
+        "mode": "100644",
+        "git_blob": "9672092c0404d8693dbb7b4ac0f136c7b305d3be",
+        "sha256": "0125b4fbbd174e83dee7cd83144356f45134e4ef59a0bf4a46ebb14fdc659882",
+        "bytes": 18808
+      },
+      "simulation": {
+        "mode": "100644",
+        "git_blob": "9672092c0404d8693dbb7b4ac0f136c7b305d3be",
+        "sha256": "0125b4fbbd174e83dee7cd83144356f45134e4ef59a0bf4a46ebb14fdc659882",
+        "bytes": 18808
+      }
+    },
+    "tools/swarm006/package_owner.py": {
+      "path": "tools/swarm006/package_owner.py",
+      "textual_conflict": false,
+      "accepted_base": null,
+      "shared_donor_base": null,
+      "reviewed_successor": {
+        "mode": "100644",
+        "git_blob": "be29cdbe9194fb4f7ad7099e1105cb0978cd8a7d",
+        "sha256": "b73d1a6e52c7541b909860f033692e1f401d5f144146629da24d83e0f1d7cc6f",
+        "bytes": 3374
+      },
+      "successor": {
+        "mode": "100644",
+        "git_blob": "be29cdbe9194fb4f7ad7099e1105cb0978cd8a7d",
+        "sha256": "b73d1a6e52c7541b909860f033692e1f401d5f144146629da24d83e0f1d7cc6f",
+        "bytes": 3374
+      },
+      "frozen_candidate": null,
+      "requested_candidate": null,
+      "candidate": null,
+      "requested_simulation": {
+        "mode": "100644",
+        "git_blob": "be29cdbe9194fb4f7ad7099e1105cb0978cd8a7d",
+        "sha256": "b73d1a6e52c7541b909860f033692e1f401d5f144146629da24d83e0f1d7cc6f",
+        "bytes": 3374
+      },
+      "simulation": {
+        "mode": "100644",
+        "git_blob": "be29cdbe9194fb4f7ad7099e1105cb0978cd8a7d",
+        "sha256": "b73d1a6e52c7541b909860f033692e1f401d5f144146629da24d83e0f1d7cc6f",
+        "bytes": 3374
+      }
+    },
+    "tools/swarm006/seal_owner.py": {
+      "path": "tools/swarm006/seal_owner.py",
+      "textual_conflict": false,
+      "accepted_base": null,
+      "shared_donor_base": null,
+      "reviewed_successor": {
+        "mode": "100644",
+        "git_blob": "a913404cfb279d8edccf35740807b06bac7c907f",
+        "sha256": "95247c063958d9bfd3b8f015ab8ba4813f0735b047b9ed9391b91ee64a103f1f",
+        "bytes": 5286
+      },
+      "successor": {
+        "mode": "100644",
+        "git_blob": "a913404cfb279d8edccf35740807b06bac7c907f",
+        "sha256": "95247c063958d9bfd3b8f015ab8ba4813f0735b047b9ed9391b91ee64a103f1f",
+        "bytes": 5286
+      },
+      "frozen_candidate": null,
+      "requested_candidate": null,
+      "candidate": null,
+      "requested_simulation": {
+        "mode": "100644",
+        "git_blob": "a913404cfb279d8edccf35740807b06bac7c907f",
+        "sha256": "95247c063958d9bfd3b8f015ab8ba4813f0735b047b9ed9391b91ee64a103f1f",
+        "bytes": 5286
+      },
+      "simulation": {
+        "mode": "100644",
+        "git_blob": "a913404cfb279d8edccf35740807b06bac7c907f",
+        "sha256": "95247c063958d9bfd3b8f015ab8ba4813f0735b047b9ed9391b91ee64a103f1f",
+        "bytes": 5286
+      }
+    },
+    "tools/swarm006/owner_launcher.ps1.in": {
+      "path": "tools/swarm006/owner_launcher.ps1.in",
+      "textual_conflict": false,
+      "accepted_base": null,
+      "shared_donor_base": null,
+      "reviewed_successor": {
+        "mode": "100644",
+        "git_blob": "ef5a8f45757bd87c3e69722846d23762ae10c111",
+        "sha256": "56c2f374a13c858269cd0f1d544591ae77b7ad98c9b1ac86b2323b10c185a579",
+        "bytes": 8631
+      },
+      "successor": {
+        "mode": "100644",
+        "git_blob": "ef5a8f45757bd87c3e69722846d23762ae10c111",
+        "sha256": "56c2f374a13c858269cd0f1d544591ae77b7ad98c9b1ac86b2323b10c185a579",
+        "bytes": 8631
+      },
+      "frozen_candidate": null,
+      "requested_candidate": null,
+      "candidate": null,
+      "requested_simulation": {
+        "mode": "100644",
+        "git_blob": "ef5a8f45757bd87c3e69722846d23762ae10c111",
+        "sha256": "56c2f374a13c858269cd0f1d544591ae77b7ad98c9b1ac86b2323b10c185a579",
+        "bytes": 8631
+      },
+      "simulation": {
+        "mode": "100644",
+        "git_blob": "ef5a8f45757bd87c3e69722846d23762ae10c111",
+        "sha256": "56c2f374a13c858269cd0f1d544591ae77b7ad98c9b1ac86b2323b10c185a579",
+        "bytes": 8631
+      }
+    },
+    "tools/swarm006/compare_saved_setup.ps1": {
+      "path": "tools/swarm006/compare_saved_setup.ps1",
+      "textual_conflict": false,
+      "accepted_base": null,
+      "shared_donor_base": null,
+      "reviewed_successor": {
+        "mode": "100644",
+        "git_blob": "0894c6391a1756b0b0b1490c3ab42e270bf32052",
+        "sha256": "e36c37e04c11fc6fbc1f3d84c1ca41d06c58e0e4c1b1abcc528ea3e4fee38fc0",
+        "bytes": 14209
+      },
+      "successor": {
+        "mode": "100644",
+        "git_blob": "0894c6391a1756b0b0b1490c3ab42e270bf32052",
+        "sha256": "e36c37e04c11fc6fbc1f3d84c1ca41d06c58e0e4c1b1abcc528ea3e4fee38fc0",
+        "bytes": 14209
+      },
+      "frozen_candidate": null,
+      "requested_candidate": null,
+      "candidate": null,
+      "requested_simulation": {
+        "mode": "100644",
+        "git_blob": "0894c6391a1756b0b0b1490c3ab42e270bf32052",
+        "sha256": "e36c37e04c11fc6fbc1f3d84c1ca41d06c58e0e4c1b1abcc528ea3e4fee38fc0",
+        "bytes": 14209
+      },
+      "simulation": {
+        "mode": "100644",
+        "git_blob": "0894c6391a1756b0b0b1490c3ab42e270bf32052",
+        "sha256": "e36c37e04c11fc6fbc1f3d84c1ca41d06c58e0e4c1b1abcc528ea3e4fee38fc0",
+        "bytes": 14209
+      }
+    },
+    "tools/swarm45/stage_source.py": {
+      "path": "tools/swarm45/stage_source.py",
+      "textual_conflict": false,
+      "accepted_base": null,
+      "shared_donor_base": null,
+      "reviewed_successor": null,
+      "successor": null,
+      "frozen_candidate": {
+        "mode": "100644",
+        "git_blob": "ea29e00b7f3ed9ab78047811271aa6ce6bb7b703",
+        "sha256": "3325a7ecbf0b0846187bd87551b65c07123a79dcd24bc6e7cc72e734279f474d",
+        "bytes": 4703
+      },
+      "requested_candidate": {
+        "mode": "100644",
+        "git_blob": "ea29e00b7f3ed9ab78047811271aa6ce6bb7b703",
+        "sha256": "3325a7ecbf0b0846187bd87551b65c07123a79dcd24bc6e7cc72e734279f474d",
+        "bytes": 4703
+      },
+      "candidate": {
+        "mode": "100644",
+        "git_blob": "ea29e00b7f3ed9ab78047811271aa6ce6bb7b703",
+        "sha256": "3325a7ecbf0b0846187bd87551b65c07123a79dcd24bc6e7cc72e734279f474d",
+        "bytes": 4703
+      },
+      "requested_simulation": {
+        "mode": "100644",
+        "git_blob": "ea29e00b7f3ed9ab78047811271aa6ce6bb7b703",
+        "sha256": "3325a7ecbf0b0846187bd87551b65c07123a79dcd24bc6e7cc72e734279f474d",
+        "bytes": 4703
+      },
+      "simulation": {
+        "mode": "100644",
+        "git_blob": "ea29e00b7f3ed9ab78047811271aa6ce6bb7b703",
+        "sha256": "3325a7ecbf0b0846187bd87551b65c07123a79dcd24bc6e7cc72e734279f474d",
+        "bytes": 4703
+      }
+    },
+    "tools/package_explore001_candidate.py": {
+      "path": "tools/package_explore001_candidate.py",
+      "textual_conflict": false,
+      "accepted_base": {
+        "mode": "100644",
+        "git_blob": "ce2f25012dff4e123a88d55b097a60ba59f89ea9",
+        "sha256": "08fe25690469a217ccd7583b492cef5d36eb199d201d4802d782fe1b03080cc5",
+        "bytes": 8479
+      },
+      "shared_donor_base": {
+        "mode": "100644",
+        "git_blob": "ce2f25012dff4e123a88d55b097a60ba59f89ea9",
+        "sha256": "08fe25690469a217ccd7583b492cef5d36eb199d201d4802d782fe1b03080cc5",
+        "bytes": 8479
+      },
+      "reviewed_successor": {
+        "mode": "100644",
+        "git_blob": "ce2f25012dff4e123a88d55b097a60ba59f89ea9",
+        "sha256": "08fe25690469a217ccd7583b492cef5d36eb199d201d4802d782fe1b03080cc5",
+        "bytes": 8479
+      },
+      "successor": {
+        "mode": "100644",
+        "git_blob": "ce2f25012dff4e123a88d55b097a60ba59f89ea9",
+        "sha256": "08fe25690469a217ccd7583b492cef5d36eb199d201d4802d782fe1b03080cc5",
+        "bytes": 8479
+      },
+      "frozen_candidate": {
+        "mode": "100644",
+        "git_blob": "965f21fd0534bd77c7f510110243f95fcb3f23d9",
+        "sha256": "e5b384b89a01cad341e8b43bd27b281a134e30cbae448565ac8b484af3ab8cb8",
+        "bytes": 9414
+      },
+      "requested_candidate": {
+        "mode": "100644",
+        "git_blob": "965f21fd0534bd77c7f510110243f95fcb3f23d9",
+        "sha256": "e5b384b89a01cad341e8b43bd27b281a134e30cbae448565ac8b484af3ab8cb8",
+        "bytes": 9414
+      },
+      "candidate": {
+        "mode": "100644",
+        "git_blob": "965f21fd0534bd77c7f510110243f95fcb3f23d9",
+        "sha256": "e5b384b89a01cad341e8b43bd27b281a134e30cbae448565ac8b484af3ab8cb8",
+        "bytes": 9414
+      },
+      "requested_simulation": {
+        "mode": "100644",
+        "git_blob": "965f21fd0534bd77c7f510110243f95fcb3f23d9",
+        "sha256": "e5b384b89a01cad341e8b43bd27b281a134e30cbae448565ac8b484af3ab8cb8",
+        "bytes": 9414
+      },
+      "simulation": {
+        "mode": "100644",
+        "git_blob": "965f21fd0534bd77c7f510110243f95fcb3f23d9",
+        "sha256": "e5b384b89a01cad341e8b43bd27b281a134e30cbae448565ac8b484af3ab8cb8",
+        "bytes": 9414
+      }
+    },
+    "native/experiments/gentek_swarm/Makefile.reciprocal": {
+      "path": "native/experiments/gentek_swarm/Makefile.reciprocal",
+      "textual_conflict": false,
+      "accepted_base": null,
+      "shared_donor_base": {
+        "mode": "100644",
+        "git_blob": "19b8aa0d934c0674ae860017309acf5324f406f2",
+        "sha256": "364394e722add87b2a528e31c0d6d474243d09dd97d1428f821c8a9017075142",
+        "bytes": 2483
+      },
+      "reviewed_successor": {
+        "mode": "100644",
+        "git_blob": "80af17c2a895211948b6fe4f73faf774464e0e1b",
+        "sha256": "dc9f06631967b00108d699b092100c2474de348332c0009b32ece9f6832609a7",
+        "bytes": 3180
+      },
+      "successor": {
+        "mode": "100644",
+        "git_blob": "80af17c2a895211948b6fe4f73faf774464e0e1b",
+        "sha256": "dc9f06631967b00108d699b092100c2474de348332c0009b32ece9f6832609a7",
+        "bytes": 3180
+      },
+      "frozen_candidate": {
+        "mode": "100644",
+        "git_blob": "290e32d7049bd92a2e4fb7dbce826a20e5a43078",
+        "sha256": "3f8d7676cc0a5f74db8c936c4618af708c304200c5a1a286f68dd4a1fc9a490c",
+        "bytes": 2819
+      },
+      "requested_candidate": {
+        "mode": "100644",
+        "git_blob": "290e32d7049bd92a2e4fb7dbce826a20e5a43078",
+        "sha256": "3f8d7676cc0a5f74db8c936c4618af708c304200c5a1a286f68dd4a1fc9a490c",
+        "bytes": 2819
+      },
+      "candidate": {
+        "mode": "100644",
+        "git_blob": "290e32d7049bd92a2e4fb7dbce826a20e5a43078",
+        "sha256": "3f8d7676cc0a5f74db8c936c4618af708c304200c5a1a286f68dd4a1fc9a490c",
+        "bytes": 2819
+      },
+      "requested_simulation": {
+        "mode": "100644",
+        "git_blob": "5a969952b0b5d08eb01814ad215ad6002ccda03a",
+        "sha256": "2b6346bcbf1c1bc152acf1d141c8937ed9ad4f591d1e34852a498bc4ad99000c",
+        "bytes": 3516
+      },
+      "simulation": {
+        "mode": "100644",
+        "git_blob": "5a969952b0b5d08eb01814ad215ad6002ccda03a",
+        "sha256": "2b6346bcbf1c1bc152acf1d141c8937ed9ad4f591d1e34852a498bc4ad99000c",
+        "bytes": 3516
+      }
+    },
+    "native/experiments/gentek_swarm/reciprocal_mosaic.cpp": {
+      "path": "native/experiments/gentek_swarm/reciprocal_mosaic.cpp",
+      "textual_conflict": false,
+      "accepted_base": null,
+      "shared_donor_base": {
+        "mode": "100644",
+        "git_blob": "86cc8945dfc59dd6adb1fe79952228c62fd7ca09",
+        "sha256": "6c29a10cf9fa1e13d99a1095dd8de88e5b0446ed64d22b1cc52994d77aa6f2c2",
+        "bytes": 34096
+      },
+      "reviewed_successor": {
+        "mode": "100644",
+        "git_blob": "86cc8945dfc59dd6adb1fe79952228c62fd7ca09",
+        "sha256": "6c29a10cf9fa1e13d99a1095dd8de88e5b0446ed64d22b1cc52994d77aa6f2c2",
+        "bytes": 34096
+      },
+      "successor": {
+        "mode": "100644",
+        "git_blob": "86cc8945dfc59dd6adb1fe79952228c62fd7ca09",
+        "sha256": "6c29a10cf9fa1e13d99a1095dd8de88e5b0446ed64d22b1cc52994d77aa6f2c2",
+        "bytes": 34096
+      },
+      "frozen_candidate": {
+        "mode": "100644",
+        "git_blob": "e87ed4f9c808362f953bf74baedccacd372ad362",
+        "sha256": "94a38e05026e6f16b84d1ba2e506775f4159e21424c958e4886e4981cc65579d",
+        "bytes": 38200
+      },
+      "requested_candidate": {
+        "mode": "100644",
+        "git_blob": "e87ed4f9c808362f953bf74baedccacd372ad362",
+        "sha256": "94a38e05026e6f16b84d1ba2e506775f4159e21424c958e4886e4981cc65579d",
+        "bytes": 38200
+      },
+      "candidate": {
+        "mode": "100644",
+        "git_blob": "e87ed4f9c808362f953bf74baedccacd372ad362",
+        "sha256": "94a38e05026e6f16b84d1ba2e506775f4159e21424c958e4886e4981cc65579d",
+        "bytes": 38200
+      },
+      "requested_simulation": {
+        "mode": "100644",
+        "git_blob": "e87ed4f9c808362f953bf74baedccacd372ad362",
+        "sha256": "94a38e05026e6f16b84d1ba2e506775f4159e21424c958e4886e4981cc65579d",
+        "bytes": 38200
+      },
+      "simulation": {
+        "mode": "100644",
+        "git_blob": "e87ed4f9c808362f953bf74baedccacd372ad362",
+        "sha256": "94a38e05026e6f16b84d1ba2e506775f4159e21424c958e4886e4981cc65579d",
+        "bytes": 38200
+      }
+    },
+    "native/experiments/gentek_swarm/reciprocal_main.cpp": {
+      "path": "native/experiments/gentek_swarm/reciprocal_main.cpp",
+      "textual_conflict": false,
+      "accepted_base": null,
+      "shared_donor_base": {
+        "mode": "100644",
+        "git_blob": "ae48ec4580eeecc8f9231995b2b1e4be4b37a86b",
+        "sha256": "54756a97a35105c6588eb4381928f88090719570f6d55742c0a34050caeaf41a",
+        "bytes": 29407
+      },
+      "reviewed_successor": {
+        "mode": "100644",
+        "git_blob": "701242bdbf58d6decef586a423523115ee8f78fc",
+        "sha256": "51db99e30391e06546ceb590affcd5aa86c6b68adc2195598ee4300b4b0555a5",
+        "bytes": 29585
+      },
+      "successor": {
+        "mode": "100644",
+        "git_blob": "701242bdbf58d6decef586a423523115ee8f78fc",
+        "sha256": "51db99e30391e06546ceb590affcd5aa86c6b68adc2195598ee4300b4b0555a5",
+        "bytes": 29585
+      },
+      "frozen_candidate": {
+        "mode": "100644",
+        "git_blob": "8cca64b4c6868397e9eb4f738d451b3043834953",
+        "sha256": "85610d2d00e997278394d3ed6310097c546b26ab6588b6b16b7f30de6b46c1ac",
+        "bytes": 29594
+      },
+      "requested_candidate": {
+        "mode": "100644",
+        "git_blob": "8cca64b4c6868397e9eb4f738d451b3043834953",
+        "sha256": "85610d2d00e997278394d3ed6310097c546b26ab6588b6b16b7f30de6b46c1ac",
+        "bytes": 29594
+      },
+      "candidate": {
+        "mode": "100644",
+        "git_blob": "8cca64b4c6868397e9eb4f738d451b3043834953",
+        "sha256": "85610d2d00e997278394d3ed6310097c546b26ab6588b6b16b7f30de6b46c1ac",
+        "bytes": 29594
+      },
+      "requested_simulation": {
+        "mode": "100644",
+        "git_blob": "f855924531c8412a1fd170fd4fea8a2cd100302c",
+        "sha256": "892f648df02c9ad2ceb4dff619b613be68c7543094759cc01bdb5b927c7a4034",
+        "bytes": 29772
+      },
+      "simulation": {
+        "mode": "100644",
+        "git_blob": "f855924531c8412a1fd170fd4fea8a2cd100302c",
+        "sha256": "892f648df02c9ad2ceb4dff619b613be68c7543094759cc01bdb5b927c7a4034",
+        "bytes": 29772
+      }
+    },
+    "native/experiments/gentek_swarm/swarm005_research_tests.cpp": {
+      "path": "native/experiments/gentek_swarm/swarm005_research_tests.cpp",
+      "textual_conflict": false,
+      "accepted_base": null,
+      "shared_donor_base": {
+        "mode": "100644",
+        "git_blob": "1a813d0eb5cd71e43cedd3e8988ef5788d46c78c",
+        "sha256": "e29ef8b750836147d7df359c66ef4f2a0164394dbe306d561871b0d4b0ff1e95",
+        "bytes": 9242
+      },
+      "reviewed_successor": {
+        "mode": "100644",
+        "git_blob": "1a813d0eb5cd71e43cedd3e8988ef5788d46c78c",
+        "sha256": "e29ef8b750836147d7df359c66ef4f2a0164394dbe306d561871b0d4b0ff1e95",
+        "bytes": 9242
+      },
+      "successor": {
+        "mode": "100644",
+        "git_blob": "1a813d0eb5cd71e43cedd3e8988ef5788d46c78c",
+        "sha256": "e29ef8b750836147d7df359c66ef4f2a0164394dbe306d561871b0d4b0ff1e95",
+        "bytes": 9242
+      },
+      "frozen_candidate": {
+        "mode": "100644",
+        "git_blob": "c430a918a55a5d8f982b0c38dd3374235dfe11aa",
+        "sha256": "c7226cae0f92858dad52ff8e285eee22b40274e7c1a01d45d7e840fd3a4861b1",
+        "bytes": 14166
+      },
+      "requested_candidate": {
+        "mode": "100644",
+        "git_blob": "c430a918a55a5d8f982b0c38dd3374235dfe11aa",
+        "sha256": "c7226cae0f92858dad52ff8e285eee22b40274e7c1a01d45d7e840fd3a4861b1",
+        "bytes": 14166
+      },
+      "candidate": {
+        "mode": "100644",
+        "git_blob": "c430a918a55a5d8f982b0c38dd3374235dfe11aa",
+        "sha256": "c7226cae0f92858dad52ff8e285eee22b40274e7c1a01d45d7e840fd3a4861b1",
+        "bytes": 14166
+      },
+      "requested_simulation": {
+        "mode": "100644",
+        "git_blob": "c430a918a55a5d8f982b0c38dd3374235dfe11aa",
+        "sha256": "c7226cae0f92858dad52ff8e285eee22b40274e7c1a01d45d7e840fd3a4861b1",
+        "bytes": 14166
+      },
+      "simulation": {
+        "mode": "100644",
+        "git_blob": "c430a918a55a5d8f982b0c38dd3374235dfe11aa",
+        "sha256": "c7226cae0f92858dad52ff8e285eee22b40274e7c1a01d45d7e840fd3a4861b1",
+        "bytes": 14166
+      }
+    }
+  },
+  "simulated_native_changes_from_successor": [
+    "native/experiments/gentek_swarm/Makefile.reciprocal",
+    "native/experiments/gentek_swarm/reciprocal_main.cpp",
+    "native/experiments/gentek_swarm/reciprocal_mosaic.cpp",
+    "native/experiments/gentek_swarm/swarm005_research_tests.cpp"
+  ],
+  "old_control_path_absent_in_simulation": true
+}

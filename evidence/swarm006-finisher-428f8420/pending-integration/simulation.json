@@ -1,0 +1,72 @@
+{
+  "requested_simulation": {
+    "candidate_key": "requested_candidate",
+    "successor": "ca63445888d818ed868f71869abb37ae4d00975e",
+    "candidate": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f",
+    "tree": "4ba29d767e60dd76721378d96d76c4d654e37c4e",
+    "exit_code": 1,
+    "merge_bases": [
+      "846fe0533b3170e7b01f690518da49fc40cc24d1",
+      "8ec6d3c62197f3ef4088d79e4aa2910f5eaa36f7"
+    ],
+    "conflicts": [
+      "CONFLICT (content): Merge conflict in docs/README.md",
+      "CONFLICT (content): Merge conflict in docs/operations/cybersand-codex-development-handover.md",
+      "CONFLICT (content): Merge conflict in docs/operations/swarm005-workbench-playtest.md",
+      "CONFLICT (content): Merge conflict in docs/reference/retrieval-corpus.json",
+      "CONFLICT (content): Merge conflict in docs/reference/retrieval-index.md",
+      "CONFLICT (content): Merge conflict in docs/reference/status-and-roadmap.md",
+      "CONFLICT (content): Merge conflict in godot/scripts/workbench_reciprocal_panel.gd",
+      "CONFLICT (content): Merge conflict in godot/scripts/workbench_reciprocal_protocol.gd",
+      "CONFLICT (content): Merge conflict in godot/tests/swarm45_reciprocal_controls.gd",
+      "CONFLICT (content): Merge conflict in godot/tests/test_workbench_reciprocal_protocol.gd"
+    ],
+    "conflict_paths": [
+      "docs/README.md",
+      "docs/operations/cybersand-codex-development-handover.md",
+      "docs/operations/swarm005-workbench-playtest.md",
+      "docs/reference/retrieval-corpus.json",
+      "docs/reference/retrieval-index.md",
+      "docs/reference/status-and-roadmap.md",
+      "godot/scripts/workbench_reciprocal_panel.gd",
+      "godot/scripts/workbench_reciprocal_protocol.gd",
+      "godot/tests/swarm45_reciprocal_controls.gd",
+      "godot/tests/test_workbench_reciprocal_protocol.gd"
+    ]
+  },
+  "simulation": {
+    "candidate_key": "candidate",
+    "successor": "ca63445888d818ed868f71869abb37ae4d00975e",
+    "candidate": "919134a39d31461947c410c233d59d1965c48414",
+    "tree": "eff7ed15cf588a4e21bcb85cc0cdf64f29070828",
+    "exit_code": 1,
+    "merge_bases": [
+      "846fe0533b3170e7b01f690518da49fc40cc24d1",
+      "8ec6d3c62197f3ef4088d79e4aa2910f5eaa36f7"
+    ],
+    "conflicts": [
+      "CONFLICT (content): Merge conflict in docs/README.md",
+      "CONFLICT (content): Merge conflict in docs/operations/cybersand-codex-development-handover.md",
+      "CONFLICT (content): Merge conflict in docs/operations/swarm005-workbench-playtest.md",
+      "CONFLICT (content): Merge conflict in docs/reference/retrieval-corpus.json",
+      "CONFLICT (content): Merge conflict in docs/reference/retrieval-index.md",
+      "CONFLICT (content): Merge conflict in docs/reference/status-and-roadmap.md",
+      "CONFLICT (content): Merge conflict in godot/scripts/workbench_reciprocal_panel.gd",
+      "CONFLICT (content): Merge conflict in godot/scripts/workbench_reciprocal_protocol.gd",
+      "CONFLICT (content): Merge conflict in godot/tests/swarm45_reciprocal_controls.gd",
+      "CONFLICT (content): Merge conflict in godot/tests/test_workbench_reciprocal_protocol.gd"
+    ],
+    "conflict_paths": [
+      "docs/README.md",
+      "docs/operations/cybersand-codex-development-handover.md",
+      "docs/operations/swarm005-workbench-playtest.md",
+      "docs/reference/retrieval-corpus.json",
+      "docs/reference/retrieval-index.md",
+      "docs/reference/status-and-roadmap.md",
+      "godot/scripts/workbench_reciprocal_panel.gd",
+      "godot/scripts/workbench_reciprocal_protocol.gd",
+      "godot/tests/swarm45_reciprocal_controls.gd",
+      "godot/tests/test_workbench_reciprocal_protocol.gd"
+    ]
+  }
+}

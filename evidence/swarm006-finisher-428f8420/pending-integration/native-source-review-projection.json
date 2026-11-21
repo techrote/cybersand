@@ -1,0 +1,441 @@
+{
+  "schema": 1,
+  "result": "EXACT_SOURCE_REVIEW_PROJECTED",
+  "reviewed_successor": "8cf93e48bc23370c6ef7b835978689ca3aa3e9f8",
+  "published_successor": "ca63445888d818ed868f71869abb37ae4d00975e",
+  "native_definition_sha256": "72779688b897e4707d89ac1f6e692046abbc806bd27b4c129bd77fcd995093a0",
+  "definition_input_count": 52,
+  "all_git_blob_mode_sha256_and_working_bytes_equal": true,
+  "inputs": [
+    {
+      "label": "admission_main.cpp",
+      "path": "native/experiments/gentek_swarm/admission_main.cpp",
+      "mode": "100644",
+      "git_blob": "44886b3f653db513913503d542deb2afe6cebd01",
+      "sha256": "fdbf37cf5f3aa73643c036b8b543ef7e42b796f2813f51c57f2a76f3e93fe4c0",
+      "bytes": 6956
+    },
+    {
+      "label": "admission_resilience_tests.cpp",
+      "path": "native/experiments/gentek_swarm/admission_resilience_tests.cpp",
+      "mode": "100644",
+      "git_blob": "8b9a95774f44a1ca40be448832421bc8b82f7478",
+      "sha256": "0201d2af2cdfec823a0dc596996ca258dd35e313c253ede53b5cae36ea642ac8",
+      "bytes": 20652
+    },
+    {
+      "label": "admission_tests.cpp",
+      "path": "native/experiments/gentek_swarm/admission_tests.cpp",
+      "mode": "100644",
+      "git_blob": "8a474aaeb43127261056195f6e0e5a7586ad7a14",
+      "sha256": "7cd4aa43f6648ba82fc143d1f0f974748fbf7cb5c5fe589c030c3bbf39c79889",
+      "bytes": 28364
+    },
+    {
+      "label": "assembly.cpp",
+      "path": "native/experiments/gentek_swarm/assembly.cpp",
+      "mode": "100644",
+      "git_blob": "392f2b30ecfbab228c52122db7ce6e03090d8a7b",
+      "sha256": "d4546d654f7af516e471b791ac6460ef5daa90506f8265a3e0f17e90f428df8d",
+      "bytes": 35455
+    },
+    {
+      "label": "assembly_tests.cpp",
+      "path": "native/experiments/gentek_swarm/assembly_tests.cpp",
+      "mode": "100644",
+      "git_blob": "fe83ecba7d260ee022bc758d87bc5326c4fb6c64",
+      "sha256": "10d18fdf68e04f4f571ae70273127cdaae8a0085d62f16583b6cdd155598e221",
+      "bytes": 22340
+    },
+    {
+      "label": "common.cpp",
+      "path": "native/experiments/gentek_swarm/common.cpp",
+      "mode": "100644",
+      "git_blob": "55acfa8ff95d091e84470afa2590a80c3929621c",
+      "sha256": "df5a180b86ad978a2dd91e415c3a38a25828b20f7a9739d6f7f2ea31edcc3941",
+      "bytes": 19510
+    },
+    {
+      "label": "custody_hash_tests.cpp",
+      "path": "native/experiments/gentek_swarm/custody_hash_tests.cpp",
+      "mode": "100644",
+      "git_blob": "db7f88632e4aba04d4a6b9f113c28b6faa0859ad",
+      "sha256": "c99185f4eef26e41f65b17c3b5b00805639326832e908ff6938fc5ed2636bf17",
+      "bytes": 2277
+    },
+    {
+      "label": "fixtures.cpp",
+      "path": "native/experiments/gentek_swarm/fixtures.cpp",
+      "mode": "100644",
+      "git_blob": "43af985e9fb240a5b8f1c045199ecc2ae258aa35",
+      "sha256": "2d5025763ad0f741f5fd77d25d38f9f448cef601cbcd9a6c9b58a70e0c2d8142",
+      "bytes": 4361
+    },
+    {
+      "label": "frameweaver.cpp",
+      "path": "native/experiments/gentek_swarm/frameweaver.cpp",
+      "mode": "100644",
+      "git_blob": "ffa961ba20e1cb2a58a852fd2e1281de24a1eaaf",
+      "sha256": "95c06e44eaab98a3562042ce421a5203992a095aeb8d025149f2d6bc9af4c6f1",
+      "bytes": 76505
+    },
+    {
+      "label": "io.cpp",
+      "path": "native/experiments/gentek_swarm/io.cpp",
+      "mode": "100644",
+      "git_blob": "724d0cfe0de8c5fc736792112826e66b2a7c881b",
+      "sha256": "e3e6f012a28a17952af1a3c95c947631cef620eb2d6de3e49abe6a8e0f29c1a2",
+      "bytes": 20245
+    },
+    {
+      "label": "main.cpp",
+      "path": "native/experiments/gentek_swarm/main.cpp",
+      "mode": "100644",
+      "git_blob": "411940e2be17940697d378557e4341f4625aa032",
+      "sha256": "1e101edb2d197c7e425eea058098c5a3310b1c8a5703a55ba5b6d817329921c0",
+      "bytes": 3689
+    },
+    {
+      "label": "meshing.cpp",
+      "path": "native/experiments/gentek_swarm/meshing.cpp",
+      "mode": "100644",
+      "git_blob": "698683a8b644282276492da383197052aa30a3ad",
+      "sha256": "4fc5961f62c00f24a0c5405a2b8ed94bc82cb0a17eaa1859dcce9b65460b5f29",
+      "bytes": 13391
+    },
+    {
+      "label": "mosaic.cpp",
+      "path": "native/experiments/gentek_swarm/mosaic.cpp",
+      "mode": "100644",
+      "git_blob": "00000da9f1ece81958438de6f074ffd13e541869",
+      "sha256": "34ef8871890b3510f96bc5ad97754bad0f064979f146e608098512c91d2d2ee4",
+      "bytes": 75355
+    },
+    {
+      "label": "mosaic_admission.cpp",
+      "path": "native/experiments/gentek_swarm/mosaic_admission.cpp",
+      "mode": "100644",
+      "git_blob": "d998e54bd86c8b7fa8cb290ee95677c3e5614097",
+      "sha256": "3ab2cf07a02858859b7ecb979f3d1f2dfb2c68c683905708f1ee165608819b30",
+      "bytes": 18450
+    },
+    {
+      "label": "mosaic_recovery.cpp",
+      "path": "native/experiments/gentek_swarm/mosaic_recovery.cpp",
+      "mode": "100644",
+      "git_blob": "ed91ed01dc2ff2e86434c1c470f52fda481a3bda",
+      "sha256": "ec9dbe6dd227b7b376763961c51b12b94ff7cb143f43e4999d3a6e2eec678850",
+      "bytes": 42928
+    },
+    {
+      "label": "negotiated.cpp",
+      "path": "native/experiments/gentek_swarm/negotiated.cpp",
+      "mode": "100644",
+      "git_blob": "199f7c6feaad39e828ec69f447ae52fdbe528e5f",
+      "sha256": "c16618da630d5d3da68f5be003229c8d1f11694cdf01468a2688535ec0a34eea",
+      "bytes": 49056
+    },
+    {
+      "label": "negotiated_main.cpp",
+      "path": "native/experiments/gentek_swarm/negotiated_main.cpp",
+      "mode": "100644",
+      "git_blob": "ceb7c1aaea61a7b1b4c8941026bff1b738accf57",
+      "sha256": "b3ce696435f43a7ea88554783d37dc2b1710b7d6f0456a7de4c05db7a0e7e6d0",
+      "bytes": 1698
+    },
+    {
+      "label": "negotiated_tests.cpp",
+      "path": "native/experiments/gentek_swarm/negotiated_tests.cpp",
+      "mode": "100644",
+      "git_blob": "a7eea8ce9f389a46c3da7fb98e7eab6148064e05",
+      "sha256": "a7390f42f204ed801c0ef9e6172426fb6d6521fa32f1a2fdef53ae9487dcb3d1",
+      "bytes": 8419
+    },
+    {
+      "label": "receptor.cpp",
+      "path": "native/experiments/gentek_swarm/receptor.cpp",
+      "mode": "100644",
+      "git_blob": "ed78f666956ab2de6255fce761b284e5f64e4ea7",
+      "sha256": "c6bef593754c055cea373bdbc139f82035b513582b4c20fcb9771c87c80e72d5",
+      "bytes": 22609
+    },
+    {
+      "label": "reciprocal.cpp",
+      "path": "native/experiments/gentek_swarm/reciprocal.cpp",
+      "mode": "100644",
+      "git_blob": "b63d7473b4d851262db125a8fb7d3e7da605f378",
+      "sha256": "3954349cda20b42904459d017c1540cface45502b62b97c1aa1a24e322be619f",
+      "bytes": 114964
+    },
+    {
+      "label": "reciprocal_causal.cpp",
+      "path": "native/experiments/gentek_swarm/reciprocal_causal.cpp",
+      "mode": "100644",
+      "git_blob": "87a3a82a252ea89350f1e0af7c64550427027684",
+      "sha256": "cb2e828d70fb1f4c44d2c1bd750bfe35f5a520270a3c4a611f7b9884112f7ba2",
+      "bytes": 13910
+    },
+    {
+      "label": "reciprocal_io.cpp",
+      "path": "native/experiments/gentek_swarm/reciprocal_io.cpp",
+      "mode": "100644",
+      "git_blob": "fb064b7715af7d2847ffd1be939fef083e49e85a",
+      "sha256": "cd44b2fc9b99b48f7a102737f5219b2fe7c520bce4d3043b54c365f892365e91",
+      "bytes": 38358
+    },
+    {
+      "label": "reciprocal_main.cpp",
+      "path": "native/experiments/gentek_swarm/reciprocal_main.cpp",
+      "mode": "100644",
+      "git_blob": "701242bdbf58d6decef586a423523115ee8f78fc",
+      "sha256": "51db99e30391e06546ceb590affcd5aa86c6b68adc2195598ee4300b4b0555a5",
+      "bytes": 29585
+    },
+    {
+      "label": "reciprocal_mosaic.cpp",
+      "path": "native/experiments/gentek_swarm/reciprocal_mosaic.cpp",
+      "mode": "100644",
+      "git_blob": "86cc8945dfc59dd6adb1fe79952228c62fd7ca09",
+      "sha256": "6c29a10cf9fa1e13d99a1095dd8de88e5b0446ed64d22b1cc52994d77aa6f2c2",
+      "bytes": 34096
+    },
+    {
+      "label": "reciprocal_mosaic_tests.cpp",
+      "path": "native/experiments/gentek_swarm/reciprocal_mosaic_tests.cpp",
+      "mode": "100644",
+      "git_blob": "b29aef5f08c0d4adf5f162fcc9cb353f8d7ed71d",
+      "sha256": "d9bc4880851c44c8a9f0fcbbde1744527b65f1a141ea49b55aad3489ebebc982",
+      "bytes": 18887
+    },
+    {
+      "label": "reciprocal_tests.cpp",
+      "path": "native/experiments/gentek_swarm/reciprocal_tests.cpp",
+      "mode": "100644",
+      "git_blob": "f74ac1d2cbf078a4feecb4aaccabbf3edd2ecf2c",
+      "sha256": "a53b63867e8222e18dcc27fe523be2cd077ae7b59d5b2a2137d90562cb8b780b",
+      "bytes": 29482
+    },
+    {
+      "label": "recovery_admission.cpp",
+      "path": "native/experiments/gentek_swarm/recovery_admission.cpp",
+      "mode": "100644",
+      "git_blob": "caad3deec096c6513b2d340e573c4b4297120a00",
+      "sha256": "a4357637f9eaaff6d62b670fa7b7486bc43fb3eb82ea8baa36c3396ad487a71f",
+      "bytes": 29790
+    },
+    {
+      "label": "recovery_admission_tests.cpp",
+      "path": "native/experiments/gentek_swarm/recovery_admission_tests.cpp",
+      "mode": "100644",
+      "git_blob": "3261cb15d4164937dd2eed6734e8cd7ef1a68e99",
+      "sha256": "102db7164ad5ddde21b5eeb589862ce0f8cde084597430fe0467cdd0d5455f0a",
+      "bytes": 20246
+    },
+    {
+      "label": "resilience_main.cpp",
+      "path": "native/experiments/gentek_swarm/resilience_main.cpp",
+      "mode": "100644",
+      "git_blob": "b4f768be0e856de88097eafb9e4bec5cbb57328b",
+      "sha256": "c2b3d31b58e6762a7e39a61cba5502ce12e2b197e43a8123cc3597ffe5fc60a2",
+      "bytes": 12314
+    },
+    {
+      "label": "resilience_solver.cpp",
+      "path": "native/experiments/gentek_swarm/resilience_solver.cpp",
+      "mode": "100644",
+      "git_blob": "3a38c2624c1b5c20ed0d200b2347b781f01a5375",
+      "sha256": "ba6f72bc4768875f377c296b7910e24b1227d5dcec0cf9ac267d921a47a66206",
+      "bytes": 13349
+    },
+    {
+      "label": "resilience_solver_tests.cpp",
+      "path": "native/experiments/gentek_swarm/resilience_solver_tests.cpp",
+      "mode": "100644",
+      "git_blob": "8e5df7af723e7278c77c1b06d6a940cab6c34868",
+      "sha256": "6c5c53ad6080017de739f18d3f88b06ede81d64fd568f142cf2b9f85009f5d01",
+      "bytes": 11242
+    },
+    {
+      "label": "resilience_tests.cpp",
+      "path": "native/experiments/gentek_swarm/resilience_tests.cpp",
+      "mode": "100644",
+      "git_blob": "12a6a2602a45502e2d58df35fc601b6513cc0d5d",
+      "sha256": "5b52b859e2302ea828a5498834315767a1af2223ad0c0d0e37d01d9117cddf14",
+      "bytes": 19424
+    },
+    {
+      "label": "swarm005_research_tests.cpp",
+      "path": "native/experiments/gentek_swarm/swarm005_research_tests.cpp",
+      "mode": "100644",
+      "git_blob": "1a813d0eb5cd71e43cedd3e8988ef5788d46c78c",
+      "sha256": "e29ef8b750836147d7df359c66ef4f2a0164394dbe306d561871b0d4b0ff1e95",
+      "bytes": 9242
+    },
+    {
+      "label": "swarm006_experiment_main.cpp",
+      "path": "native/experiments/gentek_swarm/swarm006_experiment_main.cpp",
+      "mode": "100644",
+      "git_blob": "ae09a9bd435f5a17affb033a9ba41e85f11d287c",
+      "sha256": "54c176d9da9b47266075a1567afe9c54af7cd09239bbe348de904f01e058ae69",
+      "bytes": 21338
+    },
+    {
+      "label": "swarm006_recovery_tests.cpp",
+      "path": "native/experiments/gentek_swarm/swarm006_recovery_tests.cpp",
+      "mode": "100644",
+      "git_blob": "4005571d58ca2dbf8cdbf454dd1085f27ce68915",
+      "sha256": "f099a2841fdb78f5bbadfd418719a7ec04f7bf7cebfed776a85fcf3d2418ffc9",
+      "bytes": 51242
+    },
+    {
+      "label": "swarm006_source_tests.cpp",
+      "path": "native/experiments/gentek_swarm/swarm006_source_tests.cpp",
+      "mode": "100644",
+      "git_blob": "f99362c04b96f3317417adc240be4551de3cfe67",
+      "sha256": "1685e8c5326bd2d1bb99da52dbe6c62d41db2a99422c4904327c697e2169e48d",
+      "bytes": 12398
+    },
+    {
+      "label": "tests.cpp",
+      "path": "native/experiments/gentek_swarm/tests.cpp",
+      "mode": "100644",
+      "git_blob": "59a3218acb80529f740d57c4c91351c6d756bf80",
+      "sha256": "ad5dea12e3941eab55816d611ab4ca140aba8c18c2d105e3bde64ab98bb69b96",
+      "bytes": 13495
+    },
+    {
+      "label": "assembly.hpp",
+      "path": "native/experiments/gentek_swarm/assembly.hpp",
+      "mode": "100644",
+      "git_blob": "5e7b20a31e0dda0aec3f9b87f6fdbbb1db21ddf5",
+      "sha256": "2c1b589be93d0e5381b4e5974e931e8d01d93b8c9583ab6bda2c03ef423055f4",
+      "bytes": 6446
+    },
+    {
+      "label": "custody_hash.hpp",
+      "path": "native/experiments/gentek_swarm/custody_hash.hpp",
+      "mode": "100644",
+      "git_blob": "fb7fe991677ced9230ec07eb5791d3f354130eca",
+      "sha256": "d29089cd225047455e989c4dd39e2566741bb6d719dda4bd4fade834828309da",
+      "bytes": 4490
+    },
+    {
+      "label": "mosaic_admission.hpp",
+      "path": "native/experiments/gentek_swarm/mosaic_admission.hpp",
+      "mode": "100644",
+      "git_blob": "5e4dda141827a653012b605d62784bac11894643",
+      "sha256": "c6b8f8435a238b1c55be09127450865401768dc0081de61edd5e29ac210769d9",
+      "bytes": 2266
+    },
+    {
+      "label": "negotiated.hpp",
+      "path": "native/experiments/gentek_swarm/negotiated.hpp",
+      "mode": "100644",
+      "git_blob": "ac9d4f2f8498db54beb78b7687e1c436998280e6",
+      "sha256": "b6be864cc02e225070dd0aa78e6fd22302f1f150ef4b7460d6beb79eecb15e9a",
+      "bytes": 7064
+    },
+    {
+      "label": "reciprocal.hpp",
+      "path": "native/experiments/gentek_swarm/reciprocal.hpp",
+      "mode": "100644",
+      "git_blob": "8b9fbe855ce9ce62990fa2cc7fc5e7d1dc9f4e06",
+      "sha256": "a4264ec0bafbb814b642589f6ef39524ebe2704ebe41522bc06aa49f5e8877cb",
+      "bytes": 5705
+    },
+    {
+      "label": "reciprocal_io.hpp",
+      "path": "native/experiments/gentek_swarm/reciprocal_io.hpp",
+      "mode": "100644",
+      "git_blob": "a8293a6f1c134caec88027a483a7fd25434975e2",
+      "sha256": "5a4d01b97aa844b0cb58f11d2e87d76bf18aa2c648743fcb012ba74638fd7f2d",
+      "bytes": 822
+    },
+    {
+      "label": "reciprocal_mosaic.hpp",
+      "path": "native/experiments/gentek_swarm/reciprocal_mosaic.hpp",
+      "mode": "100644",
+      "git_blob": "3a19ab3a9d1bf8e811b094d42c74c363c91339b8",
+      "sha256": "c80252918dd32478ef7fd71c422904f1972a31d46b6fcf4b22fe72dccb2a88b3",
+      "bytes": 6666
+    },
+    {
+      "label": "recovery_admission.hpp",
+      "path": "native/experiments/gentek_swarm/recovery_admission.hpp",
+      "mode": "100644",
+      "git_blob": "7bbe7d66ab00e7a23789108f23e8b040b1f0efcb",
+      "sha256": "792e0705d07885800a50ecc6d2c9029eb64103f3f9bfdbda52ed369ce41d2799",
+      "bytes": 978
+    },
+    {
+      "label": "resilience.hpp",
+      "path": "native/experiments/gentek_swarm/resilience.hpp",
+      "mode": "100644",
+      "git_blob": "dc9eb9c50dd1b84b9ec401cd4328f5417edc5299",
+      "sha256": "134250470152e0a56b23fddad706d507642dfd47dcb400b431ee9f0653800a5c",
+      "bytes": 2733
+    },
+    {
+      "label": "resilience_solver.hpp",
+      "path": "native/experiments/gentek_swarm/resilience_solver.hpp",
+      "mode": "100644",
+      "git_blob": "c38d11850556912164b878021b0129b17e36387d",
+      "sha256": "a13f5f0b68796024a030f683fbc6c15ae86b3ec7e3d9a0d397b377f5a86fbccd",
+      "bytes": 1707
+    },
+    {
+      "label": "swarm.hpp",
+      "path": "native/experiments/gentek_swarm/swarm.hpp",
+      "mode": "100644",
+      "git_blob": "d57dc1b66120187b0e99a93d597221266a360607",
+      "sha256": "f1739832a3f695bb127f6064a1ac622c7ebb30134d291f0e3712304db3bb53f6",
+      "bytes": 7223
+    },
+    {
+      "label": "../../../native/src/generation_spatial.cpp",
+      "path": "native/src/generation_spatial.cpp",
+      "mode": "100644",
+      "git_blob": "23d7b8916748650b388611fd7063e665d2273af3",
+      "sha256": "8f99e577b7bec07142daf7c0e273146991528cdc3a13e6bf2301f14a7f049961",
+      "bytes": 30074
+    },
+    {
+      "label": "../../../native/include/cybersand/material.hpp",
+      "path": "native/include/cybersand/material.hpp",
+      "mode": "100644",
+      "git_blob": "dcf05895da3015a2e999e3d1cbbae0fdc7fe32b3",
+      "sha256": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+      "bytes": 29262
+    },
+    {
+      "label": "../../../native/include/cybersand/generation_spatial.hpp",
+      "path": "native/include/cybersand/generation_spatial.hpp",
+      "mode": "100644",
+      "git_blob": "2c0e81efb5bfe4e4c5cf2131c03dd6760dd767d9",
+      "sha256": "8e02a001775915dc8d8fe9b79c0a1ffb65b51989ffd424a7b847d741a49065e2",
+      "bytes": 8745
+    },
+    {
+      "label": "../../../native/include/cybersand/generation_numeric.hpp",
+      "path": "native/include/cybersand/generation_numeric.hpp",
+      "mode": "100644",
+      "git_blob": "5bfd732e8703925b680cdb4a19716f29ab68667b",
+      "sha256": "231fd8547985397103388d863297009aee8df944d3be453e6a88ca24ee18bb3a",
+      "bytes": 772
+    }
+  ],
+  "reviewed_repair_files": {
+    "native/experiments/gentek_swarm/mosaic_recovery.cpp": "ec9dbe6dd227b7b376763961c51b12b94ff7cb143f43e4999d3a6e2eec678850",
+    "native/experiments/gentek_swarm/swarm006_recovery_tests.cpp": "f099a2841fdb78f5bbadfd418719a7ec04f7bf7cebfed776a85fcf3d2418ffc9"
+  },
+  "only_native_delta_since_integrated_5722": [
+    "native/experiments/gentek_swarm/mosaic_recovery.cpp",
+    "native/experiments/gentek_swarm/swarm006_recovery_tests.cpp"
+  ],
+  "basis": {
+    "historical_source_custody": "/workspace/scratch/d425b9146667/swarm006-evidence/workbench-dev/pending-pr715-reconciliation/source-custody.json",
+    "historical_custody_sha256": "2be07b8c400e84671c0e8b5cee4017802f247e44a546ff924364efb28cc25031",
+    "new_custody_sha256": "80f0dbb2e9737d63d706de5211385db92c256dbc93363e362c6913b208fe379c"
+  },
+  "signoff": "The independently reviewed reserve/debit/failure-receipt repair remains byte-identical at published ca634458. V1-V3 preservation conclusion for that original two-file repair remains scoped to the same native source. This is not approval of unaccepted PR715 accounting changes or the simulated combined native definition. No runtime rerun or platform claim is made."
+}
