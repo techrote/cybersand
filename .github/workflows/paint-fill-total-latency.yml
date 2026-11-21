@@ -9,6 +9,7 @@ on:
       - "godot/tests/bench_paint_fill_total_latency.gd"
       - "godot/scripts/workbench_paint_editor_controller.gd"
       - "tools/ci/qualify_paint_fill_total_latency.py"
+      - "tools/ci/qualify_paint_fill_total_latency_windows.py"
   workflow_dispatch:
 
 permissions:
