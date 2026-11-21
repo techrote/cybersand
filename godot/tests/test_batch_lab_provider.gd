@@ -2,6 +2,7 @@ extends SceneTree
 ## Self-contained loopback HTTP protocol fixture, not real model inference.
 ## Accepted fixture responses still execute through the actual native owner.
 const Controller = preload("res://scripts/batch_lab/batch_lab_controller.gd")
+const Experiments = preload("res://scripts/batch_lab/batch_lab_experiments.gd")
 const SECRET := "batch-fixture-secret-opaque"
 var controller: Node
 var server := TCPServer.new()
@@ -169,6 +170,28 @@ func run() -> void:
 	deadline = Time.get_ticks_msec()+700
 	while Time.get_ticks_msec()<deadline: await process_frame
 	check(controller.tiles[0].material_sha256==hash and not controller.is_running(),"retired slow callbacks cannot alter a completed retry")
+	var common_context := ""
+	for variant: String in ["P0","P1","P2","P3"]:
+		var matched := Experiments.make_attempt("architecture",variant,19301,128,128)
+		matched.provider="LM Studio"; matched.model="protocol-context-parity"
+		matched.endpoint="http://127.0.0.1:%d/v1" % port
+		matched.source_rectangles=[[13,13,1,1,28]]; matched.protection=[[20,20,3,3]]
+		check(controller.configure_tile(0,matched).ok and controller.start([0]).ok,"matched context "+variant+" queued")
+		await settle("matched context "+variant+" completes")
+		var request := _last_request()
+		var system_context := str(request.messages[0].content)
+		if common_context.is_empty(): common_context=system_context
+		check(system_context==common_context,"all variants receive equivalent source, constraints and tools / "+variant)
+		check(system_context.contains(JSON.stringify(matched.metrics_targets)) and system_context.contains("not aesthetic scores") \
+			and system_context.contains("native actor traversability/playability"),"explicit diagnostic geometry is delivered without a playability claim / "+variant)
+		var expected_shapes := ["rectangle","disc","line","pixels","polyline","polygon","airbrush"]
+		check(system_context.contains("Enabled shapes: "+JSON.stringify(expected_shapes)+Controller.SHAPE_SCHEMA_HINT),"same complete accepted seven-shape contract / "+variant)
+		var record: Dictionary = controller.attempts.back()
+		check(record.state=="completed" and record.config.get("control")=="procedural" and record.execution_origin=="provider-response" \
+			and record.provenance.execution_origin=="provider-response", "provider switch is classified by executed path, not stale control metadata / "+variant)
+		check(record.provenance.configuration_sha256==JSON.stringify(record.config).sha256_text() \
+			and record.provenance.configuration_sha256!=record.provenance.request_configuration_sha256,
+			"returned native program has its own final configuration identity / "+variant)
 	_close_server()
 	await run_case("protocol-unavailable")
 	check(controller.tiles[0].state=="refused" and controller.tiles[0].material_cells.is_empty(),"missing local server refuses without native changes")

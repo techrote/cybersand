@@ -19,6 +19,8 @@ const MAX_CONFIG_BYTES := 1024*1024
 const MAX_RESPONSE_BYTES := 1024*1024
 const TERMINAL := ["completed","partial","refused","stopped"]
 const SECRET_FIELDS := ["key","api_key","apikey","credential","credentials","authorization","token","access_token","password"]
+const EXECUTION_ORIGINS := ["supplied-program","provider-request","provider-response","history-replay","captured-baseline"]
+const SHAPE_SCHEMA_HINT := ". Use only these shapes. Line and polyline accept optional integer width (default 1) with rounded ends. Polyline and filled polygon use points:[[x,y],...]. Airbrush uses x,y,radius, optional density and hardness in [0,1], and an integer seed."
 var tiles: Array[Dictionary] = []
 var columns := 2
 var rows := 2
@@ -130,8 +132,7 @@ func _validate(config: Dictionary) -> String:
 	var serializable := config.duplicate()
 	serializable.erase("source_cells")
 	if JSON.stringify(serializable).to_utf8_buffer().size()>MAX_CONFIG_BYTES: return "Configuration exceeds the 1 MiB bounded compilation input."
-	var json := JSON.stringify(serializable)
-	if _sanitize(json)!=json: return "Remove credentials from the prompt, endpoint and configuration; use the volatile Key field."
+	if _sanitize(serializable)!=serializable: return "Remove credentials from the prompt, endpoint and configuration; use the volatile Key field."
 	var size := _extent(config.get("extent"))
 	if size == Vector2i.ZERO: return "Tile footprint must be 64–512 cells on each side."
 	for key: String in ["prompt","model","endpoint","family","variant","prompt_version"]:
@@ -157,6 +158,7 @@ func _validate(config: Dictionary) -> String:
 			return "Protection must fit inside the tile."
 	if not config.get("operations") is Array: return "Drawing operations must be a JSON array."
 	if config.operations.size()>4096: return "At most 4096 drawing operations fit one attempt."
+	if config.has("metrics_targets") and not config.metrics_targets is Dictionary: return "Diagnostic geometry targets must be an object."
 	if str(config.get("prompt","")).to_utf8_buffer().size()>32768: return "Tile prompt exceeds 32 KiB."
 	if str(config.get("provider","")) not in ["procedural","random","direct","LM Studio","OpenAI","NVIDIA"]:
 		return "Select a supported provider or deterministic control."
@@ -173,25 +175,35 @@ func _validate(config: Dictionary) -> String:
 func set_credential(provider: String, key: String) -> void:
 	_credentials[provider] = key
 
-func _sanitize(value: Variant) -> Variant:
+func _sanitize(value: Variant, request_redactor: Node = null) -> Variant:
 	# Reuse the existing Art provider's credential treatment. Keys remain volatile;
-	# a model echo or error must never move them into a retained experiment.
-	var redactor := Provider.new()
+	# request-owned secrets survive rotation/clearing until its response retires.
+	var redactor: Node = request_redactor if request_redactor!=null else Provider.new()
 	for secret: Variant in _credentials.values():
-		if not str(secret).is_empty(): redactor.secrets.append(str(secret))
-	var clean: Variant = redactor._redacted_value(value)
-	redactor.free()
-	return _drop_secret_fields(clean)
+		if not str(secret).is_empty() and str(secret) not in redactor.secrets: redactor.secrets.append(str(secret))
+	var clean: Variant = _redacted_tree(value,redactor,{})
+	if request_redactor==null: redactor.free()
+	return clean
 
-static func _drop_secret_fields(value: Variant) -> Variant:
+static func _redacted_string(value: String, redactor: Node, cache: Dictionary) -> String:
+	if not cache.has(value): cache[value] = redactor.redact(value)
+	return cache[value]
+
+static func _redacted_tree(value: Variant, redactor: Node, cache: Dictionary) -> Variant:
+	if value is String or value is StringName: return _redacted_string(str(value),redactor,cache)
 	if value is Dictionary:
 		var clean := {}
 		for key: Variant in value:
-			if str(key).to_lower() not in SECRET_FIELDS: clean[key] = _drop_secret_fields(value[key])
+			if str(key).to_lower() in SECRET_FIELDS: continue
+			# Metadata keys are provider-controlled text too. A changed key is
+			# omitted rather than merged with another '[redacted]' key.
+			var safe_key := _redacted_string(str(key),redactor,cache)
+			if safe_key!=str(key): continue
+			clean[safe_key] = _redacted_tree(value[key],redactor,cache)
 		return clean
-	if value is Array:
+	if value is Array or value is PackedStringArray:
 		var clean: Array = []
-		for item: Variant in value: clean.append(_drop_secret_fields(item))
+		for item: Variant in value: clean.append(_redacted_tree(item,redactor,cache))
 		return clean
 	return value
 
@@ -245,6 +257,20 @@ static func _source_context(cells: PackedByteArray, size: Vector2i) -> Dictionar
 		"extent":[size.x,size.y],"material_sha256":TileHost.digest(cells),"runs":runs})
 	if text.to_utf8_buffer().size()>65536: return _error("Exact source context exceeds 64 KiB; crop the tile before local inference.")
 	return {"ok":true,"text":text,"sha256":text.sha256_text(),"runs":runs.size()}
+
+static func _provider_instructions(config: Dictionary, source_context: String) -> String:
+	# The same accepted seven-shape hint used by ArtBatchPanel is provided to
+	# every prompt variant. P3 never silently gains additional tools/schema.
+	return Provider.INSTRUCTIONS+"\nEnabled shapes: "+JSON.stringify(Plan.SHAPES)+SHAPE_SCHEMA_HINT \
+		+"\nAllowed materials: "+JSON.stringify(config.materials) \
+		+". Local footprint: "+JSON.stringify(config.extent)+". Host seed: "+str(config.seed) \
+		+". Checked-cell budget: "+str(config.budget_cells)+". Protected rectangles [x,y,width,height]: "+JSON.stringify(config.protection) \
+		+". Original source region: "+JSON.stringify(config.source_region) \
+		+". Diagnostic geometry targets: "+JSON.stringify(config.get("metrics_targets",{})) \
+		+". These targets describe intended feature regions, connectivity, negative space and geometric clearance. " \
+		+"They are not aesthetic scores or proof of native actor traversability/playability. " \
+		+"The following exact material baseline will be independently restored and read back before applying your commands. " \
+		+"Only existing Empty 0 and HardWall 58 are eligible sources. Preserve other materials and protection. Source: "+source_context
 
 func compile_preview(index: int) -> Dictionary:
 	if not _index(index): return _error("Unknown tile.")
@@ -318,6 +344,7 @@ func start(indices: Array = []) -> Dictionary:
 		tile["_frozen_config"] = config
 		tile["_queued_usec"] = Time.get_ticks_usec()
 		tile["_restore_only"] = false
+		tile["execution_origin"] = "supplied-program" if str(config.provider) in ["procedural","random","direct"] else "provider-request"
 		tile.metrics = {}
 		tile.receipts = []
 		tile.image = null
@@ -336,7 +363,8 @@ func start(indices: Array = []) -> Dictionary:
 		tile.provenance["native_world_isolation"] = "one exclusive CyberSimulationWorker/CyberNativeCellWorld per active attempt"
 		tile.provenance["state_scope"] = "paused material identities; not an evolved physics checkpoint"
 		tile.provenance["actual_prompt_sha256"] = str(config.prompt).sha256_text()
-		tile.provenance["configuration_sha256"] = JSON.stringify(_config_identity(config)).sha256_text()
+		tile.provenance["request_configuration_sha256"] = JSON.stringify(_config_identity(config)).sha256_text()
+		tile.provenance["request_configuration_scope"] = "canonical configuration when queued, before any provider program replacement"
 		tile.provenance["compiled_program_admitted"] = false
 		tile.timings = {"model_ms":0.0,"compile_ms":0.0,"native_ms":0.0,"capture_ms":0.0,"total_ms":0.0}
 		tile.usage = {}
@@ -413,7 +441,9 @@ func replay(index: int) -> Dictionary:
 	var configured := configure_tile(index,config)
 	if not configured.ok: return configured
 	var answer := start([index])
-	if answer.ok and no_confirmed_work: tiles[index]._restore_only = true
+	if answer.ok:
+		tiles[index].execution_origin = "captured-baseline" if no_confirmed_work else "history-replay"
+		if no_confirmed_work: tiles[index]._restore_only = true
 	return answer
 
 func undo(index: int) -> Dictionary:
@@ -443,6 +473,7 @@ func _restore(index: int, redo_result: bool) -> Dictionary:
 	var answer := start([index])
 	if answer.ok:
 		tile._restore_only = true
+		tile.execution_origin = "captured-baseline"
 		tile.history_attempt = original_id
 		tile.history_cursor = "result" if redo_result else "source"
 	return answer
@@ -535,13 +566,10 @@ func _begin(index: int) -> void:
 		_active[index] = {"provider":connection,"attempt_id":identity,"model_started_usec":Time.get_ticks_usec()}
 		connection.finished.connect(func(_id: int, text: String, response: Dictionary, error: String):
 			_provider_done(index,identity,text,response,error))
+		var instructions := _provider_instructions(config,str(source_context.text))
+		tile.provenance["model_common_context_sha256"] = instructions.sha256_text()
 		var message := connection.send("LM Studio",str(config.endpoint),str(config.model),str(_credentials.get("LM Studio","")),
-			str(config.prompt),Provider.INSTRUCTIONS+"\nAllowed materials: "+JSON.stringify(config.materials)
-			+". Local footprint: "+JSON.stringify(config.extent)+". Host seed: "+str(config.seed)
-			+". Checked-cell budget: "+str(config.budget_cells)+". Protected rectangles [x,y,width,height]: "+JSON.stringify(config.protection)
-			+". Original source region: "+JSON.stringify(config.source_region)
-			+". The following exact material baseline will be independently restored and read back before applying your commands. "
-			+"Only existing Empty 0 and HardWall 58 are eligible sources. Preserve other materials and protection. Source: "+str(source_context.text),
+			str(config.prompt),instructions,
 			int(config.max_output_tokens),float(config.timeout_seconds))
 		if not message.is_empty(): _provider_done(index,identity,"",{},message)
 	else:
@@ -555,22 +583,25 @@ func _provider_done(index: int, identity: String, text: String, response: Dictio
 	var elapsed := float(Time.get_ticks_usec()-int(work.model_started_usec))/1000.0
 	var tile: Dictionary = tiles[index]
 	tile.timings.model_ms = elapsed
-	var response_bytes := text.to_utf8_buffer()
+	var clean_text := str(_sanitize(text,work.provider))
+	var clean_error := str(_sanitize(error,work.provider))
+	var response_bytes := clean_text.to_utf8_buffer()
 	var response_size := JSON.stringify(response).to_utf8_buffer().size()
 	var over_capacity := response_bytes.size()>MAX_RESPONSE_BYTES or response_size>MAX_RESPONSE_BYTES
+	if not response.is_empty() or not text.is_empty(): tile.execution_origin = "provider-response"
 	tile.provenance["model_response_sha256"] = TileHost.digest(response_bytes)
 	tile.provenance["model_response_bytes"] = response_bytes.size()
 	tile.provenance["model_response_digest_scope"] = "assistant text after existing ArtProvider credential redaction"
 	tile.provenance["provider_packet_bytes"] = response_size
-	tile["model_response"] = _sanitize(text) if not over_capacity else "[Response exceeded the 1 MiB retention limit; no program admitted. Digest and byte count retained.]"
+	tile["model_response"] = clean_text if not over_capacity else "[Response exceeded the 1 MiB retention limit; no program admitted. Digest and byte count retained.]"
 	tile.provenance["model_response_complete"] = not over_capacity
 	tile.usage = {} if over_capacity else _sanitize({"reported":response.get("usage",{}),"cost_usd":null,"cost_known":false,
-		"requested_model":tile._frozen_config.model,"returned_model":response.get("model","unknown")})
+		"requested_model":tile._frozen_config.model,"returned_model":response.get("model","unknown")},work.provider)
 	work.provider.queue_free()
 	_active.erase(index)
 	if over_capacity: _finish(index,"refused","Local provider response exceeds the 1 MiB bounded response capacity; no native writes."); return
-	if not error.is_empty(): _finish(index,"refused",str(_sanitize(error))); return
-	var operations: Variant = Provider.operations(text)
+	if not clean_error.is_empty(): _finish(index,"refused",clean_error); return
+	var operations: Variant = Provider.operations(clean_text)
 	if not operations is Array: _finish(index,"refused","Provider output was not a complete drawing array; original text retained."); return
 	var candidate: Dictionary = tile._frozen_config.duplicate(true)
 	candidate.operations = operations.duplicate(true)
@@ -618,6 +649,12 @@ func _finish(index: int, status: String, reason: String) -> void:
 	tile.provenance["runtime"] = Engine.get_version_info().string
 	tile.provenance["source_material_sha256"] = "" if tile.source_materials.is_empty() else TileHost.digest(tile.source_materials)
 	tile.provenance["actual_program_sha256"] = JSON.stringify(_canonical_numbers(tile._frozen_config.operations)).sha256_text()
+	var final_config := _config_identity(tile._frozen_config)
+	tile.provenance["configuration_sha256"] = JSON.stringify(final_config).sha256_text()
+	tile.provenance["configuration_scope"] = "canonical retained record.config; input capture bytes represented by source_cells_sha256"
+	tile.provenance["actual_prompt_sha256"] = str(final_config.prompt).sha256_text()
+	tile.provenance["execution_origin"] = tile.execution_origin
+	tile.provenance["execution_origin_scope"] = "controller execution path; provider-response does not establish genuine inference or model identity"
 	var record := _record(tile)
 	attempts.append(record)
 	tile.attempts.append(record.attempt_id)
@@ -642,7 +679,7 @@ static func _config_identity(config: Dictionary) -> Dictionary:
 	if identity.has("source_cells"):
 		identity["source_cells_sha256"] = TileHost.digest(identity.source_cells)
 		identity.erase("source_cells")
-	return identity
+	return _canonical_numbers(identity)
 
 static func _record_bytes(record: Dictionary) -> int:
 	var metadata := record.duplicate()
@@ -663,9 +700,9 @@ static func material_image(cells: PackedByteArray, size: Vector2i) -> Image:
 	return Image.create_from_data(size.x,size.y,false,Image.FORMAT_RGB8,pixels)
 
 func _record(tile: Dictionary) -> Dictionary:
-	var config: Dictionary = tile.get("_frozen_config",tile.config).duplicate(true)
-	config.erase("source_cells")
+	var config := _config_identity(tile.get("_frozen_config",tile.config))
 	var value := {"attempt_id":tile.attempt_id,"config":config,"state":tile.state,"reason":tile.reason,
+		"execution_origin":tile.execution_origin,
 		"result_extent":tile.result_extent.duplicate(),"source_materials":tile.source_materials.duplicate(),
 		"material_cells":tile.material_cells.duplicate(),"material_sha256":tile.get("material_sha256",""),
 		"receipts":tile.receipts.duplicate(true),"accepted_edits":tile.get("accepted_edits",[]).duplicate(true),
@@ -684,7 +721,7 @@ func select_attempt(index: int, identity: String) -> Dictionary:
 	var record := _find_attempt(identity)
 	if record.is_empty(): return _error("Unknown retained attempt.")
 	var tile: Dictionary = tiles[index]
-	for key: String in ["attempt_id","state","reason","result_extent","source_materials","material_cells","material_sha256","receipts","accepted_edits","metrics","timings","usage","provenance","render_kind"]:
+	for key: String in ["attempt_id","state","reason","execution_origin","result_extent","source_materials","material_cells","material_sha256","receipts","accepted_edits","metrics","timings","usage","provenance","render_kind"]:
 		if record.has(key): tile[key] = record[key].duplicate(true) if record[key] is Dictionary or record[key] is Array else record[key]
 	tile.image = material_image(tile.material_cells,_extent(tile.result_extent))
 	tile["render_image"] = null
@@ -732,7 +769,7 @@ static func _encode(record: Dictionary) -> Dictionary:
 	return value
 
 func _write(path: String, value: Dictionary) -> Dictionary:
-	var bytes := str(_sanitize(JSON.stringify(value))).to_utf8_buffer()
+	var bytes := JSON.stringify(_sanitize(value)).to_utf8_buffer()
 	if bytes.size()>MAX_FILE_BYTES: return _error("Export exceeds the bounded session file size.")
 	var target := ProjectSettings.globalize_path(path)
 	if DirAccess.make_dir_recursive_absolute(target.get_base_dir())!=OK: return _error("Cannot create export directory.")
@@ -786,7 +823,7 @@ static func _base64(value: Variant, maximum: int, allow_empty := true) -> Dictio
 	return {"ok":true,"bytes":bytes}
 
 static func _png_dimensions(bytes: PackedByteArray) -> Vector2i:
-	if bytes.size()<33 or bytes.slice(0,8)!=PackedByteArray([137,80,78,71,13,10,26,10]) \
+	if bytes.size()<45 or bytes.slice(0,8)!=PackedByteArray([137,80,78,71,13,10,26,10]) \
 		or bytes.slice(12,16).get_string_from_ascii()!="IHDR": return Vector2i.ZERO
 	var width := (int(bytes[16])<<24)|(int(bytes[17])<<16)|(int(bytes[18])<<8)|int(bytes[19])
 	var height := (int(bytes[20])<<24)|(int(bytes[21])<<16)|(int(bytes[22])<<8)|int(bytes[23])
@@ -823,6 +860,11 @@ func _decode_record(raw: Variant) -> Dictionary:
 	var value: Dictionary = raw.duplicate(true)
 	value.config = _canonical_numbers(value.config)
 	value.operations = _canonical_numbers(value.operations)
+	if JSON.stringify(value.config).sha256_text()!=value.provenance.get("configuration_sha256","") \
+		or str(value.config.prompt).sha256_text()!=value.provenance.get("actual_prompt_sha256",""):
+		return _error("Stored prompt or configuration differs from its final identity.")
+	if value.get("execution_origin") not in EXECUTION_ORIGINS or value.provenance.get("execution_origin")!=value.execution_origin:
+		return _error("Stored execution origin is missing or inconsistent.")
 	if value.operations!=value.config.operations or JSON.stringify(value.operations).sha256_text()!=value.provenance.get("actual_program_sha256",""):
 		return _error("Stored native program differs from its configuration or checksum.")
 	for pair: Array in [["source_materials_base64","source_materials"],["material_cells_base64","material_cells"]]:
@@ -841,9 +883,15 @@ func _decode_record(raw: Variant) -> Dictionary:
 	if value.has("render_png_base64"):
 		var decoded := _base64(value.render_png_base64,8*1024*1024,false)
 		if not decoded.ok: return decoded
-		if _png_dimensions(decoded.bytes)==Vector2i.ZERO: return _error("Stored render has invalid or oversized PNG dimensions.")
+		var dimensions := _png_dimensions(decoded.bytes)
+		if dimensions==Vector2i.ZERO: return _error("Stored render has invalid or oversized PNG dimensions.")
 		if TileHost.digest(decoded.bytes)!=value.get("render_png_sha256","") or not value.get("renderer") is Dictionary \
 			or value.renderer.get("material_sha256")!=value.material_sha256: return _error("Stored render checksum or source identity differs.")
+		# The header is only an allocation guard. The actual bounded decoder must
+		# accept the complete image before any session state is replaced.
+		var image := Image.new()
+		if image.load_png_from_buffer(decoded.bytes)!=OK or image.is_empty() or image.get_size()!=dimensions:
+			return _error("Stored render is not a complete valid PNG.")
 		value["render_png"] = decoded.bytes
 		value.erase("render_png_base64")
 	value.provenance["reopened_record"] = true
@@ -914,8 +962,9 @@ func load_session(path: String) -> Dictionary:
 		tile.attempt_id = str(view.get("attempt_id",""))
 		var record := _find_attempt(tile.attempt_id)
 		if not record.is_empty():
-			for key: String in ["state","reason","result_extent","source_materials","material_cells","material_sha256","receipts","accepted_edits","metrics","timings","usage","provenance","render_kind"]:
+			for key: String in ["state","reason","execution_origin","result_extent","source_materials","material_cells","material_sha256","receipts","accepted_edits","metrics","timings","usage","provenance","render_kind"]:
 				if record.has(key): tile[key] = record[key].duplicate(true) if record[key] is Dictionary or record[key] is Array else record[key]
+			tile["_frozen_config"] = record.config.duplicate(true)
 			tile.image = material_image(tile.material_cells,_extent(tile.result_extent))
 			if record.has("render_png"):
 				var image := Image.new()

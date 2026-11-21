@@ -157,6 +157,50 @@ def tile_records(document: dict) -> list[dict]:
     return records
 
 
+def checked_readback(tile: dict) -> tuple[dict, list[int], list[int], bytes, bytes, int]:
+    """Validate the retained native boundary before deriving metrics or images."""
+    if tile.get("state") not in FINAL_STATES:
+        raise ValueError("Attempt has no terminal native outcome")
+    config = tile["config"]
+    width, height = config["extent"]
+    if type(width) is not int or type(height) is not int or not 1 <= width <= 512 or not 1 <= height <= 512:
+        raise ValueError("Unsupported extent")
+    before, before_raw = _plane(tile["source_materials_base64"], width * height)
+    after, raw = _plane(tile["material_cells_base64"], width * height)
+    if _hash(raw) != tile.get("material_sha256"):
+        raise ValueError("Native result plane SHA-256 mismatch")
+    provenance = tile.get("provenance", {})
+    if not isinstance(provenance, dict):
+        raise ValueError("Native provenance is malformed")
+    source_hash = tile.get("source_material_sha256", provenance.get("source_material_sha256"))
+    if source_hash != _hash(before_raw):
+        raise ValueError("Native source plane SHA-256 missing or mismatched")
+    if "source_material_sha256" in provenance and provenance["source_material_sha256"] != source_hash:
+        raise ValueError("Native source digests disagree")
+    receipts = tile.get("receipts")
+    if not isinstance(receipts, list) or len(receipts) > MAX_CELLS:
+        raise ValueError("Native acknowledgement array is missing or oversized")
+    confirmed_changes = 0
+    total_checked = 0
+    for receipt in receipts:
+        if not isinstance(receipt, dict) or receipt.get("backend") != "CyberNativeCellWorld" or receipt.get("status") != "completed":
+            raise ValueError("Receipt is not a completed native acknowledgement")
+        fields = ("requested", "checked", "changed", "unchanged", "confirmed", "excluded", "refused")
+        if any(type(receipt.get(k)) is not int or not 0 <= receipt[k] <= 4096 for k in fields):
+            raise ValueError("Native acknowledgement counters are missing or outside chunk bounds")
+        if (receipt["checked"] > receipt["requested"]
+                or receipt["checked"] != sum(receipt[k] for k in ("changed", "unchanged", "excluded", "refused"))
+                or receipt["confirmed"] != receipt["changed"] + receipt["unchanged"]):
+            raise ValueError("Native acknowledgement counters are inconsistent")
+        confirmed_changes += receipt["changed"]
+        total_checked += receipt["checked"]
+    if total_checked > MAX_CELLS:
+        raise ValueError("Native acknowledgements exceed the bounded attempt capacity")
+    if sum(a != b for a, b in zip(before, after)) > confirmed_changes:
+        raise ValueError("Net changed cells exceed preserved native acknowledgements")
+    return config, before, after, before_raw, raw, confirmed_changes
+
+
 def evaluate(document: dict) -> dict:
     records = tile_records(document)
     outcomes = []
@@ -172,28 +216,20 @@ def evaluate(document: dict) -> dict:
             if identifier in seen:
                 raise ValueError("Duplicate attempt identity")
             seen.add(identifier)
-            config = tile["config"]
-            width, height = config["extent"]
-            if type(width) is not int or type(height) is not int or not 1 <= width <= 512 or not 1 <= height <= 512:
-                raise ValueError("Unsupported extent")
-            before, before_raw = _plane(tile["source_materials_base64"], width * height)
-            after, raw = _plane(tile["material_cells_base64"], width * height)
-            if _hash(raw) != tile.get("material_sha256"):
-                raise ValueError("Native result plane SHA-256 mismatch")
-            source_hash = tile.get("source_material_sha256", tile.get("provenance", {}).get("source_material_sha256"))
-            if source_hash not in (None, _hash(before_raw)):
-                raise ValueError("Native source plane SHA-256 mismatch")
+            config, before, after, before_raw, raw, confirmed_changes = checked_readback(tile)
             metrics = material_metrics(config, before, after)
-            receipts = tile.get("receipts", [])
-            confirmed_changes = sum(int(r.get("changed", 0)) for r in receipts)
-            if metrics["changed_cells"] > confirmed_changes:
-                raise ValueError("Net changed cells exceed preserved native acknowledgements")
+            provider = config.get("provider")
+            origin = tile.get("provenance", {}).get("execution_origin")
+            if not origin:
+                origin = "supplied-program" if provider in {"procedural", "random", "direct"} else "provider-response-unverified"
+            control = config.get("control") if provider in {"procedural", "random"} and origin == "supplied-program" else None
             item.update(evaluable=True, metrics=metrics, native_changed_acknowledgements=confirmed_changes,
                         source_sha256=_hash(before_raw), result_sha256=_hash(raw),
                         cohort=config.get("cohort", "unassigned"), group_id=config.get("group_id", "unassigned"),
-                        family=config.get("family"), variant=config.get("variant"), control=config.get("control"),
-                        provider=config.get("provider"), model=config.get("model"), seed=config.get("seed"))
-        except (ValueError, KeyError, TypeError, struct.error) as exc:
+                        family=config.get("family"), variant=config.get("variant"), control=control,
+                        requested_control=config.get("control"), execution_origin=origin,
+                        provider=provider, model=config.get("model"), seed=config.get("seed"))
+        except (ValueError, KeyError, TypeError, IndexError, AttributeError, struct.error) as exc:
             item["reason"] = str(exc)
         outcomes.append(item)
     return {"schema": "cybersand-batch-analysis-v1", "total_attempts": len(records),
@@ -234,17 +270,13 @@ def blinded_bundle(document: dict, destination: Path, seed: int) -> dict:
                   "prompt_version", "prompt_sha256", "group_id", "cohort", "control", "extent")}
         key.append({"anonymous_id": anonymous, "original_index": original_index,
                     "attempt_id": tile.get("attempt_id"), "config": labels})
-        visual = "<p>No completed native readback is available.</p>"
+        visual = "<p>Native evidence is unevaluable. Retain this outcome in the review denominator.</p>"
         try:
-            width, height = tile["config"]["extent"]
-            if not 1 <= width <= 512 or not 1 <= height <= 512:
-                raise ValueError("Unsupported extent")
-            cells, raw = _plane(tile["material_cells_base64"], width * height)
-            if _hash(raw) != tile.get("material_sha256"):
-                raise ValueError("Readback digest mismatch")
+            validated, _before, cells, _before_raw, _raw, _changed = checked_readback(tile)
+            width, height = validated["extent"]
             png = base64.b64encode(_png(cells, width, height)).decode()
             visual = f'<img width="{width * 2}" height="{height * 2}" src="data:image/png;base64,{png}" alt="Native material-ID view"><p>{width} × {height} cells; 2 display pixels per cell.</p>'
-        except (KeyError, ValueError, TypeError):
+        except (KeyError, ValueError, TypeError, IndexError, AttributeError, struct.error):
             pass
         state = html.escape(str(tile.get("state", "unknown")))
         cards.append(f'<article data-id="{anonymous}"><h2>{anonymous}</h2><p>Outcome: {state}</p>{visual}<label>Visual usefulness <select><option value="">Unrated</option><option>not assessable</option><option>reject</option><option>promising</option></select></label><label>Reason <textarea></textarea></label></article>')

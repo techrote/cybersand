@@ -160,7 +160,10 @@ func _redacted_value(value: Variant) -> Variant:
 		for key: Variant in value:
 			var item: Variant = value[key]
 			var credential: bool = str(key).to_lower() in ["api_key", "apikey", "api-key", "access_token", "token", "authorization", "password"]
-			clean[key] = "[redacted]" if credential and item is String else _redacted_value(item)
+			# Untrusted provider metadata can echo a request credential in a key as
+			# well as a value. Preserve other structural keys and use this request's
+			# retained secret set even after the host changes its current key.
+			clean[redact(str(key))] = "[redacted]" if credential and item is String else _redacted_value(item)
 		return clean
 	if value is Array:
 		var clean: Array = []

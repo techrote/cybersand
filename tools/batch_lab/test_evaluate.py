@@ -25,7 +25,10 @@ def example(identifier="native-test-fixture"):
             "features": [{"name":"pipe", "rect":[2,5,12,1], "minimum_fraction":1.0}]}},
         "material_cells_base64": base64.b64encode(raw).decode(), "material_sha256": hashlib.sha256(raw).hexdigest(),
         "source_materials_base64": base64.b64encode(source).decode(),
-        "provenance": {"source_material_sha256": hashlib.sha256(source).hexdigest()}, "receipts": [{"changed":12}], "usage": {}}
+        "provenance": {"source_material_sha256": hashlib.sha256(source).hexdigest()},
+        "receipts": [{"backend": "CyberNativeCellWorld", "status": "completed", "requested": 12,
+                      "checked": 12, "changed": 12, "unchanged": 0, "confirmed": 12, "excluded": 0, "refused": 0}],
+        "usage": {}}
 
 
 class ReducerTests(unittest.TestCase):
@@ -62,8 +65,50 @@ class ReducerTests(unittest.TestCase):
         self.assertIn("SHA-256 mismatch",result["reason"])
 
     def test_unacknowledged_changes_refuse(self):
-        tile=example();tile["receipts"][0]["changed"]=11
-        self.assertFalse(evaluate(tile)["attempts"][0]["evaluable"])
+        tile=example()
+        tile["receipts"][0].update(changed=11, confirmed=11, excluded=1)
+        result=evaluate(tile)["attempts"][0]
+        self.assertFalse(result["evaluable"])
+        self.assertIn("Net changed cells", result["reason"])
+
+    def test_untrusted_native_evidence_remains_in_denominator(self):
+        mutations = [
+            lambda t: t.update(state="running"),
+            lambda t: t["receipts"][0].update(status="queued"),
+            lambda t: t["receipts"][0].update(status="refused"),
+            lambda t: t["receipts"][0].update(backend="image-preview"),
+            lambda t: t["receipts"][0].update(checked=True),
+            lambda t: t["receipts"][0].update(changed=12.0),
+            lambda t: t["receipts"][0].update(requested=4097),
+            lambda t: t["receipts"][0].update(confirmed=13),
+            lambda t: t["receipts"][0].pop("requested"),
+            lambda t: t["provenance"].pop("source_material_sha256"),
+            lambda t: t.update(source_material_sha256="0"*64),
+        ]
+        records = []
+        for i, mutate in enumerate(mutations):
+            tile = example(f"invalid-{i}")
+            mutate(tile)
+            records.append(tile)
+        result = evaluate({"attempts": records + [example()]})
+        self.assertEqual(result["total_attempts"], len(records) + 1)
+        self.assertEqual(result["evaluable_attempts"], 1)
+        self.assertTrue(all(not t["evaluable"] and t.get("reason") for t in result["attempts"][:-1]))
+
+    def test_provider_response_is_not_mislabeled_as_procedural_control(self):
+        tile = example()
+        tile["config"].update(provider="lmstudio", control="deterministic-procedural")
+        tile["provenance"]["execution_origin"] = "provider-response"
+        result = evaluate(tile)["attempts"][0]
+        self.assertTrue(result["evaluable"])
+        self.assertIsNone(result["control"])
+        self.assertEqual(result["requested_control"], "deterministic-procedural")
+        self.assertEqual(result["execution_origin"], "provider-response")
+        tile["config"]["provider"] = "procedural"
+        tile["provenance"]["execution_origin"] = "history-replay"
+        self.assertIsNone(evaluate(tile)["attempts"][0]["control"])
+        tile["provenance"]["execution_origin"] = "supplied-program"
+        self.assertEqual(evaluate(tile)["attempts"][0]["control"], "deterministic-procedural")
 
     def test_duplicate_attempt_identity_retained_as_failure(self):
         result=evaluate({"attempts":[example(),example()]})
@@ -75,7 +120,7 @@ class ReducerTests(unittest.TestCase):
         tile=example();raw=bytearray(base64.b64decode(tile["material_cells_base64"]))
         raw[34:36]=struct.pack("<H",58)
         tile["material_cells_base64"]=base64.b64encode(raw).decode();tile["material_sha256"]=hashlib.sha256(raw).hexdigest()
-        tile["receipts"][0]["changed"]=13
+        tile["receipts"][0].update(requested=13, checked=13, changed=13, confirmed=13)
         result=evaluate(tile)["attempts"][0]
         self.assertEqual(result["metrics"]["protected_changed_cells"],1)
         self.assertFalse(result["metrics"]["structural_checks_pass"])
@@ -98,6 +143,19 @@ class ReducerTests(unittest.TestCase):
             votes["votes"].pop()
             with self.assertRaises(ValueError):reveal_votes(votes,key)
             with self.assertRaises(FileExistsError):blinded_bundle(doc,root,17)
+
+    def test_blinding_does_not_present_hash_only_or_queued_preview_as_native(self):
+        missing = example("missing-proof")
+        missing.pop("receipts")
+        queued = example("queued-proof")
+        queued["receipts"][0]["status"] = "queued"
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)/"blind"
+            blinded_bundle({"attempts": [missing, queued]}, root, 19)
+            page = (root/"review/index.html").read_text()
+            self.assertEqual(page.count("Native evidence is unevaluable."), 2)
+            self.assertNotIn("<img", page)
+            self.assertEqual(page.count("Outcome: completed"), 2)
 
     def test_cross_cohort_unblinding_refuses(self):
         with self.assertRaises(ValueError):

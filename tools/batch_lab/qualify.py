@@ -11,6 +11,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import subprocess
 import sys
 import time
@@ -37,9 +38,44 @@ def identity(project: Path) -> dict:
     return {name: sha(project / name) for name in sorted(names)}
 
 
+def material_completion(log: Path) -> dict:
+    """The accepted catalogue uses a comma, unlike other shared-runner markers."""
+    matches = re.findall(r"^MATERIAL_LAB_CATALOGUE: (\d+) assertions, (\d+) failures(?:;.*)?$",
+                         log.read_text(encoding="utf-8"), flags=re.MULTILINE)
+    if not matches or int(matches[-1][0]) < 1 or int(matches[-1][1]) != 0:
+        raise RuntimeError("Materials Lab catalogue did not finish with positive assertions and zero failures")
+    return {"checks": int(matches[-1][0]), "failures": 0}
+
+
+def validate_project(project: Path, package: Path | None, allow_dirty: bool) -> None:
+    expected = (package / "godot" if package else ROOT / "godot").resolve()
+    if project.resolve() != expected and (package or not allow_dirty):
+        raise ValueError("Qualification project must be the exact source checkout or verified package/godot")
+
+
+def launch_workbench(runner: Runner, project: Path, graphical: bool) -> None:
+    command = [str(runner.args.godot.resolve()), "--audio-driver", "Dummy", "--max-fps", "60",
+               "--path", str(project), "--quit-after", "30"]
+    if graphical:
+        command += ["--rendering-method", "gl_compatibility"]
+        command += (["--rendering-driver", "opengl3_angle"] if sys.platform == "win32"
+                    else ["--display-driver", "x11"])
+    else:
+        command += ["--headless"]
+    command += ["--", "--workbench"]
+
+    def validate() -> dict:
+        text = (runner.evidence / "actual-workbench-launch.log").read_text(encoding="utf-8")
+        if "SHARED_WORKBENCH_LAUNCH_READY" not in text.splitlines():
+            raise RuntimeError("The shipped --workbench launch route was not entered")
+        return {"launch_route": "--workbench", "checks": 1, "failures": 0}
+
+    runner.execute("actual-workbench-launch", command, validate=validate, timeout=120)
+
+
 def regression_cases(runner: Runner, project: Path) -> None:
     # Existing native protocols and shared editor/history semantics. The new
-    # feature owns no C++/physics/provider-stack mutation and needs no duplicate
+    # feature owns no C++/physics/provider-transport mutation and needs no duplicate
     # all-Gentek research or provider-quality campaign.
     cases = [
         ("art-keyless", "test_art_provider", "ART_PROVIDER_KEYLESS"),
@@ -47,13 +83,15 @@ def regression_cases(runner: Runner, project: Path) -> None:
         ("edit-ordering", "test_workbench_edit_ordering", "EDIT_ORDER_RESULT"),
         ("manual-shapes", "test_paint_editor_shapes", "PAINT_EDITOR_SHAPES"),
         ("manual-recovery", "test_paint_editor_recovery", "PAINT_RECOVERY"),
-        ("materials", "test_material_lab_catalogue", "MATERIAL_LAB_CATALOGUE:"),
         ("actors", "test_workbench_actor_composition_native", "Workbench actor composition native:"),
         ("equipment", "test_workbench_liquid_equipment", "LIQUID_EQUIPMENT"),
         ("worldgen", "test_worldgen_workbench", "WORLDGEN_WORKBENCH:"),
     ]
     for label, script, marker in cases:
         runner.godot(project, "regression-" + label, script, marker)
+    runner.execute("regression-materials", [str(runner.args.godot.resolve()), "--audio-driver", "Dummy",
+                   "--headless", "--path", str(project), "--script", "res://tests/test_material_lab_catalogue.gd"],
+                   validate=lambda: material_completion(runner.evidence / "regression-materials.log"))
     for workers in (1, 4):
         runner.godot(project, f"manual-native-{workers}", "test_paint_editor_native", "PAINT_EDITOR_NATIVE",
                      env={"PAINT_TEST_WORKERS": str(workers)})
@@ -76,6 +114,7 @@ def main() -> int:
     args = parser.parse_args()
     args.evidence = args.evidence.resolve()
     project = args.project.resolve()
+    validate_project(project, args.package.resolve() if args.package else None, args.allow_dirty)
     args.evidence.mkdir(parents=True, exist_ok=True)
     revision = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
     if not args.allow_dirty:
@@ -94,11 +133,14 @@ def main() -> int:
               "actual_model_calls": 0, "physical_owner_acceptance": "pending", "status": "running"}
     try:
         runner.godot(project, "import")
+        launch_workbench(runner, project, args.graphical)
         runner.godot(project, "experiment-contracts", "test_batch_lab_experiments",
                      "Batch Lab experiment/metric script contracts:")
         runner.execute("independent-metric-controls", [sys.executable, str(ROOT / "tools/batch_lab/test_evaluate.py")])
         runner.godot(project, "provider-loopback-protocol", "test_batch_lab_provider", "BATCH_PROVIDER_RESULT",
                      env={"BATCH_LAB_EVIDENCE_DIR": str(args.evidence / "provider-protocol")})
+        runner.godot(project, "independent-security", "test_batch_lab_security", "BATCH_SECURITY_RESULT",
+                     env={"BATCH_LAB_EVIDENCE_DIR": str(args.evidence / "security")})
         runner.godot(project, "native-failure-recovery", "test_batch_lab_failure_recovery", "BATCH_RECOVERY_RESULT",
                      env={"BATCH_LAB_EVIDENCE_DIR": str(args.evidence / "failure-recovery")})
         runner.godot(project, "independent-ui-lifecycle", "test_batch_lab_ui_lifecycle", "BATCH_UI_LIFECYCLE",

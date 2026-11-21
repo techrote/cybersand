@@ -99,13 +99,29 @@ The versioned inputs live under [`godot/batch_lab`](../../godot/batch_lab/experi
 P0 is direct construction; P1 adds geometry/connectivity/negative-space guidance;
 P2 adds a source-grounded SANDMAPS text card; P3 adds explicit supported tool
 contract guidance. All four variants have the same accepted seven Art primitives,
-permissions and native budget. P3 introduces no new macro interpreter.
+schema description, permissions and native budget. All receive the same explicit
+diagnostic feature boxes, clearance route and other geometric targets, so a later
+model comparison cannot be scored against undisclosed targets. P3 introduces no
+new macro interpreter.
 
 Procedural controls intentionally emit the same operations for each P0–P3 at a
 matched seed. Seeded-random controls relocate the same component sizes/count
 within the same footprint and budget. These demonstrate real construction,
 measurement and failure retention; they do **not** measure prompt improvement.
 There is no claim that a deterministic fixture is a model response.
+
+The independently audited development pilot retained 75 attempts: 68 completed,
+four partial, two refused and one stopped; 72 had evaluable native planes. Its
+48 procedural family runs are **12 family/seed blocks repeated across four prompt
+labels**, not 48 independent designs. The 12 seeded-random runs are three such
+blocks. Only three family blocks, at seed 19301, have matched procedural/random
+controls. Within each block, P0–P3 produce identical material hashes by design.
+All 48 procedural executions pass the declared geometric proxies. Random
+pipework and architecture fail their connectivity/clearance/feature checks, but
+all four random greeble executions also pass. This is a demonstrated limitation:
+the current metrics cannot distinguish useful contextual greebles from that
+random control. These descriptive results support apparatus qualification, not
+prompt superiority, statistical significance or visual preference.
 
 The three reference cards identify and hash actual inspected originals in
 `techrote/sandmapsreference` at commit
@@ -122,8 +138,12 @@ proxies, not an aesthetic score or proof that a gravity-driven player can traver
 the construction. Retain negative controls even when JSON, paint counts and
 native execution are valid.
 
-The independent reducer reads every retained attempt, validates material hashes
-and native acknowledgements and retains unevaluable failures in its denominator:
+The independent reducer reads every retained attempt, validates both material
+hashes and completed native acknowledgements, and retains unevaluable failures
+in its denominator. A result with queued, missing or non-native receipts is not
+presented as validated native evidence. These optional Python commands
+require the **source checkout**; the standalone evaluator does not include the
+developer tools and its interactive Save/Open/Export needs no Python:
 
 ```sh
 python tools/batch_lab/evaluate.py session.json --output analysis.json --blind-dir new-review-directory
@@ -146,6 +166,14 @@ and NVIDIA selections are retained as visible refusal outcomes. Availability of
 models in ChatGPT is not API entitlement. Missing endpoints, credentials,
 malformed responses and cancellation are failures to inspect, not sample filters.
 Never store credentials in configurations or exported evidence.
+
+Execution provenance identifies supplied programs, provider responses, history
+replays and captured baselines separately. Selecting a provider on a procedural
+example does not make that response a deterministic control. A provider response
+also does not prove that genuine model inference occurred. The host seed controls
+procedural construction and supported seeded tools; the current provider payload
+does not set a model sampling seed or temperature. No real model endpoint was
+available in the development environment and no paid dispatch was authorized.
 
 Model, compilation, native application, material capture, analysis and graphical
 presentation times are separate. Usage is recorded when a provider supplies it;
@@ -171,6 +199,7 @@ read-only design reference, not a runtime dependency or imported training corpus
 | Area | Owned delta and accepted dependency |
 | --- | --- |
 | Native orchestration | New `scripts/batch_lab` adapter/controller; existing worker and Art executor unchanged |
+| Provider retention | Existing `ArtProvider` reused; narrow credential redaction also covers echoed JSON field names in its traffic archive |
 | UI | New Batch Lab panel/view; one lazy toolbar entry and source-capture method in `shared_workbench.gd` |
 | Experiments | New versioned prompts/cards/manifests, metrics and independent reducer; no #568/#569 data mutation |
 | Qualification | New Batch Lab tests, runner and one request-scoped workflow; accepted build/packaging helpers reused |
@@ -183,7 +212,7 @@ any later reconciliation; shared Workbench mounting is the small overlap seam.
 
 ## Reproduce qualification and inspect custody
 
-Use the pinned dependencies in the existing
+From a **source checkout**, use the pinned dependencies in the existing
 [local build guide](local-build-and-validation.md), then run:
 
 ```sh
@@ -205,6 +234,24 @@ checksums. `qualification.json` and `results.json` assert actual outcomes; a ZIP
 is published as qualified only after extracted-package execution succeeds.
 Physical Windows 11/NVIDIA acceptance and genuine model comparisons remain
 explicit independent gates.
+
+## Independent review and repairs
+
+Five separate review lanes examined the implementation and the repaired delta.
+Their development-source results do not substitute for the rebuilt platform
+artifacts. The final campaign repeats the shipped regressions on exact source.
+
+| Review | Confirmed defects repaired and independently checked |
+| --- | --- |
+| Native ownership | Large partial-result replay uses the original program and confirmed prefix; JSON material permissions remain canonical; source-crop coordinates stay separate from local metrics; timeout recovery retains acknowledged material state |
+| Workbench UI | Reopened grid dimensions and selection caches remain coherent; pending source capture is fenced against Stop/close/reconfigure; blinding removes identifying fields; small tiles can reach true 1:1 scale; 68 lifecycle checks passed |
+| Methodology | Common targets and seven-shape schema are disclosed to every variant; 60 context checks passed; 12 independent invalid-evidence mutations were rejected without losing their review cards; stale control labels cannot classify provider responses or replays |
+| Security and persistence | Request-owned redaction covers rotated/cleared keys and durable JSON field names; structured export handles escaped credentials; corrupt PNGs refuse before commit; prompt/config hashes and executed-versus-next configuration remain bound; 51 checks passed |
+| Regression and release | The accepted Materials Lab completion format is recognized without accepting failures; qualification binds the executed project to its checkout or verified package; 22 guard checks, the actual launcher route and 54 existing provider checks passed |
+
+The narrow shared-provider repair preserves its transport, session stack and
+structural metadata. No native C++ input, worker ownership, physics default,
+material identity or ordinary Workbench save format changed.
 
 ## Deferred M3–M7
 
