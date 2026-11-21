@@ -2326,6 +2326,28 @@ func paint_test_release_gate() -> bool:
 	return entered
 
 
+# Simulate the real, mutex-owned World-transition admission fence without
+# resetting a 512-cell Workbench behind its rendered owner (the full native
+# contract suite separately exercises actual Workbench replacement).
+func paint_test_begin_world_change_fence() -> bool:
+	if not _paint_test_gates_enabled: return false
+	_mutex.lock()
+	var allowed: bool = _paint_test_gate_entered and _paint_test_gate_phase == "after_validation_slice" \
+		and not _world_change_inflight and not _reset_requested
+	if allowed: _world_change_inflight = true
+	_mutex.unlock()
+	return allowed
+
+
+func paint_test_end_world_change_fence() -> bool:
+	if not _paint_test_gates_enabled: return false
+	_mutex.lock()
+	var was_active: bool = _world_change_inflight
+	if was_active: _world_change_inflight = false
+	_mutex.unlock()
+	return was_active
+
+
 func _paint_test_wait_gate(phase: String) -> void:
 	_mutex.lock()
 	var armed: bool = _paint_test_gate_phase == phase

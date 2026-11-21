@@ -176,7 +176,7 @@ func test_native() -> void:
 	check(worker.paint_queue(stale_source).status=="refused","old source remains invalid after replacement")
 func test_burst_fence_controls() -> void:
 	if OS.get_environment("CYBERSAND_PAINT_TEST_GATES") != "1": return
-	for mode: String in ["stop", "settings", "reset"]:
+	for mode: String in ["stop", "settings", "world_change"]:
 		if not await install(512): return
 		var phase: String = "after_first_write" if mode == "stop" else "after_validation_slice"
 		if not check(worker.paint_test_arm_gate(phase),mode+" boundary armed"): return
@@ -198,10 +198,14 @@ func test_burst_fence_controls() -> void:
 				check(worker.queue_player_environment_profile(
 					PlayerEnvironmentProfiles.preset(PlayerEnvironmentProfiles.PRESET_CURRENT)),
 					"real settings change admitted while native validation is held")
-			"reset":
-				worker.queue_reset(Vector2.ZERO)
+			"world_change":
+				check(worker.paint_test_begin_world_change_fence(),
+					"real World-transition exclusion fence raised without changing canvas extent")
 		check(worker.paint_test_release_gate(),mode+" boundary released")
 		var interrupted: Dictionary = await result()
+		if mode == "world_change":
+			check(worker.paint_test_end_world_change_fence(),
+				"World-transition exclusion fence cleared after acknowledgement")
 		var prefix: int = int(interrupted.get("applied",-1))
 		if mode == "stop":
 			check(interrupted.get("status","")=="partial" and
