@@ -2,14 +2,10 @@ name: PAINT-END2END-002 physical Windows evaluator package
 
 # Separate Draft/HOLD child of PR #703. Source-pinned research DLL only.
 on:
+  # Rebuild for ANY owner-evaluator source change, including new parent
+  # merges: the physical packet must always match its immutable HEAD.
   push:
     branches: [exp/paint-end2end-002-owner-windows]
-    paths:
-      - '.github/workflows/paint-end2end-002-owner-windows.yml'
-      - 'tools/ci/qualify_paint_end2end_002_owner_windows.py'
-      - 'tools/windows/RUN-PAINT-END2END-002-OWNER.ps1'
-      - 'tools/windows/README-PAINT-END2END-002-OWNER.md'
-      - 'godot/tests/bench_paint_end2end_002_owner.gd'
   workflow_dispatch:
 
 permissions:
